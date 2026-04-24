@@ -1,0 +1,22 @@
+{
+  "name": "blendops",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Safe Blender automation for AI agents: MCP tools, CLI workflows, scene inspection, preview, validation, and export.",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "cli": "npm run dev --workspace @blendops/cli --",
+    "mcp-server": "npm run dev --workspace @blendops/mcp-server"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.3"
+  }
+}
