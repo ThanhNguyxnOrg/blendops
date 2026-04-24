@@ -1,46 +1,57 @@
 # BlendOps
 
-**Safe Blender automation for AI agents: MCP tools, CLI workflows, scene inspection, preview, validation, and export.**
+<p align="left">
+  <img alt="MVP Status" src="https://img.shields.io/badge/status-MVP%20in%20progress-0ea5e9">
+  <img alt="Safety" src="https://img.shields.io/badge/safety-no%20arbitrary%20python-success">
+  <img alt="CLI First" src="https://img.shields.io/badge/workflow-CLI--first-7c3aed">
+  <img alt="License" src="https://img.shields.io/badge/license-MIT-16a34a">
+</p>
+
+**Safe Blender automation for AI agents: MCP tools, CLI workflows, scene inspection, validation, and export readiness.**
+
+BlendOps is a **workflow layer** on top of Blender automation. It is not a “run arbitrary Python in Blender” tool.
 
 ---
 
-## What is BlendOps?
+## Why BlendOps?
 
-BlendOps is a **CLI-first, AI-safe workflow layer** for Blender automation. It provides:
+Most Blender+AI integrations focus on direct execution power. BlendOps focuses on **safe, typed, inspectable workflows**:
 
-- **MCP server** for AI agents (Claude, etc.)
-- **CLI** for humans and developers
-- **Blender bridge/addon** for executing typed commands in Blender
-- **JSON schemas** for safe, validated operations
-- **Scene inspection, dry-run, preview, undo, validation, and export**
-
-BlendOps is **not** a generic "run arbitrary Python in Blender" tool. It's a practical, inspectable automation toolkit with safety built in.
+- ✅ Typed command schemas (Zod / JSON schema-compatible)
+- ✅ Structured JSON responses for every command
+- ✅ CLI-first development loop (humans can test flows before agent use)
+- ✅ MCP wrapper over same core operations
+- ❌ No arbitrary Python execution exposed by default
 
 ---
 
-## Why Not Just Arbitrary Blender Python?
+## Current Status (v0.1)
 
-Existing Blender automation approaches often expose arbitrary Python execution, which creates security and reliability risks for AI-driven workflows:
+### Implemented vertical slices
 
-- **Security**: Arbitrary code execution is a vector for malicious or unintended operations
-- **Reliability**: Untyped commands lead to runtime errors and unpredictable behavior
-- **Inspectability**: No structured way to preview, validate, or undo operations
-- **Workflow**: No CLI-first development experience or dry-run capabilities
+- `blendops bridge status`
+- `blendops scene inspect`
+- `blendops object create --type cube --name test_cube --location 0,0,1 --scale 1,1,1`
 
-BlendOps addresses these gaps with:
+### MCP tools implemented
 
-- **Typed command schemas** (JSON Schema / Zod)
-- **Explicit confirmation** for destructive operations
-- **Structured JSON responses** with corrective error messages
-- **Scene inspection and validation presets**
-- **Export readiness checks**
-- **Undo support** (where Blender API allows)
+- `inspect_scene()`
+- `create_object(type, name, location?, rotation?, scale?)`
+
+### Planned (not implemented yet)
+
+- `clear_scene(confirm: boolean)`
+- `transform_object(...)`
+- `material` / `camera` / `lighting` / `render preview`
+- `validate_scene(preset)`
+- `export_asset(format, path)`
+- `undo_last()`
 
 ---
 
 ## Architecture
 
-```
+```text
 CLI                          MCP Server
  ↓                              ↓
  └─→ Shared Schemas/Core ←─────┘
@@ -50,243 +61,108 @@ CLI                          MCP Server
     Blender Python API
 ```
 
-### Components
+### Repo layout
 
-- **`apps/cli/`** - Command-line interface with subcommands
-- **`apps/mcp-server/`** - MCP server exposing tools for AI agents
-- **`apps/blender-addon/`** - Blender addon/bridge (Python) for local command execution
-- **`packages/core/`** - Shared core logic and client for bridge communication
-- **`packages/schemas/`** - JSON Schema / Zod definitions for all operations
-- **`examples/`** - Example workflows and AI agent prompts
-- **`docs/`** - Documentation and prior-art analysis
+```text
+blendops/
+  apps/
+    cli/
+    mcp-server/
+    blender-addon/
+  packages/
+    core/
+    schemas/
+  docs/
+  examples/
+```
+
+---
+
+## Quick Start (Dev)
+
+### 1) Clone + install
+
+```bash
+git clone https://github.com/ThanhNguyxnOrg/blendops.git
+cd blendops
+npm install
+```
+
+### 2) Typecheck + build
+
+```bash
+npm run typecheck
+npm run build
+```
+
+### 3) Start Blender bridge addon
+
+Load and enable addon from:
+
+- `apps/blender-addon/blendops_addon`
+
+### 4) Run CLI examples
+
+```bash
+npm run cli -- bridge status
+npm run cli -- scene inspect
+npm run cli -- object create --type cube --name test_cube --location 0,0,1 --scale 1,1,1
+```
+
+---
+
+## Response Envelope
+
+All commands return this structure:
+
+```json
+{
+  "ok": true,
+  "operation": "scene.inspect",
+  "message": "Scene inspection complete",
+  "data": {},
+  "warnings": [],
+  "next_steps": []
+}
+```
 
 ---
 
 ## Prior Art & Differentiation
 
-Several Blender MCP projects already exist. BlendOps is **not** trying to be just another generic Blender MCP server.
+BlendOps is inspired by existing Blender MCP projects but intentionally takes a different stance:
 
-**BlendOps differentiates by:**
+- **CLI-first + MCP-second**
+- **Safety-first contracts**
+- **No default arbitrary execution path**
 
-- **CLI-first development** - Build and test workflows without AI agents
-- **Typed operations** - No arbitrary Python execution by default
-- **Safety model** - Confirm flags, dry-run design, structured validation
-- **Inspectability** - Scene inspection, preview, validation presets
-- **Export readiness** - Validate assets before export (polycount, materials, naming, etc.)
-- **Workflow focus** - Undo, diff, corrective error messages
-
-See [`docs/prior-art.md`](./docs/prior-art.md) for detailed comparison with existing projects.
+See detailed analysis:
+- [`docs/prior-art.md`](./docs/prior-art.md)
 
 ---
 
-## Installation
+## Documentation
 
-> **Note**: MVP is under active development. Installation instructions will be added as components stabilize.
-
-### Prerequisites
-
-- Node.js 18+ (for CLI and MCP server)
-- Python 3.10+ (for Blender addon)
-- Blender 3.6+ (for bridge execution)
-
-### Install CLI
-
-```bash
-# Coming soon
-npm install -g blendops
-```
-
-### Install Blender Addon
-
-```bash
-# Coming soon
-# Copy apps/blender-addon to Blender addons directory
-```
-
-### Configure MCP Server
-
-```json
-{
-  "mcpServers": {
-    "blendops": {
-      "command": "npx",
-      "args": ["blendops-mcp"],
-      "env": {
-        "BLENDER_BRIDGE_URL": "http://localhost:8765"
-      }
-    }
-  }
-}
-```
-
----
-
-## Development Setup
-
-```bash
-# Clone repository
-git clone https://github.com/yourusername/blendops.git
-cd blendops
-
-# Install dependencies
-npm install
-
-# Build packages
-npm run build
-
-# Start Blender bridge (in Blender)
-# Open Blender → Scripting → Run bridge script
-
-# Test CLI
-npm run cli -- scene inspect
-
-# Test MCP server
-npm run mcp-server
-```
-
----
-
-## CLI Examples
-
-### Scene Inspection
-
-```bash
-blendops scene inspect
-```
-
-**Output:**
-```json
-{
-  "ok": true,
-  "operation": "scene_inspect",
-  "message": "Scene inspection complete",
-  "data": {
-    "objects": [
-      {
-        "name": "Cube",
-        "type": "MESH",
-        "location": [0, 0, 0],
-        "rotation": [0, 0, 0],
-        "scale": [1, 1, 1],
-        "materials": ["Material"]
-      }
-    ],
-    "cameras": ["Camera"],
-    "lights": ["Light"],
-    "materials": ["Material"],
-    "active_camera": "Camera"
-  },
-  "warnings": [],
-  "next_steps": ["Use 'blendops object create' to add objects"]
-}
-```
-
-### Create Object
-
-```bash
-blendops object create --type cube --name crate_01 --location 0,0,1 --scale 1,1,1
-```
-
-### Apply Material
-
-```bash
-blendops material create --name red_plastic --color "#ff0000" --roughness 0.5
-blendops material apply --object crate_01 --material red_plastic
-```
-
-### Validate Scene
-
-```bash
-blendops validate --preset game-asset
-```
-
-### Export
-
-```bash
-blendops export --format glb --output ./exports/scene.glb
-```
-
----
-
-## MCP Tools
-
-### Implemented in v0.1
-
-- `inspect_scene()` - Get structured scene data
-- `create_object(type, name, location?, rotation?, scale?)` - Create primitive mesh object
-
-### Planned (not implemented yet)
-
-- `clear_scene(confirm: boolean)`
-- `transform_object(name, location?, rotation?, scale?)`
-- `create_material(name, color, roughness?, metallic?)`
-- `apply_material(object_name, material_name)`
-- `setup_lighting(preset)`
-- `set_camera(target?, location?, rotation?, distance?)`
-- `render_preview(width?, height?)`
-- `validate_scene(preset)`
-- `export_asset(format, path)`
-- `undo_last()`
-
----
-
-## MVP Scope
-
-The first milestone focuses on proving the end-to-end flow:
-
-1. ✅ Scaffold repository structure
-2. ⏳ Implement `blendops scene inspect` (CLI + MCP)
-3. ⏳ Implement `blendops object create` (CLI + MCP)
-4. ⏳ Implement basic validation preset
-5. ⏳ Document install and dev workflow
-
-**Not in MVP:**
-- Full command set (lighting, camera, materials)
-- Dry-run implementation
-- Undo history
-- Advanced validation presets
-- Export format support beyond GLB
-
-See [`TODO.md`](./TODO.md) for detailed implementation checklist.
-
----
-
-## Safety Requirements
-
-- ❌ **No arbitrary Python execution** in MVP
-- ✅ **Typed command schemas** (JSON Schema / Zod)
-- ✅ **Explicit confirmation** for destructive operations (`--confirm` flag)
-- ✅ **Structured JSON responses** with corrective error messages
-- ✅ **Dry-run design** (architecture support, implementation TBD)
-- ✅ **Scene inspection** before and after operations
-
----
-
-## Roadmap
-
-- [ ] MVP: `scene inspect` and `object create` working end-to-end
-- [ ] Add material, lighting, camera commands
-- [ ] Implement dry-run mode
-- [ ] Add undo history
-- [ ] Expand validation presets (game-asset, 3d-print, animation)
-- [ ] Support multiple export formats (FBX, STL, USD)
-- [ ] Add scene diff visualization
-- [ ] Performance optimization for large scenes
+- [Manual test guide](./docs/manual-test.md)
+- [Agent eval prompts](./docs/evals.md)
+- [Contributing guide](./CONTRIBUTING.md)
+- [Code of Conduct](./CODE_OF_CONDUCT.md)
+- [Security policy](./SECURITY.md)
+- [Support](./SUPPORT.md)
+- [Project TODO](./TODO.md)
 
 ---
 
 ## Contributing
 
-Contributions welcome! Please see [`CONTRIBUTING.md`](./CONTRIBUTING.md) for guidelines.
+Contributions are welcome. Start here:
+
+- [`CONTRIBUTING.md`](./CONTRIBUTING.md)
+
+Please keep changes incremental and align with the safety model.
 
 ---
 
 ## License
 
-MIT License - see [`LICENSE`](./LICENSE) for details.
-
----
-
-## Acknowledgments
-
-BlendOps is inspired by existing Blender automation projects. See [`docs/prior-art.md`](./docs/prior-art.md) for detailed analysis and attribution.
+MIT — see [`LICENSE`](./LICENSE).
