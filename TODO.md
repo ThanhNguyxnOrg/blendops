@@ -23,36 +23,37 @@
 - [x] Define BlendOpsResponse schema
 - [x] Define SceneInspectRequest schema
 - [x] Define SceneInspectData schema
-- [ ] Add ObjectCreateRequest schema
+- [x] Add ObjectCreateRequest schema
 - [ ] Add TransformObjectRequest schema
 - [ ] Add MaterialCreateRequest schema
 - [ ] Add MaterialApplyRequest schema
 - [ ] Add ValidateSceneRequest schema
 - [ ] Add ExportAssetRequest schema
-- [ ] Export all schemas from index.ts
+- [x] Export all implemented schemas from index.ts
 
 ### packages/core
-- [ ] Create package.json
-- [ ] Create BridgeClient class (HTTP/stdio transport)
-- [ ] Add connection management
-- [ ] Add request/response handling
-- [ ] Add error handling utilities
+- [x] Create package.json
+- [x] Create BridgeClient class (HTTP/stdio transport)
+- [x] Add connection management
+- [x] Add request/response handling
+- [x] Add error handling utilities
 - [ ] Add retry logic
-- [ ] Export public API
+- [x] Export public API
 
 ---
 
 ## Phase 3: Blender Bridge/Addon
 
 ### apps/blender-addon
-- [ ] Create bl_info metadata
-- [ ] Create addon __init__.py
-- [ ] Implement HTTP server (port 8765)
-- [ ] Add bpy.app.timers routing for thread safety
-- [ ] Implement scene.inspect handler
+- [x] Create bl_info metadata
+- [x] Create addon __init__.py
+- [x] Implement HTTP server (port 8765)
+- [x] Add bpy.app.timers routing for thread safety
+- [x] Implement scene.inspect handler
+- [x] Implement object.create handler
 - [ ] Add parameter validation
-- [ ] Add error handling
-- [ ] Create addon installation instructions
+- [x] Add error handling
+- [x] Create addon installation instructions
 - [ ] Add security module (allowlist, validation)
 - [ ] Test in Blender 3.6+
 
@@ -61,15 +62,16 @@
 ## Phase 4: CLI Application
 
 ### apps/cli
-- [ ] Create package.json
+- [x] Create package.json
 - [ ] Add commander.js dependency
-- [ ] Create main CLI entry point (bin/blendops.js)
-- [ ] Implement `blendops scene inspect` command
-- [ ] Add --json flag for raw output
+- [x] Create main CLI entry point (bin/blendops.js)
+- [x] Implement `blendops scene inspect` command
+- [x] Implement `blendops object create` command
+- [x] Add --json flag for raw output
 - [ ] Add --dry-run flag (architecture support)
-- [ ] Add connection error handling
+- [x] Add connection error handling
 - [ ] Add formatted output (tables, colors)
-- [ ] Create help text and examples
+- [x] Create help text and examples
 - [ ] Test CLI end-to-end
 
 ---
@@ -77,14 +79,15 @@
 ## Phase 5: MCP Server
 
 ### apps/mcp-server
-- [ ] Create package.json
-- [ ] Add @modelcontextprotocol/sdk dependency
-- [ ] Create MCP server entry point
-- [ ] Implement inspect_scene tool
-- [ ] Add tool schema definitions
-- [ ] Add stdio transport
-- [ ] Add error handling
-- [ ] Create MCP configuration example
+- [x] Create package.json
+- [x] Add @modelcontextprotocol/sdk dependency
+- [x] Create MCP server entry point
+- [x] Implement inspect_scene tool
+- [x] Implement create_object tool
+- [x] Add tool schema definitions
+- [x] Add stdio transport
+- [x] Add error handling
+- [x] Create MCP configuration example
 - [ ] Test with Claude Desktop
 - [ ] Document tool usage
 
@@ -93,8 +96,8 @@
 ## Phase 6: Scene Operations
 
 ### Implement Core Commands
-- [ ] scene.inspect (MVP priority)
-- [ ] object.create (MVP priority)
+- [x] scene.inspect (MVP priority)
+- [x] object.create (MVP priority)
 - [ ] object.transform
 - [ ] object.delete (requires --confirm)
 - [ ] scene.clear (requires --confirm)
@@ -318,10 +321,13 @@
 - [x] Create TODO.md
 - [x] Add base configuration files
 - [x] Create packages/schemas with initial schemas
-- [ ] Create packages/core with BridgeClient
-- [ ] Create apps/blender-addon with scene.inspect handler
-- [ ] Create apps/cli with scene inspect command
+- [x] Create packages/core with BridgeClient
+- [x] Create apps/blender-addon with scene.inspect handler
+- [x] Extend addon with object.create handler
+- [x] Create apps/cli with scene inspect command
+- [x] Extend CLI with object create command
 - [ ] Test end-to-end: `blendops scene inspect`
+- [ ] Test end-to-end: `blendops object create`
 
 **Success Criteria:**
 - CLI command runs without errors
@@ -354,4 +360,4 @@
 
 ---
 
-**Next Action:** Implement packages/core BridgeClient and apps/blender-addon scene.inspect handler
+**Next Action:** Run npm install/typecheck/build and verify end-to-end object.create in Blender runtime

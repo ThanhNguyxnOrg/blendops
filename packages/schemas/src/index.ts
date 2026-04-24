@@ -18,6 +18,25 @@ export const SceneInspectRequestSchema = z.object({
   dryRun: z.boolean().optional(),
 });
 
+export const ObjectTypeSchema = z.enum([
+  "cube",
+  "uv_sphere",
+  "ico_sphere",
+  "cylinder",
+  "cone",
+  "torus",
+  "plane",
+]);
+
+export const ObjectCreateRequestSchema = z.object({
+  operation: z.literal("object.create"),
+  type: ObjectTypeSchema,
+  name: z.string().min(1),
+  location: Vec3Schema.optional(),
+  rotation: Vec3Schema.optional(),
+  scale: Vec3Schema.optional(),
+});
+
 export const SceneObjectSchema = z.object({
   name: z.string(),
   type: z.string(),
@@ -43,10 +62,19 @@ export const SceneInspectDataSchema = z.object({
     .optional(),
 });
 
+export const ObjectCreateDataSchema = z.object({
+  object: SceneObjectSchema,
+});
+
 export type SceneInspectRequest = z.infer<typeof SceneInspectRequestSchema>;
 export type SceneInspectData = z.infer<typeof SceneInspectDataSchema>;
+export type ObjectCreateRequest = z.infer<typeof ObjectCreateRequestSchema>;
+export type ObjectCreateData = z.infer<typeof ObjectCreateDataSchema>;
 
-export const BridgeCommandSchema = z.discriminatedUnion("operation", [SceneInspectRequestSchema]);
+export const BridgeCommandSchema = z.discriminatedUnion("operation", [
+  SceneInspectRequestSchema,
+  ObjectCreateRequestSchema,
+]);
 export type BridgeCommand = z.infer<typeof BridgeCommandSchema>;
 
 export function makeResponse(input: {

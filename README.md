@@ -210,20 +210,23 @@ blendops export --format glb --output ./exports/scene.glb
 
 ## MCP Tools
 
-The MCP server exposes the following tools for AI agents:
+### Implemented in v0.1
 
 - `inspect_scene()` - Get structured scene data
-- `clear_scene(confirm: boolean)` - Clear all objects (requires confirmation)
-- `create_object(type, name, location, rotation, scale)` - Create mesh object
-- `transform_object(name, location?, rotation?, scale?)` - Transform existing object
-- `create_material(name, color, roughness?, metallic?)` - Create PBR material
-- `apply_material(object_name, material_name)` - Apply material to object
-- `setup_lighting(preset)` - Set up lighting (studio, outdoor, etc.)
-- `set_camera(target?, location?, rotation?, distance?)` - Configure camera
-- `render_preview(width?, height?)` - Render preview image
-- `validate_scene(preset)` - Run validation checks
-- `export_asset(format, path)` - Export scene to file
-- `undo_last()` - Undo last operation
+- `create_object(type, name, location?, rotation?, scale?)` - Create primitive mesh object
+
+### Planned (not implemented yet)
+
+- `clear_scene(confirm: boolean)`
+- `transform_object(name, location?, rotation?, scale?)`
+- `create_material(name, color, roughness?, metallic?)`
+- `apply_material(object_name, material_name)`
+- `setup_lighting(preset)`
+- `set_camera(target?, location?, rotation?, distance?)`
+- `render_preview(width?, height?)`
+- `validate_scene(preset)`
+- `export_asset(format, path)`
+- `undo_last()`
 
 ---
 

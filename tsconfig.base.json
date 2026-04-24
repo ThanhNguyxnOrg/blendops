@@ -10,6 +10,11 @@
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
+    "baseUrl": ".",
+    "paths": {
+      "@blendops/schemas": ["packages/schemas/src/index.ts"],
+      "@blendops/core": ["packages/core/src/index.ts"]
+    },
     "noUncheckedIndexedAccess": true,
     "exactOptionalPropertyTypes": true,
     "outDir": "dist"

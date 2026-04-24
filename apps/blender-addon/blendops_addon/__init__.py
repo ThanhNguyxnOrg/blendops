@@ -41,29 +41,26 @@ def make_response(
     }
 
 
+def object_snapshot(obj: Any) -> Dict[str, Any]:
+    return {
+        "name": obj.name,
+        "type": obj.type,
+        "location": list(obj.location),
+        "rotation": list(obj.rotation_euler),
+        "scale": list(obj.scale),
+        "materials": [mat.name for mat in obj.data.materials]
+        if hasattr(obj.data, "materials")
+        else [],
+    }
+
+
 def handle_scene_inspect() -> Dict[str, Any]:
     try:
         scene = bpy.context.scene
-
-        objects = []
-        for obj in scene.objects:
-            objects.append(
-                {
-                    "name": obj.name,
-                    "type": obj.type,
-                    "location": list(obj.location),
-                    "rotation": list(obj.rotation_euler),
-                    "scale": list(obj.scale),
-                    "materials": [mat.name for mat in obj.data.materials]
-                    if hasattr(obj.data, "materials")
-                    else [],
-                }
-            )
-
+        objects = [object_snapshot(obj) for obj in scene.objects]
         cameras = [obj.name for obj in scene.objects if obj.type == "CAMERA"]
         lights = [obj.name for obj in scene.objects if obj.type == "LIGHT"]
         materials = [mat.name for mat in bpy.data.materials]
-
         active_camera = scene.camera.name if scene.camera else None
 
         data = {
@@ -95,6 +92,76 @@ def handle_scene_inspect() -> Dict[str, Any]:
         )
 
 
+def handle_object_create(command: Dict[str, Any]) -> Dict[str, Any]:
+    primitive = command.get("type")
+    name = command.get("name")
+    location = command.get("location") or [0.0, 0.0, 0.0]
+    rotation = command.get("rotation") or [0.0, 0.0, 0.0]
+    scale = command.get("scale") or [1.0, 1.0, 1.0]
+
+    primitive_ops = {
+        "cube": bpy.ops.mesh.primitive_cube_add,
+        "uv_sphere": bpy.ops.mesh.primitive_uv_sphere_add,
+        "ico_sphere": bpy.ops.mesh.primitive_ico_sphere_add,
+        "cylinder": bpy.ops.mesh.primitive_cylinder_add,
+        "cone": bpy.ops.mesh.primitive_cone_add,
+        "torus": bpy.ops.mesh.primitive_torus_add,
+        "plane": bpy.ops.mesh.primitive_plane_add,
+    }
+
+    if primitive not in primitive_ops:
+        return make_response(
+            ok=False,
+            operation="object.create",
+            message=f"Unsupported primitive type: {primitive}",
+            warnings=["Allowed types: cube, uv_sphere, ico_sphere, cylinder, cone, torus, plane"],
+            next_steps=["Use one of the supported primitive types"],
+        )
+
+    if not isinstance(name, str) or len(name.strip()) == 0:
+        return make_response(
+            ok=False,
+            operation="object.create",
+            message="Object name is required",
+            warnings=["Provide --name for object.create"],
+            next_steps=["Example: blendops object create --type cube --name test_cube"],
+        )
+
+    try:
+        primitive_ops[primitive](location=tuple(location), rotation=tuple(rotation), scale=tuple(scale))
+        created = bpy.context.active_object
+
+        if created is None:
+            return make_response(
+                ok=False,
+                operation="object.create",
+                message="Object creation failed: no active object created",
+                warnings=["Blender operator did not return an active object"],
+                next_steps=["Check Blender console for operator errors"],
+            )
+
+        created.name = name
+
+        return make_response(
+            ok=True,
+            operation="object.create",
+            message=f"Created {primitive} object '{name}'",
+            data={"object": object_snapshot(created)},
+            next_steps=[
+                "Run `blendops scene inspect` to verify scene state",
+                "Use object transform in future slices",
+            ],
+        )
+    except Exception as e:
+        return make_response(
+            ok=False,
+            operation="object.create",
+            message=f"Object creation failed: {str(e)}",
+            warnings=[traceback.format_exc()],
+            next_steps=["Check Blender console for detailed error"],
+        )
+
+
 def process_command(command: Dict[str, Any]) -> Dict[str, Any]:
     operation = command.get("operation")
 
@@ -108,6 +175,9 @@ def process_command(command: Dict[str, Any]) -> Dict[str, Any]:
 
     if operation == "scene.inspect":
         return handle_scene_inspect()
+
+    if operation == "object.create":
+        return handle_object_create(command)
 
     return make_response(
         ok=False,
