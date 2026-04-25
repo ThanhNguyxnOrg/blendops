@@ -57,7 +57,6 @@ Most Blender+AI integrations focus on direct execution power. BlendOps focuses o
 ### Planned (not implemented yet)
 
 - `clear_scene(confirm: boolean)`
-- `validate_scene(preset)` ✅ now implemented with presets: `basic`, `game_asset`, `render_ready`
 - `export_asset(format, path)`
 - `undo_last()`
 
