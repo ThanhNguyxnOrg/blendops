@@ -1,7 +1,103 @@
 #!/usr/bin/env node
 
 import { BridgeClient } from "@blendops/core";
-import { ColorHexSchema, LightingPresetSchema, makeResponse, ObjectTypeSchema, ValidationPresetSchema, Vec3Schema } from "@blendops/schemas";
+import { appendFileSync, mkdirSync } from "node:fs";
+import { dirname, resolve } from "node:path";
+import { ColorHexSchema, ExportAssetExtensionByFormat, ExportAssetFormatSchema, LightingPresetSchema, makeResponse, ObjectTypeSchema, ValidationPresetSchema, Vec3Schema } from "@blendops/schemas";
+
+interface GlobalFlags {
+  verbose: boolean;
+  quiet: boolean;
+  commandArgs: string[];
+}
+
+const LONG_RUNNING_OPERATIONS = new Set(["render.preview", "validate.scene", "export.asset"]);
+const LOG_FILE = process.env.BLENDOPS_LOG_FILE;
+
+function parseGlobalFlags(args: string[]): GlobalFlags {
+  let verbose = false;
+  let quiet = false;
+  const commandArgs: string[] = [];
+
+  for (const arg of args) {
+    if (arg === "--verbose" || arg === "-v") {
+      verbose = true;
+      continue;
+    }
+
+    if (arg === "--quiet" || arg === "-q") {
+      quiet = true;
+      continue;
+    }
+
+    commandArgs.push(arg);
+  }
+
+  if (quiet) {
+    verbose = false;
+  }
+
+  return { verbose, quiet, commandArgs };
+}
+
+function appendLogFile(message: string): void {
+  if (!LOG_FILE) {
+    return;
+  }
+
+  try {
+    const resolvedPath = resolve(LOG_FILE);
+    mkdirSync(dirname(resolvedPath), { recursive: true });
+    appendFileSync(resolvedPath, `${message}\n`, { encoding: "utf8" });
+  } catch {
+    return;
+  }
+}
+
+function nowStamp(): string {
+  return new Date().toLocaleTimeString("en-US", { hour12: false });
+}
+
+function humanLog(message: string, flags: GlobalFlags): void {
+  if (flags.quiet) {
+    return;
+  }
+
+  const line = `[BlendOps ${nowStamp()}] ${message}`;
+  process.stderr.write(`${line}\n`);
+  appendLogFile(line);
+}
+
+async function timeOperation<T>(
+  operation: string,
+  fn: () => Promise<T>,
+  flags: GlobalFlags
+): Promise<T> {
+  const start = Date.now();
+  const shouldLog = flags.verbose || LONG_RUNNING_OPERATIONS.has(operation);
+
+  if (shouldLog) {
+    humanLog(`command: ${operation}`, flags);
+  }
+
+  try {
+    const result = await fn();
+    const duration = Date.now() - start;
+    if (shouldLog) {
+      let outcome = "done";
+      if (typeof result === "object" && result !== null && "ok" in result) {
+        const okValue = (result as { ok?: unknown }).ok;
+        outcome = okValue === true ? "ok" : "failed";
+      }
+      humanLog(`completed: ${operation} ${outcome} ${duration}ms`, flags);
+    }
+    return result;
+  } catch (error) {
+    const duration = Date.now() - start;
+    humanLog(`failed: ${operation} ${duration}ms`, flags);
+    throw error;
+  }
+}
 
 function printHelp(): void {
   console.log(`BlendOps CLI
@@ -26,10 +122,16 @@ Usage:
   blendops validate scene --preset basic
   blendops validate scene --preset game_asset
   blendops validate scene --preset render_ready
+  blendops export asset --format glb --output exports/test_scene.glb
+  blendops export asset --format gltf --output exports/test_scene.gltf
+  blendops export asset --format fbx --output exports/test_scene.fbx
+  blendops export asset --format glb --output exports/test_scene.glb --selected-only --no-apply-modifiers
 
 Options:
-  --json        Output JSON (default)
-  -h, --help    Show help
+  --verbose, -v  Show detailed progress logs (stderr)
+  --quiet, -q    Suppress progress logs
+  --json         Output JSON (default)
+  -h, --help     Show help
 
 Implemented in v0.1:
   - bridge status
@@ -41,7 +143,8 @@ Implemented in v0.1:
   - lighting setup
   - camera set
   - render preview
-  - validate scene`);
+  - validate scene
+  - export asset`);
 }
 
 function readFlag(args: string[], flag: string): string | undefined {
@@ -79,31 +182,34 @@ function parseNumericFlag(value: string | undefined, flagName: string, fallback:
 }
 
 async function main(): Promise<number> {
-  const args = process.argv.slice(2);
+  const rawArgs = process.argv.slice(2);
+  const flags = parseGlobalFlags(rawArgs);
+  const commandArgs = flags.commandArgs;
 
-  if (args.length === 0 || args.includes("-h") || args.includes("--help")) {
+  if (commandArgs.length === 0 || commandArgs.includes("-h") || commandArgs.includes("--help")) {
     printHelp();
     return 0;
   }
 
-  const client = new BridgeClient();
-  const [group, action] = args;
+  const logger = (message: string) => humanLog(message, flags);
+  const client = new BridgeClient({ verbose: flags.verbose, quiet: flags.quiet, logger });
+  const [group, action] = commandArgs;
 
   if (group === "bridge" && action === "status") {
-    const res = await client.status();
+    const res = await timeOperation("bridge.status", () => client.status(), flags);
     console.log(JSON.stringify(res, null, 2));
     return res.ok ? 0 : 1;
   }
 
   if (group === "scene" && action === "inspect") {
-    const res = await client.inspectScene();
+    const res = await timeOperation("scene.inspect", () => client.inspectScene(), flags);
     console.log(JSON.stringify(res, null, 2));
     return res.ok ? 0 : 1;
   }
 
   if (group === "object" && action === "create") {
-    const typeRaw = readFlag(args, "--type");
-    const name = readFlag(args, "--name");
+    const typeRaw = readFlag(commandArgs, "--type");
+    const name = readFlag(commandArgs, "--name");
 
     if (!typeRaw || !name) {
       const error = makeResponse({
@@ -121,17 +227,17 @@ async function main(): Promise<number> {
 
     try {
       const type = ObjectTypeSchema.parse(typeRaw);
-      const location = parseVec3(readFlag(args, "--location"), [0, 0, 0]);
-      const rotation = parseVec3(readFlag(args, "--rotation"), [0, 0, 0]);
-      const scale = parseVec3(readFlag(args, "--scale"), [1, 1, 1]);
+      const location = parseVec3(readFlag(commandArgs, "--location"), [0, 0, 0]);
+      const rotation = parseVec3(readFlag(commandArgs, "--rotation"), [0, 0, 0]);
+      const scale = parseVec3(readFlag(commandArgs, "--scale"), [1, 1, 1]);
 
-      const res = await client.createObject({
+      const res = await timeOperation("object.create", () => client.createObject({
         type,
         name,
         location,
         rotation,
         scale,
-      });
+      }), flags);
 
       console.log(JSON.stringify(res, null, 2));
       return res.ok ? 0 : 1;
@@ -152,7 +258,7 @@ async function main(): Promise<number> {
   }
 
   if (group === "object" && action === "transform") {
-    const name = readFlag(args, "--name");
+    const name = readFlag(commandArgs, "--name");
 
     if (!name) {
       const error = makeResponse({
@@ -169,24 +275,24 @@ async function main(): Promise<number> {
     }
 
     try {
-      const hasLocation = args.includes("--location");
-      const hasRotation = args.includes("--rotation");
-      const hasScale = args.includes("--scale");
+      const hasLocation = commandArgs.includes("--location");
+      const hasRotation = commandArgs.includes("--rotation");
+      const hasScale = commandArgs.includes("--scale");
 
       if (!hasLocation && !hasRotation && !hasScale) {
         throw new Error("object transform requires at least one of --location, --rotation, or --scale");
       }
 
-      const location = hasLocation ? parseVec3(readFlag(args, "--location"), [0, 0, 0]) : undefined;
-      const rotation = hasRotation ? parseVec3(readFlag(args, "--rotation"), [0, 0, 0]) : undefined;
-      const scale = hasScale ? parseVec3(readFlag(args, "--scale"), [1, 1, 1]) : undefined;
+      const location = hasLocation ? parseVec3(readFlag(commandArgs, "--location"), [0, 0, 0]) : undefined;
+      const rotation = hasRotation ? parseVec3(readFlag(commandArgs, "--rotation"), [0, 0, 0]) : undefined;
+      const scale = hasScale ? parseVec3(readFlag(commandArgs, "--scale"), [1, 1, 1]) : undefined;
 
-      const res = await client.transformObject({
+      const res = await timeOperation("object.transform", () => client.transformObject({
         name,
         location,
         rotation,
         scale,
-      });
+      }), flags);
 
       console.log(JSON.stringify(res, null, 2));
       return res.ok ? 0 : 1;
@@ -207,8 +313,8 @@ async function main(): Promise<number> {
   }
 
   if (group === "material" && action === "create") {
-    const name = readFlag(args, "--name");
-    const colorRaw = readFlag(args, "--color");
+    const name = readFlag(commandArgs, "--name");
+    const colorRaw = readFlag(commandArgs, "--color");
 
     if (!name || !colorRaw) {
       const error = makeResponse({
@@ -226,19 +332,19 @@ async function main(): Promise<number> {
 
     try {
       const color = ColorHexSchema.parse(colorRaw);
-      const roughness = parseNumericFlag(readFlag(args, "--roughness"), "--roughness", 0.5);
-      const metallic = parseNumericFlag(readFlag(args, "--metallic"), "--metallic", 0);
+      const roughness = parseNumericFlag(readFlag(commandArgs, "--roughness"), "--roughness", 0.5);
+      const metallic = parseNumericFlag(readFlag(commandArgs, "--metallic"), "--metallic", 0);
 
       if (roughness < 0 || roughness > 1 || metallic < 0 || metallic > 1) {
         throw new Error("roughness and metallic must be between 0 and 1");
       }
 
-      const res = await client.createMaterial({
+      const res = await timeOperation("material.create", () => client.createMaterial({
         name,
         color,
         roughness,
         metallic,
-      });
+      }), flags);
 
       console.log(JSON.stringify(res, null, 2));
       return res.ok ? 0 : 1;
@@ -259,8 +365,8 @@ async function main(): Promise<number> {
   }
 
   if (group === "material" && action === "apply") {
-    const objectName = readFlag(args, "--object");
-    const materialName = readFlag(args, "--material");
+    const objectName = readFlag(commandArgs, "--object");
+    const materialName = readFlag(commandArgs, "--material");
 
     if (!objectName || !materialName) {
       const error = makeResponse({
@@ -276,18 +382,18 @@ async function main(): Promise<number> {
       return 1;
     }
 
-    const res = await client.applyMaterial({
+    const res = await timeOperation("material.apply", () => client.applyMaterial({
       object_name: objectName,
       material_name: materialName,
-    });
+    }), flags);
 
     console.log(JSON.stringify(res, null, 2));
     return res.ok ? 0 : 1;
   }
 
   if (group === "lighting" && action === "setup") {
-    const presetRaw = readFlag(args, "--preset");
-    const target = readFlag(args, "--target");
+    const presetRaw = readFlag(commandArgs, "--preset");
+    const target = readFlag(commandArgs, "--target");
 
     if (!presetRaw) {
       const error = makeResponse({
@@ -306,10 +412,10 @@ async function main(): Promise<number> {
 
     try {
       const preset = LightingPresetSchema.parse(presetRaw);
-      const res = await client.setupLighting({
+      const res = await timeOperation("lighting.setup", () => client.setupLighting({
         preset,
         target,
-      });
+      }), flags);
 
       console.log(JSON.stringify(res, null, 2));
       return res.ok ? 0 : 1;
@@ -330,41 +436,41 @@ async function main(): Promise<number> {
   }
 
   if (group === "camera" && action === "set") {
-    const target = readFlag(args, "--target");
-    const hasLocation = args.includes("--location");
-    const hasRotation = args.includes("--rotation");
-    const hasDistance = args.includes("--distance");
-    const hasFocalLength = args.includes("--focal-length");
+    const target = readFlag(commandArgs, "--target");
+    const hasLocation = commandArgs.includes("--location");
+    const hasRotation = commandArgs.includes("--rotation");
+    const hasDistance = commandArgs.includes("--distance");
+    const hasFocalLength = commandArgs.includes("--focal-length");
 
     try {
       if (!target && !hasLocation) {
         throw new Error("camera set requires at least --target or --location");
       }
 
-      const location = hasLocation ? parseVec3(readFlag(args, "--location"), [0, 0, 0]) : undefined;
-      const rotation = hasRotation ? parseVec3(readFlag(args, "--rotation"), [0, 0, 0]) : undefined;
+      const location = hasLocation ? parseVec3(readFlag(commandArgs, "--location"), [0, 0, 0]) : undefined;
+      const rotation = hasRotation ? parseVec3(readFlag(commandArgs, "--rotation"), [0, 0, 0]) : undefined;
 
       if (hasLocation && !target && !hasRotation) {
         throw new Error("camera set requires --rotation when --location is provided without --target");
       }
 
-      const distance = hasDistance ? parseNumericFlag(readFlag(args, "--distance"), "--distance", 0) : undefined;
+      const distance = hasDistance ? parseNumericFlag(readFlag(commandArgs, "--distance"), "--distance", 0) : undefined;
       if (typeof distance !== "undefined" && distance <= 0) {
         throw new Error("--distance must be a positive number");
       }
 
-      const focal_length = hasFocalLength ? parseNumericFlag(readFlag(args, "--focal-length"), "--focal-length", 0) : undefined;
+      const focal_length = hasFocalLength ? parseNumericFlag(readFlag(commandArgs, "--focal-length"), "--focal-length", 0) : undefined;
       if (typeof focal_length !== "undefined" && focal_length <= 0) {
         throw new Error("--focal-length must be a positive number");
       }
 
-      const res = await client.setCamera({
+      const res = await timeOperation("camera.set", () => client.setCamera({
         target,
         location,
         rotation,
         distance,
         focal_length,
-      });
+      }), flags);
 
       console.log(JSON.stringify(res, null, 2));
       return res.ok ? 0 : 1;
@@ -388,15 +494,15 @@ async function main(): Promise<number> {
 
   if (group === "render" && action === "preview") {
     try {
-      const hasOutput = args.includes("--output");
-      const hasWidth = args.includes("--width");
-      const hasHeight = args.includes("--height");
-      const hasSamples = args.includes("--samples");
+      const hasOutput = commandArgs.includes("--output");
+      const hasWidth = commandArgs.includes("--width");
+      const hasHeight = commandArgs.includes("--height");
+      const hasSamples = commandArgs.includes("--samples");
 
-      const output = hasOutput ? readFlag(args, "--output") : undefined;
-      const width = hasWidth ? parseNumericFlag(readFlag(args, "--width"), "--width", 0) : undefined;
-      const height = hasHeight ? parseNumericFlag(readFlag(args, "--height"), "--height", 0) : undefined;
-      const samples = hasSamples ? parseNumericFlag(readFlag(args, "--samples"), "--samples", 0) : undefined;
+      const output = hasOutput ? readFlag(commandArgs, "--output") : undefined;
+      const width = hasWidth ? parseNumericFlag(readFlag(commandArgs, "--width"), "--width", 0) : undefined;
+      const height = hasHeight ? parseNumericFlag(readFlag(commandArgs, "--height"), "--height", 0) : undefined;
+      const samples = hasSamples ? parseNumericFlag(readFlag(commandArgs, "--samples"), "--samples", 0) : undefined;
 
       if (typeof width !== "undefined" && (width <= 0 || !Number.isInteger(width))) {
         throw new Error("--width must be a positive integer");
@@ -414,12 +520,12 @@ async function main(): Promise<number> {
         throw new Error("--output must end with .png");
       }
 
-      const res = await client.renderPreview({
+      const res = await timeOperation("render.preview", () => client.renderPreview({
         output,
         width,
         height,
         samples,
-      });
+      }), flags);
 
       console.log(JSON.stringify(res, null, 2));
       return res.ok ? 0 : 1;
@@ -442,13 +548,13 @@ async function main(): Promise<number> {
 
   if (group === "validate" && action === "scene") {
     try {
-      const hasPreset = args.includes("--preset");
-      const presetRaw = hasPreset ? readFlag(args, "--preset") : undefined;
+      const hasPreset = commandArgs.includes("--preset");
+      const presetRaw = hasPreset ? readFlag(commandArgs, "--preset") : undefined;
       const preset = typeof presetRaw === "undefined" ? "basic" : ValidationPresetSchema.parse(presetRaw);
 
-      const res = await client.validateScene({
+      const res = await timeOperation("validate.scene", () => client.validateScene({
         preset,
-      });
+      }), flags);
 
       console.log(JSON.stringify(res, null, 2));
       return res.ok ? 0 : 1;
@@ -468,10 +574,53 @@ async function main(): Promise<number> {
     }
   }
 
+  if (group === "export" && action === "asset") {
+    try {
+      const formatRaw = readFlag(commandArgs, "--format");
+      const output = readFlag(commandArgs, "--output");
+      const selected_only = commandArgs.includes("--selected-only");
+      const apply_modifiers = !commandArgs.includes("--no-apply-modifiers");
+
+      if (!formatRaw || !output) {
+        throw new Error("export asset requires --format and --output");
+      }
+
+      const format = ExportAssetFormatSchema.parse(formatRaw);
+      const expectedExtension = ExportAssetExtensionByFormat[format];
+      if (!output.toLowerCase().endsWith(expectedExtension)) {
+        throw new Error(`--output must end with ${expectedExtension} for format ${format}`);
+      }
+
+      const res = await timeOperation("export.asset", () => client.exportAsset({
+        format,
+        output,
+        selected_only,
+        apply_modifiers,
+      }), flags);
+
+      console.log(JSON.stringify(res, null, 2));
+      return res.ok ? 0 : 1;
+    } catch (error) {
+      const invalid = makeResponse({
+        ok: false,
+        operation: "cli.invalid_arguments",
+        message: error instanceof Error ? error.message : "Invalid export asset arguments",
+        warnings: ["Invalid export asset input"],
+        next_steps: [
+          "Allowed formats: glb, gltf, fbx",
+          "Ensure --output extension matches --format",
+          "Example: blendops export asset --format glb --output exports/test_scene.glb",
+        ],
+      });
+      console.log(JSON.stringify(invalid, null, 2));
+      return 1;
+    }
+  }
+
   const error = makeResponse({
     ok: false,
     operation: "cli.command_not_found",
-    message: `Unknown command: ${args.join(" ")}`,
+    message: `Unknown command: ${commandArgs.join(" ")}`,
     warnings: ["Unsupported command in MVP"],
     next_steps: [
       "Run `blendops --help` to see available commands",

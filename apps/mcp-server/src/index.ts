@@ -5,7 +5,15 @@ import {
   ListToolsRequestSchema,
 } from "@modelcontextprotocol/sdk/types.js";
 import { BridgeClient } from "@blendops/core";
-import { ColorHexSchema, LightingPresetSchema, ObjectTypeSchema, ValidationPresetSchema, Vec3Schema } from "@blendops/schemas";
+import { ColorHexSchema, ExportAssetExtensionByFormat, ExportAssetFormatSchema, LightingPresetSchema, ObjectTypeSchema, ValidationPresetSchema, Vec3Schema } from "@blendops/schemas";
+
+const MCP_VERBOSE = process.env.BLENDOPS_MCP_VERBOSE === "1" || process.env.BLENDOPS_VERBOSE === "1";
+
+function mcpLog(message: string): void {
+  if (MCP_VERBOSE) {
+    process.stderr.write(`[BlendOps MCP] ${message}\n`);
+  }
+}
 
 const server = new Server(
   {
@@ -19,7 +27,10 @@ const server = new Server(
   },
 );
 
-const client = new BridgeClient();
+const client = new BridgeClient({
+  verbose: MCP_VERBOSE,
+  logger: (message: string) => mcpLog(message),
+});
 
 type Vec3 = [number, number, number];
 
@@ -226,14 +237,37 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
         additionalProperties: false,
       },
     },
+    {
+      name: "export_asset",
+      description: "Export asset to glb/gltf/fbx file.",
+      inputSchema: {
+        type: "object",
+        properties: {
+          format: {
+            type: "string",
+            enum: ["glb", "gltf", "fbx"],
+          },
+          output: { type: "string" },
+          selected_only: { type: "boolean" },
+          apply_modifiers: { type: "boolean" },
+        },
+        required: ["format", "output"],
+        additionalProperties: false,
+      },
+    },
   ],
 }));
 
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
   const { name, arguments: rawArgs } = request.params;
+  const start = Date.now();
+  
+  mcpLog(`tool call: ${name}`);
 
   if (name === "inspect_scene") {
     const result = await client.inspectScene();
+    const duration = Date.now() - start;
+    mcpLog(`tool result: ${name} ok=${result.ok} duration=${duration}ms`);
     return {
       content: [
         {
@@ -268,6 +302,8 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         scale: parseOptionalVec3(args.scale, "scale") ?? [1, 1, 1],
       });
 
+      const duration = Date.now() - start;
+      mcpLog(`tool result: ${name} ok=${result.ok} duration=${duration}ms`);
       return {
         content: [
           {
@@ -278,6 +314,8 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         isError: !result.ok,
       };
     } catch (error) {
+      const duration = Date.now() - start;
+      mcpLog(`tool error: ${name} duration=${duration}ms error=${error instanceof Error ? error.message : "unknown"}`);
       const payload = {
         ok: false,
         operation: "mcp.create_object.invalid_input",
@@ -317,6 +355,8 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         scale: hasScale ? parseRequiredVec3(args.scale, "scale") : undefined,
       });
 
+      const duration = Date.now() - start;
+      mcpLog(`tool result: ${name} ok=${result.ok} duration=${duration}ms`);
       return {
         content: [
           {
@@ -327,6 +367,8 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         isError: !result.ok,
       };
     } catch (error) {
+      const duration = Date.now() - start;
+      mcpLog(`tool error: ${name} duration=${duration}ms error=${error instanceof Error ? error.message : "unknown"}`);
       const payload = {
         ok: false,
         operation: "mcp.transform_object.invalid_input",
@@ -385,6 +427,8 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         metallic,
       });
 
+      const duration = Date.now() - start;
+      mcpLog(`tool result: ${name} ok=${result.ok} duration=${duration}ms`);
       return {
         content: [
           {
@@ -395,6 +439,8 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         isError: !result.ok,
       };
     } catch (error) {
+      const duration = Date.now() - start;
+      mcpLog(`tool error: ${name} duration=${duration}ms error=${error instanceof Error ? error.message : "unknown"}`);
       const payload = {
         ok: false,
         operation: "mcp.create_material.invalid_input",
@@ -428,6 +474,8 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         material_name: args.material_name.trim(),
       });
 
+      const duration = Date.now() - start;
+      mcpLog(`tool result: ${name} ok=${result.ok} duration=${duration}ms`);
       return {
         content: [
           {
@@ -438,6 +486,8 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         isError: !result.ok,
       };
     } catch (error) {
+      const duration = Date.now() - start;
+      mcpLog(`tool error: ${name} duration=${duration}ms error=${error instanceof Error ? error.message : "unknown"}`);
       const payload = {
         ok: false,
         operation: "mcp.apply_material.invalid_input",
@@ -477,6 +527,8 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         target,
       });
 
+      const duration = Date.now() - start;
+      mcpLog(`tool result: ${name} ok=${result.ok} duration=${duration}ms`);
       return {
         content: [
           {
@@ -487,6 +539,8 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         isError: !result.ok,
       };
     } catch (error) {
+      const duration = Date.now() - start;
+      mcpLog(`tool error: ${name} duration=${duration}ms error=${error instanceof Error ? error.message : "unknown"}`);
       const payload = {
         ok: false,
         operation: "mcp.setup_lighting.invalid_input",
@@ -556,6 +610,8 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         focal_length,
       });
 
+      const duration = Date.now() - start;
+      mcpLog(`tool result: ${name} ok=${result.ok} duration=${duration}ms`);
       return {
         content: [
           {
@@ -566,6 +622,8 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         isError: !result.ok,
       };
     } catch (error) {
+      const duration = Date.now() - start;
+      mcpLog(`tool error: ${name} duration=${duration}ms error=${error instanceof Error ? error.message : "unknown"}`);
       const payload = {
         ok: false,
         operation: "mcp.set_camera.invalid_input",
@@ -632,6 +690,8 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         samples,
       });
 
+      const duration = Date.now() - start;
+      mcpLog(`tool result: ${name} ok=${result.ok} duration=${duration}ms`);
       return {
         content: [
           {
@@ -642,6 +702,8 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         isError: !result.ok,
       };
     } catch (error) {
+      const duration = Date.now() - start;
+      mcpLog(`tool error: ${name} duration=${duration}ms error=${error instanceof Error ? error.message : "unknown"}`);
       const payload = {
         ok: false,
         operation: "mcp.render_preview.invalid_input",
@@ -678,6 +740,8 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         preset,
       });
 
+      const duration = Date.now() - start;
+      mcpLog(`tool result: ${name} ok=${result.ok} duration=${duration}ms`);
       return {
         content: [
           {
@@ -688,6 +752,8 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         isError: !result.ok,
       };
     } catch (error) {
+      const duration = Date.now() - start;
+      mcpLog(`tool error: ${name} duration=${duration}ms error=${error instanceof Error ? error.message : "unknown"}`);
       const payload = {
         ok: false,
         operation: "mcp.validate_scene.invalid_input",
@@ -707,6 +773,82 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
     }
   }
 
+  if (name === "export_asset") {
+    try {
+      const args = (rawArgs ?? {}) as Record<string, unknown>;
+
+      if (typeof args.format !== "string") {
+        throw new Error("Missing required field: format");
+      }
+      if (typeof args.output !== "string" || args.output.trim().length === 0) {
+        throw new Error("Missing required field: output");
+      }
+
+      const format = ExportAssetFormatSchema.parse(args.format);
+      const output = args.output.trim();
+      const expectedExtension = ExportAssetExtensionByFormat[format];
+      if (!output.toLowerCase().endsWith(expectedExtension)) {
+        throw new Error(`output must end with ${expectedExtension} for format ${format}`);
+      }
+
+      let selected_only = false;
+      if (typeof args.selected_only !== "undefined") {
+        if (typeof args.selected_only !== "boolean") {
+          throw new Error("selected_only must be boolean");
+        }
+        selected_only = args.selected_only;
+      }
+
+      let apply_modifiers = true;
+      if (typeof args.apply_modifiers !== "undefined") {
+        if (typeof args.apply_modifiers !== "boolean") {
+          throw new Error("apply_modifiers must be boolean");
+        }
+        apply_modifiers = args.apply_modifiers;
+      }
+
+      const result = await client.exportAsset({
+        format,
+        output,
+        selected_only,
+        apply_modifiers,
+      });
+
+      const duration = Date.now() - start;
+      mcpLog(`tool result: ${name} ok=${result.ok} duration=${duration}ms`);
+      return {
+        content: [
+          {
+            type: "text",
+            text: JSON.stringify(result, null, 2),
+          },
+        ],
+        isError: !result.ok,
+      };
+    } catch (error) {
+      const duration = Date.now() - start;
+      mcpLog(`tool error: ${name} duration=${duration}ms error=${error instanceof Error ? error.message : "unknown"}`);
+      const payload = {
+        ok: false,
+        operation: "mcp.export_asset.invalid_input",
+        message: error instanceof Error ? error.message : "Invalid export_asset input",
+        data: {},
+        warnings: ["Input validation failed for export_asset"],
+        next_steps: [
+          "Provide format from: glb, gltf, fbx",
+          "Provide output with extension matching format",
+          "Example: export_asset with format='glb' and output='exports/test_scene.glb'",
+        ],
+      };
+
+      return {
+        content: [{ type: "text", text: JSON.stringify(payload, null, 2) }],
+        isError: true,
+      };
+    }
+  }
+
+  mcpLog(`tool error: ${name} duration=${Date.now() - start}ms error=tool_not_found`);
   return {
     content: [
       {
@@ -718,7 +860,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
             message: `Unknown tool: ${name}`,
             data: {},
             warnings: ["Tool not implemented in MVP"],
-            next_steps: ["Use tool `inspect_scene`, `create_object`, `transform_object`, `create_material`, `apply_material`, `setup_lighting`, `set_camera`, `render_preview`, or `validate_scene`"],
+            next_steps: ["Use tool `inspect_scene`, `create_object`, `transform_object`, `create_material`, `apply_material`, `setup_lighting`, `set_camera`, `render_preview`, `validate_scene`, or `export_asset`"],
           },
           null,
           2,

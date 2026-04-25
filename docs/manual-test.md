@@ -12,6 +12,7 @@ This guide verifies the current MVP vertical slices:
 - `blendops camera set`
 - `blendops render preview`
 - `blendops validate scene`
+- `blendops export asset`
 
 ## 1) Install dependencies
 
@@ -35,10 +36,15 @@ npm run build
 3. Enable **BlendOps Bridge** addon
 4. Confirm console prints bridge startup on `http://127.0.0.1:8765`
 
+Note:
+- A black Blender background console window is expected on Windows.
+- Do not close it while using BlendOps.
+- Use `bridge status` and CLI `--verbose` output to verify liveness/progress.
+
 ## 4) Verify bridge status
 
 ```bash
-npm run cli -- bridge status
+npm run cli -- bridge status --verbose
 ```
 
 Expected JSON shape:
@@ -170,7 +176,23 @@ Expected:
 - `data.summary` object includes `pass`, `warn`, `fail`
 - `data.passed` is `false` only when one or more checks are `fail`
 
-## 14) Inspect scene again and confirm material + lighting + camera assignment
+## 14) Export asset
+
+```bash
+npm run cli -- export asset --format glb --output exports/test_scene.glb
+npm run cli -- export asset --format gltf --output exports/test_scene.gltf
+npm run cli -- export asset --format fbx --output exports/test_scene.fbx
+```
+
+Expected:
+- `ok: true`
+- `operation: "export.asset"`
+- `data.format` matches requested format
+- `data.output` matches requested output path
+- `data.file_exists === true`
+- `data.file_size_bytes > 0`
+
+## 15) Inspect scene again and confirm material + lighting + camera assignment
 
 ```bash
 npm run cli -- scene inspect

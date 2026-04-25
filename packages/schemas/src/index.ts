@@ -195,6 +195,31 @@ export const ValidateSceneDataSchema = z.object({
   }),
 });
 
+export const ExportAssetFormatSchema = z.enum(["glb", "gltf", "fbx"]);
+
+export const ExportAssetExtensionByFormat = {
+  glb: ".glb",
+  gltf: ".gltf",
+  fbx: ".fbx",
+} as const;
+
+export const ExportAssetRequestSchema = z.object({
+  operation: z.literal("export.asset"),
+  format: ExportAssetFormatSchema,
+  output: z.string().min(1),
+  selected_only: z.boolean().optional(),
+  apply_modifiers: z.boolean().optional(),
+});
+
+export const ExportAssetDataSchema = z.object({
+  format: ExportAssetFormatSchema,
+  output: z.string().min(1),
+  selected_only: z.boolean(),
+  apply_modifiers: z.boolean(),
+  file_exists: z.boolean(),
+  file_size_bytes: z.number().int().nonnegative(),
+});
+
 export type SceneInspectRequest = z.infer<typeof SceneInspectRequestSchema>;
 export type SceneInspectData = z.infer<typeof SceneInspectDataSchema>;
 export type ObjectCreateRequest = z.infer<typeof ObjectCreateRequestSchema>;
@@ -214,6 +239,9 @@ export type RenderPreviewData = z.infer<typeof RenderPreviewDataSchema>;
 export type ValidateSceneRequest = z.infer<typeof ValidateSceneRequestSchema>;
 export type ValidateSceneData = z.infer<typeof ValidateSceneDataSchema>;
 export type ValidationPreset = z.infer<typeof ValidationPresetSchema>;
+export type ExportAssetFormat = z.infer<typeof ExportAssetFormatSchema>;
+export type ExportAssetRequest = z.infer<typeof ExportAssetRequestSchema>;
+export type ExportAssetData = z.infer<typeof ExportAssetDataSchema>;
 
 export const BridgeCommandSchema = z.discriminatedUnion("operation", [
   SceneInspectRequestSchema,
@@ -225,6 +253,7 @@ export const BridgeCommandSchema = z.discriminatedUnion("operation", [
   CameraSetRequestSchema,
   RenderPreviewRequestSchema,
   ValidateSceneRequestSchema,
+  ExportAssetRequestSchema,
 ]);
 export type BridgeCommand = z.infer<typeof BridgeCommandSchema>;
 

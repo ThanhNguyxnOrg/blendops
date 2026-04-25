@@ -12,20 +12,36 @@ import {
   type ObjectTransformRequest,
   type RenderPreviewRequest,
   type ValidateSceneRequest,
+  type ExportAssetRequest,
 } from "@blendops/schemas";
 
 export interface BridgeClientOptions {
   baseUrl?: string;
   timeoutMs?: number;
+  verbose?: boolean;
+  quiet?: boolean;
+  logger?: (message: string) => void;
 }
 
 export class BridgeClient {
   private readonly baseUrl: string;
   private readonly timeoutMs: number;
+  private readonly verbose: boolean;
+  private readonly quiet: boolean;
+  private readonly logger: ((message: string) => void) | undefined;
 
   constructor(options: BridgeClientOptions = {}) {
     this.baseUrl = options.baseUrl ?? process.env.BLENDER_BRIDGE_URL ?? "http://127.0.0.1:8765";
     this.timeoutMs = options.timeoutMs ?? 5_000;
+    this.verbose = options.verbose ?? false;
+    this.quiet = options.quiet ?? false;
+    this.logger = options.logger;
+  }
+
+  private log(message: string): void {
+    if (this.logger && !this.quiet) {
+      this.logger(message);
+    }
   }
 
   async status(): Promise<BlendOpsResponse> {
@@ -75,9 +91,20 @@ export class BridgeClient {
     return this.send({ operation: "validate.scene", ...input });
   }
 
+  async exportAsset(input: Omit<ExportAssetRequest, "operation">): Promise<BlendOpsResponse> {
+    return this.send({ operation: "export.asset", ...input });
+  }
+
   private async post(path: string, body: Record<string, unknown>): Promise<unknown> {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), this.timeoutMs);
+    const startedAt = Date.now();
+    const operation = typeof body.operation === "string" ? body.operation : "unknown";
+
+    if (this.verbose) {
+      this.log(`bridge request start: ${operation} ${path}`);
+      this.log(`bridge target: ${this.baseUrl}${path}`);
+    }
 
     try {
       const res = await fetch(`${this.baseUrl}${path}`, {
@@ -88,8 +115,10 @@ export class BridgeClient {
       });
 
       const json = (await res.json()) as unknown;
+      const durationMs = Date.now() - startedAt;
 
       if (!res.ok) {
+        this.log(`bridge request failed: ${operation} ${path} status=${res.status} duration=${durationMs}ms`);
         return makeResponse({
           ok: false,
           operation: "bridge.error",
@@ -103,9 +132,15 @@ export class BridgeClient {
         });
       }
 
+      if (this.verbose) {
+        this.log(`bridge request ok: ${operation} ${path} duration=${durationMs}ms`);
+      }
+
       return json;
     } catch (error) {
+      const durationMs = Date.now() - startedAt;
       const message = error instanceof Error ? error.message : "Unknown bridge error";
+      this.log(`bridge connection error: ${operation} ${path} duration=${durationMs}ms error=${message}`);
       return makeResponse({
         ok: false,
         operation: "bridge.error",

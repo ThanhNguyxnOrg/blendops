@@ -13,7 +13,10 @@ bl_info = {
 import bpy
 import json
 import math
+import os
 import re
+import sys
+import time
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from threading import Thread
 from typing import Any, Dict, Optional
@@ -28,6 +31,11 @@ _server: Optional[HTTPServer] = None
 _server_thread: Optional[Thread] = None
 _command_queue: list[Dict[str, Any]] = []
 _response_queue: Dict[str, Dict[str, Any]] = {}
+_server_start_time: float = 0.0
+_request_count: int = 0
+_last_operation: Optional[str] = None
+_last_error: Optional[str] = None
+_last_duration_ms: Optional[int] = None
 
 VALIDATION_PRESETS = {"basic", "game_asset", "render_ready"}
 GENERIC_NAME_ROOTS = {
@@ -43,6 +51,31 @@ GENERIC_NAME_ROOTS = {
     "camera",
     "empty",
 }
+EXPORT_FORMAT_EXTENSIONS = {
+    "glb": ".glb",
+    "gltf": ".gltf",
+    "fbx": ".fbx",
+}
+
+OPERATION_REGISTRY = {
+    "scene.inspect": None,
+    "object.create": None,
+    "object.transform": None,
+    "material.create": None,
+    "material.apply": None,
+    "lighting.setup": None,
+    "camera.set": None,
+    "render.preview": None,
+    "validate.scene": None,
+    "export.asset": None,
+}
+
+
+def _log(msg: str) -> None:
+    timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
+    line = f"[BlendOps {timestamp}] {msg}"
+    print(line, flush=True)
+    sys.stdout.flush()
 
 
 def make_response(
@@ -738,6 +771,142 @@ def is_generic_name(name: str) -> bool:
     return base_name in GENERIC_NAME_ROOTS
 
 
+def handle_export_asset(command: Dict[str, Any]) -> Dict[str, Any]:
+    export_format = str(command.get("format", "")).lower().strip()
+    output = str(command.get("output", "")).strip()
+    selected_only = bool(command.get("selected_only", False))
+    apply_modifiers = bool(command.get("apply_modifiers", True))
+
+    if export_format not in EXPORT_FORMAT_EXTENSIONS:
+        return make_response(
+            ok=False,
+            operation="export.asset",
+            message=f"Unsupported export format: {export_format}",
+            warnings=["Allowed formats: glb, gltf, fbx"],
+            next_steps=["Use one of the supported formats"],
+        )
+
+    if len(output) == 0:
+        return make_response(
+            ok=False,
+            operation="export.asset",
+            message="Export output path is required",
+            warnings=["Provide output path for export.asset"],
+            next_steps=["Example: blendops export asset --format glb --output exports/test_scene.glb"],
+        )
+
+    expected_extension = EXPORT_FORMAT_EXTENSIONS[export_format]
+    if not output.lower().endswith(expected_extension):
+        return make_response(
+            ok=False,
+            operation="export.asset",
+            message=f"Output extension must be {expected_extension} for format {export_format}",
+            warnings=["Output path extension and format mismatch"],
+            next_steps=[f"Use output ending with {expected_extension}"],
+        )
+
+    scene = bpy.context.scene
+    mesh_objects = [obj for obj in scene.objects if obj.type == "MESH"]
+    if len(mesh_objects) == 0:
+        return make_response(
+            ok=False,
+            operation="export.asset",
+            message="No mesh objects found to export",
+            next_steps=["Create an object before exporting"],
+        )
+
+    try:
+        output_path = output
+        if not os.path.isabs(output_path):
+            output_path = os.path.abspath(output_path)
+
+        output_dir = os.path.dirname(output_path)
+        if output_dir and not os.path.exists(output_dir):
+            os.makedirs(output_dir, exist_ok=True)
+
+        active_object = bpy.context.view_layer.objects.active
+        original_selected = [obj for obj in scene.objects if obj.select_get()]
+
+        if selected_only:
+            for obj in scene.objects:
+                obj.select_set(False)
+            for obj in mesh_objects:
+                obj.select_set(True)
+            bpy.context.view_layer.objects.active = mesh_objects[0]
+
+        if export_format == "glb":
+            bpy.ops.export_scene.gltf(
+                filepath=output_path,
+                export_format="GLB",
+                use_selection=selected_only,
+                export_apply=apply_modifiers,
+            )
+        elif export_format == "gltf":
+            bpy.ops.export_scene.gltf(
+                filepath=output_path,
+                export_format="GLTF_EMBEDDED",
+                use_selection=selected_only,
+                export_apply=apply_modifiers,
+            )
+        elif export_format == "fbx":
+            bpy.ops.export_scene.fbx(
+                filepath=output_path,
+                use_selection=selected_only,
+                apply_scale_options="FBX_SCALE_NONE",
+                use_mesh_modifiers=apply_modifiers,
+            )
+
+        if selected_only:
+            for obj in scene.objects:
+                obj.select_set(False)
+            for obj in original_selected:
+                obj.select_set(True)
+            bpy.context.view_layer.objects.active = active_object
+
+        file_exists = os.path.exists(output_path)
+        file_size_bytes = os.path.getsize(output_path) if file_exists else 0
+
+        if not file_exists:
+            return make_response(
+                ok=False,
+                operation="export.asset",
+                message=f"Export completed but output file not found at {output_path}",
+                next_steps=["Check Blender export settings and filesystem permissions"],
+            )
+
+        return make_response(
+            ok=True,
+            operation="export.asset",
+            message=f"Exported asset to {output}",
+            data={
+                "format": export_format,
+                "output": output,
+                "selected_only": selected_only,
+                "apply_modifiers": apply_modifiers,
+                "file_exists": file_exists,
+                "file_size_bytes": file_size_bytes,
+            },
+            next_steps=["Verify exported asset in target tool"],
+        )
+    except Exception as e:
+        try:
+            for obj in scene.objects:
+                obj.select_set(False)
+            for obj in original_selected:
+                obj.select_set(True)
+            bpy.context.view_layer.objects.active = active_object
+        except Exception:
+            pass
+
+        return make_response(
+            ok=False,
+            operation="export.asset",
+            message=f"Asset export failed: {str(e)}",
+            warnings=[traceback.format_exc()],
+            next_steps=["Check Blender console for detailed error"],
+        )
+
+
 def handle_validate_scene(command: Dict[str, Any]) -> Dict[str, Any]:
     preset = command.get("preset", "basic")
     
@@ -1200,51 +1369,75 @@ def handle_lighting_setup(command: Dict[str, Any]) -> Dict[str, Any]:
         )
 
 
-def process_command(command: Dict[str, Any]) -> Dict[str, Any]:
+def _dispatch_with_observability(command: Dict[str, Any], client_ip: Optional[str] = None) -> Dict[str, Any]:
+    global _request_count, _last_operation, _last_error, _last_duration_ms
+    
     operation = command.get("operation")
-
+    start = time.time()
+    
+    _log(f"<- {operation}")
+    
     if operation == "bridge.status":
-        return make_response(
+        uptime_seconds = int(time.time() - _server_start_time) if _server_start_time > 0 else 0
+        response = make_response(
             ok=True,
             operation="bridge.status",
             message="BlendOps bridge is running",
-            data={"version": ".".join(map(str, bl_info["version"]))},
+            data={
+                "version": ".".join(map(str, bl_info["version"])),
+                "started_at": time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(_server_start_time)) if _server_start_time > 0 else None,
+                "uptime_seconds": uptime_seconds,
+                "request_count": _request_count,
+                "last_operation": _last_operation,
+                "last_error": _last_error,
+                "last_duration_ms": _last_duration_ms,
+                "implemented_operations": list(OPERATION_REGISTRY.keys()),
+            },
         )
+    else:
+        handler = OPERATION_REGISTRY.get(operation)
+        if handler is None:
+            response = make_response(
+                ok=False,
+                operation="unknown",
+                message=f"Unknown operation: {operation}",
+                warnings=["Operation not implemented in MVP"],
+                next_steps=["Use operation 'scene.inspect'"],
+            )
+        else:
+            try:
+                response = handler(command)
+            except Exception as e:
+                response = make_response(
+                    ok=False,
+                    operation=operation,
+                    message=f"Operation failed: {str(e)}",
+                    warnings=[traceback.format_exc()],
+                    next_steps=["Check Blender console for detailed error"],
+                )
+    
+    duration_ms = int((time.time() - start) * 1000)
+    
+    _request_count += 1
+    _last_operation = operation
+    _last_duration_ms = duration_ms
+    if not response.get("ok"):
+        _last_error = response.get("message")
+    else:
+        _last_error = None
+    
+    status = "ok" if response.get("ok") else "failed"
+    if response.get("ok"):
+        _log(f"-> {operation} {status} {duration_ms}ms")
+    else:
+        error_message = response.get("message")
+        _log(f"-> {operation} {status} {duration_ms}ms: {error_message}")
+    
+    return response
 
-    if operation == "scene.inspect":
-        return handle_scene_inspect()
 
-    if operation == "object.create":
-        return handle_object_create(command)
-
-    if operation == "object.transform":
-        return handle_object_transform(command)
-
-    if operation == "material.create":
-        return handle_material_create(command)
-
-    if operation == "material.apply":
-        return handle_material_apply(command)
-
-    if operation == "lighting.setup":
-        return handle_lighting_setup(command)
-
-    if operation == "camera.set":
-        return handle_camera_set(command)
-
-    if operation == "render.preview":
-        return handle_render_preview(command)
-
-    if operation == "validate.scene":
-        return handle_validate_scene(command)
-
-    return make_response(
-        ok=False,
-        operation="unknown",
-        message=f"Unknown operation: {operation}",
-        warnings=["Operation not implemented in MVP"],
-        next_steps=["Use operation 'scene.inspect'"],
-    )
+def process_command(command: Dict[str, Any]) -> Dict[str, Any]:
+    return _dispatch_with_observability(command, client_ip=None)
 
 
 def timer_process_queue() -> float:
@@ -1254,9 +1447,10 @@ def timer_process_queue() -> float:
         item = _command_queue.pop(0)
         command_id = item["id"]
         command = item["command"]
+        client_ip = item.get("client_ip")
 
         try:
-            response = process_command(command)
+            response = _dispatch_with_observability(command, client_ip=client_ip)
             _response_queue[command_id] = response
         except Exception as e:
             _response_queue[command_id] = make_response(
@@ -1271,7 +1465,10 @@ def timer_process_queue() -> float:
 
 class BlendOpsHandler(BaseHTTPRequestHandler):
     def log_message(self, format: str, *args: Any) -> None:
-        pass
+        timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
+        msg = f"[BlendOps {timestamp}] {self.client_address[0]}:{self.client_address[1]} - {format % args}"
+        sys.stderr.write(msg + "\n")
+        sys.stderr.flush()
 
     def do_POST(self) -> None:
         global _command_queue, _response_queue
@@ -1292,12 +1489,8 @@ class BlendOpsHandler(BaseHTTPRequestHandler):
             )
 
     def _handle_status(self) -> None:
-        response = make_response(
-            ok=True,
-            operation="bridge.status",
-            message="BlendOps bridge is running",
-            data={"version": ".".join(map(str, bl_info["version"]))},
-        )
+        client_ip = self.client_address[0] if isinstance(self.client_address, tuple) else None
+        response = _dispatch_with_observability({"operation": "bridge.status"}, client_ip=client_ip)
         self._send_json(200, response)
 
     def _handle_command(self) -> None:
@@ -1305,17 +1498,14 @@ class BlendOpsHandler(BaseHTTPRequestHandler):
             content_length = int(self.headers.get("Content-Length", 0))
             body = self.rfile.read(content_length).decode("utf-8")
             command = json.loads(body)
+            client_ip = self.client_address[0] if isinstance(self.client_address, tuple) else None
 
             if bpy.app.background:
-                self._send_json(200, process_command(command))
+                self._send_json(200, _dispatch_with_observability(command, client_ip=client_ip))
                 return
 
-            import uuid
-
             command_id = str(uuid.uuid4())
-            _command_queue.append({"id": command_id, "command": command})
-
-            import time
+            _command_queue.append({"id": command_id, "command": command, "client_ip": client_ip})
 
             timeout = 5.0
             start = time.time()
@@ -1364,10 +1554,10 @@ class BlendOpsHandler(BaseHTTPRequestHandler):
 
 
 def start_server(port: int = 8765) -> None:
-    global _server, _server_thread
+    global _server, _server_thread, _server_start_time
 
     if _server is not None:
-        print("BlendOps: Server already running")
+        _log("Server already running")
         return
 
     try:
@@ -1378,9 +1568,21 @@ def start_server(port: int = 8765) -> None:
         if not bpy.app.timers.is_registered(timer_process_queue):
             bpy.app.timers.register(timer_process_queue, persistent=True)
 
-        print(f"BlendOps: Bridge started on http://127.0.0.1:{port}")
+        _server_start_time = time.time()
+        
+        print("=" * 60, flush=True)
+        print(" BlendOps Bridge", flush=True)
+        print(f" Version: {'.'.join(map(str, bl_info['version']))}", flush=True)
+        print(" Status: READY", flush=True)
+        print(f" URL: http://127.0.0.1:{port}", flush=True)
+        print(" Mode: Blender background bridge", flush=True)
+        print(" Note: keep this window open while using BlendOps", flush=True)
+        print("=" * 60, flush=True)
+        sys.stdout.flush()
+        
+        _log("bridge ready")
     except Exception as e:
-        print(f"BlendOps: Failed to start server: {e}")
+        _log(f"Failed to start server: {e}")
 
 
 def stop_server() -> None:
@@ -1394,10 +1596,21 @@ def stop_server() -> None:
         if bpy.app.timers.is_registered(timer_process_queue):
             bpy.app.timers.unregister(timer_process_queue)
 
-        print("BlendOps: Bridge stopped")
+        _log("Bridge stopped")
 
 
 def register() -> None:
+    OPERATION_REGISTRY["scene.inspect"] = lambda _command: handle_scene_inspect()
+    OPERATION_REGISTRY["object.create"] = handle_object_create
+    OPERATION_REGISTRY["object.transform"] = handle_object_transform
+    OPERATION_REGISTRY["material.create"] = handle_material_create
+    OPERATION_REGISTRY["material.apply"] = handle_material_apply
+    OPERATION_REGISTRY["lighting.setup"] = handle_lighting_setup
+    OPERATION_REGISTRY["camera.set"] = handle_camera_set
+    OPERATION_REGISTRY["render.preview"] = handle_render_preview
+    OPERATION_REGISTRY["validate.scene"] = handle_validate_scene
+    OPERATION_REGISTRY["export.asset"] = handle_export_asset
+    
     start_server()
 
 

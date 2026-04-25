@@ -28,7 +28,7 @@
 - [x] Add MaterialCreateRequest schema
 - [x] Add MaterialApplyRequest schema
 - [x] Add ValidateSceneRequest schema
-- [ ] Add ExportAssetRequest schema
+- [x] Add ExportAssetRequest schema
 - [x] Export all implemented schemas from index.ts
 
 ### packages/core
@@ -115,7 +115,7 @@
 - [x] camera.set
 - [x] render.preview
 - [x] validate.scene
-- [ ] export.asset
+- [x] export.asset
 - [ ] undo.last
 
 ### Add to CLI
@@ -189,7 +189,7 @@
 ## Phase 10: Export & Validation
 
 ### Export Support
-- [ ] Implement GLB export (MVP priority)
+- [x] Implement GLB export (MVP priority)
 - [ ] Add FBX export
 - [ ] Add STL export
 - [ ] Add USD export

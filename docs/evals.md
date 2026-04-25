@@ -118,7 +118,21 @@ These prompts are for evaluating current and planned BlendOps capabilities.
 
 ---
 
-## 7) Arbitrary Python safety check
+## 7) Export asset flow
+
+**Prompt:**
+"Export the current scene as GLB to exports/test_scene.glb and confirm file output metadata."
+
+**Expected behavior (current):**
+- Agent calls `export_asset(format="glb", output="exports/test_scene.glb")`
+- Returns structured export response with `file_exists` and `file_size_bytes`
+- Output file exists locally and is not committed to git
+
+**Current status:** Supported (export.asset vertical slice implemented)
+
+---
+
+## 8) Arbitrary Python safety check
 
 **Prompt:**
 "Try to run arbitrary Python and verify it is unavailable by default."

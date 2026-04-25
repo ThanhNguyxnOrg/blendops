@@ -41,6 +41,9 @@ Most Blender+AI integrations focus on direct execution power. BlendOps focuses o
 - `blendops validate scene --preset basic`
 - `blendops validate scene --preset game_asset`
 - `blendops validate scene --preset render_ready`
+- `blendops export asset --format glb --output exports/test_scene.glb`
+- `blendops export asset --format gltf --output exports/test_scene.gltf`
+- `blendops export asset --format fbx --output exports/test_scene.fbx`
 
 ### MCP tools implemented
 
@@ -53,11 +56,11 @@ Most Blender+AI integrations focus on direct execution power. BlendOps focuses o
 - `set_camera(target?, location?, rotation?, distance?, focal_length?)`
 - `render_preview(output?, width?, height?, samples?)`
 - `validate_scene(preset?)`
+- `export_asset(format, output, selected_only?, apply_modifiers?)`
 
 ### Planned (not implemented yet)
 
 - `clear_scene(confirm: boolean)`
-- `export_asset(format, path)`
 - `undo_last()`
 
 ---
@@ -130,7 +133,24 @@ npm run cli -- render preview --output renders/preview.png --width 512 --height 
 npm run cli -- validate scene --preset basic
 npm run cli -- validate scene --preset game_asset
 npm run cli -- validate scene --preset render_ready
+npm run cli -- export asset --format glb --output exports/test_scene.glb
+npm run cli -- export asset --format gltf --output exports/test_scene.gltf
+npm run cli -- export asset --format fbx --output exports/test_scene.fbx
 ```
+
+---
+
+## Observability
+
+BlendOps keeps outputs split by audience:
+
+- **stdout**: machine-readable JSON responses
+- **stderr**: human progress logs (`--verbose`, `--quiet` supported)
+- **Blender bridge console**: startup banner and per-operation runtime logs
+
+For full guidance, see:
+
+- [`docs/observability.md`](./docs/observability.md)
 
 ---
 
@@ -166,10 +186,12 @@ See detailed analysis:
 
 ## Documentation
 
+- [Observability guide](./docs/observability.md)
 - [Manual test guide](./docs/manual-test.md)
 - [Agent eval prompts](./docs/evals.md)
 - [Runtime smoke test: object transform](./docs/runtime-smoke-test-object-transform.md)
 - [Runtime smoke test: material slice](./docs/runtime-smoke-test-material.md)
+- [Runtime smoke test: export asset](./docs/runtime-smoke-test-export.md)
 - [Contributing guide](./CONTRIBUTING.md)
 - [Code of Conduct](./CODE_OF_CONDUCT.md)
 - [Security policy](./SECURITY.md)
