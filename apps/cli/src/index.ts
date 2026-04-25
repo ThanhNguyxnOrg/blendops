@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { BridgeClient } from "@blendops/core";
-import { ColorHexSchema, makeResponse, ObjectTypeSchema, Vec3Schema } from "@blendops/schemas";
+import { ColorHexSchema, LightingPresetSchema, makeResponse, ObjectTypeSchema, Vec3Schema } from "@blendops/schemas";
 
 function printHelp(): void {
   console.log(`BlendOps CLI
@@ -15,6 +15,8 @@ Usage:
   blendops object transform --name test_cube --scale 2,2,2
   blendops material create --name red_plastic --color "#ff0000" --roughness 0.5 --metallic 0
   blendops material apply --object test_cube --material red_plastic
+  blendops lighting setup --preset studio
+  blendops lighting setup --preset three_point --target test_cube
 
 Options:
   --json        Output JSON (default)
@@ -26,7 +28,8 @@ Implemented in v0.1:
   - object create
   - object transform
   - material create
-  - material apply`);
+  - material apply
+  - lighting setup`);
 }
 
 function readFlag(args: string[], flag: string): string | undefined {
@@ -270,6 +273,50 @@ async function main(): Promise<number> {
     return res.ok ? 0 : 1;
   }
 
+  if (group === "lighting" && action === "setup") {
+    const presetRaw = readFlag(args, "--preset");
+    const target = readFlag(args, "--target");
+
+    if (!presetRaw) {
+      const error = makeResponse({
+        ok: false,
+        operation: "cli.invalid_arguments",
+        message: "lighting setup requires --preset",
+        warnings: ["Missing required flags"],
+        next_steps: [
+          "Example: blendops lighting setup --preset studio",
+          "Allowed presets: studio, three_point, soft_key",
+        ],
+      });
+      console.log(JSON.stringify(error, null, 2));
+      return 1;
+    }
+
+    try {
+      const preset = LightingPresetSchema.parse(presetRaw);
+      const res = await client.setupLighting({
+        preset,
+        target,
+      });
+
+      console.log(JSON.stringify(res, null, 2));
+      return res.ok ? 0 : 1;
+    } catch (error) {
+      const invalid = makeResponse({
+        ok: false,
+        operation: "cli.invalid_arguments",
+        message: error instanceof Error ? error.message : "Invalid lighting setup arguments",
+        warnings: ["Invalid preset or target"],
+        next_steps: [
+          "Allowed presets: studio, three_point, soft_key",
+          "Use: blendops lighting setup --preset studio",
+        ],
+      });
+      console.log(JSON.stringify(invalid, null, 2));
+      return 1;
+    }
+  }
+
   const error = makeResponse({
     ok: false,
     operation: "cli.command_not_found",
@@ -277,7 +324,7 @@ async function main(): Promise<number> {
     warnings: ["Unsupported command in MVP"],
     next_steps: [
       "Run `blendops --help` to see available commands",
-      "Use scene/object/material commands shown in help",
+      "Use scene/object/material/lighting commands shown in help",
     ],
   });
 

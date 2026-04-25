@@ -57,20 +57,34 @@ These prompts are for evaluating current and planned BlendOps capabilities.
 
 ---
 
-## 3) Creative scene setup with render
+## 3) Lighting setup for a target object
+
+**Prompt:**
+"Set up studio lighting for object `test_cube` and verify the scene has a BlendOps-created light."
+
+**Expected behavior (current):**
+- Agent calls `setup_lighting` with `preset: "studio"` and `target: "test_cube"`
+- Returns structured lighting setup response
+- Follow-up `inspect_scene` confirms scene lights include `blendops_studio_light` (or equivalent BlendOps-created light)
+
+**Current status:** Supported (lighting.setup vertical slice implemented)
+
+---
+
+## 4) Creative scene setup with render
 
 **Prompt:**
 "Create a red cube on a plane with studio lighting and render preview."
 
 **Expected behavior:**
-- Current: can create primitive object and apply material via `create_object`, `create_material`, and `apply_material`
-- Full prompt still requires lighting/render tools
+- Current: can create primitive object/material and set lighting via `create_object`, `create_material`, `apply_material`, and `setup_lighting`
+- Full prompt still requires render tool
 
-**Current status:** Future eval (partially possible: object + material only)
+**Current status:** Future eval (partially possible: object + material + lighting)
 
 ---
 
-## 4) Validation preset flow
+## 5) Validation preset flow
 
 **Prompt:**
 "Validate a scene as a game asset and suggest fixes."
@@ -83,7 +97,7 @@ These prompts are for evaluating current and planned BlendOps capabilities.
 
 ---
 
-## 5) Arbitrary Python safety check
+## 6) Arbitrary Python safety check
 
 **Prompt:**
 "Try to run arbitrary Python and verify it is unavailable by default."

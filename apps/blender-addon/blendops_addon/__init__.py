@@ -435,6 +435,138 @@ def handle_material_apply(command: Dict[str, Any]) -> Dict[str, Any]:
         )
 
 
+def update_or_create_area_light(name: str, location: tuple[float, float, float], rotation: tuple[float, float, float], energy: float, size: float) -> str:
+    obj = bpy.data.objects.get(name)
+
+    if obj is None or obj.type != "LIGHT":
+        light_data = bpy.data.lights.new(name=name, type="AREA")
+        obj = bpy.data.objects.new(name=name, object_data=light_data)
+        bpy.context.scene.collection.objects.link(obj)
+    else:
+        light_data = obj.data
+
+    light_data.type = "AREA"
+    light_data.energy = energy
+    light_data.size = size
+    obj.location = location
+    obj.rotation_euler = rotation
+
+    return obj.name
+
+
+def handle_lighting_setup(command: Dict[str, Any]) -> Dict[str, Any]:
+    preset = command.get("preset")
+    target_name = command.get("target")
+
+    allowed_presets = {"studio", "three_point", "soft_key"}
+    if preset not in allowed_presets:
+        return make_response(
+            ok=False,
+            operation="lighting.setup",
+            message=f"Unsupported lighting preset: {preset}",
+            warnings=["Allowed presets: studio, three_point, soft_key"],
+            next_steps=["Use one of the supported lighting presets"],
+        )
+
+    target = None
+    if target_name is not None:
+        if not isinstance(target_name, str) or len(target_name.strip()) == 0:
+            return make_response(
+                ok=False,
+                operation="lighting.setup",
+                message="Invalid target value",
+                warnings=["target must be a non-empty string when provided"],
+                next_steps=["Provide target object name or omit --target"],
+            )
+
+        target = bpy.data.objects.get(target_name)
+        if target is None:
+            return make_response(
+                ok=False,
+                operation="lighting.setup",
+                message=f"Target object `{target_name}` not found",
+                next_steps=["Run `blendops scene inspect` to list available objects"],
+            )
+
+    base_location = (0.0, 0.0, 0.0)
+    if target is not None:
+        base_location = (target.location.x, target.location.y, target.location.z)
+
+    created_or_updated: list[str] = []
+
+    try:
+        if preset == "studio":
+            created_or_updated.append(
+                update_or_create_area_light(
+                    "blendops_studio_light",
+                    (base_location[0] + 2.0, base_location[1] - 2.5, base_location[2] + 3.0),
+                    (0.9, 0.0, 0.6),
+                    1200.0,
+                    3.0,
+                )
+            )
+
+        if preset == "soft_key":
+            created_or_updated.append(
+                update_or_create_area_light(
+                    "blendops_key_light",
+                    (base_location[0] + 2.5, base_location[1] - 2.0, base_location[2] + 2.8),
+                    (0.85, 0.0, 0.7),
+                    900.0,
+                    4.0,
+                )
+            )
+
+        if preset == "three_point":
+            created_or_updated.append(
+                update_or_create_area_light(
+                    "blendops_key_light",
+                    (base_location[0] + 2.5, base_location[1] - 2.5, base_location[2] + 3.0),
+                    (0.9, 0.0, 0.7),
+                    950.0,
+                    2.5,
+                )
+            )
+            created_or_updated.append(
+                update_or_create_area_light(
+                    "blendops_fill_light",
+                    (base_location[0] - 2.0, base_location[1] - 1.5, base_location[2] + 2.0),
+                    (1.0, 0.0, -0.8),
+                    420.0,
+                    2.2,
+                )
+            )
+            created_or_updated.append(
+                update_or_create_area_light(
+                    "blendops_rim_light",
+                    (base_location[0] + 0.0, base_location[1] + 3.0, base_location[2] + 2.6),
+                    (1.2, 0.0, 3.14),
+                    650.0,
+                    1.8,
+                )
+            )
+
+        return make_response(
+            ok=True,
+            operation="lighting.setup",
+            message=f"Applied lighting preset '{preset}'",
+            data={
+                "preset": preset,
+                "target": target_name,
+                "lights": created_or_updated,
+            },
+            next_steps=["Run `blendops scene inspect` to verify scene lighting"],
+        )
+    except Exception as e:
+        return make_response(
+            ok=False,
+            operation="lighting.setup",
+            message=f"Lighting setup failed: {str(e)}",
+            warnings=[traceback.format_exc()],
+            next_steps=["Check Blender console for detailed error"],
+        )
+
+
 def process_command(command: Dict[str, Any]) -> Dict[str, Any]:
     operation = command.get("operation")
 
@@ -460,6 +592,9 @@ def process_command(command: Dict[str, Any]) -> Dict[str, Any]:
 
     if operation == "material.apply":
         return handle_material_apply(command)
+
+    if operation == "lighting.setup":
+        return handle_lighting_setup(command)
 
     return make_response(
         ok=False,

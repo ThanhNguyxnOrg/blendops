@@ -6,6 +6,7 @@ import {
   type BridgeCommand,
   type MaterialApplyRequest,
   type MaterialCreateRequest,
+  type LightingSetupRequest,
   type ObjectCreateRequest,
   type ObjectTransformRequest,
 } from "@blendops/schemas";
@@ -53,6 +54,10 @@ export class BridgeClient {
 
   async applyMaterial(input: Omit<MaterialApplyRequest, "operation">): Promise<BlendOpsResponse> {
     return this.send({ operation: "material.apply", ...input });
+  }
+
+  async setupLighting(input: Omit<LightingSetupRequest, "operation">): Promise<BlendOpsResponse> {
+    return this.send({ operation: "lighting.setup", ...input });
   }
 
   private async post(path: string, body: Record<string, unknown>): Promise<unknown> {

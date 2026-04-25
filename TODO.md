@@ -111,7 +111,7 @@
 - [ ] scene.clear (requires --confirm)
 - [x] material.create
 - [x] material.apply
-- [ ] lighting.setup
+- [x] lighting.setup
 - [ ] camera.set
 - [ ] render.preview
 - [ ] validate.scene

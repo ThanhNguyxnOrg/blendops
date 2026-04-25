@@ -85,6 +85,14 @@ export const MaterialApplyRequestSchema = z.object({
   material_name: z.string().min(1),
 });
 
+export const LightingPresetSchema = z.enum(["studio", "three_point", "soft_key"]);
+
+export const LightingSetupRequestSchema = z.object({
+  operation: z.literal("lighting.setup"),
+  preset: LightingPresetSchema,
+  target: z.string().min(1).optional(),
+});
+
 export const ObjectCreateDataSchema = z.object({
   object: SceneObjectSchema,
 });
@@ -109,6 +117,12 @@ export const MaterialApplyDataSchema = z.object({
   }),
 });
 
+export const LightingSetupDataSchema = z.object({
+  preset: LightingPresetSchema,
+  target: z.string().optional(),
+  lights: z.array(z.string()),
+});
+
 export type SceneInspectRequest = z.infer<typeof SceneInspectRequestSchema>;
 export type SceneInspectData = z.infer<typeof SceneInspectDataSchema>;
 export type ObjectCreateRequest = z.infer<typeof ObjectCreateRequestSchema>;
@@ -119,6 +133,8 @@ export type MaterialCreateRequest = z.infer<typeof MaterialCreateRequestSchema>;
 export type MaterialCreateData = z.infer<typeof MaterialCreateDataSchema>;
 export type MaterialApplyRequest = z.infer<typeof MaterialApplyRequestSchema>;
 export type MaterialApplyData = z.infer<typeof MaterialApplyDataSchema>;
+export type LightingSetupRequest = z.infer<typeof LightingSetupRequestSchema>;
+export type LightingSetupData = z.infer<typeof LightingSetupDataSchema>;
 
 export const BridgeCommandSchema = z.discriminatedUnion("operation", [
   SceneInspectRequestSchema,
@@ -126,6 +142,7 @@ export const BridgeCommandSchema = z.discriminatedUnion("operation", [
   ObjectTransformRequestSchema,
   MaterialCreateRequestSchema,
   MaterialApplyRequestSchema,
+  LightingSetupRequestSchema,
 ]);
 export type BridgeCommand = z.infer<typeof BridgeCommandSchema>;
 

@@ -8,6 +8,7 @@ This guide verifies the current MVP vertical slices:
 - `blendops object transform`
 - `blendops material create`
 - `blendops material apply`
+- `blendops lighting setup`
 
 ## 1) Install dependencies
 
@@ -110,7 +111,20 @@ Expected:
 - `data.object.name === "test_cube"`
 - `data.object.materials` contains `"red_plastic"`
 
-## 10) Inspect scene again and confirm material assignment
+## 10) Set up lighting preset
+
+```bash
+npm run cli -- lighting setup --preset studio --target test_cube
+```
+
+Expected:
+- `ok: true`
+- `operation: "lighting.setup"`
+- `data.preset === "studio"`
+- `data.target === "test_cube"`
+- `data.lights` includes `"blendops_studio_light"`
+
+## 11) Inspect scene again and confirm material + lighting assignment
 
 ```bash
 npm run cli -- scene inspect
@@ -122,6 +136,7 @@ Expected:
 - `data.objects` contains an object with `name: "test_cube"`
 - `test_cube.location` is `[1,0,1]`
 - `test_cube.materials` contains `"red_plastic"`
+- `data.lights` includes `"blendops_studio_light"`
 
 ## Common failures
 

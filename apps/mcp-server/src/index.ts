@@ -5,7 +5,7 @@ import {
   ListToolsRequestSchema,
 } from "@modelcontextprotocol/sdk/types.js";
 import { BridgeClient } from "@blendops/core";
-import { ColorHexSchema, ObjectTypeSchema, Vec3Schema } from "@blendops/schemas";
+import { ColorHexSchema, LightingPresetSchema, ObjectTypeSchema, Vec3Schema } from "@blendops/schemas";
 
 const server = new Server(
   {
@@ -154,6 +154,22 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
           material_name: { type: "string" },
         },
         required: ["object_name", "material_name"],
+        additionalProperties: false,
+      },
+    },
+    {
+      name: "setup_lighting",
+      description: "Setup scene lighting using a preset with optional target object.",
+      inputSchema: {
+        type: "object",
+        properties: {
+          preset: {
+            type: "string",
+            enum: ["studio", "three_point", "soft_key"],
+          },
+          target: { type: "string" },
+        },
+        required: ["preset"],
         additionalProperties: false,
       },
     },
@@ -385,6 +401,55 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
     }
   }
 
+  if (name === "setup_lighting") {
+    try {
+      const args = (rawArgs ?? {}) as Record<string, unknown>;
+
+      if (typeof args.preset !== "string") {
+        throw new Error("Missing required field: preset");
+      }
+
+      const preset = LightingPresetSchema.parse(args.preset);
+
+      let target: string | undefined;
+      if (typeof args.target !== "undefined") {
+        if (typeof args.target !== "string" || args.target.trim().length === 0) {
+          throw new Error("Invalid target: expected non-empty string");
+        }
+        target = args.target.trim();
+      }
+
+      const result = await client.setupLighting({
+        preset,
+        target,
+      });
+
+      return {
+        content: [
+          {
+            type: "text",
+            text: JSON.stringify(result, null, 2),
+          },
+        ],
+        isError: !result.ok,
+      };
+    } catch (error) {
+      const payload = {
+        ok: false,
+        operation: "mcp.setup_lighting.invalid_input",
+        message: error instanceof Error ? error.message : "Invalid setup_lighting input",
+        data: {},
+        warnings: ["Input validation failed for setup_lighting"],
+        next_steps: ["Provide preset from: studio, three_point, soft_key"],
+      };
+
+      return {
+        content: [{ type: "text", text: JSON.stringify(payload, null, 2) }],
+        isError: true,
+      };
+    }
+  }
+
   return {
     content: [
       {
@@ -396,7 +461,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
             message: `Unknown tool: ${name}`,
             data: {},
             warnings: ["Tool not implemented in MVP"],
-            next_steps: ["Use tool `inspect_scene`, `create_object`, `transform_object`, `create_material`, or `apply_material`"],
+            next_steps: ["Use tool `inspect_scene`, `create_object`, `transform_object`, `create_material`, `apply_material`, or `setup_lighting`"],
           },
           null,
           2,

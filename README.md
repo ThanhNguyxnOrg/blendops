@@ -35,6 +35,7 @@ Most Blender+AI integrations focus on direct execution power. BlendOps focuses o
 - `blendops object transform --name test_cube --location 1,0,1`
 - `blendops material create --name red_plastic --color "#ff0000" --roughness 0.5 --metallic 0`
 - `blendops material apply --object test_cube --material red_plastic`
+- `blendops lighting setup --preset studio --target test_cube`
 
 ### MCP tools implemented
 
@@ -43,11 +44,12 @@ Most Blender+AI integrations focus on direct execution power. BlendOps focuses o
 - `transform_object(name, location?, rotation?, scale?)`
 - `create_material(name, color, roughness?, metallic?)`
 - `apply_material(object_name, material_name)`
+- `setup_lighting(preset, target?)`
 
 ### Planned (not implemented yet)
 
 - `clear_scene(confirm: boolean)`
-- `camera` / `lighting` / `render preview`
+- `camera.set` / `render.preview`
 - `validate_scene(preset)`
 - `export_asset(format, path)`
 - `undo_last()`
@@ -116,6 +118,7 @@ npm run cli -- object create --type cube --name test_cube --location 0,0,1 --sca
 npm run cli -- object transform --name test_cube --location 1,0,1
 npm run cli -- material create --name red_plastic --color "#ff0000" --roughness 0.5 --metallic 0
 npm run cli -- material apply --object test_cube --material red_plastic
+npm run cli -- lighting setup --preset studio --target test_cube
 ```
 
 ---
