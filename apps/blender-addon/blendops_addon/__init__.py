@@ -514,7 +514,11 @@ def handle_render_preview(command: Dict[str, Any]) -> Dict[str, Any]:
     try:
         import os
 
-        output_dir = os.path.dirname(output)
+        output_path = output
+        if not os.path.isabs(output_path):
+            output_path = os.path.abspath(output_path)
+
+        output_dir = os.path.dirname(output_path)
         if output_dir and not os.path.exists(output_dir):
             os.makedirs(output_dir, exist_ok=True)
 
@@ -528,8 +532,16 @@ def handle_render_preview(command: Dict[str, Any]) -> Dict[str, Any]:
             except Exception:
                 pass
 
-        scene.render.filepath = output
+        scene.render.filepath = output_path
         bpy.ops.render.render(write_still=True)
+
+        if not os.path.exists(output_path):
+            return make_response(
+                ok=False,
+                operation="render.preview",
+                message=f"Render completed but output file not found at {output_path}",
+                next_steps=["Check Blender render output settings and filesystem permissions"],
+            )
 
         camera_name = scene.camera.name if scene.camera else None
 
