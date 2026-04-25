@@ -83,21 +83,36 @@ async function main(): Promise<number> {
       return 1;
     }
 
-    const type = ObjectTypeSchema.parse(typeRaw);
-    const location = parseVec3(readFlag(args, "--location"), [0, 0, 0]);
-    const rotation = parseVec3(readFlag(args, "--rotation"), [0, 0, 0]);
-    const scale = parseVec3(readFlag(args, "--scale"), [1, 1, 1]);
+    try {
+      const type = ObjectTypeSchema.parse(typeRaw);
+      const location = parseVec3(readFlag(args, "--location"), [0, 0, 0]);
+      const rotation = parseVec3(readFlag(args, "--rotation"), [0, 0, 0]);
+      const scale = parseVec3(readFlag(args, "--scale"), [1, 1, 1]);
 
-    const res = await client.createObject({
-      type,
-      name,
-      location,
-      rotation,
-      scale,
-    });
+      const res = await client.createObject({
+        type,
+        name,
+        location,
+        rotation,
+        scale,
+      });
 
-    console.log(JSON.stringify(res, null, 2));
-    return res.ok ? 0 : 1;
+      console.log(JSON.stringify(res, null, 2));
+      return res.ok ? 0 : 1;
+    } catch (error) {
+      const invalid = makeResponse({
+        ok: false,
+        operation: "cli.invalid_arguments",
+        message: error instanceof Error ? error.message : "Invalid object create arguments",
+        warnings: ["Invalid --type or vec3 input"],
+        next_steps: [
+          "Allowed --type: cube, uv_sphere, ico_sphere, cylinder, cone, torus, plane",
+          "Use vec3 format like --location 0,0,1",
+        ],
+      });
+      console.log(JSON.stringify(invalid, null, 2));
+      return 1;
+    }
   }
 
   const error = makeResponse({

@@ -23,12 +23,20 @@ const client = new BridgeClient();
 
 type Vec3 = [number, number, number];
 
-function parseVec3(input: unknown, fallback: Vec3): Vec3 {
-  if (!Array.isArray(input) || input.length !== 3) {
+function parseOptionalVec3(input: unknown, fallback: Vec3, field: "location" | "rotation" | "scale"): Vec3 {
+  if (typeof input === "undefined") {
     return fallback;
   }
 
+  if (!Array.isArray(input) || input.length !== 3) {
+    throw new Error(`Invalid ${field}: expected an array of 3 numbers`);
+  }
+
   const parsed: Vec3 = [Number(input[0]), Number(input[1]), Number(input[2])];
+  if (parsed.some((entry) => Number.isNaN(entry))) {
+    throw new Error(`Invalid ${field}: all values must be numbers`);
+  }
+
   return Vec3Schema.parse(parsed);
 }
 
@@ -100,16 +108,23 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
     try {
       const args = (rawArgs ?? {}) as Record<string, unknown>;
 
-      const type = ObjectTypeSchema.parse(String(args.type ?? "cube"));
-      const nameValue = String(args.name ?? "unnamed_object").trim();
-      const objectName = nameValue.length > 0 ? nameValue : "unnamed_object";
+      if (typeof args.type !== "string" || args.type.trim().length === 0) {
+        throw new Error("Missing required field: type");
+      }
+
+      if (typeof args.name !== "string" || args.name.trim().length === 0) {
+        throw new Error("Missing required field: name");
+      }
+
+      const type = ObjectTypeSchema.parse(args.type.trim());
+      const objectName = args.name.trim();
 
       const result = await client.createObject({
         type,
         name: objectName,
-        location: parseVec3(args.location, [0, 0, 0]),
-        rotation: parseVec3(args.rotation, [0, 0, 0]),
-        scale: parseVec3(args.scale, [1, 1, 1]),
+        location: parseOptionalVec3(args.location, [0, 0, 0], "location"),
+        rotation: parseOptionalVec3(args.rotation, [0, 0, 0], "rotation"),
+        scale: parseOptionalVec3(args.scale, [1, 1, 1], "scale"),
       });
 
       return {

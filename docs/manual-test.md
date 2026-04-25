@@ -12,14 +12,23 @@ This guide verifies the current MVP vertical slices:
 npm install
 ```
 
-## 2) Start Blender bridge addon
+## 2) Clean + build packages
+
+```bash
+npm run clean
+npm run typecheck
+npm run build
+```
+
+
+## 3) Start Blender bridge addon
 
 1. Open Blender (3.6+)
 2. Install addon from `apps/blender-addon/blendops_addon`
 3. Enable **BlendOps Bridge** addon
 4. Confirm console prints bridge startup on `http://127.0.0.1:8765`
 
-## 3) Verify bridge status
+## 4) Verify bridge status
 
 ```bash
 npm run cli -- bridge status
@@ -40,7 +49,7 @@ Expected JSON shape:
 }
 ```
 
-## 4) Inspect scene
+## 5) Inspect scene
 
 ```bash
 npm run cli -- scene inspect
@@ -52,7 +61,7 @@ Expected:
 - `data.objects` array present
 - `data.stats.object_count` number present
 
-## 5) Create primitive object
+## 6) Create primitive object
 
 ```bash
 npm run cli -- object create --type cube --name test_cube --location 0,0,1 --scale 1,1,1

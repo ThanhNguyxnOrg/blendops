@@ -88,9 +88,10 @@ cd blendops
 npm install
 ```
 
-### 2) Typecheck + build
+### 2) Clean, typecheck + build
 
 ```bash
+npm run clean
 npm run typecheck
 npm run build
 ```
