@@ -12,6 +12,8 @@ bl_info = {
 
 import bpy
 import json
+import math
+import re
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from threading import Thread
 from typing import Any, Dict, Optional
@@ -26,6 +28,21 @@ _server: Optional[HTTPServer] = None
 _server_thread: Optional[Thread] = None
 _command_queue: list[Dict[str, Any]] = []
 _response_queue: Dict[str, Dict[str, Any]] = {}
+
+VALIDATION_PRESETS = {"basic", "game_asset", "render_ready"}
+GENERIC_NAME_ROOTS = {
+    "cube",
+    "sphere",
+    "uvsphere",
+    "icosphere",
+    "cylinder",
+    "cone",
+    "torus",
+    "plane",
+    "light",
+    "camera",
+    "empty",
+}
 
 
 def make_response(
@@ -701,6 +718,375 @@ def handle_camera_set(command: Dict[str, Any]) -> Dict[str, Any]:
         )
 
 
+def is_finite_numeric(value: Any) -> bool:
+    """Check if value is a finite numeric value."""
+    try:
+        num = float(value)
+        return math.isfinite(num)
+    except (TypeError, ValueError):
+        return False
+
+
+def is_generic_name(name: str) -> bool:
+    """Check if object name is generic (e.g., Cube, Cube.001, Sphere.002)."""
+    if not name:
+        return False
+    
+    name_lower = name.lower()
+    base_name = re.sub(r'\.\d+$', '', name_lower)
+    
+    return base_name in GENERIC_NAME_ROOTS
+
+
+def handle_validate_scene(command: Dict[str, Any]) -> Dict[str, Any]:
+    preset = command.get("preset", "basic")
+    
+    if preset not in VALIDATION_PRESETS:
+        return make_response(
+            ok=False,
+            operation="validate.scene",
+            message=f"Unsupported validation preset: {preset}",
+            warnings=["Allowed presets: basic, game_asset, render_ready"],
+            next_steps=["Use one of the supported validation presets"],
+        )
+    
+    try:
+        scene = bpy.context.scene
+        checks: list[Dict[str, Any]] = []
+        
+        # Common checks for all presets
+        objects = list(scene.objects)
+        mesh_objects = [obj for obj in objects if obj.type == "MESH"]
+        cameras = [obj for obj in objects if obj.type == "CAMERA"]
+        lights = [obj for obj in objects if obj.type == "LIGHT"]
+        
+        # Check: has at least one object
+        if len(objects) > 0:
+            checks.append({
+                "id": "has_objects",
+                "status": "pass",
+                "message": f"Scene has {len(objects)} object(s)",
+                "details": {"count": len(objects)},
+            })
+        else:
+            checks.append({
+                "id": "has_objects",
+                "status": "fail",
+                "message": "Scene has no objects",
+                "details": {"count": 0},
+            })
+        
+        # Check: has at least one mesh object
+        if len(mesh_objects) > 0:
+            checks.append({
+                "id": "has_mesh_objects",
+                "status": "pass",
+                "message": f"Scene has {len(mesh_objects)} mesh object(s)",
+                "details": {"count": len(mesh_objects)},
+            })
+        else:
+            checks.append({
+                "id": "has_mesh_objects",
+                "status": "fail",
+                "message": "Scene has no mesh objects",
+                "details": {"count": 0},
+            })
+        
+        # Check: object names are non-empty
+        empty_names = [obj.name for obj in objects if not obj.name or len(obj.name.strip()) == 0]
+        if len(empty_names) == 0:
+            checks.append({
+                "id": "object_names_non_empty",
+                "status": "pass",
+                "message": "All objects have non-empty names",
+                "details": {},
+            })
+        else:
+            checks.append({
+                "id": "object_names_non_empty",
+                "status": "fail",
+                "message": f"{len(empty_names)} object(s) have empty names",
+                "details": {"empty_count": len(empty_names)},
+            })
+        
+        # Check: no duplicate object names (after Blender suffix normalization)
+        name_counts: Dict[str, int] = {}
+        for obj in objects:
+            base_name = re.sub(r'\.\d+$', '', obj.name)
+            name_counts[base_name] = name_counts.get(base_name, 0) + 1
+        
+        duplicates = {name: count for name, count in name_counts.items() if count > 1}
+        if len(duplicates) == 0:
+            checks.append({
+                "id": "no_duplicate_names",
+                "status": "pass",
+                "message": "No duplicate object names detected",
+                "details": {},
+            })
+        else:
+            checks.append({
+                "id": "no_duplicate_names",
+                "status": "warn",
+                "message": f"{len(duplicates)} duplicate base name(s) detected",
+                "details": {"duplicates": duplicates},
+            })
+        
+        # Check: scene has active camera
+        if scene.camera is not None:
+            checks.append({
+                "id": "has_active_camera",
+                "status": "pass",
+                "message": f"Active camera: {scene.camera.name}",
+                "details": {"camera": scene.camera.name},
+            })
+        else:
+            checks.append({
+                "id": "has_active_camera",
+                "status": "fail",
+                "message": "No active camera set",
+                "details": {},
+            })
+        
+        # Check: scene has at least one light
+        if len(lights) > 0:
+            checks.append({
+                "id": "has_lights",
+                "status": "pass",
+                "message": f"Scene has {len(lights)} light(s)",
+                "details": {"count": len(lights)},
+            })
+        else:
+            checks.append({
+                "id": "has_lights",
+                "status": "fail",
+                "message": "Scene has no lights",
+                "details": {"count": 0},
+            })
+        
+        # Check: mesh objects have materials
+        meshes_without_materials = [
+            obj.name for obj in mesh_objects
+            if not hasattr(obj.data, "materials") or len(obj.data.materials) == 0
+        ]
+        if len(meshes_without_materials) == 0:
+            checks.append({
+                "id": "meshes_have_materials",
+                "status": "pass",
+                "message": "All mesh objects have materials",
+                "details": {},
+            })
+        else:
+            checks.append({
+                "id": "meshes_have_materials",
+                "status": "warn",
+                "message": f"{len(meshes_without_materials)} mesh object(s) have no materials",
+                "details": {"objects": meshes_without_materials},
+            })
+        
+        # Check: transforms have valid finite numeric values
+        invalid_transforms = []
+        for obj in objects:
+            if not all(is_finite_numeric(v) for v in obj.location):
+                invalid_transforms.append(f"{obj.name} (location)")
+            if not all(is_finite_numeric(v) for v in obj.rotation_euler):
+                invalid_transforms.append(f"{obj.name} (rotation)")
+            if not all(is_finite_numeric(v) for v in obj.scale):
+                invalid_transforms.append(f"{obj.name} (scale)")
+        
+        if len(invalid_transforms) == 0:
+            checks.append({
+                "id": "valid_transforms",
+                "status": "pass",
+                "message": "All object transforms are valid",
+                "details": {},
+            })
+        else:
+            checks.append({
+                "id": "valid_transforms",
+                "status": "fail",
+                "message": f"{len(invalid_transforms)} invalid transform(s) detected",
+                "details": {"invalid": invalid_transforms},
+            })
+        
+        # Preset-specific checks
+        if preset == "game_asset":
+            # Check: warn if non-mesh objects exist besides camera/lights
+            other_objects = [
+                obj.name for obj in objects
+                if obj.type not in {"MESH", "CAMERA", "LIGHT"}
+            ]
+            if len(other_objects) == 0:
+                checks.append({
+                    "id": "game_asset_object_types",
+                    "status": "pass",
+                    "message": "Only mesh/camera/light objects present",
+                    "details": {},
+                })
+            else:
+                checks.append({
+                    "id": "game_asset_object_types",
+                    "status": "warn",
+                    "message": f"{len(other_objects)} non-mesh/camera/light object(s) present",
+                    "details": {"objects": other_objects},
+                })
+            
+            # Check: warn if scale is not applied (scale differs from [1,1,1])
+            unapplied_scale = [
+                obj.name for obj in mesh_objects
+                if not all(abs(s - 1.0) < 0.001 for s in obj.scale)
+            ]
+            if len(unapplied_scale) == 0:
+                checks.append({
+                    "id": "game_asset_scale_applied",
+                    "status": "pass",
+                    "message": "All mesh objects have applied scale",
+                    "details": {},
+                })
+            else:
+                checks.append({
+                    "id": "game_asset_scale_applied",
+                    "status": "warn",
+                    "message": f"{len(unapplied_scale)} mesh object(s) have unapplied scale",
+                    "details": {"objects": unapplied_scale},
+                })
+            
+            # Check: warn if object names are generic
+            generic_names = [obj.name for obj in mesh_objects if is_generic_name(obj.name)]
+            if len(generic_names) == 0:
+                checks.append({
+                    "id": "game_asset_non_generic_names",
+                    "status": "pass",
+                    "message": "All mesh objects have non-generic names",
+                    "details": {},
+                })
+            else:
+                checks.append({
+                    "id": "game_asset_non_generic_names",
+                    "status": "warn",
+                    "message": f"{len(generic_names)} mesh object(s) have generic names",
+                    "details": {"objects": generic_names},
+                })
+            
+            # Check: estimate polygon/triangle count
+            total_polys = 0
+            for obj in mesh_objects:
+                if hasattr(obj.data, "polygons"):
+                    total_polys += len(obj.data.polygons)
+            
+            if total_polys > 0:
+                if total_polys < 10000:
+                    checks.append({
+                        "id": "game_asset_poly_count",
+                        "status": "pass",
+                        "message": f"Estimated {total_polys} polygon(s) (reasonable for game asset)",
+                        "details": {"poly_count": total_polys},
+                    })
+                else:
+                    checks.append({
+                        "id": "game_asset_poly_count",
+                        "status": "warn",
+                        "message": f"Estimated {total_polys} polygon(s) (high for game asset)",
+                        "details": {"poly_count": total_polys},
+                    })
+            else:
+                checks.append({
+                    "id": "game_asset_poly_count",
+                    "status": "warn",
+                    "message": "No polygons detected",
+                    "details": {"poly_count": 0},
+                })
+        
+        if preset == "render_ready":
+            # Check: active camera exists (already checked above, but emphasize for render)
+            # Check: at least one visible mesh object exists
+            visible_meshes = [obj for obj in mesh_objects if not obj.hide_render]
+            if len(visible_meshes) > 0:
+                checks.append({
+                    "id": "render_ready_visible_meshes",
+                    "status": "pass",
+                    "message": f"{len(visible_meshes)} visible mesh object(s) for rendering",
+                    "details": {"count": len(visible_meshes)},
+                })
+            else:
+                checks.append({
+                    "id": "render_ready_visible_meshes",
+                    "status": "fail",
+                    "message": "No visible mesh objects for rendering",
+                    "details": {"count": 0},
+                })
+            
+            # Check: render resolution positive
+            if scene.render.resolution_x > 0 and scene.render.resolution_y > 0:
+                checks.append({
+                    "id": "render_ready_resolution",
+                    "status": "pass",
+                    "message": f"Render resolution: {scene.render.resolution_x}x{scene.render.resolution_y}",
+                    "details": {
+                        "width": scene.render.resolution_x,
+                        "height": scene.render.resolution_y,
+                    },
+                })
+            else:
+                checks.append({
+                    "id": "render_ready_resolution",
+                    "status": "fail",
+                    "message": "Invalid render resolution",
+                    "details": {
+                        "width": scene.render.resolution_x,
+                        "height": scene.render.resolution_y,
+                    },
+                })
+        
+        # Calculate summary
+        pass_count = sum(1 for check in checks if check["status"] == "pass")
+        warn_count = sum(1 for check in checks if check["status"] == "warn")
+        fail_count = sum(1 for check in checks if check["status"] == "fail")
+        
+        passed = fail_count == 0
+        
+        data = {
+            "preset": preset,
+            "passed": passed,
+            "checks": checks,
+            "summary": {
+                "pass": pass_count,
+                "warn": warn_count,
+                "fail": fail_count,
+            },
+        }
+        
+        warnings = []
+        next_steps = []
+        
+        if fail_count > 0:
+            warnings.append(f"Validation failed with {fail_count} failure(s)")
+            next_steps.append("Review failed checks and address issues")
+        
+        if warn_count > 0:
+            warnings.append(f"Validation has {warn_count} warning(s)")
+            next_steps.append("Review warnings for potential improvements")
+        
+        if passed and warn_count == 0:
+            next_steps.append("Scene validation passed with no warnings")
+        
+        return make_response(
+            ok=True,
+            operation="validate.scene",
+            message=f"Scene validation complete (preset: {preset})",
+            data=data,
+            warnings=warnings if warnings else None,
+            next_steps=next_steps if next_steps else None,
+        )
+    except Exception as e:
+        return make_response(
+            ok=False,
+            operation="validate.scene",
+            message=f"Scene validation failed: {str(e)}",
+            warnings=[traceback.format_exc()],
+            next_steps=["Check Blender console for detailed error"],
+        )
+
+
 def handle_lighting_setup(command: Dict[str, Any]) -> Dict[str, Any]:
     preset = command.get("preset")
     target_name = command.get("target")
@@ -848,6 +1234,9 @@ def process_command(command: Dict[str, Any]) -> Dict[str, Any]:
 
     if operation == "render.preview":
         return handle_render_preview(command)
+
+    if operation == "validate.scene":
+        return handle_validate_scene(command)
 
     return make_response(
         ok=False,

@@ -170,6 +170,31 @@ export const RenderPreviewDataSchema = z.object({
   camera: z.string().nullable(),
 });
 
+export const ValidationPresetSchema = z.enum(["basic", "game_asset", "render_ready"]);
+
+export const ValidateSceneRequestSchema = z.object({
+  operation: z.literal("validate.scene"),
+  preset: ValidationPresetSchema.optional(),
+});
+
+export const ValidationCheckSchema = z.object({
+  id: z.string(),
+  status: z.enum(["pass", "warn", "fail"]),
+  message: z.string(),
+  details: z.record(z.any()),
+});
+
+export const ValidateSceneDataSchema = z.object({
+  preset: ValidationPresetSchema,
+  passed: z.boolean(),
+  checks: z.array(ValidationCheckSchema),
+  summary: z.object({
+    pass: z.number(),
+    warn: z.number(),
+    fail: z.number(),
+  }),
+});
+
 export type SceneInspectRequest = z.infer<typeof SceneInspectRequestSchema>;
 export type SceneInspectData = z.infer<typeof SceneInspectDataSchema>;
 export type ObjectCreateRequest = z.infer<typeof ObjectCreateRequestSchema>;
@@ -186,6 +211,9 @@ export type CameraSetRequest = z.infer<typeof CameraSetRequestSchema>;
 export type CameraSetData = z.infer<typeof CameraSetDataSchema>;
 export type RenderPreviewRequest = z.infer<typeof RenderPreviewRequestSchema>;
 export type RenderPreviewData = z.infer<typeof RenderPreviewDataSchema>;
+export type ValidateSceneRequest = z.infer<typeof ValidateSceneRequestSchema>;
+export type ValidateSceneData = z.infer<typeof ValidateSceneDataSchema>;
+export type ValidationPreset = z.infer<typeof ValidationPresetSchema>;
 
 export const BridgeCommandSchema = z.discriminatedUnion("operation", [
   SceneInspectRequestSchema,
@@ -196,6 +224,7 @@ export const BridgeCommandSchema = z.discriminatedUnion("operation", [
   LightingSetupRequestSchema,
   CameraSetRequestSchema,
   RenderPreviewRequestSchema,
+  ValidateSceneRequestSchema,
 ]);
 export type BridgeCommand = z.infer<typeof BridgeCommandSchema>;
 

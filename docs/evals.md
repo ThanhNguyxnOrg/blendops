@@ -108,11 +108,13 @@ These prompts are for evaluating current and planned BlendOps capabilities.
 **Prompt:**
 "Validate a scene as a game asset and suggest fixes."
 
-**Expected behavior:**
-- Calls `validate_scene(preset="game-asset")`
-- Returns warnings + next-step suggestions
+**Expected behavior (current):**
+- Calls `validate_scene(preset="game_asset")`
+- Returns structured validation report with `checks`, `summary`, and `passed`
+- `ok` remains true when validation executes, even if checks contain warn/fail
+- Returns warning summaries and corrective `next_steps` when issues are found
 
-**Current status:** Future eval (validation not implemented yet)
+**Current status:** Supported (validate.scene vertical slice implemented)
 
 ---
 

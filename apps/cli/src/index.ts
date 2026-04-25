@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { BridgeClient } from "@blendops/core";
-import { ColorHexSchema, LightingPresetSchema, makeResponse, ObjectTypeSchema, Vec3Schema } from "@blendops/schemas";
+import { ColorHexSchema, LightingPresetSchema, makeResponse, ObjectTypeSchema, ValidationPresetSchema, Vec3Schema } from "@blendops/schemas";
 
 function printHelp(): void {
   console.log(`BlendOps CLI
@@ -22,6 +22,10 @@ Usage:
   blendops camera set --location 4,-5,3 --rotation 1.1,0,0.7 --focal-length 35
   blendops render preview
   blendops render preview --output renders/preview.png --width 512 --height 512 --samples 16
+  blendops validate scene
+  blendops validate scene --preset basic
+  blendops validate scene --preset game_asset
+  blendops validate scene --preset render_ready
 
 Options:
   --json        Output JSON (default)
@@ -36,7 +40,8 @@ Implemented in v0.1:
   - material apply
   - lighting setup
   - camera set
-  - render preview`);
+  - render preview
+  - validate scene`);
 }
 
 function readFlag(args: string[], flag: string): string | undefined {
@@ -428,6 +433,34 @@ async function main(): Promise<number> {
           "Use positive integer values for --width, --height, and --samples",
           "Use .png extension for --output",
           "Example: blendops render preview --output renders/preview.png --width 512 --height 512 --samples 16",
+        ],
+      });
+      console.log(JSON.stringify(invalid, null, 2));
+      return 1;
+    }
+  }
+
+  if (group === "validate" && action === "scene") {
+    try {
+      const hasPreset = args.includes("--preset");
+      const presetRaw = hasPreset ? readFlag(args, "--preset") : undefined;
+      const preset = typeof presetRaw === "undefined" ? "basic" : ValidationPresetSchema.parse(presetRaw);
+
+      const res = await client.validateScene({
+        preset,
+      });
+
+      console.log(JSON.stringify(res, null, 2));
+      return res.ok ? 0 : 1;
+    } catch (error) {
+      const invalid = makeResponse({
+        ok: false,
+        operation: "cli.invalid_arguments",
+        message: error instanceof Error ? error.message : "Invalid validate scene arguments",
+        warnings: ["Invalid validate scene input"],
+        next_steps: [
+          "Allowed presets: basic, game_asset, render_ready",
+          "Example: blendops validate scene --preset game_asset",
         ],
       });
       console.log(JSON.stringify(invalid, null, 2));

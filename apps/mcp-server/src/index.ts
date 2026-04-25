@@ -5,7 +5,7 @@ import {
   ListToolsRequestSchema,
 } from "@modelcontextprotocol/sdk/types.js";
 import { BridgeClient } from "@blendops/core";
-import { ColorHexSchema, LightingPresetSchema, ObjectTypeSchema, Vec3Schema } from "@blendops/schemas";
+import { ColorHexSchema, LightingPresetSchema, ObjectTypeSchema, ValidationPresetSchema, Vec3Schema } from "@blendops/schemas";
 
 const server = new Server(
   {
@@ -208,6 +208,20 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
           width: { type: "number", minimum: 1 },
           height: { type: "number", minimum: 1 },
           samples: { type: "number", minimum: 1 },
+        },
+        additionalProperties: false,
+      },
+    },
+    {
+      name: "validate_scene",
+      description: "Validate scene against a preset (basic, game_asset, render_ready).",
+      inputSchema: {
+        type: "object",
+        properties: {
+          preset: {
+            type: "string",
+            enum: ["basic", "game_asset", "render_ready"],
+          },
         },
         additionalProperties: false,
       },
@@ -648,6 +662,51 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
     }
   }
 
+  if (name === "validate_scene") {
+    try {
+      const args = (rawArgs ?? {}) as Record<string, unknown>;
+
+      let preset: "basic" | "game_asset" | "render_ready" = "basic";
+      if (typeof args.preset !== "undefined") {
+        if (typeof args.preset !== "string") {
+          throw new Error("Invalid preset: expected string");
+        }
+        preset = ValidationPresetSchema.parse(args.preset);
+      }
+
+      const result = await client.validateScene({
+        preset,
+      });
+
+      return {
+        content: [
+          {
+            type: "text",
+            text: JSON.stringify(result, null, 2),
+          },
+        ],
+        isError: !result.ok,
+      };
+    } catch (error) {
+      const payload = {
+        ok: false,
+        operation: "mcp.validate_scene.invalid_input",
+        message: error instanceof Error ? error.message : "Invalid validate_scene input",
+        data: {},
+        warnings: ["Input validation failed for validate_scene"],
+        next_steps: [
+          "Provide preset from: basic, game_asset, render_ready",
+          "Example: validate_scene with preset='game_asset'",
+        ],
+      };
+
+      return {
+        content: [{ type: "text", text: JSON.stringify(payload, null, 2) }],
+        isError: true,
+      };
+    }
+  }
+
   return {
     content: [
       {
@@ -659,7 +718,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
             message: `Unknown tool: ${name}`,
             data: {},
             warnings: ["Tool not implemented in MVP"],
-            next_steps: ["Use tool `inspect_scene`, `create_object`, `transform_object`, `create_material`, `apply_material`, `setup_lighting`, `set_camera`, or `render_preview`"],
+            next_steps: ["Use tool `inspect_scene`, `create_object`, `transform_object`, `create_material`, `apply_material`, `setup_lighting`, `set_camera`, `render_preview`, or `validate_scene`"],
           },
           null,
           2,

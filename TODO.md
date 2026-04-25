@@ -27,7 +27,7 @@
 - [x] Add TransformObjectRequest schema
 - [x] Add MaterialCreateRequest schema
 - [x] Add MaterialApplyRequest schema
-- [ ] Add ValidateSceneRequest schema
+- [x] Add ValidateSceneRequest schema
 - [ ] Add ExportAssetRequest schema
 - [x] Export all implemented schemas from index.ts
 
@@ -114,7 +114,7 @@
 - [x] lighting.setup
 - [x] camera.set
 - [x] render.preview
-- [ ] validate.scene
+- [x] validate.scene
 - [ ] export.asset
 - [ ] undo.last
 

@@ -38,6 +38,9 @@ Most Blender+AI integrations focus on direct execution power. BlendOps focuses o
 - `blendops lighting setup --preset studio --target test_cube`
 - `blendops camera set --target test_cube --distance 5 --focal-length 50`
 - `blendops render preview --output renders/preview.png --width 512 --height 512 --samples 16`
+- `blendops validate scene --preset basic`
+- `blendops validate scene --preset game_asset`
+- `blendops validate scene --preset render_ready`
 
 ### MCP tools implemented
 
@@ -49,11 +52,12 @@ Most Blender+AI integrations focus on direct execution power. BlendOps focuses o
 - `setup_lighting(preset, target?)`
 - `set_camera(target?, location?, rotation?, distance?, focal_length?)`
 - `render_preview(output?, width?, height?, samples?)`
+- `validate_scene(preset?)`
 
 ### Planned (not implemented yet)
 
 - `clear_scene(confirm: boolean)`
-- `validate_scene(preset)`
+- `validate_scene(preset)` ✅ now implemented with presets: `basic`, `game_asset`, `render_ready`
 - `export_asset(format, path)`
 - `undo_last()`
 
@@ -124,6 +128,9 @@ npm run cli -- material apply --object test_cube --material red_plastic
 npm run cli -- lighting setup --preset studio --target test_cube
 npm run cli -- camera set --target test_cube --distance 5 --focal-length 50
 npm run cli -- render preview --output renders/preview.png --width 512 --height 512 --samples 16
+npm run cli -- validate scene --preset basic
+npm run cli -- validate scene --preset game_asset
+npm run cli -- validate scene --preset render_ready
 ```
 
 ---

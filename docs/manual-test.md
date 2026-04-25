@@ -11,6 +11,7 @@ This guide verifies the current MVP vertical slices:
 - `blendops lighting setup`
 - `blendops camera set`
 - `blendops render preview`
+- `blendops validate scene`
 
 ## 1) Install dependencies
 
@@ -153,7 +154,23 @@ Expected:
 - `data.samples === 16`
 - `data.camera === "blendops_camera"`
 
-## 13) Inspect scene again and confirm material + lighting + camera assignment
+## 13) Validate scene
+
+```bash
+npm run cli -- validate scene --preset basic
+npm run cli -- validate scene --preset game_asset
+npm run cli -- validate scene --preset render_ready
+```
+
+Expected:
+- `ok: true` (validation executed successfully)
+- `operation: "validate.scene"`
+- `data.preset` matches requested preset
+- `data.checks` array is present and non-empty
+- `data.summary` object includes `pass`, `warn`, `fail`
+- `data.passed` is `false` only when one or more checks are `fail`
+
+## 14) Inspect scene again and confirm material + lighting + camera assignment
 
 ```bash
 npm run cli -- scene inspect

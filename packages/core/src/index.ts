@@ -11,6 +11,7 @@ import {
   type ObjectCreateRequest,
   type ObjectTransformRequest,
   type RenderPreviewRequest,
+  type ValidateSceneRequest,
 } from "@blendops/schemas";
 
 export interface BridgeClientOptions {
@@ -68,6 +69,10 @@ export class BridgeClient {
 
   async renderPreview(input: Partial<Omit<RenderPreviewRequest, "operation">> = {}): Promise<BlendOpsResponse> {
     return this.send({ operation: "render.preview", ...input });
+  }
+
+  async validateScene(input: Partial<Omit<ValidateSceneRequest, "operation">> = {}): Promise<BlendOpsResponse> {
+    return this.send({ operation: "validate.scene", ...input });
   }
 
   private async post(path: string, body: Record<string, unknown>): Promise<unknown> {
