@@ -24,7 +24,7 @@
 - [x] Define SceneInspectRequest schema
 - [x] Define SceneInspectData schema
 - [x] Add ObjectCreateRequest schema
-- [ ] Add TransformObjectRequest schema
+- [x] Add TransformObjectRequest schema
 - [ ] Add MaterialCreateRequest schema
 - [ ] Add MaterialApplyRequest schema
 - [ ] Add ValidateSceneRequest schema
@@ -67,6 +67,7 @@
 - [x] Create main CLI entry point (bin/blendops.js)
 - [x] Implement `blendops scene inspect` command
 - [x] Implement `blendops object create` command
+- [x] Implement `blendops object transform` command
 - [x] Add --json flag for raw output
 - [ ] Add --dry-run flag (architecture support)
 - [x] Add connection error handling
@@ -84,6 +85,7 @@
 - [x] Create MCP server entry point
 - [x] Implement inspect_scene tool
 - [x] Implement create_object tool
+- [x] Implement transform_object tool
 - [x] Add tool schema definitions
 - [x] Add stdio transport
 - [x] Add error handling
@@ -98,7 +100,7 @@
 ### Implement Core Commands
 - [x] scene.inspect (MVP priority)
 - [x] object.create (MVP priority)
-- [ ] object.transform
+- [x] object.transform
 - [ ] object.delete (requires --confirm)
 - [ ] scene.clear (requires --confirm)
 - [ ] material.create
@@ -111,15 +113,15 @@
 - [ ] undo.last
 
 ### Add to CLI
-- [ ] Implement each command as CLI subcommand
-- [ ] Add argument parsing
-- [ ] Add validation
+- [x] Implement each command as CLI subcommand
+- [x] Add argument parsing
+- [x] Add validation
 - [ ] Add formatted output
 
 ### Add to MCP
-- [ ] Implement each command as MCP tool
-- [ ] Add tool schemas
-- [ ] Add parameter validation
+- [x] Implement each command as MCP tool
+- [x] Add tool schemas
+- [x] Add parameter validation
 - [ ] Test with AI agents
 
 ---
@@ -324,10 +326,13 @@
 - [x] Create packages/core with BridgeClient
 - [x] Create apps/blender-addon with scene.inspect handler
 - [x] Extend addon with object.create handler
+- [x] Extend addon with object.transform handler
 - [x] Create apps/cli with scene inspect command
 - [x] Extend CLI with object create command
+- [x] Extend CLI with object transform command
 - [ ] Test end-to-end: `blendops scene inspect`
 - [ ] Test end-to-end: `blendops object create`
+- [ ] Test end-to-end: `blendops object transform`
 
 **Success Criteria:**
 - CLI command runs without errors
@@ -360,4 +365,4 @@
 
 ---
 
-**Next Action:** Run npm install/typecheck/build and verify end-to-end object.create in Blender runtime
+**Next Action:** Run npm install/typecheck/build and verify end-to-end object.transform in Blender runtime

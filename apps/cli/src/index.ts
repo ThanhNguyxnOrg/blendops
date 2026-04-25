@@ -10,6 +10,9 @@ Usage:
   blendops bridge status
   blendops scene inspect
   blendops object create --type cube --name test_cube --location 0,0,1 --scale 1,1,1
+  blendops object transform --name test_cube --location 1,0,1
+  blendops object transform --name test_cube --rotation 0,0,1.5708
+  blendops object transform --name test_cube --scale 2,2,2
 
 Options:
   --json        Output JSON (default)
@@ -18,7 +21,8 @@ Options:
 Implemented in v0.1:
   - bridge status
   - scene inspect
-  - object create`);
+  - object create
+  - object transform`);
 }
 
 function readFlag(args: string[], flag: string): string | undefined {
@@ -115,6 +119,61 @@ async function main(): Promise<number> {
     }
   }
 
+  if (group === "object" && action === "transform") {
+    const name = readFlag(args, "--name");
+
+    if (!name) {
+      const error = makeResponse({
+        ok: false,
+        operation: "cli.invalid_arguments",
+        message: "object transform requires --name",
+        warnings: ["Missing required flags"],
+        next_steps: [
+          "Example: blendops object transform --name test_cube --location 1,0,1",
+        ],
+      });
+      console.log(JSON.stringify(error, null, 2));
+      return 1;
+    }
+
+    try {
+      const hasLocation = args.includes("--location");
+      const hasRotation = args.includes("--rotation");
+      const hasScale = args.includes("--scale");
+
+      if (!hasLocation && !hasRotation && !hasScale) {
+        throw new Error("object transform requires at least one of --location, --rotation, or --scale");
+      }
+
+      const location = hasLocation ? parseVec3(readFlag(args, "--location"), [0, 0, 0]) : undefined;
+      const rotation = hasRotation ? parseVec3(readFlag(args, "--rotation"), [0, 0, 0]) : undefined;
+      const scale = hasScale ? parseVec3(readFlag(args, "--scale"), [1, 1, 1]) : undefined;
+
+      const res = await client.transformObject({
+        name,
+        location,
+        rotation,
+        scale,
+      });
+
+      console.log(JSON.stringify(res, null, 2));
+      return res.ok ? 0 : 1;
+    } catch (error) {
+      const invalid = makeResponse({
+        ok: false,
+        operation: "cli.invalid_arguments",
+        message: error instanceof Error ? error.message : "Invalid object transform arguments",
+        warnings: ["Invalid --name or vec3 input"],
+        next_steps: [
+          "Use --name plus at least one transform flag (--location, --rotation, --scale)",
+          "Use vec3 format like --location 1,0,1",
+        ],
+      });
+      console.log(JSON.stringify(invalid, null, 2));
+      return 1;
+    }
+  }
+
   const error = makeResponse({
     ok: false,
     operation: "cli.command_not_found",
@@ -122,7 +181,7 @@ async function main(): Promise<number> {
     warnings: ["Unsupported command in MVP"],
     next_steps: [
       "Run `blendops --help` to see available commands",
-      "Use `blendops scene inspect` or `blendops object create`",
+      "Use `blendops scene inspect`, `blendops object create`, or `blendops object transform`",
     ],
   });
 

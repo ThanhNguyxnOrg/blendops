@@ -23,11 +23,7 @@ const client = new BridgeClient();
 
 type Vec3 = [number, number, number];
 
-function parseOptionalVec3(input: unknown, fallback: Vec3, field: "location" | "rotation" | "scale"): Vec3 {
-  if (typeof input === "undefined") {
-    return fallback;
-  }
-
+function parseRequiredVec3(input: unknown, field: "location" | "rotation" | "scale"): Vec3 {
   if (!Array.isArray(input) || input.length !== 3) {
     throw new Error(`Invalid ${field}: expected an array of 3 numbers`);
   }
@@ -38,6 +34,14 @@ function parseOptionalVec3(input: unknown, fallback: Vec3, field: "location" | "
   }
 
   return Vec3Schema.parse(parsed);
+}
+
+function parseOptionalVec3(input: unknown, field: "location" | "rotation" | "scale"): Vec3 | undefined {
+  if (typeof input === "undefined") {
+    return undefined;
+  }
+
+  return parseRequiredVec3(input, field);
 }
 
 server.setRequestHandler(ListToolsRequestSchema, async () => ({
@@ -85,6 +89,36 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
         additionalProperties: false,
       },
     },
+    {
+      name: "transform_object",
+      description: "Transform an existing object by name in Blender scene.",
+      inputSchema: {
+        type: "object",
+        properties: {
+          name: { type: "string" },
+          location: {
+            type: "array",
+            items: { type: "number" },
+            minItems: 3,
+            maxItems: 3,
+          },
+          rotation: {
+            type: "array",
+            items: { type: "number" },
+            minItems: 3,
+            maxItems: 3,
+          },
+          scale: {
+            type: "array",
+            items: { type: "number" },
+            minItems: 3,
+            maxItems: 3,
+          },
+        },
+        required: ["name"],
+        additionalProperties: false,
+      },
+    },
   ],
 }));
 
@@ -122,9 +156,9 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       const result = await client.createObject({
         type,
         name: objectName,
-        location: parseOptionalVec3(args.location, [0, 0, 0], "location"),
-        rotation: parseOptionalVec3(args.rotation, [0, 0, 0], "rotation"),
-        scale: parseOptionalVec3(args.scale, [1, 1, 1], "scale"),
+        location: parseOptionalVec3(args.location, "location") ?? [0, 0, 0],
+        rotation: parseOptionalVec3(args.rotation, "rotation") ?? [0, 0, 0],
+        scale: parseOptionalVec3(args.scale, "scale") ?? [1, 1, 1],
       });
 
       return {
@@ -153,6 +187,55 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
     }
   }
 
+  if (name === "transform_object") {
+    try {
+      const args = (rawArgs ?? {}) as Record<string, unknown>;
+
+      if (typeof args.name !== "string" || args.name.trim().length === 0) {
+        throw new Error("Missing required field: name");
+      }
+
+      const hasLocation = typeof args.location !== "undefined";
+      const hasRotation = typeof args.rotation !== "undefined";
+      const hasScale = typeof args.scale !== "undefined";
+
+      if (!hasLocation && !hasRotation && !hasScale) {
+        throw new Error("transform_object requires at least one of location, rotation, or scale");
+      }
+
+      const result = await client.transformObject({
+        name: args.name.trim(),
+        location: hasLocation ? parseRequiredVec3(args.location, "location") : undefined,
+        rotation: hasRotation ? parseRequiredVec3(args.rotation, "rotation") : undefined,
+        scale: hasScale ? parseRequiredVec3(args.scale, "scale") : undefined,
+      });
+
+      return {
+        content: [
+          {
+            type: "text",
+            text: JSON.stringify(result, null, 2),
+          },
+        ],
+        isError: !result.ok,
+      };
+    } catch (error) {
+      const payload = {
+        ok: false,
+        operation: "mcp.transform_object.invalid_input",
+        message: error instanceof Error ? error.message : "Invalid transform_object input",
+        data: {},
+        warnings: ["Input validation failed for transform_object"],
+        next_steps: ["Provide name and at least one valid vec3 array for location/rotation/scale"],
+      };
+
+      return {
+        content: [{ type: "text", text: JSON.stringify(payload, null, 2) }],
+        isError: true,
+      };
+    }
+  }
+
   return {
     content: [
       {
@@ -164,7 +247,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
             message: `Unknown tool: ${name}`,
             data: {},
             warnings: ["Tool not implemented in MVP"],
-            next_steps: ["Use tool `inspect_scene` or `create_object`"],
+            next_steps: ["Use tool `inspect_scene`, `create_object`, or `transform_object`"],
           },
           null,
           2,

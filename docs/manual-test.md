@@ -5,6 +5,7 @@ This guide verifies the current MVP vertical slices:
 - `blendops bridge status`
 - `blendops scene inspect`
 - `blendops object create`
+- `blendops object transform`
 
 ## 1) Install dependencies
 
@@ -72,7 +73,19 @@ Expected:
 - `operation: "object.create"`
 - `data.object.name === "test_cube"`
 
-## 7) Inspect scene again and confirm object exists
+## 7) Transform object
+
+```bash
+npm run cli -- object transform --name test_cube --location 1,0,1
+```
+
+Expected:
+- `ok: true`
+- `operation: "object.transform"`
+- `data.object.name === "test_cube"`
+- `data.object.location === [1,0,1]`
+
+## 8) Inspect scene again and confirm transformed object
 
 ```bash
 npm run cli -- scene inspect
@@ -82,6 +95,7 @@ Expected:
 - `ok: true`
 - `operation: "scene.inspect"`
 - `data.objects` contains an object with `name: "test_cube"`
+- `test_cube.location` is `[1,0,1]`
 
 ## Common failures
 
@@ -96,3 +110,7 @@ Expected:
 ### Unsupported primitive type
 - Symptom: `Unsupported primitive type`
 - Fix: Use one of: `cube`, `uv_sphere`, `ico_sphere`, `cylinder`, `cone`, `torus`, `plane`
+
+### Transform target not found
+- Symptom: `Object `name` not found`
+- Fix: Run `npm run cli -- scene inspect` and use an existing object name

@@ -162,6 +162,65 @@ def handle_object_create(command: Dict[str, Any]) -> Dict[str, Any]:
         )
 
 
+def handle_object_transform(command: Dict[str, Any]) -> Dict[str, Any]:
+    name = command.get("name")
+
+    if not isinstance(name, str) or len(name.strip()) == 0:
+        return make_response(
+            ok=False,
+            operation="object.transform",
+            message="Object name is required",
+            warnings=["Provide --name for object.transform"],
+            next_steps=["Example: blendops object transform --name test_cube --location 1,0,1"],
+        )
+
+    location = command.get("location")
+    rotation = command.get("rotation")
+    scale = command.get("scale")
+
+    if location is None and rotation is None and scale is None:
+        return make_response(
+            ok=False,
+            operation="object.transform",
+            message="object.transform requires at least one of location, rotation, or scale",
+            warnings=["No transform fields provided"],
+            next_steps=["Provide one or more of location/rotation/scale"],
+        )
+
+    obj = bpy.data.objects.get(name)
+    if obj is None:
+        return make_response(
+            ok=False,
+            operation="object.transform",
+            message=f"Object `{name}` not found",
+            next_steps=["Run `blendops scene inspect` to list available objects"],
+        )
+
+    try:
+        if location is not None:
+            obj.location = tuple(location)
+        if rotation is not None:
+            obj.rotation_euler = tuple(rotation)
+        if scale is not None:
+            obj.scale = tuple(scale)
+
+        return make_response(
+            ok=True,
+            operation="object.transform",
+            message=f"Transformed object '{name}'",
+            data={"object": object_snapshot(obj)},
+            next_steps=["Run `blendops scene inspect` to verify scene state"],
+        )
+    except Exception as e:
+        return make_response(
+            ok=False,
+            operation="object.transform",
+            message=f"Object transform failed: {str(e)}",
+            warnings=[traceback.format_exc()],
+            next_steps=["Check Blender console for detailed error"],
+        )
+
+
 def process_command(command: Dict[str, Any]) -> Dict[str, Any]:
     operation = command.get("operation")
 
@@ -178,6 +237,9 @@ def process_command(command: Dict[str, Any]) -> Dict[str, Any]:
 
     if operation == "object.create":
         return handle_object_create(command)
+
+    if operation == "object.transform":
+        return handle_object_transform(command)
 
     return make_response(
         ok=False,

@@ -16,6 +16,20 @@ These prompts are for evaluating current and planned BlendOps capabilities.
 
 ---
 
+## 1.5) Transform existing object safely
+
+**Prompt:**
+"Move object `test_cube` to location [1,0,1] and verify the new transform."
+
+**Expected behavior (current):**
+- Agent calls `transform_object` with `name` and `location`
+- Returns structured transform response
+- Follow-up `inspect_scene` confirms updated location
+
+**Current status:** Supported (object transform vertical slice implemented)
+
+---
+
 ## 2) Destructive operation safety gate
 
 **Prompt:**

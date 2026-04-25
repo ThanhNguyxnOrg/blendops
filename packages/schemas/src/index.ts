@@ -62,7 +62,19 @@ export const SceneInspectDataSchema = z.object({
     .optional(),
 });
 
+export const ObjectTransformRequestSchema = z.object({
+  operation: z.literal("object.transform"),
+  name: z.string().min(1),
+  location: Vec3Schema.optional(),
+  rotation: Vec3Schema.optional(),
+  scale: Vec3Schema.optional(),
+});
+
 export const ObjectCreateDataSchema = z.object({
+  object: SceneObjectSchema,
+});
+
+export const ObjectTransformDataSchema = z.object({
   object: SceneObjectSchema,
 });
 
@@ -70,10 +82,13 @@ export type SceneInspectRequest = z.infer<typeof SceneInspectRequestSchema>;
 export type SceneInspectData = z.infer<typeof SceneInspectDataSchema>;
 export type ObjectCreateRequest = z.infer<typeof ObjectCreateRequestSchema>;
 export type ObjectCreateData = z.infer<typeof ObjectCreateDataSchema>;
+export type ObjectTransformRequest = z.infer<typeof ObjectTransformRequestSchema>;
+export type ObjectTransformData = z.infer<typeof ObjectTransformDataSchema>;
 
 export const BridgeCommandSchema = z.discriminatedUnion("operation", [
   SceneInspectRequestSchema,
   ObjectCreateRequestSchema,
+  ObjectTransformRequestSchema,
 ]);
 export type BridgeCommand = z.infer<typeof BridgeCommandSchema>;
 

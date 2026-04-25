@@ -5,6 +5,7 @@ import {
   type BlendOpsResponse,
   type BridgeCommand,
   type ObjectCreateRequest,
+  type ObjectTransformRequest,
 } from "@blendops/schemas";
 
 export interface BridgeClientOptions {
@@ -38,6 +39,10 @@ export class BridgeClient {
 
   async createObject(input: Omit<ObjectCreateRequest, "operation">): Promise<BlendOpsResponse> {
     return this.send({ operation: "object.create", ...input });
+  }
+
+  async transformObject(input: Omit<ObjectTransformRequest, "operation">): Promise<BlendOpsResponse> {
+    return this.send({ operation: "object.transform", ...input });
   }
 
   private async post(path: string, body: Record<string, unknown>): Promise<unknown> {

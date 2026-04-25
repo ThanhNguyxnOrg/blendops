@@ -32,16 +32,17 @@ Most Blender+AI integrations focus on direct execution power. BlendOps focuses o
 - `blendops bridge status`
 - `blendops scene inspect`
 - `blendops object create --type cube --name test_cube --location 0,0,1 --scale 1,1,1`
+- `blendops object transform --name test_cube --location 1,0,1`
 
 ### MCP tools implemented
 
 - `inspect_scene()`
 - `create_object(type, name, location?, rotation?, scale?)`
+- `transform_object(name, location?, rotation?, scale?)`
 
 ### Planned (not implemented yet)
 
 - `clear_scene(confirm: boolean)`
-- `transform_object(...)`
 - `material` / `camera` / `lighting` / `render preview`
 - `validate_scene(preset)`
 - `export_asset(format, path)`
@@ -108,6 +109,7 @@ Load and enable addon from:
 npm run cli -- bridge status
 npm run cli -- scene inspect
 npm run cli -- object create --type cube --name test_cube --location 0,0,1 --scale 1,1,1
+npm run cli -- object transform --name test_cube --location 1,0,1
 ```
 
 ---
