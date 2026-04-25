@@ -129,7 +129,7 @@ def handle_object_create(command: Dict[str, Any]) -> Dict[str, Any]:
 
     try:
         primitive_ops[primitive](location=tuple(location), rotation=tuple(rotation), scale=tuple(scale))
-        created = bpy.context.active_object
+        created = bpy.context.view_layer.objects.active
 
         if created is None:
             return make_response(
@@ -246,6 +246,10 @@ class BlendOpsHandler(BaseHTTPRequestHandler):
             content_length = int(self.headers.get("Content-Length", 0))
             body = self.rfile.read(content_length).decode("utf-8")
             command = json.loads(body)
+
+            if bpy.app.background:
+                self._send_json(200, process_command(command))
+                return
 
             import uuid
 
