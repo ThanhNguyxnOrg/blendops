@@ -113,7 +113,7 @@
 - [x] material.apply
 - [x] lighting.setup
 - [x] camera.set
-- [ ] render.preview
+- [x] render.preview
 - [ ] validate.scene
 - [ ] export.asset
 - [ ] undo.last

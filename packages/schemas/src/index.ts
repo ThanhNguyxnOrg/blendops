@@ -143,6 +143,33 @@ export const CameraSetDataSchema = z.object({
   active_camera: z.string(),
 });
 
+export const RenderPreviewDefaults = {
+  output: "renders/preview.png",
+  width: 512,
+  height: 512,
+  samples: 32,
+} as const;
+
+export const RenderPreviewRequestSchema = z.object({
+  operation: z.literal("render.preview"),
+  output: z
+    .string()
+    .min(1)
+    .refine((value) => value.toLowerCase().endsWith(".png"), "output must end with .png")
+    .optional(),
+  width: z.number().int().positive().optional(),
+  height: z.number().int().positive().optional(),
+  samples: z.number().int().positive().optional(),
+});
+
+export const RenderPreviewDataSchema = z.object({
+  output: z.string().min(1),
+  width: z.number().int().positive(),
+  height: z.number().int().positive(),
+  samples: z.number().int().positive(),
+  camera: z.string().nullable(),
+});
+
 export type SceneInspectRequest = z.infer<typeof SceneInspectRequestSchema>;
 export type SceneInspectData = z.infer<typeof SceneInspectDataSchema>;
 export type ObjectCreateRequest = z.infer<typeof ObjectCreateRequestSchema>;
@@ -157,6 +184,8 @@ export type LightingSetupRequest = z.infer<typeof LightingSetupRequestSchema>;
 export type LightingSetupData = z.infer<typeof LightingSetupDataSchema>;
 export type CameraSetRequest = z.infer<typeof CameraSetRequestSchema>;
 export type CameraSetData = z.infer<typeof CameraSetDataSchema>;
+export type RenderPreviewRequest = z.infer<typeof RenderPreviewRequestSchema>;
+export type RenderPreviewData = z.infer<typeof RenderPreviewDataSchema>;
 
 export const BridgeCommandSchema = z.discriminatedUnion("operation", [
   SceneInspectRequestSchema,
@@ -166,6 +195,7 @@ export const BridgeCommandSchema = z.discriminatedUnion("operation", [
   MaterialApplyRequestSchema,
   LightingSetupRequestSchema,
   CameraSetRequestSchema,
+  RenderPreviewRequestSchema,
 ]);
 export type BridgeCommand = z.infer<typeof BridgeCommandSchema>;
 

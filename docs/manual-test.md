@@ -10,6 +10,7 @@ This guide verifies the current MVP vertical slices:
 - `blendops material apply`
 - `blendops lighting setup`
 - `blendops camera set`
+- `blendops render preview`
 
 ## 1) Install dependencies
 
@@ -137,7 +138,22 @@ Expected:
 - `data.camera.name === "blendops_camera"`
 - `data.active_camera === "blendops_camera"`
 
-## 12) Inspect scene again and confirm material + lighting + camera assignment
+## 12) Render preview
+
+```bash
+npm run cli -- render preview --output renders/preview.png --width 512 --height 512 --samples 16
+```
+
+Expected:
+- `ok: true`
+- `operation: "render.preview"`
+- `data.output === "renders/preview.png"`
+- `data.width === 512`
+- `data.height === 512`
+- `data.samples === 16`
+- `data.camera === "blendops_camera"`
+
+## 13) Inspect scene again and confirm material + lighting + camera assignment
 
 ```bash
 npm run cli -- scene inspect

@@ -20,6 +20,8 @@ Usage:
   blendops camera set --target test_cube --distance 5
   blendops camera set --target test_cube --location 4,-5,3 --focal-length 50
   blendops camera set --location 4,-5,3 --rotation 1.1,0,0.7 --focal-length 35
+  blendops render preview
+  blendops render preview --output renders/preview.png --width 512 --height 512 --samples 16
 
 Options:
   --json        Output JSON (default)
@@ -33,7 +35,8 @@ Implemented in v0.1:
   - material create
   - material apply
   - lighting setup
-  - camera set`);
+  - camera set
+  - render preview`);
 }
 
 function readFlag(args: string[], flag: string): string | undefined {
@@ -371,6 +374,60 @@ async function main(): Promise<number> {
           "If --location is provided without --target, include --rotation",
           "Use positive values for --distance and --focal-length",
           "Example: blendops camera set --target test_cube --distance 5 --focal-length 50",
+        ],
+      });
+      console.log(JSON.stringify(invalid, null, 2));
+      return 1;
+    }
+  }
+
+  if (group === "render" && action === "preview") {
+    try {
+      const hasOutput = args.includes("--output");
+      const hasWidth = args.includes("--width");
+      const hasHeight = args.includes("--height");
+      const hasSamples = args.includes("--samples");
+
+      const output = hasOutput ? readFlag(args, "--output") : undefined;
+      const width = hasWidth ? parseNumericFlag(readFlag(args, "--width"), "--width", 0) : undefined;
+      const height = hasHeight ? parseNumericFlag(readFlag(args, "--height"), "--height", 0) : undefined;
+      const samples = hasSamples ? parseNumericFlag(readFlag(args, "--samples"), "--samples", 0) : undefined;
+
+      if (typeof width !== "undefined" && (width <= 0 || !Number.isInteger(width))) {
+        throw new Error("--width must be a positive integer");
+      }
+
+      if (typeof height !== "undefined" && (height <= 0 || !Number.isInteger(height))) {
+        throw new Error("--height must be a positive integer");
+      }
+
+      if (typeof samples !== "undefined" && (samples <= 0 || !Number.isInteger(samples))) {
+        throw new Error("--samples must be a positive integer");
+      }
+
+      if (typeof output !== "undefined" && (!output.endsWith(".png"))) {
+        throw new Error("--output must end with .png");
+      }
+
+      const res = await client.renderPreview({
+        output,
+        width,
+        height,
+        samples,
+      });
+
+      console.log(JSON.stringify(res, null, 2));
+      return res.ok ? 0 : 1;
+    } catch (error) {
+      const invalid = makeResponse({
+        ok: false,
+        operation: "cli.invalid_arguments",
+        message: error instanceof Error ? error.message : "Invalid render preview arguments",
+        warnings: ["Invalid render preview input"],
+        next_steps: [
+          "Use positive integer values for --width, --height, and --samples",
+          "Use .png extension for --output",
+          "Example: blendops render preview --output renders/preview.png --width 512 --height 512 --samples 16",
         ],
       });
       console.log(JSON.stringify(invalid, null, 2));

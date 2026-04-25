@@ -198,6 +198,20 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
         additionalProperties: false,
       },
     },
+    {
+      name: "render_preview",
+      description: "Render a preview image of the current scene.",
+      inputSchema: {
+        type: "object",
+        properties: {
+          output: { type: "string" },
+          width: { type: "number", minimum: 1 },
+          height: { type: "number", minimum: 1 },
+          samples: { type: "number", minimum: 1 },
+        },
+        additionalProperties: false,
+      },
+    },
   ],
 }));
 
@@ -558,6 +572,82 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
     }
   }
 
+  if (name === "render_preview") {
+    try {
+      const args = (rawArgs ?? {}) as Record<string, unknown>;
+
+      let output: string | undefined;
+      if (typeof args.output !== "undefined") {
+        if (typeof args.output !== "string" || args.output.trim().length === 0) {
+          throw new Error("Invalid output: expected non-empty string");
+        }
+        if (!args.output.endsWith(".png")) {
+          throw new Error("Invalid output: must end with .png");
+        }
+        output = args.output.trim();
+      }
+
+      let width: number | undefined;
+      if (typeof args.width !== "undefined") {
+        width = Number(args.width);
+        if (Number.isNaN(width) || width <= 0 || !Number.isInteger(width)) {
+          throw new Error("width must be a positive integer");
+        }
+      }
+
+      let height: number | undefined;
+      if (typeof args.height !== "undefined") {
+        height = Number(args.height);
+        if (Number.isNaN(height) || height <= 0 || !Number.isInteger(height)) {
+          throw new Error("height must be a positive integer");
+        }
+      }
+
+      let samples: number | undefined;
+      if (typeof args.samples !== "undefined") {
+        samples = Number(args.samples);
+        if (Number.isNaN(samples) || samples <= 0 || !Number.isInteger(samples)) {
+          throw new Error("samples must be a positive integer");
+        }
+      }
+
+      const result = await client.renderPreview({
+        output,
+        width,
+        height,
+        samples,
+      });
+
+      return {
+        content: [
+          {
+            type: "text",
+            text: JSON.stringify(result, null, 2),
+          },
+        ],
+        isError: !result.ok,
+      };
+    } catch (error) {
+      const payload = {
+        ok: false,
+        operation: "mcp.render_preview.invalid_input",
+        message: error instanceof Error ? error.message : "Invalid render_preview input",
+        data: {},
+        warnings: ["Input validation failed for render_preview"],
+        next_steps: [
+          "Provide positive integer values for width, height, and samples",
+          "Use .png extension for output",
+          "Example: render_preview with output='renders/preview.png', width=512, height=512, samples=16",
+        ],
+      };
+
+      return {
+        content: [{ type: "text", text: JSON.stringify(payload, null, 2) }],
+        isError: true,
+      };
+    }
+  }
+
   return {
     content: [
       {
@@ -569,7 +659,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
             message: `Unknown tool: ${name}`,
             data: {},
             warnings: ["Tool not implemented in MVP"],
-            next_steps: ["Use tool `inspect_scene`, `create_object`, `transform_object`, `create_material`, `apply_material`, `setup_lighting`, or `set_camera`"],
+            next_steps: ["Use tool `inspect_scene`, `create_object`, `transform_object`, `create_material`, `apply_material`, `setup_lighting`, `set_camera`, or `render_preview`"],
           },
           null,
           2,

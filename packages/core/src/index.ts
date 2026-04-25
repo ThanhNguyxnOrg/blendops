@@ -10,6 +10,7 @@ import {
   type CameraSetRequest,
   type ObjectCreateRequest,
   type ObjectTransformRequest,
+  type RenderPreviewRequest,
 } from "@blendops/schemas";
 
 export interface BridgeClientOptions {
@@ -63,6 +64,10 @@ export class BridgeClient {
 
   async setCamera(input: Omit<CameraSetRequest, "operation">): Promise<BlendOpsResponse> {
     return this.send({ operation: "camera.set", ...input });
+  }
+
+  async renderPreview(input: Partial<Omit<RenderPreviewRequest, "operation">> = {}): Promise<BlendOpsResponse> {
+    return this.send({ operation: "render.preview", ...input });
   }
 
   private async post(path: string, body: Record<string, unknown>): Promise<unknown> {

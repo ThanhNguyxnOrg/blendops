@@ -37,6 +37,7 @@ Most Blender+AI integrations focus on direct execution power. BlendOps focuses o
 - `blendops material apply --object test_cube --material red_plastic`
 - `blendops lighting setup --preset studio --target test_cube`
 - `blendops camera set --target test_cube --distance 5 --focal-length 50`
+- `blendops render preview --output renders/preview.png --width 512 --height 512 --samples 16`
 
 ### MCP tools implemented
 
@@ -47,11 +48,11 @@ Most Blender+AI integrations focus on direct execution power. BlendOps focuses o
 - `apply_material(object_name, material_name)`
 - `setup_lighting(preset, target?)`
 - `set_camera(target?, location?, rotation?, distance?, focal_length?)`
+- `render_preview(output?, width?, height?, samples?)`
 
 ### Planned (not implemented yet)
 
 - `clear_scene(confirm: boolean)`
-- `render.preview`
 - `validate_scene(preset)`
 - `export_asset(format, path)`
 - `undo_last()`
@@ -122,6 +123,7 @@ npm run cli -- material create --name red_plastic --color "#ff0000" --roughness 
 npm run cli -- material apply --object test_cube --material red_plastic
 npm run cli -- lighting setup --preset studio --target test_cube
 npm run cli -- camera set --target test_cube --distance 5 --focal-length 50
+npm run cli -- render preview --output renders/preview.png --width 512 --height 512 --samples 16
 ```
 
 ---

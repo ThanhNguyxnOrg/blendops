@@ -91,10 +91,15 @@ These prompts are for evaluating current and planned BlendOps capabilities.
 "Create a red cube on a plane with studio lighting and render preview."
 
 **Expected behavior:**
-- Current: can create primitive object/material, set lighting, and position camera via `create_object`, `create_material`, `apply_material`, `setup_lighting`, and `set_camera`
-- Full prompt still requires render tool
+- Agent calls `create_object` for cube and plane
+- Agent calls `create_material` with red color
+- Agent calls `apply_material` to assign material
+- Agent calls `setup_lighting` with studio preset
+- Agent calls `set_camera` targeting the cube
+- Agent calls `render_preview` to generate output image
+- Returns structured render response with output path
 
-**Current status:** Future eval (partially possible: object + material + lighting + camera)
+**Current status:** Supported (full creative scene workflow with render)
 
 ---
 

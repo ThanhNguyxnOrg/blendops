@@ -495,6 +495,67 @@ def aim_object_at_target(obj: Any, target_location: tuple[float, float, float]) 
     obj.rotation_euler = quat.to_euler()
 
 
+def handle_render_preview(command: Dict[str, Any]) -> Dict[str, Any]:
+    output = command.get("output") or "renders/preview.png"
+    width = command.get("width") or 512
+    height = command.get("height") or 512
+    samples = command.get("samples") or 32
+
+    scene = bpy.context.scene
+
+    if scene.camera is None:
+        return make_response(
+            ok=False,
+            operation="render.preview",
+            message="No active camera found",
+            next_steps=["Run `blendops camera set --target <object>` before rendering"],
+        )
+
+    try:
+        import os
+
+        output_dir = os.path.dirname(output)
+        if output_dir and not os.path.exists(output_dir):
+            os.makedirs(output_dir, exist_ok=True)
+
+        scene.render.resolution_x = int(width)
+        scene.render.resolution_y = int(height)
+        scene.render.image_settings.file_format = "PNG"
+
+        if scene.render.engine == "CYCLES" or (hasattr(scene, "cycles") and scene.cycles):
+            try:
+                scene.cycles.samples = int(samples)
+            except Exception:
+                pass
+
+        scene.render.filepath = output
+        bpy.ops.render.render(write_still=True)
+
+        camera_name = scene.camera.name if scene.camera else None
+
+        return make_response(
+            ok=True,
+            operation="render.preview",
+            message=f"Rendered preview to {output}",
+            data={
+                "output": output,
+                "width": int(width),
+                "height": int(height),
+                "samples": int(samples),
+                "camera": camera_name,
+            },
+            next_steps=["Check output file exists at specified path"],
+        )
+    except Exception as e:
+        return make_response(
+            ok=False,
+            operation="render.preview",
+            message=f"Render preview failed: {str(e)}",
+            warnings=[traceback.format_exc()],
+            next_steps=["Check Blender console for detailed error"],
+        )
+
+
 def handle_camera_set(command: Dict[str, Any]) -> Dict[str, Any]:
     target_name = command.get("target")
     location = command.get("location")
@@ -772,6 +833,9 @@ def process_command(command: Dict[str, Any]) -> Dict[str, Any]:
 
     if operation == "camera.set":
         return handle_camera_set(command)
+
+    if operation == "render.preview":
+        return handle_render_preview(command)
 
     return make_response(
         ok=False,
