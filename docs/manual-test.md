@@ -37,11 +37,14 @@ npm run build
 4. Confirm console prints bridge startup on `http://127.0.0.1:8765`
 
 Note:
-- A black Blender background console window is expected on Windows.
+- A Blender console window is expected on Windows.
+- The console shows human-readable operation logs.
 - Do not close it while using BlendOps.
 - Use `bridge status` and CLI `--verbose` output to verify liveness/progress.
 
 ## 4) Verify bridge status
+
+### Via CLI
 
 ```bash
 npm run cli -- bridge status --verbose
@@ -61,6 +64,18 @@ Expected JSON shape:
   "next_steps": []
 }
 ```
+
+### Via browser (optional)
+
+Open in browser or use curl:
+```
+http://127.0.0.1:8765/status
+```
+
+Expected:
+- Browser shows JSON status response
+- Bridge console logs: `[BlendOps ...] status check ok`
+- No scary 501 or HTTP error spam
 
 ## 5) Inspect scene
 

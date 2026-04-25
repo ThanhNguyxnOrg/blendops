@@ -155,10 +155,46 @@ Expected:
 - stdout: Valid JSON response
 - stderr: Automatic progress logs (long-running operation)
 
+## Human-readable console UX
+
+### Before
+
+Console could show low-level HTTP noise such as:
+
+```
+code 501, message Unsupported method ('GET')
+"GET /status HTTP/1.1" 501 -
+```
+
+This was technically observable but confusing for normal users.
+
+### After
+
+Console now shows semantic, human-readable activity lines:
+
+```
+[BlendOps 09:00:00] ready and waiting for commands
+[BlendOps 09:00:05] status check ok
+[BlendOps 09:00:10] received: scene.inspect
+[BlendOps 09:00:10] completed: scene.inspect ok 8ms
+[BlendOps 09:00:10] status: alive | requests=3 | last=scene.inspect | last_error=none
+[BlendOps 09:00:12] ignored unsupported GET /favicon.ico
+```
+
+### UX behavior verified
+
+- GET `/status` works in browser and returns bridge status JSON
+- Browser `/favicon.ico` requests are treated as harmless and do not produce scary spam
+- Raw low-level `501 Unsupported method ('GET')` spam no longer appears in normal console flow
+- Bridge console clearly communicates what ran and whether it succeeded or failed
+
 ## Pass / Fail verdict
 
 - PowerShell `$PID` bug: **N/A** (no PowerShell scripts exist)
 - Blender console visibility: **PASS** (banner and logs print to visible console, no redirection)
+- Bridge console readability: **PASS** (semantic activity lines replace raw HTTP noise)
+- GET `/status` support: **PASS** (status JSON available via browser)
+- 501 GET spam removal: **PASS** (no scary raw 501 spam for normal status checks)
 - Bridge status metadata: **PASS** (all fields present: uptime_seconds, request_count, last_operation, last_error, last_duration_ms, implemented_operations)
 - CLI stdout JSON-only: **PASS** (verified via manual testing)
 - CLI stderr progress logs: **PASS** (verified via manual testing)

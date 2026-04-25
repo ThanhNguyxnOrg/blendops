@@ -22,25 +22,60 @@ This separation makes behavior predictable:
 
 ## Blender bridge console behavior
 
-## What the black Blender console window means
+### What the Blender console shows
 
-On Windows, the Blender background bridge often appears as a black console window.
-That window is expected and is now used as a live operation log stream.
+The Blender bridge console is a **human activity log** that shows:
 
-## Why the console must stay open
+- Startup banner with URL and example commands
+- Operation logs: `received: scene.inspect`, `completed: scene.inspect ok 45ms`
+- Status checks: `status check ok`
+- Failures with reasons: `failed: export.asset 1850ms`, `reason: No mesh objects found`
+- Harmless browser checks: `ignored unsupported GET /favicon.ico`
+
+### Normal console output examples
+
+```
+============================================================
+ BlendOps Bridge is running
+ Version: 0.1.0
+ URL: http://127.0.0.1:8765
+ Status page: http://127.0.0.1:8765/status
+
+ Keep this window open while using BlendOps.
+
+ Try:
+   npm run cli -- bridge status
+   npm run cli -- scene inspect --verbose
+
+ This window will show BlendOps operation logs.
+============================================================
+[BlendOps 2026-04-25 09:00:00] ready and waiting for commands
+[BlendOps 2026-04-25 09:00:15] received: scene.inspect
+[BlendOps 2026-04-25 09:00:15] completed: scene.inspect ok 8ms
+[BlendOps 2026-04-25 09:00:15] status: alive | requests=1 | last=scene.inspect | last_error=none
+[BlendOps 2026-04-25 09:01:10] received: render.preview
+[BlendOps 2026-04-25 09:01:14] completed: render.preview ok 4012ms
+[BlendOps 2026-04-25 09:01:14] output: renders/preview.png
+[BlendOps 2026-04-25 09:01:14] status: alive | requests=2 | last=render.preview | last_error=none
+```
+
+### Why the console must stay open
 
 The bridge HTTP server runs in that Blender process. Closing the window stops the bridge and commands will fail to connect.
 
-## What READY means
+### Harmless browser checks
 
-When the bridge starts, it prints a startup banner and then logs `bridge ready`.
-`Status: READY` means:
+If you open `http://127.0.0.1:8765/status` in a browser, you may see:
+```
+[BlendOps 2026-04-25 09:02:00] status check ok
+[BlendOps 2026-04-25 09:02:00] ignored unsupported GET /favicon.ico
+```
 
-- bridge server is listening
-- command dispatcher is initialized
-- operation registry is available
+These are harmless. The bridge correctly handles browser requests and ignores favicon lookups.
 
 ## Verify bridge health
+
+### Via CLI
 
 ```bash
 npm run cli -- bridge status --verbose
@@ -58,6 +93,18 @@ Expected:
   - `last_error`
   - `last_duration_ms`
   - `implemented_operations`
+
+### Via browser
+
+Open in your browser:
+```
+http://127.0.0.1:8765/status
+```
+
+You'll see JSON status response and the bridge console will log:
+```
+[BlendOps 2026-04-25 09:02:00] status check ok
+```
 
 ## Run commands with visibility
 

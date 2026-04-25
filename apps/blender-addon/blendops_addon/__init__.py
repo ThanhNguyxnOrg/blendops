@@ -1375,7 +1375,10 @@ def _dispatch_with_observability(command: Dict[str, Any], client_ip: Optional[st
     operation = command.get("operation")
     start = time.time()
     
-    _log(f"<- {operation}")
+    if operation == "bridge.status":
+        _log("status check ok")
+    else:
+        _log(f"received: {operation}")
     
     if operation == "bridge.status":
         uptime_seconds = int(time.time() - _server_start_time) if _server_start_time > 0 else 0
@@ -1428,10 +1431,22 @@ def _dispatch_with_observability(command: Dict[str, Any], client_ip: Optional[st
     
     status = "ok" if response.get("ok") else "failed"
     if response.get("ok"):
-        _log(f"-> {operation} {status} {duration_ms}ms")
+        if operation != "bridge.status":
+            _log(f"completed: {operation} ok {duration_ms}ms")
+            output_path = response.get("data", {}).get("output") if isinstance(response.get("data"), dict) else None
+            if isinstance(output_path, str) and output_path.strip():
+                _log(f"output: {output_path}")
     else:
+        _log(f"failed: {operation} {duration_ms}ms")
         error_message = response.get("message")
-        _log(f"-> {operation} {status} {duration_ms}ms: {error_message}")
+        if isinstance(error_message, str) and error_message.strip():
+            _log(f"reason: {error_message}")
+        next_steps = response.get("next_steps")
+        if isinstance(next_steps, list) and len(next_steps) > 0 and isinstance(next_steps[0], str):
+            _log(f"next: {next_steps[0]}")
+
+    last_error_label = _last_error if _last_error else "none"
+    _log(f"status: alive | requests={_request_count} | last={_last_operation} | last_error={last_error_label}")
     
     return response
 
@@ -1465,10 +1480,37 @@ def timer_process_queue() -> float:
 
 class BlendOpsHandler(BaseHTTPRequestHandler):
     def log_message(self, format: str, *args: Any) -> None:
-        timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
-        msg = f"[BlendOps {timestamp}] {self.client_address[0]}:{self.client_address[1]} - {format % args}"
-        sys.stderr.write(msg + "\n")
-        sys.stderr.flush()
+        # Suppress low-level HTTP logs - semantic logs are handled by _dispatch_with_observability
+        pass
+
+    def do_GET(self) -> None:
+        if self.path == "/status":
+            _log("status check ok")
+            self._handle_status()
+        elif self.path == "/favicon.ico":
+            # Silently ignore browser favicon requests
+            self._send_json(
+                404,
+                make_response(
+                    ok=False,
+                    operation="bridge.http",
+                    message="Not found",
+                    data={},
+                ),
+            )
+        else:
+            _log(f"ignored unsupported GET {self.path}")
+            self._send_json(
+                405,
+                make_response(
+                    ok=False,
+                    operation="bridge.http",
+                    message=f"Unsupported GET path: {self.path}",
+                    data={},
+                    warnings=["GET is only supported for /status"],
+                    next_steps=["Use GET /status or the BlendOps CLI"],
+                ),
+            )
 
     def do_POST(self) -> None:
         global _command_queue, _response_queue
@@ -1571,16 +1613,22 @@ def start_server(port: int = 8765) -> None:
         _server_start_time = time.time()
         
         print("=" * 60, flush=True)
-        print(" BlendOps Bridge", flush=True)
+        print(" BlendOps Bridge is running", flush=True)
         print(f" Version: {'.'.join(map(str, bl_info['version']))}", flush=True)
-        print(" Status: READY", flush=True)
         print(f" URL: http://127.0.0.1:{port}", flush=True)
-        print(" Mode: Blender background bridge", flush=True)
-        print(" Note: keep this window open while using BlendOps", flush=True)
+        print(f" Status page: http://127.0.0.1:{port}/status", flush=True)
+        print("", flush=True)
+        print(" Keep this window open while using BlendOps.", flush=True)
+        print("", flush=True)
+        print(" Try:", flush=True)
+        print("   npm run cli -- bridge status", flush=True)
+        print("   npm run cli -- scene inspect --verbose", flush=True)
+        print("", flush=True)
+        print(" This window will show BlendOps operation logs.", flush=True)
         print("=" * 60, flush=True)
         sys.stdout.flush()
         
-        _log("bridge ready")
+        _log("ready and waiting for commands")
     except Exception as e:
         _log(f"Failed to start server: {e}")
 
