@@ -43,16 +43,30 @@ These prompts are for evaluating current and planned BlendOps capabilities.
 
 ---
 
+## 2) Material creation and assignment
+
+**Prompt:**
+"Create a material named `red_plastic` with color #ff0000 and apply it to object `test_cube`."
+
+**Expected behavior (current):**
+- Agent calls `create_material` with required `name` and `color`
+- Agent calls `apply_material` with `object_name` and `material_name`
+- Follow-up `inspect_scene` confirms `test_cube.materials` includes `red_plastic`
+
+**Current status:** Supported (material create/apply vertical slice implemented)
+
+---
+
 ## 3) Creative scene setup with render
 
 **Prompt:**
 "Create a red cube on a plane with studio lighting and render preview."
 
 **Expected behavior:**
-- Current: can only create primitive object via `create_object`
-- Full prompt requires materials/lighting/render tools
+- Current: can create primitive object and apply material via `create_object`, `create_material`, and `apply_material`
+- Full prompt still requires lighting/render tools
 
-**Current status:** Future eval (partially possible: object creation only)
+**Current status:** Future eval (partially possible: object + material only)
 
 ---
 

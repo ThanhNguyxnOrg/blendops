@@ -25,8 +25,8 @@
 - [x] Define SceneInspectData schema
 - [x] Add ObjectCreateRequest schema
 - [x] Add TransformObjectRequest schema
-- [ ] Add MaterialCreateRequest schema
-- [ ] Add MaterialApplyRequest schema
+- [x] Add MaterialCreateRequest schema
+- [x] Add MaterialApplyRequest schema
 - [ ] Add ValidateSceneRequest schema
 - [ ] Add ExportAssetRequest schema
 - [x] Export all implemented schemas from index.ts
@@ -51,6 +51,8 @@
 - [x] Add bpy.app.timers routing for thread safety
 - [x] Implement scene.inspect handler
 - [x] Implement object.create handler
+- [x] Implement material.create handler
+- [x] Implement material.apply handler
 - [ ] Add parameter validation
 - [x] Add error handling
 - [x] Create addon installation instructions
@@ -68,6 +70,8 @@
 - [x] Implement `blendops scene inspect` command
 - [x] Implement `blendops object create` command
 - [x] Implement `blendops object transform` command
+- [x] Implement `blendops material create` command
+- [x] Implement `blendops material apply` command
 - [x] Add --json flag for raw output
 - [ ] Add --dry-run flag (architecture support)
 - [x] Add connection error handling
@@ -86,6 +90,8 @@
 - [x] Implement inspect_scene tool
 - [x] Implement create_object tool
 - [x] Implement transform_object tool
+- [x] Implement create_material tool
+- [x] Implement apply_material tool
 - [x] Add tool schema definitions
 - [x] Add stdio transport
 - [x] Add error handling
@@ -103,8 +109,8 @@
 - [x] object.transform
 - [ ] object.delete (requires --confirm)
 - [ ] scene.clear (requires --confirm)
-- [ ] material.create
-- [ ] material.apply
+- [x] material.create
+- [x] material.apply
 - [ ] lighting.setup
 - [ ] camera.set
 - [ ] render.preview
@@ -327,12 +333,15 @@
 - [x] Create apps/blender-addon with scene.inspect handler
 - [x] Extend addon with object.create handler
 - [x] Extend addon with object.transform handler
+- [x] Extend addon with material.create/material.apply handlers
 - [x] Create apps/cli with scene inspect command
 - [x] Extend CLI with object create command
 - [x] Extend CLI with object transform command
 - [ ] Test end-to-end: `blendops scene inspect`
 - [ ] Test end-to-end: `blendops object create`
 - [ ] Test end-to-end: `blendops object transform`
+- [ ] Test end-to-end: `blendops material create`
+- [ ] Test end-to-end: `blendops material apply`
 
 **Success Criteria:**
 - CLI command runs without errors
@@ -365,4 +374,4 @@
 
 ---
 
-**Next Action:** Run npm install/typecheck/build and verify end-to-end object.transform in Blender runtime
+**Next Action:** Run npm install/typecheck/build and verify end-to-end material.create/material.apply in Blender runtime

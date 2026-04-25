@@ -4,6 +4,8 @@ import {
   makeResponse,
   type BlendOpsResponse,
   type BridgeCommand,
+  type MaterialApplyRequest,
+  type MaterialCreateRequest,
   type ObjectCreateRequest,
   type ObjectTransformRequest,
 } from "@blendops/schemas";
@@ -43,6 +45,14 @@ export class BridgeClient {
 
   async transformObject(input: Omit<ObjectTransformRequest, "operation">): Promise<BlendOpsResponse> {
     return this.send({ operation: "object.transform", ...input });
+  }
+
+  async createMaterial(input: Omit<MaterialCreateRequest, "operation">): Promise<BlendOpsResponse> {
+    return this.send({ operation: "material.create", ...input });
+  }
+
+  async applyMaterial(input: Omit<MaterialApplyRequest, "operation">): Promise<BlendOpsResponse> {
+    return this.send({ operation: "material.apply", ...input });
   }
 
   private async post(path: string, body: Record<string, unknown>): Promise<unknown> {

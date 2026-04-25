@@ -12,6 +12,7 @@ export const BlendOpsResponseSchema = z.object({
 export type BlendOpsResponse = z.infer<typeof BlendOpsResponseSchema>;
 
 export const Vec3Schema = z.tuple([z.number(), z.number(), z.number()]);
+export const ColorHexSchema = z.string().regex(/^#([0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/, "Invalid hex color format");
 
 export const SceneInspectRequestSchema = z.object({
   operation: z.literal("scene.inspect"),
@@ -70,6 +71,20 @@ export const ObjectTransformRequestSchema = z.object({
   scale: Vec3Schema.optional(),
 });
 
+export const MaterialCreateRequestSchema = z.object({
+  operation: z.literal("material.create"),
+  name: z.string().min(1),
+  color: z.union([ColorHexSchema, z.tuple([z.number(), z.number(), z.number(), z.number()])]),
+  roughness: z.number().min(0).max(1).optional(),
+  metallic: z.number().min(0).max(1).optional(),
+});
+
+export const MaterialApplyRequestSchema = z.object({
+  operation: z.literal("material.apply"),
+  object_name: z.string().min(1),
+  material_name: z.string().min(1),
+});
+
 export const ObjectCreateDataSchema = z.object({
   object: SceneObjectSchema,
 });
@@ -78,17 +93,39 @@ export const ObjectTransformDataSchema = z.object({
   object: SceneObjectSchema,
 });
 
+export const MaterialCreateDataSchema = z.object({
+  material: z.object({
+    name: z.string(),
+    color: z.tuple([z.number(), z.number(), z.number(), z.number()]),
+    roughness: z.number(),
+    metallic: z.number(),
+  }),
+});
+
+export const MaterialApplyDataSchema = z.object({
+  object: SceneObjectSchema,
+  material: z.object({
+    name: z.string(),
+  }),
+});
+
 export type SceneInspectRequest = z.infer<typeof SceneInspectRequestSchema>;
 export type SceneInspectData = z.infer<typeof SceneInspectDataSchema>;
 export type ObjectCreateRequest = z.infer<typeof ObjectCreateRequestSchema>;
 export type ObjectCreateData = z.infer<typeof ObjectCreateDataSchema>;
 export type ObjectTransformRequest = z.infer<typeof ObjectTransformRequestSchema>;
 export type ObjectTransformData = z.infer<typeof ObjectTransformDataSchema>;
+export type MaterialCreateRequest = z.infer<typeof MaterialCreateRequestSchema>;
+export type MaterialCreateData = z.infer<typeof MaterialCreateDataSchema>;
+export type MaterialApplyRequest = z.infer<typeof MaterialApplyRequestSchema>;
+export type MaterialApplyData = z.infer<typeof MaterialApplyDataSchema>;
 
 export const BridgeCommandSchema = z.discriminatedUnion("operation", [
   SceneInspectRequestSchema,
   ObjectCreateRequestSchema,
   ObjectTransformRequestSchema,
+  MaterialCreateRequestSchema,
+  MaterialApplyRequestSchema,
 ]);
 export type BridgeCommand = z.infer<typeof BridgeCommandSchema>;
 

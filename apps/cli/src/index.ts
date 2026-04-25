@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { BridgeClient } from "@blendops/core";
-import { makeResponse, ObjectTypeSchema, Vec3Schema } from "@blendops/schemas";
+import { ColorHexSchema, makeResponse, ObjectTypeSchema, Vec3Schema } from "@blendops/schemas";
 
 function printHelp(): void {
   console.log(`BlendOps CLI
@@ -13,6 +13,8 @@ Usage:
   blendops object transform --name test_cube --location 1,0,1
   blendops object transform --name test_cube --rotation 0,0,1.5708
   blendops object transform --name test_cube --scale 2,2,2
+  blendops material create --name red_plastic --color "#ff0000" --roughness 0.5 --metallic 0
+  blendops material apply --object test_cube --material red_plastic
 
 Options:
   --json        Output JSON (default)
@@ -22,7 +24,9 @@ Implemented in v0.1:
   - bridge status
   - scene inspect
   - object create
-  - object transform`);
+  - object transform
+  - material create
+  - material apply`);
 }
 
 function readFlag(args: string[], flag: string): string | undefined {
@@ -44,6 +48,19 @@ function parseVec3(value: string | undefined, fallback: [number, number, number]
   }
 
   return Vec3Schema.parse([parts[0], parts[1], parts[2]]);
+}
+
+function parseNumericFlag(value: string | undefined, flagName: string, fallback: number): number {
+  if (typeof value === "undefined") {
+    return fallback;
+  }
+
+  const parsed = Number(value);
+  if (Number.isNaN(parsed)) {
+    throw new Error(`Invalid ${flagName}: expected a number`);
+  }
+
+  return parsed;
 }
 
 async function main(): Promise<number> {
@@ -174,6 +191,85 @@ async function main(): Promise<number> {
     }
   }
 
+  if (group === "material" && action === "create") {
+    const name = readFlag(args, "--name");
+    const colorRaw = readFlag(args, "--color");
+
+    if (!name || !colorRaw) {
+      const error = makeResponse({
+        ok: false,
+        operation: "cli.invalid_arguments",
+        message: "material create requires --name and --color",
+        warnings: ["Missing required flags"],
+        next_steps: [
+          "Example: blendops material create --name red_plastic --color \"#ff0000\" --roughness 0.5 --metallic 0",
+        ],
+      });
+      console.log(JSON.stringify(error, null, 2));
+      return 1;
+    }
+
+    try {
+      const color = ColorHexSchema.parse(colorRaw);
+      const roughness = parseNumericFlag(readFlag(args, "--roughness"), "--roughness", 0.5);
+      const metallic = parseNumericFlag(readFlag(args, "--metallic"), "--metallic", 0);
+
+      if (roughness < 0 || roughness > 1 || metallic < 0 || metallic > 1) {
+        throw new Error("roughness and metallic must be between 0 and 1");
+      }
+
+      const res = await client.createMaterial({
+        name,
+        color,
+        roughness,
+        metallic,
+      });
+
+      console.log(JSON.stringify(res, null, 2));
+      return res.ok ? 0 : 1;
+    } catch (error) {
+      const invalid = makeResponse({
+        ok: false,
+        operation: "cli.invalid_arguments",
+        message: error instanceof Error ? error.message : "Invalid material create arguments",
+        warnings: ["Invalid material create input"],
+        next_steps: [
+          "Use --name and --color with hex format like #ff0000",
+          "Use --roughness/--metallic values between 0 and 1",
+        ],
+      });
+      console.log(JSON.stringify(invalid, null, 2));
+      return 1;
+    }
+  }
+
+  if (group === "material" && action === "apply") {
+    const objectName = readFlag(args, "--object");
+    const materialName = readFlag(args, "--material");
+
+    if (!objectName || !materialName) {
+      const error = makeResponse({
+        ok: false,
+        operation: "cli.invalid_arguments",
+        message: "material apply requires --object and --material",
+        warnings: ["Missing required flags"],
+        next_steps: [
+          "Example: blendops material apply --object test_cube --material red_plastic",
+        ],
+      });
+      console.log(JSON.stringify(error, null, 2));
+      return 1;
+    }
+
+    const res = await client.applyMaterial({
+      object_name: objectName,
+      material_name: materialName,
+    });
+
+    console.log(JSON.stringify(res, null, 2));
+    return res.ok ? 0 : 1;
+  }
+
   const error = makeResponse({
     ok: false,
     operation: "cli.command_not_found",
@@ -181,7 +277,7 @@ async function main(): Promise<number> {
     warnings: ["Unsupported command in MVP"],
     next_steps: [
       "Run `blendops --help` to see available commands",
-      "Use `blendops scene inspect`, `blendops object create`, or `blendops object transform`",
+      "Use scene/object/material commands shown in help",
     ],
   });
 

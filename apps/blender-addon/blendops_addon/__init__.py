@@ -221,6 +221,220 @@ def handle_object_transform(command: Dict[str, Any]) -> Dict[str, Any]:
         )
 
 
+def parse_color_input(color: Any) -> Optional[tuple[float, float, float, float]]:
+    if isinstance(color, str):
+        value = color.strip()
+        if not value.startswith("#"):
+            return None
+        hex_value = value[1:]
+        if len(hex_value) not in (6, 8):
+            return None
+
+        try:
+            if len(hex_value) == 6:
+                r = int(hex_value[0:2], 16) / 255.0
+                g = int(hex_value[2:4], 16) / 255.0
+                b = int(hex_value[4:6], 16) / 255.0
+                return (r, g, b, 1.0)
+
+            r = int(hex_value[0:2], 16) / 255.0
+            g = int(hex_value[2:4], 16) / 255.0
+            b = int(hex_value[4:6], 16) / 255.0
+            a = int(hex_value[6:8], 16) / 255.0
+            return (r, g, b, a)
+        except ValueError:
+            return None
+
+    if isinstance(color, list) and len(color) == 4:
+        try:
+            rgba = tuple(float(channel) for channel in color)
+        except (TypeError, ValueError):
+            return None
+
+        if any(channel < 0.0 or channel > 1.0 for channel in rgba):
+            return None
+
+        return rgba
+
+    return None
+
+
+def material_snapshot(mat: Any) -> Dict[str, Any]:
+    color = [1.0, 1.0, 1.0, 1.0]
+    roughness = 0.5
+    metallic = 0.0
+
+    if mat.use_nodes and mat.node_tree:
+        bsdf = mat.node_tree.nodes.get("Principled BSDF")
+        if bsdf is not None:
+            color = list(bsdf.inputs["Base Color"].default_value)
+            roughness = float(bsdf.inputs["Roughness"].default_value)
+            metallic = float(bsdf.inputs["Metallic"].default_value)
+
+    return {
+        "name": mat.name,
+        "color": color,
+        "roughness": roughness,
+        "metallic": metallic,
+    }
+
+
+def handle_material_create(command: Dict[str, Any]) -> Dict[str, Any]:
+    name = command.get("name")
+    color_input = command.get("color")
+    roughness = command.get("roughness", 0.5)
+    metallic = command.get("metallic", 0.0)
+
+    if not isinstance(name, str) or len(name.strip()) == 0:
+        return make_response(
+            ok=False,
+            operation="material.create",
+            message="Material name is required",
+            warnings=["Provide --name for material.create"],
+            next_steps=["Example: blendops material create --name red_plastic --color #ff0000"],
+        )
+
+    parsed_color = parse_color_input(color_input)
+    if parsed_color is None:
+        return make_response(
+            ok=False,
+            operation="material.create",
+            message="Invalid color value",
+            warnings=["Color must be hex (#RRGGBB or #RRGGBBAA) or RGBA array with 4 values between 0 and 1"],
+            next_steps=["Use --color \"#ff0000\" or RGBA array [1,0,0,1]"],
+        )
+
+    try:
+        roughness_value = float(roughness)
+        metallic_value = float(metallic)
+    except (TypeError, ValueError):
+        return make_response(
+            ok=False,
+            operation="material.create",
+            message="Invalid material numeric properties",
+            warnings=["roughness and metallic must be numbers"],
+            next_steps=["Use numeric values between 0 and 1"],
+        )
+
+    if roughness_value < 0.0 or roughness_value > 1.0 or metallic_value < 0.0 or metallic_value > 1.0:
+        return make_response(
+            ok=False,
+            operation="material.create",
+            message="Invalid material numeric range",
+            warnings=["roughness and metallic must be between 0 and 1"],
+            next_steps=["Use values like --roughness 0.5 --metallic 0"],
+        )
+
+    try:
+        material = bpy.data.materials.get(name)
+        if material is None:
+            material = bpy.data.materials.new(name=name)
+
+        material.use_nodes = True
+        bsdf = material.node_tree.nodes.get("Principled BSDF") if material.node_tree else None
+        if bsdf is None:
+            return make_response(
+                ok=False,
+                operation="material.create",
+                message="Failed to locate Principled BSDF node",
+                next_steps=["Check Blender material node configuration"],
+            )
+
+        bsdf.inputs["Base Color"].default_value = parsed_color
+        bsdf.inputs["Roughness"].default_value = roughness_value
+        bsdf.inputs["Metallic"].default_value = metallic_value
+
+        return make_response(
+            ok=True,
+            operation="material.create",
+            message=f"Created material '{name}'",
+            data={"material": material_snapshot(material)},
+            next_steps=["Run `blendops material apply` to assign material to an object"],
+        )
+    except Exception as e:
+        return make_response(
+            ok=False,
+            operation="material.create",
+            message=f"Material creation failed: {str(e)}",
+            warnings=[traceback.format_exc()],
+            next_steps=["Check Blender console for detailed error"],
+        )
+
+
+def handle_material_apply(command: Dict[str, Any]) -> Dict[str, Any]:
+    object_name = command.get("object_name")
+    material_name = command.get("material_name")
+
+    if not isinstance(object_name, str) or len(object_name.strip()) == 0:
+        return make_response(
+            ok=False,
+            operation="material.apply",
+            message="Object name is required",
+            warnings=["Provide --object for material.apply"],
+            next_steps=["Example: blendops material apply --object test_cube --material red_plastic"],
+        )
+
+    if not isinstance(material_name, str) or len(material_name.strip()) == 0:
+        return make_response(
+            ok=False,
+            operation="material.apply",
+            message="Material name is required",
+            warnings=["Provide --material for material.apply"],
+            next_steps=["Example: blendops material apply --object test_cube --material red_plastic"],
+        )
+
+    obj = bpy.data.objects.get(object_name)
+    if obj is None:
+        return make_response(
+            ok=False,
+            operation="material.apply",
+            message=f"Object `{object_name}` not found",
+            next_steps=["Run `blendops scene inspect` to list available objects"],
+        )
+
+    material = bpy.data.materials.get(material_name)
+    if material is None:
+        return make_response(
+            ok=False,
+            operation="material.apply",
+            message=f"Material `{material_name}` not found",
+            next_steps=["Run `blendops material create` to create the material first"],
+        )
+
+    if not hasattr(obj.data, "materials"):
+        return make_response(
+            ok=False,
+            operation="material.apply",
+            message=f"Object `{object_name}` does not support materials",
+            next_steps=["Use a mesh object target"],
+        )
+
+    try:
+        if len(obj.data.materials) > 0:
+            obj.data.materials[0] = material
+        else:
+            obj.data.materials.append(material)
+
+        return make_response(
+            ok=True,
+            operation="material.apply",
+            message=f"Applied material '{material_name}' to '{object_name}'",
+            data={
+                "object": object_snapshot(obj),
+                "material": {"name": material.name},
+            },
+            next_steps=["Run `blendops scene inspect` to verify material assignment"],
+        )
+    except Exception as e:
+        return make_response(
+            ok=False,
+            operation="material.apply",
+            message=f"Material apply failed: {str(e)}",
+            warnings=[traceback.format_exc()],
+            next_steps=["Check Blender console for detailed error"],
+        )
+
+
 def process_command(command: Dict[str, Any]) -> Dict[str, Any]:
     operation = command.get("operation")
 
@@ -240,6 +454,12 @@ def process_command(command: Dict[str, Any]) -> Dict[str, Any]:
 
     if operation == "object.transform":
         return handle_object_transform(command)
+
+    if operation == "material.create":
+        return handle_material_create(command)
+
+    if operation == "material.apply":
+        return handle_material_apply(command)
 
     return make_response(
         ok=False,

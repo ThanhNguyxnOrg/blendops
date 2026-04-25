@@ -6,6 +6,8 @@ This guide verifies the current MVP vertical slices:
 - `blendops scene inspect`
 - `blendops object create`
 - `blendops object transform`
+- `blendops material create`
+- `blendops material apply`
 
 ## 1) Install dependencies
 
@@ -85,7 +87,30 @@ Expected:
 - `data.object.name === "test_cube"`
 - `data.object.location === [1,0,1]`
 
-## 8) Inspect scene again and confirm transformed object
+## 8) Create material
+
+```bash
+npm run cli -- material create --name red_plastic --color "#ff0000" --roughness 0.5 --metallic 0
+```
+
+Expected:
+- `ok: true`
+- `operation: "material.create"`
+- `data.material.name === "red_plastic"`
+
+## 9) Apply material to object
+
+```bash
+npm run cli -- material apply --object test_cube --material red_plastic
+```
+
+Expected:
+- `ok: true`
+- `operation: "material.apply"`
+- `data.object.name === "test_cube"`
+- `data.object.materials` contains `"red_plastic"`
+
+## 10) Inspect scene again and confirm material assignment
 
 ```bash
 npm run cli -- scene inspect
@@ -96,6 +121,7 @@ Expected:
 - `operation: "scene.inspect"`
 - `data.objects` contains an object with `name: "test_cube"`
 - `test_cube.location` is `[1,0,1]`
+- `test_cube.materials` contains `"red_plastic"`
 
 ## Common failures
 
@@ -114,3 +140,11 @@ Expected:
 ### Transform target not found
 - Symptom: `Object `name` not found`
 - Fix: Run `npm run cli -- scene inspect` and use an existing object name
+
+### Invalid material color
+- Symptom: `Invalid color value`
+- Fix: Use `--color "#RRGGBB"` or `#RRGGBBAA`
+
+### Material/object not found for apply
+- Symptom: `Object `<name>` not found` or `Material `<name>` not found`
+- Fix: Run `scene inspect` for object names and `material create` before apply

@@ -5,7 +5,7 @@ import {
   ListToolsRequestSchema,
 } from "@modelcontextprotocol/sdk/types.js";
 import { BridgeClient } from "@blendops/core";
-import { ObjectTypeSchema, Vec3Schema } from "@blendops/schemas";
+import { ColorHexSchema, ObjectTypeSchema, Vec3Schema } from "@blendops/schemas";
 
 const server = new Server(
   {
@@ -116,6 +116,44 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
           },
         },
         required: ["name"],
+        additionalProperties: false,
+      },
+    },
+    {
+      name: "create_material",
+      description: "Create a material with base color and optional roughness/metallic.",
+      inputSchema: {
+        type: "object",
+        properties: {
+          name: { type: "string" },
+          color: {
+            oneOf: [
+              { type: "string", pattern: "^#([0-9a-fA-F]{6}|[0-9a-fA-F]{8})$" },
+              {
+                type: "array",
+                items: { type: "number" },
+                minItems: 4,
+                maxItems: 4,
+              },
+            ],
+          },
+          roughness: { type: "number", minimum: 0, maximum: 1 },
+          metallic: { type: "number", minimum: 0, maximum: 1 },
+        },
+        required: ["name", "color"],
+        additionalProperties: false,
+      },
+    },
+    {
+      name: "apply_material",
+      description: "Apply an existing material to an existing object.",
+      inputSchema: {
+        type: "object",
+        properties: {
+          object_name: { type: "string" },
+          material_name: { type: "string" },
+        },
+        required: ["object_name", "material_name"],
         additionalProperties: false,
       },
     },
@@ -236,6 +274,117 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
     }
   }
 
+  if (name === "create_material") {
+    try {
+      const args = (rawArgs ?? {}) as Record<string, unknown>;
+
+      if (typeof args.name !== "string" || args.name.trim().length === 0) {
+        throw new Error("Missing required field: name");
+      }
+
+      if (typeof args.color === "undefined") {
+        throw new Error("Missing required field: color");
+      }
+
+      let color: string | [number, number, number, number];
+      if (typeof args.color === "string") {
+        color = ColorHexSchema.parse(args.color.trim());
+      } else if (Array.isArray(args.color) && args.color.length === 4) {
+        const parsed = [Number(args.color[0]), Number(args.color[1]), Number(args.color[2]), Number(args.color[3])] as [number, number, number, number];
+        if (parsed.some((entry) => Number.isNaN(entry) || entry < 0 || entry > 1)) {
+          throw new Error("Invalid color: RGBA values must be numbers between 0 and 1");
+        }
+        color = parsed;
+      } else {
+        throw new Error("Invalid color: expected hex string or RGBA array");
+      }
+
+      const roughness = typeof args.roughness === "undefined" ? 0.5 : Number(args.roughness);
+      const metallic = typeof args.metallic === "undefined" ? 0 : Number(args.metallic);
+
+      if (Number.isNaN(roughness) || Number.isNaN(metallic)) {
+        throw new Error("roughness and metallic must be numbers");
+      }
+      if (roughness < 0 || roughness > 1 || metallic < 0 || metallic > 1) {
+        throw new Error("roughness and metallic must be between 0 and 1");
+      }
+
+      const result = await client.createMaterial({
+        name: args.name.trim(),
+        color,
+        roughness,
+        metallic,
+      });
+
+      return {
+        content: [
+          {
+            type: "text",
+            text: JSON.stringify(result, null, 2),
+          },
+        ],
+        isError: !result.ok,
+      };
+    } catch (error) {
+      const payload = {
+        ok: false,
+        operation: "mcp.create_material.invalid_input",
+        message: error instanceof Error ? error.message : "Invalid create_material input",
+        data: {},
+        warnings: ["Input validation failed for create_material"],
+        next_steps: ["Provide name, color, and optional roughness/metallic values"],
+      };
+
+      return {
+        content: [{ type: "text", text: JSON.stringify(payload, null, 2) }],
+        isError: true,
+      };
+    }
+  }
+
+  if (name === "apply_material") {
+    try {
+      const args = (rawArgs ?? {}) as Record<string, unknown>;
+
+      if (typeof args.object_name !== "string" || args.object_name.trim().length === 0) {
+        throw new Error("Missing required field: object_name");
+      }
+
+      if (typeof args.material_name !== "string" || args.material_name.trim().length === 0) {
+        throw new Error("Missing required field: material_name");
+      }
+
+      const result = await client.applyMaterial({
+        object_name: args.object_name.trim(),
+        material_name: args.material_name.trim(),
+      });
+
+      return {
+        content: [
+          {
+            type: "text",
+            text: JSON.stringify(result, null, 2),
+          },
+        ],
+        isError: !result.ok,
+      };
+    } catch (error) {
+      const payload = {
+        ok: false,
+        operation: "mcp.apply_material.invalid_input",
+        message: error instanceof Error ? error.message : "Invalid apply_material input",
+        data: {},
+        warnings: ["Input validation failed for apply_material"],
+        next_steps: ["Provide object_name and material_name"],
+      };
+
+      return {
+        content: [{ type: "text", text: JSON.stringify(payload, null, 2) }],
+        isError: true,
+      };
+    }
+  }
+
   return {
     content: [
       {
@@ -247,7 +396,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
             message: `Unknown tool: ${name}`,
             data: {},
             warnings: ["Tool not implemented in MVP"],
-            next_steps: ["Use tool `inspect_scene`, `create_object`, or `transform_object`"],
+            next_steps: ["Use tool `inspect_scene`, `create_object`, `transform_object`, `create_material`, or `apply_material`"],
           },
           null,
           2,

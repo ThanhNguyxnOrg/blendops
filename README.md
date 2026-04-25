@@ -33,17 +33,21 @@ Most Blender+AI integrations focus on direct execution power. BlendOps focuses o
 - `blendops scene inspect`
 - `blendops object create --type cube --name test_cube --location 0,0,1 --scale 1,1,1`
 - `blendops object transform --name test_cube --location 1,0,1`
+- `blendops material create --name red_plastic --color "#ff0000" --roughness 0.5 --metallic 0`
+- `blendops material apply --object test_cube --material red_plastic`
 
 ### MCP tools implemented
 
 - `inspect_scene()`
 - `create_object(type, name, location?, rotation?, scale?)`
 - `transform_object(name, location?, rotation?, scale?)`
+- `create_material(name, color, roughness?, metallic?)`
+- `apply_material(object_name, material_name)`
 
 ### Planned (not implemented yet)
 
 - `clear_scene(confirm: boolean)`
-- `material` / `camera` / `lighting` / `render preview`
+- `camera` / `lighting` / `render preview`
 - `validate_scene(preset)`
 - `export_asset(format, path)`
 - `undo_last()`
@@ -110,6 +114,8 @@ npm run cli -- bridge status
 npm run cli -- scene inspect
 npm run cli -- object create --type cube --name test_cube --location 0,0,1 --scale 1,1,1
 npm run cli -- object transform --name test_cube --location 1,0,1
+npm run cli -- material create --name red_plastic --color "#ff0000" --roughness 0.5 --metallic 0
+npm run cli -- material apply --object test_cube --material red_plastic
 ```
 
 ---
@@ -148,6 +154,8 @@ See detailed analysis:
 
 - [Manual test guide](./docs/manual-test.md)
 - [Agent eval prompts](./docs/evals.md)
+- [Runtime smoke test: object transform](./docs/runtime-smoke-test-object-transform.md)
+- [Runtime smoke test: material slice](./docs/runtime-smoke-test-material.md)
 - [Contributing guide](./CONTRIBUTING.md)
 - [Code of Conduct](./CODE_OF_CONDUCT.md)
 - [Security policy](./SECURITY.md)
