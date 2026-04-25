@@ -93,6 +93,15 @@ export const LightingSetupRequestSchema = z.object({
   target: z.string().min(1).optional(),
 });
 
+export const CameraSetRequestSchema = z.object({
+  operation: z.literal("camera.set"),
+  target: z.string().min(1).optional(),
+  location: Vec3Schema.optional(),
+  rotation: Vec3Schema.optional(),
+  distance: z.number().positive().optional(),
+  focal_length: z.number().positive().optional(),
+});
+
 export const ObjectCreateDataSchema = z.object({
   object: SceneObjectSchema,
 });
@@ -123,6 +132,17 @@ export const LightingSetupDataSchema = z.object({
   lights: z.array(z.string()),
 });
 
+export const CameraSetDataSchema = z.object({
+  camera: z.object({
+    name: z.string(),
+    location: Vec3Schema,
+    rotation: Vec3Schema,
+    focal_length: z.number(),
+  }),
+  target: z.string().nullable(),
+  active_camera: z.string(),
+});
+
 export type SceneInspectRequest = z.infer<typeof SceneInspectRequestSchema>;
 export type SceneInspectData = z.infer<typeof SceneInspectDataSchema>;
 export type ObjectCreateRequest = z.infer<typeof ObjectCreateRequestSchema>;
@@ -135,6 +155,8 @@ export type MaterialApplyRequest = z.infer<typeof MaterialApplyRequestSchema>;
 export type MaterialApplyData = z.infer<typeof MaterialApplyDataSchema>;
 export type LightingSetupRequest = z.infer<typeof LightingSetupRequestSchema>;
 export type LightingSetupData = z.infer<typeof LightingSetupDataSchema>;
+export type CameraSetRequest = z.infer<typeof CameraSetRequestSchema>;
+export type CameraSetData = z.infer<typeof CameraSetDataSchema>;
 
 export const BridgeCommandSchema = z.discriminatedUnion("operation", [
   SceneInspectRequestSchema,
@@ -143,6 +165,7 @@ export const BridgeCommandSchema = z.discriminatedUnion("operation", [
   MaterialCreateRequestSchema,
   MaterialApplyRequestSchema,
   LightingSetupRequestSchema,
+  CameraSetRequestSchema,
 ]);
 export type BridgeCommand = z.infer<typeof BridgeCommandSchema>;
 

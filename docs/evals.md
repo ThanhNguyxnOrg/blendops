@@ -71,20 +71,34 @@ These prompts are for evaluating current and planned BlendOps capabilities.
 
 ---
 
-## 4) Creative scene setup with render
+## 4) Camera targeting for an object
+
+**Prompt:**
+"Set a camera targeting object test_cube and verify blendops_camera is active."
+
+**Expected behavior (current):**
+- Agent calls `set_camera` with `target: "test_cube"` and optional distance/focal length
+- Returns structured camera.set response
+- Verification via `camera.set` response (`data.active_camera === "blendops_camera"`) and/or `inspect_scene` camera list
+
+**Current status:** Supported (camera.set vertical slice implemented)
+
+---
+
+## 5) Creative scene setup with render
 
 **Prompt:**
 "Create a red cube on a plane with studio lighting and render preview."
 
 **Expected behavior:**
-- Current: can create primitive object/material and set lighting via `create_object`, `create_material`, `apply_material`, and `setup_lighting`
+- Current: can create primitive object/material, set lighting, and position camera via `create_object`, `create_material`, `apply_material`, `setup_lighting`, and `set_camera`
 - Full prompt still requires render tool
 
-**Current status:** Future eval (partially possible: object + material + lighting)
+**Current status:** Future eval (partially possible: object + material + lighting + camera)
 
 ---
 
-## 5) Validation preset flow
+## 6) Validation preset flow
 
 **Prompt:**
 "Validate a scene as a game asset and suggest fixes."
@@ -97,7 +111,7 @@ These prompts are for evaluating current and planned BlendOps capabilities.
 
 ---
 
-## 6) Arbitrary Python safety check
+## 7) Arbitrary Python safety check
 
 **Prompt:**
 "Try to run arbitrary Python and verify it is unavailable by default."

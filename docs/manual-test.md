@@ -9,6 +9,7 @@ This guide verifies the current MVP vertical slices:
 - `blendops material create`
 - `blendops material apply`
 - `blendops lighting setup`
+- `blendops camera set`
 
 ## 1) Install dependencies
 
@@ -124,7 +125,19 @@ Expected:
 - `data.target === "test_cube"`
 - `data.lights` includes `"blendops_studio_light"`
 
-## 11) Inspect scene again and confirm material + lighting assignment
+## 11) Set camera targeting test object
+
+```bash
+npm run cli -- camera set --target test_cube --distance 5 --focal-length 50
+```
+
+Expected:
+- `ok: true`
+- `operation: "camera.set"`
+- `data.camera.name === "blendops_camera"`
+- `data.active_camera === "blendops_camera"`
+
+## 12) Inspect scene again and confirm material + lighting + camera assignment
 
 ```bash
 npm run cli -- scene inspect
@@ -137,7 +150,7 @@ Expected:
 - `test_cube.location` is `[1,0,1]`
 - `test_cube.materials` contains `"red_plastic"`
 - `data.lights` includes `"blendops_studio_light"`
-
+- `data.cameras` includes `"blendops_camera"`
 ## Common failures
 
 ### Bridge not running

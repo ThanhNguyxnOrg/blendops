@@ -173,6 +173,31 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
         additionalProperties: false,
       },
     },
+    {
+      name: "set_camera",
+      description: "Set camera position/target and focal length.",
+      inputSchema: {
+        type: "object",
+        properties: {
+          target: { type: "string" },
+          location: {
+            type: "array",
+            items: { type: "number" },
+            minItems: 3,
+            maxItems: 3,
+          },
+          rotation: {
+            type: "array",
+            items: { type: "number" },
+            minItems: 3,
+            maxItems: 3,
+          },
+          distance: { type: "number", exclusiveMinimum: 0 },
+          focal_length: { type: "number", exclusiveMinimum: 0 },
+        },
+        additionalProperties: false,
+      },
+    },
   ],
 }));
 
@@ -450,6 +475,89 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
     }
   }
 
+  if (name === "set_camera") {
+    try {
+      const args = (rawArgs ?? {}) as Record<string, unknown>;
+
+      const hasTarget = typeof args.target !== "undefined";
+      const hasLocation = typeof args.location !== "undefined";
+      const hasRotation = typeof args.rotation !== "undefined";
+      const hasDistance = typeof args.distance !== "undefined";
+      const hasFocalLength = typeof args.focal_length !== "undefined";
+
+      let target: string | undefined;
+      if (hasTarget) {
+        if (typeof args.target !== "string" || args.target.trim().length === 0) {
+          throw new Error("Invalid target: expected non-empty string");
+        }
+        target = args.target.trim();
+      }
+
+      if (!hasTarget && !hasLocation) {
+        throw new Error("set_camera requires at least target or location");
+      }
+
+      const location = hasLocation ? parseRequiredVec3(args.location, "location") : undefined;
+      const rotation = hasRotation ? parseRequiredVec3(args.rotation, "rotation") : undefined;
+
+      if (hasLocation && !hasTarget && !hasRotation) {
+        throw new Error("set_camera requires rotation when location is provided without target");
+      }
+
+      let distance: number | undefined;
+      if (hasDistance) {
+        distance = Number(args.distance);
+        if (Number.isNaN(distance) || distance <= 0) {
+          throw new Error("distance must be a positive number");
+        }
+      }
+
+      let focal_length: number | undefined;
+      if (hasFocalLength) {
+        focal_length = Number(args.focal_length);
+        if (Number.isNaN(focal_length) || focal_length <= 0) {
+          throw new Error("focal_length must be a positive number");
+        }
+      }
+
+      const result = await client.setCamera({
+        target,
+        location,
+        rotation,
+        distance,
+        focal_length,
+      });
+
+      return {
+        content: [
+          {
+            type: "text",
+            text: JSON.stringify(result, null, 2),
+          },
+        ],
+        isError: !result.ok,
+      };
+    } catch (error) {
+      const payload = {
+        ok: false,
+        operation: "mcp.set_camera.invalid_input",
+        message: error instanceof Error ? error.message : "Invalid set_camera input",
+        data: {},
+        warnings: ["Input validation failed for set_camera"],
+        next_steps: [
+          "Provide at least target or location",
+          "If location is provided without target, provide rotation",
+          "Use positive distance and focal_length values",
+        ],
+      };
+
+      return {
+        content: [{ type: "text", text: JSON.stringify(payload, null, 2) }],
+        isError: true,
+      };
+    }
+  }
+
   return {
     content: [
       {
@@ -461,7 +569,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
             message: `Unknown tool: ${name}`,
             data: {},
             warnings: ["Tool not implemented in MVP"],
-            next_steps: ["Use tool `inspect_scene`, `create_object`, `transform_object`, `create_material`, `apply_material`, or `setup_lighting`"],
+            next_steps: ["Use tool `inspect_scene`, `create_object`, `transform_object`, `create_material`, `apply_material`, `setup_lighting`, or `set_camera`"],
           },
           null,
           2,

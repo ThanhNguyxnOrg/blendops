@@ -17,6 +17,9 @@ Usage:
   blendops material apply --object test_cube --material red_plastic
   blendops lighting setup --preset studio
   blendops lighting setup --preset three_point --target test_cube
+  blendops camera set --target test_cube --distance 5
+  blendops camera set --target test_cube --location 4,-5,3 --focal-length 50
+  blendops camera set --location 4,-5,3 --rotation 1.1,0,0.7 --focal-length 35
 
 Options:
   --json        Output JSON (default)
@@ -29,7 +32,8 @@ Implemented in v0.1:
   - object transform
   - material create
   - material apply
-  - lighting setup`);
+  - lighting setup
+  - camera set`);
 }
 
 function readFlag(args: string[], flag: string): string | undefined {
@@ -317,6 +321,63 @@ async function main(): Promise<number> {
     }
   }
 
+  if (group === "camera" && action === "set") {
+    const target = readFlag(args, "--target");
+    const hasLocation = args.includes("--location");
+    const hasRotation = args.includes("--rotation");
+    const hasDistance = args.includes("--distance");
+    const hasFocalLength = args.includes("--focal-length");
+
+    try {
+      if (!target && !hasLocation) {
+        throw new Error("camera set requires at least --target or --location");
+      }
+
+      const location = hasLocation ? parseVec3(readFlag(args, "--location"), [0, 0, 0]) : undefined;
+      const rotation = hasRotation ? parseVec3(readFlag(args, "--rotation"), [0, 0, 0]) : undefined;
+
+      if (hasLocation && !target && !hasRotation) {
+        throw new Error("camera set requires --rotation when --location is provided without --target");
+      }
+
+      const distance = hasDistance ? parseNumericFlag(readFlag(args, "--distance"), "--distance", 0) : undefined;
+      if (typeof distance !== "undefined" && distance <= 0) {
+        throw new Error("--distance must be a positive number");
+      }
+
+      const focal_length = hasFocalLength ? parseNumericFlag(readFlag(args, "--focal-length"), "--focal-length", 0) : undefined;
+      if (typeof focal_length !== "undefined" && focal_length <= 0) {
+        throw new Error("--focal-length must be a positive number");
+      }
+
+      const res = await client.setCamera({
+        target,
+        location,
+        rotation,
+        distance,
+        focal_length,
+      });
+
+      console.log(JSON.stringify(res, null, 2));
+      return res.ok ? 0 : 1;
+    } catch (error) {
+      const invalid = makeResponse({
+        ok: false,
+        operation: "cli.invalid_arguments",
+        message: error instanceof Error ? error.message : "Invalid camera set arguments",
+        warnings: ["Invalid camera set input"],
+        next_steps: [
+          "Provide --target or --location",
+          "If --location is provided without --target, include --rotation",
+          "Use positive values for --distance and --focal-length",
+          "Example: blendops camera set --target test_cube --distance 5 --focal-length 50",
+        ],
+      });
+      console.log(JSON.stringify(invalid, null, 2));
+      return 1;
+    }
+  }
+
   const error = makeResponse({
     ok: false,
     operation: "cli.command_not_found",
@@ -324,7 +385,7 @@ async function main(): Promise<number> {
     warnings: ["Unsupported command in MVP"],
     next_steps: [
       "Run `blendops --help` to see available commands",
-      "Use scene/object/material/lighting commands shown in help",
+      "Use scene/object/material/lighting/camera commands shown in help",
     ],
   });
 

@@ -112,7 +112,7 @@
 - [x] material.create
 - [x] material.apply
 - [x] lighting.setup
-- [ ] camera.set
+- [x] camera.set
 - [ ] render.preview
 - [ ] validate.scene
 - [ ] export.asset

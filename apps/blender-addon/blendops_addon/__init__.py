@@ -17,6 +17,11 @@ from threading import Thread
 from typing import Any, Dict, Optional
 import traceback
 
+try:
+    from mathutils import Vector
+except ImportError:
+    Vector = None  # type: ignore
+
 _server: Optional[HTTPServer] = None
 _server_thread: Optional[Thread] = None
 _command_queue: list[Dict[str, Any]] = []
@@ -454,6 +459,175 @@ def update_or_create_area_light(name: str, location: tuple[float, float, float],
     return obj.name
 
 
+def camera_snapshot(camera_object: Any) -> Dict[str, Any]:
+    lens = 50.0
+    if hasattr(camera_object, "data") and hasattr(camera_object.data, "lens"):
+        lens = float(camera_object.data.lens)
+
+    return {
+        "name": camera_object.name,
+        "location": list(camera_object.location),
+        "rotation": list(camera_object.rotation_euler),
+        "focal_length": lens,
+    }
+
+
+def ensure_blendops_camera() -> Any:
+    camera_obj = bpy.data.objects.get("blendops_camera")
+    if camera_obj is not None and camera_obj.type == "CAMERA":
+        return camera_obj
+
+    camera_data = bpy.data.cameras.new(name="blendops_camera")
+    camera_obj = bpy.data.objects.new(name="blendops_camera", object_data=camera_data)
+    bpy.context.scene.collection.objects.link(camera_obj)
+    return camera_obj
+
+
+def aim_object_at_target(obj: Any, target_location: tuple[float, float, float]) -> None:
+    if Vector is None:
+        return
+
+    direction = Vector(target_location) - obj.location
+    if direction.length == 0:
+        return
+
+    quat = direction.to_track_quat("-Z", "Y")
+    obj.rotation_euler = quat.to_euler()
+
+
+def handle_camera_set(command: Dict[str, Any]) -> Dict[str, Any]:
+    target_name = command.get("target")
+    location = command.get("location")
+    rotation = command.get("rotation")
+    distance_input = command.get("distance")
+    focal_length_input = command.get("focal_length")
+
+    has_target = isinstance(target_name, str) and len(target_name.strip()) > 0
+    has_location = location is not None
+    has_rotation = rotation is not None
+
+    if not has_target and not has_location:
+        return make_response(
+            ok=False,
+            operation="camera.set",
+            message="camera.set requires at least target or location",
+            warnings=["Provide --target or --location"],
+            next_steps=[
+                "Example: blendops camera set --target test_cube --distance 5",
+                "Example: blendops camera set --location 4,-5,3 --rotation 1.1,0,0.7",
+            ],
+        )
+
+    if has_location and not has_target and not has_rotation:
+        return make_response(
+            ok=False,
+            operation="camera.set",
+            message="camera.set requires rotation when location is provided without target",
+            warnings=["Missing rotation for explicit camera placement without target"],
+            next_steps=["Provide --rotation with --location when --target is omitted"],
+        )
+
+    if distance_input is not None:
+        try:
+            distance_value = float(distance_input)
+        except (TypeError, ValueError):
+            return make_response(
+                ok=False,
+                operation="camera.set",
+                message="distance must be a positive number",
+                next_steps=["Use a positive numeric value for --distance"],
+            )
+
+        if distance_value <= 0:
+            return make_response(
+                ok=False,
+                operation="camera.set",
+                message="distance must be a positive number",
+                next_steps=["Use a positive numeric value for --distance"],
+            )
+    else:
+        distance_value = 5.0
+
+    if focal_length_input is None:
+        focal_length_value = 50.0
+    else:
+        try:
+            focal_length_value = float(focal_length_input)
+        except (TypeError, ValueError):
+            return make_response(
+                ok=False,
+                operation="camera.set",
+                message="focal_length must be a positive number",
+                next_steps=["Use a positive numeric value for --focal-length"],
+            )
+
+        if focal_length_value <= 0:
+            return make_response(
+                ok=False,
+                operation="camera.set",
+                message="focal_length must be a positive number",
+                next_steps=["Use a positive numeric value for --focal-length"],
+            )
+
+    target_obj = None
+    if has_target:
+        target_obj = bpy.data.objects.get(target_name)
+        if target_obj is None:
+            return make_response(
+                ok=False,
+                operation="camera.set",
+                message=f"Target object `{target_name}` not found",
+                next_steps=["Run `blendops scene inspect` to list available objects"],
+            )
+
+    try:
+        camera_obj = ensure_blendops_camera()
+        scene = bpy.context.scene
+
+        if not hasattr(camera_obj, "data") or camera_obj.data is None:
+            return make_response(
+                ok=False,
+                operation="camera.set",
+                message="Resolved camera object does not have camera data",
+                next_steps=["Check Blender camera data consistency"],
+            )
+
+        camera_obj.data.lens = focal_length_value
+
+        if has_location:
+            camera_obj.location = tuple(location)
+        elif target_obj is not None:
+            tx, ty, tz = target_obj.location.x, target_obj.location.y, target_obj.location.z
+            camera_obj.location = (tx + distance_value, ty - distance_value, tz + distance_value * 0.6)
+
+        if has_rotation:
+            camera_obj.rotation_euler = tuple(rotation)
+        elif target_obj is not None:
+            aim_object_at_target(camera_obj, (target_obj.location.x, target_obj.location.y, target_obj.location.z))
+
+        scene.camera = camera_obj
+
+        return make_response(
+            ok=True,
+            operation="camera.set",
+            message="Camera set successfully",
+            data={
+                "camera": camera_snapshot(camera_obj),
+                "target": target_obj.name if target_obj is not None else None,
+                "active_camera": scene.camera.name if scene.camera is not None else camera_obj.name,
+            },
+            next_steps=["Run `blendops scene inspect` to verify camera state"],
+        )
+    except Exception as e:
+        return make_response(
+            ok=False,
+            operation="camera.set",
+            message=f"Camera set failed: {str(e)}",
+            warnings=[traceback.format_exc()],
+            next_steps=["Check Blender console for detailed error"],
+        )
+
+
 def handle_lighting_setup(command: Dict[str, Any]) -> Dict[str, Any]:
     preset = command.get("preset")
     target_name = command.get("target")
@@ -595,6 +769,9 @@ def process_command(command: Dict[str, Any]) -> Dict[str, Any]:
 
     if operation == "lighting.setup":
         return handle_lighting_setup(command)
+
+    if operation == "camera.set":
+        return handle_camera_set(command)
 
     return make_response(
         ok=False,
