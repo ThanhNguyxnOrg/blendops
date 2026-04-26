@@ -834,27 +834,53 @@ def handle_export_asset(command: Dict[str, Any]) -> Dict[str, Any]:
                 obj.select_set(True)
             bpy.context.view_layer.objects.active = mesh_objects[0]
 
+        selected_objects_for_export = [obj for obj in scene.objects if obj.select_get()]
+        active_object_for_export = bpy.context.view_layer.objects.active
+
+        if active_object_for_export is None:
+            if len(selected_objects_for_export) > 0:
+                active_object_for_export = selected_objects_for_export[0]
+            elif len(mesh_objects) > 0:
+                active_object_for_export = mesh_objects[0]
+
+        def run_export_with_context(export_callable: Any) -> None:
+            if hasattr(bpy.context, "temp_override"):
+                override_kwargs: Dict[str, Any] = {
+                    "scene": scene,
+                    "view_layer": bpy.context.view_layer,
+                }
+                if active_object_for_export is not None:
+                    override_kwargs["active_object"] = active_object_for_export
+                    override_kwargs["object"] = active_object_for_export
+                if len(selected_objects_for_export) > 0:
+                    override_kwargs["selected_objects"] = selected_objects_for_export
+                    override_kwargs["selected_editable_objects"] = selected_objects_for_export
+                with bpy.context.temp_override(**override_kwargs):
+                    export_callable()
+            else:
+                export_callable()
+
         if export_format == "glb":
-            bpy.ops.export_scene.gltf(
+            run_export_with_context(lambda: bpy.ops.export_scene.gltf(
                 filepath=output_path,
                 export_format="GLB",
                 use_selection=selected_only,
                 export_apply=apply_modifiers,
-            )
+            ))
         elif export_format == "gltf":
-            bpy.ops.export_scene.gltf(
+            run_export_with_context(lambda: bpy.ops.export_scene.gltf(
                 filepath=output_path,
                 export_format="GLTF_EMBEDDED",
                 use_selection=selected_only,
                 export_apply=apply_modifiers,
-            )
+            ))
         elif export_format == "fbx":
-            bpy.ops.export_scene.fbx(
+            run_export_with_context(lambda: bpy.ops.export_scene.fbx(
                 filepath=output_path,
                 use_selection=selected_only,
                 apply_scale_options="FBX_SCALE_NONE",
                 use_mesh_modifiers=apply_modifiers,
-            )
+            ))
 
         if selected_only:
             for obj in scene.objects:
