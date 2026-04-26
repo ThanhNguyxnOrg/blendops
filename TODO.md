@@ -58,7 +58,7 @@ This roadmap reflects **current code + runtime evidence**.
 - [ ] Add explicit confirmation flow for destructive operations
 - [x] Add operation-level risk annotations (`bridge.operations` manifest with `destructive` flags)
 - [ ] Add dry-run semantics for eligible operations
-- [ ] Expand audit-friendly operation receipts
+- [x] Expand audit-friendly operation receipts
 - [x] Add operation manifest parity check between CLI manifest and MCP `ListTools`
 
 ---

@@ -1,5 +1,14 @@
 import { z } from "zod";
 
+export const BlendOpsReceiptSchema = z.object({
+  request_id: z.string(),
+  operation: z.string(),
+  ok: z.boolean(),
+  duration_ms: z.number().int().nonnegative().optional(),
+});
+
+export type BlendOpsReceipt = z.infer<typeof BlendOpsReceiptSchema>;
+
 export const BlendOpsResponseSchema = z.object({
   ok: z.boolean(),
   operation: z.string(),
@@ -7,6 +16,8 @@ export const BlendOpsResponseSchema = z.object({
   data: z.record(z.any()),
   warnings: z.array(z.string()),
   next_steps: z.array(z.string()),
+  request_id: z.string().optional(),
+  receipt: BlendOpsReceiptSchema.optional(),
 });
 
 export type BlendOpsResponse = z.infer<typeof BlendOpsResponseSchema>;
@@ -17,10 +28,12 @@ export const ColorHexSchema = z.string().regex(/^#([0-9a-fA-F]{6}|[0-9a-fA-F]{8}
 export const SceneInspectRequestSchema = z.object({
   operation: z.literal("scene.inspect"),
   dryRun: z.boolean().optional(),
+  request_id: z.string().optional(),
 });
 
 export const BridgeOperationsRequestSchema = z.object({
   operation: z.literal("bridge.operations"),
+  request_id: z.string().optional(),
 });
 
 export const OperationManifestEntrySchema = z.object({
@@ -54,6 +67,7 @@ export const ObjectCreateRequestSchema = z.object({
   location: Vec3Schema.optional(),
   rotation: Vec3Schema.optional(),
   scale: Vec3Schema.optional(),
+  request_id: z.string().optional(),
 });
 
 export const SceneObjectSchema = z.object({
@@ -87,6 +101,7 @@ export const ObjectTransformRequestSchema = z.object({
   location: Vec3Schema.optional(),
   rotation: Vec3Schema.optional(),
   scale: Vec3Schema.optional(),
+  request_id: z.string().optional(),
 });
 
 export const MaterialCreateRequestSchema = z.object({
@@ -95,12 +110,14 @@ export const MaterialCreateRequestSchema = z.object({
   color: z.union([ColorHexSchema, z.tuple([z.number(), z.number(), z.number(), z.number()])]),
   roughness: z.number().min(0).max(1).optional(),
   metallic: z.number().min(0).max(1).optional(),
+  request_id: z.string().optional(),
 });
 
 export const MaterialApplyRequestSchema = z.object({
   operation: z.literal("material.apply"),
   object_name: z.string().min(1),
   material_name: z.string().min(1),
+  request_id: z.string().optional(),
 });
 
 export const LightingPresetSchema = z.enum(["studio", "three_point", "soft_key"]);
@@ -109,6 +126,7 @@ export const LightingSetupRequestSchema = z.object({
   operation: z.literal("lighting.setup"),
   preset: LightingPresetSchema,
   target: z.string().min(1).optional(),
+  request_id: z.string().optional(),
 });
 
 export const CameraSetRequestSchema = z.object({
@@ -118,6 +136,7 @@ export const CameraSetRequestSchema = z.object({
   rotation: Vec3Schema.optional(),
   distance: z.number().positive().optional(),
   focal_length: z.number().positive().optional(),
+  request_id: z.string().optional(),
 });
 
 export const ObjectCreateDataSchema = z.object({
@@ -178,6 +197,7 @@ export const RenderPreviewRequestSchema = z.object({
   width: z.number().int().positive().optional(),
   height: z.number().int().positive().optional(),
   samples: z.number().int().positive().optional(),
+  request_id: z.string().optional(),
 });
 
 export const RenderPreviewDataSchema = z.object({
@@ -193,6 +213,7 @@ export const ValidationPresetSchema = z.enum(["basic", "game_asset", "render_rea
 export const ValidateSceneRequestSchema = z.object({
   operation: z.literal("validate.scene"),
   preset: ValidationPresetSchema.optional(),
+  request_id: z.string().optional(),
 });
 
 export const ValidationCheckSchema = z.object({
@@ -227,6 +248,7 @@ export const ExportAssetRequestSchema = z.object({
   output: z.string().min(1),
   selected_only: z.boolean().optional(),
   apply_modifiers: z.boolean().optional(),
+  request_id: z.string().optional(),
 });
 
 export const ExportAssetDataSchema = z.object({
@@ -286,6 +308,8 @@ export function makeResponse(input: {
   data?: Record<string, unknown>;
   warnings?: string[];
   next_steps?: string[];
+  request_id?: string;
+  receipt?: BlendOpsReceipt;
 }): BlendOpsResponse {
   return BlendOpsResponseSchema.parse({
     ok: input.ok,
@@ -294,5 +318,7 @@ export function makeResponse(input: {
     data: input.data ?? {},
     warnings: input.warnings ?? [],
     next_steps: input.next_steps ?? [],
+    request_id: input.request_id,
+    receipt: input.receipt,
   });
 }

@@ -71,13 +71,14 @@ function humanLog(message: string, flags: GlobalFlags): void {
 async function timeOperation<T>(
   operation: string,
   fn: () => Promise<T>,
-  flags: GlobalFlags
+  flags: GlobalFlags,
+  request_id: string
 ): Promise<T> {
   const start = Date.now();
   const shouldLog = flags.verbose || LONG_RUNNING_OPERATIONS.has(operation);
 
   if (shouldLog) {
-    humanLog(`command: ${operation}`, flags);
+    humanLog(`command: ${operation} request_id=${request_id}`, flags);
   }
 
   try {
@@ -85,16 +86,25 @@ async function timeOperation<T>(
     const duration = Date.now() - start;
     if (shouldLog) {
       let outcome = "done";
-      if (typeof result === "object" && result !== null && "ok" in result) {
-        const okValue = (result as { ok?: unknown }).ok;
-        outcome = okValue === true ? "ok" : "failed";
+      let responseRequestId = request_id;
+      if (typeof result === "object" && result !== null) {
+        if ("ok" in result) {
+          const okValue = (result as { ok?: unknown }).ok;
+          outcome = okValue === true ? "ok" : "failed";
+        }
+        if ("request_id" in result) {
+          const maybeRequestId = (result as { request_id?: unknown }).request_id;
+          if (typeof maybeRequestId === "string" && maybeRequestId.length > 0) {
+            responseRequestId = maybeRequestId;
+          }
+        }
       }
-      humanLog(`completed: ${operation} ${outcome} ${duration}ms`, flags);
+      humanLog(`completed: ${operation} ${outcome} ${duration}ms request_id=${responseRequestId}`, flags);
     }
     return result;
   } catch (error) {
     const duration = Date.now() - start;
-    humanLog(`failed: ${operation} ${duration}ms`, flags);
+    humanLog(`failed: ${operation} ${duration}ms request_id=${request_id}`, flags);
     throw error;
   }
 }
@@ -183,10 +193,31 @@ function parseNumericFlag(value: string | undefined, flagName: string, fallback:
   return parsed;
 }
 
+function createRequestId(): string {
+  return `req_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`;
+}
+
+function withRequestId(value: unknown, request_id: string): unknown {
+  if (typeof value !== "object" || value === null) {
+    return value;
+  }
+
+  const typed = value as Record<string, unknown>;
+  if (typeof typed.request_id === "string" && typed.request_id.length > 0) {
+    return value;
+  }
+
+  return {
+    ...typed,
+    request_id,
+  };
+}
+
 async function main(): Promise<number> {
   const rawArgs = process.argv.slice(2);
   const flags = parseGlobalFlags(rawArgs);
   const commandArgs = flags.commandArgs;
+  const commandRequestId = createRequestId();
 
   if (commandArgs.length === 0 || commandArgs.includes("-h") || commandArgs.includes("--help")) {
     printHelp();
@@ -198,20 +229,20 @@ async function main(): Promise<number> {
   const [group, action] = commandArgs;
 
   if (group === "bridge" && action === "status") {
-    const res = await timeOperation("bridge.status", () => client.status(), flags);
-    console.log(JSON.stringify(res, null, 2));
+    const res = await timeOperation("bridge.status", () => client.status(commandRequestId), flags, commandRequestId);
+    console.log(JSON.stringify(withRequestId(res, commandRequestId), null, 2));
     return res.ok ? 0 : 1;
   }
 
   if (group === "bridge" && action === "operations") {
-    const res = await timeOperation("bridge.operations", () => client.operations(), flags);
-    console.log(JSON.stringify(res, null, 2));
+    const res = await timeOperation("bridge.operations", () => client.operations(commandRequestId), flags, commandRequestId);
+    console.log(JSON.stringify(withRequestId(res, commandRequestId), null, 2));
     return res.ok ? 0 : 1;
   }
 
   if (group === "scene" && action === "inspect") {
-    const res = await timeOperation("scene.inspect", () => client.inspectScene(), flags);
-    console.log(JSON.stringify(res, null, 2));
+    const res = await timeOperation("scene.inspect", () => client.inspectScene(commandRequestId), flags, commandRequestId);
+    console.log(JSON.stringify(withRequestId(res, commandRequestId), null, 2));
     return res.ok ? 0 : 1;
   }
 
@@ -228,8 +259,9 @@ async function main(): Promise<number> {
         next_steps: [
           "Example: blendops object create --type cube --name test_cube --location 0,0,1 --scale 1,1,1",
         ],
+        request_id: commandRequestId,
       });
-      console.log(JSON.stringify(error, null, 2));
+      console.log(JSON.stringify(withRequestId(error, commandRequestId), null, 2));
       return 1;
     }
 
@@ -245,9 +277,10 @@ async function main(): Promise<number> {
         location,
         rotation,
         scale,
-      }), flags);
+        request_id: commandRequestId,
+      }), flags, commandRequestId);
 
-      console.log(JSON.stringify(res, null, 2));
+      console.log(JSON.stringify(withRequestId(res, commandRequestId), null, 2));
       return res.ok ? 0 : 1;
     } catch (error) {
       const invalid = makeResponse({
@@ -259,8 +292,9 @@ async function main(): Promise<number> {
           "Allowed --type: cube, uv_sphere, ico_sphere, cylinder, cone, torus, plane",
           "Use vec3 format like --location 0,0,1",
         ],
+        request_id: commandRequestId,
       });
-      console.log(JSON.stringify(invalid, null, 2));
+      console.log(JSON.stringify(withRequestId(invalid, commandRequestId), null, 2));
       return 1;
     }
   }
@@ -278,7 +312,7 @@ async function main(): Promise<number> {
           "Example: blendops object transform --name test_cube --location 1,0,1",
         ],
       });
-      console.log(JSON.stringify(error, null, 2));
+      console.log(JSON.stringify(withRequestId(error, commandRequestId), null, 2));
       return 1;
     }
 
@@ -300,9 +334,10 @@ async function main(): Promise<number> {
         location,
         rotation,
         scale,
-      }), flags);
+        request_id: commandRequestId,
+      }), flags, commandRequestId);
 
-      console.log(JSON.stringify(res, null, 2));
+      console.log(JSON.stringify(withRequestId(res, commandRequestId), null, 2));
       return res.ok ? 0 : 1;
     } catch (error) {
       const invalid = makeResponse({
@@ -315,7 +350,7 @@ async function main(): Promise<number> {
           "Use vec3 format like --location 1,0,1",
         ],
       });
-      console.log(JSON.stringify(invalid, null, 2));
+      console.log(JSON.stringify(withRequestId(invalid, commandRequestId), null, 2));
       return 1;
     }
   }
@@ -334,7 +369,7 @@ async function main(): Promise<number> {
           "Example: blendops material create --name red_plastic --color \"#ff0000\" --roughness 0.5 --metallic 0",
         ],
       });
-      console.log(JSON.stringify(error, null, 2));
+      console.log(JSON.stringify(withRequestId(error, commandRequestId), null, 2));
       return 1;
     }
 
@@ -352,9 +387,10 @@ async function main(): Promise<number> {
         color,
         roughness,
         metallic,
-      }), flags);
+        request_id: commandRequestId,
+      }), flags, commandRequestId);
 
-      console.log(JSON.stringify(res, null, 2));
+      console.log(JSON.stringify(withRequestId(res, commandRequestId), null, 2));
       return res.ok ? 0 : 1;
     } catch (error) {
       const invalid = makeResponse({
@@ -367,7 +403,7 @@ async function main(): Promise<number> {
           "Use --roughness/--metallic values between 0 and 1",
         ],
       });
-      console.log(JSON.stringify(invalid, null, 2));
+      console.log(JSON.stringify(withRequestId(invalid, commandRequestId), null, 2));
       return 1;
     }
   }
@@ -386,16 +422,17 @@ async function main(): Promise<number> {
           "Example: blendops material apply --object test_cube --material red_plastic",
         ],
       });
-      console.log(JSON.stringify(error, null, 2));
+      console.log(JSON.stringify(withRequestId(error, commandRequestId), null, 2));
       return 1;
     }
 
     const res = await timeOperation("material.apply", () => client.applyMaterial({
       object_name: objectName,
       material_name: materialName,
-    }), flags);
+      request_id: commandRequestId,
+    }), flags, commandRequestId);
 
-    console.log(JSON.stringify(res, null, 2));
+    console.log(JSON.stringify(withRequestId(res, commandRequestId), null, 2));
     return res.ok ? 0 : 1;
   }
 
@@ -414,7 +451,7 @@ async function main(): Promise<number> {
           "Allowed presets: studio, three_point, soft_key",
         ],
       });
-      console.log(JSON.stringify(error, null, 2));
+      console.log(JSON.stringify(withRequestId(error, commandRequestId), null, 2));
       return 1;
     }
 
@@ -423,9 +460,10 @@ async function main(): Promise<number> {
       const res = await timeOperation("lighting.setup", () => client.setupLighting({
         preset,
         target,
-      }), flags);
+        request_id: commandRequestId,
+      }), flags, commandRequestId);
 
-      console.log(JSON.stringify(res, null, 2));
+      console.log(JSON.stringify(withRequestId(res, commandRequestId), null, 2));
       return res.ok ? 0 : 1;
     } catch (error) {
       const invalid = makeResponse({
@@ -438,7 +476,7 @@ async function main(): Promise<number> {
           "Use: blendops lighting setup --preset studio",
         ],
       });
-      console.log(JSON.stringify(invalid, null, 2));
+      console.log(JSON.stringify(withRequestId(invalid, commandRequestId), null, 2));
       return 1;
     }
   }
@@ -478,9 +516,10 @@ async function main(): Promise<number> {
         rotation,
         distance,
         focal_length,
-      }), flags);
+        request_id: commandRequestId,
+      }), flags, commandRequestId);
 
-      console.log(JSON.stringify(res, null, 2));
+      console.log(JSON.stringify(withRequestId(res, commandRequestId), null, 2));
       return res.ok ? 0 : 1;
     } catch (error) {
       const invalid = makeResponse({
@@ -495,7 +534,7 @@ async function main(): Promise<number> {
           "Example: blendops camera set --target test_cube --distance 5 --focal-length 50",
         ],
       });
-      console.log(JSON.stringify(invalid, null, 2));
+      console.log(JSON.stringify(withRequestId(invalid, commandRequestId), null, 2));
       return 1;
     }
   }
@@ -533,9 +572,10 @@ async function main(): Promise<number> {
         width,
         height,
         samples,
-      }), flags);
+        request_id: commandRequestId,
+      }), flags, commandRequestId);
 
-      console.log(JSON.stringify(res, null, 2));
+      console.log(JSON.stringify(withRequestId(res, commandRequestId), null, 2));
       return res.ok ? 0 : 1;
     } catch (error) {
       const invalid = makeResponse({
@@ -549,7 +589,7 @@ async function main(): Promise<number> {
           "Example: blendops render preview --output renders/preview.png --width 512 --height 512 --samples 16",
         ],
       });
-      console.log(JSON.stringify(invalid, null, 2));
+      console.log(JSON.stringify(withRequestId(invalid, commandRequestId), null, 2));
       return 1;
     }
   }
@@ -562,9 +602,10 @@ async function main(): Promise<number> {
 
       const res = await timeOperation("validate.scene", () => client.validateScene({
         preset,
-      }), flags);
+        request_id: commandRequestId,
+      }), flags, commandRequestId);
 
-      console.log(JSON.stringify(res, null, 2));
+      console.log(JSON.stringify(withRequestId(res, commandRequestId), null, 2));
       return res.ok ? 0 : 1;
     } catch (error) {
       const invalid = makeResponse({
@@ -577,7 +618,7 @@ async function main(): Promise<number> {
           "Example: blendops validate scene --preset game_asset",
         ],
       });
-      console.log(JSON.stringify(invalid, null, 2));
+      console.log(JSON.stringify(withRequestId(invalid, commandRequestId), null, 2));
       return 1;
     }
   }
@@ -604,9 +645,10 @@ async function main(): Promise<number> {
         output,
         selected_only,
         apply_modifiers,
-      }), flags);
+        request_id: commandRequestId,
+      }), flags, commandRequestId);
 
-      console.log(JSON.stringify(res, null, 2));
+      console.log(JSON.stringify(withRequestId(res, commandRequestId), null, 2));
       return res.ok ? 0 : 1;
     } catch (error) {
       const invalid = makeResponse({
@@ -620,7 +662,7 @@ async function main(): Promise<number> {
           "Example: blendops export asset --format glb --output exports/test_scene.glb",
         ],
       });
-      console.log(JSON.stringify(invalid, null, 2));
+      console.log(JSON.stringify(withRequestId(invalid, commandRequestId), null, 2));
       return 1;
     }
   }
@@ -636,7 +678,7 @@ async function main(): Promise<number> {
     ],
   });
 
-  console.log(JSON.stringify(error, null, 2));
+  console.log(JSON.stringify(withRequestId(error, commandRequestId), null, 2));
   return 1;
 }
 
@@ -651,7 +693,8 @@ main()
       message: error instanceof Error ? error.message : "Unknown CLI error",
       warnings: ["Unhandled exception in CLI"],
       next_steps: ["Run `blendops bridge status` to verify bridge connectivity"],
+      request_id: createRequestId(),
     });
-    console.log(JSON.stringify(res, null, 2));
+    console.log(JSON.stringify(withRequestId(res, createRequestId()), null, 2));
     process.exitCode = 1;
   });

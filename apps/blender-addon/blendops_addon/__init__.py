@@ -37,6 +37,7 @@ _request_count: int = 0
 _last_operation: Optional[str] = None
 _last_error: Optional[str] = None
 _last_duration_ms: Optional[int] = None
+_last_request_id: Optional[str] = None
 
 VALIDATION_PRESETS = {"basic", "game_asset", "render_ready"}
 GENERIC_NAME_ROOTS = {
@@ -180,6 +181,8 @@ def make_response(
     data: Optional[Dict[str, Any]] = None,
     warnings: Optional[list[str]] = None,
     next_steps: Optional[list[str]] = None,
+    request_id: Optional[str] = None,
+    receipt: Optional[Dict[str, Any]] = None,
 ) -> Dict[str, Any]:
     return {
         "ok": ok,
@@ -188,6 +191,8 @@ def make_response(
         "data": data or {},
         "warnings": warnings or [],
         "next_steps": next_steps or [],
+        "request_id": request_id,
+        "receipt": receipt,
     }
 
 
@@ -1527,16 +1532,17 @@ def handle_lighting_setup(command: Dict[str, Any]) -> Dict[str, Any]:
 
 
 def _dispatch_with_observability(command: Dict[str, Any], client_ip: Optional[str] = None) -> Dict[str, Any]:
-    global _request_count, _last_operation, _last_error, _last_duration_ms
-    
+    global _request_count, _last_operation, _last_error, _last_duration_ms, _last_request_id
+
     operation = _coerce_operation_name(command.get("operation"))
+    request_id = _coerce_request_id(command.get("request_id"))
     start = time.time()
-    
+
     if operation == "bridge.status":
-        _log("status check ok")
+        _log(f"status check ok request_id={request_id}")
     else:
-        _log(f"received: {operation}")
-    
+        _log(f"received: {operation} request_id={request_id}")
+
     if operation == "bridge.status":
         uptime_seconds = int(time.time() - _server_start_time) if _server_start_time > 0 else 0
         blender_version_tuple = tuple(bpy.app.version)
@@ -1561,6 +1567,7 @@ def _dispatch_with_observability(command: Dict[str, Any], client_ip: Optional[st
                 "last_operation": _last_operation,
                 "last_error": _last_error,
                 "last_duration_ms": _last_duration_ms,
+                "last_request_id": _last_request_id,
                 "implemented_operations": list(OPERATION_REGISTRY.keys()),
                 "blender_version": bpy.app.version_string,
                 "blender_version_tuple": blender_version_tuple,
@@ -1571,6 +1578,7 @@ def _dispatch_with_observability(command: Dict[str, Any], client_ip: Optional[st
                 "export_fbx_supported": "unknown",
                 "compatibility_notes": compatibility_notes,
             },
+            request_id=request_id,
         )
     else:
         handler = OPERATION_REGISTRY.get(operation)
@@ -1581,6 +1589,7 @@ def _dispatch_with_observability(command: Dict[str, Any], client_ip: Optional[st
                 message=f"Unknown operation: {operation}",
                 warnings=["Operation not implemented in MVP"],
                 next_steps=["Use operation 'scene.inspect'"],
+                request_id=request_id,
             )
         else:
             try:
@@ -1592,27 +1601,36 @@ def _dispatch_with_observability(command: Dict[str, Any], client_ip: Optional[st
                     message=f"Operation failed: {str(e)}",
                     warnings=[traceback.format_exc()],
                     next_steps=["Check Blender console for detailed error"],
+                    request_id=request_id,
                 )
-    
+
     duration_ms = int((time.time() - start) * 1000)
-    
+
     _request_count += 1
     _last_operation = operation
     _last_duration_ms = duration_ms
+    _last_request_id = request_id
     if not response.get("ok"):
         _last_error = response.get("message")
     else:
         _last_error = None
-    
-    status = "ok" if response.get("ok") else "failed"
+
+    response["request_id"] = response.get("request_id") or request_id
+    response["receipt"] = response.get("receipt") or {
+        "request_id": response["request_id"],
+        "operation": operation,
+        "ok": bool(response.get("ok")),
+        "duration_ms": duration_ms,
+    }
+
     if response.get("ok"):
         if operation != "bridge.status":
-            _log(f"completed: {operation} ok {duration_ms}ms")
+            _log(f"completed: {operation} ok {duration_ms}ms request_id={response['request_id']}")
             output_path = response.get("data", {}).get("output") if isinstance(response.get("data"), dict) else None
             if isinstance(output_path, str) and output_path.strip():
                 _log(f"output: {output_path}")
     else:
-        _log(f"failed: {operation} {duration_ms}ms")
+        _log(f"failed: {operation} {duration_ms}ms request_id={response['request_id']}")
         error_message = response.get("message")
         if isinstance(error_message, str) and error_message.strip():
             _log(f"reason: {error_message}")
@@ -1621,8 +1639,8 @@ def _dispatch_with_observability(command: Dict[str, Any], client_ip: Optional[st
             _log(f"next: {next_steps[0]}")
 
     last_error_label = _last_error if _last_error else "none"
-    _log(f"status: alive | requests={_request_count} | last={_last_operation} | last_error={last_error_label}")
-    
+    _log(f"status: alive | requests={_request_count} | last={_last_operation} | last_error={last_error_label} | last_request_id={_last_request_id}")
+
     return response
 
 
@@ -1634,6 +1652,12 @@ def _coerce_operation_name(value: Any) -> str:
     if isinstance(value, str):
         return value
     return "unknown"
+
+
+def _coerce_request_id(value: Any) -> str:
+    if isinstance(value, str) and len(value.strip()) > 0:
+        return value.strip()
+    return f"req_{int(time.time() * 1000)}_{uuid.uuid4().hex[:8]}"
 
 
 def timer_process_queue() -> float:
@@ -1649,11 +1673,18 @@ def timer_process_queue() -> float:
             response = _dispatch_with_observability(command, client_ip=client_ip)
             _response_queue[command_id] = response
         except Exception as e:
+            fallback_request_id = _coerce_request_id(command.get("request_id"))
             _response_queue[command_id] = make_response(
                 ok=False,
                 operation="bridge.error",
                 message=f"Command processing failed: {str(e)}",
                 warnings=[traceback.format_exc()],
+                request_id=fallback_request_id,
+                receipt={
+                    "request_id": fallback_request_id,
+                    "operation": "bridge.error",
+                    "ok": False,
+                },
             )
 
     return 0.1
@@ -1735,6 +1766,7 @@ class BlendOpsHandler(BaseHTTPRequestHandler):
             while command_id not in _response_queue:
                 time.sleep(0.05)
                 if time.time() - start > timeout:
+                    request_id = _coerce_request_id(command.get("request_id"))
                     self._send_json(
                         504,
                         make_response(
@@ -1742,6 +1774,12 @@ class BlendOpsHandler(BaseHTTPRequestHandler):
                             operation="bridge.timeout",
                             message="Command processing timed out",
                             warnings=["Command may still be processing"],
+                            request_id=request_id,
+                            receipt={
+                                "request_id": request_id,
+                                "operation": "bridge.timeout",
+                                "ok": False,
+                            },
                         ),
                     )
                     return
@@ -1750,21 +1788,35 @@ class BlendOpsHandler(BaseHTTPRequestHandler):
             self._send_json(200, response)
 
         except json.JSONDecodeError:
+            request_id = _coerce_request_id(None)
             self._send_json(
                 400,
                 make_response(
                     ok=False,
                     operation="bridge.invalid_json",
                     message="Invalid JSON in request body",
+                    request_id=request_id,
+                    receipt={
+                        "request_id": request_id,
+                        "operation": "bridge.invalid_json",
+                        "ok": False,
+                    },
                 ),
             )
         except Exception as e:
+            request_id = _coerce_request_id(None)
             self._send_json(
                 500,
                 make_response(
                     ok=False,
                     operation="bridge.error",
                     message=f"Request handling failed: {str(e)}",
+                    request_id=request_id,
+                    receipt={
+                        "request_id": request_id,
+                        "operation": "bridge.error",
+                        "ok": False,
+                    },
                 ),
             )
 

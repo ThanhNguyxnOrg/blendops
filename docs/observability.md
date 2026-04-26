@@ -32,9 +32,9 @@ This separation makes behavior predictable and parseable.
 The Blender bridge console is a **human activity log**:
 
 - Startup banner with URL and example commands
-- Operation logs: `received: scene.inspect`, `completed: scene.inspect ok 45ms`
-- Status checks: `status check ok`
-- Failures with reasons: `failed: export.asset 1850ms`, `reason: No mesh objects found`
+- Operation logs: `received: scene.inspect request_id=req_...`, `completed: scene.inspect ok 45ms request_id=req_...`
+- Status checks: `status check ok request_id=req_...`
+- Failures with reasons: `failed: export.asset 1850ms request_id=req_...`, `reason: No mesh objects found`
 - Harmless browser checks: `ignored unsupported GET /favicon.ico`
 
 ### Normal console output examples
@@ -55,10 +55,10 @@ The Blender bridge console is a **human activity log**:
  This window will show BlendOps operation logs.
 ============================================================
 [BlendOps 2026-04-25 09:00:00] ready and waiting for commands
-[BlendOps 2026-04-25 09:00:15] received: scene.inspect
-[BlendOps 2026-04-25 09:00:15] completed: scene.inspect ok 8ms
-[BlendOps 2026-04-25 09:01:10] received: render.preview
-[BlendOps 2026-04-25 09:01:14] completed: render.preview ok 4012ms
+[BlendOps 2026-04-25 09:00:15] received: scene.inspect request_id=req_1714035615000_ab12cd34
+[BlendOps 2026-04-25 09:00:15] completed: scene.inspect ok 8ms request_id=req_1714035615000_ab12cd34
+[BlendOps 2026-04-25 09:01:10] received: render.preview request_id=req_1714035670000_ef56gh78
+[BlendOps 2026-04-25 09:01:14] completed: render.preview ok 4012ms request_id=req_1714035670000_ef56gh78
 [BlendOps 2026-04-25 09:01:14] output: renders/preview.png
 ```
 
@@ -81,6 +81,9 @@ npm run cli -- bridge operations --verbose
 
 - stdout: valid JSON response (`operation: "bridge.status"`)
 - stderr: progress logs (with `--verbose`)
+- Response envelope includes optional correlation fields:
+  - `request_id`
+  - `receipt` (`request_id`, `operation`, `ok`, optional `duration_ms`)
 - JSON `data` includes:
   - `started_at`
   - `uptime_seconds`
@@ -88,6 +91,7 @@ npm run cli -- bridge operations --verbose
   - `last_operation`
   - `last_error`
   - `last_duration_ms`
+  - `last_request_id`
   - `implemented_operations`
   - `blender_version`
   - `blender_version_tuple`

@@ -34,6 +34,10 @@ const client = new BridgeClient({
 
 type Vec3 = [number, number, number];
 
+function createRequestId(): string {
+  return `req_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`;
+}
+
 function parseRequiredVec3(input: unknown, field: "location" | "rotation" | "scale"): Vec3 {
   if (!Array.isArray(input) || input.length !== 3) {
     throw new Error(`Invalid ${field}: expected an array of 3 numbers`);
@@ -270,18 +274,19 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
   const { name, arguments: rawArgs } = request.params;
   const start = Date.now();
-  
-  mcpLog(`tool call: ${name}`);
+  const request_id = createRequestId();
+
+  mcpLog(`tool call: ${name} request_id=${request_id}`);
 
   if (name === "inspect_scene") {
-    const result = await client.inspectScene();
+    const result = await client.inspectScene(request_id);
     const duration = Date.now() - start;
-    mcpLog(`tool result: ${name} ok=${result.ok} duration=${duration}ms`);
+    mcpLog(`tool result: ${name} ok=${result.ok} duration=${duration}ms request_id=${result.request_id ?? request_id}`);
     return {
       content: [
         {
           type: "text",
-          text: JSON.stringify(result, null, 2),
+          text: JSON.stringify({ ...result, request_id: result.request_id ?? request_id }, null, 2),
         },
       ],
       isError: !result.ok,
@@ -289,14 +294,14 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
   }
 
   if (name === "list_operations") {
-    const result = await client.operations();
+    const result = await client.operations(request_id);
     const duration = Date.now() - start;
-    mcpLog(`tool result: ${name} ok=${result.ok} duration=${duration}ms`);
+    mcpLog(`tool result: ${name} ok=${result.ok} duration=${duration}ms request_id=${result.request_id ?? request_id}`);
     return {
       content: [
         {
           type: "text",
-          text: JSON.stringify(result, null, 2),
+          text: JSON.stringify({ ...result, request_id: result.request_id ?? request_id }, null, 2),
         },
       ],
       isError: !result.ok,
@@ -324,22 +329,23 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         location: parseOptionalVec3(args.location, "location") ?? [0, 0, 0],
         rotation: parseOptionalVec3(args.rotation, "rotation") ?? [0, 0, 0],
         scale: parseOptionalVec3(args.scale, "scale") ?? [1, 1, 1],
+        request_id,
       });
 
       const duration = Date.now() - start;
-      mcpLog(`tool result: ${name} ok=${result.ok} duration=${duration}ms`);
+      mcpLog(`tool result: ${name} ok=${result.ok} duration=${duration}ms request_id=${result.request_id ?? request_id}`);
       return {
         content: [
           {
             type: "text",
-            text: JSON.stringify(result, null, 2),
+            text: JSON.stringify({ ...result, request_id: result.request_id ?? request_id }, null, 2),
           },
         ],
         isError: !result.ok,
       };
     } catch (error) {
       const duration = Date.now() - start;
-      mcpLog(`tool error: ${name} duration=${duration}ms error=${error instanceof Error ? error.message : "unknown"}`);
+      mcpLog(`tool error: ${name} duration=${duration}ms error=${error instanceof Error ? error.message : "unknown"} request_id=${request_id}`);
       const payload = {
         ok: false,
         operation: "mcp.create_object.invalid_input",
@@ -347,6 +353,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         data: {},
         warnings: ["Input validation failed for create_object"],
         next_steps: ["Provide type/name and valid vec3 arrays for location/rotation/scale"],
+        request_id,
       };
 
       return {
@@ -377,22 +384,23 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         location: hasLocation ? parseRequiredVec3(args.location, "location") : undefined,
         rotation: hasRotation ? parseRequiredVec3(args.rotation, "rotation") : undefined,
         scale: hasScale ? parseRequiredVec3(args.scale, "scale") : undefined,
+        request_id,
       });
 
       const duration = Date.now() - start;
-      mcpLog(`tool result: ${name} ok=${result.ok} duration=${duration}ms`);
+      mcpLog(`tool result: ${name} ok=${result.ok} duration=${duration}ms request_id=${result.request_id ?? request_id}`);
       return {
         content: [
           {
             type: "text",
-            text: JSON.stringify(result, null, 2),
+            text: JSON.stringify({ ...result, request_id: result.request_id ?? request_id }, null, 2),
           },
         ],
         isError: !result.ok,
       };
     } catch (error) {
       const duration = Date.now() - start;
-      mcpLog(`tool error: ${name} duration=${duration}ms error=${error instanceof Error ? error.message : "unknown"}`);
+      mcpLog(`tool error: ${name} duration=${duration}ms error=${error instanceof Error ? error.message : "unknown"} request_id=${request_id}`);
       const payload = {
         ok: false,
         operation: "mcp.transform_object.invalid_input",
@@ -400,6 +408,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         data: {},
         warnings: ["Input validation failed for transform_object"],
         next_steps: ["Provide name and at least one valid vec3 array for location/rotation/scale"],
+        request_id,
       };
 
       return {
@@ -449,22 +458,23 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         color,
         roughness,
         metallic,
+        request_id,
       });
 
       const duration = Date.now() - start;
-      mcpLog(`tool result: ${name} ok=${result.ok} duration=${duration}ms`);
+      mcpLog(`tool result: ${name} ok=${result.ok} duration=${duration}ms request_id=${result.request_id ?? request_id}`);
       return {
         content: [
           {
             type: "text",
-            text: JSON.stringify(result, null, 2),
+            text: JSON.stringify({ ...result, request_id: result.request_id ?? request_id }, null, 2),
           },
         ],
         isError: !result.ok,
       };
     } catch (error) {
       const duration = Date.now() - start;
-      mcpLog(`tool error: ${name} duration=${duration}ms error=${error instanceof Error ? error.message : "unknown"}`);
+      mcpLog(`tool error: ${name} duration=${duration}ms error=${error instanceof Error ? error.message : "unknown"} request_id=${request_id}`);
       const payload = {
         ok: false,
         operation: "mcp.create_material.invalid_input",
@@ -472,6 +482,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         data: {},
         warnings: ["Input validation failed for create_material"],
         next_steps: ["Provide name, color, and optional roughness/metallic values"],
+        request_id,
       };
 
       return {
@@ -496,22 +507,23 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       const result = await client.applyMaterial({
         object_name: args.object_name.trim(),
         material_name: args.material_name.trim(),
+        request_id,
       });
 
       const duration = Date.now() - start;
-      mcpLog(`tool result: ${name} ok=${result.ok} duration=${duration}ms`);
+      mcpLog(`tool result: ${name} ok=${result.ok} duration=${duration}ms request_id=${result.request_id ?? request_id}`);
       return {
         content: [
           {
             type: "text",
-            text: JSON.stringify(result, null, 2),
+            text: JSON.stringify({ ...result, request_id: result.request_id ?? request_id }, null, 2),
           },
         ],
         isError: !result.ok,
       };
     } catch (error) {
       const duration = Date.now() - start;
-      mcpLog(`tool error: ${name} duration=${duration}ms error=${error instanceof Error ? error.message : "unknown"}`);
+      mcpLog(`tool error: ${name} duration=${duration}ms error=${error instanceof Error ? error.message : "unknown"} request_id=${request_id}`);
       const payload = {
         ok: false,
         operation: "mcp.apply_material.invalid_input",
@@ -519,6 +531,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         data: {},
         warnings: ["Input validation failed for apply_material"],
         next_steps: ["Provide object_name and material_name"],
+        request_id,
       };
 
       return {
@@ -549,22 +562,23 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       const result = await client.setupLighting({
         preset,
         target,
+        request_id,
       });
 
       const duration = Date.now() - start;
-      mcpLog(`tool result: ${name} ok=${result.ok} duration=${duration}ms`);
+      mcpLog(`tool result: ${name} ok=${result.ok} duration=${duration}ms request_id=${result.request_id ?? request_id}`);
       return {
         content: [
           {
             type: "text",
-            text: JSON.stringify(result, null, 2),
+            text: JSON.stringify({ ...result, request_id: result.request_id ?? request_id }, null, 2),
           },
         ],
         isError: !result.ok,
       };
     } catch (error) {
       const duration = Date.now() - start;
-      mcpLog(`tool error: ${name} duration=${duration}ms error=${error instanceof Error ? error.message : "unknown"}`);
+      mcpLog(`tool error: ${name} duration=${duration}ms error=${error instanceof Error ? error.message : "unknown"} request_id=${request_id}`);
       const payload = {
         ok: false,
         operation: "mcp.setup_lighting.invalid_input",
@@ -572,6 +586,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         data: {},
         warnings: ["Input validation failed for setup_lighting"],
         next_steps: ["Provide preset from: studio, three_point, soft_key"],
+        request_id,
       };
 
       return {
@@ -632,22 +647,23 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         rotation,
         distance,
         focal_length,
+        request_id,
       });
 
       const duration = Date.now() - start;
-      mcpLog(`tool result: ${name} ok=${result.ok} duration=${duration}ms`);
+      mcpLog(`tool result: ${name} ok=${result.ok} duration=${duration}ms request_id=${result.request_id ?? request_id}`);
       return {
         content: [
           {
             type: "text",
-            text: JSON.stringify(result, null, 2),
+            text: JSON.stringify({ ...result, request_id: result.request_id ?? request_id }, null, 2),
           },
         ],
         isError: !result.ok,
       };
     } catch (error) {
       const duration = Date.now() - start;
-      mcpLog(`tool error: ${name} duration=${duration}ms error=${error instanceof Error ? error.message : "unknown"}`);
+      mcpLog(`tool error: ${name} duration=${duration}ms error=${error instanceof Error ? error.message : "unknown"} request_id=${request_id}`);
       const payload = {
         ok: false,
         operation: "mcp.set_camera.invalid_input",
@@ -659,6 +675,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           "If location is provided without target, provide rotation",
           "Use positive distance and focal_length values",
         ],
+        request_id,
       };
 
       return {
@@ -712,22 +729,23 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         width,
         height,
         samples,
+        request_id,
       });
 
       const duration = Date.now() - start;
-      mcpLog(`tool result: ${name} ok=${result.ok} duration=${duration}ms`);
+      mcpLog(`tool result: ${name} ok=${result.ok} duration=${duration}ms request_id=${result.request_id ?? request_id}`);
       return {
         content: [
           {
             type: "text",
-            text: JSON.stringify(result, null, 2),
+            text: JSON.stringify({ ...result, request_id: result.request_id ?? request_id }, null, 2),
           },
         ],
         isError: !result.ok,
       };
     } catch (error) {
       const duration = Date.now() - start;
-      mcpLog(`tool error: ${name} duration=${duration}ms error=${error instanceof Error ? error.message : "unknown"}`);
+      mcpLog(`tool error: ${name} duration=${duration}ms error=${error instanceof Error ? error.message : "unknown"} request_id=${request_id}`);
       const payload = {
         ok: false,
         operation: "mcp.render_preview.invalid_input",
@@ -739,6 +757,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           "Use .png extension for output",
           "Example: render_preview with output='renders/preview.png', width=512, height=512, samples=16",
         ],
+        request_id,
       };
 
       return {
@@ -762,22 +781,23 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 
       const result = await client.validateScene({
         preset,
+        request_id,
       });
 
       const duration = Date.now() - start;
-      mcpLog(`tool result: ${name} ok=${result.ok} duration=${duration}ms`);
+      mcpLog(`tool result: ${name} ok=${result.ok} duration=${duration}ms request_id=${result.request_id ?? request_id}`);
       return {
         content: [
           {
             type: "text",
-            text: JSON.stringify(result, null, 2),
+            text: JSON.stringify({ ...result, request_id: result.request_id ?? request_id }, null, 2),
           },
         ],
         isError: !result.ok,
       };
     } catch (error) {
       const duration = Date.now() - start;
-      mcpLog(`tool error: ${name} duration=${duration}ms error=${error instanceof Error ? error.message : "unknown"}`);
+      mcpLog(`tool error: ${name} duration=${duration}ms error=${error instanceof Error ? error.message : "unknown"} request_id=${request_id}`);
       const payload = {
         ok: false,
         operation: "mcp.validate_scene.invalid_input",
@@ -788,6 +808,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           "Provide preset from: basic, game_asset, render_ready",
           "Example: validate_scene with preset='game_asset'",
         ],
+        request_id,
       };
 
       return {
@@ -836,22 +857,23 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         output,
         selected_only,
         apply_modifiers,
+        request_id,
       });
 
       const duration = Date.now() - start;
-      mcpLog(`tool result: ${name} ok=${result.ok} duration=${duration}ms`);
+      mcpLog(`tool result: ${name} ok=${result.ok} duration=${duration}ms request_id=${result.request_id ?? request_id}`);
       return {
         content: [
           {
             type: "text",
-            text: JSON.stringify(result, null, 2),
+            text: JSON.stringify({ ...result, request_id: result.request_id ?? request_id }, null, 2),
           },
         ],
         isError: !result.ok,
       };
     } catch (error) {
       const duration = Date.now() - start;
-      mcpLog(`tool error: ${name} duration=${duration}ms error=${error instanceof Error ? error.message : "unknown"}`);
+      mcpLog(`tool error: ${name} duration=${duration}ms error=${error instanceof Error ? error.message : "unknown"} request_id=${request_id}`);
       const payload = {
         ok: false,
         operation: "mcp.export_asset.invalid_input",
@@ -863,6 +885,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           "Provide output with extension matching format",
           "Example: export_asset with format='glb' and output='exports/test_scene.glb'",
         ],
+        request_id,
       };
 
       return {
@@ -872,7 +895,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
     }
   }
 
-  mcpLog(`tool error: ${name} duration=${Date.now() - start}ms error=tool_not_found`);
+  mcpLog(`tool error: ${name} duration=${Date.now() - start}ms error=tool_not_found request_id=${request_id}`);
   return {
     content: [
       {
@@ -885,6 +908,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
             data: {},
             warnings: ["Tool not implemented in MVP"],
             next_steps: ["Use tool `inspect_scene`, `list_operations`, `create_object`, `transform_object`, `create_material`, `apply_material`, `setup_lighting`, `set_camera`, `render_preview`, `validate_scene`, or `export_asset`"],
+            request_id,
           },
           null,
           2,
