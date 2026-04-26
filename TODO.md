@@ -1,377 +1,79 @@
-# BlendOps TODO
+# 🧭 BlendOps Roadmap
 
-**Last Updated:** 2026-04-24  
-**Status:** MVP scaffolding in progress
+_Last updated: 2026-04-26_
 
----
-
-## Phase 1: Repository Setup ✅
-
-- [x] Create directory structure (apps/, packages/, examples/, docs/)
-- [x] Write README.md with architecture and examples
-- [x] Create docs/prior-art.md with comparison matrix
-- [x] Add package.json with workspace configuration
-- [x] Add tsconfig.base.json
-- [x] Add .gitignore
-- [x] Create packages/schemas with Zod schemas
+This roadmap reflects **current code + runtime evidence**.
 
 ---
 
-## Phase 2: Shared Schemas & Core
+## ✅ Completed and validated
 
-### packages/schemas
-- [x] Define BlendOpsResponse schema
-- [x] Define SceneInspectRequest schema
-- [x] Define SceneInspectData schema
-- [x] Add ObjectCreateRequest schema
-- [x] Add TransformObjectRequest schema
-- [x] Add MaterialCreateRequest schema
-- [x] Add MaterialApplyRequest schema
-- [x] Add ValidateSceneRequest schema
-- [x] Add ExportAssetRequest schema
-- [x] Export all implemented schemas from index.ts
-
-### packages/core
-- [x] Create package.json
-- [x] Create BridgeClient class (HTTP/stdio transport)
-- [x] Add connection management
-- [x] Add request/response handling
-- [x] Add error handling utilities
-- [ ] Add retry logic
-- [x] Export public API
+| Slice | Status | Notes |
+|---|---:|---|
+| `scene.inspect` | ✅ | CLI + MCP + runtime evidence |
+| `object.create` | ✅ | CLI + MCP + runtime evidence |
+| `object.transform` | ✅ | CLI + MCP + runtime evidence |
+| `material.create` | ✅ | CLI + MCP + runtime evidence |
+| `material.apply` | ✅ | CLI + MCP + runtime evidence |
+| `lighting.setup` | ✅ | CLI + MCP + runtime evidence |
+| `camera.set` | ✅ | CLI + MCP + runtime evidence |
+| `render.preview` | ✅ | CLI + MCP + runtime evidence |
+| `validate.scene` | ✅ | CLI + MCP + runtime evidence |
+| `export.asset` | ✅ | GUI bridge GLB runtime evidence recorded |
+| Observability split (stdout/stderr/bridge console) | ✅ | Implemented and smoke-tested |
 
 ---
 
-## Phase 3: Blender Bridge/Addon
+## 🧪 Needs periodic runtime revalidation
 
-### apps/blender-addon
-- [x] Create bl_info metadata
-- [x] Create addon __init__.py
-- [x] Implement HTTP server (port 8765)
-- [x] Add bpy.app.timers routing for thread safety
-- [x] Implement scene.inspect handler
-- [x] Implement object.create handler
-- [x] Implement material.create handler
-- [x] Implement material.apply handler
-- [ ] Add parameter validation
-- [x] Add error handling
-- [x] Create addon installation instructions
-- [ ] Add security module (allowlist, validation)
-- [ ] Test in Blender 3.6+
+| Area | Why revalidate |
+|---|---|
+| Export (GLB/GLTF/FBX) | Blender version/context behavior can change |
+| Render pipeline | Output path + camera assumptions can regress |
+| Validate presets | Rule updates can drift from expectations |
+| Bridge startup UX | Blender launch/runtime environments vary across machines |
 
 ---
 
-## Phase 4: CLI Application
+## ⚠️ Known limitations (current)
 
-### apps/cli
-- [x] Create package.json
-- [ ] Add commander.js dependency
-- [x] Create main CLI entry point (bin/blendops.js)
-- [x] Implement `blendops scene inspect` command
-- [x] Implement `blendops object create` command
-- [x] Implement `blendops object transform` command
-- [x] Implement `blendops material create` command
-- [x] Implement `blendops material apply` command
-- [x] Add --json flag for raw output
-- [ ] Add --dry-run flag (architecture support)
-- [x] Add connection error handling
-- [ ] Add formatted output (tables, colors)
-- [x] Create help text and examples
-- [ ] Test CLI end-to-end
+- Blender 4.2 background mode (`-b`) GLB/GLTF export can fail due to window-context constraints.
+- BlendOps currently documents and guards this path for GLB/GLTF.
+- GUI bridge mode is the validated runtime path for GLB evidence.
 
 ---
 
-## Phase 5: MCP Server
+## 🚧 Next candidates
 
-### apps/mcp-server
-- [x] Create package.json
-- [x] Add @modelcontextprotocol/sdk dependency
-- [x] Create MCP server entry point
-- [x] Implement inspect_scene tool
-- [x] Implement create_object tool
-- [x] Implement transform_object tool
-- [x] Implement create_material tool
-- [x] Implement apply_material tool
-- [x] Add tool schema definitions
-- [x] Add stdio transport
-- [x] Add error handling
-- [x] Create MCP configuration example
-- [ ] Test with Claude Desktop
-- [ ] Document tool usage
+1. `undo.last`
+2. `scene.clear --confirm`
+3. Batch operations (safe multi-step orchestration)
+4. Validation preset expansion
+5. Packaging/release automation
 
 ---
 
-## Phase 6: Scene Operations
+## 🛡️ Safety / destructive operations
 
-### Implement Core Commands
-- [x] scene.inspect (MVP priority)
-- [x] object.create (MVP priority)
-- [x] object.transform
-- [ ] object.delete (requires --confirm)
-- [ ] scene.clear (requires --confirm)
-- [x] material.create
-- [x] material.apply
-- [x] lighting.setup
-- [x] camera.set
-- [x] render.preview
-- [x] validate.scene
-- [x] export.asset
-- [ ] undo.last
-
-### Add to CLI
-- [x] Implement each command as CLI subcommand
-- [x] Add argument parsing
-- [x] Add validation
-- [ ] Add formatted output
-
-### Add to MCP
-- [x] Implement each command as MCP tool
-- [x] Add tool schemas
-- [x] Add parameter validation
-- [ ] Test with AI agents
+- [ ] Add explicit confirmation flow for destructive operations
+- [ ] Add operation-level risk annotations
+- [ ] Add dry-run semantics for eligible operations
+- [ ] Expand audit-friendly operation receipts
 
 ---
 
-## Phase 7: Validation System
+## 🧠 AI-agent UX improvements
 
-### Validation Presets
-- [ ] Define game-asset preset
-  - [ ] Check object count
-  - [ ] Check missing materials
-  - [ ] Check unapplied scale
-  - [ ] Estimate polycount
-  - [ ] Check object naming
-  - [ ] Check origin/scale warnings
-  - [ ] Check export readiness
-- [ ] Define 3d-print preset
-- [ ] Define animation preset
-- [ ] Add custom validation rules API
-
-### Implementation
-- [ ] Create validation engine
-- [ ] Add preset loader
-- [ ] Add validation report formatter
-- [ ] Test validation presets
+- [ ] Tighten eval prompts with pass/fail assertions per operation
+- [ ] Add operation compatibility matrix by Blender version and mode
+- [ ] Improve corrective `next_steps` consistency across operations
 
 ---
 
-## Phase 8: Safety & Dry-Run
+## 📚 Docs / research tasks
 
-### Safety Features
-- [ ] Implement --confirm flag for destructive ops
-- [ ] Add operation allowlist
-- [ ] Add rate limiting per session
-- [ ] Add audit logging
-- [ ] Add operation receipts
-- [ ] Document security model
-
-### Dry-Run Design
-- [ ] Add --dry-run flag to CLI
-- [ ] Return CANCELLED-equivalent responses
-- [ ] Preview operations without execution
-- [ ] Add dry-run to MCP tools
-- [ ] Test dry-run mode
-
----
-
-## Phase 9: Undo System
-
-### Undo Implementation
-- [ ] Track operation batches
-- [ ] Implement undo checkpointing
-- [ ] Add `blendops undo` command
-- [ ] Add undo_last MCP tool
-- [ ] Add undo history inspection
-- [ ] Test undo functionality
-
----
-
-## Phase 10: Export & Validation
-
-### Export Support
-- [x] Implement GLB export (MVP priority)
-- [ ] Add FBX export
-- [ ] Add STL export
-- [ ] Add USD export
-- [ ] Add path validation
-- [ ] Add export readiness checks
-
-### Pre-Export Validation
-- [ ] Check file extension
-- [ ] Check directory exists
-- [ ] Check path is within allowed tree
-- [ ] Validate scene before export
-- [ ] Add export warnings
-
----
-
-## Phase 11: Documentation
-
-### User Documentation
-- [ ] Installation guide
-- [ ] CLI usage guide
-- [ ] MCP configuration guide
-- [ ] Blender addon installation
-- [ ] Troubleshooting guide
-- [ ] FAQ
-
-### Developer Documentation
-- [ ] Architecture overview
-- [ ] Contributing guide
-- [ ] API reference
-- [ ] Schema documentation
-- [ ] Security model documentation
-- [ ] Testing guide
-
----
-
-## Phase 12: Testing & Evaluation
-
-### Unit Tests
-- [ ] Schema validation tests (50+)
-- [ ] Core utilities tests (50+)
-- [ ] Bridge client tests (30+)
-- [ ] CLI command tests (30+)
-- [ ] MCP tool tests (30+)
-- [ ] Validation preset tests (20+)
-
-### Integration Tests
-- [ ] CLI → Bridge → Blender (20+)
-- [ ] MCP → Bridge → Blender (20+)
-- [ ] Error handling tests (10+)
-
-### E2E Tests
-- [ ] Full workflow tests (10+)
-- [ ] AI agent evaluation prompts (5+)
-
-### Security Tests
-- [ ] Injection attempt tests (5+)
-- [ ] Bypass attempt tests (5+)
-
----
-
-## Phase 13: Examples & Demos
-
-### Example Prompts
-- [ ] "Create a red cube on a plane with studio lighting and render preview"
-- [ ] "Inspect this scene and tell me what can be exported as a game asset"
-- [ ] "Create a low-poly treasure chest style blockout and export GLB"
-- [ ] "Validate the scene and suggest fixes"
-- [ ] "Set up a product photography scene with proper lighting"
-
-### Demo Workflows
-- [ ] Game asset creation workflow
-- [ ] Product visualization workflow
-- [ ] 3D print preparation workflow
-- [ ] Animation setup workflow
-
----
-
-## Phase 14: Polish & Release
-
-### Pre-Release Checklist
-- [ ] All MVP features working
-- [ ] Documentation complete
-- [ ] Tests passing (>90% coverage)
-- [ ] Security audit complete
-- [ ] Performance benchmarks run
-- [ ] Cross-platform testing (Windows, macOS, Linux)
-- [ ] Blender version testing (3.6, 4.0, 4.1)
-
-### Release Preparation
-- [ ] Choose license (MIT recommended)
-- [ ] Add LICENSE file
-- [ ] Add CONTRIBUTING.md
-- [ ] Add CODE_OF_CONDUCT.md
-- [ ] Create GitHub repository
-- [ ] Set up CI/CD
-- [ ] Publish to npm (CLI + MCP server)
-- [ ] Create release notes
-
----
-
-## Future Roadmap (Post-MVP)
-
-### Advanced Features
-- [ ] Scene diff visualization
-- [ ] Multi-scene management
-- [ ] Asset library integration
-- [ ] Procedural generation tools
-- [ ] Animation timeline tools
-- [ ] Geometry nodes integration
-- [ ] Shader nodes integration
-- [ ] Batch operations
-- [ ] Remote Blender support
-- [ ] Multi-DCC integration (Unreal, Unity)
-
-### Performance
-- [ ] Optimize large scene handling
-- [ ] Add caching layer
-- [ ] Parallel operation execution
-- [ ] Lazy loading for large tool sets
-
-### Developer Experience
-- [ ] VSCode extension
-- [ ] Blender addon UI panel
-- [ ] Interactive CLI mode
-- [ ] Web-based inspector
-- [ ] GraphQL API option
-
----
-
-## Current Sprint (Week 1)
-
-**Goal:** Minimal vertical slice working end-to-end
-
-- [x] Scaffold repository structure
-- [x] Create README.md
-- [x] Create docs/prior-art.md
-- [x] Create TODO.md
-- [x] Add base configuration files
-- [x] Create packages/schemas with initial schemas
-- [x] Create packages/core with BridgeClient
-- [x] Create apps/blender-addon with scene.inspect handler
-- [x] Extend addon with object.create handler
-- [x] Extend addon with object.transform handler
-- [x] Extend addon with material.create/material.apply handlers
-- [x] Create apps/cli with scene inspect command
-- [x] Extend CLI with object create command
-- [x] Extend CLI with object transform command
-- [ ] Test end-to-end: `blendops scene inspect`
-- [ ] Test end-to-end: `blendops object create`
-- [ ] Test end-to-end: `blendops object transform`
-- [ ] Test end-to-end: `blendops material create`
-- [ ] Test end-to-end: `blendops material apply`
-
-**Success Criteria:**
-- CLI command runs without errors
-- Connects to Blender bridge
-- Returns structured JSON response
-- Displays formatted output
-
----
-
-## Notes
-
-### Architecture Decisions
-- **Transport:** stdio for MCP, HTTP for Blender bridge (port 8765)
-- **Schemas:** Zod for TypeScript, Pydantic for Python
-- **Safety:** No arbitrary Python execution, typed operations only
-- **Thread Safety:** Use bpy.app.timers for main-thread routing
-- **Validation:** JSON Schema validation before reaching Blender
-
-### Prior Art Learnings
-- Adopt: Thread-safe routing, comprehensive test coverage, goal-first validation
-- Avoid: Arbitrary code execution, unclear licensing, HTTP-only transport
-- Differentiate: CLI-first, safety-first, schema-first design
-
-### Open Questions
-- [ ] Should we support Blender 3.3+ or 3.6+ minimum?
-- [ ] Should bridge use HTTP or stdio for local communication?
-- [ ] Should we add WebSocket transport for real-time updates?
-- [ ] Should we support multiple Blender instances?
-- [ ] Should we add a GUI inspector tool?
-
----
-
-**Next Action:** Run npm install/typecheck/build and verify end-to-end material.create/material.apply in Blender runtime
+- [x] Prior-art research refresh and inheritance guidance
+- [x] README landing-page polish and capability matrix
+- [x] Manual testing and observability docs polish
+- [x] Runtime smoke docs consistency formatting
+- [ ] Add docs lint/check workflow in CI

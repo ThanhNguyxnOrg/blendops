@@ -1,215 +1,168 @@
 # BlendOps
 
 <p align="left">
-  <img alt="MVP Status" src="https://img.shields.io/badge/status-MVP%20in%20progress-0ea5e9">
-  <img alt="Safety" src="https://img.shields.io/badge/safety-no%20arbitrary%20python-success">
-  <img alt="CLI First" src="https://img.shields.io/badge/workflow-CLI--first-7c3aed">
-  <img alt="License" src="https://img.shields.io/badge/license-MIT-16a34a">
+  <img alt="Node >=18" src="https://img.shields.io/badge/node-%3E%3D18-339933?logo=node.js&logoColor=white">
+  <img alt="Blender >=3.6" src="https://img.shields.io/badge/blender-%3E%3D3.6-F5792A?logo=blender&logoColor=white">
+  <img alt="MCP ready" src="https://img.shields.io/badge/MCP-ready-111827">
+  <img alt="CLI first" src="https://img.shields.io/badge/workflow-CLI%20first-7C3AED">
+  <img alt="Safe operations" src="https://img.shields.io/badge/safety-typed%20operations-16A34A">
+  <img alt="Runtime smoke tested" src="https://img.shields.io/badge/runtime-smoke%20tested-0EA5E9">
 </p>
 
-**Safe Blender automation for AI agents: MCP tools, CLI workflows, scene inspection, validation, and export readiness.**
+**Safe, inspectable Blender automation for AI agents via CLI + MCP + Blender bridge.**
 
-BlendOps is a **workflow layer** on top of Blender automation. It is not a “run arbitrary Python in Blender” tool.
+BlendOps is a workflow layer for AI-assisted Blender work. It provides typed operations, structured JSON responses, and observability-first runtime behavior.
 
----
-
-## Why BlendOps?
-
-Most Blender+AI integrations focus on direct execution power. BlendOps focuses on **safe, typed, inspectable workflows**:
-
-- ✅ Typed command schemas (Zod / JSON schema-compatible)
-- ✅ Structured JSON responses for every command
-- ✅ CLI-first development loop (humans can test flows before agent use)
-- ✅ MCP wrapper over same core operations
-- ❌ No arbitrary Python execution exposed by default
+> 🛡️ **Security stance**: BlendOps does **not** expose arbitrary Python execution endpoints by default.
 
 ---
 
-## Current Status (v0.1)
+## 🚀 What BlendOps is
 
-### Implemented vertical slices
+BlendOps combines three layers:
 
-- `blendops bridge status`
-- `blendops scene inspect`
-- `blendops object create --type cube --name test_cube --location 0,0,1 --scale 1,1,1`
-- `blendops object transform --name test_cube --location 1,0,1`
-- `blendops material create --name red_plastic --color "#ff0000" --roughness 0.5 --metallic 0`
-- `blendops material apply --object test_cube --material red_plastic`
-- `blendops lighting setup --preset studio --target test_cube`
-- `blendops camera set --target test_cube --distance 5 --focal-length 50`
-- `blendops render preview --output renders/preview.png --width 512 --height 512 --samples 16`
-- `blendops validate scene --preset basic`
-- `blendops validate scene --preset game_asset`
-- `blendops validate scene --preset render_ready`
-- `blendops export asset --format glb --output exports/test_scene.glb`
-- `blendops export asset --format gltf --output exports/test_scene.gltf`
-- `blendops export asset --format fbx --output exports/test_scene.fbx`
+- 🧰 **CLI** for deterministic human and script workflows
+- 🧠 **MCP server** for agent tool-calling
+- 🎛️ **Blender addon bridge** for safe, structured operation execution
 
-### MCP tools implemented
-
-- `inspect_scene()`
-- `create_object(type, name, location?, rotation?, scale?)`
-- `transform_object(name, location?, rotation?, scale?)`
-- `create_material(name, color, roughness?, metallic?)`
-- `apply_material(object_name, material_name)`
-- `setup_lighting(preset, target?)`
-- `set_camera(target?, location?, rotation?, distance?, focal_length?)`
-- `render_preview(output?, width?, height?, samples?)`
-- `validate_scene(preset?)`
-- `export_asset(format, output, selected_only?, apply_modifiers?)`
-
-### Planned (not implemented yet)
-
-- `clear_scene(confirm: boolean)`
-- `undo_last()`
+All three share the same typed schema/core contracts.
 
 ---
 
-## Architecture
+## ✅ Current capability matrix
 
-```text
-CLI                          MCP Server
- ↓                              ↓
- └─→ Shared Schemas/Core ←─────┘
-           ↓
-    Blender Bridge/Addon
-           ↓
-    Blender Python API
-```
-
-### Repo layout
-
-```text
-blendops/
-  apps/
-    cli/
-    mcp-server/
-    blender-addon/
-  packages/
-    core/
-    schemas/
-  docs/
-  examples/
-```
+| Area | Operation | CLI | MCP | Runtime evidence |
+|---|---|---:|---:|---:|
+| Bridge | `bridge.status` | ✅ | ✅ | ✅ |
+| Scene | `scene.inspect` | ✅ | ✅ | ✅ |
+| Object | `object.create` | ✅ | ✅ | ✅ |
+| Object | `object.transform` | ✅ | ✅ | ✅ |
+| Material | `material.create` | ✅ | ✅ | ✅ |
+| Material | `material.apply` | ✅ | ✅ | ✅ |
+| Lighting | `lighting.setup` | ✅ | ✅ | ✅ |
+| Camera | `camera.set` | ✅ | ✅ | ✅ |
+| Render | `render.preview` | ✅ | ✅ | ✅ |
+| Validate | `validate.scene` | ✅ | ✅ | ✅ |
+| Export | `export.asset` | ✅ | ✅ | ✅ (GUI bridge GLB) |
 
 ---
 
-## Quick Start (Dev)
-
-### 1) Clone + install
+## 🚀 Quickstart
 
 ```bash
 git clone https://github.com/ThanhNguyxnOrg/blendops.git
 cd blendops
 npm install
-```
-
-### 2) Clean, typecheck + build
-
-```bash
 npm run clean
 npm run typecheck
 npm run build
+
+npm run cli -- bridge status --verbose
+npm run cli -- scene inspect --verbose
 ```
 
-### 3) Start Blender bridge addon
+Then in Blender:
 
-Load and enable addon from:
+1. Open **Edit → Preferences → Add-ons → Install...**
+2. Select `apps/blender-addon/blendops_addon`
+3. Enable **BlendOps Bridge**
+4. Confirm bridge on `http://127.0.0.1:8765`
 
-- `apps/blender-addon/blendops_addon`
+---
 
-### 4) Run CLI examples
+## 🧭 Architecture
+
+```mermaid
+flowchart TD
+  A[Human or AI Agent] --> B[CLI]
+  A --> C[MCP Server]
+
+  B --> D[packages/schemas + packages/core]
+  C --> D
+
+  D --> E[Blender Addon Bridge]
+  E --> F[Blender Python API]
+```
+
+---
+
+## 🛡️ Safety model
+
+BlendOps adopts a constrained operation model:
+
+- Typed operation contracts (Zod/JSON schema compatible)
+- Structured response envelope (`ok`, `operation`, `message`, `data`, `warnings`, `next_steps`)
+- No arbitrary Python execution tool by default
+- Validation-first request handling
+- Observable runtime behavior (CLI stderr + bridge console)
+
+---
+
+## 🎬 Example creative flow
 
 ```bash
-npm run cli -- bridge status
-npm run cli -- scene inspect
 npm run cli -- object create --type cube --name test_cube --location 0,0,1 --scale 1,1,1
-npm run cli -- object transform --name test_cube --location 1,0,1
 npm run cli -- material create --name red_plastic --color "#ff0000" --roughness 0.5 --metallic 0
 npm run cli -- material apply --object test_cube --material red_plastic
 npm run cli -- lighting setup --preset studio --target test_cube
 npm run cli -- camera set --target test_cube --distance 5 --focal-length 50
 npm run cli -- render preview --output renders/preview.png --width 512 --height 512 --samples 16
-npm run cli -- validate scene --preset basic
 npm run cli -- validate scene --preset game_asset
-npm run cli -- validate scene --preset render_ready
 npm run cli -- export asset --format glb --output exports/test_scene.glb
-npm run cli -- export asset --format gltf --output exports/test_scene.gltf
-npm run cli -- export asset --format fbx --output exports/test_scene.fbx
 ```
 
 ---
 
-## Observability
+## 🧪 Runtime evidence
 
-BlendOps keeps outputs split by audience:
-
-- **stdout**: machine-readable JSON responses
-- **stderr**: human progress logs (`--verbose`, `--quiet` supported)
-- **Blender bridge console**: startup banner and per-operation runtime logs
-
-For full guidance, see:
-
-- [`docs/observability.md`](./docs/observability.md)
-
----
-
-## Response Envelope
-
-All commands return this structure:
-
-```json
-{
-  "ok": true,
-  "operation": "scene.inspect",
-  "message": "Scene inspection complete",
-  "data": {},
-  "warnings": [],
-  "next_steps": []
-}
-```
-
----
-
-## Prior Art & Differentiation
-
-BlendOps is inspired by existing Blender MCP projects but intentionally takes a different stance:
-
-- **CLI-first + MCP-second**
-- **Safety-first contracts**
-- **No default arbitrary execution path**
-
-See detailed analysis:
-- [`docs/prior-art.md`](./docs/prior-art.md)
-
----
-
-## Documentation
-
-- [Observability guide](./docs/observability.md)
-- [Manual test guide](./docs/manual-test.md)
-- [Agent eval prompts](./docs/evals.md)
+- [Runtime smoke test (baseline)](./docs/runtime-smoke-test.md)
 - [Runtime smoke test: object transform](./docs/runtime-smoke-test-object-transform.md)
-- [Runtime smoke test: material slice](./docs/runtime-smoke-test-material.md)
-- [Runtime smoke test: export asset](./docs/runtime-smoke-test-export.md)
-- [Contributing guide](./CONTRIBUTING.md)
-- [Code of Conduct](./CODE_OF_CONDUCT.md)
-- [Security policy](./SECURITY.md)
-- [Support](./SUPPORT.md)
-- [Project TODO](./TODO.md)
+- [Runtime smoke test: material](./docs/runtime-smoke-test-material.md)
+- [Runtime smoke test: lighting](./docs/runtime-smoke-test-lighting.md)
+- [Runtime smoke test: camera](./docs/runtime-smoke-test-camera.md)
+- [Runtime smoke test: render](./docs/runtime-smoke-test-render.md)
+- [Runtime smoke test: validate](./docs/runtime-smoke-test-validate.md)
+- [Runtime smoke test: export](./docs/runtime-smoke-test-export.md)
+- [Runtime smoke test: observability](./docs/runtime-smoke-test-observability.md)
 
 ---
 
-## Contributing
+## ⚠️ Known limitations
 
-Contributions are welcome. Start here:
+- Blender 4.2 background mode (`-b`) has glTF exporter window-context constraints for GLB/GLTF.
+- BlendOps documents and guards this path:
+  - GUI bridge mode is the validated path for GLB runtime smoke evidence.
+  - Background GLB/GLTF is not treated as runtime PASS unless explicitly validated.
 
-- [`CONTRIBUTING.md`](./CONTRIBUTING.md)
+---
 
-Please keep changes incremental and align with the safety model.
+## 🧭 Roadmap (concise)
+
+**Validated now**
+- Core scene/object/material/lighting/camera/render/validate/export slices
+- CLI + MCP parity for current operations
+- Observability and runtime evidence workflow
+
+**Next candidates**
+- `undo.last`
+- `scene.clear --confirm`
+- Batch operations
+- Validation preset expansion
+- Packaging/release automation
+
+---
+
+## 📚 Documentation
+
+- [Docs index](./docs/README.md)
+- [Prior-art analysis](./docs/prior-art.md)
+- [Manual test guide](./docs/manual-test.md)
+- [Observability guide](./docs/observability.md)
+- [Agent eval prompts](./docs/evals.md)
+- [Project TODO / roadmap detail](./TODO.md)
 
 ---
 
 ## License
 
-MIT — see [`LICENSE`](./LICENSE).
+MIT — see [LICENSE](./LICENSE).

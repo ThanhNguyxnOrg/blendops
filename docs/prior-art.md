@@ -1,485 +1,174 @@
-# Blender Automation Prior-Art Analysis
+# 🔍 Blender Automation Prior-Art Research
 
-**Generated:** April 24, 2026  
-**Purpose:** Document existing Blender MCP/AI automation projects to inform BlendOps design decisions
+> **Purpose**: identify what BlendOps should inherit, adapt, or avoid from Blender MCP/AI automation ecosystems.
 
----
-
-## Executive Summary
-
-The Blender MCP ecosystem has matured significantly since early 2025, with 350+ repositories exploring AI-driven Blender automation. This analysis covers 12 significant projects to identify:
-
-- **What works** - Patterns to adopt
-- **What doesn't** - Anti-patterns to avoid  
-- **Gaps** - Opportunities for BlendOps differentiation
-
-**Key Findings:**
-
-- 6 projects expose structured MCP tools with typed surfaces
-- 4 projects support arbitrary Python execution (unsafe but powerful)
-- 0 projects offer native CLI-first workflows
-- All major projects use Blender addon + separate MCP server architecture
-- Only 1 project (blender-ai-mcp) implements comprehensive safety model
+- **Research date**: 2026-04-26
+- **Scope**: Blender MCP servers, addon bridges, local HTTP/TCP bridges, CLI-first workflows, glTF export behavior, safety patterns, and MCP UX conventions.
+- **Method**: repository discovery (GitHub), MCP ecosystem scans, Blender/glTF runtime issue lookups, and project documentation review.
 
 ---
 
-## Prior-Art Comparison Matrix
+## 1) 🧭 Summary verdict
 
-| Project | License | Language | MCP | CLI | Arbitrary Python | Safety Model | Stars/Activity |
-|---------|---------|----------|-----|-----|------------------|--------------|----------------|
-| [poly-mcp/Blender-MCP-Server](#1-blender-mcp-server) | MIT | Python | ✅ | ❌ | ❌ | Basic | High |
-| [ahujasid/blender-mcp](#2-blender-mcp) | Not stated | Python | ✅ | ❌ | ✅ | None | High |
-| [PatrykIti/blender-ai-mcp](#3-blender-ai-mcp) | Apache 2.0 | Python | ✅ | ❌ | Limited | **Strong** | Medium |
-| [mlolson/blender-orchestrator](#4-blender-orchestrator) | MIT | Python | ✅ | ❌ | ❌ | Basic | Medium |
-| [glonorce/Blender_mcp](#5-blender_mcp) | MIT | Python | ✅ | ❌ | ✅ | Medium | Medium |
-| [tahooki/unreal-blender-mcp](#6-unreal-blender-mcp) | MIT | Python | ✅ | ❌ | ✅ | None | Low |
-| [youichi-uda/blender-mcp-pro](#9-blender-mcp-pro) | Proprietary | Python | ✅ | ❌ | ❌ | Unknown | Commercial |
+BlendOps is well-positioned with a **typed, operation-scoped, CLI+MCP architecture** and a clear **no-arbitrary-python** safety stance.
 
----
+Most prior-art projects optimize for speed of experimentation (large tool surfaces, code execution, broad API reach), but often trade away safety boundaries or reproducibility.
 
-## Detailed Project Analysis
+**Strategic direction for BlendOps**:
 
-### 1. Blender-MCP-Server (poly-mcp)
-
-**Repository:** https://github.com/poly-mcp/Blender-MCP-Server  
-**License:** MIT  
-**Architecture:** Blender addon + HTTP server (FastAPI/Uvicorn on port 8000)
-
-**Tool Surface:**
-- 50+ tools across: Object Ops, Transforms, Materials, Animation, Camera/Lighting, Physics, Geometry Nodes, File Ops, Scene Management, Batch Operations
-
-**Transport:** HTTP API at `localhost:8000/mcp/invoke/{tool_name}`
-
-**Safety Features:**
-- Thread-safe queue system
-- Auto-dependency installation
-- Error handling + result caching
-
-**Gaps:**
-- No typed Pydantic schemas documented
-- No inspectability layer
-- Limited security documentation
-- No CLI wrapper
-
-**What BlendOps Should Learn:**
-- Comprehensive tool coverage (50+ tools is good target)
-- Thread-safe queue pattern for bpy operations
-- HTTP transport option for remote access
-
-**What BlendOps Should Avoid:**
-- HTTP-only transport (adds network complexity for local use)
-- Lack of typed schemas
+- Keep operation-first contracts and explicit JSON envelopes.
+- Prefer GUI-validated runtime evidence for fragile Blender paths (notably glTF in Blender 4.2).
+- Inherit UX and architecture patterns, not raw implementation.
+- Treat unclear licenses as **ideas-only**.
 
 ---
 
-### 2. blender-mcp (ahujasid)
+## 2) 📊 Comparison matrix
 
-**Repository:** https://github.com/ahujasid/blender-mcp  
-**License:** Not stated (check source)  
-**Architecture:** Blender addon (TCP socket on port 9876) + Python MCP server
+| Project | URL | License | MCP | CLI | Addon/Bridge | Arbitrary Python | What to learn | Reuse status |
+|---|---|---:|---:|---:|---:|---:|---|---|
+| ahujasid/blender-mcp | https://github.com/ahujasid/blender-mcp | MIT | ✅ | ⚠️ | TCP addon + MCP bridge | ✅ | Baseline MCP-addon split, socket bridge pattern | ⚠️ ideas only (security-sensitive parts) |
+| glonorce/Blender_mcp | https://github.com/glonorce/Blender_mcp | MIT | ✅ | ⚠️ | stdio bridge + TCP addon | ✅ | Main-thread routing, broad handler architecture | ⚠️ ideas only (code-exec model) |
+| poly-mcp/Blender-MCP-Server | https://github.com/poly-mcp/Blender-MCP-Server | MIT (project-stated) | ✅ | ⚠️ | HTTP server addon | ✅/mixed | Tool-category organization, large workflow coverage | ⚠️ ideas only (verify license + safety model) |
+| PatrykIti/blender-ai-mcp | https://github.com/PatrykIti/blender-ai-mcp | Apache-2.0 (project docs) | ✅ | ⚠️ | RPC/addon bridge + router | ⚠️ limited | Goal-first routing, policy/verification framing | ✅ pattern-level adoption |
+| mlolson/blender-orchestrator | https://github.com/mlolson/blender-orchestrator | MIT | ✅ | ⚠️ | HTTP addon + MCP server | ❌ (project-positioned) | Scene comprehension and workflow orchestration ideas | ✅ pattern-level adoption |
+| loonghao/dcc-mcp-blender | https://github.com/loonghao/dcc-mcp-blender | MIT | ✅ | ⚠️ | Embedded streamable HTTP in addon | ⚠️ skill-driven | Embedded server ergonomics and MCP transport options | ⚠️ ideas only |
+| HoldMyBeer-gg/blend-ai | https://github.com/HoldMyBeer-gg/blend-ai | MIT (project-stated) | ✅ | ⚠️ | Addon + MCP bridge | ⚠️ sandboxed | Sandbox-first execution boundaries | ✅ security-pattern adoption |
+| JonathanGrocott/better-blender | https://github.com/JonathanGrocott/better-blender | Unknown in quick scan | ✅ | ✅ | Addon bridge + MCP | Unknown | Local-first bridge ergonomics and operator tooling | ⚠️ ideas only / verify license |
+| igamenovoer/blender-remote | https://github.com/igamenovoer/blender-remote | Unknown in quick scan | ✅ | ✅ | Remote control bridge | Unknown | Remote orchestration and background controls | ⚠️ ideas only |
+| Blender Foundation MCP Server page | https://www.blender.org/lab/mcp-server/ | Blender ecosystem terms | ✅ | ⚠️ | Official ecosystem direction | Unknown | Official trajectory signal and compatibility target | ⚠️ ideas only / no blind code reuse |
+| ptrthomas/blender-agent | https://github.com/ptrthomas/blender-agent | Unknown in quick scan | ❌ | ✅ | HTTP server inside addon | ✅ full | Demonstrates simplicity tradeoff and risk surface | ❌ avoid execution model |
+| harnessgg-blender | https://harness.gg/blender | Commercial package ecosystem | ❌ | ✅ | Bridge-based CLI model | Unknown | Strong CLI ergonomics for agents | ⚠️ ideas only |
 
-**Tool Surface:**
-- ~30 tools: scene/object operations, materials, rendering
-- **`execute_blender_code`** - arbitrary Python execution
-
-**Transport:** stdio for MCP, TCP socket for Blender bridge
-
-**Safety Features:**
-- None - arbitrary code execution enabled
-- Telemetry collection (can disable via `DISABLE_TELEMETRY=true`)
-
-**Known Vulnerabilities:**
-- GitHub Issue #201: RCE via `execute_blender_code`
-- GitHub Issue #207: `__builtins__` injection bypass
-
-**What BlendOps Should Learn:**
-- stdio transport is standard for MCP
-- TCP socket pattern for Blender bridge
-
-**What BlendOps Should Avoid:**
-- **Arbitrary code execution as primary tool**
-- Telemetry without explicit opt-in
-- Unclear licensing
+Legend:
+- ✅ safe to adopt pattern
+- ⚠️ ideas only
+- ❌ avoid
+- 📌 attribution needed when borrowing permissively licensed structure/snippets
 
 ---
 
-### 3. blender-ai-mcp (PatrykIti)
+## 3) 📚 Detailed project notes
 
-**Repository:** https://github.com/PatrykIti/blender-ai-mcp  
-**License:** Apache 2.0  
-**Architecture:** 3-layer: FastMCP server → Router (goal-first) → Blender addon (RPC on port 8765)
+### ahujasid/blender-mcp
+- **Strengths**: clear MCP + addon split, practical onboarding, broad community visibility.
+- **Weaknesses**: historically centered around `execute_blender_code`; security risks when used carelessly.
+- **BlendOps inheritance**: protocol layering, command routing patterns.
+- **BlendOps avoid**: arbitrary code execution endpoint as a primary capability.
 
-**Tool Surface:**
-- 8 bootstrap tools with `llm-guided` profile
-- Macro tools for modeling workflows
-- Measurement/assertion tools
+### glonorce/Blender_mcp
+- **Strengths**: extensive operation surface, thread-safety discipline, mature handler segmentation.
+- **Weaknesses**: heavy operational surface increases safety and maintenance burden.
+- **BlendOps inheritance**: main-thread marshalling and modular handler decomposition.
+- **BlendOps avoid**: defaulting to execution-power-first UX.
 
-**Transport:** stdio + Streamable HTTP via FastMCP
+### PatrykIti/blender-ai-mcp
+- **Strengths**: policy-aware orchestration, deterministic verification framing, production-oriented design language.
+- **Weaknesses**: can introduce complexity/dependency overhead.
+- **BlendOps inheritance**: intent/goal validation concepts and explicit verification workflows.
+- **BlendOps avoid**: overcomplicating core MVP pathways.
 
-**Safety Features:** ⭐ **Best-in-class**
-- Structured contracts (JSON schemas)
-- Goal-first orchestration (router validates intent before execution)
-- Deterministic verification
-- Session diagnostics
-- Typed payloads
-- Router policy enforcement
-- Limited `call_tool` with validation (not raw `exec`)
+### blend-ai (sandbox-focused)
+- **Strengths**: explicit sandbox boundaries and blocked dangerous modules.
+- **Weaknesses**: sandbox maintenance complexity.
+- **BlendOps inheritance**: safety hardening patterns and deny-by-default posture.
+- **BlendOps avoid**: false confidence from partial sandboxes without robust threat model coverage.
 
-**Requirements:**
-- Blender 4.0+ minimum
-- Local MLX/LaBSE model for router semantics (memory overhead)
-
-**What BlendOps Should Learn:**
-- **Goal-first routing pattern**
-- Structured contracts with JSON Schema
-- Session diagnostics and verification
-- Policy enforcement layer
-
-**What BlendOps Should Avoid:**
-- Heavy ML dependencies for basic operations
-- Blender 4.0+ requirement (support 3.6+)
+### dcc-mcp-blender / poly-mcp style embedded servers
+- **Strengths**: direct MCP transport inside Blender process, broad tool discoverability.
+- **Weaknesses**: larger in-process blast radius and operational complexity.
+- **BlendOps inheritance**: discoverability UX and categorization patterns.
+- **BlendOps avoid**: oversized tool surfaces before safety/testing maturity.
 
 ---
 
-### 4. blender-orchestrator (mlolson)
+## 4) 🏗️ Architecture lessons
 
-**Repository:** https://github.com/mlolson/blender-orchestrator  
-**License:** MIT  
-**Architecture:** Blender addon (HTTP server on port 8765) + FastMCP server
-
-**Tool Surface:**
-- 50+ tools: Primitives, Transforms, Mesh Editing, Procedural Gen, Materials, Rendering, Lighting, Cameras
-- **Spatial intelligence suite** (55+ real-world objects)
-- VR optimization tools
-
-**Transport:** HTTP + FastMCP
-
-**Safety Features:**
-- Spatial intelligence helps avoid bad transforms
-- No arbitrary code execution
-
-**What BlendOps Should Learn:**
-- Spatial reasoning for object placement
-- Real-world object library concept
-
-**What BlendOps Should Avoid:**
-- Dependency on external asset libraries (Poly Haven)
-- No typed schemas
+1. **Addon bridge + external client/server split is the dominant pattern**.
+2. **Main-thread execution routing is non-negotiable** for Blender stability.
+3. **Typed operation contracts reduce agent ambiguity and improve recovery**.
+4. **Small, composable operation surfaces outperform massive generic surfaces for reliability**.
 
 ---
 
-### 5. Blender_mcp (glonorce)
+## 5) 🛡️ Safety lessons
 
-**Repository:** https://github.com/glonorce/Blender_mcp  
-**License:** MIT  
-**Architecture:** stdio bridge → TCP socket (port 9879) → Blender addon
-
-**Tool Surface:**
-- 69 handler groups (550+ actions)
-- `execute_blender_code` as primary tool
-- Scene graph (11 actions)
-- Viewport screenshot
-- Object inspection
-
-**Transport:** stdio via `stdio_bridge.py`
-
-**Safety Features:**
-- Security module (`core/security.py`) with High/Safe Mode toggle
-- Parameter validation
-- Thread safety via `bpy.app.timers`
-- **499 unit tests** ⭐
-
-**What BlendOps Should Learn:**
-- **Comprehensive test coverage** (499 tests)
-- Thread-safe bpy routing via `bpy.app.timers`
-- Parameter validation module
-- Security mode toggle concept
-
-**What BlendOps Should Avoid:**
-- Still exposes arbitrary code execution
-- "High Mode" scope unclear
+1. **Arbitrary Python execution is the largest recurring risk** in Blender-agent ecosystems.
+2. **Safer default**: operation allowlist + structured argument schemas + explicit corrective `next_steps`.
+3. **Destructive operations should require explicit confirmation semantics**.
+4. **Error envelopes should remain tool-level structured responses (not transport-breaking exceptions)**.
 
 ---
 
-### 6. unreal-blender-mcp (tahooki)
+## 6) 🧰 CLI / MCP UX lessons
 
-**Repository:** https://github.com/tahooki/unreal-blender-mcp  
-**License:** MIT  
-**Architecture:** MCP server (SSE port 8300) → Blender addon (8400/8401) + Unreal plugin (8500)
-
-**Tool Surface:**
-- Inherits blender-mcp tools
-- Unreal Engine integration (level management, assets, Python exec)
-
-**Transport:** SSE HTTP
-
-**Safety Features:**
-- None - inherits blender-mcp risks
-- Unreal integration is experimental
-
-**What BlendOps Should Learn:**
-- Multi-DCC integration is possible (future consideration)
-
-**What BlendOps Should Avoid:**
-- Scope creep into multi-DCC (focus on Blender first)
-- Arbitrary Python execution for Unreal
+1. Use operation names that map 1:1 between CLI and MCP tools.
+2. Keep response envelopes stable and machine-readable.
+3. Separate human logs from machine output.
+4. Prefer deterministic command examples over vague “chat-first” demos.
 
 ---
 
-### 9. blender-mcp-pro (youichi-uda)
+## 7) 📦 Blender runtime lessons
 
-**Repository:** https://github.com/youichi-uda/blender-mcp-pro  
-**License:** Proprietary (MIT for addon, proprietary for server)  
-**Architecture:** Blender addon + encrypted MCP server
-
-**Tool Surface:**
-- 120+ tools across 17 categories
-- Scene, Materials, Shader Nodes, Lights, Modifiers, Animation, Geometry Nodes, Camera, Render, Import/Export, UV/Texture, Batch, Assets, Rigging
-
-**Transport:** stdio + Streamable HTTP
-
-**Safety Features:**
-- Lazy loading (15 core → on-demand)
-- License key system
-- No arbitrary code execution
-
-**What BlendOps Should Learn:**
-- Lazy loading pattern for large tool sets
-- Category organization (17 categories)
-
-**What BlendOps Should Avoid:**
-- Proprietary licensing model
-- Encrypted server (anti-pattern for open source)
+1. Blender 4.2 glTF exporter behavior is context-sensitive.
+2. `active_object` fixes alone are insufficient in all contexts.
+3. GUI-window context requirements can block background (`-b`) GLB/GLTF in certain paths.
+4. Runtime docs must record mode-specific validity (GUI vs background).
 
 ---
 
-## Safety Patterns Analysis
+## 8) ⚖️ License / reuse guidance
 
-### Arbitrary Code Execution Risks
+### Reuse policy for BlendOps docs and implementation
 
-**Evidence from Prior Art:**
+- **MIT / Apache / BSD**: patterns are generally reusable with proper attribution where required.
+- **GPL-family**: treat implementation as reference unless compatibility strategy is explicit.
+- **Unknown / unclear license**: **ideas only**; do not copy implementation.
+- **Commercial/proprietary**: no code reuse; pattern inspiration only.
 
-1. **GitHub Issue #207** (ahujasid/blender-mcp): RCE via `execute_blender_code`
-   - Bare `{"bpy": bpy}` namespace is cosmetic only
-   - Python automatically injects `__builtins__` with full access
-   - **Fix:** Must explicitly set `namespace["__builtins__"] = _SAFE_BUILTINS`
+### Practical rule
 
-2. **GitHub Issue #201** (ahujasid/blender-mcp): Import bypass
-   - Even with restricted namespace, can import `os`, `sys`, `subprocess`
-   - **Fix:** AST validation to reject `Import`/`ImportFrom` nodes
-
-**Recommendation for BlendOps:**
-- ❌ **Never expose `exec()` or `execute_blender_code` to AI agents**
-- ✅ Build curated tool surface only
-- ✅ If code execution needed, require explicit user confirmation
+If license confidence is not high, classify as:
+- `⚠️ ideas only / no code reuse`
 
 ---
 
-### Local Bridge Hardening
+## 9) ✅ What BlendOps should inherit now
 
-**Best Practices from Prior Art:**
-
-1. **Per-tool RBAC** (Rapid Claw MCP Security Guide)
-   - Grant permissions at tool level, not server level
-   - Unknown tools default to denied
-
-2. **Human-in-the-loop** (Rapid Claw)
-   - Require approval before destructive operations
-   - Delete, render, file export, scale operations
-
-3. **Rate limiting** (PolicyLayer)
-   - Per-session limits (e.g., 10 calls/minute)
-   - Prevent runaway execution
-
-4. **Thread-safe routing** (glonorce/Blender_mcp)
-   - Use `bpy.app.timers` for main-thread marshalling
-   - Avoid blocking operations
-
-**Recommendation for BlendOps:**
-- ✅ Implement per-tool permissions
-- ✅ Require `--confirm` flag for destructive operations
-- ✅ Use `bpy.app.timers` pattern for thread safety
-- ✅ Add rate limiting per session
+1. **Operation-first safety model** (already aligned).
+2. **Strong docs + examples + eval prompts** as first-class UX.
+3. **Mode-aware runtime evidence** (GUI-vs-background distinctions).
+4. **Thread-safe bridge execution and structured observability**.
+5. **Comparison-driven roadmap decisions (inherit pattern, not code)**.
 
 ---
 
-### Typed Operation Contracts
+## 10) ❌ What BlendOps should avoid
 
-**Best Practices from Prior Art:**
-
-1. **JSON Schema validation** (glonorce/Blender_mcp)
-   - `parameter_validator.py` with type coercion
-   - Enforce enum values for discrete options
-
-2. **Goal-first routing** (PatrykIti/blender-ai-mcp)
-   - Return typed fallback payloads (`needs_input`, `guided_handoff`)
-   - Validate intent before execution
-
-3. **Pydantic models** (implied in poly-mcp)
-   - Type-safe request/response models
-   - Auto-generated OpenAPI schemas
-
-**Recommendation for BlendOps:**
-- ✅ Use Zod for TypeScript schemas
-- ✅ Use Pydantic for Python bridge
-- ✅ Validate all inputs before reaching Blender
-- ✅ Return structured JSON responses with corrective errors
+1. Exposing broad arbitrary execution endpoints by default.
+2. Inflating tool count before safety/test maturity.
+3. Declaring runtime PASS without concrete artifact evidence.
+4. Treating unknown-license implementations as copy-ready.
+5. Combining machine output and human logs in the same stream.
 
 ---
 
-### Dry-Run Strategies
+## 11) 🧭 Future opportunities
 
-**Patterns from Prior Art:**
-
-1. **Operator return values** (Blender API)
-   - `bpy.ops` returns `{'FINISHED'}` or `{'CANCELLED'}`
-   - `CANCELLED` means no state change, no undo entry
-
-2. **Read-only inspection** (PatrykIti/blender-ai-mcp)
-   - Separate tools that query state without modification
-   - `check_scene`, `scene_measure_*`
-
-**Recommendation for BlendOps:**
-- ✅ Implement `--dry-run` flag that returns `CANCELLED`-equivalent
-- ✅ Provide read-only inspection tools
-- ✅ Preview operations before execution
+- Add formal operation annotations for risk level and expected side effects.
+- Expand eval coverage with explicit regression suites per operation.
+- Introduce release-ready docs governance (docs lint + claim consistency checks).
+- Add a compatibility matrix by Blender version and execution mode.
 
 ---
 
-### Undo Patterns
+## 12) Research source set (representative)
 
-**Patterns from Prior Art:**
+- GitHub topic/repo searches for Blender MCP and Blender automation bridges.
+- Project READMEs and architecture sections from referenced repositories.
+- Blender ecosystem references:
+  - Blender MCP server lab page: https://www.blender.org/lab/mcp-server/
+- glTF exporter context behavior references (issue discussions and practical project notes).
 
-1. **Programmatic undo** (Blender API)
-   - `bpy.ops.ed.undo()`, `bpy.ops.ed.redo()`
-   - `bpy.ops.ed.undo_history(item=N)`
-
-2. **Operator history** (Blender API)
-   - `bpy.context.window_manager.operators` exposes history
-   - Track operations with properties
-
-**Recommendation for BlendOps:**
-- ✅ Implement `blendops undo` command
-- ✅ Track operation batches
-- ✅ Provide undo checkpointing
-
----
-
-## BlendOps Differentiation Strategy
-
-Based on prior-art analysis, BlendOps should differentiate on:
-
-### 1. CLI-First Development
-- **Gap:** No existing project offers native CLI
-- **Opportunity:** Build `blendops` CLI with typed commands
-- **Benefit:** Test workflows without AI agents, scriptable automation
-
-### 2. Safety-First Architecture
-- **Gap:** Only 1 project (blender-ai-mcp) has comprehensive safety
-- **Opportunity:** Make safety default, not opt-in
-- **Benefit:** Production-ready for enterprise use
-
-### 3. Typed Operation Contracts
-- **Gap:** Most projects lack explicit schemas
-- **Opportunity:** Schema-first design with Zod + Pydantic
-- **Benefit:** Compile-time validation, auto-generated docs
-
-### 4. Inspectability
-- **Gap:** No project exposes tool schema discovery
-- **Opportunity:** `/tools`, `/schema`, `/audit` endpoints
-- **Benefit:** Runtime introspection, debugging
-
-### 5. Export Readiness
-- **Gap:** No project validates export readiness
-- **Opportunity:** Validation presets (game-asset, 3d-print, animation)
-- **Benefit:** Catch issues before export
-
-### 6. Workflow Focus
-- **Gap:** Limited undo, no diff, generic errors
-- **Opportunity:** Undo batches, scene diff, corrective errors
-- **Benefit:** Better developer experience
-
----
-
-## Licensing Considerations
-
-| License | Projects | Implications for BlendOps |
-|---------|----------|---------------------------|
-| **MIT** | 5 projects | Permissive, allows commercial use, good for BlendOps |
-| **Apache 2.0** | 1 project | Permissive + patent grant, good for BlendOps |
-| **Proprietary** | 1 project | Cannot reuse code |
-| **Not stated** | 5 projects | Cannot safely reuse code without clarification |
-
-**Recommendation for BlendOps:**
-- ✅ Use **MIT License** for maximum compatibility
-- ✅ Clearly state license in README and LICENSE file
-- ❌ Do not copy code from projects without clear licenses
-
----
-
-## Architecture Recommendations
-
-Based on prior-art analysis:
-
-### Transport Layer
-- **Primary:** stdio (MCP standard)
-- **Secondary:** HTTP for remote access (optional)
-- **Avoid:** TCP sockets (adds complexity)
-
-### Bridge Pattern
-- **Use:** Blender addon with `bpy.app.timers` routing
-- **Port:** 8765 (common convention)
-- **Protocol:** JSON-RPC 2.0 or simple JSON lines
-
-### Schema Strategy
-- **TypeScript:** Zod for CLI + MCP server
-- **Python:** Pydantic for Blender bridge
-- **Shared:** JSON Schema as interchange format
-
-### Safety Model
-- **Validation:** All inputs validated before reaching Blender
-- **Permissions:** Per-tool allowlist with default-deny
-- **Confirmation:** Explicit `--confirm` for destructive operations
-- **Audit:** Structured logs with operation receipts
-
----
-
-## Test Coverage Targets
-
-Based on glonorce/Blender_mcp (499 tests):
-
-- **Unit tests:** 200+ (core logic, schemas, validation)
-- **Integration tests:** 50+ (CLI → bridge → Blender)
-- **E2E tests:** 20+ (full workflows)
-- **Security tests:** 10+ (injection, bypass attempts)
-
----
-
-## Conclusion
-
-The Blender MCP ecosystem is mature but has clear gaps:
-
-1. **No CLI-first workflows** - BlendOps opportunity
-2. **Limited safety models** - BlendOps differentiator
-3. **Arbitrary code execution common** - BlendOps avoids
-4. **Weak typed contracts** - BlendOps schema-first
-5. **No export validation** - BlendOps adds
-
-BlendOps should learn from:
-- **poly-mcp:** Comprehensive tool coverage
-- **PatrykIti:** Goal-first routing, safety model
-- **glonorce:** Test coverage, thread safety
-
-BlendOps should avoid:
-- **ahujasid:** Arbitrary code execution
-- **All projects:** Lack of CLI, weak schemas
-
-By focusing on CLI-first, safety-first, and schema-first design, BlendOps can fill a clear gap in the ecosystem.
-
----
-
-**Next Steps:**
-1. Implement minimal `blendops scene inspect` with full safety model
-2. Add comprehensive test coverage from day 1
-3. Document security model in README
-4. Publish comparison benchmarks vs existing projects
+This document is a **pattern and decision artifact**, not a legal opinion. Always verify licenses before copying implementation.
