@@ -20,7 +20,7 @@ This roadmap reflects **current code + runtime evidence**.
 | `render.preview` | ✅ | CLI + MCP + runtime evidence |
 | `validate.scene` | ✅ | CLI + MCP + runtime evidence |
 | `export.asset` | ✅ | GUI bridge GLB runtime evidence recorded |
-| `undo.last` | ✅ | CLI + MCP + typed schema/core/addon slice implemented |
+| `undo.last` | ✅ | Typed slice implemented; safe failure path runtime-verified (successful undo path pending verification) |
 | Observability split (stdout/stderr/bridge console) | ✅ | Implemented and smoke-tested |
 
 ---

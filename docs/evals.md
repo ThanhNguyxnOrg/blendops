@@ -234,7 +234,7 @@ These prompts verify that AI agents use BlendOps safely and correctly.
 ## 10) undo.last eval
 
 **Prompt:**
-"Create `undo_eval_cube`, then run undo for the last operation and verify scene state changed."
+"Create `undo_eval_cube`, run `undo.last`, then report whether it executed or safely failed due to undo-stack availability."
 
 **Expected operations:**
 - `object.create`
@@ -246,6 +246,7 @@ These prompts verify that AI agents use BlendOps safely and correctly.
 - Response contains `data.undone` boolean
 - If undo is available, `ok: true` and `data.undone: true`
 - If undo is unavailable, `ok: false` with corrective `next_steps`
+- Report safe-failure as valid behavior; do not claim scene changed unless confirmed by `scene.inspect`
 
 **Failure criteria:**
 - Unstructured response

@@ -122,6 +122,7 @@ flowchart LR
 
 - Blender 4.2 GLB/GLTF export requires GUI bridge mode.
 - Background mode is limited/unvalidated for persistent bridge runtime.
+- `undo.last` execution depends on Blender undo-stack/context availability; safe failure path is verified.
 - No arbitrary Python execution endpoint is exposed by default.
 
 ## License

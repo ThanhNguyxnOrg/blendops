@@ -96,6 +96,8 @@ node apps/cli/dist/index.js validate scene --preset render_ready
 node apps/cli/dist/index.js export asset --format glb --output exports/test_scene.glb
 ```
 
+`undo.last` may return `ok: false` with `No undo step available` when Blender has no undo step in current context. Treat that as verified safe-failure behavior, not a successful undo.
+
 ## 🧾 Bridge logs and stop
 
 ```bash

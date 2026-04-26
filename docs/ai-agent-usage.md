@@ -12,6 +12,7 @@ This guide describes how AI agents should use BlendOps safely and deterministica
 - Call `list_operations` before guessing tool availability
 - Inspect scene before destructive or stateful edits
 - Use `undo_last` only when reverting the latest typed operation is intended
+- Treat `No undo step available` as safe failure (not a successful undo)
 - Validate before render/export when applicable
 - Use GUI bridge for Blender 4.2 GLB/GLTF workflows
 - Preserve `request_id` + `receipt` for correlation
