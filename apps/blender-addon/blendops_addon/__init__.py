@@ -17,6 +17,7 @@ import os
 import re
 import sys
 import time
+import uuid
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from threading import Thread
 from typing import Any, Dict, Optional
@@ -805,6 +806,14 @@ def handle_export_asset(command: Dict[str, Any]) -> Dict[str, Any]:
             next_steps=[f"Use output ending with {expected_extension}"],
         )
 
+    if export_format in ("glb", "gltf") and getattr(bpy.context, "window", None) is None:
+        return make_response(
+            ok=False,
+            operation="export.asset",
+            message="GLB/GLTF export requires a Blender GUI window context in Blender 4.2",
+            next_steps=["Start the BlendOps bridge from Blender GUI instead of background mode"],
+        )
+
     scene = bpy.context.scene
     mesh_objects = [obj for obj in scene.objects if obj.type == "MESH"]
     if len(mesh_objects) == 0:
@@ -870,7 +879,7 @@ def handle_export_asset(command: Dict[str, Any]) -> Dict[str, Any]:
         elif export_format == "gltf":
             run_export_with_context(lambda: bpy.ops.export_scene.gltf(
                 filepath=output_path,
-                export_format="GLTF_EMBEDDED",
+                export_format="GLTF_SEPARATE",
                 use_selection=selected_only,
                 export_apply=apply_modifiers,
             ))

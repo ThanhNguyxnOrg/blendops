@@ -1,184 +1,115 @@
 # Runtime Smoke Test: Export Asset
 
-**Status**: PASS (fix applied, pending manual verification)
+**Status**: PASS (GUI bridge, GLB)
 
 **Date**: 2026-04-26
 
 **Blender Version**: 4.2.5 LTS
 
-**Test Objective**: Verify export.asset command successfully exports GLB/GLTF/FBX files without AttributeError on bpy.context.active_object.
+**Pass/Fail Verdict**: **PASS for GUI bridge GLB export**
 
 ---
 
-## Original Failure
+## Scope
 
-**Error observed**:
-```
-AttributeError: 'Context' object has no attribute 'active_object'
-```
-
-**Location**: Inside Blender's `io_scene_gltf2` exporter during `bpy.ops.export_scene.gltf()` call.
-
-**Root Cause**: In headless/runtime bridge contexts, `bpy.context.active_object` may not exist as a context member. The glTF exporter expects this attribute to be present, but in non-UI contexts (like our HTTP bridge), the context hierarchy is incomplete.
+This smoke test records **real runtime evidence** for `export.asset` in Blender 4.2.5 LTS using the **GUI bridge mode**.
 
 ---
 
-## Fix Applied
+## Runtime Environment Evidence
 
-**File**: `apps/blender-addon/blendops_addon/__init__.py`
+Bridge startup log (GUI mode):
+- `BlendOps Bridge is running`
+- `URL: http://127.0.0.1:8765`
+- `BRIDGE_READY`
 
-**Function**: `handle_export_asset`
-
-**Change**: Added fallback logic to ensure `active_object_for_export` is never None when calling the exporter:
-
-```python
-selected_objects_for_export = [obj for obj in scene.objects if obj.select_get()]
-active_object_for_export = bpy.context.view_layer.objects.active
-
-if active_object_for_export is None:
-    if len(selected_objects_for_export) > 0:
-        active_object_for_export = selected_objects_for_export[0]
-    elif len(mesh_objects) > 0:
-        active_object_for_export = mesh_objects[0]
-```
-
-**Rationale**:
-- Uses `bpy.context.view_layer.objects.active` (data API) instead of relying on `bpy.context.active_object` (UI context member)
-- Ensures the exporter always receives a valid active_object via `temp_override`
-- Fallback chain: current active → first selected → first mesh
-- Minimal change, preserves existing restoration logic
+Working directory:
+- `D:\Code\blendops`
 
 ---
 
-## Manual Test Procedure
+## Commands Executed and Results
 
-### Prerequisites
-1. Start Blender 4.2.5 LTS
-2. Load and enable BlendOps Bridge addon from `apps/blender-addon/blendops_addon`
-3. Confirm bridge console shows "bridge ready" on `http://127.0.0.1:8765`
+### 1) Bridge status
 
-### Test Commands
-
+Command:
 ```bash
-# Create test scene
+npm run cli -- bridge status --verbose
+```
+
+Result:
+- `ok: true`
+- `operation: "bridge.status"`
+- `implemented_operations` includes `"export.asset"`
+
+### 2) Create object
+
+Command:
+```bash
 npm run cli -- object create --type cube --name test_cube --location 0,0,1 --scale 1,1,1
+```
 
-# Export GLB
+Result:
+- `ok: true`
+- `operation: "object.create"`
+- created object name: `"test_cube"`
+
+### 3) Export GLB
+
+Command:
+```bash
 npm run cli -- export asset --format glb --output exports/test_scene.glb
-
-# Export GLTF
-npm run cli -- export asset --format gltf --output exports/test_scene.gltf
-
-# Export FBX
-npm run cli -- export asset --format fbx --output exports/test_scene.fbx
 ```
 
-### Expected Results
-
-**For each export command**:
-
-JSON response:
-```json
-{
-  "ok": true,
-  "operation": "export.asset",
-  "message": "Exported asset to exports/test_scene.glb",
-  "data": {
-    "format": "glb",
-    "output": "exports/test_scene.glb",
-    "selected_only": false,
-    "apply_modifiers": true,
-    "file_exists": true,
-    "file_size_bytes": 1234
-  },
-  "warnings": [],
-  "next_steps": ["Verify exported asset in target tool"]
-}
-```
-
-**File system verification**:
-- `exports/test_scene.glb` exists
-- `exports/test_scene.gltf` exists
-- `exports/test_scene.fbx` exists
-- Each file size > 0 bytes
-
-**Blender console**:
-- No AttributeError
-- Shows "received: export.asset"
-- Shows "completed: export.asset ok"
+Result:
+- `ok: true`
+- `operation: "export.asset"`
+- `message: "Exported asset to exports/test_scene.glb"`
+- `data.format: "glb"`
+- `data.output: "exports/test_scene.glb"`
+- `data.selected_only: false`
+- `data.apply_modifiers: true`
+- `data.file_exists: true`
+- `data.file_size_bytes: 3472`
 
 ---
 
-## Technical Details
+## File Verification
 
-### Context Override Implementation
-
-The fix uses Blender 4.2's `temp_override` context manager:
-
-```python
-def run_export_with_context(export_callable: Any) -> None:
-    if hasattr(bpy.context, "temp_override"):
-        override_kwargs: Dict[str, Any] = {
-            "scene": scene,
-            "view_layer": bpy.context.view_layer,
-        }
-        if active_object_for_export is not None:
-            override_kwargs["active_object"] = active_object_for_export
-            override_kwargs["object"] = active_object_for_export
-        if len(selected_objects_for_export) > 0:
-            override_kwargs["selected_objects"] = selected_objects_for_export
-            override_kwargs["selected_editable_objects"] = selected_objects_for_export
-        with bpy.context.temp_override(**override_kwargs):
-            export_callable()
-    else:
-        export_callable()
-```
-
-### State Restoration
-
-Original selection and active object are preserved and restored:
-
-```python
-# Before export
-active_object = bpy.context.view_layer.objects.active
-original_selected = [obj for obj in scene.objects if obj.select_get()]
-
-# After export (success path)
-if selected_only:
-    for obj in scene.objects:
-        obj.select_set(False)
-    for obj in original_selected:
-        obj.select_set(True)
-    bpy.context.view_layer.objects.active = active_object
-
-# After export (exception path)
-try:
-    for obj in scene.objects:
-        obj.select_set(False)
-    for obj in original_selected:
-        obj.select_set(True)
-    bpy.context.view_layer.objects.active = active_object
-except Exception:
-    pass
-```
+Verified artifact:
+- `D:\Code\blendops\exports\test_scene.glb`
+- exists: `true`
+- size: `3472` bytes
 
 ---
 
-## References
+## Generated File Exclusion (Git Hygiene)
 
-- [Blender API: temp_override](https://docs.blender.org/api/4.2/bpy.types.Context.html#bpy.types.Context.temp_override)
-- [Blender StackExchange: GLTF export context issue](https://blender.stackexchange.com/questions/200616/script-to-export-gltf-fails-with-context-object-has-no-attribute-active-objec)
-- [Blender StackExchange: active_object vs view_layer.objects.active](https://blender.stackexchange.com/questions/244486/context-active-object-vs-context-scene-objects-active)
+Confirmed generated runtime export artifact is excluded from commit scope:
+- `exports/test_scene.glb` is **not committed**
+- `exports/`, `.tmp/`, logs, `dist/`, `node_modules/`, `renders/` are not to be committed
 
 ---
 
-## Verification Status
+## Background Mode Limitation (Blender 4.2)
 
-- [x] Fix implemented
-- [x] Build passes (typecheck + compile)
-- [x] LSP diagnostics clean (no new errors)
-- [ ] Manual runtime test (requires Blender GUI)
-- [ ] Export file exists and size > 0
-- [ ] No AttributeError in Blender console
+Background mode (`-b`) GLB/GLTF export has a Blender 4.2 context limitation when `bpy.context.window` is `None`.
 
-**Next Steps**: Manual verification by starting Blender bridge and running test commands above.
+Observed background failure pattern:
+- `AttributeError: 'NoneType' object has no attribute 'scene'`
+- around `bpy.context.window.scene = blender_scene` in Blender glTF exporter path
+
+Current handling in addon:
+- `handle_export_asset` now returns a structured failure for GLB/GLTF when no GUI window context is present:
+  - `operation: "export.asset"`
+  - `message: "GLB/GLTF export requires a Blender GUI window context in Blender 4.2"`
+  - `next_steps: ["Start the BlendOps bridge from Blender GUI instead of background mode"]`
+
+FBX behavior is unchanged by this guard.
+
+---
+
+## Notes
+
+- This PASS verdict applies to **GUI bridge GLB runtime export**.
+- Do not treat background-mode GLB/GLTF as PASS until Blender context limitations are resolved upstream or by a proven safe workaround.
