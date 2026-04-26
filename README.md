@@ -1,23 +1,20 @@
 # BlendOps
 
-Safe, inspectable Blender automation for AI agents via CLI + MCP + a managed Blender bridge.
+<p align="left">
+  <img alt="Node >=18" src="https://img.shields.io/badge/node-%3E%3D18-339933?logo=node.js&logoColor=white">
+  <img alt="Blender >=3.6" src="https://img.shields.io/badge/blender-%3E%3D3.6-F5792A?logo=blender&logoColor=white">
+  <img alt="MCP ready" src="https://img.shields.io/badge/MCP-ready-111827">
+  <img alt="CLI first" src="https://img.shields.io/badge/workflow-CLI%20first-7C3AED">
+  <img alt="Managed bridge" src="https://img.shields.io/badge/bridge-managed-0EA5E9">
+  <img alt="No arbitrary Python" src="https://img.shields.io/badge/security-no%20arbitrary%20python-16A34A">
+  <img alt="Runtime smoke tested" src="https://img.shields.io/badge/runtime-smoke%20tested-22C55E">
+</p>
 
-BlendOps focuses on deterministic, schema-validated operations and structured JSON responses.
+Safe, inspectable Blender automation for AI agents via CLI + MCP + managed Blender bridge.
 
-## What BlendOps is
+> 🛡️ **Security**: BlendOps exposes typed operations, not arbitrary Python execution.
 
-BlendOps combines three layers:
-
-- Typed CLI for deterministic local workflows
-- MCP server for agent tool-calling
-- Blender bridge for runtime operations
-
-## Requirements
-
-- Node.js >= 18
-- Blender >= 3.6
-
-## Quick install
+## 🚀 Quick install
 
 ```bash
 git clone https://github.com/ThanhNguyxnOrg/blendops.git
@@ -26,9 +23,7 @@ npm install
 npm run build
 ```
 
-## Start Blender bridge
-
-Primary path (automated bridge startup):
+## 🎛️ Start the managed Blender bridge
 
 ```bash
 node apps/cli/dist/index.js bridge start --mode gui --verbose
@@ -43,7 +38,9 @@ Windows explicit Blender path:
 node apps/cli/dist/index.js bridge start --mode gui --blender "C:\Program Files\Blender Foundation\Blender 4.2\blender.exe" --verbose
 ```
 
-## CLI quick examples
+## 🧰 CLI quick examples
+
+> ✅ Keep stdout machine-parseable by using the built CLI directly.
 
 ```bash
 node apps/cli/dist/index.js object create --type cube --name test_cube --location 0,0,1
@@ -51,7 +48,9 @@ node apps/cli/dist/index.js validate scene --preset basic
 node apps/cli/dist/index.js render preview --output renders/preview.png
 ```
 
-## MCP quick setup
+## 🧠 MCP quick setup
+
+> 🧠 MCP server provides tool-calling access to the same typed BlendOps operations.
 
 ```bash
 npm run build
@@ -74,16 +73,44 @@ Generic MCP config:
 }
 ```
 
-## Full documentation
+## ✅ What works today
 
-- [Documentation index](./docs/README.md)
-- [Install guide](./docs/install.md)
-- [AI agent usage](./docs/ai-agent-usage.md)
-- [Manual test guide](./docs/manual-test.md)
-- [Observability guide](./docs/observability.md)
-- [Eval prompts](./docs/evals.md)
+| Area | Operations |
+|---|---|
+| Bridge | `bridge.start`, `bridge.status`, `bridge.operations`, `bridge.logs`, `bridge.stop` |
+| Scene | `scene.inspect` |
+| Object | `object.create`, `object.transform` |
+| Material | `material.create`, `material.apply` |
+| Lighting | `lighting.setup` |
+| Camera | `camera.set` |
+| Render | `render.preview` |
+| Validate | `validate.scene` |
+| Export | `export.asset` |
 
-## Known limitations
+## 🧭 Architecture
+
+```mermaid
+flowchart LR
+  A[Human / AI Agent] --> B[CLI]
+  A --> C[MCP Server]
+  B --> D[Core + Schemas]
+  C --> D
+  D --> E[Managed Blender Bridge]
+  E --> F[Blender Python API]
+```
+
+## 📚 Full documentation
+
+| Need | Read |
+|---|---|
+| Install from scratch | [docs/install.md](./docs/install.md) |
+| Use from AI/MCP | [docs/ai-agent-usage.md](./docs/ai-agent-usage.md) |
+| Manual runtime checks | [docs/manual-test.md](./docs/manual-test.md) |
+| Debug logs/status | [docs/observability.md](./docs/observability.md) |
+| Eval prompts | [docs/evals.md](./docs/evals.md) |
+| Runtime evidence | [docs/README.md#-runtime-evidence](./docs/README.md#-runtime-evidence) |
+
+## ⚠️ Known limitations
 
 - Blender 4.2 GLB/GLTF export requires GUI bridge mode.
 - Background mode is limited/unvalidated for persistent bridge runtime.

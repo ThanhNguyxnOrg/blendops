@@ -1,37 +1,54 @@
-# BlendOps Documentation
+# 📚 BlendOps Documentation
 
-Documentation index for BlendOps.
+Lightweight documentation hub for BlendOps.
 
-## Start here
+## 🚀 Start here
 
 | Need | Read |
 |---|---|
-| Install and start BlendOps | [Install guide](./install.md) |
-| Use BlendOps from AI/MCP | [AI agent usage](./ai-agent-usage.md) |
-| Run manual runtime checks | [Manual test guide](./manual-test.md) |
-| Debug bridge/logs/request IDs | [Observability guide](./observability.md) |
-| Evaluate agent behavior | [Eval prompts](./evals.md) |
-| Review runtime evidence | [Runtime evidence](#runtime-evidence) |
-| Understand research/prior art | [Prior art](./prior-art.md) |
+| 📦 Install and start BlendOps | [Install guide](./install.md) |
+| 🧠 Use BlendOps from AI/MCP | [AI agent usage](./ai-agent-usage.md) |
+| 🧪 Run manual runtime checks | [Manual test guide](./manual-test.md) |
+| 🎛️ Debug bridge/logs/request IDs | [Observability guide](./observability.md) |
+| ✅ Evaluate agent behavior | [Eval prompts](./evals.md) |
+| 🧪 Review runtime evidence | [Runtime evidence](#-runtime-evidence) |
+| 🔍 Understand research/prior art | [Prior art](./prior-art.md) |
 
-## Runtime evidence
+## 🧰 Setup and usage
 
-- [runtime-smoke-test.md](./runtime-smoke-test.md)
-- [runtime-smoke-test-object-transform.md](./runtime-smoke-test-object-transform.md)
-- [runtime-smoke-test-material.md](./runtime-smoke-test-material.md)
-- [runtime-smoke-test-lighting.md](./runtime-smoke-test-lighting.md)
-- [runtime-smoke-test-camera.md](./runtime-smoke-test-camera.md)
-- [runtime-smoke-test-render.md](./runtime-smoke-test-render.md)
-- [runtime-smoke-test-validate.md](./runtime-smoke-test-validate.md)
-- [runtime-smoke-test-export.md](./runtime-smoke-test-export.md)
-- [runtime-smoke-test-observability.md](./runtime-smoke-test-observability.md)
-- [runtime-smoke-test-request-correlation.md](./runtime-smoke-test-request-correlation.md)
-- [runtime-smoke-test-bridge-bootstrap.md](./runtime-smoke-test-bridge-bootstrap.md)
+- [Install and bridge bootstrap](./install.md)
+- [Manual runtime testing](./manual-test.md)
 
-## Project roadmap
+## 🧠 AI and MCP
+
+- [AI-agent usage guide](./ai-agent-usage.md)
+- [Eval prompts](./evals.md)
+
+## 🧪 Runtime evidence
+
+| Evidence | Focus |
+|---|---|
+| [runtime-smoke-test.md](./runtime-smoke-test.md) | End-to-end baseline smoke run |
+| [runtime-smoke-test-object-transform.md](./runtime-smoke-test-object-transform.md) | `object.transform` runtime validation |
+| [runtime-smoke-test-material.md](./runtime-smoke-test-material.md) | Material create/apply validation |
+| [runtime-smoke-test-lighting.md](./runtime-smoke-test-lighting.md) | `lighting.setup` runtime validation |
+| [runtime-smoke-test-camera.md](./runtime-smoke-test-camera.md) | `camera.set` runtime validation |
+| [runtime-smoke-test-render.md](./runtime-smoke-test-render.md) | `render.preview` runtime validation |
+| [runtime-smoke-test-validate.md](./runtime-smoke-test-validate.md) | `validate.scene` runtime validation |
+| [runtime-smoke-test-export.md](./runtime-smoke-test-export.md) | `export.asset` runtime validation |
+| [runtime-smoke-test-observability.md](./runtime-smoke-test-observability.md) | stdout/stderr/bridge-log checks |
+| [runtime-smoke-test-request-correlation.md](./runtime-smoke-test-request-correlation.md) | request_id + receipt correlation |
+| [runtime-smoke-test-bridge-bootstrap.md](./runtime-smoke-test-bridge-bootstrap.md) | managed bridge startup validation |
+
+## 🔍 Research and architecture
+
+- [Implementation mining](./implementation-mining.md)
+- [Bridge lifecycle prior art](./bridge-lifecycle-prior-art.md)
+
+## 🧭 Roadmap
 
 - [TODO](../TODO.md)
 
-## Compatibility index
+## Compatibility
 
 [docs/INDEX.md](./INDEX.md) remains available as a compatibility redirect.
