@@ -85,6 +85,7 @@ Generic MCP config:
 | Area | Operations |
 |---|---|
 | Bridge | `bridge.start`, `bridge.status`, `bridge.operations`, `bridge.logs`, `bridge.stop` |
+| History | `undo.last` |
 | Scene | `scene.inspect` |
 | Object | `object.create`, `object.transform` |
 | Material | `material.create`, `material.apply` |

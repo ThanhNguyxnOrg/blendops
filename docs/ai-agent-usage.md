@@ -11,6 +11,7 @@ This guide describes how AI agents should use BlendOps safely and deterministica
 - Start bridge first, then verify readiness
 - Call `list_operations` before guessing tool availability
 - Inspect scene before destructive or stateful edits
+- Use `undo_last` only when reverting the latest typed operation is intended
 - Validate before render/export when applicable
 - Use GUI bridge for Blender 4.2 GLB/GLTF workflows
 - Preserve `request_id` + `receipt` for correlation
@@ -39,6 +40,7 @@ AI should call `list_operations` before guessing tools.
 - `get_bridge_logs`
 - `list_operations`
 - `inspect_scene`
+- `undo_last`
 - `create_object`
 - `transform_object`
 - `create_material`

@@ -9,6 +9,7 @@ import {
   type BridgeStartRequest,
   type BridgeStopRequest,
   type BridgeLogsRequest,
+  type UndoLastRequest,
   type MaterialApplyRequest,
   type MaterialCreateRequest,
   type LightingSetupRequest,
@@ -195,6 +196,10 @@ export class BridgeClient {
 
   async bridgeLogs(input: Partial<Omit<BridgeLogsRequest, "operation">> = {}): Promise<BlendOpsResponse> {
     return this.send({ operation: "bridge.logs", ...input });
+  }
+
+  async undoLast(input: Partial<Omit<UndoLastRequest, "operation">> = {}): Promise<BlendOpsResponse> {
+    return this.send({ operation: "undo.last", ...input });
   }
 
   async getOperationManifest(): Promise<BridgeOperationsData> {

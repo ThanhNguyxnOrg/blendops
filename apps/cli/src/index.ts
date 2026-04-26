@@ -140,6 +140,7 @@ Usage:
   blendops export asset --format gltf --output exports/test_scene.gltf
   blendops export asset --format fbx --output exports/test_scene.fbx
   blendops export asset --format glb --output exports/test_scene.glb --selected-only --no-apply-modifiers
+  blendops undo last --verbose
 
 Options:
   --verbose, -v  Show detailed progress logs (stderr)
@@ -153,6 +154,7 @@ Implemented in v0.1:
   - bridge logs
   - bridge status
   - bridge operations
+  - undo last
   - scene inspect
   - object create
   - object transform
@@ -373,6 +375,12 @@ async function main(): Promise<number> {
 
   if (group === "scene" && action === "inspect") {
     const res = await timeOperation("scene.inspect", () => client.inspectScene(commandRequestId), flags, commandRequestId);
+    console.log(JSON.stringify(withRequestId(res, commandRequestId), null, 2));
+    return res.ok ? 0 : 1;
+  }
+
+  if (group === "undo" && action === "last") {
+    const res = await timeOperation("undo.last", () => client.undoLast({ request_id: commandRequestId }), flags, commandRequestId);
     console.log(JSON.stringify(withRequestId(res, commandRequestId), null, 2));
     return res.ok ? 0 : 1;
   }
@@ -805,7 +813,7 @@ async function main(): Promise<number> {
     warnings: ["Unsupported command in MVP"],
     next_steps: [
       "Run `blendops --help` to see available commands",
-      "Use bridge/scene/object/material/lighting/camera/render/validate/export commands shown in help",
+      "Use bridge/undo/scene/object/material/lighting/camera/render/validate/export commands shown in help",
     ],
   });
 

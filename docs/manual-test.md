@@ -83,6 +83,8 @@ Expected:
 ```bash
 node apps/cli/dist/index.js object create --type cube --name test_cube --location 0,0,1 --scale 1,1,1
 node apps/cli/dist/index.js object transform --name test_cube --location 1,0,1
+node apps/cli/dist/index.js undo last --verbose
+node apps/cli/dist/index.js scene inspect --verbose
 node apps/cli/dist/index.js material create --name red_plastic --color "#ff0000" --roughness 0.5 --metallic 0
 node apps/cli/dist/index.js material apply --object test_cube --material red_plastic
 node apps/cli/dist/index.js lighting setup --preset studio --target test_cube

@@ -68,6 +68,7 @@ OPERATION_REGISTRY: Dict[str, Optional[OperationHandler]] = {
     "bridge.start": None,
     "bridge.stop": None,
     "bridge.logs": None,
+    "undo.last": None,
     "object.create": None,
     "object.transform": None,
     "material.create": None,
@@ -111,6 +112,14 @@ OPERATION_MANIFEST = {
         "destructive": False,
         "runtime_notes": "Returns managed bridge process log tails from CLI lifecycle helper",
         "evidence_doc": "docs/runtime-smoke-test.md",
+    },
+    "undo.last": {
+        "category": "history",
+        "cli_supported": True,
+        "mcp_supported": True,
+        "destructive": True,
+        "runtime_notes": "Uses Blender undo stack; affects last undoable scene operation",
+        "evidence_doc": "docs/manual-test.md",
     },
     "scene.inspect": {
         "category": "scene",
@@ -372,6 +381,62 @@ def handle_bridge_logs(command: Dict[str, Any]) -> Dict[str, Any]:
             "Inspect Blender console window for in-process bridge lifecycle logs",
         ],
     )
+
+
+def handle_undo_last(_command: Dict[str, Any]) -> Dict[str, Any]:
+    undo_poll = bpy.ops.ed.undo.poll()
+    if not undo_poll:
+        return make_response(
+            ok=False,
+            operation="undo.last",
+            message="No undo step available",
+            data={
+                "undone": False,
+                "detail": "Blender undo stack is empty or undo is unavailable in current context",
+            },
+            warnings=["Undo not executed because no undo step is available"],
+            next_steps=["Run `blendops scene inspect` to confirm current scene state"],
+        )
+
+    try:
+        result = bpy.ops.ed.undo()
+        was_undone = "FINISHED" in result
+
+        if was_undone:
+            return make_response(
+                ok=True,
+                operation="undo.last",
+                message="Undo executed",
+                data={
+                    "undone": True,
+                    "detail": "Reverted last undoable scene operation",
+                },
+                next_steps=["Run `blendops scene inspect` to verify scene changes after undo"],
+            )
+
+        return make_response(
+            ok=False,
+            operation="undo.last",
+            message="Undo did not execute",
+            data={
+                "undone": False,
+                "detail": "Blender undo operator did not report FINISHED",
+            },
+            warnings=["Undo operator returned without FINISHED status"],
+            next_steps=["Run `blendops scene inspect` to confirm scene state"],
+        )
+    except Exception as e:
+        return make_response(
+            ok=False,
+            operation="undo.last",
+            message=f"Undo failed: {str(e)}",
+            data={
+                "undone": False,
+                "detail": "Undo execution raised an exception",
+            },
+            warnings=[traceback.format_exc()],
+            next_steps=["Check Blender console for detailed error", "Run `blendops scene inspect` to confirm scene state"],
+        )
 
 
 def handle_object_create(command: Dict[str, Any]) -> Dict[str, Any]:
@@ -2004,6 +2069,7 @@ def register() -> None:
     OPERATION_REGISTRY["bridge.start"] = handle_bridge_start
     OPERATION_REGISTRY["bridge.stop"] = handle_bridge_stop
     OPERATION_REGISTRY["bridge.logs"] = handle_bridge_logs
+    OPERATION_REGISTRY["undo.last"] = handle_undo_last
     OPERATION_REGISTRY["object.create"] = handle_object_create
     OPERATION_REGISTRY["object.transform"] = handle_object_transform
     OPERATION_REGISTRY["material.create"] = handle_material_create

@@ -71,6 +71,15 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
       },
     },
     {
+      name: "undo_last",
+      description: "Undo the last undoable Blender scene operation.",
+      inputSchema: {
+        type: "object",
+        properties: {},
+        additionalProperties: false,
+      },
+    },
+    {
       name: "list_operations",
       description: "List BlendOps operation manifest and compatibility notes.",
       inputSchema: {
@@ -316,6 +325,21 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 
   if (name === "inspect_scene") {
     const result = await client.inspectScene(request_id);
+    const duration = Date.now() - start;
+    mcpLog(`tool result: ${name} ok=${result.ok} duration=${duration}ms request_id=${result.request_id ?? request_id}`);
+    return {
+      content: [
+        {
+          type: "text",
+          text: JSON.stringify({ ...result, request_id: result.request_id ?? request_id }, null, 2),
+        },
+      ],
+      isError: !result.ok,
+    };
+  }
+
+  if (name === "undo_last") {
+    const result = await client.undoLast({ request_id });
     const duration = Date.now() - start;
     mcpLog(`tool result: ${name} ok=${result.ok} duration=${duration}ms request_id=${result.request_id ?? request_id}`);
     return {
@@ -1118,7 +1142,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
             message: `Unknown tool: ${name}`,
             data: {},
             warnings: ["Tool not implemented in MVP"],
-            next_steps: ["Use tool `inspect_scene`, `list_operations`, `start_bridge`, `stop_bridge`, `get_bridge_logs`, `create_object`, `transform_object`, `create_material`, `apply_material`, `setup_lighting`, `set_camera`, `render_preview`, `validate_scene`, or `export_asset`"],
+            next_steps: ["Use tool `inspect_scene`, `undo_last`, `list_operations`, `start_bridge`, `stop_bridge`, `get_bridge_logs`, `create_object`, `transform_object`, `create_material`, `apply_material`, `setup_lighting`, `set_camera`, `render_preview`, `validate_scene`, or `export_asset`"],
             request_id,
           },
           null,

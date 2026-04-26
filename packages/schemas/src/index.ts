@@ -59,6 +59,16 @@ export const BridgeLogsRequestSchema = z.object({
   request_id: z.string().optional(),
 });
 
+export const UndoLastRequestSchema = z.object({
+  operation: z.literal("undo.last"),
+  request_id: z.string().optional(),
+});
+
+export const UndoLastDataSchema = z.object({
+  undone: z.boolean(),
+  detail: z.string().optional(),
+});
+
 export const OperationManifestEntrySchema = z.object({
   name: z.string(),
   category: z.string(),
@@ -290,6 +300,8 @@ export type BridgeStartMode = z.infer<typeof BridgeStartModeSchema>;
 export type BridgeStartRequest = z.infer<typeof BridgeStartRequestSchema>;
 export type BridgeStopRequest = z.infer<typeof BridgeStopRequestSchema>;
 export type BridgeLogsRequest = z.infer<typeof BridgeLogsRequestSchema>;
+export type UndoLastRequest = z.infer<typeof UndoLastRequestSchema>;
+export type UndoLastData = z.infer<typeof UndoLastDataSchema>;
 export type OperationManifestEntry = z.infer<typeof OperationManifestEntrySchema>;
 export type BridgeOperationsData = z.infer<typeof BridgeOperationsDataSchema>;
 export type ObjectCreateRequest = z.infer<typeof ObjectCreateRequestSchema>;
@@ -319,6 +331,7 @@ export const BridgeCommandSchema = z.discriminatedUnion("operation", [
   BridgeStartRequestSchema,
   BridgeStopRequestSchema,
   BridgeLogsRequestSchema,
+  UndoLastRequestSchema,
   ObjectCreateRequestSchema,
   ObjectTransformRequestSchema,
   MaterialCreateRequestSchema,

@@ -20,6 +20,7 @@ This roadmap reflects **current code + runtime evidence**.
 | `render.preview` | ✅ | CLI + MCP + runtime evidence |
 | `validate.scene` | ✅ | CLI + MCP + runtime evidence |
 | `export.asset` | ✅ | GUI bridge GLB runtime evidence recorded |
+| `undo.last` | ✅ | CLI + MCP + typed schema/core/addon slice implemented |
 | Observability split (stdout/stderr/bridge console) | ✅ | Implemented and smoke-tested |
 
 ---
@@ -45,11 +46,10 @@ This roadmap reflects **current code + runtime evidence**.
 
 ## 🚧 Next candidates
 
-1. `undo.last`
-2. `scene.clear --confirm`
-3. Batch operations (safe multi-step orchestration)
-4. Validation preset expansion
-5. Packaging/release automation
+1. `scene.clear --confirm`
+2. Batch operations (safe multi-step orchestration)
+3. Validation preset expansion
+4. Packaging/release automation
 
 ---
 
