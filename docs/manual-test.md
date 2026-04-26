@@ -1,248 +1,125 @@
-# Manual Test Guide
+# 📚 Manual Test Guide
 
-This guide verifies the current MVP vertical slices:
+Practical manual verification guide for currently supported BlendOps operations.
 
-- `blendops bridge status`
-- `blendops scene inspect`
-- `blendops object create`
-- `blendops object transform`
-- `blendops material create`
-- `blendops material apply`
-- `blendops lighting setup`
-- `blendops camera set`
-- `blendops render preview`
-- `blendops validate scene`
-- `blendops export asset`
+## 🧰 Prerequisites
 
-## 1) Install dependencies
+- Node.js >=18
+- Blender >=3.6
+- Blender 4.2.5 LTS was used for current runtime evidence
+- Run from repo root (`D:\Code\blendops` on Windows examples below):
 
 ```bash
 npm install
-```
-
-## 2) Clean + build packages
-
-```bash
 npm run clean
 npm run typecheck
 npm run build
 ```
 
+## 🎛️ Starting the Blender bridge
 
-## 3) Start Blender bridge addon
+### GUI bridge mode
 
-1. Open Blender (3.6+)
-2. Install addon from `apps/blender-addon/blendops_addon`
-3. Enable **BlendOps Bridge** addon
-4. Confirm console prints bridge startup on `http://127.0.0.1:8765`
+- Recommended for full runtime validation.
+- Required for GLB/GLTF export on Blender 4.2.
+- Keep Blender + bridge console window open while testing.
 
-Note:
-- A Blender console window is expected on Windows.
-- The console shows human-readable operation logs.
-- Do not close it while using BlendOps.
-- Use `bridge status` and CLI `--verbose` output to verify liveness/progress.
+### Background bridge mode
 
-## 4) Verify bridge status
+- Useful for quick non-export checks.
+- Can run many operations (inspect/create/transform/material/lighting/camera/validate).
+- Not validated for GLB/GLTF export on Blender 4.2 because glTF exporter needs window context.
 
-### Via CLI
+- A black Blender console window on Windows is expected.
+- Do not close it during tests (it hosts the running bridge process).
+
+## ✅ Quick health checks
+
+Verify bridge connectivity before running full test sequence:
 
 ```bash
 npm run cli -- bridge status --verbose
+npm run cli -- scene inspect --verbose
 ```
 
-Expected JSON shape:
+**Expected outcomes:**
 
-```json
-{
-  "ok": true,
-  "operation": "bridge.status",
-  "message": "BlendOps bridge is running",
-  "data": {
-    "version": "0.1.0"
-  },
-  "warnings": [],
-  "next_steps": []
-}
-```
+- `bridge status`: `ok: true`, `operation: "bridge.status"`, `data.version` present
+- `scene inspect`: `ok: true`, `operation: "scene.inspect"`, `data.objects` array present
+- CLI stdout contains valid JSON only
+- CLI stderr shows timing logs (with `--verbose`)
+- Bridge console shows operation lifecycle logs
 
-### Via browser (optional)
+## 🧪 Full validation sequence
 
-Open in browser or use curl:
-```
-http://127.0.0.1:8765/status
-```
-
-Expected:
-- Browser shows JSON status response
-- Bridge console logs: `[BlendOps ...] status check ok`
-- No scary 501 or HTTP error spam
-
-## 5) Inspect scene
-
-```bash
-npm run cli -- scene inspect
-```
-
-Expected:
-- `ok: true`
-- `operation: "scene.inspect"`
-- `data.objects` array present
-- `data.stats.object_count` number present
-
-## 6) Create primitive object
+Run the complete operation chain to verify end-to-end functionality:
 
 ```bash
 npm run cli -- object create --type cube --name test_cube --location 0,0,1 --scale 1,1,1
-```
-
-Expected:
-- `ok: true`
-- `operation: "object.create"`
-- `data.object.name === "test_cube"`
-
-## 7) Transform object
-
-```bash
 npm run cli -- object transform --name test_cube --location 1,0,1
-```
-
-Expected:
-- `ok: true`
-- `operation: "object.transform"`
-- `data.object.name === "test_cube"`
-- `data.object.location === [1,0,1]`
-
-## 8) Create material
-
-```bash
 npm run cli -- material create --name red_plastic --color "#ff0000" --roughness 0.5 --metallic 0
-```
-
-Expected:
-- `ok: true`
-- `operation: "material.create"`
-- `data.material.name === "red_plastic"`
-
-## 9) Apply material to object
-
-```bash
 npm run cli -- material apply --object test_cube --material red_plastic
-```
-
-Expected:
-- `ok: true`
-- `operation: "material.apply"`
-- `data.object.name === "test_cube"`
-- `data.object.materials` contains `"red_plastic"`
-
-## 10) Set up lighting preset
-
-```bash
 npm run cli -- lighting setup --preset studio --target test_cube
-```
-
-Expected:
-- `ok: true`
-- `operation: "lighting.setup"`
-- `data.preset === "studio"`
-- `data.target === "test_cube"`
-- `data.lights` includes `"blendops_studio_light"`
-
-## 11) Set camera targeting test object
-
-```bash
 npm run cli -- camera set --target test_cube --distance 5 --focal-length 50
-```
-
-Expected:
-- `ok: true`
-- `operation: "camera.set"`
-- `data.camera.name === "blendops_camera"`
-- `data.active_camera === "blendops_camera"`
-
-## 12) Render preview
-
-```bash
 npm run cli -- render preview --output renders/preview.png --width 512 --height 512 --samples 16
-```
-
-Expected:
-- `ok: true`
-- `operation: "render.preview"`
-- `data.output === "renders/preview.png"`
-- `data.width === 512`
-- `data.height === 512`
-- `data.samples === 16`
-- `data.camera === "blendops_camera"`
-
-## 13) Validate scene
-
-```bash
 npm run cli -- validate scene --preset basic
 npm run cli -- validate scene --preset game_asset
 npm run cli -- validate scene --preset render_ready
-```
-
-Expected:
-- `ok: true` (validation executed successfully)
-- `operation: "validate.scene"`
-- `data.preset` matches requested preset
-- `data.checks` array is present and non-empty
-- `data.summary` object includes `pass`, `warn`, `fail`
-- `data.passed` is `false` only when one or more checks are `fail`
-
-## 14) Export asset
-
-```bash
 npm run cli -- export asset --format glb --output exports/test_scene.glb
-npm run cli -- export asset --format gltf --output exports/test_scene.gltf
-npm run cli -- export asset --format fbx --output exports/test_scene.fbx
 ```
 
-Expected:
-- `ok: true`
-- `operation: "export.asset"`
-- `data.format` matches requested format
-- `data.output` matches requested output path
-- `data.file_exists === true`
-- `data.file_size_bytes > 0`
+**Pass criteria:**
 
-## 15) Inspect scene again and confirm material + lighting + camera assignment
+- All commands return `ok: true`
+- Each operation name matches the command
+- `data` object contains expected fields per operation
+- No unhandled errors in bridge console
+- Generated files exist where specified (`renders/`, `exports/`)
 
-```bash
-npm run cli -- scene inspect
+---
+
+## 📦 Export verification
+
+After running export commands, verify generated files:
+
+```powershell
+Test-Path D:\Code\blendops\exports\test_scene.glb
+Get-Item D:\Code\blendops\exports\test_scene.glb | Select-Object FullName,Length
 ```
 
-Expected:
-- `ok: true`
-- `operation: "scene.inspect"`
-- `data.objects` contains an object with `name: "test_cube"`
-- `test_cube.location` is `[1,0,1]`
-- `test_cube.materials` contains `"red_plastic"`
-- `data.lights` includes `"blendops_studio_light"`
-- `data.cameras` includes `"blendops_camera"`
-## Common failures
+**Expected:**
 
-### Bridge not running
-- Symptom: `Failed to connect to Blender bridge`
-- Fix: Enable addon in Blender and verify port `8765`
+- File exists: `True`
+- `Length` > 0 bytes
+- Generated exports must **not** be committed to git
 
-### Addon not enabled
-- Symptom: `bridge status` fails even with Blender open
-- Fix: Ensure **BlendOps Bridge** checkbox is enabled in Blender Add-ons
+---
 
-### Unsupported primitive type
-- Symptom: `Unsupported primitive type`
-- Fix: Use one of: `cube`, `uv_sphere`, `ico_sphere`, `cylinder`, `cone`, `torus`, `plane`
+## 🧯 Troubleshooting
 
-### Transform target not found
-- Symptom: `Object `name` not found`
-- Fix: Run `npm run cli -- scene inspect` and use an existing object name
+| Symptom | Likely cause | Fix |
+|---------|--------------|-----|
+| `bridge status` fails | Bridge not running | Start Blender, enable BlendOps Bridge addon |
+| Black console appears | Bridge process running | Keep it open (hosts HTTP server) |
+| `package.json` missing error | Wrong working directory | `cd D:\Code\blendops` |
+| GLB export fails in `-b` mode | Missing window context | Use GUI bridge mode instead |
+| Stdout contains logs mixed with JSON | Logging regression | Logs must go to stderr only |
+| Generated files in `git status` | Runtime artifacts staged | Do not commit `exports/`, `renders/`, `.tmp/` |
 
-### Invalid material color
-- Symptom: `Invalid color value`
-- Fix: Use `--color "#RRGGBB"` or `#RRGGBBAA`
+---
 
-### Material/object not found for apply
-- Symptom: `Object `<name>` not found` or `Material `<name>` not found`
-- Fix: Run `scene inspect` for object names and `material create` before apply
+## 🧹 Cleanup
+
+Stop Blender bridge process:
+
+```powershell
+Get-Process blender -ErrorAction SilentlyContinue | Stop-Process -Force
+```
+
+---
+
+## 🔎 Notes
+
+- This guide intentionally stays concise.
+- For operation-by-operation runtime evidence JSON, see `docs/runtime-smoke-test-*.md`.
+- Export runtime PASS for GLB is validated in Blender 4.2.5 LTS **GUI bridge mode**.

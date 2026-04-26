@@ -72,8 +72,7 @@ This roadmap reflects **current code + runtime evidence**.
 
 ## 📚 Docs / research tasks
 
-- [x] Prior-art research refresh and inheritance guidance
-- [x] README landing-page polish and capability matrix
-- [x] Manual testing and observability docs polish
-- [x] Runtime smoke docs consistency formatting
+- [x] README / TODO / prior-art polish
+- [ ] Manual testing and observability docs polish
+- [ ] Evals and runtime smoke docs consistency formatting
 - [ ] Add docs lint/check workflow in CI
