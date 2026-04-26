@@ -18,3 +18,17 @@ exports/
 # IDE
 .vscode/
 .idea/
+
+# Local prior-art research clones
+Blender_mcp/
+antigravity-blender-mcp/
+blender-mcp-vxai/
+blender-open-mcp/
+dcc-mcp-blender/
+
+# Additional runtime artifacts
+screenshots/
+*.glb
+*.gltf
+*.fbx
+*.blend1
