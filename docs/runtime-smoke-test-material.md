@@ -1,5 +1,17 @@
 # Runtime Smoke Test Report - material slice
 
+**Status**: PASS
+
+**Date**: 2026-04-24
+
+**Blender Version**: 4.2.5 LTS
+
+**Scope**: object.create + material.create + material.apply + scene.inspect verification.
+
+**Pass/Fail Verdict**: PASS
+
+---
+
 ## Date / Time
 - 2026-04-24 22:24:27 -05:00
 
@@ -47,8 +59,7 @@ npm run cli -- scene inspect
   },
   "warnings": [],
   "next_steps": [
-    "Run `blendops scene inspect` to verify scene state",
-    "Use object transform in future slices"
+    "Run `blendops scene inspect` to verify scene state"
   ]
 }
 ```

@@ -1,5 +1,17 @@
 # Runtime Smoke Test Report - render.preview
 
+**Status**: PASS
+
+**Date**: 2026-04-25
+
+**Blender Version**: 4.2.5 LTS
+
+**Scope**: render.preview runtime evidence with no-camera error-path verification.
+
+**Pass/Fail Verdict**: PASS
+
+---
+
 ## Date / Time
 - 2026-04-25 04:36:34 -05:00
 

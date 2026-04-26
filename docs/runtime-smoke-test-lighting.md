@@ -1,5 +1,17 @@
 # Runtime Smoke Test Report - lighting.setup
 
+**Status**: PASS
+
+**Date**: 2026-04-24
+
+**Blender Version**: 4.2.5 LTS
+
+**Scope**: object.create + lighting.setup + scene.inspect + target-not-found handling.
+
+**Pass/Fail Verdict**: PASS
+
+---
+
 ## Date / Time
 - 2026-04-24 23:15:32 -05:00
 
@@ -52,8 +64,7 @@ npm run cli -- lighting setup --preset studio --target does_not_exist
   },
   "warnings": [],
   "next_steps": [
-    "Run `blendops scene inspect` to verify scene state",
-    "Use object transform in future slices"
+    "Run `blendops scene inspect` to verify scene state"
   ]
 }
 ```

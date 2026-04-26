@@ -1,5 +1,17 @@
 # Runtime Smoke Test Report - Observability
 
+**Status**: PASS
+
+**Date**: 2026-04-25
+
+**Blender Version**: 4.2.5 LTS
+
+**Scope**: observability evidence for stdout JSON / stderr logs / bridge console activity.
+
+**Pass/Fail Verdict**: PASS
+
+---
+
 ## Date / Time
 - 2026-04-25 08:47:21 -05:00
 
@@ -33,12 +45,12 @@ This report documents the observability improvements to BlendOps runtime behavio
 2. User installs and enables the BlendOps Bridge addon from `apps/blender-addon/blendops_addon`
 3. Addon's `register()` function calls `start_server()` which:
    - Starts HTTP server on `http://127.0.0.1:8765`
-   - Prints startup banner to Blender console (stdout)
+   - Prints startup banner to Blender console (human activity log window)
    - Logs "bridge ready" message
 
 **Blender console visibility**:
-- On Windows, Blender background mode shows a console window
-- This console displays the bridge startup banner and per-operation logs
+- On Windows, Blender shows a console window for bridge activity logs
+- This console displays startup banner and per-operation logs
 - Console output is **not redirected** - it prints directly to the visible window
 - Users should keep this window open while using BlendOps
 
@@ -207,7 +219,8 @@ Overall: **PASS**
 - The reported PowerShell launcher issue does not exist in this codebase
 - Runtime tests are manual (docs-driven), not automated via scripts
 - The Blender bridge is launched by manually enabling the addon in Blender
-- The "black console" on Windows is expected and serves as the live operation log stream
+- The console window on Windows is expected and serves as the live operation log stream
+- Observability contract remains: stdout JSON only, stderr human logs, bridge console activity logs
 - All observability improvements are already implemented and functional
 - No code changes were required for this verification pass
 

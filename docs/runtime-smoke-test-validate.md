@@ -1,5 +1,17 @@
 # Runtime Smoke Test Report - validate.scene
 
+**Status**: PASS
+
+**Date**: 2026-04-25
+
+**Blender Version**: 4.2.5 LTS
+
+**Scope**: validate.scene presets (basic/game_asset/render_ready) and invalid preset handling.
+
+**Pass/Fail Verdict**: PASS
+
+---
+
 ## Date / Time
 - 2026-04-25 05:04:08 -05:00
 

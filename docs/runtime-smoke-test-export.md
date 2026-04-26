@@ -8,6 +8,8 @@
 
 **Pass/Fail Verdict**: **PASS for GUI bridge GLB export**
 
+**Limitation**: Background GLB/GLTF on Blender 4.2 is guarded/limited due missing GUI window context.
+
 ---
 
 ## Scope

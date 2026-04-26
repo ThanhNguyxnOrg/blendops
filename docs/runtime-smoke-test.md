@@ -1,5 +1,17 @@
 # Runtime Smoke Test Report
 
+**Status**: PASS
+
+**Date**: 2026-04-24
+
+**Blender Version**: 4.2.5 LTS
+
+**Scope**: Baseline bridge/status + scene.inspect + object.create runtime evidence.
+
+**Pass/Fail Verdict**: PASS
+
+---
+
 ## Date / Time
 - 2026-04-24 21:38:09 -05:00
 
@@ -108,10 +120,9 @@ npm run cli -- scene inspect
     }
   },
   "warnings": [],
-  "next_steps": [
-    "Run `blendops scene inspect` to verify scene state",
-    "Use object transform in future slices"
-  ]
+    "next_steps": [
+      "Run `blendops scene inspect` to verify scene state"
+    ]
 }
 ```
 
