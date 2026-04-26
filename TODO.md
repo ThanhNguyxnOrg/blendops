@@ -56,16 +56,17 @@ This roadmap reflects **current code + runtime evidence**.
 ## 🛡️ Safety / destructive operations
 
 - [ ] Add explicit confirmation flow for destructive operations
-- [ ] Add operation-level risk annotations
+- [x] Add operation-level risk annotations (`bridge.operations` manifest with `destructive` flags)
 - [ ] Add dry-run semantics for eligible operations
 - [ ] Expand audit-friendly operation receipts
+- [ ] Add operation manifest parity check between CLI manifest and MCP `ListTools`
 
 ---
 
 ## 🧠 AI-agent UX improvements
 
 - [ ] Tighten eval prompts with pass/fail assertions per operation
-- [ ] Add operation compatibility matrix by Blender version and mode
+- [x] Add operation compatibility matrix by Blender version and mode (bridge.status compatibility fields)
 - [ ] Improve corrective `next_steps` consistency across operations
 
 ---

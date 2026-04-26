@@ -104,6 +104,7 @@ function printHelp(): void {
 
 Usage:
   blendops bridge status
+  blendops bridge operations
   blendops scene inspect
   blendops object create --type cube --name test_cube --location 0,0,1 --scale 1,1,1
   blendops object transform --name test_cube --location 1,0,1
@@ -135,6 +136,7 @@ Options:
 
 Implemented in v0.1:
   - bridge status
+  - bridge operations
   - scene inspect
   - object create
   - object transform
@@ -197,6 +199,12 @@ async function main(): Promise<number> {
 
   if (group === "bridge" && action === "status") {
     const res = await timeOperation("bridge.status", () => client.status(), flags);
+    console.log(JSON.stringify(res, null, 2));
+    return res.ok ? 0 : 1;
+  }
+
+  if (group === "bridge" && action === "operations") {
+    const res = await timeOperation("bridge.operations", () => client.operations(), flags);
     console.log(JSON.stringify(res, null, 2));
     return res.ok ? 0 : 1;
   }

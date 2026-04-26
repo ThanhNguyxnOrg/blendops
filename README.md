@@ -34,6 +34,7 @@ All three share the same typed schema/core contracts.
 | Area | Operation | CLI | MCP | Runtime evidence |
 |---|---|---:|---:|---:|
 | Bridge | `bridge.status` | ✅ | ✅ | ✅ |
+| Bridge | `bridge.operations` | ✅ | ✅ | ✅ |
 | Scene | `scene.inspect` | ✅ | ✅ | ✅ |
 | Object | `object.create` | ✅ | ✅ | ✅ |
 | Object | `object.transform` | ✅ | ✅ | ✅ |
@@ -58,6 +59,7 @@ npm run typecheck
 npm run build
 
 npm run cli -- bridge status --verbose
+npm run cli -- bridge operations --verbose
 npm run cli -- scene inspect --verbose
 ```
 
@@ -91,6 +93,7 @@ flowchart TD
 BlendOps adopts a constrained operation model:
 
 - Typed operation contracts (Zod/JSON schema compatible)
+- Operation manifest discovery (`bridge.operations`) for agent-safe introspection
 - Structured response envelope (`ok`, `operation`, `message`, `data`, `warnings`, `next_steps`)
 - No arbitrary Python execution tool by default
 - Validation-first request handling

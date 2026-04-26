@@ -67,6 +67,15 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
       },
     },
     {
+      name: "list_operations",
+      description: "List BlendOps operation manifest and compatibility notes.",
+      inputSchema: {
+        type: "object",
+        properties: {},
+        additionalProperties: false,
+      },
+    },
+    {
       name: "create_object",
       description: "Create a primitive mesh object in Blender scene.",
       inputSchema: {
@@ -266,6 +275,21 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 
   if (name === "inspect_scene") {
     const result = await client.inspectScene();
+    const duration = Date.now() - start;
+    mcpLog(`tool result: ${name} ok=${result.ok} duration=${duration}ms`);
+    return {
+      content: [
+        {
+          type: "text",
+          text: JSON.stringify(result, null, 2),
+        },
+      ],
+      isError: !result.ok,
+    };
+  }
+
+  if (name === "list_operations") {
+    const result = await client.operations();
     const duration = Date.now() - start;
     mcpLog(`tool result: ${name} ok=${result.ok} duration=${duration}ms`);
     return {
@@ -860,7 +884,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
             message: `Unknown tool: ${name}`,
             data: {},
             warnings: ["Tool not implemented in MVP"],
-            next_steps: ["Use tool `inspect_scene`, `create_object`, `transform_object`, `create_material`, `apply_material`, `setup_lighting`, `set_camera`, `render_preview`, `validate_scene`, or `export_asset`"],
+            next_steps: ["Use tool `inspect_scene`, `list_operations`, `create_object`, `transform_object`, `create_material`, `apply_material`, `setup_lighting`, `set_camera`, `render_preview`, `validate_scene`, or `export_asset`"],
           },
           null,
           2,

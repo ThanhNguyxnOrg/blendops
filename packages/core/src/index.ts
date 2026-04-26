@@ -4,6 +4,7 @@ import {
   makeResponse,
   type BlendOpsResponse,
   type BridgeCommand,
+  type BridgeOperationsData,
   type MaterialApplyRequest,
   type MaterialCreateRequest,
   type LightingSetupRequest,
@@ -57,6 +58,54 @@ export class BridgeClient {
 
   async inspectScene(): Promise<BlendOpsResponse> {
     return this.send({ operation: "scene.inspect" });
+  }
+
+  async operations(): Promise<BlendOpsResponse> {
+    return this.send({ operation: "bridge.operations" });
+  }
+
+  async getOperationManifest(): Promise<BridgeOperationsData> {
+    const response = await this.operations();
+    if (!response.ok) {
+      throw new Error(response.message);
+    }
+
+    const operations = response.data["operations"];
+    if (!Array.isArray(operations)) {
+      throw new Error("Bridge operations payload is missing operations array");
+    }
+
+    return {
+      operations: operations.map((entry) => {
+        if (typeof entry !== "object" || entry === null) {
+          throw new Error("Bridge operations payload contains invalid operation entry");
+        }
+
+        const typed = entry as Record<string, unknown>;
+        if (
+          typeof typed["name"] !== "string" ||
+          typeof typed["category"] !== "string" ||
+          typeof typed["cli_supported"] !== "boolean" ||
+          typeof typed["mcp_supported"] !== "boolean" ||
+          typeof typed["destructive"] !== "boolean"
+        ) {
+          throw new Error("Bridge operations payload entry has invalid shape");
+        }
+
+        const runtimeNotes = typed["runtime_notes"];
+        const evidenceDoc = typed["evidence_doc"];
+
+        return {
+          name: typed["name"],
+          category: typed["category"],
+          cli_supported: typed["cli_supported"],
+          mcp_supported: typed["mcp_supported"],
+          destructive: typed["destructive"],
+          runtime_notes: typeof runtimeNotes === "string" ? runtimeNotes : undefined,
+          evidence_doc: typeof evidenceDoc === "string" ? evidenceDoc : undefined,
+        };
+      }),
+    };
   }
 
   async createObject(input: Omit<ObjectCreateRequest, "operation">): Promise<BlendOpsResponse> {

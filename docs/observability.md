@@ -74,6 +74,7 @@ The bridge HTTP server runs in that Blender process. Closing the window stops th
 
 ```bash
 npm run cli -- bridge status --verbose
+npm run cli -- bridge operations --verbose
 ```
 
 **Expected:**
@@ -88,6 +89,14 @@ npm run cli -- bridge status --verbose
   - `last_error`
   - `last_duration_ms`
   - `implemented_operations`
+  - `blender_version`
+  - `blender_version_tuple`
+  - `background_mode`
+  - `has_window_context`
+  - `export_glb_supported`
+  - `export_gltf_supported`
+  - `export_fbx_supported`
+  - `compatibility_notes`
 
 ### Via browser
 
@@ -151,9 +160,11 @@ MCP responses remain protocol-valid. Logs are emitted only to stderr.
 ### If a command appears stuck
 
 1. Check bridge liveness:
-   ```bash
-   npm run cli -- bridge status --verbose
-   ```
+```bash
+npm run cli -- bridge status --verbose
+npm run cli -- bridge operations --verbose
+```
+
 2. Confirm Blender bridge console is still open
 3. Re-run the command with `--verbose` to inspect progress timing
 4. If using MCP, enable `BLENDOPS_MCP_VERBOSE=1` and inspect stderr

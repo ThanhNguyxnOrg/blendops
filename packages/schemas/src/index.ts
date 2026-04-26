@@ -19,6 +19,24 @@ export const SceneInspectRequestSchema = z.object({
   dryRun: z.boolean().optional(),
 });
 
+export const BridgeOperationsRequestSchema = z.object({
+  operation: z.literal("bridge.operations"),
+});
+
+export const OperationManifestEntrySchema = z.object({
+  name: z.string(),
+  category: z.string(),
+  cli_supported: z.boolean(),
+  mcp_supported: z.boolean(),
+  destructive: z.boolean(),
+  runtime_notes: z.string().optional(),
+  evidence_doc: z.string().optional(),
+});
+
+export const BridgeOperationsDataSchema = z.object({
+  operations: z.array(OperationManifestEntrySchema),
+});
+
 export const ObjectTypeSchema = z.enum([
   "cube",
   "uv_sphere",
@@ -222,6 +240,9 @@ export const ExportAssetDataSchema = z.object({
 
 export type SceneInspectRequest = z.infer<typeof SceneInspectRequestSchema>;
 export type SceneInspectData = z.infer<typeof SceneInspectDataSchema>;
+export type BridgeOperationsRequest = z.infer<typeof BridgeOperationsRequestSchema>;
+export type OperationManifestEntry = z.infer<typeof OperationManifestEntrySchema>;
+export type BridgeOperationsData = z.infer<typeof BridgeOperationsDataSchema>;
 export type ObjectCreateRequest = z.infer<typeof ObjectCreateRequestSchema>;
 export type ObjectCreateData = z.infer<typeof ObjectCreateDataSchema>;
 export type ObjectTransformRequest = z.infer<typeof ObjectTransformRequestSchema>;
@@ -245,6 +266,7 @@ export type ExportAssetData = z.infer<typeof ExportAssetDataSchema>;
 
 export const BridgeCommandSchema = z.discriminatedUnion("operation", [
   SceneInspectRequestSchema,
+  BridgeOperationsRequestSchema,
   ObjectCreateRequestSchema,
   ObjectTransformRequestSchema,
   MaterialCreateRequestSchema,

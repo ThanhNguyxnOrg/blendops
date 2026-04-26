@@ -20,7 +20,7 @@ import time
 import uuid
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from threading import Thread
-from typing import Any, Dict, Optional
+from typing import Any, Callable, Dict, Optional
 import traceback
 
 try:
@@ -58,8 +58,11 @@ EXPORT_FORMAT_EXTENSIONS = {
     "fbx": ".fbx",
 }
 
-OPERATION_REGISTRY = {
+OperationHandler = Callable[[Dict[str, Any]], Dict[str, Any]]
+
+OPERATION_REGISTRY: Dict[str, Optional[OperationHandler]] = {
     "scene.inspect": None,
+    "bridge.operations": None,
     "object.create": None,
     "object.transform": None,
     "material.create": None,
@@ -69,6 +72,89 @@ OPERATION_REGISTRY = {
     "render.preview": None,
     "validate.scene": None,
     "export.asset": None,
+}
+
+OPERATION_MANIFEST = {
+    "scene.inspect": {
+        "category": "scene",
+        "cli_supported": True,
+        "mcp_supported": True,
+        "destructive": False,
+        "runtime_notes": None,
+        "evidence_doc": "docs/runtime-smoke-test.md",
+    },
+    "object.create": {
+        "category": "object",
+        "cli_supported": True,
+        "mcp_supported": True,
+        "destructive": False,
+        "runtime_notes": None,
+        "evidence_doc": "docs/runtime-smoke-test.md",
+    },
+    "object.transform": {
+        "category": "object",
+        "cli_supported": True,
+        "mcp_supported": True,
+        "destructive": False,
+        "runtime_notes": None,
+        "evidence_doc": "docs/runtime-smoke-test-object-transform.md",
+    },
+    "material.create": {
+        "category": "material",
+        "cli_supported": True,
+        "mcp_supported": True,
+        "destructive": False,
+        "runtime_notes": None,
+        "evidence_doc": "docs/runtime-smoke-test-material.md",
+    },
+    "material.apply": {
+        "category": "material",
+        "cli_supported": True,
+        "mcp_supported": True,
+        "destructive": False,
+        "runtime_notes": None,
+        "evidence_doc": "docs/runtime-smoke-test-material.md",
+    },
+    "lighting.setup": {
+        "category": "lighting",
+        "cli_supported": True,
+        "mcp_supported": True,
+        "destructive": False,
+        "runtime_notes": None,
+        "evidence_doc": "docs/runtime-smoke-test-lighting.md",
+    },
+    "camera.set": {
+        "category": "camera",
+        "cli_supported": True,
+        "mcp_supported": True,
+        "destructive": False,
+        "runtime_notes": None,
+        "evidence_doc": "docs/runtime-smoke-test-camera.md",
+    },
+    "render.preview": {
+        "category": "render",
+        "cli_supported": True,
+        "mcp_supported": True,
+        "destructive": False,
+        "runtime_notes": None,
+        "evidence_doc": "docs/runtime-smoke-test-render.md",
+    },
+    "validate.scene": {
+        "category": "validate",
+        "cli_supported": True,
+        "mcp_supported": True,
+        "destructive": False,
+        "runtime_notes": None,
+        "evidence_doc": "docs/runtime-smoke-test-validate.md",
+    },
+    "export.asset": {
+        "category": "export",
+        "cli_supported": True,
+        "mcp_supported": True,
+        "destructive": False,
+        "runtime_notes": "GLB/GLTF requires GUI bridge on Blender 4.2 background mode",
+        "evidence_doc": "docs/runtime-smoke-test-export.md",
+    },
 }
 
 
@@ -146,6 +232,31 @@ def handle_scene_inspect() -> Dict[str, Any]:
             warnings=[traceback.format_exc()],
             next_steps=["Check Blender console for detailed error"],
         )
+
+
+def handle_bridge_operations() -> Dict[str, Any]:
+    operations = []
+    for operation_name, metadata in OPERATION_MANIFEST.items():
+        operations.append(
+            {
+                "name": operation_name,
+                "category": metadata["category"],
+                "cli_supported": metadata["cli_supported"],
+                "mcp_supported": metadata["mcp_supported"],
+                "destructive": metadata["destructive"],
+                "runtime_notes": metadata["runtime_notes"],
+                "evidence_doc": metadata["evidence_doc"],
+            }
+        )
+
+    operations.sort(key=lambda item: str(item.get("name", "")))
+
+    return make_response(
+        ok=True,
+        operation="bridge.operations",
+        message="Operation manifest",
+        data={"operations": operations},
+    )
 
 
 def handle_object_create(command: Dict[str, Any]) -> Dict[str, Any]:
@@ -303,14 +414,14 @@ def parse_color_input(color: Any) -> Optional[tuple[float, float, float, float]]
 
     if isinstance(color, list) and len(color) == 4:
         try:
-            rgba = tuple(float(channel) for channel in color)
+            rgba = [float(channel) for channel in color]
         except (TypeError, ValueError):
             return None
 
         if any(channel < 0.0 or channel > 1.0 for channel in rgba):
             return None
 
-        return rgba
+        return (rgba[0], rgba[1], rgba[2], rgba[3])
 
     return None
 
@@ -823,6 +934,9 @@ def handle_export_asset(command: Dict[str, Any]) -> Dict[str, Any]:
             message="No mesh objects found to export",
             next_steps=["Create an object before exporting"],
         )
+
+    active_object = None
+    original_selected: list[Any] = []
 
     try:
         output_path = output
@@ -1407,7 +1521,7 @@ def handle_lighting_setup(command: Dict[str, Any]) -> Dict[str, Any]:
 def _dispatch_with_observability(command: Dict[str, Any], client_ip: Optional[str] = None) -> Dict[str, Any]:
     global _request_count, _last_operation, _last_error, _last_duration_ms
     
-    operation = command.get("operation")
+    operation = _coerce_operation_name(command.get("operation"))
     start = time.time()
     
     if operation == "bridge.status":
@@ -1417,6 +1531,16 @@ def _dispatch_with_observability(command: Dict[str, Any], client_ip: Optional[st
     
     if operation == "bridge.status":
         uptime_seconds = int(time.time() - _server_start_time) if _server_start_time > 0 else 0
+        blender_version_tuple = tuple(bpy.app.version)
+        background_mode = bpy.app.background
+        has_window_context = getattr(bpy.context, "window", None) is not None
+        export_glb_supported = not (background_mode and not has_window_context)
+        export_gltf_supported = not (background_mode and not has_window_context)
+
+        compatibility_notes = []
+        if not export_glb_supported or not export_gltf_supported:
+            compatibility_notes.append("GLB/GLTF export requires GUI bridge on Blender 4.2 background mode")
+
         response = make_response(
             ok=True,
             operation="bridge.status",
@@ -1430,6 +1554,14 @@ def _dispatch_with_observability(command: Dict[str, Any], client_ip: Optional[st
                 "last_error": _last_error,
                 "last_duration_ms": _last_duration_ms,
                 "implemented_operations": list(OPERATION_REGISTRY.keys()),
+                "blender_version": bpy.app.version_string,
+                "blender_version_tuple": blender_version_tuple,
+                "background_mode": background_mode,
+                "has_window_context": has_window_context,
+                "export_glb_supported": export_glb_supported,
+                "export_gltf_supported": export_gltf_supported,
+                "export_fbx_supported": "unknown",
+                "compatibility_notes": compatibility_notes,
             },
         )
     else:
@@ -1488,6 +1620,12 @@ def _dispatch_with_observability(command: Dict[str, Any], client_ip: Optional[st
 
 def process_command(command: Dict[str, Any]) -> Dict[str, Any]:
     return _dispatch_with_observability(command, client_ip=None)
+
+
+def _coerce_operation_name(value: Any) -> str:
+    if isinstance(value, str):
+        return value
+    return "unknown"
 
 
 def timer_process_queue() -> float:
@@ -1684,6 +1822,7 @@ def stop_server() -> None:
 
 def register() -> None:
     OPERATION_REGISTRY["scene.inspect"] = lambda _command: handle_scene_inspect()
+    OPERATION_REGISTRY["bridge.operations"] = lambda _command: handle_bridge_operations()
     OPERATION_REGISTRY["object.create"] = handle_object_create
     OPERATION_REGISTRY["object.transform"] = handle_object_transform
     OPERATION_REGISTRY["material.create"] = handle_material_create
