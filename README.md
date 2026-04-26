@@ -1,14 +1,12 @@
 # BlendOps
 
-<p align="left">
-  <img alt="Node >=18" src="https://img.shields.io/badge/node-%3E%3D18-339933?logo=node.js&logoColor=white">
-  <img alt="Blender >=3.6" src="https://img.shields.io/badge/blender-%3E%3D3.6-F5792A?logo=blender&logoColor=white">
-  <img alt="MCP ready" src="https://img.shields.io/badge/MCP-ready-111827">
-  <img alt="CLI first" src="https://img.shields.io/badge/workflow-CLI%20first-7C3AED">
-  <img alt="Managed bridge" src="https://img.shields.io/badge/bridge-managed-0EA5E9">
-  <img alt="No arbitrary Python" src="https://img.shields.io/badge/security-no%20arbitrary%20python-16A34A">
-  <img alt="Runtime smoke tested" src="https://img.shields.io/badge/runtime-smoke%20tested-22C55E">
-</p>
+[![Node >=18](https://img.shields.io/badge/node-%3E%3D18-339933?logo=node.js&logoColor=white)](https://nodejs.org/)
+[![Blender >=3.6](https://img.shields.io/badge/blender-%3E%3D3.6-F5792A?logo=blender&logoColor=white)](https://www.blender.org/)
+![MCP ready](https://img.shields.io/badge/MCP-ready-111827)
+![CLI first](https://img.shields.io/badge/workflow-CLI%20first-7C3AED)
+![Managed bridge](https://img.shields.io/badge/bridge-managed-0EA5E9)
+![No arbitrary Python](https://img.shields.io/badge/security-no%20arbitrary%20python-16A34A)
+![Runtime smoke tested](https://img.shields.io/badge/runtime-smoke%20tested-22C55E)
 
 Safe, inspectable Blender automation for AI agents via CLI + MCP + managed Blender bridge.
 
@@ -72,6 +70,15 @@ Generic MCP config:
   }
 }
 ```
+
+## 🧩 Usage surfaces
+
+| Surface | Use when | Start here |
+| --- | --- | --- |
+| 🧰 CLI | Human/local scripting | `node apps/cli/dist/index.js ...` |
+| 🧠 MCP / AI agents | Tool-calling from AI clients | `node apps/mcp-server/dist/index.js` |
+| 🎛️ Managed Blender bridge | Automated Blender runtime | `bridge start --mode gui` |
+| 🧩 Blender addon fallback | Manual Blender setup if bootstrap fails | Install/enable addon in Blender |
 
 ## ✅ What works today
 

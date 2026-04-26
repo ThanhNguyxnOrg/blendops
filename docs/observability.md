@@ -1,221 +1,112 @@
 # 👀 Observability Guide
 
-BlendOps is designed for **machine-readable output** and **human-visible progress** simultaneously.
+> 📚 Docs: [Index](./README.md) · [Install](./install.md) · [AI usage](./ai-agent-usage.md) · [Manual test](./manual-test.md) · [Observability](./observability.md)
 
----
+BlendOps separates machine output from human diagnostics.
 
 ## 📋 Output contract
 
-### CLI stdout: JSON only
+- stdout: JSON response envelopes
+- stderr: human progress and timing logs
 
-BlendOps CLI stdout is reserved for structured JSON responses:
+This applies to CLI and MCP wrappers.
 
-- AI/MCP/tooling integrations can parse output reliably
-- Scripts can use stdout directly without filtering logs
-- Error envelopes stay consistent and automatable
+## 🎛️ Bridge lifecycle observability
 
-### CLI stderr: human logs
-
-Human progress/status logs are sent to stderr:
-
-- **stdout**: response JSON only
-- **stderr**: progress, timing, diagnostics
-
-This separation makes behavior predictable and parseable.
-
----
-
-## 🖥️ Blender bridge console
-
-### What the console shows
-
-The Blender bridge console is a **human activity log**:
-
-- Startup banner with URL and example commands
-- Operation logs: `received: scene.inspect request_id=req_...`, `completed: scene.inspect ok 45ms request_id=req_...`
-- Status checks: `status check ok request_id=req_...`
-- Failures with reasons: `failed: export.asset 1850ms request_id=req_...`, `reason: No mesh objects found`
-- Harmless browser checks: `ignored unsupported GET /favicon.ico`
-
-### Normal console output examples
-
-```
-============================================================
- BlendOps Bridge is running
- Version: 0.1.0
- URL: http://127.0.0.1:8765
- Status page: http://127.0.0.1:8765/status
-
- Keep this window open while using BlendOps.
-
- Try:
-   npm run cli -- bridge status
-   npm run cli -- scene inspect --verbose
-
- This window will show BlendOps operation logs.
-============================================================
-[BlendOps 2026-04-25 09:00:00] ready and waiting for commands
-[BlendOps 2026-04-25 09:00:15] received: scene.inspect request_id=req_1714035615000_ab12cd34
-[BlendOps 2026-04-25 09:00:15] completed: scene.inspect ok 8ms request_id=req_1714035615000_ab12cd34
-[BlendOps 2026-04-25 09:01:10] received: render.preview request_id=req_1714035670000_ef56gh78
-[BlendOps 2026-04-25 09:01:14] completed: render.preview ok 4012ms request_id=req_1714035670000_ef56gh78
-[BlendOps 2026-04-25 09:01:14] output: renders/preview.png
-```
-
-### Why the console must stay open
-
-The bridge HTTP server runs in that Blender process. Closing the window stops the bridge.
-
----
-
-## ✅ Verify bridge health
-
-### Via CLI
+Managed bridge lifecycle commands:
 
 ```bash
-npm run cli -- bridge status --verbose
-npm run cli -- bridge operations --verbose
+node apps/cli/dist/index.js bridge start --mode gui --verbose
+node apps/cli/dist/index.js bridge logs --tail 120
+node apps/cli/dist/index.js bridge stop
 ```
 
-**Expected:**
+Lifecycle artifacts are written under `.tmp/blendops/`:
 
-- stdout: valid JSON response (`operation: "bridge.status"`)
-- stderr: progress logs (with `--verbose`)
-- Response envelope includes optional correlation fields:
-  - `request_id`
-  - `receipt` (`request_id`, `operation`, `ok`, optional `duration_ms`)
-- JSON `data` includes:
-  - `started_at`
-  - `uptime_seconds`
-  - `request_count`
-  - `last_operation`
-  - `last_error`
-  - `last_duration_ms`
-  - `last_request_id`
-  - `implemented_operations`
-  - `blender_version`
-  - `blender_version_tuple`
-  - `background_mode`
-  - `has_window_context`
-  - `export_glb_supported`
-  - `export_gltf_supported`
-  - `export_fbx_supported`
-  - `compatibility_notes`
+- `bridge-process.json`
+- `bridge.stdout.log`
+- `bridge.stderr.log`
+- `start_bridge_gui.py`
 
-### Via browser
+## 🔎 Request correlation
 
-Open: `http://127.0.0.1:8765/status`
+BlendOps responses include structured correlation fields when available:
 
-Bridge console will log: `[BlendOps ...] status check ok`
+- top-level `request_id`
+- top-level `receipt`
+  - `receipt.request_id`
+  - `receipt.operation`
+  - `receipt.ok`
+  - `receipt.duration_ms`
 
----
+Verbose logs include request IDs on command start/completion.
 
-## 🔍 CLI visibility modes
-
-### Verbose mode
+## ✅ How to tell bridge is working
 
 ```bash
-npm run cli -- scene inspect --verbose
-npm run cli -- validate scene --preset basic --verbose
+node apps/cli/dist/index.js bridge status --verbose
+node apps/cli/dist/index.js bridge operations --verbose
+node apps/cli/dist/index.js scene inspect --verbose
 ```
 
-With `--verbose`, CLI prints operation start/completion timing on stderr while keeping stdout JSON-only.
+Healthy indicators:
 
-### Quiet mode
+- `bridge.status` returns `ok: true`
+- bridge metadata includes `request_count`, `last_operation`, `last_request_id`
+- `scene.inspect` returns structured scene data
+- stderr shows matching request IDs
+
+## 🧯 Debug failed startup
+
+1. Inspect lifecycle logs:
 
 ```bash
-npm run cli -- validate scene --preset basic --quiet
+node apps/cli/dist/index.js bridge logs --tail 200
 ```
 
-`--quiet` suppresses human logs on stderr (except unavoidable runtime failures). Stdout remains JSON.
-
----
-
-## 📝 Optional log file
-
-Mirror human logs to a file:
+2. Verify blender path:
 
 ```bash
-set BLENDOPS_LOG_FILE=.tmp/blendops.log
-npm run cli -- render preview --output renders/preview.png --verbose
+node apps/cli/dist/index.js bridge start --mode gui --blender "C:\Program Files\Blender Foundation\Blender 4.2\blender.exe" --verbose
 ```
 
-Log-file failures are non-fatal; commands continue even if file logging cannot write.
+3. If bootstrap never becomes ready, use addon fallback:
 
----
+```txt
+Blender → Edit → Preferences → Add-ons → Install...
+Select: apps/blender-addon/blendops_addon
+Enable: BlendOps Bridge
+```
 
-## 🔌 MCP server observability
+4. Re-check bridge status:
 
-Enable MCP stderr logs:
+```bash
+node apps/cli/dist/index.js bridge status --verbose
+```
+
+## 🧠 MCP observability
+
+Enable MCP stderr logging:
 
 ```bash
 set BLENDOPS_MCP_VERBOSE=1
-# or
+node apps/mcp-server/dist/index.js
+```
+
+Or:
+
+```bash
 set BLENDOPS_VERBOSE=1
-npm run mcp-server
+node apps/mcp-server/dist/index.js
 ```
 
-MCP responses remain protocol-valid. Logs are emitted only to stderr.
+MCP responses remain protocol-valid while diagnostics go to stderr.
 
----
-
-## 🧯 Troubleshooting
-
-### If a command appears stuck
-
-1. Check bridge liveness:
-```bash
-npm run cli -- bridge status --verbose
-npm run cli -- bridge operations --verbose
-```
-
-2. Confirm Blender bridge console is still open
-3. Re-run the command with `--verbose` to inspect progress timing
-4. If using MCP, enable `BLENDOPS_MCP_VERBOSE=1` and inspect stderr
-
-### Common issues
-
-| Symptom | Likely cause | Fix |
-|---------|--------------|-----|
-| Command hangs | Bridge not responding | Check bridge console for errors; restart Blender |
-| JSON parse error | Stdout contaminated with logs | Verify logs go to stderr only |
-| Bridge console closed | Process terminated | Restart Blender and enable addon |
-| Slow operations | Heavy scene or low samples | Check bridge console for timing; adjust parameters |
-
----
-
-## 🔎 Inspect logs
-
-- **CLI stdout**: parseable JSON response
-- **CLI stderr**: human progress logs
-- **Bridge console**: per-operation start/end/failure logs with duration
-- **Optional file**: `BLENDOPS_LOG_FILE` mirror
-
----
-
-## 🛑 Kill/restart bridge (Windows)
-
-If Blender is unresponsive:
-
-```powershell
-Get-Process blender -ErrorAction SilentlyContinue | Stop-Process -Force
-```
-
-Then restart Blender, enable the BlendOps addon, and verify:
+## 📝 Optional CLI log file mirror
 
 ```bash
-npm run cli -- bridge status --verbose
+set BLENDOPS_LOG_FILE=.tmp/blendops.log
+node apps/cli/dist/index.js scene inspect --verbose
 ```
 
----
-
-## 🧑‍💻 For contributors: adding new operations
-
-To ensure future operations are observable by default:
-
-1. Register the operation handler in the bridge operation registry
-2. Use the centralized dispatcher path (do not bypass it)
-3. Do not print human logs to CLI stdout
-4. Use stderr logger wiring for human progress logs
-
-When registered in the bridge registry, operation start/end logging, duration, and bridge metadata updates are automatic.
+If file logging fails, command execution still continues.

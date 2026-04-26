@@ -1,13 +1,15 @@
-# 📚 Manual Test Guide
+# 🧪 Manual Test Guide
 
-Practical manual verification guide for currently supported BlendOps operations.
+> 📚 Docs: [Index](./README.md) · [Install](./install.md) · [AI usage](./ai-agent-usage.md) · [Manual test](./manual-test.md) · [Observability](./observability.md)
 
-## 🧰 Prerequisites
+Practical runtime verification guide for BlendOps operations.
 
-- Node.js >=18
-- Blender >=3.6
-- Blender 4.2.5 LTS was used for current runtime evidence
-- Run from repo root (`D:\Code\blendops` on Windows examples below):
+## ✅ Prerequisites
+
+- Node.js >= 18
+- Blender >= 3.6
+- Blender 4.2.5 LTS used for current runtime evidence
+- Run from repo root
 
 ```bash
 npm install
@@ -16,110 +18,115 @@ npm run typecheck
 npm run build
 ```
 
-## 🎛️ Starting the Blender bridge
+## 🎛️ Start the bridge
 
-### GUI bridge mode
+### Primary path: automated managed CLI bootstrap
 
-- Recommended for full runtime validation.
-- Required for GLB/GLTF export on Blender 4.2.
-- Keep Blender + bridge console window open while testing.
+```bash
+node apps/cli/dist/index.js bridge start --mode gui --verbose
+node apps/cli/dist/index.js bridge status --verbose
+node apps/cli/dist/index.js bridge operations --verbose
+```
 
-### Background bridge mode
+Windows path override:
 
-- Useful for quick non-export checks.
-- Can run many operations (inspect/create/transform/material/lighting/camera/validate).
-- Not validated for GLB/GLTF export on Blender 4.2 because glTF exporter needs window context.
+```bash
+node apps/cli/dist/index.js bridge start --mode gui --blender "C:\Program Files\Blender Foundation\Blender 4.2\blender.exe" --verbose
+```
 
-- A black Blender console window on Windows is expected.
-- Do not close it during tests (it hosts the running bridge process).
+### Fallback path: manual addon enablement
+
+If automated startup fails:
+
+1. Open Blender
+2. Edit → Preferences → Add-ons → Install...
+3. Select `apps/blender-addon/blendops_addon`
+4. Enable **BlendOps Bridge**
+5. Verify:
+
+```bash
+node apps/cli/dist/index.js bridge status --verbose
+```
+
+## 🧰 Strict stdout JSON rule
+
+Use built CLI directly for tests where stdout must parse as JSON:
+
+```bash
+node apps/cli/dist/index.js ...
+```
+
+Avoid npm wrapper output as JSON-only proof:
+
+```bash
+npm run cli -- ...
+```
+
+`npm run` may emit wrapper lines that pollute stdout.
 
 ## ✅ Quick health checks
 
-Verify bridge connectivity before running full test sequence:
+```bash
+node apps/cli/dist/index.js bridge status --verbose
+node apps/cli/dist/index.js scene inspect --verbose
+```
+
+Expected:
+
+- `ok: true`
+- correct operation name
+- top-level `request_id` and `receipt` present when provided by bridge/client
+- stderr includes command/completed logs in verbose mode
+
+## 🔁 Full validation sequence
 
 ```bash
-npm run cli -- bridge status --verbose
-npm run cli -- scene inspect --verbose
+node apps/cli/dist/index.js object create --type cube --name test_cube --location 0,0,1 --scale 1,1,1
+node apps/cli/dist/index.js object transform --name test_cube --location 1,0,1
+node apps/cli/dist/index.js material create --name red_plastic --color "#ff0000" --roughness 0.5 --metallic 0
+node apps/cli/dist/index.js material apply --object test_cube --material red_plastic
+node apps/cli/dist/index.js lighting setup --preset studio --target test_cube
+node apps/cli/dist/index.js camera set --target test_cube --distance 5 --focal-length 50
+node apps/cli/dist/index.js render preview --output renders/preview.png --width 512 --height 512 --samples 16
+node apps/cli/dist/index.js validate scene --preset basic
+node apps/cli/dist/index.js validate scene --preset game_asset
+node apps/cli/dist/index.js validate scene --preset render_ready
+node apps/cli/dist/index.js export asset --format glb --output exports/test_scene.glb
 ```
 
-**Expected outcomes:**
-
-- `bridge status`: `ok: true`, `operation: "bridge.status"`, `data.version` present
-- `scene inspect`: `ok: true`, `operation: "scene.inspect"`, `data.objects` array present
-- CLI stdout contains valid JSON only
-- CLI stderr shows timing logs (with `--verbose`)
-- Bridge console shows operation lifecycle logs
-
-## 🧪 Full validation sequence
-
-Run the complete operation chain to verify end-to-end functionality:
+## 🧾 Bridge logs and stop
 
 ```bash
-npm run cli -- object create --type cube --name test_cube --location 0,0,1 --scale 1,1,1
-npm run cli -- object transform --name test_cube --location 1,0,1
-npm run cli -- material create --name red_plastic --color "#ff0000" --roughness 0.5 --metallic 0
-npm run cli -- material apply --object test_cube --material red_plastic
-npm run cli -- lighting setup --preset studio --target test_cube
-npm run cli -- camera set --target test_cube --distance 5 --focal-length 50
-npm run cli -- render preview --output renders/preview.png --width 512 --height 512 --samples 16
-npm run cli -- validate scene --preset basic
-npm run cli -- validate scene --preset game_asset
-npm run cli -- validate scene --preset render_ready
-npm run cli -- export asset --format glb --output exports/test_scene.glb
+node apps/cli/dist/index.js bridge logs --tail 120
+node apps/cli/dist/index.js bridge stop
 ```
 
-**Pass criteria:**
+Optional destructive stop:
 
-- All commands return `ok: true`
-- Each operation name matches the command
-- `data` object contains expected fields per operation
-- No unhandled errors in bridge console
-- Generated files exist where specified (`renders/`, `exports/`)
-
----
-
-## 📦 Export verification
-
-After running export commands, verify generated files:
-
-```powershell
-Test-Path D:\Code\blendops\exports\test_scene.glb
-Get-Item D:\Code\blendops\exports\test_scene.glb | Select-Object FullName,Length
+```bash
+node apps/cli/dist/index.js bridge stop --all
 ```
 
-**Expected:**
-
-- File exists: `True`
-- `Length` > 0 bytes
-- Generated exports must **not** be committed to git
-
----
+`--all` can terminate unrelated Blender sessions.
 
 ## 🧯 Troubleshooting
 
 | Symptom | Likely cause | Fix |
-|---------|--------------|-----|
-| `bridge status` fails | Bridge not running | Start Blender, enable BlendOps Bridge addon |
-| Black console appears | Bridge process running | Keep it open (hosts HTTP server) |
-| `package.json` missing error | Wrong working directory | `cd D:\Code\blendops` |
-| GLB export fails in `-b` mode | Missing window context | Use GUI bridge mode instead |
-| Stdout contains logs mixed with JSON | Logging regression | Logs must go to stderr only |
-| Generated files in `git status` | Runtime artifacts staged | Do not commit `exports/`, `renders/`, `.tmp/` |
+|---|---|---|
+| `bridge start` fails | Blender executable not found | pass `--blender` or set `BLENDOPS_BLENDER_PATH` |
+| `bridge status` fails | bridge not running | run `bridge start`, then inspect `bridge logs` |
+| JSON parsing fails | npm wrapper output mixed in stdout | use `node apps/cli/dist/index.js ...` |
+| GLB export fails in background mode | missing GUI window context on Blender 4.2 | use GUI bridge mode |
+| Runtime artifacts appear in git | generated files present | do not commit `.tmp/`, `exports/`, `renders/` |
 
----
+## Cleanup
 
-## 🧹 Cleanup
+```bash
+node apps/cli/dist/index.js bridge stop
+```
 
-Stop Blender bridge process:
+If unresponsive:
 
 ```powershell
 Get-Process blender -ErrorAction SilentlyContinue | Stop-Process -Force
 ```
-
----
-
-## 🔎 Notes
-
-- This guide intentionally stays concise.
-- For operation-by-operation runtime evidence JSON, see `docs/runtime-smoke-test-*.md`.
-- Export runtime PASS for GLB is validated in Blender 4.2.5 LTS **GUI bridge mode**.
