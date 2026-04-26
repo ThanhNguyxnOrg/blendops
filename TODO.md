@@ -59,7 +59,7 @@ This roadmap reflects **current code + runtime evidence**.
 - [x] Add operation-level risk annotations (`bridge.operations` manifest with `destructive` flags)
 - [ ] Add dry-run semantics for eligible operations
 - [ ] Expand audit-friendly operation receipts
-- [ ] Add operation manifest parity check between CLI manifest and MCP `ListTools`
+- [x] Add operation manifest parity check between CLI manifest and MCP `ListTools`
 
 ---
 

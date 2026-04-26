@@ -16,6 +16,7 @@
     "typecheck:apps": "npm run typecheck --workspace @blendops/cli && npm run typecheck --workspace @blendops/mcp-server",
     "typecheck": "npm run build:packages && npm run typecheck:packages && npm run typecheck:apps",
     "docs:check": "node scripts/check-docs.mjs",
+    "operations:check": "node scripts/check-operation-manifest.mjs",
     "cli": "npm run dev --workspace @blendops/cli --",
     "mcp-server": "npm run dev --workspace @blendops/mcp-server"
   },

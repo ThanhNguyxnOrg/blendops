@@ -75,6 +75,14 @@ OPERATION_REGISTRY: Dict[str, Optional[OperationHandler]] = {
 }
 
 OPERATION_MANIFEST = {
+    "bridge.operations": {
+        "category": "bridge",
+        "cli_supported": True,
+        "mcp_supported": True,
+        "destructive": False,
+        "runtime_notes": None,
+        "evidence_doc": "docs/runtime-smoke-test.md",
+    },
     "scene.inspect": {
         "category": "scene",
         "cli_supported": True,
