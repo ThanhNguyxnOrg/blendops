@@ -38,7 +38,6 @@ Lightweight documentation hub for BlendOps.
 | [runtime-smoke-test-export.md](./runtime-smoke-test-export.md) | `export.asset` runtime validation |
 | [runtime-smoke-test-observability.md](./runtime-smoke-test-observability.md) | stdout/stderr/bridge-log checks |
 | [runtime-smoke-test-request-correlation.md](./runtime-smoke-test-request-correlation.md) | request_id + receipt correlation |
-| [runtime-smoke-test-bridge-bootstrap.md](./runtime-smoke-test-bridge-bootstrap.md) | managed bridge startup validation |
 
 ## 🔍 Research and architecture
 

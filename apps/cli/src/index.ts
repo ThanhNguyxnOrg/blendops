@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { BridgeClient } from "@blendops/core";
+import { BridgeClient, getBridgeLogsLifecycle, startBridgeLifecycle, stopBridgeLifecycle } from "@blendops/core";
 import { appendFileSync, mkdirSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { ColorHexSchema, ExportAssetExtensionByFormat, ExportAssetFormatSchema, LightingPresetSchema, makeResponse, ObjectTypeSchema, ValidationPresetSchema, Vec3Schema } from "@blendops/schemas";
@@ -113,6 +113,9 @@ function printHelp(): void {
   console.log(`BlendOps CLI
 
 Usage:
+  blendops bridge start --mode gui [--blender "C:\\Program Files\\Blender Foundation\\Blender 4.2\\blender.exe"] [--verbose]
+  blendops bridge stop [--all]
+  blendops bridge logs [--tail 120]
   blendops bridge status
   blendops bridge operations
   blendops scene inspect
@@ -145,6 +148,9 @@ Options:
   -h, --help     Show help
 
 Implemented in v0.1:
+  - bridge start
+  - bridge stop
+  - bridge logs
   - bridge status
   - bridge operations
   - scene inspect
@@ -227,6 +233,131 @@ async function main(): Promise<number> {
   const logger = (message: string) => humanLog(message, flags);
   const client = new BridgeClient({ verbose: flags.verbose, quiet: flags.quiet, logger });
   const [group, action] = commandArgs;
+
+  if (group === "bridge" && action === "start") {
+    const modeRaw = readFlag(commandArgs, "--mode");
+    const blenderPath = readFlag(commandArgs, "--blender");
+    const mode = typeof modeRaw === "undefined" ? "gui" : modeRaw;
+
+    if (mode !== "gui" && mode !== "background") {
+      const invalid = makeResponse({
+        ok: false,
+        operation: "cli.invalid_arguments",
+        message: "bridge start --mode must be either gui or background",
+        warnings: ["Unsupported bridge start mode"],
+        next_steps: [
+          "Use --mode gui (default) or --mode background",
+          "Example: blendops bridge start --mode gui --blender \"C:\\Program Files\\Blender Foundation\\Blender 4.2\\blender.exe\"",
+        ],
+        request_id: commandRequestId,
+      });
+      console.log(JSON.stringify(withRequestId(invalid, commandRequestId), null, 2));
+      return 1;
+    }
+
+    const started = Date.now();
+    const lifecycle = await timeOperation("bridge.start", () => startBridgeLifecycle({
+      mode,
+      root_dir: process.cwd(),
+      logger: (message: string) => humanLog(message, flags),
+      ...(typeof blenderPath === "string" ? { blender_path: blenderPath } : {}),
+    }), flags, commandRequestId);
+
+    const response = makeResponse({
+      ok: lifecycle.ok,
+      operation: "bridge.start",
+      message: lifecycle.message,
+      data: lifecycle.data,
+      warnings: lifecycle.warnings,
+      next_steps: lifecycle.next_steps,
+      request_id: commandRequestId,
+      receipt: {
+        request_id: commandRequestId,
+        operation: "bridge.start",
+        ok: lifecycle.ok,
+        duration_ms: Date.now() - started,
+      },
+    });
+
+    console.log(JSON.stringify(response, null, 2));
+    return lifecycle.ok ? 0 : 1;
+  }
+
+  if (group === "bridge" && action === "stop") {
+    const all = commandArgs.includes("--all");
+    const started = Date.now();
+
+    const lifecycle = await timeOperation("bridge.stop", async () => stopBridgeLifecycle({
+      all,
+      root_dir: process.cwd(),
+      logger: (message: string) => humanLog(message, flags),
+    }), flags, commandRequestId);
+
+    const response = makeResponse({
+      ok: lifecycle.ok,
+      operation: "bridge.stop",
+      message: lifecycle.message,
+      data: lifecycle.data,
+      warnings: lifecycle.warnings,
+      next_steps: lifecycle.next_steps,
+      request_id: commandRequestId,
+      receipt: {
+        request_id: commandRequestId,
+        operation: "bridge.stop",
+        ok: lifecycle.ok,
+        duration_ms: Date.now() - started,
+      },
+    });
+
+    console.log(JSON.stringify(response, null, 2));
+    return lifecycle.ok ? 0 : 1;
+  }
+
+  if (group === "bridge" && action === "logs") {
+    const tailRaw = readFlag(commandArgs, "--tail");
+    let tail: number | undefined;
+    if (typeof tailRaw !== "undefined") {
+      const parsed = Number(tailRaw);
+      if (Number.isNaN(parsed) || !Number.isInteger(parsed) || parsed <= 0) {
+        const invalid = makeResponse({
+          ok: false,
+          operation: "cli.invalid_arguments",
+          message: "bridge logs --tail must be a positive integer",
+          warnings: ["Invalid --tail value"],
+          next_steps: ["Example: blendops bridge logs --tail 120"],
+          request_id: commandRequestId,
+        });
+        console.log(JSON.stringify(withRequestId(invalid, commandRequestId), null, 2));
+        return 1;
+      }
+      tail = parsed;
+    }
+
+    const started = Date.now();
+    const lifecycle = await timeOperation("bridge.logs", async () => getBridgeLogsLifecycle({
+      root_dir: process.cwd(),
+      ...(typeof tail === "number" ? { tail } : {}),
+    }), flags, commandRequestId);
+
+    const response = makeResponse({
+      ok: lifecycle.ok,
+      operation: "bridge.logs",
+      message: lifecycle.message,
+      data: lifecycle.data,
+      warnings: lifecycle.warnings,
+      next_steps: lifecycle.next_steps,
+      request_id: commandRequestId,
+      receipt: {
+        request_id: commandRequestId,
+        operation: "bridge.logs",
+        ok: lifecycle.ok,
+        duration_ms: Date.now() - started,
+      },
+    });
+
+    console.log(JSON.stringify(response, null, 2));
+    return lifecycle.ok ? 0 : 1;
+  }
 
   if (group === "bridge" && action === "status") {
     const res = await timeOperation("bridge.status", () => client.status(commandRequestId), flags, commandRequestId);
@@ -674,7 +805,7 @@ async function main(): Promise<number> {
     warnings: ["Unsupported command in MVP"],
     next_steps: [
       "Run `blendops --help` to see available commands",
-      "Use scene/object/material/lighting/camera commands shown in help",
+      "Use bridge/scene/object/material/lighting/camera/render/validate/export commands shown in help",
     ],
   });
 

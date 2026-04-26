@@ -6,6 +6,9 @@ import {
   type BlendOpsReceipt,
   type BridgeCommand,
   type BridgeOperationsData,
+  type BridgeStartRequest,
+  type BridgeStopRequest,
+  type BridgeLogsRequest,
   type MaterialApplyRequest,
   type MaterialCreateRequest,
   type LightingSetupRequest,
@@ -16,6 +19,26 @@ import {
   type ValidateSceneRequest,
   type ExportAssetRequest,
 } from "@blendops/schemas";
+
+import {
+  startBridgeLifecycle,
+  stopBridgeLifecycle,
+  getBridgeLogsLifecycle,
+  type BridgeLifecycleResult,
+  type StartBridgeLifecycleInput,
+  type StopBridgeLifecycleInput,
+  type GetBridgeLogsLifecycleInput,
+} from "./bridgeLifecycle.js";
+
+export {
+  startBridgeLifecycle,
+  stopBridgeLifecycle,
+  getBridgeLogsLifecycle,
+  type BridgeLifecycleResult,
+  type StartBridgeLifecycleInput,
+  type StopBridgeLifecycleInput,
+  type GetBridgeLogsLifecycleInput,
+};
 
 export interface BridgeClientOptions {
   baseUrl?: string;
@@ -35,7 +58,7 @@ export class BridgeClient {
   private readonly requestIdFactory: () => string;
 
   constructor(options: BridgeClientOptions = {}) {
-    this.baseUrl = options.baseUrl ?? process.env.BLENDER_BRIDGE_URL ?? "http://127.0.0.1:8765";
+    this.baseUrl = options.baseUrl ?? process.env.BLENDOPS_BRIDGE_URL ?? process.env.BLENDER_BRIDGE_URL ?? "http://127.0.0.1:8765";
     this.timeoutMs = options.timeoutMs ?? 5_000;
     this.verbose = options.verbose ?? false;
     this.quiet = options.quiet ?? false;
@@ -64,16 +87,79 @@ export class BridgeClient {
 
   async status(request_id?: string): Promise<BlendOpsResponse> {
     const resolvedRequestId = request_id ?? this.requestIdFactory();
-    const response = await this.post("/status", { operation: "bridge.status", request_id: resolvedRequestId });
-    const parsed = BlendOpsResponseSchema.parse(response);
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), this.timeoutMs);
+    const startedAt = Date.now();
+    const statusPath = `/status?request_id=${encodeURIComponent(resolvedRequestId)}`;
 
-    return {
-      ...parsed,
-      request_id: parsed.request_id ?? resolvedRequestId,
-      receipt:
-        parsed.receipt ??
-        BridgeClient.buildReceipt(parsed.request_id ?? resolvedRequestId, parsed.operation, parsed.ok),
-    };
+    if (this.verbose) {
+      this.log(`bridge request start: bridge.status /status request_id=${resolvedRequestId}`);
+      this.log(`bridge target: ${this.baseUrl}${statusPath}`);
+    }
+
+    try {
+      const res = await fetch(`${this.baseUrl}${statusPath}`, {
+        method: "GET",
+        headers: {
+          "X-BlendOps-Request-Id": resolvedRequestId,
+        },
+        signal: controller.signal,
+      });
+
+      const json = (await res.json()) as unknown;
+      const duration_ms = Date.now() - startedAt;
+
+      if (!res.ok) {
+        this.log(`bridge request failed: bridge.status /status status=${res.status} duration=${duration_ms}ms request_id=${resolvedRequestId}`);
+        return makeResponse({
+          ok: false,
+          operation: "bridge.error",
+          message: `Bridge request failed with status ${res.status}`,
+          data: { status: res.status, body: json },
+          warnings: ["Bridge returned non-2xx status"],
+          next_steps: [
+            "Ensure Blender addon bridge is running",
+            "Run `blendops bridge status`",
+          ],
+          request_id: resolvedRequestId,
+          receipt: BridgeClient.buildReceipt(resolvedRequestId, "bridge.status", false, duration_ms),
+        });
+      }
+
+      if (this.verbose) {
+        this.log(`bridge request ok: bridge.status /status duration=${duration_ms}ms request_id=${resolvedRequestId}`);
+      }
+
+      const parsed = BlendOpsResponseSchema.parse(json);
+      const responseRequestId = parsed.request_id ?? resolvedRequestId;
+
+      return {
+        ...parsed,
+        request_id: responseRequestId,
+        receipt: parsed.receipt ?? BridgeClient.buildReceipt(responseRequestId, parsed.operation, parsed.ok, duration_ms),
+      };
+    } catch (error) {
+      const duration_ms = Date.now() - startedAt;
+      const message = error instanceof Error ? error.message : "Unknown bridge error";
+      this.log(`bridge connection error: bridge.status /status duration=${duration_ms}ms error=${message} request_id=${resolvedRequestId}`);
+      return makeResponse({
+        ok: false,
+        operation: "bridge.error",
+        message: `Failed to connect to Blender bridge: ${message}`,
+        warnings: [
+          "Blender bridge might not be running",
+          "Connection timed out or was refused",
+        ],
+        next_steps: [
+          "Start Blender and enable BlendOps addon bridge",
+          "Run `blendops bridge status` to verify connection",
+        ],
+        request_id: resolvedRequestId,
+        receipt: BridgeClient.buildReceipt(resolvedRequestId, "bridge.status", false, duration_ms),
+      });
+    } finally {
+      clearTimeout(timeout);
+    }
   }
 
   async send(command: BridgeCommand): Promise<BlendOpsResponse> {
@@ -97,6 +183,18 @@ export class BridgeClient {
 
   async operations(request_id?: string): Promise<BlendOpsResponse> {
     return this.send({ operation: "bridge.operations", request_id });
+  }
+
+  async startBridge(input: Partial<Omit<BridgeStartRequest, "operation">> = {}): Promise<BlendOpsResponse> {
+    return this.send({ operation: "bridge.start", ...input });
+  }
+
+  async stopBridge(input: Partial<Omit<BridgeStopRequest, "operation">> = {}): Promise<BlendOpsResponse> {
+    return this.send({ operation: "bridge.stop", ...input });
+  }
+
+  async bridgeLogs(input: Partial<Omit<BridgeLogsRequest, "operation">> = {}): Promise<BlendOpsResponse> {
+    return this.send({ operation: "bridge.logs", ...input });
   }
 
   async getOperationManifest(): Promise<BridgeOperationsData> {

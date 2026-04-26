@@ -5,6 +5,9 @@ const ROOT = process.cwd();
 
 const EXPECTED_OPERATIONS = [
   'bridge.operations',
+  'bridge.start',
+  'bridge.stop',
+  'bridge.logs',
   'scene.inspect',
   'object.create',
   'object.transform',
@@ -73,6 +76,9 @@ function checkCLICommands() {
   let allOk = true;
 
   const cliCommands = [
+    { op: 'bridge.start', pattern: /group === ["']bridge["'] && action === ["']start["']/ },
+    { op: 'bridge.stop', pattern: /group === ["']bridge["'] && action === ["']stop["']/ },
+    { op: 'bridge.logs', pattern: /group === ["']bridge["'] && action === ["']logs["']/ },
     { op: 'bridge.status', pattern: /group === ["']bridge["'] && action === ["']status["']/ },
     { op: 'bridge.operations', pattern: /group === ["']bridge["'] && action === ["']operations["']/ },
     { op: 'scene.inspect', pattern: /group === ["']scene["'] && action === ["']inspect["']/ },
@@ -112,6 +118,9 @@ function checkMCPTools() {
   const mcpTools = [
     'inspect_scene',
     'list_operations',
+    'start_bridge',
+    'stop_bridge',
+    'get_bridge_logs',
     'create_object',
     'transform_object',
     'create_material',
@@ -157,6 +166,9 @@ function checkSchemas() {
   const schemaOps = [
     'scene.inspect',
     'bridge.operations',
+    'bridge.start',
+    'bridge.stop',
+    'bridge.logs',
     'object.create',
     'object.transform',
     'material.create',
@@ -195,6 +207,9 @@ function checkCore() {
   const coreMethods = [
     { op: 'bridge.status', method: 'status' },
     { op: 'bridge.operations', method: 'operations' },
+    { op: 'bridge.start', method: 'startBridge' },
+    { op: 'bridge.stop', method: 'stopBridge' },
+    { op: 'bridge.logs', method: 'bridgeLogs' },
     { op: 'scene.inspect', method: 'inspectScene' },
     { op: 'object.create', method: 'createObject' },
     { op: 'object.transform', method: 'transformObject' },

@@ -21,6 +21,7 @@ import uuid
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from threading import Thread
 from typing import Any, Callable, Dict, Optional
+from urllib.parse import parse_qs, urlparse
 import traceback
 
 try:
@@ -64,6 +65,9 @@ OperationHandler = Callable[[Dict[str, Any]], Dict[str, Any]]
 OPERATION_REGISTRY: Dict[str, Optional[OperationHandler]] = {
     "scene.inspect": None,
     "bridge.operations": None,
+    "bridge.start": None,
+    "bridge.stop": None,
+    "bridge.logs": None,
     "object.create": None,
     "object.transform": None,
     "material.create": None,
@@ -82,6 +86,30 @@ OPERATION_MANIFEST = {
         "mcp_supported": True,
         "destructive": False,
         "runtime_notes": None,
+        "evidence_doc": "docs/runtime-smoke-test.md",
+    },
+    "bridge.start": {
+        "category": "bridge",
+        "cli_supported": True,
+        "mcp_supported": True,
+        "destructive": False,
+        "runtime_notes": "Starts managed Blender bridge process from CLI/MCP lifecycle helper",
+        "evidence_doc": "docs/runtime-smoke-test.md",
+    },
+    "bridge.stop": {
+        "category": "bridge",
+        "cli_supported": True,
+        "mcp_supported": True,
+        "destructive": True,
+        "runtime_notes": "Stops managed Blender bridge process; use --all with caution",
+        "evidence_doc": "docs/runtime-smoke-test.md",
+    },
+    "bridge.logs": {
+        "category": "bridge",
+        "cli_supported": True,
+        "mcp_supported": True,
+        "destructive": False,
+        "runtime_notes": "Returns managed bridge process log tails from CLI lifecycle helper",
         "evidence_doc": "docs/runtime-smoke-test.md",
     },
     "scene.inspect": {
@@ -269,6 +297,80 @@ def handle_bridge_operations() -> Dict[str, Any]:
         operation="bridge.operations",
         message="Operation manifest",
         data={"operations": operations},
+    )
+
+
+def handle_bridge_start(_command: Dict[str, Any]) -> Dict[str, Any]:
+    return make_response(
+        ok=True,
+        operation="bridge.start",
+        message="Bridge is already running in this Blender process",
+        data={
+            "managed_by": "blender-addon",
+            "server_running": _server is not None,
+            "port": 8765,
+        },
+        next_steps=[
+            "Use CLI/MCP bridge start to launch managed Blender process when bridge is not running",
+            "Run `blendops bridge status --verbose` to verify readiness",
+        ],
+    )
+
+
+def _delayed_stop_server() -> None:
+    time.sleep(0.05)
+    stop_server()
+
+
+def handle_bridge_stop(_command: Dict[str, Any]) -> Dict[str, Any]:
+    if _server is None:
+        return make_response(
+            ok=False,
+            operation="bridge.stop",
+            message="Bridge is not running in this Blender process",
+            next_steps=["Use CLI bridge start to launch the bridge"],
+        )
+
+    Thread(target=_delayed_stop_server, daemon=True).start()
+
+    return make_response(
+        ok=True,
+        operation="bridge.stop",
+        message="Bridge stop requested for this Blender process",
+        data={"stopping": True},
+        warnings=["This will stop HTTP bridge handling in current Blender process"],
+    )
+
+
+def handle_bridge_logs(command: Dict[str, Any]) -> Dict[str, Any]:
+    tail = command.get("tail", 80)
+    try:
+        tail_int = int(tail)
+    except (TypeError, ValueError):
+        tail_int = 80
+
+    if tail_int <= 0:
+        tail_int = 80
+    if tail_int > 1000:
+        tail_int = 1000
+
+    return make_response(
+        ok=True,
+        operation="bridge.logs",
+        message="Bridge-side log tail is available in Blender console",
+        data={
+            "tail": tail_int,
+            "note": "Use CLI bridge logs for managed process stdout/stderr files",
+            "last_operation": _last_operation,
+            "last_request_id": _last_request_id,
+            "request_count": _request_count,
+            "last_error": _last_error,
+            "last_duration_ms": _last_duration_ms,
+        },
+        next_steps=[
+            "Run `blendops bridge logs --tail 120` for managed process stdout/stderr tails",
+            "Inspect Blender console window for in-process bridge lifecycle logs",
+        ],
     )
 
 
@@ -1563,11 +1665,11 @@ def _dispatch_with_observability(command: Dict[str, Any], client_ip: Optional[st
                 "version": ".".join(map(str, bl_info["version"])),
                 "started_at": time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(_server_start_time)) if _server_start_time > 0 else None,
                 "uptime_seconds": uptime_seconds,
-                "request_count": _request_count,
-                "last_operation": _last_operation,
-                "last_error": _last_error,
+                "request_count": _request_count + 1,
+                "last_operation": operation,
+                "last_error": None,
                 "last_duration_ms": _last_duration_ms,
-                "last_request_id": _last_request_id,
+                "last_request_id": request_id,
                 "implemented_operations": list(OPERATION_REGISTRY.keys()),
                 "blender_version": bpy.app.version_string,
                 "blender_version_tuple": blender_version_tuple,
@@ -1696,10 +1798,16 @@ class BlendOpsHandler(BaseHTTPRequestHandler):
         pass
 
     def do_GET(self) -> None:
-        if self.path == "/status":
-            _log("status check ok")
-            self._handle_status()
-        elif self.path == "/favicon.ico":
+        parsed_path = urlparse(self.path)
+        route_path = parsed_path.path
+        request_id_header = self.headers.get("X-BlendOps-Request-Id")
+        query_request_id_values = parse_qs(parsed_path.query).get("request_id", [])
+        query_request_id = query_request_id_values[0] if len(query_request_id_values) > 0 else None
+        request_id = request_id_header if isinstance(request_id_header, str) and len(request_id_header.strip()) > 0 else query_request_id
+
+        if route_path == "/status":
+            self._handle_status(request_id=request_id)
+        elif route_path == "/favicon.ico":
             # Silently ignore browser favicon requests
             self._send_json(
                 404,
@@ -1727,9 +1835,16 @@ class BlendOpsHandler(BaseHTTPRequestHandler):
     def do_POST(self) -> None:
         global _command_queue, _response_queue
 
-        if self.path == "/status":
-            self._handle_status()
-        elif self.path == "/command":
+        parsed_path = urlparse(self.path)
+        route_path = parsed_path.path
+        request_id_header = self.headers.get("X-BlendOps-Request-Id")
+        query_request_id_values = parse_qs(parsed_path.query).get("request_id", [])
+        query_request_id = query_request_id_values[0] if len(query_request_id_values) > 0 else None
+        request_id = request_id_header if isinstance(request_id_header, str) and len(request_id_header.strip()) > 0 else query_request_id
+
+        if route_path == "/status":
+            self._handle_status(request_id=request_id)
+        elif route_path == "/command":
             self._handle_command()
         else:
             self._send_json(
@@ -1742,9 +1857,12 @@ class BlendOpsHandler(BaseHTTPRequestHandler):
                 ),
             )
 
-    def _handle_status(self) -> None:
+    def _handle_status(self, request_id: Optional[str] = None) -> None:
         client_ip = self.client_address[0] if isinstance(self.client_address, tuple) else None
-        response = _dispatch_with_observability({"operation": "bridge.status"}, client_ip=client_ip)
+        command: Dict[str, Any] = {"operation": "bridge.status"}
+        if isinstance(request_id, str) and len(request_id.strip()) > 0:
+            command["request_id"] = request_id.strip()
+        response = _dispatch_with_observability(command, client_ip=client_ip)
         self._send_json(200, response)
 
     def _handle_command(self) -> None:
@@ -1883,6 +2001,9 @@ def stop_server() -> None:
 def register() -> None:
     OPERATION_REGISTRY["scene.inspect"] = lambda _command: handle_scene_inspect()
     OPERATION_REGISTRY["bridge.operations"] = lambda _command: handle_bridge_operations()
+    OPERATION_REGISTRY["bridge.start"] = handle_bridge_start
+    OPERATION_REGISTRY["bridge.stop"] = handle_bridge_stop
+    OPERATION_REGISTRY["bridge.logs"] = handle_bridge_logs
     OPERATION_REGISTRY["object.create"] = handle_object_create
     OPERATION_REGISTRY["object.transform"] = handle_object_transform
     OPERATION_REGISTRY["material.create"] = handle_material_create

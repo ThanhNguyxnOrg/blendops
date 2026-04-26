@@ -4,7 +4,7 @@ import {
   CallToolRequestSchema,
   ListToolsRequestSchema,
 } from "@modelcontextprotocol/sdk/types.js";
-import { BridgeClient } from "@blendops/core";
+import { BridgeClient, getBridgeLogsLifecycle, startBridgeLifecycle, stopBridgeLifecycle } from "@blendops/core";
 import { ColorHexSchema, ExportAssetExtensionByFormat, ExportAssetFormatSchema, LightingPresetSchema, ObjectTypeSchema, ValidationPresetSchema, Vec3Schema } from "@blendops/schemas";
 
 const MCP_VERBOSE = process.env.BLENDOPS_MCP_VERBOSE === "1" || process.env.BLENDOPS_VERBOSE === "1";
@@ -76,6 +76,42 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
       inputSchema: {
         type: "object",
         properties: {},
+        additionalProperties: false,
+      },
+    },
+    {
+      name: "start_bridge",
+      description: "Start managed Blender bridge process using safe lifecycle helper.",
+      inputSchema: {
+        type: "object",
+        properties: {
+          mode: { type: "string", enum: ["gui", "background"] },
+          blender_path: { type: "string" },
+          timeout_ms: { type: "number", minimum: 1 },
+          poll_interval_ms: { type: "number", minimum: 1 },
+        },
+        additionalProperties: false,
+      },
+    },
+    {
+      name: "stop_bridge",
+      description: "Stop managed Blender bridge process tracked by BlendOps lifecycle state.",
+      inputSchema: {
+        type: "object",
+        properties: {
+          all: { type: "boolean" },
+        },
+        additionalProperties: false,
+      },
+    },
+    {
+      name: "get_bridge_logs",
+      description: "Read managed bridge stdout/stderr log tails.",
+      inputSchema: {
+        type: "object",
+        properties: {
+          tail: { type: "number", minimum: 1 },
+        },
         additionalProperties: false,
       },
     },
@@ -306,6 +342,181 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       ],
       isError: !result.ok,
     };
+  }
+
+  if (name === "start_bridge") {
+    try {
+      const args = (rawArgs ?? {}) as Record<string, unknown>;
+      const modeRaw = typeof args.mode === "string" ? args.mode : "gui";
+      if (modeRaw !== "gui" && modeRaw !== "background") {
+        throw new Error("start_bridge mode must be gui or background");
+      }
+
+      const blender_path = typeof args.blender_path === "string" && args.blender_path.trim().length > 0
+        ? args.blender_path.trim()
+        : undefined;
+
+      const timeout_ms = typeof args.timeout_ms === "number" && Number.isFinite(args.timeout_ms)
+        ? Math.max(1, Math.floor(args.timeout_ms))
+        : undefined;
+
+      const poll_interval_ms = typeof args.poll_interval_ms === "number" && Number.isFinite(args.poll_interval_ms)
+        ? Math.max(1, Math.floor(args.poll_interval_ms))
+        : undefined;
+
+      const lifecycle = await startBridgeLifecycle({
+        mode: modeRaw,
+        root_dir: process.cwd(),
+        logger: (message: string) => mcpLog(message),
+        ...(typeof blender_path === "string" ? { blender_path } : {}),
+        ...(typeof timeout_ms === "number" ? { timeout_ms } : {}),
+        ...(typeof poll_interval_ms === "number" ? { poll_interval_ms } : {}),
+      });
+
+      const duration = Date.now() - start;
+      const payload = {
+        ok: lifecycle.ok,
+        operation: "bridge.start",
+        message: lifecycle.message,
+        data: lifecycle.data,
+        warnings: lifecycle.warnings,
+        next_steps: lifecycle.next_steps,
+        request_id,
+        receipt: {
+          request_id,
+          operation: "bridge.start",
+          ok: lifecycle.ok,
+          duration_ms: duration,
+        },
+      };
+
+      mcpLog(`tool result: ${name} ok=${lifecycle.ok} duration=${duration}ms request_id=${request_id}`);
+      return {
+        content: [{ type: "text", text: JSON.stringify(payload, null, 2) }],
+        isError: !lifecycle.ok,
+      };
+    } catch (error) {
+      const duration = Date.now() - start;
+      mcpLog(`tool error: ${name} duration=${duration}ms error=${error instanceof Error ? error.message : "unknown"} request_id=${request_id}`);
+      const payload = {
+        ok: false,
+        operation: "mcp.start_bridge.invalid_input",
+        message: error instanceof Error ? error.message : "Invalid start_bridge input",
+        data: {},
+        warnings: ["Input validation failed for start_bridge"],
+        next_steps: ["Use mode gui/background and optional blender_path"],
+        request_id,
+      };
+      return {
+        content: [{ type: "text", text: JSON.stringify(payload, null, 2) }],
+        isError: true,
+      };
+    }
+  }
+
+  if (name === "stop_bridge") {
+    try {
+      const args = (rawArgs ?? {}) as Record<string, unknown>;
+      const all = typeof args.all === "boolean" ? args.all : false;
+
+      const lifecycle = stopBridgeLifecycle({
+        all,
+        root_dir: process.cwd(),
+        logger: (message: string) => mcpLog(message),
+      });
+
+      const duration = Date.now() - start;
+      const payload = {
+        ok: lifecycle.ok,
+        operation: "bridge.stop",
+        message: lifecycle.message,
+        data: lifecycle.data,
+        warnings: lifecycle.warnings,
+        next_steps: lifecycle.next_steps,
+        request_id,
+        receipt: {
+          request_id,
+          operation: "bridge.stop",
+          ok: lifecycle.ok,
+          duration_ms: duration,
+        },
+      };
+
+      mcpLog(`tool result: ${name} ok=${lifecycle.ok} duration=${duration}ms request_id=${request_id}`);
+      return {
+        content: [{ type: "text", text: JSON.stringify(payload, null, 2) }],
+        isError: !lifecycle.ok,
+      };
+    } catch (error) {
+      const duration = Date.now() - start;
+      mcpLog(`tool error: ${name} duration=${duration}ms error=${error instanceof Error ? error.message : "unknown"} request_id=${request_id}`);
+      const payload = {
+        ok: false,
+        operation: "mcp.stop_bridge.invalid_input",
+        message: error instanceof Error ? error.message : "Invalid stop_bridge input",
+        data: {},
+        warnings: ["Input validation failed for stop_bridge"],
+        next_steps: ["Use optional all=true only when intentional"],
+        request_id,
+      };
+      return {
+        content: [{ type: "text", text: JSON.stringify(payload, null, 2) }],
+        isError: true,
+      };
+    }
+  }
+
+  if (name === "get_bridge_logs") {
+    try {
+      const args = (rawArgs ?? {}) as Record<string, unknown>;
+      const tail = typeof args.tail === "number" && Number.isFinite(args.tail)
+        ? Math.max(1, Math.floor(args.tail))
+        : undefined;
+
+      const lifecycle = getBridgeLogsLifecycle({
+        root_dir: process.cwd(),
+        ...(typeof tail === "number" ? { tail } : {}),
+      });
+
+      const duration = Date.now() - start;
+      const payload = {
+        ok: lifecycle.ok,
+        operation: "bridge.logs",
+        message: lifecycle.message,
+        data: lifecycle.data,
+        warnings: lifecycle.warnings,
+        next_steps: lifecycle.next_steps,
+        request_id,
+        receipt: {
+          request_id,
+          operation: "bridge.logs",
+          ok: lifecycle.ok,
+          duration_ms: duration,
+        },
+      };
+
+      mcpLog(`tool result: ${name} ok=${lifecycle.ok} duration=${duration}ms request_id=${request_id}`);
+      return {
+        content: [{ type: "text", text: JSON.stringify(payload, null, 2) }],
+        isError: !lifecycle.ok,
+      };
+    } catch (error) {
+      const duration = Date.now() - start;
+      mcpLog(`tool error: ${name} duration=${duration}ms error=${error instanceof Error ? error.message : "unknown"} request_id=${request_id}`);
+      const payload = {
+        ok: false,
+        operation: "mcp.get_bridge_logs.invalid_input",
+        message: error instanceof Error ? error.message : "Invalid get_bridge_logs input",
+        data: {},
+        warnings: ["Input validation failed for get_bridge_logs"],
+        next_steps: ["Use optional tail positive integer"],
+        request_id,
+      };
+      return {
+        content: [{ type: "text", text: JSON.stringify(payload, null, 2) }],
+        isError: true,
+      };
+    }
   }
 
   if (name === "create_object") {
@@ -907,7 +1118,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
             message: `Unknown tool: ${name}`,
             data: {},
             warnings: ["Tool not implemented in MVP"],
-            next_steps: ["Use tool `inspect_scene`, `list_operations`, `create_object`, `transform_object`, `create_material`, `apply_material`, `setup_lighting`, `set_camera`, `render_preview`, `validate_scene`, or `export_asset`"],
+            next_steps: ["Use tool `inspect_scene`, `list_operations`, `start_bridge`, `stop_bridge`, `get_bridge_logs`, `create_object`, `transform_object`, `create_material`, `apply_material`, `setup_lighting`, `set_camera`, `render_preview`, `validate_scene`, or `export_asset`"],
             request_id,
           },
           null,

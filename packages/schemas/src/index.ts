@@ -36,6 +36,29 @@ export const BridgeOperationsRequestSchema = z.object({
   request_id: z.string().optional(),
 });
 
+export const BridgeStartModeSchema = z.enum(["gui", "background"]);
+
+export const BridgeStartRequestSchema = z.object({
+  operation: z.literal("bridge.start"),
+  mode: BridgeStartModeSchema.optional(),
+  blender_path: z.string().min(1).optional(),
+  timeout_ms: z.number().int().positive().optional(),
+  poll_interval_ms: z.number().int().positive().optional(),
+  request_id: z.string().optional(),
+});
+
+export const BridgeStopRequestSchema = z.object({
+  operation: z.literal("bridge.stop"),
+  all: z.boolean().optional(),
+  request_id: z.string().optional(),
+});
+
+export const BridgeLogsRequestSchema = z.object({
+  operation: z.literal("bridge.logs"),
+  tail: z.number().int().positive().optional(),
+  request_id: z.string().optional(),
+});
+
 export const OperationManifestEntrySchema = z.object({
   name: z.string(),
   category: z.string(),
@@ -263,6 +286,10 @@ export const ExportAssetDataSchema = z.object({
 export type SceneInspectRequest = z.infer<typeof SceneInspectRequestSchema>;
 export type SceneInspectData = z.infer<typeof SceneInspectDataSchema>;
 export type BridgeOperationsRequest = z.infer<typeof BridgeOperationsRequestSchema>;
+export type BridgeStartMode = z.infer<typeof BridgeStartModeSchema>;
+export type BridgeStartRequest = z.infer<typeof BridgeStartRequestSchema>;
+export type BridgeStopRequest = z.infer<typeof BridgeStopRequestSchema>;
+export type BridgeLogsRequest = z.infer<typeof BridgeLogsRequestSchema>;
 export type OperationManifestEntry = z.infer<typeof OperationManifestEntrySchema>;
 export type BridgeOperationsData = z.infer<typeof BridgeOperationsDataSchema>;
 export type ObjectCreateRequest = z.infer<typeof ObjectCreateRequestSchema>;
@@ -289,6 +316,9 @@ export type ExportAssetData = z.infer<typeof ExportAssetDataSchema>;
 export const BridgeCommandSchema = z.discriminatedUnion("operation", [
   SceneInspectRequestSchema,
   BridgeOperationsRequestSchema,
+  BridgeStartRequestSchema,
+  BridgeStopRequestSchema,
+  BridgeLogsRequestSchema,
   ObjectCreateRequestSchema,
   ObjectTransformRequestSchema,
   MaterialCreateRequestSchema,
