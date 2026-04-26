@@ -8,6 +8,8 @@
 | [evals.md](./evals.md) | AI-agent evaluation prompts |
 | [runtime-smoke-test*.md](./runtime-smoke-test.md) | Runtime evidence records |
 
+_Docs are checked by `npm run docs:check`._
+
 ## Runtime smoke test set
 
 - [runtime-smoke-test.md](./runtime-smoke-test.md)
