@@ -1,23 +1,7 @@
-# 📚 BlendOps Documentation
+# BlendOps Documentation (Compatibility Index)
 
-| Doc | Purpose |
-|---|---|
-| [prior-art.md](./prior-art.md) | Research and inheritance guidance |
-| [manual-test.md](./manual-test.md) | Manual runtime verification |
-| [observability.md](./observability.md) | Logs, status, and debugging model |
-| [evals.md](./evals.md) | AI-agent evaluation prompts |
-| [runtime-smoke-test*.md](./runtime-smoke-test.md) | Runtime evidence records |
+The canonical documentation index is now:
 
-_Docs are checked by `npm run docs:check`._
+- [docs/README.md](./README.md)
 
-## Runtime smoke test set
-
-- [runtime-smoke-test.md](./runtime-smoke-test.md)
-- [runtime-smoke-test-object-transform.md](./runtime-smoke-test-object-transform.md)
-- [runtime-smoke-test-material.md](./runtime-smoke-test-material.md)
-- [runtime-smoke-test-lighting.md](./runtime-smoke-test-lighting.md)
-- [runtime-smoke-test-camera.md](./runtime-smoke-test-camera.md)
-- [runtime-smoke-test-render.md](./runtime-smoke-test-render.md)
-- [runtime-smoke-test-validate.md](./runtime-smoke-test-validate.md)
-- [runtime-smoke-test-export.md](./runtime-smoke-test-export.md)
-- [runtime-smoke-test-observability.md](./runtime-smoke-test-observability.md)
+This file remains for compatibility with older links.

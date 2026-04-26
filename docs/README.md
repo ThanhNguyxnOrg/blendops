@@ -1,18 +1,18 @@
-# 📚 BlendOps Docs Index
+# BlendOps Documentation
 
-Use this page as the canonical documentation index.
+Documentation index for BlendOps.
 
-## Core guides
+## Start here
 
-| Doc | Purpose |
+| Need | Read |
 |---|---|
-| [install.md](./install.md) | Installation, setup, bridge bootstrap, and troubleshooting |
-| [ai-agent-usage.md](./ai-agent-usage.md) | Safe AI-agent workflow for typed BlendOps operations |
-| [manual-test.md](./manual-test.md) | Manual and semi-automated runtime validation steps |
-| [observability.md](./observability.md) | stdout/stderr contract, bridge logs, and diagnostics |
-| [evals.md](./evals.md) | Prompt-based evaluation scenarios |
-| [prior-art.md](./prior-art.md) | Prior-art research and strategic tradeoffs |
-| [implementation-mining.md](./implementation-mining.md) | Deep repository implementation mining notes |
+| Install and start BlendOps | [Install guide](./install.md) |
+| Use BlendOps from AI/MCP | [AI agent usage](./ai-agent-usage.md) |
+| Run manual runtime checks | [Manual test guide](./manual-test.md) |
+| Debug bridge/logs/request IDs | [Observability guide](./observability.md) |
+| Evaluate agent behavior | [Eval prompts](./evals.md) |
+| Review runtime evidence | [Runtime evidence](#runtime-evidence) |
+| Understand research/prior art | [Prior art](./prior-art.md) |
 
 ## Runtime evidence
 
@@ -28,6 +28,10 @@ Use this page as the canonical documentation index.
 - [runtime-smoke-test-request-correlation.md](./runtime-smoke-test-request-correlation.md)
 - [runtime-smoke-test-bridge-bootstrap.md](./runtime-smoke-test-bridge-bootstrap.md)
 
+## Project roadmap
+
+- [TODO](../TODO.md)
+
 ## Compatibility index
 
-`docs/INDEX.md` remains available as a compatibility entry point and links back here.
+[docs/INDEX.md](./INDEX.md) remains available as a compatibility redirect.
