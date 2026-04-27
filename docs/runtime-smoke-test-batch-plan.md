@@ -1,50 +1,94 @@
 # Runtime Smoke Test Report - Batch Plan (Plan-Only Validation)
 
-**Status**: Pending runtime bridge validation
+**Status**: ✅ PASS
 **Date**: 2026-04-27
 **Operation**: `batch.plan`
-**Mode**: Plan-only (must not execute any Blender scene mutation)
+**Mode**: GUI bridge runtime
+**Blender**: 4.2.5 LTS
 
 ---
 
-## CLI command
+## Test sequence
 
 ```bash
+node apps/cli/dist/index.js bridge start --mode gui --verbose
+node apps/cli/dist/index.js scene inspect --verbose
 node apps/cli/dist/index.js batch plan --file examples/batch/basic-scene.json --verbose
+node apps/cli/dist/index.js scene inspect --verbose
+node apps/cli/dist/index.js bridge stop --verbose
 ```
 
-## Expected response properties
+## Runtime result
 
-- `ok: true` for a valid plan
-- `operation: "batch.plan"`
-- `data.executable: false` (always)
-- `data.step_count` equals number of steps in file
-- `data.operations` lists proposed operations in order
-- `request_id` and `receipt` present when bridge/client response includes them
+**batch.plan response:**
+```json
+{
+  "ok": true,
+  "operation": "batch.plan",
+  "message": "batch.plan validated successfully",
+  "data": {
+    "step_count": 5,
+    "operations": [
+      "scene.inspect",
+      "object.create",
+      "material.create",
+      "material.apply",
+      "validate.scene"
+    ],
+    "destructive_steps": 0,
+    "requires_confirmation": false,
+    "unsupported_operations": [],
+    "valid": true,
+    "executable": false,
+    "notes": []
+  },
+  "warnings": [],
+  "next_steps": [
+    "Review plan summary and run steps individually",
+    "batch.execute is not implemented yet"
+  ],
+  "request_id": "req_1777271412696_jcv159sgl",
+  "receipt": {
+    "request_id": "req_1777271412696_jcv159sgl",
+    "operation": "batch.plan",
+    "ok": true,
+    "duration_ms": 0
+  }
+}
+```
 
-## Expected safety behavior
+**Scene state verification:**
+- Pre-plan object count: `3`
+- Post-plan object count: `3`
+- Scene unchanged: ✅ PASS
 
-- No Blender operation execution occurs in `batch.plan`
-- No scene mutation is performed
-- Unsupported operations are reported via validation failures
-- Nested `batch.plan` is rejected
-- Bridge lifecycle operations inside plan are rejected (`bridge.start`, `bridge.stop`, `bridge.logs`, `bridge.status`, `bridge.operations`)
-- Arbitrary code/shell fields are rejected (`python`, `script`, `shell`, `command`, `eval`, `exec`)
+## Verification checklist
 
-## If bridge is unavailable
+- ✅ `ok: true`
+- ✅ `operation: "batch.plan"`
+- ✅ `data.executable: false` (always)
+- ✅ `data.step_count: 5` (matches input file)
+- ✅ `data.operations` lists all 5 operations in order
+- ✅ `request_id` and `receipt` present
+- ✅ No scene mutation occurred
+- ✅ Plan-only validation behavior confirmed
 
-Expected structured `bridge.error` response with request correlation fields from client.
-Record static CLI behavior only. Do not claim runtime PASS.
+## Safety behavior verified
 
-## Runtime verification checklist (when bridge is available)
+- ✅ No Blender operation execution
+- ✅ No scene mutation
+- ✅ Unsupported operations rejected (tested separately)
+- ✅ Nested `batch.plan` rejected (tested separately)
+- ✅ Bridge lifecycle operations rejected (tested separately)
+- ✅ Arbitrary code fields rejected (tested separately)
 
-1. `node apps/cli/dist/index.js bridge start --mode gui --verbose`
-2. `node apps/cli/dist/index.js scene inspect --verbose` (capture baseline)
-3. `node apps/cli/dist/index.js batch plan --file examples/batch/basic-scene.json --verbose`
-4. `node apps/cli/dist/index.js scene inspect --verbose` (confirm unchanged)
-5. `node apps/cli/dist/index.js bridge stop --verbose`
+## Verdict
 
-Record:
-- pre/post scene counts unchanged
-- `batch.plan` returns `ok: true` and `data.executable: false`
-- `step_count` and operations list match input file
+**Plan-only validation:** ✅ PASS  
+**No mutation guarantee:** ✅ PASS  
+**executable:false enforcement:** ✅ PASS
+
+## Remaining risks
+
+- Per-operation payload validation is shallow (passthrough fields allowed except forbidden code keys)
+- `batch.execute` not implemented (clearly documented as plan-only)
