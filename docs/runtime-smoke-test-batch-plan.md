@@ -69,6 +69,7 @@ node apps/cli/dist/index.js bridge stop --verbose
 - ✅ `data.executable: false` (always)
 - ✅ `data.step_count: 5` (matches input file)
 - ✅ `data.operations` lists all 5 operations in order
+- ✅ `data.plan_fingerprint` present (deterministic SHA-256 fingerprint)
 - ✅ `request_id` and `receipt` present
 - ✅ No scene mutation occurred
 - ✅ Plan-only validation behavior confirmed

@@ -115,6 +115,7 @@ export const BatchPlanDataSchema = z.object({
   executable: z.literal(false),
   notes: z.array(z.string()),
   validation_errors: z.array(BatchPlanValidationErrorSchema).optional(),
+  plan_fingerprint: z.string().optional(),
 });
 
 export const BatchExecuteRequestSchema = z.object({
@@ -141,6 +142,8 @@ export const BatchExecuteDataSchema = z.object({
   requires_confirmation: z.boolean(),
   validation_errors: z.array(BatchPlanValidationErrorSchema).optional(),
   notes: z.array(z.string()),
+  plan_fingerprint: z.string().optional(),
+  dry_run_id: z.string().optional(),
 });
 
 export const OperationManifestEntrySchema = z.object({

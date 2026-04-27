@@ -332,6 +332,18 @@ function checkBatchPlanStrictValidation() {
     allOk = fail('addon strict validation missing executable=false guarantee');
   }
 
+  if (!addonContent.includes('def _batch_plan_fingerprint')) {
+    allOk = fail('addon missing _batch_plan_fingerprint helper for deterministic fingerprinting');
+  }
+
+  if (!addonContent.includes('plan_fingerprint')) {
+    allOk = fail('addon missing plan_fingerprint field in batch.plan/batch.execute responses');
+  }
+
+  if (!addonContent.includes('dry_run_id')) {
+    allOk = fail('addon missing dry_run_id field in batch.execute dry-run responses');
+  }
+
   const examples = [
     'examples/batch/basic-scene.json',
     'examples/batch/invalid-arbitrary-code.json',

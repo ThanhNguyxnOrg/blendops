@@ -331,6 +331,7 @@ These prompts verify that AI agents use BlendOps safely and correctly.
 **Pass criteria:**
 - Returns structured response with `ok: true` when plan is valid
 - `data.executable` is exactly `false`
+- `data.plan_fingerprint` present (deterministic SHA-256 fingerprint format `sha256:<hex>`)
 - Includes `step_count` and operations summary
 - No scene mutation occurs from planning call
 - Invalid arbitrary-code field is rejected with `ok: false` + `validation_errors`
@@ -356,6 +357,8 @@ These prompts verify that AI agents use BlendOps safely and correctly.
 - Requires `dry_run: true` (missing/false rejected locally before bridge call)
 - Returns `ok: true` for valid dry-run
 - `data.dry_run: true` and `data.executable: false`
+- `data.plan_fingerprint` present (deterministic SHA-256 fingerprint format `sha256:<hex>`)
+- `data.dry_run_id` present (format `dryrun:<16hex>:<request_id>`)
 - `data.would_execute` array with per-step effect previews
 - No scene mutation occurs
 - `validation_errors` present when steps are invalid

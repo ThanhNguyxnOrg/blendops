@@ -27,6 +27,8 @@ node apps/cli/dist/index.js batch execute --file examples/batch/basic-scene.json
 - `data.would_execute` array with step previews
 - `data.step_count: 5`
 - `data.operations` array matches steps
+- `data.plan_fingerprint` present (`sha256:<hex>`)
+- `data.dry_run_id` present (`dryrun:<16hex>:<request_id>`)
 - `next_steps` includes "Review dry-run output" and "Real batch execution is not implemented yet"
 
 ### 2) Missing --dry-run flag (local CLI rejection)
@@ -65,6 +67,8 @@ node apps/cli/dist/index.js scene inspect --verbose
 | Valid dry-run returns ok: true | ✅ Structured response | PASS |
 | data.dry_run: true | ✅ Present | PASS |
 | data.executable: false | ✅ Present | PASS |
+| data.plan_fingerprint present | ✅ SHA-256 fingerprint | PASS |
+| data.dry_run_id present | ✅ Correlates fingerprint + request_id | PASS |
 | data.would_execute preview array | ✅ Per-step effects | PASS |
 | Scene state unchanged | ✅ No mutation | PASS |
 | Invalid steps rejected | ✅ validation_errors | PASS |

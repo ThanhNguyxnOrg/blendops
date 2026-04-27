@@ -13,8 +13,9 @@ Real `batch.execute` must be rejected unless **all** conditions below are true.
 
 1. **Dry-run first is mandatory**
    - A successful dry-run must exist for the same plan.
-   - Real execution request must include a dry-run reference (at minimum prior `request_id`).
+   - Real execution request must include a dry-run reference (at minimum prior `request_id` or `dry_run_id`).
    - Real execution must verify the referenced dry-run succeeded and corresponds to the exact same step set.
+   - Real execution must verify `plan_fingerprint` matches between dry-run and real execution to ensure identical step arrays.
 
 2. **Global confirmation token is mandatory**
    - Real execution must require an explicit top-level confirmation token (for example `confirm: "EXECUTE_BATCH"`).
@@ -75,6 +76,7 @@ Real execution responses must include:
 
 4. **Dry-run linkage**
    - Response must include the dry-run reference used for authorization/gating.
+   - Response must include `plan_fingerprint` to enable verification of step array identity across dry-run and real execution.
 
 ---
 

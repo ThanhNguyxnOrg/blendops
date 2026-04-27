@@ -23,8 +23,10 @@ This guide describes how AI agents should use BlendOps safely and deterministica
 - Use `plan_batch` for multi-step requests before executing individual typed operations
 - Inspect `validation_errors` from `batch.plan` before executing any individual typed operation
 - Never treat `batch.plan` as execution; it is plan-only and never mutates scene
+- Preserve `plan_fingerprint` from `batch.plan` responses for future real execution correlation
 - `execute_batch` is dry-run only; it validates and previews steps without executing
 - AI may use `execute_batch` only with `dry_run: true`
+- Preserve `plan_fingerprint` and `dry_run_id` from `execute_batch` dry-run responses for future real execution
 - AI must not claim execution happened after `execute_batch` dry-run
 - After dry-run preview, AI should run individual typed operations manually or wait for future real batch execution
 - Future real execution must satisfy the [batch execution safety contract](./batch-execute-safety-contract.md)

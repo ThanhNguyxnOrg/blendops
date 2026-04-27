@@ -11,6 +11,7 @@ bl_info = {
 }
 
 import bpy
+import hashlib
 import json
 import math
 import os
@@ -1036,6 +1037,42 @@ def _batch_validate_step(raw_step: Dict[str, Any], step_label: int) -> Dict[str,
     return result
 
 
+def _canonicalize_batch_value(value: Any) -> Any:
+    """Recursively canonicalize a value for deterministic fingerprinting."""
+    if isinstance(value, dict):
+        return {k: _canonicalize_batch_value(v) for k, v in sorted(value.items())}
+    elif isinstance(value, list):
+        return [_canonicalize_batch_value(item) for item in value]
+    elif isinstance(value, str):
+        return value.strip()
+    else:
+        return value
+
+
+def _normalize_batch_steps_for_fingerprint(steps: list[Dict[str, Any]]) -> list[Dict[str, Any]]:
+    """Normalize steps array for deterministic fingerprinting by removing runtime metadata."""
+    normalized = []
+    for step in steps:
+        if not isinstance(step, dict):
+            continue
+        normalized_step = {}
+        for key, value in step.items():
+            if key in ("request_id", "receipt"):
+                continue
+            normalized_step[key] = value
+        normalized.append(normalized_step)
+    return normalized
+
+
+def _batch_plan_fingerprint(steps: list[Dict[str, Any]]) -> str:
+    """Generate deterministic SHA-256 fingerprint from normalized steps."""
+    normalized_steps = _normalize_batch_steps_for_fingerprint(steps)
+    canonical = _canonicalize_batch_value(normalized_steps)
+    canonical_json = json.dumps(canonical, sort_keys=True, separators=(',', ':'))
+    hash_digest = hashlib.sha256(canonical_json.encode('utf-8')).hexdigest()
+    return f"sha256:{hash_digest}"
+
+
 def handle_batch_plan(command: Dict[str, Any]) -> Dict[str, Any]:
     operation = "batch.plan"
 
@@ -1119,6 +1156,13 @@ def handle_batch_plan(command: Dict[str, Any]) -> Dict[str, Any]:
 
     valid = len(validation_errors) == 0 and len(unsupported_operations) == 0
 
+    plan_fingerprint = None
+    if isinstance(steps, list) and len(steps) > 0:
+        try:
+            plan_fingerprint = _batch_plan_fingerprint(steps)
+        except Exception:
+            pass
+
     data: Dict[str, Any] = {
         "step_count": step_count,
         "operations": operations,
@@ -1129,6 +1173,9 @@ def handle_batch_plan(command: Dict[str, Any]) -> Dict[str, Any]:
         "executable": False,
         "notes": notes,
     }
+
+    if plan_fingerprint is not None:
+        data["plan_fingerprint"] = plan_fingerprint
 
     if not valid:
         data["validation_errors"] = validation_errors
@@ -1329,6 +1376,19 @@ def handle_batch_execute(command: Dict[str, Any]) -> Dict[str, Any]:
     
     valid = len(validation_errors) == 0
     
+    plan_fingerprint = None
+    if isinstance(steps, list) and len(steps) > 0:
+        try:
+            plan_fingerprint = _batch_plan_fingerprint(steps)
+        except Exception:
+            pass
+    
+    dry_run_id = None
+    if plan_fingerprint is not None:
+        fingerprint_short = plan_fingerprint.replace("sha256:", "")[:16]
+        request_id_value = command.get("request_id", "unknown")
+        dry_run_id = f"dryrun:{fingerprint_short}:{request_id_value}"
+    
     data: Dict[str, Any] = {
         "dry_run": True,
         "executable": False,
@@ -1341,6 +1401,11 @@ def handle_batch_execute(command: Dict[str, Any]) -> Dict[str, Any]:
         "validation_errors": validation_errors,
         "notes": notes,
     }
+    
+    if plan_fingerprint is not None:
+        data["plan_fingerprint"] = plan_fingerprint
+    if dry_run_id is not None:
+        data["dry_run_id"] = dry_run_id
     
     if not valid:
         return make_response(
