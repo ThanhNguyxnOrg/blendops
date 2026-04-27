@@ -40,16 +40,17 @@ node apps/cli/dist/index.js bridge stop --verbose
     "unsupported_operations": [],
     "valid": true,
     "executable": false,
-    "notes": []
+    "notes": [],
+    "plan_fingerprint": "sha256:7fed7d5e95670321d3999371292f3c5a83ab3484178383da903d1184f585a2d8"
   },
   "warnings": [],
   "next_steps": [
     "Review plan summary and run steps individually",
     "batch.execute is not implemented yet"
   ],
-  "request_id": "req_1777271412696_jcv159sgl",
+  "request_id": "req_1777280737964_mrg1tevdk",
   "receipt": {
-    "request_id": "req_1777271412696_jcv159sgl",
+    "request_id": "req_1777280737964_mrg1tevdk",
     "operation": "batch.plan",
     "ok": true,
     "duration_ms": 0

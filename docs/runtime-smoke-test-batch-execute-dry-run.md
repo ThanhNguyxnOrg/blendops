@@ -134,7 +134,10 @@ node apps/cli/dist/index.js scene inspect --verbose
     ],
     "destructive_steps": 0,
     "requires_confirmation": false,
-    "notes": []
+    "validation_errors": [],
+    "notes": [],
+    "plan_fingerprint": "sha256:7fed7d5e95670321d3999371292f3c5a83ab3484178383da903d1184f585a2d8",
+    "dry_run_id": "dryrun:7fed7d5e95670321:req_1777280743574_rfdjgtax9"
   },
   "warnings": [],
   "next_steps": [
@@ -142,9 +145,38 @@ node apps/cli/dist/index.js scene inspect --verbose
     "Real batch execution is not implemented yet",
     "Run individual operations manually or wait for future batch.execute support"
   ],
-  "request_id": "req_1234567890_abcdef123"
+  "request_id": "req_1777280743574_rfdjgtax9",
+  "receipt": {
+    "request_id": "req_1777280743574_rfdjgtax9",
+    "operation": "batch.execute",
+    "ok": true,
+    "duration_ms": 0
+  }
 }
 ```
+
+---
+
+## 📊 Runtime evidence verdict
+
+**Captured evidence (2026-04-27):**
+
+- **batch.plan fingerprint:** `sha256:7fed7d5e95670321d3999371292f3c5a83ab3484178383da903d1184f585a2d8`
+- **batch.execute fingerprint:** `sha256:7fed7d5e95670321d3999371292f3c5a83ab3484178383da903d1184f585a2d8`
+- **dry_run_id:** `dryrun:7fed7d5e95670321:req_1777280743574_rfdjgtax9`
+- **Scene object count:** 3 (before) → 3 (after)
+
+**Verification results:**
+
+| Check | Result |
+|---|---|
+| Fingerprint generated | ✅ PASS |
+| Dry-run fingerprint matches batch.plan | ✅ PASS |
+| dry_run_id generated | ✅ PASS |
+| dry_run_id format correct (dryrun:16hex:request_id) | ✅ PASS |
+| No scene mutation | ✅ PASS |
+| executable:false enforced | ✅ PASS |
+| Real execution NOT IMPLEMENTED | ✅ PASS |
 
 ---
 
