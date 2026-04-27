@@ -44,7 +44,6 @@ node apps/cli/dist/index.js bridge start --mode gui --blender "C:\Program Files\
 node apps/cli/dist/index.js object create --type cube --name test_cube --location 0,0,1
 node apps/cli/dist/index.js validate scene --preset basic
 node apps/cli/dist/index.js render preview --output renders/preview.png
-node apps/cli/dist/index.js scene clear --confirm CLEAR_SCENE --verbose
 ```
 
 ## 🧠 MCP quick setup
@@ -95,6 +94,14 @@ Generic MCP config:
 | Render | `render.preview` |
 | Validate | `validate.scene` |
 | Export | `export.asset` |
+
+## ⚠️ Destructive operations
+
+`scene.clear` removes all scene objects. Use it only when you explicitly intend to wipe scene contents, and always provide the exact confirmation token.
+
+```bash
+node apps/cli/dist/index.js scene clear --confirm CLEAR_SCENE --verbose
+```
 
 ## 🧭 Architecture
 
