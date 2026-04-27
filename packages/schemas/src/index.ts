@@ -72,6 +72,7 @@ export const UndoLastDataSchema = z.object({
 export const SceneClearRequestSchema = z.object({
   operation: z.literal("scene.clear"),
   confirm: z.literal("CLEAR_SCENE"),
+  dry_run: z.boolean().optional(),
   request_id: z.string().optional(),
 });
 
@@ -80,6 +81,9 @@ export const SceneClearDataSchema = z.object({
   removed_meshes: z.number().int().nonnegative().optional(),
   removed_materials: z.number().int().nonnegative().optional(),
   remaining_objects: z.number().int().nonnegative(),
+  dry_run: z.boolean().optional(),
+  would_remove_objects: z.number().int().nonnegative().optional(),
+  would_remove_meshes: z.number().int().nonnegative().optional(),
 });
 
 export const OperationManifestEntrySchema = z.object({

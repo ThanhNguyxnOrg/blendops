@@ -99,6 +99,14 @@ Generic MCP config:
 
 `scene.clear` removes all scene objects. Use it only when you explicitly intend to wipe scene contents, and always provide the exact confirmation token.
 
+Preview what would be removed with `--dry-run`:
+
+```bash
+node apps/cli/dist/index.js scene clear --confirm CLEAR_SCENE --dry-run --verbose
+```
+
+Execute the actual clear:
+
 ```bash
 node apps/cli/dist/index.js scene clear --confirm CLEAR_SCENE --verbose
 ```

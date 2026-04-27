@@ -135,7 +135,7 @@ OPERATION_MANIFEST = {
         "cli_supported": True,
         "mcp_supported": True,
         "destructive": True,
-        "runtime_notes": "Requires confirm=CLEAR_SCENE; removes scene objects",
+        "runtime_notes": "Requires confirm=CLEAR_SCENE; supports dry_run preview; removes scene objects when dry_run is false",
         "evidence_doc": "docs/manual-test.md",
     },
     "object.create": {
@@ -295,7 +295,8 @@ def handle_scene_inspect() -> Dict[str, Any]:
 
 def handle_scene_clear(command: Dict[str, Any]) -> Dict[str, Any]:
     confirm = command.get("confirm")
-    
+    dry_run = bool(command.get("dry_run", False))
+
     if confirm != "CLEAR_SCENE":
         return make_response(
             ok=False,
@@ -307,11 +308,32 @@ def handle_scene_clear(command: Dict[str, Any]) -> Dict[str, Any]:
                 "Run scene.inspect before clearing to verify scene state",
             ],
         )
-    
+
     try:
         scene = bpy.context.scene
-        objects_before = len(scene.objects)
-        
+        objects_to_remove = list(scene.objects)
+        objects_before = len(objects_to_remove)
+        mesh_count_before = len([obj for obj in objects_to_remove if obj.type == "MESH"])
+
+        if dry_run:
+            return make_response(
+                ok=True,
+                operation="scene.clear",
+                message=f"Dry run: scene.clear would remove {objects_before} object(s)",
+                data={
+                    "removed_objects": 0,
+                    "removed_meshes": 0,
+                    "remaining_objects": objects_before,
+                    "dry_run": True,
+                    "would_remove_objects": objects_before,
+                    "would_remove_meshes": mesh_count_before,
+                },
+                next_steps=[
+                    "Run scene.inspect to verify scene state",
+                    "Run scene.clear with --confirm CLEAR_SCENE without --dry-run to execute",
+                ],
+            )
+
         if objects_before == 0:
             return make_response(
                 ok=True,
@@ -319,25 +341,32 @@ def handle_scene_clear(command: Dict[str, Any]) -> Dict[str, Any]:
                 message="Scene already empty",
                 data={
                     "removed_objects": 0,
+                    "removed_meshes": 0,
                     "remaining_objects": 0,
+                    "dry_run": False,
+                    "would_remove_objects": 0,
+                    "would_remove_meshes": 0,
                 },
                 next_steps=["Run scene.inspect to verify scene state"],
             )
-        
-        objects_to_remove = list(scene.objects)
+
         for obj in objects_to_remove:
             bpy.data.objects.remove(obj, do_unlink=True)
-        
+
         objects_after = len(scene.objects)
         removed_count = objects_before - objects_after
-        
+
         return make_response(
             ok=True,
             operation="scene.clear",
             message=f"Cleared {removed_count} object(s) from scene",
             data={
                 "removed_objects": removed_count,
+                "removed_meshes": mesh_count_before,
                 "remaining_objects": objects_after,
+                "dry_run": False,
+                "would_remove_objects": objects_before,
+                "would_remove_meshes": mesh_count_before,
             },
             next_steps=["Run scene.inspect to verify scene state"],
         )

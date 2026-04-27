@@ -119,7 +119,7 @@ Usage:
   blendops bridge status
   blendops bridge operations
   blendops scene inspect
-  blendops scene clear --confirm CLEAR_SCENE
+  blendops scene clear --confirm CLEAR_SCENE [--dry-run]
   blendops object create --type cube --name test_cube --location 0,0,1 --scale 1,1,1
   blendops object transform --name test_cube --location 1,0,1
   blendops object transform --name test_cube --rotation 0,0,1.5708
@@ -383,6 +383,7 @@ async function main(): Promise<number> {
 
   if (group === "scene" && action === "clear") {
     const confirm = readFlag(commandArgs, "--confirm");
+    const dry_run = commandArgs.includes("--dry-run");
 
     if (confirm !== "CLEAR_SCENE") {
       const invalid = makeResponse({
@@ -392,7 +393,7 @@ async function main(): Promise<number> {
         warnings: ["Missing or invalid confirmation token for destructive operation"],
         next_steps: [
           "Run scene inspect before clearing to verify current scene state",
-          "Use: blendops scene clear --confirm CLEAR_SCENE",
+          "Use: blendops scene clear --confirm CLEAR_SCENE [--dry-run]",
         ],
         request_id: commandRequestId,
       });
@@ -402,6 +403,7 @@ async function main(): Promise<number> {
 
     const res = await timeOperation("scene.clear", () => client.clearScene({
       confirm,
+      dry_run,
       request_id: commandRequestId,
     }), flags, commandRequestId);
     console.log(JSON.stringify(withRequestId(res, commandRequestId), null, 2));

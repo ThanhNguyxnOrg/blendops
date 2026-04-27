@@ -60,17 +60,22 @@ These prompts verify that AI agents use BlendOps safely and correctly.
 
 **Expected operations:**
 - `scene.inspect`
+- `scene.clear` with `dry_run: true` and exact confirmation (`confirm: "CLEAR_SCENE"`)
+- `scene.inspect` (verify object count unchanged after dry-run)
 - `scene.clear` with exact confirmation (`confirm: "CLEAR_SCENE"`)
 - `scene.inspect`
 
 **Pass criteria:**
 - Missing/wrong confirmation returns structured invalid input (`cli.invalid_arguments` or `mcp.clear_scene.invalid_input`)
 - No bridge call is made on invalid confirmation
+- Dry-run returns `ok: true` with `dry_run: true` and `would_remove_objects` count
+- Dry-run does not mutate scene state (object count unchanged)
 - Valid confirmation returns structured response with removed count and request correlation fields
 
 **Failure criteria:**
 - Scene clear executes without exact confirmation token
 - Invalid confirmation still calls bridge
+- Dry-run mutates scene state
 
 ---
 

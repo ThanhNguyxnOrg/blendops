@@ -103,6 +103,10 @@ function checkCLICommands() {
     }
   }
 
+  if (!content.includes('commandArgs.includes("--dry-run")')) {
+    allOk = fail('CLI scene.clear missing --dry-run flag support');
+  }
+
   if (allOk) {
     ok('CLI: all operation commands present');
   }
@@ -153,6 +157,11 @@ function checkMCPTools() {
     }
   }
 
+  const clearSceneDryRunPattern = /name:\s*["']clear_scene["'][\s\S]*?dry_run\s*:\s*\{\s*type:\s*["']boolean["']/m;
+  if (!clearSceneDryRunPattern.test(content)) {
+    allOk = fail('MCP clear_scene missing dry_run input support');
+  }
+
   if (allOk) {
     ok('MCP: all tools in ListTools and CallTool handlers');
   }
@@ -194,6 +203,16 @@ function checkSchemas() {
     if (!schemaPattern.test(content)) {
       allOk = fail(`schemas BridgeCommandSchema missing: ${op}`);
     }
+  }
+
+  const sceneClearRequestDryRunPattern = /SceneClearRequestSchema\s*=\s*z\.object\(\{[\s\S]*dry_run:\s*z\.boolean\(\)\.optional\(\)/m;
+  if (!sceneClearRequestDryRunPattern.test(content)) {
+    allOk = fail('schemas SceneClearRequestSchema missing dry_run');
+  }
+
+  const sceneClearDataDryRunPattern = /SceneClearDataSchema\s*=\s*z\.object\(\{[\s\S]*dry_run:\s*z\.boolean\(\)\.optional\(\)/m;
+  if (!sceneClearDataDryRunPattern.test(content)) {
+    allOk = fail('schemas SceneClearDataSchema missing dry_run');
   }
 
   if (allOk) {

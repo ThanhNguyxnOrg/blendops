@@ -72,11 +72,12 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
     },
     {
       name: "clear_scene",
-      description: "Clear scene objects (destructive) with explicit confirmation token.",
+      description: "Clear scene objects (destructive) with explicit confirmation token; supports dry_run preview.",
       inputSchema: {
         type: "object",
         properties: {
           confirm: { type: "string", enum: ["CLEAR_SCENE"] },
+          dry_run: { type: "boolean" },
         },
         required: ["confirm"],
         additionalProperties: false,
@@ -355,6 +356,14 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       const args = (rawArgs ?? {}) as Record<string, unknown>;
       const confirm = args.confirm;
 
+      let dry_run = false;
+      if (typeof args.dry_run !== "undefined") {
+        if (typeof args.dry_run !== "boolean") {
+          throw new Error("dry_run must be boolean");
+        }
+        dry_run = args.dry_run;
+      }
+
       if (confirm !== "CLEAR_SCENE") {
         const duration = Date.now() - start;
         mcpLog(`tool error: ${name} duration=${duration}ms error=invalid_confirm request_id=${request_id}`);
@@ -366,7 +375,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           warnings: ["Missing or incorrect confirmation token for destructive operation"],
           next_steps: [
             "Call inspect_scene before clear_scene to verify current state",
-            "Retry with confirm: CLEAR_SCENE",
+            "Retry with confirm: CLEAR_SCENE (optionally set dry_run: true)",
           ],
           request_id,
         };
@@ -379,6 +388,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 
       const result = await client.clearScene({
         confirm,
+        dry_run,
         request_id,
       });
 
