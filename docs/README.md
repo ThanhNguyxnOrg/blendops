@@ -40,6 +40,7 @@ Lightweight documentation hub for BlendOps.
 | [runtime-smoke-test-request-correlation.md](./runtime-smoke-test-request-correlation.md) | request_id + receipt correlation |
 | [runtime-smoke-test-undo.md](./runtime-smoke-test-undo.md) | `undo.last` safe-failure runtime evidence |
 | [runtime-smoke-test-scene-clear.md](./runtime-smoke-test-scene-clear.md) | `scene.clear` guarded destructive runtime validation |
+| [runtime-smoke-test-batch-plan.md](./runtime-smoke-test-batch-plan.md) | `batch.plan` plan-only validation smoke evidence |
 
 ## 🔍 Research and architecture
 

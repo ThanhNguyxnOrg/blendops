@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { BridgeClient, getBridgeLogsLifecycle, startBridgeLifecycle, stopBridgeLifecycle } from "@blendops/core";
-import { appendFileSync, mkdirSync } from "node:fs";
+import { appendFileSync, mkdirSync, readFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { ColorHexSchema, ExportAssetExtensionByFormat, ExportAssetFormatSchema, LightingPresetSchema, makeResponse, ObjectTypeSchema, ValidationPresetSchema, Vec3Schema } from "@blendops/schemas";
 
@@ -142,6 +142,7 @@ Usage:
   blendops export asset --format fbx --output exports/test_scene.fbx
   blendops export asset --format glb --output exports/test_scene.glb --selected-only --no-apply-modifiers
   blendops undo last --verbose
+  blendops batch plan --file examples/batch/basic-scene.json --verbose
 
 Options:
   --verbose, -v  Show detailed progress logs (stderr)
@@ -166,7 +167,8 @@ Implemented in v0.1:
   - camera set
   - render preview
   - validate scene
-  - export asset`);
+  - export asset
+  - batch plan`);
 }
 
 function readFlag(args: string[], flag: string): string | undefined {
@@ -412,6 +414,107 @@ async function main(): Promise<number> {
 
   if (group === "undo" && action === "last") {
     const res = await timeOperation("undo.last", () => client.undoLast({ request_id: commandRequestId }), flags, commandRequestId);
+    console.log(JSON.stringify(withRequestId(res, commandRequestId), null, 2));
+    return res.ok ? 0 : 1;
+  }
+
+  if (group === "batch" && action === "plan") {
+    const filePath = readFlag(commandArgs, "--file");
+
+    if (!filePath) {
+      const invalid = makeResponse({
+        ok: false,
+        operation: "cli.invalid_arguments",
+        message: "batch plan requires --file",
+        warnings: ["Missing required --file argument"],
+        next_steps: ["Example: blendops batch plan --file examples/batch/basic-scene.json --verbose"],
+        request_id: commandRequestId,
+      });
+      console.log(JSON.stringify(withRequestId(invalid, commandRequestId), null, 2));
+      return 1;
+    }
+
+    let rawText = "";
+    let parsedJson: unknown;
+    try {
+      rawText = readFileSync(filePath, "utf8");
+      parsedJson = JSON.parse(rawText) as unknown;
+    } catch (error) {
+      const invalid = makeResponse({
+        ok: false,
+        operation: "cli.invalid_arguments",
+        message: error instanceof Error ? `Failed to read/parse batch file: ${error.message}` : "Failed to read/parse batch file",
+        warnings: ["Invalid or unreadable batch plan file"],
+        next_steps: [
+          "Provide a valid JSON file path with --file",
+          "File must contain either { \"steps\": [...] } or a direct steps array",
+        ],
+        request_id: commandRequestId,
+      });
+      console.log(JSON.stringify(withRequestId(invalid, commandRequestId), null, 2));
+      return 1;
+    }
+
+    let stepsSource: unknown;
+    if (Array.isArray(parsedJson)) {
+      stepsSource = parsedJson;
+    } else if (typeof parsedJson === "object" && parsedJson !== null && Array.isArray((parsedJson as { steps?: unknown }).steps)) {
+      stepsSource = (parsedJson as { steps: unknown[] }).steps;
+    }
+
+    if (!Array.isArray(stepsSource)) {
+      const invalid = makeResponse({
+        ok: false,
+        operation: "cli.invalid_arguments",
+        message: "batch plan file must be an array or object containing steps array",
+        warnings: ["Invalid batch plan JSON shape"],
+        next_steps: [
+          "Use { \"steps\": [ ... ] } or [ ... ] as file root",
+          "Each step must include an operation string",
+        ],
+        request_id: commandRequestId,
+      });
+      console.log(JSON.stringify(withRequestId(invalid, commandRequestId), null, 2));
+      return 1;
+    }
+
+    const steps: Array<{ operation: string } & Record<string, unknown>> = [];
+    for (let index = 0; index < stepsSource.length; index += 1) {
+      const step = stepsSource[index];
+      if (typeof step !== "object" || step === null || Array.isArray(step)) {
+        const invalid = makeResponse({
+          ok: false,
+          operation: "cli.invalid_arguments",
+          message: `batch plan step ${index + 1} must be an object`,
+          warnings: ["Invalid step shape"],
+          next_steps: ["Each step must be a JSON object containing operation string"],
+          request_id: commandRequestId,
+        });
+        console.log(JSON.stringify(withRequestId(invalid, commandRequestId), null, 2));
+        return 1;
+      }
+
+      const operation = (step as { operation?: unknown }).operation;
+      if (typeof operation !== "string" || operation.trim().length === 0) {
+        const invalid = makeResponse({
+          ok: false,
+          operation: "cli.invalid_arguments",
+          message: `batch plan step ${index + 1} is missing a valid operation string`,
+          warnings: ["Invalid step operation"],
+          next_steps: ["Set step.operation to a non-empty string"],
+          request_id: commandRequestId,
+        });
+        console.log(JSON.stringify(withRequestId(invalid, commandRequestId), null, 2));
+        return 1;
+      }
+
+      steps.push({ ...(step as Record<string, unknown>), operation: operation.trim() });
+    }
+
+    const res = await timeOperation("batch.plan", () => client.planBatch({
+      steps,
+      request_id: commandRequestId,
+    }), flags, commandRequestId);
     console.log(JSON.stringify(withRequestId(res, commandRequestId), null, 2));
     return res.ok ? 0 : 1;
   }

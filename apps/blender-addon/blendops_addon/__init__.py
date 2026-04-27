@@ -70,6 +70,7 @@ OPERATION_REGISTRY: Dict[str, Optional[OperationHandler]] = {
     "bridge.stop": None,
     "bridge.logs": None,
     "undo.last": None,
+    "batch.plan": None,
     "object.create": None,
     "object.transform": None,
     "material.create": None,
@@ -209,6 +210,14 @@ OPERATION_MANIFEST = {
         "destructive": False,
         "runtime_notes": "GLB/GLTF requires GUI bridge on Blender 4.2 background mode",
         "evidence_doc": "docs/runtime-smoke-test-export.md",
+    },
+    "batch.plan": {
+        "category": "batch",
+        "cli_supported": True,
+        "mcp_supported": True,
+        "destructive": False,
+        "runtime_notes": "Plan-only validation; does not execute steps",
+        "evidence_doc": "docs/manual-test.md",
     },
 }
 
@@ -533,6 +542,195 @@ def handle_undo_last(_command: Dict[str, Any]) -> Dict[str, Any]:
             warnings=[traceback.format_exc()],
             next_steps=["Check Blender console for detailed error", "Run `blendops scene inspect` to confirm scene state"],
         )
+
+
+def handle_batch_plan(command: Dict[str, Any]) -> Dict[str, Any]:
+    operation = "batch.plan"
+    forbidden_operations = {
+        "batch.plan",
+        "bridge.start",
+        "bridge.stop",
+        "bridge.logs",
+        "bridge.status",
+        "bridge.operations",
+    }
+    allowed_operations = {
+        "scene.inspect",
+        "scene.clear",
+        "undo.last",
+        "object.create",
+        "object.transform",
+        "material.create",
+        "material.apply",
+        "lighting.setup",
+        "camera.set",
+        "render.preview",
+        "validate.scene",
+        "export.asset",
+    }
+    forbidden_keys = {"python", "script", "shell", "command", "eval", "exec"}
+    output_operations = {"export.asset", "render.preview"}
+    required_clear_confirm = "CLEAR_SCENE"
+
+    steps = command.get("steps")
+    if not isinstance(steps, list):
+        return make_response(
+            ok=False,
+            operation=operation,
+            message="batch.plan requires steps array",
+            data={
+                "step_count": 0,
+                "operations": [],
+                "destructive_steps": 0,
+                "requires_confirmation": False,
+                "unsupported_operations": [],
+                "valid": False,
+                "executable": False,
+                "notes": [],
+                "validation_errors": [{"step": None, "error": "steps must be an array"}],
+            },
+            warnings=["Invalid steps payload"],
+            next_steps=["Provide steps as an array with 1 to 25 typed operations"],
+        )
+
+    step_count = len(steps)
+    if step_count == 0 or step_count > 25:
+        return make_response(
+            ok=False,
+            operation=operation,
+            message="batch.plan steps must contain between 1 and 25 items",
+            data={
+                "step_count": step_count,
+                "operations": [],
+                "destructive_steps": 0,
+                "requires_confirmation": False,
+                "unsupported_operations": [],
+                "valid": False,
+                "executable": False,
+                "notes": [],
+                "validation_errors": [{"step": None, "error": "steps count must be within 1..25"}],
+            },
+            warnings=["Unsupported step count"],
+            next_steps=["Split large plans into smaller batches and retry batch.plan"],
+        )
+
+    operations: list[str] = []
+    notes: list[str] = []
+    warnings: list[str] = []
+    validation_errors: list[Dict[str, Any]] = []
+    unsupported_operations: list[str] = []
+    destructive_steps = 0
+    requires_confirmation = False
+
+    for index, raw_step in enumerate(steps):
+        step_label = index + 1
+        if not isinstance(raw_step, dict):
+            validation_errors.append({"step": step_label, "error": "step must be an object"})
+            continue
+
+        step_op = raw_step.get("operation")
+        if not isinstance(step_op, str) or len(step_op.strip()) == 0:
+            validation_errors.append({"step": step_label, "error": "operation must be a non-empty string"})
+            continue
+
+        normalized_op = step_op.strip()
+        operations.append(normalized_op)
+
+        for forbidden_key in forbidden_keys:
+            if forbidden_key in raw_step:
+                validation_errors.append(
+                    {
+                        "step": step_label,
+                        "operation": normalized_op,
+                        "error": f"forbidden field: {forbidden_key}",
+                    }
+                )
+
+        if normalized_op in forbidden_operations:
+            validation_errors.append(
+                {
+                    "step": step_label,
+                    "operation": normalized_op,
+                    "error": "operation is not allowed in batch.plan",
+                }
+            )
+            if normalized_op not in unsupported_operations:
+                unsupported_operations.append(normalized_op)
+            continue
+
+        if normalized_op not in allowed_operations:
+            validation_errors.append(
+                {
+                    "step": step_label,
+                    "operation": normalized_op,
+                    "error": "operation is not supported for batch.plan",
+                }
+            )
+            if normalized_op not in unsupported_operations:
+                unsupported_operations.append(normalized_op)
+            continue
+
+        if normalized_op == "scene.clear":
+            destructive_steps += 1
+            requires_confirmation = True
+            notes.append(f"step {step_label}: scene.clear is destructive")
+            confirm_value = raw_step.get("confirm")
+            if confirm_value != required_clear_confirm:
+                validation_errors.append(
+                    {
+                        "step": step_label,
+                        "operation": normalized_op,
+                        "error": "scene.clear requires confirm=CLEAR_SCENE",
+                    }
+                )
+            if raw_step.get("dry_run") is not True:
+                warnings.append(f"step {step_label}: recommend dry_run=true before real scene.clear")
+                notes.append(f"step {step_label}: recommend dry_run=true before real scene.clear")
+
+        if normalized_op == "undo.last":
+            destructive_steps += 1
+            notes.append(f"step {step_label}: undo.last is stateful and context dependent")
+
+        if normalized_op in output_operations:
+            notes.append(f"step {step_label}: {normalized_op} produces output artifacts")
+
+    valid = len(validation_errors) == 0 and len(unsupported_operations) == 0
+    data: Dict[str, Any] = {
+        "step_count": step_count,
+        "operations": operations,
+        "destructive_steps": destructive_steps,
+        "requires_confirmation": requires_confirmation,
+        "unsupported_operations": unsupported_operations,
+        "valid": valid,
+        "executable": False,
+        "notes": notes,
+    }
+
+    if not valid:
+        data["validation_errors"] = validation_errors
+        return make_response(
+            ok=False,
+            operation=operation,
+            message="batch.plan validation failed",
+            data=data,
+            warnings=warnings + ["One or more steps are invalid or unsupported"],
+            next_steps=[
+                "Fix validation_errors and retry batch.plan",
+                "Use typed operations only; batch.execute is not implemented",
+            ],
+        )
+
+    return make_response(
+        ok=True,
+        operation=operation,
+        message="batch.plan validated successfully",
+        data=data,
+        warnings=warnings,
+        next_steps=[
+            "Review plan summary and run steps individually",
+            "batch.execute is not implemented yet",
+        ],
+    )
 
 
 def handle_object_create(command: Dict[str, Any]) -> Dict[str, Any]:
@@ -2167,6 +2365,7 @@ def register() -> None:
     OPERATION_REGISTRY["bridge.stop"] = handle_bridge_stop
     OPERATION_REGISTRY["bridge.logs"] = handle_bridge_logs
     OPERATION_REGISTRY["undo.last"] = handle_undo_last
+    OPERATION_REGISTRY["batch.plan"] = handle_batch_plan
     OPERATION_REGISTRY["object.create"] = handle_object_create
     OPERATION_REGISTRY["object.transform"] = handle_object_transform
     OPERATION_REGISTRY["material.create"] = handle_material_create

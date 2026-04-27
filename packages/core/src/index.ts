@@ -11,6 +11,7 @@ import {
   type BridgeLogsRequest,
   type UndoLastRequest,
   type SceneClearRequest,
+  type BatchPlanRequest,
   type MaterialApplyRequest,
   type MaterialCreateRequest,
   type LightingSetupRequest,
@@ -205,6 +206,10 @@ export class BridgeClient {
 
   async undoLast(input: Partial<Omit<UndoLastRequest, "operation">> = {}): Promise<BlendOpsResponse> {
     return this.send({ operation: "undo.last", ...input });
+  }
+
+  async planBatch(input: Omit<BatchPlanRequest, "operation">): Promise<BlendOpsResponse> {
+    return this.send({ operation: "batch.plan", ...input });
   }
 
   async getOperationManifest(): Promise<BridgeOperationsData> {

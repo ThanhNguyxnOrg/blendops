@@ -326,6 +326,25 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
         additionalProperties: false,
       },
     },
+    {
+      name: "plan_batch",
+      description: "Validate and summarize a multi-step BlendOps plan without executing any step.",
+      inputSchema: {
+        type: "object",
+        properties: {
+          steps: {
+            type: "array",
+            minItems: 1,
+            maxItems: 25,
+            items: {
+              type: "object",
+            },
+          },
+        },
+        required: ["steps"],
+        additionalProperties: false,
+      },
+    },
   ],
 }));
 
@@ -1215,6 +1234,65 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
     }
   }
 
+  if (name === "plan_batch") {
+    try {
+      const args = (rawArgs ?? {}) as Record<string, unknown>;
+      const steps = args.steps;
+
+      if (!Array.isArray(steps)) {
+        throw new Error("Missing required field: steps array");
+      }
+      if (steps.length < 1 || steps.length > 25) {
+        throw new Error("steps length must be between 1 and 25");
+      }
+
+      for (const step of steps) {
+        if (typeof step !== "object" || step === null || Array.isArray(step)) {
+          throw new Error("each step must be an object");
+        }
+      }
+
+      const result = await client.planBatch({
+        steps,
+        request_id,
+      });
+
+      const duration = Date.now() - start;
+      mcpLog(`tool result: ${name} ok=${result.ok} duration=${duration}ms request_id=${result.request_id ?? request_id}`);
+      return {
+        content: [
+          {
+            type: "text",
+            text: JSON.stringify({ ...result, request_id: result.request_id ?? request_id }, null, 2),
+          },
+        ],
+        isError: !result.ok,
+      };
+    } catch (error) {
+      const duration = Date.now() - start;
+      mcpLog(`tool error: ${name} duration=${duration}ms error=${error instanceof Error ? error.message : "unknown"} request_id=${request_id}`);
+      const payload = {
+        ok: false,
+        operation: "mcp.plan_batch.invalid_input",
+        message: error instanceof Error ? error.message : "Invalid plan_batch input",
+        data: {
+          executable: false,
+        },
+        warnings: ["Input validation failed for plan_batch"],
+        next_steps: [
+          "Provide steps as an array of 1..25 objects",
+          "Use typed BlendOps operations only",
+        ],
+        request_id,
+      };
+
+      return {
+        content: [{ type: "text", text: JSON.stringify(payload, null, 2) }],
+        isError: true,
+      };
+    }
+  }
+
   mcpLog(`tool error: ${name} duration=${Date.now() - start}ms error=tool_not_found request_id=${request_id}`);
   return {
     content: [
@@ -1227,7 +1305,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
             message: `Unknown tool: ${name}`,
             data: {},
             warnings: ["Tool not implemented in MVP"],
-            next_steps: ["Use tool `inspect_scene`, `clear_scene`, `undo_last`, `list_operations`, `start_bridge`, `stop_bridge`, `get_bridge_logs`, `create_object`, `transform_object`, `create_material`, `apply_material`, `setup_lighting`, `set_camera`, `render_preview`, `validate_scene`, or `export_asset`"],
+            next_steps: ["Use tool `inspect_scene`, `clear_scene`, `undo_last`, `list_operations`, `start_bridge`, `stop_bridge`, `get_bridge_logs`, `create_object`, `transform_object`, `create_material`, `apply_material`, `setup_lighting`, `set_camera`, `render_preview`, `validate_scene`, `export_asset`, or `plan_batch`"],
             request_id,
           },
           null,

@@ -22,6 +22,7 @@ This roadmap reflects **current code + runtime evidence**.
 | `validate.scene` | ✅ | CLI + MCP + runtime evidence |
 | `export.asset` | ✅ | GUI bridge GLB runtime evidence recorded |
 | `undo.last` | ✅ | Typed slice implemented; safe failure path runtime-verified (successful undo path pending verification) |
+| `batch.plan` | ✅ | Plan-only validation; does not execute steps |
 | Observability split (stdout/stderr/bridge console) | ✅ | Implemented and smoke-tested |
 
 ---
@@ -47,7 +48,7 @@ This roadmap reflects **current code + runtime evidence**.
 
 ## 🚧 Next candidates
 
-1. Batch operations (safe multi-step orchestration)
+1. Batch execute (follow-up to plan-only orchestration)
 2. Validation preset expansion
 3. Packaging/release automation
 

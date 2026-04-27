@@ -20,6 +20,8 @@ This guide describes how AI agents should use BlendOps safely and deterministica
 - Use GUI bridge for Blender 4.2 GLB/GLTF workflows
 - Preserve `request_id` + `receipt` for correlation
 - Do not commit generated artifacts (`exports/`, `renders/`, `.tmp/`)
+- Use `plan_batch` for multi-step requests before executing individual typed operations
+- `batch.plan` is plan-only and never mutates scene
 
 ## 🚀 Recommended AI workflow
 
@@ -55,6 +57,7 @@ AI should call `list_operations` before guessing tools.
 - `render_preview`
 - `validate_scene`
 - `export_asset`
+- `plan_batch` (plan-only validation; does not execute)
 
 ### Minimal MCP flow
 

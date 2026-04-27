@@ -86,6 +86,42 @@ export const SceneClearDataSchema = z.object({
   would_remove_meshes: z.number().int().nonnegative().optional(),
 });
 
+const BatchPlanForbiddenKeys = new Set(["python", "script", "shell", "command", "eval", "exec"]);
+
+export const BatchPlanStepSchema = z
+  .object({
+    operation: z.string().min(1),
+  })
+  .passthrough()
+  .superRefine((value, context) => {
+    for (const key of BatchPlanForbiddenKeys) {
+      if (key in value) {
+        context.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: `Forbidden field in batch.plan step: ${key}`,
+          path: [key],
+        });
+      }
+    }
+  });
+
+export const BatchPlanRequestSchema = z.object({
+  operation: z.literal("batch.plan"),
+  steps: z.array(BatchPlanStepSchema).min(1).max(25),
+  request_id: z.string().optional(),
+});
+
+export const BatchPlanDataSchema = z.object({
+  step_count: z.number().int().nonnegative(),
+  operations: z.array(z.string()),
+  destructive_steps: z.number().int().nonnegative(),
+  requires_confirmation: z.boolean(),
+  unsupported_operations: z.array(z.string()),
+  valid: z.boolean(),
+  executable: z.literal(false),
+  notes: z.array(z.string()),
+});
+
 export const OperationManifestEntrySchema = z.object({
   name: z.string(),
   category: z.string(),
@@ -321,6 +357,9 @@ export type UndoLastRequest = z.infer<typeof UndoLastRequestSchema>;
 export type UndoLastData = z.infer<typeof UndoLastDataSchema>;
 export type SceneClearRequest = z.infer<typeof SceneClearRequestSchema>;
 export type SceneClearData = z.infer<typeof SceneClearDataSchema>;
+export type BatchPlanStep = z.infer<typeof BatchPlanStepSchema>;
+export type BatchPlanRequest = z.infer<typeof BatchPlanRequestSchema>;
+export type BatchPlanData = z.infer<typeof BatchPlanDataSchema>;
 export type OperationManifestEntry = z.infer<typeof OperationManifestEntrySchema>;
 export type BridgeOperationsData = z.infer<typeof BridgeOperationsDataSchema>;
 export type ObjectCreateRequest = z.infer<typeof ObjectCreateRequestSchema>;
@@ -352,6 +391,7 @@ export const BridgeCommandSchema = z.discriminatedUnion("operation", [
   BridgeStopRequestSchema,
   BridgeLogsRequestSchema,
   UndoLastRequestSchema,
+  BatchPlanRequestSchema,
   ObjectCreateRequestSchema,
   ObjectTransformRequestSchema,
   MaterialCreateRequestSchema,
