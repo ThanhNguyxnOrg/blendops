@@ -117,6 +117,32 @@ export const BatchPlanDataSchema = z.object({
   validation_errors: z.array(BatchPlanValidationErrorSchema).optional(),
 });
 
+export const BatchExecuteRequestSchema = z.object({
+  operation: z.literal("batch.execute"),
+  dry_run: z.literal(true),
+  steps: z.array(BatchPlanStepSchema).min(1).max(25),
+  request_id: z.string().optional(),
+});
+
+export const BatchExecuteStepPreviewSchema = z.object({
+  step: z.number().int().positive(),
+  operation: z.string(),
+  effect: z.string(),
+});
+
+export const BatchExecuteDataSchema = z.object({
+  dry_run: z.literal(true),
+  executable: z.literal(false),
+  step_count: z.number().int().nonnegative(),
+  operations: z.array(z.string()),
+  valid: z.boolean(),
+  would_execute: z.array(BatchExecuteStepPreviewSchema),
+  destructive_steps: z.number().int().nonnegative(),
+  requires_confirmation: z.boolean(),
+  validation_errors: z.array(BatchPlanValidationErrorSchema).optional(),
+  notes: z.array(z.string()),
+});
+
 export const OperationManifestEntrySchema = z.object({
   name: z.string(),
   category: z.string(),
@@ -356,6 +382,9 @@ export type BatchPlanStep = z.infer<typeof BatchPlanStepSchema>;
 export type BatchPlanRequest = z.infer<typeof BatchPlanRequestSchema>;
 export type BatchPlanValidationError = z.infer<typeof BatchPlanValidationErrorSchema>;
 export type BatchPlanData = z.infer<typeof BatchPlanDataSchema>;
+export type BatchExecuteRequest = z.infer<typeof BatchExecuteRequestSchema>;
+export type BatchExecuteStepPreview = z.infer<typeof BatchExecuteStepPreviewSchema>;
+export type BatchExecuteData = z.infer<typeof BatchExecuteDataSchema>;
 export type OperationManifestEntry = z.infer<typeof OperationManifestEntrySchema>;
 export type BridgeOperationsData = z.infer<typeof BridgeOperationsDataSchema>;
 export type ObjectCreateRequest = z.infer<typeof ObjectCreateRequestSchema>;
@@ -388,6 +417,7 @@ export const BridgeCommandSchema = z.discriminatedUnion("operation", [
   BridgeLogsRequestSchema,
   UndoLastRequestSchema,
   BatchPlanRequestSchema,
+  BatchExecuteRequestSchema,
   ObjectCreateRequestSchema,
   ObjectTransformRequestSchema,
   MaterialCreateRequestSchema,

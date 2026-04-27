@@ -103,6 +103,8 @@ node apps/cli/dist/index.js batch plan --file examples/batch/basic-scene.json --
 node apps/cli/dist/index.js batch plan --file examples/batch/invalid-arbitrary-code.json --verbose
 node apps/cli/dist/index.js batch plan --file examples/batch/invalid-scene-clear.json --verbose
 node apps/cli/dist/index.js batch plan --file examples/batch/invalid-object-create.json --verbose
+node apps/cli/dist/index.js batch execute --file examples/batch/basic-scene.json --dry-run --verbose
+node apps/cli/dist/index.js batch execute --file examples/batch/basic-scene.json --verbose
 ```
 
 `undo.last` may return `ok: false` with `No undo step available` when Blender has no undo step in current context. Treat that as verified safe-failure behavior, not a successful undo.
@@ -110,6 +112,8 @@ node apps/cli/dist/index.js batch plan --file examples/batch/invalid-object-crea
 `scene.clear` is destructive and requires exact `--confirm CLEAR_SCENE`. Without this exact token, CLI returns `cli.invalid_arguments` and no bridge call is made.
 
 `scene.clear --dry-run` reports what would be removed and must not mutate scene state; verify object count is unchanged before running the real clear.
+
+`batch.execute` requires `--dry-run` flag; missing flag returns `cli.invalid_arguments` and no bridge call is made. Dry-run validates and previews steps without executing them.
 
 ## 🧾 Bridge logs and stop
 

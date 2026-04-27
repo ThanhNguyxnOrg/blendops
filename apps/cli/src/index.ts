@@ -143,6 +143,7 @@ Usage:
   blendops export asset --format glb --output exports/test_scene.glb --selected-only --no-apply-modifiers
   blendops undo last --verbose
   blendops batch plan --file examples/batch/basic-scene.json --verbose
+  blendops batch execute --file examples/batch/basic-scene.json --dry-run --verbose
 
 Options:
   --verbose, -v  Show detailed progress logs (stderr)
@@ -168,7 +169,8 @@ Implemented in v0.1:
   - render preview
   - validate scene
   - export asset
-  - batch plan`);
+  - batch plan
+  - batch execute (dry-run only)`);
 }
 
 function readFlag(args: string[], flag: string): string | undefined {
@@ -512,6 +514,125 @@ async function main(): Promise<number> {
     }
 
     const res = await timeOperation("batch.plan", () => client.planBatch({
+      steps,
+      request_id: commandRequestId,
+    }), flags, commandRequestId);
+    console.log(JSON.stringify(withRequestId(res, commandRequestId), null, 2));
+    return res.ok ? 0 : 1;
+  }
+
+  if (group === "batch" && action === "execute") {
+    const filePath = readFlag(commandArgs, "--file");
+    const hasDryRun = commandArgs.includes("--dry-run");
+
+    if (!filePath) {
+      const invalid = makeResponse({
+        ok: false,
+        operation: "cli.invalid_arguments",
+        message: "batch execute requires --file",
+        warnings: ["Missing required --file argument"],
+        next_steps: ["Example: blendops batch execute --file examples/batch/basic-scene.json --dry-run --verbose"],
+        request_id: commandRequestId,
+      });
+      console.log(JSON.stringify(withRequestId(invalid, commandRequestId), null, 2));
+      return 1;
+    }
+
+    if (!hasDryRun) {
+      const invalid = makeResponse({
+        ok: false,
+        operation: "cli.invalid_arguments",
+        message: "batch execute requires --dry-run; real execution is not implemented",
+        warnings: ["Missing required --dry-run flag"],
+        next_steps: [
+          "Add --dry-run flag to preview batch execution",
+          "Example: blendops batch execute --file examples/batch/basic-scene.json --dry-run --verbose",
+        ],
+        request_id: commandRequestId,
+      });
+      console.log(JSON.stringify(withRequestId(invalid, commandRequestId), null, 2));
+      return 1;
+    }
+
+    let rawText = "";
+    let parsedJson: unknown;
+    try {
+      rawText = readFileSync(filePath, "utf8");
+      parsedJson = JSON.parse(rawText) as unknown;
+    } catch (error) {
+      const invalid = makeResponse({
+        ok: false,
+        operation: "cli.invalid_arguments",
+        message: error instanceof Error ? `Failed to read/parse batch file: ${error.message}` : "Failed to read/parse batch file",
+        warnings: ["Invalid or unreadable batch execute file"],
+        next_steps: [
+          "Provide a valid JSON file path with --file",
+          "File must contain either { \"steps\": [...] } or a direct steps array",
+        ],
+        request_id: commandRequestId,
+      });
+      console.log(JSON.stringify(withRequestId(invalid, commandRequestId), null, 2));
+      return 1;
+    }
+
+    let stepsSource: unknown;
+    if (Array.isArray(parsedJson)) {
+      stepsSource = parsedJson;
+    } else if (typeof parsedJson === "object" && parsedJson !== null && Array.isArray((parsedJson as { steps?: unknown }).steps)) {
+      stepsSource = (parsedJson as { steps: unknown[] }).steps;
+    }
+
+    if (!Array.isArray(stepsSource)) {
+      const invalid = makeResponse({
+        ok: false,
+        operation: "cli.invalid_arguments",
+        message: "batch execute file must be an array or object containing steps array",
+        warnings: ["Invalid batch execute JSON shape"],
+        next_steps: [
+          "Use { \"steps\": [ ... ] } or [ ... ] as file root",
+          "Each step must include an operation string",
+        ],
+        request_id: commandRequestId,
+      });
+      console.log(JSON.stringify(withRequestId(invalid, commandRequestId), null, 2));
+      return 1;
+    }
+
+    const steps: Array<{ operation: string } & Record<string, unknown>> = [];
+    for (let index = 0; index < stepsSource.length; index += 1) {
+      const step = stepsSource[index];
+      if (typeof step !== "object" || step === null || Array.isArray(step)) {
+        const invalid = makeResponse({
+          ok: false,
+          operation: "cli.invalid_arguments",
+          message: `batch execute step ${index + 1} must be an object`,
+          warnings: ["Invalid step shape"],
+          next_steps: ["Each step must be a JSON object containing operation string"],
+          request_id: commandRequestId,
+        });
+        console.log(JSON.stringify(withRequestId(invalid, commandRequestId), null, 2));
+        return 1;
+      }
+
+      const operation = (step as { operation?: unknown }).operation;
+      if (typeof operation !== "string" || operation.trim().length === 0) {
+        const invalid = makeResponse({
+          ok: false,
+          operation: "cli.invalid_arguments",
+          message: `batch execute step ${index + 1} is missing a valid operation string`,
+          warnings: ["Invalid step operation"],
+          next_steps: ["Set step.operation to a non-empty string"],
+          request_id: commandRequestId,
+        });
+        console.log(JSON.stringify(withRequestId(invalid, commandRequestId), null, 2));
+        return 1;
+      }
+
+      steps.push({ ...(step as Record<string, unknown>), operation: operation.trim() });
+    }
+
+    const res = await timeOperation("batch.execute", () => client.executeBatch({
+      dry_run: true,
       steps,
       request_id: commandRequestId,
     }), flags, commandRequestId);

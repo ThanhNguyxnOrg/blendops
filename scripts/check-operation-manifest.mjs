@@ -10,6 +10,7 @@ const EXPECTED_OPERATIONS = [
   'bridge.logs',
   'undo.last',
   'batch.plan',
+  'batch.execute',
   'scene.inspect',
   'scene.clear',
   'object.create',
@@ -86,6 +87,7 @@ function checkCLICommands() {
     { op: 'bridge.operations', pattern: /group === ["']bridge["'] && action === ["']operations["']/ },
     { op: 'undo.last', pattern: /group === ["']undo["'] && action === ["']last["']/ },
     { op: 'batch.plan', pattern: /group === ["']batch["'] && action === ["']plan["']/ },
+    { op: 'batch.execute', pattern: /group === ["']batch["'] && action === ["']execute["']/ },
     { op: 'scene.inspect', pattern: /group === ["']scene["'] && action === ["']inspect["']/ },
     { op: 'scene.clear', pattern: /group === ["']scene["'] && action === ["']clear["']/ },
     { op: 'object.create', pattern: /group === ["']object["'] && action === ["']create["']/ },
@@ -130,6 +132,7 @@ function checkMCPTools() {
     'clear_scene',
     'undo_last',
     'plan_batch',
+    'execute_batch',
     'list_operations',
     'start_bridge',
     'stop_bridge',
@@ -165,6 +168,11 @@ function checkMCPTools() {
     allOk = fail('MCP clear_scene missing dry_run input support');
   }
 
+  const executeBatchDryRunPattern = /name:\s*["']execute_batch["'][\s\S]*?dry_run\s*:\s*\{[\s\S]*?enum:\s*\[true\]/m;
+  if (!executeBatchDryRunPattern.test(content)) {
+    allOk = fail('MCP execute_batch missing dry_run=true input requirement');
+  }
+
   if (allOk) {
     ok('MCP: all tools in ListTools and CallTool handlers');
   }
@@ -190,6 +198,7 @@ function checkSchemas() {
     'bridge.logs',
     'undo.last',
     'batch.plan',
+    'batch.execute',
     'object.create',
     'object.transform',
     'material.create',
@@ -219,6 +228,16 @@ function checkSchemas() {
     allOk = fail('schemas SceneClearDataSchema missing dry_run');
   }
 
+  const batchExecuteRequestDryRunPattern = /BatchExecuteRequestSchema\s*=\s*z\.object\(\{[\s\S]*operation:\s*z\.literal\(["']batch\.execute["']\)[\s\S]*dry_run:\s*z\.literal\(true\)/m;
+  if (!batchExecuteRequestDryRunPattern.test(content)) {
+    allOk = fail('schemas BatchExecuteRequestSchema missing dry_run=true requirement');
+  }
+
+  const batchExecuteDataPattern = /BatchExecuteDataSchema\s*=\s*z\.object\(\{[\s\S]*dry_run:\s*z\.literal\(true\)[\s\S]*executable:\s*z\.literal\(false\)[\s\S]*would_execute:/m;
+  if (!batchExecuteDataPattern.test(content)) {
+    allOk = fail('schemas BatchExecuteDataSchema missing dry_run/executable/would_execute fields');
+  }
+
   if (allOk) {
     ok('schemas: all operations in BridgeCommandSchema union');
   }
@@ -243,6 +262,7 @@ function checkCore() {
     { op: 'bridge.logs', method: 'bridgeLogs' },
     { op: 'undo.last', method: 'undoLast' },
     { op: 'batch.plan', method: 'planBatch' },
+    { op: 'batch.execute', method: 'executeBatch' },
     { op: 'scene.inspect', method: 'inspectScene' },
     { op: 'scene.clear', method: 'clearScene' },
     { op: 'object.create', method: 'createObject' },
@@ -275,8 +295,12 @@ function checkBatchPlanStrictValidation() {
 
   const addonPath = path.join(ROOT, 'apps/blender-addon/blendops_addon/__init__.py');
   const runtimeDocPath = path.join(ROOT, 'docs/runtime-smoke-test-batch-plan.md');
+  const runtimeBatchExecuteDocPath = path.join(ROOT, 'docs/runtime-smoke-test-batch-execute-dry-run.md');
   const aiUsagePath = path.join(ROOT, 'docs/ai-agent-usage.md');
   const evalsPath = path.join(ROOT, 'docs/evals.md');
+  const readmePath = path.join(ROOT, 'README.md');
+  const manualTestPath = path.join(ROOT, 'docs/manual-test.md');
+  const docsReadmePath = path.join(ROOT, 'docs/README.md');
 
   if (!fs.existsSync(addonPath)) {
     return fail('batch.plan strict validation check: addon __init__.py not found');
@@ -294,6 +318,14 @@ function checkBatchPlanStrictValidation() {
 
   if (!addonContent.includes('validation_errors')) {
     allOk = fail('addon strict validation missing validation_errors response payload');
+  }
+
+  if (!addonContent.includes('def handle_batch_execute')) {
+    allOk = fail('addon missing batch.execute dry-run handler');
+  }
+
+  if (!addonContent.includes('batch.execute requires dry_run=true')) {
+    allOk = fail('addon batch.execute missing dry_run=true enforcement');
   }
 
   if (!addonContent.includes('"executable": False')) {
@@ -333,6 +365,9 @@ function checkBatchPlanStrictValidation() {
     if (!aiUsageDoc.includes('validation_errors')) {
       allOk = fail('ai-agent usage doc missing validation_errors guidance for batch.plan');
     }
+    if (!aiUsageDoc.includes('execute_batch') || !aiUsageDoc.includes('dry_run: true')) {
+      allOk = fail('ai-agent usage doc missing execute_batch dry_run:true guidance');
+    }
   }
 
   if (!fs.existsSync(evalsPath)) {
@@ -342,10 +377,52 @@ function checkBatchPlanStrictValidation() {
     if (!evalsDoc.includes('validation_errors')) {
       allOk = fail('evals doc missing strict batch.plan validation assertions');
     }
+    if (!evalsDoc.includes('batch.execute dry-run eval')) {
+      allOk = fail('evals doc missing batch.execute dry-run eval section');
+    }
+  }
+
+  if (!fs.existsSync(runtimeBatchExecuteDocPath)) {
+    allOk = fail('batch.execute dry-run runtime evidence doc missing');
+  } else {
+    const runtimeBatchExecuteDoc = readText(runtimeBatchExecuteDocPath);
+    if (!runtimeBatchExecuteDoc.includes('Dry-run only') || !runtimeBatchExecuteDoc.includes('Real batch execution is not implemented')) {
+      allOk = fail('batch.execute runtime doc missing dry-run only / not implemented statements');
+    }
+  }
+
+  if (!fs.existsSync(readmePath)) {
+    allOk = fail('README.md missing');
+  } else {
+    const readmeDoc = readText(readmePath);
+    if (!readmeDoc.includes('batch.execute --dry-run')) {
+      allOk = fail('README missing batch.execute --dry-run support statement');
+    }
+  }
+
+  if (!fs.existsSync(manualTestPath)) {
+    allOk = fail('manual-test doc missing');
+  } else {
+    const manualTestDoc = readText(manualTestPath);
+    if (!manualTestDoc.includes('batch execute --file examples/batch/basic-scene.json --dry-run --verbose')) {
+      allOk = fail('manual-test doc missing batch.execute dry-run command');
+    }
+    if (!manualTestDoc.includes('batch execute --file examples/batch/basic-scene.json --verbose')) {
+      allOk = fail('manual-test doc missing batch.execute no-dry-run rejection command');
+    }
+  }
+
+  if (!fs.existsSync(docsReadmePath)) {
+    allOk = fail('docs/README.md missing');
+  } else {
+    const docsReadmeDoc = readText(docsReadmePath);
+    if (!docsReadmeDoc.includes('runtime-smoke-test-batch-execute-dry-run.md')) {
+      allOk = fail('docs/README missing batch.execute dry-run runtime evidence link');
+    }
   }
 
   if (allOk) {
-    ok('batch.plan strict validation checks passed (addon, examples, docs)');
+    ok('batch.plan/batch.execute strict validation checks passed (addon, examples, docs)');
   }
 
   return allOk;

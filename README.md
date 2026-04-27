@@ -94,7 +94,7 @@ Generic MCP config:
 | Render | `render.preview` |
 | Validate | `validate.scene` |
 | Export | `export.asset` |
-| Batch | `batch.plan` (plan-only; strict per-operation validation; does not execute) |
+| Batch | `batch.plan`, `batch.execute --dry-run` (no real execution yet) |
 
 ## ⚠️ Destructive operations
 

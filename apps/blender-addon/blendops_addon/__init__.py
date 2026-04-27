@@ -71,6 +71,7 @@ OPERATION_REGISTRY: Dict[str, Optional[OperationHandler]] = {
     "bridge.logs": None,
     "undo.last": None,
     "batch.plan": None,
+    "batch.execute": None,
     "object.create": None,
     "object.transform": None,
     "material.create": None,
@@ -218,6 +219,14 @@ OPERATION_MANIFEST = {
         "destructive": False,
         "runtime_notes": "Plan-only validation; does not execute steps",
         "evidence_doc": "docs/manual-test.md",
+    },
+    "batch.execute": {
+        "category": "batch",
+        "cli_supported": True,
+        "mcp_supported": True,
+        "destructive": False,
+        "runtime_notes": "Dry-run only; validates and previews steps without executing",
+        "evidence_doc": "docs/runtime-smoke-test-batch-execute-dry-run.md",
     },
 }
 
@@ -705,8 +714,12 @@ def _batch_validate_step(raw_step: Dict[str, Any], step_label: int) -> Dict[str,
             )
 
         if raw_step.get("dry_run") is not True:
-            result["warnings"].append(f"step {step_label}: recommend dry_run=true before real scene.clear")
-            result["notes"].append(f"step {step_label}: recommend dry_run=true before real scene.clear")
+            result["warnings"].append(
+                f"step {step_label}: real scene.clear requires confirm=CLEAR_SCENE and dry_run preview first"
+            )
+            result["notes"].append(
+                f"step {step_label}: real scene.clear requires confirm=CLEAR_SCENE and dry_run preview first"
+            )
 
     elif normalized_op == "undo.last":
         result["destructive_step"] = True
@@ -1140,6 +1153,218 @@ def handle_batch_plan(command: Dict[str, Any]) -> Dict[str, Any]:
         next_steps=[
             "Review plan summary and run steps individually",
             "batch.execute is not implemented yet",
+        ],
+    )
+
+
+def _generate_batch_execute_preview(step_num: int, operation: str, raw_step: Dict[str, Any]) -> Dict[str, Any]:
+    effect = ""
+    
+    if operation == "scene.inspect":
+        effect = "inspect scene state"
+    elif operation == "scene.clear":
+        effect = "would clear scene objects"
+    elif operation == "undo.last":
+        effect = "undo is context-dependent"
+    elif operation == "object.create":
+        obj_type = raw_step.get("type", "unknown")
+        obj_name = raw_step.get("name", "unnamed")
+        effect = f"create {obj_type} object '{obj_name}'"
+    elif operation == "object.transform":
+        obj_name = raw_step.get("name", "unnamed")
+        transforms = []
+        if "location" in raw_step:
+            transforms.append("location")
+        if "rotation" in raw_step:
+            transforms.append("rotation")
+        if "scale" in raw_step:
+            transforms.append("scale")
+        effect = f"transform object '{obj_name}' ({', '.join(transforms)})"
+    elif operation == "material.create":
+        mat_name = raw_step.get("name", "unnamed")
+        effect = f"create material '{mat_name}'"
+    elif operation == "material.apply":
+        obj_name = raw_step.get("object") or raw_step.get("object_name", "unnamed")
+        mat_name = raw_step.get("material") or raw_step.get("material_name", "unnamed")
+        effect = f"apply material '{mat_name}' to object '{obj_name}'"
+    elif operation == "lighting.setup":
+        preset = raw_step.get("preset", "unknown")
+        target = raw_step.get("target")
+        if target:
+            effect = f"setup {preset} lighting targeting '{target}'"
+        else:
+            effect = f"setup {preset} lighting"
+    elif operation == "camera.set":
+        target = raw_step.get("target")
+        if target:
+            effect = f"set camera targeting '{target}'"
+        else:
+            effect = "set camera position/rotation"
+    elif operation == "render.preview":
+        output = raw_step.get("output", "renders/preview.png")
+        effect = f"output artifact would be produced at {output}"
+    elif operation == "validate.scene":
+        preset = raw_step.get("preset", "basic")
+        effect = f"validate scene with {preset} preset"
+    elif operation == "export.asset":
+        fmt = raw_step.get("format", "unknown")
+        output = raw_step.get("output", "unknown")
+        effect = f"output artifact would be produced at {output} ({fmt})"
+    else:
+        effect = f"execute {operation}"
+    
+    return {
+        "step": step_num,
+        "operation": operation,
+        "effect": effect,
+    }
+
+
+def handle_batch_execute(command: Dict[str, Any]) -> Dict[str, Any]:
+    operation = "batch.execute"
+    
+    dry_run = command.get("dry_run")
+    if dry_run is not True:
+        return make_response(
+            ok=False,
+            operation=operation,
+            message="batch.execute requires dry_run=true; real execution is not implemented",
+            data={
+                "dry_run": dry_run if isinstance(dry_run, bool) else None,
+                "executable": False,
+                "step_count": 0,
+                "operations": [],
+                "valid": False,
+                "would_execute": [],
+                "destructive_steps": 0,
+                "requires_confirmation": False,
+                "notes": ["Only dry-run mode is supported"],
+            },
+            warnings=["Real batch execution is not implemented"],
+            next_steps=["Rerun with dry_run=true to preview steps"],
+        )
+    
+    steps = command.get("steps")
+    if not isinstance(steps, list):
+        return make_response(
+            ok=False,
+            operation=operation,
+            message="batch.execute requires steps array",
+            data={
+                "dry_run": True,
+                "executable": False,
+                "step_count": 0,
+                "operations": [],
+                "valid": False,
+                "would_execute": [],
+                "destructive_steps": 0,
+                "requires_confirmation": False,
+                "validation_errors": [{"step": None, "field": "steps", "error": "steps must be an array"}],
+                "notes": [],
+            },
+            warnings=["Invalid steps payload"],
+            next_steps=["Provide steps as an array with 1 to 25 typed operations"],
+        )
+    
+    step_count = len(steps)
+    if step_count == 0 or step_count > 25:
+        return make_response(
+            ok=False,
+            operation=operation,
+            message="batch.execute steps must contain between 1 and 25 items",
+            data={
+                "dry_run": True,
+                "executable": False,
+                "step_count": step_count,
+                "operations": [],
+                "valid": False,
+                "would_execute": [],
+                "destructive_steps": 0,
+                "requires_confirmation": False,
+                "validation_errors": [{"step": None, "field": "steps", "error": "steps count must be within 1..25"}],
+                "notes": [],
+            },
+            warnings=["Unsupported step count"],
+            next_steps=["Split large plans into smaller batches"],
+        )
+    
+    operations: list[str] = []
+    notes: list[str] = []
+    warnings: list[str] = []
+    validation_errors: list[Dict[str, Any]] = []
+    would_execute: list[Dict[str, Any]] = []
+    destructive_steps = 0
+    requires_confirmation = False
+    
+    for index, raw_step in enumerate(steps):
+        step_label = index + 1
+        if not isinstance(raw_step, dict):
+            validation_errors.append({
+                "step": step_label,
+                "field": "step",
+                "error": "step must be an object",
+            })
+            continue
+        
+        result = _batch_validate_step(raw_step, step_label)
+        
+        normalized_op = result.get("operation")
+        if isinstance(normalized_op, str):
+            operations.append(normalized_op)
+            if len(result.get("errors", [])) == 0:
+                preview = _generate_batch_execute_preview(step_label, normalized_op, raw_step)
+                would_execute.append(preview)
+        
+        notes.extend(result.get("notes", []))
+        warnings.extend(result.get("warnings", []))
+        
+        if bool(result.get("destructive_step")):
+            destructive_steps += 1
+        if bool(result.get("requires_confirmation")):
+            requires_confirmation = True
+        
+        errors = result.get("errors")
+        if isinstance(errors, list):
+            validation_errors.extend(errors)
+    
+    valid = len(validation_errors) == 0
+    
+    data: Dict[str, Any] = {
+        "dry_run": True,
+        "executable": False,
+        "step_count": step_count,
+        "operations": operations,
+        "valid": valid,
+        "would_execute": would_execute,
+        "destructive_steps": destructive_steps,
+        "requires_confirmation": requires_confirmation,
+        "validation_errors": validation_errors,
+        "notes": notes,
+    }
+    
+    if not valid:
+        return make_response(
+            ok=False,
+            operation=operation,
+            message="batch.execute dry-run validation failed",
+            data=data,
+            warnings=warnings + ["One or more steps are invalid"],
+            next_steps=[
+                "Fix validation_errors and retry",
+                "Real batch.execute is not implemented yet",
+            ],
+        )
+    
+    return make_response(
+        ok=True,
+        operation=operation,
+        message="batch.execute dry-run preview complete",
+        data=data,
+        warnings=warnings,
+        next_steps=[
+            "Review dry-run output",
+            "Real batch execution is not implemented yet",
+            "Run individual operations manually or wait for future batch.execute support",
         ],
     )
 
@@ -2777,6 +3002,7 @@ def register() -> None:
     OPERATION_REGISTRY["bridge.logs"] = handle_bridge_logs
     OPERATION_REGISTRY["undo.last"] = handle_undo_last
     OPERATION_REGISTRY["batch.plan"] = handle_batch_plan
+    OPERATION_REGISTRY["batch.execute"] = handle_batch_execute
     OPERATION_REGISTRY["object.create"] = handle_object_create
     OPERATION_REGISTRY["object.transform"] = handle_object_transform
     OPERATION_REGISTRY["material.create"] = handle_material_create
