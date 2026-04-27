@@ -47,6 +47,7 @@ Lightweight documentation hub for BlendOps.
 
 - [Implementation mining](./implementation-mining.md)
 - [Bridge lifecycle prior art](./bridge-lifecycle-prior-art.md)
+- [Batch execute safety contract (real execution)](./batch-execute-safety-contract.md)
 
 ## 🧭 Roadmap
 

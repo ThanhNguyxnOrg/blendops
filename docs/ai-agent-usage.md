@@ -27,6 +27,7 @@ This guide describes how AI agents should use BlendOps safely and deterministica
 - AI may use `execute_batch` only with `dry_run: true`
 - AI must not claim execution happened after `execute_batch` dry-run
 - After dry-run preview, AI should run individual typed operations manually or wait for future real batch execution
+- Future real execution must satisfy the [batch execution safety contract](./batch-execute-safety-contract.md)
 
 ## 🚀 Recommended AI workflow
 
