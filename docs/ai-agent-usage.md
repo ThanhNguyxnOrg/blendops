@@ -11,6 +11,8 @@ This guide describes how AI agents should use BlendOps safely and deterministica
 - Start bridge first, then verify readiness
 - Call `list_operations` before guessing tool availability
 - Inspect scene before destructive or stateful edits
+- `scene.clear` is destructive and requires exact confirmation token `CLEAR_SCENE`
+- Never call `scene.clear` unless the user explicitly requests clearing the scene
 - Use `undo_last` only when reverting the latest typed operation is intended
 - Treat `No undo step available` as safe failure (not a successful undo)
 - Validate before render/export when applicable
@@ -41,6 +43,7 @@ AI should call `list_operations` before guessing tools.
 - `get_bridge_logs`
 - `list_operations`
 - `inspect_scene`
+- `clear_scene` (requires `confirm: "CLEAR_SCENE"`)
 - `undo_last`
 - `create_object`
 - `transform_object`

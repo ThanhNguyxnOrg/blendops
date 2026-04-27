@@ -10,6 +10,7 @@ import {
   type BridgeStopRequest,
   type BridgeLogsRequest,
   type UndoLastRequest,
+  type SceneClearRequest,
   type MaterialApplyRequest,
   type MaterialCreateRequest,
   type LightingSetupRequest,
@@ -180,6 +181,10 @@ export class BridgeClient {
 
   async inspectScene(request_id?: string): Promise<BlendOpsResponse> {
     return this.send({ operation: "scene.inspect", request_id });
+  }
+
+  async clearScene(input: Omit<SceneClearRequest, "operation">): Promise<BlendOpsResponse> {
+    return this.send({ operation: "scene.clear", ...input });
   }
 
   async operations(request_id?: string): Promise<BlendOpsResponse> {

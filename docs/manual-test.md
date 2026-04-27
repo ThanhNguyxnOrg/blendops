@@ -94,9 +94,14 @@ node apps/cli/dist/index.js validate scene --preset basic
 node apps/cli/dist/index.js validate scene --preset game_asset
 node apps/cli/dist/index.js validate scene --preset render_ready
 node apps/cli/dist/index.js export asset --format glb --output exports/test_scene.glb
+node apps/cli/dist/index.js scene inspect --verbose
+node apps/cli/dist/index.js scene clear --confirm CLEAR_SCENE --verbose
+node apps/cli/dist/index.js scene inspect --verbose
 ```
 
 `undo.last` may return `ok: false` with `No undo step available` when Blender has no undo step in current context. Treat that as verified safe-failure behavior, not a successful undo.
+
+`scene.clear` is destructive and requires exact `--confirm CLEAR_SCENE`. Without this exact token, CLI returns `cli.invalid_arguments` and no bridge call is made.
 
 ## 🧾 Bridge logs and stop
 

@@ -44,6 +44,7 @@ node apps/cli/dist/index.js bridge start --mode gui --blender "C:\Program Files\
 node apps/cli/dist/index.js object create --type cube --name test_cube --location 0,0,1
 node apps/cli/dist/index.js validate scene --preset basic
 node apps/cli/dist/index.js render preview --output renders/preview.png
+node apps/cli/dist/index.js scene clear --confirm CLEAR_SCENE --verbose
 ```
 
 ## 🧠 MCP quick setup
@@ -86,7 +87,7 @@ Generic MCP config:
 |---|---|
 | Bridge | `bridge.start`, `bridge.status`, `bridge.operations`, `bridge.logs`, `bridge.stop` |
 | History | `undo.last` |
-| Scene | `scene.inspect` |
+| Scene | `scene.inspect`, `scene.clear` (requires `--confirm CLEAR_SCENE`) |
 | Object | `object.create`, `object.transform` |
 | Material | `material.create`, `material.apply` |
 | Lighting | `lighting.setup` |

@@ -69,6 +69,19 @@ export const UndoLastDataSchema = z.object({
   detail: z.string().optional(),
 });
 
+export const SceneClearRequestSchema = z.object({
+  operation: z.literal("scene.clear"),
+  confirm: z.literal("CLEAR_SCENE"),
+  request_id: z.string().optional(),
+});
+
+export const SceneClearDataSchema = z.object({
+  removed_objects: z.number().int().nonnegative(),
+  removed_meshes: z.number().int().nonnegative().optional(),
+  removed_materials: z.number().int().nonnegative().optional(),
+  remaining_objects: z.number().int().nonnegative(),
+});
+
 export const OperationManifestEntrySchema = z.object({
   name: z.string(),
   category: z.string(),
@@ -302,6 +315,8 @@ export type BridgeStopRequest = z.infer<typeof BridgeStopRequestSchema>;
 export type BridgeLogsRequest = z.infer<typeof BridgeLogsRequestSchema>;
 export type UndoLastRequest = z.infer<typeof UndoLastRequestSchema>;
 export type UndoLastData = z.infer<typeof UndoLastDataSchema>;
+export type SceneClearRequest = z.infer<typeof SceneClearRequestSchema>;
+export type SceneClearData = z.infer<typeof SceneClearDataSchema>;
 export type OperationManifestEntry = z.infer<typeof OperationManifestEntrySchema>;
 export type BridgeOperationsData = z.infer<typeof BridgeOperationsDataSchema>;
 export type ObjectCreateRequest = z.infer<typeof ObjectCreateRequestSchema>;
@@ -327,6 +342,7 @@ export type ExportAssetData = z.infer<typeof ExportAssetDataSchema>;
 
 export const BridgeCommandSchema = z.discriminatedUnion("operation", [
   SceneInspectRequestSchema,
+  SceneClearRequestSchema,
   BridgeOperationsRequestSchema,
   BridgeStartRequestSchema,
   BridgeStopRequestSchema,

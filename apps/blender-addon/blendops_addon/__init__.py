@@ -64,6 +64,7 @@ OperationHandler = Callable[[Dict[str, Any]], Dict[str, Any]]
 
 OPERATION_REGISTRY: Dict[str, Optional[OperationHandler]] = {
     "scene.inspect": None,
+    "scene.clear": None,
     "bridge.operations": None,
     "bridge.start": None,
     "bridge.stop": None,
@@ -128,6 +129,14 @@ OPERATION_MANIFEST = {
         "destructive": False,
         "runtime_notes": None,
         "evidence_doc": "docs/runtime-smoke-test.md",
+    },
+    "scene.clear": {
+        "category": "scene",
+        "cli_supported": True,
+        "mcp_supported": True,
+        "destructive": True,
+        "runtime_notes": "Requires confirm=CLEAR_SCENE; removes scene objects",
+        "evidence_doc": "docs/manual-test.md",
     },
     "object.create": {
         "category": "object",
@@ -279,6 +288,64 @@ def handle_scene_inspect() -> Dict[str, Any]:
             ok=False,
             operation="scene.inspect",
             message=f"Scene inspection failed: {str(e)}",
+            warnings=[traceback.format_exc()],
+            next_steps=["Check Blender console for detailed error"],
+        )
+
+
+def handle_scene_clear(command: Dict[str, Any]) -> Dict[str, Any]:
+    confirm = command.get("confirm")
+    
+    if confirm != "CLEAR_SCENE":
+        return make_response(
+            ok=False,
+            operation="scene.clear",
+            message="scene.clear requires exact confirm token CLEAR_SCENE",
+            warnings=["Missing or incorrect confirmation token"],
+            next_steps=[
+                "Use: blendops scene clear --confirm CLEAR_SCENE",
+                "Run scene.inspect before clearing to verify scene state",
+            ],
+        )
+    
+    try:
+        scene = bpy.context.scene
+        objects_before = len(scene.objects)
+        
+        if objects_before == 0:
+            return make_response(
+                ok=True,
+                operation="scene.clear",
+                message="Scene already empty",
+                data={
+                    "removed_objects": 0,
+                    "remaining_objects": 0,
+                },
+                next_steps=["Run scene.inspect to verify scene state"],
+            )
+        
+        objects_to_remove = list(scene.objects)
+        for obj in objects_to_remove:
+            bpy.data.objects.remove(obj, do_unlink=True)
+        
+        objects_after = len(scene.objects)
+        removed_count = objects_before - objects_after
+        
+        return make_response(
+            ok=True,
+            operation="scene.clear",
+            message=f"Cleared {removed_count} object(s) from scene",
+            data={
+                "removed_objects": removed_count,
+                "remaining_objects": objects_after,
+            },
+            next_steps=["Run scene.inspect to verify scene state"],
+        )
+    except Exception as e:
+        return make_response(
+            ok=False,
+            operation="scene.clear",
+            message=f"Scene clear failed: {str(e)}",
             warnings=[traceback.format_exc()],
             next_steps=["Check Blender console for detailed error"],
         )
@@ -2065,6 +2132,7 @@ def stop_server() -> None:
 
 def register() -> None:
     OPERATION_REGISTRY["scene.inspect"] = lambda _command: handle_scene_inspect()
+    OPERATION_REGISTRY["scene.clear"] = handle_scene_clear
     OPERATION_REGISTRY["bridge.operations"] = lambda _command: handle_bridge_operations()
     OPERATION_REGISTRY["bridge.start"] = handle_bridge_start
     OPERATION_REGISTRY["bridge.stop"] = handle_bridge_stop

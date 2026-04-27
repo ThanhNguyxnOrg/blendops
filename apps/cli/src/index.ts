@@ -119,6 +119,7 @@ Usage:
   blendops bridge status
   blendops bridge operations
   blendops scene inspect
+  blendops scene clear --confirm CLEAR_SCENE
   blendops object create --type cube --name test_cube --location 0,0,1 --scale 1,1,1
   blendops object transform --name test_cube --location 1,0,1
   blendops object transform --name test_cube --rotation 0,0,1.5708
@@ -156,6 +157,7 @@ Implemented in v0.1:
   - bridge operations
   - undo last
   - scene inspect
+  - scene clear
   - object create
   - object transform
   - material create
@@ -375,6 +377,33 @@ async function main(): Promise<number> {
 
   if (group === "scene" && action === "inspect") {
     const res = await timeOperation("scene.inspect", () => client.inspectScene(commandRequestId), flags, commandRequestId);
+    console.log(JSON.stringify(withRequestId(res, commandRequestId), null, 2));
+    return res.ok ? 0 : 1;
+  }
+
+  if (group === "scene" && action === "clear") {
+    const confirm = readFlag(commandArgs, "--confirm");
+
+    if (confirm !== "CLEAR_SCENE") {
+      const invalid = makeResponse({
+        ok: false,
+        operation: "cli.invalid_arguments",
+        message: "scene clear requires --confirm CLEAR_SCENE",
+        warnings: ["Missing or invalid confirmation token for destructive operation"],
+        next_steps: [
+          "Run scene inspect before clearing to verify current scene state",
+          "Use: blendops scene clear --confirm CLEAR_SCENE",
+        ],
+        request_id: commandRequestId,
+      });
+      console.log(JSON.stringify(withRequestId(invalid, commandRequestId), null, 2));
+      return 1;
+    }
+
+    const res = await timeOperation("scene.clear", () => client.clearScene({
+      confirm,
+      request_id: commandRequestId,
+    }), flags, commandRequestId);
     console.log(JSON.stringify(withRequestId(res, commandRequestId), null, 2));
     return res.ok ? 0 : 1;
   }

@@ -39,6 +39,7 @@ Lightweight documentation hub for BlendOps.
 | [runtime-smoke-test-observability.md](./runtime-smoke-test-observability.md) | stdout/stderr/bridge-log checks |
 | [runtime-smoke-test-request-correlation.md](./runtime-smoke-test-request-correlation.md) | request_id + receipt correlation |
 | [runtime-smoke-test-undo.md](./runtime-smoke-test-undo.md) | `undo.last` safe-failure runtime evidence |
+| [runtime-smoke-test-scene-clear.md](./runtime-smoke-test-scene-clear.md) | `scene.clear` guarded destructive runtime validation |
 
 ## 🔍 Research and architecture
 

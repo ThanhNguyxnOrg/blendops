@@ -71,6 +71,18 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
       },
     },
     {
+      name: "clear_scene",
+      description: "Clear scene objects (destructive) with explicit confirmation token.",
+      inputSchema: {
+        type: "object",
+        properties: {
+          confirm: { type: "string", enum: ["CLEAR_SCENE"] },
+        },
+        required: ["confirm"],
+        additionalProperties: false,
+      },
+    },
+    {
       name: "undo_last",
       description: "Undo the last undoable Blender scene operation.",
       inputSchema: {
@@ -336,6 +348,69 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       ],
       isError: !result.ok,
     };
+  }
+
+  if (name === "clear_scene") {
+    try {
+      const args = (rawArgs ?? {}) as Record<string, unknown>;
+      const confirm = args.confirm;
+
+      if (confirm !== "CLEAR_SCENE") {
+        const duration = Date.now() - start;
+        mcpLog(`tool error: ${name} duration=${duration}ms error=invalid_confirm request_id=${request_id}`);
+        const payload = {
+          ok: false,
+          operation: "mcp.clear_scene.invalid_input",
+          message: "clear_scene requires confirm=CLEAR_SCENE",
+          data: {},
+          warnings: ["Missing or incorrect confirmation token for destructive operation"],
+          next_steps: [
+            "Call inspect_scene before clear_scene to verify current state",
+            "Retry with confirm: CLEAR_SCENE",
+          ],
+          request_id,
+        };
+
+        return {
+          content: [{ type: "text", text: JSON.stringify(payload, null, 2) }],
+          isError: true,
+        };
+      }
+
+      const result = await client.clearScene({
+        confirm,
+        request_id,
+      });
+
+      const duration = Date.now() - start;
+      mcpLog(`tool result: ${name} ok=${result.ok} duration=${duration}ms request_id=${result.request_id ?? request_id}`);
+      return {
+        content: [
+          {
+            type: "text",
+            text: JSON.stringify({ ...result, request_id: result.request_id ?? request_id }, null, 2),
+          },
+        ],
+        isError: !result.ok,
+      };
+    } catch (error) {
+      const duration = Date.now() - start;
+      mcpLog(`tool error: ${name} duration=${duration}ms error=${error instanceof Error ? error.message : "unknown"} request_id=${request_id}`);
+      const payload = {
+        ok: false,
+        operation: "mcp.clear_scene.invalid_input",
+        message: error instanceof Error ? error.message : "Invalid clear_scene input",
+        data: {},
+        warnings: ["Input validation failed for clear_scene"],
+        next_steps: ["Provide confirm with exact value CLEAR_SCENE"],
+        request_id,
+      };
+
+      return {
+        content: [{ type: "text", text: JSON.stringify(payload, null, 2) }],
+        isError: true,
+      };
+    }
   }
 
   if (name === "undo_last") {
@@ -1142,7 +1217,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
             message: `Unknown tool: ${name}`,
             data: {},
             warnings: ["Tool not implemented in MVP"],
-            next_steps: ["Use tool `inspect_scene`, `undo_last`, `list_operations`, `start_bridge`, `stop_bridge`, `get_bridge_logs`, `create_object`, `transform_object`, `create_material`, `apply_material`, `setup_lighting`, `set_camera`, `render_preview`, `validate_scene`, or `export_asset`"],
+            next_steps: ["Use tool `inspect_scene`, `clear_scene`, `undo_last`, `list_operations`, `start_bridge`, `stop_bridge`, `get_bridge_logs`, `create_object`, `transform_object`, `create_material`, `apply_material`, `setup_lighting`, `set_camera`, `render_preview`, `validate_scene`, or `export_asset`"],
             request_id,
           },
           null,

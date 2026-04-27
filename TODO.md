@@ -11,6 +11,7 @@ This roadmap reflects **current code + runtime evidence**.
 | Slice | Status | Notes |
 |---|---:|---|
 | `scene.inspect` | ✅ | CLI + MCP + runtime evidence |
+| `scene.clear` | ✅ | CLI + MCP + runtime evidence with explicit `CLEAR_SCENE` confirmation |
 | `object.create` | ✅ | CLI + MCP + runtime evidence |
 | `object.transform` | ✅ | CLI + MCP + runtime evidence |
 | `material.create` | ✅ | CLI + MCP + runtime evidence |
@@ -46,16 +47,15 @@ This roadmap reflects **current code + runtime evidence**.
 
 ## 🚧 Next candidates
 
-1. `scene.clear --confirm`
-2. Batch operations (safe multi-step orchestration)
-3. Validation preset expansion
-4. Packaging/release automation
+1. Batch operations (safe multi-step orchestration)
+2. Validation preset expansion
+3. Packaging/release automation
 
 ---
 
 ## 🛡️ Safety / destructive operations
 
-- [ ] Add explicit confirmation flow for destructive operations
+- [x] Add explicit confirmation flow for destructive operations (`scene.clear` requires `CLEAR_SCENE`)
 - [x] Add operation-level risk annotations (`bridge.operations` manifest with `destructive` flags)
 - [ ] Add dry-run semantics for eligible operations
 - [x] Expand audit-friendly operation receipts

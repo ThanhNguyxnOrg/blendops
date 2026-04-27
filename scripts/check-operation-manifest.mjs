@@ -10,6 +10,7 @@ const EXPECTED_OPERATIONS = [
   'bridge.logs',
   'undo.last',
   'scene.inspect',
+  'scene.clear',
   'object.create',
   'object.transform',
   'material.create',
@@ -84,6 +85,7 @@ function checkCLICommands() {
     { op: 'bridge.operations', pattern: /group === ["']bridge["'] && action === ["']operations["']/ },
     { op: 'undo.last', pattern: /group === ["']undo["'] && action === ["']last["']/ },
     { op: 'scene.inspect', pattern: /group === ["']scene["'] && action === ["']inspect["']/ },
+    { op: 'scene.clear', pattern: /group === ["']scene["'] && action === ["']clear["']/ },
     { op: 'object.create', pattern: /group === ["']object["'] && action === ["']create["']/ },
     { op: 'object.transform', pattern: /group === ["']object["'] && action === ["']transform["']/ },
     { op: 'material.create', pattern: /group === ["']material["'] && action === ["']create["']/ },
@@ -119,6 +121,7 @@ function checkMCPTools() {
 
   const mcpTools = [
     'inspect_scene',
+    'clear_scene',
     'undo_last',
     'list_operations',
     'start_bridge',
@@ -168,6 +171,7 @@ function checkSchemas() {
 
   const schemaOps = [
     'scene.inspect',
+    'scene.clear',
     'bridge.operations',
     'bridge.start',
     'bridge.stop',
@@ -216,6 +220,7 @@ function checkCore() {
     { op: 'bridge.logs', method: 'bridgeLogs' },
     { op: 'undo.last', method: 'undoLast' },
     { op: 'scene.inspect', method: 'inspectScene' },
+    { op: 'scene.clear', method: 'clearScene' },
     { op: 'object.create', method: 'createObject' },
     { op: 'object.transform', method: 'transformObject' },
     { op: 'material.create', method: 'createMaterial' },
