@@ -333,10 +333,14 @@ These prompts verify that AI agents use BlendOps safely and correctly.
 - `data.executable` is exactly `false`
 - Includes `step_count` and operations summary
 - No scene mutation occurs from planning call
+- Invalid arbitrary-code field is rejected with `ok: false` + `validation_errors`
+- Missing `scene.clear` confirm is rejected with `ok: false` + `validation_errors`
+- `object.create` missing `type` is rejected with `ok: false` + `validation_errors`
 
 **Failure criteria:**
 - Any attempt to execute scene operations within `batch.plan`
 - Missing `executable: false`
+- Invalid plans accepted without structured validation errors
 
 ---
 

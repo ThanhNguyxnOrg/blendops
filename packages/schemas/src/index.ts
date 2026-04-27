@@ -86,29 +86,23 @@ export const SceneClearDataSchema = z.object({
   would_remove_meshes: z.number().int().nonnegative().optional(),
 });
 
-const BatchPlanForbiddenKeys = new Set(["python", "script", "shell", "command", "eval", "exec"]);
-
 export const BatchPlanStepSchema = z
   .object({
     operation: z.string().min(1),
   })
-  .passthrough()
-  .superRefine((value, context) => {
-    for (const key of BatchPlanForbiddenKeys) {
-      if (key in value) {
-        context.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: `Forbidden field in batch.plan step: ${key}`,
-          path: [key],
-        });
-      }
-    }
-  });
+  .passthrough();
 
 export const BatchPlanRequestSchema = z.object({
   operation: z.literal("batch.plan"),
   steps: z.array(BatchPlanStepSchema).min(1).max(25),
   request_id: z.string().optional(),
+});
+
+export const BatchPlanValidationErrorSchema = z.object({
+  step: z.number().int().positive().nullable(),
+  operation: z.string().optional(),
+  field: z.string().optional(),
+  error: z.string(),
 });
 
 export const BatchPlanDataSchema = z.object({
@@ -120,6 +114,7 @@ export const BatchPlanDataSchema = z.object({
   valid: z.boolean(),
   executable: z.literal(false),
   notes: z.array(z.string()),
+  validation_errors: z.array(BatchPlanValidationErrorSchema).optional(),
 });
 
 export const OperationManifestEntrySchema = z.object({
@@ -359,6 +354,7 @@ export type SceneClearRequest = z.infer<typeof SceneClearRequestSchema>;
 export type SceneClearData = z.infer<typeof SceneClearDataSchema>;
 export type BatchPlanStep = z.infer<typeof BatchPlanStepSchema>;
 export type BatchPlanRequest = z.infer<typeof BatchPlanRequestSchema>;
+export type BatchPlanValidationError = z.infer<typeof BatchPlanValidationErrorSchema>;
 export type BatchPlanData = z.infer<typeof BatchPlanDataSchema>;
 export type OperationManifestEntry = z.infer<typeof OperationManifestEntrySchema>;
 export type BridgeOperationsData = z.infer<typeof BridgeOperationsDataSchema>;

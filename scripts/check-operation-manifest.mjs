@@ -270,6 +270,87 @@ function checkCore() {
   return allOk;
 }
 
+function checkBatchPlanStrictValidation() {
+  let allOk = true;
+
+  const addonPath = path.join(ROOT, 'apps/blender-addon/blendops_addon/__init__.py');
+  const runtimeDocPath = path.join(ROOT, 'docs/runtime-smoke-test-batch-plan.md');
+  const aiUsagePath = path.join(ROOT, 'docs/ai-agent-usage.md');
+  const evalsPath = path.join(ROOT, 'docs/evals.md');
+
+  if (!fs.existsSync(addonPath)) {
+    return fail('batch.plan strict validation check: addon __init__.py not found');
+  }
+
+  const addonContent = readText(addonPath);
+
+  if (!addonContent.includes('BATCH_PLAN_FORBIDDEN_KEYS')) {
+    allOk = fail('addon strict validation missing forbidden key list for batch.plan');
+  }
+
+  if (!addonContent.includes('def _batch_validate_step')) {
+    allOk = fail('addon strict validation missing _batch_validate_step helper');
+  }
+
+  if (!addonContent.includes('validation_errors')) {
+    allOk = fail('addon strict validation missing validation_errors response payload');
+  }
+
+  if (!addonContent.includes('"executable": False')) {
+    allOk = fail('addon strict validation missing executable=false guarantee');
+  }
+
+  const examples = [
+    'examples/batch/basic-scene.json',
+    'examples/batch/invalid-arbitrary-code.json',
+    'examples/batch/invalid-scene-clear.json',
+    'examples/batch/invalid-object-create.json',
+  ];
+
+  for (const relativePath of examples) {
+    const filePath = path.join(ROOT, relativePath);
+    if (!fs.existsSync(filePath)) {
+      allOk = fail(`batch.plan example missing: ${relativePath}`);
+    }
+  }
+
+  if (!fs.existsSync(runtimeDocPath)) {
+    allOk = fail('batch.plan runtime evidence doc missing');
+  } else {
+    const runtimeDoc = readText(runtimeDocPath);
+    if (!runtimeDoc.includes('executable:false') && !runtimeDoc.includes('`data.executable: false`')) {
+      allOk = fail('runtime doc missing executable:false mention for batch.plan');
+    }
+    if (!runtimeDoc.includes('No Blender operation execution') && !runtimeDoc.includes('plan-only')) {
+      allOk = fail('runtime doc missing no-execution/plan-only statement');
+    }
+  }
+
+  if (!fs.existsSync(aiUsagePath)) {
+    allOk = fail('ai-agent usage doc missing');
+  } else {
+    const aiUsageDoc = readText(aiUsagePath);
+    if (!aiUsageDoc.includes('validation_errors')) {
+      allOk = fail('ai-agent usage doc missing validation_errors guidance for batch.plan');
+    }
+  }
+
+  if (!fs.existsSync(evalsPath)) {
+    allOk = fail('evals doc missing');
+  } else {
+    const evalsDoc = readText(evalsPath);
+    if (!evalsDoc.includes('validation_errors')) {
+      allOk = fail('evals doc missing strict batch.plan validation assertions');
+    }
+  }
+
+  if (allOk) {
+    ok('batch.plan strict validation checks passed (addon, examples, docs)');
+  }
+
+  return allOk;
+}
+
 function main() {
   console.log('Checking operation manifest parity...\n');
 
@@ -279,6 +360,7 @@ function main() {
     checkMCPTools(),
     checkSchemas(),
     checkCore(),
+    checkBatchPlanStrictValidation(),
   ];
 
   console.log('');

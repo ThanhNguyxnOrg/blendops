@@ -21,7 +21,8 @@ This guide describes how AI agents should use BlendOps safely and deterministica
 - Preserve `request_id` + `receipt` for correlation
 - Do not commit generated artifacts (`exports/`, `renders/`, `.tmp/`)
 - Use `plan_batch` for multi-step requests before executing individual typed operations
-- `batch.plan` is plan-only and never mutates scene
+- Inspect `validation_errors` from `batch.plan` before executing any individual typed operation
+- Never treat `batch.plan` as execution; it is plan-only and never mutates scene
 
 ## 🚀 Recommended AI workflow
 

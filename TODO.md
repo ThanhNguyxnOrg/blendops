@@ -22,7 +22,7 @@ This roadmap reflects **current code + runtime evidence**.
 | `validate.scene` | ✅ | CLI + MCP + runtime evidence |
 | `export.asset` | ✅ | GUI bridge GLB runtime evidence recorded |
 | `undo.last` | ✅ | Typed slice implemented; safe failure path runtime-verified (successful undo path pending verification) |
-| `batch.plan` | ✅ | Plan-only validation; does not execute steps |
+| `batch.plan` | ✅ | Plan-only + strict per-operation validation; does not execute steps |
 | Observability split (stdout/stderr/bridge console) | ✅ | Implemented and smoke-tested |
 
 ---
@@ -58,6 +58,7 @@ This roadmap reflects **current code + runtime evidence**.
 
 - [x] Add explicit confirmation flow for destructive operations (`scene.clear` requires `CLEAR_SCENE`)
 - [x] Add operation-level risk annotations (`bridge.operations` manifest with `destructive` flags)
+- [x] Tighten `batch.plan` per-operation validation (`validation_errors`) while keeping plan-only execution semantics
 - [ ] Add dry-run semantics for eligible operations
 - [x] Expand audit-friendly operation receipts
 - [x] Add operation manifest parity check between CLI manifest and MCP `ListTools`

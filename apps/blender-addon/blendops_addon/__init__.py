@@ -544,33 +544,487 @@ def handle_undo_last(_command: Dict[str, Any]) -> Dict[str, Any]:
         )
 
 
+BATCH_PLAN_FORBIDDEN_OPERATIONS = {
+    "batch.plan",
+    "bridge.start",
+    "bridge.stop",
+    "bridge.logs",
+    "bridge.status",
+    "bridge.operations",
+}
+BATCH_PLAN_ALLOWED_OPERATIONS = {
+    "scene.inspect",
+    "scene.clear",
+    "undo.last",
+    "object.create",
+    "object.transform",
+    "material.create",
+    "material.apply",
+    "lighting.setup",
+    "camera.set",
+    "render.preview",
+    "validate.scene",
+    "export.asset",
+}
+BATCH_PLAN_FORBIDDEN_KEYS = {"python", "script", "shell", "command", "eval", "exec"}
+BATCH_PLAN_OUTPUT_OPERATIONS = {"render.preview", "export.asset"}
+BATCH_PLAN_ALLOWED_OBJECT_TYPES = {"cube", "uv_sphere", "ico_sphere", "cylinder", "cone", "torus", "plane"}
+BATCH_PLAN_ALLOWED_LIGHTING_PRESETS = {"studio", "three_point", "soft_key"}
+BATCH_PLAN_ALLOWED_EXPORT_FORMATS = set(EXPORT_FORMAT_EXTENSIONS.keys())
+
+
+def _batch_add_error(
+    errors: list[Dict[str, Any]],
+    step: Optional[int],
+    error: str,
+    operation: Optional[str] = None,
+    field: Optional[str] = None,
+) -> None:
+    payload: Dict[str, Any] = {
+        "step": step,
+        "error": error,
+    }
+    if operation is not None:
+        payload["operation"] = operation
+    if field is not None:
+        payload["field"] = field
+    errors.append(payload)
+
+
+def is_non_empty_string(value: Any) -> bool:
+    return isinstance(value, str) and len(value.strip()) > 0
+
+
+def is_number(value: Any) -> bool:
+    return isinstance(value, (int, float)) and not isinstance(value, bool) and math.isfinite(float(value))
+
+
+def is_positive_number(value: Any) -> bool:
+    return is_number(value) and float(value) > 0
+
+
+def is_positive_integer(value: Any) -> bool:
+    return is_number(value) and float(value).is_integer() and int(float(value)) > 0
+
+
+def is_vec3(value: Any) -> bool:
+    return isinstance(value, list) and len(value) == 3 and all(is_number(component) for component in value)
+
+
+def is_hex_color(value: Any) -> bool:
+    return isinstance(value, str) and re.fullmatch(r"^#([0-9a-fA-F]{6}|[0-9a-fA-F]{8})$", value.strip()) is not None
+
+
+def is_rgba_color(value: Any) -> bool:
+    if not isinstance(value, list) or len(value) != 4:
+        return False
+    if not all(is_number(channel) for channel in value):
+        return False
+    return all(0.0 <= float(channel) <= 1.0 for channel in value)
+
+
+def _batch_validate_step(raw_step: Dict[str, Any], step_label: int) -> Dict[str, Any]:
+    result: Dict[str, Any] = {
+        "operation": None,
+        "errors": [],
+        "warnings": [],
+        "notes": [],
+        "unsupported_operation": None,
+        "destructive_step": False,
+        "requires_confirmation": False,
+    }
+
+    step_operation_value = raw_step.get("operation")
+    if not is_non_empty_string(step_operation_value):
+        _batch_add_error(result["errors"], step_label, "operation must be a non-empty string", field="operation")
+        return result
+
+    normalized_op = str(step_operation_value).strip()
+    result["operation"] = normalized_op
+
+    for forbidden_key in BATCH_PLAN_FORBIDDEN_KEYS:
+        if forbidden_key in raw_step:
+            _batch_add_error(
+                result["errors"],
+                step_label,
+                f"forbidden field: {forbidden_key}",
+                operation=normalized_op,
+                field=forbidden_key,
+            )
+
+    if normalized_op in BATCH_PLAN_FORBIDDEN_OPERATIONS:
+        _batch_add_error(
+            result["errors"],
+            step_label,
+            "operation is not allowed in batch.plan",
+            operation=normalized_op,
+            field="operation",
+        )
+        result["unsupported_operation"] = normalized_op
+        return result
+
+    if normalized_op not in BATCH_PLAN_ALLOWED_OPERATIONS:
+        _batch_add_error(
+            result["errors"],
+            step_label,
+            "operation is not supported for batch.plan",
+            operation=normalized_op,
+            field="operation",
+        )
+        result["unsupported_operation"] = normalized_op
+        return result
+
+    if normalized_op == "scene.inspect":
+        ignored_fields = sorted([key for key in raw_step.keys() if key not in {"operation", "request_id"}])
+        if len(ignored_fields) > 0:
+            result["warnings"].append(
+                f"step {step_label}: scene.inspect ignores extra fields: {', '.join(ignored_fields)}"
+            )
+
+    elif normalized_op == "scene.clear":
+        result["destructive_step"] = True
+        result["requires_confirmation"] = True
+        result["notes"].append(f"step {step_label}: scene.clear is destructive")
+
+        if raw_step.get("confirm") != "CLEAR_SCENE":
+            _batch_add_error(
+                result["errors"],
+                step_label,
+                "scene.clear requires confirm=CLEAR_SCENE",
+                operation=normalized_op,
+                field="confirm",
+            )
+
+        if "dry_run" in raw_step and not isinstance(raw_step.get("dry_run"), bool):
+            _batch_add_error(
+                result["errors"],
+                step_label,
+                "dry_run must be boolean",
+                operation=normalized_op,
+                field="dry_run",
+            )
+
+        if raw_step.get("dry_run") is not True:
+            result["warnings"].append(f"step {step_label}: recommend dry_run=true before real scene.clear")
+            result["notes"].append(f"step {step_label}: recommend dry_run=true before real scene.clear")
+
+    elif normalized_op == "undo.last":
+        result["destructive_step"] = True
+        result["notes"].append(f"step {step_label}: undo.last is stateful and context dependent")
+
+    elif normalized_op == "object.create":
+        object_type = raw_step.get("type")
+        if not is_non_empty_string(object_type) or str(object_type).strip() not in BATCH_PLAN_ALLOWED_OBJECT_TYPES:
+            _batch_add_error(
+                result["errors"],
+                step_label,
+                "type is required and must be one of: cube, uv_sphere, ico_sphere, cylinder, cone, torus, plane",
+                operation=normalized_op,
+                field="type",
+            )
+
+        if not is_non_empty_string(raw_step.get("name")):
+            _batch_add_error(
+                result["errors"],
+                step_label,
+                "name is required and must be a non-empty string",
+                operation=normalized_op,
+                field="name",
+            )
+
+        for vec_field in ("location", "rotation", "scale"):
+            if vec_field in raw_step and not is_vec3(raw_step.get(vec_field)):
+                _batch_add_error(
+                    result["errors"],
+                    step_label,
+                    f"{vec_field} must be a vec3 number array",
+                    operation=normalized_op,
+                    field=vec_field,
+                )
+
+    elif normalized_op == "object.transform":
+        if not is_non_empty_string(raw_step.get("name")):
+            _batch_add_error(
+                result["errors"],
+                step_label,
+                "name is required and must be a non-empty string",
+                operation=normalized_op,
+                field="name",
+            )
+
+        has_transform_field = any(field in raw_step for field in ("location", "rotation", "scale"))
+        if not has_transform_field:
+            _batch_add_error(
+                result["errors"],
+                step_label,
+                "object.transform requires at least one of location, rotation, or scale",
+                operation=normalized_op,
+                field="location|rotation|scale",
+            )
+
+        for vec_field in ("location", "rotation", "scale"):
+            if vec_field in raw_step and not is_vec3(raw_step.get(vec_field)):
+                _batch_add_error(
+                    result["errors"],
+                    step_label,
+                    f"{vec_field} must be a vec3 number array",
+                    operation=normalized_op,
+                    field=vec_field,
+                )
+
+    elif normalized_op == "material.create":
+        if not is_non_empty_string(raw_step.get("name")):
+            _batch_add_error(
+                result["errors"],
+                step_label,
+                "name is required and must be a non-empty string",
+                operation=normalized_op,
+                field="name",
+            )
+
+        if "color" not in raw_step:
+            _batch_add_error(
+                result["errors"],
+                step_label,
+                "color is required",
+                operation=normalized_op,
+                field="color",
+            )
+        else:
+            color_value = raw_step.get("color")
+            if not is_hex_color(color_value) and not is_rgba_color(color_value):
+                _batch_add_error(
+                    result["errors"],
+                    step_label,
+                    "color must be a hex string (#RRGGBB or #RRGGBBAA) or RGBA array with values 0..1",
+                    operation=normalized_op,
+                    field="color",
+                )
+
+        for numeric_field in ("roughness", "metallic"):
+            if numeric_field in raw_step:
+                numeric_value = raw_step.get(numeric_field)
+                if not is_number(numeric_value) or float(numeric_value) < 0 or float(numeric_value) > 1:
+                    _batch_add_error(
+                        result["errors"],
+                        step_label,
+                        f"{numeric_field} must be a number between 0 and 1",
+                        operation=normalized_op,
+                        field=numeric_field,
+                    )
+
+    elif normalized_op == "material.apply":
+        object_target = raw_step.get("object")
+        if object_target is None:
+            object_target = raw_step.get("object_name")
+        material_target = raw_step.get("material")
+        if material_target is None:
+            material_target = raw_step.get("material_name")
+
+        if not is_non_empty_string(object_target):
+            _batch_add_error(
+                result["errors"],
+                step_label,
+                "object is required and must be a non-empty string",
+                operation=normalized_op,
+                field="object",
+            )
+
+        if not is_non_empty_string(material_target):
+            _batch_add_error(
+                result["errors"],
+                step_label,
+                "material is required and must be a non-empty string",
+                operation=normalized_op,
+                field="material",
+            )
+
+    elif normalized_op == "lighting.setup":
+        preset = raw_step.get("preset")
+        if not is_non_empty_string(preset) or str(preset).strip() not in BATCH_PLAN_ALLOWED_LIGHTING_PRESETS:
+            _batch_add_error(
+                result["errors"],
+                step_label,
+                "preset is required and must be one of: studio, three_point, soft_key",
+                operation=normalized_op,
+                field="preset",
+            )
+
+        if "target" in raw_step and not is_non_empty_string(raw_step.get("target")):
+            _batch_add_error(
+                result["errors"],
+                step_label,
+                "target must be a non-empty string when provided",
+                operation=normalized_op,
+                field="target",
+            )
+
+    elif normalized_op == "camera.set":
+        target_value = raw_step.get("target")
+        has_target = "target" in raw_step and target_value is not None
+        has_location = "location" in raw_step and raw_step.get("location") is not None
+        has_rotation = "rotation" in raw_step and raw_step.get("rotation") is not None
+
+        if has_target and not is_non_empty_string(target_value):
+            _batch_add_error(
+                result["errors"],
+                step_label,
+                "target must be a non-empty string when provided",
+                operation=normalized_op,
+                field="target",
+            )
+
+        if has_location and not is_vec3(raw_step.get("location")):
+            _batch_add_error(
+                result["errors"],
+                step_label,
+                "location must be a vec3 number array",
+                operation=normalized_op,
+                field="location",
+            )
+
+        if has_rotation and not is_vec3(raw_step.get("rotation")):
+            _batch_add_error(
+                result["errors"],
+                step_label,
+                "rotation must be a vec3 number array",
+                operation=normalized_op,
+                field="rotation",
+            )
+
+        for numeric_field in ("distance", "focal_length"):
+            if numeric_field in raw_step and raw_step.get(numeric_field) is not None:
+                if not is_positive_number(raw_step.get(numeric_field)):
+                    _batch_add_error(
+                        result["errors"],
+                        step_label,
+                        f"{numeric_field} must be a positive number",
+                        operation=normalized_op,
+                        field=numeric_field,
+                    )
+
+        if not has_target and not has_location:
+            _batch_add_error(
+                result["errors"],
+                step_label,
+                "camera.set requires at least target or location",
+                operation=normalized_op,
+                field="target",
+            )
+
+        if has_location and not has_target and not has_rotation:
+            _batch_add_error(
+                result["errors"],
+                step_label,
+                "camera.set requires rotation when location is provided without target",
+                operation=normalized_op,
+                field="rotation",
+            )
+
+    elif normalized_op == "render.preview":
+        output_value = raw_step.get("output")
+        if not is_non_empty_string(output_value):
+            _batch_add_error(
+                result["errors"],
+                step_label,
+                "output is required and must be a non-empty string",
+                operation=normalized_op,
+                field="output",
+            )
+        elif not str(output_value).lower().endswith(".png"):
+            _batch_add_error(
+                result["errors"],
+                step_label,
+                "output must end with .png",
+                operation=normalized_op,
+                field="output",
+            )
+
+        for integer_field in ("width", "height", "samples"):
+            if integer_field in raw_step and raw_step.get(integer_field) is not None:
+                if not is_positive_integer(raw_step.get(integer_field)):
+                    _batch_add_error(
+                        result["errors"],
+                        step_label,
+                        f"{integer_field} must be a positive integer",
+                        operation=normalized_op,
+                        field=integer_field,
+                    )
+
+        result["notes"].append(f"step {step_label}: {normalized_op} produces output artifacts")
+
+    elif normalized_op == "validate.scene":
+        preset_value = raw_step.get("preset")
+        if not is_non_empty_string(preset_value) or str(preset_value).strip() not in VALIDATION_PRESETS:
+            _batch_add_error(
+                result["errors"],
+                step_label,
+                "preset is required and must be one of: basic, game_asset, render_ready",
+                operation=normalized_op,
+                field="preset",
+            )
+
+    elif normalized_op == "export.asset":
+        format_value = raw_step.get("format")
+        normalized_format: Optional[str] = None
+        if is_non_empty_string(format_value):
+            normalized_format = str(format_value).strip().lower()
+
+        if normalized_format is None or normalized_format not in BATCH_PLAN_ALLOWED_EXPORT_FORMATS:
+            _batch_add_error(
+                result["errors"],
+                step_label,
+                "format is required and must be one of: glb, gltf, fbx",
+                operation=normalized_op,
+                field="format",
+            )
+
+        output_value = raw_step.get("output")
+        if not is_non_empty_string(output_value):
+            _batch_add_error(
+                result["errors"],
+                step_label,
+                "output is required and must be a non-empty string",
+                operation=normalized_op,
+                field="output",
+            )
+        elif normalized_format is not None:
+            expected_extension = EXPORT_FORMAT_EXTENSIONS[normalized_format]
+            if not str(output_value).lower().endswith(expected_extension):
+                _batch_add_error(
+                    result["errors"],
+                    step_label,
+                    f"output must end with {expected_extension} for format {normalized_format}",
+                    operation=normalized_op,
+                    field="output",
+                )
+
+        for boolean_field in ("selected_only", "apply_modifiers"):
+            if boolean_field in raw_step and not isinstance(raw_step.get(boolean_field), bool):
+                _batch_add_error(
+                    result["errors"],
+                    step_label,
+                    f"{boolean_field} must be boolean",
+                    operation=normalized_op,
+                    field=boolean_field,
+                )
+
+        result["notes"].append(f"step {step_label}: {normalized_op} produces output artifacts")
+        if normalized_format in {"glb", "gltf"}:
+            result["notes"].append(
+                f"step {step_label}: {normalized_format} export requires GUI bridge on Blender 4.2"
+            )
+
+    if normalized_op in BATCH_PLAN_OUTPUT_OPERATIONS and (
+        f"step {step_label}: {normalized_op} produces output artifacts" not in result["notes"]
+    ):
+        result["notes"].append(f"step {step_label}: {normalized_op} produces output artifacts")
+
+    return result
+
+
 def handle_batch_plan(command: Dict[str, Any]) -> Dict[str, Any]:
     operation = "batch.plan"
-    forbidden_operations = {
-        "batch.plan",
-        "bridge.start",
-        "bridge.stop",
-        "bridge.logs",
-        "bridge.status",
-        "bridge.operations",
-    }
-    allowed_operations = {
-        "scene.inspect",
-        "scene.clear",
-        "undo.last",
-        "object.create",
-        "object.transform",
-        "material.create",
-        "material.apply",
-        "lighting.setup",
-        "camera.set",
-        "render.preview",
-        "validate.scene",
-        "export.asset",
-    }
-    forbidden_keys = {"python", "script", "shell", "command", "eval", "exec"}
-    output_operations = {"export.asset", "render.preview"}
-    required_clear_confirm = "CLEAR_SCENE"
 
     steps = command.get("steps")
     if not isinstance(steps, list):
@@ -587,7 +1041,7 @@ def handle_batch_plan(command: Dict[str, Any]) -> Dict[str, Any]:
                 "valid": False,
                 "executable": False,
                 "notes": [],
-                "validation_errors": [{"step": None, "error": "steps must be an array"}],
+                "validation_errors": [{"step": None, "field": "steps", "error": "steps must be an array"}],
             },
             warnings=["Invalid steps payload"],
             next_steps=["Provide steps as an array with 1 to 25 typed operations"],
@@ -608,7 +1062,7 @@ def handle_batch_plan(command: Dict[str, Any]) -> Dict[str, Any]:
                 "valid": False,
                 "executable": False,
                 "notes": [],
-                "validation_errors": [{"step": None, "error": "steps count must be within 1..25"}],
+                "validation_errors": [{"step": None, "field": "steps", "error": "steps count must be within 1..25"}],
             },
             warnings=["Unsupported step count"],
             next_steps=["Split large plans into smaller batches and retry batch.plan"],
@@ -625,76 +1079,33 @@ def handle_batch_plan(command: Dict[str, Any]) -> Dict[str, Any]:
     for index, raw_step in enumerate(steps):
         step_label = index + 1
         if not isinstance(raw_step, dict):
-            validation_errors.append({"step": step_label, "error": "step must be an object"})
+            _batch_add_error(validation_errors, step_label, "step must be an object", field="step")
             continue
 
-        step_op = raw_step.get("operation")
-        if not isinstance(step_op, str) or len(step_op.strip()) == 0:
-            validation_errors.append({"step": step_label, "error": "operation must be a non-empty string"})
-            continue
+        result = _batch_validate_step(raw_step, step_label)
 
-        normalized_op = step_op.strip()
-        operations.append(normalized_op)
+        normalized_op = result.get("operation")
+        if isinstance(normalized_op, str):
+            operations.append(normalized_op)
 
-        for forbidden_key in forbidden_keys:
-            if forbidden_key in raw_step:
-                validation_errors.append(
-                    {
-                        "step": step_label,
-                        "operation": normalized_op,
-                        "error": f"forbidden field: {forbidden_key}",
-                    }
-                )
+        notes.extend(result.get("notes", []))
+        warnings.extend(result.get("warnings", []))
 
-        if normalized_op in forbidden_operations:
-            validation_errors.append(
-                {
-                    "step": step_label,
-                    "operation": normalized_op,
-                    "error": "operation is not allowed in batch.plan",
-                }
-            )
-            if normalized_op not in unsupported_operations:
-                unsupported_operations.append(normalized_op)
-            continue
-
-        if normalized_op not in allowed_operations:
-            validation_errors.append(
-                {
-                    "step": step_label,
-                    "operation": normalized_op,
-                    "error": "operation is not supported for batch.plan",
-                }
-            )
-            if normalized_op not in unsupported_operations:
-                unsupported_operations.append(normalized_op)
-            continue
-
-        if normalized_op == "scene.clear":
+        if bool(result.get("destructive_step")):
             destructive_steps += 1
+        if bool(result.get("requires_confirmation")):
             requires_confirmation = True
-            notes.append(f"step {step_label}: scene.clear is destructive")
-            confirm_value = raw_step.get("confirm")
-            if confirm_value != required_clear_confirm:
-                validation_errors.append(
-                    {
-                        "step": step_label,
-                        "operation": normalized_op,
-                        "error": "scene.clear requires confirm=CLEAR_SCENE",
-                    }
-                )
-            if raw_step.get("dry_run") is not True:
-                warnings.append(f"step {step_label}: recommend dry_run=true before real scene.clear")
-                notes.append(f"step {step_label}: recommend dry_run=true before real scene.clear")
 
-        if normalized_op == "undo.last":
-            destructive_steps += 1
-            notes.append(f"step {step_label}: undo.last is stateful and context dependent")
+        unsupported_op = result.get("unsupported_operation")
+        if isinstance(unsupported_op, str) and unsupported_op not in unsupported_operations:
+            unsupported_operations.append(unsupported_op)
 
-        if normalized_op in output_operations:
-            notes.append(f"step {step_label}: {normalized_op} produces output artifacts")
+        errors = result.get("errors")
+        if isinstance(errors, list):
+            validation_errors.extend(errors)
 
     valid = len(validation_errors) == 0 and len(unsupported_operations) == 0
+
     data: Dict[str, Any] = {
         "step_count": step_count,
         "operations": operations,

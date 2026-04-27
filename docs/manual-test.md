@@ -100,6 +100,9 @@ node apps/cli/dist/index.js scene inspect --verbose
 node apps/cli/dist/index.js scene clear --confirm CLEAR_SCENE --verbose
 node apps/cli/dist/index.js scene inspect --verbose
 node apps/cli/dist/index.js batch plan --file examples/batch/basic-scene.json --verbose
+node apps/cli/dist/index.js batch plan --file examples/batch/invalid-arbitrary-code.json --verbose
+node apps/cli/dist/index.js batch plan --file examples/batch/invalid-scene-clear.json --verbose
+node apps/cli/dist/index.js batch plan --file examples/batch/invalid-object-create.json --verbose
 ```
 
 `undo.last` may return `ok: false` with `No undo step available` when Blender has no undo step in current context. Treat that as verified safe-failure behavior, not a successful undo.

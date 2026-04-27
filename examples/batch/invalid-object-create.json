@@ -1,0 +1,5 @@
+{
+  "steps": [
+    { "operation": "object.create", "name": "missing_type" }
+  ]
+}

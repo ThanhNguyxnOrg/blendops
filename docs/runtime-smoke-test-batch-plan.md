@@ -77,18 +77,39 @@ node apps/cli/dist/index.js bridge stop --verbose
 
 - ✅ No Blender operation execution
 - ✅ No scene mutation
-- ✅ Unsupported operations rejected (tested separately)
-- ✅ Nested `batch.plan` rejected (tested separately)
-- ✅ Bridge lifecycle operations rejected (tested separately)
-- ✅ Arbitrary code fields rejected (tested separately)
+- ✅ Unsupported operations rejected
+- ✅ Nested `batch.plan` rejected
+- ✅ Bridge lifecycle operations rejected
+- ✅ Arbitrary code fields rejected
+
+## Strict validation evidence
+
+Additional runtime commands executed:
+
+```bash
+node apps/cli/dist/index.js batch plan --file examples/batch/invalid-arbitrary-code.json --verbose
+node apps/cli/dist/index.js batch plan --file examples/batch/invalid-scene-clear.json --verbose
+node apps/cli/dist/index.js batch plan --file examples/batch/invalid-object-create.json --verbose
+```
+
+Observed strict validation outcomes:
+- ✅ Invalid arbitrary-code field rejected with `ok: false` and `data.validation_errors[0].field = "python"`
+  - request_id: `req_1777273961933_ih0h5k4ot`
+- ✅ Invalid scene.clear (missing `confirm`) rejected with `ok: false` and `data.validation_errors[0].field = "confirm"`
+  - request_id: `req_1777273857088_bpch1u0vi`
+- ✅ Invalid object.create (missing `type`) rejected with `ok: false` and `data.validation_errors[0].field = "type"`
+  - request_id: `req_1777273857297_jf8pme35p`
+- ✅ `data.executable` remained `false` for valid and invalid plans
+- ✅ Scene object count remained unchanged (`3` before `req_1777273816651_8u5o4qgxk`, `3` after `req_1777273971262_38xllmzfj`)
 
 ## Verdict
 
 **Plan-only validation:** ✅ PASS  
+**Strict per-operation validation:** ✅ PASS  
 **No mutation guarantee:** ✅ PASS  
 **executable:false enforcement:** ✅ PASS
 
 ## Remaining risks
 
-- Per-operation payload validation is shallow (passthrough fields allowed except forbidden code keys)
+- Strict validation is implemented in addon handler and must stay in parity with schema evolution over time
 - `batch.execute` not implemented (clearly documented as plan-only)
