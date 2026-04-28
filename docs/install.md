@@ -46,6 +46,7 @@ Blender GUI remaining open is expected while bridge is running; do not wait for 
 - GUI mode (default) follows official Blender launch patterns
 - Background mode (`--background`) is supported but limited/unvalidated for persistent bridge runtime
 - Process detachment and readiness polling align with non-blocking automation workflows
+- See [Official Blender CLI Reference](./blender-cli-reference.md) for detailed alignment notes
 
 Windows Blender path override:
 

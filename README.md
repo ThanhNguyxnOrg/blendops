@@ -10,7 +10,8 @@
 
 Safe, inspectable Blender automation for AI agents via CLI + MCP + managed Blender bridge.
 
-> 🛡️ **Security**: BlendOps exposes typed operations, not arbitrary Python execution.
+> 🛡️ **Security**: BlendOps exposes typed operations, not arbitrary Python execution.  
+> 📋 **CLI Alignment**: BlendOps builds on [official Blender CLI behavior](./docs/blender-cli-reference.md) with managed lifecycle and typed operations.
 
 ## 🚀 Quick install
 

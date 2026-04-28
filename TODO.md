@@ -94,3 +94,4 @@ This roadmap reflects **current code + runtime evidence**.
 - [x] Manual testing and observability docs polish
 - [x] Evals and runtime smoke docs consistency formatting
 - [x] Add docs lint/check workflow in CI
+- [x] Official Blender CLI reference alignment documentation

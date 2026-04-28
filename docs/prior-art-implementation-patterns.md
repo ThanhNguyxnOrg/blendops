@@ -106,6 +106,8 @@ These updates align user/agent behavior with runtime lifecycle reality:
 **Source**: Blender official documentation (https://docs.blender.org/manual/en/latest/advanced/command_line/)  
 **Purpose**: Document alignment between BlendOps managed bridge lifecycle and official Blender CLI behavior.
 
+**Full reference**: See [docs/blender-cli-reference.md](./blender-cli-reference.md) for comprehensive CLI alignment documentation.
+
 ### Known official Blender CLI patterns (from community usage and BlendOps runtime evidence)
 
 | Official Pattern | BlendOps Current Behavior | Status | Action Taken |

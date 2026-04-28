@@ -7,7 +7,7 @@ This guide describes how AI agents should use BlendOps safely and deterministica
 ## 🛡️ Safety rules
 
 - Use typed BlendOps tools/commands only
-- Never request arbitrary Python execution
+- Never request arbitrary Python execution (BlendOps does not expose arbitrary Blender CLI flags or Python to agents)
 - Start bridge first, then verify readiness (`bridge.status` / `start_bridge` follow-up)
 - Do not wait for Blender GUI process exit after successful bridge start; GUI remaining open is expected
 - Call `list_operations` before guessing tool availability
