@@ -18,6 +18,22 @@ npm run typecheck
 npm run build
 ```
 
+## 🤖 Automated UAT
+
+For non-interactive end-to-end testing:
+
+```bash
+npm run uat
+```
+
+Or directly:
+
+```bash
+powershell -ExecutionPolicy Bypass -File scripts/run-uat.ps1
+```
+
+This runs the full 12-step UAT sequence with per-step timeout, separate stdout/stderr files, and JSON summary output at `.tmp/uat-full/summary.json`.
+
 ## 🎛️ Start the bridge
 
 ### Primary path: automated managed CLI bootstrap

@@ -50,6 +50,16 @@ node apps/cli/dist/index.js validate scene --preset basic
 node apps/cli/dist/index.js render preview --output renders/preview.png
 ```
 
+## 🤖 Automated UAT
+
+Run the full end-to-end test suite:
+
+```bash
+npm run uat
+```
+
+This executes the 12-step UAT sequence with per-step timeout and generates a summary at `.tmp/uat-full/summary.json`.
+
 ## 🧠 MCP quick setup
 
 > 🧠 MCP server provides tool-calling access to the same typed BlendOps operations.

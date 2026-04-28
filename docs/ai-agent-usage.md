@@ -37,14 +37,17 @@ This guide describes how AI agents should use BlendOps safely and deterministica
 
 ## 🚀 Recommended AI workflow
 
-1. Start bridge (`start_bridge`)
-2. Check capabilities (`list_operations`)
-3. Inspect scene (`inspect_scene`)
-4. Apply typed operations
-5. Validate (`validate_scene`)
-6. Render/export (`render_preview` / `export_asset`)
-7. Collect logs on failure (`get_bridge_logs`)
-8. Stop bridge (`stop_bridge`) when done
+1. Prefer automated UAT runner for end-to-end validation: `npm run uat` or `powershell -ExecutionPolicy Bypass -File scripts/run-uat.ps1`
+2. Start bridge (`start_bridge`)
+3. Check capabilities (`list_operations`)
+4. Inspect scene (`inspect_scene`)
+5. Apply typed operations
+6. Validate (`validate_scene`)
+7. Render/export (`render_preview` / `export_asset`)
+8. Collect logs on failure (`get_bridge_logs`)
+9. Stop bridge (`stop_bridge`) when done
+
+For full smoke coverage, agents should use the UAT runner instead of manually orchestrating each step.
 
 ## 🧠 MCP tool flow
 
