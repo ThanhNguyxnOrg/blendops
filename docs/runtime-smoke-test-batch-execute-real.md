@@ -114,6 +114,60 @@ Expected:
 
 ---
 
+---
+
+## 🔗 dry_run_id linkage runtime evidence
+
+**Date:** 2026-04-28  
+**Blender:** 4.2.5 LTS  
+**Mode:** GUI bridge
+
+**Captured linkage fields:**
+- Dry-run plan_fingerprint: `sha256:7fed7d5e95670321d3999371292f3c5a83ab3484178383da903d1184f585a2d8`
+- Dry-run dry_run_id: `dryrun:7fed7d5e95670321:req_1777358557664_qmfb4ia14`
+
+**Valid real execution (matching linkage):**
+- Result: `ok: true`
+- Executed steps: `5`
+- Failed step: `null`
+- Stopped on error: `false`
+- Step receipts: `5` (all steps executed)
+- Plan fingerprint accepted: ✅
+- dry_run_id linkage accepted: ✅
+
+**Wrong dry_run_id prefix rejection:**
+- Submitted dry_run_id: `dryrun:0000000000000000:test` (wrong prefix)
+- Result: `ok: false`
+- Message: `batch.execute dry_run_id linkage validation failed`
+- Executed steps: `0`
+- Validation error: `dry_run_id must start with dryrun:7fed7d5e95670321:`
+- Verdict: ✅ **PASS** (rejected before execution, zero mutation)
+
+**Fingerprint mismatch rejection:**
+- Submitted plan_fingerprint: `sha256:0000000000000000000000000000000000000000000000000000000000000000`
+- Result: `ok: false`
+- Message: `batch.execute plan_fingerprint mismatch`
+- Executed steps: `0`
+- Verdict: ✅ **PASS** (rejected before execution, zero mutation)
+
+**scene.clear real execution rejection:**
+- Operation: `scene.clear` with matching dry_run_id and plan_fingerprint
+- Result: `ok: false`
+- Message: `batch.execute validation failed`
+- Executed steps: `0`
+- Validation error: `operation is not allowed in first real batch.execute release`
+- Verdict: ✅ **PASS** (rejected by real execution allowlist, zero mutation)
+
+**Scene mutation verification:**
+- Object count before: `3`
+- Object count after: `4` (batch_cube created)
+- Expected: Non-destructive mutation only (object creation allowed)
+- Verdict: ✅ **PASS** (only allowed operations executed)
+
+**Linkage validation verdict:** ✅ All dry_run_id linkage gates enforced. Wrong prefix rejected. Fingerprint mismatch rejected. Destructive operations rejected. Non-destructive real execution succeeded with matching linkage.
+
+---
+
 ## Current limitation
 
 Persistent dry-run registry validation is future hardening. Current first release enforces exact step identity through recomputed fingerprint equality but does not yet prove `dry_run_id` history persistence server-side.
