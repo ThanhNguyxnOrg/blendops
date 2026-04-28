@@ -1,63 +1,45 @@
 # 📚 BlendOps Documentation
 
-Lightweight documentation hub for BlendOps.
+BlendOps docs are organized around the current **minimal safe runtime foundation** direction.
 
-## 🚀 Start here
+## Start here (foundation)
 
 | Need | Read |
 |---|---|
-| 📦 Install and start BlendOps | [Install guide](./install.md) |
-| 🧠 MCP server configuration | [MCP setup guide](./mcp-setup.md) |
-| 🤖 Use BlendOps from AI/MCP | [AI agent usage](./ai-agent-usage.md) |
-| 🧪 Run manual runtime checks | [Manual test guide](./manual-test.md) |
-| 🎛️ Debug bridge/logs/request IDs | [Observability guide](./observability.md) |
-| 🧱 Understand architecture | [Inheritance foundation](./inheritance-foundation.md) |
-| ✅ Evaluate agent behavior | [Eval prompts](./evals.md) |
-| 🧪 Review runtime evidence | [Runtime evidence](#-runtime-evidence) |
-| 🔍 Understand research/prior art | [Prior art](./prior-art.md) |
+| Product direction | [product-direction.md](./product-direction.md) |
+| Prune/recenter decisions | [foundation-prune-audit.md](./foundation-prune-audit.md) |
+| Runtime parity baseline | [runtime-foundation-parity.md](./runtime-foundation-parity.md) |
+| Install and bridge bootstrap | [install.md](./install.md) |
+| MCP setup | [mcp-setup.md](./mcp-setup.md) |
+| Observability/status/logs | [observability.md](./observability.md) |
+| Manual runtime checks | [manual-test.md](./manual-test.md) |
 
-## 🧰 Setup and usage
+## Core references
 
-- [Install and bridge bootstrap](./install.md)
-- [Manual runtime testing](./manual-test.md)
+- [Official Blender CLI reference notes](./blender-cli-reference.md)
+- [Prior art overview](./prior-art.md)
 
-## 🧠 AI and MCP
-
-- [AI-agent usage guide](./ai-agent-usage.md)
-- [Eval prompts](./evals.md)
-
-## 🧪 Runtime evidence
+## Runtime evidence (foundation-first)
 
 | Evidence | Focus |
 |---|---|
-| [runtime-smoke-test-installability.md](./runtime-smoke-test-installability.md) | Source installability + npm link + MCP setup smoke evidence |
-| [runtime-smoke-test.md](./runtime-smoke-test.md) | End-to-end baseline smoke run |
-| [runtime-smoke-test-object-transform.md](./runtime-smoke-test-object-transform.md) | `object.transform` runtime validation |
-| [runtime-smoke-test-material.md](./runtime-smoke-test-material.md) | Material create/apply validation |
-| [runtime-smoke-test-lighting.md](./runtime-smoke-test-lighting.md) | `lighting.setup` runtime validation |
-| [runtime-smoke-test-camera.md](./runtime-smoke-test-camera.md) | `camera.set` runtime validation |
-| [runtime-smoke-test-render.md](./runtime-smoke-test-render.md) | `render.preview` runtime validation |
-| [runtime-smoke-test-validate.md](./runtime-smoke-test-validate.md) | `validate.scene` runtime validation |
-| [runtime-smoke-test-export.md](./runtime-smoke-test-export.md) | `export.asset` runtime validation |
-| [runtime-smoke-test-observability.md](./runtime-smoke-test-observability.md) | stdout/stderr/bridge-log checks |
-| [runtime-smoke-test-request-correlation.md](./runtime-smoke-test-request-correlation.md) | request_id + receipt correlation |
-| [runtime-smoke-test-undo.md](./runtime-smoke-test-undo.md) | `undo.last` safe-failure runtime evidence |
-| [runtime-smoke-test-scene-clear.md](./runtime-smoke-test-scene-clear.md) | `scene.clear` guarded destructive runtime validation |
-| [runtime-smoke-test-batch-plan.md](./runtime-smoke-test-batch-plan.md) | `batch.plan` plan-only validation smoke evidence |
-| [runtime-smoke-test-batch-execute-dry-run.md](./runtime-smoke-test-batch-execute-dry-run.md) | `batch.execute` dry-run validation + linkage artifacts (`plan_fingerprint`, `dry_run_id`) |
-| [runtime-smoke-test-batch-execute-real.md](./runtime-smoke-test-batch-execute-real.md) | `batch.execute` first real execution slice (non-destructive allowlist only) |
+| [runtime-smoke-test-installability.md](./runtime-smoke-test-installability.md) | Source installability + CLI exposure + setup checks |
+| [runtime-smoke-test-onboarding.md](./runtime-smoke-test-onboarding.md) | Fresh-clone onboarding baseline |
 
-## 🔍 Research and architecture
+## Frozen/de-emphasized evidence and breadth docs
 
-- [Official Blender CLI Reference](./blender-cli-reference.md)
-- [Implementation mining](./implementation-mining.md)
-- [Bridge lifecycle prior art](./bridge-lifecycle-prior-art.md)
-- [Batch execute safety contract (real execution)](./batch-execute-safety-contract.md)
+These docs are retained for compatibility/history, but are not current top-level product promise:
 
-## 🧭 Roadmap
+- operation-breadth smoke tests (`object/material/lighting/camera/render/validate/export/undo/scene-clear/batch*`)
+- [runtime-smoke-test-batch-execute-dry-run.md](./runtime-smoke-test-batch-execute-dry-run.md) (retained for compatibility checks)
+- broad eval catalogs and recipe-oriented prompts
+- deep implementation mining snapshots
 
-- [TODO](../TODO.md)
+## Historical/archive-oriented docs
+
+- `docs/roadmap.md` (superseded by root `TODO.md`)
+- early broad-scope runtime snapshots kept for traceability
 
 ## Compatibility
 
-[docs/INDEX.md](./INDEX.md) remains available as a compatibility redirect.
+[docs/INDEX.md](./INDEX.md) remains as a compatibility redirect.

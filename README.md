@@ -2,95 +2,85 @@
 
 [![Node >=18](https://img.shields.io/badge/node-%3E%3D18-339933?logo=node.js&logoColor=white)](https://nodejs.org/)
 [![Blender >=3.6](https://img.shields.io/badge/blender-%3E%3D3.6-F5792A?logo=blender&logoColor=white)](https://www.blender.org/)
-![MCP ready](https://img.shields.io/badge/MCP-ready-111827)
-![CLI first](https://img.shields.io/badge/workflow-CLI%20first-7C3AED)
-![Managed bridge](https://img.shields.io/badge/bridge-managed-0EA5E9)
+![Foundation mode](https://img.shields.io/badge/status-foundation-0EA5E9)
 ![No arbitrary Python](https://img.shields.io/badge/security-no%20arbitrary%20python-16A34A)
-![Runtime smoke tested](https://img.shields.io/badge/runtime-smoke%20tested-22C55E)
 
-Safe, inspectable Blender automation for AI agents via CLI + MCP + managed Blender bridge.
+BlendOps is currently a **minimal safe runtime foundation** for AI-driven Blender workflows.
 
-> 🛡️ **Security**: BlendOps exposes typed operations, not arbitrary Python execution.  
-> 📋 **CLI Alignment**: BlendOps builds on [official Blender CLI behavior](./docs/blender-cli-reference.md) with managed lifecycle and typed operations.
+It is not trying to replace Blender CLI, and it is not a clone of `ahujasid/blender-mcp`.
 
-## 🚀 Quick install
+- **Official Blender CLI** is the runtime primitive.
+- **BlendOps** adds typed operations, lifecycle control, readiness/status/logs, and request correlation.
+- **Future product direction**: AI-native workflows for users who do not know Blender internals.
+
+See [docs/product-direction.md](./docs/product-direction.md).
+
+## What BlendOps is (right now)
+
+BlendOps currently commits to this foundation path:
+
+- `blendops --help`
+- `blendops doctor`
+- `bridge start/status/logs/stop`
+- `scene inspect`
+- `object create` (minimal)
+- MCP server startup + tool listing
+- request envelope fields (`request_id`, `receipt`)
+- addon/bridge main-thread dispatch
+
+Infrastructure surfaces (CLI/MCP/addon/core/schemas) are implementation layers, not the finished end-user product.
+
+## What BlendOps is not trying to do in this pass
+
+- Rebuild Blender’s official CLI
+- Clone `ahujasid/blender-mcp`
+- Expose arbitrary Python execution
+- Expose unrestricted Blender CLI flags to AI users
+- Present broad low-level operation coverage as final product promise
+
+## Quick start
 
 ```bash
 git clone https://github.com/ThanhNguyxnOrg/blendops.git
 cd blendops
 npm install
 npm run build
-npm link
 ```
 
-Verify installation:
+Core checks:
 
 ```bash
 blendops --help
 npm run doctor
 ```
 
-## 🎛️ Start the managed Blender bridge
+## Managed bridge lifecycle
 
 ```bash
 blendops bridge start --mode gui --verbose
 blendops bridge status --verbose
-blendops bridge operations --verbose
+blendops bridge logs --tail 80
+blendops bridge stop --verbose
+```
+
+`bridge start` returning `ok: true` means startup handoff succeeded.
+
+Blender GUI staying open is expected while bridge is running; use bridge status/logs for readiness.
+
+## Minimal foundation commands
+
+```bash
 blendops scene inspect --verbose
+blendops object create --type cube --name foundation_cube --location 0,0,1 --verbose
 ```
 
-Or use node path directly:
+## MCP startup (foundation)
 
 ```bash
-node apps/cli/dist/index.js bridge start --mode gui --verbose
-```
-
-`bridge start` returns when managed bridge lifecycle startup succeeds.
-
-Blender GUI staying open is expected while bridge is running; use `bridge status`/`bridge logs` for readiness, not process exit.
-
-Windows explicit Blender path:
-
-```powershell
-node apps/cli/dist/index.js bridge start --mode gui --blender "C:\Program Files\Blender Foundation\Blender 4.2\blender.exe" --verbose
-```
-
-## 🧰 CLI quick examples
-
-> ✅ Prefer `blendops` after `npm link`. Keep node-path fallback for machine-parseable stdout.
-
-```bash
-blendops object create --type cube --name test_cube --location 0,0,1
-blendops validate scene --preset basic
-blendops render preview --output renders/preview.png
-```
-
-Fallback:
-
-```bash
-node apps/cli/dist/index.js object create --type cube --name test_cube --location 0,0,1
-```
-
-## 🤖 Automated UAT
-
-Run the full end-to-end test suite:
-
-```bash
-npm run uat
-```
-
-This executes the 12-step UAT sequence with per-step timeout and generates a summary at `.tmp/uat-full/summary.json`.
-
-## 🧠 MCP quick setup
-
-> 🧠 MCP server provides tool-calling access to the same typed BlendOps operations.
-
-```bash
-npm run build
 node apps/mcp-server/dist/index.js
 ```
 
-Generic MCP config:
+Typical MCP config:
 
 ```json
 {
@@ -106,80 +96,36 @@ Generic MCP config:
 }
 ```
 
-## 🧩 Usage surfaces
+## Frozen/de-emphasized capabilities (still implemented)
 
-| Surface | Use when | Start here |
-| --- | --- | --- |
-| 🧰 CLI | Human/local scripting | `node apps/cli/dist/index.js ...` |
-| 🧠 MCP / AI agents | Tool-calling from AI clients | `node apps/mcp-server/dist/index.js` |
-| 🎛️ Managed Blender bridge | Automated Blender runtime | `bridge start --mode gui` |
-| 🧩 Blender addon fallback | Manual Blender setup if bootstrap fails | Install/enable addon in Blender |
+These areas exist in code/runtime artifacts but are **not** current product promise:
 
-## ✅ What works today
+- render/export breadth
+- advanced validation preset breadth
+- batch execution expansion (`batch.execute --dry-run` and real guarded path)
+- material/lighting/camera expansion
+- undo workflows
+- creative prompt catalogs and broad scene recipes
 
-| Area | Operations |
-|---|---|
-| Bridge | `bridge.start`, `bridge.status`, `bridge.operations`, `bridge.logs`, `bridge.stop` |
-| History | `undo.last` |
-| Scene | `scene.inspect`, `scene.clear` (requires `--confirm CLEAR_SCENE`) |
-| Object | `object.create`, `object.transform` |
-| Material | `material.create`, `material.apply` |
-| Lighting | `lighting.setup` |
-| Camera | `camera.set` |
-| Render | `render.preview` |
-| Validate | `validate.scene` |
-| Export | `export.asset` |
-| Batch | `batch.plan`, `batch.execute --dry-run`, `batch.execute` (guarded first real execution slice: non-destructive operations only; requires same-session dry-run registry linkage) |
+They are retained to avoid unnecessary churn and preserve existing integration stability.
 
-## ⚠️ Destructive operations
+## Safety boundaries
 
-`scene.clear` removes all scene objects. Use it only when you explicitly intend to wipe scene contents, and always provide the exact confirmation token.
+- No arbitrary Python endpoint
+- Typed operation contracts only
+- Structured error and recovery messaging
+- Correlatable operation receipts
 
-Preview what would be removed with `--dry-run`:
+## Docs map
 
-```bash
-node apps/cli/dist/index.js scene clear --confirm CLEAR_SCENE --dry-run --verbose
-```
-
-Execute the actual clear:
-
-```bash
-node apps/cli/dist/index.js scene clear --confirm CLEAR_SCENE --verbose
-```
-
-## 🧭 Architecture
-
-```mermaid
-flowchart LR
-  A[Human / AI Agent] --> B[CLI]
-  A --> C[MCP Server]
-  B --> D[Core + Schemas]
-  C --> D
-  D --> E[Managed Blender Bridge]
-  E --> F[Blender Python API]
-```
-
-## 📚 Full documentation
-
-| Need | Read |
-|---|---|
-| Install from scratch | [docs/install.md](./docs/install.md) |
-| MCP server setup | [docs/mcp-setup.md](./docs/mcp-setup.md) |
-| Use from AI/MCP | [docs/ai-agent-usage.md](./docs/ai-agent-usage.md) |
-| Manual runtime checks | [docs/manual-test.md](./docs/manual-test.md) |
-| Debug logs/status | [docs/observability.md](./docs/observability.md) |
-| Architecture foundation | [docs/inheritance-foundation.md](./docs/inheritance-foundation.md) |
-| Bridge lifecycle troubleshooting | [docs/manual-test.md#-troubleshooting](./docs/manual-test.md#-troubleshooting) |
-| Eval prompts | [docs/evals.md](./docs/evals.md) |
-| Runtime evidence | [docs/README.md#-runtime-evidence](./docs/README.md#-runtime-evidence) |
-
-## ⚠️ Known limitations
-
-- Blender 4.2 GLB/GLTF export requires GUI bridge mode.
-- Background mode is limited/unvalidated for persistent bridge runtime.
-- `undo.last` execution depends on Blender undo-stack/context availability; safe failure path is verified.
-- No arbitrary Python execution endpoint is exposed by default.
+- Direction: [docs/product-direction.md](./docs/product-direction.md)
+- Prune audit: [docs/foundation-prune-audit.md](./docs/foundation-prune-audit.md)
+- Foundation parity: [docs/runtime-foundation-parity.md](./docs/runtime-foundation-parity.md)
+- Install: [docs/install.md](./docs/install.md)
+- MCP setup: [docs/mcp-setup.md](./docs/mcp-setup.md)
+- Observability: [docs/observability.md](./docs/observability.md)
+- Runtime evidence index: [docs/README.md](./docs/README.md)
 
 ## License
 
-MIT — see [LICENSE](./LICENSE).
+MIT — see [LICENSE](./LICENSE)

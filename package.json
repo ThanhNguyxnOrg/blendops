@@ -2,7 +2,7 @@
   "name": "blendops",
   "version": "0.1.0",
   "private": true,
-  "description": "Safe Blender automation for AI agents: MCP tools, CLI workflows, scene inspection, preview, validation, and export.",
+  "description": "Minimal safe runtime foundation for AI-native Blender workflows.",
   "bin": {
     "blendops": "apps/cli/dist/index.js"
   },
