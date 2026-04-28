@@ -41,6 +41,10 @@ _last_error: Optional[str] = None
 _last_duration_ms: Optional[int] = None
 _last_request_id: Optional[str] = None
 
+BATCH_DRY_RUN_REGISTRY: Dict[str, Dict[str, Any]] = {}
+BATCH_DRY_RUN_TTL_SECONDS = 1800
+BATCH_DRY_RUN_MAX_ENTRIES = 100
+
 VALIDATION_PRESETS = {"basic", "game_asset", "render_ready"}
 GENERIC_NAME_ROOTS = {
     "cube",
@@ -1213,6 +1217,58 @@ def handle_batch_plan(command: Dict[str, Any]) -> Dict[str, Any]:
     )
 
 
+def _cleanup_batch_dry_run_registry(now_ts: Optional[float] = None) -> None:
+    global BATCH_DRY_RUN_REGISTRY
+
+    ts = now_ts if isinstance(now_ts, (int, float)) else time.time()
+
+    # Remove expired entries
+    expired_keys: list[str] = []
+    for key, entry in BATCH_DRY_RUN_REGISTRY.items():
+        created_at = entry.get("created_at")
+        if not isinstance(created_at, (int, float)):
+            expired_keys.append(key)
+            continue
+        if ts - float(created_at) > BATCH_DRY_RUN_TTL_SECONDS:
+            expired_keys.append(key)
+
+    for key in expired_keys:
+        BATCH_DRY_RUN_REGISTRY.pop(key, None)
+
+    # Keep only newest max entries
+    if len(BATCH_DRY_RUN_REGISTRY) <= BATCH_DRY_RUN_MAX_ENTRIES:
+        return
+
+    items = list(BATCH_DRY_RUN_REGISTRY.items())
+    items.sort(key=lambda item: float(item[1].get("created_at", 0.0)), reverse=True)
+    kept = items[:BATCH_DRY_RUN_MAX_ENTRIES]
+    BATCH_DRY_RUN_REGISTRY = {k: v for k, v in kept}
+
+
+
+def _store_batch_dry_run_registry_entry(
+    dry_run_id: str,
+    plan_fingerprint: str,
+    request_id: str,
+    step_count: int,
+    operations: list[str],
+) -> None:
+    _cleanup_batch_dry_run_registry()
+
+    BATCH_DRY_RUN_REGISTRY[dry_run_id] = {
+        "dry_run_id": dry_run_id,
+        "plan_fingerprint": plan_fingerprint,
+        "created_at": time.time(),
+        "request_id": request_id,
+        "step_count": step_count,
+        "operations": list(operations),
+        "valid": True,
+    }
+
+    _cleanup_batch_dry_run_registry()
+
+
+
 def _generate_batch_execute_preview(step_num: int, operation: str, raw_step: Dict[str, Any]) -> Dict[str, Any]:
     effect = ""
 
@@ -1300,12 +1356,11 @@ def _batch_execute_reject(
         "valid": False,
         "step_receipts": [],
         "executed_steps": 0,
-        "failed_step": None,
-        "stopped_on_error": False,
-        "remaining_steps_skipped": step_count,
         "destructive_steps": destructive_steps,
         "requires_confirmation": requires_confirmation,
+        "validation_errors": validation_errors or [],
         "notes": notes or [],
+        "dry_run_registry_verified": False,
     }
     if validation_errors is not None:
         payload["validation_errors"] = validation_errors
@@ -1474,6 +1529,8 @@ def handle_batch_execute(command: Dict[str, Any]) -> Dict[str, Any]:
             data["dry_run_id"] = dry_run_id
 
         if not valid:
+            data["registry_stored"] = False
+            data["registry_ttl_seconds"] = BATCH_DRY_RUN_TTL_SECONDS
             return make_response(
                 ok=False,
                 operation=operation,
@@ -1485,6 +1542,24 @@ def handle_batch_execute(command: Dict[str, Any]) -> Dict[str, Any]:
                     "Run with confirm=EXECUTE_BATCH for real execution after dry-run succeeds",
                 ],
             )
+
+        request_id_value = command.get("request_id")
+        if not isinstance(request_id_value, str) or len(request_id_value.strip()) == 0:
+            request_id_value = "unknown"
+
+        if dry_run_id is not None and plan_fingerprint is not None:
+            _store_batch_dry_run_registry_entry(
+                dry_run_id=dry_run_id,
+                plan_fingerprint=plan_fingerprint,
+                request_id=request_id_value,
+                step_count=step_count,
+                operations=operations,
+            )
+            data["registry_stored"] = True
+        else:
+            data["registry_stored"] = False
+
+        data["registry_ttl_seconds"] = BATCH_DRY_RUN_TTL_SECONDS
 
         return make_response(
             ok=True,
@@ -1653,6 +1728,96 @@ def handle_batch_execute(command: Dict[str, Any]) -> Dict[str, Any]:
             dry_run_id=str(dry_run_id_input),
         )
 
+    _cleanup_batch_dry_run_registry()
+
+    registry_entry = BATCH_DRY_RUN_REGISTRY.get(str(dry_run_id_input))
+    if registry_entry is None:
+        return _batch_execute_reject(
+            "batch.execute dry_run_id not found in registry",
+            steps=steps,
+            operations=operations,
+            destructive_steps=destructive_steps,
+            requires_confirmation=requires_confirmation,
+            validation_errors=[
+                {
+                    "step": None,
+                    "field": "dry_run_id",
+                    "error": "dry_run_id not found in current session registry",
+                }
+            ],
+            warnings=warnings + ["dry_run_id does not exist in current bridge session registry"],
+            next_steps=["Run dry-run in current session and use returned dry_run_id"],
+            notes=notes + ["Registry validation failed: dry_run_id not found or expired"],
+            plan_fingerprint=plan_fingerprint,
+            dry_run_id=str(dry_run_id_input),
+        )
+
+    registry_fingerprint = registry_entry.get("plan_fingerprint")
+    if registry_fingerprint != plan_fingerprint:
+        return _batch_execute_reject(
+            "batch.execute registry fingerprint mismatch",
+            steps=steps,
+            operations=operations,
+            destructive_steps=destructive_steps,
+            requires_confirmation=requires_confirmation,
+            validation_errors=[
+                {
+                    "step": None,
+                    "field": "dry_run_id",
+                    "error": "registry plan_fingerprint does not match computed fingerprint",
+                }
+            ],
+            warnings=warnings + ["Registry entry fingerprint mismatch"],
+            next_steps=["Run dry-run again with current steps"],
+            notes=notes + ["Registry validation failed: fingerprint mismatch"],
+            plan_fingerprint=plan_fingerprint,
+            dry_run_id=str(dry_run_id_input),
+        )
+
+    registry_step_count = registry_entry.get("step_count")
+    if registry_step_count != step_count:
+        return _batch_execute_reject(
+            "batch.execute registry step count mismatch",
+            steps=steps,
+            operations=operations,
+            destructive_steps=destructive_steps,
+            requires_confirmation=requires_confirmation,
+            validation_errors=[
+                {
+                    "step": None,
+                    "field": "dry_run_id",
+                    "error": f"registry step_count {registry_step_count} does not match submitted {step_count}",
+                }
+            ],
+            warnings=warnings + ["Registry entry step count mismatch"],
+            next_steps=["Run dry-run again with current steps"],
+            notes=notes + ["Registry validation failed: step count mismatch"],
+            plan_fingerprint=plan_fingerprint,
+            dry_run_id=str(dry_run_id_input),
+        )
+
+    registry_operations = registry_entry.get("operations")
+    if not isinstance(registry_operations, list) or registry_operations != operations:
+        return _batch_execute_reject(
+            "batch.execute registry operations mismatch",
+            steps=steps,
+            operations=operations,
+            destructive_steps=destructive_steps,
+            requires_confirmation=requires_confirmation,
+            validation_errors=[
+                {
+                    "step": None,
+                    "field": "dry_run_id",
+                    "error": "registry operations list does not match submitted operations",
+                }
+            ],
+            warnings=warnings + ["Registry entry operations mismatch"],
+            next_steps=["Run dry-run again with current steps"],
+            notes=notes + ["Registry validation failed: operations mismatch"],
+            plan_fingerprint=plan_fingerprint,
+            dry_run_id=str(dry_run_id_input),
+        )
+
     if not valid:
         return _batch_execute_reject(
             "batch.execute validation failed",
@@ -1781,6 +1946,7 @@ def handle_batch_execute(command: Dict[str, Any]) -> Dict[str, Any]:
         "failed_step": failed_step,
         "stopped_on_error": stopped_on_error,
         "remaining_steps_skipped": remaining_steps_skipped,
+        "dry_run_registry_verified": True,
     }
 
     if stopped_on_error:

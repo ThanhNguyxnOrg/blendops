@@ -170,4 +170,4 @@ Expected:
 
 ## Current limitation
 
-Persistent dry-run registry validation is future hardening. Current first release enforces exact step identity through recomputed fingerprint equality but does not yet prove `dry_run_id` history persistence server-side.
+Session-local dry-run registry is implemented. Registry is in-memory and cleared on bridge restart. Future hardening may add persistent cross-session registry or signed dry-run tokens.

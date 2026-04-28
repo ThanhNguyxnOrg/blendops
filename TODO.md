@@ -23,7 +23,7 @@ This roadmap reflects **current code + runtime evidence**.
 | `export.asset` | ✅ | GUI bridge GLB runtime evidence recorded |
 | `undo.last` | ✅ | Typed slice implemented; safe failure path runtime-verified (successful undo path pending verification) |
 | `batch.plan` | ✅ | Plan-only + strict per-operation validation; does not execute steps |
-| `batch.execute` (first real slice) | ✅ | Dry-run preview + guarded real execution; non-destructive allowlist only with mandatory dry-run linkage |
+| `batch.execute` (first real slice) | ✅ | Dry-run preview + guarded real execution; non-destructive allowlist only with mandatory dry-run linkage and session-local registry verification |
 | Observability split (stdout/stderr/bridge console) | ✅ | Implemented and smoke-tested |
 
 ---
@@ -49,7 +49,7 @@ This roadmap reflects **current code + runtime evidence**.
 
 ## 🚧 Next candidates
 
-1. Persistent dry-run registry (server-side verification that provided dry_run_id exists and succeeded)
+1. Persistent cross-session dry-run registry or signed dry-run token hardening
 2. Validation preset expansion
 3. Packaging/release automation
 

@@ -176,6 +176,9 @@ export const BatchExecuteDataSchema = z.object({
   notes: z.array(z.string()),
   plan_fingerprint: z.string().optional(),
   dry_run_id: z.string().optional(),
+  registry_stored: z.boolean().optional(),
+  registry_ttl_seconds: z.number().int().positive().optional(),
+  dry_run_registry_verified: z.boolean().optional(),
 });
 
 export const OperationManifestEntrySchema = z.object({

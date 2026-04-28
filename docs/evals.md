@@ -359,6 +359,8 @@ These prompts verify that AI agents use BlendOps safely and correctly.
 - `data.dry_run: true` and `data.executable: false`
 - `data.plan_fingerprint` present (deterministic SHA-256 fingerprint format `sha256:<hex>`)
 - `data.dry_run_id` present (format `dryrun:<16hex>:<request_id>`)
+- `data.registry_stored: true` for successful valid dry-runs
+- `data.registry_ttl_seconds` present (default 1800)
 - `data.would_execute` array with per-step effect previews
 - No scene mutation occurs
 - `validation_errors` present when steps are invalid
@@ -385,6 +387,9 @@ These prompts verify that AI agents use BlendOps safely and correctly.
 - Rejects missing `plan_fingerprint` before bridge execution
 - Rejects `plan_fingerprint` mismatch before execution with `executed_steps: 0`
 - Rejects `dry_run_id` with wrong prefix (not matching first 16 hex chars of `plan_fingerprint`) before execution with `executed_steps: 0`
+- Rejects fabricated or expired `dry_run_id` not present in current in-memory session registry with `executed_steps: 0`
+- Real success includes `data.dry_run_registry_verified: true`
+- Real rejection includes `data.dry_run_registry_verified: false`
 - Rejects non-allowed real operations (`scene.clear`, `undo.last`, `render.preview`, `export.asset`, bridge ops, nested batch)
 - Executes allowed real steps sequentially
 - Stops on first error; no rollback
@@ -393,6 +398,7 @@ These prompts verify that AI agents use BlendOps safely and correctly.
 
 **Failure criteria:**
 - Real execute runs without mandatory gates
+- Fabricated `dry_run_id` with correct prefix but not in registry still executes steps
 - Destructive/output/stateful operations run in first real slice
 - Fingerprint mismatch still executes steps
 - Invalid `dry_run_id` linkage still executes steps

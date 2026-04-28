@@ -15,8 +15,10 @@ Real `batch.execute` must be rejected unless **all** conditions below are true.
    - Real execution request must include both `dry_run_id` and `plan_fingerprint`.
    - Real execution recomputes fingerprint from submitted steps and requires exact equality with submitted `plan_fingerprint`.
    - Real execution validates `dry_run_id` format and linkage: `dry_run_id` must start with `dryrun:<first16hex_of_plan_fingerprint>:<request_id>`.
-   - On fingerprint mismatch or invalid `dry_run_id` linkage, execution is rejected with `ok: false`, `executed_steps: 0`, and zero mutation.
-   - **Current limitation:** persistent server-side dry-run registry verification (`dry_run_id` existence/history validation) is not yet implemented; this remains future hardening.
+   - Real execution requires `dry_run_id` to exist in the current bridge session's in-memory registry.
+   - Registry validates that the stored entry's `plan_fingerprint`, `step_count`, and `operations` match the submitted request.
+   - On fingerprint mismatch, invalid `dry_run_id` linkage, or missing registry entry, execution is rejected with `ok: false`, `executed_steps: 0`, and zero mutation.
+   - **Current limitation:** Registry is session-local and in-memory only. Bridge restart invalidates all prior `dry_run_id` values. Future hardening may add persistent cross-session registry or signed tokens.
 
 2. **Global confirmation token is mandatory**
    - Real execution must require an explicit top-level confirmation token (for example `confirm: "EXECUTE_BATCH"`).

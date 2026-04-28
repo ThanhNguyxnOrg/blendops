@@ -27,10 +27,11 @@ This guide describes how AI agents should use BlendOps safely and deterministica
 - `execute_batch` supports dry-run preview and a guarded first real execution slice (non-destructive operations only)
 - AI should run `execute_batch` with `dry_run: true` first, then preserve `plan_fingerprint` + `dry_run_id`
 - Real execution requires all three gates: `confirm: "EXECUTE_BATCH"`, `dry_run_id`, and `plan_fingerprint`
+- Real execution requires `dry_run_id` to exist in the current bridge session's in-memory registry
+- Bridge restart invalidates all prior `dry_run_id` values; agents must run dry-run and real execution in the same bridge session
 - AI must ensure real batch steps are non-destructive only in first release (`scene.inspect`, `object.create`, `material.create`, `material.apply`, `lighting.setup`, `camera.set`, `validate.scene`)
 - AI must not include `scene.clear`, `undo.last`, `render.preview`, `export.asset`, bridge lifecycle/status, or nested batch operations in real batch execution
-- On fingerprint mismatch or missing gates, execution is rejected before mutation
-- Future hardening: persistent dry-run registry/history verification beyond submitted fingerprint equality
+- On fingerprint mismatch, missing gates, or missing registry entry, execution is rejected before mutation
 - Real execution behavior must satisfy the [batch execution safety contract](./batch-execute-safety-contract.md)
 
 ## 🚀 Recommended AI workflow

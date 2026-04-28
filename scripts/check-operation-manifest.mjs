@@ -365,6 +365,18 @@ function checkBatchPlanStrictValidation() {
     allOk = fail('addon missing dry_run_id field in batch.execute dry-run responses');
   }
 
+  if (!addonContent.includes('BATCH_DRY_RUN_REGISTRY')) {
+    allOk = fail('addon missing BATCH_DRY_RUN_REGISTRY for session-local dry-run verification');
+  }
+
+  if (!addonContent.includes('registry_stored')) {
+    allOk = fail('addon missing registry_stored field in batch.execute dry-run responses');
+  }
+
+  if (!addonContent.includes('dry_run_registry_verified')) {
+    allOk = fail('addon missing dry_run_registry_verified field in batch.execute real responses');
+  }
+
   const examples = [
     'examples/batch/basic-scene.json',
     'examples/batch/invalid-arbitrary-code.json',

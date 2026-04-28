@@ -94,7 +94,7 @@ Generic MCP config:
 | Render | `render.preview` |
 | Validate | `validate.scene` |
 | Export | `export.asset` |
-| Batch | `batch.plan`, `batch.execute --dry-run`, `batch.execute` (guarded first real execution slice: non-destructive operations only) |
+| Batch | `batch.plan`, `batch.execute --dry-run`, `batch.execute` (guarded first real execution slice: non-destructive operations only; requires same-session dry-run registry linkage) |
 
 ## ⚠️ Destructive operations
 
