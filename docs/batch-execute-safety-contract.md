@@ -14,7 +14,8 @@ Real `batch.execute` must be rejected unless **all** conditions below are true.
 1. **Dry-run first is mandatory**
    - Real execution request must include both `dry_run_id` and `plan_fingerprint`.
    - Real execution recomputes fingerprint from submitted steps and requires exact equality with submitted `plan_fingerprint`.
-   - On mismatch, execution is rejected with `ok: false`, `executed_steps: 0`, and zero mutation.
+   - Real execution validates `dry_run_id` format and linkage: `dry_run_id` must start with `dryrun:<first16hex_of_plan_fingerprint>:<request_id>`.
+   - On fingerprint mismatch or invalid `dry_run_id` linkage, execution is rejected with `ok: false`, `executed_steps: 0`, and zero mutation.
    - **Current limitation:** persistent server-side dry-run registry verification (`dry_run_id` existence/history validation) is not yet implemented; this remains future hardening.
 
 2. **Global confirmation token is mandatory**

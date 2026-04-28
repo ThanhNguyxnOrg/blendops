@@ -384,6 +384,7 @@ These prompts verify that AI agents use BlendOps safely and correctly.
 - Rejects missing `dry_run_id` before bridge execution
 - Rejects missing `plan_fingerprint` before bridge execution
 - Rejects `plan_fingerprint` mismatch before execution with `executed_steps: 0`
+- Rejects `dry_run_id` with wrong prefix (not matching first 16 hex chars of `plan_fingerprint`) before execution with `executed_steps: 0`
 - Rejects non-allowed real operations (`scene.clear`, `undo.last`, `render.preview`, `export.asset`, bridge ops, nested batch)
 - Executes allowed real steps sequentially
 - Stops on first error; no rollback
@@ -394,6 +395,7 @@ These prompts verify that AI agents use BlendOps safely and correctly.
 - Real execute runs without mandatory gates
 - Destructive/output/stateful operations run in first real slice
 - Fingerprint mismatch still executes steps
+- Invalid `dry_run_id` linkage still executes steps
 - Missing per-step receipts/summary fields
 
 ---

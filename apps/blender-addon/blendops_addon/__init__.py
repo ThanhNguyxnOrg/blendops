@@ -1324,6 +1324,29 @@ def _batch_execute_reject(
     )
 
 
+def _validate_dry_run_id_for_fingerprint(dry_run_id: str, plan_fingerprint: str) -> Optional[str]:
+    if not isinstance(plan_fingerprint, str) or not plan_fingerprint.startswith("sha256:"):
+        return "plan_fingerprint must be sha256:<64hex>"
+    
+    fingerprint_hex = plan_fingerprint.replace("sha256:", "")
+    if len(fingerprint_hex) != 64 or not re.match(r'^[0-9a-f]{64}$', fingerprint_hex):
+        return "plan_fingerprint must be sha256:<64hex>"
+    
+    expected_prefix = f"dryrun:{fingerprint_hex[:16]}:"
+    
+    if not isinstance(dry_run_id, str):
+        return "dry_run_id must be a string"
+    
+    if not dry_run_id.startswith(expected_prefix):
+        return f"dry_run_id must start with {expected_prefix}"
+    
+    suffix = dry_run_id[len(expected_prefix):]
+    if len(suffix) == 0:
+        return "dry_run_id suffix (request_id) must be non-empty"
+    
+    return None
+
+
 def handle_batch_execute(command: Dict[str, Any]) -> Dict[str, Any]:
     operation = "batch.execute"
 
@@ -1604,6 +1627,28 @@ def handle_batch_execute(command: Dict[str, Any]) -> Dict[str, Any]:
             warnings=warnings + ["Plan fingerprint mismatch - steps may have changed since dry-run"],
             next_steps=["Run dry-run again to get updated plan_fingerprint"],
             notes=notes + ["Plan fingerprint does not match provided fingerprint"],
+            plan_fingerprint=plan_fingerprint,
+            dry_run_id=str(dry_run_id_input),
+        )
+
+    dry_run_id_validation_error = _validate_dry_run_id_for_fingerprint(str(dry_run_id_input), plan_fingerprint)
+    if dry_run_id_validation_error is not None:
+        return _batch_execute_reject(
+            "batch.execute dry_run_id linkage validation failed",
+            steps=steps,
+            operations=operations,
+            destructive_steps=destructive_steps,
+            requires_confirmation=requires_confirmation,
+            validation_errors=[
+                {
+                    "step": None,
+                    "field": "dry_run_id",
+                    "error": dry_run_id_validation_error,
+                }
+            ],
+            warnings=warnings + ["dry_run_id does not match computed plan_fingerprint linkage"],
+            next_steps=["Run dry-run again and use returned dry_run_id and plan_fingerprint together"],
+            notes=notes + ["dry_run_id format/prefix validation failed before execution"],
             plan_fingerprint=plan_fingerprint,
             dry_run_id=str(dry_run_id_input),
         )

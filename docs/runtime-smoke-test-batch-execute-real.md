@@ -19,6 +19,7 @@ This doc records the exact verification criteria for first real execution releas
   - `dry_run_id: string`
   - `plan_fingerprint: string`
 - fingerprint equality is enforced before mutation
+- `dry_run_id` format and linkage is validated: must start with `dryrun:<first16hex_of_plan_fingerprint>:<request_id>`
 - real execution allowlist is restricted to non-destructive operations only:
   - `scene.inspect`
   - `object.create`
