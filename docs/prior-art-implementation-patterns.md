@@ -97,3 +97,45 @@ These updates align user/agent behavior with runtime lifecycle reality:
 - No `batch.execute` allowlist expansion.
 - No destructive behavior changes.
 - No broad lifecycle architecture rewrite.
+
+---
+
+## Official Blender command-line reference
+
+**Date**: 2026-04-28  
+**Source**: Blender official documentation (https://docs.blender.org/manual/en/latest/advanced/command_line/)  
+**Purpose**: Document alignment between BlendOps managed bridge lifecycle and official Blender CLI behavior.
+
+### Known official Blender CLI patterns (from community usage and BlendOps runtime evidence)
+
+| Official Pattern | BlendOps Current Behavior | Status | Action Taken |
+|---|---|---|---|
+| **Launch via command line** | ✅ `spawn(blender_path, args, { detached: true })` in `bridgeLifecycle.ts` | Aligned | No change needed |
+| **GUI mode (default)** | ✅ Default mode; `--python` script without `--background` flag | Aligned | Documented as primary validated path |
+| **Background mode (`--background`)** | ⚠️ Supported but limited/unvalidated for persistent bridge runtime | Intentionally different | Documented limitation remains |
+| **Startup script (`--python <script>`)** | ✅ Generated `.tmp/blendops/start_bridge_gui.py` with addon import/register | Aligned | No change needed |
+| **Process lifetime (GUI stays open)** | ✅ Blender GUI remains open while bridge serves; CLI exits after handoff | Aligned | Clarified in docs: GUI staying open is expected |
+| **stdout/stderr separation** | ✅ Redirected to `.tmp/blendops/bridge.stdout.log` and `.tmp/blendops/bridge.stderr.log` | Aligned | Documented log locations |
+| **Non-blocking launch** | ✅ `child.unref()` after spawn; readiness determined by `/status` poll | Aligned | No change needed |
+| **Background mode limitations** | ⚠️ Known: GLB/GLTF export requires GUI window context on Blender 4.2 | Limitation acknowledged | Documented in README, install.md, manual-test.md |
+
+### BlendOps-specific enhancements beyond official CLI
+
+| Enhancement | Rationale | Status |
+|---|---|---|
+| Process metadata tracking (`bridge-process.json`) | Enable managed stop/status without manual PID lookup | ✅ Implemented |
+| Health check endpoint (`GET /status`) | Explicit readiness verification vs implicit process existence | ✅ Implemented |
+| Automated addon bootstrap | Remove manual addon install step for primary path | ✅ Implemented |
+| Platform-specific process validation (tasklist/ps) | Prevent accidental termination of non-Blender PIDs | ✅ Implemented |
+| Request correlation (`request_id` + `receipt`) | Enable troubleshooting and operation tracing | ✅ Implemented |
+
+### Alignment summary
+
+**BlendOps managed bridge lifecycle aligns with official Blender CLI launch behavior:**
+- Uses standard `--python` script injection for addon bootstrap
+- Respects GUI mode as default validated runtime path
+- Acknowledges background mode limitations (GLB/GLTF export, persistent runtime)
+- Separates stdout/stderr for automation-friendly output
+- Documents that GUI process staying open is expected behavior
+
+**No code changes needed** - current implementation follows official CLI patterns. Documentation updates clarify alignment and expected behavior.

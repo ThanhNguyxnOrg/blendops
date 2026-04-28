@@ -41,6 +41,12 @@ node apps/cli/dist/index.js scene inspect --verbose
 
 Blender GUI remaining open is expected while bridge is running; do not wait for Blender to exit.
 
+**Alignment with official Blender CLI behavior:**
+- BlendOps uses standard `--python <script>` for addon bootstrap
+- GUI mode (default) follows official Blender launch patterns
+- Background mode (`--background`) is supported but limited/unvalidated for persistent bridge runtime
+- Process detachment and readiness polling align with non-blocking automation workflows
+
 Windows Blender path override:
 
 ```bash

@@ -11,6 +11,8 @@ BlendOps separates machine output from human diagnostics.
 
 This applies to CLI and MCP wrappers.
 
+**Official Blender CLI alignment:** BlendOps separates stdout/stderr following standard CLI automation patterns. Blender bridge logs are captured to `.tmp/blendops/bridge.stdout.log` and `.tmp/blendops/bridge.stderr.log` for persistent troubleshooting.
+
 ## 🎛️ Bridge lifecycle observability
 
 Managed bridge lifecycle commands:
