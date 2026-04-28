@@ -7,9 +7,11 @@ Lightweight documentation hub for BlendOps.
 | Need | Read |
 |---|---|
 | 📦 Install and start BlendOps | [Install guide](./install.md) |
-| 🧠 Use BlendOps from AI/MCP | [AI agent usage](./ai-agent-usage.md) |
+| 🧠 MCP server configuration | [MCP setup guide](./mcp-setup.md) |
+| 🤖 Use BlendOps from AI/MCP | [AI agent usage](./ai-agent-usage.md) |
 | 🧪 Run manual runtime checks | [Manual test guide](./manual-test.md) |
 | 🎛️ Debug bridge/logs/request IDs | [Observability guide](./observability.md) |
+| 🧱 Understand architecture | [Inheritance foundation](./inheritance-foundation.md) |
 | ✅ Evaluate agent behavior | [Eval prompts](./evals.md) |
 | 🧪 Review runtime evidence | [Runtime evidence](#-runtime-evidence) |
 | 🔍 Understand research/prior art | [Prior art](./prior-art.md) |
@@ -28,6 +30,7 @@ Lightweight documentation hub for BlendOps.
 
 | Evidence | Focus |
 |---|---|
+| [runtime-smoke-test-installability.md](./runtime-smoke-test-installability.md) | Source installability + npm link + MCP setup smoke evidence |
 | [runtime-smoke-test.md](./runtime-smoke-test.md) | End-to-end baseline smoke run |
 | [runtime-smoke-test-object-transform.md](./runtime-smoke-test-object-transform.md) | `object.transform` runtime validation |
 | [runtime-smoke-test-material.md](./runtime-smoke-test-material.md) | Material create/apply validation |

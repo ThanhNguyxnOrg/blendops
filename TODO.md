@@ -52,14 +52,13 @@ This roadmap reflects **current code + runtime evidence**.
 
 1. Persistent cross-session dry-run registry or signed dry-run token hardening
 2. Validation preset expansion
-3. Packaging/release automation
-4. Managed lifecycle root-dir override support for multi-workspace usage
-5. Optional stale port preflight diagnostics before Blender spawn
+3. Optional stale port preflight diagnostics before Blender spawn
 
 ---
 
 ## 🧱 Stabilization backlog
 
+- Source installability baseline: `npm link`, `blendops` command, `npm run doctor`
 - UAT runner baseline command: `npm run uat`
 - Remaining risk: background GLB/GLTF limitation
 - Remaining risk: persistent cross-session dry-run registry / signed token

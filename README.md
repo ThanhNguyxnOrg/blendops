@@ -20,15 +20,29 @@ git clone https://github.com/ThanhNguyxnOrg/blendops.git
 cd blendops
 npm install
 npm run build
+npm link
+```
+
+Verify installation:
+
+```bash
+blendops --help
+npm run doctor
 ```
 
 ## 🎛️ Start the managed Blender bridge
 
 ```bash
+blendops bridge start --mode gui --verbose
+blendops bridge status --verbose
+blendops bridge operations --verbose
+blendops scene inspect --verbose
+```
+
+Or use node path directly:
+
+```bash
 node apps/cli/dist/index.js bridge start --mode gui --verbose
-node apps/cli/dist/index.js bridge status --verbose
-node apps/cli/dist/index.js bridge operations --verbose
-node apps/cli/dist/index.js scene inspect --verbose
 ```
 
 `bridge start` returns when managed bridge lifecycle startup succeeds.
@@ -43,12 +57,18 @@ node apps/cli/dist/index.js bridge start --mode gui --blender "C:\Program Files\
 
 ## 🧰 CLI quick examples
 
-> ✅ Keep stdout machine-parseable by using the built CLI directly.
+> ✅ Prefer `blendops` after `npm link`. Keep node-path fallback for machine-parseable stdout.
+
+```bash
+blendops object create --type cube --name test_cube --location 0,0,1
+blendops validate scene --preset basic
+blendops render preview --output renders/preview.png
+```
+
+Fallback:
 
 ```bash
 node apps/cli/dist/index.js object create --type cube --name test_cube --location 0,0,1
-node apps/cli/dist/index.js validate scene --preset basic
-node apps/cli/dist/index.js render preview --output renders/preview.png
 ```
 
 ## 🤖 Automated UAT
@@ -144,9 +164,11 @@ flowchart LR
 | Need | Read |
 |---|---|
 | Install from scratch | [docs/install.md](./docs/install.md) |
+| MCP server setup | [docs/mcp-setup.md](./docs/mcp-setup.md) |
 | Use from AI/MCP | [docs/ai-agent-usage.md](./docs/ai-agent-usage.md) |
 | Manual runtime checks | [docs/manual-test.md](./docs/manual-test.md) |
 | Debug logs/status | [docs/observability.md](./docs/observability.md) |
+| Architecture foundation | [docs/inheritance-foundation.md](./docs/inheritance-foundation.md) |
 | Bridge lifecycle troubleshooting | [docs/manual-test.md#-troubleshooting](./docs/manual-test.md#-troubleshooting) |
 | Eval prompts | [docs/evals.md](./docs/evals.md) |
 | Runtime evidence | [docs/README.md#-runtime-evidence](./docs/README.md#-runtime-evidence) |

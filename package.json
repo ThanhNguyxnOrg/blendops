@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "description": "Safe Blender automation for AI agents: MCP tools, CLI workflows, scene inspection, preview, validation, and export.",
+  "bin": {
+    "blendops": "apps/cli/dist/index.js"
+  },
   "workspaces": [
     "packages/*",
     "apps/*"
@@ -18,6 +21,7 @@
     "docs:check": "node scripts/check-docs.mjs",
     "operations:check": "node scripts/check-operation-manifest.mjs",
     "uat": "powershell -ExecutionPolicy Bypass -File scripts/run-uat.ps1",
+    "doctor": "powershell -ExecutionPolicy Bypass -File scripts/doctor.ps1",
     "cli": "npm run dev --workspace @blendops/cli --",
     "mcp-server": "npm run dev --workspace @blendops/mcp-server"
   },

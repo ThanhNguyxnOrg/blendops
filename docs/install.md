@@ -26,6 +26,38 @@ npm run typecheck
 npm run build
 ```
 
+## 🔗 Link CLI for global access (optional)
+
+```bash
+npm link
+```
+
+This creates a global `blendops` command. Verify:
+
+```bash
+blendops --help
+blendops bridge status --verbose
+```
+
+If `npm link` fails or is unavailable, use node path directly:
+
+```bash
+node apps/cli/dist/index.js --help
+```
+
+## 🩺 Validate installation
+
+```bash
+npm run doctor
+```
+
+Doctor checks:
+- Node.js >= 18
+- npm availability
+- Build artifacts (CLI + MCP server)
+- Blender executable detection
+- Bridge connectivity (non-destructive)
+
 ## 🎛️ Automated managed bridge start (primary path)
 
 Use managed bridge bootstrap first:
@@ -63,7 +95,16 @@ Managed lifecycle artifacts are written under `.tmp/blendops/`:
 
 ## 🧰 CLI setup and examples
 
-Use built CLI directly for strict stdout JSON behavior:
+Preferred (after `npm link`):
+
+```bash
+blendops bridge status --verbose
+blendops object create --type cube --name test_cube --location 0,0,1
+blendops validate scene --preset basic
+blendops render preview --output renders/preview.png
+```
+
+Fallback (strict stdout JSON behavior):
 
 ```bash
 node apps/cli/dist/index.js bridge status --verbose
@@ -83,7 +124,9 @@ npm run build
 node apps/mcp-server/dist/index.js
 ```
 
-Example MCP client config:
+For detailed MCP configuration examples (Claude Desktop, Cursor, OpenCode), see [MCP Setup Guide](./mcp-setup.md).
+
+Quick example:
 
 ```json
 {

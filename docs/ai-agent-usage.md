@@ -37,17 +37,24 @@ This guide describes how AI agents should use BlendOps safely and deterministica
 
 ## 🚀 Recommended AI workflow
 
-1. Prefer automated UAT runner for end-to-end validation: `npm run uat` or `powershell -ExecutionPolicy Bypass -File scripts/run-uat.ps1`
-2. Start bridge (`start_bridge`)
-3. Check capabilities (`list_operations`)
-4. Inspect scene (`inspect_scene`)
-5. Apply typed operations
-6. Validate (`validate_scene`)
-7. Render/export (`render_preview` / `export_asset`)
-8. Collect logs on failure (`get_bridge_logs`)
-9. Stop bridge (`stop_bridge`) when done
+1. Run install checks: `npm run doctor`
+2. Prefer automated UAT runner before feature changes: `npm run uat` (or `powershell -ExecutionPolicy Bypass -File scripts/run-uat.ps1`)
+3. Start bridge (`start_bridge`)
+4. Check capabilities (`list_operations`)
+5. Inspect scene (`inspect_scene`)
+6. Apply typed operations
+7. Validate (`validate_scene`)
+8. Render/export (`render_preview` / `export_asset`)
+9. Collect logs on failure (`get_bridge_logs`)
+10. Stop bridge (`stop_bridge`) when done
 
 For full smoke coverage, agents should use the UAT runner instead of manually orchestrating each step.
+
+Agent command preference:
+- Prefer `blendops` command if installed (`npm link`)
+- Fallback to `node apps/cli/dist/index.js` when `blendops` is not linked
+- Use MCP config examples from [MCP Setup Guide](./mcp-setup.md)
+- Never use raw Blender CLI/Python unless explicitly working on bridge lifecycle internals.
 
 ## 🧠 MCP tool flow
 
@@ -84,6 +91,19 @@ AI should call `list_operations` before guessing tools.
 ## 🧰 CLI fallback flow
 
 When MCP integration is unavailable, use direct CLI:
+
+Preferred (after `npm link`):
+
+```bash
+blendops bridge start --mode gui --verbose
+blendops bridge status --verbose
+blendops bridge operations --verbose
+blendops scene inspect --verbose
+blendops validate scene --preset basic --verbose
+blendops bridge stop
+```
+
+Fallback (node path):
 
 ```bash
 node apps/cli/dist/index.js bridge start --mode gui --verbose
