@@ -58,6 +58,17 @@ This roadmap reflects **current code + runtime evidence**.
 
 ---
 
+## 🧱 Stabilization backlog
+
+- UAT runner baseline command: `npm run uat`
+- Remaining risk: background GLB/GLTF limitation
+- Remaining risk: persistent cross-session dry-run registry / signed token
+- Remaining risk: stale port auto-remediation is diagnostic-first
+- Remaining risk: successful undo path not verified
+- Rule: every future feature must pass `npm run uat` before commit
+
+---
+
 ## 🛡️ Safety / destructive operations
 
 - [x] Add explicit confirmation flow for destructive operations (`scene.clear` requires `CLEAR_SCENE`)
