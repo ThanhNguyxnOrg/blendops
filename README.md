@@ -30,6 +30,10 @@ node apps/cli/dist/index.js bridge operations --verbose
 node apps/cli/dist/index.js scene inspect --verbose
 ```
 
+`bridge start` returns when managed bridge lifecycle startup succeeds.
+
+Blender GUI staying open is expected while bridge is running; use `bridge status`/`bridge logs` for readiness, not process exit.
+
 Windows explicit Blender path:
 
 ```powershell
@@ -132,6 +136,7 @@ flowchart LR
 | Use from AI/MCP | [docs/ai-agent-usage.md](./docs/ai-agent-usage.md) |
 | Manual runtime checks | [docs/manual-test.md](./docs/manual-test.md) |
 | Debug logs/status | [docs/observability.md](./docs/observability.md) |
+| Bridge lifecycle troubleshooting | [docs/manual-test.md#-troubleshooting](./docs/manual-test.md#-troubleshooting) |
 | Eval prompts | [docs/evals.md](./docs/evals.md) |
 | Runtime evidence | [docs/README.md#-runtime-evidence](./docs/README.md#-runtime-evidence) |
 

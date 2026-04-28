@@ -8,7 +8,8 @@ This guide describes how AI agents should use BlendOps safely and deterministica
 
 - Use typed BlendOps tools/commands only
 - Never request arbitrary Python execution
-- Start bridge first, then verify readiness
+- Start bridge first, then verify readiness (`bridge.status` / `start_bridge` follow-up)
+- Do not wait for Blender GUI process exit after successful bridge start; GUI remaining open is expected
 - Call `list_operations` before guessing tool availability
 - Inspect scene before destructive or stateful edits
 - `scene.clear` is destructive and requires exact confirmation token `CLEAR_SCENE`
@@ -83,11 +84,14 @@ When MCP integration is unavailable, use direct CLI:
 
 ```bash
 node apps/cli/dist/index.js bridge start --mode gui --verbose
+node apps/cli/dist/index.js bridge status --verbose
 node apps/cli/dist/index.js bridge operations --verbose
 node apps/cli/dist/index.js scene inspect --verbose
 node apps/cli/dist/index.js validate scene --preset basic --verbose
 node apps/cli/dist/index.js bridge stop
 ```
+
+For long JSON outputs, redirect to `.tmp/stabilize/*.json` and summarize only key fields (`ok`, `operation`, `request_id`, `warnings`, `next_steps`) instead of pasting full payloads.
 
 ## 🎛️ Bridge lifecycle
 
@@ -99,6 +103,8 @@ node apps/cli/dist/index.js bridge status --verbose
 node apps/cli/dist/index.js bridge logs --tail 120
 node apps/cli/dist/index.js bridge stop
 ```
+
+A successful `bridge start` does **not** imply Blender exits. Blender GUI should remain open while bridge serves commands.
 
 ## 🧩 Blender addon fallback
 

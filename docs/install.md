@@ -37,6 +37,10 @@ node apps/cli/dist/index.js bridge operations --verbose
 node apps/cli/dist/index.js scene inspect --verbose
 ```
 
+`bridge start` returning `ok: true` means lifecycle startup succeeded.
+
+Blender GUI remaining open is expected while bridge is running; do not wait for Blender to exit.
+
 Windows Blender path override:
 
 ```bash
@@ -123,11 +127,21 @@ node apps/cli/dist/index.js bridge logs --tail 120
 node apps/cli/dist/index.js bridge status --verbose
 ```
 
+If `bridge start` succeeded but readiness is still unhealthy, treat this as stale bridge/process/port state and run recovery:
+
+```bash
+node apps/cli/dist/index.js bridge stop
+node apps/cli/dist/index.js bridge start --mode gui --verbose
+node apps/cli/dist/index.js bridge status --verbose
+```
+
 If still failing, use manual addon fallback.
 
 ### Wrong working directory
 
 Run commands from repo root where `apps/` and `packages/` exist.
+
+If you previously saw `MODULE_NOT_FOUND`, rerun from repo root (for example `D:\Code\blendops`) before bridge lifecycle commands.
 
 ### Background GLB limitation
 

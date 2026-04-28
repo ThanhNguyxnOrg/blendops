@@ -336,13 +336,60 @@ export async function startBridgeLifecycle(input: StartBridgeLifecycleInput = {}
         next_steps: [
           "Run `blendops bridge status --verbose` to verify bridge metadata",
           "Run `blendops bridge logs --tail 120` to inspect lifecycle logs",
+          "Blender GUI staying open is expected while bridge is running; do not wait for Blender to exit",
         ],
       };
     }
+
+    return {
+      ok: false,
+      message: "Tracked Blender process exists but bridge readiness is stale or still starting",
+      data: {
+        mode: existing.mode,
+        blender_path: existing.blender_path,
+        pid: existing.pid,
+        bridge_url: existing.bridge_url,
+        process_file: paths.process_file,
+        stdout_log: existing.stdout_log,
+        stderr_log: existing.stderr_log,
+        startup_script: existing.startup_script,
+        already_running: true,
+      },
+      warnings: [
+        "A tracked Blender process is alive but /status is not returning ready",
+        "This often indicates stale bridge state, addon startup failure, or a conflicting process/port",
+      ],
+      next_steps: [
+        "Run `blendops bridge logs --tail 120` to inspect startup output",
+        "Run `blendops bridge status --verbose` to verify current connectivity",
+        "Run `blendops bridge stop` and then `blendops bridge start --mode gui --verbose` to recover managed lifecycle state",
+      ],
+    };
   }
 
   if (existing && !isPidRunning(existing.pid)) {
+    logIfDefined(input.logger, `bridge lifecycle: removing stale process state pid=${existing.pid}`);
     removeProcessState(paths);
+  }
+
+  const expected_addon_entry = path.resolve(root_dir, "apps", "blender-addon", "blendops_addon", "__init__.py");
+  if (!existsSync(expected_addon_entry)) {
+    return {
+      ok: false,
+      message: "Managed bridge startup requires running from the BlendOps repository root",
+      data: {
+        root_dir,
+        expected_addon_entry,
+        process_file: paths.process_file,
+      },
+      warnings: [
+        "Could not locate BlendOps addon source under current working directory",
+      ],
+      next_steps: [
+        "Run commands from repo root where apps/ and packages/ exist (example: D:\\Code\\blendops)",
+        "If you saw MODULE_NOT_FOUND earlier, re-run from repo root and retry bridge start",
+      ],
+    };
   }
 
   const blender_path = resolveBlenderPath(input.blender_path);
@@ -354,10 +401,14 @@ export async function startBridgeLifecycle(input: StartBridgeLifecycleInput = {}
         requested_blender_path: input.blender_path ?? null,
         env_blender_path: process.env.BLENDOPS_BLENDER_PATH ?? null,
         default_windows_path: process.platform === "win32" ? DEFAULT_WINDOWS_BLENDER_PATH : null,
+        root_dir,
+        process_file: paths.process_file,
       },
       warnings: ["Set --blender or BLENDOPS_BLENDER_PATH to a valid Blender executable path"],
       next_steps: [
         "Example: blendops bridge start --mode gui --blender \"C:\\Program Files\\Blender Foundation\\Blender 4.2\\blender.exe\"",
+        "Run `blendops bridge logs --tail 120` if Blender starts but bridge never becomes ready",
+        "If you ran from a different folder, rerun from repo root where apps/ and packages/ exist",
       ],
     };
   }
@@ -391,11 +442,16 @@ export async function startBridgeLifecycle(input: StartBridgeLifecycleInput = {}
         blender_path,
         mode,
         startup_script: paths.startup_script,
+        process_file: paths.process_file,
         stdout_log: paths.stdout_log,
         stderr_log: paths.stderr_log,
       },
       warnings: ["Spawn returned no PID"],
-      next_steps: ["Inspect bridge stderr log and Blender installation path"],
+      next_steps: [
+        "Inspect bridge stderr/stdout logs for Blender startup failure details",
+        "Verify Blender path and addon import script path",
+        "Run from repo root and retry bridge start if lifecycle files were generated in unexpected location",
+      ],
     };
   }
 
@@ -435,10 +491,13 @@ export async function startBridgeLifecycle(input: StartBridgeLifecycleInput = {}
       warnings: [
         "Bridge process may still be starting or may have failed startup",
         mode === "background" ? "Background mode is limited/unvalidated for persistent bridge runtime" : "Verify addon import path and Blender GUI startup",
+        "A stale bridge process or port conflict can also cause readiness timeout",
       ],
       next_steps: [
         "Run `blendops bridge logs --tail 120` to inspect bridge output",
         "Run `blendops bridge status --verbose` to check bridge connectivity",
+        "Blender GUI staying open is expected; readiness is determined by /status, not process exit",
+        "If status remains unhealthy, run `blendops bridge stop` then `blendops bridge start --mode gui --verbose`",
       ],
     };
   }
@@ -463,6 +522,7 @@ export async function startBridgeLifecycle(input: StartBridgeLifecycleInput = {}
       "Run `blendops bridge status --verbose`",
       "Run `blendops bridge operations --verbose`",
       "Run `blendops scene inspect --verbose`",
+      "Blender GUI staying open is expected while bridge is running; do not wait for Blender to exit",
     ],
   };
 }
@@ -496,7 +556,10 @@ export function stopBridgeLifecycle(input: StopBridgeLifecycleInput = {}): Bridg
         process_file: paths.process_file,
       },
       warnings: ["Bridge may have been started manually or process state was removed"],
-      next_steps: ["Run `blendops bridge start --mode gui` to start a managed bridge process"],
+      next_steps: [
+        "Run `blendops bridge start --mode gui` to start a managed bridge process",
+        "If bridge appears active but untracked, run `blendops bridge logs --tail 120` and `blendops bridge status --verbose`",
+      ],
     };
   }
 
@@ -520,9 +583,13 @@ export function stopBridgeLifecycle(input: StopBridgeLifecycleInput = {}): Bridg
       message: `Refusing to stop pid ${state.pid} because it is not a Blender process`,
       data: {
         pid: state.pid,
+        process_file: paths.process_file,
       },
       warnings: ["Process name validation failed"],
-      next_steps: ["Inspect process state file and remove it manually if stale"],
+      next_steps: [
+        "Inspect process state file and remove it manually if stale",
+        "Run `blendops bridge status --verbose` to verify current bridge owner/process",
+      ],
     };
   }
 
@@ -533,9 +600,13 @@ export function stopBridgeLifecycle(input: StopBridgeLifecycleInput = {}): Bridg
       message: `Failed to stop Blender process pid=${state.pid}`,
       data: {
         pid: state.pid,
+        process_file: paths.process_file,
       },
       warnings: ["Process termination command failed"],
-      next_steps: ["Stop Blender manually and rerun bridge stop"],
+      next_steps: [
+        "Stop Blender manually and rerun bridge stop",
+        "Run `blendops bridge logs --tail 120` and `blendops bridge status --verbose` before restarting",
+      ],
     };
   }
 
@@ -567,19 +638,30 @@ export function getBridgeLogsLifecycle(input: GetBridgeLogsLifecycleInput = {}):
   const stdout_tail = tailFileLines(stdout_log, tail);
   const stderr_tail = tailFileLines(stderr_log, tail);
 
+  const warnings: string[] = [];
+  if (stdout_tail.length === 0 && stderr_tail.length === 0) {
+    warnings.push("Bridge logs are currently empty; bridge may still be starting or has not emitted output yet");
+  }
+
   return {
     ok: true,
     message: "Bridge logs retrieved",
     data: {
       tail,
+      process_file: paths.process_file,
       stdout_log,
       stderr_log,
       stdout_tail,
       stderr_tail,
+      stdout_line_count: stdout_tail.length,
+      stderr_line_count: stderr_tail.length,
       tracked_pid: state?.pid ?? null,
       tracked_mode: state?.mode ?? null,
     },
-    warnings: [],
-    next_steps: [],
+    warnings,
+    next_steps: [
+      "Run `blendops bridge status --verbose` to verify readiness and request counters",
+      "If logs stay empty and status is unhealthy, run `blendops bridge stop` then `blendops bridge start --mode gui --verbose`",
+    ],
   };
 }

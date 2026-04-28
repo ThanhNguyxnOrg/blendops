@@ -169,10 +169,12 @@ export class BridgeClient {
         warnings: [
           "Blender bridge might not be running",
           "Connection timed out or was refused",
+          "A stale bridge process or port conflict may be present",
         ],
         next_steps: [
-          "Start Blender and enable BlendOps addon bridge",
-          "Run `blendops bridge status` to verify connection",
+          "Run `blendops bridge logs --tail 120` to inspect lifecycle output",
+          "Run `blendops bridge start --mode gui --verbose` to start managed bridge lifecycle",
+          "Run `blendops bridge status --verbose` after startup; do not wait for Blender GUI to exit",
         ],
         request_id: resolvedRequestId,
         receipt: BridgeClient.buildReceipt(resolvedRequestId, "bridge.status", false, duration_ms),
@@ -399,10 +401,12 @@ export class BridgeClient {
         warnings: [
           "Blender bridge might not be running",
           "Connection timed out or was refused",
+          "A stale bridge process or port conflict may be present",
         ],
         next_steps: [
-          "Start Blender and enable BlendOps addon bridge",
-          "Run `blendops bridge status` to verify connection",
+          "Run `blendops bridge logs --tail 120` to inspect lifecycle output",
+          "Run `blendops bridge start --mode gui --verbose` to start managed bridge lifecycle",
+          "Run `blendops bridge status --verbose` after startup; do not wait for Blender GUI to exit",
         ],
         request_id,
         receipt: BridgeClient.buildReceipt(request_id, operation, false, duration_ms),

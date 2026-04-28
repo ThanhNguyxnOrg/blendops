@@ -17,9 +17,14 @@ Managed bridge lifecycle commands:
 
 ```bash
 node apps/cli/dist/index.js bridge start --mode gui --verbose
+node apps/cli/dist/index.js bridge status --verbose
 node apps/cli/dist/index.js bridge logs --tail 120
 node apps/cli/dist/index.js bridge stop
 ```
+
+`bridge start` returning `ok: true` means startup handoff completed.
+
+Blender GUI remaining open is expected while bridge is running; use `bridge status` as readiness source of truth.
 
 Lifecycle artifacts are written under `.tmp/blendops/`:
 
@@ -83,6 +88,15 @@ Enable: BlendOps Bridge
 ```bash
 node apps/cli/dist/index.js bridge status --verbose
 ```
+
+5. If runtime JSON is too long for terminal review, redirect output and summarize key fields:
+
+```bash
+node apps/cli/dist/index.js bridge status --verbose > .tmp/stabilize/status.json
+node apps/cli/dist/index.js bridge logs --tail 40 > .tmp/stabilize/logs.json
+```
+
+Inspect only key fields: `ok`, `operation`, `request_id`, `warnings`, `next_steps`.
 
 ## 🧠 MCP observability
 

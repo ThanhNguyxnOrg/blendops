@@ -134,10 +134,15 @@ For long JSON responses during troubleshooting, redirect to `.tmp` files and sum
 
 ```bash
 node apps/cli/dist/index.js bridge status --verbose > .tmp/stabilize/bridge-status.json
+node apps/cli/dist/index.js bridge logs --tail 40 > .tmp/stabilize/bridge-logs.json
 node apps/cli/dist/index.js batch execute --file examples/batch/basic-scene.json --dry-run > .tmp/stabilize/batch-dry-run.json
 ```
 
 Then inspect only key fields such as `ok`, `operation`, `request_id`, `warnings`, and `next_steps`.
+
+`bridge start` returning `ok: true` means managed startup succeeded; Blender GUI remaining open is expected while bridge is running.
+
+Do not wait for Blender to exit after successful `bridge start`; use `bridge status`/`bridge logs` to determine readiness instead.
 
 Use lifecycle recovery sequence when bridge state is unclear:
 
@@ -148,23 +153,15 @@ node apps/cli/dist/index.js bridge stop
 node apps/cli/dist/index.js bridge start --mode gui --verbose
 ```
 
-`bridge start` returning `ok: true` means startup handoff succeeded; Blender GUI remaining open is expected.
-
 Stale-process symptoms include persistent "already in use" behavior, status mismatch, or unresponsive bridge commands after previous runs.
 
 If stale behavior persists after `bridge stop`, terminate stale Blender processes and retry start.
 
-```
+```powershell
 Get-Process blender -ErrorAction SilentlyContinue | Stop-Process -Force
 ```
 
 Do this only for local recovery when the managed stop path does not recover the bridge.
-
-```bash
-node apps/cli/dist/index.js bridge status --verbose
-```
-
-After recovery, status should return healthy bridge metadata.
 
 Optional destructive stop remains available:
 
@@ -200,38 +197,4 @@ If unresponsive:
 Get-Process blender -ErrorAction SilentlyContinue | Stop-Process -Force
 ```
 
-Do not wait for Blender to exit after successful `bridge start`; use `bridge status`/`bridge logs` to determine readiness instead.
-
-For repo-root mistakes (`MODULE_NOT_FOUND`), run from repo root before retrying commands.
-Optional destructive stop:
-
-```bash
-node apps/cli/dist/index.js bridge stop --all
-```
-
-`--all` can terminate unrelated Blender sessions.
-
-## 🧯 Troubleshooting
-
-| Symptom | Likely cause | Fix |
-|---|---|---|
-| `MODULE_NOT_FOUND` error | CLI run outside repo root | `cd` into repo root before running CLI |
-| `bridge start` fails | Blender executable not found | pass `--blender` or set `BLENDOPS_BLENDER_PATH` |
-| `bridge start` returns ok but Blender stays open | Expected behavior in GUI mode | This is correct - bridge runs inside Blender; use `bridge status` to verify readiness |
-| `bridge status` fails | bridge not running | run `bridge start`, then inspect `bridge logs` |
-| Stale bridge process/port conflict | Previous bridge not stopped cleanly | `bridge stop` or manually kill Blender process, then restart |
-| JSON parsing fails | npm wrapper output mixed in stdout | use `node apps/cli/dist/index.js ...` |
-| GLB export fails in background mode | missing GUI window context on Blender 4.2 | use GUI bridge mode |
-| Runtime artifacts appear in git | generated files present | do not commit `.tmp/`, `exports/`, `renders/` |
-
-## Cleanup
-
-```bash
-node apps/cli/dist/index.js bridge stop
-```
-
-If unresponsive:
-
-```powershell
-Get-Process blender -ErrorAction SilentlyContinue | Stop-Process -Force
-```
+For repo-root mistakes (`MODULE_NOT_FOUND`), rerun from repo root before retrying commands.

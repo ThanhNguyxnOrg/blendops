@@ -35,6 +35,46 @@ const EXPORT_REQUIRED_PHRASES = [
   "background",
 ];
 
+const LIFECYCLE_GUIDANCE_CHECKS = [
+  {
+    file: "README.md",
+    phrases: [
+      "Blender GUI staying open is expected",
+      "bridge status",
+    ],
+  },
+  {
+    file: "docs/install.md",
+    phrases: [
+      "Wrong working directory",
+      "MODULE_NOT_FOUND",
+      "bridge stop",
+    ],
+  },
+  {
+    file: "docs/manual-test.md",
+    phrases: [
+      "bridge start` returning `ok: true`",
+      ".tmp/stabilize",
+      "Do not wait for Blender to exit",
+    ],
+  },
+  {
+    file: "docs/ai-agent-usage.md",
+    phrases: [
+      "Do not wait for Blender GUI process exit",
+      ".tmp/stabilize",
+    ],
+  },
+  {
+    file: "docs/observability.md",
+    phrases: [
+      "Blender GUI remaining open is expected",
+      ".tmp/stabilize/status.json",
+    ],
+  },
+];
+
 const GENERATED_ARTIFACT_COMMIT_CLAIMS = [
   "exports/test_scene.glb is committed",
   "committed generated export",
@@ -306,13 +346,31 @@ function main() {
     const exportContent = readText(exportDocPath);
     for (const phrase of EXPORT_REQUIRED_PHRASES) {
       if (!exportContent.includes(phrase)) {
-        fail(`${exportDocRel}: missing required export-context phrase (\"${phrase}\")`);
+        fail(`${exportDocRel}: missing required export-context phrase ("${phrase}")`);
       }
     }
     ok(`${exportDocRel}: export limitation consistency phrases present`);
   }
 
+  for (const check of LIFECYCLE_GUIDANCE_CHECKS) {
+    const absPath = path.join(ROOT, check.file);
+    if (!fs.existsSync(absPath)) {
+      fail(`${check.file}: lifecycle guidance check file missing`);
+      continue;
+    }
+
+    const content = readText(absPath);
+    for (const phrase of check.phrases) {
+      if (!content.includes(phrase)) {
+        fail(`${check.file}: missing required lifecycle guidance phrase ("${phrase}")`);
+      }
+    }
+
+    ok(`${check.file}: lifecycle guidance phrases present`);
+  }
+
   console.log("");
+
   if (failed) {
     console.log(`❌ docs:check failed with ${issues.length} issue(s)`);
     process.exit(1);

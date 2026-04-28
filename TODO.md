@@ -25,6 +25,7 @@ This roadmap reflects **current code + runtime evidence**.
 | `batch.plan` | ✅ | Plan-only + strict per-operation validation; does not execute steps |
 | `batch.execute` (first real slice) | ✅ | Dry-run preview + guarded real execution; non-destructive allowlist only with mandatory dry-run linkage and session-local registry verification |
 | Observability split (stdout/stderr/bridge console) | ✅ | Implemented and smoke-tested |
+| Bridge lifecycle hardening from source prior art | ✅ | Added stale-readiness diagnostics, clearer startup/timeout recovery, root-dir preflight guidance, and log discoverability improvements |
 
 ---
 
@@ -52,6 +53,8 @@ This roadmap reflects **current code + runtime evidence**.
 1. Persistent cross-session dry-run registry or signed dry-run token hardening
 2. Validation preset expansion
 3. Packaging/release automation
+4. Managed lifecycle root-dir override support for multi-workspace usage
+5. Optional stale port preflight diagnostics before Blender spawn
 
 ---
 

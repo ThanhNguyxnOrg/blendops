@@ -1,9 +1,9 @@
-# 🧪 Runtime Smoke Test: batch.execute (dry-run only)
+# 🧪 Runtime Smoke Test: batch.execute (Dry-run preview path)
 
 > 📚 Docs: [Index](./README.md) · [Manual test](./manual-test.md) · [Runtime evidence](./README.md#-runtime-evidence)
 
 **Operation:** `batch.execute`  
-**Status:** Dry-run only; validates and previews steps without executing  
+**Status:** Dry-run preview path; first real execution slice remains separately guarded and documented  
 **Date:** 2026-04-27  
 **Blender:** 4.2.5 LTS  
 **Mode:** GUI bridge  
