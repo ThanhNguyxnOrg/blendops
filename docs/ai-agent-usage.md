@@ -24,12 +24,14 @@ This guide describes how AI agents should use BlendOps safely and deterministica
 - Inspect `validation_errors` from `batch.plan` before executing any individual typed operation
 - Never treat `batch.plan` as execution; it is plan-only and never mutates scene
 - Preserve `plan_fingerprint` from `batch.plan` responses for future real execution correlation
-- `execute_batch` is dry-run only; it validates and previews steps without executing
-- AI may use `execute_batch` only with `dry_run: true`
-- Preserve `plan_fingerprint` and `dry_run_id` from `execute_batch` dry-run responses for future real execution
-- AI must not claim execution happened after `execute_batch` dry-run
-- After dry-run preview, AI should run individual typed operations manually or wait for future real batch execution
-- Future real execution must satisfy the [batch execution safety contract](./batch-execute-safety-contract.md)
+- `execute_batch` supports dry-run preview and a guarded first real execution slice (non-destructive operations only)
+- AI should run `execute_batch` with `dry_run: true` first, then preserve `plan_fingerprint` + `dry_run_id`
+- Real execution requires all three gates: `confirm: "EXECUTE_BATCH"`, `dry_run_id`, and `plan_fingerprint`
+- AI must ensure real batch steps are non-destructive only in first release (`scene.inspect`, `object.create`, `material.create`, `material.apply`, `lighting.setup`, `camera.set`, `validate.scene`)
+- AI must not include `scene.clear`, `undo.last`, `render.preview`, `export.asset`, bridge lifecycle/status, or nested batch operations in real batch execution
+- On fingerprint mismatch or missing gates, execution is rejected before mutation
+- Future hardening: persistent dry-run registry/history verification beyond submitted fingerprint equality
+- Real execution behavior must satisfy the [batch execution safety contract](./batch-execute-safety-contract.md)
 
 ## 🚀 Recommended AI workflow
 
@@ -66,7 +68,7 @@ AI should call `list_operations` before guessing tools.
 - `validate_scene`
 - `export_asset`
 - `plan_batch` (plan-only validation; does not execute)
-- `execute_batch` (dry-run only; validates and previews steps without executing)
+- `execute_batch` (dry-run preview + guarded first real execution slice with mandatory safety gates)
 
 ### Minimal MCP flow
 

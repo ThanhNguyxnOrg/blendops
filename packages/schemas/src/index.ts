@@ -118,12 +118,27 @@ export const BatchPlanDataSchema = z.object({
   plan_fingerprint: z.string().optional(),
 });
 
-export const BatchExecuteRequestSchema = z.object({
+export const BatchExecuteDryRunRequestSchema = z.object({
   operation: z.literal("batch.execute"),
   dry_run: z.literal(true),
   steps: z.array(BatchPlanStepSchema).min(1).max(25),
   request_id: z.string().optional(),
 });
+
+export const BatchExecuteRealRequestSchema = z.object({
+  operation: z.literal("batch.execute"),
+  dry_run: z.literal(false).optional(),
+  confirm: z.literal("EXECUTE_BATCH"),
+  dry_run_id: z.string().min(1),
+  plan_fingerprint: z.string().min(1),
+  steps: z.array(BatchPlanStepSchema).min(1).max(25),
+  request_id: z.string().optional(),
+});
+
+export const BatchExecuteRequestSchema = z.union([
+  BatchExecuteDryRunRequestSchema,
+  BatchExecuteRealRequestSchema,
+]);
 
 export const BatchExecuteStepPreviewSchema = z.object({
   step: z.number().int().positive(),
@@ -131,13 +146,30 @@ export const BatchExecuteStepPreviewSchema = z.object({
   effect: z.string(),
 });
 
+export const BatchExecuteStepReceiptSchema = z.object({
+  step: z.number().int().positive(),
+  operation: z.string(),
+  ok: z.boolean(),
+  skipped: z.boolean(),
+  duration_ms: z.number().int().nonnegative().optional(),
+  message: z.string().optional(),
+  error: z.string().optional(),
+  request_id: z.string().optional(),
+});
+
 export const BatchExecuteDataSchema = z.object({
-  dry_run: z.literal(true),
-  executable: z.literal(false),
+  dry_run: z.boolean(),
+  executable: z.boolean(),
+  executed: z.boolean().optional(),
   step_count: z.number().int().nonnegative(),
   operations: z.array(z.string()),
   valid: z.boolean(),
-  would_execute: z.array(BatchExecuteStepPreviewSchema),
+  would_execute: z.array(BatchExecuteStepPreviewSchema).optional(),
+  step_receipts: z.array(BatchExecuteStepReceiptSchema).optional(),
+  executed_steps: z.number().int().nonnegative().optional(),
+  failed_step: z.number().int().positive().nullable().optional(),
+  stopped_on_error: z.boolean().optional(),
+  remaining_steps_skipped: z.number().int().nonnegative().optional(),
   destructive_steps: z.number().int().nonnegative(),
   requires_confirmation: z.boolean(),
   validation_errors: z.array(BatchPlanValidationErrorSchema).optional(),
@@ -385,8 +417,11 @@ export type BatchPlanStep = z.infer<typeof BatchPlanStepSchema>;
 export type BatchPlanRequest = z.infer<typeof BatchPlanRequestSchema>;
 export type BatchPlanValidationError = z.infer<typeof BatchPlanValidationErrorSchema>;
 export type BatchPlanData = z.infer<typeof BatchPlanDataSchema>;
+export type BatchExecuteDryRunRequest = z.infer<typeof BatchExecuteDryRunRequestSchema>;
+export type BatchExecuteRealRequest = z.infer<typeof BatchExecuteRealRequestSchema>;
 export type BatchExecuteRequest = z.infer<typeof BatchExecuteRequestSchema>;
 export type BatchExecuteStepPreview = z.infer<typeof BatchExecuteStepPreviewSchema>;
+export type BatchExecuteStepReceipt = z.infer<typeof BatchExecuteStepReceiptSchema>;
 export type BatchExecuteData = z.infer<typeof BatchExecuteDataSchema>;
 export type OperationManifestEntry = z.infer<typeof OperationManifestEntrySchema>;
 export type BridgeOperationsData = z.infer<typeof BridgeOperationsDataSchema>;
@@ -411,7 +446,7 @@ export type ExportAssetFormat = z.infer<typeof ExportAssetFormatSchema>;
 export type ExportAssetRequest = z.infer<typeof ExportAssetRequestSchema>;
 export type ExportAssetData = z.infer<typeof ExportAssetDataSchema>;
 
-export const BridgeCommandSchema = z.discriminatedUnion("operation", [
+export const BridgeCommandSchema = z.union([
   SceneInspectRequestSchema,
   SceneClearRequestSchema,
   BridgeOperationsRequestSchema,
@@ -420,7 +455,8 @@ export const BridgeCommandSchema = z.discriminatedUnion("operation", [
   BridgeLogsRequestSchema,
   UndoLastRequestSchema,
   BatchPlanRequestSchema,
-  BatchExecuteRequestSchema,
+  BatchExecuteDryRunRequestSchema,
+  BatchExecuteRealRequestSchema,
   ObjectCreateRequestSchema,
   ObjectTransformRequestSchema,
   MaterialCreateRequestSchema,

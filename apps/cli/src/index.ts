@@ -144,6 +144,7 @@ Usage:
   blendops undo last --verbose
   blendops batch plan --file examples/batch/basic-scene.json --verbose
   blendops batch execute --file examples/batch/basic-scene.json --dry-run --verbose
+  blendops batch execute --file examples/batch/basic-scene.json --confirm EXECUTE_BATCH --dry-run-id <id> --plan-fingerprint <sha256:...> --verbose
 
 Options:
   --verbose, -v  Show detailed progress logs (stderr)
@@ -170,7 +171,7 @@ Implemented in v0.1:
   - validate scene
   - export asset
   - batch plan
-  - batch execute (dry-run only)`);
+  - batch execute (dry-run + guarded real execution)`);
 }
 
 function readFlag(args: string[], flag: string): string | undefined {
@@ -524,6 +525,10 @@ async function main(): Promise<number> {
   if (group === "batch" && action === "execute") {
     const filePath = readFlag(commandArgs, "--file");
     const hasDryRun = commandArgs.includes("--dry-run");
+    const hasConfirm = commandArgs.includes("--confirm");
+    const confirmValue = hasConfirm ? readFlag(commandArgs, "--confirm") : undefined;
+    const dryRunId = readFlag(commandArgs, "--dry-run-id");
+    const planFingerprint = readFlag(commandArgs, "--plan-fingerprint");
 
     if (!filePath) {
       const invalid = makeResponse({
@@ -531,22 +536,9 @@ async function main(): Promise<number> {
         operation: "cli.invalid_arguments",
         message: "batch execute requires --file",
         warnings: ["Missing required --file argument"],
-        next_steps: ["Example: blendops batch execute --file examples/batch/basic-scene.json --dry-run --verbose"],
-        request_id: commandRequestId,
-      });
-      console.log(JSON.stringify(withRequestId(invalid, commandRequestId), null, 2));
-      return 1;
-    }
-
-    if (!hasDryRun) {
-      const invalid = makeResponse({
-        ok: false,
-        operation: "cli.invalid_arguments",
-        message: "batch execute requires --dry-run; real execution is not implemented",
-        warnings: ["Missing required --dry-run flag"],
         next_steps: [
-          "Add --dry-run flag to preview batch execution",
-          "Example: blendops batch execute --file examples/batch/basic-scene.json --dry-run --verbose",
+          "Example (dry-run): blendops batch execute --file examples/batch/basic-scene.json --dry-run --verbose",
+          "Example (real): blendops batch execute --file examples/batch/basic-scene.json --confirm EXECUTE_BATCH --verbose",
         ],
         request_id: commandRequestId,
       });
@@ -631,11 +623,99 @@ async function main(): Promise<number> {
       steps.push({ ...(step as Record<string, unknown>), operation: operation.trim() });
     }
 
-    const res = await timeOperation("batch.execute", () => client.executeBatch({
-      dry_run: true,
-      steps,
-      request_id: commandRequestId,
-    }), flags, commandRequestId);
+    if (hasDryRun) {
+      if (hasConfirm || typeof dryRunId === "string" || typeof planFingerprint === "string") {
+        const invalid = makeResponse({
+          ok: false,
+          operation: "cli.invalid_arguments",
+          message: "batch execute dry-run must not include --confirm, --dry-run-id, or --plan-fingerprint",
+          warnings: ["Dry-run arguments conflict with real execution arguments"],
+          next_steps: [
+            "Use dry-run only: blendops batch execute --file <path> --dry-run --verbose",
+            "Or remove --dry-run and provide real execution gates",
+          ],
+          request_id: commandRequestId,
+        });
+        console.log(JSON.stringify(withRequestId(invalid, commandRequestId), null, 2));
+        return 1;
+      }
+
+      const res = await timeOperation(
+        "batch.execute",
+        () =>
+          client.executeBatch({
+            dry_run: true,
+            steps,
+            request_id: commandRequestId,
+          }),
+        flags,
+        commandRequestId,
+      );
+      console.log(JSON.stringify(withRequestId(res, commandRequestId), null, 2));
+      return res.ok ? 0 : 1;
+    }
+
+    if (confirmValue !== "EXECUTE_BATCH") {
+      const invalid = makeResponse({
+        ok: false,
+        operation: "cli.invalid_arguments",
+        message: "batch execute real mode requires --confirm EXECUTE_BATCH",
+        warnings: ["Missing or invalid --confirm value"],
+        next_steps: [
+          "Run dry-run first: blendops batch execute --file <path> --dry-run --verbose",
+          "Then run real: blendops batch execute --file <path> --confirm EXECUTE_BATCH --dry-run-id <id> --plan-fingerprint <sha256:...> --verbose",
+        ],
+        request_id: commandRequestId,
+      });
+      console.log(JSON.stringify(withRequestId(invalid, commandRequestId), null, 2));
+      return 1;
+    }
+
+    if (typeof dryRunId !== "string" || dryRunId.trim().length === 0) {
+      const invalid = makeResponse({
+        ok: false,
+        operation: "cli.invalid_arguments",
+        message: "batch execute real mode requires --dry-run-id",
+        warnings: ["Missing --dry-run-id"],
+        next_steps: [
+          "Run dry-run first and copy data.dry_run_id",
+          "Retry with --dry-run-id <id>",
+        ],
+        request_id: commandRequestId,
+      });
+      console.log(JSON.stringify(withRequestId(invalid, commandRequestId), null, 2));
+      return 1;
+    }
+
+    if (typeof planFingerprint !== "string" || planFingerprint.trim().length === 0) {
+      const invalid = makeResponse({
+        ok: false,
+        operation: "cli.invalid_arguments",
+        message: "batch execute real mode requires --plan-fingerprint",
+        warnings: ["Missing --plan-fingerprint"],
+        next_steps: [
+          "Run dry-run first and copy data.plan_fingerprint",
+          "Retry with --plan-fingerprint <sha256:...>",
+        ],
+        request_id: commandRequestId,
+      });
+      console.log(JSON.stringify(withRequestId(invalid, commandRequestId), null, 2));
+      return 1;
+    }
+
+    const res = await timeOperation(
+      "batch.execute",
+      () =>
+        client.executeBatch({
+          confirm: "EXECUTE_BATCH",
+          dry_run_id: dryRunId.trim(),
+          plan_fingerprint: planFingerprint.trim(),
+          steps,
+          request_id: commandRequestId,
+        }),
+      flags,
+      commandRequestId,
+    );
     console.log(JSON.stringify(withRequestId(res, commandRequestId), null, 2));
     return res.ok ? 0 : 1;
   }

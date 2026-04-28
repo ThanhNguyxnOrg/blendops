@@ -168,9 +168,9 @@ function checkMCPTools() {
     allOk = fail('MCP clear_scene missing dry_run input support');
   }
 
-  const executeBatchDryRunPattern = /name:\s*["']execute_batch["'][\s\S]*?dry_run\s*:\s*\{[\s\S]*?enum:\s*\[true\]/m;
-  if (!executeBatchDryRunPattern.test(content)) {
-    allOk = fail('MCP execute_batch missing dry_run=true input requirement');
+  const executeBatchToolPattern = /name:\s*["']execute_batch["'][\s\S]*?properties:\s*\{[\s\S]*?dry_run\s*:\s*\{[\s\S]*?confirm\s*:\s*\{[\s\S]*?dry_run_id\s*:\s*\{[\s\S]*?plan_fingerprint\s*:\s*\{/m;
+  if (!executeBatchToolPattern.test(content)) {
+    allOk = fail('MCP execute_batch schema missing dry_run/confirm/dry_run_id/plan_fingerprint fields');
   }
 
   if (allOk) {
@@ -228,14 +228,19 @@ function checkSchemas() {
     allOk = fail('schemas SceneClearDataSchema missing dry_run');
   }
 
-  const batchExecuteRequestDryRunPattern = /BatchExecuteRequestSchema\s*=\s*z\.object\(\{[\s\S]*operation:\s*z\.literal\(["']batch\.execute["']\)[\s\S]*dry_run:\s*z\.literal\(true\)/m;
-  if (!batchExecuteRequestDryRunPattern.test(content)) {
-    allOk = fail('schemas BatchExecuteRequestSchema missing dry_run=true requirement');
+  const batchExecuteDryRunSchemaPattern = /BatchExecuteDryRunRequestSchema\s*=\s*z\.object\([\s\S]*dry_run:\s*z\.literal\(true\)/m;
+  if (!batchExecuteDryRunSchemaPattern.test(content)) {
+    allOk = fail('schemas missing BatchExecuteDryRunRequestSchema with dry_run=true');
   }
 
-  const batchExecuteDataPattern = /BatchExecuteDataSchema\s*=\s*z\.object\(\{[\s\S]*dry_run:\s*z\.literal\(true\)[\s\S]*executable:\s*z\.literal\(false\)[\s\S]*would_execute:/m;
+  const batchExecuteRealSchemaPattern = /BatchExecuteRealRequestSchema\s*=\s*z\.object\([\s\S]*confirm:\s*z\.literal\(["']EXECUTE_BATCH["']\)[\s\S]*dry_run_id:\s*z\.string\(\)\.min\(1\)[\s\S]*plan_fingerprint:\s*z\.string\(\)\.min\(1\)/m;
+  if (!batchExecuteRealSchemaPattern.test(content)) {
+    allOk = fail('schemas missing BatchExecuteRealRequestSchema required safety fields');
+  }
+
+  const batchExecuteDataPattern = /BatchExecuteDataSchema\s*=\s*z\.object\([\s\S]*dry_run:\s*z\.boolean\([\s\S]*executable:\s*z\.boolean\([\s\S]*step_receipts:[\s\S]*executed_steps:[\s\S]*failed_step:[\s\S]*stopped_on_error:[\s\S]*remaining_steps_skipped:/m;
   if (!batchExecuteDataPattern.test(content)) {
-    allOk = fail('schemas BatchExecuteDataSchema missing dry_run/executable/would_execute fields');
+    allOk = fail('schemas BatchExecuteDataSchema missing real-execution receipt/summary fields');
   }
 
   if (allOk) {
@@ -324,8 +329,24 @@ function checkBatchPlanStrictValidation() {
     allOk = fail('addon missing batch.execute dry-run handler');
   }
 
-  if (!addonContent.includes('batch.execute requires dry_run=true')) {
-    allOk = fail('addon batch.execute missing dry_run=true enforcement');
+  if (!addonContent.includes('batch.execute real execution requires confirm=EXECUTE_BATCH')) {
+    allOk = fail('addon batch.execute missing confirm gate for real execution');
+  }
+
+  if (!addonContent.includes('BATCH_EXECUTE_REAL_ALLOWED_OPERATIONS')) {
+    allOk = fail('addon batch.execute missing non-destructive real allowlist');
+  }
+
+  if (!addonContent.includes('batch.execute real execution requires dry_run_id')) {
+    allOk = fail('addon batch.execute missing dry_run_id gate');
+  }
+
+  if (!addonContent.includes('batch.execute real execution requires plan_fingerprint')) {
+    allOk = fail('addon batch.execute missing plan_fingerprint gate');
+  }
+
+  if (!addonContent.includes('batch.execute plan_fingerprint mismatch')) {
+    allOk = fail('addon batch.execute missing fingerprint mismatch rejection');
   }
 
   if (!addonContent.includes('"executable": False')) {
@@ -398,9 +419,14 @@ function checkBatchPlanStrictValidation() {
     allOk = fail('batch.execute dry-run runtime evidence doc missing');
   } else {
     const runtimeBatchExecuteDoc = readText(runtimeBatchExecuteDocPath);
-    if (!runtimeBatchExecuteDoc.includes('Dry-run only') || !runtimeBatchExecuteDoc.includes('Real batch execution is not implemented')) {
-      allOk = fail('batch.execute runtime doc missing dry-run only / not implemented statements');
+    if (!runtimeBatchExecuteDoc.includes('Dry-run preview path') || !runtimeBatchExecuteDoc.includes('first real execution slice')) {
+      allOk = fail('batch.execute dry-run runtime doc missing first-release positioning statements');
     }
+  }
+
+  const runtimeBatchExecuteRealDocPath = path.join(ROOT, 'docs/runtime-smoke-test-batch-execute-real.md');
+  if (!fs.existsSync(runtimeBatchExecuteRealDocPath)) {
+    allOk = fail('batch.execute real runtime evidence doc missing');
   }
 
   if (!fs.existsSync(readmePath)) {
@@ -420,7 +446,16 @@ function checkBatchPlanStrictValidation() {
       allOk = fail('manual-test doc missing batch.execute dry-run command');
     }
     if (!manualTestDoc.includes('batch execute --file examples/batch/basic-scene.json --verbose')) {
-      allOk = fail('manual-test doc missing batch.execute no-dry-run rejection command');
+      allOk = fail('manual-test doc missing batch.execute missing-gates rejection command');
+    }
+    if (!manualTestDoc.includes('batch execute --file examples/batch/basic-scene.json --confirm WRONG --dry-run-id x --plan-fingerprint y --verbose')) {
+      allOk = fail('manual-test doc missing batch.execute invalid confirm rejection command');
+    }
+    if (!manualTestDoc.includes('batch execute --file examples/batch/basic-scene.json --confirm EXECUTE_BATCH --dry-run-id x --verbose')) {
+      allOk = fail('manual-test doc missing batch.execute missing plan_fingerprint rejection command');
+    }
+    if (!manualTestDoc.includes('batch execute --file examples/batch/basic-scene.json --confirm EXECUTE_BATCH --plan-fingerprint y --verbose')) {
+      allOk = fail('manual-test doc missing batch.execute missing dry_run_id rejection command');
     }
   }
 

@@ -2,8 +2,8 @@
 
 > 📚 Docs: [Index](./README.md) · [AI usage](./ai-agent-usage.md) · [Batch execute dry-run evidence](./runtime-smoke-test-batch-execute-dry-run.md)
 
-**Status:** Spec-only contract (real `batch.execute` execution is **not implemented yet**)  
-**Scope:** Requirements that must be met **before** enabling non-dry-run execution.
+**Status:** Implemented for first guarded real execution slice (non-destructive operations only).  
+**Scope:** Mandatory safety contract for dry-run linkage + first real execution behavior.
 
 ---
 
@@ -12,10 +12,10 @@
 Real `batch.execute` must be rejected unless **all** conditions below are true.
 
 1. **Dry-run first is mandatory**
-   - A successful dry-run must exist for the same plan.
-   - Real execution request must include a dry-run reference (at minimum prior `request_id` or `dry_run_id`).
-   - Real execution must verify the referenced dry-run succeeded and corresponds to the exact same step set.
-   - Real execution must verify `plan_fingerprint` matches between dry-run and real execution to ensure identical step arrays.
+   - Real execution request must include both `dry_run_id` and `plan_fingerprint`.
+   - Real execution recomputes fingerprint from submitted steps and requires exact equality with submitted `plan_fingerprint`.
+   - On mismatch, execution is rejected with `ok: false`, `executed_steps: 0`, and zero mutation.
+   - **Current limitation:** persistent server-side dry-run registry verification (`dry_run_id` existence/history validation) is not yet implemented; this remains future hardening.
 
 2. **Global confirmation token is mandatory**
    - Real execution must require an explicit top-level confirmation token (for example `confirm: "EXECUTE_BATCH"`).
@@ -25,10 +25,20 @@ Real `batch.execute` must be rejected unless **all** conditions below are true.
    - Reject any payload containing forbidden fields such as `python`, `script`, `shell`, `command`, `eval`, `exec`.
    - Reject non-whitelisted operations and bridge lifecycle/self-referential batch ops.
 
-4. **Destructive step confirmations are mandatory**
-   - Any destructive step (current and future) must include its step-level confirmation requirements.
-   - Example: `scene.clear` must still require `confirm: "CLEAR_SCENE"`.
-   - If any required destructive confirmation is missing/invalid, reject before execution begins.
+4. **First real execution slice is non-destructive only**
+   - Real execution allowlist is restricted to:
+     - `scene.inspect`
+     - `object.create`
+     - `material.create`
+     - `material.apply`
+     - `lighting.setup`
+     - `camera.set`
+     - `validate.scene`
+   - Real execution must reject destructive/output/stateful/bridge/self-referential operations, including:
+     - `scene.clear`, `undo.last`, `render.preview`, `export.asset`
+     - `bridge.start`, `bridge.stop`, `bridge.logs`, `bridge.status`, `bridge.operations`
+     - nested `batch.plan` and nested `batch.execute`.
+   - Dry-run may still preview rejected real-execution operations; real mode must not execute them.
 
 ---
 
@@ -60,13 +70,14 @@ Real execution responses must include:
    - `receipt` with operation-level timing/outcome
 
 2. **Per-step receipts (required)**
-   - One receipt per attempted/executed step, including at least:
+   - One receipt per attempted/executed/skipped step, including at least:
      - step index
      - operation name
      - `ok`
+     - `skipped` boolean
      - duration/timing
-     - warnings/errors
-     - artifact references (when applicable)
+     - warning/error text when failed
+     - per-step `request_id` when available
 
 3. **Outcome summary**
    - `executed_steps`
@@ -98,7 +109,7 @@ For steps that produce outputs (render/export):
 
 ## 5) Runtime evidence requirements (before enabling real execution)
 
-Real execution must not be declared supported until runtime evidence is recorded.
+Real execution support claims require runtime evidence; if runtime cannot be run, document explicit limitation and do not claim PASS.
 
 Required evidence set:
 
@@ -127,7 +138,8 @@ Required evidence set:
    - Top-level `request_id` + `receipt` and per-step receipts verifiable
 
 8. **Artifact metadata verification**
-   - Render/export steps include artifact metadata in receipts
+   - For first real execution slice, render/export steps are rejected before execution.
+   - Artifact metadata verification remains required for future release when render/export are admitted.
 
 Document evidence in a dedicated runtime doc (for example `docs/runtime-smoke-test-batch-execute-real.md`) before claiming support.
 
@@ -144,4 +156,4 @@ Document evidence in a dedicated runtime doc (for example `docs/runtime-smoke-te
 
 ## 7) Contract compliance rule
 
-Until all sections above are implemented and runtime-verified, `batch.execute` must remain dry-run only.
+`batch.execute` real mode is allowed only when this contract gates are enforced. Current release is intentionally limited to non-destructive operations and exact dry-run fingerprint linkage.

@@ -347,13 +347,24 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
     },
     {
       name: "execute_batch",
-      description: "Preview batch execution with dry-run validation (real execution not implemented).",
+      description: "Batch execution: dry-run preview or guarded first-release real execution (non-destructive operations only).",
       inputSchema: {
         type: "object",
         properties: {
           dry_run: {
             type: "boolean",
-            enum: [true],
+          },
+          confirm: {
+            type: "string",
+            enum: ["EXECUTE_BATCH"],
+          },
+          dry_run_id: {
+            type: "string",
+            minLength: 1,
+          },
+          plan_fingerprint: {
+            type: "string",
+            minLength: 1,
           },
           steps: {
             type: "array",
@@ -364,7 +375,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
             },
           },
         },
-        required: ["dry_run", "steps"],
+        required: ["steps"],
         additionalProperties: false,
       },
     },
@@ -1321,31 +1332,9 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       const args = (rawArgs ?? {}) as Record<string, unknown>;
       const dry_run = args.dry_run;
       const steps = args.steps;
-
-      if (dry_run !== true) {
-        const duration = Date.now() - start;
-        mcpLog(`tool error: ${name} duration=${duration}ms error=invalid_dry_run request_id=${request_id}`);
-        const payload = {
-          ok: false,
-          operation: "mcp.execute_batch.invalid_input",
-          message: "execute_batch requires dry_run=true; real execution is not implemented",
-          data: {
-            dry_run: typeof dry_run === "boolean" ? dry_run : null,
-            executable: false,
-          },
-          warnings: ["dry_run must be true"],
-          next_steps: [
-            "Set dry_run to true",
-            "Provide steps as an array of 1..25 objects",
-          ],
-          request_id,
-        };
-
-        return {
-          content: [{ type: "text", text: JSON.stringify(payload, null, 2) }],
-          isError: true,
-        };
-      }
+      const confirm = args.confirm;
+      const dry_run_id = args.dry_run_id;
+      const plan_fingerprint = args.plan_fingerprint;
 
       if (!Array.isArray(steps)) {
         throw new Error("Missing required field: steps array");
@@ -1360,8 +1349,126 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         }
       }
 
+      if (dry_run === true) {
+        if (typeof confirm !== "undefined" || typeof dry_run_id !== "undefined" || typeof plan_fingerprint !== "undefined") {
+          const duration = Date.now() - start;
+          mcpLog(`tool error: ${name} duration=${duration}ms error=invalid_dry_run_arguments request_id=${request_id}`);
+          const payload = {
+            ok: false,
+            operation: "mcp.execute_batch.invalid_input",
+            message: "execute_batch dry_run=true must not include confirm/dry_run_id/plan_fingerprint",
+            data: {
+              executable: false,
+            },
+            warnings: ["Dry-run and real-execution arguments cannot be mixed"],
+            next_steps: [
+              "For preview: set dry_run=true and provide only steps",
+              "For real execution: remove dry_run and provide confirm/dry_run_id/plan_fingerprint",
+            ],
+            request_id,
+          };
+
+          return {
+            content: [{ type: "text", text: JSON.stringify(payload, null, 2) }],
+            isError: true,
+          };
+        }
+
+        const result = await client.executeBatch({
+          dry_run: true,
+          steps,
+          request_id,
+        });
+
+        const duration = Date.now() - start;
+        mcpLog(`tool result: ${name} ok=${result.ok} duration=${duration}ms request_id=${result.request_id ?? request_id}`);
+        return {
+          content: [
+            {
+              type: "text",
+              text: JSON.stringify({ ...result, request_id: result.request_id ?? request_id }, null, 2),
+            },
+          ],
+          isError: !result.ok,
+        };
+      }
+
+      if (confirm !== "EXECUTE_BATCH") {
+        const duration = Date.now() - start;
+        mcpLog(`tool error: ${name} duration=${duration}ms error=missing_confirm request_id=${request_id}`);
+        const payload = {
+          ok: false,
+          operation: "mcp.execute_batch.invalid_input",
+          message: "execute_batch real mode requires confirm=EXECUTE_BATCH",
+          data: {
+            executable: false,
+          },
+          warnings: ["Missing or invalid confirm token"],
+          next_steps: [
+            "Run execute_batch with dry_run=true first",
+            "Then provide confirm=EXECUTE_BATCH with dry_run_id and plan_fingerprint",
+          ],
+          request_id,
+        };
+
+        return {
+          content: [{ type: "text", text: JSON.stringify(payload, null, 2) }],
+          isError: true,
+        };
+      }
+
+      if (typeof dry_run_id !== "string" || dry_run_id.trim().length === 0) {
+        const duration = Date.now() - start;
+        mcpLog(`tool error: ${name} duration=${duration}ms error=missing_dry_run_id request_id=${request_id}`);
+        const payload = {
+          ok: false,
+          operation: "mcp.execute_batch.invalid_input",
+          message: "execute_batch real mode requires dry_run_id",
+          data: {
+            executable: false,
+          },
+          warnings: ["Missing dry_run_id"],
+          next_steps: [
+            "Run dry_run first and reuse returned dry_run_id",
+            "Retry with dry_run_id string",
+          ],
+          request_id,
+        };
+
+        return {
+          content: [{ type: "text", text: JSON.stringify(payload, null, 2) }],
+          isError: true,
+        };
+      }
+
+      if (typeof plan_fingerprint !== "string" || plan_fingerprint.trim().length === 0) {
+        const duration = Date.now() - start;
+        mcpLog(`tool error: ${name} duration=${duration}ms error=missing_plan_fingerprint request_id=${request_id}`);
+        const payload = {
+          ok: false,
+          operation: "mcp.execute_batch.invalid_input",
+          message: "execute_batch real mode requires plan_fingerprint",
+          data: {
+            executable: false,
+          },
+          warnings: ["Missing plan_fingerprint"],
+          next_steps: [
+            "Run dry_run first and reuse returned plan_fingerprint",
+            "Retry with plan_fingerprint string",
+          ],
+          request_id,
+        };
+
+        return {
+          content: [{ type: "text", text: JSON.stringify(payload, null, 2) }],
+          isError: true,
+        };
+      }
+
       const result = await client.executeBatch({
-        dry_run: true,
+        confirm: "EXECUTE_BATCH",
+        dry_run_id: dry_run_id.trim(),
+        plan_fingerprint: plan_fingerprint.trim(),
         steps,
         request_id,
       });
@@ -1389,7 +1496,8 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         },
         warnings: ["Input validation failed for execute_batch"],
         next_steps: [
-          "Set dry_run to true",
+          "For dry-run: set dry_run=true with steps",
+          "For real execution: provide confirm=EXECUTE_BATCH, dry_run_id, and plan_fingerprint",
           "Provide steps as an array of 1..25 objects",
         ],
         request_id,

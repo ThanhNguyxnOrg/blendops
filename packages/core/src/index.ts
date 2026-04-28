@@ -12,7 +12,8 @@ import {
   type UndoLastRequest,
   type SceneClearRequest,
   type BatchPlanRequest,
-  type BatchExecuteRequest,
+  type BatchExecuteDryRunRequest,
+  type BatchExecuteRealRequest,
   type MaterialApplyRequest,
   type MaterialCreateRequest,
   type LightingSetupRequest,
@@ -51,6 +52,21 @@ export interface BridgeClientOptions {
   quiet?: boolean;
   logger?: (message: string) => void;
   requestIdFactory?: () => string;
+}
+
+type BatchExecuteInput = Omit<BatchExecuteDryRunRequest, "operation"> | Omit<BatchExecuteRealRequest, "operation">;
+
+function isBatchExecuteRealInput(input: BatchExecuteInput): input is Omit<BatchExecuteRealRequest, "operation"> {
+  return (
+    "confirm" in input &&
+    input.confirm === "EXECUTE_BATCH" &&
+    "dry_run_id" in input &&
+    typeof input.dry_run_id === "string" &&
+    input.dry_run_id.length > 0 &&
+    "plan_fingerprint" in input &&
+    typeof input.plan_fingerprint === "string" &&
+    input.plan_fingerprint.length > 0
+  );
 }
 
 export class BridgeClient {
@@ -213,8 +229,29 @@ export class BridgeClient {
     return this.send({ operation: "batch.plan", ...input });
   }
 
-  async executeBatch(input: Omit<BatchExecuteRequest, "operation">): Promise<BlendOpsResponse> {
-    return this.send({ operation: "batch.execute", ...input });
+  async executeBatch(input: BatchExecuteInput): Promise<BlendOpsResponse> {
+    if (isBatchExecuteRealInput(input)) {
+      const payload: BatchExecuteRealRequest = {
+        operation: "batch.execute",
+        confirm: "EXECUTE_BATCH",
+        dry_run_id: input.dry_run_id,
+        plan_fingerprint: input.plan_fingerprint,
+        steps: input.steps,
+        request_id: input.request_id,
+        ...(input.dry_run === false ? { dry_run: false } : {}),
+      };
+
+      return this.send(payload);
+    }
+
+    const payload: BatchExecuteDryRunRequest = {
+      operation: "batch.execute",
+      dry_run: true,
+      steps: input.steps,
+      request_id: input.request_id,
+    };
+
+    return this.send(payload);
   }
 
   async getOperationManifest(): Promise<BridgeOperationsData> {

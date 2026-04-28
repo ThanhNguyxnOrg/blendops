@@ -226,8 +226,8 @@ OPERATION_MANIFEST = {
         "cli_supported": True,
         "mcp_supported": True,
         "destructive": False,
-        "runtime_notes": "Dry-run only; validates and previews steps without executing",
-        "evidence_doc": "docs/runtime-smoke-test-batch-execute-dry-run.md",
+        "runtime_notes": "Dry-run preview + guarded first real execution slice (non-destructive allowlist only)",
+        "evidence_doc": "docs/runtime-smoke-test-batch-execute-real.md",
     },
 }
 
@@ -575,6 +575,15 @@ BATCH_PLAN_ALLOWED_OPERATIONS = {
     "render.preview",
     "validate.scene",
     "export.asset",
+}
+BATCH_EXECUTE_REAL_ALLOWED_OPERATIONS = {
+    "scene.inspect",
+    "object.create",
+    "material.create",
+    "material.apply",
+    "lighting.setup",
+    "camera.set",
+    "validate.scene",
 }
 BATCH_PLAN_FORBIDDEN_KEYS = {"python", "script", "shell", "command", "eval", "exec"}
 BATCH_PLAN_OUTPUT_OPERATIONS = {"render.preview", "export.asset"}
@@ -1187,7 +1196,7 @@ def handle_batch_plan(command: Dict[str, Any]) -> Dict[str, Any]:
             warnings=warnings + ["One or more steps are invalid or unsupported"],
             next_steps=[
                 "Fix validation_errors and retry batch.plan",
-                "Use typed operations only; batch.execute is not implemented",
+                "Use typed operations only; use batch.execute dry-run before guarded real execution",
             ],
         )
 
@@ -1198,15 +1207,15 @@ def handle_batch_plan(command: Dict[str, Any]) -> Dict[str, Any]:
         data=data,
         warnings=warnings,
         next_steps=[
-            "Review plan summary and run steps individually",
-            "batch.execute is not implemented yet",
+            "Review plan summary and run batch.execute dry-run first",
+            "Use guarded real execution with confirm + dry_run_id + plan_fingerprint for non-destructive steps",
         ],
     )
 
 
 def _generate_batch_execute_preview(step_num: int, operation: str, raw_step: Dict[str, Any]) -> Dict[str, Any]:
     effect = ""
-    
+
     if operation == "scene.inspect":
         effect = "inspect scene state"
     elif operation == "scene.clear":
@@ -1259,7 +1268,7 @@ def _generate_batch_execute_preview(step_num: int, operation: str, raw_step: Dic
         effect = f"output artifact would be produced at {output} ({fmt})"
     else:
         effect = f"execute {operation}"
-    
+
     return {
         "step": step_num,
         "operation": operation,
@@ -1267,82 +1276,265 @@ def _generate_batch_execute_preview(step_num: int, operation: str, raw_step: Dic
     }
 
 
+def _batch_execute_reject(
+    message: str,
+    *,
+    steps: Optional[list[Dict[str, Any]]] = None,
+    operations: Optional[list[str]] = None,
+    destructive_steps: int = 0,
+    requires_confirmation: bool = True,
+    validation_errors: Optional[list[Dict[str, Any]]] = None,
+    notes: Optional[list[str]] = None,
+    warnings: Optional[list[str]] = None,
+    next_steps: Optional[list[str]] = None,
+    plan_fingerprint: Optional[str] = None,
+    dry_run_id: Optional[str] = None,
+) -> Dict[str, Any]:
+    step_count = len(steps) if isinstance(steps, list) else 0
+    payload: Dict[str, Any] = {
+        "dry_run": False,
+        "executable": False,
+        "executed": False,
+        "step_count": step_count,
+        "operations": operations or [],
+        "valid": False,
+        "step_receipts": [],
+        "executed_steps": 0,
+        "failed_step": None,
+        "stopped_on_error": False,
+        "remaining_steps_skipped": step_count,
+        "destructive_steps": destructive_steps,
+        "requires_confirmation": requires_confirmation,
+        "notes": notes or [],
+    }
+    if validation_errors is not None:
+        payload["validation_errors"] = validation_errors
+    if plan_fingerprint is not None:
+        payload["plan_fingerprint"] = plan_fingerprint
+    if dry_run_id is not None:
+        payload["dry_run_id"] = dry_run_id
+
+    return make_response(
+        ok=False,
+        operation="batch.execute",
+        message=message,
+        data=payload,
+        warnings=warnings or [],
+        next_steps=next_steps or [],
+    )
+
+
 def handle_batch_execute(command: Dict[str, Any]) -> Dict[str, Any]:
     operation = "batch.execute"
-    
+
     dry_run = command.get("dry_run")
-    if dry_run is not True:
+    confirm = command.get("confirm")
+    dry_run_id_input = command.get("dry_run_id")
+    plan_fingerprint_input = command.get("plan_fingerprint")
+
+    # Dry-run mode (preview only)
+    if dry_run is True:
+        steps = command.get("steps")
+        if not isinstance(steps, list):
+            return make_response(
+                ok=False,
+                operation=operation,
+                message="batch.execute requires steps array",
+                data={
+                    "dry_run": True,
+                    "executable": False,
+                    "step_count": 0,
+                    "operations": [],
+                    "valid": False,
+                    "would_execute": [],
+                    "destructive_steps": 0,
+                    "requires_confirmation": False,
+                    "validation_errors": [{"step": None, "field": "steps", "error": "steps must be an array"}],
+                    "notes": [],
+                },
+                warnings=["Invalid steps payload"],
+                next_steps=["Provide steps as an array with 1 to 25 typed operations"],
+            )
+
+        step_count = len(steps)
+        if step_count == 0 or step_count > 25:
+            return make_response(
+                ok=False,
+                operation=operation,
+                message="batch.execute steps must contain between 1 and 25 items",
+                data={
+                    "dry_run": True,
+                    "executable": False,
+                    "step_count": step_count,
+                    "operations": [],
+                    "valid": False,
+                    "would_execute": [],
+                    "destructive_steps": 0,
+                    "requires_confirmation": False,
+                    "validation_errors": [{"step": None, "field": "steps", "error": "steps count must be within 1..25"}],
+                    "notes": [],
+                },
+                warnings=["Unsupported step count"],
+                next_steps=["Split large plans into smaller batches"],
+            )
+
+        operations: list[str] = []
+        notes: list[str] = []
+        warnings: list[str] = []
+        validation_errors: list[Dict[str, Any]] = []
+        would_execute: list[Dict[str, Any]] = []
+        destructive_steps = 0
+        requires_confirmation = False
+
+        for index, raw_step in enumerate(steps):
+            step_label = index + 1
+            if not isinstance(raw_step, dict):
+                validation_errors.append({
+                    "step": step_label,
+                    "field": "step",
+                    "error": "step must be an object",
+                })
+                continue
+
+            result = _batch_validate_step(raw_step, step_label)
+
+            normalized_op = result.get("operation")
+            if isinstance(normalized_op, str):
+                operations.append(normalized_op)
+                if len(result.get("errors", [])) == 0:
+                    preview = _generate_batch_execute_preview(step_label, normalized_op, raw_step)
+                    would_execute.append(preview)
+
+            notes.extend(result.get("notes", []))
+            warnings.extend(result.get("warnings", []))
+
+            if bool(result.get("destructive_step")):
+                destructive_steps += 1
+            if bool(result.get("requires_confirmation")):
+                requires_confirmation = True
+
+            errors = result.get("errors")
+            if isinstance(errors, list):
+                validation_errors.extend(errors)
+
+        valid = len(validation_errors) == 0
+
+        plan_fingerprint = None
+        if isinstance(steps, list) and len(steps) > 0:
+            try:
+                plan_fingerprint = _batch_plan_fingerprint(steps)
+            except Exception:
+                pass
+
+        dry_run_id = None
+        if plan_fingerprint is not None:
+            fingerprint_short = plan_fingerprint.replace("sha256:", "")[:16]
+            request_id_value = command.get("request_id", "unknown")
+            dry_run_id = f"dryrun:{fingerprint_short}:{request_id_value}"
+
+        data: Dict[str, Any] = {
+            "dry_run": True,
+            "executable": False,
+            "step_count": step_count,
+            "operations": operations,
+            "valid": valid,
+            "would_execute": would_execute,
+            "destructive_steps": destructive_steps,
+            "requires_confirmation": requires_confirmation,
+            "validation_errors": validation_errors,
+            "notes": notes,
+        }
+
+        if plan_fingerprint is not None:
+            data["plan_fingerprint"] = plan_fingerprint
+        if dry_run_id is not None:
+            data["dry_run_id"] = dry_run_id
+
+        if not valid:
+            return make_response(
+                ok=False,
+                operation=operation,
+                message="batch.execute dry-run validation failed",
+                data=data,
+                warnings=warnings + ["One or more steps are invalid"],
+                next_steps=[
+                    "Fix validation_errors and retry",
+                    "Run with confirm=EXECUTE_BATCH for real execution after dry-run succeeds",
+                ],
+            )
+
         return make_response(
-            ok=False,
+            ok=True,
             operation=operation,
-            message="batch.execute requires dry_run=true; real execution is not implemented",
-            data={
-                "dry_run": dry_run if isinstance(dry_run, bool) else None,
-                "executable": False,
-                "step_count": 0,
-                "operations": [],
-                "valid": False,
-                "would_execute": [],
-                "destructive_steps": 0,
-                "requires_confirmation": False,
-                "notes": ["Only dry-run mode is supported"],
-            },
-            warnings=["Real batch execution is not implemented"],
-            next_steps=["Rerun with dry_run=true to preview steps"],
+            message="batch.execute dry-run preview complete",
+            data=data,
+            warnings=warnings,
+            next_steps=[
+                "Review dry-run output",
+                "Run with confirm=EXECUTE_BATCH and dry_run_id for real execution",
+            ],
         )
-    
+
+    if confirm != "EXECUTE_BATCH":
+        return _batch_execute_reject(
+            "batch.execute real execution requires confirm=EXECUTE_BATCH",
+            warnings=["Real execution rejected: missing confirm=EXECUTE_BATCH"],
+            next_steps=["Run dry-run first, then provide confirm=EXECUTE_BATCH for real execution"],
+            notes=["Missing required confirmation token"],
+            requires_confirmation=True,
+        )
+
+    if not is_non_empty_string(dry_run_id_input):
+        return _batch_execute_reject(
+            "batch.execute real execution requires dry_run_id",
+            warnings=["Real execution rejected: missing dry_run_id"],
+            next_steps=["Run dry-run first and pass returned dry_run_id"],
+            notes=["Missing required dry_run_id linkage"],
+            requires_confirmation=True,
+        )
+
+    if not is_non_empty_string(plan_fingerprint_input):
+        return _batch_execute_reject(
+            "batch.execute real execution requires plan_fingerprint",
+            warnings=["Real execution rejected: missing plan_fingerprint"],
+            next_steps=["Run dry-run first and pass returned plan_fingerprint"],
+            notes=["Missing required plan_fingerprint linkage"],
+            requires_confirmation=True,
+            dry_run_id=str(dry_run_id_input),
+        )
+
     steps = command.get("steps")
     if not isinstance(steps, list):
-        return make_response(
-            ok=False,
-            operation=operation,
-            message="batch.execute requires steps array",
-            data={
-                "dry_run": True,
-                "executable": False,
-                "step_count": 0,
-                "operations": [],
-                "valid": False,
-                "would_execute": [],
-                "destructive_steps": 0,
-                "requires_confirmation": False,
-                "validation_errors": [{"step": None, "field": "steps", "error": "steps must be an array"}],
-                "notes": [],
-            },
+        return _batch_execute_reject(
+            "batch.execute requires steps array",
             warnings=["Invalid steps payload"],
             next_steps=["Provide steps as an array with 1 to 25 typed operations"],
+            validation_errors=[{"step": None, "field": "steps", "error": "steps must be an array"}],
+            requires_confirmation=True,
+            dry_run_id=str(dry_run_id_input),
+            plan_fingerprint=str(plan_fingerprint_input),
         )
-    
+
     step_count = len(steps)
     if step_count == 0 or step_count > 25:
-        return make_response(
-            ok=False,
-            operation=operation,
-            message="batch.execute steps must contain between 1 and 25 items",
-            data={
-                "dry_run": True,
-                "executable": False,
-                "step_count": step_count,
-                "operations": [],
-                "valid": False,
-                "would_execute": [],
-                "destructive_steps": 0,
-                "requires_confirmation": False,
-                "validation_errors": [{"step": None, "field": "steps", "error": "steps count must be within 1..25"}],
-                "notes": [],
-            },
+        return _batch_execute_reject(
+            "batch.execute steps must contain between 1 and 25 items",
+            steps=steps,
             warnings=["Unsupported step count"],
             next_steps=["Split large plans into smaller batches"],
+            validation_errors=[{"step": None, "field": "steps", "error": "steps count must be within 1..25"}],
+            requires_confirmation=True,
+            dry_run_id=str(dry_run_id_input),
+            plan_fingerprint=str(plan_fingerprint_input),
         )
-    
+
     operations: list[str] = []
     notes: list[str] = []
     warnings: list[str] = []
     validation_errors: list[Dict[str, Any]] = []
-    would_execute: list[Dict[str, Any]] = []
     destructive_steps = 0
     requires_confirmation = False
-    
+
     for index, raw_step in enumerate(steps):
         step_label = index + 1
         if not isinstance(raw_step, dict):
@@ -1352,85 +1544,217 @@ def handle_batch_execute(command: Dict[str, Any]) -> Dict[str, Any]:
                 "error": "step must be an object",
             })
             continue
-        
+
         result = _batch_validate_step(raw_step, step_label)
-        
+
         normalized_op = result.get("operation")
         if isinstance(normalized_op, str):
             operations.append(normalized_op)
-            if len(result.get("errors", [])) == 0:
-                preview = _generate_batch_execute_preview(step_label, normalized_op, raw_step)
-                would_execute.append(preview)
-        
+
+            if normalized_op not in BATCH_EXECUTE_REAL_ALLOWED_OPERATIONS:
+                validation_errors.append({
+                    "step": step_label,
+                    "operation": normalized_op,
+                    "field": "operation",
+                    "error": "operation is not allowed in first real batch.execute release",
+                })
+
         notes.extend(result.get("notes", []))
         warnings.extend(result.get("warnings", []))
-        
+
         if bool(result.get("destructive_step")):
             destructive_steps += 1
         if bool(result.get("requires_confirmation")):
             requires_confirmation = True
-        
+
         errors = result.get("errors")
         if isinstance(errors, list):
             validation_errors.extend(errors)
-    
+
     valid = len(validation_errors) == 0
-    
+
     plan_fingerprint = None
     if isinstance(steps, list) and len(steps) > 0:
         try:
             plan_fingerprint = _batch_plan_fingerprint(steps)
         except Exception:
             pass
-    
-    dry_run_id = None
-    if plan_fingerprint is not None:
-        fingerprint_short = plan_fingerprint.replace("sha256:", "")[:16]
-        request_id_value = command.get("request_id", "unknown")
-        dry_run_id = f"dryrun:{fingerprint_short}:{request_id_value}"
-    
+
+    if plan_fingerprint is None:
+        return _batch_execute_reject(
+            "batch.execute could not compute plan fingerprint",
+            steps=steps,
+            operations=operations,
+            destructive_steps=destructive_steps,
+            requires_confirmation=requires_confirmation,
+            warnings=warnings + ["Failed to compute plan fingerprint"],
+            next_steps=["Retry with a valid batch steps payload"],
+            notes=notes + ["Fingerprint computation failed; execution aborted before mutation"],
+            dry_run_id=str(dry_run_id_input),
+            plan_fingerprint=str(plan_fingerprint_input),
+        )
+
+    if plan_fingerprint != plan_fingerprint_input:
+        return _batch_execute_reject(
+            "batch.execute plan_fingerprint mismatch",
+            steps=steps,
+            operations=operations,
+            destructive_steps=destructive_steps,
+            requires_confirmation=requires_confirmation,
+            warnings=warnings + ["Plan fingerprint mismatch - steps may have changed since dry-run"],
+            next_steps=["Run dry-run again to get updated plan_fingerprint"],
+            notes=notes + ["Plan fingerprint does not match provided fingerprint"],
+            plan_fingerprint=plan_fingerprint,
+            dry_run_id=str(dry_run_id_input),
+        )
+
+    if not valid:
+        return _batch_execute_reject(
+            "batch.execute validation failed",
+            steps=steps,
+            operations=operations,
+            destructive_steps=destructive_steps,
+            requires_confirmation=requires_confirmation,
+            validation_errors=validation_errors,
+            warnings=warnings + ["One or more steps are invalid"],
+            next_steps=["Fix validation_errors and retry"],
+            notes=notes,
+            plan_fingerprint=plan_fingerprint,
+            dry_run_id=str(dry_run_id_input),
+        )
+
+    step_receipts: list[Dict[str, Any]] = []
+    executed_steps = 0
+    failed_step: Optional[int] = None
+    stopped_on_error = False
+
+    for index, raw_step in enumerate(steps):
+        step_label = index + 1
+        step_operation = raw_step.get("operation", "unknown")
+
+        if not isinstance(step_operation, str):
+            step_operation = str(step_operation)
+
+        if step_operation not in BATCH_EXECUTE_REAL_ALLOWED_OPERATIONS:
+            break
+
+        step_start = time.time()
+
+        try:
+            handler = OPERATION_REGISTRY.get(step_operation)
+            if handler is None:
+                step_receipts.append({
+                    "step": step_label,
+                    "operation": step_operation,
+                    "ok": False,
+                    "skipped": False,
+                    "duration_ms": int((time.time() - step_start) * 1000),
+                    "error": f"No handler registered for operation: {step_operation}",
+                })
+                failed_step = step_label
+                stopped_on_error = True
+                break
+
+            step_response = handler(raw_step)
+            step_duration_ms = int((time.time() - step_start) * 1000)
+            step_ok = bool(step_response.get("ok", False))
+
+            step_receipt: Dict[str, Any] = {
+                "step": step_label,
+                "operation": step_operation,
+                "ok": step_ok,
+                "skipped": False,
+                "duration_ms": step_duration_ms,
+            }
+
+            step_message = step_response.get("message")
+            if isinstance(step_message, str):
+                step_receipt["message"] = step_message
+
+            step_error = step_response.get("message") if not step_ok else None
+            if isinstance(step_error, str) and len(step_error.strip()) > 0:
+                step_receipt["error"] = step_error
+
+            step_request_id = step_response.get("request_id")
+            if isinstance(step_request_id, str) and len(step_request_id.strip()) > 0:
+                step_receipt["request_id"] = step_request_id
+
+            step_receipts.append(step_receipt)
+
+            if not step_ok:
+                failed_step = step_label
+                stopped_on_error = True
+                break
+
+            executed_steps += 1
+
+        except Exception as e:
+            step_duration_ms = int((time.time() - step_start) * 1000)
+            step_receipts.append({
+                "step": step_label,
+                "operation": step_operation,
+                "ok": False,
+                "skipped": False,
+                "duration_ms": step_duration_ms,
+                "error": str(e),
+            })
+            failed_step = step_label
+            stopped_on_error = True
+            break
+
+    if stopped_on_error and failed_step is not None:
+        for skipped_index in range(failed_step, step_count):
+            skipped_step = steps[skipped_index]
+            skipped_operation = skipped_step.get("operation", "unknown") if isinstance(skipped_step, dict) else "unknown"
+            if not isinstance(skipped_operation, str):
+                skipped_operation = str(skipped_operation)
+            step_receipts.append({
+                "step": skipped_index + 1,
+                "operation": skipped_operation,
+                "ok": False,
+                "skipped": True,
+                "duration_ms": 0,
+                "message": "Skipped due to earlier step failure",
+            })
+
+    remaining_steps_skipped = max(step_count - executed_steps - (1 if stopped_on_error and failed_step is not None else 0), 0)
+
     data: Dict[str, Any] = {
-        "dry_run": True,
-        "executable": False,
+        "dry_run": False,
+        "executable": True,
+        "executed": not stopped_on_error,
         "step_count": step_count,
         "operations": operations,
-        "valid": valid,
-        "would_execute": would_execute,
+        "valid": True,
+        "step_receipts": step_receipts,
+        "executed_steps": executed_steps,
         "destructive_steps": destructive_steps,
         "requires_confirmation": requires_confirmation,
-        "validation_errors": validation_errors,
         "notes": notes,
+        "plan_fingerprint": plan_fingerprint,
+        "dry_run_id": str(dry_run_id_input),
+        "failed_step": failed_step,
+        "stopped_on_error": stopped_on_error,
+        "remaining_steps_skipped": remaining_steps_skipped,
     }
-    
-    if plan_fingerprint is not None:
-        data["plan_fingerprint"] = plan_fingerprint
-    if dry_run_id is not None:
-        data["dry_run_id"] = dry_run_id
-    
-    if not valid:
+
+    if stopped_on_error:
         return make_response(
             ok=False,
             operation=operation,
-            message="batch.execute dry-run validation failed",
+            message=f"batch.execute stopped at step {failed_step}",
             data=data,
-            warnings=warnings + ["One or more steps are invalid"],
-            next_steps=[
-                "Fix validation_errors and retry",
-                "Real batch.execute is not implemented yet",
-            ],
+            warnings=warnings + [f"Execution stopped on first error at step {failed_step}"],
+            next_steps=["Review step_receipts for failure details", "Fix failed step and retry"],
         )
-    
+
     return make_response(
         ok=True,
         operation=operation,
-        message="batch.execute dry-run preview complete",
+        message=f"batch.execute completed successfully ({executed_steps} steps)",
         data=data,
         warnings=warnings,
-        next_steps=[
-            "Review dry-run output",
-            "Real batch execution is not implemented yet",
-            "Run individual operations manually or wait for future batch.execute support",
-        ],
+        next_steps=["Run scene inspect to verify final state"],
     )
 
 
@@ -1705,7 +2029,12 @@ def handle_material_create(command: Dict[str, Any]) -> Dict[str, Any]:
 
 def handle_material_apply(command: Dict[str, Any]) -> Dict[str, Any]:
     object_name = command.get("object_name")
+    if not isinstance(object_name, str) or len(object_name.strip()) == 0:
+        object_name = command.get("object")
+
     material_name = command.get("material_name")
+    if not isinstance(material_name, str) or len(material_name.strip()) == 0:
+        material_name = command.get("material")
 
     if not isinstance(object_name, str) or len(object_name.strip()) == 0:
         return make_response(

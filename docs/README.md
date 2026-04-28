@@ -41,7 +41,8 @@ Lightweight documentation hub for BlendOps.
 | [runtime-smoke-test-undo.md](./runtime-smoke-test-undo.md) | `undo.last` safe-failure runtime evidence |
 | [runtime-smoke-test-scene-clear.md](./runtime-smoke-test-scene-clear.md) | `scene.clear` guarded destructive runtime validation |
 | [runtime-smoke-test-batch-plan.md](./runtime-smoke-test-batch-plan.md) | `batch.plan` plan-only validation smoke evidence |
-| [runtime-smoke-test-batch-execute-dry-run.md](./runtime-smoke-test-batch-execute-dry-run.md) | `batch.execute` dry-run only validation |
+| [runtime-smoke-test-batch-execute-dry-run.md](./runtime-smoke-test-batch-execute-dry-run.md) | `batch.execute` dry-run validation + linkage artifacts (`plan_fingerprint`, `dry_run_id`) |
+| [runtime-smoke-test-batch-execute-real.md](./runtime-smoke-test-batch-execute-real.md) | `batch.execute` first real execution slice (non-destructive allowlist only) |
 
 ## 🔍 Research and architecture
 
