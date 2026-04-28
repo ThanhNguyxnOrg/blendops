@@ -105,6 +105,10 @@ node apps/cli/dist/index.js batch plan --file examples/batch/invalid-scene-clear
 node apps/cli/dist/index.js batch plan --file examples/batch/invalid-object-create.json --verbose
 node apps/cli/dist/index.js batch execute --file examples/batch/basic-scene.json --dry-run --verbose
 node apps/cli/dist/index.js batch execute --file examples/batch/basic-scene.json --verbose
+node apps/cli/dist/index.js batch execute --file examples/batch/basic-scene.json --confirm WRONG --dry-run-id x --plan-fingerprint y --verbose
+node apps/cli/dist/index.js batch execute --file examples/batch/basic-scene.json --confirm EXECUTE_BATCH --dry-run-id x --verbose
+node apps/cli/dist/index.js batch execute --file examples/batch/basic-scene.json --confirm EXECUTE_BATCH --plan-fingerprint y --verbose
+node apps/cli/dist/index.js batch execute --file examples/batch/basic-scene.json --confirm EXECUTE_BATCH --dry-run-id <id> --plan-fingerprint <sha256:...> --verbose
 ```
 
 `undo.last` may return `ok: false` with `No undo step available` when Blender has no undo step in current context. Treat that as verified safe-failure behavior, not a successful undo.
@@ -113,7 +117,11 @@ node apps/cli/dist/index.js batch execute --file examples/batch/basic-scene.json
 
 `scene.clear --dry-run` reports what would be removed and must not mutate scene state; verify object count is unchanged before running the real clear.
 
-`batch.execute` requires `--dry-run` flag; missing flag returns `cli.invalid_arguments` and no bridge call is made. Dry-run validates and previews steps without executing them.
+`batch.execute` supports dry-run preview and a guarded first real execution path.
+
+- Dry-run: `--dry-run` validates and previews without executing.
+- Real mode requires **all** gates: `--confirm EXECUTE_BATCH`, `--dry-run-id`, `--plan-fingerprint`.
+- Missing/wrong real gates must return `cli.invalid_arguments` locally with no bridge call.
 
 ## 🧾 Bridge logs and stop
 
@@ -122,6 +130,79 @@ node apps/cli/dist/index.js bridge logs --tail 120
 node apps/cli/dist/index.js bridge stop
 ```
 
+For long JSON responses during troubleshooting, redirect to `.tmp` files and summarize key fields:
+
+```bash
+node apps/cli/dist/index.js bridge status --verbose > .tmp/stabilize/bridge-status.json
+node apps/cli/dist/index.js batch execute --file examples/batch/basic-scene.json --dry-run > .tmp/stabilize/batch-dry-run.json
+```
+
+Then inspect only key fields such as `ok`, `operation`, `request_id`, `warnings`, and `next_steps`.
+
+Use lifecycle recovery sequence when bridge state is unclear:
+
+```bash
+node apps/cli/dist/index.js bridge status --verbose
+node apps/cli/dist/index.js bridge logs --tail 120
+node apps/cli/dist/index.js bridge stop
+node apps/cli/dist/index.js bridge start --mode gui --verbose
+```
+
+`bridge start` returning `ok: true` means startup handoff succeeded; Blender GUI remaining open is expected.
+
+Stale-process symptoms include persistent "already in use" behavior, status mismatch, or unresponsive bridge commands after previous runs.
+
+If stale behavior persists after `bridge stop`, terminate stale Blender processes and retry start.
+
+```
+Get-Process blender -ErrorAction SilentlyContinue | Stop-Process -Force
+```
+
+Do this only for local recovery when the managed stop path does not recover the bridge.
+
+```bash
+node apps/cli/dist/index.js bridge status --verbose
+```
+
+After recovery, status should return healthy bridge metadata.
+
+Optional destructive stop remains available:
+
+```bash
+node apps/cli/dist/index.js bridge stop --all
+```
+
+`--all` can terminate unrelated Blender sessions.
+
+## 🧯 Troubleshooting
+
+| Symptom | Likely cause | Fix |
+|---|---|---|
+| `MODULE_NOT_FOUND` error | CLI run outside repo root | `cd` into repo root before running CLI |
+| `bridge start` fails | Blender executable not found | pass `--blender` or set `BLENDOPS_BLENDER_PATH` |
+| `bridge start` returns ok but Blender stays open | Expected behavior in GUI mode | This is correct - bridge runs inside Blender; use `bridge status` to verify readiness |
+| `bridge status` fails | bridge not running | run `bridge start`, then inspect `bridge logs` |
+| Stale bridge process/port conflict | Previous bridge not stopped cleanly | `bridge stop` or manually kill Blender process, then restart |
+| JSON parsing fails | npm wrapper output mixed in stdout | use `node apps/cli/dist/index.js ...` |
+| Long runtime JSON too noisy in terminal | raw JSON too large for manual review | redirect output to `.tmp/stabilize/*.json` and summarize key fields |
+| GLB export fails in background mode | missing GUI window context on Blender 4.2 | use GUI bridge mode |
+| Runtime artifacts appear in git | generated files present | do not commit `.tmp/`, `exports/`, `renders/` |
+
+## Cleanup
+
+```bash
+node apps/cli/dist/index.js bridge stop
+```
+
+If unresponsive:
+
+```powershell
+Get-Process blender -ErrorAction SilentlyContinue | Stop-Process -Force
+```
+
+Do not wait for Blender to exit after successful `bridge start`; use `bridge status`/`bridge logs` to determine readiness instead.
+
+For repo-root mistakes (`MODULE_NOT_FOUND`), run from repo root before retrying commands.
 Optional destructive stop:
 
 ```bash
@@ -134,8 +215,11 @@ node apps/cli/dist/index.js bridge stop --all
 
 | Symptom | Likely cause | Fix |
 |---|---|---|
+| `MODULE_NOT_FOUND` error | CLI run outside repo root | `cd` into repo root before running CLI |
 | `bridge start` fails | Blender executable not found | pass `--blender` or set `BLENDOPS_BLENDER_PATH` |
+| `bridge start` returns ok but Blender stays open | Expected behavior in GUI mode | This is correct - bridge runs inside Blender; use `bridge status` to verify readiness |
 | `bridge status` fails | bridge not running | run `bridge start`, then inspect `bridge logs` |
+| Stale bridge process/port conflict | Previous bridge not stopped cleanly | `bridge stop` or manually kill Blender process, then restart |
 | JSON parsing fails | npm wrapper output mixed in stdout | use `node apps/cli/dist/index.js ...` |
 | GLB export fails in background mode | missing GUI window context on Blender 4.2 | use GUI bridge mode |
 | Runtime artifacts appear in git | generated files present | do not commit `.tmp/`, `exports/`, `renders/` |
