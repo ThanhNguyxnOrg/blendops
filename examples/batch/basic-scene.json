@@ -1,9 +1,0 @@
-{
-  "steps": [
-    { "operation": "scene.inspect" },
-    { "operation": "object.create", "type": "cube", "name": "batch_cube", "location": [0, 0, 1] },
-    { "operation": "material.create", "name": "batch_red", "color": "#ff0000" },
-    { "operation": "material.apply", "object": "batch_cube", "material": "batch_red" },
-    { "operation": "validate.scene", "preset": "basic" }
-  ]
-}

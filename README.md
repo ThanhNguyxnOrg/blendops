@@ -1,130 +1,84 @@
 # BlendOps
 
-[![Node >=18](https://img.shields.io/badge/node-%3E%3D18-339933?logo=node.js&logoColor=white)](https://nodejs.org/)
-[![Blender >=3.6](https://img.shields.io/badge/blender-%3E%3D3.6-F5792A?logo=blender&logoColor=white)](https://www.blender.org/)
-![Foundation mode](https://img.shields.io/badge/status-foundation-0EA5E9)
-![No arbitrary Python](https://img.shields.io/badge/security-no%20arbitrary%20python-16A34A)
+BlendOps is being rebuilt as an **AI-native Blender workflow/product layer** for people who do not know Blender.
 
-BlendOps is currently a **minimal safe runtime foundation** for AI-driven Blender workflows.
+## What BlendOps is now
 
-It is not trying to replace Blender CLI, and it is not a clone of `ahujasid/blender-mcp`.
+BlendOps currently defines product direction, workflow intent, and architecture for a non-Blender-user-first experience:
 
-- **Official Blender CLI** is the runtime primitive.
-- **BlendOps** adds typed operations, lifecycle control, readiness/status/logs, and request correlation.
-- **Future product direction**: AI-native workflows for users who do not know Blender internals.
+- natural-language creative intent understanding
+- scene/workflow planning
+- safe structured execution design
+- validation criteria and output checks
+- render/export handoff expectations
+- web-ready 3D usage guidance
 
-See [docs/product-direction.md](./docs/product-direction.md).
+## What BlendOps is not
 
-## What BlendOps is (right now)
+BlendOps does **not** currently ship its own custom runtime implementation for:
 
-BlendOps currently commits to this foundation path:
+- a custom BlendOps CLI runtime
+- a custom BlendOps MCP server
+- a custom BlendOps Blender addon/bridge
 
-- `blendops --help`
-- `blendops doctor`
-- `bridge start/status/logs/stop`
-- `scene inspect`
-- `object create` (minimal)
-- MCP server startup + tool listing
-- request envelope fields (`request_id`, `receipt`)
-- addon/bridge main-thread dispatch
+BlendOps is also not intended to become another clone of Blender’s CLI or another clone of `ahujasid/blender-mcp`.
 
-Infrastructure surfaces (CLI/MCP/addon/core/schemas) are implementation layers, not the finished end-user product.
+## Why this reset happened
 
-## What BlendOps is not trying to do in this pass
+The repository previously explored low-level runtime implementation (CLI/MCP/addon/schemas/runtime scripts/UAT). That exploration was useful, but it was not the long-term product goal.
 
-- Rebuild Blender’s official CLI
-- Clone `ahujasid/blender-mcp`
-- Expose arbitrary Python execution
-- Expose unrestricted Blender CLI flags to AI users
-- Present broad low-level operation coverage as final product promise
+This reset aligns the repo with the actual goal: a product/workflow layer that helps AI tools deliver useful 3D outcomes for users who do not know Blender internals.
 
-## Quick start
+## Target user
 
-```bash
-git clone https://github.com/ThanhNguyxnOrg/blendops.git
-cd blendops
-npm install
-npm run build
-```
+A person who knows nothing about Blender but can ask Claude Code, Cursor, OpenCode, Codex, or another AI coding tool to produce:
 
-Core checks:
+- a useful Blender scene
+- a GLB asset
+- a preview render
+- web-ready 3D integration guidance
 
-```bash
-blendops --help
-npm run doctor
-```
+## Target product experience
 
-## Managed bridge lifecycle
+User prompt (example intent):
 
-```bash
-blendops bridge start --mode gui --verbose
-blendops bridge status --verbose
-blendops bridge logs --tail 80
-blendops bridge stop --verbose
-```
+> “Create a cyberpunk product hero section for a shoe website: floating shoe, neon lighting, glossy dark floor, cinematic camera, export GLB, and give me React Three Fiber usage guidance.”
 
-`bridge start` returning `ok: true` means startup handoff succeeded.
+Future flow:
 
-Blender GUI staying open is expected while bridge is running; use bridge status/logs for readiness.
+`user prompt` → `intent understanding` → `BlendOps workflow/scene plan` → `safe structured execution design` → `external runtime execution` → `validation` → `render/export` → `non-Blender-language handoff`
 
-## Minimal foundation commands
+## External runtime setup links
 
-```bash
-blendops scene inspect --verbose
-blendops object create --type cube --name foundation_cube --location 0,0,1 --verbose
-```
+Use external runtimes today:
 
-## MCP startup (foundation)
+- Blender official CLI/runtime:
+  https://docs.blender.org/manual/en/latest/advanced/command_line/index.html
+- Reference AI ↔ Blender MCP bridge:
+  https://github.com/ahujasid/blender-mcp
 
-```bash
-node apps/mcp-server/dist/index.js
-```
+## Current repo status
 
-Typical MCP config:
+- Runtime-era custom implementation has been removed from the active codebase.
+- Active docs now focus on product/workflow direction.
+- Historical runtime docs are preserved under `docs/archive/` for context.
 
-```json
-{
-  "mcpServers": {
-    "blendops": {
-      "command": "node",
-      "args": ["D:/Code/blendops/apps/mcp-server/dist/index.js"],
-      "env": {
-        "BLENDOPS_BRIDGE_URL": "http://127.0.0.1:8765"
-      }
-    }
-  }
-}
-```
+## Next milestones
 
-## Frozen/de-emphasized capabilities (still implemented)
+1. Define first non-Blender-user golden path specification
+2. Define scene/workflow plan format and safety model
+3. Define validation checklist and user-facing output language
+4. Decide external-runtime integration strategy
+5. Build minimal product implementation from workflow requirements
+6. Deliver web-ready 3D handoff guidance (GLB + React Three Fiber/Three.js)
 
-These areas exist in code/runtime artifacts but are **not** current product promise:
+## Historical runtime note
 
-- render/export breadth
-- advanced validation preset breadth
-- batch execution expansion (`batch.execute --dry-run` and real guarded path)
-- material/lighting/camera expansion
-- undo workflows
-- creative prompt catalogs and broad scene recipes
+The old custom CLI/MCP/addon runtime was removed from the active codebase in this reset.
 
-They are retained to avoid unnecessary churn and preserve existing integration stability.
+If needed, that historical implementation can be recovered from git history, including baseline commit:
 
-## Safety boundaries
-
-- No arbitrary Python endpoint
-- Typed operation contracts only
-- Structured error and recovery messaging
-- Correlatable operation receipts
-
-## Docs map
-
-- Direction: [docs/product-direction.md](./docs/product-direction.md)
-- Prune audit: [docs/foundation-prune-audit.md](./docs/foundation-prune-audit.md)
-- Foundation parity: [docs/runtime-foundation-parity.md](./docs/runtime-foundation-parity.md)
-- Install: [docs/install.md](./docs/install.md)
-- MCP setup: [docs/mcp-setup.md](./docs/mcp-setup.md)
-- Observability: [docs/observability.md](./docs/observability.md)
-- Runtime evidence index: [docs/README.md](./docs/README.md)
+- `04c70db`
 
 ## License
 

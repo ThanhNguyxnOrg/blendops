@@ -1,88 +1,45 @@
 # BlendOps Product Direction
 
-## Pivot Summary
+BlendOps is being rebuilt as an **AI-native workflow/product layer** for people who do not know Blender.
 
-BlendOps is **not** trying to rebuild Blender’s official CLI.
+## What BlendOps is not
 
-BlendOps is **not** trying to clone `ahujasid/blender-mcp`.
+BlendOps is not another Blender CLI.
 
-BlendOps is now positioned as a **safe workflow layer** for AI-driven Blender work by users who do not know Blender internals.
+BlendOps is not another raw Blender MCP.
 
-## Foundation Assumptions
+BlendOps is not a custom runtime clone of `ahujasid/blender-mcp`.
 
-1. **Official Blender CLI is the runtime primitive**
-   - Blender process launch/runtime behavior comes from Blender itself.
-   - BlendOps builds on top of that lifecycle rather than replacing it.
+## What BlendOps is
 
-2. **`ahujasid/blender-mcp` is prior art, not implementation source**
-   - It proves AI ↔ Blender addon/MCP interaction can work.
-   - BlendOps uses it as benchmark/reference only.
+BlendOps is a workflow/product layer above runtime primitives, designed for non-Blender users and AI tool orchestration.
 
-3. **BlendOps value is safety + workflow structure**
-   - Typed operations
-   - Request correlation (`request_id`, `receipt`)
-   - Readiness/status/logs
-   - Guarded execution and dry-run semantics
+Its value is in:
 
-## Who BlendOps is For
+- translating creative intent into safe workflow plans
+- structuring execution and validation criteria
+- producing understandable outputs for web/app/game usage
 
-Primary user:
-- A person who does not know Blender APIs, modes, or operator quirks
-- But can ask Claude Code / Cursor / OpenCode / Codex to produce 3D outcomes
+## Runtime assumptions
 
-Target outcomes:
-- scene preview
-- exportable asset (for example GLB)
-- web-ready handoff inputs
+- Official Blender CLI is the runtime primitive.
+- `ahujasid/blender-mcp` is the current reference/proven AI ↔ Blender MCP bridge.
 
-## Product Trajectory (North Star)
+BlendOps should reference these as external runtime dependencies instead of rebuilding them by default.
 
-User prompt
-→ intent understanding
-→ safe scene plan
-→ dry-run
-→ execute
-→ validate
-→ render/export
-→ non-Blender-language output for downstream use
+## Non-goals for this reset
 
-## Current Scope (This Phase)
+- Do not clone `ahujasid/blender-mcp`.
+- Do not vendor their code.
+- Do not copy large sections of upstream docs.
+- Do not expose arbitrary Python as the final BlendOps product interface.
 
-BlendOps currently commits to a **minimal safe runtime foundation**:
+## Reset status
 
-- CLI entrypoint + diagnostics
-- Managed bridge lifecycle (`start/status/logs/stop`)
-- Scene inspect
-- Minimal object create
-- MCP server startup + minimal tool surface
-- Addon/bridge main-thread dispatch
+Old custom runtime implementation (custom CLI/MCP/addon/runtime operation surface) has been removed from the active codebase.
 
-Infrastructure (CLI/MCP/addon/core/schemas) is a means to the product, not the product itself.
+Historical artifacts remain recoverable from git history and are preserved in `docs/archive/` where helpful for context.
 
-## De-emphasized for Now
+## Implementation principle going forward
 
-Implemented capabilities outside the immediate foundation are intentionally de-emphasized in product messaging:
-
-- render/export
-- advanced validation presets
-- batch execution expansion
-- material/lighting/camera breadth
-- undo workflows
-- creative prompt catalogs
-
-These remain as freeze candidates unless they are needed for foundation stability.
-
-## Hard Safety Boundaries
-
-- No arbitrary Python endpoint for AI users
-- No raw shell execution surface
-- No unrestricted Blender CLI flag passthrough to AI
-- No unverified runtime claims
-- No npm publish in this pivot pass
-
-## Reference Docs
-
-- [Runtime Foundation Parity](./runtime-foundation-parity.md)
-- [Foundation Prune Audit](./foundation-prune-audit.md)
-- [Main README](../README.md)
-- [Roadmap Phases](../TODO.md)
+Future implementation must be driven by **product workflow requirements** (non-Blender-user outcomes), not by low-level tool copying inertia.

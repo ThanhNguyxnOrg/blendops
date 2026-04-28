@@ -2,35 +2,8 @@
   "name": "blendops",
   "version": "0.1.0",
   "private": true,
-  "description": "Minimal safe runtime foundation for AI-native Blender workflows.",
-  "bin": {
-    "blendops": "apps/cli/dist/index.js"
-  },
-  "workspaces": [
-    "packages/*",
-    "apps/*"
-  ],
-  "scripts": {
-    "clean": "npm run clean --workspace @blendops/schemas && npm run clean --workspace @blendops/core && npm run clean --workspace @blendops/cli && npm run clean --workspace @blendops/mcp-server",
-    "build:packages": "npm run build --workspace @blendops/schemas && npm run build --workspace @blendops/core",
-    "build:apps": "npm run build --workspace @blendops/cli && npm run build --workspace @blendops/mcp-server",
-    "build": "npm run build:packages && npm run build:apps",
-    "typecheck:packages": "npm run typecheck --workspace @blendops/schemas && npm run typecheck --workspace @blendops/core",
-    "typecheck:apps": "npm run typecheck --workspace @blendops/cli && npm run typecheck --workspace @blendops/mcp-server",
-    "typecheck": "npm run build:packages && npm run typecheck:packages && npm run typecheck:apps",
-    "docs:check": "node scripts/check-docs.mjs",
-    "operations:check": "node scripts/check-operation-manifest.mjs",
-    "uat": "powershell -ExecutionPolicy Bypass -File scripts/run-uat.ps1",
-    "doctor": "powershell -ExecutionPolicy Bypass -File scripts/doctor.ps1",
-    "cli": "npm run dev --workspace @blendops/cli --",
-    "mcp-server": "npm run dev --workspace @blendops/mcp-server"
-  },
+  "description": "AI-native Blender workflow/product layer for non-Blender users.",
   "engines": {
     "node": ">=18"
-  },
-  "devDependencies": {
-    "@types/node": "^22.13.4",
-    "rimraf": "^5.0.10",
-    "typescript": "^5.6.3"
   }
 }

@@ -1,5 +1,0 @@
-{
-  "steps": [
-    { "operation": "object.create", "type": "cube", "name": "bad_cube", "python": "print('no')" }
-  ]
-}
