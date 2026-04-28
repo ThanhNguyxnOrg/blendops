@@ -22,9 +22,11 @@ node apps/cli/dist/index.js bridge logs --tail 120
 node apps/cli/dist/index.js bridge stop
 ```
 
-`bridge start` returning `ok: true` means startup handoff completed.
+`bridge start` returning `ok: true` means startup handoff completed and the CLI process should exit cleanly.
 
 Blender GUI remaining open is expected while bridge is running; use `bridge status` as readiness source of truth.
+
+If `bridge start` outputs `ok: true` but the command does not return control to the shell, that indicates a process detachment bug.
 
 Lifecycle artifacts are written under `.tmp/blendops/`:
 

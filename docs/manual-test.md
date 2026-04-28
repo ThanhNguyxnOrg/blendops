@@ -64,6 +64,14 @@ npm run cli -- ...
 
 `npm run` may emit wrapper lines that pollute stdout.
 
+For parseable JSON output, prefer separate stdout/stderr redirects over `Tee-Object`:
+
+```bash
+node apps/cli/dist/index.js bridge start --mode gui --verbose 1> .tmp/start.stdout.json 2> .tmp/start.stderr.log
+```
+
+This ensures clean JSON in stdout and avoids pipeline buffering issues.
+
 ## ✅ Quick health checks
 
 ```bash
@@ -143,6 +151,8 @@ Then inspect only key fields such as `ok`, `operation`, `request_id`, `warnings`
 `bridge start` returning `ok: true` means managed startup succeeded; Blender GUI remaining open is expected while bridge is running.
 
 Do not wait for Blender to exit after successful `bridge start`; use `bridge status`/`bridge logs` to determine readiness instead.
+
+`bridge start` should exit cleanly after returning `ok: true`. If the command outputs `ok: true` but does not return control to the shell, that is a bug in process detachment.
 
 Use lifecycle recovery sequence when bridge state is unclear:
 

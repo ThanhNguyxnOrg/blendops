@@ -104,7 +104,9 @@ node apps/cli/dist/index.js bridge logs --tail 120
 node apps/cli/dist/index.js bridge stop
 ```
 
-A successful `bridge start` does **not** imply Blender exits. Blender GUI should remain open while bridge serves commands.
+A successful `bridge start` returns `ok: true` and exits cleanly. Blender GUI should remain open while bridge serves commands.
+
+If `bridge start` outputs `ok: true` but does not return control, that is a process detachment bug.
 
 ## 🧩 Blender addon fallback
 

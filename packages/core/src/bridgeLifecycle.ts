@@ -474,6 +474,12 @@ export async function startBridgeLifecycle(input: StartBridgeLifecycleInput = {}
 
   const ready = await waitForBridgeReady(bridge_url, timeout_ms, poll_interval_ms);
 
+  // Force event loop to allow exit after readiness check completes
+  // This ensures CLI process can exit even when stdout/stderr are piped/redirected
+  if (typeof setImmediate !== "undefined") {
+    setImmediate(() => {});
+  }
+
   if (!ready) {
     return {
       ok: false,
