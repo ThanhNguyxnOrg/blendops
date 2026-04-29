@@ -84,6 +84,16 @@ For exact/current install commands and runtime configuration details, follow ups
 
 ---
 
+## 🧩 v0 Official Runtime Skill Pack
+
+- Pack: [docs/packs/v0-product-hero-pack.md](./docs/packs/v0-product-hero-pack.md)
+- Laws: [docs/laws/README.md](./docs/laws/README.md)
+- Skills: [docs/skills/README.md](./docs/skills/README.md)
+- Workflow: [docs/workflows/product-hero-workflow.md](./docs/workflows/product-hero-workflow.md)
+- Recipe: [docs/recipes/cyberpunk-shoe-hero.md](./docs/recipes/cyberpunk-shoe-hero.md)
+
+---
+
 ## 🔁 Product flow
 
 BlendOps is designed around this workflow:

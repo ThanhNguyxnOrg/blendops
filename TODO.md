@@ -16,7 +16,7 @@ _Last updated: 2026-04-29_
 - [x] define AI workflow
 - [x] define expected artifacts
 - [x] define acceptance criteria
-- [x] define external runtime assumptions using Blender + reference MCP
+- [x] define external runtime assumptions using official runtime hierarchy
 - [x] document first golden path in `docs/golden-path-cyberpunk-shoe.md`
 - [x] define workflow contract in `docs/workflow-contract.md`
 - [x] define product-layer safety model in `docs/safety-model.md`
@@ -39,13 +39,20 @@ _Last updated: 2026-04-29_
 - [x] research official Claude Blender Connector source accessibility
 - [x] update v0 skill pack runtime assumptions to official-only
 
-## Phase 2 — Workflow design
+## Phase 2 — Workflow design (completed)
 
-- [ ] scene plan format
-- [ ] safety model
-- [ ] validation checklist
-- [ ] user-facing language
-- [ ] render/export expectations
+- [x] scene plan format
+- [x] safety model
+- [x] validation checklist
+- [x] user-facing language
+- [x] render/export expectations
+
+## Phase 2.5 — v0 pack review and manual eval
+
+- [ ] run cyberpunk shoe recipe through official runtime manually
+- [ ] inspect if output stays non-Blender-user-friendly
+- [ ] refine validation gates
+- [ ] decide whether to package installable skills later
 
 ## Phase 3 — Prototype integration decision
 

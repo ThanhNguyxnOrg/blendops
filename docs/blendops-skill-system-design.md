@@ -169,12 +169,24 @@ To remain portable across Claude Code/Cursor/OpenCode/Codex:
 
 ## 10) Proposed v0 architecture
 
+### Implemented draft artifact map (docs only)
+
+- Laws: `docs/laws/*`
+- Skills: `docs/skills/*`
+- Workflows: `docs/workflows/*`
+- Recipes: `docs/recipes/*`
+- Packs: `docs/packs/*`
+
+This is a documentation/spec layer only (no runtime code added).
+
+
 ### Directory concept
 
 ```txt
 docs/
   research/
   laws/
+  skills/
   workflows/
   recipes/
   packs/

@@ -1,6 +1,6 @@
-# BlendOps First Skill Pack (Proposed v0)
+# BlendOps First Skill Pack (Draft v0)
 
-Status: Proposed v0 pack (not final)
+Status: Draft v0 pack (not final)
 Date: 2026-04-29
 
 ## Purpose
@@ -20,6 +20,16 @@ A v0 unit should:
 
 ---
 
+## Implemented draft file mapping
+
+- Laws: `docs/laws/*.md`
+- Skills: `docs/skills/*.md`
+- Workflow: `docs/workflows/product-hero-workflow.md`
+- Recipe: `docs/recipes/cyberpunk-shoe-hero.md`
+- Pack: `docs/packs/v0-product-hero-pack.md`
+
+---
+
 ## 1) external-runtime-setup-guide
 
 ### Purpose
@@ -27,7 +37,7 @@ Guide users through prerequisite external runtime setup and boundary understandi
 
 ### Trigger
 - “How do I run this with Blender?”
-- “Set up BlendOps runtime”
+- “Set up official runtime for BlendOps workflow”
 - first-time project onboarding
 
 ### Inputs

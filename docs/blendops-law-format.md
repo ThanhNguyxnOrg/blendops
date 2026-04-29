@@ -18,6 +18,18 @@ Example:
 
 ---
 
+## Canonical file placement
+
+- Laws → `docs/laws/`
+- Skills → `docs/skills/`
+- Workflows → `docs/workflows/`
+- Recipes → `docs/recipes/`
+- Packs → `docs/packs/`
+
+Each artifact should be linked from its directory `README.md` index.
+
+---
+
 ## Purpose
 
 - One concise statement of intended outcome.

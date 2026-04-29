@@ -34,6 +34,58 @@ Active docs for the current product/workflow direction.
 
 ---
 
+## ⚖️ Laws
+
+| Area | Doc |
+|---|---|
+| Laws index | [laws/README.md](./laws/README.md) |
+| Official runtime only law | [laws/official-runtime-only.md](./laws/official-runtime-only.md) |
+| No arbitrary Python interface law | [laws/no-arbitrary-python-interface.md](./laws/no-arbitrary-python-interface.md) |
+| Evidence before done law | [laws/evidence-before-done.md](./laws/evidence-before-done.md) |
+| Non-Blender-user language law | [laws/non-blender-user-language.md](./laws/non-blender-user-language.md) |
+
+---
+
+## 🛠️ Skills
+
+| Area | Doc |
+|---|---|
+| Skills index | [skills/README.md](./skills/README.md) |
+| Official runtime setup guide | [skills/official-runtime-setup-guide.md](./skills/official-runtime-setup-guide.md) |
+| Product hero scene planner | [skills/product-hero-scene-planner.md](./skills/product-hero-scene-planner.md) |
+| Blender scene quality checker | [skills/blender-scene-quality-checker.md](./skills/blender-scene-quality-checker.md) |
+| GLB web handoff | [skills/glb-web-handoff.md](./skills/glb-web-handoff.md) |
+| Non-Blender-user response writer | [skills/non-blender-user-response-writer.md](./skills/non-blender-user-response-writer.md) |
+
+---
+
+## 🔁 Workflows
+
+| Area | Doc |
+|---|---|
+| Workflows index | [workflows/README.md](./workflows/README.md) |
+| Product hero workflow | [workflows/product-hero-workflow.md](./workflows/product-hero-workflow.md) |
+
+---
+
+## 🧪 Recipes
+
+| Area | Doc |
+|---|---|
+| Recipes index | [recipes/README.md](./recipes/README.md) |
+| Cyberpunk shoe hero recipe | [recipes/cyberpunk-shoe-hero.md](./recipes/cyberpunk-shoe-hero.md) |
+
+---
+
+## 📦 Packs
+
+| Area | Doc |
+|---|---|
+| Packs index | [packs/README.md](./packs/README.md) |
+| v0 product hero pack | [packs/v0-product-hero-pack.md](./packs/v0-product-hero-pack.md) |
+
+---
+
 ## 🔬 Research docs
 
 | Area | Doc |
