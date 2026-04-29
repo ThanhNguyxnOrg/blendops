@@ -168,6 +168,7 @@ Active docs for the current product/workflow direction.
 | Area | Doc |
 |---|---|
 | Current cleanup audit | [cleanup-audit.md](./cleanup-audit.md) |
+| Release readiness status | [release-readiness.md](./release-readiness.md) |
 
 ---
 

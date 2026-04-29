@@ -79,8 +79,8 @@ For exact/current install commands and runtime configuration details, follow ups
 | Skill/law design draft | [docs/blendops-skill-system-design.md](./docs/blendops-skill-system-design.md) |
 | Proposed law format | [docs/blendops-law-format.md](./docs/blendops-law-format.md) |
 | Proposed first skill pack | [docs/blendops-first-skill-pack.md](./docs/blendops-first-skill-pack.md) |
-| Reset audit | [docs/reset-audit.md](./docs/reset-audit.md) |
-| Markdown audit | [docs/markdown-cleanup-audit.md](./docs/markdown-cleanup-audit.md) |
+| Cleanup audit | [docs/cleanup-audit.md](./docs/cleanup-audit.md) |
+| Release readiness | [docs/release-readiness.md](./docs/release-readiness.md) |
 
 ---
 
@@ -184,10 +184,10 @@ BlendOps safety stance:
 
 ## 📍 Next milestones
 
-1. finalize first non-Blender-user golden path
-2. mature workflow/validation artifacts
-3. decide long-term external-runtime integration strategy
-4. implement minimal product features from workflow requirements
+1. resolve Claude Code native-path ambiguity from adapter dry-run findings
+2. run manual install beta tests in disposable projects
+3. run official-runtime manual eval when connector/MCP path is available
+4. prepare Draft v0 release-readiness package (no stable claim yet)
 
 ---
 

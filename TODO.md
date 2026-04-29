@@ -103,11 +103,12 @@ _Last updated: 2026-04-29_
 
 ## Phase 2.11 — Public repo polish and release-readiness cleanup
 
-- [ ] update GitHub About/topics if needed
-- [ ] cleanup stale duplicate docs only after dry-run findings
-- [ ] update README milestones
-- [ ] prepare v0 manual install instructions
+- [x] update GitHub About/topics if needed
+- [x] cleanup stale duplicate docs only after dry-run findings
+- [x] update README milestones
+- [x] prepare v0 manual install instructions
 - [ ] decide whether to tag draft release
+
 
 ## Phase 3 — Prototype integration decision
 
