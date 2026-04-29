@@ -22,13 +22,14 @@ Active docs for the current product and workflow direction.
 ## 🚀 Start here
 
 1. **External runtime setup, required first:** [external-runtime-setup.md](./external-runtime-setup.md)
-2. **Product direction:** [product-direction.md](./product-direction.md)
-3. **Release status:** [release-readiness.md](./release-readiness.md)
-4. **Release readiness rollup:** [release-readiness-rollup-v0.md](./release-readiness-rollup-v0.md)
-5. **Multi-agent install strategy:** [multi-agent-install-strategy.md](./multi-agent-install-strategy.md)
-6. **Distribution strategy:** [distribution-strategy.md](./distribution-strategy.md)
-7. **Eval status:** [evals/README.md](./evals/README.md)
-8. **Workflow and delivery specs:** continue through the grouped navigation below
+2. **Runtime route strategy:** [runtime-route-strategy.md](./runtime-route-strategy.md)
+3. **Product direction:** [product-direction.md](./product-direction.md)
+4. **Release status:** [release-readiness.md](./release-readiness.md)
+5. **Release readiness rollup:** [release-readiness-rollup-v0.md](./release-readiness-rollup-v0.md)
+6. **Multi-agent install strategy:** [multi-agent-install-strategy.md](./multi-agent-install-strategy.md)
+7. **Distribution strategy:** [distribution-strategy.md](./distribution-strategy.md)
+8. **Eval status:** [evals/README.md](./evals/README.md)
+9. **Workflow and delivery specs:** continue through the grouped navigation below
 
 > [!TIP]
 > If you're evaluating release readiness, read the release status and manual install beta evidence before the pack docs.
@@ -40,7 +41,7 @@ Active docs for the current product and workflow direction.
 | Job | Start with | Then read |
 |---|---|---|
 | Understand the product | [product-direction.md](./product-direction.md) | [architecture.md](./architecture.md), [reference-runtime.md](./reference-runtime.md) |
-| Set runtime boundaries | [external-runtime-setup.md](./external-runtime-setup.md) | [reference-runtime.md](./reference-runtime.md), [laws/official-runtime-only.md](./laws/official-runtime-only.md) |
+| Set runtime boundaries | [external-runtime-setup.md](./external-runtime-setup.md) | [runtime-route-strategy.md](./runtime-route-strategy.md), [reference-runtime.md](./reference-runtime.md), [laws/official-runtime-only.md](./laws/official-runtime-only.md) |
 | Review workflow behavior | [workflow-contract.md](./workflow-contract.md) | [first-user-journey.md](./first-user-journey.md), [safety-model.md](./safety-model.md) |
 | Try install/adoption docs | [agent-install.md](./agent-install.md) | [install-scopes.md](./install-scopes.md), [multi-agent-install-strategy.md](./multi-agent-install-strategy.md), [adapters/README.md](./adapters/README.md) |
 | Check eval evidence | [evals/README.md](./evals/README.md) | [release-readiness.md](./release-readiness.md), [release-readiness-rollup-v0.md](./release-readiness-rollup-v0.md) |
@@ -54,8 +55,9 @@ Active docs for the current product and workflow direction.
 |---|---|
 | Product direction | [product-direction.md](./product-direction.md) |
 | Runtime setup, external | [external-runtime-setup.md](./external-runtime-setup.md) |
+| Runtime route strategy | [runtime-route-strategy.md](./runtime-route-strategy.md) |
 | Runtime boundary | [reference-runtime.md](./reference-runtime.md) |
-| Optional bridge caveats, unofficial | [unofficial-runtime-bridges.md](./unofficial-runtime-bridges.md) |
+| Optional bridge caveats, unofficial Route D | [unofficial-runtime-bridges.md](./unofficial-runtime-bridges.md) |
 | Architecture | [architecture.md](./architecture.md) |
 
 ---
@@ -218,4 +220,5 @@ Active docs for the current product and workflow direction.
 
 - BlendOps is a product/workflow layer for non-Blender users.
 - BlendOps does **not** currently ship its own BlendOps-owned CLI/MCP/addon runtime.
+- Runtime route status follows [runtime-route-strategy.md](./runtime-route-strategy.md).
 - Runtime artifacts remain Not Run/Not Produced unless an eval record states otherwise with evidence.

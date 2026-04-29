@@ -155,6 +155,8 @@ Focus: official runtime verification criteria and runtime eval readiness, not cu
 - [x] prepare runtime availability checklist without claiming runtime execution
 - [x] prepare Phase 3.3 pre-runtime release readiness rollup (`docs/release-readiness-rollup-v0.md`)
 - [x] record Claude Desktop Blender connector read-only smoke test without claiming full runtime eval or artifacts
+- [x] draft runtime route strategy with Route A first eval, Route C fallback, Route B candidate, and Route D unofficial caveat
+- [x] update eval docs for Route A first, Route C fallback, Route B per-agent verification, and Route D non-release path
 - [x] draft and link multi-agent install and distribution strategy docs without claiming package or marketplace availability
 - [ ] package a project-local generic BlendOps bundle with rollback notes
 - [ ] prepare Claude Desktop Personal Skill import bundle without claiming connector/runtime success

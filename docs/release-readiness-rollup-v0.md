@@ -66,18 +66,20 @@ What limits confidence:
 
 ## Current runtime evidence status
 
-Current runtime evidence status is **Read-only connector access available; full runtime eval Not Run**.
+Current runtime evidence status is **Read-only connector access available; full runtime eval Not Run**. Route selection is defined in [docs/runtime-route-strategy.md](./runtime-route-strategy.md).
 
 Verified read-only access:
 
-- Claude Desktop Blender connector read-only smoke test: Pass / Available. Evidence report: [docs/evals/blender-connector-read-only-smoke-test.md](./evals/blender-connector-read-only-smoke-test.md).
-- Blender-side MCP bridge: Available for read-only session access.
+- Route A — Claude Desktop Blender connector read-only smoke test: Pass / Available. Evidence report: [docs/evals/blender-connector-read-only-smoke-test.md](./evals/blender-connector-read-only-smoke-test.md).
+- Blender-side connector bridge/server: Available for read-only session access only; this is not Route B per-agent MCP success and not Route D support.
 
 Prepared but not run:
 
 - Official runtime verification criteria.
 - Runtime availability checklist.
 - Official runtime manual eval packet.
+- Route A mutation/render/export eval.
+- Route C official CLI fallback eval.
 
 Not produced:
 
@@ -101,6 +103,7 @@ No current repository doc should claim official runtime compatibility confirmed,
 | Manual install beta | Warn |
 | Multi-agent install strategy | Drafted |
 | Distribution strategy | Drafted / no marketplace claim |
+| Runtime route strategy | Drafted / Route A preferred first eval |
 | Runtime availability checklist | Prepared / Not Run |
 | Claude Desktop Blender connector read-only smoke test | Pass / Available |
 | Official runtime manual eval | Not Run |
@@ -113,9 +116,9 @@ No current repository doc should claim official runtime compatibility confirmed,
 
 | Blocker | Why it blocks release confidence | Required change |
 |---|---|---|
-| Official runtime manual eval not run | Read-only connector access has been evidenced, but recipe execution, mutation, render/export, validation, and artifact capture have not been run. | Run the official runtime manual eval packet and capture evidence. |
+| Official runtime manual eval not run | Route A read-only connector access has been evidenced, but recipe execution, mutation, render/export, validation, and artifact capture have not been run. | Run the official runtime manual eval packet and capture evidence, starting with Route A. |
 | Runtime artifacts not produced | No preview, render, GLB, or artifact handoff can be claimed. | Produce and record artifacts only through official runtime eval, or document missing artifacts as an accepted limitation. |
-| Runtime availability incomplete | Read-only connector access is available, but full runtime availability and artifact capture remain untested. | Run the runtime availability checklist in a real environment before full eval. |
+| Runtime availability incomplete | Route A read-only connector access is available, but full runtime availability and artifact capture remain untested; Route C fallback has not been attempted. | Run the runtime availability checklist in a real environment before full eval. |
 | Adapter confidence remains scoped | Install confidence is dry-run/docs based and environment-dependent. | Keep warnings visible or document a narrowed support scope. |
 | Stable release criteria unmet | A stable or production claim needs repeated runtime and install evidence. | Keep Draft v0 posture. |
 
@@ -126,9 +129,12 @@ No current repository doc should claim official runtime compatibility confirmed,
 1. Adapter install dry-run is useful but not universal install proof.
 2. Manual install beta remains Warn, not full Pass.
 3. Runtime availability checklist is Prepared / Not Run.
-4. Claude Desktop Blender connector read-only smoke test is Pass / Available, but it does not cover recipe execution, mutation, render, export, or artifact validation.
-5. Official runtime manual eval is Not Run.
-6. Runtime artifacts are Not Produced.
+4. Runtime route strategy prefers Route A for the first real eval and Route C as the next official fallback if Route A fails during mutation/render/export.
+5. Claude Desktop Blender connector read-only smoke test is Pass / Available, but it does not cover recipe execution, mutation, render, export, or artifact validation.
+6. Route B remains a per-agent MCP candidate until verified.
+7. Route D remains optional unofficial/user-managed and not a release path.
+8. Official runtime manual eval is Not Run.
+9. Runtime artifacts are Not Produced.
 6. Stable release readiness is Not Ready.
 7. Any release note must avoid implying runtime compatibility is confirmed.
 
@@ -145,6 +151,7 @@ No current repository doc should claim official runtime compatibility confirmed,
 - Manual install beta report.
 - Multi-agent install strategy and distribution strategy drafts.
 - Runtime verification criteria.
+- Runtime route strategy.
 - Runtime availability checklist.
 - Official runtime manual eval packet.
 - Claude Desktop Blender connector read-only smoke test evidence.
