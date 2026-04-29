@@ -22,6 +22,7 @@ const requiredRootDirs = [
 const requiredDocs = [
   'docs/external-runtime-setup.md',
   'docs/reference-runtime.md',
+  'docs/unofficial-runtime-bridges.md',
   'docs/adapter-registry.md',
   'docs/install-scopes.md',
   'docs/capability-profile.md',
@@ -74,6 +75,17 @@ const forbiddenCommunityPatterns = [
   'ahujasid/blender-mcp',
   'uvx blender-mcp',
   'community MCP',
+  'third-party MCP',
+];
+
+const unofficialBridgeDoc = 'docs/unofficial-runtime-bridges.md';
+
+const requiredUnofficialBridgeDisclaimers = [
+  'not official Blender tooling',
+  'not part of the BlendOps official runtime path',
+  'not used for Draft v0 release-readiness claims',
+  'user-managed',
+  'not a substitute for the official runtime manual eval',
 ];
 
 const requiredOfficialRefs = [
@@ -115,11 +127,21 @@ function walkMarkdownFiles(dirRel, out) {
   }
 }
 
-function scanPattern(files, pattern, label) {
+function scanPattern(files, pattern, label, allowlist = []) {
   for (const f of files) {
+    if (allowlist.includes(f)) continue;
     const txt = fs.readFileSync(path.join(root, f), 'utf8');
     if (txt.includes(pattern)) {
       errors.push(`${label} found in active file: ${f} -> "${pattern}"`);
+    }
+  }
+}
+
+function assertContainsAll(relPath, snippets, label) {
+  const txt = fs.readFileSync(path.join(root, relPath), 'utf8');
+  for (const snippet of snippets) {
+    if (!txt.includes(snippet)) {
+      errors.push(`${label} missing required disclaimer in ${relPath}: "${snippet}"`);
     }
   }
 }
@@ -158,7 +180,14 @@ walkMarkdownFiles('packs', activeMd);
 walkMarkdownFiles('skill-reviews', activeMd);
 
 for (const p of forbiddenLegacyPatterns) scanPattern(activeMd, p, 'Forbidden legacy runtime pattern');
-for (const p of forbiddenCommunityPatterns) scanPattern(activeMd, p, 'Forbidden community runtime pattern');
+for (const p of forbiddenCommunityPatterns) {
+  scanPattern(activeMd, p, 'Forbidden community runtime pattern', [unofficialBridgeDoc]);
+}
+assertContainsAll(
+  unofficialBridgeDoc,
+  requiredUnofficialBridgeDisclaimers,
+  'Unofficial bridge allowlist'
+);
 
 for (const ref of requiredOfficialRefs) {
   if (!ensureRefExists(activeMd, ref)) {
