@@ -107,7 +107,7 @@ _Last updated: 2026-04-29_
 - [x] cleanup stale duplicate docs only after dry-run findings
 - [x] update README milestones
 - [x] prepare v0 manual install instructions
-- [ ] decide whether to tag draft release
+- [x] decide whether to tag draft release (Decision: do not tag yet; defer until official runtime manual eval evidence exists or limitation is explicitly accepted)
 
 
 ## Phase 2.12 — Manual install beta (completed)
@@ -121,6 +121,7 @@ _Last updated: 2026-04-29_
 
 ## Phase 3 — Prototype integration decision
 
+- Focus: official runtime verification criteria and runtime eval readiness, not custom runtime implementation.
 - [ ] confirm official runtime compatibility assumptions (Blender MCP + Claude connector + Blender CLI)
 - [ ] define runtime verification criteria for official integration paths
 - [ ] evaluate whether a later custom adapter is product-justified
