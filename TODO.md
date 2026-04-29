@@ -2,7 +2,34 @@
 
 _Last updated: 2026-04-29_
 
-## Phase 0 — Product reset
+> [!NOTE]
+> Current focus: Phase 3, official runtime verification criteria and runtime eval readiness. BlendOps remains Draft v0 and does not claim stable release, runtime eval completion, or generated preview/render/GLB artifacts.
+
+## Status snapshot
+
+| Area | Status | Notes |
+|---|---|---|
+| Product reset | ✅ Complete | Old custom runtime implementation removed and active docs rewritten. |
+| Golden path spec | ✅ Complete | Cyberpunk shoe hero workflow and safety expectations documented. |
+| Research foundation | ✅ Complete | Skill systems, Blender workflow, and web handoff research recorded. |
+| Official runtime strategy | ✅ Complete | Active docs aligned to official-runtime-only references. |
+| Workflow design | ✅ Complete | Scene plan, validation, safety, and user-facing language defined. |
+| v0 pack eval | 🚧 In progress | Text-only dry eval done, runtime manual eval still open. |
+| Installable skill pack | ✅ Complete | Root `skills/`, `laws/`, and `packs/` layout created. |
+| Skill review gates | ✅ Complete | Root skills expanded, reviewed, and indexed. |
+| Adapter install dry-run | ✅ Complete | Dry-run and rollback findings recorded without runtime execution. |
+| Manual install beta | ✅ Complete | Generic-root, Claude Code fallback, and docs-only walkthrough completed. |
+| Runtime verification | 🎯 Current focus | Define criteria and prepare official-runtime eval path. |
+
+## Current blockers
+
+| Blocker | Impact | Next action |
+|---|---|---|
+| Official runtime manual eval not run | Cannot claim runtime behavior or artifact production | Define criteria, then run manual eval when official runtime path is available |
+| Runtime output not inspected | Cannot validate non-Blender-user artifact handoff from real output | Keep status as planned/not run until evidence exists |
+| Stable release not justified | Draft v0 must remain the posture | Defer tag or release claim until evidence is recorded |
+
+## ✅ Phase 0: Product reset
 
 - [x] remove old custom runtime implementation
 - [x] rewrite docs truthfully
@@ -10,7 +37,7 @@ _Last updated: 2026-04-29_
 - [x] define first non-Blender-user journey
 - [x] add external runtime setup overview docs (`docs/external-runtime-setup.md`)
 
-## Phase 1 — First non-Blender-user golden path spec
+## ✅ Phase 1: First non-Blender-user golden path spec
 
 - [x] user asks for a simple 3D product hero
 - [x] define AI workflow
@@ -21,25 +48,25 @@ _Last updated: 2026-04-29_
 - [x] define workflow contract in `docs/workflow-contract.md`
 - [x] define product-layer safety model in `docs/safety-model.md`
 
-## Phase 1.5 — Research foundation (completed)
+## ✅ Phase 1.5: Research foundation
 
 - [x] research skill/workflow systems and source-verify claims
 - [x] produce skill/law pattern synthesis
 - [x] produce decision matrix for BlendOps v0 direction
 - [x] research Blender production workflow with source confidence labels
-- [x] research Blender→GLB→web handoff pipeline
+- [x] research Blender to GLB to web handoff pipeline
 - [x] define Blender quality checklist categories and gate format
 - [x] draft BlendOps synthesis docs (design, law format, first skill pack)
 
-## Phase 1.6 — Official runtime strategy alignment (completed)
+## ✅ Phase 1.6: Official runtime strategy alignment
 
-- [x] remove non-official MCP runtime references from active strategy
+- [x] remove non-official runtime references from active strategy
 - [x] adopt official-only runtime references in active docs
 - [x] research official Blender MCP source accessibility
 - [x] research official Claude Blender Connector source accessibility
 - [x] update v0 skill pack runtime assumptions to official-only
 
-## Phase 2 — Workflow design (completed)
+## ✅ Phase 2: Workflow design
 
 - [x] scene plan format
 - [x] safety model
@@ -47,7 +74,7 @@ _Last updated: 2026-04-29_
 - [x] user-facing language
 - [x] render/export expectations
 
-## Phase 2.5 — v0 pack review and manual eval
+## 🚧 Phase 2.5: v0 pack review and manual eval
 
 - [x] create cyberpunk shoe v0 manual eval protocol
 - [x] run text-only dry eval before runtime manual eval
@@ -57,7 +84,7 @@ _Last updated: 2026-04-29_
 - [ ] refine validation gates
 - [ ] decide whether to package installable skills later
 
-## Phase 2.6 — Installable skill pack layout (completed)
+## ✅ Phase 2.6: Installable skill pack layout
 
 - [x] create root `skills/` multi-skill entrypoints
 - [x] create pack-local laws
@@ -67,7 +94,7 @@ _Last updated: 2026-04-29_
 - [x] create references/examples/harness notes
 - [x] update docs to point to installable pack
 
-## Phase 2.7 — Skill depth and review gates (completed)
+## ✅ Phase 2.7: Skill depth and review gates
 
 - [x] benchmark Blender skill repos
 - [x] create canonical skill template
@@ -76,7 +103,7 @@ _Last updated: 2026-04-29_
 - [x] add per-skill eval prompts
 - [x] update pack manifest
 
-## Phase 2.8 — Skill depth audit and enrichment (completed)
+## ✅ Phase 2.8: Skill depth audit and enrichment
 
 - [x] audit every root skill for depth
 - [x] define depth standard
@@ -85,14 +112,14 @@ _Last updated: 2026-04-29_
 - [x] enrich per-skill EVAL files
 - [x] update pack/readme indexes
 
-## Phase 2.9 — Skill gate review eval (completed)
+## ✅ Phase 2.9: Skill gate review eval
 
 - [x] run every root skill through review gates
 - [x] produce pass/warn/fail report
 - [x] fix remaining weak skills
 - [x] then run adapter install dry-run
 
-## Phase 2.10 — Adapter install dry-run eval (completed)
+## ✅ Phase 2.10: Adapter install dry-run eval
 
 - [x] test generic-root fallback in a disposable fixture project
 - [x] test Claude Code adapter in a disposable fixture if safe
@@ -101,7 +128,7 @@ _Last updated: 2026-04-29_
 - [x] verify rollback instructions
 - [x] update agent-install guide from findings
 
-## Phase 2.11 — Public repo polish and release-readiness cleanup
+## ✅ Phase 2.11: Public repo polish and release-readiness cleanup
 
 - [x] update GitHub About/topics if needed
 - [x] cleanup stale duplicate docs only after dry-run findings
@@ -109,8 +136,7 @@ _Last updated: 2026-04-29_
 - [x] prepare v0 manual install instructions
 - [x] decide whether to tag draft release (Decision: do not tag yet; defer until official runtime manual eval evidence exists or limitation is explicitly accepted)
 
-
-## Phase 2.12 — Manual install beta (completed)
+## ✅ Phase 2.12: Manual install beta
 
 - [x] run generic-root install dry-run in disposable fixture project
 - [x] run Claude Code project-local fallback dry-run
@@ -119,20 +145,21 @@ _Last updated: 2026-04-29_
 - [x] verify rollback clarity in fixture reports
 - [x] document beta findings in `docs/evals/manual-install-beta-v0.md`
 
-## Phase 3 — Prototype integration decision
+## 🎯 Phase 3: Prototype integration decision
 
-- Focus: official runtime verification criteria and runtime eval readiness, not custom runtime implementation.
+Focus: official runtime verification criteria and runtime eval readiness, not custom runtime implementation.
+
 - [ ] confirm official runtime compatibility assumptions (Blender MCP + Claude connector + Blender CLI)
 - [ ] define runtime verification criteria for official integration paths
 - [ ] evaluate whether a later custom adapter is product-justified
 - [ ] no arbitrary Python as final BlendOps user-facing workflow
 
-## Phase 4 — Minimal product implementation
+## 🧱 Phase 4: Minimal product implementation
 
 - [ ] build only from product requirements
 - [ ] avoid rebuilding low-level CLI/MCP out of inertia
 
-## Phase 5 — Web-ready 3D output
+## 🌐 Phase 5: Web-ready 3D output
 
 - [ ] GLB handoff
 - [ ] preview report
