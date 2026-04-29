@@ -1,34 +1,36 @@
 # Security Policy
 
-## Supported Scope
+## Scope
 
-BlendOps is in MVP stage. Security-sensitive areas include:
+BlendOps is currently a product/workflow layer with external runtime dependencies.
 
-- command validation and dispatch
-- bridge transport (`localhost` addon endpoint)
-- MCP tool exposure
-- prevention of arbitrary code execution
+Security-sensitive areas include:
 
-## Reporting a Vulnerability
+- user-facing workflow constraints
+- prevention of arbitrary execution exposure in final product interface
+- safe validation/handoff messaging
+- dependency on external runtime tooling configuration
+
+## Reporting a vulnerability
 
 Please **do not** open public issues for sensitive vulnerabilities.
 
-Instead, report privately with:
+Report with:
 
-- description of the issue
+- issue description
 - impact/risk level
-- reproduction steps
+- reproduction details
 - suggested mitigation (if available)
 
 Until a dedicated security mailbox is configured, open a GitHub issue with minimal details and request private coordination.
 
-## Security Principles for this repo
+## Security principles
 
-- No arbitrary Python execution exposed by default
-- Explicit allowlist of bridge operations
-- Destructive actions should require explicit confirmation flags
-- Structured error messages should guide corrective action
+- no arbitrary Python execution as default user-facing interface
+- no hidden execution paths
+- explicit safety boundaries in workflow docs
+- clear user-facing failure/limitation communication
 
-## Hard No
+## Hard no
 
-Contributions that add hidden execution paths or bypass schema validation will be rejected.
+Contributions that reintroduce hidden runtime execution paths or bypass documented safety constraints will be rejected.

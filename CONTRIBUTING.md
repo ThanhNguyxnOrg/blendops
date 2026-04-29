@@ -2,74 +2,62 @@
 
 Thanks for contributing ❤️
 
-BlendOps is currently MVP-stage and optimized for **safe, inspectable Blender automation**.
+BlendOps is currently focused on a **product/workflow layer** for non-Blender users.
 
-## Ground Rules
+## Scope
 
-1. **No arbitrary Python execution paths** by default.
-2. Keep changes **small and vertical-slice oriented**.
-3. Preserve structured JSON response envelope:
-   - `ok`, `operation`, `message`, `data`, `warnings`, `next_steps`
-4. Update docs when behavior changes.
+Contributions should improve one or more of:
 
-## Local Setup
+- product/workflow docs clarity
+- scene/workflow planning contracts
+- validation and handoff guidance
+- safety boundaries for user-facing AI workflows
+
+## Ground rules
+
+1. Do not reintroduce old custom BlendOps CLI/MCP/addon runtime surfaces.
+2. Do not expose arbitrary Python as the final BlendOps user-facing interface.
+3. Keep changes small, reviewable, and reversible.
+4. Update docs whenever behavior or contracts change.
+
+## Local setup
 
 ```bash
 git clone https://github.com/ThanhNguyxnOrg/blendops.git
 cd blendops
 npm install
-npm run typecheck
-npm run build
 ```
+
+If your change includes code, run relevant project checks before opening PR.
 
 ## Branching
 
-- Create feature branches from `main`
-- Suggested naming:
-  - `feat/object-transform`
-  - `fix/bridge-timeout-message`
-  - `docs/manual-test-update`
+- branch from `main`
+- use descriptive names (e.g., `docs/cleanup-readme`, `docs/workflow-contract-polish`)
 
-## Pull Request Checklist
+## Pull request checklist
 
-Before opening PR:
+- [ ] change is aligned with product/workflow direction
+- [ ] no runtime-era command surface reintroduced
+- [ ] docs updated for user-facing contract changes
+- [ ] scope is focused and clearly explained
 
-- [ ] `npm run typecheck` passes
-- [ ] `npm run build` passes
-- [ ] No arbitrary execution exposure introduced
-- [ ] README/docs updated if command/tool surface changed
-- [ ] Changes are scoped and reversible
-
-## Commit Guidance
-
-Prefer focused commits by concern:
-
-- schemas/core changes
-- bridge/addon changes
-- cli/mcp wiring
-- docs updates
-
-## Reporting Bugs
+## Reporting bugs
 
 Please include:
 
-- OS + Node version
-- Blender version
-- Command/tool invoked
-- Full JSON output (including `warnings`)
-- Expected vs actual behavior
+- environment (OS, Node, Blender)
+- affected docs/feature
+- repro steps
+- expected vs actual behavior
 
-Open an issue in this repo with reproducible steps.
+## Feature requests
 
-## Feature Requests
+Please include:
 
-When proposing features, include:
-
-- user workflow
-- safety considerations
-- command/tool contract shape
-- minimal vertical slice proposal
-
----
+- target user workflow
+- why current docs/flow are insufficient
+- proposed minimal change
+- safety implications
 
 Questions? See [SUPPORT.md](./SUPPORT.md).

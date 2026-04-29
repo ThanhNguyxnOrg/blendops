@@ -1,28 +1,34 @@
 # Support
 
-## Where to get help
+## Where to start
 
-1. Read docs first:
-   - [README](./README.md)
-   - [Manual test guide](./docs/manual-test.md)
-   - [Agent eval prompts](./docs/evals.md)
-2. Search existing issues/discussions
-3. Open a new issue with repro details
+Before opening an issue, check these docs in order:
+
+1. [README.md](./README.md)
+2. [docs/README.md](./docs/README.md)
+3. [docs/external-runtime-setup.md](./docs/external-runtime-setup.md)
+4. [docs/golden-path-cyberpunk-shoe.md](./docs/golden-path-cyberpunk-shoe.md)
+5. [docs/workflow-contract.md](./docs/workflow-contract.md)
+
+For historical runtime-era material, use:
+
+- [docs/archive/README.md](./docs/archive/README.md)
 
 ## What to include in support requests
 
-- Environment: OS, Node, Blender version
-- Exact command/tool used
-- Full JSON output
-- What you expected vs what happened
-- Steps to reproduce
+- environment details (OS, Node, Blender version)
+- AI tool used (Claude Code, Cursor, OpenCode, Codex, etc.)
+- prompt/request used
+- what you expected
+- what happened
+- reproducible steps
 
-## Common startup problems
+## Common problems
 
-- Bridge not running (addon not enabled)
-- Wrong bridge URL/port
-- Blender not on supported version
-- Typecheck/build not run after dependency changes
+- external runtime setup not completed yet
+- Blender not available on expected path/PATH
+- MCP bridge not configured/connected correctly
+- assumptions about old BlendOps runtime commands from archived docs
 
 ## Contribution help
 

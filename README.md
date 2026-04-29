@@ -1,91 +1,127 @@
-# BlendOps
+# 🦾 BlendOps
 
-BlendOps is being rebuilt as an **AI-native Blender workflow/product layer** for people who do not know Blender.
+BlendOps is an AI-native Blender workflow layer for people who do not know Blender.
 
-## What BlendOps is now
+```txt
+User prompt
+→ AI workflow plan
+→ external Blender runtime
+→ preview/export artifacts
+→ web-ready 3D handoff
+```
 
-BlendOps currently defines product direction, workflow intent, and architecture for a non-Blender-user-first experience:
+---
 
-- natural-language creative intent understanding
+## ✨ What BlendOps is
+
+BlendOps focuses on the product/workflow layer above runtime tooling:
+
+- natural-language intent understanding
 - scene/workflow planning
-- safe structured execution design
-- validation criteria and output checks
+- structured validation
 - render/export handoff expectations
-- web-ready 3D usage guidance
+- web-ready usage guidance
 
-## What BlendOps is not
+---
 
-BlendOps does **not** currently ship its own custom runtime implementation for:
+## 🚫 What BlendOps is not
 
-- a custom BlendOps CLI runtime
-- a custom BlendOps MCP server
-- a custom BlendOps Blender addon/bridge
+BlendOps does **not** currently ship its own:
 
-BlendOps is also not intended to become another clone of Blender’s CLI or another clone of `ahujasid/blender-mcp`.
+- custom CLI runtime
+- custom MCP server runtime
+- custom Blender addon runtime
 
-## Why this reset happened
+BlendOps is also not intended to clone Blender CLI or clone `ahujasid/blender-mcp`.
 
-The repository previously explored low-level runtime implementation (CLI/MCP/addon/schemas/runtime scripts/UAT). That exploration was useful, but it was not the long-term product goal.
+---
 
-This reset aligns the repo with the actual goal: a product/workflow layer that helps AI tools deliver useful 3D outcomes for users who do not know Blender internals.
+## 👤 Target user
 
-## Target user
+A person who does not know Blender internals but can ask an AI coding tool (Claude Code, Cursor, OpenCode, Codex, etc.) for useful 3D outcomes.
 
-A person who knows nothing about Blender but can ask Claude Code, Cursor, OpenCode, Codex, or another AI coding tool to produce:
+Typical desired outputs:
 
-- a useful Blender scene
-- a GLB asset
-- a preview render
-- web-ready 3D integration guidance
+- Blender scene
+- GLB asset
+- preview render
+- practical web integration guidance
 
-## Target product experience
+---
 
-User prompt (example intent):
+## 🧭 External runtime setup (required first)
 
-> “Create a cyberpunk product hero section for a shoe website: floating shoe, neon lighting, glossy dark floor, cinematic camera, export GLB, and give me React Three Fiber usage guidance.”
+Before using BlendOps workflow specs, complete external runtime setup:
 
-Future flow:
+- **BlendOps setup overview:** [docs/external-runtime-setup.md](./docs/external-runtime-setup.md)
+- **Official Blender CLI docs:** https://docs.blender.org/manual/en/latest/advanced/command_line/index.html
+- **Reference AI ↔ Blender bridge:** https://github.com/ahujasid/blender-mcp
 
-`user prompt` → `intent understanding` → `BlendOps workflow/scene plan` → `safe structured execution design` → `external runtime execution` → `validation` → `render/export` → `non-Blender-language handoff`
+For exact/current install commands and runtime configuration details, follow upstream docs.
 
-## External runtime setup
+---
 
-BlendOps does **not** currently ship a custom CLI/MCP/addon runtime.
+## 🗂️ Active documentation map
 
-To use BlendOps workflow docs today:
+| Area | Doc |
+|---|---|
+| Docs start page | [docs/README.md](./docs/README.md) |
+| Product direction | [docs/product-direction.md](./docs/product-direction.md) |
+| External runtime setup | [docs/external-runtime-setup.md](./docs/external-runtime-setup.md) |
+| Runtime boundary | [docs/reference-runtime.md](./docs/reference-runtime.md) |
+| User journey | [docs/first-user-journey.md](./docs/first-user-journey.md) |
+| Golden path spec | [docs/golden-path-cyberpunk-shoe.md](./docs/golden-path-cyberpunk-shoe.md) |
+| Workflow contract | [docs/workflow-contract.md](./docs/workflow-contract.md) |
+| Safety model | [docs/safety-model.md](./docs/safety-model.md) |
+| Architecture | [docs/architecture.md](./docs/architecture.md) |
+| Reset audit | [docs/reset-audit.md](./docs/reset-audit.md) |
+| Markdown audit | [docs/markdown-cleanup-audit.md](./docs/markdown-cleanup-audit.md) |
 
-- Install Blender and use official CLI/runtime docs:
-  https://docs.blender.org/manual/en/latest/advanced/command_line/index.html
-- Use `ahujasid/blender-mcp` for AI ↔ Blender MCP bridging:
-  https://github.com/ahujasid/blender-mcp
-- Read BlendOps setup overview:
-  `docs/external-runtime-setup.md`
+---
 
-For exact/current install and configuration details, follow upstream docs.
+## 🔁 Product flow
 
-## Current repo status
+BlendOps is designed around this workflow:
 
-- Runtime-era custom implementation has been removed from the active codebase.
-- Active docs now focus on product/workflow direction.
-- Historical runtime docs are preserved under `docs/archive/` for context.
+`intent` → `scene/workflow plan` → `external runtime execution` → `validation` → `artifact handoff` → `web-ready guidance`
 
-## Next milestones
+---
 
-1. Define first non-Blender-user golden path specification
-2. Define scene/workflow plan format and safety model
-3. Define validation checklist and user-facing output language
-4. Decide external-runtime integration strategy
-5. Build minimal product implementation from workflow requirements
-6. Deliver web-ready 3D handoff guidance (GLB + React Three Fiber/Three.js)
+## ✅ Current repo status
 
-## Historical runtime note
+- runtime-era custom implementation removed from active codebase
+- active docs aligned to product/workflow direction
+- historical runtime materials preserved under [`docs/archive/`](./docs/archive/README.md)
 
-The old custom CLI/MCP/addon runtime was removed from the active codebase in this reset.
+---
 
-If needed, that historical implementation can be recovered from git history, including baseline commit:
+## 🛡️ Safety boundary
 
-- `04c70db`
+`ahujasid/blender-mcp` can expose powerful capabilities, including arbitrary Python execution.
 
-## License
+BlendOps safety stance:
+
+- do **not** use arbitrary Python as final user-facing product interface
+- prefer constrained workflow plans and explicit validation outputs
+- communicate limitations and failures clearly
+
+---
+
+## 📍 Next milestones
+
+1. finalize first non-Blender-user golden path
+2. mature workflow/validation artifacts
+3. decide long-term external-runtime integration strategy
+4. implement minimal product features from workflow requirements
+
+---
+
+## 🗃️ Historical runtime note
+
+Pre-reset custom runtime work remains recoverable from git history (baseline reference: `04c70db`) and from the archive docs.
+
+---
+
+## 📄 License
 
 MIT — see [LICENSE](./LICENSE)
