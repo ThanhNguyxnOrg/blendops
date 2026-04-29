@@ -21,3 +21,13 @@ Use glb-web-handoff to produce a handoff report with explicit artifact status an
 - artifact status per item
 - assumption/caveat section
 - next checks section
+
+## Sample passing response outline
+- Scope and mode stated clearly
+- Evidence expectations listed
+- Pass/warn/fail reasoning tied to checks
+
+## Sample failing response outline
+- Overclaims runtime/artifact success
+- Missing caveats or blocker details
+- No clear next action

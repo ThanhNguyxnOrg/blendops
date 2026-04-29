@@ -14,6 +14,12 @@ tags:
 ## Purpose
 Define a safe, official-runtime-only setup path for users/agents before runtime execution.
 
+## Quick start
+- confirm this skill fits your goal
+- provide required inputs first
+- keep runtime claims evidence-bound
+- follow suggested next-skill handoff
+
 ## When to use
 - beginning of a Blender-related task
 - runtime path is unknown
@@ -34,7 +40,7 @@ Define a safe, official-runtime-only setup path for users/agents before runtime 
 - access to official runtime reference links
 - no requirement to run Blender in this skill
 
-## Inputs
+## Input schema
 
 ### Required inputs
 - user’s target tool/harness context
@@ -50,7 +56,7 @@ Define a safe, official-runtime-only setup path for users/agents before runtime 
 - runtime setup is external to BlendOps
 - runtime evidence may be unavailable in current environment
 
-## Outputs
+## Output schema
 
 ### Primary output
 - official runtime option selection + rationale
@@ -94,6 +100,11 @@ Define a safe, official-runtime-only setup path for users/agents before runtime 
 - If user only needs planning now → planning mode; keep runtime Not Run.
 - If user requests runtime eval now and readiness is unknown → run readiness checker first.
 - If runtime signals are blocked → return blocked setup summary + next setup actions.
+
+## Playbooks
+- Playbook A: text-only planning path
+- Playbook B: runtime-ready path with evidence gating
+- Playbook C: blocked runtime path with caveat-first reporting
 
 ## Mode handling
 
@@ -147,10 +158,10 @@ Define a safe, official-runtime-only setup path for users/agents before runtime 
 - separate readiness from execution success
 - include concise before/after change summaries
 
-## Good example
+## Good examples
 “Selected official path: Claude Connector. Source confidence: mixed. Runtime status: Not Run. Next: verify local connector config, then run readiness checker.”
 
-## Bad example
+## Bad examples
 “Setup complete and runtime works now.” (no checks/evidence)
 
 ## User-facing response template

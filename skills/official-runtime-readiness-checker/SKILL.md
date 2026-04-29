@@ -14,6 +14,12 @@ tags:
 ## Purpose
 Assess runtime readiness before any attempt to claim runtime execution outcomes.
 
+## Quick start
+- confirm this skill fits your goal
+- provide required inputs first
+- keep runtime claims evidence-bound
+- follow suggested next-skill handoff
+
 ## When to use
 - before runtime manual eval
 - before any preview/render/GLB readiness claim
@@ -33,7 +39,7 @@ Assess runtime readiness before any attempt to claim runtime execution outcomes.
 - ability to read config/path signals
 - clear distinction between readiness and execution
 
-## Inputs
+## Input schema
 
 ### Required inputs
 - expected runtime path(s)
@@ -48,7 +54,7 @@ Assess runtime readiness before any attempt to claim runtime execution outcomes.
 - no Blender run required for readiness-only pass
 - no non-official runtime path should be used
 
-## Outputs
+## Output schema
 
 ### Primary output
 - readiness matrix + final status
@@ -87,6 +93,11 @@ Assess runtime readiness before any attempt to claim runtime execution outcomes.
 - Blender missing + no connector/MCP evidence → Blocked.
 - Blender found but connector/MCP uncertain → Partially Ready or Unknown.
 - Blender found + connector/MCP signals sufficient → Ready candidate (still no artifact claim).
+
+## Playbooks
+- Playbook A: text-only planning path
+- Playbook B: runtime-ready path with evidence gating
+- Playbook C: blocked runtime path with caveat-first reporting
 
 ## Mode handling
 
@@ -138,10 +149,10 @@ Assess runtime readiness before any attempt to claim runtime execution outcomes.
 - include exact evidence lines in report
 - separate readiness from artifact claims
 
-## Good example
+## Good examples
 “Status: Blocked. Blender binary exists, but official connector/MCP runtime path is not confirmed in this environment.”
 
-## Bad example
+## Bad examples
 “Looks good; runtime should work.” (no matrix, no evidence)
 
 ## User-facing response template

@@ -20,3 +20,13 @@ Use blender-lighting-material-planner to produce detailed lighting/material plan
 ## Evidence expectations
 - structured lookdev plan
 - explicit uncertainty markers
+
+## Sample passing response outline
+- Scope and mode stated clearly
+- Evidence expectations listed
+- Pass/warn/fail reasoning tied to checks
+
+## Sample failing response outline
+- Overclaims runtime/artifact success
+- Missing caveats or blocker details
+- No clear next action

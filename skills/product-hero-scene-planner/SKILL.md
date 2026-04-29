@@ -14,6 +14,12 @@ tags:
 ## Purpose
 Turn user intent into a high-quality, gate-ready scene plan before runtime execution.
 
+## Quick start
+- confirm this skill fits your goal
+- provide required inputs first
+- keep runtime claims evidence-bound
+- follow suggested next-skill handoff
+
 ## When to use
 - product hero scenario requests
 - pre-runtime plan generation
@@ -33,7 +39,7 @@ Turn user intent into a high-quality, gate-ready scene plan before runtime execu
 - output destination clarified
 - no runtime execution required in this skill
 
-## Inputs
+## Input schema
 
 ### Required inputs
 - user prompt
@@ -49,7 +55,7 @@ Turn user intent into a high-quality, gate-ready scene plan before runtime execu
 - quality priority (realtime vs marketing)
 - acceptable caveat level
 
-## Outputs
+## Output schema
 
 ### Primary output
 - full scene plan schema
@@ -89,6 +95,11 @@ Planning-only skill. Runtime execution and artifact claims are out of scope here
 - If destination is unknown → request destination first.
 - If constraints conflict → produce option A/B with trade-offs.
 - If runtime blocked → keep planning mode and mark artifacts Not Run.
+
+## Playbooks
+- Playbook A: text-only planning path
+- Playbook B: runtime-ready path with evidence gating
+- Playbook C: blocked runtime path with caveat-first reporting
 
 ## Mode handling
 
@@ -141,10 +152,10 @@ Planning-only skill. Runtime execution and artifact claims are out of scope here
 - keep plan modular and checklist-ready
 - surface unknowns early
 
-## Good example
+## Good examples
 “Plan includes subject/composition/camera/lighting/material/environment plus explicit Not Run artifact status pending runtime phase.”
 
-## Bad example
+## Bad examples
 “Hero scene done.” (no structure, no caveats)
 
 ## User-facing response template

@@ -14,6 +14,12 @@ tags:
 ## Purpose
 Create a high-quality, practical lighting/material plan that balances visual intent and web portability constraints.
 
+## Quick start
+- confirm this skill fits your goal
+- provide required inputs first
+- keep runtime claims evidence-bound
+- follow suggested next-skill handoff
+
 ## When to use
 - look-development strategy is needed
 - lighting/material choices drive scene mood
@@ -33,7 +39,7 @@ Create a high-quality, practical lighting/material plan that balances visual int
 - output destination is known
 - runtime mode status known (text-only/runtime-ready/blocked)
 
-## Inputs
+## Input schema
 
 ### Required inputs
 - style intent
@@ -50,7 +56,7 @@ Create a high-quality, practical lighting/material plan that balances visual int
 - reflection intensity tolerance
 - portability strictness for web handoff
 
-## Outputs
+## Output schema
 
 ### Primary output
 - lighting strategy + material strategy
@@ -87,6 +93,11 @@ This skill produces planning guidance only. It does not run Blender or claim run
 - If style is cyberpunk + product clarity required → neon accents + controlled reflections.
 - If web performance priority high → simplify material stack and reflection complexity.
 - If portability uncertain → keep assumptions explicit and request runtime validation.
+
+## Playbooks
+- Playbook A: text-only planning path
+- Playbook B: runtime-ready path with evidence gating
+- Playbook C: blocked runtime path with caveat-first reporting
 
 ## Mode handling
 
@@ -137,10 +148,10 @@ This skill produces planning guidance only. It does not run Blender or claim run
 - map each lookdev decision to user-facing outcome
 - preserve portability caveats explicitly
 
-## Good example
+## Good examples
 “Use key+soft fill for product readability, neon rim accents for mood, and limit reflective floor intensity to avoid detail washout in web contexts.”
 
-## Bad example
+## Bad examples
 “Make it look cool with neon materials.” (no constraints, no caveats)
 
 ## User-facing response template

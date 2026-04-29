@@ -21,3 +21,13 @@ Use official-runtime-setup-guide to determine official runtime options and confi
 - reference links listed
 - confidence labels present
 - explicit Not Run runtime state when applicable
+
+## Sample passing response outline
+- Scope and mode stated clearly
+- Evidence expectations listed
+- Pass/warn/fail reasoning tied to checks
+
+## Sample failing response outline
+- Overclaims runtime/artifact success
+- Missing caveats or blocker details
+- No clear next action

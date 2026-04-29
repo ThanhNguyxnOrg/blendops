@@ -21,3 +21,13 @@ Use product-hero-scene-planner to create a full cyberpunk shoe hero scene plan w
 - plan sections listed
 - unresolved assumptions listed
 - runtime status marked Not Run in text-only mode
+
+## Sample passing response outline
+- Scope and mode stated clearly
+- Evidence expectations listed
+- Pass/warn/fail reasoning tied to checks
+
+## Sample failing response outline
+- Overclaims runtime/artifact success
+- Missing caveats or blocker details
+- No clear next action

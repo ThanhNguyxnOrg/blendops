@@ -150,6 +150,7 @@ Draft note: this collection is still draft and should be validated through insta
 Skill depth note: root skills are benchmark-informed and reviewed against multi-layer gates.
 - Skills index: [skills/README.md](./skills/README.md)
 - Review gates: [skill-reviews/README.md](./skill-reviews/README.md)
+- Depth audit report: [skill-reviews/reports/v0-skill-depth-audit.md](./skill-reviews/reports/v0-skill-depth-audit.md)
 
 ---
 

@@ -14,6 +14,12 @@ tags:
 ## Purpose
 Evaluate scene/workflow readiness honestly and consistently before any success claim.
 
+## Quick start
+- confirm this skill fits your goal
+- provide required inputs first
+- keep runtime claims evidence-bound
+- follow suggested next-skill handoff
+
 ## When to use
 - before readiness/export/handoff claims
 - after planning pass
@@ -33,7 +39,7 @@ Evaluate scene/workflow readiness honestly and consistently before any success c
 - criteria set available
 - evidence state known (Produced/Not Produced/Not Run)
 
-## Inputs
+## Input schema
 
 ### Required inputs
 - scene plan summary
@@ -48,7 +54,7 @@ Evaluate scene/workflow readiness honestly and consistently before any success c
 - whether runtime was executed
 - whether artifacts are from this run vs pre-existing
 
-## Outputs
+## Output schema
 
 ### Primary output
 - category-level pass/warn/fail matrix
@@ -85,6 +91,11 @@ No execution claims without evidence. Text-only and blocked modes must remain ex
 - If runtime not executed → Not Run or Conditionally Ready (never Ready without evidence).
 - If critical category fails → Not Ready.
 - If all critical pass and only minor warnings remain → Conditionally Ready.
+
+## Playbooks
+- Playbook A: text-only planning path
+- Playbook B: runtime-ready path with evidence gating
+- Playbook C: blocked runtime path with caveat-first reporting
 
 ## Mode handling
 
@@ -135,10 +146,10 @@ No execution claims without evidence. Text-only and blocked modes must remain ex
 - keep caveats visible in final summary
 - preserve traceability from category score to verdict
 
-## Good example
+## Good examples
 “Status: Conditionally Ready. Planning categories pass, but runtime artifacts are Not Run in this pass.”
 
-## Bad example
+## Bad examples
 “Looks good overall, ship it.” (no rubric, no evidence mapping)
 
 ## User-facing response template

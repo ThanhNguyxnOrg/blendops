@@ -14,6 +14,12 @@ tags:
 ## Purpose
 Define reliable handoff language and checks for GLB/web scenarios without overclaiming.
 
+## Quick start
+- confirm this skill fits your goal
+- provide required inputs first
+- keep runtime claims evidence-bound
+- follow suggested next-skill handoff
+
 ## When to use
 - before web handoff summary
 - when user asks GLB readiness
@@ -33,7 +39,7 @@ Define reliable handoff language and checks for GLB/web scenarios without overcl
 - artifact evidence state known
 - runtime mode known
 
-## Inputs
+## Input schema
 
 ### Required inputs
 - artifact status evidence
@@ -49,7 +55,7 @@ Define reliable handoff language and checks for GLB/web scenarios without overcl
 - texture/material portability assumptions
 - loader/extension assumptions
 
-## Outputs
+## Output schema
 
 ### Primary output
 - handoff status report
@@ -84,6 +90,11 @@ No GLB/export success claim without concrete evidence.
 - If GLB evidence exists → report produced + caveats.
 - If no GLB evidence and runtime not run → Not Run status.
 - If runtime run but export failed → Not Produced + failure note.
+
+## Playbooks
+- Playbook A: text-only planning path
+- Playbook B: runtime-ready path with evidence gating
+- Playbook C: blocked runtime path with caveat-first reporting
 
 ## Mode handling
 
@@ -134,10 +145,10 @@ No GLB/export success claim without concrete evidence.
 - separate assumptions from verified facts
 - prioritize non-technical clarity in final handoff text
 
-## Good example
+## Good examples
 “GLB status: Not Run (runtime not executed in this pass). Next: run official runtime eval and capture export evidence.”
 
-## Bad example
+## Bad examples
 “GLB is ready for production.” (no artifact proof)
 
 ## User-facing response template

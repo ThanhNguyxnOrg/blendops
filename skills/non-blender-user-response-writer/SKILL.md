@@ -14,6 +14,12 @@ tags:
 ## Purpose
 Produce stakeholder-friendly outputs that preserve truthfulness, evidence boundaries, and clear next actions.
 
+## Quick start
+- confirm this skill fits your goal
+- provide required inputs first
+- keep runtime claims evidence-bound
+- follow suggested next-skill handoff
+
 ## When to use
 - final response phase
 - eval report summaries
@@ -33,7 +39,7 @@ Produce stakeholder-friendly outputs that preserve truthfulness, evidence bounda
 - evidence state available
 - blocker/caveat list available
 
-## Inputs
+## Input schema
 
 ### Required inputs
 - current status and evidence state
@@ -48,7 +54,7 @@ Produce stakeholder-friendly outputs that preserve truthfulness, evidence bounda
 - user has limited Blender knowledge
 - caveats must remain visible
 
-## Outputs
+## Output schema
 
 ### Primary output
 - plain-language final summary
@@ -83,6 +89,11 @@ Never imply runtime success or artifact existence without evidence.
 - If evidence complete and status positive → clear readiness + caveats.
 - If evidence partial/blocked → explicit uncertainty + next checks.
 - If major failures exist → clear fail state + remediation path.
+
+## Playbooks
+- Playbook A: text-only planning path
+- Playbook B: runtime-ready path with evidence gating
+- Playbook C: blocked runtime path with caveat-first reporting
 
 ## Mode handling
 
@@ -132,10 +143,10 @@ Never imply runtime success or artifact existence without evidence.
 - always include what remains unverified
 - end with one concrete next action
 
-## Good example
+## Good examples
 “Your planning output is complete, but runtime artifacts were not produced in this pass. Next step: run the official runtime eval and collect export evidence.”
 
-## Bad example
+## Bad examples
 “Everything is done and production-ready.” (without evidence)
 
 ## User-facing response template

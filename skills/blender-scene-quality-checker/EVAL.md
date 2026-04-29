@@ -21,3 +21,13 @@ Use blender-scene-quality-checker to score a planned hero scene with pass/warn/f
 - mode label
 - artifact status language
 - rationale for verdict
+
+## Sample passing response outline
+- Scope and mode stated clearly
+- Evidence expectations listed
+- Pass/warn/fail reasoning tied to checks
+
+## Sample failing response outline
+- Overclaims runtime/artifact success
+- Missing caveats or blocker details
+- No clear next action

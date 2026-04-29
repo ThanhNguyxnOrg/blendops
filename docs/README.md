@@ -155,6 +155,8 @@ Active docs for the current product/workflow direction.
 | Review gates | [../skill-reviews/review-gates.md](../skill-reviews/review-gates.md) |
 | Acceptance criteria | [../skill-reviews/acceptance-criteria.md](../skill-reviews/acceptance-criteria.md) |
 | Skill template | [../skill-reviews/blendops-skill-template.md](../skill-reviews/blendops-skill-template.md) |
+| Depth standard | [../skill-reviews/depth-standard.md](../skill-reviews/depth-standard.md) |
+| v0 depth audit report | [../skill-reviews/reports/v0-skill-depth-audit.md](../skill-reviews/reports/v0-skill-depth-audit.md) |
 
 ---
 

@@ -44,6 +44,7 @@ This pack expects skills to pass:
 - each included skill has `EVAL.md`
 - text-only eval should pass baseline checks
 - runtime blockers must be recordable without overclaims
+- depth audit status tracked in `skill-reviews/reports/v0-skill-depth-audit.md`
 
 ## Release readiness checklist
 

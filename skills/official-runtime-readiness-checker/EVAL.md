@@ -21,3 +21,13 @@ Use official-runtime-readiness-checker to produce readiness matrix and final sta
 - check table with evidence lines
 - final status rationale
 - blocker list when not ready
+
+## Sample passing response outline
+- Scope and mode stated clearly
+- Evidence expectations listed
+- Pass/warn/fail reasoning tied to checks
+
+## Sample failing response outline
+- Overclaims runtime/artifact success
+- Missing caveats or blocker details
+- No clear next action

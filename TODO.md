@@ -76,23 +76,21 @@ _Last updated: 2026-04-29_
 - [x] add per-skill eval prompts
 - [x] update pack manifest
 
-## Phase 2.8 — Target adapter architecture (completed)
+## Phase 2.8 — Skill depth audit and enrichment (completed)
 
-- [x] define install scopes
-- [x] define capability profile schema
-- [x] create adapter registry
-- [x] create current adapters
-- [x] create generic-root fallback
-- [x] update agent install guide
-- [x] create BLENDOPS.md root entrypoint template
+- [x] audit every root skill for depth
+- [x] define depth standard
+- [x] enrich all root SKILL.md files
+- [x] add per-skill references
+- [x] enrich per-skill EVAL files
+- [x] update pack/readme indexes
 
-## Phase 2.9 — Adapter install dry-run eval
+## Phase 2.9 — Skill gate review eval
 
-- [ ] test generic-root fallback in disposable fixture
-- [ ] test Claude Code adapter in disposable fixture if safe
-- [ ] test Claude app setup docs text-only
-- [ ] verify no runtime was installed/run
-- [ ] verify rollback instructions
+- [ ] run every root skill through review gates
+- [ ] produce pass/warn/fail report
+- [ ] fix remaining weak skills
+- [ ] then run adapter install dry-run
 
 ## Phase 3 — Prototype integration decision
 

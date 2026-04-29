@@ -14,6 +14,12 @@ tags:
 ## Purpose
 Design high-quality composition/camera strategy for product hero scenes in plain, actionable language.
 
+## Quick start
+- confirm this skill fits your goal
+- provide required inputs first
+- keep runtime claims evidence-bound
+- follow suggested next-skill handoff
+
 ## When to use
 - composition quality is uncertain
 - camera direction needs deeper guidance
@@ -32,7 +38,7 @@ Design high-quality composition/camera strategy for product hero scenes in plain
 - subject and destination context available
 - planning mode accepted when runtime unavailable
 
-## Inputs
+## Input schema
 
 ### Required inputs
 - subject intent
@@ -48,7 +54,7 @@ Design high-quality composition/camera strategy for product hero scenes in plain
 - focal detail priority
 - camera motion vs static hero shot intent
 
-## Outputs
+## Output schema
 
 ### Primary output
 - composition-camera plan
@@ -85,6 +91,11 @@ Planning-only skill; no runtime execution or render claims.
 - If copy overlay required → prioritize negative space and silhouette.
 - If product detail priority high → tighter framing and controlled depth.
 - If uncertainty high → provide two options and ask preference.
+
+## Playbooks
+- Playbook A: text-only planning path
+- Playbook B: runtime-ready path with evidence gating
+- Playbook C: blocked runtime path with caveat-first reporting
 
 ## Mode handling
 
@@ -135,10 +146,10 @@ Planning-only skill; no runtime execution or render claims.
 - tie each camera choice to user outcome
 - preserve fallback path for uncertain constraints
 
-## Good example
+## Good examples
 “Primary subject occupies center-right with left negative space for hero copy; camera 3/4 angle chosen for silhouette and depth readability.”
 
-## Bad example
+## Bad examples
 “Use cinematic camera.” (no context, no criteria)
 
 ## User-facing response template

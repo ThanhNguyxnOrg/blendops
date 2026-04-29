@@ -20,3 +20,13 @@ Use blender-composition-camera-planner to produce composition/camera plan for a 
 ## Evidence expectations
 - explicit plan elements
 - caveat notes for unverified visual outcomes
+
+## Sample passing response outline
+- Scope and mode stated clearly
+- Evidence expectations listed
+- Pass/warn/fail reasoning tied to checks
+
+## Sample failing response outline
+- Overclaims runtime/artifact success
+- Missing caveats or blocker details
+- No clear next action
