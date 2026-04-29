@@ -74,6 +74,10 @@ For exact/current install commands and runtime configuration details, follow ups
 | Workflow contract | [docs/workflow-contract.md](./docs/workflow-contract.md) |
 | Safety model | [docs/safety-model.md](./docs/safety-model.md) |
 | Architecture | [docs/architecture.md](./docs/architecture.md) |
+| Research index | [docs/research/skill-systems-research.md](./docs/research/skill-systems-research.md) |
+| Skill/law design draft | [docs/blendops-skill-system-design.md](./docs/blendops-skill-system-design.md) |
+| Proposed law format | [docs/blendops-law-format.md](./docs/blendops-law-format.md) |
+| Proposed first skill pack | [docs/blendops-first-skill-pack.md](./docs/blendops-first-skill-pack.md) |
 | Reset audit | [docs/reset-audit.md](./docs/reset-audit.md) |
 | Markdown audit | [docs/markdown-cleanup-audit.md](./docs/markdown-cleanup-audit.md) |
 

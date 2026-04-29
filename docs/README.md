@@ -34,6 +34,29 @@ Active docs for the current product/workflow direction.
 
 ---
 
+## 🔬 Research docs
+
+| Area | Doc |
+|---|---|
+| Skill systems research | [research/skill-systems-research.md](./research/skill-systems-research.md) |
+| Skill/law pattern synthesis | [research/skill-system-patterns.md](./research/skill-system-patterns.md) |
+| Skill system decision matrix | [research/skill-system-decision-matrix.md](./research/skill-system-decision-matrix.md) |
+| Blender workflow research | [research/blender-workflow-research.md](./research/blender-workflow-research.md) |
+| Web 3D asset pipeline | [research/web-3d-asset-pipeline.md](./research/web-3d-asset-pipeline.md) |
+| Blender quality checklist | [research/blender-quality-checklist.md](./research/blender-quality-checklist.md) |
+
+---
+
+## 🧱 BlendOps synthesis docs
+
+| Area | Doc |
+|---|---|
+| Skill system design | [blendops-skill-system-design.md](./blendops-skill-system-design.md) |
+| Proposed law format | [blendops-law-format.md](./blendops-law-format.md) |
+| Proposed first skill pack | [blendops-first-skill-pack.md](./blendops-first-skill-pack.md) |
+
+---
+
 ## 🧾 Governance and audit docs
 
 | Area | Doc |

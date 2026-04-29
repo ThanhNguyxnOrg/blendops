@@ -1,6 +1,6 @@
 # BlendOps Roadmap (Product-Layer Rebuild)
 
-_Last updated: 2026-04-28_
+_Last updated: 2026-04-29_
 
 ## Phase 0 — Product reset
 
@@ -20,6 +20,16 @@ _Last updated: 2026-04-28_
 - [x] document first golden path in `docs/golden-path-cyberpunk-shoe.md`
 - [x] define workflow contract in `docs/workflow-contract.md`
 - [x] define product-layer safety model in `docs/safety-model.md`
+
+## Phase 1.5 — Research foundation (completed)
+
+- [x] research skill/workflow systems and source-verify claims
+- [x] produce skill/law pattern synthesis
+- [x] produce decision matrix for BlendOps v0 direction
+- [x] research Blender production workflow with source confidence labels
+- [x] research Blender→GLB→web handoff pipeline
+- [x] define Blender quality checklist categories and gate format
+- [x] draft BlendOps synthesis docs (design, law format, first skill pack)
 
 ## Phase 2 — Workflow design
 
