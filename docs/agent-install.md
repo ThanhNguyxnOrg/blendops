@@ -45,7 +45,7 @@ Record these fields before editing files:
 
 | Field | Examples |
 |---|---|
-| Target name/type | Claude Code, Claude app/Desktop, OpenCode, Cursor, Codex, unknown |
+| Target name/type | Claude Code, Claude app/Desktop, OpenCode, Cursor, Codex, Gemini, unknown |
 | Native skill/rules support | verified, linked-only, unknown |
 | Project file write capability | yes, no, restricted |
 | Global config capability | yes, no, unknown |
@@ -71,7 +71,7 @@ Scope precedence:
 | Tool-native path is linked-only or unknown | Use project-local plus generic-root fallback. |
 | Writes aren't allowed or weren't requested | Use docs-only/reference mode. |
 
-For multi-agent installs or multiple target surfaces, read [multi-agent-install-strategy.md](./multi-agent-install-strategy.md) before selecting adapters.
+For multi-agent installs or multiple target surfaces, read [multi-agent-install-strategy.md](./multi-agent-install-strategy.md) and [distribution-strategy.md](./distribution-strategy.md) before selecting adapters.
 
 ## Step 3: Select adapter
 

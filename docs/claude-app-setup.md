@@ -19,7 +19,7 @@ Use Claude app/Desktop with:
 - user-managed Personal Skills import when supported by the app UI
 - official runtime references when runtime is needed
 
-For the broader multi-surface strategy, see [multi-agent-install-strategy.md](./multi-agent-install-strategy.md).
+For broader multi-surface and distribution strategy, see [multi-agent-install-strategy.md](./multi-agent-install-strategy.md) and [distribution-strategy.md](./distribution-strategy.md).
 
 ## Official runtime note
 

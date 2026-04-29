@@ -157,6 +157,7 @@ Default install stance:
 | Architecture | [docs/architecture.md](./docs/architecture.md) |
 | Release readiness | [docs/release-readiness.md](./docs/release-readiness.md) |
 | Release readiness rollup v0 | [docs/release-readiness-rollup-v0.md](./docs/release-readiness-rollup-v0.md) |
+| Multi-agent install strategy | [docs/multi-agent-install-strategy.md](./docs/multi-agent-install-strategy.md) |
 | Distribution strategy | [docs/distribution-strategy.md](./docs/distribution-strategy.md) |
 
 | v0 pack area | Doc |

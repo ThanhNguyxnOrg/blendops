@@ -25,9 +25,10 @@ Active docs for the current product and workflow direction.
 2. **Product direction:** [product-direction.md](./product-direction.md)
 3. **Release status:** [release-readiness.md](./release-readiness.md)
 4. **Release readiness rollup:** [release-readiness-rollup-v0.md](./release-readiness-rollup-v0.md)
-5. **Distribution strategy:** [distribution-strategy.md](./distribution-strategy.md)
-6. **Eval status:** [evals/README.md](./evals/README.md)
-7. **Workflow and delivery specs:** continue through the grouped navigation below
+5. **Multi-agent install strategy:** [multi-agent-install-strategy.md](./multi-agent-install-strategy.md)
+6. **Distribution strategy:** [distribution-strategy.md](./distribution-strategy.md)
+7. **Eval status:** [evals/README.md](./evals/README.md)
+8. **Workflow and delivery specs:** continue through the grouped navigation below
 
 > [!TIP]
 > If you're evaluating release readiness, read the release status and manual install beta evidence before the pack docs.
