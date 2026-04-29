@@ -15,7 +15,7 @@ This document defines the target non-Blender-user experience as a **spec only**.
 3. Create scene/workflow plan
    - safe structured steps and validation checkpoints
 4. Route through external runtime layer
-   - execution via official runtime options (Official Blender MCP Server, Official Claude Blender Connector, Official Blender CLI reference)
+   - execution via Stack 1 Claude Desktop official connector stack first, or Stack 2 official Blender CLI fallback when needed; Stack 3 unofficial bridge remains optional/local and outside release evidence
 5. Validate result
    - check scene/output criteria against requested intent
 6. Render/export

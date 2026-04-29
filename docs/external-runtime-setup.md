@@ -2,54 +2,127 @@
 
 BlendOps is a workflow/product layer and does **not** ship its own BlendOps-owned CLI/MCP/addon runtime.
 
-Active runtime guidance is official-only. For route selection and current status, see [Runtime route strategy](./runtime-route-strategy.md).
+Active runtime guidance uses the 3-stack model in [Runtime stack strategy](./runtime-stack-strategy.md).
+
+> [!IMPORTANT]
+> Importing BlendOps skills, laws, packs, or docs does not install Blender runtime, the Claude Desktop connector, any MCP server, or any Blender add-on.
 
 ---
 
-## Route A — Claude Desktop Connector path
+## Stack 1 — Claude Desktop official connector stack
 
-Current strongest first runtime eval candidate:
-- https://claude.com/resources/tutorials/using-the-blender-connector-in-claude
+Use this stack for users with Claude Desktop when Blender runtime execution is needed.
 
-Use this route for users with Claude Desktop. The read-only connector smoke test passed, but mutation, render, export, and artifact production remain `Not Tested` / `Not Produced`.
+Runtime chain:
 
-For exact/current setup details, follow the official Claude tutorial directly.
+```txt
+Claude Desktop Blender Connector
+  → official Blender MCP bridge/add-on running inside Blender
+  → Blender app/session
+```
+
+Official / primary links:
+
+- Official Blender MCP project: https://projects.blender.org/lab/blender_mcp
+- Blender Lab MCP page: https://www.blender.org/lab/mcp-server/
+- Claude Blender Connector tutorial: https://claude.com/resources/tutorials/using-the-blender-connector-in-claude
+
+Required setup guidance:
+
+1. Add or enable the Blender connector in Claude Desktop.
+2. Install and enable the official Blender MCP bridge/add-on in Blender from official Blender sources.
+3. Enable Online Access if Blender requires it for the add-on/repository flow.
+4. Start **MCP Bridge Server**, **Connect to Claude**, or the equivalent official server control inside Blender.
+5. Confirm the host/port shown by the add-on when shown, commonly `localhost:9876`.
+6. Run a read-only connector smoke test first.
+7. Only after read-only access passes should the user attempt scene mutation, render, export, or full runtime eval.
+
+Current BlendOps evidence:
+
+- Read-only connector smoke test passed.
+- Blender responded through read-only connector tools.
+- Default scene data returned: Cube, Camera, Light.
+- No mutation, render, export, preview, or GLB artifact was produced.
+- Full runtime eval remains `Not Run`.
+
+This is the only official connector stack currently verified. The first real BlendOps runtime eval should use this stack.
 
 ---
 
-## Route B — Official MCP path for non-Claude Desktop agents
+## Stack 2 — Official Blender CLI fallback
 
-Candidate path for MCP-capable agents:
-- https://www.blender.org/lab/mcp-server/
+Use this stack if Stack 1 is unavailable or fails and a deterministic command-line fallback is acceptable.
 
-Use this route only when the target agent can be configured as an MCP client or host. Do not claim it works with Claude Code, OpenCode, Cursor, Codex, Gemini, or another agent until that specific client is verified.
+Runtime chain:
 
-For exact/current setup details, follow the official Blender page and the target agent's current MCP documentation directly.
+```txt
+Agent/shell
+  → explicit Blender executable / CLI
+  → Blender process
+```
+
+Official link:
+
+- Blender CLI docs: https://docs.blender.org/manual/en/latest/advanced/command_line/index.html
+
+Required setup/eval guidance:
+
+- Blender must be installed and available through an explicit executable path or verified `PATH` entry.
+- The operator/agent must record the exact Blender command.
+- The operator/agent must record the script/input used.
+- The operator/agent must record the output folder, generated files, exit status, logs, and validation evidence.
+- No artifact claim is allowed without evidence.
+- CLI fallback does not need MCP or Claude Desktop.
+
+Current BlendOps evidence:
+
+- Full CLI eval is still `Not Run`.
+- Preview/render/GLB artifacts are still `Not Produced`.
 
 ---
 
-## Route C — Official Blender CLI path
+## Stack 3 — Optional unofficial third-party bridge stack
 
-Official CLI fallback and process reference:
-- https://docs.blender.org/manual/en/latest/advanced/command_line/index.html
+Use this stack only when a user knowingly chooses a third-party local experiment.
 
-Use this for Blender command-line behavior, automation fundamentals, and runtime process understanding. If Route A fails during mutation, render, or export, Route C is the next official route to test.
+Runtime chain:
 
-BlendOps does not use Blender CLI as its product interface; it is a runtime/process reference layer.
+```txt
+MCP-capable client/agent
+  → third-party bridge server
+  → third-party Blender add-on/socket bridge
+  → Blender
+```
+
+Optional upstream examples and caveats live in [Unofficial runtime bridges](./unofficial-runtime-bridges.md).
+
+Required caveats:
+
+- Follow the upstream third-party repo; BlendOps does not copy or own its install docs.
+- Configure each MCP client separately. Config in Claude Desktop does not configure Claude Code/OpenCode/Cursor.
+- Install/run that third-party bridge server and that third-party Blender add-on/socket bridge if you choose it.
+- Keep it experimental/local and user-managed.
+- Do not treat it as official release evidence.
+- Do not run it together with the official bridge on the same host/port unless the user intentionally changes ports and understands conflicts, commonly around `localhost:9876`.
+- Treat arbitrary Blender Python/code execution as a serious local security risk.
+
+This stack is not dependent on the official Blender MCP bridge/add-on and is not standalone without its own Blender-side add-on/server.
 
 ---
 
-## Route D — Optional unofficial bridge caveats
+## Future research / unverified
 
-Official routes above remain the recommended and release-eval paths. If a user knowingly wants a user-managed, non-official bridge for a local experiment, read [Unofficial runtime bridges](./unofficial-runtime-bridges.md) first. Do not treat those bridges as BlendOps-supported setup or Draft v0 release-readiness evidence.
+Direct official MCP use from Claude Code/OpenCode/Cursor/Codex/Gemini is not verified and is not currently a supported BlendOps route.
+
+Do not tell users to choose it. Do not claim it works. Keep any future investigation under source-backed research and separate eval evidence.
 
 ---
 
 ## Return to BlendOps
 
-Once one official runtime path is working, continue with BlendOps workflow docs:
+Once one appropriate runtime stack is working, continue with BlendOps workflow docs:
 
-- Runtime route strategy: `./runtime-route-strategy.md`
+- Runtime stack strategy: `./runtime-stack-strategy.md`
 - Product direction: `./product-direction.md`
 - First user journey: `./first-user-journey.md`
 - Architecture: `./architecture.md`
@@ -65,9 +138,10 @@ BlendOps role:
 
 ## Safety boundary
 
-Official runtime integrations may expose powerful runtime operations.
+Runtime integrations may expose powerful Blender capabilities.
 
 BlendOps safety stance:
+
 - Keep user-facing behavior constrained by workflow + validation + evidence.
 - Avoid using arbitrary execution primitives as the final product interface.
 - Prefer explicit assumptions, explicit checks, and clear pass/partial/fail reporting.

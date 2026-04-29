@@ -72,14 +72,16 @@ Skill import does not prove connector setup. Connector read-only access does not
 
 ---
 
-## Official runtime boundary
+## Runtime boundary
 
 Distribution strategy does not change runtime strategy.
 
-- The official runtime path remains the recommended and release-eval path:
-  1. Official Blender MCP Server
-  2. Official Claude Blender Connector
-  3. Official Blender CLI reference path
+- Public runtime guidance uses exactly three stacks:
+  1. Stack 1 — Claude Desktop official connector stack.
+  2. Stack 2 — Official Blender CLI fallback.
+  3. Stack 3 — Optional unofficial third-party bridge stack.
+- The official Blender MCP bridge/add-on is a required Blender-side dependency inside Stack 1, not a separate supported user-facing route.
+- Direct official MCP use from Claude Code/OpenCode/Cursor/Codex/Gemini is not verified and is not currently a supported BlendOps route.
 - Optional unofficial bridges remain user-managed and experimental/local only.
 - Blender runtime setup is separate from BlendOps skill/law/pack distribution.
 - Runtime artifacts still require eval evidence before any claim.

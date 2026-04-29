@@ -4,36 +4,38 @@ Status: Draft v0 criteria only, not executed
 Date: 2026-04-29
 
 > [!CAUTION]
-> This document defines criteria for future official-runtime evals. It does not claim Blender was run, does not claim runtime success, and does not claim preview/render/GLB artifacts were produced.
+> This document defines criteria for future runtime evals. It does not claim Blender was run, does not claim runtime success, and does not claim preview/render/GLB artifacts were produced.
 
 ---
 
 ## Purpose
 
-BlendOps needs a conservative way to decide when an official-runtime eval can move from planned work to an evidence-backed runtime result.
+BlendOps needs a conservative way to decide when a runtime eval can move from planned work to an evidence-backed runtime result.
 
-This document defines the minimum criteria for three official paths:
+This document defines the minimum criteria for the public 3-stack model:
 
-1. Official Blender MCP Server path
-2. Official Claude Blender Connector path
-3. Official Blender CLI reference path
+1. Stack 1 — Claude Desktop official connector stack.
+2. Stack 2 — Official Blender CLI fallback.
+3. Stack 3 — Optional unofficial third-party bridge stack.
 
-The criteria are intentionally Draft v0. They set evidence requirements before anyone can claim runtime success.
+Stack 1 is the only official connector stack currently verified, based on read-only smoke evidence. Stack 2 is official and deterministic, but full CLI eval is still `Not Run`. Stack 3 is optional, unofficial, user-managed, and excluded from BlendOps official release-eval evidence.
+
+Direct official MCP use from Claude Code/OpenCode/Cursor/Codex/Gemini is not verified and is not currently a supported BlendOps route.
 
 ---
 
-## Official runtime stance
+## Runtime stance
 
-BlendOps only recognizes official runtime paths for active runtime docs and evals.
+BlendOps recognizes these runtime stacks for public guidance:
 
-| Runtime path | Status in Draft v0 | Source stance |
+| Runtime stack | Status in Draft v0 | Source stance |
 |---|---|---|
-| Official Blender MCP Server | Candidate official runtime path | Use upstream Blender documentation and current official instructions. |
-| Official Claude Blender Connector | Candidate official runtime path | Use upstream Claude tutorial and current official instructions. |
-| Official Blender CLI reference | Candidate official reference path | Use upstream Blender manual CLI documentation. |
+| Stack 1 — Claude Desktop official connector stack | Only official connector stack currently verified for read-only smoke access | Use upstream Claude tutorial plus official Blender MCP project/page for the required Blender-side bridge/add-on. |
+| Stack 2 — Official Blender CLI fallback | Official deterministic fallback; full CLI eval `Not Run` | Use upstream Blender manual CLI documentation. |
+| Stack 3 — Optional unofficial third-party bridge stack | Optional / unofficial / user-managed / experimental-local; not release-eval evidence | Link upstream third-party repo only; do not copy or own its install docs. |
 
 > [!IMPORTANT]
-> Exact setup commands, versions, UI labels, and runtime behavior must come from upstream official documentation at execution time. BlendOps must not invent install steps or imply that runtime setup happened in this repository.
+> Exact setup commands, versions, UI labels, and runtime behavior must come from upstream documentation at execution time. BlendOps must not invent install steps or imply that runtime setup happened in this repository.
 
 ---
 
@@ -43,7 +45,7 @@ An eval may claim runtime success only when its record includes all required evi
 
 | Evidence field | Requirement |
 |---|---|
-| Runtime path used | Name the official path used, plus source link and date checked. |
+| Runtime stack used | Name the stack used, plus source link(s) and date checked. |
 | Commands/actions executed | List the exact commands, UI actions, connector actions, or agent actions performed. |
 | Generated files | List every output file path, file type, and creation context. If none were produced, say `Not Produced`. |
 | Preview/render evidence | Provide screenshot, render file, preview image, or clear capture notes. If not captured, say `Not Produced`. |
@@ -79,41 +81,25 @@ Artifact labels must be scoped per artifact type. A run can be `Verified` for pr
 
 | Verdict | Required condition |
 |---|---|
-| Pass | Official runtime path is identified, actions are recorded, expected outputs are produced, required preview/render and GLB/export evidence is present when in scope, validation notes are complete, and caveats do not block the scoped objective. |
-| Warn | Runtime path is official and some evidence exists, but one or more non-blocking caveats remain, such as environment-specific setup notes, partial artifact coverage, limited validation depth, or unclear upstream behavior. |
-| Fail | Runtime path is not official, required evidence is missing, the runtime cannot complete the scoped objective, generated artifacts are absent when required, or validation finds blocking quality/safety issues. |
+| Pass | Runtime stack is identified, actions are recorded, expected outputs are produced, required preview/render and GLB/export evidence is present when in scope, validation notes are complete, and caveats do not block the scoped objective. |
+| Warn | Runtime stack is allowed for the evidence category and some evidence exists, but one or more non-blocking caveats remain, such as environment-specific setup notes, partial artifact coverage, limited validation depth, or unclear upstream behavior. |
+| Fail | Runtime stack is unsupported for the claimed evidence category, required evidence is missing, the runtime cannot complete the scoped objective, generated artifacts are absent when required, or validation finds blocking quality/safety issues. |
 
-A blocked environment should normally remain `Blocked / Not Run`, not Fail, unless an official runtime attempt was actually made and failed.
+A blocked environment should normally remain `Blocked / Not Run`, not Fail, unless a runtime attempt was actually made and failed.
 
 ---
 
-## Path-specific criteria
+## Stack-specific criteria
 
-### 1. Official Blender MCP Server path
+### 1. Stack 1 — Claude Desktop official connector stack
 
 Minimum criteria:
 
-- Confirm the eval used the official Blender MCP Server path from upstream Blender documentation.
-- Record the date the upstream official instructions were checked.
+- Confirm the eval used Claude Desktop Blender Connector plus the official Blender MCP bridge/add-on running inside Blender.
+- Record the date the upstream Claude tutorial and official Blender MCP source were checked.
 - Record setup state without claiming setup was performed unless it was actually performed during the eval.
-- Record every MCP action, tool call, or agent action used to create, inspect, render, or export the scene.
-- Save output paths for generated Blender files, preview/render files, and GLB/export files when produced.
-- Capture validation notes for scene structure, materials, lighting, scale, camera, naming, and user-facing handoff clarity.
-- Record any connector/session limitations, permissions, crashes, missing tools, or ambiguous runtime behavior.
-
-Pass requires verified output evidence for every artifact type in scope for the eval.
-
-Warn is acceptable when the official path runs but a non-critical artifact or validation detail is incomplete and clearly logged.
-
-Fail applies when the path cannot perform the scoped runtime objective, outputs are missing, or the path used is not official.
-
-### 2. Official Claude Blender Connector path
-
-Minimum criteria:
-
-- Confirm the eval used the official Claude Blender Connector path from upstream Claude documentation.
-- Record the date the upstream official tutorial or instructions were checked.
-- Record the Claude-side actions and Blender-side actions separately when possible.
+- Confirm a read-only connector smoke test before mutation/render/export.
+- Record Claude-side actions and Blender-side actions separately when possible.
 - Record prompts, connector actions, accepted permissions, scene edits, preview/render actions, and export actions.
 - Save output paths and visible evidence for generated files and previews when produced.
 - Capture validation notes for whether the workflow stayed understandable for a non-Blender user.
@@ -125,13 +111,14 @@ Warn applies when the connector works but the eval leaves limited evidence, envi
 
 Fail applies when connector execution cannot complete the scoped objective, required artifacts are missing, or evidence cannot support the claim.
 
-### 3. Official Blender CLI reference path
+### 2. Stack 2 — Official Blender CLI fallback
 
 Minimum criteria:
 
 - Confirm the eval used the official Blender CLI reference from the upstream Blender manual.
 - Record the date the CLI reference was checked.
 - Record the exact command line used, including Blender executable path style, input files, output paths, and flags.
+- Record the script/input used.
 - Record whether commands were reference-only, dry-run, or actual runtime execution.
 - Save generated output paths for render, preview, Blender file, and GLB/export artifacts when produced.
 - Capture command output, exit status, logs, and validation notes.
@@ -142,6 +129,28 @@ Pass requires a successful official CLI runtime command with expected outputs, v
 Warn applies when the CLI path produces partial evidence or needs environment-specific notes that do not block the scoped objective.
 
 Fail applies when the CLI command fails, required outputs are absent, or evidence is insufficient.
+
+### 3. Stack 3 — Optional unofficial bridge stack
+
+Minimum criteria for local experimental records only:
+
+- Confirm the user knowingly chose unofficial, user-managed, experimental/local operation.
+- Link the upstream third-party repo checked on the eval date.
+- Record the third-party server and third-party Blender add-on/socket bridge used.
+- Record the MCP client/agent configured and note that each client needs separate configuration.
+- Record host/port choices and any `localhost:9876` conflict risk.
+- Record arbitrary Blender Python/code execution risk and user acceptance.
+- Keep results separate from BlendOps official release-eval evidence.
+
+Stack 3 must not be counted as official release-eval evidence. It can only produce a local/experimental note unless a future policy explicitly creates a separate evidence category.
+
+---
+
+## Future research guard
+
+Direct official MCP use from Claude Code/OpenCode/Cursor/Codex/Gemini is not verified and is not currently a supported BlendOps route.
+
+Future research may investigate specific non-Claude Desktop clients only with source-backed setup, client-specific configuration evidence, and local eval records. Until then, do not present direct official MCP as a selectable user route.
 
 ---
 
@@ -154,8 +163,8 @@ Use this template in future runtime eval records.
 
 | Field | Value |
 |---|---|
-| Runtime path used | Not Run |
-| Official source checked | Not Run |
+| Runtime stack used | Not Run |
+| Source checked | Not Run |
 | Date checked | Not Run |
 | Environment | Not Run |
 | Commands/actions executed | Not Run |
@@ -176,7 +185,7 @@ Use this template in future runtime eval records.
 - This criteria document does not run Blender.
 - This criteria document does not claim official runtime success.
 - This criteria document does not claim generated preview/render/GLB artifacts exist.
-- This criteria document does not introduce non-official runtime install strategies.
+- This criteria document does not introduce non-official runtime install strategies as official setup.
 - This criteria document does not mark Phase 3 complete.
 
 ---
@@ -184,4 +193,4 @@ Use this template in future runtime eval records.
 ## Current Draft v0 decision
 
 > [!WARNING]
-> Current status remains criteria prepared only. Runtime evals must stay `Not Run`, `Not Produced`, or `Blocked / Not Run` until an official runtime path is actually executed and the required evidence is recorded.
+> Current status remains criteria prepared only. Runtime evals must stay `Not Run`, `Not Produced`, or `Blocked / Not Run` until an allowed runtime stack is actually executed and the required evidence is recorded.

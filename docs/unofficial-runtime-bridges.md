@@ -1,17 +1,17 @@
 # Unofficial Runtime Bridges
 
-Status: Optional / Unofficial / User-managed / Not part of the official BlendOps runtime path / Not used for release-readiness claims
+Status: Optional / Unofficial / User-managed / Experimental-local / Not part of the official BlendOps runtime path / Not used for release-readiness claims
 
 > [!CAUTION]
 > This page is caveat-only guidance for users who knowingly choose an unofficial bridge. It is **not official Blender tooling**, **not part of the BlendOps official runtime path**, **not used for Draft v0 release-readiness claims**, and **not a substitute for the official runtime manual eval**.
 
-BlendOps still treats these as the official and release-eval runtime paths:
+BlendOps public runtime guidance uses the 3-stack model in [runtime-stack-strategy.md](./runtime-stack-strategy.md):
 
-1. Official Blender MCP Server
-2. Official Claude Blender Connector
-3. Official Blender CLI reference path
+1. Stack 1 — Claude Desktop official connector stack.
+2. Stack 2 — Official Blender CLI fallback.
+3. Stack 3 — Optional unofficial third-party MCP stack.
 
-Use [external-runtime-setup.md](./external-runtime-setup.md) and [reference-runtime.md](./reference-runtime.md) for the authoritative BlendOps runtime posture.
+This page documents Stack 3 caveats only. Use [external-runtime-setup.md](./external-runtime-setup.md), [reference-runtime.md](./reference-runtime.md), and [runtime-stack-strategy.md](./runtime-stack-strategy.md) for the authoritative BlendOps runtime posture.
 
 ---
 
@@ -93,6 +93,6 @@ BlendOps can still provide:
 - user-facing handoff language
 - safety and evidence expectations
 
-BlendOps does **not** own, ship, support, audit, maintain, or validate a third-party MCP bridge. A run through a community MCP or other third-party MCP bridge must be labeled experimental/local and must not be counted as an official runtime eval.
+BlendOps does **not** own, ship, support, audit, maintain, or validate a third-party MCP bridge. A run through a community MCP or other third-party MCP bridge must be labeled experimental/local and must not be counted as an official runtime eval or as release-eval evidence.
 
 Do not treat an unofficial bridge run as release-readiness evidence for Draft v0 unless a future release policy explicitly creates a separate, non-official evidence category.

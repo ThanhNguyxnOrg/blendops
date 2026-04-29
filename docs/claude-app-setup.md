@@ -21,14 +21,25 @@ Use Claude app/Desktop with:
 
 For broader multi-surface and distribution strategy, see [multi-agent-install-strategy.md](./multi-agent-install-strategy.md) and [distribution-strategy.md](./distribution-strategy.md).
 
-## Official runtime note
+## Runtime note
 
-When Blender execution is needed, use official runtime paths:
-1. Official Blender MCP Server
-2. Official Claude Blender Connector tutorial
-3. Official Blender CLI docs
+When Blender execution is needed from Claude app/Desktop, use Stack 1 — Claude Desktop official connector stack:
+
+1. Add or enable the Claude Desktop Blender Connector.
+2. Install/enable the official Blender MCP bridge/add-on inside Blender from official Blender sources.
+3. Start **MCP Bridge Server**, **Connect to Claude**, or the equivalent official Blender-side server control.
+4. Run a read-only connector smoke test before mutation/render/export.
+
+Official links:
+
+- Official Blender MCP project: https://projects.blender.org/lab/blender_mcp
+- Blender Lab MCP page: https://www.blender.org/lab/mcp-server/
+- Claude Blender Connector tutorial: https://claude.com/resources/tutorials/using-the-blender-connector-in-claude
+- Blender CLI fallback docs: https://docs.blender.org/manual/en/latest/advanced/command_line/index.html
 
 BlendOps remains workflow/law/checklist layer and does not install runtime.
+
+Direct official MCP use from Claude Code/OpenCode/Cursor/Codex/Gemini is not verified and is not currently a supported BlendOps route.
 
 ## Artifact truth policy
 

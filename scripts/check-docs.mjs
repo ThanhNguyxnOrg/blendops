@@ -22,6 +22,7 @@ const requiredRootDirs = [
 const requiredDocs = [
   'docs/external-runtime-setup.md',
   'docs/reference-runtime.md',
+  'docs/runtime-stack-strategy.md',
   'docs/unofficial-runtime-bridges.md',
   'docs/adapter-registry.md',
   'docs/install-scopes.md',
@@ -85,7 +86,67 @@ const requiredUnofficialBridgeDisclaimers = [
   'not part of the BlendOps official runtime path',
   'not used for Draft v0 release-readiness claims',
   'user-managed',
+  'experimental/local',
+  'must not be counted as an official runtime eval',
   'not a substitute for the official runtime manual eval',
+];
+
+const requiredRuntimeStackSnippets = [
+  'BlendOps public runtime guidance uses exactly three user-facing stacks',
+  'Stack 1 — Claude Desktop official connector stack',
+  'Stack 2 — Official Blender CLI fallback',
+  'Stack 3 — Optional unofficial third-party bridge stack',
+  'Direct official MCP use from Claude Code/OpenCode/Cursor/Codex/Gemini is not verified and is not currently a supported BlendOps route.',
+];
+
+const requiredArtifactEvidenceSnippets = [
+  {
+    file: 'laws/evidence-before-done.md',
+    snippets: [
+      'must not claim preview/render/GLB exists without evidence',
+      'must not mark Ready if evidence is missing',
+    ],
+  },
+  {
+    file: 'docs/evals/README.md',
+    snippets: [
+      'Runtime artifacts remain Not Run/Not Produced unless a runtime eval record provides evidence',
+      'Do not claim preview/render/GLB artifacts exist unless produced evidence is listed',
+    ],
+  },
+  {
+    file: 'docs/evals/official-runtime-verification-criteria.md',
+    snippets: [
+      'A transcript alone is not enough for runtime success',
+      'Do not upgrade `Attempted` to `Produced` without generated file or visible output evidence',
+    ],
+  },
+];
+
+const requiredMarketplaceSnippets = [
+  {
+    file: 'docs/distribution-strategy.md',
+    snippets: [
+      'does not claim BlendOps is published in any marketplace',
+      'Do not claim official marketplace listing until the listing is actually published and verified',
+      'Do not claim availability until it is verified for the specific surface',
+    ],
+  },
+  {
+    file: 'docs/multi-agent-install-strategy.md',
+    snippets: [
+      'Do not claim a marketplace or plugin listing until the package is actually accepted, listed, and verified',
+      'Marketplace/plugin install',
+      'Future, do not claim now',
+    ],
+  },
+];
+
+const forbiddenOfficialDirectMcpRoutePatterns = [
+  'Route B — Official MCP path for non-Claude Desktop agents',
+  'Official MCP path for non-Claude Desktop agents',
+  'standalone official MCP',
+  'choose official direct MCP',
 ];
 
 const requiredOfficialRefs = [
@@ -188,6 +249,20 @@ assertContainsAll(
   requiredUnofficialBridgeDisclaimers,
   'Unofficial bridge allowlist'
 );
+assertContainsAll(
+  'docs/runtime-stack-strategy.md',
+  requiredRuntimeStackSnippets,
+  'Runtime stack policy'
+);
+for (const policy of requiredArtifactEvidenceSnippets) {
+  assertContainsAll(policy.file, policy.snippets, 'Artifact evidence policy');
+}
+for (const policy of requiredMarketplaceSnippets) {
+  assertContainsAll(policy.file, policy.snippets, 'Marketplace/plugin policy');
+}
+for (const p of forbiddenOfficialDirectMcpRoutePatterns) {
+  scanPattern(activeMd, p, 'Forbidden official direct MCP route pattern', ['docs/archive']);
+}
 
 for (const ref of requiredOfficialRefs) {
   if (!ensureRefExists(activeMd, ref)) {

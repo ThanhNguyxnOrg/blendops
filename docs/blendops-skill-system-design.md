@@ -132,8 +132,8 @@ Runtime references should be:
 - link-based
 - version-aware when possible
 - explicitly marked as assumptions/dependencies
-- official-source-first in active docs (Official Blender MCP Server, Official Claude Blender Connector, Official Blender CLI reference)
-- no named community runtime fallback in active strategy (historical notes belong in archive context only)
+- official-source-first in active docs (Claude Desktop official connector stack, official Blender MCP bridge/add-on as that stack's Blender-side dependency, and official Blender CLI fallback)
+- no direct official MCP support claim for Claude Code/OpenCode/Cursor/Codex/Gemini until verified; no named community runtime fallback in active official strategy
 
 ---
 

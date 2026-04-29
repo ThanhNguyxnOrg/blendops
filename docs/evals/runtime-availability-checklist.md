@@ -12,7 +12,7 @@ Related criteria: [official-runtime-verification-criteria.md](./official-runtime
 
 ## Purpose
 
-This checklist gives a future operator a conservative preflight for deciding whether a manual official-runtime eval can be attempted.
+This checklist gives a future operator a conservative preflight for deciding whether a manual runtime eval can be attempted.
 
 Use it before the manual eval packet. Record readiness only. Do not convert readiness into runtime results.
 
@@ -37,7 +37,7 @@ Use these values exactly.
 A completed checklist can only support this claim:
 
 ```txt
-The environment appears ready, or not ready, to attempt a scoped official-runtime eval.
+The environment appears ready, or not ready, to attempt a scoped runtime eval.
 ```
 
 It cannot support these claims:
@@ -65,15 +65,18 @@ Fill one row per check. Add notes for every `Missing`, `Unknown`, `Not Tested`, 
 | Blender app availability | Blender application path or launch method identified from the local system. | Unknown |  |
 | Blender app availability | Blender version captured, if available without changing setup. | Unknown |  |
 | Blender app availability | Operator confirms the environment is allowed to run Blender during the future eval. | Unknown |  |
-| Route A — Claude Desktop Connector availability | Official Claude Blender Connector path is available from upstream Claude instructions. | Unknown |  |
-| Route A — Claude Desktop Connector availability | Connector setup state is known for this machine or session. | Unknown |  |
-| Route A — Claude Desktop Connector availability | Claude-side and Blender-side actions can be recorded separately when possible. | Unknown |  |
-| Route B — Official MCP agent availability | Official Blender MCP Server path is available from upstream Blender instructions. | Unknown |  |
-| Route B — Official MCP agent availability | Target agent MCP setup state, config format, and approval flow are known for this machine or session. | Unknown |  |
-| Route B — Official MCP agent availability | MCP actions can be recorded with timestamps, prompts, or tool/action notes for the specific agent. | Unknown |  |
-| Route C — Official Blender CLI availability | Official Blender CLI reference is available from upstream Blender manual docs. | Unknown |  |
-| Route C — Official Blender CLI availability | Blender executable path style is known for this machine. | Unknown |  |
-| Route C — Official Blender CLI availability | CLI output, exit status, and logs can be captured if CLI is the selected path. | Unknown |  |
+| Stack 1 — Claude Desktop official connector stack | Claude Desktop Blender Connector setup source is available from upstream Claude instructions. | Unknown |  |
+| Stack 1 — Claude Desktop official connector stack | Official Blender MCP bridge/add-on setup source is available from upstream Blender instructions. | Unknown |  |
+| Stack 1 — Claude Desktop official connector stack | Connector setup state is known for this machine or session. | Unknown |  |
+| Stack 1 — Claude Desktop official connector stack | Read-only connector smoke test can be recorded before mutation/render/export. | Unknown |  |
+| Stack 1 — Claude Desktop official connector stack | Claude-side and Blender-side actions can be recorded separately when possible. | Unknown |  |
+| Stack 2 — Official Blender CLI fallback | Official Blender CLI reference is available from upstream Blender manual docs. | Unknown |  |
+| Stack 2 — Official Blender CLI fallback | Blender executable path style is known for this machine. | Unknown |  |
+| Stack 2 — Official Blender CLI fallback | Exact command, script/input, output folder, generated files, exit status, and logs can be captured if CLI is selected. | Unknown |  |
+| Stack 3 — Optional unofficial third-party bridge stack | User explicitly chose a third-party local experiment and accepted it is not release-eval evidence. | Unknown |  |
+| Stack 3 — Optional unofficial bridge stack | Upstream third-party docs are linked without copying install steps. | Unknown |  |
+| Stack 3 — Optional unofficial bridge stack | Host/port conflicts and arbitrary Blender Python/code execution risks are understood. | Unknown |  |
+| Future research / unverified | Direct official MCP use from Claude Code/OpenCode/Cursor/Codex/Gemini remains unverified and unsupported. | Unknown |  |
 | Project workspace readiness | Repository workspace is available for reading docs and eval instructions. | Unknown |  |
 | Project workspace readiness | Runtime eval output paths are planned outside docs unless the eval plan says otherwise. | Unknown |  |
 | Project workspace readiness | The selected recipe, prompt, or eval scope is named before execution. | Unknown |  |
@@ -88,33 +91,36 @@ Fill one row per check. Add notes for every `Missing`, `Unknown`, `Not Tested`, 
 | Rollback/cleanup readiness | Temporary output cleanup plan is known. | Unknown |  |
 | Rollback/cleanup readiness | Connector, MCP, or CLI session cleanup steps are known if they are used. | Unknown |  |
 | Rollback/cleanup readiness | The operator can leave the repository without generated runtime artifacts unless evidence records intentionally reference them. | Unknown |  |
-| Safety/non-actions reminders | Operator confirms no non-official runtime fallback will be used. | Unknown |  |
+| Safety/non-actions reminders | Operator confirms no unsupported official-direct-MCP route will be used. | Unknown |  |
+| Safety/non-actions reminders | Operator confirms no unofficial third-party stack will be counted as release-eval evidence. | Unknown |  |
 | Safety/non-actions reminders | Operator confirms no preview/render/GLB claim will be made without evidence. | Unknown |  |
 | Safety/non-actions reminders | Operator confirms this checklist will not mark runtime eval complete. | Unknown |  |
 
 ---
 
-## Path selection guidance
+## Stack selection guidance
 
-Choose one intended path before attempting a manual eval. For the first real runtime eval, prefer Route A because read-only connector smoke evidence exists.
+Choose one intended stack before attempting a manual eval. For the first real runtime eval, prefer Stack 1 because read-only connector smoke evidence exists.
 
-| Intended path | Minimum readiness before proceeding | If unavailable |
+| Intended stack | Minimum readiness before proceeding | If unavailable |
 |---|---|---|
-| Route A — Claude Desktop Connector path | Blender app availability is `Available`, official connector path is `Available`, project workspace is `Available`, output folder is `Available`, evidence capture is `Available`, and cleanup is `Available`. | Mark connector rows `Missing`, `Unknown`, or `Blocked`. Do not run a fallback non-official connector. |
-| Route B — Official MCP path for non-Claude Desktop agents | Blender app availability is `Available`, official MCP path is `Available`, the target agent MCP setup is verified, project workspace is `Available`, output folder is `Available`, evidence capture is `Available`, and cleanup is `Available`. | Mark MCP-agent rows `Missing`, `Unknown`, or `Blocked`. Do not run a fallback non-official MCP. |
-| Route C — Official Blender CLI path | Blender app availability is `Available`, official CLI reference is `Available`, executable path style is known, project workspace is `Available`, output folder is `Available`, evidence capture is `Available`, and cleanup is `Available`. | Mark CLI rows `Missing`, `Unknown`, or `Blocked`. Do not treat CLI-only readiness as connector or MCP readiness. |
+| Stack 1 — Claude Desktop official connector stack | Blender app availability is `Available`, Claude Desktop connector source is `Available`, official Blender MCP bridge/add-on source is `Available`, connector state is known, project workspace is `Available`, output folder is `Available`, evidence capture is `Available`, and cleanup is `Available`. | Mark connector rows `Missing`, `Unknown`, or `Blocked`. Do not run a fallback unofficial connector as release evidence. |
+| Stack 2 — Official Blender CLI fallback | Blender app availability is `Available`, official CLI reference is `Available`, executable path style is known, exact commands/script/input/output paths can be recorded, project workspace is `Available`, output folder is `Available`, evidence capture is `Available`, and cleanup is `Available`. | Mark CLI rows `Missing`, `Unknown`, or `Blocked`. Do not treat CLI-only readiness as connector or MCP readiness. |
+| Stack 3 — Optional unofficial third-party bridge stack | User knowingly chooses third-party local experiment; upstream third-party docs are linked; client-specific config, third-party server/add-on, host/port, and security risks are understood. | Keep it out of release evidence. If not chosen, mark `Not Tested`. |
 
-If Route A fails during mutation, render, or export, Route C is the next official route to test. If only Blender CLI is available, mark Connector/MCP paths `Not Tested` or `Blocked`. A CLI-only path may support a scoped CLI eval attempt, but it does not prove connector or MCP availability.
+If Stack 1 fails during mutation, render, or export, Stack 2 is the next official fallback to test. If only Blender CLI is available, mark connector paths `Not Tested` or `Blocked`. A CLI-only path may support a scoped CLI eval attempt, but it does not prove connector or MCP availability.
 
 ---
 
 ## Readiness outcome
 
-When all required paths for the selected official runtime path are `Available`, proceed to [official-runtime-manual-eval-packet.md](./official-runtime-manual-eval-packet.md) and [runtime-route-strategy.md](../runtime-route-strategy.md).
+When all required paths for the selected official stack are `Available`, proceed to [official-runtime-manual-eval-packet.md](./official-runtime-manual-eval-packet.md) and [runtime-stack-strategy.md](../runtime-stack-strategy.md).
 
-If the official connector or official MCP path is missing, do not run fallback non-official MCP tooling. Record the missing path and keep the eval blocked or scoped to another official path.
+If the official connector stack is missing, do not run fallback unofficial MCP tooling as release evidence. Record the missing path and keep the eval blocked or scoped to Stack 2.
 
-If only Blender CLI is available, continue only with Route C. Mark Connector/MCP paths `Not Tested` or `Blocked`, and do not imply connector or MCP coverage.
+If only Blender CLI is available, continue only with Stack 2. Mark Connector/MCP paths `Not Tested` or `Blocked`, and do not imply connector or MCP coverage.
+
+Direct official MCP use from Claude Code/OpenCode/Cursor/Codex/Gemini is not verified and is not currently a supported BlendOps route.
 
 Do not claim preview/render/GLB output unless evidence exists in the eval record. If no output exists, record `Not Produced`.
 

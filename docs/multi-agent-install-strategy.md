@@ -15,7 +15,7 @@ BlendOps installation has three separate layers.
 | Layer | What it installs or records | Boundary |
 |---|---|---|
 | Skill/install layer | BlendOps docs, skills, laws, packs, adapters, references, and entrypoint instructions. | Does not install or run Blender runtime. |
-| Runtime bridge layer | Official Blender MCP Server, Official Claude Blender Connector, or Official Blender CLI setup chosen by the user. | Separate setup owned by upstream official docs and the local user environment. |
+| Runtime bridge layer | Stack 1 Claude Desktop official connector setup, Stack 2 official Blender CLI fallback, or Stack 3 optional unofficial bridge setup chosen by the user. | Separate setup owned by upstream docs and the local user environment; not installed by BlendOps. |
 | Evidence/eval layer | Readiness checks, connector smoke tests, full runtime eval records, artifact truth labels. | Evidence is required before claiming runtime or artifact success. |
 
 The layers may be used together, but success in one layer does not prove success in another. For example, a Claude Desktop Personal Skill import does not prove Blender connector access, and read-only connector access does not prove render/export behavior.
@@ -50,7 +50,7 @@ Claude Desktop has two distinct surfaces:
 
 2. **Blender Connector**
    - A user separately enables and configures the official Claude Desktop Blender Connector.
-   - The Blender-side MCP bridge/server must be running and connected for runtime access.
+   - The official Blender MCP bridge/add-on must be installed/enabled inside Blender and running/connected for runtime access.
    - Connector enabled does not mean a runtime eval passed.
    - A read-only connector smoke test should pass before any scene mutation.
 
@@ -64,7 +64,9 @@ Current evidence records should stay scoped:
 
 ## MCP-capable coding agents
 
-Claude Code, OpenCode, Cursor, Codex, Gemini, and other MCP-capable agents may each need separate configuration.
+Claude Code, OpenCode, Cursor, Codex, Gemini, and other MCP-capable agents may each need separate configuration for BlendOps content installation.
+
+Direct official MCP use from Claude Code/OpenCode/Cursor/Codex/Gemini is not verified and is not currently a supported BlendOps route.
 
 Rules:
 
@@ -72,6 +74,7 @@ Rules:
 - Each client should prefer a project-local or tool-native install path with a confidence label.
 - If native paths are unknown, use the generic root/project-local fallback.
 - Blender runtime bridge setup remains separate if Blender control is needed.
+- Do not present direct official MCP as a supported runtime route for non-Claude Desktop agents.
 - Do not use a non-official bridge as the BlendOps official runtime path.
 - Do not claim a marketplace or plugin listing until the package is actually accepted, listed, and verified.
 
@@ -118,12 +121,12 @@ This package structure is a strategy target, not a current packaged release.
 |---|---|---|---|---|---|---|
 | Claude Desktop Personal Skills | Manual import or attachment of BlendOps skill content through Claude Desktop UI. | Separate Official Claude Blender Connector. | Manual UI import | Import skill content; separately enable connector if runtime is needed. | linked-only | Skill import does not prove runtime access. |
 | Claude Desktop Blender Connector | Not a skill install surface; use BlendOps docs as guidance. | Official Claude Blender Connector plus Blender-side bridge/server. | Manual UI import / Docs-only/reference | Enable connector, connect from Blender, run read-only smoke test before mutation. | verified-read for read-only smoke evidence | Full runtime eval still Not Run. |
-| Claude Code | Project-local files or verified tool-native skill path. | Official runtime bridge separately configured if needed. | Project-local file install | Attach `skills/`, `laws/`, `packs/`, and entrypoint instructions. | verified-read for project-local adapter; native path environment-dependent | Keep Claude Code distinct from Claude Desktop. |
-| OpenCode | Project-local files now; future plugin-style install doc if verified. | Official runtime bridge separately configured if needed. | Project-local file install / future tool-native plugin install | Add project-local entrypoint or verified plugin config later. | linked-only | Do not claim plugin availability yet. |
-| Cursor | Project-local rules/docs attachment if verified. | Official runtime bridge separately configured if needed. | Project-local file install | Add project rules or docs references only after backup/approval. | linked-only | Avoid broad global rule mutation. |
-| Codex CLI/App | Generic project instruction or future adapter. | Official runtime bridge separately configured if needed. | Project-local file install / Docs-only/reference | Use AGENTS-style fallback when native path is unknown. | linked-only | Do not invent plugin paths. |
-| Gemini CLI | Future adapter or docs-only reference until researched. | Official runtime bridge separately configured if needed. | Docs-only/reference | Treat as not researched until verified. | not researched | Add adapter only after source-backed path exists. |
-| Generic root/project-local fallback | `BLENDOPS.md`, `AGENTS.md`, or copied core collection references. | Official runtime bridge separately configured if needed. | Project-local file install | Copy/reference core collection and record rollback. | verified-read | Default safest reversible path. |
+| Claude Code | Project-local files or verified tool-native skill path. | Direct official MCP unsupported/unverified; use Stack 2 CLI fallback if explicitly selected, or Stack 3 only as optional third-party experiment. | Project-local file install | Attach `skills/`, `laws/`, `packs/`, and entrypoint instructions. | verified-read for project-local adapter; native path environment-dependent | Keep Claude Code distinct from Claude Desktop. |
+| OpenCode | Project-local files now; future tool-native install option if verified. | Direct official MCP unsupported/unverified; use Stack 2 CLI fallback if explicitly selected, or Stack 3 only as optional third-party experiment. | Project-local file install / future verified tool-native install | Add project-local entrypoint or verified config later. | linked-only | Do not claim plugin availability yet. |
+| Cursor | Project-local rules/docs attachment if verified. | Direct official MCP unsupported/unverified; use Stack 2 CLI fallback if explicitly selected, or Stack 3 only as optional third-party experiment. | Project-local file install | Add project rules or docs references only after backup/approval. | linked-only | Avoid broad global rule mutation. |
+| Codex CLI/App | Generic project instruction or future adapter. | Direct official MCP unsupported/unverified; use Stack 2 CLI fallback if explicitly selected, or Stack 3 only as optional third-party experiment. | Project-local file install / Docs-only/reference | Use AGENTS-style fallback when native path is unknown. | linked-only | Do not invent plugin paths. |
+| Gemini CLI | Future adapter or docs-only reference until researched. | Direct official MCP unsupported/unverified; use Stack 2 CLI fallback if explicitly selected, or Stack 3 only as optional third-party experiment. | Docs-only/reference | Treat as not researched until verified. | not researched | Add adapter only after source-backed path exists. |
+| Generic root/project-local fallback | `BLENDOPS.md`, `AGENTS.md`, or copied core collection references. | Direct official MCP unsupported/unverified; use Stack 2 CLI fallback if explicitly selected, or Stack 3 only as optional third-party experiment. | Project-local file install | Copy/reference core collection and record rollback. | verified-read | Default safest reversible path. |
 
 ---
 
@@ -145,7 +148,7 @@ This package structure is a strategy target, not a current packaged release.
 |---|---|---|
 | Phase A | Project-local generic package | Reversible copy/reference flow verified in disposable projects. |
 | Phase B | Claude Desktop Personal Skill bundle | User-managed import package tested without claiming connector/runtime success. |
-| Phase C | OpenCode plugin-style install doc | Source-backed plugin config and rollback verified. |
+| Phase C | OpenCode installation options research | Source-backed install/config path and rollback verified before any tool-native claim. |
 | Phase D | Cursor/Codex/Gemini adapters | Each adapter has confidence labels, install scope, verification, and rollback. |
 | Phase E | Marketplace/package automation if justified | Published/listed package exists and install evidence is recorded. |
 

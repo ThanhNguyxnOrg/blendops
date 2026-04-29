@@ -4,7 +4,7 @@ Status: Draft v0 packet only, not executed
 Date: 2026-04-29  
 Source of truth: [official-runtime-verification-criteria.md](./official-runtime-verification-criteria.md)  
 Readiness preflight: [runtime-availability-checklist.md](./runtime-availability-checklist.md)  
-Route decision: [../runtime-route-strategy.md](../runtime-route-strategy.md)
+Stack decision: [../runtime-stack-strategy.md](../runtime-stack-strategy.md)
 
 > [!CAUTION]
 > This packet prepares a future manual eval. It does not install Blender, run Blender, claim official runtime compatibility, or claim preview/render/GLB artifacts were produced.
@@ -13,7 +13,7 @@ Route decision: [../runtime-route-strategy.md](../runtime-route-strategy.md)
 
 ## Purpose
 
-This packet gives a future operator a conservative checklist for running official-runtime manual evals and recording evidence.
+This packet gives a future operator a conservative checklist for running runtime manual evals and recording evidence.
 
 The packet exists so BlendOps can keep Draft v0 status honest while preparing for runtime verification. A future result can only move from planned work to an evidence-backed result when it follows the criteria in the source document and records enough proof for review.
 
@@ -21,20 +21,22 @@ The packet exists so BlendOps can keep Draft v0 status honest while preparing fo
 
 ## Scope
 
-This packet covers manual eval preparation for the official routes in [runtime-route-strategy.md](../runtime-route-strategy.md):
+This packet covers manual eval preparation for the stacks in [runtime-stack-strategy.md](../runtime-stack-strategy.md):
 
-1. Route A — Claude Desktop Connector path.
-2. Route B — Official MCP path for non-Claude Desktop agents.
-3. Route C — Official Blender CLI path.
+1. Stack 1 — Claude Desktop official connector stack.
+2. Stack 2 — Official Blender CLI fallback.
+3. Stack 3 — Optional unofficial third-party bridge stack.
 
-Route D — Optional unofficial MCP bridge path is excluded from official release-eval evidence unless a future policy creates a separate local/experimental evidence category.
+Stack 1 is the only official connector stack currently verified, based on read-only smoke evidence. Stack 2 is official and deterministic, but less interactive than the connector stack. Stack 3 is unofficial, user-managed, experimental/local only, and excluded from official release-eval evidence unless a future policy creates a separate local/experimental evidence category.
 
-The operator must choose one path per eval record unless the test plan explicitly compares paths. Each path needs its own evidence notes, artifact labels, and final verdict.
+Direct official MCP use from Claude Code/OpenCode/Cursor/Codex/Gemini is not verified and is not currently a supported BlendOps route.
+
+The operator must choose one stack per eval record unless the test plan explicitly compares stacks. Each stack needs its own evidence notes, artifact labels, and final verdict.
 
 This packet covers:
 
 - environment capture
-- official source capture
+- official/upstream source capture
 - operator steps
 - artifact evidence rules
 - pass, warn, fail rubric
@@ -45,10 +47,10 @@ This packet covers:
 
 ## Run order
 
-1. Read [../runtime-route-strategy.md](../runtime-route-strategy.md) and select the intended route.
-2. Prefer Route A for the first real runtime eval because read-only connector smoke evidence exists.
+1. Read [../runtime-stack-strategy.md](../runtime-stack-strategy.md) and select the intended stack.
+2. Prefer Stack 1 for the first real runtime eval because read-only connector smoke evidence exists.
 3. Complete [runtime-availability-checklist.md](./runtime-availability-checklist.md) in the runtime environment.
-4. If Route A fails during mutation, render, or export, use Route C as the next official fallback route to test.
+4. If Stack 1 fails during mutation, render, or export, use Stack 2 as the next official fallback stack to test.
 5. Run this official runtime manual eval packet only when readiness allows a scoped attempt.
 6. Apply [official-runtime-verification-criteria.md](./official-runtime-verification-criteria.md) when assigning artifact truth labels and final verdicts.
 7. Update [../release-readiness.md](../release-readiness.md) only after evidence exists.
@@ -80,8 +82,8 @@ Before execution, complete the readiness preflight in [runtime-availability-chec
 Before execution, the future operator must confirm:
 
 - BlendOps status is still Draft v0 unless a newer release-readiness document says otherwise.
-- The selected runtime path is official.
-- The current upstream official instructions were checked on the eval date.
+- The selected runtime stack is named and its release-eval status is understood.
+- The current upstream instructions were checked on the eval date.
 - The eval environment is allowed to run Blender and produce files.
 - Output paths are known before execution.
 - Evidence capture is available for screenshots, logs, generated files, and notes.
@@ -89,16 +91,16 @@ Before execution, the future operator must confirm:
 
 ---
 
-## Runtime paths to test
+## Runtime stacks to test
 
-| Runtime path | Eval use | Source requirement | Evidence focus |
+| Runtime stack | Eval use | Source requirement | Evidence focus |
 |---|---|---|---|
-| Route A — Claude Desktop Connector path | Preferred first real runtime eval candidate because read-only smoke evidence exists. | Use upstream Claude tutorial and current official instructions checked on the eval date. | Claude-side actions, Blender-side actions, prompts, permissions, generated files, preview/render evidence, GLB/export evidence, user-facing clarity. |
-| Route B — Official MCP path for non-Claude Desktop agents | Candidate official path only after the specific MCP-capable agent is verified. | Use upstream Blender documentation plus current target-agent MCP documentation checked on the eval date. | Agent-specific MCP config, MCP actions, generated files, preview/render evidence, GLB/export evidence, validation notes, caveats. |
-| Route C — Official Blender CLI path | Next official fallback if Route A fails during mutation, render, or export. | Use upstream Blender manual CLI documentation checked on the eval date. | Exact command line, exit status, logs, generated files, preview/render evidence, GLB/export evidence, platform caveats. |
+| Stack 1 — Claude Desktop official connector stack | Preferred first real runtime eval candidate because read-only smoke evidence exists. | Use upstream Claude tutorial, official Blender MCP project/page, and current official instructions checked on the eval date. | Claude Desktop connector actions, Blender-side official MCP bridge/add-on actions, prompts, permissions, generated files, preview/render evidence, GLB/export evidence, user-facing clarity. |
+| Stack 2 — Official Blender CLI fallback | Next official fallback if Stack 1 fails or is unavailable. | Use upstream Blender manual CLI documentation checked on the eval date. | Exact command line, script/input, output folder, generated files, exit status, logs, preview/render evidence, GLB/export evidence, platform caveats. |
+| Stack 3 — Optional unofficial third-party bridge stack | Local experimental/user-managed only; not official release-eval evidence. | Use upstream third-party repo checked on the eval date; do not copy full install docs into BlendOps. | Client-specific config, third-party server/add-on state, host/port, arbitrary Python/code execution risk, generated files if any, and clear local/experimental caveats. |
 
 > [!IMPORTANT]
-> Exact setup commands, versions, UI labels, and runtime behavior must come from upstream official documentation at execution time. BlendOps must not invent install steps or imply setup happened in this repository.
+> Exact setup commands, versions, UI labels, and runtime behavior must come from upstream documentation at execution time. BlendOps must not invent install steps or imply setup happened in this repository.
 
 ---
 
@@ -111,9 +113,9 @@ Record these fields before running an eval:
 - [ ] Operating system and version
 - [ ] Hardware notes relevant to Blender, if known
 - [ ] Blender version, if installed
-- [ ] Selected runtime path
-- [ ] Upstream official source URL
-- [ ] Date upstream official source was checked
+- [ ] Selected runtime stack
+- [ ] Upstream source URL(s)
+- [ ] Date upstream source was checked
 - [ ] Runtime setup state before eval
 - [ ] Working directory
 - [ ] Planned output directory
@@ -131,9 +133,9 @@ If a field cannot be captured, record `Unknown` and explain why.
 ### 1. Prepare the eval record
 
 - [ ] Create a new dated eval result record or copy the future result template below.
-- [ ] Name the selected official runtime path.
-- [ ] Link the upstream official source.
-- [ ] Record the date the upstream official source was checked.
+- [ ] Name the selected runtime stack.
+- [ ] Link the upstream source(s).
+- [ ] Record the date upstream source(s) were checked.
 - [ ] Record the environment capture checklist.
 - [ ] Record the prompt or recipe that will be used.
 - [ ] Record expected outputs and which artifact types are in scope.
@@ -141,37 +143,43 @@ If a field cannot be captured, record `Unknown` and explain why.
 ### 2. Confirm boundaries before execution
 
 - [ ] Confirm this is a runtime eval, not an install dry-run.
-- [ ] Confirm the selected path is official.
-- [ ] Confirm no custom runtime implementation is being introduced.
+- [ ] Confirm the selected stack is allowed for the intended evidence category.
+- [ ] Confirm no custom BlendOps runtime implementation is being introduced.
 - [ ] Confirm output paths are outside docs unless the eval plan says otherwise.
 - [ ] Confirm the operator will not claim artifacts until evidence exists.
 
-### 3. Execute the selected official path
+### 3. Execute the selected stack
 
-For Route A — Claude Desktop Connector path:
+For Stack 1 — Claude Desktop official connector stack:
 
-- [ ] Follow upstream official Claude instructions.
+- [ ] Follow upstream official Claude instructions and official Blender MCP bridge/add-on instructions.
+- [ ] Confirm the official Blender MCP bridge/add-on is installed/enabled in Blender.
+- [ ] Start **MCP Bridge Server**, **Connect to Claude**, or the equivalent official Blender-side server control.
+- [ ] Record the host/port shown by the add-on when shown, commonly `localhost:9876`.
+- [ ] Run a read-only connector smoke test before mutation.
 - [ ] Record Claude-side actions separately from Blender-side actions when possible.
 - [ ] Record prompts, connector actions, accepted permissions, scene edits, preview/render actions, and export actions.
 - [ ] Record generated file paths and visible evidence when produced.
 - [ ] Record caveats about UI state, connector availability, session continuity, permissions, or incomplete exports.
 
-For Route B — Official MCP path for non-Claude Desktop agents:
-
-- [ ] Follow upstream official Blender instructions and the target agent's current MCP documentation.
-- [ ] Record the specific agent name, config source, transport assumptions, and approval flow.
-- [ ] Record setup state without claiming setup was performed unless it was performed during this eval.
-- [ ] Record every MCP action, tool call, or agent action.
-- [ ] Record file paths for generated Blender files, preview/render files, and GLB/export files when produced.
-- [ ] Record connector/session caveats, permissions, crashes, missing tools, or ambiguous behavior.
-
-For Route C — Official Blender CLI path:
+For Stack 2 — Official Blender CLI fallback:
 
 - [ ] Follow upstream official Blender CLI documentation.
 - [ ] Record the exact command line used, including executable path style, input files, output paths, and flags.
+- [ ] Record the script/input used.
 - [ ] Record whether commands were reference-only, dry-run, or actual runtime execution.
-- [ ] Capture command output, exit status, logs, and validation notes.
+- [ ] Capture command output, exit status, logs, generated files, and validation notes.
 - [ ] Record caveats about platform differences, path quoting, missing Blender installation, missing input file, or unsupported flags.
+
+For Stack 3 — Optional unofficial bridge stack:
+
+- [ ] Confirm the user knowingly chose unofficial, user-managed, experimental/local operation.
+- [ ] Follow upstream third-party instructions without copying them into BlendOps.
+- [ ] Configure each MCP client separately; do not assume Claude Desktop config applies to Claude Code/OpenCode/Cursor.
+- [ ] Record the third-party server and third-party Blender add-on/socket bridge used.
+- [ ] Record host/port and confirm it does not conflict with another bridge server, commonly `localhost:9876`.
+- [ ] Record arbitrary Blender Python/code execution risks and user acceptance.
+- [ ] Keep any result separate from BlendOps official release-eval evidence.
 
 ### 4. Capture evidence
 
@@ -201,7 +209,7 @@ Artifact labels must be scoped per artifact type. A run can be `Verified` for pr
 ### 6. Assign final verdict
 
 - [ ] Use the pass/warn/fail rubric below.
-- [ ] Keep blocked environment cases as `Blocked / Not Run` unless an official runtime attempt was actually made and failed.
+- [ ] Keep blocked environment cases as `Blocked / Not Run` unless a runtime attempt was actually made and failed.
 - [ ] Do not claim runtime compatibility is confirmed unless the specific scoped eval passes with evidence.
 - [ ] Do not mark broader Phase 3 or runtime manual eval complete based on packet preparation.
 
@@ -213,7 +221,7 @@ Use this table in the future eval record.
 
 | Evidence field | Requirement | Captured value |
 |---|---|---|
-| Runtime path used | Name the official path used, plus source link and date checked. |  |
+| Runtime stack used | Name the stack used, plus source link(s) and date checked. |  |
 | Commands/actions executed | List the exact commands, UI actions, connector actions, or agent actions performed. |  |
 | Generated files | List every output file path, file type, and creation context. If none were produced, say `Not Produced`. |  |
 | Preview/render evidence | Provide screenshot, render file, preview image, or clear capture notes. If not captured, say `Not Produced`. |  |
@@ -221,84 +229,10 @@ Use this table in the future eval record.
 | Validation notes | Record scene-quality checks, user-facing artifact checks, and web handoff checks. |  |
 | Failure/caveat log | Record errors, missing setup, environment limitations, partial runs, warnings, and unknowns. |  |
 
-> [!WARNING]
-> A transcript alone is not enough for runtime success. Success requires concrete artifact evidence or explicit proof of the runtime action being evaluated.
-
 ---
 
-## Artifact truth table
+## Future research guard
 
-| Artifact or action | Not Run | Attempted | Produced | Verified | Failed | Notes |
-|---|---|---|---|---|---|---|
-| Official source checked |  |  |  |  |  |  |
-| Runtime path setup state recorded |  |  |  |  |  |  |
-| Prompt or recipe submitted |  |  |  |  |  |  |
-| Actions or commands recorded |  |  |  |  |  |  |
-| Blender scene file |  |  |  |  |  |  |
-| Preview/render evidence |  |  |  |  |  |  |
-| GLB/export evidence |  |  |  |  |  |  |
-| Validation notes |  |  |  |  |  |  |
-| User-facing response quality notes |  |  |  |  |  |  |
-| Cleanup completed |  |  |  |  |  |  |
+Direct official MCP use from Claude Code/OpenCode/Cursor/Codex/Gemini is not verified and is not currently a supported BlendOps route.
 
----
-
-## Pass, warn, fail rubric
-
-| Verdict | Required condition |
-|---|---|
-| Pass | Official runtime path is identified, actions are recorded, expected outputs are produced, required preview/render and GLB/export evidence is present when in scope, validation notes are complete, and caveats do not block the scoped objective. |
-| Warn | Runtime path is official and some evidence exists, but one or more non-blocking caveats remain, such as environment-specific setup notes, partial artifact coverage, limited validation depth, or unclear upstream behavior. |
-| Fail | Runtime path is not official, required evidence is missing, the runtime cannot complete the scoped objective, generated artifacts are absent when required, or validation finds blocking quality/safety issues. |
-| Blocked / Not Run | The environment cannot run the selected official path, or execution was not attempted. No runtime success claim is allowed. |
-
----
-
-## Rollback and cleanup checklist
-
-Record cleanup actions after the eval:
-
-- [ ] Close Blender and related connector sessions, if opened.
-- [ ] Stop any runtime session started for the eval.
-- [ ] Save logs and screenshots needed for evidence before deleting temporary files.
-- [ ] Move intended eval artifacts to the planned output directory.
-- [ ] Mark temporary files that should not be kept.
-- [ ] Delete temporary files only after evidence is captured.
-- [ ] Record any files intentionally retained.
-- [ ] Record any files intentionally deleted.
-- [ ] Confirm no repository docs claim runtime success unless the eval record supports it.
-- [ ] Confirm preview/render/GLB claims match recorded evidence.
-- [ ] Confirm caveats and failures are still visible in the eval record.
-
----
-
-## Blank result template for a future eval record
-
-Copy this template into a future runtime eval result record.
-
-```md
-# Official Runtime Manual Eval Result, Draft v0
-
-| Field | Value |
-|---|---|
-| Date |  |
-| Operator |  |
-| Environment |  |
-| Runtime path used |  |
-| Prompt/recipe used |  |
-| Actions executed |  |
-| Files generated | Not Produced |
-| Preview/render status | Not Produced |
-| GLB/export status | Not Produced |
-| Validation notes |  |
-| User-facing response quality |  |
-| Caveats/failures |  |
-| Final verdict | Blocked / Not Run |
-```
-
----
-
-## Current Draft v0 decision
-
-> [!WARNING]
-> Current status remains packet prepared only. Runtime evals must stay `Not Run`, `Not Produced`, or `Blocked / Not Run` until an official runtime path is actually executed and the required evidence is recorded.
+Do not use this packet to claim direct official MCP support for those agents unless a future policy, source-backed setup record, and local eval evidence explicitly add that scope.

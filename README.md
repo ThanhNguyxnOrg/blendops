@@ -86,16 +86,31 @@ Examples of desired outcomes may include:
 
 ---
 
-## 🧭 Official runtime setup
+## 🧭 Runtime setup
 
-BlendOps keeps runtime execution outside this repository and points users to official Blender-supported paths.
+BlendOps keeps runtime execution outside this repository and documents a clear 3-stack model.
 
 Start here:
 
 - **BlendOps setup overview:** [docs/external-runtime-setup.md](./docs/external-runtime-setup.md)
-- **Official Blender MCP Server:** https://www.blender.org/lab/mcp-server/
-- **Official Claude Blender Connector tutorial:** https://claude.com/resources/tutorials/using-the-blender-connector-in-claude
-- **Official Blender CLI docs:** https://docs.blender.org/manual/en/latest/advanced/command_line/index.html
+- **Runtime stack strategy:** [docs/runtime-stack-strategy.md](./docs/runtime-stack-strategy.md)
+
+Runtime stacks:
+
+1. **Claude Desktop official connector stack** — Claude Desktop Blender Connector plus the official Blender MCP bridge/add-on running inside Blender. This is the only official connector stack currently verified, based on read-only smoke evidence.
+2. **Official Blender CLI fallback** — explicit Blender executable / CLI invocation. This does not use MCP and does not need Claude Desktop.
+3. **Optional unofficial third-party bridge stack** — user-managed, experimental/local only, and not part of BlendOps official release-eval evidence.
+
+Official / primary links:
+
+- **Official Blender MCP project:** https://projects.blender.org/lab/blender_mcp
+- **Blender Lab MCP page:** https://www.blender.org/lab/mcp-server/
+- **Claude Blender Connector tutorial:** https://claude.com/resources/tutorials/using-the-blender-connector-in-claude
+- **Blender CLI docs:** https://docs.blender.org/manual/en/latest/advanced/command_line/index.html
+
+Optional unofficial bridge details live in [docs/unofficial-runtime-bridges.md](./docs/unofficial-runtime-bridges.md).
+
+Direct official MCP use from Claude Code/OpenCode/Cursor/Codex/Gemini is not verified and is not currently a supported BlendOps route.
 
 For exact/current install commands and runtime configuration details, follow upstream Blender and Claude documentation.
 

@@ -155,12 +155,13 @@ Focus: official runtime verification criteria and runtime eval readiness, not cu
 - [x] prepare runtime availability checklist without claiming runtime execution
 - [x] prepare Phase 3.3 pre-runtime release readiness rollup (`docs/release-readiness-rollup-v0.md`)
 - [x] record Claude Desktop Blender connector read-only smoke test without claiming full runtime eval or artifacts
-- [x] draft runtime route strategy with Route A first eval, Route C fallback, Route B candidate, and Route D unofficial caveat
-- [x] update eval docs for Route A first, Route C fallback, Route B per-agent verification, and Route D non-release path
+- [x] draft runtime stack strategy with Stack 1 first eval, Stack 2 CLI fallback, Stack 3 unofficial caveat, and direct official MCP for non-Claude agents kept as future research only
+- [x] update eval docs for Stack 1 first, Stack 2 fallback, Stack 3 non-release path, and direct official MCP for non-Claude agents unsupported/unverified
 - [x] draft and link multi-agent install and distribution strategy docs without claiming package or marketplace availability
+- [x] complete runtime stack model cleanup across public docs
 - [ ] package a project-local generic BlendOps bundle with rollback notes
 - [ ] prepare Claude Desktop Personal Skill import bundle without claiming connector/runtime success
-- [ ] prepare OpenCode plugin-style install documentation after source-backed path verification
+- [ ] research OpenCode installation options after source-backed path verification
 - [ ] research and draft Cursor, Codex, and Gemini adapters with confidence labels
 - [ ] define evidence gates for any future tool-native package, extension, or marketplace listing
 - [ ] defer any product implementation decision until official runtime evidence exists

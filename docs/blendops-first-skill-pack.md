@@ -44,7 +44,7 @@ Guide users through prerequisite external runtime setup and boundary understandi
 
 ### Inputs
 - user environment (OS/toolchain)
-- target runtime choice (Official Blender MCP Server, Official Claude Blender Connector, Official Blender CLI reference)
+- target runtime stack choice (Claude Desktop official connector stack, official Blender CLI fallback, or optional unofficial bridge stack with caveats)
 
 ### Outputs
 - setup checklist
