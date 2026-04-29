@@ -12,8 +12,10 @@ BlendOps evals are evidence records for laws, skills, workflows, recipes, and pa
 ## Status model
 
 - **Protocol / Not yet executed**: test plan only, no runtime execution claims
-- **Executed**: includes real evidence artifacts and explicit pass/warn/fail outcomes
+- **Executed / Text-only (No Blender runtime)**: evaluation completed on prompts/plans/checklists only; runtime artifacts remain Not Run/Not Produced
+- **Executed / Runtime**: official runtime path actually run with real preview/export/GLB evidence and explicit pass/warn/fail outcomes
 
 ## Eval index
 
 - [cyberpunk-shoe-hero-v0-manual-eval.md](./cyberpunk-shoe-hero-v0-manual-eval.md)
+- [cyberpunk-shoe-hero-v0-text-eval.md](./cyberpunk-shoe-hero-v0-text-eval.md) — text-only dry eval (no Blender runtime execution)

@@ -92,6 +92,7 @@ Active docs for the current product/workflow direction.
 |---|---|
 | Evals index | [evals/README.md](./evals/README.md) |
 | Cyberpunk shoe v0 manual eval protocol | [evals/cyberpunk-shoe-hero-v0-manual-eval.md](./evals/cyberpunk-shoe-hero-v0-manual-eval.md) |
+| Cyberpunk shoe v0 text-only eval | [evals/cyberpunk-shoe-hero-v0-text-eval.md](./evals/cyberpunk-shoe-hero-v0-text-eval.md) |
 
 ---
 

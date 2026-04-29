@@ -79,6 +79,7 @@ Every run must capture:
 - selected official runtime path
 - source confidence level
 - what was verified vs what remains linked-only
+- text-only dry-eval marker when runtime is not executed (`Not Run` artifact status)
 
 ## Final response format
 

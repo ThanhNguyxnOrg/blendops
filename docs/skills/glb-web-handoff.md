@@ -57,6 +57,11 @@ If compatibility evidence is missing:
 - list missing checks,
 - provide next verification actions.
 
+If this is a text-only dry eval:
+- mark artifact status as `Not Run`,
+- avoid runtime success claims,
+- and keep handoff language in planning mode.
+
 ## User-facing response template
 
 - Handoff status
