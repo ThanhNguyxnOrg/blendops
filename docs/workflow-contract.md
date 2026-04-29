@@ -194,7 +194,7 @@ BlendOps responsibilities:
 - provide user-facing clarity
 
 Not a BlendOps responsibility in this phase:
-- shipping custom CLI/MCP/addon runtime implementation
+- shipping BlendOps-owned CLI/MCP/addon runtime implementation
 
 ---
 

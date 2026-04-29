@@ -36,6 +36,6 @@ Non-Blender user
 
 ## Reset note
 
-The old internal custom CLI/MCP/addon implementation was removed from active codebase in this reset.
+The old internal BlendOps-owned CLI/MCP/addon implementation was removed from active codebase in this reset.
 
 A new internal adapter should only be rebuilt later if product requirements explicitly justify it.

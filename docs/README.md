@@ -96,6 +96,17 @@ Active docs for the current product/workflow direction.
 
 ---
 
+## 🧩 Install / Adoption
+
+| Area | Doc |
+|---|---|
+| Install strategy | [install-strategy.md](./install-strategy.md) |
+| Agent install guide | [agent-install.md](./agent-install.md) |
+| Package layout plan | [package-layout.md](./package-layout.md) |
+| Agent install prompts | [examples/agent-install-prompt.md](./examples/agent-install-prompt.md) |
+
+---
+
 ## 🔬 Research docs
 
 | Area | Doc |
@@ -132,5 +143,5 @@ Active docs for the current product/workflow direction.
 ## ⚠️ Notes
 
 - BlendOps is a product/workflow layer for non-Blender users.
-- BlendOps does **not** currently ship its own custom CLI/MCP/addon runtime.
+- BlendOps does **not** currently ship its own BlendOps-owned CLI/MCP/addon runtime.
 - Historical runtime-era documents live under `docs/archive/` and are not active setup guidance.

@@ -5,7 +5,7 @@ Date: 2026-04-29
 
 ## Decision context
 
-BlendOps is currently a product/workflow layer for non-Blender users and explicitly does **not** ship its own custom CLI/MCP/addon runtime in active scope.
+BlendOps is currently a product/workflow layer for non-Blender users and explicitly does **not** ship its own BlendOps-owned CLI/MCP/addon runtime in active scope.
 
 Decision goal:
 Choose a v0 approach for law/skill/workflow delivery that maximizes portability, safety, and non-Blender-user usefulness while minimizing accidental runtime rebuild.

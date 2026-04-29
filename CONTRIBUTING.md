@@ -15,7 +15,7 @@ Contributions should improve one or more of:
 
 ## Ground rules
 
-1. Do not reintroduce old custom BlendOps CLI/MCP/addon runtime surfaces.
+1. Do not reintroduce old BlendOps-owned CLI/MCP/addon runtime surfaces; only official Blender CLI (runtime reference) and GitHub CLI (`gh`) may be referenced where relevant.
 2. Do not expose arbitrary Python as the final BlendOps user-facing interface.
 3. Keep changes small, reviewable, and reversible.
 4. Update docs whenever behavior or contracts change.

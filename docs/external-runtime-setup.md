@@ -1,6 +1,6 @@
 # External Runtime Setup
 
-BlendOps is a workflow/product layer and does **not** ship its own custom CLI/MCP/addon runtime.
+BlendOps is a workflow/product layer and does **not** ship its own BlendOps-owned CLI/MCP/addon runtime.
 
 Active runtime guidance is official-only.
 

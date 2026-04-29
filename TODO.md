@@ -57,6 +57,22 @@ _Last updated: 2026-04-29_
 - [ ] refine validation gates
 - [ ] decide whether to package installable skills later
 
+## Phase 2.6 — Install / adoption strategy (completed)
+
+- [x] research agent-driven install patterns
+- [x] design project-local install strategy
+- [x] create agent-install guide
+- [x] create package layout plan
+- [x] create copy-paste install prompt
+
+## Phase 2.7 — Install dry-run eval
+
+- [ ] run agent-install guide in a disposable fixture project
+- [ ] verify project-local files created correctly
+- [ ] verify no runtime was installed/run
+- [ ] verify rollback instructions work
+- [ ] refine install guide
+
 ## Phase 3 — Prototype integration decision
 
 - [ ] confirm official runtime compatibility assumptions (Blender MCP + Claude connector + Blender CLI)

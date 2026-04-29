@@ -25,7 +25,7 @@ The project direction is now intentionally focused on:
 
 ## Boundary after reset
 
-BlendOps does **not** currently ship its own custom CLI/MCP/addon runtime.
+BlendOps does **not** currently ship its own BlendOps-owned CLI/MCP/addon runtime.
 
 BlendOps is the workflow/product layer above external runtime tooling.
 

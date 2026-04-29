@@ -236,6 +236,6 @@ Output language policy:
 ## Out of scope for this document
 
 - No code implementation
-- No custom CLI/MCP/addon design
+- No BlendOps-owned CLI/MCP/addon design
 - No raw shell or arbitrary-Python user interface definition
 - No React code in this phase

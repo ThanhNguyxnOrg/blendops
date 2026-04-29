@@ -28,7 +28,7 @@ BlendOps focuses on the product/workflow layer above runtime tooling:
 
 BlendOps does **not** currently ship its own:
 
-- custom CLI runtime
+- BlendOps-owned CLI runtime
 - custom MCP server runtime
 - custom Blender addon runtime
 
@@ -91,6 +91,30 @@ For exact/current install commands and runtime configuration details, follow ups
 - Skills: [docs/skills/README.md](./docs/skills/README.md)
 - Workflow: [docs/workflows/product-hero-workflow.md](./docs/workflows/product-hero-workflow.md)
 - Recipe: [docs/recipes/cyberpunk-shoe-hero.md](./docs/recipes/cyberpunk-shoe-hero.md)
+
+---
+
+## 🧩 Install with your AI agent
+
+Attach BlendOps v0 laws/skills/workflows to a project by giving your AI coding agent a short install prompt.
+
+**Human quick install prompt:**
+
+```txt
+Install BlendOps in this project by following:
+https://raw.githubusercontent.com/ThanhNguyxnOrg/blendops/main/docs/agent-install.md
+
+Use project-local install unless I explicitly ask for global install.
+Do not install Blender runtime.
+Do not run Blender.
+Do not overwrite existing config without asking.
+Summarize exactly what you changed.
+```
+
+- Agent install guide: [docs/agent-install.md](./docs/agent-install.md)
+- Prompt examples: [docs/examples/agent-install-prompt.md](./docs/examples/agent-install-prompt.md)
+
+Note: this installs/attaches BlendOps skills/docs only. It does not install Blender runtime.
 
 ---
 

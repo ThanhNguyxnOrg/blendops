@@ -41,7 +41,7 @@ Status: Draft v0
 
 - no runtime code implementation
 - no plugin packaging/installer generation
-- no custom CLI/MCP/addon ownership
+- no BlendOps-owned CLI/MCP/addon ownership
 
 ## Release criteria
 
