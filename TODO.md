@@ -155,11 +155,12 @@ Focus: official runtime verification criteria and runtime eval readiness, not cu
 - [x] prepare runtime availability checklist without claiming runtime execution
 - [x] prepare Phase 3.3 pre-runtime release readiness rollup (`docs/release-readiness-rollup-v0.md`)
 - [x] record Claude Desktop Blender connector read-only smoke test without claiming full runtime eval or artifacts
-- [x] draft multi-agent install and distribution strategy docs without claiming package or marketplace availability
-- [ ] package a project-local generic BlendOps bundle
-- [ ] prepare Claude Desktop Personal Skill import bundle
-- [ ] prepare OpenCode plugin-style install documentation
-- [ ] research and draft Cursor, Codex, and Gemini adapters
+- [x] draft and link multi-agent install and distribution strategy docs without claiming package or marketplace availability
+- [ ] package a project-local generic BlendOps bundle with rollback notes
+- [ ] prepare Claude Desktop Personal Skill import bundle without claiming connector/runtime success
+- [ ] prepare OpenCode plugin-style install documentation after source-backed path verification
+- [ ] research and draft Cursor, Codex, and Gemini adapters with confidence labels
+- [ ] define evidence gates for any future tool-native package, extension, or marketplace listing
 - [ ] defer any product implementation decision until official runtime evidence exists
 - [ ] no arbitrary Python as final BlendOps user-facing workflow
 
