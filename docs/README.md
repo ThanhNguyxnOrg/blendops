@@ -24,8 +24,9 @@ Active docs for the current product and workflow direction.
 1. **External runtime setup, required first:** [external-runtime-setup.md](./external-runtime-setup.md)
 2. **Product direction:** [product-direction.md](./product-direction.md)
 3. **Release status:** [release-readiness.md](./release-readiness.md)
-4. **Eval status:** [evals/README.md](./evals/README.md)
-5. **Workflow and delivery specs:** continue through the grouped navigation below
+4. **Release readiness rollup:** [release-readiness-rollup-v0.md](./release-readiness-rollup-v0.md)
+5. **Eval status:** [evals/README.md](./evals/README.md)
+6. **Workflow and delivery specs:** continue through the grouped navigation below
 
 > [!TIP]
 > If you're evaluating release readiness, read the release status and manual install beta evidence before the pack docs.
@@ -40,7 +41,7 @@ Active docs for the current product and workflow direction.
 | Set runtime boundaries | [external-runtime-setup.md](./external-runtime-setup.md) | [reference-runtime.md](./reference-runtime.md), [laws/official-runtime-only.md](./laws/official-runtime-only.md) |
 | Review workflow behavior | [workflow-contract.md](./workflow-contract.md) | [first-user-journey.md](./first-user-journey.md), [safety-model.md](./safety-model.md) |
 | Try install/adoption docs | [agent-install.md](./agent-install.md) | [install-scopes.md](./install-scopes.md), [adapters/README.md](./adapters/README.md) |
-| Check eval evidence | [evals/README.md](./evals/README.md) | [release-readiness.md](./release-readiness.md) |
+| Check eval evidence | [evals/README.md](./evals/README.md) | [release-readiness.md](./release-readiness.md), [release-readiness-rollup-v0.md](./release-readiness-rollup-v0.md) |
 | Review v0 pack content | [packs/README.md](./packs/README.md) | [skills/README.md](./skills/README.md), [workflows/README.md](./workflows/README.md) |
 
 ---
@@ -203,6 +204,7 @@ Active docs for the current product and workflow direction.
 |---|---|---|
 | Current cleanup audit | [cleanup-audit.md](./cleanup-audit.md) | Governance record |
 | Release readiness status | [release-readiness.md](./release-readiness.md) | Draft v0, do not tag yet |
+| Release readiness rollup v0 | [release-readiness-rollup-v0.md](./release-readiness-rollup-v0.md) | Phase 3.3 pre-runtime rollup |
 
 ---
 

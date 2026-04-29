@@ -4,7 +4,9 @@ Status: Draft v0, not production, not stable
 Date: 2026-04-29
 
 > [!CAUTION]
-> Conservative tag decision: **do not tag yet**. BlendOps has useful Draft v0 install and documentation evidence, but runtime eval evidence is still Blocked / Not Run and artifacts are Not Produced.
+> Conservative tag decision: **do not tag v0.1.0 yet; defer tag until official runtime manual eval evidence exists, or until missing runtime evidence is explicitly accepted as a documented limitation.** BlendOps has useful Draft v0 install and documentation evidence, but runtime eval evidence is still Blocked / Not Run and artifacts are Not Produced.
+>
+> Phase 3.3 rollup: [docs/release-readiness-rollup-v0.md](./release-readiness-rollup-v0.md)
 
 ---
 
@@ -22,7 +24,7 @@ Date: 2026-04-29
 | Official runtime manual eval packet | Prepared | Packet doc: [docs/evals/official-runtime-manual-eval-packet.md](./evals/official-runtime-manual-eval-packet.md). |
 | Official runtime manual eval | Blocked / Not Run | Runtime-available environment evidence is missing. |
 | Runtime artifacts | Not Produced | No fresh preview/render/GLB evidence has been produced in official-runtime manual eval. |
-| Release tag | Not Ready | Do not tag yet. |
+| Release tag | Not Ready | Do not tag v0.1.0 yet; defer until official runtime manual eval evidence exists or missing runtime evidence is explicitly accepted as a documented limitation. |
 
 ---
 
@@ -45,7 +47,7 @@ Date: 2026-04-29
 - Claude Code native install path confidence remains environment-dependent.
 - Product-hero v0 pack remains Draft v0.
 - No fresh BlendOps runtime artifact evidence, preview/render/GLB, has been produced in official-runtime manual eval.
-- The v0.1.0 draft tag is not ready.
+- The v0.1.0 draft tag is not ready; see the Phase 3.3 rollup: [docs/release-readiness-rollup-v0.md](./release-readiness-rollup-v0.md).
 
 ---
 
@@ -84,7 +86,7 @@ Date: 2026-04-29
 - [ ] Keep final tag decision conservative until blockers are cleared.
 
 > [!WARNING]
-> Current decision: **do not tag yet**. This is a Draft v0 readiness report, not a production or stable readiness claim.
+> Current decision: **do not tag v0.1.0 yet; defer tag until official runtime manual eval evidence exists, or until missing runtime evidence is explicitly accepted as a documented limitation.** This is a Draft v0 readiness report, not a production or stable readiness claim.
 
 ---
 

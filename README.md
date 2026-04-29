@@ -153,6 +153,7 @@ Default install stance:
 | Safety model | [docs/safety-model.md](./docs/safety-model.md) |
 | Architecture | [docs/architecture.md](./docs/architecture.md) |
 | Release readiness | [docs/release-readiness.md](./docs/release-readiness.md) |
+| Release readiness rollup v0 | [docs/release-readiness-rollup-v0.md](./docs/release-readiness-rollup-v0.md) |
 
 | v0 pack area | Doc |
 |---|---|
@@ -226,7 +227,7 @@ BlendOps safety stance:
 1. Resolve Claude Code native-path ambiguity from adapter dry-run findings.
 2. Run manual install beta tests in disposable projects.
 3. Run official-runtime manual evaluation when the connector/runtime path is available.
-4. Prepare a Draft v0 release-readiness package without making a stable claim.
+4. Run the runtime availability checklist and official runtime manual eval before any v0.1.0 draft tag.
 
 ---
 

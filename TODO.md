@@ -19,7 +19,7 @@ _Last updated: 2026-04-29_
 | Skill review gates | ✅ Complete | Root skills expanded, reviewed, and indexed. |
 | Adapter install dry-run | ✅ Complete | Dry-run and rollback findings recorded without runtime execution. |
 | Manual install beta | ✅ Complete | Generic-root, Claude Code fallback, and docs-only walkthrough completed. |
-| Runtime verification | 🎯 Current focus | Verification criteria and manual eval packet prepared; official-runtime eval path remains Not Run. |
+| Runtime verification | 🎯 Current focus | Verification criteria, manual eval packet, runtime availability checklist, and release readiness rollup prepared; official-runtime eval path remains Not Run. |
 
 ## Current blockers
 
@@ -153,6 +153,7 @@ Focus: official runtime verification criteria and runtime eval readiness, not cu
 - [x] define runtime verification criteria for official integration paths
 - [x] prepare official runtime manual eval packet without claiming runtime execution
 - [x] prepare runtime availability checklist without claiming runtime execution
+- [x] prepare Phase 3.3 pre-runtime release readiness rollup (`docs/release-readiness-rollup-v0.md`)
 - [ ] evaluate whether a later custom adapter is product-justified
 - [ ] no arbitrary Python as final BlendOps user-facing workflow
 
