@@ -43,3 +43,6 @@ Confidence label: verified-read
 
 ## Notes
 Claude Code adapter is separate from Claude app/Desktop adapter.
+
+Native path confidence unresolved snippet (use when needed):
+- "Claude Code native install path is not fully verified in this environment. Using project-local fallback attachment and keeping runtime status Not Run."

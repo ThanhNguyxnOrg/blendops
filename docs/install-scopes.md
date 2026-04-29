@@ -141,3 +141,12 @@ Default order:
 3. generic-root fallback (if native uncertain)
 4. user-global only by explicit opt-in
 5. docs-only/reference on request or restriction
+
+### Generic-root vs docs-only quick rule
+
+| Situation | Scope |
+|---|---|
+| Tool-native path is linked-only/unknown but project writes are allowed | generic-root fallback |
+| User requests no file writes or environment is restricted | docs-only/reference |
+| Project-local instruction file can be created safely | generic-root fallback |
+| Compliance/policy forbids writing project files | docs-only/reference |

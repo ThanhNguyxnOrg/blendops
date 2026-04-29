@@ -98,8 +98,9 @@ Fixture outputs are disposable dry-run artifacts only.
 ## Required changes
 
 Applied in this pass:
-- No structural adapter flow changes required.
-- Eval/report additions and TODO tracking updates only.
+- Added native-path confidence unresolved snippet to `docs/adapters/claude-code.md`.
+- Added generic-root vs docs-only quick decision table to `docs/install-scopes.md`.
+- Preserved no-runtime/no-global-config boundaries while improving clarity.
 
 ## Final verdict
 
