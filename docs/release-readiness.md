@@ -74,12 +74,12 @@ Date: 2026-04-29
 
 ---
 
-## 🧾 Required before v0.1.0 draft tag
+## 🧾 Required before draft release tag
 
 - [x] Prepare official runtime verification criteria without claiming runtime execution.
 - [x] Prepare runtime availability checklist without claiming runtime execution.
 - [x] Prepare official runtime manual eval packet without claiming runtime execution.
-- [ ] Run manual install beta in disposable repos and resolve adapter friction.
+- [ ] Resolve remaining adapter friction found during manual install beta.
 - [ ] Run official-runtime manual eval with evidence capture.
 - [ ] Verify rollback procedures end-to-end.
 - [ ] Resolve or explicitly accept remaining warnings.

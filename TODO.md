@@ -145,16 +145,16 @@ _Last updated: 2026-04-29_
 - [x] verify rollback clarity in fixture reports
 - [x] document beta findings in `docs/evals/manual-install-beta-v0.md`
 
-## 🎯 Phase 3: Prototype integration decision
+## 🎯 Phase 3: Official runtime readiness
 
 Focus: official runtime verification criteria and runtime eval readiness, not custom runtime implementation.
 
-- [ ] confirm official runtime compatibility assumptions (Blender MCP + Claude connector + Blender CLI)
+- [ ] document official runtime compatibility assumptions without confirming them until evidence exists (Blender MCP + Claude connector + Blender CLI)
 - [x] define runtime verification criteria for official integration paths
 - [x] prepare official runtime manual eval packet without claiming runtime execution
 - [x] prepare runtime availability checklist without claiming runtime execution
 - [x] prepare Phase 3.3 pre-runtime release readiness rollup (`docs/release-readiness-rollup-v0.md`)
-- [ ] evaluate whether a later custom adapter is product-justified
+- [ ] defer any product implementation decision until official runtime evidence exists
 - [ ] no arbitrary Python as final BlendOps user-facing workflow
 
 ## 🧱 Phase 4: Minimal product implementation

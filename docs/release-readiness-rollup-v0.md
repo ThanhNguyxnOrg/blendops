@@ -167,12 +167,12 @@ Rationale:
 
 ---
 
-## Next operator action
+## Remaining official runtime work
 
-1. Run runtime availability checklist in a real environment.
-2. Then run official runtime manual eval packet.
+1. When a runtime-available environment exists, run the runtime availability checklist.
+2. If readiness is available, run the official runtime manual eval packet.
 3. Capture evidence before claiming any artifact.
-4. Update release-readiness after eval.
+4. Update release-readiness after eval evidence exists.
 
 ---
 
