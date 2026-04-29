@@ -19,7 +19,7 @@ _Last updated: 2026-04-29_
 | Skill review gates | ✅ Complete | Root skills expanded, reviewed, and indexed. |
 | Adapter install dry-run | ✅ Complete | Dry-run and rollback findings recorded without runtime execution. |
 | Manual install beta | ✅ Complete | Generic-root, Claude Code fallback, and docs-only walkthrough completed. |
-| Runtime verification | 🎯 Current focus | Verification criteria, manual eval packet, runtime availability checklist, release readiness rollup, and read-only connector smoke evidence prepared; full official-runtime eval remains Not Run. |
+| Runtime verification | 🎯 Current focus | Verification criteria, manual eval packet, runtime availability checklist, release readiness rollup, read-only connector smoke evidence, and install/distribution strategy docs prepared; full official-runtime eval remains Not Run. |
 
 ## Current blockers
 
@@ -155,6 +155,11 @@ Focus: official runtime verification criteria and runtime eval readiness, not cu
 - [x] prepare runtime availability checklist without claiming runtime execution
 - [x] prepare Phase 3.3 pre-runtime release readiness rollup (`docs/release-readiness-rollup-v0.md`)
 - [x] record Claude Desktop Blender connector read-only smoke test without claiming full runtime eval or artifacts
+- [x] draft multi-agent install and distribution strategy docs without claiming package or marketplace availability
+- [ ] package a project-local generic BlendOps bundle
+- [ ] prepare Claude Desktop Personal Skill import bundle
+- [ ] prepare OpenCode plugin-style install documentation
+- [ ] research and draft Cursor, Codex, and Gemini adapters
 - [ ] defer any product implementation decision until official runtime evidence exists
 - [ ] no arbitrary Python as final BlendOps user-facing workflow
 
@@ -162,6 +167,7 @@ Focus: official runtime verification criteria and runtime eval readiness, not cu
 
 - [ ] build only from product requirements
 - [ ] avoid rebuilding low-level CLI/MCP out of inertia
+- [ ] do not mark packaged skill, plugin, or marketplace distribution complete until evidence exists
 
 ## 🌐 Phase 5: Web-ready 3D output
 

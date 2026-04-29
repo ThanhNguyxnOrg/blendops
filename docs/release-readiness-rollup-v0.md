@@ -99,6 +99,8 @@ No current repository doc should claim official runtime compatibility confirmed,
 | Skill/law/pack collection | Draft Pass |
 | Adapter install dry-run | Warn |
 | Manual install beta | Warn |
+| Multi-agent install strategy | Drafted |
+| Distribution strategy | Drafted / no marketplace claim |
 | Runtime availability checklist | Prepared / Not Run |
 | Claude Desktop Blender connector read-only smoke test | Pass / Available |
 | Official runtime manual eval | Not Run |
@@ -141,6 +143,7 @@ No current repository doc should claim official runtime compatibility confirmed,
 - Skill depth and review gate docs.
 - Adapter install dry-run report.
 - Manual install beta report.
+- Multi-agent install strategy and distribution strategy drafts.
 - Runtime verification criteria.
 - Runtime availability checklist.
 - Official runtime manual eval packet.
@@ -159,6 +162,7 @@ No current repository doc should claim official runtime compatibility confirmed,
 - Runtime artifact claims.
 - Preview/render/GLB evidence claims.
 - Broad install confidence across environments.
+- Packaged skill bundle, tool-native package, or official marketplace listing.
 
 ---
 
