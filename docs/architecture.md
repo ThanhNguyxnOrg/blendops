@@ -5,7 +5,10 @@
 Non-Blender user
 → AI coding tool
 → BlendOps workflow/product layer
-→ external Blender MCP/runtime adapter
+→ external runtime option:
+   - Official Blender MCP Server
+   - Official Claude Blender Connector
+   - Official Blender CLI reference
 → Blender
 → preview/export/artifacts
 → web/app/game usage guidance
@@ -25,7 +28,7 @@ Non-Blender user
 - returns plain-language handoff guidance
 
 ### External runtime layer
-- uses official Blender runtime behavior and reference MCP bridge patterns
+- uses official Blender ecosystem runtime sources (Blender MCP Server, Claude Blender Connector, Blender CLI reference)
 - executes low-level scene operations outside BlendOps core product abstraction
 
 ### Blender

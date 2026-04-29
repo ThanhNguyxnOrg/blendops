@@ -32,7 +32,7 @@ BlendOps does **not** currently ship its own:
 - custom MCP server runtime
 - custom Blender addon runtime
 
-BlendOps is also not intended to clone Blender CLI or clone `ahujasid/blender-mcp`.
+BlendOps is also not intended to clone or re-implement external runtime tooling.
 
 ---
 
@@ -54,8 +54,9 @@ Typical desired outputs:
 Before using BlendOps workflow specs, complete external runtime setup:
 
 - **BlendOps setup overview:** [docs/external-runtime-setup.md](./docs/external-runtime-setup.md)
+- **Official Blender MCP Server:** https://www.blender.org/lab/mcp-server/
+- **Official Claude Blender Connector tutorial:** https://claude.com/resources/tutorials/using-the-blender-connector-in-claude
 - **Official Blender CLI docs:** https://docs.blender.org/manual/en/latest/advanced/command_line/index.html
-- **Reference AI ↔ Blender bridge:** https://github.com/ahujasid/blender-mcp
 
 For exact/current install commands and runtime configuration details, follow upstream docs.
 
@@ -101,7 +102,7 @@ BlendOps is designed around this workflow:
 
 ## 🛡️ Safety boundary
 
-`ahujasid/blender-mcp` can expose powerful capabilities, including arbitrary Python execution.
+Official runtime integrations can expose powerful Blender capabilities.
 
 BlendOps safety stance:
 

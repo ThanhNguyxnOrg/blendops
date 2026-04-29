@@ -27,7 +27,7 @@ For historical runtime-era material, use:
 
 - external runtime setup not completed yet
 - Blender not available on expected path/PATH
-- MCP bridge not configured/connected correctly
+- official runtime connector/server not configured correctly
 - assumptions about old BlendOps runtime commands from archived docs
 
 ## Contribution help

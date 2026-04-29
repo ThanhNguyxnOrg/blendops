@@ -61,11 +61,32 @@ Example output classes:
 
 ## External runtime assumptions
 
-- explicit runtime dependencies (e.g., Blender CLI, external MCP)
+- explicit runtime dependencies (official sources only in active strategy)
 - version assumptions (if known)
 - what BlendOps does **not** control
 
 This section is mandatory to prevent runtime-scope confusion.
+
+## Official runtime references
+
+Each law/skill must list official runtime references used by that artifact:
+
+- Official Blender MCP Server: https://www.blender.org/lab/mcp-server/
+- Official Claude Blender Connector tutorial: https://claude.com/resources/tutorials/using-the-blender-connector-in-claude
+- Official Blender CLI docs: https://docs.blender.org/manual/en/latest/advanced/command_line/index.html
+
+Rules:
+- active docs should prefer official sources only
+- if a source cannot be fully fetched, keep link + “follow upstream official docs for exact/current setup”
+- do not invent setup details
+
+## Source confidence label
+
+Each law/skill should include a source-confidence declaration, e.g.:
+
+- `verified-read` (source fetched/read directly)
+- `linked-only` (source link confirmed but full content inaccessible)
+- `mixed` (combination of verified-read and linked-only references)
 
 ---
 
@@ -112,7 +133,7 @@ Rule:
 
 - failure classes (input failure, runtime failure, quality failure)
 - required user-facing failure message style
-- fallback or next-best-action guidance
+- next-step recovery guidance
 
 ---
 
@@ -148,6 +169,19 @@ Examples must include expected evidence format.
 
 ---
 
+## Runtime verification evidence
+
+Every law/skill output should include runtime-evidence fields:
+
+- runtime path selected (official Blender MCP / Claude Connector / Blender CLI reference)
+- which official source links were used
+- verification outcome summary (pass / partial / fail)
+- unresolved runtime-risk notes
+
+If runtime evidence is incomplete, the response must explicitly say so.
+
+---
+
 ## Verification
 
 Required verification block at end:
@@ -180,6 +214,13 @@ outputs:
   - <artifact>
 runtime_assumptions:
   - <dependency>
+official_runtime_references:
+  - https://www.blender.org/lab/mcp-server/
+  - https://claude.com/resources/tutorials/using-the-blender-connector-in-claude
+  - https://docs.blender.org/manual/en/latest/advanced/command_line/index.html
+runtime_verification_evidence:
+  - <evidence-item>
+source_confidence_label: verified-read | linked-only | mixed
 safety_level: strict | moderate | advisory
 verification_level: required | recommended
 references:

@@ -31,6 +31,14 @@ _Last updated: 2026-04-29_
 - [x] define Blender quality checklist categories and gate format
 - [x] draft BlendOps synthesis docs (design, law format, first skill pack)
 
+## Phase 1.6 — Official runtime strategy alignment (completed)
+
+- [x] remove non-official MCP runtime references from active strategy
+- [x] adopt official-only runtime references in active docs
+- [x] research official Blender MCP source accessibility
+- [x] research official Claude Blender Connector source accessibility
+- [x] update v0 skill pack runtime assumptions to official-only
+
 ## Phase 2 — Workflow design
 
 - [ ] scene plan format
@@ -41,9 +49,9 @@ _Last updated: 2026-04-29_
 
 ## Phase 3 — Prototype integration decision
 
-- [ ] decide whether BlendOps wraps `ahujasid/blender-mcp`
-- [ ] or uses it as an external requirement
-- [ ] or later rebuilds a small custom adapter
+- [ ] confirm official runtime compatibility assumptions (Blender MCP + Claude connector + Blender CLI)
+- [ ] define runtime verification criteria for official integration paths
+- [ ] evaluate whether a later custom adapter is product-justified
 - [ ] no arbitrary Python as final BlendOps user-facing workflow
 
 ## Phase 4 — Minimal product implementation

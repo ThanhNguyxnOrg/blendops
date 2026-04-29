@@ -15,7 +15,7 @@ The project direction is now intentionally focused on:
 
 - non-Blender-user workflow design
 - intent → plan → validation → handoff product flow
-- external runtime dependency assumptions (Blender CLI + reference MCP bridge)
+- external runtime dependency assumptions (official Blender MCP Server, official Claude Blender Connector, official Blender CLI reference)
 
 ## What changed
 

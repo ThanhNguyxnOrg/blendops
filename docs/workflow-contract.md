@@ -29,7 +29,7 @@ BlendOps contract scope:
    - Output must be understandable by non-Blender users.
 
 5. **External runtime dependency clarity**
-   - BlendOps is workflow/product layer; Blender CLI + reference bridge are external assumptions.
+   - BlendOps is workflow/product layer; official Blender MCP Server, official Claude Blender Connector, and official Blender CLI reference are external assumptions.
 
 ---
 
@@ -182,8 +182,9 @@ The contract uses a strict completion taxonomy:
 
 BlendOps workflow contract assumes:
 
-- official Blender CLI provides low-level execution primitives
-- `ahujasid/blender-mcp` is reference external bridge pattern
+- official Blender MCP Server is the preferred Blender-side runtime target
+- official Claude Blender Connector is the preferred Claude-side connector path
+- official Blender CLI provides low-level runtime/process reference behavior
 - runtime process behavior, tool availability, and environment reliability are external dependencies
 
 BlendOps responsibilities:

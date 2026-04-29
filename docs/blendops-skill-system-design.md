@@ -119,6 +119,8 @@ Runtime references should be:
 - link-based
 - version-aware when possible
 - explicitly marked as assumptions/dependencies
+- official-source-first in active docs (Official Blender MCP Server, Official Claude Blender Connector, Official Blender CLI reference)
+- no named community runtime fallback in active strategy (historical notes belong in archive context only)
 
 ---
 

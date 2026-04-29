@@ -1,65 +1,47 @@
 # External Runtime Setup
 
-## Why BlendOps uses external runtime tools today
+BlendOps is a workflow/product layer and does **not** ship its own custom CLI/MCP/addon runtime.
 
-BlendOps is currently a product/workflow layer, not a low-level runtime distribution.
-
-That means BlendOps does **not** currently ship its own:
-
-- custom CLI runtime
-- custom MCP server runtime
-- custom Blender addon runtime
-
-Instead, BlendOps assumes:
-
-- official Blender runtime/CLI
-- `ahujasid/blender-mcp` as the current reference AI ↔ Blender MCP bridge
-
-BlendOps then sits above that runtime setup and focuses on workflow guidance for non-Blender users.
+Active runtime guidance is official-only.
 
 ---
 
-## Step 1 — Install Blender
+## Option A — Official Blender MCP Server
 
-1. Install Blender from official sources:
-   - Download/install: https://www.blender.org/download/
-   - Install docs: https://docs.blender.org/manual/en/latest/getting_started/installing/index.html
+Primary Blender-side MCP runtime target:
+- https://www.blender.org/lab/mcp-server/
 
-2. Blender CLI is included with Blender.
+Use this as the first runtime option when available in your environment.
 
-3. Optionally verify CLI availability (if Blender is on your PATH):
-
-```bash
-blender --version
-```
-
-4. For full command-line behavior and options, use official docs:
-   - https://docs.blender.org/manual/en/latest/advanced/command_line/index.html
+For exact/current setup details, follow the official Blender page directly.
 
 ---
 
-## Step 2 — Set up AI ↔ Blender MCP bridge
+## Option B — Official Claude Blender Connector
 
-For AI-to-Blender connectivity today, use:
+Preferred Claude-side connector path:
+- https://claude.com/resources/tutorials/using-the-blender-connector-in-claude
 
-- https://github.com/ahujasid/blender-mcp
+Use this option for Claude users who want the official Claude tutorial flow.
 
-High-level setup flow (summary only):
-
-1. Install required tooling such as `uv`.
-2. Configure your AI client to run `uvx blender-mcp`.
-3. Install/enable the Blender addon from that repo.
-4. Start/connect the addon inside Blender so AI requests can reach Blender.
-
-Important:
-- Follow the upstream repository for exact/current setup commands and configuration.
-- Do not treat this document as a replacement for upstream install instructions.
+For exact/current setup details, follow the official Claude tutorial directly.
 
 ---
 
-## Step 3 — Return to BlendOps
+## Option C — Official Blender CLI
 
-Once Blender + MCP bridge setup is working, return to BlendOps workflow docs:
+Low-level Blender runtime/process reference:
+- https://docs.blender.org/manual/en/latest/advanced/command_line/index.html
+
+Use this for Blender command-line behavior, automation fundamentals, and runtime process understanding.
+
+BlendOps does not use Blender CLI as its product interface; it is a runtime/process reference layer.
+
+---
+
+## Return to BlendOps
+
+Once one official runtime path is working, continue with BlendOps workflow docs:
 
 - Product direction: `./product-direction.md`
 - First user journey: `./first-user-journey.md`
@@ -68,7 +50,7 @@ Once Blender + MCP bridge setup is working, return to BlendOps workflow docs:
 - Workflow contract: `./workflow-contract.md`
 - Safety model: `./safety-model.md`
 
-BlendOps role at that point:
+BlendOps role:
 
 `natural-language intent` → `scene/workflow plan` → `validation` → `render/export handoff` → `web-ready guidance`
 
@@ -76,10 +58,9 @@ BlendOps role at that point:
 
 ## Safety boundary
 
-`ahujasid/blender-mcp` may expose powerful tooling, including arbitrary Python execution capability.
+Official runtime integrations may expose powerful runtime operations.
 
 BlendOps safety stance:
-
-- Do **not** use arbitrary Python execution as the final BlendOps product interface.
-- Keep user-facing behavior workflow-constrained and validation-driven.
-- Prefer safe structured plans, explicit assumptions, and clear pass/partial/fail outcomes.
+- Keep user-facing behavior constrained by workflow + validation + evidence.
+- Avoid using arbitrary execution primitives as the final product interface.
+- Prefer explicit assumptions, explicit checks, and clear pass/partial/fail reporting.

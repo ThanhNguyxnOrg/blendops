@@ -66,7 +66,7 @@ BlendOps should enable an AI tool to return:
    - Produce a structured, non-Blender-jargon plan (subject, composition, lighting, materials, camera, export intent, validation checks).
 
 4. **Runtime execution plan**
-   - Route to external runtime assumptions (official Blender CLI + reference bridge pattern), without exposing raw runtime complexity to end user.
+   - Route to official external runtime assumptions (official Blender MCP Server, official Claude Blender Connector, official Blender CLI reference), without exposing raw runtime complexity to end user.
 
 5. **Validation**
    - Compare output against original intent and explicit acceptance checks.
@@ -124,10 +124,11 @@ Clarification policy:
 
 BlendOps golden path assumes:
 
-- **Official Blender CLI** is the runtime primitive for scene execution/export.
-- **`ahujasid/blender-mcp`** is a reference external bridge pattern for AI↔Blender interaction.
+- **Official Blender MCP Server** is the preferred Blender-side runtime target when available.
+- **Official Claude Blender Connector** is the preferred Claude-side connector path.
+- **Official Blender CLI** is the low-level runtime/process reference for execution behavior.
 - BlendOps does not claim to ship or clone a custom runtime in this phase.
-- Runtime execution capabilities may vary by environment, Blender version, and bridge setup quality.
+- Runtime execution capabilities may vary by environment, Blender version, and official integration setup quality.
 - Final user-facing language must stay workflow-oriented; do not expose raw low-level operational steps unless needed for failure explanation.
 
 ---

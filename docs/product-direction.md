@@ -10,7 +10,7 @@ BlendOps is not another Blender CLI.
 
 BlendOps is not another raw Blender MCP.
 
-BlendOps is not a custom runtime clone of `ahujasid/blender-mcp`.
+BlendOps is not a custom runtime implementation project.
 
 ## What BlendOps is
 
@@ -24,17 +24,17 @@ Its value is in:
 
 ## Runtime assumptions
 
-- Official Blender CLI is the runtime primitive.
-- `ahujasid/blender-mcp` is the current reference/proven AI ↔ Blender MCP bridge.
+- Official Blender MCP Server is the preferred Blender-side runtime target when available.
+- Official Claude Blender Connector is the preferred Claude-side connector path.
+- Official Blender CLI remains the low-level runtime/process reference.
 
-BlendOps should reference these as external runtime dependencies instead of rebuilding them by default.
+BlendOps should reference official runtime sources as external dependencies instead of rebuilding runtime surfaces by default.
 
 Runtime setup sequence is documented in [External runtime setup](./external-runtime-setup.md). Product docs should link there instead of duplicating detailed setup steps.
 
 ## Non-goals for this reset
 
-- Do not clone `ahujasid/blender-mcp`.
-- Do not vendor their code.
+- Do not clone or vendor external runtime implementations into active BlendOps runtime scope.
 - Do not copy large sections of upstream docs.
 - Do not expose arbitrary Python as the final BlendOps product interface.
 

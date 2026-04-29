@@ -32,7 +32,7 @@ Guide users through prerequisite external runtime setup and boundary understandi
 
 ### Inputs
 - user environment (OS/toolchain)
-- target runtime choice (official Blender CLI, reference MCP stack)
+- target runtime choice (Official Blender MCP Server, Official Claude Blender Connector, Official Blender CLI reference)
 
 ### Outputs
 - setup checklist
@@ -52,6 +52,7 @@ Prevents downstream confusion and false assumptions about BlendOps capabilities.
 
 ### Must not do
 - must not rebuild or imply internal runtime ownership
+- must not route users to non-official MCP runtimes as active setup paths
 - must not skip caveat reporting for powerful runtime features
 
 ---
