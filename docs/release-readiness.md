@@ -18,6 +18,7 @@ Date: 2026-04-29
 | Adapter install dry-run | Warn | Adapter architecture and dry-run install eval are complete, with native-path confidence still environment-dependent. |
 | Manual install beta | Warn | Evidence report: [docs/evals/manual-install-beta-v0.md](./evals/manual-install-beta-v0.md). |
 | Official runtime verification criteria | Prepared | Criteria doc: [docs/evals/official-runtime-verification-criteria.md](./evals/official-runtime-verification-criteria.md). |
+| Official runtime manual eval packet | Prepared | Packet doc: [docs/evals/official-runtime-manual-eval-packet.md](./evals/official-runtime-manual-eval-packet.md). |
 | Official runtime manual eval | Blocked / Not Run | Runtime-available environment evidence is missing. |
 | Runtime artifacts | Not Produced | No fresh preview/render/GLB evidence has been produced in official-runtime manual eval. |
 | Release tag | Not Ready | Do not tag yet. |
@@ -32,6 +33,7 @@ Date: 2026-04-29
 - Adapter architecture and dry-run install eval are complete.
 - Manual install beta dry-run has been executed and documented: [docs/evals/manual-install-beta-v0.md](./evals/manual-install-beta-v0.md).
 - Official runtime verification criteria are prepared: [docs/evals/official-runtime-verification-criteria.md](./evals/official-runtime-verification-criteria.md).
+- Official runtime manual eval packet is prepared: [docs/evals/official-runtime-manual-eval-packet.md](./evals/official-runtime-manual-eval-packet.md).
 
 ---
 
@@ -60,6 +62,7 @@ Date: 2026-04-29
 | Blocker | Status | Required evidence |
 |---|---|---|
 | Official runtime criteria | Prepared | Draft v0 criteria prepared in [docs/evals/official-runtime-verification-criteria.md](./evals/official-runtime-verification-criteria.md); no runtime execution claimed. |
+| Official runtime manual eval packet | Prepared | Draft v0 packet prepared in [docs/evals/official-runtime-manual-eval-packet.md](./evals/official-runtime-manual-eval-packet.md); no runtime execution claimed. |
 | Official runtime manual eval evidence | Blocked / Not Run | Runtime eval record with real execution evidence in a runtime-available environment. |
 | Runtime artifact evidence | Not Produced | Preview/render/GLB evidence captured from official-runtime manual eval. |
 | Adapter native-path certainty | Warn | Environment-scoped decision or accepted limitation with clear user-facing wording. |
@@ -69,6 +72,7 @@ Date: 2026-04-29
 ## 🧾 Required before v0.1.0 draft tag
 
 - [x] Prepare official runtime verification criteria without claiming runtime execution.
+- [x] Prepare official runtime manual eval packet without claiming runtime execution.
 - [ ] Run manual install beta in disposable repos and resolve adapter friction.
 - [ ] Run official-runtime manual eval with evidence capture.
 - [ ] Verify rollback procedures end-to-end.
