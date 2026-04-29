@@ -23,6 +23,7 @@ const requiredDocs = [
   'docs/external-runtime-setup.md',
   'docs/reference-runtime.md',
   'docs/runtime-stack-strategy.md',
+  'docs/skill-system.md',
   'docs/unofficial-runtime-bridges.md',
   'docs/adapter-registry.md',
   'docs/install-scopes.md',
@@ -33,6 +34,9 @@ const requiredDocs = [
 ];
 
 const requiredSkills = [
+  'skills/_template/SKILL.md',
+  'skills/blendops-help/SKILL.md',
+  'skills/render-export-evidence/SKILL.md',
   'skills/official-runtime-setup-guide/SKILL.md',
   'skills/official-runtime-readiness-checker/SKILL.md',
   'skills/product-hero-scene-planner/SKILL.md',
