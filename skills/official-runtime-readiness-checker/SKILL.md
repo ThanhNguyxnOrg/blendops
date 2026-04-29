@@ -14,6 +14,8 @@ tags:
 ## Purpose
 Assess runtime readiness before any attempt to claim runtime execution outcomes.
 
+Canonical role: `runtime-readiness` in the BlendOps skill system. Keep this as the active readiness implementation rather than creating duplicate readiness skills.
+
 ## Quick start
 - confirm this skill fits your goal
 - provide required inputs first

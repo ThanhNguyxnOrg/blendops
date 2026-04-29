@@ -14,6 +14,8 @@ tags:
 ## Purpose
 Turn user intent into a high-quality, gate-ready scene plan before runtime execution.
 
+Canonical role: `scene-planning` for product-hero workflows in the BlendOps skill system. Use this with the composition, camera, lighting, and material planners instead of creating duplicate generic scene-planning skills.
+
 ## Quick start
 - confirm this skill fits your goal
 - provide required inputs first
