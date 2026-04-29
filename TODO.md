@@ -90,7 +90,7 @@ _Last updated: 2026-04-29_
 - [x] run every root skill through review gates
 - [x] produce pass/warn/fail report
 - [x] fix remaining weak skills
-- [ ] then run adapter install dry-run
+- [x] then run adapter install dry-run
 
 ## Phase 2.10 — Adapter install dry-run eval (completed)
 
@@ -109,6 +109,15 @@ _Last updated: 2026-04-29_
 - [x] prepare v0 manual install instructions
 - [ ] decide whether to tag draft release
 
+
+## Phase 2.12 — Manual install beta (completed)
+
+- [x] run generic-root install dry-run in disposable fixture project
+- [x] run Claude Code project-local fallback dry-run
+- [x] run Claude app/Desktop docs-only/reference walkthrough
+- [x] verify no runtime was installed/run
+- [x] verify rollback clarity in fixture reports
+- [x] document beta findings in `docs/evals/manual-install-beta-v0.md`
 
 ## Phase 3 — Prototype integration decision
 

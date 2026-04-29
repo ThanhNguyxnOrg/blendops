@@ -21,3 +21,4 @@ BlendOps evals are evidence records for laws, skills, workflows, recipes, and pa
 - [cyberpunk-shoe-hero-v0-text-eval.md](./cyberpunk-shoe-hero-v0-text-eval.md) — executed text-only dry eval (no Blender runtime execution)
 - [cyberpunk-shoe-hero-v0-runtime-eval.md](./cyberpunk-shoe-hero-v0-runtime-eval.md) — runtime eval result record (blocked in current environment)
 - [adapter-install-v0-dry-run.md](./adapter-install-v0-dry-run.md) — adapter install dry-run evaluation report
+- [manual-install-beta-v0.md](./manual-install-beta-v0.md) — manual install beta dry-run summary
