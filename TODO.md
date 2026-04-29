@@ -145,6 +145,22 @@ _Last updated: 2026-04-29_
 - [x] verify rollback clarity in fixture reports
 - [x] document beta findings in `docs/evals/manual-install-beta-v0.md`
 
+## ✅ Phase 2.13: Portable skill system architecture
+
+- [x] create canonical skill system guide (`docs/skill-system.md`)
+- [x] create reusable root skill template (`skills/_template/SKILL.md`)
+- [x] add BlendOps next-step helper skill (`skills/blendops-help/SKILL.md`)
+- [x] add render/export evidence skill (`skills/render-export-evidence/SKILL.md`)
+- [x] document canonical aliases for runtime readiness and scene planning without duplicating skills
+- [ ] create Claude Desktop skill bundle without claiming connector/runtime success
+- [ ] package a project-local skill bundle with rollback notes
+- [ ] research OpenCode, Cursor, Codex, and Gemini adapters with confidence labels
+- [ ] add Blender-specific eval skills only after runtime evidence needs are clearer
+- [ ] create skill packaging fixture and validation script
+- [ ] keep packaged skill, plugin listing, and marketplace listing unchecked until verified
+- [ ] keep runtime eval unchecked / Not Run until execution evidence exists
+- [ ] keep preview/render/GLB artifact evidence unchecked / Not Produced until generated evidence exists
+
 ## 🎯 Phase 3: Official runtime readiness
 
 Focus: official runtime verification criteria and runtime eval readiness, not custom runtime implementation.

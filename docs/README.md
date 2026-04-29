@@ -54,6 +54,7 @@ Active docs for the current product and workflow direction.
 | Area | Doc |
 |---|---|
 | Product direction | [product-direction.md](./product-direction.md) |
+| Skill system | [skill-system.md](./skill-system.md) |
 | Runtime setup, external | [external-runtime-setup.md](./external-runtime-setup.md) |
 | Runtime stack strategy | [runtime-stack-strategy.md](./runtime-stack-strategy.md) |
 | Runtime boundary | [reference-runtime.md](./reference-runtime.md) |
@@ -90,6 +91,7 @@ Active docs for the current product and workflow direction.
 | Area | Doc |
 |---|---|
 | Skills index | [skills/README.md](./skills/README.md) |
+| Root skill system guide | [skill-system.md](./skill-system.md) |
 | Official runtime setup guide | [skills/official-runtime-setup-guide.md](./skills/official-runtime-setup-guide.md) |
 | Product hero scene planner | [skills/product-hero-scene-planner.md](./skills/product-hero-scene-planner.md) |
 | Blender scene quality checker | [skills/blender-scene-quality-checker.md](./skills/blender-scene-quality-checker.md) |
