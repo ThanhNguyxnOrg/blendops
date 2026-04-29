@@ -40,6 +40,18 @@ This packet covers:
 
 ---
 
+## Run order
+
+1. Complete [runtime-availability-checklist.md](./runtime-availability-checklist.md) in the runtime environment.
+2. Run this official runtime manual eval packet only when readiness allows a scoped attempt.
+3. Apply [official-runtime-verification-criteria.md](./official-runtime-verification-criteria.md) when assigning artifact truth labels and final verdicts.
+4. Update [../release-readiness.md](../release-readiness.md) only after evidence exists.
+
+> [!WARNING]
+> This run order does not claim execution has happened. It is the order for a future human-operated eval.
+
+---
+
 ## Non-actions
 
 This packet preserves these non-actions:
@@ -253,7 +265,7 @@ Record cleanup actions after the eval:
 
 ---
 
-## Future result template
+## Blank result template for a future eval record
 
 Copy this template into a future runtime eval result record.
 

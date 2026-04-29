@@ -108,7 +108,7 @@ If only Blender CLI is available, mark Connector/MCP paths `Not Tested` or `Bloc
 
 ---
 
-## Operator handoff
+## Readiness outcome
 
 When all required paths for the selected official runtime path are `Available`, proceed to [official-runtime-manual-eval-packet.md](./official-runtime-manual-eval-packet.md).
 
