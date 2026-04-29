@@ -65,15 +65,15 @@ Fill one row per check. Add notes for every `Missing`, `Unknown`, `Not Tested`, 
 | Blender app availability | Blender application path or launch method identified from the local system. | Unknown |  |
 | Blender app availability | Blender version captured, if available without changing setup. | Unknown |  |
 | Blender app availability | Operator confirms the environment is allowed to run Blender during the future eval. | Unknown |  |
-| Official Blender MCP Server availability | Official Blender MCP Server path is available from upstream Blender instructions. | Unknown |  |
-| Official Blender MCP Server availability | MCP setup state is known for this machine or session. | Unknown |  |
-| Official Blender MCP Server availability | MCP actions can be recorded with timestamps, prompts, or tool/action notes. | Unknown |  |
-| Official Claude Blender Connector availability | Official Claude Blender Connector path is available from upstream Claude instructions. | Unknown |  |
-| Official Claude Blender Connector availability | Connector setup state is known for this machine or session. | Unknown |  |
-| Official Claude Blender Connector availability | Claude-side and Blender-side actions can be recorded separately when possible. | Unknown |  |
-| Official Blender CLI availability | Official Blender CLI reference is available from upstream Blender manual docs. | Unknown |  |
-| Official Blender CLI availability | Blender executable path style is known for this machine. | Unknown |  |
-| Official Blender CLI availability | CLI output, exit status, and logs can be captured if CLI is the selected path. | Unknown |  |
+| Route A — Claude Desktop Connector availability | Official Claude Blender Connector path is available from upstream Claude instructions. | Unknown |  |
+| Route A — Claude Desktop Connector availability | Connector setup state is known for this machine or session. | Unknown |  |
+| Route A — Claude Desktop Connector availability | Claude-side and Blender-side actions can be recorded separately when possible. | Unknown |  |
+| Route B — Official MCP agent availability | Official Blender MCP Server path is available from upstream Blender instructions. | Unknown |  |
+| Route B — Official MCP agent availability | Target agent MCP setup state, config format, and approval flow are known for this machine or session. | Unknown |  |
+| Route B — Official MCP agent availability | MCP actions can be recorded with timestamps, prompts, or tool/action notes for the specific agent. | Unknown |  |
+| Route C — Official Blender CLI availability | Official Blender CLI reference is available from upstream Blender manual docs. | Unknown |  |
+| Route C — Official Blender CLI availability | Blender executable path style is known for this machine. | Unknown |  |
+| Route C — Official Blender CLI availability | CLI output, exit status, and logs can be captured if CLI is the selected path. | Unknown |  |
 | Project workspace readiness | Repository workspace is available for reading docs and eval instructions. | Unknown |  |
 | Project workspace readiness | Runtime eval output paths are planned outside docs unless the eval plan says otherwise. | Unknown |  |
 | Project workspace readiness | The selected recipe, prompt, or eval scope is named before execution. | Unknown |  |
@@ -96,25 +96,25 @@ Fill one row per check. Add notes for every `Missing`, `Unknown`, `Not Tested`, 
 
 ## Path selection guidance
 
-Choose one intended path before attempting a manual eval.
+Choose one intended path before attempting a manual eval. For the first real runtime eval, prefer Route A because read-only connector smoke evidence exists.
 
 | Intended path | Minimum readiness before proceeding | If unavailable |
 |---|---|---|
-| Official Blender MCP Server | Blender app availability is `Available`, official MCP path is `Available`, project workspace is `Available`, output folder is `Available`, evidence capture is `Available`, and cleanup is `Available`. | Mark MCP rows `Missing`, `Unknown`, or `Blocked`. Do not run a fallback non-official MCP. |
-| Official Claude Blender Connector | Blender app availability is `Available`, official connector path is `Available`, project workspace is `Available`, output folder is `Available`, evidence capture is `Available`, and cleanup is `Available`. | Mark connector rows `Missing`, `Unknown`, or `Blocked`. Do not run a fallback non-official connector. |
-| Official Blender CLI reference | Blender app availability is `Available`, official CLI reference is `Available`, executable path style is known, project workspace is `Available`, output folder is `Available`, evidence capture is `Available`, and cleanup is `Available`. | Mark CLI rows `Missing`, `Unknown`, or `Blocked`. Do not treat CLI-only readiness as connector or MCP readiness. |
+| Route A — Claude Desktop Connector path | Blender app availability is `Available`, official connector path is `Available`, project workspace is `Available`, output folder is `Available`, evidence capture is `Available`, and cleanup is `Available`. | Mark connector rows `Missing`, `Unknown`, or `Blocked`. Do not run a fallback non-official connector. |
+| Route B — Official MCP path for non-Claude Desktop agents | Blender app availability is `Available`, official MCP path is `Available`, the target agent MCP setup is verified, project workspace is `Available`, output folder is `Available`, evidence capture is `Available`, and cleanup is `Available`. | Mark MCP-agent rows `Missing`, `Unknown`, or `Blocked`. Do not run a fallback non-official MCP. |
+| Route C — Official Blender CLI path | Blender app availability is `Available`, official CLI reference is `Available`, executable path style is known, project workspace is `Available`, output folder is `Available`, evidence capture is `Available`, and cleanup is `Available`. | Mark CLI rows `Missing`, `Unknown`, or `Blocked`. Do not treat CLI-only readiness as connector or MCP readiness. |
 
-If only Blender CLI is available, mark Connector/MCP paths `Not Tested` or `Blocked`. A CLI-only path may support a scoped CLI eval attempt, but it does not prove connector or MCP availability.
+If Route A fails during mutation, render, or export, Route C is the next official route to test. If only Blender CLI is available, mark Connector/MCP paths `Not Tested` or `Blocked`. A CLI-only path may support a scoped CLI eval attempt, but it does not prove connector or MCP availability.
 
 ---
 
 ## Readiness outcome
 
-When all required paths for the selected official runtime path are `Available`, proceed to [official-runtime-manual-eval-packet.md](./official-runtime-manual-eval-packet.md).
+When all required paths for the selected official runtime path are `Available`, proceed to [official-runtime-manual-eval-packet.md](./official-runtime-manual-eval-packet.md) and [runtime-route-strategy.md](../runtime-route-strategy.md).
 
 If the official connector or official MCP path is missing, do not run fallback non-official MCP tooling. Record the missing path and keep the eval blocked or scoped to another official path.
 
-If only Blender CLI is available, continue only with the official CLI reference path. Mark Connector/MCP paths `Not Tested` or `Blocked`, and do not imply connector or MCP coverage.
+If only Blender CLI is available, continue only with Route C. Mark Connector/MCP paths `Not Tested` or `Blocked`, and do not imply connector or MCP coverage.
 
 Do not claim preview/render/GLB output unless evidence exists in the eval record. If no output exists, record `Not Produced`.
 

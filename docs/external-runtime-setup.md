@@ -2,46 +2,46 @@
 
 BlendOps is a workflow/product layer and does **not** ship its own BlendOps-owned CLI/MCP/addon runtime.
 
-Active runtime guidance is official-only.
+Active runtime guidance is official-only. For route selection and current status, see [Runtime route strategy](./runtime-route-strategy.md).
 
 ---
 
-## Option A — Official Blender MCP Server
+## Route A — Claude Desktop Connector path
 
-Primary Blender-side MCP runtime target:
-- https://www.blender.org/lab/mcp-server/
-
-Use this as the first runtime option when available in your environment.
-
-For exact/current setup details, follow the official Blender page directly.
-
----
-
-## Option B — Official Claude Blender Connector
-
-Preferred Claude-side connector path:
+Current strongest first runtime eval candidate:
 - https://claude.com/resources/tutorials/using-the-blender-connector-in-claude
 
-Use this option for Claude users who want the official Claude tutorial flow.
+Use this route for users with Claude Desktop. The read-only connector smoke test passed, but mutation, render, export, and artifact production remain `Not Tested` / `Not Produced`.
 
 For exact/current setup details, follow the official Claude tutorial directly.
 
 ---
 
-## Option C — Official Blender CLI
+## Route B — Official MCP path for non-Claude Desktop agents
 
-Low-level Blender runtime/process reference:
+Candidate path for MCP-capable agents:
+- https://www.blender.org/lab/mcp-server/
+
+Use this route only when the target agent can be configured as an MCP client or host. Do not claim it works with Claude Code, OpenCode, Cursor, Codex, Gemini, or another agent until that specific client is verified.
+
+For exact/current setup details, follow the official Blender page and the target agent's current MCP documentation directly.
+
+---
+
+## Route C — Official Blender CLI path
+
+Official CLI fallback and process reference:
 - https://docs.blender.org/manual/en/latest/advanced/command_line/index.html
 
-Use this for Blender command-line behavior, automation fundamentals, and runtime process understanding.
+Use this for Blender command-line behavior, automation fundamentals, and runtime process understanding. If Route A fails during mutation, render, or export, Route C is the next official route to test.
 
 BlendOps does not use Blender CLI as its product interface; it is a runtime/process reference layer.
 
 ---
 
-## Optional unofficial bridge caveats
+## Route D — Optional unofficial bridge caveats
 
-Official paths above remain the recommended and release-eval paths. If a user knowingly wants a user-managed, non-official bridge for a local experiment, read [Unofficial runtime bridges](./unofficial-runtime-bridges.md) first. Do not treat those bridges as BlendOps-supported setup or Draft v0 release-readiness evidence.
+Official routes above remain the recommended and release-eval paths. If a user knowingly wants a user-managed, non-official bridge for a local experiment, read [Unofficial runtime bridges](./unofficial-runtime-bridges.md) first. Do not treat those bridges as BlendOps-supported setup or Draft v0 release-readiness evidence.
 
 ---
 
@@ -49,6 +49,7 @@ Official paths above remain the recommended and release-eval paths. If a user kn
 
 Once one official runtime path is working, continue with BlendOps workflow docs:
 
+- Runtime route strategy: `./runtime-route-strategy.md`
 - Product direction: `./product-direction.md`
 - First user journey: `./first-user-journey.md`
 - Architecture: `./architecture.md`

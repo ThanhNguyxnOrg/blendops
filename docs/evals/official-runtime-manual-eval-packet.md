@@ -3,7 +3,8 @@
 Status: Draft v0 packet only, not executed  
 Date: 2026-04-29  
 Source of truth: [official-runtime-verification-criteria.md](./official-runtime-verification-criteria.md)  
-Readiness preflight: [runtime-availability-checklist.md](./runtime-availability-checklist.md)
+Readiness preflight: [runtime-availability-checklist.md](./runtime-availability-checklist.md)  
+Route decision: [../runtime-route-strategy.md](../runtime-route-strategy.md)
 
 > [!CAUTION]
 > This packet prepares a future manual eval. It does not install Blender, run Blender, claim official runtime compatibility, or claim preview/render/GLB artifacts were produced.
@@ -20,11 +21,13 @@ The packet exists so BlendOps can keep Draft v0 status honest while preparing fo
 
 ## Scope
 
-This packet covers manual eval preparation for three official runtime paths:
+This packet covers manual eval preparation for the official routes in [runtime-route-strategy.md](../runtime-route-strategy.md):
 
-1. Official Blender MCP Server
-2. Official Claude Blender Connector
-3. Official Blender CLI reference path
+1. Route A — Claude Desktop Connector path.
+2. Route B — Official MCP path for non-Claude Desktop agents.
+3. Route C — Official Blender CLI path.
+
+Route D — Optional unofficial MCP bridge path is excluded from official release-eval evidence unless a future policy creates a separate local/experimental evidence category.
 
 The operator must choose one path per eval record unless the test plan explicitly compares paths. Each path needs its own evidence notes, artifact labels, and final verdict.
 
@@ -42,10 +45,13 @@ This packet covers:
 
 ## Run order
 
-1. Complete [runtime-availability-checklist.md](./runtime-availability-checklist.md) in the runtime environment.
-2. Run this official runtime manual eval packet only when readiness allows a scoped attempt.
-3. Apply [official-runtime-verification-criteria.md](./official-runtime-verification-criteria.md) when assigning artifact truth labels and final verdicts.
-4. Update [../release-readiness.md](../release-readiness.md) only after evidence exists.
+1. Read [../runtime-route-strategy.md](../runtime-route-strategy.md) and select the intended route.
+2. Prefer Route A for the first real runtime eval because read-only connector smoke evidence exists.
+3. Complete [runtime-availability-checklist.md](./runtime-availability-checklist.md) in the runtime environment.
+4. If Route A fails during mutation, render, or export, use Route C as the next official fallback route to test.
+5. Run this official runtime manual eval packet only when readiness allows a scoped attempt.
+6. Apply [official-runtime-verification-criteria.md](./official-runtime-verification-criteria.md) when assigning artifact truth labels and final verdicts.
+7. Update [../release-readiness.md](../release-readiness.md) only after evidence exists.
 
 > [!WARNING]
 > This run order does not claim execution has happened. It is the order for a future human-operated eval.
@@ -87,9 +93,9 @@ Before execution, the future operator must confirm:
 
 | Runtime path | Eval use | Source requirement | Evidence focus |
 |---|---|---|---|
-| Official Blender MCP Server | Candidate official runtime path | Use upstream Blender documentation and current official instructions checked on the eval date. | MCP actions, generated files, preview/render evidence, GLB/export evidence, validation notes, caveats. |
-| Official Claude Blender Connector | Candidate official runtime path | Use upstream Claude tutorial and current official instructions checked on the eval date. | Claude-side actions, Blender-side actions, prompts, permissions, generated files, preview/render evidence, GLB/export evidence, user-facing clarity. |
-| Official Blender CLI reference path | Candidate official reference path | Use upstream Blender manual CLI documentation checked on the eval date. | Exact command line, exit status, logs, generated files, preview/render evidence, GLB/export evidence, platform caveats. |
+| Route A — Claude Desktop Connector path | Preferred first real runtime eval candidate because read-only smoke evidence exists. | Use upstream Claude tutorial and current official instructions checked on the eval date. | Claude-side actions, Blender-side actions, prompts, permissions, generated files, preview/render evidence, GLB/export evidence, user-facing clarity. |
+| Route B — Official MCP path for non-Claude Desktop agents | Candidate official path only after the specific MCP-capable agent is verified. | Use upstream Blender documentation plus current target-agent MCP documentation checked on the eval date. | Agent-specific MCP config, MCP actions, generated files, preview/render evidence, GLB/export evidence, validation notes, caveats. |
+| Route C — Official Blender CLI path | Next official fallback if Route A fails during mutation, render, or export. | Use upstream Blender manual CLI documentation checked on the eval date. | Exact command line, exit status, logs, generated files, preview/render evidence, GLB/export evidence, platform caveats. |
 
 > [!IMPORTANT]
 > Exact setup commands, versions, UI labels, and runtime behavior must come from upstream official documentation at execution time. BlendOps must not invent install steps or imply setup happened in this repository.
@@ -142,15 +148,7 @@ If a field cannot be captured, record `Unknown` and explain why.
 
 ### 3. Execute the selected official path
 
-For the Official Blender MCP Server path:
-
-- [ ] Follow upstream official Blender instructions.
-- [ ] Record setup state without claiming setup was performed unless it was performed during this eval.
-- [ ] Record every MCP action, tool call, or agent action.
-- [ ] Record file paths for generated Blender files, preview/render files, and GLB/export files when produced.
-- [ ] Record connector/session caveats, permissions, crashes, missing tools, or ambiguous behavior.
-
-For the Official Claude Blender Connector path:
+For Route A — Claude Desktop Connector path:
 
 - [ ] Follow upstream official Claude instructions.
 - [ ] Record Claude-side actions separately from Blender-side actions when possible.
@@ -158,7 +156,16 @@ For the Official Claude Blender Connector path:
 - [ ] Record generated file paths and visible evidence when produced.
 - [ ] Record caveats about UI state, connector availability, session continuity, permissions, or incomplete exports.
 
-For the Official Blender CLI reference path:
+For Route B — Official MCP path for non-Claude Desktop agents:
+
+- [ ] Follow upstream official Blender instructions and the target agent's current MCP documentation.
+- [ ] Record the specific agent name, config source, transport assumptions, and approval flow.
+- [ ] Record setup state without claiming setup was performed unless it was performed during this eval.
+- [ ] Record every MCP action, tool call, or agent action.
+- [ ] Record file paths for generated Blender files, preview/render files, and GLB/export files when produced.
+- [ ] Record connector/session caveats, permissions, crashes, missing tools, or ambiguous behavior.
+
+For Route C — Official Blender CLI path:
 
 - [ ] Follow upstream official Blender CLI documentation.
 - [ ] Record the exact command line used, including executable path style, input files, output paths, and flags.
