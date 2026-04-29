@@ -133,6 +133,7 @@ Links:
 - [docs/adapter-registry.md](./docs/adapter-registry.md)
 - [docs/adapters/README.md](./docs/adapters/README.md)
 - [docs/examples/blendops-root-entrypoint.md](./docs/examples/blendops-root-entrypoint.md)
+- [docs/claude-app-setup.md](./docs/claude-app-setup.md)
 
 ---
 

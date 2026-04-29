@@ -5,5 +5,8 @@
   "description": "AI-native Blender workflow/product layer for non-Blender users.",
   "engines": {
     "node": ">=18"
+  },
+  "scripts": {
+    "docs:check": "node scripts/check-docs.mjs"
   }
 }

@@ -120,6 +120,8 @@ Active docs for the current product/workflow direction.
 | Package layout plan | [package-layout.md](./package-layout.md) |
 | Agent install prompts | [examples/agent-install-prompt.md](./examples/agent-install-prompt.md) |
 | BLENDOPS.md root template | [examples/blendops-root-entrypoint.md](./examples/blendops-root-entrypoint.md) |
+| Claude app/Desktop setup notes | [claude-app-setup.md](./claude-app-setup.md) |
+| Claude app project instructions template | [examples/claude-app-project-instructions.md](./examples/claude-app-project-instructions.md) |
 
 ---
 
@@ -166,6 +168,7 @@ Active docs for the current product/workflow direction.
 |---|---|
 | Reset audit (historical transition log) | [reset-audit.md](./reset-audit.md) |
 | Markdown cleanup audit | [markdown-cleanup-audit.md](./markdown-cleanup-audit.md) |
+| Current cleanup audit | [cleanup-audit.md](./cleanup-audit.md) |
 | Archive index | [archive/README.md](./archive/README.md) |
 
 ---
