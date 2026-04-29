@@ -19,14 +19,14 @@ _Last updated: 2026-04-29_
 | Skill review gates | ✅ Complete | Root skills expanded, reviewed, and indexed. |
 | Adapter install dry-run | ✅ Complete | Dry-run and rollback findings recorded without runtime execution. |
 | Manual install beta | ✅ Complete | Generic-root, Claude Code fallback, and docs-only walkthrough completed. |
-| Runtime verification | 🎯 Current focus | Verification criteria, manual eval packet, runtime availability checklist, and release readiness rollup prepared; official-runtime eval path remains Blocked / Not Run. |
+| Runtime verification | 🎯 Current focus | Verification criteria, manual eval packet, runtime availability checklist, release readiness rollup, and read-only connector smoke evidence prepared; full official-runtime eval remains Not Run. |
 
 ## Current blockers
 
 | Blocker | Impact | Next action |
 |---|---|---|
-| Official runtime manual eval not run | Cannot claim runtime behavior or artifact production | Run manual eval when official runtime path is available |
-| Runtime output not inspected | Cannot validate non-Blender-user artifact handoff from real output | Keep status as planned/not run until evidence exists |
+| Official runtime manual eval not run | Cannot claim recipe execution, render/export behavior, or artifact production | Run manual eval after read-only connector access and runtime availability are sufficient |
+| Runtime output not inspected | Cannot validate non-Blender-user artifact handoff from real output | Keep artifact status as Not Produced until evidence exists |
 | Stable release not justified | Draft v0 must remain the posture | Defer tag or release claim until evidence is recorded |
 
 ## ✅ Phase 0: Product reset
@@ -154,6 +154,7 @@ Focus: official runtime verification criteria and runtime eval readiness, not cu
 - [x] prepare official runtime manual eval packet without claiming runtime execution
 - [x] prepare runtime availability checklist without claiming runtime execution
 - [x] prepare Phase 3.3 pre-runtime release readiness rollup (`docs/release-readiness-rollup-v0.md`)
+- [x] record Claude Desktop Blender connector read-only smoke test without claiming full runtime eval or artifacts
 - [ ] defer any product implementation decision until official runtime evidence exists
 - [ ] no arbitrary Python as final BlendOps user-facing workflow
 

@@ -22,7 +22,8 @@ Date: 2026-04-29
 | Official runtime verification criteria | Prepared | Criteria doc: [docs/evals/official-runtime-verification-criteria.md](./evals/official-runtime-verification-criteria.md). |
 | Runtime availability checklist | Prepared | Readiness doc: [docs/evals/runtime-availability-checklist.md](./evals/runtime-availability-checklist.md). |
 | Official runtime manual eval packet | Prepared | Packet doc: [docs/evals/official-runtime-manual-eval-packet.md](./evals/official-runtime-manual-eval-packet.md). |
-| Official runtime manual eval | Blocked / Not Run | Runtime-available environment evidence is missing. |
+| Claude Desktop Blender connector read-only smoke test | Pass / Available | Evidence report: [docs/evals/blender-connector-read-only-smoke-test.md](./evals/blender-connector-read-only-smoke-test.md). Read-only session access only; no mutation, render, export, or artifacts. |
+| Official runtime manual eval | Blocked / Not Run | Full eval remains Not Run; read-only connector access is not artifact or recipe evidence. |
 | Runtime artifacts | Not Produced | No fresh preview/render/GLB evidence has been produced in official-runtime manual eval. |
 | Release tag | Not Ready | Do not tag v0.1.0 yet; defer until official runtime manual eval evidence exists or missing runtime evidence is explicitly accepted as a documented limitation. |
 
@@ -38,6 +39,7 @@ Date: 2026-04-29
 - Official runtime verification criteria are prepared: [docs/evals/official-runtime-verification-criteria.md](./evals/official-runtime-verification-criteria.md).
 - Runtime availability checklist is prepared: [docs/evals/runtime-availability-checklist.md](./evals/runtime-availability-checklist.md).
 - Official runtime manual eval packet is prepared: [docs/evals/official-runtime-manual-eval-packet.md](./evals/official-runtime-manual-eval-packet.md).
+- Claude Desktop Blender connector read-only smoke test has Pass / Available evidence: [docs/evals/blender-connector-read-only-smoke-test.md](./evals/blender-connector-read-only-smoke-test.md).
 
 ---
 
@@ -54,7 +56,7 @@ Date: 2026-04-29
 ## ⚠️ Warnings
 
 1. Claude Code native path confidence is not universal across environments.
-2. Official runtime manual execution evidence is missing.
+2. Official runtime manual execution evidence is missing; read-only connector access is verified but does not prove recipe execution, rendering, export, or artifact validation.
 3. Manual install beta verdict remains Warn, not full Pass.
 4. Some skill examples can still be expanded for edge audiences.
 5. Confidence labels may require tighter environment scoping.

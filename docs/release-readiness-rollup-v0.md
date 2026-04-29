@@ -66,7 +66,12 @@ What limits confidence:
 
 ## Current runtime evidence status
 
-Current runtime evidence status is **Not Run / Blocked until runtime environment**.
+Current runtime evidence status is **Read-only connector access available; full runtime eval Not Run**.
+
+Verified read-only access:
+
+- Claude Desktop Blender connector read-only smoke test: Pass / Available. Evidence report: [docs/evals/blender-connector-read-only-smoke-test.md](./evals/blender-connector-read-only-smoke-test.md).
+- Blender-side MCP bridge: Available for read-only session access.
 
 Prepared but not run:
 
@@ -95,7 +100,8 @@ No current repository doc should claim official runtime compatibility confirmed,
 | Adapter install dry-run | Warn |
 | Manual install beta | Warn |
 | Runtime availability checklist | Prepared / Not Run |
-| Official runtime manual eval | Not Run / Blocked until runtime environment |
+| Claude Desktop Blender connector read-only smoke test | Pass / Available |
+| Official runtime manual eval | Not Run |
 | Runtime artifacts | Not Produced |
 | Stable release readiness | Not Ready |
 
@@ -105,9 +111,9 @@ No current repository doc should claim official runtime compatibility confirmed,
 
 | Blocker | Why it blocks release confidence | Required change |
 |---|---|---|
-| Official runtime manual eval not run | Runtime behavior and official integration paths have not been evidenced in a runtime-available environment. | Run the official runtime manual eval packet and capture evidence. |
+| Official runtime manual eval not run | Read-only connector access has been evidenced, but recipe execution, mutation, render/export, validation, and artifact capture have not been run. | Run the official runtime manual eval packet and capture evidence. |
 | Runtime artifacts not produced | No preview, render, GLB, or artifact handoff can be claimed. | Produce and record artifacts only through official runtime eval, or document missing artifacts as an accepted limitation. |
-| Runtime availability untested | The checklist is prepared, but the real environment has not been checked. | Run the runtime availability checklist in a real environment. |
+| Runtime availability incomplete | Read-only connector access is available, but full runtime availability and artifact capture remain untested. | Run the runtime availability checklist in a real environment before full eval. |
 | Adapter confidence remains scoped | Install confidence is dry-run/docs based and environment-dependent. | Keep warnings visible or document a narrowed support scope. |
 | Stable release criteria unmet | A stable or production claim needs repeated runtime and install evidence. | Keep Draft v0 posture. |
 
@@ -118,8 +124,9 @@ No current repository doc should claim official runtime compatibility confirmed,
 1. Adapter install dry-run is useful but not universal install proof.
 2. Manual install beta remains Warn, not full Pass.
 3. Runtime availability checklist is Prepared / Not Run.
-4. Official runtime manual eval is Not Run / Blocked until runtime environment.
-5. Runtime artifacts are Not Produced.
+4. Claude Desktop Blender connector read-only smoke test is Pass / Available, but it does not cover recipe execution, mutation, render, export, or artifact validation.
+5. Official runtime manual eval is Not Run.
+6. Runtime artifacts are Not Produced.
 6. Stable release readiness is Not Ready.
 7. Any release note must avoid implying runtime compatibility is confirmed.
 
@@ -137,6 +144,7 @@ No current repository doc should claim official runtime compatibility confirmed,
 - Runtime verification criteria.
 - Runtime availability checklist.
 - Official runtime manual eval packet.
+- Claude Desktop Blender connector read-only smoke test evidence.
 - Conservative draft tag decision.
 
 ---
@@ -146,7 +154,7 @@ No current repository doc should claim official runtime compatibility confirmed,
 - v0.1.0 draft tag.
 - Stable release readiness.
 - Production readiness.
-- Official runtime compatibility confirmation.
+- Official runtime compatibility confirmation beyond scoped read-only connector access.
 - Official runtime manual eval completion.
 - Runtime artifact claims.
 - Preview/render/GLB evidence claims.
@@ -160,7 +168,7 @@ No current repository doc should claim official runtime compatibility confirmed,
 
 Rationale:
 
-- Draft v0 docs and install evidence are useful, but runtime evidence is still missing.
+- Draft v0 docs, install evidence, and read-only connector smoke evidence are useful, but full runtime eval evidence is still missing.
 - Runtime artifacts are not produced.
 - The official runtime manual eval packet is prepared, not executed.
 - A tag now could be mistaken for runtime readiness unless the limitation is explicitly accepted and documented.
