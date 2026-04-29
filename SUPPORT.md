@@ -10,9 +10,6 @@ Before opening an issue, check these docs in order:
 4. [docs/golden-path-cyberpunk-shoe.md](./docs/golden-path-cyberpunk-shoe.md)
 5. [docs/workflow-contract.md](./docs/workflow-contract.md)
 
-For historical runtime-era material, use:
-
-- [docs/archive/README.md](./docs/archive/README.md)
 
 ## What to include in support requests
 
@@ -28,7 +25,7 @@ For historical runtime-era material, use:
 - external runtime setup not completed yet
 - Blender not available on expected path/PATH
 - official runtime connector/server not configured correctly
-- assumptions about old BlendOps runtime commands from archived docs
+- assumptions about BlendOps runtime ownership that conflict with current official-runtime model
 
 ## Contribution help
 

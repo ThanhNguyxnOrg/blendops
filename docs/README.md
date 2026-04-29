@@ -166,10 +166,7 @@ Active docs for the current product/workflow direction.
 
 | Area | Doc |
 |---|---|
-| Reset audit (historical transition log) | [reset-audit.md](./reset-audit.md) |
-| Markdown cleanup audit | [markdown-cleanup-audit.md](./markdown-cleanup-audit.md) |
 | Current cleanup audit | [cleanup-audit.md](./cleanup-audit.md) |
-| Archive index | [archive/README.md](./archive/README.md) |
 
 ---
 
@@ -177,4 +174,3 @@ Active docs for the current product/workflow direction.
 
 - BlendOps is a product/workflow layer for non-Blender users.
 - BlendOps does **not** currently ship its own BlendOps-owned CLI/MCP/addon runtime.
-- Historical runtime-era documents live under `docs/archive/` and are not active setup guidance.

@@ -42,7 +42,7 @@ Runtime setup sequence is documented in [External runtime setup](./external-runt
 
 Old custom runtime implementation (BlendOps-owned CLI/MCP/addon/runtime operation surface) has been removed from the active codebase.
 
-Historical artifacts remain recoverable from git history and are preserved in `docs/archive/` where helpful for context.
+Historical implementation context remains recoverable from git history when needed.
 
 ## Implementation principle going forward
 

@@ -32,6 +32,3 @@ BlendOps focuses on:
 
 Use [External runtime setup](./external-runtime-setup.md) as BlendOps setup overview, and follow upstream official docs for exact/current setup instructions.
 
-## Historical note
-
-Historical community prior-art material, where preserved, belongs in `docs/archive/` only and is not active setup guidance.

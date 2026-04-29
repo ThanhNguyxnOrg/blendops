@@ -165,9 +165,8 @@ BlendOps is designed around this workflow:
 
 ## ✅ Current repo status
 
-- runtime-era custom implementation removed from active codebase
-- active docs aligned to product/workflow direction
-- historical runtime materials preserved under [`docs/archive/`](./docs/archive/README.md)
+- active docs aligned to official-runtime workflow/skill collection direction
+- root `skills/`, `laws/`, and `packs/` collections are active
 
 ---
 
@@ -189,12 +188,6 @@ BlendOps safety stance:
 2. mature workflow/validation artifacts
 3. decide long-term external-runtime integration strategy
 4. implement minimal product features from workflow requirements
-
----
-
-## 🗃️ Historical runtime note
-
-Pre-reset custom runtime work remains recoverable from git history (baseline reference: `04c70db`) and from the archive docs.
 
 ---
 
