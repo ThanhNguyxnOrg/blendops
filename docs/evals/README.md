@@ -16,6 +16,7 @@ BlendOps evals are evidence records for laws, skills, workflows, recipes, and pa
 | Runtime cyberpunk shoe eval | Blocked | Blocked / Not Run |
 | Adapter install dry-run | Warn | Executed / Dry-run |
 | Manual install beta v0 | Warn | Executed / Dry-run / No runtime / No global config writes |
+| Official runtime verification criteria | Prepared | Criteria only / Not Run |
 
 ---
 
@@ -51,6 +52,7 @@ BlendOps evals are evidence records for laws, skills, workflows, recipes, and pa
 | [cyberpunk-shoe-hero-v0-runtime-eval.md](./cyberpunk-shoe-hero-v0-runtime-eval.md) | Blocked / Not Run | No runtime evidence | Runtime eval result record is blocked in current environment. |
 | [adapter-install-v0-dry-run.md](./adapter-install-v0-dry-run.md) | Warn | Dry-run install evidence | Adapter install evaluation report. |
 | [manual-install-beta-v0.md](./manual-install-beta-v0.md) | Warn | Dry-run fixture evidence | Manual install beta dry-run summary. |
+| [official-runtime-verification-criteria.md](./official-runtime-verification-criteria.md) | Prepared | Criteria only | Defines Draft v0 evidence rules for future official-runtime evals. |
 
 ---
 

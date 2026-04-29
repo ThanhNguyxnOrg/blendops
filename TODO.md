@@ -19,7 +19,7 @@ _Last updated: 2026-04-29_
 | Skill review gates | ✅ Complete | Root skills expanded, reviewed, and indexed. |
 | Adapter install dry-run | ✅ Complete | Dry-run and rollback findings recorded without runtime execution. |
 | Manual install beta | ✅ Complete | Generic-root, Claude Code fallback, and docs-only walkthrough completed. |
-| Runtime verification | 🎯 Current focus | Define criteria and prepare official-runtime eval path. |
+| Runtime verification | 🎯 Current focus | Verification criteria prepared; official-runtime eval path remains Not Run. |
 
 ## Current blockers
 
@@ -150,7 +150,7 @@ _Last updated: 2026-04-29_
 Focus: official runtime verification criteria and runtime eval readiness, not custom runtime implementation.
 
 - [ ] confirm official runtime compatibility assumptions (Blender MCP + Claude connector + Blender CLI)
-- [ ] define runtime verification criteria for official integration paths
+- [x] define runtime verification criteria for official integration paths
 - [ ] evaluate whether a later custom adapter is product-justified
 - [ ] no arbitrary Python as final BlendOps user-facing workflow
 
