@@ -48,14 +48,20 @@ Future flow:
 
 `user prompt` → `intent understanding` → `BlendOps workflow/scene plan` → `safe structured execution design` → `external runtime execution` → `validation` → `render/export` → `non-Blender-language handoff`
 
-## External runtime setup links
+## External runtime setup
 
-Use external runtimes today:
+BlendOps does **not** currently ship a custom CLI/MCP/addon runtime.
 
-- Blender official CLI/runtime:
+To use BlendOps workflow docs today:
+
+- Install Blender and use official CLI/runtime docs:
   https://docs.blender.org/manual/en/latest/advanced/command_line/index.html
-- Reference AI ↔ Blender MCP bridge:
+- Use `ahujasid/blender-mcp` for AI ↔ Blender MCP bridging:
   https://github.com/ahujasid/blender-mcp
+- Read BlendOps setup overview:
+  `docs/external-runtime-setup.md`
+
+For exact/current install and configuration details, follow upstream docs.
 
 ## Current repo status
 

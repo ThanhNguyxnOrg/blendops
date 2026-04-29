@@ -2,6 +2,8 @@
 
 BlendOps is being rebuilt as an **AI-native workflow/product layer** for people who do not know Blender.
 
+Before using BlendOps workflow specs, complete [External runtime setup](./external-runtime-setup.md).
+
 ## What BlendOps is not
 
 BlendOps is not another Blender CLI.
@@ -26,6 +28,8 @@ Its value is in:
 - `ahujasid/blender-mcp` is the current reference/proven AI ↔ Blender MCP bridge.
 
 BlendOps should reference these as external runtime dependencies instead of rebuilding them by default.
+
+Runtime setup sequence is documented in [External runtime setup](./external-runtime-setup.md). Product docs should link there instead of duplicating detailed setup steps.
 
 ## Non-goals for this reset
 

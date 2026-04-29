@@ -2,6 +2,7 @@
 
 Active docs for the current reset direction:
 
+- [External runtime setup (required first step)](./external-runtime-setup.md)
 - [Product direction](./product-direction.md)
 - [Reference runtime](./reference-runtime.md)
 - [First user journey (spec)](./first-user-journey.md)

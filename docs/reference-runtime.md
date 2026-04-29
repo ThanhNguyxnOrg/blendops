@@ -1,5 +1,7 @@
 # Reference Runtime
 
+> This file summarizes runtime boundaries. For concise prerequisite setup flow, see [External runtime setup](./external-runtime-setup.md).
+
 BlendOps uses external runtime primitives rather than shipping a duplicate low-level runtime.
 
 ## How official Blender CLI fits
@@ -28,12 +30,12 @@ BlendOps references this prior art and does not vendor or clone it into active r
 
 BlendOps should avoid arbitrary Python as its final user-facing product interface, and instead focus on constrained workflow-level intent and safe structured execution design.
 
-## Using an external runtime today
+## Setup path (authoritative)
 
-1. Install Blender.
-2. Read official Blender CLI docs for runtime/process behavior.
-3. Follow `ahujasid/blender-mcp` for AI ↔ Blender MCP setup.
-4. Return to BlendOps docs for workflow/product-layer design.
+Use [External runtime setup](./external-runtime-setup.md) as the BlendOps setup overview.
+
+- This repo summarizes prerequisites and boundaries only.
+- Exact/current install and configuration details should be followed from upstream docs.
 
 ## BlendOps role
 

@@ -8,6 +8,7 @@ _Last updated: 2026-04-28_
 - [x] rewrite docs truthfully
 - [x] define external runtime assumption
 - [x] define first non-Blender-user journey
+- [x] add external runtime setup overview docs (`docs/external-runtime-setup.md`)
 
 ## Phase 1 — First non-Blender-user golden path spec
 
