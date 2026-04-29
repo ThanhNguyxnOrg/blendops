@@ -1,14 +1,47 @@
 # 📚 BlendOps Documentation
 
-Active docs for the current product/workflow direction.
+Active docs for the current product and workflow direction.
+
+> [!WARNING]
+> BlendOps is Draft v0. It is not production-ready or stable. Start with setup boundaries, then read the workflow and eval status before treating any pack as releasable.
+
+---
+
+## 🚦 Status dashboard
+
+| Area | Status | What it means |
+|---|---|---|
+| Product direction | Draft v0 | Product and workflow direction are documented, with no stable release claim. |
+| Runtime boundary | Active | BlendOps depends on an external Blender runtime and does not ship its own runtime. |
+| Install/adoption docs | Warn | Dry-run install evidence exists, with adapter path confidence still environment-dependent. |
+| Runtime eval evidence | Blocked / Not Run | Official runtime manual eval evidence has not been produced in a runtime-available environment. |
+| Release tag | Not Ready | Conservative decision remains: do not tag yet. |
 
 ---
 
 ## 🚀 Start here
 
-1. **External runtime setup (required first):** [external-runtime-setup.md](./external-runtime-setup.md)
+1. **External runtime setup, required first:** [external-runtime-setup.md](./external-runtime-setup.md)
 2. **Product direction:** [product-direction.md](./product-direction.md)
-3. **Workflow and delivery specs:** continue through the docs below
+3. **Release status:** [release-readiness.md](./release-readiness.md)
+4. **Eval status:** [evals/README.md](./evals/README.md)
+5. **Workflow and delivery specs:** continue through the grouped navigation below
+
+> [!TIP]
+> If you're evaluating release readiness, read the release status and manual install beta evidence before the pack docs.
+
+---
+
+## 🧭 Navigation by job
+
+| Job | Start with | Then read |
+|---|---|---|
+| Understand the product | [product-direction.md](./product-direction.md) | [architecture.md](./architecture.md), [reference-runtime.md](./reference-runtime.md) |
+| Set runtime boundaries | [external-runtime-setup.md](./external-runtime-setup.md) | [reference-runtime.md](./reference-runtime.md), [laws/official-runtime-only.md](./laws/official-runtime-only.md) |
+| Review workflow behavior | [workflow-contract.md](./workflow-contract.md) | [first-user-journey.md](./first-user-journey.md), [safety-model.md](./safety-model.md) |
+| Try install/adoption docs | [agent-install.md](./agent-install.md) | [install-scopes.md](./install-scopes.md), [adapters/README.md](./adapters/README.md) |
+| Check eval evidence | [evals/README.md](./evals/README.md) | [release-readiness.md](./release-readiness.md) |
+| Review v0 pack content | [packs/README.md](./packs/README.md) | [skills/README.md](./skills/README.md), [workflows/README.md](./workflows/README.md) |
 
 ---
 
@@ -17,7 +50,7 @@ Active docs for the current product/workflow direction.
 | Area | Doc |
 |---|---|
 | Product direction | [product-direction.md](./product-direction.md) |
-| Runtime setup (external) | [external-runtime-setup.md](./external-runtime-setup.md) |
+| Runtime setup, external | [external-runtime-setup.md](./external-runtime-setup.md) |
 | Runtime boundary | [reference-runtime.md](./reference-runtime.md) |
 | Architecture | [architecture.md](./architecture.md) |
 
@@ -28,7 +61,7 @@ Active docs for the current product/workflow direction.
 | Area | Doc |
 |---|---|
 | First user journey | [first-user-journey.md](./first-user-journey.md) |
-| Golden path (cyberpunk shoe) | [golden-path-cyberpunk-shoe.md](./golden-path-cyberpunk-shoe.md) |
+| Golden path, cyberpunk shoe | [golden-path-cyberpunk-shoe.md](./golden-path-cyberpunk-shoe.md) |
 | Workflow contract | [workflow-contract.md](./workflow-contract.md) |
 | Safety model | [safety-model.md](./safety-model.md) |
 
@@ -98,11 +131,12 @@ Active docs for the current product/workflow direction.
 
 ## 🧪 Evals
 
-| Area | Doc |
-|---|---|
-| Evals index | [evals/README.md](./evals/README.md) |
-| Cyberpunk shoe v0 manual eval protocol | [evals/cyberpunk-shoe-hero-v0-manual-eval.md](./evals/cyberpunk-shoe-hero-v0-manual-eval.md) |
-| Cyberpunk shoe v0 text-only eval | [evals/cyberpunk-shoe-hero-v0-text-eval.md](./evals/cyberpunk-shoe-hero-v0-text-eval.md) |
+| Area | Doc | Current status |
+|---|---|---|
+| Evals index | [evals/README.md](./evals/README.md) | Draft v0 index |
+| Cyberpunk shoe v0 manual eval protocol | [evals/cyberpunk-shoe-hero-v0-manual-eval.md](./evals/cyberpunk-shoe-hero-v0-manual-eval.md) | Protocol / Not yet executed |
+| Cyberpunk shoe v0 text-only eval | [evals/cyberpunk-shoe-hero-v0-text-eval.md](./evals/cyberpunk-shoe-hero-v0-text-eval.md) | Executed / Text-only |
+| Manual install beta v0 | [evals/manual-install-beta-v0.md](./evals/manual-install-beta-v0.md) | Executed / Dry-run / Warn |
 
 ---
 
@@ -165,10 +199,10 @@ Active docs for the current product/workflow direction.
 
 ## 🧾 Governance and audit docs
 
-| Area | Doc |
-|---|---|
-| Current cleanup audit | [cleanup-audit.md](./cleanup-audit.md) |
-| Release readiness status | [release-readiness.md](./release-readiness.md) |
+| Area | Doc | Status |
+|---|---|---|
+| Current cleanup audit | [cleanup-audit.md](./cleanup-audit.md) | Governance record |
+| Release readiness status | [release-readiness.md](./release-readiness.md) | Draft v0, do not tag yet |
 
 ---
 
@@ -176,3 +210,4 @@ Active docs for the current product/workflow direction.
 
 - BlendOps is a product/workflow layer for non-Blender users.
 - BlendOps does **not** currently ship its own BlendOps-owned CLI/MCP/addon runtime.
+- Runtime artifacts remain Not Run/Not Produced unless an eval record states otherwise with evidence.
