@@ -35,6 +35,15 @@ If your change includes code, run relevant project checks before opening PR.
 - branch from `main`
 - use descriptive names (e.g., `docs/cleanup-readme`, `docs/workflow-contract-polish`)
 
+## Commit authorship policy
+
+Commits should be single-author by default and authored only by the configured Git author for this repository.
+
+- Do not add `Co-authored-by` trailers unless explicitly requested by the maintainer.
+- Do not add AI, bot, or agent attribution trailers or footers.
+- Do not represent agent, model, or tool assistance as Git co-authorship.
+- Commit messages should contain only the human subject/body needed for the project.
+
 ## Pull request checklist
 
 - [ ] change is aligned with product/workflow direction

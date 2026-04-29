@@ -201,6 +201,7 @@ Active docs for the current product and workflow direction.
 
 | Area | Doc | Status |
 |---|---|---|
+| Contributor guide | [../CONTRIBUTING.md](../CONTRIBUTING.md) | Includes commit authorship policy |
 | Current cleanup audit | [cleanup-audit.md](./cleanup-audit.md) | Governance record |
 | Release readiness status | [release-readiness.md](./release-readiness.md) | Draft v0, do not tag yet |
 
