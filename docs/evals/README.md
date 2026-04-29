@@ -14,6 +14,7 @@ BlendOps evals are evidence records for laws, skills, workflows, recipes, and pa
 | Manual runtime protocol | No verdict yet | Protocol / Not yet executed |
 | Text-only cyberpunk shoe eval | Text-only evidence only | Executed / Text-only, no Blender runtime |
 | Runtime cyberpunk shoe eval | Blocked | Blocked / Not Run |
+| Blender connector read-only smoke test | Pass | Available / Read-only session access |
 | Adapter install dry-run | Warn | Executed / Dry-run |
 | Manual install beta v0 | Warn | Executed / Dry-run / No runtime / No global config writes |
 | Official runtime verification criteria | Prepared | Criteria only / Not Run |
@@ -52,6 +53,7 @@ BlendOps evals are evidence records for laws, skills, workflows, recipes, and pa
 | [cyberpunk-shoe-hero-v0-manual-eval.md](./cyberpunk-shoe-hero-v0-manual-eval.md) | Not yet executed | Protocol | Manual runtime eval protocol only. |
 | [cyberpunk-shoe-hero-v0-text-eval.md](./cyberpunk-shoe-hero-v0-text-eval.md) | Text-only | Prompt/plan/checklist evidence | No Blender runtime execution. |
 | [cyberpunk-shoe-hero-v0-runtime-eval.md](./cyberpunk-shoe-hero-v0-runtime-eval.md) | Blocked / Not Run | No runtime evidence | Runtime eval result record is blocked in current environment. |
+| [blender-connector-read-only-smoke-test.md](./blender-connector-read-only-smoke-test.md) | Pass / Available | Read-only connector evidence | Official Claude Desktop Blender Connector returned session, datablock, and object summaries; no mutation, render, export, or artifacts. |
 | [adapter-install-v0-dry-run.md](./adapter-install-v0-dry-run.md) | Warn | Dry-run install evidence | Adapter install evaluation report. |
 | [manual-install-beta-v0.md](./manual-install-beta-v0.md) | Warn | Dry-run fixture evidence | Manual install beta dry-run summary. |
 | [official-runtime-verification-criteria.md](./official-runtime-verification-criteria.md) | Prepared | Criteria only | Defines Draft v0 evidence rules for future official-runtime evals. |
