@@ -19,13 +19,13 @@ _Last updated: 2026-04-29_
 | Skill review gates | ✅ Complete | Root skills expanded, reviewed, and indexed. |
 | Adapter install dry-run | ✅ Complete | Dry-run and rollback findings recorded without runtime execution. |
 | Manual install beta | ✅ Complete | Generic-root, Claude Code fallback, and docs-only walkthrough completed. |
-| Runtime verification | 🎯 Current focus | Verification criteria, manual eval packet, runtime availability checklist, and release readiness rollup prepared; official-runtime eval path remains Not Run. |
+| Runtime verification | 🎯 Current focus | Verification criteria, manual eval packet, runtime availability checklist, and release readiness rollup prepared; official-runtime eval path remains Blocked / Not Run. |
 
 ## Current blockers
 
 | Blocker | Impact | Next action |
 |---|---|---|
-| Official runtime manual eval not run | Cannot claim runtime behavior or artifact production | Define criteria, then run manual eval when official runtime path is available |
+| Official runtime manual eval not run | Cannot claim runtime behavior or artifact production | Run manual eval when official runtime path is available |
 | Runtime output not inspected | Cannot validate non-Blender-user artifact handoff from real output | Keep status as planned/not run until evidence exists |
 | Stable release not justified | Draft v0 must remain the posture | Defer tag or release claim until evidence is recorded |
 
@@ -149,7 +149,7 @@ _Last updated: 2026-04-29_
 
 Focus: official runtime verification criteria and runtime eval readiness, not custom runtime implementation.
 
-- [ ] document official runtime compatibility assumptions without confirming them until evidence exists (Blender MCP + Claude connector + Blender CLI)
+- [x] document official runtime compatibility assumptions without confirming them until evidence exists (Blender MCP + Claude connector + Blender CLI)
 - [x] define runtime verification criteria for official integration paths
 - [x] prepare official runtime manual eval packet without claiming runtime execution
 - [x] prepare runtime availability checklist without claiming runtime execution
