@@ -17,6 +17,7 @@ BlendOps evals are evidence records for laws, skills, workflows, recipes, and pa
 | Adapter install dry-run | Warn | Executed / Dry-run |
 | Manual install beta v0 | Warn | Executed / Dry-run / No runtime / No global config writes |
 | Official runtime verification criteria | Prepared | Criteria only / Not Run |
+| Runtime availability checklist | Prepared | Readiness checklist only / Not Run |
 | Official runtime manual eval packet | Prepared | Packet only / Not Run |
 
 ---
@@ -54,6 +55,7 @@ BlendOps evals are evidence records for laws, skills, workflows, recipes, and pa
 | [adapter-install-v0-dry-run.md](./adapter-install-v0-dry-run.md) | Warn | Dry-run install evidence | Adapter install evaluation report. |
 | [manual-install-beta-v0.md](./manual-install-beta-v0.md) | Warn | Dry-run fixture evidence | Manual install beta dry-run summary. |
 | [official-runtime-verification-criteria.md](./official-runtime-verification-criteria.md) | Prepared | Criteria only | Defines Draft v0 evidence rules for future official-runtime evals. |
+| [runtime-availability-checklist.md](./runtime-availability-checklist.md) | Prepared | Readiness checklist only | Preflight checklist for deciding whether an official-runtime eval can be attempted. |
 | [official-runtime-manual-eval-packet.md](./official-runtime-manual-eval-packet.md) | Prepared | Packet only | Operator checklist and result template for future official-runtime manual evals. |
 
 ---

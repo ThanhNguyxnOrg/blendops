@@ -2,7 +2,8 @@
 
 Status: Draft v0 packet only, not executed  
 Date: 2026-04-29  
-Source of truth: [official-runtime-verification-criteria.md](./official-runtime-verification-criteria.md)
+Source of truth: [official-runtime-verification-criteria.md](./official-runtime-verification-criteria.md)  
+Readiness preflight: [runtime-availability-checklist.md](./runtime-availability-checklist.md)
 
 > [!CAUTION]
 > This packet prepares a future manual eval. It does not install Blender, run Blender, claim official runtime compatibility, or claim preview/render/GLB artifacts were produced.
@@ -49,14 +50,14 @@ This packet preserves these non-actions:
 - It does not introduce a custom runtime implementation.
 - It does not claim runtime compatibility is confirmed.
 - It does not mark actual runtime manual eval complete.
-- It does not change authorship policy.
-- It does not add commit attribution metadata.
 - It does not move BlendOps out of Draft v0.
 - It does not prepare or claim a draft tag.
 
 ---
 
 ## Prerequisites
+
+Before execution, complete the readiness preflight in [runtime-availability-checklist.md](./runtime-availability-checklist.md). This preflight only shows whether an eval attempt is ready. It does not prove runtime success.
 
 Before execution, the future operator must confirm:
 

@@ -152,6 +152,7 @@ Focus: official runtime verification criteria and runtime eval readiness, not cu
 - [ ] confirm official runtime compatibility assumptions (Blender MCP + Claude connector + Blender CLI)
 - [x] define runtime verification criteria for official integration paths
 - [x] prepare official runtime manual eval packet without claiming runtime execution
+- [x] prepare runtime availability checklist without claiming runtime execution
 - [ ] evaluate whether a later custom adapter is product-justified
 - [ ] no arbitrary Python as final BlendOps user-facing workflow
 
