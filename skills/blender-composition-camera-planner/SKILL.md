@@ -158,6 +158,12 @@ Planning-only skill; no runtime execution or render claims.
 - Why this helps your goal
 - What remains unverified
 
+## Anti-patterns
+- skipping required laws or runtime boundary statements
+- claiming runtime/artifact success without evidence
+- using non-official runtime setup paths
+- producing jargon-heavy final output without explanation
+
 ## Cross-skill handoff
 - Next: `blender-lighting-material-planner`
 - Then: `blender-scene-quality-checker`

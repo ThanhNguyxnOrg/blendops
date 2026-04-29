@@ -160,6 +160,12 @@ This skill produces planning guidance only. It does not run Blender or claim run
 - Portability caveats
 - Next validation step
 
+## Anti-patterns
+- skipping required laws or runtime boundary statements
+- claiming runtime/artifact success without evidence
+- using non-official runtime setup paths
+- producing jargon-heavy final output without explanation
+
 ## Cross-skill handoff
 - Next: `blender-scene-quality-checker`
 - Then: `glb-web-handoff`

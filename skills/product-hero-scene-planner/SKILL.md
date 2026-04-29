@@ -164,6 +164,12 @@ Planning-only skill. Runtime execution and artifact claims are out of scope here
 - What is not verified yet
 - Next action
 
+## Anti-patterns
+- skipping required laws or runtime boundary statements
+- claiming runtime/artifact success without evidence
+- using non-official runtime setup paths
+- producing jargon-heavy final output without explanation
+
 ## Cross-skill handoff
 - Next: `blender-composition-camera-planner`
 - Then: `blender-lighting-material-planner`

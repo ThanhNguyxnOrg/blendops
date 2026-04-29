@@ -159,6 +159,7 @@ Active docs for the current product/workflow direction.
 | Skill template | [../skill-reviews/blendops-skill-template.md](../skill-reviews/blendops-skill-template.md) |
 | Depth standard | [../skill-reviews/depth-standard.md](../skill-reviews/depth-standard.md) |
 | v0 depth audit report | [../skill-reviews/reports/v0-skill-depth-audit.md](../skill-reviews/reports/v0-skill-depth-audit.md) |
+| v0 skill gate review report | [../skill-reviews/reports/v0-skill-gate-review.md](../skill-reviews/reports/v0-skill-gate-review.md) |
 
 ---
 

@@ -171,6 +171,12 @@ Define a safe, official-runtime-only setup path for users/agents before runtime 
 - What remains unverified
 - Next setup step
 
+## Anti-patterns
+- skipping required laws or runtime boundary statements
+- claiming runtime/artifact success without evidence
+- using non-official runtime setup paths
+- producing jargon-heavy final output without explanation
+
 ## Cross-skill handoff
 - Next: `official-runtime-readiness-checker`
 - Then: `product-hero-scene-planner`

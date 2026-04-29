@@ -85,12 +85,21 @@ _Last updated: 2026-04-29_
 - [x] enrich per-skill EVAL files
 - [x] update pack/readme indexes
 
-## Phase 2.9 — Skill gate review eval
+## Phase 2.9 — Skill gate review eval (completed)
 
-- [ ] run every root skill through review gates
-- [ ] produce pass/warn/fail report
-- [ ] fix remaining weak skills
+- [x] run every root skill through review gates
+- [x] produce pass/warn/fail report
+- [x] fix remaining weak skills
 - [ ] then run adapter install dry-run
+
+## Phase 2.10 — Adapter install dry-run eval
+
+- [ ] test generic-root fallback in a disposable fixture project
+- [ ] test Claude Code adapter in a disposable fixture if safe
+- [ ] test Claude app setup docs text-only
+- [ ] verify no runtime is installed/run
+- [ ] verify rollback instructions
+- [ ] update agent-install guide from findings
 
 ## Phase 3 — Prototype integration decision
 

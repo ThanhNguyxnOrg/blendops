@@ -155,6 +155,12 @@ Never imply runtime success or artifact existence without evidence.
 3. What is not fully verified yet
 4. What to do next
 
+## Anti-patterns
+- skipping required laws or runtime boundary statements
+- claiming runtime/artifact success without evidence
+- using non-official runtime setup paths
+- producing jargon-heavy final output without explanation
+
 ## Cross-skill handoff
 - If runtime not ready: `official-runtime-readiness-checker`
 - If handoff unclear: `glb-web-handoff`

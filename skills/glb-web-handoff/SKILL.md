@@ -156,6 +156,12 @@ No GLB/export success claim without concrete evidence.
 - What is still unverified
 - What to run/check next
 
+## Anti-patterns
+- skipping required laws or runtime boundary statements
+- claiming runtime/artifact success without evidence
+- using non-official runtime setup paths
+- producing jargon-heavy final output without explanation
+
 ## Cross-skill handoff
 - Next: `non-blender-user-response-writer`
 

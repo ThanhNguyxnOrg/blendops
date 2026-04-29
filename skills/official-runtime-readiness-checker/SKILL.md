@@ -161,6 +161,12 @@ Assess runtime readiness before any attempt to claim runtime execution outcomes.
 - Missing readiness signals
 - Next setup action
 
+## Anti-patterns
+- skipping required laws or runtime boundary statements
+- claiming runtime/artifact success without evidence
+- using non-official runtime setup paths
+- producing jargon-heavy final output without explanation
+
 ## Cross-skill handoff
 - If Ready/Partially Ready: `product-hero-scene-planner`
 - If Blocked/Unknown: `official-runtime-setup-guide`

@@ -45,6 +45,7 @@ This pack expects skills to pass:
 - text-only eval should pass baseline checks
 - runtime blockers must be recordable without overclaims
 - depth audit status tracked in `skill-reviews/reports/v0-skill-depth-audit.md`
+- gate review status tracked in `skill-reviews/reports/v0-skill-gate-review.md`
 
 ## Release readiness checklist
 

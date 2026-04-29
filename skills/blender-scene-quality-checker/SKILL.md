@@ -158,6 +158,12 @@ No execution claims without evidence. Text-only and blocked modes must remain ex
 - What needs follow-up
 - Next best action
 
+## Anti-patterns
+- skipping required laws or runtime boundary statements
+- claiming runtime/artifact success without evidence
+- using non-official runtime setup paths
+- producing jargon-heavy final output without explanation
+
 ## Cross-skill handoff
 - Next: `glb-web-handoff`
 - Then: `non-blender-user-response-writer`
