@@ -21,9 +21,10 @@ Compose the included skills to plan, validate, and communicate product-hero Blen
 
 | Stage | Skill family | Output |
 |---|---|---|
+| Help | Next-step routing skill | Safe entrypoint and skill/doc handoff |
 | Setup | Runtime setup and readiness skills | Prerequisites, confidence labels, blockers |
 | Planning | Product, camera, lighting, and material planners | Structured scene/workflow plan |
-| Quality | Scene quality checker | Pass/warn/fail readiness verdict |
+| Quality | Scene quality and render/export evidence skills | Pass/warn/fail readiness verdict and artifact truth labels |
 | Handoff | GLB/web and response writer skills | Plain-language status and web handoff notes |
 
 ## Included laws
@@ -39,12 +40,14 @@ Compose the included skills to plan, validate, and communicate product-hero Blen
 
 | Category | Skill path | Status |
 |---|---|---|
+| Help / routing | `../../skills/blendops-help/SKILL.md` | Draft v0 |
 | Setup / readiness | `../../skills/official-runtime-setup-guide/SKILL.md` | Expanded Draft v0 |
 | Setup / readiness | `../../skills/official-runtime-readiness-checker/SKILL.md` | Expanded Draft v0 |
 | Planning | `../../skills/product-hero-scene-planner/SKILL.md` | Expanded Draft v0 |
 | Planning | `../../skills/blender-composition-camera-planner/SKILL.md` | Expanded Draft v0 |
 | Planning | `../../skills/blender-lighting-material-planner/SKILL.md` | Expanded Draft v0 |
 | Quality / eval | `../../skills/blender-scene-quality-checker/SKILL.md` | Expanded Draft v0 |
+| Quality / evidence | `../../skills/render-export-evidence/SKILL.md` | Draft v0 |
 | Handoff / communication | `../../skills/glb-web-handoff/SKILL.md` | Expanded Draft v0 |
 | Handoff / communication | `../../skills/non-blender-user-response-writer/SKILL.md` | Expanded Draft v0 |
 
