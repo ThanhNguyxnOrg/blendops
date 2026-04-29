@@ -49,6 +49,7 @@ _Last updated: 2026-04-29_
 
 ## Phase 2.5 — v0 pack review and manual eval
 
+- [x] create cyberpunk shoe v0 manual eval protocol
 - [ ] run cyberpunk shoe recipe through official runtime manually
 - [ ] inspect if output stays non-Blender-user-friendly
 - [ ] refine validation gates

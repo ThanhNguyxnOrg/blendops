@@ -86,6 +86,15 @@ Active docs for the current product/workflow direction.
 
 ---
 
+## 🧪 Evals
+
+| Area | Doc |
+|---|---|
+| Evals index | [evals/README.md](./evals/README.md) |
+| Cyberpunk shoe v0 manual eval protocol | [evals/cyberpunk-shoe-hero-v0-manual-eval.md](./evals/cyberpunk-shoe-hero-v0-manual-eval.md) |
+
+---
+
 ## 🔬 Research docs
 
 | Area | Doc |
