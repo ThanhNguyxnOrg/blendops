@@ -92,14 +92,22 @@ _Last updated: 2026-04-29_
 - [x] fix remaining weak skills
 - [ ] then run adapter install dry-run
 
-## Phase 2.10 — Adapter install dry-run eval
+## Phase 2.10 — Adapter install dry-run eval (completed)
 
-- [ ] test generic-root fallback in a disposable fixture project
-- [ ] test Claude Code adapter in a disposable fixture if safe
-- [ ] test Claude app setup docs text-only
-- [ ] verify no runtime is installed/run
-- [ ] verify rollback instructions
-- [ ] update agent-install guide from findings
+- [x] test generic-root fallback in a disposable fixture project
+- [x] test Claude Code adapter in a disposable fixture if safe
+- [x] test Claude app setup docs text-only
+- [x] verify no runtime is installed/run
+- [x] verify rollback instructions
+- [x] update agent-install guide from findings
+
+## Phase 2.11 — Public repo polish and release-readiness cleanup
+
+- [ ] update GitHub About/topics if needed
+- [ ] cleanup stale duplicate docs only after dry-run findings
+- [ ] update README milestones
+- [ ] prepare v0 manual install instructions
+- [ ] decide whether to tag draft release
 
 ## Phase 3 — Prototype integration decision
 

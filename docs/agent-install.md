@@ -35,6 +35,11 @@ Default order:
 4. user-global (explicit user opt-in only)
 5. docs-only/reference
 
+Scope precedence rule:
+- if a tool-native path is verified, use project-local + tool-native placement
+- if tool-native path is linked-only/unknown, use project-local + generic-root fallback
+- use docs-only/reference when writes are not allowed or not requested
+
 ## Step 3 — Select adapter
 Choose from adapter registry:
 - `docs/adapter-registry.md`
@@ -62,6 +67,8 @@ Report:
 - files changed
 - confidence labels
 - rollback steps
+- backup file paths (if any)
+- post-rollback verification checklist
 
 Checks:
 - no runtime commands run
