@@ -147,6 +147,7 @@ Default install stance:
 | Product direction | [docs/product-direction.md](./docs/product-direction.md) |
 | External runtime setup | [docs/external-runtime-setup.md](./docs/external-runtime-setup.md) |
 | Runtime boundary | [docs/reference-runtime.md](./docs/reference-runtime.md) |
+| Optional bridge caveats, unofficial | [docs/unofficial-runtime-bridges.md](./docs/unofficial-runtime-bridges.md) |
 | First user journey | [docs/first-user-journey.md](./docs/first-user-journey.md) |
 | Golden path spec | [docs/golden-path-cyberpunk-shoe.md](./docs/golden-path-cyberpunk-shoe.md) |
 | Workflow contract | [docs/workflow-contract.md](./docs/workflow-contract.md) |

@@ -32,3 +32,5 @@ BlendOps focuses on:
 
 Use [External runtime setup](./external-runtime-setup.md) as BlendOps setup overview, and follow upstream official docs for exact/current setup instructions.
 
+Optional non-official bridge caveats live in [Unofficial runtime bridges](./unofficial-runtime-bridges.md). That page is not part of the active official runtime hierarchy and must not be treated as BlendOps-supported setup or release-readiness evidence.
+

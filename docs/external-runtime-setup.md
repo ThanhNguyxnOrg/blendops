@@ -39,6 +39,12 @@ BlendOps does not use Blender CLI as its product interface; it is a runtime/proc
 
 ---
 
+## Optional unofficial bridge caveats
+
+Official paths above remain the recommended and release-eval paths. If a user knowingly wants a user-managed, non-official bridge for a local experiment, read [Unofficial runtime bridges](./unofficial-runtime-bridges.md) first. Do not treat those bridges as BlendOps-supported setup or Draft v0 release-readiness evidence.
+
+---
+
 ## Return to BlendOps
 
 Once one official runtime path is working, continue with BlendOps workflow docs:

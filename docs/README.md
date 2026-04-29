@@ -53,6 +53,7 @@ Active docs for the current product and workflow direction.
 | Product direction | [product-direction.md](./product-direction.md) |
 | Runtime setup, external | [external-runtime-setup.md](./external-runtime-setup.md) |
 | Runtime boundary | [reference-runtime.md](./reference-runtime.md) |
+| Optional bridge caveats, unofficial | [unofficial-runtime-bridges.md](./unofficial-runtime-bridges.md) |
 | Architecture | [architecture.md](./architecture.md) |
 
 ---
