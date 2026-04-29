@@ -4,10 +4,10 @@ _Last updated: 2026-04-28_
 
 ## Phase 0 — Product reset
 
-- [ ] remove old custom runtime implementation
-- [ ] rewrite docs truthfully
-- [ ] define external runtime assumption
-- [ ] define first non-Blender-user journey
+- [x] remove old custom runtime implementation
+- [x] rewrite docs truthfully
+- [x] define external runtime assumption
+- [x] define first non-Blender-user journey
 
 ## Phase 1 — First non-Blender-user golden path spec
 
