@@ -12,7 +12,7 @@ Scope: BlendOps content distribution, not Blender runtime distribution
 
 | Level | Name | Meaning | Current v0 posture |
 |---:|---|---|---|
-| 0 | Docs-only/reference | Users read docs, copy prompts, or link source material without installing files. | Available now. |
+| 0 | Docs-only/reference | Users read docs, copy prompts, or link source material without installing files. | Present in repo docs now. |
 | 1 | Project-local file install | Users or agents copy/reference BlendOps docs, skills, laws, and packs inside a project. | Preferred near-term route. |
 | 2 | User-managed Claude Desktop skill import | User manually imports or attaches BlendOps skill content through Claude Desktop UI. | Candidate route; must stay separate from connector setup. |
 | 3 | GitHub/raw/plugin-from-repo install | Tool consumes content directly from a GitHub URL, raw file, or repo plugin reference. | Future; must follow target tool format. |

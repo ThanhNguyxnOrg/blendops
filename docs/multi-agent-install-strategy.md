@@ -44,8 +44,8 @@ BlendOps should plan for these targets while preserving confidence labels.
 Claude Desktop has two distinct surfaces:
 
 1. **Personal Skills / user-facing instruction import**
-   - A user likely imports or attaches BlendOps skill content manually through Claude Desktop UI.
-   - This is a skill/install-layer action.
+   - A user manually imports or attaches BlendOps skill content through Claude Desktop UI when supported by the app UI.
+   - This is a user-managed skill/install-layer action.
    - It does not prove Blender runtime access.
 
 2. **Blender Connector**
