@@ -129,6 +129,10 @@ Installable draft skill units now live under root collections:
 
 Draft note: this collection is still draft and should be validated through install dry-run + runtime eval before promotion.
 
+Skill depth note: root skills are benchmark-informed and reviewed against multi-layer gates.
+- Skills index: [skills/README.md](./skills/README.md)
+- Review gates: [skill-reviews/README.md](./skill-reviews/README.md)
+
 ---
 
 ## 🔁 Product flow

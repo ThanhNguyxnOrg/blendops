@@ -1,6 +1,6 @@
 ---
 name: glb-web-handoff
-description: Define GLB/web handoff expectations with explicit artifact status and caveats.
+description: Prepare truthful GLB/web handoff output with explicit artifact status, assumptions, and caveats.
 version: 0.1.0-draft
 status: draft
 tags:
@@ -12,26 +12,54 @@ tags:
 # glb-web-handoff
 
 ## Purpose
-Provide clear GLB/web handoff status language and assumptions.
+Define reliable handoff language and checks for GLB/web scenarios without overclaiming.
 
 ## When to use
-- before declaring handoff ready
-- when summarizing export/web status
+- before web handoff summary
+- when user asks GLB readiness
+- when preparing Three.js/R3F expectations
 
 ## When not to use
-- to claim GLB exists without evidence
-- to replace runtime verification steps
+- to claim GLB was produced without evidence
+- to replace runtime export verification
+
+## Trigger phrases
+- "prepare web handoff"
+- "is GLB ready"
+- "summarize export status"
+
+## Prerequisites / readiness
+- quality checker output available
+- artifact evidence state known
+- runtime mode known
 
 ## Inputs
-- artifact evidence state
-- compatibility assumptions
-- quality findings
+
+### Required inputs
+- artifact status evidence
+- handoff target context
+- known compatibility assumptions
+
+### Optional inputs
+- size/performance constraints
+- expected downstream stack details
+
+### Assumptions to confirm
+- transform/scale/origin assumptions
+- texture/material portability assumptions
+- loader/extension assumptions
 
 ## Outputs
-- artifact status list
-- web handoff assumptions
-- caveat summary
-- next checks
+
+### Primary output
+- handoff status report
+
+### Secondary output
+- compatibility assumptions and caveats
+
+### Evidence / caveat output
+- explicit artifact status per artifact
+- unresolved risk notes and next checks
 
 ## Required laws
 - ../../laws/evidence-before-done.md
@@ -40,34 +68,91 @@ Provide clear GLB/web handoff status language and assumptions.
 - ../../laws/no-arbitrary-python-interface.md
 
 ## Official runtime boundary
-No runtime execution claims unless evidence is present.
+No GLB/export success claim without concrete evidence.
 
-## Workflow steps
-1. List expected handoff artifacts.
-2. Mark each artifact status.
-3. Document compatibility assumptions/caveats.
-4. Provide next verification actions.
+## Operating procedure
+1. Enumerate expected handoff artifacts (GLB/preview/report).
+2. Mark each artifact status (Produced/Not Produced/Not Run).
+3. Validate transform/scale/origin assumptions are documented.
+4. Validate material/texture caveats are documented.
+5. Record Three.js/R3F compatibility assumptions.
+6. Record performance caveats and uncertainty.
+7. Check evidence boundary compliance.
+8. Produce handoff summary and next actions.
+
+## Decision tree
+- If GLB evidence exists → report produced + caveats.
+- If no GLB evidence and runtime not run → Not Run status.
+- If runtime run but export failed → Not Produced + failure note.
+
+## Mode handling
+
+### Text-only mode
+- handoff expectations only
+- artifacts marked Not Run/Not Produced
+
+### Runtime-ready mode
+- include evidence-linked artifact statuses
+
+### Blocked runtime mode
+- no production claims
+- blocker-driven next steps
 
 ## Validation checklist
 - [ ] GLB status explicit
 - [ ] preview status explicit
-- [ ] caveats explicit
-- [ ] no unsupported success claims
+- [ ] transform/scale/origin assumptions documented
+- [ ] material/texture caveats documented
+- [ ] stack assumptions documented
+- [ ] performance caveats documented
+- [ ] evidence boundary respected
+- [ ] next checks actionable
+- [ ] no unsupported readiness claims
+- [ ] plain-language handoff summary
+
+## Pass / Warn / Fail rubric
+
+| Category | Pass | Warn | Fail |
+|---|---|---|---|
+| Artifact truth | Status matches evidence | Partial evidence | Claims without evidence |
+| Compatibility clarity | Assumptions/caveats complete | Some gaps | Missing assumptions |
+| Web handoff usability | Clear next actions | Partial actionability | Confusing or incomplete |
+| Evidence boundary | No overclaims | Minor ambiguity | Contradictory claims |
 
 ## Failure handling
-If evidence is missing or runtime not run:
-- mark Not Run/Not Produced
-- avoid runtime success language
-- provide next test path
+- Missing evidence: mark Not Run/Not Produced and list missing checks.
+- Failed export evidence: record failure reason and retry path.
+- Unknown compatibility: keep Warn with explicit caveat.
+
+## Troubleshooting
+- Existing files found: verify provenance before claiming produced.
+- Missing scale/origin assumptions: add as blocker.
+- Missing stack assumptions: mark handoff as conditional.
+
+## Best practices
+- always pair artifact status with caveat
+- separate assumptions from verified facts
+- prioritize non-technical clarity in final handoff text
+
+## Good example
+“GLB status: Not Run (runtime not executed in this pass). Next: run official runtime eval and capture export evidence.”
+
+## Bad example
+“GLB is ready for production.” (no artifact proof)
 
 ## User-facing response template
 - What is included now
-- What is not verified yet
-- What to test next
+- What is still unverified
+- What to run/check next
+
+## Cross-skill handoff
+- Next: `non-blender-user-response-writer`
 
 ## Non-goals
-- framework runtime code
-- artifact fabrication
+- runtime export code generation
+- unsupported compatibility guarantees
 
 ## References
-- ../../references/web-3d-handoff.md
+- https://www.blender.org/lab/mcp-server/
+- https://claude.com/resources/tutorials/using-the-blender-connector-in-claude
+- https://docs.blender.org/manual/en/latest/advanced/command_line/index.html

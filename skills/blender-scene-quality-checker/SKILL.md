@@ -1,6 +1,6 @@
 ---
 name: blender-scene-quality-checker
-description: Evaluate scene readiness with pass/warn/fail and evidence-bound verdicts.
+description: Apply multi-category readiness gates with pass/warn/fail and evidence-bound verdicts.
 version: 0.1.0-draft
 status: draft
 tags:
@@ -12,25 +12,53 @@ tags:
 # blender-scene-quality-checker
 
 ## Purpose
-Assess readiness using explicit pass/warn/fail checks.
+Evaluate scene/workflow readiness honestly and consistently before any success claim.
 
 ## When to use
-- before readiness/export claims
-- during text-only or runtime eval reporting
+- before readiness/export/handoff claims
+- after planning pass
+- during text-only/runtime eval reporting
 
 ## When not to use
-- to replace evidence collection
-- to fabricate artifact claims
+- as a replacement for evidence collection
+- to fabricate confidence in missing artifacts
+
+## Trigger phrases
+- "quality-check this scene"
+- "is this ready"
+- "evaluate pass warn fail"
+
+## Prerequisites / readiness
+- plan output available
+- criteria set available
+- evidence state known (Produced/Not Produced/Not Run)
 
 ## Inputs
-- scene plan
-- available evidence
-- quality criteria
+
+### Required inputs
+- scene plan summary
+- intended output criteria
+- available evidence artifacts
+
+### Optional inputs
+- target quality threshold
+- destination-specific constraints
+
+### Assumptions to confirm
+- whether runtime was executed
+- whether artifacts are from this run vs pre-existing
 
 ## Outputs
-- category rubric
-- readiness verdict (Ready / Conditionally Ready / Not Ready / Not Run)
-- blockers/caveats
+
+### Primary output
+- category-level pass/warn/fail matrix
+
+### Secondary output
+- readiness verdict and blockers
+
+### Evidence / caveat output
+- artifact status ledger
+- explicit caveats and unknowns
 
 ## Required laws
 - ../../laws/evidence-before-done.md
@@ -39,32 +67,95 @@ Assess readiness using explicit pass/warn/fail checks.
 - ../../laws/no-arbitrary-python-interface.md
 
 ## Official runtime boundary
-Quality checker may run in text-only mode; must not imply runtime execution occurred.
+No execution claims without evidence. Text-only and blocked modes must remain explicit.
 
-## Workflow steps
-1. Confirm evidence state.
-2. Score categories pass/warn/fail.
-3. Compute readiness verdict.
-4. Report blockers and next actions.
+## Operating procedure
+1. Confirm evidence state and run mode.
+2. Validate subject clarity criteria.
+3. Validate composition/camera criteria.
+4. Validate lighting/material criteria.
+5. Validate scale/transform assumptions.
+6. Validate render/export readiness criteria.
+7. Validate GLB/web handoff clarity criteria.
+8. Assign pass/warn/fail by category.
+9. Determine blockers and conditional gaps.
+10. Produce final verdict (Ready/Conditionally Ready/Not Ready/Not Run).
+
+## Decision tree
+- If runtime not executed → Not Run or Conditionally Ready (never Ready without evidence).
+- If critical category fails → Not Ready.
+- If all critical pass and only minor warnings remain → Conditionally Ready.
+
+## Mode handling
+
+### Text-only mode
+- evaluate planning quality only
+- mark artifact statuses Not Run
+
+### Runtime-ready mode
+- include real artifact checks when present
+
+### Blocked runtime mode
+- keep verdict conservative
+- list exact blockers and next actions
 
 ## Validation checklist
-- [ ] rubric complete
-- [ ] evidence state explicit
-- [ ] verdict justified
-- [ ] caveats and next actions included
+- [ ] mode explicitly labeled
+- [ ] artifact status ledger present
+- [ ] category rubric complete
+- [ ] blocker list complete
+- [ ] caveats include user impact
+- [ ] final verdict justified
+- [ ] no unsupported success claims
+- [ ] no non-official runtime guidance
+- [ ] plain-language summary included
+- [ ] next actions provided
+
+## Pass / Warn / Fail rubric
+
+| Category | Pass | Warn | Fail |
+|---|---|---|---|
+| Subject clarity | Clear and aligned | Minor ambiguity | Unclear focal subject |
+| Composition/camera | Coherent and purposeful | Some weak framing | Framing fails user goal |
+| Lighting/material | Plan supports intent | Gaps need tuning | Major quality mismatch |
+| Evidence integrity | Claims align with evidence | Partial evidence | Claims contradict evidence |
 
 ## Failure handling
-If evidence is missing, mark Not Run/Conditionally Ready and list required evidence.
+- Missing evidence: downgrade verdict and mark Not Run/Not Produced.
+- Critical fail: mark Not Ready with remediation steps.
+- Unknowns: keep Warn + explicit caveat.
+
+## Troubleshooting
+- If all categories pass but no artifacts exist: ensure verdict is not Ready.
+- If pre-existing files found: do not attribute to current run without linkage.
+- If plan quality high but runtime blocked: use Conditionally Ready or Not Run.
+
+## Best practices
+- score categories independently before final verdict
+- keep caveats visible in final summary
+- preserve traceability from category score to verdict
+
+## Good example
+“Status: Conditionally Ready. Planning categories pass, but runtime artifacts are Not Run in this pass.”
+
+## Bad example
+“Looks good overall, ship it.” (no rubric, no evidence mapping)
 
 ## User-facing response template
 - Current status
 - What passed
-- What is uncertain
-- What to do next
+- What needs follow-up
+- Next best action
+
+## Cross-skill handoff
+- Next: `glb-web-handoff`
+- Then: `non-blender-user-response-writer`
 
 ## Non-goals
 - runtime execution
 - evidence-free readiness claims
 
 ## References
-- ../../references/blender-quality-checklist.md
+- https://www.blender.org/lab/mcp-server/
+- https://claude.com/resources/tutorials/using-the-blender-connector-in-claude
+- https://docs.blender.org/manual/en/latest/advanced/command_line/index.html

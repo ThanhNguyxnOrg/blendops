@@ -127,6 +127,7 @@ Active docs for the current product/workflow direction.
 | Blender workflow research | [research/blender-workflow-research.md](./research/blender-workflow-research.md) |
 | Web 3D asset pipeline | [research/web-3d-asset-pipeline.md](./research/web-3d-asset-pipeline.md) |
 | Blender quality checklist | [research/blender-quality-checklist.md](./research/blender-quality-checklist.md) |
+| Blender skill benchmark analysis | [research/blender-skill-benchmark-analysis.md](./research/blender-skill-benchmark-analysis.md) |
 
 ---
 
@@ -137,6 +138,17 @@ Active docs for the current product/workflow direction.
 | Skill system design | [blendops-skill-system-design.md](./blendops-skill-system-design.md) |
 | Proposed law format | [blendops-law-format.md](./blendops-law-format.md) |
 | Proposed first skill pack | [blendops-first-skill-pack.md](./blendops-first-skill-pack.md) |
+
+---
+
+## 🧪 Skill reviews
+
+| Area | Doc |
+|---|---|
+| Skill review index | [../skill-reviews/README.md](../skill-reviews/README.md) |
+| Review gates | [../skill-reviews/review-gates.md](../skill-reviews/review-gates.md) |
+| Acceptance criteria | [../skill-reviews/acceptance-criteria.md](../skill-reviews/acceptance-criteria.md) |
+| Skill template | [../skill-reviews/blendops-skill-template.md](../skill-reviews/blendops-skill-template.md) |
 
 ---
 

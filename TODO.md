@@ -67,14 +67,21 @@ _Last updated: 2026-04-29_
 - [x] create references/examples/harness notes
 - [x] update docs to point to installable pack
 
-## Phase 2.7 — Agent install strategy and dry-run
+## Phase 2.7 — Skill depth and review gates (completed)
 
-- [x] update/repair agent-install guide to install root `skills/` collection
-- [ ] run agent-install guide in a disposable fixture project
-- [ ] verify project-local files created correctly
-- [ ] verify no runtime was installed/run
-- [ ] verify rollback instructions work
-- [ ] refine install guide
+- [x] benchmark Blender skill repos
+- [x] create canonical skill template
+- [x] create review gates
+- [x] expand 8 root skills
+- [x] add per-skill eval prompts
+- [x] update pack manifest
+
+## Phase 2.8 — Skill gate review eval
+
+- [ ] run every root skill through review gates
+- [ ] produce pass/warn/fail report
+- [ ] fix weak skills
+- [ ] then run agent install dry-run
 
 ## Phase 3 — Prototype integration decision
 

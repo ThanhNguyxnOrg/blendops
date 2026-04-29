@@ -5,20 +5,24 @@ Status: Draft v0
 BlendOps skills are installable AI-agent skill units for official-runtime Blender workflows.
 
 - Each skill is its own directory with `SKILL.md`.
-- Skills are meant to be copied or referenced by AI coding tools.
+- Each skill includes `EVAL.md` for text-only gate testing.
 - Skills must obey shared laws under `laws/`.
-- Skills do not install or run Blender.
+- Skills do not install or run Blender runtime.
 - Skills do not provide custom runtime code.
 
-## Skill index
+## Review gate dependency
 
-| Skill | Purpose | Use when |
-|---|---|---|
-| official-runtime-setup-guide | Explain official runtime prerequisites and boundaries | You need to set expectations before any runtime claim |
-| official-runtime-readiness-checker | Evaluate whether official runtime appears ready | You need a readiness verdict before execution |
-| product-hero-scene-planner | Convert user intent into hero-scene plan | A non-Blender user asks for product hero planning |
-| blender-composition-camera-planner | Focus planning for composition and camera | You need detailed framing/camera direction |
-| blender-lighting-material-planner | Focus planning for lighting/material design | You need look-dev planning with portability caveats |
-| blender-scene-quality-checker | Score readiness via pass/warn/fail | You need explicit quality gate outcomes |
-| glb-web-handoff | Define GLB/web handoff assumptions and caveats | You need web handoff clarity without overclaims |
-| non-blender-user-response-writer | Produce plain-language final responses | You need non-jargon user-facing summaries |
+All skills should pass `skill-reviews/review-gates.md` before promotion.
+
+## Skill categories
+
+| Category | Skill | Purpose | Use when | Eval |
+|---|---|---|---|---|
+| Setup / readiness | official-runtime-setup-guide | runtime prerequisite guidance and confidence labels | runtime setup path unclear | [EVAL](./official-runtime-setup-guide/EVAL.md) |
+| Setup / readiness | official-runtime-readiness-checker | readiness matrix and blocker reporting | before runtime eval attempt | [EVAL](./official-runtime-readiness-checker/EVAL.md) |
+| Planning | product-hero-scene-planner | full product-hero scene plan schema | user asks for hero scene planning | [EVAL](./product-hero-scene-planner/EVAL.md) |
+| Planning | blender-composition-camera-planner | composition and camera strategy | framing/camera decisions need depth | [EVAL](./blender-composition-camera-planner/EVAL.md) |
+| Planning | blender-lighting-material-planner | lighting/material lookdev plan + portability caveats | lookdev strategy required | [EVAL](./blender-lighting-material-planner/EVAL.md) |
+| Quality / eval | blender-scene-quality-checker | pass/warn/fail readiness and verdict | readiness decision needed | [EVAL](./blender-scene-quality-checker/EVAL.md) |
+| Handoff / communication | glb-web-handoff | GLB/web handoff status and caveats | handoff clarity required | [EVAL](./glb-web-handoff/EVAL.md) |
+| Handoff / communication | non-blender-user-response-writer | plain-language final response | stakeholder-facing summary needed | [EVAL](./non-blender-user-response-writer/EVAL.md) |
