@@ -124,6 +124,8 @@ Helpful install references:
 - [docs/agent-install.md](./docs/agent-install.md)
 - [docs/examples/agent-install-prompt.md](./docs/examples/agent-install-prompt.md)
 - [docs/install-scopes.md](./docs/install-scopes.md)
+- [docs/multi-agent-install-strategy.md](./docs/multi-agent-install-strategy.md)
+- [docs/distribution-strategy.md](./docs/distribution-strategy.md)
 - [docs/target-adapter-architecture.md](./docs/target-adapter-architecture.md)
 - [docs/adapter-registry.md](./docs/adapter-registry.md)
 - [docs/adapters/README.md](./docs/adapters/README.md)
@@ -155,6 +157,7 @@ Default install stance:
 | Architecture | [docs/architecture.md](./docs/architecture.md) |
 | Release readiness | [docs/release-readiness.md](./docs/release-readiness.md) |
 | Release readiness rollup v0 | [docs/release-readiness-rollup-v0.md](./docs/release-readiness-rollup-v0.md) |
+| Distribution strategy | [docs/distribution-strategy.md](./docs/distribution-strategy.md) |
 
 | v0 pack area | Doc |
 |---|---|

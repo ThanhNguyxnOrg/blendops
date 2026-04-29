@@ -71,6 +71,8 @@ Scope precedence:
 | Tool-native path is linked-only or unknown | Use project-local plus generic-root fallback. |
 | Writes aren't allowed or weren't requested | Use docs-only/reference mode. |
 
+For multi-agent installs or multiple target surfaces, read [multi-agent-install-strategy.md](./multi-agent-install-strategy.md) before selecting adapters.
+
 ## Step 3: Select adapter
 
 Use the adapter registry:

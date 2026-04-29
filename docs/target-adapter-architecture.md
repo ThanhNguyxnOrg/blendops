@@ -17,6 +17,8 @@ Adapters prevent hard-coded, brittle install logic per tool. Instead, each targe
 
 Core does not change per tool; adapters map core into tool-native or fallback locations.
 
+For installs across multiple agent surfaces, use [multi-agent-install-strategy.md](./multi-agent-install-strategy.md) as the orchestration layer above per-target adapters.
+
 ## Adapter registry
 
 Adapter lookup should be centralized in `docs/adapter-registry.md`.

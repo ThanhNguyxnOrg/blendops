@@ -16,7 +16,10 @@ Clarify how to use BlendOps with Claude app/Desktop as a separate target from Cl
 Use Claude app/Desktop with:
 - Project Instructions / knowledge docs / prompt pack style guidance
 - `BLENDOPS.md` and/or `AGENTS.md` style project-local instruction files
+- user-managed Personal Skills import when supported by the app UI
 - official runtime references when runtime is needed
+
+For the broader multi-surface strategy, see [multi-agent-install-strategy.md](./multi-agent-install-strategy.md).
 
 ## Official runtime note
 

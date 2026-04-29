@@ -25,8 +25,9 @@ Active docs for the current product and workflow direction.
 2. **Product direction:** [product-direction.md](./product-direction.md)
 3. **Release status:** [release-readiness.md](./release-readiness.md)
 4. **Release readiness rollup:** [release-readiness-rollup-v0.md](./release-readiness-rollup-v0.md)
-5. **Eval status:** [evals/README.md](./evals/README.md)
-6. **Workflow and delivery specs:** continue through the grouped navigation below
+5. **Distribution strategy:** [distribution-strategy.md](./distribution-strategy.md)
+6. **Eval status:** [evals/README.md](./evals/README.md)
+7. **Workflow and delivery specs:** continue through the grouped navigation below
 
 > [!TIP]
 > If you're evaluating release readiness, read the release status and manual install beta evidence before the pack docs.
@@ -40,7 +41,7 @@ Active docs for the current product and workflow direction.
 | Understand the product | [product-direction.md](./product-direction.md) | [architecture.md](./architecture.md), [reference-runtime.md](./reference-runtime.md) |
 | Set runtime boundaries | [external-runtime-setup.md](./external-runtime-setup.md) | [reference-runtime.md](./reference-runtime.md), [laws/official-runtime-only.md](./laws/official-runtime-only.md) |
 | Review workflow behavior | [workflow-contract.md](./workflow-contract.md) | [first-user-journey.md](./first-user-journey.md), [safety-model.md](./safety-model.md) |
-| Try install/adoption docs | [agent-install.md](./agent-install.md) | [install-scopes.md](./install-scopes.md), [adapters/README.md](./adapters/README.md) |
+| Try install/adoption docs | [agent-install.md](./agent-install.md) | [install-scopes.md](./install-scopes.md), [multi-agent-install-strategy.md](./multi-agent-install-strategy.md), [adapters/README.md](./adapters/README.md) |
 | Check eval evidence | [evals/README.md](./evals/README.md) | [release-readiness.md](./release-readiness.md), [release-readiness-rollup-v0.md](./release-readiness-rollup-v0.md) |
 | Review v0 pack content | [packs/README.md](./packs/README.md) | [skills/README.md](./skills/README.md), [workflows/README.md](./workflows/README.md) |
 
@@ -148,6 +149,8 @@ Active docs for the current product and workflow direction.
 |---|---|
 | Install strategy | [install-strategy.md](./install-strategy.md) |
 | Install scopes | [install-scopes.md](./install-scopes.md) |
+| Multi-agent install strategy | [multi-agent-install-strategy.md](./multi-agent-install-strategy.md) |
+| Distribution strategy | [distribution-strategy.md](./distribution-strategy.md) |
 | Adapter architecture | [target-adapter-architecture.md](./target-adapter-architecture.md) |
 | Capability profile schema | [capability-profile.md](./capability-profile.md) |
 | Adapter registry | [adapter-registry.md](./adapter-registry.md) |
@@ -206,6 +209,7 @@ Active docs for the current product and workflow direction.
 | Current cleanup audit | [cleanup-audit.md](./cleanup-audit.md) | Governance record |
 | Release readiness status | [release-readiness.md](./release-readiness.md) | Draft v0, do not tag yet |
 | Release readiness rollup v0 | [release-readiness-rollup-v0.md](./release-readiness-rollup-v0.md) | Phase 3.3 pre-runtime rollup |
+| Distribution strategy | [distribution-strategy.md](./distribution-strategy.md) | Draft v0, no marketplace claim |
 
 ---
 

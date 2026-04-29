@@ -55,6 +55,8 @@ packs/
 - Agent install guide attaches root collection project-locally by default.
 - Runtime setup remains external and official-reference-only.
 - Future installers may copy these root collection files into tool-specific locations, but that is out of scope in v0.
+- Multi-agent install planning is tracked in [multi-agent-install-strategy.md](./multi-agent-install-strategy.md).
+- Distribution levels and marketplace caveats are tracked in [distribution-strategy.md](./distribution-strategy.md).
 
 ## Promotion criteria
 
