@@ -11,11 +11,14 @@ _Last updated: 2026-04-28_
 
 ## Phase 1 — First non-Blender-user golden path spec
 
-- [ ] user asks for a simple 3D product hero
-- [ ] define AI workflow
-- [ ] define expected artifacts
-- [ ] define acceptance criteria
-- [ ] define external runtime assumptions using Blender + reference MCP
+- [x] user asks for a simple 3D product hero
+- [x] define AI workflow
+- [x] define expected artifacts
+- [x] define acceptance criteria
+- [x] define external runtime assumptions using Blender + reference MCP
+- [x] document first golden path in `docs/golden-path-cyberpunk-shoe.md`
+- [x] define workflow contract in `docs/workflow-contract.md`
+- [x] define product-layer safety model in `docs/safety-model.md`
 
 ## Phase 2 — Workflow design
 

@@ -4,6 +4,8 @@ Date: 2026-04-28
 Branch: `reset/product-layer-rebuild`  
 Baseline reference: commit `04c70db` (last custom-runtime baseline)
 
+> Historical scope note: references to deleted runtime paths (for example `apps/mcp-server`, `apps/blender-addon`, runtime scripts) are audit-history records only. They are not active setup or usage guidance.
+
 ## Action labels
 
 - **DELETE**: Remove from active codebase because it represents old custom runtime implementation.
