@@ -111,9 +111,15 @@ Active docs for the current product/workflow direction.
 | Area | Doc |
 |---|---|
 | Install strategy | [install-strategy.md](./install-strategy.md) |
+| Install scopes | [install-scopes.md](./install-scopes.md) |
+| Adapter architecture | [target-adapter-architecture.md](./target-adapter-architecture.md) |
+| Capability profile schema | [capability-profile.md](./capability-profile.md) |
+| Adapter registry | [adapter-registry.md](./adapter-registry.md) |
+| Adapter docs index | [adapters/README.md](./adapters/README.md) |
 | Agent install guide | [agent-install.md](./agent-install.md) |
 | Package layout plan | [package-layout.md](./package-layout.md) |
 | Agent install prompts | [examples/agent-install-prompt.md](./examples/agent-install-prompt.md) |
+| BLENDOPS.md root template | [examples/blendops-root-entrypoint.md](./examples/blendops-root-entrypoint.md) |
 
 ---
 

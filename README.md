@@ -118,6 +118,24 @@ Note: this installs/attaches BlendOps skills/docs only. It does not install Blen
 
 ---
 
+## 🧭 Install adapters and scopes
+
+BlendOps uses target adapters and install scopes instead of hard-coded one-off install logic.
+
+- project-local is default
+- generic-root fallback handles unknown future tools
+- user-global is opt-in only
+- Claude Code and Claude app/Desktop are separate targets
+
+Links:
+- [docs/target-adapter-architecture.md](./docs/target-adapter-architecture.md)
+- [docs/install-scopes.md](./docs/install-scopes.md)
+- [docs/adapter-registry.md](./docs/adapter-registry.md)
+- [docs/adapters/README.md](./docs/adapters/README.md)
+- [docs/examples/blendops-root-entrypoint.md](./docs/examples/blendops-root-entrypoint.md)
+
+---
+
 ## 🧩 BlendOps Skills
 
 Canonical specs live under `docs/`.

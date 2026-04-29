@@ -1,16 +1,36 @@
 # BlendOps Agent Install Prompts
 
-## Human quick install prompt
+## A. Adaptive install prompt
 
-Install BlendOps in this project by following:
+Install BlendOps in this project using the adapter model:
 https://raw.githubusercontent.com/ThanhNguyxnOrg/blendops/main/docs/agent-install.md
 
-Use project-local install unless I explicitly ask for global install.
+Build a capability profile first.
+Use project-local install by default.
+Use generic-root fallback if tool-native support is not verified.
 Do not install Blender runtime.
 Do not run Blender.
-Do not claim BlendOps has its own CLI command.
-Do not overwrite existing config without asking.
-Summarize exactly what you changed.
+Do not modify global config unless I explicitly ask.
+Report adapter, scope, files changed, and rollback steps.
+
+## B. Generic-root install prompt
+
+Attach BlendOps using generic-root fallback only.
+Create BLENDOPS.md in the project root and link/copy the BlendOps skills/laws/packs as needed.
+Do not touch tool-specific config.
+
+## C. Global install prompt
+
+Install BlendOps globally for <tool>.
+Only proceed if the global path is verified, backup is created, and rollback is documented.
+Ask me before writing any global config.
+
+## D. Claude app setup prompt
+
+Set up BlendOps guidance for Claude app/Desktop using docs/reference mode.
+Do not assume Claude Code workspace paths.
+Keep runtime setup external and official-only.
+Do not install Blender runtime or run Blender.
 
 ## Agent fetch command
 

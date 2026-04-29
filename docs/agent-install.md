@@ -1,89 +1,82 @@
 # BlendOps Agent Install Guide
 
 ## Mission
-Install or attach the BlendOps v0 official-runtime skill collection to the current AI coding workspace.
+Install or attach the BlendOps v0 official-runtime core collection to the current AI coding workspace.
 
-Note:
-- This guide originally targeted a monolithic draft path.
-- The current install target is the root collection: `skills/`, `laws/`, and `packs/`.
+Core collection:
+- `skills/`
+- `laws/`
+- `packs/`
+- selected runtime boundary docs
 
 ## Safety rules
 - Do not install Blender runtime.
 - Do not run Blender.
 - Do not claim runtime works.
 - Do not use non-official MCP runtime paths.
-- Do not modify global config unless the user explicitly requested global install.
+- Do not modify global config unless user explicitly requested global install.
 - Prefer project-local install.
-- Do not overwrite existing user rules/config without backup.
+- Do not overwrite existing config without backup.
 - Ask before destructive changes.
 
-## Step 1 — Detect target environment
-Detect if the current workspace is using:
-- Claude Code
-- OpenCode
-- Cursor
-- Codex / AGENTS.md style
-- Unknown fallback
+## Step 1 — Build capability profile
+Determine target and confidence:
+- target name/type
+- native skill/rules support (verified/unknown)
+- project file write capability
+- global config capability
+- adapter confidence label
 
-Detection hints (non-destructive):
-- Claude Code hints: `CLAUDE.md`, `.claude/`
-- OpenCode hints: `.opencode/`
-- Cursor hints: `.cursor/`
-- Codex/generic hints: `AGENTS.md`
+## Step 2 — Select install scope
+Default order:
+1. project-local (default)
+2. tool-native (if verified)
+3. generic-root fallback (if uncertain)
+4. user-global (explicit user opt-in only)
+5. docs-only/reference
 
-## Step 2 — Choose install mode
-Default:
-- project-local install
+## Step 3 — Select adapter
+Choose from adapter registry:
+- `docs/adapter-registry.md`
+- `docs/adapters/*.md`
 
-Only use global install if:
-- user explicitly asked for global install
-- target path is verified
-- backup/rollback is documented
+If target is uncertain, use `docs/adapters/generic-root.md`.
 
-## Step 3 — Attach BlendOps collection/docs
-For v0, attach by copying or referencing:
-- `skills/` (multiple focused skill units)
-- `laws/` (shared guardrails)
-- `packs/` (bundle manifests)
-- `docs/external-runtime-setup.md` (official runtime prerequisite)
-- `docs/reference-runtime.md` (runtime boundary reference)
+## Step 4 — Attach core collection
+Attach by copy/reference:
+- `skills/`
+- `laws/`
+- `packs/`
+- `docs/external-runtime-setup.md`
+- `docs/reference-runtime.md`
 
-Prefer linking/reference mode when full copy is unnecessary.
+## Step 5 — Create entrypoint
+- adapter-specific entrypoint when verified
+- otherwise create `BLENDOPS.md` root fallback using template:
+  - `docs/examples/blendops-root-entrypoint.md`
 
-## Step 4 — Create entrypoint instruction
-Create or update a project-local entrypoint where appropriate.
+## Step 6 — Verify install
+Report:
+- adapter used
+- scope used
+- files changed
+- confidence labels
+- rollback steps
 
-Potential targets, only if verified:
-- Claude Code: `CLAUDE.md` plus project-local skill directories under `.claude/skills/<skill-name>/SKILL.md`
-- OpenCode: project-local skill directories under `.opencode/skills/<skill-name>/SKILL.md`
-- Cursor: `.cursor/rules/blendops.md` (collection index + links)
-- Codex/generic: `AGENTS.md` section (collection index + links)
+Checks:
+- no runtime commands run
+- no global config changes unless explicitly approved
+- backups created where existing files were touched
 
-If uncertain:
-- write a generic `AGENTS.md` or `BLENDOPS.md` fallback
-- clearly tell the user which path was chosen and why
+## Step 7 — First-use prompt
+Use the BlendOps v0 product hero pack to plan a cyberpunk shoe web hero.
+Do not run Blender until runtime is explicitly available.
+Do not claim preview/render/GLB exists without evidence.
 
-## Step 5 — Verify install
-Check:
-- files exist
-- entrypoint links to BlendOps pack
-- no runtime commands were run
-- no BlendOps-owned CLI/runtime command surface was created or assumed
-- no global config was modified unless requested
-- old files were backed up if touched
-
-## Step 6 — Tell user what to try next
-Give a first prompt:
-
-“Use the BlendOps v0 product hero pack to plan a cyberpunk shoe web hero. Do not run Blender until runtime is explicitly available.”
-
-## Step 7 — Uninstall / rollback
-Explain how to remove copied files and restore backups.
-
-Minimum rollback checklist:
-1. Remove project-local BlendOps-attached files created by this install pass.
-2. Restore any backed-up pre-existing files.
-3. Confirm no global config remains modified (unless explicitly approved and desired).
+## Rollback / uninstall
+- remove newly attached project-local files
+- restore backups for modified files
+- confirm post-rollback state
 
 ## Source confidence note
-When install-path assumptions are uncertain, label them clearly (`verified-read`, `linked-only`, or `mixed`) and avoid inventing tool-specific behavior.
+When assumptions are uncertain, label as `linked-only` or `unknown` and avoid invented tool-specific behavior.

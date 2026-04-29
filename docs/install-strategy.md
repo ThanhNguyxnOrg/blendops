@@ -4,102 +4,73 @@ Status: Draft v0
 
 ## v0 install philosophy
 
-BlendOps v0 is a **docs/skill-pack adoption layer**, not a runtime installer.
+BlendOps v0 is a docs/skill-pack adoption layer, not a runtime installer.
 
-What v0 install does:
-- attaches BlendOps laws/skills/workflows/recipes/packs to an AI coding workspace
-- creates project-local entrypoint guidance
-- preserves official-runtime-only boundaries
+## Core collection
 
-What v0 install does not do:
-- install Blender runtime
-- run Blender
-- claim runtime is ready
-- mutate global config without explicit user approval
+- `skills/`
+- `laws/`
+- `packs/`
 
-## Install targets
+Core collection is tool-agnostic.
 
-Primary target (default):
-- project-local workspace attachment
+## Install scopes
 
-Optional target (explicit opt-in only):
-- user-global attachment for a specific tool, with backup + rollback
+See `docs/install-scopes.md`.
 
-## Project-local install (default)
+Default: project-local.
 
-Recommended default because it is:
-- reversible
-- low-risk
-- repository-scoped
-- easier to audit
+Global install is opt-in only and requires:
+- explicit user approval
+- verified path
+- backup + rollback
 
-Project-local attachment should include references/copies of:
-- `docs/laws/`
-- `docs/skills/`
-- `docs/workflows/`
-- `docs/recipes/`
-- `docs/packs/`
-- runtime boundary references (`docs/external-runtime-setup.md`, `docs/reference-runtime.md`)
+## Target adapters
 
-## User-global install (opt-in)
+BlendOps uses adapters instead of fixed hard-coded install logic.
 
-Only proceed when:
-- user explicitly requests global install
-- tool-specific global path is verified
-- backup + rollback steps are prepared and reported
+See:
+- `docs/target-adapter-architecture.md`
+- `docs/adapters/README.md`
+- `docs/adapter-registry.md`
 
-## Claude Code notes
+## Capability profiles
 
-- Prefer project-local `CLAUDE.md` augmentation or project-local skill entrypoint.
-- If using `.claude/skills/<skill-name>/SKILL.md`, ensure backup of any existing content before edits.
-- Keep runtime setup external and link to official runtime docs.
+Each install run should build a capability profile before writing files.
 
-## OpenCode notes
+See:
+- `docs/capability-profile.md`
 
-- Prefer project-local `.opencode/skills/<skill-name>/SKILL.md` when path conventions are verified.
-- If conventions are uncertain, fallback to project-local `AGENTS.md`/`BLENDOPS.md` with explicit note.
+## Generic-root fallback
 
-## Cursor notes
-
-- Prefer project-local `.cursor/rules/` attachment where verified.
-- Keep rules concise and reference BlendOps docs rather than duplicating large content.
-
-## Codex / AGENTS.md notes
-
-- Prefer project-local `AGENTS.md` section-based attachment.
-- Keep explicit law order + first-use prompt + runtime boundaries.
+If tool-native path is unverified, use generic-root fallback:
+- create `BLENDOPS.md`
+- optionally update `AGENTS.md` with backup
 
 ## Official runtime prerequisite
 
-BlendOps adoption assumes official runtime setup remains external:
+Runtime setup remains external and official-only:
 1. Official Blender MCP Server
 2. Official Claude Blender Connector
-3. Official Blender CLI reference
+3. Official Blender CLI docs
 
-BlendOps install does not validate runtime execution; it only attaches workflow/law/skill guidance.
+## Claude Code vs Claude app
 
-## Rollback/uninstall model
+Treat these as separate targets:
+- Claude Code: workspace/agent attachment path
+- Claude app/Desktop: connector/runtime context and docs-first guidance
 
-Every install action should produce:
-- change summary
-- touched-file list
-- backup file list
-- rollback instructions
+Do not assume Claude Code paths apply to Claude app/Desktop.
 
-Rollback minimum:
-1. delete newly attached project-local files
-2. restore backups of modified files
-3. report post-rollback status
+## Rollback model
 
-## Source confidence labels
+Every install must report:
+- changed files
+- backup files
+- rollback steps
 
-Use these labels in install reports:
-- `verified-read`: source fetched/read directly
-- `linked-only`: link verified but full content unavailable
-- `mixed`: combined confidence state
+## Non-goals
 
-## Why this is not a runtime installer
-
-BlendOps v0 intentionally avoids runtime ownership creep.
-
-Its role is to make AI-agent behavior safer, clearer, and more consistent for non-Blender users through laws/skills/workflows/recipes/packs.
+- no runtime code installation
+- no runtime execution claims
+- no custom CLI/MCP/addon ownership
