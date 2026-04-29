@@ -51,12 +51,12 @@ Only proceed when:
 ## Claude Code notes
 
 - Prefer project-local `CLAUDE.md` augmentation or project-local skill entrypoint.
-- If using `.claude/skills/blendops/SKILL.md`, ensure backup of any existing content before edits.
+- If using `.claude/skills/<skill-name>/SKILL.md`, ensure backup of any existing content before edits.
 - Keep runtime setup external and link to official runtime docs.
 
 ## OpenCode notes
 
-- Prefer project-local `.opencode/skills/blendops/SKILL.md` when path conventions are verified.
+- Prefer project-local `.opencode/skills/<skill-name>/SKILL.md` when path conventions are verified.
 - If conventions are uncertain, fallback to project-local `AGENTS.md`/`BLENDOPS.md` with explicit note.
 
 ## Cursor notes

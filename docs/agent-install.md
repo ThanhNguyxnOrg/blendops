@@ -1,7 +1,11 @@
 # BlendOps Agent Install Guide
 
 ## Mission
-Install or attach the BlendOps v0 official-runtime skill pack to the current AI coding workspace.
+Install or attach the BlendOps v0 official-runtime skill collection to the current AI coding workspace.
+
+Note:
+- This guide originally targeted a monolithic draft path.
+- The current install target is the root collection: `skills/`, `laws/`, and `packs/`.
 
 ## Safety rules
 - Do not install Blender runtime.
@@ -36,15 +40,13 @@ Only use global install if:
 - target path is verified
 - backup/rollback is documented
 
-## Step 3 — Attach BlendOps docs/skills
+## Step 3 — Attach BlendOps collection/docs
 For v0, attach by copying or referencing:
-- `docs/laws/`
-- `docs/skills/`
-- `docs/workflows/`
-- `docs/recipes/`
-- `docs/packs/`
-- `docs/external-runtime-setup.md`
-- `docs/reference-runtime.md`
+- `skills/` (multiple focused skill units)
+- `laws/` (shared guardrails)
+- `packs/` (bundle manifests)
+- `docs/external-runtime-setup.md` (official runtime prerequisite)
+- `docs/reference-runtime.md` (runtime boundary reference)
 
 Prefer linking/reference mode when full copy is unnecessary.
 
@@ -52,10 +54,10 @@ Prefer linking/reference mode when full copy is unnecessary.
 Create or update a project-local entrypoint where appropriate.
 
 Potential targets, only if verified:
-- Claude Code: `CLAUDE.md` or `.claude/skills/blendops/SKILL.md`
-- OpenCode: `.opencode/skills/blendops/SKILL.md`
-- Cursor: `.cursor/rules/blendops.md` or equivalent
-- Codex/generic: `AGENTS.md` section
+- Claude Code: `CLAUDE.md` plus project-local skill directories under `.claude/skills/<skill-name>/SKILL.md`
+- OpenCode: project-local skill directories under `.opencode/skills/<skill-name>/SKILL.md`
+- Cursor: `.cursor/rules/blendops.md` (collection index + links)
+- Codex/generic: `AGENTS.md` section (collection index + links)
 
 If uncertain:
 - write a generic `AGENTS.md` or `BLENDOPS.md` fallback

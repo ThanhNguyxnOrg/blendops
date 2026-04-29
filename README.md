@@ -118,6 +118,19 @@ Note: this installs/attaches BlendOps skills/docs only. It does not install Blen
 
 ---
 
+## 🧩 BlendOps Skills
+
+Canonical specs live under `docs/`.
+
+Installable draft skill units now live under root collections:
+- Skills: [skills/README.md](./skills/README.md)
+- Laws: [laws/README.md](./laws/README.md)
+- Pack manifest: [packs/product-hero-v0/PACK.md](./packs/product-hero-v0/PACK.md)
+
+Draft note: this collection is still draft and should be validated through install dry-run + runtime eval before promotion.
+
+---
+
 ## 🔁 Product flow
 
 BlendOps is designed around this workflow:

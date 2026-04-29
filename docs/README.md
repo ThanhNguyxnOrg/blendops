@@ -86,6 +86,16 @@ Active docs for the current product/workflow direction.
 
 ---
 
+## 🧩 Installable skill collection
+
+| Area | Doc |
+|---|---|
+| Root skills index | [../skills/README.md](../skills/README.md) |
+| Root laws index | [../laws/README.md](../laws/README.md) |
+| Product hero v0 pack | [../packs/product-hero-v0/PACK.md](../packs/product-hero-v0/PACK.md) |
+
+---
+
 ## 🧪 Evals
 
 | Area | Doc |

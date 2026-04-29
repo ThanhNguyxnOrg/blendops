@@ -32,6 +32,19 @@ Why:
 
 ---
 
+## Collection model clarification
+
+BlendOps is not a single monolithic skill.
+
+BlendOps should be modeled as:
+- multiple focused skills under `skills/`
+- shared guardrails under `laws/`
+- compositional bundles under `packs/`
+
+Each skill should remain narrow, composable, and independently reviewable.
+
+---
+
 ## 2) What one BlendOps law/skill should contain
 
 Every unit should include:

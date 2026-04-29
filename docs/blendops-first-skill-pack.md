@@ -7,6 +7,8 @@ Date: 2026-04-29
 
 Define the first 3–5 BlendOps laws/skills that maximize non-Blender-user value while preserving current runtime boundary (external runtime references, no custom runtime rebuild).
 
+Installable draft counterparts now exist as a root multi-skill collection under `skills/`, with shared `laws/` and bundle manifests under `packs/`.
+
 ---
 
 ## Selection criteria for v0

@@ -57,16 +57,19 @@ _Last updated: 2026-04-29_
 - [ ] refine validation gates
 - [ ] decide whether to package installable skills later
 
-## Phase 2.6 — Install / adoption strategy (completed)
+## Phase 2.6 — Installable skill pack layout (completed)
 
-- [x] research agent-driven install patterns
-- [x] design project-local install strategy
-- [x] create agent-install guide
-- [x] create package layout plan
-- [x] create copy-paste install prompt
+- [x] create root `skills/` multi-skill entrypoints
+- [x] create pack-local laws
+- [x] create pack-local skills
+- [x] create pack-local workflow
+- [x] create pack-local recipe
+- [x] create references/examples/harness notes
+- [x] update docs to point to installable pack
 
-## Phase 2.7 — Install dry-run eval
+## Phase 2.7 — Agent install strategy and dry-run
 
+- [x] update/repair agent-install guide to install root `skills/` collection
 - [ ] run agent-install guide in a disposable fixture project
 - [ ] verify project-local files created correctly
 - [ ] verify no runtime was installed/run
