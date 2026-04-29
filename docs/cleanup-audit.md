@@ -51,9 +51,9 @@ Audit for stale/duplicate/conflicting files under current model:
 | **/dist/** (apps/packages) | DELETE | Generated build outputs from old runtime-era surfaces.
 | **/__pycache__/** | DELETE | Python cache artifacts.
 | node_modules/** | DELETE | Reproducible dependency install artifact.
-| skills/blendops/harnesses/* | REWRITE | Legacy wording references monolithic path; keep as auxiliary notes or migrate to docs/adapters.
-| skills/blendops/references/* | REWRITE | Auxiliary references; keep but clarify not canonical install target.
-| skills/blendops/examples/* | REWRITE | Auxiliary examples; keep but clarify relation to root skills.
+| skills/blendops/harnesses/* | DELETE | Legacy monolithic leftovers; superseded by root `skills/` + `docs/adapters/*`.
+| skills/blendops/references/* | DELETE | Legacy auxiliary refs; superseded by root per-skill `references/`.
+| skills/blendops/examples/* | DELETE | Legacy examples; superseded by root per-skill references/examples.
 | docs/laws/* vs laws/* | MERGE | Dual-layer by design; keep both but periodically sync to avoid drift.
 | docs/skills/* vs skills/* | MERGE | Docs-spec vs installable artifacts; enforce sync policy.
 | docs/packs/* vs packs/* | MERGE | Docs-spec manifest vs installable manifest; enforce sync policy.
@@ -72,4 +72,4 @@ Audit for stale/duplicate/conflicting files under current model:
 ## Follow-up alignment actions
 
 - Add a periodic “docs/spec vs installable sync” check.
-- Clarify `skills/blendops/*` as auxiliary or migrate those notes into `docs/adapters/*` over time.
+- Confirm no active references remain to removed `skills/blendops/*` subtree.
