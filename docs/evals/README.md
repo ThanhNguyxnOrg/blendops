@@ -17,5 +17,6 @@ BlendOps evals are evidence records for laws, skills, workflows, recipes, and pa
 
 ## Eval index
 
-- [cyberpunk-shoe-hero-v0-manual-eval.md](./cyberpunk-shoe-hero-v0-manual-eval.md)
-- [cyberpunk-shoe-hero-v0-text-eval.md](./cyberpunk-shoe-hero-v0-text-eval.md) — text-only dry eval (no Blender runtime execution)
+- [cyberpunk-shoe-hero-v0-manual-eval.md](./cyberpunk-shoe-hero-v0-manual-eval.md) — protocol-only manual runtime eval
+- [cyberpunk-shoe-hero-v0-text-eval.md](./cyberpunk-shoe-hero-v0-text-eval.md) — executed text-only dry eval (no Blender runtime execution)
+- [cyberpunk-shoe-hero-v0-runtime-eval.md](./cyberpunk-shoe-hero-v0-runtime-eval.md) — runtime eval result record (blocked in current environment)

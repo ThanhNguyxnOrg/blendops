@@ -51,6 +51,7 @@ _Last updated: 2026-04-29_
 
 - [x] create cyberpunk shoe v0 manual eval protocol
 - [x] run text-only dry eval before runtime manual eval
+- [x] create runtime eval result/blocker record
 - [ ] run cyberpunk shoe recipe through official runtime manually
 - [ ] inspect if output stays non-Blender-user-friendly
 - [ ] refine validation gates
