@@ -28,6 +28,7 @@ const requiredDocs = [
   'docs/adapter-registry.md',
   'docs/install-scopes.md',
   'docs/ai-agent-install-flow.md',
+  'docs/start-here.md',
   'docs/install/README.md',
   'docs/install/claude-desktop.md',
   'docs/install/claude-code.md',

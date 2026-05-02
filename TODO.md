@@ -136,6 +136,8 @@ _Last updated: 2026-04-29_
 - [x] update README milestones
 - [x] prepare v0 manual install instructions
 - [x] decide whether to tag draft release (Decision: do not tag yet; defer until official runtime manual eval evidence exists or limitation is explicitly accepted)
+- [x] polish README.md into product landing page
+- [x] create docs/start-here.md friendly docs overview
 
 ## ✅ Phase 2.12: Manual install beta
 

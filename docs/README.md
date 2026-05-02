@@ -21,19 +21,20 @@ Active docs for the current product and workflow direction.
 
 ## 🚀 Start here
 
-1. **External runtime setup, required first:** [external-runtime-setup.md](./external-runtime-setup.md)
-2. **Runtime stack strategy:** [runtime-stack-strategy.md](./runtime-stack-strategy.md)
-3. **Product direction:** [product-direction.md](./product-direction.md)
-4. **Release status:** [release-readiness.md](./release-readiness.md)
-5. **Release readiness rollup:** [release-readiness-rollup-v0.md](./release-readiness-rollup-v0.md)
-6. **AI agent install flow:** [ai-agent-install-flow.md](./ai-agent-install-flow.md)
-7. **Multi-agent install strategy:** [multi-agent-install-strategy.md](./multi-agent-install-strategy.md)
-8. **Distribution strategy:** [distribution-strategy.md](./distribution-strategy.md)
-9. **Eval status:** [evals/README.md](./evals/README.md)
-10. **Workflow and delivery specs:** continue through the grouped navigation below
+1. **Friendly first-read guide:** [start-here.md](./start-here.md)
+2. **External runtime setup, required first:** [external-runtime-setup.md](./external-runtime-setup.md)
+3. **Runtime stack strategy:** [runtime-stack-strategy.md](./runtime-stack-strategy.md)
+4. **Product direction:** [product-direction.md](./product-direction.md)
+5. **Release status:** [release-readiness.md](./release-readiness.md)
+6. **Release readiness rollup:** [release-readiness-rollup-v0.md](./release-readiness-rollup-v0.md)
+7. **AI agent install flow:** [ai-agent-install-flow.md](./ai-agent-install-flow.md)
+8. **Multi-agent install strategy:** [multi-agent-install-strategy.md](./multi-agent-install-strategy.md)
+9. **Distribution strategy:** [distribution-strategy.md](./distribution-strategy.md)
+10. **Eval status:** [evals/README.md](./evals/README.md)
+11. **Workflow and delivery specs:** continue through the grouped navigation below
 
 > [!TIP]
-> If you're evaluating release readiness, read the release status and manual install beta evidence before the pack docs.
+> If you're new, read [start-here.md](./start-here.md) first. If you're evaluating release readiness, read the release status and manual install beta evidence before the pack docs.
 
 ---
 

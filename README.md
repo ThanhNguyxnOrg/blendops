@@ -7,11 +7,11 @@
 <p align="center">
   <a href="./LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-green.svg"></a>
   <img alt="Status: Draft v0" src="https://img.shields.io/badge/status-draft%20v0-orange.svg">
-  <img alt="Runtime: official Blender runtime only" src="https://img.shields.io/badge/runtime-official%20Blender%20only-blue.svg">
-  <img alt="Production: not stable" src="https://img.shields.io/badge/production-not%20stable-lightgrey.svg">
+  <img alt="Runtime eval: Not Run" src="https://img.shields.io/badge/runtime%20eval-Not%20Run-lightgrey.svg">
+  <img alt="Artifacts: Not Produced" src="https://img.shields.io/badge/artifacts-Not%20Produced-lightgrey.svg">
 </p>
 
-BlendOps is a product/workflow layer that helps an AI coding agent turn a plain-language 3D request into a constrained Blender workflow plan, validation expectations, and web handoff guidance.
+BlendOps helps an AI coding agent turn plain-language 3D requests into constrained Blender workflow plans, validation expectations, and practical handoff guidance.
 
 ```txt
 Human intent
@@ -22,106 +22,39 @@ Human intent
 ```
 
 > [!IMPORTANT]
-> BlendOps is currently a **draft v0 workflow/specification project**. It does not claim stable or production-ready status, and this README does not claim that Blender has been run for this repository.
+> BlendOps is **Draft v0**. It is not production-ready and does not claim runtime eval completion, preview/render/GLB artifact production, or stable release status.
 
 ---
 
-## ✨ What BlendOps is
+## ✨ What it does
 
-BlendOps focuses on the layer above Blender runtime tooling:
-
-- **Natural-language 3D intent framing** for users who do not know Blender internals.
-- **Workflow plans and constraints** that an AI coding agent can follow.
-- **Laws, skills, and recipes** for repeatable scene-generation behavior.
-- **Validation and safety expectations** before handing work to a user.
-- **Web-ready guidance** for teams that eventually need practical 3D integration notes.
-
-It is designed to make AI-assisted Blender work more structured, less ad hoc, and easier to review.
+| Capability | What you get | Current truth |
+|---|---|---|
+| 🧭 Intent-to-workflow planning | Structured scene planning for non-Blender-user requests | Draft v0 |
+| 🛡️ Safety and validation framing | Explicit constraints and evidence rules before "done" | Draft v0 |
+| 📦 Portable skill package layout | Reusable laws/skills/packs docs for project-local install | Draft fixture |
+| 🌐 Web handoff guidance | Specs for downstream web-ready 3D handoff patterns | Draft, not runtime-proven |
 
 ---
 
-## 🚫 What BlendOps is not
+## 🚫 What it does not do
 
-BlendOps does **not** currently ship its own:
+BlendOps does **not**:
 
-- BlendOps-owned CLI runtime
-- custom MCP server runtime
-- custom Blender addon runtime
-- stable release channel
-- verified generated scene, render, preview, or GLB artifact in this repository
-
-BlendOps is also not intended to clone, replace, or re-implement official Blender runtime tooling.
-
-> [!CAUTION]
-> Treat the current materials as draft workflow infrastructure. Do not present them to users as a finished 3D asset pipeline.
+- install Blender
+- ship its own runtime
+- configure Claude Desktop Connector automatically
+- configure official Blender MCP bridge/add-on automatically
+- run Blender runtime eval by itself
+- create/render/export or prove preview/render/GLB artifacts without evidence
+- provide an implemented `npm`/`npx` installer
+- claim marketplace/plugin listing availability
 
 ---
 
-## ✅ Current status
+## ⚡ Use in 30 seconds
 
-| Area | Status | Notes |
-|---|---:|---|
-| Product direction | Drafted | Public docs describe official-runtime-only positioning. |
-| Root skill/law/pack collections | Active draft | Root `skills/`, `laws/`, and `packs/` collections exist for v0 evaluation. |
-| Install adapter model | Drafted | Project-local install is the default; user-global install is opt-in only. |
-| Official runtime execution | Not verified here | Runtime setup is documented, but this README does not claim Blender was run. |
-| Release readiness | Not stable | Draft v0 readiness work remains in progress. |
-
----
-
-## 👤 Who this is for
-
-BlendOps is for a person who can ask an AI coding tool for a useful 3D outcome but does not know Blender internals.
-
-Examples of desired outcomes may include:
-
-- a Blender scene plan
-- a future Blender scene file produced through an official runtime
-- a future GLB export produced through an official runtime
-- a future preview render produced through an official runtime
-- practical web integration guidance
-
-> [!NOTE]
-> Those examples describe intended workflow outcomes. They are not claims that this repository currently contains generated preview, render, GLB, or Blender artifacts.
-
----
-
-## 🧭 Runtime setup
-
-BlendOps keeps runtime execution outside this repository and documents a clear 3-stack model.
-
-Start here:
-
-- **BlendOps setup overview:** [docs/external-runtime-setup.md](./docs/external-runtime-setup.md)
-- **Runtime stack strategy:** [docs/runtime-stack-strategy.md](./docs/runtime-stack-strategy.md)
-
-Runtime stacks:
-
-1. **Claude Desktop official connector stack** — Claude Desktop Blender Connector plus the official Blender MCP bridge/add-on running inside Blender. This is the only official connector stack currently verified, based on read-only smoke evidence.
-2. **Official Blender CLI fallback** — explicit Blender executable / CLI invocation. This does not use MCP and does not need Claude Desktop.
-3. **Optional unofficial third-party bridge stack** — user-managed, experimental/local only, and not part of BlendOps official release-eval evidence.
-
-Official / primary links:
-
-- **Official Blender MCP project:** https://projects.blender.org/lab/blender_mcp
-- **Blender Lab MCP page:** https://www.blender.org/lab/mcp-server/
-- **Claude Blender Connector tutorial:** https://claude.com/resources/tutorials/using-the-blender-connector-in-claude
-- **Blender CLI docs:** https://docs.blender.org/manual/en/latest/advanced/command_line/index.html
-
-Optional unofficial bridge details live in [docs/unofficial-runtime-bridges.md](./docs/unofficial-runtime-bridges.md).
-
-Direct official MCP use from Claude Code/OpenCode/Cursor/Codex/Gemini is not verified and is not currently a supported BlendOps route.
-
-For exact/current install commands and runtime configuration details, follow upstream Blender and Claude documentation.
-
-> [!WARNING]
-> BlendOps install prompts do **not** install Blender runtime and do **not** run Blender. Runtime setup is a separate, explicit step.
-
----
-
-## 🧩 Install BlendOps with your AI agent
-
-Attach the draft v0 BlendOps laws, skills, workflows, and docs to a project by giving your AI coding agent this prompt.
+Paste this into your AI coding agent in your target repository:
 
 ```txt
 Install BlendOps in this project by following:
@@ -134,120 +67,47 @@ Do not overwrite existing config without asking.
 Summarize exactly what you changed.
 ```
 
-Helpful install references:
-
-- [docs/ai-agent-install-flow.md](./docs/ai-agent-install-flow.md)
-- [docs/install/installer-spec.md](./docs/install/installer-spec.md) — future script spec only; not implemented
-- [docs/agent-install.md](./docs/agent-install.md)
-- [docs/examples/agent-install-prompt.md](./docs/examples/agent-install-prompt.md)
-- [docs/install-scopes.md](./docs/install-scopes.md)
-- [docs/multi-agent-install-strategy.md](./docs/multi-agent-install-strategy.md)
-- [docs/distribution-strategy.md](./docs/distribution-strategy.md)
-- [docs/target-adapter-architecture.md](./docs/target-adapter-architecture.md)
-- [docs/adapter-registry.md](./docs/adapter-registry.md)
-- [docs/adapters/README.md](./docs/adapters/README.md)
-
-Default install stance:
-
-| Scope | Position |
-|---|---|
-| Project-local | Default |
-| User-global | Opt-in only |
-| Unknown future tools | Generic root fallback |
-| Claude Code vs Claude app/Desktop | Separate targets |
+Then continue with:
+- [AI Agent Install Flow](./docs/ai-agent-install-flow.md)
+- [Install targets index](./docs/install/README.md)
 
 ---
 
-## 🗂️ Documentation map
+## 🛠️ Pick your install path
 
-| Start here | Doc |
-|---|---|
-| Docs index | [docs/README.md](./docs/README.md) |
-| Product direction | [docs/product-direction.md](./docs/product-direction.md) |
-| External runtime setup | [docs/external-runtime-setup.md](./docs/external-runtime-setup.md) |
-| Runtime boundary | [docs/reference-runtime.md](./docs/reference-runtime.md) |
-| Optional bridge caveats, unofficial | [docs/unofficial-runtime-bridges.md](./docs/unofficial-runtime-bridges.md) |
-| First user journey | [docs/first-user-journey.md](./docs/first-user-journey.md) |
-| Golden path spec | [docs/golden-path-cyberpunk-shoe.md](./docs/golden-path-cyberpunk-shoe.md) |
-| Workflow contract | [docs/workflow-contract.md](./docs/workflow-contract.md) |
-| Safety model | [docs/safety-model.md](./docs/safety-model.md) |
-| Architecture | [docs/architecture.md](./docs/architecture.md) |
-| Release readiness | [docs/release-readiness.md](./docs/release-readiness.md) |
-| Release readiness rollup v0 | [docs/release-readiness-rollup-v0.md](./docs/release-readiness-rollup-v0.md) |
-| Multi-agent install strategy | [docs/multi-agent-install-strategy.md](./docs/multi-agent-install-strategy.md) |
-| Distribution strategy | [docs/distribution-strategy.md](./docs/distribution-strategy.md) |
-
-| v0 pack area | Doc |
-|---|---|
-| Pack overview | [packs/product-hero-v0/PACK.md](./packs/product-hero-v0/PACK.md) |
-| Laws | [laws/README.md](./laws/README.md) |
-| Skill system | [docs/skill-system.md](./docs/skill-system.md) |
-| Skills | [skills/README.md](./skills/README.md) |
-| Workflow | [docs/workflows/product-hero-workflow.md](./docs/workflows/product-hero-workflow.md) |
-| Recipe | [docs/recipes/cyberpunk-shoe-hero.md](./docs/recipes/cyberpunk-shoe-hero.md) |
-
-| Root installable drafts | Doc |
-|---|---|
-| Skills index | [skills/README.md](./skills/README.md) |
-| Laws index | [laws/README.md](./laws/README.md) |
-| Pack manifest | [packs/product-hero-v0/PACK.md](./packs/product-hero-v0/PACK.md) |
-| Review gates | [skill-reviews/README.md](./skill-reviews/README.md) |
-| Depth audit | [skill-reviews/reports/v0-skill-depth-audit.md](./skill-reviews/reports/v0-skill-depth-audit.md) |
-
-| Research and cleanup | Doc |
-|---|---|
-| Skill systems research | [docs/research/skill-systems-research.md](./docs/research/skill-systems-research.md) |
-| Cleanup audit | [docs/cleanup-audit.md](./docs/cleanup-audit.md) |
+| You are using | Recommended path | Source |
+|---|---|---|
+| Claude Desktop | Canonical package + manual bundle | `bundles/skill-package/blendops/` + `bundles/claude-desktop-manual/` |
+| Coding agent (Claude Code/OpenCode/Cursor/Codex/Gemini/etc.) | AI Agent Install Flow | [docs/ai-agent-install-flow.md](./docs/ai-agent-install-flow.md) |
+| Unknown target | Generic project-local fallback | `bundles/generic-project-local/` |
 
 ---
 
-## 🔁 Product flow
+## 🧭 Runtime truth
 
-BlendOps is designed around a conservative, reviewable workflow:
+BlendOps runtime guidance uses three stacks:
 
-```txt
-intent
-  → workflow plan
-  → official external runtime execution
-  → validation notes
-  → artifact handoff expectations
-  → web-ready guidance
-```
+1. **Stack 1 — Claude Desktop official connector stack** (Claude Desktop Blender Connector + official Blender MCP bridge/add-on)
+2. **Stack 2 — Official Blender CLI fallback**
+3. **Stack 3 — Optional unofficial third-party bridge stack** (experimental/local only, not official release path)
 
-The project emphasizes explicit boundaries: planning and validation live in BlendOps; Blender execution belongs to official external runtime setup.
+Direct official MCP use from Claude Code/OpenCode/Cursor/Codex/Gemini is **not verified** and is **not currently a supported BlendOps route**.
+
+For runtime setup details, see [docs/runtime-stack-strategy.md](./docs/runtime-stack-strategy.md).
 
 ---
 
-## 🛡️ Safety boundary
+## 🗺️ Project map
 
-Official runtime integrations can expose powerful Blender capabilities.
+High-value links:
 
-BlendOps safety stance:
-
-- do **not** use arbitrary Python as the final user-facing product interface
-- prefer constrained workflow plans and explicit validation outputs
-- communicate limitations and failures clearly
-- separate install/setup instructions from runtime execution
-- avoid unsupported claims about generated artifacts
-
----
-
-## ⚠️ Known limitations
-
-- Draft v0 materials still need install dry-runs in disposable projects.
-- Official runtime manual evaluation remains a future milestone.
-- Generated Blender scenes, preview renders, and GLB exports are not claimed as current repository artifacts.
-- Runtime setup depends on upstream official Blender and Claude documentation.
-- The root skill collection is still draft and should be validated before promotion.
-
----
-
-## 📍 Next milestones
-
-1. Resolve Claude Code native-path ambiguity from adapter dry-run findings.
-2. Run manual install beta tests in disposable projects.
-3. Run official-runtime manual evaluation when the connector/runtime path is available.
-4. Run the runtime availability checklist and official runtime manual eval before any v0.1.0 draft tag.
+- **Start here:** [docs/start-here.md](./docs/start-here.md)
+- **Full docs index:** [docs/README.md](./docs/README.md)
+- **Skill package:** [bundles/skill-package/blendops/](./bundles/skill-package/blendops/)
+- **Claude Desktop bundle:** [bundles/claude-desktop-manual/](./bundles/claude-desktop-manual/)
+- **Generic bundle:** [bundles/generic-project-local/](./bundles/generic-project-local/)
+- **Runtime stack:** [docs/runtime-stack-strategy.md](./docs/runtime-stack-strategy.md)
+- **Evals:** [docs/evals/README.md](./docs/evals/README.md)
 
 ---
 
