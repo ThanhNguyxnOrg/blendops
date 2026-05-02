@@ -35,6 +35,8 @@ BlendOps should plan for these targets while preserving confidence labels.
 | Cursor | Candidate for project/rules or tool-native attachment; verify before writing tool-specific paths. |
 | Codex CLI/App | Candidate for project instruction or plugin-style attachment; do not invent paths. |
 | Gemini CLI | Candidate future adapter; mark linked-only or not researched until verified. |
+| Antigravity | Candidate future adapter; keep fallback-only until source-backed install path is verified. |
+| GitHub Copilot | Candidate target; use generic project-local attachment unless install path evidence exists. |
 | Generic root/project-local fallback | Default safe path for unknown or low-confidence tools. |
 
 ---
@@ -135,6 +137,8 @@ This package structure is a strategy target, not a current packaged release.
 The primary near-term UX is a user-managed paste prompt: the user copies [AI Agent Install Flow](./ai-agent-install-flow.md) into a coding agent with terminal/file access, and the agent performs a reversible project-local attachment.
 
 This is an install-layer action only. It does not install Blender, configure runtime bridges, run runtime evals, or create preview/render/GLB artifacts. Unknown or mixed targets should use the generic project-local fallback or ask the user before writing.
+
+Per-target guidance lives in [docs/install/](./install/README.md).
 
 ---
 

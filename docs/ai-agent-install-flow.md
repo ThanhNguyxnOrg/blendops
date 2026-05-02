@@ -87,15 +87,15 @@ Report back with:
 
 | Target | Near-term install style | Auto-detect confidence | Ask user if ambiguous? | Global writes allowed by default? | Runtime setup separate? | Notes |
 |---|---|---|---:|---:|---:|---|
-| Claude Code | Project-local files or verified project instruction path. | Medium when Claude Code files are present; otherwise unknown. | Yes | No | Yes | Keep distinct from Claude Desktop. Direct official MCP runtime use is not verified. |
-| OpenCode | Project-local files now; tool-native install only after source-backed verification. | Low / linked-only | Yes | No | Yes | Use generic fallback unless project evidence is clear. |
-| Cursor | Project rules/docs attachment after backup and path verification. | Low / linked-only | Yes | No | Yes | Avoid broad global rule mutation. |
-| Codex CLI/App | Generic project instruction fallback or future adapter. | Low / linked-only | Yes | No | Yes | Do not invent plugin paths. |
-| Gemini CLI | Docs-only or generic project-local fallback until adapter evidence exists. | Low / not researched | Yes | No | Yes | Treat as future adapter work. |
-| Antigravity | Generic project-local fallback until source-backed adapter evidence exists. | Low / not researched | Yes | No | Yes | Do not claim native support yet. |
-| GitHub Copilot | Project-local docs/instructions reference where the project already uses such files. | Low / linked-only | Yes | No | Yes | Do not claim marketplace or extension listing. |
-| Generic project-local fallback | `BLENDOPS.md`, `AGENTS.md`, or copied/referenced core collection with rollback notes. | High as safe fallback | Yes, if it would modify existing files | No | Yes | Default when target is unknown or mixed. |
-| Claude Desktop | User-managed manual import/copy of skill content; not a normal coding-agent install. | Manual only | Yes | No | Yes | Connector/runtime setup is a separate user action. |
+| [Claude Code](./install/claude-code.md) | Project-local files or verified project instruction path. | Medium when Claude Code files are present; otherwise unknown. | Yes | No | Yes | Keep distinct from Claude Desktop. Direct official MCP runtime use is not verified. |
+| [OpenCode](./install/opencode.md) | Project-local files now; tool-native install only after source-backed verification. | Low / linked-only | Yes | No | Yes | Use generic fallback unless project evidence is clear. |
+| [Cursor](./install/cursor.md) | Project rules/docs attachment after backup and path verification. | Low / linked-only | Yes | No | Yes | Avoid broad global rule mutation. |
+| [Codex CLI/App](./install/codex.md) | Generic project instruction fallback or future adapter. | Low / linked-only | Yes | No | Yes | Do not invent plugin paths. |
+| [Gemini CLI](./install/gemini.md) | Docs-only or generic project-local fallback until adapter evidence exists. | Low / not researched | Yes | No | Yes | Treat as future adapter work. |
+| [Antigravity](./install/antigravity.md) | Generic project-local fallback until source-backed adapter evidence exists. | Low / not researched | Yes | No | Yes | Do not claim native support yet. |
+| [GitHub Copilot](./install/github-copilot.md) | Project-local docs/instructions reference where the project already uses such files. | Low / linked-only | Yes | No | Yes | Do not claim marketplace or extension listing. |
+| [Generic project-local fallback](./install/generic-project.md) | `BLENDOPS.md`, `AGENTS.md`, or copied/referenced core collection with rollback notes. | High as safe fallback | Yes, if it would modify existing files | No | Yes | Default when target is unknown or mixed. |
+| [Claude Desktop](./install/claude-desktop.md) | User-managed manual import/copy of skill content; not a normal coding-agent install. | Manual only | Yes | No | Yes | Connector/runtime setup is a separate user action. |
 
 ## Auto-detect policy
 

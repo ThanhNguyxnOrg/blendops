@@ -156,6 +156,7 @@ _Last updated: 2026-04-29_
 - [x] add render/export evidence baseline eval (`skills/render-export-evidence/EVAL.md`)
 - [x] document canonical aliases for runtime readiness and scene planning without duplicating skills
 - [x] document AI agent paste-command install flow (`docs/ai-agent-install-flow.md`)
+- [x] create per-target AI agent install docs (`docs/install/`)
 - [ ] create Claude Desktop skill bundle without claiming connector/runtime success
 - [ ] package a project-local skill bundle with rollback notes
 - [ ] research OpenCode, Cursor, Codex, and Gemini adapters with confidence labels
