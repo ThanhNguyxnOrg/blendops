@@ -184,6 +184,7 @@ Focus: official runtime verification criteria and runtime eval readiness, not cu
 - [x] package a project-local generic BlendOps bundle with rollback notes
 - [x] prepare Claude Desktop Personal Skill import bundle without claiming connector/runtime success
 - [x] promote canonical portable BlendOps skill package source (`bundles/skill-package/blendops/`)
+- [x] clarify OpenAI metadata vs multi-agent adapters
 - [ ] research OpenCode installation options after source-backed path verification
 - [ ] research and draft Cursor, Codex, and Gemini adapters with confidence labels
 - [ ] define evidence gates for any future tool-native package, extension, or marketplace listing

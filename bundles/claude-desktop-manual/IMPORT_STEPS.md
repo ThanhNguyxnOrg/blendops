@@ -11,7 +11,7 @@ Status: Draft v0 manual procedure
 
 ## Recommended order
 
-1. **Preferred:** upload/import `bundles/skill-package/blendops/` as one Skill package if your Claude Desktop workflow supports package upload/import.
+1. **Preferred:** upload/import `bundles/skill-package/blendops/` as one Skill package if your Claude Desktop workflow supports package upload/import. The `agents/openai.yaml` file in that package is OpenAI/ChatGPT Skills UI metadata only and does not configure Claude Desktop Connector.
 2. If package upload/import is unavailable, manually copy `SKILL.md` plus `references/` from this manual bundle.
 3. Use `BLENDOPS_SINGLE_FILE.md` only when your setup supports one file only.
 

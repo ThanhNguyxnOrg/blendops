@@ -59,6 +59,7 @@ packs/
 - Future installers may copy these root collection files into tool-specific locations, but that is out of scope in v0.
 - Multi-agent install planning is tracked in [multi-agent-install-strategy.md](./multi-agent-install-strategy.md).
 - Distribution levels and marketplace caveats are tracked in [distribution-strategy.md](./distribution-strategy.md).
+- The canonical portable package source is `bundles/skill-package/blendops/`; its `SKILL.md` + `references/` are target-neutral, while `agents/openai.yaml` is OpenAI/ChatGPT Skills UI metadata only.
 
 ## Promotion criteria
 

@@ -20,6 +20,8 @@ BlendOps installation has three separate layers.
 
 The layers may be used together, but success in one layer does not prove success in another. For example, a Claude Desktop Personal Skill import does not prove Blender connector access, and read-only connector access does not prove render/export behavior.
 
+The canonical portable package source is `bundles/skill-package/blendops/`: `SKILL.md` plus `references/` are target-neutral core content, while `agents/openai.yaml` is OpenAI/ChatGPT Skills UI metadata only. It is not the universal adapter layer and does not configure Claude Desktop, Claude Code, OpenCode, Cursor, Codex, Gemini, Antigravity, GitHub Copilot, or generic project-local fallback installs.
+
 ---
 
 ## Target surfaces

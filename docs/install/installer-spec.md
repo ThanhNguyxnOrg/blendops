@@ -223,6 +223,7 @@ It must not claim:
 - Blender is installed,
 - Claude Desktop Connector is configured,
 - official Blender MCP bridge/add-on is configured,
+- `agents/openai.yaml` in the canonical package is a universal adapter layer (it is OpenAI/ChatGPT Skills UI metadata only),
 - direct official MCP is supported from non-Claude Desktop agents,
 - runtime eval passed,
 - preview/render/GLB artifacts were produced,

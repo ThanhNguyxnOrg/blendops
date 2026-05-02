@@ -60,6 +60,8 @@ Claude Desktop has separate user journeys:
 
 Skill import does not prove connector setup. Connector read-only access does not prove full runtime eval, render/export behavior, or artifact validation.
 
+If the canonical package source `bundles/skill-package/blendops/` is used as upload/import material, its `agents/openai.yaml` file remains OpenAI/ChatGPT Skills UI metadata only. It is not Claude Desktop connector setup and is not cross-agent adapter configuration.
+
 ---
 
 ## Release policy

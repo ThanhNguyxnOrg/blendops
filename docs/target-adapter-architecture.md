@@ -17,6 +17,8 @@ Adapters prevent hard-coded, brittle install logic per tool. Instead, each targe
 
 Core does not change per tool; adapters map core into tool-native or fallback locations.
 
+For the canonical portable package source (`bundles/skill-package/blendops/`), treat `SKILL.md` + `references/` as target-neutral content. `agents/openai.yaml` is OpenAI/ChatGPT Skills UI metadata only and must not be treated as a universal adapter layer for Claude Desktop, Claude Code, OpenCode, Cursor, Codex, Gemini, Antigravity, GitHub Copilot, or generic-root flows.
+
 For installs across multiple agent surfaces, use [multi-agent-install-strategy.md](./multi-agent-install-strategy.md) as the orchestration layer above per-target adapters.
 
 ## Adapter registry

@@ -4,6 +4,8 @@ Status: Draft v0 target install docs
 
 These pages describe near-term, project-local BlendOps installation for AI coding agents. They do not describe a packaged installer, npm package, marketplace listing, or runtime setup.
 
+The canonical portable package source is `bundles/skill-package/blendops/`. Its `SKILL.md` plus `references/` are the target-neutral content layer; `agents/openai.yaml` is OpenAI/ChatGPT Skills UI metadata only, not the universal adapter layer for the targets below.
+
 ## Target docs
 
 | Target | Doc | Confidence |

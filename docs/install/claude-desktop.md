@@ -39,7 +39,7 @@ Report:
 
 **Preferred upload package source:** `bundles/skill-package/blendops/`
 - `SKILL.md` (single upload entrypoint)
-- `agents/openai.yaml` (display metadata)
+- `agents/openai.yaml` (OpenAI/ChatGPT Skills UI metadata only; not Claude Desktop connector setup)
 - `references/` (flattened skill/law/pack summaries)
 - `LICENSE.txt`
 
@@ -58,7 +58,7 @@ Remove newly added project-local instruction files and restore backups for modif
 
 ## Runtime boundary
 
-Skill install is separate from runtime setup. Connector and Blender-side bridge setup are separate user actions.
+Skill install is separate from runtime setup. The `agents/openai.yaml` file in the canonical package is OpenAI/ChatGPT-specific metadata only and does not configure Claude Desktop Connector. Connector and Blender-side bridge setup are separate user actions.
 
 ## What not to claim
 
