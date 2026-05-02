@@ -157,6 +157,7 @@ _Last updated: 2026-04-29_
 - [x] document canonical aliases for runtime readiness and scene planning without duplicating skills
 - [x] document AI agent paste-command install flow (`docs/ai-agent-install-flow.md`)
 - [x] create per-target AI agent install docs (`docs/install/`)
+- [x] design local installer script spec (`docs/install/installer-spec.md`) without implementation
 - [ ] create Claude Desktop skill bundle without claiming connector/runtime success
 - [ ] package a project-local skill bundle with rollback notes
 - [ ] research OpenCode, Cursor, Codex, and Gemini adapters with confidence labels

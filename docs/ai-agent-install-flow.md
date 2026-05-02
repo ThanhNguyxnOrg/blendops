@@ -145,7 +145,7 @@ npx blendops skills install --target antigravity --project .
 npx blendops skills doctor
 ```
 
-Before any command is promoted, BlendOps needs an implemented package, install tests, rollback tests, target-specific evidence, and conservative runtime/artifact status handling.
+Before any command is promoted, BlendOps needs an implemented package, install tests, rollback tests, target-specific evidence, and conservative runtime/artifact status handling. See [installer-spec.md](./install/installer-spec.md) for the design-only behavior contract.
 
 ## Rollback/report contract
 

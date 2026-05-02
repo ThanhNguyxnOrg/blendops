@@ -137,6 +137,7 @@ Summarize exactly what you changed.
 Helpful install references:
 
 - [docs/ai-agent-install-flow.md](./docs/ai-agent-install-flow.md)
+- [docs/install/installer-spec.md](./docs/install/installer-spec.md) — future script spec only; not implemented
 - [docs/agent-install.md](./docs/agent-install.md)
 - [docs/examples/agent-install-prompt.md](./docs/examples/agent-install-prompt.md)
 - [docs/install-scopes.md](./docs/install-scopes.md)

@@ -154,6 +154,7 @@ Active docs for the current product and workflow direction.
 |---|---|
 | AI agent install flow | [ai-agent-install-flow.md](./ai-agent-install-flow.md) |
 | Per-target install docs | [install/README.md](./install/README.md) |
+| Installer script spec (future) | [install/installer-spec.md](./install/installer-spec.md) |
 | Install strategy | [install-strategy.md](./install-strategy.md) |
 | Install scopes | [install-scopes.md](./install-scopes.md) |
 | Multi-agent install strategy | [multi-agent-install-strategy.md](./multi-agent-install-strategy.md) |

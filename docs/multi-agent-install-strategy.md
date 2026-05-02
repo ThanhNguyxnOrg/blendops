@@ -138,7 +138,7 @@ The primary near-term UX is a user-managed paste prompt: the user copies [AI Age
 
 This is an install-layer action only. It does not install Blender, configure runtime bridges, run runtime evals, or create preview/render/GLB artifacts. Unknown or mixed targets should use the generic project-local fallback or ask the user before writing.
 
-Per-target guidance lives in [docs/install/](./install/README.md).
+Per-target guidance lives in [docs/install/](./install/README.md). Future installer behavior is specified in [docs/install/installer-spec.md](./install/installer-spec.md) and remains unimplemented.
 
 ---
 

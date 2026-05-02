@@ -17,6 +17,7 @@ These pages describe near-term, project-local BlendOps installation for AI codin
 | Antigravity | [antigravity.md](./antigravity.md) | not researched |
 | GitHub Copilot | [github-copilot.md](./github-copilot.md) | linked-only / generic |
 | Generic project | [generic-project.md](./generic-project.md) | verified-read fallback |
+| Installer script spec (future) | [installer-spec.md](./installer-spec.md) | Draft spec only |
 
 ## Shared rules
 

@@ -38,6 +38,7 @@ const requiredDocs = [
   'docs/install/antigravity.md',
   'docs/install/github-copilot.md',
   'docs/install/generic-project.md',
+  'docs/install/installer-spec.md',
   'docs/capability-profile.md',
   'docs/adapters/claude-code.md',
   'docs/adapters/claude-app.md',
@@ -170,6 +171,16 @@ const requiredMarketplaceSnippets = [
   },
 ];
 
+const requiredInstallerSpecSnippets = [
+  'This is a specification only.',
+  '`scripts/install-skills.mjs` is not implemented yet.',
+  'Do not tell users to run these commands until the script exists',
+  'does not install Blender',
+  'does not run Blender or runtime eval',
+  'Runtime status remains `Not Run`.',
+  'Artifact status remains `Not Produced`.',
+];
+
 const forbiddenOfficialDirectMcpRoutePatterns = [
   'Route B — Official MCP path for non-Claude Desktop agents',
   'Official MCP path for non-Claude Desktop agents',
@@ -289,6 +300,11 @@ for (const policy of requiredArtifactEvidenceSnippets) {
 for (const policy of requiredMarketplaceSnippets) {
   assertContainsAll(policy.file, policy.snippets, 'Marketplace/plugin policy');
 }
+assertContainsAll(
+  'docs/install/installer-spec.md',
+  requiredInstallerSpecSnippets,
+  'Future installer spec policy'
+);
 for (const p of forbiddenOfficialDirectMcpRoutePatterns) {
   scanPattern(activeMd, p, 'Forbidden official direct MCP route pattern', ['docs/archive']);
 }
