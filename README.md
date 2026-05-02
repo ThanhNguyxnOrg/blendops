@@ -32,7 +32,7 @@ Human intent
 |---|---|---|
 | 🧭 Intent-to-workflow planning | Structured scene planning for non-Blender-user requests | Draft v0 |
 | 🛡️ Safety and validation framing | Explicit constraints and evidence rules before "done" | Draft v0 |
-| 📦 Portable skill package layout | Reusable laws/skills/packs docs for project-local install | Draft fixture |
+| 📦 Portable skill package layout | Reusable laws/skills/packs docs for project-local install or Skills UI upload prep | Draft fixture |
 | 🌐 Web handoff guidance | Specs for downstream web-ready 3D handoff patterns | Draft, not runtime-proven |
 
 ---
@@ -52,20 +52,60 @@ BlendOps does **not**:
 
 ---
 
-## ⚡ Use in 30 seconds
+## ⚡ Use in 30 seconds: one prompt for any AI
 
-Paste this into your AI coding agent in your target repository:
+Paste this universal prompt into any AI agent.
 
 ```txt
-Install BlendOps in this project by following:
-https://raw.githubusercontent.com/ThanhNguyxnOrg/blendops/main/docs/ai-agent-install-flow.md
+Install or prepare BlendOps for this environment.
 
-Use project-local install unless I explicitly ask for global install.
-Do not install Blender runtime.
+Source:
+https://github.com/ThanhNguyxnOrg/blendops
+
+Choose the safest mode:
+
+1. If you have project file access, install BlendOps project-locally.
+   - Inspect the project first.
+   - Detect the target only if obvious.
+   - If multiple targets are present, ask before writing.
+   - If unsure, use the generic project-local fallback.
+   - Do not write global config unless I explicitly approve it.
+
+2. If you do not have project file access, or this is Claude Desktop / ChatGPT-style chat, prepare a downloadable Skills upload package instead.
+   - Use source package:
+     https://github.com/ThanhNguyxnOrg/blendops/tree/main/bundles/skill-package/blendops
+   - Create a downloadable file named exactly: skill.zip
+   - The ZIP root must contain:
+     - SKILL.md
+     - agents/openai.yaml
+     - references/*.md
+     - LICENSE.txt
+   - Do not zip parent folders like bundles/, skill-package/, or claude-desktop-manual/.
+   - The package must contain exactly one SKILL.md at the zip root.
+   - Keep references flattened under references/.
+
+3. If you cannot safely install or create the zip, stop and ask me for the missing project access, repo files, or target choice.
+
+Do not install Blender.
+Do not configure Claude Desktop Connector.
+Do not configure the official Blender MCP bridge/add-on.
 Do not run Blender.
-Do not overwrite existing config without asking.
-Summarize exactly what you changed.
+Do not run runtime eval.
+Do not create, render, export, or claim preview/render/GLB artifacts.
+
+Report:
+- mode selected
+- target or reason
+- files changed or zip filename
+- SKILL.md count if zip mode
+- global files touched
+- rollback steps if project-local mode
+- runtime status: Not Run
+- artifact status: Not Produced
+- limitations
 ```
+
+Coding agents will install project-locally; Claude Desktop-style chats should prepare skill.zip.
 
 Then continue with:
 - [AI Agent Install Flow](./docs/ai-agent-install-flow.md)
@@ -75,11 +115,11 @@ Then continue with:
 
 ## 🛠️ Pick your install path
 
-| You are using | Recommended path | Source |
+| You are using | Universal prompt mode | Source |
 |---|---|---|
-| Claude Desktop | Canonical package + manual bundle | `bundles/skill-package/blendops/` + `bundles/claude-desktop-manual/` |
-| Coding agent (Claude Code/OpenCode/Cursor/Codex/Gemini/etc.) | AI Agent Install Flow | [docs/ai-agent-install-flow.md](./docs/ai-agent-install-flow.md) |
-| Unknown target | Generic project-local fallback | `bundles/generic-project-local/` |
+| Claude Desktop or ChatGPT-style chat | Skill ZIP preparation | `bundles/skill-package/blendops/` + [Claude Desktop guide](./docs/install/claude-desktop.md) |
+| Coding agent (Claude Code/OpenCode/Cursor/Codex/Gemini/etc.) | Project-local install | [docs/ai-agent-install-flow.md](./docs/ai-agent-install-flow.md) |
+| Unknown/ambiguous target | Blocked-needs-input or generic project-local fallback | `bundles/generic-project-local/` |
 
 ---
 
