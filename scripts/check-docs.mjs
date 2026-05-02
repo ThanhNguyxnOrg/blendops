@@ -44,6 +44,7 @@ const requiredDocs = [
   'docs/adapters/claude-code.md',
   'docs/adapters/claude-app.md',
   'docs/adapters/generic-root.md',
+  'docs/evals/skill-package-upload-readiness-v0.md',
 ];
 
 const requiredSkills = [

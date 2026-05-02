@@ -20,6 +20,7 @@ BlendOps evals are evidence records for laws, skills, workflows, recipes, and pa
 | Official runtime verification criteria | Prepared | Criteria only / Not Run |
 | Runtime availability checklist | Prepared | Readiness checklist only / Not Run |
 | Official runtime manual eval packet | Prepared | Packet only / Not Run |
+| Skill package upload-readiness eval | Warn | Executed / Text-only / No upload / No publication |
 
 ---
 
@@ -59,6 +60,7 @@ BlendOps evals are evidence records for laws, skills, workflows, recipes, and pa
 | [official-runtime-verification-criteria.md](./official-runtime-verification-criteria.md) | Prepared | Criteria only | Defines Draft v0 evidence rules for future official-runtime evals. |
 | [runtime-availability-checklist.md](./runtime-availability-checklist.md) | Prepared | Readiness checklist only | Preflight checklist for deciding whether an official-runtime eval can be attempted. |
 | [official-runtime-manual-eval-packet.md](./official-runtime-manual-eval-packet.md) | Prepared | Packet only | Operator checklist and result template for future official-runtime manual evals. |
+| [skill-package-upload-readiness-v0.md](./skill-package-upload-readiness-v0.md) | Warn | Text-only package-source evidence | Canonical package source shape passes Draft v0 upload-readiness review; actual UI upload/import is Not Tested and publication is Not Published. |
 
 ---
 

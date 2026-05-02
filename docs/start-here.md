@@ -153,6 +153,7 @@ Pick the path that matches what you want to do:
 - [Cyberpunk shoe v0 text-only eval](./evals/cyberpunk-shoe-hero-v0-text-eval.md) — Executed / Text-only
 - [Cyberpunk shoe v0 manual eval protocol](./evals/cyberpunk-shoe-hero-v0-manual-eval.md) — Protocol / Not yet executed
 - [Manual install beta v0](./evals/manual-install-beta-v0.md) — Executed / Dry-run / Warn
+- [Skill package upload-readiness v0](./evals/skill-package-upload-readiness-v0.md) — Executed / Text-only / No upload / Warn
 
 ---
 

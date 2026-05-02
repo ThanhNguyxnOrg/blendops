@@ -171,6 +171,8 @@ No current repository doc should claim official runtime compatibility confirmed,
 - Broad install confidence across environments.
 - Packaged skill bundle, tool-native package, or official marketplace listing.
 
+A canonical package-source upload-readiness eval exists for `bundles/skill-package/blendops/`, but this is limited to source-level readiness evidence. Actual Claude Desktop/ChatGPT UI upload/import execution remains Not Tested.
+
 ---
 
 ## Draft tag decision
