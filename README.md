@@ -177,10 +177,10 @@ Default install stance:
 
 | v0 pack area | Doc |
 |---|---|
-| Pack overview | [docs/packs/v0-product-hero-pack.md](./docs/packs/v0-product-hero-pack.md) |
-| Laws | [docs/laws/README.md](./docs/laws/README.md) |
+| Pack overview | [packs/product-hero-v0/PACK.md](./packs/product-hero-v0/PACK.md) |
+| Laws | [laws/README.md](./laws/README.md) |
 | Skill system | [docs/skill-system.md](./docs/skill-system.md) |
-| Skills | [docs/skills/README.md](./docs/skills/README.md) |
+| Skills | [skills/README.md](./skills/README.md) |
 | Workflow | [docs/workflows/product-hero-workflow.md](./docs/workflows/product-hero-workflow.md) |
 | Recipe | [docs/recipes/cyberpunk-shoe-hero.md](./docs/recipes/cyberpunk-shoe-hero.md) |
 
@@ -195,9 +195,6 @@ Default install stance:
 | Research and cleanup | Doc |
 |---|---|
 | Skill systems research | [docs/research/skill-systems-research.md](./docs/research/skill-systems-research.md) |
-| Skill/law design draft | [docs/blendops-skill-system-design.md](./docs/blendops-skill-system-design.md) |
-| Proposed law format | [docs/blendops-law-format.md](./docs/blendops-law-format.md) |
-| Proposed first skill pack | [docs/blendops-first-skill-pack.md](./docs/blendops-first-skill-pack.md) |
 | Cleanup audit | [docs/cleanup-audit.md](./docs/cleanup-audit.md) |
 
 ---

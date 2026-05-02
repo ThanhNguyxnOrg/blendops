@@ -5,15 +5,17 @@ Status: Draft v0
 ## Purpose
 
 Define the relationship between:
-- canonical source docs (`docs/`)
-- installable root skill collection (`skills/`, `laws/`, `packs/`)
+- narrative, spec, eval, install, and research docs (`docs/`)
+- canonical installable root collections (`skills/`, `laws/`, `packs/`)
 
 ## Current layout model
 
-- `docs/` = canonical research/spec/source-of-truth
-- `skills/` = installable AI-agent skill units (multiple focused skills)
-- `laws/` = shared guardrails used by all skills
-- `packs/` = bundle manifests composing laws + skills
+- `docs/` = narrative docs, specs, evals, install/adoption guidance, and research notes
+- `skills/` = canonical installable AI-agent skill units
+- `laws/` = canonical shared guardrails used by all skills
+- `packs/` = canonical bundle manifests composing laws + skills
+
+There is no duplicate docs-level skill/law/pack collection layer. Do not recreate `docs/skills/`, `docs/laws/`, or `docs/packs/`; link to the root canonical collections instead.
 
 ## Current root collection
 

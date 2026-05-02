@@ -78,11 +78,11 @@ Active docs for the current product and workflow direction.
 
 | Area | Doc |
 |---|---|
-| Laws index | [laws/README.md](./laws/README.md) |
-| Official runtime only law | [laws/official-runtime-only.md](./laws/official-runtime-only.md) |
-| No arbitrary Python interface law | [laws/no-arbitrary-python-interface.md](./laws/no-arbitrary-python-interface.md) |
-| Evidence before done law | [laws/evidence-before-done.md](./laws/evidence-before-done.md) |
-| Non-Blender-user language law | [laws/non-blender-user-language.md](./laws/non-blender-user-language.md) |
+| Root laws index | [../laws/README.md](../laws/README.md) |
+| Official runtime only law | [../laws/official-runtime-only.md](../laws/official-runtime-only.md) |
+| No arbitrary Python interface law | [../laws/no-arbitrary-python-interface.md](../laws/no-arbitrary-python-interface.md) |
+| Evidence before done law | [../laws/evidence-before-done.md](../laws/evidence-before-done.md) |
+| Non-Blender-user language law | [../laws/non-blender-user-language.md](../laws/non-blender-user-language.md) |
 
 ---
 
@@ -90,13 +90,12 @@ Active docs for the current product and workflow direction.
 
 | Area | Doc |
 |---|---|
-| Skills index | [skills/README.md](./skills/README.md) |
-| Root skill system guide | [skill-system.md](./skill-system.md) |
-| Official runtime setup guide | [skills/official-runtime-setup-guide.md](./skills/official-runtime-setup-guide.md) |
-| Product hero scene planner | [skills/product-hero-scene-planner.md](./skills/product-hero-scene-planner.md) |
-| Blender scene quality checker | [skills/blender-scene-quality-checker.md](./skills/blender-scene-quality-checker.md) |
-| GLB web handoff | [skills/glb-web-handoff.md](./skills/glb-web-handoff.md) |
-| Non-Blender-user response writer | [skills/non-blender-user-response-writer.md](./skills/non-blender-user-response-writer.md) |
+| Skill system guide | [skill-system.md](./skill-system.md) |
+| Root skills index | [../skills/README.md](../skills/README.md) |
+| Product hero scene planner | [../skills/product-hero-scene-planner/SKILL.md](../skills/product-hero-scene-planner/SKILL.md) |
+| Blender scene quality checker | [../skills/blender-scene-quality-checker/SKILL.md](../skills/blender-scene-quality-checker/SKILL.md) |
+| GLB web handoff | [../skills/glb-web-handoff/SKILL.md](../skills/glb-web-handoff/SKILL.md) |
+| Non-Blender-user response writer | [../skills/non-blender-user-response-writer/SKILL.md](../skills/non-blender-user-response-writer/SKILL.md) |
 
 ---
 
@@ -122,8 +121,8 @@ Active docs for the current product and workflow direction.
 
 | Area | Doc |
 |---|---|
-| Packs index | [packs/README.md](./packs/README.md) |
-| v0 product hero pack | [packs/v0-product-hero-pack.md](./packs/v0-product-hero-pack.md) |
+| Root packs index | [../packs/README.md](../packs/README.md) |
+| v0 product hero pack | [../packs/product-hero-v0/PACK.md](../packs/product-hero-v0/PACK.md) |
 
 ---
 
@@ -183,15 +182,6 @@ Active docs for the current product and workflow direction.
 
 ---
 
-## 🧱 BlendOps synthesis docs
-
-| Area | Doc |
-|---|---|
-| Skill system design | [blendops-skill-system-design.md](./blendops-skill-system-design.md) |
-| Proposed law format | [blendops-law-format.md](./blendops-law-format.md) |
-| Proposed first skill pack | [blendops-first-skill-pack.md](./blendops-first-skill-pack.md) |
-
----
 
 ## 🧪 Skill reviews
 

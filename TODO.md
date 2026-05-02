@@ -17,6 +17,7 @@ _Last updated: 2026-04-29_
 | v0 pack eval | 🚧 In progress | Text-only dry eval done, runtime manual eval still open. |
 | Installable skill pack | ✅ Complete | Root `skills/`, `laws/`, and `packs/` layout created. |
 | Skill review gates | ✅ Complete | Root skills expanded, reviewed, and indexed. |
+| Duplicate docs/root cleanup | ✅ Complete | docs/skills, docs/laws, docs/packs removed; root skills/laws/packs are canonical and docs navigation updated. |
 | Adapter install dry-run | ✅ Complete | Dry-run and rollback findings recorded without runtime execution. |
 | Manual install beta | ✅ Complete | Generic-root, Claude Code fallback, and docs-only walkthrough completed. |
 | Runtime verification | 🎯 Current focus | Verification criteria, manual eval packet, runtime availability checklist, release readiness rollup, read-only connector smoke evidence, and install/distribution strategy docs prepared; full official-runtime eval remains Not Run. |
