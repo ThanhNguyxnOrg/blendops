@@ -11,8 +11,8 @@ Status: Draft v0 manual procedure
 
 ## Recommended order
 
-1. **Preferred:** import/copy the full `bundles/claude-desktop-manual/` folder if your workflow supports folder-level context.
-2. If folder-level import is not available, copy `SKILL.md` plus `references/` files manually into your Claude Desktop project/context workflow.
+1. **Preferred:** upload/import `bundles/claude-desktop-manual/blendops/` as one Skill package if your Claude Desktop workflow supports package upload/import.
+2. If package upload/import is unavailable, manually copy `SKILL.md` plus `references/` from this manual bundle.
 3. Use `BLENDOPS_SINGLE_FILE.md` only when your setup supports one file only.
 
 ## Manual checklist

@@ -14,7 +14,8 @@ It provides:
 
 ## Preferred vs fallback
 
-- **Preferred:** full manual bundle (`SKILL.md` + `references/`)
+- **Preferred:** upload/import package source at `bundles/claude-desktop-manual/blendops/`
+- **Manual copy fallback:** `SKILL.md` + `references/` from this manual bundle
 - **Fallback only:** `BLENDOPS_SINGLE_FILE.md` when import/copy supports only one file
 
 The single-file fallback is intentionally less complete than the full bundle.
@@ -37,7 +38,7 @@ Runtime status remains `Not Run`. Artifact status remains `Not Produced` until e
 
 Claude Desktop is a manual/user-managed flow, not a normal coding-agent auto-install target.
 
-Use [IMPORT_STEPS.md](./IMPORT_STEPS.md) for import/copy instructions.
+Use [IMPORT_STEPS.md](./IMPORT_STEPS.md) for upload/import/copy instructions.
 
 ## Canonical source alignment
 

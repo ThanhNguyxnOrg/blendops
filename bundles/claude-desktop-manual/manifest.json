@@ -9,6 +9,8 @@
   "global_writes": false,
   "runtime_status": "Not Run",
   "artifact_status": "Not Produced",
+  "upload_package_source": "bundles/claude-desktop-manual/blendops/",
+  "fallback_file": "BLENDOPS_SINGLE_FILE.md",
   "files": [
     { "path": "README.md", "purpose": "Bundle overview and boundaries" },
     { "path": "IMPORT_STEPS.md", "purpose": "Manual import/copy instructions" },
@@ -33,7 +35,17 @@
     { "path": "references/laws/non-blender-user-language.md", "purpose": "Law summary" },
     { "path": "references/packs/product-hero-v0.md", "purpose": "Pack summary" },
     { "path": "INSTALL_REPORT_TEMPLATE.md", "purpose": "Manual install report template" },
-    { "path": "manifest.json", "purpose": "Machine-readable fixture metadata" }
+    { "path": "manifest.json", "purpose": "Machine-readable fixture metadata" },
+    { "path": "blendops/SKILL.md", "purpose": "Upload-ready Skill package entrypoint" },
+    { "path": "blendops/agents/openai.yaml", "purpose": "Upload package UI metadata" },
+    { "path": "blendops/references/skill-map.md", "purpose": "Upload package routing map" },
+    { "path": "blendops/references/runtime-stacks.md", "purpose": "Upload package runtime policy" },
+    { "path": "blendops/references/evidence-rules.md", "purpose": "Upload package evidence policy" },
+    { "path": "blendops/references/install-boundary.md", "purpose": "Upload package install boundary" },
+    { "path": "blendops/references/skill-render-export-evidence.md", "purpose": "Upload package skill summary" },
+    { "path": "blendops/references/law-evidence-before-done.md", "purpose": "Upload package law summary" },
+    { "path": "blendops/references/pack-product-hero-v0.md", "purpose": "Upload package pack summary" },
+    { "path": "blendops/LICENSE.txt", "purpose": "Upload package license" }
   ],
   "source_docs": [
     "docs/ai-agent-install-flow.md",

@@ -111,6 +111,16 @@ const requiredBundleFixture = [
   'bundles/claude-desktop-manual/references/packs/product-hero-v0.md',
   'bundles/claude-desktop-manual/INSTALL_REPORT_TEMPLATE.md',
   'bundles/claude-desktop-manual/manifest.json',
+  'bundles/claude-desktop-manual/blendops/SKILL.md',
+  'bundles/claude-desktop-manual/blendops/agents/openai.yaml',
+  'bundles/claude-desktop-manual/blendops/references/skill-map.md',
+  'bundles/claude-desktop-manual/blendops/references/runtime-stacks.md',
+  'bundles/claude-desktop-manual/blendops/references/evidence-rules.md',
+  'bundles/claude-desktop-manual/blendops/references/install-boundary.md',
+  'bundles/claude-desktop-manual/blendops/references/skill-render-export-evidence.md',
+  'bundles/claude-desktop-manual/blendops/references/law-evidence-before-done.md',
+  'bundles/claude-desktop-manual/blendops/references/pack-product-hero-v0.md',
+  'bundles/claude-desktop-manual/blendops/LICENSE.txt',
 ];
 
 const requiredSkillHeadings = [
@@ -299,6 +309,26 @@ function ensureRefExists(files, ref) {
   return false;
 }
 
+function assertUploadSkillFrontmatterMinimal(relPath) {
+  const txt = fs.readFileSync(path.join(root, relPath), 'utf8');
+  const match = txt.match(/^---\r?\n([\s\S]*?)\r?\n---/);
+  if (!match) {
+    errors.push(`Missing upload package SKILL.md frontmatter: ${relPath}`);
+    return;
+  }
+  const frontmatter = match[1];
+  for (const forbidden of ['version:', 'status:']) {
+    if (frontmatter.includes(forbidden)) {
+      errors.push(`Upload package SKILL.md frontmatter must not include ${forbidden} ${relPath}`);
+    }
+  }
+  for (const required of ['name: blendops', 'description:']) {
+    if (!frontmatter.includes(required)) {
+      errors.push(`Upload package SKILL.md frontmatter missing ${required} ${relPath}`);
+    }
+  }
+}
+
 console.log('Running docs:check...');
 
 for (const f of requiredRootFiles) assertExists(f, 'file');
@@ -309,6 +339,8 @@ for (const f of requiredSkillEvals) assertExists(f, 'file');
 for (const f of requiredLaws) assertExists(f, 'file');
 for (const f of requiredPack) assertExists(f, 'file');
 for (const f of requiredBundleFixture) assertExists(f, 'file');
+
+assertUploadSkillFrontmatterMinimal('bundles/claude-desktop-manual/blendops/SKILL.md');
 
 for (const skillFile of requiredSkills) {
   const txt = fs.readFileSync(path.join(root, skillFile), 'utf8');

@@ -118,8 +118,9 @@ Claude Desktop is not a normal coding-agent install target.
 
 Near-term safe path:
 
-1. User manually imports, copies, or attaches BlendOps skill content through Claude Desktop-supported UI or project context.
-   - **Preferred:** Use the full manual bundle at `bundles/claude-desktop-manual/` (`SKILL.md` + `references/`).
+1. User manually uploads/imports or copies BlendOps skill content through Claude Desktop-supported UI or project context.
+   - **Preferred:** Use upload package source `bundles/claude-desktop-manual/blendops/`.
+   - **Manual copy fallback:** Use full manual bundle `bundles/claude-desktop-manual/` (`SKILL.md` + `references/`).
    - **Fallback only:** Use `BLENDOPS_SINGLE_FILE.md` when import/copy supports one file only.
 2. User separately configures Claude Desktop Blender Connector if runtime control is needed.
 3. User separately configures the official Blender MCP bridge/add-on inside Blender as required by the connector path.

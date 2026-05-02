@@ -4,7 +4,9 @@ Status/confidence: Draft v0, linked-only/manual
 
 ## Recommended near-term install mode
 
-Manual/user-managed import/copy path using the full manual bundle at `bundles/claude-desktop-manual/`. This is not a normal coding-agent install target.
+Manual/user-managed upload/import path using `bundles/claude-desktop-manual/blendops/` as one Skill package source when supported. This is not a normal coding-agent install target.
+
+If upload/import fails, manually copy `SKILL.md` + `references/` from `bundles/claude-desktop-manual/`.
 
 Use the single-file fallback (`BLENDOPS_SINGLE_FILE.md`) only when your Claude Desktop workflow supports one file only.
 
@@ -35,12 +37,18 @@ Report:
 
 ## Expected files/folders
 
-**Preferred:** Full manual bundle at `bundles/claude-desktop-manual/`
+**Preferred upload package source:** `bundles/claude-desktop-manual/blendops/`
+- `SKILL.md` (single upload entrypoint)
+- `agents/openai.yaml` (display metadata)
+- `references/` (flattened skill/law/pack summaries)
+- `LICENSE.txt`
+
+**Manual copy fallback:** `bundles/claude-desktop-manual/`
 - `SKILL.md` (main router)
 - `references/` (skill/law/pack summaries)
 - `BLENDOPS_SINGLE_FILE.md` (fallback only)
 
-**Fallback:** Project-local docs/instructions only (`BLENDOPS.md` and optional `AGENTS.md` update with backup).
+**Legacy generic fallback:** Project-local docs/instructions only (`BLENDOPS.md` and optional `AGENTS.md` update with backup).
 
 Native Claude Desktop import path is environment-specific and needs verification.
 
