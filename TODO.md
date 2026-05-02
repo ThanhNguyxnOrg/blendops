@@ -151,7 +151,9 @@ _Last updated: 2026-04-29_
 - [x] create canonical skill system guide (`docs/skill-system.md`)
 - [x] create reusable root skill template (`skills/_template/SKILL.md`)
 - [x] add BlendOps next-step helper skill (`skills/blendops-help/SKILL.md`)
+- [x] add BlendOps next-step helper baseline eval (`skills/blendops-help/EVAL.md`)
 - [x] add render/export evidence skill (`skills/render-export-evidence/SKILL.md`)
+- [x] add render/export evidence baseline eval (`skills/render-export-evidence/EVAL.md`)
 - [x] document canonical aliases for runtime readiness and scene planning without duplicating skills
 - [ ] create Claude Desktop skill bundle without claiming connector/runtime success
 - [ ] package a project-local skill bundle with rollback notes

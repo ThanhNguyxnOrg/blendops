@@ -71,7 +71,7 @@ This pack expects included skills to pass Gate 0 through Gate 8 in `skill-review
 
 | Expectation | Status language |
 |---|---|
-| Per-skill evals | Each included skill has `EVAL.md`. |
+| Per-skill evals | Each included skill has `EVAL.md` (8 expanded skills have full evals; 2 Draft v0 skills have text-only baseline evals). |
 | Text-only eval | Baseline checks should pass before runtime eval. |
 | Runtime blockers | Must be recordable without overclaims. |
 | Depth audit | Tracked in `skill-reviews/reports/v0-skill-depth-audit.md`. |

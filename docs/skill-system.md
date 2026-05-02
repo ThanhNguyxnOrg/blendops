@@ -51,11 +51,11 @@ A skill may point to runtime docs, but it must not imply runtime was installed o
 
 | Canonical role | Active skill path | Notes |
 |---|---|---|
-| Help / next safe action | `skills/blendops-help/SKILL.md` | Routes between docs, skills, runtime readiness, evals, and packaging. |
+| Help / next safe action | `skills/blendops-help/SKILL.md` | Routes between docs, skills, runtime readiness, evals, and packaging. Baseline eval: `skills/blendops-help/EVAL.md`. |
 | Runtime readiness | `skills/official-runtime-readiness-checker/SKILL.md` | Canonical role: `runtime-readiness`; keep 3-stack boundaries. |
 | Scene planning | `skills/product-hero-scene-planner/SKILL.md` | Canonical role for product-hero scene planning. |
 | Camera / lighting / composition | `skills/blender-composition-camera-planner/SKILL.md`, `skills/blender-lighting-material-planner/SKILL.md` | Domain planning, no runtime claim. |
-| Render/export evidence | `skills/render-export-evidence/SKILL.md` | Artifact truth ledger for preview/render/GLB evidence. |
+| Render/export evidence | `skills/render-export-evidence/SKILL.md` | Artifact truth ledger for preview/render/GLB evidence. Baseline eval: `skills/render-export-evidence/EVAL.md`. |
 | GLB handoff | `skills/glb-web-handoff/SKILL.md` | Web handoff language after evidence state is known. |
 
 Do not create duplicate alias folders unless packaging evidence shows a target agent needs them.

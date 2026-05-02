@@ -27,7 +27,7 @@ Core guide: [docs/skill-system.md](../docs/skill-system.md)
 
 | Skill | Purpose | Use when | Depth status | Gate review | Eval |
 |---|---|---|---|---|---|
-| `blendops-help` | Next-step routing across docs, skills, readiness, evidence, packaging, and release status | Goal/status is unclear or multiple skills could apply | Draft v0 | Pending review | Planned |
+| `blendops-help` | Next-step routing across docs, skills, readiness, evidence, packaging, and release status | Goal/status is unclear or multiple skills could apply | Draft v0 | Pending review | [EVAL](./blendops-help/EVAL.md) |
 
 ### 🧭 Setup and readiness
 
@@ -49,7 +49,7 @@ Core guide: [docs/skill-system.md](../docs/skill-system.md)
 | Skill | Purpose | Use when | Depth status | Gate review | Eval |
 |---|---|---|---|---|---|
 | `blender-scene-quality-checker` | Pass/warn/fail readiness and verdict | A readiness decision is needed | Expanded Draft v0 | Pass | [EVAL](./blender-scene-quality-checker/EVAL.md) |
-| `render-export-evidence` | Preview/render/GLB evidence ledger and artifact truth labels | Artifact status must be proven or downgraded | Draft v0 | Pending review | Planned |
+| `render-export-evidence` | Preview/render/GLB evidence ledger and artifact truth labels | Artifact status must be proven or downgraded | Draft v0 | Pending review | [EVAL](./render-export-evidence/EVAL.md) |
 
 ### 📦 Handoff and communication
 

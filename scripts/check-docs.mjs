@@ -47,6 +47,19 @@ const requiredSkills = [
   'skills/non-blender-user-response-writer/SKILL.md',
 ];
 
+const requiredSkillEvals = [
+  'skills/blendops-help/EVAL.md',
+  'skills/render-export-evidence/EVAL.md',
+  'skills/official-runtime-setup-guide/EVAL.md',
+  'skills/official-runtime-readiness-checker/EVAL.md',
+  'skills/product-hero-scene-planner/EVAL.md',
+  'skills/blender-composition-camera-planner/EVAL.md',
+  'skills/blender-lighting-material-planner/EVAL.md',
+  'skills/blender-scene-quality-checker/EVAL.md',
+  'skills/glb-web-handoff/EVAL.md',
+  'skills/non-blender-user-response-writer/EVAL.md',
+];
+
 const requiredLaws = [
   'laws/official-runtime-only.md',
   'laws/no-arbitrary-python-interface.md',
@@ -225,6 +238,7 @@ for (const f of requiredRootFiles) assertExists(f, 'file');
 for (const d of requiredRootDirs) assertExists(d, 'dir');
 for (const f of requiredDocs) assertExists(f, 'file');
 for (const f of requiredSkills) assertExists(f, 'file');
+for (const f of requiredSkillEvals) assertExists(f, 'file');
 for (const f of requiredLaws) assertExists(f, 'file');
 for (const f of requiredPack) assertExists(f, 'file');
 
