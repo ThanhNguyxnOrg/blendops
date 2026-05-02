@@ -130,6 +130,14 @@ This package structure is a strategy target, not a current packaged release.
 
 ---
 
+## Near-term AI paste-command flow
+
+The primary near-term UX is a user-managed paste prompt: the user copies [AI Agent Install Flow](./ai-agent-install-flow.md) into a coding agent with terminal/file access, and the agent performs a reversible project-local attachment.
+
+This is an install-layer action only. It does not install Blender, configure runtime bridges, run runtime evals, or create preview/render/GLB artifacts. Unknown or mixed targets should use the generic project-local fallback or ask the user before writing.
+
+---
+
 ## Automation levels
 
 | Level | Meaning | BlendOps Draft v0 posture |

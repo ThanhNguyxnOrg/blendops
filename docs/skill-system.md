@@ -119,6 +119,8 @@ Never claim preview/render/GLB exists unless the output path, file existence, an
 
 A Claude Desktop Personal Skill import does not configure the Blender connector. A Claude Code/OpenCode/Cursor/Codex/Gemini adapter does not prove direct official MCP support.
 
+For the current paste-this-into-your-agent install path, use [AI Agent Install Flow](./ai-agent-install-flow.md).
+
 ---
 
 ## Future packaging map

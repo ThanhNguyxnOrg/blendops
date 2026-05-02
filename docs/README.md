@@ -26,10 +26,11 @@ Active docs for the current product and workflow direction.
 3. **Product direction:** [product-direction.md](./product-direction.md)
 4. **Release status:** [release-readiness.md](./release-readiness.md)
 5. **Release readiness rollup:** [release-readiness-rollup-v0.md](./release-readiness-rollup-v0.md)
-6. **Multi-agent install strategy:** [multi-agent-install-strategy.md](./multi-agent-install-strategy.md)
-7. **Distribution strategy:** [distribution-strategy.md](./distribution-strategy.md)
-8. **Eval status:** [evals/README.md](./evals/README.md)
-9. **Workflow and delivery specs:** continue through the grouped navigation below
+6. **AI agent install flow:** [ai-agent-install-flow.md](./ai-agent-install-flow.md)
+7. **Multi-agent install strategy:** [multi-agent-install-strategy.md](./multi-agent-install-strategy.md)
+8. **Distribution strategy:** [distribution-strategy.md](./distribution-strategy.md)
+9. **Eval status:** [evals/README.md](./evals/README.md)
+10. **Workflow and delivery specs:** continue through the grouped navigation below
 
 > [!TIP]
 > If you're evaluating release readiness, read the release status and manual install beta evidence before the pack docs.
@@ -43,7 +44,7 @@ Active docs for the current product and workflow direction.
 | Understand the product | [product-direction.md](./product-direction.md) | [architecture.md](./architecture.md), [reference-runtime.md](./reference-runtime.md) |
 | Set runtime boundaries | [external-runtime-setup.md](./external-runtime-setup.md) | [runtime-stack-strategy.md](./runtime-stack-strategy.md), [reference-runtime.md](./reference-runtime.md), [laws/official-runtime-only.md](./laws/official-runtime-only.md) |
 | Review workflow behavior | [workflow-contract.md](./workflow-contract.md) | [first-user-journey.md](./first-user-journey.md), [safety-model.md](./safety-model.md) |
-| Try install/adoption docs | [agent-install.md](./agent-install.md) | [install-scopes.md](./install-scopes.md), [multi-agent-install-strategy.md](./multi-agent-install-strategy.md), [adapters/README.md](./adapters/README.md) |
+| Try install/adoption docs | [ai-agent-install-flow.md](./ai-agent-install-flow.md) | [agent-install.md](./agent-install.md), [install-scopes.md](./install-scopes.md), [multi-agent-install-strategy.md](./multi-agent-install-strategy.md), [adapters/README.md](./adapters/README.md) |
 | Check eval evidence | [evals/README.md](./evals/README.md) | [release-readiness.md](./release-readiness.md), [release-readiness-rollup-v0.md](./release-readiness-rollup-v0.md) |
 | Review v0 pack content | [packs/README.md](./packs/README.md) | [skills/README.md](./skills/README.md), [workflows/README.md](./workflows/README.md) |
 
@@ -151,6 +152,7 @@ Active docs for the current product and workflow direction.
 
 | Area | Doc |
 |---|---|
+| AI agent install flow | [ai-agent-install-flow.md](./ai-agent-install-flow.md) |
 | Install strategy | [install-strategy.md](./install-strategy.md) |
 | Install scopes | [install-scopes.md](./install-scopes.md) |
 | Multi-agent install strategy | [multi-agent-install-strategy.md](./multi-agent-install-strategy.md) |

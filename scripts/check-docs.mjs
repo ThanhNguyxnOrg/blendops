@@ -27,6 +27,7 @@ const requiredDocs = [
   'docs/unofficial-runtime-bridges.md',
   'docs/adapter-registry.md',
   'docs/install-scopes.md',
+  'docs/ai-agent-install-flow.md',
   'docs/capability-profile.md',
   'docs/adapters/claude-code.md',
   'docs/adapters/claude-app.md',

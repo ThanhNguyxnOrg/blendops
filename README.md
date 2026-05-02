@@ -125,7 +125,7 @@ Attach the draft v0 BlendOps laws, skills, workflows, and docs to a project by g
 
 ```txt
 Install BlendOps in this project by following:
-https://raw.githubusercontent.com/ThanhNguyxnOrg/blendops/main/docs/agent-install.md
+https://raw.githubusercontent.com/ThanhNguyxnOrg/blendops/main/docs/ai-agent-install-flow.md
 
 Use project-local install unless I explicitly ask for global install.
 Do not install Blender runtime.
@@ -136,6 +136,7 @@ Summarize exactly what you changed.
 
 Helpful install references:
 
+- [docs/ai-agent-install-flow.md](./docs/ai-agent-install-flow.md)
 - [docs/agent-install.md](./docs/agent-install.md)
 - [docs/examples/agent-install-prompt.md](./docs/examples/agent-install-prompt.md)
 - [docs/install-scopes.md](./docs/install-scopes.md)
