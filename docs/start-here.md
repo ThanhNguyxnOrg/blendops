@@ -42,35 +42,40 @@ Pick the path that matches what you want to do:
 **Current reality:**
 - BlendOps is not published to npm or any marketplace
 - No `npx blendops` installer exists yet
-- Installation is manual, project-local, and reversible
+- Installation is manual, project-local or skill.zip-prepared, and reversible
+
+Use the universal prompt from [README.md](../README.md). It auto-selects project-local install or skill.zip preparation.
 
 **Your options:**
 
 | Method | Best for | Start here |
 |---|---|---|
-| **AI coding agent paste-prompt** | Claude Code, OpenCode, Cursor, Codex, Gemini, GitHub Copilot | [AI agent install flow](./ai-agent-install-flow.md) |
-| **Claude Desktop manual import** | Claude Desktop app with Personal Skills | [Claude Desktop bundle](../bundles/claude-desktop-manual/README.md) |
-| **Generic project-local fallback** | Unknown/unsupported tools | [Generic bundle](../bundles/generic-project-local/README.md) |
+| **Universal prompt** | Any AI/agent | [README universal prompt](../README.md#-use-in-30-seconds-one-prompt-for-any-ai) |
+| **Project-local install details** | Claude Code, OpenCode, Cursor, Codex, Gemini, GitHub Copilot | [AI agent install flow](./ai-agent-install-flow.md) |
+| **Claude Desktop skill.zip details** | Claude Desktop / chat-only Skills UI upload prep | [Claude Desktop install guide](./install/claude-desktop.md) |
+| **Generic project-local fallback** | Unknown/unsupported writable projects | [Generic bundle](../bundles/generic-project-local/README.md) |
 
 **Canonical package source:**
-- `bundles/skill-package/blendops/` — target-neutral portable package
+- `bundles/skill-package/blendops/` — target-neutral portable package and skill.zip source
 - See [package README](../bundles/skill-package/README.md) for structure
 
 **Per-target install docs:**
-- [docs/install/README.md](./install/README.md) — all target-specific guides
+- [docs/install/README.md](./install/README.md) — target-specific fallback details
 
 ---
 
 ### 🖥️ I use Claude Desktop
 
 **What you need to know:**
+- Use the universal prompt from [README.md](../README.md); expected mode is usually skill.zip preparation
 - BlendOps skill package can be manually imported as a Personal Skill
 - Runtime requires separate Claude Desktop Blender Connector setup
 - Connector configuration is not automatic
 
 **Start here:**
-- [Claude Desktop manual bundle](../bundles/claude-desktop-manual/README.md)
+- [README universal prompt](../README.md#-use-in-30-seconds-one-prompt-for-any-ai)
 - [Claude Desktop install guide](./install/claude-desktop.md)
+- [Claude Desktop manual bundle](../bundles/claude-desktop-manual/README.md)
 - [Claude app setup notes](./claude-app-setup.md)
 
 **Runtime setup (separate step):**
@@ -83,11 +88,12 @@ Pick the path that matches what you want to do:
 
 **What you need to know:**
 - Installation is project-local by default
-- Use the AI agent paste-prompt for automatic setup
+- Use the universal prompt for automatic setup
 - Direct official MCP use from coding agents is not verified/supported
 
 **Start here:**
-- [AI agent install flow](./ai-agent-install-flow.md) — copy-paste prompt
+- [README universal prompt](../README.md#-use-in-30-seconds-one-prompt-for-any-ai)
+- [AI agent install flow](./ai-agent-install-flow.md) — project-local mode details
 - [Agent install guide](./agent-install.md) — detailed instructions
 - [Multi-agent install strategy](./multi-agent-install-strategy.md) — cross-tool approach
 

@@ -4,61 +4,77 @@ Status/confidence: Draft v0, linked-only/manual
 
 ## Recommended near-term install mode
 
-Manual/user-managed upload/import path using the canonical portable package at `bundles/skill-package/blendops/` as one Skill package source when supported. Claude Desktop is one consumer of the canonical package, not the owner of the package. This is not a normal coding-agent install target.
+Claude Desktop can use the same universal prompt from [`README.md`](../../README.md). Expected selected mode is usually **skill.zip preparation**, because Claude Desktop-style chats often lack target project write access.
 
-If upload/import fails, manually copy `SKILL.md` + `references/` from `bundles/claude-desktop-manual/`.
+This is not a normal coding-agent install target. Project-local install is only appropriate if the assistant is actually operating inside a writable target project.
 
-Use the single-file fallback (`BLENDOPS_SINGLE_FILE.md`) only when your Claude Desktop workflow supports one file only.
+## Universal prompt behavior in Claude Desktop
 
-## Copy/paste checklist prompt
+When the universal prompt runs in Claude Desktop / chat-only context, the assistant should prepare a downloadable `skill.zip` from:
 
 ```txt
-I use Claude Desktop.
-Prepare a project-local BlendOps attachment plan only.
-
-Requirements:
-- Treat Claude Desktop skill import as a manual user step.
-- Do not claim an AI agent can click/import in Claude Desktop UI.
-- Provide files I should copy/reference and where they belong in my project context.
-- Keep runtime setup separate.
-- Do not configure Claude Desktop Connector.
-- Do not configure official Blender MCP bridge/add-on.
-- Do not run Blender or runtime eval.
-- Do not claim preview/render/GLB artifacts.
-
-Report:
-- files prepared
-- files skipped
-- manual steps for me
-- rollback steps
-- runtime status: Not Run
-- artifact status: Not Produced
+https://github.com/ThanhNguyxnOrg/blendops/tree/main/bundles/skill-package/blendops
 ```
 
-## Expected files/folders
+If Claude cannot fetch repository subpaths, ask the user to upload the package folder/files or provide a direct package source. Do not invent file contents.
 
-**Preferred upload package source:** `bundles/skill-package/blendops/`
-- `SKILL.md` (single upload entrypoint)
-- `agents/openai.yaml` (OpenAI/ChatGPT Skills UI metadata only; not Claude Desktop connector setup)
-- `references/` (flattened skill/law/pack summaries)
-- `LICENSE.txt`
+## skill.zip requirements
 
-**Manual copy fallback:** `bundles/claude-desktop-manual/`
-- `SKILL.md` (main router)
-- `references/` (skill/law/pack summaries)
-- `BLENDOPS_SINGLE_FILE.md` (fallback only)
+The downloadable ZIP must be named exactly:
 
-**Legacy generic fallback:** Project-local docs/instructions only (`BLENDOPS.md` and optional `AGENTS.md` update with backup).
+```txt
+skill.zip
+```
 
-Native Claude Desktop import path is environment-specific and needs verification.
+ZIP root must contain:
 
-## Rollback notes
+```txt
+SKILL.md
+agents/openai.yaml
+references/*.md
+LICENSE.txt
+```
 
-Remove newly added project-local instruction files and restore backups for modified existing files.
+Packaging rules:
+
+- Do not zip parent folders like `bundles/`, `skill-package/`, or `claude-desktop-manual/`.
+- The package must contain exactly one `SKILL.md` at the ZIP root.
+- Keep references flattened under `references/`.
+- `agents/openai.yaml` is OpenAI/ChatGPT Skills UI metadata only; it does not configure Claude Desktop Connector.
+- Do not generate or commit `skill.zip` in this repo.
+- Upload/import remains a manual user action.
+
+## Fallbacks
+
+If a downloadable ZIP cannot be created, the assistant should output the exact folder tree plus file contents/instructions and clearly say this is fallback only.
+
+If Claude returns only `blendops.md` or `BLENDOPS_SINGLE_FILE.md`, treat that as fallback only. Ask it to create the full `skill.zip` with `SKILL.md`, `agents/openai.yaml`, `references/*.md`, and `LICENSE.txt` when possible.
+
+Manual copy fallback:
+
+- Use full manual bundle `bundles/claude-desktop-manual/` (`SKILL.md` + `references/`).
+- Use `BLENDOPS_SINGLE_FILE.md` only when the workflow supports one file only.
+
+Native Claude Desktop import paths are environment-specific and need user verification.
 
 ## Runtime boundary
 
-Skill install is separate from runtime setup. The `agents/openai.yaml` file in the canonical package is OpenAI/ChatGPT-specific metadata only and does not configure Claude Desktop Connector. Connector and Blender-side bridge setup are separate user actions.
+Skill import/package prep is separate from runtime setup. It does not configure Claude Desktop Connector, install Blender, configure the Blender-side official MCP bridge/add-on, run Blender, run runtime eval, render, export, or produce artifacts.
+
+Runtime status remains `Not Run`. Artifact status remains `Not Produced`.
+
+## Report contract
+
+Every Claude Desktop prep attempt should report:
+
+- mode selected: `skill.zip preparation` or `blocked-needs-input`
+- reason: Claude Desktop / chat-only / no project write access, or blocker
+- zip filename: `skill.zip`, or fallback files/instructions
+- SKILL.md count if zip mode: `1`
+- global files touched: `No`
+- runtime status: `Not Run`
+- artifact status: `Not Produced`
+- limitations
 
 ## What not to claim
 
