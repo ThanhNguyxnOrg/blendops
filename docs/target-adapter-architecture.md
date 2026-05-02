@@ -55,5 +55,5 @@ If target is unknown or path confidence is low:
 
 ## Runtime boundary
 
-Adapters attach docs/skills/laws/packs only.
+Adapters attach docs plus root skills/laws/packs only.
 They do not install Blender runtime or claim runtime execution success.

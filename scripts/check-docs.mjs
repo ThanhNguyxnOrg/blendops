@@ -181,6 +181,19 @@ const requiredInstallerSpecSnippets = [
   'Artifact status remains `Not Produced`.',
 ];
 
+const forbiddenStaleDocsCollectionPatterns = [
+  'docs/skills',
+  'docs/laws',
+  'docs/packs',
+  'runtime-route-strategy',
+];
+
+const forbiddenDocsRelativeRootCollectionLinkPatterns = [
+  '](./skills/',
+  '](./laws/',
+  '](./packs/',
+];
+
 const forbiddenOfficialDirectMcpRoutePatterns = [
   'Route B — Official MCP path for non-Claude Desktop agents',
   'Official MCP path for non-Claude Desktop agents',
@@ -280,7 +293,15 @@ walkMarkdownFiles('laws', activeMd);
 walkMarkdownFiles('packs', activeMd);
 walkMarkdownFiles('skill-reviews', activeMd);
 
+const docsMd = activeMd.filter((f) => f.startsWith('docs/'));
+
 for (const p of forbiddenLegacyPatterns) scanPattern(activeMd, p, 'Forbidden legacy runtime pattern');
+for (const p of forbiddenStaleDocsCollectionPatterns) {
+  scanPattern(activeMd, p, 'Forbidden stale docs collection reference');
+}
+for (const p of forbiddenDocsRelativeRootCollectionLinkPatterns) {
+  scanPattern(docsMd, p, 'Forbidden docs-relative root collection link');
+}
 for (const p of forbiddenCommunityPatterns) {
   scanPattern(activeMd, p, 'Forbidden community runtime pattern', [unofficialBridgeDoc]);
 }

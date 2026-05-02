@@ -15,7 +15,7 @@ Define the relationship between:
 - `laws/` = canonical shared guardrails used by all skills
 - `packs/` = canonical bundle manifests composing laws + skills
 
-There is no duplicate docs-level skill/law/pack collection layer. Do not recreate `docs/skills/`, `docs/laws/`, or `docs/packs/`; link to the root canonical collections instead.
+There is no duplicate docs-level skill/law/pack collection layer. Do not recreate those removed docs-level collection folders; link to the root canonical collections instead.
 
 ## Current root collection
 

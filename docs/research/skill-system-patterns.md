@@ -29,7 +29,7 @@ Observed in:
 - `superpowers-lab` (experimental catalog)
 
 BlendOps adaptation:
-- `docs/laws/` (stable)
+- root `laws/` (stable)
 - `docs/labs/` or `docs/experiments/` (draft patterns)
 
 Why it works:
@@ -43,7 +43,7 @@ Observed in mature repos:
 
 BlendOps adaptation (documentation/product layer):
 - `docs/research/` for evidence
-- `docs/laws/` for policy-like constraints
+- root `laws/` for policy-like constraints
 - `docs/workflows/` for operational sequences
 - `docs/recipes/` for concrete user scenarios
 

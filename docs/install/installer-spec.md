@@ -201,7 +201,7 @@ It may check:
 - whether required BlendOps source files exist
 - whether target markers exist
 - whether multiple targets appear present
-- whether duplicate docs folders (`docs/skills`, `docs/laws`, `docs/packs`) are absent
+- whether removed duplicate docs-level skill/law/pack collection folders are absent
 - whether runtime/artifact claims are absent from install outputs
 
 It must not:

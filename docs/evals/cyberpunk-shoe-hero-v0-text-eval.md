@@ -123,7 +123,7 @@ Evaluate pass/warn/fail:
 ## Required changes
 
 - docs/workflows/product-hero-workflow.md: add text-only evaluation handling under runtime evidence expectations.
-- docs/skills/glb-web-handoff.md: add explicit “Not Run” handling in failure/uncertainty path for dry eval mode.
+- Root `skills/glb-web-handoff/SKILL.md`: add explicit “Not Run” handling in failure/uncertainty path for dry eval mode.
 
 ## Final verdict
 

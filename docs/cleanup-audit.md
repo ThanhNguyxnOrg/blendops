@@ -37,15 +37,8 @@ Cleanup decisions under current official-runtime model:
   - `skills/blendops/examples/*`
   - `skills/blendops/harnesses/*`
   - `skills/blendops/references/*`
-- duplicate docs-level collections (2026-05-02):
-  - `docs/skills/` folder and all skill spec duplicates
-  - `docs/laws/` folder and all law spec duplicates
-  - `docs/packs/` folder and pack spec duplicates
-- obsolete synthesis docs (2026-05-02):
-  - `docs/blendops-skill-system-design.md`
-  - `docs/blendops-law-format.md`
-  - `docs/blendops-first-skill-pack.md`
-  - `docs/runtime-route-strategy.md`
+- duplicate docs-level skill, law, and pack collection folders (2026-05-02)
+- obsolete synthesis/runtime-route draft docs (2026-05-02)
 
 ### DELETE (local generated artifacts policy)
 - `.tmp/**`
@@ -56,11 +49,8 @@ Cleanup decisions under current official-runtime model:
 - `node_modules/**` (rebuildable)
 
 ### MERGE (completed 2026-05-02)
-- docs-level specs vs root installable artifacts:
-  - `docs/laws/*` → `laws/*` (root canonical)
-  - `docs/skills/*` → `skills/*` (root canonical)
-  - `docs/packs/*` → `packs/*` (root canonical)
-- All active navigation now points to root canonical collections
+- docs-level skill/law/pack specs were consolidated into root installable artifacts.
+- All active navigation now points to root canonical collections.
 
 ### REWRITE (performed)
 - Removed archive references from active docs and support guidance.

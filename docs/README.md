@@ -42,11 +42,11 @@ Active docs for the current product and workflow direction.
 | Job | Start with | Then read |
 |---|---|---|
 | Understand the product | [product-direction.md](./product-direction.md) | [architecture.md](./architecture.md), [reference-runtime.md](./reference-runtime.md) |
-| Set runtime boundaries | [external-runtime-setup.md](./external-runtime-setup.md) | [runtime-stack-strategy.md](./runtime-stack-strategy.md), [reference-runtime.md](./reference-runtime.md), [laws/official-runtime-only.md](./laws/official-runtime-only.md) |
+| Set runtime boundaries | [external-runtime-setup.md](./external-runtime-setup.md) | [runtime-stack-strategy.md](./runtime-stack-strategy.md), [reference-runtime.md](./reference-runtime.md), [../laws/official-runtime-only.md](../laws/official-runtime-only.md) |
 | Review workflow behavior | [workflow-contract.md](./workflow-contract.md) | [first-user-journey.md](./first-user-journey.md), [safety-model.md](./safety-model.md) |
 | Try install/adoption docs | [ai-agent-install-flow.md](./ai-agent-install-flow.md) | [agent-install.md](./agent-install.md), [install-scopes.md](./install-scopes.md), [multi-agent-install-strategy.md](./multi-agent-install-strategy.md), [adapters/README.md](./adapters/README.md) |
 | Check eval evidence | [evals/README.md](./evals/README.md) | [release-readiness.md](./release-readiness.md), [release-readiness-rollup-v0.md](./release-readiness-rollup-v0.md) |
-| Review v0 pack content | [packs/README.md](./packs/README.md) | [skills/README.md](./skills/README.md), [workflows/README.md](./workflows/README.md) |
+| Review v0 pack content | [../packs/README.md](../packs/README.md) | [../skills/README.md](../skills/README.md), [workflows/README.md](./workflows/README.md) |
 
 ---
 
