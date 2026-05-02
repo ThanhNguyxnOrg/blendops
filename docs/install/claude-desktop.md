@@ -4,7 +4,9 @@ Status/confidence: Draft v0, linked-only/manual
 
 ## Recommended near-term install mode
 
-Manual/user-managed import/copy path. This is not a normal coding-agent install target.
+Manual/user-managed import/copy path using the full manual bundle at `bundles/claude-desktop-manual/`. This is not a normal coding-agent install target.
+
+Use the single-file fallback (`BLENDOPS_SINGLE_FILE.md`) only when your Claude Desktop workflow supports one file only.
 
 ## Copy/paste checklist prompt
 
@@ -33,7 +35,14 @@ Report:
 
 ## Expected files/folders
 
-Project-local docs/instructions only (`BLENDOPS.md` and optional `AGENTS.md` update with backup). Native Claude Desktop import path is environment-specific and needs verification.
+**Preferred:** Full manual bundle at `bundles/claude-desktop-manual/`
+- `SKILL.md` (main router)
+- `references/` (skill/law/pack summaries)
+- `BLENDOPS_SINGLE_FILE.md` (fallback only)
+
+**Fallback:** Project-local docs/instructions only (`BLENDOPS.md` and optional `AGENTS.md` update with backup).
+
+Native Claude Desktop import path is environment-specific and needs verification.
 
 ## Rollback notes
 

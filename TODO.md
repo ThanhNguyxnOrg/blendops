@@ -158,7 +158,7 @@ _Last updated: 2026-04-29_
 - [x] document AI agent paste-command install flow (`docs/ai-agent-install-flow.md`)
 - [x] create per-target AI agent install docs (`docs/install/`)
 - [x] design local installer script spec (`docs/install/installer-spec.md`) without implementation
-- [ ] create Claude Desktop skill bundle without claiming connector/runtime success
+- [x] create Claude Desktop skill bundle without claiming connector/runtime success
 - [ ] package a project-local skill bundle with rollback notes
 - [ ] research OpenCode, Cursor, Codex, and Gemini adapters with confidence labels
 - [ ] add Blender-specific eval skills only after runtime evidence needs are clearer
@@ -182,7 +182,7 @@ Focus: official runtime verification criteria and runtime eval readiness, not cu
 - [x] draft and link multi-agent install and distribution strategy docs without claiming package or marketplace availability
 - [x] complete runtime stack model cleanup across public docs
 - [x] package a project-local generic BlendOps bundle with rollback notes
-- [ ] prepare Claude Desktop Personal Skill import bundle without claiming connector/runtime success
+- [x] prepare Claude Desktop Personal Skill import bundle without claiming connector/runtime success
 - [ ] research OpenCode installation options after source-backed path verification
 - [ ] research and draft Cursor, Codex, and Gemini adapters with confidence labels
 - [ ] define evidence gates for any future tool-native package, extension, or marketplace listing
