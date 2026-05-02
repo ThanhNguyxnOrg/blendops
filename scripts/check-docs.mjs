@@ -227,6 +227,17 @@ const requiredInstallerSpecSnippets = [
   'Artifact status remains `Not Produced`.',
 ];
 
+const requiredReadmeGuardSnippets = [
+  'Use in 30 seconds: one prompt for any AI',
+  'universal prompt',
+  'skill.zip',
+  'project-local install',
+  'runtime%20eval-Not%20Run',
+  'artifacts-Not%20Produced',
+  'runtime status: Not Run',
+  'artifact status: Not Produced',
+];
+
 const forbiddenStaleDocsCollectionPatterns = [
   'docs/skills',
   'docs/laws',
@@ -402,6 +413,11 @@ assertContainsAll(
   'docs/install/installer-spec.md',
   requiredInstallerSpecSnippets,
   'Future installer spec policy'
+);
+assertContainsAll(
+  'README.md',
+  requiredReadmeGuardSnippets,
+  'Root README universal prompt policy'
 );
 for (const p of forbiddenOfficialDirectMcpRoutePatterns) {
   scanPattern(activeMd, p, 'Forbidden official direct MCP route pattern', ['docs/archive']);

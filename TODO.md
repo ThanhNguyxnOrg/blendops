@@ -188,6 +188,7 @@ Focus: official runtime verification criteria and runtime eval readiness, not cu
 - [x] promote canonical portable BlendOps skill package source (`bundles/skill-package/blendops/`)
 - [x] clarify OpenAI metadata vs multi-agent adapters
 - [x] complete skill package upload-readiness eval (text-only/source-level; no manual upload/import execution)
+- [x] add universal install prompt that auto-selects project-local install, skill.zip preparation, or blocked-needs-input
 - [ ] manually test canonical skill package upload/import in target UI
 - [ ] research OpenCode installation options after source-backed path verification
 - [ ] research and draft Cursor, Codex, and Gemini adapters with confidence labels
