@@ -4,7 +4,7 @@ Status/confidence: Draft v0, linked-only/manual
 
 ## Recommended near-term install mode
 
-Manual/user-managed upload/import path using `bundles/claude-desktop-manual/blendops/` as one Skill package source when supported. This is not a normal coding-agent install target.
+Manual/user-managed upload/import path using the canonical portable package at `bundles/skill-package/blendops/` as one Skill package source when supported. Claude Desktop is one consumer of the canonical package, not the owner of the package. This is not a normal coding-agent install target.
 
 If upload/import fails, manually copy `SKILL.md` + `references/` from `bundles/claude-desktop-manual/`.
 
@@ -37,7 +37,7 @@ Report:
 
 ## Expected files/folders
 
-**Preferred upload package source:** `bundles/claude-desktop-manual/blendops/`
+**Preferred upload package source:** `bundles/skill-package/blendops/`
 - `SKILL.md` (single upload entrypoint)
 - `agents/openai.yaml` (display metadata)
 - `references/` (flattened skill/law/pack summaries)

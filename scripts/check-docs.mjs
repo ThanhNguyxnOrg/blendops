@@ -111,16 +111,16 @@ const requiredBundleFixture = [
   'bundles/claude-desktop-manual/references/packs/product-hero-v0.md',
   'bundles/claude-desktop-manual/INSTALL_REPORT_TEMPLATE.md',
   'bundles/claude-desktop-manual/manifest.json',
-  'bundles/claude-desktop-manual/blendops/SKILL.md',
-  'bundles/claude-desktop-manual/blendops/agents/openai.yaml',
-  'bundles/claude-desktop-manual/blendops/references/skill-map.md',
-  'bundles/claude-desktop-manual/blendops/references/runtime-stacks.md',
-  'bundles/claude-desktop-manual/blendops/references/evidence-rules.md',
-  'bundles/claude-desktop-manual/blendops/references/install-boundary.md',
-  'bundles/claude-desktop-manual/blendops/references/skill-render-export-evidence.md',
-  'bundles/claude-desktop-manual/blendops/references/law-evidence-before-done.md',
-  'bundles/claude-desktop-manual/blendops/references/pack-product-hero-v0.md',
-  'bundles/claude-desktop-manual/blendops/LICENSE.txt',
+  'bundles/skill-package/blendops/SKILL.md',
+  'bundles/skill-package/blendops/agents/openai.yaml',
+  'bundles/skill-package/blendops/references/skill-map.md',
+  'bundles/skill-package/blendops/references/runtime-stacks.md',
+  'bundles/skill-package/blendops/references/evidence-rules.md',
+  'bundles/skill-package/blendops/references/install-boundary.md',
+  'bundles/skill-package/blendops/references/skill-render-export-evidence.md',
+  'bundles/skill-package/blendops/references/law-evidence-before-done.md',
+  'bundles/skill-package/blendops/references/pack-product-hero-v0.md',
+  'bundles/skill-package/blendops/LICENSE.txt',
 ];
 
 const requiredSkillHeadings = [
@@ -309,6 +309,13 @@ function ensureRefExists(files, ref) {
   return false;
 }
 
+function assertMissing(relPath, type = 'path') {
+  const abs = path.join(root, relPath);
+  if (fs.existsSync(abs)) {
+    errors.push(`Unexpected ${type} exists: ${relPath}`);
+  }
+}
+
 function assertUploadSkillFrontmatterMinimal(relPath) {
   const txt = fs.readFileSync(path.join(root, relPath), 'utf8');
   const match = txt.match(/^---\r?\n([\s\S]*?)\r?\n---/);
@@ -340,7 +347,8 @@ for (const f of requiredLaws) assertExists(f, 'file');
 for (const f of requiredPack) assertExists(f, 'file');
 for (const f of requiredBundleFixture) assertExists(f, 'file');
 
-assertUploadSkillFrontmatterMinimal('bundles/claude-desktop-manual/blendops/SKILL.md');
+assertUploadSkillFrontmatterMinimal('bundles/skill-package/blendops/SKILL.md');
+assertMissing('bundles/claude-desktop-manual/blendops', 'directory');
 
 for (const skillFile of requiredSkills) {
   const txt = fs.readFileSync(path.join(root, skillFile), 'utf8');

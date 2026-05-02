@@ -5,7 +5,7 @@ Target: `claude-desktop-manual`
 
 ## What this bundle is
 
-This is the preferred **full manual Claude Desktop bundle** for attaching BlendOps guidance.
+This is the Claude Desktop manual bundle for attaching BlendOps guidance. Claude Desktop is one consumer of the canonical portable package; it does not own the package source.
 
 It provides:
 - one Claude Desktop-facing router skill (`SKILL.md`),
@@ -14,7 +14,7 @@ It provides:
 
 ## Preferred vs fallback
 
-- **Preferred:** upload/import package source at `bundles/claude-desktop-manual/blendops/`
+- **Preferred:** upload/import canonical package source at `bundles/skill-package/blendops/`
 - **Manual copy fallback:** `SKILL.md` + `references/` from this manual bundle
 - **Fallback only:** `BLENDOPS_SINGLE_FILE.md` when import/copy supports only one file
 

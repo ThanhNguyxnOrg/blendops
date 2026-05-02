@@ -155,6 +155,7 @@ Active docs for the current product and workflow direction.
 | AI agent install flow | [ai-agent-install-flow.md](./ai-agent-install-flow.md) |
 | Per-target install docs | [install/README.md](./install/README.md) |
 | Generic project-local bundle fixture | [../bundles/generic-project-local/README.md](../bundles/generic-project-local/README.md) |
+| Canonical portable skill package | [../bundles/skill-package/blendops/SKILL.md](../bundles/skill-package/blendops/SKILL.md) |
 | Claude Desktop manual bundle fixture | [../bundles/claude-desktop-manual/README.md](../bundles/claude-desktop-manual/README.md) |
 | Installer script spec (future) | [install/installer-spec.md](./install/installer-spec.md) |
 | Install strategy | [install-strategy.md](./install-strategy.md) |
