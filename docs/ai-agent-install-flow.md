@@ -40,7 +40,7 @@ Success in one layer does not imply success in another. A successful skill insta
 2. The agent inspects the project for existing instruction/config files and target clues.
 3. If the target is obvious, the agent installs for that one target.
 4. If multiple targets are detected, the agent asks before writing.
-5. If no target is detected, the agent uses a generic project-local fallback.
+5. If no target is detected, the agent uses a generic project-local fallback (see `bundles/generic-project-local/`).
 6. The agent installs or references BlendOps project-local files only.
 7. If the install is happening inside the BlendOps repo, the agent runs `npm run docs:check`.
 8. The agent reports files changed, skipped files, rollback steps, runtime status, and artifact status.
@@ -94,7 +94,7 @@ Report back with:
 | [Gemini CLI](./install/gemini.md) | Docs-only or generic project-local fallback until adapter evidence exists. | Low / not researched | Yes | No | Yes | Treat as future adapter work. |
 | [Antigravity](./install/antigravity.md) | Generic project-local fallback until source-backed adapter evidence exists. | Low / not researched | Yes | No | Yes | Do not claim native support yet. |
 | [GitHub Copilot](./install/github-copilot.md) | Project-local docs/instructions reference where the project already uses such files. | Low / linked-only | Yes | No | Yes | Do not claim marketplace or extension listing. |
-| [Generic project-local fallback](./install/generic-project.md) | `BLENDOPS.md`, `AGENTS.md`, or copied/referenced core collection with rollback notes. | High as safe fallback | Yes, if it would modify existing files | No | Yes | Default when target is unknown or mixed. |
+| [Generic project-local fallback](./install/generic-project.md) | `BLENDOPS.md`, `AGENTS.md`, or copied/referenced core collection with rollback notes. | High as safe fallback | Yes, if it would modify existing files | No | Yes | Default when target is unknown or mixed; fixture available at `bundles/generic-project-local/`. |
 | [Claude Desktop](./install/claude-desktop.md) | User-managed manual import/copy of skill content; not a normal coding-agent install. | Manual only | Yes | No | Yes | Connector/runtime setup is a separate user action. |
 
 ## Auto-detect policy
@@ -162,6 +162,8 @@ Every AI install attempt should end with a report containing:
 | Artifact status | `Not Produced`. |
 | Runtime setup note | Separate setup required for Blender connector/CLI/bridge. |
 | Limitations | Unknown target behavior, linked-only confidence, or pending verification. |
+
+For a static generic project-local fixture example, see [`bundles/generic-project-local/`](../bundles/generic-project-local/). It demonstrates rollback/report templates only and does not run an installer or runtime.
 
 Minimal report shape:
 

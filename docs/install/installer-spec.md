@@ -10,6 +10,8 @@ Scope: future local installer for BlendOps skill/law/pack project-local attachme
 
 Define the expected behavior for a future local installer script that attaches BlendOps skills, laws, packs, and selected docs to a project or prepares a Claude Desktop bundle output.
 
+The first static reference fixture for this behavior is `bundles/generic-project-local/`.
+
 The installer must preserve the existing BlendOps boundaries:
 
 - Skill install is not Blender runtime setup.

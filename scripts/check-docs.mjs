@@ -81,6 +81,14 @@ const requiredLaws = [
 
 const requiredPack = ['packs/product-hero-v0/PACK.md'];
 
+const requiredBundleFixture = [
+  'bundles/generic-project-local/README.md',
+  'bundles/generic-project-local/BLENDOPS.md',
+  'bundles/generic-project-local/ROLLBACK.md',
+  'bundles/generic-project-local/INSTALL_REPORT_TEMPLATE.md',
+  'bundles/generic-project-local/manifest.json',
+];
+
 const requiredSkillHeadings = [
   '## Purpose',
   '## When to use',
@@ -276,6 +284,7 @@ for (const f of requiredSkills) assertExists(f, 'file');
 for (const f of requiredSkillEvals) assertExists(f, 'file');
 for (const f of requiredLaws) assertExists(f, 'file');
 for (const f of requiredPack) assertExists(f, 'file');
+for (const f of requiredBundleFixture) assertExists(f, 'file');
 
 for (const skillFile of requiredSkills) {
   const txt = fs.readFileSync(path.join(root, skillFile), 'utf8');

@@ -181,7 +181,7 @@ Focus: official runtime verification criteria and runtime eval readiness, not cu
 - [x] update eval docs for Stack 1 first, Stack 2 fallback, Stack 3 non-release path, and direct official MCP for non-Claude agents unsupported/unverified
 - [x] draft and link multi-agent install and distribution strategy docs without claiming package or marketplace availability
 - [x] complete runtime stack model cleanup across public docs
-- [ ] package a project-local generic BlendOps bundle with rollback notes
+- [x] package a project-local generic BlendOps bundle with rollback notes
 - [ ] prepare Claude Desktop Personal Skill import bundle without claiming connector/runtime success
 - [ ] research OpenCode installation options after source-backed path verification
 - [ ] research and draft Cursor, Codex, and Gemini adapters with confidence labels

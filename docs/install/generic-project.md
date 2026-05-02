@@ -30,10 +30,15 @@ Artifact status: Not Produced.
 
 - `BLENDOPS.md` (project root)
 - optional `AGENTS.md` minimal update with backup
+- static fallback fixture reference: [`bundles/generic-project-local/`](../../bundles/generic-project-local/)
+  - `BLENDOPS.md` template
+  - `ROLLBACK.md` rollback notes
+  - `INSTALL_REPORT_TEMPLATE.md` install report template
+  - `manifest.json` fixture metadata
 
 ## Rollback notes
 
-Delete `BLENDOPS.md` and restore any modified file from backup.
+Delete `BLENDOPS.md` and restore any modified file from backup. Use the fixture rollback notes as a starting point, adapting paths to the target project.
 
 ## Runtime boundary
 

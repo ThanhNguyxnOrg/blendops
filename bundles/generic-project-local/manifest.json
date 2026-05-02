@@ -1,0 +1,54 @@
+{
+  "bundle_name": "generic-project-local",
+  "version": "0.1.0-draft",
+  "status": "fixture only / not release",
+  "target": "generic-project",
+  "scope": "project-local",
+  "package_status": "fixture only / not release",
+  "global_writes": false,
+  "runtime_status": "Not Run",
+  "artifact_status": "Not Produced",
+  "files": [
+    {
+      "path": "README.md",
+      "purpose": "Explains the fixture and safe manual use"
+    },
+    {
+      "path": "BLENDOPS.md",
+      "purpose": "Project-local instruction file to copy into a target project root"
+    },
+    {
+      "path": "ROLLBACK.md",
+      "purpose": "Rollback notes for project-local files"
+    },
+    {
+      "path": "INSTALL_REPORT_TEMPLATE.md",
+      "purpose": "Report template for manual or future scripted install attempts"
+    },
+    {
+      "path": "manifest.json",
+      "purpose": "Machine-readable fixture metadata"
+    }
+  ],
+  "source_docs": [
+    "docs/ai-agent-install-flow.md",
+    "docs/install/generic-project.md",
+    "docs/install/installer-spec.md",
+    "docs/skill-system.md",
+    "docs/runtime-stack-strategy.md",
+    "skills/README.md",
+    "laws/README.md",
+    "packs/README.md",
+    "packs/product-hero-v0/PACK.md"
+  ],
+  "non_actions": [
+    "does not install Blender",
+    "does not configure Claude Desktop Connector",
+    "does not configure official Blender MCP bridge/add-on",
+    "does not configure third-party runtime bridges",
+    "does not run Blender",
+    "does not run runtime eval",
+    "does not create preview/render/GLB artifacts",
+    "does not publish package/release/marketplace listing"
+  ]
+}
