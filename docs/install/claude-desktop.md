@@ -4,56 +4,70 @@ Status/confidence: Draft v0, linked-only/manual
 
 ## Recommended near-term install mode
 
-Claude Desktop can use the same universal prompt from [`README.md`](../../README.md). Expected selected mode is usually **skill.zip preparation**, because Claude Desktop-style chats often lack target project write access.
+Claude Desktop can use the concise prompt from [`README.md`](../../README.md#-use-in-30-seconds), which points the assistant to [`AI Agent Quickstart`](../ai-agent-quickstart.md). Expected selected mode is usually **multiple Skills ZIP preparation**, because Claude Desktop-style chats often lack target project write access.
 
 This is not a normal coding-agent install target. Project-local install is only appropriate if the assistant is actually operating inside a writable target project.
 
-## Universal prompt behavior in Claude Desktop
+## Prompt behavior in Claude Desktop
 
-When the universal prompt runs in Claude Desktop / chat-only context, the assistant should prepare a downloadable `skill.zip` from:
+When the prompt runs in Claude Desktop / Claude.ai / chat-only context, the assistant should prepare one downloadable ZIP per canonical skill from:
 
 ```txt
-https://github.com/ThanhNguyxnOrg/blendops/tree/main/bundles/skill-package/blendops
+skills/*/SKILL.md
 ```
 
-If Claude cannot fetch repository subpaths, ask the user to upload the package folder/files or provide a direct package source. Do not invent file contents.
+If Claude cannot fetch repository subpaths, ask the user to upload the repository files or provide direct source access. Do not invent file contents.
 
-## skill.zip requirements
+## Multiple ZIP requirements
 
-The downloadable ZIP must be named exactly:
+Expected ZIP files:
 
 ```txt
-skill.zip
+blendops-help.zip
+product-hero-scene-planner.zip
+official-runtime-readiness-checker.zip
+official-runtime-setup-guide.zip
+render-export-evidence.zip
+glb-web-handoff.zip
+blender-composition-camera-planner.zip
+blender-lighting-material-planner.zip
+blender-scene-quality-checker.zip
+non-blender-user-response-writer.zip
 ```
 
-ZIP root must contain:
+Each ZIP must contain:
 
 ```txt
-SKILL.md
-agents/openai.yaml
-references/*.md
-LICENSE.txt
+skill-name/
+  SKILL.md
 ```
 
 Packaging rules:
 
-- Do not zip parent folders like `bundles/`, `skill-package/`, or `claude-desktop-manual/`.
-- The package must contain exactly one `SKILL.md` at the ZIP root.
-- Keep references flattened under `references/`.
-- `agents/openai.yaml` is OpenAI/ChatGPT Skills UI metadata only; it does not configure Claude Desktop Connector.
-- Do not generate or commit `skill.zip` in this repo.
+- Create one ZIP per skill directory under `skills/`.
+- Do not include `skills/_template/`.
+- Do not use `bundles/skill-package/blendops/` when the user wants multiple skills; that bundle is a one-skill umbrella fallback.
+- Each ZIP must contain exactly one top-level skill folder and exactly one `SKILL.md`.
 - Upload/import remains a manual user action.
+
+If running inside this repo, use:
+
+```sh
+npm run skills:export
+```
+
+Outputs:
+
+```txt
+dist/claude-skills/desktop-zips/*.zip
+dist/claude-skills/claude-code-skills/*/SKILL.md
+```
 
 ## Fallbacks
 
-If a downloadable ZIP cannot be created, the assistant should output the exact folder tree plus file contents/instructions and clearly say this is fallback only.
+If downloadable ZIP files cannot be created, the assistant should output the exact per-skill folder tree plus file contents/instructions and clearly say this is fallback only.
 
-If Claude returns only `blendops.md` or `BLENDOPS_SINGLE_FILE.md`, treat that as fallback only. Ask it to create the full `skill.zip` with `SKILL.md`, `agents/openai.yaml`, `references/*.md`, and `LICENSE.txt` when possible.
-
-Manual copy fallback:
-
-- Use full manual bundle `bundles/claude-desktop-manual/` (`SKILL.md` + `references/`).
-- Use `BLENDOPS_SINGLE_FILE.md` only when the workflow supports one file only.
+If Claude returns only `skill.zip`, `blendops.md`, or `BLENDOPS_SINGLE_FILE.md`, treat that as an umbrella/manual fallback only. Ask it to create separate ZIP files from `skills/*/SKILL.md` when multiple recognized skills are required.
 
 Native Claude Desktop import paths are environment-specific and need user verification.
 
@@ -67,10 +81,10 @@ Runtime status remains `Not Run`. Artifact status remains `Not Produced`.
 
 Every Claude Desktop prep attempt should report:
 
-- mode selected: `skill.zip preparation` or `blocked-needs-input`
-- reason: Claude Desktop / chat-only / no project write access, or blocker
-- zip filename: `skill.zip`, or fallback files/instructions
-- SKILL.md count if zip mode: `1`
+- mode selected: `multiple Skills ZIP preparation` or `blocked-needs-input`
+- reason: Claude Desktop / Claude.ai / chat-only / no project write access, or blocker
+- ZIP filenames generated, or fallback files/instructions
+- SKILL.md count if ZIP mode: `1` per ZIP
 - global files touched: `No`
 - runtime status: `Not Run`
 - artifact status: `Not Produced`

@@ -8,10 +8,10 @@ Scope: universal BlendOps install/prep UX across coding agents and Claude Deskto
 
 ## Purpose
 
-This is the detailed companion to the universal prompt in [`README.md`](../README.md). The prompt works across project-aware coding agents and chat-only assistants by selecting one safe mode:
+This is the detailed companion to the concise prompt in [`README.md`](../README.md#-use-in-30-seconds) and the agent-facing [`AI Agent Quickstart`](./ai-agent-quickstart.md). The flow works across project-aware coding agents and chat-only assistants by selecting one safe mode:
 
 1. **Project-local install** for Claude Code, OpenCode, Cursor, Codex, Gemini, Antigravity, GitHub Copilot, or similar agents with project file access.
-2. **Skill ZIP preparation** for Claude Desktop / ChatGPT-style chats without target project write access.
+2. **Multiple Skills ZIP preparation** for Claude Desktop / Claude.ai / chat-only contexts without target project write access.
 3. **Blocked-needs-input** when the assistant cannot safely write, zip, fetch the package source, or choose a target.
 
 Some chats cannot fetch arbitrary repository subpaths from one raw doc link. If repo or package source fetch is blocked, the assistant should ask for uploaded files or a direct package source instead of hallucinating contents.
@@ -24,7 +24,7 @@ BlendOps adoption has three separate layers.
 
 | Layer | What happens | What it does not prove |
 |---|---|---|
-| Skill install/package layer | Copy/reference BlendOps `skills/`, `laws/`, `packs/`, selected docs, project/tool instruction files, or prepare `skill.zip` from `bundles/skill-package/blendops/`. | Blender availability, connector configuration, runtime execution, or artifact output. |
+| Skill install/package layer | Copy/reference BlendOps `skills/`, `laws/`, `packs/`, selected docs, project/tool instruction files, or prepare one ZIP per canonical skill from `skills/*/SKILL.md`. | Blender availability, connector configuration, runtime execution, or artifact output. |
 | Runtime setup layer | User separately configures Blender, Claude Desktop Connector, Blender CLI, or optional local bridge paths. | Skill install correctness or artifact quality. |
 | Evidence layer | Runtime evals, output paths, file existence, validation notes, and artifact truth labels are recorded. | Broad production readiness beyond the scoped evidence. |
 
@@ -32,10 +32,10 @@ Success in one layer does not imply success in another. A successful install or 
 
 ## Universal flow
 
-1. User pastes the universal prompt from [`README.md`](../README.md) into any AI/agent.
+1. User pastes the concise prompt from [`README.md`](../README.md#-use-in-30-seconds) into any AI/agent; the prompt tells the agent to read [`docs/ai-agent-quickstart.md`](./ai-agent-quickstart.md).
 2. The assistant decides mode from available capability, not optimism.
 3. If project write access exists, use project-local mode.
-4. If no target project/write access exists, use skill.zip mode.
+4. If no target project/write access exists, use multiple Skills ZIP mode.
 5. If target choice, permissions, source access, or zip creation is unclear, use blocked-needs-input mode.
 6. Every mode reports runtime status `Not Run` and artifact status `Not Produced`.
 
@@ -56,30 +56,40 @@ The agent should:
 
 If the install is happening inside the BlendOps repo itself, run `npm run docs:check` after edits. Do not run Blender.
 
-## Mode B — Skill ZIP preparation
+## Mode B — Multiple Skills ZIP preparation
 
-Use when running in Claude Desktop / ChatGPT-style chat, no target project folder is available, no file write access is available, the user asks for Skills UI upload/import, or project-local install is not possible.
+Use when running in Claude Desktop / Claude.ai / chat-only context, no target project folder is available, the user asks for Skills UI upload/import, or project-local install is not possible.
 
-Prepare a downloadable `skill.zip` from:
+Prepare one downloadable ZIP per canonical skill from:
 
 ```txt
-https://github.com/ThanhNguyxnOrg/blendops/tree/main/bundles/skill-package/blendops
+skills/*/SKILL.md
+```
+
+Expected ZIP set:
+
+```txt
+blendops-help.zip
+product-hero-scene-planner.zip
+official-runtime-readiness-checker.zip
+official-runtime-setup-guide.zip
+render-export-evidence.zip
+glb-web-handoff.zip
+blender-composition-camera-planner.zip
+blender-lighting-material-planner.zip
+blender-scene-quality-checker.zip
+non-blender-user-response-writer.zip
 ```
 
 ZIP requirements:
 
-- ZIP filename: `skill.zip`
-- ZIP root contains:
-  - `SKILL.md`
-  - `agents/openai.yaml`
-  - `references/*.md`
-  - `LICENSE.txt`
-- Do not include parent folders such as `bundles/`, `skill-package/`, or `claude-desktop-manual/`.
-- Exactly one `SKILL.md` must be at ZIP root.
-- Keep references flattened under `references/`.
+- Each ZIP contains exactly one top-level skill directory.
+- Each top-level skill directory contains exactly one `SKILL.md`.
+- Do not include `skills/_template/`.
+- Do not use `bundles/skill-package/blendops/` when the user wants multiple skills; that bundle is a one-skill umbrella fallback.
 - Do not generate or claim runtime artifacts.
 
-If a downloadable ZIP cannot be created, output the exact folder tree plus file contents/instructions and label that as fallback only. For full ZIP detail, see [`docs/install/claude-desktop.md`](./install/claude-desktop.md).
+If running inside this repo, run `npm run skills:export` and use `dist/claude-skills/desktop-zips/*.zip`. If ZIP creation is blocked, output the exact per-skill folder tree and label it as fallback only. For target details, see [`docs/install/claude-desktop.md`](./install/claude-desktop.md).
 
 ## Mode C — Blocked-needs-input
 
@@ -145,10 +155,10 @@ Every mode must report:
 
 | Field | Required content |
 |---|---|
-| Mode selected | `project-local install`, `skill.zip preparation`, or `blocked-needs-input`. |
+| Mode selected | `project-local install`, `multiple Skills ZIP preparation`, or `blocked-needs-input`. |
 | Target or reason | Target project/tool, ZIP reason, or blocker. |
-| Files changed or ZIP filename | Exact project-local paths or `skill.zip`. |
-| SKILL.md count | Required in ZIP mode; expected value is `1` at ZIP root. |
+| Files changed or ZIP filenames | Exact project-local paths or generated per-skill ZIP names. |
+| SKILL.md count | Required in ZIP mode; expected value is `1` per ZIP. |
 | Global files touched | `No`, unless user explicitly approved and backup/rollback is recorded. |
 | Rollback steps | Required for project-local mode. |
 | Runtime status | `Not Run`. |
@@ -162,8 +172,8 @@ Minimal report shape:
 
 - Mode selected:
 - Target or reason:
-- Files changed or zip filename:
-- SKILL.md count if zip mode:
+- Files changed or ZIP filenames:
+- SKILL.md count if ZIP mode:
 - Global files touched: No
 - Rollback steps if project-local mode:
 - Runtime status: Not Run
