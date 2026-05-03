@@ -10,6 +10,7 @@ const requiredRootFiles = [
   'README.md',
   'TODO.md',
   'package.json',
+  'scripts/export-claude-skills.mjs',
 ];
 
 const requiredRootDirs = [
@@ -27,6 +28,7 @@ const requiredDocs = [
   'docs/unofficial-runtime-bridges.md',
   'docs/adapter-registry.md',
   'docs/install-scopes.md',
+  'docs/ai-agent-quickstart.md',
   'docs/ai-agent-install-flow.md',
   'docs/start-here.md',
   'docs/install/README.md',
@@ -228,14 +230,14 @@ const requiredInstallerSpecSnippets = [
 ];
 
 const requiredReadmeGuardSnippets = [
-  'Use in 30 seconds: one prompt for any AI',
-  'universal prompt',
-  'skill.zip',
-  'project-local install',
+  'Use in 30 seconds',
+  'AI Agent Quickstart',
+  'separate ZIPs from skills/*/SKILL.md',
+  'project-locally',
   'runtime%20eval-Not%20Run',
   'artifacts-Not%20Produced',
-  'runtime status: Not Run',
-  'artifact status: Not Produced',
+  'runtime status',
+  'artifact status',
 ];
 
 const forbiddenStaleDocsCollectionPatterns = [
