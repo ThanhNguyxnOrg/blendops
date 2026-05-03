@@ -142,7 +142,7 @@ Rules:
 - Explicit user target always beats auto-detect.
 - If more than one target is detected, ask before writing.
 - If no target is detected but project write access exists, use the generic project-local fallback.
-- If no project write access exists, prepare `skill.zip` or ask for needed files.
+- If no project write access exists, prepare one ZIP per canonical skill from `skills/*/SKILL.md` or ask for needed files.
 - Use one target/mode per install run.
 - Prefer project-local writes over global writes.
 - Avoid global writes by default.
