@@ -52,60 +52,18 @@ BlendOps does **not**:
 
 ---
 
-## ⚡ Use in 30 seconds: one prompt for any AI
+## ⚡ Use in 30 seconds
 
-Paste this universal prompt into any AI agent.
+Paste this into any AI agent:
 
 ```txt
-Install or prepare BlendOps for this environment.
+Read and follow the BlendOps AI Agent Quickstart:
+https://raw.githubusercontent.com/ThanhNguyxnOrg/blendops/main/docs/ai-agent-quickstart.md
 
-Source:
-https://github.com/ThanhNguyxnOrg/blendops
-
-Choose the safest mode:
-
-1. If you have project file access, install BlendOps project-locally.
-   - Inspect the project first.
-   - Detect the target only if obvious.
-   - If multiple targets are present, ask before writing.
-   - If unsure, use the generic project-local fallback.
-   - Do not write global config unless I explicitly approve it.
-
-2. If you do not have project file access, or this is Claude Desktop / ChatGPT-style chat, prepare a downloadable Skills upload package instead.
-   - Use source package:
-     https://github.com/ThanhNguyxnOrg/blendops/tree/main/bundles/skill-package/blendops
-   - Create a downloadable file named exactly: skill.zip
-   - The ZIP root must contain:
-     - SKILL.md
-     - agents/openai.yaml
-     - references/*.md
-     - LICENSE.txt
-   - Do not zip parent folders like bundles/, skill-package/, or claude-desktop-manual/.
-   - The package must contain exactly one SKILL.md at the zip root.
-   - Keep references flattened under references/.
-
-3. If you cannot safely install or create the zip, stop and ask me for the missing project access, repo files, or target choice.
-
-Do not install Blender.
-Do not configure Claude Desktop Connector.
-Do not configure the official Blender MCP bridge/add-on.
-Do not run Blender.
-Do not run runtime eval.
-Do not create, render, export, or claim preview/render/GLB artifacts.
-
-Report:
-- mode selected
-- target or reason
-- files changed or zip filename
-- SKILL.md count if zip mode
-- global files touched
-- rollback steps if project-local mode
-- runtime status: Not Run
-- artifact status: Not Produced
-- limitations
+Prepare BlendOps for this environment using the safest mode. If I need Claude/Skills upload, create separate ZIPs from skills/*/SKILL.md so they import as multiple skills. Do not install Blender, configure runtime connectors, run Blender, or claim generated artifacts. Report the selected mode, files changed or ZIP filenames, runtime status, artifact status, and limitations.
 ```
 
-Coding agents will install project-locally; Claude Desktop-style chats should prepare skill.zip.
+The full agent-facing instructions live in [docs/ai-agent-quickstart.md](./docs/ai-agent-quickstart.md). Coding agents should install project-locally; Claude Desktop-style chats should prepare one ZIP per canonical skill.
 
 Then continue with:
 - [AI Agent Install Flow](./docs/ai-agent-install-flow.md)
@@ -115,9 +73,9 @@ Then continue with:
 
 ## 🛠️ Pick your install path
 
-| You are using | Universal prompt mode | Source |
+| You are using | Selected mode | Source |
 |---|---|---|
-| Claude Desktop or ChatGPT-style chat | Skill ZIP preparation | `bundles/skill-package/blendops/` + [Claude Desktop guide](./docs/install/claude-desktop.md) |
+| Claude Desktop or Claude.ai chat | Multiple Skills ZIP preparation | `skills/*/SKILL.md` + [Claude Desktop guide](./docs/install/claude-desktop.md) |
 | Coding agent (Claude Code/OpenCode/Cursor/Codex/Gemini/etc.) | Project-local install | [docs/ai-agent-install-flow.md](./docs/ai-agent-install-flow.md) |
 | Unknown/ambiguous target | Blocked-needs-input or generic project-local fallback | `bundles/generic-project-local/` |
 
