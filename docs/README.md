@@ -27,11 +27,12 @@ Active docs for the current product and workflow direction.
 4. **Product direction:** [product-direction.md](./product-direction.md)
 5. **Release status:** [release-readiness.md](./release-readiness.md)
 6. **Release readiness rollup:** [release-readiness-rollup-v0.md](./release-readiness-rollup-v0.md)
-7. **AI agent install flow:** [ai-agent-install-flow.md](./ai-agent-install-flow.md)
-8. **Multi-agent install strategy:** [multi-agent-install-strategy.md](./multi-agent-install-strategy.md)
-9. **Distribution strategy:** [distribution-strategy.md](./distribution-strategy.md)
-10. **Eval status:** [evals/README.md](./evals/README.md)
-11. **Workflow and delivery specs:** continue through the grouped navigation below
+7. **AI agent quickstart:** [ai-agent-quickstart.md](./ai-agent-quickstart.md)
+8. **AI agent install flow:** [ai-agent-install-flow.md](./ai-agent-install-flow.md)
+9. **Multi-agent install strategy:** [multi-agent-install-strategy.md](./multi-agent-install-strategy.md)
+10. **Distribution strategy:** [distribution-strategy.md](./distribution-strategy.md)
+11. **Eval status:** [evals/README.md](./evals/README.md)
+12. **Workflow and delivery specs:** continue through the grouped navigation below
 
 > [!TIP]
 > If you're new, read [start-here.md](./start-here.md) first. If you're evaluating release readiness, read the release status and manual install beta evidence before the pack docs.
@@ -45,7 +46,7 @@ Active docs for the current product and workflow direction.
 | Understand the product | [product-direction.md](./product-direction.md) | [architecture.md](./architecture.md), [reference-runtime.md](./reference-runtime.md) |
 | Set runtime boundaries | [external-runtime-setup.md](./external-runtime-setup.md) | [runtime-stack-strategy.md](./runtime-stack-strategy.md), [reference-runtime.md](./reference-runtime.md), [../laws/official-runtime-only.md](../laws/official-runtime-only.md) |
 | Review workflow behavior | [workflow-contract.md](./workflow-contract.md) | [first-user-journey.md](./first-user-journey.md), [safety-model.md](./safety-model.md) |
-| Try install/adoption docs | [ai-agent-install-flow.md](./ai-agent-install-flow.md) | [agent-install.md](./agent-install.md), [install-scopes.md](./install-scopes.md), [multi-agent-install-strategy.md](./multi-agent-install-strategy.md), [adapters/README.md](./adapters/README.md) |
+| Try install/adoption docs | [ai-agent-quickstart.md](./ai-agent-quickstart.md) | [ai-agent-install-flow.md](./ai-agent-install-flow.md), [agent-install.md](./agent-install.md), [install-scopes.md](./install-scopes.md), [multi-agent-install-strategy.md](./multi-agent-install-strategy.md), [adapters/README.md](./adapters/README.md) |
 | Check eval evidence | [evals/README.md](./evals/README.md) | [release-readiness.md](./release-readiness.md), [release-readiness-rollup-v0.md](./release-readiness-rollup-v0.md) |
 | Review v0 pack content | [../packs/README.md](../packs/README.md) | [../skills/README.md](../skills/README.md), [workflows/README.md](./workflows/README.md) |
 
@@ -153,6 +154,7 @@ Active docs for the current product and workflow direction.
 
 | Area | Doc |
 |---|---|
+| AI agent quickstart | [ai-agent-quickstart.md](./ai-agent-quickstart.md) |
 | AI agent install flow | [ai-agent-install-flow.md](./ai-agent-install-flow.md) |
 | Per-target install docs | [install/README.md](./install/README.md) |
 | Generic project-local bundle fixture | [../bundles/generic-project-local/README.md](../bundles/generic-project-local/README.md) |
