@@ -104,6 +104,9 @@ Direct official MCP use from Claude Code/OpenCode/Cursor/Codex/Gemini is **not v
 > [!WARNING]
 > Anthropic's Claude Connector tutorial mentions Blender 4.2+, but the **official MCP add-on inside Blender requires Blender 5.1+**. Stack 1 needs both, so install Blender 5.1+ if you want the full Connector + MCP runtime path.
 
+> [!NOTE]
+> **Naming glossary.** Across BlendOps docs you will see "Claude Connect", "Claude Connector", "Claude Desktop Connector", and "Claude Desktop Blender Connector" used as **synonyms** for the same Anthropic feature: the official Claude Desktop ↔ Blender bridge described at [claude.com/.../using-the-blender-connector-in-claude](https://claude.com/resources/tutorials/using-the-blender-connector-in-claude). The shorter forms are reader-friendly variants; "Claude Desktop Blender Connector" is the most explicit.
+
 For runtime setup details, see [docs/runtime-stack-strategy.md](./docs/runtime-stack-strategy.md).
 
 ---

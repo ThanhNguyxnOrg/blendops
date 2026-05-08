@@ -2,6 +2,9 @@
 
 Status: Draft v0
 
+> [!NOTE]
+> This recipe is the **step-by-step template** for an AI agent to execute the cyberpunk-shoe-hero scenario. The matching **product/workflow specification** (the "what and why") lives at [`../golden-path-cyberpunk-shoe.md`](../golden-path-cyberpunk-shoe.md). The historical text-only runtime eval lives at [`../evals/cyberpunk-shoe-hero-v0-runtime-eval.md`](../evals/cyberpunk-shoe-hero-v0-runtime-eval.md). The pack that bundles the skills used here is [`packs/product-hero-v0/PACK.md`](../../packs/product-hero-v0/PACK.md).
+
 ## User prompt
 
 “Create a cyberpunk shoe web hero with a floating shoe, neon lights, glossy dark floor, cinematic camera, export GLB, and give web usage guidance.”

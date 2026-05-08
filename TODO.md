@@ -1,6 +1,6 @@
 # BlendOps Roadmap (Product-Layer Rebuild)
 
-_Last updated: 2026-04-29_
+_Last updated: 2026-05-08_
 
 > [!NOTE]
 > Current focus: Phase 3, official runtime verification criteria and runtime eval readiness. BlendOps remains Draft v0 and does not claim stable release, runtime eval completion, or generated preview/render/GLB artifacts.
@@ -161,8 +161,8 @@ _Last updated: 2026-04-29_
 - [x] create per-target AI agent install docs (`docs/install/`)
 - [x] design local installer script spec (`docs/install/installer-spec.md`) without implementation
 - [x] create Claude Desktop skill bundle without claiming connector/runtime success
-- [ ] package a project-local skill bundle with rollback notes
-- [ ] research OpenCode, Cursor, Codex, and Gemini adapters with confidence labels
+- [x] package a project-local skill bundle with rollback notes (delivered as `bundles/generic-project-local/` with `ROLLBACK.md`; see Phase 3)
+- [x] research OpenCode, Cursor, Codex, and Gemini adapters with confidence labels (initial drafts in `docs/install/{opencode,cursor,codex,gemini}.md` and `docs/adapters/{opencode,cursor,codex}.md` with linked-only confidence)
 - [ ] add Blender-specific eval skills only after runtime evidence needs are clearer
 - [ ] create skill packaging fixture and validation script
 - [ ] keep packaged skill, plugin listing, and marketplace listing unchecked until verified

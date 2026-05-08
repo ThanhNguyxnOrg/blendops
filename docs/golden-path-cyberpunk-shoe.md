@@ -1,5 +1,10 @@
 # Golden Path — Cyberpunk Shoe Web Hero
 
+Status: Draft v0
+
+> [!NOTE]
+> This document is the **product/workflow specification** for the cyberpunk-shoe-hero scenario (the "what and why"). The **step-by-step recipe template** for an AI agent to execute the same scenario lives at [`docs/recipes/cyberpunk-shoe-hero.md`](./recipes/cyberpunk-shoe-hero.md). The historical text-only runtime eval lives at [`docs/evals/cyberpunk-shoe-hero-v0-runtime-eval.md`](./evals/cyberpunk-shoe-hero-v0-runtime-eval.md).
+
 ## Purpose
 
 Define the first useful non-Blender-user BlendOps experience as a product/workflow specification (not implementation code).

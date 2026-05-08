@@ -49,14 +49,19 @@ A skill may point to runtime docs, but it must not imply runtime was installed o
 
 ## Canonical skill map
 
+All 10 root skills, grouped by canonical role. The full per-skill table with depth and gate-review status lives in [`skills/README.md`](../skills/README.md).
+
 | Canonical role | Active skill path | Notes |
 |---|---|---|
 | Help / next safe action | `skills/blendops-help/SKILL.md` | Routes between docs, skills, runtime readiness, evals, and packaging. Baseline eval: `skills/blendops-help/EVAL.md`. |
+| Runtime setup prerequisites | `skills/official-runtime-setup-guide/SKILL.md` | Canonical role: `runtime-setup`; chooses Stack 1/2/3 prerequisites without installing Blender. |
 | Runtime readiness | `skills/official-runtime-readiness-checker/SKILL.md` | Canonical role: `runtime-readiness`; keep 3-stack boundaries. |
 | Scene planning | `skills/product-hero-scene-planner/SKILL.md` | Canonical role for product-hero scene planning. |
 | Camera / lighting / composition | `skills/blender-composition-camera-planner/SKILL.md`, `skills/blender-lighting-material-planner/SKILL.md` | Domain planning, no runtime claim. |
+| Scene quality gate | `skills/blender-scene-quality-checker/SKILL.md` | Pass/Warn/Fail readiness verdict before runtime mutation. |
 | Render/export evidence | `skills/render-export-evidence/SKILL.md` | Artifact truth ledger for preview/render/GLB evidence. Baseline eval: `skills/render-export-evidence/EVAL.md`. |
 | GLB handoff | `skills/glb-web-handoff/SKILL.md` | Web handoff language after evidence state is known. |
+| Plain-language final response | `skills/non-blender-user-response-writer/SKILL.md` | Stakeholder-friendly summary after evidence state is known. |
 
 Do not create duplicate alias folders unless packaging evidence shows a target agent needs them.
 
@@ -144,28 +149,40 @@ Do not claim packaged skill, plugin listing, marketplace listing, or broad adapt
 skills/
 ├─ README.md
 ├─ _template/
-│  └─ SKILL.md
+│  └─ SKILL.md                      # placeholder, excluded from export + spec checks
 ├─ blendops-help/
-│  └─ SKILL.md
+│  ├─ SKILL.md
+│  └─ EVAL.md
+├─ official-runtime-setup-guide/
+│  ├─ SKILL.md
+│  └─ EVAL.md
 ├─ official-runtime-readiness-checker/
-│  └─ SKILL.md
+│  ├─ SKILL.md
+│  └─ EVAL.md
 ├─ product-hero-scene-planner/
-│  └─ SKILL.md
+│  ├─ SKILL.md
+│  └─ EVAL.md
 ├─ blender-composition-camera-planner/
-│  └─ SKILL.md
+│  ├─ SKILL.md
+│  └─ EVAL.md
 ├─ blender-lighting-material-planner/
-│  └─ SKILL.md
+│  ├─ SKILL.md
+│  └─ EVAL.md
 ├─ blender-scene-quality-checker/
-│  └─ SKILL.md
+│  ├─ SKILL.md
+│  └─ EVAL.md
 ├─ render-export-evidence/
-│  └─ SKILL.md
+│  ├─ SKILL.md
+│  └─ EVAL.md
 ├─ glb-web-handoff/
-│  └─ SKILL.md
+│  ├─ SKILL.md
+│  └─ EVAL.md
 └─ non-blender-user-response-writer/
-   └─ SKILL.md
+   ├─ SKILL.md
+   └─ EVAL.md
 ```
 
-Optional `references/`, `evals/`, or `assets/` subfolders should be created only when they contain real reusable material.
+Every active skill ships with both `SKILL.md` (operating contract) and `EVAL.md` (text-only baseline eval). Optional `references/` or `assets/` subfolders should be created only when they contain real reusable material.
 
 ---
 

@@ -55,6 +55,9 @@ Validate BlendOps install/adoption flow from a user and agent perspective in dis
 
 ## Fixture environment
 
+> [!WARNING]
+> Fixture paths below are under `.tmp/`, which is gitignored (see [`.gitignore`](../../.gitignore) line 16). The fixture directories were created locally during the 2026-04-29 dry-run and are NOT shipped in the cloned repo. External verifiers reproduce the dry-run by following the install flow against their own disposable project, not by reading these paths.
+
 | Fixture | Purpose |
 |---|---|
 | `.tmp/install-dry-run/generic-root-project/` | generic-root fallback dry-run |

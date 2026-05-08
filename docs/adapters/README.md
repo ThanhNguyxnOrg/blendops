@@ -3,6 +3,9 @@
 > [!NOTE]
 > Status: Draft v0. Adapters are install mapping docs. They aren't runtime code and don't install Blender runtime.
 
+> [!IMPORTANT]
+> **Adapters are a smaller subset of the install layer.** This folder covers 6 verified-or-drafted adapters. For the full per-target install guide (10 targets including Antigravity, GitHub Copilot, Gemini, Claude Desktop, etc.) see [`docs/install/`](../install/README.md). New tool support starts as an install doc first, then graduates to an adapter only after the install path is verified.
+
 ## Policy guardrails
 
 | Policy | Adapter requirement |

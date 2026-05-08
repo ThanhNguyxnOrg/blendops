@@ -27,27 +27,31 @@ Use this workflow when a non-Blender user asks for a product hero 3D output with
 - [../../skills/glb-web-handoff/SKILL.md](../../skills/glb-web-handoff/SKILL.md)
 - [../../skills/non-blender-user-response-writer/SKILL.md](../../skills/non-blender-user-response-writer/SKILL.md)
 
-## Phases
+## Stages
 
-### Phase 1 — Runtime readiness gate
+> [!NOTE]
+> These are workflow stages (per-run pipeline steps), not project roadmap phases.
+> Project phases live in [`TODO.md`](../../TODO.md). They are unrelated.
+
+### Stage 1 — Runtime readiness gate
 - Confirm official runtime path selection.
 - Capture source confidence (`verified-read` or `linked-only`).
 - Block workflow if official runtime prerequisites are not acknowledged.
 
-### Phase 2 — Intent and plan
+### Stage 2 — Intent and plan
 - Normalize intent.
 - Ask minimal clarification questions.
 - Build scene plan: composition, lighting, materials, camera, handoff intent.
 
-### Phase 3 — Quality gate
+### Stage 3 — Quality gate
 - Apply pass/warn/fail checks against requested intent.
 - Identify blockers and unresolved risks.
 
-### Phase 4 — GLB/web handoff gate
+### Stage 4 — GLB/web handoff gate
 - Prepare handoff expectation report.
 - Record compatibility assumptions and caveats.
 
-### Phase 5 — Final non-Blender-user response
+### Stage 5 — Final non-Blender-user response
 - Produce plain-language status and next actions.
 
 ## Outputs

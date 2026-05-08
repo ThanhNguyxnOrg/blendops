@@ -1,7 +1,24 @@
 ---
+# TEMPLATE — DO NOT UPLOAD AS-IS. Replace every <placeholder> before saving as a real skill.
+# name: kebab-case lowercase letters/numbers/hyphens only, max 64 chars.
+# description: max 200 chars (Claude.ai upload UI limit). No version/status/tags keys.
+# Spec: https://support.anthropic.com/en/articles/12512198-creating-custom-skills
 name: <skill-name>
 description: <One sentence: what this skill does and the exact situations that should trigger it.>
 ---
+
+<!--
+TEMPLATE FILE — DO NOT UPLOAD OR ZIP AS-IS.
+
+Before using:
+1. Replace EVERY `<placeholder>` (name, description, headings, examples).
+2. Confirm `name` matches your folder slug exactly.
+3. Confirm `description` is ≤200 chars and triggers the right use cases.
+4. Delete this HTML comment block.
+
+This file is excluded from `npm run skills:export` and from docs:check
+frontmatter validation, so it can keep placeholder values safely in-repo.
+-->
 
 # <skill-name>
 

@@ -2,6 +2,12 @@
 
 Status: Blocked / Runtime unavailable
 
+> [!WARNING]
+> **Historical eval — environment-specific evidence, not reproducible from a clean clone.**
+>
+> 1. **Blender 4.2.5 reported below is NOT sufficient for Stack 1.** The official MCP add-on inside Blender requires Blender 5.1+ (see [`docs/external-runtime-setup.md`](../external-runtime-setup.md#blender-version-requirements)). 4.2 only satisfies Stack 2 (CLI fallback). The "Blender installed: Pass" row reflects local CLI availability at eval time, not Stack 1 readiness.
+> 2. **Pre-existing artifact files referenced in this eval (`renders/preview.png`, `exports/test_scene.fbx`, `exports/test_scene.glb`) are gitignored** (see [`.gitignore`](../../.gitignore) lines 12–13, 31–33). They do NOT ship in the cloned repo. They were observed locally at eval time and are explicitly NOT counted as fresh runtime-eval evidence here. External verifiers cannot reproduce these paths from a clean clone.
+
 ## Purpose
 
 Evaluate whether the v0 product hero pack works with official runtime paths.
