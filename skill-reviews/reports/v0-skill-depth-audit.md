@@ -1,7 +1,13 @@
 # v0 Skill Depth Audit
 
-Status: Draft audit
+Status: Draft audit (snapshot — partially outdated)
 Date: 2026-04-29
+
+> [!WARNING]
+> This audit is a 2026-04-29 snapshot covering **8 of the current 10 root skills**.
+> The two skills added later in Phase 2.13 — `blendops-help` and `render-export-evidence` —
+> are not included here. See `skills/README.md` ("Pending review") and any newer
+> `skill-reviews/reports/*.md` entries for current coverage.
 
 ## Scope
 

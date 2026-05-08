@@ -1,12 +1,6 @@
 ---
 name: blendops-help
 description: Help users and agents choose the next safe BlendOps action across skills, docs, runtime readiness, evals, packaging, and Draft v0 release boundaries.
-version: 0.1.0-draft
-status: draft
-tags:
-  - blender
-  - official-runtime
-  - blendops
 ---
 
 # blendops-help

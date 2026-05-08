@@ -1,12 +1,6 @@
 ---
 name: <skill-name>
 description: <One sentence: what this skill does and the exact situations that should trigger it.>
-version: 0.1.0-draft
-status: draft
-tags:
-  - blender
-  - official-runtime
-  - blendops
 ---
 
 # <skill-name>

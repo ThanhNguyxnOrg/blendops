@@ -100,6 +100,7 @@ const requiredBundleFixture = [
   'bundles/claude-desktop-manual/references/evidence-rules.md',
   'bundles/claude-desktop-manual/references/install-boundary.md',
   'bundles/claude-desktop-manual/references/skills/blendops-help.md',
+  'bundles/claude-desktop-manual/references/skills/official-runtime-setup-guide.md',
   'bundles/claude-desktop-manual/references/skills/product-hero-scene-planner.md',
   'bundles/claude-desktop-manual/references/skills/official-runtime-readiness-checker.md',
   'bundles/claude-desktop-manual/references/skills/render-export-evidence.md',
@@ -124,6 +125,7 @@ const requiredBundleFixture = [
   'bundles/skill-package/blendops/references/evidence-rules.md',
   'bundles/skill-package/blendops/references/install-boundary.md',
   'bundles/skill-package/blendops/references/skill-render-export-evidence.md',
+  'bundles/skill-package/blendops/references/skill-official-runtime-setup-guide.md',
   'bundles/skill-package/blendops/references/law-evidence-before-done.md',
   'bundles/skill-package/blendops/references/pack-product-hero-v0.md',
   'bundles/skill-package/blendops/LICENSE.txt',
@@ -353,6 +355,30 @@ function assertUploadSkillFrontmatterMinimal(relPath) {
   }
 }
 
+// Anthropic Skills spec defines only `name` and `description` as required (and optional
+// keys like `license`/`allowed-tools`/`dependencies`). Reject custom fields like
+// `version`, `status`, `tags` in any SKILL.md that ships in an upload ZIP, so the
+// project does not accidentally re-introduce non-spec frontmatter.
+// Source: https://support.anthropic.com/en/articles/12512198-creating-custom-skills
+function assertSkillFrontmatterSpecCompliant(relPath) {
+  const txt = fs.readFileSync(path.join(root, relPath), 'utf8');
+  const match = txt.match(/^---\r?\n([\s\S]*?)\r?\n---/);
+  if (!match) {
+    errors.push(`Missing SKILL.md frontmatter: ${relPath}`);
+    return;
+  }
+  const frontmatter = match[1];
+  const forbiddenKeys = ['version', 'status', 'tags'];
+  for (const key of forbiddenKeys) {
+    const re = new RegExp(`^${key}:`, 'm');
+    if (re.test(frontmatter)) {
+      errors.push(
+        `Non-spec frontmatter key '${key}:' in ${relPath} (Anthropic Skills spec defines only name + description)`,
+      );
+    }
+  }
+}
+
 // Check Anthropic Skills upload limits: name <=64, description <=200 (claude.ai UI limit).
 // Source: https://support.anthropic.com/en/articles/12512198-creating-custom-skills
 function assertSkillFrontmatterUploadLimits(relPath, opts = {}) {
@@ -435,6 +461,9 @@ for (const f of requiredBundleFixture) assertExists(f, 'file');
 
 assertUploadSkillFrontmatterMinimal('bundles/skill-package/blendops/SKILL.md');
 assertSkillFrontmatterUploadLimits('bundles/skill-package/blendops/SKILL.md');
+assertSkillFrontmatterSpecCompliant('bundles/skill-package/blendops/SKILL.md');
+assertSkillFrontmatterUploadLimits('bundles/claude-desktop-manual/SKILL.md');
+assertSkillFrontmatterSpecCompliant('bundles/claude-desktop-manual/SKILL.md');
 assertOpenAiSkillYaml('bundles/skill-package/blendops/agents/openai.yaml');
 assertMissing('bundles/claude-desktop-manual/blendops', 'directory');
 assertMissing('apps', 'directory');
@@ -450,6 +479,7 @@ for (const skillFile of requiredSkills) {
   }
   if (!skillFile.endsWith('/_template/SKILL.md')) {
     assertSkillFrontmatterUploadLimits(skillFile);
+    assertSkillFrontmatterSpecCompliant(skillFile);
   }
 }
 

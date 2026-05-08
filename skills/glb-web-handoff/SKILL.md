@@ -1,12 +1,6 @@
 ---
 name: glb-web-handoff
 description: Prepare truthful GLB/web handoff output with explicit artifact status, assumptions, and caveats.
-version: 0.1.0-draft
-status: draft
-tags:
-  - blender
-  - official-runtime
-  - blendops
 ---
 
 # glb-web-handoff

@@ -1,12 +1,6 @@
 ---
 name: product-hero-scene-planner
 description: Generate a complete product-hero scene plan from non-Blender-user intent with explicit assumptions and gates.
-version: 0.1.0-draft
-status: draft
-tags:
-  - blender
-  - official-runtime
-  - blendops
 ---
 
 # product-hero-scene-planner

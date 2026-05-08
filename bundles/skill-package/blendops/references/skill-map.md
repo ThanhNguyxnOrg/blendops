@@ -5,6 +5,7 @@ Canonical BlendOps references inside this single upload-ready Skill package.
 | Intent | Use reference |
 |---|---|
 | unclear next step | `skill-blendops-help.md` |
+| runtime setup prerequisites | `skill-official-runtime-setup-guide.md` |
 | product hero scene plan | `skill-product-hero-scene-planner.md` |
 | runtime readiness | `skill-official-runtime-readiness-checker.md` |
 | render/export evidence | `skill-render-export-evidence.md` |

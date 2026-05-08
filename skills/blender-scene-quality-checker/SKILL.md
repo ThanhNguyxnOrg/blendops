@@ -1,12 +1,6 @@
 ---
 name: blender-scene-quality-checker
 description: Apply multi-category readiness gates with pass/warn/fail and evidence-bound verdicts.
-version: 0.1.0-draft
-status: draft
-tags:
-  - blender
-  - official-runtime
-  - blendops
 ---
 
 # blender-scene-quality-checker

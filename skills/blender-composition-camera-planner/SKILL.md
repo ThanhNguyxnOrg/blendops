@@ -1,12 +1,6 @@
 ---
 name: blender-composition-camera-planner
 description: Provide detailed composition and camera planning for product hero outputs.
-version: 0.1.0-draft
-status: draft
-tags:
-  - blender
-  - official-runtime
-  - blendops
 ---
 
 # blender-composition-camera-planner

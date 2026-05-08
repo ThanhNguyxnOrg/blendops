@@ -82,7 +82,7 @@ Do not create empty placeholder subfolders. Add references/assets/scripts only w
 
 Every real root skill should include:
 
-- YAML frontmatter: `name`, `description`, `version`, `status`, `tags`
+- YAML frontmatter: `name` (kebab-case, ≤64 chars) and `description` (≤200 chars to clear the Claude.ai upload UI limit). Do not add `version`, `status`, `tags`, or other non-spec keys; they are not part of the [Anthropic Skills frontmatter spec](https://support.anthropic.com/en/articles/12512198-creating-custom-skills) and the docs:check script will reject them in any uploadable SKILL.md.
 - `## Purpose`
 - `## When to use`
 - `## When not to use`

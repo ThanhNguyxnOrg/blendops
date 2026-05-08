@@ -9,6 +9,7 @@ Status: Draft v0 fallback only
 
 Use these routes:
 - unclear next step → `blendops-help`
+- runtime setup prerequisites → `official-runtime-setup-guide`
 - scene planning → `product-hero-scene-planner`
 - runtime preflight/readiness → `official-runtime-readiness-checker`
 - artifact truth/evidence → `render-export-evidence`

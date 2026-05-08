@@ -1,8 +1,6 @@
 ---
 name: blendops-claude-desktop-router
 description: Claude Desktop-facing BlendOps router skill for planning, runtime readiness, evidence truth, and non-Blender-user outputs using bundled references.
-version: 0.1.0-draft
-status: draft
 ---
 
 # BlendOps Claude Desktop Router Skill

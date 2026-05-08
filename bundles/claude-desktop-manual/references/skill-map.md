@@ -7,6 +7,7 @@ These are **reference summaries inside one Claude Desktop BlendOps skill bundle*
 | Canonical subskill | Use when | Reference summary |
 |---|---|---|
 | `blendops-help` | next step is unclear, routing needed | `skills/blendops-help.md` |
+| `official-runtime-setup-guide` | choosing/setting up runtime prerequisites | `skills/official-runtime-setup-guide.md` |
 | `product-hero-scene-planner` | generating scene plan/spec | `skills/product-hero-scene-planner.md` |
 | `official-runtime-readiness-checker` | runtime preflight/readiness decision | `skills/official-runtime-readiness-checker.md` |
 | `render-export-evidence` | proving/downgrading render/export claims | `skills/render-export-evidence.md` |

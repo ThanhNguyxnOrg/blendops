@@ -1,12 +1,6 @@
 ---
 name: render-export-evidence
 description: Verify preview/render/GLB artifact truth by recording commands, inputs, output paths, file existence, validation notes, limitations, and conservative status labels.
-version: 0.1.0-draft
-status: draft
-tags:
-  - blender
-  - official-runtime
-  - blendops
 ---
 
 # render-export-evidence

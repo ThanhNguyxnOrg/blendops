@@ -1,12 +1,6 @@
 ---
 name: non-blender-user-response-writer
 description: Convert technical Blender workflow findings into plain-language user-facing responses with honest caveats.
-version: 0.1.0-draft
-status: draft
-tags:
-  - blender
-  - official-runtime
-  - blendops
 ---
 
 # non-blender-user-response-writer

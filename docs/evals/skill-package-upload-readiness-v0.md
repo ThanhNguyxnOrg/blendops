@@ -2,7 +2,7 @@
 
 Status: Executed / Text-only / No upload / No publication  
 Verdict: Warn  
-Date: 2026-05-02
+Date: 2026-05-02 (re-verified 2026-05-08 against current frontmatter)
 
 > [!WARNING]
 > This eval is a text-only upload-readiness review for the canonical package source. The package was not uploaded, UI import was not manually tested, marketplace publication was not attempted, Blender was not run, runtime eval remains Not Run, and preview/render/GLB artifacts remain Not Produced.
@@ -94,12 +94,12 @@ Verify the canonical BlendOps skill package source at `bundles/skill-package/ble
 
 ## `SKILL.md` frontmatter checks
 
-Current frontmatter:
+Current frontmatter (re-verified 2026-05-08):
 
 ```yaml
 ---
 name: blendops
-description: Use for BlendOps, Blender scene planning, runtime/eval readiness, render/export evidence, Claude Desktop connector guidance, install/runtime boundary help, product hero scene planning, and non-Blender-user explanations.
+description: Blender skills pack for non-Blender users. Use for scene planning, runtime readiness, render/export/GLB evidence, Claude Connect guidance, and plain-language handoff across multiple AI agents.
 ---
 ```
 
@@ -107,10 +107,12 @@ description: Use for BlendOps, Blender scene planning, runtime/eval readiness, r
 |---|---|---|
 | YAML frontmatter exists | Pass | `SKILL.md` starts with frontmatter delimiters. |
 | `name` present | Pass | `name: blendops`. |
-| `description` present | Pass | Description is non-empty. |
+| `description` present | Pass | Description is non-empty (192 chars). |
+| Description ≤ 200 chars (Claude.ai upload UI hard limit) | Pass | 192 / 200 chars; 8-char margin. Warn: any future edit must keep ≤ 200. |
 | No extra `version` frontmatter key | Pass | No `version` key present. |
 | No extra `status` frontmatter key | Pass | No `status` key present. |
-| Description triggers BlendOps use cases | Pass | Mentions BlendOps, Blender scene planning, runtime/eval readiness, render/export evidence, connector guidance, install/runtime boundary help, product hero planning, and non-Blender-user explanations. |
+| No extra `tags` frontmatter key | Pass | No `tags` key present (Anthropic Skills spec defines only `name`/`description`). |
+| Description triggers BlendOps use cases | Pass | Mentions Blender skills pack for non-Blender users, scene planning, runtime readiness, render/export/GLB evidence, Claude Connect guidance, and plain-language handoff across multiple AI agents. |
 | Name uses conservative skill naming | Pass | `blendops` is lowercase and simple. |
 
 ---
@@ -124,6 +126,7 @@ description: Use for BlendOps, Blender scene planning, runtime/eval readiness, r
 | Evidence rules | Pass | `references/evidence-rules.md` |
 | Install boundary | Pass | `references/install-boundary.md` |
 | BlendOps helper summary | Pass | `references/skill-blendops-help.md` |
+| Official runtime setup guide summary | Pass | `references/skill-official-runtime-setup-guide.md` |
 | Product hero scene planner summary | Pass | `references/skill-product-hero-scene-planner.md` |
 | Official runtime readiness checker summary | Pass | `references/skill-official-runtime-readiness-checker.md` |
 | Render/export evidence summary | Pass | `references/skill-render-export-evidence.md` |

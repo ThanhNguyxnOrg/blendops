@@ -1,8 +1,13 @@
 # v0 Skill Gate Review
 
-Status: Completed
+Status: Completed (snapshot — partially outdated)
 Date: 2026-04-29
 Scope: Root installable skills (`skills/*/SKILL.md`)
+
+> [!WARNING]
+> This gate review is a 2026-04-29 snapshot covering **8 of the current 10 root skills**.
+> The two skills added later in Phase 2.13 — `blendops-help` and `render-export-evidence` —
+> are not included here. See `skills/README.md` ("Pending review") for current status.
 
 ## Summary
 

@@ -1,12 +1,6 @@
 ---
 name: official-runtime-readiness-checker
 description: Evaluate whether official runtime appears ready using evidence-bound checks and explicit readiness states.
-version: 0.1.0-draft
-status: draft
-tags:
-  - blender
-  - official-runtime
-  - blendops
 ---
 
 # official-runtime-readiness-checker

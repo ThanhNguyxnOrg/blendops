@@ -1,12 +1,6 @@
 ---
 name: official-runtime-setup-guide
 description: Establish official runtime prerequisites and setup boundaries before any Blender execution claim.
-version: 0.1.0-draft
-status: draft
-tags:
-  - blender
-  - official-runtime
-  - blendops
 ---
 
 # official-runtime-setup-guide

@@ -21,6 +21,7 @@
     { "path": "references/evidence-rules.md", "purpose": "Manual copy evidence status and claim policy" },
     { "path": "references/install-boundary.md", "purpose": "Manual copy install/runtime separation summary" },
     { "path": "references/skills/blendops-help.md", "purpose": "Manual copy subskill summary" },
+    { "path": "references/skills/official-runtime-setup-guide.md", "purpose": "Manual copy subskill summary" },
     { "path": "references/skills/product-hero-scene-planner.md", "purpose": "Manual copy subskill summary" },
     { "path": "references/skills/official-runtime-readiness-checker.md", "purpose": "Manual copy subskill summary" },
     { "path": "references/skills/render-export-evidence.md", "purpose": "Manual copy subskill summary" },

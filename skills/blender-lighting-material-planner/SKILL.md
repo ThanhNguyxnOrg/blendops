@@ -1,12 +1,6 @@
 ---
 name: blender-lighting-material-planner
 description: Build detailed lighting and material direction with portability and caveat handling for Blender/web-3D outputs.
-version: 0.1.0-draft
-status: draft
-tags:
-  - blender
-  - official-runtime
-  - blendops
 ---
 
 # blender-lighting-material-planner
