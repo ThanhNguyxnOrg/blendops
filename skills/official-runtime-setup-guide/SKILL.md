@@ -73,25 +73,35 @@ Define a safe, official-runtime-only setup path for users/agents before runtime 
 - This skill does not install Blender runtime.
 - This skill does not run Blender.
 - This skill does not provide custom CLI/MCP/addon runtime.
-- Runtime references are official-only:
-  - https://www.blender.org/lab/mcp-server/
-  - https://claude.com/resources/tutorials/using-the-blender-connector-in-claude
-  - https://docs.blender.org/manual/en/latest/advanced/command_line/index.html
+- This skill recognizes exactly four runtime routes (see `../../docs/runtime-stack-strategy.md`):
+  - **Route A — Anthropic Blender Connector** (one-click in Claude Desktop, min Blender 4.2+ / 4.5 LTS recommended) — https://claude.com/resources/tutorials/using-the-blender-connector-in-claude
+  - **Route B — Blender Foundation MCP Server** (`bpype/blender_mcp`, manual install, min Blender 5.1+) — https://www.blender.org/lab/mcp-server/
+  - **Route C — Community Blender MCP** (`ahujasid/blender-mcp`, mature 21K+ stars third-party, min Blender 3.0+) — https://github.com/ahujasid/blender-mcp
+  - **Route D — Official Blender CLI** (no MCP, deterministic) — https://docs.blender.org/manual/en/latest/advanced/command_line/index.html
 
 ## Operating procedure
 1. Confirm user objective and whether runtime execution is needed now.
 2. Confirm install mode preference (project-local default, global only if explicit).
-3. Detect likely harness (Claude Code/OpenCode/Cursor/Codex/generic).
-4. Present official runtime hierarchy and purpose of each path.
-5. Apply source-confidence labels to each runtime reference.
-6. Record local known/unknown setup signals (paths/configs) without overclaiming.
-7. Build readiness checklist with explicit pass/warn/block items.
-8. Mark runtime execution status as Not Run until readiness checker confirms.
-9. Provide official upstream links for exact/current setup details.
-10. Summarize what is verified vs linked-only and what to do next.
+3. Detect likely client (Claude Desktop / Claude Code / Cursor / Codex / OpenCode / Cline / generic).
+4. Map client → applicable routes:
+   - Claude Desktop → Route A (recommended), Route B, Route C, Route D.
+   - Any other MCP client → Route B, Route C, Route D (Route A is Claude Desktop only).
+   - No MCP client available → Route D.
+5. Confirm the user's installed Blender version against per-route minimums (do NOT apply Route B's 5.1+ to other routes).
+6. Apply source-confidence labels (`verified-read` / `linked-only` / `unknown`) to each route reference.
+7. Record local known/unknown setup signals without overclaiming.
+8. Build readiness checklist with explicit pass/warn/block items per chosen route.
+9. Mark runtime execution status as Not Run until readiness checker confirms.
+10. Provide upstream links for exact/current setup details per route.
+11. Enforce single-client constraint: warn if user has multiple route servers configured for the same Blender instance.
+12. Summarize what is verified vs linked-only and what to do next.
 
 ## Decision tree
 - If user only needs planning now → planning mode; keep runtime Not Run.
+- If user is on Claude Desktop and wants lowest friction → recommend Route A.
+- If user is on Blender 5.1+ and wants Blender Foundation's MCP server → Route B.
+- If user is on a non-Claude MCP client (Cursor/Codex/OpenCode/Cline) OR wants Hyper3D/Hunyuan3D/Poly Haven/Sketchfab integrations → Route C (read `../../docs/unofficial-runtime-bridges.md` first).
+- If MCP is unavailable or scripted batch processing fits the task → Route D.
 - If user requests runtime eval now and readiness is unknown → run readiness checker first.
 - If runtime signals are blocked → return blocked setup summary + next setup actions.
 
@@ -181,6 +191,10 @@ Define a safe, official-runtime-only setup path for users/agents before runtime 
 - custom runtime ownership
 
 ## References
-- https://www.blender.org/lab/mcp-server/
-- https://claude.com/resources/tutorials/using-the-blender-connector-in-claude
-- https://docs.blender.org/manual/en/latest/advanced/command_line/index.html
+- 4-route runtime model: ../../docs/runtime-stack-strategy.md
+- Per-route setup details: ../../docs/external-runtime-setup.md
+- Route C caveats: ../../docs/unofficial-runtime-bridges.md
+- Route A source: https://claude.com/resources/tutorials/using-the-blender-connector-in-claude
+- Route B source: https://www.blender.org/lab/mcp-server/
+- Route C source: https://github.com/ahujasid/blender-mcp
+- Route D source: https://docs.blender.org/manual/en/latest/advanced/command_line/index.html

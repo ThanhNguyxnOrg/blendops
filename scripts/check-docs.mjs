@@ -151,31 +151,47 @@ const forbiddenLegacyPatterns = [
   'node apps/cli',
 ];
 
-const forbiddenCommunityPatterns = [
-  'ahujasid/blender-mcp',
-  'uvx blender-mcp',
-  'community MCP',
-  'third-party MCP',
-];
+// Note: this allowlist used to ban any mention of ahujasid/blender-mcp outside
+// docs/unofficial-runtime-bridges.md. That ban created a contradictory state
+// because the only currently user-verified runtime path uses `ahujasid/blender-mcp`,
+// and Blender's own MCP ecosystem treats it as canonical prior art (21K+ stars,
+// the only practical path for non-Claude MCP clients). The 4-path runtime route
+// model (see docs/runtime-stack-strategy.md) now lets these terms appear in
+// runtime-stack-strategy, external-runtime-setup, install docs, smoke-test
+// attribution, and the README glossary. We keep a narrower forbidden list:
+// nothing here for now, but the slot is preserved for future bans.
+const forbiddenCommunityPatterns = [];
 
 const unofficialBridgeDoc = 'docs/unofficial-runtime-bridges.md';
 
+// Route C disclaimer set. The earlier set required dismissive phrasing
+// ("experimental/local", "not part of the BlendOps official runtime path")
+// that was inaccurate — Route C is mature prior art and IS one of the four
+// canonical BlendOps runtime routes. The new set focuses on what stays true:
+// third-party provenance, manual config burden, the unsandboxed Python
+// execution surface, and the "no formal eval record yet" evidence gap.
 const requiredUnofficialBridgeDisclaimers = [
-  'not official Blender tooling',
-  'not part of the BlendOps official runtime path',
-  'not used for Draft v0 release-readiness claims',
-  'user-managed',
-  'experimental/local',
+  'Route C',
+  'ahujasid/blender-mcp',
+  'Not yet covered by a formal BlendOps eval evidence record',
+  'Not used for Draft v0 release-readiness claims',
+  'User-managed',
   'must not be counted as an official runtime eval',
   'not a substitute for the official runtime manual eval',
+  'Single-client constraint',
+  'execute_blender_code',
 ];
 
+// New 4-route runtime model (replaces the previous 3-stack labeling). Each route
+// is a distinct, separately-installable runtime path with its own provenance,
+// Blender-version requirement, and BlendOps verification status. See
+// docs/runtime-stack-strategy.md for the canonical write-up.
 const requiredRuntimeStackSnippets = [
-  'BlendOps public runtime guidance uses exactly three user-facing stacks',
-  'Stack 1 — Claude Desktop official connector stack',
-  'Stack 2 — Official Blender CLI fallback',
-  'Stack 3 — Optional unofficial third-party bridge stack',
-  'Direct official MCP use from Claude Code/OpenCode/Cursor/Codex/Gemini is not verified and is not currently a supported BlendOps route.',
+  'BlendOps runtime guidance uses four runtime routes',
+  'Route A — Anthropic Blender Connector',
+  'Route B — Blender Foundation MCP Server',
+  'Route C — Community Blender MCP',
+  'Route D — Official Blender CLI',
 ];
 
 const requiredArtifactEvidenceSnippets = [
@@ -255,10 +271,13 @@ const forbiddenDocsRelativeRootCollectionLinkPatterns = [
   '](./packs/',
 ];
 
+// Note: previous bans on "standalone official MCP" / "Route B — Official MCP path
+// for non-Claude Desktop agents" were dropped. Blender Foundation's own MCP
+// Server (`bpype/blender_mcp` at blender.org/lab/mcp-server/) IS a standalone
+// official MCP that any MCP client can configure. The 4-route runtime model
+// names it Route B explicitly. The remaining ban guards the older naming that
+// implied "official MCP route" was forbidden conceptually.
 const forbiddenOfficialDirectMcpRoutePatterns = [
-  'Route B — Official MCP path for non-Claude Desktop agents',
-  'Official MCP path for non-Claude Desktop agents',
-  'standalone official MCP',
   'choose official direct MCP',
 ];
 
@@ -541,7 +560,11 @@ for (const ref of requiredOfficialRefs) {
 // Link existence check (catches future doc-collection moves like Phase 2.11 cleanup).
 assertRelativeLinksExist(activeMd);
 
-// Blender 5.1+ requirement must be stated in user-facing docs.
+// The Blender 5.1+ requirement is specifically a property of Route B
+// (Blender Foundation MCP Server, `bpype/blender_mcp`), NOT Route A
+// (Anthropic Connector, which Anthropic's own tutorial documents at 4.2+).
+// Each user-facing runtime doc must distinguish these two routes so users
+// don't conclude they need 5.1+ for the Anthropic Connector path.
 const blenderVersionRequiredFiles = [
   'README.md',
   'docs/external-runtime-setup.md',
@@ -551,6 +574,9 @@ for (const f of blenderVersionRequiredFiles) {
   const txt = fs.readFileSync(path.join(root, f), 'utf8');
   if (!txt.includes('Blender 5.1')) {
     errors.push(`Missing Blender 5.1+ requirement note in ${f}`);
+  }
+  if (!txt.includes('Route B')) {
+    errors.push(`Missing Route B (Blender Foundation MCP Server) attribution for the 5.1+ requirement in ${f}`);
   }
 }
 

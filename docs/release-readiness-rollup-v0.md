@@ -1,10 +1,12 @@
 # Release Readiness Rollup v0
 
 Status: Draft v0, pre-runtime rollup  
-Date: 2026-04-29
+Date: 2026-04-29 (original); runtime-evidence section corrected 2026-05-08
 
 > [!CAUTION]
-> Exact draft tag decision: **do not tag v0.1.0 yet; defer tag until official runtime manual eval evidence exists, or until missing runtime evidence is explicitly accepted as a documented limitation.**
+> Exact draft tag decision: **do not tag v0.1.0 yet; defer tag until a fresh per-route runtime eval evidence record exists, or until missing runtime evidence is explicitly accepted as a documented limitation.**
+>
+> The 2026-04-29 rollup claimed "Stack 1 — Claude Desktop official connector stack read-only smoke test: Pass / Available". On 2026-05-08 that claim was found to be ambiguous: the smoke test tool names match Route B (`bpype/blender_mcp`), the original label was Route A (Anthropic Connector), and the repo owner reports verifying Route C (`ahujasid/blender-mcp`). See [`docs/evals/blender-connector-read-only-smoke-test.md`](./evals/blender-connector-read-only-smoke-test.md) for the corrected attribution. The runtime-evidence section below is rewritten under the 4-route model.
 
 This rollup summarizes the current pre-runtime release position for BlendOps. It does not claim stable readiness, production readiness, official runtime compatibility confirmation, official runtime manual eval completion, or generated runtime artifacts.
 
@@ -66,30 +68,34 @@ What limits confidence:
 
 ## Current runtime evidence status
 
-Current runtime evidence status is **Read-only connector access available; full runtime eval Not Run**. Stack selection is defined in [docs/runtime-stack-strategy.md](./runtime-stack-strategy.md).
+Current runtime evidence status is **No route cleanly verified; full runtime eval Not Run**. Route selection is defined in [docs/runtime-stack-strategy.md](./runtime-stack-strategy.md) using the 4-route model.
 
-Verified read-only access:
+Per-route status (corrected 2026-05-08):
 
-- Stack 1 — Claude Desktop official connector stack read-only smoke test: Pass / Available. Evidence report: [docs/evals/blender-connector-read-only-smoke-test.md](./evals/blender-connector-read-only-smoke-test.md).
-- Blender-side official MCP bridge/add-on: Available for read-only session access only inside the Claude Desktop connector stack; this is not direct official MCP success for Claude Code/OpenCode/Cursor/Codex/Gemini and not Stack 3 support.
+| Route | Verification status | Evidence |
+|---|---|---|
+| **Route A** Anthropic Blender Connector | Not Verified | No fresh evidence record. The 2026-04-29 smoke test was originally labeled this route but its tool names match Route B; the original label is no longer counted. |
+| **Route B** Blender Foundation MCP Server (`bpype/blender_mcp`) | Ambiguous | The 2026-04-29 smoke test recorded Route B-style tool names (`get_blendfile_summary_*`) but was labeled Route A. See [`docs/evals/blender-connector-read-only-smoke-test.md`](./evals/blender-connector-read-only-smoke-test.md). |
+| **Route C** Community Blender MCP (`ahujasid/blender-mcp`) | User-reported verified (2026-05-08) | No formal evidence record file with Route C tool names (`get_scene_info`, `execute_blender_code`) yet. |
+| **Route D** Official Blender CLI | Not Run | No CLI eval has been attempted. |
 
 Prepared but not run:
 
 - Official runtime verification criteria.
 - Runtime availability checklist.
 - Official runtime manual eval packet.
-- Stack 1 mutation/render/export eval.
-- Stack 2 official CLI fallback eval.
+- Per-route mutation/render/export eval.
+- Route D CLI fallback eval.
 
 Not produced:
 
-- Official runtime manual eval evidence.
+- Per-route runtime manual eval evidence file.
 - Preview evidence.
 - Render evidence.
 - GLB evidence.
 - Runtime artifact handoff record.
 
-No current repository doc should claim official runtime compatibility confirmed, stable readiness, production readiness, or completed official runtime manual eval.
+No current repository doc should claim runtime compatibility confirmed, stable readiness, production readiness, or completed runtime manual eval for any route.
 
 ---
 
@@ -103,9 +109,9 @@ No current repository doc should claim official runtime compatibility confirmed,
 | Manual install beta | Warn |
 | Multi-agent install strategy | Drafted |
 | Distribution strategy | Drafted / no marketplace claim |
-| Runtime stack strategy | Drafted / Stack 1 preferred first eval |
+| Runtime route strategy | Drafted / 4-route model with no route cleanly verified |
 | Runtime availability checklist | Prepared / Not Run |
-| Claude Desktop Blender connector read-only smoke test | Pass / Available |
+| 2026-04-29 read-only smoke test | Recorded but attribution ambiguous (Route A label vs. Route B tool names) |
 | Official runtime manual eval | Not Run |
 | Runtime artifacts | Not Produced |
 | Stable release readiness | Not Ready |
@@ -116,9 +122,10 @@ No current repository doc should claim official runtime compatibility confirmed,
 
 | Blocker | Why it blocks release confidence | Required change |
 |---|---|---|
-| Official runtime manual eval not run | Stack 1 read-only connector access has been evidenced, but recipe execution, mutation, render/export, validation, and artifact capture have not been run. | Run the official runtime manual eval packet and capture evidence, starting with Stack 1. |
-| Runtime artifacts not produced | No preview, render, GLB, or artifact handoff can be claimed. | Produce and record artifacts only through official runtime eval, or document missing artifacts as an accepted limitation. |
-| Runtime availability incomplete | Stack 1 read-only connector access is available, but full runtime availability and artifact capture remain untested; Stack 2 fallback has not been attempted. | Run the runtime availability checklist in a real environment before full eval. |
+| No route cleanly verified | The 2026-04-29 smoke test has ambiguous attribution; user statement about Route C has no formal evidence file; Routes A and D have no evidence at all. | Run a fresh per-route smoke test that records route name, Blender version, MCP server source/commit, and exact tool names used. Save under `docs/evals/route-X-...md`. |
+| Runtime manual eval not run for any route | Read-only smoke test (under any interpretation) does not cover recipe execution, mutation, render/export, validation, and artifact capture. | Run the runtime manual eval packet against the chosen route and capture evidence. |
+| Runtime artifacts not produced | No preview, render, GLB, or artifact handoff can be claimed under any route. | Produce and record artifacts only through a recorded runtime eval, or document missing artifacts as an accepted limitation. |
+| Runtime availability incomplete | Per-route availability checklist has not been run end-to-end in a fresh, attribution-clean environment. | Run the runtime availability checklist for the chosen route. |
 | Adapter confidence remains scoped | Install confidence is dry-run/docs based and environment-dependent. | Keep warnings visible or document a narrowed support scope. |
 | Stable release criteria unmet | A stable or production claim needs repeated runtime and install evidence. | Keep Draft v0 posture. |
 
@@ -129,14 +136,15 @@ No current repository doc should claim official runtime compatibility confirmed,
 1. Adapter install dry-run is useful but not universal install proof.
 2. Manual install beta remains Warn, not full Pass.
 3. Runtime availability checklist is Prepared / Not Run.
-4. Runtime stack strategy prefers Stack 1 for the first real eval and Stack 2 as the next official fallback if Stack 1 fails during mutation/render/export.
-5. Claude Desktop Blender connector read-only smoke test is Pass / Available, but it does not cover recipe execution, mutation, render, export, or artifact validation.
-6. Direct official MCP use from Claude Code/OpenCode/Cursor/Codex/Gemini is not verified and is not currently a supported BlendOps route.
-7. Stack 3 remains optional unofficial/user-managed/experimental-local and not a release path.
-8. Official runtime manual eval is Not Run.
-9. Runtime artifacts are Not Produced.
-10. Stable release readiness is Not Ready.
-11. Any release note must avoid implying runtime compatibility is confirmed.
+4. Runtime route strategy now uses a 4-route model (A: Anthropic Connector, B: Blender Foundation MCP `bpype/blender_mcp`, C: Community `ahujasid/blender-mcp`, D: Blender CLI). No route is cleanly verified yet.
+5. The 2026-04-29 read-only smoke test has ambiguous attribution: original Route A label vs. Route B tool names vs. user statement about Route C. It is not currently counted as evidence for any specific route.
+6. The Blender 5.1+ requirement applies only to Route B (Blender Foundation MCP Server). Routes A, C, and D have lower minimums.
+7. Route C (`ahujasid/blender-mcp`) is mature 21K+ stars third-party prior art, not "experimental" — but BlendOps has no formal evidence file with Route C tool names yet.
+8. Single-client constraint: Routes A + B + C must not run concurrently against the same Blender instance.
+9. Runtime manual eval is Not Run for all routes.
+10. Runtime artifacts are Not Produced.
+11. Stable release readiness is Not Ready.
+12. Any release note must avoid implying runtime compatibility is confirmed for any route.
 
 ---
 
@@ -201,6 +209,7 @@ Rationale:
 
 - This rollup does not claim Blender was run.
 - This rollup does not claim runtime artifacts exist.
-- This rollup does not claim official runtime compatibility is confirmed.
-- This rollup does not claim official runtime manual eval is complete.
+- This rollup does not claim runtime compatibility is confirmed for Route A, B, C, or D.
+- This rollup does not claim runtime manual eval is complete.
 - This rollup does not claim stable or production readiness.
+- This rollup does not promote the 2026-04-29 ambiguous smoke test to fresh evidence for any route.

@@ -3,9 +3,15 @@
 Status: Blocked / Runtime unavailable
 
 > [!WARNING]
-> **Historical eval — environment-specific evidence, not reproducible from a clean clone.**
+> **Historical eval — environment-specific evidence, not reproducible from a clean clone. Legacy Stack labels superseded 2026-05-08 by the 4-route model.**
 >
-> 1. **Blender 4.2.5 reported below is NOT sufficient for Stack 1.** The official MCP add-on inside Blender requires Blender 5.1+ (see [`docs/external-runtime-setup.md`](../external-runtime-setup.md#blender-version-requirements)). 4.2 only satisfies Stack 2 (CLI fallback). The "Blender installed: Pass" row reflects local CLI availability at eval time, not Stack 1 readiness.
+> 1. **Blender 4.2.5 reported below maps as follows under the 4-route model** (see [`docs/runtime-stack-strategy.md`](../runtime-stack-strategy.md)):
+>    - **Insufficient for Route B** (Blender Foundation MCP `bpype/blender_mcp`, requires Blender 5.1+).
+>    - **Sufficient for Route A** (Anthropic Blender Connector, Blender 4.2+ per Anthropic tutorial).
+>    - **Sufficient for Route C** (community `ahujasid/blender-mcp`, Blender 3.0+).
+>    - **Sufficient for Route D** (Blender CLI, 4.2+ recommended).
+>
+>    The earlier WARNING in this file applied a single "Blender 5.1+" bar to all of "Stack 1", which mistakenly required 5.1+ for the Anthropic Connector path too. The "Blender installed: Pass" row reflects local CLI availability at eval time, not any specific route's readiness.
 > 2. **Pre-existing artifact files referenced in this eval (`renders/preview.png`, `exports/test_scene.fbx`, `exports/test_scene.glb`) are gitignored** (see [`.gitignore`](../../.gitignore) lines 12–13, 31–33). They do NOT ship in the cloned repo. They were observed locally at eval time and are explicitly NOT counted as fresh runtime-eval evidence here. External verifiers cannot reproduce these paths from a clean clone.
 
 ## Purpose

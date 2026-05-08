@@ -74,13 +74,17 @@ Canonical role: `runtime-readiness` in the BlendOps skill system. Keep this as t
 - This skill must not claim execution success without execution evidence.
 
 ## Operating procedure
-1. Confirm official runtime scope and user intent.
-2. Check Blender executable availability (command/path evidence).
-3. Check official connector config presence indicators.
-4. Check official MCP config presence indicators.
+1. Confirm chosen runtime route (Route A/B/C/D from `../../docs/runtime-stack-strategy.md`) and user intent.
+2. Check Blender executable availability (command/path evidence) AND record exact `blender --version` output for per-route minimum check (Route A 4.2+, Route B 5.1+, Route C 3.0+, Route D 4.2+ recommended).
+3. Per chosen route, check the route-specific configuration:
+   - Route A: Anthropic Connector enabled in Claude Desktop Settings → Connectors.
+   - Route B: `bpype/blender_mcp` add-on installed in Blender + MCP client config registered.
+   - Route C: `ahujasid/blender-mcp` MCP server registered in client config + addon.py installed and enabled in Blender.
+   - Route D: Blender executable resolvable from agent shell.
+4. Check single-client constraint: at most one MCP route active for the target Blender instance.
 5. Check artifact/output location readiness for future run.
-6. Assign confidence label to each check.
-7. Populate readiness matrix table.
+6. Assign confidence label to each check (`verified-read` / `linked-only` / `unknown` / `blocked`).
+7. Populate readiness matrix table per route.
 8. Derive final status (Ready / Partially Ready / Blocked / Unknown).
 9. Produce blocker summary and next actions.
 10. Route to planner or setup skill based on status.
@@ -173,6 +177,9 @@ Canonical role: `runtime-readiness` in the BlendOps skill system. Keep this as t
 - unofficial runtime fallback
 
 ## References
-- https://www.blender.org/lab/mcp-server/
-- https://claude.com/resources/tutorials/using-the-blender-connector-in-claude
-- https://docs.blender.org/manual/en/latest/advanced/command_line/index.html
+- 4-route runtime model: ../../docs/runtime-stack-strategy.md
+- Per-route setup details: ../../docs/external-runtime-setup.md
+- Route A source: https://claude.com/resources/tutorials/using-the-blender-connector-in-claude
+- Route B source: https://www.blender.org/lab/mcp-server/
+- Route C source: https://github.com/ahujasid/blender-mcp
+- Route D source: https://docs.blender.org/manual/en/latest/advanced/command_line/index.html

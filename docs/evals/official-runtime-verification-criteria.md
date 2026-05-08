@@ -1,10 +1,21 @@
 # Official Runtime Verification Criteria, Draft v0
 
 Status: Draft v0 criteria only, not executed  
-Date: 2026-04-29
+Date: 2026-04-29 (original); legacy 3-stack labels mapped to 4-route model 2026-05-08
 
 > [!CAUTION]
 > This document defines criteria for future runtime evals. It does not claim Blender was run, does not claim runtime success, and does not claim preview/render/GLB artifacts were produced.
+
+> [!NOTE]
+> **Legacy "Stack 1/2/3" labels in this document map to the current 4-route model** (see [`../runtime-stack-strategy.md`](../runtime-stack-strategy.md) for the corrected attribution history):
+>
+> | Legacy label | New route mapping |
+> |---|---|
+> | Stack 1 — Claude Desktop official connector stack | **Was conflated.** Now split into Route A (Anthropic Blender Connector, Blender 4.2+) and Route B (Blender Foundation MCP `bpype/blender_mcp`, Blender 5.1+). |
+> | Stack 2 — Official Blender CLI fallback | Route D (Blender CLI, no MCP). |
+> | Stack 3 — Optional unofficial third-party bridge stack | Route C (Community `ahujasid/blender-mcp`, mature 21K+ stars third-party, Blender 3.0+). |
+>
+> Verification criteria below apply per route. Any verification record produced under these criteria must name the route explicitly and record `blender --version`, MCP server source/commit, and exact tool names.
 
 ---
 

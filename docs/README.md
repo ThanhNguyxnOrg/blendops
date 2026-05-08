@@ -61,7 +61,7 @@ Active docs for the current product and workflow direction.
 | Runtime setup, external | [external-runtime-setup.md](./external-runtime-setup.md) |
 | Runtime stack strategy | [runtime-stack-strategy.md](./runtime-stack-strategy.md) |
 | Runtime boundary | [reference-runtime.md](./reference-runtime.md) |
-| Optional bridge caveats, unofficial Stack 3 | [unofficial-runtime-bridges.md](./unofficial-runtime-bridges.md) |
+| Route C caveats (community `ahujasid/blender-mcp`) | [unofficial-runtime-bridges.md](./unofficial-runtime-bridges.md) |
 | Architecture | [architecture.md](./architecture.md) |
 
 ---

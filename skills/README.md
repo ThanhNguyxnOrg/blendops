@@ -144,10 +144,13 @@ No preview/render/GLB claim is valid without output path or visible evidence plu
 - Skills do not install Blender.
 - Skills do not run Blender unless the user explicitly requests runtime work and readiness is satisfied.
 - Skill install is separate from runtime install.
-- Stack 1 is the Claude Desktop official connector stack.
-- Stack 2 is the official Blender CLI fallback.
-- Stack 3 is optional, unofficial, user-managed, experimental/local only.
-- Direct official MCP use from Claude Code/OpenCode/Cursor/Codex/Gemini is not verified and is not currently a supported BlendOps route.
+- The 4-route runtime model lives in [`docs/runtime-stack-strategy.md`](../docs/runtime-stack-strategy.md):
+  - Route A — Anthropic Blender Connector (one-click in Claude Desktop, Blender 4.2+).
+  - Route B — Blender Foundation MCP Server (`bpype/blender_mcp`, manual install, Blender **5.1+**).
+  - Route C — Community Blender MCP (`ahujasid/blender-mcp`, mature 21K+ stars third-party, Blender 3.0+).
+  - Route D — Official Blender CLI (no MCP, deterministic fallback).
+- Skills must name the route explicitly when discussing runtime steps and must not mis-attribute per-route properties (e.g., the 5.1+ requirement applies to Route B only).
+- Single-client constraint: Blender accepts one MCP client per session. Skills must warn if multiple route servers are configured for the same Blender instance.
 
 Runtime docs:
 

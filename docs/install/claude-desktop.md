@@ -77,15 +77,64 @@ Skill import/package prep is separate from runtime setup. It does not configure 
 
 Runtime status remains `Not Run`. Artifact status remains `Not Produced`.
 
-## Blender version note for Claude Connect users
+## After importing BlendOps skills — actually running Blender
 
-If a user wants to actually use the Claude Desktop Blender Connector after importing BlendOps skills:
+Importing BlendOps skills into Claude Desktop only loads the BlendOps content layer. To **actually run Blender from Claude Desktop**, you must also choose one of the four runtime routes documented in [`docs/runtime-stack-strategy.md`](../runtime-stack-strategy.md). For Claude Desktop users, three of the four routes apply:
 
-- Anthropic's tutorial says Claude Connector itself works with Blender 4.2+.
-- The official Blender MCP add-on inside Blender requires **Blender 5.1+**.
-- Stack 1 needs both, so users must install **Blender 5.1+** to run the full Connector + MCP path.
+### Route A — Anthropic Blender Connector (recommended for Claude Desktop, lowest friction)
 
-See [external-runtime-setup.md](../external-runtime-setup.md) for the complete version table.
+Anthropic shipped a one-click Blender Connector in April 2026 as part of Claude for Creative Work.
+
+1. Update Blender to a supported version (Anthropic tutorial states **4.2+**, community guides recommend **4.5 LTS**). Route A does **not** require Blender 5.1+.
+2. In Claude Desktop, open Settings → Connectors → Browse, find **Blender**, click Enable.
+3. Approve the local helper launch.
+4. Open Blender, confirm the BlenderMCP panel is visible in the 3D View sidebar (`N` to toggle), confirm the status pill reads **Connected**.
+5. Run a read-only request first.
+
+Source: [claude.com/.../using-the-blender-connector-in-claude](https://claude.com/resources/tutorials/using-the-blender-connector-in-claude). The Anthropic helper handles the Blender-side bridge; you do **not** separately install the Blender Foundation MCP add-on for this route.
+
+### Route B — Blender Foundation MCP Server (`bpype/blender_mcp`, requires Blender 5.1+)
+
+Use this if you want Blender's own official MCP server instead of Anthropic's connector. **This is the route whose 5.1+ requirement is real** — `blender_manifest.toml: blender_version_min = "5.1.0"`.
+
+1. Install **Blender 5.1+** (the add-on will not load on earlier versions).
+2. Drag-drop the install link from [blender.org/lab/mcp-server](https://www.blender.org/lab/mcp-server/) into Blender twice (first registers the Blender Lab repository, second installs the add-on).
+3. Install the MCP server itself either as an `.mcpb` bundle or from source.
+4. In Claude Desktop, open Settings → Developer → Edit Config and register the server in `mcpServers`.
+5. Open Blender's BlenderMCP panel and start/connect the server.
+
+### Route C — Community Blender MCP (`ahujasid/blender-mcp`, mature third-party)
+
+Use this if you want the prior-art community path or want Hyper3D / Hunyuan3D / Poly Haven / Sketchfab integrations layered on top.
+
+1. Install Blender 3.0+ (uses stable `bpy`).
+2. Install `uv` per upstream instructions.
+3. In Claude Desktop, open Settings → Developer → Edit Config and add:
+   ```json
+   {
+     "mcpServers": {
+       "blender": { "command": "uvx", "args": ["blender-mcp"] }
+     }
+   }
+   ```
+4. Download `addon.py` from [`github.com/ahujasid/blender-mcp`](https://github.com/ahujasid/blender-mcp), install in Blender via Edit → Preferences → Add-ons → Install, enable it.
+5. Restart Claude Desktop so it discovers the new MCP server.
+
+Caveats for Route C live in [`docs/unofficial-runtime-bridges.md`](../unofficial-runtime-bridges.md). Read them before use.
+
+### Single-client constraint
+
+Blender accepts a single MCP client per session. **Do not run Routes A + B + C concurrently** against the same Blender instance — the second connection silently fails. Pick one route per Blender session.
+
+### Blender version summary for Claude Desktop users
+
+| Route | Min Blender | Notes |
+|---|---|---|
+| Route A (Anthropic Connector) | 4.2+ (4.5 LTS recommended) | Blender 5.1+ NOT required for this route. |
+| Route B (Blender Foundation MCP) | **5.1+** | The 5.1+ requirement applies only here. |
+| Route C (community `ahujasid/blender-mcp`) | 3.0+ | Lowest version requirement. |
+
+See [`docs/external-runtime-setup.md`](../external-runtime-setup.md) for the complete per-route setup walkthrough and the corrected attribution history.
 
 ## Report contract
 

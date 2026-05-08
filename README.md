@@ -93,21 +93,25 @@ Then continue with:
 
 ## 🧭 Runtime truth
 
-BlendOps runtime guidance uses three stacks:
+BlendOps runtime guidance uses **four runtime routes** (replacing the older 3-stack labeling that conflated three different products into one stack — see [`docs/runtime-stack-strategy.md`](./docs/runtime-stack-strategy.md) for the corrected attribution history):
 
-1. **Stack 1 — Claude Desktop official connector stack** (Claude Desktop Blender Connector + official Blender MCP bridge/add-on, requires **Blender 5.1+**)
-2. **Stack 2 — Official Blender CLI fallback** (Blender 4.2+ recommended)
-3. **Stack 3 — Optional unofficial third-party bridge stack** (experimental/local only, not official release path)
-
-Direct official MCP use from Claude Code/OpenCode/Cursor/Codex/Gemini is **not verified** and is **not currently a supported BlendOps route**.
+| Route | What it is | Min Blender | BlendOps verification |
+|---|---|---|---|
+| **Route A** Anthropic Blender Connector | One-click toggle in Claude Desktop, Anthropic-shipped April 2026 | **4.2+** (4.5 LTS recommended) | Not Verified |
+| **Route B** Blender Foundation MCP Server (`bpype/blender_mcp`) | Standalone MCP server from Blender Foundation Lab | **5.1+** | Ambiguous (smoke test tool names match this route, but attribution unclear) |
+| **Route C** Community Blender MCP (`ahujasid/blender-mcp`) | Mature 21K+ stars prior-art project; only path for many non-Claude clients | **3.0+** | User-reported verified (no formal evidence file yet) |
+| **Route D** Official Blender CLI | Direct `blender --background --python` invocation, no MCP | 4.2+ recommended | Not Run |
 
 > [!WARNING]
-> Anthropic's Claude Connector tutorial mentions Blender 4.2+, but the **official MCP add-on inside Blender requires Blender 5.1+**. Stack 1 needs both, so install Blender 5.1+ if you want the full Connector + MCP runtime path.
+> The **Blender 5.1+** requirement applies **only to Route B** (Blender Foundation MCP Server, `bpype/blender_mcp`). It does **not** apply to Route A, Route C, or Route D. Earlier BlendOps drafts conflated Routes A and B into one "Stack 1" and incorrectly required 5.1+ for the whole stack — that mistake is corrected in the runtime docs.
+
+> [!IMPORTANT]
+> **Currently no route has a clean fresh evidence record.** The 2026-04-29 smoke test was originally labeled Route A, but its tool names (`get_blendfile_summary_*`) match Route B; the user reports verifying Route C separately. See [`docs/evals/blender-connector-read-only-smoke-test.md`](./docs/evals/blender-connector-read-only-smoke-test.md) for the corrected attribution. A fresh re-verification is needed before any route can move from "Not Verified" / "Ambiguous" / "User-reported" to documented "Verified".
 
 > [!NOTE]
-> **Naming glossary.** Across BlendOps docs you will see "Claude Connect", "Claude Connector", "Claude Desktop Connector", and "Claude Desktop Blender Connector" used as **synonyms** for the same Anthropic feature: the official Claude Desktop ↔ Blender bridge described at [claude.com/.../using-the-blender-connector-in-claude](https://claude.com/resources/tutorials/using-the-blender-connector-in-claude). The shorter forms are reader-friendly variants; "Claude Desktop Blender Connector" is the most explicit.
+> **Naming glossary.** Anthropic's product is called the **Blender Connector** (full name: Claude Desktop Blender Connector). Across BlendOps docs and the wider community you will also see "Claude Connect" and "Claude Connector" as shorter synonyms for it. They all refer to **Route A** — the one-click toggle inside Claude Desktop. They do **not** refer to the Blender Foundation's standalone MCP server (Route B) or the community `ahujasid/blender-mcp` project (Route C). When precision matters, name the route.
 
-For runtime setup details, see [docs/runtime-stack-strategy.md](./docs/runtime-stack-strategy.md).
+For runtime setup details, see [`docs/runtime-stack-strategy.md`](./docs/runtime-stack-strategy.md) and [`docs/external-runtime-setup.md`](./docs/external-runtime-setup.md).
 
 ---
 

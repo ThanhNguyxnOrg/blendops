@@ -23,23 +23,24 @@ For broader multi-surface and distribution strategy, see [multi-agent-install-st
 
 ## Runtime note
 
-When Blender execution is needed from Claude app/Desktop, use Stack 1 — Claude Desktop official connector stack:
+When Blender execution is needed from Claude app/Desktop, pick one of the four runtime routes (see [runtime-stack-strategy.md](./runtime-stack-strategy.md) for the corrected attribution history). Three of the four apply to Claude Desktop:
 
-1. Add or enable the Claude Desktop Blender Connector.
-2. Install/enable the official Blender MCP bridge/add-on inside Blender from official Blender sources.
-3. Start **MCP Bridge Server**, **Connect to Claude**, or the equivalent official Blender-side server control.
-4. Run a read-only connector smoke test before mutation/render/export.
+- **Route A — Anthropic Blender Connector** (recommended for Claude Desktop, lowest friction). Settings → Connectors → Blender → Enable. Blender 4.2+ (4.5 LTS recommended).
+- **Route B — Blender Foundation MCP Server (`bpype/blender_mcp`)**. Manual install from blender.org/lab/mcp-server, plus MCP config in Claude Desktop. **Blender 5.1+**.
+- **Route C — Community Blender MCP (`ahujasid/blender-mcp`)**. `uvx blender-mcp` + addon.py. Blender 3.0+. Mature 21K+ stars third-party; read [unofficial-runtime-bridges.md](./unofficial-runtime-bridges.md) before use.
 
-Official links:
+Run a read-only request before any mutation/render/export, regardless of route.
 
-- Official Blender MCP project: https://projects.blender.org/lab/blender_mcp
-- Blender Lab MCP page: https://www.blender.org/lab/mcp-server/
-- Claude Blender Connector tutorial: https://claude.com/resources/tutorials/using-the-blender-connector-in-claude
-- Blender CLI fallback docs: https://docs.blender.org/manual/en/latest/advanced/command_line/index.html
+**Single-client constraint:** Blender accepts one MCP client per session. Do not run Routes A + B + C concurrently against the same Blender instance.
+
+Official links per route:
+
+- Route A: https://claude.com/resources/tutorials/using-the-blender-connector-in-claude
+- Route B: https://www.blender.org/lab/mcp-server/, https://projects.blender.org/lab/blender_mcp
+- Route C: https://github.com/ahujasid/blender-mcp
+- Route D (Blender CLI fallback): https://docs.blender.org/manual/en/latest/advanced/command_line/index.html
 
 BlendOps remains workflow/law/checklist layer and does not install runtime.
-
-Direct official MCP use from Claude Code/OpenCode/Cursor/Codex/Gemini is not verified and is not currently a supported BlendOps route.
 
 ## Artifact truth policy
 

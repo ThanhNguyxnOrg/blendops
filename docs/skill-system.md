@@ -29,7 +29,7 @@ Skills are intentionally composable. A helper skill routes the task, planning sk
 | Skills | Focused workflows loaded by an agent when relevant. | `skills/product-hero-scene-planner/SKILL.md` plans a product hero scene. |
 | Packs | Curated skill/law bundles for a scenario. | `packs/product-hero-v0/PACK.md` composes Draft v0 product-hero work. |
 | Evals | Evidence records and checklists. | `docs/evals/runtime-availability-checklist.md`. |
-| Runtime stacks | External execution choices, separate from skill install. | Stack 1 connector, Stack 2 CLI fallback, Stack 3 optional local experiment. |
+| Runtime routes | External execution choices, separate from skill install. | Route A Anthropic Connector, Route B Blender Foundation MCP, Route C community blender-mcp, Route D Blender CLI. |
 
 A skill may point to runtime docs, but it must not imply runtime was installed or run.
 
@@ -54,8 +54,8 @@ All 10 root skills, grouped by canonical role. The full per-skill table with dep
 | Canonical role | Active skill path | Notes |
 |---|---|---|
 | Help / next safe action | `skills/blendops-help/SKILL.md` | Routes between docs, skills, runtime readiness, evals, and packaging. Baseline eval: `skills/blendops-help/EVAL.md`. |
-| Runtime setup prerequisites | `skills/official-runtime-setup-guide/SKILL.md` | Canonical role: `runtime-setup`; chooses Stack 1/2/3 prerequisites without installing Blender. |
-| Runtime readiness | `skills/official-runtime-readiness-checker/SKILL.md` | Canonical role: `runtime-readiness`; keep 3-stack boundaries. |
+| Runtime setup prerequisites | `skills/official-runtime-setup-guide/SKILL.md` | Canonical role: `runtime-setup`; chooses Route A/B/C/D prerequisites without installing Blender. |
+| Runtime readiness | `skills/official-runtime-readiness-checker/SKILL.md` | Canonical role: `runtime-readiness`; keep per-route boundaries. |
 | Scene planning | `skills/product-hero-scene-planner/SKILL.md` | Canonical role for product-hero scene planning. |
 | Camera / lighting / composition | `skills/blender-composition-camera-planner/SKILL.md`, `skills/blender-lighting-material-planner/SKILL.md` | Domain planning, no runtime claim. |
 | Scene quality gate | `skills/blender-scene-quality-checker/SKILL.md` | Pass/Warn/Fail readiness verdict before runtime mutation. |
@@ -67,15 +67,18 @@ Do not create duplicate alias folders unless packaging evidence shows a target a
 
 ---
 
-## Runtime stack boundaries every skill must preserve
+## Runtime route boundaries every skill must preserve
 
-BlendOps public runtime guidance uses exactly three stacks:
+BlendOps runtime guidance uses **four runtime routes** (replacing the older 3-stack labeling that conflated three different products into one stack — see [`runtime-stack-strategy.md`](./runtime-stack-strategy.md) for the corrected attribution history):
 
-1. **Stack 1 — Claude Desktop official connector stack**: Claude Desktop Blender Connector plus official Blender MCP bridge/add-on inside Blender plus Blender app/session.
-2. **Stack 2 — Official Blender CLI fallback**: explicit Blender executable / CLI invocation, no MCP, no Claude Desktop required.
-3. **Stack 3 — Optional unofficial third-party bridge stack**: user-managed, experimental/local, outside official release-eval evidence.
+1. **Route A — Anthropic Blender Connector** (one-click in Claude Desktop, Blender 4.2+).
+2. **Route B — Blender Foundation MCP Server** (`bpype/blender_mcp`, manual install, Blender **5.1+**).
+3. **Route C — Community Blender MCP** (`ahujasid/blender-mcp`, mature 21K+ stars third-party, Blender 3.0+).
+4. **Route D — Official Blender CLI** (no MCP, deterministic fallback, Blender 4.2+ recommended).
 
-Direct official MCP use from Claude Code/OpenCode/Cursor/Codex/Gemini is not verified and is not currently a supported BlendOps route.
+The Blender 5.1+ requirement applies only to Route B. Skills must not apply it to Routes A, C, or D.
+
+Single-client constraint: Blender accepts one MCP client per session. Skills must warn if multiple route servers are configured for the same Blender instance.
 
 ---
 

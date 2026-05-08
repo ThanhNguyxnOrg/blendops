@@ -111,13 +111,14 @@ Why this is safe: <reason>
 
 Before runtime work, point to `../../docs/runtime-stack-strategy.md` and the readiness checklist.
 
-BlendOps public runtime guidance uses:
+BlendOps runtime guidance uses **4 runtime routes** (replacing the older 3-stack labeling):
 
-1. Stack 1 — Claude Desktop official connector stack.
-2. Stack 2 — Official Blender CLI fallback.
-3. Stack 3 — Optional unofficial third-party bridge stack.
+1. Route A — Anthropic Blender Connector (one-click in Claude Desktop, Blender 4.2+).
+2. Route B — Blender Foundation MCP Server (`bpype/blender_mcp`, manual install, Blender **5.1+**).
+3. Route C — Community Blender MCP (`ahujasid/blender-mcp`, mature 21K+ stars third-party, Blender 3.0+).
+4. Route D — Official Blender CLI (no MCP, deterministic fallback).
 
-Direct official MCP use from Claude Code/OpenCode/Cursor/Codex/Gemini is not verified and is not currently a supported BlendOps route.
+Single-client constraint: Blender accepts one MCP client per session. Do not run Routes A + B + C concurrently against the same Blender instance.
 
 This skill does not run Blender, mutate scenes, render, export, install runtimes, or claim artifacts.
 
@@ -240,7 +241,7 @@ Name blocker and suggest the next non-runtime planning or documentation step.
 
 ## Good examples
 
-- “Next safe action: run runtime readiness checklist for Stack 1. Runtime status: Not Run. Artifact status: Not Produced.”
+- “Next safe action: run runtime readiness checklist for Route A (Anthropic Blender Connector). Runtime status: Not Run. Artifact status: Not Produced.”
 - “Next safe action: use scene planner; no runtime is needed for this request.”
 
 ## Bad examples

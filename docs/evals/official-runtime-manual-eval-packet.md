@@ -1,13 +1,24 @@
 # Official Runtime Manual Eval Packet, Draft v0
 
 Status: Draft v0 packet only, not executed  
-Date: 2026-04-29  
+Date: 2026-04-29 (original); legacy 3-stack labels mapped to 4-route model 2026-05-08  
 Source of truth: [official-runtime-verification-criteria.md](./official-runtime-verification-criteria.md)  
 Readiness preflight: [runtime-availability-checklist.md](./runtime-availability-checklist.md)  
-Stack decision: [../runtime-stack-strategy.md](../runtime-stack-strategy.md)
+Route decision: [../runtime-stack-strategy.md](../runtime-stack-strategy.md)
 
 > [!CAUTION]
-> This packet prepares a future manual eval. It does not install Blender, run Blender, claim official runtime compatibility, or claim preview/render/GLB artifacts were produced.
+> This packet prepares a future manual eval. It does not install Blender, run Blender, claim runtime compatibility, or claim preview/render/GLB artifacts were produced.
+
+> [!NOTE]
+> **Legacy "Stack 1/2/3" labels in this packet map to the current 4-route model** (see [`../runtime-stack-strategy.md`](../runtime-stack-strategy.md) for the corrected attribution history):
+>
+> | Legacy label | New route mapping |
+> |---|---|
+> | Stack 1 — Claude Desktop official connector stack | **Was conflated.** Now split into Route A (Anthropic Blender Connector, Blender 4.2+) and Route B (Blender Foundation MCP `bpype/blender_mcp`, Blender 5.1+). |
+> | Stack 2 — Official Blender CLI fallback | Route D (Blender CLI, no MCP). |
+> | Stack 3 — Optional unofficial third-party bridge stack | Route C (Community `ahujasid/blender-mcp`, mature 21K+ stars third-party, Blender 3.0+). |
+>
+> A fresh per-route eval record must explicitly name the route (Route A / B / C / D), record `blender --version`, record the MCP server source URL + commit, and record the exact tool names used.
 
 ---
 

@@ -37,14 +37,15 @@ Always state:
 
 Do not claim preview/render/GLB artifacts without evidence.
 
-## Runtime stack policy
+## Runtime route policy
 
-Preserve exactly three stacks:
-1. Claude Desktop official connector stack.
-2. Official Blender CLI fallback.
-3. Optional unofficial third-party bridge stack.
+Preserve the 4-route runtime model (replaces the older 3-stack labeling that conflated three different products into one stack):
+1. Route A — Anthropic Blender Connector (one-click in Claude Desktop, Blender 4.2+).
+2. Route B — Blender Foundation MCP Server (`bpype/blender_mcp`, manual install, Blender **5.1+**).
+3. Route C — Community Blender MCP (`ahujasid/blender-mcp`, mature 21K+ stars third-party, Blender 3.0+).
+4. Route D — Official Blender CLI (no MCP, deterministic fallback).
 
-Direct official MCP use from Claude Code/OpenCode/Cursor/Codex/Gemini is not verified and is not currently a supported BlendOps route.
+The Blender 5.1+ requirement applies only to Route B. Single-client constraint: Blender accepts one MCP client per session.
 
 ## Output template
 

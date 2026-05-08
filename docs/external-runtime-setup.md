@@ -2,138 +2,154 @@
 
 BlendOps is a workflow/product layer and does **not** ship its own BlendOps-owned CLI/MCP/addon runtime.
 
-Active runtime guidance uses the 3-stack model in [Runtime stack strategy](./runtime-stack-strategy.md).
+Active runtime guidance uses the 4-route model in [Runtime stack strategy](./runtime-stack-strategy.md).
 
 > [!IMPORTANT]
-> Importing BlendOps skills, laws, packs, or docs does not install Blender runtime, the Claude Desktop connector, any MCP server, or any Blender add-on.
+> Importing BlendOps skills, laws, packs, or docs does not install Blender runtime, the Anthropic Blender Connector, any MCP server (Blender Foundation `bpype/blender_mcp` or community `ahujasid/blender-mcp`), or any Blender add-on.
 
-## Blender version requirements
+## Blender version requirements per route
 
-| Stack | Minimum Blender version | Source |
+| Route | Min Blender | Source |
 |---|---|---|
-| Stack 1 (Claude Desktop Connector + official MCP add-on) | **Blender 5.1+** | Official add-on `blender_manifest.toml: blender_version_min = "5.1.0"` ([blender.org/lab/mcp-server](https://www.blender.org/lab/mcp-server/)) |
-| Stack 2 (Official Blender CLI) | Blender 4.2+ recommended | [Blender CLI docs](https://docs.blender.org/manual/en/latest/advanced/command_line/index.html) |
-| Stack 3 (Optional unofficial bridges) | Varies per upstream | Check each upstream repo |
+| **Route A** Anthropic Blender Connector | **4.2+** (4.5 LTS recommended) | Anthropic tutorial, [claude.com/.../using-the-blender-connector-in-claude](https://claude.com/resources/tutorials/using-the-blender-connector-in-claude) |
+| **Route B** Blender Foundation MCP Server (`bpype/blender_mcp`) | **5.1+** | `blender_manifest.toml: blender_version_min = "5.1.0"` ([blender.org/lab/mcp-server](https://www.blender.org/lab/mcp-server/)) |
+| **Route C** Community Blender MCP (`ahujasid/blender-mcp`) | **3.0+** | Uses stable `bpy` available since 3.0 ([github.com/ahujasid/blender-mcp](https://github.com/ahujasid/blender-mcp)) |
+| **Route D** Official Blender CLI | 4.2+ recommended | [Blender CLI docs](https://docs.blender.org/manual/en/latest/advanced/command_line/index.html) |
 
 > [!WARNING]
-> Anthropic's Claude Connector tutorial says "Blender 4.2 or later" for the connector itself, but the **official MCP add-on inside Blender requires Blender 5.1+**. Stack 1 needs both, so practical minimum is **Blender 5.1+**. Users on 4.2/4.3/4.4/5.0 cannot install the official MCP add-on.
+> The 5.1+ requirement applies **only to Route B** (Blender Foundation MCP Server, `bpype/blender_mcp`). Earlier BlendOps drafts incorrectly applied 5.1+ to all of "Stack 1", which conflated Routes A and B. Users picking Route A (Anthropic Connector) only need Blender 4.2+. Users picking Route C (community `ahujasid/blender-mcp`) only need Blender 3.0+.
 
 ---
 
-## Stack 1 — Claude Desktop official connector stack
+## Route A — Anthropic Blender Connector
 
-Use this stack for users with Claude Desktop when Blender runtime execution is needed.
-
-Requires Blender 5.1+ (see version table above).
+Use this route if the user is on Claude Desktop and wants the lowest-friction setup.
 
 Runtime chain:
 
 ```txt
-Claude Desktop Blender Connector
-  → official Blender MCP bridge/add-on running inside Blender
-  → Blender app/session
+Claude Desktop with Anthropic "Blender" Connector enabled
+  → local Anthropic helper
+  → Blender (3.0+ supported, 4.2+ per Anthropic tutorial)
 ```
 
-Official / primary links:
+Source link: https://claude.com/resources/tutorials/using-the-blender-connector-in-claude
 
-- Official Blender MCP project: https://projects.blender.org/lab/blender_mcp
+Required setup guidance (defer to upstream tutorial for canonical UI flow):
+
+1. Install Blender (4.2+ per Anthropic tutorial; 4.5 LTS recommended).
+2. In Claude Desktop, open Settings → Connectors → Browse, find Blender, click Enable.
+3. Approve the local helper launch.
+4. Open Blender, confirm the BlenderMCP panel is visible in the 3D View sidebar (`N` to toggle), confirm the status pill reads Connected.
+5. Run a read-only request first.
+
+Notes:
+
+- Route A's helper handles the Blender-side bridge for you; you do **not** separately install `bpype/blender_mcp` for this route. If you also install Route B, do not run both concurrently against the same Blender instance.
+- Tool surface includes `create_object`, `delete_object`, `run_blender_code`. (Different from Route B's `get_blendfile_summary_*` and Route C's `get_scene_info` / `execute_blender_code`.)
+
+Current BlendOps evidence: **Not Verified** (no fresh evidence record exists for Route A).
+
+---
+
+## Route B — Blender Foundation MCP Server (`bpype/blender_mcp`)
+
+Use this route if you are on Blender 5.1+ and want the Blender Foundation's own MCP server. Works with any MCP client.
+
+Runtime chain:
+
+```txt
+Any MCP client (Claude Desktop, Cursor, Codex, OpenCode, Cline, VS Code)
+  → MCP transport
+  → bpype/blender_mcp server
+  → Blender 5.1+ session (with Lab MCP add-on installed)
+```
+
+Source links:
+
 - Blender Lab MCP page: https://www.blender.org/lab/mcp-server/
-- Claude Blender Connector tutorial: https://claude.com/resources/tutorials/using-the-blender-connector-in-claude
+- Source repo: https://projects.blender.org/lab/blender_mcp
 
 Required setup guidance:
 
-1. Add or enable the Blender connector in Claude Desktop.
-2. Install and enable the official Blender MCP bridge/add-on in Blender from official Blender sources.
-3. Enable Online Access if Blender requires it for the add-on/repository flow.
-4. Start **MCP Bridge Server**, **Connect to Claude**, or the equivalent official server control inside Blender.
-5. Confirm the host/port shown by the add-on when shown, commonly `localhost:9876`.
-6. Run a read-only connector smoke test first.
-7. Only after read-only access passes should the user attempt scene mutation, render, export, or full runtime eval.
+1. Install Blender 5.1+ (the add-on will not load on earlier versions).
+2. Drag-drop the add-on install link from blender.org/lab/mcp-server into Blender twice (first registers the Blender Lab repository, second installs the add-on), or download and install from disk.
+3. Install the MCP server itself either as an `.mcpb` bundle (clients that support it) or from source.
+4. Configure your MCP client to point at the server.
+5. Open Blender's BlenderMCP panel and start/connect the server.
+6. Run a read-only request (e.g., `get_blendfile_summary_path_info`) before any mutation.
 
-Current BlendOps evidence:
-
-- Read-only connector smoke test passed.
-- Blender responded through read-only connector tools.
-- Default scene data returned: Cube, Camera, Light.
-- No mutation, render, export, preview, or GLB artifact was produced.
-- Full runtime eval remains `Not Run`.
-
-This is the only official connector stack currently verified. The first real BlendOps runtime eval should use this stack.
+Current BlendOps evidence: **Ambiguous attribution.** The 2026-04-29 smoke test ([`docs/evals/blender-connector-read-only-smoke-test.md`](./evals/blender-connector-read-only-smoke-test.md)) recorded tool names that match Route B's tool surface, but the labeled runtime path was Route A. The record now reflects this ambiguity. A fresh evidence record explicitly naming Route B is needed.
 
 ---
 
-## Stack 2 — Official Blender CLI fallback
+## Route C — Community Blender MCP (`ahujasid/blender-mcp`)
 
-Use this stack if Stack 1 is unavailable or fails and a deterministic command-line fallback is acceptable.
+Use this route if you are on a non-Claude MCP client (Cursor, Codex, OpenCode, Cline, VS Code) or specifically want the prior-art community path. Works with any MCP client including Claude Desktop via manual MCP config.
 
 Runtime chain:
 
 ```txt
-Agent/shell
-  → explicit Blender executable / CLI
+Any MCP client
+  → MCP transport
+  → ahujasid/blender-mcp server (uvx blender-mcp)
+  → Blender 3.0+ session (with addon.py installed)
+```
+
+Source link: https://github.com/ahujasid/blender-mcp
+
+Required setup guidance (defer to upstream README for exact current commands):
+
+1. Install `uv` per upstream instructions.
+2. In your MCP client config, register a `blender` MCP server with `command: uvx, args: [blender-mcp]`. For Claude Desktop this is Settings → Developer → Edit Config.
+3. Download `addon.py` from the upstream repo, install it in Blender via Edit → Preferences → Add-ons → Install, and enable it.
+4. Open the BlenderMCP tab in Blender's 3D View sidebar (`N`) and click Connect to your client.
+5. Restart your MCP client so it discovers the new server.
+
+Caveats:
+
+- Third-party software; review the upstream repo, license, issue tracker, and security posture before use.
+- `execute_blender_code` runs LLM-generated Python with no sandbox. Save before destructive operations and prefer disposable scenes for first runs.
+- Port conflicts: do not run Route B and Route C concurrently against the same Blender instance unless you intentionally change ports.
+
+Current BlendOps evidence: **User-reported verified** (2026-05-08 statement). No formal evidence record file exists yet for this route. For longer caveat write-up see [`unofficial-runtime-bridges.md`](./unofficial-runtime-bridges.md).
+
+---
+
+## Route D — Official Blender CLI fallback
+
+Use this route when no MCP route is available, when scripted batch processing fits the task, or as a deterministic fallback.
+
+Runtime chain:
+
+```txt
+Agent or shell with permission to invoke an explicit Blender executable
+  → blender --background --python script.py ...
   → Blender process
 ```
 
-Official link:
-
-- Blender CLI docs: https://docs.blender.org/manual/en/latest/advanced/command_line/index.html
+Source link: https://docs.blender.org/manual/en/latest/advanced/command_line/index.html
 
 Required setup/eval guidance:
 
-- Blender must be installed and available through an explicit executable path or verified `PATH` entry.
-- The operator/agent must record the exact Blender command.
-- The operator/agent must record the script/input used.
-- The operator/agent must record the output folder, generated files, exit status, logs, and validation evidence.
+- Blender must be installed and reachable via an explicit executable path or verified `PATH` entry.
+- The operator/agent must record the exact Blender command, input script, output paths, generated files, exit status, logs, and validation evidence.
 - No artifact claim is allowed without evidence.
 - CLI fallback does not need MCP or Claude Desktop.
 
-Current BlendOps evidence:
-
-- Full CLI eval is still `Not Run`.
-- Preview/render/GLB artifacts are still `Not Produced`.
+Current BlendOps evidence: Full CLI eval is `Not Run`. Preview/render/GLB artifacts are `Not Produced`.
 
 ---
 
-## Stack 3 — Optional unofficial third-party bridge stack
+## Single-client constraint
 
-Use this stack only when a user knowingly chooses a third-party local experiment.
-
-Runtime chain:
-
-```txt
-MCP-capable client/agent
-  → third-party bridge server
-  → third-party Blender add-on/socket bridge
-  → Blender
-```
-
-Optional upstream examples and caveats live in [Unofficial runtime bridges](./unofficial-runtime-bridges.md).
-
-Required caveats:
-
-- Follow the upstream third-party repo; BlendOps does not copy or own its install docs.
-- Configure each MCP client separately. Config in Claude Desktop does not configure Claude Code/OpenCode/Cursor.
-- Install/run that third-party bridge server and that third-party Blender add-on/socket bridge if you choose it.
-- Keep it experimental/local and user-managed.
-- Do not treat it as official release evidence.
-- Do not run it together with the official bridge on the same host/port unless the user intentionally changes ports and understands conflicts, commonly around `localhost:9876`.
-- Treat arbitrary Blender Python/code execution as a serious local security risk.
-
-This stack is not dependent on the official Blender MCP bridge/add-on and is not standalone without its own Blender-side add-on/server.
-
----
-
-## Future research / unverified
-
-Direct official MCP use from Claude Code/OpenCode/Cursor/Codex/Gemini is not verified and is not currently a supported BlendOps route.
-
-Do not tell users to choose it. Do not claim it works. Keep any future investigation under source-backed research and separate eval evidence.
+Blender accepts a single MCP client per session. Do not run Route A + Route B + Route C concurrently against the same Blender instance — the second connection will silently fail. Pick one route per session.
 
 ---
 
 ## Return to BlendOps
 
-Once one appropriate runtime stack is working, continue with BlendOps workflow docs:
+Once one route is working, continue with BlendOps workflow docs:
 
 - Runtime stack strategy: `./runtime-stack-strategy.md`
 - Product direction: `./product-direction.md`
@@ -151,10 +167,11 @@ BlendOps role:
 
 ## Safety boundary
 
-Runtime integrations may expose powerful Blender capabilities.
+Runtime integrations expose powerful Blender capabilities (Routes A, B, and C all allow LLM-generated Python execution).
 
 BlendOps safety stance:
 
 - Keep user-facing behavior constrained by workflow + validation + evidence.
 - Avoid using arbitrary execution primitives as the final product interface.
 - Prefer explicit assumptions, explicit checks, and clear pass/partial/fail reporting.
+- Save before destructive operations regardless of route.

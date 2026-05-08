@@ -1,35 +1,34 @@
 # Reference Runtime
 
-> This file summarizes runtime boundaries. For setup flow, see [External runtime setup](./external-runtime-setup.md). For stack selection, see [Runtime stack strategy](./runtime-stack-strategy.md).
+> This file summarizes runtime boundaries. For setup flow, see [External runtime setup](./external-runtime-setup.md). For route selection and the corrected attribution history, see [Runtime stack strategy](./runtime-stack-strategy.md).
 
 BlendOps uses external runtime primitives and remains a workflow/product layer above runtime execution.
 
-## Runtime stack model
+## Runtime route model
 
-BlendOps public runtime guidance uses exactly three user-facing stacks:
+BlendOps runtime guidance uses four distinct runtime routes (replacing the older 3-stack labeling that conflated three different products into one stack):
 
-1. **Stack 1 — Claude Desktop official connector stack**
-   - Claude Desktop Blender Connector → official Blender MCP bridge/add-on running inside Blender → Blender app/session.
-   - Preferred first real runtime eval candidate because read-only connector smoke evidence exists.
-   - This is the only official connector stack currently verified.
-   - https://claude.com/resources/tutorials/using-the-blender-connector-in-claude
-   - https://projects.blender.org/lab/blender_mcp
-   - https://www.blender.org/lab/mcp-server/
+1. **Route A — Anthropic Blender Connector** (one-click in Claude Desktop, Anthropic-shipped)
+   - Anthropic Blender Connector → local helper → Blender (4.2+ per Anthropic tutorial; 4.5 LTS recommended).
+   - Verification status: **Not Verified**.
+   - Tutorial: https://claude.com/resources/tutorials/using-the-blender-connector-in-claude
 
-2. **Stack 2 — Official Blender CLI fallback**
-   - Agent/shell invokes explicit Blender executable / CLI.
-   - This does not use MCP and does not need Claude Desktop.
-   - Official deterministic fallback if Stack 1 is unavailable or fails.
-   - Full CLI eval is still `Not Run`.
-   - https://docs.blender.org/manual/en/latest/advanced/command_line/index.html
+2. **Route B — Blender Foundation MCP Server** (`bpype/blender_mcp`, manual install, any MCP client)
+   - Any MCP client → MCP transport → `bpype/blender_mcp` → Blender 5.1+ session with the Blender Lab MCP add-on.
+   - Verification status: **Ambiguous attribution** — 2026-04-29 smoke test tool names match Route B but the labeled runtime path was Route A.
+   - Source: https://www.blender.org/lab/mcp-server/, https://projects.blender.org/lab/blender_mcp
 
-3. **Stack 3 — Optional unofficial third-party bridge stack**
-   - MCP-capable client/agent → third-party server → third-party Blender add-on/socket bridge → Blender.
-   - Optional, unofficial, user-managed, experimental/local only.
-   - Not recommended official setup and not part of BlendOps official release-eval evidence.
-   - See [Unofficial runtime bridges](./unofficial-runtime-bridges.md).
+3. **Route C — Community Blender MCP** (`ahujasid/blender-mcp`, manual install, any MCP client)
+   - Any MCP client → MCP transport → `ahujasid/blender-mcp` server → Blender 3.0+ session with the upstream `addon.py`.
+   - Mature prior-art project (21K+ stars). Third-party from both Anthropic and Blender Foundation.
+   - Verification status: **User-reported verified** (2026-05-08 statement); no formal evidence record file yet.
+   - Caveats live in [Unofficial runtime bridges](./unofficial-runtime-bridges.md).
+   - Source: https://github.com/ahujasid/blender-mcp
 
-Direct official MCP use from Claude Code/OpenCode/Cursor/Codex/Gemini is not verified and is not currently a supported BlendOps route.
+4. **Route D — Official Blender CLI** (no MCP, deterministic fallback)
+   - Agent/shell → explicit `blender` executable → Blender process.
+   - Verification status: **Not Run** (full CLI eval still pending).
+   - Source: https://docs.blender.org/manual/en/latest/advanced/command_line/index.html
 
 ## Important interface boundary
 
@@ -44,6 +43,10 @@ BlendOps focuses on:
 
 ## Setup authority
 
-Use [External runtime setup](./external-runtime-setup.md) as the BlendOps setup overview and [Runtime stack strategy](./runtime-stack-strategy.md) as the stack decision record. Follow upstream official docs for exact/current setup instructions.
+Use [External runtime setup](./external-runtime-setup.md) as the BlendOps setup overview and [Runtime stack strategy](./runtime-stack-strategy.md) as the route decision record. Follow upstream official docs for exact/current setup instructions.
 
-Optional non-official bridge caveats live in [Unofficial runtime bridges](./unofficial-runtime-bridges.md). That page describes Stack 3 only; it is not part of the active official release-eval path and must not be treated as BlendOps-supported official setup or release-readiness evidence.
+Caveats specific to Route C (community `ahujasid/blender-mcp`) live in [Unofficial runtime bridges](./unofficial-runtime-bridges.md). That page describes Route C only. The page name was kept "unofficial" because Route C is unofficial from both Anthropic's and Blender Foundation's perspective, even though it is mature and widely used.
+
+## Single-client constraint
+
+Blender accepts a single MCP client per session. Do not run Route A + Route B + Route C concurrently against the same Blender instance.

@@ -12,8 +12,8 @@ Use render-export-evidence to classify artifact evidence state (Not Run / Attemp
 - classifies artifact evidence state per item
 - requires output path, file existence, and validation notes before `Produced` or `Verified`
 - preserves `Not Run` / `Not Produced` when no runtime action occurred
-- labels Stack 3 unofficial bridge evidence as local/experimental, not official release evidence
-- labels read-only connector smoke evidence as runtime access scoped read-only, artifacts `Not Produced`
+- labels Route C (`ahujasid/blender-mcp`) evidence with the Route C tag, the upstream commit/version, and the third-party-from-Anthropic-and-Blender-Foundation caveat — not as official release evidence on its own
+- labels read-only connector smoke evidence as runtime access scoped read-only, artifacts `Not Produced`, with the route name explicit (Route A / B / C / D)
 
 ## Eval cases
 
@@ -23,8 +23,9 @@ Use render-export-evidence to classify artifact evidence state (Not Run / Attemp
 | Runtime attempted but no output path/file | Blender command ran but no output path or file evidence | `Attempted` or `Failed`, never `Produced` | Command/tool/action, input/script, output path (missing or unknown), validation notes (blocked) |
 | Output path exists but validation missing | File path provided but no validation checks recorded | `Produced`, not `Verified` | Command/tool/action, input/script, output path, file existence (yes), validation notes (incomplete or pending) |
 | Output path + existence + validation notes | File exists and validation checks recorded | `Verified` | Command/tool/action, input/script, output path, file existence (yes), validation notes (complete), limitations (if any) |
-| Read-only connector smoke evidence only | Claude Desktop Blender Connector returned session/datablock summaries without mutation/render/export | Runtime access: scoped read-only; artifacts: `Not Produced` | Connector evidence type (read-only smoke), no render/export/artifact claim |
-| Optional unofficial bridge evidence | Stack 3 local/experimental bridge used | Label: Stack 3 local/experimental, not official release evidence | Bridge type (Stack 3), confidence label (user-managed/experimental), not counted as official runtime eval |
+| Read-only smoke evidence only | An MCP route returned session/datablock summaries without mutation/render/export | Runtime access: scoped read-only; artifacts: `Not Produced` | Route name (A/B/C/D) MUST be explicit; tool names recorded; no render/export/artifact claim |
+| Route C (`ahujasid/blender-mcp`) evidence | Route C MCP server used | Label: Route C with upstream commit/version, third-party from Anthropic and Blender Foundation, caveats per docs/unofficial-runtime-bridges.md | Route name (Route C), upstream commit/version, single-client constraint check, `execute_blender_code` not called for read-only |
+| Ambiguous attribution | Recorded tool names contradict the labeled route | Label: ambiguous; not counted as evidence for ANY route | Tool name list, route label as recorded, mismatch description, re-verification needed |
 
 ## Expected evidence/status fields
 
@@ -38,27 +39,30 @@ Use render-export-evidence to classify artifact evidence state (Not Run / Attemp
 | File existence | Yes, no, or unknown |
 | Validation notes | Checks performed, blockers, or none |
 | Limitations | Portability, quality, or scope caveats |
-| Stack label | Stack 1 (official connector), Stack 2 (CLI), Stack 3 (unofficial), or none |
+| Route label | Route A (Anthropic Connector), Route B (Blender Foundation MCP `bpype/blender_mcp`), Route C (community `ahujasid/blender-mcp`), Route D (Blender CLI), or none |
+| Blender version | Output of `blender --version`, or unknown |
+| MCP server source | Repo URL + commit/version for Routes B and C; N/A for Routes A and D |
 
 ## Pass / Warn / Fail criteria
 
-- Pass: artifact status matches evidence exactly, no `Produced`/`Verified` claim without output path + file existence + validation notes, Stack 3 labeled correctly, read-only connector evidence does not claim artifacts
+- Pass: artifact status matches evidence exactly, no `Produced`/`Verified` claim without output path + file existence + validation notes, Route C labeled correctly with upstream commit, route attribution unambiguous (tool names match labeled route), read-only smoke evidence does not claim artifacts
 - Warn: partial evidence with explicit caveat and conservative status downgrade, but no unsupported artifact claim
-- Fail: `Produced` or `Verified` claim without output path/file/validation, Stack 3 evidence promoted as official, read-only connector evidence claims render/export/artifact success
+- Fail: `Produced` or `Verified` claim without output path/file/validation, Route C evidence promoted as Route A/B without separate evidence, route label contradicts recorded tool names, read-only smoke evidence claims render/export/artifact success
 
 ## Common failure modes
 
 - claiming `Produced` when only a command was attempted but no output path or file evidence exists
 - claiming `Verified` when file exists but no validation checks were recorded
 - treating read-only connector smoke test as artifact production evidence
-- promoting Stack 3 unofficial bridge evidence as official release-eval evidence
+- promoting Route C (`ahujasid/blender-mcp`) evidence as Route A or Route B evidence without separately recorded Route A/B tool names
+- recording a route label that contradicts the observed tool names (e.g., labeling Route A but recording Route B's `get_blendfile_summary_*`)
 - upgrading `Attempted` to `Produced` based on transcript alone without file evidence
 
 ## Evidence expectations
 
 - required evidence table with all fields per artifact item
 - explicit status per item aligned with evidence
-- Stack 3 and read-only connector caveats when applicable
+- Route C and read-only smoke caveats when applicable, with route attribution explicitly checked against recorded tool names
 - no artifact success claim without output path, file existence, and validation notes
 
 ## Sample passing response outline

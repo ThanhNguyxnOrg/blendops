@@ -119,23 +119,25 @@ Limitations: <known gaps>
 
 ## Official runtime boundary
 
-BlendOps public runtime guidance uses exactly three stacks:
+BlendOps runtime guidance uses **4 runtime routes** (replacing the older 3-stack labeling — see `../../docs/runtime-stack-strategy.md` for the corrected attribution history):
 
-1. Stack 1 — Claude Desktop official connector stack.
-2. Stack 2 — Official Blender CLI fallback.
-3. Stack 3 — Optional unofficial third-party bridge stack.
+1. Route A — Anthropic Blender Connector (one-click in Claude Desktop, Blender 4.2+).
+2. Route B — Blender Foundation MCP Server (`bpype/blender_mcp`, manual install, Blender **5.1+**).
+3. Route C — Community Blender MCP (`ahujasid/blender-mcp`, mature 21K+ stars third-party, Blender 3.0+).
+4. Route D — Official Blender CLI (no MCP, deterministic fallback).
 
-Direct official MCP use from Claude Code/OpenCode/Cursor/Codex/Gemini is not verified and is not currently a supported BlendOps route.
+The Blender 5.1+ requirement applies only to Route B. Single-client constraint: Blender accepts one MCP client per session.
 
 This skill must not install Blender, run Blender, configure a runtime bridge, mutate a scene, render, export GLB, or claim artifacts unless the user explicitly requested that work and evidence exists.
 
-## Runtime stack requirements
+## Runtime route requirements
 
-| Stack | Requirement before use |
+| Route | Requirement before use |
 |---|---|
-| Stack 1 | Read-only connector smoke test before mutation/render/export. |
-| Stack 2 | Exact Blender executable/CLI command, input/script, output paths, logs, and validation evidence. |
-| Stack 3 | Explicit user opt-in, third-party caveats, host/port risk, and no release-eval claim. |
+| Route A | Anthropic Connector enabled in Claude Desktop Settings → Connectors; read-only request before mutation/render/export. |
+| Route B | `bpype/blender_mcp` add-on installed in Blender 5.1+ + MCP client config registered; read-only request first. |
+| Route C | `ahujasid/blender-mcp` MCP server registered in client config + addon.py installed/enabled in Blender; read `../../docs/unofficial-runtime-bridges.md` first; explicit user opt-in for `execute_blender_code` (no sandbox). |
+| Route D | Exact Blender executable/CLI command, input/script, output paths, logs, and validation evidence. |
 
 ## Operating procedure
 
@@ -241,7 +243,7 @@ Use when requirements are missing. Report blockers and next safe action.
 
 ## Good examples
 
-- “Runtime status: Not Run. Artifact status: Not Produced. Next safe action: run runtime readiness checklist for Stack 1.”
+- “Runtime status: Not Run. Artifact status: Not Produced. Next safe action: run runtime readiness checklist for Route A (Anthropic Blender Connector).”
 - “Produced evidence exists at `<path>`, but validation is incomplete; status remains Produced, not Verified.”
 
 ## Bad examples

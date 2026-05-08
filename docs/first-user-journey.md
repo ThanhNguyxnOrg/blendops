@@ -15,7 +15,7 @@ This document defines the target non-Blender-user experience as a **spec only**.
 3. Create scene/workflow plan
    - safe structured steps and validation checkpoints
 4. Route through external runtime layer
-   - execution via Stack 1 Claude Desktop official connector stack first, or Stack 2 official Blender CLI fallback when needed; Stack 3 unofficial bridge remains optional/local and outside release evidence
+   - execution via one of the four runtime routes: Route A (Anthropic Blender Connector — one-click in Claude Desktop), Route B (Blender Foundation MCP `bpype/blender_mcp` — manual install, Blender 5.1+), Route C (community `ahujasid/blender-mcp` — mature 21K+ stars third-party), or Route D (Blender CLI — no MCP). See `./runtime-stack-strategy.md` for the corrected attribution history and per-route status.
 5. Validate result
    - check scene/output criteria against requested intent
 6. Render/export

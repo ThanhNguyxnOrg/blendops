@@ -119,15 +119,16 @@ Use the short prompt from [README.md](../README.md#-use-in-30-seconds). The agen
 - Configure official Blender MCP bridge/add-on automatically
 - Ship its own runtime
 
-**Runtime stack options:**
+**Runtime route options (4-route model):**
 
-| Stack | What it is | When to use |
-|---|---|---|
-| **Stack 1** | Claude Desktop Connector + official Blender MCP | Claude Desktop users (only verified stack) |
-| **Stack 2** | Official Blender CLI | Direct Blender executable invocation, no MCP |
-| **Stack 3** | Optional unofficial third-party bridges | Experimental/local only, not official release path |
+| Route | What it is | When to use | Min Blender |
+|---|---|---|---|
+| **Route A** | Anthropic Blender Connector — one-click in Claude Desktop | Claude Desktop users, lowest friction | 4.2+ (4.5 LTS recommended) |
+| **Route B** | Blender Foundation MCP Server (`bpype/blender_mcp`) — manual install | Any MCP client, "official from Blender" path | **5.1+** |
+| **Route C** | Community Blender MCP (`ahujasid/blender-mcp`) — mature 21K+ stars | Non-Claude MCP clients, the only currently user-verified path | 3.0+ |
+| **Route D** | Official Blender CLI — direct `blender` invocation, no MCP | Scripted batch processing, deterministic fallback | 4.2+ recommended |
 
-**Direct official MCP use from Claude Code/OpenCode/Cursor/Codex/Gemini is not verified and not currently supported.**
+**Currently no route has a clean fresh evidence record.** See [`docs/runtime-stack-strategy.md`](./runtime-stack-strategy.md) for per-route verification status and the corrected attribution history of the 2026-04-29 smoke test.
 
 **Start here:**
 - [External runtime setup](./external-runtime-setup.md) — overview
@@ -165,17 +166,18 @@ Use the short prompt from [README.md](../README.md#-use-in-30-seconds). The agen
 
 ## 🎯 Runtime summary
 
-BlendOps documents three runtime stacks:
+BlendOps documents **four runtime routes** (replacing the older 3-stack labeling that conflated three different products into one stack):
 
-| Stack | Description | Status |
+| Route | Description | Verification status |
 |---|---|---|
-| **Stack 1** | Claude Desktop official connector stack (Claude Desktop Connector + official Blender MCP) | Only verified stack (read-only smoke evidence) |
-| **Stack 2** | Official Blender CLI fallback (direct executable invocation, no MCP) | Documented, not verified |
-| **Stack 3** | Optional unofficial third-party bridge stack (user-managed, experimental/local) | Not part of official release path |
+| **Route A** | Anthropic Blender Connector (one-click in Claude Desktop, Anthropic-shipped April 2026) | Not Verified |
+| **Route B** | Blender Foundation MCP Server (`bpype/blender_mcp`, manual install, requires Blender 5.1+) | Ambiguous (2026-04-29 smoke test tool names match this route, but original attribution was Route A) |
+| **Route C** | Community Blender MCP (`ahujasid/blender-mcp`, mature 21K+ stars, the only path verified by the repo owner) | User-reported verified (2026-05-08); no formal evidence file yet |
+| **Route D** | Official Blender CLI (direct `blender --background --python` invocation, no MCP) | Not Run |
 
-**Direct official MCP use from Claude Code/OpenCode/Cursor/Codex/Gemini is not verified and is not currently a supported BlendOps route.**
+**Single-client constraint:** Blender accepts one MCP client per session. Do not run Routes A + B + C concurrently against the same Blender instance.
 
-**Key point:** BlendOps does not ship its own runtime. Runtime setup is a separate, explicit step that depends on upstream official Blender and Claude documentation.
+**Key point:** BlendOps does not ship its own runtime. Runtime setup is a separate, explicit step that depends on upstream Blender, Anthropic, and `ahujasid/blender-mcp` documentation.
 
 ---
 

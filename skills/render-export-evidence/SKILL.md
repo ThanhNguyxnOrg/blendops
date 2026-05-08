@@ -59,7 +59,7 @@ Do not use this skill when:
 | Input | Why it is required |
 |---|---|
 | Artifact type | Status is scoped per artifact. |
-| Runtime stack or mode | Separates Stack 1, Stack 2, Stack 3, or text-only mode. |
+| Runtime route or mode | Separates Route A, B, C, D, or text-only mode (see ../../docs/runtime-stack-strategy.md). |
 | Command/tool/action used | Proves how the artifact was attempted. |
 | Input/script/scene | Connects output to a specific run. |
 | Output path | Required for file-based claims. |
@@ -100,7 +100,9 @@ An artifact evidence ledger.
 ```txt
 Artifact type: <preview | render | blend | GLB/export | handoff>
 Status: Not Run | Attempted | Produced | Verified | Failed
-Runtime stack: <Stack 1 | Stack 2 | Stack 3 | text-only | unknown>
+Runtime route: <Route A | Route B | Route C | Route D | text-only | unknown>
+Blender version: <output of `blender --version` or unknown>
+MCP server source: <repo + commit/version, or N/A for Route D>
 Command/tool/action: <recorded or missing>
 Input/script/scene: <recorded or missing>
 Output path: <path or Not Produced>
@@ -119,13 +121,14 @@ Next safe action: <action>
 
 ## Official runtime boundary
 
-This skill can evaluate evidence from:
+This skill can evaluate evidence from any of the four runtime routes (see ../../docs/runtime-stack-strategy.md):
 
-1. Stack 1 — Claude Desktop official connector stack.
-2. Stack 2 — Official Blender CLI fallback.
-3. Stack 3 — Optional unofficial third-party bridge stack, local/experimental only.
+1. Route A — Anthropic Blender Connector (one-click in Claude Desktop, Blender 4.2+).
+2. Route B — Blender Foundation MCP Server (`bpype/blender_mcp`, manual install, Blender **5.1+**).
+3. Route C — Community Blender MCP (`ahujasid/blender-mcp`, mature 21K+ stars third-party, Blender 3.0+).
+4. Route D — Official Blender CLI (no MCP, deterministic fallback).
 
-Direct official MCP use from Claude Code/OpenCode/Cursor/Codex/Gemini is not verified and is not currently a supported BlendOps route.
+Evidence records must name the route explicitly and must include Blender version + MCP server source/commit (when applicable) so the record is unambiguously attributable to one route.
 
 This skill must not run Blender, render, export GLB, mutate scenes, install runtimes, or promote optional local bridge evidence as official release-eval evidence.
 
@@ -191,11 +194,12 @@ Require:
 
 Read-only smoke evidence is not render/export evidence.
 
-### Playbook D: Optional local bridge output
+### Playbook D: Route C (community `ahujasid/blender-mcp`) output
 
-- Label as Stack 3 local/experimental.
-- Keep separate from official release-eval evidence.
-- Record host/port and arbitrary code execution caveats if relevant.
+- Label as Route C with upstream commit/version.
+- Keep separate from Route A or Route B evidence — Route C is third-party from both Anthropic and the Blender Foundation.
+- Record host/port and arbitrary code execution caveats (`execute_blender_code` runs LLM-generated Python with no sandbox).
+- See ../../docs/unofficial-runtime-bridges.md for the full Route C caveat write-up.
 
 ## Mode handling
 

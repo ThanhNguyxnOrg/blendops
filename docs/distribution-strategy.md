@@ -78,13 +78,13 @@ If the canonical package source `bundles/skill-package/blendops/` is used as upl
 
 Distribution strategy does not change runtime strategy.
 
-- Public runtime guidance uses exactly three stacks:
-  1. Stack 1 — Claude Desktop official connector stack.
-  2. Stack 2 — Official Blender CLI fallback.
-  3. Stack 3 — Optional unofficial third-party bridge stack.
-- The official Blender MCP bridge/add-on is a required Blender-side dependency inside Stack 1, not a separate supported user-facing route.
-- Direct official MCP use from Claude Code/OpenCode/Cursor/Codex/Gemini is not verified and is not currently a supported BlendOps route.
-- Optional unofficial bridges remain user-managed and experimental/local only.
+- Public runtime guidance uses **4 runtime routes** (replaces older 3-stack labeling — see [`./runtime-stack-strategy.md`](./runtime-stack-strategy.md)):
+  1. Route A — Anthropic Blender Connector (one-click in Claude Desktop, Blender 4.2+).
+  2. Route B — Blender Foundation MCP Server (`bpype/blender_mcp`, manual install, Blender **5.1+**).
+  3. Route C — Community Blender MCP (`ahujasid/blender-mcp`, mature 21K+ stars third-party, Blender 3.0+).
+  4. Route D — Official Blender CLI (no MCP, deterministic fallback).
+- Routes A and B are independent products from independent organizations (Anthropic vs. Blender Foundation). The earlier "Stack 1" labeling that gathered them into one stack was a documentation error and is now corrected.
+- Route C is mature prior art (21K+ stars) and is the only currently user-verified runtime path; caveats live in [`./unofficial-runtime-bridges.md`](./unofficial-runtime-bridges.md).
 - Blender runtime setup is separate from BlendOps skill/law/pack distribution.
 - Runtime artifacts still require eval evidence before any claim.
 - Full official runtime manual eval remains Not Run until the eval packet is executed and evidence is recorded.
