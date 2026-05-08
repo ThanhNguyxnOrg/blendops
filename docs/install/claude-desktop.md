@@ -77,6 +77,16 @@ Skill import/package prep is separate from runtime setup. It does not configure 
 
 Runtime status remains `Not Run`. Artifact status remains `Not Produced`.
 
+## Blender version note for Claude Connect users
+
+If a user wants to actually use the Claude Desktop Blender Connector after importing BlendOps skills:
+
+- Anthropic's tutorial says Claude Connector itself works with Blender 4.2+.
+- The official Blender MCP add-on inside Blender requires **Blender 5.1+**.
+- Stack 1 needs both, so users must install **Blender 5.1+** to run the full Connector + MCP path.
+
+See [external-runtime-setup.md](../external-runtime-setup.md) for the complete version table.
+
 ## Report contract
 
 Every Claude Desktop prep attempt should report:

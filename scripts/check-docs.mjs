@@ -353,6 +353,75 @@ function assertUploadSkillFrontmatterMinimal(relPath) {
   }
 }
 
+// Check Anthropic Skills upload limits: name <=64, description <=200 (claude.ai UI limit).
+// Source: https://support.anthropic.com/en/articles/12512198-creating-custom-skills
+function assertSkillFrontmatterUploadLimits(relPath, opts = {}) {
+  const { maxDescription = 200 } = opts;
+  const txt = fs.readFileSync(path.join(root, relPath), 'utf8');
+  const match = txt.match(/^---\r?\n([\s\S]*?)\r?\n---/);
+  if (!match) return;
+  const fm = match[1];
+  const nameMatch = fm.match(/^name:\s*(.*)$/m);
+  const descMatch = fm.match(/^description:\s*(.*)$/m);
+  if (nameMatch) {
+    const name = nameMatch[1].trim();
+    if (name.length > 64) {
+      errors.push(`Skill 'name' >64 chars (Anthropic limit) in ${relPath}: ${name.length} chars`);
+    }
+    if (!/^[a-z0-9-]+$/.test(name)) {
+      errors.push(`Skill 'name' must be lowercase letters/numbers/hyphens only in ${relPath}: '${name}'`);
+    }
+  }
+  if (descMatch) {
+    const desc = descMatch[1].trim();
+    if (desc.length > maxDescription) {
+      errors.push(
+        `Skill 'description' >${maxDescription} chars (Claude.ai upload limit) in ${relPath}: ${desc.length} chars`,
+      );
+    }
+    if (desc.length < 10) {
+      errors.push(`Skill 'description' too short (<10 chars) in ${relPath}`);
+    }
+  }
+}
+
+// Check OpenAI Skills yaml limits: short_description 25-64 chars, strings should be quoted.
+// Source: https://github.com/openai/skills (skill-creator references/openai_yaml.md)
+function assertOpenAiSkillYaml(relPath) {
+  const txt = fs.readFileSync(path.join(root, relPath), 'utf8');
+  const sdMatch = txt.match(/short_description:\s*"?([^"\n]*)"?/);
+  if (!sdMatch) {
+    errors.push(`OpenAI skill yaml missing short_description: ${relPath}`);
+    return;
+  }
+  const sd = sdMatch[1].trim().replace(/^"|"$/g, '');
+  if (sd.length < 25 || sd.length > 64) {
+    errors.push(
+      `OpenAI yaml short_description must be 25-64 chars (got ${sd.length}) in ${relPath}: "${sd}"`,
+    );
+  }
+}
+
+// Check relative markdown link existence (lightweight, scoped to *.md and *.html targets).
+function assertRelativeLinksExist(files) {
+  const linkRe = /\[([^\]]+)\]\(([^)]+)\)/g;
+  for (const f of files) {
+    const txt = fs.readFileSync(path.join(root, f), 'utf8');
+    let m;
+    while ((m = linkRe.exec(txt)) !== null) {
+      let target = m[2].trim();
+      if (target.startsWith('http://') || target.startsWith('https://') || target.startsWith('mailto:')) continue;
+      if (target.startsWith('#')) continue;
+      target = target.split('#')[0].split('?')[0];
+      if (!target) continue;
+      const abs = path.resolve(path.dirname(path.join(root, f)), target);
+      if (!fs.existsSync(abs)) {
+        errors.push(`Broken relative link in ${f}: "${m[2]}" (resolves to ${path.relative(root, abs).replaceAll('\\', '/')})`);
+      }
+    }
+  }
+}
+
 console.log('Running docs:check...');
 
 for (const f of requiredRootFiles) assertExists(f, 'file');
@@ -365,7 +434,12 @@ for (const f of requiredPack) assertExists(f, 'file');
 for (const f of requiredBundleFixture) assertExists(f, 'file');
 
 assertUploadSkillFrontmatterMinimal('bundles/skill-package/blendops/SKILL.md');
+assertSkillFrontmatterUploadLimits('bundles/skill-package/blendops/SKILL.md');
+assertOpenAiSkillYaml('bundles/skill-package/blendops/agents/openai.yaml');
 assertMissing('bundles/claude-desktop-manual/blendops', 'directory');
+assertMissing('apps', 'directory');
+assertMissing('packages', 'directory');
+assertMissing('tsconfig.base.json', 'file');
 
 for (const skillFile of requiredSkills) {
   const txt = fs.readFileSync(path.join(root, skillFile), 'utf8');
@@ -373,6 +447,9 @@ for (const skillFile of requiredSkills) {
     if (!txt.includes(heading)) {
       errors.push(`Missing required heading in ${skillFile}: ${heading}`);
     }
+  }
+  if (!skillFile.endsWith('/_template/SKILL.md')) {
+    assertSkillFrontmatterUploadLimits(skillFile);
   }
 }
 
@@ -428,6 +505,22 @@ for (const p of forbiddenOfficialDirectMcpRoutePatterns) {
 for (const ref of requiredOfficialRefs) {
   if (!ensureRefExists(activeMd, ref)) {
     errors.push(`Missing required official runtime reference in active files: ${ref}`);
+  }
+}
+
+// Link existence check (catches future doc-collection moves like Phase 2.11 cleanup).
+assertRelativeLinksExist(activeMd);
+
+// Blender 5.1+ requirement must be stated in user-facing docs.
+const blenderVersionRequiredFiles = [
+  'README.md',
+  'docs/external-runtime-setup.md',
+  'docs/install/claude-desktop.md',
+];
+for (const f of blenderVersionRequiredFiles) {
+  const txt = fs.readFileSync(path.join(root, f), 'utf8');
+  if (!txt.includes('Blender 5.1')) {
+    errors.push(`Missing Blender 5.1+ requirement note in ${f}`);
   }
 }
 

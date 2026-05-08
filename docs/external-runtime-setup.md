@@ -7,11 +7,24 @@ Active runtime guidance uses the 3-stack model in [Runtime stack strategy](./run
 > [!IMPORTANT]
 > Importing BlendOps skills, laws, packs, or docs does not install Blender runtime, the Claude Desktop connector, any MCP server, or any Blender add-on.
 
+## Blender version requirements
+
+| Stack | Minimum Blender version | Source |
+|---|---|---|
+| Stack 1 (Claude Desktop Connector + official MCP add-on) | **Blender 5.1+** | Official add-on `blender_manifest.toml: blender_version_min = "5.1.0"` ([blender.org/lab/mcp-server](https://www.blender.org/lab/mcp-server/)) |
+| Stack 2 (Official Blender CLI) | Blender 4.2+ recommended | [Blender CLI docs](https://docs.blender.org/manual/en/latest/advanced/command_line/index.html) |
+| Stack 3 (Optional unofficial bridges) | Varies per upstream | Check each upstream repo |
+
+> [!WARNING]
+> Anthropic's Claude Connector tutorial says "Blender 4.2 or later" for the connector itself, but the **official MCP add-on inside Blender requires Blender 5.1+**. Stack 1 needs both, so practical minimum is **Blender 5.1+**. Users on 4.2/4.3/4.4/5.0 cannot install the official MCP add-on.
+
 ---
 
 ## Stack 1 — Claude Desktop official connector stack
 
 Use this stack for users with Claude Desktop when Blender runtime execution is needed.
+
+Requires Blender 5.1+ (see version table above).
 
 Runtime chain:
 

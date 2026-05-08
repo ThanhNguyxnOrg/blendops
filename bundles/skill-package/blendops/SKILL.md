@@ -1,6 +1,6 @@
 ---
 name: blendops
-description: Use for BlendOps, Blender scene planning, runtime/eval readiness, render/export evidence, Claude Desktop connector guidance, install/runtime boundary help, product hero scene planning, and non-Blender-user explanations.
+description: Blender skills pack for non-Blender users. Use for scene planning, runtime readiness, render/export/GLB evidence, Claude Connect guidance, and plain-language handoff across multiple AI agents.
 ---
 
 # BlendOps

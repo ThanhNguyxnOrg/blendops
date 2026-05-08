@@ -1,2 +1,4 @@
-display_name: BlendOps
-short_description: Blender workflow planning, runtime readiness, and artifact evidence guardrails.
+interface:
+  display_name: "BlendOps"
+  short_description: "Blender planning, evidence, and handoff for non-Blender users."
+  default_prompt: "Use $blendops to plan a Blender scene, check runtime readiness, and produce a non-Blender-user response."

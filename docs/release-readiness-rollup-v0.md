@@ -135,8 +135,8 @@ No current repository doc should claim official runtime compatibility confirmed,
 7. Stack 3 remains optional unofficial/user-managed/experimental-local and not a release path.
 8. Official runtime manual eval is Not Run.
 9. Runtime artifacts are Not Produced.
-6. Stable release readiness is Not Ready.
-7. Any release note must avoid implying runtime compatibility is confirmed.
+10. Stable release readiness is Not Ready.
+11. Any release note must avoid implying runtime compatibility is confirmed.
 
 ---
 

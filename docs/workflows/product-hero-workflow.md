@@ -14,18 +14,18 @@ Use this workflow when a non-Blender user asks for a product hero 3D output with
 
 ## Laws applied
 
-- [../laws/official-runtime-only.md](../laws/official-runtime-only.md)
-- [../laws/no-arbitrary-python-interface.md](../laws/no-arbitrary-python-interface.md)
-- [../laws/evidence-before-done.md](../laws/evidence-before-done.md)
-- [../laws/non-blender-user-language.md](../laws/non-blender-user-language.md)
+- [../../laws/official-runtime-only.md](../../laws/official-runtime-only.md)
+- [../../laws/no-arbitrary-python-interface.md](../../laws/no-arbitrary-python-interface.md)
+- [../../laws/evidence-before-done.md](../../laws/evidence-before-done.md)
+- [../../laws/non-blender-user-language.md](../../laws/non-blender-user-language.md)
 
 ## Skills composed
 
-- [../skills/official-runtime-setup-guide.md](../skills/official-runtime-setup-guide.md)
-- [../skills/product-hero-scene-planner.md](../skills/product-hero-scene-planner.md)
-- [../skills/blender-scene-quality-checker.md](../skills/blender-scene-quality-checker.md)
-- [../skills/glb-web-handoff.md](../skills/glb-web-handoff.md)
-- [../skills/non-blender-user-response-writer.md](../skills/non-blender-user-response-writer.md)
+- [../../skills/official-runtime-setup-guide/SKILL.md](../../skills/official-runtime-setup-guide/SKILL.md)
+- [../../skills/product-hero-scene-planner/SKILL.md](../../skills/product-hero-scene-planner/SKILL.md)
+- [../../skills/blender-scene-quality-checker/SKILL.md](../../skills/blender-scene-quality-checker/SKILL.md)
+- [../../skills/glb-web-handoff/SKILL.md](../../skills/glb-web-handoff/SKILL.md)
+- [../../skills/non-blender-user-response-writer/SKILL.md](../../skills/non-blender-user-response-writer/SKILL.md)
 
 ## Phases
 

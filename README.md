@@ -11,15 +11,25 @@
   <img alt="Artifacts: Not Produced" src="https://img.shields.io/badge/artifacts-Not%20Produced-lightgrey.svg">
 </p>
 
-BlendOps helps an AI coding agent turn plain-language 3D requests into constrained Blender workflow plans, validation expectations, and practical handoff guidance.
+BlendOps is a portable **AI-agent Skills pack for Blender**, built for users who don't know Blender. Think of it as "superpowers for the Blender domain" — a set of `SKILL.md`-based capabilities (planning, runtime readiness, evidence, plain-language handoff) that load on-demand inside any compatible AI agent.
 
 ```txt
-Human intent
-  → BlendOps laws / skills / workflow specs
-  → AI-generated scene plan
-  → official external Blender runtime execution
-  → validation notes and handoff guidance
+Human intent (non-Blender user)
+  → BlendOps Skills (planning · readiness · evidence · handoff)
+  → external Blender runtime via Claude Connect / Blender CLI
+  → validated artifacts + non-Blender-user response
 ```
+
+**Multi-agent compatible.** BlendOps is a content layer — same Skills work across:
+
+| Surface | How |
+|---|---|
+| Claude Desktop (with Claude Connect for Blender) | Upload Skills via UI, runtime via Connector |
+| Claude Code / Cursor / OpenCode / Codex / Gemini | Project-local install of `skills/` + `laws/` + `packs/` |
+| ChatGPT (OpenAI Skills UI) | Upload `bundles/skill-package/blendops/` package |
+| Any other tool | Generic project-local fallback in `bundles/generic-project-local/` |
+
+**Complements, not replaces, Claude Connect.** Claude Connect handles the runtime bridge to Blender. BlendOps adds the *workflow knowledge* on top: how to plan a scene, what evidence to require, how to talk to non-Blender users.
 
 > [!IMPORTANT]
 > BlendOps is **Draft v0**. It is not production-ready and does not claim runtime eval completion, preview/render/GLB artifact production, or stable release status.
@@ -85,11 +95,14 @@ Then continue with:
 
 BlendOps runtime guidance uses three stacks:
 
-1. **Stack 1 — Claude Desktop official connector stack** (Claude Desktop Blender Connector + official Blender MCP bridge/add-on)
-2. **Stack 2 — Official Blender CLI fallback**
+1. **Stack 1 — Claude Desktop official connector stack** (Claude Desktop Blender Connector + official Blender MCP bridge/add-on, requires **Blender 5.1+**)
+2. **Stack 2 — Official Blender CLI fallback** (Blender 4.2+ recommended)
 3. **Stack 3 — Optional unofficial third-party bridge stack** (experimental/local only, not official release path)
 
 Direct official MCP use from Claude Code/OpenCode/Cursor/Codex/Gemini is **not verified** and is **not currently a supported BlendOps route**.
+
+> [!WARNING]
+> Anthropic's Claude Connector tutorial mentions Blender 4.2+, but the **official MCP add-on inside Blender requires Blender 5.1+**. Stack 1 needs both, so install Blender 5.1+ if you want the full Connector + MCP runtime path.
 
 For runtime setup details, see [docs/runtime-stack-strategy.md](./docs/runtime-stack-strategy.md).
 
