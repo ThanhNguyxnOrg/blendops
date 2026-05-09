@@ -1,13 +1,38 @@
 {
   "name": "blendops",
-  "version": "0.1.0",
+  "version": "0.1.0-draft",
   "private": true,
-  "description": "AI-native Blender workflow/product layer for non-Blender users.",
+  "description": "AI-native Blender workflow + skill pack for non-Blender users. Portable Anthropic Skills (10 skills, 4 laws, 1 pack) + 9 install targets across Claude Desktop, Claude Code, Cursor, Codex, OpenCode, Gemini, Copilot, Antigravity, generic.",
+  "homepage": "https://github.com/ThanhNguyxnOrg/blendops#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ThanhNguyxnOrg/blendops.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ThanhNguyxnOrg/blendops/issues"
+  },
+  "license": "MIT",
+  "keywords": [
+    "blender",
+    "blender-mcp",
+    "claude",
+    "claude-skills",
+    "anthropic-skills",
+    "openai-skills",
+    "ai-agent",
+    "mcp",
+    "model-context-protocol",
+    "workflow",
+    "3d",
+    "glb",
+    "non-blender-user"
+  ],
   "engines": {
     "node": ">=18"
   },
   "scripts": {
     "docs:check": "node scripts/check-docs.mjs",
-    "skills:export": "node scripts/export-claude-skills.mjs"
+    "skills:export": "node scripts/export-claude-skills.mjs",
+    "ci": "npm run docs:check && npm run skills:export"
   }
 }

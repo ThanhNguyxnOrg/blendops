@@ -1,24 +1,31 @@
 # Contributing to BlendOps
 
-Thanks for contributing ❤️
+Thanks for contributing.
 
-BlendOps is currently focused on a **product/workflow layer** for non-Blender users.
+BlendOps is a **product/workflow + Skills-pack layer** for non-Blender users. It is **not** a Blender runtime, MCP server, or installer.
 
-## Scope
+---
 
-Contributions should improve one or more of:
+## Scope of contributions
 
-- product/workflow docs clarity
-- scene/workflow planning contracts
-- validation and handoff guidance
-- safety boundaries for user-facing AI workflows
+Welcome:
 
-## Ground rules
+- product / workflow doc clarity (README, hub, runtime, install)
+- scene / workflow planning skill contracts (`skills/`)
+- shared guardrail laws (`laws/`)
+- pack manifests (`packs/`)
+- per-target install docs (`docs/install/`) and adapter mappings (`docs/adapters/`)
+- bundle fixtures (`bundles/skill-package/`, `bundles/claude-desktop-manual/`, `bundles/generic-project-local/`)
+- evidence records under `docs/evals/` when you actually run a path
 
-1. Do not reintroduce old BlendOps-owned CLI/MCP/addon runtime surfaces; only official Blender CLI (runtime reference) and GitHub CLI (`gh`) may be referenced where relevant.
-2. Do not expose arbitrary Python as the final BlendOps user-facing interface.
-3. Keep changes small, reviewable, and reversible.
-4. Update docs whenever behavior or contracts change.
+Out of scope (will be rejected):
+
+- shipping a BlendOps-owned CLI / MCP server / Blender add-on (intentionally external — see `laws/official-runtime-only.md`)
+- making arbitrary Python the user-facing surface (see `laws/no-arbitrary-python-interface.md`)
+- claiming runtime / artifact success without an evidence file (see `laws/evidence-before-done.md`)
+- introducing dense Blender jargon into user-facing outputs (see `laws/non-blender-user-language.md`)
+
+---
 
 ## Local setup
 
@@ -28,36 +35,111 @@ cd blendops
 npm install
 ```
 
-If your change includes code, run relevant project checks before opening PR.
+Node 18 or newer is required.
+
+---
+
+## Required pre-PR checks
+
+Run BOTH before opening a PR. CI runs `docs:check` on every PR.
+
+```bash
+npm run docs:check     # validates 137 active markdown files: frontmatter spec, runtime model, link integrity, Blender 5.1+ for Path 1, evidence rules
+npm run skills:export  # produces 10 ZIPs + 10 Claude Code folders into dist/claude-skills/
+```
+
+Or run both with the convenience script:
+
+```bash
+npm run ci
+```
+
+---
 
 ## Branching
 
 - branch from `main`
-- use descriptive names (e.g., `docs/cleanup-readme`, `docs/workflow-contract-polish`)
+- descriptive names: `docs/<area>-<topic>`, `skill/<name>-<change>`, `eval/<path>-<scenario>-<date>`
+
+---
 
 ## Pull request checklist
 
-- [ ] change is aligned with product/workflow direction
-- [ ] no runtime-era command surface reintroduced
-- [ ] docs updated for user-facing contract changes
+- [ ] change is aligned with product / workflow direction (see [`docs/product-direction.md`](./docs/product-direction.md))
+- [ ] no BlendOps-owned CLI / MCP / addon runtime surface reintroduced
+- [ ] no arbitrary Python presented as user-facing surface
+- [ ] runtime / artifact claims have evidence files under `docs/evals/`
+- [ ] runtime references use the 2-path + CLI appendix model (Path 1 = Lab MCP with hosts a/b, Path 2 = community `ahujasid/blender-mcp`, CLI fallback = appendix, publisher not verified) — see [`docs/runtime-stack-strategy.md`](./docs/runtime-stack-strategy.md)
+- [ ] `npm run docs:check` passes locally
+- [ ] `npm run skills:export` passes locally and produces clean ZIPs
+- [ ] docs updated for any user-facing contract change
 - [ ] scope is focused and clearly explained
+
+---
 
 ## Reporting bugs
 
-Please include:
+Use the bug report issue template. Please include:
 
-- environment (OS, Node, Blender)
-- affected docs/feature
+- environment (OS, Node, Blender version)
+- AI tool / runtime path used (which Path 1 host, or Path 2)
+- affected docs / skill / bundle
 - repro steps
 - expected vs actual behavior
 
+Security-sensitive issues: see [`SECURITY.md`](./SECURITY.md). Do not open public issues for security issues.
+
+---
+
 ## Feature requests
 
-Please include:
+Use the feature request issue template. Please include:
 
-- target user workflow
-- why current docs/flow are insufficient
+- target user workflow (which non-Blender-user scenario)
+- why current docs / flow are insufficient
 - proposed minimal change
-- safety implications
+- safety implications (does it affect any law?)
 
-Questions? See [SUPPORT.md](./SUPPORT.md).
+---
+
+## Adding a new skill
+
+See [`skills/README.md`](./skills/README.md) and [`docs/skill-system.md`](./docs/skill-system.md). New skills must:
+
+- start from `skills/_template/SKILL.md`
+- have valid Anthropic Skills frontmatter (`name` ≤64 chars, `description` ≤200 chars, no `version`/`status`/`tags` keys)
+- ship with both `SKILL.md` and `EVAL.md`
+- use the 2-path + CLI appendix runtime model when discussing runtime
+- pass `npm run docs:check` after the skill is registered in `scripts/check-docs.mjs` `requiredSkills`
+
+---
+
+## Adding a new install target / adapter
+
+See [`docs/install/README.md`](./docs/install/README.md), [`docs/adapters/README.md`](./docs/adapters/README.md), and [`docs/adapter-registry.md`](./docs/adapter-registry.md). New targets:
+
+- start as an install doc under `docs/install/<target>.md`
+- graduate to an adapter at `docs/adapters/<target>.md` once the project-local mapping is verified or drafted
+- use `verified-read` / `linked-only` / `unknown` confidence labels honestly
+- pass `npm run docs:check`
+
+---
+
+## Recording runtime evidence
+
+Don't claim runtime / artifact success in a doc. Record it in `docs/evals/path-X-...md`. Template at [`docs/evals/blender-connector-read-only-smoke-test.md`](./docs/evals/blender-connector-read-only-smoke-test.md) section "What a clean re-verification would record".
+
+Required fields:
+
+- Path number (1 or 2) and host option (a / b for Path 1)
+- `blender --version` verbatim
+- Blender-side add-on identity (Lab MCP add-on version OR `ahujasid/blender-mcp` `addon.py` commit)
+- MCP server source (`.mcpb` bundle filename / source commit / `uvx blender-mcp` version)
+- MCP host product + version
+- Exact tool names called + responses
+- Single-bridge constraint check
+- No-mutation guarantee for read-only smoke
+
+---
+
+Questions? See [`SUPPORT.md`](./SUPPORT.md).
