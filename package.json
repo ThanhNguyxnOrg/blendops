@@ -2,7 +2,7 @@
   "name": "blendops",
   "version": "0.1.0-draft",
   "private": true,
-  "description": "AI-native Blender workflow + skill pack for non-Blender users. Portable Anthropic Skills (24 skills, roadmap 48 = 3x; v0.1.0-draft baseline + Batch 1 web 3D deep + Batch 2 quality validation deep, 4 laws, 1 pack) + 16 install targets across Claude Desktop, Claude Code, Cursor, Codex, OpenCode, Gemini, Antigravity, Copilot, Cline, Continue, Zed, goose, Ollama, LM Studio, Open WebUI, generic.",
+  "description": "AI-native Blender workflow + skill pack for non-Blender users. Portable Anthropic Skills (32 skills, roadmap 48 = 3x; v0.1.0-draft baseline + Batches 1-4: web 3D deep, quality validation deep, domain scene planners, process discipline; 4 laws, 1 pack) + 16 install targets across Claude Desktop, Claude Code, Cursor, Codex, OpenCode, Gemini, Antigravity, Copilot, Cline, Continue, Zed, goose, Ollama, LM Studio, Open WebUI, generic.",
   "homepage": "https://github.com/ThanhNguyxnOrg/blendops#readme",
   "repository": {
     "type": "git",

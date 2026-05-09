@@ -86,6 +86,16 @@ const requiredSkills = [
   'skills/lighting-quality-checker/SKILL.md',
   'skills/composition-quality-checker/SKILL.md',
   'skills/polycount-budget-checker/SKILL.md',
+  // Batch 3 (post-v0.2.0-draft): Domain scene planners:
+  'skills/character-portrait-scene-planner/SKILL.md',
+  'skills/environment-establishing-shot-planner/SKILL.md',
+  'skills/interior-architectural-scene-planner/SKILL.md',
+  'skills/product-grid-scene-planner/SKILL.md',
+  // Batch 4 (post-v0.2.0-draft): Process discipline:
+  'skills/blender-checklist-driven-workflow/SKILL.md',
+  'skills/blender-stop-condition-decider/SKILL.md',
+  'skills/blender-scope-boundary-enforcer/SKILL.md',
+  'skills/blender-recipe-decomposer/SKILL.md',
 ];
 
 const requiredSkillEvals = [
@@ -115,6 +125,16 @@ const requiredSkillEvals = [
   'skills/lighting-quality-checker/EVAL.md',
   'skills/composition-quality-checker/EVAL.md',
   'skills/polycount-budget-checker/EVAL.md',
+  // Batch 3 (post-v0.2.0-draft): Domain scene planners:
+  'skills/character-portrait-scene-planner/EVAL.md',
+  'skills/environment-establishing-shot-planner/EVAL.md',
+  'skills/interior-architectural-scene-planner/EVAL.md',
+  'skills/product-grid-scene-planner/EVAL.md',
+  // Batch 4 (post-v0.2.0-draft): Process discipline:
+  'skills/blender-checklist-driven-workflow/EVAL.md',
+  'skills/blender-stop-condition-decider/EVAL.md',
+  'skills/blender-scope-boundary-enforcer/EVAL.md',
+  'skills/blender-recipe-decomposer/EVAL.md',
 ];
 
 const requiredLaws = [
@@ -166,6 +186,16 @@ const requiredBundleFixture = [
   'bundles/claude-desktop-manual/references/skills/lighting-quality-checker.md',
   'bundles/claude-desktop-manual/references/skills/composition-quality-checker.md',
   'bundles/claude-desktop-manual/references/skills/polycount-budget-checker.md',
+  // Batch 3 (post-v0.2.0-draft): Domain scene planners:
+  'bundles/claude-desktop-manual/references/skills/character-portrait-scene-planner.md',
+  'bundles/claude-desktop-manual/references/skills/environment-establishing-shot-planner.md',
+  'bundles/claude-desktop-manual/references/skills/interior-architectural-scene-planner.md',
+  'bundles/claude-desktop-manual/references/skills/product-grid-scene-planner.md',
+  // Batch 4 (post-v0.2.0-draft): Process discipline:
+  'bundles/claude-desktop-manual/references/skills/blender-checklist-driven-workflow.md',
+  'bundles/claude-desktop-manual/references/skills/blender-stop-condition-decider.md',
+  'bundles/claude-desktop-manual/references/skills/blender-scope-boundary-enforcer.md',
+  'bundles/claude-desktop-manual/references/skills/blender-recipe-decomposer.md',
   'bundles/claude-desktop-manual/references/laws/evidence-before-done.md',
   'bundles/claude-desktop-manual/references/laws/official-runtime-only.md',
   'bundles/claude-desktop-manual/references/laws/no-arbitrary-python-interface.md',
@@ -199,6 +229,16 @@ const requiredBundleFixture = [
   'bundles/skill-package/blendops/references/skill-lighting-quality-checker.md',
   'bundles/skill-package/blendops/references/skill-composition-quality-checker.md',
   'bundles/skill-package/blendops/references/skill-polycount-budget-checker.md',
+  // Batch 3 (post-v0.2.0-draft): Domain scene planners:
+  'bundles/skill-package/blendops/references/skill-character-portrait-scene-planner.md',
+  'bundles/skill-package/blendops/references/skill-environment-establishing-shot-planner.md',
+  'bundles/skill-package/blendops/references/skill-interior-architectural-scene-planner.md',
+  'bundles/skill-package/blendops/references/skill-product-grid-scene-planner.md',
+  // Batch 4 (post-v0.2.0-draft): Process discipline:
+  'bundles/skill-package/blendops/references/skill-blender-checklist-driven-workflow.md',
+  'bundles/skill-package/blendops/references/skill-blender-stop-condition-decider.md',
+  'bundles/skill-package/blendops/references/skill-blender-scope-boundary-enforcer.md',
+  'bundles/skill-package/blendops/references/skill-blender-recipe-decomposer.md',
   'bundles/skill-package/blendops/references/law-evidence-before-done.md',
   'bundles/skill-package/blendops/references/pack-product-hero-v0.md',
   'bundles/skill-package/blendops/LICENSE.txt',

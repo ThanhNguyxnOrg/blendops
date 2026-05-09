@@ -80,6 +80,28 @@ Each ships with `SKILL.md` + `EVAL.md` + 3 `references/` files. These four narro
 | `composition-quality-checker` | Validate framing, subject placement, headroom/lead-room, visual hierarchy vs framing intent | Before render, after a camera change | Expanded Draft v0 | [EVAL](./composition-quality-checker/EVAL.md) | composition-rules / headroom-leadroom-rules / aspect-ratio-rules |
 | `polycount-budget-checker` | Validate per-mesh + total-scene triangle counts vs pinned budget; flag worst offenders and topology hints without modeling | After scene plan, before GLB export, when `glb-mobile-performance-budget` is pinned | Expanded Draft v0 | [EVAL](./polycount-budget-checker/EVAL.md) | per-mesh-rules / topology-hints / instance-counting-rules |
 
+### 🎬 Domain scene planners (Batch 3, post-v0.2.0-draft)
+
+Four narrowly-scoped scene planners that complement `product-hero-scene-planner` (the existing single-product hero planner).
+
+| Skill | Purpose | Use when | Depth status | Eval | References |
+|---|---|---|---|---|---|
+| `character-portrait-scene-planner` | Plan a single-character portrait scene (subject, pose, expression, wardrobe, framing, lighting, background) | Intent is a character / person / creature portrait | Expanded Draft v0 | [EVAL](./character-portrait-scene-planner/EVAL.md) | portrait-framing-rules / portrait-lighting-patterns / style-consistency-rules |
+| `environment-establishing-shot-planner` | Plan a wide environment / establishing shot (locale, time, weather, atmosphere, depth layers, focal subject) | Intent is establishing a place (wide / outdoor / landscape / cityscape) | Expanded Draft v0 | [EVAL](./environment-establishing-shot-planner/EVAL.md) | time-and-weather-rules / wide-shot-camera-rules / depth-layering-rules |
+| `interior-architectural-scene-planner` | Plan an interior arch viz scene (room dims, style, furniture, materials, natural + artificial lighting, camera) | Intent is an interior room / venue / showroom | Expanded Draft v0 | [EVAL](./interior-architectural-scene-planner/EVAL.md) | interior-architecture-rules / furniture-layout-rules / interior-camera-rules |
+| `product-grid-scene-planner` | Plan a multi-product grid scene with consistent lighting, camera, background, grid spacing | Intent is multi-product display (4+ products in same scene, e-commerce / catalog / comparison) | Expanded Draft v0 | [EVAL](./product-grid-scene-planner/EVAL.md) | grid-layout-rules / grid-consistency-rules / grid-output-naming-rules |
+
+### 🧰 Process discipline (Batch 4, post-v0.2.0-draft, Superpowers-inspired)
+
+Four process / discipline skills that prevent scope drift, enforce gates, and pin "done":
+
+| Skill | Purpose | Use when | Depth status | Eval | References |
+|---|---|---|---|---|---|
+| `blender-checklist-driven-workflow` | Enforce per-stage gates and acceptance checklists; work advances only when each previous gate `Pass` | Complex multi-stage recipe (4+ stages), or before runtime work | Expanded Draft v0 | [EVAL](./blender-checklist-driven-workflow/EVAL.md) | gate-template / stage-decomposition-patterns / failed-gate-handling |
+| `blender-stop-condition-decider` | Define one explicit "done" condition for a recipe before starting work, plus an out-of-scope list | Before any non-trivial recipe, when previous attempts drifted into endless polish | Expanded Draft v0 | [EVAL](./blender-stop-condition-decider/EVAL.md) | stop-condition-templates / out-of-scope-patterns / done-vs-perfect |
+| `blender-scope-boundary-enforcer` | Detect mid-recipe scope creep and force decline / agree-to-new-scope / defer; prevents silent absorption | Mid-recipe when scope drift is detected ("can you also...") | Expanded Draft v0 | [EVAL](./blender-scope-boundary-enforcer/EVAL.md) | scope-addition-classification / options-language-template / recurring-creep-patterns |
+| `blender-recipe-decomposer` | Break a complex / over-scoped intent into 2-5 smaller cohesive recipes with brief, stop condition, handoff | Intent has multiple distinct deliverables or crosses scene types | Expanded Draft v0 | [EVAL](./blender-recipe-decomposer/EVAL.md) | recipe-grouping-rules / dependency-patterns / recipe-naming-rules |
+
 ### 🧠 Process and discipline (Phase 4 expansion — Superpowers + BMad inspired)
 
 Each ships with `SKILL.md` + `EVAL.md` + 3 `references/` files (templates / playbooks / patterns).
