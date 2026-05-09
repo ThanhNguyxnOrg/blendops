@@ -3,7 +3,7 @@
 _Last updated: 2026-05-09 (Batches 7+8 complete — 48 skills shipped, 3x baseline target reached. Tags v0.4.0-draft (40) and v0.5.0-draft (48) pushed with GitHub Releases attached. Skills layer roadmap done.)_
 
 > [!NOTE]
-> BlendOps publishes one thing: a **skills layer** (**48 skills** — Batches 1–8 complete 2026-05-09; **3× baseline target reached**) + 4 laws + 1 pack + 3 bundles + 16 install target docs + ZIP/package generation + CI guards). The layer is **complete and shippable** at Draft v0. Milestone tags: `v0.1.0-draft` (16) → `v0.2.0-draft` (24) → `v0.3.0-draft` (32) → **`v0.4.0-draft` (40)** → **`v0.5.0-draft` (48)**.
+> BlendOps publishes one thing: a **skills layer** (**48 skills** — Batches 1–8 complete 2026-05-09; **3× baseline target reached**) + 4 laws + 1 pack + 3 bundles + **20 install target docs** + ZIP/package generation + CI guards. The layer is **complete and shippable** at Draft v0. Milestone tags: `v0.1.0-draft` (16) → `v0.2.0-draft` (24) → `v0.3.0-draft` (32) → `v0.4.0-draft` (40) → `v0.5.0-draft` (48) → **`v0.6.0-draft` (final agent expansion + docs sync)**.
 >
 > Everything related to actually running Blender — the Blender executable, the MCP servers, the MCP hosts, the CLI — is **upstream**, owned by Blender Foundation / Anthropic / the `ahujasid` community. BlendOps **redirects** users to the right upstream docs per per-target install doc. Whether those upstream paths work in a given environment is upstream's claim, not BlendOps'. Path 1 + Path 2 are **user-reported verified by the repo owner**; CLI is **upstream-stable, decades-old**.
 >
@@ -17,7 +17,7 @@ _Last updated: 2026-05-09 (Batches 7+8 complete — 48 skills shipped, 3x baseli
 
 | Layer | Runnable? | Why |
 |---|---|---|
-| Content install (clone → paste prompt → agent installs project-locally OR prepares Skills ZIPs) | ✅ Yes | `docs/ai-agent-quickstart.md` + 3-mode auto-detect flow + 16 install targets. Just paste the README 30-second prompt. |
+| Content install (clone → paste prompt → agent installs project-locally OR prepares Skills ZIPs) | ✅ Yes | `docs/ai-agent-quickstart.md` + 3-mode auto-detect flow + 20 install targets. Just paste the README 30-second prompt. |
 | Skill ZIP / package generation | ✅ Yes | `npm run skills:export` → 48 ZIPs in `dist/claude-skills/desktop-zips/` + canonical portable skill at `bundles/skill-package/blendops/`. |
 | Skill upload to Claude Desktop / Claude.ai / ChatGPT Skills UI | ✅ Yes (UI drag-drop = user's manual action, not a publisher gap) | `npm run skills:export` produces correctly-shaped Anthropic Skills (≤200-char description, no `version:` / `status:` keys) and an OpenAI YAML manifest. |
 | CI guards | ✅ Yes | `npm run docs:check` validates active markdown files (see script footer count) against runtime model, frontmatter spec, evidence rules, and link integrity. |

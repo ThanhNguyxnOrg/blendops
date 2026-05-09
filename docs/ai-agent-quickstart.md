@@ -68,27 +68,7 @@ Create one ZIP per canonical skill from:
 skills/*/SKILL.md
 ```
 
-Expected output shape (16 ZIPs — 10 domain skills + 6 process / discipline skills inspired by Superpowers + BMad):
-
-```txt
-desktop-zips/
-  blendops-help.zip
-  blender-brainstorming.zip
-  intent-to-3d-brief-writer.zip
-  blender-asset-discovery-planner.zip
-  blender-troubleshooting.zip
-  pre-handoff-verification.zip
-  runtime-bridge-conflict-resolver.zip
-  official-runtime-setup-guide.zip
-  official-runtime-readiness-checker.zip
-  product-hero-scene-planner.zip
-  blender-composition-camera-planner.zip
-  blender-lighting-material-planner.zip
-  blender-scene-quality-checker.zip
-  render-export-evidence.zip
-  glb-web-handoff.zip
-  non-blender-user-response-writer.zip
-```
+Expected output shape: **one ZIP per `skills/*/SKILL.md`** (currently 48 — 16 baseline + 32 expansion across Batches 1–8: web 3D handoff deep, quality validators, domain scene planners, process discipline, asset/sourcing, color/format/output decisions, recipe/pack ops, runtime path discipline). Run `npm run skills:export` to generate them deterministically into `dist/claude-skills/desktop-zips/`. The full skill inventory lives in [`skills/README.md`](../skills/README.md).
 
 Each ZIP must contain exactly one skill directory:
 

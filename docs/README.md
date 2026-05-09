@@ -100,9 +100,9 @@ The single index for everything in this repo. Bookmark this page.
 
 ---
 
-## 📂 Per-target install docs (16 targets total)
+## 📂 Per-target install docs (20 targets total)
 
-3 consumer types: **chat UI** (Claude Desktop), **coding agents** (11 — Claude Code through goose), **local LLM runners** (3 — Ollama / LM Studio / Open WebUI). Plus a generic project-local fallback.
+3 consumer types: **chat UI** (Claude Desktop), **coding agents** (15 — Claude Code through JetBrains Junie), **local LLM runners** (3 — Ollama / LM Studio / Open WebUI). Plus a generic project-local fallback.
 
 ### 1) Chat UI with Skills upload
 
@@ -112,7 +112,7 @@ The single index for everything in this repo. Bookmark this page.
 
 ### 2) Coding agents (project-local install + can host MCP for Blender)
 
-All 11 accept BlendOps via project-local files and can host MCP for Blender via Path 1 host (b) Lab MCP or Path 2 community `ahujasid/blender-mcp`. They differ in MCP config syntax and native-skill-loader maturity.
+All 15 accept BlendOps via project-local files and can host MCP for Blender via Path 1 host (b) Lab MCP or Path 2 community `ahujasid/blender-mcp`. They differ in MCP config syntax and native-skill-loader maturity.
 
 | Target | Doc | Selected mode | Confidence |
 |---|---|---|---|
@@ -124,9 +124,13 @@ All 11 accept BlendOps via project-local files and can host MCP for Blender via 
 | Antigravity | [`install/antigravity.md`](./install/antigravity.md) | project-local install | not researched |
 | GitHub Copilot | [`install/github-copilot.md`](./install/github-copilot.md) | project-local install | linked-only / generic |
 | Cline (VS Code) | [`install/cline.md`](./install/cline.md) | project-local install | linked-only |
+| Roo Code (VS Code) | [`install/roo-code.md`](./install/roo-code.md) | project-local install | linked-only |
 | Continue.dev | [`install/continue.md`](./install/continue.md) | project-local install | linked-only |
 | Zed editor | [`install/zed.md`](./install/zed.md) | project-local install | linked-only |
+| Windsurf (Codeium) | [`install/windsurf.md`](./install/windsurf.md) | project-local install | linked-only |
 | goose (Block) | [`install/goose.md`](./install/goose.md) | docs-only + Standard IO extension | linked-only — has upstream Blender tutorial |
+| OpenHands | [`install/openhands.md`](./install/openhands.md) | project-local install | linked-only |
+| JetBrains Junie / AI Assistant | [`install/jetbrains-junie.md`](./install/jetbrains-junie.md) | project-local install | linked-only |
 
 ### 3) Local LLM runners (docs-only; runner hosts MCP for Blender)
 

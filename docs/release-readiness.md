@@ -1,12 +1,12 @@
 # 🚦 Release Readiness
 
 Status: Draft v0, not production, not stable  
-Date: 2026-05-09 (scope clarified)
+Date: 2026-05-09 (scope clarified; expanded to 48 skills + 20 install targets)
 
 > [!IMPORTANT]
-> **Scope: BlendOps publishes the skills layer; runtime paths are an upstream redirect.** This readiness report grades only what BlendOps **owns**: 16 skills + 4 laws + 1 pack + 3 bundles + 16 install target docs + ZIP/package generation + CI guards. Runtime execution (Path 1 Lab MCP, Path 2 `ahujasid` community, CLI) is owned by Blender Foundation / Anthropic / the community — BlendOps redirects users via per-target install docs and does **not** claim ownership of those upstream paths' stability.
+> **Scope: BlendOps publishes the skills layer; runtime paths are an upstream redirect.** This readiness report grades only what BlendOps **owns**: 48 skills + 4 laws + 1 pack + 3 bundles + 20 install target docs + ZIP/package generation + CI guards. Runtime execution (Path 1 Lab MCP, Path 2 `ahujasid` community, CLI) is owned by Blender Foundation / Anthropic / the community — BlendOps redirects users via per-target install docs and does **not** claim ownership of those upstream paths' stability.
 >
-> The skills layer is **Ready for Draft v0**. The `v0.1.0-draft` tag is **tag-able now**; deferring it is a publishing decision, not a blocker.
+> The skills layer is **Ready for Draft v0**. Tags shipped: `v0.1.0-draft` (16) → `v0.2.0-draft` (24) → `v0.3.0-draft` (32) → `v0.4.0-draft` (40) → `v0.5.0-draft` (48) → `v0.6.0-draft` (final agent expansion + docs sync).
 >
 > Phase 3.3 rollup: [docs/release-readiness-rollup-v0.md](./release-readiness-rollup-v0.md)
 
@@ -17,9 +17,9 @@ Date: 2026-05-09 (scope clarified)
 | Gate | Status | Evidence |
 |---|---|---|
 | Product and docs direction | Ready for Draft v0 review | Active docs describe upstream-redirect workflow and skill collection direction. |
-| Root collection layout | Ready for Draft v0 review | `skills/` (16 skills), `laws/` (4 laws), `packs/` (1 pack) exist. |
-| Skill depth and gate review | Ready for Draft v0 review | All 16 skills at Expanded Draft v0; 13 Pass / 3 Warn / 0 Fail in `skill-reviews/reports/v0-skill-gate-review.md`. |
-| Skill ZIP / package generation | Ready for Draft v0 review | `npm run skills:export` produces 16 ZIPs + 16 Claude Code skill folders. Anthropic Skills frontmatter spec compliance verified. |
+| Root collection layout | Ready for Draft v0 review | `skills/` (48 skills), `laws/` (4 laws), `packs/` (1 pack) exist. |
+| Skill depth and gate review | Ready for Draft v0 review | All 48 skills at Expanded Draft v0; gate review pass for the original 16 baseline (snapshot in `skill-reviews/reports/v0-skill-gate-review.md`); Batches 1–8 inherit the same SKILL.md + EVAL.md + 3 references shape. |
+| Skill ZIP / package generation | Ready for Draft v0 review | `npm run skills:export` produces one ZIP + one Claude Code folder per `skills/*/SKILL.md` (currently 48). Anthropic Skills frontmatter spec compliance verified. |
 | Adapter install dry-run | Warn | Adapter architecture and dry-run install eval are complete, with native-path confidence still environment-dependent. |
 | Manual install beta | Warn | Evidence report: [docs/evals/manual-install-beta-v0.md](./evals/manual-install-beta-v0.md). |
 | CI guards | Ready for Draft v0 review | `npm run docs:check` validates active markdown files (see script footer count). |
@@ -78,7 +78,7 @@ The following are **not** "Not Ready" items in the publishing sense — they are
 
 ## 🧱 No blockers for `v0.1.0-draft`
 
-There are no skills-layer blockers for the `v0.1.0-draft` tag. Earlier drafts of this report listed runtime-eval-evidence items as blockers; that framing was wrong because BlendOps does not own runtime execution paths — it redirects to upstream. Skills layer has clean CI, all 16 skills are Expanded Draft v0, all 16 install targets are documented, and skill ZIP / package generation is verified at source level.
+There are no skills-layer blockers for the `v0.1.0-draft` tag (already shipped on 2026-05-09 alongside subsequent batch tags). Earlier drafts of this report listed runtime-eval-evidence items as blockers; that framing was wrong because BlendOps does not own runtime execution paths — it redirects to upstream. Skills layer has clean CI, all 48 skills are Expanded Draft v0, all 20 install targets are documented, and skill ZIP / package generation is verified at source level.
 
 The previously-listed "blockers" are now correctly scoped:
 
@@ -92,12 +92,12 @@ The previously-listed "blockers" are now correctly scoped:
 
 ## 🧾 Ready for `v0.1.0-draft` tag
 
-- [x] 16 skills at Expanded Draft v0 with frontmatter spec compliance.
+- [x] 48 skills at Expanded Draft v0 with frontmatter spec compliance (16 baseline + 32 expansion across Batches 1–8).
 - [x] 4 laws + 1 pack + 3 bundle fixtures.
-- [x] 16 install target docs (Claude Desktop, Claude Code, Cursor, Codex, OpenCode, Gemini, Antigravity, Copilot, Cline, Continue, Zed, goose, Ollama, LM Studio, Open WebUI, generic-project).
+- [x] 20 install target docs (Claude Desktop, Claude Code, Cursor, Codex, OpenCode, Gemini, Antigravity, Copilot, Cline, Roo Code, Continue, Zed, Windsurf, goose, OpenHands, JetBrains Junie, Ollama, LM Studio, Open WebUI, generic-project).
 - [x] 3-mode auto-detect install flow (Mode A / B / C) in `docs/ai-agent-quickstart.md` + README 30-second prompt.
-- [x] Skill ZIP / package generation working (`npm run skills:export` → 16 ZIPs + 16 Claude Code folders).
-- [x] CI guards passing (`npm run docs:check` validates 182 active markdown files).
+- [x] Skill ZIP / package generation working (`npm run skills:export` produces one ZIP + one Claude Code folder per `skills/*/SKILL.md`, currently 48).
+- [x] CI guards passing (`npm run docs:check` validates active markdown files; see script footer count).
 - [x] Runtime-stack-strategy 2-path + CLI appendix documented with upstream redirect clarity.
 - [x] CLI compatibility considerations researched + documented (GLB export, add-on enablement, GPU flags, viewport limits, stateless caveat).
 - [x] AGENTS.md, CONTRIBUTING.md, GitHub PR / issue templates, package.json metadata.

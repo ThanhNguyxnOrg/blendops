@@ -132,6 +132,9 @@ This package structure is a strategy target, not a current packaged release.
 | Gemini CLI | Future adapter or docs-only reference until researched. | Path 1 host (a) not applicable; MCP support TBD per upstream; CLI fallback usable; documented upstream as first-class Blender CLI but no in-repo evidence file yet. | Docs-only/reference | Treat as not researched until verified. | not researched | Add adapter only after source-backed path exists. |
 | Generic root/project-local fallback | `BLENDOPS.md`, `AGENTS.md`, or copied core collection references. | Path 1 host (a) not applicable; Path 1 host (b) usable; Path 2 usable; CLI fallback usable; documented upstream as first-class Blender CLI but no in-repo evidence file yet. | Project-local file install | Copy/reference core collection and record rollback. | verified-read | Default safest reversible path. |
 
+> [!NOTE]
+> The matrix above lists representative surfaces. The full canonical install index covers **20 targets** (1 chat UI + 15 coding agents + 3 local LLM runners + 1 generic) and lives in [`docs/install/README.md`](./install/README.md). Coding agents not enumerated above (Antigravity, GitHub Copilot, Cline, Roo Code, Continue.dev, Zed, Windsurf, goose, OpenHands, JetBrains Junie / AI Assistant) follow the same project-local + optional MCP host pattern documented for Cursor / Claude Code; only the MCP config syntax differs per upstream client.
+
 ---
 
 ## Near-term AI paste-command flow

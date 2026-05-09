@@ -16,7 +16,7 @@
 [![Skills: 48](https://img.shields.io/badge/skills-48-1f6feb.svg?style=flat-square)](./skills/README.md)
 [![Laws: 4](https://img.shields.io/badge/laws-4-1f6feb.svg?style=flat-square)](./laws/README.md)
 [![Packs: 1](https://img.shields.io/badge/packs-1-1f6feb.svg?style=flat-square)](./packs/README.md)
-[![Install targets: 16](https://img.shields.io/badge/install%20targets-16-1f6feb.svg?style=flat-square)](./docs/install/README.md)
+[![Install targets: 20](https://img.shields.io/badge/install%20targets-20-1f6feb.svg?style=flat-square)](./docs/install/README.md)
 [![Adapters: 6](https://img.shields.io/badge/adapters-6-1f6feb.svg?style=flat-square)](./docs/adapters/README.md)
 [![Bundles: 3](https://img.shields.io/badge/bundles-3-1f6feb.svg?style=flat-square)](./bundles/)
 [![Inspired by: Superpowers + BMad](https://img.shields.io/badge/inspired%20by-Superpowers%20%2B%20BMad-orange.svg?style=flat-square)](./skills/README.md)
@@ -32,6 +32,10 @@
 [![Coding agent: Continue.dev](https://img.shields.io/badge/coding%20agent-Continue.dev-5436DA.svg?style=flat-square)](./docs/install/continue.md)
 [![Coding agent: Zed](https://img.shields.io/badge/coding%20agent-Zed-D29922.svg?style=flat-square)](./docs/install/zed.md)
 [![Coding agent: goose](https://img.shields.io/badge/coding%20agent-goose%20(Block)-FF8C00.svg?style=flat-square)](./docs/install/goose.md)
+[![Coding agent: Roo Code](https://img.shields.io/badge/coding%20agent-Roo%20Code-7c3aed.svg?style=flat-square)](./docs/install/roo-code.md)
+[![Coding agent: Windsurf](https://img.shields.io/badge/coding%20agent-Windsurf-09b6a2.svg?style=flat-square)](./docs/install/windsurf.md)
+[![Coding agent: OpenHands](https://img.shields.io/badge/coding%20agent-OpenHands-c63d2f.svg?style=flat-square)](./docs/install/openhands.md)
+[![Coding agent: JetBrains Junie](https://img.shields.io/badge/coding%20agent-JetBrains%20Junie-000000.svg?style=flat-square)](./docs/install/jetbrains-junie.md)
 [![+ 4 more coding agents](https://img.shields.io/badge/%2B%204%20more%20coding%20agents-OpenCode%20%E2%80%A2%20Gemini%20%E2%80%A2%20Antigravity%20%E2%80%A2%20Copilot-1f6feb.svg?style=flat-square)](./docs/install/README.md)
 
 [![Local LLM: Ollama](https://img.shields.io/badge/local%20LLM-Ollama-000000.svg?style=flat-square)](./docs/install/ollama.md)
@@ -67,8 +71,8 @@ Human intent (non-Blender user)
 | 48 skills (baseline + web 3D deep + quality validators + domain planners + process discipline + asset/sourcing + color/format/output + recipe/pack ops + runtime path discipline, …) | **Path 1 — Blender Lab MCP** (Lab add-on + Lab server). Owner: Blender Foundation. Source: [blender.org/lab/mcp-server](https://www.blender.org/lab/mcp-server/) |
 | 4 laws (evidence-before-done, official-runtime-only, no-arbitrary-python-interface, non-blender-user-language) | **Path 1 host (a) — Anthropic Blender Connector** (Claude-Desktop-specific MCP host). Owner: Anthropic. Source: [claude.com/.../using-the-blender-connector-in-claude](https://claude.com/resources/tutorials/using-the-blender-connector-in-claude) |
 | 1 pack (`product-hero-v0`), 3 bundles (skill-package, claude-desktop-manual, generic-project-local) | **Path 2 — Community `ahujasid/blender-mcp`** (different add-on/server). Owner: 21K+ stars community project. Source: [github.com/ahujasid/blender-mcp](https://github.com/ahujasid/blender-mcp) |
-| 16 install target docs + 3 mode auto-detect install flow | **CLI fallback** (`blender --background --python ...`). Owner: Blender Foundation. Source: [docs.blender.org/manual/.../command_line](https://docs.blender.org/manual/en/latest/advanced/command_line/index.html) |
-| Skill ZIP / OpenAI YAML / canonical bundle generation (`npm run skills:export` → 16 ZIPs) | The Blender executable, MCP servers, MCP host clients, OS, GPU drivers, network. |
+| 20 install target docs + 3 mode auto-detect install flow | **CLI fallback** (`blender --background --python ...`). Owner: Blender Foundation. Source: [docs.blender.org/manual/.../command_line](https://docs.blender.org/manual/en/latest/advanced/command_line/index.html) |
+| Skill ZIP / OpenAI YAML / canonical bundle generation (`npm run skills:export` → 48 ZIPs, one per `skills/*/SKILL.md`) | The Blender executable, MCP servers, MCP host clients, OS, GPU drivers, network. |
 
 **What this means for "completeness":**
 
@@ -88,13 +92,13 @@ https://raw.githubusercontent.com/ThanhNguyxnOrg/blendops/main/docs/ai-agent-qui
 
 Auto-detect your environment first, then pick one mode:
 - If you have project filesystem write access → Mode A: install BlendOps project-locally (skills/, laws/, packs/, target-specific entrypoint).
-- If you are in a chat-only UI (Claude Desktop chat, Claude.ai, ChatGPT) with no filesystem write → Mode B: output 16 separate ZIPs from skills/*/SKILL.md (one ZIP per skill) for me to drag-drop into the Skills UI manually.
+- If you are in a chat-only UI (Claude Desktop chat, Claude.ai, ChatGPT) with no filesystem write → Mode B: output 48 separate ZIPs from skills/*/SKILL.md (one ZIP per skill) for me to drag-drop into the Skills UI manually.
 - If you cannot fetch the repo, cannot write, AND cannot output ZIPs → Mode C: ask one concise question.
 
 Do not install Blender, configure runtime connectors, run Blender, or claim generated artifacts. Report the selected mode, files changed or ZIP filenames, runtime status, artifact status, and limitations.
 ```
 
-The agent auto-detects which mode applies. Coding agents (Claude Code, Cursor, Codex, OpenCode, Cline, Continue, Zed, goose, Gemini, Copilot, Antigravity) hit **Mode A** and install **project-locally**. Claude Desktop / Claude.ai / ChatGPT chats hit **Mode B** and output **separate ZIPs from skills/*/SKILL.md** (one per skill) for you to drag-drop into the Skills UI manually. Anything else falls back to **Mode C — blocked-needs-input**. Full mode logic in [`docs/ai-agent-install-flow.md`](./docs/ai-agent-install-flow.md).
+The agent auto-detects which mode applies. Coding agents (Claude Code, Cursor, Codex, OpenCode, Cline, Roo Code, Continue, Zed, Windsurf, goose, OpenHands, JetBrains Junie, Gemini, Copilot, Antigravity) hit **Mode A** and install **project-locally**. Claude Desktop / Claude.ai / ChatGPT chats hit **Mode B** and output **separate ZIPs from skills/*/SKILL.md** (one per skill, 48 total) for you to drag-drop into the Skills UI manually. Anything else falls back to **Mode C — blocked-needs-input**. Full mode logic in [`docs/ai-agent-install-flow.md`](./docs/ai-agent-install-flow.md).
 
 ---
 

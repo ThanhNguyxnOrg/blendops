@@ -1,6 +1,6 @@
 # Lifecycle Phases
 
-A complete BlendOps run for a non-Blender user passes through 6 phases. Each phase loads a specific subset of the 16 skills.
+A complete BlendOps run for a non-Blender user passes through 6 phases. Each phase loads a specific subset of the **48** skills (16 baseline + 32 expansion across Batches 1–8). Use `workflow-stage-router` whenever you need to interleave expansion skills with the baseline chain summarized below.
 
 ## Phase A — Intent
 

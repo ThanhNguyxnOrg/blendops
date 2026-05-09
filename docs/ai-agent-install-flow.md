@@ -127,7 +127,7 @@ Every mode must avoid these actions:
 
 ## Target confidence table
 
-3 consumer types: chat UI (Claude Desktop), coding agents (11 — all project-aware + MCP-capable), local LLM runners (3 — docs-only). Plus a generic fallback. The 11 coding agents share the same install pattern (project-local files + optional MCP host config); they differ only in MCP config syntax + tool-native skill-loader maturity.
+3 consumer types: chat UI (Claude Desktop), coding agents (15 — all project-aware + MCP-capable), local LLM runners (3 — docs-only). Plus a generic fallback. The 15 coding agents share the same install pattern (project-local files + optional MCP host config); they differ only in MCP config syntax + tool-native skill-loader maturity.
 
 ### 1) Chat UI with Skills upload
 
@@ -147,11 +147,15 @@ Every mode must avoid these actions:
 | [Antigravity](./install/antigravity.md) | Low / not researched | per upstream | Don't claim native support yet. |
 | [GitHub Copilot](./install/github-copilot.md) | Low / linked-only | per upstream | No marketplace / extension listing claim. |
 | [Cline (VS Code)](./install/cline.md) | Low / linked-only | Cline Settings → Integrations | MCP-capable VS Code extension. |
+| [Roo Code (VS Code)](./install/roo-code.md) | Low / linked-only | `.roo/mcp.json` (project) or global `mcp_settings.json` | Cline fork; project + global config levels. |
 | [Continue.dev](./install/continue.md) | Low / linked-only | `.continue/mcpServers/` | MCP usable in agent mode only. |
 | [Zed editor](./install/zed.md) | Low / linked-only | `settings.json` `context_servers` | HTTP/SSE MCP supported (Nov 2025). |
+| [Windsurf (Codeium)](./install/windsurf.md) | Low / linked-only | `~/.codeium/windsurf/mcp_config.json` | Cascade agent; 100-tool ceiling. |
 | [goose (Block)](./install/goose.md) | Low / linked-only | Standard IO extension | Has upstream Blender MCP tutorial covering Path 2. |
+| [OpenHands](./install/openhands.md) | Low / linked-only | `~/.openhands/mcp.json` + Settings UI + `openhands mcp` CLI | Formerly OpenDevin; CLI/SDK/GUI/Cloud parity. |
+| [JetBrains Junie / AI Assistant](./install/jetbrains-junie.md) | Low / linked-only | Settings → Tools → Junie → MCP Settings or `.junie/mcp/mcp.json` | Shared MCP config with AI Assistant. |
 
-All 11 follow the same project-local install pattern (`BLENDOPS.md` / `AGENTS.md` / `skills/` etc.) and can host MCP for Blender via **Path 1 host (b) Lab MCP** OR **Path 2 community `ahujasid/blender-mcp`**. Global writes are not allowed by default for any of them; existing project instruction files are backed up before edits; runtime setup is always separate.
+All 15 follow the same project-local install pattern (`BLENDOPS.md` / `AGENTS.md` / `skills/` etc.) and can host MCP for Blender via **Path 1 host (b) Lab MCP** OR **Path 2 community `ahujasid/blender-mcp`**. Global writes are not allowed by default for any of them; existing project instruction files are backed up before edits; runtime setup is always separate.
 
 ### 3) Local LLM runners (docs-only; runner hosts MCP)
 

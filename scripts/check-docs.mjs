@@ -48,6 +48,11 @@ const requiredDocs = [
   'docs/install/ollama.md',
   'docs/install/lm-studio.md',
   'docs/install/open-webui.md',
+  // Phase 5 final agent expansion (post-v0.5.0-draft): popular MCP-aware coding agents
+  'docs/install/roo-code.md',
+  'docs/install/windsurf.md',
+  'docs/install/openhands.md',
+  'docs/install/jetbrains-junie.md',
   'docs/install/generic-project.md',
   'docs/install/installer-spec.md',
   'docs/capability-profile.md',

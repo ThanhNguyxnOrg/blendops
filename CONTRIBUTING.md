@@ -45,7 +45,7 @@ Run BOTH before opening a PR. CI runs `docs:check` on every PR.
 
 ```bash
 npm run docs:check     # validates active markdown files under docs/skills/laws/packs/skill-reviews (see script footer count): frontmatter spec, runtime model, link integrity, Blender 5.1+ for Path 1, evidence rules
-npm run skills:export  # produces 10 ZIPs + 10 Claude Code folders into dist/claude-skills/
+npm run skills:export  # produces one ZIP + one Claude Code folder per skills/*/SKILL.md (currently 48) into dist/claude-skills/
 ```
 
 Or run both with the convenience script:

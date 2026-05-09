@@ -5,9 +5,11 @@ Status: Draft v0 fallback only
 > [!IMPORTANT]
 > This file is a **fallback only**. It is less complete than the full manual bundle (`SKILL.md` + `references/`). Use this only when your Claude Desktop import/copy path supports one file.
 
-## Condensed skill map (16 skills)
+## Condensed skill map (baseline 16 — full inventory: 48 skills)
 
-Use these routes:
+The 16 routes below cover the canonical baseline workflow. The repo now ships **48 skills** (16 baseline + 32 expansion across Batches 1–8: web 3D handoff deep, quality validators, domain scene planners, process discipline, asset/sourcing, color/format/output decisions, recipe/pack ops, runtime path discipline). For the full inventory, switch to the multi-file bundle (`bundles/claude-desktop-manual/references/skills/*.md`) or browse `skills/README.md` upstream. When in doubt, route to `blendops-help`.
+
+Baseline routes:
 - unclear next step → `blendops-help`
 - vague creative request, intent exploration → `blender-brainstorming` (Superpowers `/brainstorming` analog)
 - convert intent → 8-slot 3D brief → `intent-to-3d-brief-writer` (BMad analysis-phase analog)
@@ -24,6 +26,16 @@ Use these routes:
 - 7-point gate before any "ready" / `Verified` claim → `pre-handoff-verification` (Superpowers `/verification-before-completion` analog)
 - GLB/web handoff framing → `glb-web-handoff`
 - plain-language final answer → `non-blender-user-response-writer`
+
+Expansion routes (load via the multi-file bundle for full SKILL.md content):
+- recipe/pack fit → `recipe-fit-assessor`; pre-flight → `pack-prerequisite-checker`; resume routing → `workflow-stage-router`; acceptance criteria → `acceptance-criteria-builder`
+- runtime path discipline: `runtime-path-picker`, `path-one-host-outline`, `cli-appendix-job-outline`, `runtime-attempt-report-writer`
+- web 3D deep: `glb-mobile-performance-budget`, `glb-animation-handoff`, `three-fiber-component-shape-planner`, `preview-report-template-writer`
+- quality validators: `material-quality-checker`, `lighting-quality-checker`, `composition-quality-checker`, `polycount-budget-checker`
+- domain scene planners: `character-portrait-scene-planner`, `environment-establishing-shot-planner`, `interior-architectural-scene-planner`, `product-grid-scene-planner`
+- process discipline: `blender-checklist-driven-workflow`, `blender-stop-condition-decider`, `blender-scope-boundary-enforcer`, `blender-recipe-decomposer`
+- asset/sourcing: `asset-license-checker`, `asset-style-consistency-checker`, `asset-fallback-strategy`, `asset-library-organization-planner`
+- color/format/output: `color-management-decision`, `output-format-decision`, `resolution-aspect-decision`, `cycles-vs-eevee-decision`
 
 ## Runtime boundary
 

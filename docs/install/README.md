@@ -22,7 +22,7 @@ BlendOps recognizes 3 fundamentally different consumer types: **chat UI with Ski
 |---|---|---|---|
 | Claude Desktop / Claude.ai | [claude-desktop.md](./claude-desktop.md) | multiple Skills ZIP preparation | linked-only / manual |
 
-### 2) Coding agents (project-local install + can host MCP for Blender) — 11 targets
+### 2) Coding agents (project-local install + can host MCP for Blender) — 15 targets
 
 All of these accept BlendOps via **project-local files** (`BLENDOPS.md`, `skills/`, `laws/`, `packs/`, optional tool-native paths) and can host MCP for Blender via Path 1 host (b) Lab MCP or Path 2 community `ahujasid/blender-mcp`. They differ in MCP config syntax, native skill-loader maturity, and BlendOps confidence labels — but the consumer model is the same.
 
@@ -36,9 +36,13 @@ All of these accept BlendOps via **project-local files** (`BLENDOPS.md`, `skills
 | Antigravity | [antigravity.md](./antigravity.md) | `.agent/skills/` (candidate) | per upstream | not researched |
 | GitHub Copilot | [github-copilot.md](./github-copilot.md) | none verified | per upstream | linked-only |
 | Cline (VS Code) | [cline.md](./cline.md) | none verified | Settings → Integrations | linked-only |
+| Roo Code (VS Code) | [roo-code.md](./roo-code.md) | none verified | `.roo/mcp.json` (project) or global `mcp_settings.json` | linked-only |
 | Continue.dev | [continue.md](./continue.md) | none verified | `.continue/mcpServers/` | linked-only |
 | Zed editor | [zed.md](./zed.md) | none verified | `settings.json` `context_servers` | linked-only |
+| Windsurf (Codeium) | [windsurf.md](./windsurf.md) | none verified | `~/.codeium/windsurf/mcp_config.json` | linked-only |
 | goose (Block) | [goose.md](./goose.md) | none verified | Standard IO extension | linked-only — has upstream Blender tutorial |
+| OpenHands | [openhands.md](./openhands.md) | none verified | `~/.openhands/mcp.json` + Settings UI + `openhands mcp` CLI | linked-only |
+| JetBrains Junie / AI Assistant | [jetbrains-junie.md](./jetbrains-junie.md) | none verified | Settings → Tools → Junie → MCP Settings or `.junie/mcp/mcp.json` | linked-only |
 
 ### 3) Local LLM runners (BlendOps = docs-only / reference; runner hosts MCP for Blender) — 3 targets
 
