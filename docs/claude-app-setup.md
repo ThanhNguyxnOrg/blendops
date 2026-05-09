@@ -51,6 +51,6 @@ Never claim preview/render/GLB exists without evidence.
 
 ## Suggested next docs
 
-- `docs/agent-install.md`
+- `docs/ai-agent-install-flow.md`
 - `docs/examples/claude-app-project-instructions.md`
 - `docs/examples/blendops-root-entrypoint.md`

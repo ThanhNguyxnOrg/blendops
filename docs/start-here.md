@@ -94,7 +94,6 @@ Use the short prompt from [README.md](../README.md#-use-in-30-seconds). The agen
 **Start here:**
 - [README 30-second prompt](../README.md#-use-in-30-seconds)
 - [AI agent install flow](./ai-agent-install-flow.md) — project-local mode details
-- [Agent install guide](./agent-install.md) — detailed instructions
 - [Multi-agent install strategy](./multi-agent-install-strategy.md) — cross-tool approach
 
 **Per-tool guides:**

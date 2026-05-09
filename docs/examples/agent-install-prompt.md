@@ -2,8 +2,8 @@
 
 ## A. Adaptive install prompt
 
-Install BlendOps in this project using the adapter model:
-https://raw.githubusercontent.com/ThanhNguyxnOrg/blendops/main/docs/agent-install.md
+Install BlendOps in this project using the universal install flow:
+https://raw.githubusercontent.com/ThanhNguyxnOrg/blendops/main/docs/ai-agent-quickstart.md
 
 Build a capability profile first.
 Use project-local install by default.
@@ -34,7 +34,7 @@ Do not install Blender runtime or run Blender.
 
 ## Agent fetch command
 
-`curl -s https://raw.githubusercontent.com/ThanhNguyxnOrg/blendops/main/docs/agent-install.md`
+`curl -s https://raw.githubusercontent.com/ThanhNguyxnOrg/blendops/main/docs/ai-agent-quickstart.md`
 
 ## First use prompt after install
 

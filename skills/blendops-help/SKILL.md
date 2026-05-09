@@ -154,7 +154,7 @@ Need artifact proof?
 Need GLB/web handoff?
   → glb-web-handoff
 Need install/package?
-  → docs/agent-install.md + docs/distribution-strategy.md
+  → docs/ai-agent-install-flow.md + docs/distribution-strategy.md
 Need release readiness?
   → docs/release-readiness.md + docs/release-readiness-rollup-v0.md
 ```

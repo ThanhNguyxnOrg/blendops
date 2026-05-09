@@ -36,7 +36,8 @@ Multi-agent support comes from:
 
 See:
 - `docs/multi-agent-install-strategy.md`
-- `docs/target-adapter-architecture.md`
+- `docs/adapters/README.md`
+- `docs/adapter-registry.md`
 - `docs/install/README.md`
 
 ## Adding target-specific metadata
@@ -46,7 +47,7 @@ If a new skill surface requires metadata beyond the portable core:
 1. Add a new file in this folder (e.g., `claude-desktop.json`, `cursor.yaml`).
 2. Document its purpose and scope in this README.
 3. Clarify that it is target-specific metadata, not a universal adapter.
-4. Update `docs/multi-agent-install-strategy.md` if the new surface changes the install model.
+4. Update `docs/multi-agent-install-strategy.md` and `docs/adapter-registry.md` if the new surface changes the install model.
 
 ## Non-actions
 

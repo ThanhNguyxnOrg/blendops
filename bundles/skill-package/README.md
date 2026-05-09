@@ -20,7 +20,7 @@ Those files are the target-neutral BlendOps skill content. They can be copied, r
 
 `blendops/agents/openai.yaml` is one consumer-specific metadata file for OpenAI/ChatGPT Skills UI upload compatibility. It is not the universal multi-agent adapter layer and does not configure Claude Desktop, Claude Code, OpenCode, Cursor, Codex, Gemini, Antigravity, GitHub Copilot, or the generic project-local fallback.
 
-Other targets use separate install docs and adapter layers. Current guidance lives under `docs/install/`, `docs/multi-agent-install-strategy.md`, and `docs/target-adapter-architecture.md`; future adapter bundles may map this same core package into target-specific locations such as `.claude`, `.opencode`, `.cursor`, `.agents`, `.gemini`, `.agent`, or `.github` when those paths are verified.
+Other targets use separate install docs and adapter layers. Current guidance lives under `docs/install/`, `docs/multi-agent-install-strategy.md`, `docs/adapters/README.md`, and `docs/adapter-registry.md`; future adapter bundles may map this same core package into target-specific locations such as `.claude`, `.opencode`, `.cursor`, `.agents`, `.gemini`, `.agent`, or `.github` when those paths are verified.
 
 ## Non-actions
 

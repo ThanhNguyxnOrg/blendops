@@ -59,4 +59,5 @@ If runtime is blocked/unavailable:
 
 - `docs/external-runtime-setup.md`
 - `docs/reference-runtime.md`
-- `docs/install-strategy.md`
+- `docs/install-scopes.md`
+- `docs/ai-agent-install-flow.md`

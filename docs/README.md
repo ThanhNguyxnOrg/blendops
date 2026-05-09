@@ -1,41 +1,40 @@
-# 📚 BlendOps Documentation
+# 📚 BlendOps Documentation Hub
 
-Active docs for the current product and workflow direction.
+The single index for everything in this repo. Bookmark this page.
 
 > [!WARNING]
-> BlendOps is Draft v0. It is not production-ready or stable. Start with setup boundaries, then read the workflow and eval status before treating any pack as releasable.
+> BlendOps is **Draft v0**. It is a documentation + skill-pack project, not a production-ready tool. No marketplace listing. No `npx` installer yet. Runtime evidence is partial (Path 1 read-only smoke only).
 
 ---
 
 ## 🚦 Status dashboard
 
-| Area | Status | What it means |
+| Area | Status | Meaning |
 |---|---|---|
-| Product direction | Draft v0 | Product and workflow direction are documented, with no stable release claim. |
-| Runtime boundary | Active | BlendOps depends on an external Blender runtime and does not ship its own runtime. |
-| Install/adoption docs | Warn | Dry-run install evidence exists, with adapter path confidence still environment-dependent. |
-| Runtime eval evidence | Blocked / Not Run | Official runtime manual eval evidence has not been produced in a runtime-available environment. |
-| Release tag | Not Ready | Conservative decision remains: do not tag yet. |
+| Product direction | Draft v0 | Workflow specs are documented; no stable release claim. |
+| Skill / law / pack collection | Draft Pass | 10 root skills, 4 laws, 1 pack (`product-hero-v0`). |
+| Runtime path model | Active (2-path + CLI appendix) | Path 1 (Lab MCP, hosted from Anthropic Connector or manual MCP); Path 2 (community `ahujasid/blender-mcp`); CLI fallback (publisher not verified). |
+| Path 1 read-only smoke | Pass / Available | 2026-04-29 record (likely Anthropic Connector host). |
+| Path 2 user-reported verified | Yes (2026-05-08) | No formal eval file yet. |
+| CLI fallback | Not Run | **Publisher has not verified** in this repo. |
+| Full runtime manual eval (any path) | Blocked / Not Run | Mutation/render/export not attempted. |
+| Runtime artifacts | Not Produced | No fresh preview/render/GLB. |
+| Release tag (`v0.1.0`) | Not Ready | Conservative decision; do not tag yet. |
+| Marketplace / `npx` listing | Not Published | None claimed. |
 
 ---
 
-## 🚀 Start here
+## 🚀 Start here (recommended order)
 
-1. **Friendly first-read guide:** [start-here.md](./start-here.md)
-2. **External runtime setup, required first:** [external-runtime-setup.md](./external-runtime-setup.md)
-3. **Runtime stack strategy:** [runtime-stack-strategy.md](./runtime-stack-strategy.md)
-4. **Product direction:** [product-direction.md](./product-direction.md)
-5. **Release status:** [release-readiness.md](./release-readiness.md)
-6. **Release readiness rollup:** [release-readiness-rollup-v0.md](./release-readiness-rollup-v0.md)
-7. **AI agent quickstart:** [ai-agent-quickstart.md](./ai-agent-quickstart.md)
-8. **AI agent install flow:** [ai-agent-install-flow.md](./ai-agent-install-flow.md)
-9. **Multi-agent install strategy:** [multi-agent-install-strategy.md](./multi-agent-install-strategy.md)
-10. **Distribution strategy:** [distribution-strategy.md](./distribution-strategy.md)
-11. **Eval status:** [evals/README.md](./evals/README.md)
-12. **Workflow and delivery specs:** continue through the grouped navigation below
+1. [`start-here.md`](./start-here.md) — friendly first-read orientation.
+2. [`product-direction.md`](./product-direction.md) — what BlendOps is and isn't.
+3. [`runtime-stack-strategy.md`](./runtime-stack-strategy.md) — the canonical 2-path + CLI appendix runtime model with corrected attribution history.
+4. [`external-runtime-setup.md`](./external-runtime-setup.md) — per-path Blender + MCP setup walkthrough.
+5. [`ai-agent-quickstart.md`](./ai-agent-quickstart.md) — the prompt to paste into any AI agent.
+6. [`ai-agent-install-flow.md`](./ai-agent-install-flow.md) — universal install/prep flow (Mode A/B/C).
 
 > [!TIP]
-> If you're new, read [start-here.md](./start-here.md) first. If you're evaluating release readiness, read the release status and manual install beta evidence before the pack docs.
+> If you only have 5 minutes: read [`start-here.md`](./start-here.md). If you only need runtime setup: read [`external-runtime-setup.md`](./external-runtime-setup.md).
 
 ---
 
@@ -43,184 +42,183 @@ Active docs for the current product and workflow direction.
 
 | Job | Start with | Then read |
 |---|---|---|
-| Understand the product | [product-direction.md](./product-direction.md) | [architecture.md](./architecture.md), [reference-runtime.md](./reference-runtime.md) |
-| Set runtime boundaries | [external-runtime-setup.md](./external-runtime-setup.md) | [runtime-stack-strategy.md](./runtime-stack-strategy.md), [reference-runtime.md](./reference-runtime.md), [../laws/official-runtime-only.md](../laws/official-runtime-only.md) |
-| Review workflow behavior | [workflow-contract.md](./workflow-contract.md) | [first-user-journey.md](./first-user-journey.md), [safety-model.md](./safety-model.md) |
-| Try install/adoption docs | [ai-agent-quickstart.md](./ai-agent-quickstart.md) | [ai-agent-install-flow.md](./ai-agent-install-flow.md), [agent-install.md](./agent-install.md), [install-scopes.md](./install-scopes.md), [multi-agent-install-strategy.md](./multi-agent-install-strategy.md), [adapters/README.md](./adapters/README.md) |
-| Check eval evidence | [evals/README.md](./evals/README.md) | [release-readiness.md](./release-readiness.md), [release-readiness-rollup-v0.md](./release-readiness-rollup-v0.md) |
-| Review v0 pack content | [../packs/README.md](../packs/README.md) | [../skills/README.md](../skills/README.md), [workflows/README.md](./workflows/README.md) |
+| Understand the product | [`product-direction.md`](./product-direction.md) | [`architecture.md`](./architecture.md), [`reference-runtime.md`](./reference-runtime.md) |
+| Set up Blender runtime | [`external-runtime-setup.md`](./external-runtime-setup.md) | [`runtime-stack-strategy.md`](./runtime-stack-strategy.md), [`reference-runtime.md`](./reference-runtime.md), [`unofficial-runtime-bridges.md`](./unofficial-runtime-bridges.md), [`../laws/official-runtime-only.md`](../laws/official-runtime-only.md) |
+| Review workflow behavior | [`workflow-contract.md`](./workflow-contract.md) | [`first-user-journey.md`](./first-user-journey.md), [`safety-model.md`](./safety-model.md) |
+| Install BlendOps into a tool | [`ai-agent-quickstart.md`](./ai-agent-quickstart.md) | [`ai-agent-install-flow.md`](./ai-agent-install-flow.md), [`install-scopes.md`](./install-scopes.md), [`multi-agent-install-strategy.md`](./multi-agent-install-strategy.md), [`adapters/README.md`](./adapters/README.md), [`install/README.md`](./install/README.md) |
+| Check eval evidence | [`evals/README.md`](./evals/README.md) | [`release-readiness.md`](./release-readiness.md), [`release-readiness-rollup-v0.md`](./release-readiness-rollup-v0.md) |
+| Review v0 pack content | [`../packs/README.md`](../packs/README.md) | [`../skills/README.md`](../skills/README.md), [`workflows/README.md`](./workflows/README.md), [`recipes/README.md`](./recipes/README.md) |
 
 ---
 
-## 🧩 Core docs
+## 🧩 Core specs
 
 | Area | Doc |
 |---|---|
-| Product direction | [product-direction.md](./product-direction.md) |
-| Skill system | [skill-system.md](./skill-system.md) |
-| Runtime setup, external | [external-runtime-setup.md](./external-runtime-setup.md) |
-| Runtime stack strategy | [runtime-stack-strategy.md](./runtime-stack-strategy.md) |
-| Runtime boundary | [reference-runtime.md](./reference-runtime.md) |
-| Path 2 caveats (community `ahujasid/blender-mcp`) | [unofficial-runtime-bridges.md](./unofficial-runtime-bridges.md) |
-| Architecture | [architecture.md](./architecture.md) |
+| Product direction | [`product-direction.md`](./product-direction.md) |
+| Architecture | [`architecture.md`](./architecture.md) |
+| Skill system | [`skill-system.md`](./skill-system.md) |
+| Workflow contract | [`workflow-contract.md`](./workflow-contract.md) |
+| Safety model | [`safety-model.md`](./safety-model.md) |
+| First user journey | [`first-user-journey.md`](./first-user-journey.md) |
+| Golden path (cyberpunk shoe) | [`golden-path-cyberpunk-shoe.md`](./golden-path-cyberpunk-shoe.md) |
 
 ---
 
-## 🛠️ Workflow specs
+## 🧭 Runtime (2-path + CLI appendix model)
 
 | Area | Doc |
 |---|---|
-| First user journey | [first-user-journey.md](./first-user-journey.md) |
-| Golden path, cyberpunk shoe | [golden-path-cyberpunk-shoe.md](./golden-path-cyberpunk-shoe.md) |
-| Workflow contract | [workflow-contract.md](./workflow-contract.md) |
-| Safety model | [safety-model.md](./safety-model.md) |
+| Path strategy + corrected attribution history | [`runtime-stack-strategy.md`](./runtime-stack-strategy.md) |
+| External setup walkthrough | [`external-runtime-setup.md`](./external-runtime-setup.md) |
+| Runtime boundary summary | [`reference-runtime.md`](./reference-runtime.md) |
+| Path 2 caveats (community `ahujasid/blender-mcp`) | [`unofficial-runtime-bridges.md`](./unofficial-runtime-bridges.md) |
+| Claude app/Desktop setup notes | [`claude-app-setup.md`](./claude-app-setup.md) |
+
+---
+
+## 📦 Install + adoption
+
+| Area | Doc |
+|---|---|
+| AI agent quickstart (paste-this-prompt) | [`ai-agent-quickstart.md`](./ai-agent-quickstart.md) |
+| AI agent install flow (Mode A/B/C) | [`ai-agent-install-flow.md`](./ai-agent-install-flow.md) |
+| Install scopes (project-local / tool-native / generic-root / user-global / docs-only) | [`install-scopes.md`](./install-scopes.md) |
+| Per-target install index | [`install/README.md`](./install/README.md) |
+| Multi-agent install strategy | [`multi-agent-install-strategy.md`](./multi-agent-install-strategy.md) |
+| Distribution strategy | [`distribution-strategy.md`](./distribution-strategy.md) |
+| Adapter index | [`adapters/README.md`](./adapters/README.md) |
+| Adapter registry (promotion ladder) | [`adapter-registry.md`](./adapter-registry.md) |
+| Capability profile schema | [`capability-profile.md`](./capability-profile.md) |
+| Future installer script spec | [`install/installer-spec.md`](./install/installer-spec.md) |
+| Bundle: canonical portable skill package | [`../bundles/skill-package/README.md`](../bundles/skill-package/README.md) |
+| Bundle: Claude Desktop manual import | [`../bundles/claude-desktop-manual/README.md`](../bundles/claude-desktop-manual/README.md) |
+| Bundle: generic project-local fallback | [`../bundles/generic-project-local/README.md`](../bundles/generic-project-local/README.md) |
+| Example: agent install prompts | [`examples/agent-install-prompt.md`](./examples/agent-install-prompt.md) |
+| Example: `BLENDOPS.md` root template | [`examples/blendops-root-entrypoint.md`](./examples/blendops-root-entrypoint.md) |
+| Example: Claude app project instructions | [`examples/claude-app-project-instructions.md`](./examples/claude-app-project-instructions.md) |
+
+---
+
+## 📂 Per-target install docs
+
+| Target | Doc | Selected mode | Confidence |
+|---|---|---|---|
+| Claude Desktop / Claude.ai | [`install/claude-desktop.md`](./install/claude-desktop.md) | multiple Skills ZIP preparation | linked-only / manual |
+| Claude Code | [`install/claude-code.md`](./install/claude-code.md) | project-local install | verified-read for project-local adapter |
+| OpenCode | [`install/opencode.md`](./install/opencode.md) | project-local install | linked-only |
+| Cursor | [`install/cursor.md`](./install/cursor.md) | project-local install | linked-only |
+| Codex CLI/App | [`install/codex.md`](./install/codex.md) | project-local install | linked-only |
+| Gemini CLI | [`install/gemini.md`](./install/gemini.md) | project-local install | not researched |
+| Antigravity | [`install/antigravity.md`](./install/antigravity.md) | project-local install | not researched |
+| GitHub Copilot | [`install/github-copilot.md`](./install/github-copilot.md) | project-local install | linked-only / generic |
+| Generic project | [`install/generic-project.md`](./install/generic-project.md) | project-local install fallback | verified-read fallback |
 
 ---
 
 ## ⚖️ Laws
 
-| Area | Doc |
+| Law | Doc |
 |---|---|
-| Root laws index | [../laws/README.md](../laws/README.md) |
-| Official runtime only law | [../laws/official-runtime-only.md](../laws/official-runtime-only.md) |
-| No arbitrary Python interface law | [../laws/no-arbitrary-python-interface.md](../laws/no-arbitrary-python-interface.md) |
-| Evidence before done law | [../laws/evidence-before-done.md](../laws/evidence-before-done.md) |
-| Non-Blender-user language law | [../laws/non-blender-user-language.md](../laws/non-blender-user-language.md) |
+| Index | [`../laws/README.md`](../laws/README.md) |
+| Official runtime only | [`../laws/official-runtime-only.md`](../laws/official-runtime-only.md) |
+| No arbitrary Python interface | [`../laws/no-arbitrary-python-interface.md`](../laws/no-arbitrary-python-interface.md) |
+| Evidence before done | [`../laws/evidence-before-done.md`](../laws/evidence-before-done.md) |
+| Non-Blender-user language | [`../laws/non-blender-user-language.md`](../laws/non-blender-user-language.md) |
 
 ---
 
-## 🛠️ Skills
+## 🛠️ Skills (10 root skills)
 
-| Area | Doc |
+| Skill | Doc |
 |---|---|
-| Skill system guide | [skill-system.md](./skill-system.md) |
-| Root skills index | [../skills/README.md](../skills/README.md) |
-| Product hero scene planner | [../skills/product-hero-scene-planner/SKILL.md](../skills/product-hero-scene-planner/SKILL.md) |
-| Blender scene quality checker | [../skills/blender-scene-quality-checker/SKILL.md](../skills/blender-scene-quality-checker/SKILL.md) |
-| GLB web handoff | [../skills/glb-web-handoff/SKILL.md](../skills/glb-web-handoff/SKILL.md) |
-| Non-Blender-user response writer | [../skills/non-blender-user-response-writer/SKILL.md](../skills/non-blender-user-response-writer/SKILL.md) |
-
----
-
-## 🔁 Workflows
-
-| Area | Doc |
-|---|---|
-| Workflows index | [workflows/README.md](./workflows/README.md) |
-| Product hero workflow | [workflows/product-hero-workflow.md](./workflows/product-hero-workflow.md) |
-
----
-
-## 🧪 Recipes
-
-| Area | Doc |
-|---|---|
-| Recipes index | [recipes/README.md](./recipes/README.md) |
-| Cyberpunk shoe hero recipe | [recipes/cyberpunk-shoe-hero.md](./recipes/cyberpunk-shoe-hero.md) |
+| Index + how to add a new skill | [`../skills/README.md`](../skills/README.md) |
+| `blendops-help` (router) | [`../skills/blendops-help/SKILL.md`](../skills/blendops-help/SKILL.md) |
+| `official-runtime-setup-guide` | [`../skills/official-runtime-setup-guide/SKILL.md`](../skills/official-runtime-setup-guide/SKILL.md) |
+| `official-runtime-readiness-checker` | [`../skills/official-runtime-readiness-checker/SKILL.md`](../skills/official-runtime-readiness-checker/SKILL.md) |
+| `product-hero-scene-planner` | [`../skills/product-hero-scene-planner/SKILL.md`](../skills/product-hero-scene-planner/SKILL.md) |
+| `blender-composition-camera-planner` | [`../skills/blender-composition-camera-planner/SKILL.md`](../skills/blender-composition-camera-planner/SKILL.md) |
+| `blender-lighting-material-planner` | [`../skills/blender-lighting-material-planner/SKILL.md`](../skills/blender-lighting-material-planner/SKILL.md) |
+| `blender-scene-quality-checker` | [`../skills/blender-scene-quality-checker/SKILL.md`](../skills/blender-scene-quality-checker/SKILL.md) |
+| `render-export-evidence` | [`../skills/render-export-evidence/SKILL.md`](../skills/render-export-evidence/SKILL.md) |
+| `glb-web-handoff` | [`../skills/glb-web-handoff/SKILL.md`](../skills/glb-web-handoff/SKILL.md) |
+| `non-blender-user-response-writer` | [`../skills/non-blender-user-response-writer/SKILL.md`](../skills/non-blender-user-response-writer/SKILL.md) |
 
 ---
 
 ## 📦 Packs
 
-| Area | Doc |
+| Pack | Doc |
 |---|---|
-| Root packs index | [../packs/README.md](../packs/README.md) |
-| v0 product hero pack | [../packs/product-hero-v0/PACK.md](../packs/product-hero-v0/PACK.md) |
+| Index | [`../packs/README.md`](../packs/README.md) |
+| `product-hero-v0` | [`../packs/product-hero-v0/PACK.md`](../packs/product-hero-v0/PACK.md) |
 
 ---
 
-## 🧩 Installable skill collection
-
-| Area | Doc |
-|---|---|
-| Root skills index | [../skills/README.md](../skills/README.md) |
-| Root laws index | [../laws/README.md](../laws/README.md) |
-| Product hero v0 pack | [../packs/product-hero-v0/PACK.md](../packs/product-hero-v0/PACK.md) |
-
----
-
-## 🧪 Evals
-
-| Area | Doc | Current status |
-|---|---|---|
-| Evals index | [evals/README.md](./evals/README.md) | Draft v0 index |
-| Cyberpunk shoe v0 manual eval protocol | [evals/cyberpunk-shoe-hero-v0-manual-eval.md](./evals/cyberpunk-shoe-hero-v0-manual-eval.md) | Protocol / Not yet executed |
-| Cyberpunk shoe v0 text-only eval | [evals/cyberpunk-shoe-hero-v0-text-eval.md](./evals/cyberpunk-shoe-hero-v0-text-eval.md) | Executed / Text-only |
-| Manual install beta v0 | [evals/manual-install-beta-v0.md](./evals/manual-install-beta-v0.md) | Executed / Dry-run / Warn |
-
----
-
-## 🧩 Install / Adoption
+## 🔁 Workflows + recipes
 
 | Area | Doc |
 |---|---|
-| AI agent quickstart | [ai-agent-quickstart.md](./ai-agent-quickstart.md) |
-| AI agent install flow | [ai-agent-install-flow.md](./ai-agent-install-flow.md) |
-| Per-target install docs | [install/README.md](./install/README.md) |
-| Generic project-local bundle fixture | [../bundles/generic-project-local/README.md](../bundles/generic-project-local/README.md) |
-| Canonical portable skill package | [../bundles/skill-package/blendops/SKILL.md](../bundles/skill-package/blendops/SKILL.md) (see [package README](../bundles/skill-package/README.md) for target-neutral core vs target-specific metadata) |
-| Claude Desktop manual bundle fixture | [../bundles/claude-desktop-manual/README.md](../bundles/claude-desktop-manual/README.md) |
-| Installer script spec (future) | [install/installer-spec.md](./install/installer-spec.md) |
-| Install strategy | [install-strategy.md](./install-strategy.md) |
-| Install scopes | [install-scopes.md](./install-scopes.md) |
-| Multi-agent install strategy | [multi-agent-install-strategy.md](./multi-agent-install-strategy.md) |
-| Distribution strategy | [distribution-strategy.md](./distribution-strategy.md) |
-| Adapter architecture | [target-adapter-architecture.md](./target-adapter-architecture.md) |
-| Capability profile schema | [capability-profile.md](./capability-profile.md) |
-| Adapter registry | [adapter-registry.md](./adapter-registry.md) |
-| Adapter docs index | [adapters/README.md](./adapters/README.md) |
-| Agent install guide | [agent-install.md](./agent-install.md) |
-| Package layout plan | [package-layout.md](./package-layout.md) |
-| Agent install prompts | [examples/agent-install-prompt.md](./examples/agent-install-prompt.md) |
-| BLENDOPS.md root template | [examples/blendops-root-entrypoint.md](./examples/blendops-root-entrypoint.md) |
-| Claude app/Desktop setup notes | [claude-app-setup.md](./claude-app-setup.md) |
-| Claude app project instructions template | [examples/claude-app-project-instructions.md](./examples/claude-app-project-instructions.md) |
+| Workflows index | [`workflows/README.md`](./workflows/README.md) |
+| Product hero workflow (5 stages) | [`workflows/product-hero-workflow.md`](./workflows/product-hero-workflow.md) |
+| Recipes index | [`recipes/README.md`](./recipes/README.md) |
+| Cyberpunk shoe hero recipe | [`recipes/cyberpunk-shoe-hero.md`](./recipes/cyberpunk-shoe-hero.md) |
 
 ---
 
-## 🔬 Research docs
-
-| Area | Doc |
-|---|---|
-| Skill systems research | [research/skill-systems-research.md](./research/skill-systems-research.md) |
-| Skill/law pattern synthesis | [research/skill-system-patterns.md](./research/skill-system-patterns.md) |
-| Skill system decision matrix | [research/skill-system-decision-matrix.md](./research/skill-system-decision-matrix.md) |
-| Blender workflow research | [research/blender-workflow-research.md](./research/blender-workflow-research.md) |
-| Web 3D asset pipeline | [research/web-3d-asset-pipeline.md](./research/web-3d-asset-pipeline.md) |
-| Blender quality checklist | [research/blender-quality-checklist.md](./research/blender-quality-checklist.md) |
-| Blender skill benchmark analysis | [research/blender-skill-benchmark-analysis.md](./research/blender-skill-benchmark-analysis.md) |
-
----
-
-
-## 🧪 Skill reviews
-
-| Area | Doc |
-|---|---|
-| Skill review index | [../skill-reviews/README.md](../skill-reviews/README.md) |
-| Review gates | [../skill-reviews/review-gates.md](../skill-reviews/review-gates.md) |
-| Acceptance criteria | [../skill-reviews/acceptance-criteria.md](../skill-reviews/acceptance-criteria.md) |
-| Skill template | [../skill-reviews/blendops-skill-template.md](../skill-reviews/blendops-skill-template.md) |
-| Depth standard | [../skill-reviews/depth-standard.md](../skill-reviews/depth-standard.md) |
-| v0 depth audit report | [../skill-reviews/reports/v0-skill-depth-audit.md](../skill-reviews/reports/v0-skill-depth-audit.md) |
-| v0 skill gate review report | [../skill-reviews/reports/v0-skill-gate-review.md](../skill-reviews/reports/v0-skill-gate-review.md) |
-
----
-
-## 🧾 Governance and audit docs
+## 🧪 Evals + readiness
 
 | Area | Doc | Status |
 |---|---|---|
-| Current cleanup audit | [cleanup-audit.md](./cleanup-audit.md) | Governance record |
-| Release readiness status | [release-readiness.md](./release-readiness.md) | Draft v0, do not tag yet |
-| Release readiness rollup v0 | [release-readiness-rollup-v0.md](./release-readiness-rollup-v0.md) | Phase 3.3 pre-runtime rollup |
-| Distribution strategy | [distribution-strategy.md](./distribution-strategy.md) | Draft v0, no marketplace claim |
+| Evals index | [`evals/README.md`](./evals/README.md) | Draft v0 index |
+| Path 1 read-only smoke test (likely Anthropic Connector host) | [`evals/blender-connector-read-only-smoke-test.md`](./evals/blender-connector-read-only-smoke-test.md) | Pass / Available |
+| Cyberpunk shoe v0 text-only eval | [`evals/cyberpunk-shoe-hero-v0-text-eval.md`](./evals/cyberpunk-shoe-hero-v0-text-eval.md) | Executed / Text-only |
+| Cyberpunk shoe v0 manual eval protocol | [`evals/cyberpunk-shoe-hero-v0-manual-eval.md`](./evals/cyberpunk-shoe-hero-v0-manual-eval.md) | Protocol / Not yet executed |
+| Cyberpunk shoe v0 runtime eval | [`evals/cyberpunk-shoe-hero-v0-runtime-eval.md`](./evals/cyberpunk-shoe-hero-v0-runtime-eval.md) | Historical / Blocked |
+| Manual install beta v0 | [`evals/manual-install-beta-v0.md`](./evals/manual-install-beta-v0.md) | Executed / Dry-run / Warn |
+| Adapter install v0 dry-run | [`evals/adapter-install-v0-dry-run.md`](./evals/adapter-install-v0-dry-run.md) | Executed / Dry-run |
+| Skill package upload-readiness v0 | [`evals/skill-package-upload-readiness-v0.md`](./evals/skill-package-upload-readiness-v0.md) | Executed / Text-only / No upload / Warn |
+| Official runtime verification criteria | [`evals/official-runtime-verification-criteria.md`](./evals/official-runtime-verification-criteria.md) | Prepared |
+| Runtime availability checklist | [`evals/runtime-availability-checklist.md`](./evals/runtime-availability-checklist.md) | Prepared |
+| Official runtime manual eval packet | [`evals/official-runtime-manual-eval-packet.md`](./evals/official-runtime-manual-eval-packet.md) | Prepared |
+| Release readiness status | [`release-readiness.md`](./release-readiness.md) | Draft v0; do not tag yet |
+| Release readiness rollup v0 | [`release-readiness-rollup-v0.md`](./release-readiness-rollup-v0.md) | Phase 3.3 pre-runtime rollup |
 
 ---
 
-## ⚠️ Notes
+## 🧪 Skill reviews + reports
 
-- BlendOps is a product/workflow layer for non-Blender users.
-- BlendOps does **not** currently ship its own BlendOps-owned CLI/MCP/addon runtime.
-- Runtime stack status follows [runtime-stack-strategy.md](./runtime-stack-strategy.md).
-- Runtime artifacts remain Not Run/Not Produced unless an eval record states otherwise with evidence.
+| Area | Doc |
+|---|---|
+| Index | [`../skill-reviews/README.md`](../skill-reviews/README.md) |
+| Review gates | [`../skill-reviews/review-gates.md`](../skill-reviews/review-gates.md) |
+| Acceptance criteria | [`../skill-reviews/acceptance-criteria.md`](../skill-reviews/acceptance-criteria.md) |
+| Skill template | [`../skill-reviews/blendops-skill-template.md`](../skill-reviews/blendops-skill-template.md) |
+| Depth standard | [`../skill-reviews/depth-standard.md`](../skill-reviews/depth-standard.md) |
+| v0 depth audit report | [`../skill-reviews/reports/v0-skill-depth-audit.md`](../skill-reviews/reports/v0-skill-depth-audit.md) |
+| v0 skill gate review report | [`../skill-reviews/reports/v0-skill-gate-review.md`](../skill-reviews/reports/v0-skill-gate-review.md) |
+
+---
+
+## 🔬 Research notes
+
+| Topic | Doc |
+|---|---|
+| Skill systems research | [`research/skill-systems-research.md`](./research/skill-systems-research.md) |
+| Skill / law pattern synthesis | [`research/skill-system-patterns.md`](./research/skill-system-patterns.md) |
+| Skill system decision matrix | [`research/skill-system-decision-matrix.md`](./research/skill-system-decision-matrix.md) |
+| Install patterns research | [`research/install-patterns-research.md`](./research/install-patterns-research.md) |
+| Blender workflow research | [`research/blender-workflow-research.md`](./research/blender-workflow-research.md) |
+| Blender quality checklist | [`research/blender-quality-checklist.md`](./research/blender-quality-checklist.md) |
+| Blender skill benchmark analysis | [`research/blender-skill-benchmark-analysis.md`](./research/blender-skill-benchmark-analysis.md) |
+| Web 3D asset pipeline | [`research/web-3d-asset-pipeline.md`](./research/web-3d-asset-pipeline.md) |
+
+---
+
+## ⚠️ Non-claims preserved
+
+- BlendOps does not install Blender, configure the Anthropic Blender Connector, configure the Blender Lab MCP add-on, configure the community `ahujasid/blender-mcp` stack, or run Blender.
+- Read-only smoke evidence is not mutation/render/export evidence.
+- CLI fallback is **publisher has not verified** in this repo; documented for completeness only.
+- No marketplace / npm / `npx` listing. No tag.
+- See [`release-readiness.md`](./release-readiness.md) for the full readiness state.
