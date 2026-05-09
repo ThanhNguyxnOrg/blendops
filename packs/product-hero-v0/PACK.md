@@ -40,7 +40,7 @@ Compose the included skills to plan, validate, and communicate product-hero Blen
 
 | Category | Skill path | Status |
 |---|---|---|
-| Help / routing | `../../skills/blendops-help/SKILL.md` | Draft v0 |
+| Help / routing | `../../skills/blendops-help/SKILL.md` | Expanded Draft v0 |
 | Process / discipline (Superpowers + BMad inspired) | `../../skills/blender-brainstorming/SKILL.md` | Expanded Draft v0 |
 | Process / discipline | `../../skills/intent-to-3d-brief-writer/SKILL.md` | Expanded Draft v0 |
 | Process / discipline | `../../skills/blender-asset-discovery-planner/SKILL.md` | Expanded Draft v0 |
@@ -52,7 +52,7 @@ Compose the included skills to plan, validate, and communicate product-hero Blen
 | Planning | `../../skills/blender-lighting-material-planner/SKILL.md` | Expanded Draft v0 |
 | Quality / eval | `../../skills/blender-scene-quality-checker/SKILL.md` | Expanded Draft v0 |
 | Quality / debugging | `../../skills/blender-troubleshooting/SKILL.md` | Expanded Draft v0 |
-| Quality / evidence | `../../skills/render-export-evidence/SKILL.md` | Draft v0 |
+| Quality / evidence | `../../skills/render-export-evidence/SKILL.md` | Expanded Draft v0 |
 | Quality / pre-handoff | `../../skills/pre-handoff-verification/SKILL.md` | Expanded Draft v0 |
 | Handoff / communication | `../../skills/glb-web-handoff/SKILL.md` | Expanded Draft v0 |
 | Handoff / communication | `../../skills/non-blender-user-response-writer/SKILL.md` | Expanded Draft v0 |
@@ -77,7 +77,7 @@ This pack expects included skills to pass Gate 0 through Gate 8 in `skill-review
 
 | Expectation | Status language |
 |---|---|
-| Per-skill evals | Each included skill has `EVAL.md`. 14 skills are Expanded Draft v0 with `references/` folders (8 originals + 6 Phase 4 promoted after references/ added 2026-05-09). Only 2 skills remain Draft v0 baseline (`blendops-help`, `render-export-evidence`). |
+| Per-skill evals | Each included skill has `EVAL.md`. **All 16 skills are Expanded Draft v0 with `references/` folders** (8 originals + 6 Phase 4 + 2 final baselines `blendops-help` and `render-export-evidence` promoted 2026-05-09). |
 | Text-only eval | Baseline checks should pass before runtime eval. |
 | Runtime blockers | Must be recordable without overclaims. |
 | Depth audit | Tracked in `skill-reviews/reports/v0-skill-depth-audit.md`. |
