@@ -1,6 +1,6 @@
 # BlendOps Roadmap (Product-Layer Rebuild)
 
-_Last updated: 2026-05-09 (Phase 4: 10 → 16 skills + 9 → 16 install targets; Superpowers + BMad inspired process / discipline skills + 4 more coding agents Cline / Continue / Zed / goose + 3 local LLM runners Ollama / LM Studio / Open WebUI)_
+_Last updated: 2026-05-09 (Phase 4 complete: 10 → 16 skills with all 16 now Expanded Draft v0; 9 → 16 install targets; Superpowers + BMad inspired process / discipline skills + 4 more coding agents + 3 local LLM runners; refreshed skill review reports for all 16; added canonical 7-stage full-non-blender-user-workflow chaining all 16 skills)_
 
 > [!NOTE]
 > BlendOps remains **Draft v0**. The **content layer** (docs, skills, laws, packs, bundles) is **shippable / runnable end-to-end** for content install + planning workflows. The **runtime evidence layer** is gated on the operator running Blender once and recording evidence — BlendOps publisher cannot do that for the user because BlendOps does not install Blender.
@@ -151,6 +151,33 @@ Added 7 new install targets (9 → 16 total) based on web research of MCP suppor
 All 7 register in `docs/install/README.md`, `docs/adapter-registry.md` "Install-only pending adapter draft" section, `docs/multi-agent-install-strategy.md` per-client matrix, `docs/ai-agent-install-flow.md` target confidence table, `scripts/check-docs.mjs requiredDocs`, `README.md` badges + per-target table, `docs/README.md` per-target tables.
 
 Adapter rows for these 7 stay deferred until each native skill path is verified — they are install-only docs with linked-only confidence labels (per the adapter promotion ladder defined in `docs/adapter-registry.md`).
+
+### ✅ Phase 4 final docs polish (2026-05-09)
+
+After the 6 Phase 4 skills + 7 install targets + references/ rounds, the remaining
+docs cleanup is now complete:
+
+- [x] Promote final 2 baseline skills (`blendops-help`, `render-export-evidence`)
+      from Draft v0 → Expanded Draft v0 by adding `references/` (3 files each:
+      routing-decision-tree / quick-start-prompts / lifecycle-phases for
+      `blendops-help`; truth-label-decision-tree / evidence-record-templates /
+      attempted-vs-failed-rubric for `render-export-evidence`).
+      → **All 16 skills now Expanded Draft v0**.
+- [x] Refresh `skill-reviews/reports/v0-skill-depth-audit.md` to cover all 16
+      skills (was 8); drop "partial snapshot" WARNING banner.
+- [x] Refresh `skill-reviews/reports/v0-skill-gate-review.md` to cover all 16
+      skills (was 8); 13 Pass / 3 Warn (Superpowers + BMad source-provenance
+      notes) / 0 Fail; drop "partial snapshot" WARNING.
+- [x] Add canonical 7-stage `docs/workflows/full-non-blender-user-workflow.md`
+      chaining all 16 skills end-to-end. Update `docs/workflows/README.md`
+      and `docs/README.md` workflows section to list it as the canonical
+      broad-scope workflow (with `product-hero-workflow.md` reframed as
+      the narrower subset).
+
+After this, the only remaining actionable items are operator-blocked
+(runtime evidence) or future-deferred (Phase 4 npx installer / Phase 5
+web-3D implementation) — see the "Blocked on operator action" and
+"Future work deliberately deferred" sections below.
 
 ### ✅ Phase 4 skills expansion (Superpowers + BMad inspired, 2026-05-09)
 
