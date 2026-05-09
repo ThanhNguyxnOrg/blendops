@@ -96,6 +96,16 @@ const requiredSkills = [
   'skills/blender-stop-condition-decider/SKILL.md',
   'skills/blender-scope-boundary-enforcer/SKILL.md',
   'skills/blender-recipe-decomposer/SKILL.md',
+  // Batch 5 (post-v0.3.0-draft): Asset / sourcing:
+  'skills/asset-license-checker/SKILL.md',
+  'skills/asset-style-consistency-checker/SKILL.md',
+  'skills/asset-fallback-strategy/SKILL.md',
+  'skills/asset-library-organization-planner/SKILL.md',
+  // Batch 6 (post-v0.3.0-draft): Color / format / output decisions:
+  'skills/color-management-decision/SKILL.md',
+  'skills/output-format-decision/SKILL.md',
+  'skills/resolution-aspect-decision/SKILL.md',
+  'skills/cycles-vs-eevee-decision/SKILL.md',
 ];
 
 const requiredSkillEvals = [
@@ -135,6 +145,16 @@ const requiredSkillEvals = [
   'skills/blender-stop-condition-decider/EVAL.md',
   'skills/blender-scope-boundary-enforcer/EVAL.md',
   'skills/blender-recipe-decomposer/EVAL.md',
+  // Batch 5 (post-v0.3.0-draft): Asset / sourcing:
+  'skills/asset-license-checker/EVAL.md',
+  'skills/asset-style-consistency-checker/EVAL.md',
+  'skills/asset-fallback-strategy/EVAL.md',
+  'skills/asset-library-organization-planner/EVAL.md',
+  // Batch 6 (post-v0.3.0-draft): Color / format / output decisions:
+  'skills/color-management-decision/EVAL.md',
+  'skills/output-format-decision/EVAL.md',
+  'skills/resolution-aspect-decision/EVAL.md',
+  'skills/cycles-vs-eevee-decision/EVAL.md',
 ];
 
 const requiredLaws = [
@@ -196,6 +216,16 @@ const requiredBundleFixture = [
   'bundles/claude-desktop-manual/references/skills/blender-stop-condition-decider.md',
   'bundles/claude-desktop-manual/references/skills/blender-scope-boundary-enforcer.md',
   'bundles/claude-desktop-manual/references/skills/blender-recipe-decomposer.md',
+  // Batch 5 (post-v0.3.0-draft): Asset / sourcing:
+  'bundles/claude-desktop-manual/references/skills/asset-license-checker.md',
+  'bundles/claude-desktop-manual/references/skills/asset-style-consistency-checker.md',
+  'bundles/claude-desktop-manual/references/skills/asset-fallback-strategy.md',
+  'bundles/claude-desktop-manual/references/skills/asset-library-organization-planner.md',
+  // Batch 6 (post-v0.3.0-draft): Color / format / output decisions:
+  'bundles/claude-desktop-manual/references/skills/color-management-decision.md',
+  'bundles/claude-desktop-manual/references/skills/output-format-decision.md',
+  'bundles/claude-desktop-manual/references/skills/resolution-aspect-decision.md',
+  'bundles/claude-desktop-manual/references/skills/cycles-vs-eevee-decision.md',
   'bundles/claude-desktop-manual/references/laws/evidence-before-done.md',
   'bundles/claude-desktop-manual/references/laws/official-runtime-only.md',
   'bundles/claude-desktop-manual/references/laws/no-arbitrary-python-interface.md',
@@ -239,6 +269,16 @@ const requiredBundleFixture = [
   'bundles/skill-package/blendops/references/skill-blender-stop-condition-decider.md',
   'bundles/skill-package/blendops/references/skill-blender-scope-boundary-enforcer.md',
   'bundles/skill-package/blendops/references/skill-blender-recipe-decomposer.md',
+  // Batch 5 (post-v0.3.0-draft): Asset / sourcing:
+  'bundles/skill-package/blendops/references/skill-asset-license-checker.md',
+  'bundles/skill-package/blendops/references/skill-asset-style-consistency-checker.md',
+  'bundles/skill-package/blendops/references/skill-asset-fallback-strategy.md',
+  'bundles/skill-package/blendops/references/skill-asset-library-organization-planner.md',
+  // Batch 6 (post-v0.3.0-draft): Color / format / output decisions:
+  'bundles/skill-package/blendops/references/skill-color-management-decision.md',
+  'bundles/skill-package/blendops/references/skill-output-format-decision.md',
+  'bundles/skill-package/blendops/references/skill-resolution-aspect-decision.md',
+  'bundles/skill-package/blendops/references/skill-cycles-vs-eevee-decision.md',
   'bundles/skill-package/blendops/references/law-evidence-before-done.md',
   'bundles/skill-package/blendops/references/pack-product-hero-v0.md',
   'bundles/skill-package/blendops/LICENSE.txt',

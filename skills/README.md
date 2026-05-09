@@ -102,6 +102,28 @@ Four process / discipline skills that prevent scope drift, enforce gates, and pi
 | `blender-scope-boundary-enforcer` | Detect mid-recipe scope creep and force decline / agree-to-new-scope / defer; prevents silent absorption | Mid-recipe when scope drift is detected ("can you also...") | Expanded Draft v0 | [EVAL](./blender-scope-boundary-enforcer/EVAL.md) | scope-addition-classification / options-language-template / recurring-creep-patterns |
 | `blender-recipe-decomposer` | Break a complex / over-scoped intent into 2-5 smaller cohesive recipes with brief, stop condition, handoff | Intent has multiple distinct deliverables or crosses scene types | Expanded Draft v0 | [EVAL](./blender-recipe-decomposer/EVAL.md) | recipe-grouping-rules / dependency-patterns / recipe-naming-rules |
 
+### 🗂️ Asset / sourcing (Batch 5, post-v0.3.0-draft)
+
+Four asset-management skills covering license, style consistency, fallback, and library organization:
+
+| Skill | Purpose | Use when | Depth status | Eval | References |
+|---|---|---|---|---|---|
+| `asset-license-checker` | Verify license compliance for downloaded 3D assets, textures, HDRIs, fonts before scene build / mutation / export | After asset-discovery produces asset list | Expanded Draft v0 | [EVAL](./asset-license-checker/EVAL.md) | common-license-mapping / license-source-rules / attribution-rendering-patterns |
+| `asset-style-consistency-checker` | Verify chosen assets share visual style (realism / detail / color / surface) before scene build | Before scene build, when scene preview shows visible style mismatch | Expanded Draft v0 | [EVAL](./asset-style-consistency-checker/EVAL.md) | style-axes / drift-classification / intentional-mixed-style |
+| `asset-fallback-strategy` | Provide 2-3 fallback options when asset is unavailable / blocked / over-budget — without halting the recipe | After a checker fails an asset | Expanded Draft v0 | [EVAL](./asset-fallback-strategy/EVAL.md) | fallback-option-types / scoring-rubric / drop-with-caveat-rules |
+| `asset-library-organization-planner` | Plan internal asset library (folders, naming, metadata, license tracking, version control) for repeat reuse | Starting new repo with multiple recipes, or before scaling to 50+ assets | Expanded Draft v0 | [EVAL](./asset-library-organization-planner/EVAL.md) | folder-structure-rules / naming-rules / metadata-schema |
+
+### 🎨 Color / format / output decisions (Batch 6, post-v0.3.0-draft)
+
+Four upfront render-config decisions that prevent the most common Blender output mistakes:
+
+| Skill | Purpose | Use when | Depth status | Eval | References |
+|---|---|---|---|---|---|
+| `color-management-decision` | Pick color management config (sRGB / Filmic / Standard / AgX / ACEScg) per output context before render | Before render / lookdev pass when consumer color pipeline is known | Expanded Draft v0 | [EVAL](./color-management-decision/EVAL.md) | pipeline-mapping / per-channel-rules / look-comparison |
+| `output-format-decision` | Pick output file format (PNG / JPG / WebP / OpenEXR / TIFF) per use case based on bit depth, compression, transparency | Before render when consumer requires specific format | Expanded Draft v0 | [EVAL](./output-format-decision/EVAL.md) | format-decision-matrix / bit-depth-rules / compression-tradeoffs |
+| `resolution-aspect-decision` | Pick render resolution + aspect ratio per consumer use case; avoid render-then-crop and aspect mismatch | Before render when consumer requires specific aspect / resolution | Expanded Draft v0 | [EVAL](./resolution-aspect-decision/EVAL.md) | aspect-defaults / resolution-defaults / print-vs-screen-rules |
+| `cycles-vs-eevee-decision` | Pick Cycles / Eevee Next / Eevee legacy / Workbench based on quality bar, time budget, feature needs | Before render when engine choice drives feature support and time tradeoff | Expanded Draft v0 | [EVAL](./cycles-vs-eevee-decision/EVAL.md) | engine-feature-matrix / samples-by-quality / gpu-device-rules |
+
 ### 🧠 Process and discipline (Phase 4 expansion — Superpowers + BMad inspired)
 
 Each ships with `SKILL.md` + `EVAL.md` + 3 `references/` files (templates / playbooks / patterns).
