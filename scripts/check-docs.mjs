@@ -106,6 +106,16 @@ const requiredSkills = [
   'skills/output-format-decision/SKILL.md',
   'skills/resolution-aspect-decision/SKILL.md',
   'skills/cycles-vs-eevee-decision/SKILL.md',
+  // Batch 7 (post-v0.4.0-draft): Recipe / pack expansion:
+  'skills/recipe-fit-assessor/SKILL.md',
+  'skills/pack-prerequisite-checker/SKILL.md',
+  'skills/workflow-stage-router/SKILL.md',
+  'skills/acceptance-criteria-builder/SKILL.md',
+  // Batch 8 (post-v0.4.0-draft): Runtime path discipline:
+  'skills/runtime-path-picker/SKILL.md',
+  'skills/path-one-host-outline/SKILL.md',
+  'skills/cli-appendix-job-outline/SKILL.md',
+  'skills/runtime-attempt-report-writer/SKILL.md',
 ];
 
 const requiredSkillEvals = [
@@ -155,6 +165,16 @@ const requiredSkillEvals = [
   'skills/output-format-decision/EVAL.md',
   'skills/resolution-aspect-decision/EVAL.md',
   'skills/cycles-vs-eevee-decision/EVAL.md',
+  // Batch 7 (post-v0.4.0-draft): Recipe / pack expansion:
+  'skills/recipe-fit-assessor/EVAL.md',
+  'skills/pack-prerequisite-checker/EVAL.md',
+  'skills/workflow-stage-router/EVAL.md',
+  'skills/acceptance-criteria-builder/EVAL.md',
+  // Batch 8 (post-v0.4.0-draft): Runtime path discipline:
+  'skills/runtime-path-picker/EVAL.md',
+  'skills/path-one-host-outline/EVAL.md',
+  'skills/cli-appendix-job-outline/EVAL.md',
+  'skills/runtime-attempt-report-writer/EVAL.md',
 ];
 
 const requiredLaws = [
@@ -226,6 +246,16 @@ const requiredBundleFixture = [
   'bundles/claude-desktop-manual/references/skills/output-format-decision.md',
   'bundles/claude-desktop-manual/references/skills/resolution-aspect-decision.md',
   'bundles/claude-desktop-manual/references/skills/cycles-vs-eevee-decision.md',
+  // Batch 7 (post-v0.4.0-draft): Recipe / pack expansion:
+  'bundles/claude-desktop-manual/references/skills/recipe-fit-assessor.md',
+  'bundles/claude-desktop-manual/references/skills/pack-prerequisite-checker.md',
+  'bundles/claude-desktop-manual/references/skills/workflow-stage-router.md',
+  'bundles/claude-desktop-manual/references/skills/acceptance-criteria-builder.md',
+  // Batch 8 (post-v0.4.0-draft): Runtime path discipline:
+  'bundles/claude-desktop-manual/references/skills/runtime-path-picker.md',
+  'bundles/claude-desktop-manual/references/skills/path-one-host-outline.md',
+  'bundles/claude-desktop-manual/references/skills/cli-appendix-job-outline.md',
+  'bundles/claude-desktop-manual/references/skills/runtime-attempt-report-writer.md',
   'bundles/claude-desktop-manual/references/laws/evidence-before-done.md',
   'bundles/claude-desktop-manual/references/laws/official-runtime-only.md',
   'bundles/claude-desktop-manual/references/laws/no-arbitrary-python-interface.md',
@@ -279,6 +309,16 @@ const requiredBundleFixture = [
   'bundles/skill-package/blendops/references/skill-output-format-decision.md',
   'bundles/skill-package/blendops/references/skill-resolution-aspect-decision.md',
   'bundles/skill-package/blendops/references/skill-cycles-vs-eevee-decision.md',
+  // Batch 7 (post-v0.4.0-draft): Recipe / pack expansion:
+  'bundles/skill-package/blendops/references/skill-recipe-fit-assessor.md',
+  'bundles/skill-package/blendops/references/skill-pack-prerequisite-checker.md',
+  'bundles/skill-package/blendops/references/skill-workflow-stage-router.md',
+  'bundles/skill-package/blendops/references/skill-acceptance-criteria-builder.md',
+  // Batch 8 (post-v0.4.0-draft): Runtime path discipline:
+  'bundles/skill-package/blendops/references/skill-runtime-path-picker.md',
+  'bundles/skill-package/blendops/references/skill-path-one-host-outline.md',
+  'bundles/skill-package/blendops/references/skill-cli-appendix-job-outline.md',
+  'bundles/skill-package/blendops/references/skill-runtime-attempt-report-writer.md',
   'bundles/skill-package/blendops/references/law-evidence-before-done.md',
   'bundles/skill-package/blendops/references/pack-product-hero-v0.md',
   'bundles/skill-package/blendops/LICENSE.txt',

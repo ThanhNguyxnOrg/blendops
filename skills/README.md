@@ -124,6 +124,28 @@ Four upfront render-config decisions that prevent the most common Blender output
 | `resolution-aspect-decision` | Pick render resolution + aspect ratio per consumer use case; avoid render-then-crop and aspect mismatch | Before render when consumer requires specific aspect / resolution | Expanded Draft v0 | [EVAL](./resolution-aspect-decision/EVAL.md) | aspect-defaults / resolution-defaults / print-vs-screen-rules |
 | `cycles-vs-eevee-decision` | Pick Cycles / Eevee Next / Eevee legacy / Workbench based on quality bar, time budget, feature needs | Before render when engine choice drives feature support and time tradeoff | Expanded Draft v0 | [EVAL](./cycles-vs-eevee-decision/EVAL.md) | engine-feature-matrix / samples-by-quality / gpu-device-rules |
 
+### 📚 Recipe / pack operations (Batch 7, post-v0.3.0-draft)
+
+Four skills that keep pack workflows honest: fit, prerequisites, stage routing, and acceptance criteria.
+
+| Skill | Purpose | Use when | Depth status | Eval | References |
+|---|---|---|---|---|---|
+| `recipe-fit-assessor` | Map goals to documented recipes/packs; flag scope gaps; recommend workflow entry | Choosing which recipe/pack fits before locking a brief | Expanded Draft v0 | [EVAL](./recipe-fit-assessor/EVAL.md) | recipe-catalog / scope-gap-rules / workflow-recommendation-template |
+| `pack-prerequisite-checker` | Pre-flight matrix: brief, assets, runtime posture, evidence habits, Single-bridge | Right before execution-heavy work for a chosen pack | Expanded Draft v0 | [EVAL](./pack-prerequisite-checker/EVAL.md) | prerequisite-matrix / blocked-start-playbook / pack-readiness-template |
+| `workflow-stage-router` | From current artifacts → next narrow skill + preconditions | Resume, de-bottleneck skill overload, mid-project status checks | Expanded Draft v0 | [EVAL](./workflow-stage-router/EVAL.md) | milestone-model / routing-decision-tree / stage-handoff-template |
+| `acceptance-criteria-builder` | Turn brief + recipe into measurable acceptance rows with evidence hooks | Stakeholder sign-off, definition-of-done, pre-render contract | Expanded Draft v0 | [EVAL](./acceptance-criteria-builder/EVAL.md) | checklist-patterns / evidence-hook-rules / brief-to-criteria-mapper |
+
+### 🧷 Runtime path discipline (Batch 8, post-v0.3.0-draft)
+
+Four skills that separate Path 1 hosting, Path 2 community bridge, and CLI appendix without false standalone Connector claims.
+
+| Skill | Purpose | Use when | Depth status | Eval | References |
+|---|---|---|---|---|---|
+| `runtime-path-picker` | Choose Path 1 Lab MCP, Path 2 `ahujasid`, or CLI appendix from constraints | User frozen between official Lab stack, community bridge, or headless batch | Expanded Draft v0 | [EVAL](./runtime-path-picker/EVAL.md) | path-constraints-table / decision-tree / anti-patterns |
+| `path-one-host-outline` | Connector vs manual MCP for Path 1; Lab add-on inside Blender 5.1+ always | Claude Desktop tutorial vs coding-agent MCP config explanations | Expanded Draft v0 | [EVAL](./path-one-host-outline/EVAL.md) | connector-vs-manual-matrix / lab-addon-reminders / host-checklist-template |
+| `cli-appendix-job-outline` | Phased headless job outline; upstream CLI manual is authority | CI / farm / policy-blocked MCP scenarios | Expanded Draft v0 | [EVAL](./cli-appendix-job-outline/EVAL.md) | job-type-matrix / flag-order-reminders / stateless-limitations |
+| `runtime-attempt-report-writer` | Structured attempt report with truth labels for Path 1 / Path 2 / CLI | After connect tries; provenance for evals or stakeholders | Expanded Draft v0 | [EVAL](./runtime-attempt-report-writer/EVAL.md) | truth-label-blocks / attempt-record-template / triage-next-steps |
+
 ### 🧠 Process and discipline (Phase 4 expansion — Superpowers + BMad inspired)
 
 Each ships with `SKILL.md` + `EVAL.md` + 3 `references/` files (templates / playbooks / patterns).

@@ -71,7 +71,7 @@ Read [`docs/README.md`](./docs/README.md) for the full hub. Read [`docs/runtime-
 ## Required pre-PR checks
 
 ```bash
-npm run docs:check     # 137 active markdown files
+npm run docs:check     # ~342 active markdown files (see script footer count)
 npm run skills:export  # 10 ZIPs + 10 Claude Code folders
 ```
 

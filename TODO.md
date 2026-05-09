@@ -3,7 +3,7 @@
 _Last updated: 2026-05-09 (clarified scope: BlendOps publishes the **skills layer**; runtime paths are an **upstream redirect** to Blender Foundation Lab / Anthropic Connector / `ahujasid` community / Blender CLI — not BlendOps' deliverable. Skills layer is complete. In-repo runtime evidence files are optional operator-side provenance records, not publishing blockers. CLI compatibility considerations researched and documented inline.)_
 
 > [!NOTE]
-> BlendOps publishes one thing: a **skills layer** (40 skills (Batches 1-6 of 8 added 2026-05-09; roadmap to 48 skills = 3x) + 4 laws + 1 pack + 3 bundles + 16 install target docs + ZIP/package generation + CI guards). The layer is **complete and shippable** at Draft v0. Tags shipped: `v0.1.0-draft` (16) → `v0.2.0-draft` (24) → `v0.3.0-draft` (32). Tag `v0.4.0-draft` (40) pending operator decision; final `v0.5.0-draft` (48 = 3x) needs Batches 7+8.
+> BlendOps publishes one thing: a **skills layer** (**48 skills** — Batches 1–8 complete 2026-05-09; **3× baseline target reached**) + 4 laws + 1 pack + 3 bundles + 16 install target docs + ZIP/package generation + CI guards). The layer is **complete and shippable** at Draft v0. Milestone tags: `v0.1.0-draft` (16) → `v0.2.0-draft` (24) → `v0.3.0-draft` (32) → **`v0.4.0-draft` (40)** → **`v0.5.0-draft` (48)**.
 >
 > Everything related to actually running Blender — the Blender executable, the MCP servers, the MCP hosts, the CLI — is **upstream**, owned by Blender Foundation / Anthropic / the `ahujasid` community. BlendOps **redirects** users to the right upstream docs per per-target install doc. Whether those upstream paths work in a given environment is upstream's claim, not BlendOps'. Path 1 + Path 2 are **user-reported verified by the repo owner**; CLI is **upstream-stable, decades-old**.
 >
@@ -18,9 +18,9 @@ _Last updated: 2026-05-09 (clarified scope: BlendOps publishes the **skills laye
 | Layer | Runnable? | Why |
 |---|---|---|
 | Content install (clone → paste prompt → agent installs project-locally OR prepares Skills ZIPs) | ✅ Yes | `docs/ai-agent-quickstart.md` + 3-mode auto-detect flow + 16 install targets. Just paste the README 30-second prompt. |
-| Skill ZIP / package generation | ✅ Yes | `npm run skills:export` → 16 ZIPs in `dist/claude-skills/desktop-zips/` + canonical portable skill at `bundles/skill-package/blendops/`. |
+| Skill ZIP / package generation | ✅ Yes | `npm run skills:export` → 48 ZIPs in `dist/claude-skills/desktop-zips/` + canonical portable skill at `bundles/skill-package/blendops/`. |
 | Skill upload to Claude Desktop / Claude.ai / ChatGPT Skills UI | ✅ Yes (UI drag-drop = user's manual action, not a publisher gap) | `npm run skills:export` produces correctly-shaped Anthropic Skills (≤200-char description, no `version:` / `status:` keys) and an OpenAI YAML manifest. |
-| CI guards | ✅ Yes | `npm run docs:check` validates 182 markdown files against runtime model, frontmatter spec, evidence rules, and link integrity. |
+| CI guards | ✅ Yes | `npm run docs:check` validates active markdown files (see script footer count) against runtime model, frontmatter spec, evidence rules, and link integrity. |
 | `v0.1.0-draft` tag | 🟡 Tag-able now | Skills layer is complete. Tag whenever the operator decides; pure publishing decision, no upstream blocker. |
 
 ### Runtime paths (BlendOps redirects to — owned by upstream, not this repo)
@@ -41,7 +41,7 @@ _Last updated: 2026-05-09 (clarified scope: BlendOps publishes the **skills laye
 | `npx blendops` installer | Spec only at `docs/install/installer-spec.md`. Future Phase 4 work, deliberately deferred. | — |
 | Marketplace / plugin listing | Future Phase work. Gated on upstream listing acceptance. | — |
 
-**Bottom line**: clone the repo today → paste 30-second prompt → agent auto-detects and installs/prepares ZIPs → plan a scene with the 40 skills → follow per-target install doc to enable an upstream runtime path → drive Blender via Path 1 / Path 2 (both verified by the repo owner) or CLI (decades-stable). Skills layer is **shipped through `v0.3.0-draft` (32 skills) with Batches 5+6 (8 more skills) committed on top — v0.4.0-draft tag pending operator approval**. Runtime paths are **upstream's deliverable**, not BlendOps'. Remaining = Batches 7+8 (8 skills) → `v0.5.0-draft` final (48 = 3x target reached).
+**Bottom line**: clone the repo today → paste 30-second prompt → agent auto-detects and installs/prepares ZIPs → plan a scene with **48 skills** → follow per-target install doc to enable an upstream runtime path → drive Blender via Path 1 / Path 2 (both verified by the repo owner) or CLI (decades-stable). Skills roadmap **48/48** complete (`v0.5.0-draft`). Runtime paths remain **upstream's deliverable**, not BlendOps'.
 
 ---
 
@@ -225,7 +225,7 @@ All 6 ship with `SKILL.md` + `EVAL.md` + 3 `references/` files each (18 referenc
 - [x] create Claude Desktop skill bundle without claiming connector/runtime success
 - [x] package a project-local skill bundle with rollback notes (`bundles/generic-project-local/` with `ROLLBACK.md`)
 - [x] research OpenCode, Cursor, Codex, and Gemini adapters with confidence labels (initial drafts in `docs/install/{opencode,cursor,codex,gemini}.md` and `docs/adapters/{opencode,cursor,codex}.md` with linked-only confidence; Gemini stays install-only pending source-backed verification)
-- [x] create skill packaging fixture and validation script (`scripts/export-claude-skills.mjs` produces 10 ZIPs + 10 Claude Code folders; `scripts/check-docs.mjs` validates 137 active markdown files against runtime model, frontmatter spec, evidence rules, link integrity)
+- [x] create skill packaging fixture and validation script (`scripts/export-claude-skills.mjs` produces one ZIP per skill under `skills/*/SKILL.md`; `scripts/check-docs.mjs` validates active markdown files per directory walk — see script footer count)
 
 ### ✅ Phase 3: Official runtime readiness (docs + criteria)
 - [x] document official runtime compatibility assumptions without confirming them until evidence exists

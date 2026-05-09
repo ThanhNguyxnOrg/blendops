@@ -44,7 +44,7 @@ Node 18 or newer is required.
 Run BOTH before opening a PR. CI runs `docs:check` on every PR.
 
 ```bash
-npm run docs:check     # validates 137 active markdown files: frontmatter spec, runtime model, link integrity, Blender 5.1+ for Path 1, evidence rules
+npm run docs:check     # validates active markdown files under docs/skills/laws/packs/skill-reviews (see script footer count): frontmatter spec, runtime model, link integrity, Blender 5.1+ for Path 1, evidence rules
 npm run skills:export  # produces 10 ZIPs + 10 Claude Code folders into dist/claude-skills/
 ```
 

@@ -20,5 +20,13 @@ Canonical BlendOps references inside this single upload-ready Skill package.
 | 7-point gate before any "ready" / `Verified` claim | `skill-pre-handoff-verification.md` |
 | GLB/web handoff | `skill-glb-web-handoff.md` |
 | plain-language final output | `skill-non-blender-user-response-writer.md` |
+| recipe / pack fit | `skill-recipe-fit-assessor.md` |
+| pack pre-flight readiness | `skill-pack-prerequisite-checker.md` |
+| resume / next skill routing | `skill-workflow-stage-router.md` |
+| acceptance checklist authoring | `skill-acceptance-criteria-builder.md` |
+| Path 1 vs Path 2 vs CLI decision | `skill-runtime-path-picker.md` |
+| Path 1 Connector vs manual MCP | `skill-path-one-host-outline.md` |
+| CLI appendix batch jobs | `skill-cli-appendix-job-outline.md` |
+| runtime attempt provenance write-up | `skill-runtime-attempt-report-writer.md` |
 
 Apply law and evidence references before final output.

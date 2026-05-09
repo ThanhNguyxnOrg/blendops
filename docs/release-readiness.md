@@ -22,7 +22,7 @@ Date: 2026-05-09 (scope clarified)
 | Skill ZIP / package generation | Ready for Draft v0 review | `npm run skills:export` produces 16 ZIPs + 16 Claude Code skill folders. Anthropic Skills frontmatter spec compliance verified. |
 | Adapter install dry-run | Warn | Adapter architecture and dry-run install eval are complete, with native-path confidence still environment-dependent. |
 | Manual install beta | Warn | Evidence report: [docs/evals/manual-install-beta-v0.md](./evals/manual-install-beta-v0.md). |
-| CI guards | Ready for Draft v0 review | `npm run docs:check` validates 182 markdown files. |
+| CI guards | Ready for Draft v0 review | `npm run docs:check` validates active markdown files (see script footer count). |
 | **`v0.1.0-draft` tag** | **🟡 Tag-able now** | **Skills layer is complete. Tagging is a publishing decision, not gated on upstream runtime evidence.** |
 
 ## Runtime paths dashboard (BlendOps redirects to — owned by upstream)

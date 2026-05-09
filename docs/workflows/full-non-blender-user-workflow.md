@@ -3,7 +3,7 @@
 Status: Draft v0
 
 > [!NOTE]
-> This is the **canonical full-lifecycle workflow** that chains all 16 BlendOps skills for a complete non-Blender-user run. It is the most general workflow; `product-hero-workflow.md` is the narrower product-hero-specific subset.
+> This is the **canonical full-lifecycle workflow** that chains the **original 16** BlendOps core skills for a complete non-Blender-user run. The repo now ships **48** composable skills (see [`skills/README.md`](../../skills/README.md)); use [`workflow-stage-router`](../../skills/workflow-stage-router/SKILL.md) when you need to interleave expansion skills. `product-hero-workflow.md` is the narrower product-hero-specific subset.
 
 ## Trigger
 
@@ -26,7 +26,7 @@ If the user already has a confirmed brief, jump in at Stage 2. If runtime is not
 - [`../../laws/evidence-before-done.md`](../../laws/evidence-before-done.md)
 - [`../../laws/non-blender-user-language.md`](../../laws/non-blender-user-language.md)
 
-## Skills composed (all 16, in canonical run order)
+## Skills composed (baseline 16, canonical order)
 
 ```txt
 Stage 1 — Intent

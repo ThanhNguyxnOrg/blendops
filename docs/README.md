@@ -12,7 +12,7 @@ The single index for everything in this repo. Bookmark this page.
 | Area | Status | Meaning |
 |---|---|---|
 | Product direction | Draft v0 | Workflow specs are documented; no stable release claim. |
-| Skill / law / pack collection | Draft Pass | 16 root skills (10 domain + 6 process/discipline inspired by Superpowers + BMad), 4 laws, 1 pack (`product-hero-v0`). |
+| Skill / law / pack collection | Draft Pass | **48** portable skills (16 baseline + 32 expansion across Batches 1–8), 4 laws, 1 pack (`product-hero-v0`). Canonical index: [`../skills/README.md`](../skills/README.md). |
 | Runtime path model | Active (2-path + CLI appendix) | Path 1 (Lab MCP, hosted from Anthropic Connector or manual MCP); Path 2 (community `ahujasid/blender-mcp`); CLI fallback (documented upstream as first-class Blender CLI; no in-repo evidence file yet). |
 | Path 1 read-only smoke | Pass / Available | 2026-04-29 record (likely Anthropic Connector host). |
 | Path 2 user-reported verified | Yes (2026-05-08) | No formal eval file yet. |
@@ -157,7 +157,19 @@ All 11 accept BlendOps via project-local files and can host MCP for Blender via 
 
 ---
 
-## 🛠️ Skills (16 root skills)
+## 🛠️ Skills (48 portable skills — canonical index)
+
+The grouped inventory, depth status, eval links, and references live in [`../skills/README.md`](../skills/README.md). Baseline + expansion batches cover planning, readiness, evidence, web 3D handoff, focused quality validators, domain scene planners, process discipline, asset/sourcing, color/format/output decisions, recipe/pack operations, and runtime path discipline.
+
+| Skill | Doc | Group |
+|---|---|---|
+| **Full inventory (48)** | [`../skills/README.md`](../skills/README.md) | Index |
+
+Legacy quick links below cover only the **baseline 16**; the [`skills/README.md`](../skills/README.md) index lists all **48** skills by batch.
+
+---
+
+### Baseline 16 (historic quick links)
 
 | Skill | Doc | Group |
 |---|---|---|
@@ -195,7 +207,7 @@ All 11 accept BlendOps via project-local files and can host MCP for Blender via 
 | Area | Doc |
 |---|---|
 | Workflows index | [`workflows/README.md`](./workflows/README.md) |
-| **Full non-Blender-user workflow** (canonical, 7 stages, chains all 16 skills) | [`workflows/full-non-blender-user-workflow.md`](./workflows/full-non-blender-user-workflow.md) |
+| **Full non-Blender-user workflow** (canonical **baseline 16** chain; extend with `workflow-stage-router` + [`skills/README.md`](../skills/README.md) for all 48) | [`workflows/full-non-blender-user-workflow.md`](./workflows/full-non-blender-user-workflow.md) |
 | Product hero workflow (narrower subset, 5 stages) | [`workflows/product-hero-workflow.md`](./workflows/product-hero-workflow.md) |
 | Recipes index | [`recipes/README.md`](./recipes/README.md) |
 | Cyberpunk shoe hero recipe | [`recipes/cyberpunk-shoe-hero.md`](./recipes/cyberpunk-shoe-hero.md) |

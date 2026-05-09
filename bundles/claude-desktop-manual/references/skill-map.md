@@ -22,5 +22,15 @@ These are **reference summaries inside one Claude Desktop BlendOps skill bundle*
 | `pre-handoff-verification` | 7-point gate before any "ready" / `Verified` claim | `skills/pre-handoff-verification.md` |
 | `glb-web-handoff` | web handoff framing and caveats | `skills/glb-web-handoff.md` |
 | `non-blender-user-response-writer` | plain-language final response | `skills/non-blender-user-response-writer.md` |
+| `recipe-fit-assessor` | choose recipe/pack fit before locking brief | `skills/recipe-fit-assessor.md` |
+| `pack-prerequisite-checker` | GO/NO-GO pre-flight for pack workflows | `skills/pack-prerequisite-checker.md` |
+| `workflow-stage-router` | resume / pick next narrow skill from artifact state | `skills/workflow-stage-router.md` |
+| `acceptance-criteria-builder` | definition-of-done checklist with evidence hooks | `skills/acceptance-criteria-builder.md` |
+| `runtime-path-picker` | Path 1 vs Path 2 vs CLI appendix choice | `skills/runtime-path-picker.md` |
+| `path-one-host-outline` | Path 1 Connector vs manual MCP host ordering | `skills/path-one-host-outline.md` |
+| `cli-appendix-job-outline` | headless batch job outline when MCP is wrong | `skills/cli-appendix-job-outline.md` |
+| `runtime-attempt-report-writer` | truth-label attempt report after runtime tries | `skills/runtime-attempt-report-writer.md` |
+
+Additional expansion skills (web 3D deep, quality validators, domain planners, process discipline, asset/sourcing, color/format/output) live under `skills/*.md` in this bundle; see repo `skills/README.md` for the full inventory table.
 
 Always apply law summaries in `../laws/` and runtime/evidence boundaries before final output.
