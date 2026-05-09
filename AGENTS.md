@@ -57,7 +57,7 @@ Read [`docs/README.md`](./docs/README.md) for the full hub. Read [`docs/runtime-
 | 2-path runtime summary | [`docs/reference-runtime.md`](./docs/reference-runtime.md) |
 | Path 2 caveats (community `ahujasid/blender-mcp`) | [`docs/unofficial-runtime-bridges.md`](./docs/unofficial-runtime-bridges.md) |
 | Universal install flow (Mode A/B/C) | [`docs/ai-agent-install-flow.md`](./docs/ai-agent-install-flow.md) |
-| Per-target install index (20 targets) | [`docs/install/README.md`](./docs/install/README.md) |
+| Per-target install index (26 targets) | [`docs/install/README.md`](./docs/install/README.md) |
 | Adapter index + registry | [`docs/adapters/README.md`](./docs/adapters/README.md), [`docs/adapter-registry.md`](./docs/adapter-registry.md) |
 | Skill system architecture | [`docs/skill-system.md`](./docs/skill-system.md) |
 | Skills (48 total — 16 baseline + 32 expansion across Batches 1–8) | [`skills/README.md`](./skills/README.md) |

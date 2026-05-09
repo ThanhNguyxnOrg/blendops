@@ -4,9 +4,9 @@ Status: Draft v0, not production, not stable
 Date: 2026-05-09 (scope clarified; expanded to 48 skills + 20 install targets)
 
 > [!IMPORTANT]
-> **Scope: BlendOps publishes the skills layer; runtime paths are an upstream redirect.** This readiness report grades only what BlendOps **owns**: 48 skills + 4 laws + 1 pack + 3 bundles + 20 install target docs + ZIP/package generation + CI guards. Runtime execution (Path 1 Lab MCP, Path 2 `ahujasid` community, CLI) is owned by Blender Foundation / Anthropic / the community — BlendOps redirects users via per-target install docs and does **not** claim ownership of those upstream paths' stability.
+> **Scope: BlendOps publishes the skills layer; runtime paths are an upstream redirect.** This readiness report grades only what BlendOps **owns**: 48 skills + 4 laws + 1 pack + 3 bundles + 26 install target docs + ZIP/package generation + CI guards. Runtime execution (Path 1 Lab MCP, Path 2 `ahujasid` community, CLI) is owned by Blender Foundation / Anthropic / the community — BlendOps redirects users via per-target install docs and does **not** claim ownership of those upstream paths' stability.
 >
-> The skills layer is **Ready for Draft v0**. Tags shipped: `v0.1.0-draft` (16) → `v0.2.0-draft` (24) → `v0.3.0-draft` (32) → `v0.4.0-draft` (40) → `v0.5.0-draft` (48) → `v0.6.0-draft` (final agent expansion + docs sync).
+> The skills layer is **Ready for Draft v0**. Tags shipped: `v0.1.0-draft` (16) → `v0.2.0-draft` (24) → `v0.3.0-draft` (32) → `v0.4.0-draft` (40) → `v0.5.0-draft` (48) → `v0.6.0-draft` (20 install targets) → `v0.7.0-draft` (26 install targets).
 >
 > Phase 3.3 rollup: [docs/release-readiness-rollup-v0.md](./release-readiness-rollup-v0.md)
 
@@ -78,7 +78,7 @@ The following are **not** "Not Ready" items in the publishing sense — they are
 
 ## 🧱 No blockers for `v0.1.0-draft`
 
-There are no skills-layer blockers for the `v0.1.0-draft` tag (already shipped on 2026-05-09 alongside subsequent batch tags). Earlier drafts of this report listed runtime-eval-evidence items as blockers; that framing was wrong because BlendOps does not own runtime execution paths — it redirects to upstream. Skills layer has clean CI, all 48 skills are Expanded Draft v0, all 20 install targets are documented, and skill ZIP / package generation is verified at source level.
+There are no skills-layer blockers for the `v0.1.0-draft` tag (already shipped on 2026-05-09 alongside subsequent batch tags). Earlier drafts of this report listed runtime-eval-evidence items as blockers; that framing was wrong because BlendOps does not own runtime execution paths — it redirects to upstream. Skills layer has clean CI, all 48 skills are Expanded Draft v0, all 26 install targets are documented, and skill ZIP / package generation is verified at source level.
 
 The previously-listed "blockers" are now correctly scoped:
 
@@ -94,7 +94,7 @@ The previously-listed "blockers" are now correctly scoped:
 
 - [x] 48 skills at Expanded Draft v0 with frontmatter spec compliance (16 baseline + 32 expansion across Batches 1–8).
 - [x] 4 laws + 1 pack + 3 bundle fixtures.
-- [x] 20 install target docs (Claude Desktop, Claude Code, Cursor, Codex, OpenCode, Gemini, Antigravity, Copilot, Cline, Roo Code, Continue, Zed, Windsurf, goose, OpenHands, JetBrains Junie, Ollama, LM Studio, Open WebUI, generic-project).
+- [x] 26 install target docs (Claude Desktop, Claude Code, Cursor, Codex, OpenCode, Gemini, Antigravity, Copilot, Cline, Roo Code, Blackbox AI, Continue, Zed, Windsurf, Trae, Augment Code, goose, OpenHands, JetBrains Junie, Sourcegraph Cody, Aider, Amazon Q Developer, Ollama, LM Studio, Open WebUI, generic-project).
 - [x] 3-mode auto-detect install flow (Mode A / B / C) in `docs/ai-agent-quickstart.md` + README 30-second prompt.
 - [x] Skill ZIP / package generation working (`npm run skills:export` produces one ZIP + one Claude Code folder per `skills/*/SKILL.md`, currently 48).
 - [x] CI guards passing (`npm run docs:check` validates active markdown files; see script footer count).

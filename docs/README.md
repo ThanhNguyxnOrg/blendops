@@ -100,9 +100,9 @@ The single index for everything in this repo. Bookmark this page.
 
 ---
 
-## 📂 Per-target install docs (20 targets total)
+## 📂 Per-target install docs (26 targets total)
 
-3 consumer types: **chat UI** (Claude Desktop), **coding agents** (15 — Claude Code through JetBrains Junie), **local LLM runners** (3 — Ollama / LM Studio / Open WebUI). Plus a generic project-local fallback.
+3 consumer types: **chat UI** (Claude Desktop), **coding agents** (21 — Claude Code through Amazon Q Developer), **local LLM runners** (3 — Ollama / LM Studio / Open WebUI). Plus a generic project-local fallback.
 
 ### 1) Chat UI with Skills upload
 
@@ -112,7 +112,7 @@ The single index for everything in this repo. Bookmark this page.
 
 ### 2) Coding agents (project-local install + can host MCP for Blender)
 
-All 15 accept BlendOps via project-local files and can host MCP for Blender via Path 1 host (b) Lab MCP or Path 2 community `ahujasid/blender-mcp`. They differ in MCP config syntax and native-skill-loader maturity.
+All 21 accept BlendOps via project-local files and can host MCP for Blender via Path 1 host (b) Lab MCP or Path 2 community `ahujasid/blender-mcp`. They differ in MCP config syntax and native-skill-loader maturity.
 
 | Target | Doc | Selected mode | Confidence |
 |---|---|---|---|
@@ -121,16 +121,22 @@ All 15 accept BlendOps via project-local files and can host MCP for Blender via 
 | Cursor | [`install/cursor.md`](./install/cursor.md) | project-local install | linked-only |
 | Codex CLI/App | [`install/codex.md`](./install/codex.md) | project-local install | linked-only |
 | Gemini CLI | [`install/gemini.md`](./install/gemini.md) | project-local install | not researched |
-| Antigravity | [`install/antigravity.md`](./install/antigravity.md) | project-local install | not researched |
+| Antigravity (Google) | [`install/antigravity.md`](./install/antigravity.md) | project-local install | linked-only |
 | GitHub Copilot | [`install/github-copilot.md`](./install/github-copilot.md) | project-local install | linked-only / generic |
 | Cline (VS Code) | [`install/cline.md`](./install/cline.md) | project-local install | linked-only |
 | Roo Code (VS Code) | [`install/roo-code.md`](./install/roo-code.md) | project-local install | linked-only |
+| Blackbox AI (VS Code) | [`install/blackbox-ai.md`](./install/blackbox-ai.md) | project-local install | linked-only |
 | Continue.dev | [`install/continue.md`](./install/continue.md) | project-local install | linked-only |
 | Zed editor | [`install/zed.md`](./install/zed.md) | project-local install | linked-only |
 | Windsurf (Codeium) | [`install/windsurf.md`](./install/windsurf.md) | project-local install | linked-only |
+| Trae (ByteDance) | [`install/trae.md`](./install/trae.md) | project-local install | linked-only |
+| Augment Code | [`install/augment-code.md`](./install/augment-code.md) | project-local install | linked-only |
 | goose (Block) | [`install/goose.md`](./install/goose.md) | docs-only + Standard IO extension | linked-only — has upstream Blender tutorial |
 | OpenHands | [`install/openhands.md`](./install/openhands.md) | project-local install | linked-only |
 | JetBrains Junie / AI Assistant | [`install/jetbrains-junie.md`](./install/jetbrains-junie.md) | project-local install | linked-only |
+| Sourcegraph Cody | [`install/sourcegraph-cody.md`](./install/sourcegraph-cody.md) | project-local install | linked-only |
+| Aider (terminal) | [`install/aider.md`](./install/aider.md) | project-local install | linked-only |
+| Amazon Q Developer CLI | [`install/amazon-q-developer.md`](./install/amazon-q-developer.md) | project-local install | linked-only |
 
 ### 3) Local LLM runners (docs-only; runner hosts MCP for Blender)
 

@@ -53,6 +53,13 @@ const requiredDocs = [
   'docs/install/windsurf.md',
   'docs/install/openhands.md',
   'docs/install/jetbrains-junie.md',
+  // Phase 5b expansion (post-v0.6.0-draft): more MCP-aware agents
+  'docs/install/blackbox-ai.md',
+  'docs/install/augment-code.md',
+  'docs/install/aider.md',
+  'docs/install/trae.md',
+  'docs/install/sourcegraph-cody.md',
+  'docs/install/amazon-q-developer.md',
   'docs/install/generic-project.md',
   'docs/install/installer-spec.md',
   'docs/capability-profile.md',

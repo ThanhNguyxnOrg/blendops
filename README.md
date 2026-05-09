@@ -11,12 +11,12 @@
 [![Path 2 user-reported: verified](https://img.shields.io/badge/path%202%20user--reported-verified-2ea44f.svg?style=flat-square)](./docs/unofficial-runtime-bridges.md)
 [![Full runtime eval: Not Run](https://img.shields.io/badge/full%20runtime%20eval-Not%20Run-lightgrey.svg?style=flat-square)](./docs/release-readiness-rollup-v0.md)
 [![Artifacts: Not Produced](https://img.shields.io/badge/artifacts-Not%20Produced-lightgrey.svg?style=flat-square)](./docs/release-readiness-rollup-v0.md)
-[![Release: v0.6.0-draft](https://img.shields.io/github/v/release/ThanhNguyxnOrg/blendops?include_prereleases&label=release&color=2ea44f&style=flat-square)](https://github.com/ThanhNguyxnOrg/blendops/releases/tag/v0.6.0-draft)
+[![Release: v0.7.0-draft](https://img.shields.io/github/v/release/ThanhNguyxnOrg/blendops?include_prereleases&label=release&color=2ea44f&style=flat-square)](https://github.com/ThanhNguyxnOrg/blendops/releases/tag/v0.7.0-draft)
 
 [![Skills: 48](https://img.shields.io/badge/skills-48-1f6feb.svg?style=flat-square)](./skills/README.md)
 [![Laws: 4](https://img.shields.io/badge/laws-4-1f6feb.svg?style=flat-square)](./laws/README.md)
 [![Packs: 1](https://img.shields.io/badge/packs-1-1f6feb.svg?style=flat-square)](./packs/README.md)
-[![Install targets: 20](https://img.shields.io/badge/install%20targets-20-1f6feb.svg?style=flat-square)](./docs/install/README.md)
+[![Install targets: 26](https://img.shields.io/badge/install%20targets-26-1f6feb.svg?style=flat-square)](./docs/install/README.md)
 [![Adapters: 6](https://img.shields.io/badge/adapters-6-1f6feb.svg?style=flat-square)](./docs/adapters/README.md)
 [![Bundles: 3](https://img.shields.io/badge/bundles-3-1f6feb.svg?style=flat-square)](./bundles/)
 [![Inspired by: Superpowers + BMad](https://img.shields.io/badge/inspired%20by-Superpowers%20%2B%20BMad-orange.svg?style=flat-square)](./skills/README.md)
@@ -36,7 +36,14 @@
 [![Coding agent: Windsurf](https://img.shields.io/badge/coding%20agent-Windsurf-09b6a2.svg?style=flat-square)](./docs/install/windsurf.md)
 [![Coding agent: OpenHands](https://img.shields.io/badge/coding%20agent-OpenHands-c63d2f.svg?style=flat-square)](./docs/install/openhands.md)
 [![Coding agent: JetBrains Junie](https://img.shields.io/badge/coding%20agent-JetBrains%20Junie-000000.svg?style=flat-square)](./docs/install/jetbrains-junie.md)
-[![+ 4 more coding agents](https://img.shields.io/badge/%2B%204%20more%20coding%20agents-OpenCode%20%E2%80%A2%20Gemini%20%E2%80%A2%20Antigravity%20%E2%80%A2%20Copilot-1f6feb.svg?style=flat-square)](./docs/install/README.md)
+[![Coding agent: Antigravity](https://img.shields.io/badge/coding%20agent-Antigravity%20(Google)-4285F4.svg?style=flat-square)](./docs/install/antigravity.md)
+[![Coding agent: Blackbox AI](https://img.shields.io/badge/coding%20agent-Blackbox%20AI-111827.svg?style=flat-square)](./docs/install/blackbox-ai.md)
+[![Coding agent: Augment](https://img.shields.io/badge/coding%20agent-Augment%20Code-22d3ee.svg?style=flat-square)](./docs/install/augment-code.md)
+[![Coding agent: Aider](https://img.shields.io/badge/coding%20agent-Aider-f59e0b.svg?style=flat-square)](./docs/install/aider.md)
+[![Coding agent: Trae](https://img.shields.io/badge/coding%20agent-Trae%20(ByteDance)-ef4444.svg?style=flat-square)](./docs/install/trae.md)
+[![Coding agent: Cody](https://img.shields.io/badge/coding%20agent-Sourcegraph%20Cody-5b21b6.svg?style=flat-square)](./docs/install/sourcegraph-cody.md)
+[![Coding agent: Amazon Q](https://img.shields.io/badge/coding%20agent-Amazon%20Q%20Developer-FF9900.svg?style=flat-square)](./docs/install/amazon-q-developer.md)
+[![+ 3 more coding agents](https://img.shields.io/badge/%2B%203%20more%20coding%20agents-OpenCode%20%E2%80%A2%20Gemini%20%E2%80%A2%20Copilot-1f6feb.svg?style=flat-square)](./docs/install/README.md)
 
 [![Local LLM: Ollama](https://img.shields.io/badge/local%20LLM-Ollama-000000.svg?style=flat-square)](./docs/install/ollama.md)
 [![Local LLM: LM Studio](https://img.shields.io/badge/local%20LLM-LM%20Studio-7e57c2.svg?style=flat-square)](./docs/install/lm-studio.md)
@@ -71,7 +78,7 @@ Human intent (non-Blender user)
 | 48 skills (baseline + web 3D deep + quality validators + domain planners + process discipline + asset/sourcing + color/format/output + recipe/pack ops + runtime path discipline, …) | **Path 1 — Blender Lab MCP** (Lab add-on + Lab server). Owner: Blender Foundation. Source: [blender.org/lab/mcp-server](https://www.blender.org/lab/mcp-server/) |
 | 4 laws (evidence-before-done, official-runtime-only, no-arbitrary-python-interface, non-blender-user-language) | **Path 1 host (a) — Anthropic Blender Connector** (Claude-Desktop-specific MCP host). Owner: Anthropic. Source: [claude.com/.../using-the-blender-connector-in-claude](https://claude.com/resources/tutorials/using-the-blender-connector-in-claude) |
 | 1 pack (`product-hero-v0`), 3 bundles (skill-package, claude-desktop-manual, generic-project-local) | **Path 2 — Community `ahujasid/blender-mcp`** (different add-on/server). Owner: 21K+ stars community project. Source: [github.com/ahujasid/blender-mcp](https://github.com/ahujasid/blender-mcp) |
-| 20 install target docs + 3 mode auto-detect install flow | **CLI fallback** (`blender --background --python ...`). Owner: Blender Foundation. Source: [docs.blender.org/manual/.../command_line](https://docs.blender.org/manual/en/latest/advanced/command_line/index.html) |
+| 26 install target docs + 3 mode auto-detect install flow | **CLI fallback** (`blender --background --python ...`). Owner: Blender Foundation. Source: [docs.blender.org/manual/.../command_line](https://docs.blender.org/manual/en/latest/advanced/command_line/index.html) |
 | Skill ZIP / OpenAI YAML / canonical bundle generation (`npm run skills:export` → 48 ZIPs, one per `skills/*/SKILL.md`) | The Blender executable, MCP servers, MCP host clients, OS, GPU drivers, network. |
 
 **What this means for "completeness":**
@@ -98,7 +105,7 @@ Auto-detect your environment first, then pick one mode:
 Do not install Blender, configure runtime connectors, run Blender, or claim generated artifacts. Report the selected mode, files changed or ZIP filenames, runtime status, artifact status, and limitations.
 ```
 
-The agent auto-detects which mode applies. Coding agents (Claude Code, Cursor, Codex, OpenCode, Cline, Roo Code, Continue, Zed, Windsurf, goose, OpenHands, JetBrains Junie, Gemini, Copilot, Antigravity) hit **Mode A** and install **project-locally**. Claude Desktop / Claude.ai / ChatGPT chats hit **Mode B** and output **separate ZIPs from skills/*/SKILL.md** (one per skill, 48 total) for you to drag-drop into the Skills UI manually. Anything else falls back to **Mode C — blocked-needs-input**. Full mode logic in [`docs/ai-agent-install-flow.md`](./docs/ai-agent-install-flow.md).
+The agent auto-detects which mode applies. Coding agents (Claude Code, Cursor, Codex, OpenCode, Cline, Roo Code, Blackbox AI, Continue, Zed, Windsurf, Trae, Augment Code, goose, OpenHands, JetBrains Junie, Sourcegraph Cody, Aider, Amazon Q Developer, Gemini, Copilot, Antigravity) hit **Mode A** and install **project-locally**. Claude Desktop / Claude.ai / ChatGPT chats hit **Mode B** and output **separate ZIPs from skills/*/SKILL.md** (one per skill, 48 total) for you to drag-drop into the Skills UI manually. Anything else falls back to **Mode C — blocked-needs-input**. Full mode logic in [`docs/ai-agent-install-flow.md`](./docs/ai-agent-install-flow.md).
 
 ---
 

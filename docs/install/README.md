@@ -22,7 +22,7 @@ BlendOps recognizes 3 fundamentally different consumer types: **chat UI with Ski
 |---|---|---|---|
 | Claude Desktop / Claude.ai | [claude-desktop.md](./claude-desktop.md) | multiple Skills ZIP preparation | linked-only / manual |
 
-### 2) Coding agents (project-local install + can host MCP for Blender) — 15 targets
+### 2) Coding agents (project-local install + can host MCP for Blender) — 21 targets
 
 All of these accept BlendOps via **project-local files** (`BLENDOPS.md`, `skills/`, `laws/`, `packs/`, optional tool-native paths) and can host MCP for Blender via Path 1 host (b) Lab MCP or Path 2 community `ahujasid/blender-mcp`. They differ in MCP config syntax, native skill-loader maturity, and BlendOps confidence labels — but the consumer model is the same.
 
@@ -33,16 +33,22 @@ All of these accept BlendOps via **project-local files** (`BLENDOPS.md`, `skills
 | Cursor | [cursor.md](./cursor.md) | `.cursor/rules` (candidate) | `.cursor/mcp.json` | linked-only |
 | Codex CLI/App | [codex.md](./codex.md) | none verified | per upstream | linked-only |
 | Gemini CLI | [gemini.md](./gemini.md) | not researched | per upstream | not researched |
-| Antigravity | [antigravity.md](./antigravity.md) | `.agent/skills/` (candidate) | per upstream | not researched |
+| Antigravity (Google) | [antigravity.md](./antigravity.md) | none verified | MCP Store / `mcp_config.json` | linked-only |
 | GitHub Copilot | [github-copilot.md](./github-copilot.md) | none verified | per upstream | linked-only |
 | Cline (VS Code) | [cline.md](./cline.md) | none verified | Settings → Integrations | linked-only |
 | Roo Code (VS Code) | [roo-code.md](./roo-code.md) | none verified | `.roo/mcp.json` (project) or global `mcp_settings.json` | linked-only |
+| Blackbox AI (VS Code) | [blackbox-ai.md](./blackbox-ai.md) | none verified | Blackbox panel → MCP Servers | linked-only |
 | Continue.dev | [continue.md](./continue.md) | none verified | `.continue/mcpServers/` | linked-only |
 | Zed editor | [zed.md](./zed.md) | none verified | `settings.json` `context_servers` | linked-only |
 | Windsurf (Codeium) | [windsurf.md](./windsurf.md) | none verified | `~/.codeium/windsurf/mcp_config.json` | linked-only |
+| Trae (ByteDance) | [trae.md](./trae.md) | none verified | Settings → MCP → Add Manually (v1.3.0+) | linked-only |
+| Augment Code | [augment-code.md](./augment-code.md) | none verified | Settings panel + `~/.augment/settings.json` | linked-only |
 | goose (Block) | [goose.md](./goose.md) | none verified | Standard IO extension | linked-only — has upstream Blender tutorial |
 | OpenHands | [openhands.md](./openhands.md) | none verified | `~/.openhands/mcp.json` + Settings UI + `openhands mcp` CLI | linked-only |
 | JetBrains Junie / AI Assistant | [jetbrains-junie.md](./jetbrains-junie.md) | none verified | Settings → Tools → Junie → MCP Settings or `.junie/mcp/mcp.json` | linked-only |
+| Sourcegraph Cody | [sourcegraph-cody.md](./sourcegraph-cody.md) | none verified | agentic context fetching MCP config (opt-in) | linked-only |
+| Aider (terminal) | [aider.md](./aider.md) | none verified | `--mcp-servers` flag or `.aider.conf.yml` | linked-only |
+| Amazon Q Developer CLI | [amazon-q-developer.md](./amazon-q-developer.md) | none verified | `~/.aws/amazonq/cli-agents` + `qchat mcp` CLI | linked-only |
 
 ### 3) Local LLM runners (BlendOps = docs-only / reference; runner hosts MCP for Blender) — 3 targets
 
