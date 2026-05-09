@@ -10,4 +10,5 @@ A workflow:
 
 ## Workflow index
 
-- [product-hero-workflow](./product-hero-workflow.md)
+- [**full-non-blender-user-workflow**](./full-non-blender-user-workflow.md) — canonical full-lifecycle workflow chaining all 16 skills (Stages 1–7: Intent → Asset planning → Runtime readiness → Scene planning → Quality gate → Evidence + verification → Handoff). Use when scope is broad.
+- [product-hero-workflow](./product-hero-workflow.md) — narrower product-hero-specific subset. Use when the request is specifically a product hero scene.

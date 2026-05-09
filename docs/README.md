@@ -195,7 +195,8 @@ All 11 accept BlendOps via project-local files and can host MCP for Blender via 
 | Area | Doc |
 |---|---|
 | Workflows index | [`workflows/README.md`](./workflows/README.md) |
-| Product hero workflow (5 stages) | [`workflows/product-hero-workflow.md`](./workflows/product-hero-workflow.md) |
+| **Full non-Blender-user workflow** (canonical, 7 stages, chains all 16 skills) | [`workflows/full-non-blender-user-workflow.md`](./workflows/full-non-blender-user-workflow.md) |
+| Product hero workflow (narrower subset, 5 stages) | [`workflows/product-hero-workflow.md`](./workflows/product-hero-workflow.md) |
 | Recipes index | [`recipes/README.md`](./recipes/README.md) |
 | Cyberpunk shoe hero recipe | [`recipes/cyberpunk-shoe-hero.md`](./recipes/cyberpunk-shoe-hero.md) |
 
