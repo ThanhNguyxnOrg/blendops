@@ -1,6 +1,6 @@
 # BlendOps Roadmap (Product-Layer Rebuild)
 
-_Last updated: 2026-05-09 (Phase 4: 10 → 16 skills + 9 → 16 install targets; Superpowers + BMad inspired process / discipline skills + Ollama / LM Studio / Open WebUI local + Cline / Continue / Zed / goose MCP-first agents)_
+_Last updated: 2026-05-09 (Phase 4: 10 → 16 skills + 9 → 16 install targets; Superpowers + BMad inspired process / discipline skills + 4 more coding agents Cline / Continue / Zed / goose + 3 local LLM runners Ollama / LM Studio / Open WebUI)_
 
 > [!NOTE]
 > BlendOps remains **Draft v0**. The **content layer** (docs, skills, laws, packs, bundles) is **shippable / runnable end-to-end** for content install + planning workflows. The **runtime evidence layer** is gated on the operator running Blender once and recording evidence — BlendOps publisher cannot do that for the user because BlendOps does not install Blender.
@@ -131,16 +131,21 @@ _Last updated: 2026-05-09 (Phase 4: 10 → 16 skills + 9 → 16 install targets;
 - [x] verify rollback clarity in fixture reports
 - [x] document beta findings in `docs/evals/manual-install-beta-v0.md`
 
-### ✅ Phase 4 agent expansion (local + MCP-first, 2026-05-09)
+### ✅ Phase 4 agent expansion (more coding agents + local LLM runners, 2026-05-09)
 
-Added 7 new install targets (9 → 16 total) based on web research of MCP support in popular agents and local LLM runners:
+Added 7 new install targets (9 → 16 total) based on web research of MCP support in popular tools. **All 11 of the existing + new coding agents share the same install pattern** (project-local files + optional MCP host config); the prior "MCP-first agent" sub-bucket was an artificial split and is dropped. Only Claude Desktop (chat UI) and the 3 local LLM runners (Ollama / LM Studio / Open WebUI) are genuinely different consumer types.
 
-- [x] `docs/install/cline.md` — VS Code MCP-first extension. Source: https://docs.cline.bot/mcp-servers/mcp.
-- [x] `docs/install/continue.md` — VS Code / JetBrains assistant; `.continue/mcpServers/` YAML or JSON. Source: https://docs.continue.dev/customize/deep-dives/mcp.
-- [x] `docs/install/zed.md` — Zed editor; `settings.json` `context_servers` + extensions; HTTP/SSE since Nov 2025; remote MCP since Jan 2026. Source: https://zed.dev/docs/ai/mcp.
-- [x] `docs/install/goose.md` — Block's goose agent; **upstream Blender MCP tutorial exists** at http://block.github.io/goose/docs/mcp/blender-mcp covering Path 2.
-- [x] `docs/install/ollama.md` — Local LLM; experimental MCP via PR #13700 (`~/.ollama/mcp-servers.json`, namespaced tools, `--experimental` flag) + 3rd-party clients (mcphost, mcp-client-for-ollama, OllamaC).
-- [x] `docs/install/lm-studio.md` — Local LLM; native MCP since 0.3.17, `mcp.json` Cursor-compatible.
+**Coding agents added (4 of them — same install pattern as Claude Code / Cursor / Codex):**
+
+- [x] `docs/install/cline.md` — VS Code coding agent with MCP support. Source: https://docs.cline.bot/mcp-servers/mcp.
+- [x] `docs/install/continue.md` — VS Code / JetBrains coding agent; `.continue/mcpServers/` YAML or JSON. Source: https://docs.continue.dev/customize/deep-dives/mcp.
+- [x] `docs/install/zed.md` — Zed editor (coding agent UX); `settings.json` `context_servers` + extensions; HTTP/SSE since Nov 2025; remote MCP since Jan 2026. Source: https://zed.dev/docs/ai/mcp.
+- [x] `docs/install/goose.md` — Block's goose coding agent; **upstream Blender MCP tutorial exists** at http://block.github.io/goose/docs/mcp/blender-mcp covering Path 2.
+
+**Local LLM runners added (3 — genuinely different consumer type, BlendOps stays docs-only):**
+
+- [x] `docs/install/ollama.md` — Local LLM runner; experimental MCP via PR #13700 (`~/.ollama/mcp-servers.json`, namespaced tools, `--experimental` flag) + 3rd-party clients (mcphost, mcp-client-for-ollama, OllamaC).
+- [x] `docs/install/lm-studio.md` — Local LLM runner; native MCP since 0.3.17, `mcp.json` Cursor-compatible.
 - [x] `docs/install/open-webui.md` — Local LLM frontend; native MCP since 0.6.31, Streamable HTTP transport (stdio MCP needs bridge).
 
 All 7 register in `docs/install/README.md`, `docs/adapter-registry.md` "Install-only pending adapter draft" section, `docs/multi-agent-install-strategy.md` per-client matrix, `docs/ai-agent-install-flow.md` target confidence table, `scripts/check-docs.mjs requiredDocs`, `README.md` badges + per-target table, `docs/README.md` per-target tables.

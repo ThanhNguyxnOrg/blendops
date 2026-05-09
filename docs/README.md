@@ -102,11 +102,20 @@ The single index for everything in this repo. Bookmark this page.
 
 ## 📂 Per-target install docs (16 targets total)
 
-### Claude / coding agents (project-aware)
+3 consumer types: **chat UI** (Claude Desktop), **coding agents** (11 — Claude Code through goose), **local LLM runners** (3 — Ollama / LM Studio / Open WebUI). Plus a generic project-local fallback.
+
+### 1) Chat UI with Skills upload
 
 | Target | Doc | Selected mode | Confidence |
 |---|---|---|---|
 | Claude Desktop / Claude.ai | [`install/claude-desktop.md`](./install/claude-desktop.md) | multiple Skills ZIP preparation | linked-only / manual |
+
+### 2) Coding agents (project-local install + can host MCP for Blender)
+
+All 11 accept BlendOps via project-local files and can host MCP for Blender via Path 1 host (b) Lab MCP or Path 2 community `ahujasid/blender-mcp`. They differ in MCP config syntax and native-skill-loader maturity.
+
+| Target | Doc | Selected mode | Confidence |
+|---|---|---|---|
 | Claude Code | [`install/claude-code.md`](./install/claude-code.md) | project-local install | verified-read for project-local adapter |
 | OpenCode | [`install/opencode.md`](./install/opencode.md) | project-local install | linked-only |
 | Cursor | [`install/cursor.md`](./install/cursor.md) | project-local install | linked-only |
@@ -114,21 +123,16 @@ The single index for everything in this repo. Bookmark this page.
 | Gemini CLI | [`install/gemini.md`](./install/gemini.md) | project-local install | not researched |
 | Antigravity | [`install/antigravity.md`](./install/antigravity.md) | project-local install | not researched |
 | GitHub Copilot | [`install/github-copilot.md`](./install/github-copilot.md) | project-local install | linked-only / generic |
-
-### MCP-first agents (Phase 4 expansion)
-
-| Target | Doc | Selected mode | Confidence |
-|---|---|---|---|
-| Cline (VS Code) | [`install/cline.md`](./install/cline.md) | project-local + MCP config | linked-only |
-| Continue.dev | [`install/continue.md`](./install/continue.md) | project-local + `.continue/mcpServers/` | linked-only |
-| Zed editor | [`install/zed.md`](./install/zed.md) | project-local + `settings.json` `context_servers` | linked-only |
+| Cline (VS Code) | [`install/cline.md`](./install/cline.md) | project-local install | linked-only |
+| Continue.dev | [`install/continue.md`](./install/continue.md) | project-local install | linked-only |
+| Zed editor | [`install/zed.md`](./install/zed.md) | project-local install | linked-only |
 | goose (Block) | [`install/goose.md`](./install/goose.md) | docs-only + Standard IO extension | linked-only — has upstream Blender tutorial |
 
-### Local LLM runners (Phase 4 expansion)
+### 3) Local LLM runners (docs-only; runner hosts MCP for Blender)
 
 | Target | Doc | Selected mode | Confidence |
 |---|---|---|---|
-| Ollama | [`install/ollama.md`](./install/ollama.md) | docs-only + experimental MCP config | linked-only / experimental |
+| Ollama | [`install/ollama.md`](./install/ollama.md) | docs-only + `~/.ollama/mcp-servers.json` (experimental) | linked-only / experimental |
 | LM Studio | [`install/lm-studio.md`](./install/lm-studio.md) | docs-only + `mcp.json` (Cursor-compatible) | linked-only |
 | Open WebUI | [`install/open-webui.md`](./install/open-webui.md) | docs-only + Streamable HTTP MCP | linked-only |
 

@@ -25,13 +25,18 @@
 [![Blender Lab: MCP server](https://img.shields.io/badge/Blender%20Lab-MCP%20server%20(Path%201%20Blender--side)-f5792a.svg?style=flat-square)](https://www.blender.org/lab/mcp-server/)
 [![Community: ahujasid/blender-mcp](https://img.shields.io/badge/Community-ahujasid%2Fblender--mcp%20(Path%202)-181717.svg?style=flat-square&logo=github)](https://github.com/ahujasid/blender-mcp)
 
-[![Local LLM: Ollama](https://img.shields.io/badge/local-Ollama-000000.svg?style=flat-square)](./docs/install/ollama.md)
-[![Local LLM: LM Studio](https://img.shields.io/badge/local-LM%20Studio-7e57c2.svg?style=flat-square)](./docs/install/lm-studio.md)
-[![Local LLM: Open WebUI](https://img.shields.io/badge/local-Open%20WebUI-1f8a44.svg?style=flat-square)](./docs/install/open-webui.md)
-[![MCP host: Cline](https://img.shields.io/badge/MCP%20host-Cline-007ACC.svg?style=flat-square)](./docs/install/cline.md)
-[![MCP host: Continue.dev](https://img.shields.io/badge/MCP%20host-Continue.dev-5436DA.svg?style=flat-square)](./docs/install/continue.md)
-[![MCP host: Zed](https://img.shields.io/badge/MCP%20host-Zed-D29922.svg?style=flat-square)](./docs/install/zed.md)
-[![MCP host: goose](https://img.shields.io/badge/MCP%20host-goose%20(Block)-FF8C00.svg?style=flat-square)](./docs/install/goose.md)
+[![Coding agent: Claude Code](https://img.shields.io/badge/coding%20agent-Claude%20Code-d97757.svg?style=flat-square)](./docs/install/claude-code.md)
+[![Coding agent: Cursor](https://img.shields.io/badge/coding%20agent-Cursor-1f6feb.svg?style=flat-square)](./docs/install/cursor.md)
+[![Coding agent: Codex](https://img.shields.io/badge/coding%20agent-Codex-10a37f.svg?style=flat-square)](./docs/install/codex.md)
+[![Coding agent: Cline](https://img.shields.io/badge/coding%20agent-Cline-007ACC.svg?style=flat-square)](./docs/install/cline.md)
+[![Coding agent: Continue.dev](https://img.shields.io/badge/coding%20agent-Continue.dev-5436DA.svg?style=flat-square)](./docs/install/continue.md)
+[![Coding agent: Zed](https://img.shields.io/badge/coding%20agent-Zed-D29922.svg?style=flat-square)](./docs/install/zed.md)
+[![Coding agent: goose](https://img.shields.io/badge/coding%20agent-goose%20(Block)-FF8C00.svg?style=flat-square)](./docs/install/goose.md)
+[![+ 4 more coding agents](https://img.shields.io/badge/%2B%204%20more%20coding%20agents-OpenCode%20%E2%80%A2%20Gemini%20%E2%80%A2%20Antigravity%20%E2%80%A2%20Copilot-1f6feb.svg?style=flat-square)](./docs/install/README.md)
+
+[![Local LLM: Ollama](https://img.shields.io/badge/local%20LLM-Ollama-000000.svg?style=flat-square)](./docs/install/ollama.md)
+[![Local LLM: LM Studio](https://img.shields.io/badge/local%20LLM-LM%20Studio-7e57c2.svg?style=flat-square)](./docs/install/lm-studio.md)
+[![Local LLM: Open WebUI](https://img.shields.io/badge/local%20LLM-Open%20WebUI-1f8a44.svg?style=flat-square)](./docs/install/open-webui.md)
 
 </div>
 

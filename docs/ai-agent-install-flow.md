@@ -127,24 +127,45 @@ Every mode must avoid these actions:
 
 ## Target confidence table
 
-| Target | Universal mode | Auto-detect confidence | Ask user if ambiguous? | Global writes allowed by default? | Runtime setup separate? | Notes |
-|---|---|---|---:|---:|---:|---|
-| [Claude Code](./install/claude-code.md) | Project-local install | Medium when Claude Code files are present; otherwise unknown. | Yes | No | Yes | Keep distinct from Claude Desktop. |
-| [OpenCode](./install/opencode.md) | Project-local install | Low / linked-only | Yes | No | Yes | Use generic fallback unless project evidence is clear. |
-| [Cursor](./install/cursor.md) | Project-local install | Low / linked-only | Yes | No | Yes | Avoid broad global rule mutation. |
-| [Codex CLI/App](./install/codex.md) | Project-local install | Low / linked-only | Yes | No | Yes | Do not invent plugin paths. |
-| [Gemini CLI](./install/gemini.md) | Project-local install | Low / not researched | Yes | No | Yes | Treat as future adapter work. |
-| [Antigravity](./install/antigravity.md) | Project-local install | Low / not researched | Yes | No | Yes | Do not claim native support yet. |
-| [GitHub Copilot](./install/github-copilot.md) | Project-local install | Low / linked-only | Yes | No | Yes | Do not claim marketplace or extension listing. |
-| [Claude Desktop](./install/claude-desktop.md) | Skill ZIP preparation | Manual/chat-only | Yes | No | Yes | Connector/runtime setup is a separate user action. |
-| [Cline (VS Code)](./install/cline.md) | Project-local + MCP config | Low / linked-only | Yes | No | Yes | Phase 4: MCP-first VS Code extension. |
-| [Continue.dev](./install/continue.md) | Project-local + `.continue/mcpServers/` | Low / linked-only | Yes | No | Yes | Phase 4: MCP usable in agent mode only. |
-| [Zed editor](./install/zed.md) | Project-local + `settings.json` `context_servers` | Low / linked-only | Yes | No | Yes | Phase 4: HTTP/SSE MCP supported. |
-| [goose (Block)](./install/goose.md) | Docs-only + Standard IO extension | Low / linked-only | Yes | No | Yes | Phase 4: has upstream Blender tutorial. |
-| [Ollama](./install/ollama.md) | Docs-only + experimental MCP config | Low / linked-only / experimental | Yes | No | Yes | Phase 4: local LLM, MCP via PR #13700. |
-| [LM Studio](./install/lm-studio.md) | Docs-only + `mcp.json` (Cursor-compatible) | Low / linked-only | Yes | No | Yes | Phase 4: local LLM, MCP since 0.3.17. |
-| [Open WebUI](./install/open-webui.md) | Docs-only + Streamable HTTP MCP | Low / linked-only | Yes | No | Yes | Phase 4: local LLM frontend, MCP since 0.6.31. |
-| [Generic project-local fallback](./install/generic-project.md) | Project-local install | High as safe fallback | Yes, if it would modify existing files | No | Yes | Default when target is unknown or mixed; fixture in `bundles/generic-project-local/`. |
+3 consumer types: chat UI (Claude Desktop), coding agents (11 — all project-aware + MCP-capable), local LLM runners (3 — docs-only). Plus a generic fallback. The 11 coding agents share the same install pattern (project-local files + optional MCP host config); they differ only in MCP config syntax + tool-native skill-loader maturity.
+
+### 1) Chat UI with Skills upload
+
+| Target | Universal mode | Auto-detect confidence | Notes |
+|---|---|---|---|
+| [Claude Desktop / Claude.ai](./install/claude-desktop.md) | Skill ZIP preparation | Manual / chat-only | Connector / runtime setup is a separate user action. |
+
+### 2) Coding agents (project-local install + can host MCP for Blender)
+
+| Target | Auto-detect confidence | MCP config location | Notes |
+|---|---|---|---|
+| [Claude Code](./install/claude-code.md) | Medium when Claude Code files are present | per Claude Code MCP guide | Tool-native partly verified (`.claude/`). |
+| [OpenCode](./install/opencode.md) | Low / linked-only | per upstream | Use generic fallback unless project evidence is clear. |
+| [Cursor](./install/cursor.md) | Low / linked-only | `.cursor/mcp.json` | Avoid broad global rule mutation. |
+| [Codex CLI/App](./install/codex.md) | Low / linked-only | per upstream | No verified Codex-native skill path. |
+| [Gemini CLI](./install/gemini.md) | Low / not researched | per upstream | Treat as future adapter work. |
+| [Antigravity](./install/antigravity.md) | Low / not researched | per upstream | Don't claim native support yet. |
+| [GitHub Copilot](./install/github-copilot.md) | Low / linked-only | per upstream | No marketplace / extension listing claim. |
+| [Cline (VS Code)](./install/cline.md) | Low / linked-only | Cline Settings → Integrations | MCP-capable VS Code extension. |
+| [Continue.dev](./install/continue.md) | Low / linked-only | `.continue/mcpServers/` | MCP usable in agent mode only. |
+| [Zed editor](./install/zed.md) | Low / linked-only | `settings.json` `context_servers` | HTTP/SSE MCP supported (Nov 2025). |
+| [goose (Block)](./install/goose.md) | Low / linked-only | Standard IO extension | Has upstream Blender MCP tutorial covering Path 2. |
+
+All 11 follow the same project-local install pattern (`BLENDOPS.md` / `AGENTS.md` / `skills/` etc.) and can host MCP for Blender via **Path 1 host (b) Lab MCP** OR **Path 2 community `ahujasid/blender-mcp`**. Global writes are not allowed by default for any of them; existing project instruction files are backed up before edits; runtime setup is always separate.
+
+### 3) Local LLM runners (docs-only; runner hosts MCP)
+
+| Target | Auto-detect confidence | MCP config location | Notes |
+|---|---|---|---|
+| [Ollama](./install/ollama.md) | Low / linked-only / experimental | `~/.ollama/mcp-servers.json` (PR #13700) + 3rd-party clients | Local LLM. |
+| [LM Studio](./install/lm-studio.md) | Low / linked-only | `mcp.json` (Cursor-compatible) | Local LLM, MCP since 0.3.17. |
+| [Open WebUI](./install/open-webui.md) | Low / linked-only | Admin Settings → External Tools → Streamable HTTP | Local LLM frontend, MCP since 0.6.31; stdio MCP needs bridge. |
+
+### Generic / future
+
+| Target | Auto-detect confidence | Notes |
+|---|---|---|
+| [Generic project-local fallback](./install/generic-project.md) | High as safe fallback | Default when target type is unknown or mixed; fixture in `bundles/generic-project-local/`. |
 
 ## Auto-detect policy
 

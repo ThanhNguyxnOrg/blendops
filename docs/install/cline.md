@@ -4,7 +4,7 @@ Status/confidence: Draft v0, linked-only
 
 ## Recommended near-term install mode
 
-Cline is an **MCP-first VS Code extension**. BlendOps install for Cline is **project-local** (write `BLENDOPS.md` and / or `.clinerules` per upstream) plus **MCP server config in Cline's Integrations panel**.
+Cline is a **VS Code coding agent with MCP support**. BlendOps install for Cline follows the same project-local pattern as Claude Code / Cursor / Codex / etc. (write `BLENDOPS.md` and / or `.clinerules` per upstream) plus optional **MCP server config in Cline's Integrations panel** when the user wants Blender runtime through Cline.
 
 For Blender execution, Cline acts as the **MCP host** (Path 1 host b — manual MCP, or Path 2 — community `ahujasid/blender-mcp`). It does not replace the Blender-side install.
 

@@ -14,41 +14,47 @@ The canonical portable package source is `bundles/skill-package/blendops/`. Its 
 
 ## Target docs
 
-### Claude / coding agents (project-aware, install BlendOps content directly)
+BlendOps recognizes 3 fundamentally different consumer types: **chat UI with Skills upload** (Claude Desktop), **coding agents that work with project-local files and host MCP** (everything from Claude Code to goose), and **local LLM runners that host MCP without project-local-file conventions**.
+
+### 1) Chat UI with Skills upload — 1 target
 
 | Target | Doc | Selected mode | Confidence |
 |---|---|---|---|
 | Claude Desktop / Claude.ai | [claude-desktop.md](./claude-desktop.md) | multiple Skills ZIP preparation | linked-only / manual |
-| Claude Code | [claude-code.md](./claude-code.md) | project-local install | verified-read for project-local adapter |
-| OpenCode | [opencode.md](./opencode.md) | project-local install | linked-only |
-| Cursor | [cursor.md](./cursor.md) | project-local install | linked-only |
-| Codex CLI/App | [codex.md](./codex.md) | project-local install | linked-only |
-| Gemini CLI | [gemini.md](./gemini.md) | project-local install | not researched |
-| Antigravity | [antigravity.md](./antigravity.md) | project-local install | not researched |
-| GitHub Copilot | [github-copilot.md](./github-copilot.md) | project-local install | linked-only / generic |
 
-### MCP-first agents (BlendOps content = docs-only / reference; agent acts as MCP host for Blender)
+### 2) Coding agents (project-local install + can host MCP for Blender) — 11 targets
 
-| Target | Doc | Selected mode | Confidence |
+All of these accept BlendOps via **project-local files** (`BLENDOPS.md`, `skills/`, `laws/`, `packs/`, optional tool-native paths) and can host MCP for Blender via Path 1 host (b) Lab MCP or Path 2 community `ahujasid/blender-mcp`. They differ in MCP config syntax, native skill-loader maturity, and BlendOps confidence labels — but the consumer model is the same.
+
+| Target | Doc | Tool-native skill path | MCP config location | Confidence |
+|---|---|---|---|---|
+| Claude Code | [claude-code.md](./claude-code.md) | `.claude/skills/`, `CLAUDE.md` | per Claude Code MCP guide | verified-read for project-local |
+| OpenCode | [opencode.md](./opencode.md) | `.opencode/` (candidate) | per upstream | linked-only |
+| Cursor | [cursor.md](./cursor.md) | `.cursor/rules` (candidate) | `.cursor/mcp.json` | linked-only |
+| Codex CLI/App | [codex.md](./codex.md) | none verified | per upstream | linked-only |
+| Gemini CLI | [gemini.md](./gemini.md) | not researched | per upstream | not researched |
+| Antigravity | [antigravity.md](./antigravity.md) | `.agent/skills/` (candidate) | per upstream | not researched |
+| GitHub Copilot | [github-copilot.md](./github-copilot.md) | none verified | per upstream | linked-only |
+| Cline (VS Code) | [cline.md](./cline.md) | none verified | Settings → Integrations | linked-only |
+| Continue.dev | [continue.md](./continue.md) | none verified | `.continue/mcpServers/` | linked-only |
+| Zed editor | [zed.md](./zed.md) | none verified | `settings.json` `context_servers` | linked-only |
+| goose (Block) | [goose.md](./goose.md) | none verified | Standard IO extension | linked-only — has upstream Blender tutorial |
+
+### 3) Local LLM runners (BlendOps = docs-only / reference; runner hosts MCP for Blender) — 3 targets
+
+These are LLM hosts, not coding agents. They don't have project-local-file conventions for skills. BlendOps is **docs-only / reference** for the local LLM session.
+
+| Target | Doc | MCP config | Confidence |
 |---|---|---|---|
-| Cline (VS Code) | [cline.md](./cline.md) | project-local + MCP config | linked-only |
-| Continue.dev (VS Code / JetBrains) | [continue.md](./continue.md) | project-local + `.continue/mcpServers/` | linked-only |
-| Zed editor | [zed.md](./zed.md) | project-local + `settings.json` `context_servers` | linked-only |
-| goose (Block's agent) | [goose.md](./goose.md) | docs-only + Standard IO extension | linked-only — has upstream Blender tutorial |
-
-### Local LLM runners (BlendOps content = docs-only / reference; LLM runner is MCP host)
-
-| Target | Doc | Selected mode | Confidence |
-|---|---|---|---|
-| Ollama | [ollama.md](./ollama.md) | docs-only + experimental MCP config | linked-only / experimental |
-| LM Studio | [lm-studio.md](./lm-studio.md) | docs-only + `mcp.json` (Cursor-compatible) | linked-only |
-| Open WebUI | [open-webui.md](./open-webui.md) | docs-only + Streamable HTTP MCP | linked-only |
+| Ollama | [ollama.md](./ollama.md) | `~/.ollama/mcp-servers.json` (experimental, PR #13700) + 3rd-party clients | linked-only / experimental |
+| LM Studio | [lm-studio.md](./lm-studio.md) | `mcp.json` (Cursor-compatible notation) | linked-only |
+| Open WebUI | [open-webui.md](./open-webui.md) | Admin Settings → External Tools → Streamable HTTP MCP | linked-only |
 
 ### Generic / future
 
 | Target | Doc | Selected mode | Confidence |
 |---|---|---|---|
-| Generic project | [generic-project.md](./generic-project.md) | project-local install fallback | verified-read fallback |
+| Generic project | [generic-project.md](./generic-project.md) | project-local install fallback (when target type is unknown) | verified-read fallback |
 | Installer script spec (future) | [installer-spec.md](./installer-spec.md) | future only | Draft spec only |
 
 ## Shared rules

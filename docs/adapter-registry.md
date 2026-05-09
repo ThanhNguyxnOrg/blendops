@@ -26,13 +26,13 @@ These targets have an install doc but **no adapter row yet**. They use the gener
 | Antigravity | [`docs/install/antigravity.md`](./install/antigravity.md) | linked-only research; native skill path unverified |
 | GitHub Copilot (chat) | [`docs/install/github-copilot.md`](./install/github-copilot.md) | linked-only research; no native skill format confirmed |
 | Claude Desktop (manual import) | [`docs/install/claude-desktop.md`](./install/claude-desktop.md) | covered by `claude-app/Desktop` adapter row above as docs-only/reference; manual personal-skill ZIP path is install-only |
-| **Cline** (VS Code) | [`docs/install/cline.md`](./install/cline.md) | Phase 4: MCP-first VS Code extension; native skill path = generic-root + MCP config |
-| **Continue.dev** | [`docs/install/continue.md`](./install/continue.md) | Phase 4: `.continue/mcpServers/` config + project-local fallback; no canonical Continue Skills loader |
-| **Zed editor** | [`docs/install/zed.md`](./install/zed.md) | Phase 4: `settings.json` `context_servers` + project-local fallback |
-| **goose** (Block) | [`docs/install/goose.md`](./install/goose.md) | Phase 4: docs-only + Standard IO extension; goose has its own canonical extension model |
-| **Ollama** | [`docs/install/ollama.md`](./install/ollama.md) | Phase 4: local LLM runner, MCP support experimental (PR #13700); docs-only |
-| **LM Studio** | [`docs/install/lm-studio.md`](./install/lm-studio.md) | Phase 4: local LLM runner, `mcp.json` Cursor-compatible; docs-only |
-| **Open WebUI** | [`docs/install/open-webui.md`](./install/open-webui.md) | Phase 4: local LLM frontend, Streamable HTTP MCP; docs-only |
+| **Cline** (VS Code) | [`docs/install/cline.md`](./install/cline.md) | Coding agent; MCP via Settings → Integrations; native skill loader unverified, generic fallback used |
+| **Continue.dev** | [`docs/install/continue.md`](./install/continue.md) | Coding agent; MCP via `.continue/mcpServers/`; native skill loader unverified, generic fallback used |
+| **Zed editor** | [`docs/install/zed.md`](./install/zed.md) | Coding agent (editor); MCP via `settings.json` `context_servers`; native skill loader unverified |
+| **goose** (Block) | [`docs/install/goose.md`](./install/goose.md) | Coding agent; MCP via Standard IO extension; goose has upstream Blender tutorial covering Path 2 |
+| **Ollama** | [`docs/install/ollama.md`](./install/ollama.md) | Local LLM runner (NOT a coding agent); MCP support experimental (PR #13700); BlendOps stays docs-only |
+| **LM Studio** | [`docs/install/lm-studio.md`](./install/lm-studio.md) | Local LLM runner (NOT a coding agent); `mcp.json` Cursor-compatible; BlendOps stays docs-only |
+| **Open WebUI** | [`docs/install/open-webui.md`](./install/open-webui.md) | Local LLM frontend (NOT a coding agent); Streamable HTTP MCP; BlendOps stays docs-only |
 
 ## Future candidates (not researched)
 
