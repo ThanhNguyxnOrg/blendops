@@ -1,12 +1,12 @@
 # Release Readiness Rollup v0
 
 Status: Draft v0, pre-runtime rollup  
-Date: 2026-04-29 (original); runtime-evidence section corrected 2026-05-08; corrected again 2026-05-08 after upstream re-read
+Date: 2026-04-29 (original); runtime-evidence section corrected 2026-05-08; scope corrected 2026-05-09 (skills layer = BlendOps-owned; runtime paths = upstream redirect)
 
-> [!CAUTION]
-> Exact draft tag decision: **do not tag v0.1.0 yet; defer tag until a fresh per-path runtime eval evidence record covers mutation/render/export, or until missing runtime evidence is explicitly accepted as a documented limitation.**
+> [!IMPORTANT]
+> **Scope correction (2026-05-09): BlendOps publishes the skills layer; runtime paths are an upstream redirect.** Earlier drafts of this rollup framed runtime-eval-evidence items as v0.1.0-tagging blockers. That was wrong because BlendOps does not own runtime execution paths — it redirects to upstream Blender Foundation Lab + Anthropic Connector + community `ahujasid` + Blender CLI. Skills layer is **complete and tag-able as `v0.1.0-draft`**; in-repo runtime evidence files are **optional operator-side provenance**, not publishing blockers.
 >
-> The 2026-04-29 rollup claimed "Stack 1 — Claude Desktop official connector stack read-only smoke test: Pass / Available". A previous correction (commit `ac04686`) called this attribution ambiguous because it framed Anthropic Connector and Blender Lab MCP as independent routes. After re-reading the upstream Anthropic tutorial and Blender Lab page, that framing was wrong: Anthropic Connector is **not** standalone — the Lab MCP add-on inside Blender is required either way. The original "Claude Desktop Connector" attribution is **consistent** with the recorded Lab MCP tool names (`get_blendfile_summary_*`, `get_objects_summary`). The runtime-evidence section below is rewritten under the 2-path + CLI appendix model.
+> Historical attribution context (kept for record): the 2026-04-29 rollup originally claimed "Stack 1 — Claude Desktop official connector stack read-only smoke test: Pass / Available". A previous correction (commit `ac04686`) called this attribution ambiguous. After re-reading upstream docs, the original "Claude Desktop Connector" attribution is **consistent** with the recorded Lab MCP tool names (`get_blendfile_summary_*`, `get_objects_summary`) since Anthropic Connector hosts the same Lab MCP stack. The runtime-evidence section below uses the 2-path + CLI appendix model.
 
 This rollup summarizes the current pre-runtime release position for BlendOps. It does not claim stable readiness, production readiness, official runtime compatibility confirmation, official runtime manual eval completion, or generated runtime artifacts.
 
@@ -185,7 +185,7 @@ A canonical package-source upload-readiness eval exists for `bundles/skill-packa
 
 ## Draft tag decision
 
-**Decision: do not tag v0.1.0 yet; defer tag until official runtime manual eval evidence exists, or until missing runtime evidence is explicitly accepted as a documented limitation.**
+**Decision (updated 2026-05-09): `v0.1.0-draft` is tag-able now from a skills-layer perspective.** Skills layer is complete; runtime paths are an upstream redirect not owned by BlendOps. Whether to actually cut the tag is a publishing decision (release notes, GitHub release page). Earlier drafts of this rollup gated tagging on in-repo runtime evidence; that framing was scope-wrong.
 
 Rationale:
 

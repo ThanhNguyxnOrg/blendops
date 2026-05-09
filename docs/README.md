@@ -19,7 +19,7 @@ The single index for everything in this repo. Bookmark this page.
 | CLI fallback | Not Run | **Documented upstream** as a first-class Blender CLI surface; no in-repo evidence file yet. |
 | Full runtime manual eval (any path) | Blocked / Not Run | Mutation/render/export not attempted. |
 | Runtime artifacts | Not Produced | No fresh preview/render/GLB. |
-| Release tag (`v0.1.0`) | Not Ready | Conservative decision; do not tag yet. |
+| Release tag (`v0.1.0-draft`) | 🟡 Tag-able now | Skills layer is complete; tagging is a publishing decision, not gated on upstream runtime evidence. |
 | Marketplace / `npx` listing | Not Published | None claimed. |
 
 ---

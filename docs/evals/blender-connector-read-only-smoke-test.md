@@ -31,7 +31,7 @@ The Blender Lab MCP add-on responded to safe read-only tool calls against a live
 | Full official runtime manual eval | **Not Run** | No BlendOps recipe, mutation, render, export, or artifact validation was attempted. |
 | Preview/render/GLB artifacts | **Not Produced** | No file was created. |
 | Stable release readiness | **Not Ready** | Read-only access is not sufficient for stable readiness. |
-| v0.1.0 tag | **Not Ready** | Do not tag yet. |
+| `v0.1.0-draft` tag | 🟡 Tag-able now | Skills layer is complete; tagging is a publishing decision. This smoke evidence file is a captured Path 1 read-only record, not a tagging gate. |
 
 ---
 

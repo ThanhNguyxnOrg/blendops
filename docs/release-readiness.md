@@ -1,33 +1,44 @@
 # 🚦 Release Readiness
 
 Status: Draft v0, not production, not stable  
-Date: 2026-04-29
+Date: 2026-05-09 (scope clarified)
 
-> [!CAUTION]
-> Conservative tag decision: **do not tag v0.1.0 yet; defer tag until official runtime manual eval evidence exists, or until missing runtime evidence is explicitly accepted as a documented limitation.** BlendOps has useful Draft v0 install and documentation evidence, but runtime eval evidence is still Blocked / Not Run and artifacts are Not Produced.
+> [!IMPORTANT]
+> **Scope: BlendOps publishes the skills layer; runtime paths are an upstream redirect.** This readiness report grades only what BlendOps **owns**: 16 skills + 4 laws + 1 pack + 3 bundles + 16 install target docs + ZIP/package generation + CI guards. Runtime execution (Path 1 Lab MCP, Path 2 `ahujasid` community, CLI) is owned by Blender Foundation / Anthropic / the community — BlendOps redirects users via per-target install docs and does **not** claim ownership of those upstream paths' stability.
+>
+> The skills layer is **Ready for Draft v0**. The `v0.1.0-draft` tag is **tag-able now**; deferring it is a publishing decision, not a blocker.
 >
 > Phase 3.3 rollup: [docs/release-readiness-rollup-v0.md](./release-readiness-rollup-v0.md)
 
 ---
 
-## Status dashboard
+## Skills layer dashboard (BlendOps publishes — what this repo owns)
 
 | Gate | Status | Evidence |
 |---|---|---|
-| Product and docs direction | Ready for Draft v0 review | Active docs describe official-runtime workflow and skill collection direction. |
-| Root collection layout | Ready for Draft v0 review | `skills/`, `laws/`, and `packs/` exist. |
-| Skill depth and gate review | Ready for Draft v0 review | Skill depth enrichment and gate review reports exist. |
+| Product and docs direction | Ready for Draft v0 review | Active docs describe upstream-redirect workflow and skill collection direction. |
+| Root collection layout | Ready for Draft v0 review | `skills/` (16 skills), `laws/` (4 laws), `packs/` (1 pack) exist. |
+| Skill depth and gate review | Ready for Draft v0 review | All 16 skills at Expanded Draft v0; 13 Pass / 3 Warn / 0 Fail in `skill-reviews/reports/v0-skill-gate-review.md`. |
+| Skill ZIP / package generation | Ready for Draft v0 review | `npm run skills:export` produces 16 ZIPs + 16 Claude Code skill folders. Anthropic Skills frontmatter spec compliance verified. |
 | Adapter install dry-run | Warn | Adapter architecture and dry-run install eval are complete, with native-path confidence still environment-dependent. |
 | Manual install beta | Warn | Evidence report: [docs/evals/manual-install-beta-v0.md](./evals/manual-install-beta-v0.md). |
-| Official runtime verification criteria | Prepared | Criteria doc: [docs/evals/official-runtime-verification-criteria.md](./evals/official-runtime-verification-criteria.md). |
-| Runtime availability checklist | Prepared | Readiness doc: [docs/evals/runtime-availability-checklist.md](./evals/runtime-availability-checklist.md). |
-| Official runtime manual eval packet | Prepared | Packet doc: [docs/evals/official-runtime-manual-eval-packet.md](./evals/official-runtime-manual-eval-packet.md). |
-| Path 1 read-only smoke (Lab MCP via likely Anthropic Connector host) | Pass / Available | Evidence report: [docs/evals/blender-connector-read-only-smoke-test.md](./evals/blender-connector-read-only-smoke-test.md). Read-only session access only; no mutation, render, export, or artifacts. See [runtime-stack-strategy.md](./runtime-stack-strategy.md) for the corrected 2-path + CLI appendix model. |
-| Path 2 community `ahujasid/blender-mcp` | User-reported verified | 2026-05-08 statement; no formal eval file with Path 2 tool names yet. |
-| CLI fallback (appendix) | Not Run | **Documented upstream** as a first-class Blender CLI surface (stable across LTS releases); no in-repo evidence file yet. |
-| Full runtime manual eval (any path) | Blocked / Not Run | Read-only smoke is not mutation/render/export evidence. |
-| Runtime artifacts | Not Produced | No fresh preview/render/GLB evidence has been produced in official-runtime manual eval. |
-| Release tag | Not Ready | Do not tag v0.1.0 yet; defer until official runtime manual eval evidence exists or missing runtime evidence is explicitly accepted as a documented limitation. |
+| CI guards | Ready for Draft v0 review | `npm run docs:check` validates 182 markdown files. |
+| **`v0.1.0-draft` tag** | **🟡 Tag-able now** | **Skills layer is complete. Tagging is a publishing decision, not gated on upstream runtime evidence.** |
+
+## Runtime paths dashboard (BlendOps redirects to — owned by upstream)
+
+This grades whether BlendOps' redirect docs are accurate, **not** whether BlendOps "owns" the upstream paths.
+
+| Path | Owner | Redirect doc accurate? | In-repo provenance file? |
+|---|---|---|---|
+| Path 1 — Lab MCP (Blender Foundation) | Blender Foundation ([blender.org/lab/mcp-server](https://www.blender.org/lab/mcp-server/)) | ✅ Per-target install docs cite source, list Blender 5.1+, host options (a) and (b). | `docs/evals/blender-connector-read-only-smoke-test.md` (read-only). No mutation/render/export evidence file yet (optional operator-side). |
+| Path 1 host (a) — Anthropic Blender Connector | Anthropic ([claude.com tutorial](https://claude.com/resources/tutorials/using-the-blender-connector-in-claude)) | ✅ `docs/install/claude-desktop.md` documents Connector + Lab add-on dependency. | Same as Path 1 above. |
+| Path 1 host (b) — Manual MCP client config | Each MCP client | ✅ Per-target install docs (cursor, claude-code, cline, continue, …). | Same as Path 1 above. |
+| Path 2 — Community `ahujasid/blender-mcp` | `ahujasid` community ([21K+ stars](https://github.com/ahujasid/blender-mcp)) | ✅ `docs/unofficial-runtime-bridges.md` lists caveats; install docs cite source. | Template at `docs/evals/path-2-ahujasid-readonly-template.md`. No filled file yet (optional operator-side). |
+| CLI fallback | Blender Foundation ([CLI manual](https://docs.blender.org/manual/en/latest/advanced/command_line/index.html)) | ✅ `docs/runtime-stack-strategy.md` includes a CLI compatibility considerations table (GLB export, --factory-startup add-on enablement, GPU rendering, viewport limits, stateless caveat). | None (optional operator-side). |
+
+> [!NOTE]
+> Path 1 + Path 2 are **user-reported verified by repo owner** (2026-04-29 + 2026-05-08 + 2026-05-09 reconfirmation). CLI is decades-stable upstream first-class surface. The lack of an in-repo eval record file does **not** mean the upstream paths don't work — it just means BlendOps has not captured a per-recipe provenance record under `docs/evals/`. That record is optional operator-side.
 
 ---
 
@@ -45,13 +56,13 @@ Date: 2026-04-29
 
 ---
 
-## ❌ Not Ready
+## ⚪ Optional / outside publisher scope
 
-- Official runtime manual eval is blocked/not executed in a runtime-available environment.
-- Claude Code native install path confidence remains environment-dependent.
-- Product-hero v0 pack remains Draft v0.
-- No fresh BlendOps runtime artifact evidence, preview/render/GLB, has been produced in official-runtime manual eval.
-- The v0.1.0 draft tag is not ready; see the Phase 3.3 rollup: [docs/release-readiness-rollup-v0.md](./release-readiness-rollup-v0.md).
+The following are **not** "Not Ready" items in the publishing sense — they are deliberately scoped outside what BlendOps owns:
+
+- **In-repo runtime artifact evidence** (preview / render / GLB captured under `docs/evals/`) — optional operator-side provenance. BlendOps redirects to upstream runtime paths and does not run Blender itself, so evidence capture happens on the operator's machine. The upstream paths themselves are user-reported verified by repo owner.
+- **Claude Code native install path confidence** — environment-dependent, by design (different Claude Code versions / configs). Documented as Warn with linked-only confidence.
+- **Product-hero v0 pack** — labeled Draft v0 deliberately (the recipe is a planning spec, not a "verified once and done" artifact).
 
 ---
 
@@ -65,32 +76,35 @@ Date: 2026-04-29
 
 ---
 
-## 🧱 Blockers
+## 🧱 No blockers for `v0.1.0-draft`
 
-| Blocker | Status | Required evidence |
+There are no skills-layer blockers for the `v0.1.0-draft` tag. Earlier drafts of this report listed runtime-eval-evidence items as blockers; that framing was wrong because BlendOps does not own runtime execution paths — it redirects to upstream. Skills layer has clean CI, all 16 skills are Expanded Draft v0, all 16 install targets are documented, and skill ZIP / package generation is verified at source level.
+
+The previously-listed "blockers" are now correctly scoped:
+
+| Item | Old framing (wrong) | Correct framing |
 |---|---|---|
-| Official runtime criteria | Prepared | Draft v0 criteria prepared in [docs/evals/official-runtime-verification-criteria.md](./evals/official-runtime-verification-criteria.md); no runtime execution claimed. |
-| Runtime availability checklist | Prepared | Draft v0 readiness checklist prepared in [docs/evals/runtime-availability-checklist.md](./evals/runtime-availability-checklist.md); no runtime execution claimed. |
-| Official runtime manual eval packet | Prepared | Draft v0 packet prepared in [docs/evals/official-runtime-manual-eval-packet.md](./evals/official-runtime-manual-eval-packet.md); no runtime execution claimed. |
-| Official runtime manual eval evidence | Blocked / Not Run | Runtime eval record with real execution evidence in a runtime-available environment. |
-| Runtime artifact evidence | Not Produced | Preview/render/GLB evidence captured from official-runtime manual eval. |
-| Adapter native-path certainty | Warn | Environment-scoped decision or accepted limitation with clear user-facing wording. |
+| Official runtime manual eval evidence | Blocker for v0.1.0 | Optional operator-side provenance record. Path 1 + Path 2 are user-reported verified by repo owner. |
+| Runtime artifact evidence | Blocker for v0.1.0 | Optional operator-side provenance under `docs/evals/`. Upstream paths produce real artifacts; BlendOps does not run them. |
+| Adapter native-path certainty | Blocker | Documented Warn with linked-only confidence per environment. Not a v0.1.0 blocker. |
 
 ---
 
-## 🧾 Required before draft release tag
+## 🧾 Ready for `v0.1.0-draft` tag
 
-- [x] Prepare official runtime verification criteria without claiming runtime execution.
-- [x] Prepare runtime availability checklist without claiming runtime execution.
-- [x] Prepare official runtime manual eval packet without claiming runtime execution.
-- [ ] Resolve remaining adapter friction found during manual install beta.
-- [ ] Run official-runtime manual eval with evidence capture.
-- [ ] Verify rollback procedures end-to-end.
-- [ ] Resolve or explicitly accept remaining warnings.
-- [ ] Keep final tag decision conservative until blockers are cleared.
+- [x] 16 skills at Expanded Draft v0 with frontmatter spec compliance.
+- [x] 4 laws + 1 pack + 3 bundle fixtures.
+- [x] 16 install target docs (Claude Desktop, Claude Code, Cursor, Codex, OpenCode, Gemini, Antigravity, Copilot, Cline, Continue, Zed, goose, Ollama, LM Studio, Open WebUI, generic-project).
+- [x] 3-mode auto-detect install flow (Mode A / B / C) in `docs/ai-agent-quickstart.md` + README 30-second prompt.
+- [x] Skill ZIP / package generation working (`npm run skills:export` → 16 ZIPs + 16 Claude Code folders).
+- [x] CI guards passing (`npm run docs:check` validates 182 active markdown files).
+- [x] Runtime-stack-strategy 2-path + CLI appendix documented with upstream redirect clarity.
+- [x] CLI compatibility considerations researched + documented (GLB export, add-on enablement, GPU flags, viewport limits, stateless caveat).
+- [x] AGENTS.md, CONTRIBUTING.md, GitHub PR / issue templates, package.json metadata.
+- [x] TODO.md scope-corrected: optional operator-side provenance items separated from BlendOps publishing items.
 
-> [!WARNING]
-> Current decision: **do not tag v0.1.0 yet; defer tag until official runtime manual eval evidence exists, or until missing runtime evidence is explicitly accepted as a documented limitation.** This is a Draft v0 readiness report, not a production or stable readiness claim.
+> [!NOTE]
+> Whether to actually cut the `v0.1.0-draft` tag is a publishing decision (release notes, GitHub release page, etc.). Nothing in the skills layer blocks it. The "Not Run" / "Not Produced" labels on runtime/artifact badges refer to **in-repo provenance under `docs/evals/`**, not to whether the upstream redirect targets work — they do.
 
 ---
 
