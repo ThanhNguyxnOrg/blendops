@@ -81,6 +81,11 @@ const requiredSkills = [
   'skills/glb-animation-handoff/SKILL.md',
   'skills/three-fiber-component-shape-planner/SKILL.md',
   'skills/preview-report-template-writer/SKILL.md',
+  // Batch 2 (post-v0.1.0-draft): Quality validation deep:
+  'skills/material-quality-checker/SKILL.md',
+  'skills/lighting-quality-checker/SKILL.md',
+  'skills/composition-quality-checker/SKILL.md',
+  'skills/polycount-budget-checker/SKILL.md',
 ];
 
 const requiredSkillEvals = [
@@ -105,6 +110,11 @@ const requiredSkillEvals = [
   'skills/glb-animation-handoff/EVAL.md',
   'skills/three-fiber-component-shape-planner/EVAL.md',
   'skills/preview-report-template-writer/EVAL.md',
+  // Batch 2 (post-v0.1.0-draft): Quality validation deep:
+  'skills/material-quality-checker/EVAL.md',
+  'skills/lighting-quality-checker/EVAL.md',
+  'skills/composition-quality-checker/EVAL.md',
+  'skills/polycount-budget-checker/EVAL.md',
 ];
 
 const requiredLaws = [
@@ -151,6 +161,11 @@ const requiredBundleFixture = [
   'bundles/claude-desktop-manual/references/skills/glb-animation-handoff.md',
   'bundles/claude-desktop-manual/references/skills/three-fiber-component-shape-planner.md',
   'bundles/claude-desktop-manual/references/skills/preview-report-template-writer.md',
+  // Batch 2 (post-v0.1.0-draft): Quality validation deep:
+  'bundles/claude-desktop-manual/references/skills/material-quality-checker.md',
+  'bundles/claude-desktop-manual/references/skills/lighting-quality-checker.md',
+  'bundles/claude-desktop-manual/references/skills/composition-quality-checker.md',
+  'bundles/claude-desktop-manual/references/skills/polycount-budget-checker.md',
   'bundles/claude-desktop-manual/references/laws/evidence-before-done.md',
   'bundles/claude-desktop-manual/references/laws/official-runtime-only.md',
   'bundles/claude-desktop-manual/references/laws/no-arbitrary-python-interface.md',
@@ -179,6 +194,11 @@ const requiredBundleFixture = [
   'bundles/skill-package/blendops/references/skill-glb-animation-handoff.md',
   'bundles/skill-package/blendops/references/skill-three-fiber-component-shape-planner.md',
   'bundles/skill-package/blendops/references/skill-preview-report-template-writer.md',
+  // Batch 2 (post-v0.1.0-draft): Quality validation deep:
+  'bundles/skill-package/blendops/references/skill-material-quality-checker.md',
+  'bundles/skill-package/blendops/references/skill-lighting-quality-checker.md',
+  'bundles/skill-package/blendops/references/skill-composition-quality-checker.md',
+  'bundles/skill-package/blendops/references/skill-polycount-budget-checker.md',
   'bundles/skill-package/blendops/references/law-evidence-before-done.md',
   'bundles/skill-package/blendops/references/pack-product-hero-v0.md',
   'bundles/skill-package/blendops/LICENSE.txt',

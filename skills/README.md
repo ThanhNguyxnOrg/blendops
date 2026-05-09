@@ -69,6 +69,17 @@ Each ships with `SKILL.md` + `EVAL.md` + 3 `references/` files.
 | `three-fiber-component-shape-planner` | Plan the React Three Fiber component shape (props, refs, Suspense, useGLTF cache, animation hook) before delivering a GLB to the web team | Consumer is using R3F, before component code is written | Expanded Draft v0 | [EVAL](./three-fiber-component-shape-planner/EVAL.md) | component-shape-patterns / suspense-placement-rules / usegltf-caching-rules |
 | `preview-report-template-writer` | Generate the structured preview-report Markdown that glb-web-handoff and non-blender-user-response-writer consume | After render-export-evidence produces measurements, before web/final handoff | Expanded Draft v0 | [EVAL](./preview-report-template-writer/EVAL.md) | report-schema / truth-label-rules / handoff-recipients |
 
+### 🔍 Quality validation deep (Batch 2, post-v0.1.0-draft)
+
+Each ships with `SKILL.md` + `EVAL.md` + 3 `references/` files. These four narrow validators complement the broader `blender-scene-quality-checker` — use them when you need a focused per-domain check (material / lighting / composition / polycount) instead of holistic readiness.
+
+| Skill | Purpose | Use when | Depth status | Eval | References |
+|---|---|---|---|---|---|
+| `material-quality-checker` | Validate PBR material sanity, texture budgets, consumer-stack compatibility per material | Before render / GLB export, after a material change | Expanded Draft v0 | [EVAL](./material-quality-checker/EVAL.md) | pbr-sanity-rules / texture-budget-rules / consumer-stack-rules |
+| `lighting-quality-checker` | Validate intensity ranges, shadow softness, color temperature, HDRI / explicit-light balance vs mood brief | Before render, after a lighting change, when render mood feels off | Expanded Draft v0 | [EVAL](./lighting-quality-checker/EVAL.md) | intensity-ranges / shadow-softness-rules / hdri-balance-rules |
+| `composition-quality-checker` | Validate framing, subject placement, headroom/lead-room, visual hierarchy vs framing intent | Before render, after a camera change | Expanded Draft v0 | [EVAL](./composition-quality-checker/EVAL.md) | composition-rules / headroom-leadroom-rules / aspect-ratio-rules |
+| `polycount-budget-checker` | Validate per-mesh + total-scene triangle counts vs pinned budget; flag worst offenders and topology hints without modeling | After scene plan, before GLB export, when `glb-mobile-performance-budget` is pinned | Expanded Draft v0 | [EVAL](./polycount-budget-checker/EVAL.md) | per-mesh-rules / topology-hints / instance-counting-rules |
+
 ### 🧠 Process and discipline (Phase 4 expansion — Superpowers + BMad inspired)
 
 Each ships with `SKILL.md` + `EVAL.md` + 3 `references/` files (templates / playbooks / patterns).
