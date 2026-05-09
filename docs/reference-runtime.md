@@ -1,52 +1,37 @@
+
+
 # Reference Runtime
 
-> This file summarizes runtime boundaries. For setup flow, see [External runtime setup](./external-runtime-setup.md). For route selection and the corrected attribution history, see [Runtime stack strategy](./runtime-stack-strategy.md).
+> Setup flow: [External runtime setup](./external-runtime-setup.md). Path model + history of corrections: [Runtime stack strategy](./runtime-stack-strategy.md).
 
 BlendOps uses external runtime primitives and remains a workflow/product layer above runtime execution.
 
-## Runtime route model
+## Runtime path model
 
-BlendOps runtime guidance uses four distinct runtime routes (replacing the older 3-stack labeling that conflated three different products into one stack):
+BlendOps recognizes **two MCP execution paths** plus a **CLI fallback appendix** (replaces the older 3-stack and 4-route labelings, both of which mis-described how the Anthropic Connector relates to Blender Lab MCP):
 
-1. **Route A — Anthropic Blender Connector** (one-click in Claude Desktop, Anthropic-shipped)
-   - Anthropic Blender Connector → local helper → Blender (4.2+ per Anthropic tutorial; 4.5 LTS recommended).
-   - Verification status: **Not Verified**.
-   - Tutorial: https://claude.com/resources/tutorials/using-the-blender-connector-in-claude
+1. **Path 1 — Official Blender Lab MCP** (Lab add-on + Lab server in Blender 5.1+, hosted from either the Anthropic Blender Connector in Claude Desktop, or any other MCP client configured manually).
+   - Sources: [claude.com/.../using-the-blender-connector-in-claude](https://claude.com/resources/tutorials/using-the-blender-connector-in-claude), [blender.org/lab/mcp-server](https://www.blender.org/lab/mcp-server/), [projects.blender.org/lab/blender_mcp](https://projects.blender.org/lab/blender_mcp).
+   - Verification: read-only smoke test 2026-04-29 records `get_blendfile_summary_*` + `get_objects_summary` (Lab tool surface) — consistent with Anthropic Connector host. Mutation/render/export not attempted.
+   - Anthropic Connector and Lab MCP are **not independent products**: the Connector is a Claude-Desktop-specific host for the Lab stack and **requires the Lab add-on inside Blender**.
 
-2. **Route B — Blender Foundation MCP Server** (`bpype/blender_mcp`, manual install, any MCP client)
-   - Any MCP client → MCP transport → `bpype/blender_mcp` → Blender 5.1+ session with the Blender Lab MCP add-on.
-   - Verification status: **Ambiguous attribution** — 2026-04-29 smoke test tool names match Route B but the labeled runtime path was Route A.
-   - Source: https://www.blender.org/lab/mcp-server/, https://projects.blender.org/lab/blender_mcp
+2. **Path 2 — Community `ahujasid/blender-mcp`** (different `addon.py` + server via `uvx blender-mcp`, Blender 3.0+, third-party from both Anthropic and Blender Foundation).
+   - Source: https://github.com/ahujasid/blender-mcp.
+   - Verification: user-reported verified 2026-05-08; no formal evidence file with Path 2 tool names yet.
+   - Caveats: [Unofficial runtime bridges](./unofficial-runtime-bridges.md).
 
-3. **Route C — Community Blender MCP** (`ahujasid/blender-mcp`, manual install, any MCP client)
-   - Any MCP client → MCP transport → `ahujasid/blender-mcp` server → Blender 3.0+ session with the upstream `addon.py`.
-   - Mature prior-art project (21K+ stars). Third-party from both Anthropic and Blender Foundation.
-   - Verification status: **User-reported verified** (2026-05-08 statement); no formal evidence record file yet.
-   - Caveats live in [Unofficial runtime bridges](./unofficial-runtime-bridges.md).
-   - Source: https://github.com/ahujasid/blender-mcp
-
-4. **Route D — Official Blender CLI** (no MCP, deterministic fallback)
-   - Agent/shell → explicit `blender` executable → Blender process.
-   - Verification status: **Not Run** (full CLI eval still pending).
-   - Source: https://docs.blender.org/manual/en/latest/advanced/command_line/index.html
+3. **CLI fallback (appendix)** — direct `blender --background --python`, no MCP, **publisher has not verified** this path in this repository.
+   - Source: https://docs.blender.org/manual/en/latest/advanced/command_line/index.html.
+   - Verification: `Not Run`.
 
 ## Important interface boundary
 
-BlendOps does not treat runtime internals as user-facing product behavior.
-
-BlendOps focuses on:
-
-- intent normalization
-- workflow constraints
-- validation gates
-- artifact/handoff clarity
+BlendOps does not treat runtime internals as user-facing product behavior. Focus: intent normalization, workflow constraints, validation gates, artifact/handoff clarity.
 
 ## Setup authority
 
-Use [External runtime setup](./external-runtime-setup.md) as the BlendOps setup overview and [Runtime stack strategy](./runtime-stack-strategy.md) as the route decision record. Follow upstream official docs for exact/current setup instructions.
+Follow [External runtime setup](./external-runtime-setup.md) and upstream Anthropic + Blender Lab + `ahujasid` READMEs for exact/current install steps.
 
-Caveats specific to Route C (community `ahujasid/blender-mcp`) live in [Unofficial runtime bridges](./unofficial-runtime-bridges.md). That page describes Route C only. The page name was kept "unofficial" because Route C is unofficial from both Anthropic's and Blender Foundation's perspective, even though it is mature and widely used.
+## Single-bridge constraint
 
-## Single-client constraint
-
-Blender accepts a single MCP client per session. Do not run Route A + Route B + Route C concurrently against the same Blender instance.
+One MCP bridge session per Blender instance. Do not run Path 1 + Path 2 concurrently against the same Blender instance. Within Path 1, do not run the Anthropic Connector host and a manual MCP host both pointed at the same Blender instance.

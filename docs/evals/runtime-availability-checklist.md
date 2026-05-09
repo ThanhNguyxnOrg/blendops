@@ -1,7 +1,7 @@
 # Runtime Availability Checklist, Draft v0
 
 Status: Draft v0 readiness checklist only, not executed  
-Date: 2026-04-29 (original); legacy 3-stack labels mapped to 4-route model 2026-05-08  
+Date: 2026-04-29 (original); legacy 3-stack labels mapped to 2-path + CLI appendix model 2026-05-08  
 Related packet: [official-runtime-manual-eval-packet.md](./official-runtime-manual-eval-packet.md)  
 Related criteria: [official-runtime-verification-criteria.md](./official-runtime-verification-criteria.md)
 
@@ -9,15 +9,15 @@ Related criteria: [official-runtime-verification-criteria.md](./official-runtime
 > This checklist does not prove runtime success. It only proves readiness to attempt an eval. It does not install Blender, run Blender, claim runtime compatibility, or claim preview/render/GLB artifacts were produced.
 
 > [!NOTE]
-> **Legacy "Stack 1/2/3" labels in this document map to the current 4-route model** (see [`../runtime-stack-strategy.md`](../runtime-stack-strategy.md) for the corrected attribution history):
+> **Legacy "Stack 1/2/3" labels in this document map to the current 2-path + CLI appendix model** (see [`../runtime-stack-strategy.md`](../runtime-stack-strategy.md) for the corrected attribution history):
 >
-> | Legacy label | New route mapping |
+> | Legacy label | New mapping |
 > |---|---|
-> | Stack 1 — Claude Desktop official connector stack | **Was conflated.** Now split into Route A (Anthropic Blender Connector, one-click, Blender 4.2+) and Route B (Blender Foundation MCP `bpype/blender_mcp`, manual install, Blender 5.1+). The Blender 5.1+ requirement applies only to Route B. |
-> | Stack 2 — Official Blender CLI fallback | Route D (Official Blender CLI, no MCP). |
-> | Stack 3 — Optional unofficial third-party bridge stack | Route C (Community `ahujasid/blender-mcp`, mature 21K+ stars third-party). |
+> | Stack 1 — Claude Desktop official connector stack | **Path 1** (Official Blender Lab MCP). Lab add-on + Lab server installed in Blender 5.1+. Host = (a) Anthropic Blender Connector in Claude Desktop OR (b) any other MCP client configured manually. Anthropic Connector is **not** standalone — Lab add-on inside Blender is required either way. The Blender 5.1+ floor applies to all of Path 1. |
+> | Stack 2 — Official Blender CLI fallback | **CLI fallback (appendix)**. Direct `blender --background --python`. **Publisher has not verified** in this repo. |
+> | Stack 3 — Optional unofficial third-party bridge stack | **Path 2** (Community `ahujasid/blender-mcp`, mature 21K+ stars third-party, Blender 3.0+). |
 >
-> When using this checklist, name the route explicitly (Route A / B / C / D) and apply the per-route Blender minimum (A: 4.2+, B: 5.1+, C: 3.0+, D: 4.2+ recommended). Wherever the document below says "Stack 1", treat it as "Route A or Route B — name which one".
+> When using this checklist, name the path explicitly (Path 1 host a / Path 1 host b / Path 2 / CLI fallback) and apply the per-path Blender minimum (Path 1 either host: **5.1+**; Path 2: 3.0+; CLI: 4.2+ recommended, not publisher-verified). Wherever the document below says "Stack 1", treat it as "Path 1 — name the host option".
 
 ---
 

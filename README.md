@@ -93,23 +93,22 @@ Then continue with:
 
 ## 🧭 Runtime truth
 
-BlendOps runtime guidance uses **four runtime routes** (replacing the older 3-stack labeling that conflated three different products into one stack — see [`docs/runtime-stack-strategy.md`](./docs/runtime-stack-strategy.md) for the corrected attribution history):
+BlendOps runtime guidance uses **two MCP execution paths** plus a **CLI fallback appendix**. Earlier 3-stack and 4-route drafts conflated separate things — the corrected model and history live in [`docs/runtime-stack-strategy.md`](./docs/runtime-stack-strategy.md).
 
-| Route | What it is | Min Blender | BlendOps verification |
-|---|---|---|---|
-| **Route A** Anthropic Blender Connector | One-click toggle in Claude Desktop, Anthropic-shipped April 2026 | **4.2+** (4.5 LTS recommended) | Not Verified |
-| **Route B** Blender Foundation MCP Server (`bpype/blender_mcp`) | Standalone MCP server from Blender Foundation Lab | **5.1+** | Ambiguous (smoke test tool names match this route, but attribution unclear) |
-| **Route C** Community Blender MCP (`ahujasid/blender-mcp`) | Mature 21K+ stars prior-art project; only path for many non-Claude clients | **3.0+** | User-reported verified (no formal evidence file yet) |
-| **Route D** Official Blender CLI | Direct `blender --background --python` invocation, no MCP | 4.2+ recommended | Not Run |
-
-> [!WARNING]
-> The **Blender 5.1+** requirement applies **only to Route B** (Blender Foundation MCP Server, `bpype/blender_mcp`). It does **not** apply to Route A, Route C, or Route D. Earlier BlendOps drafts conflated Routes A and B into one "Stack 1" and incorrectly required 5.1+ for the whole stack — that mistake is corrected in the runtime docs.
+| Path | Blender-side stack | Host options | Min Blender | BlendOps verification |
+|---|---|---|---|---|
+| **Path 1** Official Blender Lab MCP | **Lab MCP add-on + Lab MCP server** from `blender.org/lab/mcp-server` (`bpype/blender_mcp`) | (a) Anthropic Blender Connector in Claude Desktop (one-click toggle), OR (b) any other MCP client (Claude Code, Cursor, Codex, OpenCode, Cline, VS Code) configured manually | **5.1+** (Lab add-on manifest) | Read-only smoke test 2026-04-29 (likely via Anthropic Connector host); mutation/render/export `Not Run` |
+| **Path 2** Community `ahujasid/blender-mcp` | Different `addon.py` + server via `uvx blender-mcp` (mature 21K+ stars third-party) | Any MCP client | **3.0+** | User-reported verified; no formal eval file yet |
+| **CLI fallback (appendix)** | None — direct `blender` executable | Shell `blender --background --python …` | 4.2+ recommended | **Publisher has not verified** in this repo. Documented only. |
 
 > [!IMPORTANT]
-> **Currently no route has a clean fresh evidence record.** The 2026-04-29 smoke test was originally labeled Route A, but its tool names (`get_blendfile_summary_*`) match Route B; the user reports verifying Route C separately. See [`docs/evals/blender-connector-read-only-smoke-test.md`](./docs/evals/blender-connector-read-only-smoke-test.md) for the corrected attribution. A fresh re-verification is needed before any route can move from "Not Verified" / "Ambiguous" / "User-reported" to documented "Verified".
+> **Anthropic Connector is not standalone.** Anthropic's tutorial step 2 explicitly tells you to install the **Blender Lab MCP add-on inside Blender** ([`blender.org/lab/mcp-server`](https://www.blender.org/lab/mcp-server/)). The Connector toggle is just the Claude-Desktop-specific MCP host on top of the same Lab stack — there is no Anthropic-only Blender component. Because the Lab add-on requires Blender 5.1+, **Path 1 needs Blender 5.1+ even when you use the Anthropic Connector**, despite Anthropic's tutorial mentioning "4.2+" elsewhere.
+
+> [!WARNING]
+> **The 5.1+ floor is not optional for Path 1.** It applies whether the host is Anthropic Connector (Path 1 host a) or a manual MCP client (Path 1 host b). Only Path 2 (community `ahujasid/blender-mcp`) is documented at Blender 3.0+. The CLI fallback appendix is unrelated to MCP.
 
 > [!NOTE]
-> **Naming glossary.** Anthropic's product is called the **Blender Connector** (full name: Claude Desktop Blender Connector). Across BlendOps docs and the wider community you will also see "Claude Connect" and "Claude Connector" as shorter synonyms for it. They all refer to **Route A** — the one-click toggle inside Claude Desktop. They do **not** refer to the Blender Foundation's standalone MCP server (Route B) or the community `ahujasid/blender-mcp` project (Route C). When precision matters, name the route.
+> **Naming glossary.** "Claude Connect / Claude Connector / Claude Desktop Blender Connector" all refer to **Anthropic's host option** for Path 1. They do **not** refer to "the entire Blender-side stack" — Lab MCP in Blender is required either way. When precision matters, name the path **and** the host (e.g. "Path 1, host (a) Anthropic Connector").
 
 For runtime setup details, see [`docs/runtime-stack-strategy.md`](./docs/runtime-stack-strategy.md) and [`docs/external-runtime-setup.md`](./docs/external-runtime-setup.md).
 

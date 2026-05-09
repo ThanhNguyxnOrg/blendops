@@ -74,17 +74,21 @@ Canonical role: `runtime-readiness` in the BlendOps skill system. Keep this as t
 - This skill must not claim execution success without execution evidence.
 
 ## Operating procedure
-1. Confirm chosen runtime route (Route A/B/C/D from `../../docs/runtime-stack-strategy.md`) and user intent.
-2. Check Blender executable availability (command/path evidence) AND record exact `blender --version` output for per-route minimum check (Route A 4.2+, Route B 5.1+, Route C 3.0+, Route D 4.2+ recommended).
-3. Per chosen route, check the route-specific configuration:
-   - Route A: Anthropic Connector enabled in Claude Desktop Settings → Connectors.
-   - Route B: `bpype/blender_mcp` add-on installed in Blender + MCP client config registered.
-   - Route C: `ahujasid/blender-mcp` MCP server registered in client config + addon.py installed and enabled in Blender.
-   - Route D: Blender executable resolvable from agent shell.
-4. Check single-client constraint: at most one MCP route active for the target Blender instance.
+1. Confirm chosen runtime path (Path 1 or Path 2 from `../../docs/runtime-stack-strategy.md`); for Path 1 also confirm host option (a Anthropic Connector, b manual MCP). CLI fallback is appendix only and not publisher-verified — flag this if user picks it.
+2. Check Blender executable availability (command/path evidence) AND record exact `blender --version` output for per-path minimum check:
+   - **Path 1 (either host)** → 5.1+ required (Lab add-on `blender_version_min = 5.1.0`).
+   - Path 2 → 3.0+ required (per upstream).
+   - CLI fallback → 4.2+ recommended; not publisher-verified.
+3. Per chosen path + host, check the path-specific configuration:
+   - **Path 1 Blender-side (always required)**: Lab MCP add-on installed in Blender + MCP server (`.mcpb` bundle or source) reachable.
+   - Path 1 host (a): Anthropic Connector enabled in Claude Desktop → Customize → Connectors.
+   - Path 1 host (b): Lab MCP server registered in MCP client config (`mcpServers` JSON or equivalent).
+   - Path 2: `ahujasid/blender-mcp` server registered (`uvx blender-mcp` or equivalent) + upstream `addon.py` installed + enabled in Blender.
+   - CLI fallback: Blender executable resolvable from agent shell.
+4. Check single-bridge constraint: at most one MCP bridge session active per Blender instance (Path 1 + Path 2 must not both target the same Blender; Path 1 host (a) + host (b) must not both target the same Blender).
 5. Check artifact/output location readiness for future run.
 6. Assign confidence label to each check (`verified-read` / `linked-only` / `unknown` / `blocked`).
-7. Populate readiness matrix table per route.
+7. Populate readiness matrix table per path + host.
 8. Derive final status (Ready / Partially Ready / Blocked / Unknown).
 9. Produce blocker summary and next actions.
 10. Route to planner or setup skill based on status.
@@ -177,9 +181,9 @@ Canonical role: `runtime-readiness` in the BlendOps skill system. Keep this as t
 - unofficial runtime fallback
 
 ## References
-- 4-route runtime model: ../../docs/runtime-stack-strategy.md
-- Per-route setup details: ../../docs/external-runtime-setup.md
-- Route A source: https://claude.com/resources/tutorials/using-the-blender-connector-in-claude
-- Route B source: https://www.blender.org/lab/mcp-server/
-- Route C source: https://github.com/ahujasid/blender-mcp
-- Route D source: https://docs.blender.org/manual/en/latest/advanced/command_line/index.html
+- 2-path + CLI appendix runtime model: ../../docs/runtime-stack-strategy.md
+- Per-path setup details: ../../docs/external-runtime-setup.md
+- Path 1 host (a) source — Anthropic Connector: https://claude.com/resources/tutorials/using-the-blender-connector-in-claude
+- Path 1 Blender-side source — Lab MCP (required for both hosts): https://www.blender.org/lab/mcp-server/
+- Path 2 source: https://github.com/ahujasid/blender-mcp
+- CLI fallback source (not publisher-verified): https://docs.blender.org/manual/en/latest/advanced/command_line/index.html

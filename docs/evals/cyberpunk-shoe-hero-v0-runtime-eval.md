@@ -3,15 +3,14 @@
 Status: Blocked / Runtime unavailable
 
 > [!WARNING]
-> **Historical eval — environment-specific evidence, not reproducible from a clean clone. Legacy Stack labels superseded 2026-05-08 by the 4-route model.**
+> **Historical eval — environment-specific evidence, not reproducible from a clean clone. Legacy Stack labels superseded 2026-05-08 by the 2-path + CLI appendix model.**
 >
-> 1. **Blender 4.2.5 reported below maps as follows under the 4-route model** (see [`docs/runtime-stack-strategy.md`](../runtime-stack-strategy.md)):
->    - **Insufficient for Route B** (Blender Foundation MCP `bpype/blender_mcp`, requires Blender 5.1+).
->    - **Sufficient for Route A** (Anthropic Blender Connector, Blender 4.2+ per Anthropic tutorial).
->    - **Sufficient for Route C** (community `ahujasid/blender-mcp`, Blender 3.0+).
->    - **Sufficient for Route D** (Blender CLI, 4.2+ recommended).
+> 1. **Blender 4.2.5 reported below maps as follows under the 2-path + CLI appendix model** (see [`docs/runtime-stack-strategy.md`](../runtime-stack-strategy.md)):
+>    - **Insufficient for Path 1** (Official Blender Lab MCP — Lab add-on requires Blender 5.1+, regardless of which host you pick: Anthropic Connector or manual MCP). An earlier WARNING in this file claimed 4.2.5 was sufficient for the Anthropic Connector path; that was wrong because the Connector still requires the Lab add-on inside Blender, which is 5.1+.
+>    - **Sufficient for Path 2** (community `ahujasid/blender-mcp`, Blender 3.0+).
+>    - **Sufficient for CLI fallback** (Blender 4.2+ recommended), but **publisher has not verified** that path in-repo.
 >
->    The earlier WARNING in this file applied a single "Blender 5.1+" bar to all of "Stack 1", which mistakenly required 5.1+ for the Anthropic Connector path too. The "Blender installed: Pass" row reflects local CLI availability at eval time, not any specific route's readiness.
+>    The "Blender installed: Pass" row below reflects local CLI availability at eval time, not Path 1 readiness.
 > 2. **Pre-existing artifact files referenced in this eval (`renders/preview.png`, `exports/test_scene.fbx`, `exports/test_scene.glb`) are gitignored** (see [`.gitignore`](../../.gitignore) lines 12–13, 31–33). They do NOT ship in the cloned repo. They were observed locally at eval time and are explicitly NOT counted as fresh runtime-eval evidence here. External verifiers cannot reproduce these paths from a clean clone.
 
 ## Purpose

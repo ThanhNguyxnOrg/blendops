@@ -78,13 +78,12 @@ If the canonical package source `bundles/skill-package/blendops/` is used as upl
 
 Distribution strategy does not change runtime strategy.
 
-- Public runtime guidance uses **4 runtime routes** (replaces older 3-stack labeling — see [`./runtime-stack-strategy.md`](./runtime-stack-strategy.md)):
-  1. Route A — Anthropic Blender Connector (one-click in Claude Desktop, Blender 4.2+).
-  2. Route B — Blender Foundation MCP Server (`bpype/blender_mcp`, manual install, Blender **5.1+**).
-  3. Route C — Community Blender MCP (`ahujasid/blender-mcp`, mature 21K+ stars third-party, Blender 3.0+).
-  4. Route D — Official Blender CLI (no MCP, deterministic fallback).
-- Routes A and B are independent products from independent organizations (Anthropic vs. Blender Foundation). The earlier "Stack 1" labeling that gathered them into one stack was a documentation error and is now corrected.
-- Route C is mature prior art (21K+ stars) and is the only currently user-verified runtime path; caveats live in [`./unofficial-runtime-bridges.md`](./unofficial-runtime-bridges.md).
+- Public runtime guidance uses **2 MCP execution paths plus a CLI fallback appendix** (replaces older 3-stack and 4-route drafts — see [`./runtime-stack-strategy.md`](./runtime-stack-strategy.md)):
+  1. **Path 1 — Official Blender Lab MCP** (Lab add-on + Lab server installed in Blender 5.1+, hosted from either (a) Anthropic Blender Connector in Claude Desktop, or (b) any other MCP client configured manually).
+  2. **Path 2 — Community `ahujasid/blender-mcp`** (mature 21K+ stars third-party, Blender 3.0+).
+  3. **CLI fallback (appendix)** — direct `blender --background --python`. **Publisher has not verified** in this repo.
+- Anthropic Connector is **not** standalone. Anthropic's tutorial step 2 explicitly tells you to install the Lab MCP add-on inside Blender. The Connector is the Claude-Desktop-specific MCP host on top of the Lab stack.
+- Path 2 (`ahujasid/blender-mcp`) is mature prior art (21K+ stars). Caveats live in [`./unofficial-runtime-bridges.md`](./unofficial-runtime-bridges.md).
 - Blender runtime setup is separate from BlendOps skill/law/pack distribution.
 - Runtime artifacts still require eval evidence before any claim.
 - Full official runtime manual eval remains Not Run until the eval packet is executed and evidence is recorded.

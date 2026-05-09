@@ -179,8 +179,8 @@ Focus: official runtime verification criteria and runtime eval readiness, not cu
 - [x] prepare runtime availability checklist without claiming runtime execution
 - [x] prepare Phase 3.3 pre-runtime release readiness rollup (`docs/release-readiness-rollup-v0.md`)
 - [x] record Claude Desktop Blender connector read-only smoke test without claiming full runtime eval or artifacts
-- [x] draft runtime stack strategy with Stack 1 first eval, Stack 2 CLI fallback, Stack 3 unofficial caveat (later corrected 2026-05-08 to the 4-route model: Route A Anthropic Connector, Route B Blender Foundation MCP `bpype/blender_mcp`, Route C community `ahujasid/blender-mcp`, Route D Blender CLI — see `docs/runtime-stack-strategy.md` for the corrected attribution history)
-- [x] update eval docs for Stack 1 first, Stack 2 fallback, Stack 3 non-release path (superseded 2026-05-08 by 4-route model)
+- [x] draft runtime stack strategy with Stack 1 first eval, Stack 2 CLI fallback, Stack 3 unofficial caveat (later corrected 2026-05-08 to the 2-path + CLI appendix model: Path 1 = Official Blender Lab MCP with host options (a) Anthropic Connector or (b) manual MCP client; Path 2 = community `ahujasid/blender-mcp`; CLI fallback = appendix, publisher not verified — see `docs/runtime-stack-strategy.md` for the corrected attribution history. The 4-route interim labeling from earlier 2026-05-08 was wrong because Anthropic Connector is not standalone — it requires the same Blender Lab MCP add-on inside Blender.)
+- [x] update eval docs for Stack 1 first, Stack 2 fallback, Stack 3 non-release path (superseded 2026-05-08 by 2-path + CLI appendix model)
 - [x] draft and link multi-agent install and distribution strategy docs without claiming package or marketplace availability
 - [x] complete runtime stack model cleanup across public docs
 - [x] package a project-local generic BlendOps bundle with rollback notes

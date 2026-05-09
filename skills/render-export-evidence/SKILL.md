@@ -59,7 +59,7 @@ Do not use this skill when:
 | Input | Why it is required |
 |---|---|
 | Artifact type | Status is scoped per artifact. |
-| Runtime route or mode | Separates Route A, B, C, D, or text-only mode (see ../../docs/runtime-stack-strategy.md). |
+| Runtime path or mode | Separates Path 1 (with host a or b), Path 2, CLI fallback, or text-only mode (see ../../docs/runtime-stack-strategy.md). |
 | Command/tool/action used | Proves how the artifact was attempted. |
 | Input/script/scene | Connects output to a specific run. |
 | Output path | Required for file-based claims. |
@@ -100,9 +100,11 @@ An artifact evidence ledger.
 ```txt
 Artifact type: <preview | render | blend | GLB/export | handoff>
 Status: Not Run | Attempted | Produced | Verified | Failed
-Runtime route: <Route A | Route B | Route C | Route D | text-only | unknown>
+Runtime path: <Path 1 host a (Anthropic Connector) | Path 1 host b (manual MCP) | Path 2 (ahujasid) | CLI fallback | text-only | unknown>
 Blender version: <output of `blender --version` or unknown>
-MCP server source: <repo + commit/version, or N/A for Route D>
+Blender-side add-on identity: <Lab MCP add-on version | ahujasid addon.py commit | N/A for CLI>
+MCP server source: <Lab .mcpb bundle filename or commit | uvx blender-mcp version | N/A for CLI>
+MCP host product: <Claude Desktop (Connector or manual MCP) | Cursor | Codex | OpenCode | Cline | other | N/A for CLI>
 Command/tool/action: <recorded or missing>
 Input/script/scene: <recorded or missing>
 Output path: <path or Not Produced>
@@ -121,14 +123,13 @@ Next safe action: <action>
 
 ## Official runtime boundary
 
-This skill can evaluate evidence from any of the four runtime routes (see ../../docs/runtime-stack-strategy.md):
+This skill can evaluate evidence from the 2-path + CLI appendix runtime model (see ../../docs/runtime-stack-strategy.md):
 
-1. Route A — Anthropic Blender Connector (one-click in Claude Desktop, Blender 4.2+).
-2. Route B — Blender Foundation MCP Server (`bpype/blender_mcp`, manual install, Blender **5.1+**).
-3. Route C — Community Blender MCP (`ahujasid/blender-mcp`, mature 21K+ stars third-party, Blender 3.0+).
-4. Route D — Official Blender CLI (no MCP, deterministic fallback).
+1. **Path 1 — Official Blender Lab MCP** (Lab add-on + Lab server in Blender 5.1+, hosted from either (a) Anthropic Blender Connector in Claude Desktop, or (b) any other MCP client configured manually). Both hosts share the same Blender-side stack and tool surface.
+2. **Path 2 — Community `ahujasid/blender-mcp`** (different `addon.py` + server via `uvx blender-mcp`, mature 21K+ stars third-party, Blender 3.0+).
+3. **CLI fallback (appendix)** — direct `blender --background --python`, no MCP. **Publisher has not verified** in this repo.
 
-Evidence records must name the route explicitly and must include Blender version + MCP server source/commit (when applicable) so the record is unambiguously attributable to one route.
+Evidence records must name the path explicitly (and Path 1 host option a/b when relevant) and must include Blender version + Blender-side add-on identity + MCP server source/commit + MCP host product so the record is unambiguously attributable.
 
 This skill must not run Blender, render, export GLB, mutate scenes, install runtimes, or promote optional local bridge evidence as official release-eval evidence.
 
@@ -194,12 +195,12 @@ Require:
 
 Read-only smoke evidence is not render/export evidence.
 
-### Playbook D: Route C (community `ahujasid/blender-mcp`) output
+### Playbook D: Path 2 (community `ahujasid/blender-mcp`) output
 
-- Label as Route C with upstream commit/version.
-- Keep separate from Route A or Route B evidence — Route C is third-party from both Anthropic and the Blender Foundation.
+- Label as Path 2 with upstream commit/version of `addon.py` and `uvx blender-mcp`.
+- Keep separate from Path 1 evidence — Path 2 is third-party from both Anthropic and the Blender Foundation.
 - Record host/port and arbitrary code execution caveats (`execute_blender_code` runs LLM-generated Python with no sandbox).
-- See ../../docs/unofficial-runtime-bridges.md for the full Route C caveat write-up.
+- See ../../docs/unofficial-runtime-bridges.md for the full Path 2 caveat write-up.
 
 ## Mode handling
 

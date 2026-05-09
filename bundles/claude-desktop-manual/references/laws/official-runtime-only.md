@@ -1,13 +1,20 @@
+
+
 # official-runtime-only (law summary)
 
-Keep BlendOps aligned to documented Blender runtime routes only.
+Keep BlendOps aligned to documented Blender runtime paths only.
 
 Required behavior:
-- name the runtime route explicitly (Route A / B / C / D from `references/runtime-stacks.md`),
+
+- name the runtime path explicitly (Path 1 or Path 2 from `references/runtime-stacks.md`); for Path 1 also name the host option (a — Anthropic Connector, b — manual MCP client) when relevant,
 - do not invent custom runtime implementations,
-- preserve the 4-route runtime model (Anthropic Connector, Blender Foundation MCP `bpype/blender_mcp`, community `ahujasid/blender-mcp`, Blender CLI),
-- do not mis-attribute per-route properties (the Blender 5.1+ requirement applies only to Route B).
+- preserve the 2-path + CLI appendix model:
+  - Path 1 = Official Blender Lab MCP add-on/server in Blender 5.1+, hosted from Anthropic Connector OR manual MCP client.
+  - Path 2 = Community `ahujasid/blender-mcp`, Blender 3.0+.
+  - CLI fallback = direct Blender CLI; appendix only; **publisher has not verified**.
+- do not describe Anthropic Connector as standalone — Anthropic's tutorial explicitly tells you to install the Lab MCP add-on inside Blender.
+- the Blender 5.1+ floor applies to **all** of Path 1 (whichever host).
 
-Route C (`ahujasid/blender-mcp`) is third-party from both Anthropic and the Blender Foundation but is mature (21K+ stars, prior art); it is one of the four canonical routes, with extra caveats in `references/install-boundary.md` and `unofficial-runtime-bridges` guidance.
+Path 2 (`ahujasid/blender-mcp`) is third-party from both Anthropic and the Blender Foundation but is mature (21K+ stars, prior art). It is one of the canonical paths, with extra caveats in unofficial-runtime-bridges guidance.
 
-Single-client constraint: Blender accepts one MCP client per session. Do not run Routes A + B + C concurrently against the same Blender instance.
+Single-bridge constraint: Blender accepts one MCP bridge session per Blender instance. Do not run Path 1 + Path 2 concurrently against the same Blender instance.

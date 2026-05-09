@@ -23,22 +23,25 @@ For broader multi-surface and distribution strategy, see [multi-agent-install-st
 
 ## Runtime note
 
-When Blender execution is needed from Claude app/Desktop, pick one of the four runtime routes (see [runtime-stack-strategy.md](./runtime-stack-strategy.md) for the corrected attribution history). Three of the four apply to Claude Desktop:
+When Blender execution is needed from Claude app/Desktop, pick one of the runtime paths (see [runtime-stack-strategy.md](./runtime-stack-strategy.md) for the corrected attribution history):
 
-- **Route A — Anthropic Blender Connector** (recommended for Claude Desktop, lowest friction). Settings → Connectors → Blender → Enable. Blender 4.2+ (4.5 LTS recommended).
-- **Route B — Blender Foundation MCP Server (`bpype/blender_mcp`)**. Manual install from blender.org/lab/mcp-server, plus MCP config in Claude Desktop. **Blender 5.1+**.
-- **Route C — Community Blender MCP (`ahujasid/blender-mcp`)**. `uvx blender-mcp` + addon.py. Blender 3.0+. Mature 21K+ stars third-party; read [unofficial-runtime-bridges.md](./unofficial-runtime-bridges.md) before use.
+- **Path 1 — Official Blender Lab MCP** (recommended for Claude Desktop). Lab add-on + Lab server installed in Blender per [`blender.org/lab/mcp-server`](https://www.blender.org/lab/mcp-server/). Then pick a host:
+  - Host (a): Anthropic Blender Connector toggle in Settings → Connectors → Blender → Enable (one-click).
+  - Host (b): Manual MCP client config in Settings → Developer → Edit Config (`mcpServers` JSON pointing at the Lab `.mcpb` bundle).
+  Practical floor: **Blender 5.1+** (Lab add-on manifest). Anthropic's "4.2+" prerequisite is misleading because the Lab add-on it requires is 5.1+. Anthropic Connector is **not** standalone — Lab add-on inside Blender is required either way.
+- **Path 2 — Community Blender MCP (`ahujasid/blender-mcp`)**. `uvx blender-mcp` + `addon.py`. Blender 3.0+. Mature 21K+ stars third-party; read [unofficial-runtime-bridges.md](./unofficial-runtime-bridges.md) before use.
+- **CLI fallback (appendix)** — direct `blender --background --python`. **Publisher has not verified** in this repo.
 
-Run a read-only request before any mutation/render/export, regardless of route.
+Run a read-only request before any mutation/render/export, regardless of path.
 
 **Single-client constraint:** Blender accepts one MCP client per session. Do not run Routes A + B + C concurrently against the same Blender instance.
 
-Official links per route:
+Official links per path:
 
-- Route A: https://claude.com/resources/tutorials/using-the-blender-connector-in-claude
-- Route B: https://www.blender.org/lab/mcp-server/, https://projects.blender.org/lab/blender_mcp
-- Route C: https://github.com/ahujasid/blender-mcp
-- Route D (Blender CLI fallback): https://docs.blender.org/manual/en/latest/advanced/command_line/index.html
+- Path 1, host (a) Anthropic Connector: https://claude.com/resources/tutorials/using-the-blender-connector-in-claude
+- Path 1, Blender-side Lab MCP (required for both hosts): https://www.blender.org/lab/mcp-server/, https://projects.blender.org/lab/blender_mcp
+- Path 2: https://github.com/ahujasid/blender-mcp
+- CLI fallback (appendix, not publisher-verified): https://docs.blender.org/manual/en/latest/advanced/command_line/index.html
 
 BlendOps remains workflow/law/checklist layer and does not install runtime.
 

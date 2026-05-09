@@ -164,34 +164,40 @@ const forbiddenCommunityPatterns = [];
 
 const unofficialBridgeDoc = 'docs/unofficial-runtime-bridges.md';
 
-// Route C disclaimer set. The earlier set required dismissive phrasing
-// ("experimental/local", "not part of the BlendOps official runtime path")
-// that was inaccurate — Route C is mature prior art and IS one of the four
-// canonical BlendOps runtime routes. The new set focuses on what stays true:
-// third-party provenance, manual config burden, the unsandboxed Python
-// execution surface, and the "no formal eval record yet" evidence gap.
+// Path 2 disclaimer set. The community `ahujasid/blender-mcp` is mature prior
+// art (21K+ stars) and IS one of the canonical BlendOps runtime paths — but it
+// is third-party from both Anthropic and the Blender Foundation. The disclaimer
+// set guards what stays true: third-party provenance, manual config burden, the
+// unsandboxed Python execution surface, and the "no formal eval record yet"
+// evidence gap.
 const requiredUnofficialBridgeDisclaimers = [
-  'Route C',
+  'Path 2',
   'ahujasid/blender-mcp',
   'Not yet covered by a formal BlendOps eval evidence record',
   'Not used for Draft v0 release-readiness claims',
   'User-managed',
   'must not be counted as an official runtime eval',
   'not a substitute for the official runtime manual eval',
-  'Single-client constraint',
+  'Single-bridge constraint',
   'execute_blender_code',
 ];
 
-// New 4-route runtime model (replaces the previous 3-stack labeling). Each route
-// is a distinct, separately-installable runtime path with its own provenance,
-// Blender-version requirement, and BlendOps verification status. See
+// 2-path + CLI appendix runtime model (replaces the older 3-stack and 4-route
+// drafts that mis-described how the Anthropic Connector relates to Blender Lab
+// MCP). Path 1 = Lab MCP add-on/server in Blender 5.1+, hosted from either the
+// Anthropic Connector (host a) or a manual MCP client (host b) — the Connector
+// is NOT standalone. Path 2 = community ahujasid/blender-mcp. CLI fallback is
+// an appendix that the BlendOps publisher has NOT verified in-repo. See
 // docs/runtime-stack-strategy.md for the canonical write-up.
 const requiredRuntimeStackSnippets = [
-  'BlendOps runtime guidance uses four runtime routes',
-  'Route A — Anthropic Blender Connector',
-  'Route B — Blender Foundation MCP Server',
-  'Route C — Community Blender MCP',
-  'Route D — Official Blender CLI',
+  'BlendOps recognizes **two MCP execution paths** plus a **CLI fallback appendix**',
+  'Path 1 — Official Blender Lab MCP',
+  'Connector is not standalone',
+  'install an add-on inside Blender',
+  'Path 2 — Community',
+  'ahujasid/blender-mcp',
+  'CLI fallback',
+  'BlendOps publishers have not exercised',
 ];
 
 const requiredArtifactEvidenceSnippets = [
@@ -560,11 +566,12 @@ for (const ref of requiredOfficialRefs) {
 // Link existence check (catches future doc-collection moves like Phase 2.11 cleanup).
 assertRelativeLinksExist(activeMd);
 
-// The Blender 5.1+ requirement is specifically a property of Route B
-// (Blender Foundation MCP Server, `bpype/blender_mcp`), NOT Route A
-// (Anthropic Connector, which Anthropic's own tutorial documents at 4.2+).
-// Each user-facing runtime doc must distinguish these two routes so users
-// don't conclude they need 5.1+ for the Anthropic Connector path.
+// The Blender 5.1+ requirement is bound to Path 1 because the Lab MCP add-on
+// inside Blender declares blender_version_min = 5.1.0. It applies to BOTH
+// Path 1 host options (Anthropic Connector and manual MCP client) — the
+// Anthropic Connector is NOT standalone. Each user-facing runtime doc must
+// state both Blender 5.1+ AND Path 1 so the floor cannot drift back to a
+// per-host claim.
 const blenderVersionRequiredFiles = [
   'README.md',
   'docs/external-runtime-setup.md',
@@ -575,8 +582,11 @@ for (const f of blenderVersionRequiredFiles) {
   if (!txt.includes('Blender 5.1')) {
     errors.push(`Missing Blender 5.1+ requirement note in ${f}`);
   }
-  if (!txt.includes('Route B')) {
-    errors.push(`Missing Route B (Blender Foundation MCP Server) attribution for the 5.1+ requirement in ${f}`);
+  if (!txt.includes('Path 1')) {
+    errors.push(`Missing Path 1 (Blender Lab MCP) attribution for the 5.1+ requirement in ${f}`);
+  }
+  if (!txt.includes('Lab')) {
+    errors.push(`Missing Blender Lab MCP context for the 5.1+ requirement in ${f}`);
   }
 }
 

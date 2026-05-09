@@ -119,25 +119,25 @@ Limitations: <known gaps>
 
 ## Official runtime boundary
 
-BlendOps runtime guidance uses **4 runtime routes** (replacing the older 3-stack labeling — see `../../docs/runtime-stack-strategy.md` for the corrected attribution history):
+BlendOps runtime guidance uses **2 MCP execution paths plus a CLI fallback appendix** (replaces older 3-stack and 4-route drafts — see `../../docs/runtime-stack-strategy.md` for the corrected attribution history):
 
-1. Route A — Anthropic Blender Connector (one-click in Claude Desktop, Blender 4.2+).
-2. Route B — Blender Foundation MCP Server (`bpype/blender_mcp`, manual install, Blender **5.1+**).
-3. Route C — Community Blender MCP (`ahujasid/blender-mcp`, mature 21K+ stars third-party, Blender 3.0+).
-4. Route D — Official Blender CLI (no MCP, deterministic fallback).
+1. **Path 1 — Official Blender Lab MCP** (Lab add-on + Lab server installed in Blender 5.1+, hosted from either (a) Anthropic Blender Connector in Claude Desktop, or (b) any other MCP client configured manually). Anthropic Connector is **not** standalone — Anthropic's tutorial step 2 tells you to install the Lab add-on inside Blender.
+2. **Path 2 — Community `ahujasid/blender-mcp`** (different `addon.py` + server via `uvx blender-mcp`, mature 21K+ stars third-party, Blender 3.0+).
+3. **CLI fallback (appendix)** — direct `blender --background --python`, no MCP. **Publisher has not verified** in this repo.
 
-The Blender 5.1+ requirement applies only to Route B. Single-client constraint: Blender accepts one MCP client per session.
+Blender 5.1+ floor applies to all of Path 1 (whichever host). Single-bridge constraint: Blender accepts one MCP bridge session per Blender instance.
 
 This skill must not install Blender, run Blender, configure a runtime bridge, mutate a scene, render, export GLB, or claim artifacts unless the user explicitly requested that work and evidence exists.
 
 ## Runtime route requirements
 
-| Route | Requirement before use |
+| Path | Requirement before use |
 |---|---|
-| Route A | Anthropic Connector enabled in Claude Desktop Settings → Connectors; read-only request before mutation/render/export. |
-| Route B | `bpype/blender_mcp` add-on installed in Blender 5.1+ + MCP client config registered; read-only request first. |
-| Route C | `ahujasid/blender-mcp` MCP server registered in client config + addon.py installed/enabled in Blender; read `../../docs/unofficial-runtime-bridges.md` first; explicit user opt-in for `execute_blender_code` (no sandbox). |
-| Route D | Exact Blender executable/CLI command, input/script, output paths, logs, and validation evidence. |
+| Path 1 (Blender-side, always required) | Blender 5.1+ + Lab MCP add-on installed in Blender + Lab MCP server (`.mcpb` bundle or source) reachable. |
+| Path 1, host (a) Anthropic Connector | Connector enabled in Claude Desktop → Customize → Connectors; read-only request first. |
+| Path 1, host (b) manual MCP client | Lab MCP server registered in client's `mcpServers` JSON or equivalent UI; read-only request first. |
+| Path 2 (community `ahujasid/blender-mcp`) | `uvx blender-mcp` registered in client config + `addon.py` installed/enabled in Blender 3.0+; read `../../docs/unofficial-runtime-bridges.md` first; explicit user opt-in for `execute_blender_code` (no sandbox). |
+| CLI fallback (appendix) | Exact Blender executable/CLI command, input/script, output paths, logs, validation evidence; warn user that publisher has not verified. |
 
 ## Operating procedure
 
@@ -243,7 +243,7 @@ Use when requirements are missing. Report blockers and next safe action.
 
 ## Good examples
 
-- “Runtime status: Not Run. Artifact status: Not Produced. Next safe action: run runtime readiness checklist for Route A (Anthropic Blender Connector).”
+- “Runtime status: Not Run. Artifact status: Not Produced. Next safe action: run runtime readiness checklist for Path 1, host (a) Anthropic Blender Connector.”
 - “Produced evidence exists at `<path>`, but validation is incomplete; status remains Produced, not Verified.”
 
 ## Bad examples

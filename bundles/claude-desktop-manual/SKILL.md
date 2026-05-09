@@ -37,15 +37,15 @@ Always state:
 
 Do not claim preview/render/GLB artifacts without evidence.
 
-## Runtime route policy
+## Runtime path policy
 
-Preserve the 4-route runtime model (replaces the older 3-stack labeling that conflated three different products into one stack):
-1. Route A — Anthropic Blender Connector (one-click in Claude Desktop, Blender 4.2+).
-2. Route B — Blender Foundation MCP Server (`bpype/blender_mcp`, manual install, Blender **5.1+**).
-3. Route C — Community Blender MCP (`ahujasid/blender-mcp`, mature 21K+ stars third-party, Blender 3.0+).
-4. Route D — Official Blender CLI (no MCP, deterministic fallback).
+Preserve the 2-path + CLI appendix runtime model (replaces older 3-stack and 4-route drafts that mis-described how the Anthropic Connector relates to Blender Lab MCP):
 
-The Blender 5.1+ requirement applies only to Route B. Single-client constraint: Blender accepts one MCP client per session.
+1. **Path 1 — Official Blender Lab MCP** (Lab add-on + Lab server in Blender 5.1+, hosted from either (a) Anthropic Blender Connector in Claude Desktop, or (b) any other MCP client configured manually). Anthropic Connector is **not** standalone — Anthropic's tutorial step 2 tells you to install the Lab add-on inside Blender. The 5.1+ floor applies regardless of host option.
+2. **Path 2 — Community `ahujasid/blender-mcp`** (different `addon.py` + server via `uvx blender-mcp`, mature 21K+ stars third-party, Blender 3.0+).
+3. **CLI fallback (appendix)** — direct `blender --background --python`, no MCP. **Publisher has not verified** in this repo.
+
+Single-bridge constraint: Blender accepts one MCP bridge session per Blender instance. Do not run Path 1 + Path 2 concurrently against the same Blender instance.
 
 ## Output template
 

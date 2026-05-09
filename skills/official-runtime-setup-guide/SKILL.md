@@ -73,35 +73,38 @@ Define a safe, official-runtime-only setup path for users/agents before runtime 
 - This skill does not install Blender runtime.
 - This skill does not run Blender.
 - This skill does not provide custom CLI/MCP/addon runtime.
-- This skill recognizes exactly four runtime routes (see `../../docs/runtime-stack-strategy.md`):
-  - **Route A — Anthropic Blender Connector** (one-click in Claude Desktop, min Blender 4.2+ / 4.5 LTS recommended) — https://claude.com/resources/tutorials/using-the-blender-connector-in-claude
-  - **Route B — Blender Foundation MCP Server** (`bpype/blender_mcp`, manual install, min Blender 5.1+) — https://www.blender.org/lab/mcp-server/
-  - **Route C — Community Blender MCP** (`ahujasid/blender-mcp`, mature 21K+ stars third-party, min Blender 3.0+) — https://github.com/ahujasid/blender-mcp
-  - **Route D — Official Blender CLI** (no MCP, deterministic) — https://docs.blender.org/manual/en/latest/advanced/command_line/index.html
+- This skill recognizes **two MCP execution paths plus a CLI fallback appendix** (see `../../docs/runtime-stack-strategy.md`):
+  - **Path 1 — Official Blender Lab MCP** (Lab add-on + Lab server installed in Blender 5.1+, hosted from either (a) Anthropic Blender Connector in Claude Desktop OR (b) any other MCP client configured manually). Anthropic Connector is **not** standalone — Anthropic's tutorial step 2 tells you to install the Lab add-on inside Blender, so Lab is required for Path 1 regardless of host. Sources: https://claude.com/resources/tutorials/using-the-blender-connector-in-claude (host a), https://www.blender.org/lab/mcp-server/ (Blender side, both hosts).
+  - **Path 2 — Community `ahujasid/blender-mcp`** (different `addon.py` + server via `uvx blender-mcp`, mature 21K+ stars third-party, min Blender 3.0+). Source: https://github.com/ahujasid/blender-mcp
+  - **CLI fallback (appendix)** — direct `blender --background --python`, no MCP. **BlendOps publisher has not verified this path in-repo.** Documented for completeness only. Source: https://docs.blender.org/manual/en/latest/advanced/command_line/index.html
 
 ## Operating procedure
 1. Confirm user objective and whether runtime execution is needed now.
 2. Confirm install mode preference (project-local default, global only if explicit).
 3. Detect likely client (Claude Desktop / Claude Code / Cursor / Codex / OpenCode / Cline / generic).
-4. Map client → applicable routes:
-   - Claude Desktop → Route A (recommended), Route B, Route C, Route D.
-   - Any other MCP client → Route B, Route C, Route D (Route A is Claude Desktop only).
-   - No MCP client available → Route D.
-5. Confirm the user's installed Blender version against per-route minimums (do NOT apply Route B's 5.1+ to other routes).
-6. Apply source-confidence labels (`verified-read` / `linked-only` / `unknown`) to each route reference.
+4. Map client → applicable paths:
+   - Claude Desktop → Path 1 host (a) Anthropic Connector (recommended for one-click), Path 1 host (b) manual MCP, Path 2, CLI fallback.
+   - Any other MCP client → Path 1 host (b) manual MCP, Path 2, CLI fallback (Anthropic Connector host (a) is Claude Desktop only).
+   - No MCP client available → CLI fallback only (and warn it is not publisher-verified).
+5. Confirm the user's installed Blender version against per-path minimums:
+   - **Path 1 (either host) → Blender 5.1+** (Lab add-on `blender_version_min = 5.1.0`). Anthropic's tutorial says "4.2+" but the add-on it requires is 5.1+, so 5.1+ is the binding floor.
+   - Path 2 → Blender 3.0+.
+   - CLI fallback → Blender 4.2+ recommended; not publisher-verified.
+6. Apply source-confidence labels (`verified-read` / `linked-only` / `unknown`) to each path reference.
 7. Record local known/unknown setup signals without overclaiming.
-8. Build readiness checklist with explicit pass/warn/block items per chosen route.
+8. Build readiness checklist with explicit pass/warn/block items per chosen path + host.
 9. Mark runtime execution status as Not Run until readiness checker confirms.
-10. Provide upstream links for exact/current setup details per route.
-11. Enforce single-client constraint: warn if user has multiple route servers configured for the same Blender instance.
+10. Provide upstream links for exact/current setup details per path.
+11. Enforce single-bridge constraint: warn if Path 1 + Path 2 are both configured against the same Blender instance, or if both Path 1 host options (a) and (b) target the same Blender instance.
 12. Summarize what is verified vs linked-only and what to do next.
 
 ## Decision tree
 - If user only needs planning now → planning mode; keep runtime Not Run.
-- If user is on Claude Desktop and wants lowest friction → recommend Route A.
-- If user is on Blender 5.1+ and wants Blender Foundation's MCP server → Route B.
-- If user is on a non-Claude MCP client (Cursor/Codex/OpenCode/Cline) OR wants Hyper3D/Hunyuan3D/Poly Haven/Sketchfab integrations → Route C (read `../../docs/unofficial-runtime-bridges.md` first).
-- If MCP is unavailable or scripted batch processing fits the task → Route D.
+- If user is on Claude Desktop and wants lowest friction → Path 1 host (a) Anthropic Connector. Still install Lab add-on in Blender 5.1+.
+- If user is on Claude Desktop but cannot use the Connector toggle → Path 1 host (b) manual MCP via Settings → Developer → Edit Config.
+- If user is on a non-Claude-Desktop MCP client → Path 1 host (b) manual MCP, OR Path 2 if simpler.
+- If user wants Hyper3D/Hunyuan3D/Poly Haven/Sketchfab integrations or is on Blender 3.x/4.x → Path 2 (read `../../docs/unofficial-runtime-bridges.md` first).
+- If MCP is unavailable or scripted batch processing fits the task → CLI fallback (warn that publisher has not verified).
 - If user requests runtime eval now and readiness is unknown → run readiness checker first.
 - If runtime signals are blocked → return blocked setup summary + next setup actions.
 
@@ -191,10 +194,10 @@ Define a safe, official-runtime-only setup path for users/agents before runtime 
 - custom runtime ownership
 
 ## References
-- 4-route runtime model: ../../docs/runtime-stack-strategy.md
-- Per-route setup details: ../../docs/external-runtime-setup.md
-- Route C caveats: ../../docs/unofficial-runtime-bridges.md
-- Route A source: https://claude.com/resources/tutorials/using-the-blender-connector-in-claude
-- Route B source: https://www.blender.org/lab/mcp-server/
-- Route C source: https://github.com/ahujasid/blender-mcp
-- Route D source: https://docs.blender.org/manual/en/latest/advanced/command_line/index.html
+- 2-path + CLI appendix runtime model: ../../docs/runtime-stack-strategy.md
+- Per-path setup details: ../../docs/external-runtime-setup.md
+- Path 2 caveats: ../../docs/unofficial-runtime-bridges.md
+- Path 1 host (a) source — Anthropic Connector: https://claude.com/resources/tutorials/using-the-blender-connector-in-claude
+- Path 1 Blender-side source — Lab MCP (required for both hosts): https://www.blender.org/lab/mcp-server/
+- Path 2 source: https://github.com/ahujasid/blender-mcp
+- CLI fallback source (not publisher-verified): https://docs.blender.org/manual/en/latest/advanced/command_line/index.html

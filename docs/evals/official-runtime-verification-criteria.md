@@ -1,21 +1,21 @@
 # Official Runtime Verification Criteria, Draft v0
 
 Status: Draft v0 criteria only, not executed  
-Date: 2026-04-29 (original); legacy 3-stack labels mapped to 4-route model 2026-05-08
+Date: 2026-04-29 (original); legacy 3-stack labels mapped to 2-path + CLI appendix model 2026-05-08
 
 > [!CAUTION]
 > This document defines criteria for future runtime evals. It does not claim Blender was run, does not claim runtime success, and does not claim preview/render/GLB artifacts were produced.
 
 > [!NOTE]
-> **Legacy "Stack 1/2/3" labels in this document map to the current 4-route model** (see [`../runtime-stack-strategy.md`](../runtime-stack-strategy.md) for the corrected attribution history):
+> **Legacy "Stack 1/2/3" labels in this document map to the current 2-path + CLI appendix model** (see [`../runtime-stack-strategy.md`](../runtime-stack-strategy.md) for the corrected attribution history):
 >
-> | Legacy label | New route mapping |
+> | Legacy label | New mapping |
 > |---|---|
-> | Stack 1 — Claude Desktop official connector stack | **Was conflated.** Now split into Route A (Anthropic Blender Connector, Blender 4.2+) and Route B (Blender Foundation MCP `bpype/blender_mcp`, Blender 5.1+). |
-> | Stack 2 — Official Blender CLI fallback | Route D (Blender CLI, no MCP). |
-> | Stack 3 — Optional unofficial third-party bridge stack | Route C (Community `ahujasid/blender-mcp`, mature 21K+ stars third-party, Blender 3.0+). |
+> | Stack 1 — Claude Desktop official connector stack | **Path 1** (Official Blender Lab MCP), with **host option (a)** Anthropic Blender Connector. Lab add-on inside Blender is required either way; **Blender 5.1+** is the binding floor. |
+> | Stack 2 — Official Blender CLI fallback | **CLI fallback (appendix)**. Direct `blender --background --python`. **Publisher has not verified** in this repo. |
+> | Stack 3 — Optional unofficial third-party bridge stack | **Path 2** (Community `ahujasid/blender-mcp`, mature 21K+ stars third-party, Blender 3.0+). |
 >
-> Verification criteria below apply per route. Any verification record produced under these criteria must name the route explicitly and record `blender --version`, MCP server source/commit, and exact tool names.
+> Verification criteria below apply per path. Any verification record produced under these criteria must name the path explicitly (and Path 1 host option a/b when relevant) and record `blender --version`, Blender-side add-on identity, MCP server source/commit, MCP host product, and exact tool names.
 
 ---
 

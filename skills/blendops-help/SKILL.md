@@ -111,14 +111,13 @@ Why this is safe: <reason>
 
 Before runtime work, point to `../../docs/runtime-stack-strategy.md` and the readiness checklist.
 
-BlendOps runtime guidance uses **4 runtime routes** (replacing the older 3-stack labeling):
+BlendOps runtime guidance uses **2 MCP execution paths plus a CLI fallback appendix** (replaces older 3-stack and 4-route drafts):
 
-1. Route A — Anthropic Blender Connector (one-click in Claude Desktop, Blender 4.2+).
-2. Route B — Blender Foundation MCP Server (`bpype/blender_mcp`, manual install, Blender **5.1+**).
-3. Route C — Community Blender MCP (`ahujasid/blender-mcp`, mature 21K+ stars third-party, Blender 3.0+).
-4. Route D — Official Blender CLI (no MCP, deterministic fallback).
+1. **Path 1 — Official Blender Lab MCP** (Lab add-on + Lab server installed in Blender 5.1+, hosted from either (a) Anthropic Blender Connector in Claude Desktop, or (b) any other MCP client configured manually). Anthropic Connector is **not** standalone — Anthropic's tutorial step 2 tells you to install the Lab add-on inside Blender.
+2. **Path 2 — Community `ahujasid/blender-mcp`** (different `addon.py` + server via `uvx blender-mcp`, mature 21K+ stars third-party, Blender 3.0+).
+3. **CLI fallback (appendix)** — direct `blender --background --python`, no MCP. **Publisher has not verified** in this repo.
 
-Single-client constraint: Blender accepts one MCP client per session. Do not run Routes A + B + C concurrently against the same Blender instance.
+Single-bridge constraint: Blender accepts one MCP bridge session per Blender instance. Do not run Path 1 + Path 2 concurrently against the same Blender instance.
 
 This skill does not run Blender, mutate scenes, render, export, install runtimes, or claim artifacts.
 
@@ -241,7 +240,7 @@ Name blocker and suggest the next non-runtime planning or documentation step.
 
 ## Good examples
 
-- “Next safe action: run runtime readiness checklist for Route A (Anthropic Blender Connector). Runtime status: Not Run. Artifact status: Not Produced.”
+- “Next safe action: run runtime readiness checklist for Path 1, host (a) Anthropic Blender Connector. Runtime status: Not Run. Artifact status: Not Produced.”
 - “Next safe action: use scene planner; no runtime is needed for this request.”
 
 ## Bad examples

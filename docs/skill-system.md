@@ -29,7 +29,7 @@ Skills are intentionally composable. A helper skill routes the task, planning sk
 | Skills | Focused workflows loaded by an agent when relevant. | `skills/product-hero-scene-planner/SKILL.md` plans a product hero scene. |
 | Packs | Curated skill/law bundles for a scenario. | `packs/product-hero-v0/PACK.md` composes Draft v0 product-hero work. |
 | Evals | Evidence records and checklists. | `docs/evals/runtime-availability-checklist.md`. |
-| Runtime routes | External execution choices, separate from skill install. | Route A Anthropic Connector, Route B Blender Foundation MCP, Route C community blender-mcp, Route D Blender CLI. |
+| Runtime paths | External execution choices, separate from skill install. | Path 1 Official Blender Lab MCP (host: Anthropic Connector OR manual MCP client), Path 2 community `ahujasid/blender-mcp`, CLI fallback (publisher not verified). |
 
 A skill may point to runtime docs, but it must not imply runtime was installed or run.
 
@@ -54,8 +54,8 @@ All 10 root skills, grouped by canonical role. The full per-skill table with dep
 | Canonical role | Active skill path | Notes |
 |---|---|---|
 | Help / next safe action | `skills/blendops-help/SKILL.md` | Routes between docs, skills, runtime readiness, evals, and packaging. Baseline eval: `skills/blendops-help/EVAL.md`. |
-| Runtime setup prerequisites | `skills/official-runtime-setup-guide/SKILL.md` | Canonical role: `runtime-setup`; chooses Route A/B/C/D prerequisites without installing Blender. |
-| Runtime readiness | `skills/official-runtime-readiness-checker/SKILL.md` | Canonical role: `runtime-readiness`; keep per-route boundaries. |
+| Runtime setup prerequisites | `skills/official-runtime-setup-guide/SKILL.md` | Canonical role: `runtime-setup`; chooses Path 1 (host a or b) / Path 2 / CLI prerequisites without installing Blender. |
+| Runtime readiness | `skills/official-runtime-readiness-checker/SKILL.md` | Canonical role: `runtime-readiness`; keep per-path + per-host boundaries. |
 | Scene planning | `skills/product-hero-scene-planner/SKILL.md` | Canonical role for product-hero scene planning. |
 | Camera / lighting / composition | `skills/blender-composition-camera-planner/SKILL.md`, `skills/blender-lighting-material-planner/SKILL.md` | Domain planning, no runtime claim. |
 | Scene quality gate | `skills/blender-scene-quality-checker/SKILL.md` | Pass/Warn/Fail readiness verdict before runtime mutation. |
@@ -67,18 +67,17 @@ Do not create duplicate alias folders unless packaging evidence shows a target a
 
 ---
 
-## Runtime route boundaries every skill must preserve
+## Runtime path boundaries every skill must preserve
 
-BlendOps runtime guidance uses **four runtime routes** (replacing the older 3-stack labeling that conflated three different products into one stack — see [`runtime-stack-strategy.md`](./runtime-stack-strategy.md) for the corrected attribution history):
+BlendOps runtime guidance uses **two MCP execution paths** plus a **CLI fallback appendix** (replaces older 3-stack and 4-route drafts; see [`runtime-stack-strategy.md`](./runtime-stack-strategy.md) for the corrected attribution history):
 
-1. **Route A — Anthropic Blender Connector** (one-click in Claude Desktop, Blender 4.2+).
-2. **Route B — Blender Foundation MCP Server** (`bpype/blender_mcp`, manual install, Blender **5.1+**).
-3. **Route C — Community Blender MCP** (`ahujasid/blender-mcp`, mature 21K+ stars third-party, Blender 3.0+).
-4. **Route D — Official Blender CLI** (no MCP, deterministic fallback, Blender 4.2+ recommended).
+1. **Path 1 — Official Blender Lab MCP** (Lab add-on + Lab server installed in Blender 5.1+, hosted from either (a) Anthropic Blender Connector in Claude Desktop, or (b) any other MCP client configured manually). The Anthropic Connector is **not** a separate path — it is one host option for Path 1, and the Lab add-on inside Blender is required either way.
+2. **Path 2 — Community `ahujasid/blender-mcp`** (different `addon.py` + server via `uvx blender-mcp`, mature 21K+ stars third-party, Blender 3.0+).
+3. **CLI fallback (appendix)** — direct `blender --background --python`, no MCP, **publisher has not verified** in this repository.
 
-The Blender 5.1+ requirement applies only to Route B. Skills must not apply it to Routes A, C, or D.
+Skills must not present Anthropic Connector as a separate runtime that needs no Blender-side install. Skills must apply Blender 5.1+ to all of Path 1 (whichever host). Skills must label CLI as appendix, not peer.
 
-Single-client constraint: Blender accepts one MCP client per session. Skills must warn if multiple route servers are configured for the same Blender instance.
+Single-bridge constraint: Blender accepts one MCP bridge session per Blender instance. Skills must warn if Path 1 + Path 2 are both configured for the same Blender instance.
 
 ---
 

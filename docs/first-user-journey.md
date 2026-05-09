@@ -15,7 +15,7 @@ This document defines the target non-Blender-user experience as a **spec only**.
 3. Create scene/workflow plan
    - safe structured steps and validation checkpoints
 4. Route through external runtime layer
-   - execution via one of the four runtime routes: Route A (Anthropic Blender Connector — one-click in Claude Desktop), Route B (Blender Foundation MCP `bpype/blender_mcp` — manual install, Blender 5.1+), Route C (community `ahujasid/blender-mcp` — mature 21K+ stars third-party), or Route D (Blender CLI — no MCP). See `./runtime-stack-strategy.md` for the corrected attribution history and per-route status.
+   - execution via one of the runtime paths: Path 1 (Official Blender Lab MCP — Lab add-on + Lab server in Blender 5.1+, hosted from Anthropic Blender Connector or any other MCP client manually), or Path 2 (community `ahujasid/blender-mcp` — mature 21K+ stars third-party, Blender 3.0+). CLI fallback is appendix only and not publisher-verified. See `./runtime-stack-strategy.md` for the corrected attribution history and per-path status.
 5. Validate result
    - check scene/output criteria against requested intent
 6. Render/export

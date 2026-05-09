@@ -144,13 +144,12 @@ No preview/render/GLB claim is valid without output path or visible evidence plu
 - Skills do not install Blender.
 - Skills do not run Blender unless the user explicitly requests runtime work and readiness is satisfied.
 - Skill install is separate from runtime install.
-- The 4-route runtime model lives in [`docs/runtime-stack-strategy.md`](../docs/runtime-stack-strategy.md):
-  - Route A — Anthropic Blender Connector (one-click in Claude Desktop, Blender 4.2+).
-  - Route B — Blender Foundation MCP Server (`bpype/blender_mcp`, manual install, Blender **5.1+**).
-  - Route C — Community Blender MCP (`ahujasid/blender-mcp`, mature 21K+ stars third-party, Blender 3.0+).
-  - Route D — Official Blender CLI (no MCP, deterministic fallback).
-- Skills must name the route explicitly when discussing runtime steps and must not mis-attribute per-route properties (e.g., the 5.1+ requirement applies to Route B only).
-- Single-client constraint: Blender accepts one MCP client per session. Skills must warn if multiple route servers are configured for the same Blender instance.
+- The 2-path + CLI appendix runtime model lives in [`docs/runtime-stack-strategy.md`](../docs/runtime-stack-strategy.md):
+  - **Path 1 — Official Blender Lab MCP** (Lab add-on + Lab server installed in Blender 5.1+, hosted from either (a) Anthropic Blender Connector in Claude Desktop, or (b) any other MCP client configured manually). Anthropic Connector is **not** standalone — Anthropic's tutorial step 2 tells you to install the Lab add-on inside Blender.
+  - **Path 2 — Community `ahujasid/blender-mcp`** (different `addon.py` + server via `uvx blender-mcp`, mature 21K+ stars third-party, Blender 3.0+).
+  - **CLI fallback (appendix)** — direct `blender --background --python`, no MCP. **Publisher has not verified** in this repo.
+- Skills must name the path explicitly (and Path 1 host option a/b when relevant) and must apply Blender 5.1+ to all of Path 1 (whichever host).
+- Single-bridge constraint: Blender accepts one MCP bridge session per Blender instance. Skills must warn if Path 1 + Path 2 are both configured for the same Blender instance.
 
 Runtime docs:
 
