@@ -58,6 +58,17 @@ Core guide: [docs/skill-system.md](../docs/skill-system.md)
 | `glb-web-handoff` | GLB/web handoff status and caveats | Handoff clarity is required | Expanded Draft v0 | Pass | [EVAL](./glb-web-handoff/EVAL.md) |
 | `non-blender-user-response-writer` | Plain-language final response | Stakeholder-facing summary is needed | Expanded Draft v0 | Pass | [EVAL](./non-blender-user-response-writer/EVAL.md) |
 
+### 🌐 Web 3D handoff deep (Batch 1, post-v0.1.0-draft)
+
+Each ships with `SKILL.md` + `EVAL.md` + 3 `references/` files.
+
+| Skill | Purpose | Use when | Depth status | Eval | References |
+|---|---|---|---|---|---|
+| `glb-mobile-performance-budget` | Set explicit triangle / texture / draw-call / file-size / animation budgets per device tier before any export decision | User mentions "mobile" / "phone" / "low-end" / "for the web" | Expanded Draft v0 | [EVAL](./glb-mobile-performance-budget/EVAL.md) | budget-tiers / violation-rules / degradation-plan |
+| `glb-animation-handoff` | Document GLB animation contract (skeletal / morph, FPS, looping, root motion, blend) with web-stack caveats | GLB ships with at least one animation clip and consumer is a web app | Expanded Draft v0 | [EVAL](./glb-animation-handoff/EVAL.md) | animation-types / web-stack-caveats / transition-rules |
+| `three-fiber-component-shape-planner` | Plan the React Three Fiber component shape (props, refs, Suspense, useGLTF cache, animation hook) before delivering a GLB to the web team | Consumer is using R3F, before component code is written | Expanded Draft v0 | [EVAL](./three-fiber-component-shape-planner/EVAL.md) | component-shape-patterns / suspense-placement-rules / usegltf-caching-rules |
+| `preview-report-template-writer` | Generate the structured preview-report Markdown that glb-web-handoff and non-blender-user-response-writer consume | After render-export-evidence produces measurements, before web/final handoff | Expanded Draft v0 | [EVAL](./preview-report-template-writer/EVAL.md) | report-schema / truth-label-rules / handoff-recipients |
+
 ### 🧠 Process and discipline (Phase 4 expansion — Superpowers + BMad inspired)
 
 Each ships with `SKILL.md` + `EVAL.md` + 3 `references/` files (templates / playbooks / patterns).

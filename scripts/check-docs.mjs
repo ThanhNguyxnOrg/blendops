@@ -76,6 +76,11 @@ const requiredSkills = [
   'skills/intent-to-3d-brief-writer/SKILL.md',
   'skills/blender-asset-discovery-planner/SKILL.md',
   'skills/runtime-bridge-conflict-resolver/SKILL.md',
+  // Batch 1 (post-v0.1.0-draft): Web 3D handoff deep:
+  'skills/glb-mobile-performance-budget/SKILL.md',
+  'skills/glb-animation-handoff/SKILL.md',
+  'skills/three-fiber-component-shape-planner/SKILL.md',
+  'skills/preview-report-template-writer/SKILL.md',
 ];
 
 const requiredSkillEvals = [
@@ -95,6 +100,11 @@ const requiredSkillEvals = [
   'skills/intent-to-3d-brief-writer/EVAL.md',
   'skills/blender-asset-discovery-planner/EVAL.md',
   'skills/runtime-bridge-conflict-resolver/EVAL.md',
+  // Batch 1 (post-v0.1.0-draft): Web 3D handoff deep:
+  'skills/glb-mobile-performance-budget/EVAL.md',
+  'skills/glb-animation-handoff/EVAL.md',
+  'skills/three-fiber-component-shape-planner/EVAL.md',
+  'skills/preview-report-template-writer/EVAL.md',
 ];
 
 const requiredLaws = [
@@ -136,6 +146,11 @@ const requiredBundleFixture = [
   'bundles/claude-desktop-manual/references/skills/pre-handoff-verification.md',
   'bundles/claude-desktop-manual/references/skills/glb-web-handoff.md',
   'bundles/claude-desktop-manual/references/skills/non-blender-user-response-writer.md',
+  // Batch 1 (post-v0.1.0-draft): Web 3D handoff deep:
+  'bundles/claude-desktop-manual/references/skills/glb-mobile-performance-budget.md',
+  'bundles/claude-desktop-manual/references/skills/glb-animation-handoff.md',
+  'bundles/claude-desktop-manual/references/skills/three-fiber-component-shape-planner.md',
+  'bundles/claude-desktop-manual/references/skills/preview-report-template-writer.md',
   'bundles/claude-desktop-manual/references/laws/evidence-before-done.md',
   'bundles/claude-desktop-manual/references/laws/official-runtime-only.md',
   'bundles/claude-desktop-manual/references/laws/no-arbitrary-python-interface.md',
@@ -159,6 +174,11 @@ const requiredBundleFixture = [
   'bundles/skill-package/blendops/references/skill-intent-to-3d-brief-writer.md',
   'bundles/skill-package/blendops/references/skill-blender-asset-discovery-planner.md',
   'bundles/skill-package/blendops/references/skill-runtime-bridge-conflict-resolver.md',
+  // Batch 1 (post-v0.1.0-draft): Web 3D handoff deep:
+  'bundles/skill-package/blendops/references/skill-glb-mobile-performance-budget.md',
+  'bundles/skill-package/blendops/references/skill-glb-animation-handoff.md',
+  'bundles/skill-package/blendops/references/skill-three-fiber-component-shape-planner.md',
+  'bundles/skill-package/blendops/references/skill-preview-report-template-writer.md',
   'bundles/skill-package/blendops/references/law-evidence-before-done.md',
   'bundles/skill-package/blendops/references/pack-product-hero-v0.md',
   'bundles/skill-package/blendops/LICENSE.txt',

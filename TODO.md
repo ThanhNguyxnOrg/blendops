@@ -3,7 +3,7 @@
 _Last updated: 2026-05-09 (clarified scope: BlendOps publishes the **skills layer**; runtime paths are an **upstream redirect** to Blender Foundation Lab / Anthropic Connector / `ahujasid` community / Blender CLI — not BlendOps' deliverable. Skills layer is complete. In-repo runtime evidence files are optional operator-side provenance records, not publishing blockers. CLI compatibility considerations researched and documented inline.)_
 
 > [!NOTE]
-> BlendOps publishes one thing: a **skills layer** (16 skills + 4 laws + 1 pack + 3 bundles + 16 install target docs + ZIP/package generation + CI guards). That layer is **complete and shippable** at Draft v0.
+> BlendOps publishes one thing: a **skills layer** (20 skills (Batch 1 of 8 added 2026-05-09; roadmap to 48 skills = 3x) + 4 laws + 1 pack + 3 bundles + 16 install target docs + ZIP/package generation + CI guards). The layer is **complete and shippable** at Draft v0.
 >
 > Everything related to actually running Blender — the Blender executable, the MCP servers, the MCP hosts, the CLI — is **upstream**, owned by Blender Foundation / Anthropic / the `ahujasid` community. BlendOps **redirects** users to the right upstream docs per per-target install doc. Whether those upstream paths work in a given environment is upstream's claim, not BlendOps'. Path 1 + Path 2 are **user-reported verified by the repo owner**; CLI is **upstream-stable, decades-old**.
 >
@@ -41,7 +41,7 @@ _Last updated: 2026-05-09 (clarified scope: BlendOps publishes the **skills laye
 | `npx blendops` installer | Spec only at `docs/install/installer-spec.md`. Future Phase 4 work, deliberately deferred. | — |
 | Marketplace / plugin listing | Future Phase work. Gated on upstream listing acceptance. | — |
 
-**Bottom line**: clone the repo today → paste 30-second prompt → agent auto-detects and installs/prepares ZIPs → plan a scene with the 16 skills → follow per-target install doc to enable an upstream runtime path → drive Blender via Path 1 / Path 2 (both verified by the repo owner) or CLI (decades-stable). Skills layer is **complete and tag-able as `v0.1.0-draft`**; runtime paths are **upstream's deliverable**, not BlendOps'.
+**Bottom line**: clone the repo today → paste 30-second prompt → agent auto-detects and installs/prepares ZIPs → plan a scene with the 20 skills → follow per-target install doc to enable an upstream runtime path → drive Blender via Path 1 / Path 2 (both verified by the repo owner) or CLI (decades-stable). Skills layer is **shipped as `v0.1.0-draft` (16 skills baseline) with Batch 1 (4 web 3D deep skills) added on top**; runtime paths are **upstream's deliverable**, not BlendOps'. Roadmap: 48 skills total (3x baseline) across 8 batches.
 
 ---
 

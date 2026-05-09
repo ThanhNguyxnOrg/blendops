@@ -13,7 +13,7 @@
 [![Artifacts: Not Produced](https://img.shields.io/badge/artifacts-Not%20Produced-lightgrey.svg?style=flat-square)](./docs/release-readiness-rollup-v0.md)
 [![Release: v0.1.0-draft](https://img.shields.io/github/v/release/ThanhNguyxnOrg/blendops?include_prereleases&label=release&color=2ea44f&style=flat-square)](https://github.com/ThanhNguyxnOrg/blendops/releases/tag/v0.1.0-draft)
 
-[![Skills: 16](https://img.shields.io/badge/skills-16-1f6feb.svg?style=flat-square)](./skills/README.md)
+[![Skills: 20](https://img.shields.io/badge/skills-20-1f6feb.svg?style=flat-square)](./skills/README.md)
 [![Laws: 4](https://img.shields.io/badge/laws-4-1f6feb.svg?style=flat-square)](./laws/README.md)
 [![Packs: 1](https://img.shields.io/badge/packs-1-1f6feb.svg?style=flat-square)](./packs/README.md)
 [![Install targets: 16](https://img.shields.io/badge/install%20targets-16-1f6feb.svg?style=flat-square)](./docs/install/README.md)
@@ -64,7 +64,7 @@ Human intent (non-Blender user)
 
 | BlendOps **publishes** (this repo's deliverable) | BlendOps **redirects to** (upstream — not this repo's work) |
 |---|---|
-| 16 skills (planning, readiness, evidence, handoff, troubleshooting, brainstorming, …) | **Path 1 — Blender Lab MCP** (Lab add-on + Lab server). Owner: Blender Foundation. Source: [blender.org/lab/mcp-server](https://www.blender.org/lab/mcp-server/) |
+| 20 skills (planning, readiness, evidence, handoff, troubleshooting, brainstorming, web 3D handoff deep, …) | **Path 1 — Blender Lab MCP** (Lab add-on + Lab server). Owner: Blender Foundation. Source: [blender.org/lab/mcp-server](https://www.blender.org/lab/mcp-server/) |
 | 4 laws (evidence-before-done, official-runtime-only, no-arbitrary-python-interface, non-blender-user-language) | **Path 1 host (a) — Anthropic Blender Connector** (Claude-Desktop-specific MCP host). Owner: Anthropic. Source: [claude.com/.../using-the-blender-connector-in-claude](https://claude.com/resources/tutorials/using-the-blender-connector-in-claude) |
 | 1 pack (`product-hero-v0`), 3 bundles (skill-package, claude-desktop-manual, generic-project-local) | **Path 2 — Community `ahujasid/blender-mcp`** (different add-on/server). Owner: 21K+ stars community project. Source: [github.com/ahujasid/blender-mcp](https://github.com/ahujasid/blender-mcp) |
 | 16 install target docs + 3 mode auto-detect install flow | **CLI fallback** (`blender --background --python ...`). Owner: Blender Foundation. Source: [docs.blender.org/manual/.../command_line](https://docs.blender.org/manual/en/latest/advanced/command_line/index.html) |
@@ -72,7 +72,7 @@ Human intent (non-Blender user)
 
 **What this means for "completeness":**
 
-- The **skills layer** (16 skills + workflows + install docs + ZIP generation + CI guards) is **complete** at Draft v0 — nothing upstream blocks it.
+- The **skills layer** (20 skills + workflows + install docs + ZIP generation + CI guards) is **complete** at Draft v0 — nothing upstream blocks it. Roadmap target: 48 skills (3x); progress 20/48.
 - Whether the **upstream runtime paths work in your environment** is up to upstream Blender Foundation / Anthropic / `ahujasid` (Path 1 + Path 2 are user-reported verified by the repo owner; CLI is decades-stable upstream). BlendOps **redirects** to them via per-target install docs but does not own their stability.
 - The "Full runtime eval: Not Run" / "Artifacts: Not Produced" labels refer to **in-repo provenance evidence files only** — operator-side records under `docs/evals/`. They do **not** mean "the upstream runtime paths don't work" or "BlendOps is incomplete."
 
