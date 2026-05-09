@@ -60,14 +60,16 @@ Core guide: [docs/skill-system.md](../docs/skill-system.md)
 
 ### 🧠 Process and discipline (Phase 4 expansion — Superpowers + BMad inspired)
 
-| Skill | Purpose | Use when | Depth status | Eval |
-|---|---|---|---|---|
-| `blender-brainstorming` | Socratic intent exploration before planning (Superpowers `/brainstorming` analog) | User request is vague or ambiguous | Draft v0 | [EVAL](./blender-brainstorming/EVAL.md) |
-| `blender-troubleshooting` | 4-phase root-cause analysis when output looks wrong (Superpowers `/systematic-debugging` analog) | Render / GLB / response diverges from intent | Draft v0 | [EVAL](./blender-troubleshooting/EVAL.md) |
-| `pre-handoff-verification` | 7-point evidence gate before any "ready" / `Verified` claim (Superpowers `/verification-before-completion` analog) | Before any handoff, evidence file save, or release | Draft v0 | [EVAL](./pre-handoff-verification/EVAL.md) |
-| `intent-to-3d-brief-writer` | Convert NL intent → 8-slot structured 3D brief (BMad analysis-phase analog) | First step before any planner | Draft v0 | [EVAL](./intent-to-3d-brief-writer/EVAL.md) |
-| `blender-asset-discovery-planner` | Per-asset strategy (procedural / library / generative / photogrammetry) before scene plan | Brief is locked, scene plan needs asset commitment | Draft v0 | [EVAL](./blender-asset-discovery-planner/EVAL.md) |
-| `runtime-bridge-conflict-resolver` | Diagnose Single-bridge constraint conflicts (Path 1 + Path 2 + port `9876`) | Readiness signals inconsistent or two bridges installed | Draft v0 | [EVAL](./runtime-bridge-conflict-resolver/EVAL.md) |
+Each ships with `SKILL.md` + `EVAL.md` + 3 `references/` files (templates / playbooks / patterns).
+
+| Skill | Purpose | Use when | Depth status | Eval | References |
+|---|---|---|---|---|---|
+| `blender-brainstorming` | Socratic intent exploration before planning (Superpowers `/brainstorming` analog) | User request is vague or ambiguous | Expanded Draft v0 | [EVAL](./blender-brainstorming/EVAL.md) | clarification-patterns / alternative-scoping-templates / intent-summary-style-guide |
+| `blender-troubleshooting` | 4-phase root-cause analysis when output looks wrong (Superpowers `/systematic-debugging` analog) | Render / GLB / response diverges from intent | Expanded Draft v0 | [EVAL](./blender-troubleshooting/EVAL.md) | four-phase-template / divergence-routing-table / common-symptom-playbooks |
+| `pre-handoff-verification` | 7-point evidence gate before any "ready" / `Verified` claim (Superpowers `/verification-before-completion` analog) | Before any handoff, evidence file save, or release | Expanded Draft v0 | [EVAL](./pre-handoff-verification/EVAL.md) | seven-point-checklist / downgrade-rules / text-only-mode-handling |
+| `intent-to-3d-brief-writer` | Convert NL intent → 8-slot structured 3D brief (BMad analysis-phase analog) | First step before any planner | Expanded Draft v0 | [EVAL](./intent-to-3d-brief-writer/EVAL.md) | eight-slot-template / acceptance-criteria-patterns / mixed-audience-handling |
+| `blender-asset-discovery-planner` | Per-asset strategy (procedural / library / generative / photogrammetry) before scene plan | Brief is locked, scene plan needs asset commitment | Expanded Draft v0 | [EVAL](./blender-asset-discovery-planner/EVAL.md) | asset-strategy-decision-tree / license-confidence-table / budget-reconciliation-patterns |
+| `runtime-bridge-conflict-resolver` | Diagnose Single-bridge constraint conflicts (Path 1 + Path 2 + port `9876`) | Readiness signals inconsistent or two bridges installed | Expanded Draft v0 | [EVAL](./runtime-bridge-conflict-resolver/EVAL.md) | bridge-state-matrix-template / conflict-playbooks / do-not-reminders |
 
 ---
 

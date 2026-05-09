@@ -158,7 +158,7 @@ Added 6 new process / discipline skills based on web research of [Anthropic Supe
 - [x] `skills/blender-asset-discovery-planner/` — Per-asset acquisition strategy (procedural / library / generative / photogrammetry) before scene planner (BlendOps-specific).
 - [x] `skills/runtime-bridge-conflict-resolver/` — Diagnose Single-bridge constraint conflicts (Path 1 + Path 2 + port `9876`) (BlendOps-specific).
 
-All 6 ship with `SKILL.md` + `EVAL.md`, frontmatter ≤200 chars, all required headings present, registered in `scripts/check-docs.mjs`, summarized in both bundles, indexed in `docs/skill-system.md`, `skills/README.md`, `docs/README.md`. Skills export now produces 16 ZIPs + 16 Claude Code folders.
+All 6 ship with `SKILL.md` + `EVAL.md` + 3 `references/` files each (18 reference files total: templates, playbooks, decision trees, patterns, do-not lists). Frontmatter ≤200 chars, all required headings present, registered in `scripts/check-docs.mjs`, summarized in both bundles, indexed in `docs/skill-system.md`, `skills/README.md`, `docs/README.md`. All 6 promoted from Draft v0 → **Expanded Draft v0** after references/ added (matches the existing 8 Expanded Draft v0 skills' depth pattern). Skills export now produces 16 ZIPs + 16 Claude Code folders.
 
 ### ✅ Phase 2.13: Portable skill system architecture
 - [x] create canonical skill system guide (`docs/skill-system.md`)
