@@ -2,7 +2,7 @@
   "name": "blendops",
   "version": "0.1.0-draft",
   "private": true,
-  "description": "AI-native Blender workflow + skill pack for non-Blender users. Portable Anthropic Skills (10 skills, 4 laws, 1 pack) + 9 install targets across Claude Desktop, Claude Code, Cursor, Codex, OpenCode, Gemini, Copilot, Antigravity, generic.",
+  "description": "AI-native Blender workflow + skill pack for non-Blender users. Portable Anthropic Skills (16 skills incl. Superpowers + BMad inspired process/discipline ones, 4 laws, 1 pack) + 9 install targets across Claude Desktop, Claude Code, Cursor, Codex, OpenCode, Gemini, Copilot, Antigravity, generic.",
   "homepage": "https://github.com/ThanhNguyxnOrg/blendops#readme",
   "repository": {
     "type": "git",

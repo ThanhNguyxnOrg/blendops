@@ -20,18 +20,33 @@ If Claude cannot fetch repository subpaths, ask the user to upload the repositor
 
 ## Multiple ZIP requirements
 
-Expected ZIP files:
+Expected ZIP files (16 total — 10 domain skills + 6 process / discipline skills inspired by Superpowers + BMad):
 
 ```txt
+# Help / routing
 blendops-help.zip
-product-hero-scene-planner.zip
-official-runtime-readiness-checker.zip
+
+# Process / discipline (Superpowers + BMad inspired)
+blender-brainstorming.zip
+intent-to-3d-brief-writer.zip
+blender-asset-discovery-planner.zip
+blender-troubleshooting.zip
+pre-handoff-verification.zip
+runtime-bridge-conflict-resolver.zip
+
+# Runtime
 official-runtime-setup-guide.zip
-render-export-evidence.zip
-glb-web-handoff.zip
+official-runtime-readiness-checker.zip
+
+# Scene planning (domain)
+product-hero-scene-planner.zip
 blender-composition-camera-planner.zip
 blender-lighting-material-planner.zip
 blender-scene-quality-checker.zip
+
+# Evidence + handoff
+render-export-evidence.zip
+glb-web-handoff.zip
 non-blender-user-response-writer.zip
 ```
 

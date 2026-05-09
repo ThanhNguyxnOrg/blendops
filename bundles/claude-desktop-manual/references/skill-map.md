@@ -7,14 +7,20 @@ These are **reference summaries inside one Claude Desktop BlendOps skill bundle*
 | Canonical subskill | Use when | Reference summary |
 |---|---|---|
 | `blendops-help` | next step is unclear, routing needed | `skills/blendops-help.md` |
+| `blender-brainstorming` | vague creative request, intent exploration before brief | `skills/blender-brainstorming.md` |
+| `intent-to-3d-brief-writer` | convert confirmed intent into 8-slot brief | `skills/intent-to-3d-brief-writer.md` |
+| `blender-asset-discovery-planner` | per-asset strategy (procedural / library / generative / photogrammetry) before scene plan | `skills/blender-asset-discovery-planner.md` |
 | `official-runtime-setup-guide` | choosing/setting up runtime prerequisites | `skills/official-runtime-setup-guide.md` |
-| `product-hero-scene-planner` | generating scene plan/spec | `skills/product-hero-scene-planner.md` |
 | `official-runtime-readiness-checker` | runtime preflight/readiness decision | `skills/official-runtime-readiness-checker.md` |
-| `render-export-evidence` | proving/downgrading render/export claims | `skills/render-export-evidence.md` |
-| `glb-web-handoff` | web handoff framing and caveats | `skills/glb-web-handoff.md` |
+| `runtime-bridge-conflict-resolver` | Single-bridge constraint conflicts (Path 1 + Path 2 + port 9876) | `skills/runtime-bridge-conflict-resolver.md` |
+| `product-hero-scene-planner` | generating scene plan/spec | `skills/product-hero-scene-planner.md` |
 | `blender-composition-camera-planner` | composition/camera strategy | `skills/blender-composition-camera-planner.md` |
 | `blender-lighting-material-planner` | lighting/material/lookdev planning | `skills/blender-lighting-material-planner.md` |
 | `blender-scene-quality-checker` | pass/warn/fail quality gate | `skills/blender-scene-quality-checker.md` |
+| `blender-troubleshooting` | output looks wrong, 4-phase root-cause analysis | `skills/blender-troubleshooting.md` |
+| `render-export-evidence` | proving/downgrading render/export claims | `skills/render-export-evidence.md` |
+| `pre-handoff-verification` | 7-point gate before any "ready" / `Verified` claim | `skills/pre-handoff-verification.md` |
+| `glb-web-handoff` | web handoff framing and caveats | `skills/glb-web-handoff.md` |
 | `non-blender-user-response-writer` | plain-language final response | `skills/non-blender-user-response-writer.md` |
 
 Always apply law summaries in `../laws/` and runtime/evidence boundaries before final output.

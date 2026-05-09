@@ -49,19 +49,25 @@ Create one ZIP per canonical skill from:
 skills/*/SKILL.md
 ```
 
-Expected output shape:
+Expected output shape (16 ZIPs — 10 domain skills + 6 process / discipline skills inspired by Superpowers + BMad):
 
 ```txt
 desktop-zips/
   blendops-help.zip
-  product-hero-scene-planner.zip
-  official-runtime-readiness-checker.zip
+  blender-brainstorming.zip
+  intent-to-3d-brief-writer.zip
+  blender-asset-discovery-planner.zip
+  blender-troubleshooting.zip
+  pre-handoff-verification.zip
+  runtime-bridge-conflict-resolver.zip
   official-runtime-setup-guide.zip
-  render-export-evidence.zip
-  glb-web-handoff.zip
+  official-runtime-readiness-checker.zip
+  product-hero-scene-planner.zip
   blender-composition-camera-planner.zip
   blender-lighting-material-planner.zip
   blender-scene-quality-checker.zip
+  render-export-evidence.zip
+  glb-web-handoff.zip
   non-blender-user-response-writer.zip
 ```
 

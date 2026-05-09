@@ -49,17 +49,23 @@ A skill may point to runtime docs, but it must not imply runtime was installed o
 
 ## Canonical skill map
 
-All 10 root skills, grouped by canonical role. The full per-skill table with depth and gate-review status lives in [`skills/README.md`](../skills/README.md).
+All 16 root skills, grouped by canonical role. The full per-skill table with depth and gate-review status lives in [`skills/README.md`](../skills/README.md).
 
 | Canonical role | Active skill path | Notes |
 |---|---|---|
 | Help / next safe action | `skills/blendops-help/SKILL.md` | Routes between docs, skills, runtime readiness, evals, and packaging. Baseline eval: `skills/blendops-help/EVAL.md`. |
+| Brainstorming (intent exploration) | `skills/blender-brainstorming/SKILL.md` | Socratic intent exploration before brief writer; Superpowers `/brainstorming` analog. |
+| 3D brief writer | `skills/intent-to-3d-brief-writer/SKILL.md` | Convert confirmed intent into an 8-slot structured 3D brief; BMad analysis-phase analog. |
+| Asset discovery | `skills/blender-asset-discovery-planner/SKILL.md` | Per-asset strategy (procedural / library / generative / photogrammetry) before scene planner. |
 | Runtime setup prerequisites | `skills/official-runtime-setup-guide/SKILL.md` | Canonical role: `runtime-setup`; chooses Path 1 (host a or b) / Path 2 / CLI prerequisites without installing Blender. |
 | Runtime readiness | `skills/official-runtime-readiness-checker/SKILL.md` | Canonical role: `runtime-readiness`; keep per-path + per-host boundaries. |
+| Bridge-conflict resolution | `skills/runtime-bridge-conflict-resolver/SKILL.md` | Diagnose Single-bridge constraint conflicts (Path 1 + Path 2 + port `9876`); BlendOps-specific. |
 | Scene planning | `skills/product-hero-scene-planner/SKILL.md` | Canonical role for product-hero scene planning. |
 | Camera / lighting / composition | `skills/blender-composition-camera-planner/SKILL.md`, `skills/blender-lighting-material-planner/SKILL.md` | Domain planning, no runtime claim. |
 | Scene quality gate | `skills/blender-scene-quality-checker/SKILL.md` | Pass/Warn/Fail readiness verdict before runtime mutation. |
+| Troubleshooting | `skills/blender-troubleshooting/SKILL.md` | Structured 4-phase root-cause analysis when output looks wrong; Superpowers `/systematic-debugging` analog. |
 | Render/export evidence | `skills/render-export-evidence/SKILL.md` | Artifact truth ledger for preview/render/GLB evidence. Baseline eval: `skills/render-export-evidence/EVAL.md`. |
+| Pre-handoff verification | `skills/pre-handoff-verification/SKILL.md` | 7-point evidence gate before any "ready" / `Verified` claim; Superpowers `/verification-before-completion` analog. |
 | GLB handoff | `skills/glb-web-handoff/SKILL.md` | Web handoff language after evidence state is known. |
 | Plain-language final response | `skills/non-blender-user-response-writer/SKILL.md` | Stakeholder-friendly summary after evidence state is known. |
 
@@ -155,10 +161,22 @@ skills/
 ├─ blendops-help/
 │  ├─ SKILL.md
 │  └─ EVAL.md
+├─ blender-brainstorming/
+│  ├─ SKILL.md
+│  └─ EVAL.md
+├─ intent-to-3d-brief-writer/
+│  ├─ SKILL.md
+│  └─ EVAL.md
+├─ blender-asset-discovery-planner/
+│  ├─ SKILL.md
+│  └─ EVAL.md
 ├─ official-runtime-setup-guide/
 │  ├─ SKILL.md
 │  └─ EVAL.md
 ├─ official-runtime-readiness-checker/
+│  ├─ SKILL.md
+│  └─ EVAL.md
+├─ runtime-bridge-conflict-resolver/
 │  ├─ SKILL.md
 │  └─ EVAL.md
 ├─ product-hero-scene-planner/
@@ -173,7 +191,13 @@ skills/
 ├─ blender-scene-quality-checker/
 │  ├─ SKILL.md
 │  └─ EVAL.md
+├─ blender-troubleshooting/
+│  ├─ SKILL.md
+│  └─ EVAL.md
 ├─ render-export-evidence/
+│  ├─ SKILL.md
+│  └─ EVAL.md
+├─ pre-handoff-verification/
 │  ├─ SKILL.md
 │  └─ EVAL.md
 ├─ glb-web-handoff/

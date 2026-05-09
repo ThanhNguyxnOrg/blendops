@@ -58,6 +58,17 @@ Core guide: [docs/skill-system.md](../docs/skill-system.md)
 | `glb-web-handoff` | GLB/web handoff status and caveats | Handoff clarity is required | Expanded Draft v0 | Pass | [EVAL](./glb-web-handoff/EVAL.md) |
 | `non-blender-user-response-writer` | Plain-language final response | Stakeholder-facing summary is needed | Expanded Draft v0 | Pass | [EVAL](./non-blender-user-response-writer/EVAL.md) |
 
+### 🧠 Process and discipline (Phase 4 expansion — Superpowers + BMad inspired)
+
+| Skill | Purpose | Use when | Depth status | Eval |
+|---|---|---|---|---|
+| `blender-brainstorming` | Socratic intent exploration before planning (Superpowers `/brainstorming` analog) | User request is vague or ambiguous | Draft v0 | [EVAL](./blender-brainstorming/EVAL.md) |
+| `blender-troubleshooting` | 4-phase root-cause analysis when output looks wrong (Superpowers `/systematic-debugging` analog) | Render / GLB / response diverges from intent | Draft v0 | [EVAL](./blender-troubleshooting/EVAL.md) |
+| `pre-handoff-verification` | 7-point evidence gate before any "ready" / `Verified` claim (Superpowers `/verification-before-completion` analog) | Before any handoff, evidence file save, or release | Draft v0 | [EVAL](./pre-handoff-verification/EVAL.md) |
+| `intent-to-3d-brief-writer` | Convert NL intent → 8-slot structured 3D brief (BMad analysis-phase analog) | First step before any planner | Draft v0 | [EVAL](./intent-to-3d-brief-writer/EVAL.md) |
+| `blender-asset-discovery-planner` | Per-asset strategy (procedural / library / generative / photogrammetry) before scene plan | Brief is locked, scene plan needs asset commitment | Draft v0 | [EVAL](./blender-asset-discovery-planner/EVAL.md) |
+| `runtime-bridge-conflict-resolver` | Diagnose Single-bridge constraint conflicts (Path 1 + Path 2 + port `9876`) | Readiness signals inconsistent or two bridges installed | Draft v0 | [EVAL](./runtime-bridge-conflict-resolver/EVAL.md) |
+
 ---
 
 ## Expected folder structure

@@ -1,6 +1,6 @@
 # BlendOps Roadmap (Product-Layer Rebuild)
 
-_Last updated: 2026-05-09_
+_Last updated: 2026-05-09 (Phase 4 skills expansion: 10 → 16 skills, Superpowers + BMad inspired process / discipline skills)_
 
 > [!NOTE]
 > BlendOps remains **Draft v0**. The **content layer** (docs, skills, laws, packs, bundles) is **shippable / runnable end-to-end** for content install + planning workflows. The **runtime evidence layer** is gated on the operator running Blender once and recording evidence — BlendOps publisher cannot do that for the user because BlendOps does not install Blender.
@@ -130,6 +130,19 @@ _Last updated: 2026-05-09_
 - [x] verify no runtime was installed/run
 - [x] verify rollback clarity in fixture reports
 - [x] document beta findings in `docs/evals/manual-install-beta-v0.md`
+
+### ✅ Phase 4 skills expansion (Superpowers + BMad inspired, 2026-05-09)
+
+Added 6 new process / discipline skills based on web research of [Anthropic Superpowers](https://github.com/anthropics/skills) (150K+ stars, 12-skill framework) and [BMad-Method](https://docs.bmad-method.org/) (34+ agile-AI workflows):
+
+- [x] `skills/blender-brainstorming/` — Socratic intent exploration before planning (Superpowers `/brainstorming` analog).
+- [x] `skills/blender-troubleshooting/` — Structured 4-phase root-cause analysis (Superpowers `/systematic-debugging` analog).
+- [x] `skills/pre-handoff-verification/` — 7-point evidence gate before any "ready" / `Verified` claim (Superpowers `/verification-before-completion` analog).
+- [x] `skills/intent-to-3d-brief-writer/` — Convert NL intent into 8-slot structured 3D brief (BMad analysis-phase analog).
+- [x] `skills/blender-asset-discovery-planner/` — Per-asset acquisition strategy (procedural / library / generative / photogrammetry) before scene planner (BlendOps-specific).
+- [x] `skills/runtime-bridge-conflict-resolver/` — Diagnose Single-bridge constraint conflicts (Path 1 + Path 2 + port `9876`) (BlendOps-specific).
+
+All 6 ship with `SKILL.md` + `EVAL.md`, frontmatter ≤200 chars, all required headings present, registered in `scripts/check-docs.mjs`, summarized in both bundles, indexed in `docs/skill-system.md`, `skills/README.md`, `docs/README.md`. Skills export now produces 16 ZIPs + 16 Claude Code folders.
 
 ### ✅ Phase 2.13: Portable skill system architecture
 - [x] create canonical skill system guide (`docs/skill-system.md`)

@@ -41,13 +41,19 @@ Compose the included skills to plan, validate, and communicate product-hero Blen
 | Category | Skill path | Status |
 |---|---|---|
 | Help / routing | `../../skills/blendops-help/SKILL.md` | Draft v0 |
+| Process / discipline (Superpowers + BMad inspired) | `../../skills/blender-brainstorming/SKILL.md` | Draft v0 |
+| Process / discipline | `../../skills/intent-to-3d-brief-writer/SKILL.md` | Draft v0 |
+| Process / discipline | `../../skills/blender-asset-discovery-planner/SKILL.md` | Draft v0 |
 | Setup / readiness | `../../skills/official-runtime-setup-guide/SKILL.md` | Expanded Draft v0 |
 | Setup / readiness | `../../skills/official-runtime-readiness-checker/SKILL.md` | Expanded Draft v0 |
+| Setup / readiness | `../../skills/runtime-bridge-conflict-resolver/SKILL.md` | Draft v0 |
 | Planning | `../../skills/product-hero-scene-planner/SKILL.md` | Expanded Draft v0 |
 | Planning | `../../skills/blender-composition-camera-planner/SKILL.md` | Expanded Draft v0 |
 | Planning | `../../skills/blender-lighting-material-planner/SKILL.md` | Expanded Draft v0 |
 | Quality / eval | `../../skills/blender-scene-quality-checker/SKILL.md` | Expanded Draft v0 |
+| Quality / debugging | `../../skills/blender-troubleshooting/SKILL.md` | Draft v0 |
 | Quality / evidence | `../../skills/render-export-evidence/SKILL.md` | Draft v0 |
+| Quality / pre-handoff | `../../skills/pre-handoff-verification/SKILL.md` | Draft v0 |
 | Handoff / communication | `../../skills/glb-web-handoff/SKILL.md` | Expanded Draft v0 |
 | Handoff / communication | `../../skills/non-blender-user-response-writer/SKILL.md` | Expanded Draft v0 |
 
@@ -71,7 +77,7 @@ This pack expects included skills to pass Gate 0 through Gate 8 in `skill-review
 
 | Expectation | Status language |
 |---|---|
-| Per-skill evals | Each included skill has `EVAL.md` (8 expanded skills have full evals; 2 Draft v0 skills have text-only baseline evals). |
+| Per-skill evals | Each included skill has `EVAL.md`. 8 skills have expanded evals; 8 skills have text-only baseline evals (the 2 original Draft v0 skills + 6 Phase 4 process / discipline skills inspired by Superpowers + BMad). |
 | Text-only eval | Baseline checks should pass before runtime eval. |
 | Runtime blockers | Must be recordable without overclaims. |
 | Depth audit | Tracked in `skill-reviews/reports/v0-skill-depth-audit.md`. |

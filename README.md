@@ -13,12 +13,13 @@
 [![Artifacts: Not Produced](https://img.shields.io/badge/artifacts-Not%20Produced-lightgrey.svg?style=flat-square)](./docs/release-readiness-rollup-v0.md)
 [![Tag: Not Ready](https://img.shields.io/badge/v0.1.0%20tag-Not%20Ready-red.svg?style=flat-square)](./docs/release-readiness.md)
 
-[![Skills: 10](https://img.shields.io/badge/skills-10-1f6feb.svg?style=flat-square)](./skills/README.md)
+[![Skills: 16](https://img.shields.io/badge/skills-16-1f6feb.svg?style=flat-square)](./skills/README.md)
 [![Laws: 4](https://img.shields.io/badge/laws-4-1f6feb.svg?style=flat-square)](./laws/README.md)
 [![Packs: 1](https://img.shields.io/badge/packs-1-1f6feb.svg?style=flat-square)](./packs/README.md)
 [![Install targets: 9](https://img.shields.io/badge/install%20targets-9-1f6feb.svg?style=flat-square)](./docs/install/README.md)
 [![Adapters: 6](https://img.shields.io/badge/adapters-6-1f6feb.svg?style=flat-square)](./docs/adapters/README.md)
 [![Bundles: 3](https://img.shields.io/badge/bundles-3-1f6feb.svg?style=flat-square)](./bundles/)
+[![Inspired by: Superpowers + BMad](https://img.shields.io/badge/inspired%20by-Superpowers%20%2B%20BMad-orange.svg?style=flat-square)](./skills/README.md)
 
 [![Anthropic: Blender Connector](https://img.shields.io/badge/Anthropic-Blender%20Connector%20(Path%201%20host)-d97757.svg?style=flat-square)](https://claude.com/resources/tutorials/using-the-blender-connector-in-claude)
 [![Blender Lab: MCP server](https://img.shields.io/badge/Blender%20Lab-MCP%20server%20(Path%201%20Blender--side)-f5792a.svg?style=flat-square)](https://www.blender.org/lab/mcp-server/)

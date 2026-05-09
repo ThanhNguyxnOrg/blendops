@@ -12,7 +12,7 @@ The single index for everything in this repo. Bookmark this page.
 | Area | Status | Meaning |
 |---|---|---|
 | Product direction | Draft v0 | Workflow specs are documented; no stable release claim. |
-| Skill / law / pack collection | Draft Pass | 10 root skills, 4 laws, 1 pack (`product-hero-v0`). |
+| Skill / law / pack collection | Draft Pass | 16 root skills (10 domain + 6 process/discipline inspired by Superpowers + BMad), 4 laws, 1 pack (`product-hero-v0`). |
 | Runtime path model | Active (2-path + CLI appendix) | Path 1 (Lab MCP, hosted from Anthropic Connector or manual MCP); Path 2 (community `ahujasid/blender-mcp`); CLI fallback (publisher not verified). |
 | Path 1 read-only smoke | Pass / Available | 2026-04-29 record (likely Anthropic Connector host). |
 | Path 2 user-reported verified | Yes (2026-05-08) | No formal eval file yet. |
@@ -128,21 +128,27 @@ The single index for everything in this repo. Bookmark this page.
 
 ---
 
-## 🛠️ Skills (10 root skills)
+## 🛠️ Skills (16 root skills)
 
-| Skill | Doc |
-|---|---|
-| Index + how to add a new skill | [`../skills/README.md`](../skills/README.md) |
-| `blendops-help` (router) | [`../skills/blendops-help/SKILL.md`](../skills/blendops-help/SKILL.md) |
-| `official-runtime-setup-guide` | [`../skills/official-runtime-setup-guide/SKILL.md`](../skills/official-runtime-setup-guide/SKILL.md) |
-| `official-runtime-readiness-checker` | [`../skills/official-runtime-readiness-checker/SKILL.md`](../skills/official-runtime-readiness-checker/SKILL.md) |
-| `product-hero-scene-planner` | [`../skills/product-hero-scene-planner/SKILL.md`](../skills/product-hero-scene-planner/SKILL.md) |
-| `blender-composition-camera-planner` | [`../skills/blender-composition-camera-planner/SKILL.md`](../skills/blender-composition-camera-planner/SKILL.md) |
-| `blender-lighting-material-planner` | [`../skills/blender-lighting-material-planner/SKILL.md`](../skills/blender-lighting-material-planner/SKILL.md) |
-| `blender-scene-quality-checker` | [`../skills/blender-scene-quality-checker/SKILL.md`](../skills/blender-scene-quality-checker/SKILL.md) |
-| `render-export-evidence` | [`../skills/render-export-evidence/SKILL.md`](../skills/render-export-evidence/SKILL.md) |
-| `glb-web-handoff` | [`../skills/glb-web-handoff/SKILL.md`](../skills/glb-web-handoff/SKILL.md) |
-| `non-blender-user-response-writer` | [`../skills/non-blender-user-response-writer/SKILL.md`](../skills/non-blender-user-response-writer/SKILL.md) |
+| Skill | Doc | Group |
+|---|---|---|
+| Index + how to add a new skill | [`../skills/README.md`](../skills/README.md) | — |
+| `blendops-help` (router) | [`../skills/blendops-help/SKILL.md`](../skills/blendops-help/SKILL.md) | Help |
+| `blender-brainstorming` (Superpowers `/brainstorming` analog) | [`../skills/blender-brainstorming/SKILL.md`](../skills/blender-brainstorming/SKILL.md) | Process |
+| `intent-to-3d-brief-writer` (BMad analysis-phase analog) | [`../skills/intent-to-3d-brief-writer/SKILL.md`](../skills/intent-to-3d-brief-writer/SKILL.md) | Process |
+| `blender-asset-discovery-planner` | [`../skills/blender-asset-discovery-planner/SKILL.md`](../skills/blender-asset-discovery-planner/SKILL.md) | Process |
+| `official-runtime-setup-guide` | [`../skills/official-runtime-setup-guide/SKILL.md`](../skills/official-runtime-setup-guide/SKILL.md) | Runtime |
+| `official-runtime-readiness-checker` | [`../skills/official-runtime-readiness-checker/SKILL.md`](../skills/official-runtime-readiness-checker/SKILL.md) | Runtime |
+| `runtime-bridge-conflict-resolver` (Single-bridge constraint) | [`../skills/runtime-bridge-conflict-resolver/SKILL.md`](../skills/runtime-bridge-conflict-resolver/SKILL.md) | Runtime |
+| `product-hero-scene-planner` | [`../skills/product-hero-scene-planner/SKILL.md`](../skills/product-hero-scene-planner/SKILL.md) | Planning |
+| `blender-composition-camera-planner` | [`../skills/blender-composition-camera-planner/SKILL.md`](../skills/blender-composition-camera-planner/SKILL.md) | Planning |
+| `blender-lighting-material-planner` | [`../skills/blender-lighting-material-planner/SKILL.md`](../skills/blender-lighting-material-planner/SKILL.md) | Planning |
+| `blender-scene-quality-checker` | [`../skills/blender-scene-quality-checker/SKILL.md`](../skills/blender-scene-quality-checker/SKILL.md) | Quality |
+| `blender-troubleshooting` (Superpowers `/systematic-debugging` analog) | [`../skills/blender-troubleshooting/SKILL.md`](../skills/blender-troubleshooting/SKILL.md) | Quality |
+| `render-export-evidence` | [`../skills/render-export-evidence/SKILL.md`](../skills/render-export-evidence/SKILL.md) | Evidence |
+| `pre-handoff-verification` (Superpowers `/verification-before-completion` analog) | [`../skills/pre-handoff-verification/SKILL.md`](../skills/pre-handoff-verification/SKILL.md) | Evidence |
+| `glb-web-handoff` | [`../skills/glb-web-handoff/SKILL.md`](../skills/glb-web-handoff/SKILL.md) | Handoff |
+| `non-blender-user-response-writer` | [`../skills/non-blender-user-response-writer/SKILL.md`](../skills/non-blender-user-response-writer/SKILL.md) | Handoff |
 
 ---
 
