@@ -122,6 +122,23 @@ MCP client (any)
 
 **Evidence status:** `Not Run` / `Not Produced` until an in-repo eval record exists. The path itself is upstream-documented and reliable.
 
+### CLI compatibility considerations (from upstream research, 2026-05-09)
+
+The CLI fallback is fully compatible with batch-style BlendOps workflows (plan → execute as one Python script → render → export → validate). Operators picking this path should know the following operational caveats sourced from upstream Blender / glTF docs:
+
+| Topic | Notes |
+|---|---|
+| **GLB export in `--background` mode** | `bpy.ops.export_scene.gltf(filepath=...)` works in Blender 4.5+. The historical headless-mode bug ([KhronosGroup/glTF-Blender-IO #1281](https://github.com/KhronosGroup/glTF-Blender-IO/issues/1281), `on_export_format_changed()` accessing `context.space_data` which is None) was fixed upstream by adding a null check. Recommended invocation: `blender -b file.blend --python-expr "import bpy; bpy.ops.export_scene.gltf(filepath='out.glb')"` or `-P script.py`. |
+| **Add-on enablement under `--factory-startup`** | Add-ons are not auto-loaded when `--factory-startup` is used. Re-enable explicitly inside the Python script: `bpy.ops.preferences.addon_enable(module='io_scene_gltf2')` (and similarly for any other add-on the recipe depends on). |
+| **GPU rendering** | Headless GPU rendering is supported via `--cycles-device CUDA \| OPTIX \| HIP \| ONEAPI \| METAL`. Append `+CPU` to render on both (e.g. `OPTIX+CPU`). Example: `blender -b file.blend -P script.py -- --cycles-device OPTIX`. |
+| **Camera renders vs viewport screenshots** | `bpy.ops.render.render(write_still=True)` works in `--background` mode (camera-based rendering). `bpy.ops.screen.screenshot()` and other GUI-bound viewport ops do **not** work without a display — recipes that need viewport captures should target Path 1/Path 2 instead. |
+| **Stateless invocation** | Each `blender -b ...` run starts fresh and exits when the script completes. Iterative back-and-forth refinement workflows ("now make it more red → now move the camera up") fit the **MCP paths (Path 1 / Path 2)** better, where Blender stays alive across tool calls. CLI is best for single-shot recipes (cyberpunk shoe hero end-to-end as one script) and CI/render-farm batch jobs. |
+| **Output flag ordering** | Blender CLI args execute in the order given. Render flags (`-f` / `-a`) must come **after** `-o` (output path) and `-F` (format). Wrong ordering silently uses defaults. |
+| **Engine + threads** | `-E CYCLES \| BLENDER_EEVEE_NEXT \| WORKBENCH` selects render engine; `-t N` sets thread count. Both stable across LTS. |
+| **Script args separator** | Use `--` to separate Blender args from your Python script's own args: `blender -b file.blend -P script.py -- --my-arg value`. |
+
+**Verdict:** CLI is **compatible** with BlendOps batch recipes (plan → render → GLB → validate) on Blender 4.5+ when the script handles add-on enablement, uses the GLB export pattern above, and avoids GUI-only ops. CLI is **not compatible** with iterative session-based workflows — those need Path 1 or Path 2.
+
 ---
 
 ## Single-bridge constraint
