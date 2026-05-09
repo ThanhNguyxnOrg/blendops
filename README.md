@@ -11,7 +11,7 @@
 [![Path 2 user-reported: verified](https://img.shields.io/badge/path%202%20user--reported-verified-2ea44f.svg?style=flat-square)](./docs/unofficial-runtime-bridges.md)
 [![Full runtime eval: Not Run](https://img.shields.io/badge/full%20runtime%20eval-Not%20Run-lightgrey.svg?style=flat-square)](./docs/release-readiness-rollup-v0.md)
 [![Artifacts: Not Produced](https://img.shields.io/badge/artifacts-Not%20Produced-lightgrey.svg?style=flat-square)](./docs/release-readiness-rollup-v0.md)
-[![v0.1.0-draft: tag-able now](https://img.shields.io/badge/v0.1.0--draft-tag--able%20now-2ea44f.svg?style=flat-square)](./docs/release-readiness.md)
+[![Release: v0.1.0-draft](https://img.shields.io/github/v/release/ThanhNguyxnOrg/blendops?include_prereleases&label=release&color=2ea44f&style=flat-square)](https://github.com/ThanhNguyxnOrg/blendops/releases/tag/v0.1.0-draft)
 
 [![Skills: 16](https://img.shields.io/badge/skills-16-1f6feb.svg?style=flat-square)](./skills/README.md)
 [![Laws: 4](https://img.shields.io/badge/laws-4-1f6feb.svg?style=flat-square)](./laws/README.md)
