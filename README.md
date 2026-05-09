@@ -16,7 +16,7 @@
 [![Skills: 16](https://img.shields.io/badge/skills-16-1f6feb.svg?style=flat-square)](./skills/README.md)
 [![Laws: 4](https://img.shields.io/badge/laws-4-1f6feb.svg?style=flat-square)](./laws/README.md)
 [![Packs: 1](https://img.shields.io/badge/packs-1-1f6feb.svg?style=flat-square)](./packs/README.md)
-[![Install targets: 9](https://img.shields.io/badge/install%20targets-9-1f6feb.svg?style=flat-square)](./docs/install/README.md)
+[![Install targets: 16](https://img.shields.io/badge/install%20targets-16-1f6feb.svg?style=flat-square)](./docs/install/README.md)
 [![Adapters: 6](https://img.shields.io/badge/adapters-6-1f6feb.svg?style=flat-square)](./docs/adapters/README.md)
 [![Bundles: 3](https://img.shields.io/badge/bundles-3-1f6feb.svg?style=flat-square)](./bundles/)
 [![Inspired by: Superpowers + BMad](https://img.shields.io/badge/inspired%20by-Superpowers%20%2B%20BMad-orange.svg?style=flat-square)](./skills/README.md)
@@ -24,6 +24,14 @@
 [![Anthropic: Blender Connector](https://img.shields.io/badge/Anthropic-Blender%20Connector%20(Path%201%20host)-d97757.svg?style=flat-square)](https://claude.com/resources/tutorials/using-the-blender-connector-in-claude)
 [![Blender Lab: MCP server](https://img.shields.io/badge/Blender%20Lab-MCP%20server%20(Path%201%20Blender--side)-f5792a.svg?style=flat-square)](https://www.blender.org/lab/mcp-server/)
 [![Community: ahujasid/blender-mcp](https://img.shields.io/badge/Community-ahujasid%2Fblender--mcp%20(Path%202)-181717.svg?style=flat-square&logo=github)](https://github.com/ahujasid/blender-mcp)
+
+[![Local LLM: Ollama](https://img.shields.io/badge/local-Ollama-000000.svg?style=flat-square)](./docs/install/ollama.md)
+[![Local LLM: LM Studio](https://img.shields.io/badge/local-LM%20Studio-7e57c2.svg?style=flat-square)](./docs/install/lm-studio.md)
+[![Local LLM: Open WebUI](https://img.shields.io/badge/local-Open%20WebUI-1f8a44.svg?style=flat-square)](./docs/install/open-webui.md)
+[![MCP host: Cline](https://img.shields.io/badge/MCP%20host-Cline-007ACC.svg?style=flat-square)](./docs/install/cline.md)
+[![MCP host: Continue.dev](https://img.shields.io/badge/MCP%20host-Continue.dev-5436DA.svg?style=flat-square)](./docs/install/continue.md)
+[![MCP host: Zed](https://img.shields.io/badge/MCP%20host-Zed-D29922.svg?style=flat-square)](./docs/install/zed.md)
+[![MCP host: goose](https://img.shields.io/badge/MCP%20host-goose%20(Block)-FF8C00.svg?style=flat-square)](./docs/install/goose.md)
 
 </div>
 

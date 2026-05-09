@@ -14,6 +14,8 @@ The canonical portable package source is `bundles/skill-package/blendops/`. Its 
 
 ## Target docs
 
+### Claude / coding agents (project-aware, install BlendOps content directly)
+
 | Target | Doc | Selected mode | Confidence |
 |---|---|---|---|
 | Claude Desktop / Claude.ai | [claude-desktop.md](./claude-desktop.md) | multiple Skills ZIP preparation | linked-only / manual |
@@ -24,6 +26,28 @@ The canonical portable package source is `bundles/skill-package/blendops/`. Its 
 | Gemini CLI | [gemini.md](./gemini.md) | project-local install | not researched |
 | Antigravity | [antigravity.md](./antigravity.md) | project-local install | not researched |
 | GitHub Copilot | [github-copilot.md](./github-copilot.md) | project-local install | linked-only / generic |
+
+### MCP-first agents (BlendOps content = docs-only / reference; agent acts as MCP host for Blender)
+
+| Target | Doc | Selected mode | Confidence |
+|---|---|---|---|
+| Cline (VS Code) | [cline.md](./cline.md) | project-local + MCP config | linked-only |
+| Continue.dev (VS Code / JetBrains) | [continue.md](./continue.md) | project-local + `.continue/mcpServers/` | linked-only |
+| Zed editor | [zed.md](./zed.md) | project-local + `settings.json` `context_servers` | linked-only |
+| goose (Block's agent) | [goose.md](./goose.md) | docs-only + Standard IO extension | linked-only — has upstream Blender tutorial |
+
+### Local LLM runners (BlendOps content = docs-only / reference; LLM runner is MCP host)
+
+| Target | Doc | Selected mode | Confidence |
+|---|---|---|---|
+| Ollama | [ollama.md](./ollama.md) | docs-only + experimental MCP config | linked-only / experimental |
+| LM Studio | [lm-studio.md](./lm-studio.md) | docs-only + `mcp.json` (Cursor-compatible) | linked-only |
+| Open WebUI | [open-webui.md](./open-webui.md) | docs-only + Streamable HTTP MCP | linked-only |
+
+### Generic / future
+
+| Target | Doc | Selected mode | Confidence |
+|---|---|---|---|
 | Generic project | [generic-project.md](./generic-project.md) | project-local install fallback | verified-read fallback |
 | Installer script spec (future) | [installer-spec.md](./installer-spec.md) | future only | Draft spec only |
 

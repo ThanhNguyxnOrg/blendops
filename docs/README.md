@@ -100,7 +100,9 @@ The single index for everything in this repo. Bookmark this page.
 
 ---
 
-## 📂 Per-target install docs
+## 📂 Per-target install docs (16 targets total)
+
+### Claude / coding agents (project-aware)
 
 | Target | Doc | Selected mode | Confidence |
 |---|---|---|---|
@@ -112,7 +114,30 @@ The single index for everything in this repo. Bookmark this page.
 | Gemini CLI | [`install/gemini.md`](./install/gemini.md) | project-local install | not researched |
 | Antigravity | [`install/antigravity.md`](./install/antigravity.md) | project-local install | not researched |
 | GitHub Copilot | [`install/github-copilot.md`](./install/github-copilot.md) | project-local install | linked-only / generic |
+
+### MCP-first agents (Phase 4 expansion)
+
+| Target | Doc | Selected mode | Confidence |
+|---|---|---|---|
+| Cline (VS Code) | [`install/cline.md`](./install/cline.md) | project-local + MCP config | linked-only |
+| Continue.dev | [`install/continue.md`](./install/continue.md) | project-local + `.continue/mcpServers/` | linked-only |
+| Zed editor | [`install/zed.md`](./install/zed.md) | project-local + `settings.json` `context_servers` | linked-only |
+| goose (Block) | [`install/goose.md`](./install/goose.md) | docs-only + Standard IO extension | linked-only — has upstream Blender tutorial |
+
+### Local LLM runners (Phase 4 expansion)
+
+| Target | Doc | Selected mode | Confidence |
+|---|---|---|---|
+| Ollama | [`install/ollama.md`](./install/ollama.md) | docs-only + experimental MCP config | linked-only / experimental |
+| LM Studio | [`install/lm-studio.md`](./install/lm-studio.md) | docs-only + `mcp.json` (Cursor-compatible) | linked-only |
+| Open WebUI | [`install/open-webui.md`](./install/open-webui.md) | docs-only + Streamable HTTP MCP | linked-only |
+
+### Generic / future
+
+| Target | Doc | Selected mode | Confidence |
+|---|---|---|---|
 | Generic project | [`install/generic-project.md`](./install/generic-project.md) | project-local install fallback | verified-read fallback |
+| Installer script spec (future) | [`install/installer-spec.md`](./install/installer-spec.md) | future only | Draft spec only |
 
 ---
 
