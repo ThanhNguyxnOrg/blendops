@@ -16,7 +16,7 @@ BlendOps evals are evidence records for laws, skills, workflows, recipes, and pa
 | Runtime cyberpunk shoe eval | Blocked | Blocked / Not Run |
 | Path 1 read-only smoke (likely Anthropic Connector host) | Pass | Available / Read-only session access |
 | Path 2 (`ahujasid/blender-mcp`) | User-reported verified | No formal evidence file yet; template at [`path-2-ahujasid-readonly-template.md`](./path-2-ahujasid-readonly-template.md) |
-| CLI fallback | Not Run | **Publisher has not verified** in this repo |
+| CLI fallback | Not Run | **Documented upstream** as a first-class Blender CLI surface; no in-repo evidence file yet |
 | Adapter install dry-run | Warn | Executed / Dry-run |
 | Manual install beta v0 | Warn | Executed / Dry-run / No runtime / No global config writes |
 | Official runtime verification criteria | Prepared | Criteria only / Not Run |

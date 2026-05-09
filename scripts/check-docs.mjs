@@ -220,8 +220,11 @@ const requiredUnofficialBridgeDisclaimers = [
 // MCP). Path 1 = Lab MCP add-on/server in Blender 5.1+, hosted from either the
 // Anthropic Connector (host a) or a manual MCP client (host b) — the Connector
 // is NOT standalone. Path 2 = community ahujasid/blender-mcp. CLI fallback is
-// an appendix that the BlendOps publisher has NOT verified in-repo. See
-// docs/runtime-stack-strategy.md for the canonical write-up.
+// an appendix documented upstream as a first-class Blender CLI surface (stable
+// across LTS releases) — BlendOps simply does not have an in-repo eval record
+// file yet, but the path itself is mature, not "experimental". Path 1 + Path 2
+// are user-reported verified by the repo owner with no formal in-repo evidence
+// file yet. See docs/runtime-stack-strategy.md for the canonical write-up.
 const requiredRuntimeStackSnippets = [
   'BlendOps recognizes **two MCP execution paths** plus a **CLI fallback appendix**',
   'Path 1 — Official Blender Lab MCP',
@@ -230,7 +233,8 @@ const requiredRuntimeStackSnippets = [
   'Path 2 — Community',
   'ahujasid/blender-mcp',
   'CLI fallback',
-  'BlendOps publishers have not exercised',
+  'first-class',
+  'No in-repo evidence file yet',
 ];
 
 const requiredArtifactEvidenceSnippets = [

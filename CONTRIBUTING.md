@@ -69,7 +69,7 @@ npm run ci
 - [ ] no BlendOps-owned CLI / MCP / addon runtime surface reintroduced
 - [ ] no arbitrary Python presented as user-facing surface
 - [ ] runtime / artifact claims have evidence files under `docs/evals/`
-- [ ] runtime references use the 2-path + CLI appendix model (Path 1 = Lab MCP with hosts a/b, Path 2 = community `ahujasid/blender-mcp`, CLI fallback = appendix, publisher not verified) — see [`docs/runtime-stack-strategy.md`](./docs/runtime-stack-strategy.md)
+- [ ] runtime references use the 2-path + CLI appendix model (Path 1 = Lab MCP with hosts a/b, Path 2 = community `ahujasid/blender-mcp`, CLI fallback = appendix, documented upstream as first-class Blender CLI surface; no in-repo evidence file yet) — see [`docs/runtime-stack-strategy.md`](./docs/runtime-stack-strategy.md)
 - [ ] `npm run docs:check` passes locally
 - [ ] `npm run skills:export` passes locally and produces clean ZIPs
 - [ ] docs updated for any user-facing contract change

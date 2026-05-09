@@ -14,10 +14,10 @@ Related criteria: [official-runtime-verification-criteria.md](./official-runtime
 > | Legacy label | New mapping |
 > |---|---|
 > | Stack 1 — Claude Desktop official connector stack | **Path 1** (Official Blender Lab MCP). Lab add-on + Lab server installed in Blender 5.1+. Host = (a) Anthropic Blender Connector in Claude Desktop OR (b) any other MCP client configured manually. Anthropic Connector is **not** standalone — Lab add-on inside Blender is required either way. The Blender 5.1+ floor applies to all of Path 1. |
-> | Stack 2 — Official Blender CLI fallback | **CLI fallback (appendix)**. Direct `blender --background --python`. **Publisher has not verified** in this repo. |
+> | Stack 2 — Official Blender CLI fallback | **CLI fallback (appendix)**. Direct `blender --background --python`. **Documented upstream** as a first-class Blender CLI surface (stable across LTS releases); no in-repo evidence file yet. |
 > | Stack 3 — Optional unofficial third-party bridge stack | **Path 2** (Community `ahujasid/blender-mcp`, mature 21K+ stars third-party, Blender 3.0+). |
 >
-> When using this checklist, name the path explicitly (Path 1 host a / Path 1 host b / Path 2 / CLI fallback) and apply the per-path Blender minimum (Path 1 either host: **5.1+**; Path 2: 3.0+; CLI: 4.2+ recommended, not publisher-verified). Wherever the document below says "Stack 1", treat it as "Path 1 — name the host option".
+> When using this checklist, name the path explicitly (Path 1 host a / Path 1 host b / Path 2 / CLI fallback) and apply the per-path Blender minimum (Path 1 either host: **5.1+**; Path 2: 3.0+; CLI: 4.2+ recommended, documented upstream as first-class Blender CLI; no in-repo evidence file yet). Wherever the document below says "Stack 1", treat it as "Path 1 — name the host option".
 
 ---
 
@@ -129,7 +129,7 @@ When all required paths for the selected official stack are `Available`, proceed
 
 If the official connector stack is missing, do not run fallback unofficial MCP tooling as release evidence. Record the missing path and keep the eval blocked or scoped to Stack 2.
 
-If only Blender CLI is available, continue only with the CLI fallback (appendix). Mark Path 1 + Path 2 paths `Not Tested` or `Blocked`, and do not imply MCP coverage. **CLI fallback is publisher-not-verified in this repo** — record the exact `blender` command, inputs, output paths, exit code before any artifact claim.
+If only Blender CLI is available, continue only with the CLI fallback (appendix). Mark Path 1 + Path 2 paths `Not Tested` or `Blocked`, and do not imply MCP coverage. **CLI fallback is documented upstream as a first-class Blender CLI surface** (stable across LTS releases) but BlendOps has no in-repo evidence file yet — record the exact `blender` command, inputs, output paths, exit code before any artifact claim, both for provenance and to upgrade the in-repo evidence record.
 
 Path 1 host (b) (manual MCP client config pointing at Blender Lab MCP from Claude Code / Cursor / Codex / OpenCode / Cline / VS Code) is supported per the Lab Setup wiki — it is not "unverified direct MCP". Per-client MCP config is the operator's responsibility.
 

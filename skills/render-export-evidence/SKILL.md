@@ -127,7 +127,7 @@ This skill can evaluate evidence from the 2-path + CLI appendix runtime model (s
 
 1. **Path 1 — Official Blender Lab MCP** (Lab add-on + Lab server in Blender 5.1+, hosted from either (a) Anthropic Blender Connector in Claude Desktop, or (b) any other MCP client configured manually). Both hosts share the same Blender-side stack and tool surface.
 2. **Path 2 — Community `ahujasid/blender-mcp`** (different `addon.py` + server via `uvx blender-mcp`, mature 21K+ stars third-party, Blender 3.0+).
-3. **CLI fallback (appendix)** — direct `blender --background --python`, no MCP. **Publisher has not verified** in this repo.
+3. **CLI fallback (appendix)** — direct `blender --background --python`, no MCP. **Documented upstream** as a first-class Blender CLI surface (stable across LTS releases); no in-repo evidence file yet.
 
 Evidence records must name the path explicitly (and Path 1 host option a/b when relevant) and must include Blender version + Blender-side add-on identity + MCP server source/commit + MCP host product so the record is unambiguously attributable.
 

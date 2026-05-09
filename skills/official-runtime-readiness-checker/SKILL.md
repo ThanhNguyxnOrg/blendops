@@ -74,11 +74,11 @@ Canonical role: `runtime-readiness` in the BlendOps skill system. Keep this as t
 - This skill must not claim execution success without execution evidence.
 
 ## Operating procedure
-1. Confirm chosen runtime path (Path 1 or Path 2 from `../../docs/runtime-stack-strategy.md`); for Path 1 also confirm host option (a Anthropic Connector, b manual MCP). CLI fallback is appendix only and not publisher-verified — flag this if user picks it.
+1. Confirm chosen runtime path (Path 1 or Path 2 from `../../docs/runtime-stack-strategy.md`); for Path 1 also confirm host option (a Anthropic Connector, b manual MCP). CLI fallback is appendix only — documented upstream as first-class Blender CLI surface but no in-repo evidence file yet; flag this if user picks it.
 2. Check Blender executable availability (command/path evidence) AND record exact `blender --version` output for per-path minimum check:
    - **Path 1 (either host)** → 5.1+ required (Lab add-on `blender_version_min = 5.1.0`).
    - Path 2 → 3.0+ required (per upstream).
-   - CLI fallback → 4.2+ recommended; not publisher-verified.
+   - CLI fallback → 4.2+ recommended; documented upstream as first-class Blender CLI; no in-repo evidence file yet.
 3. Per chosen path + host, check the path-specific configuration:
    - **Path 1 Blender-side (always required)**: Lab MCP add-on installed in Blender + MCP server (`.mcpb` bundle or source) reachable.
    - Path 1 host (a): Anthropic Connector enabled in Claude Desktop → Customize → Connectors.
@@ -186,4 +186,4 @@ Canonical role: `runtime-readiness` in the BlendOps skill system. Keep this as t
 - Path 1 host (a) source — Anthropic Connector: https://claude.com/resources/tutorials/using-the-blender-connector-in-claude
 - Path 1 Blender-side source — Lab MCP (required for both hosts): https://www.blender.org/lab/mcp-server/
 - Path 2 source: https://github.com/ahujasid/blender-mcp
-- CLI fallback source (not publisher-verified): https://docs.blender.org/manual/en/latest/advanced/command_line/index.html
+- CLI fallback source (documented upstream as first-class Blender CLI; no in-repo evidence file yet): https://docs.blender.org/manual/en/latest/advanced/command_line/index.html

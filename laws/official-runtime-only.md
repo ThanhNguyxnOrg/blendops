@@ -18,7 +18,7 @@ The currently recognized paths are:
 |---|---|---|
 | **Path 1** Official Blender Lab MCP (Lab add-on + Lab server in Blender; host = Anthropic Blender Connector OR manual MCP client) | Blender Foundation Lab (`bpype/blender_mcp`) for the Blender-side stack; Anthropic for host option (a) | Official — endorsed by Blender Foundation for the Blender side, and by Anthropic for host option (a). Anthropic Connector is **not** a separate runtime; it is one MCP host on top of Lab MCP. |
 | **Path 2** Community `ahujasid/blender-mcp` | Community / `ahujasid` (21K+ stars, prior art) | Third-party but **mature and recognized**; treated as a supported path in BlendOps with extra caveats in [`docs/unofficial-runtime-bridges.md`](../docs/unofficial-runtime-bridges.md). |
-| **CLI fallback (appendix)** | Blender Foundation | Official source for `blender` CLI, but **BlendOps publisher has not verified this path in-repo** — documented for completeness only, not presented as a peer execution path. |
+| **CLI fallback (appendix)** | Blender Foundation | Official source for `blender` CLI. **Documented upstream** as a first-class Blender CLI surface (stable across LTS releases, used widely in render farms / HPC / CI); BlendOps simply has no in-repo evidence file yet capturing a per-recipe CLI-fallback eval. Appendix only — not presented as a peer execution path of Path 1/2 because no in-repo eval record exists. |
 
 What this law forbids:
 

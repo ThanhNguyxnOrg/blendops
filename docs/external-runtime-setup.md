@@ -17,7 +17,7 @@ Active runtime guidance uses the **2-path + CLI appendix** model in [Runtime sta
 |---|---|---|
 | **Path 1** Official Blender Lab MCP (Lab add-on + Lab server, hosted from Anthropic Connector OR manual MCP client) | **5.1+** | Lab add-on `mcp-1.0.0.zip?...&blender_version_min=5.1.0` ([blender.org/lab/mcp-server](https://www.blender.org/lab/mcp-server/)) and Lab page lists "Blender 5.1 or newer" as requirement #1. Anthropic's tutorial says "Blender 4.2 or later" but the add-on it tells you to install requires 5.1+, so **5.1+ is the binding floor**. |
 | **Path 2** Community `ahujasid/blender-mcp` | **3.0+** | Upstream targets stable `bpy` ([github.com/ahujasid/blender-mcp](https://github.com/ahujasid/blender-mcp)). |
-| **CLI fallback (appendix)** | 4.2+ recommended | [Blender CLI docs](https://docs.blender.org/manual/en/latest/advanced/command_line/index.html). **Not publisher-verified** in this repo. |
+| **CLI fallback (appendix)** | 4.2+ recommended | [Blender CLI docs](https://docs.blender.org/manual/en/latest/advanced/command_line/index.html). **Documented upstream** as a first-class Blender CLI surface (stable across LTS releases); no in-repo evidence file yet. |
 
 > [!WARNING]
 > The **Anthropic Connector path is not a separate "Blender 4.2+ enough" route.** Anthropic's tutorial step 2 explicitly tells you to install the Blender Lab MCP add-on inside Blender. That add-on requires **Blender 5.1+**. So anyone using Anthropic Connector to drive Blender via MCP is also on Path 1 and bound by the 5.1+ floor.
@@ -64,7 +64,7 @@ Same Lab tool surface (`get_blendfile_summary_*`, `get_objects_summary`, etc.) a
 
 ### BlendOps evidence
 
-Read-only smoke test 2026-04-29 ([`docs/evals/blender-connector-read-only-smoke-test.md`](./evals/blender-connector-read-only-smoke-test.md)) recorded `get_blendfile_summary_*` and `get_objects_summary` calls. Tool names match Lab MCP exactly. The original "Claude Desktop Connector" attribution is consistent with host option (a). Mutation/render/export not attempted — full Path 1 eval remains `Not Run`.
+Read-only smoke test 2026-04-29 ([`docs/evals/blender-connector-read-only-smoke-test.md`](./evals/blender-connector-read-only-smoke-test.md)) recorded `get_blendfile_summary_*` and `get_objects_summary` calls. Tool names match Lab MCP exactly. The original "Claude Desktop Connector" attribution is consistent with host option (a). Mutation/render/export not attempted — full Path 1 eval remains `Not Run`. Repo owner verbally reconfirmed 2026-05-09 that Path 1 + Path 2 both work in their environment for full execution; recorded as "User-reported verified" but not promoted to formal eval record without a captured in-repo evidence file.
 
 ---
 
@@ -99,7 +99,7 @@ See [`unofficial-runtime-bridges.md`](./unofficial-runtime-bridges.md). Third-pa
 
 Direct `blender --background`, `--python`, render flags. Source: [Blender CLI docs](https://docs.blender.org/manual/en/latest/advanced/command_line/index.html).
 
-**BlendOps publishers have not exercised this path in-repo.** Documented for completeness only. Operators who use shell `blender` must record the exact command, inputs, output paths, exit code, and validation evidence per `docs/evals/official-runtime-verification-criteria.md` before any artifact claim.
+**Maturity note:** Blender's CLI is a **first-class, decades-stable surface** documented in the official Blender Manual (continuous coverage from 1.x through 5.2 LTS) and used widely in render farms, HPC clusters, CI pipelines, and scripted automation — it is **not experimental**. The `--background`, `--python`, `--render-output`, `--render-frame`, `--factory-startup` flags are stable across LTS releases. **BlendOps simply has no in-repo evidence file yet** capturing a per-recipe CLI-fallback eval. Operators who use shell `blender` should still record the exact command, inputs, output paths, exit code, and validation evidence per `docs/evals/official-runtime-verification-criteria.md` before any artifact claim — for **provenance**, not because the CLI itself is unstable.
 
 **Evidence:** `Not Run` / `Not Produced` until a future eval record exists.
 

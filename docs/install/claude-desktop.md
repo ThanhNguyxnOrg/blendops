@@ -94,7 +94,7 @@ Runtime status remains `Not Run`. Artifact status remains `Not Produced`.
 
 ## After importing BlendOps skills — actually running Blender
 
-Importing BlendOps skills into Claude Desktop only loads the BlendOps content layer. To **actually drive Blender from Claude Desktop**, follow [`docs/runtime-stack-strategy.md`](../runtime-stack-strategy.md). Claude Desktop sits on **Path 1 (Lab MCP)** with two host options, **Path 2 (community `ahujasid/blender-mcp`)**, or the **CLI fallback** (publisher has not verified the CLI path).
+Importing BlendOps skills into Claude Desktop only loads the BlendOps content layer. To **actually drive Blender from Claude Desktop**, follow [`docs/runtime-stack-strategy.md`](../runtime-stack-strategy.md). Claude Desktop sits on **Path 1 (Lab MCP)** with two host options, **Path 2 (community `ahujasid/blender-mcp`)**, or the **CLI fallback** (Blender's first-class CLI surface, documented upstream; no in-repo evidence file yet).
 
 ### Path 1 — Official Blender Lab MCP (recommended for Claude Desktop)
 
@@ -147,7 +147,7 @@ Caveats for Path 2 live in [`docs/unofficial-runtime-bridges.md`](../unofficial-
 
 ### CLI fallback (appendix)
 
-`blender --background --python script.py` per [Blender CLI docs](https://docs.blender.org/manual/en/latest/advanced/command_line/index.html). **BlendOps publishers have not verified this path in this repository.** Documented for completeness only.
+`blender --background --python script.py` per [Blender CLI docs](https://docs.blender.org/manual/en/latest/advanced/command_line/index.html). **Documented upstream** as a first-class Blender CLI surface (stable across LTS releases, used widely in render farms / HPC / CI); BlendOps has no in-repo evidence file yet.
 
 ### Single-bridge constraint
 
@@ -159,7 +159,7 @@ Blender accepts a single MCP bridge session per Blender instance. **Do not run P
 |---|---|---|
 | **Path 1** (Lab MCP, host = Anthropic Connector OR manual MCP) | **5.1+** | Same Lab add-on regardless of host. Anthropic's "4.2+" prerequisite is misleading — the add-on it requires is 5.1+. |
 | **Path 2** (community `ahujasid/blender-mcp`) | 3.0+ | Different stack from Path 1. |
-| **CLI fallback** | 4.2+ recommended | Not publisher-verified. |
+| **CLI fallback** | 4.2+ recommended | Documented upstream as first-class Blender CLI; no in-repo evidence file yet. |
 
 See [`docs/external-runtime-setup.md`](../external-runtime-setup.md) for the complete per-path setup walkthrough.
 

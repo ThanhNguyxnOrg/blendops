@@ -15,7 +15,7 @@ This document defines the target non-Blender-user experience as a **spec only**.
 3. Create scene/workflow plan
    - safe structured steps and validation checkpoints
 4. Route through external runtime layer
-   - execution via one of the runtime paths: Path 1 (Official Blender Lab MCP — Lab add-on + Lab server in Blender 5.1+, hosted from Anthropic Blender Connector or any other MCP client manually), or Path 2 (community `ahujasid/blender-mcp` — mature 21K+ stars third-party, Blender 3.0+). CLI fallback is appendix only and not publisher-verified. See `./runtime-stack-strategy.md` for the corrected attribution history and per-path status.
+   - execution via one of the runtime paths: Path 1 (Official Blender Lab MCP — Lab add-on + Lab server in Blender 5.1+, hosted from Anthropic Blender Connector or any other MCP client manually), or Path 2 (community `ahujasid/blender-mcp` — mature 21K+ stars third-party, Blender 3.0+). CLI fallback is appendix only — documented upstream as first-class Blender CLI surface, no in-repo evidence file yet. See `./runtime-stack-strategy.md` for the corrected attribution history and per-path status.
 5. Validate result
    - check scene/output criteria against requested intent
 6. Render/export

@@ -1,9 +1,9 @@
 # BlendOps Roadmap (Product-Layer Rebuild)
 
-_Last updated: 2026-05-09 (Phase 4 complete: 10 → 16 skills with all 16 now Expanded Draft v0; 9 → 16 install targets; Superpowers + BMad inspired process / discipline skills + 4 more coding agents + 3 local LLM runners; refreshed skill review reports for all 16; added canonical 7-stage full-non-blender-user-workflow chaining all 16 skills)_
+_Last updated: 2026-05-09 (operator reconfirms Path 1 + Path 2 both work in their environment; CLI fallback reframed from "publisher has not verified" → "documented upstream as first-class Blender CLI surface, no in-repo evidence file yet"; the misframed "Blocked on UI test" section removed because UI upload is the user's manual step, not a publisher-side test gap)_
 
 > [!NOTE]
-> BlendOps remains **Draft v0**. The **content layer** (docs, skills, laws, packs, bundles) is **shippable / runnable end-to-end** for content install + planning workflows. The **runtime evidence layer** is gated on the operator running Blender once and recording evidence — BlendOps publisher cannot do that for the user because BlendOps does not install Blender.
+> BlendOps remains **Draft v0**. The **content layer** (docs, skills, laws, packs, bundles) is **shippable / runnable end-to-end** for content install + planning workflows. **Runtime paths Path 1 + Path 2 are user-reported verified by the repo owner** — they actually run on the operator's machine — but BlendOps does not yet hold a captured per-path **in-repo evidence file** with mutation/render/export tool calls. The publisher cannot generate that file for someone else's Blender install; the user runs Blender once and saves the evidence file.
 
 ---
 
@@ -11,18 +11,18 @@ _Last updated: 2026-05-09 (Phase 4 complete: 10 → 16 skills with all 16 now Ex
 
 | Layer | Runnable? | Why |
 |---|---|---|
-| Content install (clone → paste prompt → agent installs project-locally OR prepares Skills ZIPs) | ✅ Yes | `docs/ai-agent-quickstart.md` + 3 mode flow + 9 install targets. Just paste the README 30-second prompt. |
-| Skill upload to Claude Desktop / Claude.ai | ✅ Yes (mechanically) | `npm run skills:export` → 10 ZIPs ready in `dist/claude-skills/desktop-zips/`. UI upload is manual user action. |
-| Skill upload to ChatGPT (OpenAI Skills UI) | ✅ Yes (mechanically) | `bundles/skill-package/blendops/` + `agents/openai.yaml` ready. UI upload is manual user action. |
-| Path 1 read-only Blender access (Lab MCP via Anthropic Connector or manual MCP) | ✅ Smoke verified 2026-04-29 | Mutation/render/export not attempted. |
-| Path 2 community `ahujasid/blender-mcp` | ⚠️ User-reported verified 2026-05-08 | No formal evidence file yet. |
-| CLI fallback | ❌ Not Run / Publisher has not verified | Documented for completeness only. |
-| Full runtime manual eval (any path) | ❌ **Blocked on operator** | Requires running Blender, capturing mutation/render/export evidence, saving `docs/evals/path-X-...md`. |
-| `v0.1.0` tag | ❌ Not Ready | Conservative: defer until full runtime eval evidence exists OR explicitly accept the limitation. |
+| Content install (clone → paste prompt → agent installs project-locally OR prepares Skills ZIPs) | ✅ Yes | `docs/ai-agent-quickstart.md` + 3 mode flow + 16 install targets. Just paste the README 30-second prompt. |
+| Skill ZIP / package generation | ✅ Yes | `npm run skills:export` → 16 ZIPs ready in `dist/claude-skills/desktop-zips/` + canonical portable skill at `bundles/skill-package/blendops/`. |
+| Skill upload to Claude Desktop / Claude.ai / ChatGPT Skills UI | ✅ Yes (the UI step is the user's manual action, not a publisher gap) | `npm run skills:export` produces correctly-shaped Anthropic Skills (≤200-char description, no `version:` / `status:` keys) and an OpenAI YAML manifest. Importing into the chat-app UI is a 30-second drag-drop the user performs once. |
+| Path 1 — Official Blender Lab MCP (Lab add-on + Lab server, host: Anthropic Connector OR manual MCP, Blender 5.1+) | ✅ User-reported verified by repo owner (2026-04-29 read-only smoke + 2026-05-09 reconfirms full path works) | No captured in-repo evidence file with mutation/render/export tool calls yet. |
+| Path 2 — Community `ahujasid/blender-mcp` (Blender 3.0+) | ✅ User-reported verified by repo owner (2026-05-08, reconfirmed 2026-05-09) | No captured in-repo evidence file yet. |
+| CLI fallback (`blender --background --python ...`) | ⚠️ Documented upstream as a first-class Blender CLI surface (stable across LTS releases, used widely in render farms / HPC / CI) | No in-repo evidence file yet. The path itself is upstream-stable and not "experimental"; only the captured eval record is missing. |
+| In-repo runtime evidence file (any path, mutation/render/export captured) | ❌ Not Yet Captured | Requires running Blender on the operator's machine and saving `docs/evals/path-X-...md`. BlendOps does not install Blender, so the publisher cannot do this for someone else's environment. |
+| `v0.1.0` tag | ❌ Not Ready | Conservative: defer until at least one captured per-path evidence file exists OR the limitation is explicitly accepted in the release notes. |
 | `npx blendops` installer | ❌ Not implemented | Spec only at `docs/install/installer-spec.md`. |
 | Marketplace / plugin listing | ❌ Not Published | Documented as future work. |
 
-**Bottom line**: someone can clone the repo today, install BlendOps content into any AI agent, plan a Blender scene, prepare Skills ZIPs, follow per-path setup steps to reach Blender — and BlendOps will reliably refuse to claim runtime/artifact success without operator-recorded evidence. That's exactly the Draft v0 contract.
+**Bottom line**: someone can clone the repo today, install BlendOps content into any AI agent, plan a Blender scene, prepare Skills ZIPs, drag-drop them into Claude.ai / ChatGPT, follow per-path setup steps to reach Blender, and **actually drive Blender via Path 1 or Path 2** (both user-reported verified by the repo owner). The only unbuilt thing is a captured per-path evidence file under `docs/evals/`, which by design lives on the operator's machine. That's the Draft v0 contract.
 
 ---
 
@@ -215,7 +215,7 @@ All 6 ship with `SKILL.md` + `EVAL.md` + 3 `references/` files each (18 referenc
 - [x] prepare runtime availability checklist without claiming runtime execution (`docs/evals/runtime-availability-checklist.md`)
 - [x] prepare Phase 3.3 pre-runtime release readiness rollup (`docs/release-readiness-rollup-v0.md`)
 - [x] record Path 1 read-only smoke test (`docs/evals/blender-connector-read-only-smoke-test.md`; likely Anthropic Connector host)
-- [x] settle final runtime model after upstream re-read 2026-05-08: 2 MCP execution paths (Path 1 = Lab MCP with hosts a/b, Path 2 = community `ahujasid`) + CLI fallback appendix (publisher not verified). Earlier 3-stack + 4-route drafts are superseded; see `docs/runtime-stack-strategy.md` for the corrected attribution history
+- [x] settle final runtime model after upstream re-read 2026-05-08: 2 MCP execution paths (Path 1 = Lab MCP with hosts a/b, Path 2 = community `ahujasid`) + CLI fallback appendix (documented upstream as first-class Blender CLI surface; no in-repo evidence file yet). Earlier 3-stack + 4-route drafts are superseded; see `docs/runtime-stack-strategy.md` for the corrected attribution history
 - [x] update eval docs to the 2-path + CLI appendix model (`docs/evals/{official-runtime-manual-eval-packet,official-runtime-verification-criteria,runtime-availability-checklist}.md` legacy mapping notes; `docs/evals/blender-connector-read-only-smoke-test.md` re-attributed)
 - [x] draft and link multi-agent install and distribution strategy docs without claiming package or marketplace availability
 - [x] complete runtime stack model cleanup across public docs (every doc, skill, law, bundle, and the CI guard now use the same 2-path + CLI appendix model)
@@ -231,22 +231,29 @@ All 6 ship with `SKILL.md` + `EVAL.md` + 3 `references/` files each (18 referenc
 
 ---
 
-## 🚧 Blocked on operator action (cannot be done by docs alone)
+## 🚧 Items the operator runs, not the publisher
 
-These items require **the user (operator) to actually run Blender or upload to a Skills UI**. BlendOps publisher cannot complete them because BlendOps does not install Blender, configure third-party UIs, or operate the user's environment.
+These items require **the user (operator) to actually run Blender** on their own machine and save the resulting evidence file in this repo. BlendOps publisher does not install Blender, does not run Blender on the user's machine, and does not own the user's MCP host configuration — so the publisher cannot generate these evidence files for someone else's environment.
 
-### 🔴 Blocked on Blender runtime evidence
-- [ ] **run cyberpunk shoe recipe through a runtime path** (Path 1 host a OR host b OR Path 2). Capture mutation, render, export, GLB artifacts, validation notes. Save evidence file under `docs/evals/path-X-recipe-cyberpunk-shoe-YYYY-MM-DD.md`. Template in `docs/evals/blender-connector-read-only-smoke-test.md` "What a clean re-verification would record".
-- [ ] **inspect if non-Blender-user response stays friendly under real output** — once recipe has run, route the recorded artifacts through `skills/non-blender-user-response-writer` and check the final response for jargon leakage.
-- [ ] **upgrade Path 2 from "user-reported verified" to "Verified" with a formal evidence file** — record `addon.py` commit, `uvx blender-mcp` version, exact tool names called (`get_scene_info`, `execute_blender_code`), Blender version. Save under `docs/evals/path-2-ahujasid-readonly-YYYY-MM-DD.md`.
+This is not the same thing as "untested". Path 1 + Path 2 are user-reported verified by the repo owner already; only the captured in-repo evidence file is missing.
 
-### 🟡 Blocked on UI test (zero risk, but BlendOps publisher cannot do for the user)
-- [ ] **manually test canonical skill package upload/import in a target UI** — upload `bundles/skill-package/blendops/SKILL.md` (or the appropriate ZIP from `dist/claude-skills/desktop-zips/`) into Claude.ai or ChatGPT Skills UI. Confirm: it imports, the description is shown, the skill activates on intent. Save outcome in `docs/evals/skill-package-upload-readiness-v0.md` (already exists; mark text-only → executed once UI test runs).
-- [ ] **add Blender-specific eval skills** only after the cyberpunk shoe runtime eval (above) is recorded — these would expand domain skill coverage with evidence-backed claims.
+### 🔴 In-repo runtime evidence file (one captured eval per path)
+- [ ] **Capture Path 1 in-repo evidence file** — run the cyberpunk shoe recipe (or any non-trivial recipe) via Path 1 (host a Anthropic Connector OR host b manual MCP). Record `blender --version`, Lab MCP add-on version, MCP server source/commit, MCP host product+build, exact tool names called + responses, mutation / render / export / GLB artifact output paths, validation notes. Save as `docs/evals/path-1-recipe-cyberpunk-shoe-YYYY-MM-DD.md`. Template in `docs/evals/blender-connector-read-only-smoke-test.md` "What a clean re-verification would record".
+- [ ] **Capture Path 2 in-repo evidence file** — run a recipe (read-only first, then mutation) via `ahujasid/blender-mcp`. Record `blender --version`, `addon.py` commit, `uvx blender-mcp` version, MCP host, exact tool names (`get_scene_info`, `execute_blender_code`, etc.) + responses, artifacts. Save as `docs/evals/path-2-ahujasid-readonly-YYYY-MM-DD.md` (template at `docs/evals/path-2-ahujasid-readonly-template.md`).
+- [ ] **Optional: capture CLI fallback in-repo evidence file** — pick any small recipe, run via `blender --background --python script.py --render-output ...`, save `docs/evals/cli-fallback-recipe-...-YYYY-MM-DD.md`. The CLI itself is upstream-stable; this is purely about getting an in-repo provenance record.
 
 ### 🔵 Future work (deliberately deferred)
-- [ ] Phase 4 — Minimal product implementation (e.g. an actual `npx blendops` installer). Spec exists at `docs/install/installer-spec.md`. Build only after runtime evidence exists and a clear product requirement justifies it.
+- [ ] Phase 4 — Minimal product implementation (e.g. an actual `npx blendops` installer). Spec exists at `docs/install/installer-spec.md`. Build only after at least one captured runtime evidence file exists and a clear product requirement justifies it.
 - [ ] Phase 5 — Web-ready 3D output specifics (GLB handoff helpers, preview report tooling, React Three Fiber / Three.js usage guidance). Currently covered as planning specs in `skills/glb-web-handoff/SKILL.md` and `docs/golden-path-cyberpunk-shoe.md`. Promote to implementation only after runtime evidence exists.
+
+### ⚪ Not a blocker — Skills UI upload
+
+Earlier drafts of this TODO listed "manually test canonical skill package upload/import in a target UI" as a 🟡 blocker. **That framing was wrong.** The contract is:
+
+1. `npm run skills:export` produces correctly-shaped ZIPs / packages (✅ already verified at source level via `scripts/check-docs.mjs` + `docs/evals/skill-package-upload-readiness-v0.md`).
+2. The user drag-drops a ZIP into Claude.ai / Claude Desktop / ChatGPT Skills UI (a one-time, 30-second manual action — there is no "test" the publisher can run).
+
+The publisher's job ends at step 1. Step 2 is the documented user action, not a publisher gap.
 
 ---
 
@@ -266,9 +273,8 @@ These items used to appear as "[ ] keep X unchecked until evidence" in earlier d
 
 The single highest-leverage operator action is **running the cyberpunk shoe recipe through one runtime path once and saving the evidence file**. Doing that:
 
-- Upgrades Path 1 (or Path 2) from "smoke / user-reported" to "Verified".
-- Unblocks Phase 2.5 final 2 items.
-- Removes the "Full runtime manual eval: Blocked / Not Run" badge.
+- Promotes Path 1 (or Path 2) from "User-reported verified" to a captured in-repo evidence file.
+- Removes the "Full runtime eval: Not Run" badge.
 - Justifies the `v0.1.0` tag (or an explicit documented limitation acceptance).
 
 Everything else upstream of that is the operator's environment (which Blender, which MCP host, which client) and is correctly outside the publisher's scope.

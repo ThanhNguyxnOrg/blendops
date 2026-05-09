@@ -22,7 +22,7 @@ For full contributing guidelines, see CONTRIBUTING.md.
 - [ ] `npm run skills:export` passes locally and produces 10 ZIPs + 10 Claude Code folders
 - [ ] No BlendOps-owned CLI / MCP / addon runtime surface reintroduced
 - [ ] No arbitrary Python presented as user-facing surface
-- [ ] Runtime references use the **2-path + CLI appendix** model (Path 1 = Lab MCP with hosts a/b; Path 2 = community `ahujasid/blender-mcp`; CLI fallback = appendix, publisher not verified). See [`docs/runtime-stack-strategy.md`](../docs/runtime-stack-strategy.md).
+- [ ] Runtime references use the **2-path + CLI appendix** model (Path 1 = Lab MCP with hosts a/b; Path 2 = community `ahujasid/blender-mcp`; CLI fallback = appendix, documented upstream as first-class Blender CLI surface; no in-repo evidence file yet). See [`docs/runtime-stack-strategy.md`](../docs/runtime-stack-strategy.md).
 - [ ] Anthropic Connector is **not** described as standalone (it requires the Lab add-on inside Blender)
 - [ ] Blender 5.1+ floor is applied **only** to Path 1 (not Path 2 or CLI fallback)
 - [ ] No new claim of runtime / artifact success without an evidence file under `docs/evals/`

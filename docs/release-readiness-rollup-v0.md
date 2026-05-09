@@ -76,7 +76,7 @@ Per-path status (corrected 2026-05-08):
 |---|---|---|
 | **Path 1** Official Blender Lab MCP (host: Anthropic Connector OR manual MCP client; Blender 5.1+) | Read-only smoke verified (likely via Anthropic Connector host); mutation/render/export `Not Run` | The 2026-04-29 smoke test recorded `get_blendfile_summary_*` and `get_objects_summary` calls — these are Lab MCP tools, reachable from both Path 1 hosts. The original "Claude Desktop Connector" attribution is consistent with host option (a). See [`docs/evals/blender-connector-read-only-smoke-test.md`](./evals/blender-connector-read-only-smoke-test.md). |
 | **Path 2** Community Blender MCP (`ahujasid/blender-mcp`) | User-reported verified (2026-05-08) | No formal evidence record file with Path 2 tool names (`get_scene_info`, `execute_blender_code`) yet. |
-| **CLI fallback (appendix)** | **Publisher has not verified** in this repo | Documented for completeness only; not a peer of Path 1/2. |
+| **CLI fallback (appendix)** | **Documented upstream** as a first-class Blender CLI surface (stable across LTS releases) | No in-repo evidence file yet; appendix only, not a peer of Path 1/2. |
 
 Prepared but not run:
 
@@ -110,7 +110,7 @@ No current repository doc should claim runtime compatibility confirmed, stable r
 | Distribution strategy | Drafted / no marketplace claim |
 | Runtime path strategy | Drafted / 2-path + CLI appendix model; Path 1 read-only smoke verified; mutation/render/export `Not Run` for both paths |
 | Runtime availability checklist | Prepared / Not Run |
-| 2026-04-29 read-only smoke test | Recorded as Path 1 read-only (likely Anthropic Connector host); mutation/render/export `Not Run` |
+| 2026-04-29 read-only smoke test | Recorded as Path 1 read-only (likely Anthropic Connector host); mutation/render/export `Not Run`. Repo owner reconfirmed on 2026-05-09 that Path 1 works in their environment for full execution — recorded as "User-reported verified", but not promoted to formal eval record without a captured in-repo evidence file. |
 | Official runtime manual eval | Not Run |
 | Runtime artifacts | Not Produced |
 | Stable release readiness | Not Ready |
@@ -121,7 +121,7 @@ No current repository doc should claim runtime compatibility confirmed, stable r
 
 | Blocker | Why it blocks release confidence | Required change |
 |---|---|---|
-| No path has full mutation/render/export evidence | Path 1 has read-only smoke evidence only (likely Anthropic Connector host); Path 2 is user-reported only with no formal file; CLI fallback is publisher-not-verified. | Run a fresh per-path eval covering recipe execution, mutation, render/export, validation, and artifact capture. Record path + host (for Path 1), `blender --version`, Blender-side add-on identity, MCP server source/commit, MCP host product, exact tool names, and tool responses. Save under `docs/evals/path-1-...md` or `docs/evals/path-2-...md`. |
+| No path has full mutation/render/export evidence | Path 1 + Path 2 are user-reported verified by repo owner (2026-04-29 / 2026-05-08, both reconfirmed 2026-05-09) but without formal in-repo evidence files; CLI fallback is documented upstream as first-class Blender CLI but no in-repo evidence file yet. | Run a fresh per-path eval covering recipe execution, mutation, render/export, validation, and artifact capture. Record path + host (for Path 1), `blender --version`, Blender-side add-on identity, MCP server source/commit, MCP host product, exact tool names, and tool responses. Save under `docs/evals/path-1-...md` or `docs/evals/path-2-...md`. |
 | Runtime manual eval not run for any route | Read-only smoke test (under any interpretation) does not cover recipe execution, mutation, render/export, validation, and artifact capture. | Run the runtime manual eval packet against the chosen route and capture evidence. |
 | Runtime artifacts not produced | No preview, render, GLB, or artifact handoff can be claimed under any route. | Produce and record artifacts only through a recorded runtime eval, or document missing artifacts as an accepted limitation. |
 | Runtime availability incomplete | Per-route availability checklist has not been run end-to-end in a fresh, attribution-clean environment. | Run the runtime availability checklist for the chosen route. |
@@ -135,8 +135,8 @@ No current repository doc should claim runtime compatibility confirmed, stable r
 1. Adapter install dry-run is useful but not universal install proof.
 2. Manual install beta remains Warn, not full Pass.
 3. Runtime availability checklist is Prepared / Not Run.
-4. Runtime path strategy uses the 2-path + CLI appendix model. Path 1 = Official Blender Lab MCP (host: Anthropic Connector OR manual MCP, both require Blender 5.1+). Path 2 = community `ahujasid/blender-mcp` (Blender 3.0+). CLI fallback is appendix only and publisher-not-verified.
-5. The 2026-04-29 read-only smoke test is consistent with Path 1, host (a) Anthropic Connector. It does not cover mutation/render/export, so full Path 1 eval remains `Not Run`.
+4. Runtime path strategy uses the 2-path + CLI appendix model. Path 1 = Official Blender Lab MCP (host: Anthropic Connector OR manual MCP, both require Blender 5.1+). Path 2 = community `ahujasid/blender-mcp` (Blender 3.0+). CLI fallback is appendix only — documented upstream as first-class Blender CLI surface, no in-repo evidence file yet.
+5. The 2026-04-29 read-only smoke test is consistent with Path 1, host (a) Anthropic Connector. It does not cover mutation/render/export, so full Path 1 eval remains `Not Run`. Repo owner verbally reconfirmed 2026-05-09 that Path 1 + Path 2 both work in their environment for full execution; this is recorded as "User-reported verified" but not promoted to formal eval record without a captured in-repo evidence file.
 6. The Blender 5.1+ floor applies to **all** of Path 1 (whichever host) because the Lab MCP add-on inside Blender requires it. Path 2 needs only Blender 3.0+.
 7. Path 2 (`ahujasid/blender-mcp`) is mature 21K+ stars third-party prior art, not "experimental" — but BlendOps has no formal evidence file with Path 2 tool names yet.
 8. Anthropic Connector is **not** standalone — Anthropic's tutorial step 2 explicitly tells you to install the Lab MCP add-on inside Blender. Docs that imply "Connector only, no Blender-side add-on" are wrong.

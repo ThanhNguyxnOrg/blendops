@@ -24,7 +24,7 @@ Date: 2026-04-29
 | Official runtime manual eval packet | Prepared | Packet doc: [docs/evals/official-runtime-manual-eval-packet.md](./evals/official-runtime-manual-eval-packet.md). |
 | Path 1 read-only smoke (Lab MCP via likely Anthropic Connector host) | Pass / Available | Evidence report: [docs/evals/blender-connector-read-only-smoke-test.md](./evals/blender-connector-read-only-smoke-test.md). Read-only session access only; no mutation, render, export, or artifacts. See [runtime-stack-strategy.md](./runtime-stack-strategy.md) for the corrected 2-path + CLI appendix model. |
 | Path 2 community `ahujasid/blender-mcp` | User-reported verified | 2026-05-08 statement; no formal eval file with Path 2 tool names yet. |
-| CLI fallback (appendix) | Not Run | **BlendOps publisher has not verified** in this repo. Documented for completeness only. |
+| CLI fallback (appendix) | Not Run | **Documented upstream** as a first-class Blender CLI surface (stable across LTS releases); no in-repo evidence file yet. |
 | Full runtime manual eval (any path) | Blocked / Not Run | Read-only smoke is not mutation/render/export evidence. |
 | Runtime artifacts | Not Produced | No fresh preview/render/GLB evidence has been produced in official-runtime manual eval. |
 | Release tag | Not Ready | Do not tag v0.1.0 yet; defer until official runtime manual eval evidence exists or missing runtime evidence is explicitly accepted as a documented limitation. |
@@ -58,7 +58,7 @@ Date: 2026-04-29
 ## ⚠️ Warnings
 
 1. Claude Code native path confidence is not universal across environments.
-2. Full runtime manual execution evidence is missing for any path; Path 1 read-only smoke access is verified but does not prove recipe execution, rendering, export, or artifact validation. Path 2 is user-reported verified but lacks formal evidence file. CLI fallback is publisher-not-verified.
+2. Full runtime manual execution evidence is missing for any path; Path 1 is user-reported verified by repo owner (2026-04-29 read-only smoke + 2026-05-09 operator confirms) but does not yet have an in-repo evidence file proving recipe execution, rendering, export, or artifact validation. Path 2 is user-reported verified by repo owner (2026-05-08, reconfirmed 2026-05-09) without a formal evidence file. CLI fallback is documented upstream as a first-class Blender CLI surface; no in-repo evidence file yet.
 3. Manual install beta verdict remains Warn, not full Pass.
 4. Some skill examples can still be expanded for edge audiences.
 5. Confidence labels may require tighter environment scoping.

@@ -11,7 +11,7 @@ Required behavior:
 - preserve the 2-path + CLI appendix model:
   - Path 1 = Official Blender Lab MCP add-on/server in Blender 5.1+, hosted from Anthropic Connector OR manual MCP client.
   - Path 2 = Community `ahujasid/blender-mcp`, Blender 3.0+.
-  - CLI fallback = direct Blender CLI; appendix only; **publisher has not verified**.
+  - CLI fallback = direct Blender CLI; appendix only; **documented upstream as first-class Blender CLI**, no in-repo evidence file yet.
 - do not describe Anthropic Connector as standalone — Anthropic's tutorial explicitly tells you to install the Lab MCP add-on inside Blender.
 - the Blender 5.1+ floor applies to **all** of Path 1 (whichever host).
 

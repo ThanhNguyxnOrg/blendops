@@ -19,7 +19,7 @@ Read [`docs/README.md`](./docs/README.md) for the full hub. Read [`docs/runtime-
 1. **Runtime model = 2 MCP execution paths + CLI fallback appendix.**
    - Path 1 — Official Blender Lab MCP (Lab add-on + Lab server in Blender 5.1+; host = (a) Anthropic Connector OR (b) any other MCP client manually configured).
    - Path 2 — Community `ahujasid/blender-mcp` (Blender 3.0+).
-   - CLI fallback (appendix) — direct `blender --background --python`. **Publisher has not verified** in this repo.
+   - CLI fallback (appendix) — direct `blender --background --python`. **Documented upstream** as a first-class Blender CLI surface (stable across LTS releases); no in-repo evidence file yet.
    - **Do not** describe Anthropic Connector as standalone. Anthropic's tutorial step 2 explicitly tells the user to install the Blender Lab MCP add-on inside Blender.
    - **Do not** apply the Blender 5.1+ floor to Path 2 or to the CLI appendix. It is bound to the Lab add-on manifest, which only governs Path 1.
 

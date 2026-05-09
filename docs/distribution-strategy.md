@@ -81,7 +81,7 @@ Distribution strategy does not change runtime strategy.
 - Public runtime guidance uses **2 MCP execution paths plus a CLI fallback appendix** (replaces older 3-stack and 4-route drafts — see [`./runtime-stack-strategy.md`](./runtime-stack-strategy.md)):
   1. **Path 1 — Official Blender Lab MCP** (Lab add-on + Lab server installed in Blender 5.1+, hosted from either (a) Anthropic Blender Connector in Claude Desktop, or (b) any other MCP client configured manually).
   2. **Path 2 — Community `ahujasid/blender-mcp`** (mature 21K+ stars third-party, Blender 3.0+).
-  3. **CLI fallback (appendix)** — direct `blender --background --python`. **Publisher has not verified** in this repo.
+  3. **CLI fallback (appendix)** — direct `blender --background --python`. **Documented upstream** as a first-class Blender CLI surface; no in-repo evidence file yet.
 - Anthropic Connector is **not** standalone. Anthropic's tutorial step 2 explicitly tells you to install the Lab MCP add-on inside Blender. The Connector is the Claude-Desktop-specific MCP host on top of the Lab stack.
 - Path 2 (`ahujasid/blender-mcp`) is mature prior art (21K+ stars). Caveats live in [`./unofficial-runtime-bridges.md`](./unofficial-runtime-bridges.md).
 - Blender runtime setup is separate from BlendOps skill/law/pack distribution.

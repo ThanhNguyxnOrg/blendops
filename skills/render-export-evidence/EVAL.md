@@ -16,7 +16,7 @@ Use render-export-evidence to classify artifact evidence state (Not Run / Attemp
 - preserves `Not Run` / `Not Produced` when no runtime action occurred
 - labels Path 2 (`ahujasid/blender-mcp`) evidence with the Path 2 tag, the upstream commit/version, and the third-party-from-Anthropic-and-Blender-Foundation caveat — not as official release evidence on its own
 - labels read-only smoke evidence as runtime access scoped read-only, artifacts `Not Produced`, with the path + host explicit (Path 1 host a / Path 1 host b / Path 2)
-- labels CLI fallback evidence with explicit "publisher has not verified" warning
+- labels CLI fallback evidence with explicit "no in-repo evidence file yet (Blender CLI itself is upstream-stable)" note
 
 ## Eval cases
 
@@ -28,7 +28,7 @@ Use render-export-evidence to classify artifact evidence state (Not Run / Attemp
 | Output path + existence + validation notes | File exists and validation checks recorded | `Verified` | Command/tool/action, input/script, output path, file existence (yes), validation notes (complete), limitations (if any) |
 | Path 1 read-only smoke evidence | Lab MCP returned `get_blendfile_summary_*` / `get_objects_summary` from a Lab-add-on-equipped Blender, no mutation/render/export | Runtime access: scoped read-only; artifacts: `Not Produced` | Path 1 + host option (a/b) MUST be explicit; tool names recorded; Blender version recorded if available; no render/export/artifact claim |
 | Path 2 (`ahujasid/blender-mcp`) evidence | Path 2 MCP server used | Label: Path 2 with upstream commit/version of `addon.py` and `uvx blender-mcp`, third-party from Anthropic and Blender Foundation, caveats per docs/unofficial-runtime-bridges.md | Path 2 label, upstream commit/version, single-bridge constraint check, `execute_blender_code` not called for read-only |
-| CLI fallback evidence | `blender --background --python` used | Label: CLI fallback (appendix), with explicit warning that publisher has not verified | Exact command, input/script, output path, exit code, logs |
+| CLI fallback evidence | `blender --background --python` used | Label: CLI fallback (appendix), with explicit note that no in-repo evidence file yet exists (the Blender CLI is upstream-stable) | Exact command, input/script, output path, exit code, logs |
 | Tool-name vs path-label inconsistency | Recorded tool names do not belong to the labeled path's tool surface | Label: ambiguous; not counted as evidence; recommend re-verification | Tool name list, path label as recorded, mismatch description, re-verification needed. Note: `get_blendfile_summary_*` belong to Lab MCP and ARE valid for both Path 1 hosts (a) and (b); `get_scene_info`/`execute_blender_code` belong to Path 2. |
 
 ## Expected evidence/status fields
@@ -51,7 +51,7 @@ Use render-export-evidence to classify artifact evidence state (Not Run / Attemp
 
 ## Pass / Warn / Fail criteria
 
-- Pass: artifact status matches evidence exactly, no `Produced`/`Verified` claim without output path + file existence + validation notes, Path 2 labeled correctly with upstream commit, path attribution unambiguous (tool names match labeled path's tool surface), read-only smoke evidence does not claim artifacts, CLI fallback labeled with publisher-not-verified warning when used.
+- Pass: artifact status matches evidence exactly, no `Produced`/`Verified` claim without output path + file existence + validation notes, Path 2 labeled correctly with upstream commit, path attribution unambiguous (tool names match labeled path's tool surface), read-only smoke evidence does not claim artifacts, CLI fallback labeled with "no in-repo evidence file yet" note when used.
 - Warn: partial evidence with explicit caveat and conservative status downgrade, but no unsupported artifact claim
 - Fail: `Produced` or `Verified` claim without output path/file/validation, Path 2 evidence promoted as Path 1 without separately recorded Path 1 tool names, path label contradicts recorded tool names (e.g., labeling Path 2 but recording Lab MCP `get_blendfile_summary_*`), read-only smoke evidence claims render/export/artifact success, CLI fallback presented as publisher-verified peer of Path 1/2.
 

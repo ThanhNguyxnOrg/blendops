@@ -29,7 +29,7 @@ Skills are intentionally composable. A helper skill routes the task, planning sk
 | Skills | Focused workflows loaded by an agent when relevant. | `skills/product-hero-scene-planner/SKILL.md` plans a product hero scene. |
 | Packs | Curated skill/law bundles for a scenario. | `packs/product-hero-v0/PACK.md` composes Draft v0 product-hero work. |
 | Evals | Evidence records and checklists. | `docs/evals/runtime-availability-checklist.md`. |
-| Runtime paths | External execution choices, separate from skill install. | Path 1 Official Blender Lab MCP (host: Anthropic Connector OR manual MCP client), Path 2 community `ahujasid/blender-mcp`, CLI fallback (publisher not verified). |
+| Runtime paths | External execution choices, separate from skill install. | Path 1 Official Blender Lab MCP (host: Anthropic Connector OR manual MCP client), Path 2 community `ahujasid/blender-mcp`, CLI fallback (documented upstream as first-class Blender CLI; no in-repo evidence file yet). |
 
 A skill may point to runtime docs, but it must not imply runtime was installed or run.
 
@@ -79,7 +79,7 @@ BlendOps runtime guidance uses **two MCP execution paths** plus a **CLI fallback
 
 1. **Path 1 — Official Blender Lab MCP** (Lab add-on + Lab server installed in Blender 5.1+, hosted from either (a) Anthropic Blender Connector in Claude Desktop, or (b) any other MCP client configured manually). The Anthropic Connector is **not** a separate path — it is one host option for Path 1, and the Lab add-on inside Blender is required either way.
 2. **Path 2 — Community `ahujasid/blender-mcp`** (different `addon.py` + server via `uvx blender-mcp`, mature 21K+ stars third-party, Blender 3.0+).
-3. **CLI fallback (appendix)** — direct `blender --background --python`, no MCP, **publisher has not verified** in this repository.
+3. **CLI fallback (appendix)** — direct `blender --background --python`, no MCP. **Documented upstream** as a first-class Blender CLI surface (stable across LTS releases); no in-repo evidence file yet.
 
 Skills must not present Anthropic Connector as a separate runtime that needs no Blender-side install. Skills must apply Blender 5.1+ to all of Path 1 (whichever host). Skills must label CLI as appendix, not peer.
 

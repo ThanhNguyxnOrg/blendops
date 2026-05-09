@@ -20,7 +20,7 @@ BlendOps recognizes **two MCP execution paths** plus a **CLI fallback appendix**
    - Verification: user-reported verified 2026-05-08; no formal evidence file with Path 2 tool names yet.
    - Caveats: [Unofficial runtime bridges](./unofficial-runtime-bridges.md).
 
-3. **CLI fallback (appendix)** — direct `blender --background --python`, no MCP, **publisher has not verified** this path in this repository.
+3. **CLI fallback (appendix)** — direct `blender --background --python`, no MCP. **Documented upstream** as a first-class Blender CLI surface (stable across LTS releases); no in-repo evidence file yet.
    - Source: https://docs.blender.org/manual/en/latest/advanced/command_line/index.html.
    - Verification: `Not Run`.
 

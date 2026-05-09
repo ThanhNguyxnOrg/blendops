@@ -8,7 +8,7 @@ Status: Blocked / Runtime unavailable
 > 1. **Blender 4.2.5 reported below maps as follows under the 2-path + CLI appendix model** (see [`docs/runtime-stack-strategy.md`](../runtime-stack-strategy.md)):
 >    - **Insufficient for Path 1** (Official Blender Lab MCP — Lab add-on requires Blender 5.1+, regardless of which host you pick: Anthropic Connector or manual MCP). An earlier WARNING in this file claimed 4.2.5 was sufficient for the Anthropic Connector path; that was wrong because the Connector still requires the Lab add-on inside Blender, which is 5.1+.
 >    - **Sufficient for Path 2** (community `ahujasid/blender-mcp`, Blender 3.0+).
->    - **Sufficient for CLI fallback** (Blender 4.2+ recommended), but **publisher has not verified** that path in-repo.
+>    - **Sufficient for CLI fallback** (Blender 4.2+ recommended), documented upstream as first-class Blender CLI surface; no in-repo evidence file yet.
 >
 >    The "Blender installed: Pass" row below reflects local CLI availability at eval time, not Path 1 readiness.
 > 2. **Pre-existing artifact files referenced in this eval (`renders/preview.png`, `exports/test_scene.fbx`, `exports/test_scene.glb`) are gitignored** (see [`.gitignore`](../../.gitignore) lines 12–13, 31–33). They do NOT ship in the cloned repo. They were observed locally at eval time and are explicitly NOT counted as fresh runtime-eval evidence here. External verifiers cannot reproduce these paths from a clean clone.

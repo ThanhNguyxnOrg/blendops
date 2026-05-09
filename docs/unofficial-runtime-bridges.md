@@ -11,7 +11,7 @@ BlendOps runtime guidance uses the 2-path model in [runtime-stack-strategy.md](.
 
 1. Path 1 — Official Blender Lab MCP (Lab add-on + Lab server, hosted from Anthropic Connector or manual MCP client).
 2. Path 2 — Community Blender MCP (`ahujasid/blender-mcp`).
-3. CLI fallback (appendix) — direct Blender CLI, no MCP, not publisher-verified.
+3. CLI fallback (appendix) — direct Blender CLI, no MCP; documented upstream as first-class Blender CLI, no in-repo evidence file yet.
 
 This page documents Path 2 details only. Use [external-runtime-setup.md](./external-runtime-setup.md), [reference-runtime.md](./reference-runtime.md), and [runtime-stack-strategy.md](./runtime-stack-strategy.md) for the authoritative cross-path runtime posture.
 

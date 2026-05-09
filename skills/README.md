@@ -160,7 +160,7 @@ No preview/render/GLB claim is valid without output path or visible evidence plu
 - The 2-path + CLI appendix runtime model lives in [`docs/runtime-stack-strategy.md`](../docs/runtime-stack-strategy.md):
   - **Path 1 — Official Blender Lab MCP** (Lab add-on + Lab server installed in Blender 5.1+, hosted from either (a) Anthropic Blender Connector in Claude Desktop, or (b) any other MCP client configured manually). Anthropic Connector is **not** standalone — Anthropic's tutorial step 2 tells you to install the Lab add-on inside Blender.
   - **Path 2 — Community `ahujasid/blender-mcp`** (different `addon.py` + server via `uvx blender-mcp`, mature 21K+ stars third-party, Blender 3.0+).
-  - **CLI fallback (appendix)** — direct `blender --background --python`, no MCP. **Publisher has not verified** in this repo.
+  - **CLI fallback (appendix)** — direct `blender --background --python`, no MCP. **Documented upstream** as a first-class Blender CLI surface; no in-repo evidence file yet.
 - Skills must name the path explicitly (and Path 1 host option a/b when relevant) and must apply Blender 5.1+ to all of Path 1 (whichever host).
 - Single-bridge constraint: Blender accepts one MCP bridge session per Blender instance. Skills must warn if Path 1 + Path 2 are both configured for the same Blender instance.
 

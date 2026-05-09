@@ -13,10 +13,10 @@ The single index for everything in this repo. Bookmark this page.
 |---|---|---|
 | Product direction | Draft v0 | Workflow specs are documented; no stable release claim. |
 | Skill / law / pack collection | Draft Pass | 16 root skills (10 domain + 6 process/discipline inspired by Superpowers + BMad), 4 laws, 1 pack (`product-hero-v0`). |
-| Runtime path model | Active (2-path + CLI appendix) | Path 1 (Lab MCP, hosted from Anthropic Connector or manual MCP); Path 2 (community `ahujasid/blender-mcp`); CLI fallback (publisher not verified). |
+| Runtime path model | Active (2-path + CLI appendix) | Path 1 (Lab MCP, hosted from Anthropic Connector or manual MCP); Path 2 (community `ahujasid/blender-mcp`); CLI fallback (documented upstream as first-class Blender CLI; no in-repo evidence file yet). |
 | Path 1 read-only smoke | Pass / Available | 2026-04-29 record (likely Anthropic Connector host). |
 | Path 2 user-reported verified | Yes (2026-05-08) | No formal eval file yet. |
-| CLI fallback | Not Run | **Publisher has not verified** in this repo. |
+| CLI fallback | Not Run | **Documented upstream** as a first-class Blender CLI surface; no in-repo evidence file yet. |
 | Full runtime manual eval (any path) | Blocked / Not Run | Mutation/render/export not attempted. |
 | Runtime artifacts | Not Produced | No fresh preview/render/GLB. |
 | Release tag (`v0.1.0`) | Not Ready | Conservative decision; do not tag yet. |
@@ -255,6 +255,6 @@ All 11 accept BlendOps via project-local files and can host MCP for Blender via 
 
 - BlendOps does not install Blender, configure the Anthropic Blender Connector, configure the Blender Lab MCP add-on, configure the community `ahujasid/blender-mcp` stack, or run Blender.
 - Read-only smoke evidence is not mutation/render/export evidence.
-- CLI fallback is **publisher has not verified** in this repo; documented for completeness only.
+- CLI fallback is **documented upstream** as a first-class Blender CLI surface (stable across LTS releases); no in-repo evidence file yet.
 - No marketplace / npm / `npx` listing. No tag.
 - See [`release-readiness.md`](./release-readiness.md) for the full readiness state.
