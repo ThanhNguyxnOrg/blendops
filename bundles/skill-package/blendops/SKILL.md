@@ -20,11 +20,11 @@ Consult `references/skill-map.md` first, then load only the relevant flattened r
 ## Non-negotiable truth rules
 
 - Skill import is not runtime setup.
-- Claude Desktop Connector setup is separate.
-- Official Blender MCP bridge/add-on setup is separate.
+- Anthropic Blender Connector is not standalone — Anthropic's tutorial step 2 tells you to install the Blender Lab MCP add-on inside Blender. Path 1 always needs that Lab add-on (Blender 5.1+) regardless of host.
+- Path 2 (community `ahujasid/blender-mcp`) is mature 21K+ stars third-party. Different add-on/server.
+- CLI fallback (appendix) is direct Blender CLI; publisher has not verified in this repo.
 - Run a read-only smoke test before any mutation, render, export, or runtime eval.
 - Do not claim preview/render/GLB artifacts without evidence.
-- Direct official MCP use from Claude Code/OpenCode/Cursor/Codex/Gemini is not verified and is not a supported BlendOps route.
 
 ## Evidence states
 

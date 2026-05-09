@@ -70,7 +70,7 @@ Current evidence records should stay scoped:
 
 Claude Code, OpenCode, Cursor, Codex, Gemini, and other MCP-capable agents may each need separate configuration for BlendOps content installation.
 
-Direct official MCP use from Claude Code/OpenCode/Cursor/Codex/Gemini is not verified and is not currently a supported BlendOps route.
+Path 1 host (b) (manual MCP client config pointing at Blender Lab MCP) IS the supported way for Claude Code, Cursor, Codex, OpenCode, Cline, etc. to use the official Lab MCP stack — it is not a separate "direct MCP" route. Path 2 (`ahujasid/blender-mcp`) is the community alternative. Gemini CLI MCP support depends on upstream and is not researched yet. See [`./runtime-stack-strategy.md`](./runtime-stack-strategy.md).
 
 Rules:
 

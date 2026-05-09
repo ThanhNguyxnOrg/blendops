@@ -34,7 +34,7 @@ When Blender execution is needed from Claude app/Desktop, pick one of the runtim
 
 Run a read-only request before any mutation/render/export, regardless of path.
 
-**Single-client constraint:** Blender accepts one MCP client per session. Do not run Routes A + B + C concurrently against the same Blender instance.
+**Single-bridge constraint:** Blender accepts one MCP bridge session per Blender instance. Do not run Path 1 + Path 2 concurrently against the same Blender instance.
 
 Official links per path:
 

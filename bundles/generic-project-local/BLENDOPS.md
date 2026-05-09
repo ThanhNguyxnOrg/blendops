@@ -20,15 +20,15 @@ Reference the canonical BlendOps sources from the repository copy or attached pr
 
 Do not duplicate the whole BlendOps repository into the target project unless the user explicitly asks and rollback is documented.
 
-## Runtime stack boundaries
+## Runtime path boundaries
 
-Preserve exactly three public runtime stacks:
+Preserve the **2 MCP execution paths + CLI fallback appendix** model (see `docs/runtime-stack-strategy.md`):
 
-1. Claude Desktop official connector stack.
-2. Official Blender CLI fallback.
-3. Optional unofficial third-party bridge stack.
+1. **Path 1 — Official Blender Lab MCP.** Lab MCP add-on + Lab MCP server installed in Blender 5.1+, hosted from either (a) Anthropic Blender Connector in Claude Desktop, or (b) any other MCP client configured manually. Anthropic Connector is **not** standalone — Lab add-on inside Blender is required either way.
+2. **Path 2 — Community `ahujasid/blender-mcp`.** Different add-on/server. Mature 21K+ stars third-party, Blender 3.0+.
+3. **CLI fallback (appendix).** Direct `blender --background --python`. No MCP. **Publisher has not verified** in this repo.
 
-Direct official MCP use from Claude Code/OpenCode/Cursor/Codex/Gemini is not verified and is not currently a supported BlendOps runtime route.
+Single-bridge constraint: Blender accepts one MCP bridge session per Blender instance. Do not run Path 1 + Path 2 concurrently against the same Blender instance.
 
 ## Evidence states
 

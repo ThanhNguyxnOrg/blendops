@@ -87,7 +87,7 @@ Fill one row per check. Add notes for every `Missing`, `Unknown`, `Not Tested`, 
 | Stack 3 — Optional unofficial third-party bridge stack | User explicitly chose a third-party local experiment and accepted it is not release-eval evidence. | Unknown |  |
 | Stack 3 — Optional unofficial bridge stack | Upstream third-party docs are linked without copying install steps. | Unknown |  |
 | Stack 3 — Optional unofficial bridge stack | Host/port conflicts and arbitrary Blender Python/code execution risks are understood. | Unknown |  |
-| Future research / unverified | Direct official MCP use from Claude Code/OpenCode/Cursor/Codex/Gemini remains unverified and unsupported. | Unknown |  |
+| Path 1 host (b) — manual MCP from non-Claude-Desktop client | Manual `mcpServers` config pointing at Blender Lab MCP from Claude Code / Cursor / Codex / OpenCode / Cline / VS Code is supported per the Lab Setup wiki; per-client config is the operator's responsibility. | Unknown |  |
 | Project workspace readiness | Repository workspace is available for reading docs and eval instructions. | Unknown |  |
 | Project workspace readiness | Runtime eval output paths are planned outside docs unless the eval plan says otherwise. | Unknown |  |
 | Project workspace readiness | The selected recipe, prompt, or eval scope is named before execution. | Unknown |  |
@@ -129,9 +129,9 @@ When all required paths for the selected official stack are `Available`, proceed
 
 If the official connector stack is missing, do not run fallback unofficial MCP tooling as release evidence. Record the missing path and keep the eval blocked or scoped to Stack 2.
 
-If only Blender CLI is available, continue only with Stack 2. Mark Connector/MCP paths `Not Tested` or `Blocked`, and do not imply connector or MCP coverage.
+If only Blender CLI is available, continue only with the CLI fallback (appendix). Mark Path 1 + Path 2 paths `Not Tested` or `Blocked`, and do not imply MCP coverage. **CLI fallback is publisher-not-verified in this repo** — record the exact `blender` command, inputs, output paths, exit code before any artifact claim.
 
-Direct official MCP use from Claude Code/OpenCode/Cursor/Codex/Gemini is not verified and is not currently a supported BlendOps route.
+Path 1 host (b) (manual MCP client config pointing at Blender Lab MCP from Claude Code / Cursor / Codex / OpenCode / Cline / VS Code) is supported per the Lab Setup wiki — it is not "unverified direct MCP". Per-client MCP config is the operator's responsibility.
 
 Do not claim preview/render/GLB output unless evidence exists in the eval record. If no output exists, record `Not Produced`.
 

@@ -23,15 +23,13 @@ Date: 2026-04-29 (original); legacy 3-stack labels mapped to 2-path + CLI append
 
 BlendOps needs a conservative way to decide when a runtime eval can move from planned work to an evidence-backed runtime result.
 
-This document defines the minimum criteria for the public 3-stack model:
+This document defines the minimum criteria for the **2-path + CLI appendix** model (legacy "Stack 1/2/3" labels still appear in mapping notes only):
 
-1. Stack 1 — Claude Desktop official connector stack.
-2. Stack 2 — Official Blender CLI fallback.
-3. Stack 3 — Optional unofficial third-party bridge stack.
+1. **Path 1 — Official Blender Lab MCP** (Lab MCP add-on + Lab MCP server installed in Blender 5.1+, hosted from either (a) Anthropic Blender Connector in Claude Desktop, or (b) any other MCP client configured manually). Anthropic Connector is **not** standalone — Lab add-on inside Blender is required either way.
+2. **Path 2 — Community `ahujasid/blender-mcp`** (different add-on/server, mature 21K+ stars third-party, Blender 3.0+).
+3. **CLI fallback (appendix)** — direct `blender --background --python`. **Publisher has not verified** in this repo.
 
-Stack 1 is the only official connector stack currently verified, based on read-only smoke evidence. Stack 2 is official and deterministic, but full CLI eval is still `Not Run`. Stack 3 is optional, unofficial, user-managed, and excluded from BlendOps official release-eval evidence.
-
-Direct official MCP use from Claude Code/OpenCode/Cursor/Codex/Gemini is not verified and is not currently a supported BlendOps route.
+Path 1 has read-only smoke evidence (likely host (a) Anthropic Connector); mutation/render/export `Not Run`. Path 2 is user-reported verified; no formal evidence file yet. CLI fallback is appendix only and not a peer of Path 1/2.
 
 ---
 
@@ -159,9 +157,9 @@ Stack 3 must not be counted as official release-eval evidence. It can only produ
 
 ## Future research guard
 
-Direct official MCP use from Claude Code/OpenCode/Cursor/Codex/Gemini is not verified and is not currently a supported BlendOps route.
+Path 1 host (b) (manual MCP client config pointing at Blender Lab MCP from Claude Code / Cursor / Codex / OpenCode / Cline / VS Code) IS the supported way to use the official Lab stack from non-Claude-Desktop MCP clients — per Anthropic's tutorial closing note ("works with other MCP clients, including Claude Code") and the Lab Setup wiki. It is not "unverified direct MCP". Per-client config is the operator's responsibility, and each MCP client needs its own configuration.
 
-Future research may investigate specific non-Claude Desktop clients only with source-backed setup, client-specific configuration evidence, and local eval records. Until then, do not present direct official MCP as a selectable user route.
+Future research may investigate clients beyond what Anthropic and the Lab Setup wiki currently document (e.g. Gemini CLI MCP host support depends on upstream and is not researched yet). Until then, only claim what upstream supports.
 
 ---
 
