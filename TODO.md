@@ -1,6 +1,6 @@
 # BlendOps Roadmap (Product-Layer Rebuild)
 
-_Last updated: 2026-05-09 (clarified scope: BlendOps publishes the **skills layer**; runtime paths are an **upstream redirect** to Blender Foundation Lab / Anthropic Connector / `ahujasid` community / Blender CLI — not BlendOps' deliverable. Skills layer is complete. In-repo runtime evidence files are optional operator-side provenance records, not publishing blockers. CLI compatibility considerations researched and documented inline.)_
+_Last updated: 2026-05-09 (Batches 7+8 complete — 48 skills shipped, 3x baseline target reached. Tags v0.4.0-draft (40) and v0.5.0-draft (48) pushed with GitHub Releases attached. Skills layer roadmap done.)_
 
 > [!NOTE]
 > BlendOps publishes one thing: a **skills layer** (**48 skills** — Batches 1–8 complete 2026-05-09; **3× baseline target reached**) + 4 laws + 1 pack + 3 bundles + 16 install target docs + ZIP/package generation + CI guards). The layer is **complete and shippable** at Draft v0. Milestone tags: `v0.1.0-draft` (16) → `v0.2.0-draft` (24) → `v0.3.0-draft` (32) → **`v0.4.0-draft` (40)** → **`v0.5.0-draft` (48)**.
@@ -211,6 +211,21 @@ Added 6 new process / discipline skills based on web research of [Anthropic Supe
 
 All 6 ship with `SKILL.md` + `EVAL.md` + 3 `references/` files each (18 reference files total: templates, playbooks, decision trees, patterns, do-not lists). Frontmatter ≤200 chars, all required headings present, registered in `scripts/check-docs.mjs`, summarized in both bundles, indexed in `docs/skill-system.md`, `skills/README.md`, `docs/README.md`. All 6 promoted from Draft v0 → **Expanded Draft v0** after references/ added (matches the existing 8 Expanded Draft v0 skills' depth pattern). Skills export now produces 16 ZIPs + 16 Claude Code folders.
 
+### ✅ Phase 5 batches 1–8: 3x skills expansion (16 → 48, 2026-05-09)
+
+Roadmap target reached. Each batch adds 4 new Expanded Draft v0 skills (`SKILL.md` + `EVAL.md` + 3 `references/` files), registers in `scripts/check-docs.mjs`, ships bundle reference summaries in both `bundles/skill-package/` and `bundles/claude-desktop-manual/`, and updates `skills/README.md`.
+
+- [x] **Batch 1** Web 3D handoff deep — `glb-mobile-performance-budget`, `glb-animation-handoff`, `three-fiber-component-shape-planner`, `preview-report-template-writer` (16 → 20).
+- [x] **Batch 2** Quality validation deep — `material-quality-checker`, `lighting-quality-checker`, `composition-quality-checker`, `polycount-budget-checker` (20 → 24, tagged `v0.2.0-draft`).
+- [x] **Batch 3** Domain scene planners — `character-portrait-scene-planner`, `environment-establishing-shot-planner`, `interior-architectural-scene-planner`, `product-grid-scene-planner` (24 → 28).
+- [x] **Batch 4** Process discipline — `blender-checklist-driven-workflow`, `blender-stop-condition-decider`, `blender-scope-boundary-enforcer`, `blender-recipe-decomposer` (28 → 32, tagged `v0.3.0-draft`).
+- [x] **Batch 5** Asset / sourcing — `asset-license-checker`, `asset-style-consistency-checker`, `asset-fallback-strategy`, `asset-library-organization-planner` (32 → 36).
+- [x] **Batch 6** Color / format / output decisions — `color-management-decision`, `output-format-decision`, `resolution-aspect-decision`, `cycles-vs-eevee-decision` (36 → 40, tagged `v0.4.0-draft`).
+- [x] **Batch 7** Recipe / pack operations — `recipe-fit-assessor`, `pack-prerequisite-checker`, `workflow-stage-router`, `acceptance-criteria-builder` (40 → 44).
+- [x] **Batch 8** Runtime path discipline — `runtime-path-picker`, `path-one-host-outline`, `cli-appendix-job-outline`, `runtime-attempt-report-writer` (44 → 48, tagged `v0.5.0-draft`).
+
+GitHub Releases shipped at v0.4.0-draft (40 ZIP assets) and v0.5.0-draft (48 ZIP assets). `npm run docs:check` passes 342 active markdown files. `npm run skills:export` produces 48 ZIPs + 48 Claude Code folders deterministically. **Roadmap 48/48 = 3x baseline target reached.**
+
 ### ✅ Phase 2.13: Portable skill system architecture
 - [x] create canonical skill system guide (`docs/skill-system.md`)
 - [x] create reusable root skill template (`skills/_template/SKILL.md`)
@@ -290,6 +305,6 @@ These items used to appear as "[ ] keep X unchecked until evidence" in earlier d
 
 ## 🎯 What changes the picture
 
-Skills layer is complete. The `v0.1.0-draft` tag can be cut whenever the operator decides — there is no upstream blocker on it.
+Skills layer is **complete and tagged**. Tags shipped: `v0.1.0-draft` (16) → `v0.2.0-draft` (24) → `v0.3.0-draft` (32) → `v0.4.0-draft` (40) → `v0.5.0-draft` (48 = 3x baseline). GitHub Releases attached.
 
 If the operator wants to remove the "Full runtime eval: Not Run" badge from in-repo provenance perspective, they can run any recipe through Path 1 / Path 2 / CLI on their machine and save the evidence file under `docs/evals/`. That is **provenance**, not a "fix" — the upstream paths already work; the badge just describes what's captured **inside this repo**, not whether the redirect targets work upstream.
