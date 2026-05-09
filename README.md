@@ -68,10 +68,15 @@ Paste this into any AI agent:
 Read and follow the BlendOps AI Agent Quickstart:
 https://raw.githubusercontent.com/ThanhNguyxnOrg/blendops/main/docs/ai-agent-quickstart.md
 
-Prepare BlendOps for this environment using the safest mode. If I need Claude/Skills upload, create separate ZIPs from skills/*/SKILL.md so they import as multiple skills. Do not install Blender, configure runtime connectors, run Blender, or claim generated artifacts. Report the selected mode, files changed or ZIP filenames, runtime status, artifact status, and limitations.
+Auto-detect your environment first, then pick one mode:
+- If you have project filesystem write access → Mode A: install BlendOps project-locally (skills/, laws/, packs/, target-specific entrypoint).
+- If you are in a chat-only UI (Claude Desktop chat, Claude.ai, ChatGPT) with no filesystem write → Mode B: output 16 separate ZIPs from skills/*/SKILL.md (one ZIP per skill) for me to drag-drop into the Skills UI manually.
+- If you cannot fetch the repo, cannot write, AND cannot output ZIPs → Mode C: ask one concise question.
+
+Do not install Blender, configure runtime connectors, run Blender, or claim generated artifacts. Report the selected mode, files changed or ZIP filenames, runtime status, artifact status, and limitations.
 ```
 
-The agent auto-selects one of three modes. Coding agents (Claude Code, Cursor, Codex, OpenCode, Gemini, Copilot, Antigravity) install **project-locally**. Claude Desktop / Claude.ai chats prepare **multiple Skills ZIP preparation** with one ZIP per canonical skill from `skills/*/SKILL.md`. Anything else falls back to **blocked-needs-input**. Full mode logic in [`docs/ai-agent-install-flow.md`](./docs/ai-agent-install-flow.md).
+The agent auto-detects which mode applies. Coding agents (Claude Code, Cursor, Codex, OpenCode, Cline, Continue, Zed, goose, Gemini, Copilot, Antigravity) hit **Mode A** and install **project-locally**. Claude Desktop / Claude.ai / ChatGPT chats hit **Mode B** and output **separate ZIPs from skills/*/SKILL.md** (one per skill) for you to drag-drop into the Skills UI manually. Anything else falls back to **Mode C — blocked-needs-input**. Full mode logic in [`docs/ai-agent-install-flow.md`](./docs/ai-agent-install-flow.md).
 
 ---
 

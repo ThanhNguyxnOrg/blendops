@@ -11,9 +11,28 @@ Prepare BlendOps for the current environment using the safest available mode.
 
 BlendOps attaches workflow knowledge only. It does not install Blender, configure runtime connectors, run Blender, or prove generated artifacts.
 
+## Mode auto-detect (do this first, in 5 seconds)
+
+Run this check **before** doing anything else. Pick exactly one mode:
+
+| Your environment right now | Mode |
+|---|---|
+| You can read/write files in a target project (Claude Code, Cursor, Codex, OpenCode, Cline, Continue, Zed, goose, Gemini CLI, Antigravity, GitHub Copilot, generic CLI agent inside a repo) | **Mode A** — install project-locally |
+| You are in a chat-only UI with no project filesystem write access (Claude Desktop chat, Claude.ai web, ChatGPT web/app, any browser chat UI) | **Mode B** — output 16 separate skill files/ZIPs for the user to manually upload |
+| You cannot fetch the BlendOps repo, cannot write files, AND cannot output ZIPs / file contents | **Mode C** — ask one concise question |
+
+Decision rules (no optimism):
+
+- "Filesystem write access" means you can actually create / edit files in a target project right now, not "I have a tool for it." If the user has not shown you a project, do not assume Mode A.
+- "Chat-only" includes Claude Desktop chat, Claude.ai web, ChatGPT (web / app), and any browser chat UI without project filesystem write. These default to Mode B.
+- If the user explicitly says which tool they are in, trust that signal:
+  - "I'm in Cursor / VS Code Cline / Claude Code / Codex / OpenCode" → Mode A
+  - "I'm in Claude Desktop chat" / "I want to upload to Claude Skills UI" / "I want to use this in ChatGPT" → Mode B
+- If you cannot tell whether you have project write access OR cannot fetch the repo, go to Mode C — ask one concise question instead of guessing.
+
 ## Mode selection
 
-Choose exactly one mode.
+Choose exactly one mode using the table above.
 
 ### Mode A — Project-local install
 
