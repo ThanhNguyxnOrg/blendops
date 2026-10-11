@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src=".github/assets/logo.svg" alt="BlendOps logo" width="160" />
+
 # 🦾 BlendOps
 
 **AI-native Blender workflow specs for people who do not know Blender.**
