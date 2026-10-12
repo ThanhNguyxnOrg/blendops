@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src=".github/assets/logo.svg" alt="BlendOps logo" width="160" />
+<img src=".github/assets/logo.png" alt="BlendOps logo" width="140" />
 
 # 🦾 BlendOps
 
