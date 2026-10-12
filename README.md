@@ -1,6 +1,10 @@
 <div align="center">
 
-<img src=".github/assets/logo.png" alt="BlendOps logo" width="140" />
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/logo.png" />
+  <source media="(prefers-color-scheme: light)" srcset=".github/assets/logo-dark.png" />
+  <img src=".github/assets/logo.png" alt="BlendOps logo" width="140" />
+</picture>
 
 # 🦾 BlendOps
 
