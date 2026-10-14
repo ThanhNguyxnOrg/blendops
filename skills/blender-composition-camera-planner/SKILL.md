@@ -15,12 +15,15 @@ Design high-quality composition/camera strategy for product hero scenes in plain
 - follow suggested next-skill handoff
 
 ## When to use
-- composition quality is uncertain
-- camera direction needs deeper guidance
-- hero section framing must align with web usage
+- expanding an upstream scene brief from `product-hero-scene-planner` into detailed framing and camera direction
+- defining focal hierarchy, viewer attention path, camera angle, focal length mood, and depth layering before lookdev
+- aligning hero framing and negative space with web/UI copy overlays
 
 ## When not to use
-- as proof of rendered output quality
+- as proof of rendered output quality or to validate an existing framing (use `composition-quality-checker`)
+- to design lighting rigs or surface materials/lookdev (use `blender-lighting-material-planner`)
+- to lock final pixel resolution or output aspect specs (use `resolution-aspect-decision`)
+- to choose delivery file formats (use `output-format-decision`)
 - when subject intent is undefined
 
 ## Trigger phrases
@@ -29,17 +32,17 @@ Design high-quality composition/camera strategy for product hero scenes in plain
 - “set camera strategy for product hero”
 
 ## Prerequisites / readiness
-- subject and destination context available
-- planning mode accepted when runtime unavailable
+- upstream scene concept from `product-hero-scene-planner` (or clear subject and destination context) available
+- planning-only boundary accepted: runtime status remains `Not Run` and artifacts remain `Not Produced`
 
 ## Input schema
 
 ### Required inputs
-- subject intent
+- subject intent (from `product-hero-scene-planner` or user brief)
 - target output context (web/app/game/render)
 
 ### Optional inputs
-- preferred aspect ratio
+- target aspect ratio constraints (from `resolution-aspect-decision` if already locked)
 - UI/copy overlay constraints
 - cinematic vs neutral tone preference
 
@@ -51,14 +54,14 @@ Design high-quality composition/camera strategy for product hero scenes in plain
 ## Output schema
 
 ### Primary output
-- composition-camera plan
+- composition-camera plan with plain-language rationale
 
 ### Secondary output
-- alternative framing options
+- fallback framing variant for uncertain constraints
 
 ### Evidence / caveat output
 - unresolved visual assumptions
-- Not Run caveat when no runtime validation
+- explicit truth states: Runtime `Not Run`, Artifacts `Not Produced` (downgrade-only, never upgrade)
 
 ## Required laws
 - ../../laws/non-blender-user-language.md
@@ -67,17 +70,17 @@ Design high-quality composition/camera strategy for product hero scenes in plain
 - ../../laws/no-arbitrary-python-interface.md
 
 ## Official runtime boundary
-Planning-only skill; no runtime execution or render claims.
+Planning-only skill: no Blender execution, no Python scripts, and no artifact generation. Runtime status stays `Not Run` and artifacts stay `Not Produced` (truth states are downgrade-only, never upgraded without verified evidence).
 
 ## Operating procedure
 1. Define focal hierarchy (primary/secondary/background).
 2. Define hero-section objective and viewer attention path.
-3. Select aspect ratio strategy.
+3. Select aspect ratio framing strategy (deferring final resolution/aspect locks to `resolution-aspect-decision`).
 4. Reserve negative space for UI/text overlays if needed.
 5. Choose camera angle preset family.
 6. Set focal length guidance by mood (dramatic vs neutral).
 7. Define depth layering (foreground/midground/background).
-8. Add silhouette/readability checks.
+8. Define target silhouette/readability checks (for later validation by `composition-quality-checker`).
 9. Produce fallback framing variant for uncertainty.
 10. Translate plan into plain-language rationale.
 
@@ -87,43 +90,45 @@ Planning-only skill; no runtime execution or render claims.
 - If uncertainty high → provide two options and ask preference.
 
 ## Playbooks
-- Playbook A: text-only planning path
-- Playbook B: runtime-ready path with evidence gating
-- Playbook C: blocked runtime path with caveat-first reporting
+- Playbook A: Full brief path — expand upstream `product-hero-scene-planner` output into primary framing + fallback variant (`Runtime: Not Run`, `Artifacts: Not Produced`).
+- Playbook B: Overlay-heavy path — prioritize negative space and silhouette separation for UI/copy constraints (`Runtime: Not Run`, `Artifacts: Not Produced`).
+- Playbook C: High-uncertainty path — provide two distinct framing variants with trade-off rationale and explicit caveats (`Runtime: Not Run`, `Artifacts: Not Produced`).
 
 ## Mode handling
 
 ### Text-only mode
-- provide planning options only
-- mark visual validation Not Run
+- provide primary composition/camera plan and fallback variant in plain language
+- report `Runtime: Not Run` and `Artifacts: Not Produced`
 
 ### Runtime-ready mode
-- include visual validation criteria for later runtime checks
+- provide the composition/camera plan plus explicit target criteria for `composition-quality-checker` to validate once a scene exists
+- keep `Runtime: Not Run` and `Artifacts: Not Produced` during planning
 
 ### Blocked runtime mode
-- keep plan + caveats
-- no visual success claims
+- deliver full composition/camera plan and fallback variant with explicit caveats
+- keep `Runtime: Not Run` and `Artifacts: Not Produced`; make no visual success claims
 
 ## Validation checklist
 - [ ] focal hierarchy explicit
-- [ ] hero framing objective explicit
-- [ ] aspect ratio strategy documented
+- [ ] hero framing objective and attention path explicit
+- [ ] aspect ratio framing strategy documented (without overriding `resolution-aspect-decision`)
 - [ ] negative space policy documented
-- [ ] camera angle rationale documented
-- [ ] focal length guidance documented
-- [ ] depth layering documented
-- [ ] silhouette criteria documented
-- [ ] fallback variant documented
-- [ ] plain-language rationale included
+- [ ] camera angle preset rationale documented
+- [ ] focal length guidance by mood documented
+- [ ] depth layering (foreground/midground/background) documented
+- [ ] target silhouette/readability checks documented for `composition-quality-checker`
+- [ ] fallback framing variant documented
+- [ ] plain-language rationale included throughout
+- [ ] truth states explicitly set to `Runtime: Not Run` and `Artifacts: Not Produced`
 
 ## Pass / Warn / Fail rubric
 
 | Category | Pass | Warn | Fail |
 |---|---|---|---|
-| Focal hierarchy | Clear and prioritized | Partial hierarchy | Missing hierarchy |
-| Framing strategy | Matches output context | Generic but usable | Mismatched framing |
-| Camera rationale | Specific and actionable | Vague rationale | No rationale |
-| Evidence boundary | No visual overclaims | Mild ambiguity | Claims rendered quality without evidence |
+| Focal hierarchy | Clear primary/secondary/background priority | Partial hierarchy | Missing hierarchy |
+| Framing strategy | Matches output context and includes fallback variant | Generic framing or weak fallback | Mismatched framing or missing fallback |
+| Camera rationale | Specific plain-language angle, focal-length mood, and depth layering | Vague rationale or unexplained jargon | No rationale or includes Python/execution commands |
+| Role & truth boundary | Stays in planning; reports `Runtime: Not Run` and `Artifacts: Not Produced` | Mild boundary overlap with lookdev/validation | Claims verified framing quality or upgrades truth states |
 
 ## Failure handling
 - Conflicting goals: provide trade-off options.
@@ -131,9 +136,10 @@ Planning-only skill; no runtime execution or render claims.
 - Unknown destination: use conservative web-hero defaults + caveat.
 
 ## Troubleshooting
-- Subject lost in frame: increase focal contrast and framing focus.
-- No room for copy: widen negative space and rebalance composition.
-- Flat look risk: increase depth-layer contrast in plan.
+- Subject lost in frame: tighten framing focus, adjust camera angle preset, or increase spatial separation between foreground, midground, and background layers.
+- No room for copy: widen negative space allowance and shift primary focal placement off-center.
+- Flat spatial staging: adjust camera angle and focal-length perspective or increase depth-layer spacing (route lighting/material contrast issues to `blender-lighting-material-planner`).
+- Existing scene framing needs pass/fail grading: hand off to `composition-quality-checker`.
 
 ## Best practices
 - optimize for clarity before stylization
@@ -147,24 +153,34 @@ Planning-only skill; no runtime execution or render claims.
 “Use cinematic camera.” (no context, no criteria)
 
 ## User-facing response template
-- Composition summary
-- Camera strategy summary
-- Why this helps your goal
-- What remains unverified
+- Composition summary (focal hierarchy, attention path, negative space, depth layering, silhouette checks)
+- Camera strategy summary (aspect strategy, angle preset, focal length by mood)
+- Fallback framing variant
+- Why this helps your goal (plain-language rationale)
+- Truth states (`Runtime: Not Run`, `Artifacts: Not Produced`) and unverified assumptions
+- Recommended next skill handoff
 
 ## Anti-patterns
 - skipping required laws or runtime boundary statements
 - claiming runtime/artifact success without evidence
-- using Path 2 without caveats or CLI fallback as a peer path
-- producing jargon-heavy final output without explanation
+- claiming runtime or artifact states above `Not Run` / `Not Produced` (violating downgrade-only truth rules)
+- writing Python code or Blender camera execution commands
+- designing lighting rigs or material lookdev instead of handing off to `blender-lighting-material-planner`
+- validating rendered/viewport composition instead of handing off to `composition-quality-checker`
+- locking final export resolution/aspect (`resolution-aspect-decision`) or file formats (`output-format-decision`)
+- producing jargon-heavy camera specs without plain-language rationale
 
 ## Cross-skill handoff
-- Next: `blender-lighting-material-planner`
-- Then: `blender-scene-quality-checker`
+- Upstream input from: `product-hero-scene-planner`
+- Lateral output specs (if needed): `resolution-aspect-decision` (aspect/resolution locks), `output-format-decision` (file formats)
+- Next (lookdev & lighting): `blender-lighting-material-planner`
+- Then (validation): `composition-quality-checker` and `blender-scene-quality-checker`
 
 ## Non-goals
-- runtime camera command execution
-- render quality claims without runtime evidence
+- executing Blender commands, writing Python scripts, or generating scene/render artifacts
+- designing lighting setups or materials (owned by `blender-lighting-material-planner`)
+- validating or scoring completed scene framing (owned by `composition-quality-checker`)
+- locking output resolution/aspect standards (owned by `resolution-aspect-decision`) or file formats (owned by `output-format-decision`)
 
 ## References
 - https://www.blender.org/lab/mcp-server/
