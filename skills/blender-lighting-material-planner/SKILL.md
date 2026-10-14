@@ -20,8 +20,11 @@ Create a high-quality, practical lighting/material plan that balances visual int
 - web/GLB portability caveats must be explicit
 
 ## When not to use
-- to claim final rendered quality
-- to skip composition/camera context
+- to claim final rendered quality or executed results
+- to skip composition/camera context from `blender-composition-camera-planner`
+- to validate existing lighting or materials (use `lighting-quality-checker` and `material-quality-checker`)
+- to decide render engines (`cycles-vs-eevee-decision`), color management (`color-management-decision`), or file formats (`output-format-decision`)
+- to execute Blender or generate Python scripts
 
 ## Trigger phrases
 - "plan lighting and materials"
@@ -29,9 +32,9 @@ Create a high-quality, practical lighting/material plan that balances visual int
 - "define PBR and reflection strategy"
 
 ## Prerequisites / readiness
-- subject/composition plan exists
-- output destination is known
-- runtime mode status known (text-only/runtime-ready/blocked)
+- framing and camera plan received from `blender-composition-camera-planner` when chaining upstream planners (or clear subject and destination context for standalone use)
+- upstream constraints known from `cycles-vs-eevee-decision`, `color-management-decision`, and `output-format-decision` when applicable
+- target delivery context known
 
 ## Input schema
 
@@ -53,14 +56,14 @@ Create a high-quality, practical lighting/material plan that balances visual int
 ## Output schema
 
 ### Primary output
-- lighting strategy + material strategy
+- lighting rig strategy (key/fill/rim, mood accents, reflection behavior) + material lookdev strategy (hierarchy, PBR targets, naming)
 
 ### Secondary output
 - portability simplification recommendations
 
 ### Evidence / caveat output
 - unverified visual assumptions
-- Not Run caveats when runtime unavailable
+- explicit truth states: `Runtime: Not Run`, `Artifacts: Not Produced` (downgrade-only, never upgrade)
 
 ## Required laws
 - ../../laws/evidence-before-done.md
@@ -69,7 +72,7 @@ Create a high-quality, practical lighting/material plan that balances visual int
 - ../../laws/no-arbitrary-python-interface.md
 
 ## Official runtime boundary
-This skill produces planning guidance only. It does not run Blender or claim runtime-produced results.
+This is a planning-only skill: no Blender execution, no Python, and no artifact generation. Runtime status always remains `Not Run` and artifact status always remains `Not Produced` (truth states are downgrade-only, never upgrade). If referencing Eevee engine tokens from upstream `cycles-vs-eevee-decision`, use `BLENDER_EEVEE` on Blender 4.0–4.1 and 5.x, and `BLENDER_EEVEE_NEXT` only for 4.2–4.x — never present Eevee Next as the current name.
 
 ## Operating procedure
 1. Define lighting objective (readability vs drama balance).
@@ -89,22 +92,23 @@ This skill produces planning guidance only. It does not run Blender or claim run
 - If portability uncertain → keep assumptions explicit and request runtime validation.
 
 ## Playbooks
-- Playbook A: text-only planning path
-- Playbook B: runtime-ready path with evidence gating
-- Playbook C: blocked runtime path with caveat-first reporting
+- Playbook A: text-only lookdev planning (`Runtime: Not Run`, `Artifacts: Not Produced`)
+- Playbook B: runtime-ready lookdev planning with verification targets prepared for `lighting-quality-checker` and `material-quality-checker` (`Runtime: Not Run`, `Artifacts: Not Produced`)
+- Playbook C: blocked-runtime conservative lookdev planning with strict portability caveats (`Runtime: Not Run`, `Artifacts: Not Produced`)
 
 ## Mode handling
 
 ### Text-only mode
-- produce lookdev plan only
-- mark visual evidence as Not Run
+- produce lighting rig and material lookdev plan only
+- report `Runtime: Not Run` and `Artifacts: Not Produced`
 
 ### Runtime-ready mode
-- include validation targets for downstream runtime checks
+- produce lookdev plan and define checklist targets for downstream `lighting-quality-checker` and `material-quality-checker`
+- keep `Runtime: Not Run` and `Artifacts: Not Produced` within this skill
 
 ### Blocked runtime mode
-- provide conservative plan and caveats
-- no rendered output claim
+- provide conservative lookdev plan and explicit portability caveats
+- keep `Runtime: Not Run` and `Artifacts: Not Produced` with no rendered output claims
 
 ## Validation checklist
 - [ ] key/fill/rim strategy documented
@@ -152,17 +156,23 @@ This skill produces planning guidance only. It does not run Blender or claim run
 - Lighting plan summary
 - Material plan summary
 - Portability caveats
-- Next validation step
+- Truth states: `Runtime: Not Run` | `Artifacts: Not Produced`
+- Next handoff step (`lighting-quality-checker`, `material-quality-checker`, `blender-scene-quality-checker`, `glb-web-handoff`)
 
 ## Anti-patterns
 - skipping required laws or runtime boundary statements
 - claiming runtime/artifact success without evidence
-- using Path 2 without caveats or CLI fallback as a peer path
-- producing jargon-heavy final output without explanation
+- upgrading truth states above `Runtime: Not Run` or `Artifacts: Not Produced`
+- blurring roles by validating lighting/materials instead of handing off to `lighting-quality-checker` and `material-quality-checker`
+- making render engine, color config, or file format decisions owned by `cycles-vs-eevee-decision`, `color-management-decision`, or `output-format-decision`
+- presenting `BLENDER_EEVEE_NEXT` / Eevee Next as the current Blender 5.x engine name
+- including Python snippets, Blender execution commands, or unhedged jargon
 
 ## Cross-skill handoff
-- Next: `blender-scene-quality-checker`
-- Then: `glb-web-handoff`
+- Upstream input from: `blender-composition-camera-planner` (plus constraints from `cycles-vs-eevee-decision`, `color-management-decision`, `output-format-decision`)
+- Next validation: `lighting-quality-checker` and `material-quality-checker`
+- Then scene check: `blender-scene-quality-checker`
+- Then delivery: `glb-web-handoff`
 
 ## Non-goals
 - shader/runtime implementation code
