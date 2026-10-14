@@ -137,7 +137,7 @@ Looser texture format rules (EXR / Float allowed); still check albedo / normal /
 ## Mode handling
 
 ### Text-only mode
-Verdicts based on plan / spec only; mark `Artifact status: Not Run`.
+Verdicts based on plan / spec only; mark `Artifact status: Not Produced`.
 
 ### Runtime-ready mode
 Verdicts based on measured scene snapshot; cite tool used. Never upgrade to `Verified` without recorded measurement.
