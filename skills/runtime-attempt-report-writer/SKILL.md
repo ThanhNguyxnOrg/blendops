@@ -101,6 +101,7 @@ Document blockers explicitly.
 - [ ] Labels match definitions in evidence-before-done law
 - [ ] No upstream vendor blame language — factual only
 - [ ] Secrets redacted
+- [ ] Operator sandbox hygiene recorded (trusted environment, no credentials in scenes/logs, disposable ports/paths)
 
 ## Pass / Warn / Fail rubric
 

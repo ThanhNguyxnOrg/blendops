@@ -86,7 +86,7 @@ This pack expects included skills to pass Gate 0 through Gate 8 in `skill-review
 ## Release readiness checklist
 
 - [ ] all included skills pass review gates or have explicit warnings
-- [ ] no non-official runtime setup references
+- [ ] no uncaveated Path 2 references; CLI appendix never a peer path
 - [ ] no artifact overclaims without evidence
 - [ ] install dry-run in disposable fixture succeeds
 - [ ] rollback instructions validated

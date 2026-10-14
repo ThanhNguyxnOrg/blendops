@@ -134,7 +134,7 @@ Define a safe, official-runtime-only setup path for users/agents before runtime 
 - [ ] confidence labels present
 - [ ] project-local default stated
 - [ ] global changes require explicit user approval
-- [ ] no non-official runtime references
+- [ ] Path 2 references carry third-party caveats; CLI appendix never a peer path
 - [ ] no runtime-executed claim
 - [ ] blockers or unknowns explicitly listed
 - [ ] next actions actionable

@@ -48,7 +48,7 @@ Canonical role: `runtime-readiness` in the BlendOps skill system. Keep this as t
 
 ### Assumptions to confirm
 - no Blender run required for readiness-only pass
-- no non-official runtime path should be used
+- Path 2 used only with third-party caveats; CLI appendix never a peer path
 
 ## Output schema
 
@@ -126,7 +126,8 @@ Canonical role: `runtime-readiness` in the BlendOps skill system. Keep this as t
 - [ ] final status assigned
 - [ ] blocker list included
 - [ ] no execution success claim
-- [ ] no non-official path reference
+- [ ] Path 2 references carry third-party caveats; CLI appendix never a peer path
+- [ ] operator sandbox hygiene noted (trusted environment, no secrets in scenes/logs, disposable ports/paths)
 - [ ] next actions clear
 
 ## Pass / Warn / Fail rubric

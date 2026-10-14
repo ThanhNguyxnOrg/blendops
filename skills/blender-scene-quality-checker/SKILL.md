@@ -112,7 +112,7 @@ No execution claims without evidence. Text-only and blocked modes must remain ex
 - [ ] caveats include user impact
 - [ ] final verdict justified
 - [ ] no unsupported success claims
-- [ ] no non-official runtime guidance
+- [ ] no uncaveated Path 2 guidance; CLI appendix never a peer path
 - [ ] plain-language summary included
 - [ ] next actions provided
 
