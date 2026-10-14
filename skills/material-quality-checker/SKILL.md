@@ -22,10 +22,12 @@ Run a focused pass/warn/fail check on each material in the scene against PBR san
 - as a sub-check during full quality review
 
 ## When not to use
+- upstream lookdev and material planning (use `blender-lighting-material-planner`)
 - lighting validation (use `lighting-quality-checker`)
 - composition / camera validation (use `composition-quality-checker`)
-- broad pass/warn/fail readiness (use `blender-scene-quality-checker`)
-- to fix materials (this skill validates, it does not edit)
+- broad pass/warn/fail scene readiness (use `blender-scene-quality-checker`)
+- web integration and viewer handoff (use `glb-web-handoff`)
+- to fix or edit materials (this skill validates and emits remediation hints only; it never edits)
 
 ## Trigger phrases
 - "are the materials okay"
@@ -67,11 +69,13 @@ Run a focused pass/warn/fail check on each material in the scene against PBR san
 A per-material verdict table: name, type (PBR / non-PBR / variant), albedo state, normal state, roughness/metallic state, texture count + resolution sum, consumer-stack compatibility, verdict (Pass / Warn / Fail), notes.
 
 ### Secondary output
-- top-line status (Pass / Warn / Fail) computed from rows
+- top-line status (Pass / Warn / Fail) computed from rows (separate from runtime/artifact truth states)
 - worst-offender highlighting (one or two materials to fix first)
-- remediation hint per Fail row (without performing the fix)
+- remediation hint per Fail row (advisory only, without performing the fix)
 
 ### Evidence / caveat output
+- Artifact status defaults to `Not Produced` unless concrete output evidence exists.
+- Truth states are downgrade-only (never upgrade without recorded evidence) and remain strictly separate from per-material `Pass / Warn / Fail` validation verdicts.
 
 ```txt
 Runtime status: Not Run | Attempted | Produced | Verified | Failed
@@ -121,6 +125,10 @@ Material count above pinned cap?
   → Fail (whole-scene)
 Unsupported shader node for chosen export?
   → Fail (e.g. OSL nodes for glTF)
+Unsupported shader feature for glTF export (OSL custom shaders, unbaked procedural noise/wave/voronoi, or drivers on material values)?
+  → Fail
+Uses KHR glTF extensions (unlit, transmission, volume, ior, specular, clearcoat, emissive_strength, anisotropy, iridescence, variants) without consumer-stack confirmation?
+  → Warn (escalate to Fail if target consumer explicitly lacks support)
 ```
 
 ## Playbooks
@@ -147,14 +155,15 @@ Skip rows that depend on measurement; mark explicitly.
 
 ## Validation checklist
 - [ ] Every material listed
-- [ ] PBR sanity columns filled
+- [ ] PBR sanity columns filled (sRGB albedo, linear data textures, OpenGL `+Y` normal for glTF)
+- [ ] Principled BSDF sockets verified by name (version-dependent sockets marked)
 - [ ] Texture budget compared to pinned cap
-- [ ] Consumer-stack compatibility checked
-- [ ] Per-material verdict assigned
+- [ ] Consumer-stack compatibility and KHR extensions checked
+- [ ] Per-material verdict assigned (`Pass / Warn / Fail`, kept separate from truth states)
 - [ ] Top-line status derived from rows
 - [ ] Worst offenders highlighted
-- [ ] No remediation performed inside this skill
-- [ ] Honest evidence label
+- [ ] Remediation hints advisory only (no material edits performed)
+- [ ] Honest downgrade-only evidence label (`Artifact status: Not Produced` default without concrete output evidence)
 
 ## Pass / Warn / Fail rubric
 
@@ -174,10 +183,11 @@ Skip rows that depend on measurement; mark explicitly.
 | Problem | Response |
 |---|---|
 | Material visible in viewport but missing from list | Confirm linked vs appended status; re-check measured scene snapshot. |
-| Roughness texture looks "too dark" | Verify color space (linear, not sRGB); add Warn. |
-| Normal map looks inverted | Verify Y-axis convention; add Warn until convention confirmed. |
-| GLB export fails on a material | Check unsupported nodes (OSL, drivers); add Fail with node names. |
-| Value lands on the wrong shader input | Socket resolved by index across Blender versions; re-resolve inputs by name. |
+| Roughness, metallic, normal, or AO texture looks wrong | Verify color space is linear (not sRGB); add Warn/Fail with remediation hint. |
+| Normal map looks inverted in glTF viewer | Verify OpenGL (`+Y` up) convention; add Warn until convention confirmed. |
+| GLB export fails or drops material features | Check for OSL custom shaders, unbaked procedural nodes (`noise`, `wave`, `voronoi`), or drivers on material values; add Fail with node/driver names. |
+| KHR extension appearance missing in target viewer | Confirm consumer support for `unlit`, `transmission`, `volume`, `ior`, `specular`, `clearcoat`, `emissive_strength`, `anisotropy`, `iridescence`, or `variants`. |
+| Value lands on the wrong shader input | Socket was resolved by index across Blender versions; re-resolve Principled BSDF inputs by name. |
 
 ## Best practices
 - Pair every Fail with the rule that triggered it.
@@ -201,12 +211,16 @@ Texture budget cap: <N MP total>
 
 | Material | Type | Albedo | Normal | Rough/Met | Tex count + res | Consumer | Verdict | Notes |
 |---|---|---|---|---|---|---|---|---|
-| <name> | PBR | <state> | <state> | <state> | <N × Wpx> | <ok/warn/fail> | Pass/Warn/Fail | <note> |
+| <name> | PBR | <state> | <state> | <state> | <N x Wpx> | <ok/warn/fail> | Pass/Warn/Fail | <note> |
 
 Top-line: <Pass / Warn / Fail>
 Worst offenders: <list 1-2>
+Remediation hints: <advisory hints per Fail/Warn row, no edits performed>
+Runtime status: <Not Run | Attempted | Produced | Verified | Failed>
+Artifact status: <Not Run | Not Produced | Produced | Verified | Failed>
+Evidence used: <links, paths, logs, or "none">
 Limitations: <gaps>
-Next: blender-scene-quality-checker / render-export-evidence
+Next: <blender-scene-quality-checker | render-export-evidence | glb-web-handoff | blender-lighting-material-planner>
 ```
 
 ## Anti-patterns
@@ -218,11 +232,13 @@ Next: blender-scene-quality-checker / render-export-evidence
 - Mixing lighting / composition checks here.
 
 ## Cross-skill handoff
+- Upstream lookdev & material planning → `../blender-lighting-material-planner/SKILL.md`
+- Mobile/web texture budget definition → `../glb-mobile-performance-budget/SKILL.md`
 - Broad readiness review → `../blender-scene-quality-checker/SKILL.md`
 - Lighting validation → `../lighting-quality-checker/SKILL.md`
 - Composition validation → `../composition-quality-checker/SKILL.md`
 - Polycount budget → `../polycount-budget-checker/SKILL.md`
-- GLB export evidence → `../render-export-evidence/SKILL.md`
+- Render / GLB export evidence → `../render-export-evidence/SKILL.md`
 - Web handoff → `../glb-web-handoff/SKILL.md`
 
 ## Non-goals
