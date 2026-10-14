@@ -29,9 +29,9 @@ BlendOps recognizes **two MCP execution paths** plus a **CLI fallback appendix**
 
 | Path | Blender-side stack | MCP host (your choice within the path) | Practical min Blender | BlendOps verification |
 |---|---|---|---|---|
-| **Path 1 — Official Blender Lab MCP** | **Lab MCP add-on + Lab MCP server** from blender.org/lab/mcp-server (`bpype/blender_mcp`) | (a) Anthropic Blender Connector in Claude Desktop (one-click toggle); OR (b) any other MCP client (Claude Code, Cursor, Codex, OpenCode, Cline, VS Code) configured manually using the `.mcpb` bundle or source. | **5.1+** (Lab add-on `blender_manifest.toml: blender_version_min = "5.1.0"`) | **User-reported verified** by repo owner (2026-04-29 read-only smoke + 2026-05-09 operator confirms full Path 1 works in their environment). No formal in-repo evidence file with mutation/render/export tool calls yet. |
-| **Path 2 — Community `ahujasid/blender-mcp`** | Different `addon.py` + server started via `uvx blender-mcp` (third-party, 21K+ stars, prior art) | Any MCP client (Claude Desktop with manual `mcpServers` config, Cursor, Codex, OpenCode, Cline, VS Code) | **3.0+** (per upstream) | **User-reported verified** by repo owner (2026-05-08, reconfirmed 2026-05-09). No formal in-repo evidence file with Path 2 tool names yet. |
-| **CLI fallback (appendix)** | None — direct `blender` executable | Shell / agent invokes `blender --background --python` | 4.2+ recommended ([Blender CLI docs](https://docs.blender.org/manual/en/latest/advanced/command_line/index.html), stable across 4.5 LTS / 5.2 LTS) | **Documented upstream as a first-class Blender CLI surface**, stable across decades and used widely in render farms, HPC, and CI pipelines. No in-repo evidence file yet. |
+| **Path 1 — Official Blender Lab MCP** | **Lab MCP add-on + Lab MCP server** from blender.org/lab/mcp-server (`bpype/blender_mcp`) | (a) Anthropic Blender Connector in Claude Desktop (one-click toggle); OR (b) any other MCP client (Claude Code, Cursor, Codex, OpenCode, Cline, VS Code) configured manually using the `.mcpb` bundle or source. | **5.1+** (Lab page requirement #1: "Blender 5.1 or newer", indexed text re-confirmed 2026-10-14; manifest literal `5.1.0` pending direct re-read — see `docs/research/runtime-lab-cli-deep-verification-2026-10-14.md`) | **User-reported verified** by repo owner (operator statement, does not promote eval scope; 2026-04-29 read-only smoke + 2026-05-09 operator confirms full Path 1 works in their environment). No formal in-repo evidence file with mutation/render/export tool calls yet. |
+| **Path 2 — Community `mcp-for-blender` (formerly `ahujasid/blender-mcp`)** | Different `addon.py` + server started via `uvx mcp-for-blender` (legacy `uvx blender-mcp` still works; third-party, 20K+ stars prior art — 30.7k on 2026-10-13) | Any MCP client (Claude Desktop with manual `mcpServers` config, Cursor, Codex, OpenCode, Cline, VS Code) | **3.0+** (per upstream) | **User-reported verified** by repo owner (operator statement, does not promote eval scope; 2026-05-08, reconfirmed 2026-05-09). No formal in-repo evidence file with Path 2 tool names yet. |
+| **CLI fallback (appendix)** | None — direct `blender` executable | Shell / agent invokes `blender --background --python` | 4.2+ recommended ([Blender CLI docs](https://docs.blender.org/manual/en/latest/advanced/command_line/index.html), Render/Cycles/Format/Python sections verified in 2.93–5.2 Manuals) | Upstream-documented CLI surface. No in-repo evidence file yet. |
 
 > [!IMPORTANT]
 > **Anthropic Connector and Lab MCP are NOT independent products.** Anthropic Connector is the Claude-Desktop-specific host for the same Lab MCP stack. You install the Lab add-on in Blender either way. The Connector toggle just spares you from registering the MCP server in `mcpServers` JSON manually.
@@ -60,35 +60,35 @@ MCP host (Anthropic Blender Connector OR manually-configured MCP client)
 1. Install **Blender 5.1+** (Lab add-on will not load on earlier versions).
 2. Open `blender.org/lab/mcp-server` in a browser alongside Blender.
 3. Drag the install link into Blender (first time registers the Blender Lab repository, second time installs the add-on). Or download the `.zip` and Install from Disk.
-4. Install/start the **MCP server** part: either the `.mcpb` MCP Bundle (newer clients) or from source per upstream Setup wiki.
+4. Install/start the **MCP server** part: either the `.mcpb` MCP Bundle (newer clients; Lab page: "For newer clients that support `.mcpb` files…") or from source per upstream Setup wiki (wiki not directly re-read; manual check pending).
 
 **Host-side install — pick exactly one option per Blender session:**
 
 - **Host option (a) — Anthropic Blender Connector (Claude Desktop only):**
   1. Claude Desktop → Customize → Connectors → search "Blender" → Add.
-  2. Open Blender, in the 3D Viewport press `N` → BlenderMCP tab → "Connect to Claude".
+  2. Start the connection either via Edit → Preferences → Add-ons → BlenderMCP → "start MCP server" (Anthropic tutorial Step 3, primary) or via the 3D Viewport `N` → BlenderMCP tab → "Connect to Claude" (client-docs flow; Lab-side primary confirmation pending).
   3. Tool surface appears under the connector icon in the Claude Desktop chat input.
 - **Host option (b) — Manual MCP client (any other MCP-capable client, including Claude Desktop's own Developer config):**
   1. Register the Lab MCP server in your client's MCP config (`mcpServers` JSON or equivalent UI). Use the `.mcpb` bundle or source-installed entrypoint per the Lab Setup wiki.
   2. Restart your client so it discovers the new server.
-  3. Open Blender, in the 3D Viewport press `N` → BlenderMCP tab → connect.
+  3. Start the connection either via Edit → Preferences → Add-ons → BlenderMCP → "start MCP server" or via the 3D Viewport `N` → BlenderMCP tab → connect.
 
-**Tool surface (Lab MCP):** `get_blendfile_summary_path_info`, `get_blendfile_summary_datablocks`, `get_blendfile_summary_missing_files`, `get_blendfile_summary_of_linked_libraries`, `get_objects_summary`, plus the equivalent `*_for_cli` variants and Python execution tools. Same set regardless of which host you pick.
+**Tool surface (Lab MCP):** `get_blendfile_summary_path_info`, `get_blendfile_summary_datablocks`, `get_blendfile_summary_missing_files`, `get_blendfile_summary_of_linked_libraries`, `get_objects_summary`, plus the equivalent `*_for_cli` variants and Python execution tools. Same set regardless of which host you pick. (Corroborated 2026-10-14 for `get_objects_summary`, `datablocks/missing_files/linked_libraries`, `execute_blender_code`, `*_for_cli` via secondary sample list sourced to `readme_tools.rst`; `path_info` attested only by the in-repo smoke test — full list pending direct `readme_tools.rst` read.)
 
-**BlendOps evidence:** The 2026-04-29 read-only smoke test recorded `get_blendfile_summary_*` and `get_objects_summary` calls — these match Lab MCP exactly. The original "Claude Desktop Connector" attribution is consistent with host option (a). On 2026-05-09 the repo owner verbally reconfirmed Path 1 works in their environment for full execution. **However, no formal in-repo evidence file with mutation/render/export tool calls exists yet**, so full Path 1 eval remains `Not Run` per BlendOps evidence rules — verbal confirmation is recorded as "User-reported verified" but does not promote to a formal eval record.
+**BlendOps evidence:** The 2026-04-29 read-only smoke test recorded `get_blendfile_summary_*` and `get_objects_summary` calls — these are consistent with Lab MCP (see qualifier above). The original "Claude Desktop Connector" attribution is consistent with host option (a). On 2026-05-09 the repo owner verbally reconfirmed Path 1 works in their environment for full execution. **However, no formal in-repo evidence file with mutation/render/export tool calls exists yet**, so full Path 1 eval remains `Not Run` per BlendOps evidence rules — verbal confirmation is recorded as "User-reported verified" but does not promote to a formal eval record.
 
 ---
 
-## Path 2 — Community `ahujasid/blender-mcp`
+## Path 2 — Community `mcp-for-blender` (formerly `ahujasid/blender-mcp`)
 
-**Source:** https://github.com/ahujasid/blender-mcp (21K+ stars, predates Path 1 by ~1 year, pioneered the Blender + MCP pattern).
+**Source:** https://github.com/ahujasid/mcp-for-blender (20K+ stars — 30.7k on 2026-10-13; predates Path 1 by ~1 year, pioneered the Blender + MCP pattern).
 
 **Conceptual chain:**
 
 ```txt
 MCP client (any)
   → MCP transport
-  → ahujasid/blender-mcp server (uvx blender-mcp)
+  → mcp-for-blender server (uvx mcp-for-blender; legacy blender-mcp name still works)
   → upstream addon.py inside Blender 3.0+
   → live Blender session
 ```
@@ -97,12 +97,12 @@ MCP client (any)
 
 1. Install Blender 3.0+.
 2. Install `uv` per upstream instructions.
-3. In your MCP client's MCP config (e.g. Claude Desktop → Settings → Developer → Edit Config) register: `command: uvx, args: [blender-mcp]`.
-4. Download `addon.py` from the upstream repo. Blender → Edit → Preferences → Add-ons → Install → enable.
+3. Preferred: `uvx mcp-for-blender setup` or the one-line `install.sh` / `install.ps1` from the upstream README (handles `install-addon` + `.bak` backup). Manual alternative: in your MCP client's MCP config (e.g. Claude Desktop → Settings → Developer → Edit Config) register: `command: uvx, args: [mcp-for-blender]` (legacy `blender-mcp` name still works).
+4. Blender add-on: auto-installed by `setup`/`install-addon`, or manual fallback — download `addon.py` from the upstream repo. Blender → Edit → Preferences → Add-ons → Install → enable.
 5. In Blender's 3D Viewport press `N` → BlenderMCP tab → connect.
 6. Restart your MCP client so it discovers the new server.
 
-**Tool surface (community):** `get_scene_info`, `execute_blender_code`, viewport screenshots, plus optional Hyper3D / Hunyuan3D / Poly Haven / Sketchfab integrations. **Different** from Lab MCP's tool surface.
+**Tool surface (community):** `execute_blender_code`, `look`, `get_scene_info`, `generate_3d`, `search_assets` / `import_asset`, `get_addon_status` + safe mode `BLENDER_MCP_SAFE_MODE=1`, viewport screenshots, plus optional Hyper3D / Hunyuan3D / Poly Haven / Sketchfab integrations. **Different** from Lab MCP's tool surface. Defer to upstream README for exact current commands.
 
 **BlendOps evidence:** User-reported verified by repo owner (2026-05-08 statement, reconfirmed 2026-05-09). No formal evidence record file with Path 2 tool names yet.
 
@@ -116,7 +116,7 @@ MCP client (any)
 
 **What it is:** Direct `blender --background`, `--python script.py`, render flags, etc. No MCP, no LLM-side tool calls, agent-agnostic, deterministic.
 
-**Maturity note:** Blender's CLI is a **first-class, decades-stable surface** documented in the official Blender Manual (continuous coverage from 1.x through 5.2 LTS) and used widely in render farms, HPC clusters, CI pipelines, and scripted automation. It is **not experimental**. The CLI flags `--background`, `--python`, `--render-output`, `--render-frame`, `--factory-startup`, etc. are stable across LTS releases.
+**Maturity note:** Blender's CLI is an upstream-documented surface (Render/Cycles/Format/Python/Logging/Debug/GPU/Misc sections verified in 2.93–5.2 Manuals). Stability beyond that window is not asserted. The CLI flags `--background`, `--python`, `--render-output`, `--render-frame`, `--factory-startup`, etc. are documented across LTS releases.
 
 **BlendOps evidence:** No in-repo eval record file yet. Operators who use shell `blender` should still record the exact command, inputs, output paths, exit code, and validation evidence per `docs/evals/official-runtime-verification-criteria.md` before any artifact claim — this is for **provenance**, not because the CLI itself is unstable.
 
@@ -129,13 +129,14 @@ The CLI fallback is fully compatible with batch-style BlendOps workflows (plan �
 | Topic | Notes |
 |---|---|
 | **GLB export in `--background` mode** | `bpy.ops.export_scene.gltf(filepath=...)` works in Blender 4.5+. The historical headless-mode bug ([KhronosGroup/glTF-Blender-IO #1281](https://github.com/KhronosGroup/glTF-Blender-IO/issues/1281), `on_export_format_changed()` accessing `context.space_data` which is None) was fixed upstream by adding a null check. Recommended invocation: `blender -b file.blend --python-expr "import bpy; bpy.ops.export_scene.gltf(filepath='out.glb')"` or `-P script.py`. |
-| **Add-on enablement under `--factory-startup`** | Add-ons are not auto-loaded when `--factory-startup` is used. Re-enable explicitly inside the Python script: `bpy.ops.preferences.addon_enable(module='io_scene_gltf2')` (and similarly for any other add-on the recipe depends on). |
+| **Add-on enablement under `--factory-startup`** | Add-ons are not auto-loaded when `--factory-startup` is used. Re-enable explicitly inside the Python script (e.g. `bpy.ops.preferences.addon_enable(module='io_scene_gltf2')`) (and similarly for any other add-on the recipe depends on). |
 | **GPU rendering** | Headless GPU rendering is supported via `--cycles-device CUDA \| OPTIX \| HIP \| ONEAPI \| METAL`. Append `+CPU` to render on both (e.g. `OPTIX+CPU`). Example: `blender -b file.blend -P script.py -- --cycles-device OPTIX`. |
-| **Camera renders vs viewport screenshots** | `bpy.ops.render.render(write_still=True)` works in `--background` mode (camera-based rendering). `bpy.ops.screen.screenshot()` and other GUI-bound viewport ops do **not** work without a display — recipes that need viewport captures should target Path 1/Path 2 instead. |
+| **Camera renders vs viewport screenshots** | `bpy.ops.render.render(write_still=True)` works in `--background` mode (camera-based rendering). GUI-bound viewport ops need a window/OpenGL context (community reports); prefer camera renders headless — recipes that need viewport captures should target Path 1/Path 2 instead. |
 | **Stateless invocation** | Each `blender -b ...` run starts fresh and exits when the script completes. Iterative back-and-forth refinement workflows ("now make it more red → now move the camera up") fit the **MCP paths (Path 1 / Path 2)** better, where Blender stays alive across tool calls. CLI is best for single-shot recipes (cyberpunk shoe hero end-to-end as one script) and CI/render-farm batch jobs. |
 | **Output flag ordering** | Blender CLI args execute in the order given. Render flags (`-f` / `-a`) must come **after** `-o` (output path) and `-F` (format). Wrong ordering silently uses defaults. |
-| **Engine + threads** | `-E CYCLES \| BLENDER_EEVEE_NEXT \| WORKBENCH` selects render engine; `-t N` sets thread count. Both stable across LTS. |
+| **Engine + threads** | `-E CYCLES \| BLENDER_EEVEE \| WORKBENCH` (run `blender -E help` for exact tokens; `BLENDER_EEVEE_NEXT` pending `-E help` capture) selects render engine; `-t N` sets thread count. |
 | **Script args separator** | Use `--` to separate Blender args from your Python script's own args: `blender -b file.blend -P script.py -- --my-arg value`. |
+| **Script auto-execution** | `-y` / `--enable-autoexec` enables automatic Python script execution; `-Y` / `--disable-autoexec` disables it (`advanced/scripting/security.html`). |
 
 **Verdict:** CLI is **compatible** with BlendOps batch recipes (plan → render → GLB → validate) on Blender 4.5+ when the script handles add-on enablement, uses the GLB export pattern above, and avoids GUI-only ops. CLI is **not compatible** with iterative session-based workflows — those need Path 1 or Path 2.
 
@@ -143,7 +144,7 @@ The CLI fallback is fully compatible with batch-style BlendOps workflows (plan �
 
 ## Single-bridge constraint
 
-Blender accepts **one MCP bridge session** per Blender instance. Do not run **Path 1 (Lab MCP) + Path 2 (community)** concurrently against the same Blender instance — they typically use the same `localhost:9876` range and the second connection silently fails. Pick one path per Blender session.
+Blender accepts **one MCP bridge session** per Blender instance on the default port. Do not run **Path 1 (Lab MCP) + Path 2 (community)** concurrently against the same Blender instance on `localhost:9876` — the second connection silently fails. Side-by-side on separate Blender instances is supported upstream via per-instance `--port 9877` (+ matching port in the add-on panel). Pick one path + host per Blender session.
 
 Within Path 1, you can have only one host option active at a time too — do not run Anthropic Connector and a manual MCP client both pointed at the same Blender instance.
 
@@ -168,8 +169,8 @@ To upgrade any path's verification status from "User-reported verified" to a doc
 
 1. **Path** (1 or 2) and **host option** within Path 1 (a vs b).
 2. **`blender --version`** verbatim.
-3. **Blender-side add-on identity** (Lab MCP add-on version vs `ahujasid/blender-mcp` `addon.py` commit).
-4. **MCP server source** (`.mcpb` bundle filename / source commit / `uvx blender-mcp` version).
+3. **Blender-side add-on identity** (Lab MCP add-on version vs `mcp-for-blender` `addon.py` commit).
+4. **MCP server source** (`.mcpb` bundle filename / source commit / `uvx mcp-for-blender` version).
 5. **MCP host product + version** (Claude Desktop build, Cursor build, etc.).
 6. **Exact tool names** invoked + responses.
 7. **Single-bridge check** confirming only one MCP host connected.

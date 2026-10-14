@@ -18,7 +18,7 @@ Run this check **before** doing anything else. Pick exactly one mode:
 | Your environment right now | Mode |
 |---|---|
 | You can read/write files in a target project (Claude Code, Cursor, Codex, OpenCode, Cline, Continue, Zed, goose, Gemini CLI, Antigravity, GitHub Copilot, generic CLI agent inside a repo) | **Mode A** — install project-locally |
-| You are in a chat-only UI with no project filesystem write access (Claude Desktop chat, Claude.ai web, ChatGPT web/app, any browser chat UI) | **Mode B** — output 16 separate skill files/ZIPs for the user to manually upload |
+| You are in a chat-only UI with no project filesystem write access (Claude Desktop chat, Claude.ai web, ChatGPT web/app, any browser chat UI) | **Mode B** — output one ZIP per canonical skill from `skills/*/SKILL.md` (currently 48) for the user to manually upload |
 | You cannot fetch the BlendOps repo, cannot write files, AND cannot output ZIPs / file contents | **Mode C** — ask one concise question |
 
 Decision rules (no optimism):

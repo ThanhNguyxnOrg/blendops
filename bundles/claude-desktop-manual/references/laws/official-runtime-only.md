@@ -10,11 +10,11 @@ Required behavior:
 - do not invent custom runtime implementations,
 - preserve the 2-path + CLI appendix model:
   - Path 1 = Official Blender Lab MCP add-on/server in Blender 5.1+, hosted from Anthropic Connector OR manual MCP client.
-  - Path 2 = Community `ahujasid/blender-mcp`, Blender 3.0+.
+  - Path 2 = Community `mcp-for-blender` (formerly `blender-mcp`), Blender 3.0+.
   - CLI fallback = direct Blender CLI; appendix only; **documented upstream as first-class Blender CLI**, no in-repo evidence file yet.
 - do not describe Anthropic Connector as standalone — Anthropic's tutorial explicitly tells you to install the Lab MCP add-on inside Blender.
 - the Blender 5.1+ floor applies to **all** of Path 1 (whichever host).
 
-Path 2 (`ahujasid/blender-mcp`) is third-party from both Anthropic and the Blender Foundation but is mature (21K+ stars, prior art). It is one of the canonical paths, with extra caveats in unofficial-runtime-bridges guidance.
+Path 2 (`mcp-for-blender` (formerly `blender-mcp`)) is third-party from both Anthropic and the Blender Foundation but is mature (20K+ stars, prior art). It is one of the canonical paths, with extra caveats in unofficial-runtime-bridges guidance.
 
-Single-bridge constraint: Blender accepts one MCP bridge session per Blender instance. Do not run Path 1 + Path 2 concurrently against the same Blender instance.
+Single-bridge constraint: Blender accepts one MCP bridge session per Blender instance. Do not run Path 1 + Path 2 concurrently against the same Blender instance on `localhost:9876` (side-by-side on separate instances via per-instance `--port 9877` is supported upstream).

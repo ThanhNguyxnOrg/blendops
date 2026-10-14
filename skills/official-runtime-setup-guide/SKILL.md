@@ -75,8 +75,8 @@ Define a safe, official-runtime-only setup path for users/agents before runtime 
 - This skill does not provide custom CLI/MCP/addon runtime.
 - This skill recognizes **two MCP execution paths plus a CLI fallback appendix** (see `../../docs/runtime-stack-strategy.md`):
   - **Path 1 — Official Blender Lab MCP** (Lab add-on + Lab server installed in Blender 5.1+, hosted from either (a) Anthropic Blender Connector in Claude Desktop OR (b) any other MCP client configured manually). Anthropic Connector is **not** standalone — Anthropic's tutorial step 2 tells you to install the Lab add-on inside Blender, so Lab is required for Path 1 regardless of host. Sources: https://claude.com/resources/tutorials/using-the-blender-connector-in-claude (host a), https://www.blender.org/lab/mcp-server/ (Blender side, both hosts).
-  - **Path 2 — Community `ahujasid/blender-mcp`** (different `addon.py` + server via `uvx blender-mcp`, mature 21K+ stars third-party, min Blender 3.0+). Source: https://github.com/ahujasid/blender-mcp
-  - **CLI fallback (appendix)** — direct `blender --background --python`, no MCP. **Documented upstream** as a first-class Blender CLI surface (stable across LTS releases, used widely in render farms / HPC / CI); BlendOps has no in-repo evidence file yet. Source: https://docs.blender.org/manual/en/latest/advanced/command_line/index.html
+  - **Path 2 — Community `mcp-for-blender` (formerly `blender-mcp`)** (different `addon.py` + server via `uvx mcp-for-blender`, mature 20K+ stars third-party, min Blender 3.0+). Source: https://github.com/ahujasid/mcp-for-blender
+  - **CLI fallback (appendix)** — direct `blender --background --python`, no MCP. Upstream-documented CLI surface (Render/Cycles/Format/Python sections verified in 2.93–5.2 Manuals); BlendOps has no in-repo evidence file yet. Source: https://docs.blender.org/manual/en/latest/advanced/command_line/index.html
 
 ## Operating procedure
 1. Confirm user objective and whether runtime execution is needed now.
@@ -87,21 +87,21 @@ Define a safe, official-runtime-only setup path for users/agents before runtime 
    - Any other MCP client → Path 1 host (b) manual MCP, Path 2, CLI fallback (Anthropic Connector host (a) is Claude Desktop only).
    - No MCP client available → CLI fallback only (note: upstream-documented first-class CLI, but no in-repo evidence file yet).
 5. Confirm the user's installed Blender version against per-path minimums:
-   - **Path 1 (either host) → Blender 5.1+** (Lab add-on `blender_version_min = 5.1.0`). Anthropic's tutorial says "4.2+" but the add-on it requires is 5.1+, so 5.1+ is the binding floor.
+   - **Path 1 (either host) → Blender 5.1+** (Lab page requirement #1: "Blender 5.1 or newer"; manifest literal `5.1.0` pending direct re-read). Anthropic's tutorial says "4.2+" but the add-on it requires is 5.1+, so 5.1+ is the binding floor.
    - Path 2 → Blender 3.0+.
-   - CLI fallback → Blender 4.2+ recommended; documented upstream as first-class Blender CLI; no in-repo evidence file yet.
+   - CLI fallback → Blender 4.2+ recommended; upstream-documented CLI surface; no in-repo evidence file yet.
 6. Apply source-confidence labels (`verified-read` / `linked-only` / `unknown`) to each path reference.
 7. Record local known/unknown setup signals without overclaiming.
 8. Build readiness checklist with explicit pass/warn/block items per chosen path + host.
 9. Mark runtime execution status as Not Run until readiness checker confirms.
 10. Provide upstream links for exact/current setup details per path.
-11. Enforce single-bridge constraint: warn if Path 1 + Path 2 are both configured against the same Blender instance, or if both Path 1 host options (a) and (b) target the same Blender instance.
+11. Enforce single-bridge constraint: warn if Path 1 + Path 2 are both configured against the same Blender instance on `localhost:9876` (side-by-side on separate instances via per-instance `--port 9877` is supported upstream), or if both Path 1 host options (a) and (b) target the same Blender instance.
 12. Summarize what is verified vs linked-only and what to do next.
 
 ## Decision tree
 - If user only needs planning now → planning mode; keep runtime Not Run.
-- If user is on Claude Desktop and wants lowest friction → Path 1 host (a) Anthropic Connector. Still install Lab add-on in Blender 5.1+.
-- If user is on Claude Desktop but cannot use the Connector toggle → Path 1 host (b) manual MCP via Settings → Developer → Edit Config.
+- If user is on Claude Desktop and wants lowest friction → Path 1 host (a) Anthropic Connector. Still install Lab add-on in Blender 5.1+. Start via Edit → Preferences → Add-ons → BlenderMCP → "start MCP server", or via the 3D Viewport `N` → BlenderMCP tab.
+- If user is on Claude Desktop but cannot use the Connector toggle → Path 1 host (b) manual MCP via Settings → Developer → Edit Config. Start via Preferences flow or `N`-panel flow (same add-on).
 - If user is on a non-Claude-Desktop MCP client → Path 1 host (b) manual MCP, OR Path 2 if simpler.
 - If user wants Hyper3D/Hunyuan3D/Poly Haven/Sketchfab integrations or is on Blender 3.x/4.x → Path 2 (read `../../docs/unofficial-runtime-bridges.md` first).
 - If MCP is unavailable or scripted batch processing fits the task → CLI fallback (note: documented upstream, no in-repo evidence file yet).
@@ -199,5 +199,5 @@ Define a safe, official-runtime-only setup path for users/agents before runtime 
 - Path 2 caveats: ../../docs/unofficial-runtime-bridges.md
 - Path 1 host (a) source — Anthropic Connector: https://claude.com/resources/tutorials/using-the-blender-connector-in-claude
 - Path 1 Blender-side source — Lab MCP (required for both hosts): https://www.blender.org/lab/mcp-server/
-- Path 2 source: https://github.com/ahujasid/blender-mcp
+- Path 2 source: https://github.com/ahujasid/mcp-for-blender
 - CLI fallback source (upstream-documented first-class CLI; no in-repo evidence file yet): https://docs.blender.org/manual/en/latest/advanced/command_line/index.html

@@ -34,7 +34,7 @@ Remove fallback instruction files and restore backups.
 
 ## Runtime boundary
 
-Skill install != runtime setup.
+Skill install != runtime setup. For Blender execution this tool would be a Path 1 host-(b) manual-MCP host or Path 2 host; setup is separate — see `docs/external-runtime-setup.md`. Skill install here never configures runtime.
 
 ## What not to claim
 

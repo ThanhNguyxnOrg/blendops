@@ -6,7 +6,7 @@ Status/confidence: Draft v0, linked-only
 
 Zed is an editor with **native MCP support** (Tools and Prompts; Resources and Sampling not yet). BlendOps install for Zed is **project-local** plus **MCP server config in `settings.json` or via Zed extensions**.
 
-For Blender execution, Zed acts as the **MCP host** (Path 1 host b — manual MCP, or Path 2 — community `ahujasid/blender-mcp`).
+For Blender execution, Zed acts as the **MCP host** (Path 1 host b — manual MCP, or Path 2 — community `mcp-for-blender` (formerly `blender-mcp`)).
 
 ## Copy/paste prompt
 
@@ -49,7 +49,7 @@ Artifact status: Not Produced.
   "context_servers": {
     "blender": {
       "command": "uvx",
-      "args": ["blender-mcp"]
+      "args": ["mcp-for-blender"]
     }
   }
 }
@@ -69,7 +69,7 @@ Skill install != runtime setup.
 
 For Blender runtime via Zed as MCP host:
 - **Path 1 (Lab MCP)** — Blender 5.1+ + Lab add-on + Lab server. Anthropic Connector is Claude Desktop only.
-- **Path 2 (community `ahujasid/blender-mcp`)** — Blender 3.0+ + `addon.py` + `uvx blender-mcp`.
+- **Path 2 (community `mcp-for-blender` (formerly `blender-mcp`))** — Blender 3.0+ + `addon.py` + `uvx mcp-for-blender`.
 - **CLI fallback (appendix)** — Documented upstream as a first-class Blender CLI surface (stable across LTS releases); no in-repo evidence file yet.
 
 See [`docs/runtime-stack-strategy.md`](../runtime-stack-strategy.md).

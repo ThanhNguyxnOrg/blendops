@@ -29,7 +29,7 @@ When Blender execution is needed from Claude app/Desktop, pick one of the runtim
   - Host (a): Anthropic Blender Connector toggle in Settings → Connectors → Blender → Enable (one-click).
   - Host (b): Manual MCP client config in Settings → Developer → Edit Config (`mcpServers` JSON pointing at the Lab `.mcpb` bundle).
   Practical floor: **Blender 5.1+** (Lab add-on manifest). Anthropic's "4.2+" prerequisite is misleading because the Lab add-on it requires is 5.1+. Anthropic Connector is **not** standalone — Lab add-on inside Blender is required either way.
-- **Path 2 — Community Blender MCP (`ahujasid/blender-mcp`)**. `uvx blender-mcp` + `addon.py`. Blender 3.0+. Mature 21K+ stars third-party; read [unofficial-runtime-bridges.md](./unofficial-runtime-bridges.md) before use.
+- **Path 2 — Community Blender MCP (`ahujasid/blender-mcp`)**. `uvx blender-mcp` + `addon.py`. Blender 3.0+. Mature 20K+ stars third-party; read [unofficial-runtime-bridges.md](./unofficial-runtime-bridges.md) before use.
 - **CLI fallback (appendix)** — direct `blender --background --python`. **Documented upstream** as a first-class Blender CLI surface; no in-repo evidence file yet.
 
 Run a read-only request before any mutation/render/export, regardless of path.

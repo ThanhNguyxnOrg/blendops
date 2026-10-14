@@ -24,7 +24,7 @@ BlendOps recognizes 3 fundamentally different consumer types: **chat UI with Ski
 
 ### 2) Coding agents (project-local install + can host MCP for Blender) — 21 targets
 
-All of these accept BlendOps via **project-local files** (`BLENDOPS.md`, `skills/`, `laws/`, `packs/`, optional tool-native paths) and can host MCP for Blender via Path 1 host (b) Lab MCP or Path 2 community `ahujasid/blender-mcp`. They differ in MCP config syntax, native skill-loader maturity, and BlendOps confidence labels — but the consumer model is the same.
+All of these accept BlendOps via **project-local files** (`BLENDOPS.md`, `skills/`, `laws/`, `packs/`, optional tool-native paths) and can host MCP for Blender via Path 1 host (b) Lab MCP or Path 2 community `mcp-for-blender` (formerly `blender-mcp`). They differ in MCP config syntax, native skill-loader maturity, and BlendOps confidence labels — but the consumer model is the same.
 
 | Target | Doc | Tool-native skill path | MCP config location | Confidence |
 |---|---|---|---|---|

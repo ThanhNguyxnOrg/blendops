@@ -104,7 +104,7 @@ This skill is BlendOps-specific (no direct analog in Anthropic Superpowers or BM
 
 This skill does not download, generate, or install any asset. It does not run Blender, configure any MCP path, or touch the network. It produces a plan in markdown.
 
-If the chosen strategy is "generative" via Path 2 (community `ahujasid/blender-mcp` integrates Hyper3D / Hunyuan3D), this skill notes that the actual generation happens in a runtime step under that path with the per-path caveats (see `docs/unofficial-runtime-bridges.md`).
+If the chosen strategy is "generative" via Path 2 (community `mcp-for-blender` (formerly `blender-mcp`) integrates Hyper3D / Hunyuan3D), this skill notes that the actual generation happens in a runtime step under that path with the per-path caveats (see `docs/unofficial-runtime-bridges.md`).
 
 ## Operating procedure
 
@@ -145,7 +145,7 @@ If the chosen strategy is "generative" via Path 2 (community `ahujasid/blender-m
 ### Runtime-ready mode
 
 - plan stays text-only; runtime steps consume the plan
-- if generative strategy chosen, route to runtime readiness checker first to confirm Path 2 (`ahujasid/blender-mcp` Hyper3D / Hunyuan3D integrations) is configured
+- if generative strategy chosen, route to runtime readiness checker first to confirm Path 2 (`mcp-for-blender` (formerly `blender-mcp`) Hyper3D / Hunyuan3D integrations) is configured
 
 ### Blocked runtime mode
 

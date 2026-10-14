@@ -73,7 +73,7 @@ Embedded template includes explicit Runtime + Artifact states.
 
 ## Official runtime boundary
 
-Documentation skill — does not execute Blender. Must preserve Path 1 / Path 2 / CLI appendix distinctions; Path 2 references remain community third-party; CLI appendix references remain **first-class** upstream with **no in-repo evidence file yet** unless this report becomes one.
+Documentation skill — does not execute Blender. Must preserve Path 1 / Path 2 / CLI appendix distinctions; Path 2 references remain community third-party; CLI appendix references remain upstream-documented with **no in-repo evidence file yet** unless this report becomes one.
 
 ## Operating procedure
 

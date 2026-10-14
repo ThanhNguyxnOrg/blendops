@@ -27,11 +27,11 @@ _Last updated: 2026-05-09 (Batches 7+8 complete — 48 skills shipped, 3x baseli
 
 | Path | Owner | Status (upstream + this operator) | BlendOps' role |
 |---|---|---|---|
-| **Path 1 — Lab MCP** (Lab add-on + Lab server, Blender 5.1+) | Blender Foundation ([blender.org/lab/mcp-server](https://www.blender.org/lab/mcp-server/)) | ✅ User-reported verified by repo owner (2026-04-29 read-only smoke + 2026-05-09 full path) | Redirect via per-target install docs. Stability is upstream's claim. |
+| **Path 1 — Lab MCP** (Lab add-on + Lab server, Blender 5.1+) | Blender Foundation ([blender.org/lab/mcp-server](https://www.blender.org/lab/mcp-server/)) | ✅ User-reported verified by repo owner — operator statement, does not promote eval scope (2026-04-29 read-only smoke + 2026-05-09 full path) | Redirect via per-target install docs. Stability is upstream's claim. |
 | Path 1 host (a) — **Anthropic Blender Connector** | Anthropic ([claude.com tutorial](https://claude.com/resources/tutorials/using-the-blender-connector-in-claude)) | ✅ Documented upstream | Redirect from `docs/install/claude-desktop.md`. |
 | Path 1 host (b) — **Manual MCP client config** (Cursor, Claude Code, Codex, OpenCode, Cline, …) | Each MCP client | ✅ Documented upstream per client | Redirect from per-target install doc. |
-| **Path 2 — Community `ahujasid/blender-mcp`** (Blender 3.0+) | `ahujasid` community ([21K+ stars repo](https://github.com/ahujasid/blender-mcp)) | ✅ User-reported verified by repo owner (2026-05-08, reconfirmed 2026-05-09) | Redirect via `docs/unofficial-runtime-bridges.md` + install docs. |
-| **CLI fallback** (`blender --background --python ...`) | Blender Foundation ([CLI manual](https://docs.blender.org/manual/en/latest/advanced/command_line/index.html)) | ✅ Decades-stable upstream first-class CLI surface | Redirect; CLI compatibility considerations table in `docs/runtime-stack-strategy.md`. |
+| **Path 2 — Community `mcp-for-blender` (formerly `blender-mcp`)** (Blender 3.0+) | `ahujasid` community ([20K+ stars repo](https://github.com/ahujasid/mcp-for-blender)) | ✅ User-reported verified by repo owner — operator statement, does not promote eval scope (2026-05-08, reconfirmed 2026-05-09) | Redirect via `docs/unofficial-runtime-bridges.md` + install docs. |
+| **CLI fallback** (`blender --background --python ...`) | Blender Foundation ([CLI manual](https://docs.blender.org/manual/en/latest/advanced/command_line/index.html)) | ✅ Upstream-documented CLI surface | Redirect; CLI compatibility considerations table in `docs/runtime-stack-strategy.md`. |
 
 ### Optional operator-side provenance (not blockers)
 
@@ -41,7 +41,7 @@ _Last updated: 2026-05-09 (Batches 7+8 complete — 48 skills shipped, 3x baseli
 | `npx blendops` installer | Spec only at `docs/install/installer-spec.md`. Future Phase 4 work, deliberately deferred. | — |
 | Marketplace / plugin listing | Future Phase work. Gated on upstream listing acceptance. | — |
 
-**Bottom line**: clone the repo today → paste 30-second prompt → agent auto-detects and installs/prepares ZIPs → plan a scene with **48 skills** → follow per-target install doc to enable an upstream runtime path → drive Blender via Path 1 / Path 2 (both verified by the repo owner) or CLI (decades-stable). Skills roadmap **48/48** complete (`v0.5.0-draft`). Runtime paths remain **upstream's deliverable**, not BlendOps'.
+**Bottom line**: clone the repo today → paste 30-second prompt → agent auto-detects and installs/prepares ZIPs → plan a scene with **48 skills** → follow per-target install doc to enable an upstream runtime path → drive Blender via Path 1 / Path 2 (both user-reported verified by the repo owner — operator statement) or CLI (upstream-documented). Skills roadmap **48/48** complete (`v0.5.0-draft`). Runtime paths remain **upstream's deliverable**, not BlendOps'.
 
 ---
 
@@ -224,7 +224,7 @@ Roadmap target reached. Each batch adds 4 new Expanded Draft v0 skills (`SKILL.m
 - [x] **Batch 7** Recipe / pack operations — `recipe-fit-assessor`, `pack-prerequisite-checker`, `workflow-stage-router`, `acceptance-criteria-builder` (40 → 44).
 - [x] **Batch 8** Runtime path discipline — `runtime-path-picker`, `path-one-host-outline`, `cli-appendix-job-outline`, `runtime-attempt-report-writer` (44 → 48, tagged `v0.5.0-draft`).
 
-GitHub Releases shipped at v0.4.0-draft (40 ZIP assets) and v0.5.0-draft (48 ZIP assets). `npm run docs:check` passes 342 active markdown files. `npm run skills:export` produces 48 ZIPs + 48 Claude Code folders deterministically. **Roadmap 48/48 = 3x baseline target reached.**
+GitHub Releases shipped at v0.4.0-draft (40 ZIP assets) and v0.5.0-draft (48 ZIP assets). `npm run docs:check` passes 352 active markdown files (see script footer count). `npm run skills:export` produces 48 ZIPs + 48 Claude Code folders deterministically. **Roadmap 48/48 = 3x baseline target reached.**
 
 ### ✅ Phase 2.13: Portable skill system architecture
 - [x] create canonical skill system guide (`docs/skill-system.md`)
@@ -249,7 +249,7 @@ GitHub Releases shipped at v0.4.0-draft (40 ZIP assets) and v0.5.0-draft (48 ZIP
 - [x] prepare runtime availability checklist without claiming runtime execution (`docs/evals/runtime-availability-checklist.md`)
 - [x] prepare Phase 3.3 pre-runtime release readiness rollup (`docs/release-readiness-rollup-v0.md`)
 - [x] record Path 1 read-only smoke test (`docs/evals/blender-connector-read-only-smoke-test.md`; likely Anthropic Connector host)
-- [x] settle final runtime model after upstream re-read 2026-05-08: 2 MCP execution paths (Path 1 = Lab MCP with hosts a/b, Path 2 = community `ahujasid`) + CLI fallback appendix (documented upstream as first-class Blender CLI surface; no in-repo evidence file yet). Earlier 3-stack + 4-route drafts are superseded; see `docs/runtime-stack-strategy.md` for the corrected attribution history
+- [x] settle final runtime model after upstream re-read 2026-05-08: 2 MCP execution paths (Path 1 = Lab MCP with hosts a/b, Path 2 = community `mcp-for-blender`) + CLI fallback appendix (upstream-documented CLI surface; no in-repo evidence file yet). Earlier 3-stack + 4-route drafts are superseded; see `docs/runtime-stack-strategy.md` for the corrected attribution history
 - [x] update eval docs to the 2-path + CLI appendix model (`docs/evals/{official-runtime-manual-eval-packet,official-runtime-verification-criteria,runtime-availability-checklist}.md` legacy mapping notes; `docs/evals/blender-connector-read-only-smoke-test.md` re-attributed)
 - [x] draft and link multi-agent install and distribution strategy docs without claiming package or marketplace availability
 - [x] complete runtime stack model cleanup across public docs (every doc, skill, law, bundle, and the CI guard now use the same 2-path + CLI appendix model)
@@ -270,10 +270,10 @@ GitHub Releases shipped at v0.4.0-draft (40 ZIP assets) and v0.5.0-draft (48 ZIP
 These are useful for any operator who wants a **captured in-repo eval record** under `docs/evals/`, but they are **not** items BlendOps owes to ship. BlendOps publishes the skills layer; runtime paths are upstream-owned.
 
 - [ ] Capture Path 1 in-repo evidence file (`docs/evals/path-1-recipe-cyberpunk-shoe-YYYY-MM-DD.md`) — run a recipe via Path 1 (host a Anthropic Connector OR host b manual MCP). Record `blender --version`, Lab MCP add-on version, MCP server source/commit, MCP host product+build, exact tool names + responses, artifacts.
-- [ ] Capture Path 2 in-repo evidence file (`docs/evals/path-2-ahujasid-readonly-YYYY-MM-DD.md`) — run a recipe via `ahujasid/blender-mcp`. Template at `docs/evals/path-2-ahujasid-readonly-template.md`.
+- [ ] Capture Path 2 in-repo evidence file (`docs/evals/path-2-ahujasid-readonly-YYYY-MM-DD.md`) — run a recipe via `mcp-for-blender` (formerly `blender-mcp`). Template at `docs/evals/path-2-ahujasid-readonly-template.md`.
 - [ ] Capture CLI fallback in-repo evidence file (`docs/evals/cli-fallback-recipe-...-YYYY-MM-DD.md`) — run a script via `blender --background --python ...`. Pure provenance; the CLI itself is upstream-stable.
 
-Status without these files: **skills layer still complete and shippable**. Runtime path stability is upstream's claim, not ours. Path 1 + Path 2 are user-reported verified by the repo owner; CLI is decades-stable upstream.
+Status without these files: **skills layer still complete and shippable**. Runtime path stability is upstream's claim, not ours. Path 1 + Path 2 are user-reported verified by the repo owner (operator statement, does not promote eval scope); CLI is upstream-documented.
 
 ## 🔵 Future work (deliberately deferred)
 

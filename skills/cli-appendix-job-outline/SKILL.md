@@ -66,8 +66,9 @@ Structure **CLI fallback appendix** jobs (batch render, batch export, scripted s
 ### Evidence / caveat output
 
 ```txt
-Runtime status: Not Run | Attempted | Produced | Verified | Failed | Blocked / Not Run
-Artifact status: Not Run | Not Produced | Produced | Verified | Failed
+Runtime status: Not Run | Attempted | Produced | Verified | Failed
+Artifact status: Not Produced | Produced | Verified | Failed
+Blockers: <separate line>
 Evidence used: <CLI logs when available>
 Limitations: no viewport Grab; script args via `--` separator per upstream docs
 ```
@@ -81,7 +82,7 @@ Limitations: no viewport Grab; script args via `--` separator per upstream docs
 
 ## Official runtime boundary
 
-Planning outline — BlendOps does not execute Blender. CLI fallback appendix is documented upstream as a **first-class** Blender CLI surface; BlendOps has **no in-repo evidence file yet**. Stay truthful: MCP paths remain Path 1 / Path 2 when interactivity matters.
+Planning outline — BlendOps does not execute Blender. CLI fallback appendix is upstream-documented CLI surface (Render/Cycles/Format/Python sections verified in 2.93-5.2 Manuals); BlendOps has **no in-repo evidence file yet**. Stay truthful: MCP paths remain Path 1 / Path 2 when interactivity matters.
 
 ## Operating procedure
 

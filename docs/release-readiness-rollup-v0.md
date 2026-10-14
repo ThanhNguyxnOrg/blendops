@@ -138,7 +138,7 @@ No current repository doc should claim runtime compatibility confirmed, stable r
 4. Runtime path strategy uses the 2-path + CLI appendix model. Path 1 = Official Blender Lab MCP (host: Anthropic Connector OR manual MCP, both require Blender 5.1+). Path 2 = community `ahujasid/blender-mcp` (Blender 3.0+). CLI fallback is appendix only — documented upstream as first-class Blender CLI surface, no in-repo evidence file yet.
 5. The 2026-04-29 read-only smoke test is consistent with Path 1, host (a) Anthropic Connector. It does not cover mutation/render/export, so full Path 1 eval remains `Not Run`. Repo owner verbally reconfirmed 2026-05-09 that Path 1 + Path 2 both work in their environment for full execution; this is recorded as "User-reported verified" but not promoted to formal eval record without a captured in-repo evidence file.
 6. The Blender 5.1+ floor applies to **all** of Path 1 (whichever host) because the Lab MCP add-on inside Blender requires it. Path 2 needs only Blender 3.0+.
-7. Path 2 (`ahujasid/blender-mcp`) is mature 21K+ stars third-party prior art, not "experimental" — but BlendOps has no formal evidence file with Path 2 tool names yet.
+7. Path 2 (`ahujasid/blender-mcp`) is mature 20K+ stars third-party prior art, not "experimental" — but BlendOps has no formal evidence file with Path 2 tool names yet.
 8. Anthropic Connector is **not** standalone — Anthropic's tutorial step 2 explicitly tells you to install the Lab MCP add-on inside Blender. Docs that imply "Connector only, no Blender-side add-on" are wrong.
 9. Single-bridge constraint: Path 1 + Path 2 must not run concurrently against the same Blender instance.
 10. Runtime manual eval is Not Run for all paths.

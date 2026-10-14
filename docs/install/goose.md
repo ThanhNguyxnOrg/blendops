@@ -4,11 +4,11 @@ Status/confidence: Draft v0, linked-only — but goose has a **dedicated upstrea
 
 ## Recommended near-term install mode
 
-goose is an **open-source AI agent from Block, Inc.** that runs locally and connects to tools via MCP. Crucially, **goose has an official upstream Blender MCP tutorial** ([block.github.io/goose/docs/mcp/blender-mcp](http://block.github.io/goose/docs/mcp/blender-mcp)) covering the community `ahujasid/blender-mcp` (Path 2) installation.
+goose is an **open-source AI agent from Block, Inc.** that runs locally and connects to tools via MCP. Crucially, **goose has an official upstream Blender MCP tutorial** ([block.github.io/goose/docs/mcp/blender-mcp](http://block.github.io/goose/docs/mcp/blender-mcp)) covering the community `mcp-for-blender` (formerly `blender-mcp`) (Path 2) installation.
 
 BlendOps install for goose is **docs-only / reference** + **MCP server config via Standard IO extension**.
 
-For Blender execution, goose acts as the **MCP host** (Path 1 host b — manual MCP, or Path 2 — community `ahujasid/blender-mcp` with goose's documented path).
+For Blender execution, goose acts as the **MCP host** (Path 1 host b — manual MCP, or Path 2 — community `mcp-for-blender` (formerly `blender-mcp`) with goose's documented path).
 
 ## Copy/paste prompt
 
@@ -19,9 +19,9 @@ Requirements:
 - Treat goose as docs-only / reference; goose itself manages its config.
 - Provide BlendOps planning/readiness/evidence/handoff guidance for goose sessions.
 - For Blender runtime via goose as MCP host:
-  - Path 2 (community ahujasid/blender-mcp) is the upstream-documented path: add Blender MCP as an extension in goose with command uvx blender-mcp, type Standard IO. See block.github.io/goose/docs/mcp/blender-mcp.
+  - Path 2 (community `mcp-for-blender`) is the upstream-documented path: add Blender MCP as an extension in goose with command `uvx mcp-for-blender` (or `uvx mcp-for-blender setup` per upstream README), type Standard IO. See block.github.io/goose/docs/mcp/blender-mcp.
   - Path 1 (Lab MCP) is also possible via Standard IO extension pointing at the Lab .mcpb bundle.
-  - Single-bridge constraint: do not run Path 1 + Path 2 against the same Blender session.
+  - Single-bridge constraint: do not run Path 1 + Path 2 against the same Blender session on `localhost:9876` (side-by-side on separate instances via per-instance `--port 9877` is supported upstream).
 - Do not install Blender, do not run Blender.
 
 Report changed files (likely none on goose side, just docs).
@@ -33,8 +33,8 @@ Artifact status: Not Produced.
 
 - Official goose Blender MCP tutorial: http://block.github.io/goose/docs/mcp/blender-mcp.
 - Tutorial PR: https://github.com/block/goose/pull/2122 (merged).
-- Documented setup: install Blender + goose Desktop, add Blender MCP as Standard IO extension with command `uvx blender-mcp`.
-- This documents Path 2 (community `ahujasid/blender-mcp`) explicitly.
+- Documented setup: install Blender + goose Desktop, add Blender MCP as Standard IO extension with command `uvx mcp-for-blender`.
+- This documents Path 2 (community `mcp-for-blender` (formerly `blender-mcp`)) explicitly.
 
 ## Expected files/folders
 
@@ -46,8 +46,8 @@ Artifact status: Not Produced.
 
 1. Install Blender (Path 2 needs 3.0+; Path 1 needs 5.1+).
 2. Install goose Desktop.
-3. In goose: Add Extension → Standard IO. Command: `uvx blender-mcp`.
-4. Per Path 2: install `addon.py` from [`github.com/ahujasid/blender-mcp`](https://github.com/ahujasid/blender-mcp) into Blender. Per Path 1: install Lab MCP add-on per [`blender.org/lab/mcp-server`](https://www.blender.org/lab/mcp-server/).
+3. In goose: Add Extension → Standard IO. Command: `uvx mcp-for-blender`.
+4. Per Path 2: install `addon.py` from [`github.com/ahujasid/mcp-for-blender`](https://github.com/ahujasid/mcp-for-blender) into Blender. Per Path 1: install Lab MCP add-on per [`blender.org/lab/mcp-server`](https://www.blender.org/lab/mcp-server/).
 5. Restart goose so it discovers the extension.
 
 ## Rollback notes
@@ -61,8 +61,8 @@ Skill install != runtime setup.
 
 For Blender runtime via goose as MCP host:
 - **Path 1 (Lab MCP)** — Blender 5.1+ + Lab add-on + Lab server.
-- **Path 2 (community `ahujasid/blender-mcp`)** — **upstream-documented**: Blender 3.0+ + `addon.py` + `uvx blender-mcp`. This is the tutorial path.
-- **CLI fallback (appendix)** — Documented upstream as a first-class Blender CLI surface (stable across LTS releases); no in-repo evidence file yet.
+- **Path 2 (community `mcp-for-blender` (formerly `blender-mcp`))** — **upstream-documented**: Blender 3.0+ + `addon.py` + `uvx mcp-for-blender`. This is the tutorial path.
+- **CLI fallback (appendix)** — upstream-documented CLI surface; no in-repo evidence file yet.
 
 See [`docs/runtime-stack-strategy.md`](../runtime-stack-strategy.md).
 

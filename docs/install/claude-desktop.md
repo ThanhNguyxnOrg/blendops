@@ -20,9 +20,10 @@ If Claude cannot fetch repository subpaths, ask the user to upload the repositor
 
 ## Multiple ZIP requirements
 
-Expected ZIP files (16 total — 10 domain skills + 6 process / discipline skills inspired by Superpowers + BMad):
+Expected ZIP set (one per `skills/*/SKILL.md`, currently 48 — run `npm run skills:export`; do not hand-maintain the list here; inventory: `skills/README.md`):
 
 ```txt
+# Canonical baseline snapshot (16 of 48; full set via skills:export)
 # Help / routing
 blendops-help.zip
 
@@ -94,13 +95,13 @@ Runtime status remains `Not Run`. Artifact status remains `Not Produced`.
 
 ## After importing BlendOps skills — actually running Blender
 
-Importing BlendOps skills into Claude Desktop only loads the BlendOps content layer. To **actually drive Blender from Claude Desktop**, follow [`docs/runtime-stack-strategy.md`](../runtime-stack-strategy.md). Claude Desktop sits on **Path 1 (Lab MCP)** with two host options, **Path 2 (community `ahujasid/blender-mcp`)**, or the **CLI fallback** (Blender's first-class CLI surface, documented upstream; no in-repo evidence file yet).
+Importing BlendOps skills into Claude Desktop only loads the BlendOps content layer. To **actually drive Blender from Claude Desktop**, follow [`docs/runtime-stack-strategy.md`](../runtime-stack-strategy.md). Claude Desktop sits on **Path 1 (Lab MCP)** with two host options, **Path 2 (community `mcp-for-blender` (formerly `blender-mcp`))**, or the **CLI fallback** (Blender's first-class CLI surface, documented upstream; no in-repo evidence file yet).
 
 ### Path 1 — Official Blender Lab MCP (recommended for Claude Desktop)
 
 **Blender-side install (always required, regardless of host option):**
 
-1. Install **Blender 5.1+** (Lab add-on declares `blender_manifest.toml: blender_version_min = "5.1.0"` — earlier Blender will not load it).
+1. Install **Blender 5.1+** (Lab page requirement #1: "Blender 5.1 or newer", indexed text re-confirmed 2026-10-14; manifest literal `5.1.0` pending direct re-read — earlier Blender will not load the add-on).
 2. Open `blender.org/lab/mcp-server` in a browser alongside Blender.
 3. Drag the install link into Blender **twice**: first registers the Blender Lab repository, second installs the Lab MCP add-on. Or download the `.zip` and Install from Disk.
 4. Install/start the **MCP server** part: either the `.mcpb` MCP Bundle (recommended for newer hosts), or from source per the upstream Setup wiki.
@@ -115,20 +116,20 @@ Importing BlendOps skills into Claude Desktop only loads the BlendOps content la
 Source: [claude.com/.../using-the-blender-connector-in-claude](https://claude.com/resources/tutorials/using-the-blender-connector-in-claude).
 
 1. Claude Desktop → Customize → Connectors → search "Blender" → Add.
-2. In Blender's 3D Viewport press `N` → BlenderMCP tab → "Connect to Claude".
+2. Start the connection either via Edit → Preferences → Add-ons → BlenderMCP → "start MCP server" (Anthropic tutorial Step 3, primary) or via the 3D Viewport `N` → BlenderMCP tab → "Connect to Claude" (client-docs flow; Lab-side primary confirmation pending).
 3. Blender tools appear under the connector icon in the chat input. Read-only request first before mutation/render/export.
 
 #### Path 1, host (b) — Manual MCP client config (Claude Desktop's Developer JSON, or any other MCP client)
 
 1. Claude Desktop → Settings → Developer → Edit Config → register the Lab MCP server in `mcpServers` (use the `.mcpb` entry per the Lab Setup wiki).
 2. Restart Claude Desktop so it discovers the new server.
-3. In Blender press `N` → BlenderMCP tab → connect.
+3. Start the connection either via Edit → Preferences → Add-ons → BlenderMCP → "start MCP server" or via the 3D Viewport `N` → BlenderMCP tab → connect.
 
-Same Lab tool surface (`get_blendfile_summary_*`, `get_objects_summary`, …) as host (a). Use this when you do not want the Connector toggle, or when you are on a non-Claude-Desktop MCP client.
+Same Lab tool surface (`get_blendfile_summary_*`, `get_objects_summary`, …) as host (a). Corroborated 2026-10-14 for `get_objects_summary`, `datablocks/missing_files/linked_libraries`, `execute_blender_code`, `*_for_cli` via secondary sample list sourced to `readme_tools.rst`; `path_info` attested only by the in-repo smoke test. Use this when you do not want the Connector toggle, or when you are on a non-Claude-Desktop MCP client.
 
-### Path 2 — Community `ahujasid/blender-mcp` (mature third-party)
+### Path 2 — Community `mcp-for-blender` (formerly `blender-mcp`, mature third-party)
 
-Use this if you want the prior-art community path, want Hyper3D / Hunyuan3D / Poly Haven / Sketchfab integrations, or are on Blender 3.x / 4.x.
+Use this if you want the prior-art community path, want `generate_3d` / Poly Haven / Sketchfab integrations, or are on Blender 3.x / 4.x. Recommended: `uvx mcp-for-blender setup` or the one-line `install.sh` / `install.ps1` from the upstream README; manual `addon.py` download is fallback only (legacy `uvx blender-mcp` still works).
 
 1. Install Blender 3.0+ (uses stable `bpy`).
 2. Install `uv` per upstream instructions.
@@ -136,29 +137,29 @@ Use this if you want the prior-art community path, want Hyper3D / Hunyuan3D / Po
    ```json
    {
      "mcpServers": {
-       "blender": { "command": "uvx", "args": ["blender-mcp"] }
+       "blender": { "command": "uvx", "args": ["mcp-for-blender"] }
      }
    }
    ```
-4. Download `addon.py` from [`github.com/ahujasid/blender-mcp`](https://github.com/ahujasid/blender-mcp), install in Blender via Edit → Preferences → Add-ons → Install, enable it.
+4. Blender add-on: auto-installed by `setup`/`install-addon`, or manual fallback — download `addon.py` from [`github.com/ahujasid/mcp-for-blender`](https://github.com/ahujasid/mcp-for-blender), install in Blender via Edit → Preferences → Add-ons → Install, enable it.
 5. Restart Claude Desktop so it discovers the new MCP server.
 
 Caveats for Path 2 live in [`docs/unofficial-runtime-bridges.md`](../unofficial-runtime-bridges.md). Read them before use.
 
 ### CLI fallback (appendix)
 
-`blender --background --python script.py` per [Blender CLI docs](https://docs.blender.org/manual/en/latest/advanced/command_line/index.html). **Documented upstream** as a first-class Blender CLI surface (stable across LTS releases, used widely in render farms / HPC / CI); BlendOps has no in-repo evidence file yet.
+`blender --background --python script.py` per [Blender CLI docs](https://docs.blender.org/manual/en/latest/advanced/command_line/index.html). Upstream-documented CLI surface (Render/Cycles/Format/Python sections verified in 2.93–5.2 Manuals); BlendOps has no in-repo evidence file yet.
 
 ### Single-bridge constraint
 
-Blender accepts a single MCP bridge session per Blender instance. **Do not run Path 1 + Path 2 concurrently** against the same Blender instance — the second connection silently fails. Within Path 1, do not run host (a) Anthropic Connector and host (b) manual MCP client both pointed at the same Blender instance. Pick one path + host per Blender session.
+Blender accepts a single MCP bridge session per Blender instance on the default port. **Do not run Path 1 + Path 2 concurrently** against the same Blender instance on `localhost:9876` — the second connection silently fails. Side-by-side on separate Blender instances is supported upstream via per-instance `--port 9877` (+ matching port in the add-on panel). Within Path 1, do not run host (a) Anthropic Connector and host (b) manual MCP client both pointed at the same Blender instance. Pick one path + host per Blender session.
 
 ### Blender version summary for Claude Desktop users
 
 | Path | Min Blender | Notes |
 |---|---|---|
 | **Path 1** (Lab MCP, host = Anthropic Connector OR manual MCP) | **5.1+** | Same Lab add-on regardless of host. Anthropic's "4.2+" prerequisite is misleading — the add-on it requires is 5.1+. |
-| **Path 2** (community `ahujasid/blender-mcp`) | 3.0+ | Different stack from Path 1. |
+| **Path 2** (community `mcp-for-blender` (formerly `blender-mcp`)) | 3.0+ | Different stack from Path 1. |
 | **CLI fallback** | 4.2+ recommended | Documented upstream as first-class Blender CLI; no in-repo evidence file yet. |
 
 See [`docs/external-runtime-setup.md`](../external-runtime-setup.md) for the complete per-path setup walkthrough.

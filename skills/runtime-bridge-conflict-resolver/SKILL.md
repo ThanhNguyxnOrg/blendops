@@ -7,7 +7,7 @@ description: Detect and resolve MCP bridge conflicts (Path 1 Lab MCP + Path 2 ah
 
 ## Purpose
 
-Resolve the single-bridge constraint when more than one MCP runtime path is configured against the same Blender instance (or when ports collide). BlendOps documents that Blender accepts only one MCP bridge session per instance — but both Path 1 (Blender Lab MCP `bpype/blender_mcp`) and Path 2 (community `ahujasid/blender-mcp`) commonly bind to a `localhost:9876` range. If both are configured concurrently, the second connection silently fails and downstream planners get inconsistent signals.
+Resolve the single-bridge constraint when more than one MCP runtime path is configured against the same Blender instance (or when ports collide). BlendOps documents that Blender accepts only one MCP bridge session per instance — but both Path 1 (Blender Lab MCP `bpype/blender_mcp`) and Path 2 (community `mcp-for-blender` (formerly `blender-mcp`)) commonly bind to a `localhost:9876` range. If both are configured concurrently, the second connection silently fails and downstream planners get inconsistent signals.
 
 This skill diagnoses the conflict, names the cheapest resolution, and hands off to the readiness checker for re-verification.
 
@@ -24,7 +24,7 @@ This skill is BlendOps-specific (no direct analog in Anthropic Superpowers or BM
 ## When to use
 
 - `official-runtime-readiness-checker` reports inconsistent signals (e.g. "MCP host says connected" but tool calls return wrong tool surface)
-- you see Lab MCP add-on AND `ahujasid/blender-mcp` `addon.py` both installed in Blender
+- you see Lab MCP add-on AND `mcp-for-blender` (formerly `blender-mcp`) `addon.py` both installed in Blender
 - two MCP clients are pointing at the same Blender (e.g. Claude Desktop with Connector + Cursor with manual MCP)
 - a recipe smoke test fails despite a recent successful read-only smoke
 - log shows port collision around `localhost:9876`
@@ -47,7 +47,7 @@ This skill is BlendOps-specific (no direct analog in Anthropic Superpowers or BM
 ## Prerequisites / readiness
 
 - list of configured MCP servers per client (`mcpServers` in client config files)
-- list of installed Blender add-ons inside Blender (Lab MCP add-on + `ahujasid/blender-mcp` `addon.py`)
+- list of installed Blender add-ons inside Blender (Lab MCP add-on + `mcp-for-blender` (formerly `blender-mcp`) `addon.py`)
 - log / port output if available (`netstat -ano | grep 9876` or equivalent)
 - no Blender execution required from this skill
 
@@ -57,7 +57,7 @@ This skill is BlendOps-specific (no direct analog in Anthropic Superpowers or BM
 
 - target Blender instance (path to `blender` binary or "the running session")
 - list of MCP clients that are currently configured to talk to that Blender
-- list of Blender-side add-ons currently enabled (Lab MCP / `ahujasid/blender-mcp` `addon.py`)
+- list of Blender-side add-ons currently enabled (Lab MCP / `mcp-for-blender` (formerly `blender-mcp`) `addon.py`)
 
 ### Optional inputs
 
@@ -69,7 +69,7 @@ This skill is BlendOps-specific (no direct analog in Anthropic Superpowers or BM
 
 - the operator can disable one path or change ports
 - only one path is intended at a time (or explicit port isolation)
-- runtime status is one of `Not Run` / `Attempted` / `Blocked`
+- runtime status is one of `Not Run` / `Attempted` / `Produced` / `Verified` / `Failed` (plus blockers on a separate line)
 
 ## Output schema
 
@@ -105,7 +105,7 @@ This skill does not disable add-ons, edit MCP client configs, change ports, kill
 
 1. Build the bridge state matrix:
    - For each MCP client (Claude Desktop with Connector, Claude Desktop manual MCP, Claude Code, Cursor, Codex, OpenCode, Cline, Continue, Zed, goose, LM Studio, Open WebUI, Ollama, etc.) record whether it is currently registered for this Blender.
-   - For Blender-side: record whether Lab MCP add-on is enabled, and whether `ahujasid/blender-mcp` `addon.py` is enabled.
+   - For Blender-side: record whether Lab MCP add-on is enabled, and whether `mcp-for-blender` (formerly `blender-mcp`) `addon.py` is enabled.
    - Record ports if known.
 2. Identify the intended path from the user / brief / readiness checker.
 3. Identify residual / unintended bridges:
@@ -113,7 +113,7 @@ This skill does not disable add-ons, edit MCP client configs, change ports, kill
    - Two MCP clients pointing at the same Blender → conflict.
    - Two servers binding the same port → conflict.
 4. Propose the cheapest fix:
-   - If only Path 1 intended: disable `ahujasid/blender-mcp` addon.py inside Blender; unregister `uvx blender-mcp` from MCP client config; restart MCP client.
+   - If only Path 1 intended: disable `mcp-for-blender` (formerly `blender-mcp`) addon.py inside Blender; unregister `uvx mcp-for-blender` from MCP client config; restart MCP client.
    - If only Path 2 intended: disable Lab MCP add-on inside Blender; if Anthropic Connector is on, also disable that toggle; restart Claude Desktop.
    - If both wanted on different Blender instances: explicit port isolation, separate Blender processes, separate workspaces.
 5. State explicit `do-not` reminders for the operator.
@@ -192,7 +192,7 @@ This skill does not disable add-ons, edit MCP client configs, change ports, kill
 
 ## Good examples
 
-- "Bridge matrix: Lab MCP add-on enabled (Blender), `ahujasid/blender-mcp` `addon.py` also enabled (Blender), Claude Desktop has Anthropic Connector ON, Claude Desktop also has `mcpServers.blender = uvx blender-mcp`. Conflict: 2 Blender-side bridges + 2 host options (a) and (b) both targeting Path 1 + Path 2 mixed. Intended (per brief): Path 1 host (a) Anthropic Connector. Cheapest fix: disable `ahujasid/blender-mcp` `addon.py` inside Blender; remove the manual `mcpServers.blender` entry; restart Claude Desktop. Do-not: keep both Blender-side add-ons enabled at once. Handoff: `official-runtime-readiness-checker`."
+- "Bridge matrix: Lab MCP add-on enabled (Blender), `mcp-for-blender` (formerly `blender-mcp`) `addon.py` also enabled (Blender), Claude Desktop has Anthropic Connector ON, Claude Desktop also has `mcpServers.blender = uvx mcp-for-blender`. Conflict: 2 Blender-side bridges + 2 host options (a) and (b) both targeting Path 1 + Path 2 mixed. Intended (per brief): Path 1 host (a) Anthropic Connector. Cheapest fix: disable `mcp-for-blender` (formerly `blender-mcp`) `addon.py` inside Blender; remove the manual `mcpServers.blender` entry; restart Claude Desktop. Do-not: keep both Blender-side add-ons enabled at once. Handoff: `official-runtime-readiness-checker`."
 
 ## Bad examples
 

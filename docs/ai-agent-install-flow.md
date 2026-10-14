@@ -66,9 +66,10 @@ Prepare one downloadable ZIP per canonical skill from:
 skills/*/SKILL.md
 ```
 
-Expected ZIP set (16 total — 10 domain + 6 process/discipline skills inspired by Superpowers + BMad):
+Expected ZIP set (one per `skills/*/SKILL.md`, currently 48 — run `npm run skills:export`; do not hand-maintain the list here; inventory: `skills/README.md`):
 
 ```txt
+# Canonical baseline snapshot (16 of 48; full set via skills:export — do not hand-maintain)
 blendops-help.zip
 blender-brainstorming.zip
 intent-to-3d-brief-writer.zip

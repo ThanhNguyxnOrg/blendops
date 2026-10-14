@@ -64,8 +64,9 @@ Explain **Path 1 host surfaces** without implying any host replaces the Blender-
 ### Evidence / caveat output
 
 ```txt
-Runtime status: Not Run | Attempted | Produced | Verified | Failed | Blocked / Not Run
-Artifact status: Not Run | Not Produced | Produced | Verified | Failed
+Runtime status: Not Run | Attempted | Produced | Verified | Failed
+Artifact status: Not Produced | Produced | Verified | Failed
+Blockers: <separate line>
 Evidence used: <doc references>
 Limitations: <unknown host version>
 ```
@@ -79,7 +80,7 @@ Limitations: <unknown host version>
 
 ## Official runtime boundary
 
-Outline only. Path 1 == Blender Lab MCP inside Blender **plus** MCP server wiring from a host. Anthropic Blender Connector can be host **(a)**; any configured MCP client can be host **(b)** — Connector is **not standalone**. Path 2 (`ahujasid/blender-mcp`) is out of scope here.
+Outline only. Path 1 == Blender Lab MCP inside Blender **plus** MCP server wiring from a host. Anthropic Blender Connector can be host **(a)**; any configured MCP client can be host **(b)** — Connector is **not standalone**. Path 2 (`mcp-for-blender` (formerly `blender-mcp`)) is out of scope here.
 
 ## Operating procedure
 

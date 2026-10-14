@@ -6,7 +6,7 @@ Status/confidence: Draft v0, linked-only
 
 LM Studio is a **local LLM runner with native MCP support** since version 0.3.17 ([release notes](https://lmstudio.ai/blog/mcp)). BlendOps install for LM Studio is **docs-only / reference** + **MCP server config in `mcp.json`** (Cursor-compatible JSON notation).
 
-For Blender execution, LM Studio acts as the **MCP host** (Path 1 host b — manual MCP, or Path 2 — community `ahujasid/blender-mcp`).
+For Blender execution, LM Studio acts as the **MCP host** (Path 1 host b — manual MCP, or Path 2 — community `mcp-for-blender` (formerly `blender-mcp`)).
 
 ## Copy/paste prompt
 
@@ -44,7 +44,7 @@ Artifact status: Not Produced.
   "mcpServers": {
     "blender": {
       "command": "uvx",
-      "args": ["blender-mcp"]
+      "args": ["mcp-for-blender"]
     }
   }
 }
@@ -63,7 +63,7 @@ Skill install != runtime setup.
 
 For Blender runtime via LM Studio as MCP host:
 - **Path 1 (Lab MCP)** — Blender 5.1+ + Lab add-on + Lab server. Anthropic Connector is Claude Desktop only; not applicable here.
-- **Path 2 (community `ahujasid/blender-mcp`)** — Blender 3.0+ + `addon.py` + `uvx blender-mcp`.
+- **Path 2 (community `mcp-for-blender` (formerly `blender-mcp`))** — Blender 3.0+ + `addon.py` + `uvx mcp-for-blender`.
 - **CLI fallback (appendix)** — Documented upstream as a first-class Blender CLI surface (stable across LTS releases); no in-repo evidence file yet.
 
 See [`docs/runtime-stack-strategy.md`](../runtime-stack-strategy.md).

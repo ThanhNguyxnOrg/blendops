@@ -7,7 +7,7 @@ description: Choose Path 1 Lab MCP, Path 2 ahujasid bridge, or CLI appendix from
 
 ## Purpose
 
-Produce a **single primary** runtime execution choice among Path 1 (Blender Lab MCP), Path 2 (community `ahujasid/blender-mcp`), or the CLI fallback appendix — with explicit tradeoffs and no false "standalone Connector" claims.
+Produce a **single primary** runtime execution choice among Path 1 (Blender Lab MCP), Path 2 (community `mcp-for-blender` (formerly `blender-mcp`)), or the CLI fallback appendix — with explicit tradeoffs and no false "standalone Connector" claims.
 
 ## Quick start
 
@@ -67,8 +67,9 @@ Produce a **single primary** runtime execution choice among Path 1 (Blender Lab 
 ### Evidence / caveat output
 
 ```txt
-Runtime status: Not Run | Attempted | Produced | Verified | Failed | Blocked / Not Run
-Artifact status: Not Run | Not Produced | Produced | Verified | Failed
+Runtime status: Not Run | Attempted | Produced | Verified | Failed
+Artifact status: Not Produced | Produced | Verified | Failed
+Blockers: <separate line>
 Evidence used: <user-stated constraints only unless logs provided>
 Limitations: <unknown Blender build>
 ```
@@ -82,7 +83,7 @@ Limitations: <unknown Blender build>
 
 ## Official runtime boundary
 
-Decision skill only — does not configure hosts. Must reflect BlendOps model: **two MCP execution paths** plus **CLI fallback appendix** documented upstream as a **first-class** Blender CLI surface; **No in-repo evidence file yet** for BlendOps-run CLI examples. Path 2 is third-party community (`ahujasid/blender-mcp`) — mature prior art with manual configuration responsibility; see `docs/unofficial-runtime-bridges.md`. Never describe Anthropic Connector as replacing the Lab add-on inside Blender.
+Decision skill only — does not configure hosts. Must reflect BlendOps model: **two MCP execution paths** plus **CLI fallback appendix** upstream-documented CLI surface (Render/Cycles/Format/Python sections verified in 2.93-5.2 Manuals); **No in-repo evidence file yet** for BlendOps-run CLI examples. Path 2 is third-party community (`mcp-for-blender` (formerly `blender-mcp`)) — mature prior art with manual configuration responsibility; see `docs/unofficial-runtime-bridges.md`. Never describe Anthropic Connector as replacing the Lab add-on inside Blender.
 
 ## Operating procedure
 

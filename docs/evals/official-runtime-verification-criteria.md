@@ -13,7 +13,7 @@ Date: 2026-04-29 (original); legacy 3-stack labels mapped to 2-path + CLI append
 > |---|---|
 > | Stack 1 — Claude Desktop official connector stack | **Path 1** (Official Blender Lab MCP), with **host option (a)** Anthropic Blender Connector. Lab add-on inside Blender is required either way; **Blender 5.1+** is the binding floor. |
 > | Stack 2 — Official Blender CLI fallback | **CLI fallback (appendix)**. Direct `blender --background --python`. **Documented upstream** as a first-class Blender CLI surface (stable across LTS releases); no in-repo evidence file yet. |
-> | Stack 3 — Optional unofficial third-party bridge stack | **Path 2** (Community `ahujasid/blender-mcp`, mature 21K+ stars third-party, Blender 3.0+). |
+> | Stack 3 — Optional unofficial third-party bridge stack | **Path 2** (Community `ahujasid/blender-mcp`, mature 20K+ stars third-party, Blender 3.0+). |
 >
 > Verification criteria below apply per path. Any verification record produced under these criteria must name the path explicitly (and Path 1 host option a/b when relevant) and record `blender --version`, Blender-side add-on identity, MCP server source/commit, MCP host product, and exact tool names.
 
@@ -26,7 +26,7 @@ BlendOps needs a conservative way to decide when a runtime eval can move from pl
 This document defines the minimum criteria for the **2-path + CLI appendix** model (legacy "Stack 1/2/3" labels still appear in mapping notes only):
 
 1. **Path 1 — Official Blender Lab MCP** (Lab MCP add-on + Lab MCP server installed in Blender 5.1+, hosted from either (a) Anthropic Blender Connector in Claude Desktop, or (b) any other MCP client configured manually). Anthropic Connector is **not** standalone — Lab add-on inside Blender is required either way.
-2. **Path 2 — Community `ahujasid/blender-mcp`** (different add-on/server, mature 21K+ stars third-party, Blender 3.0+).
+2. **Path 2 — Community `ahujasid/blender-mcp`** (different add-on/server, mature 20K+ stars third-party, Blender 3.0+).
 3. **CLI fallback (appendix)** — direct `blender --background --python`. **Documented upstream** as a first-class Blender CLI surface; no in-repo evidence file yet.
 
 Path 1 + Path 2 are user-reported verified by repo owner (Path 1: 2026-04-29 read-only smoke + 2026-05-09 reconfirmation; Path 2: 2026-05-08 statement, reconfirmed 2026-05-09). Mutation/render/export `Not Run` for both — no formal in-repo evidence file yet. CLI fallback is appendix only and not a peer of Path 1/2 — documented upstream as first-class Blender CLI surface; no in-repo evidence file yet.

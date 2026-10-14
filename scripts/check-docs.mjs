@@ -359,9 +359,9 @@ const forbiddenLegacyPatterns = [
 // Note: this allowlist used to ban any mention of ahujasid/blender-mcp outside
 // docs/unofficial-runtime-bridges.md. That ban created a contradictory state
 // because the only currently user-verified runtime path uses `ahujasid/blender-mcp`,
-// and Blender's own MCP ecosystem treats it as canonical prior art (21K+ stars,
-// the only practical path for non-Claude MCP clients). The 4-path runtime route
-// model (see docs/runtime-stack-strategy.md) now lets these terms appear in
+// and Blender's own MCP ecosystem treats it as canonical prior art (30.7k stars
+// on 2026-10-13, now `ahujasid/mcp-for-blender`; the practical path for non-Claude MCP clients). The 2-path + CLI appendix runtime model
+// (see docs/runtime-stack-strategy.md) now lets these terms appear in
 // runtime-stack-strategy, external-runtime-setup, install docs, smoke-test
 // attribution, and the README glossary. We keep a narrower forbidden list:
 // nothing here for now, but the slot is preserved for future bans.
@@ -488,9 +488,9 @@ const forbiddenDocsRelativeRootCollectionLinkPatterns = [
 
 // Note: previous bans on "standalone official MCP" / "Route B — Official MCP path
 // for non-Claude Desktop agents" were dropped. Blender Foundation's own MCP
-// Server (`bpype/blender_mcp` at blender.org/lab/mcp-server/) IS a standalone
-// official MCP that any MCP client can configure. The 4-route runtime model
-// names it Route B explicitly. The remaining ban guards the older naming that
+// Server (`bpype/blender_mcp` at blender.org/lab/mcp-server/) IS an official MCP
+// that any MCP client can configure. The 2-path + CLI appendix runtime model
+// names it Path 1 host option (b) explicitly. The remaining ban guards the older naming that
 // implied "official MCP route" was forbidden conceptually.
 const forbiddenOfficialDirectMcpRoutePatterns = [
   'choose official direct MCP',

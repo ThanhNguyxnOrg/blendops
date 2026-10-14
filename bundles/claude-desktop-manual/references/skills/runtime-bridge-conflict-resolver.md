@@ -1,7 +1,7 @@
 # runtime-bridge-conflict-resolver (reference summary)
 
 ## Purpose
-Diagnose and propose resolutions for Single-bridge constraint conflicts (Path 1 Lab MCP + Path 2 community `ahujasid/blender-mcp` running together, port `9876` collisions, two MCP clients targeting same Blender). BlendOps-specific.
+Diagnose and propose resolutions for Single-bridge constraint conflicts (Path 1 Lab MCP + Path 2 community `mcp-for-blender` (formerly `blender-mcp`) running together, port `9876` collisions, two MCP clients targeting same Blender). BlendOps-specific.
 
 ## When to use
 - readiness checker reports inconsistent signals (e.g. host says connected but tool surface is wrong path)

@@ -25,10 +25,10 @@ Do not duplicate the whole BlendOps repository into the target project unless th
 Preserve the **2 MCP execution paths + CLI fallback appendix** model (see `docs/runtime-stack-strategy.md`):
 
 1. **Path 1 — Official Blender Lab MCP.** Lab MCP add-on + Lab MCP server installed in Blender 5.1+, hosted from either (a) Anthropic Blender Connector in Claude Desktop, or (b) any other MCP client configured manually. Anthropic Connector is **not** standalone — Lab add-on inside Blender is required either way.
-2. **Path 2 — Community `ahujasid/blender-mcp`.** Different add-on/server. Mature 21K+ stars third-party, Blender 3.0+.
+2. **Path 2 — Community `mcp-for-blender` (formerly `blender-mcp`).** Different add-on/server. Mature 20K+ stars third-party, Blender 3.0+.
 3. **CLI fallback (appendix).** Direct `blender --background --python`. No MCP. **Documented upstream** as a first-class Blender CLI surface (stable across LTS releases); no in-repo evidence file yet.
 
-Single-bridge constraint: Blender accepts one MCP bridge session per Blender instance. Do not run Path 1 + Path 2 concurrently against the same Blender instance.
+Single-bridge constraint: Blender accepts one MCP bridge session per Blender instance. Do not run Path 1 + Path 2 concurrently against the same Blender instance on `localhost:9876` (side-by-side on separate instances via per-instance `--port 9877` is supported upstream).
 
 ## Evidence states
 

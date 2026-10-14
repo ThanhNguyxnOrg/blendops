@@ -103,7 +103,7 @@ Status: Not Run | Attempted | Produced | Verified | Failed
 Runtime path: <Path 1 host a (Anthropic Connector) | Path 1 host b (manual MCP) | Path 2 (ahujasid) | CLI fallback | text-only | unknown>
 Blender version: <output of `blender --version` or unknown>
 Blender-side add-on identity: <Lab MCP add-on version | ahujasid addon.py commit | N/A for CLI>
-MCP server source: <Lab .mcpb bundle filename or commit | uvx blender-mcp version | N/A for CLI>
+MCP server source: <Lab .mcpb bundle filename or commit | uvx mcp-for-blender version | N/A for CLI>
 MCP host product: <Claude Desktop (Connector or manual MCP) | Cursor | Codex | OpenCode | Cline | other | N/A for CLI>
 Command/tool/action: <recorded or missing>
 Input/script/scene: <recorded or missing>
@@ -126,8 +126,8 @@ Next safe action: <action>
 This skill can evaluate evidence from the 2-path + CLI appendix runtime model (see ../../docs/runtime-stack-strategy.md):
 
 1. **Path 1 — Official Blender Lab MCP** (Lab add-on + Lab server in Blender 5.1+, hosted from either (a) Anthropic Blender Connector in Claude Desktop, or (b) any other MCP client configured manually). Both hosts share the same Blender-side stack and tool surface.
-2. **Path 2 — Community `ahujasid/blender-mcp`** (different `addon.py` + server via `uvx blender-mcp`, mature 21K+ stars third-party, Blender 3.0+).
-3. **CLI fallback (appendix)** — direct `blender --background --python`, no MCP. **Documented upstream** as a first-class Blender CLI surface (stable across LTS releases); no in-repo evidence file yet.
+2. **Path 2 — Community `mcp-for-blender` (formerly `blender-mcp`)** (different `addon.py` + server via `uvx mcp-for-blender`, mature 20K+ stars third-party, Blender 3.0+).
+3. **CLI fallback (appendix)** — direct `blender --background --python`, no MCP. **Documented upstream** as an upstream-documented CLI surface (stable across LTS releases); no in-repo evidence file yet.
 
 Evidence records must name the path explicitly (and Path 1 host option a/b when relevant) and must include Blender version + Blender-side add-on identity + MCP server source/commit + MCP host product so the record is unambiguously attributable.
 
@@ -195,9 +195,9 @@ Require:
 
 Read-only smoke evidence is not render/export evidence.
 
-### Playbook D: Path 2 (community `ahujasid/blender-mcp`) output
+### Playbook D: Path 2 (community `mcp-for-blender` (formerly `blender-mcp`)) output
 
-- Label as Path 2 with upstream commit/version of `addon.py` and `uvx blender-mcp`.
+- Label as Path 2 with upstream commit/version of `addon.py` and `uvx mcp-for-blender`.
 - Keep separate from Path 1 evidence — Path 2 is third-party from both Anthropic and the Blender Foundation.
 - Record host/port and arbitrary code execution caveats (`execute_blender_code` runs LLM-generated Python with no sandbox).
 - See ../../docs/unofficial-runtime-bridges.md for the full Path 2 caveat write-up.

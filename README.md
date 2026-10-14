@@ -29,7 +29,7 @@
 
 [![Anthropic: Blender Connector](https://img.shields.io/badge/Anthropic-Blender%20Connector%20(Path%201%20host)-d97757.svg?style=flat-square)](https://claude.com/resources/tutorials/using-the-blender-connector-in-claude)
 [![Blender Lab: MCP server](https://img.shields.io/badge/Blender%20Lab-MCP%20server%20(Path%201%20Blender--side)-f5792a.svg?style=flat-square)](https://www.blender.org/lab/mcp-server/)
-[![Community: ahujasid/blender-mcp](https://img.shields.io/badge/Community-ahujasid%2Fblender--mcp%20(Path%202)-181717.svg?style=flat-square&logo=github)](https://github.com/ahujasid/blender-mcp)
+[![Community: ahujasid/mcp-for-blender](https://img.shields.io/badge/Community-ahujasid%2Fmcp--for--blender%20(Path%202)-181717.svg?style=flat-square&logo=github)](https://github.com/ahujasid/mcp-for-blender)
 
 [![Coding agent: Claude Code](https://img.shields.io/badge/coding%20agent-Claude%20Code-d97757.svg?style=flat-square)](./docs/install/claude-code.md)
 [![Coding agent: Cursor](https://img.shields.io/badge/coding%20agent-Cursor-1f6feb.svg?style=flat-square)](./docs/install/cursor.md)
@@ -83,14 +83,14 @@ Human intent (non-Blender user)
 |---|---|
 | 48 skills (baseline + web 3D deep + quality validators + domain planners + process discipline + asset/sourcing + color/format/output + recipe/pack ops + runtime path discipline, …) | **Path 1 — Blender Lab MCP** (Lab add-on + Lab server). Owner: Blender Foundation. Source: [blender.org/lab/mcp-server](https://www.blender.org/lab/mcp-server/) |
 | 4 laws (evidence-before-done, official-runtime-only, no-arbitrary-python-interface, non-blender-user-language) | **Path 1 host (a) — Anthropic Blender Connector** (Claude-Desktop-specific MCP host). Owner: Anthropic. Source: [claude.com/.../using-the-blender-connector-in-claude](https://claude.com/resources/tutorials/using-the-blender-connector-in-claude) |
-| 1 pack (`product-hero-v0`), 3 bundles (skill-package, claude-desktop-manual, generic-project-local) | **Path 2 — Community `ahujasid/blender-mcp`** (different add-on/server). Owner: 21K+ stars community project. Source: [github.com/ahujasid/blender-mcp](https://github.com/ahujasid/blender-mcp) |
+| 1 pack (`product-hero-v0`), 3 bundles (skill-package, claude-desktop-manual, generic-project-local) | **Path 2 — Community `mcp-for-blender` (formerly `blender-mcp`)** (different add-on/server). Owner: 20K+ stars community project. Source: [github.com/ahujasid/mcp-for-blender](https://github.com/ahujasid/mcp-for-blender) |
 | 26 install target docs + 3 mode auto-detect install flow | **CLI fallback** (`blender --background --python ...`). Owner: Blender Foundation. Source: [docs.blender.org/manual/.../command_line](https://docs.blender.org/manual/en/latest/advanced/command_line/index.html) |
 | Skill ZIP / OpenAI YAML / canonical bundle generation (`npm run skills:export` → 48 ZIPs, one per `skills/*/SKILL.md`) | The Blender executable, MCP servers, MCP host clients, OS, GPU drivers, network. |
 
 **What this means for "completeness":**
 
 - The **skills layer** (48 skills = 3× baseline + workflows + install docs + ZIP generation + CI guards) is **complete** at Draft v0 — nothing upstream blocks it. Milestones: tag `v0.4.0-draft` @ 40 skills, tag `v0.5.0-draft` @ 48 skills (full roadmap).
-- Whether the **upstream runtime paths work in your environment** is up to upstream Blender Foundation / Anthropic / `ahujasid` (Path 1 + Path 2 are user-reported verified by the repo owner; CLI is decades-stable upstream). BlendOps **redirects** to them via per-target install docs but does not own their stability.
+- Whether the **upstream runtime paths work in your environment** is up to upstream Blender Foundation / Anthropic / community `mcp-for-blender` (Path 1 + Path 2 are user-reported verified by the repo owner — operator statement, does not promote eval scope; CLI is upstream-documented). BlendOps **redirects** to them via per-target install docs but does not own their stability.
 - The "Full runtime eval: Not Run" / "Artifacts: Not Produced" labels refer to **in-repo provenance evidence files only** — operator-side records under `docs/evals/`. They do **not** mean "the upstream runtime paths don't work" or "BlendOps is incomplete."
 
 ---
@@ -120,8 +120,8 @@ The agent auto-detects which mode applies. Coding agents (Claude Code, Cursor, C
 BlendOps recognizes **2 MCP execution paths + a CLI fallback appendix** ([full doc](./docs/runtime-stack-strategy.md)):
 
 - **Path 1 — Official Blender Lab MCP** (Lab add-on + Lab server installed in Blender 5.1+, hosted from either (a) **Anthropic Blender Connector** in Claude Desktop, or (b) any other MCP client configured manually).
-- **Path 2 — Community `ahujasid/blender-mcp`** (different add-on/server, mature 21K+ stars third-party, Blender 3.0+).
-- **CLI fallback (appendix)** — direct `blender --background --python`. **Documented upstream** as a first-class Blender CLI surface (stable across LTS releases); no in-repo evidence file yet.
+- **Path 2 — Community `mcp-for-blender` (formerly `blender-mcp`)** (different add-on/server, mature 20K+ stars third-party, Blender 3.0+).
+- **CLI fallback (appendix)** — direct `blender --background --python`. Upstream-documented CLI surface; no in-repo evidence file yet.
 
 > [!WARNING]
 > **Anthropic Connector is not standalone.** Anthropic's tutorial step 2 explicitly tells you to install the Blender Lab MCP add-on inside Blender. The Connector is the Claude-Desktop-specific MCP host on top of the Lab stack. **Path 1 needs Blender 5.1+ regardless of host** because of the Lab add-on manifest.

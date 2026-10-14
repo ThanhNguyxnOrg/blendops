@@ -6,7 +6,7 @@ Status/confidence: Draft v0, linked-only
 
 Open WebUI is a **frontend for local LLMs** (Ollama, OpenAI-compatible APIs, etc.) with native MCP support since version 0.6.31 ([docs](http://docs.openwebui.com/features/extensibility/mcp)). BlendOps install for Open WebUI is **docs-only / reference** + **MCP server config via Admin Settings → External Tools**.
 
-For Blender execution, Open WebUI acts as the **MCP host** (Path 1 host b — manual MCP, or Path 2 — community `ahujasid/blender-mcp`). Open WebUI specifically uses the **Streamable HTTP transport**; stdio-only servers may need a bridge package like `mcp-remote`.
+For Blender execution, Open WebUI acts as the **MCP host** (Path 1 host b — manual MCP, or Path 2 — community `mcp-for-blender` (formerly `blender-mcp`)). Open WebUI specifically uses the **Streamable HTTP transport**; stdio-only servers may need a bridge package like `mcp-remote`.
 
 ## Copy/paste prompt
 
@@ -53,7 +53,7 @@ Skill install != runtime setup.
 
 For Blender runtime via Open WebUI as MCP host:
 - **Path 1 (Lab MCP)** — Blender 5.1+ + Lab add-on + Lab server. Default Lab `.mcpb` is stdio; use a bridge to HTTP for Open WebUI.
-- **Path 2 (community `ahujasid/blender-mcp`)** — Blender 3.0+ + `addon.py` + `uvx blender-mcp`. Default is stdio; bridge required.
+- **Path 2 (community `mcp-for-blender` (formerly `blender-mcp`))** — Blender 3.0+ + `addon.py` + `uvx mcp-for-blender`. Default is stdio; bridge required.
 - **CLI fallback (appendix)** — Documented upstream as a first-class Blender CLI surface (stable across LTS releases); no in-repo evidence file yet.
 
 See [`docs/runtime-stack-strategy.md`](../runtime-stack-strategy.md).

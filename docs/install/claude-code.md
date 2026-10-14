@@ -41,6 +41,6 @@ Skill install != runtime setup.
 
 ## What not to claim
 
-- Direct official MCP runtime support from Claude Code.
+- Verified native skill-loader support (use project-local fallback unless verified); runtime execution success; artifact production.
 - Runtime execution success.
 - Artifact production.

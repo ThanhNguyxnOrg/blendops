@@ -6,7 +6,7 @@ Status/confidence: Draft v0, linked-only
 
 Continue.dev is a **VS Code / JetBrains AI assistant** with MCP support in its **agent mode**. BlendOps install for Continue is **project-local** (`BLENDOPS.md`) plus **MCP server config in `.continue/mcpServers/`** (YAML or JSON, supports standard MCP JSON formats from Claude Desktop / Cursor / LM Studio / etc. — paste-and-go).
 
-For Blender execution, Continue acts as the **MCP host** (Path 1 host b — manual MCP, or Path 2 — community `ahujasid/blender-mcp`).
+For Blender execution, Continue acts as the **MCP host** (Path 1 host b — manual MCP, or Path 2 — community `mcp-for-blender` (formerly `blender-mcp`)).
 
 ## Copy/paste prompt
 
@@ -63,7 +63,7 @@ Skill install != runtime setup.
 
 For Blender runtime via Continue as MCP host:
 - **Path 1 (Lab MCP)** — Blender 5.1+ + Lab add-on + Lab server. Anthropic Connector is Claude Desktop only.
-- **Path 2 (community `ahujasid/blender-mcp`)** — Blender 3.0+ + `addon.py` + `uvx blender-mcp`.
+- **Path 2 (community `mcp-for-blender` (formerly `blender-mcp`))** — Blender 3.0+ + `addon.py` + `uvx mcp-for-blender`.
 - **CLI fallback (appendix)** — Documented upstream as a first-class Blender CLI surface (stable across LTS releases); no in-repo evidence file yet.
 
 See [`docs/runtime-stack-strategy.md`](../runtime-stack-strategy.md).
