@@ -145,7 +145,7 @@ Define a safe, official-runtime-only setup path for users/agents before runtime 
 
 | Category | Pass | Warn | Fail |
 |---|---|---|---|
-| Official runtime references | All 3 official refs present | 1-2 refs present with caveat | Non-official path used |
+| Official runtime references | All 3 official refs present | 1-2 refs present with caveat | Path 2 without caveats or CLI fallback as peer path |
 | Source confidence | All refs labeled | Partial labeling | No labeling |
 | Runtime boundary | No install/run overclaim | Mild ambiguity corrected | Runtime claimed working without evidence |
 | Install scope safety | Project-local default + approval guard | Scope partially documented | Global mutation implied by default |
@@ -181,7 +181,7 @@ Define a safe, official-runtime-only setup path for users/agents before runtime 
 ## Anti-patterns
 - skipping required laws or runtime boundary statements
 - claiming runtime/artifact success without evidence
-- using non-official runtime setup paths
+- using Path 2 without caveats or CLI fallback as a peer path
 - producing jargon-heavy final output without explanation
 
 ## Cross-skill handoff
