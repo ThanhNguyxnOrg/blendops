@@ -122,7 +122,7 @@ Four upfront render-config decisions that prevent the most common Blender output
 | `color-management-decision` | Pick color management config (sRGB / Filmic / Standard / AgX / ACEScg) per output context before render | Before render / lookdev pass when consumer color pipeline is known | Expanded Draft v0 | [EVAL](./color-management-decision/EVAL.md) | pipeline-mapping / per-channel-rules / look-comparison |
 | `output-format-decision` | Pick output file format (PNG / JPG / WebP / OpenEXR / TIFF) per use case based on bit depth, compression, transparency | Before render when consumer requires specific format | Expanded Draft v0 | [EVAL](./output-format-decision/EVAL.md) | format-decision-matrix / bit-depth-rules / compression-tradeoffs |
 | `resolution-aspect-decision` | Pick render resolution + aspect ratio per consumer use case; avoid render-then-crop and aspect mismatch | Before render when consumer requires specific aspect / resolution | Expanded Draft v0 | [EVAL](./resolution-aspect-decision/EVAL.md) | aspect-defaults / resolution-defaults / print-vs-screen-rules |
-| `cycles-vs-eevee-decision` | Pick Cycles / Eevee Next / Eevee legacy / Workbench based on quality bar, time budget, feature needs | Before render when engine choice drives feature support and time tradeoff | Expanded Draft v0 | [EVAL](./cycles-vs-eevee-decision/EVAL.md) | engine-feature-matrix / samples-by-quality / gpu-device-rules |
+| `cycles-vs-eevee-decision` | Pick Cycles / Eevee / Workbench based on quality bar, time budget, feature needs | Before render when engine choice drives feature support and time tradeoff | Expanded Draft v0 | [EVAL](./cycles-vs-eevee-decision/EVAL.md) | engine-feature-matrix / samples-by-quality / gpu-device-rules |
 
 ### 📚 Recipe / pack operations (Batch 7, post-v0.3.0-draft)
 
@@ -141,7 +141,7 @@ Four skills that separate Path 1 hosting, Path 2 community bridge, and CLI appen
 
 | Skill | Purpose | Use when | Depth status | Eval | References |
 |---|---|---|---|---|---|
-| `runtime-path-picker` | Choose Path 1 Lab MCP, Path 2 `ahujasid`, or CLI appendix from constraints | User frozen between official Lab stack, community bridge, or headless batch | Expanded Draft v0 | [EVAL](./runtime-path-picker/EVAL.md) | path-constraints-table / decision-tree / anti-patterns |
+| `runtime-path-picker` | Choose Path 1 Lab MCP, Path 2 `mcp-for-blender`, or CLI appendix from constraints | User frozen between official Lab stack, community bridge, or headless batch | Expanded Draft v0 | [EVAL](./runtime-path-picker/EVAL.md) | path-constraints-table / decision-tree / anti-patterns |
 | `path-one-host-outline` | Connector vs manual MCP for Path 1; Lab add-on inside Blender 5.1+ always | Claude Desktop tutorial vs coding-agent MCP config explanations | Expanded Draft v0 | [EVAL](./path-one-host-outline/EVAL.md) | connector-vs-manual-matrix / lab-addon-reminders / host-checklist-template |
 | `cli-appendix-job-outline` | Phased headless job outline; upstream CLI manual is authority | CI / farm / policy-blocked MCP scenarios | Expanded Draft v0 | [EVAL](./cli-appendix-job-outline/EVAL.md) | job-type-matrix / flag-order-reminders / stateless-limitations |
 | `runtime-attempt-report-writer` | Structured attempt report with truth labels for Path 1 / Path 2 / CLI | After connect tries; provenance for evals or stakeholders | Expanded Draft v0 | [EVAL](./runtime-attempt-report-writer/EVAL.md) | truth-label-blocks / attempt-record-template / triage-next-steps |
@@ -183,7 +183,7 @@ Do not create empty placeholder subfolders. Add references/assets/scripts only w
 
 Every real root skill should include:
 
-- YAML frontmatter: `name` (kebab-case, ≤64 chars) and `description` (≤200 chars to clear the Claude.ai upload UI limit). Do not add `version`, `status`, `tags`, or other non-spec keys; they are not part of the [Anthropic Skills frontmatter spec](https://support.anthropic.com/en/articles/12512198-creating-custom-skills) and the docs:check script will reject them in any uploadable SKILL.md.
+- YAML frontmatter: `name` (kebab-case, ≤64 chars) and `description` (≤200 chars to clear the Claude.ai upload UI limit). Upstream requires `name` + `description` and allows additional metadata; BlendOps packaging additionally forbids `version`, `status`, `tags`, `allowed-tools`, and other non-spec keys in any uploadable SKILL.md (Claude.ai upload contract), and the docs:check script enforces the BlendOps subset.
 - `## Purpose`
 - `## When to use`
 - `## When not to use`
@@ -285,8 +285,8 @@ Future packaging should map this canonical source to target surfaces without dup
 | Claude Desktop | Future user-managed skill bundle; connector setup separate. |
 | Claude Code | Project-local first; native path remains environment-scoped. |
 | OpenCode | Research install options before claiming tool-native support. |
-| Cursor | Adapter evidence required before project/rules guidance is promoted. |
-| Codex | Generic project instruction fallback until verified. |
+| Cursor | Project-local first (`.cursor/rules/*.mdc` or `AGENTS.md`, verified-read); native path remains environment-scoped. |
+| Codex | `AGENTS.md` discovery verified; project-local instruction files. |
 | Gemini | Future adapter; not researched enough for support claim. |
 
 No packaged skill, plugin listing, marketplace listing, or release availability should be marked complete until verified.
