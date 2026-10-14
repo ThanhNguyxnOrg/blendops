@@ -95,7 +95,7 @@ No execution claims without evidence. Text-only and blocked modes must remain ex
 
 ### Text-only mode
 - evaluate planning quality only
-- mark artifact statuses Not Run
+- mark artifact statuses Not Produced
 
 ### Runtime-ready mode
 - include real artifact checks when present
@@ -155,7 +155,7 @@ No execution claims without evidence. Text-only and blocked modes must remain ex
 ## Anti-patterns
 - skipping required laws or runtime boundary statements
 - claiming runtime/artifact success without evidence
-- using non-official runtime setup paths
+- using Path 2 without caveats or CLI fallback as a peer path
 - producing jargon-heavy final output without explanation
 
 ## Cross-skill handoff
