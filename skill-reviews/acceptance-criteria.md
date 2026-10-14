@@ -6,8 +6,8 @@ Status: Draft v0
 
 A skill is Draft v0 when:
 - required structure sections exist
-- official runtime boundary is explicit
-- no non-official runtime setup path appears
+- runtime boundary is explicit in 2-path + CLI appendix terms
+- Path 2 appears only with third-party caveats; CLI appendix is never a peer path
 - evidence-before-done language is present
 - non-Blender-user response pattern is present
 - at least one text-only eval prompt exists
@@ -25,7 +25,10 @@ A skill can be considered Active v0 when:
 
 - claiming runtime success without evidence
 - claiming preview/render/GLB exists without evidence
-- non-official runtime setup instructions in active skill content
+- Path 2 setup without third-party caveats in active skill content
+- describing the Anthropic Connector as standalone
+- applying the Blender 5.1+ floor to Path 2 or CLI
+- presenting CLI fallback as a peer execution path without an eval record
 - arbitrary Python as final user-facing interface
 - monolithic cross-domain skill that ignores handoff/gate composition
 
@@ -45,4 +48,4 @@ A skill can be considered Active v0 when:
 
 - “Export succeeded.” (without artifact evidence)
 - “Runtime is configured.” (without checks)
-- “Use non-official MCP fallback for setup.”
+- “Use Path 2 without caveats for setup.”

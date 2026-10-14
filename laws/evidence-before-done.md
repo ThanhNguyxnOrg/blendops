@@ -13,6 +13,11 @@ All skills/workflows/evals/pack outputs.
 - include verification outcomes
 - include caveats for unresolved checks
 
+## Canonical truth states
+- Runtime status: `Not Run`, `Attempted`, `Produced`, `Verified`, `Failed`.
+- Artifact status: `Not Produced` by default; allowed values are `Not Run`, `Not Produced`, `Produced`, `Verified`, `Failed`.
+- Do not invent other runtime states; a blocked environment stays `Not Run` (nothing attempted) or `Attempted` (started but incomplete).
+
 ## Must not do
 - must not claim preview/render/GLB exists without evidence
 - must not mark Ready if evidence is missing

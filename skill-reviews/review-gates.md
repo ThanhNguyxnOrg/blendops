@@ -7,12 +7,12 @@ Status: Draft v0
 - references and summarized learnings only
 - external inspiration must be structural, not verbatim
 
-## Gate 1 — Official runtime boundary
-- Official Blender MCP Server
-- Official Claude Blender Connector
-- Official Blender CLI docs
-- no non-official MCP active path
-- no custom runtime ownership claims
+## Gate 1 — Runtime boundary (2-path + CLI appendix)
+- Path 1 — Official Blender Lab MCP, host (a) Anthropic Connector OR host (b) manual MCP client; Connector is not standalone
+- Path 2 — Community `mcp-for-blender` only with third-party caveats; never as official release evidence
+- CLI fallback is appendix only, never a peer execution path without an in-repo eval record
+- Blender 5.1+ floor applies to Path 1 only; never to Path 2 or CLI
+- single-bridge constraint preserved; no BlendOps-owned runtime claims
 
 ## Gate 2 — Law compliance
 - official-runtime-only
@@ -57,7 +57,8 @@ Each skill must include:
 - text-only mode labeled
 - runtime-ready mode labeled
 - blocked runtime mode labeled
-- artifact status required (`Produced`, `Not Produced`, `Not Run`)
+- runtime status uses the canonical 5 states in `laws/evidence-before-done.md`
+- artifact status required with `Not Produced` default
 
 ## Gate 6 — Non-Blender-user UX
 - plain language first
