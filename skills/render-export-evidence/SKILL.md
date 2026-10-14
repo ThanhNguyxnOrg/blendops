@@ -7,35 +7,39 @@ description: Verify preview/render/GLB artifact truth by recording commands, inp
 
 ## Purpose
 
-Create a conservative evidence ledger for preview, render, export, and GLB claims. Use this skill to decide whether an artifact is `Not Run`, `Attempted`, `Produced`, `Verified`, or `Failed`.
+Classify preview, render, `.blend`, and GLB/export evidence into a conservative, one-row-per-artifact-type evidence ledger.
 
-This skill verifies evidence; it does not run Blender or create artifacts by itself.
+- **Runtime truth states:** `Not Run | Attempted | Produced | Verified | Failed`
+- **Artifact truth states:** `Not Run | Not Produced | Produced | Verified | Failed` (default `Not Produced`; never use `Attempted` for an artifact)
+- **Direction:** Downgrade-only, never upgrade.
+
+Role boundary: `render-export-evidence` classifies artifact evidence into a ledger; `pre-handoff-verification` gates handoffs (confirm-or-downgrade); `preview-report-template-writer` renders the report Markdown; `glb-web-handoff` owns web handoff. This skill does not run Blender or create artifacts.
 
 ## Quick start
 
-1. Identify the claimed artifact or runtime action.
-2. Collect command/tool, input/script/scene, output path, file existence, validation notes, and limitations.
-3. Assign the most conservative valid status.
-4. Hand off to `glb-web-handoff` or response writer only after evidence is clear.
+1. Identify the runtime state (`Not Run | Attempted | Produced | Verified | Failed`) and list one ledger row per claimed artifact type.
+2. Collect command/tool (plus exact command and exit code for CLI), input/script/scene, output path, current-run provenance, file existence, validation notes, and limitations.
+3. Assign the most conservative valid artifact status (`Not Run | Not Produced | Produced | Verified | Failed`, defaulting to `Not Produced`, downgrade-only) and label any Path 2 evidence as `non-release`.
+4. Pass the classified ledger to `pre-handoff-verification` to gate handoffs, `preview-report-template-writer` to render report Markdown, `glb-web-handoff` for web integration, or `non-blender-user-response-writer` for plain-language user responses.
 
 ## When to use
 
 Use this skill when:
 
-- a user asks whether preview/render/GLB/export succeeded
-- an agent needs to summarize artifact evidence
-- a runtime eval produced or attempted files
-- a report needs artifact truth labels
-- a handoff needs proof before user-facing claims
+- a user asks whether a preview, render, `.blend`, or GLB/export was actually produced or verified
+- an agent needs to classify raw runtime outputs into a structured, one-row-per-artifact-type evidence ledger
+- a runtime attempt (`runtime-attempt-report-writer`) recorded commands, tools, or output files that need artifact status labels
+- `pre-handoff-verification` or `preview-report-template-writer` requires classified artifact truth labels as input
 
 ## When not to use
 
 Do not use this skill when:
 
-- the user only needs a scene plan with no runtime/artifact evidence
-- runtime readiness has not been checked and the user wants execution
-- the task is GLB web integration language after evidence is already summarized; use `glb-web-handoff`
-- the request asks to run Blender, render, or export; use runtime/eval flow first
+- the user only needs a scene plan with no runtime or artifact evidence
+- runtime readiness or path selection has not been completed and the user wants setup or routing; use `official-runtime-readiness-checker` or `runtime-path-picker`
+- the task is gating a handoff via confirm-or-downgrade rules; use `pre-handoff-verification`
+- the task is rendering the formatted preview/eval report Markdown; use `preview-report-template-writer`
+- the task is GLB web integration after evidence is already classified and gated; use `glb-web-handoff`
 
 ## Trigger phrases
 
@@ -47,10 +51,11 @@ Do not use this skill when:
 
 ## Prerequisites / readiness
 
-- The claimed artifact type is known: preview, render, Blender file, GLB/export, or handoff record.
-- Any runtime action is already completed or explicitly `Not Run` / `Attempted`.
-- Evidence sources are available or can be marked missing.
-- No artifact claim is accepted from intent, prompt text, or transcript alone.
+- Each claimed artifact type is identified (`preview`, `render`, `blend`, or `GLB/export`) with one ledger row per artifact type.
+- Runtime state is explicitly known (`Not Run | Attempted | Produced | Verified | Failed`).
+- Evidence sources are available or explicitly marked missing.
+- No artifact claim is accepted from intent, prompt text, transcript, or executed Python code alone.
+- Any pre-existing file has verifiable provenance linking it to the current run; otherwise it cannot support `Produced` or `Verified`.
 
 ## Input schema
 
@@ -58,60 +63,62 @@ Do not use this skill when:
 
 | Input | Why it is required |
 |---|---|
-| Artifact type | Status is scoped per artifact. |
-| Runtime path or mode | Separates Path 1 (with host a or b), Path 2, CLI fallback, or text-only mode (see ../../docs/runtime-stack-strategy.md). |
-| Command/tool/action used | Proves how the artifact was attempted. |
+| Artifact type | One ledger row is required per artifact type (`preview`, `render`, `blend`, `GLB/export`). |
+| Runtime path and status | Separates Path 1 (host a or b), Path 2 (`non-release`), CLI fallback (appendix), or text-only mode, and records runtime state (`Not Run | Attempted | Produced | Verified | Failed`). |
+| Command/tool/action used | Proves how the artifact was attempted (for CLI fallback, exact command and exit code are required). |
 | Input/script/scene | Connects output to a specific run. |
-| Output path | Required for file-based claims. |
-| File existence or visible evidence | Required before `Produced` or `Verified`. |
-| Validation notes | Required before `Verified`. |
-| Limitations/failures | Prevents overclaiming. |
+| Output path and current-run provenance | Required for file-based claims and to prove pre-existing files were written by the current run. |
+| File existence or visible evidence | Required before an artifact can be `Produced` or `Verified`. |
+| Validation notes | Required before an artifact can be `Verified`. |
+| Limitations/failures and release label | Prevents overclaiming and enforces `non-release` labeling on Path 2 evidence. |
 
 ### Optional inputs
 
 | Input | Use |
 |---|---|
-| File size/hash | Strengthens generated-file evidence. |
-| Screenshot/render thumbnail path | Supports visible-output claims. |
-| Logs/exit status | Supports CLI or failed-attempt analysis. |
-| User-facing target | Shapes handoff language. |
+| File size/hash or modification timestamp | Strengthens current-run provenance for generated files. |
+| Screenshot/render thumbnail path | Supports visible-output claims as a `preview` artifact row. |
+| Detailed stdout/stderr logs | Supplements failed-attempt or warning analysis alongside required CLI exit codes. |
+| User-facing target | Informs downstream handoff to `pre-handoff-verification`, `preview-report-template-writer`, or `non-blender-user-response-writer`. |
 
 ### Assumptions to confirm
 
-- Runtime eval remains `Not Run` unless an actual runtime action was recorded.
-- Preview/render/GLB remains `Not Produced` unless concrete output evidence exists.
-- `Produced` is not `Verified` until validation notes exist.
+- Runtime status (`Not Run | Attempted | Produced | Verified | Failed`) and artifact status (`Not Run | Not Produced | Produced | Verified | Failed`) are tracked separately.
+- Every artifact defaults to `Not Produced` unless concrete output evidence and current-run provenance exist.
+- Status transitions are strictly downgrade-only, never upgrade.
+- `Produced` is never upgraded to `Verified` without passing validation notes.
+- Path 2 evidence is always labeled `non-release` and never used as release evidence.
 
 ## Output schema
 
 ### Primary output
 
-An artifact evidence ledger.
+A one-row-per-artifact-type evidence ledger separating runtime truth from artifact truth.
 
 ### Secondary output
 
-- status per artifact type
-- missing evidence list
-- next safe action
-- handoff recommendation
+- runtime status and stack identity
+- per-artifact conservative status (`Not Run | Not Produced | Produced | Verified | Failed`)
+- missing evidence and provenance gaps
+- next safe skill handoff (`pre-handoff-verification`, `preview-report-template-writer`, `glb-web-handoff`, or `non-blender-user-response-writer`)
 
 ### Evidence / caveat output
 
 ```txt
-Artifact type: <preview | render | blend | GLB/export | handoff>
-Status: Not Run | Attempted | Produced | Verified | Failed
-Runtime path: <Path 1 host a (Anthropic Connector) | Path 1 host b (manual MCP) | Path 2 (ahujasid) | CLI fallback | text-only | unknown>
+Runtime status: Not Run | Attempted | Produced | Verified | Failed
+Runtime path: <Path 1 host a | Path 1 host b | Path 2 (non-release) | CLI fallback (appendix) | text-only | unknown>
+Release eligibility: <release-eligible | non-release | N/A>
 Blender version: <output of `blender --version` or unknown>
-Blender-side add-on identity: <Lab MCP add-on version | ahujasid addon.py commit | N/A for CLI>
+Blender-side add-on identity: <Lab MCP add-on version | mcp-for-blender addon.py commit | N/A for CLI>
 MCP server source: <Lab .mcpb bundle filename or commit | uvx mcp-for-blender version | N/A for CLI>
 MCP host product: <Claude Desktop (Connector or manual MCP) | Cursor | Codex | OpenCode | Cline | other | N/A for CLI>
-Command/tool/action: <recorded or missing>
-Input/script/scene: <recorded or missing>
-Output path: <path or Not Produced>
-File existence: <yes/no/unknown>
-Validation notes: <notes or missing>
-Limitations: <caveats>
-Next safe action: <action>
+
+Artifact ledger (one row per artifact type):
+| Artifact type | Artifact status (Not Run | Not Produced | Produced | Verified | Failed) | Command / tool (+ CLI exit code) | Output path + current-run provenance | Validation notes | Limitations |
+|---|---|---|---|---|---|
+| <preview | render | blend | GLB/export> | <status> | <exact command + exit code, or MCP tool> | <path + provenance> | <notes or missing> | <caveats> |
+
+Next safe action: <pre-handoff-verification | preview-report-template-writer | glb-web-handoff | non-blender-user-response-writer>
 ```
 
 ## Required laws
@@ -123,43 +130,41 @@ Next safe action: <action>
 
 ## Official runtime boundary
 
-This skill can evaluate evidence from the 2-path + CLI appendix runtime model (see ../../docs/runtime-stack-strategy.md):
+This skill classifies evidence from the 2-path + CLI appendix runtime model (see `../../docs/runtime-stack-strategy.md`):
 
-1. **Path 1 — Official Blender Lab MCP** (Lab add-on + Lab server in Blender 5.1+, hosted from either (a) Anthropic Blender Connector in Claude Desktop, or (b) any other MCP client configured manually). Both hosts share the same Blender-side stack and tool surface.
-2. **Path 2 — Community `mcp-for-blender` (formerly `blender-mcp`)** (different `addon.py` + server via `uvx mcp-for-blender`, mature third-party, Blender 3.0+).
-3. **CLI fallback (appendix)** — direct `blender --background --python`, no MCP. **Documented upstream** as a first-class Blender CLI surface; no in-repo evidence file yet.
+1. **Path 1 — Official Blender Lab MCP** in Blender 5.1+ (add-on manifest literal `blender_version_min = "5.1.0"`), hosted from either (a) Anthropic Connector in Claude Desktop or (b) any manually configured MCP client. The Connector is NOT standalone (Anthropic tutorial step 2 installs the Lab add-on inside Blender; the tutorial prerequisite says "Blender 4.2 or later" but the binding floor is 5.1+). One MCP bridge runs per Blender instance (default port 9876). The 20-tool surface includes `get_blendfile_summary_path_info`, `get_blendfile_summary_datablocks`, `get_objects_summary`, `*_for_cli` variants, and `execute_blender_code`.
+2. **Path 2 — Community `mcp-for-blender` (renamed from `ahujasid/blender-mcp`)**, third-party, Blender 3.0+, nine tools including `get_scene_info` and `execute_blender_code`, one bridge per Blender instance (default port 9876). Allowed only with caveats and **never release evidence** — every Path 2 ledger row must be labeled `non-release`.
+3. **CLI fallback (appendix)** — direct `blender --background --python`, appendix only, never a peer path without an eval record. Documented flags: `--background`, `--python`, `-E/--engine` (run `blender -E help` for exact engine tokens; Eevee token is `BLENDER_EEVEE` on 4.0–4.1 and 5.x, and `BLENDER_EEVEE_NEXT` on 4.2–4.x). CLI evidence requires the exact command and exit code.
 
-Evidence records must name the path explicitly (and Path 1 host option a/b when relevant) and must include Blender version + Blender-side add-on identity + MCP server source/commit + MCP host product so the record is unambiguously attributable.
-
-This skill must not run Blender, render, export GLB, mutate scenes, install runtimes, or promote optional local bridge evidence as official release-eval evidence.
+This skill must not run Blender, render, export GLB, mutate scenes, install runtimes, gate handoffs (`pre-handoff-verification`), or promote Path 2 evidence as release evidence.
 
 ## Operating procedure
 
-1. Name every artifact type in scope.
-2. For each artifact, collect:
-   - command/tool/action used
+1. Record the runtime status (`Not Run | Attempted | Produced | Verified | Failed`) and runtime path/host identity.
+2. Create one ledger row per artifact type in scope (`preview`, `render`, `blend`, `GLB/export`).
+3. For each artifact row, collect:
+   - exact command + exit code (required for CLI) or MCP tool name
    - input/script/scene
    - output path
-   - file existence or visible-output evidence
+   - file existence and provenance linking the file to the current run
    - validation notes
-   - limitations/failures
-3. Assign status using the decision tree.
-4. List missing evidence before any handoff.
-5. Recommend next safe action.
+   - limitations, failures, and `non-release` label if Path 2
+4. Assign conservative artifact status (`Not Run | Not Produced | Produced | Verified | Failed`, default `Not Produced`) using the decision tree (downgrade-only, never upgrade).
+5. Hand the ledger to `pre-handoff-verification` before any user-facing handoff or to `preview-report-template-writer` for Markdown report rendering.
 
 ## Decision tree
 
 ```txt
 No runtime action recorded?
-  → Not Run
-Runtime action recorded but output missing/incomplete?
-  → Attempted or Failed
-Output path/visible evidence exists but validation missing?
-  → Produced
-Output exists and validation notes pass?
-  → Verified
-Runtime/action failed or artifact absent when required?
-  → Failed or Not Produced with reason
+  → Runtime: Not Run | Artifact: Not Run (or default Not Produced)
+Runtime action recorded, but command failed or required artifact is absent/corrupt?
+  → Runtime: Attempted or Failed | Artifact: Failed or Not Produced (never Attempted)
+Transcript/code exists, or file is pre-existing without current-run provenance, or CLI lacks exact command + exit code?
+  → Runtime: Attempted | Artifact: Not Produced (downgrade-only)
+Output file/visible evidence exists with current-run provenance, but validation notes are missing or incomplete?
+  → Artifact: Produced (label non-release if Path 2)
+Output file exists with current-run provenance AND validation notes pass?
+  → Artifact: Verified (label non-release if Path 2; never release evidence)
 ```
 
 ## Playbooks
@@ -167,40 +172,40 @@ Runtime/action failed or artifact absent when required?
 ### Playbook A: Text-only planning output
 
 - Runtime status: `Not Run`.
-- Artifact status: `Not Produced`.
-- Next action: runtime readiness or eval packet.
+- Artifact status: `Not Produced` (default).
+- Next action: `official-runtime-readiness-checker` or `runtime-path-picker`.
 
-### Playbook B: CLI fallback output
-
-Require:
-
-- exact Blender command
-- script/input path
-- output folder
-- generated file paths
-- exit status/logs
-- validation notes
-
-Without generated files, do not claim artifacts.
-
-### Playbook C: Connector output
+### Playbook B: CLI fallback (appendix) output
 
 Require:
 
-- connector action/tool name or UI action
-- Blender-side action notes
-- generated file paths or screenshot/render evidence
+- eval record context (CLI is appendix-only, never a peer path without an eval record)
+- exact `blender --background --python` command (and `-E/--engine` token if specified: `BLENDER_EEVEE` on 4.0–4.1 and 5.x, `BLENDER_EEVEE_NEXT` on 4.2–4.x)
+- CLI exit code (mandatory) and logs
+- script/input path and output path
+- generated file existence with current-run provenance
 - validation notes
-- permission/session caveats
 
-Read-only smoke evidence is not render/export evidence.
+Without the exact command, exit code, and generated file provenance, keep artifact status at `Not Produced` or `Failed`.
 
-### Playbook D: Path 2 (community `mcp-for-blender` (formerly `blender-mcp`)) output
+### Playbook C: Path 1 (Official Blender Lab MCP — host a Connector or host b manual MCP) output
 
-- Label as Path 2 with upstream commit/version of `addon.py` and `uvx mcp-for-blender`.
-- Keep separate from Path 1 evidence — Path 2 is third-party from both Anthropic and the Blender Foundation.
-- Record host/port and arbitrary code execution caveats (`execute_blender_code` runs LLM-generated Python with no sandbox).
-- See ../../docs/unofficial-runtime-bridges.md for the full Path 2 caveat write-up.
+Require:
+
+- Blender 5.1+ (`blender_version_min = "5.1.0"`) and non-standalone Lab add-on + server identity
+- host identity: (a) Anthropic Connector in Claude Desktop or (b) manually configured MCP client
+- recorded Lab MCP tool call (from the 20-tool surface, e.g., `get_blendfile_summary_path_info`, `get_blendfile_summary_datablocks`, `get_objects_summary`, `*_for_cli` variants, or `execute_blender_code`)
+- generated file paths or visible preview/render evidence with current-run provenance
+- validation notes and session/port caveats (single bridge per Blender instance, default port 9876)
+
+Read-only summary tool calls or `execute_blender_code` transcripts alone are not artifact evidence; keep artifacts `Not Produced` until output files are verified.
+
+### Playbook D: Path 2 (community `mcp-for-blender`, formerly `ahujasid/blender-mcp`) output
+
+- Label every ledger row as `Path 2 (non-release)` — Path 2 is third-party (Blender 3.0+, 9-tool surface including `get_scene_info` and `execute_blender_code`) and is **never release evidence**.
+- Record `addon.py` commit/version, `uvx mcp-for-blender` version, single-bridge port (default 9876), and `execute_blender_code` unsandboxed execution caveats.
+- Require the same file existence, current-run provenance, and validation notes before marking `Produced (non-release)` or `Verified (non-release)`.
+- See `../../docs/unofficial-runtime-bridges.md` for full Path 2 caveats.
 
 ## Mode handling
 
@@ -218,16 +223,15 @@ Use when runtime was unavailable; record blockers and keep artifacts `Not Produc
 
 ## Validation checklist
 
-- [ ] Artifact type is named.
-- [ ] Runtime stack/mode is named.
-- [ ] Command/tool/action is recorded or explicitly missing.
-- [ ] Input/script/scene is recorded or explicitly missing.
-- [ ] Output path is recorded or explicitly `Not Produced`.
-- [ ] File existence or visible evidence is recorded.
-- [ ] Validation notes exist before `Verified`.
-- [ ] Limitations/failures are listed.
-- [ ] No unsupported route is treated as official.
-- [ ] No artifact success is claimed from transcript alone.
+- [ ] One ledger row is recorded per artifact type (`preview`, `render`, `blend`, `GLB/export`).
+- [ ] Runtime status (`Not Run | Attempted | Produced | Verified | Failed`) is separated from artifact status (`Not Run | Not Produced | Produced | Verified | Failed`).
+- [ ] Artifact status defaults to `Not Produced`, never uses `Attempted`, and only moves via downgrade-only rules.
+- [ ] Runtime path/host is named (Path 1 host a/b in Blender 5.1+, Path 2 `non-release`, CLI appendix, or text-only).
+- [ ] CLI evidence includes both exact command and exit code.
+- [ ] Path 2 evidence is explicitly labeled `non-release` and excluded from release evidence.
+- [ ] Transcript or `execute_blender_code` code alone is never accepted as artifact evidence.
+- [ ] Pre-existing files have provenance to the current run before `Produced` or `Verified`.
+- [ ] Validation notes exist before any artifact is marked `Verified`.
 
 ## Pass / Warn / Fail rubric
 
@@ -239,29 +243,33 @@ Use when runtime was unavailable; record blockers and keep artifacts `Not Produc
 
 ## Failure handling
 
-- Missing output path → status cannot exceed `Attempted`.
-- Missing file existence/visible evidence → status cannot exceed `Attempted`.
-- Missing validation notes → status cannot exceed `Produced`.
-- Failed command/export → record `Failed` or `Not Produced` with reason.
-- Pre-existing file only → do not claim current run produced it unless provenance links it to the run.
+- Missing output path or missing file/visible evidence → runtime may be `Attempted`, but artifact status cannot exceed `Not Produced` (or `Failed` if the command errored).
+- Transcript or executed code only → artifact status remains `Not Produced`.
+- Pre-existing file without current-run provenance → downgrade artifact status to `Not Produced`.
+- CLI run missing exact command or exit code → downgrade artifact status to `Not Produced` (or `Failed`).
+- Missing validation notes → artifact status cannot exceed `Produced` (downgrade any `Verified` claim to `Produced`).
+- Path 2 evidence presented for release → label `non-release` and block release promotion.
 
 ## Troubleshooting
 
 | Problem | Conservative handling |
 |---|---|
-| Screenshot exists but no render file | Mark preview evidence separately from render file. |
-| GLB file exists but no validation | `Produced`, not `Verified`. |
-| CLI log says success but file missing | `Attempted` or `Failed`, not `Produced`. |
-| Output path unknown | `Attempted`; request path evidence. |
-| Read-only connector smoke passed | Runtime access scoped to read-only; artifacts `Not Produced`. |
+| Screenshot exists but no render file | Record two ledger rows: `preview` (`Produced`/`Verified`) and `render` (`Not Produced`). |
+| GLB file exists with provenance but no validation | Mark GLB artifact `Produced`, not `Verified`. |
+| CLI log says success but file is missing | Runtime `Attempted` or `Failed`; artifact `Not Produced` or `Failed` (never `Attempted`). |
+| CLI output file exists but command or exit code is missing | Downgrade artifact to `Not Produced` until exact command and exit code are provided. |
+| Output path unknown | Runtime `Attempted`; artifact `Not Produced`; request path and provenance evidence. |
+| Pre-existing file found at output path | Artifact `Not Produced` unless timestamp/hash/log provenance proves current run wrote it. |
+| Read-only Lab MCP summary or smoke passed | Runtime scoped to read-only; all output artifacts `Not Produced`. |
+| Path 2 (`mcp-for-blender`) produced valid files | Mark `Produced (non-release)` or `Verified (non-release)`; never treat as release evidence. |
 
 ## Best practices
 
-- Track each artifact type separately.
-- Prefer paths and validation notes over prose claims.
-- Use exact status words.
-- Keep user-facing summary understandable for non-Blender users.
-- Hand off to `glb-web-handoff` only after GLB/export status is known.
+- Maintain strictly one ledger row per artifact type (`preview`, `render`, `blend`, `GLB/export`).
+- Keep runtime states (`Not Run | Attempted | Produced | Verified | Failed`) distinct from artifact states (`Not Run | Not Produced | Produced | Verified | Failed`, default `Not Produced`).
+- Apply downgrade-only status changes; never upgrade an upstream status claim.
+- Require exact command + exit code for CLI fallback and label all Path 2 rows `non-release`.
+- Route classified ledgers to `pre-handoff-verification` to gate handoffs and `preview-report-template-writer` to format Markdown reports before calling `glb-web-handoff` or `non-blender-user-response-writer`.
 
 ## Good examples
 
@@ -277,38 +285,49 @@ Use when runtime was unavailable; record blockers and keep artifacts `Not Produc
 ## User-facing response template
 
 ```txt
-Artifact evidence summary
-- Runtime stack/mode: <state>
-- Preview: <status + path/evidence>
-- Render: <status + path/evidence>
-- GLB/export: <status + path/evidence>
-- Validation: <notes or missing>
-- Limitations: <caveats>
-- Next safe action: <action>
+Artifact evidence ledger
+- Runtime stack/mode: <Path 1 host a | Path 1 host b | Path 2 (non-release) | CLI fallback (appendix) | text-only>
+- Runtime status: <Not Run | Attempted | Produced | Verified | Failed>
+- Release eligibility: <release-eligible | non-release | N/A>
+
+| Artifact type | Artifact status | Command / tool (+ CLI exit code) | Output path + current-run provenance | Validation notes | Limitations |
+|---|---|---|---|---|---|
+| preview | <Not Run | Not Produced | Produced | Verified | Failed> | <cmd/exit or tool> | <path + provenance> | <notes> | <caveats> |
+| render | <Not Run | Not Produced | Produced | Verified | Failed> | <cmd/exit or tool> | <path + provenance> | <notes> | <caveats> |
+| blend | <Not Run | Not Produced | Produced | Verified | Failed> | <cmd/exit or tool> | <path + provenance> | <notes> | <caveats> |
+| GLB/export | <Not Run | Not Produced | Produced | Verified | Failed> | <cmd/exit or tool> | <path + provenance> | <notes> | <caveats> |
+
+- Next safe action: <pre-handoff-verification | preview-report-template-writer | glb-web-handoff | non-blender-user-response-writer>
 ```
 
 ## Anti-patterns
 
-- Treating a planned output as a produced artifact.
-- Treating a prompt transcript as file evidence.
-- Merging preview, render, and GLB into one vague status.
-- Calling optional local bridge evidence official release evidence.
+- Assigning the runtime state `Attempted` to an artifact row instead of `Not Produced` or `Failed`.
+- Upgrading an artifact or runtime status instead of enforcing downgrade-only transitions.
+- Accepting a prompt transcript or `execute_blender_code` snippet alone as artifact evidence.
+- Accepting a pre-existing file without provenance linking it to the current run.
+- Accepting CLI fallback evidence without both the exact command and exit code.
+- Treating Path 2 (`mcp-for-blender`) output as official release evidence or omitting the `non-release` label.
+- Merging `preview`, `render`, `blend`, and `GLB/export` into a single status instead of one row per artifact type.
+- Blurring boundaries with `pre-handoff-verification` (gating handoffs), `preview-report-template-writer` (rendering report Markdown), or `glb-web-handoff` (web handoff).
 
 ## Cross-skill handoff
 
 - Runtime readiness → `../official-runtime-readiness-checker/SKILL.md`
+- Runtime attempt recording → `../runtime-attempt-report-writer/SKILL.md`
 - Scene validation → `../blender-scene-quality-checker/SKILL.md`
+- Handoff gating (confirm-or-downgrade) → `../pre-handoff-verification/SKILL.md`
+- Report Markdown rendering → `../preview-report-template-writer/SKILL.md`
 - GLB/web handoff → `../glb-web-handoff/SKILL.md`
 - User-facing explanation → `../non-blender-user-response-writer/SKILL.md`
 
 ## Non-goals
 
-- Run Blender.
-- Render images.
-- Export GLB.
-- Modify scene data.
-- Install runtime bridges.
-- Publish artifacts.
+- Run Blender, render images, export GLB, or modify scene data.
+- Install or configure runtime bridges.
+- Gate handoffs or perform confirm-or-downgrade release decisions (`pre-handoff-verification`).
+- Render the formatted preview or evaluation report Markdown (`preview-report-template-writer`).
+- Own GLB web integration handoffs (`glb-web-handoff`).
 
 ## References
 
