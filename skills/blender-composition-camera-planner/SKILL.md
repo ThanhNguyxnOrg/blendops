@@ -155,7 +155,7 @@ Planning-only skill; no runtime execution or render claims.
 ## Anti-patterns
 - skipping required laws or runtime boundary statements
 - claiming runtime/artifact success without evidence
-- using non-official runtime setup paths
+- using Path 2 without caveats or CLI fallback as a peer path
 - producing jargon-heavy final output without explanation
 
 ## Cross-skill handoff
