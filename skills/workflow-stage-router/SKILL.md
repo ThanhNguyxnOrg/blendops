@@ -60,14 +60,14 @@ Reduce skill-choice paralysis by mapping **current state → next narrow skill**
 ### Primary output
 
 - current stage name
-- next skill + why
+- single immediate next skill from the locked precedence order + why (or escalation to the precedence owner if a multi-skill clash lacks a locked order, or immediate exit to `pre-handoff-verification` on any failed gate / blocked mode)
 - preconditions checklist for advancing
 
 ### Evidence / caveat output
 
 ```txt
 Runtime status: Not Run | Attempted | Produced | Verified | Failed
-Artifact status: Not Run | Not Produced | Produced | Verified | Failed
+Artifact status: Not Run | Not Produced | Produced | Verified | Failed (defaults to Not Produced; downgrade-only, never upgrade)
 Evidence used: <inventory references>
 Limitations: <unknown state>
 ```
@@ -81,49 +81,60 @@ Limitations: <unknown state>
 
 ## Official runtime boundary
 
-Routing only. If next step is runtime configuration, point to Path 1 / Path 2 / CLI appendix docs — never imply Connector replaces Lab MCP.
+Routing only — no Python and no Blender execution (`execute_blender_code` is never invoked here). If the next step requires runtime selection or configuration, route to `runtime-path-picker`, `official-runtime-setup-guide`, `official-runtime-readiness-checker`, `path-one-host-outline`, or `cli-appendix-job-outline` with these locked boundaries:
+
+- **Path 1 (Official Blender Lab MCP):** Requires Blender 5.1+ (`blender_version_min = "5.1.0"`), hosted via Anthropic Connector in Claude Desktop or a manually configured MCP client. The Connector is not standalone and never replaces the Lab MCP add-on inside Blender (even though the Anthropic tutorial prerequisite text says "Blender 4.2 or later", the binding minimum is 5.1+).
+- **Path 2 (Community `mcp-for-blender`):** Renamed from `ahujasid/blender-mcp`, third-party, Blender 3.0+. Use only with caveats and never as release evidence.
+- **CLI fallback (`blender --background --python`):** Appendix only (`cli-appendix-job-outline`), never a peer path without an evaluation record.
 
 ## Operating procedure
 
-1. Normalize inventory against milestone model.
-2. Walk decision tree.
-3. If multiple equally valid skills, pick narrowest.
-4. Emit handoff template.
+1. Normalize the artifact inventory and runtime state against `references/milestone-model.md`. Default any missing or unverified artifact status to `Not Produced`; apply truth states as downgrade-only (never upgrade).
+2. Enforce the locked precedence rules without re-deciding cross-skill precedence locally:
+   - **Evidence beats assumption**
+   - **Geometry lock before look-dev**
+   - **Export waits for validation**
+3. If any gate has failed or the workflow is in blocked mode, exit immediately to `pre-handoff-verification` — never route forward.
+4. Walk `references/routing-decision-tree.md` to select the single immediate next skill. If multiple skills clash without a locked precedence order, stop and escalate to the precedence owner rather than picking a skill locally.
+5. Emit `references/stage-handoff-template.md`.
 
 ## Mode handling
 
 ### Text-only mode
 
-Assume stated inventory is truthful; flag unverified claims.
+Do not upgrade unverified claims: evidence beats assumption. Keep unverified artifacts at `Not Produced` (downgrade-only, never upgrade) and flag all unverified claims before routing.
 
 ### Runtime-ready mode
 
-Prefer readiness checker before mutation skills when inventory shows no runtime attempt yet user wants mutation.
+Route to `official-runtime-readiness-checker` before any scene planning or mutation-dependent workflow stage when the inventory shows `Runtime status: Not Run` and the user wants runtime changes.
 
 ### Blocked runtime mode
 
-Route to planning/evidence skills only.
+Do not route forward to planning or execution skills. Exit immediately to `pre-handoff-verification` (or route strictly to `runtime-bridge-conflict-resolver` when the block is an active MCP bridge conflict on port 9876).
 
 ## Validation checklist
 
 - [ ] Stage named
-- [ ] Next skill singular primary recommendation
-- [ ] Preconditions listed
-- [ ] Evidence labels preserved
+- [ ] Single immediate next skill selected from locked precedence (no local cross-skill precedence re-decision)
+- [ ] Multi-skill clashes without locked order escalated to precedence owner
+- [ ] Any failed gate or blocked mode exits to `pre-handoff-verification` (never forward)
+- [ ] Preconditions listed (`evidence beats assumption; geometry lock before look-dev; export waits for validation`)
+- [ ] Truth states preserved as downgrade-only with artifacts defaulting to `Not Produced`
 
 ## Pass / Warn / Fail rubric
 
 | Verdict | Criteria |
 |---|---|
-| Pass | Clear next skill + preconditions |
-| Warn | Multiple branches — user must choose priority |
-| Fail | Next skill contradicts evidence state |
+| Pass | Single next skill selected from locked precedence order with clear preconditions and downgrade-only truth states |
+| Warn | Multi-skill clash has no locked precedence order — escalated to precedence owner instead of guessing locally |
+| Fail | Failed gate, blocked mode, or evidence contradiction encountered — mandatory immediate exit to `pre-handoff-verification` (never forward) |
 
 ## Cross-skill handoff
 
 - Pack entry → `../pack-prerequisite-checker/SKILL.md`
+- Runtime readiness check → `../official-runtime-readiness-checker/SKILL.md`
 - Evidence updates → `../render-export-evidence/SKILL.md`
-- Final gate → `../pre-handoff-verification/SKILL.md`
+- Failed gate / blocked mode exit / final gate → `../pre-handoff-verification/SKILL.md`
 
 ## References
 
