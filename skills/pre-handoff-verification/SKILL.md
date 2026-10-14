@@ -22,10 +22,12 @@ This skill **complements** `render-export-evidence` (which classifies artifact e
 
 ## When to use
 
+- `workflow-stage-router` routes here as the final gate before handoff, or exits here on any failed upstream gate to lock in an honest downgraded truth label
+- `blendops-help` routes a user directly to verify an existing deliverable or evidence claim
 - a planner / executor / response writer says "the output is ready"
-- before saving an evidence file under `docs/evals/path-X-...md`
+- before saving an evidence file under `docs/evals/path-X-...md` via `runtime-attempt-report-writer` or `render-export-evidence`
 - before answering a user with `Verified` or `Produced` status
-- before tagging a release or promoting status from Draft v0
+- before tagging a release or confirming whether a claim holds or must be downgraded
 - when the operator is tempted to claim "done" but evidence is fuzzy
 
 ## When not to use
@@ -39,8 +41,8 @@ This skill **complements** `render-export-evidence` (which classifies artifact e
 - "looks ready, can we ship?"
 - "I think the render is good — verify before sending"
 - "before saving the evidence file..."
-- "is this Verified?"
-- "promote to Pass / Verified"
+- "is this Verified or do we downgrade?"
+- "confirm whether this claim holds or must be downgraded"
 
 ## Prerequisites / readiness
 
@@ -53,21 +55,26 @@ This skill **complements** `render-export-evidence` (which classifies artifact e
 ### Required inputs
 
 - proposed handoff content (response or evidence file draft)
-- claim being made (`Not Run` / `Attempted` / `Produced` / `Verified` / `Failed`)
+- runtime truth state claimed (`Not Run` | `Attempted` | `Produced` | `Verified` | `Failed`)
+- artifact truth state claimed (`Not Run` | `Not Produced` | `Produced` | `Verified` | `Failed`; default `Not Produced`)
 - artifact paths referenced (if any)
-- runtime path used (Path 1 host a/b, Path 2, CLI fallback, text-only)
+- runtime path used:
+  - Path 1: Official Blender Lab MCP in Blender 5.1+ (`blender_version_min = "5.1.0"`), hosted from (a) Anthropic Connector in Claude Desktop (installs the Lab add-on inside Blender; not standalone) or (b) any manually configured MCP client
+  - Path 2: community `mcp-for-blender` (Blender 3.0+, with explicit caveats, never release evidence)
+  - CLI fallback: appendix only (`blender --background --python`, never a peer path without an eval record)
+  - Text-only (no runtime executed)
 
 ### Optional inputs
 
 - prior evidence record paths
-- validation notes from `blender-scene-quality-checker` or `render-export-evidence`
+- validation notes from `blender-scene-quality-checker`, `material-quality-checker`, `lighting-quality-checker`, `composition-quality-checker`, `polycount-budget-checker`, or `render-export-evidence`
 - user's explicit acceptance level ("draft is fine" vs. "must be production-ready")
 
 ### Assumptions to confirm
 
-- the proposed claim is the maximum truth label justified by evidence
+- the proposed claim is the maximum truth label justified by evidence (downgrade-only, never upgrade)
 - file paths are real and inspectable, not invented
-- the operator can pause before handoff to gather missing evidence
+- the operator can pause before handoff to downgrade unsupported claims or gather missing evidence upstream
 
 ## Output schema
 
@@ -100,47 +107,52 @@ This skill does not run Blender, mutate scenes, or generate artifacts. It reads 
 
 ## Operating procedure
 
-Run all 7 checks. Each must pass before claim is upheld.
+Run all 7 checks. Each applicable check must pass before a claim is upheld; otherwise downgrade.
 
-1. **Claim is named explicitly** — handoff states one of the 5 truth labels (`Not Run` / `Attempted` / `Produced` / `Verified` / `Failed`). No vague "ready" / "done" / "good".
-2. **Path attribution is explicit** — runtime path named (Path 1 host a/b, Path 2, CLI fallback, or text-only). No "we used the connector" without specifying host.
-3. **Artifact paths exist** — for any `Produced` or `Verified` claim, every referenced file path exists and is inspectable. If `Not Produced`, no artifact path is asserted.
-4. **Validation notes present** — for any `Verified` claim, validation notes record what was checked and how it passed. Empty validation = downgrade to `Produced`.
-5. **Tool / command names recorded** — exact tool names called (Path 1 read-only: `get_blendfile_summary_*` / `get_objects_summary` / `get_object_detail_summary`; Path 1 mutation: `execute_blender_code`; Path 2: `get_scene_info` / `execute_blender_code`; CLI: exact `blender` command).
-6. **No-mutation guarantee for read-only smoke** — if the claim is read-only smoke evidence, explicit confirmation that no code-execution tool (`execute_blender_code` on either backend) was called.
-7. **Plain-language summary present** — final user-facing text passes `non-blender-user-language` check (no jargon without explanation).
+1. **Claim is named explicitly** — handoff states an exact runtime truth label (`Not Run` | `Attempted` | `Produced` | `Verified` | `Failed`) and artifact truth label (`Not Run` | `Not Produced` | `Produced` | `Verified` | `Failed`, defaulting to `Not Produced`). No vague "ready" / "done" / "good".
+2. **Path attribution and boundary compliance are explicit** — runtime path is named: Path 1 host (a) Anthropic Connector in Claude Desktop or host (b) manually configured MCP client on Blender 5.1+ (`blender_version_min = "5.1.0"`); Path 2 (`mcp-for-blender`, Blender 3.0+, caveated only and **never release evidence**); CLI appendix (`blender --background --python`, **never a peer path without an eval record**); or text-only. Reject "we used the connector" without host attribution or with standalone/pre-5.1 claims.
+3. **Artifact paths exist** — for any `Produced` or `Verified` artifact claim, every referenced file path exists and is inspectable. If artifact state is `Not Produced` or `Not Run`, no artifact path is asserted.
+4. **Validation notes present** — for any `Verified` claim, validation notes record what was checked and how it passed. Empty validation = automatic downgrade to `Produced` (or lower).
+5. **Tool / command names recorded** — exact verified tool or CLI names are recorded:
+   - Path 1 read-only: `get_blendfile_summary_path_info`, `get_blendfile_summary_datablocks`, `get_objects_summary`, `get_object_detail_summary`, and `*_for_cli` variants
+   - Path 1 mutation: `execute_blender_code`
+   - Path 2: `get_scene_info`, `execute_blender_code` (within its 9-tool surface)
+   - CLI appendix: exact `blender` command using documented flags (`--background`, `--python`, `-E`/`--engine`; run `blender -E help` for exact engine tokens)
+6. **No-mutation guarantee for read-only smoke** — if the claim is read-only smoke evidence, explicit confirmation that `execute_blender_code` was not called on either backend.
+7. **Plain-language summary present** — final user-facing text passes `non-blender-user-language` check (no unexplained Blender/MCP internals).
 
 ## Decision tree
 
-- all 7 checks pass → confirm claim, allow handoff
-- 1-2 checks warn but workaround exists → keep claim with explicit caveat
-- 3+ checks fail → downgrade claim by one or more truth steps; explain downgrade
-- check 1 fails (no claim named) → reject handoff entirely until claim is named
+- all 7 checks pass → confirm truth label, allow handoff
+- 1-2 checks warn on non-blocking metadata (e.g., minor jargon explained inline) AND all required evidence for the truth label exists → keep truth label only with explicit caveat; if validation notes are missing on `Verified` or Path 2 is used as release evidence, mandatory downgrade applies
+- any required evidence check fails or 3+ checks fail → downgrade claim by one or more truth steps to the highest label strictly supported by evidence; explain downgrade
+- check 1 fails (no valid truth label named) → block handoff and downgrade to `Not Run` / `Not Produced` until an explicit truth label is set
 
 ## Playbooks
 
-- Playbook A: "Operator wants to mark Verified" — run all 7; downgrade to `Produced` if validation notes are missing
-- Playbook B: "Operator wants to mark Pass on smoke test" — confirm checks 1-3, 5, 6 (validation + plain-language are bonus for smoke)
-- Playbook C: "Final user-facing response" — confirm all 7 with extra weight on check 7 (plain language)
-- Playbook D: "Evidence file save" — confirm checks 1-6 (file is for record, not user-facing prose)
+- Playbook A: "Operator wants to confirm `Verified`" — run all 7 checks; downgrade to `Produced` if validation notes (check 4) are missing, or to `Attempted` / `Not Produced` if artifact paths (check 3) are missing. Ensure Path 2 is never accepted as release evidence.
+- Playbook B: "Operator wants to confirm read-only smoke test evidence" — run all 7 checks: confirm runtime truth label (check 1), Path 1 host a/b on Blender 5.1+ or caveated Path 2 (check 2), artifact state `Not Produced` (check 3), smoke validation notes (check 4), read-only tool names recorded (check 5), explicit no-`execute_blender_code` guarantee (check 6), and plain-language summary (check 7).
+- Playbook C: "Final user-facing response" — run all 7 checks with strict enforcement of check 7 via `non-blender-user-response-writer`.
+- Playbook D: "Evidence file save" — run checks 1-6 strictly for the record (`runtime-attempt-report-writer` / `render-export-evidence`), and check 7 for any user-facing summary section.
 
 ## Mode handling
 
 ### Text-only mode
 
 - verifies a text-only deliverable (plan, brief, response) — checks 1, 2, 7 apply; checks 3-6 marked N/A explicitly
-- runtime status: unchanged from input
-- artifact status: unchanged from input
+- runtime status: must be `Not Run` (if input claims `Attempted`, `Produced`, or `Verified` without runtime execution, downgrade to `Not Run`)
+- artifact status: must be `Not Produced` or `Not Run` (downgrade any higher claim)
 
 ### Runtime-ready mode
 
 - all 7 checks apply
-- if checks 3-6 fail and operator wants `Verified`, downgrade to `Produced` or `Attempted` per evidence
+- if checks 3-6 fail and operator wants `Verified`, downgrade runtime state to `Produced`, `Attempted`, or `Failed` and artifact state to `Produced` or `Not Produced` per actual evidence
 
 ### Blocked runtime mode
 
-- only checks 1, 2, 7 apply (no runtime claim possible)
-- enforce that no `Verified` / `Produced` claim leaks past blocked status
+- Entered when `workflow-stage-router` exits here on a failed readiness or execution gate
+- checks 1, 2, 7 apply; checks 3-6 marked N/A or Failed per upstream block
+- enforce downgrade: runtime status cannot exceed `Not Run`, `Attempted`, or `Failed`, and artifact status must be `Not Produced` (or `Failed`) — no `Verified` or `Produced` claim may leak past a blocked gate
 
 ## Validation checklist
 
@@ -168,9 +180,10 @@ Run all 7 checks. Each must pass before claim is upheld.
 
 ## Failure handling
 
-- check fails: downgrade claim by one step. Re-run remaining checks. If multiple fail, downgrade to lowest justified.
-- operator overrides downgrade: log override with explicit reason in evidence record, do not change check result.
-- evidence file would lie: refuse to allow handoff. Force fix or honest downgrade.
+- check fails: downgrade runtime and/or artifact claim to the highest truth label strictly proven by existing evidence. Re-run remaining checks.
+- when entered via `workflow-stage-router` failed-gate exit: lock in the downgraded truth label (`Not Run`, `Attempted`, or `Failed` for runtime; `Not Produced` or `Failed` for artifact) and state the exact upstream gate that failed.
+- operator attempts to override downgrade: refuse to upgrade or keep an unsupported truth label. Log the discrepancy in the verification record and output only the downgraded label.
+- evidence file would misrepresent path, version floor, or artifact existence: block handoff and force honest downgrade.
 
 ## Troubleshooting
 
@@ -207,10 +220,13 @@ Run all 7 checks. Each must pass before claim is upheld.
 
 ## Cross-skill handoff
 
-- If verdict is Pass: hand off to `non-blender-user-response-writer` for final user-facing text
-- If verdict is Warn: hand off to the skill that produced the claim with the downgraded label
-- If verdict is Fail and 3+ checks failed: hand off to `blender-troubleshooting` for diagnosis
-- If runtime path was the failure point: hand off to `runtime-bridge-conflict-resolver` or `official-runtime-readiness-checker`
+- Entry wiring: reached from `workflow-stage-router` (as the final gate or failed-gate exit) or `blendops-help`.
+- If verdict is Pass: hand off to `non-blender-user-response-writer` for final user-facing delivery (or `render-export-evidence` / `runtime-attempt-report-writer` when finalizing an evidence log).
+- If verdict is Warn or Fail (claim downgraded, handoff continues with lower truth label): hand off to `non-blender-user-response-writer` with the downgraded label and caveats locked.
+- If verdict is Fail and the operator wants to fix the upstream gap instead of shipping downgraded: return to `workflow-stage-router` to pick the single immediate next skill:
+  - scene/asset quality gap → `blender-scene-quality-checker`, `material-quality-checker`, `lighting-quality-checker`, `composition-quality-checker`, or `polycount-budget-checker`
+  - evidence classification gap → `render-export-evidence` or `runtime-attempt-report-writer`
+  - runtime/bridge failure → `official-runtime-readiness-checker`, `runtime-bridge-conflict-resolver`, or `blender-troubleshooting`
 
 ## Non-goals
 
