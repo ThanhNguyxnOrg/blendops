@@ -101,7 +101,7 @@ Importing BlendOps skills into Claude Desktop only loads the BlendOps content la
 
 **Blender-side install (always required, regardless of host option):**
 
-1. Install **Blender 5.1+** (Lab install-link parameter + add-on manifest literal `blender_version_min=5.1.0`, re-verified 2026-10-13 — see `docs/research/runtime-lab-cli-deep-verification-2026-10-13.md`; earlier Blender will not load the add-on).
+1. Install **Blender 5.1+** (Lab install-link parameter + add-on manifest literal `blender_version_min=5.1.0`, re-verified 2026-10-13; earlier Blender will not load the add-on).
 2. Open `blender.org/lab/mcp-server` in a browser alongside Blender.
 3. Drag the install link into Blender **twice**: first registers the Blender Lab repository, second installs the Lab MCP add-on. Or download the `.zip` and Install from Disk.
 4. Install/start the **MCP server** part: either the `.mcpb` MCP Bundle (recommended for newer hosts), or from source per the upstream Setup wiki.
@@ -125,7 +125,7 @@ Source: [claude.com/.../using-the-blender-connector-in-claude](https://claude.co
 2. Restart Claude Desktop so it discovers the new server.
 3. Start the connection either via Edit → Preferences → Add-ons → BlenderMCP → "start MCP server" or via the 3D Viewport `N` → BlenderMCP tab → connect.
 
-Same Lab tool surface (`get_blendfile_summary_*`, `get_objects_summary`, …) as host (a). Full 20-tool surface read directly from `readme_tools.rst` on 2026-10-13 (record: `docs/research/runtime-lab-cli-deep-verification-2026-10-13.md`). Use this when you do not want the Connector toggle, or when you are on a non-Claude-Desktop MCP client.
+Same Lab tool surface (`get_blendfile_summary_*`, `get_objects_summary`, …) as host (a). Full 20-tool surface read directly from `readme_tools.rst` on 2026-10-13. Use this when you do not want the Connector toggle, or when you are on a non-Claude-Desktop MCP client.
 
 ### Path 2 — Community `mcp-for-blender` (formerly `blender-mcp`, mature third-party)
 
@@ -148,7 +148,7 @@ Caveats for Path 2 live in [`docs/unofficial-runtime-bridges.md`](../unofficial-
 
 ### CLI fallback (appendix)
 
-`blender --background --python script.py` per [Blender CLI docs](https://docs.blender.org/manual/en/latest/advanced/command_line/index.html). Documented upstream as a first-class Blender CLI surface (render/Cycles/format/Python sections read in the current Blender 5.2 LTS Manual — record: `docs/research/runtime-lab-cli-deep-verification-2026-10-13.md`); BlendOps has no in-repo evidence file yet.
+`blender --background --python script.py` per [Blender CLI docs](https://docs.blender.org/manual/en/latest/advanced/command_line/index.html). Documented upstream as a first-class Blender CLI surface (render/Cycles/format/Python sections read in the current Blender 5.2 LTS Manual); BlendOps has no in-repo evidence file yet.
 
 ### Single-bridge constraint
 

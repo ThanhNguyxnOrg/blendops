@@ -75,7 +75,7 @@ Per-path status (corrected 2026-05-08):
 | Path | Verification status | Evidence |
 |---|---|---|
 | **Path 1** Official Blender Lab MCP (host: Anthropic Connector OR manual MCP client; Blender 5.1+) | Read-only smoke verified (likely via Anthropic Connector host); mutation/render/export `Not Run` | The 2026-04-29 smoke test recorded `get_blendfile_summary_*` and `get_objects_summary` calls — these are Lab MCP tools, reachable from both Path 1 hosts. The original "Claude Desktop Connector" attribution is consistent with host option (a). See [`docs/evals/blender-connector-read-only-smoke-test.md`](./evals/blender-connector-read-only-smoke-test.md). |
-| **Path 2** Community Blender MCP (`mcp-for-blender`) | User-reported verified (2026-05-08) | No formal evidence record file with any of Path 2's nine tools (`get_scene_info`, `execute_blender_code`, and seven more — see `docs/research/runtime-lab-cli-deep-verification-2026-10-13.md`) yet. |
+| **Path 2** Community Blender MCP (`mcp-for-blender`) | User-reported verified (2026-05-08) | No formal evidence record file with any of Path 2's nine tools (`get_scene_info`, `execute_blender_code`, and seven more, per the upstream README read 2026-10-13) yet. |
 | **CLI fallback (appendix)** | **Documented upstream** as a first-class Blender CLI surface | No in-repo evidence file yet; appendix only, not a peer of Path 1/2. |
 
 Prepared but not run:

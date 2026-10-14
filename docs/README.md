@@ -258,22 +258,6 @@ Legacy quick links below cover only the **baseline 16**; the [`skills/README.md`
 
 ---
 
-## 🔬 Research notes
-
-| Topic | Doc |
-|---|---|
-| Skill systems research | [`research/skill-systems-research.md`](./research/skill-systems-research.md) |
-| Skill / law pattern synthesis | [`research/skill-system-patterns.md`](./research/skill-system-patterns.md) |
-| Skill system decision matrix | [`research/skill-system-decision-matrix.md`](./research/skill-system-decision-matrix.md) |
-| Install patterns research | [`research/install-patterns-research.md`](./research/install-patterns-research.md) |
-| Blender workflow research | [`research/blender-workflow-research.md`](./research/blender-workflow-research.md) |
-| Blender quality checklist | [`research/blender-quality-checklist.md`](./research/blender-quality-checklist.md) |
-| Blender skill benchmark analysis | [`research/blender-skill-benchmark-analysis.md`](./research/blender-skill-benchmark-analysis.md) |
-| Web 3D asset pipeline | [`research/web-3d-asset-pipeline.md`](./research/web-3d-asset-pipeline.md) |
-| Runtime claim verification (Lab MCP, Blender CLI, Path 2) — 2026-10-13 | [`research/runtime-lab-cli-deep-verification-2026-10-13.md`](./research/runtime-lab-cli-deep-verification-2026-10-13.md) |
-
----
-
 ## ⚠️ Non-claims preserved
 
 - BlendOps does not install Blender, configure the Anthropic Blender Connector, configure the Blender Lab MCP add-on, configure the community `mcp-for-blender` stack, or run Blender.

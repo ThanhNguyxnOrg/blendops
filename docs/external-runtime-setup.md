@@ -15,7 +15,7 @@ Active runtime guidance uses the **2-path + CLI appendix** model in [Runtime sta
 
 | Path | Practical min Blender | Why |
 |---|---|---|
-| **Path 1** Official Blender Lab MCP (Lab add-on + Lab server, hosted from Anthropic Connector OR manual MCP client) | **5.1+** | The Lab page's install link carries `blender_version_min=5.1.0` and the add-on manifest declares the same literal (both re-verified 2026-10-13 — see `docs/research/runtime-lab-cli-deep-verification-2026-10-13.md`). Anthropic's tutorial says "Blender 4.2 or later" but the add-on it tells you to install requires 5.1+, so **5.1+ is the binding floor**. |
+| **Path 1** Official Blender Lab MCP (Lab add-on + Lab server, hosted from Anthropic Connector OR manual MCP client) | **5.1+** | The Lab page's install link carries `blender_version_min=5.1.0` and the add-on manifest declares the same literal (both re-verified 2026-10-13). Anthropic's tutorial says "Blender 4.2 or later" but the add-on it tells you to install requires 5.1+, so **5.1+ is the binding floor**. |
 | **Path 2** Community `mcp-for-blender` | **3.0+** | Upstream targets stable `bpy` ([github.com/ahujasid/mcp-for-blender](https://github.com/ahujasid/mcp-for-blender)). |
 | **CLI fallback (appendix)** | 4.2+ recommended | [Blender CLI docs](https://docs.blender.org/manual/en/latest/advanced/command_line/index.html). **Documented upstream** as a first-class Blender CLI surface; no in-repo evidence file yet. |
 
@@ -60,7 +60,7 @@ Same Lab tool surface (`get_blendfile_summary_*`, `get_objects_summary`, etc.) a
 
 ### Tool surface
 
-`get_blendfile_summary_path_info`, `get_blendfile_summary_datablocks`, `get_blendfile_summary_missing_files`, `get_blendfile_summary_of_linked_libraries`, `get_objects_summary`, plus `*_for_cli` variants and Python execution tools. Same regardless of host option. (Full 20-tool surface read directly from `readme_tools.rst` on 2026-10-13; record: `docs/research/runtime-lab-cli-deep-verification-2026-10-13.md`.)
+`get_blendfile_summary_path_info`, `get_blendfile_summary_datablocks`, `get_blendfile_summary_missing_files`, `get_blendfile_summary_of_linked_libraries`, `get_objects_summary`, plus `*_for_cli` variants and Python execution tools. Same regardless of host option. (Full 20-tool surface read directly from `readme_tools.rst` on 2026-10-13.)
 
 ### BlendOps evidence
 
@@ -101,7 +101,7 @@ See [`unofficial-runtime-bridges.md`](./unofficial-runtime-bridges.md). Third-pa
 
 Direct `blender --background`, `--python`, render flags. Source: [Blender CLI docs](https://docs.blender.org/manual/en/latest/advanced/command_line/index.html).
 
-**Maturity note:** Blender's CLI is an upstream-documented surface (render/Cycles/format/Python sections read in the current Blender 5.2 LTS Manual — record: `docs/research/runtime-lab-cli-deep-verification-2026-10-13.md`) — stability beyond the current LTS is not asserted. The `--background`, `--python`, `--render-output`, `--render-frame`, `--factory-startup` flags are documented in the current Manual. **BlendOps simply has no in-repo evidence file yet** capturing a per-recipe CLI-fallback eval. Operators who use shell `blender` should still record the exact command, inputs, output paths, exit code, and validation evidence per `docs/evals/official-runtime-verification-criteria.md` before any artifact claim — for **provenance**, not because the CLI itself is unstable.
+**Maturity note:** Blender's CLI is an upstream-documented surface (render/Cycles/format/Python sections read in the current Blender 5.2 LTS Manual) — stability beyond the current LTS is not asserted. The `--background`, `--python`, `--render-output`, `--render-frame`, `--factory-startup` flags are documented in the current Manual. **BlendOps simply has no in-repo evidence file yet** capturing a per-recipe CLI-fallback eval. Operators who use shell `blender` should still record the exact command, inputs, output paths, exit code, and validation evidence per `docs/evals/official-runtime-verification-criteria.md` before any artifact claim — for **provenance**, not because the CLI itself is unstable.
 
 **Evidence:** `Not Run` / `Not Produced` until a future eval record exists.
 

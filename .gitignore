@@ -3,6 +3,9 @@ dist/
 *.log
 .DS_Store
 
+# Research scratch (not committed - findings get absorbed into docs/ first)
+docs/research/
+
 # Python
 __pycache__/
 *.pyc
