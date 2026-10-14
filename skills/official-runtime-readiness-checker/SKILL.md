@@ -6,9 +6,13 @@ description: Evaluate whether official runtime appears ready using evidence-boun
 # official-runtime-readiness-checker
 
 ## Purpose
-Assess runtime readiness before any attempt to claim runtime execution outcomes.
+Run the evidence-bound readiness matrix to evaluate check completeness (`Ready | Partially Ready | Blocked | Unknown`) before any runtime attempt.
 
-Canonical role: `runtime-readiness` in the BlendOps skill system. Keep this as the active readiness implementation rather than creating duplicate readiness skills.
+Canonical role: `runtime-readiness` in the BlendOps skill system. Respect strict role boundaries:
+- `official-runtime-setup-guide` frames prerequisites and boundaries.
+- `runtime-path-picker` chooses the runtime path.
+- `path-one-host-outline` details Path 1 host (a) and host (b) setup.
+- THIS skill (`official-runtime-readiness-checker`) runs the readiness matrix only.
 
 ## Quick start
 - confirm this skill fits your goal
@@ -17,18 +21,19 @@ Canonical role: `runtime-readiness` in the BlendOps skill system. Keep this as t
 - follow suggested next-skill handoff
 
 ## When to use
-- before runtime manual eval
-- before any preview/render/GLB readiness claim
+- to run the readiness matrix after prerequisites are framed (`official-runtime-setup-guide`) and a target path is selected (`runtime-path-picker`)
+- before any runtime manual evaluation or planning handoff
 
 ## When not to use
-- as proof that runtime execution succeeded
-- as substitute for actual runtime artifacts
+- as proof that Blender ran or that runtime execution succeeded
+- as a substitute for runtime truth states (`Not Run | Attempted | Produced | Verified | Failed`) or artifact status (default `Not Produced`)
+- to choose a runtime path (use `runtime-path-picker`) or walk through Path 1 host setup (use `path-one-host-outline`)
 
 ## Trigger phrases
 - “check runtime readiness”
 - “is runtime available”
 - “can we run this now”
-- “verify connector and MCP availability”
+- “run the readiness matrix for our chosen Blender path”
 
 ## Prerequisites / readiness
 - non-destructive local environment access
@@ -53,14 +58,15 @@ Canonical role: `runtime-readiness` in the BlendOps skill system. Keep this as t
 ## Output schema
 
 ### Primary output
-- readiness matrix + final status
+- readiness matrix + final readiness status (`Ready | Partially Ready | Blocked | Unknown`, describing check completeness only)
+- explicit runtime truth state reminder (runtime remains `Not Run`; artifacts remain `Not Produced`)
 
 ### Secondary output
-- blocker list + retry steps
+- blocker list + next-skill handoff or retry steps
 
 ### Evidence / caveat output
 - per-check evidence lines
-- confidence label per check: verified / linked-only / unknown / blocked
+- confidence label per check: `verified-read | linked-only | unknown | blocked`
 
 ## Required laws
 - ../../laws/official-runtime-only.md
@@ -69,9 +75,14 @@ Canonical role: `runtime-readiness` in the BlendOps skill system. Keep this as t
 - ../../laws/non-blender-user-language.md
 
 ## Official runtime boundary
+- Readiness ≠ execution: `Ready` means readiness checks passed, never that Blender executed or artifacts exist.
+- Readiness statuses (`Ready | Partially Ready | Blocked | Unknown`) describe check completeness only; never conflate them with runtime truth states (`Not Run | Attempted | Produced | Verified | Failed`, downgrade-only) or artifact state (default `Not Produced`).
 - This skill can check local readiness signals.
 - This skill must not claim runtime artifact production.
 - This skill must not claim execution success without execution evidence.
+- Path 1 Anthropic Connector is never standalone: it always requires the Official Blender Lab MCP add-on installed inside Blender 5.1+.
+- Path 2 (`mcp-for-blender`) is third-party only, carries mandatory caveats, and is never release evidence.
+- CLI fallback (`blender --background --python`) is appendix-only and never a peer path without an evaluation record.
 
 ## Operating procedure
 1. Confirm chosen runtime path (Path 1 or Path 2 from `../../docs/runtime-stack-strategy.md`); for Path 1 also confirm host option (a Anthropic Connector, b manual MCP). CLI fallback is appendix only — documented upstream as a first-class Blender CLI surface but no in-repo evidence file yet; flag this if user picks it.
@@ -86,12 +97,13 @@ Canonical role: `runtime-readiness` in the BlendOps skill system. Keep this as t
    - Path 2: `mcp-for-blender` (formerly `blender-mcp`) server registered (`uvx mcp-for-blender` or equivalent) + upstream `addon.py` installed + enabled in Blender.
    - CLI fallback: Blender executable resolvable from agent shell.
 4. Check single-bridge constraint: at most one MCP bridge session active per Blender instance on the default port (Path 1 + Path 2 must not both target the same Blender on `localhost:9876`; per-instance `--port 9877` is the supported multi-instance pattern; Path 1 host (a) + host (b) must not both target the same Blender).
-5. Check artifact/output location readiness for future run.
-6. Assign confidence label to each check (`verified-read` / `linked-only` / `unknown` / `blocked`).
-7. Populate readiness matrix table per path + host.
-8. Derive final status (Ready / Partially Ready / Blocked / Unknown).
-9. Produce blocker summary and next actions.
-10. Route to planner or setup skill based on status.
+5. Check operator sandbox hygiene: trusted environment, no secrets in scenes/logs, disposable ports/paths.
+6. Check artifact/output location readiness for future run.
+7. Assign confidence label to each check (`verified-read` / `linked-only` / `unknown` / `blocked`).
+8. Populate readiness matrix table per path + host.
+9. Derive final status (Ready / Partially Ready / Blocked / Unknown) while keeping runtime truth at `Not Run` and artifacts at `Not Produced`.
+10. Produce blocker summary and next actions.
+11. Route to planner or setup skill based on status.
 
 ## Decision tree
 - Blender missing + no connector/MCP evidence → Blocked.
@@ -106,16 +118,16 @@ Canonical role: `runtime-readiness` in the BlendOps skill system. Keep this as t
 ## Mode handling
 
 ### Text-only mode
-- readiness checks only
-- no runtime execution claims
+- evaluate readiness matrix from provided evidence only
+- runtime truth state stays `Not Run`; artifacts stay `Not Produced`
 
 ### Runtime-ready mode
-- status Ready/Partially Ready with explicit caveats
-- handoff to planning/execution workflows
+- status `Ready` or `Partially Ready` with explicit path caveats
+- handoff to scene planning or host outline skills (never claim execution occurred)
 
 ### Blocked runtime mode
-- status Blocked
-- explicit blockers + setup next steps
+- status `Blocked` or `Unknown`
+- list explicit blockers and handoff to setup or conflict-resolution skills
 
 ## Validation checklist
 - [ ] Blender check recorded
@@ -126,6 +138,7 @@ Canonical role: `runtime-readiness` in the BlendOps skill system. Keep this as t
 - [ ] final status assigned
 - [ ] blocker list included
 - [ ] no execution success claim
+- [ ] runtime truth state kept at `Not Run`, artifacts at `Not Produced` (readiness is not execution)
 - [ ] Path 2 references carry third-party caveats; CLI appendix never a peer path
 - [ ] operator sandbox hygiene noted (trusted environment, no secrets in scenes/logs, disposable ports/paths)
 - [ ] next actions clear
@@ -135,9 +148,9 @@ Canonical role: `runtime-readiness` in the BlendOps skill system. Keep this as t
 | Category | Pass | Warn | Fail |
 |---|---|---|---|
 | Blender availability | Verified with local evidence | Partial path evidence | Missing/not found |
-| Connector/MCP checks | Clear signal per path | Unknown signal with caveat | Claimed available without evidence |
-| Confidence labeling | Every check labeled | Partial labels | No labels |
-| Status logic | Matches matrix evidence | Minor ambiguity | Contradicts evidence |
+| Path & host signals | Both in-Blender Lab add-on + host (a/b) verified for Path 1 (or caveated Path 2/CLI) | Incomplete signal downgraded to `Unknown`/`Partially Ready` | Standalone-Connector assumed or claimed without evidence |
+| Sandbox hygiene & confidence | Sandbox hygiene noted; every check labeled (`verified-read`/`linked-only`/`unknown`/`blocked`) | Partial labels or hygiene caveats | Missing labels or hygiene ignored |
+| Status vs truth separation | Matrix status matches evidence; runtime kept at `Not Run` and artifacts `Not Produced` | Minor ambiguity with conservative downgrade | Readiness conflated with execution or truth upgraded |
 
 ## Failure handling
 - Unknown state: mark Unknown, not Ready.
@@ -169,17 +182,25 @@ Canonical role: `runtime-readiness` in the BlendOps skill system. Keep this as t
 ## Anti-patterns
 - skipping required laws or runtime boundary statements
 - claiming runtime/artifact success without evidence
-- using non-official runtime setup paths
+- conflating readiness status (`Ready`) with runtime truth states (`Produced | Verified`) or claiming artifacts exist
+- treating the Path 1 Anthropic Connector as standalone without the Blender 5.1+ Lab MCP add-on
+- using Path 2 (`mcp-for-blender`) without third-party caveats or as release evidence
+- treating CLI fallback (`blender --background --python`) as a peer path without an eval record
+- blurring roles with `official-runtime-setup-guide`, `runtime-path-picker`, or `path-one-host-outline`
 - producing jargon-heavy final output without explanation
 
 ## Cross-skill handoff
-- If Ready/Partially Ready: `product-hero-scene-planner`
-- If Blocked/Unknown: `official-runtime-setup-guide`
+- If runtime path is not yet chosen: `runtime-path-picker`
+- If Path 1 host (a) or (b) outline is needed: `path-one-host-outline`
+- If prerequisites/boundaries are missing (`Blocked` / `Unknown`): `official-runtime-setup-guide`
+- If bridge contention is detected: `runtime-bridge-conflict-resolver`
+- If CLI appendix job structure is needed: `cli-appendix-job-outline`
+- If `Ready` / `Partially Ready` and moving to scene planning: `workflow-stage-router` or `product-hero-scene-planner`
 
 ## Non-goals
 - runtime execution
 - artifact generation claims
-- unofficial runtime fallback
+- uncaveated Path 2 / peer-path CLI fallback
 
 ## References
 - 2-path + CLI appendix runtime model: ../../docs/runtime-stack-strategy.md
