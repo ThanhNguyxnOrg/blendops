@@ -21,7 +21,7 @@ Requirements:
   - IDE: Settings → Tools → Junie → MCP Settings (or Tools → AI Assistant → Model Context Protocol (MCP)).
   - File: edit `.junie/mcp/mcp.json` (project-level) OR `~/.junie/mcp/mcp.json` (user-level).
   - Junie CLI: use the `/mcp` slash command's MCP Installation Assistant.
-- Add Blender MCP server (Path 1 Lab MCP via .mcpb bundle, OR Path 2 ahujasid/blender-mcp via uvx).
+- Add Blender MCP server (Path 1 Lab MCP via .mcpb bundle, OR Path 2 mcp-for-blender via uvx).
 - Single-bridge constraint: do not run two Blender MCP servers concurrently against the same Blender instance on `localhost:9876` (side-by-side on separate instances via per-instance `--port 9877` is supported upstream).
 - Do not install Blender, do not run Blender, do not configure connectors automatically.
 
@@ -75,7 +75,7 @@ Skill install != runtime setup.
 For Blender runtime via Junie / AI Assistant as MCP host:
 - **Path 1 (Lab MCP)** — Blender 5.1+ + Lab add-on + Lab server. Anthropic Connector is Claude Desktop only.
 - **Path 2 (community `mcp-for-blender` (formerly `blender-mcp`))** — Blender 3.0+ + `addon.py` + `uvx mcp-for-blender`.
-- **CLI fallback (appendix)** — Documented upstream as a first-class Blender CLI surface (stable across LTS releases); no in-repo evidence file yet.
+- **CLI fallback (appendix)** — Documented upstream as a first-class Blender CLI surface; no in-repo evidence file yet.
 
 See [`docs/runtime-stack-strategy.md`](../runtime-stack-strategy.md).
 

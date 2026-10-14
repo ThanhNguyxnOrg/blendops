@@ -59,6 +59,7 @@ Run a focused pass/warn/fail check on each material in the scene against PBR san
 - Albedo / base-color textures are sRGB; data textures (normal, roughness, metallic, AO) are linear.
 - Normal maps follow OpenGL convention (`+Y` up) for glTF-bound exports.
 - Shader graph is glTF-export-compatible if export is in scope.
+- Principled BSDF sockets are resolved by name (not position); version-dependent socket assumptions are marked in Notes.
 
 ## Output schema
 
@@ -73,7 +74,7 @@ A per-material verdict table: name, type (PBR / non-PBR / variant), albedo state
 ### Evidence / caveat output
 
 ```txt
-Runtime status: Not Run | Attempted | Produced | Verified | Failed | Blocked / Not Run
+Runtime status: Not Run | Attempted | Produced | Verified | Failed
 Artifact status: Not Run | Not Produced | Produced | Verified | Failed
 Evidence used: <links, paths, logs, or "none">
 Limitations: <known gaps>
@@ -176,11 +177,13 @@ Skip rows that depend on measurement; mark explicitly.
 | Roughness texture looks "too dark" | Verify color space (linear, not sRGB); add Warn. |
 | Normal map looks inverted | Verify Y-axis convention; add Warn until convention confirmed. |
 | GLB export fails on a material | Check unsupported nodes (OSL, drivers); add Fail with node names. |
+| Value lands on the wrong shader input | Socket resolved by index across Blender versions; re-resolve inputs by name. |
 
 ## Best practices
 - Pair every Fail with the rule that triggered it.
 - Mark Warn rows that escalate to Fail when consumer is mobile (e.g. 4K texture warns on desktop, fails on mobile).
 - Cite consumer stack in every verdict.
+- Resolve Principled BSDF inputs by name across Blender versions; never by position.
 - Keep this skill narrow — do not creep into lighting or composition.
 
 ## Good examples
@@ -209,6 +212,8 @@ Next: blender-scene-quality-checker / render-export-evidence
 ## Anti-patterns
 - Performing material edits inside this skill.
 - Inventing values to make rows pass.
+- Resolving shader sockets by index instead of by name.
+- Assuming a Principled socket exists on every Blender version.
 - Marking Verified without measurement.
 - Mixing lighting / composition checks here.
 

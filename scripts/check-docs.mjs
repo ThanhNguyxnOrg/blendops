@@ -356,12 +356,13 @@ const forbiddenLegacyPatterns = [
   'node apps/cli',
 ];
 
-// Note: this allowlist used to ban any mention of ahujasid/blender-mcp outside
-// docs/unofficial-runtime-bridges.md. That ban created a contradictory state
-// because the only currently user-verified runtime path uses `ahujasid/blender-mcp`,
-// and Blender's own MCP ecosystem treats it as canonical prior art (30.7k stars
-// on 2026-10-13, now `ahujasid/mcp-for-blender`; the practical path for non-Claude MCP clients). The 2-path + CLI appendix runtime model
-// (see docs/runtime-stack-strategy.md) now lets these terms appear in
+// Note: this allowlist used to ban any mention of `mcp-for-blender` (formerly
+// `blender-mcp`) outside docs/unofficial-runtime-bridges.md. That ban created a
+// contradictory state because the only currently user-verified runtime path uses
+// `mcp-for-blender`, and Blender's own MCP ecosystem treats it as canonical prior
+// art (30.7k stars as of 2026-10-13; repo `ahujasid/mcp-for-blender`; the
+// practical path for non-Claude MCP clients). The 2-path + CLI appendix runtime
+// model (see docs/runtime-stack-strategy.md) now lets these terms appear in
 // runtime-stack-strategy, external-runtime-setup, install docs, smoke-test
 // attribution, and the README glossary. We keep a narrower forbidden list:
 // nothing here for now, but the slot is preserved for future bans.
@@ -369,15 +370,15 @@ const forbiddenCommunityPatterns = [];
 
 const unofficialBridgeDoc = 'docs/unofficial-runtime-bridges.md';
 
-// Path 2 disclaimer set. The community `ahujasid/blender-mcp` is mature prior
-// art (21K+ stars) and IS one of the canonical BlendOps runtime paths — but it
-// is third-party from both Anthropic and the Blender Foundation. The disclaimer
-// set guards what stays true: third-party provenance, manual config burden, the
-// unsandboxed Python execution surface, and the "no formal eval record yet"
-// evidence gap.
+// Path 2 disclaimer set. The community `mcp-for-blender` is mature prior
+// art (30.7k stars as of 2026-10-13) and IS one of the canonical BlendOps
+// runtime paths — but it is third-party from both Anthropic and the Blender
+// Foundation. The disclaimer set guards what stays true: third-party
+// provenance, manual config burden, the unsandboxed Python execution surface,
+// and the "no formal eval record yet" evidence gap.
 const requiredUnofficialBridgeDisclaimers = [
   'Path 2',
-  'ahujasid/blender-mcp',
+  'mcp-for-blender',
   'Not yet covered by a formal BlendOps eval evidence record',
   'Not used for Draft v0 release-readiness claims',
   'User-managed',
@@ -391,10 +392,10 @@ const requiredUnofficialBridgeDisclaimers = [
 // drafts that mis-described how the Anthropic Connector relates to Blender Lab
 // MCP). Path 1 = Lab MCP add-on/server in Blender 5.1+, hosted from either the
 // Anthropic Connector (host a) or a manual MCP client (host b) — the Connector
-// is NOT standalone. Path 2 = community ahujasid/blender-mcp. CLI fallback is
-// an appendix documented upstream as a first-class Blender CLI surface (stable
-// across LTS releases) — BlendOps simply does not have an in-repo eval record
-// file yet, but the path itself is mature, not "experimental". Path 1 + Path 2
+// is NOT standalone. Path 2 = community mcp-for-blender. CLI fallback is
+// an appendix documented upstream as a first-class Blender CLI surface —
+// BlendOps simply does not have an in-repo eval record
+// file yet, but the path itself is upstream-documented, not "experimental". Path 1 + Path 2
 // are user-reported verified by the repo owner with no formal in-repo evidence
 // file yet. See docs/runtime-stack-strategy.md for the canonical write-up.
 const requiredRuntimeStackSnippets = [
@@ -403,7 +404,7 @@ const requiredRuntimeStackSnippets = [
   'Connector is not standalone',
   'install an add-on inside Blender',
   'Path 2 — Community',
-  'ahujasid/blender-mcp',
+  'mcp-for-blender',
   'CLI fallback',
   'first-class',
   'No in-repo evidence file yet',

@@ -75,7 +75,7 @@ Map a user's stated goal to the closest documented recipe or pack (`product-hero
 ### Evidence / caveat output
 
 ```txt
-Runtime status: Not Run | Attempted | Produced | Verified | Failed | Blocked / Not Run
+Runtime status: Not Run | Attempted | Produced | Verified | Failed
 Artifact status: Not Run | Not Produced | Produced | Verified | Failed
 Evidence used: <recipe/pack doc paths consulted>
 Limitations: <catalog coverage gaps>

@@ -49,9 +49,9 @@ v0.1.0 tag: depends on full eval
 ```
 ```
 
-## Template B — Path 2 (community `ahujasid/blender-mcp`) read-only smoke
+## Template B — Path 2 (community `mcp-for-blender`) read-only smoke
 
-See `docs/evals/path-2-ahujasid-readonly-template.md` (canonical template). Copy it, fill, save.
+See `docs/evals/path-2-mcp-for-blender-readonly-template.md` (canonical template). Copy it, fill, save.
 
 ## Template C — Full runtime eval (mutation / render / export)
 

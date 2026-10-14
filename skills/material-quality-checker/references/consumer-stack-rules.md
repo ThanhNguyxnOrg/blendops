@@ -8,6 +8,11 @@
 - Image Texture (linked to one of the above)
 - Normal Map (with strength = 1 for safe export)
 
+### Version-safe socket access (Principled BSDF)
+- Principled BSDF's input set changes across Blender versions (sockets such as Diffuse Roughness arrived after 4.0, shifting what sits behind each position). Access inputs by **name**, never by index (`inputs[7]`).
+- On Blender 5.x some sockets (e.g. Subsurface IOR, Weight) ship disabled, and a disabled socket can break name-keyed lookups. Resolve by iterating `node.inputs` and matching `.name`; treat a missing or disabled socket as an optional feature, not an error.
+- A recipe that hardcodes an input position or assumes a socket exists may attach values to the wrong slot on another Blender version. Mark any version-dependent assumption in the verdict Notes.
+
 ### Disallowed (or fragile) nodes for glTF export
 - OSL (Open Shading Language) custom shaders → Fail
 - Procedural noise / wave / voronoi (must be baked first) → Fail unless baked
@@ -34,7 +39,7 @@ Almost everything is allowed. Sanity rules still apply (PBR plausibility, color 
 
 ## Eevee preview
 
-Most Principled features supported (Blender 4.x+ Eevee Next). Some clearcoat / iridescence / volume effects approximated. Use Eevee preview as a rough check, not a final compatibility test for glTF.
+Most Principled features supported (Blender 4.2+ Eevee Next). Some clearcoat / iridescence / volume effects approximated. Use Eevee preview as a rough check, not a final compatibility test for glTF.
 
 ## Verdict guidance
 

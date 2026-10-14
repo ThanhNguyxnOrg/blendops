@@ -162,7 +162,7 @@ Every mode must avoid these actions:
 | [Aider (terminal)](./install/aider.md) | Low / linked-only | `--mcp-servers` flag or `.aider.conf.yml` | LiteLLM-backed MCP, stdio only, 25-call cap per reply. |
 | [Amazon Q Developer CLI](./install/amazon-q-developer.md) | Low / linked-only | `~/.aws/amazonq/cli-agents` + `qchat mcp` CLI | Local + remote MCP; agent config format. |
 
-All 21 follow the same project-local install pattern (`BLENDOPS.md` / `AGENTS.md` / `skills/` etc.) and can host MCP for Blender via **Path 1 host (b) Lab MCP** OR **Path 2 community `ahujasid/blender-mcp`**. Global writes are not allowed by default for any of them; existing project instruction files are backed up before edits; runtime setup is always separate.
+All 21 follow the same project-local install pattern (`BLENDOPS.md` / `AGENTS.md` / `skills/` etc.) and can host MCP for Blender via **Path 1 host (b) Lab MCP** OR **Path 2 community `mcp-for-blender`**. Global writes are not allowed by default for any of them; existing project instruction files are backed up before edits; runtime setup is always separate.
 
 ### 3) Local LLM runners (docs-only; runner hosts MCP)
 

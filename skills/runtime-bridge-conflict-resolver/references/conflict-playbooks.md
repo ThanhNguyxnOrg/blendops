@@ -5,7 +5,7 @@ Pre-canned resolution patterns for the 5 most common Single-bridge constraint co
 ## Playbook A — Path 1 + Path 2 both installed in Blender
 
 **Symptoms:**
-- Lab MCP add-on **AND** `ahujasid/blender-mcp` `addon.py` both enabled in Blender.
+- Lab MCP add-on **AND** `mcp-for-blender` `addon.py` both enabled in Blender.
 - Smoke test fails or returns inconsistent tool surface.
 
 **Diagnosis:**

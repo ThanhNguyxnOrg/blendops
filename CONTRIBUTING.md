@@ -69,7 +69,7 @@ npm run ci
 - [ ] no BlendOps-owned CLI / MCP / addon runtime surface reintroduced
 - [ ] no arbitrary Python presented as user-facing surface
 - [ ] runtime / artifact claims have evidence files under `docs/evals/`
-- [ ] runtime references use the 2-path + CLI appendix model (Path 1 = Lab MCP with hosts a/b, Path 2 = community `ahujasid/blender-mcp`, CLI fallback = appendix, documented upstream as first-class Blender CLI surface; no in-repo evidence file yet) — see [`docs/runtime-stack-strategy.md`](./docs/runtime-stack-strategy.md)
+- [ ] runtime references use the 2-path + CLI appendix model (Path 1 = Lab MCP with hosts a/b, Path 2 = community `mcp-for-blender`, CLI fallback = appendix, documented upstream as first-class Blender CLI surface; no in-repo evidence file yet) — see [`docs/runtime-stack-strategy.md`](./docs/runtime-stack-strategy.md)
 - [ ] `npm run docs:check` passes locally
 - [ ] `npm run skills:export` passes locally and produces clean ZIPs
 - [ ] docs updated for any user-facing contract change
@@ -133,8 +133,8 @@ Required fields:
 
 - Path number (1 or 2) and host option (a / b for Path 1)
 - `blender --version` verbatim
-- Blender-side add-on identity (Lab MCP add-on version OR `ahujasid/blender-mcp` `addon.py` commit)
-- MCP server source (`.mcpb` bundle filename / source commit / `uvx blender-mcp` version)
+- Blender-side add-on identity (Lab MCP add-on version OR `mcp-for-blender` `addon.py` commit)
+- MCP server source (`.mcpb` bundle filename / source commit / `uvx mcp-for-blender` version)
 - MCP host product + version
 - Exact tool names called + responses
 - Single-bridge constraint check

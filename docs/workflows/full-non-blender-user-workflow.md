@@ -180,8 +180,8 @@ Every run that reaches Stage 6 must capture:
 
 - selected path + host option (Path 1 host a, Path 1 host b, Path 2, CLI fallback, or text-only)
 - `blender --version` verbatim
-- Blender-side add-on identity (Lab MCP add-on version OR `ahujasid/blender-mcp` `addon.py` commit)
-- MCP server source (`.mcpb` filename / source commit / `uvx blender-mcp` version)
+- Blender-side add-on identity (Lab MCP add-on version OR `mcp-for-blender` `addon.py` commit)
+- MCP server source (`.mcpb` filename / source commit / `uvx mcp-for-blender` version)
 - MCP host product + version
 - exact tool names called + responses
 - single-bridge constraint check

@@ -9,7 +9,8 @@ Use definitions from `laws/evidence-before-done.md`.
 - `Produced` — observable runtime output exists but validation incomplete.
 - `Verified` — output exists AND checks recorded (rare immediately after first connect).
 - `Failed` — attempt concluded negatively with evidence.
-- `Blocked / Not Run` — policy/environment prevented start.
+
+A blocked environment (no attempt started) stays `Not Run`; an attempt that could not finish stays `Attempted`. Do not introduce a `Blocked` runtime state — it is not one of the 5 truth states.
 
 **Artifact status** (renders, GLB, previews)
 

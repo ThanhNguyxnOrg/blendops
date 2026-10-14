@@ -66,7 +66,7 @@ Reduce skill-choice paralysis by mapping **current state → next narrow skill**
 ### Evidence / caveat output
 
 ```txt
-Runtime status: Not Run | Attempted | Produced | Verified | Failed | Blocked / Not Run
+Runtime status: Not Run | Attempted | Produced | Verified | Failed
 Artifact status: Not Run | Not Produced | Produced | Verified | Failed
 Evidence used: <inventory references>
 Limitations: <unknown state>

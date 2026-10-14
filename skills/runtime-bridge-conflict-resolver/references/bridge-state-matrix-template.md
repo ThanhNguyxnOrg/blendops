@@ -34,13 +34,13 @@ Date: <YYYY-MM-DD>
 | Add-on | Enabled in Blender? | Version / commit | Path |
 |---|---|---|---|
 | Blender Lab MCP add-on (`bpype/blender_mcp`) | Yes / No | <Lab add-on version, e.g. mcp-1.0.0> | Path 1 |
-| Community `ahujasid/blender-mcp` `addon.py` | Yes / No | <upstream commit SHA> | Path 2 |
+| Community `mcp-for-blender` `addon.py` | Yes / No | <upstream commit SHA> | Path 2 |
 
 ### Port state
 
 | Port | Listener (if known) | Notes |
 |---|---|---|
-| `localhost:9876` | <process name + PID> or `unknown` | Common default for both Lab MCP and `ahujasid/blender-mcp` |
+| `localhost:9876` | <process name + PID> or `unknown` | Common default for both Lab MCP and `mcp-for-blender` |
 | Other (if changed) | | |
 ```
 

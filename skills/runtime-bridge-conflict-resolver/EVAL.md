@@ -22,8 +22,8 @@ Use runtime-bridge-conflict-resolver to build a bridge state matrix, identify th
 
 | Case | Input | Expected output | Required evidence |
 |---|---|---|---|
-| Path 1 + Path 2 both installed | Lab MCP add-on AND `ahujasid/blender-mcp` `addon.py` both enabled in Blender | Conflict diagnosis; cheapest fix = disable unintended; do-not reminder; handoff | matrix, intended path, fix, reminder, handoff |
-| Two MCP clients pointing at same Blender | Claude Desktop Connector ON + Cursor with manual `uvx blender-mcp` | Conflict diagnosis; pick one client per session; unregister other from this Blender | matrix, single-client decision, fix |
+| Path 1 + Path 2 both installed | Lab MCP add-on AND `mcp-for-blender` `addon.py` both enabled in Blender | Conflict diagnosis; cheapest fix = disable unintended; do-not reminder; handoff | matrix, intended path, fix, reminder, handoff |
+| Two MCP clients pointing at same Blender | Claude Desktop Connector ON + Cursor with manual `uvx mcp-for-blender` | Conflict diagnosis; pick one client per session; unregister other from this Blender | matrix, single-client decision, fix |
 | Port collision | Lab MCP server + community server both on `localhost:9876` | Diagnose port collision; change one server's port; update its client config | matrix, port reasoning, port change proposal |
 | Anthropic Connector + manual mcpServers Lab MCP both ON | Claude Desktop has Connector toggle + manual `mcpServers.blender` Lab entry | Diagnose: both are Path 1 host options targeting same Lab stack; pick one host per session | matrix, host decision, do-not reminder |
 | Matrix clean but smoke fails | Single intended path, single client, no port collision; smoke still fails | Route to `blender-troubleshooting` | clean matrix, route to troubleshooting |

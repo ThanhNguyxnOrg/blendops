@@ -65,7 +65,7 @@ A 3-line resolution record: aspect, resolution (W × H), DPI / PPI if print.
 ### Evidence / caveat output
 
 ```txt
-Runtime status: Not Run | Attempted | Produced | Verified | Failed | Blocked / Not Run
+Runtime status: Not Run | Attempted | Produced | Verified | Failed
 Artifact status: Not Run | Not Produced | Produced | Verified | Failed
 Evidence used: <links, paths, logs, or "none">
 Limitations: <known gaps>

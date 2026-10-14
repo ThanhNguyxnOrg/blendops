@@ -36,5 +36,5 @@ Per-asset-class decision tree. Walk top-down, stop at the first matching conditi
 ## Anti-patterns
 
 - "Just use any free model from the internet" — no source named, no license, no confidence label. **Rejected.**
-- Choosing generative without checking Path 2 readiness (the host must have `ahujasid/blender-mcp` configured + `addon.py` enabled). Route to `official-runtime-readiness-checker` first if generative.
+- Choosing generative without checking Path 2 readiness (the host must have `mcp-for-blender` configured + `addon.py` enabled). Route to `official-runtime-readiness-checker` first if generative.
 - Choosing high-poly Sketchfab import for a tight web budget. Compare poly count to budget BEFORE the planner commits.

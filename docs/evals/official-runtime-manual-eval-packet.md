@@ -15,8 +15,8 @@ Path decision: [../runtime-stack-strategy.md](../runtime-stack-strategy.md)
 > | Legacy label | New mapping |
 > |---|---|
 > | Stack 1 — Claude Desktop official connector stack | **Path 1** (Official Blender Lab MCP). Lab add-on + Lab server installed in Blender 5.1+, hosted from either (a) Anthropic Blender Connector or (b) manual MCP client. Anthropic Connector is **not** standalone — Lab add-on inside Blender is required either way. |
-> | Stack 2 — Official Blender CLI fallback | **CLI fallback (appendix)**. Direct `blender --background --python`. **Documented upstream** as a first-class Blender CLI surface (stable across LTS releases); no in-repo evidence file yet. |
-> | Stack 3 — Optional unofficial third-party bridge stack | **Path 2** (Community `ahujasid/blender-mcp`, mature 20K+ stars third-party, Blender 3.0+). |
+> | Stack 2 — Official Blender CLI fallback | **CLI fallback (appendix)**. Direct `blender --background --python`. **Documented upstream** as a first-class Blender CLI surface; no in-repo evidence file yet. |
+> | Stack 3 — Optional unofficial third-party bridge stack | **Path 2** (Community `mcp-for-blender`, mature third-party, Blender 3.0+). |
 >
 > A fresh per-path eval record must explicitly name the path (Path 1 host a / Path 1 host b / Path 2 / CLI fallback), record `blender --version`, record the Blender-side add-on identity, record the MCP server source/commit, record the MCP host product, and record the exact tool names used.
 
@@ -35,7 +35,7 @@ The packet exists so BlendOps can keep Draft v0 status honest while preparing fo
 This packet covers manual eval preparation for the paths in [runtime-stack-strategy.md](../runtime-stack-strategy.md). Active model is **2 MCP execution paths + CLI fallback appendix**; legacy "Stack 1/2/3" labels still appear in mapping notes only.
 
 1. **Path 1 — Official Blender Lab MCP** (Lab MCP add-on + Lab MCP server installed in Blender 5.1+, hosted from either (a) Anthropic Blender Connector in Claude Desktop, or (b) any other MCP client configured manually). Anthropic Connector is **not** standalone — Lab add-on inside Blender is required either way.
-2. **Path 2 — Community `ahujasid/blender-mcp`** (different add-on/server, mature 20K+ stars third-party, Blender 3.0+).
+2. **Path 2 — Community `mcp-for-blender`** (different add-on/server, mature third-party, Blender 3.0+).
 3. **CLI fallback (appendix)** — direct `blender --background --python`. **Documented upstream** as a first-class Blender CLI surface; no in-repo evidence file yet.
 
 Path 1 + Path 2 are user-reported verified by repo owner (Path 1: 2026-04-29 read-only smoke + 2026-05-09 reconfirmation; Path 2: 2026-05-08 statement, reconfirmed 2026-05-09). Mutation/render/export `Not Run` for both — no formal in-repo evidence file yet. CLI fallback is appendix only — documented upstream as first-class Blender CLI surface, no in-repo evidence file yet.
@@ -96,7 +96,7 @@ Before execution, the future operator must confirm:
 - The eval environment is allowed to run Blender and produce files.
 - Output paths are known before execution.
 - Evidence capture is available for screenshots, logs, generated files, and notes.
-- The operator understands that missing evidence keeps the result at `Attempted`, `Not Run`, `Not Produced`, `Blocked / Not Run`, or `Failed`, depending on what happened.
+- The operator understands that missing evidence keeps the result at `Attempted`, `Not Run`, `Not Produced`, or `Failed`, depending on what happened.
 
 ---
 
@@ -218,7 +218,7 @@ Artifact labels must be scoped per artifact type. A run can be `Verified` for pr
 ### 6. Assign final verdict
 
 - [ ] Use the pass/warn/fail rubric below.
-- [ ] Keep blocked environment cases as `Blocked / Not Run` unless a runtime attempt was actually made and failed.
+- [ ] Keep blocked environment cases as `Not Run` unless a runtime attempt was actually made and failed.
 - [ ] Do not claim runtime compatibility is confirmed unless the specific scoped eval passes with evidence.
 - [ ] Do not mark broader Phase 3 or runtime manual eval complete based on packet preparation.
 

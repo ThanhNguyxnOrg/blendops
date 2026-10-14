@@ -126,7 +126,7 @@ Validate BlendOps install/adoption flow from a user and agent perspective in dis
 
 | Blocker | Status | Notes |
 |---|---|---|
-| Official runtime manual eval | Blocked / Not Run | Not part of this dry-run install beta. |
+| Official runtime manual eval | Not Run | Not part of this dry-run install beta. |
 | Runtime artifact evidence | Not Produced | No preview/render/GLB artifacts were produced. |
 
 ---

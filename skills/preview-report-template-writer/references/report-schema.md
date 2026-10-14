@@ -8,8 +8,8 @@ Downstream skills parse this layout. Do not deviate.
 # Preview report (kind: <preview | render | export | full>)
 Date: <YYYY-MM-DD>
 Operator: <name or unknown>
-Runtime path: <Path 1 host a Anthropic Connector | Path 1 host b manual MCP | Path 2 ahujasid/blender-mcp | CLI fallback>
-Tool versions: <blender X.Y | lab-mcp-addon vN | mcp-host product+build | uvx blender-mcp vN | unknown>
+Runtime path: <Path 1 host a Anthropic Connector | Path 1 host b manual MCP | Path 2 mcp-for-blender | CLI fallback>
+Tool versions: <blender X.Y | lab-mcp-addon vN | mcp-host product+build | uvx mcp-for-blender vN | unknown>
 ```
 
 ## Artifacts section (required)

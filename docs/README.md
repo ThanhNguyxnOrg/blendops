@@ -13,11 +13,11 @@ The single index for everything in this repo. Bookmark this page.
 |---|---|---|
 | Product direction | Draft v0 | Workflow specs are documented; no stable release claim. |
 | Skill / law / pack collection | Draft Pass | **48** portable skills (16 baseline + 32 expansion across Batches 1–8), 4 laws, 1 pack (`product-hero-v0`). Canonical index: [`../skills/README.md`](../skills/README.md). |
-| Runtime path model | Active (2-path + CLI appendix) | Path 1 (Lab MCP, hosted from Anthropic Connector or manual MCP); Path 2 (community `ahujasid/blender-mcp`); CLI fallback (documented upstream as first-class Blender CLI; no in-repo evidence file yet). |
+| Runtime path model | Active (2-path + CLI appendix) | Path 1 (Lab MCP, hosted from Anthropic Connector or manual MCP); Path 2 (community `mcp-for-blender`); CLI fallback (documented upstream as first-class Blender CLI; no in-repo evidence file yet). |
 | Path 1 read-only smoke | Pass / Available | 2026-04-29 record (likely Anthropic Connector host). |
 | Path 2 user-reported verified | Yes (2026-05-08) | No formal eval file yet. |
 | CLI fallback | Not Run | **Documented upstream** as a first-class Blender CLI surface; no in-repo evidence file yet. |
-| Full runtime manual eval (any path) | Blocked / Not Run | Mutation/render/export not attempted. |
+| Full runtime manual eval (any path) | Not Run | Mutation/render/export not attempted. |
 | Runtime artifacts | Not Produced | No fresh preview/render/GLB. |
 | Release tag (`v0.1.0-draft`) | 🟡 Tag-able now | Skills layer is complete; tagging is a publishing decision, not gated on upstream runtime evidence. |
 | Marketplace / `npx` listing | Not Published | None claimed. |
@@ -72,7 +72,7 @@ The single index for everything in this repo. Bookmark this page.
 | Path strategy + corrected attribution history | [`runtime-stack-strategy.md`](./runtime-stack-strategy.md) |
 | External setup walkthrough | [`external-runtime-setup.md`](./external-runtime-setup.md) |
 | Runtime boundary summary | [`reference-runtime.md`](./reference-runtime.md) |
-| Path 2 caveats (community `ahujasid/blender-mcp`) | [`unofficial-runtime-bridges.md`](./unofficial-runtime-bridges.md) |
+| Path 2 caveats (community `mcp-for-blender`) | [`unofficial-runtime-bridges.md`](./unofficial-runtime-bridges.md) |
 | Claude app/Desktop setup notes | [`claude-app-setup.md`](./claude-app-setup.md) |
 
 ---
@@ -112,7 +112,7 @@ The single index for everything in this repo. Bookmark this page.
 
 ### 2) Coding agents (project-local install + can host MCP for Blender)
 
-All 21 accept BlendOps via project-local files and can host MCP for Blender via Path 1 host (b) Lab MCP or Path 2 community `ahujasid/blender-mcp`. They differ in MCP config syntax and native-skill-loader maturity.
+All 21 accept BlendOps via project-local files and can host MCP for Blender via Path 1 host (b) Lab MCP or Path 2 community `mcp-for-blender`. They differ in MCP config syntax and native-skill-loader maturity.
 
 | Target | Doc | Selected mode | Confidence |
 |---|---|---|---|
@@ -270,13 +270,14 @@ Legacy quick links below cover only the **baseline 16**; the [`skills/README.md`
 | Blender quality checklist | [`research/blender-quality-checklist.md`](./research/blender-quality-checklist.md) |
 | Blender skill benchmark analysis | [`research/blender-skill-benchmark-analysis.md`](./research/blender-skill-benchmark-analysis.md) |
 | Web 3D asset pipeline | [`research/web-3d-asset-pipeline.md`](./research/web-3d-asset-pipeline.md) |
+| Runtime claim verification (Lab MCP, Blender CLI, Path 2) — 2026-10-13 | [`research/runtime-lab-cli-deep-verification-2026-10-13.md`](./research/runtime-lab-cli-deep-verification-2026-10-13.md) |
 
 ---
 
 ## ⚠️ Non-claims preserved
 
-- BlendOps does not install Blender, configure the Anthropic Blender Connector, configure the Blender Lab MCP add-on, configure the community `ahujasid/blender-mcp` stack, or run Blender.
+- BlendOps does not install Blender, configure the Anthropic Blender Connector, configure the Blender Lab MCP add-on, configure the community `mcp-for-blender` stack, or run Blender.
 - Read-only smoke evidence is not mutation/render/export evidence.
-- CLI fallback is **documented upstream** as a first-class Blender CLI surface (stable across LTS releases); no in-repo evidence file yet.
+- CLI fallback is **documented upstream** as a first-class Blender CLI surface; no in-repo evidence file yet.
 - No marketplace / npm / `npx` listing. No tag.
 - See [`release-readiness.md`](./release-readiness.md) for the full readiness state.

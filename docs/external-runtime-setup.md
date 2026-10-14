@@ -7,7 +7,7 @@ BlendOps is a workflow/product layer and does **not** ship its own BlendOps-owne
 Active runtime guidance uses the **2-path + CLI appendix** model in [Runtime stack strategy](./runtime-stack-strategy.md).
 
 > [!IMPORTANT]
-> Importing BlendOps skills, laws, packs, or docs does not install Blender, the **Blender Lab MCP add-on inside Blender**, the Anthropic Blender Connector, the community `ahujasid/blender-mcp`, or any MCP server process.
+> Importing BlendOps skills, laws, packs, or docs does not install Blender, the **Blender Lab MCP add-on inside Blender**, the Anthropic Blender Connector, the community `mcp-for-blender`, or any MCP server process.
 
 ---
 
@@ -15,9 +15,9 @@ Active runtime guidance uses the **2-path + CLI appendix** model in [Runtime sta
 
 | Path | Practical min Blender | Why |
 |---|---|---|
-| **Path 1** Official Blender Lab MCP (Lab add-on + Lab server, hosted from Anthropic Connector OR manual MCP client) | **5.1+** | Lab page requirement #1: "Blender 5.1 or newer" (indexed text re-confirmed 2026-10-14; direct fetch 403; manifest literal `5.1.0` pending direct re-read — see `docs/research/runtime-lab-cli-deep-verification-2026-10-14.md`). Anthropic's tutorial says "Blender 4.2 or later" but the add-on it tells you to install requires 5.1+, so **5.1+ is the binding floor**. |
-| **Path 2** Community `ahujasid/blender-mcp` | **3.0+** | Upstream targets stable `bpy` ([github.com/ahujasid/blender-mcp](https://github.com/ahujasid/blender-mcp)). |
-| **CLI fallback (appendix)** | 4.2+ recommended | [Blender CLI docs](https://docs.blender.org/manual/en/latest/advanced/command_line/index.html). **Documented upstream** as a first-class Blender CLI surface (stable across LTS releases); no in-repo evidence file yet. |
+| **Path 1** Official Blender Lab MCP (Lab add-on + Lab server, hosted from Anthropic Connector OR manual MCP client) | **5.1+** | The Lab page's install link carries `blender_version_min=5.1.0` and the add-on manifest declares the same literal (both re-verified 2026-10-13 — see `docs/research/runtime-lab-cli-deep-verification-2026-10-13.md`). Anthropic's tutorial says "Blender 4.2 or later" but the add-on it tells you to install requires 5.1+, so **5.1+ is the binding floor**. |
+| **Path 2** Community `mcp-for-blender` | **3.0+** | Upstream targets stable `bpy` ([github.com/ahujasid/mcp-for-blender](https://github.com/ahujasid/mcp-for-blender)). |
+| **CLI fallback (appendix)** | 4.2+ recommended | [Blender CLI docs](https://docs.blender.org/manual/en/latest/advanced/command_line/index.html). **Documented upstream** as a first-class Blender CLI surface; no in-repo evidence file yet. |
 
 > [!WARNING]
 > The **Anthropic Connector path is not a separate "Blender 4.2+ enough" route.** Anthropic's tutorial step 2 explicitly tells you to install the Blender Lab MCP add-on inside Blender. That add-on requires **Blender 5.1+**. So anyone using Anthropic Connector to drive Blender via MCP is also on Path 1 and bound by the 5.1+ floor.
@@ -32,7 +32,7 @@ Same Blender-side stack regardless of which MCP host you pick. Pick exactly one 
 
 1. Install **Blender 5.1+** so the Lab add-on can load.
 2. Open `blender.org/lab/mcp-server` in a browser alongside Blender.
-3. Drag the install link into Blender twice — first registers the Blender Lab repository, second installs the Lab MCP add-on. Or download `mcp-1.0.0.zip` and Install from Disk.
+3. Drag the install link into Blender twice — first registers the Blender Lab repository, second installs the Lab MCP add-on. Or download `mcp-1.0.3.zip` and Install from Disk.
 4. Install/start the **MCP server** part:
    - **MCP Bundle (`.mcpb`)** for clients that support it (recommended for newer hosts; Lab page: "For newer clients that support `.mcpb` files…"), OR
    - From source per the upstream Setup wiki (wiki not directly re-read; manual check pending).
@@ -60,7 +60,7 @@ Same Lab tool surface (`get_blendfile_summary_*`, `get_objects_summary`, etc.) a
 
 ### Tool surface
 
-`get_blendfile_summary_path_info`, `get_blendfile_summary_datablocks`, `get_blendfile_summary_missing_files`, `get_blendfile_summary_of_linked_libraries`, `get_objects_summary`, plus `*_for_cli` variants and Python execution tools. Same regardless of host option. (Corroborated 2026-10-14 for `get_objects_summary`, `datablocks/missing_files/linked_libraries`, `execute_blender_code`, `*_for_cli` via secondary sample list sourced to `readme_tools.rst`; `path_info` attested only by the in-repo smoke test — full list pending direct `readme_tools.rst` read.)
+`get_blendfile_summary_path_info`, `get_blendfile_summary_datablocks`, `get_blendfile_summary_missing_files`, `get_blendfile_summary_of_linked_libraries`, `get_objects_summary`, plus `*_for_cli` variants and Python execution tools. Same regardless of host option. (Full 20-tool surface read directly from `readme_tools.rst` on 2026-10-13; record: `docs/research/runtime-lab-cli-deep-verification-2026-10-13.md`.)
 
 ### BlendOps evidence
 
@@ -80,7 +80,7 @@ Preferred: `uvx mcp-for-blender setup` or the one-line `install.sh` / `install.p
 2. Install `uv` per upstream instructions.
 3. In your MCP client config register: `command: uvx, args: [mcp-for-blender]`.
 4. Blender add-on: auto-installed by `setup`/`install-addon`, or manual fallback — download `addon.py` from upstream → install in Blender via Edit → Preferences → Add-ons → Install → enable.
-5. In Blender: press `N` → BlenderMCP tab → connect.
+5. In Blender: press `N` → "MCP for Blender" tab → connect.
 6. Restart your MCP client so it discovers the new server.
 
 ### Tool surface
@@ -101,7 +101,7 @@ See [`unofficial-runtime-bridges.md`](./unofficial-runtime-bridges.md). Third-pa
 
 Direct `blender --background`, `--python`, render flags. Source: [Blender CLI docs](https://docs.blender.org/manual/en/latest/advanced/command_line/index.html).
 
-**Maturity note:** Blender's CLI is an upstream-documented surface (Render/Cycles/Format/Python sections verified in 2.93–5.2 Manuals) — it is not claimed beyond that window. The `--background`, `--python`, `--render-output`, `--render-frame`, `--factory-startup` flags are documented across LTS releases. **BlendOps simply has no in-repo evidence file yet** capturing a per-recipe CLI-fallback eval. Operators who use shell `blender` should still record the exact command, inputs, output paths, exit code, and validation evidence per `docs/evals/official-runtime-verification-criteria.md` before any artifact claim — for **provenance**, not because the CLI itself is unstable.
+**Maturity note:** Blender's CLI is an upstream-documented surface (render/Cycles/format/Python sections read in the current Blender 5.2 LTS Manual — record: `docs/research/runtime-lab-cli-deep-verification-2026-10-13.md`) — stability beyond the current LTS is not asserted. The `--background`, `--python`, `--render-output`, `--render-frame`, `--factory-startup` flags are documented in the current Manual. **BlendOps simply has no in-repo evidence file yet** capturing a per-recipe CLI-fallback eval. Operators who use shell `blender` should still record the exact command, inputs, output paths, exit code, and validation evidence per `docs/evals/official-runtime-verification-criteria.md` before any artifact claim — for **provenance**, not because the CLI itself is unstable.
 
 **Evidence:** `Not Run` / `Not Produced` until a future eval record exists.
 

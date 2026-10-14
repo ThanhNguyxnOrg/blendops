@@ -4,13 +4,13 @@ Every resolution proposal must include explicit "do-not" reminders so the operat
 
 ## Permanent do-nots (always include in every resolution)
 
-1. **Do not enable both `Blender Lab MCP add-on` AND `ahujasid/blender-mcp` `addon.py` in the same Blender instance** simultaneously. Even with separate ports, port management is fragile.
+1. **Do not enable both `Blender Lab MCP add-on` AND `mcp-for-blender` `addon.py` in the same Blender instance** simultaneously. Even with separate ports, port management is fragile.
 
 2. **Do not point two MCP clients at the same Blender session.** The second connection silently fails per the Single-bridge constraint.
 
 3. **Do not enable Anthropic Connector toggle AND a manual `mcpServers.blender` Lab entry** in Claude Desktop simultaneously. They are both Path 1 host options targeting the same Lab stack.
 
-4. **Do not assume `localhost:9876` is yours** without checking. Both Lab MCP and `ahujasid/blender-mcp` default to ports in this range.
+4. **Do not assume `localhost:9876` is yours** without checking. Both Lab MCP and `mcp-for-blender` default to ports in this range.
 
 5. **Do not execute the resolution from this skill.** This skill diagnoses; the operator (or another skill) executes. Anything else violates `evidence-before-done` law.
 
@@ -20,7 +20,7 @@ Every resolution proposal must include explicit "do-not" reminders so the operat
 
 7. **If Path 2 is intended** — do-not also enable Anthropic Connector. Connector is for Path 1 only; enabling both would create a Path 1 + Path 2 conflict on Path 1 host (a) terms.
 
-8. **If Path 1 is intended** — do-not run `uvx blender-mcp` for that Blender. The community server uses different tool names and a different add-on.
+8. **If Path 1 is intended** — do-not run `uvx mcp-for-blender` for that Blender. The community server uses different tool names and a different add-on.
 
 9. **If the user wants both paths on different Blender instances** — do-not share ports. Each Blender process needs explicit port isolation in BOTH the Blender add-on settings AND the MCP client config.
 

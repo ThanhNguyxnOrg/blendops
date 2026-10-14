@@ -13,10 +13,10 @@ BlendOps evals are evidence records for laws, skills, workflows, recipes, and pa
 |---|---|---|
 | Manual runtime protocol | No verdict yet | Protocol / Not yet executed |
 | Text-only cyberpunk shoe eval | Text-only evidence only | Executed / Text-only, no Blender runtime |
-| Runtime cyberpunk shoe eval | Blocked | Blocked / Not Run |
+| Runtime cyberpunk shoe eval | Blocked | Not Run |
 | Path 1 read-only smoke (likely Anthropic Connector host) | Pass | Available / Read-only session access |
-| Path 2 (`mcp-for-blender` (formerly `blender-mcp`)) | User-reported verified (operator statement, does not promote eval scope) | No formal evidence file yet; template at [`path-2-ahujasid-readonly-template.md`](./path-2-ahujasid-readonly-template.md) |
-| CLI fallback | Not Run | Upstream-documented CLI surface; no in-repo evidence file yet |
+| Path 2 (`mcp-for-blender` (formerly `blender-mcp`)) | User-reported verified (operator statement, does not promote eval scope) | No formal evidence file yet; template at [`path-2-mcp-for-blender-readonly-template.md`](./path-2-mcp-for-blender-readonly-template.md) |
+| CLI fallback | Not Run | Documented upstream as a first-class Blender CLI surface; no in-repo evidence file yet |
 | Adapter install dry-run | Warn | Executed / Dry-run |
 | Manual install beta v0 | Warn | Executed / Dry-run / No runtime / No global config writes |
 | Official runtime verification criteria | Prepared | Criteria only / Not Run |
@@ -45,7 +45,7 @@ BlendOps evals are evidence records for laws, skills, workflows, recipes, and pa
 | **Executed / Text-only (No Blender runtime)** | Evaluation completed on prompts, plans, and checklists only. Runtime artifacts remain Not Run/Not Produced. |
 | **Executed / Dry-run** | Install or workflow behavior was tested without runtime execution or artifact production. |
 | **Executed / Runtime** | Official runtime path actually run with real preview/export/GLB evidence and explicit pass/warn/fail outcomes. |
-| **Blocked / Not Run** | Eval could not be executed in the current environment. |
+| **Not Run** | Eval could not be executed in the current environment. |
 
 ---
 
@@ -55,9 +55,9 @@ BlendOps evals are evidence records for laws, skills, workflows, recipes, and pa
 |---|---|---|---|
 | [cyberpunk-shoe-hero-v0-manual-eval.md](./cyberpunk-shoe-hero-v0-manual-eval.md) | Not yet executed | Protocol | Manual runtime eval protocol only. |
 | [cyberpunk-shoe-hero-v0-text-eval.md](./cyberpunk-shoe-hero-v0-text-eval.md) | Text-only | Prompt/plan/checklist evidence | No Blender runtime execution. |
-| [cyberpunk-shoe-hero-v0-runtime-eval.md](./cyberpunk-shoe-hero-v0-runtime-eval.md) | Blocked / Not Run | No runtime evidence | Runtime eval result record is blocked in current environment. |
+| [cyberpunk-shoe-hero-v0-runtime-eval.md](./cyberpunk-shoe-hero-v0-runtime-eval.md) | Not Run | No runtime evidence | Runtime eval result record is blocked in current environment. |
 | [blender-connector-read-only-smoke-test.md](./blender-connector-read-only-smoke-test.md) | Pass / Available (Path 1 read-only, likely Anthropic Connector host) | Read-only smoke evidence | Lab MCP tool surface (`get_blendfile_summary_*`, `get_objects_summary`) returned `status: ok` (attribution: consistent with Lab MCP; `path_info` attested only by this smoke test). No mutation, render, export, or artifacts. |
-| [path-2-ahujasid-readonly-template.md](./path-2-ahujasid-readonly-template.md) | Template only / Not Yet Run | Fill-in template | Use this template to record Path 2 read-only smoke evidence when running `mcp-for-blender` (formerly `blender-mcp`). |
+| [path-2-mcp-for-blender-readonly-template.md](./path-2-mcp-for-blender-readonly-template.md) | Template only / Not Yet Run | Fill-in template | Use this template to record Path 2 read-only smoke evidence when running `mcp-for-blender` (formerly `blender-mcp`). |
 | [adapter-install-v0-dry-run.md](./adapter-install-v0-dry-run.md) | Warn | Dry-run install evidence | Adapter install evaluation report. |
 | [manual-install-beta-v0.md](./manual-install-beta-v0.md) | Warn | Dry-run fixture evidence | Manual install beta dry-run summary. |
 | [official-runtime-verification-criteria.md](./official-runtime-verification-criteria.md) | Prepared | Criteria only | Defines Draft v0 evidence rules for future official-runtime evals. |
@@ -80,7 +80,7 @@ BlendOps evals are evidence records for laws, skills, workflows, recipes, and pa
 
 | Blocker | Affects | Current state |
 |---|---|---|
-| Runtime-available environment missing | Runtime eval | Blocked / Not Run |
+| Runtime-available environment missing | Runtime eval | Not Run |
 | Preview/render/GLB evidence missing | Artifact-truth readiness | Not Produced |
 
 ---

@@ -1,14 +1,14 @@
-# Path 2 Read-Only Smoke Test (ahujasid/blender-mcp) — Template
+# Path 2 Read-Only Smoke Test (mcp-for-blender) — Template
 
-Status: **Template only / Not Yet Run** — copy this file to `path-2-ahujasid-readonly-YYYY-MM-DD.md`, fill in every field below, change Status to `Pass / Available` or `Failed` based on what actually happened, then add a row to [`README.md`](./README.md) "Evidence and result index".
+Status: **Template only / Not Yet Run** — copy this file to `path-2-mcp-for-blender-readonly-YYYY-MM-DD.md`, fill in every field below, change Status to `Pass / Available` or `Failed` based on what actually happened, then add a row to [`README.md`](./README.md) "Evidence and result index".
 
 Date filled: <YYYY-MM-DD>  
 Operator: <name or handle>  
-Runtime path: **Path 2 — Community Blender MCP (`ahujasid/blender-mcp`)** — see [`docs/runtime-stack-strategy.md`](../runtime-stack-strategy.md)  
+Runtime path: **Path 2 — Community Blender MCP (`mcp-for-blender`)** — see [`docs/runtime-stack-strategy.md`](../runtime-stack-strategy.md)  
 Scope: Read-only smoke test only. Mutation, render, and export must remain `Not Run`.
 
 > [!CAUTION]
-> A successful run of this template **only** upgrades Path 2 read-only access from "User-reported verified" to "Verified". It does **not** upgrade mutation, render, export, or artifact evidence. For those, run the [official runtime manual eval packet](./official-runtime-manual-eval-packet.md) and save a separate `path-2-ahujasid-recipe-cyberpunk-shoe-YYYY-MM-DD.md` evidence file.
+> A successful run of this template **only** upgrades Path 2 read-only access from "User-reported verified" to "Verified". It does **not** upgrade mutation, render, export, or artifact evidence. For those, run the [official runtime manual eval packet](./official-runtime-manual-eval-packet.md) and save a separate `path-2-mcp-for-blender-recipe-cyberpunk-shoe-YYYY-MM-DD.md` evidence file.
 
 ---
 
@@ -18,8 +18,8 @@ Scope: Read-only smoke test only. Mutation, render, and export must remain `Not 
 |---|---|---|
 | `blender --version` (verbatim) |  | yes |
 | Blender install path (e.g. `/Applications/Blender.app/Contents/MacOS/Blender` or `C:\Program Files\Blender Foundation\Blender 4.5\blender.exe`) |  | yes |
-| `ahujasid/blender-mcp` `addon.py` upstream commit SHA (from the file you installed in Blender) |  | yes |
-| `uvx blender-mcp` version (output of `uvx blender-mcp --version` if available, otherwise the package version `uv pip list \| grep blender-mcp`) |  | yes |
+| `mcp-for-blender` `addon.py` upstream commit SHA (from the file you installed in Blender) |  | yes |
+| `uvx mcp-for-blender` version (output of `uvx mcp-for-blender --version` if available, otherwise the package version via `uv pip list \| grep -E "mcp-for-blender\|blender-mcp"`) |  | yes |
 | MCP host product + version (Claude Desktop / Claude Code / Cursor / Codex / OpenCode / Cline / VS Code / other) |  | yes |
 | MCP host config snippet that registered the server |  | yes |
 
@@ -48,7 +48,7 @@ Example for the last field (Claude Desktop):
 | Local bridge port (commonly `localhost:9876`) is not already taken by another process | Pass / Fail |
 
 > [!IMPORTANT]
-> Blender accepts a single MCP bridge session per Blender instance. If Path 1 (Lab MCP) and Path 2 (`ahujasid/blender-mcp`) are both configured, the second connection silently fails. Prove the single-bridge constraint here.
+> Blender accepts a single MCP bridge session per Blender instance. If Path 1 (Lab MCP) and Path 2 (`mcp-for-blender`) are both configured, the second connection silently fails. Prove the single-bridge constraint here.
 
 ---
 
@@ -110,7 +110,7 @@ Objects returned:
 This smoke test only upgrades Path 2 read-only access. Set the verdict and confirm what it does NOT upgrade:
 
 ```txt
-Path 2 (ahujasid/blender-mcp) read-only access: Pass / Available    ← change if the test failed
+Path 2 (mcp-for-blender) read-only access: Pass / Available    ← change if the test failed
 Path 2 mutation / render / export eval: Not Run                     ← keep this verbatim
 Path 1 (Lab MCP): unchanged by this record (still smoke-only)       ← keep verbatim
 CLI fallback: unchanged by this record (documented upstream; no in-repo evidence file yet)     ← keep verbatim
@@ -130,7 +130,7 @@ v0.1.0 tag: <update only after both paths have full eval evidence OR the limitat
 
 ## 8. After saving this file
 
-- [ ] Rename this copy from `path-2-ahujasid-readonly-template.md` to `path-2-ahujasid-readonly-YYYY-MM-DD.md`.
+- [ ] Rename this copy from `path-2-mcp-for-blender-readonly-template.md` to `path-2-mcp-for-blender-readonly-YYYY-MM-DD.md`.
 - [ ] Add a row to [`docs/evals/README.md`](./README.md) "Evidence and result index" pointing at the new file.
 - [ ] Update the verdict in [`docs/evals/README.md`](./README.md) "Verdict dashboard" Path 2 row from "User-reported verified" to "Verified" if the smoke test passed.
 - [ ] Update [`docs/release-readiness.md`](../release-readiness.md) status row for Path 2.
@@ -138,14 +138,14 @@ v0.1.0 tag: <update only after both paths have full eval evidence OR the limitat
 - [ ] Update [`docs/runtime-stack-strategy.md`](../runtime-stack-strategy.md) "BlendOps verification" cell for Path 2.
 - [ ] Update [`README.md`](../../README.md) badge for Path 2 if appropriate.
 - [ ] Run `npm run docs:check` and `npm run skills:export` to confirm no CI break.
-- [ ] Commit with message `Add Path 2 (ahujasid/blender-mcp) read-only smoke evidence YYYY-MM-DD`.
+- [ ] Commit with message `Add Path 2 (mcp-for-blender) read-only smoke evidence YYYY-MM-DD`.
 
 ---
 
 ## What this template does NOT do
 
 - Does **not** install Blender.
-- Does **not** install `uv` or `ahujasid/blender-mcp` for you.
+- Does **not** install `uv` or `mcp-for-blender` for you.
 - Does **not** configure an MCP client.
 - Does **not** prove mutation, render, export, or GLB success.
 - Does **not** authorize tagging `v0.1.0`. That requires either a full eval record OR an explicit documented limitation acceptance.

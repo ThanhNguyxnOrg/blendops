@@ -17,7 +17,7 @@ Requirements:
 - Treat Ollama as docs-only / reference; no global config writes.
 - Provide BlendOps planning/readiness/evidence/handoff guidance for the local LLM session.
 - For Blender runtime via Ollama as MCP host:
-  - Configure ~/.ollama/mcp-servers.json (per Ollama PR #13700) with the Blender MCP server (Path 1 Lab MCP via .mcpb bundle, OR Path 2 ahujasid/blender-mcp via uvx).
+  - Configure ~/.ollama/mcp-servers.json (per Ollama PR #13700) with the Blender MCP server (Path 1 Lab MCP via .mcpb bundle, OR Path 2 mcp-for-blender via uvx).
   - Run Ollama with --experimental flag for the agent loop.
   - Tools are namespaced as servername:toolname.
 - Do not install Blender, do not run Blender, do not configure connectors automatically.
@@ -60,7 +60,7 @@ Skill install != runtime setup.
 For Blender runtime via Ollama as MCP host:
 - **Path 1 (Lab MCP)** — Blender 5.1+ + Lab MCP add-on installed in Blender + MCP server reachable from Ollama's MCP config. Anthropic Connector toggle is Claude Desktop only; not applicable here.
 - **Path 2 (community `mcp-for-blender` (formerly `blender-mcp`))** — Blender 3.0+ + `addon.py` + `uvx mcp-for-blender` registered in Ollama's MCP config.
-- **CLI fallback (appendix)** — Ollama can also drive Blender via shell. The Blender CLI is **documented upstream** as a first-class surface (stable across LTS releases); no in-repo evidence file yet.
+- **CLI fallback (appendix)** — Ollama can also drive Blender via shell. The Blender CLI is **documented upstream** as a first-class Blender CLI surface; no in-repo evidence file yet.
 
 See [`docs/runtime-stack-strategy.md`](../runtime-stack-strategy.md) for the canonical 2-path + CLI appendix model.
 

@@ -41,6 +41,6 @@ Skill install != runtime setup.
 
 ## What not to claim
 
-- Verified native skill-loader support (use project-local fallback unless verified); runtime execution success; artifact production.
+- Verified native skill-loader support (use project-local fallback unless verified).
 - Runtime execution success.
 - Artifact production.

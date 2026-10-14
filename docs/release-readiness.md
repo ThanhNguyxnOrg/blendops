@@ -1,7 +1,7 @@
 # 🚦 Release Readiness
 
 Status: Draft v0, not production, not stable  
-Date: 2026-05-09 (scope clarified; expanded to 48 skills + 20 install targets)
+Date: 2026-05-09 (scope clarified; expanded to 48 skills + 26 install targets)
 
 > [!IMPORTANT]
 > **Scope: BlendOps publishes the skills layer; runtime paths are an upstream redirect.** This readiness report grades only what BlendOps **owns**: 48 skills + 4 laws + 1 pack + 3 bundles + 26 install target docs + ZIP/package generation + CI guards. Runtime execution (Path 1 Lab MCP, Path 2 `ahujasid` community, CLI) is owned by Blender Foundation / Anthropic / the community — BlendOps redirects users via per-target install docs and does **not** claim ownership of those upstream paths' stability.
@@ -34,11 +34,11 @@ This grades whether BlendOps' redirect docs are accurate, **not** whether BlendO
 | Path 1 — Lab MCP (Blender Foundation) | Blender Foundation ([blender.org/lab/mcp-server](https://www.blender.org/lab/mcp-server/)) | ✅ Per-target install docs cite source, list Blender 5.1+, host options (a) and (b). | `docs/evals/blender-connector-read-only-smoke-test.md` (read-only). No mutation/render/export evidence file yet (optional operator-side). |
 | Path 1 host (a) — Anthropic Blender Connector | Anthropic ([claude.com tutorial](https://claude.com/resources/tutorials/using-the-blender-connector-in-claude)) | ✅ `docs/install/claude-desktop.md` documents Connector + Lab add-on dependency. | Same as Path 1 above. |
 | Path 1 host (b) — Manual MCP client config | Each MCP client | ✅ Per-target install docs (cursor, claude-code, cline, continue, …). | Same as Path 1 above. |
-| Path 2 — Community `ahujasid/blender-mcp` | `ahujasid` community ([20K+ stars](https://github.com/ahujasid/blender-mcp)) | ✅ `docs/unofficial-runtime-bridges.md` lists caveats; install docs cite source. | Template at `docs/evals/path-2-ahujasid-readonly-template.md`. No filled file yet (optional operator-side). |
+| Path 2 — Community `mcp-for-blender` | `ahujasid` community ([github.com/ahujasid/mcp-for-blender](https://github.com/ahujasid/mcp-for-blender)) | ✅ `docs/unofficial-runtime-bridges.md` lists caveats; install docs cite source. | Template at `docs/evals/path-2-mcp-for-blender-readonly-template.md`. No filled file yet (optional operator-side). |
 | CLI fallback | Blender Foundation ([CLI manual](https://docs.blender.org/manual/en/latest/advanced/command_line/index.html)) | ✅ `docs/runtime-stack-strategy.md` includes a CLI compatibility considerations table (GLB export, --factory-startup add-on enablement, GPU rendering, viewport limits, stateless caveat). | None (optional operator-side). |
 
 > [!NOTE]
-> Path 1 + Path 2 are **user-reported verified by repo owner** (2026-04-29 + 2026-05-08 + 2026-05-09 reconfirmation). CLI is decades-stable upstream first-class surface. The lack of an in-repo eval record file does **not** mean the upstream paths don't work — it just means BlendOps has not captured a per-recipe provenance record under `docs/evals/`. That record is optional operator-side.
+> Path 1 + Path 2 are **user-reported verified by repo owner** (2026-04-29 + 2026-05-08 + 2026-05-09 reconfirmation). CLI is documented upstream as a first-class Blender CLI surface. The lack of an in-repo eval record file does **not** mean the upstream paths don't work — it just means BlendOps has not captured a per-recipe provenance record under `docs/evals/`. That record is optional operator-side.
 
 ---
 

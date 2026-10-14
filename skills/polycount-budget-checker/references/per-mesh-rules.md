@@ -32,5 +32,12 @@ A mesh that is:
 
 Meshes hidden in viewport or disabled in collection should not count. But export options vary by stack — verify the export will actually exclude them before claiming compliance.
 
+## Evaluated mesh counts (modifiers, Simplify)
+
+- The count that matters for export/render is the **evaluated** mesh: the base mesh after the full modifier stack at **render** levels — not the viewport display count.
+- Modifiers with separate viewport/render levels (Subdivision Surface, Multiresolution) can multiply the render-time triangle count (a Solidify modifier can double faces even at viewport level). A count read from the viewport understates the real cost.
+- Scene simplify (Renderer → Simplify) lowers effective subdivision at render time; when it is on, the rendered result may be cheaper than the modeled count. Verify the Simplify state before claiming compliance, and record which basis the count used.
+- Every triangle count must state its basis (base mesh / viewport / evaluated render mesh). If the basis is unknown, mark the row `Not Run` rather than guessing.
+
 ## Related skill
 `../SKILL.md`

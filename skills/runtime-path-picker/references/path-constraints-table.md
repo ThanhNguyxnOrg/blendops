@@ -1,6 +1,6 @@
 # Path constraints table
 
-| Constraint | Path 1 — Lab MCP | Path 2 — `ahujasid/blender-mcp` | CLI appendix |
+| Constraint | Path 1 — Lab MCP | Path 2 — `mcp-for-blender` | CLI appendix |
 |---|---|---|---|
 | Blender 5.1+ available | Required | Not required (3.0+ typical) | Version tied to file ops; see upstream CLI docs |
 | Interactive chat steering | Excellent via MCP | Excellent via MCP | Poor (non-interactive batches) |

@@ -21,7 +21,7 @@ Requirements:
   - CLI: qchat mcp add blender --command uvx --args blender-mcp
   - File: edit the agent config under ~/.aws/amazonq/cli-agents (JSON, mcpServers field).
   - Import: qchat mcp import <path-to-config>
-- Add Blender MCP server (Path 1 Lab MCP via .mcpb bundle, OR Path 2 ahujasid/blender-mcp via uvx).
+- Add Blender MCP server (Path 1 Lab MCP via .mcpb bundle, OR Path 2 mcp-for-blender via uvx).
 - After adding, verify with qchat mcp status and /tools.
 - Single-bridge constraint: do not run two Blender MCP servers concurrently against the same Blender instance on `localhost:9876` (side-by-side on separate instances via per-instance `--port 9877` is supported upstream).
 - Do not install Blender, do not run Blender, do not configure connectors automatically.
@@ -88,7 +88,7 @@ Skill install != runtime setup.
 For Blender runtime via Amazon Q Developer CLI as MCP host:
 - **Path 1 (Lab MCP)** — Blender 5.1+ + Lab add-on + Lab server. Anthropic Connector is Claude Desktop only.
 - **Path 2 (community `mcp-for-blender` (formerly `blender-mcp`))** — Blender 3.0+ + `addon.py` + `uvx mcp-for-blender`.
-- **CLI fallback (appendix)** — Documented upstream as a first-class Blender CLI surface (stable across LTS releases); no in-repo evidence file yet.
+- **CLI fallback (appendix)** — Documented upstream as a first-class Blender CLI surface; no in-repo evidence file yet.
 
 See [`docs/runtime-stack-strategy.md`](../runtime-stack-strategy.md).
 

@@ -15,6 +15,6 @@ Required behavior:
 - do not describe Anthropic Connector as standalone — Anthropic's tutorial explicitly tells you to install the Lab MCP add-on inside Blender.
 - the Blender 5.1+ floor applies to **all** of Path 1 (whichever host).
 
-Path 2 (`mcp-for-blender` (formerly `blender-mcp`)) is third-party from both Anthropic and the Blender Foundation but is mature (20K+ stars, prior art). It is one of the canonical paths, with extra caveats in unofficial-runtime-bridges guidance.
+Path 2 (`mcp-for-blender` (formerly `blender-mcp`)) is third-party from both Anthropic and the Blender Foundation but is mature prior art. It is one of the canonical paths, with extra caveats in unofficial-runtime-bridges guidance.
 
 Single-bridge constraint: Blender accepts one MCP bridge session per Blender instance. Do not run Path 1 + Path 2 concurrently against the same Blender instance on `localhost:9876` (side-by-side on separate instances via per-instance `--port 9877` is supported upstream).

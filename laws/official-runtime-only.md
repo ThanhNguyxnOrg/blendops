@@ -17,8 +17,8 @@ The currently recognized paths are:
 | Path | Provenance | "Official" status for this law |
 |---|---|---|
 | **Path 1** Official Blender Lab MCP (Lab add-on + Lab server in Blender; host = Anthropic Blender Connector OR manual MCP client) | Blender Foundation Lab (`bpype/blender_mcp`) for the Blender-side stack; Anthropic for host option (a) | Official — endorsed by Blender Foundation for the Blender side, and by Anthropic for host option (a). Anthropic Connector is **not** a separate runtime; it is one MCP host on top of Lab MCP. |
-| **Path 2** Community `ahujasid/blender-mcp` | Community / `ahujasid` (20K+ stars, prior art) | Third-party but **mature and recognized**; treated as a supported path in BlendOps with extra caveats in [`docs/unofficial-runtime-bridges.md`](../docs/unofficial-runtime-bridges.md). |
-| **CLI fallback (appendix)** | Blender Foundation | Official source for `blender` CLI. **Documented upstream** as a first-class Blender CLI surface (stable across LTS releases, used widely in render farms / HPC / CI); BlendOps simply has no in-repo evidence file yet capturing a per-recipe CLI-fallback eval. Appendix only — not presented as a peer execution path of Path 1/2 because no in-repo eval record exists. |
+| **Path 2** Community `mcp-for-blender` | Community / `ahujasid` (mature prior art) | Third-party but **mature and recognized**; treated as a supported path in BlendOps with extra caveats in [`docs/unofficial-runtime-bridges.md`](../docs/unofficial-runtime-bridges.md). |
+| **CLI fallback (appendix)** | Blender Foundation | Official source for `blender` CLI. **Documented upstream** as a first-class Blender CLI surface; BlendOps simply has no in-repo evidence file yet capturing a per-recipe CLI-fallback eval. Appendix only — not presented as a peer execution path of Path 1/2 because no in-repo eval record exists. |
 
 What this law forbids:
 
@@ -53,7 +53,7 @@ All files under `skills/` and `packs/`.
 - must not invent setup commands/details
 - must not describe Anthropic Connector as standalone or as not requiring the Lab add-on inside Blender
 - must not loosen the Blender 5.1+ floor for Path 1 (regardless of host option)
-- must not call Path 2 "experimental" in a way that implies engineering immaturity (it is a 21K+ star prior-art project; the caveat is provenance, not maturity)
+- must not call Path 2 "experimental" in a way that implies engineering immaturity (it is a mature prior-art project; the caveat is provenance, not maturity)
 - must not present CLI fallback as publisher-verified
 
 ## Blocking conditions
@@ -64,7 +64,7 @@ All files under `skills/` and `packs/`.
 
 ## Validation
 
-- official source links present per path mentioned (Anthropic tutorial + Lab MCP for Path 1; `ahujasid/blender-mcp` for Path 2; Blender CLI docs for CLI appendix)
+- official source links present per path mentioned (Anthropic tutorial + Lab MCP for Path 1; `mcp-for-blender` for Path 2; Blender CLI docs for CLI appendix)
 - no invented runtime path references
 - confidence labels used when needed
 - per-path Blender-version requirement is correctly attributed (Path 1 → 5.1+; Path 2 → 3.0+; CLI → 4.2+ recommended, not verified)

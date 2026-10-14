@@ -82,7 +82,7 @@ Limitations: no viewport Grab; script args via `--` separator per upstream docs
 
 ## Official runtime boundary
 
-Planning outline — BlendOps does not execute Blender. CLI fallback appendix is upstream-documented CLI surface (Render/Cycles/Format/Python sections verified in 2.93-5.2 Manuals); BlendOps has **no in-repo evidence file yet**. Stay truthful: MCP paths remain Path 1 / Path 2 when interactivity matters.
+Planning outline — BlendOps does not execute Blender. CLI fallback appendix is documented upstream as a first-class Blender CLI surface (render/Cycles/format/Python sections read in the current Blender 5.2 LTS Manual — record: `docs/research/runtime-lab-cli-deep-verification-2026-10-13.md`); BlendOps has **no in-repo evidence file yet**. Stay truthful: MCP paths remain Path 1 / Path 2 when interactivity matters.
 
 ## Operating procedure
 

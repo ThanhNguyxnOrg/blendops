@@ -15,7 +15,7 @@ BlendOps installation has three separate layers.
 | Layer | What it installs or records | Boundary |
 |---|---|---|
 | Skill/install layer | BlendOps docs, skills, laws, packs, adapters, references, and entrypoint instructions. | Does not install or run Blender runtime. |
-| Runtime bridge layer | One of the runtime paths (see [`./runtime-stack-strategy.md`](./runtime-stack-strategy.md)): Path 1 (Official Blender Lab MCP, hosted from either (a) Anthropic Blender Connector or (b) any other MCP client configured manually) or Path 2 (community `ahujasid/blender-mcp`). CLI fallback exists as appendix only — documented upstream as first-class Blender CLI surface, no in-repo evidence file yet. | Separate setup owned by upstream docs and the local user environment; not installed by BlendOps. |
+| Runtime bridge layer | One of the runtime paths (see [`./runtime-stack-strategy.md`](./runtime-stack-strategy.md)): Path 1 (Official Blender Lab MCP, hosted from either (a) Anthropic Blender Connector or (b) any other MCP client configured manually) or Path 2 (community `mcp-for-blender`). CLI fallback exists as appendix only — documented upstream as first-class Blender CLI surface, no in-repo evidence file yet. | Separate setup owned by upstream docs and the local user environment; not installed by BlendOps. |
 | Evidence/eval layer | Readiness checks, connector smoke tests, full runtime eval records, artifact truth labels. | Evidence is required before claiming runtime or artifact success. |
 
 The layers may be used together, but success in one layer does not prove success in another. For example, a Claude Desktop Personal Skill import does not prove Blender connector access, and read-only connector access does not prove render/export behavior.
@@ -70,7 +70,7 @@ Current evidence records should stay scoped:
 
 Claude Code, OpenCode, Cursor, Codex, Gemini, and other MCP-capable agents may each need separate configuration for BlendOps content installation.
 
-Path 1 host (b) (manual MCP client config pointing at Blender Lab MCP) IS the supported way for Claude Code, Cursor, Codex, OpenCode, Cline, etc. to use the official Lab MCP stack — it is not a separate "direct MCP" route. Path 2 (`ahujasid/blender-mcp`) is the community alternative. Gemini CLI MCP support depends on upstream and is not researched yet. See [`./runtime-stack-strategy.md`](./runtime-stack-strategy.md).
+Path 1 host (b) (manual MCP client config pointing at Blender Lab MCP) IS the supported way for Claude Code, Cursor, Codex, OpenCode, Cline, etc. to use the official Lab MCP stack — it is not a separate "direct MCP" route. Path 2 (`mcp-for-blender`) is the community alternative. Gemini CLI MCP support depends on upstream and is not researched yet. See [`./runtime-stack-strategy.md`](./runtime-stack-strategy.md).
 
 Rules:
 

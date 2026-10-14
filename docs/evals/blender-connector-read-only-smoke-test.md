@@ -45,7 +45,7 @@ Only safe read-only tools were used:
 
 All three returned `status: ok`.
 
-These tool names are part of the **Blender Lab MCP** tool surface (`bpype/blender_mcp` at `blender.org/lab/mcp-server`). They are reachable from any host on Path 1 — both the Anthropic Connector (host option a) and any manually-configured MCP client (host option b). They are **not** part of the community `ahujasid/blender-mcp` Path 2 surface (which uses `get_scene_info`, `execute_blender_code`).
+These tool names are part of the **Blender Lab MCP** tool surface (`bpype/blender_mcp` at `blender.org/lab/mcp-server`). They are reachable from any host on Path 1 — both the Anthropic Connector (host option a) and any manually-configured MCP client (host option b). They are **not** part of the community `mcp-for-blender` Path 2 surface (whose tool list includes `get_scene_info` and `execute_blender_code` among nine tools, per the 2026-10-13 research record).
 
 ---
 
@@ -93,8 +93,8 @@ This smoke test only upgrades the Path 1 read-only access signal:
 ```txt
 Path 1 read-only Lab MCP access (likely via Anthropic Connector host): Pass / Available
 Path 1 mutation/render/export eval: Not Run
-Path 2 (community ahujasid/blender-mcp): User-reported verified separately; no formal eval file
-CLI fallback: Not Run; documented upstream as first-class Blender CLI (stable across LTS releases); no in-repo evidence file yet
+Path 2 (community mcp-for-blender): User-reported verified separately; no formal eval file
+CLI fallback: Not Run; documented upstream as first-class Blender CLI; no in-repo evidence file yet
 Full official runtime manual eval: Not Run
 Runtime artifacts: Not Produced
 Stable release readiness: Not Ready
@@ -109,11 +109,11 @@ To upgrade Path 1 from "read-only smoke" to documented full eval, or to upgrade 
 
 1. **Path** (1 or 2) and (for Path 1) **host option** (a — Anthropic Connector, b — manual MCP client).
 2. **`blender --version`** verbatim.
-3. **Blender-side add-on identity** (Lab add-on version vs `ahujasid/blender-mcp` `addon.py` commit).
-4. **MCP server source** (`.mcpb` bundle filename / source commit / `uvx blender-mcp` version).
+3. **Blender-side add-on identity** (Lab add-on version vs `mcp-for-blender` `addon.py` commit).
+4. **MCP server source** (`.mcpb` bundle filename / source commit / `uvx mcp-for-blender` version).
 5. **MCP host product + version** (Claude Desktop build, Cursor build, etc.).
 6. **Exact tool names** invoked + responses.
 7. **Single-bridge check** confirming only one MCP host connected.
 8. **No-mutation guarantee** (explicit list of read-only tools used; no `execute_blender_code` / `run_blender_code`).
 
-Save the new record under `docs/evals/` with a filename that names the path + host, e.g. `path-1-anthropic-connector-readonly-YYYY-MM-DD.md` or `path-2-ahujasid-readonly-YYYY-MM-DD.md`.
+Save the new record under `docs/evals/` with a filename that names the path + host, e.g. `path-1-anthropic-connector-readonly-YYYY-MM-DD.md` or `path-2-mcp-for-blender-readonly-YYYY-MM-DD.md`.

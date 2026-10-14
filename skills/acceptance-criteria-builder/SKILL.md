@@ -64,7 +64,7 @@ Translate qualitative creative goals into **checkable** acceptance rows so valid
 ### Evidence / caveat output
 
 ```txt
-Runtime status: Not Run | Attempted | Produced | Verified | Failed | Blocked / Not Run
+Runtime status: Not Run | Attempted | Produced | Verified | Failed
 Artifact status: Not Run | Not Produced | Produced | Verified | Failed
 Evidence used: <brief version ID>
 Limitations: <subjective rows flagged>

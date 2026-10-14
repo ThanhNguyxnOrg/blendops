@@ -58,6 +58,7 @@ Run a focused pass/warn/fail check on per-mesh and total-scene triangle counts v
 - Triangle counts are post-decimation (final), not pre-decimation source.
 - Counts include all visible meshes; hidden / collection-disabled meshes excluded.
 - "Triangles" in glTF = primitive triangles after triangulation, not Blender face count.
+- Counts are stated with their basis (base mesh / viewport / evaluated render mesh); an unknown basis is marked `Not Run`, not guessed.
 
 ## Output schema
 
@@ -72,7 +73,7 @@ A per-mesh row table: name, triangle count, vs per-mesh cap, vs total budget con
 ### Evidence / caveat output
 
 ```txt
-Runtime status: Not Run | Attempted | Produced | Verified | Failed | Blocked / Not Run
+Runtime status: Not Run | Attempted | Produced | Verified | Failed
 Artifact status: Not Run | Not Produced | Produced | Verified | Failed
 Evidence used: <links, paths, logs, or "none">
 Limitations: <known gaps>
@@ -112,6 +113,10 @@ Skinned mesh > per-mesh skinned cap?
   → Fail (skinning cost is non-linear)
 Hidden / disabled meshes consume budget by accident?
   → Warn (verify exclusion before export)
+Counts read at viewport levels while modifiers render higher?
+  → Warn (undercounts evaluated mesh; re-read evaluated render mesh)
+Scene simplify (Renderer → Simplify) enabled at render time?
+  → Note in limitations; rendered result may be cheaper than modeled
 ```
 
 ## Playbooks
@@ -139,6 +144,7 @@ Skip rows that depend on measurement; mark explicitly.
 ## Validation checklist
 - [ ] Pinned budget recorded
 - [ ] Every mesh listed with triangle count
+- [ ] Triangle-count basis stated (base / viewport / evaluated render mesh)
 - [ ] Per-mesh % of total budget computed
 - [ ] Verdicts assigned per mesh
 - [ ] Worst offenders highlighted
@@ -166,11 +172,13 @@ Skip rows that depend on measurement; mark explicitly.
 | One mesh over per-mesh cap | Recommend split into multiple primitives or LOD. |
 | Skinned mesh expensive | Reduce bone influences per vertex (clamp ≤ 4); reduce bone count. |
 | Hidden meshes counted | Verify export options exclude hidden/disabled collections. |
+| Viewport says under budget but render is heavy | Check modifier render levels + evaluated mesh; viewport display understates cost. |
 
 ## Best practices
 - Use total + per-mesh caps together; either alone is misleading.
 - Reserve 20% headroom against absolute caps.
 - Treat instances as shared geometry; count once, not per-instance.
+- Count the evaluated render mesh, not the viewport display.
 - Keep this skill narrow.
 
 ## Good examples
@@ -197,6 +205,7 @@ Next: blender-scene-quality-checker / glb-mobile-performance-budget
 ## Anti-patterns
 - Decimating inside this skill.
 - Inventing triangle counts.
+- Counting viewport display triangles and calling it the export cost.
 - Marking Verified without measurement.
 - Mixing material / lighting / composition checks.
 

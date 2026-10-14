@@ -83,7 +83,7 @@ Human intent (non-Blender user)
 |---|---|
 | 48 skills (baseline + web 3D deep + quality validators + domain planners + process discipline + asset/sourcing + color/format/output + recipe/pack ops + runtime path discipline, …) | **Path 1 — Blender Lab MCP** (Lab add-on + Lab server). Owner: Blender Foundation. Source: [blender.org/lab/mcp-server](https://www.blender.org/lab/mcp-server/) |
 | 4 laws (evidence-before-done, official-runtime-only, no-arbitrary-python-interface, non-blender-user-language) | **Path 1 host (a) — Anthropic Blender Connector** (Claude-Desktop-specific MCP host). Owner: Anthropic. Source: [claude.com/.../using-the-blender-connector-in-claude](https://claude.com/resources/tutorials/using-the-blender-connector-in-claude) |
-| 1 pack (`product-hero-v0`), 3 bundles (skill-package, claude-desktop-manual, generic-project-local) | **Path 2 — Community `mcp-for-blender` (formerly `blender-mcp`)** (different add-on/server). Owner: 20K+ stars community project. Source: [github.com/ahujasid/mcp-for-blender](https://github.com/ahujasid/mcp-for-blender) |
+| 1 pack (`product-hero-v0`), 3 bundles (skill-package, claude-desktop-manual, generic-project-local) | **Path 2 — Community `mcp-for-blender` (formerly `blender-mcp`)** (different add-on/server). Owner: mature community project. Source: [github.com/ahujasid/mcp-for-blender](https://github.com/ahujasid/mcp-for-blender) |
 | 26 install target docs + 3 mode auto-detect install flow | **CLI fallback** (`blender --background --python ...`). Owner: Blender Foundation. Source: [docs.blender.org/manual/.../command_line](https://docs.blender.org/manual/en/latest/advanced/command_line/index.html) |
 | Skill ZIP / OpenAI YAML / canonical bundle generation (`npm run skills:export` → 48 ZIPs, one per `skills/*/SKILL.md`) | The Blender executable, MCP servers, MCP host clients, OS, GPU drivers, network. |
 
@@ -120,8 +120,8 @@ The agent auto-detects which mode applies. Coding agents (Claude Code, Cursor, C
 BlendOps recognizes **2 MCP execution paths + a CLI fallback appendix** ([full doc](./docs/runtime-stack-strategy.md)):
 
 - **Path 1 — Official Blender Lab MCP** (Lab add-on + Lab server installed in Blender 5.1+, hosted from either (a) **Anthropic Blender Connector** in Claude Desktop, or (b) any other MCP client configured manually).
-- **Path 2 — Community `mcp-for-blender` (formerly `blender-mcp`)** (different add-on/server, mature 20K+ stars third-party, Blender 3.0+).
-- **CLI fallback (appendix)** — direct `blender --background --python`. Upstream-documented CLI surface; no in-repo evidence file yet.
+- **Path 2 — Community `mcp-for-blender` (formerly `blender-mcp`)** (different add-on/server, mature third-party, Blender 3.0+).
+- **CLI fallback (appendix)** — direct `blender --background --python`. Documented upstream as a first-class Blender CLI surface; no in-repo evidence file yet.
 
 > [!WARNING]
 > **Anthropic Connector is not standalone.** Anthropic's tutorial step 2 explicitly tells you to install the Blender Lab MCP add-on inside Blender. The Connector is the Claude-Desktop-specific MCP host on top of the Lab stack. **Path 1 needs Blender 5.1+ regardless of host** because of the Lab add-on manifest.

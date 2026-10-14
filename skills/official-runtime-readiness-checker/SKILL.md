@@ -74,11 +74,11 @@ Canonical role: `runtime-readiness` in the BlendOps skill system. Keep this as t
 - This skill must not claim execution success without execution evidence.
 
 ## Operating procedure
-1. Confirm chosen runtime path (Path 1 or Path 2 from `../../docs/runtime-stack-strategy.md`); for Path 1 also confirm host option (a Anthropic Connector, b manual MCP). CLI fallback is appendix only — upstream-documented CLI surface but no in-repo evidence file yet; flag this if user picks it.
+1. Confirm chosen runtime path (Path 1 or Path 2 from `../../docs/runtime-stack-strategy.md`); for Path 1 also confirm host option (a Anthropic Connector, b manual MCP). CLI fallback is appendix only — documented upstream as a first-class Blender CLI surface but no in-repo evidence file yet; flag this if user picks it.
 2. Check Blender executable availability (command/path evidence) AND record exact `blender --version` output for per-path minimum check:
-   - **Path 1 (either host)** → 5.1+ required (Lab page requirement #1: "Blender 5.1 or newer"; manifest literal `5.1.0` pending direct re-read).
+   - **Path 1 (either host)** → 5.1+ required (Lab install-link parameter + add-on manifest literal `blender_version_min=5.1.0`, re-verified 2026-10-13 — see `docs/research/runtime-lab-cli-deep-verification-2026-10-13.md`).
    - Path 2 → 3.0+ required (per upstream).
-   - CLI fallback → 4.2+ recommended; upstream-documented CLI surface; no in-repo evidence file yet.
+   - CLI fallback → 4.2+ recommended; documented upstream as a first-class Blender CLI surface; no in-repo evidence file yet.
 3. Per chosen path + host, check the path-specific configuration:
    - **Path 1 Blender-side (always required)**: Lab MCP add-on installed in Blender + MCP server (`.mcpb` bundle or source) reachable.
    - Path 1 host (a): Anthropic Connector enabled in Claude Desktop → Customize → Connectors.

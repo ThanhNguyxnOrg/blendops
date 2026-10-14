@@ -4,7 +4,7 @@
 > Status: Draft v0. Adapters are install mapping docs. They aren't runtime code and don't install Blender runtime.
 
 > [!IMPORTANT]
-> **Adapters are a smaller subset of the install layer.** This folder covers 6 verified-or-drafted adapters. For the full per-target install guide (26 targets — see [`docs/install/`](../install/README.md)). New tool support starts as an install doc first, then graduates to an adapter only after the install path is verified.
+> **Adapters are a smaller subset of the install layer.** This folder covers 6 verified-or-drafted adapters. New tool support starts as an install doc first, then graduates to an adapter only after the install path is verified. For the full per-target install guide, see [`docs/install/`](../install/README.md) (26 targets).
 
 ## Policy guardrails
 

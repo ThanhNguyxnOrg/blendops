@@ -20,7 +20,7 @@ Requirements:
 - For Blender runtime via Windsurf Cascade as MCP host:
   - Edit `~/.codeium/windsurf/mcp_config.json` (macOS/Linux) or `%USERPROFILE%\.codeium\windsurf\mcp_config.json` (Windows).
   - OR use the Cascade MCP marketplace icon if BlendOps later registers a deeplink (none today).
-  - Add Blender MCP server (Path 1 Lab MCP via .mcpb bundle, OR Path 2 ahujasid/blender-mcp via uvx).
+  - Add Blender MCP server (Path 1 Lab MCP via .mcpb bundle, OR Path 2 mcp-for-blender via uvx).
   - Cascade picks up config changes without restart, but verify connection status in the MCPs panel.
   - Watch the 100-tool Cascade ceiling — Blender MCP can publish many tools; trim if exceeded.
   - Single-bridge constraint: do not run two Blender MCP servers concurrently against the same Blender instance on `localhost:9876` (side-by-side on separate instances via per-instance `--port 9877` is supported upstream).
@@ -75,7 +75,7 @@ Skill install != runtime setup.
 For Blender runtime via Windsurf Cascade as MCP host:
 - **Path 1 (Lab MCP)** — Blender 5.1+ + Lab add-on + Lab server. Anthropic Connector is Claude Desktop only.
 - **Path 2 (community `mcp-for-blender` (formerly `blender-mcp`))** — Blender 3.0+ + `addon.py` + `uvx mcp-for-blender`.
-- **CLI fallback (appendix)** — Documented upstream as a first-class Blender CLI surface (stable across LTS releases); no in-repo evidence file yet.
+- **CLI fallback (appendix)** — Documented upstream as a first-class Blender CLI surface; no in-repo evidence file yet.
 
 See [`docs/runtime-stack-strategy.md`](../runtime-stack-strategy.md).
 

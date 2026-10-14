@@ -5,7 +5,7 @@
 Status: Mature third-party / User-managed / Per-client manual config / Not yet covered by a formal BlendOps eval evidence record / Not used for Draft v0 release-readiness claims
 
 > [!CAUTION]
-> This page is the longer write-up for **Path 2 — Community Blender MCP (`ahujasid/blender-mcp`)** in the [2-path runtime model](./runtime-stack-strategy.md). Path 2 is unofficial from both Anthropic's and Blender Foundation's perspective, but it is **not** experimental in the engineering-maturity sense — it is a 21K+ star project that pioneered the Blender + MCP pattern. The "unofficial" label here is about provenance, not maturity. Read this page before choosing Path 2, especially the safety section.
+> This page is the longer write-up for **Path 2 — Community Blender MCP (`mcp-for-blender`)** in the [2-path runtime model](./runtime-stack-strategy.md). Path 2 is unofficial from both Anthropic's and Blender Foundation's perspective, but it is **not** experimental in the engineering-maturity sense — it is a mature, widely adopted project that pioneered the Blender + MCP pattern. The "unofficial" label here is about provenance, not maturity. Read this page before choosing Path 2, especially the safety section.
 
 BlendOps runtime guidance uses the 2-path model in [runtime-stack-strategy.md](./runtime-stack-strategy.md):
 
@@ -75,7 +75,7 @@ If you choose Path 2:
 2. Preferred: `uvx mcp-for-blender setup` or the one-line `install.sh` / `install.ps1` (handles `install-addon` + `.bak`). Manual fallback: install `uv` (the fast Python package runner) per upstream instructions.
 3. In your MCP client config, register a `blender` MCP server with `command: uvx, args: [mcp-for-blender]` (legacy `blender-mcp` still works). For Claude Desktop this is Settings → Developer → Edit Config.
 4. Download `addon.py` from the upstream repo and install it in Blender (Edit → Preferences → Add-ons → Install), then enable it.
-5. Open the BlenderMCP tab in Blender's 3D View sidebar (`N`) and click Connect to your client.
+5. Open the "MCP for Blender" tab in Blender's 3D View sidebar (`N`) and click Connect to your client.
 6. Restart your MCP client so it discovers the new server.
 7. Run a read-only request (e.g., `get_scene_info`) before any mutation.
 8. Save the file before any destructive operation; prefer disposable scenes for first runs.
@@ -123,7 +123,7 @@ BlendOps can still provide for Path 2 runs:
 - user-facing handoff language
 - safety and evidence expectations
 
-BlendOps does **not** own, ship, support, audit, maintain, or validate `ahujasid/blender-mcp`. A run through Path 2 must be labeled with the path, the upstream commit, and explicit evidence — and must not be counted as an official runtime eval or as release-eval evidence until the formal eval flow records it that way.
+BlendOps does **not** own, ship, support, audit, maintain, or validate `mcp-for-blender`. A run through Path 2 must be labeled with the path, the upstream commit, and explicit evidence — and must not be counted as an official runtime eval or as release-eval evidence until the formal eval flow records it that way.
 
 This page is **not a substitute for the official runtime manual eval**.
 

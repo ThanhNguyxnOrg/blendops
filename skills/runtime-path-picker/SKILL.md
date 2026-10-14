@@ -83,7 +83,7 @@ Limitations: <unknown Blender build>
 
 ## Official runtime boundary
 
-Decision skill only — does not configure hosts. Must reflect BlendOps model: **two MCP execution paths** plus **CLI fallback appendix** upstream-documented CLI surface (Render/Cycles/Format/Python sections verified in 2.93-5.2 Manuals); **No in-repo evidence file yet** for BlendOps-run CLI examples. Path 2 is third-party community (`mcp-for-blender` (formerly `blender-mcp`)) — mature prior art with manual configuration responsibility; see `docs/unofficial-runtime-bridges.md`. Never describe Anthropic Connector as replacing the Lab add-on inside Blender.
+Decision skill only — does not configure hosts. Must reflect BlendOps model: **two MCP execution paths** plus **CLI fallback appendix** documented upstream as a first-class Blender CLI surface (render/Cycles/format/Python sections read in the current Blender 5.2 LTS Manual — record: `docs/research/runtime-lab-cli-deep-verification-2026-10-13.md`); **No in-repo evidence file yet** for BlendOps-run CLI examples. Path 2 is third-party community (`mcp-for-blender` (formerly `blender-mcp`)) — mature prior art with manual configuration responsibility; see `docs/unofficial-runtime-bridges.md`. Never describe Anthropic Connector as replacing the Lab add-on inside Blender.
 
 ## Operating procedure
 
