@@ -30,8 +30,8 @@ All of these accept BlendOps via **project-local files** (`BLENDOPS.md`, `skills
 |---|---|---|---|---|
 | Claude Code | [claude-code.md](./claude-code.md) | `.claude/skills/`, `CLAUDE.md` | per Claude Code MCP guide | verified-read for project-local |
 | OpenCode | [opencode.md](./opencode.md) | `.opencode/` (candidate) | per upstream | linked-only |
-| Cursor | [cursor.md](./cursor.md) | `.cursor/rules` (candidate) | `.cursor/mcp.json` | linked-only |
-| Codex CLI/App | [codex.md](./codex.md) | none verified | per upstream | linked-only |
+| Cursor | [cursor.md](./cursor.md) | `.cursor/rules/*.mdc`, `AGENTS.md` (root/nested) | `.cursor/mcp.json` (project) or `~/.cursor/mcp.json` (global) | verified-read (rules + MCP locations) |
+| Codex CLI/App | [codex.md](./codex.md) | `AGENTS.md` (root/nested; `BLENDOPS.md` only if referenced or fallback-configured) | per upstream Codex MCP docs | verified-read (AGENTS.md); linked-only (MCP) |
 | Gemini CLI | [gemini.md](./gemini.md) | not researched | per upstream | not researched |
 | Antigravity (Google) | [antigravity.md](./antigravity.md) | none verified | MCP Store / `mcp_config.json` | linked-only |
 | GitHub Copilot | [github-copilot.md](./github-copilot.md) | none verified | per upstream | linked-only |

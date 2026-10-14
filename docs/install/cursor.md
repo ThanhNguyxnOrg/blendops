@@ -1,10 +1,10 @@
 # Install target: Cursor
 
-Status/confidence: Draft v0, linked-only
+Status/confidence: Draft v0, verified-read for rules + AGENTS.md discovery (Cursor docs read 2026-10-14)
 
 ## Recommended near-term install mode
 
-Project-local docs/rules attachment only after path verification; otherwise generic fallback.
+Project-local: prefer root/nested `AGENTS.md` or `.cursor/rules/*.mdc` with frontmatter. A plain `.md` file under `.cursor/rules/` is ignored by Cursor; do not use it. Use generic fallback only when neither fits.
 
 ## Copy/paste prompt
 
@@ -12,8 +12,8 @@ Project-local docs/rules attachment only after path verification; otherwise gene
 Install BlendOps for Cursor in project-local mode.
 
 Requirements:
-- Verify Cursor-specific path before writing tool-native files.
-- If not verified, use generic fallback (`BLENDOPS.md`/`AGENTS.md`).
+- Prefer `AGENTS.md` (project root/nested) or `.cursor/rules/*.mdc` with `description`/`globs`/`alwaysApply` frontmatter.
+- Do not write plain `.md` files into `.cursor/rules/` (Cursor ignores them); if BlendOps content lives in `BLENDOPS.md`, reference it from `AGENTS.md` or the rule body instead of duplicating it.
 - Backup existing files before edits.
 - Avoid global mutation.
 - Do not install/configure runtime components.
@@ -28,7 +28,8 @@ Artifact status: Not Produced.
 ## Expected files/folders
 
 - Detection hint: `.cursor/` directory.
-- `.cursor/rules` path is candidate/needs verification.
+- Verified: root/nested `AGENTS.md`; `.cursor/rules/*.mdc` with frontmatter.
+- Not valid: plain `.md` under `.cursor/rules/` (ignored by Cursor).
 
 ## Rollback notes
 
@@ -40,6 +41,6 @@ Skill install != runtime setup. For Blender execution this tool would be a Path 
 
 ## What not to claim
 
-- Guaranteed Cursor native path support.
+- Guaranteed auto-loading of `BLENDOPS.md` without an `AGENTS.md`/rule reference.
 - Runtime eval success.
 - Artifact production.
