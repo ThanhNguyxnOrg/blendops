@@ -106,8 +106,8 @@ Run all 7 checks. Each must pass before claim is upheld.
 2. **Path attribution is explicit** — runtime path named (Path 1 host a/b, Path 2, CLI fallback, or text-only). No "we used the connector" without specifying host.
 3. **Artifact paths exist** — for any `Produced` or `Verified` claim, every referenced file path exists and is inspectable. If `Not Produced`, no artifact path is asserted.
 4. **Validation notes present** — for any `Verified` claim, validation notes record what was checked and how it passed. Empty validation = downgrade to `Produced`.
-5. **Tool / command names recorded** — exact tool names called (Path 1: `get_blendfile_summary_*` / `create_object`; Path 2: `get_scene_info` / `execute_blender_code`; CLI: exact `blender` command).
-6. **No-mutation guarantee for read-only smoke** — if the claim is read-only smoke evidence, explicit confirmation that no `execute_blender_code` / `run_blender_code` / `create_object` was called.
+5. **Tool / command names recorded** — exact tool names called (Path 1 read-only: `get_blendfile_summary_*` / `get_objects_summary` / `get_object_detail_summary`; Path 1 mutation: `execute_blender_code`; Path 2: `get_scene_info` / `execute_blender_code`; CLI: exact `blender` command).
+6. **No-mutation guarantee for read-only smoke** — if the claim is read-only smoke evidence, explicit confirmation that no code-execution tool (`execute_blender_code` on either backend) was called.
 7. **Plain-language summary present** — final user-facing text passes `non-blender-user-language` check (no jargon without explanation).
 
 ## Decision tree
@@ -185,7 +185,7 @@ Run all 7 checks. Each must pass before claim is upheld.
 
 ## Good examples
 
-- "Operator wants Verified for cyberpunk-shoe-render. 7-check pass: claim explicit, Path 1 host a, artifact paths exist (`renders/preview-2026-05-09.png`), validation notes record subject framing + lighting + neon mood checks pass, tool `run_blender_code` recorded, no smoke guarantee needed (this is a render not smoke), plain-language summary clean. Verdict: Pass. Verified upheld."
+- "Operator wants Verified for cyberpunk-shoe-render. 7-check pass: claim explicit, Path 1 host a, artifact paths exist (`renders/preview-2026-05-09.png`), validation notes record subject framing + lighting + neon mood checks pass, tool `execute_blender_code` recorded, no smoke guarantee needed (this is a render not smoke), plain-language summary clean. Verdict: Pass. Verified upheld."
 
 ## Bad examples
 

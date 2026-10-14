@@ -114,6 +114,6 @@ To upgrade Path 1 from "read-only smoke" to documented full eval, or to upgrade 
 5. **MCP host product + version** (Claude Desktop build, Cursor build, etc.).
 6. **Exact tool names** invoked + responses.
 7. **Single-bridge check** confirming only one MCP host connected.
-8. **No-mutation guarantee** (explicit list of read-only tools used; no `execute_blender_code` / `run_blender_code`).
+8. **No-mutation guarantee** (explicit list of read-only tools used; no `execute_blender_code` on either backend).
 
 Save the new record under `docs/evals/` with a filename that names the path + host, e.g. `path-1-anthropic-connector-readonly-YYYY-MM-DD.md` or `path-2-mcp-for-blender-readonly-YYYY-MM-DD.md`.

@@ -72,7 +72,7 @@ Use pre-handoff-verification on a proposed handoff (response or evidence file). 
 - Check 2 (path): Pass — Path 1 host a, Anthropic Connector
 - Check 3 (artifact paths): Pass — `renders/preview-2026-05-09.png` exists
 - Check 4 (validation): Pass — subject framing + lighting + neon mood validated
-- Check 5 (tool names): Pass — `run_blender_code` recorded
+- Check 5 (tool names): Pass — `execute_blender_code` recorded
 - Check 6 (no-mutation guarantee): N/A (this is a render claim, not a smoke claim)
 - Check 7 (plain language): Pass
 - Verdict: Pass; `Verified` upheld

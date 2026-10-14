@@ -32,7 +32,7 @@ Operator: <name or handle>
 
 ## No-mutation guarantee
 
-- [x] No `run_blender_code` was called with mutating Python.
+- [x] No `execute_blender_code` was called with mutating Python.
 - [x] No render was triggered.
 - [x] No GLB export was triggered.
 - [x] No `.blend` file save.

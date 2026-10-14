@@ -1,6 +1,6 @@
 ---
 name: cycles-vs-eevee-decision
-description: Pick Cycles or Eevee (or Eevee Next / Workbench) for a render based on quality bar, time budget, and feature requirements (caustics, subsurface, etc.).
+description: Pick Cycles, Eevee, or Workbench for a render based on quality bar, time budget, and feature requirements (caustics, subsurface, etc.). Note: Eevee was named Eevee Next on Blender 4.2-4.x only.
 ---
 
 # cycles-vs-eevee-decision

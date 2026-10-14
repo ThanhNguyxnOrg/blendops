@@ -10,8 +10,8 @@ Run all 7 before any handoff. Each must Pass (or be N/A in text-only mode for ch
 | 2 | **Path attribution is explicit** (Path 1 host a/b, Path 2, CLI fallback, or text-only). | "Path 1, host (a) Anthropic Connector, Blender 5.1.0." | "We used the connector." |
 | 3 | **Artifact paths exist** for any `Produced` or `Verified` claim. | `renders/preview-2026-05-09.png` resolves; `exports/hero.glb` resolves. | "The render is at renders/preview.png" but file does not exist on disk. |
 | 4 | **Validation notes present** for any `Verified` claim. | "Subject framing centered, neon visible, GLB ≤ 10MB, web import test passed." | (Empty validation field; just a file path.) |
-| 5 | **Tool / command names recorded** for any runtime claim. | Path 1: `run_blender_code` recorded. Path 2: `get_scene_info` + `execute_blender_code`. CLI: exact `blender --background --python` command. | "We ran Blender." (no tool names) |
-| 6 | **No-mutation guarantee** for any read-only smoke claim. | Tool list = `get_blendfile_summary_path_info`, `get_objects_summary`. No `execute_blender_code`, `run_blender_code`, or `create_object`. | Smoke claim with `execute_blender_code` in the tool list. |
+| 5 | **Tool / command names recorded** for any runtime claim. | Path 1: `execute_blender_code` recorded (mutation) or read-only summary tools recorded (smoke). Path 2: `get_scene_info` + `execute_blender_code`. CLI: exact `blender --background --python` command. | "We ran Blender." (no tool names) |
+| 6 | **No-mutation guarantee** for any read-only smoke claim. | Tool list = `get_blendfile_summary_path_info`, `get_objects_summary`. No `execute_blender_code` on either backend. | Smoke claim with `execute_blender_code` in the tool list. |
 | 7 | **Plain-language summary** passes `non-blender-user-language` check. | "Your render is ready. The shoe is centered, the neon mood is visible, and the GLB is small enough for web." | "BSDF subsurf scattering applied; topology budget at 8k tris; tangent-space NaN handled." |
 
 ## Mode-aware applicability
