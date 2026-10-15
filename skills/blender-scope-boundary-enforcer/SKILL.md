@@ -6,7 +6,7 @@ description: Detect mid-recipe scope creep and push back constructively before t
 # blender-scope-boundary-enforcer
 
 ## Purpose
-Catch in-recipe scope creep ("can you also do X?") and force the user to either (a) decline the expansion, or (b) agree to a new scope explicitly. Prevents silent absorption that breaks gates and stop conditions.
+Catch mid-flight scope creep ("can you also do X?") and force an explicit recorded decision: (a) decline the expansion, (b) add now with explicit user agreement (updating the stop condition and stage gates), or (c) defer to a follow-up recipe. Prevents silent absorption that breaks gates and stop conditions. Trivial in-gate items may be absorbed only when existing gate criteria explicitly cover them — never by feel.
 
 ## Quick start
 - when scope drift is detected, name it
@@ -19,9 +19,9 @@ Catch in-recipe scope creep ("can you also do X?") and force the user to either 
 - when stages start exceeding their gates "just a bit"
 
 ## When not to use
-- early planning (scope is naturally fluid)
-- pure brainstorming (no scope yet)
-- when the addition is trivially within an existing gate
+- early planning before scope is pinned (use `intent-to-3d-brief-writer` and `blender-stop-condition-decider`)
+- pure brainstorming with no active recipe (use `blender-brainstorming`)
+- when the addition is already explicitly covered by existing gate criteria in `blender-checklist-driven-workflow` / `acceptance-criteria-builder` (verified against written criteria, never judged by feel)
 
 ## Trigger phrases
 - "can you also"
@@ -30,8 +30,8 @@ Catch in-recipe scope creep ("can you also do X?") and force the user to either 
 - "one more thing"
 
 ## Prerequisites / readiness
-- recipe has a brief and stop condition
-- user accepts that scope changes need explicit agreement
+- recipe has an active brief (`intent-to-3d-brief-writer`), pinned stop condition (`blender-stop-condition-decider`), and stage gates (`blender-checklist-driven-workflow` / `acceptance-criteria-builder`)
+- user accepts that mid-flight scope changes require an explicit, recorded decision
 
 ## Input schema
 
@@ -39,7 +39,8 @@ Catch in-recipe scope creep ("can you also do X?") and force the user to either 
 
 | Input | Why it is required |
 |---|---|
-| Current scope (brief + stop condition) | Anchors the boundary |
+| Current scope (brief + stop condition) | Anchors the boundary pinned before execution |
+| Current stage gates & acceptance criteria | Judges whether an addition is truly within an existing gate or exceeds it |
 | Proposed addition | Subject of the scope decision |
 
 ### Optional inputs
@@ -49,17 +50,17 @@ Catch in-recipe scope creep ("can you also do X?") and force the user to either 
 | Time / budget remaining | Affects feasibility of in-recipe addition |
 
 ### Assumptions to confirm
-- The user agrees scope creep should be made explicit, not silent.
-- "Trivial within current gate" is judged by the gate criteria, not by feel.
+- The user agrees scope creep must be named, classified, and recorded — never silently absorbed.
+- "Trivial within current gate" is judged strictly by written gate criteria (`blender-checklist-driven-workflow` / `acceptance-criteria-builder`), never by feel.
 
 ## Output schema
 
 ### Primary output
-A scope decision record: addition (one sentence), recommended action (decline / add-now-with-agreement / defer), rationale, evidence of agreement if added.
+A scope decision record: named addition (one sentence), classification (in-gate trivial by criteria / substantive / major), recommended action (decline / add-now-with-agreement / defer), rationale, and recorded evidence of user agreement before proceeding.
 
 ### Secondary output
-- updated stop condition if added now
-- explicit recipe-split note if deferred
+- updated stop condition (`blender-stop-condition-decider`), stage gates (`blender-checklist-driven-workflow`), and measurable acceptance rows (`acceptance-criteria-builder`) if added now
+- explicit follow-up recipe note (`blender-recipe-decomposer`) if deferred
 
 ### Evidence / caveat output
 
@@ -78,18 +79,18 @@ Limitations: <known gaps>
 
 ## Official runtime boundary
 
-Process / discipline skill — does not run Blender. Decisions are about scope language, not runtime.
+Process / discipline skill — does not run Blender or execute Python. Decisions govern scope boundaries, stop conditions, and stage gates. A scope decision never upgrades runtime (`Not Run | Attempted | Produced | Verified | Failed`) or artifact (`Not Run | Not Produced | Produced | Verified | Failed`, default `Not Produced`) truth states; truth-state changes are downgrade-only (for example, when added scope invalidates a previously satisfied gate).
 
 ## Operating procedure
-1. Detect scope addition (trigger phrase or substantive new requirement).
-2. Compare addition to current brief + stop condition.
-3. Classify:
-   - Trivial within gate → absorb silently is OK
-   - Substantive but small → propose 3 options
-   - Major → strongly recommend defer
-4. Record the user's decision.
-5. If added: update stop condition and gates.
-6. If deferred: note for follow-up recipe.
+1. Detect and name the mid-flight scope addition (trigger phrase or new requirement beyond the brief).
+2. Compare the addition against the current brief, pinned stop condition (`blender-stop-condition-decider`), and written stage gate criteria (`blender-checklist-driven-workflow` / `acceptance-criteria-builder`).
+3. Classify (never by feel — verify against written gate criteria; thresholds per `references/scope-addition-classification.md`):
+   - **Trivial within existing gate**: ONLY if written gate criteria already encompass it → name it, record that it fits the existing gate criteria, and proceed without silent drift.
+   - **Substantive addition**: exceeds current gate criteria or stop condition → present the 3 options (decline / add-now-with-agreement / defer) and require explicit user agreement.
+   - **Major addition or brief contradiction**: alters recipe architecture or invalidates earlier stages → strongly recommend deferring to a follow-up recipe via `blender-recipe-decomposer`.
+4. Record the user's explicit decision before proceeding.
+5. If added now: update the stop condition (`blender-stop-condition-decider`), stage gates (`blender-checklist-driven-workflow`), and measurable criteria (`acceptance-criteria-builder`); downgrade any invalidated runtime/artifact truth states (never upgrade).
+6. If deferred: record an explicit follow-up recipe note for `blender-recipe-decomposer` before final `pre-handoff-verification`.
 
 ## Decision tree
 
@@ -118,20 +119,21 @@ Original recipe: 1920×1080. Addition: 4K. Likely small effort but doubles rende
 ## Mode handling
 
 ### Text-only mode
-Scope decisions about plan additions; runtime claims unchanged.
+Scope decisions govern the plan, stop condition, and gate definitions; runtime status remains `Not Run` and artifact status remains `Not Produced` (default).
 
 ### Runtime-ready mode
-Scope decisions affect render queue, asset queue, gate count.
+Scope decisions affect the render queue, asset queue, and stage gates. Adding scope never upgrades truth states; if an addition invalidates prior outputs, downgrade affected runtime/artifact states accordingly.
 
 ### Blocked runtime mode
-Scope decisions still applicable for plan layer.
+Scope decisions still apply to the planning and gate layer; runtime truth states remain unchanged or downgraded.
 
 ## Validation checklist
-- [ ] Addition stated in one sentence
-- [ ] Action recommendation (decline / add / defer) explicit
-- [ ] User agreement evidence required if added
-- [ ] Stop condition updated if added
-- [ ] Recipe split documented if deferred
+- [ ] Addition named explicitly in one sentence and classified against written gate criteria (not by feel)
+- [ ] Action recommendation (decline / add-now-with-agreement / defer) stated explicitly
+- [ ] Explicit user agreement recorded before proceeding
+- [ ] Stop condition (`blender-stop-condition-decider`), stage gates (`blender-checklist-driven-workflow`), and acceptance rows (`acceptance-criteria-builder`) updated if added now
+- [ ] Follow-up recipe note documented for `blender-recipe-decomposer` if deferred
+- [ ] Truth states kept downgrade-only (no runtime or artifact truth state upgraded by the scope decision)
 
 ## Pass / Warn / Fail rubric
 
@@ -170,31 +172,37 @@ Scope decisions still applicable for plan layer.
 
 ```txt
 Detected scope addition: <addition in one sentence>
+Classification: <in-gate by written criteria | substantive | major>
 
 Original brief: <one line>
 Original stop condition: <one line>
 
 Options:
-  1. Decline — proceed with original scope.
-  2. Add now — agree to new scope: <updated stop condition>. Cost: <time / gate / budget>.
-  3. Defer — track as follow-up recipe (no current scope change).
+  1. Decline — proceed with original scope and gates.
+  2. Add now — require explicit agreement to updated stop condition (<updated stop condition>) and updated stage gates (<updated gates / acceptance criteria>). Cost: <time / gate / budget impact>.
+  3. Defer — keep current scope unchanged; record as a follow-up recipe note for blender-recipe-decomposer: <follow-up recipe note>.
 
 Recommended: <option>
 Decision needed before proceeding.
-Limitations: <gaps>
+Runtime status: Not Run | Attempted | Produced | Verified | Failed
+Artifact status: Not Run | Not Produced | Produced | Verified | Failed (default: Not Produced)
+Limitations: <gaps; scope decisions never upgrade truth states>
 ```
 
 ## Anti-patterns
-- Silently absorbing the addition.
-- Adding without updating the stop condition.
-- Treating "while we're at it" as the same scope.
-- No defer option.
+- Silently absorbing an addition ("Sure, I'll do that too") or judging it "trivial" by feel instead of written gate criteria.
+- Adding scope without updating both the stop condition (`blender-stop-condition-decider`) and stage gates (`blender-checklist-driven-workflow` / `acceptance-criteria-builder`).
+- Treating "while we're at it" as part of the original scope.
+- Omitting the defer option or failing to record a follow-up recipe note (`blender-recipe-decomposer`).
+- Upgrading runtime or artifact truth states on the basis of a scope agreement.
 
 ## Cross-skill handoff
 - Original brief → `../intent-to-3d-brief-writer/SKILL.md`
-- Workflow gates → `../blender-checklist-driven-workflow/SKILL.md`
-- Stop condition → `../blender-stop-condition-decider/SKILL.md`
-- Recipe splitting → `../blender-recipe-decomposer/SKILL.md`
+- Stop condition pinned beforehand / updated on expansion → `../blender-stop-condition-decider/SKILL.md`
+- Per-stage gates enforced / updated on expansion → `../blender-checklist-driven-workflow/SKILL.md`
+- Measurable acceptance rows for added scope → `../acceptance-criteria-builder/SKILL.md`
+- Deferred scope split into follow-up recipes → `../blender-recipe-decomposer/SKILL.md`
+- Delivery gate after scope and gates settle → `../pre-handoff-verification/SKILL.md`
 
 ## Non-goals
 - Run Blender.
