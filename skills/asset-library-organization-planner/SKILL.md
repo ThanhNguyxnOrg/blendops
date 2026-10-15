@@ -6,11 +6,12 @@ description: Plan an internal asset library structure (folders, naming, metadata
 # asset-library-organization-planner
 
 ## Purpose
-Set up a maintainable internal asset library so future recipes can:
+Plan a maintainable internal asset library structure (folder tree, naming convention, per-asset metadata schema, license-tracking strategy, version-control rules, migration steps, and review process) so future recipes can:
 - find existing assets quickly,
 - avoid re-licensing the same source,
 - reuse PBR materials and HDRIs,
-- track versions and revisions.
+- track versions and revisions,
+- serve as the internal-library source for `blender-asset-discovery-planner` and `asset-fallback-strategy`.
 
 ## Quick start
 - pin folder structure (kebab-case, by category)
@@ -26,8 +27,12 @@ Set up a maintainable internal asset library so future recipes can:
 
 ## When not to use
 - single-recipe repo with < 5 assets
-- pure planning before any asset is sourced
-- as a substitute for license check (use `asset-license-checker`)
+- pure planning before any asset categories or storage constraints are known
+- sourcing or acquiring external assets (use `blender-asset-discovery-planner`)
+- verifying asset licenses (use `asset-license-checker`)
+- checking visual style consistency across assets (use `asset-style-consistency-checker`)
+- planning fallback substitutions when an asset is missing or fails (use `asset-fallback-strategy`)
+- enforcing file size or polygon/asset count performance budgets (use `glb-mobile-performance-budget`)
 
 ## Trigger phrases
 - "organize the assets"
@@ -65,7 +70,7 @@ Set up a maintainable internal asset library so future recipes can:
 ## Output schema
 
 ### Primary output
-A library plan: folder tree, naming convention, metadata schema, version control rules, license tracking strategy.
+A library plan: folder tree, naming convention, per-asset metadata schema, version control rules, license tracking strategy.
 
 ### Secondary output
 - migration steps if existing assets need re-organizing
@@ -81,6 +86,12 @@ Evidence used: <links, paths, logs, or "none">
 Limitations: <known gaps>
 ```
 
+Truth-state rules:
+
+* Default `Artifact status` is `Not Produced`.
+* States are downgrade-only, never upgrade.
+* Planning a library never produces library files (`Runtime status: Not Run`, `Artifact status: Not Produced` unless verifying pre-existing external evidence).
+
 ## Required laws
 - `../../laws/evidence-before-done.md`
 - `../../laws/non-blender-user-language.md`
@@ -89,7 +100,7 @@ Limitations: <known gaps>
 
 ## Official runtime boundary
 
-Planning skill — does not move files, does not run Blender, does not configure version control. Outputs a structure spec.
+Planning skill — never moves files, never configures git/LFS/DAM, never runs Blender, and never produces library files. Outputs a structure spec, migration steps, and review process only.
 
 ## Operating procedure
 1. Read asset categories.
@@ -97,7 +108,7 @@ Planning skill — does not move files, does not run Blender, does not configure
 3. Pin naming convention (see `references/naming-rules.md`).
 4. Pin metadata schema (see `references/metadata-schema.md`).
 5. Pin version control rules (LFS thresholds, branching).
-6. Pin license tracking (one license file per asset folder).
+6. Pin license tracking (license file lives next to the asset; unlicensed old assets go to Quarantine for `asset-license-checker`).
 7. Recommend a review process for new asset additions.
 8. Emit library-init plan + migration steps.
 
@@ -121,24 +132,30 @@ Mixed sizes including > 50MB?
 ## Playbooks
 
 ### Playbook A: Small repo (< 50 assets)
-Flat folders by category: `assets/models/`, `assets/textures/`, `assets/hdris/`, `assets/fonts/`. One README + LICENSES.md per folder.
+
+Flat folders by category: `assets/models/`, `assets/textures/`, `assets/hdris/`, `assets/fonts/`. Per-asset license file and metadata file live directly next to each asset file, plus one README per category folder.
 
 ### Playbook B: Medium repo (50-500 assets)
-Nested by category + sub-category: `assets/models/products/`, `assets/models/characters/`, `assets/textures/pbr/`, etc. Per-asset LICENSE.txt + metadata.json.
+
+Nested by category + sub-category: `assets/models/products/`, `assets/models/characters/`, `assets/textures/pbr/`, etc. Per-asset `LICENSE.txt` + `metadata.json` next to the asset.
 
 ### Playbook C: Large repo (500+)
-External DAM (e.g. Tractor, Razuna, custom) + git pointer files. Library plan focuses on naming + metadata schema; storage is offloaded.
+
+External DAM tool + git pointer files. Library plan focuses on folder taxonomy, naming convention, and per-asset metadata/license schema; binary storage is offloaded (operator configures DAM/VCS externally).
 
 ## Mode handling
 
 ### Text-only mode
-Library plan only.
+
+Library structure plan, migration steps, and review process only (`Runtime status: Not Run`, `Artifact status: Not Produced`).
 
 ### Runtime-ready mode
-Plan + recommended directory creation steps (operator runs them; this skill does not).
+
+Library plan + recommended directory creation and migration steps for the operator to run manually. This skill never creates directories, never moves files, never configures git/LFS/DAM, and never produces library files (`Runtime status: Not Run`, `Artifact status: Not Produced`).
 
 ### Blocked runtime mode
-Plan only.
+
+Library plan only (`Runtime status: Not Run`, `Artifact status: Not Produced`).
 
 ## Validation checklist
 - [ ] Folder structure pinned
@@ -165,10 +182,10 @@ Plan only.
 ## Troubleshooting
 
 | Problem | Response |
-|---|---|
-| Asset duplicates across folders | Add a hash check; deduplicate before re-organizing. |
-| Lost license info on old assets | Mark as Quarantine; do not use until re-licensed. |
-| Naming inconsistency | Apply convention to new only; rename old in batches with care. |
+| --- | --- |
+| Asset duplicates across folders | Plan a hash-check step in the migration plan so the operator can deduplicate before re-organizing (this skill does not move or delete files). |
+| Lost license info on old assets | Plan a `Quarantine/` holding path; mark unlicensed old assets as Quarantine and hand off to `asset-license-checker` before any recipe uses them. |
+| Naming inconsistency | Apply convention to new assets immediately; schedule batch renames of old assets in phased migration steps. |
 
 ## Best practices
 - One library, one source of truth.
@@ -199,13 +216,17 @@ Metadata schema (per asset):
 Version control:
   <rules>
 
-License tracking: <strategy>
+License tracking: <per-asset license file next to asset + Quarantine rule for unlicensed legacy assets>
 
 Review process: <1-page checklist>
 
 Migration steps (if applicable): <list>
-Limitations: <gaps>
-Next: implement plan; future recipes use this library
+
+Runtime status: Not Run | Attempted | Produced | Verified | Failed
+Artifact status: Not Run | Not Produced | Produced | Verified | Failed
+Evidence used: <links, paths, logs, or "none">
+Limitations: <known gaps>
+Next: operator implements structure; `blender-asset-discovery-planner` and `asset-fallback-strategy` use this library as their internal source
 ```
 
 ## Anti-patterns
@@ -215,16 +236,20 @@ Next: implement plan; future recipes use this library
 - Mixing assets and recipes in the same folders.
 
 ## Cross-skill handoff
-- Asset discovery → `../blender-asset-discovery-planner/SKILL.md`
-- License → `../asset-license-checker/SKILL.md`
-- Style → `../asset-style-consistency-checker/SKILL.md`
-- Fallback → `../asset-fallback-strategy/SKILL.md`
+
+* External asset sourcing into this library → `../blender-asset-discovery-planner/SKILL.md`
+* License verification (license file next to asset; unlicensed old assets to Quarantine) → `../asset-license-checker/SKILL.md`
+* Visual style consistency checks → `../asset-style-consistency-checker/SKILL.md`
+* Consuming this library as fastest fallback source → `../asset-fallback-strategy/SKILL.md`
+* File size and asset/polygon count pressure → `../glb-mobile-performance-budget/SKILL.md`
 
 ## Non-goals
-- Move files.
-- Configure git / DAM.
-- Run Blender.
-- Buy assets.
+
+* Move, rename, or delete files.
+* Configure git, Git LFS, Perforce, or DAM tools.
+* Run Blender or execute Python.
+* Buy or source external assets (use `blender-asset-discovery-planner`).
+* Verify licenses, style consistency, or performance budgets (use `asset-license-checker`, `asset-style-consistency-checker`, `glb-mobile-performance-budget`).
 
 ## References
 - `references/folder-structure-rules.md`
