@@ -72,10 +72,13 @@ A per-asset row table containing: asset name, realism axis, detail axis, color a
 
 ```txt
 Runtime status: Not Run | Attempted | Produced | Verified | Failed
-Artifact status: Not Run | Not Produced | Produced | Verified | Failed
+Artifact status: Not Run | Not Produced | Produced | Verified | Failed (default: Not Produced)
 Evidence used: <links, paths, logs, or "none">
 Limitations: <known gaps>
+
 ```
+
+Note: Truth states are downgrade-only (never upgrade without verified evidence) and remain strictly separate from per-asset `Pass | Warn | Fail` validation verdicts.
 
 ## Required laws
 - `../../laws/evidence-before-done.md`
