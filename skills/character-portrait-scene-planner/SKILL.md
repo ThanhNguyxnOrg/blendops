@@ -6,15 +6,15 @@ description: Plan a character-portrait scene (subject, pose, expression, wardrob
 # character-portrait-scene-planner
 
 ## Purpose
-Translate a character-portrait intent (a single character in a hero / editorial / mood frame) into a structured scene plan that downstream quality / runtime / handoff skills validate. Distinct from `product-hero-scene-planner` (which targets manufactured products).
+Translate a single-subject character-portrait intent (subject identity, pose, expression, wardrobe, framing, lighting, background) into a structured scene plan with an explicit assumptions register. Distinct from `product-hero-scene-planner` (manufactured products), `environment-establishing-shot-planner` (places), and `interior-architectural-scene-planner` (rooms). Multi-character ensembles are out of scope. Hands off framing deep-dives to `blender-composition-camera-planner`, lookdev deep-dives to `blender-lighting-material-planner`, assets to `blender-asset-discovery-planner`, and validation to `composition-quality-checker`, `lighting-quality-checker`, and `blender-scene-quality-checker`.
 
 ## Quick start
-- pin subject identity (real / stylized / archetype) + age + body type + role
-- pin pose + expression + gaze
-- pin wardrobe + props
-- pin framing + camera + lens
-- pin lighting + background + mood
-- emit a structured plan + handoff to quality checkers
+- confirm single-subject scope and upstream brief from `intent-to-3d-brief-writer`
+- confirm likeness rights before use if the subject is a real person
+- pin subject identity, pose, expression, wardrobe, framing, lighting, and background
+- record an explicit assumptions register
+- flag needed assets for `blender-asset-discovery-planner`
+- emit handoffs to `blender-composition-camera-planner`, `blender-lighting-material-planner`, and quality checkers with `Runtime status: Not Run` and `Artifact status: Not Produced`
 
 ## When to use
 - intent is explicitly a character / person / creature portrait
@@ -35,8 +35,9 @@ Translate a character-portrait intent (a single character in a hero / editorial 
 
 ## Prerequisites / readiness
 - brief from `intent-to-3d-brief-writer` is locked
-- character identity + style is known
-- target aspect + use case is known
+- single-subject character identity and style are known
+- likeness rights are confirmed before use if the subject depicts a real person
+- target framing and use case are known
 
 ## Input schema
 
@@ -44,33 +45,35 @@ Translate a character-portrait intent (a single character in a hero / editorial 
 
 | Input | Why it is required |
 |---|---|
-| Subject identity | Determines proportions / rig / asset strategy |
-| Pose + expression + gaze | Drives camera and lighting decisions |
-| Framing intent | Close-up / medium / wide |
-| Aspect ratio | Required for composition rules |
+| Subject identity | Defines single-subject character traits and asset needs |
+| Likeness rights confirmation (if real person) | Must be confirmed before use; blocks planning if unconfirmed |
+| Pose + expression | Drives framing and lighting intent |
+| Framing + background intent | Sets portrait boundaries before camera/lookdev deep-dives |
 
 ### Optional inputs
 
 | Input | Use |
 |---|---|
-| Reference images | Calibrate proportions / style |
-| Wardrobe / prop list | Adds asset rows |
-| Existing rig / model | Reuse instead of re-build |
+| Reference images | Align style and character details (with rights confirmed) |
+| Wardrobe / prop list | Populates asset rows for `blender-asset-discovery-planner` |
+| Existing asset notes | Flags reuse candidates for discovery |
 
 ### Assumptions to confirm
-- Single subject only.
-- Camera is locked unless animation called out.
-- Style is consistent across subject + wardrobe + background.
+- Single subject only (multi-character ensembles are out of scope).
+- Likeness rights are confirmed for any real person depicted.
+- Style is consistent across subject, wardrobe, and background.
+- Planning-only output: runtime stays `Not Run` and artifacts stay `Not Produced`.
 
 ## Output schema
 
 ### Primary output
-A structured character portrait plan with sections: Subject, Pose / expression / gaze, Wardrobe + props, Camera / framing / lens, Lighting, Background, Mood, Style notes.
+A structured single-subject character portrait plan covering: Subject identity, Likeness rights status, Pose / expression, Wardrobe, Framing, Lighting, Background, and an Assumptions register.
 
 ### Secondary output
-- asset list flagged for `blender-asset-discovery-planner`
-- next-skill handoff list (composition / lighting / quality checkers)
-- explicit Not Run / Not Produced labels
+- asset rows flagged for `blender-asset-discovery-planner`
+- deep-dive handoffs to `blender-composition-camera-planner` (framing) and `blender-lighting-material-planner` (lookdev)
+- validation handoffs to `composition-quality-checker`, `lighting-quality-checker`, and `blender-scene-quality-checker`
+- explicit `Runtime status: Not Run` and `Artifact status: Not Produced` labels
 
 ### Evidence / caveat output
 
@@ -89,22 +92,25 @@ Limitations: <known gaps>
 
 ## Official runtime boundary
 
-Planning skill — does not run Blender, model, or render. Output is a textual plan downstream quality and runtime skills validate against. If brief is unclear, hand off to `intent-to-3d-brief-writer`.
+Planning-only skill: no modeling, no animation, no render, and no Blender execution. `Runtime status` stays `Not Run` and `Artifact status` stays `Not Produced` (downgrade-only, never upgrade). If the brief is unclear, hand off to `intent-to-3d-brief-writer`.
 
 ## Operating procedure
-1. Read brief; confirm subject identity + framing intent.
-2. Fill subject section (age / body type / archetype / style).
-3. Fill pose / expression / gaze (one decision per row).
-4. Fill wardrobe + props.
-5. Fill camera + framing + lens (per `references/portrait-framing-rules.md`).
-6. Fill lighting plan (key + fill + rim, HDRI presence).
-7. Fill background + mood.
-8. List assets needed; flag for asset discovery.
-9. Emit handoff to quality / lighting / composition checkers.
+1. Read the brief from `intent-to-3d-brief-writer` and verify single-subject portrait scope.
+2. Check if the subject is a real person; require confirmed likeness rights before proceeding.
+3. Fill subject identity, pose, expression, and wardrobe sections.
+4. Define portrait framing, lighting intent, and background intent without overclaiming rendered results.
+5. Record all open assumptions in the assumptions register.
+6. List required assets and hand off asset rows to `blender-asset-discovery-planner`.
+7. Hand off camera/framing deep-dives to `blender-composition-camera-planner` and lookdev deep-dives to `blender-lighting-material-planner`.
+8. Emit validation handoffs to `composition-quality-checker`, `lighting-quality-checker`, and `blender-scene-quality-checker` with `Runtime status: Not Run` and `Artifact status: Not Produced`.
 
 ## Decision tree
 
 ```txt
+More than one character, or focus is a product / place / room?
+  → Stop; route to product-hero-scene-planner, environment-establishing-shot-planner, or interior-architectural-scene-planner
+Subject is a real person without confirmed likeness rights?
+  → Stop (Fail); require likeness rights confirmation before use
 Subject is identifiable real person?
   → Add Warn for likeness rights + reference image needed
 Pose unclear?
@@ -113,6 +119,8 @@ Framing close-up but lens 18mm?
   → Warn (likely distortion); propose 50–85mm
 Background detailed but framing tight close-up?
   → Warn (background mostly out of frame; simplify)
+Need detailed camera/framing or lookdev execution plan?
+  → Hand off framing to blender-composition-camera-planner and lookdev to blender-lighting-material-planner
 ```
 
 ## Playbooks
@@ -129,45 +137,46 @@ Style-specific; flat or simplified background; key + bounce; consistent stylizat
 ## Mode handling
 
 ### Text-only mode
-Pure plan; mark `Artifact status: Not Run`.
+Produce the portrait plan and assumptions register; keep `Runtime status: Not Run` and `Artifact status: Not Produced`.
 
 ### Runtime-ready mode
-Plan plus runtime path attribution; do not upgrade to `Verified` without rendered evidence.
+Planning-only even when runtime is available downstream: keep `Runtime status: Not Run` and `Artifact status: Not Produced` (downgrade-only, never upgrade), and hand off to downstream planners and checkers.
 
 ### Blocked runtime mode
-Plan only; flag what cannot be confirmed.
+Produce the portrait plan and assumptions register; keep `Runtime status: Not Run` and `Artifact status: Not Produced`, and log blockers under `Limitations`.
 
 ## Validation checklist
-- [ ] Subject section filled
-- [ ] Pose / expression / gaze explicit
-- [ ] Wardrobe + props listed
-- [ ] Camera + framing + lens chosen
-- [ ] Lighting plan present
-- [ ] Background + mood explicit
-- [ ] Style notes present
-- [ ] Asset list flagged for discovery
-- [ ] Handoff named
+- [ ] Single-subject portrait scope confirmed
+- [ ] Likeness rights confirmed before use (if real person)
+- [ ] Subject identity, pose, expression, and wardrobe filled
+- [ ] Framing, lighting, and background filled
+- [ ] Assumptions register included
+- [ ] Asset rows flagged for `blender-asset-discovery-planner`
+- [ ] Deep-dive handoffs named (`blender-composition-camera-planner`, `blender-lighting-material-planner`)
+- [ ] Validation handoffs named (`composition-quality-checker`, `lighting-quality-checker`, `blender-scene-quality-checker`)
+- [ ] `Runtime status: Not Run` and `Artifact status: Not Produced` explicitly set
 
 ## Pass / Warn / Fail rubric
 
 | Verdict | Criteria |
-|---|---|
-| Pass | All sections filled; no "TBD"; framing rules respected; assets flagged. |
-| Warn | One section ambiguous (e.g. mood line missing); assets list partial. |
-| Fail | Subject identity unclear; framing impossible (15mm + tight close-up); no lighting plan. |
+| --- | --- |
+| Pass | All portrait sections and assumptions register complete; likeness rights confirmed (if applicable); truth states locked to `Not Run` / `Not Produced`; downstream handoffs named. |
+| Warn | Minor non-blocking detail open in the assumptions register; asset list partial. |
+| Fail | Multi-character or non-portrait scope; real person used without confirmed likeness rights; missing lighting/framing/assumptions sections; truth states upgraded above `Not Run` / `Not Produced`. |
 
 ## Failure handling
-- Brief unclear → `intent-to-3d-brief-writer`.
-- Style inconsistent → flag and ask user to lock style.
-- Likeness rights unknown → Warn until confirmed.
+- Brief unclear → hand off to `intent-to-3d-brief-writer`.
+- Real person without confirmed likeness rights → block plan and require rights confirmation before use.
+- Framing or lookdev underspecified → hand off deep-dives to `blender-composition-camera-planner` and `blender-lighting-material-planner`.
+- Style inconsistent → flag in assumptions register and require user confirmation.
 
 ## Troubleshooting
 
 | Problem | Response |
 |---|---|
-| Real person reference but no rights | Pause; require rights confirmation. |
-| Stylization clashes with wardrobe | Re-lock style early; cheaper than later. |
-| Lighting + background fight subject | Re-balance per `lighting-quality-checker` rules. |
+| Real person reference has no confirmed likeness rights | Stop immediately; require likeness rights confirmation before use. |
+| Stylization clashes between character and wardrobe | Re-lock style in the plan and update rows for `blender-asset-discovery-planner`. |
+| Lighting and background compete with the subject | Hand off lookdev adjustments to `blender-lighting-material-planner`, then validate with `lighting-quality-checker`. |
 
 ## Best practices
 - Lock style early; revisions are cheap pre-modeling.
@@ -175,7 +184,7 @@ Plan only; flag what cannot be confirmed.
 - Always flag assets for `blender-asset-discovery-planner` before committing modeling work.
 
 ## Good examples
-- "Subject: stylized 30s tech founder, neutral build. Pose: 3/4 toward camera, slight smile, gaze direct. Wardrobe: dark turtleneck. Camera: 85mm equivalent, eye-line upper third, 16:9. Lighting: soft key 250W + fill 50W + rim 100W; HDRI 0.7 studio. Background: gradient gray. Mood: confident editorial."
+- "Subject: stylized founder character, single subject (fictional, no real-person likeness). Pose/expression: three-quarter turn, calm smile, direct gaze. Wardrobe: dark knit top. Framing: close-up head-and-shoulders portrait (deep-dive via `blender-composition-camera-planner`). Lighting: soft key, gentle fill, subtle rim for separation (lookdev via `blender-lighting-material-planner`). Background: neutral studio gradient. Assumptions register: single static frame; fictional character; no existing rig. Runtime status: Not Run. Artifact status: Not Produced."
 
 ## Bad examples
 - "Person looking at camera." — no proportions, lighting, or framing.
@@ -184,32 +193,38 @@ Plan only; flag what cannot be confirmed.
 ## User-facing response template
 
 ```txt
-Subject: <identity / age / body / archetype>
-Pose / expression / gaze: <three lines>
-Wardrobe + props: <list>
-Camera / framing / lens: <aspect> | <focal length> | <distance> | <eye-line>
-Lighting: <key> | <fill> | <rim> | <HDRI>
-Background: <type + tone>
-Mood + style notes: <line>
+Subject identity: <single-subject description>
+Likeness rights: <confirmed | fictional N/A | unconfirmed — BLOCKED>
+Pose / expression: <pose and expression>
+Wardrobe: <wardrobe and props>
+Framing: <portrait framing intent>
+Lighting: <key / fill / rim intent>
+Background: <background intent>
+Assumptions register: <explicit list of assumptions>
 
-Assets to discover: <list>
-Limitations: <gaps>
-Next: blender-asset-discovery-planner / composition-quality-checker / lighting-quality-checker
+Assets to discover: <rows for blender-asset-discovery-planner>
+Runtime status: Not Run
+Artifact status: Not Produced
+Evidence used: <links, paths, logs, or "none">
+Limitations: <known gaps>
+Next: blender-asset-discovery-planner | blender-composition-camera-planner | blender-lighting-material-planner | composition-quality-checker | lighting-quality-checker | blender-scene-quality-checker
 ```
 
 ## Anti-patterns
-- Performing modeling decisions inside this skill.
-- Inventing likeness without rights confirmation.
-- Skipping mood / style notes.
-- Mixing multi-character or environment scope.
+- Performing modeling, animation, rendering, or Blender execution inside this skill.
+- Proceeding with a real person's likeness without confirmed rights before use.
+- Upgrading `Runtime status` above `Not Run` or `Artifact status` above `Not Produced`.
+- Blurring boundaries with `product-hero-scene-planner`, `environment-establishing-shot-planner`, `interior-architectural-scene-planner`, or multi-character ensembles.
+- Bypassing `blender-composition-camera-planner` (framing) or `blender-lighting-material-planner` (lookdev).
 
 ## Cross-skill handoff
-- Brief writer → `../intent-to-3d-brief-writer/SKILL.md`
+- Upstream brief → `../intent-to-3d-brief-writer/SKILL.md`
+- Framing deep-dive → `../blender-composition-camera-planner/SKILL.md`
+- Lookdev deep-dive → `../blender-lighting-material-planner/SKILL.md`
 - Asset discovery → `../blender-asset-discovery-planner/SKILL.md`
 - Composition validation → `../composition-quality-checker/SKILL.md`
 - Lighting validation → `../lighting-quality-checker/SKILL.md`
-- Material validation → `../material-quality-checker/SKILL.md`
-- Quality readiness → `../blender-scene-quality-checker/SKILL.md`
+- Scene quality validation → `../blender-scene-quality-checker/SKILL.md`
 
 ## Non-goals
 - Model the character.
