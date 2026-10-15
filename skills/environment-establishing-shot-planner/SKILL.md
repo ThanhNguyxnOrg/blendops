@@ -6,20 +6,20 @@ description: Plan a wide environment / establishing-shot scene (locale, time of 
 # environment-establishing-shot-planner
 
 ## Purpose
-Translate an environment / establishing-shot intent (a wide locale shot establishing place + mood) into a structured plan. Distinct from `character-portrait-scene-planner` (single subject) and `interior-architectural-scene-planner` (interior arch viz).
+Translate a wide place-establishing intent (locale, time of day, weather, atmosphere, foreground/midground/background depth layers, and focal subject or explicit "none") into a structured scene plan with an explicit assumptions register. Distinct from `character-portrait-scene-planner` (single subject), `product-hero-scene-planner` (manufactured products), and `interior-architectural-scene-planner` (interior rooms/furniture/surfaces — an establishing shot of an interior room belongs there when furniture or surfaces dominate). Hands off asset rows to `blender-asset-discovery-planner` and validation to `composition-quality-checker`, `lighting-quality-checker`, and `blender-scene-quality-checker`.
 
 ## Quick start
-- pin locale + time of day + weather
-- pin focal subject (a building, a vehicle, a tree, or "no single focal subject")
-- pin camera + lens + altitude
-- pin atmosphere (haze, fog, sunlight quality, sky)
-- pin foreground / midground / background composition
-- emit a structured plan + handoff to checkers
+- confirm upstream brief from `intent-to-3d-brief-writer` and verify a realizable (non-invented) locale scope
+- pin locale, time of day, weather, and atmosphere
+- pin foreground (FG), midground (MG), and background (BG) depth layers
+- pin focal subject (or explicitly declare `none`)
+- record an explicit assumptions register
+- flag asset rows for `blender-asset-discovery-planner` and emit validation handoffs with `Runtime status: Not Run` and `Artifact status: Not Produced`
 
 ## When to use
-- intent is establishing a place (wide / outdoor / landscape / cityscape / interior establishing)
-- before any modeling
-- when consumer is editorial / cinematic / brand
+- intent is establishing a wide place (landscape, cityscape, outdoor locale, or wide interior space where furniture/surfaces do not dominate)
+- before any modeling, Geometry Nodes, or scene building
+- when consumer is editorial, cinematic, or brand
 
 ## When not to use
 - character portrait (use `character-portrait-scene-planner`)
@@ -34,7 +34,8 @@ Translate an environment / establishing-shot intent (a wide locale shot establis
 
 ## Prerequisites / readiness
 - brief from `intent-to-3d-brief-writer` is locked
-- aspect ratio + use case known
+- locale scope is realizable and bounded (never invented)
+- target aspect ratio and use case are known
 
 ## Input schema
 
@@ -42,33 +43,34 @@ Translate an environment / establishing-shot intent (a wide locale shot establis
 
 | Input | Why it is required |
 |---|---|
-| Locale | Drives asset / scope decisions |
-| Time of day | Drives lighting + atmosphere |
-| Weather | Drives sky + atmosphere + visibility |
-| Aspect ratio | Composition rules |
+| Realizable locale | Drives bounded asset and depth-layer scope without inventing unrequested worldbuilding |
+| Time of day | Drives sunlight direction, sky tone, and lighting mood |
+| Weather + atmosphere | Drives visibility, haze/fog, and surface condition |
+| Focal subject intent | Identifies the visual anchor (or explicitly confirms `none`) |
 
 ### Optional inputs
 
 | Input | Use |
 |---|---|
-| Reference images | Calibrate scope and mood |
-| Focal subject | If "establishing toward something" |
-| Era / period | Asset style reference |
+| Reference images | Calibrate place scope, depth layers, and mood |
+| Aspect ratio | Guides framing across FG / MG / BG layers |
+| Era / period | Aligns asset discovery rows |
 
 ### Assumptions to confirm
-- Single time-of-day snapshot (not multi-time animation).
-- Camera is locked unless animation called out.
-- Locale is realizable in scope (e.g. "New York at sunset" needs decisions about scope).
+- Single time-of-day snapshot (unless animation is explicitly requested upstream).
+- Locale scope is realizable and bounded, not invented.
+- Interior rooms dominated by furniture or surfaces are routed to `interior-architectural-scene-planner`.
+- Planning-only output: `Runtime status` stays `Not Run` and `Artifact status` stays `Not Produced`.
 
 ## Output schema
 
 ### Primary output
-A structured establishing-shot plan: Locale, Time of day, Weather, Atmosphere, Sky / lighting, Camera (position + lens + altitude + tilt), Composition (foreground / midground / background), Focal subject, Mood / style.
+A structured place-establishing plan covering: Locale (bounded scope), Time of day, Weather, Atmosphere, Depth layers (FG / MG / BG), Focal subject (or explicit `none`), Mood / style, and an Assumptions register.
 
 ### Secondary output
-- asset list flagged for `blender-asset-discovery-planner`
-- depth-cue strategy
-- handoff list
+- asset rows flagged for `blender-asset-discovery-planner`
+- validation handoffs to `composition-quality-checker`, `lighting-quality-checker`, and `blender-scene-quality-checker`
+- explicit `Runtime status: Not Run` and `Artifact status: Not Produced` labels
 
 ### Evidence / caveat output
 
@@ -87,21 +89,27 @@ Limitations: <known gaps>
 
 ## Official runtime boundary
 
-Planning skill — does not run Blender, model, or render. If brief is unclear, hand off to `intent-to-3d-brief-writer`.
+Planning-only skill: no modeling, no Geometry Nodes, no render, and no Blender execution. `Runtime status` stays `Not Run` and `Artifact status` stays `Not Produced` (downgrade-only, never upgrade). If the brief or locale scope is unclear, hand off to `intent-to-3d-brief-writer`.
 
 ## Operating procedure
-1. Read brief; confirm locale + mood.
-2. Pin time of day + weather (see `references/time-and-weather-rules.md`).
-3. Pin atmosphere + sky (HDRI vs sky shader).
-4. Pin camera position + lens + altitude (see `references/wide-shot-camera-rules.md`).
-5. Plan foreground / midground / background layers (see `references/depth-layering-rules.md`).
-6. Identify focal subject (or document "no focal subject").
-7. List assets needed; flag for asset discovery.
-8. Emit handoff.
+1. Read the brief from `intent-to-3d-brief-writer`; confirm wide place-establishing scope and ensure locale scope is realizable (not invented).
+2. Route to `interior-architectural-scene-planner` if the scene is an interior room where furniture or surfaces dominate.
+3. Pin time of day, weather, and atmosphere (per `references/time-and-weather-rules.md`).
+4. Define wide camera placement and framing intent (per `references/wide-shot-camera-rules.md`).
+5. Plan foreground (FG), midground (MG), and background (BG) depth layers (per `references/depth-layering-rules.md`).
+6. Identify the focal subject or explicitly document `none`.
+7. Record all open assumptions in the assumptions register.
+8. List required assets for `blender-asset-discovery-planner` and emit validation handoffs to `composition-quality-checker`, `lighting-quality-checker`, and `blender-scene-quality-checker` with `Runtime status: Not Run` and `Artifact status: Not Produced`.
 
 ## Decision tree
 
 ```txt
+Scene is an interior room where furniture or surfaces dominate?
+  → Stop; route to interior-architectural-scene-planner
+Focus is a single character or a manufactured product?
+  → Stop; route to character-portrait-scene-planner or product-hero-scene-planner
+Locale scope is unbounded or unclear (would require inventing scope)?
+  → Stop; hand off to intent-to-3d-brief-writer to bound locale scope
 Locale + time-of-day combination implausible (e.g. "Antarctic noon" with deep dark mood)?
   → Warn; clarify intent
 "City scene" + tight close-up framing?
@@ -126,36 +134,36 @@ Focal subject not chosen but every asset has same visual weight?
 ## Mode handling
 
 ### Text-only mode
-Plan only.
+Produce the environment plan and assumptions register; keep `Runtime status: Not Run` and `Artifact status: Not Produced`.
 
 ### Runtime-ready mode
-Plan + runtime path attribution.
+Planning-only even when runtime is available downstream: keep `Runtime status: Not Run` and `Artifact status: Not Produced` (downgrade-only, never upgrade), and hand off to `blender-asset-discovery-planner` and quality checkers.
 
 ### Blocked runtime mode
-Plan only; flag what cannot be confirmed.
+Produce the environment plan and assumptions register; keep `Runtime status: Not Run` and `Artifact status: Not Produced`, and log blockers under `Limitations`.
 
 ## Validation checklist
-- [ ] Locale chosen
-- [ ] Time of day + weather pinned
-- [ ] Atmosphere + sky chosen
-- [ ] Camera + lens + altitude chosen
-- [ ] Composition layers (FG / MG / BG) explicit
-- [ ] Focal subject decision (or "none") explicit
-- [ ] Asset list flagged
-- [ ] Handoff named
+- [ ] Realizable, non-invented locale scope confirmed
+- [ ] Time of day, weather, and atmosphere pinned
+- [ ] Depth layers (FG / MG / BG) explicitly defined
+- [ ] Focal subject (or explicit `none`) documented
+- [ ] Assumptions register included
+- [ ] Asset rows flagged for `blender-asset-discovery-planner`
+- [ ] Validation handoffs named (`composition-quality-checker`, `lighting-quality-checker`, `blender-scene-quality-checker`)
+- [ ] `Runtime status: Not Run` and `Artifact status: Not Produced` explicitly set
 
 ## Pass / Warn / Fail rubric
 
 | Verdict | Criteria |
-|---|---|
-| Pass | All sections + plausible time-of-day / weather + clear focal subject (or explicit "none") + assets flagged. |
-| Warn | One section ambiguous; locale scope very broad ("a city" without specifics). |
-| Fail | Locale + time + weather contradict; no composition layers; no focal subject and no acknowledgment. |
+| --- | --- |
+| Pass | Realizable locale scope; consistent time/weather/atmosphere; explicit FG/MG/BG depth layers; focal subject (or explicit `none`); assumptions register complete; truth states locked to `Not Run` / `Not Produced`; handoffs named. |
+| Warn | Minor non-blocking assumption open in the assumptions register; asset list partial. |
+| Fail | Invented or unbounded locale scope; interior room dominated by furniture/surfaces; contradictory time/weather/mood; missing FG/MG/BG layers; missing focal subject decision; truth states upgraded above `Not Run` / `Not Produced`. |
 
 ## Failure handling
-- Locale too broad → ask for narrower scope.
-- Mood + weather contradict → user picks one.
-- Asset budget unknown → hand off to budget skill.
+- Locale scope too broad or unclear → hand off to `intent-to-3d-brief-writer` (never invent scope).
+- Mood and weather contradict → stop and ask user to pick one consistent direction.
+- Asset availability unknown → flag missing items for `blender-asset-discovery-planner`.
 
 ## Troubleshooting
 
@@ -179,26 +187,29 @@ Plan only; flag what cannot be confirmed.
 ## User-facing response template
 
 ```txt
-Locale: <where + scope>
-Time of day: <e.g. golden hour 18:30>
-Weather: <state>
-Atmosphere: <haze / fog / clarity>
-Sky / lighting: <HDRI + sun + practicals>
-Camera: <focal length> | <altitude> | <tilt> | <position>
-Composition layers: FG: <…> | MG: <…> | BG: <…>
-Focal subject: <name + placement>
+Locale (bounded scope): <where + realizable boundaries>
+Time of day: <time / sun state>
+Weather: <weather state>
+Atmosphere: <haze / fog / visibility>
+Camera & framing: <wide position / altitude / tilt>
+Depth layers: FG: <…> | MG: <…> | BG: <…>
+Focal subject: <subject + placement, or explicit "none">
 Mood + style: <line>
+Assumptions register: <explicit list of confirmed assumptions>
 
-Assets to discover: <list>
-Limitations: <gaps>
-Next: blender-asset-discovery-planner / composition-quality-checker / lighting-quality-checker
+Assets to discover: <rows for blender-asset-discovery-planner>
+Runtime status: Not Run
+Artifact status: Not Produced
+Evidence used: <links, paths, logs, or "none">
+Limitations: <known gaps>
+Next: blender-asset-discovery-planner | composition-quality-checker | lighting-quality-checker | blender-scene-quality-checker
 ```
 
 ## Anti-patterns
-- Mixing single-character framing into wide establishing scope.
-- Skipping FG / MG / BG layers.
-- "Beautiful weather" without specifics.
-- Inventing locale scope.
+- Mixing single-character portraits (`character-portrait-scene-planner`), manufactured product shots (`product-hero-scene-planner`), or furniture/surface-dominant interior rooms (`interior-architectural-scene-planner`) into wide place planning.
+- Inventing unbounded locale scope instead of handing off to `intent-to-3d-brief-writer`.
+- Skipping FG / MG / BG depth layers or failing to declare a focal subject (or explicit `none`).
+- Prescribing Geometry Nodes, modeling steps, or renders, or upgrading truth states above `Not Run` / `Not Produced`.
 
 ## Cross-skill handoff
 - Brief writer → `../intent-to-3d-brief-writer/SKILL.md`
