@@ -9,10 +9,11 @@ description: Pick the right render resolution + aspect ratio for the consumer us
 Avoid the most common render planning mistake: rendering at one aspect / resolution and cropping or upscaling to fit. Pick the consumer's required output upfront.
 
 ## Quick start
-- Name the consumer use case and intended placement (web hero / social / print / app).
-- Pick the required aspect ratio for each output stream before framing.
-- Pick the exact target render resolution (W × H) and DPI / PPI (if print) from the consumer spec or reference tables.
-- Pin the resolution record for the operator to apply in scene render properties.
+- Identify the consumer use case and target placement (web hero, social feed, print, app asset).
+- Pick the delivery aspect ratio (`W:H`) upfront so camera framing matches target placement.
+- Pick exact render resolution (`W × H` in pixels) and `DPI / PPI` for print deliverables.
+- Define per-stream resolution records if multiple delivery targets exist.
+- Pin the record for the operator to enter in Blender scene render properties (no rendering, no post-render resizing).
 
 ## When to use
 - before render
@@ -30,8 +31,8 @@ Avoid the most common render planning mistake: rendering at one aspect / resolut
 - "16:9 or square"
 
 ## Prerequisites / readiness
-- Consumer use case and target delivery placement are known.
-- Companion decisions are handled in their dedicated skills: `color-management-decision` (color config), `output-format-decision` (container/codec), and `cycles-vs-eevee-decision` (render engine).
+- Consumer use case and target placement are known (or ready to be confirmed with one question).
+- Color config (`color-management-decision`), container/codec (`output-format-decision`), and engine (`cycles-vs-eevee-decision`) remain separate decisions owned by their respective skills.
 
 ## Input schema
 
@@ -39,38 +40,43 @@ Avoid the most common render planning mistake: rendering at one aspect / resolut
 
 | Input | Why it is required |
 |---|---|
-| Consumer use case | Drives target aspect ratio, resolution (W × H), and print DPI / PPI |
+| Consumer use case / placement | Determines target aspect ratio and required pixel dimensions |
+| Print physical dimensions + target DPI/PPI (if print) | Required to compute exact pixel width and height (`W × H`) before render |
 
 ### Optional inputs
 
 | Input | Use |
 |---|---|
-| Brand or platform spec | Pins exact required dimensions and aspect ratio |
-| Multi-stream requirement | Produces a separate per-stream resolution record for each delivery target |
+| Brand or platform delivery spec | Overrides category defaults with exact required `W × H` and aspect |
+| Multi-stream delivery list | Produces separate per-stream resolution records for each target aspect/size |
+| Render time / memory constraints | Flags caveats if high pixel counts require operator budget review |
 
 ### Assumptions to confirm
-- The target machine and schedule can accommodate the pinned resolution in scene render properties.
-- Any framing adjustments for the pinned aspect ratio will be validated via `composition-quality-checker`.
+- The target machine and render budget can handle the pinned `W × H` resolution.
+- Multiple aspect ratios will be framed via camera/scene setup rather than post-render cropping.
 
 ## Output schema
 
 ### Primary output
-One resolution record per output: aspect ratio, render resolution (W × H), and DPI / PPI (for print).
+A 3-line resolution record per target stream:
+1. Aspect ratio (`W:H`)
+2. Render resolution (`W × H` pixels)
+3. `DPI / PPI` (explicit value for print; `N/A (screen delivery)` for digital)
 
 ### Secondary output
-- Per-stream resolution rules when multiple outputs are required
-- Caveats and hardware/memory considerations
+- Per-stream resolution rules when delivering to multiple placements
+- Caveats (hardware memory/time budget notes, framing handoff requirements)
 
 ### Evidence / caveat output
 
 ```txt
 Runtime status: Not Run
 Artifact status: Not Produced
-Evidence used: <links, paths, logs, or "none">
-Limitations: <known gaps>
+Evidence used: <consumer spec, or "none">
+Limitations: <unconfirmed platform specs, memory/time budget caveats>
 ```
 
-> Note: Valid runtime states are `Not Run | Attempted | Produced | Verified | Failed` and valid artifact states are `Not Run | Not Produced | Produced | Verified | Failed` (default `Not Produced`). Truth states are downgrade-only, never upgrade. Pinning a resolution record never runs Blender or produces a file.
+> **Truth-state rule:** Pinning an aspect ratio and resolution is a planning decision and never produces a file. Default to `Runtime status: Not Run` and `Artifact status: Not Produced`. Truth states are downgrade-only and must never be upgraded by this skill.
 
 ## Required laws
 - `../../laws/evidence-before-done.md`
@@ -83,73 +89,85 @@ Limitations: <known gaps>
 Decision skill — does not render. Pins resolution + aspect; operator applies in scene render properties.
 
 ## Operating procedure
-1. Identify the consumer use case and every required delivery stream.
-2. Select the target aspect ratio from the consumer spec or `references/aspect-defaults.md`.
-3. Select the target render resolution (W × H) from the consumer spec or `references/resolution-defaults.md`.
-4. Pin DPI / PPI for print outputs per `references/print-vs-screen-rules.md`.
-5. Record per-stream rules and caveats for the operator to apply in scene render properties.
-6. Hand off the pinned aspect to `composition-quality-checker` to validate framing, and to `render-export-evidence` after rendering to verify saved files.
+
+1. Identify the consumer use case and all target delivery streams.
+2. Pin the required aspect ratio (`W:H`) for each stream from the consumer spec (or mark fallback defaults as assumptions to confirm).
+3. Pin the exact render resolution (`W × H`) and `DPI / PPI` (for print) to be set directly in scene render properties—do not prescribe post-render resizing, cropping, or upscaling.
+4. For multi-aspect deliverables, define a separate resolution record per stream and hand off camera framing to `blender-composition-camera-planner` and `composition-quality-checker`.
+5. Record caveats and set truth states to `Runtime status: Not Run` and `Artifact status: Not Produced`.
 
 ## Decision tree
 
 ```txt
-Consumer provides exact spec (aspect + W × H + DPI)?
-  → Pin the exact consumer spec per stream
-Consumer provides placement category only (web / social / mobile / banner / print)?
-  → Look up category aspect in references/aspect-defaults.md
-  → Look up category W × H in references/resolution-defaults.md
-Print delivery required?
-  → Pin required print W × H and DPI / PPI per references/print-vs-screen-rules.md
-Multiple aspect ratios required across streams?
-  → Emit a separate resolution record per stream; hand off to composition-quality-checker to validate framing per aspect (do not render once and crop)
-HDR or specific container/color pipeline mentioned?
-  → Keep aspect + W × H here; route color config to color-management-decision and container/codec to output-format-decision
+Consumer provides exact W × H (and DPI for print)?
+  → Pin exact consumer spec; verify aspect ratio matches W × H.
+Web / desktop widescreen placement?
+  → Pin widescreen aspect (e.g., 16:9) and target display W × H from spec; DPI: N/A.
+Social square placement?
+  → Pin 1:1 aspect and platform-required W × H; DPI: N/A.
+Mobile vertical / story placement?
+  → Pin 9:16 aspect and platform-required W × H; DPI: N/A.
+Ultrawide / cinematic banner?
+  → Pin target banner aspect (e.g., 2.39:1) and spec W × H; DPI: N/A.
+Print delivery (physical size + target DPI/PPI)?
+  → Compute W × H = (physical inches × DPI) at exact print aspect ratio; pin W × H and DPI.
+Multiple aspects required from one scene?
+  → Emit one resolution record per stream; require per-aspect camera framing (never render-then-crop).
 ```
 
 ## Playbooks
 
-### Playbook A: Single-stream web or screen delivery
-Pin the target aspect ratio and exact W × H from the consumer spec or `references/resolution-defaults.md` (`DPI / PPI: N/A`). Operator applies directly in scene render properties; no post-render resize or upscale is performed by this skill.
+### Playbook A: Single-stream digital hero
 
-### Playbook B: Multi-format social delivery
-Emit a separate per-stream resolution record for each required aspect ratio (e.g., portrait, square, widescreen). Do not advise rendering once and cropping; hand off each pinned aspect to `blender-composition-camera-planner` and `composition-quality-checker` so framing is validated per stream.
+Pin the target aspect ratio (such as `16:9`) and exact delivery `W × H` required by the placement spec (`DPI / PPI: N/A`). Operator enters `W × H` in scene render properties before composition check.
 
-### Playbook C: Print delivery
-Pin the required print aspect ratio, exact pixel dimensions (W × H), and target DPI / PPI from the print specification or `references/print-vs-screen-rules.md`. Render directly at target print resolution; never render small and upscale.
+### Playbook B: Multi-stream social campaign
 
-### Playbook D: Multi-size asset or icon delivery
-Pin each required output tier (aspect + W × H) in the per-stream resolution record. Keep any external post-render resizing or format conversion outside this skill's boundary.
+Emit separate resolution records for each stream (for example, `9:16` vertical, `1:1` square, and `16:9` widescreen) with their respective target `W × H`. Hand off to `blender-composition-camera-planner` and `composition-quality-checker` so each aspect is properly framed in-camera rather than cropped post-render.
+
+### Playbook C: Print deliverable
+
+Obtain physical print dimensions and required print density (`DPI / PPI`). Calculate exact pixel dimensions (`W × H`), pin the native print aspect ratio, and require rendering directly at final print resolution without post-render upscaling.
+
+### Playbook D: Multi-size asset family
+
+When a consumer needs multiple distinct pixel dimensions, list each required `W × H` stream in the per-stream resolution record so the operator can plan native render outputs or hand off post-render image processing outside BlendOps.
 
 ## Mode handling
 
 ### Text-only mode
-Output the resolution record, per-stream rules, caveats, and default truth states (`Runtime status: Not Run`, `Artifact status: Not Produced`).
+
+Return the resolution record, per-stream rules, caveats, and truth states (`Runtime status: Not Run`, `Artifact status: Not Produced`).
 
 ### Runtime-ready mode
-Output the resolution record for the operator to apply in scene render properties. This skill never executes a render or inspects files; actual saved files must be verified downstream by `render-export-evidence`.
+
+Return the exact same resolution record and truth states (`Runtime status: Not Run`, `Artifact status: Not Produced`) for the operator to apply in scene render properties. Actual file verification after rendering belongs strictly to `render-export-evidence`.
 
 ### Blocked runtime mode
-Output the resolution record, per-stream rules, and caveats with `Runtime status: Not Run` and `Artifact status: Not Produced`.
+
+Return the resolution record, caveats, and truth states (`Runtime status: Not Run`, `Artifact status: Not Produced`).
 
 ## Validation checklist
-- [ ] Aspect ratio explicitly chosen per output stream
-- [ ] Render resolution (W × H) explicitly chosen per output stream
-- [ ] DPI / PPI specified for print outputs (or marked `N/A` for screen)
-- [ ] No post-render resize, crop, or upscale steps claimed inside this skill
-- [ ] Caveats and truth states (`Not Run` / `Not Produced`) listed
+
+* [ ] Aspect ratio (`W:H`) explicitly pinned for every output stream
+* [ ] Render resolution (`W × H`) explicitly pinned for every output stream
+* [ ] `DPI / PPI` specified for print outputs (or marked `N/A` for screen)
+* [ ] No post-render resize, crop, or upscale steps prescribed
+* [ ] Caveats and downgrade-only truth states (`Not Run` / `Not Produced`) included
 
 ## Pass / Warn / Fail rubric
 
 | Verdict | Criteria |
-|---|---|
-| Pass | Aspect ratio, resolution (W × H), and print DPI / PPI are explicit per stream and match the consumer use case without relying on post-render crop or upscale. |
-| Warn | Aspect ratio is set, but resolution is borderline for the target placement or relies on unconfirmed consumer assumptions. |
-| Fail | Aspect ratio is omitted or mismatched to the consumer; plan relies on rendering small and upscaling or rendering once and cropping across mismatched aspects. |
+| --- | --- |
+| Pass | Aspect + `W × H` + `DPI / PPI` (if print) explicitly pinned per stream; matches consumer use case; no post-render crop/upscale assumed; truth states set to `Not Run` / `Not Produced`. |
+| Warn | Aspect and `W × H` pinned using fallback assumptions because consumer spec was incomplete, or high pixel count risks memory/time budget limits. |
+| Fail | Aspect omitted or mismatched to placement; relies on render-then-crop or post-render upscaling; upgrades truth state without verified evidence. |
 
 ## Failure handling
-- Consumer use case unspecified → ask once to clarify target placement and spec before pinning defaults from `references/aspect-defaults.md` and `references/resolution-defaults.md`.
-- Multi-format request with conflicting aspects → define a separate per-stream resolution record for each aspect and hand off framing validation to `composition-quality-checker`.
-- Target resolution exceeds machine memory or time budget → document the constraint in caveats and escalate to the operator before render.
+
+* Consumer spec unspecified → ask once for placement and target dimensions; if unavailable, state a fallback aspect and `W × H` explicitly as an unconfirmed assumption in Caveats.
+* Multi-aspect request → emit separate per-stream resolution records and route framing to `blender-composition-camera-planner` and `composition-quality-checker` (never advise silent cropping).
+* Resolution exceeds hardware memory or render time budget → flag in Caveats and recommend operator review before rendering.
 
 ## Troubleshooting
 
@@ -161,13 +179,15 @@ Output the resolution record, per-stream rules, and caveats with `Runtime status
 | Consumer spec unclear | Ask once, then default per consumer category. |
 
 ## Best practices
-- Always pin the delivery aspect ratio upfront rather than rendering a generic frame and cropping later.
-- When multiple aspect ratios are needed, emit per-stream records and validate framing for each via `composition-quality-checker`.
-- Keep post-render resizing, scaling, and format conversion outside this skill.
-- Pass the pinned resolution record to `render-export-evidence` so saved render outputs can be verified against target dimensions.
+
+* Always pin the delivery aspect ratio before camera setup so `blender-composition-camera-planner` and `composition-quality-checker` frame against the true boundary.
+* Render directly at the required delivery resolution (`W × H`); keep post-render resizing, cropping, or format conversion outside this skill.
+* For multi-aspect deliverables, output explicit per-stream records and require per-aspect camera validation.
+* Pass the pinned resolution record to `render-export-evidence` so rendered files can be checked against target dimensions after execution.
 
 ## Good examples
-- "Consumer use case: Web hero banner. Aspect ratio: 16:9. Resolution: pinned per consumer spec (W × H). DPI / PPI: N/A. Operator applies in scene render properties; framing validated via `composition-quality-checker`."
+
+* "Consumer: Web hero. Aspect: `16:9`. Resolution: `1920 × 1080` (per client spec). DPI/PPI: `N/A`. Multi-stream: none. Caveats: confirm whether high-DPI display tier requires a second native render stream. `Runtime status: Not Run`, `Artifact status: Not Produced`."
 
 ## Bad examples
 - "1080p." — no aspect.
@@ -175,20 +195,20 @@ Output the resolution record, per-stream rules, and caveats with `Runtime status
 ## User-facing response template
 
 ```txt
-Consumer use case: <web hero / social / print / app icon / banner>
-Aspect ratio: <ratio>
-Resolution: <W H ×>
+Consumer use case: <web hero / social / print / app asset / banner>
+Aspect ratio: <W:H>
+Resolution: <W H px ×>
 DPI / PPI: <value if print, else "N/A">
 
 Per-stream outputs (if multiple):
-  <stream name>: <aspect ratio> | <W H ×> | <DPI / PPI>
+  - <stream name>: <W:H>, <W H px ×>, DPI/PPI: <value or N/A>
 
-Caveats: <list>
+Caveats: <budget notes, unconfirmed spec assumptions>
 Runtime status: Not Run
 Artifact status: Not Produced
-Evidence used: <links, paths, logs, or "none">
+Evidence used: <consumer spec or "none">
 Limitations: <known gaps>
-Next: composition-quality-checker, render-export-evidence
+Next: blender-composition-camera-planner -> composition-quality-checker -> render-export-evidence
 ```
 
 ## Anti-patterns
@@ -198,19 +218,21 @@ Next: composition-quality-checker, render-export-evidence
 - "Default size" answers.
 
 ## Cross-skill handoff
-- Color configuration → `../color-management-decision/SKILL.md`
-- Container / codec format → `../output-format-decision/SKILL.md`
-- Render engine choice → `../cycles-vs-eevee-decision/SKILL.md`
-- Camera & composition planning → `../blender-composition-camera-planner/SKILL.md`
-- Framing validation against pinned aspect → `../composition-quality-checker/SKILL.md`
-- Saved file & dimension verification post-render → `../render-export-evidence/SKILL.md`
+
+* Camera & composition planning (upstream framing setup) → `../blender-composition-camera-planner/SKILL.md`
+* Composition framing validation against pinned aspect → `../composition-quality-checker/SKILL.md`
+* Color configuration decision → `../color-management-decision/SKILL.md`
+* Container / codec decision → `../output-format-decision/SKILL.md`
+* Render engine decision → `../cycles-vs-eevee-decision/SKILL.md`
+* Post-render saved file verification → `../render-export-evidence/SKILL.md`
 
 ## Non-goals
-- Rendering scenes or executing Blender.
-- Resizing, cropping, or upscaling images post-render.
-- Choosing color management (`color-management-decision`), file formats/codecs (`output-format-decision`), or render engines (`cycles-vs-eevee-decision`).
-- Validating scene framing (`composition-quality-checker`) or verifying produced files on disk (`render-export-evidence`).
-- Calibrating displays.
+
+* Never execute Blender or trigger renders.
+* Never resize, crop, upscale, or convert images post-render (belongs outside this skill).
+* Never choose file containers, codecs, or bit depths (`output-format-decision`).
+* Never configure color spaces or HDR view transforms (`color-management-decision`).
+* Never validate camera composition (`composition-quality-checker`) or verify rendered output files (`render-export-evidence`).
 
 ## References
 - `references/aspect-defaults.md`
