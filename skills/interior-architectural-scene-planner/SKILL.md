@@ -6,20 +6,20 @@ description: Plan an interior architectural visualization scene (room layout, fu
 # interior-architectural-scene-planner
 
 ## Purpose
-Translate an interior arch viz intent (room / interior space planned for catalog / brand / showcase) into a structured scene plan. Distinct from `environment-establishing-shot-planner` (outdoor/wide) and `product-hero-scene-planner` (single product hero).
+Translate an interior architectural visualization intent (room or interior space planned for catalog, brand, or showcase) into a complete, structured room plan with an assumptions register. Distinct from `environment-establishing-shot-planner` (outdoor/wide places; an establishing shot of an interior room belongs HERE when furniture and surfaces dominate), `product-hero-scene-planner` (single manufactured product), and `character-portrait-scene-planner` (single subject).
 
 ## Quick start
-- pin room type + dimensions + style
-- pin furniture + props + key materials
-- pin lighting (natural + artificial mix)
+- lock style early and pin room type + plausible room dimensions (never invent dimensions; record any defaults in the assumptions register)
+- pin architecture basics (walls, floor, ceiling, windows, doors)
+- pin furniture + props + material palette
+- pin lighting (natural + artificial mix) + mood + time of day
 - pin camera angle + lens
-- pin mood + time of day
-- emit a structured plan + handoff to checkers
+- emit a structured plan with an assumptions register + handoff to `blender-asset-discovery-planner`, `glb-mobile-performance-budget`, `asset-style-consistency-checker`, and quality checkers
 
 ## When to use
-- intent is interior room / space / venue
-- arch viz / catalog / brand / showcase / hospitality / residential
-- before any modeling
+- intent is an interior room, space, or venue where furniture and surfaces dominate (including interior establishing shots)
+- architectural visualization, catalog, brand showcase, hospitality, or residential room planning
+- before any modeling, furniture sourcing, or rendering
 
 ## When not to use
 - outdoor establishing (use `environment-establishing-shot-planner`)
@@ -44,33 +44,43 @@ Translate an interior arch viz intent (room / interior space planned for catalog
 
 | Input | Why it is required |
 |---|---|
-| Room type | Drives layout + furniture |
-| Style era / aesthetic | Drives material + furniture choices |
-| Time of day | Drives natural light direction + intensity |
-| Aspect ratio | Composition rules |
+| Room type + plausible dimensions | Drives layout, scale, and furniture fit (dimensions must be plausible, never invented) |
+| Style era / aesthetic | Locked early to drive architecture, material palette, and furniture choices |
+| Time of day + mood | Drives natural light direction, intensity, and artificial fixture balance |
+| Aspect ratio | Drives camera framing and composition rules |
 
 ### Optional inputs
 
 | Input | Use |
 |---|---|
 | Reference images / boards | Style calibration |
-| Brand guidelines | Color + material + branding |
-| Specific furniture brand requests | Asset sourcing |
+| Brand guidelines | Color, material, and branding alignment |
+| Specific furniture requests | Flagged as rows for `blender-asset-discovery-planner` |
 
 ### Assumptions to confirm
-- Room is realizable in a reasonable budget (asset / polycount).
-- Style is consistent across architecture + furniture + props.
-- Camera is locked.
+- Plausible room dimensions explicitly stated or flagged for confirmation (never silently invented).
+- Style is locked early and consistent across architecture, furniture, and props (validated via `asset-style-consistency-checker`).
+- Scene scope is realizable within target asset/performance constraints (budget questions routed to `glb-mobile-performance-budget`).
+- Camera position, lens, and target are locked before modeling.
 
 ## Output schema
 
 ### Primary output
-A structured interior arch viz plan: Room (type / dims / style), Architecture (walls / floor / ceiling / windows / doors), Furniture + props, Materials (palette + key surfaces), Lighting (natural via windows + artificial fixtures + practicals), Camera (position / lens / target), Mood + time of day.
+A complete interior room plan containing:
+- Room (type, plausible dimensions, locked style)
+- Architecture (walls, floor, ceiling, windows, doors)
+- Furniture + props
+- Material palette (key surfaces + finishes)
+- Lighting (natural light via windows + artificial fixtures + practical lamps)
+- Camera (position, lens, target)
+- Mood + time of day
+- Assumptions register (all unconfirmed inputs and plausible dimension assumptions)
 
 ### Secondary output
-- asset list flagged for `blender-asset-discovery-planner`
-- branding / palette notes
-- handoff list
+- asset rows flagged for `blender-asset-discovery-planner`
+- style consistency notes for `asset-style-consistency-checker`
+- budget questions flagged for `glb-mobile-performance-budget`
+- validation handoff list for `composition-quality-checker`, `lighting-quality-checker`, `material-quality-checker`, and `blender-scene-quality-checker`
 
 ### Evidence / caveat output
 
@@ -89,28 +99,32 @@ Limitations: <known gaps>
 
 ## Official runtime boundary
 
-Planning skill — does not run Blender, model, or render. Hand off to discovery / quality checkers.
+Planning-only skill — does not model, source furniture, render, or execute Blender. Runtime status stays `Not Run` and artifact status stays `Not Produced` (downgrade-only, never upgrade). Hand off asset sourcing to `blender-asset-discovery-planner`, budget questions to `glb-mobile-performance-budget`, style checks to `asset-style-consistency-checker`, and validation to `composition-quality-checker`, `lighting-quality-checker`, `material-quality-checker`, and `blender-scene-quality-checker`.
 
 ## Operating procedure
-1. Read brief; pin room type + style.
-2. Pin architecture basics (see `references/interior-architecture-rules.md`).
+1. Read brief from `intent-to-3d-brief-writer`; lock style early and pin room type + plausible room dimensions (never invent dimensions; log any unconfirmed values in the assumptions register).
+2. Pin architecture basics: walls, floor, ceiling, windows, and doors (see `references/interior-architecture-rules.md`).
 3. Plan furniture layout + props (see `references/furniture-layout-rules.md`).
-4. Pin material palette (per style + brand).
-5. Plan lighting: natural (windows + sun direction) + artificial (fixtures + practicals).
-6. Pin camera angle + lens (see `references/interior-camera-rules.md`).
+4. Pin material palette and key surfaces matching the locked style.
+5. Plan lighting: natural light (windows + sun direction) + artificial light (overhead fixtures + practical lamps).
+6. Pin camera position, lens, and target (see `references/interior-camera-rules.md`).
 7. Pin mood + time of day.
-8. List assets + flag for discovery.
-9. Emit handoff.
+8. Compile the assumptions register and list asset rows for `blender-asset-discovery-planner`.
+9. Emit handoffs to `blender-asset-discovery-planner`, `glb-mobile-performance-budget`, `asset-style-consistency-checker`, `composition-quality-checker`, `lighting-quality-checker`, `material-quality-checker`, and `blender-scene-quality-checker`.
 
 ## Decision tree
 
 ```txt
-Room dimensions unrealistic for use case (e.g. 100m² home office)?
-  → Warn; verify intent
-Style + furniture brand mismatch (modern brief + ornate Victorian sofa)?
-  → Fail; pick one
+Room dimensions missing or unrealistic for use case (e.g. 100m² home office)?
+  → Do not invent dimensions; warn, propose plausible defaults in the assumptions register, and verify intent
+Style unclear in brief?
+  → Return to intent-to-3d-brief-writer before planning furniture or materials
+Style + furniture mismatch (e.g. modern brief + ornate Victorian sofa)?
+  → Fail; lock one style early and route to asset-style-consistency-checker
+Performance or polycount budget in question?
+  → Route budget questions to glb-mobile-performance-budget
 Time of day mid-day but only artificial lighting planned?
-  → Warn; window light should dominate
+  → Warn; natural window light should be accounted for alongside artificial fixtures
 Wide-angle 14mm in a small room?
   → Warn; distortion likely; propose 24mm + camera repositioning
 ```
@@ -129,46 +143,51 @@ Wide-angle 14mm in a small room?
 ## Mode handling
 
 ### Text-only mode
-Plan only.
+Emit the structured room plan, assumptions register, and handoff list. Runtime stays `Not Run`; artifacts stay `Not Produced`.
 
 ### Runtime-ready mode
-Plan + runtime path attribution.
+Emit the structured room plan, assumptions register, and downstream handoffs. Do not execute Blender; runtime stays `Not Run` and artifacts stay `Not Produced`.
 
 ### Blocked runtime mode
-Plan only; flag what cannot be confirmed.
+Emit the structured room plan and assumptions register; flag what cannot be confirmed downstream. Runtime stays `Not Run`; artifacts stay `Not Produced`.
 
 ## Validation checklist
-- [ ] Room type + dims + style pinned
-- [ ] Architecture basics pinned
+- [ ] Style locked early
+- [ ] Room type + plausible dimensions pinned (never invented)
+- [ ] Assumptions register populated
+- [ ] Architecture basics (walls, floor, ceiling, windows, doors) pinned
 - [ ] Furniture + props listed
 - [ ] Material palette + key surfaces listed
 - [ ] Lighting plan (natural + artificial) explicit
-- [ ] Camera + lens chosen
+- [ ] Camera position + lens + target chosen
 - [ ] Mood + time of day pinned
-- [ ] Asset list flagged
-- [ ] Handoff named
+- [ ] Asset rows flagged for `blender-asset-discovery-planner`
+- [ ] Handoffs named (`glb-mobile-performance-budget`, `asset-style-consistency-checker`, `composition-quality-checker`, `lighting-quality-checker`, `material-quality-checker`, `blender-scene-quality-checker`)
+- [ ] Runtime status locked to `Not Run` and Artifact status locked to `Not Produced`
 
 ## Pass / Warn / Fail rubric
 
 | Verdict | Criteria |
-|---|---|
-| Pass | All sections + plausible style consistency + lighting plan + assets flagged. |
-| Warn | One section ambiguous (palette unclear, time of day vs lighting mismatch). |
-| Fail | Style + furniture clash; impossible camera (14mm in 4m² room); lighting plan absent. |
+| --- | --- |
+| Pass | All room plan sections complete, style locked early, plausible dimensions with assumptions register, natural + artificial lighting planned, assets flagged, handoffs named, truth states set to `Not Run` / `Not Produced`. |
+| Warn | Minor ambiguity recorded in assumptions register (e.g. secondary prop finish or exact window orientation pending confirmation). |
+| Fail | Invented or implausible room dimensions; missing assumptions register; style + furniture clash; missing lighting or camera plan; truth states upgraded beyond `Not Run` / `Not Produced`. |
 
 ## Failure handling
-- Style unclear → hand off to brief writer.
-- Asset budget unknown → hand off to budget skill.
-- Camera unrealistic → propose alternative.
+- Unclear brief or style → hand off to `intent-to-3d-brief-writer`.
+- Style mismatch across assets → hand off to `asset-style-consistency-checker`.
+- Unknown asset or performance budget → hand off to `glb-mobile-performance-budget`.
+- Composition, lighting, material, or overall scene validation issues → hand off to `composition-quality-checker`, `lighting-quality-checker`, `material-quality-checker`, and `blender-scene-quality-checker`.
 
 ## Troubleshooting
 
-| Problem | Response |
-|---|---|
-| Room feels empty | Add foreground prop + verify camera is in corner (not center). |
-| Lighting reads flat | Mix natural + artificial; add practicals; verify HDRI not dominating. |
-| Materials clash | Lock palette early per `style-consistency-rules.md` (character planner). |
-| Wide-angle distortion ugly | Use 24–35mm; reposition camera farther. |
+| Problem | Resolution |
+| --- | --- |
+| Room dimensions not supplied by user | Do not invent silently; propose standard plausible dimensions in the assumptions register and request confirmation. |
+| Planned layout feels empty or lacks depth | Add foreground/midground prop layers in the plan, place camera in a corner rather than room center, and flag for `composition-quality-checker`. |
+| Planned lighting lacks contrast | Balance natural window light direction with warm artificial practical lamps, and flag for `lighting-quality-checker`. |
+| Planned materials or furniture clash | Lock the style palette early and route to `asset-style-consistency-checker` and `material-quality-checker`. |
+| Wide-angle lens distortion risk in small room | Plan for a 24–35mm lens with corner camera placement and verify via `composition-quality-checker`. |
 
 ## Best practices
 - Plan natural + artificial lighting together; they form a system.
@@ -177,7 +196,7 @@ Plan only; flag what cannot be confirmed.
 - Treat windows as light sources, not decorations.
 
 ## Good examples
-- "Room: modern minimalist living room, 4×6m, ceiling 2.7m, light oak floor, white walls, large window south-facing. Architecture: floor-to-ceiling window left wall, fireplace center back. Furniture: 3-seat sofa facing fireplace, low coffee table, area rug, single armchair right. Materials: warm wood + concrete + neutral fabric. Lighting: afternoon natural through window dominant + 2 ceiling spots + 1 floor lamp. Camera: 35mm, near corner, eye-level. Mood: calm, modern, warm. Time: 15:00."
+- "Room: modern minimalist living room, 4×6m, ceiling 2.7m, style locked to warm Scandinavian modern. Architecture: light oak floor, matte white walls, floor-to-ceiling window on south wall, fireplace center back, flush wood door on east wall. Furniture + props: 3-seat neutral fabric sofa facing fireplace, low oak coffee table, woven area rug, single armchair right, ceramic vase on table. Material palette: light oak, matte white plaster, brushed concrete, warm grey linen. Lighting: afternoon natural sunlight through south window (dominant) + 2 recessed ceiling lights + 1 warm floor lamp by armchair. Camera: 35mm lens, north-east corner at eye-level, targeting sofa and fireplace framing. Mood + time of day: calm, warm afternoon (15:00). Assumptions register: 2.7m ceiling height assumed as plausible residential standard pending user confirmation; standard doorway width assumed. Runtime status: Not Run. Artifact status: Not Produced."
 
 ## Bad examples
 - "Living room scene." — no dims, style, lighting, or camera.
@@ -185,18 +204,22 @@ Plan only; flag what cannot be confirmed.
 ## User-facing response template
 
 ```txt
-Room: <type / dims / style / era>
+Room: <type / plausible dims / locked style>
 Architecture: <walls / floor / ceiling / windows / doors>
 Furniture + props: <list>
-Material palette: <3-5 dominant>
-Key surfaces: <floor / wall / counter / fabric>
-Lighting: Natural: <window + sun direction + intensity> | Artificial: <fixtures + practicals> | HDRI: <if any>
+Material palette: <3-5 dominant finishes>
+Key surfaces: <floor / wall / ceiling / furniture fabric>
+Lighting: Natural: <window + sun direction + intensity> | Artificial: <ceiling fixtures + practical lamps> | Ambient environment: <sky/exterior bounce if any>
 Camera: <focal length> | <position> | <eye-line> | <target>
 Mood + time of day: <line>
+Assumptions register: <explicitly confirmed vs assumed plausible dimensions, style locks, and constraints>
 
-Assets to discover: <list>
+Assets to discover (for blender-asset-discovery-planner): <list>
+Runtime status: Not Run
+Artifact status: Not Produced
+Evidence used: <brief / inputs or "none">
 Limitations: <gaps>
-Next: blender-asset-discovery-planner / composition-quality-checker / lighting-quality-checker / material-quality-checker
+Next: blender-asset-discovery-planner | glb-mobile-performance-budget | asset-style-consistency-checker | composition-quality-checker | lighting-quality-checker | material-quality-checker | blender-scene-quality-checker
 ```
 
 ## Anti-patterns
@@ -206,17 +229,24 @@ Next: blender-asset-discovery-planner / composition-quality-checker / lighting-q
 - Inventing room dimensions.
 
 ## Cross-skill handoff
-- Brief writer → `../intent-to-3d-brief-writer/SKILL.md`
+- Upstream brief → `../intent-to-3d-brief-writer/SKILL.md`
+- Outdoor / wide establishing shot redirect → `../environment-establishing-shot-planner/SKILL.md`
+- Single hero product redirect → `../product-hero-scene-planner/SKILL.md`
+- Single character portrait redirect → `../character-portrait-scene-planner/SKILL.md`
 - Asset discovery → `../blender-asset-discovery-planner/SKILL.md`
-- Material validation → `../material-quality-checker/SKILL.md`
-- Lighting validation → `../lighting-quality-checker/SKILL.md`
+- Performance / polycount budget → `../glb-mobile-performance-budget/SKILL.md`
+- Style consistency check → `../asset-style-consistency-checker/SKILL.md`
 - Composition validation → `../composition-quality-checker/SKILL.md`
+- Lighting validation → `../lighting-quality-checker/SKILL.md`
+- Material validation → `../material-quality-checker/SKILL.md`
+- Scene quality validation → `../blender-scene-quality-checker/SKILL.md`
 
 ## Non-goals
-- Model the room.
-- Source furniture.
-- Render.
-- Run Blender.
+- Model the room or geometry.
+- Source furniture or download assets (belongs to `blender-asset-discovery-planner`).
+- Decide performance or polycount budgets (belongs to `glb-mobile-performance-budget`).
+- Audit cross-asset style consistency or validate composition, lighting, materials, or scene quality (belongs to `asset-style-consistency-checker`, `composition-quality-checker`, `lighting-quality-checker`, `material-quality-checker`, and `blender-scene-quality-checker`).
+- Render or run Blender.
 
 ## References
 - `references/interior-architecture-rules.md`
