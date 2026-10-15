@@ -21,7 +21,8 @@ Avoid mismatched output formats (e.g., JPEG for VFX, EXR for web, TIFF for socia
 
 ## When not to use
 - raw modeling without rendering
-- 3D exports (use `glb-mobile-performance-budget` / `glb-animation-handoff`)
+- 3D/GLB exports (out of scope — use `glb-web-handoff`, `glb-mobile-performance-budget`, or `glb-animation-handoff`)
+- verifying saved files on disk after rendering (use `render-export-evidence`)
 
 ## Trigger phrases
 - "PNG or JPEG"
@@ -38,19 +39,18 @@ Avoid mismatched output formats (e.g., JPEG for VFX, EXR for web, TIFF for socia
 
 | Input | Why it is required |
 |---|---|
-| Consumer | Drives format choice |
-| Color management config | Filmic / sRGB / Linear affects format |
-| Transparency required? | Drives PNG vs JPG |
+| Consumer | Drives format choice per output stream |
+| Color management config | Consumed from `color-management-decision` to align bit depth and container support |
+| Transparency required? | Drives alpha channel and container choice (e.g., PNG/WebP/OpenEXR vs JPG) |
 
 ### Optional inputs
 
 | Input | Use |
 |---|---|
-| File-size budget | Compression decision |
-| Multi-resolution requirement | Format-per-tier |
+| File-size budget | Guides lossless vs lossy compression decision |
 
 ### Assumptions to confirm
-- The consumer can read the chosen format (verify if non-default).
+- The consumer pipeline can read the chosen container/codec (verify if non-default).
 - Lossy compression is acceptable when chosen.
 
 ## Output schema
@@ -72,6 +72,9 @@ Evidence used: <links, paths, logs, or "none">
 Limitations: <known gaps>
 ```
 
+* Default states for this decision skill: `Runtime status: Not Run`, `Artifact status: Not Produced`.
+* Truth states are downgrade-only, never upgrade. Pinning a format never produces a file.
+
 ## Required laws
 - `../../laws/evidence-before-done.md`
 - `../../laws/non-blender-user-language.md`
@@ -83,53 +86,53 @@ Limitations: <known gaps>
 Decision skill — does not run Blender. Pins format; operator applies to scene render output.
 
 ## Operating procedure
-1. Identify consumer + color management config.
+1. Identify consumer pipeline + consume color config from `color-management-decision`.
 2. Select format per `references/format-decision-matrix.md`.
-3. Pin bit depth + compression + alpha.
-4. List caveats.
-5. Hand off to render evidence.
+3. Pin bit depth + compression + alpha per output stream.
+4. List stream rules and caveats.
+5. Hand off format record to operator (and to `resolution-aspect-decision` if resolution is unpinned, or `render-export-evidence` once rendered).
 
 ## Decision tree
 
 ```txt
-Web hero (sRGB)?
-  → PNG (lossless) or WebP (smaller, modern browsers); 8-bit; alpha if needed
+Web hero (consuming sRGB config)?
+  → PNG (lossless) or WebP (lossy/lossless); 8-bit; alpha if needed
 JPEG-only consumer?
-  → JPG; 8-bit; no alpha; quality 85-95
-VFX / film pipeline?
+  → JPG; 8-bit; no alpha; lossy quality 85-95
+VFX / film pipeline (consuming Linear config)?
   → OpenEXR; 16-bit half float; ZIP compression; alpha as channel
 Print?
-  → TIFF; 16-bit; LZW or no compression; CMYK/sRGB per print prep
+  → TIFF; 16-bit; LZW or no compression; alpha optional per print prep
 Social / mobile (WebP-first)?
-  → WebP; 8-bit; alpha optional; quality 85-90
+  → WebP; 8-bit; alpha optional; lossy quality 85-90
 HDR display delivery?
-  → PNG-16 or OpenEXR; verify consumer supports HDR display
+  → PNG 16-bit or OpenEXR; verify consumer supports HDR container
 ```
 
 ## Playbooks
 
 ### Playbook A: Web hero PNG
-PNG, 8-bit per channel, sRGB color space, alpha if needed. Output ~2-5 MB at 1920×1080.
+PNG, 8-bit per channel, lossless compression, alpha if needed (consumes color config from `color-management-decision`).
 
 ### Playbook B: VFX EXR
-OpenEXR, 16-bit half float, Linear, alpha as channel, ZIP compression. Multi-pass support.
+OpenEXR, 16-bit half float, ZIP compression, alpha as channel. Multi-pass support (consumes Linear config from `color-management-decision`).
 
 ### Playbook C: Mobile-first social
-WebP, 8-bit, sRGB, alpha optional, quality 85-90. Output ~50-200 KB at 1080×1080.
+WebP, 8-bit, quality 85-90 compression, alpha optional (consumes color config from `color-management-decision`).
 
 ### Playbook D: Print
-TIFF, 16-bit, sRGB, no compression. Output 5-50 MB at print resolution.
+TIFF, 16-bit, LZW or no compression, alpha optional (consumes color config from `color-management-decision`; resolution owned by `resolution-aspect-decision`).
 
 ## Mode handling
 
 ### Text-only mode
-Format record only.
+Emit format record + per-stream rules + caveats (`Runtime status: Not Run`, `Artifact status: Not Produced`).
 
 ### Runtime-ready mode
-After render, verify file actually saved in chosen format + bit depth.
+Emit format record for the operator to apply in Blender render output settings. Pinning a format never produces or verifies a file; hand off post-render file verification to `render-export-evidence`.
 
 ### Blocked runtime mode
-Format record only.
+Emit format record only (`Runtime status: Not Run`, `Artifact status: Not Produced`).
 
 ## Validation checklist
 - [ ] Consumer + color config identified
@@ -148,38 +151,38 @@ Format record only.
 | Fail | Wrong format for consumer (JPEG for VFX, EXR for web), missing bit depth, "any format" answer. |
 
 ## Failure handling
-- Consumer unknown → ask once; default to PNG sRGB 8-bit.
-- Multiple consumers → pick most-restrictive, render once; or render multiple outputs.
+- Consumer unknown → ask once; if still unknown, default to PNG, 8-bit, lossless compression, alpha enabled (paired with upstream `color-management-decision`).
+- Multiple consumers → define one format record per output stream (or pin the most restrictive format if single-stream delivery is required).
 
 ## Troubleshooting
 
 | Problem | Response |
 |---|---|
-| File too large | Reduce bit depth, increase compression, switch to WebP / JPG |
-| HDR data lost | Switch to OpenEXR or PNG 16-bit |
-| Alpha disappeared | Verify format supports alpha (PNG / WebP / EXR yes; JPG no) |
-| Color shift in delivered file | Verify color management config matches; verify consumer handles sRGB correctly |
+| File too large | Reduce bit depth, increase compression, or switch stream to WebP / JPG |
+| HDR data lost | Switch container/bit depth to OpenEXR (16-bit half float) or PNG 16-bit |
+| Alpha disappeared | Verify chosen format supports alpha (PNG / WebP / OpenEXR / TIFF yes; JPG no) |
+| Color shift in delivered file | Hand off to `color-management-decision` to verify color config and consumer display transform |
 
 ## Best practices
-- Render once per consumer; do not "convert later" unless testing.
-- For web: WebP is smaller than PNG with same quality; use it if consumer supports.
-- For VFX: always EXR; never JPG / PNG for that pipeline.
-- Document the format in render evidence.
+- Define one format record per consumer output stream; never convert or re-encode files post-render.
+- For web: use WebP or PNG based on consumer support and alpha/compression requirements.
+- For VFX: always pin OpenEXR; never pin JPG or 8-bit PNG for compositing pipelines.
+- Pass the pinned format record to `render-export-evidence` for post-render verification.
 
 ## Good examples
-- "Web hero. PNG, 8-bit, sRGB, alpha if needed. Compression: lossless."
+- "Web hero stream: PNG, 8-bit, lossless compression, alpha enabled (using upstream color config from `color-management-decision`)."
 
 ## Bad examples
-- "Save as PNG." — no bit depth, color space.
+- "Save as PNG." — missing bit depth, compression, and alpha rules.
 
 ## User-facing response template
 
 ```txt
-Consumer: <web / VFX / print / social / mobile / GLB>
+Consumer: <web / VFX / print / social / mobile>
 Color config: <reference color-management-decision output>
 
 Output(s):
-  <stream>: <format>, <bit depth>, <color space>, <compression>, <alpha>
+  <stream>: <format>, <bit depth>, <compression>, <alpha>
 
 Caveats: <list>
 Limitations: <gaps>
@@ -194,9 +197,10 @@ Next: render-export-evidence
 
 ## Cross-skill handoff
 - Color management → `../color-management-decision/SKILL.md`
-- Render evidence → `../render-export-evidence/SKILL.md`
+- Resolution & aspect ratio → `../resolution-aspect-decision/SKILL.md`
 - Engine choice → `../cycles-vs-eevee-decision/SKILL.md`
-- Resolution → `../resolution-aspect-decision/SKILL.md`
+- Render file verification → `../render-export-evidence/SKILL.md`
+- 3D / GLB exports (out of scope here) → `../glb-web-handoff/SKILL.md`, `../glb-mobile-performance-budget/SKILL.md`, `../glb-animation-handoff/SKILL.md`
 
 ## Non-goals
 - Convert formats post-render.
