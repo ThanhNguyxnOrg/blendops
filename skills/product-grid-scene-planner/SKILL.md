@@ -9,11 +9,12 @@ description: Plan a multi-product grid scene (e-commerce, catalog, comparison) b
 Translate a multi-product grid intent (e-commerce / catalog / comparison) into a structured scene plan. Distinct from `product-hero-scene-planner` (single product, hero) and `interior-architectural-scene-planner` (room scene).
 
 ## Quick start
-- pin product list (count + per-product type)
+- pin product list (count + per-product type and relative real-world size)
+- normalize product scale across cells (or split incompatible scales into separate grids)
 - pin grid layout (rows × cols + spacing)
-- pin per-cell consistency (camera angle, lighting, background)
+- pin per-cell consistency level (strict / loose for camera angle, lighting, background)
 - pin shared material / lighting / background palette
-- emit a structured plan + handoff to checkers
+- record assumptions register and hand off to asset discovery, format decision, and quality checkers
 
 ## When to use
 - intent is multi-product display (4+ products in same scene)
@@ -24,7 +25,8 @@ Translate a multi-product grid intent (e-commerce / catalog / comparison) into a
 ## When not to use
 - single product hero (use `product-hero-scene-planner`)
 - character portrait (use `character-portrait-scene-planner`)
-- environment / interior scene (use respective planners)
+- outdoor environment scene (use `environment-establishing-shot-planner`)
+- interior room scene (use `interior-architectural-scene-planner`)
 
 ## Trigger phrases
 - "grid of products"
@@ -42,33 +44,33 @@ Translate a multi-product grid intent (e-commerce / catalog / comparison) into a
 
 | Input | Why it is required |
 |---|---|
-| Product list | Determines grid size + asset scope |
-| Grid layout (rows × cols) | Drives composition |
-| Aspect ratio | Composition rules |
-| Consistency level (strict / loose) | Determines per-cell rules |
+| Product list + relative sizes | Determines grid size, asset scope, and scale normalization |
+| Grid layout (rows × cols + spacing) | Drives overall and per-cell composition |
+| Aspect ratio | Governs framing and cell proportions |
+| Consistency level (strict / loose) | Determines per-cell camera, lighting, and background rules |
 
 ### Optional inputs
 
 | Input | Use |
 |---|---|
-| Brand palette | Material + background consistency |
-| Per-product variants (color / SKU) | Adds variant rows |
-| Reference catalog images | Calibrate visual style |
+| Brand palette | Shared material + background consistency |
+| Per-product variants (color / SKU) | Adds variant rows and informs `output-format-decision` |
+| Reference catalog images | Calibrates visual style and spacing |
 
 ### Assumptions to confirm
-- All products share the same scale convention.
-- Lighting is shared across cells (not per-cell separate lighting setups).
-- Camera angle is consistent (same yaw / pitch / lens) across cells unless explicitly varied.
+- Scale normalization method is agreed (true relative scale vs. visual bounding-box normalization).
+- Lighting is shared across cells (not separate per-cell lighting setups).
+- Camera angle is consistent (same angle, distance, and lens feel) across cells unless variation is explicitly requested.
 
 ## Output schema
 
 ### Primary output
-A structured product-grid plan: Product list, Grid layout, Per-cell consistency rules, Shared lighting plan, Shared background, Per-cell composition rules, Aspect + framing.
+A structured product-grid plan: Product list, Scale normalization rule (normalized or split), Grid layout (rows × cols + spacing), Consistency level (strict / loose), Per-cell composition and camera rules, Shared lighting plan, Shared background and palette, Aspect + framing, and Assumptions register.
 
 ### Secondary output
-- asset list flagged for `blender-asset-discovery-planner`
-- naming + file convention notes for export
-- handoff list
+- per-product asset rows flagged for `blender-asset-discovery-planner`
+- variant / SKU file output notes routed to `output-format-decision`
+- downstream validation and sign-off handoff list
 
 ### Evidence / caveat output
 
@@ -87,29 +89,31 @@ Limitations: <known gaps>
 
 ## Official runtime boundary
 
-Planning skill — does not run Blender, model, or render. Hand off to discovery / quality checkers.
+Planning-only skill — does not run Blender, model, source assets, or render. Runtime status must remain `Not Run` and Artifact status must remain `Not Produced` (truth states are downgrade-only, never upgrade). Hand off asset needs to `blender-asset-discovery-planner`, file output rules to `output-format-decision`, and validation to quality checkers.
 
 ## Operating procedure
-1. Read product list; pin count + per-product description.
-2. Pin grid layout (rows × cols + spacing) per `references/grid-layout-rules.md`.
-3. Decide consistency level (strict / loose).
-4. Plan shared lighting (one rig, applied uniformly).
-5. Plan shared background.
-6. Plan per-cell camera + framing (typically same).
-7. Define per-product asset rows.
-8. Hand off to discovery / checkers.
+1. Read product list from user or `intent-to-3d-brief-writer`; pin count, per-product description, and relative sizes.
+2. Normalize scale across differently-sized products (or split incompatible items into separate grid plans).
+3. Pin grid layout (rows × cols + spacing) per `references/grid-layout-rules.md`.
+4. Decide consistency level (strict / loose).
+5. Plan shared palette, shared lighting (one setup applied uniformly), and shared background.
+6. Plan per-cell camera + framing (including caption/label space).
+7. Define per-product asset rows and document the assumptions register.
+8. Hand off to `blender-asset-discovery-planner`, `output-format-decision` (if variant/SKU file outputs apply), `composition-quality-checker`, `lighting-quality-checker`, `material-quality-checker`, `blender-scene-quality-checker`, `acceptance-criteria-builder`, and `blender-stop-condition-decider`.
 
 ## Decision tree
 
 ```txt
 Products at very different scales (lipstick + sofa) in same grid?
-  → Fail; pick separate scenes or normalize scale clearly
+  → Fail if unaddressed; normalize to a clear visual bounding box or split into separate scenes
 Different lighting per cell requested?
   → Warn; usually erodes catalog uniformity
 20+ products in single render?
-  → Warn; consider multiple grid renders
-Brand palette unclear?
-  → Hand off to brief writer
+  → Warn; recommend splitting into multiple grid plans
+Brand palette or intent unclear?
+  → Hand off to intent-to-3d-brief-writer
+Variant / SKU file output formats needed?
+  → Hand off file output rules to output-format-decision
 ```
 
 ## Playbooks
@@ -126,55 +130,58 @@ Brand palette unclear?
 ## Mode handling
 
 ### Text-only mode
-Plan only.
+
+Emit the complete grid plan and assumptions register. Runtime stays `Not Run`; Artifacts stay `Not Produced`.
 
 ### Runtime-ready mode
-Plan + runtime path attribution.
+
+Emit the complete grid plan, assumptions register, and downstream handoff targets. Do not execute Blender; Runtime stays `Not Run` and Artifacts stay `Not Produced`.
 
 ### Blocked runtime mode
-Plan only; flag what cannot be confirmed.
+
+Emit the complete grid plan and assumptions register; flag unconfirmed inputs under Limitations. Runtime stays `Not Run` and Artifacts stay `Not Produced`.
 
 ## Validation checklist
-- [ ] Product list complete with count
+- [ ] Product list complete with count and relative sizes
+- [ ] Scale normalized across products (or explicitly split into separate grids)
 - [ ] Grid layout (rows × cols + spacing) explicit
-- [ ] Consistency level stated
-- [ ] Shared lighting plan present
-- [ ] Shared background present
-- [ ] Per-cell camera consistent (or variation explicit)
-- [ ] Aspect + framing consistent across cells
-- [ ] Asset list flagged
-- [ ] Handoff named
+- [ ] Consistency level (strict / loose) stated
+- [ ] Shared palette, lighting plan, and background present
+- [ ] Per-cell camera and framing consistent (or variation explicit)
+- [ ] Assumptions register included
+- [ ] Asset rows flagged for `blender-asset-discovery-planner`
+- [ ] Validation and sign-off handoffs named
 
 ## Pass / Warn / Fail rubric
 
 | Verdict | Criteria |
-|---|---|
-| Pass | All sections + scale-normalized + consistent lighting + asset list. |
-| Warn | One inconsistency (per-cell lighting variance) without justification. |
-| Fail | Mixed-scale products without normalization, no shared lighting plan, missing per-cell camera consistency. |
+| --- | --- |
+| Pass | All sections complete + scale normalized (or split) + consistency level stated + shared lighting/palette + assumptions register + asset list + truth states locked to `Not Run` / `Not Produced`. |
+| Warn | Minor cell variance (e.g., per-cell angle or lighting tweak) without clear justification, or 20+ items crammed into one grid. |
+| Fail | Mixed-scale products without normalization or split, missing shared lighting/camera consistency, missing consistency level, missing assumptions register, or upgraded truth states. |
 
 ## Failure handling
-- Mixed product scales → user picks normalized scale or splits into separate grids.
-- 20+ products → suggest splitting into multiple renders.
-- Missing brand palette → hand off to brief writer.
+- Mixed product scales → require normalized visual scale or split into separate grid plans.
+- 20+ products → suggest splitting into multiple grid plans.
+- Missing brand palette or unclear intent → hand off to `intent-to-3d-brief-writer`.
 
 ## Troubleshooting
 
 | Problem | Response |
-|---|---|
-| Products read at different sizes despite same scale | Verify camera distance is identical per cell; verify assets at same world scale. |
-| One cell stands out | Check for accidental lighting / material variance. |
-| Caption space cramped | Re-plan grid spacing or reduce product count. |
-| Background distracts | Simplify to solid color or gradient. |
+| --- | --- |
+| Products appear mismatched in size across cells | Specify bounding-box scale normalization and identical per-cell camera distance in the plan. |
+| One cell stands out visually | Enforce strict consistency level for shared lighting and shared background palette. |
+| Caption space cramped | Increase planned grid spacing or reduce product count per grid. |
+| Background distracts from products | Plan a neutral solid or subtle gradient background that contrasts cleanly with the shared palette. |
 
 ## Best practices
-- Lock one camera + one lighting rig; apply identically across all cells.
-- Normalize product scale before grid planning.
-- Reserve consistent caption space per cell for downstream layout.
-- Use brand color as accent only, not full background (often clashes with materials).
+- Lock one camera angle and one shared lighting plan; apply identically across all cells.
+- Normalize product scale (or split grids) before finalizing rows and columns.
+- Reserve consistent caption or label space per cell for catalog layout.
+- Keep the shared background tone consistent so material differences across SKUs remain accurate.
 
 ## Good examples
-- "Products: 4 sneaker variants. Grid: 2×2, 0.5m spacing. Aspect: 16:9. Shared lighting: 3-point key 250W + fill 50W + rim 100W; HDRI 0.7 studio. Background: neutral seamless gray (#dddddd). Per-cell camera: 50mm equivalent, eye-level, 1.5m distance, identical orientation. Caption space: lower 15% of cell. Mood: clean, modern, e-commerce."
+- "Products: 4 sneaker variants (identical real-world scale, normalized to equal cell bounding boxes). Grid: 2×2, even spacing. Shared lighting: soft studio three-point setup, even illumination. Shared palette/background: neutral light-gray seamless backdrop. Per-cell camera: standard eye-level framing, identical distance and orientation. Caption space lower 15% reserved. Assumptions register: identical footwear dimensions; no props; single still catalog output. Runtime status: Not Run. Artifact status: Not Produced."
 
 ## Bad examples
 - "Show 4 products in a grid." — no lighting, layout, scale.
@@ -183,17 +190,23 @@ Plan only; flag what cannot be confirmed.
 
 ```txt
 Product list: <count + per-product list>
-Grid layout: <rows × cols> | spacing <m> | aspect <ratio>
+Scale normalization: <normalized bounding box / true relative scale / split into separate grids>
+Grid layout: <rows × cols> | spacing <value> | aspect <ratio>
 Consistency: <strict / loose>
-Shared lighting: <plan>
+Shared palette: <colors + surface tones>
+Shared lighting: <plain-language lighting plan>
 Shared background: <type + tone>
-Per-cell camera: <focal length> | <distance> | <eye-line>
-Caption / label space: <where + size>
+Per-cell camera: <angle> | <distance> | <framing>
+Caption / label space: <location + proportion>
 Mood + style: <line>
+Assumptions register: <explicit assumptions to confirm>
 
-Assets to discover: <list>
-Limitations: <gaps>
-Next: blender-asset-discovery-planner / composition-quality-checker / lighting-quality-checker / material-quality-checker
+Assets to discover: <per-product rows for blender-asset-discovery-planner>
+Runtime status: Not Run
+Artifact status: Not Produced
+Evidence used: <links, paths, logs, or "none">
+Limitations: <known gaps>
+Next: blender-asset-discovery-planner | output-format-decision | composition-quality-checker | lighting-quality-checker | material-quality-checker | blender-scene-quality-checker | acceptance-criteria-builder | blender-stop-condition-decider
 ```
 
 ## Anti-patterns
@@ -203,11 +216,15 @@ Next: blender-asset-discovery-planner / composition-quality-checker / lighting-q
 - Skipping caption space when downstream layout needs it.
 
 ## Cross-skill handoff
-- Brief writer → `../intent-to-3d-brief-writer/SKILL.md`
+- Upstream brief → `../intent-to-3d-brief-writer/SKILL.md`
+- Single hero product alternative → `../product-hero-scene-planner/SKILL.md`
 - Asset discovery → `../blender-asset-discovery-planner/SKILL.md`
+- Variant / SKU file output format → `../output-format-decision/SKILL.md`
 - Composition validation → `../composition-quality-checker/SKILL.md`
 - Lighting validation → `../lighting-quality-checker/SKILL.md`
 - Material validation → `../material-quality-checker/SKILL.md`
+- Overall scene quality validation → `../blender-scene-quality-checker/SKILL.md`
+- Catalog sign-off & stop conditions → `../acceptance-criteria-builder/SKILL.md`, `../blender-stop-condition-decider/SKILL.md`
 
 ## Non-goals
 - Model the products.
