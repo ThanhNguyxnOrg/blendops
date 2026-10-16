@@ -7,7 +7,7 @@ description: Match user goals to BlendOps recipes and packs; flag scope gaps; re
 
 ## Purpose
 
-Map a user's stated goal to the closest documented recipe or pack (`product-hero-v0`, golden paths, workflow docs) and surface mismatches before expensive planning or runtime work.
+Map a user's stated goal to the closest documented BlendOps recipe or pack before expensive planning or runtime work, returning a fit verdict (`Strong` / `Partial` / `Poor`), rationale, explicit gap list, and **one** recommended next skill. This skill is planning-only and never runs Blender, packs, or runtime.
 
 ## Quick start
 
@@ -24,9 +24,13 @@ Map a user's stated goal to the closest documented recipe or pack (`product-hero
 
 ## When not to use
 
-- runtime execution or MCP troubleshooting (use runtime skills)
-- pure creative brainstorming without a delivery shape (use `blender-brainstorming` first)
-- legal/license checks (use `asset-license-checker`)
+- Diverging raw creative ideas before a delivery shape exists (use `blender-brainstorming`)
+- Writing the structured 3D brief after fit is settled (use `intent-to-3d-brief-writer`)
+- Detailed scene planning once a domain is chosen (use `product-hero-scene-planner`, `product-grid-scene-planner`, `character-portrait-scene-planner`, `environment-establishing-shot-planner`, or `interior-architectural-scene-planner`)
+- Checking whether a pack's installation prerequisites are met (use `pack-prerequisite-checker`)
+- General entry routing across BlendOps (use `blendops-help`) or picking the next stage after artifacts already exist (use `workflow-stage-router`)
+- Runtime setup, path selection, or troubleshooting (use `runtime-path-picker`, `official-runtime-setup-guide`, `official-runtime-readiness-checker`, `blender-troubleshooting`, or `runtime-bridge-conflict-resolver`)
+- Legal or license verification (use `asset-license-checker`)
 
 ## Trigger phrases
 
@@ -67,18 +71,22 @@ Map a user's stated goal to the closest documented recipe or pack (`product-hero
 
 ### Primary output
 
-- recommended recipe / pack name(s)
-- fit verdict + rationale
-- gap list (what must change for Strong fit)
-- suggested next skill (`intent-to-3d-brief-writer`, domain planner, etc.)
+- Recommended closest documented recipe or pack name
+- Fit verdict (`Strong` | `Partial` | `Poor`) + plain-language rationale
+- Gap list (what must change or be accepted to reach a Strong fit, or `none`)
+- **One** recommended next skill from the official catalog (e.g., `intent-to-3d-brief-writer` or the single best-matching skill)
 
 ### Evidence / caveat output
 
+Assessing fit is planning-only and never executes runtime or produces artifacts. Truth states are downgrade-only (never upgrade):
+- Allowed Runtime states: `Not Run | Attempted | Produced | Verified | Failed` (always `Not Run` for fit assessment unless reporting prior state)
+- Allowed Artifact states: `Not Run | Not Produced | Produced | Verified | Failed` (defaults to `Not Produced`)
+
 ```txt
-Runtime status: Not Run | Attempted | Produced | Verified | Failed
-Artifact status: Not Run | Not Produced | Produced | Verified | Failed
-Evidence used: <recipe/pack doc paths consulted>
-Limitations: <catalog coverage gaps>
+Runtime status: Not Run
+Artifact status: Not Produced
+Evidence used: <documented recipe/pack paths consulted>
+Limitations: <catalog coverage gaps or unverified user constraints>
 ```
 
 ## Required laws
@@ -116,11 +124,12 @@ Still usable; note runtime unavailable does not change recipe fit.
 
 ## Validation checklist
 
-- [ ] Catalog consulted
-- [ ] Verdict assigned
-- [ ] Gaps listed or "none"
-- [ ] Next skill named
-- [ ] No false runtime claims
+* [ ] Documented recipe/pack catalog consulted
+* [ ] Fit verdict (`Strong` / `Partial` / `Poor`) and plain-language rationale assigned
+* [ ] Explicit gap list included (or `none`)
+* [ ] Exactly **one** next skill recommended from the valid 48-skill catalog
+* [ ] Truth states follow downgrade-only rules with Artifact status defaulting to `Not Produced`
+* [ ] No Blender execution, Python code, pack installation, or runtime success claims
 
 ## Pass / Warn / Fail rubric
 
@@ -132,15 +141,16 @@ Still usable; note runtime unavailable does not change recipe fit.
 
 ## Cross-skill handoff
 
-- From brainstorming → `../blender-brainstorming/SKILL.md`
-- To structured brief → `../intent-to-3d-brief-writer/SKILL.md`
-- Product hero path → `../product-hero-scene-planner/SKILL.md`
-- Help routing → `../blendops-help/SKILL.md`
+* Upstream creative divergence -> `../blender-brainstorming/SKILL.md`
+* General entry routing -> `../blendops-help/SKILL.md`
+* Downstream structured brief -> `../intent-to-3d-brief-writer/SKILL.md`
+* Pack prerequisite verification -> `../pack-prerequisite-checker/SKILL.md`
+* Post-artifact stage routing -> `../workflow-stage-router/SKILL.md`
+* Domain scene planners (pick one when brief is ready) -> `../product-hero-scene-planner/SKILL.md`, `../product-grid-scene-planner/SKILL.md`, `../character-portrait-scene-planner/SKILL.md`, `../environment-establishing-shot-planner/SKILL.md`, `../interior-architectural-scene-planner/SKILL.md`
 
 ## References
 
-- `references/recipe-catalog.md`
-- `references/scope-gap-rules.md`
-- `references/workflow-recommendation-template.md`
-- `../../docs/recipes/README.md`
-- `../../packs/product-hero-v0/PACK.md`
+* `references/recipe-catalog.md`
+* `references/scope-gap-rules.md`
+* `references/workflow-recommendation-template.md`
+* `../../docs/recipes/README.md`
