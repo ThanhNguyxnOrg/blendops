@@ -31,7 +31,7 @@ Structure **CLI fallback appendix** jobs (batch render, batch export, scripted s
 
 - "headless blender"
 - "batch render CLI"
-- "--background --python"
+- "blender --background"
 - "render farm outline"
 
 ## Prerequisites / readiness
@@ -45,32 +45,33 @@ Structure **CLI fallback appendix** jobs (batch render, batch export, scripted s
 
 | Input | Why it is required |
 |---|---|
-| Job intent (render vs export vs scripted pipeline) | Chooses matrix row |
-| Output artifact expectations | Drives validation hooks |
+| Job intent (batch render vs batch export vs scripted job) | Chooses matrix row (routeMCP vs CLI selection to `runtime-path-picker` first) |
+| Output artifact expectations | Drives validation hooks (route format selection to `output-format-decision`) |
 
 ### Optional inputs
 
 | Input | Use |
 |---|---|
-| GPU availability | Device flags note |
+| GPU availability | Device flags category note |
 | Mixture of Windows/Linux paths | Quote escaping caution |
 
 ## Output schema
 
 ### Primary output
 
-- job outline: phases (startup, load, process, save)
-- flag categories to research upstream (not copy-paste dumps unless user explicitly maintains scripts)
-- validation / logging expectations
+- Phased job outline: startup, load, process, save
+- Flag categories to look up in the upstream Blender manual (plain language only; no copy-paste Python dumps, no execution)
+- Validation and logging hooks (stdout tail, expected output paths)
 
 ### Evidence / caveat output
 
 ```txt
 Runtime status: Not Run | Attempted | Produced | Verified | Failed
-Artifact status: Not Produced | Produced | Verified | Failed
+Artifact status: Not Run | Not Produced | Produced | Verified | Failed (default: Not Produced)
+Rule: Downgrade-only, never upgrade. Outlining a job never executes Blender (Runtime remains Not Run; Artifact remains Not Produced).
 Blockers: <separate line>
-Evidence used: <CLI logs when available>
-Limitations: no viewport Grab; script args via `--` separator per upstream docs
+Evidence used: <none during outlining; route actual CLI logs/outputs to render-export-evidence>
+Limitations: Stateless execution, no interactive viewport
 ```
 
 ## Required laws
@@ -82,48 +83,54 @@ Limitations: no viewport Grab; script args via `--` separator per upstream docs
 
 ## Official runtime boundary
 
-Planning outline — BlendOps does not execute Blender. CLI fallback appendix is documented upstream as a first-class Blender CLI surface (render/Cycles/format/Python sections read in the current Blender 5.2 LTS Manual); BlendOps has **no in-repo evidence file yet**. Stay truthful: MCP paths remain Path 1 / Path 2 when interactivity matters.
+Planning outline only — BlendOps never executes Blender and never presents arbitrary Python as the product surface. This CLI workflow is an **appendix only**, never a peer path without an eval record, and BlendOps has **no in-repo CLI evidence file yet**. Point users to the upstream Blender manual for exact CLI flags.
 
 ## Operating procedure
 
-1. Confirm MCP ill-fit reason documented.
-2. Pick matrix row.
-3. List phases + evidence hooks (stdout tail, written output paths).
-4. Tell user to verify flags against current Blender manual.
+1. Verify `runtime-path-picker` confirmed MCP is ill-fit; if interactive MCP is needed, hand off to `path-one-host-outline`.
+2. Verify target formats are settled via `output-format-decision`.
+3. Select the job-type matrix row and outline phases (`blender --background` startup, load, process, save), flag categories, and validation/logging hooks in plain language without Python dumps.
+4. Direct the user to verify exact flags against the upstream Blender manual.
+5. Keep truth states at `Not Run` (Runtime) and `Not Produced` (Artifact); hand off actual CLI execution logs and outputs to `render-export-evidence`.
 
 ## Mode handling
 
 ### Text-only mode
 
-Abstract outline only.
+Provide the phased CLI job outline, flag categories, and stateless limitations. Runtime is `Not Run`; Artifact is `Not Produced`.
 
 ### Runtime-ready mode
 
-Allow attaching sample log locations — still no success claim without artifacts.
+Specify validation and logging hooks (where logs and output files should land), then hand off post-run verification to `render-export-evidence` and `runtime-attempt-report-writer`. Outlining never upgrades truth states.
 
 ### Blocked runtime mode
 
-Describe intended future job pack.
+Outline the intended phased job structure and record blockers on a separate line with Runtime `Not Run` and Artifact `Not Produced`.
 
 ## Validation checklist
 
-- [ ] Stateless limits acknowledged
-- [ ] Upstream CLI manual cited generically (URL in docs/runtime-stack-strategy.md chain)
-- [ ] No "BlendOps runs Blender" implication
+* [ ] Framed strictly as an appendix, never a peer path without an eval record
+* [ ] Stateless, no-viewport limitations acknowledged
+* [ ] Upstream Blender CLI manual cited for exact flags
+* [ ] No copy-paste Python dumps and no implication that BlendOps executes Blender
+* [ ] Truth states respect downgrade-only rule (default `Not Produced` for artifacts; outlining never runs anything)
+* [ ] Role boundaries preserved with `runtime-path-picker`, `output-format-decision`, and `render-export-evidence`
 
 ## Pass / Warn / Fail rubric
 
 | Verdict | Criteria |
 |---|---|
-| Pass | Coherent phased outline + evidence hooks |
-| Warn | GPU device uncertain — dual-branch note |
-| Fail | Presents giant opaque Python as deliverable |
+| Pass | Coherent phased outline + flag categories + validation/logging hooks + accurate downgrade-only truth states |
+| Warn | GPU or OS path environment uncertain — dual-branch caution noted |
+| Fail | Includes copy-paste Python dumps, treats CLI as a peer path, blurs roles with path/format/evidence skills, or upgrades truth states without verified evidence |
 
 ## Cross-skill handoff
 
-- Pick MCP vs CLI → `../runtime-path-picker/SKILL.md`
-- Export format choices → `../output-format-decision/SKILL.md`
-- Evidence recording → `../render-export-evidence/SKILL.md`
+* Pick MCP vs CLI → `../runtime-path-picker/SKILL.md`
+* Interactive MCP host outline → `../path-one-host-outline/SKILL.md`
+* Export format choices → `../output-format-decision/SKILL.md`
+* Actual CLI output evidence recording → `../render-export-evidence/SKILL.md`
+* Runtime attempt reporting → `../runtime-attempt-report-writer/SKILL.md`
 
 ## References
 
