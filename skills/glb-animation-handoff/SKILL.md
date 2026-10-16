@@ -42,43 +42,47 @@ When a GLB ships with animation, capture the exact playback contract the consume
 
 | Input | Why it is required |
 |---|---|
-| Clip list (names + lengths in frames or seconds) | Consumer must know what exists |
+| Clip list (names + lengths in frames or seconds) | Consumer must know what exists without inventing clips |
+| Clip type per clip (`skeletal` / `morph` / `both`) | Determines rig vs morph target handling |
 | Target FPS | Determines time-base mapping for the consumer |
-| Loop / one-shot / chain semantics per clip | Determines play behavior |
+| Loop / one-shot / chain semantics per clip | Determines playback behavior |
 | Trigger model | Auto / hover / click / scroll / programmatic |
+| Blend duration | Crossfade duration for chained or interactive transitions |
+| Root-motion treatment (`bake` or `strip`) | Binary choice per clip; never ambiguous or combined |
+| Interpolation (`LINEAR` / `STEP` / `CUBICSPLINE`) | Always pinned per clip |
 
 ### Optional inputs
 
 | Input | Use |
 |---|---|
-| Bone hierarchy summary | Helps consumers warn on missing bones |
-| Morph target list | For face / shape variants |
-| Root motion treatment | Bake into clip or strip and apply at runtime? |
-| Blend duration between transitions | Gives consumer animation mixer crossfade hint |
+| Channel, bone, and morph ceilings | Sourced from `glb-mobile-performance-budget` to keep contract within budget |
+| Target consumer stack | Tailors caveats for Three.js, R3F, Babylon, or model-viewer |
 
 ### Assumptions to confirm
 - Animation timing is recorded in seconds (not just frames) for portability.
-- glTF binary stores animation samplers as keyframe arrays; ensure interpolation type is documented (LINEAR / STEP / CUBICSPLINE).
-- Skinned meshes need bone count below the consumer's per-mesh limit (web stacks vary).
+- Interpolation type (`LINEAR` / `STEP` / `CUBICSPLINE`) and binary root-motion treatment (`bake` or `strip`) are explicitly pinned for every clip.
+- Channel, bone, and morph target ceilings are pinned by `glb-mobile-performance-budget`.
 
 ## Output schema
 
 ### Primary output
-A structured animation contract: per-clip rows with type, length, FPS, loop, trigger, blend, root-motion, caveats.
+A structured animation contract before `glb-web-handoff`: per-clip rows with type (`skeletal` / `morph` / `both`), length, FPS, `loop` / `one-shot` / `chain`, trigger, blend, binary root-motion (`bake` or `strip`), and interpolation (`LINEAR` / `STEP` / `CUBICSPLINE`).
 
 ### Secondary output
 - consumer-stack-specific caveats (Three.js / R3F / Babylon / model-viewer)
-- a "what to verify after export" checklist
-- assumptions and limitations explicit
+- a "what to verify after export" checklist (paired with `render-export-evidence` and manual viewer test)
+- explicit assumptions, budget ceiling references (`glb-mobile-performance-budget`), and named next handoff
 
 ### Evidence / caveat output
 
 ```txt
 Runtime status: Not Run | Attempted | Produced | Verified | Failed
-Artifact status: Not Run | Not Produced | Produced | Verified | Failed
+Artifact status: Not Produced | Produced | Verified | Failed
 Evidence used: <links, paths, logs, or "none">
 Limitations: <known gaps>
 ```
+
+Default for planning documentation is `Runtime status: Not Run` and `Artifact status: Not Produced`. Truth states are downgrade-only, never upgraded by this skill.
 
 ## Required laws
 - `../../laws/evidence-before-done.md`
@@ -88,98 +92,115 @@ Limitations: <known gaps>
 
 ## Official runtime boundary
 
-This skill is documentation-only. It does not export GLB, run Blender, or claim that a clip plays correctly without measured evidence (`render-export-evidence` for export proof + manual viewer test for playback).
+This skill is documentation-only. It never exports GLB, runs Blender, writes Python, or claims that a clip plays correctly without measured evidence (`render-export-evidence` for export proof plus manual viewer test for playback).
 
-If runtime is involved, refer to `../../docs/runtime-stack-strategy.md` for the 2-path + CLI appendix model. Animation export tools work in all paths but caveats differ (CLI requires explicit `bpy.ops.export_scene.gltf(filepath=..., export_animations=True)` and add-on enable).
+If runtime execution is needed, refer to `../../docs/runtime-stack-strategy.md` and hand off export verification to `render-export-evidence`.
 
 ## Operating procedure
-1. Read the clip list from scene plan or measured GLB (`gltf-validator` output is ideal).
-2. For each clip, fill the contract row.
-3. Apply consumer-stack caveats (see `references/web-stack-caveats.md`).
-4. Apply animation-type caveats (see `references/animation-types.md`).
-5. Apply root-motion + transition rules (see `references/transition-rules.md`).
-6. Mark export evidence status (Not Run / Produced / Verified).
-7. Hand off to glb-web-handoff with the contract pinned.
+
+1. Read the existing clip list from the upstream scene plan or verified export report (never invent clips).
+2. Confirm animation channel, bone, and morph ceilings from `glb-mobile-performance-budget`.
+3. For each clip, fill the contract row: type (`skeletal` / `morph` / `both`), length, FPS, `loop` / `one-shot` / `chain`, trigger, blend, root-motion (`bake` or `strip`), and interpolation (`LINEAR` / `STEP` / `CUBICSPLINE`).
+4. Apply consumer-stack caveats (`references/web-stack-caveats.md`), animation-type caveats (`references/animation-types.md`), and transition rules (`references/transition-rules.md`).
+5. Attach the "what to verify after export" checklist covering `render-export-evidence` and manual viewer testing.
+6. Record truth states (`Runtime status: Not Run`, `Artifact status: Not Produced` default; downgrade-only, never upgrade).
+7. Hand off to `glb-web-handoff` (and `three-fiber-component-shape-planner` if R3F, then `non-blender-user-response-writer` for final user wording).
 
 ## Decision tree
 
 ```txt
 Clip list unknown?
-  → Hand off to scene planner first
-Skeletal + morph in same clip?
-  → Document both, flag bone budget tightness
-Multiple clips meant to chain?
-  → Document blend duration explicitly per pair
+  → Do not invent clips; hand off to product-hero-scene-planner, character-portrait-scene-planner, environment-establishing-shot-planner, interior-architectural-scene-planner, or product-grid-scene-planner first
+Channel, bone, or morph ceiling unpinned or exceeded?
+  → Hand off to glb-mobile-performance-budget
+Multiple clips meant to chain or transition?
+  → Document blend duration explicitly per clip pair
 Root motion present?
-  → Pick: bake into clip OR strip + apply at runtime; not both
+  → Pick binary treatment per clip: bake OR strip (never both, never undefined)
+Export proof or playback verification needed?
+  → Hand off to render-export-evidence + require manual viewer test
 ```
 
 ## Playbooks
 
 ### Playbook A: Idle-only loop
-Single skeletal idle clip, auto-loop on mount. Record FPS, length, interpolation. No root motion, no transitions. The simplest contract.
+
+Single skeletal idle clip, auto-loop on mount. Pin type, length, FPS, `loop`, auto trigger, `0ms` blend, root-motion (`strip` or `bake`), and interpolation (`LINEAR` / `STEP` / `CUBICSPLINE`).
 
 ### Playbook B: Idle + active (hover/click)
-Two clips. Consumer crossfades 200–400ms. Document blend duration, document return-to-idle policy.
+
+Two clips. Pin FPS, length, trigger, crossfade blend duration (e.g., 200–400ms), return-to-idle chain semantics, binary root-motion (`bake` or `strip`), and interpolation (`LINEAR` / `STEP` / `CUBICSPLINE`) for each clip.
 
 ### Playbook C: Scroll-driven scrub
-Single long clip, no auto-play, consumer scrubs `mixer.setTime(scrollProgress * length)`. Document interpolation type explicitly (CUBICSPLINE recommended for smoothness).
+
+Single clip driven by scroll progress (`one-shot` / programmatic scrub trigger). Pin length, FPS, blend (`0ms`), binary root-motion (`bake` or `strip`), and interpolation (`LINEAR` / `STEP` / `CUBICSPLINE`). Never promise playback smoothness.
 
 ## Mode handling
 
 ### Text-only mode
-Produce contract from the scene plan; mark `Artifact status: Not Run`.
+
+Produce the animation contract from the scene plan; set `Runtime status: Not Run` and `Artifact status: Not Produced`.
 
 ### Runtime-ready mode
-After export, validate clip count + lengths against the contract using the GLB. Upgrade `Artifact status` only if measured.
+
+Keep this skill's contract truth states downgrade-only (default `Runtime status: Not Run`, `Artifact status: Not Produced`; never upgrade here). Route export verification to `render-export-evidence` and require a manual viewer test to verify clip count, lengths, and playback behavior against the contract.
 
 ### Blocked runtime mode
-Produce the contract and explicitly mark which fields cannot be confirmed without runtime.
+
+Produce the planning contract with `Runtime status: Not Run` and `Artifact status: Not Produced`, and explicitly list which verification items remain blocked pending `render-export-evidence` and manual viewer testing.
 
 ## Validation checklist
-- [ ] Every clip listed in the contract
-- [ ] Type per clip (skeletal / morph / both)
-- [ ] FPS pinned
-- [ ] Loop / one-shot / chain explicit
-- [ ] Trigger model explicit
-- [ ] Blend duration where applicable
-- [ ] Root motion treatment chosen (one of two, never both)
-- [ ] Consumer-stack caveats listed
-- [ ] No "smooth animation guaranteed" without testing
-- [ ] Handoff to next skill named
+
+* [ ] Every clip from the scene plan is listed (no invented clips)
+* [ ] Type pinned per clip (`skeletal` / `morph` / `both`)
+* [ ] Length and FPS pinned per clip
+* [ ] `loop` / `one-shot` / `chain` semantics explicit per clip
+* [ ] Trigger model and blend duration explicit per clip
+* [ ] Root-motion treatment chosen as binary (`bake` or `strip`, never both)
+* [ ] Interpolation pinned per clip (`LINEAR` / `STEP` / `CUBICSPLINE`)
+* [ ] Channel, bone, and morph counts checked against ceilings from `glb-mobile-performance-budget`
+* [ ] Consumer-stack caveats and what-to-verify checklist included
+* [ ] Truth states default to `Runtime status: Not Run` and `Artifact status: Not Produced` (downgrade-only, never upgraded)
+* [ ] No smoothness promises and no Python snippets
+* [ ] Next handoff skill explicitly named (`glb-web-handoff`)
 
 ## Pass / Warn / Fail rubric
 
 | Verdict | Criteria |
 |---|---|
-| Pass | All clips contracted, all caveats listed, evidence honest, handoff named. |
-| Warn | Contract present but FPS / blend / trigger ambiguous. |
-| Fail | Claiming clip plays correctly without measurement, or conflicting root-motion treatment, or omitting consumer-stack caveats. |
+| Pass | All per-clip contract fields pinned (including FPS, binary root-motion, and interpolation), stack caveats and verify checklist included, truth states honest and downgrade-only, handoff named. |
+| Warn | Contract present but blend duration, trigger detail, or stack caveats are incomplete. |
+| Fail | Inventing clips, promising smoothness, omitting FPS / interpolation / binary root-motion, including Python snippets, upgrading truth states, or claiming clips play correctly without `render-export-evidence` + manual viewer test. |
 
 ## Failure handling
-- If clip list is unknown → hand off to scene planner first; do not invent clips.
-- If consumer stack is unknown → list caveats per stack; ask user to pick.
-- If skeletal + morph budget exceeds tier → hand off to performance-budget skill.
+
+* If clip list is unknown → do not invent clips; hand off to the appropriate scene planner (`product-hero-scene-planner`, `character-portrait-scene-planner`, `environment-establishing-shot-planner`, `interior-architectural-scene-planner`, or `product-grid-scene-planner`).
+* If consumer stack is unknown → list caveats per stack and ask the user to confirm before `glb-web-handoff`.
+* If channel, bone, or morph counts exceed ceilings → hand off to `glb-mobile-performance-budget`.
+* If export proof is missing → keep `Runtime status: Not Run` and `Artifact status: Not Produced`, and hand off to `render-export-evidence`.
 
 ## Troubleshooting
 
 | Problem | Response |
 |---|---|
-| Clip plays at wrong speed in web | Verify FPS in glTF matches consumer's mixer time scale (default 1.0). |
-| Clip stutters at end | Check loop semantics + last keyframe matches first within tolerance. |
-| Bones missing in web | Check bone count against consumer's per-mesh limit; check binding pose export option. |
-| Morph not visible | Verify `KHR_materials_variants` is not used in place of morph; check shape key export option. |
+| Clip plays at wrong speed in web viewer | Check that the contracted FPS and clip length in seconds match the consumer stack playback settings during manual viewer test. |
+| Clip transition pops or loops abruptly | Verify `loop` / `one-shot` / `chain` semantics, blend duration, and pinned interpolation (`LINEAR` / `STEP` / `CUBICSPLINE`) in the contract. |
+| Bone or channel limits exceeded on target device | Hand off to `glb-mobile-performance-budget` to enforce bone, morph, and animation channel ceilings. |
+| Unverified export or missing clips in file | Hand off to `render-export-evidence` for export verification and perform a manual viewer test. |
 
 ## Best practices
-- Always pin FPS even when the user thinks it "doesn't matter".
-- Always document interpolation per clip; defaults break smoothness for scrub-driven cases.
-- Treat root motion as a binary choice (bake OR strip), never undefined.
-- Always pair with `glb-mobile-performance-budget` for animation channel budget.
+
+* Always pin FPS and interpolation (`LINEAR` / `STEP` / `CUBICSPLINE`) per clip, even when the user thinks defaults are sufficient.
+* Treat root motion as a strict binary choice (`bake` or `strip`), never undefined or mixed.
+* Always pair with `glb-mobile-performance-budget` for channel, bone, and morph ceilings.
+* Never invent clips and never promise playback smoothness.
 
 ## Good examples
-- "Clips: idle (skeletal, 4s, 30fps, auto-loop, LINEAR), wave (skeletal, 2s, 30fps, hover-trigger, blend 250ms back to idle, LINEAR). Root motion: stripped, applied at runtime via parent transform. Animation channel count: 24 of 50 budget. Compliance: Not Run."
+
+* "Clips: `idle` (`skeletal`, `4s`, `30fps`, `loop`, `auto`, blend `0ms`, root-motion `strip`, `LINEAR`), `wave` (`skeletal`, `2s`, `30fps`, `one-shot` chain to `idle`, `hover`, blend `250ms`, root-motion `strip`, `LINEAR`). Ceilings (via `glb-mobile-performance-budget`): channels 24/50, bones 32/64, morphs 0/8. What to verify: confirm export via `render-export-evidence` and manual viewer test. `Runtime status: Not Run`, `Artifact status: Not Produced`. Next: `glb-web-handoff`."
 
 ## Bad examples
+
 - "It animates." — no contract.
 - "Will be smooth." — no FPS, no blend, no measurement.
 
@@ -187,38 +208,52 @@ Produce the contract and explicitly mark which fields cannot be confirmed withou
 
 ```txt
 Clip contract:
-  <clip name>: <type> | <length s> | <fps> | <loop/one-shot> | <trigger> | <blend ms> | <root motion> | <interpolation>
+  <clip name>: <skeletal|morph|both> | <length s> | <fps> | <loop|one-shot|chain> | <trigger> | <blend ms> | <bake|strip> | <LINEAR|STEP|CUBICSPLINE>
 
 Consumer stack: <three.js / r3f / babylon / model-viewer>
 Stack-specific caveats: <list>
 
-Animation channel total: <N> of <budget>
-Bones: <N> of <budget>
-Morph targets: <N> of <budget>
+Budget check (from glb-mobile-performance-budget):
+  Animation channels: <N> of <ceiling>
+  Bones: <N> of <ceiling>
+  Morph targets: <N> of <ceiling>
 
-Export evidence status: Not Run / Produced / Verified
+What to verify after export:
+  - [ ] Export proof verified via render-export-evidence
+  - [ ] Clip names, lengths, FPS, and loop/chain behavior checked in manual viewer test
+  - [ ] Root-motion (bake vs strip) and blend transitions verified in target consumer stack
+
+Runtime status: Not Run | Attempted | Produced | Verified | Failed
+Artifact status: Not Produced | Produced | Verified | Failed
+Evidence used: <links, paths, logs, or "none">
 Limitations: <gaps>
 Next: glb-web-handoff
 ```
 
 ## Anti-patterns
-- Inventing clip names not in the scene plan.
-- Promising playback smoothness without testing.
-- Mixing root motion + parented motion silently.
-- Omitting interpolation type.
+
+* Inventing clip names not present in the scene plan.
+* Promising playback smoothness under any circumstance.
+* Leaving root-motion treatment ambiguous or mixing `bake` and `strip` silently.
+* Omitting FPS or interpolation type (`LINEAR` / `STEP` / `CUBICSPLINE`).
+* Including Blender Python (`bpy.ops`) snippets.
+* Using `Artifact status: Not Run` or upgrading truth states instead of keeping them downgrade-only.
 
 ## Cross-skill handoff
-- Performance budget → `../glb-mobile-performance-budget/SKILL.md`
-- Render/export evidence → `../render-export-evidence/SKILL.md`
-- Web handoff → `../glb-web-handoff/SKILL.md`
-- React Three Fiber consumer shape → `../three-fiber-component-shape-planner/SKILL.md`
-- Final response → `../non-blender-user-response-writer/SKILL.md`
+
+* Missing clip list / scene plan → `../product-hero-scene-planner/SKILL.md`, `../character-portrait-scene-planner/SKILL.md`, `../environment-establishing-shot-planner/SKILL.md`, `../interior-architectural-scene-planner/SKILL.md`, or `../product-grid-scene-planner/SKILL.md` (owns scene planning and clip list definition)
+* Channel, bone, and morph ceilings → `../glb-mobile-performance-budget/SKILL.md` (pins animation channel, bone, and morph ceilings)
+* Export verification → `../render-export-evidence/SKILL.md` (verifies exported GLB artifacts)
+* Web delivery handoff → `../glb-web-handoff/SKILL.md` (owns web delivery package)
+* React Three Fiber component shape → `../three-fiber-component-shape-planner/SKILL.md` (owns R3F component structure)
+* Final user-facing wording → `../non-blender-user-response-writer/SKILL.md` (owns plain-language final response)
 
 ## Non-goals
-- Run Blender.
-- Author or retarget animation.
-- Generate animation Python.
-- Promise web-side smoothness without measurement.
+
+* Run Blender or export GLB files.
+* Author, retarget, or modify animations.
+* Generate Python or `bpy` snippets.
+* Promise web-side playback smoothness or upgrade truth states.
 
 ## References
 - `references/animation-types.md`
