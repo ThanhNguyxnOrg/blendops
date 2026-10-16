@@ -25,7 +25,9 @@ Block "half-ready" pack execution: confirm the user's brief, chosen pack/recipe,
 ## When not to use
 
 - micro decisions inside a single skill (too narrow)
-- runtime debugging (use `blender-troubleshooting` / bridge resolver)
+- runtime readiness detail (use `official-runtime-readiness-checker`)
+- runtime bridge conflicts (use `runtime-bridge-conflict-resolver`)
+- runtime debugging (use `blender-troubleshooting`)
 - license compliance (use `asset-license-checker`)
 
 ## Trigger phrases
@@ -61,9 +63,9 @@ Block "half-ready" pack execution: confirm the user's brief, chosen pack/recipe,
 
 ### Primary output
 
-- row table: Area | Status | Owner action
+- row table: Area | Status (`Ready` / `Needs input` / `Blocked`) | Owner action
 - go / no-go summary
-- next skill when go
+- one next skill (downstream domain planner if go; upstream remediation skill if no-go)
 
 ### Evidence / caveat output
 
@@ -74,6 +76,12 @@ Evidence used: <brief text, doc paths>
 Limitations: <unknowns>
 ```
 
+Truth-state rules:
+
+* Artifact status defaults to `Not Produced`.
+* States are downgrade-only (never upgrade).
+* Preflight gating never executes packs, planners, or runtime, and never produces artifacts (a gate run alone stays `Runtime status: Not Run` and `Artifact status: Not Produced`).
+
 ## Required laws
 
 - `../../laws/evidence-before-done.md`
@@ -83,14 +91,18 @@ Limitations: <unknowns>
 
 ## Official runtime boundary
 
-Readiness gate only. State Path 1 / Path 2 / CLI appendix per `docs/runtime-stack-strategy.md` without claiming Connector works alone — Path 1 always implies Blender Lab MCP add-on inside Blender 5.1+.
+Preflight gate only — never executes packs, domain planners, or Blender runtime. Uses the 2-path + CLI appendix model per `docs/runtime-stack-strategy.md`:
+
+* Path 1 always implies the Lab MCP add-on inside Blender 5.1+; Connector is never standalone.
+* Path 2 and CLI appendix require explicit scope caveats and readiness confirmation via `official-runtime-readiness-checker`.
+* Defer runtime detail to `official-runtime-readiness-checker`, bridge conflicts to `runtime-bridge-conflict-resolver`, and runtime errors to `blender-troubleshooting`.
 
 ## Operating procedure
 
-1. Load matrix `references/prerequisite-matrix.md`.
-2. Apply `references/blocked-start-playbook.md` for any Blocked row.
-3. Emit `references/pack-readiness-template.md`.
-4. If go → next planner skill; if no-go → list minimum inputs.
+1. Load matrix `references/prerequisite-matrix.md` and evaluate brief completeness, runtime posture, skill coverage, and evidence habits.
+2. Mark each row `Ready`, `Needs input`, or `Blocked`; apply `references/blocked-start-playbook.md` for any `Blocked` row.
+3. Emit `references/pack-readiness-template.md` with explicit go/no-go and downgrade-only truth states (gating never produces artifacts).
+4. Recommend exactly one next skill: if go, hand off to the target domain planner; if no-go, hand off to the single blocking upstream skill (never run pack execution, runtime debugging, or license checks inside this skill).
 
 ## Mode handling
 
@@ -108,10 +120,11 @@ Still check non-runtime rows (brief, assets plan, evidence).
 
 ## Validation checklist
 
-- [ ] Matrix covered
-- [ ] Each Blocked row has owner action
-- [ ] Go/no-go explicit
-- [ ] Next skill named if go
+* [ ] Matrix covered across brief completeness, runtime posture, skill coverage, and evidence habits
+* [ ] Every row marked `Ready`, `Needs input`, or `Blocked` with owner action for blocked/missing items
+* [ ] Explicit go/no-go decision recorded
+* [ ] Exactly one next skill named from the catalog
+* [ ] Truth states follow downgrade-only rule with default `Not Produced` (no artifacts claimed by gate)
 
 ## Pass / Warn / Fail rubric
 
@@ -123,14 +136,16 @@ Still check non-runtime rows (brief, assets plan, evidence).
 
 ## Cross-skill handoff
 
-- Recipe selection → `../recipe-fit-assessor/SKILL.md`
-- Brief → `../intent-to-3d-brief-writer/SKILL.md`
-- Runtime detail → `../official-runtime-readiness-checker/SKILL.md`
-- Bridge conflicts → `../runtime-bridge-conflict-resolver/SKILL.md`
+* Recipe selection → `../recipe-fit-assessor/SKILL.md`
+* Brief completeness → `../intent-to-3d-brief-writer/SKILL.md`
+* Runtime detail → `../official-runtime-readiness-checker/SKILL.md`
+* Bridge conflicts → `../runtime-bridge-conflict-resolver/SKILL.md`
+* Runtime debugging → `../blender-troubleshooting/SKILL.md`
+* License checks → `../asset-license-checker/SKILL.md`
+* Domain planners (when go) → `../product-hero-scene-planner/SKILL.md`, `../product-grid-scene-planner/SKILL.md`, `../character-portrait-scene-planner/SKILL.md`, `../environment-establishing-shot-planner/SKILL.md`, or `../interior-architectural-scene-planner/SKILL.md`
 
 ## References
 
-- `references/prerequisite-matrix.md`
-- `references/blocked-start-playbook.md`
-- `references/pack-readiness-template.md`
-- `../../packs/product-hero-v0/PACK.md`
+* `references/prerequisite-matrix.md`
+* `references/blocked-start-playbook.md`
+* `references/pack-readiness-template.md`
