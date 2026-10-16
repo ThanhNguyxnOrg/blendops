@@ -7,7 +7,7 @@ description: Outline Path 1 hosting options — Anthropic Blender Connector vs m
 
 ## Purpose
 
-Explain **Path 1 host surfaces** without implying any host replaces the Blender-side Lab MCP installation.
+Outline **Path 1 host surfaces** — **(a)** Anthropic Connector in Claude Desktop vs **(b)** any manually configured MCP client — while making clear that both require the Lab MCP add-on inside **Blender 5.1+** and that the Connector is **never standalone**. This skill provides an outline only; it never configures hosts and never runs Blender.
 
 ## Quick start
 
@@ -18,26 +18,29 @@ Explain **Path 1 host surfaces** without implying any host replaces the Blender-
 
 ## When to use
 
-- user on Claude Desktop asking about Connector
-- coding agent needs generic MCP JSON/YAML pattern for Lab MCP
-- comparing "tutorial path" vs "bring your own client"
+- user on Claude Desktop asking what the Anthropic Connector does vs the Blender-side add-on
+- user or agent comparing Path 1 host surfaces: **(a)** Anthropic Connector in Claude Desktop vs **(b)** a manually configured MCP client
+- outlining which components live on the host side vs inside Blender 5.1+ before setup begins
 
 ## When not to use
 
-- Path 2 community bridge specifics (`docs/unofficial-runtime-bridges.md`)
-- CLI appendix batch planning
-- readiness probing without host context
+- choosing between Path 1, Path 2, or CLI → use `runtime-path-picker`
+- step-by-step host or add-on installation and configuration → use `official-runtime-setup-guide`
+- probing live runtime readiness → use `official-runtime-readiness-checker`
+- resolving conflicts between official and unofficial bridges → use `runtime-bridge-conflict-resolver`
+- Path 2 community bridge specifics → see `docs/unofficial-runtime-bridges.md`
+- CLI appendix job outlining → use `cli-appendix-job-outline`
 
 ## Trigger phrases
 
 - "Connector vs Cursor MCP"
 - "how do I host Lab MCP"
-- "Claude Desktop blender setup"
-- "manual MCP for Path 1"
+- "Claude Desktop Connector vs manual MCP client"
+- "what hosts work with Path 1"
 
 ## Prerequisites / readiness
 
-- user acknowledges Blender-side add-on requirement
+- target environment plans for **Blender 5.1+** with the Blender-side Lab MCP add-on required for both Host **(a)** and Host **(b)** (the Anthropic Connector is never standalone)
 
 ## Input schema
 
@@ -58,14 +61,16 @@ Explain **Path 1 host surfaces** without implying any host replaces the Blender-
 
 ### Primary output
 
-- host-specific outline (not executable code dump — point to install docs)
-- explicit Lab MCP add-on prerequisite line
+- host-specific outline using **(a)** Anthropic Connector in Claude Desktop vs **(b)** manually configured MCP client framing (outline only — never configure hosts or dump executable setup scripts; hand off setup details to `official-runtime-setup-guide`)
+- explicit prerequisite line stating that both Host **(a)** and Host **(b)** require the Lab MCP add-on inside **Blender 5.1+**
+- explicit statement that the Anthropic Connector is **never standalone** whenever Connector is discussed
 
 ### Evidence / caveat output
 
 ```txt
 Runtime status: Not Run | Attempted | Produced | Verified | Failed
-Artifact status: Not Produced | Produced | Verified | Failed
+Artifact status: Not Run | Not Produced | Produced | Verified | Failed (default: Not Produced)
+Rule: Downgrade-only, never upgrade. Outlining hosts never configures hosts or runs Blender.
 Blockers: <separate line>
 Evidence used: <doc references>
 Limitations: <unknown host version>
@@ -80,13 +85,14 @@ Limitations: <unknown host version>
 
 ## Official runtime boundary
 
-Outline only. Path 1 == Blender Lab MCP inside Blender **plus** MCP server wiring from a host. Anthropic Blender Connector can be host **(a)**; any configured MCP client can be host **(b)** — Connector is **not standalone**. Path 2 (`mcp-for-blender` (formerly `blender-mcp`)) is out of scope here.
+Outline only; never configures hosts and never runs Blender. Path 1 requires the Lab MCP add-on inside **Blender 5.1+** plus a host surface: **(a)** Anthropic Connector in Claude Desktop or **(b)** any manually configured MCP client. The Connector is **never standalone**. Path 2 (`mcp-for-blender`, formerly `ahujasid/blender-mcp`; see `docs/unofficial-runtime-bridges.md`) and CLI workflows (`cli-appendix-job-outline`) are out of scope here.
 
 ## Operating procedure
 
-1. Verify Path 1 versioning gate.
-2. Pick host row.
-3. Emit checklist with links to `docs/install/claude-desktop.md` vs other install targets.
+1. Verify the **Blender 5.1+** version floor for Path 1 (route path selection questions to `runtime-path-picker`).
+2. Identify the target host surface as **(a)** Anthropic Connector in Claude Desktop or **(b)** a manually configured MCP client using `references/connector-vs-manual-matrix.md`.
+3. State explicitly that the Lab MCP add-on inside Blender 5.1+ is required for both **(a)** and **(b)**, and reiterate that the Connector is **never standalone** (`references/lab-addon-reminders.md`).
+4. Emit the conceptual checklist (`references/host-checklist-template.md`) with pointers to `docs/install/claude-desktop.md` or `official-runtime-setup-guide` without performing host configuration.
 
 ## Mode handling
 
@@ -104,23 +110,29 @@ Still explain host conceptual split.
 
 ## Validation checklist
 
-- [ ] Lab add-on mentioned as Blender-side requirement
-- [ ] Connector not standalone phrasing present when Connector discussed
-- [ ] Host (a)/(b) framing used
+* [ ] Host **(a)** (Anthropic Connector in Claude Desktop) vs Host **(b)** (manually configured MCP client) framing is used
+* [ ] Lab MCP add-on inside **Blender 5.1+** is stated as a prerequisite on the outline
+* [ ] "Connector is never standalone" phrasing is present whenever the Connector is discussed
+* [ ] No host configuration, Python, or Blender execution is performed
+* [ ] Former Path 2 repo is cited as `ahujasid/blender-mcp` (never bare `blender-mcp`)
+* [ ] Truth states use the full allowed enums with default `Not Produced` for artifacts and downgrade-only enforcement
 
 ## Pass / Warn / Fail rubric
 
 | Verdict | Criteria |
 |---|---|
-| Pass | Correct prerequisite ordering |
-| Warn | Host version uncertain |
-| Fail | Implies Connector installs Blender internals automatically |
+| Pass | Uses Host (a)/(b) framing, requires Lab MCP add-on in Blender 5.1+, states Connector is never standalone, keeps strictly to outlining, and uses exact truth-state enums. |
+| Warn | Host product or version is ambiguous, requiring a general (a) vs (b) comparison with documented limitations. |
+| Fail | Implies Connector is standalone or installs Blender internals automatically, omits Blender 5.1+ Lab add-on prerequisite, uses bare `blender-mcp`, configures hosts/runs Blender, or upgrades truth states. |
 
 ## Cross-skill handoff
 
-- Path decision → `../runtime-path-picker/SKILL.md`
-- Install depth → `../official-runtime-setup-guide/SKILL.md`
-- Bridge confusion → `../runtime-bridge-conflict-resolver/SKILL.md`
+* Path selection → `../runtime-path-picker/SKILL.md`
+* Detailed setup and configuration → `../official-runtime-setup-guide/SKILL.md`
+* Readiness probing → `../official-runtime-readiness-checker/SKILL.md`
+* Bridge conflicts → `../runtime-bridge-conflict-resolver/SKILL.md`
+* CLI appendix workflows → `../cli-appendix-job-outline/SKILL.md`
+* Path 2 community bridge reference → `../../docs/unofficial-runtime-bridges.md`
 
 ## References
 
