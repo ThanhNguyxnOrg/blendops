@@ -181,14 +181,14 @@ docs cleanup is now complete:
       routing-decision-tree / quick-start-prompts / lifecycle-phases for
       `blendops-help`; truth-label-decision-tree / evidence-record-templates /
       attempted-vs-failed-rubric for `render-export-evidence`).
-      → **All 16 skills now Expanded Draft v0**.
+      → **All 16 baseline skills now Expanded Draft v0**.
 - [x] Refresh `skill-reviews/reports/v0-skill-depth-audit.md` to cover all 16
       skills (was 8); drop "partial snapshot" WARNING banner.
 - [x] Refresh `skill-reviews/reports/v0-skill-gate-review.md` to cover all 16
       skills (was 8); 13 Pass / 3 Warn (Superpowers + BMad source-provenance
       notes) / 0 Fail; drop "partial snapshot" WARNING.
 - [x] Add canonical 7-stage `docs/workflows/full-non-blender-user-workflow.md`
-      chaining all 16 skills end-to-end. Update `docs/workflows/README.md`
+      chaining the 16 baseline skills end-to-end. Update `docs/workflows/README.md`
       and `docs/README.md` workflows section to list it as the canonical
       broad-scope workflow (with `product-hero-workflow.md` reframed as
       the narrower subset).

@@ -49,7 +49,7 @@ A skill may point to runtime docs, but it must not imply runtime was installed o
 
 ## Canonical skill map
 
-All 16 root skills, grouped by canonical role. The full per-skill table with depth and gate-review status lives in [`skills/README.md`](../skills/README.md).
+All 48 skills, grouped by canonical role (16-skill original baseline plus 32 expansion skills across Batches 1–8). The full per-skill table with depth and gate-review status lives in [`skills/README.md`](../skills/README.md).
 
 | Canonical role | Active skill path | Notes |
 |---|---|---|
@@ -155,57 +155,13 @@ Do not claim packaged skill, plugin listing, marketplace listing, or broad adapt
 
 ```txt
 skills/
-├─ README.md
+├─ README.md                       # canonical inventory: all 48 skills by batch
 ├─ _template/
 │  └─ SKILL.md                      # placeholder, excluded from export + spec checks
-├─ blendops-help/
+├─ <skill-name>/                    # one folder per skill (48 total: 16 baseline + 32 expansion)
 │  ├─ SKILL.md
 │  └─ EVAL.md
-├─ blender-brainstorming/
-│  ├─ SKILL.md
-│  └─ EVAL.md
-├─ intent-to-3d-brief-writer/
-│  ├─ SKILL.md
-│  └─ EVAL.md
-├─ blender-asset-discovery-planner/
-│  ├─ SKILL.md
-│  └─ EVAL.md
-├─ official-runtime-setup-guide/
-│  ├─ SKILL.md
-│  └─ EVAL.md
-├─ official-runtime-readiness-checker/
-│  ├─ SKILL.md
-│  └─ EVAL.md
-├─ runtime-bridge-conflict-resolver/
-│  ├─ SKILL.md
-│  └─ EVAL.md
-├─ product-hero-scene-planner/
-│  ├─ SKILL.md
-│  └─ EVAL.md
-├─ blender-composition-camera-planner/
-│  ├─ SKILL.md
-│  └─ EVAL.md
-├─ blender-lighting-material-planner/
-│  ├─ SKILL.md
-│  └─ EVAL.md
-├─ blender-scene-quality-checker/
-│  ├─ SKILL.md
-│  └─ EVAL.md
-├─ blender-troubleshooting/
-│  ├─ SKILL.md
-│  └─ EVAL.md
-├─ render-export-evidence/
-│  ├─ SKILL.md
-│  └─ EVAL.md
-├─ pre-handoff-verification/
-│  ├─ SKILL.md
-│  └─ EVAL.md
-├─ glb-web-handoff/
-│  ├─ SKILL.md
-│  └─ EVAL.md
-└─ non-blender-user-response-writer/
-   ├─ SKILL.md
-   └─ EVAL.md
+└─ ...                              # see skills/README.md for the full directory list
 ```
 
 Every active skill ships with both `SKILL.md` (operating contract) and `EVAL.md` (text-only baseline eval). Optional `references/` or `assets/` subfolders should be created only when they contain real reusable material.
