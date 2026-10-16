@@ -7,28 +7,30 @@ description: Convert a non-Blender-user's natural-language request into a struct
 
 ## Purpose
 
-Translate a confirmed user intent (from `blender-brainstorming` or a clear initial request) into a structured 3D brief that downstream planners can consume without re-asking. Inspired by the "Analysis phase" pattern in BMad-Method (PRD / project brief), adapted for 3D scene work and non-Blender users.
+Translate a confirmed user intent (from `blender-brainstorming` or a clear initial request) into a structured 3D brief that downstream planners and `acceptance-criteria-builder` can consume without re-asking. Inspired by the "Analysis phase" pattern in BMad-Method (PRD / project brief), adapted for 3D scene work and non-Blender users.
 
-This skill produces **a brief, not a plan**. The brief has fixed slots for subject, mood, deliverables, constraints, evidence expectations, and acceptance criteria. Planners consume the brief; they do not negotiate with it.
+This skill produces **a brief, not a plan**. The brief has 8 fixed slots: subject, mood, deliverables, constraints, evidence expectations, acceptance criteria, audience, and owner. Planners consume the brief; they do not negotiate with it.
 
 ## Quick start
 
-- read confirmed intent from prior step (brainstorming or original request)
-- fill the 8 brief slots
+- read confirmed intent from prior step (`blender-brainstorming` or original request)
+- fill the 8 brief slots (mark unconfirmed items as `Unknown`, never invent)
 - echo the brief to the user for confirmation
-- hand off to the relevant planner once confirmed
+- hand off to downstream planners (e.g., `product-hero-scene-planner`) and `acceptance-criteria-builder` once confirmed
 
 ## When to use
 
 - right after `blender-brainstorming` confirms user intent
 - when the user provides a structured request that just needs format normalization
-- before any planner skill (`product-hero-scene-planner`, composition / lighting / material planners)
+- before any planner skill (`product-hero-scene-planner`, `blender-composition-camera-planner`, `blender-lighting-material-planner`)
+- before `acceptance-criteria-builder` consumes brief rows to build criteria
 - when multiple planners need to share the same source-of-truth brief
 
 ## When not to use
 
 - intent is still ambiguous (run `blender-brainstorming` first)
-- the user is mid-execution and asks for a re-brief (route to troubleshooting instead)
+- the user is mid-execution and asks for a re-brief (route to `blender-troubleshooting` instead)
+- the user pushes for immediate execution (route to `official-runtime-readiness-checker`)
 - the request is iteration on existing output ("make it darker") — that's a planner-level edit, not a new brief
 
 ## Trigger phrases
@@ -83,14 +85,14 @@ This skill produces **a brief, not a plan**. The brief has fixed slots for subje
 
 ### Secondary output
 
-- list of decisions explicitly deferred to planners
-- explicit unknowns flagged
+* list of decisions explicitly deferred to planners
+* explicit unknowns flagged
 
 ### Evidence / caveat output
 
-- runtime status: `Not Run`
-- artifact status: `Not Produced`
-- brief is a contract; planners should not silently expand scope
+* runtime status: `Not Run` (downgrade-only, never upgrade)
+* artifact status: `Not Produced` (downgrade-only, never upgrade)
+* brief is a contract; planners should not silently expand scope
 
 ## Required laws
 
@@ -105,12 +107,12 @@ This skill does not install Blender, run Blender, configure MCP, or claim artifa
 
 ## Operating procedure
 
-1. Read confirmed intent (from brainstorming or original request).
+1. Read confirmed intent (from `blender-brainstorming` or original request).
 2. Pull each of the 8 slots one at a time. If a slot is missing, ask one targeted question per missing slot in a single batch.
 3. Write the brief in markdown using the 8-slot template.
-4. List decisions deferred to planners (e.g. "lighting style left to lighting planner per mood").
+4. List decisions deferred to planners (e.g. "lighting style left to `blender-lighting-material-planner` per mood").
 5. Echo the brief to the user. Ask for confirm or edit.
-6. After confirmation, hand off to the relevant planner.
+6. After confirmation, hand off to the relevant planner (e.g., `product-hero-scene-planner`) and `acceptance-criteria-builder`.
 
 ## Decision tree
 
@@ -131,18 +133,20 @@ This skill does not install Blender, run Blender, configure MCP, or claim artifa
 ### Text-only mode
 
 - text only, no runtime calls
-- runtime status: `Not Run`
-- artifact status: `Not Produced`
+- runtime status: `Not Run` (downgrade-only, never upgrade)
+- artifact status: `Not Produced` (downgrade-only, never upgrade)
 
 ### Runtime-ready mode
 
 - still text-only for this skill (brief is always text)
-- runtime activation happens in downstream planner / readiness flow
+- runtime status remains `Not Run`
+- execution pushes route to `official-runtime-readiness-checker`
 
 ### Blocked runtime mode
 
 - still produces brief
 - adds explicit note that downstream planning may be blocked too
+- runtime status remains `Not Run`
 
 ## Validation checklist
 
@@ -168,14 +172,15 @@ This skill does not install Blender, run Blender, configure MCP, or claim artifa
 
 ## Failure handling
 
-- user changes intent mid-brief: pause, mark intent as not-confirmed, route back to brainstorming
+- user changes intent mid-brief: pause, mark intent as not-confirmed, route back to `blender-brainstorming`
 - conflicting deliverables (e.g. "GLB and 50MB poly budget"): flag conflict in slot 4, ask user to resolve
 - user wants the brief to skip slots: explicit `Unknown` markers, never invent
 
 ## Troubleshooting
 
 - if the brief feels too long, write a "TL;DR" line at top but keep all 8 slots
-- if the user pushes for execution, route to readiness checker; brief stays as locked contract
+- if the user pushes for execution, route to `official-runtime-readiness-checker`; brief stays as locked contract
+- if the user requests mid-execution re-briefing, route to `blender-troubleshooting`
 
 ## Best practices
 
@@ -185,7 +190,7 @@ This skill does not install Blender, run Blender, configure MCP, or claim artifa
 
 ## Good examples
 
-- "Brief: Cyberpunk Shoe Web Hero. Subject: floating cyberpunk sneaker. Mood: neon-lit, glossy dark floor, dramatic. Deliverables: preview image + GLB for web. Constraints: poly budget for mobile web; brand neon palette. Evidence: `Verified` requires render path + GLB path + validation notes. Acceptance: subject framing centered, neon visible, web GLB ≤ 10MB. Audience: marketing team (non-Blender). Owner: <user>. Deferred: exact lighting placement to lighting planner; exact camera angle to composition planner."
+- "Brief: Cyberpunk Shoe Web Hero. Subject: floating cyberpunk sneaker. Mood: neon-lit, glossy dark floor, dramatic. Deliverables: preview image + GLB for web. Constraints: poly budget for mobile web; brand neon palette. Evidence: `Verified` requires render path + GLB path + validation notes. Acceptance: subject framing centered, neon visible, web GLB ≤ 10MB. Audience: marketing team (non-Blender). Owner: <user>. Deferred: exact lighting placement to `blender-lighting-material-planner`; exact camera angle to `blender-composition-camera-planner`."
 
 ## Bad examples
 
@@ -207,16 +212,18 @@ This skill does not install Blender, run Blender, configure MCP, or claim artifa
 
 ## Cross-skill handoff
 
-- After: relevant planner (`product-hero-scene-planner` for product hero context, then composition / lighting / material planners)
-- If runtime needed next: route to `official-runtime-readiness-checker` after planning
-- If brief reveals intent ambiguity: route back to `blender-brainstorming`
+- Preceding step: `blender-brainstorming` confirms user intent before brief writing.
+- Consuming skills: hand off to relevant scene planners (`product-hero-scene-planner`, `blender-composition-camera-planner`, `blender-lighting-material-planner`) and `acceptance-criteria-builder` (which consumes brief rows).
+- If execution is requested: route to `official-runtime-readiness-checker`.
+- If mid-execution re-briefing occurs: route to `blender-troubleshooting`.
+- If brief reveals intent ambiguity: route back to `blender-brainstorming`.
 
 ## Non-goals
 
 - making the plan (planner's job)
 - running Blender
 - setting up runtime
-- writing the final user response (response writer's job)
+- writing the final user response (`non-blender-user-response-writer`'s job)
 
 ## References
 
