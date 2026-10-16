@@ -27,9 +27,9 @@ Inspired by the `/brainstorming` skill in Anthropic Superpowers, adapted for the
 
 ## When not to use
 
-- the user already provided a structured brief (jump straight to `intent-to-3d-brief-writer` or planners)
-- the user explicitly asked to skip clarification
-- runtime is already configured and the user wants execution, not planning
+- the user already provided a structured brief (route directly to `intent-to-3d-brief-writer` to lock the brief before any planner runs)
+- the user explicitly asked to skip clarification (record explicit assumptions and route to `intent-to-3d-brief-writer`)
+- the user pushes for immediate execution rather than exploration (route to `official-runtime-readiness-checker`)
 
 ## Trigger phrases
 
@@ -60,26 +60,28 @@ Inspired by the `/brainstorming` skill in Anthropic Superpowers, adapted for the
 
 ### Assumptions to confirm
 
-- the user has time for a 3-5 question clarification round
-- the user wants a structured plan, not a one-shot guess
-- runtime status is `Not Run` and may stay so
+- the user has time for a single 3-5 batched question clarification round
+- the user wants a confirmed intent summary before brief locking and planning
+- truth states are locked at `Runtime: Not Run` and `Artifact: Not Produced` (conversation-only; downgrade-only, never upgrade)
 
 ## Output schema
 
 ### Primary output
 
-- one-paragraph confirmed intent summary
+- user-confirmed one-paragraph intent summary in plain language (no Blender jargon)
 - explicit list of decisions taken vs. deferred
+- named handoff target (`intent-to-3d-brief-writer` to lock the brief, `official-runtime-readiness-checker` if execution is pushed, or `non-blender-user-response-writer` if blocked)
 
 ### Secondary output
 
-- list of clarification questions asked + user answers
+- batched list of 3-5 clarifying questions asked + user answers
 - 2-3 alternative scopings considered (and why one was chosen)
 
 ### Evidence / caveat output
 
-- any unresolved ambiguity flagged as a blocker for the next skill
-- explicit statement that no Blender execution happened
+- `Runtime: Not Run` | `Artifact: Not Produced` (downgrade-only, never upgrade)
+- any unresolved ambiguity flagged as an explicit blocker for `intent-to-3d-brief-writer`
+- explicit statement that this session is conversation-only and no Blender installation or execution happened
 
 ## Required laws
 
@@ -97,77 +99,77 @@ If the user pushes for execution during brainstorming, route to `official-runtim
 ## Operating procedure
 
 1. Read the user's original request verbatim. Do not paraphrase yet.
-2. Identify the 5 minimum facts a planner needs: subject, mood, deliverable type (render/GLB/handoff), audience, evidence expectations.
-3. For each missing fact, write one short question. Ask all questions in one batch (don't drip-feed).
-4. After answers, propose 2-3 alternative scopings (e.g. "minimal hero render" vs. "full web-ready GLB" vs. "iteration-friendly text-only plan").
-5. Ask the user to pick one scoping or to combine two.
-6. Write a one-paragraph intent summary in plain language (no Blender jargon).
-7. Echo any unresolved ambiguity as an explicit blocker.
-8. Hand off to `intent-to-3d-brief-writer` (recommended) or directly to `product-hero-scene-planner` if the brief is simple.
+2. Identify the core facts needed downstream (subject, mood, deliverable type, audience, evidence expectations, and open creative constraints).
+3. Formulate 3-5 short clarifying questions in plain language and ask all of them in a single batch (never drip-feed one question at a time).
+4. Propose 2-3 distinct alternative scopings (e.g., "minimal hero image" vs. "interactive web-ready 3D model" vs. "iteration-friendly concept pass").
+5. Ask the user to pick one scoping or combine elements, and confirm the resulting one-paragraph intent summary in plain language (no Blender jargon).
+6. List decisions taken vs. deferred and record any remaining ambiguity as an explicit blocker.
+7. Maintain `Runtime: Not Run` and `Artifact: Not Produced` (downgrade-only, never upgrade).
+8. Hand off to `intent-to-3d-brief-writer` to lock the structured brief downstream before any planner skill is invoked (or route to `official-runtime-readiness-checker` if the user pushes for execution mid-brainstorm).
 
 ## Decision tree
 
-- request is short and one-line → ask all 5 minimum-fact questions in one turn.
-- request has 2 of 5 minimum facts → ask only the missing 3.
-- request has 4-5 of 5 facts → skip brainstorming; route directly to brief writer.
-- user refuses to answer → record assumptions explicitly and hand off with `verified-read: low` confidence label.
+- request is vague or missing key facts → ask 3-5 batched clarifying questions covering missing facts and creative trade-offs, then propose 2-3 alternative scopings.
+- request is already a complete structured brief → skip brainstorming and route directly to `intent-to-3d-brief-writer`.
+- user pushes for execution mid-brainstorm → pause brainstorming and route immediately to `official-runtime-readiness-checker`.
+- user refuses to answer clarifying questions → record explicit assumptions and unresolved blockers, keep `Runtime: Not Run` and `Artifact: Not Produced` (never invent confidence labels), and hand off to `intent-to-3d-brief-writer`.
 
 ## Playbooks
 
-- Playbook A: "Vague creative request" — full 5-question pass, 3 alternative scopings.
-- Playbook B: "Half-specified request" — targeted 1-3 questions, 2 alternative scopings.
-- Playbook C: "User refuses clarification" — record explicit assumptions, low-confidence handoff.
+- Playbook A: "Vague creative request" — ask 5 batched clarifying questions, propose 3 alternative scopings, confirm one-paragraph plain-language summary, hand off to `intent-to-3d-brief-writer`.
+- Playbook B: "Partially specified request" — ask 3-4 batched clarifying questions on remaining gaps and scoping trade-offs, propose 2-3 alternative scopings, confirm one-paragraph summary, hand off to `intent-to-3d-brief-writer`.
+- Playbook C: "User refuses clarification" — propose 2-3 alternative scopings with explicit assumption notes and blockers, keep `Runtime: Not Run` and `Artifact: Not Produced` without invented confidence labels, and hand off to `intent-to-3d-brief-writer`.
 
 ## Mode handling
 
 ### Text-only mode
 
-- conversation only, no runtime calls
-- runtime status: `Not Run`
-- artifact status: `Not Produced`
+- conversation only; never runs Blender or installs anything
+- `Runtime: Not Run`
+- `Artifact: Not Produced` (downgrade-only, never upgrade)
 
 ### Runtime-ready mode
 
-- not applicable; brainstorming is always text-only
-- if user wants execution, route to readiness checker first
+- brainstorming remains strictly conversation-only (`Runtime: Not Run`, `Artifact: Not Produced`)
+- if the user pushes for execution instead of scoping, route to `official-runtime-readiness-checker`
 
 ### Blocked runtime mode
 
-- still runs (brainstorming has no runtime dependency)
-- note that downstream planner / runtime steps are blocked
+- brainstorming still runs as text-only conversation (`Runtime: Not Run`, `Artifact: Not Produced`)
+- note that downstream runtime execution is blocked and route to `non-blender-user-response-writer` to explain blocked status in plain language
 
 ## Validation checklist
 
 - [ ] original user request quoted verbatim
-- [ ] 3-5 clarifying questions asked
+- [ ] 3-5 clarifying questions asked in a single batch (no drip-feeding)
 - [ ] 2-3 alternative scopings proposed
-- [ ] user-confirmed intent summary produced
+- [ ] user-confirmed one-paragraph intent summary produced in plain language (no Blender jargon)
 - [ ] decisions taken vs. deferred listed explicitly
-- [ ] runtime status remains `Not Run`
-- [ ] no Blender jargon in user-facing summary
-- [ ] handoff target named (`intent-to-3d-brief-writer` or planner)
-- [ ] no clarification question implies BlendOps installs Blender or runs it
-- [ ] unresolved ambiguity flagged as blocker if present
+- [ ] truth states explicitly set to `Runtime: Not Run` and `Artifact: Not Produced` (downgrade-only, never upgrade)
+- [ ] no invented confidence or status labels used
+- [ ] named handoff target matches role split (`intent-to-3d-brief-writer`, `official-runtime-readiness-checker`, or `non-blender-user-response-writer`)
+- [ ] no statement or question implies BlendOps installs or executes Blender
+- [ ] unresolved ambiguity flagged as an explicit blocker
 
 ## Pass / Warn / Fail rubric
 
 | Category | Pass | Warn | Fail |
 |---|---|---|---|
-| Clarification depth | 3-5 targeted questions | Fewer questions but explicit assumption notes | No questions, jumped to plan |
-| Alternative scopings | 2-3 distinct scopings | 1 scoping with caveats | 0 alternatives offered |
-| Intent summary | Plain-language, ≤5 sentences, user-confirmed | Plain-language but unconfirmed | Jargon-heavy or absent |
-| Handoff | Named next skill, evidence-bound | Named next skill, missing caveat | No handoff |
+| Clarification & scoping | 3-5 batched questions + 2-3 distinct alternative scopings | User declined questions; 2-3 scopings and explicit assumptions recorded | Drip-feed questioning (<3 batched questions) or <2 alternative scopings |
+| Intent summary | User-confirmed one-paragraph summary in plain language (no Blender jargon) | Plain-language one-paragraph summary awaiting final user confirmation | Jargon-heavy, multi-paragraph, or missing summary |
+| Runtime & truth states | `Runtime: Not Run`, `Artifact: Not Produced` (downgrade-only); no install/execution claims; no invented labels | Truth states present but blocker note could be clearer | Upgrades truth states, claims install/execution, or invents confidence/status labels |
+| Role boundary & handoff | Named handoff to `intent-to-3d-brief-writer`, `official-runtime-readiness-checker`, or `non-blender-user-response-writer` | Named valid handoff with minor caveat omission | No handoff, or bypasses `intent-to-3d-brief-writer` to jump straight into scene planning |
 
 ## Failure handling
 
-- user gives one-word answers: ask one focused follow-up, then proceed with explicit assumption notes.
-- user contradicts themselves: surface the contradiction, ask which version to keep.
-- user wants execution mid-brainstorm: pause brainstorming, route to readiness checker, return after readiness is known.
+- user gives one-word answers: record explicit assumption notes for remaining gaps, present the 2-3 alternative scopings, and ask the user to confirm the one-paragraph summary.
+- user contradicts themselves: surface the contradiction in plain language and ask which direction to lock in the summary.
+- user wants execution mid-brainstorm: pause brainstorming, route to `official-runtime-readiness-checker`, and keep `Runtime: Not Run` and `Artifact: Not Produced`.
 
 ## Troubleshooting
 
-- if the user keeps adding scope, summarize current scope and ask "should we lock this scope or keep expanding?".
-- if you can't form a 5-fact intent after 5 questions, hand off with explicit `Unknown` status on missing facts.
+- if the user keeps expanding scope: summarize the current scope in plain language, present 2-3 bounded scoping options, and ask whether to lock one for `intent-to-3d-brief-writer`.
+- if key facts remain unanswered after the batched questions: record the missing facts as explicit blockers and assumptions while keeping `Runtime: Not Run` and `Artifact: Not Produced` (do not invent custom status or confidence labels).
 
 ## Best practices
 
@@ -185,25 +187,28 @@ If the user pushes for execution during brainstorming, route to `official-runtim
 
 ## User-facing response template
 
-- What I heard you ask for (quote)
-- What I need to know (3-5 questions)
-- Alternative ways we could scope this (2-3 options)
-- Confirmed intent (one paragraph after answers)
-- Decisions deferred (explicit list)
-- What I'll do next (handoff to brief writer or planner)
+- **What I heard you ask for:** (verbatim quote)
+- **Questions to narrow this down:** (3-5 batched questions in plain language)
+- **Alternative ways we can scope this:** (2-3 distinct options)
+- **Confirmed intent summary:** (one plain-language paragraph, no Blender jargon, confirmed by user)
+- **Decisions taken vs. deferred & blockers:** (explicit list)
+- **Status:** `Runtime: Not Run` | `Artifact: Not Produced` (conversation-only)
+- **Next step:** Hand off to `intent-to-3d-brief-writer` (or `official-runtime-readiness-checker` / `non-blender-user-response-writer` when applicable)
 
 ## Anti-patterns
 
-- asking 1 question at a time (drip-feed) instead of batched
-- skipping alternative scopings
-- using Blender jargon in the intent summary
-- claiming the brainstorming session "set up" Blender or "installed" anything
+- asking 1 question at a time (drip-feed questioning) instead of 3-5 batched questions
+- skipping the 2-3 alternative scopings
+- using Blender jargon in the one-paragraph intent summary
+- claiming the brainstorming session installed or executed Blender, or upgrading `Runtime: Not Run` / `Artifact: Not Produced`
+- inventing custom confidence or status labels (such as `verified-read: low` or `Unknown`)
+- blurring role boundaries by planning the scene directly or bypassing `intent-to-3d-brief-writer`
 
 ## Cross-skill handoff
 
-- After: `intent-to-3d-brief-writer` (recommended) or directly `product-hero-scene-planner` if brief is trivial
-- If user wants execution: `official-runtime-readiness-checker`
-- If runtime blocked: `non-blender-user-response-writer` to explain status
+- Lock the confirmed brief downstream → `../intent-to-3d-brief-writer/SKILL.md`
+- User pushes for execution mid-brainstorm → `../official-runtime-readiness-checker/SKILL.md`
+- Explain blocked runtime status to user → `../non-blender-user-response-writer/SKILL.md`
 
 ## Non-goals
 
