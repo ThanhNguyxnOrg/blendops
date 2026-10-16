@@ -84,7 +84,8 @@ This skill **does not run Blender**. It guides the operator through a discipline
 
 - list of evidence collected per phase
 - explicit `cannot determine` if a phase blocked
-- runtime status updated only by re-running readiness or evidence skill
+- truth state discipline: Runtime (`Not Run | Attempted | Produced | Verified | Failed`); Artifacts (`Not Run | Not Produced | Produced | Verified | Failed`, default `Not Produced`)
+- downgrade-only, never upgrade; diagnosis never alters truth states itself (status updates require re-running `official-runtime-readiness-checker` or `render-export-evidence`)
 
 ## Required laws
 
@@ -127,18 +128,18 @@ This skill does not install Blender, run Blender, mutate scenes, render, export,
 ## Decision tree
 
 - symptom not reproducible → mark intermittent, do not propose fix
-- divergence at intent / brief stage → fix is upstream, route to brainstorming or brief writer
-- divergence at plan stage → fix is in scene/composition/lighting/material planner
-- divergence at execution stage → fix is in runtime readiness or path setup
-- divergence at output stage → fix is in render-export-evidence or GLB handoff
-- divergence at response stage → fix is in non-blender-user-response-writer
+- divergence at intent / brief stage → fix is upstream; route to `blender-brainstorming` or `intent-to-3d-brief-writer`
+- divergence at plan stage → fix is in planning; route to relevant planner (`product-hero-scene-planner`, `blender-composition-camera-planner`, `blender-lighting-material-planner`, `character-portrait-scene-planner`, `environment-establishing-shot-planner`, `interior-architectural-scene-planner`, or `product-grid-scene-planner`)
+- divergence at execution stage → fix is in runtime setup; route to `official-runtime-readiness-checker`, `runtime-bridge-conflict-resolver`, or `runtime-path-picker`
+- divergence at output stage → fix is in export/evidence; route to `render-export-evidence`, `glb-web-handoff`, or `glb-animation-handoff`
+- divergence at response stage → fix is in communication/wording; route to `non-blender-user-response-writer`
 
 ## Playbooks
 
-- Playbook A: "Render is black / blown out" — narrow to lighting plan or render settings
-- Playbook B: "GLB is empty / mis-scaled" — narrow to export plan or GLB handoff
-- Playbook C: "Final response uses jargon" — narrow to response writer
-- Playbook D: "Recipe blocked despite smoke pass" — narrow to runtime path conflict (route to `runtime-bridge-conflict-resolver`)
+- Playbook A: "Render is black / blown out" — narrow to lighting, materials, or render engine choice; hand off fix to `blender-lighting-material-planner` or `cycles-vs-eevee-decision`
+- Playbook B: "GLB is empty / mis-scaled" — narrow to scene hierarchy, transforms, or export parameters; hand off fix to `glb-web-handoff`, `glb-mobile-performance-budget`, or `render-export-evidence`
+- Playbook C: "Final response uses jargon" — narrow to user-facing wording and tone; hand off fix to `non-blender-user-response-writer`
+- Playbook D: "Recipe blocked despite smoke pass" — narrow to runtime environment or bridge path conflict; hand off fix to `runtime-bridge-conflict-resolver`
 
 ## Mode handling
 
@@ -147,16 +148,19 @@ This skill does not install Blender, run Blender, mutate scenes, render, export,
 - diagnostic conversation only, no runtime calls
 - runtime status: unchanged from input
 - artifact status: unchanged from input
+- truth state rule: diagnosis never changes truth states
 
 ### Runtime-ready mode
 
-- diagnostic plus optional re-run via the relevant runtime skill
-- this skill itself never re-runs; it hands off
+- diagnostic analysis only; this skill never re-runs Blender, renders, or mutates scenes
+- re-runs must be explicitly handed off to `official-runtime-readiness-checker` or `render-export-evidence`
+- truth state rule: diagnosis never upgrades truth states (runtime: `Not Run | Attempted | Produced | Verified | Failed`; artifacts: `Not Run | Not Produced | Produced | Verified | Failed`, default `Not Produced`); downgrade-only if evidence disproves prior state
 
 ### Blocked runtime mode
 
-- diagnose what's possible from existing evidence
+- diagnose what is observable from existing evidence
 - mark phases blocked when evidence is missing
+- truth state rule: truth states remain unchanged or downgrade-only; hand off to `official-runtime-readiness-checker`
 
 ## Validation checklist
 
@@ -225,9 +229,9 @@ This skill does not install Blender, run Blender, mutate scenes, render, export,
 ## Cross-skill handoff
 
 - If divergence at intent → `blender-brainstorming` or `intent-to-3d-brief-writer`
-- If divergence at planning → relevant planner skill
-- If divergence at execution → `official-runtime-readiness-checker` or `runtime-bridge-conflict-resolver`
-- If divergence at output → `render-export-evidence` or `glb-web-handoff`
+- If divergence at planning → hand off to the relevant planner (`product-hero-scene-planner`, `blender-composition-camera-planner`, `blender-lighting-material-planner`, `character-portrait-scene-planner`, `environment-establishing-shot-planner`, `interior-architectural-scene-planner`, or `product-grid-scene-planner`)
+- If divergence at execution → `official-runtime-readiness-checker`, `runtime-bridge-conflict-resolver`, or `runtime-path-picker`
+- If divergence at output → `render-export-evidence`, `glb-web-handoff`, or `glb-animation-handoff`
 - If divergence at response → `non-blender-user-response-writer`
 
 ## Non-goals
