@@ -38,7 +38,7 @@ This skill is BlendOps-specific (no direct analog in Anthropic Superpowers or BM
 - "where do the models come from"
 - "asset plan before scene planning"
 - "do we generate or import"
-- "license check on assets"
+- "surface asset license risks before planning"
 
 ## Prerequisites / readiness
 
@@ -51,47 +51,46 @@ This skill is BlendOps-specific (no direct analog in Anthropic Superpowers or BM
 
 ### Required inputs
 
-- 8-slot brief (subject, mood, deliverables, constraints, evidence, acceptance, audience, owner)
-- list of asset classes implied by the brief (e.g. "shoe model, neon lights, glossy floor, HDRI environment")
+- 8-slot brief from `intent-to-3d-brief-writer` (subject, mood, deliverables, constraints, evidence, acceptance, audience, owner)
+- list of asset classes implied by the brief (e.g., hero subject, lighting, floor, environment backdrop)
 
 ### Optional inputs
 
-- known asset libraries the user has access to (Poly Haven, Sketchfab, brand asset library)
-- license preferences (CC0 only / commercial OK / brand-restricted)
+- known asset libraries the user has access to (approved brand library, internal library, user-supplied files)
+- license preferences (public domain only, commercial allowed, brand-restricted)
 - prior similar scenes to match asset choices
 
 ### Assumptions to confirm
 
-- the operator can defer fetching to a later runtime step
-- license restrictions matter for the deliverable
-- runtime status is `Not Run` and may stay so
+- the operator can defer fetching or generation to a later runtime step
+- license restrictions matter for the deliverable (risks surfaced here; verdicts handled by `asset-license-checker`)
+- truth states start at Runtime `Not Run` and Artifact `Not Produced` for plan-only work (downgrade-only, never upgrade)
 
 ## Output schema
 
 ### Primary output
 
-- per-asset-class plan with strategy + license + confidence
+- per-asset-class plan with strategy + source candidate + license + confidence + risk notes
 
-```md
 | Asset class | Strategy | Source candidate | License | Confidence | Risk notes |
 |---|---|---|---|---|---|
-| Hero shoe model | Generative or import | Hyper3D / Hunyuan3D / user-supplied / Sketchfab | CC0 / commercial-OK / TBD | linked-only / verified-read / unknown | poly budget |
-| Floor + props | Procedural | Geometry Nodes setup | N/A | verified-read | poly budget |
-| Lighting fixtures | Procedural | mesh light setup | N/A | verified-read | none |
-| HDRI environment | Library | Poly Haven HDRI | CC0 | verified-read | filesize |
-```
+| Hero shoe model | generative | Path 2 community `mcp-for-blender` (formerly `ahujasid/blender-mcp`) Hyper3D / Hunyuan3D integration | TBD | linked-only | poly budget; Path 2 caveat; needs `asset-license-checker` verdict |
+| Floor + props | procedural | built-in procedural setup | N/A | verified-read | poly budget |
+| Lighting fixtures | procedural | built-in area light setup | N/A | verified-read | none |
+| Environment backdrop | library | approved environment library | commercial-OK / TBD | verified-read | filesize; style check via `asset-style-consistency-checker` |
 
 ### Secondary output
 
-- summary of poly budget / GLB size implications
-- explicit list of assets the operator must obtain before runtime
-- license risk callouts
+- budget reconciliation summary compared against `glb-mobile-performance-budget` and `polycount-budget-checker`
+- explicit list of assets the operator must obtain before any runtime step
+- license risk callouts for `asset-license-checker` to adjudicate
 
 ### Evidence / caveat output
 
-- runtime status: `Not Run`
-- artifact status: `Not Produced`
-- no asset is downloaded, generated, or installed by this skill
+- Runtime status: `Not Run`
+- Artifact status: `Not Produced`
+- Truth states are downgrade-only, never upgrade
+- No asset is downloaded, generated, fetched, or installed by this skill
 
 ## Required laws
 
@@ -102,31 +101,31 @@ This skill is BlendOps-specific (no direct analog in Anthropic Superpowers or BM
 
 ## Official runtime boundary
 
-This skill does not download, generate, or install any asset. It does not run Blender, configure any MCP path, or touch the network. It produces a plan in markdown.
+This skill does not download, generate, fetch, or install any asset. It does not run Blender, configure any MCP path, or touch the network. It produces a plain-language plan in markdown.
 
-If the chosen strategy is "generative" via Path 2 (community `mcp-for-blender` (formerly `blender-mcp`) integrates Hyper3D / Hunyuan3D), this skill notes that the actual generation happens in a runtime step under that path with the per-path caveats (see `docs/unofficial-runtime-bridges.md`).
+If the chosen strategy is `generative`, it is Path 2-only (community `mcp-for-blender`, formerly `ahujasid/blender-mcp`, Hyper3D / Hunyuan3D integrations) with per-path caveats (see `docs/unofficial-runtime-bridges.md`). Actual generation happens in a runtime step, never here.
 
 ## Operating procedure
 
-1. Read the 8-slot brief.
-2. Enumerate every asset class implied (subjects, props, environment, materials, HDRIs, particles).
-3. For each asset class, pick a strategy:
-   - **Procedural** — Geometry Nodes / shader nodes inside Blender; no external asset.
-   - **Library** — Poly Haven, brand asset library, Sketchfab, user-supplied.
-   - **Generative** — Hyper3D / Hunyuan3D (Path 2-only at present); text-to-3D pipeline.
-   - **Photogrammetry** — user-supplied scan; preprocessing required.
+1. Read the 8-slot brief from `intent-to-3d-brief-writer`.
+2. Enumerate every asset class implied (subjects, props, environment, materials, lighting backdrops, effects).
+3. For each asset class, pick one acquisition strategy:
+   - **procedural** — created inside Blender via built-in procedural rules; no external asset file.
+   - **library** — existing approved library or user-supplied asset.
+   - **generative** — Hyper3D / Hunyuan3D (Path 2-only via community `mcp-for-blender`, formerly `ahujasid/blender-mcp`, with per-path caveats); actual generation happens in a runtime step, never here.
+   - **photogrammetry** — user-supplied scan; cleanup required before scene assembly.
 4. For each pick: record source candidate, license, confidence label (`verified-read` / `linked-only` / `unknown`), and risk notes.
-5. Sum per-class poly / GLB-size estimates against the brief's constraints. Flag overage explicitly.
-6. List which assets must be obtained before any runtime step; mark license check status per asset.
-7. Hand off the asset plan to `product-hero-scene-planner` (or relevant planner) with the brief and the asset plan as joint inputs.
+5. Reconcile per-class polycount and file-size estimates against `glb-mobile-performance-budget` (and `polycount-budget-checker`). Flag any overage risk explicitly.
+6. List every asset that must be obtained before runtime; surface license risks for `asset-license-checker` (do not issue license verdicts here) and flag multi-source combinations for `asset-style-consistency-checker`.
+7. Hand off the asset plan + brief to the target scene planner (`product-hero-scene-planner`, `character-portrait-scene-planner`, `environment-establishing-shot-planner`, `interior-architectural-scene-planner`, or `product-grid-scene-planner`).
 
 ## Decision tree
 
-- subject is brand-specific (e.g. exact branded shoe) → strategy must be user-supplied / library; never generative without licensing
-- mood is highly specific (cyberpunk neon) → HDRI = library, color via shader procedural
-- web GLB constraint < 10MB → poly budget is tight; favor procedural over high-poly imports
-- iteration-loop deliverable → favor procedural (cheap to iterate)
-- one-shot marketing render → import-or-generative is fine if license OK
+- subject is brand-specific (e.g., exact branded product) -> strategy must be `library` (user-supplied / brand library); never `generative` without explicit brand authorization
+- mood is highly specific -> backdrop = `library`, color and surface treatments = `procedural`
+- tight web or mobile budget constraint -> reconcile against `glb-mobile-performance-budget`; favor `procedural` over heavy external imports
+- iteration-loop deliverable -> favor `procedural` (fast and reproducible to adjust)
+- one-shot marketing render -> `library` or `generative` (Path 2-only with caveats) is acceptable once license risk is cleared by `asset-license-checker`
 
 ## Playbooks
 
@@ -139,31 +138,32 @@ If the chosen strategy is "generative" via Path 2 (community `mcp-for-blender` (
 ### Text-only mode
 
 - plan only, no fetch / generate / install
-- runtime status: `Not Run`
-- artifact status: `Not Produced`
+- Runtime status: `Not Run`
+- Artifact status: `Not Produced`
+- Truth states are downgrade-only, never upgrade
 
 ### Runtime-ready mode
 
-- plan stays text-only; runtime steps consume the plan
-- if generative strategy chosen, route to runtime readiness checker first to confirm Path 2 (`mcp-for-blender` (formerly `blender-mcp`) Hyper3D / Hunyuan3D integrations) is configured
+- plan stays text-only; downstream runtime steps consume the plan
+- if `generative` strategy is chosen, route to `official-runtime-readiness-checker` first to confirm Path 2 (`mcp-for-blender`, formerly `ahujasid/blender-mcp`, Hyper3D / Hunyuan3D integrations) readiness and caveats
 
 ### Blocked runtime mode
 
-- plan still produced
-- mark generative options blocked; favor procedural / library
+- plan is still produced with Runtime `Not Run` and Artifact `Not Produced`
+- mark `generative` options blocked; favor `procedural` or `library` via `asset-fallback-strategy`
 
 ## Validation checklist
 
 - [ ] every implied asset class enumerated
-- [ ] strategy chosen per asset class
+- [ ] canonical strategy chosen per asset class (`procedural` / `library` / `generative` / `photogrammetry`)
 - [ ] source candidate named per choice
-- [ ] license recorded per choice
-- [ ] confidence label per choice
-- [ ] poly / GLB budget summed and compared to brief constraints
-- [ ] generative strategy flagged with Path 2 caveat if used
-- [ ] no asset fetched / installed / generated by this skill
-- [ ] runtime status remains `Not Run`
-- [ ] license risks called out
+- [ ] license recorded per choice with risks surfaced for `asset-license-checker` (no final license verdicts claimed here)
+- [ ] confidence label (`verified-read` / `linked-only` / `unknown`) assigned per choice
+- [ ] budget reconciled against `glb-mobile-performance-budget` and brief constraints
+- [ ] obtain-before-runtime asset list included
+- [ ] generative strategy flagged as Path 2-only (`mcp-for-blender`, formerly `ahujasid/blender-mcp`, Hyper3D / Hunyuan3D) with per-path caveats
+- [ ] no asset downloaded, fetched, installed, or generated by this skill
+- [ ] truth states set to Runtime `Not Run` and Artifact `Not Produced` (downgrade-only, never upgrade)
 
 ## Pass / Warn / Fail rubric
 
@@ -177,9 +177,9 @@ If the chosen strategy is "generative" via Path 2 (community `mcp-for-blender` (
 
 ## Failure handling
 
-- license unknown: mark `TBD` and ask user before scene planner commits
-- generative strategy required but Path 2 not available: route to runtime readiness checker
-- conflicting constraints (e.g. brand asset + tight web budget): surface conflict, ask user to relax one
+- license unknown: mark `TBD`, surface the risk note, and route to `asset-license-checker` before the scene planner commits
+- generative strategy requested but Path 2 readiness unknown or unavailable: route to `official-runtime-readiness-checker` (and `asset-fallback-strategy` if blocked)
+- conflicting constraints (e.g., high-detail scan vs. tight mobile budget): surface conflict against `glb-mobile-performance-budget` and route back to `intent-to-3d-brief-writer` if constraints must be relaxed
 
 ## Troubleshooting
 
@@ -195,7 +195,7 @@ If the chosen strategy is "generative" via Path 2 (community `mcp-for-blender` (
 
 ## Good examples
 
-- "Cyberpunk shoe brief. Asset plan: hero shoe = user-supplied OR generative-via-Path-2 (license = user; confidence = linked-only); floor + props = procedural; HDRI = Poly Haven (CC0; verified-read); accent neon = procedural emission shader. Poly budget: 8MB GLB target, current estimate 6MB — Pass. Generative strategy flagged with Path 2 caveat."
+- "Cyberpunk shoe brief. Asset plan: hero shoe = `generative` via Path 2 `mcp-for-blender` (formerly `ahujasid/blender-mcp`) Hyper3D/Hunyuan3D integration (license = `TBD`, risk surfaced for `asset-license-checker`; confidence = `linked-only`); floor + props = `procedural` (license = N/A; confidence = `verified-read`); environment lighting = `library` (approved studio backdrop; license = commercial-OK; confidence = `verified-read`). Budget reconciliation: estimated footprint checked against `glb-mobile-performance-budget`. Obtain-before-runtime list: hero shoe mesh and environment backdrop. Runtime: `Not Run`, Artifact: `Not Produced`."
 
 ## Bad examples
 
@@ -212,16 +212,22 @@ If the chosen strategy is "generative" via Path 2 (community `mcp-for-blender` (
 
 ## Anti-patterns
 
-- fetching / downloading any asset from this skill
-- skipping license entries
-- claiming generative strategy works without confirming Path 2
-- letting scene planner change asset strategy silently after handoff
+- downloading, fetching, generating, or installing any asset from this skill
+- issuing final license verdicts instead of surfacing license risk for `asset-license-checker`
+- skipping style consistency handoffs (`asset-style-consistency-checker`) when mixing procedural, library, and generative sources
+- claiming generative strategy works in Path 1 or without checking Path 2 caveats via `official-runtime-readiness-checker`
+- referring to the community bridge as bare `blender-mcp` instead of `mcp-for-blender` (formerly `ahujasid/blender-mcp`)
+- upgrading truth states above Runtime `Not Run` or Artifact `Not Produced`
 
 ## Cross-skill handoff
 
-- After: `product-hero-scene-planner` with brief + asset plan
-- If generative chosen and runtime unknown: `official-runtime-readiness-checker`
-- If license risk surfaces: route back to `intent-to-3d-brief-writer` (slot 4 constraints)
+- **Before this skill**: `intent-to-3d-brief-writer` supplies the locked 8-slot brief.
+- **Scene planners (primary handoff with brief + asset plan)**: `product-hero-scene-planner`, `character-portrait-scene-planner`, `environment-establishing-shot-planner`, `interior-architectural-scene-planner`, or `product-grid-scene-planner`.
+- **License verdicts**: `asset-license-checker` (this skill surfaces license risk only; verdicts belong to `asset-license-checker`).
+- **Style re-checks**: `asset-style-consistency-checker` to verify visual consistency across mixed asset sources.
+- **Budget reconciliation**: `glb-mobile-performance-budget` (and `polycount-budget-checker`) to validate target size and polygon limits.
+- **Generative readiness**: `official-runtime-readiness-checker` when a Path 2 `generative` strategy is selected.
+- **Fallback / constraint updates**: `asset-fallback-strategy` if preferred sources fail, or back to `intent-to-3d-brief-writer` if brief constraints must change.
 
 ## Non-goals
 
