@@ -6,7 +6,7 @@ Date: 2026-05-09 (scope clarified; expanded to 48 skills + 26 install targets)
 > [!IMPORTANT]
 > **Scope: BlendOps publishes the skills layer; runtime paths are an upstream redirect.** This readiness report grades only what BlendOps **owns**: 48 skills + 4 laws + 1 pack + 3 bundles + 26 install target docs + ZIP/package generation + CI guards. Runtime execution (Path 1 Lab MCP, Path 2 `ahujasid` community, CLI) is owned by Blender Foundation / Anthropic / the community — BlendOps redirects users via per-target install docs and does **not** claim ownership of those upstream paths' stability.
 >
-> The skills layer is **Ready for Draft v0**. Tags shipped: `v0.1.0-draft` (16) → `v0.2.0-draft` (24) → `v0.3.0-draft` (32) → `v0.4.0-draft` (40) → `v0.5.0-draft` (48) → `v0.6.0-draft` (20 install targets) → `v0.7.0-draft` (26 install targets).
+> The skills layer is **Ready for Draft v0**. Tags shipped: `v0.1.0-draft` (16) → `v0.2.0-draft` (24) → `v0.3.0-draft` (32) → `v0.4.0-draft` (40) → `v0.5.0-draft` (48) → `v0.6.0-draft` (20 install targets) → `v0.7.0-draft` (26 install targets) → `v0.8.0-draft` (48-skill review hardening + runtime consistency sweep).
 >
 > Phase 3.3 rollup: [docs/release-readiness-rollup-v0.md](./release-readiness-rollup-v0.md)
 
