@@ -1,28 +1,28 @@
 {
   "schemaVersion": "1.4.0",
-  "auditPhase": "phase-7-current",
+  "auditPhase": "phase-8-current",
   "repository": "ThanhNguyxnOrg/blendops",
   "branch": "main",
   "baselineCommitSha": "3ea3c35c6b8a6e5e915bab9f63333d4a1c09bd4d",
-  "sourceCommitSha": "4af8b16aad3bdf1dce4114c479002e0b397f3c99",
-  "sourceCommitShort": "4af8b16",
-  "sourceCommitDate": "2026-10-31 13:51:12 +0000",
+  "sourceCommitSha": "9ba2d80bc8c77e8dcbd21b8d2298a837c3728c86",
+  "sourceCommitShort": "9ba2d80",
+  "sourceCommitDate": "2026-10-31 14:37:40 +0000",
   "auditProvenance": {
-    "sourceCommitSha": "4af8b16aad3bdf1dce4114c479002e0b397f3c99",
-    "sourceCommitShort": "4af8b16",
-    "sourceCommitDate": "2026-10-31 13:51:12 +0000",
+    "sourceCommitSha": "9ba2d80bc8c77e8dcbd21b8d2298a837c3728c86",
+    "sourceCommitShort": "9ba2d80",
+    "sourceCommitDate": "2026-10-31 14:37:40 +0000",
     "workingTreeState": "dirty",
     "snapshotBasis": "working-tree-on-top-of-source-commit",
-    "uncommittedChangeCount": 23,
-    "auditedInputsSha256": "e272a20d827fbfa09845b1712c0984d869084c2178eaac6741947aec28ac5e06",
+    "uncommittedChangeCount": 109,
+    "auditedInputsSha256": "7026ec6261cde20dd133edfb5914ff00ede5fbadadf783f653ae8546ad9752bc",
     "selfReferentialCommitRule": "A Git commit cannot contain its own final commit SHA inside tracked files. sourceCommitSha records the verified HEAD commit present when the generator ran, workingTreeState and snapshotBasis record whether uncommitted working-tree changes were present on top of sourceCommitSha, and auditedInputsSha256 digests the exact audited file contents."
   },
   "summary": {
     "totalFindings": 10,
     "statusBreakdown": {
-      "FIXED": 8,
+      "FIXED": 9,
       "PARTIALLY_FIXED": 1,
-      "OPEN": 1,
+      "OPEN": 0,
       "DEFERRED": 0,
       "REGRESSION": 0,
       "NOT_APPLICABLE": 0,
@@ -39,7 +39,7 @@
       "phase0BaselineState": "OPEN (30/48 skills affected at 3ea3c35)",
       "currentLifecycleStatus": "FIXED",
       "resolvedInPhase": "Phase 1 (ac1ccdb)",
-      "lastVerifiedCommit": "4af8b16aad3bdf1dce4114c479002e0b397f3c99",
+      "lastVerifiedCommit": "9ba2d80bc8c77e8dcbd21b8d2298a837c3728c86",
       "evidencePaths": [
         "scripts/check-docs.mjs",
         "scripts/test-phase1.mjs",
@@ -58,7 +58,7 @@
       "phase0BaselineState": "OPEN (spawnSync zip ENOENT on minimal Linux; CI skipped export)",
       "currentLifecycleStatus": "FIXED",
       "resolvedInPhase": "Phase 1 (ac1ccdb) + Phase 2.1 (b1927ba) + Phase 6.1 (4af8b16)",
-      "lastVerifiedCommit": "4af8b16aad3bdf1dce4114c479002e0b397f3c99",
+      "lastVerifiedCommit": "9ba2d80bc8c77e8dcbd21b8d2298a837c3728c86",
       "evidencePaths": [
         "scripts/export-claude-skills.mjs",
         "scripts/test-phase1.mjs",
@@ -76,7 +76,7 @@
       "phase0BaselineState": "OPEN (0/48 contracts, no registry/, split handoff notation)",
       "currentLifecycleStatus": "FIXED",
       "resolvedInPhase": "Phase 2 Pilot (f43385a) + Phase 2.1 Hardening (b1927ba) + Phase 5 Full Catalog (f8301a3)",
-      "lastVerifiedCommit": "4af8b16aad3bdf1dce4114c479002e0b397f3c99",
+      "lastVerifiedCommit": "9ba2d80bc8c77e8dcbd21b8d2298a837c3728c86",
       "evidencePaths": [
         "schemas/skill-contract.schema.json",
         "schemas/contract-context-fields.schema.json",
@@ -103,7 +103,7 @@
       "phase0BaselineState": "OPEN (0 automated runners; 8/48 structured EVAL.md tables; 40/48 prose-only)",
       "currentLifecycleStatus": "FIXED",
       "resolvedInPhase": "Phase 3 Foundation (88dc3bd) + Phase 3.1 (650f0a5) + Phase 6 Full Catalog (869462d)",
-      "lastVerifiedCommit": "4af8b16aad3bdf1dce4114c479002e0b397f3c99",
+      "lastVerifiedCommit": "9ba2d80bc8c77e8dcbd21b8d2298a837c3728c86",
       "evidencePaths": [
         "schemas/skill-eval.schema.json",
         "scripts/run-evals.mjs",
@@ -124,7 +124,7 @@
       "phase0BaselineState": "OPEN (8/48 skills missing Decision tree, Playbooks, Failure handling, Troubleshooting, Best practices, Good/Bad examples, User-facing response template, Anti-patterns)",
       "currentLifecycleStatus": "FIXED",
       "resolvedInPhase": "Phase 4",
-      "lastVerifiedCommit": "4af8b16aad3bdf1dce4114c479002e0b397f3c99",
+      "lastVerifiedCommit": "9ba2d80bc8c77e8dcbd21b8d2298a837c3728c86",
       "evidencePaths": [
         "skills/_template/SKILL.md",
         "scripts/check-docs.mjs",
@@ -150,7 +150,7 @@
       "phase0BaselineState": "OPEN (blendops-help omitted Batch 7 routing quartet; blender-scope-boundary-enforcer had 0 incoming forward edges)",
       "currentLifecycleStatus": "FIXED",
       "resolvedInPhase": "Phase 2 Pilot (f43385a)",
-      "lastVerifiedCommit": "4af8b16aad3bdf1dce4114c479002e0b397f3c99",
+      "lastVerifiedCommit": "9ba2d80bc8c77e8dcbd21b8d2298a837c3728c86",
       "evidencePaths": [
         "skills/blendops-help/contract.json",
         "skills/blendops-help/SKILL.md",
@@ -169,7 +169,7 @@
       "phase0BaselineState": "OPEN (no inspect-glb.mjs or version matrices)",
       "currentLifecycleStatus": "FIXED",
       "resolvedInPhase": "Phase 3 (E1 & E2, 75f3b5c)",
-      "lastVerifiedCommit": "4af8b16aad3bdf1dce4114c479002e0b397f3c99",
+      "lastVerifiedCommit": "9ba2d80bc8c77e8dcbd21b8d2298a837c3728c86",
       "evidencePaths": [
         "scripts/inspect-glb.mjs",
         "scripts/validate-evidence-packet.mjs",
@@ -189,7 +189,7 @@
       "phase0BaselineState": "OPEN (Windsurf, Continue, Cline, Roo, Aider listed as not researched; 10 targets missing from install-only table)",
       "currentLifecycleStatus": "PARTIALLY_FIXED",
       "resolvedInPhase": "Phase 1 (ac1ccdb) + Phase 3 (E4, 75f3b5c) + Phase 7 Empirical Verification & Evidence Hardening",
-      "lastVerifiedCommit": "4af8b16aad3bdf1dce4114c479002e0b397f3c99",
+      "lastVerifiedCommit": "9ba2d80bc8c77e8dcbd21b8d2298a837c3728c86",
       "evidencePaths": [
         "docs/adapter-registry.md",
         "docs/install/README.md",
@@ -214,16 +214,22 @@
       "severity": "P2",
       "pillar": "Pillar 8 (Documentation & Bundle Maintenance)",
       "phase0BaselineState": "OPEN (96 manual summary files in bundles/ average 14 lines vs 225 lines in SKILL.md)",
-      "currentLifecycleStatus": "OPEN",
-      "resolvedInPhase": "Prerequisite satisfied in Phase 5 (48/48 contracts authored); bundle generator scheduled for Phase 8",
-      "lastVerifiedCommit": "4af8b16aad3bdf1dce4114c479002e0b397f3c99",
+      "currentLifecycleStatus": "FIXED",
+      "resolvedInPhase": "Phase 5 Contracts (f8301a3) + Phase 8 Deterministic Bundle Reference Generator",
+      "lastVerifiedCommit": "9ba2d80bc8c77e8dcbd21b8d2298a837c3728c86",
       "evidencePaths": [
-        "bundles/claude-desktop-manual/",
-        "bundles/skill-package/blendops/",
+        "scripts/generate-bundle-reference-summaries.mjs",
+        "scripts/check-docs.mjs",
+        "scripts/test-phase8.mjs",
+        "bundles/claude-desktop-manual/README.md",
+        "bundles/claude-desktop-manual/manifest.json",
+        "bundles/claude-desktop-manual/references/skills/",
+        "bundles/skill-package/README.md",
+        "bundles/skill-package/blendops/references/",
         "registry/skills.json"
       ],
-      "verificationMethod": "Static check in scripts/check-docs.mjs confirms all bundle files exist and pass frontmatter/link checks; all 48/48 canonical contract.json inputs are now compiled in registry/skills.json.",
-      "remainingScope": "Implement deterministic bundle reference summary generator from canonical SKILL.md + contract.json in Phase 8."
+      "verificationMethod": "npm run bundles:summaries:check, scripts/check-docs.mjs, and scripts/test-phase8.mjs verify that all 96 bundle reference summaries (48 in bundles/claude-desktop-manual/references/skills/<id>.md and 48 in bundles/skill-package/blendops/references/skill-<id>.md) plus bundles/claude-desktop-manual/manifest.json are deterministically generated from the 48 canonical skills/<id>/SKILL.md + skills/<id>/contract.json pairs with zero manual drift.",
+      "remainingScope": "None. All 96 bundle reference summaries and bundle manifest entries are deterministically generated and verified in CI on every commit."
     },
     {
       "id": "F-10",
@@ -233,7 +239,7 @@
       "phase0BaselineState": "OPEN (only file-install ROLLBACK.md exists; no L0-L3 runtime capability model)",
       "currentLifecycleStatus": "FIXED",
       "resolvedInPhase": "Phase 3 (E3, 75f3b5c)",
-      "lastVerifiedCommit": "4af8b16aad3bdf1dce4114c479002e0b397f3c99",
+      "lastVerifiedCommit": "9ba2d80bc8c77e8dcbd21b8d2298a837c3728c86",
       "evidencePaths": [
         "schemas/runtime-capability-policy.schema.json",
         "registry/runtime-capability-policy.json",

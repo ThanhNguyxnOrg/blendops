@@ -637,14 +637,14 @@ describe('Phase 5 — Full Catalog Contract Coverage & F-03 Resolution (30 Scena
     }
   });
 
-  it('Scenario 27: docs/audits/current/findings.json marks F-03 FIXED and F-09 OPEN, and reverts in an isolated repo if a contract is removed', () => {
+  it('Scenario 27: docs/audits/current/findings.json marks F-03 FIXED and F-09 FIXED, and reverts in an isolated repo if a contract is removed', () => {
     const findings = JSON.parse(
       fs.readFileSync(path.join(root, 'docs', 'audits', 'current', 'findings.json'), 'utf8'),
     );
     const f03 = findings.findings.find((f) => f.id === 'F-03');
     const f09 = findings.findings.find((f) => f.id === 'F-09');
     assert.equal(f03?.currentLifecycleStatus, 'FIXED');
-    assert.equal(f09?.currentLifecycleStatus, 'OPEN');
+    assert.equal(f09?.currentLifecycleStatus, 'FIXED');
 
     const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-phase5-f03-'));
     try {
@@ -691,7 +691,7 @@ describe('Phase 5 — Full Catalog Contract Coverage & F-03 Resolution (30 Scena
     }
   });
 
-  it('Scenario 28: docs/audits/current/scorecard.json records 86.5/100 (+32.0) with Pillar 1 = 15.0, Pillar 2 = 15.0, and Pillar 3 = 16.0 while Phase 0 baseline stays 54.5/100', () => {
+  it('Scenario 28: docs/audits/current/scorecard.json records 87.0/100 (+32.5) with Pillar 1 = 15.0, Pillar 2 = 15.0, Pillar 3 = 16.0, and Pillar 8 = 5.0 while Phase 0 baseline stays 54.5/100', () => {
     const scorecard = JSON.parse(
       fs.readFileSync(path.join(root, 'docs', 'audits', 'current', 'scorecard.json'), 'utf8'),
     );
@@ -700,8 +700,8 @@ describe('Phase 5 — Full Catalog Contract Coverage & F-03 Resolution (30 Scena
     );
     assert.equal(baseline.totals.measuredScore, 54.5);
     assert.equal(scorecard.totals.historicalBaselineScore, 54.5);
-    assert.equal(scorecard.totals.measuredScore, 86.5);
-    assert.equal(scorecard.totals.scoreDelta, '+32.0');
+    assert.equal(scorecard.totals.measuredScore, 87.0);
+    assert.equal(scorecard.totals.scoreDelta, '+32.5');
 
     const p1 = scorecard.pillars.find((p) => p.id === 'pillar-1-skill-quality-and-contracts');
     const p2 = scorecard.pillars.find((p) => p.id === 'pillar-2-workflow-architecture-and-routing');

@@ -51,3 +51,19 @@ This bundle is a condensed reference fixture aligned to canonical project source
 - `docs/ai-agent-install-flow.md`
 - `docs/install/claude-desktop.md`
 - `docs/install/installer-spec.md`
+
+## Deterministic reference summary generation
+
+All 48 per-skill summary files in `bundles/claude-desktop-manual/references/skills/<skill-id>.md` (along with the 48 flattened package summaries in `bundles/skill-package/blendops/references/skill-<skill-id>.md`) are deterministically generated from canonical skill sources:
+
+- `skills/<skill-id>/SKILL.md`
+- `skills/<skill-id>/contract.json`
+
+Do not manually edit files under `bundles/claude-desktop-manual/references/skills/*.md`. Instead, update the canonical `skills/<skill-id>/SKILL.md` and/or `skills/<skill-id>/contract.json`, then regenerate and verify both bundle profiles:
+
+```bash
+npm run bundles:summaries:build
+npm run bundles:summaries:check
+```
+
+Non-skill bundle references (`references/skill-map.md`, `references/runtime-stacks.md`, `references/evidence-rules.md`, `references/install-boundary.md`, `references/laws/*.md`, and `references/packs/product-hero-v0.md`) remain preserved as non-generated bundle reference fixtures.

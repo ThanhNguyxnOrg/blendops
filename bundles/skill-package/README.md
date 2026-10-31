@@ -36,3 +36,19 @@ This package does not:
 - publish a package or marketplace listing.
 
 Runtime status remains `Not Run` and artifact status remains `Not Produced` unless a separate eval record provides evidence.
+
+## Deterministic skill reference summary generation
+
+All 48 flattened per-skill summary files at `bundles/skill-package/blendops/references/skill-<skill-id>.md` (together with the 48 manual-bundle summaries at `bundles/claude-desktop-manual/references/skills/<skill-id>.md`) are deterministically generated from the canonical skill definitions:
+
+- `skills/<skill-id>/SKILL.md`
+- `skills/<skill-id>/contract.json`
+
+Do not manually edit generated `blendops/references/skill-<skill-id>.md` files. Update the canonical skill sources under `skills/<skill-id>/` first, then run:
+
+```bash
+npm run bundles:summaries:build
+npm run bundles:summaries:check
+```
+
+Note that `blendops/references/skill-map.md`, `blendops/references/runtime-stacks.md`, `blendops/references/evidence-rules.md`, `blendops/references/install-boundary.md`, `blendops/references/law-*.md`, and `blendops/references/pack-product-hero-v0.md` are preserved non-skill package references and are never overwritten by per-skill summary generation.

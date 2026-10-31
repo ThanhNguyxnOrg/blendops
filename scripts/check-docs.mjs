@@ -4,6 +4,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { validateCompatibilityMatrixObject } from './validate-compatibility-matrix.mjs';
 import { validateCapabilityPolicyObject } from './validate-capability-policy.mjs';
+import { checkBundleReferenceSummaries } from './generate-bundle-reference-summaries.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const root = process.cwd();
@@ -15,6 +16,7 @@ const requiredRootFiles = [
   'TODO.md',
   'package.json',
   'scripts/export-claude-skills.mjs',
+  'scripts/generate-bundle-reference-summaries.mjs',
 ];
 
 const requiredRootDirs = [
@@ -294,8 +296,16 @@ const requiredBundleFixture = [
   'bundles/skill-package/blendops/references/runtime-stacks.md',
   'bundles/skill-package/blendops/references/evidence-rules.md',
   'bundles/skill-package/blendops/references/install-boundary.md',
+  'bundles/skill-package/blendops/references/skill-blendops-help.md',
   'bundles/skill-package/blendops/references/skill-render-export-evidence.md',
   'bundles/skill-package/blendops/references/skill-official-runtime-setup-guide.md',
+  'bundles/skill-package/blendops/references/skill-official-runtime-readiness-checker.md',
+  'bundles/skill-package/blendops/references/skill-product-hero-scene-planner.md',
+  'bundles/skill-package/blendops/references/skill-blender-composition-camera-planner.md',
+  'bundles/skill-package/blendops/references/skill-blender-lighting-material-planner.md',
+  'bundles/skill-package/blendops/references/skill-blender-scene-quality-checker.md',
+  'bundles/skill-package/blendops/references/skill-glb-web-handoff.md',
+  'bundles/skill-package/blendops/references/skill-non-blender-user-response-writer.md',
   'bundles/skill-package/blendops/references/skill-blender-brainstorming.md',
   'bundles/skill-package/blendops/references/skill-blender-troubleshooting.md',
   'bundles/skill-package/blendops/references/skill-pre-handoff-verification.md',
@@ -343,6 +353,9 @@ const requiredBundleFixture = [
   'bundles/skill-package/blendops/references/skill-cli-appendix-job-outline.md',
   'bundles/skill-package/blendops/references/skill-runtime-attempt-report-writer.md',
   'bundles/skill-package/blendops/references/law-evidence-before-done.md',
+  'bundles/skill-package/blendops/references/law-official-runtime-only.md',
+  'bundles/skill-package/blendops/references/law-no-arbitrary-python-interface.md',
+  'bundles/skill-package/blendops/references/law-non-blender-user-language.md',
   'bundles/skill-package/blendops/references/pack-product-hero-v0.md',
   'bundles/skill-package/blendops/LICENSE.txt',
 ];
@@ -1027,6 +1040,14 @@ export function runDocsCheck(targetRoot = root) {
       for (const e of matVal.errors) errors.push(`compatibility-matrix.json: ${e}`);
     } catch (err) {
       errors.push(`Invalid JSON in registry/compatibility-matrix.json: ${err.message}`);
+    }
+  }
+
+  // Phase 8 (F-09): Verify deterministic bundle reference summaries (96 generated files + manifest sync)
+  const bundleSummaryCheck = checkBundleReferenceSummaries(targetRoot);
+  if (!bundleSummaryCheck.ok) {
+    for (const e of bundleSummaryCheck.errors) {
+      errors.push(`bundle-summaries: ${e}`);
     }
   }
 

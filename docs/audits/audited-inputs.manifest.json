@@ -47,6 +47,7 @@
     "scripts/validate-evidence-packet.mjs",
     "scripts/validate-capability-policy.mjs",
     "scripts/validate-compatibility-matrix.mjs",
+    "scripts/generate-bundle-reference-summaries.mjs",
     "scripts/generate-current-audit.mjs",
     "scripts/test-phase1.mjs",
     "scripts/test-phase2.mjs",
@@ -54,7 +55,8 @@
     "scripts/test-phase4.mjs",
     "scripts/test-phase5.mjs",
     "scripts/test-phase6.mjs",
-    "scripts/test-phase7.mjs"
+    "scripts/test-phase7.mjs",
+    "scripts/test-phase8.mjs"
   ],
   "requiredDirectories": [
     "docs/audits/phase-0",

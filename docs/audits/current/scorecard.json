@@ -1,20 +1,20 @@
 {
   "schemaVersion": "1.5.0",
-  "auditPhase": "phase-7-current",
+  "auditPhase": "phase-8-current",
   "status": "reconciled-current-state",
   "repository": "ThanhNguyxnOrg/blendops",
   "branch": "main",
-  "sourceCommitSha": "4af8b16aad3bdf1dce4114c479002e0b397f3c99",
-  "sourceCommitShort": "4af8b16",
-  "sourceCommitDate": "2026-10-31 13:51:12 +0000",
+  "sourceCommitSha": "9ba2d80bc8c77e8dcbd21b8d2298a837c3728c86",
+  "sourceCommitShort": "9ba2d80",
+  "sourceCommitDate": "2026-10-31 14:37:40 +0000",
   "auditProvenance": {
-    "sourceCommitSha": "4af8b16aad3bdf1dce4114c479002e0b397f3c99",
-    "sourceCommitShort": "4af8b16",
-    "sourceCommitDate": "2026-10-31 13:51:12 +0000",
+    "sourceCommitSha": "9ba2d80bc8c77e8dcbd21b8d2298a837c3728c86",
+    "sourceCommitShort": "9ba2d80",
+    "sourceCommitDate": "2026-10-31 14:37:40 +0000",
     "workingTreeState": "dirty",
     "snapshotBasis": "working-tree-on-top-of-source-commit",
-    "uncommittedChangeCount": 23,
-    "auditedInputsSha256": "e272a20d827fbfa09845b1712c0984d869084c2178eaac6741947aec28ac5e06",
+    "uncommittedChangeCount": 109,
+    "auditedInputsSha256": "7026ec6261cde20dd133edfb5914ff00ede5fbadadf783f653ae8546ad9752bc",
     "selfReferentialCommitRule": "A Git commit cannot contain its own final commit SHA inside tracked files. sourceCommitSha records the verified HEAD commit present when the generator ran, workingTreeState and snapshotBasis record whether uncommitted working-tree changes were present on top of sourceCommitSha, and auditedInputsSha256 digests the exact audited file contents."
   },
   "historicalBaseline": {
@@ -26,7 +26,7 @@
     "note": "Historical Phase 0 Baseline — Not Current. Preserved immutably for audit provenance."
   },
   "methodology": {
-    "scoringPrinciple": "Every point increase from the 54.5/100 Phase 0 baseline is backed by committed code, schemas, and automated CI tests in Phases 1, 2, 2.1, 3, 3.1, 3.1.1, 4, 5, 6, 6.1, and 7. Unimplemented or unrun capabilities (unrun live LLM/Blender runtime evaluations, 24 linked-only host targets, and ungenerated bundle reference summaries) receive 0 inflation.",
+    "scoringPrinciple": "Every point increase from the 54.5/100 Phase 0 baseline is backed by committed code, schemas, and automated CI tests in Phases 1, 2, 2.1, 3, 3.1, 3.1.1, 4, 5, 6, 6.1, 7, and 8. Unimplemented or unrun capabilities (unrun live LLM/Blender runtime evaluations and 24 linked-only host targets) receive 0 inflation.",
     "zeroCompensationGate": "All three Phase 0 P0 zero-compensation blockers (F-01 truth-state contradiction, F-02 non-portable ZIP exporter/CI gap, and F-04 zero automated evaluation runner) have been resolved with deterministic CI runners.",
     "activeZeroCompensationBlockers": [],
     "resolvedZeroCompensationBlockers": [
@@ -38,8 +38,8 @@
   },
   "totals": {
     "historicalBaselineScore": 54.5,
-    "measuredScore": 86.5,
-    "scoreDelta": "+32.0",
+    "measuredScore": 87,
+    "scoreDelta": "+32.5",
     "maxPossibleScore": 100,
     "verified10of10Eligible": false
   },
@@ -354,21 +354,27 @@
       "name": "Documentation & UX",
       "weight": 5,
       "historicalScore": 4.5,
-      "measuredScore": 4.5,
+      "measuredScore": 5,
       "verdict": "Pass",
       "evidenceFiles": [
         "README.md",
         "docs/README.md",
-        "docs/start-here.md"
+        "docs/start-here.md",
+        "bundles/claude-desktop-manual/README.md",
+        "bundles/claude-desktop-manual/manifest.json",
+        "bundles/skill-package/README.md",
+        "scripts/generate-bundle-reference-summaries.mjs",
+        "scripts/check-docs.mjs",
+        "scripts/test-phase8.mjs"
       ],
       "criteria": [
         {
           "id": "p8-c1",
-          "description": "Clear start-here onboarding, hub index, plain-language law, and 0 broken relative links across 344 files",
+          "description": "Clear start-here onboarding, hub index, plain-language law, deterministic 96-file bundle reference summaries, and 0 broken relative links across active Markdown files",
           "maxPoints": 5,
-          "awardedPoints": 4.5,
+          "awardedPoints": 5,
           "status": "Pass",
-          "evidence": "344 active markdown files pass relative link and policy checks in scripts/check-docs.mjs."
+          "evidence": "F-09 FIXED: 353 active markdown files pass relative link and policy checks in scripts/check-docs.mjs, and all 96 bundle reference summaries across bundles/claude-desktop-manual/references/skills/*.md and bundles/skill-package/blendops/references/skill-*.md are deterministically generated and verified via scripts/generate-bundle-reference-summaries.mjs and scripts/test-phase8.mjs."
         }
       ]
     },
@@ -384,7 +390,8 @@
         "scripts/check-docs.mjs",
         "scripts/export-claude-skills.mjs",
         "scripts/build-registry.mjs",
-        "scripts/run-evals.mjs"
+        "scripts/run-evals.mjs",
+        "scripts/generate-bundle-reference-summaries.mjs"
       ],
       "criteria": [
         {
@@ -401,7 +408,7 @@
           "maxPoints": 2,
           "awardedPoints": 2,
           "status": "Pass",
-          "evidence": "F-02 FIXED: scripts/export-claude-skills.mjs uses pure-Node fflate (0 external binary calls) with isolated --output-root concurrency safety and .github/workflows/docs.yml executes npm run ci (docs:check + registry:check + evals:check + evals:run + skills:export + test)."
+          "evidence": "F-02 FIXED: scripts/export-claude-skills.mjs uses pure-Node fflate (0 external binary calls) with isolated --output-root concurrency safety and .github/workflows/docs.yml executes npm run ci (docs:check + registry:check + evals:check + evals:run + bundles:summaries:check + skills:export + test)."
         }
       ]
     }

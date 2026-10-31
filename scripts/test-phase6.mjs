@@ -705,7 +705,7 @@ describe('Phase 6 — Full-Catalog Behavioral Evaluation Coverage & F-04 Resolut
     }
   });
 
-  it('Scenario 24: docs/audits/current/* marks F-04 FIXED, updates eval-inventory.json to 48/48 suites (0 prose-only remaining), preserves F-08 PARTIALLY_FIXED and F-09 OPEN, and keeps auditedInputsSha256 synchronized', () => {
+  it('Scenario 24: docs/audits/current/* marks F-04 FIXED, updates eval-inventory.json to 48/48 suites (0 prose-only remaining), preserves F-08 PARTIALLY_FIXED and marks F-09 FIXED, and keeps auditedInputsSha256 synchronized', () => {
     const scorecard = JSON.parse(
       fs.readFileSync(path.join(root, 'docs', 'audits', 'current', 'scorecard.json'), 'utf8'),
     );
@@ -724,7 +724,7 @@ describe('Phase 6 — Full-Catalog Behavioral Evaluation Coverage & F-04 Resolut
     const f09 = findings.findings.find((f) => f.id === 'F-09');
     assert.equal(f04?.currentLifecycleStatus, 'FIXED');
     assert.equal(f08?.currentLifecycleStatus, 'PARTIALLY_FIXED');
-    assert.equal(f09?.currentLifecycleStatus, 'OPEN');
+    assert.equal(f09?.currentLifecycleStatus, 'FIXED');
 
     assert.equal(evalInv.summary.totalEvalFiles, 48);
     assert.equal(evalInv.summary.machineReadableSuitesCount, 48);

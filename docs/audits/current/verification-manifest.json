@@ -1,19 +1,19 @@
 {
   "schemaVersion": "1.4.0",
-  "auditPhase": "phase-7-current",
+  "auditPhase": "phase-8-current",
   "repository": "ThanhNguyxnOrg/blendops",
   "branch": "main",
-  "sourceCommitSha": "4af8b16aad3bdf1dce4114c479002e0b397f3c99",
-  "sourceCommitShort": "4af8b16",
-  "sourceCommitDate": "2026-10-31 13:51:12 +0000",
+  "sourceCommitSha": "9ba2d80bc8c77e8dcbd21b8d2298a837c3728c86",
+  "sourceCommitShort": "9ba2d80",
+  "sourceCommitDate": "2026-10-31 14:37:40 +0000",
   "auditProvenance": {
-    "sourceCommitSha": "4af8b16aad3bdf1dce4114c479002e0b397f3c99",
-    "sourceCommitShort": "4af8b16",
-    "sourceCommitDate": "2026-10-31 13:51:12 +0000",
+    "sourceCommitSha": "9ba2d80bc8c77e8dcbd21b8d2298a837c3728c86",
+    "sourceCommitShort": "9ba2d80",
+    "sourceCommitDate": "2026-10-31 14:37:40 +0000",
     "workingTreeState": "dirty",
     "snapshotBasis": "working-tree-on-top-of-source-commit",
-    "uncommittedChangeCount": 23,
-    "auditedInputsSha256": "e272a20d827fbfa09845b1712c0984d869084c2178eaac6741947aec28ac5e06",
+    "uncommittedChangeCount": 109,
+    "auditedInputsSha256": "7026ec6261cde20dd133edfb5914ff00ede5fbadadf783f653ae8546ad9752bc",
     "selfReferentialCommitRule": "A Git commit cannot contain its own final commit SHA inside tracked files. sourceCommitSha records the verified HEAD commit present when the generator ran, workingTreeState and snapshotBasis record whether uncommitted working-tree changes were present on top of sourceCommitSha, and auditedInputsSha256 digests the exact audited file contents."
   },
   "commitChain": [
@@ -81,17 +81,22 @@
       "phase": "Phase 6.1",
       "commitSha": "4af8b16aad3bdf1dce4114c479002e0b397f3c99",
       "summary": "CI export concurrency stabilization (--output-root isolation for export-claude-skills.mjs across parallel test suites)"
+    },
+    {
+      "phase": "Phase 7",
+      "commitSha": "9ba2d80bc8c77e8dcbd21b8d2298a837c3728c86",
+      "summary": "Adapter empirical verification & evidence integrity (F-08): 26-target host availability discovery, disposable /tmp fixture verification, and fail-closed promotion validator"
     }
   ],
   "currentPhaseContext": {
-    "phase": "Phase 7 — Adapter Empirical Verification & Evidence Integrity (F-08)",
-    "title": "26-Target Host Availability Discovery, Disposable /tmp Fixture Verification, Documentation Confidence Alignment, and Promotion Validator Hardening",
-    "sourceCommitSha": "4af8b16aad3bdf1dce4114c479002e0b397f3c99",
+    "phase": "Phase 8 — Deterministic Bundle Reference Summary Generation (F-09)",
+    "title": "Deterministic 96-File Bundle Reference Summary Compiler, Bundle Manifest Synchronization, Check-Mode Verification, and 20-Scenario Regression Suite",
+    "sourceCommitSha": "9ba2d80bc8c77e8dcbd21b8d2298a837c3728c86",
     "workingTreeState": "dirty",
     "snapshotBasis": "working-tree-on-top-of-source-commit",
-    "auditedInputsSha256": "e272a20d827fbfa09845b1712c0984d869084c2178eaac6741947aec28ac5e06",
+    "auditedInputsSha256": "7026ec6261cde20dd133edfb5914ff00ede5fbadadf783f653ae8546ad9752bc",
     "auditedInputsManifest": "docs/audits/audited-inputs.manifest.json",
-    "relationshipToCommitChain": "Phase 7 is built directly on top of Phase 6.1 (4af8b16aad3bdf1dce4114c479002e0b397f3c99). Because a Git commit cannot embed its own final SHA inside tracked files, verification-manifest.json records 4af8b16aad3bdf1dce4114c479002e0b397f3c99 as the latest completed commit in commitChain and sourceCommitSha, while locking the exact Phase 7 audited inputs via auditedInputsSha256 and docs/audits/audited-inputs.manifest.json."
+    "relationshipToCommitChain": "Phase 8 is built directly on top of Phase 7 (9ba2d80bc8c77e8dcbd21b8d2298a837c3728c86). Because a Git commit cannot embed its own final SHA inside tracked files, verification-manifest.json records 9ba2d80bc8c77e8dcbd21b8d2298a837c3728c86 as the latest completed commit in commitChain and sourceCommitSha, while locking the exact Phase 8 audited inputs via auditedInputsSha256 and docs/audits/audited-inputs.manifest.json."
   },
   "ciVerificationPipeline": {
     "command": "npm run ci",
@@ -100,7 +105,7 @@
         "script": "npm run docs:check",
         "command": "node scripts/check-docs.mjs",
         "status": "Passed",
-        "verifiedScope": "Active Markdown files, frontmatter limits, relative links, Path 1 Blender 5.1+ attribution, F-01 truth-state guard, F-05 18-heading skill template structure guard, F-08 adapter registry & install/adapter confidence consistency guard"
+        "verifiedScope": "Active Markdown files, frontmatter limits, relative links, Path 1 Blender 5.1+ attribution, F-01 truth-state guard, F-05 18-heading skill template structure guard, F-08 adapter registry & install/adapter confidence consistency guard, F-09 96-file bundle summary guard"
       },
       {
         "script": "npm run registry:check",
@@ -121,6 +126,12 @@
         "verifiedScope": "269/269 deterministic fixture, truth-state separation, contract-routing (21 cases), and specialist contract-handoff (124 cases) assertions passed across 48/48 skills (live_model: Not Run, blender_runtime: Not Run)"
       },
       {
+        "script": "npm run bundles:summaries:check",
+        "command": "node scripts/generate-bundle-reference-summaries.mjs --check",
+        "status": "Passed",
+        "verifiedScope": "Deterministic byte-for-byte verification of all 96 bundle reference summaries (48 Claude Desktop manual + 48 portable skill package) and bundles/claude-desktop-manual/manifest.json against canonical skills/<id>/SKILL.md + contract.json"
+      },
+      {
         "script": "npm run skills:export",
         "command": "node scripts/export-claude-skills.mjs",
         "status": "Passed",
@@ -128,9 +139,9 @@
       },
       {
         "script": "npm test",
-        "command": "node --test scripts/test-phase1.mjs scripts/test-phase2.mjs scripts/test-phase3.mjs scripts/test-phase4.mjs scripts/test-phase5.mjs scripts/test-phase6.mjs scripts/test-phase7.mjs",
+        "command": "node --test scripts/test-phase1.mjs scripts/test-phase2.mjs scripts/test-phase3.mjs scripts/test-phase4.mjs scripts/test-phase5.mjs scripts/test-phase6.mjs scripts/test-phase7.mjs scripts/test-phase8.mjs",
         "status": "Passed",
-        "verifiedScope": "Unit and integration suites across Phase 1, Phase 2 / 2.1, Phase 3 / 3.1 / 3.1.1, Phase 4, Phase 5, Phase 6 / 6.1, and Phase 7 (adapter empirical verification & F-08 promotion hardening)"
+        "verifiedScope": "Unit and integration suites across Phase 1, Phase 2 / 2.1, Phase 3 / 3.1 / 3.1.1, Phase 4, Phase 5, Phase 6 / 6.1, Phase 7, and Phase 8 (deterministic bundle reference summary generation)"
       }
     ]
   },
