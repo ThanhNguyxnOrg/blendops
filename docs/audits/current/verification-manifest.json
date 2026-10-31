@@ -1,10 +1,21 @@
 {
-  "schemaVersion": "1.0.0",
-  "auditPhase": "phase-2.2-and-phase-3-current",
+  "schemaVersion": "1.1.0",
+  "auditPhase": "phase-3.1-current",
   "repository": "ThanhNguyxnOrg/blendops",
   "branch": "main",
-  "commitSha": "b1927ba04bc9ac9c5ca476997ee6da7f8b8f4f78",
-  "commitDate": "2026-10-31 05:43:12 +0000",
+  "sourceCommitSha": "88dc3bddb6b907a7ca12b213bd988cb5c51659e1",
+  "sourceCommitShort": "88dc3bd",
+  "sourceCommitDate": "2026-10-31 06:12:33 +0000",
+  "auditProvenance": {
+    "sourceCommitSha": "88dc3bddb6b907a7ca12b213bd988cb5c51659e1",
+    "sourceCommitShort": "88dc3bd",
+    "sourceCommitDate": "2026-10-31 06:12:33 +0000",
+    "workingTreeState": "dirty",
+    "snapshotBasis": "working-tree-on-top-of-source-commit",
+    "uncommittedChangeCount": 10,
+    "auditedInputsSha256": "588207e63b1fcf29bd4510065c66b702817be6ba6d2793512a94f4c09f0630db",
+    "selfReferentialCommitRule": "A Git commit cannot contain its own final commit SHA inside tracked files. sourceCommitSha records the verified HEAD commit present when the generator ran, workingTreeState and snapshotBasis record whether uncommitted working-tree changes were present on top of sourceCommitSha, and auditedInputsSha256 digests the exact audited file contents."
+  },
   "commitChain": [
     {
       "phase": "Original Base",
@@ -30,8 +41,22 @@
       "phase": "Phase 2.1",
       "commitSha": "b1927ba04bc9ac9c5ca476997ee6da7f8b8f4f78",
       "summary": "Draft 2020-12 Ajv2020 schema enforcement, 16-state activationGate overlap/reachability verifier, and byte-for-byte EVAL.md ZIP export verification"
+    },
+    {
+      "phase": "Phase 2.2 & Phase 3",
+      "commitSha": "88dc3bddb6b907a7ca12b213bd988cb5c51659e1",
+      "summary": "Repository truth reconciliation (docs/audits/current/*) and Phase 3 behavioral evaluation foundation (12 pilot suites, 73 deterministic cases)"
     }
   ],
+  "currentPhaseContext": {
+    "phase": "Phase 3.1",
+    "title": "Evaluation Predicate Hardening & Audit Provenance Integrity",
+    "sourceCommitSha": "88dc3bddb6b907a7ca12b213bd988cb5c51659e1",
+    "workingTreeState": "dirty",
+    "snapshotBasis": "working-tree-on-top-of-source-commit",
+    "auditedInputsSha256": "588207e63b1fcf29bd4510065c66b702817be6ba6d2793512a94f4c09f0630db",
+    "relationshipToCommitChain": "Phase 3.1 is built directly on top of Phase 2.2 & Phase 3 (88dc3bddb6b907a7ca12b213bd988cb5c51659e1). Because a Git commit cannot embed its own final SHA inside tracked files, verification-manifest.json records 88dc3bddb6b907a7ca12b213bd988cb5c51659e1 as the latest completed commit in commitChain and sourceCommitSha, while locking the Phase 3.1 audited inputs via auditedInputsSha256."
+  },
   "ciVerificationPipeline": {
     "command": "npm run ci",
     "steps": [
@@ -57,7 +82,7 @@
         "script": "npm run evals:run",
         "command": "node scripts/run-evals.mjs",
         "status": "Passed",
-        "verifiedScope": "73/73 deterministic fixture, truth-state separation, and contract-routing assertions passed (live_model: Not Run, blender_runtime: Not Run)"
+        "verifiedScope": "73/73 deterministic fixture, truth-state separation, and contract-routing assertions passed with all 5 condition predicate operators hardened (live_model: Not Run, blender_runtime: Not Run)"
       },
       {
         "script": "npm run skills:export",
@@ -69,7 +94,7 @@
         "script": "npm test",
         "command": "node --test scripts/test-phase1.mjs scripts/test-phase2.mjs scripts/test-phase3.mjs",
         "status": "Passed",
-        "verifiedScope": "Unit and integration suites across Phase 1, Phase 2 / 2.1, and Phase 3"
+        "verifiedScope": "Unit and integration suites across Phase 1, Phase 2 / 2.1, and Phase 3 / 3.1"
       }
     ]
   },

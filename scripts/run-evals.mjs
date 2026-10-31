@@ -34,23 +34,103 @@ function getEvalSchemaValidator(schemaPath = DEFAULT_EVAL_SCHEMA_PATH) {
   return validate;
 }
 
+function isValidConditionScalar(val) {
+  return (
+    typeof val === 'string' ||
+    (typeof val === 'number' && Number.isFinite(val)) ||
+    typeof val === 'boolean'
+  );
+}
+
 export function evaluateConditionPredicate(whenGroup, context) {
-  if (!whenGroup || typeof whenGroup !== 'object' || !context || typeof context !== 'object') {
+  if (!whenGroup || typeof whenGroup !== 'object' || Array.isArray(whenGroup)) {
     return false;
   }
+  if (!context || typeof context !== 'object' || Array.isArray(context)) {
+    return false;
+  }
+
+  const groupKeys = Object.keys(whenGroup);
+  if (groupKeys.length !== 1 || (groupKeys[0] !== 'all' && groupKeys[0] !== 'any')) {
+    return false;
+  }
+
   const evalRule = (rule) => {
+    if (!rule || typeof rule !== 'object' || Array.isArray(rule)) return false;
+    const ruleKeys = Object.keys(rule);
+    if (
+      ruleKeys.length !== 3 ||
+      !Object.hasOwn(rule, 'field') ||
+      !Object.hasOwn(rule, 'operator') ||
+      !Object.hasOwn(rule, 'value')
+    ) {
+      return false;
+    }
+    if (typeof rule.field !== 'string' || rule.field.length === 0) {
+      return false;
+    }
+
+    const hasField = Object.hasOwn(context, rule.field);
+
+    if (rule.operator === 'exists') {
+      if (typeof rule.value !== 'boolean') return false;
+      return hasField === rule.value;
+    }
+
+    if (!hasField) {
+      return false;
+    }
+
     const actual = context[rule.field];
-    if (rule.operator === 'equals') return actual === rule.value;
-    if (rule.operator === 'not_equals') return actual !== rule.value;
-    if (rule.operator === 'in') return Array.isArray(rule.value) && rule.value.includes(actual);
+    if (!isValidConditionScalar(actual)) {
+      return false;
+    }
+
+    if (rule.operator === 'equals') {
+      if (!isValidConditionScalar(rule.value)) return false;
+      return actual === rule.value;
+    }
+
+    if (rule.operator === 'not_equals') {
+      if (!isValidConditionScalar(rule.value)) return false;
+      return actual !== rule.value;
+    }
+
+    if (rule.operator === 'in') {
+      if (
+        !Array.isArray(rule.value) ||
+        rule.value.length === 0 ||
+        !rule.value.every(isValidConditionScalar)
+      ) {
+        return false;
+      }
+      return rule.value.includes(actual);
+    }
+
+    if (rule.operator === 'not_in') {
+      if (
+        !Array.isArray(rule.value) ||
+        rule.value.length === 0 ||
+        !rule.value.every(isValidConditionScalar)
+      ) {
+        return false;
+      }
+      return !rule.value.includes(actual);
+    }
+
     return false;
   };
-  if (Array.isArray(whenGroup.all)) {
+
+  if (Object.hasOwn(whenGroup, 'all')) {
+    if (!Array.isArray(whenGroup.all) || whenGroup.all.length === 0) return false;
     return whenGroup.all.every(evalRule);
   }
-  if (Array.isArray(whenGroup.any)) {
+
+  if (Object.hasOwn(whenGroup, 'any')) {
+    if (!Array.isArray(whenGroup.any) || whenGroup.any.length === 0) return false;
     return whenGroup.any.some(evalRule);
   }
+
   return false;
 }
 

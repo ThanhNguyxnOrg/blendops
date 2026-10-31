@@ -1,7 +1,9 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
+import { execFileSync } from 'node:child_process';
 import {
   validateEvalSuiteObject,
   evaluateSingleCase,
@@ -10,6 +12,10 @@ import {
   getCatalogSkillIds,
   loadContractMap,
 } from './run-evals.mjs';
+import {
+  generateCurrentAuditArtifacts,
+  computeAuditedInputsDigest,
+} from './generate-current-audit.mjs';
 
 const root = process.cwd();
 const catalogSet = new Set(getCatalogSkillIds(root));
@@ -115,16 +121,206 @@ describe('Phase 3 — Behavioral Evaluation Schema & Deterministic Runner', () =
     assert.ok(res3.failures.some((f) => f.includes('Contract activationGate mismatch')));
   });
 
-  it('evaluates structured condition predicates (equals, not_equals, in, all, any) deterministically', () => {
+  it('evaluates all 5 schema-supported condition predicate operators (equals, not_equals, in, not_in, exists) with strict fail-closed semantics', () => {
+    // 1. equals matching and non-matching cases (string, number, boolean, strict type)
+    assert.equal(
+      evaluateConditionPredicate(
+        { all: [{ field: 'mode', operator: 'equals', value: 'headless' }] },
+        { mode: 'headless' },
+      ),
+      true,
+    );
+    assert.equal(
+      evaluateConditionPredicate(
+        { all: [{ field: 'count', operator: 'equals', value: 3 }] },
+        { count: 3 },
+      ),
+      true,
+    );
+    assert.equal(
+      evaluateConditionPredicate(
+        { all: [{ field: 'count', operator: 'equals', value: 3 }] },
+        { count: '3' },
+      ),
+      false,
+    );
+    assert.equal(
+      evaluateConditionPredicate(
+        { all: [{ field: 'ready', operator: 'equals', value: false }] },
+        { ready: false },
+      ),
+      true,
+    );
+
+    // 2. not_equals matching and non-matching cases
+    assert.equal(
+      evaluateConditionPredicate(
+        { all: [{ field: 'runtime.mode', operator: 'not_equals', value: 'text-only' }] },
+        { 'runtime.mode': 'mcp-connected' },
+      ),
+      true,
+    );
+    assert.equal(
+      evaluateConditionPredicate(
+        { all: [{ field: 'runtime.mode', operator: 'not_equals', value: 'text-only' }] },
+        { 'runtime.mode': 'text-only' },
+      ),
+      false,
+    );
+
+    // 3. in matching and non-matching cases
+    assert.equal(
+      evaluateConditionPredicate(
+        { all: [{ field: 'fit.verdict', operator: 'in', value: ['strong_fit', 'partial_fit'] }] },
+        { 'fit.verdict': 'partial_fit' },
+      ),
+      true,
+    );
+    assert.equal(
+      evaluateConditionPredicate(
+        { all: [{ field: 'fit.verdict', operator: 'in', value: ['strong_fit', 'partial_fit'] }] },
+        { 'fit.verdict': 'poor_fit' },
+      ),
+      false,
+    );
+
+    // 4. not_in matching and non-matching cases
+    assert.equal(
+      evaluateConditionPredicate(
+        { all: [{ field: 'stage.status', operator: 'not_in', value: ['blocked', 'failed'] }] },
+        { 'stage.status': 'ready' },
+      ),
+      true,
+    );
+    assert.equal(
+      evaluateConditionPredicate(
+        { all: [{ field: 'stage.status', operator: 'not_in', value: ['blocked', 'failed'] }] },
+        { 'stage.status': 'blocked' },
+      ),
+      false,
+    );
+
+    // 5. exists: true when field exists (including falsy scalar values false, 0, "")
+    assert.equal(
+      evaluateConditionPredicate(
+        {
+          all: [
+            { field: 'brief.locked', operator: 'exists', value: true },
+            { field: 'retry.count', operator: 'exists', value: true },
+            { field: 'notes.tag', operator: 'exists', value: true },
+          ],
+        },
+        { 'brief.locked': false, 'retry.count': 0, 'notes.tag': '' },
+      ),
+      true,
+    );
+
+    // 6. exists: false when field does not exist
+    assert.equal(
+      evaluateConditionPredicate(
+        { all: [{ field: 'artifact.glbPath', operator: 'exists', value: false }] },
+        { 'brief.locked': true },
+      ),
+      true,
+    );
+
+    // 7. exists failure when actual existence disagrees with expected boolean
+    assert.equal(
+      evaluateConditionPredicate(
+        { all: [{ field: 'artifact.glbPath', operator: 'exists', value: true }] },
+        { 'brief.locked': true },
+      ),
+      false,
+    );
+    assert.equal(
+      evaluateConditionPredicate(
+        { all: [{ field: 'brief.locked', operator: 'exists', value: false }] },
+        { 'brief.locked': false },
+      ),
+      false,
+    );
+
+    // 8. Missing field behavior for equals, not_equals, in, and not_in (must all fail closed to false!)
+    assert.equal(
+      evaluateConditionPredicate(
+        { all: [{ field: 'missing.key', operator: 'equals', value: 'any' }] },
+        {},
+      ),
+      false,
+    );
+    assert.equal(
+      evaluateConditionPredicate(
+        { all: [{ field: 'missing.key', operator: 'not_equals', value: 'any' }] },
+        {},
+      ),
+      false,
+    );
+    assert.equal(
+      evaluateConditionPredicate(
+        { all: [{ field: 'missing.key', operator: 'in', value: ['a', 'b'] }] },
+        {},
+      ),
+      false,
+    );
+    assert.equal(
+      evaluateConditionPredicate(
+        { all: [{ field: 'missing.key', operator: 'not_in', value: ['a', 'b'] }] },
+        {},
+      ),
+      false,
+    );
+
+    // 9. Dotted field names treated as literal own properties (not nested traversal or Object.prototype)
+    assert.equal(
+      evaluateConditionPredicate(
+        {
+          all: [
+            { field: 'fit.verdict', operator: 'equals', value: 'strong_fit' },
+            { field: 'brief.locked', operator: 'equals', value: false },
+          ],
+        },
+        { fit: { verdict: 'strong_fit' }, brief: { locked: false } },
+      ),
+      false,
+    );
+    assert.equal(
+      evaluateConditionPredicate(
+        { all: [{ field: 'toString', operator: 'exists', value: true }] },
+        {},
+      ),
+      false,
+    );
+    assert.equal(
+      evaluateConditionPredicate(
+        { all: [{ field: 'constructor', operator: 'not_equals', value: 'foo' }] },
+        {},
+      ),
+      false,
+    );
+
+    // 10. all and any group evaluation
     assert.equal(
       evaluateConditionPredicate(
         {
           all: [
             { field: 'fit.verdict', operator: 'in', value: ['strong_fit', 'partial_fit'] },
             { field: 'brief.locked', operator: 'equals', value: false },
+            { field: 'blocker.code', operator: 'exists', value: false },
           ],
         },
         { 'fit.verdict': 'strong_fit', 'brief.locked': false },
+      ),
+      true,
+    );
+    assert.equal(
+      evaluateConditionPredicate(
+        {
+          any: [
+            { field: 'gate.status', operator: 'equals', value: 'failed' },
+            { field: 'runtime.mode', operator: 'not_in', value: ['text-only', 'offline'] },
+          ],
+        },
+        { 'gate.status': 'passed', 'runtime.mode': 'mcp-live' },
       ),
       true,
     );
@@ -140,9 +336,60 @@ describe('Phase 3 — Behavioral Evaluation Schema & Deterministic Runner', () =
       ),
       false,
     );
+
+    // 11. Invalid operator / malformed rule / empty group / non-boolean exists value handling (fail closed)
+    assert.equal(evaluateConditionPredicate(null, { a: 1 }), false);
+    assert.equal(evaluateConditionPredicate({}, { a: 1 }), false);
+    assert.equal(evaluateConditionPredicate({ all: [] }, { a: 1 }), false);
+    assert.equal(evaluateConditionPredicate({ any: [] }, { a: 1 }), false);
+    assert.equal(
+      evaluateConditionPredicate(
+        {
+          all: [{ field: 'a', operator: 'equals', value: 1 }],
+          any: [{ field: 'a', operator: 'equals', value: 1 }],
+        },
+        { a: 1 },
+      ),
+      false,
+    );
+    assert.equal(
+      evaluateConditionPredicate(
+        { all: [{ field: 'a', operator: 'regex_match', value: '.*' }] },
+        { a: 'hello' },
+      ),
+      false,
+    );
+    assert.equal(
+      evaluateConditionPredicate(
+        { all: [{ field: 'a', operator: 'exists', value: 'yes' }] },
+        { a: 'hello' },
+      ),
+      false,
+    );
+    assert.equal(
+      evaluateConditionPredicate(
+        { all: [{ field: 'a', operator: 'in', value: [] }] },
+        { a: 'hello' },
+      ),
+      false,
+    );
+    assert.equal(
+      evaluateConditionPredicate(
+        { all: [{ field: 'a', operator: 'not_in', value: 'not-an-array' }] },
+        { a: 'hello' },
+      ),
+      false,
+    );
+    assert.equal(
+      evaluateConditionPredicate(
+        { all: [{ field: '', operator: 'equals', value: 'x' }] },
+        { '': 'x' },
+      ),
+      false,
+    );
   });
 
-  it('reconciles docs/audits/current/* with live repository state while preserving Phase 0 baseline immutably', () => {
+  it('reconciles docs/audits/current/* with accurate auditProvenance, commitChain, and untouched Phase 0 baseline', () => {
     const phase0Baseline = JSON.parse(
       fs.readFileSync(path.join(root, 'docs', 'audits', 'phase-0', 'baseline-scorecard.json'), 'utf8'),
     );
@@ -161,10 +408,66 @@ describe('Phase 3 — Behavioral Evaluation Schema & Deterministic Runner', () =
     const currentEvalInv = JSON.parse(
       fs.readFileSync(path.join(root, 'docs', 'audits', 'current', 'eval-inventory.json'), 'utf8'),
     );
+    const currentManifest = JSON.parse(
+      fs.readFileSync(path.join(root, 'docs', 'audits', 'current', 'verification-manifest.json'), 'utf8'),
+    );
 
     assert.equal(currentScorecard.totals.historicalBaselineScore, 54.5);
     assert.equal(currentScorecard.totals.measuredScore, 70.0);
     assert.equal(currentScorecard.methodology.activeZeroCompensationBlockers.length, 0);
+
+    // Verify commitChain includes all verified commits through Phase 2.2 & Phase 3 (88dc3bd)
+    const chainShas = currentManifest.commitChain.map((c) => c.commitSha);
+    assert.deepEqual(chainShas, [
+      '3ea3c35c6b8a6e5e915bab9f63333d4a1c09bd4d',
+      'd9e70ed0a7191cd8e6f63bcb6d50d9964544e625',
+      'ac1ccdb96afe7c52c3064281bd5b0f2dde69468e',
+      'f43385a8a07dace4c13ad48cb4d63ca111f3a2ff',
+      'b1927ba04bc9ac9c5ca476997ee6da7f8b8f4f78',
+      '88dc3bddb6b907a7ca12b213bd988cb5c51659e1',
+    ]);
+
+    // Verify explicit auditProvenance on all 5 JSON artifacts and no ambiguous self-referential commitSha
+    const liveDigest = computeAuditedInputsDigest(root);
+    for (const [label, doc] of [
+      ['scorecard.json', currentScorecard],
+      ['findings.json', currentFindings],
+      ['skill-inventory.json', currentSkillInv],
+      ['eval-inventory.json', currentEvalInv],
+      ['verification-manifest.json', currentManifest],
+    ]) {
+      assert.equal(
+        Object.hasOwn(doc, 'commitSha'),
+        false,
+        `${label} must not use ambiguous top-level commitSha; use sourceCommitSha + auditProvenance`,
+      );
+      assert.ok(doc.auditProvenance, `${label} must include auditProvenance`);
+      assert.equal(
+        doc.sourceCommitSha,
+        '88dc3bddb6b907a7ca12b213bd988cb5c51659e1',
+        `${label} sourceCommitSha must record Phase 2.2/3 base commit 88dc3bddb6b907a7ca12b213bd988cb5c51659e1`,
+      );
+      assert.equal(
+        doc.auditProvenance.sourceCommitSha,
+        '88dc3bddb6b907a7ca12b213bd988cb5c51659e1',
+      );
+      assert.equal(doc.auditProvenance.sourceCommitShort, '88dc3bd');
+      assert.ok(
+        doc.auditProvenance.workingTreeState === 'clean' ||
+          doc.auditProvenance.workingTreeState === 'dirty',
+      );
+      assert.equal(
+        doc.auditProvenance.snapshotBasis,
+        doc.auditProvenance.workingTreeState === 'clean'
+          ? 'clean-committed-tree'
+          : 'working-tree-on-top-of-source-commit',
+      );
+      assert.equal(
+        doc.auditProvenance.auditedInputsSha256,
+        liveDigest,
+        `${label} auditedInputsSha256 must match live audited inputs digest`,
+      );
+    }
 
     const f01 = currentFindings.findings.find((f) => f.id === 'F-01');
     const f02 = currentFindings.findings.find((f) => f.id === 'F-02');
@@ -182,6 +485,83 @@ describe('Phase 3 — Behavioral Evaluation Schema & Deterministic Runner', () =
     assert.equal(currentEvalInv.summary.totalMachineReadableCases, 73);
     assert.equal(currentEvalInv.summary.liveModelRunnerStatus, 'Not Run');
     assert.equal(currentEvalInv.summary.blenderRuntimeRunnerStatus, 'Not Run');
+  });
+
+  it('scopes generateCurrentAuditArtifacts(rootDir) to isolated repos, detects clean vs dirty workingTreeState, and is deterministic', () => {
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-audit-prov-'));
+    try {
+      // Copy minimal audited input directories into tempDir
+      for (const relDir of [
+        path.join('docs', 'audits', 'phase-0'),
+        'registry',
+        'evals',
+        'schemas',
+        'skills',
+      ]) {
+        fs.cpSync(path.join(root, relDir), path.join(tempDir, relDir), { recursive: true });
+      }
+
+      execFileSync('git', ['init', '-b', 'main'], { cwd: tempDir });
+      execFileSync('git', ['config', 'user.name', 'Temp Audit Tester'], { cwd: tempDir });
+      execFileSync('git', ['config', 'user.email', 'tester@example.com'], { cwd: tempDir });
+      execFileSync('git', ['add', '.'], { cwd: tempDir });
+      execFileSync('git', ['commit', '-m', 'Initial isolated clean snapshot'], { cwd: tempDir });
+
+      const tempHeadSha = execFileSync('git', ['rev-parse', 'HEAD'], {
+        cwd: tempDir,
+        encoding: 'utf8',
+      }).trim();
+      assert.notEqual(
+        tempHeadSha,
+        '88dc3bddb6b907a7ca12b213bd988cb5c51659e1',
+        'Isolated temp repo must have its own distinct commit SHA',
+      );
+
+      // 1. Run generator on clean committed tree
+      const cleanRun1 = generateCurrentAuditArtifacts(tempDir);
+      assert.equal(cleanRun1.currentScorecard.sourceCommitSha, tempHeadSha);
+      assert.equal(cleanRun1.currentScorecard.auditProvenance.sourceCommitSha, tempHeadSha);
+      assert.equal(cleanRun1.currentScorecard.auditProvenance.workingTreeState, 'clean');
+      assert.equal(
+        cleanRun1.currentScorecard.auditProvenance.snapshotBasis,
+        'clean-committed-tree',
+      );
+
+      const scorecardDisk1 = fs.readFileSync(
+        path.join(tempDir, 'docs', 'audits', 'current', 'scorecard.json'),
+        'utf8',
+      );
+
+      // 2. Re-run generator on unchanged audited inputs -> must be 100% deterministic
+      const cleanRun2 = generateCurrentAuditArtifacts(tempDir);
+      const scorecardDisk2 = fs.readFileSync(
+        path.join(tempDir, 'docs', 'audits', 'current', 'scorecard.json'),
+        'utf8',
+      );
+      assert.equal(scorecardDisk1, scorecardDisk2);
+      assert.equal(
+        cleanRun1.currentScorecard.auditProvenance.auditedInputsSha256,
+        cleanRun2.currentScorecard.auditProvenance.auditedInputsSha256,
+      );
+
+      // 3. Modify a tracked skill file in tempDir without committing -> must detect dirty working tree
+      const helpSkillPath = path.join(tempDir, 'skills', 'blendops-help', 'SKILL.md');
+      fs.appendFileSync(helpSkillPath, '\n', 'utf8');
+
+      const dirtyRun = generateCurrentAuditArtifacts(tempDir);
+      assert.equal(dirtyRun.currentScorecard.sourceCommitSha, tempHeadSha);
+      assert.equal(dirtyRun.currentScorecard.auditProvenance.workingTreeState, 'dirty');
+      assert.equal(
+        dirtyRun.currentScorecard.auditProvenance.snapshotBasis,
+        'working-tree-on-top-of-source-commit',
+      );
+      assert.notEqual(
+        dirtyRun.currentScorecard.auditProvenance.auditedInputsSha256,
+        cleanRun1.currentScorecard.auditProvenance.auditedInputsSha256,
+      );
+    } finally {
+      fs.rmSync(tempDir, { recursive: true, force: true });
+    }
   });
 });
 

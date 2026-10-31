@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import fs from 'node:fs';
 import path from 'node:path';
+import crypto from 'node:crypto';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { runEvalSuites } from './run-evals.mjs';
@@ -8,21 +9,99 @@ import { runEvalSuites } from './run-evals.mjs';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const ROOT_DIR = path.resolve(__dirname, '..');
-const PHASE0_DIR = path.join(ROOT_DIR, 'docs', 'audits', 'phase-0');
-const CURRENT_DIR = path.join(ROOT_DIR, 'docs', 'audits', 'current');
 
-function gitInfo(args, fallback = 'unknown') {
+function gitInfo(rootDir, args, fallback = 'unknown') {
   try {
-    return execFileSync('git', args, { cwd: ROOT_DIR, encoding: 'utf8' }).trim();
+    return execFileSync('git', args, { cwd: rootDir, encoding: 'utf8' }).trim();
   } catch {
     return fallback;
   }
 }
 
-function scanSkillMarkdown(skillId) {
-  const skillPath = path.join(ROOT_DIR, 'skills', skillId, 'SKILL.md');
-  const contractPath = path.join(ROOT_DIR, 'skills', skillId, 'contract.json');
-  const refsDir = path.join(ROOT_DIR, 'skills', skillId, 'references');
+function collectFilesRecursive(baseDir, currentRel = '') {
+  const fullDir = currentRel ? path.join(baseDir, currentRel) : baseDir;
+  if (!fs.existsSync(fullDir)) return [];
+  const entries = fs.readdirSync(fullDir, { withFileTypes: true });
+  const results = [];
+  for (const entry of entries) {
+    const relPath = currentRel ? `${currentRel}/${entry.name}` : entry.name;
+    if (entry.isDirectory()) {
+      results.push(...collectFilesRecursive(baseDir, relPath));
+    } else if (entry.isFile()) {
+      results.push(relPath);
+    }
+  }
+  return results;
+}
+
+export function computeAuditedInputsDigest(rootDir = ROOT_DIR) {
+  const auditedDirs = ['docs/audits/phase-0', 'registry', 'evals', 'schemas', 'skills'];
+  const optionalRootFiles = [
+    'package.json',
+    'docs/adapter-registry.md',
+    '.github/workflows/docs.yml',
+    'scripts/check-docs.mjs',
+    'scripts/export-claude-skills.mjs',
+    'scripts/build-registry.mjs',
+    'scripts/run-evals.mjs',
+  ];
+
+  const relFiles = [];
+  for (const dirRel of auditedDirs) {
+    relFiles.push(...collectFilesRecursive(rootDir, dirRel));
+  }
+  for (const fileRel of optionalRootFiles) {
+    if (fs.existsSync(path.join(rootDir, fileRel))) {
+      relFiles.push(fileRel);
+    }
+  }
+
+  relFiles.sort();
+  const hash = crypto.createHash('sha256');
+  for (const relPath of relFiles) {
+    const content = fs.readFileSync(path.join(rootDir, relPath));
+    hash.update(relPath, 'utf8');
+    hash.update('\0', 'utf8');
+    hash.update(content);
+    hash.update('\0', 'utf8');
+  }
+  return hash.digest('hex');
+}
+
+function inspectWorkingTreeProvenance(rootDir) {
+  const rawStatus = gitInfo(rootDir, ['status', '--porcelain', '--untracked-files=normal', '--', '.'], '');
+  const lines = rawStatus
+    .split(/\r?\n/)
+    .map((l) => l.trim())
+    .filter(Boolean)
+    .filter((line) => {
+      const filePart = line.slice(3).trim().replace(/^"(.*)"$/, '$1');
+      if (filePart.startsWith('docs/audits/current/') || filePart === 'docs/audits/current') {
+        return false;
+      }
+      if (filePart.startsWith('.aistudio/') || filePart === '.aistudio' || filePart === 'bun.lock') {
+        return false;
+      }
+      return true;
+    });
+
+  const workingTreeState = lines.length === 0 ? 'clean' : 'dirty';
+  const snapshotBasis =
+    workingTreeState === 'clean'
+      ? 'clean-committed-tree'
+      : 'working-tree-on-top-of-source-commit';
+
+  return {
+    workingTreeState,
+    snapshotBasis,
+    uncommittedChangeCount: lines.length,
+  };
+}
+
+function scanSkillMarkdown(rootDir, skillId) {
+  const skillPath = path.join(rootDir, 'skills', skillId, 'SKILL.md');
+  const contractPath = path.join(rootDir, 'skills', skillId, 'contract.json');
+  const refsDir = path.join(rootDir, 'skills', skillId, 'references');
   const txt = fs.readFileSync(skillPath, 'utf8');
   const lines = txt.split(/\r?\n/);
 
@@ -68,14 +147,17 @@ function scanSkillMarkdown(skillId) {
 }
 
 export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
+  const phase0Dir = path.join(rootDir, 'docs', 'audits', 'phase-0');
+  const currentDir = path.join(rootDir, 'docs', 'audits', 'current');
+
   const phase0Scorecard = JSON.parse(
-    fs.readFileSync(path.join(PHASE0_DIR, 'baseline-scorecard.json'), 'utf8'),
+    fs.readFileSync(path.join(phase0Dir, 'baseline-scorecard.json'), 'utf8'),
   );
   const phase0SkillInv = JSON.parse(
-    fs.readFileSync(path.join(PHASE0_DIR, 'skill-inventory.json'), 'utf8'),
+    fs.readFileSync(path.join(phase0Dir, 'skill-inventory.json'), 'utf8'),
   );
   const phase0EvalInv = JSON.parse(
-    fs.readFileSync(path.join(PHASE0_DIR, 'eval-inventory.json'), 'utf8'),
+    fs.readFileSync(path.join(phase0Dir, 'eval-inventory.json'), 'utf8'),
   );
   const registrySkills = JSON.parse(
     fs.readFileSync(path.join(rootDir, 'registry', 'skills.json'), 'utf8'),
@@ -89,10 +171,25 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
 
   const evalRunResult = runEvalSuites({ rootDir, checkOnly: false });
 
-  const headSha = gitInfo(['rev-parse', 'HEAD']);
-  const headShort = gitInfo(['rev-parse', '--short', 'HEAD']);
-  const headDate = gitInfo(['log', '-1', '--format=%ci', 'HEAD']);
-  const branchName = gitInfo(['rev-parse', '--abbrev-ref', 'HEAD'], 'main');
+  const headSha = gitInfo(rootDir, ['rev-parse', 'HEAD']);
+  const headShort = gitInfo(rootDir, ['rev-parse', '--short', 'HEAD']);
+  const headDate = gitInfo(rootDir, ['log', '-1', '--format=%ci', 'HEAD']);
+  const branchName = gitInfo(rootDir, ['rev-parse', '--abbrev-ref', 'HEAD'], 'main');
+  const { workingTreeState, snapshotBasis, uncommittedChangeCount } =
+    inspectWorkingTreeProvenance(rootDir);
+  const auditedInputsSha256 = computeAuditedInputsDigest(rootDir);
+
+  const auditProvenance = {
+    sourceCommitSha: headSha,
+    sourceCommitShort: headShort,
+    sourceCommitDate: headDate,
+    workingTreeState,
+    snapshotBasis,
+    uncommittedChangeCount,
+    auditedInputsSha256,
+    selfReferentialCommitRule:
+      'A Git commit cannot contain its own final commit SHA inside tracked files. sourceCommitSha records the verified HEAD commit present when the generator ran, workingTreeState and snapshotBasis record whether uncommitted working-tree changes were present on top of sourceCommitSha, and auditedInputsSha256 digests the exact audited file contents.',
+  };
 
   const pilotEvalMap = new Map(
     evalIndex.pilotSuites.map((s) => [s.skillId, s]),
@@ -100,7 +197,7 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
 
   // 1. Recompute live skill inventory across all 48 skills
   const updatedSkills = phase0SkillInv.skills.map((oldSkill) => {
-    const live = scanSkillMarkdown(oldSkill.id);
+    const live = scanSkillMarkdown(rootDir, oldSkill.id);
     const pilotEval = pilotEvalMap.get(oldSkill.id) || null;
     const remainingIssues = oldSkill.issues.filter((issue) => {
       if (issue === 'contradicts_truth_state_law_artifact_not_run') {
@@ -137,13 +234,15 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
   ).length;
 
   const currentSkillInventory = {
-    schemaVersion: '1.1.0',
-    auditPhase: 'phase-2.2-and-phase-3-current',
+    schemaVersion: '1.2.0',
+    auditPhase: 'phase-3.1-current',
     reconciledFromBaselineCommit: phase0SkillInv.commitSha,
     repository: 'ThanhNguyxnOrg/blendops',
     branch: branchName,
-    commitSha: headSha,
-    commitDate: headDate,
+    sourceCommitSha: headSha,
+    sourceCommitShort: headShort,
+    sourceCommitDate: headDate,
+    auditProvenance,
     summary: {
       totalSkills: updatedSkills.length,
       totalReferences: updatedSkills.reduce((acc, s) => acc + s.referenceCount, 0),
@@ -186,13 +285,15 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
   });
 
   const currentEvalInventory = {
-    schemaVersion: '1.1.0',
-    auditPhase: 'phase-2.2-and-phase-3-current',
+    schemaVersion: '1.2.0',
+    auditPhase: 'phase-3.1-current',
     reconciledFromBaselineCommit: phase0EvalInv.commitSha,
     repository: 'ThanhNguyxnOrg/blendops',
     branch: branchName,
-    commitSha: headSha,
-    commitDate: headDate,
+    sourceCommitSha: headSha,
+    sourceCommitShort: headShort,
+    sourceCommitDate: headDate,
+    auditProvenance,
     summary: {
       totalEvalFiles: updatedEvals.length,
       machineReadablePilotSuitesCount: evalIndex.coverageSummary.machineReadablePilotSuites,
@@ -213,12 +314,15 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
 
   // 3. Reconciled Finding Lifecycle Table (F-01 through F-10)
   const findings = {
-    schemaVersion: '1.0.0',
-    auditPhase: 'phase-2.2-and-phase-3-current',
+    schemaVersion: '1.1.0',
+    auditPhase: 'phase-3.1-current',
     repository: 'ThanhNguyxnOrg/blendops',
     branch: branchName,
     baselineCommitSha: '3ea3c35c6b8a6e5e915bab9f63333d4a1c09bd4d',
-    currentCommitSha: headSha,
+    sourceCommitSha: headSha,
+    sourceCommitShort: headShort,
+    sourceCommitDate: headDate,
+    auditProvenance,
     summary: {
       totalFindings: 10,
       statusBreakdown: {
@@ -416,13 +520,15 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
 
   // 4. Reassessed Current Scorecard (70.0 / 100 vs Historical 54.5 / 100)
   const currentScorecard = {
-    schemaVersion: '1.1.0',
-    auditPhase: 'phase-2.2-and-phase-3-current',
+    schemaVersion: '1.2.0',
+    auditPhase: 'phase-3.1-current',
     status: 'reconciled-current-state',
     repository: 'ThanhNguyxnOrg/blendops',
     branch: branchName,
-    commitSha: headSha,
-    commitDate: headDate,
+    sourceCommitSha: headSha,
+    sourceCommitShort: headShort,
+    sourceCommitDate: headDate,
+    auditProvenance,
     historicalBaseline: {
       auditPhase: phase0Scorecard.auditPhase,
       commitSha: phase0Scorecard.commitSha,
@@ -699,12 +805,14 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
 
   // 5. Verification Manifest
   const verificationManifest = {
-    schemaVersion: '1.0.0',
-    auditPhase: 'phase-2.2-and-phase-3-current',
+    schemaVersion: '1.1.0',
+    auditPhase: 'phase-3.1-current',
     repository: 'ThanhNguyxnOrg/blendops',
     branch: branchName,
-    commitSha: headSha,
-    commitDate: headDate,
+    sourceCommitSha: headSha,
+    sourceCommitShort: headShort,
+    sourceCommitDate: headDate,
+    auditProvenance,
     commitChain: [
       {
         phase: 'Original Base',
@@ -731,7 +839,22 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
         commitSha: 'b1927ba04bc9ac9c5ca476997ee6da7f8b8f4f78',
         summary: 'Draft 2020-12 Ajv2020 schema enforcement, 16-state activationGate overlap/reachability verifier, and byte-for-byte EVAL.md ZIP export verification',
       },
+      {
+        phase: 'Phase 2.2 & Phase 3',
+        commitSha: '88dc3bddb6b907a7ca12b213bd988cb5c51659e1',
+        summary: 'Repository truth reconciliation (docs/audits/current/*) and Phase 3 behavioral evaluation foundation (12 pilot suites, 73 deterministic cases)',
+      },
     ],
+    currentPhaseContext: {
+      phase: 'Phase 3.1',
+      title: 'Evaluation Predicate Hardening & Audit Provenance Integrity',
+      sourceCommitSha: headSha,
+      workingTreeState,
+      snapshotBasis,
+      auditedInputsSha256,
+      relationshipToCommitChain:
+        'Phase 3.1 is built directly on top of Phase 2.2 & Phase 3 (88dc3bddb6b907a7ca12b213bd988cb5c51659e1). Because a Git commit cannot embed its own final SHA inside tracked files, verification-manifest.json records 88dc3bddb6b907a7ca12b213bd988cb5c51659e1 as the latest completed commit in commitChain and sourceCommitSha, while locking the Phase 3.1 audited inputs via auditedInputsSha256.',
+    },
     ciVerificationPipeline: {
       command: 'npm run ci',
       steps: [
@@ -757,7 +880,7 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
           script: 'npm run evals:run',
           command: 'node scripts/run-evals.mjs',
           status: 'Passed',
-          verifiedScope: '73/73 deterministic fixture, truth-state separation, and contract-routing assertions passed (live_model: Not Run, blender_runtime: Not Run)',
+          verifiedScope: '73/73 deterministic fixture, truth-state separation, and contract-routing assertions passed with all 5 condition predicate operators hardened (live_model: Not Run, blender_runtime: Not Run)',
         },
         {
           script: 'npm run skills:export',
@@ -769,7 +892,7 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
           script: 'npm test',
           command: 'node --test scripts/test-phase1.mjs scripts/test-phase2.mjs scripts/test-phase3.mjs',
           status: 'Passed',
-          verifiedScope: 'Unit and integration suites across Phase 1, Phase 2 / 2.1, and Phase 3',
+          verifiedScope: 'Unit and integration suites across Phase 1, Phase 2 / 2.1, and Phase 3 / 3.1',
         },
       ],
     },
@@ -796,14 +919,25 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
 
 | Metric | Historical Phase 0 Baseline (\`3ea3c35\`) | Current Reconciled State (\`main\`) | Status / Change |
 | :--- | :---: | :---: | :--- |
-| **Overall Measured Score** | \`54.5 / 100\` | **\`70.0 / 100\`** | **\`+15.5\`** (backed by Phases 1, 2, 2.1, 3) |
+| **Overall Measured Score** | \`54.5 / 100\` | **\`70.0 / 100\`** | **\`+15.5\`** (backed by Phases 1, 2, 2.1, 3, 3.1) |
 | **Active P0 Zero-Compensation Blockers** | \`3\` (\`F-01\`, \`F-02\`, \`F-04\`) | **\`0\`** | \`F-01\` & \`F-02\` **FIXED**; \`F-04\` **PARTIALLY_FIXED** (CI runner active) |
 | **Skills with \`Artifact status: Not Run\` (\`F-01\`)** | \`30 / 48\` | **\`0 / 48\`** | **FIXED** in Phase 1 + guarded in \`scripts/check-docs.mjs\` |
 | **Portable ZIP Exporter & Full CI (\`F-02\`)** | \`spawnSync zip ENOENT\` | **Pure-Node \`fflate\` (48/48 ZIPs)** | **FIXED** in Phase 1 + \`EVAL.md\` verified in Phase 2.1 |
 | **Adapter Registry Sync (\`F-08\`)** | \`16 / 26\` targets synced | **\`26 / 26\` targets synced** | **PARTIALLY_FIXED** in Phase 1 (20 targets remain \`linked-only\`) |
 | **Machine-Readable Contracts (\`F-03\`)** | \`0 / 48\` | **\`4 / 48\` (\`routing-pilot\`)** | **PARTIALLY_FIXED** in Phase 2 & 2.1 (\`Ajv2020\` + 16-state solver) |
-| **Machine-Readable Eval Suites (\`F-04\`)** | \`0 / 48\` (0 runners) | **\`12 / 48\` (\`73\` cases in CI)** | **PARTIALLY_FIXED** in Phase 3 (\`36 / 48\` prose-only pending) |
+| **Machine-Readable Eval Suites (\`F-04\`)** | \`0 / 48\` (0 runners) | **\`12 / 48\` (\`73\` cases in CI)** | **PARTIALLY_FIXED** in Phase 3 & 3.1 (\`36 / 48\` prose-only pending) |
 | **Live LLM / Blender Runtime Evals** | \`Not Run\` | **\`Not Run\` / \`Not Produced\`** | Honest zero-fabrication boundary preserved |
+
+### 1.1 Audit Provenance & Snapshot Basis
+
+Because a Git commit cannot honestly contain its own final commit SHA inside tracked files, \`docs/audits/current/*.json\` records explicit provenance metadata (\`auditProvenance\`):
+
+| Provenance Field | Recorded Value | Explanation |
+| :--- | :--- | :--- |
+| \`sourceCommitSha\` | \`${headSha}\` (\`${headShort}\`) | Latest verified commit in Git history when the generator executed |
+| \`workingTreeState\` | \`${workingTreeState}\` | Whether audited files had uncommitted changes on top of \`sourceCommitSha\` |
+| \`snapshotBasis\` | \`${snapshotBasis}\` | Explicit distinction between a clean committed tree and a working tree on top of \`sourceCommitSha\` |
+| \`auditedInputsSha256\` | \`${auditedInputsSha256}\` | Deterministic SHA-256 content digest across all audited repository inputs |
 
 ---
 
@@ -814,7 +948,7 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
 | **F-01** | **P0** | \`Artifact status: Not Run\` contradiction in 30 skills | \`OPEN\` | **\`FIXED\`** | 0/48 skills affected; guarded in \`check-docs.mjs\` and \`test-phase1.mjs\`. |
 | **F-02** | **P0** | External \`zip\` binary dependency & partial CI workflow | \`OPEN\` | **\`FIXED\`** | Pure-Node \`fflate\` exports \`SKILL.md\`, \`EVAL.md\`, and \`references/*\`; \`docs.yml\` runs \`npm run ci\`. |
 | **F-03** | **P0** | Machine-readable \`contract.json\` & compiled \`registry/\` | \`OPEN\` | **\`PARTIALLY_FIXED\`** | 4/48 routing skills contracted with \`Ajv2020\` & 16-state overlap solver; 44/48 skills pending. |
-| **F-04** | **P0** | Structured behavioral evaluation suites & automated runner | \`OPEN\` | **\`PARTIALLY_FIXED\`** | 12/48 pilot \`.eval.json\` suites (73 cases) & \`scripts/run-evals.mjs\` in CI; 36/48 prose evals pending. |
+| **F-04** | **P0** | Structured behavioral evaluation suites & automated runner | \`OPEN\` | **\`PARTIALLY_FIXED\`** | 12/48 pilot \`.eval.json\` suites (73 cases) & \`scripts/run-evals.mjs\` (all 5 predicate operators) in CI; 36/48 prose evals pending. |
 | **F-05** | **P1** | 8 Batch 7/8 skills omit 9–11 extended template sections | \`OPEN\` | **\`OPEN\`** | 8/48 skills still omit extended template sections; tracked in \`skill-inventory.json\`. |
 | **F-06** | **P1** | Routing quartet handoffs & \`blender-scope-boundary-enforcer\` reachability | \`OPEN\` | **\`FIXED\`** | Wired in \`blendops-help\` and \`workflow-stage-router\` contracts and verified in \`workflow-graph.json\`. |
 | **F-07** | **P1** | Deterministic GLB inspector & Blender version matrices | \`OPEN\` | **\`OPEN\`** | Scoped in Phase 3 Roadmap E1 (\`docs/audits/phase-3/README.md\`). |
@@ -826,11 +960,11 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
 
 ## 3. Files in This Directory
 
-- [\`scorecard.json\`](./scorecard.json) — Reconciled 9-pillar scorecard (**70.0 / 100**) with side-by-side historical baseline comparison.
+- [\`scorecard.json\`](./scorecard.json) — Reconciled 9-pillar scorecard (**70.0 / 100**) with side-by-side historical baseline comparison and \`auditProvenance\`.
 - [\`findings.json\`](./findings.json) — Machine-readable lifecycle table for \`F-01\` through \`F-10\`.
 - [\`skill-inventory.json\`](./skill-inventory.json) — Live 48-skill inventory reflecting Phase 1 truth-state fixes, Phase 2/2.1 contracts, and Phase 3 pilot eval coverage.
 - [\`eval-inventory.json\`](./eval-inventory.json) — Live 48-skill evaluation inventory separating the 12 machine-readable pilot suites (73 cases) from the 36 prose-only \`EVAL.md\` files.
-- [\`verification-manifest.json\`](./verification-manifest.json) — Verified commit chain, CI pipeline commands, and runtime/artifact truth states.
+- [\`verification-manifest.json\`](./verification-manifest.json) — Verified commit chain through \`88dc3bddb6b907a7ca12b213bd988cb5c51659e1\`, Phase 3.1 provenance context, CI pipeline commands, and runtime/artifact truth states.
 
 ## Related Documentation
 
@@ -839,13 +973,13 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
 - Phase 3 Evaluation & Roadmap: [\`../phase-3/README.md\`](../phase-3/README.md)
 `;
 
-  fs.mkdirSync(CURRENT_DIR, { recursive: true });
-  fs.writeFileSync(path.join(CURRENT_DIR, 'scorecard.json'), JSON.stringify(currentScorecard, null, 2) + '\n', 'utf8');
-  fs.writeFileSync(path.join(CURRENT_DIR, 'findings.json'), JSON.stringify(findings, null, 2) + '\n', 'utf8');
-  fs.writeFileSync(path.join(CURRENT_DIR, 'skill-inventory.json'), JSON.stringify(currentSkillInventory, null, 2) + '\n', 'utf8');
-  fs.writeFileSync(path.join(CURRENT_DIR, 'eval-inventory.json'), JSON.stringify(currentEvalInventory, null, 2) + '\n', 'utf8');
-  fs.writeFileSync(path.join(CURRENT_DIR, 'verification-manifest.json'), JSON.stringify(verificationManifest, null, 2) + '\n', 'utf8');
-  fs.writeFileSync(path.join(CURRENT_DIR, 'README.md'), currentReadme, 'utf8');
+  fs.mkdirSync(currentDir, { recursive: true });
+  fs.writeFileSync(path.join(currentDir, 'scorecard.json'), JSON.stringify(currentScorecard, null, 2) + '\n', 'utf8');
+  fs.writeFileSync(path.join(currentDir, 'findings.json'), JSON.stringify(findings, null, 2) + '\n', 'utf8');
+  fs.writeFileSync(path.join(currentDir, 'skill-inventory.json'), JSON.stringify(currentSkillInventory, null, 2) + '\n', 'utf8');
+  fs.writeFileSync(path.join(currentDir, 'eval-inventory.json'), JSON.stringify(currentEvalInventory, null, 2) + '\n', 'utf8');
+  fs.writeFileSync(path.join(currentDir, 'verification-manifest.json'), JSON.stringify(verificationManifest, null, 2) + '\n', 'utf8');
+  fs.writeFileSync(path.join(currentDir, 'README.md'), currentReadme, 'utf8');
 
   return {
     currentScorecard,
