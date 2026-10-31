@@ -78,7 +78,7 @@ Keep gate states (`Pending | Pass | Fail | Blocked`) strictly separate from runt
 
 ```txt
 Runtime status: Not Run | Attempted | Produced | Verified | Failed
-Artifact status: Not Run | Not Produced | Produced | Verified | Failed
+Artifact status: Not Produced | Produced | Verified | Failed
 Evidence used: <links, paths, logs, or "none">
 Limitations: <known gaps>
 ```
@@ -196,7 +196,7 @@ Next skill routing (on Pass): hand off to workflow-stage-router
 Final handoff (after all stage gates Pass): pre-handoff-verification
 
 Runtime status: Not Run | Attempted | Produced | Verified | Failed
-Artifact status: Not Run | Not Produced | Produced | Verified | Failed
+Artifact status: Not Produced | Produced | Verified | Failed
 Evidence used: <links, paths, logs, or "none">
 Limitations: <gaps>
 ```

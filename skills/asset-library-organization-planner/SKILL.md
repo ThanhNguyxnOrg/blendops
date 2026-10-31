@@ -81,7 +81,7 @@ A library plan: folder tree, naming convention, per-asset metadata schema, versi
 
 ```txt
 Runtime status: Not Run | Attempted | Produced | Verified | Failed
-Artifact status: Not Run | Not Produced | Produced | Verified | Failed
+Artifact status: Not Produced | Produced | Verified | Failed
 Evidence used: <links, paths, logs, or "none">
 Limitations: <known gaps>
 ```
@@ -223,7 +223,7 @@ Review process: <1-page checklist>
 Migration steps (if applicable): <list>
 
 Runtime status: Not Run | Attempted | Produced | Verified | Failed
-Artifact status: Not Run | Not Produced | Produced | Verified | Failed
+Artifact status: Not Produced | Produced | Verified | Failed
 Evidence used: <links, paths, logs, or "none">
 Limitations: <known gaps>
 Next: operator implements structure; `blender-asset-discovery-planner` and `asset-fallback-strategy` use this library as their internal source

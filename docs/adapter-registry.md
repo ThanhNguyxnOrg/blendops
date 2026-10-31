@@ -9,42 +9,46 @@ Status: Draft v0
 
 | Adapter | Status | Confidence | Default scope | Fallback | Notes |
 |---|---|---|---|---|---|
-| Claude Code | Draft | verified-read | project-local | generic-root | Distinct from Claude app/Desktop |
-| Claude app/Desktop | Draft | linked-only | docs-only/reference | generic-root | Use connector/runtime docs context only |
-| OpenCode | Draft | linked-only | project-local | generic-root | Verify native skill path before writing |
-| Cursor | Draft | linked-only | project-local | generic-root | Prefer rules/doc attachment if verified |
-| Codex/generic | Draft | linked-only | generic-root | docs-only/reference | AGENTS.md-style fallback |
-| Generic-root | Draft | verified-read | project-local | docs-only/reference | Universal fallback for unknown tools |
+| Claude Code | Draft | verified-read | project-local | generic-root | Distinct from Claude app/Desktop; adapter doc at [`docs/adapters/claude-code.md`](./adapters/claude-code.md) |
+| Claude app/Desktop | Draft | linked-only | docs-only/reference | generic-root | Use connector/runtime docs context only; adapter doc at [`docs/adapters/claude-app.md`](./adapters/claude-app.md) |
+| OpenCode | Draft | linked-only | project-local | generic-root | Verify native skill path before writing; adapter doc at [`docs/adapters/opencode.md`](./adapters/opencode.md) |
+| Cursor | Draft | linked-only | project-local | generic-root | Prefer rules/doc attachment if verified; adapter doc at [`docs/adapters/cursor.md`](./adapters/cursor.md) |
+| Codex/generic | Draft | linked-only | generic-root | docs-only/reference | `AGENTS.md`-style fallback; adapter doc at [`docs/adapters/codex.md`](./adapters/codex.md) |
+| Generic-root | Draft | verified-read | project-local | docs-only/reference | Universal fallback for unknown tools; adapter doc at [`docs/adapters/generic-root.md`](./adapters/generic-root.md) |
 
 ## Install-only targets pending adapter draft
 
-These targets have an install doc but **no adapter row yet**. They use the generic-root fallback until an adapter doc is authored under `docs/adapters/`.
+These targets have an install doc under [`docs/install/`](./install/) (`linked-only` confidence or docs-only reference) but **no dedicated adapter doc yet** under [`docs/adapters/`](./adapters/). Having an install guide does not imply a verified adapter; they use the `generic-root` or `docs-only/reference` fallback until promoted via [`docs/adapters/adapter-template.md`](./adapters/adapter-template.md).
 
-| Target | Install doc | Why no adapter yet |
-|---|---|---|
-| Gemini CLI | [`docs/install/gemini.md`](./install/gemini.md) | linked-only research; native skill path unverified |
-| Antigravity | [`docs/install/antigravity.md`](./install/antigravity.md) | linked-only research; native skill path unverified |
-| GitHub Copilot (chat) | [`docs/install/github-copilot.md`](./install/github-copilot.md) | linked-only research; no native skill format confirmed |
-| Claude Desktop (manual import) | [`docs/install/claude-desktop.md`](./install/claude-desktop.md) | covered by `claude-app/Desktop` adapter row above as docs-only/reference; manual personal-skill ZIP path is install-only |
-| **Cline** (VS Code) | [`docs/install/cline.md`](./install/cline.md) | Coding agent; MCP via Settings → Integrations; native skill loader unverified, generic fallback used |
-| **Continue.dev** | [`docs/install/continue.md`](./install/continue.md) | Coding agent; MCP via `.continue/mcpServers/`; native skill loader unverified, generic fallback used |
-| **Zed editor** | [`docs/install/zed.md`](./install/zed.md) | Coding agent (editor); MCP via `settings.json` `context_servers`; native skill loader unverified |
-| **goose** (Block) | [`docs/install/goose.md`](./install/goose.md) | Coding agent; MCP via Standard IO extension; goose has upstream Blender tutorial covering Path 2 |
-| **Ollama** | [`docs/install/ollama.md`](./install/ollama.md) | Local LLM runner (NOT a coding agent); MCP support experimental (PR #13700); BlendOps stays docs-only |
-| **LM Studio** | [`docs/install/lm-studio.md`](./install/lm-studio.md) | Local LLM runner (NOT a coding agent); `mcp.json` Cursor-compatible; BlendOps stays docs-only |
-| **Open WebUI** | [`docs/install/open-webui.md`](./install/open-webui.md) | Local LLM frontend (NOT a coding agent); Streamable HTTP MCP; BlendOps stays docs-only |
+| Target | Install doc | Confidence | Why no adapter yet |
+|---|---|---|---|
+| Gemini CLI | [`docs/install/gemini.md`](./install/gemini.md) | `linked-only` | Native skill path unverified; uses project-local generic fallback |
+| Antigravity | [`docs/install/antigravity.md`](./install/antigravity.md) | `linked-only` | Native skill path unverified; uses project-local generic fallback |
+| GitHub Copilot (chat) | [`docs/install/github-copilot.md`](./install/github-copilot.md) | `linked-only` | No native skill format confirmed; uses repository instructions fallback |
+| Claude Desktop (manual import) | [`docs/install/claude-desktop.md`](./install/claude-desktop.md) | `linked-only` | Covered by `Claude app/Desktop` adapter row above as docs-only/reference; manual personal-skill ZIP path is install-only |
+| **Cline** (VS Code) | [`docs/install/cline.md`](./install/cline.md) | `linked-only` | Coding agent; MCP via Settings → Integrations; native skill loader unverified, generic fallback used |
+| **Continue.dev** | [`docs/install/continue.md`](./install/continue.md) | `linked-only` | Coding agent; MCP via `.continue/mcpServers/`; native skill loader unverified, generic fallback used |
+| **Zed editor** | [`docs/install/zed.md`](./install/zed.md) | `linked-only` | Coding agent (editor); MCP via `settings.json` `context_servers`; native skill loader unverified |
+| **goose** (Block) | [`docs/install/goose.md`](./install/goose.md) | `linked-only` | Coding agent; MCP via Standard IO extension; goose has upstream Blender tutorial covering Path 2 |
+| **Roo Code** | [`docs/install/roo-code.md`](./install/roo-code.md) | `linked-only` | Coding agent; `.roo/rules/` and MCP integration documented; native skill pack loader unverified, generic fallback used |
+| **Windsurf** | [`docs/install/windsurf.md`](./install/windsurf.md) | `linked-only` | Coding agent (IDE); `.windsurfrules` and MCP config documented; native skill pack loader unverified, generic fallback used |
+| **OpenHands** | [`docs/install/openhands.md`](./install/openhands.md) | `linked-only` | Coding agent; microagents/repository instructions documented; native skill loader unverified, generic fallback used |
+| **JetBrains Junie** | [`docs/install/jetbrains-junie.md`](./install/jetbrains-junie.md) | `linked-only` | Coding agent; `.junie/guidelines.md` documented; native skill loader unverified, generic fallback used |
+| **Blackbox AI** | [`docs/install/blackbox-ai.md`](./install/blackbox-ai.md) | `linked-only` | Coding agent; project instructions and MCP setup documented; native skill loader unverified, generic fallback used |
+| **Augment Code** | [`docs/install/augment-code.md`](./install/augment-code.md) | `linked-only` | Coding agent; workspace guidelines and MCP documented; native skill loader unverified, generic fallback used |
+| **Aider** | [`docs/install/aider.md`](./install/aider.md) | `linked-only` | CLI coding agent; `CONVENTIONS.md` / `--read` attachment documented; no native skill pack loader, generic fallback used |
+| **Trae** (ByteDance) | [`docs/install/trae.md`](./install/trae.md) | `linked-only` | Coding agent (IDE); project rules and MCP config documented; native skill loader unverified, generic fallback used |
+| **Sourcegraph Cody** | [`docs/install/sourcegraph-cody.md`](./install/sourcegraph-cody.md) | `linked-only` | Coding agent; context rules and OpenCtx/MCP documented; native skill loader unverified, generic fallback used |
+| **Amazon Q Developer** | [`docs/install/amazon-q-developer.md`](./install/amazon-q-developer.md) | `linked-only` | Coding agent; `.amazonq/rules/` and MCP config documented; native skill loader unverified, generic fallback used |
+| **Ollama** | [`docs/install/ollama.md`](./install/ollama.md) | `linked-only` | Local LLM runner (NOT a coding agent); MCP support experimental (PR #13700); BlendOps stays docs-only |
+| **LM Studio** | [`docs/install/lm-studio.md`](./install/lm-studio.md) | `linked-only` | Local LLM runner (NOT a coding agent); `mcp.json` Cursor-compatible; BlendOps stays docs-only |
+| **Open WebUI** | [`docs/install/open-webui.md`](./install/open-webui.md) | `linked-only` | Local LLM frontend (NOT a coding agent); Streamable HTTP MCP; BlendOps stays docs-only |
 
 ## Future candidates (not researched)
 
-- Windsurf
-- Continue
-- Cline
-- Roo
-- Aider
-- VS Code extensions
-- Other AI coding agents
+- Other AI coding agents or 3D-capable agent hosts not yet listed in [`docs/install/README.md`](./install/README.md)
 
 For future candidates:
 - mark as not researched until verified
 - do not invent paths
-- add via `docs/adapters/adapter-template.md`
+- start as an install doc under [`docs/install/`](./install/), then graduate to an adapter via [`docs/adapters/adapter-template.md`](./adapters/adapter-template.md)

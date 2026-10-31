@@ -67,7 +67,7 @@ Structure **CLI fallback appendix** jobs (batch render, batch export, scripted s
 
 ```txt
 Runtime status: Not Run | Attempted | Produced | Verified | Failed
-Artifact status: Not Run | Not Produced | Produced | Verified | Failed (default: Not Produced)
+Artifact status: Not Produced | Produced | Verified | Failed (default: Not Produced)
 Rule: Downgrade-only, never upgrade. Outlining a job never executes Blender (Runtime remains Not Run; Artifact remains Not Produced).
 Blockers: <separate line>
 Evidence used: <none during outlining; route actual CLI logs/outputs to render-export-evidence>

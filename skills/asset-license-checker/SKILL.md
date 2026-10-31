@@ -76,7 +76,7 @@ Validation verdicts (`Pass` / `Warn` / `Fail`) apply per asset and are separate 
 
 ```txt
 Runtime status: Not Run | Attempted | Produced | Verified | Failed
-Artifact status: Not Run | Not Produced | Produced | Verified | Failed
+Artifact status: Not Produced | Produced | Verified | Failed
 Evidence used: <links, paths, logs, or "none">
 Limitations: <known gaps>
 ```
@@ -205,7 +205,7 @@ Top-line gate verdict: <Pass / Warn / Fail>
 Note: Not legal advice; escalate any license ambiguity to your legal team.
 
 Runtime status: Not Run | Attempted | Produced | Verified | Failed
-Artifact status: Not Run | Not Produced | Produced | Verified | Failed (default: Not Produced)
+Artifact status: Not Produced | Produced | Verified | Failed (default: Not Produced)
 Evidence used: <links, paths, logs, or "none">
 Limitations: <known gaps>
 Next: <if all Pass or explicitly accepted Warn: asset-style-consistency-checker / asset-library-organization-planner / workflow-stage-router | if any Fail: asset-fallback-strategy / blender-asset-discovery-planner>

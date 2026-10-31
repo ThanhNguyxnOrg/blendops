@@ -14,4 +14,4 @@ jobs:
         with:
           node-version: 20
       - run: npm ci
-      - run: npm run docs:check
+      - run: npm run ci

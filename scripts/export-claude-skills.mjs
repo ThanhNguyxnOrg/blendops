@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import fs from 'node:fs';
 import path from 'node:path';
-import { execFileSync } from 'node:child_process';
+import { zipSync } from 'fflate';
 
 const root = process.cwd();
 const skillsDir = path.join(root, 'skills');
@@ -21,24 +21,28 @@ function copyDir(src, dest) {
   fs.cpSync(src, dest, { recursive: true });
 }
 
+function collectZipEntries(dir, baseDir, entries = {}) {
+  const items = fs
+    .readdirSync(dir, { withFileTypes: true })
+    .sort((a, b) => a.name.localeCompare(b.name));
+
+  for (const item of items) {
+    const fullPath = path.join(dir, item.name);
+    if (item.isDirectory()) {
+      collectZipEntries(fullPath, baseDir, entries);
+    } else if (item.isFile()) {
+      const relPath = path.relative(baseDir, fullPath).split(path.sep).join('/');
+      entries[relPath] = new Uint8Array(fs.readFileSync(fullPath));
+    }
+  }
+  return entries;
+}
+
 function zipDir(srcDir, zipPath) {
   const parent = path.dirname(srcDir);
-  const folder = path.basename(srcDir);
-
-  if (process.platform === 'win32') {
-    execFileSync(
-      'powershell.exe',
-      [
-        '-NoProfile',
-        '-Command',
-        `Compress-Archive -Path ${JSON.stringify(path.join(parent, folder))} -DestinationPath ${JSON.stringify(zipPath)} -Force`,
-      ],
-      { stdio: 'pipe' },
-    );
-    return;
-  }
-
-  execFileSync('zip', ['-qr', zipPath, folder], { cwd: parent, stdio: 'pipe' });
+  const entries = collectZipEntries(srcDir, parent);
+  const zipped = zipSync(entries, { level: 6 });
+  fs.writeFileSync(zipPath, Buffer.from(zipped));
 }
 
 function listSkillDirs() {

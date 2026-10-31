@@ -141,7 +141,7 @@ Run all 7 checks. Each applicable check must pass before a claim is upheld; othe
 
 - verifies a text-only deliverable (plan, brief, response) — checks 1, 2, 7 apply; checks 3-6 marked N/A explicitly
 - runtime status: must be `Not Run` (if input claims `Attempted`, `Produced`, or `Verified` without runtime execution, downgrade to `Not Run`)
-- artifact status: must be `Not Produced` or `Not Run` (downgrade any higher claim)
+- artifact status: must be `Not Produced` (downgrade any higher claim)
 
 ### Runtime-ready mode
 

@@ -69,7 +69,7 @@ Outline **Path 1 host surfaces** — **(a)** Anthropic Connector in Claude Deskt
 
 ```txt
 Runtime status: Not Run | Attempted | Produced | Verified | Failed
-Artifact status: Not Run | Not Produced | Produced | Verified | Failed (default: Not Produced)
+Artifact status: Not Produced | Produced | Verified | Failed (default: Not Produced)
 Rule: Downgrade-only, never upgrade. Outlining hosts never configures hosts or runs Blender.
 Blockers: <separate line>
 Evidence used: <doc references>

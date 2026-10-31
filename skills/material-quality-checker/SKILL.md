@@ -79,7 +79,7 @@ A per-material verdict table: name, type (PBR / non-PBR / variant), albedo state
 
 ```txt
 Runtime status: Not Run | Attempted | Produced | Verified | Failed
-Artifact status: Not Run | Not Produced | Produced | Verified | Failed
+Artifact status: Not Produced | Produced | Verified | Failed
 Evidence used: <links, paths, logs, or "none">
 Limitations: <known gaps>
 ```
@@ -217,7 +217,7 @@ Top-line: <Pass / Warn / Fail>
 Worst offenders: <list 1-2>
 Remediation hints: <advisory hints per Fail/Warn row, no edits performed>
 Runtime status: <Not Run | Attempted | Produced | Verified | Failed>
-Artifact status: <Not Run | Not Produced | Produced | Verified | Failed>
+Artifact status: <Not Produced | Produced | Verified | Failed>
 Evidence used: <links, paths, logs, or "none">
 Limitations: <gaps>
 Next: <blender-scene-quality-checker | render-export-evidence | glb-web-handoff | blender-lighting-material-planner>

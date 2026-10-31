@@ -73,7 +73,7 @@ Produce a **single primary** runtime execution choice among Path 1 (Blender Lab 
 
 ```txt
 Runtime status: Not Run | Attempted | Produced | Verified | Failed
-Artifact status: Not Run | Not Produced | Produced | Verified | Failed
+Artifact status: Not Produced | Produced | Verified | Failed
 Blockers: <separate line; route contradictory constraints to pre-handoff-verification>
 Evidence used: <user-stated constraints only unless logs provided>
 Limitations: <unknown Blender build or unverified host state>

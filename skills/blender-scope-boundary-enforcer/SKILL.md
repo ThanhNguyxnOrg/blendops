@@ -66,7 +66,7 @@ A scope decision record: named addition (one sentence), classification (in-gate 
 
 ```txt
 Runtime status: Not Run | Attempted | Produced | Verified | Failed
-Artifact status: Not Run | Not Produced | Produced | Verified | Failed
+Artifact status: Not Produced | Produced | Verified | Failed
 Evidence used: <links, paths, logs, or "none">
 Limitations: <known gaps>
 ```
@@ -185,7 +185,7 @@ Options:
 Recommended: <option>
 Decision needed before proceeding.
 Runtime status: Not Run | Attempted | Produced | Verified | Failed
-Artifact status: Not Run | Not Produced | Produced | Verified | Failed (default: Not Produced)
+Artifact status: Not Produced | Produced | Verified | Failed (default: Not Produced)
 Limitations: <gaps; scope decisions never upgrade truth states>
 ```
 

@@ -91,7 +91,7 @@ This skill is BlendOps-specific, driven by the single-bridge constraint describe
 ### Evidence / caveat output
 
 - runtime status: unchanged by diagnosis (`Not Run | Attempted | Produced | Verified | Failed`; downgrade-only, never upgrade)
-- artifact status: unchanged by diagnosis (`Not Run | Not Produced | Produced | Verified | Failed`, default `Not Produced`; downgrade-only, never upgrade)
+- artifact status: unchanged by diagnosis (`Not Produced | Produced | Verified | Failed`, default `Not Produced`; downgrade-only, never upgrade)
 - explicit note that resolution requires operator action; this skill only diagnoses and plans, and never executes
 
 ## Required laws

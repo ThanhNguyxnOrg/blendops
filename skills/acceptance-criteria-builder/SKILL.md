@@ -71,7 +71,7 @@ Turn a locked 3D brief plus chosen recipe into a measurable acceptance checklist
 
 ```txt
 Runtime status: Not Run | Attempted | Produced | Verified | Failed
-Artifact status: Not Run | Not Produced | Produced | Verified | Failed
+Artifact status: Not Produced | Produced | Verified | Failed
 Evidence used: <brief version ID + chosen recipe ID>
 Limitations: <subjective rows flagged; planning-only — writing criteria never produces artifacts or verifies files>
 ```

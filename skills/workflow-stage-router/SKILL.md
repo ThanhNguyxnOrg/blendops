@@ -67,7 +67,7 @@ Reduce skill-choice paralysis by mapping **current state → next narrow skill**
 
 ```txt
 Runtime status: Not Run | Attempted | Produced | Verified | Failed
-Artifact status: Not Run | Not Produced | Produced | Verified | Failed (defaults to Not Produced; downgrade-only, never upgrade)
+Artifact status: Not Produced | Produced | Verified | Failed (defaults to Not Produced; downgrade-only, never upgrade)
 Evidence used: <inventory references>
 Limitations: <unknown state>
 ```

@@ -72,7 +72,7 @@ A fallback option table: option (`replace` / `re-source` / `procedural` / `gener
 
 ```txt
 Runtime status: Not Run | Attempted | Produced | Verified | Failed
-Artifact status: Not Run | Not Produced | Produced | Verified | Failed (default: Not Produced)
+Artifact status: Not Produced | Produced | Verified | Failed (default: Not Produced)
 Rule: downgrade-only, never upgrade
 Evidence used: <links, paths, logs, or "none">
 Limitations: <known gaps>
@@ -207,7 +207,7 @@ Updated asset list: <link or note>
 Next re-checks (if replacement picked): asset-license-checker, asset-style-consistency-checker, glb-mobile-performance-budget (if budget applies)
 Escalation (if no viable fallback): blender-scope-boundary-enforcer or blender-recipe-decomposer
 Runtime status: Not Run | Attempted | Produced | Verified | Failed
-Artifact status: Not Run | Not Produced | Produced | Verified | Failed (default: Not Produced; downgrade-only)
+Artifact status: Not Produced | Produced | Verified | Failed (default: Not Produced; downgrade-only)
 Evidence used: <links, paths, logs, or "none">
 Limitations: <known gaps>
 ```

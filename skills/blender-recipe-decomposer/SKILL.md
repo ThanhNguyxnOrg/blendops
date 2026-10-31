@@ -70,7 +70,7 @@ A recipe table containing: name, brief seed (one line), stop condition (one line
 Decomposition is a pre-work scope splitter and creates no runtime or artifact truth claims. Truth states are downgrade-only (never upgrade without evidence); default artifact state is `Not Produced`.
 
 Runtime status: Not Run | Attempted | Produced | Verified | Failed (default at decomposition: Not Run)
-Artifact status: Not Run | Not Produced | Produced | Verified | Failed (default at decomposition: Not Produced)
+Artifact status: Not Produced | Produced | Verified | Failed (default at decomposition: Not Produced)
 Evidence used: <links, paths, logs, or "none">
 Limitations: <known gaps>
 

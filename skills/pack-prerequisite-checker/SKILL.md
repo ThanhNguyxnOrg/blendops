@@ -71,7 +71,7 @@ Block "half-ready" pack execution: confirm the user's brief, chosen pack/recipe,
 
 ```txt
 Runtime status: Not Run | Attempted | Produced | Verified | Failed
-Artifact status: Not Run | Not Produced | Produced | Verified | Failed
+Artifact status: Not Produced | Produced | Verified | Failed
 Evidence used: <brief text, doc paths>
 Limitations: <unknowns>
 ```

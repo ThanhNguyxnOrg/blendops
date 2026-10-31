@@ -98,7 +98,7 @@ A short next-step recommendation with one safe primary action.
 ```txt
 Recommended next action: <skill/doc/action>
 Runtime status: Not Run | Attempted | Produced | Verified | Failed
-Artifact status: Not Run | Not Produced | Produced | Verified | Failed
+Artifact status: Not Produced | Produced | Verified | Failed
 Evidence used: <links/paths or none>
 Why this is safe: <reason>
 ```

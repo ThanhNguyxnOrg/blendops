@@ -79,7 +79,7 @@ Validation verdicts (`Pass / Warn / Fail`) are separate from runtime and artifac
 
 ```txt
 Runtime status: Not Run | Attempted | Produced | Verified | Failed
-Artifact status: Not Run | Not Produced | Produced | Verified | Failed
+Artifact status: Not Produced | Produced | Verified | Failed
 Evidence used: <links, paths, logs, or "none">
 Limitations: <known gaps>
 ```
@@ -208,7 +208,7 @@ Top-line: <Pass / Warn / Fail>
 Worst offenders: <list or "none">
 
 Runtime status: Not Run | Attempted | Produced | Verified | Failed
-Artifact status: Not Run | Not Produced | Produced | Verified | Failed
+Artifact status: Not Produced | Produced | Verified | Failed
 Evidence used: <links, paths, logs, or "none">
 Limitations: <known gaps>
 Next: blender-scene-quality-checker | blender-lighting-material-planner | material-quality-checker | composition-quality-checker | render-export-evidence

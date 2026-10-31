@@ -72,7 +72,7 @@ A per-asset row table containing: asset name, realism axis, detail axis, color a
 
 ```txt
 Runtime status: Not Run | Attempted | Produced | Verified | Failed
-Artifact status: Not Run | Not Produced | Produced | Verified | Failed (default: Not Produced)
+Artifact status: Not Produced | Produced | Verified | Failed (default: Not Produced)
 Evidence used: <links, paths, logs, or "none">
 Limitations: <known gaps>
 
@@ -195,7 +195,7 @@ Brief style: <one line locked baseline>
 Top-line consistency: Pass / Warn / Fail
 Assets to drop / restyle / replace: <list or "none">
 Runtime status: Not Run | Attempted | Produced | Verified | Failed
-Artifact status: Not Run | Not Produced | Produced | Verified | Failed (default: Not Produced)
+Artifact status: Not Produced | Produced | Verified | Failed (default: Not Produced)
 Evidence used: <links, paths, logs, or "none">
 Limitations: <known gaps>
 Next: asset-library-organization-planner & blender-scene-quality-checker (Pass) / asset-fallback-strategy (Fail)

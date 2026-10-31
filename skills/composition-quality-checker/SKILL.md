@@ -77,7 +77,7 @@ Validation verdicts (`Pass | Warn | Fail`) are separate from runtime and artifac
 
 ```txt
 Runtime status: Not Run | Attempted | Produced | Verified | Failed
-Artifact status: Not Run | Not Produced | Produced | Verified | Failed
+Artifact status: Not Produced | Produced | Verified | Failed
 Evidence used: <links, paths, logs, or "none">
 Limitations: <known gaps>
 ```
@@ -218,7 +218,7 @@ Worst offenders: <list or "none">
 Remediation hints: <hints only — no camera edits>
 
 Runtime status: Not Run | Attempted | Produced | Verified | Failed
-Artifact status: Not Run | Not Produced | Produced | Verified | Failed (default: Not Produced)
+Artifact status: Not Produced | Produced | Verified | Failed (default: Not Produced)
 Evidence used: <links, paths, logs, or "none">
 Limitations: <gaps>
 Next: blender-scene-quality-checker | blender-composition-camera-planner | resolution-aspect-decision | render-export-evidence

@@ -800,6 +800,45 @@ for (const f of blenderVersionRequiredFiles) {
   }
 }
 
+// Phase 1 (F-01): Enforce separation between Runtime status ('Not Run') and Artifact status ('Not Produced').
+// Schema declarations must never assign 'Not Run' to 'Artifact status:', while still permitting
+// negative examples in '## Anti-patterns' that warn against using `Artifact status: Not Run`.
+for (const skillFile of requiredSkills) {
+  const txt = fs.readFileSync(path.join(root, skillFile), 'utf8');
+  const lines = txt.split(/\r?\n/);
+  let currentHeading = '';
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    const hMatch = line.match(/^##\s+(.+?)\s*$/);
+    if (hMatch) {
+      currentHeading = hMatch[1].trim();
+      continue;
+    }
+    if (currentHeading === 'Anti-patterns') continue;
+    if (/^\s*(?:[-*]\s+)?Artifact status:\s*<?Not Run\b/i.test(line)) {
+      errors.push(
+        `Truth-state violation in ${skillFile}:${i + 1} ('Not Run' is a Runtime state, not an Artifact state): "${line.trim()}"`,
+      );
+    }
+  }
+}
+
+// Phase 1 (F-08): Ensure docs/adapter-registry.md stays synchronized with all install targets.
+const adapterRegistryTxt = fs.readFileSync(path.join(root, 'docs/adapter-registry.md'), 'utf8');
+const futureCandidatesSectionMatch = adapterRegistryTxt.match(
+  /## Future candidates \(not researched\)([\s\S]*?)(?=\r?\n## |$)/,
+);
+if (futureCandidatesSectionMatch) {
+  const futureTxt = futureCandidatesSectionMatch[1];
+  for (const staleName of ['Windsurf', 'Continue', 'Cline', 'Roo', 'Aider']) {
+    if (new RegExp(`\\b${staleName}\\b`, 'i').test(futureTxt)) {
+      errors.push(
+        `Stale entry '${staleName}' listed under 'Future candidates (not researched)' in docs/adapter-registry.md despite shipping an install doc in docs/install/`,
+      );
+    }
+  }
+}
+
 if (errors.length > 0) {
   console.error('\nDocs check failed with the following issues:');
   for (const e of errors) console.error(`- ${e}`);

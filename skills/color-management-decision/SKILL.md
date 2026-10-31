@@ -71,7 +71,7 @@ A 4-line config record: `Display Device`, `View Transform`, `Look`, `Sequencer`.
 
 ```txt
 Runtime status: Not Run | Attempted | Produced | Verified | Failed
-Artifact status: Not Run | Not Produced | Produced | Verified | Failed
+Artifact status: Not Produced | Produced | Verified | Failed
 Evidence used: <links, paths, logs, or "none">
 Limitations: <known gaps>
 ```
@@ -213,7 +213,7 @@ Per-output rules:
 
 Caveats: <list>
 Runtime status: Not Run | Attempted | Produced | Verified | Failed
-Artifact status: Not Run | Not Produced | Produced | Verified | Failed
+Artifact status: Not Produced | Produced | Verified | Failed
 Evidence used: <links, paths, logs, or "none">
 Limitations: <known gaps>
 Next: <render-export-evidence | material-quality-checker | output-format-decision | cycles-vs-eevee-decision | glb-web-handoff>

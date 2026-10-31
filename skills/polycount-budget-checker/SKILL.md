@@ -79,7 +79,7 @@ A per-mesh row table: mesh name, triangle count, count basis (`base` / `viewport
 
 ```txt
 Runtime status: Not Run | Attempted | Produced | Verified | Failed
-Artifact status: Not Run | Not Produced | Produced | Verified | Failed (default: Not Produced)
+Artifact status: Not Produced | Produced | Verified | Failed (default: Not Produced)
 Evidence used: <links, paths, logs, or "none">
 Limitations: <known gaps, viewport-only caveats, or Scene Simplify notes>
 ```
@@ -210,7 +210,7 @@ Pinned budget: <total triangles cap> | <per-mesh cap> (from glb-mobile-performan
 Total scene cost: <N> of <cap> (<%>) | Per-mesh worst: <name> at <count> (<basis>)
 Top-line verdict: <Pass / Warn / Fail / Not Run>
 Runtime status: <Not Run | Attempted | Produced | Verified | Failed>
-Artifact status: <Not Run | Not Produced | Produced | Verified | Failed>
+Artifact status: <Not Produced | Produced | Verified | Failed>
 Evidence used: <links, paths, logs, or "none">
 Limitations: <gaps, viewport-only warnings, or Scene Simplify notes>
 Next: blender-scene-quality-checker | glb-mobile-performance-budget | render-export-evidence
