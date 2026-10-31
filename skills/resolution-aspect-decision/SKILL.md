@@ -21,14 +21,18 @@ Avoid the most common render planning mistake: rendering at one aspect / resolut
 - before composition planning (aspect drives composition rules)
 
 ## When not to use
-- after render is complete (no benefit)
-- pure modeling
-- internal preview-only renders (any reasonable size works)
+<!-- blendops:generated:start exclusions -->
+- after render is complete (no benefit) → use `../blender-composition-camera-planner/SKILL.md` (no benefit)
+- pure modeling → use `../output-format-decision/SKILL.md` (Delegates out-of-scope requests to output-format-decision)
+- internal preview-only renders (any reasonable size works) → use `../composition-quality-checker/SKILL.md` (any reasonable size works)
+<!-- blendops:generated:end exclusions -->
 
 ## Trigger phrases
+<!-- blendops:generated:start triggers -->
 - "what resolution"
 - "how big should the render be"
 - "16:9 or square"
+<!-- blendops:generated:end triggers -->
 
 ## Prerequisites / readiness
 - Consumer use case and target placement are known (or ready to be confirmed with one question).
@@ -218,13 +222,14 @@ Next: blender-composition-camera-planner -> composition-quality-checker -> rende
 - "Default size" answers.
 
 ## Cross-skill handoff
-
-* Camera & composition planning (upstream framing setup) → `../blender-composition-camera-planner/SKILL.md`
-* Composition framing validation against pinned aspect → `../composition-quality-checker/SKILL.md`
-* Color configuration decision → `../color-management-decision/SKILL.md`
-* Container / codec decision → `../output-format-decision/SKILL.md`
-* Render engine decision → `../cycles-vs-eevee-decision/SKILL.md`
-* Post-render saved file verification → `../render-export-evidence/SKILL.md`
+<!-- blendops:generated:start handoffs -->
+- [upstream_reference] Camera & composition planning (upstream framing setup) → `../blender-composition-camera-planner/SKILL.md`
+- [progression] Composition framing validation against pinned aspect → `../composition-quality-checker/SKILL.md`
+- [upstream_reference] Color configuration decision → `../color-management-decision/SKILL.md`
+- [progression] Container / codec decision → `../output-format-decision/SKILL.md`
+- [progression] Render engine decision → `../cycles-vs-eevee-decision/SKILL.md`
+- [progression] Post-render saved file verification → `../render-export-evidence/SKILL.md`
+<!-- blendops:generated:end handoffs -->
 
 ## Non-goals
 

@@ -1,0 +1,115 @@
+{
+  "$schema": "../../schemas/skill-contract.schema.json",
+  "id": "blender-brainstorming",
+  "version": "1.0.0",
+  "category": "process-discipline",
+  "role": "pre-brief-ideation-and-clarification",
+  "purpose": "Socratic exploration of a non-Blender-user's 3D intent before scene planning. Use when the request is vague, has multiple plausible interpretations, or needs creative scoping.",
+  "capabilityTier": "L0",
+  "triggers": [
+    "I want a 3D render of...\" (vague)",
+    "Make me something cool with...",
+    "Help me plan a Blender scene\" (no constraints given)",
+    "I'm not sure what I want exactly...",
+    "Brainstorm with me about..."
+  ],
+  "exclusions": [
+    {
+      "condition": "the user already provided a structured brief (route directly to intent-to-3d-brief-writer to lock the brief before any planner runs)",
+      "delegateTo": "intent-to-3d-brief-writer",
+      "reason": "route directly to intent-to-3d-brief-writer to lock the brief before any planner runs"
+    },
+    {
+      "condition": "the user explicitly asked to skip clarification (record explicit assumptions and route to intent-to-3d-brief-writer)",
+      "delegateTo": "intent-to-3d-brief-writer",
+      "reason": "record explicit assumptions and route to intent-to-3d-brief-writer"
+    },
+    {
+      "condition": "the user pushes for immediate execution rather than exploration",
+      "delegateTo": "official-runtime-readiness-checker",
+      "reason": "route to official-runtime-readiness-checker"
+    }
+  ],
+  "inputs": {
+    "required": [
+      {
+        "name": "initial_user_idea",
+        "type": "string",
+        "description": "Vague, exploratory, or open-ended 3D concept from the user"
+      }
+    ],
+    "optional": [
+      {
+        "name": "brand_or_mood_references",
+        "type": "array",
+        "description": "Optional mood keywords, reference products, or target audience notes"
+      }
+    ]
+  },
+  "outputs": {
+    "primary": [
+      "divergent_concept_options",
+      "clarifying_questions_shortlist",
+      "recommended_direction_for_brief"
+    ],
+    "truthStatePolicy": {
+      "runtimeDefault": "Not Run",
+      "artifactDefault": "Not Produced",
+      "mutationRule": "downgrade_only"
+    }
+  },
+  "handoffs": [
+    {
+      "target": "intent-to-3d-brief-writer",
+      "type": "progression",
+      "label": "Lock the confirmed brief downstream",
+      "when": {
+        "all": [
+          {
+            "field": "goal.clarity",
+            "operator": "equals",
+            "value": "clear"
+          },
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": false
+          }
+        ]
+      }
+    },
+    {
+      "target": "official-runtime-readiness-checker",
+      "type": "progression",
+      "label": "User pushes for execution mid-brainstorm",
+      "when": {
+        "all": [
+          {
+            "field": "runtime.path",
+            "operator": "not_equals",
+            "value": "unselected"
+          },
+          {
+            "field": "runtime.verifiedReady",
+            "operator": "equals",
+            "value": false
+          }
+        ]
+      }
+    },
+    {
+      "target": "non-blender-user-response-writer",
+      "type": "progression",
+      "label": "Explain blocked runtime status to user",
+      "when": {
+        "all": [
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "final_communication"
+          }
+        ]
+      }
+    }
+  ]
+}

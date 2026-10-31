@@ -32,22 +32,22 @@ Use this skill when:
 - `pre-handoff-verification` or `preview-report-template-writer` requires classified artifact truth labels as input
 
 ## When not to use
-
-Do not use this skill when:
-
-- the user only needs a scene plan with no runtime or artifact evidence
-- runtime readiness or path selection has not been completed and the user wants setup or routing; use `official-runtime-readiness-checker` or `runtime-path-picker`
-- the task is gating a handoff via confirm-or-downgrade rules; use `pre-handoff-verification`
-- the task is rendering the formatted preview/eval report Markdown; use `preview-report-template-writer`
-- the task is GLB web integration after evidence is already classified and gated; use `glb-web-handoff`
+<!-- blendops:generated:start exclusions -->
+- the user only needs a scene plan with no runtime or artifact evidence → use `../official-runtime-readiness-checker/SKILL.md` (Delegates out-of-scope requests to official-runtime-readiness-checker)
+- runtime readiness or path selection has not been completed and the user wants setup or routing; use official-runtime-readiness-checker or runtime-path-picker → use `../official-runtime-readiness-checker/SKILL.md` (Delegates out-of-scope requests to official-runtime-readiness-checker)
+- the task is gating a handoff via confirm-or-downgrade rules; use pre-handoff-verification → use `../pre-handoff-verification/SKILL.md` (Delegates out-of-scope requests to pre-handoff-verification)
+- the task is rendering the formatted preview/eval report Markdown; use preview-report-template-writer → use `../preview-report-template-writer/SKILL.md` (Delegates out-of-scope requests to preview-report-template-writer)
+- the task is GLB web integration after evidence is already classified and gated; use glb-web-handoff → use `../glb-web-handoff/SKILL.md` (Delegates out-of-scope requests to glb-web-handoff)
+<!-- blendops:generated:end exclusions -->
 
 ## Trigger phrases
-
-- “Did the render produce?”
-- “Can I claim the GLB exists?”
-- “Verify export evidence.”
-- “What artifact status should this have?”
-- “Summarize preview/render/GLB evidence.”
+<!-- blendops:generated:start triggers -->
+- "Did the render produce?"
+- "Can I claim the GLB exists?"
+- "Verify export evidence."
+- "What artifact status should this have?"
+- "Summarize preview/render/GLB evidence."
+<!-- blendops:generated:end triggers -->
 
 ## Prerequisites / readiness
 
@@ -312,14 +312,15 @@ Artifact evidence ledger
 - Blurring boundaries with `pre-handoff-verification` (gating handoffs), `preview-report-template-writer` (rendering report Markdown), or `glb-web-handoff` (web handoff).
 
 ## Cross-skill handoff
-
-- Runtime readiness → `../official-runtime-readiness-checker/SKILL.md`
-- Runtime attempt recording → `../runtime-attempt-report-writer/SKILL.md`
-- Scene validation → `../blender-scene-quality-checker/SKILL.md`
-- Handoff gating (confirm-or-downgrade) → `../pre-handoff-verification/SKILL.md`
-- Report Markdown rendering → `../preview-report-template-writer/SKILL.md`
-- GLB/web handoff → `../glb-web-handoff/SKILL.md`
-- User-facing explanation → `../non-blender-user-response-writer/SKILL.md`
+<!-- blendops:generated:start handoffs -->
+- [upstream_reference] Runtime readiness → `../official-runtime-readiness-checker/SKILL.md`
+- [upstream_reference] Runtime attempt recording → `../runtime-attempt-report-writer/SKILL.md`
+- [upstream_reference] Scene validation → `../blender-scene-quality-checker/SKILL.md`
+- [progression] Handoff gating (confirm-or-downgrade) → `../pre-handoff-verification/SKILL.md`
+- [progression] Report Markdown rendering → `../preview-report-template-writer/SKILL.md`
+- [progression] GLB/web handoff → `../glb-web-handoff/SKILL.md`
+- [progression] User-facing explanation → `../non-blender-user-response-writer/SKILL.md`
+<!-- blendops:generated:end handoffs -->
 
 ## Non-goals
 

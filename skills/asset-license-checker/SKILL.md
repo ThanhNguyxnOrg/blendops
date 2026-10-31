@@ -21,18 +21,22 @@ Catch license risk before assets go into a scene that will be rendered, exported
 - Whenever a previously sourced asset's license or attribution requirement is unclear.
 
 ## When not to use
-- Sourcing or searching for candidate assets (use `blender-asset-discovery-planner`).
-- Checking visual consistency, scale, or aesthetic fit across assets (use `asset-style-consistency-checker`).
-- Replacing or working around rejected/blocked assets (use `asset-fallback-strategy`).
-- Structuring folders, naming conventions, or catalog storage (use `asset-library-organization-planner`).
-- First-party assets authored entirely in-house with no external dependencies.
-- Legal advice or binding legal interpretation (this skill flags risk only; escalate ambiguity to legal).
+<!-- blendops:generated:start exclusions -->
+- Sourcing or searching for candidate assets → use `../blender-asset-discovery-planner/SKILL.md` (Delegates out-of-scope requests to blender-asset-discovery-planner)
+- Checking visual consistency, scale, or aesthetic fit across assets → use `../asset-style-consistency-checker/SKILL.md` (Delegates out-of-scope requests to asset-style-consistency-checker)
+- Replacing or working around rejected/blocked assets → use `../asset-fallback-strategy/SKILL.md` (Delegates out-of-scope requests to asset-fallback-strategy)
+- Structuring folders, naming conventions, or catalog storage → use `../asset-library-organization-planner/SKILL.md` (Delegates out-of-scope requests to asset-library-organization-planner)
+- First-party assets authored entirely in-house with no external dependencies. → use `../blender-asset-discovery-planner/SKILL.md` (Delegates out-of-scope requests to blender-asset-discovery-planner)
+- Legal advice or binding legal interpretation (this skill flags risk only; escalate ambiguity to legal). → use `../asset-style-consistency-checker/SKILL.md` (Delegates out-of-scope requests to asset-style-consistency-checker)
+<!-- blendops:generated:end exclusions -->
 
 ## Trigger phrases
+<!-- blendops:generated:start triggers -->
 - "is this license OK"
 - "can I use this commercially"
 - "what's the license"
 - "license check"
+<!-- blendops:generated:end triggers -->
 
 ## Prerequisites / readiness
 - Sourced asset list from `blender-asset-discovery-planner` with source URLs/origins recorded.
@@ -218,11 +222,13 @@ Next: <if all Pass or explicitly accepted Warn: asset-style-consistency-checker 
 - Inventing license terms.
 
 ## Cross-skill handoff
-- Upstream asset sourcing → `../blender-asset-discovery-planner/SKILL.md` (provides the external asset list to check).
-- Visual style validation → `../asset-style-consistency-checker/SKILL.md` (checks visual style after license gate passes).
-- Rejected/blocked asset handling → `../asset-fallback-strategy/SKILL.md` (handles assets flagged `Fail`).
-- Asset library organization → `../asset-library-organization-planner/SKILL.md` (organizes approved assets).
-- Stage routing & scene planning gate → `../workflow-stage-router/SKILL.md` (proceeds to scene planners only when all assets are `Pass` or explicitly accepted `Warn`).
+<!-- blendops:generated:start handoffs -->
+- [upstream_reference] Upstream asset sourcing → `../blender-asset-discovery-planner/SKILL.md`
+- [progression] Visual style validation → `../asset-style-consistency-checker/SKILL.md`
+- [fallback] Rejected/blocked asset handling → `../asset-fallback-strategy/SKILL.md`
+- [progression] Asset library organization → `../asset-library-organization-planner/SKILL.md`
+- [progression] Stage routing & scene planning gate → `../workflow-stage-router/SKILL.md`
+<!-- blendops:generated:end handoffs -->
 
 ## Non-goals
 - Give legal advice or interpret complex contracts (escalate ambiguity to legal).

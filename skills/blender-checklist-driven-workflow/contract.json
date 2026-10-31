@@ -1,0 +1,490 @@
+{
+  "$schema": "../../schemas/skill-contract.schema.json",
+  "id": "blender-checklist-driven-workflow",
+  "version": "1.0.0",
+  "category": "process-discipline",
+  "role": "stage-gate-checklist-enforcer",
+  "purpose": "Define explicit per-stage gates and acceptance checklists before any modeling, render, or export work — work only proceeds gate by gate.",
+  "capabilityTier": "L0",
+  "triggers": [
+    "let's do this step by step",
+    "what's done before we move on",
+    "checklist for this work",
+    "I want to make sure each stage is solid"
+  ],
+  "exclusions": [
+    {
+      "condition": "single-step requests",
+      "delegateTo": "blender-brainstorming",
+      "reason": "Delegates out-of-scope requests to blender-brainstorming"
+    },
+    {
+      "condition": "pure exploratory brainstorming",
+      "delegateTo": "blender-brainstorming",
+      "reason": "use blender-brainstorming"
+    },
+    {
+      "condition": "decomposing a brief into stages",
+      "delegateTo": "blender-recipe-decomposer",
+      "reason": "use blender-recipe-decomposer"
+    },
+    {
+      "condition": "writing measurable acceptance criteria rows from scratch",
+      "delegateTo": "acceptance-criteria-builder",
+      "reason": "use acceptance-criteria-builder"
+    },
+    {
+      "condition": "pinning the overall done/stop condition",
+      "delegateTo": "blender-stop-condition-decider",
+      "reason": "use blender-stop-condition-decider"
+    },
+    {
+      "condition": "guarding against mid-flight scope creep",
+      "delegateTo": "blender-scope-boundary-enforcer",
+      "reason": "use blender-scope-boundary-enforcer"
+    },
+    {
+      "condition": "selecting which skill runs next across the workflow",
+      "delegateTo": "workflow-stage-router",
+      "reason": "use workflow-stage-router"
+    },
+    {
+      "condition": "fixing repeated stage failures or broken renders",
+      "delegateTo": "blender-troubleshooting",
+      "reason": "use blender-troubleshooting"
+    },
+    {
+      "condition": "executing the final 7-point handoff gate",
+      "delegateTo": "pre-handoff-verification",
+      "reason": "use pre-handoff-verification"
+    }
+  ],
+  "inputs": {
+    "required": [
+      {
+        "name": "active_workflow_stages",
+        "type": "array",
+        "description": "Ordered stages of the selected BlendOps recipe or custom workflow"
+      },
+      {
+        "name": "locked_acceptance_criteria",
+        "type": "object",
+        "description": "Measurable acceptance rows from acceptance-criteria-builder"
+      }
+    ],
+    "optional": [
+      {
+        "name": "current_stage_status",
+        "type": "string",
+        "description": "Current stage progress and completed gate checks"
+      }
+    ]
+  },
+  "outputs": {
+    "primary": [
+      "stage_gate_checklists",
+      "entry_and_exit_preconditions",
+      "gate_failure_routing_rules"
+    ],
+    "truthStatePolicy": {
+      "runtimeDefault": "Not Run",
+      "artifactDefault": "Not Produced",
+      "mutationRule": "downgrade_only"
+    }
+  },
+  "handoffs": [
+    {
+      "target": "blender-brainstorming",
+      "type": "upstream_reference",
+      "label": "Brainstorming",
+      "when": {
+        "all": [
+          {
+            "field": "goal.clarity",
+            "operator": "equals",
+            "value": "ambiguous_or_mixed"
+          }
+        ]
+      }
+    },
+    {
+      "target": "intent-to-3d-brief-writer",
+      "type": "upstream_reference",
+      "label": "Brief authoring",
+      "when": {
+        "all": [
+          {
+            "field": "goal.clarity",
+            "operator": "equals",
+            "value": "clear"
+          },
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": false
+          }
+        ]
+      }
+    },
+    {
+      "target": "blender-recipe-decomposer",
+      "type": "upstream_reference",
+      "label": "Recipe stage decomposition",
+      "when": {
+        "all": [
+          {
+            "field": "fit.multiDeliverableDetected",
+            "operator": "equals",
+            "value": true
+          }
+        ]
+      }
+    },
+    {
+      "target": "acceptance-criteria-builder",
+      "type": "upstream_reference",
+      "label": "Measurable acceptance rows",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "acceptance_criteria"
+          }
+        ]
+      }
+    },
+    {
+      "target": "blender-stop-condition-decider",
+      "type": "upstream_reference",
+      "label": "Overall done condition",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "stop_condition"
+          }
+        ]
+      }
+    },
+    {
+      "target": "blender-scope-boundary-enforcer",
+      "type": "progression",
+      "label": "Scope creep protection",
+      "when": {
+        "all": [
+          {
+            "field": "scope.driftDetected",
+            "operator": "equals",
+            "value": true
+          }
+        ]
+      }
+    },
+    {
+      "target": "workflow-stage-router",
+      "type": "progression",
+      "label": "Next-skill routing across stages",
+      "when": {
+        "all": [
+          {
+            "field": "preflight.passed",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "inventory.exists",
+            "operator": "equals",
+            "value": true
+          }
+        ]
+      }
+    },
+    {
+      "target": "blender-asset-discovery-planner",
+      "type": "progression",
+      "label": "Asset discovery",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "assets.discoveryComplete",
+            "operator": "equals",
+            "value": false
+          }
+        ]
+      }
+    },
+    {
+      "target": "blender-composition-camera-planner",
+      "type": "progression",
+      "label": "Scene planners (blender-composition-camera-planner)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "camera_planning"
+          }
+        ]
+      }
+    },
+    {
+      "target": "blender-lighting-material-planner",
+      "type": "progression",
+      "label": "Scene planners (blender-lighting-material-planner)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "lookdev_planning"
+          }
+        ]
+      }
+    },
+    {
+      "target": "character-portrait-scene-planner",
+      "type": "alternative",
+      "label": "Scene planners (character-portrait-scene-planner)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "recipe.domain",
+            "operator": "equals",
+            "value": "character_portrait"
+          }
+        ]
+      }
+    },
+    {
+      "target": "environment-establishing-shot-planner",
+      "type": "alternative",
+      "label": "Scene planners (environment-establishing-shot-planner)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "recipe.domain",
+            "operator": "equals",
+            "value": "environment_shot"
+          }
+        ]
+      }
+    },
+    {
+      "target": "interior-architectural-scene-planner",
+      "type": "alternative",
+      "label": "Scene planners (interior-architectural-scene-planner)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "recipe.domain",
+            "operator": "equals",
+            "value": "interior_archviz"
+          }
+        ]
+      }
+    },
+    {
+      "target": "product-grid-scene-planner",
+      "type": "alternative",
+      "label": "Scene planners (product-grid-scene-planner)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "recipe.domain",
+            "operator": "equals",
+            "value": "product_grid"
+          }
+        ]
+      }
+    },
+    {
+      "target": "product-hero-scene-planner",
+      "type": "alternative",
+      "label": "Scene planners (product-hero-scene-planner)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "recipe.domain",
+            "operator": "equals",
+            "value": "product_hero"
+          }
+        ]
+      }
+    },
+    {
+      "target": "blender-scene-quality-checker",
+      "type": "progression",
+      "label": "Quality validators (blender-scene-quality-checker)",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "holistic"
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "quality_validation"
+          }
+        ]
+      }
+    },
+    {
+      "target": "composition-quality-checker",
+      "type": "progression",
+      "label": "Quality validators (composition-quality-checker)",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "composition"
+          },
+          {
+            "field": "quality.verdict",
+            "operator": "equals",
+            "value": "not_run"
+          }
+        ]
+      }
+    },
+    {
+      "target": "lighting-quality-checker",
+      "type": "progression",
+      "label": "Quality validators (lighting-quality-checker)",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "lighting"
+          },
+          {
+            "field": "quality.verdict",
+            "operator": "equals",
+            "value": "not_run"
+          }
+        ]
+      }
+    },
+    {
+      "target": "material-quality-checker",
+      "type": "progression",
+      "label": "Quality validators (material-quality-checker)",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "material"
+          },
+          {
+            "field": "quality.verdict",
+            "operator": "equals",
+            "value": "not_run"
+          }
+        ]
+      }
+    },
+    {
+      "target": "polycount-budget-checker",
+      "type": "progression",
+      "label": "Quality validators (polycount-budget-checker)",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "polycount"
+          },
+          {
+            "field": "budget.verdict",
+            "operator": "equals",
+            "value": "Not Run"
+          }
+        ]
+      }
+    },
+    {
+      "target": "blender-troubleshooting",
+      "type": "fallback",
+      "label": "Repeated gate failures",
+      "when": {
+        "all": [
+          {
+            "field": "runtime.errorDetected",
+            "operator": "equals",
+            "value": true
+          }
+        ]
+      }
+    },
+    {
+      "target": "pre-handoff-verification",
+      "type": "progression",
+      "label": "Final 7-point gate",
+      "when": {
+        "all": [
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "final_verification"
+          }
+        ]
+      }
+    }
+  ]
+}

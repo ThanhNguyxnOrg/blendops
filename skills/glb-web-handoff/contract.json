@@ -1,0 +1,171 @@
+{
+  "$schema": "../../schemas/skill-contract.schema.json",
+  "id": "glb-web-handoff",
+  "version": "1.0.0",
+  "category": "evidence-and-handoff",
+  "role": "web-glb-delivery-packager",
+  "purpose": "Prepare truthful GLB/web handoff output with explicit artifact status, assumptions, and caveats.",
+  "capabilityTier": "L0",
+  "triggers": [
+    "prepare web handoff",
+    "is GLB ready",
+    "summarize export status"
+  ],
+  "exclusions": [
+    {
+      "condition": "to claim GLB or export success without concrete evidence",
+      "delegateTo": "blender-scene-quality-checker",
+      "reason": "Delegates out-of-scope requests to blender-scene-quality-checker"
+    },
+    {
+      "condition": "to replace runtime export verification",
+      "delegateTo": "render-export-evidence",
+      "reason": "Delegates out-of-scope requests to render-export-evidence"
+    },
+    {
+      "condition": "to validate upstream scene readiness",
+      "delegateTo": "blender-scene-quality-checker",
+      "reason": "use blender-scene-quality-checker"
+    },
+    {
+      "condition": "to classify raw render/export artifact evidence",
+      "delegateTo": "render-export-evidence",
+      "reason": "use render-export-evidence"
+    },
+    {
+      "condition": "to define mobile or file-size performance budgets",
+      "delegateTo": "glb-mobile-performance-budget",
+      "reason": "use glb-mobile-performance-budget"
+    },
+    {
+      "condition": "to define animation playback or rig contracts",
+      "delegateTo": "glb-animation-handoff",
+      "reason": "use glb-animation-handoff"
+    },
+    {
+      "condition": "to write the final user-facing response wording",
+      "delegateTo": "non-blender-user-response-writer",
+      "reason": "use non-blender-user-response-writer"
+    }
+  ],
+  "inputs": {
+    "required": [
+      {
+        "name": "verified_or_planned_glb_artifact",
+        "type": "object",
+        "description": "GLB artifact evidence record (from render-export-evidence) or planned export specification"
+      },
+      {
+        "name": "target_web_viewer_stack",
+        "type": "string",
+        "description": "Target web runtime (Three.js, React Three Fiber, <model-viewer>, Babylon.js)"
+      }
+    ],
+    "optional": [
+      {
+        "name": "animation_and_budget_contracts",
+        "type": "object",
+        "description": "Optional linked contracts from glb-animation-handoff and glb-mobile-performance-budget"
+      }
+    ]
+  },
+  "outputs": {
+    "primary": [
+      "web_glb_delivery_handoff_packet",
+      "scale_orientation_and_compression_manifest",
+      "viewer_integration_caveats"
+    ],
+    "truthStatePolicy": {
+      "runtimeDefault": "Not Run",
+      "artifactDefault": "Not Produced",
+      "mutationRule": "downgrade_only"
+    }
+  },
+  "handoffs": [
+    {
+      "target": "blender-scene-quality-checker",
+      "type": "upstream_reference",
+      "label": "Upstream scene readiness validation",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "holistic"
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "quality_validation"
+          }
+        ]
+      }
+    },
+    {
+      "target": "render-export-evidence",
+      "type": "upstream_reference",
+      "label": "Upstream artifact evidence classification",
+      "when": {
+        "all": [
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "post_execution_audit"
+          }
+        ]
+      }
+    },
+    {
+      "target": "glb-mobile-performance-budget",
+      "type": "upstream_reference",
+      "label": "Mobile and file-size budget constraints",
+      "when": {
+        "all": [
+          {
+            "field": "artifact.type",
+            "operator": "equals",
+            "value": "glb"
+          },
+          {
+            "field": "budget.pinned",
+            "operator": "equals",
+            "value": false
+          }
+        ]
+      }
+    },
+    {
+      "target": "glb-animation-handoff",
+      "type": "upstream_reference",
+      "label": "Animation playback and rig handoff contracts",
+      "when": {
+        "all": [
+          {
+            "field": "artifact.hasAnimation",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "animation_handoff"
+          }
+        ]
+      }
+    },
+    {
+      "target": "non-blender-user-response-writer",
+      "type": "progression",
+      "label": "Final user-facing response wording",
+      "when": {
+        "all": [
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "final_communication"
+          }
+        ]
+      }
+    }
+  ]
+}

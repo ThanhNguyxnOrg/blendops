@@ -1,0 +1,195 @@
+{
+  "$schema": "../../schemas/skill-contract.schema.json",
+  "id": "intent-to-3d-brief-writer",
+  "version": "1.0.0",
+  "category": "process-discipline",
+  "role": "canonical-8-slot-brief-author",
+  "purpose": "Convert a non-Blender-user's natural-language request into a structured 3D brief (subject, mood, deliverables, constraints, evidence expectations). Use as first step before any planner.",
+  "capabilityTier": "L0",
+  "triggers": [
+    "lock the brief",
+    "write the brief from this conversation",
+    "what's the formal scope?",
+    "before planning, write the spec"
+  ],
+  "exclusions": [
+    {
+      "condition": "intent is still ambiguous (run blender-brainstorming first)",
+      "delegateTo": "blender-brainstorming",
+      "reason": "run blender-brainstorming first"
+    },
+    {
+      "condition": "the user is mid-execution and asks for a re-brief",
+      "delegateTo": "blender-troubleshooting",
+      "reason": "route to blender-troubleshooting instead"
+    },
+    {
+      "condition": "the user pushes for immediate execution",
+      "delegateTo": "official-runtime-readiness-checker",
+      "reason": "route to official-runtime-readiness-checker"
+    },
+    {
+      "condition": "the request is iteration on existing output (\"make it darker\") — that's a planner-level edit, not a new brief",
+      "delegateTo": "blender-brainstorming",
+      "reason": "Delegates out-of-scope requests to blender-brainstorming"
+    }
+  ],
+  "inputs": {
+    "required": [
+      {
+        "name": "raw_user_goal_and_context",
+        "type": "string",
+        "description": "User request or brainstormed concept to lock into the canonical 8-slot 3D brief"
+      },
+      {
+        "name": "target_deliverable_surface",
+        "type": "string",
+        "description": "Intended output format (hero still, product grid, portrait, environment, interior, or web GLB)"
+      }
+    ],
+    "optional": [
+      {
+        "name": "selected_recipe_or_pack",
+        "type": "string",
+        "description": "Recipe or pack selected via recipe-fit-assessor"
+      }
+    ]
+  },
+  "outputs": {
+    "primary": [
+      "canonical_8_slot_3d_brief",
+      "explicit_assumptions_register",
+      "scope_exclusions_and_next_skill"
+    ],
+    "truthStatePolicy": {
+      "runtimeDefault": "Not Run",
+      "artifactDefault": "Not Produced",
+      "mutationRule": "downgrade_only"
+    }
+  },
+  "handoffs": [
+    {
+      "target": "blender-brainstorming",
+      "type": "upstream_reference",
+      "label": "Preceding step",
+      "when": {
+        "all": [
+          {
+            "field": "goal.clarity",
+            "operator": "equals",
+            "value": "ambiguous_or_mixed"
+          }
+        ]
+      }
+    },
+    {
+      "target": "acceptance-criteria-builder",
+      "type": "progression",
+      "label": "Consuming skills (acceptance-criteria-builder)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "acceptance_criteria"
+          }
+        ]
+      }
+    },
+    {
+      "target": "blender-composition-camera-planner",
+      "type": "progression",
+      "label": "Consuming skills (blender-composition-camera-planner)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "camera_planning"
+          }
+        ]
+      }
+    },
+    {
+      "target": "blender-lighting-material-planner",
+      "type": "progression",
+      "label": "Consuming skills (blender-lighting-material-planner)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "lookdev_planning"
+          }
+        ]
+      }
+    },
+    {
+      "target": "product-hero-scene-planner",
+      "type": "alternative",
+      "label": "Consuming skills (product-hero-scene-planner)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "recipe.domain",
+            "operator": "equals",
+            "value": "product_hero"
+          }
+        ]
+      }
+    },
+    {
+      "target": "official-runtime-readiness-checker",
+      "type": "conditional",
+      "label": "If execution is requested",
+      "when": {
+        "all": [
+          {
+            "field": "runtime.path",
+            "operator": "not_equals",
+            "value": "unselected"
+          },
+          {
+            "field": "runtime.verifiedReady",
+            "operator": "equals",
+            "value": false
+          }
+        ]
+      }
+    },
+    {
+      "target": "blender-troubleshooting",
+      "type": "fallback",
+      "label": "If mid-execution re-briefing occurs",
+      "when": {
+        "all": [
+          {
+            "field": "runtime.errorDetected",
+            "operator": "equals",
+            "value": true
+          }
+        ]
+      }
+    }
+  ]
+}

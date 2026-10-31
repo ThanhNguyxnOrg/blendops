@@ -1,0 +1,244 @@
+{
+  "$schema": "../../schemas/skill-contract.schema.json",
+  "id": "material-quality-checker",
+  "version": "1.0.0",
+  "category": "quality-validators",
+  "role": "pbr-and-shader-portability-validator",
+  "purpose": "Validate PBR material sanity, texture budgets, and web/runtime compatibility per material before render or export.",
+  "capabilityTier": "L0",
+  "triggers": [
+    "are the materials okay",
+    "check PBR sanity",
+    "texture budget for materials",
+    "will the materials work in Three.js"
+  ],
+  "exclusions": [
+    {
+      "condition": "upstream lookdev and material planning",
+      "delegateTo": "blender-lighting-material-planner",
+      "reason": "use blender-lighting-material-planner"
+    },
+    {
+      "condition": "lighting validation",
+      "delegateTo": "lighting-quality-checker",
+      "reason": "use lighting-quality-checker"
+    },
+    {
+      "condition": "composition / camera validation",
+      "delegateTo": "composition-quality-checker",
+      "reason": "use composition-quality-checker"
+    },
+    {
+      "condition": "broad pass/warn/fail scene readiness",
+      "delegateTo": "blender-scene-quality-checker",
+      "reason": "use blender-scene-quality-checker"
+    },
+    {
+      "condition": "web integration and viewer handoff",
+      "delegateTo": "glb-web-handoff",
+      "reason": "use glb-web-handoff"
+    },
+    {
+      "condition": "to fix or edit materials (this skill validates and emits remediation hints only; it never edits)",
+      "delegateTo": "blender-lighting-material-planner",
+      "reason": "this skill validates and emits remediation hints only; it never edits"
+    }
+  ],
+  "inputs": {
+    "required": [
+      {
+        "name": "material_and_shader_inventory",
+        "type": "array",
+        "description": "Principled BSDF parameter ranges, texture maps, UV channels, and normal map conventions"
+      },
+      {
+        "name": "target_consumption_surface",
+        "type": "string",
+        "description": "Whether materials target offline Cycles/Eevee rendering or glTF 2.0 PBR web export"
+      }
+    ],
+    "optional": [
+      {
+        "name": "texture_memory_budget",
+        "type": "object",
+        "description": "Maximum texture resolution and VRAM budget from glb-mobile-performance-budget"
+      }
+    ]
+  },
+  "outputs": {
+    "primary": [
+      "pbr_material_verdict_table",
+      "gltf_shader_portability_risks",
+      "material_remediation_steps"
+    ],
+    "truthStatePolicy": {
+      "runtimeDefault": "Not Run",
+      "artifactDefault": "Not Produced",
+      "mutationRule": "downgrade_only"
+    }
+  },
+  "handoffs": [
+    {
+      "target": "blender-lighting-material-planner",
+      "type": "retry",
+      "label": "Upstream lookdev & material planning",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "material"
+          },
+          {
+            "field": "quality.verdict",
+            "operator": "equals",
+            "value": "Fail"
+          }
+        ]
+      },
+      "retryPolicy": {
+        "maxAttempts": 2,
+        "exitCondition": {
+          "all": [
+            {
+              "field": "quality.verdict",
+              "operator": "in",
+              "value": [
+                "Pass",
+                "Warn"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "target": "glb-mobile-performance-budget",
+      "type": "upstream_reference",
+      "label": "Mobile/web texture budget definition",
+      "when": {
+        "all": [
+          {
+            "field": "artifact.type",
+            "operator": "equals",
+            "value": "glb"
+          },
+          {
+            "field": "budget.pinned",
+            "operator": "equals",
+            "value": false
+          }
+        ]
+      }
+    },
+    {
+      "target": "blender-scene-quality-checker",
+      "type": "progression",
+      "label": "Broad readiness review",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "holistic"
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "quality_validation"
+          }
+        ]
+      }
+    },
+    {
+      "target": "lighting-quality-checker",
+      "type": "progression",
+      "label": "Lighting validation",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "lighting"
+          },
+          {
+            "field": "quality.verdict",
+            "operator": "equals",
+            "value": "not_run"
+          }
+        ]
+      }
+    },
+    {
+      "target": "composition-quality-checker",
+      "type": "progression",
+      "label": "Composition validation",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "composition"
+          },
+          {
+            "field": "quality.verdict",
+            "operator": "equals",
+            "value": "not_run"
+          }
+        ]
+      }
+    },
+    {
+      "target": "polycount-budget-checker",
+      "type": "progression",
+      "label": "Polycount budget",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "polycount"
+          },
+          {
+            "field": "budget.verdict",
+            "operator": "equals",
+            "value": "Not Run"
+          }
+        ]
+      }
+    },
+    {
+      "target": "render-export-evidence",
+      "type": "progression",
+      "label": "Render / GLB export evidence",
+      "when": {
+        "all": [
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "post_execution_audit"
+          }
+        ]
+      }
+    },
+    {
+      "target": "glb-web-handoff",
+      "type": "progression",
+      "label": "Web handoff",
+      "when": {
+        "all": [
+          {
+            "field": "artifact.type",
+            "operator": "equals",
+            "value": "glb"
+          },
+          {
+            "field": "handoff.consumerStack",
+            "operator": "equals",
+            "value": "web_glb"
+          }
+        ]
+      }
+    }
+  ]
+}

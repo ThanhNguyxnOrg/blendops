@@ -1,32 +1,36 @@
 {
-  "schemaVersion": "1.3.0",
-  "auditPhase": "phase-3-and-4-current",
+  "schemaVersion": "1.4.0",
+  "auditPhase": "phase-5-current",
   "reconciledFromBaselineCommit": "3ea3c35c6b8a6e5e915bab9f63333d4a1c09bd4d",
   "repository": "ThanhNguyxnOrg/blendops",
   "branch": "main",
-  "sourceCommitSha": "a5ddece28e71d0ce89f6b7a741214f8832d37ee5",
-  "sourceCommitShort": "a5ddece",
-  "sourceCommitDate": "2026-10-31 07:32:24 +0000",
+  "sourceCommitSha": "75f3b5c8b16b2d7e174d6dba58965da5013cfb5e",
+  "sourceCommitShort": "75f3b5c",
+  "sourceCommitDate": "2026-10-31 08:02:39 +0000",
   "auditProvenance": {
-    "sourceCommitSha": "a5ddece28e71d0ce89f6b7a741214f8832d37ee5",
-    "sourceCommitShort": "a5ddece",
-    "sourceCommitDate": "2026-10-31 07:32:24 +0000",
+    "sourceCommitSha": "75f3b5c8b16b2d7e174d6dba58965da5013cfb5e",
+    "sourceCommitShort": "75f3b5c",
+    "sourceCommitDate": "2026-10-31 08:02:39 +0000",
     "workingTreeState": "dirty",
     "snapshotBasis": "working-tree-on-top-of-source-commit",
-    "uncommittedChangeCount": 27,
-    "auditedInputsSha256": "55832d3ae6e9c54ded68b7639094da094d691fd6da5ca6dcde40cfaa674b54bb",
+    "uncommittedChangeCount": 101,
+    "auditedInputsSha256": "d1d27dd11a92df9b4a62a4ab671aa880325876cbdf1e69a9da1774c2ea4c758d",
     "selfReferentialCommitRule": "A Git commit cannot contain its own final commit SHA inside tracked files. sourceCommitSha records the verified HEAD commit present when the generator ran, workingTreeState and snapshotBasis record whether uncommitted working-tree changes were present on top of sourceCommitSha, and auditedInputsSha256 digests the exact audited file contents."
   },
   "summary": {
     "totalSkills": 48,
     "totalReferences": 151,
     "gatewaySkillCount": 15,
-    "contractedSkillsCount": 4,
-    "uncontractedSkillsCount": 44,
+    "contractStatus": "full-catalog",
+    "contractedSkillsCount": 48,
+    "uncontractedSkillsCount": 0,
+    "routingPrecedenceParticipantsCount": 4,
+    "specialistContractsCount": 44,
+    "totalWorkflowEdges": 371,
     "machineReadableEvalSuitesCount": 12,
     "dispositionBreakdown": {
-      "KEEP": 20,
-      "IMPROVE": 28,
+      "KEEP": 48,
+      "IMPROVE": 0,
       "MERGE": 0,
       "SPLIT": 0,
       "REWRITE": 0
@@ -37,8 +41,8 @@
     "skillsMissingOtherTemplateSections": 48,
     "totalMissingOtherTemplateSectionInstances": 48,
     "skillsMissingAnyTemplateSections": 48,
-    "skillsUsingRelativePathHandoffNotation": 35,
-    "skillsUsingBareIdHandoffNotation": 13
+    "skillsUsingRelativePathHandoffNotation": 48,
+    "skillsUsingBareIdHandoffNotation": 0
   },
   "skills": [
     {
@@ -49,8 +53,8 @@
       "category": "process-discipline",
       "canonicalRole": "measurable-acceptance-table-builder",
       "isGatewaySkill": false,
-      "auditDisposition": "IMPROVE",
-      "lineCount": 255,
+      "auditDisposition": "KEEP",
+      "lineCount": 258,
       "headingCount": 26,
       "headings": [
         "Purpose",
@@ -104,17 +108,10 @@
       "outputSchemaBulletCount": 4,
       "handoffNotationStyle": "relative_path",
       "declaredHandoffEdgeCount": 7,
-      "undeclaredBodyMentionsCount": 1,
-      "undeclaredBodyMentions": [
-        {
-          "target": "blender-brainstorming",
-          "section": "When not to use"
-        }
-      ],
+      "undeclaredBodyMentionsCount": 0,
+      "undeclaredBodyMentions": [],
       "hasArtifactNotRunBug": false,
-      "issues": [
-        "has_1_undeclared_body_handoff_mentions"
-      ],
+      "issues": [],
       "graphDegree": {
         "incomingForward": 6,
         "outgoingForward": 5,
@@ -127,8 +124,17 @@
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
-      "hasContract": false,
-      "hasManagedMarkdownSections": false,
+      "declaredHandoffTargets": [
+        "intent-to-3d-brief-writer",
+        "blender-stop-condition-decider",
+        "blender-checklist-driven-workflow",
+        "blender-scope-boundary-enforcer",
+        "asset-license-checker",
+        "render-export-evidence",
+        "pre-handoff-verification"
+      ],
+      "hasContract": true,
+      "hasManagedMarkdownSections": true,
       "hasMachineReadableEvalSuite": false,
       "machineReadableEvalCaseCount": 0
     },
@@ -141,7 +147,7 @@
       "canonicalRole": "blocked-asset-replacement-planner",
       "isGatewaySkill": false,
       "auditDisposition": "KEEP",
-      "lineCount": 244,
+      "lineCount": 249,
       "headingCount": 26,
       "headings": [
         "Purpose",
@@ -211,8 +217,17 @@
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
-      "hasContract": false,
-      "hasManagedMarkdownSections": false,
+      "declaredHandoffTargets": [
+        "blender-asset-discovery-planner",
+        "asset-library-organization-planner",
+        "asset-license-checker",
+        "asset-style-consistency-checker",
+        "glb-mobile-performance-budget",
+        "blender-scope-boundary-enforcer",
+        "blender-recipe-decomposer"
+      ],
+      "hasContract": true,
+      "hasManagedMarkdownSections": true,
       "hasMachineReadableEvalSuite": false,
       "machineReadableEvalCaseCount": 0
     },
@@ -225,7 +240,7 @@
       "canonicalRole": "local-asset-library-taxonomy-planner",
       "isGatewaySkill": false,
       "auditDisposition": "KEEP",
-      "lineCount": 259,
+      "lineCount": 264,
       "headingCount": 26,
       "headings": [
         "Purpose",
@@ -295,8 +310,15 @@
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
-      "hasContract": false,
-      "hasManagedMarkdownSections": false,
+      "declaredHandoffTargets": [
+        "blender-asset-discovery-planner",
+        "asset-license-checker",
+        "asset-style-consistency-checker",
+        "asset-fallback-strategy",
+        "glb-mobile-performance-budget"
+      ],
+      "hasContract": true,
+      "hasManagedMarkdownSections": true,
       "hasMachineReadableEvalSuite": false,
       "machineReadableEvalCaseCount": 0
     },
@@ -308,8 +330,8 @@
       "category": "asset-and-sourcing",
       "canonicalRole": "asset-license-and-provenance-gate",
       "isGatewaySkill": true,
-      "auditDisposition": "IMPROVE",
-      "lineCount": 240,
+      "auditDisposition": "KEEP",
+      "lineCount": 246,
       "headingCount": 26,
       "headings": [
         "Purpose",
@@ -363,53 +385,10 @@
       "outputSchemaBulletCount": 3,
       "handoffNotationStyle": "relative_path",
       "declaredHandoffEdgeCount": 5,
-      "undeclaredBodyMentionsCount": 10,
-      "undeclaredBodyMentions": [
-        {
-          "target": "product-hero-scene-planner",
-          "section": "When to use"
-        },
-        {
-          "target": "character-portrait-scene-planner",
-          "section": "When to use"
-        },
-        {
-          "target": "environment-establishing-shot-planner",
-          "section": "When to use"
-        },
-        {
-          "target": "interior-architectural-scene-planner",
-          "section": "When to use"
-        },
-        {
-          "target": "product-grid-scene-planner",
-          "section": "When to use"
-        },
-        {
-          "target": "pre-handoff-verification",
-          "section": "When to use"
-        },
-        {
-          "target": "render-export-evidence",
-          "section": "When to use"
-        },
-        {
-          "target": "glb-web-handoff",
-          "section": "When to use"
-        },
-        {
-          "target": "glb-animation-handoff",
-          "section": "When to use"
-        },
-        {
-          "target": "pre-handoff-verification",
-          "section": "Playbooks"
-        }
-      ],
+      "undeclaredBodyMentionsCount": 0,
+      "undeclaredBodyMentions": [],
       "hasArtifactNotRunBug": false,
-      "issues": [
-        "has_10_undeclared_body_handoff_mentions"
-      ],
+      "issues": [],
       "graphDegree": {
         "incomingForward": 5,
         "outgoingForward": 4,
@@ -422,8 +401,15 @@
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
-      "hasContract": false,
-      "hasManagedMarkdownSections": false,
+      "declaredHandoffTargets": [
+        "blender-asset-discovery-planner",
+        "asset-style-consistency-checker",
+        "asset-fallback-strategy",
+        "asset-library-organization-planner",
+        "workflow-stage-router"
+      ],
+      "hasContract": true,
+      "hasManagedMarkdownSections": true,
       "hasMachineReadableEvalSuite": false,
       "machineReadableEvalCaseCount": 0
     },
@@ -436,7 +422,7 @@
       "canonicalRole": "cross-asset-visual-coherence-validator",
       "isGatewaySkill": false,
       "auditDisposition": "KEEP",
-      "lineCount": 232,
+      "lineCount": 239,
       "headingCount": 26,
       "headings": [
         "Purpose",
@@ -505,8 +491,20 @@
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
-      "hasContract": false,
-      "hasManagedMarkdownSections": false,
+      "declaredHandoffTargets": [
+        "blender-asset-discovery-planner",
+        "asset-license-checker",
+        "intent-to-3d-brief-writer",
+        "blender-scope-boundary-enforcer",
+        "asset-fallback-strategy",
+        "asset-library-organization-planner",
+        "blender-scene-quality-checker",
+        "blender-lighting-material-planner",
+        "material-quality-checker",
+        "polycount-budget-checker"
+      ],
+      "hasContract": true,
+      "hasManagedMarkdownSections": true,
       "hasMachineReadableEvalSuite": false,
       "machineReadableEvalCaseCount": 0
     },
@@ -518,8 +516,8 @@
       "category": "asset-and-sourcing",
       "canonicalRole": "asset-strategy-and-source-planner",
       "isGatewaySkill": false,
-      "auditDisposition": "IMPROVE",
-      "lineCount": 245,
+      "auditDisposition": "KEEP",
+      "lineCount": 253,
       "headingCount": 26,
       "headings": [
         "Purpose",
@@ -572,14 +570,12 @@
       "inputSchemaRowCount": 0,
       "inputSchemaBulletCount": 8,
       "outputSchemaBulletCount": 8,
-      "handoffNotationStyle": "bare_id",
-      "declaredHandoffEdgeCount": 13,
+      "handoffNotationStyle": "relative_path",
+      "declaredHandoffEdgeCount": 12,
       "undeclaredBodyMentionsCount": 0,
       "undeclaredBodyMentions": [],
       "hasArtifactNotRunBug": false,
-      "issues": [
-        "uses_legacy_bare_id_handoff_notation"
-      ],
+      "issues": [],
       "graphDegree": {
         "incomingForward": 7,
         "outgoingForward": 12,
@@ -592,8 +588,22 @@
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
-      "hasContract": false,
-      "hasManagedMarkdownSections": false,
+      "declaredHandoffTargets": [
+        "intent-to-3d-brief-writer",
+        "character-portrait-scene-planner",
+        "environment-establishing-shot-planner",
+        "interior-architectural-scene-planner",
+        "product-grid-scene-planner",
+        "product-hero-scene-planner",
+        "asset-license-checker",
+        "asset-style-consistency-checker",
+        "glb-mobile-performance-budget",
+        "polycount-budget-checker",
+        "official-runtime-readiness-checker",
+        "asset-fallback-strategy"
+      ],
+      "hasContract": true,
+      "hasManagedMarkdownSections": true,
       "hasMachineReadableEvalSuite": true,
       "machineReadableEvalCaseCount": 7
     },
@@ -605,8 +615,8 @@
       "category": "process-discipline",
       "canonicalRole": "pre-brief-ideation-and-clarification",
       "isGatewaySkill": true,
-      "auditDisposition": "IMPROVE",
-      "lineCount": 226,
+      "auditDisposition": "KEEP",
+      "lineCount": 229,
       "headingCount": 26,
       "headings": [
         "Purpose",
@@ -661,21 +671,10 @@
       "outputSchemaBulletCount": 8,
       "handoffNotationStyle": "relative_path",
       "declaredHandoffEdgeCount": 3,
-      "undeclaredBodyMentionsCount": 2,
-      "undeclaredBodyMentions": [
-        {
-          "target": "product-hero-scene-planner",
-          "section": "When to use"
-        },
-        {
-          "target": "blender-composition-camera-planner",
-          "section": "When to use"
-        }
-      ],
+      "undeclaredBodyMentionsCount": 0,
+      "undeclaredBodyMentions": [],
       "hasArtifactNotRunBug": false,
-      "issues": [
-        "has_2_undeclared_body_handoff_mentions"
-      ],
+      "issues": [],
       "graphDegree": {
         "incomingForward": 5,
         "outgoingForward": 3,
@@ -688,8 +687,13 @@
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
-      "hasContract": false,
-      "hasManagedMarkdownSections": false,
+      "declaredHandoffTargets": [
+        "intent-to-3d-brief-writer",
+        "official-runtime-readiness-checker",
+        "non-blender-user-response-writer"
+      ],
+      "hasContract": true,
+      "hasManagedMarkdownSections": true,
       "hasMachineReadableEvalSuite": true,
       "machineReadableEvalCaseCount": 5
     },
@@ -702,7 +706,7 @@
       "canonicalRole": "stage-gate-checklist-enforcer",
       "isGatewaySkill": false,
       "auditDisposition": "KEEP",
-      "lineCount": 242,
+      "lineCount": 258,
       "headingCount": 26,
       "headings": [
         "Purpose",
@@ -772,8 +776,32 @@
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
-      "hasContract": false,
-      "hasManagedMarkdownSections": false,
+      "declaredHandoffTargets": [
+        "blender-brainstorming",
+        "intent-to-3d-brief-writer",
+        "blender-recipe-decomposer",
+        "acceptance-criteria-builder",
+        "blender-stop-condition-decider",
+        "blender-scope-boundary-enforcer",
+        "workflow-stage-router",
+        "blender-asset-discovery-planner",
+        "blender-composition-camera-planner",
+        "blender-lighting-material-planner",
+        "character-portrait-scene-planner",
+        "environment-establishing-shot-planner",
+        "interior-architectural-scene-planner",
+        "product-grid-scene-planner",
+        "product-hero-scene-planner",
+        "blender-scene-quality-checker",
+        "composition-quality-checker",
+        "lighting-quality-checker",
+        "material-quality-checker",
+        "polycount-budget-checker",
+        "blender-troubleshooting",
+        "pre-handoff-verification"
+      ],
+      "hasContract": true,
+      "hasManagedMarkdownSections": true,
       "hasMachineReadableEvalSuite": false,
       "machineReadableEvalCaseCount": 0
     },
@@ -785,8 +813,8 @@
       "category": "scene-planners",
       "canonicalRole": "camera-rig-and-composition-deep-planner",
       "isGatewaySkill": false,
-      "auditDisposition": "IMPROVE",
-      "lineCount": 189,
+      "auditDisposition": "KEEP",
+      "lineCount": 197,
       "headingCount": 26,
       "headings": [
         "Purpose",
@@ -838,14 +866,12 @@
       "inputSchemaRowCount": 0,
       "inputSchemaBulletCount": 8,
       "outputSchemaBulletCount": 4,
-      "handoffNotationStyle": "bare_id",
+      "handoffNotationStyle": "relative_path",
       "declaredHandoffEdgeCount": 6,
       "undeclaredBodyMentionsCount": 0,
       "undeclaredBodyMentions": [],
       "hasArtifactNotRunBug": false,
-      "issues": [
-        "uses_legacy_bare_id_handoff_notation"
-      ],
+      "issues": [],
       "graphDegree": {
         "incomingForward": 7,
         "outgoingForward": 3,
@@ -858,8 +884,16 @@
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
-      "hasContract": false,
-      "hasManagedMarkdownSections": false,
+      "declaredHandoffTargets": [
+        "product-hero-scene-planner",
+        "output-format-decision",
+        "resolution-aspect-decision",
+        "blender-lighting-material-planner",
+        "blender-scene-quality-checker",
+        "composition-quality-checker"
+      ],
+      "hasContract": true,
+      "hasManagedMarkdownSections": true,
       "hasMachineReadableEvalSuite": false,
       "machineReadableEvalCaseCount": 0
     },
@@ -871,8 +905,8 @@
       "category": "scene-planners",
       "canonicalRole": "lighting-rig-and-lookdev-deep-planner",
       "isGatewaySkill": false,
-      "auditDisposition": "IMPROVE",
-      "lineCount": 185,
+      "auditDisposition": "KEEP",
+      "lineCount": 195,
       "headingCount": 26,
       "headings": [
         "Purpose",
@@ -925,14 +959,12 @@
       "inputSchemaRowCount": 0,
       "inputSchemaBulletCount": 9,
       "outputSchemaBulletCount": 4,
-      "handoffNotationStyle": "bare_id",
+      "handoffNotationStyle": "relative_path",
       "declaredHandoffEdgeCount": 8,
       "undeclaredBodyMentionsCount": 0,
       "undeclaredBodyMentions": [],
       "hasArtifactNotRunBug": false,
-      "issues": [
-        "uses_legacy_bare_id_handoff_notation"
-      ],
+      "issues": [],
       "graphDegree": {
         "incomingForward": 9,
         "outgoingForward": 4,
@@ -945,8 +977,18 @@
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
-      "hasContract": false,
-      "hasManagedMarkdownSections": false,
+      "declaredHandoffTargets": [
+        "blender-composition-camera-planner",
+        "color-management-decision",
+        "cycles-vs-eevee-decision",
+        "output-format-decision",
+        "lighting-quality-checker",
+        "material-quality-checker",
+        "blender-scene-quality-checker",
+        "glb-web-handoff"
+      ],
+      "hasContract": true,
+      "hasManagedMarkdownSections": true,
       "hasMachineReadableEvalSuite": false,
       "machineReadableEvalCaseCount": 0
     },
@@ -958,8 +1000,8 @@
       "category": "process-discipline",
       "canonicalRole": "multi-deliverable-recipe-splitter",
       "isGatewaySkill": false,
-      "auditDisposition": "IMPROVE",
-      "lineCount": 253,
+      "auditDisposition": "KEEP",
+      "lineCount": 259,
       "headingCount": 26,
       "headings": [
         "Purpose",
@@ -1013,17 +1055,10 @@
       "outputSchemaBulletCount": 3,
       "handoffNotationStyle": "relative_path",
       "declaredHandoffEdgeCount": 5,
-      "undeclaredBodyMentionsCount": 1,
-      "undeclaredBodyMentions": [
-        {
-          "target": "runtime-path-picker",
-          "section": "Mode handling"
-        }
-      ],
+      "undeclaredBodyMentionsCount": 0,
+      "undeclaredBodyMentions": [],
       "hasArtifactNotRunBug": false,
-      "issues": [
-        "has_1_undeclared_body_handoff_mentions"
-      ],
+      "issues": [],
       "graphDegree": {
         "incomingForward": 4,
         "outgoingForward": 4,
@@ -1036,8 +1071,15 @@
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
-      "hasContract": false,
-      "hasManagedMarkdownSections": false,
+      "declaredHandoffTargets": [
+        "intent-to-3d-brief-writer",
+        "blender-stop-condition-decider",
+        "blender-checklist-driven-workflow",
+        "blender-scope-boundary-enforcer",
+        "blender-brainstorming"
+      ],
+      "hasContract": true,
+      "hasManagedMarkdownSections": true,
       "hasMachineReadableEvalSuite": false,
       "machineReadableEvalCaseCount": 0
     },
@@ -1049,8 +1091,8 @@
       "category": "quality-validators",
       "canonicalRole": "holistic-scene-readiness-aggregator",
       "isGatewaySkill": true,
-      "auditDisposition": "IMPROVE",
-      "lineCount": 187,
+      "auditDisposition": "KEEP",
+      "lineCount": 196,
       "headingCount": 26,
       "headings": [
         "Purpose",
@@ -1102,20 +1144,12 @@
       "inputSchemaRowCount": 0,
       "inputSchemaBulletCount": 9,
       "outputSchemaBulletCount": 5,
-      "handoffNotationStyle": "bare_id",
+      "handoffNotationStyle": "relative_path",
       "declaredHandoffEdgeCount": 8,
-      "undeclaredBodyMentionsCount": 1,
-      "undeclaredBodyMentions": [
-        {
-          "target": "acceptance-criteria-builder",
-          "section": "Prerequisites / readiness"
-        }
-      ],
+      "undeclaredBodyMentionsCount": 0,
+      "undeclaredBodyMentions": [],
       "hasArtifactNotRunBug": false,
-      "issues": [
-        "has_1_undeclared_body_handoff_mentions",
-        "uses_legacy_bare_id_handoff_notation"
-      ],
+      "issues": [],
       "graphDegree": {
         "incomingForward": 16,
         "outgoingForward": 8,
@@ -1128,8 +1162,18 @@
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
-      "hasContract": false,
-      "hasManagedMarkdownSections": false,
+      "declaredHandoffTargets": [
+        "composition-quality-checker",
+        "lighting-quality-checker",
+        "material-quality-checker",
+        "polycount-budget-checker",
+        "render-export-evidence",
+        "pre-handoff-verification",
+        "glb-web-handoff",
+        "non-blender-user-response-writer"
+      ],
+      "hasContract": true,
+      "hasManagedMarkdownSections": true,
       "hasMachineReadableEvalSuite": false,
       "machineReadableEvalCaseCount": 0
     },
@@ -1141,8 +1185,8 @@
       "category": "process-discipline",
       "canonicalRole": "scope-creep-and-change-request-guard",
       "isGatewaySkill": false,
-      "auditDisposition": "IMPROVE",
-      "lineCount": 217,
+      "auditDisposition": "KEEP",
+      "lineCount": 223,
       "headingCount": 26,
       "headings": [
         "Purpose",
@@ -1196,21 +1240,10 @@
       "outputSchemaBulletCount": 2,
       "handoffNotationStyle": "relative_path",
       "declaredHandoffEdgeCount": 6,
-      "undeclaredBodyMentionsCount": 2,
-      "undeclaredBodyMentions": [
-        {
-          "target": "blender-brainstorming",
-          "section": "When not to use"
-        },
-        {
-          "target": "product-grid-scene-planner",
-          "section": "Playbooks"
-        }
-      ],
+      "undeclaredBodyMentionsCount": 0,
+      "undeclaredBodyMentions": [],
       "hasArtifactNotRunBug": false,
-      "issues": [
-        "has_2_undeclared_body_handoff_mentions"
-      ],
+      "issues": [],
       "graphDegree": {
         "incomingForward": 0,
         "outgoingForward": 6,
@@ -1223,8 +1256,16 @@
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
-      "hasContract": false,
-      "hasManagedMarkdownSections": false,
+      "declaredHandoffTargets": [
+        "intent-to-3d-brief-writer",
+        "blender-stop-condition-decider",
+        "blender-checklist-driven-workflow",
+        "acceptance-criteria-builder",
+        "blender-recipe-decomposer",
+        "pre-handoff-verification"
+      ],
+      "hasContract": true,
+      "hasManagedMarkdownSections": true,
       "hasMachineReadableEvalSuite": false,
       "machineReadableEvalCaseCount": 0
     },
@@ -1236,8 +1277,8 @@
       "category": "process-discipline",
       "canonicalRole": "done-condition-and-iteration-cap-pinner",
       "isGatewaySkill": false,
-      "auditDisposition": "IMPROVE",
-      "lineCount": 220,
+      "auditDisposition": "KEEP",
+      "lineCount": 226,
       "headingCount": 26,
       "headings": [
         "Purpose",
@@ -1290,25 +1331,10 @@
       "outputSchemaBulletCount": 5,
       "handoffNotationStyle": "relative_path",
       "declaredHandoffEdgeCount": 7,
-      "undeclaredBodyMentionsCount": 3,
-      "undeclaredBodyMentions": [
-        {
-          "target": "blender-brainstorming",
-          "section": "When not to use"
-        },
-        {
-          "target": "glb-web-handoff",
-          "section": "Playbooks"
-        },
-        {
-          "target": "blender-scene-quality-checker",
-          "section": "Playbooks"
-        }
-      ],
+      "undeclaredBodyMentionsCount": 0,
+      "undeclaredBodyMentions": [],
       "hasArtifactNotRunBug": false,
-      "issues": [
-        "has_3_undeclared_body_handoff_mentions"
-      ],
+      "issues": [],
       "graphDegree": {
         "incomingForward": 6,
         "outgoingForward": 6,
@@ -1321,8 +1347,17 @@
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
-      "hasContract": false,
-      "hasManagedMarkdownSections": false,
+      "declaredHandoffTargets": [
+        "intent-to-3d-brief-writer",
+        "blender-recipe-decomposer",
+        "acceptance-criteria-builder",
+        "blender-checklist-driven-workflow",
+        "blender-scope-boundary-enforcer",
+        "render-export-evidence",
+        "pre-handoff-verification"
+      ],
+      "hasContract": true,
+      "hasManagedMarkdownSections": true,
       "hasMachineReadableEvalSuite": false,
       "machineReadableEvalCaseCount": 0
     },
@@ -1334,8 +1369,8 @@
       "category": "runtime-and-execution",
       "canonicalRole": "scene-and-runtime-failure-diagnostician",
       "isGatewaySkill": false,
-      "auditDisposition": "IMPROVE",
-      "lineCount": 250,
+      "auditDisposition": "KEEP",
+      "lineCount": 264,
       "headingCount": 26,
       "headings": [
         "Purpose",
@@ -1388,24 +1423,12 @@
       "inputSchemaRowCount": 0,
       "inputSchemaBulletCount": 10,
       "outputSchemaBulletCount": 8,
-      "handoffNotationStyle": "bare_id",
+      "handoffNotationStyle": "relative_path",
       "declaredHandoffEdgeCount": 16,
-      "undeclaredBodyMentionsCount": 2,
-      "undeclaredBodyMentions": [
-        {
-          "target": "cycles-vs-eevee-decision",
-          "section": "Playbooks"
-        },
-        {
-          "target": "glb-mobile-performance-budget",
-          "section": "Playbooks"
-        }
-      ],
+      "undeclaredBodyMentionsCount": 0,
+      "undeclaredBodyMentions": [],
       "hasArtifactNotRunBug": false,
-      "issues": [
-        "has_2_undeclared_body_handoff_mentions",
-        "uses_legacy_bare_id_handoff_notation"
-      ],
+      "issues": [],
       "graphDegree": {
         "incomingForward": 7,
         "outgoingForward": 16,
@@ -1418,8 +1441,26 @@
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
-      "hasContract": false,
-      "hasManagedMarkdownSections": false,
+      "declaredHandoffTargets": [
+        "blender-brainstorming",
+        "intent-to-3d-brief-writer",
+        "blender-composition-camera-planner",
+        "blender-lighting-material-planner",
+        "character-portrait-scene-planner",
+        "environment-establishing-shot-planner",
+        "interior-architectural-scene-planner",
+        "product-grid-scene-planner",
+        "product-hero-scene-planner",
+        "official-runtime-readiness-checker",
+        "runtime-bridge-conflict-resolver",
+        "runtime-path-picker",
+        "glb-animation-handoff",
+        "glb-web-handoff",
+        "render-export-evidence",
+        "non-blender-user-response-writer"
+      ],
+      "hasContract": true,
+      "hasManagedMarkdownSections": true,
       "hasMachineReadableEvalSuite": true,
       "machineReadableEvalCaseCount": 6
     },
@@ -1431,7 +1472,7 @@
       "category": "routing-and-governance",
       "canonicalRole": "ambiguous-intent-entry-router",
       "isGatewaySkill": true,
-      "auditDisposition": "IMPROVE",
+      "auditDisposition": "KEEP",
       "lineCount": 313,
       "headingCount": 26,
       "headings": [
@@ -1487,30 +1528,11 @@
       "inputSchemaBulletCount": 3,
       "outputSchemaBulletCount": 4,
       "handoffNotationStyle": "relative_path",
-      "declaredHandoffEdgeCount": 11,
-      "undeclaredBodyMentionsCount": 4,
-      "undeclaredBodyMentions": [
-        {
-          "target": "character-portrait-scene-planner",
-          "section": "When not to use"
-        },
-        {
-          "target": "environment-establishing-shot-planner",
-          "section": "When not to use"
-        },
-        {
-          "target": "interior-architectural-scene-planner",
-          "section": "When not to use"
-        },
-        {
-          "target": "product-grid-scene-planner",
-          "section": "When not to use"
-        }
-      ],
+      "declaredHandoffEdgeCount": 13,
+      "undeclaredBodyMentionsCount": 0,
+      "undeclaredBodyMentions": [],
       "hasArtifactNotRunBug": false,
-      "issues": [
-        "has_4_undeclared_body_handoff_mentions"
-      ],
+      "issues": [],
       "graphDegree": {
         "incomingForward": 2,
         "outgoingForward": 11,
@@ -1522,6 +1544,21 @@
       "missingExtendedTemplateHeadings": [],
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
+      ],
+      "declaredHandoffTargets": [
+        "recipe-fit-assessor",
+        "pack-prerequisite-checker",
+        "workflow-stage-router",
+        "intent-to-3d-brief-writer",
+        "runtime-path-picker",
+        "official-runtime-setup-guide",
+        "official-runtime-readiness-checker",
+        "runtime-bridge-conflict-resolver",
+        "product-hero-scene-planner",
+        "render-export-evidence",
+        "pre-handoff-verification",
+        "glb-web-handoff",
+        "non-blender-user-response-writer"
       ],
       "hasContract": true,
       "hasManagedMarkdownSections": true,
@@ -1536,8 +1573,8 @@
       "category": "scene-planners",
       "canonicalRole": "character-portrait-and-turntable-architect",
       "isGatewaySkill": false,
-      "auditDisposition": "IMPROVE",
-      "lineCount": 240,
+      "auditDisposition": "KEEP",
+      "lineCount": 246,
       "headingCount": 26,
       "headings": [
         "Purpose",
@@ -1591,49 +1628,10 @@
       "outputSchemaBulletCount": 4,
       "handoffNotationStyle": "relative_path",
       "declaredHandoffEdgeCount": 7,
-      "undeclaredBodyMentionsCount": 9,
-      "undeclaredBodyMentions": [
-        {
-          "target": "product-hero-scene-planner",
-          "section": "Purpose"
-        },
-        {
-          "target": "environment-establishing-shot-planner",
-          "section": "Purpose"
-        },
-        {
-          "target": "interior-architectural-scene-planner",
-          "section": "Purpose"
-        },
-        {
-          "target": "product-hero-scene-planner",
-          "section": "When not to use"
-        },
-        {
-          "target": "environment-establishing-shot-planner",
-          "section": "When not to use"
-        },
-        {
-          "target": "interior-architectural-scene-planner",
-          "section": "When not to use"
-        },
-        {
-          "target": "product-hero-scene-planner",
-          "section": "Anti-patterns"
-        },
-        {
-          "target": "environment-establishing-shot-planner",
-          "section": "Anti-patterns"
-        },
-        {
-          "target": "interior-architectural-scene-planner",
-          "section": "Anti-patterns"
-        }
-      ],
+      "undeclaredBodyMentionsCount": 0,
+      "undeclaredBodyMentions": [],
       "hasArtifactNotRunBug": false,
-      "issues": [
-        "has_9_undeclared_body_handoff_mentions"
-      ],
+      "issues": [],
       "graphDegree": {
         "incomingForward": 8,
         "outgoingForward": 6,
@@ -1646,8 +1644,17 @@
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
-      "hasContract": false,
-      "hasManagedMarkdownSections": false,
+      "declaredHandoffTargets": [
+        "intent-to-3d-brief-writer",
+        "blender-composition-camera-planner",
+        "blender-lighting-material-planner",
+        "blender-asset-discovery-planner",
+        "composition-quality-checker",
+        "lighting-quality-checker",
+        "blender-scene-quality-checker"
+      ],
+      "hasContract": true,
+      "hasManagedMarkdownSections": true,
       "hasMachineReadableEvalSuite": false,
       "machineReadableEvalCaseCount": 0
     },
@@ -1660,7 +1667,7 @@
       "canonicalRole": "headless-cli-batch-job-planner",
       "isGatewaySkill": false,
       "auditDisposition": "KEEP",
-      "lineCount": 250,
+      "lineCount": 253,
       "headingCount": 26,
       "headings": [
         "Purpose",
@@ -1730,8 +1737,15 @@
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
-      "hasContract": false,
-      "hasManagedMarkdownSections": false,
+      "declaredHandoffTargets": [
+        "runtime-path-picker",
+        "path-one-host-outline",
+        "output-format-decision",
+        "render-export-evidence",
+        "runtime-attempt-report-writer"
+      ],
+      "hasContract": true,
+      "hasManagedMarkdownSections": true,
       "hasMachineReadableEvalSuite": false,
       "machineReadableEvalCaseCount": 0
     },
@@ -1744,7 +1758,7 @@
       "canonicalRole": "view-transform-and-colorspace-selector",
       "isGatewaySkill": false,
       "auditDisposition": "KEEP",
-      "lineCount": 249,
+      "lineCount": 255,
       "headingCount": 26,
       "headings": [
         "Purpose",
@@ -1814,8 +1828,15 @@
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
-      "hasContract": false,
-      "hasManagedMarkdownSections": false,
+      "declaredHandoffTargets": [
+        "output-format-decision",
+        "material-quality-checker",
+        "cycles-vs-eevee-decision",
+        "glb-web-handoff",
+        "render-export-evidence"
+      ],
+      "hasContract": true,
+      "hasManagedMarkdownSections": true,
       "hasMachineReadableEvalSuite": false,
       "machineReadableEvalCaseCount": 0
     },
@@ -1828,7 +1849,7 @@
       "canonicalRole": "framing-and-silhouette-validator",
       "isGatewaySkill": false,
       "auditDisposition": "KEEP",
-      "lineCount": 255,
+      "lineCount": 261,
       "headingCount": 26,
       "headings": [
         "Purpose",
@@ -1898,8 +1919,16 @@
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
-      "hasContract": false,
-      "hasManagedMarkdownSections": false,
+      "declaredHandoffTargets": [
+        "blender-scene-quality-checker",
+        "blender-composition-camera-planner",
+        "resolution-aspect-decision",
+        "render-export-evidence",
+        "material-quality-checker",
+        "lighting-quality-checker"
+      ],
+      "hasContract": true,
+      "hasManagedMarkdownSections": true,
       "hasMachineReadableEvalSuite": false,
       "machineReadableEvalCaseCount": 0
     },
@@ -1912,7 +1941,7 @@
       "canonicalRole": "render-engine-tradeoff-selector",
       "isGatewaySkill": false,
       "auditDisposition": "KEEP",
-      "lineCount": 245,
+      "lineCount": 250,
       "headingCount": 26,
       "headings": [
         "Purpose",
@@ -1982,8 +2011,15 @@
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
-      "hasContract": false,
-      "hasManagedMarkdownSections": false,
+      "declaredHandoffTargets": [
+        "blender-lighting-material-planner",
+        "color-management-decision",
+        "output-format-decision",
+        "resolution-aspect-decision",
+        "render-export-evidence"
+      ],
+      "hasContract": true,
+      "hasManagedMarkdownSections": true,
       "hasMachineReadableEvalSuite": false,
       "machineReadableEvalCaseCount": 0
     },
@@ -1995,8 +2031,8 @@
       "category": "scene-planners",
       "canonicalRole": "environment-establishing-shot-architect",
       "isGatewaySkill": false,
-      "auditDisposition": "IMPROVE",
-      "lineCount": 232,
+      "auditDisposition": "KEEP",
+      "lineCount": 238,
       "headingCount": 26,
       "headings": [
         "Purpose",
@@ -2050,57 +2086,10 @@
       "outputSchemaBulletCount": 3,
       "handoffNotationStyle": "relative_path",
       "declaredHandoffEdgeCount": 5,
-      "undeclaredBodyMentionsCount": 11,
-      "undeclaredBodyMentions": [
-        {
-          "target": "character-portrait-scene-planner",
-          "section": "Purpose"
-        },
-        {
-          "target": "product-hero-scene-planner",
-          "section": "Purpose"
-        },
-        {
-          "target": "interior-architectural-scene-planner",
-          "section": "Purpose"
-        },
-        {
-          "target": "character-portrait-scene-planner",
-          "section": "When not to use"
-        },
-        {
-          "target": "product-hero-scene-planner",
-          "section": "When not to use"
-        },
-        {
-          "target": "interior-architectural-scene-planner",
-          "section": "When not to use"
-        },
-        {
-          "target": "interior-architectural-scene-planner",
-          "section": "Input schema"
-        },
-        {
-          "target": "interior-architectural-scene-planner",
-          "section": "Operating procedure"
-        },
-        {
-          "target": "character-portrait-scene-planner",
-          "section": "Anti-patterns"
-        },
-        {
-          "target": "product-hero-scene-planner",
-          "section": "Anti-patterns"
-        },
-        {
-          "target": "interior-architectural-scene-planner",
-          "section": "Anti-patterns"
-        }
-      ],
+      "undeclaredBodyMentionsCount": 0,
+      "undeclaredBodyMentions": [],
       "hasArtifactNotRunBug": false,
-      "issues": [
-        "has_11_undeclared_body_handoff_mentions"
-      ],
+      "issues": [],
       "graphDegree": {
         "incomingForward": 8,
         "outgoingForward": 5,
@@ -2113,8 +2102,15 @@
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
-      "hasContract": false,
-      "hasManagedMarkdownSections": false,
+      "declaredHandoffTargets": [
+        "intent-to-3d-brief-writer",
+        "blender-asset-discovery-planner",
+        "composition-quality-checker",
+        "lighting-quality-checker",
+        "blender-scene-quality-checker"
+      ],
+      "hasContract": true,
+      "hasManagedMarkdownSections": true,
       "hasMachineReadableEvalSuite": false,
       "machineReadableEvalCaseCount": 0
     },
@@ -2127,7 +2123,7 @@
       "canonicalRole": "rig-and-animation-clip-handoff-planner",
       "isGatewaySkill": false,
       "auditDisposition": "KEEP",
-      "lineCount": 263,
+      "lineCount": 272,
       "headingCount": 26,
       "headings": [
         "Purpose",
@@ -2197,8 +2193,20 @@
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
-      "hasContract": false,
-      "hasManagedMarkdownSections": false,
+      "declaredHandoffTargets": [
+        "character-portrait-scene-planner",
+        "environment-establishing-shot-planner",
+        "interior-architectural-scene-planner",
+        "product-grid-scene-planner",
+        "product-hero-scene-planner",
+        "glb-mobile-performance-budget",
+        "render-export-evidence",
+        "glb-web-handoff",
+        "three-fiber-component-shape-planner",
+        "non-blender-user-response-writer"
+      ],
+      "hasContract": true,
+      "hasManagedMarkdownSections": true,
       "hasMachineReadableEvalSuite": false,
       "machineReadableEvalCaseCount": 0
     },
@@ -2211,7 +2219,7 @@
       "canonicalRole": "mobile-webgl-budget-validator",
       "isGatewaySkill": false,
       "auditDisposition": "KEEP",
-      "lineCount": 252,
+      "lineCount": 265,
       "headingCount": 26,
       "headings": [
         "Purpose",
@@ -2281,8 +2289,23 @@
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
-      "hasContract": false,
-      "hasManagedMarkdownSections": false,
+      "declaredHandoffTargets": [
+        "blender-composition-camera-planner",
+        "blender-lighting-material-planner",
+        "character-portrait-scene-planner",
+        "environment-establishing-shot-planner",
+        "interior-architectural-scene-planner",
+        "product-grid-scene-planner",
+        "product-hero-scene-planner",
+        "blender-scene-quality-checker",
+        "material-quality-checker",
+        "polycount-budget-checker",
+        "render-export-evidence",
+        "glb-web-handoff",
+        "glb-animation-handoff"
+      ],
+      "hasContract": true,
+      "hasManagedMarkdownSections": true,
       "hasMachineReadableEvalSuite": false,
       "machineReadableEvalCaseCount": 0
     },
@@ -2294,8 +2317,8 @@
       "category": "evidence-and-handoff",
       "canonicalRole": "web-glb-delivery-packager",
       "isGatewaySkill": true,
-      "auditDisposition": "IMPROVE",
-      "lineCount": 202,
+      "auditDisposition": "KEEP",
+      "lineCount": 208,
       "headingCount": 26,
       "headings": [
         "Purpose",
@@ -2347,14 +2370,12 @@
       "inputSchemaRowCount": 0,
       "inputSchemaBulletCount": 14,
       "outputSchemaBulletCount": 5,
-      "handoffNotationStyle": "bare_id",
+      "handoffNotationStyle": "relative_path",
       "declaredHandoffEdgeCount": 5,
       "undeclaredBodyMentionsCount": 0,
       "undeclaredBodyMentions": [],
       "hasArtifactNotRunBug": false,
-      "issues": [
-        "uses_legacy_bare_id_handoff_notation"
-      ],
+      "issues": [],
       "graphDegree": {
         "incomingForward": 13,
         "outgoingForward": 3,
@@ -2367,8 +2388,15 @@
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
-      "hasContract": false,
-      "hasManagedMarkdownSections": false,
+      "declaredHandoffTargets": [
+        "blender-scene-quality-checker",
+        "render-export-evidence",
+        "glb-mobile-performance-budget",
+        "glb-animation-handoff",
+        "non-blender-user-response-writer"
+      ],
+      "hasContract": true,
+      "hasManagedMarkdownSections": true,
       "hasMachineReadableEvalSuite": false,
       "machineReadableEvalCaseCount": 0
     },
@@ -2380,8 +2408,8 @@
       "category": "process-discipline",
       "canonicalRole": "canonical-8-slot-brief-author",
       "isGatewaySkill": true,
-      "auditDisposition": "IMPROVE",
-      "lineCount": 234,
+      "auditDisposition": "KEEP",
+      "lineCount": 239,
       "headingCount": 26,
       "headings": [
         "Purpose",
@@ -2433,20 +2461,12 @@
       "inputSchemaRowCount": 0,
       "inputSchemaBulletCount": 9,
       "outputSchemaBulletCount": 5,
-      "handoffNotationStyle": "bare_id",
-      "declaredHandoffEdgeCount": 8,
-      "undeclaredBodyMentionsCount": 1,
-      "undeclaredBodyMentions": [
-        {
-          "target": "non-blender-user-response-writer",
-          "section": "Non-goals"
-        }
-      ],
+      "handoffNotationStyle": "relative_path",
+      "declaredHandoffEdgeCount": 7,
+      "undeclaredBodyMentionsCount": 0,
+      "undeclaredBodyMentions": [],
       "hasArtifactNotRunBug": false,
-      "issues": [
-        "has_1_undeclared_body_handoff_mentions",
-        "uses_legacy_bare_id_handoff_notation"
-      ],
+      "issues": [],
       "graphDegree": {
         "incomingForward": 11,
         "outgoingForward": 8,
@@ -2459,8 +2479,17 @@
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
-      "hasContract": false,
-      "hasManagedMarkdownSections": false,
+      "declaredHandoffTargets": [
+        "blender-brainstorming",
+        "acceptance-criteria-builder",
+        "blender-composition-camera-planner",
+        "blender-lighting-material-planner",
+        "product-hero-scene-planner",
+        "official-runtime-readiness-checker",
+        "blender-troubleshooting"
+      ],
+      "hasContract": true,
+      "hasManagedMarkdownSections": true,
       "hasMachineReadableEvalSuite": true,
       "machineReadableEvalCaseCount": 7
     },
@@ -2473,7 +2502,7 @@
       "canonicalRole": "interior-archviz-scene-architect",
       "isGatewaySkill": false,
       "auditDisposition": "KEEP",
-      "lineCount": 256,
+      "lineCount": 262,
       "headingCount": 26,
       "headings": [
         "Purpose",
@@ -2544,8 +2573,21 @@
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
-      "hasContract": false,
-      "hasManagedMarkdownSections": false,
+      "declaredHandoffTargets": [
+        "intent-to-3d-brief-writer",
+        "environment-establishing-shot-planner",
+        "product-hero-scene-planner",
+        "character-portrait-scene-planner",
+        "blender-asset-discovery-planner",
+        "glb-mobile-performance-budget",
+        "asset-style-consistency-checker",
+        "composition-quality-checker",
+        "lighting-quality-checker",
+        "material-quality-checker",
+        "blender-scene-quality-checker"
+      ],
+      "hasContract": true,
+      "hasManagedMarkdownSections": true,
       "hasMachineReadableEvalSuite": false,
       "machineReadableEvalCaseCount": 0
     },
@@ -2557,8 +2599,8 @@
       "category": "quality-validators",
       "canonicalRole": "exposure-ratio-and-shadow-validator",
       "isGatewaySkill": false,
-      "auditDisposition": "IMPROVE",
-      "lineCount": 242,
+      "auditDisposition": "KEEP",
+      "lineCount": 248,
       "headingCount": 26,
       "headings": [
         "Purpose",
@@ -2612,29 +2654,10 @@
       "outputSchemaBulletCount": 3,
       "handoffNotationStyle": "relative_path",
       "declaredHandoffEdgeCount": 5,
-      "undeclaredBodyMentionsCount": 4,
-      "undeclaredBodyMentions": [
-        {
-          "target": "intent-to-3d-brief-writer",
-          "section": "Prerequisites / readiness"
-        },
-        {
-          "target": "intent-to-3d-brief-writer",
-          "section": "Operating procedure"
-        },
-        {
-          "target": "color-management-decision",
-          "section": "Troubleshooting"
-        },
-        {
-          "target": "cycles-vs-eevee-decision",
-          "section": "Troubleshooting"
-        }
-      ],
+      "undeclaredBodyMentionsCount": 0,
+      "undeclaredBodyMentions": [],
       "hasArtifactNotRunBug": false,
-      "issues": [
-        "has_4_undeclared_body_handoff_mentions"
-      ],
+      "issues": [],
       "graphDegree": {
         "incomingForward": 11,
         "outgoingForward": 5,
@@ -2647,8 +2670,15 @@
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
-      "hasContract": false,
-      "hasManagedMarkdownSections": false,
+      "declaredHandoffTargets": [
+        "blender-scene-quality-checker",
+        "material-quality-checker",
+        "composition-quality-checker",
+        "blender-lighting-material-planner",
+        "render-export-evidence"
+      ],
+      "hasContract": true,
+      "hasManagedMarkdownSections": true,
       "hasMachineReadableEvalSuite": false,
       "machineReadableEvalCaseCount": 0
     },
@@ -2661,7 +2691,7 @@
       "canonicalRole": "pbr-and-shader-portability-validator",
       "isGatewaySkill": false,
       "auditDisposition": "KEEP",
-      "lineCount": 256,
+      "lineCount": 262,
       "headingCount": 26,
       "headings": [
         "Purpose",
@@ -2731,8 +2761,18 @@
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
-      "hasContract": false,
-      "hasManagedMarkdownSections": false,
+      "declaredHandoffTargets": [
+        "blender-lighting-material-planner",
+        "glb-mobile-performance-budget",
+        "blender-scene-quality-checker",
+        "lighting-quality-checker",
+        "composition-quality-checker",
+        "polycount-budget-checker",
+        "render-export-evidence",
+        "glb-web-handoff"
+      ],
+      "hasContract": true,
+      "hasManagedMarkdownSections": true,
       "hasMachineReadableEvalSuite": false,
       "machineReadableEvalCaseCount": 0
     },
@@ -2744,8 +2784,8 @@
       "category": "evidence-and-handoff",
       "canonicalRole": "plain-language-final-response-translator",
       "isGatewaySkill": true,
-      "auditDisposition": "IMPROVE",
-      "lineCount": 185,
+      "auditDisposition": "KEEP",
+      "lineCount": 195,
       "headingCount": 26,
       "headings": [
         "Purpose",
@@ -2797,14 +2837,12 @@
       "inputSchemaRowCount": 0,
       "inputSchemaBulletCount": 8,
       "outputSchemaBulletCount": 5,
-      "handoffNotationStyle": "bare_id",
+      "handoffNotationStyle": "relative_path",
       "declaredHandoffEdgeCount": 9,
       "undeclaredBodyMentionsCount": 0,
       "undeclaredBodyMentions": [],
       "hasArtifactNotRunBug": false,
-      "issues": [
-        "uses_legacy_bare_id_handoff_notation"
-      ],
+      "issues": [],
       "graphDegree": {
         "incomingForward": 11,
         "outgoingForward": 1,
@@ -2817,8 +2855,19 @@
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
-      "hasContract": false,
-      "hasManagedMarkdownSections": false,
+      "declaredHandoffTargets": [
+        "render-export-evidence",
+        "blender-scene-quality-checker",
+        "composition-quality-checker",
+        "lighting-quality-checker",
+        "material-quality-checker",
+        "polycount-budget-checker",
+        "glb-web-handoff",
+        "pre-handoff-verification",
+        "official-runtime-readiness-checker"
+      ],
+      "hasContract": true,
+      "hasManagedMarkdownSections": true,
       "hasMachineReadableEvalSuite": false,
       "machineReadableEvalCaseCount": 0
     },
@@ -2830,8 +2879,8 @@
       "category": "runtime-and-execution",
       "canonicalRole": "runtime-connection-and-version-preflight",
       "isGatewaySkill": true,
-      "auditDisposition": "IMPROVE",
-      "lineCount": 212,
+      "auditDisposition": "KEEP",
+      "lineCount": 219,
       "headingCount": 26,
       "headings": [
         "Purpose",
@@ -2883,14 +2932,12 @@
       "inputSchemaRowCount": 0,
       "inputSchemaBulletCount": 7,
       "outputSchemaBulletCount": 5,
-      "handoffNotationStyle": "bare_id",
+      "handoffNotationStyle": "relative_path",
       "declaredHandoffEdgeCount": 7,
       "undeclaredBodyMentionsCount": 0,
       "undeclaredBodyMentions": [],
       "hasArtifactNotRunBug": false,
-      "issues": [
-        "uses_legacy_bare_id_handoff_notation"
-      ],
+      "issues": [],
       "graphDegree": {
         "incomingForward": 16,
         "outgoingForward": 7,
@@ -2903,8 +2950,17 @@
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
-      "hasContract": false,
-      "hasManagedMarkdownSections": false,
+      "declaredHandoffTargets": [
+        "runtime-path-picker",
+        "path-one-host-outline",
+        "official-runtime-setup-guide",
+        "runtime-bridge-conflict-resolver",
+        "cli-appendix-job-outline",
+        "product-hero-scene-planner",
+        "workflow-stage-router"
+      ],
+      "hasContract": true,
+      "hasManagedMarkdownSections": true,
       "hasMachineReadableEvalSuite": true,
       "machineReadableEvalCaseCount": 5
     },
@@ -2916,8 +2972,8 @@
       "category": "runtime-and-execution",
       "canonicalRole": "path-1-and-2-setup-instructor",
       "isGatewaySkill": false,
-      "auditDisposition": "IMPROVE",
-      "lineCount": 204,
+      "auditDisposition": "KEEP",
+      "lineCount": 210,
       "headingCount": 26,
       "headings": [
         "Purpose",
@@ -2969,14 +3025,12 @@
       "inputSchemaRowCount": 0,
       "inputSchemaBulletCount": 8,
       "outputSchemaBulletCount": 6,
-      "handoffNotationStyle": "bare_id",
+      "handoffNotationStyle": "relative_path",
       "declaredHandoffEdgeCount": 6,
       "undeclaredBodyMentionsCount": 0,
       "undeclaredBodyMentions": [],
       "hasArtifactNotRunBug": false,
-      "issues": [
-        "uses_legacy_bare_id_handoff_notation"
-      ],
+      "issues": [],
       "graphDegree": {
         "incomingForward": 5,
         "outgoingForward": 6,
@@ -2989,8 +3043,16 @@
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
-      "hasContract": false,
-      "hasManagedMarkdownSections": false,
+      "declaredHandoffTargets": [
+        "runtime-path-picker",
+        "path-one-host-outline",
+        "cli-appendix-job-outline",
+        "runtime-bridge-conflict-resolver",
+        "official-runtime-readiness-checker",
+        "product-hero-scene-planner"
+      ],
+      "hasContract": true,
+      "hasManagedMarkdownSections": true,
       "hasMachineReadableEvalSuite": false,
       "machineReadableEvalCaseCount": 0
     },
@@ -3003,7 +3065,7 @@
       "canonicalRole": "still-animation-and-3d-format-selector",
       "isGatewaySkill": false,
       "auditDisposition": "KEEP",
-      "lineCount": 215,
+      "lineCount": 223,
       "headingCount": 26,
       "headings": [
         "Purpose",
@@ -3072,8 +3134,17 @@
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
-      "hasContract": false,
-      "hasManagedMarkdownSections": false,
+      "declaredHandoffTargets": [
+        "color-management-decision",
+        "resolution-aspect-decision",
+        "cycles-vs-eevee-decision",
+        "render-export-evidence",
+        "glb-animation-handoff",
+        "glb-mobile-performance-budget",
+        "glb-web-handoff"
+      ],
+      "hasContract": true,
+      "hasManagedMarkdownSections": true,
       "hasMachineReadableEvalSuite": false,
       "machineReadableEvalCaseCount": 0
     },
@@ -3156,6 +3227,19 @@
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
+      "declaredHandoffTargets": [
+        "recipe-fit-assessor",
+        "intent-to-3d-brief-writer",
+        "official-runtime-readiness-checker",
+        "runtime-bridge-conflict-resolver",
+        "blender-troubleshooting",
+        "asset-license-checker",
+        "product-hero-scene-planner",
+        "product-grid-scene-planner",
+        "character-portrait-scene-planner",
+        "environment-establishing-shot-planner",
+        "interior-architectural-scene-planner"
+      ],
       "hasContract": true,
       "hasManagedMarkdownSections": true,
       "hasMachineReadableEvalSuite": true,
@@ -3170,7 +3254,7 @@
       "canonicalRole": "lab-mcp-host-configuration-planner",
       "isGatewaySkill": false,
       "auditDisposition": "KEEP",
-      "lineCount": 250,
+      "lineCount": 252,
       "headingCount": 26,
       "headings": [
         "Purpose",
@@ -3240,8 +3324,15 @@
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
-      "hasContract": false,
-      "hasManagedMarkdownSections": false,
+      "declaredHandoffTargets": [
+        "runtime-path-picker",
+        "official-runtime-setup-guide",
+        "official-runtime-readiness-checker",
+        "runtime-bridge-conflict-resolver",
+        "cli-appendix-job-outline"
+      ],
+      "hasContract": true,
+      "hasManagedMarkdownSections": true,
       "hasMachineReadableEvalSuite": false,
       "machineReadableEvalCaseCount": 0
     },
@@ -3254,7 +3345,7 @@
       "canonicalRole": "geometry-and-topology-budget-validator",
       "isGatewaySkill": false,
       "auditDisposition": "KEEP",
-      "lineCount": 246,
+      "lineCount": 252,
       "headingCount": 26,
       "headings": [
         "Purpose",
@@ -3324,8 +3415,16 @@
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
-      "hasContract": false,
-      "hasManagedMarkdownSections": false,
+      "declaredHandoffTargets": [
+        "glb-mobile-performance-budget",
+        "blender-scene-quality-checker",
+        "render-export-evidence",
+        "material-quality-checker",
+        "lighting-quality-checker",
+        "composition-quality-checker"
+      ],
+      "hasContract": true,
+      "hasManagedMarkdownSections": true,
       "hasMachineReadableEvalSuite": false,
       "machineReadableEvalCaseCount": 0
     },
@@ -3337,8 +3436,8 @@
       "category": "evidence-and-handoff",
       "canonicalRole": "final-7-point-release-gate",
       "isGatewaySkill": true,
-      "auditDisposition": "IMPROVE",
-      "lineCount": 244,
+      "auditDisposition": "KEEP",
+      "lineCount": 253,
       "headingCount": 26,
       "headings": [
         "Purpose",
@@ -3391,14 +3490,12 @@
       "inputSchemaRowCount": 0,
       "inputSchemaBulletCount": 15,
       "outputSchemaBulletCount": 7,
-      "handoffNotationStyle": "bare_id",
-      "declaredHandoffEdgeCount": 17,
+      "handoffNotationStyle": "relative_path",
+      "declaredHandoffEdgeCount": 13,
       "undeclaredBodyMentionsCount": 0,
       "undeclaredBodyMentions": [],
       "hasArtifactNotRunBug": false,
-      "issues": [
-        "uses_legacy_bare_id_handoff_notation"
-      ],
+      "issues": [],
       "graphDegree": {
         "incomingForward": 11,
         "outgoingForward": 16,
@@ -3411,8 +3508,23 @@
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
-      "hasContract": false,
-      "hasManagedMarkdownSections": false,
+      "declaredHandoffTargets": [
+        "blendops-help",
+        "workflow-stage-router",
+        "non-blender-user-response-writer",
+        "render-export-evidence",
+        "runtime-attempt-report-writer",
+        "blender-scene-quality-checker",
+        "composition-quality-checker",
+        "lighting-quality-checker",
+        "material-quality-checker",
+        "polycount-budget-checker",
+        "blender-troubleshooting",
+        "official-runtime-readiness-checker",
+        "runtime-bridge-conflict-resolver"
+      ],
+      "hasContract": true,
+      "hasManagedMarkdownSections": true,
       "hasMachineReadableEvalSuite": true,
       "machineReadableEvalCaseCount": 7
     },
@@ -3424,8 +3536,8 @@
       "category": "evidence-and-handoff",
       "canonicalRole": "stakeholder-preview-packet-formatter",
       "isGatewaySkill": false,
-      "auditDisposition": "IMPROVE",
-      "lineCount": 250,
+      "auditDisposition": "KEEP",
+      "lineCount": 255,
       "headingCount": 26,
       "headings": [
         "Purpose",
@@ -3482,17 +3594,10 @@
       "outputSchemaBulletCount": 2,
       "handoffNotationStyle": "relative_path",
       "declaredHandoffEdgeCount": 5,
-      "undeclaredBodyMentionsCount": 1,
-      "undeclaredBodyMentions": [
-        {
-          "target": "runtime-bridge-conflict-resolver",
-          "section": "Failure handling"
-        }
-      ],
+      "undeclaredBodyMentionsCount": 0,
+      "undeclaredBodyMentions": [],
       "hasArtifactNotRunBug": false,
-      "issues": [
-        "has_1_undeclared_body_handoff_mentions"
-      ],
+      "issues": [],
       "graphDegree": {
         "incomingForward": 1,
         "outgoingForward": 5,
@@ -3505,8 +3610,15 @@
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
-      "hasContract": false,
-      "hasManagedMarkdownSections": false,
+      "declaredHandoffTargets": [
+        "render-export-evidence",
+        "pre-handoff-verification",
+        "glb-web-handoff",
+        "non-blender-user-response-writer",
+        "blender-troubleshooting"
+      ],
+      "hasContract": true,
+      "hasManagedMarkdownSections": true,
       "hasMachineReadableEvalSuite": false,
       "machineReadableEvalCaseCount": 0
     },
@@ -3518,8 +3630,8 @@
       "category": "scene-planners",
       "canonicalRole": "multi-product-catalog-grid-architect",
       "isGatewaySkill": false,
-      "auditDisposition": "IMPROVE",
-      "lineCount": 240,
+      "auditDisposition": "KEEP",
+      "lineCount": 247,
       "headingCount": 26,
       "headings": [
         "Purpose",
@@ -3573,29 +3685,10 @@
       "outputSchemaBulletCount": 3,
       "handoffNotationStyle": "relative_path",
       "declaredHandoffEdgeCount": 10,
-      "undeclaredBodyMentionsCount": 4,
-      "undeclaredBodyMentions": [
-        {
-          "target": "interior-architectural-scene-planner",
-          "section": "Purpose"
-        },
-        {
-          "target": "character-portrait-scene-planner",
-          "section": "When not to use"
-        },
-        {
-          "target": "environment-establishing-shot-planner",
-          "section": "When not to use"
-        },
-        {
-          "target": "interior-architectural-scene-planner",
-          "section": "When not to use"
-        }
-      ],
+      "undeclaredBodyMentionsCount": 0,
+      "undeclaredBodyMentions": [],
       "hasArtifactNotRunBug": false,
-      "issues": [
-        "has_4_undeclared_body_handoff_mentions"
-      ],
+      "issues": [],
       "graphDegree": {
         "incomingForward": 7,
         "outgoingForward": 9,
@@ -3608,8 +3701,20 @@
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
-      "hasContract": false,
-      "hasManagedMarkdownSections": false,
+      "declaredHandoffTargets": [
+        "intent-to-3d-brief-writer",
+        "product-hero-scene-planner",
+        "blender-asset-discovery-planner",
+        "output-format-decision",
+        "composition-quality-checker",
+        "lighting-quality-checker",
+        "material-quality-checker",
+        "blender-scene-quality-checker",
+        "acceptance-criteria-builder",
+        "blender-stop-condition-decider"
+      ],
+      "hasContract": true,
+      "hasManagedMarkdownSections": true,
       "hasMachineReadableEvalSuite": false,
       "machineReadableEvalCaseCount": 0
     },
@@ -3621,8 +3726,8 @@
       "category": "scene-planners",
       "canonicalRole": "single-product-hero-scene-architect",
       "isGatewaySkill": true,
-      "auditDisposition": "IMPROVE",
-      "lineCount": 221,
+      "auditDisposition": "KEEP",
+      "lineCount": 228,
       "headingCount": 26,
       "headings": [
         "Purpose",
@@ -3674,40 +3779,12 @@
       "inputSchemaRowCount": 0,
       "inputSchemaBulletCount": 9,
       "outputSchemaBulletCount": 5,
-      "handoffNotationStyle": "bare_id",
+      "handoffNotationStyle": "relative_path",
       "declaredHandoffEdgeCount": 8,
-      "undeclaredBodyMentionsCount": 6,
-      "undeclaredBodyMentions": [
-        {
-          "target": "product-grid-scene-planner",
-          "section": "When not to use"
-        },
-        {
-          "target": "official-runtime-readiness-checker",
-          "section": "Prerequisites / readiness"
-        },
-        {
-          "target": "cycles-vs-eevee-decision",
-          "section": "Troubleshooting"
-        },
-        {
-          "target": "glb-mobile-performance-budget",
-          "section": "Troubleshooting"
-        },
-        {
-          "target": "blender-asset-discovery-planner",
-          "section": "Troubleshooting"
-        },
-        {
-          "target": "asset-fallback-strategy",
-          "section": "Troubleshooting"
-        }
-      ],
+      "undeclaredBodyMentionsCount": 0,
+      "undeclaredBodyMentions": [],
       "hasArtifactNotRunBug": false,
-      "issues": [
-        "has_6_undeclared_body_handoff_mentions",
-        "uses_legacy_bare_id_handoff_notation"
-      ],
+      "issues": [],
       "graphDegree": {
         "incomingForward": 13,
         "outgoingForward": 7,
@@ -3720,8 +3797,18 @@
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
-      "hasContract": false,
-      "hasManagedMarkdownSections": false,
+      "declaredHandoffTargets": [
+        "intent-to-3d-brief-writer",
+        "blender-composition-camera-planner",
+        "blender-lighting-material-planner",
+        "acceptance-criteria-builder",
+        "blender-stop-condition-decider",
+        "blender-scene-quality-checker",
+        "glb-web-handoff",
+        "render-export-evidence"
+      ],
+      "hasContract": true,
+      "hasManagedMarkdownSections": true,
       "hasMachineReadableEvalSuite": false,
       "machineReadableEvalCaseCount": 0
     },
@@ -3733,7 +3820,7 @@
       "category": "routing-and-governance",
       "canonicalRole": "recipe-and-pack-selector",
       "isGatewaySkill": true,
-      "auditDisposition": "IMPROVE",
+      "auditDisposition": "KEEP",
       "lineCount": 267,
       "headingCount": 26,
       "headings": [
@@ -3787,38 +3874,11 @@
       "inputSchemaBulletCount": 2,
       "outputSchemaBulletCount": 6,
       "handoffNotationStyle": "relative_path",
-      "declaredHandoffEdgeCount": 10,
-      "undeclaredBodyMentionsCount": 6,
-      "undeclaredBodyMentions": [
-        {
-          "target": "runtime-path-picker",
-          "section": "When not to use"
-        },
-        {
-          "target": "official-runtime-setup-guide",
-          "section": "When not to use"
-        },
-        {
-          "target": "official-runtime-readiness-checker",
-          "section": "When not to use"
-        },
-        {
-          "target": "blender-troubleshooting",
-          "section": "When not to use"
-        },
-        {
-          "target": "runtime-bridge-conflict-resolver",
-          "section": "When not to use"
-        },
-        {
-          "target": "asset-license-checker",
-          "section": "When not to use"
-        }
-      ],
+      "declaredHandoffEdgeCount": 11,
+      "undeclaredBodyMentionsCount": 0,
+      "undeclaredBodyMentions": [],
       "hasArtifactNotRunBug": false,
-      "issues": [
-        "has_6_undeclared_body_handoff_mentions"
-      ],
+      "issues": [],
       "graphDegree": {
         "incomingForward": 1,
         "outgoingForward": 9,
@@ -3830,6 +3890,19 @@
       "missingExtendedTemplateHeadings": [],
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
+      ],
+      "declaredHandoffTargets": [
+        "blender-brainstorming",
+        "blendops-help",
+        "blender-recipe-decomposer",
+        "intent-to-3d-brief-writer",
+        "pack-prerequisite-checker",
+        "workflow-stage-router",
+        "product-hero-scene-planner",
+        "product-grid-scene-planner",
+        "character-portrait-scene-planner",
+        "environment-establishing-shot-planner",
+        "interior-architectural-scene-planner"
       ],
       "hasContract": true,
       "hasManagedMarkdownSections": true,
@@ -3844,8 +3917,8 @@
       "category": "evidence-and-handoff",
       "canonicalRole": "artifact-truth-and-provenance-auditor",
       "isGatewaySkill": true,
-      "auditDisposition": "IMPROVE",
-      "lineCount": 339,
+      "auditDisposition": "KEEP",
+      "lineCount": 340,
       "headingCount": 26,
       "headings": [
         "Purpose",
@@ -3900,21 +3973,10 @@
       "outputSchemaBulletCount": 4,
       "handoffNotationStyle": "relative_path",
       "declaredHandoffEdgeCount": 7,
-      "undeclaredBodyMentionsCount": 2,
-      "undeclaredBodyMentions": [
-        {
-          "target": "runtime-path-picker",
-          "section": "When not to use"
-        },
-        {
-          "target": "runtime-path-picker",
-          "section": "Playbooks"
-        }
-      ],
+      "undeclaredBodyMentionsCount": 0,
+      "undeclaredBodyMentions": [],
       "hasArtifactNotRunBug": false,
-      "issues": [
-        "has_2_undeclared_body_handoff_mentions"
-      ],
+      "issues": [],
       "graphDegree": {
         "incomingForward": 22,
         "outgoingForward": 7,
@@ -3927,8 +3989,17 @@
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
-      "hasContract": false,
-      "hasManagedMarkdownSections": false,
+      "declaredHandoffTargets": [
+        "official-runtime-readiness-checker",
+        "runtime-attempt-report-writer",
+        "blender-scene-quality-checker",
+        "pre-handoff-verification",
+        "preview-report-template-writer",
+        "glb-web-handoff",
+        "non-blender-user-response-writer"
+      ],
+      "hasContract": true,
+      "hasManagedMarkdownSections": true,
       "hasMachineReadableEvalSuite": true,
       "machineReadableEvalCaseCount": 8
     },
@@ -3941,7 +4012,7 @@
       "canonicalRole": "resolution-and-aspect-ratio-pinner",
       "isGatewaySkill": false,
       "auditDisposition": "KEEP",
-      "lineCount": 242,
+      "lineCount": 247,
       "headingCount": 26,
       "headings": [
         "Purpose",
@@ -4010,8 +4081,16 @@
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
-      "hasContract": false,
-      "hasManagedMarkdownSections": false,
+      "declaredHandoffTargets": [
+        "blender-composition-camera-planner",
+        "composition-quality-checker",
+        "color-management-decision",
+        "output-format-decision",
+        "cycles-vs-eevee-decision",
+        "render-export-evidence"
+      ],
+      "hasContract": true,
+      "hasManagedMarkdownSections": true,
       "hasMachineReadableEvalSuite": false,
       "machineReadableEvalCaseCount": 0
     },
@@ -4024,7 +4103,7 @@
       "canonicalRole": "execution-attempt-provenance-logger",
       "isGatewaySkill": false,
       "auditDisposition": "KEEP",
-      "lineCount": 266,
+      "lineCount": 269,
       "headingCount": 26,
       "headings": [
         "Purpose",
@@ -4096,8 +4175,16 @@
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
-      "hasContract": false,
-      "hasManagedMarkdownSections": false,
+      "declaredHandoffTargets": [
+        "official-runtime-readiness-checker",
+        "runtime-path-picker",
+        "runtime-bridge-conflict-resolver",
+        "blender-troubleshooting",
+        "render-export-evidence",
+        "pre-handoff-verification"
+      ],
+      "hasContract": true,
+      "hasManagedMarkdownSections": true,
       "hasMachineReadableEvalSuite": false,
       "machineReadableEvalCaseCount": 0
     },
@@ -4109,8 +4196,8 @@
       "category": "runtime-and-execution",
       "canonicalRole": "port-and-addon-conflict-resolver",
       "isGatewaySkill": false,
-      "auditDisposition": "IMPROVE",
-      "lineCount": 245,
+      "auditDisposition": "KEEP",
+      "lineCount": 247,
       "headingCount": 26,
       "headings": [
         "Purpose",
@@ -4164,14 +4251,12 @@
       "inputSchemaRowCount": 0,
       "inputSchemaBulletCount": 11,
       "outputSchemaBulletCount": 8,
-      "handoffNotationStyle": "bare_id",
-      "declaredHandoffEdgeCount": 5,
+      "handoffNotationStyle": "relative_path",
+      "declaredHandoffEdgeCount": 4,
       "undeclaredBodyMentionsCount": 0,
       "undeclaredBodyMentions": [],
       "hasArtifactNotRunBug": false,
-      "issues": [
-        "uses_legacy_bare_id_handoff_notation"
-      ],
+      "issues": [],
       "graphDegree": {
         "incomingForward": 9,
         "outgoingForward": 5,
@@ -4184,8 +4269,14 @@
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
-      "hasContract": false,
-      "hasManagedMarkdownSections": false,
+      "declaredHandoffTargets": [
+        "official-runtime-readiness-checker",
+        "blender-troubleshooting",
+        "official-runtime-setup-guide",
+        "runtime-path-picker"
+      ],
+      "hasContract": true,
+      "hasManagedMarkdownSections": true,
       "hasMachineReadableEvalSuite": true,
       "machineReadableEvalCaseCount": 7
     },
@@ -4198,7 +4289,7 @@
       "canonicalRole": "execution-path-selector",
       "isGatewaySkill": true,
       "auditDisposition": "KEEP",
-      "lineCount": 266,
+      "lineCount": 269,
       "headingCount": 26,
       "headings": [
         "Purpose",
@@ -4268,8 +4359,16 @@
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
-      "hasContract": false,
-      "hasManagedMarkdownSections": false,
+      "declaredHandoffTargets": [
+        "official-runtime-setup-guide",
+        "official-runtime-readiness-checker",
+        "path-one-host-outline",
+        "cli-appendix-job-outline",
+        "runtime-bridge-conflict-resolver",
+        "pre-handoff-verification"
+      ],
+      "hasContract": true,
+      "hasManagedMarkdownSections": true,
       "hasMachineReadableEvalSuite": false,
       "machineReadableEvalCaseCount": 0
     },
@@ -4282,7 +4381,7 @@
       "canonicalRole": "r3f-component-contract-architect",
       "isGatewaySkill": false,
       "auditDisposition": "KEEP",
-      "lineCount": 285,
+      "lineCount": 291,
       "headingCount": 26,
       "headings": [
         "Purpose",
@@ -4352,8 +4451,16 @@
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
-      "hasContract": false,
-      "hasManagedMarkdownSections": false,
+      "declaredHandoffTargets": [
+        "glb-animation-handoff",
+        "glb-mobile-performance-budget",
+        "color-management-decision",
+        "material-quality-checker",
+        "glb-web-handoff",
+        "non-blender-user-response-writer"
+      ],
+      "hasContract": true,
+      "hasManagedMarkdownSections": true,
       "hasMachineReadableEvalSuite": false,
       "machineReadableEvalCaseCount": 0
     },
@@ -4365,7 +4472,7 @@
       "category": "routing-and-governance",
       "canonicalRole": "mid-workflow-stage-router",
       "isGatewaySkill": true,
-      "auditDisposition": "IMPROVE",
+      "auditDisposition": "KEEP",
       "lineCount": 260,
       "headingCount": 26,
       "headings": [
@@ -4419,50 +4526,11 @@
       "inputSchemaBulletCount": 0,
       "outputSchemaBulletCount": 3,
       "handoffNotationStyle": "relative_path",
-      "declaredHandoffEdgeCount": 4,
-      "undeclaredBodyMentionsCount": 9,
-      "undeclaredBodyMentions": [
-        {
-          "target": "blendops-help",
-          "section": "When not to use"
-        },
-        {
-          "target": "blender-brainstorming",
-          "section": "When not to use"
-        },
-        {
-          "target": "runtime-bridge-conflict-resolver",
-          "section": "When not to use"
-        },
-        {
-          "target": "non-blender-user-response-writer",
-          "section": "When not to use"
-        },
-        {
-          "target": "runtime-path-picker",
-          "section": "Official runtime boundary"
-        },
-        {
-          "target": "official-runtime-setup-guide",
-          "section": "Official runtime boundary"
-        },
-        {
-          "target": "path-one-host-outline",
-          "section": "Official runtime boundary"
-        },
-        {
-          "target": "cli-appendix-job-outline",
-          "section": "Official runtime boundary"
-        },
-        {
-          "target": "runtime-bridge-conflict-resolver",
-          "section": "Mode handling"
-        }
-      ],
+      "declaredHandoffEdgeCount": 6,
+      "undeclaredBodyMentionsCount": 0,
+      "undeclaredBodyMentions": [],
       "hasArtifactNotRunBug": false,
-      "issues": [
-        "has_9_undeclared_body_handoff_mentions"
-      ],
+      "issues": [],
       "graphDegree": {
         "incomingForward": 6,
         "outgoingForward": 4,
@@ -4474,6 +4542,14 @@
       "missingExtendedTemplateHeadings": [],
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
+      ],
+      "declaredHandoffTargets": [
+        "pack-prerequisite-checker",
+        "official-runtime-readiness-checker",
+        "runtime-bridge-conflict-resolver",
+        "blender-scope-boundary-enforcer",
+        "render-export-evidence",
+        "pre-handoff-verification"
       ],
       "hasContract": true,
       "hasManagedMarkdownSections": true,

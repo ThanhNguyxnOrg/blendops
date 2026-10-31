@@ -22,18 +22,22 @@ Run a focused per-row Pass/Warn/Fail check on the camera and framing setup again
 - when a render "feels off" but lighting and materials check out
 
 ## When not to use
-- planning or editing camera framing (use `blender-composition-camera-planner`)
-- locking aspect ratio or resolution (use `resolution-aspect-decision`)
-- material validation (use `material-quality-checker`)
-- lighting validation (use `lighting-quality-checker`)
-- broad scene Pass/Warn/Fail readiness review (use `blender-scene-quality-checker`)
-- classifying render or export artifact evidence (use `render-export-evidence`)
+<!-- blendops:generated:start exclusions -->
+- planning or editing camera framing → use `../blender-composition-camera-planner/SKILL.md` (use blender-composition-camera-planner)
+- locking aspect ratio or resolution → use `../resolution-aspect-decision/SKILL.md` (use resolution-aspect-decision)
+- material validation → use `../material-quality-checker/SKILL.md` (use material-quality-checker)
+- lighting validation → use `../lighting-quality-checker/SKILL.md` (use lighting-quality-checker)
+- broad scene Pass/Warn/Fail readiness review → use `../blender-scene-quality-checker/SKILL.md` (use blender-scene-quality-checker)
+- classifying render or export artifact evidence → use `../render-export-evidence/SKILL.md` (use render-export-evidence)
+<!-- blendops:generated:end exclusions -->
 
 ## Trigger phrases
+<!-- blendops:generated:start triggers -->
 - "is the framing okay"
 - "check composition"
 - "subject feels off-center"
 - "too much negative space"
+<!-- blendops:generated:end triggers -->
 
 ## Prerequisites / readiness
 - camera setup known (FOV / focal length / position / target / lens)
@@ -231,12 +235,14 @@ Next: blender-scene-quality-checker | blender-composition-camera-planner | resol
 - Mixing material / lighting checks here.
 
 ## Cross-skill handoff
-- Broad scene readiness review (consumes these rows) → `../blender-scene-quality-checker/SKILL.md`
-- Camera & framing re-plan → `../blender-composition-camera-planner/SKILL.md`
-- Aspect ratio & resolution locks → `../resolution-aspect-decision/SKILL.md`
-- Artifact evidence classification → `../render-export-evidence/SKILL.md`
-- Material validation → `../material-quality-checker/SKILL.md`
-- Lighting validation → `../lighting-quality-checker/SKILL.md`
+<!-- blendops:generated:start handoffs -->
+- [progression] Broad scene readiness review (consumes these rows) → `../blender-scene-quality-checker/SKILL.md`
+- [retry] Camera & framing re-plan → `../blender-composition-camera-planner/SKILL.md`
+- [retry] Aspect ratio & resolution locks → `../resolution-aspect-decision/SKILL.md`
+- [progression] Artifact evidence classification → `../render-export-evidence/SKILL.md`
+- [upstream_reference] Material validation → `../material-quality-checker/SKILL.md`
+- [upstream_reference] Lighting validation → `../lighting-quality-checker/SKILL.md`
+<!-- blendops:generated:end handoffs -->
 
 ## Non-goals
 - Move or edit the camera (owned by `blender-composition-camera-planner`).

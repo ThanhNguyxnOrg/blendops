@@ -20,18 +20,22 @@ Pin a single, explicit stop condition for one recipe BEFORE work begins—consis
 - when previous attempts drifted into endless polish or unclear completion boundaries
 
 ## When not to use
-- pure exploration or brainstorming (use `blender-brainstorming`; goal is divergence)
-- tiny single-shot requests
-- splitting a broad multi-recipe request beforehand (use `blender-recipe-decomposer` first)
-- authoring measurable acceptance rows from scratch (use `acceptance-criteria-builder` first)
-- enforcing per-stage checklist gates during execution (use `blender-checklist-driven-workflow`)
-- after work has already started and scope is drifting mid-flight (use `blender-scope-boundary-enforcer`)
-- performing the final verification gate before delivery (use `pre-handoff-verification`)
+<!-- blendops:generated:start exclusions -->
+- pure exploration or brainstorming → use `../blender-brainstorming/SKILL.md` (use blender-brainstorming; goal is divergence)
+- tiny single-shot requests → use `../intent-to-3d-brief-writer/SKILL.md` (Delegates out-of-scope requests to intent-to-3d-brief-writer)
+- splitting a broad multi-recipe request beforehand → use `../blender-recipe-decomposer/SKILL.md` (use blender-recipe-decomposer first)
+- authoring measurable acceptance rows from scratch → use `../acceptance-criteria-builder/SKILL.md` (use acceptance-criteria-builder first)
+- enforcing per-stage checklist gates during execution → use `../blender-checklist-driven-workflow/SKILL.md` (use blender-checklist-driven-workflow)
+- after work has already started and scope is drifting mid-flight → use `../blender-scope-boundary-enforcer/SKILL.md` (use blender-scope-boundary-enforcer)
+- performing the final verification gate before delivery → use `../pre-handoff-verification/SKILL.md` (use pre-handoff-verification)
+<!-- blendops:generated:end exclusions -->
 
 ## Trigger phrases
+<!-- blendops:generated:start triggers -->
 - "when are we done"
 - "let's set the bar"
 - "what does done look like"
+<!-- blendops:generated:end triggers -->
 
 ## Prerequisites / readiness
 - single-recipe scope is clear (split beforehand via `blender-recipe-decomposer` if needed)
@@ -196,13 +200,15 @@ Limitations: <gaps>
 - Blurring roles with `acceptance-criteria-builder`, `blender-checklist-driven-workflow`, or `blender-scope-boundary-enforcer`.
 
 ## Cross-skill handoff
-- Intent brief → `../intent-to-3d-brief-writer/SKILL.md`
-- Scope splitting beforehand → `../blender-recipe-decomposer/SKILL.md`
-- Measurable acceptance rows → `../acceptance-criteria-builder/SKILL.md`
-- Per-stage workflow gates → `../blender-checklist-driven-workflow/SKILL.md`
-- Mid-flight scope drift → `../blender-scope-boundary-enforcer/SKILL.md`
-- Artifact and render evidence → `../render-export-evidence/SKILL.md`
-- Final pre-handoff gate → `../pre-handoff-verification/SKILL.md`
+<!-- blendops:generated:start handoffs -->
+- [upstream_reference] Intent brief → `../intent-to-3d-brief-writer/SKILL.md`
+- [boundary_delegation] Scope splitting beforehand → `../blender-recipe-decomposer/SKILL.md`
+- [upstream_reference] Measurable acceptance rows → `../acceptance-criteria-builder/SKILL.md`
+- [progression] Per-stage workflow gates → `../blender-checklist-driven-workflow/SKILL.md`
+- [progression] Mid-flight scope drift → `../blender-scope-boundary-enforcer/SKILL.md`
+- [progression] Artifact and render evidence → `../render-export-evidence/SKILL.md`
+- [progression] Final pre-handoff gate → `../pre-handoff-verification/SKILL.md`
+<!-- blendops:generated:end handoffs -->
 
 ## Non-goals
 - Run Blender or execute Python.

@@ -1,0 +1,147 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://blendops.dev/schemas/contract-context-fields.schema.json",
+  "title": "BlendOps Contract Routing Context Field Vocabulary Schema",
+  "description": "Validates the canonical vocabulary of dotted literal context keys, scalar types, and allowed enum values used by conditionRule predicates across all 48 skill contracts.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "schemaVersion",
+    "evaluationSemantics",
+    "supportedOperators",
+    "fields"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "const": "../schemas/contract-context-fields.schema.json"
+    },
+    "schemaVersion": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "evaluationSemantics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "dottedFieldInterpretation",
+        "missingFieldBehavior",
+        "prototypeLookupAllowed",
+        "arbitraryExpressionsAllowed",
+        "executionClaimBoundary"
+      ],
+      "properties": {
+        "dottedFieldInterpretation": {
+          "type": "string",
+          "const": "literal_own_property_key"
+        },
+        "missingFieldBehavior": {
+          "type": "string",
+          "const": "fail_closed_false_except_exists_false"
+        },
+        "prototypeLookupAllowed": {
+          "type": "boolean",
+          "const": false
+        },
+        "arbitraryExpressionsAllowed": {
+          "type": "boolean",
+          "const": false
+        },
+        "executionClaimBoundary": {
+          "type": "string",
+          "minLength": 20
+        }
+      }
+    },
+    "supportedOperators": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 5,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "enum": [
+          "equals",
+          "not_equals",
+          "in",
+          "not_in",
+          "exists"
+        ]
+      }
+    },
+    "fields": {
+      "type": "array",
+      "minItems": 20,
+      "items": {
+        "$ref": "#/$defs/contextFieldDefinition"
+      }
+    }
+  },
+  "$defs": {
+    "contextFieldDefinition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "field",
+        "domain",
+        "valueType",
+        "description"
+      ],
+      "properties": {
+        "field": {
+          "type": "string",
+          "pattern": "^[a-z][a-zA-Z0-9_.]+$"
+        },
+        "domain": {
+          "type": "string",
+          "enum": [
+            "goal",
+            "request",
+            "fit",
+            "recipe",
+            "brief",
+            "preflight",
+            "inventory",
+            "runtime",
+            "assets",
+            "stage",
+            "gate",
+            "scope",
+            "decision",
+            "budget",
+            "quality",
+            "artifact",
+            "handoff",
+            "troubleshooting"
+          ]
+        },
+        "valueType": {
+          "type": "string",
+          "enum": [
+            "string",
+            "boolean",
+            "number"
+          ]
+        },
+        "allowedValues": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "oneOf": [
+              { "type": "string", "minLength": 1 },
+              { "type": "boolean" },
+              { "type": "number" }
+            ]
+          }
+        },
+        "description": {
+          "type": "string",
+          "minLength": 15,
+          "maxLength": 260
+        }
+      }
+    }
+  }
+}

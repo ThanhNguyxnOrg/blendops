@@ -31,18 +31,20 @@ This skill **complements** `render-export-evidence` (which classifies artifact e
 - when the operator is tempted to claim "done" but evidence is fuzzy
 
 ## When not to use
-
-- the workflow is still in planning / brainstorming / brief stage (no claim to verify yet)
-- the user explicitly asked for a draft, not a verified deliverable
-- runtime status is `Not Run` and the user knows it (no verification needed when Not Run is the explicit state)
+<!-- blendops:generated:start exclusions -->
+- the workflow is still in planning / brainstorming / brief stage (no claim to verify yet) → use `../blender-scene-quality-checker/SKILL.md` (no claim to verify yet)
+- the user explicitly asked for a draft, not a verified deliverable → use `../blender-troubleshooting/SKILL.md` (Delegates out-of-scope requests to blender-troubleshooting)
+- runtime status is Not Run and the user knows it (no verification needed when Not Run is the explicit state) → use `../render-export-evidence/SKILL.md` (no verification needed when Not Run is the explicit state)
+<!-- blendops:generated:end exclusions -->
 
 ## Trigger phrases
-
+<!-- blendops:generated:start triggers -->
 - "looks ready, can we ship?"
 - "I think the render is good — verify before sending"
 - "before saving the evidence file..."
 - "is this Verified or do we downgrade?"
 - "confirm whether this claim holds or must be downgraded"
+<!-- blendops:generated:end triggers -->
 
 ## Prerequisites / readiness
 
@@ -219,14 +221,21 @@ Run all 7 checks. Each applicable check must pass before a claim is upheld; othe
 - treating a passed read-only smoke as a `Verified` for mutation/render/export
 
 ## Cross-skill handoff
-
-- Entry wiring: reached from `workflow-stage-router` (as the final gate or failed-gate exit) or `blendops-help`.
-- If verdict is Pass: hand off to `non-blender-user-response-writer` for final user-facing delivery (or `render-export-evidence` / `runtime-attempt-report-writer` when finalizing an evidence log).
-- If verdict is Warn or Fail (claim downgraded, handoff continues with lower truth label): hand off to `non-blender-user-response-writer` with the downgraded label and caveats locked.
-- If verdict is Fail and the operator wants to fix the upstream gap instead of shipping downgraded: return to `workflow-stage-router` to pick the single immediate next skill:
-  - scene/asset quality gap → `blender-scene-quality-checker`, `material-quality-checker`, `lighting-quality-checker`, `composition-quality-checker`, or `polycount-budget-checker`
-  - evidence classification gap → `render-export-evidence` or `runtime-attempt-report-writer`
-  - runtime/bridge failure → `official-runtime-readiness-checker`, `runtime-bridge-conflict-resolver`, or `blender-troubleshooting`
+<!-- blendops:generated:start handoffs -->
+- [boundary_delegation] Entry wiring (blendops-help) → `../blendops-help/SKILL.md`
+- [upstream_reference] Entry wiring (workflow-stage-router) → `../workflow-stage-router/SKILL.md`
+- [conditional] If verdict is Pass (non-blender-user-response-writer) → `../non-blender-user-response-writer/SKILL.md`
+- [upstream_reference] If verdict is Pass (render-export-evidence) → `../render-export-evidence/SKILL.md`
+- [upstream_reference] If verdict is Pass (runtime-attempt-report-writer) → `../runtime-attempt-report-writer/SKILL.md`
+- [upstream_reference] scene/asset quality gap (blender-scene-quality-checker) → `../blender-scene-quality-checker/SKILL.md`
+- [upstream_reference] scene/asset quality gap (composition-quality-checker) → `../composition-quality-checker/SKILL.md`
+- [upstream_reference] scene/asset quality gap (lighting-quality-checker) → `../lighting-quality-checker/SKILL.md`
+- [upstream_reference] scene/asset quality gap (material-quality-checker) → `../material-quality-checker/SKILL.md`
+- [upstream_reference] scene/asset quality gap (polycount-budget-checker) → `../polycount-budget-checker/SKILL.md`
+- [fallback] runtime/bridge failure (blender-troubleshooting) → `../blender-troubleshooting/SKILL.md`
+- [fallback] runtime/bridge failure (official-runtime-readiness-checker) → `../official-runtime-readiness-checker/SKILL.md`
+- [fallback] runtime/bridge failure (runtime-bridge-conflict-resolver) → `../runtime-bridge-conflict-resolver/SKILL.md`
+<!-- blendops:generated:end handoffs -->
 
 ## Non-goals
 

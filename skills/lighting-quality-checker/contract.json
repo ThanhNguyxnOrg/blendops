@@ -1,0 +1,187 @@
+{
+  "$schema": "../../schemas/skill-contract.schema.json",
+  "id": "lighting-quality-checker",
+  "version": "1.0.0",
+  "category": "quality-validators",
+  "role": "exposure-ratio-and-shadow-validator",
+  "purpose": "Validate lighting intensity ranges, shadow softness, color temperature, and HDRI use against the scene brief before render.",
+  "capabilityTier": "L0",
+  "triggers": [
+    "is the lighting okay",
+    "check shadow softness",
+    "lighting feels off",
+    "is the HDRI balanced"
+  ],
+  "exclusions": [
+    {
+      "condition": "upstream lookdev and lighting planning",
+      "delegateTo": "blender-lighting-material-planner",
+      "reason": "use blender-lighting-material-planner"
+    },
+    {
+      "condition": "material validation",
+      "delegateTo": "material-quality-checker",
+      "reason": "use material-quality-checker"
+    },
+    {
+      "condition": "composition / camera validation",
+      "delegateTo": "composition-quality-checker",
+      "reason": "use composition-quality-checker"
+    },
+    {
+      "condition": "broad pass/warn/fail scene readiness",
+      "delegateTo": "blender-scene-quality-checker",
+      "reason": "use blender-scene-quality-checker"
+    },
+    {
+      "condition": "classifying render or export artifact evidence",
+      "delegateTo": "render-export-evidence",
+      "reason": "use render-export-evidence"
+    },
+    {
+      "condition": "to fix or edit lights (this skill validates and gives remediation hints only; it never edits)",
+      "delegateTo": "blender-scene-quality-checker",
+      "reason": "this skill validates and gives remediation hints only; it never edits"
+    }
+  ],
+  "inputs": {
+    "required": [
+      {
+        "name": "lighting_rig_specification",
+        "type": "object",
+        "description": "Key-to-fill ratios, light placements, HDRI rotation, and shadow softness from blender-lighting-material-planner"
+      },
+      {
+        "name": "color_management_pins",
+        "type": "object",
+        "description": "Pinned view transform (AgX/Filmic/Standard) and exposure target from color-management-decision"
+      }
+    ],
+    "optional": [
+      {
+        "name": "render_or_preview_exposure_notes",
+        "type": "string",
+        "description": "Optional highlight clipping or shadow crush observations from preview output"
+      }
+    ]
+  },
+  "outputs": {
+    "primary": [
+      "lighting_quality_verdict_table",
+      "key_fill_rim_and_clipping_audit",
+      "lighting_remediation_instructions"
+    ],
+    "truthStatePolicy": {
+      "runtimeDefault": "Not Run",
+      "artifactDefault": "Not Produced",
+      "mutationRule": "downgrade_only"
+    }
+  },
+  "handoffs": [
+    {
+      "target": "blender-scene-quality-checker",
+      "type": "progression",
+      "label": "Broad readiness review",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "holistic"
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "quality_validation"
+          }
+        ]
+      }
+    },
+    {
+      "target": "material-quality-checker",
+      "type": "upstream_reference",
+      "label": "Material validation",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "material"
+          },
+          {
+            "field": "quality.verdict",
+            "operator": "equals",
+            "value": "not_run"
+          }
+        ]
+      }
+    },
+    {
+      "target": "composition-quality-checker",
+      "type": "progression",
+      "label": "Composition validation",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "composition"
+          },
+          {
+            "field": "quality.verdict",
+            "operator": "equals",
+            "value": "not_run"
+          }
+        ]
+      }
+    },
+    {
+      "target": "blender-lighting-material-planner",
+      "type": "retry",
+      "label": "Lighting re-plan",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "lighting"
+          },
+          {
+            "field": "quality.verdict",
+            "operator": "equals",
+            "value": "Fail"
+          }
+        ]
+      },
+      "retryPolicy": {
+        "maxAttempts": 2,
+        "exitCondition": {
+          "all": [
+            {
+              "field": "quality.verdict",
+              "operator": "in",
+              "value": [
+                "Pass",
+                "Warn"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "target": "render-export-evidence",
+      "type": "progression",
+      "label": "Render evidence",
+      "when": {
+        "all": [
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "post_execution_audit"
+          }
+        ]
+      }
+    }
+  ]
+}

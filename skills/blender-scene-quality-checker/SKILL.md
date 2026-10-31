@@ -20,13 +20,17 @@ Evaluate scene/workflow readiness honestly and consistently before any success c
 - during text-only or runtime evaluation reporting
 
 ## When not to use
-- as a replacement for evidence collection
-- to fabricate confidence in missing artifacts
+<!-- blendops:generated:start exclusions -->
+- as a replacement for evidence collection → use `../product-hero-scene-planner/SKILL.md` (Delegates out-of-scope requests to product-hero-scene-planner)
+- to fabricate confidence in missing artifacts → use `../blender-lighting-material-planner/SKILL.md` (Delegates out-of-scope requests to blender-lighting-material-planner)
+<!-- blendops:generated:end exclusions -->
 
 ## Trigger phrases
+<!-- blendops:generated:start triggers -->
 - "quality-check this scene"
 - "is this ready"
 - "evaluate pass warn fail"
+<!-- blendops:generated:end triggers -->
 
 ## Prerequisites / readiness
 - plan output and acceptance criteria set available (e.g., from `acceptance-criteria-builder`)
@@ -167,11 +171,16 @@ Review-only skill: never executes Blender, never runs or emits Python, and never
 - skipping required laws, using Path 2 without caveats, treating CLI fallback as a peer path, or emitting jargon/Python
 
 ## Cross-skill handoff
-- Focused domain validation (if gaps found): `composition-quality-checker`, `lighting-quality-checker`, `material-quality-checker`, `polycount-budget-checker`
-- Evidence classification: `render-export-evidence`
-- Handoff gate: `pre-handoff-verification`
-- Web delivery (when applicable): `glb-web-handoff`
-- Final communication: `non-blender-user-response-writer`
+<!-- blendops:generated:start handoffs -->
+- [upstream_reference] Focused domain validation (if gaps found) (composition-quality-checker) → `../composition-quality-checker/SKILL.md`
+- [upstream_reference] Focused domain validation (if gaps found) (lighting-quality-checker) → `../lighting-quality-checker/SKILL.md`
+- [upstream_reference] Focused domain validation (if gaps found) (material-quality-checker) → `../material-quality-checker/SKILL.md`
+- [upstream_reference] Focused domain validation (if gaps found) (polycount-budget-checker) → `../polycount-budget-checker/SKILL.md`
+- [progression] Evidence classification → `../render-export-evidence/SKILL.md`
+- [progression] Handoff gate → `../pre-handoff-verification/SKILL.md`
+- [conditional] Web delivery (when applicable) → `../glb-web-handoff/SKILL.md`
+- [progression] Final communication → `../non-blender-user-response-writer/SKILL.md`
+<!-- blendops:generated:end handoffs -->
 
 ## Non-goals
 - executing Blender or running/generating Python code

@@ -27,18 +27,20 @@ This skill is BlendOps-specific (no direct analog in Anthropic Superpowers or BM
 - when planner needs to know upfront whether assets are procedural or external
 
 ## When not to use
-
-- the user supplied all assets in the brief (skip; route directly to planner)
-- runtime is already executing and assets are already in the scene (route to evidence skill)
-- the request is iteration on an existing scene (assets are already chosen)
+<!-- blendops:generated:start exclusions -->
+- the user supplied all assets in the brief (skip; route directly to planner) → use `../intent-to-3d-brief-writer/SKILL.md` (skip; route directly to planner)
+- runtime is already executing and assets are already in the scene → use `../product-hero-scene-planner/SKILL.md` (route to evidence skill)
+- the request is iteration on an existing scene (assets are already chosen) → use `../render-export-evidence/SKILL.md` (assets are already chosen)
+<!-- blendops:generated:end exclusions -->
 
 ## Trigger phrases
-
+<!-- blendops:generated:start triggers -->
 - "what assets do we need"
 - "where do the models come from"
 - "asset plan before scene planning"
 - "do we generate or import"
 - "surface asset license risks before planning"
+<!-- blendops:generated:end triggers -->
 
 ## Prerequisites / readiness
 
@@ -220,14 +222,20 @@ If the chosen strategy is `generative`, it is Path 2-only (community `mcp-for-bl
 - upgrading truth states above Runtime `Not Run` or Artifact `Not Produced`
 
 ## Cross-skill handoff
-
-- **Before this skill**: `intent-to-3d-brief-writer` supplies the locked 8-slot brief.
-- **Scene planners (primary handoff with brief + asset plan)**: `product-hero-scene-planner`, `character-portrait-scene-planner`, `environment-establishing-shot-planner`, `interior-architectural-scene-planner`, or `product-grid-scene-planner`.
-- **License verdicts**: `asset-license-checker` (this skill surfaces license risk only; verdicts belong to `asset-license-checker`).
-- **Style re-checks**: `asset-style-consistency-checker` to verify visual consistency across mixed asset sources.
-- **Budget reconciliation**: `glb-mobile-performance-budget` (and `polycount-budget-checker`) to validate target size and polygon limits.
-- **Generative readiness**: `official-runtime-readiness-checker` when a Path 2 `generative` strategy is selected.
-- **Fallback / constraint updates**: `asset-fallback-strategy` if preferred sources fail, or back to `intent-to-3d-brief-writer` if brief constraints must change.
+<!-- blendops:generated:start handoffs -->
+- [upstream_reference] **Before this skill** → `../intent-to-3d-brief-writer/SKILL.md`
+- [alternative] **Scene planners (primary handoff with brief + asset plan)** (character-portrait-scene-planner) → `../character-portrait-scene-planner/SKILL.md`
+- [alternative] **Scene planners (primary handoff with brief + asset plan)** (environment-establishing-shot-planner) → `../environment-establishing-shot-planner/SKILL.md`
+- [alternative] **Scene planners (primary handoff with brief + asset plan)** (interior-architectural-scene-planner) → `../interior-architectural-scene-planner/SKILL.md`
+- [alternative] **Scene planners (primary handoff with brief + asset plan)** (product-grid-scene-planner) → `../product-grid-scene-planner/SKILL.md`
+- [alternative] **Scene planners (primary handoff with brief + asset plan)** (product-hero-scene-planner) → `../product-hero-scene-planner/SKILL.md`
+- [progression] **License verdicts** → `../asset-license-checker/SKILL.md`
+- [progression] **Style re-checks** → `../asset-style-consistency-checker/SKILL.md`
+- [progression] **Budget reconciliation** (glb-mobile-performance-budget) → `../glb-mobile-performance-budget/SKILL.md`
+- [progression] **Budget reconciliation** (polycount-budget-checker) → `../polycount-budget-checker/SKILL.md`
+- [upstream_reference] **Generative readiness** → `../official-runtime-readiness-checker/SKILL.md`
+- [fallback] **Fallback / constraint updates** (asset-fallback-strategy) → `../asset-fallback-strategy/SKILL.md`
+<!-- blendops:generated:end handoffs -->
 
 ## Non-goals
 

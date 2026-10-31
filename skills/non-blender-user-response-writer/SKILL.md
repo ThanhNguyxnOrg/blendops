@@ -20,17 +20,21 @@ Produce stakeholder-friendly outputs that preserve truthfulness, evidence bounda
 - when translating technical blockers, caveats, and verified/unverified status splits for non-Blender users
 
 ## When not to use
-- to hide blockers, drop caveats for readability, or overclaim runtime or artifact success
-- to upgrade Runtime or Artifact truth states
-- to classify raw artifact evidence (use `render-export-evidence`)
-- to generate technical pass/warn/fail checks (use `blender-scene-quality-checker` or domain quality checkers)
-- to assemble technical GLB/web compatibility summaries (use `glb-web-handoff`)
-- to gate handoff readiness (use `pre-handoff-verification`)
+<!-- blendops:generated:start exclusions -->
+- to hide blockers, drop caveats for readability, or overclaim runtime or artifact success → use `../render-export-evidence/SKILL.md` (Delegates out-of-scope requests to render-export-evidence)
+- to upgrade Runtime or Artifact truth states → use `../blender-scene-quality-checker/SKILL.md` (Delegates out-of-scope requests to blender-scene-quality-checker)
+- to classify raw artifact evidence → use `../render-export-evidence/SKILL.md` (use render-export-evidence)
+- to generate technical pass/warn/fail checks → use `../blender-scene-quality-checker/SKILL.md` (use blender-scene-quality-checker or domain quality checkers)
+- to assemble technical GLB/web compatibility summaries → use `../glb-web-handoff/SKILL.md` (use glb-web-handoff)
+- to gate handoff readiness → use `../pre-handoff-verification/SKILL.md` (use pre-handoff-verification)
+<!-- blendops:generated:end exclusions -->
 
 ## Trigger phrases
+<!-- blendops:generated:start triggers -->
 - "write final user summary"
 - "explain this for non-Blender user"
 - "make this stakeholder-friendly"
+<!-- blendops:generated:end triggers -->
 
 ## Prerequisites / readiness
 - classified Runtime and per-artifact evidence states from `render-export-evidence`
@@ -165,11 +169,17 @@ Never imply runtime success or artifact existence without concrete evidence, nev
 - producing jargon-heavy final output without explanation
 
 ## Cross-skill handoff
-- Upstream artifact evidence classification: `render-export-evidence`
-- Upstream quality pass/warn/fail validation: `blender-scene-quality-checker`, `material-quality-checker`, `lighting-quality-checker`, `composition-quality-checker`, `polycount-budget-checker`
-- Upstream GLB/web handoff summary: `glb-web-handoff`
-- Upstream handoff gate check: `pre-handoff-verification`
-- Runtime readiness check when runtime is unverified: `official-runtime-readiness-checker`
+<!-- blendops:generated:start handoffs -->
+- [upstream_reference] Upstream artifact evidence classification → `../render-export-evidence/SKILL.md`
+- [fallback] Upstream quality pass/warn/fail validation (blender-scene-quality-checker) → `../blender-scene-quality-checker/SKILL.md`
+- [fallback] Upstream quality pass/warn/fail validation (composition-quality-checker) → `../composition-quality-checker/SKILL.md`
+- [fallback] Upstream quality pass/warn/fail validation (lighting-quality-checker) → `../lighting-quality-checker/SKILL.md`
+- [fallback] Upstream quality pass/warn/fail validation (material-quality-checker) → `../material-quality-checker/SKILL.md`
+- [fallback] Upstream quality pass/warn/fail validation (polycount-budget-checker) → `../polycount-budget-checker/SKILL.md`
+- [upstream_reference] Upstream GLB/web handoff summary → `../glb-web-handoff/SKILL.md`
+- [upstream_reference] Upstream handoff gate check → `../pre-handoff-verification/SKILL.md`
+- [upstream_reference] Runtime readiness check when runtime is unverified → `../official-runtime-readiness-checker/SKILL.md`
+<!-- blendops:generated:end handoffs -->
 
 ## Non-goals
 - Dumping raw logs or unexplained 3D jargon as final output

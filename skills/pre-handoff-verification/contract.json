@@ -1,0 +1,295 @@
+{
+  "$schema": "../../schemas/skill-contract.schema.json",
+  "id": "pre-handoff-verification",
+  "version": "1.0.0",
+  "category": "evidence-and-handoff",
+  "role": "final-7-point-release-gate",
+  "purpose": "Verification gate before claiming any deliverable is ready. Forces evidence checks (path, file existence, validation notes) per evidence-before-done law. Use before any 'Verified' claim.",
+  "capabilityTier": "L0",
+  "triggers": [
+    "looks ready, can we ship?",
+    "I think the render is good — verify before sending",
+    "before saving the evidence file...",
+    "is this Verified or do we downgrade?",
+    "confirm whether this claim holds or must be downgraded"
+  ],
+  "exclusions": [
+    {
+      "condition": "the workflow is still in planning / brainstorming / brief stage (no claim to verify yet)",
+      "delegateTo": "blender-scene-quality-checker",
+      "reason": "no claim to verify yet"
+    },
+    {
+      "condition": "the user explicitly asked for a draft, not a verified deliverable",
+      "delegateTo": "blender-troubleshooting",
+      "reason": "Delegates out-of-scope requests to blender-troubleshooting"
+    },
+    {
+      "condition": "runtime status is Not Run and the user knows it (no verification needed when Not Run is the explicit state)",
+      "delegateTo": "render-export-evidence",
+      "reason": "no verification needed when Not Run is the explicit state"
+    }
+  ],
+  "inputs": {
+    "required": [
+      {
+        "name": "candidate_delivery_package",
+        "type": "object",
+        "description": "Complete set of planning, quality validation, runtime attempt, and artifact evidence records"
+      },
+      {
+        "name": "proposed_truth_state_claims",
+        "type": "object",
+        "description": "Proposed Runtime status and Artifact status labels to audit against the 7-point release gate"
+      }
+    ],
+    "optional": [
+      {
+        "name": "active_blocker_or_failed_gate_notes",
+        "type": "array",
+        "description": "Any upstream Warn/Fail quality verdicts or unresolved runtime blockers"
+      }
+    ]
+  },
+  "outputs": {
+    "primary": [
+      "seven_point_release_gate_table",
+      "enforced_downgrade_only_truth_states",
+      "release_clearance_or_remediation_route"
+    ],
+    "truthStatePolicy": {
+      "runtimeDefault": "Not Run",
+      "artifactDefault": "Not Produced",
+      "mutationRule": "downgrade_only"
+    }
+  },
+  "handoffs": [
+    {
+      "target": "blendops-help",
+      "type": "boundary_delegation",
+      "label": "Entry wiring (blendops-help)",
+      "when": {
+        "all": [
+          {
+            "field": "request.scope",
+            "operator": "equals",
+            "value": "general_help"
+          }
+        ]
+      }
+    },
+    {
+      "target": "workflow-stage-router",
+      "type": "upstream_reference",
+      "label": "Entry wiring (workflow-stage-router)",
+      "when": {
+        "all": [
+          {
+            "field": "preflight.passed",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "inventory.exists",
+            "operator": "equals",
+            "value": true
+          }
+        ]
+      }
+    },
+    {
+      "target": "non-blender-user-response-writer",
+      "type": "conditional",
+      "label": "If verdict is Pass (non-blender-user-response-writer)",
+      "when": {
+        "all": [
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "final_communication"
+          }
+        ]
+      }
+    },
+    {
+      "target": "render-export-evidence",
+      "type": "upstream_reference",
+      "label": "If verdict is Pass (render-export-evidence)",
+      "when": {
+        "all": [
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "post_execution_audit"
+          }
+        ]
+      }
+    },
+    {
+      "target": "runtime-attempt-report-writer",
+      "type": "upstream_reference",
+      "label": "If verdict is Pass (runtime-attempt-report-writer)",
+      "when": {
+        "all": [
+          {
+            "field": "runtime.status",
+            "operator": "in",
+            "value": [
+              "Attempted",
+              "Produced",
+              "Verified",
+              "Failed"
+            ]
+          },
+          {
+            "field": "request.topic",
+            "operator": "equals",
+            "value": "attempt_report"
+          }
+        ]
+      }
+    },
+    {
+      "target": "blender-scene-quality-checker",
+      "type": "upstream_reference",
+      "label": "scene/asset quality gap (blender-scene-quality-checker)",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "holistic"
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "quality_validation"
+          }
+        ]
+      }
+    },
+    {
+      "target": "composition-quality-checker",
+      "type": "upstream_reference",
+      "label": "scene/asset quality gap (composition-quality-checker)",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "composition"
+          },
+          {
+            "field": "quality.verdict",
+            "operator": "equals",
+            "value": "not_run"
+          }
+        ]
+      }
+    },
+    {
+      "target": "lighting-quality-checker",
+      "type": "upstream_reference",
+      "label": "scene/asset quality gap (lighting-quality-checker)",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "lighting"
+          },
+          {
+            "field": "quality.verdict",
+            "operator": "equals",
+            "value": "not_run"
+          }
+        ]
+      }
+    },
+    {
+      "target": "material-quality-checker",
+      "type": "upstream_reference",
+      "label": "scene/asset quality gap (material-quality-checker)",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "material"
+          },
+          {
+            "field": "quality.verdict",
+            "operator": "equals",
+            "value": "not_run"
+          }
+        ]
+      }
+    },
+    {
+      "target": "polycount-budget-checker",
+      "type": "upstream_reference",
+      "label": "scene/asset quality gap (polycount-budget-checker)",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "polycount"
+          },
+          {
+            "field": "budget.verdict",
+            "operator": "equals",
+            "value": "Not Run"
+          }
+        ]
+      }
+    },
+    {
+      "target": "blender-troubleshooting",
+      "type": "fallback",
+      "label": "runtime/bridge failure (blender-troubleshooting)",
+      "when": {
+        "all": [
+          {
+            "field": "runtime.errorDetected",
+            "operator": "equals",
+            "value": true
+          }
+        ]
+      }
+    },
+    {
+      "target": "official-runtime-readiness-checker",
+      "type": "fallback",
+      "label": "runtime/bridge failure (official-runtime-readiness-checker)",
+      "when": {
+        "all": [
+          {
+            "field": "runtime.path",
+            "operator": "not_equals",
+            "value": "unselected"
+          },
+          {
+            "field": "runtime.verifiedReady",
+            "operator": "equals",
+            "value": false
+          }
+        ]
+      }
+    },
+    {
+      "target": "runtime-bridge-conflict-resolver",
+      "type": "fallback",
+      "label": "runtime/bridge failure (runtime-bridge-conflict-resolver)",
+      "when": {
+        "all": [
+          {
+            "field": "runtime.conflictDetected",
+            "operator": "equals",
+            "value": true
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -22,16 +22,20 @@ Translate an interior architectural visualization intent (room or interior space
 - before any modeling, furniture sourcing, or rendering
 
 ## When not to use
-- outdoor establishing (use `environment-establishing-shot-planner`)
-- single hero product (use `product-hero-scene-planner`)
-- character portrait (use `character-portrait-scene-planner`)
+<!-- blendops:generated:start exclusions -->
+- outdoor establishing → use `../environment-establishing-shot-planner/SKILL.md` (use environment-establishing-shot-planner)
+- single hero product → use `../product-hero-scene-planner/SKILL.md` (use product-hero-scene-planner)
+- character portrait → use `../character-portrait-scene-planner/SKILL.md` (use character-portrait-scene-planner)
+<!-- blendops:generated:end exclusions -->
 
 ## Trigger phrases
+<!-- blendops:generated:start triggers -->
 - "interior of"
 - "living room scene"
 - "office showcase"
 - "hotel lobby"
 - "kitchen showroom"
+<!-- blendops:generated:end triggers -->
 
 ## Prerequisites / readiness
 - brief from `intent-to-3d-brief-writer`
@@ -229,17 +233,19 @@ Next: blender-asset-discovery-planner | glb-mobile-performance-budget | asset-st
 - Inventing room dimensions.
 
 ## Cross-skill handoff
-- Upstream brief → `../intent-to-3d-brief-writer/SKILL.md`
-- Outdoor / wide establishing shot redirect → `../environment-establishing-shot-planner/SKILL.md`
-- Single hero product redirect → `../product-hero-scene-planner/SKILL.md`
-- Single character portrait redirect → `../character-portrait-scene-planner/SKILL.md`
-- Asset discovery → `../blender-asset-discovery-planner/SKILL.md`
-- Performance / polycount budget → `../glb-mobile-performance-budget/SKILL.md`
-- Style consistency check → `../asset-style-consistency-checker/SKILL.md`
-- Composition validation → `../composition-quality-checker/SKILL.md`
-- Lighting validation → `../lighting-quality-checker/SKILL.md`
-- Material validation → `../material-quality-checker/SKILL.md`
-- Scene quality validation → `../blender-scene-quality-checker/SKILL.md`
+<!-- blendops:generated:start handoffs -->
+- [upstream_reference] Upstream brief → `../intent-to-3d-brief-writer/SKILL.md`
+- [upstream_reference] Outdoor / wide establishing shot redirect → `../environment-establishing-shot-planner/SKILL.md`
+- [upstream_reference] Single hero product redirect → `../product-hero-scene-planner/SKILL.md`
+- [upstream_reference] Single character portrait redirect → `../character-portrait-scene-planner/SKILL.md`
+- [upstream_reference] Asset discovery → `../blender-asset-discovery-planner/SKILL.md`
+- [upstream_reference] Performance / polycount budget → `../glb-mobile-performance-budget/SKILL.md`
+- [upstream_reference] Style consistency check → `../asset-style-consistency-checker/SKILL.md`
+- [progression] Composition validation → `../composition-quality-checker/SKILL.md`
+- [progression] Lighting validation → `../lighting-quality-checker/SKILL.md`
+- [progression] Material validation → `../material-quality-checker/SKILL.md`
+- [progression] Scene quality validation → `../blender-scene-quality-checker/SKILL.md`
+<!-- blendops:generated:end handoffs -->
 
 ## Non-goals
 - Model the room or geometry.

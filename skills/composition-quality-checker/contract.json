@@ -1,0 +1,221 @@
+{
+  "$schema": "../../schemas/skill-contract.schema.json",
+  "id": "composition-quality-checker",
+  "version": "1.0.0",
+  "category": "quality-validators",
+  "role": "framing-and-silhouette-validator",
+  "purpose": "Validate camera framing, subject placement, headroom/lead-room, and visual hierarchy against the scene brief before render.",
+  "capabilityTier": "L0",
+  "triggers": [
+    "is the framing okay",
+    "check composition",
+    "subject feels off-center",
+    "too much negative space"
+  ],
+  "exclusions": [
+    {
+      "condition": "planning or editing camera framing",
+      "delegateTo": "blender-composition-camera-planner",
+      "reason": "use blender-composition-camera-planner"
+    },
+    {
+      "condition": "locking aspect ratio or resolution",
+      "delegateTo": "resolution-aspect-decision",
+      "reason": "use resolution-aspect-decision"
+    },
+    {
+      "condition": "material validation",
+      "delegateTo": "material-quality-checker",
+      "reason": "use material-quality-checker"
+    },
+    {
+      "condition": "lighting validation",
+      "delegateTo": "lighting-quality-checker",
+      "reason": "use lighting-quality-checker"
+    },
+    {
+      "condition": "broad scene Pass/Warn/Fail readiness review",
+      "delegateTo": "blender-scene-quality-checker",
+      "reason": "use blender-scene-quality-checker"
+    },
+    {
+      "condition": "classifying render or export artifact evidence",
+      "delegateTo": "render-export-evidence",
+      "reason": "use render-export-evidence"
+    }
+  ],
+  "inputs": {
+    "required": [
+      {
+        "name": "camera_and_framing_spec",
+        "type": "object",
+        "description": "Camera focal length, sensor, angle, and subject placement from blender-composition-camera-planner"
+      },
+      {
+        "name": "pinned_aspect_ratio_and_subject",
+        "type": "object",
+        "description": "Locked aspect ratio and primary/secondary focal hierarchy from brief"
+      }
+    ],
+    "optional": [
+      {
+        "name": "viewport_or_render_preview_notes",
+        "type": "string",
+        "description": "Optional framing observations from a viewport or preview capture"
+      }
+    ]
+  },
+  "outputs": {
+    "primary": [
+      "composition_verdict_table",
+      "silhouette_and_headroom_assessment",
+      "camera_replan_remediation_hints"
+    ],
+    "truthStatePolicy": {
+      "runtimeDefault": "Not Run",
+      "artifactDefault": "Not Produced",
+      "mutationRule": "downgrade_only"
+    }
+  },
+  "handoffs": [
+    {
+      "target": "blender-scene-quality-checker",
+      "type": "progression",
+      "label": "Broad scene readiness review (consumes these rows)",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "holistic"
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "quality_validation"
+          }
+        ]
+      }
+    },
+    {
+      "target": "blender-composition-camera-planner",
+      "type": "retry",
+      "label": "Camera & framing re-plan",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "composition"
+          },
+          {
+            "field": "quality.verdict",
+            "operator": "equals",
+            "value": "Fail"
+          }
+        ]
+      },
+      "retryPolicy": {
+        "maxAttempts": 2,
+        "exitCondition": {
+          "all": [
+            {
+              "field": "quality.verdict",
+              "operator": "in",
+              "value": [
+                "Pass",
+                "Warn"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "target": "resolution-aspect-decision",
+      "type": "retry",
+      "label": "Aspect ratio & resolution locks",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "composition"
+          },
+          {
+            "field": "quality.verdict",
+            "operator": "equals",
+            "value": "Fail"
+          }
+        ]
+      },
+      "retryPolicy": {
+        "maxAttempts": 2,
+        "exitCondition": {
+          "all": [
+            {
+              "field": "quality.verdict",
+              "operator": "in",
+              "value": [
+                "Pass",
+                "Warn"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "target": "render-export-evidence",
+      "type": "progression",
+      "label": "Artifact evidence classification",
+      "when": {
+        "all": [
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "post_execution_audit"
+          }
+        ]
+      }
+    },
+    {
+      "target": "material-quality-checker",
+      "type": "upstream_reference",
+      "label": "Material validation",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "material"
+          },
+          {
+            "field": "quality.verdict",
+            "operator": "equals",
+            "value": "not_run"
+          }
+        ]
+      }
+    },
+    {
+      "target": "lighting-quality-checker",
+      "type": "upstream_reference",
+      "label": "Lighting validation",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "lighting"
+          },
+          {
+            "field": "quality.verdict",
+            "operator": "equals",
+            "value": "not_run"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,228 @@
+{
+  "$schema": "../../schemas/skill-contract.schema.json",
+  "id": "product-hero-scene-planner",
+  "version": "1.0.0",
+  "category": "scene-planners",
+  "role": "single-product-hero-scene-architect",
+  "purpose": "Generate a complete product-hero scene plan from non-Blender-user intent with explicit assumptions and gates.",
+  "capabilityTier": "L0",
+  "triggers": [
+    "plan a product hero scene",
+    "turn this into a Blender plan",
+    "prepare cyberpunk shoe scene plan"
+  ],
+  "exclusions": [
+    {
+      "condition": "to execute Blender commands, write Python, or claim generated artifacts",
+      "delegateTo": "intent-to-3d-brief-writer",
+      "reason": "Delegates out-of-scope requests to intent-to-3d-brief-writer"
+    },
+    {
+      "condition": "to skip unresolved critical ambiguity or hide missing inputs",
+      "delegateTo": "blender-composition-camera-planner",
+      "reason": "Delegates out-of-scope requests to blender-composition-camera-planner"
+    },
+    {
+      "condition": "when raw user intent still needs initial brief normalization",
+      "delegateTo": "intent-to-3d-brief-writer",
+      "reason": "use intent-to-3d-brief-writer first"
+    },
+    {
+      "condition": "when planning a multi-item catalog or grid layout",
+      "delegateTo": "product-grid-scene-planner",
+      "reason": "use product-grid-scene-planner"
+    },
+    {
+      "condition": "when deep-diving camera/framing mechanics",
+      "delegateTo": "blender-composition-camera-planner",
+      "reason": "use blender-lighting-material-planner"
+    },
+    {
+      "condition": "when writing measurable pass/fail acceptance tables",
+      "delegateTo": "acceptance-criteria-builder",
+      "reason": "use blender-scene-quality-checker"
+    }
+  ],
+  "inputs": {
+    "required": [
+      {
+        "name": "locked_3d_brief",
+        "type": "object",
+        "description": "Locked 8-slot 3D brief defining the hero product, hero feature callout, mood, and output channel"
+      },
+      {
+        "name": "sourced_product_asset_status",
+        "type": "object",
+        "description": "Hero product model posture and material readiness from blender-asset-discovery-planner"
+      }
+    ],
+    "optional": [
+      {
+        "name": "pack_context",
+        "type": "string",
+        "description": "Optional pack reference such as packs/product-hero-v0/PACK.md"
+      }
+    ]
+  },
+  "outputs": {
+    "primary": [
+      "hero_product_staging_and_pedestal_plan",
+      "camera_and_lookdev_handoff_inputs",
+      "scene_quality_validation_hooks"
+    ],
+    "truthStatePolicy": {
+      "runtimeDefault": "Not Run",
+      "artifactDefault": "Not Produced",
+      "mutationRule": "downgrade_only"
+    }
+  },
+  "handoffs": [
+    {
+      "target": "intent-to-3d-brief-writer",
+      "type": "upstream_reference",
+      "label": "Upstream input (if raw prompt needs structuring)",
+      "when": {
+        "all": [
+          {
+            "field": "goal.clarity",
+            "operator": "equals",
+            "value": "clear"
+          },
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": false
+          }
+        ]
+      }
+    },
+    {
+      "target": "blender-composition-camera-planner",
+      "type": "progression",
+      "label": "Next (deep-dive framing & camera)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "camera_planning"
+          }
+        ]
+      }
+    },
+    {
+      "target": "blender-lighting-material-planner",
+      "type": "progression",
+      "label": "Next (deep-dive lookdev & lighting)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "lookdev_planning"
+          }
+        ]
+      }
+    },
+    {
+      "target": "acceptance-criteria-builder",
+      "type": "fallback",
+      "label": "Then (measurable pass/fail rows)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "acceptance_criteria"
+          }
+        ]
+      }
+    },
+    {
+      "target": "blender-stop-condition-decider",
+      "type": "upstream_reference",
+      "label": "Then (pin done condition)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "stop_condition"
+          }
+        ]
+      }
+    },
+    {
+      "target": "blender-scene-quality-checker",
+      "type": "progression",
+      "label": "Later (post-build readiness review)",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "holistic"
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "quality_validation"
+          }
+        ]
+      }
+    },
+    {
+      "target": "glb-web-handoff",
+      "type": "conditional",
+      "label": "Delivery handoff (when web/render output is targeted) (glb-web-handoff)",
+      "when": {
+        "all": [
+          {
+            "field": "artifact.type",
+            "operator": "equals",
+            "value": "glb"
+          },
+          {
+            "field": "handoff.consumerStack",
+            "operator": "equals",
+            "value": "web_glb"
+          }
+        ]
+      }
+    },
+    {
+      "target": "render-export-evidence",
+      "type": "conditional",
+      "label": "Delivery handoff (when web/render output is targeted) (render-export-evidence)",
+      "when": {
+        "all": [
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "post_execution_audit"
+          }
+        ]
+      }
+    }
+  ]
+}

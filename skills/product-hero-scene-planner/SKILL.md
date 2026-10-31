@@ -29,17 +29,21 @@ Canonical role: high-level `scene-planning` for single product-hero workflows in
 - translating non-Blender product presentation goals into an assumption-tracked scene plan
 
 ## When not to use
-- to execute Blender commands, write Python, or claim generated artifacts
-- to skip unresolved critical ambiguity or hide missing inputs
-- when raw user intent still needs initial brief normalization (use `intent-to-3d-brief-writer` first)
-- when planning a multi-item catalog or grid layout (use `product-grid-scene-planner`)
-- when deep-diving camera/framing mechanics (use `blender-composition-camera-planner`) or shader/lighting rigs (use `blender-lighting-material-planner`)
-- when writing measurable pass/fail acceptance tables (use `acceptance-criteria-builder`), pinning stop rules (use `blender-stop-condition-decider`), or auditing a built scene (use `blender-scene-quality-checker`)
+<!-- blendops:generated:start exclusions -->
+- to execute Blender commands, write Python, or claim generated artifacts → use `../intent-to-3d-brief-writer/SKILL.md` (Delegates out-of-scope requests to intent-to-3d-brief-writer)
+- to skip unresolved critical ambiguity or hide missing inputs → use `../blender-composition-camera-planner/SKILL.md` (Delegates out-of-scope requests to blender-composition-camera-planner)
+- when raw user intent still needs initial brief normalization → use `../intent-to-3d-brief-writer/SKILL.md` (use intent-to-3d-brief-writer first)
+- when planning a multi-item catalog or grid layout → use `../product-grid-scene-planner/SKILL.md` (use product-grid-scene-planner)
+- when deep-diving camera/framing mechanics → use `../blender-composition-camera-planner/SKILL.md` (use blender-lighting-material-planner)
+- when writing measurable pass/fail acceptance tables → use `../acceptance-criteria-builder/SKILL.md` (use blender-scene-quality-checker)
+<!-- blendops:generated:end exclusions -->
 
 ## Trigger phrases
-- “plan a product hero scene”
-- “turn this into a Blender plan”
-- “prepare cyberpunk shoe scene plan”
+<!-- blendops:generated:start triggers -->
+- "plan a product hero scene"
+- "turn this into a Blender plan"
+- "prepare cyberpunk shoe scene plan"
+<!-- blendops:generated:end triggers -->
 
 ## Prerequisites / readiness
 - output destination clarified (web, app, game, or still/video render)
@@ -200,13 +204,16 @@ Planning-only skill: no Blender execution, no Python scripts, and no artifact ge
 - producing Blender-jargon-heavy output without plain-language explanation
 
 ## Cross-skill handoff
-- Upstream input (if raw prompt needs structuring): `intent-to-3d-brief-writer`
-- Next (deep-dive framing & camera): `blender-composition-camera-planner`
-- Next (deep-dive lookdev & lighting): `blender-lighting-material-planner`
-- Then (measurable pass/fail rows): `acceptance-criteria-builder`
-- Then (pin done condition): `blender-stop-condition-decider`
-- Later (post-build readiness review): `blender-scene-quality-checker`
-- Delivery handoff (when web/render output is targeted): `glb-web-handoff` or `render-export-evidence`
+<!-- blendops:generated:start handoffs -->
+- [upstream_reference] Upstream input (if raw prompt needs structuring) → `../intent-to-3d-brief-writer/SKILL.md`
+- [progression] Next (deep-dive framing & camera) → `../blender-composition-camera-planner/SKILL.md`
+- [progression] Next (deep-dive lookdev & lighting) → `../blender-lighting-material-planner/SKILL.md`
+- [fallback] Then (measurable pass/fail rows) → `../acceptance-criteria-builder/SKILL.md`
+- [upstream_reference] Then (pin done condition) → `../blender-stop-condition-decider/SKILL.md`
+- [progression] Later (post-build readiness review) → `../blender-scene-quality-checker/SKILL.md`
+- [conditional] Delivery handoff (when web/render output is targeted) (glb-web-handoff) → `../glb-web-handoff/SKILL.md`
+- [conditional] Delivery handoff (when web/render output is targeted) (render-export-evidence) → `../render-export-evidence/SKILL.md`
+<!-- blendops:generated:end handoffs -->
 
 ## Non-goals
 - executing Blender commands, MCP mutations, or CLI jobs

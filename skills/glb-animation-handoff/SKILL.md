@@ -21,15 +21,19 @@ When a GLB ships with animation, capture the exact playback contract the consume
 - when the user mentions "idle", "loop", "transition", "interactive trigger"
 
 ## When not to use
-- static GLBs with no animation
-- video pre-renders
-- platforms that re-author animation downstream (game engines re-rigging the asset)
+<!-- blendops:generated:start exclusions -->
+- static GLBs with no animation → use `../glb-web-handoff/SKILL.md` (Delegates out-of-scope requests to glb-web-handoff)
+- video pre-renders → use `../output-format-decision/SKILL.md` (Delegates out-of-scope requests to output-format-decision)
+- platforms that re-author animation downstream (game engines re-rigging the asset) → use `../product-hero-scene-planner/SKILL.md` (game engines re-rigging the asset)
+<!-- blendops:generated:end exclusions -->
 
 ## Trigger phrases
+<!-- blendops:generated:start triggers -->
 - "make it loop"
 - "trigger animation on hover"
 - "idle and active states"
 - "smooth transition between"
+<!-- blendops:generated:end triggers -->
 
 ## Prerequisites / readiness
 - scene plan or exported GLB lists clip names
@@ -240,13 +244,18 @@ Next: glb-web-handoff
 * Using `Artifact status: Not Run` or upgrading truth states instead of keeping them downgrade-only.
 
 ## Cross-skill handoff
-
-* Missing clip list / scene plan → `../product-hero-scene-planner/SKILL.md`, `../character-portrait-scene-planner/SKILL.md`, `../environment-establishing-shot-planner/SKILL.md`, `../interior-architectural-scene-planner/SKILL.md`, or `../product-grid-scene-planner/SKILL.md` (owns scene planning and clip list definition)
-* Channel, bone, and morph ceilings → `../glb-mobile-performance-budget/SKILL.md` (pins animation channel, bone, and morph ceilings)
-* Export verification → `../render-export-evidence/SKILL.md` (verifies exported GLB artifacts)
-* Web delivery handoff → `../glb-web-handoff/SKILL.md` (owns web delivery package)
-* React Three Fiber component shape → `../three-fiber-component-shape-planner/SKILL.md` (owns R3F component structure)
-* Final user-facing wording → `../non-blender-user-response-writer/SKILL.md` (owns plain-language final response)
+<!-- blendops:generated:start handoffs -->
+- [upstream_reference] Missing clip list / scene plan (character-portrait-scene-planner) → `../character-portrait-scene-planner/SKILL.md`
+- [upstream_reference] Missing clip list / scene plan (environment-establishing-shot-planner) → `../environment-establishing-shot-planner/SKILL.md`
+- [upstream_reference] Missing clip list / scene plan (interior-architectural-scene-planner) → `../interior-architectural-scene-planner/SKILL.md`
+- [upstream_reference] Missing clip list / scene plan (product-grid-scene-planner) → `../product-grid-scene-planner/SKILL.md`
+- [upstream_reference] Missing clip list / scene plan (product-hero-scene-planner) → `../product-hero-scene-planner/SKILL.md`
+- [upstream_reference] Channel, bone, and morph ceilings → `../glb-mobile-performance-budget/SKILL.md`
+- [upstream_reference] Export verification → `../render-export-evidence/SKILL.md`
+- [progression] Web delivery handoff → `../glb-web-handoff/SKILL.md`
+- [progression] React Three Fiber component shape → `../three-fiber-component-shape-planner/SKILL.md`
+- [progression] Final user-facing wording → `../non-blender-user-response-writer/SKILL.md`
+<!-- blendops:generated:end handoffs -->
 
 ## Non-goals
 

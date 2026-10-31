@@ -23,20 +23,22 @@ Outline **Path 1 host surfaces** — **(a)** Anthropic Connector in Claude Deskt
 - outlining which components live on the host side vs inside Blender 5.1+ before setup begins
 
 ## When not to use
-
-- choosing between Path 1, Path 2, or CLI → use `runtime-path-picker`
-- step-by-step host or add-on installation and configuration → use `official-runtime-setup-guide`
-- probing live runtime readiness → use `official-runtime-readiness-checker`
-- resolving conflicts between official and unofficial bridges → use `runtime-bridge-conflict-resolver`
-- Path 2 community bridge specifics → see `docs/unofficial-runtime-bridges.md`
-- CLI appendix job outlining → use `cli-appendix-job-outline`
+<!-- blendops:generated:start exclusions -->
+- choosing between Path 1, Path 2, or CLI → use `../runtime-path-picker/SKILL.md` (Delegates out-of-scope requests to runtime-path-picker)
+- step-by-step host or add-on installation and configuration → use `../official-runtime-setup-guide/SKILL.md` (Delegates out-of-scope requests to official-runtime-setup-guide)
+- probing live runtime readiness → use `../official-runtime-readiness-checker/SKILL.md` (Delegates out-of-scope requests to official-runtime-readiness-checker)
+- resolving conflicts between official and unofficial bridges → use `../runtime-bridge-conflict-resolver/SKILL.md` (Delegates out-of-scope requests to runtime-bridge-conflict-resolver)
+- Path 2 community bridge specifics → use `../runtime-path-picker/SKILL.md` (Delegates out-of-scope requests to runtime-path-picker)
+- CLI appendix job outlining → use `../cli-appendix-job-outline/SKILL.md` (Delegates out-of-scope requests to cli-appendix-job-outline)
+<!-- blendops:generated:end exclusions -->
 
 ## Trigger phrases
-
+<!-- blendops:generated:start triggers -->
 - "Connector vs Cursor MCP"
 - "how do I host Lab MCP"
 - "Claude Desktop Connector vs manual MCP client"
 - "what hosts work with Path 1"
+<!-- blendops:generated:end triggers -->
 
 ## Prerequisites / readiness
 
@@ -226,13 +228,13 @@ Next skill: <official-runtime-setup-guide | official-runtime-readiness-checker |
 - Turning a conceptual host outline into live configuration execution or Python scripts.
 
 ## Cross-skill handoff
-
-* Path selection → `../runtime-path-picker/SKILL.md`
-* Detailed setup and configuration → `../official-runtime-setup-guide/SKILL.md`
-* Readiness probing → `../official-runtime-readiness-checker/SKILL.md`
-* Bridge conflicts → `../runtime-bridge-conflict-resolver/SKILL.md`
-* CLI appendix workflows → `../cli-appendix-job-outline/SKILL.md`
-* Path 2 community bridge reference → `../../docs/unofficial-runtime-bridges.md`
+<!-- blendops:generated:start handoffs -->
+- [upstream_reference] Path selection → `../runtime-path-picker/SKILL.md`
+- [upstream_reference] Detailed setup and configuration → `../official-runtime-setup-guide/SKILL.md`
+- [progression] Readiness probing → `../official-runtime-readiness-checker/SKILL.md`
+- [fallback] Bridge conflicts → `../runtime-bridge-conflict-resolver/SKILL.md`
+- [progression] CLI appendix workflows → `../cli-appendix-job-outline/SKILL.md`
+<!-- blendops:generated:end handoffs -->
 
 ## Non-goals
 

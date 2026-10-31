@@ -20,16 +20,20 @@ Create a high-quality, practical lighting/material plan that balances visual int
 - web/GLB portability caveats must be explicit
 
 ## When not to use
-- to claim final rendered quality or executed results
-- to skip composition/camera context from `blender-composition-camera-planner`
-- to validate existing lighting or materials (use `lighting-quality-checker` and `material-quality-checker`)
-- to decide render engines (`cycles-vs-eevee-decision`), color management (`color-management-decision`), or file formats (`output-format-decision`)
-- to execute Blender or generate Python scripts
+<!-- blendops:generated:start exclusions -->
+- to claim final rendered quality or executed results → use `../blender-composition-camera-planner/SKILL.md` (Delegates out-of-scope requests to blender-composition-camera-planner)
+- to skip composition/camera context from blender-composition-camera-planner → use `../blender-composition-camera-planner/SKILL.md` (Delegates out-of-scope requests to blender-composition-camera-planner)
+- to validate existing lighting or materials → use `../lighting-quality-checker/SKILL.md` (use lighting-quality-checker and material-quality-checker)
+- to decide render engines (cycles-vs-eevee-decision), color management (color-management-decision), or file formats (output-format-decision) → use `../color-management-decision/SKILL.md` (output-format-decision)
+- to execute Blender or generate Python scripts → use `../color-management-decision/SKILL.md` (Delegates out-of-scope requests to color-management-decision)
+<!-- blendops:generated:end exclusions -->
 
 ## Trigger phrases
+<!-- blendops:generated:start triggers -->
 - "plan lighting and materials"
 - "design cyberpunk lookdev"
 - "define PBR and reflection strategy"
+<!-- blendops:generated:end triggers -->
 
 ## Prerequisites / readiness
 - framing and camera plan received from `blender-composition-camera-planner` when chaining upstream planners (or clear subject and destination context for standalone use)
@@ -169,10 +173,16 @@ This is a planning-only skill: no Blender execution, no Python, and no artifact 
 - including Python snippets, Blender execution commands, or unhedged jargon
 
 ## Cross-skill handoff
-- Upstream input from: `blender-composition-camera-planner` (plus constraints from `cycles-vs-eevee-decision`, `color-management-decision`, `output-format-decision`)
-- Next validation: `lighting-quality-checker` and `material-quality-checker`
-- Then scene check: `blender-scene-quality-checker`
-- Then delivery: `glb-web-handoff`
+<!-- blendops:generated:start handoffs -->
+- [upstream_reference] Upstream input from (blender-composition-camera-planner) → `../blender-composition-camera-planner/SKILL.md`
+- [progression] Upstream input from (color-management-decision) → `../color-management-decision/SKILL.md`
+- [progression] Upstream input from (cycles-vs-eevee-decision) → `../cycles-vs-eevee-decision/SKILL.md`
+- [progression] Upstream input from (output-format-decision) → `../output-format-decision/SKILL.md`
+- [progression] Next validation (lighting-quality-checker) → `../lighting-quality-checker/SKILL.md`
+- [progression] Next validation (material-quality-checker) → `../material-quality-checker/SKILL.md`
+- [progression] Then scene check → `../blender-scene-quality-checker/SKILL.md`
+- [progression] Then delivery → `../glb-web-handoff/SKILL.md`
+<!-- blendops:generated:end handoffs -->
 
 ## Non-goals
 - shader/runtime implementation code

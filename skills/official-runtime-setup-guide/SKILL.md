@@ -20,15 +20,19 @@ Establish runtime setup prerequisites, per-path minimum versions, source-confide
 - framing official vs third-party vs CLI appendix constraints before handoff
 
 ## When not to use
-- to install or configure a runtime automatically
-- to claim runtime execution has already succeeded
-- to choose a runtime path (use `runtime-path-picker`), detail Path 1 host a/b setup (`path-one-host-outline`), or run the readiness matrix (`official-runtime-readiness-checker`)
+<!-- blendops:generated:start exclusions -->
+- to install or configure a runtime automatically → use `../runtime-path-picker/SKILL.md` (Delegates out-of-scope requests to runtime-path-picker)
+- to claim runtime execution has already succeeded → use `../path-one-host-outline/SKILL.md` (Delegates out-of-scope requests to path-one-host-outline)
+- to choose a runtime path → use `../official-runtime-readiness-checker/SKILL.md` (official-runtime-readiness-checker)
+<!-- blendops:generated:end exclusions -->
 
 ## Trigger phrases
-- “set up Blender runtime prerequisites”
-- “what are the Blender runtime setup boundaries”
-- “prepare Official Blender Lab MCP setup prerequisites”
-- “runtime prerequisites and version minimums”
+<!-- blendops:generated:start triggers -->
+- "set up Blender runtime prerequisites"
+- "what are the Blender runtime setup boundaries"
+- "prepare Official Blender Lab MCP setup prerequisites"
+- "runtime prerequisites and version minimums"
+<!-- blendops:generated:end triggers -->
 
 ## Prerequisites / readiness
 - ability to read/write project-local docs
@@ -181,12 +185,14 @@ Establish runtime setup prerequisites, per-path minimum versions, source-confide
 - producing jargon-heavy final output or Python code
 
 ## Cross-skill handoff
-- Path selection: `runtime-path-picker`
-- Path 1 host (a)/(b) details: `path-one-host-outline`
-- CLI appendix job structure: `cli-appendix-job-outline`
-- Bridge conflict resolution: `runtime-bridge-conflict-resolver`
-- Readiness matrix check: `official-runtime-readiness-checker`
-- Scene planning after readiness: `product-hero-scene-planner`
+<!-- blendops:generated:start handoffs -->
+- [upstream_reference] Path selection → `../runtime-path-picker/SKILL.md`
+- [progression] Path 1 host (a)/(b) details → `../path-one-host-outline/SKILL.md`
+- [progression] CLI appendix job structure → `../cli-appendix-job-outline/SKILL.md`
+- [fallback] Bridge conflict resolution → `../runtime-bridge-conflict-resolver/SKILL.md`
+- [progression] Readiness matrix check → `../official-runtime-readiness-checker/SKILL.md`
+- [alternative] Scene planning after readiness → `../product-hero-scene-planner/SKILL.md`
+<!-- blendops:generated:end handoffs -->
 
 ## Non-goals
 - runtime installer creation

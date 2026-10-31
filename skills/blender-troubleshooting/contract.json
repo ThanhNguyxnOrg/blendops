@@ -1,0 +1,352 @@
+{
+  "$schema": "../../schemas/skill-contract.schema.json",
+  "id": "blender-troubleshooting",
+  "version": "1.0.0",
+  "category": "runtime-and-execution",
+  "role": "scene-and-runtime-failure-diagnostician",
+  "purpose": "Structured 4-phase root-cause analysis when Blender output looks wrong. Use when render, export, scene, or handoff doesn't match intent and you need disciplined debug, not guesses.",
+  "capabilityTier": "L0",
+  "triggers": [
+    "the render looks wrong",
+    "the GLB doesn't open / looks empty / is wrong scale",
+    "the output doesn't match what I asked for",
+    "why did it produce X instead of Y?",
+    "debug this Blender output"
+  ],
+  "exclusions": [
+    {
+      "condition": "the user has not yet stated a clear expected outcome (run intent-to-3d-brief-writer first)",
+      "delegateTo": "intent-to-3d-brief-writer",
+      "reason": "run intent-to-3d-brief-writer first"
+    },
+    {
+      "condition": "runtime has never been attempted (run official-runtime-readiness-checker first)",
+      "delegateTo": "official-runtime-readiness-checker",
+      "reason": "run official-runtime-readiness-checker first"
+    },
+    {
+      "condition": "the request is creative iteration (\"can we make it more dramatic\"), not debugging",
+      "delegateTo": "blender-brainstorming",
+      "reason": "Delegates out-of-scope requests to blender-brainstorming"
+    },
+    {
+      "condition": "the user wants a one-shot fix without diagnostic discipline",
+      "delegateTo": "intent-to-3d-brief-writer",
+      "reason": "Delegates out-of-scope requests to intent-to-3d-brief-writer"
+    }
+  ],
+  "inputs": {
+    "required": [
+      {
+        "name": "observed_symptom_or_error",
+        "type": "string",
+        "description": "Observed render defect, broken GLB export, scale mismatch, or MCP execution failure"
+      },
+      {
+        "name": "active_workflow_context",
+        "type": "object",
+        "description": "Current scene plan, runtime path, and recent actions preceding the failure"
+      }
+    ],
+    "optional": [
+      {
+        "name": "runtime_attempt_notes",
+        "type": "string",
+        "description": "Optional error output or attempt timeline from runtime-attempt-report-writer"
+      }
+    ]
+  },
+  "outputs": {
+    "primary": [
+      "root_cause_classification",
+      "minimal_remediation_plan",
+      "reverification_target_skill"
+    ],
+    "truthStatePolicy": {
+      "runtimeDefault": "Not Run",
+      "artifactDefault": "Not Produced",
+      "mutationRule": "downgrade_only"
+    }
+  },
+  "handoffs": [
+    {
+      "target": "blender-brainstorming",
+      "type": "upstream_reference",
+      "label": "If divergence at intent (blender-brainstorming)",
+      "when": {
+        "all": [
+          {
+            "field": "goal.clarity",
+            "operator": "equals",
+            "value": "ambiguous_or_mixed"
+          }
+        ]
+      }
+    },
+    {
+      "target": "intent-to-3d-brief-writer",
+      "type": "upstream_reference",
+      "label": "If divergence at intent (intent-to-3d-brief-writer)",
+      "when": {
+        "all": [
+          {
+            "field": "goal.clarity",
+            "operator": "equals",
+            "value": "clear"
+          },
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": false
+          }
+        ]
+      }
+    },
+    {
+      "target": "blender-composition-camera-planner",
+      "type": "conditional",
+      "label": "If divergence at planning (blender-composition-camera-planner)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "camera_planning"
+          }
+        ]
+      }
+    },
+    {
+      "target": "blender-lighting-material-planner",
+      "type": "conditional",
+      "label": "If divergence at planning (blender-lighting-material-planner)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "lookdev_planning"
+          }
+        ]
+      }
+    },
+    {
+      "target": "character-portrait-scene-planner",
+      "type": "alternative",
+      "label": "If divergence at planning (character-portrait-scene-planner)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "recipe.domain",
+            "operator": "equals",
+            "value": "character_portrait"
+          }
+        ]
+      }
+    },
+    {
+      "target": "environment-establishing-shot-planner",
+      "type": "alternative",
+      "label": "If divergence at planning (environment-establishing-shot-planner)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "recipe.domain",
+            "operator": "equals",
+            "value": "environment_shot"
+          }
+        ]
+      }
+    },
+    {
+      "target": "interior-architectural-scene-planner",
+      "type": "alternative",
+      "label": "If divergence at planning (interior-architectural-scene-planner)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "recipe.domain",
+            "operator": "equals",
+            "value": "interior_archviz"
+          }
+        ]
+      }
+    },
+    {
+      "target": "product-grid-scene-planner",
+      "type": "alternative",
+      "label": "If divergence at planning (product-grid-scene-planner)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "recipe.domain",
+            "operator": "equals",
+            "value": "product_grid"
+          }
+        ]
+      }
+    },
+    {
+      "target": "product-hero-scene-planner",
+      "type": "alternative",
+      "label": "If divergence at planning (product-hero-scene-planner)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "recipe.domain",
+            "operator": "equals",
+            "value": "product_hero"
+          }
+        ]
+      }
+    },
+    {
+      "target": "official-runtime-readiness-checker",
+      "type": "upstream_reference",
+      "label": "If divergence at execution (official-runtime-readiness-checker)",
+      "when": {
+        "all": [
+          {
+            "field": "runtime.path",
+            "operator": "not_equals",
+            "value": "unselected"
+          },
+          {
+            "field": "runtime.verifiedReady",
+            "operator": "equals",
+            "value": false
+          }
+        ]
+      }
+    },
+    {
+      "target": "runtime-bridge-conflict-resolver",
+      "type": "fallback",
+      "label": "If divergence at execution (runtime-bridge-conflict-resolver)",
+      "when": {
+        "all": [
+          {
+            "field": "runtime.conflictDetected",
+            "operator": "equals",
+            "value": true
+          }
+        ]
+      }
+    },
+    {
+      "target": "runtime-path-picker",
+      "type": "upstream_reference",
+      "label": "If divergence at execution (runtime-path-picker)",
+      "when": {
+        "all": [
+          {
+            "field": "runtime.path",
+            "operator": "equals",
+            "value": "unselected"
+          }
+        ]
+      }
+    },
+    {
+      "target": "glb-animation-handoff",
+      "type": "conditional",
+      "label": "If divergence at output (glb-animation-handoff)",
+      "when": {
+        "all": [
+          {
+            "field": "artifact.hasAnimation",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "animation_handoff"
+          }
+        ]
+      }
+    },
+    {
+      "target": "glb-web-handoff",
+      "type": "conditional",
+      "label": "If divergence at output (glb-web-handoff)",
+      "when": {
+        "all": [
+          {
+            "field": "artifact.type",
+            "operator": "equals",
+            "value": "glb"
+          },
+          {
+            "field": "handoff.consumerStack",
+            "operator": "equals",
+            "value": "web_glb"
+          }
+        ]
+      }
+    },
+    {
+      "target": "render-export-evidence",
+      "type": "conditional",
+      "label": "If divergence at output (render-export-evidence)",
+      "when": {
+        "all": [
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "post_execution_audit"
+          }
+        ]
+      }
+    },
+    {
+      "target": "non-blender-user-response-writer",
+      "type": "conditional",
+      "label": "If divergence at response",
+      "when": {
+        "all": [
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "final_communication"
+          }
+        ]
+      }
+    }
+  ]
+}

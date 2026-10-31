@@ -1,0 +1,141 @@
+{
+  "$schema": "../../schemas/skill-contract.schema.json",
+  "id": "preview-report-template-writer",
+  "version": "1.0.0",
+  "category": "evidence-and-handoff",
+  "role": "stakeholder-preview-packet-formatter",
+  "purpose": "Generate the structured preview-report Markdown that glb-web-handoff and non-blender-user-response-writer consume after a render or export run.",
+  "capabilityTier": "L0",
+  "triggers": [
+    "summarize the render",
+    "write up the export evidence",
+    "what's the preview status"
+  ],
+  "exclusions": [
+    {
+      "condition": "measuring artifacts directly",
+      "delegateTo": "render-export-evidence",
+      "reason": "use render-export-evidence instead"
+    },
+    {
+      "condition": "raw debug logs or crash triage",
+      "delegateTo": "blender-troubleshooting",
+      "reason": "use blender-troubleshooting instead"
+    },
+    {
+      "condition": "gating handoff readiness",
+      "delegateTo": "pre-handoff-verification",
+      "reason": "use pre-handoff-verification instead"
+    }
+  ],
+  "inputs": {
+    "required": [
+      {
+        "name": "classified_artifact_evidence",
+        "type": "object",
+        "description": "Verified or Produced artifact evidence record from render-export-evidence"
+      },
+      {
+        "name": "quality_checker_summary",
+        "type": "object",
+        "description": "Pass/Warn/Fail summary from blender-scene-quality-checker and specialist validators"
+      }
+    ],
+    "optional": [
+      {
+        "name": "known_visual_caveats",
+        "type": "array",
+        "description": "Optional non-blocking visual warnings or pending stakeholder review questions"
+      }
+    ]
+  },
+  "outputs": {
+    "primary": [
+      "stakeholder_preview_evidence_packet",
+      "truth_state_and_provenance_summary",
+      "pre_handoff_gate_submission"
+    ],
+    "truthStatePolicy": {
+      "runtimeDefault": "Not Run",
+      "artifactDefault": "Not Produced",
+      "mutationRule": "downgrade_only"
+    }
+  },
+  "handoffs": [
+    {
+      "target": "render-export-evidence",
+      "type": "upstream_reference",
+      "label": "Measured evidence input (supplies measurements + truth states)",
+      "when": {
+        "all": [
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "post_execution_audit"
+          }
+        ]
+      }
+    },
+    {
+      "target": "pre-handoff-verification",
+      "type": "progression",
+      "label": "Handoff gate (gates handoffs before downstream delivery)",
+      "when": {
+        "all": [
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "final_verification"
+          }
+        ]
+      }
+    },
+    {
+      "target": "glb-web-handoff",
+      "type": "progression",
+      "label": "Web handoff consumer",
+      "when": {
+        "all": [
+          {
+            "field": "artifact.type",
+            "operator": "equals",
+            "value": "glb"
+          },
+          {
+            "field": "handoff.consumerStack",
+            "operator": "equals",
+            "value": "web_glb"
+          }
+        ]
+      }
+    },
+    {
+      "target": "non-blender-user-response-writer",
+      "type": "progression",
+      "label": "Final non-Blender user response consumer",
+      "when": {
+        "all": [
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "final_communication"
+          }
+        ]
+      }
+    },
+    {
+      "target": "blender-troubleshooting",
+      "type": "fallback",
+      "label": "Raw debug log triage (out of scope here)",
+      "when": {
+        "all": [
+          {
+            "field": "runtime.errorDetected",
+            "operator": "equals",
+            "value": true
+          }
+        ]
+      }
+    }
+  ]
+}

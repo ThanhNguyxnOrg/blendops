@@ -23,21 +23,23 @@ Turn a locked 3D brief plus chosen recipe into a measurable acceptance checklist
 - after `blender-scope-boundary-enforcer` approves a brief or recipe delta that requires updated acceptance rows
 
 ## When not to use
-
-- pure exploration without a locked deliverable (use `blender-brainstorming`)
-- writing or locking the brief itself (use `intent-to-3d-brief-writer`)
-- pinning the stop or done condition (use `blender-stop-condition-decider`)
-- enforcing per-stage workflow gates (use `blender-checklist-driven-workflow`)
-- guarding or deciding scope boundaries (use `blender-scope-boundary-enforcer`)
-- legal or license-permission language (use `asset-license-checker`)
-- classifying artifact evidence (use `render-export-evidence`) or gating final handoffs (use `pre-handoff-verification`)
+<!-- blendops:generated:start exclusions -->
+- pure exploration without a locked deliverable → use `../blender-brainstorming/SKILL.md` (use blender-brainstorming)
+- writing or locking the brief itself → use `../intent-to-3d-brief-writer/SKILL.md` (use intent-to-3d-brief-writer)
+- pinning the stop or done condition → use `../blender-stop-condition-decider/SKILL.md` (use blender-stop-condition-decider)
+- enforcing per-stage workflow gates → use `../blender-checklist-driven-workflow/SKILL.md` (use blender-checklist-driven-workflow)
+- guarding or deciding scope boundaries → use `../blender-scope-boundary-enforcer/SKILL.md` (use blender-scope-boundary-enforcer)
+- legal or license-permission language → use `../asset-license-checker/SKILL.md` (use asset-license-checker)
+- classifying artifact evidence → use `../pre-handoff-verification/SKILL.md` (use pre-handoff-verification)
+<!-- blendops:generated:end exclusions -->
 
 ## Trigger phrases
-
+<!-- blendops:generated:start triggers -->
 - "acceptance criteria"
 - "measurable checklist rows"
 - "evidence hooks for brief"
 - "sign-off checklist table"
+<!-- blendops:generated:end triggers -->
 
 ## Prerequisites / readiness
 
@@ -231,14 +233,15 @@ Next skill: <blender-checklist-driven-workflow | render-export-evidence | pre-ha
 - Replacing `blender-stop-condition-decider`, `blender-checklist-driven-workflow`, or `pre-handoff-verification` with ad-hoc gate logic.
 
 ## Cross-skill handoff
-
-* Brief source → `../intent-to-3d-brief-writer/SKILL.md`
-* Done / stop condition → `../blender-stop-condition-decider/SKILL.md`
-* Per-stage gate enforcement → `../blender-checklist-driven-workflow/SKILL.md`
-* Scope boundary enforcement → `../blender-scope-boundary-enforcer/SKILL.md`
-* License permissions → `../asset-license-checker/SKILL.md`
-* Artifact evidence classification → `../render-export-evidence/SKILL.md`
-* Handoff gate verification → `../pre-handoff-verification/SKILL.md`
+<!-- blendops:generated:start handoffs -->
+- [upstream_reference] Brief source → `../intent-to-3d-brief-writer/SKILL.md`
+- [progression] Done / stop condition → `../blender-stop-condition-decider/SKILL.md`
+- [progression] Per-stage gate enforcement → `../blender-checklist-driven-workflow/SKILL.md`
+- [progression] Scope boundary enforcement → `../blender-scope-boundary-enforcer/SKILL.md`
+- [progression] License permissions → `../asset-license-checker/SKILL.md`
+- [progression] Artifact evidence classification → `../render-export-evidence/SKILL.md`
+- [progression] Handoff gate verification → `../pre-handoff-verification/SKILL.md`
+<!-- blendops:generated:end handoffs -->
 
 ## Non-goals
 

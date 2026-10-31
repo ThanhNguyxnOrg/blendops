@@ -1,0 +1,177 @@
+{
+  "$schema": "../../schemas/skill-contract.schema.json",
+  "id": "asset-library-organization-planner",
+  "version": "1.0.0",
+  "category": "asset-and-sourcing",
+  "role": "local-asset-library-taxonomy-planner",
+  "purpose": "Plan an internal asset library structure (folders, naming, metadata, license tracking, version control) so future recipes find and reuse assets reliably.",
+  "capabilityTier": "L0",
+  "triggers": [
+    "organize the assets",
+    "asset library structure",
+    "where should assets go",
+    "name our assets"
+  ],
+  "exclusions": [
+    {
+      "condition": "single-recipe repo with < 5 assets",
+      "delegateTo": "blender-asset-discovery-planner",
+      "reason": "Delegates out-of-scope requests to blender-asset-discovery-planner"
+    },
+    {
+      "condition": "pure planning before any asset categories or storage constraints are known",
+      "delegateTo": "asset-license-checker",
+      "reason": "Delegates out-of-scope requests to asset-license-checker"
+    },
+    {
+      "condition": "sourcing or acquiring external assets",
+      "delegateTo": "blender-asset-discovery-planner",
+      "reason": "use blender-asset-discovery-planner"
+    },
+    {
+      "condition": "verifying asset licenses",
+      "delegateTo": "asset-license-checker",
+      "reason": "use asset-license-checker"
+    },
+    {
+      "condition": "checking visual style consistency across assets",
+      "delegateTo": "asset-style-consistency-checker",
+      "reason": "use asset-style-consistency-checker"
+    },
+    {
+      "condition": "planning fallback substitutions when an asset is missing or fails",
+      "delegateTo": "asset-fallback-strategy",
+      "reason": "use asset-fallback-strategy"
+    },
+    {
+      "condition": "enforcing file size or polygon/asset count performance budgets",
+      "delegateTo": "glb-mobile-performance-budget",
+      "reason": "use glb-mobile-performance-budget"
+    }
+  ],
+  "inputs": {
+    "required": [
+      {
+        "name": "raw_asset_inventory",
+        "type": "array",
+        "description": "List of 3D models, PBR material sets, HDRIs, and license sidecar files to organize"
+      },
+      {
+        "name": "project_storage_scope",
+        "type": "string",
+        "description": "Whether the library is project-local or shared across multiple BlendOps packs"
+      }
+    ],
+    "optional": [
+      {
+        "name": "naming_prefix_convention",
+        "type": "string",
+        "description": "Optional studio or project naming prefix for datablocks and folders"
+      }
+    ]
+  },
+  "outputs": {
+    "primary": [
+      "directory_taxonomy_plan",
+      "datablock_naming_rules",
+      "quarantine_and_license_sidecar_policy"
+    ],
+    "truthStatePolicy": {
+      "runtimeDefault": "Not Run",
+      "artifactDefault": "Not Produced",
+      "mutationRule": "downgrade_only"
+    }
+  },
+  "handoffs": [
+    {
+      "target": "blender-asset-discovery-planner",
+      "type": "upstream_reference",
+      "label": "External asset sourcing into this library",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "assets.discoveryComplete",
+            "operator": "equals",
+            "value": false
+          }
+        ]
+      }
+    },
+    {
+      "target": "asset-license-checker",
+      "type": "upstream_reference",
+      "label": "License verification (license file next to asset; unlicensed old assets to Quarantine)",
+      "when": {
+        "all": [
+          {
+            "field": "assets.externalUsed",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "assets.licenseCleared",
+            "operator": "equals",
+            "value": false
+          }
+        ]
+      }
+    },
+    {
+      "target": "asset-style-consistency-checker",
+      "type": "upstream_reference",
+      "label": "Visual style consistency checks",
+      "when": {
+        "all": [
+          {
+            "field": "assets.licenseCleared",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "style_check"
+          }
+        ]
+      }
+    },
+    {
+      "target": "asset-fallback-strategy",
+      "type": "fallback",
+      "label": "Consuming this library as fastest fallback source",
+      "when": {
+        "all": [
+          {
+            "field": "assets.fallbackNeeded",
+            "operator": "equals",
+            "value": true
+          }
+        ]
+      }
+    },
+    {
+      "target": "glb-mobile-performance-budget",
+      "type": "progression",
+      "label": "File size and asset/polygon count pressure",
+      "when": {
+        "all": [
+          {
+            "field": "artifact.type",
+            "operator": "equals",
+            "value": "glb"
+          },
+          {
+            "field": "budget.pinned",
+            "operator": "equals",
+            "value": false
+          }
+        ]
+      }
+    }
+  ]
+}

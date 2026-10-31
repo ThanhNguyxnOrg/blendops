@@ -1,0 +1,172 @@
+{
+  "$schema": "../../schemas/skill-contract.schema.json",
+  "id": "asset-license-checker",
+  "version": "1.0.0",
+  "category": "asset-and-sourcing",
+  "role": "asset-license-and-provenance-gate",
+  "purpose": "Verify license compliance for downloaded 3D assets, textures, HDRIs, fonts before scene build or export.",
+  "capabilityTier": "L0",
+  "triggers": [
+    "is this license OK",
+    "can I use this commercially",
+    "what's the license",
+    "license check"
+  ],
+  "exclusions": [
+    {
+      "condition": "Sourcing or searching for candidate assets",
+      "delegateTo": "blender-asset-discovery-planner",
+      "reason": "Delegates out-of-scope requests to blender-asset-discovery-planner"
+    },
+    {
+      "condition": "Checking visual consistency, scale, or aesthetic fit across assets",
+      "delegateTo": "asset-style-consistency-checker",
+      "reason": "Delegates out-of-scope requests to asset-style-consistency-checker"
+    },
+    {
+      "condition": "Replacing or working around rejected/blocked assets",
+      "delegateTo": "asset-fallback-strategy",
+      "reason": "Delegates out-of-scope requests to asset-fallback-strategy"
+    },
+    {
+      "condition": "Structuring folders, naming conventions, or catalog storage",
+      "delegateTo": "asset-library-organization-planner",
+      "reason": "Delegates out-of-scope requests to asset-library-organization-planner"
+    },
+    {
+      "condition": "First-party assets authored entirely in-house with no external dependencies.",
+      "delegateTo": "blender-asset-discovery-planner",
+      "reason": "Delegates out-of-scope requests to blender-asset-discovery-planner"
+    },
+    {
+      "condition": "Legal advice or binding legal interpretation (this skill flags risk only; escalate ambiguity to legal).",
+      "delegateTo": "asset-style-consistency-checker",
+      "reason": "Delegates out-of-scope requests to asset-style-consistency-checker"
+    }
+  ],
+  "inputs": {
+    "required": [
+      {
+        "name": "candidate_assets",
+        "type": "array",
+        "description": "Candidate external 3D models, textures, and HDRIs with source URLs and license labels"
+      },
+      {
+        "name": "intended_distribution_use",
+        "type": "string",
+        "description": "Target distribution context (commercial product marketing, web redistribution, internal preview)"
+      }
+    ],
+    "optional": [
+      {
+        "name": "attribution_delivery_surface",
+        "type": "string",
+        "description": "Where attribution credits can be displayed if CC-BY-4.0 assets are used"
+      }
+    ]
+  },
+  "outputs": {
+    "primary": [
+      "per_asset_license_verdict_table",
+      "attribution_obligations_list",
+      "quarantined_or_blocked_assets"
+    ],
+    "truthStatePolicy": {
+      "runtimeDefault": "Not Run",
+      "artifactDefault": "Not Produced",
+      "mutationRule": "downgrade_only"
+    }
+  },
+  "handoffs": [
+    {
+      "target": "blender-asset-discovery-planner",
+      "type": "upstream_reference",
+      "label": "Upstream asset sourcing",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "assets.discoveryComplete",
+            "operator": "equals",
+            "value": false
+          }
+        ]
+      }
+    },
+    {
+      "target": "asset-style-consistency-checker",
+      "type": "progression",
+      "label": "Visual style validation",
+      "when": {
+        "all": [
+          {
+            "field": "assets.licenseCleared",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "style_check"
+          }
+        ]
+      }
+    },
+    {
+      "target": "asset-fallback-strategy",
+      "type": "fallback",
+      "label": "Rejected/blocked asset handling",
+      "when": {
+        "all": [
+          {
+            "field": "assets.fallbackNeeded",
+            "operator": "equals",
+            "value": true
+          }
+        ]
+      }
+    },
+    {
+      "target": "asset-library-organization-planner",
+      "type": "progression",
+      "label": "Asset library organization",
+      "when": {
+        "all": [
+          {
+            "field": "assets.discoveryComplete",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "library_organization"
+          }
+        ]
+      }
+    },
+    {
+      "target": "workflow-stage-router",
+      "type": "progression",
+      "label": "Stage routing & scene planning gate",
+      "when": {
+        "all": [
+          {
+            "field": "preflight.passed",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "inventory.exists",
+            "operator": "equals",
+            "value": true
+          }
+        ]
+      }
+    }
+  ]
+}

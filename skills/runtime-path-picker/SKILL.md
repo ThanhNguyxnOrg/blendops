@@ -23,20 +23,22 @@ Produce a **single primary** runtime execution choice among Path 1 (Blender Lab 
 - automation / batch render discussion
 
 ## When not to use
-
-- prerequisite framing or install steps → `official-runtime-setup-guide`
-- running the readiness matrix → `official-runtime-readiness-checker`
-- detailing Path 1 host (a) Connector vs (b) manual MCP client → `path-one-host-outline`
-- outlining headless CLI jobs → `cli-appendix-job-outline`
-- resolving active bridge or port collisions → `runtime-bridge-conflict-resolver`
-- halting on contradictory constraints before handoff → `pre-handoff-verification`
+<!-- blendops:generated:start exclusions -->
+- prerequisite framing or install steps → use `../official-runtime-setup-guide/SKILL.md` (Delegates out-of-scope requests to official-runtime-setup-guide)
+- running the readiness matrix → use `../official-runtime-readiness-checker/SKILL.md` (Delegates out-of-scope requests to official-runtime-readiness-checker)
+- detailing Path 1 host (a) Connector vs (b) manual MCP client → use `../path-one-host-outline/SKILL.md` (Delegates out-of-scope requests to path-one-host-outline)
+- outlining headless CLI jobs → use `../cli-appendix-job-outline/SKILL.md` (Delegates out-of-scope requests to cli-appendix-job-outline)
+- resolving active bridge or port collisions → use `../runtime-bridge-conflict-resolver/SKILL.md` (Delegates out-of-scope requests to runtime-bridge-conflict-resolver)
+- halting on contradictory constraints before handoff → use `../pre-handoff-verification/SKILL.md` (Delegates out-of-scope requests to pre-handoff-verification)
+<!-- blendops:generated:end exclusions -->
 
 ## Trigger phrases
-
+<!-- blendops:generated:start triggers -->
 - "which MCP should I use"
 - "Lab MCP or mcp-for-blender"
 - "Path 1 or Path 2"
 - "CLI vs MCP"
+<!-- blendops:generated:end triggers -->
 
 ## Prerequisites / readiness
 
@@ -242,13 +244,14 @@ Next skill: <path-one-host-outline | official-runtime-setup-guide | cli-appendix
 - Writing `Artifact status: Not Run` or upgrading truth states during path selection.
 
 ## Cross-skill handoff
-
-- Prerequisite framing → `../official-runtime-setup-guide/SKILL.md`
-- Readiness matrix check → `../official-runtime-readiness-checker/SKILL.md`
-- Host (a)/(b) specifics for Path 1 → `../path-one-host-outline/SKILL.md`
-- Headless CLI appendix job outline → `../cli-appendix-job-outline/SKILL.md`
-- Bridge or port 9876 conflicts → `../runtime-bridge-conflict-resolver/SKILL.md`
-- Contradictory constraints failure exit → `../pre-handoff-verification/SKILL.md`
+<!-- blendops:generated:start handoffs -->
+- [progression] Prerequisite framing → `../official-runtime-setup-guide/SKILL.md`
+- [progression] Readiness matrix check → `../official-runtime-readiness-checker/SKILL.md`
+- [progression] Host (a)/(b) specifics for Path 1 → `../path-one-host-outline/SKILL.md`
+- [progression] Headless CLI appendix job outline → `../cli-appendix-job-outline/SKILL.md`
+- [fallback] Bridge or port 9876 conflicts → `../runtime-bridge-conflict-resolver/SKILL.md`
+- [fallback] Contradictory constraints failure exit → `../pre-handoff-verification/SKILL.md`
+<!-- blendops:generated:end handoffs -->
 
 ## Non-goals
 

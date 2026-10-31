@@ -22,16 +22,20 @@ Translate a single-subject character-portrait intent (subject identity, pose, ex
 - when the consumer is editorial / brand / catalog / cinematic
 
 ## When not to use
-- product hero scenes (use `product-hero-scene-planner`)
-- environment establishing shots (use `environment-establishing-shot-planner`)
-- interior arch viz (use `interior-architectural-scene-planner`)
-- multi-character ensemble (this skill is single-subject)
+<!-- blendops:generated:start exclusions -->
+- product hero scenes → use `../product-hero-scene-planner/SKILL.md` (use product-hero-scene-planner)
+- environment establishing shots → use `../environment-establishing-shot-planner/SKILL.md` (use environment-establishing-shot-planner)
+- interior arch viz → use `../interior-architectural-scene-planner/SKILL.md` (use interior-architectural-scene-planner)
+- multi-character ensemble (this skill is single-subject) → use `../intent-to-3d-brief-writer/SKILL.md` (this skill is single-subject)
+<!-- blendops:generated:end exclusions -->
 
 ## Trigger phrases
+<!-- blendops:generated:start triggers -->
 - "portrait of"
 - "character looking at the camera"
 - "headshot"
 - "hero shot of [person / mascot / creature]"
+<!-- blendops:generated:end triggers -->
 
 ## Prerequisites / readiness
 - brief from `intent-to-3d-brief-writer` is locked
@@ -218,13 +222,15 @@ Next: blender-asset-discovery-planner | blender-composition-camera-planner | ble
 - Bypassing `blender-composition-camera-planner` (framing) or `blender-lighting-material-planner` (lookdev).
 
 ## Cross-skill handoff
-- Upstream brief → `../intent-to-3d-brief-writer/SKILL.md`
-- Framing deep-dive → `../blender-composition-camera-planner/SKILL.md`
-- Lookdev deep-dive → `../blender-lighting-material-planner/SKILL.md`
-- Asset discovery → `../blender-asset-discovery-planner/SKILL.md`
-- Composition validation → `../composition-quality-checker/SKILL.md`
-- Lighting validation → `../lighting-quality-checker/SKILL.md`
-- Scene quality validation → `../blender-scene-quality-checker/SKILL.md`
+<!-- blendops:generated:start handoffs -->
+- [upstream_reference] Upstream brief → `../intent-to-3d-brief-writer/SKILL.md`
+- [progression] Framing deep-dive → `../blender-composition-camera-planner/SKILL.md`
+- [progression] Lookdev deep-dive → `../blender-lighting-material-planner/SKILL.md`
+- [upstream_reference] Asset discovery → `../blender-asset-discovery-planner/SKILL.md`
+- [progression] Composition validation → `../composition-quality-checker/SKILL.md`
+- [progression] Lighting validation → `../lighting-quality-checker/SKILL.md`
+- [progression] Scene quality validation → `../blender-scene-quality-checker/SKILL.md`
+<!-- blendops:generated:end handoffs -->
 
 ## Non-goals
 - Model the character.

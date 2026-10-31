@@ -25,15 +25,19 @@ Canonical role: `runtime-readiness` in the BlendOps skill system. Respect strict
 - before any runtime manual evaluation or planning handoff
 
 ## When not to use
-- as proof that Blender ran or that runtime execution succeeded
-- as a substitute for runtime truth states (`Not Run | Attempted | Produced | Verified | Failed`) or artifact status (default `Not Produced`)
-- to choose a runtime path (use `runtime-path-picker`) or walk through Path 1 host setup (use `path-one-host-outline`)
+<!-- blendops:generated:start exclusions -->
+- as proof that Blender ran or that runtime execution succeeded → use `../runtime-path-picker/SKILL.md` (Delegates out-of-scope requests to runtime-path-picker)
+- as a substitute for runtime truth states (Not Run | Attempted | Produced | Verified | Failed) or artifact status (default Not Produced) → use `../path-one-host-outline/SKILL.md` (default Not Produced)
+- to choose a runtime path → use `../path-one-host-outline/SKILL.md` (use path-one-host-outline)
+<!-- blendops:generated:end exclusions -->
 
 ## Trigger phrases
-- “check runtime readiness”
-- “is runtime available”
-- “can we run this now”
-- “run the readiness matrix for our chosen Blender path”
+<!-- blendops:generated:start triggers -->
+- "check runtime readiness"
+- "is runtime available"
+- "can we run this now"
+- "run the readiness matrix for our chosen Blender path"
+<!-- blendops:generated:end triggers -->
 
 ## Prerequisites / readiness
 - non-destructive local environment access
@@ -190,12 +194,15 @@ Canonical role: `runtime-readiness` in the BlendOps skill system. Respect strict
 - producing jargon-heavy final output without explanation
 
 ## Cross-skill handoff
-- If runtime path is not yet chosen: `runtime-path-picker`
-- If Path 1 host (a) or (b) outline is needed: `path-one-host-outline`
-- If prerequisites/boundaries are missing (`Blocked` / `Unknown`): `official-runtime-setup-guide`
-- If bridge contention is detected: `runtime-bridge-conflict-resolver`
-- If CLI appendix job structure is needed: `cli-appendix-job-outline`
-- If `Ready` / `Partially Ready` and moving to scene planning: `workflow-stage-router` or `product-hero-scene-planner`
+<!-- blendops:generated:start handoffs -->
+- [upstream_reference] If runtime path is not yet chosen → `../runtime-path-picker/SKILL.md`
+- [upstream_reference] If Path 1 host (a) or (b) outline is needed → `../path-one-host-outline/SKILL.md`
+- [fallback] If prerequisites/boundaries are missing (Blocked / Unknown) → `../official-runtime-setup-guide/SKILL.md`
+- [fallback] If bridge contention is detected → `../runtime-bridge-conflict-resolver/SKILL.md`
+- [upstream_reference] If CLI appendix job structure is needed → `../cli-appendix-job-outline/SKILL.md`
+- [alternative] If Ready / Partially Ready and moving to scene planning (product-hero-scene-planner) → `../product-hero-scene-planner/SKILL.md`
+- [conditional] If Ready / Partially Ready and moving to scene planning (workflow-stage-router) → `../workflow-stage-router/SKILL.md`
+<!-- blendops:generated:end handoffs -->
 
 ## Non-goals
 - runtime execution

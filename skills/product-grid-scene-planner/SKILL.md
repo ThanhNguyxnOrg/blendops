@@ -23,16 +23,20 @@ Translate a multi-product grid intent (e-commerce / catalog / comparison) into a
 - showroom-style grid
 
 ## When not to use
-- single product hero (use `product-hero-scene-planner`)
-- character portrait (use `character-portrait-scene-planner`)
-- outdoor environment scene (use `environment-establishing-shot-planner`)
-- interior room scene (use `interior-architectural-scene-planner`)
+<!-- blendops:generated:start exclusions -->
+- single product hero → use `../product-hero-scene-planner/SKILL.md` (use product-hero-scene-planner)
+- character portrait → use `../character-portrait-scene-planner/SKILL.md` (use character-portrait-scene-planner)
+- outdoor environment scene → use `../environment-establishing-shot-planner/SKILL.md` (use environment-establishing-shot-planner)
+- interior room scene → use `../interior-architectural-scene-planner/SKILL.md` (use interior-architectural-scene-planner)
+<!-- blendops:generated:end exclusions -->
 
 ## Trigger phrases
+<!-- blendops:generated:start triggers -->
 - "grid of products"
 - "lineup of"
 - "catalog showing N items"
 - "comparison render"
+<!-- blendops:generated:end triggers -->
 
 ## Prerequisites / readiness
 - product list known (count + per-product description)
@@ -216,15 +220,18 @@ Next: blender-asset-discovery-planner | output-format-decision | composition-qua
 - Skipping caption space when downstream layout needs it.
 
 ## Cross-skill handoff
-- Upstream brief → `../intent-to-3d-brief-writer/SKILL.md`
-- Single hero product alternative → `../product-hero-scene-planner/SKILL.md`
-- Asset discovery → `../blender-asset-discovery-planner/SKILL.md`
-- Variant / SKU file output format → `../output-format-decision/SKILL.md`
-- Composition validation → `../composition-quality-checker/SKILL.md`
-- Lighting validation → `../lighting-quality-checker/SKILL.md`
-- Material validation → `../material-quality-checker/SKILL.md`
-- Overall scene quality validation → `../blender-scene-quality-checker/SKILL.md`
-- Catalog sign-off & stop conditions → `../acceptance-criteria-builder/SKILL.md`, `../blender-stop-condition-decider/SKILL.md`
+<!-- blendops:generated:start handoffs -->
+- [upstream_reference] Upstream brief → `../intent-to-3d-brief-writer/SKILL.md`
+- [upstream_reference] Single hero product alternative → `../product-hero-scene-planner/SKILL.md`
+- [upstream_reference] Asset discovery → `../blender-asset-discovery-planner/SKILL.md`
+- [progression] Variant / SKU file output format → `../output-format-decision/SKILL.md`
+- [progression] Composition validation → `../composition-quality-checker/SKILL.md`
+- [progression] Lighting validation → `../lighting-quality-checker/SKILL.md`
+- [progression] Material validation → `../material-quality-checker/SKILL.md`
+- [progression] Overall scene quality validation → `../blender-scene-quality-checker/SKILL.md`
+- [upstream_reference] Catalog sign-off & stop conditions (acceptance-criteria-builder) → `../acceptance-criteria-builder/SKILL.md`
+- [upstream_reference] Catalog sign-off & stop conditions (blender-stop-condition-decider) → `../blender-stop-condition-decider/SKILL.md`
+<!-- blendops:generated:end handoffs -->
 
 ## Non-goals
 - Model the products.

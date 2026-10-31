@@ -1,0 +1,167 @@
+{
+  "$schema": "../../schemas/skill-contract.schema.json",
+  "id": "path-one-host-outline",
+  "version": "1.0.0",
+  "category": "runtime-and-execution",
+  "role": "lab-mcp-host-configuration-planner",
+  "purpose": "Outline Path 1 hosting options — Anthropic Blender Connector vs manual MCP client — both need Blender Lab MCP add-on in Blender 5.1+.",
+  "capabilityTier": "L0",
+  "triggers": [
+    "Connector vs Cursor MCP",
+    "how do I host Lab MCP",
+    "Claude Desktop Connector vs manual MCP client",
+    "what hosts work with Path 1"
+  ],
+  "exclusions": [
+    {
+      "condition": "choosing between Path 1, Path 2, or CLI",
+      "delegateTo": "runtime-path-picker",
+      "reason": "Delegates out-of-scope requests to runtime-path-picker"
+    },
+    {
+      "condition": "step-by-step host or add-on installation and configuration",
+      "delegateTo": "official-runtime-setup-guide",
+      "reason": "Delegates out-of-scope requests to official-runtime-setup-guide"
+    },
+    {
+      "condition": "probing live runtime readiness",
+      "delegateTo": "official-runtime-readiness-checker",
+      "reason": "Delegates out-of-scope requests to official-runtime-readiness-checker"
+    },
+    {
+      "condition": "resolving conflicts between official and unofficial bridges",
+      "delegateTo": "runtime-bridge-conflict-resolver",
+      "reason": "Delegates out-of-scope requests to runtime-bridge-conflict-resolver"
+    },
+    {
+      "condition": "Path 2 community bridge specifics",
+      "delegateTo": "runtime-path-picker",
+      "reason": "Delegates out-of-scope requests to runtime-path-picker"
+    },
+    {
+      "condition": "CLI appendix job outlining",
+      "delegateTo": "cli-appendix-job-outline",
+      "reason": "Delegates out-of-scope requests to cli-appendix-job-outline"
+    }
+  ],
+  "inputs": {
+    "required": [
+      {
+        "name": "path_one_host_option",
+        "type": "string",
+        "description": "Selected Path 1 host mode: option (a) Anthropic Connector in Claude Desktop or option (b) manual MCP client"
+      },
+      {
+        "name": "blender_5_1_addon_posture",
+        "type": "object",
+        "description": "Confirmation that Official Blender Lab MCP add-on in Blender 5.1+ is required by both host options"
+      }
+    ],
+    "optional": [
+      {
+        "name": "mcp_client_name",
+        "type": "string",
+        "description": "Specific MCP client for host option (b) such as Cursor, Claude Code, or Zed"
+      }
+    ]
+  },
+  "outputs": {
+    "primary": [
+      "path_one_host_architecture_outline",
+      "connector_not_standalone_boundary_check",
+      "host_to_readiness_handoff"
+    ],
+    "truthStatePolicy": {
+      "runtimeDefault": "Not Run",
+      "artifactDefault": "Not Produced",
+      "mutationRule": "downgrade_only"
+    }
+  },
+  "handoffs": [
+    {
+      "target": "runtime-path-picker",
+      "type": "upstream_reference",
+      "label": "Path selection",
+      "when": {
+        "all": [
+          {
+            "field": "runtime.path",
+            "operator": "equals",
+            "value": "unselected"
+          }
+        ]
+      }
+    },
+    {
+      "target": "official-runtime-setup-guide",
+      "type": "upstream_reference",
+      "label": "Detailed setup and configuration",
+      "when": {
+        "all": [
+          {
+            "field": "runtime.path",
+            "operator": "not_equals",
+            "value": "unselected"
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "runtime_setup"
+          }
+        ]
+      }
+    },
+    {
+      "target": "official-runtime-readiness-checker",
+      "type": "progression",
+      "label": "Readiness probing",
+      "when": {
+        "all": [
+          {
+            "field": "runtime.path",
+            "operator": "not_equals",
+            "value": "unselected"
+          },
+          {
+            "field": "runtime.verifiedReady",
+            "operator": "equals",
+            "value": false
+          }
+        ]
+      }
+    },
+    {
+      "target": "runtime-bridge-conflict-resolver",
+      "type": "fallback",
+      "label": "Bridge conflicts",
+      "when": {
+        "all": [
+          {
+            "field": "runtime.conflictDetected",
+            "operator": "equals",
+            "value": true
+          }
+        ]
+      }
+    },
+    {
+      "target": "cli-appendix-job-outline",
+      "type": "progression",
+      "label": "CLI appendix workflows",
+      "when": {
+        "all": [
+          {
+            "field": "runtime.path",
+            "operator": "equals",
+            "value": "cli_appendix"
+          },
+          {
+            "field": "request.topic",
+            "operator": "equals",
+            "value": "cli_batch"
+          }
+        ]
+      }
+    }
+  ]
+}

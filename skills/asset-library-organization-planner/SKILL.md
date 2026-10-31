@@ -26,19 +26,23 @@ Plan a maintainable internal asset library structure (folder tree, naming conven
 - before scaling to 50+ assets
 
 ## When not to use
-- single-recipe repo with < 5 assets
-- pure planning before any asset categories or storage constraints are known
-- sourcing or acquiring external assets (use `blender-asset-discovery-planner`)
-- verifying asset licenses (use `asset-license-checker`)
-- checking visual style consistency across assets (use `asset-style-consistency-checker`)
-- planning fallback substitutions when an asset is missing or fails (use `asset-fallback-strategy`)
-- enforcing file size or polygon/asset count performance budgets (use `glb-mobile-performance-budget`)
+<!-- blendops:generated:start exclusions -->
+- single-recipe repo with < 5 assets → use `../blender-asset-discovery-planner/SKILL.md` (Delegates out-of-scope requests to blender-asset-discovery-planner)
+- pure planning before any asset categories or storage constraints are known → use `../asset-license-checker/SKILL.md` (Delegates out-of-scope requests to asset-license-checker)
+- sourcing or acquiring external assets → use `../blender-asset-discovery-planner/SKILL.md` (use blender-asset-discovery-planner)
+- verifying asset licenses → use `../asset-license-checker/SKILL.md` (use asset-license-checker)
+- checking visual style consistency across assets → use `../asset-style-consistency-checker/SKILL.md` (use asset-style-consistency-checker)
+- planning fallback substitutions when an asset is missing or fails → use `../asset-fallback-strategy/SKILL.md` (use asset-fallback-strategy)
+- enforcing file size or polygon/asset count performance budgets → use `../glb-mobile-performance-budget/SKILL.md` (use glb-mobile-performance-budget)
+<!-- blendops:generated:end exclusions -->
 
 ## Trigger phrases
+<!-- blendops:generated:start triggers -->
 - "organize the assets"
 - "asset library structure"
 - "where should assets go"
 - "name our assets"
+<!-- blendops:generated:end triggers -->
 
 ## Prerequisites / readiness
 - baseline asset count + categories known
@@ -236,12 +240,13 @@ Next: operator implements structure; `blender-asset-discovery-planner` and `asse
 - Mixing assets and recipes in the same folders.
 
 ## Cross-skill handoff
-
-* External asset sourcing into this library → `../blender-asset-discovery-planner/SKILL.md`
-* License verification (license file next to asset; unlicensed old assets to Quarantine) → `../asset-license-checker/SKILL.md`
-* Visual style consistency checks → `../asset-style-consistency-checker/SKILL.md`
-* Consuming this library as fastest fallback source → `../asset-fallback-strategy/SKILL.md`
-* File size and asset/polygon count pressure → `../glb-mobile-performance-budget/SKILL.md`
+<!-- blendops:generated:start handoffs -->
+- [upstream_reference] External asset sourcing into this library → `../blender-asset-discovery-planner/SKILL.md`
+- [upstream_reference] License verification (license file next to asset; unlicensed old assets to Quarantine) → `../asset-license-checker/SKILL.md`
+- [upstream_reference] Visual style consistency checks → `../asset-style-consistency-checker/SKILL.md`
+- [fallback] Consuming this library as fastest fallback source → `../asset-fallback-strategy/SKILL.md`
+- [progression] File size and asset/polygon count pressure → `../glb-mobile-performance-budget/SKILL.md`
+<!-- blendops:generated:end handoffs -->
 
 ## Non-goals
 

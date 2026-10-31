@@ -26,18 +26,20 @@ Inspired by the `/brainstorming` skill in Anthropic Superpowers, adapted for the
 - before any planner skill (`product-hero-scene-planner`, `blender-composition-camera-planner`, …)
 
 ## When not to use
-
-- the user already provided a structured brief (route directly to `intent-to-3d-brief-writer` to lock the brief before any planner runs)
-- the user explicitly asked to skip clarification (record explicit assumptions and route to `intent-to-3d-brief-writer`)
-- the user pushes for immediate execution rather than exploration (route to `official-runtime-readiness-checker`)
+<!-- blendops:generated:start exclusions -->
+- the user already provided a structured brief (route directly to intent-to-3d-brief-writer to lock the brief before any planner runs) → use `../intent-to-3d-brief-writer/SKILL.md` (route directly to intent-to-3d-brief-writer to lock the brief before any planner runs)
+- the user explicitly asked to skip clarification (record explicit assumptions and route to intent-to-3d-brief-writer) → use `../intent-to-3d-brief-writer/SKILL.md` (record explicit assumptions and route to intent-to-3d-brief-writer)
+- the user pushes for immediate execution rather than exploration → use `../official-runtime-readiness-checker/SKILL.md` (route to official-runtime-readiness-checker)
+<!-- blendops:generated:end exclusions -->
 
 ## Trigger phrases
-
-- "I want a 3D render of..." (vague)
+<!-- blendops:generated:start triggers -->
+- "I want a 3D render of..." (vague)"
 - "Make me something cool with..."
-- "Help me plan a Blender scene" (no constraints given)
+- "Help me plan a Blender scene" (no constraints given)"
 - "I'm not sure what I want exactly..."
 - "Brainstorm with me about..."
+<!-- blendops:generated:end triggers -->
 
 ## Prerequisites / readiness
 
@@ -205,10 +207,11 @@ If the user pushes for execution during brainstorming, route to `official-runtim
 - blurring role boundaries by planning the scene directly or bypassing `intent-to-3d-brief-writer`
 
 ## Cross-skill handoff
-
-- Lock the confirmed brief downstream → `../intent-to-3d-brief-writer/SKILL.md`
-- User pushes for execution mid-brainstorm → `../official-runtime-readiness-checker/SKILL.md`
-- Explain blocked runtime status to user → `../non-blender-user-response-writer/SKILL.md`
+<!-- blendops:generated:start handoffs -->
+- [progression] Lock the confirmed brief downstream → `../intent-to-3d-brief-writer/SKILL.md`
+- [progression] User pushes for execution mid-brainstorm → `../official-runtime-readiness-checker/SKILL.md`
+- [progression] Explain blocked runtime status to user → `../non-blender-user-response-writer/SKILL.md`
+<!-- blendops:generated:end handoffs -->
 
 ## Non-goals
 

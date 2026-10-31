@@ -22,15 +22,19 @@ Translate a wide place-establishing intent (locale, time of day, weather, atmosp
 - when consumer is editorial, cinematic, or brand
 
 ## When not to use
-- character portrait (use `character-portrait-scene-planner`)
-- product hero (use `product-hero-scene-planner`)
-- interior arch viz with focus on furniture / surfaces (use `interior-architectural-scene-planner`)
+<!-- blendops:generated:start exclusions -->
+- character portrait → use `../character-portrait-scene-planner/SKILL.md` (use character-portrait-scene-planner)
+- product hero → use `../product-hero-scene-planner/SKILL.md` (use product-hero-scene-planner)
+- interior arch viz with focus on furniture / surfaces → use `../interior-architectural-scene-planner/SKILL.md` (use interior-architectural-scene-planner)
+<!-- blendops:generated:end exclusions -->
 
 ## Trigger phrases
+<!-- blendops:generated:start triggers -->
 - "establishing shot of"
 - "wide shot of"
 - "city / forest / desert / ocean scene"
 - "set the scene"
+<!-- blendops:generated:end triggers -->
 
 ## Prerequisites / readiness
 - brief from `intent-to-3d-brief-writer` is locked
@@ -212,11 +216,13 @@ Next: blender-asset-discovery-planner | composition-quality-checker | lighting-q
 - Prescribing Geometry Nodes, modeling steps, or renders, or upgrading truth states above `Not Run` / `Not Produced`.
 
 ## Cross-skill handoff
-- Brief writer → `../intent-to-3d-brief-writer/SKILL.md`
-- Asset discovery → `../blender-asset-discovery-planner/SKILL.md`
-- Composition validation → `../composition-quality-checker/SKILL.md`
-- Lighting validation → `../lighting-quality-checker/SKILL.md`
-- Quality readiness → `../blender-scene-quality-checker/SKILL.md`
+<!-- blendops:generated:start handoffs -->
+- [upstream_reference] Brief writer → `../intent-to-3d-brief-writer/SKILL.md`
+- [upstream_reference] Asset discovery → `../blender-asset-discovery-planner/SKILL.md`
+- [progression] Composition validation → `../composition-quality-checker/SKILL.md`
+- [progression] Lighting validation → `../lighting-quality-checker/SKILL.md`
+- [progression] Quality readiness → `../blender-scene-quality-checker/SKILL.md`
+<!-- blendops:generated:end handoffs -->
 
 ## Non-goals
 - Model the environment.

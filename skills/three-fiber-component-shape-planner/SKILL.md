@@ -21,15 +21,19 @@ Translate a planned GLB delivery into the exact public surface a React Three Fib
 - when "I'll just import the GLB" needs more rigor (multiple clips, prop overrides, lazy loading)
 
 ## When not to use
-- consumers using vanilla Three.js (different API)
-- consumers using Babylon / model-viewer (different stack)
-- the GLB is rendered server-side (e.g. AR pre-render); no React component needed
+<!-- blendops:generated:start exclusions -->
+- consumers using vanilla Three.js (different API) → use `../glb-web-handoff/SKILL.md` (different API)
+- consumers using Babylon / model-viewer (different stack) → use `../glb-animation-handoff/SKILL.md` (different stack)
+- the GLB is rendered server-side (e.g. AR pre-render); no React component needed → use `../non-blender-user-response-writer/SKILL.md` (Delegates out-of-scope requests to non-blender-user-response-writer)
+<!-- blendops:generated:end exclusions -->
 
 ## Trigger phrases
+<!-- blendops:generated:start triggers -->
 - "how should the React component look"
 - "what props should I expose"
 - "ref shape for the model"
 - "we use react-three-fiber"
+<!-- blendops:generated:end triggers -->
 
 ## Prerequisites / readiness
 - GLB delivery contract known (clips, materials, variants)
@@ -262,12 +266,14 @@ Next: glb-web-handoff (then non-blender-user-response-writer)
 * Using `Artifact status: Not Run` or upgrading truth states instead of keeping `Runtime status: Not Run` and `Artifact status: Not Produced` downgrade-only.
 
 ## Cross-skill handoff
-
-* Animation contract → `../glb-animation-handoff/SKILL.md` (owns per-clip animation contracts)
-* Performance budget ceilings → `../glb-mobile-performance-budget/SKILL.md` (pins memory, bone, morph, and geometry budgets)
-* Color and material checks → `../color-management-decision/SKILL.md` and `../material-quality-checker/SKILL.md` (own color management and material quality verification)
-* Web delivery packaging → `../glb-web-handoff/SKILL.md` (owns GLB web delivery package)
-* Final user-facing response → `../non-blender-user-response-writer/SKILL.md` (owns plain-language final response)
+<!-- blendops:generated:start handoffs -->
+- [upstream_reference] Animation contract → `../glb-animation-handoff/SKILL.md`
+- [upstream_reference] Performance budget ceilings → `../glb-mobile-performance-budget/SKILL.md`
+- [upstream_reference] Color and material checks (color-management-decision) → `../color-management-decision/SKILL.md`
+- [upstream_reference] Color and material checks (material-quality-checker) → `../material-quality-checker/SKILL.md`
+- [upstream_reference] Web delivery packaging → `../glb-web-handoff/SKILL.md`
+- [progression] Final user-facing response → `../non-blender-user-response-writer/SKILL.md`
+<!-- blendops:generated:end handoffs -->
 
 ## Non-goals
 

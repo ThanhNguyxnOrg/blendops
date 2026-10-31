@@ -27,19 +27,21 @@ This skill **does not run Blender**. It guides the operator through a discipline
 - intent was clear but result diverges in a specific, reproducible way
 
 ## When not to use
-
-- the user has not yet stated a clear expected outcome (run `intent-to-3d-brief-writer` first)
-- runtime has never been attempted (run `official-runtime-readiness-checker` first)
-- the request is creative iteration ("can we make it more dramatic"), not debugging
-- the user wants a one-shot fix without diagnostic discipline
+<!-- blendops:generated:start exclusions -->
+- the user has not yet stated a clear expected outcome (run intent-to-3d-brief-writer first) → use `../intent-to-3d-brief-writer/SKILL.md` (run intent-to-3d-brief-writer first)
+- runtime has never been attempted (run official-runtime-readiness-checker first) → use `../official-runtime-readiness-checker/SKILL.md` (run official-runtime-readiness-checker first)
+- the request is creative iteration ("can we make it more dramatic"), not debugging → use `../blender-brainstorming/SKILL.md` (Delegates out-of-scope requests to blender-brainstorming)
+- the user wants a one-shot fix without diagnostic discipline → use `../intent-to-3d-brief-writer/SKILL.md` (Delegates out-of-scope requests to intent-to-3d-brief-writer)
+<!-- blendops:generated:end exclusions -->
 
 ## Trigger phrases
-
+<!-- blendops:generated:start triggers -->
 - "the render looks wrong"
 - "the GLB doesn't open / looks empty / is wrong scale"
 - "the output doesn't match what I asked for"
 - "why did it produce X instead of Y?"
 - "debug this Blender output"
+<!-- blendops:generated:end triggers -->
 
 ## Prerequisites / readiness
 
@@ -227,12 +229,24 @@ This skill does not install Blender, run Blender, mutate scenes, render, export,
 - using Blender jargon in the operator-facing summary
 
 ## Cross-skill handoff
-
-- If divergence at intent → `blender-brainstorming` or `intent-to-3d-brief-writer`
-- If divergence at planning → hand off to the relevant planner (`product-hero-scene-planner`, `blender-composition-camera-planner`, `blender-lighting-material-planner`, `character-portrait-scene-planner`, `environment-establishing-shot-planner`, `interior-architectural-scene-planner`, or `product-grid-scene-planner`)
-- If divergence at execution → `official-runtime-readiness-checker`, `runtime-bridge-conflict-resolver`, or `runtime-path-picker`
-- If divergence at output → `render-export-evidence`, `glb-web-handoff`, or `glb-animation-handoff`
-- If divergence at response → `non-blender-user-response-writer`
+<!-- blendops:generated:start handoffs -->
+- [upstream_reference] If divergence at intent (blender-brainstorming) → `../blender-brainstorming/SKILL.md`
+- [upstream_reference] If divergence at intent (intent-to-3d-brief-writer) → `../intent-to-3d-brief-writer/SKILL.md`
+- [conditional] If divergence at planning (blender-composition-camera-planner) → `../blender-composition-camera-planner/SKILL.md`
+- [conditional] If divergence at planning (blender-lighting-material-planner) → `../blender-lighting-material-planner/SKILL.md`
+- [alternative] If divergence at planning (character-portrait-scene-planner) → `../character-portrait-scene-planner/SKILL.md`
+- [alternative] If divergence at planning (environment-establishing-shot-planner) → `../environment-establishing-shot-planner/SKILL.md`
+- [alternative] If divergence at planning (interior-architectural-scene-planner) → `../interior-architectural-scene-planner/SKILL.md`
+- [alternative] If divergence at planning (product-grid-scene-planner) → `../product-grid-scene-planner/SKILL.md`
+- [alternative] If divergence at planning (product-hero-scene-planner) → `../product-hero-scene-planner/SKILL.md`
+- [upstream_reference] If divergence at execution (official-runtime-readiness-checker) → `../official-runtime-readiness-checker/SKILL.md`
+- [fallback] If divergence at execution (runtime-bridge-conflict-resolver) → `../runtime-bridge-conflict-resolver/SKILL.md`
+- [upstream_reference] If divergence at execution (runtime-path-picker) → `../runtime-path-picker/SKILL.md`
+- [conditional] If divergence at output (glb-animation-handoff) → `../glb-animation-handoff/SKILL.md`
+- [conditional] If divergence at output (glb-web-handoff) → `../glb-web-handoff/SKILL.md`
+- [conditional] If divergence at output (render-export-evidence) → `../render-export-evidence/SKILL.md`
+- [conditional] If divergence at response → `../non-blender-user-response-writer/SKILL.md`
+<!-- blendops:generated:end handoffs -->
 
 ## Non-goals
 

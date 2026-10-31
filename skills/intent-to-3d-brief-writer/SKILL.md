@@ -27,18 +27,20 @@ This skill produces **a brief, not a plan**. The brief has 8 fixed slots: subjec
 - when multiple planners need to share the same source-of-truth brief
 
 ## When not to use
-
-- intent is still ambiguous (run `blender-brainstorming` first)
-- the user is mid-execution and asks for a re-brief (route to `blender-troubleshooting` instead)
-- the user pushes for immediate execution (route to `official-runtime-readiness-checker`)
-- the request is iteration on existing output ("make it darker") — that's a planner-level edit, not a new brief
+<!-- blendops:generated:start exclusions -->
+- intent is still ambiguous (run blender-brainstorming first) → use `../blender-brainstorming/SKILL.md` (run blender-brainstorming first)
+- the user is mid-execution and asks for a re-brief → use `../blender-troubleshooting/SKILL.md` (route to blender-troubleshooting instead)
+- the user pushes for immediate execution → use `../official-runtime-readiness-checker/SKILL.md` (route to official-runtime-readiness-checker)
+- the request is iteration on existing output ("make it darker") — that's a planner-level edit, not a new brief → use `../blender-brainstorming/SKILL.md` (Delegates out-of-scope requests to blender-brainstorming)
+<!-- blendops:generated:end exclusions -->
 
 ## Trigger phrases
-
+<!-- blendops:generated:start triggers -->
 - "lock the brief"
 - "write the brief from this conversation"
 - "what's the formal scope?"
 - "before planning, write the spec"
+<!-- blendops:generated:end triggers -->
 
 ## Prerequisites / readiness
 
@@ -211,12 +213,15 @@ This skill does not install Blender, run Blender, configure MCP, or claim artifa
 - using Blender jargon
 
 ## Cross-skill handoff
-
-- Preceding step: `blender-brainstorming` confirms user intent before brief writing.
-- Consuming skills: hand off to relevant scene planners (`product-hero-scene-planner`, `blender-composition-camera-planner`, `blender-lighting-material-planner`) and `acceptance-criteria-builder` (which consumes brief rows).
-- If execution is requested: route to `official-runtime-readiness-checker`.
-- If mid-execution re-briefing occurs: route to `blender-troubleshooting`.
-- If brief reveals intent ambiguity: route back to `blender-brainstorming`.
+<!-- blendops:generated:start handoffs -->
+- [upstream_reference] Preceding step → `../blender-brainstorming/SKILL.md`
+- [progression] Consuming skills (acceptance-criteria-builder) → `../acceptance-criteria-builder/SKILL.md`
+- [progression] Consuming skills (blender-composition-camera-planner) → `../blender-composition-camera-planner/SKILL.md`
+- [progression] Consuming skills (blender-lighting-material-planner) → `../blender-lighting-material-planner/SKILL.md`
+- [alternative] Consuming skills (product-hero-scene-planner) → `../product-hero-scene-planner/SKILL.md`
+- [conditional] If execution is requested → `../official-runtime-readiness-checker/SKILL.md`
+- [fallback] If mid-execution re-briefing occurs → `../blender-troubleshooting/SKILL.md`
+<!-- blendops:generated:end handoffs -->
 
 ## Non-goals
 

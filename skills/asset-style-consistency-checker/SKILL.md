@@ -21,15 +21,19 @@ Catch style mismatches between assets before they end up in the same scene where
 - when assets come from multiple sources
 
 ## When not to use
-- single isolated asset where no multi-asset or scene-brief consistency check is requested
-- pure planning before candidate assets are picked (use `blender-asset-discovery-planner`)
-- intentionally mixed-style art direction, ONLY when the locked brief explicitly specifies mixed styles
-- checking asset licenses (`asset-license-checker`), polygon/performance budgets (`polycount-budget-checker`), topology, or planning materials/lighting (`blender-lighting-material-planner`)
+<!-- blendops:generated:start exclusions -->
+- single isolated asset where no multi-asset or scene-brief consistency check is requested → use `../blender-asset-discovery-planner/SKILL.md` (Delegates out-of-scope requests to blender-asset-discovery-planner)
+- pure planning before candidate assets are picked → use `../blender-asset-discovery-planner/SKILL.md` (use blender-asset-discovery-planner)
+- intentionally mixed-style art direction, ONLY when the locked brief explicitly specifies mixed styles → use `../asset-license-checker/SKILL.md` (Delegates out-of-scope requests to asset-license-checker)
+- checking asset licenses (asset-license-checker), polygon/performance budgets (polycount-budget-checker), topology, or planning materials/lighting (blender-light → use `../asset-license-checker/SKILL.md` (blender-lighting-material-planner)
+<!-- blendops:generated:end exclusions -->
 
 ## Trigger phrases
+<!-- blendops:generated:start triggers -->
 - "do these assets fit together"
 - "style check the assets"
 - "scene feels like a collage"
+<!-- blendops:generated:end triggers -->
 
 ## Prerequisites / readiness
 - candidate asset list with previews sourced via `blender-asset-discovery-planner`
@@ -208,15 +212,18 @@ Next: asset-library-organization-planner & blender-scene-quality-checker (Pass) 
 - Inventing axis values.
 
 ## Cross-skill handoff
-- Upstream discovery → `../blender-asset-discovery-planner/SKILL.md` (sources the candidate asset list)
-- Upstream license gate → `../asset-license-checker/SKILL.md` (must clear licenses before this skill runs)
-- Upstream brief lock → `../intent-to-3d-brief-writer/SKILL.md` (locks style baseline if brief is ambiguous)
-- Scope enforcement → `../blender-scope-boundary-enforcer/SKILL.md` (handles mid-scene style changes)
-- Rejected asset fallback → `../asset-fallback-strategy/SKILL.md` (handles `Fail` assets needing replacement/drop)
-- Approved asset organization → `../asset-library-organization-planner/SKILL.md` (organizes `Pass` assets)
-- Broad scene review → `../blender-scene-quality-checker/SKILL.md` (consumes the 4-axis style rows during scene review)
-- Material & lookdev boundary → `../material-quality-checker/SKILL.md` and `../blender-lighting-material-planner/SKILL.md` (handles shader quality and lookdev planning; do not perform here)
-- Budget & topology boundary → `../polycount-budget-checker/SKILL.md` (handles geometry budgets; do not perform here)
+<!-- blendops:generated:start handoffs -->
+- [upstream_reference] Upstream discovery → `../blender-asset-discovery-planner/SKILL.md`
+- [upstream_reference] Upstream license gate → `../asset-license-checker/SKILL.md`
+- [upstream_reference] Upstream brief lock → `../intent-to-3d-brief-writer/SKILL.md`
+- [boundary_delegation] Scope enforcement → `../blender-scope-boundary-enforcer/SKILL.md`
+- [fallback] Rejected asset fallback → `../asset-fallback-strategy/SKILL.md`
+- [progression] Approved asset organization → `../asset-library-organization-planner/SKILL.md`
+- [progression] Broad scene review → `../blender-scene-quality-checker/SKILL.md`
+- [progression] Material & lookdev boundary (blender-lighting-material-planner) → `../blender-lighting-material-planner/SKILL.md`
+- [progression] Material & lookdev boundary (material-quality-checker) → `../material-quality-checker/SKILL.md`
+- [progression] Budget & topology boundary → `../polycount-budget-checker/SKILL.md`
+<!-- blendops:generated:end handoffs -->
 
 ## Non-goals
 - Never modify or re-style assets.

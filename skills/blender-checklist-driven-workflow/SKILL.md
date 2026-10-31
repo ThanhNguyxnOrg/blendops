@@ -21,21 +21,25 @@ Enforce a checklist-driven discipline where every stage of a Blender recipe (bri
 - before any runtime work begins, to lock concrete checks, required evidence, and failure exits per stage
 
 ## When not to use
-- single-step requests
-- pure exploratory brainstorming (use `blender-brainstorming`)
-- decomposing a brief into stages (use `blender-recipe-decomposer`)
-- writing measurable acceptance criteria rows from scratch (use `acceptance-criteria-builder`)
-- pinning the overall done/stop condition (use `blender-stop-condition-decider`)
-- guarding against mid-flight scope creep (use `blender-scope-boundary-enforcer`)
-- selecting which skill runs next across the workflow (use `workflow-stage-router`)
-- fixing repeated stage failures or broken renders (use `blender-troubleshooting`)
-- executing the final 7-point handoff gate (use `pre-handoff-verification`)
+<!-- blendops:generated:start exclusions -->
+- single-step requests → use `../blender-brainstorming/SKILL.md` (Delegates out-of-scope requests to blender-brainstorming)
+- pure exploratory brainstorming → use `../blender-brainstorming/SKILL.md` (use blender-brainstorming)
+- decomposing a brief into stages → use `../blender-recipe-decomposer/SKILL.md` (use blender-recipe-decomposer)
+- writing measurable acceptance criteria rows from scratch → use `../acceptance-criteria-builder/SKILL.md` (use acceptance-criteria-builder)
+- pinning the overall done/stop condition → use `../blender-stop-condition-decider/SKILL.md` (use blender-stop-condition-decider)
+- guarding against mid-flight scope creep → use `../blender-scope-boundary-enforcer/SKILL.md` (use blender-scope-boundary-enforcer)
+- selecting which skill runs next across the workflow → use `../workflow-stage-router/SKILL.md` (use workflow-stage-router)
+- fixing repeated stage failures or broken renders → use `../blender-troubleshooting/SKILL.md` (use blender-troubleshooting)
+- executing the final 7-point handoff gate → use `../pre-handoff-verification/SKILL.md` (use pre-handoff-verification)
+<!-- blendops:generated:end exclusions -->
 
 ## Trigger phrases
+<!-- blendops:generated:start triggers -->
 - "let's do this step by step"
 - "what's done before we move on"
 - "checklist for this work"
 - "I want to make sure each stage is solid"
+<!-- blendops:generated:end triggers -->
 
 ## Prerequisites / readiness
 - recipe stages identified (or willing to identify them)
@@ -211,18 +215,30 @@ Limitations: <gaps>
 - Blurring boundaries with `acceptance-criteria-builder`, `blender-stop-condition-decider`, `blender-scope-boundary-enforcer`, `workflow-stage-router`, or `pre-handoff-verification`.
 
 ## Cross-skill handoff
-- Brainstorming → `../blender-brainstorming/SKILL.md` (only if early)
-- Brief authoring → `../intent-to-3d-brief-writer/SKILL.md`
-- Recipe stage decomposition → `../blender-recipe-decomposer/SKILL.md`
-- Measurable acceptance rows → `../acceptance-criteria-builder/SKILL.md`
-- Overall done condition → `../blender-stop-condition-decider/SKILL.md`
-- Scope creep protection → `../blender-scope-boundary-enforcer/SKILL.md`
-- Next-skill routing across stages → `../workflow-stage-router/SKILL.md`
-- Asset discovery → `../blender-asset-discovery-planner/SKILL.md`
-- Scene planners → `../product-hero-scene-planner/SKILL.md`, `../product-grid-scene-planner/SKILL.md`, `../character-portrait-scene-planner/SKILL.md`, `../environment-establishing-shot-planner/SKILL.md`, `../interior-architectural-scene-planner/SKILL.md`, `../blender-composition-camera-planner/SKILL.md`, `../blender-lighting-material-planner/SKILL.md`
-- Quality validators → `../blender-scene-quality-checker/SKILL.md`, `../material-quality-checker/SKILL.md`, `../lighting-quality-checker/SKILL.md`, `../composition-quality-checker/SKILL.md`, `../polycount-budget-checker/SKILL.md`
-- Repeated gate failures → `../blender-troubleshooting/SKILL.md`
-- Final 7-point gate → `../pre-handoff-verification/SKILL.md`
+<!-- blendops:generated:start handoffs -->
+- [upstream_reference] Brainstorming → `../blender-brainstorming/SKILL.md`
+- [upstream_reference] Brief authoring → `../intent-to-3d-brief-writer/SKILL.md`
+- [upstream_reference] Recipe stage decomposition → `../blender-recipe-decomposer/SKILL.md`
+- [upstream_reference] Measurable acceptance rows → `../acceptance-criteria-builder/SKILL.md`
+- [upstream_reference] Overall done condition → `../blender-stop-condition-decider/SKILL.md`
+- [progression] Scope creep protection → `../blender-scope-boundary-enforcer/SKILL.md`
+- [progression] Next-skill routing across stages → `../workflow-stage-router/SKILL.md`
+- [progression] Asset discovery → `../blender-asset-discovery-planner/SKILL.md`
+- [progression] Scene planners (blender-composition-camera-planner) → `../blender-composition-camera-planner/SKILL.md`
+- [progression] Scene planners (blender-lighting-material-planner) → `../blender-lighting-material-planner/SKILL.md`
+- [alternative] Scene planners (character-portrait-scene-planner) → `../character-portrait-scene-planner/SKILL.md`
+- [alternative] Scene planners (environment-establishing-shot-planner) → `../environment-establishing-shot-planner/SKILL.md`
+- [alternative] Scene planners (interior-architectural-scene-planner) → `../interior-architectural-scene-planner/SKILL.md`
+- [alternative] Scene planners (product-grid-scene-planner) → `../product-grid-scene-planner/SKILL.md`
+- [alternative] Scene planners (product-hero-scene-planner) → `../product-hero-scene-planner/SKILL.md`
+- [progression] Quality validators (blender-scene-quality-checker) → `../blender-scene-quality-checker/SKILL.md`
+- [progression] Quality validators (composition-quality-checker) → `../composition-quality-checker/SKILL.md`
+- [progression] Quality validators (lighting-quality-checker) → `../lighting-quality-checker/SKILL.md`
+- [progression] Quality validators (material-quality-checker) → `../material-quality-checker/SKILL.md`
+- [progression] Quality validators (polycount-budget-checker) → `../polycount-budget-checker/SKILL.md`
+- [fallback] Repeated gate failures → `../blender-troubleshooting/SKILL.md`
+- [progression] Final 7-point gate → `../pre-handoff-verification/SKILL.md`
+<!-- blendops:generated:end handoffs -->
 
 ## Non-goals
 - Run Blender or execute Python.

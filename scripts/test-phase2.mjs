@@ -210,13 +210,13 @@ test('Phase 2 (6/7): SKILL.md managed section drift is detected accurately witho
   );
 });
 
-test('Phase 2 (7/7): Deterministic registry build produces identical checksums and honest pilot coverage metadata', () => {
+test('Phase 2 (7/7): Deterministic registry build produces identical checksums and honest catalog coverage metadata', () => {
   const run1 = buildRegistryArtifacts(root);
   const run2 = buildRegistryArtifacts(root);
 
   assert.deepEqual(run1.errors, []);
-  assert.equal(run1.skillsRegistry.coverage, 'routing-pilot');
-  assert.equal(run1.skillsRegistry.contractedSkills, 4);
+  assert.equal(run1.skillsRegistry.coverage, 'full-catalog');
+  assert.equal(run1.skillsRegistry.contractedSkills, 48);
   assert.equal(run1.skillsRegistry.catalogSkills, 48);
   assert.equal(run1.skillsRegistry.sourceChecksum, run2.skillsRegistry.sourceChecksum);
   assert.equal(JSON.stringify(run1.skillsRegistry), JSON.stringify(run2.skillsRegistry));

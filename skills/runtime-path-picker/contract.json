@@ -1,0 +1,191 @@
+{
+  "$schema": "../../schemas/skill-contract.schema.json",
+  "id": "runtime-path-picker",
+  "version": "1.0.0",
+  "category": "runtime-and-execution",
+  "role": "execution-path-selector",
+  "purpose": "Choose Path 1 Lab MCP, Path 2 mcp-for-blender bridge, or CLI appendix from constraints; Connector hosts Path 1 only with Lab add-on inside Blender.",
+  "capabilityTier": "L0",
+  "triggers": [
+    "which MCP should I use",
+    "Lab MCP or mcp-for-blender",
+    "Path 1 or Path 2",
+    "CLI vs MCP"
+  ],
+  "exclusions": [
+    {
+      "condition": "prerequisite framing or install steps",
+      "delegateTo": "official-runtime-setup-guide",
+      "reason": "Delegates out-of-scope requests to official-runtime-setup-guide"
+    },
+    {
+      "condition": "running the readiness matrix",
+      "delegateTo": "official-runtime-readiness-checker",
+      "reason": "Delegates out-of-scope requests to official-runtime-readiness-checker"
+    },
+    {
+      "condition": "detailing Path 1 host (a) Connector vs (b) manual MCP client",
+      "delegateTo": "path-one-host-outline",
+      "reason": "Delegates out-of-scope requests to path-one-host-outline"
+    },
+    {
+      "condition": "outlining headless CLI jobs",
+      "delegateTo": "cli-appendix-job-outline",
+      "reason": "Delegates out-of-scope requests to cli-appendix-job-outline"
+    },
+    {
+      "condition": "resolving active bridge or port collisions",
+      "delegateTo": "runtime-bridge-conflict-resolver",
+      "reason": "Delegates out-of-scope requests to runtime-bridge-conflict-resolver"
+    },
+    {
+      "condition": "halting on contradictory constraints before handoff",
+      "delegateTo": "pre-handoff-verification",
+      "reason": "Delegates out-of-scope requests to pre-handoff-verification"
+    }
+  ],
+  "inputs": {
+    "required": [
+      {
+        "name": "blender_version_posture",
+        "type": "string",
+        "description": "Installed or available Blender version (e.g., 5.1+, 4.2 LTS, 3.6 LTS, or unknown)"
+      },
+      {
+        "name": "host_environment_category",
+        "type": "string",
+        "description": "Available MCP client host (Claude Desktop Connector, manual MCP IDE client, or headless CI)"
+      }
+    ],
+    "optional": [
+      {
+        "name": "organizational_policy_constraints",
+        "type": "string",
+        "description": "Optional security or IT constraints restricting third-party add-ons or interactive GUI sessions"
+      }
+    ]
+  },
+  "outputs": {
+    "primary": [
+      "single_recommended_runtime_path",
+      "rejected_paths_comparison_table",
+      "path_specific_caveat_and_next_skill"
+    ],
+    "truthStatePolicy": {
+      "runtimeDefault": "Not Run",
+      "artifactDefault": "Not Produced",
+      "mutationRule": "downgrade_only"
+    }
+  },
+  "handoffs": [
+    {
+      "target": "official-runtime-setup-guide",
+      "type": "progression",
+      "label": "Prerequisite framing",
+      "when": {
+        "all": [
+          {
+            "field": "runtime.path",
+            "operator": "not_equals",
+            "value": "unselected"
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "runtime_setup"
+          }
+        ]
+      }
+    },
+    {
+      "target": "official-runtime-readiness-checker",
+      "type": "progression",
+      "label": "Readiness matrix check",
+      "when": {
+        "all": [
+          {
+            "field": "runtime.path",
+            "operator": "not_equals",
+            "value": "unselected"
+          },
+          {
+            "field": "runtime.verifiedReady",
+            "operator": "equals",
+            "value": false
+          }
+        ]
+      }
+    },
+    {
+      "target": "path-one-host-outline",
+      "type": "progression",
+      "label": "Host (a)/(b) specifics for Path 1",
+      "when": {
+        "all": [
+          {
+            "field": "runtime.path",
+            "operator": "equals",
+            "value": "path_1"
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "runtime_setup"
+          }
+        ]
+      }
+    },
+    {
+      "target": "cli-appendix-job-outline",
+      "type": "progression",
+      "label": "Headless CLI appendix job outline",
+      "when": {
+        "all": [
+          {
+            "field": "runtime.path",
+            "operator": "equals",
+            "value": "cli_appendix"
+          },
+          {
+            "field": "request.topic",
+            "operator": "equals",
+            "value": "cli_batch"
+          }
+        ]
+      }
+    },
+    {
+      "target": "runtime-bridge-conflict-resolver",
+      "type": "fallback",
+      "label": "Bridge or port 9876 conflicts",
+      "when": {
+        "all": [
+          {
+            "field": "runtime.conflictDetected",
+            "operator": "equals",
+            "value": true
+          }
+        ]
+      }
+    },
+    {
+      "target": "pre-handoff-verification",
+      "type": "fallback",
+      "label": "Contradictory constraints failure exit",
+      "when": {
+        "any": [
+          {
+            "field": "gate.status",
+            "operator": "equals",
+            "value": "failed"
+          },
+          {
+            "field": "runtime.mode",
+            "operator": "equals",
+            "value": "blocked"
+          }
+        ]
+      }
+    }
+  ]
+}

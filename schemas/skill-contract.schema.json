@@ -11,12 +11,50 @@
     "category",
     "role",
     "purpose",
-    "routingPrecedence",
+    "capabilityTier",
     "triggers",
     "exclusions",
     "inputs",
     "outputs",
     "handoffs"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "enum": [
+              "blendops-help",
+              "recipe-fit-assessor",
+              "pack-prerequisite-checker",
+              "workflow-stage-router"
+            ]
+          }
+        },
+        "required": ["id"]
+      },
+      "then": {
+        "type": "object",
+        "properties": {
+          "category": {
+            "type": "string",
+            "const": "routing-and-governance"
+          },
+          "routingPrecedence": {
+            "type": "object"
+          }
+        },
+        "required": ["routingPrecedence"]
+      },
+      "else": {
+        "type": "object",
+        "properties": {
+          "routingPrecedence": false
+        }
+      }
+    }
   ],
   "properties": {
     "$schema": {
@@ -69,7 +107,7 @@
       "properties": {
         "group": {
           "type": "string",
-          "enum": ["entry-and-stage-routing", "domain-specialist"]
+          "enum": ["entry-and-stage-routing"]
         },
         "rank": {
           "type": "integer",
@@ -180,7 +218,7 @@
     },
     "handoffs": {
       "type": "array",
-      "minItems": 1,
+      "minItems": 0,
       "items": {
         "type": "object",
         "additionalProperties": false,

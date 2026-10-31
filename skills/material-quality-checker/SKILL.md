@@ -22,18 +22,22 @@ Run a focused pass/warn/fail check on each material in the scene against PBR san
 - as a sub-check during full quality review
 
 ## When not to use
-- upstream lookdev and material planning (use `blender-lighting-material-planner`)
-- lighting validation (use `lighting-quality-checker`)
-- composition / camera validation (use `composition-quality-checker`)
-- broad pass/warn/fail scene readiness (use `blender-scene-quality-checker`)
-- web integration and viewer handoff (use `glb-web-handoff`)
-- to fix or edit materials (this skill validates and emits remediation hints only; it never edits)
+<!-- blendops:generated:start exclusions -->
+- upstream lookdev and material planning → use `../blender-lighting-material-planner/SKILL.md` (use blender-lighting-material-planner)
+- lighting validation → use `../lighting-quality-checker/SKILL.md` (use lighting-quality-checker)
+- composition / camera validation → use `../composition-quality-checker/SKILL.md` (use composition-quality-checker)
+- broad pass/warn/fail scene readiness → use `../blender-scene-quality-checker/SKILL.md` (use blender-scene-quality-checker)
+- web integration and viewer handoff → use `../glb-web-handoff/SKILL.md` (use glb-web-handoff)
+- to fix or edit materials (this skill validates and emits remediation hints only; it never edits) → use `../blender-lighting-material-planner/SKILL.md` (this skill validates and emits remediation hints only; it never edits)
+<!-- blendops:generated:end exclusions -->
 
 ## Trigger phrases
+<!-- blendops:generated:start triggers -->
 - "are the materials okay"
 - "check PBR sanity"
 - "texture budget for materials"
 - "will the materials work in Three.js"
+<!-- blendops:generated:end triggers -->
 
 ## Prerequisites / readiness
 - material list known (from scene plan or measured scene)
@@ -232,14 +236,16 @@ Next: <blender-scene-quality-checker | render-export-evidence | glb-web-handoff 
 - Mixing lighting / composition checks here.
 
 ## Cross-skill handoff
-- Upstream lookdev & material planning → `../blender-lighting-material-planner/SKILL.md`
-- Mobile/web texture budget definition → `../glb-mobile-performance-budget/SKILL.md`
-- Broad readiness review → `../blender-scene-quality-checker/SKILL.md`
-- Lighting validation → `../lighting-quality-checker/SKILL.md`
-- Composition validation → `../composition-quality-checker/SKILL.md`
-- Polycount budget → `../polycount-budget-checker/SKILL.md`
-- Render / GLB export evidence → `../render-export-evidence/SKILL.md`
-- Web handoff → `../glb-web-handoff/SKILL.md`
+<!-- blendops:generated:start handoffs -->
+- [retry] Upstream lookdev & material planning → `../blender-lighting-material-planner/SKILL.md`
+- [upstream_reference] Mobile/web texture budget definition → `../glb-mobile-performance-budget/SKILL.md`
+- [progression] Broad readiness review → `../blender-scene-quality-checker/SKILL.md`
+- [progression] Lighting validation → `../lighting-quality-checker/SKILL.md`
+- [progression] Composition validation → `../composition-quality-checker/SKILL.md`
+- [progression] Polycount budget → `../polycount-budget-checker/SKILL.md`
+- [progression] Render / GLB export evidence → `../render-export-evidence/SKILL.md`
+- [progression] Web handoff → `../glb-web-handoff/SKILL.md`
+<!-- blendops:generated:end handoffs -->
 
 ## Non-goals
 - Edit materials.

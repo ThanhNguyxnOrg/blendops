@@ -22,15 +22,19 @@ When `asset-license-checker`, `asset-style-consistency-checker`, or `glb-mobile-
 - when license blocks an asset
 
 ## When not to use
-- when no asset has failed (nothing to fall back to)
-- pure exploration (no concrete asset list)
-- when the user wants to wait for the original asset
+<!-- blendops:generated:start exclusions -->
+- when no asset has failed (nothing to fall back to) → use `../asset-license-checker/SKILL.md` (nothing to fall back to)
+- pure exploration (no concrete asset list) → use `../blender-asset-discovery-planner/SKILL.md` (no concrete asset list)
+- when the user wants to wait for the original asset → use `../product-hero-scene-planner/SKILL.md` (Delegates out-of-scope requests to product-hero-scene-planner)
+<!-- blendops:generated:end exclusions -->
 
 ## Trigger phrases
+<!-- blendops:generated:start triggers -->
 - "what if we can't get this asset"
 - "fallback for the model"
 - "the license blocks us"
 - "scaled-down asset"
+<!-- blendops:generated:end triggers -->
 
 ## Prerequisites / readiness
 - failed asset + reason known
@@ -221,14 +225,15 @@ Limitations: <known gaps>
 * Skipping `asset-license-checker`, `asset-style-consistency-checker`, or `glb-mobile-performance-budget` on the chosen replacement.
 
 ## Cross-skill handoff
-
-* Re-source external asset → `../blender-asset-discovery-planner/SKILL.md`
-* Internal library lookup → `../asset-library-organization-planner/SKILL.md`
-* License re-check on replacement → `../asset-license-checker/SKILL.md`
-* Style re-check on replacement → `../asset-style-consistency-checker/SKILL.md`
-* Budget re-check on replacement → `../glb-mobile-performance-budget/SKILL.md`
-* Scope reduction when no viable fallback exists → `../blender-scope-boundary-enforcer/SKILL.md`
-* Recipe split when no viable fallback exists → `../blender-recipe-decomposer/SKILL.md`
+<!-- blendops:generated:start handoffs -->
+- [upstream_reference] Re-source external asset → `../blender-asset-discovery-planner/SKILL.md`
+- [progression] Internal library lookup → `../asset-library-organization-planner/SKILL.md`
+- [fallback] License re-check on replacement → `../asset-license-checker/SKILL.md`
+- [fallback] Style re-check on replacement → `../asset-style-consistency-checker/SKILL.md`
+- [progression] Budget re-check on replacement → `../glb-mobile-performance-budget/SKILL.md`
+- [fallback] Scope reduction when no viable fallback exists → `../blender-scope-boundary-enforcer/SKILL.md`
+- [fallback] Recipe split when no viable fallback exists → `../blender-recipe-decomposer/SKILL.md`
+<!-- blendops:generated:end handoffs -->
 
 ## Non-goals
 

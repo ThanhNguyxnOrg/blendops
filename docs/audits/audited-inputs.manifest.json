@@ -51,7 +51,8 @@
     "scripts/test-phase1.mjs",
     "scripts/test-phase2.mjs",
     "scripts/test-phase3.mjs",
-    "scripts/test-phase4.mjs"
+    "scripts/test-phase4.mjs",
+    "scripts/test-phase5.mjs"
   ],
   "requiredDirectories": [
     "docs/audits/phase-0",

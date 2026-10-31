@@ -20,18 +20,22 @@ Avoid the most common Blender color mistake: rendering with the wrong color spac
 - when a previous render had unexpected color shifts
 
 ## When not to use
-- Post-render color grading or soft-proofing (handled by compositor / DCC after render).
-- Validating per-material texture color spaces such as sRGB vs Non-Color/Linear (`material-quality-checker`).
-- Selecting file formats or bit depths (`output-format-decision`).
-- Choosing the render engine (`cycles-vs-eevee-decision`).
-- Monitor hardware calibration (out of scope).
-- Raw modeling without lookdev (color management does not affect geometry accuracy).
+<!-- blendops:generated:start exclusions -->
+- Post-render color grading or soft-proofing (handled by compositor / DCC after render). → use `../output-format-decision/SKILL.md` (Delegates out-of-scope requests to output-format-decision)
+- Validating per-material texture color spaces such as sRGB vs Non-Color/Linear (material-quality-checker). → use `../material-quality-checker/SKILL.md` (Delegates out-of-scope requests to material-quality-checker)
+- Selecting file formats or bit depths (output-format-decision). → use `../output-format-decision/SKILL.md` (Delegates out-of-scope requests to output-format-decision)
+- Choosing the render engine (cycles-vs-eevee-decision). → use `../cycles-vs-eevee-decision/SKILL.md` (Delegates out-of-scope requests to cycles-vs-eevee-decision)
+- Monitor hardware calibration (out of scope). → use `../material-quality-checker/SKILL.md` (Delegates out-of-scope requests to material-quality-checker)
+- Raw modeling without lookdev (color management does not affect geometry accuracy). → use `../cycles-vs-eevee-decision/SKILL.md` (Delegates out-of-scope requests to cycles-vs-eevee-decision)
+<!-- blendops:generated:end exclusions -->
 
 ## Trigger phrases
+<!-- blendops:generated:start triggers -->
 - "what color space"
 - "Filmic vs Standard"
 - "ACEScg for our pipeline"
 - "colors look weird"
+<!-- blendops:generated:end triggers -->
 
 ## Prerequisites / readiness
 - Consumer pipeline known (`web sRGB`, `film/VFX ACES linear`, `game engine`, `print`, or `GLB-Three.js`).
@@ -227,11 +231,13 @@ Next: <render-export-evidence | material-quality-checker | output-format-decisio
 - Doing post-render color grading inside the scene color-management decision step.
 
 ## Cross-skill handoff
-- Output format selection → `../output-format-decision/SKILL.md` (owns file formats and bit depths)
-- Material texture color spaces → `../material-quality-checker/SKILL.md` (validates per-material sRGB vs Linear/Non-Color texture inputs)
-- Render engine choice → `../cycles-vs-eevee-decision/SKILL.md` (owns Cycles vs EEVEE selection)
-- GLB Three.js delivery → `../glb-web-handoff/SKILL.md` (aligns exported GLB with Three.js renderer color settings)
-- Render evidence verification → `../render-export-evidence/SKILL.md` (verifies actual rendered artifacts after operator execution)
+<!-- blendops:generated:start handoffs -->
+- [progression] Output format selection → `../output-format-decision/SKILL.md`
+- [progression] Material texture color spaces → `../material-quality-checker/SKILL.md`
+- [progression] Render engine choice → `../cycles-vs-eevee-decision/SKILL.md`
+- [progression] GLB Three.js delivery → `../glb-web-handoff/SKILL.md`
+- [progression] Render evidence verification → `../render-export-evidence/SKILL.md`
+<!-- blendops:generated:end handoffs -->
 
 ## Non-goals
 - Validate per-material texture color spaces (`material-quality-checker`).

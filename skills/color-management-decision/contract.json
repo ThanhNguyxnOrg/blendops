@@ -1,0 +1,162 @@
+{
+  "$schema": "../../schemas/skill-contract.schema.json",
+  "id": "color-management-decision",
+  "version": "1.0.0",
+  "category": "render-and-output-decisions",
+  "role": "view-transform-and-colorspace-selector",
+  "purpose": "Pin Display Device, View Transform, Look, and Sequencer per consumer pipeline (web sRGB, VFX ACES linear, game engine, print, GLB-Three.js) before render.",
+  "capabilityTier": "L0",
+  "triggers": [
+    "what color space",
+    "Filmic vs Standard",
+    "ACEScg for our pipeline",
+    "colors look weird"
+  ],
+  "exclusions": [
+    {
+      "condition": "Post-render color grading or soft-proofing (handled by compositor / DCC after render).",
+      "delegateTo": "output-format-decision",
+      "reason": "Delegates out-of-scope requests to output-format-decision"
+    },
+    {
+      "condition": "Validating per-material texture color spaces such as sRGB vs Non-Color/Linear (material-quality-checker).",
+      "delegateTo": "material-quality-checker",
+      "reason": "Delegates out-of-scope requests to material-quality-checker"
+    },
+    {
+      "condition": "Selecting file formats or bit depths (output-format-decision).",
+      "delegateTo": "output-format-decision",
+      "reason": "Delegates out-of-scope requests to output-format-decision"
+    },
+    {
+      "condition": "Choosing the render engine (cycles-vs-eevee-decision).",
+      "delegateTo": "cycles-vs-eevee-decision",
+      "reason": "Delegates out-of-scope requests to cycles-vs-eevee-decision"
+    },
+    {
+      "condition": "Monitor hardware calibration (out of scope).",
+      "delegateTo": "material-quality-checker",
+      "reason": "Delegates out-of-scope requests to material-quality-checker"
+    },
+    {
+      "condition": "Raw modeling without lookdev (color management does not affect geometry accuracy).",
+      "delegateTo": "cycles-vs-eevee-decision",
+      "reason": "Delegates out-of-scope requests to cycles-vs-eevee-decision"
+    }
+  ],
+  "inputs": {
+    "required": [
+      {
+        "name": "target_delivery_pipeline",
+        "type": "string",
+        "description": "Target display or compositing pipeline (web sRGB, product brand match, ACEScg VFX, HDR)"
+      },
+      {
+        "name": "blender_version_posture",
+        "type": "string",
+        "description": "Target Blender version family (3.6 LTS Filmic, 4.0+ AgX, 5.1+ AgX/ACES)"
+      }
+    ],
+    "optional": [
+      {
+        "name": "brand_hex_swatch_constraints",
+        "type": "array",
+        "description": "Optional strict brand hex colors requiring Standard vs tone-mapped tradeoffs"
+      }
+    ]
+  },
+  "outputs": {
+    "primary": [
+      "pinned_view_transform_and_look",
+      "display_and_working_colorspace_spec",
+      "cross_engine_and_web_color_caveats"
+    ],
+    "truthStatePolicy": {
+      "runtimeDefault": "Not Run",
+      "artifactDefault": "Not Produced",
+      "mutationRule": "downgrade_only"
+    }
+  },
+  "handoffs": [
+    {
+      "target": "output-format-decision",
+      "type": "progression",
+      "label": "Output format selection",
+      "when": {
+        "all": [
+          {
+            "field": "decision.formatLocked",
+            "operator": "equals",
+            "value": false
+          }
+        ]
+      }
+    },
+    {
+      "target": "material-quality-checker",
+      "type": "progression",
+      "label": "Material texture color spaces",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "material"
+          },
+          {
+            "field": "quality.verdict",
+            "operator": "equals",
+            "value": "not_run"
+          }
+        ]
+      }
+    },
+    {
+      "target": "cycles-vs-eevee-decision",
+      "type": "progression",
+      "label": "Render engine choice",
+      "when": {
+        "all": [
+          {
+            "field": "decision.engineLocked",
+            "operator": "equals",
+            "value": false
+          }
+        ]
+      }
+    },
+    {
+      "target": "glb-web-handoff",
+      "type": "progression",
+      "label": "GLB Three.js delivery",
+      "when": {
+        "all": [
+          {
+            "field": "artifact.type",
+            "operator": "equals",
+            "value": "glb"
+          },
+          {
+            "field": "handoff.consumerStack",
+            "operator": "equals",
+            "value": "web_glb"
+          }
+        ]
+      }
+    },
+    {
+      "target": "render-export-evidence",
+      "type": "progression",
+      "label": "Render evidence verification",
+      "when": {
+        "all": [
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "post_execution_audit"
+          }
+        ]
+      }
+    }
+  ]
+}

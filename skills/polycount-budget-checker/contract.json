@@ -1,0 +1,196 @@
+{
+  "$schema": "../../schemas/skill-contract.schema.json",
+  "id": "polycount-budget-checker",
+  "version": "1.0.0",
+  "category": "quality-validators",
+  "role": "geometry-and-topology-budget-validator",
+  "purpose": "Validate per-mesh and total-scene triangle counts against the pinned budget; flag worst offenders and topology hints without modeling.",
+  "capabilityTier": "L0",
+  "triggers": [
+    "is the polycount okay",
+    "check triangle budget",
+    "what's blowing the budget",
+    "topology issue?"
+  ],
+  "exclusions": [
+    {
+      "condition": "pinning or negotiating the performance budget itself",
+      "delegateTo": "glb-mobile-performance-budget",
+      "reason": "use glb-mobile-performance-budget"
+    },
+    {
+      "condition": "material validation",
+      "delegateTo": "material-quality-checker",
+      "reason": "use material-quality-checker"
+    },
+    {
+      "condition": "lighting validation",
+      "delegateTo": "lighting-quality-checker",
+      "reason": "use lighting-quality-checker"
+    },
+    {
+      "condition": "composition validation",
+      "delegateTo": "composition-quality-checker",
+      "reason": "use composition-quality-checker"
+    },
+    {
+      "condition": "broad scene readiness review",
+      "delegateTo": "blender-scene-quality-checker",
+      "reason": "use blender-scene-quality-checker"
+    },
+    {
+      "condition": "classifying render or export artifact evidence",
+      "delegateTo": "render-export-evidence",
+      "reason": "use render-export-evidence"
+    },
+    {
+      "condition": "fixing topology, decimating, or retopologizing (this skill validates; it never edits or models)",
+      "delegateTo": "glb-mobile-performance-budget",
+      "reason": "this skill validates; it never edits or models"
+    }
+  ],
+  "inputs": {
+    "required": [
+      {
+        "name": "scene_geometry_inventory",
+        "type": "array",
+        "description": "Per-object triangle, vertex, modifier stack, and subdivision level counts"
+      },
+      {
+        "name": "pinned_geometry_budget",
+        "type": "object",
+        "description": "Target triangle and draw-call ceilings from glb-mobile-performance-budget or brief"
+      }
+    ],
+    "optional": [
+      {
+        "name": "deformation_or_rig_requirements",
+        "type": "object",
+        "description": "Optional skeletal deformation or silhouette curvature constraints"
+      }
+    ]
+  },
+  "outputs": {
+    "primary": [
+      "polycount_and_topology_verdict_table",
+      "top_budget_offenders_ranking",
+      "decimation_or_retopology_remediation_plan"
+    ],
+    "truthStatePolicy": {
+      "runtimeDefault": "Not Run",
+      "artifactDefault": "Not Produced",
+      "mutationRule": "downgrade_only"
+    }
+  },
+  "handoffs": [
+    {
+      "target": "glb-mobile-performance-budget",
+      "type": "upstream_reference",
+      "label": "Pinned budget source",
+      "when": {
+        "all": [
+          {
+            "field": "artifact.type",
+            "operator": "equals",
+            "value": "glb"
+          },
+          {
+            "field": "budget.pinned",
+            "operator": "equals",
+            "value": false
+          }
+        ]
+      }
+    },
+    {
+      "target": "blender-scene-quality-checker",
+      "type": "progression",
+      "label": "Broad readiness review",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "holistic"
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "quality_validation"
+          }
+        ]
+      }
+    },
+    {
+      "target": "render-export-evidence",
+      "type": "progression",
+      "label": "Artifact evidence classification",
+      "when": {
+        "all": [
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "post_execution_audit"
+          }
+        ]
+      }
+    },
+    {
+      "target": "material-quality-checker",
+      "type": "upstream_reference",
+      "label": "Material validation",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "material"
+          },
+          {
+            "field": "quality.verdict",
+            "operator": "equals",
+            "value": "not_run"
+          }
+        ]
+      }
+    },
+    {
+      "target": "lighting-quality-checker",
+      "type": "upstream_reference",
+      "label": "Lighting validation",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "lighting"
+          },
+          {
+            "field": "quality.verdict",
+            "operator": "equals",
+            "value": "not_run"
+          }
+        ]
+      }
+    },
+    {
+      "target": "composition-quality-checker",
+      "type": "upstream_reference",
+      "label": "Composition validation",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "composition"
+          },
+          {
+            "field": "quality.verdict",
+            "operator": "equals",
+            "value": "not_run"
+          }
+        ]
+      }
+    }
+  ]
+}

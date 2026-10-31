@@ -1,0 +1,190 @@
+{
+  "$schema": "../../schemas/skill-contract.schema.json",
+  "id": "asset-fallback-strategy",
+  "version": "1.0.0",
+  "category": "asset-and-sourcing",
+  "role": "blocked-asset-replacement-planner",
+  "purpose": "Provide a fallback strategy when an asset is unavailable, over-budget, license-blocked, or style-incompatible — without halting the recipe.",
+  "capabilityTier": "L0",
+  "triggers": [
+    "what if we can't get this asset",
+    "fallback for the model",
+    "the license blocks us",
+    "scaled-down asset"
+  ],
+  "exclusions": [
+    {
+      "condition": "when no asset has failed (nothing to fall back to)",
+      "delegateTo": "asset-license-checker",
+      "reason": "nothing to fall back to"
+    },
+    {
+      "condition": "pure exploration (no concrete asset list)",
+      "delegateTo": "blender-asset-discovery-planner",
+      "reason": "no concrete asset list"
+    },
+    {
+      "condition": "when the user wants to wait for the original asset",
+      "delegateTo": "product-hero-scene-planner",
+      "reason": "Delegates out-of-scope requests to product-hero-scene-planner"
+    }
+  ],
+  "inputs": {
+    "required": [
+      {
+        "name": "blocked_asset_entry",
+        "type": "object",
+        "description": "Asset blocked by missing source, incompatible license, style mismatch, or budget breach"
+      },
+      {
+        "name": "blocking_reason",
+        "type": "enum",
+        "description": "Primary block reason (license_rejected, source_unavailable, style_mismatch, budget_exceeded)"
+      }
+    ],
+    "optional": [
+      {
+        "name": "local_library_manifest",
+        "type": "object",
+        "description": "Optional inventory of cleared local assets from asset-library-organization-planner"
+      }
+    ]
+  },
+  "outputs": {
+    "primary": [
+      "ranked_fallback_options",
+      "selected_replacement_plan",
+      "revalidation_routing_hooks"
+    ],
+    "truthStatePolicy": {
+      "runtimeDefault": "Not Run",
+      "artifactDefault": "Not Produced",
+      "mutationRule": "downgrade_only"
+    }
+  },
+  "handoffs": [
+    {
+      "target": "blender-asset-discovery-planner",
+      "type": "upstream_reference",
+      "label": "Re-source external asset",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "assets.discoveryComplete",
+            "operator": "equals",
+            "value": false
+          }
+        ]
+      }
+    },
+    {
+      "target": "asset-library-organization-planner",
+      "type": "progression",
+      "label": "Internal library lookup",
+      "when": {
+        "all": [
+          {
+            "field": "assets.discoveryComplete",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "library_organization"
+          }
+        ]
+      }
+    },
+    {
+      "target": "asset-license-checker",
+      "type": "fallback",
+      "label": "License re-check on replacement",
+      "when": {
+        "all": [
+          {
+            "field": "assets.externalUsed",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "assets.licenseCleared",
+            "operator": "equals",
+            "value": false
+          }
+        ]
+      }
+    },
+    {
+      "target": "asset-style-consistency-checker",
+      "type": "fallback",
+      "label": "Style re-check on replacement",
+      "when": {
+        "all": [
+          {
+            "field": "assets.licenseCleared",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "style_check"
+          }
+        ]
+      }
+    },
+    {
+      "target": "glb-mobile-performance-budget",
+      "type": "progression",
+      "label": "Budget re-check on replacement",
+      "when": {
+        "all": [
+          {
+            "field": "artifact.type",
+            "operator": "equals",
+            "value": "glb"
+          },
+          {
+            "field": "budget.pinned",
+            "operator": "equals",
+            "value": false
+          }
+        ]
+      }
+    },
+    {
+      "target": "blender-scope-boundary-enforcer",
+      "type": "fallback",
+      "label": "Scope reduction when no viable fallback exists",
+      "when": {
+        "all": [
+          {
+            "field": "scope.driftDetected",
+            "operator": "equals",
+            "value": true
+          }
+        ]
+      }
+    },
+    {
+      "target": "blender-recipe-decomposer",
+      "type": "fallback",
+      "label": "Recipe split when no viable fallback exists",
+      "when": {
+        "all": [
+          {
+            "field": "fit.multiDeliverableDetected",
+            "operator": "equals",
+            "value": true
+          }
+        ]
+      }
+    }
+  ]
+}

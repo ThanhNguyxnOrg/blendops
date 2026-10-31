@@ -1,0 +1,152 @@
+{
+  "$schema": "../../schemas/skill-contract.schema.json",
+  "id": "blender-recipe-decomposer",
+  "version": "1.0.0",
+  "category": "process-discipline",
+  "role": "multi-deliverable-recipe-splitter",
+  "purpose": "Break over-scoped Blender intent into 2-5 cohesive recipes with brief seeds, stop conditions, order, dependencies, shared assets, and handoffs.",
+  "capabilityTier": "L0",
+  "triggers": [
+    "I want all of these",
+    "this is a lot",
+    "we'll need several outputs",
+    "across these scenes"
+  ],
+  "exclusions": [
+    {
+      "condition": "single deliverable that is already right-sized (hand off directly to intent-to-3d-brief-writer)",
+      "delegateTo": "intent-to-3d-brief-writer",
+      "reason": "hand off directly to intent-to-3d-brief-writer"
+    },
+    {
+      "condition": "pure exploration or open ideation",
+      "delegateTo": "blender-brainstorming",
+      "reason": "use blender-brainstorming instead"
+    },
+    {
+      "condition": "after recipes are already split or running",
+      "delegateTo": "blender-scope-boundary-enforcer",
+      "reason": "use blender-scope-boundary-enforcer for added scope or blender-stop-condition-decider to evaluate completion"
+    }
+  ],
+  "inputs": {
+    "required": [
+      {
+        "name": "multi_deliverable_request",
+        "type": "string",
+        "description": "User request spanning multiple scenes, deliverables, or incompatible output channels"
+      },
+      {
+        "name": "candidate_recipes",
+        "type": "array",
+        "description": "Candidate BlendOps recipes or packs identified by recipe-fit-assessor"
+      }
+    ],
+    "optional": [
+      {
+        "name": "delivery_priority_order",
+        "type": "array",
+        "description": "Optional user preference on which deliverable to ship first"
+      }
+    ]
+  },
+  "outputs": {
+    "primary": [
+      "ordered_sub_workflow_tracks",
+      "shared_asset_and_brief_dependencies",
+      "first_track_next_skill"
+    ],
+    "truthStatePolicy": {
+      "runtimeDefault": "Not Run",
+      "artifactDefault": "Not Produced",
+      "mutationRule": "downgrade_only"
+    }
+  },
+  "handoffs": [
+    {
+      "target": "intent-to-3d-brief-writer",
+      "type": "progression",
+      "label": "Full brief authoring for each split recipe",
+      "when": {
+        "all": [
+          {
+            "field": "goal.clarity",
+            "operator": "equals",
+            "value": "clear"
+          },
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": false
+          }
+        ]
+      }
+    },
+    {
+      "target": "blender-stop-condition-decider",
+      "type": "progression",
+      "label": "Pinning formal done conditions per recipe",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "stop_condition"
+          }
+        ]
+      }
+    },
+    {
+      "target": "blender-checklist-driven-workflow",
+      "type": "progression",
+      "label": "Workflow stage gates per recipe",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "stage_gates"
+          }
+        ]
+      }
+    },
+    {
+      "target": "blender-scope-boundary-enforcer",
+      "type": "progression",
+      "label": "Handling scope added after splitting",
+      "when": {
+        "all": [
+          {
+            "field": "scope.driftDetected",
+            "operator": "equals",
+            "value": true
+          }
+        ]
+      }
+    },
+    {
+      "target": "blender-brainstorming",
+      "type": "upstream_reference",
+      "label": "Pre-decomposition ideation when deliverables are unclear",
+      "when": {
+        "all": [
+          {
+            "field": "goal.clarity",
+            "operator": "equals",
+            "value": "ambiguous_or_mixed"
+          }
+        ]
+      }
+    }
+  ]
+}

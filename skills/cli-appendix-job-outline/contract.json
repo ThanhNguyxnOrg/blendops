@@ -1,0 +1,147 @@
+{
+  "$schema": "../../schemas/skill-contract.schema.json",
+  "id": "cli-appendix-job-outline",
+  "version": "1.0.0",
+  "category": "runtime-and-execution",
+  "role": "headless-cli-batch-job-planner",
+  "purpose": "Plan headless blender --background export or render jobs when MCP chat control is a poor fit; cite upstream Blender CLI docs only.",
+  "capabilityTier": "L0",
+  "triggers": [
+    "headless blender",
+    "batch render CLI",
+    "blender --background",
+    "render farm outline"
+  ],
+  "exclusions": [
+    {
+      "condition": "interactive viewport iteration primary goal",
+      "delegateTo": "runtime-path-picker",
+      "reason": "Delegates out-of-scope requests to runtime-path-picker"
+    },
+    {
+      "condition": "user expects Connector chat loop",
+      "delegateTo": "path-one-host-outline",
+      "reason": "Delegates out-of-scope requests to path-one-host-outline"
+    }
+  ],
+  "inputs": {
+    "required": [
+      {
+        "name": "target_blend_scene_and_outputs",
+        "type": "object",
+        "description": "Source .blend file expectations and target render/export output deliverables"
+      },
+      {
+        "name": "execution_environment_constraints",
+        "type": "string",
+        "description": "Headless CI, render node, or local batch constraints selected via runtime-path-picker"
+      }
+    ],
+    "optional": [
+      {
+        "name": "frame_range_or_batch_items",
+        "type": "array",
+        "description": "Optional frame range or batch variant list for headless execution"
+      }
+    ]
+  },
+  "outputs": {
+    "primary": [
+      "headless_cli_job_outline",
+      "appendix_governance_and_backup_gates",
+      "expected_output_evidence_hooks"
+    ],
+    "truthStatePolicy": {
+      "runtimeDefault": "Not Run",
+      "artifactDefault": "Not Produced",
+      "mutationRule": "downgrade_only"
+    }
+  },
+  "handoffs": [
+    {
+      "target": "runtime-path-picker",
+      "type": "upstream_reference",
+      "label": "Pick MCP vs CLI",
+      "when": {
+        "all": [
+          {
+            "field": "runtime.path",
+            "operator": "equals",
+            "value": "unselected"
+          }
+        ]
+      }
+    },
+    {
+      "target": "path-one-host-outline",
+      "type": "upstream_reference",
+      "label": "Interactive MCP host outline",
+      "when": {
+        "all": [
+          {
+            "field": "runtime.path",
+            "operator": "equals",
+            "value": "path_1"
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "runtime_setup"
+          }
+        ]
+      }
+    },
+    {
+      "target": "output-format-decision",
+      "type": "progression",
+      "label": "Export format choices",
+      "when": {
+        "all": [
+          {
+            "field": "decision.formatLocked",
+            "operator": "equals",
+            "value": false
+          }
+        ]
+      }
+    },
+    {
+      "target": "render-export-evidence",
+      "type": "progression",
+      "label": "Actual CLI output evidence recording",
+      "when": {
+        "all": [
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "post_execution_audit"
+          }
+        ]
+      }
+    },
+    {
+      "target": "runtime-attempt-report-writer",
+      "type": "progression",
+      "label": "Runtime attempt reporting",
+      "when": {
+        "all": [
+          {
+            "field": "runtime.status",
+            "operator": "in",
+            "value": [
+              "Attempted",
+              "Produced",
+              "Verified",
+              "Failed"
+            ]
+          },
+          {
+            "field": "request.topic",
+            "operator": "equals",
+            "value": "attempt_report"
+          }
+        ]
+      }
+    }
+  ]
+}

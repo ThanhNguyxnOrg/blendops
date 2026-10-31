@@ -23,19 +23,23 @@ Run a focused pass/warn/fail check on per-mesh and total-scene triangle counts v
 - when `glb-mobile-performance-budget` is pinned
 
 ## When not to use
-- pinning or negotiating the performance budget itself (use `glb-mobile-performance-budget`)
-- material validation (use `material-quality-checker`)
-- lighting validation (use `lighting-quality-checker`)
-- composition validation (use `composition-quality-checker`)
-- broad scene readiness review (use `blender-scene-quality-checker`)
-- classifying render or export artifact evidence (use `render-export-evidence`)
-- fixing topology, decimating, or retopologizing (this skill validates; it never edits or models)
+<!-- blendops:generated:start exclusions -->
+- pinning or negotiating the performance budget itself → use `../glb-mobile-performance-budget/SKILL.md` (use glb-mobile-performance-budget)
+- material validation → use `../material-quality-checker/SKILL.md` (use material-quality-checker)
+- lighting validation → use `../lighting-quality-checker/SKILL.md` (use lighting-quality-checker)
+- composition validation → use `../composition-quality-checker/SKILL.md` (use composition-quality-checker)
+- broad scene readiness review → use `../blender-scene-quality-checker/SKILL.md` (use blender-scene-quality-checker)
+- classifying render or export artifact evidence → use `../render-export-evidence/SKILL.md` (use render-export-evidence)
+- fixing topology, decimating, or retopologizing (this skill validates; it never edits or models) → use `../glb-mobile-performance-budget/SKILL.md` (this skill validates; it never edits or models)
+<!-- blendops:generated:end exclusions -->
 
 ## Trigger phrases
+<!-- blendops:generated:start triggers -->
 - "is the polycount okay"
 - "check triangle budget"
 - "what's blowing the budget"
 - "topology issue?"
+<!-- blendops:generated:end triggers -->
 
 ## Prerequisites / readiness
 - pinned budget known (from `glb-mobile-performance-budget` or explicit user)
@@ -224,12 +228,14 @@ Next: blender-scene-quality-checker | glb-mobile-performance-budget | render-exp
 - Mixing material / lighting / composition checks.
 
 ## Cross-skill handoff
-- Pinned budget source → `../glb-mobile-performance-budget/SKILL.md`
-- Broad readiness review → `../blender-scene-quality-checker/SKILL.md`
-- Artifact evidence classification → `../render-export-evidence/SKILL.md`
-- Material validation → `../material-quality-checker/SKILL.md`
-- Lighting validation → `../lighting-quality-checker/SKILL.md`
-- Composition validation → `../composition-quality-checker/SKILL.md`
+<!-- blendops:generated:start handoffs -->
+- [upstream_reference] Pinned budget source → `../glb-mobile-performance-budget/SKILL.md`
+- [progression] Broad readiness review → `../blender-scene-quality-checker/SKILL.md`
+- [progression] Artifact evidence classification → `../render-export-evidence/SKILL.md`
+- [upstream_reference] Material validation → `../material-quality-checker/SKILL.md`
+- [upstream_reference] Lighting validation → `../lighting-quality-checker/SKILL.md`
+- [upstream_reference] Composition validation → `../composition-quality-checker/SKILL.md`
+<!-- blendops:generated:end handoffs -->
 
 ## Non-goals
 - Decimate or retopologize.

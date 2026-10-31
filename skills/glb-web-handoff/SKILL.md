@@ -20,18 +20,22 @@ Define reliable handoff language and checks for GLB/web scenarios without overcl
 - when preparing truthful next checks before passing final wording to `non-blender-user-response-writer`
 
 ## When not to use
-- to claim GLB or export success without concrete evidence
-- to replace runtime export verification
-- to validate upstream scene readiness (use `blender-scene-quality-checker`)
-- to classify raw render/export artifact evidence (use `render-export-evidence`)
-- to define mobile or file-size performance budgets (use `glb-mobile-performance-budget`)
-- to define animation playback or rig contracts (use `glb-animation-handoff`)
-- to write the final user-facing response wording (use `non-blender-user-response-writer`)
+<!-- blendops:generated:start exclusions -->
+- to claim GLB or export success without concrete evidence → use `../blender-scene-quality-checker/SKILL.md` (Delegates out-of-scope requests to blender-scene-quality-checker)
+- to replace runtime export verification → use `../render-export-evidence/SKILL.md` (Delegates out-of-scope requests to render-export-evidence)
+- to validate upstream scene readiness → use `../blender-scene-quality-checker/SKILL.md` (use blender-scene-quality-checker)
+- to classify raw render/export artifact evidence → use `../render-export-evidence/SKILL.md` (use render-export-evidence)
+- to define mobile or file-size performance budgets → use `../glb-mobile-performance-budget/SKILL.md` (use glb-mobile-performance-budget)
+- to define animation playback or rig contracts → use `../glb-animation-handoff/SKILL.md` (use glb-animation-handoff)
+- to write the final user-facing response wording → use `../non-blender-user-response-writer/SKILL.md` (use non-blender-user-response-writer)
+<!-- blendops:generated:end exclusions -->
 
 ## Trigger phrases
+<!-- blendops:generated:start triggers -->
 - "prepare web handoff"
 - "is GLB ready"
 - "summarize export status"
+<!-- blendops:generated:end triggers -->
 
 ## Prerequisites / readiness
 - upstream readiness output from `blender-scene-quality-checker` available (or marked unverified)
@@ -181,11 +185,13 @@ Never claim GLB or export success without concrete evidence tied to the current 
 - producing jargon-heavy final output without explanation
 
 ## Cross-skill handoff
-- Upstream scene readiness validation: `blender-scene-quality-checker`
-- Upstream artifact evidence classification: `render-export-evidence`
-- Mobile and file-size budget constraints: `glb-mobile-performance-budget`
-- Animation playback and rig handoff contracts: `glb-animation-handoff`
-- Final user-facing response wording: `non-blender-user-response-writer`
+<!-- blendops:generated:start handoffs -->
+- [upstream_reference] Upstream scene readiness validation → `../blender-scene-quality-checker/SKILL.md`
+- [upstream_reference] Upstream artifact evidence classification → `../render-export-evidence/SKILL.md`
+- [upstream_reference] Mobile and file-size budget constraints → `../glb-mobile-performance-budget/SKILL.md`
+- [upstream_reference] Animation playback and rig handoff contracts → `../glb-animation-handoff/SKILL.md`
+- [progression] Final user-facing response wording → `../non-blender-user-response-writer/SKILL.md`
+<!-- blendops:generated:end handoffs -->
 
 ## Non-goals
 - Generating Python scripts or executing Blender exports

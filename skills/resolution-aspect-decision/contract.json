@@ -1,0 +1,160 @@
+{
+  "$schema": "../../schemas/skill-contract.schema.json",
+  "id": "resolution-aspect-decision",
+  "version": "1.0.0",
+  "category": "render-and-output-decisions",
+  "role": "resolution-and-aspect-ratio-pinner",
+  "purpose": "Pick the right render resolution + aspect ratio for the consumer use case before render; avoid render-then-crop and aspect mismatch.",
+  "capabilityTier": "L0",
+  "triggers": [
+    "what resolution",
+    "how big should the render be",
+    "16:9 or square"
+  ],
+  "exclusions": [
+    {
+      "condition": "after render is complete (no benefit)",
+      "delegateTo": "blender-composition-camera-planner",
+      "reason": "no benefit"
+    },
+    {
+      "condition": "pure modeling",
+      "delegateTo": "output-format-decision",
+      "reason": "Delegates out-of-scope requests to output-format-decision"
+    },
+    {
+      "condition": "internal preview-only renders (any reasonable size works)",
+      "delegateTo": "composition-quality-checker",
+      "reason": "any reasonable size works"
+    }
+  ],
+  "inputs": {
+    "required": [
+      {
+        "name": "target_delivery_surfaces",
+        "type": "array",
+        "description": "Target display placements (desktop hero banner, mobile portrait feed, 1:1 e-commerce card, 4K print)"
+      },
+      {
+        "name": "framing_and_crop_strategy",
+        "type": "string",
+        "description": "Whether deliverables use a single master aspect ratio with safe-zone crops or separate camera setups"
+      }
+    ],
+    "optional": [
+      {
+        "name": "render_time_constraints",
+        "type": "string",
+        "description": "Optional render time ceiling influencing pixel dimensions and percentage scale"
+      }
+    ]
+  },
+  "outputs": {
+    "primary": [
+      "pinned_pixel_dimensions_and_aspect_ratio",
+      "safe_frame_and_overscan_margins",
+      "camera_sensor_fit_alignment_notes"
+    ],
+    "truthStatePolicy": {
+      "runtimeDefault": "Not Run",
+      "artifactDefault": "Not Produced",
+      "mutationRule": "downgrade_only"
+    }
+  },
+  "handoffs": [
+    {
+      "target": "blender-composition-camera-planner",
+      "type": "upstream_reference",
+      "label": "Camera & composition planning (upstream framing setup)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "camera_planning"
+          }
+        ]
+      }
+    },
+    {
+      "target": "composition-quality-checker",
+      "type": "progression",
+      "label": "Composition framing validation against pinned aspect",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "composition"
+          },
+          {
+            "field": "quality.verdict",
+            "operator": "equals",
+            "value": "not_run"
+          }
+        ]
+      }
+    },
+    {
+      "target": "color-management-decision",
+      "type": "upstream_reference",
+      "label": "Color configuration decision",
+      "when": {
+        "all": [
+          {
+            "field": "decision.colorLocked",
+            "operator": "equals",
+            "value": false
+          }
+        ]
+      }
+    },
+    {
+      "target": "output-format-decision",
+      "type": "progression",
+      "label": "Container / codec decision",
+      "when": {
+        "all": [
+          {
+            "field": "decision.formatLocked",
+            "operator": "equals",
+            "value": false
+          }
+        ]
+      }
+    },
+    {
+      "target": "cycles-vs-eevee-decision",
+      "type": "progression",
+      "label": "Render engine decision",
+      "when": {
+        "all": [
+          {
+            "field": "decision.engineLocked",
+            "operator": "equals",
+            "value": false
+          }
+        ]
+      }
+    },
+    {
+      "target": "render-export-evidence",
+      "type": "progression",
+      "label": "Post-render saved file verification",
+      "when": {
+        "all": [
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "post_execution_audit"
+          }
+        ]
+      }
+    }
+  ]
+}

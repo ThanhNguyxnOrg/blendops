@@ -1,0 +1,257 @@
+{
+  "$schema": "../../schemas/skill-contract.schema.json",
+  "id": "product-grid-scene-planner",
+  "version": "1.0.0",
+  "category": "scene-planners",
+  "role": "multi-product-catalog-grid-architect",
+  "purpose": "Plan a multi-product grid scene (e-commerce, catalog, comparison) before any modeling or render attempt; consistent lighting, camera, and grid spacing.",
+  "capabilityTier": "L0",
+  "triggers": [
+    "grid of products",
+    "lineup of",
+    "catalog showing N items",
+    "comparison render"
+  ],
+  "exclusions": [
+    {
+      "condition": "single product hero",
+      "delegateTo": "product-hero-scene-planner",
+      "reason": "use product-hero-scene-planner"
+    },
+    {
+      "condition": "character portrait",
+      "delegateTo": "character-portrait-scene-planner",
+      "reason": "use character-portrait-scene-planner"
+    },
+    {
+      "condition": "outdoor environment scene",
+      "delegateTo": "environment-establishing-shot-planner",
+      "reason": "use environment-establishing-shot-planner"
+    },
+    {
+      "condition": "interior room scene",
+      "delegateTo": "interior-architectural-scene-planner",
+      "reason": "use interior-architectural-scene-planner"
+    }
+  ],
+  "inputs": {
+    "required": [
+      {
+        "name": "locked_3d_brief",
+        "type": "object",
+        "description": "Locked 3D brief specifying product lineup count, grid rows/columns, and comparison goal"
+      },
+      {
+        "name": "product_variant_inventory",
+        "type": "array",
+        "description": "List of product SKUs or variants with real-world dimensions for relative scale normalization"
+      }
+    ],
+    "optional": [
+      {
+        "name": "catalog_aspect_and_margin_rules",
+        "type": "object",
+        "description": "Optional e-commerce card aspect ratio and uniform padding requirements"
+      }
+    ]
+  },
+  "outputs": {
+    "primary": [
+      "multi_product_grid_layout_matrix",
+      "scale_normalization_and_spacing_spec",
+      "uniform_catalog_camera_and_lighting_hooks"
+    ],
+    "truthStatePolicy": {
+      "runtimeDefault": "Not Run",
+      "artifactDefault": "Not Produced",
+      "mutationRule": "downgrade_only"
+    }
+  },
+  "handoffs": [
+    {
+      "target": "intent-to-3d-brief-writer",
+      "type": "upstream_reference",
+      "label": "Upstream brief",
+      "when": {
+        "all": [
+          {
+            "field": "goal.clarity",
+            "operator": "equals",
+            "value": "clear"
+          },
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": false
+          }
+        ]
+      }
+    },
+    {
+      "target": "product-hero-scene-planner",
+      "type": "upstream_reference",
+      "label": "Single hero product alternative",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "recipe.domain",
+            "operator": "equals",
+            "value": "product_hero"
+          }
+        ]
+      }
+    },
+    {
+      "target": "blender-asset-discovery-planner",
+      "type": "upstream_reference",
+      "label": "Asset discovery",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "assets.discoveryComplete",
+            "operator": "equals",
+            "value": false
+          }
+        ]
+      }
+    },
+    {
+      "target": "output-format-decision",
+      "type": "progression",
+      "label": "Variant / SKU file output format",
+      "when": {
+        "all": [
+          {
+            "field": "decision.formatLocked",
+            "operator": "equals",
+            "value": false
+          }
+        ]
+      }
+    },
+    {
+      "target": "composition-quality-checker",
+      "type": "progression",
+      "label": "Composition validation",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "composition"
+          },
+          {
+            "field": "quality.verdict",
+            "operator": "equals",
+            "value": "not_run"
+          }
+        ]
+      }
+    },
+    {
+      "target": "lighting-quality-checker",
+      "type": "progression",
+      "label": "Lighting validation",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "lighting"
+          },
+          {
+            "field": "quality.verdict",
+            "operator": "equals",
+            "value": "not_run"
+          }
+        ]
+      }
+    },
+    {
+      "target": "material-quality-checker",
+      "type": "progression",
+      "label": "Material validation",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "material"
+          },
+          {
+            "field": "quality.verdict",
+            "operator": "equals",
+            "value": "not_run"
+          }
+        ]
+      }
+    },
+    {
+      "target": "blender-scene-quality-checker",
+      "type": "progression",
+      "label": "Overall scene quality validation",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "holistic"
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "quality_validation"
+          }
+        ]
+      }
+    },
+    {
+      "target": "acceptance-criteria-builder",
+      "type": "upstream_reference",
+      "label": "Catalog sign-off & stop conditions (acceptance-criteria-builder)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "acceptance_criteria"
+          }
+        ]
+      }
+    },
+    {
+      "target": "blender-stop-condition-decider",
+      "type": "upstream_reference",
+      "label": "Catalog sign-off & stop conditions (blender-stop-condition-decider)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "stop_condition"
+          }
+        ]
+      }
+    }
+  ]
+}

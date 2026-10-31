@@ -30,21 +30,23 @@ This skill is BlendOps-specific, driven by the single-bridge constraint describe
 - log or port output shows a collision on default port `9876`
 
 ## When not to use
-
-- no readiness signal yet (run `official-runtime-readiness-checker` first)
-- no runtime path has been chosen yet (route to `runtime-path-picker`)
-- the user wants to switch or set up a path from scratch (route to `official-runtime-setup-guide`)
-- the bridge matrix is clean and only one path is active, but smoke tests still fail (route to `blender-troubleshooting`)
-- the user explicitly wants both paths configured for separate Blender instances on different ports (requires explicit port isolation)
+<!-- blendops:generated:start exclusions -->
+- no readiness signal yet (run official-runtime-readiness-checker first) → use `../official-runtime-readiness-checker/SKILL.md` (run official-runtime-readiness-checker first)
+- no runtime path has been chosen yet → use `../runtime-path-picker/SKILL.md` (route to runtime-path-picker)
+- the user wants to switch or set up a path from scratch → use `../official-runtime-setup-guide/SKILL.md` (route to official-runtime-setup-guide)
+- the bridge matrix is clean and only one path is active, but smoke tests still fail → use `../blender-troubleshooting/SKILL.md` (route to blender-troubleshooting)
+- the user explicitly wants both paths configured for separate Blender instances on different ports (requires explicit port isolation) → use `../official-runtime-readiness-checker/SKILL.md` (requires explicit port isolation)
+<!-- blendops:generated:end exclusions -->
 
 ## Trigger phrases
-
+<!-- blendops:generated:start triggers -->
 - "tool surface looks wrong"
 - "smoke test passed yesterday but recipe fails today"
 - "Lab MCP and ahujasid both installed"
 - "Claude Desktop and Cursor both pointing at Blender"
 - "port 9876 already in use"
 - "single-bridge constraint violation"
+<!-- blendops:generated:end triggers -->
 
 ## Prerequisites / readiness
 
@@ -223,12 +225,12 @@ This skill never disables add-ons, edits MCP client configs, changes ports, kill
 - treating Anthropic Connector and manual MCP as if they were independent paths (they are both Path 1 host options; pick one)
 
 ## Cross-skill handoff
-
-- When `official-runtime-readiness-checker` reports inconsistent signals: enter this skill (`runtime-bridge-conflict-resolver`) to resolve the conflict
-- After proposing a conflict resolution: hand off to `official-runtime-readiness-checker` to re-verify
-- If the bridge matrix is clean but failures persist: hand off to `blender-troubleshooting`
-- If the user wants to change paths or set up a path: hand off to `official-runtime-setup-guide`
-- If the intended runtime path has not been chosen yet: hand off to `runtime-path-picker`
+<!-- blendops:generated:start handoffs -->
+- [upstream_reference] When official-runtime-readiness-checker reports inconsistent signals → `../official-runtime-readiness-checker/SKILL.md`
+- [fallback] If the bridge matrix is clean but failures persist → `../blender-troubleshooting/SKILL.md`
+- [upstream_reference] If the user wants to change paths or set up a path → `../official-runtime-setup-guide/SKILL.md`
+- [upstream_reference] If the intended runtime path has not been chosen yet → `../runtime-path-picker/SKILL.md`
+<!-- blendops:generated:end handoffs -->
 
 ## Non-goals
 

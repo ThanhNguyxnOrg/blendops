@@ -1,0 +1,180 @@
+{
+  "$schema": "../../schemas/skill-contract.schema.json",
+  "id": "blender-composition-camera-planner",
+  "version": "1.0.0",
+  "category": "scene-planners",
+  "role": "camera-rig-and-composition-deep-planner",
+  "purpose": "Provide detailed composition and camera planning for product hero outputs.",
+  "capabilityTier": "L0",
+  "triggers": [
+    "improve composition and camera",
+    "choose hero framing",
+    "set camera strategy for product hero"
+  ],
+  "exclusions": [
+    {
+      "condition": "as proof of rendered output quality or to validate an existing framing",
+      "delegateTo": "composition-quality-checker",
+      "reason": "use composition-quality-checker"
+    },
+    {
+      "condition": "to design lighting rigs or surface materials/lookdev",
+      "delegateTo": "blender-lighting-material-planner",
+      "reason": "use blender-lighting-material-planner"
+    },
+    {
+      "condition": "to lock final pixel resolution or output aspect specs",
+      "delegateTo": "resolution-aspect-decision",
+      "reason": "use resolution-aspect-decision"
+    },
+    {
+      "condition": "to choose delivery file formats",
+      "delegateTo": "output-format-decision",
+      "reason": "use output-format-decision"
+    },
+    {
+      "condition": "when subject intent is undefined",
+      "delegateTo": "product-hero-scene-planner",
+      "reason": "Delegates out-of-scope requests to product-hero-scene-planner"
+    }
+  ],
+  "inputs": {
+    "required": [
+      {
+        "name": "domain_scene_plan",
+        "type": "object",
+        "description": "Upstream scene layout plan defining subject scale, staging, and depth layers"
+      },
+      {
+        "name": "framing_goal",
+        "type": "string",
+        "description": "Target shot type (hero three-quarter, orthographic catalog grid, portrait, wide establishing)"
+      }
+    ],
+    "optional": [
+      {
+        "name": "pinned_aspect_ratio",
+        "type": "string",
+        "description": "Aspect ratio lock from resolution-aspect-decision"
+      }
+    ]
+  },
+  "outputs": {
+    "primary": [
+      "camera_rig_specification",
+      "focal_length_and_dof_plan",
+      "composition_anchor_guidelines"
+    ],
+    "truthStatePolicy": {
+      "runtimeDefault": "Not Run",
+      "artifactDefault": "Not Produced",
+      "mutationRule": "downgrade_only"
+    }
+  },
+  "handoffs": [
+    {
+      "target": "product-hero-scene-planner",
+      "type": "upstream_reference",
+      "label": "Upstream input from",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "recipe.domain",
+            "operator": "equals",
+            "value": "product_hero"
+          }
+        ]
+      }
+    },
+    {
+      "target": "output-format-decision",
+      "type": "conditional",
+      "label": "Lateral output specs (if needed) (output-format-decision)",
+      "when": {
+        "all": [
+          {
+            "field": "decision.formatLocked",
+            "operator": "equals",
+            "value": false
+          }
+        ]
+      }
+    },
+    {
+      "target": "resolution-aspect-decision",
+      "type": "conditional",
+      "label": "Lateral output specs (if needed) (resolution-aspect-decision)",
+      "when": {
+        "all": [
+          {
+            "field": "decision.aspectLocked",
+            "operator": "equals",
+            "value": false
+          }
+        ]
+      }
+    },
+    {
+      "target": "blender-lighting-material-planner",
+      "type": "progression",
+      "label": "Next (lookdev & lighting)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "lookdev_planning"
+          }
+        ]
+      }
+    },
+    {
+      "target": "blender-scene-quality-checker",
+      "type": "progression",
+      "label": "Then (validation) (blender-scene-quality-checker)",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "holistic"
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "quality_validation"
+          }
+        ]
+      }
+    },
+    {
+      "target": "composition-quality-checker",
+      "type": "progression",
+      "label": "Then (validation) (composition-quality-checker)",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "composition"
+          },
+          {
+            "field": "quality.verdict",
+            "operator": "equals",
+            "value": "not_run"
+          }
+        ]
+      }
+    }
+  ]
+}

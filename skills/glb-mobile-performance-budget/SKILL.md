@@ -21,15 +21,19 @@ Translate "make it work on mobile" intent into a concrete numeric planning ceili
 - when designing a scene that must run alongside other web content
 
 ## When not to use
-- desktop-only renders without web handoff
-- offline pre-rendered video (no real-time budget needed)
-- replacing engineering load testing (this skill sets a planning budget, not a real-world benchmark)
+<!-- blendops:generated:start exclusions -->
+- desktop-only renders without web handoff → use `../polycount-budget-checker/SKILL.md` (Delegates out-of-scope requests to polycount-budget-checker)
+- offline pre-rendered video (no real-time budget needed) → use `../material-quality-checker/SKILL.md` (no real-time budget needed)
+- replacing engineering load testing (this skill sets a planning budget, not a real-world benchmark) → use `../glb-web-handoff/SKILL.md` (this skill sets a planning budget, not a real-world benchmark)
+<!-- blendops:generated:end exclusions -->
 
 ## Trigger phrases
+<!-- blendops:generated:start triggers -->
 - "what's a good polycount for mobile"
 - "how big can the GLB be"
 - "will this load on iPhone"
 - "what should I aim for on a phone"
+<!-- blendops:generated:end triggers -->
 
 ## Prerequisites / readiness
 - intended device tier known (or user willing to pick one)
@@ -229,12 +233,21 @@ Limitations: Planning ceiling only; not a benchmark or compliance measurement.
 - Mixing tiers ("kind of mobile but desktop too").
 
 ## Cross-skill handoff
-
-* Scene planning (consumes pinned budget) → `../product-hero-scene-planner/SKILL.md`, `../character-portrait-scene-planner/SKILL.md`, `../environment-establishing-shot-planner/SKILL.md`, `../interior-architectural-scene-planner/SKILL.md`, `../product-grid-scene-planner/SKILL.md`, `../blender-composition-camera-planner/SKILL.md`, `../blender-lighting-material-planner/SKILL.md`
-* Count and texture budget validation → `../polycount-budget-checker/SKILL.md`, `../material-quality-checker/SKILL.md`, `../blender-scene-quality-checker/SKILL.md`
-* Measured export compliance → `../render-export-evidence/SKILL.md`
-* Web delivery handoff (consumes pinned budget) → `../glb-web-handoff/SKILL.md`
-* Animation contracts (owns animation contract details within pinned channel/bone/morph ceilings) → `../glb-animation-handoff/SKILL.md`
+<!-- blendops:generated:start handoffs -->
+- [progression] Scene planning (consumes pinned budget) (blender-composition-camera-planner) → `../blender-composition-camera-planner/SKILL.md`
+- [progression] Scene planning (consumes pinned budget) (blender-lighting-material-planner) → `../blender-lighting-material-planner/SKILL.md`
+- [alternative] Scene planning (consumes pinned budget) (character-portrait-scene-planner) → `../character-portrait-scene-planner/SKILL.md`
+- [alternative] Scene planning (consumes pinned budget) (environment-establishing-shot-planner) → `../environment-establishing-shot-planner/SKILL.md`
+- [alternative] Scene planning (consumes pinned budget) (interior-architectural-scene-planner) → `../interior-architectural-scene-planner/SKILL.md`
+- [alternative] Scene planning (consumes pinned budget) (product-grid-scene-planner) → `../product-grid-scene-planner/SKILL.md`
+- [alternative] Scene planning (consumes pinned budget) (product-hero-scene-planner) → `../product-hero-scene-planner/SKILL.md`
+- [progression] Count and texture budget validation (blender-scene-quality-checker) → `../blender-scene-quality-checker/SKILL.md`
+- [progression] Count and texture budget validation (material-quality-checker) → `../material-quality-checker/SKILL.md`
+- [progression] Count and texture budget validation (polycount-budget-checker) → `../polycount-budget-checker/SKILL.md`
+- [progression] Measured export compliance → `../render-export-evidence/SKILL.md`
+- [progression] Web delivery handoff (consumes pinned budget) → `../glb-web-handoff/SKILL.md`
+- [progression] Animation contracts (owns animation contract details within pinned channel/bone/morph ceilings) → `../glb-animation-handoff/SKILL.md`
+<!-- blendops:generated:end handoffs -->
 
 ## Non-goals
 - Run a real-world benchmark.

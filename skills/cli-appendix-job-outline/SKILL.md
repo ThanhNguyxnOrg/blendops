@@ -23,16 +23,18 @@ Structure **CLI fallback appendix** jobs (batch render, batch export, scripted s
 - deterministic batch operations vs exploratory modeling
 
 ## When not to use
-
-- interactive viewport iteration primary goal
-- user expects Connector chat loop
+<!-- blendops:generated:start exclusions -->
+- interactive viewport iteration primary goal → use `../runtime-path-picker/SKILL.md` (Delegates out-of-scope requests to runtime-path-picker)
+- user expects Connector chat loop → use `../path-one-host-outline/SKILL.md` (Delegates out-of-scope requests to path-one-host-outline)
+<!-- blendops:generated:end exclusions -->
 
 ## Trigger phrases
-
+<!-- blendops:generated:start triggers -->
 - "headless blender"
 - "batch render CLI"
 - "blender --background"
 - "render farm outline"
+<!-- blendops:generated:end triggers -->
 
 ## Prerequisites / readiness
 
@@ -227,12 +229,13 @@ Next skill: <render-export-evidence | runtime-attempt-report-writer | output-for
 - Skipping `output-format-decision` or `render-export-evidence` when planning deliverable verification.
 
 ## Cross-skill handoff
-
-* Pick MCP vs CLI → `../runtime-path-picker/SKILL.md`
-* Interactive MCP host outline → `../path-one-host-outline/SKILL.md`
-* Export format choices → `../output-format-decision/SKILL.md`
-* Actual CLI output evidence recording → `../render-export-evidence/SKILL.md`
-* Runtime attempt reporting → `../runtime-attempt-report-writer/SKILL.md`
+<!-- blendops:generated:start handoffs -->
+- [upstream_reference] Pick MCP vs CLI → `../runtime-path-picker/SKILL.md`
+- [upstream_reference] Interactive MCP host outline → `../path-one-host-outline/SKILL.md`
+- [progression] Export format choices → `../output-format-decision/SKILL.md`
+- [progression] Actual CLI output evidence recording → `../render-export-evidence/SKILL.md`
+- [progression] Runtime attempt reporting → `../runtime-attempt-report-writer/SKILL.md`
+<!-- blendops:generated:end handoffs -->
 
 ## Non-goals
 

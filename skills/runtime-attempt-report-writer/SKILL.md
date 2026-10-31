@@ -23,19 +23,21 @@ Record a chronological, secret-free runtime attempt log—including version stam
 - teaching non-technical stakeholders what actually occurred
 
 ## When not to use
-
-- Classifying rendered or exported visual artifacts (`render-export-evidence`)
-- Diagnosing systematic runtime or scene defects (`blender-troubleshooting`)
-- Running pre-attempt environment checks (`official-runtime-readiness-checker`)
-- Selecting which runtime path to use before an attempt (`runtime-path-picker`)
-- Performing final release or delivery gating (`pre-handoff-verification`)
+<!-- blendops:generated:start exclusions -->
+- Classifying rendered or exported visual artifacts (render-export-evidence) → use `../render-export-evidence/SKILL.md` (render-export-evidence)
+- Diagnosing systematic runtime or scene defects (blender-troubleshooting) → use `../blender-troubleshooting/SKILL.md` (blender-troubleshooting)
+- Running pre-attempt environment checks (official-runtime-readiness-checker) → use `../official-runtime-readiness-checker/SKILL.md` (official-runtime-readiness-checker)
+- Selecting which runtime path to use before an attempt (runtime-path-picker) → use `../runtime-path-picker/SKILL.md` (runtime-path-picker)
+- Performing final release or delivery gating (pre-handoff-verification) → use `../pre-handoff-verification/SKILL.md` (pre-handoff-verification)
+<!-- blendops:generated:end exclusions -->
 
 ## Trigger phrases
-
+<!-- blendops:generated:start triggers -->
 - "write up what we tried"
 - "runtime attempt log"
 - "postmortem blender connect"
 - "evidence report template"
+<!-- blendops:generated:end triggers -->
 
 ## Prerequisites / readiness
 
@@ -242,13 +244,14 @@ Next skill: <render-export-evidence | blender-troubleshooting | runtime-bridge-c
 - Pasting raw config files containing API keys, tokens, or local user credentials into the report.
 
 ## Cross-skill handoff
-
-- Pre-attempt readiness check → `../official-runtime-readiness-checker/SKILL.md`
-- Runtime path selection context → `../runtime-path-picker/SKILL.md`
-- Bridge / port / host conflicts → `../runtime-bridge-conflict-resolver/SKILL.md`
-- Runtime or scene defect diagnosis → `../blender-troubleshooting/SKILL.md`
-- Artifact evidence classification → `../render-export-evidence/SKILL.md`
-- Final handoff gate & failure exit → `../pre-handoff-verification/SKILL.md`
+<!-- blendops:generated:start handoffs -->
+- [upstream_reference] Pre-attempt readiness check → `../official-runtime-readiness-checker/SKILL.md`
+- [upstream_reference] Runtime path selection context → `../runtime-path-picker/SKILL.md`
+- [fallback] Bridge / port / host conflicts → `../runtime-bridge-conflict-resolver/SKILL.md`
+- [fallback] Runtime or scene defect diagnosis → `../blender-troubleshooting/SKILL.md`
+- [progression] Artifact evidence classification → `../render-export-evidence/SKILL.md`
+- [fallback] Final handoff gate & failure exit → `../pre-handoff-verification/SKILL.md`
+<!-- blendops:generated:end handoffs -->
 
 ## Non-goals
 

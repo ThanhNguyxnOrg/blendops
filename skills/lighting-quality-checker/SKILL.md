@@ -24,18 +24,22 @@ Run a focused pass/warn/fail check on the scene's lighting setup per light — c
 - when the rendered preview looks "off" but the issue is unclear
 
 ## When not to use
-- upstream lookdev and lighting planning (use `blender-lighting-material-planner`)
-- material validation (use `material-quality-checker`)
-- composition / camera validation (use `composition-quality-checker`)
-- broad pass/warn/fail scene readiness (use `blender-scene-quality-checker`)
-- classifying render or export artifact evidence (use `render-export-evidence`)
-- to fix or edit lights (this skill validates and gives remediation hints only; it never edits)
+<!-- blendops:generated:start exclusions -->
+- upstream lookdev and lighting planning → use `../blender-lighting-material-planner/SKILL.md` (use blender-lighting-material-planner)
+- material validation → use `../material-quality-checker/SKILL.md` (use material-quality-checker)
+- composition / camera validation → use `../composition-quality-checker/SKILL.md` (use composition-quality-checker)
+- broad pass/warn/fail scene readiness → use `../blender-scene-quality-checker/SKILL.md` (use blender-scene-quality-checker)
+- classifying render or export artifact evidence → use `../render-export-evidence/SKILL.md` (use render-export-evidence)
+- to fix or edit lights (this skill validates and gives remediation hints only; it never edits) → use `../blender-scene-quality-checker/SKILL.md` (this skill validates and gives remediation hints only; it never edits)
+<!-- blendops:generated:end exclusions -->
 
 ## Trigger phrases
+<!-- blendops:generated:start triggers -->
 - "is the lighting okay"
 - "check shadow softness"
 - "lighting feels off"
 - "is the HDRI balanced"
+<!-- blendops:generated:end triggers -->
 
 ## Prerequisites / readiness
 - light list known (from `blender-lighting-material-planner` scene plan or measured scene snapshot)
@@ -221,11 +225,13 @@ Next: blender-scene-quality-checker | blender-lighting-material-planner | materi
 - Mixing material checks (`material-quality-checker`), camera/framing checks (`composition-quality-checker`), or artifact evidence classification (`render-export-evidence`) into lighting validation.
 
 ## Cross-skill handoff
-- Broad readiness review → `../blender-scene-quality-checker/SKILL.md`
-- Material validation → `../material-quality-checker/SKILL.md`
-- Composition validation → `../composition-quality-checker/SKILL.md`
-- Lighting re-plan → `../blender-lighting-material-planner/SKILL.md`
-- Render evidence → `../render-export-evidence/SKILL.md`
+<!-- blendops:generated:start handoffs -->
+- [progression] Broad readiness review → `../blender-scene-quality-checker/SKILL.md`
+- [upstream_reference] Material validation → `../material-quality-checker/SKILL.md`
+- [progression] Composition validation → `../composition-quality-checker/SKILL.md`
+- [retry] Lighting re-plan → `../blender-lighting-material-planner/SKILL.md`
+- [progression] Render evidence → `../render-export-evidence/SKILL.md`
+<!-- blendops:generated:end handoffs -->
 
 ## Non-goals
 - Edit lights.

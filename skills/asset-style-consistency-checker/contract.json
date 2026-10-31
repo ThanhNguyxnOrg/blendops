@@ -1,0 +1,251 @@
+{
+  "$schema": "../../schemas/skill-contract.schema.json",
+  "id": "asset-style-consistency-checker",
+  "version": "1.0.0",
+  "category": "asset-and-sourcing",
+  "role": "cross-asset-visual-coherence-validator",
+  "purpose": "Verify chosen assets share visual style (realism, detail, color treatment) before scene build; flag style drift between assets early.",
+  "capabilityTier": "L0",
+  "triggers": [
+    "do these assets fit together",
+    "style check the assets",
+    "scene feels like a collage"
+  ],
+  "exclusions": [
+    {
+      "condition": "single isolated asset where no multi-asset or scene-brief consistency check is requested",
+      "delegateTo": "blender-asset-discovery-planner",
+      "reason": "Delegates out-of-scope requests to blender-asset-discovery-planner"
+    },
+    {
+      "condition": "pure planning before candidate assets are picked",
+      "delegateTo": "blender-asset-discovery-planner",
+      "reason": "use blender-asset-discovery-planner"
+    },
+    {
+      "condition": "intentionally mixed-style art direction, ONLY when the locked brief explicitly specifies mixed styles",
+      "delegateTo": "asset-license-checker",
+      "reason": "Delegates out-of-scope requests to asset-license-checker"
+    },
+    {
+      "condition": "checking asset licenses (asset-license-checker), polygon/performance budgets (polycount-budget-checker), topology, or planning materials/lighting (blender-light",
+      "delegateTo": "asset-license-checker",
+      "reason": "blender-lighting-material-planner"
+    }
+  ],
+  "inputs": {
+    "required": [
+      {
+        "name": "candidate_asset_list",
+        "type": "array",
+        "description": "Sourced 3D models, materials, and props to evaluate for visual coherence"
+      },
+      {
+        "name": "brief_style_direction",
+        "type": "string",
+        "description": "Pinned visual style, proportion language, texel density, and surface wear target from brief"
+      }
+    ],
+    "optional": [
+      {
+        "name": "hero_anchor_asset",
+        "type": "string",
+        "description": "Primary hero asset used as the visual benchmark for secondary props"
+      }
+    ]
+  },
+  "outputs": {
+    "primary": [
+      "style_coherence_matrix",
+      "mismatched_asset_flags",
+      "remediation_or_fallback_recommendations"
+    ],
+    "truthStatePolicy": {
+      "runtimeDefault": "Not Run",
+      "artifactDefault": "Not Produced",
+      "mutationRule": "downgrade_only"
+    }
+  },
+  "handoffs": [
+    {
+      "target": "blender-asset-discovery-planner",
+      "type": "upstream_reference",
+      "label": "Upstream discovery",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "assets.discoveryComplete",
+            "operator": "equals",
+            "value": false
+          }
+        ]
+      }
+    },
+    {
+      "target": "asset-license-checker",
+      "type": "upstream_reference",
+      "label": "Upstream license gate",
+      "when": {
+        "all": [
+          {
+            "field": "assets.externalUsed",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "assets.licenseCleared",
+            "operator": "equals",
+            "value": false
+          }
+        ]
+      }
+    },
+    {
+      "target": "intent-to-3d-brief-writer",
+      "type": "upstream_reference",
+      "label": "Upstream brief lock",
+      "when": {
+        "all": [
+          {
+            "field": "goal.clarity",
+            "operator": "equals",
+            "value": "clear"
+          },
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": false
+          }
+        ]
+      }
+    },
+    {
+      "target": "blender-scope-boundary-enforcer",
+      "type": "boundary_delegation",
+      "label": "Scope enforcement",
+      "when": {
+        "all": [
+          {
+            "field": "scope.driftDetected",
+            "operator": "equals",
+            "value": true
+          }
+        ]
+      }
+    },
+    {
+      "target": "asset-fallback-strategy",
+      "type": "fallback",
+      "label": "Rejected asset fallback",
+      "when": {
+        "all": [
+          {
+            "field": "assets.fallbackNeeded",
+            "operator": "equals",
+            "value": true
+          }
+        ]
+      }
+    },
+    {
+      "target": "asset-library-organization-planner",
+      "type": "progression",
+      "label": "Approved asset organization",
+      "when": {
+        "all": [
+          {
+            "field": "assets.discoveryComplete",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "library_organization"
+          }
+        ]
+      }
+    },
+    {
+      "target": "blender-scene-quality-checker",
+      "type": "progression",
+      "label": "Broad scene review",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "holistic"
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "quality_validation"
+          }
+        ]
+      }
+    },
+    {
+      "target": "blender-lighting-material-planner",
+      "type": "progression",
+      "label": "Material & lookdev boundary (blender-lighting-material-planner)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "lookdev_planning"
+          }
+        ]
+      }
+    },
+    {
+      "target": "material-quality-checker",
+      "type": "progression",
+      "label": "Material & lookdev boundary (material-quality-checker)",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "material"
+          },
+          {
+            "field": "quality.verdict",
+            "operator": "equals",
+            "value": "not_run"
+          }
+        ]
+      }
+    },
+    {
+      "target": "polycount-budget-checker",
+      "type": "progression",
+      "label": "Budget & topology boundary",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "polycount"
+          },
+          {
+            "field": "budget.verdict",
+            "operator": "equals",
+            "value": "Not Run"
+          }
+        ]
+      }
+    }
+  ]
+}

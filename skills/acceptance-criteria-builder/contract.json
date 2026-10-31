@@ -1,0 +1,205 @@
+{
+  "$schema": "../../schemas/skill-contract.schema.json",
+  "id": "acceptance-criteria-builder",
+  "version": "1.0.0",
+  "category": "process-discipline",
+  "role": "measurable-acceptance-table-builder",
+  "purpose": "Turn a locked 3D brief plus chosen recipe into a measurable acceptance checklist with evidence hooks.",
+  "capabilityTier": "L0",
+  "triggers": [
+    "acceptance criteria",
+    "measurable checklist rows",
+    "evidence hooks for brief",
+    "sign-off checklist table"
+  ],
+  "exclusions": [
+    {
+      "condition": "pure exploration without a locked deliverable",
+      "delegateTo": "blender-brainstorming",
+      "reason": "use blender-brainstorming"
+    },
+    {
+      "condition": "writing or locking the brief itself",
+      "delegateTo": "intent-to-3d-brief-writer",
+      "reason": "use intent-to-3d-brief-writer"
+    },
+    {
+      "condition": "pinning the stop or done condition",
+      "delegateTo": "blender-stop-condition-decider",
+      "reason": "use blender-stop-condition-decider"
+    },
+    {
+      "condition": "enforcing per-stage workflow gates",
+      "delegateTo": "blender-checklist-driven-workflow",
+      "reason": "use blender-checklist-driven-workflow"
+    },
+    {
+      "condition": "guarding or deciding scope boundaries",
+      "delegateTo": "blender-scope-boundary-enforcer",
+      "reason": "use blender-scope-boundary-enforcer"
+    },
+    {
+      "condition": "legal or license-permission language",
+      "delegateTo": "asset-license-checker",
+      "reason": "use asset-license-checker"
+    },
+    {
+      "condition": "classifying artifact evidence",
+      "delegateTo": "pre-handoff-verification",
+      "reason": "use pre-handoff-verification"
+    }
+  ],
+  "inputs": {
+    "required": [
+      {
+        "name": "locked_3d_brief",
+        "type": "object",
+        "description": "Locked 8-slot 3D brief specifying subject, destination, deliverables, and constraints"
+      },
+      {
+        "name": "target_deliverable_channels",
+        "type": "array",
+        "description": "Target delivery surfaces (hero still, catalog grid, turntable, or web GLB)"
+      }
+    ],
+    "optional": [
+      {
+        "name": "performance_budget_pins",
+        "type": "object",
+        "description": "Optional triangle, texture, and file-size ceilings from glb-mobile-performance-budget"
+      }
+    ]
+  },
+  "outputs": {
+    "primary": [
+      "measurable_acceptance_criteria_table",
+      "pass_warn_fail_thresholds",
+      "evidence_hook_mappings"
+    ],
+    "truthStatePolicy": {
+      "runtimeDefault": "Not Run",
+      "artifactDefault": "Not Produced",
+      "mutationRule": "downgrade_only"
+    }
+  },
+  "handoffs": [
+    {
+      "target": "intent-to-3d-brief-writer",
+      "type": "upstream_reference",
+      "label": "Brief source",
+      "when": {
+        "all": [
+          {
+            "field": "goal.clarity",
+            "operator": "equals",
+            "value": "clear"
+          },
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": false
+          }
+        ]
+      }
+    },
+    {
+      "target": "blender-stop-condition-decider",
+      "type": "progression",
+      "label": "Done / stop condition",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "stop_condition"
+          }
+        ]
+      }
+    },
+    {
+      "target": "blender-checklist-driven-workflow",
+      "type": "progression",
+      "label": "Per-stage gate enforcement",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "stage_gates"
+          }
+        ]
+      }
+    },
+    {
+      "target": "blender-scope-boundary-enforcer",
+      "type": "progression",
+      "label": "Scope boundary enforcement",
+      "when": {
+        "all": [
+          {
+            "field": "scope.driftDetected",
+            "operator": "equals",
+            "value": true
+          }
+        ]
+      }
+    },
+    {
+      "target": "asset-license-checker",
+      "type": "progression",
+      "label": "License permissions",
+      "when": {
+        "all": [
+          {
+            "field": "assets.externalUsed",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "assets.licenseCleared",
+            "operator": "equals",
+            "value": false
+          }
+        ]
+      }
+    },
+    {
+      "target": "render-export-evidence",
+      "type": "progression",
+      "label": "Artifact evidence classification",
+      "when": {
+        "all": [
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "post_execution_audit"
+          }
+        ]
+      }
+    },
+    {
+      "target": "pre-handoff-verification",
+      "type": "progression",
+      "label": "Handoff gate verification",
+      "when": {
+        "all": [
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "final_verification"
+          }
+        ]
+      }
+    }
+  ]
+}

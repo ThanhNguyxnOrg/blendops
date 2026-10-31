@@ -20,16 +20,20 @@ Design high-quality composition/camera strategy for product hero scenes in plain
 - aligning hero framing and negative space with web/UI copy overlays
 
 ## When not to use
-- as proof of rendered output quality or to validate an existing framing (use `composition-quality-checker`)
-- to design lighting rigs or surface materials/lookdev (use `blender-lighting-material-planner`)
-- to lock final pixel resolution or output aspect specs (use `resolution-aspect-decision`)
-- to choose delivery file formats (use `output-format-decision`)
-- when subject intent is undefined
+<!-- blendops:generated:start exclusions -->
+- as proof of rendered output quality or to validate an existing framing → use `../composition-quality-checker/SKILL.md` (use composition-quality-checker)
+- to design lighting rigs or surface materials/lookdev → use `../blender-lighting-material-planner/SKILL.md` (use blender-lighting-material-planner)
+- to lock final pixel resolution or output aspect specs → use `../resolution-aspect-decision/SKILL.md` (use resolution-aspect-decision)
+- to choose delivery file formats → use `../output-format-decision/SKILL.md` (use output-format-decision)
+- when subject intent is undefined → use `../product-hero-scene-planner/SKILL.md` (Delegates out-of-scope requests to product-hero-scene-planner)
+<!-- blendops:generated:end exclusions -->
 
 ## Trigger phrases
-- “improve composition and camera”
-- “choose hero framing”
-- “set camera strategy for product hero”
+<!-- blendops:generated:start triggers -->
+- "improve composition and camera"
+- "choose hero framing"
+- "set camera strategy for product hero"
+<!-- blendops:generated:end triggers -->
 
 ## Prerequisites / readiness
 - upstream scene concept from `product-hero-scene-planner` (or clear subject and destination context) available
@@ -171,10 +175,14 @@ Planning-only skill: no Blender execution, no Python scripts, and no artifact ge
 - producing jargon-heavy camera specs without plain-language rationale
 
 ## Cross-skill handoff
-- Upstream input from: `product-hero-scene-planner`
-- Lateral output specs (if needed): `resolution-aspect-decision` (aspect/resolution locks), `output-format-decision` (file formats)
-- Next (lookdev & lighting): `blender-lighting-material-planner`
-- Then (validation): `composition-quality-checker` and `blender-scene-quality-checker`
+<!-- blendops:generated:start handoffs -->
+- [upstream_reference] Upstream input from → `../product-hero-scene-planner/SKILL.md`
+- [conditional] Lateral output specs (if needed) (output-format-decision) → `../output-format-decision/SKILL.md`
+- [conditional] Lateral output specs (if needed) (resolution-aspect-decision) → `../resolution-aspect-decision/SKILL.md`
+- [progression] Next (lookdev & lighting) → `../blender-lighting-material-planner/SKILL.md`
+- [progression] Then (validation) (blender-scene-quality-checker) → `../blender-scene-quality-checker/SKILL.md`
+- [progression] Then (validation) (composition-quality-checker) → `../composition-quality-checker/SKILL.md`
+<!-- blendops:generated:end handoffs -->
 
 ## Non-goals
 - executing Blender commands, writing Python scripts, or generating scene/render artifacts

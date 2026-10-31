@@ -21,15 +21,19 @@ When user intent is too big for one recipe (multiple deliverables, mixed modes, 
 - before any planner runs
 
 ## When not to use
-- single deliverable that is already right-sized (hand off directly to `intent-to-3d-brief-writer`)
-- pure exploration or open ideation (use `blender-brainstorming` instead)
-- after recipes are already split or running (use `blender-scope-boundary-enforcer` for added scope or `blender-stop-condition-decider` to evaluate completion)
+<!-- blendops:generated:start exclusions -->
+- single deliverable that is already right-sized (hand off directly to intent-to-3d-brief-writer) → use `../intent-to-3d-brief-writer/SKILL.md` (hand off directly to intent-to-3d-brief-writer)
+- pure exploration or open ideation → use `../blender-brainstorming/SKILL.md` (use blender-brainstorming instead)
+- after recipes are already split or running → use `../blender-scope-boundary-enforcer/SKILL.md` (use blender-scope-boundary-enforcer for added scope or blender-stop-condition-decider to evaluate completion)
+<!-- blendops:generated:end exclusions -->
 
 ## Trigger phrases
+<!-- blendops:generated:start triggers -->
 - "I want all of these"
 - "this is a lot"
 - "we'll need several outputs"
 - "across these scenes"
+<!-- blendops:generated:end triggers -->
 
 ## Prerequisites / readiness
 - intent stated by user (or extractable)
@@ -231,11 +235,13 @@ Limitations: <gaps>
 - Skipping the dependency analysis.
 
 ## Cross-skill handoff
-- Full brief authoring for each split recipe → `../intent-to-3d-brief-writer/SKILL.md`
-- Pinning formal done conditions per recipe → `../blender-stop-condition-decider/SKILL.md`
-- Workflow stage gates per recipe → `../blender-checklist-driven-workflow/SKILL.md`
-- Handling scope added after splitting → `../blender-scope-boundary-enforcer/SKILL.md`
-- Pre-decomposition ideation when deliverables are unclear → `../blender-brainstorming/SKILL.md`
+<!-- blendops:generated:start handoffs -->
+- [progression] Full brief authoring for each split recipe → `../intent-to-3d-brief-writer/SKILL.md`
+- [progression] Pinning formal done conditions per recipe → `../blender-stop-condition-decider/SKILL.md`
+- [progression] Workflow stage gates per recipe → `../blender-checklist-driven-workflow/SKILL.md`
+- [progression] Handling scope added after splitting → `../blender-scope-boundary-enforcer/SKILL.md`
+- [upstream_reference] Pre-decomposition ideation when deliverables are unclear → `../blender-brainstorming/SKILL.md`
+<!-- blendops:generated:end handoffs -->
 
 ## Non-goals
 - Run Blender, write Python, or render/export any artifacts.

@@ -433,10 +433,10 @@ describe('Phase 3 — Behavioral Evaluation Schema & Deterministic Runner', () =
     );
 
     assert.equal(currentScorecard.totals.historicalBaselineScore, 54.5);
-    assert.equal(currentScorecard.totals.measuredScore, 78.0);
+    assert.equal(currentScorecard.totals.measuredScore, 81.0);
     assert.equal(currentScorecard.methodology.activeZeroCompensationBlockers.length, 0);
 
-    // Verify commitChain includes all verified commits through Phase 3.1.1 (51f76d9) and Phase 4 (a5ddece)
+    // Verify commitChain includes all verified commits through Phase 4 (a5ddece) and Phase 3 Completion (75f3b5c)
     const chainShas = currentManifest.commitChain.map((c) => c.commitSha);
     assert.deepEqual(chainShas, [
       '3ea3c35c6b8a6e5e915bab9f63333d4a1c09bd4d',
@@ -448,6 +448,7 @@ describe('Phase 3 — Behavioral Evaluation Schema & Deterministic Runner', () =
       '650f0a5979f1d6b9fea94a0e6378988ef1ab544e',
       '51f76d98d16deef4ed9d8d5991ff59c55ce1d27e',
       'a5ddece28e71d0ce89f6b7a741214f8832d37ee5',
+      '75f3b5c8b16b2d7e174d6dba58965da5013cfb5e',
     ]);
 
     // Verify explicit auditProvenance on all 5 JSON artifacts and no ambiguous self-referential commitSha
@@ -467,14 +468,14 @@ describe('Phase 3 — Behavioral Evaluation Schema & Deterministic Runner', () =
       assert.ok(doc.auditProvenance, `${label} must include auditProvenance`);
       assert.equal(
         doc.sourceCommitSha,
-        'a5ddece28e71d0ce89f6b7a741214f8832d37ee5',
-        `${label} sourceCommitSha must record Phase 4 base commit a5ddece28e71d0ce89f6b7a741214f8832d37ee5`,
+        '75f3b5c8b16b2d7e174d6dba58965da5013cfb5e',
+        `${label} sourceCommitSha must record Phase 3 completion base commit 75f3b5c8b16b2d7e174d6dba58965da5013cfb5e`,
       );
       assert.equal(
         doc.auditProvenance.sourceCommitSha,
-        'a5ddece28e71d0ce89f6b7a741214f8832d37ee5',
+        '75f3b5c8b16b2d7e174d6dba58965da5013cfb5e',
       );
-      assert.equal(doc.auditProvenance.sourceCommitShort, 'a5ddece');
+      assert.equal(doc.auditProvenance.sourceCommitShort, '75f3b5c');
       assert.ok(
         doc.auditProvenance.workingTreeState === 'clean' ||
           doc.auditProvenance.workingTreeState === 'dirty',
@@ -504,17 +505,17 @@ describe('Phase 3 — Behavioral Evaluation Schema & Deterministic Runner', () =
     const f10 = currentFindings.findings.find((f) => f.id === 'F-10');
     assert.equal(f01?.currentLifecycleStatus, 'FIXED');
     assert.equal(f02?.currentLifecycleStatus, 'FIXED');
-    assert.equal(f03?.currentLifecycleStatus, 'PARTIALLY_FIXED');
+    assert.equal(f03?.currentLifecycleStatus, 'FIXED');
     assert.equal(f04?.currentLifecycleStatus, 'PARTIALLY_FIXED');
     assert.equal(f05?.currentLifecycleStatus, 'FIXED');
     assert.equal(f06?.currentLifecycleStatus, 'FIXED');
     assert.equal(f07?.currentLifecycleStatus, 'FIXED');
     assert.equal(f08?.currentLifecycleStatus, 'PARTIALLY_FIXED');
-    assert.equal(f09?.currentLifecycleStatus, 'DEFERRED');
+    assert.equal(f09?.currentLifecycleStatus, 'OPEN');
     assert.equal(f10?.currentLifecycleStatus, 'FIXED');
 
     assert.equal(currentSkillInv.summary.totalSkills, 48);
-    assert.equal(currentSkillInv.summary.contractedSkillsCount, 4);
+    assert.equal(currentSkillInv.summary.contractedSkillsCount, 48);
     assert.equal(currentSkillInv.summary.skillsWithArtifactNotRunContradiction, 0);
     assert.equal(currentSkillInv.summary.skillsMissingExtendedTemplateSections, 0);
     assert.equal(currentSkillInv.summary.totalMissingExtendedSectionInstances, 0);

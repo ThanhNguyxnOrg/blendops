@@ -20,14 +20,18 @@ Standardize how a preview / render / export run's evidence is summarized so that
 - before `non-blender-user-response-writer` writes the final summary
 
 ## When not to use
-- measuring artifacts directly (use `render-export-evidence` instead)
-- raw debug logs or crash triage (use `blender-troubleshooting` instead)
-- gating handoff readiness (use `pre-handoff-verification` instead)
+<!-- blendops:generated:start exclusions -->
+- measuring artifacts directly → use `../render-export-evidence/SKILL.md` (use render-export-evidence instead)
+- raw debug logs or crash triage → use `../blender-troubleshooting/SKILL.md` (use blender-troubleshooting instead)
+- gating handoff readiness → use `../pre-handoff-verification/SKILL.md` (use pre-handoff-verification instead)
+<!-- blendops:generated:end exclusions -->
 
 ## Trigger phrases
+<!-- blendops:generated:start triggers -->
 - "summarize the render"
 - "write up the export evidence"
 - "what's the preview status"
+<!-- blendops:generated:end triggers -->
 
 ## Prerequisites / readiness
 - runtime evidence (or explicit absence) is known
@@ -228,12 +232,13 @@ Limitations: <gaps>
 - Omitting the runtime path.
 
 ## Cross-skill handoff
-
-* Measured evidence input (supplies measurements + truth states) → `../render-export-evidence/SKILL.md`
-* Handoff gate (gates handoffs before downstream delivery) → `../pre-handoff-verification/SKILL.md`
-* Web handoff consumer → `../glb-web-handoff/SKILL.md`
-* Final non-Blender user response consumer → `../non-blender-user-response-writer/SKILL.md`
-* Raw debug log triage (out of scope here) → `../blender-troubleshooting/SKILL.md`
+<!-- blendops:generated:start handoffs -->
+- [upstream_reference] Measured evidence input (supplies measurements + truth states) → `../render-export-evidence/SKILL.md`
+- [progression] Handoff gate (gates handoffs before downstream delivery) → `../pre-handoff-verification/SKILL.md`
+- [progression] Web handoff consumer → `../glb-web-handoff/SKILL.md`
+- [progression] Final non-Blender user response consumer → `../non-blender-user-response-writer/SKILL.md`
+- [fallback] Raw debug log triage (out of scope here) → `../blender-troubleshooting/SKILL.md`
+<!-- blendops:generated:end handoffs -->
 
 ## Non-goals
 - Run Blender.

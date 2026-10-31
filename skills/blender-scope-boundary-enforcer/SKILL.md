@@ -19,15 +19,19 @@ Catch mid-flight scope creep ("can you also do X?") and force an explicit record
 - when stages start exceeding their gates "just a bit"
 
 ## When not to use
-- early planning before scope is pinned (use `intent-to-3d-brief-writer` and `blender-stop-condition-decider`)
-- pure brainstorming with no active recipe (use `blender-brainstorming`)
-- when the addition is already explicitly covered by existing gate criteria in `blender-checklist-driven-workflow` / `acceptance-criteria-builder` (verified against written criteria, never judged by feel)
+<!-- blendops:generated:start exclusions -->
+- early planning before scope is pinned → use `../blender-stop-condition-decider/SKILL.md` (use intent-to-3d-brief-writer and blender-stop-condition-decider)
+- pure brainstorming with no active recipe → use `../blender-brainstorming/SKILL.md` (use blender-brainstorming)
+- when the addition is already explicitly covered by existing gate criteria in blender-checklist-driven-workflow / acceptance-criteria-builder (verified against w → use `../acceptance-criteria-builder/SKILL.md` (verified against written criteria, never judged by feel)
+<!-- blendops:generated:end exclusions -->
 
 ## Trigger phrases
+<!-- blendops:generated:start triggers -->
 - "can you also"
 - "while you're at it"
 - "actually let's also"
 - "one more thing"
+<!-- blendops:generated:end triggers -->
 
 ## Prerequisites / readiness
 - recipe has an active brief (`intent-to-3d-brief-writer`), pinned stop condition (`blender-stop-condition-decider`), and stage gates (`blender-checklist-driven-workflow` / `acceptance-criteria-builder`)
@@ -197,12 +201,14 @@ Limitations: <gaps; scope decisions never upgrade truth states>
 - Upgrading runtime or artifact truth states on the basis of a scope agreement.
 
 ## Cross-skill handoff
-- Original brief → `../intent-to-3d-brief-writer/SKILL.md`
-- Stop condition pinned beforehand / updated on expansion → `../blender-stop-condition-decider/SKILL.md`
-- Per-stage gates enforced / updated on expansion → `../blender-checklist-driven-workflow/SKILL.md`
-- Measurable acceptance rows for added scope → `../acceptance-criteria-builder/SKILL.md`
-- Deferred scope split into follow-up recipes → `../blender-recipe-decomposer/SKILL.md`
-- Delivery gate after scope and gates settle → `../pre-handoff-verification/SKILL.md`
+<!-- blendops:generated:start handoffs -->
+- [upstream_reference] Original brief → `../intent-to-3d-brief-writer/SKILL.md`
+- [upstream_reference] Stop condition pinned beforehand / updated on expansion → `../blender-stop-condition-decider/SKILL.md`
+- [upstream_reference] Per-stage gates enforced / updated on expansion → `../blender-checklist-driven-workflow/SKILL.md`
+- [boundary_delegation] Measurable acceptance rows for added scope → `../acceptance-criteria-builder/SKILL.md`
+- [boundary_delegation] Deferred scope split into follow-up recipes → `../blender-recipe-decomposer/SKILL.md`
+- [progression] Delivery gate after scope and gates settle → `../pre-handoff-verification/SKILL.md`
+<!-- blendops:generated:end handoffs -->
 
 ## Non-goals
 - Run Blender.
