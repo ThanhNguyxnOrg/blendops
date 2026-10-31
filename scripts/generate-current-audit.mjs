@@ -10,82 +10,241 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const ROOT_DIR = path.resolve(__dirname, '..');
 
-function gitInfo(rootDir, args, fallback = 'unknown') {
+function gitRequired(rootDir, args, { trimOutput = true } = {}) {
   try {
-    return execFileSync('git', args, { cwd: rootDir, encoding: 'utf8' }).trim();
-  } catch {
-    return fallback;
+    const out = execFileSync('git', args, {
+      cwd: rootDir,
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'pipe'],
+    });
+    return trimOutput ? out.trim() : out;
+  } catch (err) {
+    const stderr = err && err.stderr ? String(err.stderr).trim() : err.message;
+    throw new Error(`Git command failed (git ${args.join(' ')}) in ${rootDir}: ${stderr}`);
   }
 }
 
-function collectFilesRecursive(baseDir, currentRel = '') {
-  const fullDir = currentRel ? path.join(baseDir, currentRel) : baseDir;
-  if (!fs.existsSync(fullDir)) return [];
-  const entries = fs.readdirSync(fullDir, { withFileTypes: true });
-  const results = [];
-  for (const entry of entries) {
-    const relPath = currentRel ? `${currentRel}/${entry.name}` : entry.name;
-    if (entry.isDirectory()) {
-      results.push(...collectFilesRecursive(baseDir, relPath));
-    } else if (entry.isFile()) {
-      results.push(relPath);
+function isExcludedProvenancePath(relPath) {
+  const norm = relPath.replace(/\\/g, '/');
+  return (
+    norm === 'docs/audits/current' ||
+    norm.startsWith('docs/audits/current/') ||
+    norm === '.aistudio' ||
+    norm.startsWith('.aistudio/') ||
+    norm === 'bun.lock'
+  );
+}
+
+export const AUDITED_INPUTS_MANIFEST_REL = 'docs/audits/audited-inputs.manifest.json';
+
+function normalizePosixRelativePath(rawRel) {
+  if (typeof rawRel !== 'string' || rawRel.length === 0) {
+    throw new Error(`Invalid relative path in audited-inputs.manifest.json: ${JSON.stringify(rawRel)}`);
+  }
+  const norm = rawRel.replace(/\\/g, '/').replace(/\/+$/, '');
+  if (!norm || norm.startsWith('/') || norm.split('/').includes('..') || norm.split('/').includes('.')) {
+    throw new Error(`Unsafe relative path in audited-inputs.manifest.json: ${JSON.stringify(rawRel)}`);
+  }
+  return norm;
+}
+
+function isExcludedByManifest(relPath, excludedPrefixes, excludedExactPaths) {
+  if (excludedExactPaths.has(relPath)) return true;
+  for (const prefix of excludedPrefixes) {
+    if (relPath.startsWith(prefix)) return true;
+  }
+  return false;
+}
+
+export function loadAuditedInputsManifest(rootDir = ROOT_DIR) {
+  const manifestPath = path.join(rootDir, AUDITED_INPUTS_MANIFEST_REL);
+  if (!fs.existsSync(manifestPath)) {
+    throw new Error(`Missing required audited inputs manifest: ${AUDITED_INPUTS_MANIFEST_REL}`);
+  }
+  const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+  if (!Array.isArray(manifest.requiredFiles) || !Array.isArray(manifest.requiredDirectories)) {
+    throw new Error(`Malformed ${AUDITED_INPUTS_MANIFEST_REL}: requiredFiles and requiredDirectories must be arrays`);
+  }
+  if (!manifest.requiredFiles.includes(AUDITED_INPUTS_MANIFEST_REL)) {
+    throw new Error(`${AUDITED_INPUTS_MANIFEST_REL} must include itself in requiredFiles`);
+  }
+  return manifest;
+}
+
+export function resolveAuditedInputFiles(rootDir = ROOT_DIR) {
+  const manifest = loadAuditedInputsManifest(rootDir);
+  const realRoot = fs.realpathSync(rootDir);
+
+  const excludedPrefixes = (manifest.excludedPrefixes || [
+    'docs/audits/current/',
+    '.git/',
+    'node_modules/',
+    'dist/',
+    '.aistudio/',
+  ]).map((p) => p.replace(/\\/g, '/'));
+  const excludedExactPaths = new Set(
+    (manifest.excludedExactPaths || [
+      'docs/audits/current',
+      '.git',
+      'node_modules',
+      'dist',
+      '.aistudio',
+      'bun.lock',
+    ]).map((p) => p.replace(/\\/g, '/').replace(/\/+$/, '')),
+  );
+
+  const fileSet = new Set();
+
+  function assertSafeTargetWithinRoot(absPath, relPath) {
+    let lstat;
+    try {
+      lstat = fs.lstatSync(absPath);
+    } catch {
+      throw new Error(`Required audited input does not exist: ${relPath}`);
+    }
+    if (lstat.isSymbolicLink()) {
+      let realTarget;
+      try {
+        realTarget = fs.realpathSync(absPath);
+      } catch {
+        throw new Error(`Broken symbolic link in audited inputs: ${relPath}`);
+      }
+      const relToRoot = path.relative(realRoot, realTarget);
+      if (relToRoot.startsWith('..') || path.isAbsolute(relToRoot)) {
+        throw new Error(`Symbolic link escapes repository rootDir: ${relPath}`);
+      }
+    }
+    return lstat;
+  }
+
+  for (const rawFile of manifest.requiredFiles) {
+    const relPath = normalizePosixRelativePath(rawFile);
+    if (isExcludedByManifest(relPath, excludedPrefixes, excludedExactPaths)) {
+      throw new Error(`Manifest requiredFiles entry ${relPath} conflicts with excluded audit paths`);
+    }
+    const absPath = path.join(rootDir, relPath);
+    const lstat = assertSafeTargetWithinRoot(absPath, relPath);
+    if (lstat.isSymbolicLink() || !lstat.isFile()) {
+      throw new Error(`Manifest requiredFiles entry is not a regular file: ${relPath}`);
+    }
+    fileSet.add(relPath);
+  }
+
+  function walkRequiredDirectory(dirRel) {
+    const absDir = path.join(rootDir, dirRel);
+    const entries = fs
+      .readdirSync(absDir, { withFileTypes: true })
+      .sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
+    const collected = [];
+
+    for (const entry of entries) {
+      const childRel = `${dirRel}/${entry.name}`;
+      if (isExcludedByManifest(childRel, excludedPrefixes, excludedExactPaths)) {
+        continue;
+      }
+      const absChild = path.join(rootDir, childRel);
+      const lstat = fs.lstatSync(absChild);
+      if (lstat.isSymbolicLink()) {
+        // Ignore symlinks inside traversed directories and verify they never get hashed
+        continue;
+      }
+      if (lstat.isDirectory()) {
+        collected.push(...walkRequiredDirectory(childRel));
+      } else if (lstat.isFile()) {
+        collected.push(childRel);
+      }
+    }
+    return collected;
+  }
+
+  for (const rawDir of manifest.requiredDirectories) {
+    const dirRel = normalizePosixRelativePath(rawDir);
+    if (isExcludedByManifest(dirRel, excludedPrefixes, excludedExactPaths)) {
+      throw new Error(`Manifest requiredDirectories entry ${dirRel} conflicts with excluded audit paths`);
+    }
+    const absDir = path.join(rootDir, dirRel);
+    const lstat = assertSafeTargetWithinRoot(absDir, dirRel);
+    if (lstat.isSymbolicLink() || !lstat.isDirectory()) {
+      throw new Error(`Manifest requiredDirectories entry is not a directory: ${dirRel}`);
+    }
+    const dirFiles = walkRequiredDirectory(dirRel);
+    if (dirFiles.length === 0) {
+      throw new Error(`Manifest requiredDirectories entry ${dirRel} resolved to 0 files`);
+    }
+    for (const f of dirFiles) {
+      fileSet.add(f);
     }
   }
-  return results;
+
+  return [...fileSet].sort((a, b) => (a < b ? -1 : a > b ? 1 : 0));
 }
 
 export function computeAuditedInputsDigest(rootDir = ROOT_DIR) {
-  const auditedDirs = ['docs/audits/phase-0', 'registry', 'evals', 'schemas', 'skills'];
-  const optionalRootFiles = [
-    'package.json',
-    'docs/adapter-registry.md',
-    '.github/workflows/docs.yml',
-    'scripts/check-docs.mjs',
-    'scripts/export-claude-skills.mjs',
-    'scripts/build-registry.mjs',
-    'scripts/run-evals.mjs',
-  ];
-
-  const relFiles = [];
-  for (const dirRel of auditedDirs) {
-    relFiles.push(...collectFilesRecursive(rootDir, dirRel));
-  }
-  for (const fileRel of optionalRootFiles) {
-    if (fs.existsSync(path.join(rootDir, fileRel))) {
-      relFiles.push(fileRel);
-    }
-  }
-
-  relFiles.sort();
+  const relFiles = resolveAuditedInputFiles(rootDir);
   const hash = crypto.createHash('sha256');
   for (const relPath of relFiles) {
     const content = fs.readFileSync(path.join(rootDir, relPath));
-    hash.update(relPath, 'utf8');
-    hash.update('\0', 'utf8');
+    const pathByteLen = Buffer.byteLength(relPath, 'utf8');
+    hash.update(`path:${pathByteLen}:${relPath}\0content:${content.length}:\0`, 'utf8');
     hash.update(content);
     hash.update('\0', 'utf8');
   }
   return hash.digest('hex');
 }
 
-function inspectWorkingTreeProvenance(rootDir) {
-  const rawStatus = gitInfo(rootDir, ['status', '--porcelain', '--untracked-files=normal', '--', '.'], '');
-  const lines = rawStatus
-    .split(/\r?\n/)
-    .map((l) => l.trim())
-    .filter(Boolean)
-    .filter((line) => {
-      const filePart = line.slice(3).trim().replace(/^"(.*)"$/, '$1');
-      if (filePart.startsWith('docs/audits/current/') || filePart === 'docs/audits/current') {
-        return false;
-      }
-      if (filePart.startsWith('.aistudio/') || filePart === '.aistudio' || filePart === 'bun.lock') {
-        return false;
-      }
-      return true;
-    });
+export function inspectWorkingTreeProvenance(rootDir = ROOT_DIR) {
+  const rawPorcelainZ = gitRequired(
+    rootDir,
+    [
+      'status',
+      '--porcelain=v1',
+      '-z',
+      '--untracked-files=normal',
+      '--',
+      '.',
+      ':(exclude)docs/audits/current',
+      ':(exclude)docs/audits/current/**',
+      ':(exclude).aistudio',
+      ':(exclude).aistudio/**',
+      ':(exclude)bun.lock',
+    ],
+    { trimOutput: false },
+  );
 
-  const workingTreeState = lines.length === 0 ? 'clean' : 'dirty';
+  const tokens = rawPorcelainZ.split('\0');
+  const changedPaths = [];
+
+  for (let i = 0; i < tokens.length; i += 1) {
+    const entry = tokens[i];
+    if (!entry) continue;
+
+    if (entry.length < 4 || entry[2] !== ' ') {
+      throw new Error(`Unexpected git status --porcelain=v1 -z entry format: ${JSON.stringify(entry)}`);
+    }
+
+    const indexStatus = entry[0];
+    const workTreeStatus = entry[1];
+    const filePath = entry.slice(3);
+
+    let origPath = null;
+    if (
+      indexStatus === 'R' ||
+      indexStatus === 'C' ||
+      workTreeStatus === 'R' ||
+      workTreeStatus === 'C'
+    ) {
+      i += 1;
+      origPath = tokens[i] || '';
+    }
+
+    if (isExcludedProvenancePath(filePath) && (!origPath || isExcludedProvenancePath(origPath))) {
+      continue;
+    }
+
+    changedPaths.push(filePath);
+  }
+
+  const workingTreeState = changedPaths.length === 0 ? 'clean' : 'dirty';
   const snapshotBasis =
     workingTreeState === 'clean'
       ? 'clean-committed-tree'
@@ -94,7 +253,7 @@ function inspectWorkingTreeProvenance(rootDir) {
   return {
     workingTreeState,
     snapshotBasis,
-    uncommittedChangeCount: lines.length,
+    uncommittedChangeCount: changedPaths.length,
   };
 }
 
@@ -171,10 +330,10 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
 
   const evalRunResult = runEvalSuites({ rootDir, checkOnly: false });
 
-  const headSha = gitInfo(rootDir, ['rev-parse', 'HEAD']);
-  const headShort = gitInfo(rootDir, ['rev-parse', '--short', 'HEAD']);
-  const headDate = gitInfo(rootDir, ['log', '-1', '--format=%ci', 'HEAD']);
-  const branchName = gitInfo(rootDir, ['rev-parse', '--abbrev-ref', 'HEAD'], 'main');
+  const headSha = gitRequired(rootDir, ['rev-parse', 'HEAD']);
+  const headShort = gitRequired(rootDir, ['rev-parse', '--short', 'HEAD']);
+  const headDate = gitRequired(rootDir, ['log', '-1', '--format=%ci', 'HEAD']);
+  const branchName = gitRequired(rootDir, ['rev-parse', '--abbrev-ref', 'HEAD']);
   const { workingTreeState, snapshotBasis, uncommittedChangeCount } =
     inspectWorkingTreeProvenance(rootDir);
   const auditedInputsSha256 = computeAuditedInputsDigest(rootDir);
@@ -844,16 +1003,22 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
         commitSha: '88dc3bddb6b907a7ca12b213bd988cb5c51659e1',
         summary: 'Repository truth reconciliation (docs/audits/current/*) and Phase 3 behavioral evaluation foundation (12 pilot suites, 73 deterministic cases)',
       },
+      {
+        phase: 'Phase 3.1',
+        commitSha: '650f0a5979f1d6b9fea94a0e6378988ef1ab544e',
+        summary: 'Evaluation predicate hardening (all 5 condition operators) and explicit auditProvenance foundation',
+      },
     ],
     currentPhaseContext: {
-      phase: 'Phase 3.1',
-      title: 'Evaluation Predicate Hardening & Audit Provenance Integrity',
+      phase: 'Phase 3.1.1',
+      title: 'Provenance Verification Fixes',
       sourceCommitSha: headSha,
       workingTreeState,
       snapshotBasis,
       auditedInputsSha256,
+      auditedInputsManifest: AUDITED_INPUTS_MANIFEST_REL,
       relationshipToCommitChain:
-        'Phase 3.1 is built directly on top of Phase 2.2 & Phase 3 (88dc3bddb6b907a7ca12b213bd988cb5c51659e1). Because a Git commit cannot embed its own final SHA inside tracked files, verification-manifest.json records 88dc3bddb6b907a7ca12b213bd988cb5c51659e1 as the latest completed commit in commitChain and sourceCommitSha, while locking the Phase 3.1 audited inputs via auditedInputsSha256.',
+        'Phase 3.1.1 is built directly on top of Phase 3.1 (650f0a5979f1d6b9fea94a0e6378988ef1ab544e). Because a Git commit cannot embed its own final SHA inside tracked files, verification-manifest.json records 650f0a5979f1d6b9fea94a0e6378988ef1ab544e as the latest completed commit in commitChain and sourceCommitSha, while locking the exact Phase 3.1.1 audited inputs via auditedInputsSha256 and docs/audits/audited-inputs.manifest.json.',
     },
     ciVerificationPipeline: {
       command: 'npm run ci',
@@ -892,7 +1057,7 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
           script: 'npm test',
           command: 'node --test scripts/test-phase1.mjs scripts/test-phase2.mjs scripts/test-phase3.mjs',
           status: 'Passed',
-          verifiedScope: 'Unit and integration suites across Phase 1, Phase 2 / 2.1, and Phase 3 / 3.1',
+          verifiedScope: 'Unit and integration suites across Phase 1, Phase 2 / 2.1, and Phase 3 / 3.1 / 3.1.1',
         },
       ],
     },
@@ -937,7 +1102,17 @@ Because a Git commit cannot honestly contain its own final commit SHA inside tra
 | \`sourceCommitSha\` | \`${headSha}\` (\`${headShort}\`) | Latest verified commit in Git history when the generator executed |
 | \`workingTreeState\` | \`${workingTreeState}\` | Whether audited files had uncommitted changes on top of \`sourceCommitSha\` |
 | \`snapshotBasis\` | \`${snapshotBasis}\` | Explicit distinction between a clean committed tree and a working tree on top of \`sourceCommitSha\` |
-| \`auditedInputsSha256\` | \`${auditedInputsSha256}\` | Deterministic SHA-256 content digest across all audited repository inputs |
+| \`uncommittedChangeCount\` | \`${uncommittedChangeCount}\` | Count of modified/staged/deleted/untracked repository paths outside \`docs/audits/current/**\` |
+| \`auditedInputsSha256\` | \`${auditedInputsSha256}\` | Deterministic SHA-256 content digest across all manifest-declared repository inputs |
+
+### 1.2 Audited Input Digest Scope & Manifest Governance
+
+The \`auditedInputsSha256\` digest is governed by [\`../audited-inputs.manifest.json\`](../audited-inputs.manifest.json):
+
+- **Included Scope (\`requiredFiles\` + \`requiredDirectories\`):** Covers [\`../audited-inputs.manifest.json\`](../audited-inputs.manifest.json) itself, root governance & dependency files (\`AGENTS.md\`, \`README.md\`, \`TODO.md\`, \`LICENSE\`, \`package.json\`, \`package-lock.json\`, \`.github/workflows/docs.yml\`), core architecture & runtime docs (\`docs/README.md\`, \`docs/start-here.md\`, \`docs/runtime-stack-strategy.md\`, \`docs/adapter-registry.md\`, etc.), all validation/compiler/eval/test scripts (\`scripts/check-docs.mjs\`, \`scripts/export-claude-skills.mjs\`, \`scripts/build-registry.mjs\`, \`scripts/run-evals.mjs\`, \`scripts/generate-current-audit.mjs\`, \`scripts/test-phase1.mjs\`, \`scripts/test-phase2.mjs\`, \`scripts/test-phase3.mjs\`), and the complete directory trees \`docs/audits/phase-0\`, \`docs/audits/phase-2\`, \`docs/audits/phase-2.1\`, \`docs/audits/phase-3\`, \`docs/evals\`, \`docs/install\`, \`docs/adapters\`, \`laws\`, \`packs\`, \`bundles\`, \`skills\`, \`registry\`, \`evals\`, and \`schemas\`.
+- **Excluded Scope (\`excludedPrefixes\` & \`excludedExactPaths\`):** Excludes \`docs/audits/current/**\` (generated output directory to prevent self-referential hashing), \`.git/\`, \`node_modules/\`, \`dist/\`, \`.aistudio/\`, temporary files, and symbolic links.
+- **Digest Algorithm:** Expands all manifest files and directories into a deduplicated, lexicographically sorted list of normalized POSIX relative paths and computes a SHA-256 digest over unambiguous length-prefixed framing (\`path:<byteLength>:<relPath>\\0content:<byteLength>:\\0<bytes>\\0\`).
+- **Adding New Evidence Paths:** Whenever a new file or directory is referenced in \`scorecard.json\` (\`pillars[].evidenceFiles[]\`) or \`findings.json\` (\`findings[].evidencePaths[]\`), it **must** be covered by \`requiredFiles\` or \`requiredDirectories\` in [\`../audited-inputs.manifest.json\`](../audited-inputs.manifest.json). This invariant is enforced in CI by \`scripts/test-phase3.mjs\`.
 
 ---
 
@@ -964,10 +1139,11 @@ Because a Git commit cannot honestly contain its own final commit SHA inside tra
 - [\`findings.json\`](./findings.json) — Machine-readable lifecycle table for \`F-01\` through \`F-10\`.
 - [\`skill-inventory.json\`](./skill-inventory.json) — Live 48-skill inventory reflecting Phase 1 truth-state fixes, Phase 2/2.1 contracts, and Phase 3 pilot eval coverage.
 - [\`eval-inventory.json\`](./eval-inventory.json) — Live 48-skill evaluation inventory separating the 12 machine-readable pilot suites (73 cases) from the 36 prose-only \`EVAL.md\` files.
-- [\`verification-manifest.json\`](./verification-manifest.json) — Verified commit chain through \`88dc3bddb6b907a7ca12b213bd988cb5c51659e1\`, Phase 3.1 provenance context, CI pipeline commands, and runtime/artifact truth states.
+- [\`verification-manifest.json\`](./verification-manifest.json) — Verified commit chain through \`650f0a5979f1d6b9fea94a0e6378988ef1ab544e\`, Phase 3.1.1 provenance context, CI pipeline commands, and runtime/artifact truth states.
 
 ## Related Documentation
 
+- Audited Input Digest Manifest: [\`../audited-inputs.manifest.json\`](../audited-inputs.manifest.json)
 - Historical Phase 0 Audit: [\`../phase-0/README.md\`](../phase-0/README.md)
 - Phase 2.1 Hardening Report: [\`../phase-2.1/README.md\`](../phase-2.1/README.md)
 - Phase 3 Evaluation & Roadmap: [\`../phase-3/README.md\`](../phase-3/README.md)

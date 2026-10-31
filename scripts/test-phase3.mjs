@@ -15,6 +15,9 @@ import {
 import {
   generateCurrentAuditArtifacts,
   computeAuditedInputsDigest,
+  inspectWorkingTreeProvenance,
+  resolveAuditedInputFiles,
+  AUDITED_INPUTS_MANIFEST_REL,
 } from './generate-current-audit.mjs';
 
 const root = process.cwd();
@@ -416,7 +419,7 @@ describe('Phase 3 — Behavioral Evaluation Schema & Deterministic Runner', () =
     assert.equal(currentScorecard.totals.measuredScore, 70.0);
     assert.equal(currentScorecard.methodology.activeZeroCompensationBlockers.length, 0);
 
-    // Verify commitChain includes all verified commits through Phase 2.2 & Phase 3 (88dc3bd)
+    // Verify commitChain includes all verified commits through Phase 3.1 (650f0a5)
     const chainShas = currentManifest.commitChain.map((c) => c.commitSha);
     assert.deepEqual(chainShas, [
       '3ea3c35c6b8a6e5e915bab9f63333d4a1c09bd4d',
@@ -425,6 +428,7 @@ describe('Phase 3 — Behavioral Evaluation Schema & Deterministic Runner', () =
       'f43385a8a07dace4c13ad48cb4d63ca111f3a2ff',
       'b1927ba04bc9ac9c5ca476997ee6da7f8b8f4f78',
       '88dc3bddb6b907a7ca12b213bd988cb5c51659e1',
+      '650f0a5979f1d6b9fea94a0e6378988ef1ab544e',
     ]);
 
     // Verify explicit auditProvenance on all 5 JSON artifacts and no ambiguous self-referential commitSha
@@ -444,14 +448,14 @@ describe('Phase 3 — Behavioral Evaluation Schema & Deterministic Runner', () =
       assert.ok(doc.auditProvenance, `${label} must include auditProvenance`);
       assert.equal(
         doc.sourceCommitSha,
-        '88dc3bddb6b907a7ca12b213bd988cb5c51659e1',
-        `${label} sourceCommitSha must record Phase 2.2/3 base commit 88dc3bddb6b907a7ca12b213bd988cb5c51659e1`,
+        '650f0a5979f1d6b9fea94a0e6378988ef1ab544e',
+        `${label} sourceCommitSha must record Phase 3.1 base commit 650f0a5979f1d6b9fea94a0e6378988ef1ab544e`,
       );
       assert.equal(
         doc.auditProvenance.sourceCommitSha,
-        '88dc3bddb6b907a7ca12b213bd988cb5c51659e1',
+        '650f0a5979f1d6b9fea94a0e6378988ef1ab544e',
       );
-      assert.equal(doc.auditProvenance.sourceCommitShort, '88dc3bd');
+      assert.equal(doc.auditProvenance.sourceCommitShort, '650f0a5');
       assert.ok(
         doc.auditProvenance.workingTreeState === 'clean' ||
           doc.auditProvenance.workingTreeState === 'dirty',
@@ -500,6 +504,25 @@ describe('Phase 3 — Behavioral Evaluation Schema & Deterministic Runner', () =
       ]) {
         fs.cpSync(path.join(root, relDir), path.join(tempDir, relDir), { recursive: true });
       }
+      fs.writeFileSync(
+        path.join(tempDir, AUDITED_INPUTS_MANIFEST_REL),
+        JSON.stringify(
+          {
+            schemaVersion: '1.0.0',
+            requiredFiles: [AUDITED_INPUTS_MANIFEST_REL],
+            requiredDirectories: [
+              'docs/audits/phase-0',
+              'registry',
+              'evals',
+              'schemas',
+              'skills',
+            ],
+          },
+          null,
+          2,
+        ) + '\n',
+        'utf8',
+      );
 
       execFileSync('git', ['init', '-b', 'main'], { cwd: tempDir });
       execFileSync('git', ['config', 'user.name', 'Temp Audit Tester'], { cwd: tempDir });
@@ -513,7 +536,7 @@ describe('Phase 3 — Behavioral Evaluation Schema & Deterministic Runner', () =
       }).trim();
       assert.notEqual(
         tempHeadSha,
-        '88dc3bddb6b907a7ca12b213bd988cb5c51659e1',
+        '650f0a5979f1d6b9fea94a0e6378988ef1ab544e',
         'Isolated temp repo must have its own distinct commit SHA',
       );
 
@@ -563,5 +586,346 @@ describe('Phase 3 — Behavioral Evaluation Schema & Deterministic Runner', () =
       fs.rmSync(tempDir, { recursive: true, force: true });
     }
   });
+
+  it('Workstream A: accurately classifies Git working-tree changes across all 10 porcelain status scenarios', () => {
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-workstream-a-'));
+    try {
+      // Scenario 10: Non-repository path or Git command failure must fail explicitly, never report clean
+      assert.throws(
+        () => inspectWorkingTreeProvenance(tempDir),
+        /Git command failed|not a git repository/i,
+        'Non-Git directory must throw an explicit error rather than reporting clean',
+      );
+
+      // Initialize clean repo with both tracked source files and tracked docs/audits/current/* outputs
+      fs.mkdirSync(path.join(tempDir, 'skills', 'blendops-help'), { recursive: true });
+      fs.mkdirSync(path.join(tempDir, 'docs', 'audits', 'current'), { recursive: true });
+      fs.writeFileSync(path.join(tempDir, 'skills', 'blendops-help', 'SKILL.md'), '# Help\n', 'utf8');
+      fs.writeFileSync(path.join(tempDir, 'skills', 'blendops-help', 'EVAL.md'), '# Eval\n', 'utf8');
+      fs.writeFileSync(
+        path.join(tempDir, 'docs', 'audits', 'current', 'scorecard.json'),
+        '{"score":70}\n',
+        'utf8',
+      );
+      fs.writeFileSync(
+        path.join(tempDir, 'docs', 'audits', 'current', 'findings.json'),
+        '{"findings":[]}\n',
+        'utf8',
+      );
+
+      execFileSync('git', ['init', '-b', 'main'], { cwd: tempDir });
+      execFileSync('git', ['config', 'user.name', 'Temp Audit Tester'], { cwd: tempDir });
+      execFileSync('git', ['config', 'user.email', 'tester@example.com'], { cwd: tempDir });
+      execFileSync('git', ['add', '.'], { cwd: tempDir });
+      execFileSync('git', ['commit', '-m', 'Initial commit with tracked audit outputs'], {
+        cwd: tempDir,
+      });
+
+      // Scenario 1: Clean committed repository -> clean, count 0
+      const s1 = inspectWorkingTreeProvenance(tempDir);
+      assert.equal(s1.workingTreeState, 'clean');
+      assert.equal(s1.snapshotBasis, 'clean-committed-tree');
+      assert.equal(s1.uncommittedChangeCount, 0);
+
+      // Scenario 2: Modify a tracked source file -> dirty, count 1
+      fs.appendFileSync(
+        path.join(tempDir, 'skills', 'blendops-help', 'SKILL.md'),
+        'updated line\n',
+        'utf8',
+      );
+      const s2 = inspectWorkingTreeProvenance(tempDir);
+      assert.equal(s2.workingTreeState, 'dirty');
+      assert.equal(s2.snapshotBasis, 'working-tree-on-top-of-source-commit');
+      assert.equal(s2.uncommittedChangeCount, 1);
+      execFileSync('git', ['checkout', '--', '.'], { cwd: tempDir });
+
+      // Scenario 3: Modify a tracked file under docs/audits/current/ -> excluded from count (clean, 0)
+      fs.writeFileSync(
+        path.join(tempDir, 'docs', 'audits', 'current', 'scorecard.json'),
+        '{"score":70,"regenerated":true}\n',
+        'utf8',
+      );
+      const s3 = inspectWorkingTreeProvenance(tempDir);
+      assert.equal(
+        s3.workingTreeState,
+        'clean',
+        'Unstaged modification to tracked docs/audits/current/scorecard.json must be excluded',
+      );
+      assert.equal(s3.snapshotBasis, 'clean-committed-tree');
+      assert.equal(s3.uncommittedChangeCount, 0);
+
+      // Scenario 4: Modify multiple files including both tracked audit outputs and tracked source files -> only non-excluded changes counted
+      fs.writeFileSync(
+        path.join(tempDir, 'docs', 'audits', 'current', 'findings.json'),
+        '{"findings":["updated"]}\n',
+        'utf8',
+      );
+      fs.appendFileSync(
+        path.join(tempDir, 'skills', 'blendops-help', 'SKILL.md'),
+        'mod 1\n',
+        'utf8',
+      );
+      fs.appendFileSync(
+        path.join(tempDir, 'skills', 'blendops-help', 'EVAL.md'),
+        'mod 2\n',
+        'utf8',
+      );
+      const s4 = inspectWorkingTreeProvenance(tempDir);
+      assert.equal(s4.workingTreeState, 'dirty');
+      assert.equal(s4.uncommittedChangeCount, 2);
+      execFileSync('git', ['checkout', '--', '.'], { cwd: tempDir });
+
+      // Scenario 5: Stage a source change -> counted (and staged docs/audits/current/ change still excluded)
+      fs.appendFileSync(
+        path.join(tempDir, 'skills', 'blendops-help', 'SKILL.md'),
+        'staged mod\n',
+        'utf8',
+      );
+      fs.writeFileSync(
+        path.join(tempDir, 'docs', 'audits', 'current', 'scorecard.json'),
+        '{"score":70,"staged":true}\n',
+        'utf8',
+      );
+      execFileSync(
+        'git',
+        ['add', 'skills/blendops-help/SKILL.md', 'docs/audits/current/scorecard.json'],
+        { cwd: tempDir },
+      );
+      const s5 = inspectWorkingTreeProvenance(tempDir);
+      assert.equal(s5.workingTreeState, 'dirty');
+      assert.equal(s5.uncommittedChangeCount, 1);
+      execFileSync('git', ['reset', '--hard', 'HEAD'], { cwd: tempDir });
+
+      // Scenario 6: Delete a tracked source file -> counted
+      fs.unlinkSync(path.join(tempDir, 'skills', 'blendops-help', 'EVAL.md'));
+      const s6 = inspectWorkingTreeProvenance(tempDir);
+      assert.equal(s6.workingTreeState, 'dirty');
+      assert.equal(s6.uncommittedChangeCount, 1);
+      execFileSync('git', ['checkout', '--', '.'], { cwd: tempDir });
+
+      // Scenario 7: Add an untracked source file -> counted
+      const untrackedSource = path.join(tempDir, 'skills', 'blendops-help', 'NEW.md');
+      fs.writeFileSync(untrackedSource, '# New\n', 'utf8');
+      const s7 = inspectWorkingTreeProvenance(tempDir);
+      assert.equal(s7.workingTreeState, 'dirty');
+      assert.equal(s7.uncommittedChangeCount, 1);
+      fs.unlinkSync(untrackedSource);
+
+      // Scenario 8: Add an untracked audit output file under docs/audits/current/ -> excluded
+      const untrackedAudit = path.join(tempDir, 'docs', 'audits', 'current', 'extra.json');
+      fs.writeFileSync(untrackedAudit, '{}\n', 'utf8');
+      const s8 = inspectWorkingTreeProvenance(tempDir);
+      assert.equal(s8.workingTreeState, 'clean');
+      assert.equal(s8.uncommittedChangeCount, 0);
+      fs.unlinkSync(untrackedAudit);
+
+      // Scenario 9: Filename with spaces -> parsed and counted accurately as 1 logical path
+      const spacedFile = path.join(tempDir, 'skills', 'blendops-help', 'reference with spaces.md');
+      fs.writeFileSync(spacedFile, '# Spaced file\n', 'utf8');
+      const s9 = inspectWorkingTreeProvenance(tempDir);
+      assert.equal(s9.workingTreeState, 'dirty');
+      assert.equal(s9.uncommittedChangeCount, 1);
+      fs.unlinkSync(spacedFile);
+    } finally {
+      fs.rmSync(tempDir, { recursive: true, force: true });
+    }
+  });
+
+  it('Workstream B: enforces evidence-complete audited-inputs.manifest.json, full evidence path coverage, missing-entry failure, deduplication, and output exclusion', () => {
+    const manifestFull = path.join(root, AUDITED_INPUTS_MANIFEST_REL);
+    assert.equal(
+      fs.existsSync(manifestFull),
+      true,
+      'docs/audits/audited-inputs.manifest.json must exist on disk',
+    );
+
+    const manifest = JSON.parse(fs.readFileSync(manifestFull, 'utf8'));
+    assert.ok(Array.isArray(manifest.requiredFiles), 'manifest.requiredFiles must be an array');
+    assert.ok(
+      Array.isArray(manifest.requiredDirectories),
+      'manifest.requiredDirectories must be an array',
+    );
+    assert.ok(
+      manifest.requiredFiles.includes(AUDITED_INPUTS_MANIFEST_REL),
+      'manifest must include docs/audits/audited-inputs.manifest.json itself',
+    );
+
+    const resolvedFiles = resolveAuditedInputFiles(root);
+    const expandedSet = new Set(resolvedFiles);
+    assert.equal(
+      expandedSet.size,
+      resolvedFiles.length,
+      'resolveAuditedInputFiles must return a strictly deduplicated file list',
+    );
+
+    const scorecard = JSON.parse(
+      fs.readFileSync(path.join(root, 'docs', 'audits', 'current', 'scorecard.json'), 'utf8'),
+    );
+    const findings = JSON.parse(
+      fs.readFileSync(path.join(root, 'docs', 'audits', 'current', 'findings.json'), 'utf8'),
+    );
+
+    const referencedEvidencePaths = new Set();
+    for (const pillar of scorecard.pillars || []) {
+      for (const p of pillar.evidenceFiles || []) {
+        referencedEvidencePaths.add(p);
+      }
+    }
+    for (const finding of findings.findings || []) {
+      for (const p of finding.evidencePaths || []) {
+        referencedEvidencePaths.add(p);
+      }
+    }
+
+    for (const evPath of referencedEvidencePaths) {
+      const absEv = path.join(root, evPath);
+      assert.equal(fs.existsSync(absEv), true, `Referenced evidence path does not exist: ${evPath}`);
+
+      if (evPath === 'docs/audits/current' || evPath.startsWith('docs/audits/current/')) {
+        assert.equal(
+          expandedSet.has(evPath),
+          false,
+          `Generated current audit output ${evPath} must be excluded from audited input digest`,
+        );
+        continue;
+      }
+
+      const stat = fs.statSync(absEv);
+      if (stat.isDirectory()) {
+        const normalizedPrefix = evPath.endsWith('/') ? evPath : `${evPath}/`;
+        const hasChildCovered = resolvedFiles.some((f) => f.startsWith(normalizedPrefix));
+        assert.equal(
+          hasChildCovered,
+          true,
+          `Referenced evidence directory ${evPath} has no files covered by resolveAuditedInputFiles(root)`,
+        );
+      } else {
+        assert.equal(
+          expandedSet.has(evPath),
+          true,
+          `Referenced evidence file ${evPath} is not covered by resolveAuditedInputFiles(root)`,
+        );
+      }
+    }
+
+    // Verify isolated digest behaviors: missing entry error, deduplication, symlink exclusion, included file sensitivity, and docs/audits/current/* exclusion
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-workstream-b-'));
+    try {
+      fs.mkdirSync(path.join(tempDir, 'docs', 'audits', 'current'), { recursive: true });
+      fs.mkdirSync(path.join(tempDir, 'laws'), { recursive: true });
+      fs.writeFileSync(path.join(tempDir, 'README.md'), '# Readme v1\n', 'utf8');
+      fs.writeFileSync(
+        path.join(tempDir, 'laws', 'no-arbitrary-python-interface.md'),
+        '# Law v1\n',
+        'utf8',
+      );
+      fs.writeFileSync(
+        path.join(tempDir, 'docs', 'audits', 'current', 'scorecard.json'),
+        '{"score":70}\n',
+        'utf8',
+      );
+
+      const baseManifest = {
+        schemaVersion: '1.0.0',
+        requiredFiles: [AUDITED_INPUTS_MANIFEST_REL, 'README.md'],
+        requiredDirectories: ['laws'],
+      };
+      fs.writeFileSync(
+        path.join(tempDir, AUDITED_INPUTS_MANIFEST_REL),
+        JSON.stringify(baseManifest, null, 2) + '\n',
+        'utf8',
+      );
+
+      const digest1 = computeAuditedInputsDigest(tempDir);
+      const digest2 = computeAuditedInputsDigest(tempDir);
+      assert.equal(digest1, digest2, 'computeAuditedInputsDigest must be deterministic');
+
+      // Modifying a generated file under docs/audits/current/* must NOT change the digest
+      fs.writeFileSync(
+        path.join(tempDir, 'docs', 'audits', 'current', 'scorecard.json'),
+        '{"score":70,"modified":true}\n',
+        'utf8',
+      );
+      assert.equal(
+        computeAuditedInputsDigest(tempDir),
+        digest1,
+        'Modifying generated docs/audits/current/* files must not change auditedInputsSha256',
+      );
+
+      // Modifying an included evidence file MUST change the digest
+      fs.writeFileSync(path.join(tempDir, 'README.md'), '# Readme v2\n', 'utf8');
+      const digestAfterSourceChange = computeAuditedInputsDigest(tempDir);
+      assert.notEqual(
+        digestAfterSourceChange,
+        digest1,
+        'Modifying an included evidence file must change auditedInputsSha256',
+      );
+
+      // Overlapping file in both requiredFiles and requiredDirectories must be deduplicated (never double-hashed)
+      const listBeforeDup = resolveAuditedInputFiles(tempDir);
+      fs.writeFileSync(
+        path.join(tempDir, AUDITED_INPUTS_MANIFEST_REL),
+        JSON.stringify(
+          {
+            ...baseManifest,
+            requiredFiles: [
+              AUDITED_INPUTS_MANIFEST_REL,
+              'README.md',
+              'README.md',
+              'laws/no-arbitrary-python-interface.md',
+            ],
+          },
+          null,
+          2,
+        ) + '\n',
+        'utf8',
+      );
+      const listWithDup = resolveAuditedInputFiles(tempDir);
+      assert.deepEqual(
+        listWithDup,
+        listBeforeDup,
+        'Overlapping and duplicate entries in manifest must resolve to the exact same deduplicated file list',
+      );
+
+      // Symlinks inside a traversed directory pointing outside rootDir must be ignored and never read
+      const externalFile = path.join(os.tmpdir(), `blendops-ext-${Date.now()}.txt`);
+      fs.writeFileSync(externalFile, 'external secret\n', 'utf8');
+      try {
+        fs.symlinkSync(externalFile, path.join(tempDir, 'laws', 'escape-symlink.md'));
+        const listWithSymlink = resolveAuditedInputFiles(tempDir);
+        assert.equal(
+          listWithSymlink.includes('laws/escape-symlink.md'),
+          false,
+          'Symlinks inside requiredDirectories must be ignored',
+        );
+      } finally {
+        fs.rmSync(externalFile, { force: true });
+      }
+
+      // Missing required file must fail explicitly
+      fs.writeFileSync(
+        path.join(tempDir, AUDITED_INPUTS_MANIFEST_REL),
+        JSON.stringify(
+          {
+            ...baseManifest,
+            requiredFiles: [AUDITED_INPUTS_MANIFEST_REL, 'README.md', 'MISSING_EVIDENCE.md'],
+          },
+          null,
+          2,
+        ) + '\n',
+        'utf8',
+      );
+      assert.throws(
+        () => computeAuditedInputsDigest(tempDir),
+        /Required audited input does not exist: MISSING_EVIDENCE\.md/,
+        'Missing required file in manifest must throw an explicit error',
+      );
+    } finally {
+      fs.rmSync(tempDir, { recursive: true, force: true });
+    }
+  });
 });
+
+
+
 
