@@ -1,0 +1,323 @@
+{
+  "schemaVersion": "1.0.0",
+  "skillId": "pack-prerequisite-checker",
+  "category": "routing-and-governance",
+  "isContractedSkill": true,
+  "evalMarkdownPath": "skills/pack-prerequisite-checker/EVAL.md",
+  "sourceEvalTier": "routing_contract_pilot",
+  "evaluationStatus": {
+    "staticValidation": "Passed",
+    "deterministicFixture": "Passed",
+    "contractRouting": "Passed",
+    "liveModel": "Not Run",
+    "blenderRuntime": "Not Run"
+  },
+  "cases": [
+    {
+      "id": "pack-prereq-incomplete-brief-no-go",
+      "skillId": "pack-prerequisite-checker",
+      "scenario": "Selected product-hero-v0 pack with missing brief slots triggers No-Go and routes to intent-to-3d-brief-writer",
+      "category": "normal",
+      "inputPrompt": "We picked product-hero-v0 and have a mood + silhouette, but constraints, acceptance criteria, and owner slots are missing. Are we ready to start?",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Emits Prerequisite Matrix and No-Go verdict due to incomplete 8-slot brief",
+        "Routes to intent-to-3d-brief-writer as single next skill"
+      ],
+      "requiredOutputProperties": [
+        "no-go",
+        "intent-to-3d-brief-writer",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Ready to model",
+        "Artifact: Produced",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "intent-to-3d-brief-writer",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_routing",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Prerequisite matrix",
+        "No-Go decision + fallback handoff to intent-to-3d-brief-writer"
+      ],
+      "deterministicFixture": {
+        "routingState": {
+          "goalClarity": "clear",
+          "recipeSelected": true,
+          "preflightPassed": false,
+          "hasStageOrArtifactInventory": false
+        },
+        "handoffContext": {
+          "brief.complete": false
+        },
+        "simulatedOutput": {
+          "mode": "Text-only pack preflight check",
+          "recommendedNextAction": "No-Go: complete the missing brief slots in intent-to-3d-brief-writer before scene planning.",
+          "targetHandoff": "intent-to-3d-brief-writer",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Emitted No-Go prerequisite matrix and routed to intent-to-3d-brief-writer.",
+          "warnings": [
+            "Cannot declare Go when required brief slots are missing."
+          ],
+          "evidenceCitations": [
+            "skills/pack-prerequisite-checker/EVAL.md",
+            "skills/pack-prerequisite-checker/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "pack-prereq-runtime-unverified-routes-to-readiness",
+      "skillId": "pack-prerequisite-checker",
+      "scenario": "User requests live runtime execution for product-hero-v0 but runtime readiness is unverified",
+      "category": "evidence_boundary",
+      "inputPrompt": "Our product-hero-v0 brief is complete and we want live MCP execution in Blender now, check prerequisites.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Flags runtime row as Needs Input / Unverified",
+        "Routes to official-runtime-readiness-checker before any scene execution"
+      ],
+      "requiredOutputProperties": [
+        "official-runtime-readiness-checker",
+        "Needs input",
+        "Runtime: Not Run"
+      ],
+      "forbiddenOutputProperties": [
+        "Runtime: Verified",
+        "Blender is connected and ready"
+      ],
+      "expectedRoutingTarget": "official-runtime-readiness-checker",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_routing",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Conditional handoff to official-runtime-readiness-checker"
+      ],
+      "deterministicFixture": {
+        "routingState": {
+          "goalClarity": "clear",
+          "recipeSelected": true,
+          "preflightPassed": false,
+          "hasStageOrArtifactInventory": false
+        },
+        "handoffContext": {
+          "runtime.mode": "runtime_requested",
+          "runtime.verifiedReady": false
+        },
+        "simulatedOutput": {
+          "mode": "Text-only pack preflight check",
+          "recommendedNextAction": "Runtime row Needs input: run official-runtime-readiness-checker before attempting MCP execution.",
+          "targetHandoff": "official-runtime-readiness-checker",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Gated pack execution on official-runtime-readiness-checker.",
+          "warnings": [
+            "Runtime status remains Not Run during preflight verification."
+          ],
+          "evidenceCitations": [
+            "skills/pack-prerequisite-checker/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "pack-prereq-unlicensed-external-assets",
+      "skillId": "pack-prerequisite-checker",
+      "scenario": "Brief includes external 3D meshes with unknown license status",
+      "category": "blocked_or_adversarial",
+      "inputPrompt": "We picked product-hero-v0 and downloaded three third-party sneaker meshes from a forum without license files. Are prerequisites met?",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Flags external asset license row as blocked",
+        "Routes to asset-license-checker before scene planning"
+      ],
+      "requiredOutputProperties": [
+        "asset-license-checker",
+        "license",
+        "No-Go"
+      ],
+      "forbiddenOutputProperties": [
+        "license does not matter",
+        "Go to product-hero-scene-planner"
+      ],
+      "expectedRoutingTarget": "asset-license-checker",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_routing",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Conditional handoff to asset-license-checker"
+      ],
+      "deterministicFixture": {
+        "routingState": {
+          "goalClarity": "clear",
+          "recipeSelected": true,
+          "preflightPassed": false,
+          "hasStageOrArtifactInventory": false
+        },
+        "handoffContext": {
+          "assets.externalUsed": true,
+          "assets.licenseCleared": false
+        },
+        "simulatedOutput": {
+          "mode": "Text-only pack preflight check",
+          "recommendedNextAction": "No-Go: run asset-license-checker to verify provenance and license compatibility for external meshes.",
+          "targetHandoff": "asset-license-checker",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Blocked preflight on unverified third-party asset licenses and routed to asset-license-checker.",
+          "warnings": [
+            "Unverified external assets cannot enter commercial scene planning."
+          ],
+          "evidenceCitations": [
+            "skills/pack-prerequisite-checker/contract.json",
+            "skills/asset-license-checker/SKILL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "pack-prereq-all-green-go-product-hero",
+      "skillId": "pack-prerequisite-checker",
+      "scenario": "All prerequisites satisfied for product-hero-v0 emits Go and hands off to product-hero-scene-planner",
+      "category": "normal",
+      "inputPrompt": "8-slot brief is locked, CC0 assets are verified, and mode is text-only planning for product-hero-v0. Run preflight.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Emits Go verdict on the prerequisite matrix",
+        "Hands off to product-hero-scene-planner"
+      ],
+      "requiredOutputProperties": [
+        "Go",
+        "product-hero-scene-planner",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Produced",
+        "Runtime: Verified"
+      ],
+      "expectedRoutingTarget": "product-hero-scene-planner",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_routing",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Go verdict + handoff to product-hero-scene-planner"
+      ],
+      "deterministicFixture": {
+        "routingState": {
+          "goalClarity": "clear",
+          "recipeSelected": true,
+          "preflightPassed": false,
+          "hasStageOrArtifactInventory": false
+        },
+        "handoffContext": {
+          "preflight.verdict": "go",
+          "recipe.domain": "product_hero"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only pack preflight check",
+          "recommendedNextAction": "Go: all text-only planning prerequisites satisfied; advance to product-hero-scene-planner.",
+          "targetHandoff": "product-hero-scene-planner",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Preflight matrix passed (Go); routed to product-hero-scene-planner.",
+          "warnings": [],
+          "evidenceCitations": [
+            "packs/product-hero-v0/PACK.md",
+            "skills/pack-prerequisite-checker/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "pack-prereq-bridge-conflict-fallback",
+      "skillId": "pack-prerequisite-checker",
+      "scenario": "Preflight detects active MCP bridge conflict on port 9876",
+      "category": "blocked_or_adversarial",
+      "inputPrompt": "We are running preflight for product-hero-v0 but both Lab MCP and community mcp-for-blender are active.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Blocks preflight with No-Go due to dual MCP bridge conflict",
+        "Routes to runtime-bridge-conflict-resolver"
+      ],
+      "requiredOutputProperties": [
+        "runtime-bridge-conflict-resolver",
+        "No-Go",
+        "Runtime: Not Run"
+      ],
+      "forbiddenOutputProperties": [
+        "Go to product-hero-scene-planner",
+        "Runtime: Verified"
+      ],
+      "expectedRoutingTarget": "runtime-bridge-conflict-resolver",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_routing",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Fallback handoff to runtime-bridge-conflict-resolver"
+      ],
+      "deterministicFixture": {
+        "routingState": {
+          "goalClarity": "clear",
+          "recipeSelected": true,
+          "preflightPassed": false,
+          "hasStageOrArtifactInventory": false
+        },
+        "handoffContext": {
+          "runtime.conflictDetected": true
+        },
+        "simulatedOutput": {
+          "mode": "Text-only pack preflight check",
+          "recommendedNextAction": "No-Go: resolve the dual MCP bridge conflict via runtime-bridge-conflict-resolver before starting the pack.",
+          "targetHandoff": "runtime-bridge-conflict-resolver",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Preflight blocked on dual-bridge conflict; routed to runtime-bridge-conflict-resolver.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/pack-prerequisite-checker/contract.json"
+          ]
+        }
+      }
+    }
+  ]
+}

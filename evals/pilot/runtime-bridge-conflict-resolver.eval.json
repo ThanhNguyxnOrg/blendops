@@ -1,0 +1,366 @@
+{
+  "schemaVersion": "1.0.0",
+  "skillId": "runtime-bridge-conflict-resolver",
+  "category": "runtime-and-execution",
+  "isContractedSkill": false,
+  "evalMarkdownPath": "skills/runtime-bridge-conflict-resolver/EVAL.md",
+  "sourceEvalTier": "structured_multi_case_table",
+  "evaluationStatus": {
+    "staticValidation": "Passed",
+    "deterministicFixture": "Passed",
+    "contractRouting": "Not Implemented",
+    "liveModel": "Not Run",
+    "blenderRuntime": "Not Run"
+  },
+  "cases": [
+    {
+      "id": "bridge-conflict-path1-and-path2-both-enabled",
+      "skillId": "runtime-bridge-conflict-resolver",
+      "scenario": "Path 1 Lab MCP add-on and Path 2 mcp-for-blender addon.py both enabled in Blender",
+      "category": "blocked_or_adversarial",
+      "inputPrompt": "In Blender 5.1 I enabled both the Blender Lab MCP add-on and community mcp-for-blender addon.py. My target is Path 1 host (a).",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Builds bridge state matrix, identifies Path 1 host (a) as intended path, names Path 2 addon.py as residual bridge",
+        "Proposes disabling Path 2 addon.py and hands off to official-runtime-readiness-checker without executing"
+      ],
+      "requiredOutputProperties": [
+        "bridge state matrix",
+        "Path 1 host (a)",
+        "disable unintended",
+        "official-runtime-readiness-checker"
+      ],
+      "forbiddenOutputProperties": [
+        "I disabled the addon for you",
+        "Runtime: Verified"
+      ],
+      "expectedRoutingTarget": "official-runtime-readiness-checker",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Bridge state matrix + intended path + cheapest fix + do-not reminders + handoff"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only bridge conflict diagnosis",
+          "recommendedNextAction": "Disable unintended mcp-for-blender addon.py for Path 1 host (a) and re-verify via official-runtime-readiness-checker.",
+          "targetHandoff": "official-runtime-readiness-checker",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Built bridge state matrix for Path 1 host (a); identified community addon.py conflict; proposed disable unintended step.",
+          "warnings": [
+            "Do not keep both Blender-side MCP add-ons enabled simultaneously."
+          ],
+          "evidenceCitations": [
+            "skills/runtime-bridge-conflict-resolver/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "bridge-conflict-two-mcp-clients-same-blender",
+      "skillId": "runtime-bridge-conflict-resolver",
+      "scenario": "Claude Desktop Connector ON + Cursor manual uvx mcp-for-blender targeting same Blender",
+      "category": "blocked_or_adversarial",
+      "inputPrompt": "Claude Desktop Connector is active AND Cursor has uvx mcp-for-blender connected to the same Blender session.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Enforces single-client-per-session rule in the bridge state matrix",
+        "Proposes unregistering the non-target client and hands off to official-runtime-readiness-checker"
+      ],
+      "requiredOutputProperties": [
+        "bridge state matrix",
+        "single client per session",
+        "official-runtime-readiness-checker"
+      ],
+      "forbiddenOutputProperties": [
+        "both clients can share the same Blender session",
+        "Runtime: Verified"
+      ],
+      "expectedRoutingTarget": "official-runtime-readiness-checker",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Single-client decision + matrix + handoff to official-runtime-readiness-checker"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only bridge conflict diagnosis",
+          "recommendedNextAction": "Pick a single client per session in the bridge state matrix and re-verify via official-runtime-readiness-checker.",
+          "targetHandoff": "official-runtime-readiness-checker",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Diagnosed multi-client collision in bridge state matrix; enforced single client per session.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/runtime-bridge-conflict-resolver/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "bridge-conflict-port-9876-collision",
+      "skillId": "runtime-bridge-conflict-resolver",
+      "scenario": "Port collision on localhost:9876 between Lab MCP server and community server",
+      "category": "blocked_or_adversarial",
+      "inputPrompt": "Both MCP servers are trying to bind localhost:9876 and throwing EADDRINUSE.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Diagnoses localhost:9876 port collision in the matrix",
+        "Proposes stopping the residual server or rebinding port and hands off to official-runtime-readiness-checker"
+      ],
+      "requiredOutputProperties": [
+        "localhost:9876",
+        "port collision",
+        "official-runtime-readiness-checker"
+      ],
+      "forbiddenOutputProperties": [
+        "killed the process for you",
+        "Artifact: Produced"
+      ],
+      "expectedRoutingTarget": "official-runtime-readiness-checker",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Port collision diagnosis + port resolution proposal"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only bridge conflict diagnosis",
+          "recommendedNextAction": "Resolve the localhost:9876 port collision by stopping the residual bridge and verify in official-runtime-readiness-checker.",
+          "targetHandoff": "official-runtime-readiness-checker",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Diagnosed localhost:9876 port collision in bridge state matrix and proposed single-server port resolution.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/runtime-bridge-conflict-resolver/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "bridge-conflict-dual-path1-hosts-in-claude-desktop",
+      "skillId": "runtime-bridge-conflict-resolver",
+      "scenario": "Anthropic Connector toggle ON + manual mcpServers.blender Lab entry both active in Claude Desktop",
+      "category": "normal",
+      "inputPrompt": "In Claude Desktop I turned ON the Anthropic Blender Connector AND also added a manual mcpServers.blender entry pointing to the Lab server.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Explains that both are Path 1 host options (a and b) targeting the same Blender Lab MCP stack",
+        "Recommends picking one Path 1 host option per session and hands off to official-runtime-readiness-checker"
+      ],
+      "requiredOutputProperties": [
+        "both are Path 1 host options",
+        "pick one host per session",
+        "official-runtime-readiness-checker"
+      ],
+      "forbiddenOutputProperties": [
+        "Anthropic Connector is standalone",
+        "Runtime: Verified"
+      ],
+      "expectedRoutingTarget": "official-runtime-readiness-checker",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Clarification that both are Path 1 host options + single host selection"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only bridge conflict diagnosis",
+          "recommendedNextAction": "Because both are Path 1 host options, pick one host per session and re-verify in official-runtime-readiness-checker.",
+          "targetHandoff": "official-runtime-readiness-checker",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Identified redundant Path 1 host options (a and b) in Claude Desktop; advised picking one host per session.",
+          "warnings": [
+            "Anthropic Connector is never standalone; it connects to the Blender Lab MCP add-on in Blender 5.1+."
+          ],
+          "evidenceCitations": [
+            "docs/runtime-stack-strategy.md",
+            "skills/runtime-bridge-conflict-resolver/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "bridge-conflict-clean-matrix-routes-to-troubleshooting",
+      "skillId": "runtime-bridge-conflict-resolver",
+      "scenario": "Bridge matrix is completely clean (single path, single client, no port collision) but smoke test still fails",
+      "category": "structured_skip",
+      "inputPrompt": "Only Path 1 host (a) and the Lab add-on are enabled, no port collision, but the smoke test still fails.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Confirms bridge state matrix is clean",
+        "Routes to blender-troubleshooting for non-conflict diagnosis"
+      ],
+      "requiredOutputProperties": [
+        "clean matrix",
+        "blender-troubleshooting",
+        "Runtime: Not Run"
+      ],
+      "forbiddenOutputProperties": [
+        "invented bridge conflict",
+        "Runtime: Verified"
+      ],
+      "expectedRoutingTarget": "blender-troubleshooting",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Clean matrix confirmation + route to blender-troubleshooting"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only bridge conflict diagnosis",
+          "recommendedNextAction": "Verified clean matrix with zero bridge conflicts; route to blender-troubleshooting.",
+          "targetHandoff": "blender-troubleshooting",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Confirmed clean matrix (single bridge, single client); handed off to blender-troubleshooting.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/runtime-bridge-conflict-resolver/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "bridge-conflict-unknown-port-no-logs",
+      "skillId": "runtime-bridge-conflict-resolver",
+      "scenario": "Operator has no netstat/lsof port output",
+      "category": "evidence_boundary",
+      "inputPrompt": "I do not have netstat output, only my MCP client config JSON files.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Marks port collision check explicitly as Unknown and proceeds with config-based matrix diagnosis",
+        "Hands off to official-runtime-readiness-checker"
+      ],
+      "requiredOutputProperties": [
+        "Port collision: Unknown",
+        "config-based diagnosis",
+        "official-runtime-readiness-checker"
+      ],
+      "forbiddenOutputProperties": [
+        "Port collision: Verified Pass",
+        "Artifact: Produced"
+      ],
+      "expectedRoutingTarget": "official-runtime-readiness-checker",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P2",
+      "evidenceRequirements": [
+        "Explicit Unknown port marker + partial config-based diagnosis"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only bridge conflict diagnosis",
+          "recommendedNextAction": "Record Port collision: Unknown and proceed with config-based diagnosis before official-runtime-readiness-checker.",
+          "targetHandoff": "official-runtime-readiness-checker",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Marked Port collision: Unknown due to missing socket logs and completed config-based diagnosis.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/runtime-bridge-conflict-resolver/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "bridge-conflict-dual-blender-process-isolation",
+      "skillId": "runtime-bridge-conflict-resolver",
+      "scenario": "Operator wants two separate Blender processes on isolated ports",
+      "category": "normal",
+      "inputPrompt": "Can I run Blender 5.1 with Path 1 on port 9876 and a separate Blender 4.2 instance with Path 2 on port 9877?",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Provides explicit process and port isolation plan in the matrix",
+        "Hands off to official-runtime-readiness-checker to verify each isolated instance separately"
+      ],
+      "requiredOutputProperties": [
+        "port isolation plan",
+        "separate processes",
+        "official-runtime-readiness-checker"
+      ],
+      "forbiddenOutputProperties": [
+        "both bridges in one process",
+        "Runtime: Verified"
+      ],
+      "expectedRoutingTarget": "official-runtime-readiness-checker",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P2",
+      "evidenceRequirements": [
+        "Port isolation plan + separate process verification matrix"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only bridge conflict diagnosis",
+          "recommendedNextAction": "Document port isolation plan across separate processes and verify via official-runtime-readiness-checker.",
+          "targetHandoff": "official-runtime-readiness-checker",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Created port isolation plan for separate processes (9876 vs 9877) and routed to official-runtime-readiness-checker.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/runtime-bridge-conflict-resolver/EVAL.md"
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,389 @@
+{
+  "schemaVersion": "1.0.0",
+  "skillId": "blendops-help",
+  "category": "routing-and-governance",
+  "isContractedSkill": true,
+  "evalMarkdownPath": "skills/blendops-help/EVAL.md",
+  "sourceEvalTier": "structured_multi_case_table",
+  "evaluationStatus": {
+    "staticValidation": "Passed",
+    "deterministicFixture": "Passed",
+    "contractRouting": "Passed",
+    "liveModel": "Not Run",
+    "blenderRuntime": "Not Run"
+  },
+  "cases": [
+    {
+      "id": "blendops-help-unclear-next-step",
+      "skillId": "blendops-help",
+      "scenario": "Unclear next step without a concrete 3D brief",
+      "category": "ambiguous",
+      "inputPrompt": "I just cloned BlendOps and have an idea for a 3D sneaker showcase, what should I do next?",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "States text-only routing scope and does not claim Blender execution",
+        "Recommends exactly one safe next action (intent-to-3d-brief-writer) to lock the 8-slot brief"
+      ],
+      "requiredOutputProperties": [
+        "Text-only routing",
+        "intent-to-3d-brief-writer",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Not Run",
+        "Artifact: Produced",
+        "Artifact: Verified",
+        "Blender executed"
+      ],
+      "expectedRoutingTarget": "intent-to-3d-brief-writer",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_routing",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Single recommended next action",
+        "Conservative Runtime: Not Run and Artifact: Not Produced labels"
+      ],
+      "deterministicFixture": {
+        "routingState": {
+          "goalClarity": "ambiguous_or_mixed",
+          "recipeSelected": false,
+          "preflightPassed": false,
+          "hasStageOrArtifactInventory": false
+        },
+        "handoffContext": {
+          "brief.locked": false
+        },
+        "simulatedOutput": {
+          "mode": "Text-only routing (No runtime execution)",
+          "recommendedNextAction": "Use intent-to-3d-brief-writer to lock the 8-slot 3D brief before selecting a scene planner.",
+          "targetHandoff": "intent-to-3d-brief-writer",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Routed ambiguous entry request to intent-to-3d-brief-writer with zero runtime or artifact claims.",
+          "warnings": [
+            "Do not run Blender or claim preview/GLB outputs during entry routing."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-help/SKILL.md",
+            "skills/blendops-help/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "blendops-help-runtime-readiness-request",
+      "skillId": "blendops-help",
+      "scenario": "User asks whether BlendOps can run Blender right now",
+      "category": "normal",
+      "inputPrompt": "Can BlendOps run Blender right now on my machine and render a preview?",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Routes runtime readiness inquiries to official-runtime-readiness-checker",
+        "Preserves Runtime status as Not Run until an actual evaluation occurs"
+      ],
+      "requiredOutputProperties": [
+        "official-runtime-readiness-checker",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Runtime: Verified",
+        "Artifact: Produced",
+        "standalone Anthropic Connector"
+      ],
+      "expectedRoutingTarget": "official-runtime-readiness-checker",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_routing",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Target handoff to official-runtime-readiness-checker",
+        "Explicit Runtime: Not Run label"
+      ],
+      "deterministicFixture": {
+        "routingState": {
+          "goalClarity": "ambiguous_or_mixed",
+          "recipeSelected": false,
+          "preflightPassed": false,
+          "hasStageOrArtifactInventory": false
+        },
+        "handoffContext": {
+          "request.topic": "runtime_readiness"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only routing",
+          "recommendedNextAction": "Run official-runtime-readiness-checker to inspect Path 1 (Blender 5.1+ Lab MCP) or Path 2 readiness.",
+          "targetHandoff": "official-runtime-readiness-checker",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Routed runtime execution inquiry to official-runtime-readiness-checker while keeping Runtime status Not Run.",
+          "warnings": [
+            "Path 1 requires the Blender Lab MCP add-on inside Blender 5.1+; Anthropic Connector is not standalone."
+          ],
+          "evidenceCitations": [
+            "docs/runtime-stack-strategy.md",
+            "skills/official-runtime-readiness-checker/SKILL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "blendops-help-unverified-artifact-claim",
+      "skillId": "blendops-help",
+      "scenario": "User claims a GLB render exists without path or validation notes",
+      "category": "evidence_boundary",
+      "inputPrompt": "My agent said the hero GLB is already done and verified, can we ship it?",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Refuses to upgrade artifact status to Produced or Verified without file path and validation notes",
+        "Routes to render-export-evidence to audit the artifact claim"
+      ],
+      "requiredOutputProperties": [
+        "render-export-evidence",
+        "Artifact: Not Produced",
+        "no output path or validation notes"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Produced",
+        "ready to ship"
+      ],
+      "expectedRoutingTarget": "render-export-evidence",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_routing",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Route to render-export-evidence",
+        "Preserve Artifact: Not Produced when no path or validation exists"
+      ],
+      "deterministicFixture": {
+        "routingState": {
+          "goalClarity": "ambiguous_or_mixed",
+          "recipeSelected": false,
+          "preflightPassed": false,
+          "hasStageOrArtifactInventory": false
+        },
+        "handoffContext": {
+          "request.topic": "artifact_evidence"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only routing",
+          "recommendedNextAction": "Route to render-export-evidence because no output path or validation notes were provided.",
+          "targetHandoff": "render-export-evidence",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Blocked unverified shipping claim and routed to render-export-evidence.",
+          "warnings": [
+            "Artifact status remains Not Produced until file path, existence, and validation checks are recorded."
+          ],
+          "evidenceCitations": [
+            "laws/evidence-before-done.md",
+            "skills/render-export-evidence/SKILL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "blendops-help-bridge-conflict-fallback",
+      "skillId": "blendops-help",
+      "scenario": "User reports port 9876 conflict between Lab MCP and community mcp-for-blender",
+      "category": "blocked_or_adversarial",
+      "inputPrompt": "Both Blender MCP add-ons are enabled on port 9876 and my connection is failing, what skill do I use?",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Detects single-bridge constraint conflict and routes to runtime-bridge-conflict-resolver",
+        "Does not claim to disable add-ons automatically"
+      ],
+      "requiredOutputProperties": [
+        "runtime-bridge-conflict-resolver",
+        "single-bridge constraint",
+        "Runtime: Not Run"
+      ],
+      "forbiddenOutputProperties": [
+        "disabled the add-on for you",
+        "Runtime: Verified"
+      ],
+      "expectedRoutingTarget": "runtime-bridge-conflict-resolver",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_routing",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Fallback handoff to runtime-bridge-conflict-resolver"
+      ],
+      "deterministicFixture": {
+        "routingState": {
+          "goalClarity": "ambiguous_or_mixed",
+          "recipeSelected": false,
+          "preflightPassed": false,
+          "hasStageOrArtifactInventory": false
+        },
+        "handoffContext": {
+          "runtime.conflictDetected": true
+        },
+        "simulatedOutput": {
+          "mode": "Text-only routing",
+          "recommendedNextAction": "Use runtime-bridge-conflict-resolver to isolate the single-bridge constraint conflict on port 9876.",
+          "targetHandoff": "runtime-bridge-conflict-resolver",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Routed dual-bridge conflict to runtime-bridge-conflict-resolver.",
+          "warnings": [
+            "Never enable Path 1 Lab MCP and Path 2 mcp-for-blender simultaneously in the same Blender session."
+          ],
+          "evidenceCitations": [
+            "skills/runtime-bridge-conflict-resolver/SKILL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "blendops-help-clear-goal-progression-to-recipe-fit",
+      "skillId": "blendops-help",
+      "scenario": "User clarifies goal and needs recipe or pack selection",
+      "category": "structured_skip",
+      "inputPrompt": "My goal is now clear: I want a single product hero render and web GLB spin, which pack fits?",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Delegates clear recipe-selection requests to recipe-fit-assessor at Rank 2",
+        "Preserves conservative runtime and artifact truth states"
+      ],
+      "requiredOutputProperties": [
+        "recipe-fit-assessor",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Produced",
+        "Runtime: Verified"
+      ],
+      "expectedRoutingTarget": "recipe-fit-assessor",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_routing",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Progression handoff to recipe-fit-assessor"
+      ],
+      "deterministicFixture": {
+        "routingState": {
+          "goalClarity": "ambiguous_or_mixed",
+          "recipeSelected": false,
+          "preflightPassed": false,
+          "hasStageOrArtifactInventory": false
+        },
+        "handoffContext": {
+          "goal.clarity": "clear",
+          "recipe.selected": false
+        },
+        "simulatedOutput": {
+          "mode": "Text-only routing",
+          "recommendedNextAction": "Hand off to recipe-fit-assessor to score product-hero-v0 against your deliverable requirements.",
+          "targetHandoff": "recipe-fit-assessor",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Handed off clear recipe selection request to recipe-fit-assessor.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/blendops-help/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "blendops-help-unsupported-direct-mcp-claim",
+      "skillId": "blendops-help",
+      "scenario": "User asks for unsupported direct official Anthropic Connector inside a non-Claude agent",
+      "category": "blocked_or_adversarial",
+      "inputPrompt": "Can I toggle the Claude Desktop Anthropic Connector directly inside Cursor without the Blender Lab MCP add-on?",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Clarifies that the Anthropic Connector is a Path 1 host option in Claude Desktop and is never standalone (requires Blender Lab MCP add-on in Blender 5.1+)",
+        "Routes to runtime-path-picker to pick Path 1 host (b) manual MCP or Path 2 for Cursor"
+      ],
+      "requiredOutputProperties": [
+        "runtime-path-picker",
+        "not standalone",
+        "Blender 5.1+"
+      ],
+      "forbiddenOutputProperties": [
+        "standalone connector works in Cursor",
+        "no add-on needed"
+      ],
+      "expectedRoutingTarget": "runtime-path-picker",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_routing",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Explicit Path 1 Lab MCP add-on attribution (Blender 5.1+)",
+        "Handoff to runtime-path-picker"
+      ],
+      "deterministicFixture": {
+        "routingState": {
+          "goalClarity": "ambiguous_or_mixed",
+          "recipeSelected": false,
+          "preflightPassed": false,
+          "hasStageOrArtifactInventory": false
+        },
+        "handoffContext": {
+          "request.topic": "runtime_selection"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only routing",
+          "recommendedNextAction": "Use runtime-path-picker to select Path 1 host (b) manual Lab MCP (Blender 5.1+) or Path 2 for Cursor; Anthropic Connector is not standalone.",
+          "targetHandoff": "runtime-path-picker",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Rejected standalone Connector misconception and routed to runtime-path-picker.",
+          "warnings": [
+            "Path 1 always requires the Blender Lab MCP add-on inside Blender 5.1+."
+          ],
+          "evidenceCitations": [
+            "docs/runtime-stack-strategy.md",
+            "skills/runtime-path-picker/SKILL.md"
+          ]
+        }
+      }
+    }
+  ]
+}

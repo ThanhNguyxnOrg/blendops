@@ -1,0 +1,84 @@
+{
+  "schemaVersion": "1.0.0",
+  "auditPhase": "phase-2.2-and-phase-3-current",
+  "repository": "ThanhNguyxnOrg/blendops",
+  "branch": "main",
+  "commitSha": "b1927ba04bc9ac9c5ca476997ee6da7f8b8f4f78",
+  "commitDate": "2026-10-31 05:43:12 +0000",
+  "commitChain": [
+    {
+      "phase": "Original Base",
+      "commitSha": "3ea3c35c6b8a6e5e915bab9f63333d4a1c09bd4d",
+      "summary": "Pre-audit repository baseline (54.5/100 provisional scorecard)"
+    },
+    {
+      "phase": "Phase 0",
+      "commitSha": "d9e70ed0a7191cd8e6f63bcb6d50d9964544e625",
+      "summary": "Full 48-skill repository audit, inventories, baseline scorecard, and Inspector UI"
+    },
+    {
+      "phase": "Phase 1",
+      "commitSha": "ac1ccdb96afe7c52c3064281bd5b0f2dde69468e",
+      "summary": "P0 remediation: F-01 truth-state normalization (30 skills), F-02 pure-Node fflate exporter & CI workflow, F-08 26-target adapter registry sync"
+    },
+    {
+      "phase": "Phase 2",
+      "commitSha": "f43385a8a07dace4c13ad48cb4d63ca111f3a2ff",
+      "summary": "Contract-first routing pilot (4 routing skills), registry compiler, progression cycle detector, and managed Markdown sections"
+    },
+    {
+      "phase": "Phase 2.1",
+      "commitSha": "b1927ba04bc9ac9c5ca476997ee6da7f8b8f4f78",
+      "summary": "Draft 2020-12 Ajv2020 schema enforcement, 16-state activationGate overlap/reachability verifier, and byte-for-byte EVAL.md ZIP export verification"
+    }
+  ],
+  "ciVerificationPipeline": {
+    "command": "npm run ci",
+    "steps": [
+      {
+        "script": "npm run docs:check",
+        "command": "node scripts/check-docs.mjs",
+        "status": "Passed",
+        "verifiedScope": "Active Markdown files, frontmatter limits, relative links, Path 1 Blender 5.1+ attribution, F-01 truth-state guard, F-08 adapter registry guard"
+      },
+      {
+        "script": "npm run registry:check",
+        "command": "node scripts/build-registry.mjs --check",
+        "status": "Passed",
+        "verifiedScope": "Draft 2020-12 Ajv2020 contract schema validation, 4/48 routing-pilot contracts, 16-state precedence ladder overlap/reachability, progression DAG acyclicity, managed Markdown sync"
+      },
+      {
+        "script": "npm run evals:check",
+        "command": "node scripts/run-evals.mjs --check",
+        "status": "Passed",
+        "verifiedScope": "Draft 2020-12 Ajv2020 evaluation schema validation across 12 pilot suites (73 cases) and evals/index.json synchronization"
+      },
+      {
+        "script": "npm run evals:run",
+        "command": "node scripts/run-evals.mjs",
+        "status": "Passed",
+        "verifiedScope": "73/73 deterministic fixture, truth-state separation, and contract-routing assertions passed (live_model: Not Run, blender_runtime: Not Run)"
+      },
+      {
+        "script": "npm run skills:export",
+        "command": "node scripts/export-claude-skills.mjs",
+        "status": "Passed",
+        "verifiedScope": "48 ZIP archives in dist/claude-skills-zip/ and 48 folders in dist/claude-code-skills/ with SKILL.md, EVAL.md, and references/* verified"
+      },
+      {
+        "script": "npm test",
+        "command": "node --test scripts/test-phase1.mjs scripts/test-phase2.mjs scripts/test-phase3.mjs",
+        "status": "Passed",
+        "verifiedScope": "Unit and integration suites across Phase 1, Phase 2 / 2.1, and Phase 3"
+      }
+    ]
+  },
+  "truthStates": {
+    "staticValidation": "Verified",
+    "contractRoutingPilot": "Verified (4/48 skills)",
+    "deterministicEvalFixtures": "Verified (12/48 skills, 73 cases)",
+    "liveModelEval": "Not Run",
+    "blenderRuntimeExecution": "Not Run",
+    "blenderArtifacts": "Not Produced"
+  }
+}

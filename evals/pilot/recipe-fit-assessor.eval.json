@@ -1,0 +1,318 @@
+{
+  "schemaVersion": "1.0.0",
+  "skillId": "recipe-fit-assessor",
+  "category": "routing-and-governance",
+  "isContractedSkill": true,
+  "evalMarkdownPath": "skills/recipe-fit-assessor/EVAL.md",
+  "sourceEvalTier": "routing_contract_pilot",
+  "evaluationStatus": {
+    "staticValidation": "Passed",
+    "deterministicFixture": "Passed",
+    "contractRouting": "Passed",
+    "liveModel": "Not Run",
+    "blenderRuntime": "Not Run"
+  },
+  "cases": [
+    {
+      "id": "recipe-fit-strong-product-hero-unlocked-brief",
+      "skillId": "recipe-fit-assessor",
+      "scenario": "Clear single-product hero goal with unlocked brief routes to intent-to-3d-brief-writer",
+      "category": "normal",
+      "inputPrompt": "I want a studio hero shot and web GLB viewer spin for a single wireless headphone product. Does product-hero-v0 fit?",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Scores product-hero-v0 as a strong fit for single-subject hero still + web GLB",
+        "Hands off to intent-to-3d-brief-writer because the 8-slot brief is not locked yet"
+      ],
+      "requiredOutputProperties": [
+        "product-hero-v0",
+        "strong_fit",
+        "intent-to-3d-brief-writer"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Produced",
+        "Artifact: Not Run",
+        "skipping brief"
+      ],
+      "expectedRoutingTarget": "intent-to-3d-brief-writer",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_routing",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Fit verdict table",
+        "Progression handoff to intent-to-3d-brief-writer"
+      ],
+      "deterministicFixture": {
+        "routingState": {
+          "goalClarity": "clear",
+          "recipeSelected": false,
+          "preflightPassed": false,
+          "hasStageOrArtifactInventory": false
+        },
+        "handoffContext": {
+          "fit.verdict": "strong_fit",
+          "brief.locked": false
+        },
+        "simulatedOutput": {
+          "mode": "Text-only recipe fit scoring",
+          "recommendedNextAction": "Lock the 8-slot brief in intent-to-3d-brief-writer for pack product-hero-v0 (strong_fit).",
+          "targetHandoff": "intent-to-3d-brief-writer",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Scored product-hero-v0 as strong_fit and handed off to intent-to-3d-brief-writer.",
+          "warnings": [],
+          "evidenceCitations": [
+            "packs/product-hero-v0/PACK.md",
+            "skills/recipe-fit-assessor/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "recipe-fit-locked-brief-routes-to-pack-prerequisite",
+      "skillId": "recipe-fit-assessor",
+      "scenario": "Strong fit with an already locked 8-slot brief advances to pack-prerequisite-checker",
+      "category": "structured_skip",
+      "inputPrompt": "We already locked our 8-slot brief for a smartwatch hero render and confirmed product-hero-v0 fits. What is the next gate?",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Recognizes brief.locked is true and fit.verdict is strong_fit",
+        "Advances directly to pack-prerequisite-checker (Rank 3)"
+      ],
+      "requiredOutputProperties": [
+        "pack-prerequisite-checker",
+        "strong_fit",
+        "Runtime: Not Run"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "ready to render immediately"
+      ],
+      "expectedRoutingTarget": "pack-prerequisite-checker",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_routing",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Progression handoff to pack-prerequisite-checker"
+      ],
+      "deterministicFixture": {
+        "routingState": {
+          "goalClarity": "clear",
+          "recipeSelected": false,
+          "preflightPassed": false,
+          "hasStageOrArtifactInventory": false
+        },
+        "handoffContext": {
+          "fit.verdict": "strong_fit",
+          "brief.locked": true
+        },
+        "simulatedOutput": {
+          "mode": "Text-only recipe fit scoring",
+          "recommendedNextAction": "Run pack-prerequisite-checker to verify preflight readiness for product-hero-v0 (strong_fit).",
+          "targetHandoff": "pack-prerequisite-checker",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Brief is already locked; advancing from recipe-fit-assessor to pack-prerequisite-checker.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/recipe-fit-assessor/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "recipe-fit-multi-deliverable-decomposer",
+      "skillId": "recipe-fit-assessor",
+      "scenario": "Multi-deliverable prompt spanning incompatible recipes routes to blender-recipe-decomposer",
+      "category": "scope_creep",
+      "inputPrompt": "I need a 12-item e-commerce product grid, a character portrait, AND a full architectural dining room tour all in one pack.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Flags multi-deliverable scope across incompatible domain recipes",
+        "Routes to blender-recipe-decomposer before locking a single brief"
+      ],
+      "requiredOutputProperties": [
+        "blender-recipe-decomposer",
+        "multi-deliverable",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "product-hero-v0 covers all three without changes",
+        "Artifact: Produced"
+      ],
+      "expectedRoutingTarget": "blender-recipe-decomposer",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_routing",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Conditional handoff to blender-recipe-decomposer"
+      ],
+      "deterministicFixture": {
+        "routingState": {
+          "goalClarity": "clear",
+          "recipeSelected": false,
+          "preflightPassed": false,
+          "hasStageOrArtifactInventory": false
+        },
+        "handoffContext": {
+          "fit.multiDeliverableDetected": true
+        },
+        "simulatedOutput": {
+          "mode": "Text-only recipe fit scoring",
+          "recommendedNextAction": "Use blender-recipe-decomposer to split the multi-deliverable scope into ordered sub-recipes.",
+          "targetHandoff": "blender-recipe-decomposer",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Detected multi-deliverable scope across grid, character, and interior domains; routed to blender-recipe-decomposer.",
+          "warnings": [
+            "Do not force a single product-hero pack onto a multi-domain request."
+          ],
+          "evidenceCitations": [
+            "skills/recipe-fit-assessor/EVAL.md",
+            "skills/recipe-fit-assessor/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "recipe-fit-interior-dining-room-domain",
+      "skillId": "recipe-fit-assessor",
+      "scenario": "Interior dining room hero with locked brief routes to interior-architectural-scene-planner",
+      "category": "normal",
+      "inputPrompt": "We have a locked brief for a cinematic interior dining room hero for a furniture brand website. Which domain planner fits?",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Recognizes interior architectural domain over single-object product-hero-v0",
+        "Routes to interior-architectural-scene-planner when brief is locked"
+      ],
+      "requiredOutputProperties": [
+        "interior-architectural-scene-planner",
+        "interior caveat",
+        "Runtime: Not Run"
+      ],
+      "forbiddenOutputProperties": [
+        "use product-hero-v0 with no interior caveat",
+        "Artifact: Verified"
+      ],
+      "expectedRoutingTarget": "interior-architectural-scene-planner",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_routing",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Alternative handoff to interior-architectural-scene-planner"
+      ],
+      "deterministicFixture": {
+        "routingState": {
+          "goalClarity": "clear",
+          "recipeSelected": false,
+          "preflightPassed": false,
+          "hasStageOrArtifactInventory": false
+        },
+        "handoffContext": {
+          "brief.locked": true,
+          "recipe.domain": "interior_archviz"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only recipe fit scoring",
+          "recommendedNextAction": "Route to interior-architectural-scene-planner with interior caveat for room-scale lighting and camera blocking.",
+          "targetHandoff": "interior-architectural-scene-planner",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Matched room-scale dining room brief to interior-architectural-scene-planner.",
+          "warnings": [
+            "product-hero-v0 is only partial fit unless scoped to a single hero furniture piece."
+          ],
+          "evidenceCitations": [
+            "skills/recipe-fit-assessor/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "recipe-fit-vague-idea-upstream-brainstorming",
+      "skillId": "recipe-fit-assessor",
+      "scenario": "Vague creative idea without delivery shape delegates upstream to blender-brainstorming",
+      "category": "ambiguous",
+      "inputPrompt": "I want something futuristic and 3D for our brand launch next month, maybe neon, not sure what format.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Detects that delivery shape and subject are still diverging",
+        "Routes upstream to blender-brainstorming"
+      ],
+      "requiredOutputProperties": [
+        "blender-brainstorming",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Produced",
+        "strong_fit for product-hero-v0"
+      ],
+      "expectedRoutingTarget": "blender-brainstorming",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_routing",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Upstream reference handoff to blender-brainstorming"
+      ],
+      "deterministicFixture": {
+        "routingState": {
+          "goalClarity": "clear",
+          "recipeSelected": false,
+          "preflightPassed": false,
+          "hasStageOrArtifactInventory": false
+        },
+        "handoffContext": {
+          "goal.clarity": "ambiguous_or_mixed"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only recipe fit scoring",
+          "recommendedNextAction": "Route upstream to blender-brainstorming to explore 2-3 scoping options before scoring recipe fit.",
+          "targetHandoff": "blender-brainstorming",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Delegated unstructured creative prompt to blender-brainstorming.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/recipe-fit-assessor/contract.json"
+          ]
+        }
+      }
+    }
+  ]
+}

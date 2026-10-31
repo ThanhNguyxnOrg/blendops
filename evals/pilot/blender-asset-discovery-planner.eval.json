@@ -1,0 +1,367 @@
+{
+  "schemaVersion": "1.0.0",
+  "skillId": "blender-asset-discovery-planner",
+  "category": "asset-and-sourcing",
+  "isContractedSkill": false,
+  "evalMarkdownPath": "skills/blender-asset-discovery-planner/EVAL.md",
+  "sourceEvalTier": "structured_multi_case_table",
+  "evaluationStatus": {
+    "staticValidation": "Passed",
+    "deterministicFixture": "Passed",
+    "contractRouting": "Not Implemented",
+    "liveModel": "Not Run",
+    "blenderRuntime": "Not Run"
+  },
+  "cases": [
+    {
+      "id": "asset-discovery-cyberpunk-shoe-web-hero",
+      "skillId": "blender-asset-discovery-planner",
+      "scenario": "Cyberpunk shoe web hero brief (<=10MB GLB constraint)",
+      "category": "normal",
+      "inputPrompt": "Plan asset strategy for a floating cyberpunk shoe hero with neon glossy floor under a 10MB GLB budget.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Produces per-asset strategy table, sums estimated GLB budget (8MB vs 10MB limit), and flags Path 2 generative caveat",
+        "Hands off to product-hero-scene-planner without downloading or generating files"
+      ],
+      "requiredOutputProperties": [
+        "asset table",
+        "budget sum",
+        "Path 2 generative caveat",
+        "product-hero-scene-planner"
+      ],
+      "forbiddenOutputProperties": [
+        "downloaded asset",
+        "Artifact: Produced"
+      ],
+      "expectedRoutingTarget": "product-hero-scene-planner",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Per-asset strategy table + GLB budget sum + Path 2 generative caveat"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only asset discovery plan",
+          "recommendedNextAction": "Proceed to product-hero-scene-planner with the 8MB estimated asset table and Path 2 generative caveat.",
+          "targetHandoff": "product-hero-scene-planner",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Built full asset table with budget sum (8MB / 10MB) and explicit Path 2 generative caveat.",
+          "warnings": [
+            "Generative 3D integrations belong to community Path 2 (mcp-for-blender) and require readiness verification."
+          ],
+          "evidenceCitations": [
+            "skills/blender-asset-discovery-planner/EVAL.md",
+            "docs/unofficial-runtime-bridges.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "asset-discovery-brand-restricted-library",
+      "skillId": "blender-asset-discovery-planner",
+      "scenario": "Brand product render restricted to brand-approved library only",
+      "category": "normal",
+      "inputPrompt": "Subject is an official brand sneaker; constraint requires brand-restricted asset library only and zero third-party meshes.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Enforces brand-only library source for subject and procedural environment",
+        "Routes to asset-license-checker to record brand-restricted license compliance"
+      ],
+      "requiredOutputProperties": [
+        "brand-restricted",
+        "license risk callout",
+        "asset-license-checker"
+      ],
+      "forbiddenOutputProperties": [
+        "use any free model from the internet",
+        "Artifact: Produced"
+      ],
+      "expectedRoutingTarget": "asset-license-checker",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Brand-restricted enforcement + license risk callout"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only asset discovery plan",
+          "recommendedNextAction": "Verify brand-restricted terms in asset-license-checker before scene planning.",
+          "targetHandoff": "asset-license-checker",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Enforced brand-restricted library for hero asset and procedural environment with explicit license risk callout.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/blender-asset-discovery-planner/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "asset-discovery-procedural-iteration-sketch",
+      "skillId": "blender-asset-discovery-planner",
+      "scenario": "Text-only iteration sketch prioritizes procedural primitives and CC0 HDRI",
+      "category": "structured_skip",
+      "inputPrompt": "Deliverable is a fast text-only blocking sketch loop with zero external mesh dependencies.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Assigns procedural-first strategy for geometry and CC0 Poly Haven HDRI for lighting",
+        "Hands off to product-hero-scene-planner"
+      ],
+      "requiredOutputProperties": [
+        "procedural-first",
+        "Poly Haven CC0",
+        "product-hero-scene-planner"
+      ],
+      "forbiddenOutputProperties": [
+        "fetched external model",
+        "Artifact: Produced"
+      ],
+      "expectedRoutingTarget": "product-hero-scene-planner",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P2",
+      "evidenceRequirements": [
+        "Procedural-first asset assignment with low license risk"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only asset discovery plan",
+          "recommendedNextAction": "Hand off procedural-first asset table with Poly Haven CC0 HDRI to product-hero-scene-planner.",
+          "targetHandoff": "product-hero-scene-planner",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Selected procedural-first blocking primitives and Poly Haven CC0 lighting with low license risk.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/blender-asset-discovery-planner/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "asset-discovery-generative-without-path2-blocked",
+      "skillId": "blender-asset-discovery-planner",
+      "scenario": "User requests Hyper3D generative mesh without Path 2 readiness",
+      "category": "blocked_or_adversarial",
+      "inputPrompt": "Use Hyper3D to generate the hero sneaker mesh right now even though Path 2 is not configured.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Marks generative strategy blocked, offers procedural/library fallback, and routes to official-runtime-readiness-checker",
+        "Never claims Hyper3D generated an asset"
+      ],
+      "requiredOutputProperties": [
+        "generative blocked",
+        "official-runtime-readiness-checker",
+        "procedural/library alternatives"
+      ],
+      "forbiddenOutputProperties": [
+        "generated Hyper3D mesh",
+        "Artifact: Produced"
+      ],
+      "expectedRoutingTarget": "official-runtime-readiness-checker",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Blocked flag + procedural/library alternatives + route to official-runtime-readiness-checker"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only asset discovery plan",
+          "recommendedNextAction": "Generative blocked without Path 2: route to official-runtime-readiness-checker or use procedural/library alternatives.",
+          "targetHandoff": "official-runtime-readiness-checker",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Marked Hyper3D generative strategy blocked and offered procedural/library alternatives.",
+          "warnings": [
+            "Hyper3D requires community Path 2 (mcp-for-blender) readiness and third-party caveats."
+          ],
+          "evidenceCitations": [
+            "skills/blender-asset-discovery-planner/EVAL.md",
+            "docs/unofficial-runtime-bridges.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "asset-discovery-skipped-license-tbd",
+      "skillId": "blender-asset-discovery-planner",
+      "scenario": "User says license \"doesn't matter\" for web commercial deployment",
+      "category": "evidence_boundary",
+      "inputPrompt": "Just grab any 3D watch mesh, license does not matter to us.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Marks license column as TBD (never silently approved) and requires follow-up via asset-license-checker",
+        "Preserves Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "TBD",
+        "asset-license-checker",
+        "follow-up required"
+      ],
+      "forbiddenOutputProperties": [
+        "license approved automatically",
+        "Artifact: Verified"
+      ],
+      "expectedRoutingTarget": "asset-license-checker",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicit TBD license marker + handoff to asset-license-checker"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only asset discovery plan",
+          "recommendedNextAction": "License marked TBD (follow-up required): route to asset-license-checker before downstream planner consumes.",
+          "targetHandoff": "asset-license-checker",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Refused to skip license tracking; marked license TBD with follow-up required via asset-license-checker.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/blender-asset-discovery-planner/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "asset-discovery-conflicting-2mb-brand-cad",
+      "skillId": "blender-asset-discovery-planner",
+      "scenario": "Conflicting constraints: unoptimized 80MB CAD brand asset vs <=2MB GLB target",
+      "category": "blocked_or_adversarial",
+      "inputPrompt": "Use our raw 80MB CAD shoe assembly with 4K uncompressed textures inside a <=2MB mobile GLB budget.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Surfaces budget conflict between raw CAD source and <=2MB GLB constraint",
+        "Routes to asset-fallback-strategy to plan decimation/baking or proxy replacement"
+      ],
+      "requiredOutputProperties": [
+        "conflict callout",
+        "asset-fallback-strategy",
+        "2MB"
+      ],
+      "forbiddenOutputProperties": [
+        "80MB fits inside 2MB without changes",
+        "Artifact: Produced"
+      ],
+      "expectedRoutingTarget": "asset-fallback-strategy",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicit budget conflict callout + route to asset-fallback-strategy"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only asset discovery plan",
+          "recommendedNextAction": "Surface 80MB vs 2MB conflict callout and route to asset-fallback-strategy.",
+          "targetHandoff": "asset-fallback-strategy",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Raised conflict callout on 80MB CAD asset vs 2MB GLB constraint and routed to asset-fallback-strategy.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/blender-asset-discovery-planner/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "asset-discovery-missing-brief-reroute",
+      "skillId": "blender-asset-discovery-planner",
+      "scenario": "No 8-slot brief provided before asset discovery",
+      "category": "ambiguous",
+      "inputPrompt": "Pick assets for my project right now (no brief provided).",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Refuses to guess asset classes without an 8-slot brief",
+        "Routes back to intent-to-3d-brief-writer"
+      ],
+      "requiredOutputProperties": [
+        "intent-to-3d-brief-writer",
+        "missing 8-slot brief",
+        "Runtime: Not Run"
+      ],
+      "forbiddenOutputProperties": [
+        "invented asset table",
+        "Artifact: Produced"
+      ],
+      "expectedRoutingTarget": "intent-to-3d-brief-writer",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Re-route message to intent-to-3d-brief-writer"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only asset discovery plan",
+          "recommendedNextAction": "Route back to intent-to-3d-brief-writer because of missing 8-slot brief.",
+          "targetHandoff": "intent-to-3d-brief-writer",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted asset discovery due to missing 8-slot brief and re-routed to intent-to-3d-brief-writer.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/blender-asset-discovery-planner/EVAL.md"
+          ]
+        }
+      }
+    }
+  ]
+}

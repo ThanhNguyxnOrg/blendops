@@ -1,0 +1,315 @@
+{
+  "schemaVersion": "1.0.0",
+  "skillId": "workflow-stage-router",
+  "category": "routing-and-governance",
+  "isContractedSkill": true,
+  "evalMarkdownPath": "skills/workflow-stage-router/EVAL.md",
+  "sourceEvalTier": "routing_contract_pilot",
+  "evaluationStatus": {
+    "staticValidation": "Passed",
+    "deterministicFixture": "Passed",
+    "contractRouting": "Passed",
+    "liveModel": "Not Run",
+    "blenderRuntime": "Not Run"
+  },
+  "cases": [
+    {
+      "id": "workflow-stage-post-execution-evidence-audit",
+      "skillId": "workflow-stage-router",
+      "scenario": "In-flight workflow at post-execution audit stage routes to render-export-evidence",
+      "category": "normal",
+      "inputPrompt": "Preflight passed, scene plan is complete, and we are at post_execution_audit to classify our output status. What skill is next?",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Identifies current milestone stage as post_execution_audit",
+        "Routes to render-export-evidence without upgrading artifact truth states"
+      ],
+      "requiredOutputProperties": [
+        "render-export-evidence",
+        "post_execution_audit",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "render-export-evidence",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_routing",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Progression handoff to render-export-evidence"
+      ],
+      "deterministicFixture": {
+        "routingState": {
+          "goalClarity": "clear",
+          "recipeSelected": true,
+          "preflightPassed": true,
+          "hasStageOrArtifactInventory": true
+        },
+        "handoffContext": {
+          "stage.current": "post_execution_audit"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only stage routing",
+          "recommendedNextAction": "Advance from post_execution_audit to render-export-evidence to record truth states.",
+          "targetHandoff": "render-export-evidence",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Routed in-flight workflow at post_execution_audit to render-export-evidence.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/workflow-stage-router/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "workflow-stage-runtime-required-but-not-run",
+      "skillId": "workflow-stage-router",
+      "scenario": "Next stage requires runtime mutation while runtime status is Not Run",
+      "category": "evidence_boundary",
+      "inputPrompt": "We have our locked brief, hero plan, camera plan, and lighting plan, and want to execute in Blender next. Where do we route?",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Detects stage.requiresRuntime is true while runtime.status is Not Run",
+        "Routes to official-runtime-readiness-checker before any execution step"
+      ],
+      "requiredOutputProperties": [
+        "official-runtime-readiness-checker",
+        "Runtime: Not Run",
+        "preconditions"
+      ],
+      "forbiddenOutputProperties": [
+        "Start rendering now",
+        "Runtime: Verified"
+      ],
+      "expectedRoutingTarget": "official-runtime-readiness-checker",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_routing",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Conditional handoff to official-runtime-readiness-checker"
+      ],
+      "deterministicFixture": {
+        "routingState": {
+          "goalClarity": "clear",
+          "recipeSelected": true,
+          "preflightPassed": true,
+          "hasStageOrArtifactInventory": true
+        },
+        "handoffContext": {
+          "runtime.status": "Not Run",
+          "stage.requiresRuntime": true
+        },
+        "simulatedOutput": {
+          "mode": "Text-only stage routing",
+          "recommendedNextAction": "Route to official-runtime-readiness-checker to verify runtime preconditions before any Blender execution.",
+          "targetHandoff": "official-runtime-readiness-checker",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Gated transition from planning to execution on official-runtime-readiness-checker.",
+          "warnings": [
+            "Never jump directly to rendering without verified runtime readiness."
+          ],
+          "evidenceCitations": [
+            "skills/workflow-stage-router/EVAL.md",
+            "skills/workflow-stage-router/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "workflow-stage-mid-workflow-scope-creep",
+      "skillId": "workflow-stage-router",
+      "scenario": "Mid-workflow scope expansion delegates to blender-scope-boundary-enforcer",
+      "category": "scope_creep",
+      "inputPrompt": "While routing our product-hero-v0 lighting stage, the stakeholder just asked to add a 60-second character animation and fluid simulation.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Detects mid-workflow scope drift outside the locked brief",
+        "Delegates to blender-scope-boundary-enforcer"
+      ],
+      "requiredOutputProperties": [
+        "blender-scope-boundary-enforcer",
+        "scope",
+        "Runtime: Not Run"
+      ],
+      "forbiddenOutputProperties": [
+        "added fluid simulation to current stage",
+        "Artifact: Produced"
+      ],
+      "expectedRoutingTarget": "blender-scope-boundary-enforcer",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_routing",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Boundary delegation handoff to blender-scope-boundary-enforcer"
+      ],
+      "deterministicFixture": {
+        "routingState": {
+          "goalClarity": "clear",
+          "recipeSelected": true,
+          "preflightPassed": true,
+          "hasStageOrArtifactInventory": true
+        },
+        "handoffContext": {
+          "scope.driftDetected": true
+        },
+        "simulatedOutput": {
+          "mode": "Text-only stage routing",
+          "recommendedNextAction": "Pause stage progression and route to blender-scope-boundary-enforcer to handle mid-workflow scope expansion.",
+          "targetHandoff": "blender-scope-boundary-enforcer",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Intercepted mid-workflow scope expansion and delegated to blender-scope-boundary-enforcer.",
+          "warnings": [
+            "Unapproved deliverables cannot be injected mid-pack without a formal scope decision."
+          ],
+          "evidenceCitations": [
+            "skills/workflow-stage-router/contract.json",
+            "skills/blender-scope-boundary-enforcer/SKILL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "workflow-stage-failed-gate-exits-to-pre-handoff",
+      "skillId": "workflow-stage-router",
+      "scenario": "Failed quality gate or final verification exits to pre-handoff-verification",
+      "category": "blocked_or_adversarial",
+      "inputPrompt": "Our scene quality gate failed on material checks, or we are at final_verification before user handoff. Which skill runs next?",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Triggers fallback/final gate handoff to pre-handoff-verification",
+        "Enforces downgrade-only truth state policy"
+      ],
+      "requiredOutputProperties": [
+        "pre-handoff-verification",
+        "downgrade",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "upgraded to Verified",
+        "skipping verification gate"
+      ],
+      "expectedRoutingTarget": "pre-handoff-verification",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_routing",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Fallback handoff to pre-handoff-verification"
+      ],
+      "deterministicFixture": {
+        "routingState": {
+          "goalClarity": "clear",
+          "recipeSelected": true,
+          "preflightPassed": true,
+          "hasStageOrArtifactInventory": true
+        },
+        "handoffContext": {
+          "gate.status": "failed"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only stage routing",
+          "recommendedNextAction": "Exit to pre-handoff-verification to enforce the 7-point checklist and downgrade-only truth labels.",
+          "targetHandoff": "pre-handoff-verification",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Routed failed gate directly to pre-handoff-verification.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/workflow-stage-router/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "workflow-stage-bridge-conflict-fallback",
+      "skillId": "workflow-stage-router",
+      "scenario": "Active MCP bridge conflict during stage transition routes to runtime-bridge-conflict-resolver",
+      "category": "blocked_or_adversarial",
+      "inputPrompt": "Mid-workflow before runtime handoff, port 9876 shows a conflict between two MCP clients.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Halts stage progression and routes to runtime-bridge-conflict-resolver",
+        "Keeps Runtime status Not Run"
+      ],
+      "requiredOutputProperties": [
+        "runtime-bridge-conflict-resolver",
+        "port 9876",
+        "Runtime: Not Run"
+      ],
+      "forbiddenOutputProperties": [
+        "Runtime: Verified",
+        "Artifact: Produced"
+      ],
+      "expectedRoutingTarget": "runtime-bridge-conflict-resolver",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_routing",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Fallback handoff to runtime-bridge-conflict-resolver"
+      ],
+      "deterministicFixture": {
+        "routingState": {
+          "goalClarity": "clear",
+          "recipeSelected": true,
+          "preflightPassed": true,
+          "hasStageOrArtifactInventory": true
+        },
+        "handoffContext": {
+          "runtime.conflictDetected": true
+        },
+        "simulatedOutput": {
+          "mode": "Text-only stage routing",
+          "recommendedNextAction": "Route to runtime-bridge-conflict-resolver to clear the port 9876 MCP client collision.",
+          "targetHandoff": "runtime-bridge-conflict-resolver",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Routed mid-workflow MCP port conflict to runtime-bridge-conflict-resolver.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/workflow-stage-router/contract.json"
+          ]
+        }
+      }
+    }
+  ]
+}

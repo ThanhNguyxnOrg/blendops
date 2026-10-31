@@ -1,0 +1,384 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/ThanhNguyxnOrg/blendops/schemas/skill-eval.schema.json",
+  "title": "BlendOps Skill Behavioral Evaluation Suite Schema",
+  "description": "Draft 2020-12 JSON Schema for machine-readable BlendOps skill evaluation suites (Phase 3).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "skillId",
+    "category",
+    "isContractedSkill",
+    "evalMarkdownPath",
+    "sourceEvalTier",
+    "evaluationStatus",
+    "cases"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "skillId": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+$",
+      "minLength": 3,
+      "maxLength": 64
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "routing-and-governance",
+        "process-discipline",
+        "asset-and-sourcing",
+        "runtime-and-execution",
+        "scene-planners",
+        "quality-validators",
+        "render-and-output-decisions",
+        "evidence-and-handoff"
+      ]
+    },
+    "isContractedSkill": {
+      "type": "boolean"
+    },
+    "evalMarkdownPath": {
+      "type": "string",
+      "pattern": "^skills/[a-z0-9-]+/EVAL\\.md$"
+    },
+    "sourceEvalTier": {
+      "type": "string",
+      "enum": [
+        "structured_multi_case_table",
+        "routing_contract_pilot",
+        "gateway_pilot_upgraded"
+      ]
+    },
+    "evaluationStatus": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "staticValidation",
+        "deterministicFixture",
+        "contractRouting",
+        "liveModel",
+        "blenderRuntime"
+      ],
+      "properties": {
+        "staticValidation": {
+          "$ref": "#/$defs/evalRunState"
+        },
+        "deterministicFixture": {
+          "$ref": "#/$defs/evalRunState"
+        },
+        "contractRouting": {
+          "$ref": "#/$defs/evalRunState"
+        },
+        "liveModel": {
+          "type": "string",
+          "const": "Not Run"
+        },
+        "blenderRuntime": {
+          "type": "string",
+          "const": "Not Run"
+        }
+      }
+    },
+    "cases": {
+      "type": "array",
+      "minItems": 5,
+      "items": {
+        "$ref": "#/$defs/evalCase"
+      }
+    }
+  },
+  "$defs": {
+    "evalRunState": {
+      "type": "string",
+      "enum": [
+        "Not Run",
+        "Not Implemented",
+        "Not Verified",
+        "Passed",
+        "Failed"
+      ]
+    },
+    "runtimeTruthState": {
+      "type": "string",
+      "enum": [
+        "Not Run",
+        "Attempted",
+        "Produced",
+        "Verified",
+        "Failed"
+      ]
+    },
+    "artifactTruthState": {
+      "type": "string",
+      "enum": [
+        "Not Produced",
+        "Attempted",
+        "Produced",
+        "Verified",
+        "Failed"
+      ]
+    },
+    "routingStateVector": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "goalClarity",
+        "recipeSelected",
+        "preflightPassed",
+        "hasStageOrArtifactInventory"
+      ],
+      "properties": {
+        "goalClarity": {
+          "type": "string",
+          "enum": [
+            "ambiguous_or_mixed",
+            "clear"
+          ]
+        },
+        "recipeSelected": {
+          "type": "boolean"
+        },
+        "preflightPassed": {
+          "type": "boolean"
+        },
+        "hasStageOrArtifactInventory": {
+          "type": "boolean"
+        }
+      }
+    },
+    "evalCase": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "skillId",
+        "scenario",
+        "category",
+        "inputPrompt",
+        "preconditions",
+        "expectedBehavior",
+        "requiredOutputProperties",
+        "forbiddenOutputProperties",
+        "expectedRoutingTarget",
+        "truthStateExpectations",
+        "evaluationType",
+        "severity",
+        "evidenceRequirements",
+        "deterministicFixture"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9-]+$",
+          "minLength": 3,
+          "maxLength": 80
+        },
+        "skillId": {
+          "type": "string",
+          "pattern": "^[a-z0-9-]+$"
+        },
+        "scenario": {
+          "type": "string",
+          "minLength": 5
+        },
+        "category": {
+          "type": "string",
+          "enum": [
+            "normal",
+            "ambiguous",
+            "structured_skip",
+            "scope_creep",
+            "blocked_or_adversarial",
+            "evidence_boundary"
+          ]
+        },
+        "inputPrompt": {
+          "type": "string",
+          "minLength": 15
+        },
+        "preconditions": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "mode",
+            "runtimeAvailable",
+            "existingArtifactEvidence"
+          ],
+          "properties": {
+            "mode": {
+              "type": "string",
+              "enum": [
+                "text-only",
+                "read-only-smoke-transcript",
+                "artifact-claim-audit"
+              ]
+            },
+            "runtimeAvailable": {
+              "type": "boolean"
+            },
+            "existingArtifactEvidence": {
+              "type": "string",
+              "enum": [
+                "none",
+                "attempted-no-file",
+                "file-only-unvalidated",
+                "file-and-validation-recorded"
+              ]
+            },
+            "notes": {
+              "type": "string"
+            }
+          }
+        },
+        "expectedBehavior": {
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "type": "string",
+            "minLength": 5
+          }
+        },
+        "requiredOutputProperties": {
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "type": "string",
+            "minLength": 2
+          }
+        },
+        "forbiddenOutputProperties": {
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "type": "string",
+            "minLength": 2
+          }
+        },
+        "expectedRoutingTarget": {
+          "type": "string",
+          "minLength": 2
+        },
+        "truthStateExpectations": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "runtimeStatus",
+            "artifactStatus"
+          ],
+          "properties": {
+            "runtimeStatus": {
+              "$ref": "#/$defs/runtimeTruthState"
+            },
+            "artifactStatus": {
+              "$ref": "#/$defs/artifactTruthState"
+            }
+          }
+        },
+        "evaluationType": {
+          "type": "string",
+          "enum": [
+            "static_validation",
+            "deterministic_fixture",
+            "contract_routing",
+            "live_model",
+            "blender_runtime"
+          ]
+        },
+        "severity": {
+          "type": "string",
+          "enum": [
+            "P0",
+            "P1",
+            "P2"
+          ]
+        },
+        "evidenceRequirements": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 3
+          }
+        },
+        "deterministicFixture": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "simulatedOutput"
+          ],
+          "properties": {
+            "routingState": {
+              "$ref": "#/$defs/routingStateVector"
+            },
+            "handoffContext": {
+              "type": "object",
+              "additionalProperties": {
+                "anyOf": [
+                  { "type": "string" },
+                  { "type": "number" },
+                  { "type": "boolean" }
+                ]
+              }
+            },
+            "simulatedOutput": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "mode",
+                "recommendedNextAction",
+                "targetHandoff",
+                "runtimeStatus",
+                "artifactStatus",
+                "summary",
+                "warnings",
+                "evidenceCitations"
+              ],
+              "properties": {
+                "mode": {
+                  "type": "string",
+                  "minLength": 3
+                },
+                "recommendedNextAction": {
+                  "type": "string",
+                  "minLength": 5
+                },
+                "targetHandoff": {
+                  "type": "string",
+                  "minLength": 2
+                },
+                "runtimeStatus": {
+                  "$ref": "#/$defs/runtimeTruthState"
+                },
+                "artifactStatus": {
+                  "$ref": "#/$defs/artifactTruthState"
+                },
+                "summary": {
+                  "type": "string",
+                  "minLength": 10
+                },
+                "warnings": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "evidenceCitations": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

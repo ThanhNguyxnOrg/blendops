@@ -1,0 +1,316 @@
+{
+  "schemaVersion": "1.0.0",
+  "skillId": "blender-troubleshooting",
+  "category": "runtime-and-execution",
+  "isContractedSkill": false,
+  "evalMarkdownPath": "skills/blender-troubleshooting/EVAL.md",
+  "sourceEvalTier": "structured_multi_case_table",
+  "evaluationStatus": {
+    "staticValidation": "Passed",
+    "deterministicFixture": "Passed",
+    "contractRouting": "Not Implemented",
+    "liveModel": "Not Run",
+    "blenderRuntime": "Not Run"
+  },
+  "cases": [
+    {
+      "id": "troubleshooting-black-render-diagnosis",
+      "skillId": "blender-troubleshooting",
+      "scenario": "Render output is completely black (3/3 reproducible)",
+      "category": "normal",
+      "inputPrompt": "Expected a cyberpunk-lit shoe render, but the observed render image is 100% black across 3/3 runs.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "file-only-unvalidated"
+      },
+      "expectedBehavior": [
+        "Completes all 4 diagnostic phases (reproduce -> narrow -> identify -> propose)",
+        "Identifies missing key light / exposure in lighting plan and hands off to blender-lighting-material-planner"
+      ],
+      "requiredOutputProperties": [
+        "Phase 1 (reproduce)",
+        "Phase 2 (narrow)",
+        "Phase 3 (identify)",
+        "Phase 4 (propose)",
+        "blender-lighting-material-planner"
+      ],
+      "forbiddenOutputProperties": [
+        "I re-rendered the scene for you",
+        "Artifact: Verified"
+      ],
+      "expectedRoutingTarget": "blender-lighting-material-planner",
+      "truthStateExpectations": {
+        "runtimeStatus": "Attempted",
+        "artifactStatus": "Failed"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "4-phase diagnostic record + rejected alternatives + pass criteria"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only root-cause diagnosis",
+          "recommendedNextAction": "Phase 4 (propose): update key/rim exposure in blender-lighting-material-planner with observable luminance pass criteria.",
+          "targetHandoff": "blender-lighting-material-planner",
+          "runtimeStatus": "Attempted",
+          "artifactStatus": "Failed",
+          "summary": "Completed Phase 1 (reproduce), Phase 2 (narrow), Phase 3 (identify), and Phase 4 (propose) for black render; routed to blender-lighting-material-planner.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/blender-troubleshooting/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "troubleshooting-empty-glb-export",
+      "skillId": "blender-troubleshooting",
+      "scenario": "Exported GLB is an empty 100-byte container missing hero geometry",
+      "category": "normal",
+      "inputPrompt": "Expected GLB with hero shoe + floor, but observed output is a 100-byte empty .glb file.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "file-only-unvalidated"
+      },
+      "expectedBehavior": [
+        "Narrows issue to export selection/collection filter and identifies export plan misconfiguration",
+        "Hands off to glb-web-handoff with pass criteria requiring mesh/material count > 0"
+      ],
+      "requiredOutputProperties": [
+        "Phase 1 (reproduce)",
+        "Phase 3 (identify)",
+        "glb-web-handoff"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "re-exported the GLB now"
+      ],
+      "expectedRoutingTarget": "glb-web-handoff",
+      "truthStateExpectations": {
+        "runtimeStatus": "Attempted",
+        "artifactStatus": "Failed"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "4-phase diagnosis + handoff to glb-web-handoff"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only root-cause diagnosis",
+          "recommendedNextAction": "Re-specify collection inclusion in glb-web-handoff so exported GLB contains hero geometry.",
+          "targetHandoff": "glb-web-handoff",
+          "runtimeStatus": "Attempted",
+          "artifactStatus": "Failed",
+          "summary": "Completed Phase 1 (reproduce), Phase 2 (narrow), Phase 3 (identify), and Phase 4 (propose): empty GLB traced to export selection filter; routed to glb-web-handoff.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/blender-troubleshooting/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "troubleshooting-jargon-in-final-response",
+      "skillId": "blender-troubleshooting",
+      "scenario": "Final user-facing response leaked dense Blender jargon (\"BSDF subsurf topology\")",
+      "category": "normal",
+      "inputPrompt": "Expected plain-language stakeholder summary, but observed output says \"adjust Principled BSDF subsurface anisotropy and quad topology\".",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Identifies missing plain-language translation step in Phase 3",
+        "Proposes routing through non-blender-user-response-writer in Phase 4"
+      ],
+      "requiredOutputProperties": [
+        "missing translation step",
+        "non-blender-user-response-writer",
+        "Runtime: Not Run"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Produced",
+        "jargon is acceptable for non-Blender users"
+      ],
+      "expectedRoutingTarget": "non-blender-user-response-writer",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Root cause = missing translation step + handoff to non-blender-user-response-writer"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only root-cause diagnosis",
+          "recommendedNextAction": "Route raw planner output through non-blender-user-response-writer to eliminate unglossed jargon.",
+          "targetHandoff": "non-blender-user-response-writer",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Identified missing translation step as root cause of jargon leak; proposed handoff to non-blender-user-response-writer.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/blender-troubleshooting/EVAL.md",
+            "laws/non-blender-user-language.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "troubleshooting-intermittent-symptom-gate",
+      "skillId": "blender-troubleshooting",
+      "scenario": "Symptom is intermittent (1/5 runs) and cannot be locked in Phase 1 yet",
+      "category": "evidence_boundary",
+      "inputPrompt": "The render was black in 1 out of 5 runs, and the other 4 looked normal.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Marks symptom intermittent in Phase 1 and requires >= 2 consistent reproductions before proposing a fix",
+        "Routes to runtime-attempt-report-writer to log structured reproduction attempts"
+      ],
+      "requiredOutputProperties": [
+        "intermittent",
+        "no fix proposed yet",
+        "runtime-attempt-report-writer"
+      ],
+      "forbiddenOutputProperties": [
+        "root cause confirmed",
+        "Artifact: Verified"
+      ],
+      "expectedRoutingTarget": "runtime-attempt-report-writer",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Intermittent flag in Phase 1 + no speculative fix"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only root-cause diagnosis",
+          "recommendedNextAction": "Symptom marked intermittent (1/5): no fix proposed yet; record reproduction inputs via runtime-attempt-report-writer.",
+          "targetHandoff": "runtime-attempt-report-writer",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted at Phase 1 (intermittent 1/5 runs); no fix proposed yet until >= 2 consistent reproductions are logged.",
+          "warnings": [
+            "Never propose speculative fixes before Phase 1 reproduction is locked."
+          ],
+          "evidenceCitations": [
+            "skills/blender-troubleshooting/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "troubleshooting-missing-evidence-blocked-phase1",
+      "skillId": "blender-troubleshooting",
+      "scenario": "Operator says \"the output is wrong\" without file path, log, or screenshot",
+      "category": "blocked_or_adversarial",
+      "inputPrompt": "The Blender output is wrong, fix it now (no logs or paths provided).",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Marks Phase 1 blocked due to missing observed evidence",
+        "Routes to official-runtime-readiness-checker / evidence collection without speculative fixes"
+      ],
+      "requiredOutputProperties": [
+        "Phase 1 blocked",
+        "no speculative fix",
+        "official-runtime-readiness-checker"
+      ],
+      "forbiddenOutputProperties": [
+        "probably needs better lighting",
+        "Artifact: Produced"
+      ],
+      "expectedRoutingTarget": "official-runtime-readiness-checker",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Explicit Phase 1 blocked marker + zero speculative fixes"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only root-cause diagnosis",
+          "recommendedNextAction": "Phase 1 blocked (missing observed evidence): route to official-runtime-readiness-checker with no speculative fix.",
+          "targetHandoff": "official-runtime-readiness-checker",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Marked Phase 1 blocked because no log or file path was supplied; issued no speculative fix.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/blender-troubleshooting/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "troubleshooting-ranked-competing-causes",
+      "skillId": "blender-troubleshooting",
+      "scenario": "Two plausible causes (camera framing vs subject scale) ranked by evidence weight",
+      "category": "ambiguous",
+      "inputPrompt": "The sneaker fills only 5% of the frame in the preview; both camera focal length and mesh import scale could explain it.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "file-only-unvalidated"
+      },
+      "expectedBehavior": [
+        "Ranks primary cause by evidence weight and preserves secondary cause as \"alternative pending more evidence\"",
+        "Hands off to blender-composition-camera-planner"
+      ],
+      "requiredOutputProperties": [
+        "ranked by evidence weight",
+        "alternative pending more evidence",
+        "blender-composition-camera-planner"
+      ],
+      "forbiddenOutputProperties": [
+        "5 unranked causes",
+        "Artifact: Verified"
+      ],
+      "expectedRoutingTarget": "blender-composition-camera-planner",
+      "truthStateExpectations": {
+        "runtimeStatus": "Attempted",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P2",
+      "evidenceRequirements": [
+        "Ranked cause list + secondary cause marked alternative pending more evidence"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only root-cause diagnosis",
+          "recommendedNextAction": "Verify camera distance in blender-composition-camera-planner (ranked by evidence weight; mesh scale kept as alternative pending more evidence).",
+          "targetHandoff": "blender-composition-camera-planner",
+          "runtimeStatus": "Attempted",
+          "artifactStatus": "Produced",
+          "summary": "Ranked camera framing vs mesh scale by evidence weight and kept second cause as alternative pending more evidence.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/blender-troubleshooting/EVAL.md"
+          ]
+        }
+      }
+    }
+  ]
+}

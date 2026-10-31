@@ -1,0 +1,266 @@
+{
+  "schemaVersion": "1.0.0",
+  "skillId": "blender-brainstorming",
+  "category": "process-discipline",
+  "isContractedSkill": false,
+  "evalMarkdownPath": "skills/blender-brainstorming/EVAL.md",
+  "sourceEvalTier": "structured_multi_case_table",
+  "evaluationStatus": {
+    "staticValidation": "Passed",
+    "deterministicFixture": "Passed",
+    "contractRouting": "Not Implemented",
+    "liveModel": "Not Run",
+    "blenderRuntime": "Not Run"
+  },
+  "cases": [
+    {
+      "id": "brainstorming-vague-creative-request",
+      "skillId": "blender-brainstorming",
+      "scenario": "Vague creative request (\"Make me a cool sneaker render\")",
+      "category": "ambiguous",
+      "inputPrompt": "Make me a cool sneaker render for my new shoe line.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Quotes original request verbatim, batches 3-5 clarifying questions, and proposes 3 distinct scopings",
+        "Produces plain-language confirmed intent summary and hands off to intent-to-3d-brief-writer"
+      ],
+      "requiredOutputProperties": [
+        "Make me a cool sneaker render",
+        "clarifying questions",
+        "alternative scopings",
+        "intent-to-3d-brief-writer"
+      ],
+      "forbiddenOutputProperties": [
+        "subsurf modifier",
+        "BSDF shader",
+        "Artifact: Produced"
+      ],
+      "expectedRoutingTarget": "intent-to-3d-brief-writer",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Quoted original request, 3-5 batched questions, 2-3 scopings, plain-language intent summary"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only Socratic intent exploration",
+          "recommendedNextAction": "Confirm preferred scoping option and hand off to intent-to-3d-brief-writer.",
+          "targetHandoff": "intent-to-3d-brief-writer",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Quoted \"Make me a cool sneaker render\", asked 4 batched clarifying questions, and proposed 3 alternative scopings in plain language.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/blender-brainstorming/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "brainstorming-half-specified-request",
+      "skillId": "blender-brainstorming",
+      "scenario": "Half-specified cyberpunk shoe web hero request",
+      "category": "normal",
+      "inputPrompt": "I need a cyberpunk shoe hero for web, but I do not know what constraints or deliverables to pick.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Asks 1-3 targeted questions on audience, web performance budget, and evidence expectations",
+        "Proposes 2 distinct scopings and hands off to intent-to-3d-brief-writer"
+      ],
+      "requiredOutputProperties": [
+        "cyberpunk shoe hero for web",
+        "targeted questions",
+        "intent-to-3d-brief-writer"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "installed the Blender connector"
+      ],
+      "expectedRoutingTarget": "intent-to-3d-brief-writer",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Targeted questions + 2 scopings + plain-language summary"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only Socratic intent exploration",
+          "recommendedNextAction": "Hand off confirmed cyberpunk shoe web hero intent to intent-to-3d-brief-writer.",
+          "targetHandoff": "intent-to-3d-brief-writer",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Quoted \"cyberpunk shoe hero for web\", asked 3 targeted questions on web budget and audience, and proposed 2 scopings.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/blender-brainstorming/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "brainstorming-user-refuses-clarification",
+      "skillId": "blender-brainstorming",
+      "scenario": "User refuses clarification (\"Just do whatever, I trust you\")",
+      "category": "blocked_or_adversarial",
+      "inputPrompt": "Just do whatever for the 3D bottle render, I trust you, do not ask me questions.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Records explicit assumption block listing assumed defaults and low-confidence label",
+        "Still offers 2 scoping options and hands off to intent-to-3d-brief-writer"
+      ],
+      "requiredOutputProperties": [
+        "explicit assumption block",
+        "low-confidence",
+        "intent-to-3d-brief-writer"
+      ],
+      "forbiddenOutputProperties": [
+        "high-confidence verified brief",
+        "Artifact: Produced"
+      ],
+      "expectedRoutingTarget": "intent-to-3d-brief-writer",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicit assumption list + low-confidence label"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only Socratic intent exploration",
+          "recommendedNextAction": "Pass explicit assumption block with low-confidence label to intent-to-3d-brief-writer.",
+          "targetHandoff": "intent-to-3d-brief-writer",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Recorded explicit assumption block with low-confidence label and 2 scoping options after user declined clarification.",
+          "warnings": [
+            "Assumptions must be confirmed in intent-to-3d-brief-writer before scene planning."
+          ],
+          "evidenceCitations": [
+            "skills/blender-brainstorming/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "brainstorming-continuous-scope-expansion",
+      "skillId": "blender-brainstorming",
+      "scenario": "User keeps expanding scope mid-brainstorm (\"and a music video version too\")",
+      "category": "scope_creep",
+      "inputPrompt": "Add the sneaker still... and also an interactive configurator... and a 3-minute music video version too.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Pauses expansion and prompts user to lock current scope or delegate to blender-scope-boundary-enforcer",
+        "Summarizes current baseline scope clearly"
+      ],
+      "requiredOutputProperties": [
+        "lock current scope",
+        "blender-scope-boundary-enforcer",
+        "Runtime: Not Run"
+      ],
+      "forbiddenOutputProperties": [
+        "music video rendered",
+        "Artifact: Produced"
+      ],
+      "expectedRoutingTarget": "blender-scope-boundary-enforcer",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Scope-lock prompt + summary of current baseline scope"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only Socratic intent exploration",
+          "recommendedNextAction": "Ask user to lock current scope and route scope expansion to blender-scope-boundary-enforcer.",
+          "targetHandoff": "blender-scope-boundary-enforcer",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Issued scope-lock prompt (\"lock current scope or keep expanding?\") and routed multi-deliverable creep to blender-scope-boundary-enforcer.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/blender-brainstorming/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "brainstorming-already-structured-brief-skip",
+      "skillId": "blender-brainstorming",
+      "scenario": "User already provides subject, mood, deliverable, audience, and evidence expectations",
+      "category": "structured_skip",
+      "inputPrompt": "Subject: matte black espresso grinder. Mood: warm studio editorial. Deliverable: 4K PNG + <=8MB GLB. Audience: web buyers. Owner: design lead.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Explicitly states skipping brainstorming because brief inputs are already structured",
+        "Routes directly to intent-to-3d-brief-writer"
+      ],
+      "requiredOutputProperties": [
+        "skipping brainstorming because brief is complete",
+        "intent-to-3d-brief-writer",
+        "Runtime: Not Run"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Produced",
+        "5 mandatory clarifying questions"
+      ],
+      "expectedRoutingTarget": "intent-to-3d-brief-writer",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicit structured-skip message + route to intent-to-3d-brief-writer"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only Socratic intent exploration",
+          "recommendedNextAction": "Route directly to intent-to-3d-brief-writer (skipping brainstorming because brief is complete).",
+          "targetHandoff": "intent-to-3d-brief-writer",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Detected complete brief inputs; skipping brainstorming because brief is complete and routing to intent-to-3d-brief-writer.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/blender-brainstorming/EVAL.md"
+          ]
+        }
+      }
+    }
+  ]
+}

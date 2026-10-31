@@ -1,0 +1,364 @@
+{
+  "schemaVersion": "1.0.0",
+  "skillId": "intent-to-3d-brief-writer",
+  "category": "process-discipline",
+  "isContractedSkill": false,
+  "evalMarkdownPath": "skills/intent-to-3d-brief-writer/EVAL.md",
+  "sourceEvalTier": "structured_multi_case_table",
+  "evaluationStatus": {
+    "staticValidation": "Passed",
+    "deterministicFixture": "Passed",
+    "contractRouting": "Not Implemented",
+    "liveModel": "Not Run",
+    "blenderRuntime": "Not Run"
+  },
+  "cases": [
+    {
+      "id": "brief-writer-fully-specified-intent",
+      "skillId": "intent-to-3d-brief-writer",
+      "scenario": "Confirmed intent covers all 8 brief slots",
+      "category": "normal",
+      "inputPrompt": "Confirmed intent: ceramic pour-over dripper, warm minimalist mood, 2K hero PNG + <=5MB web GLB, marketing team audience, design lead owner, observable framing check.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Writes all 8 slots in plain language, lists deferred decisions, echoes brief for confirmation",
+        "Hands off to product-hero-scene-planner"
+      ],
+      "requiredOutputProperties": [
+        "8-slot brief",
+        "decisions deferred",
+        "product-hero-scene-planner"
+      ],
+      "forbiddenOutputProperties": [
+        "subsurf scattering",
+        "Artifact: Produced"
+      ],
+      "expectedRoutingTarget": "product-hero-scene-planner",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "All 8 slots populated + deferred decisions list + echo confirmation"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only 8-slot brief authoring",
+          "recommendedNextAction": "Echo 8-slot brief for confirmation and hand off to product-hero-scene-planner.",
+          "targetHandoff": "product-hero-scene-planner",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Authored complete 8-slot brief in plain language with explicit decisions deferred and echoed to user.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/intent-to-3d-brief-writer/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "brief-writer-half-specified-intent",
+      "skillId": "intent-to-3d-brief-writer",
+      "scenario": "5 of 8 slots present; batches 3 missing-slot questions",
+      "category": "ambiguous",
+      "inputPrompt": "We want a hero render of a mechanical keyboard with neon keycaps for our launch page, but constraints, acceptance criteria, and owner are not set yet.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Marks missing slots explicitly as Unknown and batches 3 targeted questions in one turn",
+        "Echoes draft 8-slot brief before handing off to blender-asset-discovery-planner"
+      ],
+      "requiredOutputProperties": [
+        "Unknown",
+        "batched 3 missing-slot questions",
+        "blender-asset-discovery-planner"
+      ],
+      "forbiddenOutputProperties": [
+        "invented owner",
+        "Artifact: Verified"
+      ],
+      "expectedRoutingTarget": "blender-asset-discovery-planner",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicit Unknown markers + batched missing-slot questions"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only 8-slot brief authoring",
+          "recommendedNextAction": "Resolve the batched 3 missing-slot questions (marked Unknown) and advance to blender-asset-discovery-planner.",
+          "targetHandoff": "blender-asset-discovery-planner",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Wrote draft 8-slot brief with Unknown slots explicitly flagged and batched 3 missing-slot questions.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/intent-to-3d-brief-writer/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "brief-writer-four-plus-slots-missing",
+      "skillId": "intent-to-3d-brief-writer",
+      "scenario": "4+ slots missing routes back to blender-brainstorming",
+      "category": "ambiguous",
+      "inputPrompt": "Write a 3D brief for something cool in space.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Refuses to fabricate 4+ missing brief slots",
+        "Routes upstream to blender-brainstorming"
+      ],
+      "requiredOutputProperties": [
+        "blender-brainstorming",
+        "4+ slots missing",
+        "no brief written yet"
+      ],
+      "forbiddenOutputProperties": [
+        "Brief complete and locked",
+        "Artifact: Produced"
+      ],
+      "expectedRoutingTarget": "blender-brainstorming",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Explicit re-route message to blender-brainstorming"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only 8-slot brief authoring",
+          "recommendedNextAction": "Route back to blender-brainstorming because 4+ slots missing (no brief written yet).",
+          "targetHandoff": "blender-brainstorming",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted brief generation with 4+ slots missing; no brief written yet; re-routed to blender-brainstorming.",
+          "warnings": [
+            "Never invent missing brief slots without user input."
+          ],
+          "evidenceCitations": [
+            "skills/intent-to-3d-brief-writer/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "brief-writer-conflicting-deliverable-constraint",
+      "skillId": "intent-to-3d-brief-writer",
+      "scenario": "Conflicting deliverable and constraint (\"mobile web GLB AND 50MB uncompressed budget\")",
+      "category": "blocked_or_adversarial",
+      "inputPrompt": "Write a brief for a mobile web GLB hero that must load instantly on 3G but also allows a 50MB uncompressed poly/texture budget.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Flags the conflict in Slot 4 (Constraints) and prompts user to resolve before locking",
+        "Routes to glb-mobile-performance-budget to reconcile mobile budget targets"
+      ],
+      "requiredOutputProperties": [
+        "conflict flag",
+        "Slot 4",
+        "glb-mobile-performance-budget"
+      ],
+      "forbiddenOutputProperties": [
+        "no conflict found",
+        "Artifact: Verified"
+      ],
+      "expectedRoutingTarget": "glb-mobile-performance-budget",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Slot 4 conflict flag + resolution prompt"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only 8-slot brief authoring",
+          "recommendedNextAction": "Resolve the Slot 4 conflict flag via glb-mobile-performance-budget before locking the brief.",
+          "targetHandoff": "glb-mobile-performance-budget",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Raised conflict flag in Slot 4 between instant mobile web GLB delivery and 50MB budget.",
+          "warnings": [
+            "Brief remains unlocked until conflicting constraints are resolved."
+          ],
+          "evidenceCitations": [
+            "skills/intent-to-3d-brief-writer/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "brief-writer-mixed-audience-dual-sections",
+      "skillId": "intent-to-3d-brief-writer",
+      "scenario": "Mixed audience (non-Blender marketing team + technical artist)",
+      "category": "normal",
+      "inputPrompt": "Our audience includes both the non-Blender marketing director and the WebGL technical artist for a sneaker product hero.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Includes both plain-language stakeholder section and technical handoff notes while keeping primary slots jargon-free",
+        "Hands off to product-hero-scene-planner"
+      ],
+      "requiredOutputProperties": [
+        "plain-language section",
+        "technical section",
+        "product-hero-scene-planner"
+      ],
+      "forbiddenOutputProperties": [
+        "raw bpy script",
+        "Artifact: Produced"
+      ],
+      "expectedRoutingTarget": "product-hero-scene-planner",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P2",
+      "evidenceRequirements": [
+        "Dual audience sections with plain-language primary summary"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only 8-slot brief authoring",
+          "recommendedNextAction": "Confirm dual-section brief (plain-language section + technical section) and hand off to product-hero-scene-planner.",
+          "targetHandoff": "product-hero-scene-planner",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Generated 8-slot brief containing both plain-language section for marketing and technical section for WebGL integration.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/intent-to-3d-brief-writer/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "brief-writer-user-edits-mood-re-echo",
+      "skillId": "intent-to-3d-brief-writer",
+      "scenario": "User edits mood after initial brief echo",
+      "category": "normal",
+      "inputPrompt": "Change Slot 2 mood from warm daylight studio to high-contrast dramatic rim lighting and re-echo the brief.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Updates Slot 2 in a versioned brief, re-echoes for second confirmation",
+        "Hands off to product-hero-scene-planner after confirmation"
+      ],
+      "requiredOutputProperties": [
+        "versioned brief",
+        "second confirmation",
+        "product-hero-scene-planner"
+      ],
+      "forbiddenOutputProperties": [
+        "skipped re-echo",
+        "Artifact: Produced"
+      ],
+      "expectedRoutingTarget": "product-hero-scene-planner",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P2",
+      "evidenceRequirements": [
+        "Versioned brief update + second confirmation prompt"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only 8-slot brief authoring",
+          "recommendedNextAction": "Await second confirmation on the versioned brief before advancing to product-hero-scene-planner.",
+          "targetHandoff": "product-hero-scene-planner",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Updated Slot 2 mood in versioned brief and echoed for second confirmation.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/intent-to-3d-brief-writer/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "brief-writer-text-only-iteration-loop",
+      "skillId": "intent-to-3d-brief-writer",
+      "scenario": "User wants text-only plan first and runtime later",
+      "category": "structured_skip",
+      "inputPrompt": "We want a text-only scene plan first with zero Blender execution right now; runtime will happen next week.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Sets Slot 3 deliverables to text-only plan and Slot 5 evidence expectations to Runtime: Not Run / Artifact: Not Produced",
+        "Hands off to acceptance-criteria-builder"
+      ],
+      "requiredOutputProperties": [
+        "text-only plan",
+        "Runtime: Not Run",
+        "acceptance-criteria-builder"
+      ],
+      "forbiddenOutputProperties": [
+        "runtime ready",
+        "Artifact: Produced"
+      ],
+      "expectedRoutingTarget": "acceptance-criteria-builder",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicit text-only deliverable and Not Run / Not Produced expectations in Slot 5"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only 8-slot brief authoring",
+          "recommendedNextAction": "Hand off locked text-only plan brief to acceptance-criteria-builder.",
+          "targetHandoff": "acceptance-criteria-builder",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Locked text-only plan brief with Slot 5 explicitly recording Runtime: Not Run and Artifact: Not Produced.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/intent-to-3d-brief-writer/EVAL.md"
+          ]
+        }
+      }
+    }
+  ]
+}

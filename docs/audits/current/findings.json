@@ -1,0 +1,201 @@
+{
+  "schemaVersion": "1.0.0",
+  "auditPhase": "phase-2.2-and-phase-3-current",
+  "repository": "ThanhNguyxnOrg/blendops",
+  "branch": "main",
+  "baselineCommitSha": "3ea3c35c6b8a6e5e915bab9f63333d4a1c09bd4d",
+  "currentCommitSha": "b1927ba04bc9ac9c5ca476997ee6da7f8b8f4f78",
+  "summary": {
+    "totalFindings": 10,
+    "statusBreakdown": {
+      "FIXED": 3,
+      "PARTIALLY_FIXED": 3,
+      "OPEN": 3,
+      "DEFERRED": 1,
+      "REGRESSION": 0,
+      "NOT_APPLICABLE": 0,
+      "UNVERIFIED": 0
+    },
+    "activeZeroCompensationP0Blockers": 0
+  },
+  "findings": [
+    {
+      "id": "F-01",
+      "title": "30 of 48 SKILL.md files include Not Run inside Artifact status",
+      "severity": "P0",
+      "pillar": "Pillar 1 & 5 (Truth State Integrity)",
+      "phase0BaselineState": "OPEN (30/48 skills affected at 3ea3c35)",
+      "currentLifecycleStatus": "FIXED",
+      "resolvedInPhase": "Phase 1 (ac1ccdb)",
+      "lastVerifiedCommit": "b1927ba04bc9ac9c5ca476997ee6da7f8b8f4f78",
+      "evidencePaths": [
+        "scripts/check-docs.mjs",
+        "scripts/test-phase1.mjs",
+        "schemas/skill-contract.schema.json",
+        "schemas/skill-eval.schema.json",
+        "docs/audits/current/skill-inventory.json"
+      ],
+      "verificationMethod": "Automated scan in scripts/check-docs.mjs (lines 806-824) and unit test in scripts/test-phase1.mjs confirm 0/48 skills assign Not Run to Artifact status outside Anti-patterns.",
+      "remainingScope": "None. Guarded in CI on every commit."
+    },
+    {
+      "id": "F-02",
+      "title": "scripts/export-claude-skills.mjs depends on external zip binary and docs.yml only runs docs:check",
+      "severity": "P0",
+      "pillar": "Pillar 9 (CI, Release Governance & Maintenance)",
+      "phase0BaselineState": "OPEN (spawnSync zip ENOENT on minimal Linux; CI skipped export)",
+      "currentLifecycleStatus": "FIXED",
+      "resolvedInPhase": "Phase 1 (ac1ccdb) + Phase 2.1 (b1927ba)",
+      "lastVerifiedCommit": "b1927ba04bc9ac9c5ca476997ee6da7f8b8f4f78",
+      "evidencePaths": [
+        "scripts/export-claude-skills.mjs",
+        "scripts/test-phase1.mjs",
+        ".github/workflows/docs.yml",
+        "package.json"
+      ],
+      "verificationMethod": "Pure Node.js fflate (zlibSync) ZIP builder verified byte-for-byte across all 48 skills (SKILL.md, EVAL.md, and references/*) in scripts/test-phase1.mjs; .github/workflows/docs.yml executes npm run ci.",
+      "remainingScope": "None. Full 48-skill ZIP and folder export runs in CI."
+    },
+    {
+      "id": "F-03",
+      "title": "Machine-readable contract.json, compiled registry, and canonical handoff notation",
+      "severity": "P0",
+      "pillar": "Pillar 1 & 2 (Contract & Graph Authority)",
+      "phase0BaselineState": "OPEN (0/48 contracts, no registry/, split handoff notation)",
+      "currentLifecycleStatus": "PARTIALLY_FIXED",
+      "resolvedInPhase": "Phase 2 Pilot (f43385a) + Phase 2.1 Hardening (b1927ba)",
+      "lastVerifiedCommit": "b1927ba04bc9ac9c5ca476997ee6da7f8b8f4f78",
+      "evidencePaths": [
+        "schemas/skill-contract.schema.json",
+        "scripts/build-registry.mjs",
+        "scripts/test-phase2.mjs",
+        "registry/skills.json",
+        "registry/workflow-graph.json",
+        "skills/blendops-help/contract.json",
+        "skills/recipe-fit-assessor/contract.json",
+        "skills/pack-prerequisite-checker/contract.json",
+        "skills/workflow-stage-router/contract.json"
+      ],
+      "verificationMethod": "npm run registry:check and scripts/test-phase2.mjs validate Draft 2020-12 Ajv2020 schema compliance, 16-state activationGate overlap/reachability, progression DAG acyclicity, and managed Markdown sync for the 4 routing pilot skills.",
+      "remainingScope": "4/48 skills contracted (routing-pilot); 44/48 non-pilot skills remain uncontracted prose, and 13 skills still use bare-ID handoff notation in Markdown."
+    },
+    {
+      "id": "F-04",
+      "title": "Machine-readable behavioral evaluation suites and deterministic evaluation runner",
+      "severity": "P0",
+      "pillar": "Pillar 3 (Behavioral Evaluation)",
+      "phase0BaselineState": "OPEN (0 automated runners; 8/48 structured EVAL.md tables; 40/48 prose-only)",
+      "currentLifecycleStatus": "PARTIALLY_FIXED",
+      "resolvedInPhase": "Phase 3 Foundation (b1927ba)",
+      "lastVerifiedCommit": "b1927ba04bc9ac9c5ca476997ee6da7f8b8f4f78",
+      "evidencePaths": [
+        "schemas/skill-eval.schema.json",
+        "scripts/run-evals.mjs",
+        "scripts/test-phase3.mjs",
+        "evals/index.json",
+        "evals/pilot/"
+      ],
+      "verificationMethod": "npm run evals:check, npm run evals:run, and scripts/test-phase3.mjs validate and execute 12 pilot .eval.json suites (73 cases: 21 contract_routing + 52 deterministic_fixture) in CI.",
+      "remainingScope": "12/48 skills have machine-readable .eval.json suites; 36/48 prose-only EVAL.md skills await migration; live_model and blender_runtime evaluation modes remain Not Run."
+    },
+    {
+      "id": "F-05",
+      "title": "8 Batch 7 & Batch 8 skills omit 9-11 extended template sections from skills/_template/SKILL.md",
+      "severity": "P1",
+      "pillar": "Pillar 1 (Template Completeness)",
+      "phase0BaselineState": "OPEN (8/48 skills missing Decision tree, Playbooks, Failure handling, Troubleshooting, Best practices, Good/Bad examples, User-facing response template, Anti-patterns)",
+      "currentLifecycleStatus": "OPEN",
+      "resolvedInPhase": "Pending Phase 4 catalog expansion",
+      "lastVerifiedCommit": "b1927ba04bc9ac9c5ca476997ee6da7f8b8f4f78",
+      "evidencePaths": [
+        "skills/_template/SKILL.md",
+        "docs/audits/current/skill-inventory.json"
+      ],
+      "verificationMethod": "Measured in docs/audits/current/skill-inventory.json (skillsMissingExtendedTemplateSections = 8).",
+      "remainingScope": "Backfill the missing extended template sections in the 8 Batch 7/8 skills and tighten requiredSkillHeadings in scripts/check-docs.mjs."
+    },
+    {
+      "id": "F-06",
+      "title": "Routing quartet handoffs in blendops-help and forward reachability of blender-scope-boundary-enforcer",
+      "severity": "P1",
+      "pillar": "Pillar 2 (Workflow Architecture & Routing)",
+      "phase0BaselineState": "OPEN (blendops-help omitted Batch 7 routing quartet; blender-scope-boundary-enforcer had 0 incoming forward edges)",
+      "currentLifecycleStatus": "FIXED",
+      "resolvedInPhase": "Phase 2 Pilot (f43385a)",
+      "lastVerifiedCommit": "b1927ba04bc9ac9c5ca476997ee6da7f8b8f4f78",
+      "evidencePaths": [
+        "skills/blendops-help/contract.json",
+        "skills/blendops-help/SKILL.md",
+        "skills/workflow-stage-router/contract.json",
+        "skills/workflow-stage-router/SKILL.md",
+        "registry/workflow-graph.json"
+      ],
+      "verificationMethod": "Verified in registry/workflow-graph.json and evals/pilot/workflow-stage-router.eval.json (case workflow-stage-mid-workflow-scope-creep).",
+      "remainingScope": "None for routing quartet and scope-boundary delegation."
+    },
+    {
+      "id": "F-07",
+      "title": "Deterministic GLB container inspector, Khronos glTF-Validator integration, and Blender version compatibility matrices",
+      "severity": "P1",
+      "pillar": "Pillar 4 & 5 (Blender Domain Correctness & Artifact Verification)",
+      "phase0BaselineState": "OPEN (no inspect-glb.mjs or version matrices)",
+      "currentLifecycleStatus": "OPEN",
+      "resolvedInPhase": "Planned in Roadmap E1 & E2 (docs/audits/phase-3/README.md)",
+      "lastVerifiedCommit": "b1927ba04bc9ac9c5ca476997ee6da7f8b8f4f78",
+      "evidencePaths": [
+        "docs/audits/phase-3/README.md"
+      ],
+      "verificationMethod": "Roadmap E1/E2 specification in docs/audits/phase-3/README.md; no inspect-glb.mjs binary parser or glTF-Validator runner is wired yet.",
+      "remainingScope": "Implement scripts/inspect-glb.mjs, optional Khronos glTF-Validator runner, and Blender 3.6/4.2/5.1 shader/exporter compatibility tables."
+    },
+    {
+      "id": "F-08",
+      "title": "Synchronize docs/adapter-registry.md with all 26 docs/install/*.md targets and classify compatibility tiers",
+      "severity": "P1",
+      "pillar": "Pillar 7 (Cross-Agent Compatibility)",
+      "phase0BaselineState": "OPEN (Windsurf, Continue, Cline, Roo, Aider listed as not researched; 10 targets missing from install-only table)",
+      "currentLifecycleStatus": "PARTIALLY_FIXED",
+      "resolvedInPhase": "Phase 1 (ac1ccdb)",
+      "lastVerifiedCommit": "b1927ba04bc9ac9c5ca476997ee6da7f8b8f4f78",
+      "evidencePaths": [
+        "docs/adapter-registry.md",
+        "scripts/check-docs.mjs",
+        "scripts/test-phase1.mjs"
+      ],
+      "verificationMethod": "scripts/check-docs.mjs (lines 827-840) and scripts/test-phase1.mjs verify all 26 install targets are accounted for in docs/adapter-registry.md and zero shipped targets remain in Future candidates.",
+      "remainingScope": "Documented in Roadmap E4: empirical host verification to promote targets from linked-only to verified-read across Tier 1/2/3."
+    },
+    {
+      "id": "F-09",
+      "title": "Deterministic generation of compressed bundle reference summaries from canonical SKILL.md + contract.json",
+      "severity": "P2",
+      "pillar": "Pillar 8 (Documentation & Bundle Maintenance)",
+      "phase0BaselineState": "OPEN (96 manual summary files in bundles/ average 14 lines vs 225 lines in SKILL.md)",
+      "currentLifecycleStatus": "DEFERRED",
+      "resolvedInPhase": "Deferred until 48/48 skill contracts are authored",
+      "lastVerifiedCommit": "b1927ba04bc9ac9c5ca476997ee6da7f8b8f4f78",
+      "evidencePaths": [
+        "bundles/claude-desktop-manual/",
+        "bundles/skill-package/blendops/"
+      ],
+      "verificationMethod": "Static check in scripts/check-docs.mjs confirms all bundle files exist and pass frontmatter/link checks.",
+      "remainingScope": "Auto-generate bundle reference summaries once contract.json covers all 48 skills."
+    },
+    {
+      "id": "F-10",
+      "title": "Runtime capability tiering (L0-L3) and Blender scene-mutation snapshot/rollback protocol",
+      "severity": "P1",
+      "pillar": "Pillar 6 (Security, Asset Provenance & Trust Model)",
+      "phase0BaselineState": "OPEN (only file-install ROLLBACK.md exists; no L0-L3 runtime capability model)",
+      "currentLifecycleStatus": "OPEN",
+      "resolvedInPhase": "Planned in Roadmap E3 (docs/audits/phase-3/README.md)",
+      "lastVerifiedCommit": "b1927ba04bc9ac9c5ca476997ee6da7f8b8f4f78",
+      "evidencePaths": [
+        "bundles/generic-project-local/ROLLBACK.md",
+        "docs/audits/phase-3/README.md"
+      ],
+      "verificationMethod": "Roadmap E3 architecture defined in docs/audits/phase-3/README.md.",
+      "remainingScope": "Add L0-L3 capability fields to runtime skill contracts and enforce pre-mutation .blend snapshot instructions."
+    }
+  ]
+}

@@ -1,0 +1,419 @@
+{
+  "schemaVersion": "1.0.0",
+  "skillId": "render-export-evidence",
+  "category": "evidence-and-handoff",
+  "isContractedSkill": false,
+  "evalMarkdownPath": "skills/render-export-evidence/EVAL.md",
+  "sourceEvalTier": "structured_multi_case_table",
+  "evaluationStatus": {
+    "staticValidation": "Passed",
+    "deterministicFixture": "Passed",
+    "contractRouting": "Not Implemented",
+    "liveModel": "Not Run",
+    "blenderRuntime": "Not Run"
+  },
+  "cases": [
+    {
+      "id": "render-evidence-no-runtime-action",
+      "skillId": "render-export-evidence",
+      "scenario": "No Blender execution attempted preserves Not Run and Not Produced",
+      "category": "normal",
+      "inputPrompt": "We completed our text-only scene and lighting plan with zero Blender execution. Classify evidence status.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Classifies Runtime status as Not Run and Artifact status as Not Produced",
+        "Hands off to pre-handoff-verification"
+      ],
+      "requiredOutputProperties": [
+        "Runtime: Not Run",
+        "Artifact: Not Produced",
+        "pre-handoff-verification"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Not Run",
+        "Artifact: Produced",
+        "Artifact: Verified"
+      ],
+      "expectedRoutingTarget": "pre-handoff-verification",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Runtime: Not Run and Artifact: Not Produced separation"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only artifact evidence classification",
+          "recommendedNextAction": "Pass conservative Not Run / Not Produced evidence table to pre-handoff-verification.",
+          "targetHandoff": "pre-handoff-verification",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Classified text-only session as Runtime: Not Run and Artifact: Not Produced.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/render-export-evidence/EVAL.md",
+            "laws/evidence-before-done.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "render-evidence-attempted-no-output-file",
+      "skillId": "render-export-evidence",
+      "scenario": "Runtime command attempted but no output path or file evidence exists",
+      "category": "evidence_boundary",
+      "inputPrompt": "The operator ran a render command in Blender, but no output path or file on disk was recorded.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": true,
+        "existingArtifactEvidence": "attempted-no-file"
+      },
+      "expectedBehavior": [
+        "Classifies Artifact status as Attempted (never Produced or Verified)",
+        "Routes to pre-handoff-verification with blocked validation notes"
+      ],
+      "requiredOutputProperties": [
+        "Artifact: Attempted",
+        "output path missing",
+        "pre-handoff-verification"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Produced",
+        "Artifact: Verified"
+      ],
+      "expectedRoutingTarget": "pre-handoff-verification",
+      "truthStateExpectations": {
+        "runtimeStatus": "Attempted",
+        "artifactStatus": "Attempted"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Artifact status Attempted when output path or file existence is missing"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only artifact evidence classification",
+          "recommendedNextAction": "Keep status at Artifact: Attempted (output path missing) and route to pre-handoff-verification.",
+          "targetHandoff": "pre-handoff-verification",
+          "runtimeStatus": "Attempted",
+          "artifactStatus": "Attempted",
+          "summary": "Downgraded unsubstantiated render claim to Artifact: Attempted because output path is missing.",
+          "warnings": [
+            "Never upgrade Attempted to Produced without file existence evidence."
+          ],
+          "evidenceCitations": [
+            "skills/render-export-evidence/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "render-evidence-file-exists-validation-missing",
+      "skillId": "render-export-evidence",
+      "scenario": "Output file exists on disk but validation checks are missing",
+      "category": "evidence_boundary",
+      "inputPrompt": "File renders/hero.png exists on disk, but no framing, lighting, or polycount validation checks have been recorded yet.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": true,
+        "existingArtifactEvidence": "file-only-unvalidated"
+      },
+      "expectedBehavior": [
+        "Classifies Artifact status as Produced (never Verified without validation notes)",
+        "Routes to blender-scene-quality-checker to complete validation checks"
+      ],
+      "requiredOutputProperties": [
+        "Artifact: Produced",
+        "validation notes pending",
+        "blender-scene-quality-checker"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "validation complete"
+      ],
+      "expectedRoutingTarget": "blender-scene-quality-checker",
+      "truthStateExpectations": {
+        "runtimeStatus": "Produced",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Produced (not Verified) classification when validation notes are missing"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only artifact evidence classification",
+          "recommendedNextAction": "Record Artifact: Produced (validation notes pending) and route to blender-scene-quality-checker.",
+          "targetHandoff": "blender-scene-quality-checker",
+          "runtimeStatus": "Produced",
+          "artifactStatus": "Produced",
+          "summary": "Classified renders/hero.png as Artifact: Produced because validation notes are still pending.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/render-export-evidence/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "render-evidence-full-path-existence-and-validation",
+      "skillId": "render-export-evidence",
+      "scenario": "Output path, file existence, tool names, and validation notes are all recorded",
+      "category": "normal",
+      "inputPrompt": "Path 1 host (a) produced renders/hero-v1.png; file existence verified; framing, PBR material, and lighting validation checks all passed.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": true,
+        "existingArtifactEvidence": "file-and-validation-recorded"
+      },
+      "expectedBehavior": [
+        "Classifies Artifact status as Verified with full provenance fields",
+        "Hands off to pre-handoff-verification for final 7-point check"
+      ],
+      "requiredOutputProperties": [
+        "Artifact: Verified",
+        "Path 1 host (a)",
+        "pre-handoff-verification"
+      ],
+      "forbiddenOutputProperties": [
+        "standalone connector",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "pre-handoff-verification",
+      "truthStateExpectations": {
+        "runtimeStatus": "Verified",
+        "artifactStatus": "Verified"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Complete 13-field evidence record + Verified classification"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only artifact evidence classification",
+          "recommendedNextAction": "Pass complete Path 1 host (a) Artifact: Verified record to pre-handoff-verification.",
+          "targetHandoff": "pre-handoff-verification",
+          "runtimeStatus": "Verified",
+          "artifactStatus": "Verified",
+          "summary": "Recorded Artifact: Verified for renders/hero-v1.png under Path 1 host (a) with complete validation notes.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/render-export-evidence/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "render-evidence-path1-read-only-smoke-no-artifacts",
+      "skillId": "render-export-evidence",
+      "scenario": "Path 1 read-only smoke test returned get_blendfile_summary_* and get_objects_summary only",
+      "category": "evidence_boundary",
+      "inputPrompt": "Lab MCP returned get_blendfile_summary and get_objects_summary from Blender 5.1 under Path 1 host (a); no render or export was run.",
+      "preconditions": {
+        "mode": "read-only-smoke-transcript",
+        "runtimeAvailable": true,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Labels runtime access as scoped read-only (Attempted) and keeps Artifact status strictly Not Produced",
+        "Explicitly records Path 1 + host option (a) and tool names"
+      ],
+      "requiredOutputProperties": [
+        "scoped read-only",
+        "Path 1 host (a)",
+        "Artifact: Not Produced",
+        "pre-handoff-verification"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Produced",
+        "Artifact: Verified"
+      ],
+      "expectedRoutingTarget": "pre-handoff-verification",
+      "truthStateExpectations": {
+        "runtimeStatus": "Attempted",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Read-only smoke separation from artifact production (Artifact: Not Produced)"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only artifact evidence classification",
+          "recommendedNextAction": "Record scoped read-only runtime access under Path 1 host (a) with Artifact: Not Produced and route to pre-handoff-verification.",
+          "targetHandoff": "pre-handoff-verification",
+          "runtimeStatus": "Attempted",
+          "artifactStatus": "Not Produced",
+          "summary": "Classified Lab MCP read-only smoke transcript as scoped read-only with Artifact: Not Produced.",
+          "warnings": [
+            "Read-only smoke tests never constitute render or GLB artifact production."
+          ],
+          "evidenceCitations": [
+            "docs/evals/blender-connector-read-only-smoke-test.md",
+            "skills/render-export-evidence/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "render-evidence-path2-community-caveat-labeling",
+      "skillId": "render-export-evidence",
+      "scenario": "Path 2 (mcp-for-blender) evidence requires upstream commit and third-party caveat",
+      "category": "normal",
+      "inputPrompt": "We produced a preview image using community uvx mcp-for-blender (Path 2) with execute_blender_code.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": true,
+        "existingArtifactEvidence": "file-only-unvalidated"
+      },
+      "expectedBehavior": [
+        "Labels evidence as Path 2 with upstream addon.py / uvx mcp-for-blender version and third-party caveat",
+        "Never promotes Path 2 evidence as official Path 1 release evidence"
+      ],
+      "requiredOutputProperties": [
+        "Path 2",
+        "third-party from Anthropic and Blender Foundation",
+        "docs/unofficial-runtime-bridges.md"
+      ],
+      "forbiddenOutputProperties": [
+        "official Path 1 evidence",
+        "Artifact: Verified"
+      ],
+      "expectedRoutingTarget": "pre-handoff-verification",
+      "truthStateExpectations": {
+        "runtimeStatus": "Produced",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Path 2 label + third-party caveat per docs/unofficial-runtime-bridges.md"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only artifact evidence classification",
+          "recommendedNextAction": "Attach Path 2 third-party caveat per docs/unofficial-runtime-bridges.md and route to pre-handoff-verification.",
+          "targetHandoff": "pre-handoff-verification",
+          "runtimeStatus": "Produced",
+          "artifactStatus": "Produced",
+          "summary": "Labeled preview output as Path 2 (third-party from Anthropic and Blender Foundation) per docs/unofficial-runtime-bridges.md.",
+          "warnings": [],
+          "evidenceCitations": [
+            "docs/unofficial-runtime-bridges.md",
+            "skills/render-export-evidence/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "render-evidence-cli-fallback-appendix-note",
+      "skillId": "render-export-evidence",
+      "scenario": "CLI fallback (blender --background --python) evidence requires explicit appendix note",
+      "category": "normal",
+      "inputPrompt": "We ran blender --background scene.blend --python render.py and produced /tmp/out.png.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": true,
+        "existingArtifactEvidence": "file-only-unvalidated"
+      },
+      "expectedBehavior": [
+        "Labels evidence as CLI fallback (appendix) with explicit note that no in-repo evidence file yet exists (Blender CLI itself is upstream-documented)",
+        "Classifies unvalidated output file as Produced (not Verified) and routes to pre-handoff-verification"
+      ],
+      "requiredOutputProperties": [
+        "CLI fallback (appendix)",
+        "no in-repo evidence file yet",
+        "upstream-documented"
+      ],
+      "forbiddenOutputProperties": [
+        "publisher-verified MCP peer",
+        "Artifact: Verified"
+      ],
+      "expectedRoutingTarget": "pre-handoff-verification",
+      "truthStateExpectations": {
+        "runtimeStatus": "Produced",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "CLI fallback appendix label + no in-repo evidence file yet note"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only artifact evidence classification",
+          "recommendedNextAction": "Label output as CLI fallback (appendix) with no in-repo evidence file yet note and route to pre-handoff-verification.",
+          "targetHandoff": "pre-handoff-verification",
+          "runtimeStatus": "Produced",
+          "artifactStatus": "Produced",
+          "summary": "Classified background CLI run as CLI fallback (appendix) — upstream-documented Blender CLI, no in-repo evidence file yet.",
+          "warnings": [],
+          "evidenceCitations": [
+            "docs/runtime-stack-strategy.md",
+            "skills/render-export-evidence/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "render-evidence-tool-name-vs-path-label-mismatch",
+      "skillId": "render-export-evidence",
+      "scenario": "Recorded tool names (get_scene_info) contradict Path 1 label",
+      "category": "blocked_or_adversarial",
+      "inputPrompt": "Operator labeled the run as Path 1 Lab MCP, but the recorded tool calls are get_scene_info and get_object_info from Path 2.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "attempted-no-file"
+      },
+      "expectedBehavior": [
+        "Flags tool-name vs path-label inconsistency as ambiguous and refuses to count it as verified evidence",
+        "Recommends re-verification via official-runtime-readiness-checker"
+      ],
+      "requiredOutputProperties": [
+        "ambiguous",
+        "re-verification needed",
+        "official-runtime-readiness-checker"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Produced"
+      ],
+      "expectedRoutingTarget": "official-runtime-readiness-checker",
+      "truthStateExpectations": {
+        "runtimeStatus": "Attempted",
+        "artifactStatus": "Attempted"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Tool-surface vs path-label mismatch detection + re-verification recommendation"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only artifact evidence classification",
+          "recommendedNextAction": "Mark path attribution ambiguous (re-verification needed) and route to official-runtime-readiness-checker.",
+          "targetHandoff": "official-runtime-readiness-checker",
+          "runtimeStatus": "Attempted",
+          "artifactStatus": "Attempted",
+          "summary": "Detected tool-name vs path-label mismatch (get_scene_info belongs to Path 2, not Path 1); marked ambiguous with re-verification needed.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/render-export-evidence/EVAL.md"
+          ]
+        }
+      }
+    }
+  ]
+}
