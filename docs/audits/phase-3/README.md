@@ -60,39 +60,43 @@ To migrate any of the remaining 36 skills:
 
 ---
 
-## 3. Prioritized Engineering Backlog (E1–E4)
+## 3. Completed Phase 3 Engineering Workstreams (E1–E4)
 
-### E1 — Blender Domain Correctness & Deterministic GLB Verification (`F-07`)
+### E1 — Blender Domain Correctness & Deterministic GLB Verification (`F-07` — `FIXED`)
 
-| Workstream | Target Files | Concrete Engineering Specification |
+| Workstream | Target Files | Implemented Engineering Capability |
 | :--- | :--- | :--- |
-| **1. Pure-Node GLB Container Inspector** | `scripts/inspect-glb.mjs` (planned) | Parse the 12-byte glTF 2.0 binary header (`magic === 0x46546C67`, `version === 2`, `length`), Chunk 0 (`JSON`), and Chunk 1 (`BIN`). Emit deterministic JSON containing SHA-256 hash, byte size, scene/node/mesh/material/texture/animation/skin counts, and bounding-box presence without requiring Blender. |
-| **2. Khronos `glTF-Validator` Hook** | `scripts/inspect-glb.mjs --khronos` (planned) | Optional integration with Khronos `gltf-validator` npm package when a `.glb` file is present on disk, recording exact `numErrors`, `numWarnings`, and `numInfos` into the evidence packet. |
-| **3. Blender Version Compatibility Matrix** | `skills/*/references/*.md` | Add explicit version matrices separating **Blender 3.6 LTS** (Path 2 floor `3.0+`), **Blender 4.2 LTS** (Principled BSDF v2 socket renames, EEVEE Next transition, AgX default view transform), and **Blender 5.1+** (Path 1 Blender Lab MCP add-on manifest floor). |
+| **1. Pure-Node GLB Container Inspector** | [`scripts/inspect-glb.mjs`](../../../scripts/inspect-glb.mjs) | Parses the 12-byte glTF 2.0 binary header (`magic === 0x46546C67`, `version === 2`, `length`), Chunk 0 (`JSON` `0x4E4F534A`), and Chunk 1 (`BIN\0` `0x004E4942`). Validates 4-byte chunk alignment, ASCII space (`0x20`) JSON padding, buffer/bufferView/accessor byte spans, and `POSITION` 3D bounding-box completeness. Emits deterministic JSON with SHA-256 hash, byte size, structural counts, and an explicit container-vs-visual/runtime truth boundary (`provesVisualCorrectness: false`, `provesBlenderRuntimeExecution: false`). |
+| **2. Khronos `glTF-Validator` Hook** | [`scripts/inspect-glb.mjs`](../../../scripts/inspect-glb.mjs) (`--khronos`) | Supports optional Khronos `gltf-validator` integration via `runKhronosGltfValidator()`, reporting deterministic status states (`not_run`, `unavailable`, `passed`, `failed`, `error`) without fabricating external validator installation. |
+| **3. Blender Version Compatibility Matrix** | [`docs/blender-version-compatibility.md`](../../blender-version-compatibility.md) | Authoritative compatibility matrices separating **Blender 3.6 LTS** (Path 2 floor `3.0+`), **Blender 4.2 LTS** (Principled BSDF v2 socket renames, EEVEE Next `BLENDER_EEVEE_NEXT`, AgX default view transform, Khronos PBR Neutral), and **Blender 5.1+** (Path 1 Blender Lab MCP add-on manifest floor across both Host (a) Anthropic Connector and Host (b) manual MCP client). |
 
-### E2 — Runtime & Artifact Evidence Packet (`F-07` / Pillar 5)
+### E2 — Runtime & Artifact Evidence Packet (`F-07` / Pillar 5 — `FIXED`)
 
-| Field | Type | Requirement Before `Produced` or `Verified` |
+Validated by [`schemas/runtime-evidence-packet.schema.json`](../../../schemas/runtime-evidence-packet.schema.json) and [`scripts/validate-evidence-packet.mjs`](../../../scripts/validate-evidence-packet.mjs):
+
+| Field | Type | Enforced Invariant Before `Produced` or `Verified` |
 | :--- | :--- | :--- |
-| `runtimePath` | `'path-1-host-a' \| 'path-1-host-b' \| 'path-2-community' \| 'cli-appendix'` | Must match recorded MCP tool names (`get_blendfile_summary_*` for Lab MCP vs `get_scene_info` for Path 2). |
-| `blenderVersion` | `string` | Output of `blender --version` (must be `>= 5.1.0` when `runtimePath` is `path-1-*`). |
-| `addonIdentity` | `string` | Lab MCP add-on version (Path 1), `mcp-for-blender` commit (Path 2), or `'N/A'` (CLI). |
-| `artifactPath` & `sha256` | `string` | Verified on-disk path, byte size, and SHA-256 digest (`Not Produced` if absent). |
-| `validationChecks` | `object` | Framing, lighting, PBR material, and polycount/GLB budget check results (`Produced` if pending; `Verified` only when all applicable checks pass). |
+| `runtimeEvidence.runtimePath` | `'path-1-host-a' \| 'path-1-host-b' \| 'path-2-community' \| 'cli-appendix' \| 'none'` | Must match recorded MCP tool signatures (`get_blendfile_summary_*` / `get_objects_summary` for Path 1 vs `get_scene_info` / `execute_blender_code` for Path 2). |
+| `runtimeEvidence.blenderVersion` | `string \| null` | Semver `>= 5.1.0` strictly enforced when `runtimePath` is `path-1-host-a` or `path-1-host-b` and runtime is active; `>= 3.0.0` enforced for `path-2-community`. |
+| `artifactEvidence.artifactStatus` | `'Not Produced' \| 'Attempted' \| 'Produced' \| 'Verified' \| 'Failed'` | Never `'Not Run'`. `Produced` and `Verified` require non-empty `artifactPath`, positive `byteSize`, 64-hex `sha256`, `runtimeStatus` in `['Produced', 'Verified']`, and `glbInspection.valid === true` for GLB artifacts. |
+| `validationChecks` & `isStaticFixture` | `object` & `boolean` | `Verified` requires `isStaticFixture === false`, `runtimeStatus === 'Verified'`, and all applicable `validationChecks` (`framing`, `lighting`, `pbrMaterials`, `polycountAndBudget`) set to `'Passed'`. |
 
-### E3 — Security, Asset Provenance & Runtime Capability Model (`F-10` / Pillar 6)
+### E3 — Security, Asset Provenance & Runtime Capability Model (`F-10` / Pillar 6 — `FIXED`)
 
-| Capability Tier | Scope | Required Safeguards & Rollback Protocol |
+Defined in [`schemas/runtime-capability-policy.schema.json`](../../../schemas/runtime-capability-policy.schema.json), compiled across all 48 skills in [`registry/runtime-capability-policy.json`](../../../registry/runtime-capability-policy.json), enforced by [`scripts/validate-capability-policy.mjs`](../../../scripts/validate-capability-policy.mjs), and documented in [`docs/safety-model.md`](../../safety-model.md):
+
+| Capability Tier | Scope | Enforced Safeguards & Fail-Closed Rollback Protocol |
 | :--- | :--- | :--- |
-| **L0 — Planning & Read-Only Inspection** | Text-only skills + read-only MCP smoke checks (`get_blendfile_summary_*`, `get_objects_summary`) | Zero scene mutation, zero file writes. Default for all 48 skills unless explicitly escalated. |
-| **L1 — Reversible Scene Mutation** | Camera, lighting, material, or collection adjustments inside an open Blender session | Require pre-mutation `.blend` checkpoint save (`save_as_mainfile` backup copy) before applying changes. |
-| **L2 — File Export & External Asset Import** | Writing `.png` renders, exporting `.glb` files, or importing third-party meshes/HDRIs | Require explicit output directory allowlist and `asset-license-checker` clearance (`CC0` or verified commercial license) prior to import. |
-| **L3 — Arbitrary Code / Destructive Operations** | `execute_blender_code` (Path 2) or `blender --background --python` (CLI appendix) | Never expose raw Python as the final user-facing output (`laws/no-arbitrary-python-interface.md`); require operator confirmation and pre-execution `.blend` backup. |
+| **L0 — Planning & Read-Only Inspection** | Default for all 48 skills + read-only MCP smoke checks (`get_blendfile_summary_*`, `get_objects_summary`, `get_scene_info`) | Zero scene mutation, zero file writes. Any undeclared or unknown skill defaults strictly to `L0`. |
+| **L1 — Reversible Scene Mutation** | Bounded camera, lighting, material, or object transform edits inside an active Blender session | Requires verified pre-mutation `.blend` checkpoint (`<scene>.pre-<skill-id>-<ISO8601-UTC>.blend`, positive `byteSize`, 64-hex `sha256`, `createdBeforeMutation: true`, `verifiedOnDisk: true`), `mutationBoundaries`, and `recoveryProtocol`. Missing or unverified backup strictly blocks mutation (`mutationBlockedByBackupFailure: true`). |
+| **L2 — File Export & External Asset Import** | Rendering `.png` images, exporting `.glb` files, or importing external 3D/material assets | Inherits `L1` backup gates when mutating, enforces `outputDirectoryAllowlist` (blocking `..` traversal), and requires `asset-license-checker` clearance (`CC0-1.0`, `CC-BY-4.0`, `Royalty-Free-Commercial`, or `Proprietary-First-Party`) before importing external assets. |
+| **L3 — Arbitrary Code / Destructive Operations** | `execute_blender_code` (Path 2) or `blender --background --python` (CLI appendix) | Inherits `L1`/`L2` gates, requires explicit `operatorConfirmation`, and enforces [`laws/no-arbitrary-python-interface.md`](../../../laws/no-arbitrary-python-interface.md) (`userFacingPythonAllowed: false`). |
 
-### E4 — Cross-Agent Compatibility Matrix (`F-08` / Pillar 7)
+### E4 — Cross-Agent Compatibility Matrix (`F-08` / Pillar 7 — `PARTIALLY_FIXED`)
 
-All **26 install targets** under [`docs/install/`](../../install/README.md) are synchronized in [`docs/adapter-registry.md`](../../adapter-registry.md):
+All **26 install targets** under [`docs/install/`](../../install/README.md) are synchronized across [`docs/adapter-registry.md`](../../adapter-registry.md) and the machine-readable [`registry/compatibility-matrix.json`](../../../registry/compatibility-matrix.json) (validated by [`schemas/adapter-compatibility-matrix.schema.json`](../../../schemas/adapter-compatibility-matrix.schema.json) and [`scripts/validate-compatibility-matrix.mjs`](../../../scripts/validate-compatibility-matrix.mjs)):
 
-- **Tier 1 — Verified Read / Project-Local Adapter Drafted (2 targets):** `Claude Code`, `Generic-root` (`verified-read` confidence).
-- **Tier 2 — Dedicated Adapter Drafted, Pending Live Host Verification (4 targets):** `Claude app/Desktop`, `OpenCode`, `Cursor`, `Codex/generic` (`linked-only` confidence with dedicated `docs/adapters/*.md` files).
-- **Tier 3 — Install Guide Shipped, Pending Adapter Promotion (20 targets):** `Gemini CLI`, `Antigravity`, `GitHub Copilot`, `Claude Desktop (manual import)`, `Cline`, `Continue.dev`, `Zed`, `goose`, `Roo Code`, `Windsurf`, `OpenHands`, `JetBrains Junie`, `Blackbox AI`, `Augment Code`, `Aider`, `Trae`, `Sourcegraph Cody`, `Amazon Q Developer`, `Ollama`, `LM Studio`, `Open WebUI`.
+- **Verified Read (`2` targets):** `claude-code` (`Claude Code`) and `generic-project` (`Generic project / BLENDOPS.md fallback`), backed by [`docs/evals/adapter-install-v0-dry-run.md`](../../evals/adapter-install-v0-dry-run.md) (`2026-05-08`).
+- **Linked-Only with Dedicated Adapter Doc (`4` targets):** `claude-desktop`, `cursor`, `codex`, `opencode` (`Not Verified` in live host eval).
+- **Linked-Only Install Guides Pending Adapter Promotion (`20` targets):** `aider`, `amazon-q-developer`, `antigravity`, `augment-code`, `blackbox-ai`, `cline`, `continue`, `gemini`, `github-copilot`, `goose`, `jetbrains-junie`, `lm-studio`, `ollama`, `open-webui`, `openhands`, `roo-code`, `sourcegraph-cody`, `trae`, `windsurf`, `zed` (`Not Verified`).
+- **Anti-Promotion Guard:** `validateCompatibilityMatrixObject` blocks promoting any target from `linked-only` to `verified-read` based on documentation alone.

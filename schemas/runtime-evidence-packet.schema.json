@@ -1,0 +1,211 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/ThanhNguyxnOrg/blendops/schemas/runtime-evidence-packet.schema.json",
+  "title": "BlendOps Runtime & Artifact Evidence Packet",
+  "description": "Machine-readable schema for runtime and artifact evidence packets enforcing the 5-state truth taxonomy and Path 1 / Path 2 / CLI appendix runtime boundaries.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "packetId",
+    "skillId",
+    "isStaticFixture",
+    "runtimeEvidence",
+    "artifactEvidence",
+    "validationChecks"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "schemaVersion": {
+      "const": "1.0.0"
+    },
+    "packetId": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+      "minLength": 3,
+      "maxLength": 96
+    },
+    "skillId": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+      "minLength": 2,
+      "maxLength": 64
+    },
+    "isStaticFixture": {
+      "type": "boolean",
+      "description": "True when the packet is a deterministic CI fixture rather than a live Blender runtime capture."
+    },
+    "runtimeEvidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "runtimePath",
+        "runtimeStatus",
+        "blenderVersion",
+        "addonIdentity",
+        "observedMcpTools"
+      ],
+      "properties": {
+        "runtimePath": {
+          "type": "string",
+          "enum": [
+            "path-1-host-a",
+            "path-1-host-b",
+            "path-2-community",
+            "cli-appendix",
+            "none"
+          ]
+        },
+        "runtimeStatus": {
+          "type": "string",
+          "enum": [
+            "Not Run",
+            "Attempted",
+            "Produced",
+            "Verified",
+            "Failed"
+          ]
+        },
+        "blenderVersion": {
+          "type": ["string", "null"],
+          "pattern": "^\\d+\\.\\d+\\.\\d+$"
+        },
+        "addonIdentity": {
+          "type": ["string", "null"],
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "observedMcpTools": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "artifactEvidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "artifactStatus",
+        "artifactType",
+        "artifactPath",
+        "byteSize",
+        "sha256",
+        "glbInspection"
+      ],
+      "properties": {
+        "artifactStatus": {
+          "type": "string",
+          "enum": [
+            "Not Produced",
+            "Attempted",
+            "Produced",
+            "Verified",
+            "Failed"
+          ]
+        },
+        "artifactType": {
+          "type": "string",
+          "enum": [
+            "glb",
+            "render-image",
+            "blend-checkpoint",
+            "none"
+          ]
+        },
+        "artifactPath": {
+          "type": ["string", "null"],
+          "minLength": 1
+        },
+        "byteSize": {
+          "type": ["integer", "null"],
+          "minimum": 0
+        },
+        "sha256": {
+          "type": ["string", "null"],
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "glbInspection": {
+          "type": ["object", "null"],
+          "additionalProperties": false,
+          "required": [
+            "valid",
+            "headerMagic",
+            "version",
+            "sceneCount",
+            "meshCount",
+            "materialCount",
+            "khronosStatus"
+          ],
+          "properties": {
+            "valid": {
+              "type": "boolean"
+            },
+            "headerMagic": {
+              "const": "glTF"
+            },
+            "version": {
+              "const": 2
+            },
+            "sceneCount": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "meshCount": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "materialCount": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "khronosStatus": {
+              "type": "string",
+              "enum": [
+                "not_run",
+                "unavailable",
+                "passed",
+                "failed",
+                "error"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "validationChecks": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "framing",
+        "lighting",
+        "pbrMaterials",
+        "polycountAndBudget"
+      ],
+      "properties": {
+        "framing": {
+          "type": "string",
+          "enum": ["Passed", "Warn", "Failed", "Not Applicable", "Not Run"]
+        },
+        "lighting": {
+          "type": "string",
+          "enum": ["Passed", "Warn", "Failed", "Not Applicable", "Not Run"]
+        },
+        "pbrMaterials": {
+          "type": "string",
+          "enum": ["Passed", "Warn", "Failed", "Not Applicable", "Not Run"]
+        },
+        "polycountAndBudget": {
+          "type": "string",
+          "enum": ["Passed", "Warn", "Failed", "Not Applicable", "Not Run"]
+        }
+      }
+    }
+  }
+}

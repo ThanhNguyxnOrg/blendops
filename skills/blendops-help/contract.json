@@ -5,6 +5,7 @@
   "category": "routing-and-governance",
   "role": "ambiguous-intent-entry-router",
   "purpose": "Route users to the right BlendOps skill, document, or next safe action without overclaiming runtime, artifact, or package readiness.",
+  "capabilityTier": "L0",
   "routingPrecedence": {
     "group": "entry-and-stage-routing",
     "rank": 1,

@@ -3,18 +3,18 @@
 Status: Draft v0
 
 > [!NOTE]
-> This registry is the **promotion ladder** for install targets. Every target starts as an install doc under [`docs/install/`](./install/), then graduates to an adapter row below once the project-local mapping is verified or drafted. Targets in the install layer that do not yet have adapter rows are tracked under "Install-only targets pending adapter draft" below.
+> This registry is the **promotion ladder** for install targets. Every target starts as an install doc under [`docs/install/`](./install/), then graduates to an adapter row below once the project-local mapping is verified or drafted. Targets in the install layer that do not yet have adapter rows are tracked under "Install-only targets pending adapter draft" below. The machine-readable 26-target compatibility inventory is compiled in [`../registry/compatibility-matrix.json`](../registry/compatibility-matrix.json) and validated against [`../schemas/adapter-compatibility-matrix.schema.json`](../schemas/adapter-compatibility-matrix.schema.json).
 
 ## Adapter rows
 
 | Adapter | Status | Confidence | Default scope | Fallback | Notes |
 |---|---|---|---|---|---|
-| Claude Code | Draft | verified-read | project-local | generic-root | Distinct from Claude app/Desktop; adapter doc at [`docs/adapters/claude-code.md`](./adapters/claude-code.md) |
-| Claude app/Desktop | Draft | linked-only | docs-only/reference | generic-root | Use connector/runtime docs context only; adapter doc at [`docs/adapters/claude-app.md`](./adapters/claude-app.md) |
-| OpenCode | Draft | linked-only | project-local | generic-root | Verify native skill path before writing; adapter doc at [`docs/adapters/opencode.md`](./adapters/opencode.md) |
-| Cursor | Draft | linked-only | project-local | generic-root | Prefer rules/doc attachment if verified; adapter doc at [`docs/adapters/cursor.md`](./adapters/cursor.md) |
-| Codex/generic | Draft | linked-only | generic-root | docs-only/reference | `AGENTS.md`-style fallback; adapter doc at [`docs/adapters/codex.md`](./adapters/codex.md) |
-| Generic-root | Draft | verified-read | project-local | docs-only/reference | Universal fallback for unknown tools; adapter doc at [`docs/adapters/generic-root.md`](./adapters/generic-root.md) |
+| Claude Code | Draft | verified-read | project-local | generic-root | Distinct from Claude app/Desktop; install doc at [`docs/install/claude-code.md`](./install/claude-code.md), adapter doc at [`docs/adapters/claude-code.md`](./adapters/claude-code.md) (`2026-05-08`) |
+| Claude app/Desktop | Draft | linked-only | docs-only/reference | generic-root | Use connector/runtime docs context only; install doc at [`docs/install/claude-desktop.md`](./install/claude-desktop.md), adapter doc at [`docs/adapters/claude-app.md`](./adapters/claude-app.md) (`Not Verified`) |
+| OpenCode | Draft | linked-only | project-local | generic-root | Verify native skill path before writing; install doc at [`docs/install/opencode.md`](./install/opencode.md), adapter doc at [`docs/adapters/opencode.md`](./adapters/opencode.md) (`Not Verified`) |
+| Cursor | Draft | linked-only | project-local | generic-root | Prefer rules/doc attachment if verified; install doc at [`docs/install/cursor.md`](./install/cursor.md), adapter doc at [`docs/adapters/cursor.md`](./adapters/cursor.md) (`Not Verified`) |
+| Codex/generic | Draft | linked-only | generic-root | docs-only/reference | `AGENTS.md`-style fallback; install doc at [`docs/install/codex.md`](./install/codex.md), adapter doc at [`docs/adapters/codex.md`](./adapters/codex.md) (`Not Verified`) |
+| Generic-root | Draft | verified-read | project-local | docs-only/reference | Universal fallback for unknown tools; install doc at [`docs/install/generic-project.md`](./install/generic-project.md), adapter doc at [`docs/adapters/generic-root.md`](./adapters/generic-root.md) (`2026-05-08`) |
 
 ## Install-only targets pending adapter draft
 

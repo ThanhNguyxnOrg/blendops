@@ -172,12 +172,33 @@ BlendOps safety model should:
 
 ---
 
+## Runtime capability tiers (`L0`–`L3`) and scene rollback protocol (`F-10`)
+
+To prevent implicit privilege escalation when transitioning from BlendOps workflow planning to external MCP or CLI execution, BlendOps enforces a four-tier capability model defined in [`../schemas/runtime-capability-policy.schema.json`](../schemas/runtime-capability-policy.schema.json), compiled in [`../registry/runtime-capability-policy.json`](../registry/runtime-capability-policy.json), and validated by `scripts/validate-capability-policy.mjs`:
+
+| Tier | Name | Allowed Operations | Mandatory Safety & Rollback Gates |
+| :--- | :--- | :--- | :--- |
+| **`L0`** | **Planning & Read-Only Inspection (Default)** | Workflow routing, brief decomposition, quality checklists, and read-only MCP inspection (`get_blendfile_summary_datablocks`, `get_objects_summary`, `get_scene_info`). | Zero scene mutation; zero file writes. All 48 BlendOps skills default to `L0` execution posture. |
+| **`L1`** | **Reversible Scene Mutation** | Bounded camera, lighting, material, and object transform edits in an active Blender session. | Requires a verified pre-mutation `.blend` checkpoint (`<scene>.pre-<skill-id>-<ISO8601-UTC>.blend`) with non-zero byte size and 64-hex SHA-256 digest before any mutation occurs (`failClosedOnBackupFailure: true`), plus explicit `mutationBoundaries` and `recoveryProtocol`. |
+| **`L2`** | **File Export & External Asset Import** | Still/turntable renders, `.glb` container exports, and external 3D/material asset imports. | Inherits all `L1` pre-mutation backup gates when mutating, requires an explicit `outputDirectoryAllowlist` (blocking path traversal), and requires `asset-license-checker` clearance (`CC0-1.0`, `CC-BY-4.0`, `Royalty-Free-Commercial`, or `Proprietary-First-Party`) before importing external assets. |
+| **`L3`** | **Arbitrary Code / Destructive Operations** | Headless CLI batch jobs (`blender --background --python`) or multi-object destructive scene resets. | Inherits all `L1`/`L2` safeguards, requires explicit `operatorConfirmation` (`confirmed: true`, `confirmedBy`, `scopeSummary`), and enforces [`../laws/no-arbitrary-python-interface.md`](../laws/no-arbitrary-python-interface.md) (`userFacingPythonAllowed: false`). |
+
+### Pre-mutation `.blend` checkpoint and fail-closed rollback rule
+
+1. **Backup Before Mutation:** Any `L1`, `L2`, or `L3` scene-mutating operation must first record a verified `.blend` checkpoint (`sourceBlendPath`, `backupPath`, `byteSize > 0`, 64-character hex `sha256`, `createdBeforeMutation: true`, `verifiedOnDisk: true`).
+2. **Fail-Closed Enforcement:** If backup creation or on-disk SHA-256 verification fails, `evaluateRuntimeCapabilityInvocation` in `scripts/validate-capability-policy.mjs` strictly blocks the mutation (`allowed: false`, `mutationBlockedByBackupFailure: true`).
+3. **Post-Recovery Verification & Honest Truth State:** If a mutation fails and the `.blend` checkpoint is restored, the agent must verify scene restoration via Path 1 (`get_blendfile_summary_datablocks`, `get_objects_summary`) or Path 2 (`get_scene_info`, `get_object_info`) and report `Runtime status: Failed` (or `Attempted`) with `Artifact status: Not Produced`.
+4. **Honest Boundary:** BlendOps defines and validates this capability and rollback protocol in schemas, registry metadata, and CI tests; it does **not** ship or claim a live Blender rollback execution daemon inside this repository (`blenderRuntime: "Not Run"`).
+
+---
+
 ## Relationship to workflow contract and golden path
 
 This safety model is enforced through:
 
 - `docs/workflow-contract.md` (input/intermediate/output contract)
 - `docs/golden-path-cyberpunk-shoe.md` (first concrete non-Blender-user journey)
+- `schemas/runtime-capability-policy.schema.json` and `registry/runtime-capability-policy.json` (`L0`–`L3` capability & rollback policy)
 
 ---
 

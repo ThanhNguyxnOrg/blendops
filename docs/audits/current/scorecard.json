@@ -1,20 +1,20 @@
 {
   "schemaVersion": "1.3.0",
-  "auditPhase": "phase-4-current",
+  "auditPhase": "phase-3-and-4-current",
   "status": "reconciled-current-state",
   "repository": "ThanhNguyxnOrg/blendops",
   "branch": "main",
-  "sourceCommitSha": "51f76d98d16deef4ed9d8d5991ff59c55ce1d27e",
-  "sourceCommitShort": "51f76d9",
-  "sourceCommitDate": "2026-10-31 06:57:27 +0000",
+  "sourceCommitSha": "a5ddece28e71d0ce89f6b7a741214f8832d37ee5",
+  "sourceCommitShort": "a5ddece",
+  "sourceCommitDate": "2026-10-31 07:32:24 +0000",
   "auditProvenance": {
-    "sourceCommitSha": "51f76d98d16deef4ed9d8d5991ff59c55ce1d27e",
-    "sourceCommitShort": "51f76d9",
-    "sourceCommitDate": "2026-10-31 06:57:27 +0000",
+    "sourceCommitSha": "a5ddece28e71d0ce89f6b7a741214f8832d37ee5",
+    "sourceCommitShort": "a5ddece",
+    "sourceCommitDate": "2026-10-31 07:32:24 +0000",
     "workingTreeState": "dirty",
     "snapshotBasis": "working-tree-on-top-of-source-commit",
-    "uncommittedChangeCount": 16,
-    "auditedInputsSha256": "cead5f292dae2594106ad742e135bb01f0b53a95a7aaf9f6f13d2a7c46b9db1c",
+    "uncommittedChangeCount": 27,
+    "auditedInputsSha256": "55832d3ae6e9c54ded68b7639094da094d691fd6da5ca6dcde40cfaa674b54bb",
     "selfReferentialCommitRule": "A Git commit cannot contain its own final commit SHA inside tracked files. sourceCommitSha records the verified HEAD commit present when the generator ran, workingTreeState and snapshotBasis record whether uncommitted working-tree changes were present on top of sourceCommitSha, and auditedInputsSha256 digests the exact audited file contents."
   },
   "historicalBaseline": {
@@ -26,7 +26,7 @@
     "note": "Historical Phase 0 Baseline — Not Current. Preserved immutably for audit provenance."
   },
   "methodology": {
-    "scoringPrinciple": "Every point increase from the 54.5/100 Phase 0 baseline is backed by committed code, schemas, and automated CI tests in Phases 1, 2, 2.1, 3, 3.1, 3.1.1, and 4. Unimplemented capabilities (44 uncontracted skills, 36 unmigrated prose evals, unrun live LLM/Blender runtime evaluations, and open E1-E4 roadmap items) receive 0 inflation.",
+    "scoringPrinciple": "Every point increase from the 54.5/100 Phase 0 baseline is backed by committed code, schemas, and automated CI tests in Phases 1, 2, 2.1, 3, 3.1, 3.1.1, and 4. Unimplemented capabilities (44 uncontracted skills, 36 unmigrated prose evals, unrun live LLM/Blender runtime evaluations, and 24 linked-only host targets) receive 0 inflation.",
     "zeroCompensationGate": "All three Phase 0 P0 zero-compensation blockers (F-01 truth-state contradiction, F-02 non-portable ZIP exporter/CI gap, and F-04 zero automated evaluation runner) have been resolved or mitigated with deterministic CI runners.",
     "activeZeroCompensationBlockers": [],
     "resolvedZeroCompensationBlockers": [
@@ -37,8 +37,8 @@
   },
   "totals": {
     "historicalBaselineScore": 54.5,
-    "measuredScore": 71,
-    "scoreDelta": "+16.5",
+    "measuredScore": 78,
+    "scoreDelta": "+23.5",
     "maxPossibleScore": 100,
     "verified10of10Eligible": false
   },
@@ -184,10 +184,12 @@
       "name": "Blender Domain Correctness",
       "weight": 15,
       "historicalScore": 10.5,
-      "measuredScore": 10.5,
-      "verdict": "Warn",
+      "measuredScore": 13.5,
+      "verdict": "Pass",
       "evidenceFiles": [
         "docs/runtime-stack-strategy.md",
+        "docs/blender-version-compatibility.md",
+        "scripts/inspect-glb.mjs",
         "docs/audits/current/skill-inventory.json"
       ],
       "criteria": [
@@ -211,9 +213,9 @@
           "id": "p4-c3",
           "description": "Version-pinned technical assertions and deterministic GLB/glTF container & spec inspection tooling",
           "maxPoints": 4,
-          "awardedPoints": 1,
-          "status": "Warn",
-          "evidence": "No inspect-glb.mjs or Khronos glTF-Validator integration exists yet; reference files lack explicit Blender version compatibility matrices for shader sockets/exporters."
+          "awardedPoints": 4,
+          "status": "Pass",
+          "evidence": "F-07 FIXED: scripts/inspect-glb.mjs validates GLB 2.0 binary headers, JSON/BIN chunk alignment, buffer/accessor bounds, and optional Khronos gltf-validator status; docs/blender-version-compatibility.md documents Blender 3.6 LTS, 4.2 LTS, and 5.1+ shader, engine, color management, and glTF 2.0 matrices."
         }
       ]
     },
@@ -222,11 +224,13 @@
       "name": "Runtime & Artifact Verification",
       "weight": 10,
       "historicalScore": 2.5,
-      "measuredScore": 3,
+      "measuredScore": 4.5,
       "verdict": "Warn",
       "evidenceFiles": [
         "docs/evals/README.md",
         "docs/evals/blender-connector-read-only-smoke-test.md",
+        "schemas/runtime-evidence-packet.schema.json",
+        "scripts/validate-evidence-packet.mjs",
         "scripts/run-evals.mjs"
       ],
       "criteria": [
@@ -234,9 +238,9 @@
           "id": "p5-c1",
           "description": "Honest separation of Runtime Ready, Runtime Executed, and Artifact Verified in docs, schemas, and evals",
           "maxPoints": 3,
-          "awardedPoints": 2.5,
+          "awardedPoints": 3,
           "status": "Pass",
-          "evidence": "Enforced across all 48 SKILL.md files by scripts/check-docs.mjs, schemas/skill-contract.schema.json, schemas/skill-eval.schema.json, and scripts/run-evals.mjs."
+          "evidence": "Enforced across all 48 SKILL.md files by scripts/check-docs.mjs, schemas/skill-contract.schema.json, schemas/skill-eval.schema.json, schemas/runtime-evidence-packet.schema.json, scripts/validate-evidence-packet.mjs, and scripts/run-evals.mjs."
         },
         {
           "id": "p5-c2",
@@ -250,9 +254,9 @@
           "id": "p5-c3",
           "description": "End-to-end Path 1 / Path 2 / CLI runtime mutation, render, and GLB verification packet with hashes",
           "maxPoints": 5,
-          "awardedPoints": 0,
-          "status": "Not Run",
-          "evidence": "0 E2E runtime mutation/render/GLB evidence packets captured in-repo."
+          "awardedPoints": 1,
+          "status": "Warn",
+          "evidence": "schemas/runtime-evidence-packet.schema.json and scripts/validate-evidence-packet.mjs enforce Path 1 (>= 5.1.0) / Path 2 (>= 3.0.0) runtime identity, SHA-256 artifact hashes, GLB container checks, and non-static Verified gates in CI; live E2E Blender runtime execution remains Not Run / Not Produced."
         }
       ]
     },
@@ -261,12 +265,16 @@
       "name": "Security, Asset Provenance & Trust Model",
       "weight": 10,
       "historicalScore": 6.5,
-      "measuredScore": 6.5,
-      "verdict": "Warn",
+      "measuredScore": 9,
+      "verdict": "Pass",
       "evidenceFiles": [
         "laws/no-arbitrary-python-interface.md",
         "skills/asset-license-checker/SKILL.md",
-        "bundles/generic-project-local/ROLLBACK.md"
+        "bundles/generic-project-local/ROLLBACK.md",
+        "docs/safety-model.md",
+        "schemas/runtime-capability-policy.schema.json",
+        "registry/runtime-capability-policy.json",
+        "scripts/validate-capability-policy.mjs"
       ],
       "criteria": [
         {
@@ -289,9 +297,9 @@
           "id": "p6-c3",
           "description": "Runtime capability levels (L0-L3), scene mutation snapshot/rollback policy, and formal threat model",
           "maxPoints": 3,
-          "awardedPoints": 0.5,
-          "status": "Warn",
-          "evidence": "No L0-L3 runtime capability classification or scene-level snapshot/rollback protocol exists yet."
+          "awardedPoints": 3,
+          "status": "Pass",
+          "evidence": "F-10 FIXED: schemas/runtime-capability-policy.schema.json, registry/runtime-capability-policy.json (all 48 skills defaulting to L0), scripts/validate-capability-policy.mjs, and docs/safety-model.md enforce L0-L3 capability tiers, non-escalation, asset-license-checker clearance, and fail-closed pre-mutation .blend backup verification."
         }
       ]
     },
@@ -305,6 +313,9 @@
       "evidenceFiles": [
         "docs/adapter-registry.md",
         "docs/install/README.md",
+        "schemas/adapter-compatibility-matrix.schema.json",
+        "registry/compatibility-matrix.json",
+        "scripts/validate-compatibility-matrix.mjs",
         "scripts/check-docs.mjs"
       ],
       "criteria": [
@@ -322,7 +333,7 @@
           "maxPoints": 2,
           "awardedPoints": 1.5,
           "status": "Pass",
-          "evidence": "F-08 FIXED: docs/adapter-registry.md is 100% synchronized with all 26 docs/install/*.md targets and guarded in CI. Empirical host execution across the 20 linked-only targets remains tracked in Roadmap E4."
+          "evidence": "F-08 PARTIALLY_FIXED: docs/adapter-registry.md and registry/compatibility-matrix.json are 100% synchronized across all 26 docs/install/*.md targets and guarded against unverified promotion by scripts/validate-compatibility-matrix.mjs (2 verified-read targets, 24 linked-only targets pending live host execution)."
         }
       ]
     },

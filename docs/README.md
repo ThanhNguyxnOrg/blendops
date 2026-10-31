@@ -73,6 +73,7 @@ The single index for everything in this repo. Bookmark this page.
 | External setup walkthrough | [`external-runtime-setup.md`](./external-runtime-setup.md) |
 | Runtime boundary summary | [`reference-runtime.md`](./reference-runtime.md) |
 | Path 2 caveats (community `mcp-for-blender`) | [`unofficial-runtime-bridges.md`](./unofficial-runtime-bridges.md) |
+| Blender version compatibility matrix (`3.6 LTS`, `4.2 LTS`, `5.1+`) | [`blender-version-compatibility.md`](./blender-version-compatibility.md) |
 | Claude app/Desktop setup notes | [`claude-app-setup.md`](./claude-app-setup.md) |
 
 ---

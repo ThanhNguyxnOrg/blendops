@@ -2,6 +2,8 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { validateCompatibilityMatrixObject } from './validate-compatibility-matrix.mjs';
+import { validateCapabilityPolicyObject } from './validate-capability-policy.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const root = process.cwd();
@@ -28,6 +30,8 @@ const requiredDocs = [
   'docs/runtime-stack-strategy.md',
   'docs/skill-system.md',
   'docs/unofficial-runtime-bridges.md',
+  'docs/blender-version-compatibility.md',
+  'docs/safety-model.md',
   'docs/adapter-registry.md',
   'docs/install-scopes.md',
   'docs/ai-agent-quickstart.md',
@@ -991,6 +995,33 @@ export function runDocsCheck(targetRoot = root) {
           `Stale entry '${staleName}' listed under 'Future candidates (not researched)' in docs/adapter-registry.md despite shipping an install doc in docs/install/`,
         );
       }
+    }
+  }
+
+  // Phase 3 E3 & E4: Validate runtime-capability-policy.json and compatibility-matrix.json
+  const capPolicyPath = path.join(targetRoot, 'registry/runtime-capability-policy.json');
+  if (!fs.existsSync(capPolicyPath)) {
+    errors.push('Missing registry/runtime-capability-policy.json');
+  } else {
+    try {
+      const capObj = JSON.parse(fs.readFileSync(capPolicyPath, 'utf8'));
+      const capVal = validateCapabilityPolicyObject(capObj, { rootDir: targetRoot });
+      for (const e of capVal.errors) errors.push(`runtime-capability-policy.json: ${e}`);
+    } catch (err) {
+      errors.push(`Invalid JSON in registry/runtime-capability-policy.json: ${err.message}`);
+    }
+  }
+
+  const compatMatrixPath = path.join(targetRoot, 'registry/compatibility-matrix.json');
+  if (!fs.existsSync(compatMatrixPath)) {
+    errors.push('Missing registry/compatibility-matrix.json');
+  } else {
+    try {
+      const matObj = JSON.parse(fs.readFileSync(compatMatrixPath, 'utf8'));
+      const matVal = validateCompatibilityMatrixObject(matObj, { rootDir: targetRoot });
+      for (const e of matVal.errors) errors.push(`compatibility-matrix.json: ${e}`);
+    } catch (err) {
+      errors.push(`Invalid JSON in registry/compatibility-matrix.json: ${err.message}`);
     }
   }
 

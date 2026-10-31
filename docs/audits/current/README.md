@@ -10,7 +10,7 @@
 
 | Metric | Historical Phase 0 Baseline (`3ea3c35`) | Current Reconciled State (`main`) | Status / Change |
 | :--- | :---: | :---: | :--- |
-| **Overall Measured Score** | `54.5 / 100` | **`71.0 / 100`** | **`+16.5`** (backed by Phases 1, 2, 2.1, 3, 3.1, 3.1.1, 4) |
+| **Overall Measured Score** | `54.5 / 100` | **`78.0 / 100`** | **`+23.5`** (backed by Phases 1, 2, 2.1, 3, 3.1, 3.1.1, 4) |
 | **Active P0 Zero-Compensation Blockers** | `3` (`F-01`, `F-02`, `F-04`) | **`0`** | `F-01` & `F-02` **FIXED**; `F-04` **PARTIALLY_FIXED** (CI runner active) |
 | **Skills with `Artifact status: Not Run` (`F-01`)** | `30 / 48` | **`0 / 48`** | **FIXED** in Phase 1 + guarded in `scripts/check-docs.mjs` |
 | **Extended Template Completeness (`F-05`)** | `8 / 48` skills missing sections | **`0 / 48` skills missing sections** | **FIXED** in Phase 4 + 18-heading guard in `scripts/check-docs.mjs` |
@@ -26,11 +26,11 @@ Because a Git commit cannot honestly contain its own final commit SHA inside tra
 
 | Provenance Field | Recorded Value | Explanation |
 | :--- | :--- | :--- |
-| `sourceCommitSha` | `51f76d98d16deef4ed9d8d5991ff59c55ce1d27e` (`51f76d9`) | Latest verified commit in Git history when the generator executed |
+| `sourceCommitSha` | `a5ddece28e71d0ce89f6b7a741214f8832d37ee5` (`a5ddece`) | Latest verified commit in Git history when the generator executed |
 | `workingTreeState` | `dirty` | Whether audited files had uncommitted changes on top of `sourceCommitSha` |
 | `snapshotBasis` | `working-tree-on-top-of-source-commit` | Explicit distinction between a clean committed tree and a working tree on top of `sourceCommitSha` |
-| `uncommittedChangeCount` | `16` | Count of modified/staged/deleted/untracked repository paths outside `docs/audits/current/**` |
-| `auditedInputsSha256` | `cead5f292dae2594106ad742e135bb01f0b53a95a7aaf9f6f13d2a7c46b9db1c` | Deterministic SHA-256 content digest across all manifest-declared repository inputs |
+| `uncommittedChangeCount` | `27` | Count of modified/staged/deleted/untracked repository paths outside `docs/audits/current/**` |
+| `auditedInputsSha256` | `55832d3ae6e9c54ded68b7639094da094d691fd6da5ca6dcde40cfaa674b54bb` | Deterministic SHA-256 content digest across all manifest-declared repository inputs |
 
 ### 1.2 Audited Input Digest Scope & Manifest Governance
 
@@ -53,20 +53,20 @@ The `auditedInputsSha256` digest is governed by [`../audited-inputs.manifest.jso
 | **F-04** | **P0** | Structured behavioral evaluation suites & automated runner | `OPEN` | **`PARTIALLY_FIXED`** | 12/48 pilot `.eval.json` suites (73 cases) & `scripts/run-evals.mjs` (all 5 predicate operators) in CI; 36/48 prose evals pending. |
 | **F-05** | **P1** | 8 Batch 7/8 skills omit 9–11 extended template sections | `OPEN` | **`FIXED`** | 48/48 skills include all 9 core + 9 extended sections; guarded in `check-docs.mjs` and `test-phase4.mjs`. |
 | **F-06** | **P1** | Routing quartet handoffs & `blender-scope-boundary-enforcer` reachability | `OPEN` | **`FIXED`** | Wired in `blendops-help` and `workflow-stage-router` contracts and verified in `workflow-graph.json`. |
-| **F-07** | **P1** | Deterministic GLB inspector & Blender version matrices | `OPEN` | **`OPEN`** | Scoped in Phase 3 Roadmap E1 (`docs/audits/phase-3/README.md`). |
-| **F-08** | **P1** | `docs/adapter-registry.md` drift from 26 `docs/install/` targets | `OPEN` | **`PARTIALLY_FIXED`** | All 26 install targets synced & guarded in CI; empirical Tier 1/2/3 host testing in Roadmap E4. |
+| **F-07** | **P1** | Deterministic GLB inspector & Blender version matrices | `OPEN` | **`FIXED`** | `scripts/inspect-glb.mjs`, `scripts/validate-evidence-packet.mjs`, and `docs/blender-version-compatibility.md` verified in CI. |
+| **F-08** | **P1** | `docs/adapter-registry.md` drift from 26 `docs/install/` targets | `OPEN` | **`PARTIALLY_FIXED`** | All 26 install targets synced in `docs/adapter-registry.md` & `registry/compatibility-matrix.json`; 24 targets remain `linked-only` pending live host testing. |
 | **F-09** | **P2** | Manual bundle reference summary drift risk | `OPEN` | **`DEFERRED`** | Deferred until all 48 skills have `contract.json`. |
-| **F-10** | **P1** | Runtime capability tiers (L0–L3) & scene rollback protocol | `OPEN` | **`OPEN`** | Scoped in Phase 3 Roadmap E3 (`docs/audits/phase-3/README.md`). |
+| **F-10** | **P1** | Runtime capability tiers (L0–L3) & scene rollback protocol | `OPEN` | **`FIXED`** | `registry/runtime-capability-policy.json`, `scripts/validate-capability-policy.mjs`, and `docs/safety-model.md` enforce L0–L3 tiers and fail-closed `.blend` backup checks. |
 
 ---
 
 ## 3. Files in This Directory
 
-- [`scorecard.json`](./scorecard.json) — Reconciled 9-pillar scorecard (**71.0 / 100**) with side-by-side historical baseline comparison and `auditProvenance`.
+- [`scorecard.json`](./scorecard.json) — Reconciled 9-pillar scorecard (**78.0 / 100**) with side-by-side historical baseline comparison and `auditProvenance`.
 - [`findings.json`](./findings.json) — Machine-readable lifecycle table for `F-01` through `F-10`.
 - [`skill-inventory.json`](./skill-inventory.json) — Live 48-skill inventory reflecting Phase 1 truth-state fixes, Phase 2/2.1 contracts, Phase 3 pilot eval coverage, and Phase 4 extended template completion.
 - [`eval-inventory.json`](./eval-inventory.json) — Live 48-skill evaluation inventory separating the 12 machine-readable pilot suites (73 cases) from the 36 prose-only `EVAL.md` files.
-- [`verification-manifest.json`](./verification-manifest.json) — Verified commit chain through `51f76d98d16deef4ed9d8d5991ff59c55ce1d27e`, Phase 4 provenance context, CI pipeline commands, and runtime/artifact truth states.
+- [`verification-manifest.json`](./verification-manifest.json) — Verified commit chain through `a5ddece28e71d0ce89f6b7a741214f8832d37ee5`, Phase 3 + Phase 4 provenance context, CI pipeline commands, and runtime/artifact truth states.
 
 ## Related Documentation
 

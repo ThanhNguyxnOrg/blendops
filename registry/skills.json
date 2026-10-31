@@ -3,7 +3,7 @@
   "coverage": "routing-pilot",
   "contractedSkills": 4,
   "catalogSkills": 48,
-  "sourceChecksum": "e6462aa88ddf41c2fc51bebafabc8628fb1b82e38e0966bd0668e79b66d48311",
+  "sourceChecksum": "93363121f5d55220315c684994971a4070216958dc9a87f70b43d88df5517622",
   "skills": [
     {
       "$schema": "../../schemas/skill-contract.schema.json",
@@ -12,6 +12,7 @@
       "category": "routing-and-governance",
       "role": "ambiguous-intent-entry-router",
       "purpose": "Route users to the right BlendOps skill, document, or next safe action without overclaiming runtime, artifact, or package readiness.",
+      "capabilityTier": "L0",
       "routingPrecedence": {
         "group": "entry-and-stage-routing",
         "rank": 1,
@@ -312,6 +313,7 @@
       "category": "routing-and-governance",
       "role": "recipe-and-pack-selector",
       "purpose": "Score whether a user's 3D goal fits an existing BlendOps recipe or pack, or needs custom decomposition, and name the exact next skill.",
+      "capabilityTier": "L0",
       "routingPrecedence": {
         "group": "entry-and-stage-routing",
         "rank": 2,
@@ -610,6 +612,7 @@
       "category": "routing-and-governance",
       "role": "pack-preflight-readiness-gate",
       "purpose": "Verify brief, runtime posture, skill coverage, and evidence habits before starting a BlendOps workflow pack, then emit a Go/No-Go decision and single next skill.",
+      "capabilityTier": "L0",
       "routingPrecedence": {
         "group": "entry-and-stage-routing",
         "rank": 3,
@@ -895,6 +898,7 @@
       "category": "routing-and-governance",
       "role": "mid-workflow-stage-router",
       "purpose": "Given current artifacts and intent, name the next BlendOps skill or workflow stage and preconditions to advance.",
+      "capabilityTier": "L0",
       "routingPrecedence": {
         "group": "entry-and-stage-routing",
         "rank": 4,

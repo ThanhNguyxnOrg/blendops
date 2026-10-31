@@ -5,6 +5,7 @@
   "category": "routing-and-governance",
   "role": "mid-workflow-stage-router",
   "purpose": "Given current artifacts and intent, name the next BlendOps skill or workflow stage and preconditions to advance.",
+  "capabilityTier": "L0",
   "routingPrecedence": {
     "group": "entry-and-stage-routing",
     "rank": 4,

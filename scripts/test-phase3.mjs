@@ -19,6 +19,23 @@ import {
   resolveAuditedInputFiles,
   AUDITED_INPUTS_MANIFEST_REL,
 } from './generate-current-audit.mjs';
+import {
+  buildMinimalValidGlbBuffer,
+  inspectGlbBuffer,
+  inspectGlbFile,
+  runKhronosGltfValidator,
+  GLB_CHUNK_TYPE_JSON,
+} from './inspect-glb.mjs';
+import { validateEvidencePacket } from './validate-evidence-packet.mjs';
+import {
+  buildExpectedCapabilityPolicy,
+  validateCapabilityPolicyObject,
+  evaluateRuntimeCapabilityInvocation,
+} from './validate-capability-policy.mjs';
+import {
+  buildExpectedCompatibilityMatrix,
+  validateCompatibilityMatrixObject,
+} from './validate-compatibility-matrix.mjs';
 
 const root = process.cwd();
 const catalogSet = new Set(getCatalogSkillIds(root));
@@ -416,10 +433,10 @@ describe('Phase 3 — Behavioral Evaluation Schema & Deterministic Runner', () =
     );
 
     assert.equal(currentScorecard.totals.historicalBaselineScore, 54.5);
-    assert.equal(currentScorecard.totals.measuredScore, 71.0);
+    assert.equal(currentScorecard.totals.measuredScore, 78.0);
     assert.equal(currentScorecard.methodology.activeZeroCompensationBlockers.length, 0);
 
-    // Verify commitChain includes all verified commits through Phase 3.1.1 (51f76d9)
+    // Verify commitChain includes all verified commits through Phase 3.1.1 (51f76d9) and Phase 4 (a5ddece)
     const chainShas = currentManifest.commitChain.map((c) => c.commitSha);
     assert.deepEqual(chainShas, [
       '3ea3c35c6b8a6e5e915bab9f63333d4a1c09bd4d',
@@ -430,6 +447,7 @@ describe('Phase 3 — Behavioral Evaluation Schema & Deterministic Runner', () =
       '88dc3bddb6b907a7ca12b213bd988cb5c51659e1',
       '650f0a5979f1d6b9fea94a0e6378988ef1ab544e',
       '51f76d98d16deef4ed9d8d5991ff59c55ce1d27e',
+      'a5ddece28e71d0ce89f6b7a741214f8832d37ee5',
     ]);
 
     // Verify explicit auditProvenance on all 5 JSON artifacts and no ambiguous self-referential commitSha
@@ -449,14 +467,14 @@ describe('Phase 3 — Behavioral Evaluation Schema & Deterministic Runner', () =
       assert.ok(doc.auditProvenance, `${label} must include auditProvenance`);
       assert.equal(
         doc.sourceCommitSha,
-        '51f76d98d16deef4ed9d8d5991ff59c55ce1d27e',
-        `${label} sourceCommitSha must record Phase 3.1.1 base commit 51f76d98d16deef4ed9d8d5991ff59c55ce1d27e`,
+        'a5ddece28e71d0ce89f6b7a741214f8832d37ee5',
+        `${label} sourceCommitSha must record Phase 4 base commit a5ddece28e71d0ce89f6b7a741214f8832d37ee5`,
       );
       assert.equal(
         doc.auditProvenance.sourceCommitSha,
-        '51f76d98d16deef4ed9d8d5991ff59c55ce1d27e',
+        'a5ddece28e71d0ce89f6b7a741214f8832d37ee5',
       );
-      assert.equal(doc.auditProvenance.sourceCommitShort, '51f76d9');
+      assert.equal(doc.auditProvenance.sourceCommitShort, 'a5ddece');
       assert.ok(
         doc.auditProvenance.workingTreeState === 'clean' ||
           doc.auditProvenance.workingTreeState === 'dirty',
@@ -479,11 +497,21 @@ describe('Phase 3 — Behavioral Evaluation Schema & Deterministic Runner', () =
     const f03 = currentFindings.findings.find((f) => f.id === 'F-03');
     const f04 = currentFindings.findings.find((f) => f.id === 'F-04');
     const f05 = currentFindings.findings.find((f) => f.id === 'F-05');
+    const f06 = currentFindings.findings.find((f) => f.id === 'F-06');
+    const f07 = currentFindings.findings.find((f) => f.id === 'F-07');
+    const f08 = currentFindings.findings.find((f) => f.id === 'F-08');
+    const f09 = currentFindings.findings.find((f) => f.id === 'F-09');
+    const f10 = currentFindings.findings.find((f) => f.id === 'F-10');
     assert.equal(f01?.currentLifecycleStatus, 'FIXED');
     assert.equal(f02?.currentLifecycleStatus, 'FIXED');
     assert.equal(f03?.currentLifecycleStatus, 'PARTIALLY_FIXED');
     assert.equal(f04?.currentLifecycleStatus, 'PARTIALLY_FIXED');
     assert.equal(f05?.currentLifecycleStatus, 'FIXED');
+    assert.equal(f06?.currentLifecycleStatus, 'FIXED');
+    assert.equal(f07?.currentLifecycleStatus, 'FIXED');
+    assert.equal(f08?.currentLifecycleStatus, 'PARTIALLY_FIXED');
+    assert.equal(f09?.currentLifecycleStatus, 'DEFERRED');
+    assert.equal(f10?.currentLifecycleStatus, 'FIXED');
 
     assert.equal(currentSkillInv.summary.totalSkills, 48);
     assert.equal(currentSkillInv.summary.contractedSkillsCount, 4);
@@ -929,7 +957,436 @@ describe('Phase 3 — Behavioral Evaluation Schema & Deterministic Runner', () =
       fs.rmSync(tempDir, { recursive: true, force: true });
     }
   });
+
+  it('Workstream E1 (F-07): inspects valid and adversarial GLB 2.0 containers, handles optional Khronos gltf-validator states, and verifies Blender 3.6/4.2/5.1 compatibility docs', async () => {
+    const validGlb = buildMinimalValidGlbBuffer();
+    const resValid = inspectGlbBuffer(validGlb, { strictPositionBounds: true });
+    assert.equal(resValid.valid, true, `Expected valid GLB, got errors: ${resValid.errors.join('; ')}`);
+    assert.equal(resValid.header.magic, 'glTF');
+    assert.equal(resValid.header.version, 2);
+    assert.equal(resValid.header.declaredByteLength, validGlb.byteLength);
+    assert.equal(resValid.chunks.hasBinChunk, true);
+    assert.equal(resValid.counts.scenes, 1);
+    assert.equal(resValid.counts.nodes, 1);
+    assert.equal(resValid.counts.meshes, 1);
+    assert.equal(resValid.counts.primitives, 1);
+    assert.equal(resValid.counts.materials, 1);
+    assert.equal(resValid.bounds.positionAccessorCount, 1);
+    assert.equal(resValid.bounds.missingPositionBoundsCount, 0);
+    assert.deepEqual(resValid.bounds.sceneBoundingBox.min, [0, 0, 0]);
+    assert.deepEqual(resValid.bounds.sceneBoundingBox.max, [1, 1, 0]);
+    assert.equal(resValid.truthBoundary.provesContainerIntegrity, true);
+    assert.equal(resValid.truthBoundary.provesVisualCorrectness, false);
+    assert.equal(resValid.truthBoundary.provesBlenderRuntimeExecution, false);
+
+    // Empty and truncated buffers
+    assert.equal(inspectGlbBuffer(Buffer.alloc(0)).valid, false);
+    assert.equal(inspectGlbBuffer(Buffer.alloc(12)).valid, false);
+
+    // Wrong magic header
+    const badMagic = Buffer.from(validGlb);
+    badMagic.writeUInt32LE(0x12345678, 0);
+    const resMagic = inspectGlbBuffer(badMagic);
+    assert.equal(resMagic.valid, false);
+    assert.ok(resMagic.errors.some((e) => e.includes('Invalid GLB magic header')));
+
+    // Unsupported version
+    const badVer = Buffer.from(validGlb);
+    badVer.writeUInt32LE(1, 4);
+    const resVer = inspectGlbBuffer(badVer);
+    assert.equal(resVer.valid, false);
+    assert.ok(resVer.errors.some((e) => e.includes('Unsupported GLB container version')));
+
+    // Declared length mismatch
+    const badLen = Buffer.from(validGlb);
+    badLen.writeUInt32LE(validGlb.byteLength + 16, 8);
+    const resLen = inspectGlbBuffer(badLen);
+    assert.equal(resLen.valid, false);
+    assert.ok(resLen.errors.some((e) => e.includes('declared length')));
+
+    // Missing POSITION min/max bounds under strictPositionBounds
+    const noBoundsGlb = buildMinimalValidGlbBuffer({ includePositionBounds: false });
+    const resWarnBounds = inspectGlbBuffer(noBoundsGlb, { strictPositionBounds: false });
+    assert.equal(resWarnBounds.valid, true);
+    assert.equal(resWarnBounds.bounds.missingPositionBoundsCount, 1);
+    const resStrictBounds = inspectGlbBuffer(noBoundsGlb, { strictPositionBounds: true });
+    assert.equal(resStrictBounds.valid, false);
+    assert.ok(resStrictBounds.errors.some((e) => e.includes('omit required min/max bounds')));
+
+    // NUL byte padding inside Chunk 0 (JSON) must fail (glTF 2.0 requires 0x20 space padding)
+    const nulPadded = Buffer.from(validGlb);
+    const jsonLen = nulPadded.readUInt32LE(12);
+    nulPadded[20 + jsonLen - 1] = 0x00;
+    const resNul = inspectGlbBuffer(nulPadded);
+    assert.equal(resNul.valid, false);
+    assert.ok(resNul.errors.some((e) => e.includes('forbidden NUL (0x00) padding')));
+
+    // File-based inspection + Khronos validator states (unavailable, passed, failed, error)
+    const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-glb-test-'));
+    try {
+      const glbPath = path.join(tmpDir, 'fixture.glb');
+      fs.writeFileSync(glbPath, validGlb);
+
+      const fileResDefault = await inspectGlbFile(glbPath);
+      assert.equal(fileResDefault.valid, true);
+      assert.equal(fileResDefault.khronosValidator.status, 'not_run');
+
+      const fileResUnavailable = await inspectGlbFile(glbPath, { runKhronos: true });
+      assert.equal(fileResUnavailable.valid, true);
+      assert.equal(fileResUnavailable.khronosValidator.status, 'unavailable');
+
+      const fileResPassed = await inspectGlbFile(glbPath, {
+        runKhronos: true,
+        validatorModuleLoader: async () => ({
+          validateBytes: async () => ({
+            validatorVersion: '2.0.0-mock',
+            issues: { numErrors: 0, numWarnings: 1, numInfos: 0, numHints: 0, messages: [] },
+          }),
+        }),
+      });
+      assert.equal(fileResPassed.valid, true);
+      assert.equal(fileResPassed.khronosValidator.status, 'passed');
+
+      const fileResFailed = await inspectGlbFile(glbPath, {
+        runKhronos: true,
+        validatorModuleLoader: async () => ({
+          validateBytes: async () => ({
+            validatorVersion: '2.0.0-mock',
+            issues: {
+              numErrors: 2,
+              numWarnings: 0,
+              numInfos: 0,
+              numHints: 0,
+              messages: [{ code: 'ACCESSOR_MIN_MISMATCH' }],
+            },
+          }),
+        }),
+      });
+      assert.equal(fileResFailed.valid, false);
+      assert.equal(fileResFailed.khronosValidator.status, 'failed');
+
+      const missingFileRes = await inspectGlbFile(path.join(tmpDir, 'does-not-exist.glb'));
+      assert.equal(missingFileRes.valid, false);
+    } finally {
+      fs.rmSync(tmpDir, { recursive: true, force: true });
+    }
+
+    // Verify docs/blender-version-compatibility.md covers 3.6 LTS, 4.2 LTS, and 5.1+
+    const compatDoc = fs.readFileSync(path.join(root, 'docs', 'blender-version-compatibility.md'), 'utf8');
+    for (const requiredTerm of [
+      '3.6 LTS',
+      '4.2 LTS',
+      '5.1+',
+      'Subsurface Weight',
+      'Specular IOR Level',
+      'Coat Weight',
+      'Transmission Weight',
+      'BLENDER_EEVEE_NEXT',
+      'AgX',
+      'Khronos PBR Neutral',
+      'Path 1',
+      'Path 2',
+    ]) {
+      assert.equal(
+        compatDoc.includes(requiredTerm),
+        true,
+        `docs/blender-version-compatibility.md is missing required term '${requiredTerm}'`,
+      );
+    }
+  });
+
+  it('Workstream E2 (F-07 / Pillar 5): validates runtime & artifact evidence packets and blocks truth-state contradictions', () => {
+    const validNotRunPacket = {
+      schemaVersion: '1.0.0',
+      packetId: 'packet-text-only-default',
+      skillId: 'product-hero-scene-planner',
+      isStaticFixture: true,
+      runtimeEvidence: {
+        runtimePath: 'none',
+        runtimeStatus: 'Not Run',
+        blenderVersion: null,
+        addonIdentity: null,
+        observedMcpTools: [],
+      },
+      artifactEvidence: {
+        artifactStatus: 'Not Produced',
+        artifactType: 'none',
+        artifactPath: null,
+        byteSize: null,
+        sha256: null,
+        glbInspection: null,
+      },
+      validationChecks: {
+        framing: 'Not Run',
+        lighting: 'Not Run',
+        pbrMaterials: 'Not Run',
+        polycountAndBudget: 'Not Run',
+      },
+    };
+    assert.equal(
+      validateEvidencePacket(validNotRunPacket, { catalogSkillSet: catalogSet }).valid,
+      true,
+    );
+
+    // 1. Reject Artifact status = Not Run
+    const badArtifactNotRun = structuredClone(validNotRunPacket);
+    badArtifactNotRun.artifactEvidence.artifactStatus = 'Not Run';
+    const res1 = validateEvidencePacket(badArtifactNotRun, { catalogSkillSet: catalogSet });
+    assert.equal(res1.valid, false);
+    assert.ok(res1.errors.some((e) => e.includes('Not Run')));
+
+    // 2. Reject Path 1 with Blender < 5.1.0 (e.g. 4.2.0) or with Path 2 tool execute_blender_code
+    const badPath1Version = structuredClone(validNotRunPacket);
+    badPath1Version.runtimeEvidence = {
+      runtimePath: 'path-1-host-a',
+      runtimeStatus: 'Attempted',
+      blenderVersion: '4.2.0',
+      addonIdentity: 'bpype/blender_mcp',
+      observedMcpTools: ['get_blendfile_summary_datablocks', 'execute_blender_code'],
+    };
+    const res2 = validateEvidencePacket(badPath1Version, { catalogSkillSet: catalogSet });
+    assert.equal(res2.valid, false);
+    assert.ok(res2.errors.some((e) => e.includes('>= 5.1.0')));
+    assert.ok(res2.errors.some((e) => e.includes('execute_blender_code')));
+
+    // 3. Reject Produced without sha256/byteSize or with invalid GLB container
+    const badProduced = structuredClone(validNotRunPacket);
+    badProduced.runtimeEvidence = {
+      runtimePath: 'path-1-host-b',
+      runtimeStatus: 'Produced',
+      blenderVersion: '5.1.0',
+      addonIdentity: 'bpype/blender_mcp',
+      observedMcpTools: ['get_blendfile_summary_datablocks'],
+    };
+    badProduced.artifactEvidence = {
+      artifactStatus: 'Produced',
+      artifactType: 'glb',
+      artifactPath: 'exports/shoe.glb',
+      byteSize: 0,
+      sha256: null,
+      glbInspection: null,
+    };
+    const res3 = validateEvidencePacket(badProduced, { catalogSkillSet: catalogSet });
+    assert.equal(res3.valid, false);
+    assert.ok(res3.errors.some((e) => e.includes('byteSize')));
+    assert.ok(res3.errors.some((e) => e.includes('sha256')));
+    assert.ok(res3.errors.some((e) => e.includes('glbInspection.valid === true')));
+
+    // 4. Reject Verified when isStaticFixture is true or validationChecks are not Passed
+    const validVerifiedLive = {
+      schemaVersion: '1.0.0',
+      packetId: 'packet-live-verified-glb',
+      skillId: 'render-export-evidence',
+      isStaticFixture: false,
+      runtimeEvidence: {
+        runtimePath: 'path-1-host-a',
+        runtimeStatus: 'Verified',
+        blenderVersion: '5.1.0',
+        addonIdentity: 'bpype/blender_mcp@0.1.0',
+        observedMcpTools: ['get_blendfile_summary_datablocks', 'get_objects_summary'],
+      },
+      artifactEvidence: {
+        artifactStatus: 'Verified',
+        artifactType: 'glb',
+        artifactPath: 'exports/shoe-hero.glb',
+        byteSize: 1024,
+        sha256: 'a'.repeat(64),
+        glbInspection: {
+          valid: true,
+          headerMagic: 'glTF',
+          version: 2,
+          sceneCount: 1,
+          meshCount: 1,
+          materialCount: 1,
+          khronosStatus: 'passed',
+        },
+      },
+      validationChecks: {
+        framing: 'Passed',
+        lighting: 'Passed',
+        pbrMaterials: 'Passed',
+        polycountAndBudget: 'Passed',
+      },
+    };
+    assert.equal(
+      validateEvidencePacket(validVerifiedLive, { catalogSkillSet: catalogSet }).valid,
+      true,
+    );
+
+    const staticClaimingVerified = structuredClone(validVerifiedLive);
+    staticClaimingVerified.isStaticFixture = true;
+    const res4 = validateEvidencePacket(staticClaimingVerified, { catalogSkillSet: catalogSet });
+    assert.equal(res4.valid, false);
+    assert.ok(res4.errors.some((e) => e.includes('isStaticFixture: true')));
+
+    const failedCheckClaimingVerified = structuredClone(validVerifiedLive);
+    failedCheckClaimingVerified.validationChecks.lighting = 'Warn';
+    const res5 = validateEvidencePacket(failedCheckClaimingVerified, { catalogSkillSet: catalogSet });
+    assert.equal(res5.valid, false);
+    assert.ok(res5.errors.some((e) => e.includes('validationChecks.lighting')));
+  });
+
+  it('Workstream E3 (F-10 / Pillar 6): enforces L0-L3 capability tiers, prevents privilege escalation, and blocks mutation when pre-mutation .blend backup fails', () => {
+    const policy = buildExpectedCapabilityPolicy(root);
+    const valPolicy = validateCapabilityPolicyObject(policy, { rootDir: root });
+    assert.equal(valPolicy.valid, true, `Expected valid capability policy, got: ${valPolicy.errors.join('; ')}`);
+    assert.equal(policy.defaultCapabilityTier, 'L0');
+    assert.equal(policy.skills.length, 48);
+    assert.equal(policy.runtimeExecutionState.blenderRuntime, 'Not Run');
+    assert.equal(policy.runtimeExecutionState.liveRollbackEngineExecuted, false);
+
+    // 1. Default L0 read-only operation succeeds without backup
+    const l0Read = evaluateRuntimeCapabilityInvocation(
+      {
+        skillId: 'blendops-help',
+        requestedOperationTier: 'L0',
+        mutatesScene: false,
+      },
+      policy,
+    );
+    assert.equal(l0Read.allowed, true);
+    assert.equal(l0Read.effectiveGrantedTier, 'L0');
+
+    // 2. Privilege escalation denied: L0 skill (blendops-help) attempting L1 scene mutation
+    const l0Escalation = evaluateRuntimeCapabilityInvocation(
+      {
+        skillId: 'blendops-help',
+        requestedOperationTier: 'L1',
+        mutatesScene: true,
+      },
+      policy,
+    );
+    assert.equal(l0Escalation.allowed, false);
+    assert.ok(l0Escalation.errors.some((e) => e.includes('Privilege escalation denied')));
+
+    // 3. L1 scene mutation WITHOUT verified backup is strictly blocked (fail-closed)
+    const l1NoBackup = evaluateRuntimeCapabilityInvocation(
+      {
+        skillId: 'product-hero-scene-planner',
+        requestedOperationTier: 'L1',
+        mutatesScene: true,
+        backupRecord: {
+          sourceBlendPath: '/scenes/hero.blend',
+          backupPath: '/scenes/hero.pre-product-hero-scene-planner-2026-05-08T00:00:00Z.blend',
+          byteSize: 4096,
+          sha256: 'b'.repeat(64),
+          createdBeforeMutation: true,
+          verifiedOnDisk: false, // backup verification failed!
+        },
+        mutationBoundaries: {
+          allowedDatablocks: ['Camera', 'Light'],
+          maxObjectsModified: 4,
+        },
+        recoveryProtocol: {
+          restoreFromBackupPath: '/scenes/hero.pre-product-hero-scene-planner-2026-05-08T00:00:00Z.blend',
+          postRecoveryVerificationTool: 'get_objects_summary',
+          onRecoveryFailure: 'halt-and-report-failed',
+        },
+      },
+      policy,
+    );
+    assert.equal(l1NoBackup.allowed, false);
+    assert.equal(l1NoBackup.mutationBlockedByBackupFailure, true);
+
+    // 4. L1 scene mutation WITH verified backup, boundaries, and recovery protocol succeeds
+    const l1Valid = evaluateRuntimeCapabilityInvocation(
+      {
+        skillId: 'product-hero-scene-planner',
+        requestedOperationTier: 'L1',
+        mutatesScene: true,
+        backupRecord: {
+          sourceBlendPath: '/scenes/hero.blend',
+          backupPath: '/scenes/hero.pre-product-hero-scene-planner-2026-05-08T00:00:00Z.blend',
+          byteSize: 4096,
+          sha256: 'b'.repeat(64),
+          createdBeforeMutation: true,
+          verifiedOnDisk: true,
+        },
+        mutationBoundaries: {
+          allowedDatablocks: ['Camera', 'Light'],
+          maxObjectsModified: 4,
+        },
+        recoveryProtocol: {
+          restoreFromBackupPath: '/scenes/hero.pre-product-hero-scene-planner-2026-05-08T00:00:00Z.blend',
+          postRecoveryVerificationTool: 'get_objects_summary',
+          onRecoveryFailure: 'halt-and-report-failed',
+        },
+      },
+      policy,
+    );
+    assert.equal(l1Valid.allowed, true);
+    assert.equal(l1Valid.mutationBlockedByBackupFailure, false);
+
+    // 5. L2 external asset import requires asset-license-checker clearance & allowlisted output directory
+    const l2UnclearLicense = evaluateRuntimeCapabilityInvocation(
+      {
+        skillId: 'glb-web-handoff',
+        requestedOperationTier: 'L2',
+        mutatesScene: false,
+        exportsFile: true,
+        targetOutputPath: '/workspace/exports/hero.glb',
+        outputDirectoryAllowlist: ['/workspace/exports'],
+        importsExternalAssets: true,
+        assetLicenseClearance: {
+          status: 'Blocked',
+          spdxOrCategory: 'Unknown-Unverified',
+          verifiedBySkill: 'asset-license-checker',
+        },
+      },
+      policy,
+    );
+    assert.equal(l2UnclearLicense.allowed, false);
+    assert.ok(l2UnclearLicense.errors.some((e) => e.includes('External asset import blocked')));
+
+    // 6. L3 requires explicit operatorConfirmation and forbids exposing raw Python to the end user
+    const l3ExposesPython = evaluateRuntimeCapabilityInvocation(
+      {
+        skillId: 'cli-appendix-job-outline',
+        requestedOperationTier: 'L3',
+        mutatesScene: false,
+        exposesRawPythonToEndUser: true,
+        operatorConfirmation: {
+          confirmed: true,
+          confirmedBy: 'operator-1',
+          scopeSummary: 'Headless CLI batch render',
+        },
+      },
+      policy,
+    );
+    assert.equal(l3ExposesPython.allowed, false);
+    assert.ok(l3ExposesPython.errors.some((e) => e.includes('no-arbitrary-python-interface.md')));
+  });
+
+  it('Workstream E4 (F-08 / Pillar 7): validates 26-target compatibility matrix and blocks promoting linked-only targets without empirical evidence', () => {
+    const matrix = buildExpectedCompatibilityMatrix();
+    const valRes = validateCompatibilityMatrixObject(matrix, { rootDir: root });
+    assert.equal(valRes.valid, true, `Expected valid compatibility matrix, got: ${valRes.errors.join('; ')}`);
+    assert.equal(matrix.summary.totalInstallTargets, 26);
+    assert.equal(matrix.summary.dedicatedAdapterDocs, 6);
+    assert.equal(matrix.summary.installOnlyTargets, 20);
+    assert.equal(matrix.summary.verifiedReadCount, 2);
+    assert.equal(matrix.summary.linkedOnlyCount, 24);
+    assert.equal(matrix.summary.verifiedE2eCount, 0);
+
+    // Attempt to promote a linked-only target ('cursor') to verified-read based on docs alone -> must fail
+    const promotedCursor = structuredClone(matrix);
+    promotedCursor.summary.verifiedReadCount = 3;
+    promotedCursor.summary.linkedOnlyCount = 23;
+    const cursorEntry = promotedCursor.targets.find((t) => t.id === 'cursor');
+    cursorEntry.evidenceLevel = 'verified-read';
+    cursorEntry.verificationState = 'Verified Read (Repo-Local)';
+    cursorEntry.verificationDate = '2026-05-08';
+    cursorEntry.verificationEvidencePath = 'docs/evals/adapter-install-v0-dry-run.md';
+
+    const badPromotionRes = validateCompatibilityMatrixObject(promotedCursor, { rootDir: root });
+    assert.equal(badPromotionRes.valid, false);
+    assert.ok(
+      badPromotionRes.errors.some((e) => e.includes("Unverified promotion blocked for 'cursor'")),
+      `Expected unverified promotion error for cursor, got: ${badPromotionRes.errors.join('; ')}`,
+    );
+  });
 });
+
 
 
 

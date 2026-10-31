@@ -3,7 +3,7 @@
   "coverage": "routing-pilot",
   "contractedSkills": 4,
   "catalogSkills": 48,
-  "sourceChecksum": "e6462aa88ddf41c2fc51bebafabc8628fb1b82e38e0966bd0668e79b66d48311",
+  "sourceChecksum": "93363121f5d55220315c684994971a4070216958dc9a87f70b43d88df5517622",
   "summary": {
     "totalNodes": 48,
     "contractedNodes": 4,
@@ -25,6 +25,7 @@
       "status": "catalog-only",
       "category": null,
       "role": null,
+      "capabilityTier": "L0",
       "precedenceRank": null
     },
     {
@@ -32,6 +33,7 @@
       "status": "catalog-only",
       "category": null,
       "role": null,
+      "capabilityTier": "L0",
       "precedenceRank": null
     },
     {
@@ -39,6 +41,7 @@
       "status": "catalog-only",
       "category": null,
       "role": null,
+      "capabilityTier": "L0",
       "precedenceRank": null
     },
     {
@@ -46,6 +49,7 @@
       "status": "catalog-only",
       "category": null,
       "role": null,
+      "capabilityTier": "L0",
       "precedenceRank": null
     },
     {
@@ -53,6 +57,7 @@
       "status": "catalog-only",
       "category": null,
       "role": null,
+      "capabilityTier": "L0",
       "precedenceRank": null
     },
     {
@@ -60,6 +65,7 @@
       "status": "catalog-only",
       "category": null,
       "role": null,
+      "capabilityTier": "L0",
       "precedenceRank": null
     },
     {
@@ -67,6 +73,7 @@
       "status": "catalog-only",
       "category": null,
       "role": null,
+      "capabilityTier": "L0",
       "precedenceRank": null
     },
     {
@@ -74,6 +81,7 @@
       "status": "catalog-only",
       "category": null,
       "role": null,
+      "capabilityTier": "L0",
       "precedenceRank": null
     },
     {
@@ -81,6 +89,7 @@
       "status": "catalog-only",
       "category": null,
       "role": null,
+      "capabilityTier": "L0",
       "precedenceRank": null
     },
     {
@@ -88,6 +97,7 @@
       "status": "catalog-only",
       "category": null,
       "role": null,
+      "capabilityTier": "L0",
       "precedenceRank": null
     },
     {
@@ -95,6 +105,7 @@
       "status": "catalog-only",
       "category": null,
       "role": null,
+      "capabilityTier": "L0",
       "precedenceRank": null
     },
     {
@@ -102,6 +113,7 @@
       "status": "catalog-only",
       "category": null,
       "role": null,
+      "capabilityTier": "L0",
       "precedenceRank": null
     },
     {
@@ -109,6 +121,7 @@
       "status": "catalog-only",
       "category": null,
       "role": null,
+      "capabilityTier": "L0",
       "precedenceRank": null
     },
     {
@@ -116,6 +129,7 @@
       "status": "catalog-only",
       "category": null,
       "role": null,
+      "capabilityTier": "L0",
       "precedenceRank": null
     },
     {
@@ -123,6 +137,7 @@
       "status": "catalog-only",
       "category": null,
       "role": null,
+      "capabilityTier": "L0",
       "precedenceRank": null
     },
     {
@@ -130,6 +145,7 @@
       "status": "contracted",
       "category": "routing-and-governance",
       "role": "ambiguous-intent-entry-router",
+      "capabilityTier": "L0",
       "precedenceRank": 1
     },
     {
@@ -137,6 +153,7 @@
       "status": "catalog-only",
       "category": null,
       "role": null,
+      "capabilityTier": "L0",
       "precedenceRank": null
     },
     {
@@ -144,6 +161,7 @@
       "status": "catalog-only",
       "category": null,
       "role": null,
+      "capabilityTier": "L0",
       "precedenceRank": null
     },
     {
@@ -151,6 +169,7 @@
       "status": "catalog-only",
       "category": null,
       "role": null,
+      "capabilityTier": "L0",
       "precedenceRank": null
     },
     {
@@ -158,6 +177,7 @@
       "status": "catalog-only",
       "category": null,
       "role": null,
+      "capabilityTier": "L0",
       "precedenceRank": null
     },
     {
@@ -165,6 +185,7 @@
       "status": "catalog-only",
       "category": null,
       "role": null,
+      "capabilityTier": "L0",
       "precedenceRank": null
     },
     {
@@ -172,6 +193,7 @@
       "status": "catalog-only",
       "category": null,
       "role": null,
+      "capabilityTier": "L0",
       "precedenceRank": null
     },
     {
@@ -179,6 +201,7 @@
       "status": "catalog-only",
       "category": null,
       "role": null,
+      "capabilityTier": "L0",
       "precedenceRank": null
     },
     {
@@ -186,6 +209,7 @@
       "status": "catalog-only",
       "category": null,
       "role": null,
+      "capabilityTier": "L0",
       "precedenceRank": null
     },
     {
@@ -193,6 +217,7 @@
       "status": "catalog-only",
       "category": null,
       "role": null,
+      "capabilityTier": "L0",
       "precedenceRank": null
     },
     {
@@ -200,6 +225,7 @@
       "status": "catalog-only",
       "category": null,
       "role": null,
+      "capabilityTier": "L0",
       "precedenceRank": null
     },
     {
@@ -207,6 +233,7 @@
       "status": "catalog-only",
       "category": null,
       "role": null,
+      "capabilityTier": "L0",
       "precedenceRank": null
     },
     {
@@ -214,6 +241,7 @@
       "status": "catalog-only",
       "category": null,
       "role": null,
+      "capabilityTier": "L0",
       "precedenceRank": null
     },
     {
@@ -221,6 +249,7 @@
       "status": "catalog-only",
       "category": null,
       "role": null,
+      "capabilityTier": "L0",
       "precedenceRank": null
     },
     {
@@ -228,6 +257,7 @@
       "status": "catalog-only",
       "category": null,
       "role": null,
+      "capabilityTier": "L0",
       "precedenceRank": null
     },
     {
@@ -235,6 +265,7 @@
       "status": "catalog-only",
       "category": null,
       "role": null,
+      "capabilityTier": "L0",
       "precedenceRank": null
     },
     {
@@ -242,6 +273,7 @@
       "status": "catalog-only",
       "category": null,
       "role": null,
+      "capabilityTier": "L0",
       "precedenceRank": null
     },
     {
@@ -249,6 +281,7 @@
       "status": "catalog-only",
       "category": null,
       "role": null,
+      "capabilityTier": "L0",
       "precedenceRank": null
     },
     {
@@ -256,6 +289,7 @@
       "status": "contracted",
       "category": "routing-and-governance",
       "role": "pack-preflight-readiness-gate",
+      "capabilityTier": "L0",
       "precedenceRank": 3
     },
     {
@@ -263,6 +297,7 @@
       "status": "catalog-only",
       "category": null,
       "role": null,
+      "capabilityTier": "L0",
       "precedenceRank": null
     },
     {
@@ -270,6 +305,7 @@
       "status": "catalog-only",
       "category": null,
       "role": null,
+      "capabilityTier": "L0",
       "precedenceRank": null
     },
     {
@@ -277,6 +313,7 @@
       "status": "catalog-only",
       "category": null,
       "role": null,
+      "capabilityTier": "L0",
       "precedenceRank": null
     },
     {
@@ -284,6 +321,7 @@
       "status": "catalog-only",
       "category": null,
       "role": null,
+      "capabilityTier": "L0",
       "precedenceRank": null
     },
     {
@@ -291,6 +329,7 @@
       "status": "catalog-only",
       "category": null,
       "role": null,
+      "capabilityTier": "L0",
       "precedenceRank": null
     },
     {
@@ -298,6 +337,7 @@
       "status": "catalog-only",
       "category": null,
       "role": null,
+      "capabilityTier": "L0",
       "precedenceRank": null
     },
     {
@@ -305,6 +345,7 @@
       "status": "contracted",
       "category": "routing-and-governance",
       "role": "recipe-and-pack-selector",
+      "capabilityTier": "L0",
       "precedenceRank": 2
     },
     {
@@ -312,6 +353,7 @@
       "status": "catalog-only",
       "category": null,
       "role": null,
+      "capabilityTier": "L0",
       "precedenceRank": null
     },
     {
@@ -319,6 +361,7 @@
       "status": "catalog-only",
       "category": null,
       "role": null,
+      "capabilityTier": "L0",
       "precedenceRank": null
     },
     {
@@ -326,6 +369,7 @@
       "status": "catalog-only",
       "category": null,
       "role": null,
+      "capabilityTier": "L0",
       "precedenceRank": null
     },
     {
@@ -333,6 +377,7 @@
       "status": "catalog-only",
       "category": null,
       "role": null,
+      "capabilityTier": "L0",
       "precedenceRank": null
     },
     {
@@ -340,6 +385,7 @@
       "status": "catalog-only",
       "category": null,
       "role": null,
+      "capabilityTier": "L0",
       "precedenceRank": null
     },
     {
@@ -347,6 +393,7 @@
       "status": "catalog-only",
       "category": null,
       "role": null,
+      "capabilityTier": "L0",
       "precedenceRank": null
     },
     {
@@ -354,6 +401,7 @@
       "status": "contracted",
       "category": "routing-and-governance",
       "role": "mid-workflow-stage-router",
+      "capabilityTier": "L0",
       "precedenceRank": 4
     }
   ],

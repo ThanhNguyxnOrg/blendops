@@ -5,6 +5,7 @@
   "category": "routing-and-governance",
   "role": "recipe-and-pack-selector",
   "purpose": "Score whether a user's 3D goal fits an existing BlendOps recipe or pack, or needs custom decomposition, and name the exact next skill.",
+  "capabilityTier": "L0",
   "routingPrecedence": {
     "group": "entry-and-stage-routing",
     "rank": 2,

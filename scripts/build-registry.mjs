@@ -602,6 +602,7 @@ export function buildRegistryArtifacts(rootDir) {
       status: contractedSet.has(id) ? 'contracted' : 'catalog-only',
       category: contract ? contract.category : null,
       role: contract ? contract.role : null,
+      capabilityTier: contract?.capabilityTier || 'L0',
       precedenceRank: contract ? contract.routingPrecedence.rank : null,
     };
   });

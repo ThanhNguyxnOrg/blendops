@@ -1,0 +1,533 @@
+{
+  "$schema": "../schemas/adapter-compatibility-matrix.schema.json",
+  "schemaVersion": "1.0.0",
+  "summary": {
+    "totalInstallTargets": 26,
+    "dedicatedAdapterDocs": 6,
+    "installOnlyTargets": 20,
+    "verifiedReadCount": 2,
+    "linkedOnlyCount": 24,
+    "verifiedE2eCount": 0
+  },
+  "promotionPolicy": {
+    "allowDocOnlyPromotion": false,
+    "verifiedReadAllowlist": [
+      "claude-code",
+      "generic-project"
+    ],
+    "rule": "No install target or adapter may be promoted from linked-only to verified-read or verified-e2e based on documentation alone. Promotion requires a dedicated adapter doc in docs/adapters/ AND an in-repo empirical verification record under docs/evals/."
+  },
+  "targets": [
+    {
+      "id": "aider",
+      "canonicalHostName": "Aider (terminal)",
+      "consumerType": "coding-agent-project-local",
+      "compatibilityTier": "Tier 2",
+      "installGuidePath": "docs/install/aider.md",
+      "adapterDocPath": null,
+      "configurationMethod": "Project-local BLENDOPS.md read via /read or .aider.conf.yml + --mcp-servers flag",
+      "availableCapabilities": [
+        "project-local-skill-read",
+        "mcp-path-1-host-b",
+        "mcp-path-2-community",
+        "cli-appendix-execution"
+      ],
+      "evidenceLevel": "linked-only",
+      "verificationState": "Not Verified",
+      "verificationDate": "Not Verified",
+      "verificationEvidencePath": null,
+      "limitations": "Install-only target documented from upstream Aider docs; no dedicated adapter doc or live host eval yet."
+    },
+    {
+      "id": "amazon-q-developer",
+      "canonicalHostName": "Amazon Q Developer CLI",
+      "consumerType": "coding-agent-project-local",
+      "compatibilityTier": "Tier 2",
+      "installGuidePath": "docs/install/amazon-q-developer.md",
+      "adapterDocPath": null,
+      "configurationMethod": "Project-local BLENDOPS.md + ~/.aws/amazonq/cli-agents or qchat mcp CLI",
+      "availableCapabilities": [
+        "project-local-skill-read",
+        "mcp-path-1-host-b",
+        "mcp-path-2-community",
+        "cli-appendix-execution"
+      ],
+      "evidenceLevel": "linked-only",
+      "verificationState": "Not Verified",
+      "verificationDate": "Not Verified",
+      "verificationEvidencePath": null,
+      "limitations": "Install-only target documented from upstream Amazon Q docs; not empirically verified in-repo."
+    },
+    {
+      "id": "antigravity",
+      "canonicalHostName": "Antigravity (Google)",
+      "consumerType": "coding-agent-project-local",
+      "compatibilityTier": "Tier 2",
+      "installGuidePath": "docs/install/antigravity.md",
+      "adapterDocPath": null,
+      "configurationMethod": "Project-local BLENDOPS.md + MCP Store or mcp_config.json",
+      "availableCapabilities": [
+        "project-local-skill-read",
+        "mcp-path-1-host-b",
+        "mcp-path-2-community",
+        "cli-appendix-execution"
+      ],
+      "evidenceLevel": "linked-only",
+      "verificationState": "Not Verified",
+      "verificationDate": "Not Verified",
+      "verificationEvidencePath": null,
+      "limitations": "Install-only target; MCP config location is linked-only with no dedicated adapter verification record."
+    },
+    {
+      "id": "augment-code",
+      "canonicalHostName": "Augment Code",
+      "consumerType": "coding-agent-project-local",
+      "compatibilityTier": "Tier 2",
+      "installGuidePath": "docs/install/augment-code.md",
+      "adapterDocPath": null,
+      "configurationMethod": "Project-local BLENDOPS.md + Augment Settings panel or ~/.augment/settings.json",
+      "availableCapabilities": [
+        "project-local-skill-read",
+        "mcp-path-1-host-b",
+        "mcp-path-2-community",
+        "cli-appendix-execution"
+      ],
+      "evidenceLevel": "linked-only",
+      "verificationState": "Not Verified",
+      "verificationDate": "Not Verified",
+      "verificationEvidencePath": null,
+      "limitations": "Install-only target; linked-only upstream documentation without empirical host verification."
+    },
+    {
+      "id": "blackbox-ai",
+      "canonicalHostName": "Blackbox AI (VS Code)",
+      "consumerType": "coding-agent-project-local",
+      "compatibilityTier": "Tier 2",
+      "installGuidePath": "docs/install/blackbox-ai.md",
+      "adapterDocPath": null,
+      "configurationMethod": "Project-local BLENDOPS.md + Blackbox panel MCP Servers configuration",
+      "availableCapabilities": [
+        "project-local-skill-read",
+        "mcp-path-1-host-b",
+        "mcp-path-2-community"
+      ],
+      "evidenceLevel": "linked-only",
+      "verificationState": "Not Verified",
+      "verificationDate": "Not Verified",
+      "verificationEvidencePath": null,
+      "limitations": "Install-only target; linked-only upstream documentation without empirical host verification."
+    },
+    {
+      "id": "claude-code",
+      "canonicalHostName": "Claude Code",
+      "consumerType": "coding-agent-project-local",
+      "compatibilityTier": "Tier 1",
+      "installGuidePath": "docs/install/claude-code.md",
+      "adapterDocPath": "docs/adapters/claude-code.md",
+      "configurationMethod": "Project-local .claude/skills/ + CLAUDE.md or BLENDOPS.md entrypoint + MCP config for Path 1 host (b) or Path 2",
+      "availableCapabilities": [
+        "project-local-skill-read",
+        "mcp-path-1-host-b",
+        "mcp-path-2-community",
+        "cli-appendix-execution"
+      ],
+      "evidenceLevel": "verified-read",
+      "verificationState": "Verified Read (Repo-Local)",
+      "verificationDate": "2026-05-08",
+      "verificationEvidencePath": "docs/evals/adapter-install-v0-dry-run.md",
+      "limitations": "Verified for project-local skill reading and dry-run layout; live Blender E2E MCP mutation remains Not Run in-repo."
+    },
+    {
+      "id": "claude-desktop",
+      "canonicalHostName": "Claude Desktop / Claude.ai",
+      "consumerType": "chat-ui-skills-upload",
+      "compatibilityTier": "Tier 1",
+      "installGuidePath": "docs/install/claude-desktop.md",
+      "adapterDocPath": "docs/adapters/claude-app.md",
+      "configurationMethod": "Upload separate per-skill ZIPs from dist/claude-skills-zip/*.zip + Path 1 Host (a) Anthropic Blender Connector (requires Blender 5.1+ Lab MCP add-on)",
+      "availableCapabilities": [
+        "skills-zip-upload",
+        "mcp-path-1-host-a",
+        "mcp-path-2-community",
+        "docs-only-reference"
+      ],
+      "evidenceLevel": "linked-only",
+      "verificationState": "Not Verified",
+      "verificationDate": "Not Verified",
+      "verificationEvidencePath": null,
+      "limitations": "ZIP package structure is verified in CI, but live Claude.ai UI upload + Connector E2E execution has not been recorded in a formal in-repo eval."
+    },
+    {
+      "id": "cline",
+      "canonicalHostName": "Cline (VS Code)",
+      "consumerType": "coding-agent-project-local",
+      "compatibilityTier": "Tier 2",
+      "installGuidePath": "docs/install/cline.md",
+      "adapterDocPath": null,
+      "configurationMethod": "Project-local BLENDOPS.md + .clinerules + VS Code Cline MCP Settings",
+      "availableCapabilities": [
+        "project-local-skill-read",
+        "mcp-path-1-host-b",
+        "mcp-path-2-community",
+        "cli-appendix-execution"
+      ],
+      "evidenceLevel": "linked-only",
+      "verificationState": "Not Verified",
+      "verificationDate": "Not Verified",
+      "verificationEvidencePath": null,
+      "limitations": "Install-only target; linked-only upstream documentation without empirical host verification."
+    },
+    {
+      "id": "codex",
+      "canonicalHostName": "Codex CLI / App",
+      "consumerType": "coding-agent-project-local",
+      "compatibilityTier": "Tier 1",
+      "installGuidePath": "docs/install/codex.md",
+      "adapterDocPath": "docs/adapters/codex.md",
+      "configurationMethod": "Project-local AGENTS.md + skills/, laws/, packs/ + upstream Codex MCP configuration",
+      "availableCapabilities": [
+        "project-local-skill-read",
+        "mcp-path-1-host-b",
+        "mcp-path-2-community",
+        "cli-appendix-execution"
+      ],
+      "evidenceLevel": "linked-only",
+      "verificationState": "Not Verified",
+      "verificationDate": "Not Verified",
+      "verificationEvidencePath": null,
+      "limitations": "AGENTS.md discovery is documented upstream; MCP client integration remains linked-only pending live host test."
+    },
+    {
+      "id": "continue",
+      "canonicalHostName": "Continue.dev",
+      "consumerType": "coding-agent-project-local",
+      "compatibilityTier": "Tier 2",
+      "installGuidePath": "docs/install/continue.md",
+      "adapterDocPath": null,
+      "configurationMethod": "Project-local BLENDOPS.md + .continue/mcpServers/ configuration",
+      "availableCapabilities": [
+        "project-local-skill-read",
+        "mcp-path-1-host-b",
+        "mcp-path-2-community",
+        "cli-appendix-execution"
+      ],
+      "evidenceLevel": "linked-only",
+      "verificationState": "Not Verified",
+      "verificationDate": "Not Verified",
+      "verificationEvidencePath": null,
+      "limitations": "Install-only target; linked-only upstream documentation without empirical host verification."
+    },
+    {
+      "id": "cursor",
+      "canonicalHostName": "Cursor",
+      "consumerType": "coding-agent-project-local",
+      "compatibilityTier": "Tier 1",
+      "installGuidePath": "docs/install/cursor.md",
+      "adapterDocPath": "docs/adapters/cursor.md",
+      "configurationMethod": "Project-local .cursor/rules/*.mdc or AGENTS.md/BLENDOPS.md + .cursor/mcp.json for Path 1 host (b) or Path 2",
+      "availableCapabilities": [
+        "project-local-skill-read",
+        "mcp-path-1-host-b",
+        "mcp-path-2-community",
+        "cli-appendix-execution"
+      ],
+      "evidenceLevel": "linked-only",
+      "verificationState": "Not Verified",
+      "verificationDate": "Not Verified",
+      "verificationEvidencePath": null,
+      "limitations": "Upstream .cursor/rules and .cursor/mcp.json paths are documented; awaiting empirical in-repo host verification."
+    },
+    {
+      "id": "gemini",
+      "canonicalHostName": "Gemini CLI",
+      "consumerType": "coding-agent-project-local",
+      "compatibilityTier": "Tier 2",
+      "installGuidePath": "docs/install/gemini.md",
+      "adapterDocPath": null,
+      "configurationMethod": "Project-local BLENDOPS.md / GEMINI.md + upstream Gemini CLI MCP settings",
+      "availableCapabilities": [
+        "project-local-skill-read",
+        "mcp-path-1-host-b",
+        "mcp-path-2-community",
+        "cli-appendix-execution"
+      ],
+      "evidenceLevel": "linked-only",
+      "verificationState": "Not Verified",
+      "verificationDate": "Not Verified",
+      "verificationEvidencePath": null,
+      "limitations": "Install-only target; tool-native skill loader conventions are unverified."
+    },
+    {
+      "id": "generic-project",
+      "canonicalHostName": "Generic project (BLENDOPS.md fallback)",
+      "consumerType": "generic-fallback",
+      "compatibilityTier": "Tier 1",
+      "installGuidePath": "docs/install/generic-project.md",
+      "adapterDocPath": "docs/adapters/generic-root.md",
+      "configurationMethod": "Project-local BLENDOPS.md root entrypoint + skills/, laws/, packs/ directories",
+      "availableCapabilities": [
+        "project-local-skill-read",
+        "docs-only-reference"
+      ],
+      "evidenceLevel": "verified-read",
+      "verificationState": "Verified Read (Repo-Local)",
+      "verificationDate": "2026-05-08",
+      "verificationEvidencePath": "docs/evals/adapter-install-v0-dry-run.md",
+      "limitations": "Target-neutral project-local fallback verified by bundle dry-run; host-specific MCP wiring depends on the consuming agent."
+    },
+    {
+      "id": "github-copilot",
+      "canonicalHostName": "GitHub Copilot",
+      "consumerType": "coding-agent-project-local",
+      "compatibilityTier": "Tier 2",
+      "installGuidePath": "docs/install/github-copilot.md",
+      "adapterDocPath": null,
+      "configurationMethod": "Project-local BLENDOPS.md / .github/copilot-instructions.md + VS Code MCP configuration",
+      "availableCapabilities": [
+        "project-local-skill-read",
+        "mcp-path-1-host-b",
+        "mcp-path-2-community"
+      ],
+      "evidenceLevel": "linked-only",
+      "verificationState": "Not Verified",
+      "verificationDate": "Not Verified",
+      "verificationEvidencePath": null,
+      "limitations": "Install-only target; uses generic project-local instructions and linked-only MCP docs."
+    },
+    {
+      "id": "goose",
+      "canonicalHostName": "goose (Block)",
+      "consumerType": "coding-agent-project-local",
+      "compatibilityTier": "Tier 2",
+      "installGuidePath": "docs/install/goose.md",
+      "adapterDocPath": null,
+      "configurationMethod": "Project-local BLENDOPS.md / .goosehints + goose Standard IO MCP extension",
+      "availableCapabilities": [
+        "project-local-skill-read",
+        "mcp-path-1-host-b",
+        "mcp-path-2-community",
+        "cli-appendix-execution"
+      ],
+      "evidenceLevel": "linked-only",
+      "verificationState": "Not Verified",
+      "verificationDate": "Not Verified",
+      "verificationEvidencePath": null,
+      "limitations": "Install-only target; upstream Blender MCP tutorial exists, but no BlendOps in-repo eval has been executed."
+    },
+    {
+      "id": "jetbrains-junie",
+      "canonicalHostName": "JetBrains Junie / AI Assistant",
+      "consumerType": "coding-agent-project-local",
+      "compatibilityTier": "Tier 2",
+      "installGuidePath": "docs/install/jetbrains-junie.md",
+      "adapterDocPath": null,
+      "configurationMethod": "Project-local BLENDOPS.md / .junie/guidelines.md + .junie/mcp/mcp.json",
+      "availableCapabilities": [
+        "project-local-skill-read",
+        "mcp-path-1-host-b",
+        "mcp-path-2-community",
+        "cli-appendix-execution"
+      ],
+      "evidenceLevel": "linked-only",
+      "verificationState": "Not Verified",
+      "verificationDate": "Not Verified",
+      "verificationEvidencePath": null,
+      "limitations": "Install-only target; linked-only upstream documentation without empirical host verification."
+    },
+    {
+      "id": "lm-studio",
+      "canonicalHostName": "LM Studio",
+      "consumerType": "local-llm-runner",
+      "compatibilityTier": "Tier 3",
+      "installGuidePath": "docs/install/lm-studio.md",
+      "adapterDocPath": null,
+      "configurationMethod": "Docs-only / prompt-attached skill content + LM Studio mcp.json (Cursor-compatible)",
+      "availableCapabilities": [
+        "docs-only-reference",
+        "mcp-path-1-host-b",
+        "mcp-path-2-community"
+      ],
+      "evidenceLevel": "linked-only",
+      "verificationState": "Not Verified",
+      "verificationDate": "Not Verified",
+      "verificationEvidencePath": null,
+      "limitations": "Local LLM runner without project-local file skill loader; BlendOps is docs-only / reference."
+    },
+    {
+      "id": "ollama",
+      "canonicalHostName": "Ollama",
+      "consumerType": "local-llm-runner",
+      "compatibilityTier": "Tier 3",
+      "installGuidePath": "docs/install/ollama.md",
+      "adapterDocPath": null,
+      "configurationMethod": "Docs-only / prompt-attached skill content + experimental ~/.ollama/mcp-servers.json or 3rd-party MCP client",
+      "availableCapabilities": [
+        "docs-only-reference",
+        "mcp-path-1-host-b",
+        "mcp-path-2-community"
+      ],
+      "evidenceLevel": "linked-only",
+      "verificationState": "Not Verified",
+      "verificationDate": "Not Verified",
+      "verificationEvidencePath": null,
+      "limitations": "Local LLM runner without project-local file conventions; MCP support is experimental / client-dependent."
+    },
+    {
+      "id": "open-webui",
+      "canonicalHostName": "Open WebUI",
+      "consumerType": "local-llm-runner",
+      "compatibilityTier": "Tier 3",
+      "installGuidePath": "docs/install/open-webui.md",
+      "adapterDocPath": null,
+      "configurationMethod": "Docs-only / Knowledge base attachment + Admin Settings -> External Tools -> Streamable HTTP MCP",
+      "availableCapabilities": [
+        "docs-only-reference",
+        "mcp-path-1-host-b",
+        "mcp-path-2-community"
+      ],
+      "evidenceLevel": "linked-only",
+      "verificationState": "Not Verified",
+      "verificationDate": "Not Verified",
+      "verificationEvidencePath": null,
+      "limitations": "Local LLM web UI without project-local file skill loader; requires Streamable HTTP MCP bridge."
+    },
+    {
+      "id": "opencode",
+      "canonicalHostName": "OpenCode",
+      "consumerType": "coding-agent-project-local",
+      "compatibilityTier": "Tier 1",
+      "installGuidePath": "docs/install/opencode.md",
+      "adapterDocPath": "docs/adapters/opencode.md",
+      "configurationMethod": "Project-local BLENDOPS.md + skills/, laws/, packs/ + OpenCode MCP server configuration",
+      "availableCapabilities": [
+        "project-local-skill-read",
+        "mcp-path-1-host-b",
+        "mcp-path-2-community",
+        "cli-appendix-execution"
+      ],
+      "evidenceLevel": "linked-only",
+      "verificationState": "Not Verified",
+      "verificationDate": "Not Verified",
+      "verificationEvidencePath": null,
+      "limitations": "Candidate .opencode/ skill path and MCP config remain linked-only until verified in a live OpenCode workspace."
+    },
+    {
+      "id": "openhands",
+      "canonicalHostName": "OpenHands",
+      "consumerType": "coding-agent-project-local",
+      "compatibilityTier": "Tier 2",
+      "installGuidePath": "docs/install/openhands.md",
+      "adapterDocPath": null,
+      "configurationMethod": "Project-local BLENDOPS.md + ~/.openhands/mcp.json or openhands mcp CLI",
+      "availableCapabilities": [
+        "project-local-skill-read",
+        "mcp-path-1-host-b",
+        "mcp-path-2-community",
+        "cli-appendix-execution"
+      ],
+      "evidenceLevel": "linked-only",
+      "verificationState": "Not Verified",
+      "verificationDate": "Not Verified",
+      "verificationEvidencePath": null,
+      "limitations": "Install-only target; linked-only upstream documentation without empirical host verification."
+    },
+    {
+      "id": "roo-code",
+      "canonicalHostName": "Roo Code (VS Code)",
+      "consumerType": "coding-agent-project-local",
+      "compatibilityTier": "Tier 2",
+      "installGuidePath": "docs/install/roo-code.md",
+      "adapterDocPath": null,
+      "configurationMethod": "Project-local BLENDOPS.md + .roo/mcp.json (project) or global mcp_settings.json",
+      "availableCapabilities": [
+        "project-local-skill-read",
+        "mcp-path-1-host-b",
+        "mcp-path-2-community",
+        "cli-appendix-execution"
+      ],
+      "evidenceLevel": "linked-only",
+      "verificationState": "Not Verified",
+      "verificationDate": "Not Verified",
+      "verificationEvidencePath": null,
+      "limitations": "Install-only target; linked-only upstream documentation without empirical host verification."
+    },
+    {
+      "id": "sourcegraph-cody",
+      "canonicalHostName": "Sourcegraph Cody",
+      "consumerType": "coding-agent-project-local",
+      "compatibilityTier": "Tier 2",
+      "installGuidePath": "docs/install/sourcegraph-cody.md",
+      "adapterDocPath": null,
+      "configurationMethod": "Project-local BLENDOPS.md + opt-in agentic context fetching MCP config",
+      "availableCapabilities": [
+        "project-local-skill-read",
+        "mcp-path-1-host-b",
+        "mcp-path-2-community"
+      ],
+      "evidenceLevel": "linked-only",
+      "verificationState": "Not Verified",
+      "verificationDate": "Not Verified",
+      "verificationEvidencePath": null,
+      "limitations": "Install-only target; linked-only upstream documentation without empirical host verification."
+    },
+    {
+      "id": "trae",
+      "canonicalHostName": "Trae (ByteDance)",
+      "consumerType": "coding-agent-project-local",
+      "compatibilityTier": "Tier 2",
+      "installGuidePath": "docs/install/trae.md",
+      "adapterDocPath": null,
+      "configurationMethod": "Project-local BLENDOPS.md + Trae Settings -> MCP -> Add Manually (v1.3.0+)",
+      "availableCapabilities": [
+        "project-local-skill-read",
+        "mcp-path-1-host-b",
+        "mcp-path-2-community",
+        "cli-appendix-execution"
+      ],
+      "evidenceLevel": "linked-only",
+      "verificationState": "Not Verified",
+      "verificationDate": "Not Verified",
+      "verificationEvidencePath": null,
+      "limitations": "Install-only target; linked-only upstream documentation without empirical host verification."
+    },
+    {
+      "id": "windsurf",
+      "canonicalHostName": "Windsurf (Codeium)",
+      "consumerType": "coding-agent-project-local",
+      "compatibilityTier": "Tier 2",
+      "installGuidePath": "docs/install/windsurf.md",
+      "adapterDocPath": null,
+      "configurationMethod": "Project-local BLENDOPS.md / .windsurfrules + ~/.codeium/windsurf/mcp_config.json",
+      "availableCapabilities": [
+        "project-local-skill-read",
+        "mcp-path-1-host-b",
+        "mcp-path-2-community",
+        "cli-appendix-execution"
+      ],
+      "evidenceLevel": "linked-only",
+      "verificationState": "Not Verified",
+      "verificationDate": "Not Verified",
+      "verificationEvidencePath": null,
+      "limitations": "Install-only target; linked-only upstream documentation without empirical host verification."
+    },
+    {
+      "id": "zed",
+      "canonicalHostName": "Zed editor",
+      "consumerType": "coding-agent-project-local",
+      "compatibilityTier": "Tier 2",
+      "installGuidePath": "docs/install/zed.md",
+      "adapterDocPath": null,
+      "configurationMethod": "Project-local BLENDOPS.md / .rules + Zed settings.json context_servers",
+      "availableCapabilities": [
+        "project-local-skill-read",
+        "mcp-path-1-host-b",
+        "mcp-path-2-community"
+      ],
+      "evidenceLevel": "linked-only",
+      "verificationState": "Not Verified",
+      "verificationDate": "Not Verified",
+      "verificationEvidencePath": null,
+      "limitations": "Install-only target; linked-only upstream documentation without empirical host verification."
+    }
+  ]
+}

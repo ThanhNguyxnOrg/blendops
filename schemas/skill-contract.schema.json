@@ -56,6 +56,12 @@
       "minLength": 10,
       "maxLength": 200
     },
+    "capabilityTier": {
+      "type": "string",
+      "enum": ["L0", "L1", "L2", "L3"],
+      "default": "L0",
+      "description": "Runtime capability tier (L0: Planning & Read-Only Inspection, L1: Reversible Scene Mutation, L2: File Export & External Asset Import, L3: Arbitrary Code / Destructive Operations)."
+    },
     "routingPrecedence": {
       "type": "object",
       "additionalProperties": false,
