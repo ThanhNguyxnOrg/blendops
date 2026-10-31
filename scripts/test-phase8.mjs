@@ -7,6 +7,7 @@ import { execFileSync, spawnSync } from 'node:child_process';
 import {
   EXPECTED_CANONICAL_SKILL_COUNT,
   VALID_CAPABILITY_TIERS,
+  VALID_GATE_GOAL_CLARITIES,
   ROUTING_PARTICIPANT_IDS,
   CLAUDE_DESKTOP_SKILLS_REL_DIR,
   PORTABLE_PACKAGE_REFS_REL_DIR,
@@ -16,6 +17,10 @@ import {
   buildGeneratedFileNotice,
   discoverCanonicalSkillIds,
   loadAndValidateSkillSourcePair,
+  formatConditionGroupExpression,
+  parseConditionGroupExpression,
+  renderClaudeDesktopSummary,
+  renderPortablePackageSummary,
   extractSummaryRoutingSemantics,
   computeBundleSummaryPlan,
   generateBundleReferenceSummaries,
@@ -1402,4 +1407,405 @@ test('Scenario 35: Contract validation rejects malformed handoff when conditions
   } finally {
     fs.rmSync(tempRoot, { recursive: true, force: true });
   }
+});
+
+// ============================================================================
+// Phase 8.1.1 Regression Scenarios (36 through 41)
+// ============================================================================
+
+test('Scenario 36 (Phase 8.1.1 Fix A): Condition expressions with single/multiple semicolons, escaped quotes, backslashes, Unicode, and array elements survive formatter -> summary -> extractor round trips in both profiles', () => {
+  const tempRoot = createIsolatedFixtureRepo();
+  try {
+    const contractPath = path.join(tempRoot, 'skills', 'blendops-help', 'contract.json');
+    const contract = JSON.parse(fs.readFileSync(contractPath, 'utf8'));
+
+    contract.handoffs = [
+      {
+        target: 'recipe-fit-assessor',
+        type: 'progression',
+        label: 'Single semicolon string predicate in when.all',
+        when: {
+          all: [{ field: 'stage.status', operator: 'equals', value: 'ready;approved' }],
+        },
+      },
+      {
+        target: 'pack-prerequisite-checker',
+        type: 'conditional',
+        label: 'Multiple semicolons, escaped quotes, backslashes, and Unicode in when.any',
+        when: {
+          any: [
+            {
+              field: 'review.note',
+              operator: 'equals',
+              value: 'draft; pending; review',
+            },
+            {
+              field: 'asset.path',
+              operator: 'not_equals',
+              value: 'C:\\scenes\\hero;v2\\"quoted;segment"\\final\\\\',
+            },
+            {
+              field: 'locale.tag',
+              operator: 'equals',
+              value: '日本語;テスト — café;v1 🎯',
+            },
+          ],
+        },
+      },
+      {
+        target: 'workflow-stage-router',
+        type: 'conditional',
+        label: 'Array values with semicolons and mixed multi-predicate when.all',
+        when: {
+          all: [
+            {
+              field: 'stage.phase',
+              operator: 'in',
+              value: [
+                'ready;approved',
+                'draft; pending; review',
+                'quote:"a;b"\\path;ok',
+              ],
+            },
+            {
+              field: 'runtime.ready',
+              operator: 'equals',
+              value: true,
+            },
+            {
+              field: 'quality.flags',
+              operator: 'not_in',
+              value: ['blocked;critical', 'failed;retry;later'],
+            },
+          ],
+        },
+      },
+      {
+        target: 'blender-troubleshooting',
+        type: 'retry',
+        label: 'Retry handoff with semicolon strings in both when.any and exitCondition.all',
+        when: {
+          any: [
+            {
+              field: 'bridge.error',
+              operator: 'equals',
+              value: 'timeout;connection_reset;retryable',
+            },
+            {
+              field: 'bridge.code',
+              operator: 'in',
+              value: ['ECONNRESET;502', 'ETIMEDOUT;504'],
+            },
+          ],
+        },
+        retryPolicy: {
+          maxAttempts: 3,
+          exitCondition: {
+            all: [
+              {
+                field: 'bridge.status',
+                operator: 'equals',
+                value: 'connected;verified',
+              },
+              {
+                field: 'bridge.healthy',
+                operator: 'exists',
+                value: true,
+              },
+            ],
+          },
+        },
+      },
+    ];
+
+    fs.writeFileSync(contractPath, JSON.stringify(contract, null, 2), 'utf8');
+
+    const buildRes = generateBundleReferenceSummaries(tempRoot);
+    assert.equal(
+      buildRes.ok,
+      true,
+      `Expected build with semicolon condition values to succeed, got: ${buildRes.errors.join('; ')}`,
+    );
+
+    const checkRes = checkBundleReferenceSummaries(tempRoot);
+    assert.equal(checkRes.ok, true, `Check mode failed: ${checkRes.errors.join('; ')}`);
+
+    const claudeMd = fs.readFileSync(
+      path.join(tempRoot, CLAUDE_DESKTOP_SKILLS_REL_DIR, 'blendops-help.md'),
+      'utf8',
+    );
+    const portableMd = fs.readFileSync(
+      path.join(tempRoot, PORTABLE_PACKAGE_REFS_REL_DIR, 'skill-blendops-help.md'),
+      'utf8',
+    );
+
+    const claudeSemantics = extractSummaryRoutingSemantics(claudeMd);
+    const portableSemantics = extractSummaryRoutingSemantics(portableMd);
+
+    assert.deepEqual(claudeSemantics, portableSemantics);
+    assert.deepEqual(claudeSemantics.handoffs, contract.handoffs);
+  } finally {
+    fs.rmSync(tempRoot, { recursive: true, force: true });
+  }
+});
+
+test('Scenario 37 (Phase 8.1.1 Fix A): Malformed condition expressions fail closed with actionable errors and never use unsafe evaluation', () => {
+  // 1. Empty expression
+  assert.throws(
+    () => parseConditionGroupExpression('all', '   '),
+    /expected at least one predicate/,
+  );
+
+  // 2. Invalid condition mode
+  assert.throws(
+    () => parseConditionGroupExpression('none', 'stage.status equals "ready"'),
+    /Invalid condition group mode "none"/,
+  );
+
+  // 3. Unterminated JSON string literal
+  assert.throws(
+    () => parseConditionGroupExpression('all', 'stage.status equals "ready;unterminated'),
+    /unterminated JSON string literal/,
+  );
+
+  // 4. Trailing semicolon / empty predicate segment
+  assert.throws(
+    () => parseConditionGroupExpression('all', 'stage.status equals "ready"; '),
+    /trailing semicolon or empty predicate/,
+  );
+  assert.throws(
+    () =>
+      parseConditionGroupExpression(
+        'all',
+        'stage.status equals "ready"; ; runtime.ready equals true',
+      ),
+    /empty predicate segment/,
+  );
+
+  // 5. Unbalanced brackets
+  assert.throws(
+    () => parseConditionGroupExpression('any', 'stage.status in ["ready;a", "b"'),
+    /unbalanced brackets/,
+  );
+  assert.throws(
+    () => parseConditionGroupExpression('any', 'stage.status in "ready"]'),
+    /unexpected closing bracket/,
+  );
+
+  // 6. Malformed JSON value or invalid operator value type
+  assert.throws(
+    () => parseConditionGroupExpression('all', 'stage.status equals invalid_json'),
+    /Malformed JSON value/,
+  );
+  assert.throws(
+    () => parseConditionGroupExpression('all', 'stage.status in "not-an-array"'),
+    /expected non-empty array of scalar values/,
+  );
+  assert.throws(
+    () => parseConditionGroupExpression('all', 'stage.status exists "yes"'),
+    /expected boolean/,
+  );
+
+  // 7. Formatted condition group round-trip check
+  const group = {
+    any: [
+      { field: 'a.b', operator: 'equals', value: 'x;y;z' },
+      { field: 'c.d', operator: 'in', value: ['p;q', 'r;"s";t'] },
+    ],
+  };
+  const formatted = formatConditionGroupExpression(group, 'when');
+  const innerMatch = formatted.match(/^`when\.(all|any): \[([\s\S]+)\]`$/);
+  assert.ok(innerMatch);
+  assert.deepEqual(parseConditionGroupExpression(innerMatch[1], innerMatch[2]), group);
+});
+
+test('Scenario 38 (Phase 8.1.1 Fix B): Routing precedence rank boundaries (1, 4, 100 accepted; 0, 101, non-integer rejected) match canonical schema', () => {
+  const tempRoot = createIsolatedFixtureRepo();
+  try {
+    const contractPath = path.join(tempRoot, 'skills', 'blendops-help', 'contract.json');
+    const baseContract = JSON.parse(fs.readFileSync(contractPath, 'utf8'));
+    const catalogSet = new Set(discoverCanonicalSkillIds(tempRoot).skillIds);
+
+    // Ranks 1, 4, and 100 must be accepted and survive summary rendering + extraction
+    for (const validRank of [1, 4, 100]) {
+      const candidate = structuredClone(baseContract);
+      candidate.routingPrecedence.rank = validRank;
+      fs.writeFileSync(contractPath, JSON.stringify(candidate, null, 2), 'utf8');
+
+      const res = loadAndValidateSkillSourcePair('blendops-help', catalogSet, tempRoot);
+      assert.equal(
+        res.ok,
+        true,
+        `Expected rank ${validRank} to be accepted, got errors: ${res.errors.join('; ')}`,
+      );
+      assert.equal(res.model.routingPrecedence.rank, validRank);
+
+      const claudeMd = renderClaudeDesktopSummary(res.model);
+      const portableMd = renderPortablePackageSummary(res.model);
+      assert.equal(extractSummaryRoutingSemantics(claudeMd).routingPrecedence.rank, validRank);
+      assert.equal(extractSummaryRoutingSemantics(portableMd).routingPrecedence.rank, validRank);
+    }
+
+    // Ranks 0, 101, and non-integers must be rejected
+    for (const invalidRank of [0, 101, -1, 2.5, '4', null]) {
+      const candidate = structuredClone(baseContract);
+      candidate.routingPrecedence.rank = invalidRank;
+      fs.writeFileSync(contractPath, JSON.stringify(candidate, null, 2), 'utf8');
+
+      const res = loadAndValidateSkillSourcePair('blendops-help', catalogSet, tempRoot);
+      assert.equal(res.ok, false, `Expected invalid rank ${JSON.stringify(invalidRank)} to fail`);
+      assert.equal(
+        res.errors.some((e) => e.includes('Invalid routingPrecedence.rank')),
+        true,
+        `Expected rank diagnostic for ${JSON.stringify(invalidRank)}, got: ${res.errors.join('; ')}`,
+      );
+    }
+  } finally {
+    fs.rmSync(tempRoot, { recursive: true, force: true });
+  }
+});
+
+test('Scenario 39 (Phase 8.1.1 Fix B): Activation gate goalClarity accepts ambiguous_or_mixed, clear, and any while rejecting unsupported values and non-boolean gate fields', () => {
+  assert.deepEqual(
+    [...VALID_GATE_GOAL_CLARITIES],
+    ['ambiguous_or_mixed', 'clear', 'any'],
+  );
+
+  const tempRoot = createIsolatedFixtureRepo();
+  try {
+    const contractPath = path.join(tempRoot, 'skills', 'blendops-help', 'contract.json');
+    const baseContract = JSON.parse(fs.readFileSync(contractPath, 'utf8'));
+    const catalogSet = new Set(discoverCanonicalSkillIds(tempRoot).skillIds);
+
+    for (const validClarity of ['ambiguous_or_mixed', 'clear', 'any']) {
+      const candidate = structuredClone(baseContract);
+      candidate.routingPrecedence.activationGate.goalClarity = validClarity;
+      fs.writeFileSync(contractPath, JSON.stringify(candidate, null, 2), 'utf8');
+
+      const res = loadAndValidateSkillSourcePair('blendops-help', catalogSet, tempRoot);
+      assert.equal(
+        res.ok,
+        true,
+        `Expected goalClarity "${validClarity}" to be accepted, got: ${res.errors.join('; ')}`,
+      );
+      assert.equal(res.model.routingPrecedence.activationGate.goalClarity, validClarity);
+
+      const claudeMd = renderClaudeDesktopSummary(res.model);
+      const portableMd = renderPortablePackageSummary(res.model);
+      assert.equal(
+        extractSummaryRoutingSemantics(claudeMd).routingPrecedence.activationGate.goalClarity,
+        validClarity,
+      );
+      assert.equal(
+        extractSummaryRoutingSemantics(portableMd).routingPrecedence.activationGate.goalClarity,
+        validClarity,
+      );
+    }
+
+    for (const invalidClarity of ['unknown_clarity', '', 'mixed', null, true]) {
+      const candidate = structuredClone(baseContract);
+      candidate.routingPrecedence.activationGate.goalClarity = invalidClarity;
+      fs.writeFileSync(contractPath, JSON.stringify(candidate, null, 2), 'utf8');
+
+      const res = loadAndValidateSkillSourcePair('blendops-help', catalogSet, tempRoot);
+      assert.equal(
+        res.ok,
+        false,
+        `Expected invalid goalClarity ${JSON.stringify(invalidClarity)} to fail`,
+      );
+      assert.equal(
+        res.errors.some((e) =>
+          e.includes('Invalid routingPrecedence.activationGate.goalClarity'),
+        ),
+        true,
+      );
+    }
+
+    // Strict boolean checks and unexpected property checks remain enforced
+    const badBool = structuredClone(baseContract);
+    badBool.routingPrecedence.activationGate.recipeSelected = 'true';
+    badBool.routingPrecedence.activationGate.extraGateFlag = true;
+    badBool.routingPrecedence.extraTopFlag = true;
+    fs.writeFileSync(contractPath, JSON.stringify(badBool, null, 2), 'utf8');
+    const resBadBool = loadAndValidateSkillSourcePair('blendops-help', catalogSet, tempRoot);
+    assert.equal(resBadBool.ok, false);
+    assert.equal(
+      resBadBool.errors.some((e) =>
+        e.includes('Invalid routingPrecedence.activationGate.recipeSelected'),
+      ),
+      true,
+    );
+    assert.equal(
+      resBadBool.errors.some((e) =>
+        e.includes('Unknown property "routingPrecedence.activationGate.extraGateFlag"'),
+      ),
+      true,
+    );
+    assert.equal(
+      resBadBool.errors.some((e) =>
+        e.includes('Unknown property "routingPrecedence.extraTopFlag"'),
+      ),
+      true,
+    );
+  } finally {
+    fs.rmSync(tempRoot, { recursive: true, force: true });
+  }
+});
+
+test('Scenario 40 (Phase 8.1.1 Fix C): dev-server.mjs uses blendops-phase-8.1.1.bundle consistently across bundlePath, suggestedName, download attribute, PowerShell command, /api/bundle-info, and Content-Disposition', () => {
+  const devServerPath = path.join(root, 'scripts', 'dev-server.mjs');
+  const devServerSource = fs.readFileSync(devServerPath, 'utf8');
+
+  assert.match(
+    devServerSource,
+    /const bundlePath = '\/tmp\/blendops-phase-8\.1\.1\.bundle';/,
+    'bundlePath must point to /tmp/blendops-phase-8.1.1.bundle',
+  );
+  assert.match(
+    devServerSource,
+    /suggestedName:\s*'blendops-phase-8\.1\.1\.bundle'/,
+    'showSaveFilePicker.suggestedName must be blendops-phase-8.1.1.bundle',
+  );
+  assert.match(
+    devServerSource,
+    /a\.download\s*=\s*'blendops-phase-8\.1\.1\.bundle'/,
+    'Browser download filename must be blendops-phase-8.1.1.bundle',
+  );
+  assert.match(
+    devServerSource,
+    /WriteAllBytes\("blendops-phase-8\.1\.1\.bundle"/,
+    'PowerShell Base64 decoder instructions must use blendops-phase-8.1.1.bundle',
+  );
+  assert.match(
+    devServerSource,
+    /filename:\s*'blendops-phase-8\.1\.1\.bundle'/,
+    '/api/bundle-info metadata filename must be blendops-phase-8.1.1.bundle',
+  );
+  assert.match(
+    devServerSource,
+    /Content-Disposition':\s*'attachment; filename="blendops-phase-8\.1\.1\.bundle"'/,
+    'Content-Disposition header must specify blendops-phase-8.1.1.bundle',
+  );
+  assert.match(
+    devServerSource,
+    /url === '\/blendops-phase-8\.1\.1\.bundle'/,
+    'Download route must serve /blendops-phase-8.1.1.bundle',
+  );
+  // Ensure compatibility routes for previous phases remain supported
+  assert.match(devServerSource, /url === '\/blendops-phase-8\.1\.bundle'/);
+  assert.match(devServerSource, /url === '\/blendops-phase-8\.bundle'/);
+
+  // Ensure no stale suggestedName or active download filename remains
+  assert.equal(
+    devServerSource.includes("suggestedName: 'blendops-phase-8.bundle'"),
+    false,
+  );
+  assert.equal(
+    devServerSource.includes("suggestedName: 'blendops-phase-8.1.bundle'"),
+    false,
+  );
+  assert.equal(
+    devServerSource.includes("a.download = 'blendops-phase-8.1.bundle'"),
+    false,
+  );
 });

@@ -922,7 +922,7 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
       resolvedInPhase: !f03Fixed
         ? 'Deferred until 48/48 skill contracts are authored'
         : f09Fixed
-          ? 'Phase 5 Contracts (f8301a3) + Phase 8 Generator (defb847) + Phase 8.1 Semantic Integrity & Hardening'
+          ? 'Phase 5 Contracts (f8301a3) + Phase 8 Generator (defb847) + Phase 8.1 Semantic Integrity (42dadea) + Phase 8.1.1 Edge-Case Hardening'
           : 'Prerequisite satisfied in Phase 5 (48/48 contracts authored); bundle generator scheduled for Phase 8',
       lastVerifiedCommit: headSha,
       evidencePaths: f09Fixed
@@ -1510,17 +1510,22 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
         commitSha: 'defb847b58516afa75f090fd2fa7b066d01e5832',
         summary: 'Deterministic 96-file bundle reference summary generator (F-09), bundle manifest synchronization, and CI check-mode verification',
       },
+      {
+        phase: 'Phase 8.1',
+        commitSha: '42dadea8d92c384dcd5eae419880d15d4b9ccce4',
+        summary: 'Summary semantic integrity (full handoff when/retryPolicy & routing activationGate preservation), Ajv2020 contract validation, realpath/symlink confinement, and fail-closed F-09 audit gate',
+      },
     ],
     currentPhaseContext: {
-      phase: 'Phase 8.1 — Summary Semantic Integrity & Generator Hardening (F-09)',
-      title: 'Full Routing/Handoff Semantic Preservation, Canonical Ajv2020 Contract Schema Enforcement, Realpath/Symlink Confinement, Fail-Closed Manifest Validation, and F-09 Audit Predicate Hardening',
+      phase: 'Phase 8.1.1 — Generator Edge-Case Hardening (F-09)',
+      title: 'Quoted-String Condition Expression Parser, Canonical Routing Rank (1–100) & Goal Clarity (any) Schema Alignment, and Phase 8.1.1 Bundle Delivery Consistency',
       sourceCommitSha: headSha,
       workingTreeState,
       snapshotBasis,
       auditedInputsSha256,
       auditedInputsManifest: AUDITED_INPUTS_MANIFEST_REL,
       relationshipToCommitChain:
-        'Phase 8.1 is built directly on top of Phase 8 (defb847b58516afa75f090fd2fa7b066d01e5832). Because a Git commit cannot embed its own final SHA inside tracked files, verification-manifest.json records defb847b58516afa75f090fd2fa7b066d01e5832 as the latest completed commit in commitChain and sourceCommitSha, while locking the exact Phase 8.1 audited inputs via auditedInputsSha256 and docs/audits/audited-inputs.manifest.json.',
+        'Phase 8.1.1 is built directly on top of Phase 8.1 (42dadea8d92c384dcd5eae419880d15d4b9ccce4). Because a Git commit cannot embed its own final SHA inside tracked files, verification-manifest.json records 42dadea8d92c384dcd5eae419880d15d4b9ccce4 as the latest completed commit in commitChain and sourceCommitSha, while locking the exact Phase 8.1.1 audited inputs via auditedInputsSha256 and docs/audits/audited-inputs.manifest.json.',
     },
     ciVerificationPipeline: {
       command: 'npm run ci',
@@ -1649,7 +1654,7 @@ The \`auditedInputsSha256\` digest is governed by [\`../audited-inputs.manifest.
 - [\`findings.json\`](./findings.json) — Machine-readable lifecycle table for \`F-01\` through \`F-10\`.
 - [\`skill-inventory.json\`](./skill-inventory.json) — Live 48-skill inventory reflecting Phase 1 truth-state fixes, Phase 2/2.1/5 full-catalog contracts, Phase 3/6 full-catalog eval coverage, and Phase 4 extended template completion.
 - [\`eval-inventory.json\`](./eval-inventory.json) — Live 48-skill evaluation inventory covering all 48 machine-readable suites (${totalEvalCasesCount} cases) with 0 remaining prose-only skills.
-- [\`verification-manifest.json\`](./verification-manifest.json) — Verified commit chain through \`defb847b58516afa75f090fd2fa7b066d01e5832\`, Phase 8.1 provenance context, CI pipeline commands, and runtime/artifact truth states.
+- [\`verification-manifest.json\`](./verification-manifest.json) — Verified commit chain through \`42dadea8d92c384dcd5eae419880d15d4b9ccce4\`, Phase 8.1.1 provenance context, CI pipeline commands, and runtime/artifact truth states.
 
 ## Related Documentation
 

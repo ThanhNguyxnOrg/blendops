@@ -12,6 +12,7 @@ const DEFAULT_ROOT = process.cwd();
 
 export const EXPECTED_CANONICAL_SKILL_COUNT = 48;
 export const VALID_CAPABILITY_TIERS = new Set(['L0', 'L1', 'L2', 'L3']);
+export const VALID_GATE_GOAL_CLARITIES = new Set(['ambiguous_or_mixed', 'clear', 'any']);
 export const ROUTING_PARTICIPANT_IDS = new Set([
   'blendops-help',
   'recipe-fit-assessor',
@@ -549,23 +550,28 @@ export function loadAndValidateSkillSourcePair(skillId, catalogSkillSet, rootDir
     if (!rp || typeof rp !== 'object' || Array.isArray(rp)) {
       errors.push(`Invalid "routingPrecedence" in ${contractRel}: expected object`);
     } else {
+      for (const rpKey of Object.keys(rp)) {
+        if (rpKey !== 'group' && rpKey !== 'rank' && rpKey !== 'activationGate') {
+          errors.push(`Unknown property "routingPrecedence.${rpKey}" in ${contractRel}`);
+        }
+      }
       if (rp.group !== 'entry-and-stage-routing') {
         errors.push(
           `Invalid routingPrecedence.group in ${contractRel}: expected "entry-and-stage-routing", got "${String(rp.group)}"`,
         );
       }
-      if (!Number.isInteger(rp.rank) || rp.rank < 1 || rp.rank > 4) {
+      if (!Number.isInteger(rp.rank) || rp.rank < 1 || rp.rank > 100) {
         errors.push(
-          `Invalid routingPrecedence.rank in ${contractRel}: expected integer 1..4, got "${String(rp.rank)}"`,
+          `Invalid routingPrecedence.rank in ${contractRel}: expected integer 1..100, got "${String(rp.rank)}"`,
         );
       }
       const gate = rp.activationGate;
       if (!gate || typeof gate !== 'object' || Array.isArray(gate)) {
         errors.push(`Missing or invalid "routingPrecedence.activationGate" in ${contractRel}`);
       } else {
-        if (gate.goalClarity !== 'ambiguous_or_mixed' && gate.goalClarity !== 'clear') {
+        if (typeof gate.goalClarity !== 'string' || !VALID_GATE_GOAL_CLARITIES.has(gate.goalClarity)) {
           errors.push(
-            `Invalid routingPrecedence.activationGate.goalClarity in ${contractRel}: expected "ambiguous_or_mixed" or "clear", got "${String(gate.goalClarity)}"`,
+            `Invalid routingPrecedence.activationGate.goalClarity in ${contractRel}: expected "ambiguous_or_mixed", "clear", or "any", got "${String(gate.goalClarity)}"`,
           );
         }
         for (const boolKey of [
@@ -942,20 +948,167 @@ export function formatRoutingPrecedenceLine(routingPrecedence) {
   return `group \`${routingPrecedence.group}\`, rank \`${routingPrecedence.rank}\` | activationGate: \`goalClarity=${JSON.stringify(gate.goalClarity)}\`, \`recipeSelected=${JSON.stringify(gate.recipeSelected)}\`, \`preflightPassed=${JSON.stringify(gate.preflightPassed)}\`, \`hasStageOrArtifactInventory=${JSON.stringify(gate.hasStageOrArtifactInventory)}\``;
 }
 
-function parseConditionGroupExpression(mode, innerText) {
-  const parts = String(innerText || '')
-    .split(';')
-    .map((s) => s.trim())
-    .filter(Boolean);
+function splitTopLevelPredicateExpressions(innerText) {
+  if (typeof innerText !== 'string' || innerText.trim().length === 0) {
+    throw new Error('Malformed condition group expression: expected at least one predicate');
+  }
+
+  const segments = [];
+  let inString = false;
+  let escaped = false;
+  let bracketDepth = 0;
+  let braceDepth = 0;
+  let segmentStart = 0;
+
+  for (let i = 0; i < innerText.length; i++) {
+    const ch = innerText[i];
+    if (inString) {
+      if (escaped) {
+        escaped = false;
+      } else if (ch === '\\') {
+        escaped = true;
+      } else if (ch === '"') {
+        inString = false;
+      }
+      continue;
+    }
+
+    if (ch === '"') {
+      inString = true;
+    } else if (ch === '[') {
+      bracketDepth += 1;
+    } else if (ch === ']') {
+      bracketDepth -= 1;
+      if (bracketDepth < 0) {
+        throw new Error(
+          `Malformed condition group expression: unexpected closing bracket ']' at index ${i} in "${innerText}"`,
+        );
+      }
+    } else if (ch === '{') {
+      braceDepth += 1;
+    } else if (ch === '}') {
+      braceDepth -= 1;
+      if (braceDepth < 0) {
+        throw new Error(
+          `Malformed condition group expression: unexpected closing brace '}' at index ${i} in "${innerText}"`,
+        );
+      }
+    } else if (ch === ';' && bracketDepth === 0 && braceDepth === 0) {
+      const part = innerText.slice(segmentStart, i).trim();
+      if (!part) {
+        throw new Error(
+          `Malformed condition group expression: empty predicate segment at index ${i} in "${innerText}"`,
+        );
+      }
+      segments.push(part);
+      segmentStart = i + 1;
+    }
+  }
+
+  if (inString) {
+    throw new Error(
+      `Malformed condition group expression: unterminated JSON string literal in "${innerText}"`,
+    );
+  }
+  if (bracketDepth !== 0 || braceDepth !== 0) {
+    throw new Error(
+      `Malformed condition group expression: unbalanced brackets in "${innerText}"`,
+    );
+  }
+
+  const finalPart = innerText.slice(segmentStart).trim();
+  if (!finalPart) {
+    throw new Error(
+      `Malformed condition group expression: trailing semicolon or empty predicate in "${innerText}"`,
+    );
+  }
+  segments.push(finalPart);
+  return segments;
+}
+
+function findMatchingConditionBracketEnd(text, startAfterOpenBracket) {
+  let inString = false;
+  let escaped = false;
+  let bracketDepth = 1;
+
+  for (let i = startAfterOpenBracket; i < text.length; i++) {
+    const ch = text[i];
+    if (inString) {
+      if (escaped) {
+        escaped = false;
+      } else if (ch === '\\') {
+        escaped = true;
+      } else if (ch === '"') {
+        inString = false;
+      }
+      continue;
+    }
+
+    if (ch === '"') {
+      inString = true;
+    } else if (ch === '[') {
+      bracketDepth += 1;
+    } else if (ch === ']') {
+      bracketDepth -= 1;
+      if (bracketDepth === 0) {
+        return i;
+      }
+    }
+  }
+  return -1;
+}
+
+export function parseConditionGroupExpression(mode, innerText) {
+  if (mode !== 'all' && mode !== 'any') {
+    throw new Error(`Invalid condition group mode "${String(mode)}": expected "all" or "any"`);
+  }
+  const parts = splitTopLevelPredicateExpressions(innerText);
   const predicates = parts.map((part) => {
-    const match = part.match(/^([a-zA-Z0-9_.]+)\s+(equals|not_equals|in|not_in|exists)\s+(.+)$/);
+    const match = part.match(
+      /^([a-zA-Z0-9_.]+)\s+(equals|not_equals|in|not_in|exists)\s+([\s\S]+)$/,
+    );
     if (!match) {
       throw new Error(`Unable to parse rendered predicate expression: "${part}"`);
     }
+    const field = match[1];
+    const operator = match[2];
+    const rawValue = match[3].trim();
+
+    let parsedValue;
+    try {
+      parsedValue = JSON.parse(rawValue);
+    } catch (err) {
+      throw new Error(
+        `Malformed JSON value in rendered predicate "${part}": ${err.message}`,
+      );
+    }
+
+    if (operator === 'in' || operator === 'not_in') {
+      if (
+        !Array.isArray(parsedValue) ||
+        parsedValue.length === 0 ||
+        !parsedValue.every((v) => isValidScalarValue(v))
+      ) {
+        throw new Error(
+          `Invalid predicate value for operator "${operator}" in "${part}": expected non-empty array of scalar values`,
+        );
+      }
+    } else if (operator === 'exists') {
+      if (typeof parsedValue !== 'boolean') {
+        throw new Error(
+          `Invalid predicate value for operator "exists" in "${part}": expected boolean`,
+        );
+      }
+    } else if (!isValidScalarValue(parsedValue)) {
+      throw new Error(
+        `Invalid predicate value for operator "${operator}" in "${part}": expected scalar string, number, or boolean`,
+      );
+    }
+
     return {
-      field: match[1],
-      operator: match[2],
-      value: JSON.parse(match[3]),
+      field,
+      operator,
+      value: parsedValue,
     };
   });
   return { [mode]: predicates };
@@ -986,20 +1139,25 @@ export function extractSummaryRoutingSemantics(markdownText) {
   }
 
   const handoffs = [];
-  const handoffLineRe =
-    /^- (?:\*\*\[([a-z_]+)\]\*\*|\[([a-z_]+)\]) (.+?) → `([a-z0-9-]+)` \(`references\/(?:skills\/[a-z0-9-]+\.md|skill-[a-z0-9-]+\.md)`\) — `when\.(all|any): \[(.+?)\]`(?:; retryPolicy: `maxAttempts=(\d+)`, `exitCondition\.(all|any): \[(.+?)\]`)?$/;
+  const handoffPrefixRe =
+    /^- (?:\*\*\[([a-z_]+)\]\*\*|\[([a-z_]+)\]) (.+?) → `([a-z0-9-]+)` \(`references\/(?:skills\/[a-z0-9-]+\.md|skill-[a-z0-9-]+\.md)`\) — `when\.(all|any): \[/;
 
   for (const line of lines) {
-    const m = line.match(handoffLineRe);
-    if (!m) continue;
-    const type = m[1] || m[2];
-    const label = m[3];
-    const target = m[4];
-    const whenMode = m[5];
-    const whenInner = m[6];
-    const maxAttemptsRaw = m[7];
-    const exitMode = m[8];
-    const exitInner = m[9];
+    const prefixMatch = line.match(handoffPrefixRe);
+    if (!prefixMatch) continue;
+    const type = prefixMatch[1] || prefixMatch[2];
+    const label = prefixMatch[3];
+    const target = prefixMatch[4];
+    const whenMode = prefixMatch[5];
+
+    const whenInnerStart = prefixMatch[0].length;
+    const whenCloseBracketIdx = findMatchingConditionBracketEnd(line, whenInnerStart);
+    if (whenCloseBracketIdx === -1 || line[whenCloseBracketIdx + 1] !== '`') {
+      throw new Error(`Malformed handoff condition line in summary: "${line}"`);
+    }
+
+    const whenInner = line.slice(whenInnerStart, whenCloseBracketIdx);
+    const remainder = line.slice(whenCloseBracketIdx + 2);
 
     const entry = {
       target,
@@ -1007,12 +1165,31 @@ export function extractSummaryRoutingSemantics(markdownText) {
       label,
       when: parseConditionGroupExpression(whenMode, whenInner),
     };
-    if (maxAttemptsRaw !== undefined && exitMode && exitInner !== undefined) {
+
+    if (remainder.length > 0) {
+      const retryPrefixMatch = remainder.match(
+        /^; retryPolicy: `maxAttempts=(\d+)`, `exitCondition\.(all|any): \[/,
+      );
+      if (!retryPrefixMatch) {
+        throw new Error(`Malformed retryPolicy suffix in summary line: "${line}"`);
+      }
+      const maxAttemptsRaw = retryPrefixMatch[1];
+      const exitMode = retryPrefixMatch[2];
+      const exitInnerStart = retryPrefixMatch[0].length;
+      const exitCloseBracketIdx = findMatchingConditionBracketEnd(remainder, exitInnerStart);
+      if (
+        exitCloseBracketIdx === -1 ||
+        remainder.slice(exitCloseBracketIdx) !== ']`'
+      ) {
+        throw new Error(`Malformed exitCondition expression in summary line: "${line}"`);
+      }
+      const exitInner = remainder.slice(exitInnerStart, exitCloseBracketIdx);
       entry.retryPolicy = {
         maxAttempts: Number(maxAttemptsRaw),
         exitCondition: parseConditionGroupExpression(exitMode, exitInner),
       };
     }
+
     handoffs.push(entry);
   }
 
