@@ -1,0 +1,3411 @@
+{
+  "schemaVersion": "1.0.0",
+  "auditPhase": "phase-0",
+  "repository": "ThanhNguyxnOrg/blendops",
+  "branch": "main",
+  "commitSha": "3ea3c35c6b8a6e5e915bab9f63333d4a1c09bd4d",
+  "commitDate": "2026-10-18 23:03:38 +0000",
+  "generatedAt": "2026-10-30T21:15:00-07:00",
+  "edgeTaxonomy": {
+    "progression": "Linear forward transition to the next workflow stage",
+    "conditional": "Forward transition gated on a specific condition or mode",
+    "alternative": "Branching choice among mutually applicable domain/validator skills",
+    "fallback": "Recovery or troubleshooting transition when a check or asset fails",
+    "retry": "Loop back to an earlier stage after fixing a failed gate (requires exit condition)",
+    "upstream_reference": "Backward declaration naming the upstream skill that supplies inputs",
+    "boundary_delegation": "Lateral boundary statement clarifying which skill owns an excluded concern"
+  },
+  "summary": {
+    "totalEdges": 373,
+    "byType": {
+      "upstream_reference": 29,
+      "progression": 211,
+      "boundary_delegation": 11,
+      "retry": 8,
+      "fallback": 34,
+      "alternative": 63,
+      "conditional": 17
+    },
+    "byNotation": {
+      "relative_path": 257,
+      "bare_id": 116
+    },
+    "progressionSubgraphCycles": 0,
+    "skillsWithZeroIncomingForwardEdges": [
+      "blender-scope-boundary-enforcer"
+    ],
+    "skillsWithZeroOutgoingForwardEdges": []
+  },
+  "degreeBySkill": {
+    "acceptance-criteria-builder": {
+      "incomingForward": 6,
+      "outgoingForward": 5,
+      "incomingUpstreamRef": 0,
+      "outgoingUpstreamRef": 1,
+      "incomingBoundary": 0,
+      "outgoingBoundary": 1
+    },
+    "asset-fallback-strategy": {
+      "incomingForward": 4,
+      "outgoingForward": 6,
+      "incomingUpstreamRef": 0,
+      "outgoingUpstreamRef": 0,
+      "incomingBoundary": 0,
+      "outgoingBoundary": 1
+    },
+    "asset-library-organization-planner": {
+      "incomingForward": 3,
+      "outgoingForward": 5,
+      "incomingUpstreamRef": 0,
+      "outgoingUpstreamRef": 0,
+      "incomingBoundary": 0,
+      "outgoingBoundary": 0
+    },
+    "asset-license-checker": {
+      "incomingForward": 5,
+      "outgoingForward": 4,
+      "incomingUpstreamRef": 1,
+      "outgoingUpstreamRef": 1,
+      "incomingBoundary": 0,
+      "outgoingBoundary": 0
+    },
+    "asset-style-consistency-checker": {
+      "incomingForward": 5,
+      "outgoingForward": 3,
+      "incomingUpstreamRef": 0,
+      "outgoingUpstreamRef": 3,
+      "incomingBoundary": 0,
+      "outgoingBoundary": 4
+    },
+    "blender-asset-discovery-planner": {
+      "incomingForward": 7,
+      "outgoingForward": 12,
+      "incomingUpstreamRef": 2,
+      "outgoingUpstreamRef": 1,
+      "incomingBoundary": 0,
+      "outgoingBoundary": 0
+    },
+    "blender-brainstorming": {
+      "incomingForward": 5,
+      "outgoingForward": 3,
+      "incomingUpstreamRef": 1,
+      "outgoingUpstreamRef": 0,
+      "incomingBoundary": 0,
+      "outgoingBoundary": 0
+    },
+    "blender-checklist-driven-workflow": {
+      "incomingForward": 4,
+      "outgoingForward": 21,
+      "incomingUpstreamRef": 0,
+      "outgoingUpstreamRef": 0,
+      "incomingBoundary": 0,
+      "outgoingBoundary": 1
+    },
+    "blender-composition-camera-planner": {
+      "incomingForward": 7,
+      "outgoingForward": 3,
+      "incomingUpstreamRef": 2,
+      "outgoingUpstreamRef": 1,
+      "incomingBoundary": 0,
+      "outgoingBoundary": 2
+    },
+    "blender-lighting-material-planner": {
+      "incomingForward": 9,
+      "outgoingForward": 4,
+      "incomingUpstreamRef": 1,
+      "outgoingUpstreamRef": 4,
+      "incomingBoundary": 1,
+      "outgoingBoundary": 0
+    },
+    "blender-recipe-decomposer": {
+      "incomingForward": 4,
+      "outgoingForward": 4,
+      "incomingUpstreamRef": 0,
+      "outgoingUpstreamRef": 0,
+      "incomingBoundary": 0,
+      "outgoingBoundary": 1
+    },
+    "blender-scene-quality-checker": {
+      "incomingForward": 16,
+      "outgoingForward": 8,
+      "incomingUpstreamRef": 2,
+      "outgoingUpstreamRef": 0,
+      "incomingBoundary": 0,
+      "outgoingBoundary": 0
+    },
+    "blender-scope-boundary-enforcer": {
+      "incomingForward": 0,
+      "outgoingForward": 6,
+      "incomingUpstreamRef": 0,
+      "outgoingUpstreamRef": 0,
+      "incomingBoundary": 6,
+      "outgoingBoundary": 0
+    },
+    "blender-stop-condition-decider": {
+      "incomingForward": 6,
+      "outgoingForward": 6,
+      "incomingUpstreamRef": 0,
+      "outgoingUpstreamRef": 0,
+      "incomingBoundary": 0,
+      "outgoingBoundary": 1
+    },
+    "blender-troubleshooting": {
+      "incomingForward": 7,
+      "outgoingForward": 16,
+      "incomingUpstreamRef": 0,
+      "outgoingUpstreamRef": 0,
+      "incomingBoundary": 0,
+      "outgoingBoundary": 0
+    },
+    "blendops-help": {
+      "incomingForward": 2,
+      "outgoingForward": 11,
+      "incomingUpstreamRef": 0,
+      "outgoingUpstreamRef": 0,
+      "incomingBoundary": 0,
+      "outgoingBoundary": 0
+    },
+    "character-portrait-scene-planner": {
+      "incomingForward": 8,
+      "outgoingForward": 6,
+      "incomingUpstreamRef": 0,
+      "outgoingUpstreamRef": 1,
+      "incomingBoundary": 0,
+      "outgoingBoundary": 0
+    },
+    "cli-appendix-job-outline": {
+      "incomingForward": 4,
+      "outgoingForward": 5,
+      "incomingUpstreamRef": 0,
+      "outgoingUpstreamRef": 0,
+      "incomingBoundary": 0,
+      "outgoingBoundary": 0
+    },
+    "color-management-decision": {
+      "incomingForward": 4,
+      "outgoingForward": 5,
+      "incomingUpstreamRef": 1,
+      "outgoingUpstreamRef": 0,
+      "incomingBoundary": 0,
+      "outgoingBoundary": 0
+    },
+    "composition-quality-checker": {
+      "incomingForward": 12,
+      "outgoingForward": 6,
+      "incomingUpstreamRef": 1,
+      "outgoingUpstreamRef": 0,
+      "incomingBoundary": 0,
+      "outgoingBoundary": 0
+    },
+    "cycles-vs-eevee-decision": {
+      "incomingForward": 3,
+      "outgoingForward": 5,
+      "incomingUpstreamRef": 1,
+      "outgoingUpstreamRef": 0,
+      "incomingBoundary": 0,
+      "outgoingBoundary": 0
+    },
+    "environment-establishing-shot-planner": {
+      "incomingForward": 8,
+      "outgoingForward": 5,
+      "incomingUpstreamRef": 0,
+      "outgoingUpstreamRef": 0,
+      "incomingBoundary": 0,
+      "outgoingBoundary": 0
+    },
+    "glb-animation-handoff": {
+      "incomingForward": 5,
+      "outgoingForward": 10,
+      "incomingUpstreamRef": 0,
+      "outgoingUpstreamRef": 0,
+      "incomingBoundary": 0,
+      "outgoingBoundary": 0
+    },
+    "glb-mobile-performance-budget": {
+      "incomingForward": 10,
+      "outgoingForward": 13,
+      "incomingUpstreamRef": 0,
+      "outgoingUpstreamRef": 0,
+      "incomingBoundary": 0,
+      "outgoingBoundary": 0
+    },
+    "glb-web-handoff": {
+      "incomingForward": 13,
+      "outgoingForward": 3,
+      "incomingUpstreamRef": 1,
+      "outgoingUpstreamRef": 2,
+      "incomingBoundary": 0,
+      "outgoingBoundary": 0
+    },
+    "intent-to-3d-brief-writer": {
+      "incomingForward": 11,
+      "outgoingForward": 8,
+      "incomingUpstreamRef": 7,
+      "outgoingUpstreamRef": 0,
+      "incomingBoundary": 0,
+      "outgoingBoundary": 0
+    },
+    "interior-architectural-scene-planner": {
+      "incomingForward": 7,
+      "outgoingForward": 10,
+      "incomingUpstreamRef": 0,
+      "outgoingUpstreamRef": 1,
+      "incomingBoundary": 0,
+      "outgoingBoundary": 0
+    },
+    "lighting-quality-checker": {
+      "incomingForward": 11,
+      "outgoingForward": 5,
+      "incomingUpstreamRef": 1,
+      "outgoingUpstreamRef": 0,
+      "incomingBoundary": 0,
+      "outgoingBoundary": 0
+    },
+    "material-quality-checker": {
+      "incomingForward": 12,
+      "outgoingForward": 7,
+      "incomingUpstreamRef": 1,
+      "outgoingUpstreamRef": 1,
+      "incomingBoundary": 1,
+      "outgoingBoundary": 0
+    },
+    "non-blender-user-response-writer": {
+      "incomingForward": 11,
+      "outgoingForward": 1,
+      "incomingUpstreamRef": 0,
+      "outgoingUpstreamRef": 8,
+      "incomingBoundary": 0,
+      "outgoingBoundary": 0
+    },
+    "official-runtime-readiness-checker": {
+      "incomingForward": 16,
+      "outgoingForward": 7,
+      "incomingUpstreamRef": 0,
+      "outgoingUpstreamRef": 0,
+      "incomingBoundary": 0,
+      "outgoingBoundary": 0
+    },
+    "official-runtime-setup-guide": {
+      "incomingForward": 5,
+      "outgoingForward": 6,
+      "incomingUpstreamRef": 0,
+      "outgoingUpstreamRef": 0,
+      "incomingBoundary": 0,
+      "outgoingBoundary": 0
+    },
+    "output-format-decision": {
+      "incomingForward": 5,
+      "outgoingForward": 7,
+      "incomingUpstreamRef": 1,
+      "outgoingUpstreamRef": 0,
+      "incomingBoundary": 1,
+      "outgoingBoundary": 0
+    },
+    "pack-prerequisite-checker": {
+      "incomingForward": 2,
+      "outgoingForward": 11,
+      "incomingUpstreamRef": 0,
+      "outgoingUpstreamRef": 0,
+      "incomingBoundary": 0,
+      "outgoingBoundary": 0
+    },
+    "path-one-host-outline": {
+      "incomingForward": 4,
+      "outgoingForward": 5,
+      "incomingUpstreamRef": 0,
+      "outgoingUpstreamRef": 0,
+      "incomingBoundary": 0,
+      "outgoingBoundary": 0
+    },
+    "polycount-budget-checker": {
+      "incomingForward": 6,
+      "outgoingForward": 6,
+      "incomingUpstreamRef": 1,
+      "outgoingUpstreamRef": 0,
+      "incomingBoundary": 1,
+      "outgoingBoundary": 0
+    },
+    "pre-handoff-verification": {
+      "incomingForward": 11,
+      "outgoingForward": 16,
+      "incomingUpstreamRef": 1,
+      "outgoingUpstreamRef": 1,
+      "incomingBoundary": 0,
+      "outgoingBoundary": 0
+    },
+    "preview-report-template-writer": {
+      "incomingForward": 1,
+      "outgoingForward": 5,
+      "incomingUpstreamRef": 0,
+      "outgoingUpstreamRef": 0,
+      "incomingBoundary": 0,
+      "outgoingBoundary": 0
+    },
+    "product-grid-scene-planner": {
+      "incomingForward": 7,
+      "outgoingForward": 9,
+      "incomingUpstreamRef": 0,
+      "outgoingUpstreamRef": 1,
+      "incomingBoundary": 0,
+      "outgoingBoundary": 0
+    },
+    "product-hero-scene-planner": {
+      "incomingForward": 13,
+      "outgoingForward": 7,
+      "incomingUpstreamRef": 1,
+      "outgoingUpstreamRef": 1,
+      "incomingBoundary": 0,
+      "outgoingBoundary": 0
+    },
+    "recipe-fit-assessor": {
+      "incomingForward": 1,
+      "outgoingForward": 9,
+      "incomingUpstreamRef": 0,
+      "outgoingUpstreamRef": 1,
+      "incomingBoundary": 0,
+      "outgoingBoundary": 0
+    },
+    "render-export-evidence": {
+      "incomingForward": 22,
+      "outgoingForward": 7,
+      "incomingUpstreamRef": 2,
+      "outgoingUpstreamRef": 0,
+      "incomingBoundary": 0,
+      "outgoingBoundary": 0
+    },
+    "resolution-aspect-decision": {
+      "incomingForward": 3,
+      "outgoingForward": 5,
+      "incomingUpstreamRef": 0,
+      "outgoingUpstreamRef": 1,
+      "incomingBoundary": 1,
+      "outgoingBoundary": 0
+    },
+    "runtime-attempt-report-writer": {
+      "incomingForward": 4,
+      "outgoingForward": 6,
+      "incomingUpstreamRef": 0,
+      "outgoingUpstreamRef": 0,
+      "incomingBoundary": 0,
+      "outgoingBoundary": 0
+    },
+    "runtime-bridge-conflict-resolver": {
+      "incomingForward": 9,
+      "outgoingForward": 5,
+      "incomingUpstreamRef": 0,
+      "outgoingUpstreamRef": 0,
+      "incomingBoundary": 0,
+      "outgoingBoundary": 0
+    },
+    "runtime-path-picker": {
+      "incomingForward": 8,
+      "outgoingForward": 6,
+      "incomingUpstreamRef": 0,
+      "outgoingUpstreamRef": 0,
+      "incomingBoundary": 0,
+      "outgoingBoundary": 0
+    },
+    "three-fiber-component-shape-planner": {
+      "incomingForward": 1,
+      "outgoingForward": 6,
+      "incomingUpstreamRef": 0,
+      "outgoingUpstreamRef": 0,
+      "incomingBoundary": 0,
+      "outgoingBoundary": 0
+    },
+    "workflow-stage-router": {
+      "incomingForward": 6,
+      "outgoingForward": 4,
+      "incomingUpstreamRef": 1,
+      "outgoingUpstreamRef": 0,
+      "incomingBoundary": 0,
+      "outgoingBoundary": 0
+    }
+  },
+  "edges": [
+    {
+      "from": "acceptance-criteria-builder",
+      "to": "intent-to-3d-brief-writer",
+      "type": "upstream_reference",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Brief source → `../intent-to-3d-brief-writer/SKILL.md`"
+    },
+    {
+      "from": "acceptance-criteria-builder",
+      "to": "blender-stop-condition-decider",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Done / stop condition → `../blender-stop-condition-decider/SKILL.md`"
+    },
+    {
+      "from": "acceptance-criteria-builder",
+      "to": "blender-checklist-driven-workflow",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Per-stage gate enforcement → `../blender-checklist-driven-workflow/SKILL.md`"
+    },
+    {
+      "from": "acceptance-criteria-builder",
+      "to": "blender-scope-boundary-enforcer",
+      "type": "boundary_delegation",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Scope boundary enforcement → `../blender-scope-boundary-enforcer/SKILL.md`"
+    },
+    {
+      "from": "acceptance-criteria-builder",
+      "to": "asset-license-checker",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* License permissions → `../asset-license-checker/SKILL.md`"
+    },
+    {
+      "from": "acceptance-criteria-builder",
+      "to": "render-export-evidence",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Artifact evidence classification → `../render-export-evidence/SKILL.md`"
+    },
+    {
+      "from": "acceptance-criteria-builder",
+      "to": "pre-handoff-verification",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Handoff gate verification → `../pre-handoff-verification/SKILL.md`"
+    },
+    {
+      "from": "asset-fallback-strategy",
+      "to": "blender-asset-discovery-planner",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Re-source external asset → `../blender-asset-discovery-planner/SKILL.md`"
+    },
+    {
+      "from": "asset-fallback-strategy",
+      "to": "asset-library-organization-planner",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Internal library lookup → `../asset-library-organization-planner/SKILL.md`"
+    },
+    {
+      "from": "asset-fallback-strategy",
+      "to": "asset-license-checker",
+      "type": "retry",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* License re-check on replacement → `../asset-license-checker/SKILL.md`"
+    },
+    {
+      "from": "asset-fallback-strategy",
+      "to": "asset-style-consistency-checker",
+      "type": "retry",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Style re-check on replacement → `../asset-style-consistency-checker/SKILL.md`"
+    },
+    {
+      "from": "asset-fallback-strategy",
+      "to": "glb-mobile-performance-budget",
+      "type": "retry",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Budget re-check on replacement → `../glb-mobile-performance-budget/SKILL.md`"
+    },
+    {
+      "from": "asset-fallback-strategy",
+      "to": "blender-scope-boundary-enforcer",
+      "type": "boundary_delegation",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Scope reduction when no viable fallback exists → `../blender-scope-boundary-enforcer/SKILL.md`"
+    },
+    {
+      "from": "asset-fallback-strategy",
+      "to": "blender-recipe-decomposer",
+      "type": "fallback",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Recipe split when no viable fallback exists → `../blender-recipe-decomposer/SKILL.md`"
+    },
+    {
+      "from": "asset-library-organization-planner",
+      "to": "blender-asset-discovery-planner",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* External asset sourcing into this library → `../blender-asset-discovery-planner/SKILL.md`"
+    },
+    {
+      "from": "asset-library-organization-planner",
+      "to": "asset-license-checker",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* License verification (license file next to asset; unlicensed old assets to Quarantine) → `../asset-license-checker/SKILL.md`"
+    },
+    {
+      "from": "asset-library-organization-planner",
+      "to": "asset-style-consistency-checker",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Visual style consistency checks → `../asset-style-consistency-checker/SKILL.md`"
+    },
+    {
+      "from": "asset-library-organization-planner",
+      "to": "asset-fallback-strategy",
+      "type": "fallback",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Consuming this library as fastest fallback source → `../asset-fallback-strategy/SKILL.md`"
+    },
+    {
+      "from": "asset-library-organization-planner",
+      "to": "glb-mobile-performance-budget",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* File size and asset/polygon count pressure → `../glb-mobile-performance-budget/SKILL.md`"
+    },
+    {
+      "from": "asset-license-checker",
+      "to": "blender-asset-discovery-planner",
+      "type": "upstream_reference",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Upstream asset sourcing → `../blender-asset-discovery-planner/SKILL.md` (provides the external asset list to check)."
+    },
+    {
+      "from": "asset-license-checker",
+      "to": "asset-style-consistency-checker",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Visual style validation → `../asset-style-consistency-checker/SKILL.md` (checks visual style after license gate passes)."
+    },
+    {
+      "from": "asset-license-checker",
+      "to": "asset-fallback-strategy",
+      "type": "fallback",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Rejected/blocked asset handling → `../asset-fallback-strategy/SKILL.md` (handles assets flagged `Fail`)."
+    },
+    {
+      "from": "asset-license-checker",
+      "to": "asset-library-organization-planner",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Asset library organization → `../asset-library-organization-planner/SKILL.md` (organizes approved assets)."
+    },
+    {
+      "from": "asset-license-checker",
+      "to": "workflow-stage-router",
+      "type": "alternative",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Stage routing & scene planning gate → `../workflow-stage-router/SKILL.md` (proceeds to scene planners only when all assets are `Pass` or explicitly accepted `Warn`)."
+    },
+    {
+      "from": "asset-style-consistency-checker",
+      "to": "blender-asset-discovery-planner",
+      "type": "upstream_reference",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Upstream discovery → `../blender-asset-discovery-planner/SKILL.md` (sources the candidate asset list)"
+    },
+    {
+      "from": "asset-style-consistency-checker",
+      "to": "asset-license-checker",
+      "type": "upstream_reference",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Upstream license gate → `../asset-license-checker/SKILL.md` (must clear licenses before this skill runs)"
+    },
+    {
+      "from": "asset-style-consistency-checker",
+      "to": "intent-to-3d-brief-writer",
+      "type": "upstream_reference",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Upstream brief lock → `../intent-to-3d-brief-writer/SKILL.md` (locks style baseline if brief is ambiguous)"
+    },
+    {
+      "from": "asset-style-consistency-checker",
+      "to": "blender-scope-boundary-enforcer",
+      "type": "boundary_delegation",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Scope enforcement → `../blender-scope-boundary-enforcer/SKILL.md` (handles mid-scene style changes)"
+    },
+    {
+      "from": "asset-style-consistency-checker",
+      "to": "asset-fallback-strategy",
+      "type": "fallback",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Rejected asset fallback → `../asset-fallback-strategy/SKILL.md` (handles `Fail` assets needing replacement/drop)"
+    },
+    {
+      "from": "asset-style-consistency-checker",
+      "to": "asset-library-organization-planner",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Approved asset organization → `../asset-library-organization-planner/SKILL.md` (organizes `Pass` assets)"
+    },
+    {
+      "from": "asset-style-consistency-checker",
+      "to": "blender-scene-quality-checker",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Broad scene review → `../blender-scene-quality-checker/SKILL.md` (consumes the 4-axis style rows during scene review)"
+    },
+    {
+      "from": "asset-style-consistency-checker",
+      "to": "material-quality-checker",
+      "type": "boundary_delegation",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Material & lookdev boundary → `../material-quality-checker/SKILL.md` and `../blender-lighting-material-planner/SKILL.md` (handles shader quality and lookdev planning; do not perform here)"
+    },
+    {
+      "from": "asset-style-consistency-checker",
+      "to": "blender-lighting-material-planner",
+      "type": "boundary_delegation",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Material & lookdev boundary → `../material-quality-checker/SKILL.md` and `../blender-lighting-material-planner/SKILL.md` (handles shader quality and lookdev planning; do not perform here)"
+    },
+    {
+      "from": "asset-style-consistency-checker",
+      "to": "polycount-budget-checker",
+      "type": "boundary_delegation",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Budget & topology boundary → `../polycount-budget-checker/SKILL.md` (handles geometry budgets; do not perform here)"
+    },
+    {
+      "from": "blender-asset-discovery-planner",
+      "to": "intent-to-3d-brief-writer",
+      "type": "upstream_reference",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- **Before this skill**: `intent-to-3d-brief-writer` supplies the locked 8-slot brief."
+    },
+    {
+      "from": "blender-asset-discovery-planner",
+      "to": "product-hero-scene-planner",
+      "type": "alternative",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- **Scene planners (primary handoff with brief + asset plan)**: `product-hero-scene-planner`, `character-portrait-scene-planner`, `environment-establishing-shot-planner`, `interior-architectural-scene-planner`, or `product-grid-scene-planner`."
+    },
+    {
+      "from": "blender-asset-discovery-planner",
+      "to": "character-portrait-scene-planner",
+      "type": "alternative",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- **Scene planners (primary handoff with brief + asset plan)**: `product-hero-scene-planner`, `character-portrait-scene-planner`, `environment-establishing-shot-planner`, `interior-architectural-scene-planner`, or `product-grid-scene-planner`."
+    },
+    {
+      "from": "blender-asset-discovery-planner",
+      "to": "environment-establishing-shot-planner",
+      "type": "alternative",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- **Scene planners (primary handoff with brief + asset plan)**: `product-hero-scene-planner`, `character-portrait-scene-planner`, `environment-establishing-shot-planner`, `interior-architectural-scene-planner`, or `product-grid-scene-planner`."
+    },
+    {
+      "from": "blender-asset-discovery-planner",
+      "to": "interior-architectural-scene-planner",
+      "type": "alternative",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- **Scene planners (primary handoff with brief + asset plan)**: `product-hero-scene-planner`, `character-portrait-scene-planner`, `environment-establishing-shot-planner`, `interior-architectural-scene-planner`, or `product-grid-scene-planner`."
+    },
+    {
+      "from": "blender-asset-discovery-planner",
+      "to": "product-grid-scene-planner",
+      "type": "alternative",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- **Scene planners (primary handoff with brief + asset plan)**: `product-hero-scene-planner`, `character-portrait-scene-planner`, `environment-establishing-shot-planner`, `interior-architectural-scene-planner`, or `product-grid-scene-planner`."
+    },
+    {
+      "from": "blender-asset-discovery-planner",
+      "to": "asset-license-checker",
+      "type": "progression",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- **License verdicts**: `asset-license-checker` (this skill surfaces license risk only; verdicts belong to `asset-license-checker`)."
+    },
+    {
+      "from": "blender-asset-discovery-planner",
+      "to": "asset-style-consistency-checker",
+      "type": "retry",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- **Style re-checks**: `asset-style-consistency-checker` to verify visual consistency across mixed asset sources."
+    },
+    {
+      "from": "blender-asset-discovery-planner",
+      "to": "glb-mobile-performance-budget",
+      "type": "progression",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- **Budget reconciliation**: `glb-mobile-performance-budget` (and `polycount-budget-checker`) to validate target size and polygon limits."
+    },
+    {
+      "from": "blender-asset-discovery-planner",
+      "to": "polycount-budget-checker",
+      "type": "progression",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- **Budget reconciliation**: `glb-mobile-performance-budget` (and `polycount-budget-checker`) to validate target size and polygon limits."
+    },
+    {
+      "from": "blender-asset-discovery-planner",
+      "to": "official-runtime-readiness-checker",
+      "type": "conditional",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- **Generative readiness**: `official-runtime-readiness-checker` when a Path 2 `generative` strategy is selected."
+    },
+    {
+      "from": "blender-asset-discovery-planner",
+      "to": "asset-fallback-strategy",
+      "type": "retry",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- **Fallback / constraint updates**: `asset-fallback-strategy` if preferred sources fail, or back to `intent-to-3d-brief-writer` if brief constraints must change."
+    },
+    {
+      "from": "blender-asset-discovery-planner",
+      "to": "intent-to-3d-brief-writer",
+      "type": "retry",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- **Fallback / constraint updates**: `asset-fallback-strategy` if preferred sources fail, or back to `intent-to-3d-brief-writer` if brief constraints must change."
+    },
+    {
+      "from": "blender-brainstorming",
+      "to": "intent-to-3d-brief-writer",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Lock the confirmed brief downstream → `../intent-to-3d-brief-writer/SKILL.md`"
+    },
+    {
+      "from": "blender-brainstorming",
+      "to": "official-runtime-readiness-checker",
+      "type": "conditional",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- User pushes for execution mid-brainstorm → `../official-runtime-readiness-checker/SKILL.md`"
+    },
+    {
+      "from": "blender-brainstorming",
+      "to": "non-blender-user-response-writer",
+      "type": "fallback",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Explain blocked runtime status to user → `../non-blender-user-response-writer/SKILL.md`"
+    },
+    {
+      "from": "blender-checklist-driven-workflow",
+      "to": "blender-brainstorming",
+      "type": "conditional",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Brainstorming → `../blender-brainstorming/SKILL.md` (only if early)"
+    },
+    {
+      "from": "blender-checklist-driven-workflow",
+      "to": "intent-to-3d-brief-writer",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Brief authoring → `../intent-to-3d-brief-writer/SKILL.md`"
+    },
+    {
+      "from": "blender-checklist-driven-workflow",
+      "to": "blender-recipe-decomposer",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Recipe stage decomposition → `../blender-recipe-decomposer/SKILL.md`"
+    },
+    {
+      "from": "blender-checklist-driven-workflow",
+      "to": "acceptance-criteria-builder",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Measurable acceptance rows → `../acceptance-criteria-builder/SKILL.md`"
+    },
+    {
+      "from": "blender-checklist-driven-workflow",
+      "to": "blender-stop-condition-decider",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Overall done condition → `../blender-stop-condition-decider/SKILL.md`"
+    },
+    {
+      "from": "blender-checklist-driven-workflow",
+      "to": "blender-scope-boundary-enforcer",
+      "type": "boundary_delegation",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Scope creep protection → `../blender-scope-boundary-enforcer/SKILL.md`"
+    },
+    {
+      "from": "blender-checklist-driven-workflow",
+      "to": "workflow-stage-router",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Next-skill routing across stages → `../workflow-stage-router/SKILL.md`"
+    },
+    {
+      "from": "blender-checklist-driven-workflow",
+      "to": "blender-asset-discovery-planner",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Asset discovery → `../blender-asset-discovery-planner/SKILL.md`"
+    },
+    {
+      "from": "blender-checklist-driven-workflow",
+      "to": "product-hero-scene-planner",
+      "type": "alternative",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Scene planners → `../product-hero-scene-planner/SKILL.md`, `../product-grid-scene-planner/SKILL.md`, `../character-portrait-scene-planner/SKILL.md`, `../environment-establishing-shot-planner/SKILL.md`, `../interior-architectural-scene-planner/SKILL.md`, `../blender-composition-camera-planner/SKILL.md`, `../blender-lighting-material-planner/SKILL.md`"
+    },
+    {
+      "from": "blender-checklist-driven-workflow",
+      "to": "product-grid-scene-planner",
+      "type": "alternative",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Scene planners → `../product-hero-scene-planner/SKILL.md`, `../product-grid-scene-planner/SKILL.md`, `../character-portrait-scene-planner/SKILL.md`, `../environment-establishing-shot-planner/SKILL.md`, `../interior-architectural-scene-planner/SKILL.md`, `../blender-composition-camera-planner/SKILL.md`, `../blender-lighting-material-planner/SKILL.md`"
+    },
+    {
+      "from": "blender-checklist-driven-workflow",
+      "to": "character-portrait-scene-planner",
+      "type": "alternative",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Scene planners → `../product-hero-scene-planner/SKILL.md`, `../product-grid-scene-planner/SKILL.md`, `../character-portrait-scene-planner/SKILL.md`, `../environment-establishing-shot-planner/SKILL.md`, `../interior-architectural-scene-planner/SKILL.md`, `../blender-composition-camera-planner/SKILL.md`, `../blender-lighting-material-planner/SKILL.md`"
+    },
+    {
+      "from": "blender-checklist-driven-workflow",
+      "to": "environment-establishing-shot-planner",
+      "type": "alternative",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Scene planners → `../product-hero-scene-planner/SKILL.md`, `../product-grid-scene-planner/SKILL.md`, `../character-portrait-scene-planner/SKILL.md`, `../environment-establishing-shot-planner/SKILL.md`, `../interior-architectural-scene-planner/SKILL.md`, `../blender-composition-camera-planner/SKILL.md`, `../blender-lighting-material-planner/SKILL.md`"
+    },
+    {
+      "from": "blender-checklist-driven-workflow",
+      "to": "interior-architectural-scene-planner",
+      "type": "alternative",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Scene planners → `../product-hero-scene-planner/SKILL.md`, `../product-grid-scene-planner/SKILL.md`, `../character-portrait-scene-planner/SKILL.md`, `../environment-establishing-shot-planner/SKILL.md`, `../interior-architectural-scene-planner/SKILL.md`, `../blender-composition-camera-planner/SKILL.md`, `../blender-lighting-material-planner/SKILL.md`"
+    },
+    {
+      "from": "blender-checklist-driven-workflow",
+      "to": "blender-composition-camera-planner",
+      "type": "alternative",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Scene planners → `../product-hero-scene-planner/SKILL.md`, `../product-grid-scene-planner/SKILL.md`, `../character-portrait-scene-planner/SKILL.md`, `../environment-establishing-shot-planner/SKILL.md`, `../interior-architectural-scene-planner/SKILL.md`, `../blender-composition-camera-planner/SKILL.md`, `../blender-lighting-material-planner/SKILL.md`"
+    },
+    {
+      "from": "blender-checklist-driven-workflow",
+      "to": "blender-lighting-material-planner",
+      "type": "alternative",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Scene planners → `../product-hero-scene-planner/SKILL.md`, `../product-grid-scene-planner/SKILL.md`, `../character-portrait-scene-planner/SKILL.md`, `../environment-establishing-shot-planner/SKILL.md`, `../interior-architectural-scene-planner/SKILL.md`, `../blender-composition-camera-planner/SKILL.md`, `../blender-lighting-material-planner/SKILL.md`"
+    },
+    {
+      "from": "blender-checklist-driven-workflow",
+      "to": "blender-scene-quality-checker",
+      "type": "alternative",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Quality validators → `../blender-scene-quality-checker/SKILL.md`, `../material-quality-checker/SKILL.md`, `../lighting-quality-checker/SKILL.md`, `../composition-quality-checker/SKILL.md`, `../polycount-budget-checker/SKILL.md`"
+    },
+    {
+      "from": "blender-checklist-driven-workflow",
+      "to": "material-quality-checker",
+      "type": "alternative",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Quality validators → `../blender-scene-quality-checker/SKILL.md`, `../material-quality-checker/SKILL.md`, `../lighting-quality-checker/SKILL.md`, `../composition-quality-checker/SKILL.md`, `../polycount-budget-checker/SKILL.md`"
+    },
+    {
+      "from": "blender-checklist-driven-workflow",
+      "to": "lighting-quality-checker",
+      "type": "alternative",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Quality validators → `../blender-scene-quality-checker/SKILL.md`, `../material-quality-checker/SKILL.md`, `../lighting-quality-checker/SKILL.md`, `../composition-quality-checker/SKILL.md`, `../polycount-budget-checker/SKILL.md`"
+    },
+    {
+      "from": "blender-checklist-driven-workflow",
+      "to": "composition-quality-checker",
+      "type": "alternative",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Quality validators → `../blender-scene-quality-checker/SKILL.md`, `../material-quality-checker/SKILL.md`, `../lighting-quality-checker/SKILL.md`, `../composition-quality-checker/SKILL.md`, `../polycount-budget-checker/SKILL.md`"
+    },
+    {
+      "from": "blender-checklist-driven-workflow",
+      "to": "polycount-budget-checker",
+      "type": "alternative",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Quality validators → `../blender-scene-quality-checker/SKILL.md`, `../material-quality-checker/SKILL.md`, `../lighting-quality-checker/SKILL.md`, `../composition-quality-checker/SKILL.md`, `../polycount-budget-checker/SKILL.md`"
+    },
+    {
+      "from": "blender-checklist-driven-workflow",
+      "to": "blender-troubleshooting",
+      "type": "retry",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Repeated gate failures → `../blender-troubleshooting/SKILL.md`"
+    },
+    {
+      "from": "blender-checklist-driven-workflow",
+      "to": "pre-handoff-verification",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Final 7-point gate → `../pre-handoff-verification/SKILL.md`"
+    },
+    {
+      "from": "blender-composition-camera-planner",
+      "to": "product-hero-scene-planner",
+      "type": "upstream_reference",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Upstream input from: `product-hero-scene-planner`"
+    },
+    {
+      "from": "blender-composition-camera-planner",
+      "to": "resolution-aspect-decision",
+      "type": "boundary_delegation",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Lateral output specs (if needed): `resolution-aspect-decision` (aspect/resolution locks), `output-format-decision` (file formats)"
+    },
+    {
+      "from": "blender-composition-camera-planner",
+      "to": "output-format-decision",
+      "type": "boundary_delegation",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Lateral output specs (if needed): `resolution-aspect-decision` (aspect/resolution locks), `output-format-decision` (file formats)"
+    },
+    {
+      "from": "blender-composition-camera-planner",
+      "to": "blender-lighting-material-planner",
+      "type": "progression",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Next (lookdev & lighting): `blender-lighting-material-planner`"
+    },
+    {
+      "from": "blender-composition-camera-planner",
+      "to": "composition-quality-checker",
+      "type": "progression",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Then (validation): `composition-quality-checker` and `blender-scene-quality-checker`"
+    },
+    {
+      "from": "blender-composition-camera-planner",
+      "to": "blender-scene-quality-checker",
+      "type": "progression",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Then (validation): `composition-quality-checker` and `blender-scene-quality-checker`"
+    },
+    {
+      "from": "blender-lighting-material-planner",
+      "to": "blender-composition-camera-planner",
+      "type": "upstream_reference",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Upstream input from: `blender-composition-camera-planner` (plus constraints from `cycles-vs-eevee-decision`, `color-management-decision`, `output-format-decision`)"
+    },
+    {
+      "from": "blender-lighting-material-planner",
+      "to": "cycles-vs-eevee-decision",
+      "type": "upstream_reference",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Upstream input from: `blender-composition-camera-planner` (plus constraints from `cycles-vs-eevee-decision`, `color-management-decision`, `output-format-decision`)"
+    },
+    {
+      "from": "blender-lighting-material-planner",
+      "to": "color-management-decision",
+      "type": "upstream_reference",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Upstream input from: `blender-composition-camera-planner` (plus constraints from `cycles-vs-eevee-decision`, `color-management-decision`, `output-format-decision`)"
+    },
+    {
+      "from": "blender-lighting-material-planner",
+      "to": "output-format-decision",
+      "type": "upstream_reference",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Upstream input from: `blender-composition-camera-planner` (plus constraints from `cycles-vs-eevee-decision`, `color-management-decision`, `output-format-decision`)"
+    },
+    {
+      "from": "blender-lighting-material-planner",
+      "to": "lighting-quality-checker",
+      "type": "progression",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Next validation: `lighting-quality-checker` and `material-quality-checker`"
+    },
+    {
+      "from": "blender-lighting-material-planner",
+      "to": "material-quality-checker",
+      "type": "progression",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Next validation: `lighting-quality-checker` and `material-quality-checker`"
+    },
+    {
+      "from": "blender-lighting-material-planner",
+      "to": "blender-scene-quality-checker",
+      "type": "progression",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Then scene check: `blender-scene-quality-checker`"
+    },
+    {
+      "from": "blender-lighting-material-planner",
+      "to": "glb-web-handoff",
+      "type": "progression",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Then delivery: `glb-web-handoff`"
+    },
+    {
+      "from": "blender-recipe-decomposer",
+      "to": "intent-to-3d-brief-writer",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Full brief authoring for each split recipe → `../intent-to-3d-brief-writer/SKILL.md`"
+    },
+    {
+      "from": "blender-recipe-decomposer",
+      "to": "blender-stop-condition-decider",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Pinning formal done conditions per recipe → `../blender-stop-condition-decider/SKILL.md`"
+    },
+    {
+      "from": "blender-recipe-decomposer",
+      "to": "blender-checklist-driven-workflow",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Workflow stage gates per recipe → `../blender-checklist-driven-workflow/SKILL.md`"
+    },
+    {
+      "from": "blender-recipe-decomposer",
+      "to": "blender-scope-boundary-enforcer",
+      "type": "boundary_delegation",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Handling scope added after splitting → `../blender-scope-boundary-enforcer/SKILL.md`"
+    },
+    {
+      "from": "blender-recipe-decomposer",
+      "to": "blender-brainstorming",
+      "type": "conditional",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Pre-decomposition ideation when deliverables are unclear → `../blender-brainstorming/SKILL.md`"
+    },
+    {
+      "from": "blender-scene-quality-checker",
+      "to": "composition-quality-checker",
+      "type": "conditional",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Focused domain validation (if gaps found): `composition-quality-checker`, `lighting-quality-checker`, `material-quality-checker`, `polycount-budget-checker`"
+    },
+    {
+      "from": "blender-scene-quality-checker",
+      "to": "lighting-quality-checker",
+      "type": "conditional",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Focused domain validation (if gaps found): `composition-quality-checker`, `lighting-quality-checker`, `material-quality-checker`, `polycount-budget-checker`"
+    },
+    {
+      "from": "blender-scene-quality-checker",
+      "to": "material-quality-checker",
+      "type": "conditional",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Focused domain validation (if gaps found): `composition-quality-checker`, `lighting-quality-checker`, `material-quality-checker`, `polycount-budget-checker`"
+    },
+    {
+      "from": "blender-scene-quality-checker",
+      "to": "polycount-budget-checker",
+      "type": "conditional",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Focused domain validation (if gaps found): `composition-quality-checker`, `lighting-quality-checker`, `material-quality-checker`, `polycount-budget-checker`"
+    },
+    {
+      "from": "blender-scene-quality-checker",
+      "to": "render-export-evidence",
+      "type": "progression",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Evidence classification: `render-export-evidence`"
+    },
+    {
+      "from": "blender-scene-quality-checker",
+      "to": "pre-handoff-verification",
+      "type": "progression",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Handoff gate: `pre-handoff-verification`"
+    },
+    {
+      "from": "blender-scene-quality-checker",
+      "to": "glb-web-handoff",
+      "type": "alternative",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Web delivery (when applicable): `glb-web-handoff`"
+    },
+    {
+      "from": "blender-scene-quality-checker",
+      "to": "non-blender-user-response-writer",
+      "type": "progression",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Final communication: `non-blender-user-response-writer`"
+    },
+    {
+      "from": "blender-scope-boundary-enforcer",
+      "to": "intent-to-3d-brief-writer",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Original brief → `../intent-to-3d-brief-writer/SKILL.md`"
+    },
+    {
+      "from": "blender-scope-boundary-enforcer",
+      "to": "blender-stop-condition-decider",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Stop condition pinned beforehand / updated on expansion → `../blender-stop-condition-decider/SKILL.md`"
+    },
+    {
+      "from": "blender-scope-boundary-enforcer",
+      "to": "blender-checklist-driven-workflow",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Per-stage gates enforced / updated on expansion → `../blender-checklist-driven-workflow/SKILL.md`"
+    },
+    {
+      "from": "blender-scope-boundary-enforcer",
+      "to": "acceptance-criteria-builder",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Measurable acceptance rows for added scope → `../acceptance-criteria-builder/SKILL.md`"
+    },
+    {
+      "from": "blender-scope-boundary-enforcer",
+      "to": "blender-recipe-decomposer",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Deferred scope split into follow-up recipes → `../blender-recipe-decomposer/SKILL.md`"
+    },
+    {
+      "from": "blender-scope-boundary-enforcer",
+      "to": "pre-handoff-verification",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Delivery gate after scope and gates settle → `../pre-handoff-verification/SKILL.md`"
+    },
+    {
+      "from": "blender-stop-condition-decider",
+      "to": "intent-to-3d-brief-writer",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Intent brief → `../intent-to-3d-brief-writer/SKILL.md`"
+    },
+    {
+      "from": "blender-stop-condition-decider",
+      "to": "blender-recipe-decomposer",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Scope splitting beforehand → `../blender-recipe-decomposer/SKILL.md`"
+    },
+    {
+      "from": "blender-stop-condition-decider",
+      "to": "acceptance-criteria-builder",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Measurable acceptance rows → `../acceptance-criteria-builder/SKILL.md`"
+    },
+    {
+      "from": "blender-stop-condition-decider",
+      "to": "blender-checklist-driven-workflow",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Per-stage workflow gates → `../blender-checklist-driven-workflow/SKILL.md`"
+    },
+    {
+      "from": "blender-stop-condition-decider",
+      "to": "blender-scope-boundary-enforcer",
+      "type": "boundary_delegation",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Mid-flight scope drift → `../blender-scope-boundary-enforcer/SKILL.md`"
+    },
+    {
+      "from": "blender-stop-condition-decider",
+      "to": "render-export-evidence",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Artifact and render evidence → `../render-export-evidence/SKILL.md`"
+    },
+    {
+      "from": "blender-stop-condition-decider",
+      "to": "pre-handoff-verification",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Final pre-handoff gate → `../pre-handoff-verification/SKILL.md`"
+    },
+    {
+      "from": "blender-troubleshooting",
+      "to": "blender-brainstorming",
+      "type": "alternative",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- If divergence at intent → `blender-brainstorming` or `intent-to-3d-brief-writer`"
+    },
+    {
+      "from": "blender-troubleshooting",
+      "to": "intent-to-3d-brief-writer",
+      "type": "alternative",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- If divergence at intent → `blender-brainstorming` or `intent-to-3d-brief-writer`"
+    },
+    {
+      "from": "blender-troubleshooting",
+      "to": "product-hero-scene-planner",
+      "type": "alternative",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- If divergence at planning → hand off to the relevant planner (`product-hero-scene-planner`, `blender-composition-camera-planner`, `blender-lighting-material-planner`, `character-portrait-scene-planner`, `environment-establishing-shot-planner`, `interior-architectural-scene-planner`, or `product-grid-scene-planner`)"
+    },
+    {
+      "from": "blender-troubleshooting",
+      "to": "blender-composition-camera-planner",
+      "type": "alternative",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- If divergence at planning → hand off to the relevant planner (`product-hero-scene-planner`, `blender-composition-camera-planner`, `blender-lighting-material-planner`, `character-portrait-scene-planner`, `environment-establishing-shot-planner`, `interior-architectural-scene-planner`, or `product-grid-scene-planner`)"
+    },
+    {
+      "from": "blender-troubleshooting",
+      "to": "blender-lighting-material-planner",
+      "type": "alternative",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- If divergence at planning → hand off to the relevant planner (`product-hero-scene-planner`, `blender-composition-camera-planner`, `blender-lighting-material-planner`, `character-portrait-scene-planner`, `environment-establishing-shot-planner`, `interior-architectural-scene-planner`, or `product-grid-scene-planner`)"
+    },
+    {
+      "from": "blender-troubleshooting",
+      "to": "character-portrait-scene-planner",
+      "type": "alternative",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- If divergence at planning → hand off to the relevant planner (`product-hero-scene-planner`, `blender-composition-camera-planner`, `blender-lighting-material-planner`, `character-portrait-scene-planner`, `environment-establishing-shot-planner`, `interior-architectural-scene-planner`, or `product-grid-scene-planner`)"
+    },
+    {
+      "from": "blender-troubleshooting",
+      "to": "environment-establishing-shot-planner",
+      "type": "alternative",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- If divergence at planning → hand off to the relevant planner (`product-hero-scene-planner`, `blender-composition-camera-planner`, `blender-lighting-material-planner`, `character-portrait-scene-planner`, `environment-establishing-shot-planner`, `interior-architectural-scene-planner`, or `product-grid-scene-planner`)"
+    },
+    {
+      "from": "blender-troubleshooting",
+      "to": "interior-architectural-scene-planner",
+      "type": "alternative",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- If divergence at planning → hand off to the relevant planner (`product-hero-scene-planner`, `blender-composition-camera-planner`, `blender-lighting-material-planner`, `character-portrait-scene-planner`, `environment-establishing-shot-planner`, `interior-architectural-scene-planner`, or `product-grid-scene-planner`)"
+    },
+    {
+      "from": "blender-troubleshooting",
+      "to": "product-grid-scene-planner",
+      "type": "alternative",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- If divergence at planning → hand off to the relevant planner (`product-hero-scene-planner`, `blender-composition-camera-planner`, `blender-lighting-material-planner`, `character-portrait-scene-planner`, `environment-establishing-shot-planner`, `interior-architectural-scene-planner`, or `product-grid-scene-planner`)"
+    },
+    {
+      "from": "blender-troubleshooting",
+      "to": "official-runtime-readiness-checker",
+      "type": "fallback",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- If divergence at execution → `official-runtime-readiness-checker`, `runtime-bridge-conflict-resolver`, or `runtime-path-picker`"
+    },
+    {
+      "from": "blender-troubleshooting",
+      "to": "runtime-bridge-conflict-resolver",
+      "type": "fallback",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- If divergence at execution → `official-runtime-readiness-checker`, `runtime-bridge-conflict-resolver`, or `runtime-path-picker`"
+    },
+    {
+      "from": "blender-troubleshooting",
+      "to": "runtime-path-picker",
+      "type": "fallback",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- If divergence at execution → `official-runtime-readiness-checker`, `runtime-bridge-conflict-resolver`, or `runtime-path-picker`"
+    },
+    {
+      "from": "blender-troubleshooting",
+      "to": "render-export-evidence",
+      "type": "alternative",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- If divergence at output → `render-export-evidence`, `glb-web-handoff`, or `glb-animation-handoff`"
+    },
+    {
+      "from": "blender-troubleshooting",
+      "to": "glb-web-handoff",
+      "type": "alternative",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- If divergence at output → `render-export-evidence`, `glb-web-handoff`, or `glb-animation-handoff`"
+    },
+    {
+      "from": "blender-troubleshooting",
+      "to": "glb-animation-handoff",
+      "type": "alternative",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- If divergence at output → `render-export-evidence`, `glb-web-handoff`, or `glb-animation-handoff`"
+    },
+    {
+      "from": "blender-troubleshooting",
+      "to": "non-blender-user-response-writer",
+      "type": "conditional",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- If divergence at response → `non-blender-user-response-writer`"
+    },
+    {
+      "from": "blendops-help",
+      "to": "workflow-stage-router",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- In-flight workflow routing (clear goal + existing artifacts) → `../workflow-stage-router/SKILL.md`"
+    },
+    {
+      "from": "blendops-help",
+      "to": "pre-handoff-verification",
+      "type": "fallback",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Failed workflow gate / pre-handoff check → `../pre-handoff-verification/SKILL.md`"
+    },
+    {
+      "from": "blendops-help",
+      "to": "intent-to-3d-brief-writer",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Initial 3D brief creation → `../intent-to-3d-brief-writer/SKILL.md`"
+    },
+    {
+      "from": "blendops-help",
+      "to": "runtime-path-picker",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Runtime path selection → `../runtime-path-picker/SKILL.md`"
+    },
+    {
+      "from": "blendops-help",
+      "to": "official-runtime-setup-guide",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Official runtime setup → `../official-runtime-setup-guide/SKILL.md`"
+    },
+    {
+      "from": "blendops-help",
+      "to": "official-runtime-readiness-checker",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Runtime readiness preflight → `../official-runtime-readiness-checker/SKILL.md`"
+    },
+    {
+      "from": "blendops-help",
+      "to": "runtime-bridge-conflict-resolver",
+      "type": "fallback",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- MCP bridge port/session conflict → `../runtime-bridge-conflict-resolver/SKILL.md`"
+    },
+    {
+      "from": "blendops-help",
+      "to": "product-hero-scene-planner",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Scene planning → `../product-hero-scene-planner/SKILL.md`"
+    },
+    {
+      "from": "blendops-help",
+      "to": "render-export-evidence",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Render/export evidence → `../render-export-evidence/SKILL.md`"
+    },
+    {
+      "from": "blendops-help",
+      "to": "glb-web-handoff",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- GLB handoff → `../glb-web-handoff/SKILL.md`"
+    },
+    {
+      "from": "blendops-help",
+      "to": "non-blender-user-response-writer",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Final response → `../non-blender-user-response-writer/SKILL.md`"
+    },
+    {
+      "from": "character-portrait-scene-planner",
+      "to": "intent-to-3d-brief-writer",
+      "type": "upstream_reference",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Upstream brief → `../intent-to-3d-brief-writer/SKILL.md`"
+    },
+    {
+      "from": "character-portrait-scene-planner",
+      "to": "blender-composition-camera-planner",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Framing deep-dive → `../blender-composition-camera-planner/SKILL.md`"
+    },
+    {
+      "from": "character-portrait-scene-planner",
+      "to": "blender-lighting-material-planner",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Lookdev deep-dive → `../blender-lighting-material-planner/SKILL.md`"
+    },
+    {
+      "from": "character-portrait-scene-planner",
+      "to": "blender-asset-discovery-planner",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Asset discovery → `../blender-asset-discovery-planner/SKILL.md`"
+    },
+    {
+      "from": "character-portrait-scene-planner",
+      "to": "composition-quality-checker",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Composition validation → `../composition-quality-checker/SKILL.md`"
+    },
+    {
+      "from": "character-portrait-scene-planner",
+      "to": "lighting-quality-checker",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Lighting validation → `../lighting-quality-checker/SKILL.md`"
+    },
+    {
+      "from": "character-portrait-scene-planner",
+      "to": "blender-scene-quality-checker",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Scene quality validation → `../blender-scene-quality-checker/SKILL.md`"
+    },
+    {
+      "from": "cli-appendix-job-outline",
+      "to": "runtime-path-picker",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Pick MCP vs CLI → `../runtime-path-picker/SKILL.md`"
+    },
+    {
+      "from": "cli-appendix-job-outline",
+      "to": "path-one-host-outline",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Interactive MCP host outline → `../path-one-host-outline/SKILL.md`"
+    },
+    {
+      "from": "cli-appendix-job-outline",
+      "to": "output-format-decision",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Export format choices → `../output-format-decision/SKILL.md`"
+    },
+    {
+      "from": "cli-appendix-job-outline",
+      "to": "render-export-evidence",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Actual CLI output evidence recording → `../render-export-evidence/SKILL.md`"
+    },
+    {
+      "from": "cli-appendix-job-outline",
+      "to": "runtime-attempt-report-writer",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Runtime attempt reporting → `../runtime-attempt-report-writer/SKILL.md`"
+    },
+    {
+      "from": "color-management-decision",
+      "to": "output-format-decision",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Output format selection → `../output-format-decision/SKILL.md` (owns file formats and bit depths)"
+    },
+    {
+      "from": "color-management-decision",
+      "to": "material-quality-checker",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Material texture color spaces → `../material-quality-checker/SKILL.md` (validates per-material sRGB vs Linear/Non-Color texture inputs)"
+    },
+    {
+      "from": "color-management-decision",
+      "to": "cycles-vs-eevee-decision",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Render engine choice → `../cycles-vs-eevee-decision/SKILL.md` (owns Cycles vs EEVEE selection)"
+    },
+    {
+      "from": "color-management-decision",
+      "to": "glb-web-handoff",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- GLB Three.js delivery → `../glb-web-handoff/SKILL.md` (aligns exported GLB with Three.js renderer color settings)"
+    },
+    {
+      "from": "color-management-decision",
+      "to": "render-export-evidence",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Render evidence verification → `../render-export-evidence/SKILL.md` (verifies actual rendered artifacts after operator execution)"
+    },
+    {
+      "from": "composition-quality-checker",
+      "to": "blender-scene-quality-checker",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Broad scene readiness review (consumes these rows) → `../blender-scene-quality-checker/SKILL.md`"
+    },
+    {
+      "from": "composition-quality-checker",
+      "to": "blender-composition-camera-planner",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Camera & framing re-plan → `../blender-composition-camera-planner/SKILL.md`"
+    },
+    {
+      "from": "composition-quality-checker",
+      "to": "resolution-aspect-decision",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Aspect ratio & resolution locks → `../resolution-aspect-decision/SKILL.md`"
+    },
+    {
+      "from": "composition-quality-checker",
+      "to": "render-export-evidence",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Artifact evidence classification → `../render-export-evidence/SKILL.md`"
+    },
+    {
+      "from": "composition-quality-checker",
+      "to": "material-quality-checker",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Material validation → `../material-quality-checker/SKILL.md`"
+    },
+    {
+      "from": "composition-quality-checker",
+      "to": "lighting-quality-checker",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Lighting validation → `../lighting-quality-checker/SKILL.md`"
+    },
+    {
+      "from": "cycles-vs-eevee-decision",
+      "to": "blender-lighting-material-planner",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Lighting and material setup aligned with engine choice → `../blender-lighting-material-planner/SKILL.md`"
+    },
+    {
+      "from": "cycles-vs-eevee-decision",
+      "to": "color-management-decision",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Color configuration decision → `../color-management-decision/SKILL.md`"
+    },
+    {
+      "from": "cycles-vs-eevee-decision",
+      "to": "output-format-decision",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Output container / codec decision → `../output-format-decision/SKILL.md`"
+    },
+    {
+      "from": "cycles-vs-eevee-decision",
+      "to": "resolution-aspect-decision",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Render resolution and aspect ratio decision → `../resolution-aspect-decision/SKILL.md`"
+    },
+    {
+      "from": "cycles-vs-eevee-decision",
+      "to": "render-export-evidence",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Post-render output verification → `../render-export-evidence/SKILL.md`"
+    },
+    {
+      "from": "environment-establishing-shot-planner",
+      "to": "intent-to-3d-brief-writer",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Brief writer → `../intent-to-3d-brief-writer/SKILL.md`"
+    },
+    {
+      "from": "environment-establishing-shot-planner",
+      "to": "blender-asset-discovery-planner",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Asset discovery → `../blender-asset-discovery-planner/SKILL.md`"
+    },
+    {
+      "from": "environment-establishing-shot-planner",
+      "to": "composition-quality-checker",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Composition validation → `../composition-quality-checker/SKILL.md`"
+    },
+    {
+      "from": "environment-establishing-shot-planner",
+      "to": "lighting-quality-checker",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Lighting validation → `../lighting-quality-checker/SKILL.md`"
+    },
+    {
+      "from": "environment-establishing-shot-planner",
+      "to": "blender-scene-quality-checker",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Quality readiness → `../blender-scene-quality-checker/SKILL.md`"
+    },
+    {
+      "from": "glb-animation-handoff",
+      "to": "product-hero-scene-planner",
+      "type": "alternative",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Missing clip list / scene plan → `../product-hero-scene-planner/SKILL.md`, `../character-portrait-scene-planner/SKILL.md`, `../environment-establishing-shot-planner/SKILL.md`, `../interior-architectural-scene-planner/SKILL.md`, or `../product-grid-scene-planner/SKILL.md` (owns scene planning and clip list definition)"
+    },
+    {
+      "from": "glb-animation-handoff",
+      "to": "character-portrait-scene-planner",
+      "type": "alternative",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Missing clip list / scene plan → `../product-hero-scene-planner/SKILL.md`, `../character-portrait-scene-planner/SKILL.md`, `../environment-establishing-shot-planner/SKILL.md`, `../interior-architectural-scene-planner/SKILL.md`, or `../product-grid-scene-planner/SKILL.md` (owns scene planning and clip list definition)"
+    },
+    {
+      "from": "glb-animation-handoff",
+      "to": "environment-establishing-shot-planner",
+      "type": "alternative",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Missing clip list / scene plan → `../product-hero-scene-planner/SKILL.md`, `../character-portrait-scene-planner/SKILL.md`, `../environment-establishing-shot-planner/SKILL.md`, `../interior-architectural-scene-planner/SKILL.md`, or `../product-grid-scene-planner/SKILL.md` (owns scene planning and clip list definition)"
+    },
+    {
+      "from": "glb-animation-handoff",
+      "to": "interior-architectural-scene-planner",
+      "type": "alternative",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Missing clip list / scene plan → `../product-hero-scene-planner/SKILL.md`, `../character-portrait-scene-planner/SKILL.md`, `../environment-establishing-shot-planner/SKILL.md`, `../interior-architectural-scene-planner/SKILL.md`, or `../product-grid-scene-planner/SKILL.md` (owns scene planning and clip list definition)"
+    },
+    {
+      "from": "glb-animation-handoff",
+      "to": "product-grid-scene-planner",
+      "type": "alternative",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Missing clip list / scene plan → `../product-hero-scene-planner/SKILL.md`, `../character-portrait-scene-planner/SKILL.md`, `../environment-establishing-shot-planner/SKILL.md`, `../interior-architectural-scene-planner/SKILL.md`, or `../product-grid-scene-planner/SKILL.md` (owns scene planning and clip list definition)"
+    },
+    {
+      "from": "glb-animation-handoff",
+      "to": "glb-mobile-performance-budget",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Channel, bone, and morph ceilings → `../glb-mobile-performance-budget/SKILL.md` (pins animation channel, bone, and morph ceilings)"
+    },
+    {
+      "from": "glb-animation-handoff",
+      "to": "render-export-evidence",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Export verification → `../render-export-evidence/SKILL.md` (verifies exported GLB artifacts)"
+    },
+    {
+      "from": "glb-animation-handoff",
+      "to": "glb-web-handoff",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Web delivery handoff → `../glb-web-handoff/SKILL.md` (owns web delivery package)"
+    },
+    {
+      "from": "glb-animation-handoff",
+      "to": "three-fiber-component-shape-planner",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* React Three Fiber component shape → `../three-fiber-component-shape-planner/SKILL.md` (owns R3F component structure)"
+    },
+    {
+      "from": "glb-animation-handoff",
+      "to": "non-blender-user-response-writer",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Final user-facing wording → `../non-blender-user-response-writer/SKILL.md` (owns plain-language final response)"
+    },
+    {
+      "from": "glb-mobile-performance-budget",
+      "to": "product-hero-scene-planner",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Scene planning (consumes pinned budget) → `../product-hero-scene-planner/SKILL.md`, `../character-portrait-scene-planner/SKILL.md`, `../environment-establishing-shot-planner/SKILL.md`, `../interior-architectural-scene-planner/SKILL.md`, `../product-grid-scene-planner/SKILL.md`, `../blender-composition-camera-planner/SKILL.md`, `../blender-lighting-material-planner/SKILL.md`"
+    },
+    {
+      "from": "glb-mobile-performance-budget",
+      "to": "character-portrait-scene-planner",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Scene planning (consumes pinned budget) → `../product-hero-scene-planner/SKILL.md`, `../character-portrait-scene-planner/SKILL.md`, `../environment-establishing-shot-planner/SKILL.md`, `../interior-architectural-scene-planner/SKILL.md`, `../product-grid-scene-planner/SKILL.md`, `../blender-composition-camera-planner/SKILL.md`, `../blender-lighting-material-planner/SKILL.md`"
+    },
+    {
+      "from": "glb-mobile-performance-budget",
+      "to": "environment-establishing-shot-planner",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Scene planning (consumes pinned budget) → `../product-hero-scene-planner/SKILL.md`, `../character-portrait-scene-planner/SKILL.md`, `../environment-establishing-shot-planner/SKILL.md`, `../interior-architectural-scene-planner/SKILL.md`, `../product-grid-scene-planner/SKILL.md`, `../blender-composition-camera-planner/SKILL.md`, `../blender-lighting-material-planner/SKILL.md`"
+    },
+    {
+      "from": "glb-mobile-performance-budget",
+      "to": "interior-architectural-scene-planner",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Scene planning (consumes pinned budget) → `../product-hero-scene-planner/SKILL.md`, `../character-portrait-scene-planner/SKILL.md`, `../environment-establishing-shot-planner/SKILL.md`, `../interior-architectural-scene-planner/SKILL.md`, `../product-grid-scene-planner/SKILL.md`, `../blender-composition-camera-planner/SKILL.md`, `../blender-lighting-material-planner/SKILL.md`"
+    },
+    {
+      "from": "glb-mobile-performance-budget",
+      "to": "product-grid-scene-planner",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Scene planning (consumes pinned budget) → `../product-hero-scene-planner/SKILL.md`, `../character-portrait-scene-planner/SKILL.md`, `../environment-establishing-shot-planner/SKILL.md`, `../interior-architectural-scene-planner/SKILL.md`, `../product-grid-scene-planner/SKILL.md`, `../blender-composition-camera-planner/SKILL.md`, `../blender-lighting-material-planner/SKILL.md`"
+    },
+    {
+      "from": "glb-mobile-performance-budget",
+      "to": "blender-composition-camera-planner",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Scene planning (consumes pinned budget) → `../product-hero-scene-planner/SKILL.md`, `../character-portrait-scene-planner/SKILL.md`, `../environment-establishing-shot-planner/SKILL.md`, `../interior-architectural-scene-planner/SKILL.md`, `../product-grid-scene-planner/SKILL.md`, `../blender-composition-camera-planner/SKILL.md`, `../blender-lighting-material-planner/SKILL.md`"
+    },
+    {
+      "from": "glb-mobile-performance-budget",
+      "to": "blender-lighting-material-planner",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Scene planning (consumes pinned budget) → `../product-hero-scene-planner/SKILL.md`, `../character-portrait-scene-planner/SKILL.md`, `../environment-establishing-shot-planner/SKILL.md`, `../interior-architectural-scene-planner/SKILL.md`, `../product-grid-scene-planner/SKILL.md`, `../blender-composition-camera-planner/SKILL.md`, `../blender-lighting-material-planner/SKILL.md`"
+    },
+    {
+      "from": "glb-mobile-performance-budget",
+      "to": "polycount-budget-checker",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Count and texture budget validation → `../polycount-budget-checker/SKILL.md`, `../material-quality-checker/SKILL.md`, `../blender-scene-quality-checker/SKILL.md`"
+    },
+    {
+      "from": "glb-mobile-performance-budget",
+      "to": "material-quality-checker",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Count and texture budget validation → `../polycount-budget-checker/SKILL.md`, `../material-quality-checker/SKILL.md`, `../blender-scene-quality-checker/SKILL.md`"
+    },
+    {
+      "from": "glb-mobile-performance-budget",
+      "to": "blender-scene-quality-checker",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Count and texture budget validation → `../polycount-budget-checker/SKILL.md`, `../material-quality-checker/SKILL.md`, `../blender-scene-quality-checker/SKILL.md`"
+    },
+    {
+      "from": "glb-mobile-performance-budget",
+      "to": "render-export-evidence",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Measured export compliance → `../render-export-evidence/SKILL.md`"
+    },
+    {
+      "from": "glb-mobile-performance-budget",
+      "to": "glb-web-handoff",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Web delivery handoff (consumes pinned budget) → `../glb-web-handoff/SKILL.md`"
+    },
+    {
+      "from": "glb-mobile-performance-budget",
+      "to": "glb-animation-handoff",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Animation contracts (owns animation contract details within pinned channel/bone/morph ceilings) → `../glb-animation-handoff/SKILL.md`"
+    },
+    {
+      "from": "glb-web-handoff",
+      "to": "blender-scene-quality-checker",
+      "type": "upstream_reference",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Upstream scene readiness validation: `blender-scene-quality-checker`"
+    },
+    {
+      "from": "glb-web-handoff",
+      "to": "render-export-evidence",
+      "type": "upstream_reference",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Upstream artifact evidence classification: `render-export-evidence`"
+    },
+    {
+      "from": "glb-web-handoff",
+      "to": "glb-mobile-performance-budget",
+      "type": "progression",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Mobile and file-size budget constraints: `glb-mobile-performance-budget`"
+    },
+    {
+      "from": "glb-web-handoff",
+      "to": "glb-animation-handoff",
+      "type": "progression",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Animation playback and rig handoff contracts: `glb-animation-handoff`"
+    },
+    {
+      "from": "glb-web-handoff",
+      "to": "non-blender-user-response-writer",
+      "type": "progression",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Final user-facing response wording: `non-blender-user-response-writer`"
+    },
+    {
+      "from": "intent-to-3d-brief-writer",
+      "to": "blender-brainstorming",
+      "type": "progression",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Preceding step: `blender-brainstorming` confirms user intent before brief writing."
+    },
+    {
+      "from": "intent-to-3d-brief-writer",
+      "to": "product-hero-scene-planner",
+      "type": "alternative",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Consuming skills: hand off to relevant scene planners (`product-hero-scene-planner`, `blender-composition-camera-planner`, `blender-lighting-material-planner`) and `acceptance-criteria-builder` (which consumes brief rows)."
+    },
+    {
+      "from": "intent-to-3d-brief-writer",
+      "to": "blender-composition-camera-planner",
+      "type": "alternative",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Consuming skills: hand off to relevant scene planners (`product-hero-scene-planner`, `blender-composition-camera-planner`, `blender-lighting-material-planner`) and `acceptance-criteria-builder` (which consumes brief rows)."
+    },
+    {
+      "from": "intent-to-3d-brief-writer",
+      "to": "blender-lighting-material-planner",
+      "type": "alternative",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Consuming skills: hand off to relevant scene planners (`product-hero-scene-planner`, `blender-composition-camera-planner`, `blender-lighting-material-planner`) and `acceptance-criteria-builder` (which consumes brief rows)."
+    },
+    {
+      "from": "intent-to-3d-brief-writer",
+      "to": "acceptance-criteria-builder",
+      "type": "alternative",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Consuming skills: hand off to relevant scene planners (`product-hero-scene-planner`, `blender-composition-camera-planner`, `blender-lighting-material-planner`) and `acceptance-criteria-builder` (which consumes brief rows)."
+    },
+    {
+      "from": "intent-to-3d-brief-writer",
+      "to": "official-runtime-readiness-checker",
+      "type": "conditional",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- If execution is requested: route to `official-runtime-readiness-checker`."
+    },
+    {
+      "from": "intent-to-3d-brief-writer",
+      "to": "blender-troubleshooting",
+      "type": "fallback",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- If mid-execution re-briefing occurs: route to `blender-troubleshooting`."
+    },
+    {
+      "from": "intent-to-3d-brief-writer",
+      "to": "blender-brainstorming",
+      "type": "retry",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- If brief reveals intent ambiguity: route back to `blender-brainstorming`."
+    },
+    {
+      "from": "interior-architectural-scene-planner",
+      "to": "intent-to-3d-brief-writer",
+      "type": "upstream_reference",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Upstream brief → `../intent-to-3d-brief-writer/SKILL.md`"
+    },
+    {
+      "from": "interior-architectural-scene-planner",
+      "to": "environment-establishing-shot-planner",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Outdoor / wide establishing shot redirect → `../environment-establishing-shot-planner/SKILL.md`"
+    },
+    {
+      "from": "interior-architectural-scene-planner",
+      "to": "product-hero-scene-planner",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Single hero product redirect → `../product-hero-scene-planner/SKILL.md`"
+    },
+    {
+      "from": "interior-architectural-scene-planner",
+      "to": "character-portrait-scene-planner",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Single character portrait redirect → `../character-portrait-scene-planner/SKILL.md`"
+    },
+    {
+      "from": "interior-architectural-scene-planner",
+      "to": "blender-asset-discovery-planner",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Asset discovery → `../blender-asset-discovery-planner/SKILL.md`"
+    },
+    {
+      "from": "interior-architectural-scene-planner",
+      "to": "glb-mobile-performance-budget",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Performance / polycount budget → `../glb-mobile-performance-budget/SKILL.md`"
+    },
+    {
+      "from": "interior-architectural-scene-planner",
+      "to": "asset-style-consistency-checker",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Style consistency check → `../asset-style-consistency-checker/SKILL.md`"
+    },
+    {
+      "from": "interior-architectural-scene-planner",
+      "to": "composition-quality-checker",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Composition validation → `../composition-quality-checker/SKILL.md`"
+    },
+    {
+      "from": "interior-architectural-scene-planner",
+      "to": "lighting-quality-checker",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Lighting validation → `../lighting-quality-checker/SKILL.md`"
+    },
+    {
+      "from": "interior-architectural-scene-planner",
+      "to": "material-quality-checker",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Material validation → `../material-quality-checker/SKILL.md`"
+    },
+    {
+      "from": "interior-architectural-scene-planner",
+      "to": "blender-scene-quality-checker",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Scene quality validation → `../blender-scene-quality-checker/SKILL.md`"
+    },
+    {
+      "from": "lighting-quality-checker",
+      "to": "blender-scene-quality-checker",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Broad readiness review → `../blender-scene-quality-checker/SKILL.md`"
+    },
+    {
+      "from": "lighting-quality-checker",
+      "to": "material-quality-checker",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Material validation → `../material-quality-checker/SKILL.md`"
+    },
+    {
+      "from": "lighting-quality-checker",
+      "to": "composition-quality-checker",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Composition validation → `../composition-quality-checker/SKILL.md`"
+    },
+    {
+      "from": "lighting-quality-checker",
+      "to": "blender-lighting-material-planner",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Lighting re-plan → `../blender-lighting-material-planner/SKILL.md`"
+    },
+    {
+      "from": "lighting-quality-checker",
+      "to": "render-export-evidence",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Render evidence → `../render-export-evidence/SKILL.md`"
+    },
+    {
+      "from": "material-quality-checker",
+      "to": "blender-lighting-material-planner",
+      "type": "upstream_reference",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Upstream lookdev & material planning → `../blender-lighting-material-planner/SKILL.md`"
+    },
+    {
+      "from": "material-quality-checker",
+      "to": "glb-mobile-performance-budget",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Mobile/web texture budget definition → `../glb-mobile-performance-budget/SKILL.md`"
+    },
+    {
+      "from": "material-quality-checker",
+      "to": "blender-scene-quality-checker",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Broad readiness review → `../blender-scene-quality-checker/SKILL.md`"
+    },
+    {
+      "from": "material-quality-checker",
+      "to": "lighting-quality-checker",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Lighting validation → `../lighting-quality-checker/SKILL.md`"
+    },
+    {
+      "from": "material-quality-checker",
+      "to": "composition-quality-checker",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Composition validation → `../composition-quality-checker/SKILL.md`"
+    },
+    {
+      "from": "material-quality-checker",
+      "to": "polycount-budget-checker",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Polycount budget → `../polycount-budget-checker/SKILL.md`"
+    },
+    {
+      "from": "material-quality-checker",
+      "to": "render-export-evidence",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Render / GLB export evidence → `../render-export-evidence/SKILL.md`"
+    },
+    {
+      "from": "material-quality-checker",
+      "to": "glb-web-handoff",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Web handoff → `../glb-web-handoff/SKILL.md`"
+    },
+    {
+      "from": "non-blender-user-response-writer",
+      "to": "render-export-evidence",
+      "type": "upstream_reference",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Upstream artifact evidence classification: `render-export-evidence`"
+    },
+    {
+      "from": "non-blender-user-response-writer",
+      "to": "blender-scene-quality-checker",
+      "type": "upstream_reference",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Upstream quality pass/warn/fail validation: `blender-scene-quality-checker`, `material-quality-checker`, `lighting-quality-checker`, `composition-quality-checker`, `polycount-budget-checker`"
+    },
+    {
+      "from": "non-blender-user-response-writer",
+      "to": "material-quality-checker",
+      "type": "upstream_reference",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Upstream quality pass/warn/fail validation: `blender-scene-quality-checker`, `material-quality-checker`, `lighting-quality-checker`, `composition-quality-checker`, `polycount-budget-checker`"
+    },
+    {
+      "from": "non-blender-user-response-writer",
+      "to": "lighting-quality-checker",
+      "type": "upstream_reference",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Upstream quality pass/warn/fail validation: `blender-scene-quality-checker`, `material-quality-checker`, `lighting-quality-checker`, `composition-quality-checker`, `polycount-budget-checker`"
+    },
+    {
+      "from": "non-blender-user-response-writer",
+      "to": "composition-quality-checker",
+      "type": "upstream_reference",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Upstream quality pass/warn/fail validation: `blender-scene-quality-checker`, `material-quality-checker`, `lighting-quality-checker`, `composition-quality-checker`, `polycount-budget-checker`"
+    },
+    {
+      "from": "non-blender-user-response-writer",
+      "to": "polycount-budget-checker",
+      "type": "upstream_reference",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Upstream quality pass/warn/fail validation: `blender-scene-quality-checker`, `material-quality-checker`, `lighting-quality-checker`, `composition-quality-checker`, `polycount-budget-checker`"
+    },
+    {
+      "from": "non-blender-user-response-writer",
+      "to": "glb-web-handoff",
+      "type": "upstream_reference",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Upstream GLB/web handoff summary: `glb-web-handoff`"
+    },
+    {
+      "from": "non-blender-user-response-writer",
+      "to": "pre-handoff-verification",
+      "type": "upstream_reference",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Upstream handoff gate check: `pre-handoff-verification`"
+    },
+    {
+      "from": "non-blender-user-response-writer",
+      "to": "official-runtime-readiness-checker",
+      "type": "conditional",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Runtime readiness check when runtime is unverified: `official-runtime-readiness-checker`"
+    },
+    {
+      "from": "official-runtime-readiness-checker",
+      "to": "runtime-path-picker",
+      "type": "conditional",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- If runtime path is not yet chosen: `runtime-path-picker`"
+    },
+    {
+      "from": "official-runtime-readiness-checker",
+      "to": "path-one-host-outline",
+      "type": "alternative",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- If Path 1 host (a) or (b) outline is needed: `path-one-host-outline`"
+    },
+    {
+      "from": "official-runtime-readiness-checker",
+      "to": "official-runtime-setup-guide",
+      "type": "fallback",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- If prerequisites/boundaries are missing (`Blocked` / `Unknown`): `official-runtime-setup-guide`"
+    },
+    {
+      "from": "official-runtime-readiness-checker",
+      "to": "runtime-bridge-conflict-resolver",
+      "type": "fallback",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- If bridge contention is detected: `runtime-bridge-conflict-resolver`"
+    },
+    {
+      "from": "official-runtime-readiness-checker",
+      "to": "cli-appendix-job-outline",
+      "type": "conditional",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- If CLI appendix job structure is needed: `cli-appendix-job-outline`"
+    },
+    {
+      "from": "official-runtime-readiness-checker",
+      "to": "workflow-stage-router",
+      "type": "alternative",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- If `Ready` / `Partially Ready` and moving to scene planning: `workflow-stage-router` or `product-hero-scene-planner`"
+    },
+    {
+      "from": "official-runtime-readiness-checker",
+      "to": "product-hero-scene-planner",
+      "type": "alternative",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- If `Ready` / `Partially Ready` and moving to scene planning: `workflow-stage-router` or `product-hero-scene-planner`"
+    },
+    {
+      "from": "official-runtime-setup-guide",
+      "to": "runtime-path-picker",
+      "type": "progression",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Path selection: `runtime-path-picker`"
+    },
+    {
+      "from": "official-runtime-setup-guide",
+      "to": "path-one-host-outline",
+      "type": "progression",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Path 1 host (a)/(b) details: `path-one-host-outline`"
+    },
+    {
+      "from": "official-runtime-setup-guide",
+      "to": "cli-appendix-job-outline",
+      "type": "progression",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- CLI appendix job structure: `cli-appendix-job-outline`"
+    },
+    {
+      "from": "official-runtime-setup-guide",
+      "to": "runtime-bridge-conflict-resolver",
+      "type": "fallback",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Bridge conflict resolution: `runtime-bridge-conflict-resolver`"
+    },
+    {
+      "from": "official-runtime-setup-guide",
+      "to": "official-runtime-readiness-checker",
+      "type": "progression",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Readiness matrix check: `official-runtime-readiness-checker`"
+    },
+    {
+      "from": "official-runtime-setup-guide",
+      "to": "product-hero-scene-planner",
+      "type": "progression",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Scene planning after readiness: `product-hero-scene-planner`"
+    },
+    {
+      "from": "output-format-decision",
+      "to": "color-management-decision",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Color management → `../color-management-decision/SKILL.md`"
+    },
+    {
+      "from": "output-format-decision",
+      "to": "resolution-aspect-decision",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Resolution & aspect ratio → `../resolution-aspect-decision/SKILL.md`"
+    },
+    {
+      "from": "output-format-decision",
+      "to": "cycles-vs-eevee-decision",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Engine choice → `../cycles-vs-eevee-decision/SKILL.md`"
+    },
+    {
+      "from": "output-format-decision",
+      "to": "render-export-evidence",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Render file verification → `../render-export-evidence/SKILL.md`"
+    },
+    {
+      "from": "output-format-decision",
+      "to": "glb-web-handoff",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- 3D / GLB exports (out of scope here) → `../glb-web-handoff/SKILL.md`, `../glb-mobile-performance-budget/SKILL.md`, `../glb-animation-handoff/SKILL.md`"
+    },
+    {
+      "from": "output-format-decision",
+      "to": "glb-mobile-performance-budget",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- 3D / GLB exports (out of scope here) → `../glb-web-handoff/SKILL.md`, `../glb-mobile-performance-budget/SKILL.md`, `../glb-animation-handoff/SKILL.md`"
+    },
+    {
+      "from": "output-format-decision",
+      "to": "glb-animation-handoff",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- 3D / GLB exports (out of scope here) → `../glb-web-handoff/SKILL.md`, `../glb-mobile-performance-budget/SKILL.md`, `../glb-animation-handoff/SKILL.md`"
+    },
+    {
+      "from": "pack-prerequisite-checker",
+      "to": "recipe-fit-assessor",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Recipe selection → `../recipe-fit-assessor/SKILL.md`"
+    },
+    {
+      "from": "pack-prerequisite-checker",
+      "to": "intent-to-3d-brief-writer",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Brief completeness → `../intent-to-3d-brief-writer/SKILL.md`"
+    },
+    {
+      "from": "pack-prerequisite-checker",
+      "to": "official-runtime-readiness-checker",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Runtime detail → `../official-runtime-readiness-checker/SKILL.md`"
+    },
+    {
+      "from": "pack-prerequisite-checker",
+      "to": "runtime-bridge-conflict-resolver",
+      "type": "fallback",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Bridge conflicts → `../runtime-bridge-conflict-resolver/SKILL.md`"
+    },
+    {
+      "from": "pack-prerequisite-checker",
+      "to": "blender-troubleshooting",
+      "type": "fallback",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Runtime debugging → `../blender-troubleshooting/SKILL.md`"
+    },
+    {
+      "from": "pack-prerequisite-checker",
+      "to": "asset-license-checker",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* License checks → `../asset-license-checker/SKILL.md`"
+    },
+    {
+      "from": "pack-prerequisite-checker",
+      "to": "product-hero-scene-planner",
+      "type": "alternative",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Domain planners (when go) → `../product-hero-scene-planner/SKILL.md`, `../product-grid-scene-planner/SKILL.md`, `../character-portrait-scene-planner/SKILL.md`, `../environment-establishing-shot-planner/SKILL.md`, or `../interior-architectural-scene-planner/SKILL.md`"
+    },
+    {
+      "from": "pack-prerequisite-checker",
+      "to": "product-grid-scene-planner",
+      "type": "alternative",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Domain planners (when go) → `../product-hero-scene-planner/SKILL.md`, `../product-grid-scene-planner/SKILL.md`, `../character-portrait-scene-planner/SKILL.md`, `../environment-establishing-shot-planner/SKILL.md`, or `../interior-architectural-scene-planner/SKILL.md`"
+    },
+    {
+      "from": "pack-prerequisite-checker",
+      "to": "character-portrait-scene-planner",
+      "type": "alternative",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Domain planners (when go) → `../product-hero-scene-planner/SKILL.md`, `../product-grid-scene-planner/SKILL.md`, `../character-portrait-scene-planner/SKILL.md`, `../environment-establishing-shot-planner/SKILL.md`, or `../interior-architectural-scene-planner/SKILL.md`"
+    },
+    {
+      "from": "pack-prerequisite-checker",
+      "to": "environment-establishing-shot-planner",
+      "type": "alternative",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Domain planners (when go) → `../product-hero-scene-planner/SKILL.md`, `../product-grid-scene-planner/SKILL.md`, `../character-portrait-scene-planner/SKILL.md`, `../environment-establishing-shot-planner/SKILL.md`, or `../interior-architectural-scene-planner/SKILL.md`"
+    },
+    {
+      "from": "pack-prerequisite-checker",
+      "to": "interior-architectural-scene-planner",
+      "type": "alternative",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Domain planners (when go) → `../product-hero-scene-planner/SKILL.md`, `../product-grid-scene-planner/SKILL.md`, `../character-portrait-scene-planner/SKILL.md`, `../environment-establishing-shot-planner/SKILL.md`, or `../interior-architectural-scene-planner/SKILL.md`"
+    },
+    {
+      "from": "path-one-host-outline",
+      "to": "runtime-path-picker",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Path selection → `../runtime-path-picker/SKILL.md`"
+    },
+    {
+      "from": "path-one-host-outline",
+      "to": "official-runtime-setup-guide",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Detailed setup and configuration → `../official-runtime-setup-guide/SKILL.md`"
+    },
+    {
+      "from": "path-one-host-outline",
+      "to": "official-runtime-readiness-checker",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Readiness probing → `../official-runtime-readiness-checker/SKILL.md`"
+    },
+    {
+      "from": "path-one-host-outline",
+      "to": "runtime-bridge-conflict-resolver",
+      "type": "fallback",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Bridge conflicts → `../runtime-bridge-conflict-resolver/SKILL.md`"
+    },
+    {
+      "from": "path-one-host-outline",
+      "to": "cli-appendix-job-outline",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* CLI appendix workflows → `../cli-appendix-job-outline/SKILL.md`"
+    },
+    {
+      "from": "polycount-budget-checker",
+      "to": "glb-mobile-performance-budget",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Pinned budget source → `../glb-mobile-performance-budget/SKILL.md`"
+    },
+    {
+      "from": "polycount-budget-checker",
+      "to": "blender-scene-quality-checker",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Broad readiness review → `../blender-scene-quality-checker/SKILL.md`"
+    },
+    {
+      "from": "polycount-budget-checker",
+      "to": "render-export-evidence",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Artifact evidence classification → `../render-export-evidence/SKILL.md`"
+    },
+    {
+      "from": "polycount-budget-checker",
+      "to": "material-quality-checker",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Material validation → `../material-quality-checker/SKILL.md`"
+    },
+    {
+      "from": "polycount-budget-checker",
+      "to": "lighting-quality-checker",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Lighting validation → `../lighting-quality-checker/SKILL.md`"
+    },
+    {
+      "from": "polycount-budget-checker",
+      "to": "composition-quality-checker",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Composition validation → `../composition-quality-checker/SKILL.md`"
+    },
+    {
+      "from": "pre-handoff-verification",
+      "to": "workflow-stage-router",
+      "type": "fallback",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Entry wiring: reached from `workflow-stage-router` (as the final gate or failed-gate exit) or `blendops-help`."
+    },
+    {
+      "from": "pre-handoff-verification",
+      "to": "blendops-help",
+      "type": "fallback",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Entry wiring: reached from `workflow-stage-router` (as the final gate or failed-gate exit) or `blendops-help`."
+    },
+    {
+      "from": "pre-handoff-verification",
+      "to": "non-blender-user-response-writer",
+      "type": "conditional",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- If verdict is Pass: hand off to `non-blender-user-response-writer` for final user-facing delivery (or `render-export-evidence` / `runtime-attempt-report-writer` when finalizing an evidence log)."
+    },
+    {
+      "from": "pre-handoff-verification",
+      "to": "render-export-evidence",
+      "type": "conditional",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- If verdict is Pass: hand off to `non-blender-user-response-writer` for final user-facing delivery (or `render-export-evidence` / `runtime-attempt-report-writer` when finalizing an evidence log)."
+    },
+    {
+      "from": "pre-handoff-verification",
+      "to": "runtime-attempt-report-writer",
+      "type": "conditional",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- If verdict is Pass: hand off to `non-blender-user-response-writer` for final user-facing delivery (or `render-export-evidence` / `runtime-attempt-report-writer` when finalizing an evidence log)."
+    },
+    {
+      "from": "pre-handoff-verification",
+      "to": "non-blender-user-response-writer",
+      "type": "fallback",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- If verdict is Warn or Fail (claim downgraded, handoff continues with lower truth label): hand off to `non-blender-user-response-writer` with the downgraded label and caveats locked."
+    },
+    {
+      "from": "pre-handoff-verification",
+      "to": "workflow-stage-router",
+      "type": "upstream_reference",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- If verdict is Fail and the operator wants to fix the upstream gap instead of shipping downgraded: return to `workflow-stage-router` to pick the single immediate next skill:"
+    },
+    {
+      "from": "pre-handoff-verification",
+      "to": "blender-scene-quality-checker",
+      "type": "alternative",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- scene/asset quality gap → `blender-scene-quality-checker`, `material-quality-checker`, `lighting-quality-checker`, `composition-quality-checker`, or `polycount-budget-checker`"
+    },
+    {
+      "from": "pre-handoff-verification",
+      "to": "material-quality-checker",
+      "type": "alternative",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- scene/asset quality gap → `blender-scene-quality-checker`, `material-quality-checker`, `lighting-quality-checker`, `composition-quality-checker`, or `polycount-budget-checker`"
+    },
+    {
+      "from": "pre-handoff-verification",
+      "to": "lighting-quality-checker",
+      "type": "alternative",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- scene/asset quality gap → `blender-scene-quality-checker`, `material-quality-checker`, `lighting-quality-checker`, `composition-quality-checker`, or `polycount-budget-checker`"
+    },
+    {
+      "from": "pre-handoff-verification",
+      "to": "composition-quality-checker",
+      "type": "alternative",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- scene/asset quality gap → `blender-scene-quality-checker`, `material-quality-checker`, `lighting-quality-checker`, `composition-quality-checker`, or `polycount-budget-checker`"
+    },
+    {
+      "from": "pre-handoff-verification",
+      "to": "polycount-budget-checker",
+      "type": "alternative",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- scene/asset quality gap → `blender-scene-quality-checker`, `material-quality-checker`, `lighting-quality-checker`, `composition-quality-checker`, or `polycount-budget-checker`"
+    },
+    {
+      "from": "pre-handoff-verification",
+      "to": "render-export-evidence",
+      "type": "alternative",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- evidence classification gap → `render-export-evidence` or `runtime-attempt-report-writer`"
+    },
+    {
+      "from": "pre-handoff-verification",
+      "to": "runtime-attempt-report-writer",
+      "type": "alternative",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- evidence classification gap → `render-export-evidence` or `runtime-attempt-report-writer`"
+    },
+    {
+      "from": "pre-handoff-verification",
+      "to": "official-runtime-readiness-checker",
+      "type": "fallback",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- runtime/bridge failure → `official-runtime-readiness-checker`, `runtime-bridge-conflict-resolver`, or `blender-troubleshooting`"
+    },
+    {
+      "from": "pre-handoff-verification",
+      "to": "runtime-bridge-conflict-resolver",
+      "type": "fallback",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- runtime/bridge failure → `official-runtime-readiness-checker`, `runtime-bridge-conflict-resolver`, or `blender-troubleshooting`"
+    },
+    {
+      "from": "pre-handoff-verification",
+      "to": "blender-troubleshooting",
+      "type": "fallback",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- runtime/bridge failure → `official-runtime-readiness-checker`, `runtime-bridge-conflict-resolver`, or `blender-troubleshooting`"
+    },
+    {
+      "from": "preview-report-template-writer",
+      "to": "render-export-evidence",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Measured evidence input (supplies measurements + truth states) → `../render-export-evidence/SKILL.md`"
+    },
+    {
+      "from": "preview-report-template-writer",
+      "to": "pre-handoff-verification",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Handoff gate (gates handoffs before downstream delivery) → `../pre-handoff-verification/SKILL.md`"
+    },
+    {
+      "from": "preview-report-template-writer",
+      "to": "glb-web-handoff",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Web handoff consumer → `../glb-web-handoff/SKILL.md`"
+    },
+    {
+      "from": "preview-report-template-writer",
+      "to": "non-blender-user-response-writer",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Final non-Blender user response consumer → `../non-blender-user-response-writer/SKILL.md`"
+    },
+    {
+      "from": "preview-report-template-writer",
+      "to": "blender-troubleshooting",
+      "type": "fallback",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Raw debug log triage (out of scope here) → `../blender-troubleshooting/SKILL.md`"
+    },
+    {
+      "from": "product-grid-scene-planner",
+      "to": "intent-to-3d-brief-writer",
+      "type": "upstream_reference",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Upstream brief → `../intent-to-3d-brief-writer/SKILL.md`"
+    },
+    {
+      "from": "product-grid-scene-planner",
+      "to": "product-hero-scene-planner",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Single hero product alternative → `../product-hero-scene-planner/SKILL.md`"
+    },
+    {
+      "from": "product-grid-scene-planner",
+      "to": "blender-asset-discovery-planner",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Asset discovery → `../blender-asset-discovery-planner/SKILL.md`"
+    },
+    {
+      "from": "product-grid-scene-planner",
+      "to": "output-format-decision",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Variant / SKU file output format → `../output-format-decision/SKILL.md`"
+    },
+    {
+      "from": "product-grid-scene-planner",
+      "to": "composition-quality-checker",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Composition validation → `../composition-quality-checker/SKILL.md`"
+    },
+    {
+      "from": "product-grid-scene-planner",
+      "to": "lighting-quality-checker",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Lighting validation → `../lighting-quality-checker/SKILL.md`"
+    },
+    {
+      "from": "product-grid-scene-planner",
+      "to": "material-quality-checker",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Material validation → `../material-quality-checker/SKILL.md`"
+    },
+    {
+      "from": "product-grid-scene-planner",
+      "to": "blender-scene-quality-checker",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Overall scene quality validation → `../blender-scene-quality-checker/SKILL.md`"
+    },
+    {
+      "from": "product-grid-scene-planner",
+      "to": "acceptance-criteria-builder",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Catalog sign-off & stop conditions → `../acceptance-criteria-builder/SKILL.md`, `../blender-stop-condition-decider/SKILL.md`"
+    },
+    {
+      "from": "product-grid-scene-planner",
+      "to": "blender-stop-condition-decider",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Catalog sign-off & stop conditions → `../acceptance-criteria-builder/SKILL.md`, `../blender-stop-condition-decider/SKILL.md`"
+    },
+    {
+      "from": "product-hero-scene-planner",
+      "to": "intent-to-3d-brief-writer",
+      "type": "upstream_reference",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Upstream input (if raw prompt needs structuring): `intent-to-3d-brief-writer`"
+    },
+    {
+      "from": "product-hero-scene-planner",
+      "to": "blender-composition-camera-planner",
+      "type": "progression",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Next (deep-dive framing & camera): `blender-composition-camera-planner`"
+    },
+    {
+      "from": "product-hero-scene-planner",
+      "to": "blender-lighting-material-planner",
+      "type": "progression",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Next (deep-dive lookdev & lighting): `blender-lighting-material-planner`"
+    },
+    {
+      "from": "product-hero-scene-planner",
+      "to": "acceptance-criteria-builder",
+      "type": "fallback",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Then (measurable pass/fail rows): `acceptance-criteria-builder`"
+    },
+    {
+      "from": "product-hero-scene-planner",
+      "to": "blender-stop-condition-decider",
+      "type": "progression",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Then (pin done condition): `blender-stop-condition-decider`"
+    },
+    {
+      "from": "product-hero-scene-planner",
+      "to": "blender-scene-quality-checker",
+      "type": "progression",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Later (post-build readiness review): `blender-scene-quality-checker`"
+    },
+    {
+      "from": "product-hero-scene-planner",
+      "to": "glb-web-handoff",
+      "type": "alternative",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Delivery handoff (when web/render output is targeted): `glb-web-handoff` or `render-export-evidence`"
+    },
+    {
+      "from": "product-hero-scene-planner",
+      "to": "render-export-evidence",
+      "type": "alternative",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Delivery handoff (when web/render output is targeted): `glb-web-handoff` or `render-export-evidence`"
+    },
+    {
+      "from": "recipe-fit-assessor",
+      "to": "blender-brainstorming",
+      "type": "upstream_reference",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Upstream creative divergence -> `../blender-brainstorming/SKILL.md`"
+    },
+    {
+      "from": "recipe-fit-assessor",
+      "to": "blendops-help",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* General entry routing -> `../blendops-help/SKILL.md`"
+    },
+    {
+      "from": "recipe-fit-assessor",
+      "to": "intent-to-3d-brief-writer",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Downstream structured brief -> `../intent-to-3d-brief-writer/SKILL.md`"
+    },
+    {
+      "from": "recipe-fit-assessor",
+      "to": "pack-prerequisite-checker",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Pack prerequisite verification -> `../pack-prerequisite-checker/SKILL.md`"
+    },
+    {
+      "from": "recipe-fit-assessor",
+      "to": "workflow-stage-router",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Post-artifact stage routing -> `../workflow-stage-router/SKILL.md`"
+    },
+    {
+      "from": "recipe-fit-assessor",
+      "to": "product-hero-scene-planner",
+      "type": "alternative",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Domain scene planners (pick one when brief is ready) -> `../product-hero-scene-planner/SKILL.md`, `../product-grid-scene-planner/SKILL.md`, `../character-portrait-scene-planner/SKILL.md`, `../environment-establishing-shot-planner/SKILL.md`, `../interior-architectural-scene-planner/SKILL.md`"
+    },
+    {
+      "from": "recipe-fit-assessor",
+      "to": "product-grid-scene-planner",
+      "type": "alternative",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Domain scene planners (pick one when brief is ready) -> `../product-hero-scene-planner/SKILL.md`, `../product-grid-scene-planner/SKILL.md`, `../character-portrait-scene-planner/SKILL.md`, `../environment-establishing-shot-planner/SKILL.md`, `../interior-architectural-scene-planner/SKILL.md`"
+    },
+    {
+      "from": "recipe-fit-assessor",
+      "to": "character-portrait-scene-planner",
+      "type": "alternative",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Domain scene planners (pick one when brief is ready) -> `../product-hero-scene-planner/SKILL.md`, `../product-grid-scene-planner/SKILL.md`, `../character-portrait-scene-planner/SKILL.md`, `../environment-establishing-shot-planner/SKILL.md`, `../interior-architectural-scene-planner/SKILL.md`"
+    },
+    {
+      "from": "recipe-fit-assessor",
+      "to": "environment-establishing-shot-planner",
+      "type": "alternative",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Domain scene planners (pick one when brief is ready) -> `../product-hero-scene-planner/SKILL.md`, `../product-grid-scene-planner/SKILL.md`, `../character-portrait-scene-planner/SKILL.md`, `../environment-establishing-shot-planner/SKILL.md`, `../interior-architectural-scene-planner/SKILL.md`"
+    },
+    {
+      "from": "recipe-fit-assessor",
+      "to": "interior-architectural-scene-planner",
+      "type": "alternative",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Domain scene planners (pick one when brief is ready) -> `../product-hero-scene-planner/SKILL.md`, `../product-grid-scene-planner/SKILL.md`, `../character-portrait-scene-planner/SKILL.md`, `../environment-establishing-shot-planner/SKILL.md`, `../interior-architectural-scene-planner/SKILL.md`"
+    },
+    {
+      "from": "render-export-evidence",
+      "to": "official-runtime-readiness-checker",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Runtime readiness → `../official-runtime-readiness-checker/SKILL.md`"
+    },
+    {
+      "from": "render-export-evidence",
+      "to": "runtime-attempt-report-writer",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Runtime attempt recording → `../runtime-attempt-report-writer/SKILL.md`"
+    },
+    {
+      "from": "render-export-evidence",
+      "to": "blender-scene-quality-checker",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Scene validation → `../blender-scene-quality-checker/SKILL.md`"
+    },
+    {
+      "from": "render-export-evidence",
+      "to": "pre-handoff-verification",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Handoff gating (confirm-or-downgrade) → `../pre-handoff-verification/SKILL.md`"
+    },
+    {
+      "from": "render-export-evidence",
+      "to": "preview-report-template-writer",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Report Markdown rendering → `../preview-report-template-writer/SKILL.md`"
+    },
+    {
+      "from": "render-export-evidence",
+      "to": "glb-web-handoff",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- GLB/web handoff → `../glb-web-handoff/SKILL.md`"
+    },
+    {
+      "from": "render-export-evidence",
+      "to": "non-blender-user-response-writer",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- User-facing explanation → `../non-blender-user-response-writer/SKILL.md`"
+    },
+    {
+      "from": "resolution-aspect-decision",
+      "to": "blender-composition-camera-planner",
+      "type": "upstream_reference",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Camera & composition planning (upstream framing setup) → `../blender-composition-camera-planner/SKILL.md`"
+    },
+    {
+      "from": "resolution-aspect-decision",
+      "to": "composition-quality-checker",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Composition framing validation against pinned aspect → `../composition-quality-checker/SKILL.md`"
+    },
+    {
+      "from": "resolution-aspect-decision",
+      "to": "color-management-decision",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Color configuration decision → `../color-management-decision/SKILL.md`"
+    },
+    {
+      "from": "resolution-aspect-decision",
+      "to": "output-format-decision",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Container / codec decision → `../output-format-decision/SKILL.md`"
+    },
+    {
+      "from": "resolution-aspect-decision",
+      "to": "cycles-vs-eevee-decision",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Render engine decision → `../cycles-vs-eevee-decision/SKILL.md`"
+    },
+    {
+      "from": "resolution-aspect-decision",
+      "to": "render-export-evidence",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Post-render saved file verification → `../render-export-evidence/SKILL.md`"
+    },
+    {
+      "from": "runtime-attempt-report-writer",
+      "to": "official-runtime-readiness-checker",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Pre-attempt readiness check → `../official-runtime-readiness-checker/SKILL.md`"
+    },
+    {
+      "from": "runtime-attempt-report-writer",
+      "to": "runtime-path-picker",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Runtime path selection context → `../runtime-path-picker/SKILL.md`"
+    },
+    {
+      "from": "runtime-attempt-report-writer",
+      "to": "runtime-bridge-conflict-resolver",
+      "type": "fallback",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Bridge / port / host conflicts → `../runtime-bridge-conflict-resolver/SKILL.md`"
+    },
+    {
+      "from": "runtime-attempt-report-writer",
+      "to": "blender-troubleshooting",
+      "type": "fallback",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Runtime or scene defect diagnosis → `../blender-troubleshooting/SKILL.md`"
+    },
+    {
+      "from": "runtime-attempt-report-writer",
+      "to": "render-export-evidence",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Artifact evidence classification → `../render-export-evidence/SKILL.md`"
+    },
+    {
+      "from": "runtime-attempt-report-writer",
+      "to": "pre-handoff-verification",
+      "type": "fallback",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Final handoff gate & failure exit → `../pre-handoff-verification/SKILL.md`"
+    },
+    {
+      "from": "runtime-bridge-conflict-resolver",
+      "to": "official-runtime-readiness-checker",
+      "type": "fallback",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- When `official-runtime-readiness-checker` reports inconsistent signals: enter this skill (`runtime-bridge-conflict-resolver`) to resolve the conflict"
+    },
+    {
+      "from": "runtime-bridge-conflict-resolver",
+      "to": "official-runtime-readiness-checker",
+      "type": "fallback",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- After proposing a conflict resolution: hand off to `official-runtime-readiness-checker` to re-verify"
+    },
+    {
+      "from": "runtime-bridge-conflict-resolver",
+      "to": "blender-troubleshooting",
+      "type": "fallback",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- If the bridge matrix is clean but failures persist: hand off to `blender-troubleshooting`"
+    },
+    {
+      "from": "runtime-bridge-conflict-resolver",
+      "to": "official-runtime-setup-guide",
+      "type": "alternative",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- If the user wants to change paths or set up a path: hand off to `official-runtime-setup-guide`"
+    },
+    {
+      "from": "runtime-bridge-conflict-resolver",
+      "to": "runtime-path-picker",
+      "type": "conditional",
+      "notation": "bare_id",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- If the intended runtime path has not been chosen yet: hand off to `runtime-path-picker`"
+    },
+    {
+      "from": "runtime-path-picker",
+      "to": "official-runtime-setup-guide",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Prerequisite framing → `../official-runtime-setup-guide/SKILL.md`"
+    },
+    {
+      "from": "runtime-path-picker",
+      "to": "official-runtime-readiness-checker",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Readiness matrix check → `../official-runtime-readiness-checker/SKILL.md`"
+    },
+    {
+      "from": "runtime-path-picker",
+      "to": "path-one-host-outline",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Host (a)/(b) specifics for Path 1 → `../path-one-host-outline/SKILL.md`"
+    },
+    {
+      "from": "runtime-path-picker",
+      "to": "cli-appendix-job-outline",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Headless CLI appendix job outline → `../cli-appendix-job-outline/SKILL.md`"
+    },
+    {
+      "from": "runtime-path-picker",
+      "to": "runtime-bridge-conflict-resolver",
+      "type": "fallback",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Bridge or port 9876 conflicts → `../runtime-bridge-conflict-resolver/SKILL.md`"
+    },
+    {
+      "from": "runtime-path-picker",
+      "to": "pre-handoff-verification",
+      "type": "fallback",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Contradictory constraints failure exit → `../pre-handoff-verification/SKILL.md`"
+    },
+    {
+      "from": "three-fiber-component-shape-planner",
+      "to": "glb-animation-handoff",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Animation contract → `../glb-animation-handoff/SKILL.md` (owns per-clip animation contracts)"
+    },
+    {
+      "from": "three-fiber-component-shape-planner",
+      "to": "glb-mobile-performance-budget",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Performance budget ceilings → `../glb-mobile-performance-budget/SKILL.md` (pins memory, bone, morph, and geometry budgets)"
+    },
+    {
+      "from": "three-fiber-component-shape-planner",
+      "to": "color-management-decision",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Color and material checks → `../color-management-decision/SKILL.md` and `../material-quality-checker/SKILL.md` (own color management and material quality verification)"
+    },
+    {
+      "from": "three-fiber-component-shape-planner",
+      "to": "material-quality-checker",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Color and material checks → `../color-management-decision/SKILL.md` and `../material-quality-checker/SKILL.md` (own color management and material quality verification)"
+    },
+    {
+      "from": "three-fiber-component-shape-planner",
+      "to": "glb-web-handoff",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Web delivery packaging → `../glb-web-handoff/SKILL.md` (owns GLB web delivery package)"
+    },
+    {
+      "from": "three-fiber-component-shape-planner",
+      "to": "non-blender-user-response-writer",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "* Final user-facing response → `../non-blender-user-response-writer/SKILL.md` (owns plain-language final response)"
+    },
+    {
+      "from": "workflow-stage-router",
+      "to": "pack-prerequisite-checker",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Pack entry → `../pack-prerequisite-checker/SKILL.md`"
+    },
+    {
+      "from": "workflow-stage-router",
+      "to": "official-runtime-readiness-checker",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Runtime readiness check → `../official-runtime-readiness-checker/SKILL.md`"
+    },
+    {
+      "from": "workflow-stage-router",
+      "to": "render-export-evidence",
+      "type": "progression",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Evidence updates → `../render-export-evidence/SKILL.md`"
+    },
+    {
+      "from": "workflow-stage-router",
+      "to": "pre-handoff-verification",
+      "type": "fallback",
+      "notation": "relative_path",
+      "sourceSection": "Cross-skill handoff",
+      "rawLine": "- Failed gate / blocked mode exit / final gate → `../pre-handoff-verification/SKILL.md`"
+    }
+  ]
+}

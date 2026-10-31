@@ -1,0 +1,345 @@
+{
+  "schemaVersion": "1.0.0",
+  "auditPhase": "phase-0",
+  "status": "provisional-baseline",
+  "repository": "ThanhNguyxnOrg/blendops",
+  "branch": "main",
+  "commitSha": "3ea3c35c6b8a6e5e915bab9f63333d4a1c09bd4d",
+  "commitDate": "2026-10-18 23:03:38 +0000",
+  "generatedAt": "2026-10-30T21:15:00-07:00",
+  "methodology": {
+    "scoringPrinciple": "Each pillar is broken into measurable sub-criteria backed by repository files or static analysis outputs. Unmeasured behavioral or runtime criteria receive 0 points until an automated runner or captured runtime evidence file exists.",
+    "zeroCompensationGate": "No documentation score may compensate for a P0 failure in artifact truth, runtime safety, or behavioral correctness.",
+    "activeZeroCompensationBlockers": [
+      "P0-1: 30 of 48 SKILL.md files include 'Not Run' inside 'Artifact status:' in their Output schema block, contradicting the repository truth-state law where 'Not Run' is exclusively a Runtime state and 'Not Produced' is the default Artifact state.",
+      "P0-2: 0 automated behavioral or routing evaluation runners exist in the repository.",
+      "P0-3: scripts/export-claude-skills.mjs spawns external 'zip' binary on Linux/macOS and fails with ENOENT in minimal container environments; .github/workflows/docs.yml only runs 'npm run docs:check' rather than 'npm run ci'."
+    ]
+  },
+  "totals": {
+    "maxPossibleScore": 100,
+    "measuredScore": 54.5,
+    "verified10of10Eligible": false
+  },
+  "pillars": [
+    {
+      "id": "pillar-1-skill-quality-and-contracts",
+      "name": "Skill Quality & Contracts",
+      "weight": 15,
+      "measuredScore": 10.5,
+      "verdict": "Warn",
+      "evidenceFiles": [
+        "docs/audits/phase-0/skill-inventory.json",
+        "scripts/check-docs.mjs"
+      ],
+      "criteria": [
+        {
+          "id": "p1-c1",
+          "description": "All 48 skills ship valid Anthropic/Claude.ai frontmatter (name <= 64, description <= 200, no extra keys)",
+          "maxPoints": 4,
+          "awardedPoints": 4.0,
+          "status": "Pass",
+          "evidence": "48/48 skills pass assertSkillFrontmatterSpecCompliant and assertSkillFrontmatterUploadLimits in scripts/check-docs.mjs."
+        },
+        {
+          "id": "p1-c2",
+          "description": "All 48 skills contain complete template sections and consistent truth-state definitions",
+          "maxPoints": 4,
+          "awardedPoints": 2.0,
+          "status": "Fail",
+          "evidence": "40/48 skills include all 26 sections; 8 Batch 7/8 skills omit Decision tree, Playbooks, Failure handling, Troubleshooting, Best practices, Good/Bad examples, User-facing response template, and Anti-patterns. 30/48 skills list 'Not Run' under 'Artifact status:'."
+        },
+        {
+          "id": "p1-c3",
+          "description": "Zero exact trigger phrase collisions and clear role boundaries",
+          "maxPoints": 4,
+          "awardedPoints": 3.5,
+          "status": "Pass",
+          "evidence": "191 distinct trigger phrases across 48 skills with 0 exact string collisions. Minor semantic overlap exists across the 4 routing skills."
+        },
+        {
+          "id": "p1-c4",
+          "description": "Machine-readable input/output contract per skill (contract.json + generated registry)",
+          "maxPoints": 3,
+          "awardedPoints": 1.0,
+          "status": "Warn",
+          "evidence": "Prose/table Input schema and Output schema sections exist in 48/48 skills, but 0 machine-readable contract.json files or registry/skills.json exist yet."
+        }
+      ]
+    },
+    {
+      "id": "pillar-2-workflow-architecture-and-routing",
+      "name": "Workflow Architecture & Routing",
+      "weight": 15,
+      "measuredScore": 10.0,
+      "verdict": "Warn",
+      "evidenceFiles": [
+        "docs/audits/phase-0/handoff-inventory.json",
+        "docs/audits/phase-0/routing-overlap.md"
+      ],
+      "criteria": [
+        {
+          "id": "p2-c1",
+          "description": "All 48 skills connected in workflow handoff graph with valid targets",
+          "maxPoints": 5,
+          "awardedPoints": 4.5,
+          "status": "Pass",
+          "evidence": "373 edges extracted across 48 skills; 100% of targets resolve to valid skill IDs. Zero skills have 0 outgoing edges."
+        },
+        {
+          "id": "p2-c2",
+          "description": "Linear progression subgraph is acyclic and retry loops have explicit exit gates",
+          "maxPoints": 4,
+          "awardedPoints": 3.5,
+          "status": "Pass",
+          "evidence": "0 cycles in the 211-edge linear progression subgraph; 14 cycles exist in the full forward graph via retry/fallback/troubleshooting edges."
+        },
+        {
+          "id": "p2-c3",
+          "description": "Consistent handoff notation and zero unreachable/orphan skills",
+          "maxPoints": 3,
+          "awardedPoints": 1.5,
+          "status": "Warn",
+          "evidence": "Notation is split: 35 skills use relative paths (`../<id>/SKILL.md`) and 13 skills use bare IDs (`<id>`). `blender-scope-boundary-enforcer` has 0 incoming forward progression edges (only 6 boundary_delegation edges)."
+        },
+        {
+          "id": "p2-c4",
+          "description": "Compiled workflow-graph.json with automated CI graph validator",
+          "maxPoints": 3,
+          "awardedPoints": 0.5,
+          "status": "Fail",
+          "evidence": "Phase 0 extracted handoff-inventory.json, but no build-registry.mjs or CI graph check is wired yet."
+        }
+      ]
+    },
+    {
+      "id": "pillar-3-behavioral-evaluation",
+      "name": "Behavioral Evaluation",
+      "weight": 20,
+      "measuredScore": 4.5,
+      "verdict": "Fail",
+      "evidenceFiles": [
+        "docs/audits/phase-0/eval-inventory.json"
+      ],
+      "criteria": [
+        {
+          "id": "p3-c1",
+          "description": "Every skill has a baseline EVAL.md with pass/warn/fail criteria",
+          "maxPoints": 4,
+          "awardedPoints": 4.0,
+          "status": "Pass",
+          "evidence": "48/48 skills have EVAL.md files verified by scripts/check-docs.mjs."
+        },
+        {
+          "id": "p3-c2",
+          "description": "Multi-case structured test tables (>= 5 cases per skill = 240+ cases)",
+          "maxPoints": 6,
+          "awardedPoints": 0.5,
+          "status": "Fail",
+          "evidence": "Only 8/48 EVAL.md files contain a structured 'Eval cases' table (52 rows total); 40/48 EVAL.md files contain only a single prose prompt and bullet outline."
+        },
+        {
+          "id": "p3-c3",
+          "description": "Automated static, routing classifier, and behavioral evaluation runners",
+          "maxPoints": 10,
+          "awardedPoints": 0.0,
+          "status": "Fail",
+          "evidence": "0 automated behavioral or routing evaluation runners exist (Not Run / Not Implemented)."
+        }
+      ]
+    },
+    {
+      "id": "pillar-4-blender-domain-correctness",
+      "name": "Blender Domain Correctness",
+      "weight": 15,
+      "measuredScore": 10.5,
+      "verdict": "Warn",
+      "evidenceFiles": [
+        "docs/runtime-stack-strategy.md",
+        "docs/audits/phase-0/skill-inventory.json"
+      ],
+      "criteria": [
+        {
+          "id": "p4-c1",
+          "description": "Accurate attribution of Blender 5.1+ floor to Path 1 (Blender Lab MCP add-on manifest) vs Path 2 and CLI",
+          "maxPoints": 5,
+          "awardedPoints": 5.0,
+          "status": "Pass",
+          "evidence": "Verified across docs/runtime-stack-strategy.md, skills, and enforced by scripts/check-docs.mjs."
+        },
+        {
+          "id": "p4-c2",
+          "description": "151 domain reference files covering geometry, PBR materials, lighting, camera, color management, and GLB budgets",
+          "maxPoints": 6,
+          "awardedPoints": 4.5,
+          "status": "Pass",
+          "evidence": "151 reference markdown files across 48 skills (3–4 per skill)."
+        },
+        {
+          "id": "p4-c3",
+          "description": "Version-pinned technical assertions and deterministic GLB/glTF container & spec inspection tooling",
+          "maxPoints": 4,
+          "awardedPoints": 1.0,
+          "status": "Warn",
+          "evidence": "No inspect-glb.mjs or Khronos glTF-Validator integration exists yet; reference files lack explicit Blender version compatibility matrices for shader sockets/exporters."
+        }
+      ]
+    },
+    {
+      "id": "pillar-5-runtime-and-artifact-verification",
+      "name": "Runtime & Artifact Verification",
+      "weight": 10,
+      "measuredScore": 2.5,
+      "verdict": "Warn",
+      "evidenceFiles": [
+        "docs/evals/README.md",
+        "docs/evals/blender-connector-read-only-smoke-test.md"
+      ],
+      "criteria": [
+        {
+          "id": "p5-c1",
+          "description": "Honest separation of Runtime Ready, Runtime Executed, and Artifact Verified in eval docs",
+          "maxPoints": 3,
+          "awardedPoints": 2.0,
+          "status": "Pass",
+          "evidence": "docs/evals/README.md and laws/evidence-before-done.md strictly prevent unverified claims."
+        },
+        {
+          "id": "p5-c2",
+          "description": "Captured read-only runtime smoke evidence",
+          "maxPoints": 2,
+          "awardedPoints": 0.5,
+          "status": "Warn",
+          "evidence": "docs/evals/blender-connector-read-only-smoke-test.md records a partial read-only smoke test; full provenance fields remain incomplete."
+        },
+        {
+          "id": "p5-c3",
+          "description": "End-to-end Path 1 / Path 2 / CLI runtime mutation, render, and GLB verification packet with hashes",
+          "maxPoints": 5,
+          "awardedPoints": 0.0,
+          "status": "Not Run",
+          "evidence": "0 E2E runtime mutation/render/GLB evidence packets captured in-repo."
+        }
+      ]
+    },
+    {
+      "id": "pillar-6-security-and-licensing",
+      "name": "Security, Asset Provenance & Trust Model",
+      "weight": 10,
+      "measuredScore": 6.5,
+      "verdict": "Warn",
+      "evidenceFiles": [
+        "laws/no-arbitrary-python-interface.md",
+        "skills/asset-license-checker/SKILL.md",
+        "bundles/generic-project-local/ROLLBACK.md"
+      ],
+      "criteria": [
+        {
+          "id": "p6-c1",
+          "description": "User-facing no-arbitrary-Python law and asset license checking skill",
+          "maxPoints": 5,
+          "awardedPoints": 4.5,
+          "status": "Pass",
+          "evidence": "Enforced via laws/no-arbitrary-python-interface.md and skills/asset-license-checker/SKILL.md."
+        },
+        {
+          "id": "p6-c2",
+          "description": "Install rollback documentation for project-local attachment",
+          "maxPoints": 2,
+          "awardedPoints": 1.5,
+          "status": "Pass",
+          "evidence": "bundles/generic-project-local/ROLLBACK.md defines file-level install rollback."
+        },
+        {
+          "id": "p6-c3",
+          "description": "Runtime capability levels (L0-L3), scene mutation snapshot/rollback policy, and formal threat model",
+          "maxPoints": 3,
+          "awardedPoints": 0.5,
+          "status": "Warn",
+          "evidence": "No L0-L3 runtime capability classification or scene-level snapshot/rollback protocol exists yet."
+        }
+      ]
+    },
+    {
+      "id": "pillar-7-agent-compatibility",
+      "name": "Cross-Agent Compatibility",
+      "weight": 5,
+      "measuredScore": 2.5,
+      "verdict": "Warn",
+      "evidenceFiles": [
+        "docs/adapter-registry.md",
+        "docs/install/README.md"
+      ],
+      "criteria": [
+        {
+          "id": "p7-c1",
+          "description": "26 target install guides with confidence labels and separation of skill install vs runtime setup",
+          "maxPoints": 3,
+          "awardedPoints": 2.5,
+          "status": "Pass",
+          "evidence": "26 install guides exist under docs/install/ with explicit boundary disclaimers."
+        },
+        {
+          "id": "p7-c2",
+          "description": "Synchronized adapter-registry.md and verified Tier 1/2/3 execution matrix",
+          "maxPoints": 2,
+          "awardedPoints": 0.0,
+          "status": "Fail",
+          "evidence": "docs/adapter-registry.md lists Windsurf, Continue, Cline, Roo, and Aider under 'Future candidates (not researched)' even though install docs for them already ship in docs/install/."
+        }
+      ]
+    },
+    {
+      "id": "pillar-8-documentation-and-ux",
+      "name": "Documentation & UX",
+      "weight": 5,
+      "measuredScore": 4.5,
+      "verdict": "Pass",
+      "evidenceFiles": [
+        "README.md",
+        "docs/README.md",
+        "docs/start-here.md"
+      ],
+      "criteria": [
+        {
+          "id": "p8-c1",
+          "description": "Clear start-here onboarding, hub index, plain-language law, and 0 broken relative links across 344 files",
+          "maxPoints": 5,
+          "awardedPoints": 4.5,
+          "status": "Pass",
+          "evidence": "344 active markdown files pass relative link and policy checks in scripts/check-docs.mjs."
+        }
+      ]
+    },
+    {
+      "id": "pillar-9-ci-release-and-maintenance",
+      "name": "CI, Release Governance & Maintenance",
+      "weight": 5,
+      "measuredScore": 3.0,
+      "verdict": "Warn",
+      "evidenceFiles": [
+        ".github/workflows/docs.yml",
+        "scripts/check-docs.mjs",
+        "scripts/export-claude-skills.mjs"
+      ],
+      "criteria": [
+        {
+          "id": "p9-c1",
+          "description": "Automated static documentation and frontmatter guardrails in CI",
+          "maxPoints": 3,
+          "awardedPoints": 3.0,
+          "status": "Pass",
+          "evidence": "scripts/check-docs.mjs runs on every push/PR in .github/workflows/docs.yml."
+        },
+        {
+          "id": "p9-c2",
+          "description": "Cross-platform portable ZIP export and full 'npm run ci' execution in GitHub Actions",
+          "maxPoints": 2,
+          "awardedPoints": 0.0,
+          "status": "Fail",
+          "evidence": ".github/workflows/docs.yml runs 'npm run docs:check' instead of 'npm run ci'. scripts/export-claude-skills.mjs calls external 'zip' binary and fails with ENOENT when 'zip' is not installed."
+        }
+      ]
+    }
+  ]
+}
