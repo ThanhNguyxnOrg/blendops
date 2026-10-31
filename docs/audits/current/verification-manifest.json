@@ -1,19 +1,19 @@
 {
-  "schemaVersion": "1.1.0",
-  "auditPhase": "phase-3.1-current",
+  "schemaVersion": "1.2.0",
+  "auditPhase": "phase-4-current",
   "repository": "ThanhNguyxnOrg/blendops",
   "branch": "main",
-  "sourceCommitSha": "650f0a5979f1d6b9fea94a0e6378988ef1ab544e",
-  "sourceCommitShort": "650f0a5",
-  "sourceCommitDate": "2026-10-31 06:38:05 +0000",
+  "sourceCommitSha": "51f76d98d16deef4ed9d8d5991ff59c55ce1d27e",
+  "sourceCommitShort": "51f76d9",
+  "sourceCommitDate": "2026-10-31 06:57:27 +0000",
   "auditProvenance": {
-    "sourceCommitSha": "650f0a5979f1d6b9fea94a0e6378988ef1ab544e",
-    "sourceCommitShort": "650f0a5",
-    "sourceCommitDate": "2026-10-31 06:38:05 +0000",
+    "sourceCommitSha": "51f76d98d16deef4ed9d8d5991ff59c55ce1d27e",
+    "sourceCommitShort": "51f76d9",
+    "sourceCommitDate": "2026-10-31 06:57:27 +0000",
     "workingTreeState": "dirty",
     "snapshotBasis": "working-tree-on-top-of-source-commit",
-    "uncommittedChangeCount": 4,
-    "auditedInputsSha256": "c1da96d3a5d6e624822805e510c713656e59e8b01dce62801faeaeb9dda7d4b0",
+    "uncommittedChangeCount": 16,
+    "auditedInputsSha256": "cead5f292dae2594106ad742e135bb01f0b53a95a7aaf9f6f13d2a7c46b9db1c",
     "selfReferentialCommitRule": "A Git commit cannot contain its own final commit SHA inside tracked files. sourceCommitSha records the verified HEAD commit present when the generator ran, workingTreeState and snapshotBasis record whether uncommitted working-tree changes were present on top of sourceCommitSha, and auditedInputsSha256 digests the exact audited file contents."
   },
   "commitChain": [
@@ -51,17 +51,22 @@
       "phase": "Phase 3.1",
       "commitSha": "650f0a5979f1d6b9fea94a0e6378988ef1ab544e",
       "summary": "Evaluation predicate hardening (all 5 condition operators) and explicit auditProvenance foundation"
+    },
+    {
+      "phase": "Phase 3.1.1",
+      "commitSha": "51f76d98d16deef4ed9d8d5991ff59c55ce1d27e",
+      "summary": "Audit provenance working-tree porcelain fix and manifest-backed auditedInputsSha256 digest coverage"
     }
   ],
   "currentPhaseContext": {
-    "phase": "Phase 3.1.1",
-    "title": "Provenance Verification Fixes",
-    "sourceCommitSha": "650f0a5979f1d6b9fea94a0e6378988ef1ab544e",
+    "phase": "Phase 4",
+    "title": "Catalog Template Completion",
+    "sourceCommitSha": "51f76d98d16deef4ed9d8d5991ff59c55ce1d27e",
     "workingTreeState": "dirty",
     "snapshotBasis": "working-tree-on-top-of-source-commit",
-    "auditedInputsSha256": "c1da96d3a5d6e624822805e510c713656e59e8b01dce62801faeaeb9dda7d4b0",
+    "auditedInputsSha256": "cead5f292dae2594106ad742e135bb01f0b53a95a7aaf9f6f13d2a7c46b9db1c",
     "auditedInputsManifest": "docs/audits/audited-inputs.manifest.json",
-    "relationshipToCommitChain": "Phase 3.1.1 is built directly on top of Phase 3.1 (650f0a5979f1d6b9fea94a0e6378988ef1ab544e). Because a Git commit cannot embed its own final SHA inside tracked files, verification-manifest.json records 650f0a5979f1d6b9fea94a0e6378988ef1ab544e as the latest completed commit in commitChain and sourceCommitSha, while locking the exact Phase 3.1.1 audited inputs via auditedInputsSha256 and docs/audits/audited-inputs.manifest.json."
+    "relationshipToCommitChain": "Phase 4 is built directly on top of Phase 3.1.1 (51f76d98d16deef4ed9d8d5991ff59c55ce1d27e). Because a Git commit cannot embed its own final SHA inside tracked files, verification-manifest.json records 51f76d98d16deef4ed9d8d5991ff59c55ce1d27e as the latest completed commit in commitChain and sourceCommitSha, while locking the exact Phase 4 audited inputs via auditedInputsSha256 and docs/audits/audited-inputs.manifest.json."
   },
   "ciVerificationPipeline": {
     "command": "npm run ci",
@@ -70,7 +75,7 @@
         "script": "npm run docs:check",
         "command": "node scripts/check-docs.mjs",
         "status": "Passed",
-        "verifiedScope": "Active Markdown files, frontmatter limits, relative links, Path 1 Blender 5.1+ attribution, F-01 truth-state guard, F-08 adapter registry guard"
+        "verifiedScope": "Active Markdown files, frontmatter limits, relative links, Path 1 Blender 5.1+ attribution, F-01 truth-state guard, F-05 18-heading skill template structure guard, F-08 adapter registry guard"
       },
       {
         "script": "npm run registry:check",
@@ -98,9 +103,9 @@
       },
       {
         "script": "npm test",
-        "command": "node --test scripts/test-phase1.mjs scripts/test-phase2.mjs scripts/test-phase3.mjs",
+        "command": "node --test scripts/test-phase1.mjs scripts/test-phase2.mjs scripts/test-phase3.mjs scripts/test-phase4.mjs",
         "status": "Passed",
-        "verifiedScope": "Unit and integration suites across Phase 1, Phase 2 / 2.1, and Phase 3 / 3.1 / 3.1.1"
+        "verifiedScope": "Unit and integration suites across Phase 1, Phase 2 / 2.1, Phase 3 / 3.1 / 3.1.1, and Phase 4"
       }
     ]
   },

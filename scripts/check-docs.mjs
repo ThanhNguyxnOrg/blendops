@@ -1,7 +1,9 @@
 #!/usr/bin/env node
 import fs from 'node:fs';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
+const __filename = fileURLToPath(import.meta.url);
 const root = process.cwd();
 const errors = [];
 const notes = [];
@@ -336,17 +338,36 @@ const requiredBundleFixture = [
   'bundles/skill-package/blendops/LICENSE.txt',
 ];
 
-const requiredSkillHeadings = [
-  '## Purpose',
-  '## When to use',
-  '## When not to use',
-  '## Trigger phrases',
-  '## Official runtime boundary',
-  '## Mode handling',
-  '## Validation checklist',
-  '## Pass / Warn / Fail rubric',
-  '## Cross-skill handoff',
+export const REQUIRED_CORE_SKILL_HEADINGS = [
+  'Purpose',
+  'When to use',
+  'When not to use',
+  'Trigger phrases',
+  'Official runtime boundary',
+  'Mode handling',
+  'Validation checklist',
+  'Pass / Warn / Fail rubric',
+  'Cross-skill handoff',
 ];
+
+export const REQUIRED_EXTENDED_SKILL_HEADINGS = [
+  'Decision tree',
+  'Playbooks',
+  'Failure handling',
+  'Troubleshooting',
+  'Best practices',
+  'Good examples',
+  'Bad examples',
+  'User-facing response template',
+  'Anti-patterns',
+];
+
+export const REQUIRED_SKILL_HEADINGS = [
+  ...REQUIRED_CORE_SKILL_HEADINGS,
+  ...REQUIRED_EXTENDED_SKILL_HEADINGS,
+];
+
+const requiredSkillHeadings = REQUIRED_SKILL_HEADINGS.map((h) => `## ${h}`);
 
 const forbiddenLegacyPatterns = [
   'blendops bridge',
@@ -683,168 +704,313 @@ function assertRelativeLinksExist(files) {
   }
 }
 
-console.log('Running docs:check...');
+export function extractNormalizedLevel2Headings(markdownText) {
+  const masked = String(markdownText || '').replace(/<!--[\s\S]*?-->/g, (comment) =>
+    comment.replace(/[^\r\n]/g, ' '),
+  );
+  const lines = masked.split(/\r?\n/);
+  const headings = [];
+  const counts = new Map();
+  const sectionBodies = new Map();
 
-for (const f of requiredRootFiles) assertExists(f, 'file');
-for (const d of requiredRootDirs) assertExists(d, 'dir');
-for (const f of requiredDocs) assertExists(f, 'file');
-for (const f of requiredSkills) assertExists(f, 'file');
-for (const f of requiredSkillEvals) assertExists(f, 'file');
-for (const f of requiredLaws) assertExists(f, 'file');
-for (const f of requiredPack) assertExists(f, 'file');
-for (const f of requiredBundleFixture) assertExists(f, 'file');
+  let inFence = false;
+  let fenceChar = '';
+  let fenceLen = 0;
+  let currentHeading = null;
+  let currentBodyLines = [];
 
-assertUploadSkillFrontmatterMinimal('bundles/skill-package/blendops/SKILL.md');
-assertSkillFrontmatterUploadLimits('bundles/skill-package/blendops/SKILL.md');
-assertSkillFrontmatterSpecCompliant('bundles/skill-package/blendops/SKILL.md');
-assertSkillFrontmatterUploadLimits('bundles/claude-desktop-manual/SKILL.md');
-assertSkillFrontmatterSpecCompliant('bundles/claude-desktop-manual/SKILL.md');
-assertOpenAiSkillYaml('bundles/skill-package/blendops/agents/openai.yaml');
-assertMissing('bundles/claude-desktop-manual/blendops', 'directory');
-assertMissing('apps', 'directory');
-assertMissing('packages', 'directory');
-assertMissing('tsconfig.base.json', 'file');
-
-for (const skillFile of requiredSkills) {
-  const txt = fs.readFileSync(path.join(root, skillFile), 'utf8');
-  for (const heading of requiredSkillHeadings) {
-    if (!txt.includes(heading)) {
-      errors.push(`Missing required heading in ${skillFile}: ${heading}`);
+  function flushCurrentSection() {
+    if (currentHeading !== null && !sectionBodies.has(currentHeading)) {
+      sectionBodies.set(currentHeading, currentBodyLines.join('\n').trim());
     }
   }
-  if (!skillFile.endsWith('/_template/SKILL.md')) {
-    assertSkillFrontmatterUploadLimits(skillFile);
-    assertSkillFrontmatterSpecCompliant(skillFile);
-  }
-}
 
-const activeMd = ['README.md', 'TODO.md'];
-walkMarkdownFiles('docs', activeMd);
-walkMarkdownFiles('skills', activeMd);
-walkMarkdownFiles('laws', activeMd);
-walkMarkdownFiles('packs', activeMd);
-walkMarkdownFiles('skill-reviews', activeMd);
-
-const docsMd = activeMd.filter((f) => f.startsWith('docs/'));
-
-for (const p of forbiddenLegacyPatterns) scanPattern(activeMd, p, 'Forbidden legacy runtime pattern');
-for (const p of forbiddenStaleDocsCollectionPatterns) {
-  scanPattern(activeMd, p, 'Forbidden stale docs collection reference');
-}
-for (const p of forbiddenDocsRelativeRootCollectionLinkPatterns) {
-  scanPattern(docsMd, p, 'Forbidden docs-relative root collection link');
-}
-for (const p of forbiddenCommunityPatterns) {
-  scanPattern(activeMd, p, 'Forbidden community runtime pattern', [unofficialBridgeDoc]);
-}
-assertContainsAll(
-  unofficialBridgeDoc,
-  requiredUnofficialBridgeDisclaimers,
-  'Unofficial bridge allowlist'
-);
-assertContainsAll(
-  'docs/runtime-stack-strategy.md',
-  requiredRuntimeStackSnippets,
-  'Runtime stack policy'
-);
-for (const policy of requiredArtifactEvidenceSnippets) {
-  assertContainsAll(policy.file, policy.snippets, 'Artifact evidence policy');
-}
-for (const policy of requiredMarketplaceSnippets) {
-  assertContainsAll(policy.file, policy.snippets, 'Marketplace/plugin policy');
-}
-assertContainsAll(
-  'docs/install/installer-spec.md',
-  requiredInstallerSpecSnippets,
-  'Future installer spec policy'
-);
-assertContainsAll(
-  'README.md',
-  requiredReadmeGuardSnippets,
-  'Root README universal prompt policy'
-);
-for (const p of forbiddenOfficialDirectMcpRoutePatterns) {
-  scanPattern(activeMd, p, 'Forbidden official direct MCP route pattern', ['docs/archive']);
-}
-
-for (const ref of requiredOfficialRefs) {
-  if (!ensureRefExists(activeMd, ref)) {
-    errors.push(`Missing required official runtime reference in active files: ${ref}`);
-  }
-}
-
-// Link existence check (catches future doc-collection moves like Phase 2.11 cleanup).
-assertRelativeLinksExist(activeMd);
-
-// The Blender 5.1+ requirement is bound to Path 1 because the Lab MCP add-on
-// inside Blender declares blender_version_min = 5.1.0. It applies to BOTH
-// Path 1 host options (Anthropic Connector and manual MCP client) — the
-// Anthropic Connector is NOT standalone. Each user-facing runtime doc must
-// state both Blender 5.1+ AND Path 1 so the floor cannot drift back to a
-// per-host claim.
-const blenderVersionRequiredFiles = [
-  'README.md',
-  'docs/external-runtime-setup.md',
-  'docs/install/claude-desktop.md',
-];
-for (const f of blenderVersionRequiredFiles) {
-  const txt = fs.readFileSync(path.join(root, f), 'utf8');
-  if (!txt.includes('Blender 5.1')) {
-    errors.push(`Missing Blender 5.1+ requirement note in ${f}`);
-  }
-  if (!txt.includes('Path 1')) {
-    errors.push(`Missing Path 1 (Blender Lab MCP) attribution for the 5.1+ requirement in ${f}`);
-  }
-  if (!txt.includes('Lab')) {
-    errors.push(`Missing Blender Lab MCP context for the 5.1+ requirement in ${f}`);
-  }
-}
-
-// Phase 1 (F-01): Enforce separation between Runtime status ('Not Run') and Artifact status ('Not Produced').
-// Schema declarations must never assign 'Not Run' to 'Artifact status:', while still permitting
-// negative examples in '## Anti-patterns' that warn against using `Artifact status: Not Run`.
-for (const skillFile of requiredSkills) {
-  const txt = fs.readFileSync(path.join(root, skillFile), 'utf8');
-  const lines = txt.split(/\r?\n/);
-  let currentHeading = '';
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
-    const hMatch = line.match(/^##\s+(.+?)\s*$/);
-    if (hMatch) {
-      currentHeading = hMatch[1].trim();
+    const fenceMatch = line.match(/^\s{0,3}(`{3,}|~{3,})/);
+    if (fenceMatch) {
+      const marker = fenceMatch[1];
+      const char = marker[0];
+      const len = marker.length;
+      if (!inFence) {
+        inFence = true;
+        fenceChar = char;
+        fenceLen = len;
+      } else if (char === fenceChar && len >= fenceLen) {
+        inFence = false;
+        fenceChar = '';
+        fenceLen = 0;
+      }
+      if (currentHeading !== null) {
+        currentBodyLines.push(line);
+      }
       continue;
     }
-    if (currentHeading === 'Anti-patterns') continue;
-    if (/^\s*(?:[-*]\s+)?Artifact status:\s*<?Not Run\b/i.test(line)) {
-      errors.push(
-        `Truth-state violation in ${skillFile}:${i + 1} ('Not Run' is a Runtime state, not an Artifact state): "${line.trim()}"`,
+
+    if (!inFence) {
+      const h2Match = line.match(/^##\s+(.+?)\s*$/);
+      if (h2Match) {
+        flushCurrentSection();
+        const normalizedTitle = h2Match[1].trim().replace(/\s+/g, ' ');
+        headings.push(normalizedTitle);
+        counts.set(normalizedTitle, (counts.get(normalizedTitle) || 0) + 1);
+        currentHeading = normalizedTitle;
+        currentBodyLines = [];
+        continue;
+      }
+    }
+
+    if (currentHeading !== null) {
+      currentBodyLines.push(line);
+    }
+  }
+
+  flushCurrentSection();
+
+  return {
+    headings,
+    counts,
+    sectionBodies,
+  };
+}
+
+export function validateSkillMarkdownStructure(
+  skillFileRel,
+  markdownText,
+  { isTemplate = false } = {},
+) {
+  const extracted = extractNormalizedLevel2Headings(markdownText);
+  const localErrors = [];
+
+  for (const title of REQUIRED_SKILL_HEADINGS) {
+    const count = extracted.counts.get(title) || 0;
+    if (count === 0) {
+      localErrors.push(`Missing required heading in ${skillFileRel}: ## ${title}`);
+    } else if (count > 1) {
+      localErrors.push(
+        `Duplicate required heading in ${skillFileRel}: ## ${title} (found ${count} times)`,
       );
     }
   }
-}
 
-// Phase 1 (F-08): Ensure docs/adapter-registry.md stays synchronized with all install targets.
-const adapterRegistryTxt = fs.readFileSync(path.join(root, 'docs/adapter-registry.md'), 'utf8');
-const futureCandidatesSectionMatch = adapterRegistryTxt.match(
-  /## Future candidates \(not researched\)([\s\S]*?)(?=\r?\n## |$)/,
-);
-if (futureCandidatesSectionMatch) {
-  const futureTxt = futureCandidatesSectionMatch[1];
-  for (const staleName of ['Windsurf', 'Continue', 'Cline', 'Roo', 'Aider']) {
-    if (new RegExp(`\\b${staleName}\\b`, 'i').test(futureTxt)) {
-      errors.push(
-        `Stale entry '${staleName}' listed under 'Future candidates (not researched)' in docs/adapter-registry.md despite shipping an install doc in docs/install/`,
-      );
+  if (!isTemplate) {
+    for (const title of REQUIRED_EXTENDED_SKILL_HEADINGS) {
+      const count = extracted.counts.get(title) || 0;
+      if (count === 1) {
+        const body = (extracted.sectionBodies.get(title) || '').trim();
+        if (body.length === 0) {
+          localErrors.push(`Empty required extended section in ${skillFileRel}: ## ${title}`);
+        }
+      }
     }
   }
+
+  return {
+    ok: localErrors.length === 0,
+    errors: localErrors,
+    headings: extracted.headings,
+    counts: extracted.counts,
+    sectionBodies: extracted.sectionBodies,
+  };
 }
 
-if (errors.length > 0) {
-  console.error('\nDocs check failed with the following issues:');
-  for (const e of errors) console.error(`- ${e}`);
-  process.exit(1);
+export function runDocsCheck(targetRoot = root) {
+  errors.length = 0;
+  notes.length = 0;
+
+  for (const f of requiredRootFiles) assertExists(f, 'file');
+  for (const d of requiredRootDirs) assertExists(d, 'dir');
+  for (const f of requiredDocs) assertExists(f, 'file');
+  for (const f of requiredSkills) assertExists(f, 'file');
+  for (const f of requiredSkillEvals) assertExists(f, 'file');
+  for (const f of requiredLaws) assertExists(f, 'file');
+  for (const f of requiredPack) assertExists(f, 'file');
+  for (const f of requiredBundleFixture) assertExists(f, 'file');
+
+  assertUploadSkillFrontmatterMinimal('bundles/skill-package/blendops/SKILL.md');
+  assertSkillFrontmatterUploadLimits('bundles/skill-package/blendops/SKILL.md');
+  assertSkillFrontmatterSpecCompliant('bundles/skill-package/blendops/SKILL.md');
+  assertSkillFrontmatterUploadLimits('bundles/claude-desktop-manual/SKILL.md');
+  assertSkillFrontmatterSpecCompliant('bundles/claude-desktop-manual/SKILL.md');
+  assertOpenAiSkillYaml('bundles/skill-package/blendops/agents/openai.yaml');
+  assertMissing('bundles/claude-desktop-manual/blendops', 'directory');
+  assertMissing('apps', 'directory');
+  assertMissing('packages', 'directory');
+  assertMissing('tsconfig.base.json', 'file');
+
+  const expectedCatalogSkillPaths = requiredSkills
+    .filter((s) => !s.endsWith('/_template/SKILL.md'))
+    .slice()
+    .sort();
+  const discoveredCatalogSkillPaths = fs
+    .readdirSync(path.join(targetRoot, 'skills'), { withFileTypes: true })
+    .filter((d) => d.isDirectory() && d.name !== '_template')
+    .map((d) => `skills/${d.name}/SKILL.md`)
+    .filter((rel) => fs.existsSync(path.join(targetRoot, rel)))
+    .sort();
+
+  for (const discovered of discoveredCatalogSkillPaths) {
+    if (!expectedCatalogSkillPaths.includes(discovered)) {
+      errors.push(`Unregistered catalog skill directory on disk: ${discovered}`);
+    }
+  }
+
+  for (const skillFile of requiredSkills) {
+    const absSkillPath = path.join(targetRoot, skillFile);
+    if (!fs.existsSync(absSkillPath)) continue;
+    const txt = fs.readFileSync(absSkillPath, 'utf8');
+    const isTemplate = skillFile.endsWith('/_template/SKILL.md');
+    const structRes = validateSkillMarkdownStructure(skillFile, txt, { isTemplate });
+    for (const err of structRes.errors) {
+      errors.push(err);
+    }
+    if (!isTemplate) {
+      assertSkillFrontmatterUploadLimits(skillFile);
+      assertSkillFrontmatterSpecCompliant(skillFile);
+    }
+  }
+
+  const activeMd = ['README.md', 'TODO.md'];
+  walkMarkdownFiles('docs', activeMd);
+  walkMarkdownFiles('skills', activeMd);
+  walkMarkdownFiles('laws', activeMd);
+  walkMarkdownFiles('packs', activeMd);
+  walkMarkdownFiles('skill-reviews', activeMd);
+
+  const docsMd = activeMd.filter((f) => f.startsWith('docs/'));
+
+  for (const p of forbiddenLegacyPatterns) scanPattern(activeMd, p, 'Forbidden legacy runtime pattern');
+  for (const p of forbiddenStaleDocsCollectionPatterns) {
+    scanPattern(activeMd, p, 'Forbidden stale docs collection reference');
+  }
+  for (const p of forbiddenDocsRelativeRootCollectionLinkPatterns) {
+    scanPattern(docsMd, p, 'Forbidden docs-relative root collection link');
+  }
+  for (const p of forbiddenCommunityPatterns) {
+    scanPattern(activeMd, p, 'Forbidden community runtime pattern', [unofficialBridgeDoc]);
+  }
+  assertContainsAll(
+    unofficialBridgeDoc,
+    requiredUnofficialBridgeDisclaimers,
+    'Unofficial bridge allowlist',
+  );
+  assertContainsAll(
+    'docs/runtime-stack-strategy.md',
+    requiredRuntimeStackSnippets,
+    'Runtime stack policy',
+  );
+  for (const policy of requiredArtifactEvidenceSnippets) {
+    assertContainsAll(policy.file, policy.snippets, 'Artifact evidence policy');
+  }
+  for (const policy of requiredMarketplaceSnippets) {
+    assertContainsAll(policy.file, policy.snippets, 'Marketplace/plugin policy');
+  }
+  assertContainsAll(
+    'docs/install/installer-spec.md',
+    requiredInstallerSpecSnippets,
+    'Future installer spec policy',
+  );
+  assertContainsAll(
+    'README.md',
+    requiredReadmeGuardSnippets,
+    'Root README universal prompt policy',
+  );
+  for (const p of forbiddenOfficialDirectMcpRoutePatterns) {
+    scanPattern(activeMd, p, 'Forbidden official direct MCP route pattern', ['docs/archive']);
+  }
+
+  for (const ref of requiredOfficialRefs) {
+    if (!ensureRefExists(activeMd, ref)) {
+      errors.push(`Missing required official runtime reference in active files: ${ref}`);
+    }
+  }
+
+  // Link existence check (catches future doc-collection moves like Phase 2.11 cleanup).
+  assertRelativeLinksExist(activeMd);
+
+  // The Blender 5.1+ requirement is bound to Path 1 because the Lab MCP add-on
+  // inside Blender declares blender_version_min = 5.1.0. It applies to BOTH
+  // Path 1 host options (Anthropic Connector and manual MCP client) — the
+  // Anthropic Connector is NOT standalone. Each user-facing runtime doc must
+  // state both Blender 5.1+ AND Path 1 so the floor cannot drift back to a
+  // per-host claim.
+  const blenderVersionRequiredFiles = [
+    'README.md',
+    'docs/external-runtime-setup.md',
+    'docs/install/claude-desktop.md',
+  ];
+  for (const f of blenderVersionRequiredFiles) {
+    const txt = fs.readFileSync(path.join(targetRoot, f), 'utf8');
+    if (!txt.includes('Blender 5.1')) {
+      errors.push(`Missing Blender 5.1+ requirement note in ${f}`);
+    }
+    if (!txt.includes('Path 1')) {
+      errors.push(`Missing Path 1 (Blender Lab MCP) attribution for the 5.1+ requirement in ${f}`);
+    }
+    if (!txt.includes('Lab')) {
+      errors.push(`Missing Blender Lab MCP context for the 5.1+ requirement in ${f}`);
+    }
+  }
+
+  // Phase 1 (F-01): Enforce separation between Runtime status ('Not Run') and Artifact status ('Not Produced').
+  // Schema declarations must never assign 'Not Run' to 'Artifact status:', while still permitting
+  // negative examples in '## Anti-patterns' that warn against using `Artifact status: Not Run`.
+  for (const skillFile of requiredSkills) {
+    const txt = fs.readFileSync(path.join(targetRoot, skillFile), 'utf8');
+    const lines = txt.split(/\r?\n/);
+    let currentHeading = '';
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i];
+      const hMatch = line.match(/^##\s+(.+?)\s*$/);
+      if (hMatch) {
+        currentHeading = hMatch[1].trim();
+        continue;
+      }
+      if (currentHeading === 'Anti-patterns') continue;
+      if (/^\s*(?:[-*]\s+)?Artifact status:\s*<?Not Run\b/i.test(line)) {
+        errors.push(
+          `Truth-state violation in ${skillFile}:${i + 1} ('Not Run' is a Runtime state, not an Artifact state): "${line.trim()}"`,
+        );
+      }
+    }
+  }
+
+  // Phase 1 (F-08): Ensure docs/adapter-registry.md stays synchronized with all install targets.
+  const adapterRegistryTxt = fs.readFileSync(
+    path.join(targetRoot, 'docs/adapter-registry.md'),
+    'utf8',
+  );
+  const futureCandidatesSectionMatch = adapterRegistryTxt.match(
+    /## Future candidates \(not researched\)([\s\S]*?)(?=\r?\n## |$)/,
+  );
+  if (futureCandidatesSectionMatch) {
+    const futureTxt = futureCandidatesSectionMatch[1];
+    for (const staleName of ['Windsurf', 'Continue', 'Cline', 'Roo', 'Aider']) {
+      if (new RegExp(`\\b${staleName}\\b`, 'i').test(futureTxt)) {
+        errors.push(
+          `Stale entry '${staleName}' listed under 'Future candidates (not researched)' in docs/adapter-registry.md despite shipping an install doc in docs/install/`,
+        );
+      }
+    }
+  }
+
+  return {
+    ok: errors.length === 0,
+    errors: [...errors],
+    activeMarkdownCount: activeMd.length,
+    catalogSkillCount: discoveredCatalogSkillPaths.length,
+  };
 }
 
-console.log('docs:check passed');
-console.log(`Checked ${activeMd.length} active markdown files (docs/archive excluded).`);
-process.exit(0);
+if (process.argv[1] && path.resolve(process.argv[1]) === __filename) {
+  console.log('Running docs:check...');
+  const res = runDocsCheck(root);
+  if (!res.ok) {
+    console.error('\nDocs check failed with the following issues:');
+    for (const e of res.errors) console.error(`- ${e}`);
+    process.exit(1);
+  }
+  console.log('docs:check passed');
+  console.log(`Checked ${res.activeMarkdownCount} active markdown files (docs/archive excluded).`);
+  process.exit(0);
+}

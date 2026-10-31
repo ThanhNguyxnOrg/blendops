@@ -170,7 +170,7 @@ Every active skill ships with both `SKILL.md` (operating contract) and `EVAL.md`
 
 ## How to add a new skill
 
-1. Start from `skills/_template/SKILL.md`.
+1. Start from `skills/_template/SKILL.md` and include all 18 required level-2 (`## `) sections enforced by `scripts/check-docs.mjs` (9 core sections: `Purpose`, `When to use`, `When not to use`, `Trigger phrases`, `Official runtime boundary`, `Mode handling`, `Validation checklist`, `Pass / Warn / Fail rubric`, `Cross-skill handoff`; plus 9 extended sections: `Decision tree`, `Playbooks`, `Failure handling`, `Troubleshooting`, `Best practices`, `Good examples`, `Bad examples`, `User-facing response template`, `Anti-patterns`).
 2. Keep the skill narrow and composable.
 3. Add precise trigger and skip conditions.
 4. Link required laws and runtime docs.
@@ -184,11 +184,12 @@ Every active skill ships with both `SKILL.md` (operating contract) and `EVAL.md`
 
 ## Quality checklist
 
-- [ ] Skill has clear frontmatter and a concise description.
+- [ ] Skill has clear frontmatter (`name` <= 64 chars, `description` <= 200 chars, no extra keys).
+- [ ] All 9 core and 9 extended template sections from `skills/_template/SKILL.md` are present with substantive, role-specific guidance and zero duplicate headings.
 - [ ] Trigger conditions are specific.
 - [ ] “When not to use” prevents overreach.
 - [ ] Runtime stack requirements are explicit.
-- [ ] Evidence requirements are concrete.
+- [ ] Evidence requirements are concrete (`Runtime status` uses `Not Run` default; `Artifact status` uses `Not Produced` default).
 - [ ] Output contract is easy to verify.
 - [ ] Handoff points name the next skill/doc.
 - [ ] No runtime or artifact success claim appears without evidence.

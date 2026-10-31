@@ -1,28 +1,28 @@
 {
-  "schemaVersion": "1.1.0",
-  "auditPhase": "phase-3.1-current",
+  "schemaVersion": "1.2.0",
+  "auditPhase": "phase-4-current",
   "repository": "ThanhNguyxnOrg/blendops",
   "branch": "main",
   "baselineCommitSha": "3ea3c35c6b8a6e5e915bab9f63333d4a1c09bd4d",
-  "sourceCommitSha": "650f0a5979f1d6b9fea94a0e6378988ef1ab544e",
-  "sourceCommitShort": "650f0a5",
-  "sourceCommitDate": "2026-10-31 06:38:05 +0000",
+  "sourceCommitSha": "51f76d98d16deef4ed9d8d5991ff59c55ce1d27e",
+  "sourceCommitShort": "51f76d9",
+  "sourceCommitDate": "2026-10-31 06:57:27 +0000",
   "auditProvenance": {
-    "sourceCommitSha": "650f0a5979f1d6b9fea94a0e6378988ef1ab544e",
-    "sourceCommitShort": "650f0a5",
-    "sourceCommitDate": "2026-10-31 06:38:05 +0000",
+    "sourceCommitSha": "51f76d98d16deef4ed9d8d5991ff59c55ce1d27e",
+    "sourceCommitShort": "51f76d9",
+    "sourceCommitDate": "2026-10-31 06:57:27 +0000",
     "workingTreeState": "dirty",
     "snapshotBasis": "working-tree-on-top-of-source-commit",
-    "uncommittedChangeCount": 4,
-    "auditedInputsSha256": "c1da96d3a5d6e624822805e510c713656e59e8b01dce62801faeaeb9dda7d4b0",
+    "uncommittedChangeCount": 16,
+    "auditedInputsSha256": "cead5f292dae2594106ad742e135bb01f0b53a95a7aaf9f6f13d2a7c46b9db1c",
     "selfReferentialCommitRule": "A Git commit cannot contain its own final commit SHA inside tracked files. sourceCommitSha records the verified HEAD commit present when the generator ran, workingTreeState and snapshotBasis record whether uncommitted working-tree changes were present on top of sourceCommitSha, and auditedInputsSha256 digests the exact audited file contents."
   },
   "summary": {
     "totalFindings": 10,
     "statusBreakdown": {
-      "FIXED": 3,
+      "FIXED": 4,
       "PARTIALLY_FIXED": 3,
-      "OPEN": 3,
+      "OPEN": 2,
       "DEFERRED": 1,
       "REGRESSION": 0,
       "NOT_APPLICABLE": 0,
@@ -39,7 +39,7 @@
       "phase0BaselineState": "OPEN (30/48 skills affected at 3ea3c35)",
       "currentLifecycleStatus": "FIXED",
       "resolvedInPhase": "Phase 1 (ac1ccdb)",
-      "lastVerifiedCommit": "650f0a5979f1d6b9fea94a0e6378988ef1ab544e",
+      "lastVerifiedCommit": "51f76d98d16deef4ed9d8d5991ff59c55ce1d27e",
       "evidencePaths": [
         "scripts/check-docs.mjs",
         "scripts/test-phase1.mjs",
@@ -47,7 +47,7 @@
         "schemas/skill-eval.schema.json",
         "docs/audits/current/skill-inventory.json"
       ],
-      "verificationMethod": "Automated scan in scripts/check-docs.mjs (lines 806-824) and unit test in scripts/test-phase1.mjs confirm 0/48 skills assign Not Run to Artifact status outside Anti-patterns.",
+      "verificationMethod": "Automated scan in scripts/check-docs.mjs and unit test in scripts/test-phase1.mjs confirm 0/48 skills assign Not Run to Artifact status outside Anti-patterns.",
       "remainingScope": "None. Guarded in CI on every commit."
     },
     {
@@ -58,7 +58,7 @@
       "phase0BaselineState": "OPEN (spawnSync zip ENOENT on minimal Linux; CI skipped export)",
       "currentLifecycleStatus": "FIXED",
       "resolvedInPhase": "Phase 1 (ac1ccdb) + Phase 2.1 (b1927ba)",
-      "lastVerifiedCommit": "650f0a5979f1d6b9fea94a0e6378988ef1ab544e",
+      "lastVerifiedCommit": "51f76d98d16deef4ed9d8d5991ff59c55ce1d27e",
       "evidencePaths": [
         "scripts/export-claude-skills.mjs",
         "scripts/test-phase1.mjs",
@@ -76,7 +76,7 @@
       "phase0BaselineState": "OPEN (0/48 contracts, no registry/, split handoff notation)",
       "currentLifecycleStatus": "PARTIALLY_FIXED",
       "resolvedInPhase": "Phase 2 Pilot (f43385a) + Phase 2.1 Hardening (b1927ba)",
-      "lastVerifiedCommit": "650f0a5979f1d6b9fea94a0e6378988ef1ab544e",
+      "lastVerifiedCommit": "51f76d98d16deef4ed9d8d5991ff59c55ce1d27e",
       "evidencePaths": [
         "schemas/skill-contract.schema.json",
         "scripts/build-registry.mjs",
@@ -98,8 +98,8 @@
       "pillar": "Pillar 3 (Behavioral Evaluation)",
       "phase0BaselineState": "OPEN (0 automated runners; 8/48 structured EVAL.md tables; 40/48 prose-only)",
       "currentLifecycleStatus": "PARTIALLY_FIXED",
-      "resolvedInPhase": "Phase 3 Foundation (650f0a5)",
-      "lastVerifiedCommit": "650f0a5979f1d6b9fea94a0e6378988ef1ab544e",
+      "resolvedInPhase": "Phase 3 Foundation (88dc3bd) + Phase 3.1 (650f0a5)",
+      "lastVerifiedCommit": "51f76d98d16deef4ed9d8d5991ff59c55ce1d27e",
       "evidencePaths": [
         "schemas/skill-eval.schema.json",
         "scripts/run-evals.mjs",
@@ -116,15 +116,25 @@
       "severity": "P1",
       "pillar": "Pillar 1 (Template Completeness)",
       "phase0BaselineState": "OPEN (8/48 skills missing Decision tree, Playbooks, Failure handling, Troubleshooting, Best practices, Good/Bad examples, User-facing response template, Anti-patterns)",
-      "currentLifecycleStatus": "OPEN",
-      "resolvedInPhase": "Pending Phase 4 catalog expansion",
-      "lastVerifiedCommit": "650f0a5979f1d6b9fea94a0e6378988ef1ab544e",
+      "currentLifecycleStatus": "FIXED",
+      "resolvedInPhase": "Phase 4",
+      "lastVerifiedCommit": "51f76d98d16deef4ed9d8d5991ff59c55ce1d27e",
       "evidencePaths": [
         "skills/_template/SKILL.md",
-        "docs/audits/current/skill-inventory.json"
+        "scripts/check-docs.mjs",
+        "scripts/test-phase4.mjs",
+        "docs/audits/current/skill-inventory.json",
+        "skills/acceptance-criteria-builder/SKILL.md",
+        "skills/cli-appendix-job-outline/SKILL.md",
+        "skills/pack-prerequisite-checker/SKILL.md",
+        "skills/path-one-host-outline/SKILL.md",
+        "skills/recipe-fit-assessor/SKILL.md",
+        "skills/runtime-attempt-report-writer/SKILL.md",
+        "skills/runtime-path-picker/SKILL.md",
+        "skills/workflow-stage-router/SKILL.md"
       ],
-      "verificationMethod": "Measured in docs/audits/current/skill-inventory.json (skillsMissingExtendedTemplateSections = 8).",
-      "remainingScope": "Backfill the missing extended template sections in the 8 Batch 7/8 skills and tighten requiredSkillHeadings in scripts/check-docs.mjs."
+      "verificationMethod": "Enforced across all 48 catalog skills by validateSkillMarkdownStructure in scripts/check-docs.mjs (18 required headings: 9 core + 9 extended), verified in scripts/test-phase4.mjs, and measured in docs/audits/current/skill-inventory.json (skillsMissingExtendedTemplateSections = 0, totalMissingExtendedSectionInstances = 0).",
+      "remainingScope": "None. All 48 catalog skills contain all 9 extended template sections and Non-goals."
     },
     {
       "id": "F-06",
@@ -134,7 +144,7 @@
       "phase0BaselineState": "OPEN (blendops-help omitted Batch 7 routing quartet; blender-scope-boundary-enforcer had 0 incoming forward edges)",
       "currentLifecycleStatus": "FIXED",
       "resolvedInPhase": "Phase 2 Pilot (f43385a)",
-      "lastVerifiedCommit": "650f0a5979f1d6b9fea94a0e6378988ef1ab544e",
+      "lastVerifiedCommit": "51f76d98d16deef4ed9d8d5991ff59c55ce1d27e",
       "evidencePaths": [
         "skills/blendops-help/contract.json",
         "skills/blendops-help/SKILL.md",
@@ -153,7 +163,7 @@
       "phase0BaselineState": "OPEN (no inspect-glb.mjs or version matrices)",
       "currentLifecycleStatus": "OPEN",
       "resolvedInPhase": "Planned in Roadmap E1 & E2 (docs/audits/phase-3/README.md)",
-      "lastVerifiedCommit": "650f0a5979f1d6b9fea94a0e6378988ef1ab544e",
+      "lastVerifiedCommit": "51f76d98d16deef4ed9d8d5991ff59c55ce1d27e",
       "evidencePaths": [
         "docs/audits/phase-3/README.md"
       ],
@@ -168,7 +178,7 @@
       "phase0BaselineState": "OPEN (Windsurf, Continue, Cline, Roo, Aider listed as not researched; 10 targets missing from install-only table)",
       "currentLifecycleStatus": "PARTIALLY_FIXED",
       "resolvedInPhase": "Phase 1 (ac1ccdb)",
-      "lastVerifiedCommit": "650f0a5979f1d6b9fea94a0e6378988ef1ab544e",
+      "lastVerifiedCommit": "51f76d98d16deef4ed9d8d5991ff59c55ce1d27e",
       "evidencePaths": [
         "docs/adapter-registry.md",
         "scripts/check-docs.mjs",
@@ -185,7 +195,7 @@
       "phase0BaselineState": "OPEN (96 manual summary files in bundles/ average 14 lines vs 225 lines in SKILL.md)",
       "currentLifecycleStatus": "DEFERRED",
       "resolvedInPhase": "Deferred until 48/48 skill contracts are authored",
-      "lastVerifiedCommit": "650f0a5979f1d6b9fea94a0e6378988ef1ab544e",
+      "lastVerifiedCommit": "51f76d98d16deef4ed9d8d5991ff59c55ce1d27e",
       "evidencePaths": [
         "bundles/claude-desktop-manual/",
         "bundles/skill-package/blendops/"
@@ -201,7 +211,7 @@
       "phase0BaselineState": "OPEN (only file-install ROLLBACK.md exists; no L0-L3 runtime capability model)",
       "currentLifecycleStatus": "OPEN",
       "resolvedInPhase": "Planned in Roadmap E3 (docs/audits/phase-3/README.md)",
-      "lastVerifiedCommit": "650f0a5979f1d6b9fea94a0e6378988ef1ab544e",
+      "lastVerifiedCommit": "51f76d98d16deef4ed9d8d5991ff59c55ce1d27e",
       "evidencePaths": [
         "bundles/generic-project-local/ROLLBACK.md",
         "docs/audits/phase-3/README.md"

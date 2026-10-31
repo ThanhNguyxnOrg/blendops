@@ -1,20 +1,20 @@
 {
-  "schemaVersion": "1.2.0",
-  "auditPhase": "phase-3.1-current",
+  "schemaVersion": "1.3.0",
+  "auditPhase": "phase-4-current",
   "status": "reconciled-current-state",
   "repository": "ThanhNguyxnOrg/blendops",
   "branch": "main",
-  "sourceCommitSha": "650f0a5979f1d6b9fea94a0e6378988ef1ab544e",
-  "sourceCommitShort": "650f0a5",
-  "sourceCommitDate": "2026-10-31 06:38:05 +0000",
+  "sourceCommitSha": "51f76d98d16deef4ed9d8d5991ff59c55ce1d27e",
+  "sourceCommitShort": "51f76d9",
+  "sourceCommitDate": "2026-10-31 06:57:27 +0000",
   "auditProvenance": {
-    "sourceCommitSha": "650f0a5979f1d6b9fea94a0e6378988ef1ab544e",
-    "sourceCommitShort": "650f0a5",
-    "sourceCommitDate": "2026-10-31 06:38:05 +0000",
+    "sourceCommitSha": "51f76d98d16deef4ed9d8d5991ff59c55ce1d27e",
+    "sourceCommitShort": "51f76d9",
+    "sourceCommitDate": "2026-10-31 06:57:27 +0000",
     "workingTreeState": "dirty",
     "snapshotBasis": "working-tree-on-top-of-source-commit",
-    "uncommittedChangeCount": 4,
-    "auditedInputsSha256": "c1da96d3a5d6e624822805e510c713656e59e8b01dce62801faeaeb9dda7d4b0",
+    "uncommittedChangeCount": 16,
+    "auditedInputsSha256": "cead5f292dae2594106ad742e135bb01f0b53a95a7aaf9f6f13d2a7c46b9db1c",
     "selfReferentialCommitRule": "A Git commit cannot contain its own final commit SHA inside tracked files. sourceCommitSha records the verified HEAD commit present when the generator ran, workingTreeState and snapshotBasis record whether uncommitted working-tree changes were present on top of sourceCommitSha, and auditedInputsSha256 digests the exact audited file contents."
   },
   "historicalBaseline": {
@@ -26,7 +26,7 @@
     "note": "Historical Phase 0 Baseline — Not Current. Preserved immutably for audit provenance."
   },
   "methodology": {
-    "scoringPrinciple": "Every point increase from the 54.5/100 Phase 0 baseline is backed by committed code, schemas, and automated CI tests in Phases 1, 2, 2.1, and 3. Unimplemented capabilities (44 uncontracted skills, 36 unmigrated prose evals, unrun live LLM/Blender runtime evaluations, and open E1-E4 roadmap items) receive 0 inflation.",
+    "scoringPrinciple": "Every point increase from the 54.5/100 Phase 0 baseline is backed by committed code, schemas, and automated CI tests in Phases 1, 2, 2.1, 3, 3.1, 3.1.1, and 4. Unimplemented capabilities (44 uncontracted skills, 36 unmigrated prose evals, unrun live LLM/Blender runtime evaluations, and open E1-E4 roadmap items) receive 0 inflation.",
     "zeroCompensationGate": "All three Phase 0 P0 zero-compensation blockers (F-01 truth-state contradiction, F-02 non-portable ZIP exporter/CI gap, and F-04 zero automated evaluation runner) have been resolved or mitigated with deterministic CI runners.",
     "activeZeroCompensationBlockers": [],
     "resolvedZeroCompensationBlockers": [
@@ -37,8 +37,8 @@
   },
   "totals": {
     "historicalBaselineScore": 54.5,
-    "measuredScore": 70,
-    "scoreDelta": "+15.5",
+    "measuredScore": 71,
+    "scoreDelta": "+16.5",
     "maxPossibleScore": 100,
     "verified10of10Eligible": false
   },
@@ -48,13 +48,14 @@
       "name": "Skill Quality & Contracts",
       "weight": 15,
       "historicalScore": 10.5,
-      "measuredScore": 13,
+      "measuredScore": 14,
       "verdict": "Pass",
       "evidenceFiles": [
         "docs/audits/current/skill-inventory.json",
         "schemas/skill-contract.schema.json",
         "registry/skills.json",
-        "scripts/check-docs.mjs"
+        "scripts/check-docs.mjs",
+        "scripts/test-phase4.mjs"
       ],
       "criteria": [
         {
@@ -69,9 +70,9 @@
           "id": "p1-c2",
           "description": "All 48 skills contain complete template sections and consistent truth-state definitions",
           "maxPoints": 4,
-          "awardedPoints": 3,
-          "status": "Warn",
-          "evidence": "F-01 FIXED: 48/48 skills now strictly separate Runtime status (Not Run) from Artifact status (Not Produced). F-05 OPEN: 8 Batch 7/8 skills still omit 9-11 extended template sections."
+          "awardedPoints": 4,
+          "status": "Pass",
+          "evidence": "F-01 FIXED & F-05 FIXED: 48/48 skills strictly separate Runtime status (Not Run) from Artifact status (Not Produced) and include all 9 core + 9 extended template sections enforced by scripts/check-docs.mjs and scripts/test-phase4.mjs."
         },
         {
           "id": "p1-c3",

@@ -9,7 +9,7 @@ const root = process.cwd();
 const port = Number(process.env.PORT || 3000);
 const phase0Dir = path.join(root, 'docs', 'audits', 'phase-0');
 const currentDir = path.join(root, 'docs', 'audits', 'current');
-const bundlePath = '/tmp/blendops-phase-3-1-1.bundle';
+const bundlePath = '/tmp/blendops-phase-4.bundle';
 
 function loadJsonFrom(dir, filename) {
   const full = path.join(dir, filename);
@@ -234,7 +234,8 @@ function renderHtml() {
       <span class="badge" style="color:var(--blue)">phase-2.1: b1927ba</span>
       <span class="badge" style="color:var(--blue)">phase-3: 88dc3bd</span>
       <span class="badge" style="color:var(--blue)">phase-3.1: 650f0a5</span>
-      <span class="badge" style="color:var(--green)">phase-3.1.1 (source: ${currentCommitShort} &middot; ${auditProv ? auditProv.snapshotBasis : 'verified'}): ${currentScorecard ? currentScorecard.totals.measuredScore : 70.0}/100 &middot; CI PASS</span>
+      <span class="badge" style="color:var(--blue)">phase-3.1.1: 51f76d9</span>
+      <span class="badge" style="color:var(--green)">phase-4 (source: ${currentCommitShort} &middot; ${auditProv ? auditProv.snapshotBasis : 'verified'}): ${currentScorecard ? currentScorecard.totals.measuredScore : 71.0}/100 &middot; CI PASS</span>
     </div>
   </header>
   <main>
@@ -245,7 +246,7 @@ function renderHtml() {
         <div>
           <div style="font-size:12px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:0.05em;">Verified Binary Git Bundle Ready (In-Memory Export — Zero Proxy)</div>
           <div class="mono" style="font-size:13px;margin-top:6px;">
-            File: <strong>blendops-phase-3-1-1.bundle</strong> &middot;
+            File: <strong>blendops-phase-4.bundle</strong> &middot;
             Size: <strong>${bundle.size.toLocaleString()} bytes</strong> &middot;
             Header: <strong>${bundle.header}</strong> &middot;
             SHA-256: <strong>${bundle.sha256}</strong>
@@ -456,7 +457,7 @@ function renderHtml() {
       try {
         if (window.showSaveFilePicker) {
           var handle = await window.showSaveFilePicker({
-            suggestedName: 'blendops-phase-3-1-1.bundle',
+            suggestedName: 'blendops-phase-4.bundle',
             types: [{ description: 'Git v2 Bundle', accept: { 'application/octet-stream': ['.bundle'] } }]
           });
           var writable = await handle.createWritable();
@@ -473,7 +474,7 @@ function renderHtml() {
       var url = URL.createObjectURL(blob);
       var a = document.createElement('a');
       a.href = url;
-      a.download = 'blendops-phase-3-1-1.bundle';
+      a.download = 'blendops-phase-4.bundle';
       document.body.appendChild(a);
       a.click();
       setTimeout(function () {
@@ -489,7 +490,7 @@ function renderHtml() {
       if (!el) return;
       await navigator.clipboard.writeText(el.value.trim());
       status.style.display = 'block';
-      status.textContent = 'Copied Base64 payload to clipboard! Run in PowerShell: [IO.File]::WriteAllBytes("blendops-phase-3-1-1.bundle", [Convert]::FromBase64String((Get-Clipboard)))';
+      status.textContent = 'Copied Base64 payload to clipboard! Run in PowerShell: [IO.File]::WriteAllBytes("blendops-phase-4.bundle", [Convert]::FromBase64String((Get-Clipboard)))';
     }
   </script>
 </body>
