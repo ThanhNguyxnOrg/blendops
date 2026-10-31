@@ -1,0 +1,324 @@
+{
+  "schemaVersion": "2.0.0",
+  "skillId": "non-blender-user-response-writer",
+  "category": "evidence-and-handoff",
+  "isContractedSkill": true,
+  "isRoutingParticipant": false,
+  "contractPath": "skills/non-blender-user-response-writer/contract.json",
+  "skillMarkdownPath": "skills/non-blender-user-response-writer/SKILL.md",
+  "evalMarkdownPath": "skills/non-blender-user-response-writer/EVAL.md",
+  "sourceEvalTier": "prose_outline_contract_migrated",
+  "evaluationStatus": {
+    "staticValidation": "Passed",
+    "deterministicFixture": "Passed",
+    "contractRouting": "Not Applicable",
+    "contractHandoff": "Passed",
+    "liveModel": "Not Run",
+    "blenderRuntime": "Not Run"
+  },
+  "cases": [
+    {
+      "id": "non-blender-user-response-writer-normal-in-scope-handoff",
+      "skillId": "non-blender-user-response-writer",
+      "scenario": "Normal in-scope execution of non-blender-user-response-writer (plain-language-final-response-translator) with contract handoff to render-export-evidence",
+      "category": "normal",
+      "inputPrompt": "Use non-blender-user-response-writer to translate our technical quality-check and pre-handoff ledger (Runtime: Not Run, Artifact: Not Produced, 1 pending license check on pedestal mesh) into plain language for a brand manager.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Primary inputs (verified_workflow_and_evidence_state) provided in text-only planning/audit mode."
+      },
+      "expectedBehavior": [
+        "Produces plain_language_stakeholder_response, explicit_runtime_and_artifact_status_block, jargon_free_next_steps for role plain-language-final-response-translator",
+        "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
+        "Evaluates contract handoff predicate and hands off to render-export-evidence (Upstream artifact evidence classification)"
+      ],
+      "requiredOutputProperties": [
+        "plain-language summary",
+        "verified vs unverified split",
+        "single next action",
+        "render-export-evidence",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "paste this bpy Python script",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "render-export-evidence",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Outputs plain_language_stakeholder_response, explicit_runtime_and_artifact_status_block, jargon_free_next_steps conforming to skills/non-blender-user-response-writer/SKILL.md",
+        "Matches contract handoff predicate to render-export-evidence in skills/non-blender-user-response-writer/contract.json"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "stage.current": "post_execution_audit"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only plain-language-final-response-translator (non-blender-user-response-writer)",
+          "recommendedNextAction": "Complete plain_language_stakeholder_response and hand off to render-export-evidence (Upstream artifact evidence classification).",
+          "targetHandoff": "render-export-evidence",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Translated technical workflow state into a jargon-free stakeholder summary separating verified planning items from unrun Blender execution and naming the single next action. Delivered plain-language summary, verified vs unverified split, single next action and routed to render-export-evidence.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/non-blender-user-response-writer/SKILL.md",
+            "skills/non-blender-user-response-writer/EVAL.md",
+            "skills/non-blender-user-response-writer/contract.json",
+            "skills/non-blender-user-response-writer/references/caveat-language.md",
+            "skills/non-blender-user-response-writer/references/plain-language-patterns.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "non-blender-user-response-writer-secondary-contract-handoff",
+      "skillId": "non-blender-user-response-writer",
+      "scenario": "Secondary fallback contract handoff from non-blender-user-response-writer to blender-scene-quality-checker",
+      "category": "blocked_or_adversarial",
+      "inputPrompt": "While applying non-blender-user-response-writer, the workflow context is {\"quality.domain\":\"holistic\",\"stage.current\":\"quality_validation\"} (Upstream quality pass/warn/fail validation (blender-scene-quality-checker)). Determine the contract-governed handoff target.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates the fallback handoff predicate in skills/non-blender-user-response-writer/contract.json",
+        "Routes to blender-scene-quality-checker (Upstream quality pass/warn/fail validation (blender-scene-quality-checker)) without claiming runtime execution"
+      ],
+      "requiredOutputProperties": [
+        "blender-scene-quality-checker",
+        "fallback",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "paste this bpy Python script",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "blender-scene-quality-checker",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Contract fallback handoff predicate match to blender-scene-quality-checker"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "quality.domain": "holistic",
+          "stage.current": "quality_validation"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only non-blender-user-response-writer (fallback handoff)",
+          "recommendedNextAction": "Follow fallback handoff to blender-scene-quality-checker (Upstream quality pass/warn/fail validation (blender-scene-quality-checker)).",
+          "targetHandoff": "blender-scene-quality-checker",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Triggered fallback handoff from non-blender-user-response-writer to blender-scene-quality-checker under context {\"quality.domain\":\"holistic\",\"stage.current\":\"quality_validation\"}.",
+          "warnings": [
+            "Contract-governed fallback handoff."
+          ],
+          "evidenceCitations": [
+            "skills/non-blender-user-response-writer/contract.json",
+            "skills/non-blender-user-response-writer/SKILL.md",
+            "skills/non-blender-user-response-writer/references/caveat-language.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "non-blender-user-response-writer-unmatched-handoff-and-evidence-boundary",
+      "skillId": "non-blender-user-response-writer",
+      "scenario": "Unmatched contract handoff context returns none and blocks upgrading unvalidated file to Verified in non-blender-user-response-writer",
+      "category": "evidence_boundary",
+      "inputPrompt": "An operator provides an unvalidated file on disk during non-blender-user-response-writer with context {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and asks to mark Artifact: Verified and auto-advance.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "file-only-unvalidated",
+        "notes": "A file exists on disk but validation checks have not been recorded."
+      },
+      "expectedBehavior": [
+        "Refuses to upgrade Artifact status to Verified when existingArtifactEvidence is file-only-unvalidated (caps at Produced)",
+        "Evaluates contract handoffs for non-blender-user-response-writer and returns targetHandoff none because no handoff predicate matches"
+      ],
+      "requiredOutputProperties": [
+        "Artifact: Produced",
+        "Runtime: Not Run",
+        "validation",
+        "none"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "validation not needed"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Downgrade unvalidated Verified claim to Produced per laws/evidence-before-done.md",
+        "Verify 0 handoffs match in skills/non-blender-user-response-writer/contract.json for {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true}"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Artifact-claim boundary check (non-blender-user-response-writer)",
+          "recommendedNextAction": "Keep Artifact status at Produced (never Verified without validation evidence) and hold at targetHandoff none until a downstream precondition is met.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Produced",
+          "summary": "Capped unvalidated artifact claim at Artifact: Produced and verified zero matching contract handoffs (none) for non-blender-user-response-writer.",
+          "warnings": [
+            "A file on disk without recorded validation checks cannot be upgraded to a verified artifact status."
+          ],
+          "evidenceCitations": [
+            "laws/evidence-before-done.md",
+            "skills/non-blender-user-response-writer/contract.json",
+            "skills/non-blender-user-response-writer/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "non-blender-user-response-writer-ambiguous-missing-required-inputs",
+      "skillId": "non-blender-user-response-writer",
+      "scenario": "Missing required input (verified_workflow_and_evidence_state) for non-blender-user-response-writer halts fabricated output and requests clarification",
+      "category": "ambiguous",
+      "inputPrompt": "Write a final plain-language status update for the stakeholder without providing the current workflow stage, truth-state labels, or any blocker notes.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Required input 'verified_workflow_and_evidence_state' is missing or underspecified."
+      },
+      "expectedBehavior": [
+        "Identifies missing upstream truth-state ledger and blocker/check summary required by non-blender-user-response-writer (verified_workflow_and_evidence_state)",
+        "Refuses to fabricate domain parameters and keeps Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "verified_workflow_and_evidence_state",
+        "upstream truth-state ledger and blocker/check summary",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "paste this bpy Python script",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "guessed parameters silently"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicitly names missing required input 'verified_workflow_and_evidence_state' (upstream truth-state ledger and blocker/check summary)",
+        "Conservative Runtime: Not Run and Artifact: Not Produced truth states"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Clarification gate (non-blender-user-response-writer)",
+          "recommendedNextAction": "Provide the missing upstream truth-state ledger and blocker/check summary (verified_workflow_and_evidence_state) before non-blender-user-response-writer locks plain_language_stakeholder_response.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted non-blender-user-response-writer due to missing required input 'verified_workflow_and_evidence_state' (upstream truth-state ledger and blocker/check summary); no values were fabricated.",
+          "warnings": [
+            "Do not invent upstream truth-state ledger and blocker/check summary when 'verified_workflow_and_evidence_state' is omitted."
+          ],
+          "evidenceCitations": [
+            "skills/non-blender-user-response-writer/SKILL.md",
+            "skills/non-blender-user-response-writer/EVAL.md",
+            "skills/non-blender-user-response-writer/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "non-blender-user-response-writer-out-of-scope-exclusion-delegation",
+      "skillId": "non-blender-user-response-writer",
+      "scenario": "Out-of-scope request (to hide blockers, drop caveats for readability, or overclaim runtime or artifact success) is excluded from non-blender-user-response-writer and delegated to render-export-evidence",
+      "category": "scope_creep",
+      "inputPrompt": "Instead of convert technical blender workflow findings into plain-language user-facing responses with honest caveats., handle this request inside non-blender-user-response-writer: to hide blockers, drop caveats for readability, or overclaim runtime or artifact success.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Enforces the declared exclusion boundary in skills/non-blender-user-response-writer/contract.json when to hide blockers, drop caveats for readability, or overclaim runtime or artifact success",
+        "Delegates to render-export-evidence (Delegates out-of-scope requests to render-export-evidence) with Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "render-export-evidence",
+        "out of scope",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "paste this bpy Python script",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "handled inside non-blender-user-response-writer anyway"
+      ],
+      "expectedRoutingTarget": "render-export-evidence",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Exclusion delegation to render-export-evidence per skills/non-blender-user-response-writer/contract.json"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Out-of-scope exclusion gate (non-blender-user-response-writer)",
+          "recommendedNextAction": "Request is out of scope for non-blender-user-response-writer (to hide blockers, drop caveats for readability, or overclaim runtime or artifact success); delegate to render-export-evidence.",
+          "targetHandoff": "render-export-evidence",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Enforced non-blender-user-response-writer exclusion boundary (Delegates out-of-scope requests to render-export-evidence) and delegated to render-export-evidence.",
+          "warnings": [
+            "non-blender-user-response-writer is scoped to plain-language-final-response-translator and does not absorb render-export-evidence responsibilities."
+          ],
+          "evidenceCitations": [
+            "skills/non-blender-user-response-writer/contract.json",
+            "skills/non-blender-user-response-writer/SKILL.md",
+            "skills/render-export-evidence/SKILL.md"
+          ]
+        }
+      }
+    }
+  ]
+}

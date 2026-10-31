@@ -384,6 +384,6 @@ describe('Phase 4 — Catalog Template Completion & F-05 Resolution', () => {
       cwd: root,
       encoding: 'utf8',
     });
-    assert.match(evalRunOut, /73\/73 deterministic cases Passed/i);
+    assert.match(evalRunOut, /269\/269 deterministic cases Passed/i);
   });
 });

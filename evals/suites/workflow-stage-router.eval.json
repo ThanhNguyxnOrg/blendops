@@ -1,14 +1,18 @@
 {
-  "schemaVersion": "1.0.0",
+  "schemaVersion": "2.0.0",
   "skillId": "workflow-stage-router",
   "category": "routing-and-governance",
   "isContractedSkill": true,
+  "isRoutingParticipant": true,
+  "contractPath": "skills/workflow-stage-router/contract.json",
+  "skillMarkdownPath": "skills/workflow-stage-router/SKILL.md",
   "evalMarkdownPath": "skills/workflow-stage-router/EVAL.md",
   "sourceEvalTier": "routing_contract_pilot",
   "evaluationStatus": {
     "staticValidation": "Passed",
     "deterministicFixture": "Passed",
     "contractRouting": "Passed",
+    "contractHandoff": "Not Applicable",
     "liveModel": "Not Run",
     "blenderRuntime": "Not Run"
   },

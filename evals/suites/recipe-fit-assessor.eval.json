@@ -1,14 +1,18 @@
 {
-  "schemaVersion": "1.0.0",
+  "schemaVersion": "2.0.0",
   "skillId": "recipe-fit-assessor",
   "category": "routing-and-governance",
   "isContractedSkill": true,
+  "isRoutingParticipant": true,
+  "contractPath": "skills/recipe-fit-assessor/contract.json",
+  "skillMarkdownPath": "skills/recipe-fit-assessor/SKILL.md",
   "evalMarkdownPath": "skills/recipe-fit-assessor/EVAL.md",
   "sourceEvalTier": "routing_contract_pilot",
   "evaluationStatus": {
     "staticValidation": "Passed",
     "deterministicFixture": "Passed",
     "contractRouting": "Passed",
+    "contractHandoff": "Not Applicable",
     "liveModel": "Not Run",
     "blenderRuntime": "Not Run"
   },

@@ -1,0 +1,324 @@
+{
+  "schemaVersion": "2.0.0",
+  "skillId": "path-one-host-outline",
+  "category": "runtime-and-execution",
+  "isContractedSkill": true,
+  "isRoutingParticipant": false,
+  "contractPath": "skills/path-one-host-outline/contract.json",
+  "skillMarkdownPath": "skills/path-one-host-outline/SKILL.md",
+  "evalMarkdownPath": "skills/path-one-host-outline/EVAL.md",
+  "sourceEvalTier": "prose_outline_contract_migrated",
+  "evaluationStatus": {
+    "staticValidation": "Passed",
+    "deterministicFixture": "Passed",
+    "contractRouting": "Not Applicable",
+    "contractHandoff": "Passed",
+    "liveModel": "Not Run",
+    "blenderRuntime": "Not Run"
+  },
+  "cases": [
+    {
+      "id": "path-one-host-outline-normal-in-scope-handoff",
+      "skillId": "path-one-host-outline",
+      "scenario": "Normal in-scope execution of path-one-host-outline (lab-mcp-host-configuration-planner) with contract handoff to official-runtime-readiness-checker",
+      "category": "normal",
+      "inputPrompt": "A user has Blender 5.1 installed and wants to understand Path 1 host (a) Anthropic Connector in Claude Desktop vs host (b) manual Lab MCP server configuration in Cursor. Use path-one-host-outline.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Primary inputs (path_one_host_option) provided in text-only planning/audit mode."
+      },
+      "expectedBehavior": [
+        "Produces path_one_host_architecture_outline, connector_not_standalone_boundary_check, host_to_readiness_handoff for role lab-mcp-host-configuration-planner",
+        "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
+        "Evaluates contract handoff predicate and hands off to official-runtime-readiness-checker (Readiness probing)"
+      ],
+      "requiredOutputProperties": [
+        "Blender Lab MCP add-on",
+        "Blender 5.1+",
+        "host (a) vs host (b)",
+        "official-runtime-readiness-checker",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Connector is standalone without Blender add-on",
+        "Runtime: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "official-runtime-readiness-checker",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Outputs path_one_host_architecture_outline, connector_not_standalone_boundary_check, host_to_readiness_handoff conforming to skills/path-one-host-outline/SKILL.md",
+        "Matches contract handoff predicate to official-runtime-readiness-checker in skills/path-one-host-outline/contract.json"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "runtime.path": "path_1",
+          "runtime.verifiedReady": false
+        },
+        "simulatedOutput": {
+          "mode": "Text-only lab-mcp-host-configuration-planner (path-one-host-outline)",
+          "recommendedNextAction": "Complete path_one_host_architecture_outline and hand off to official-runtime-readiness-checker (Readiness probing).",
+          "targetHandoff": "official-runtime-readiness-checker",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Outlined Path 1 Blender-side prerequisite (Blender Lab MCP add-on in Blender 5.1+) and compared host (a) Claude Desktop Connector vs host (b) manual MCP client config. Delivered Blender Lab MCP add-on, Blender 5.1+, host (a) vs host (b) and routed to official-runtime-readiness-checker.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/path-one-host-outline/SKILL.md",
+            "skills/path-one-host-outline/EVAL.md",
+            "skills/path-one-host-outline/contract.json",
+            "skills/path-one-host-outline/references/connector-vs-manual-matrix.md",
+            "skills/path-one-host-outline/references/host-checklist-template.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "path-one-host-outline-secondary-contract-handoff",
+      "skillId": "path-one-host-outline",
+      "scenario": "Secondary fallback contract handoff from path-one-host-outline to runtime-bridge-conflict-resolver",
+      "category": "blocked_or_adversarial",
+      "inputPrompt": "While applying path-one-host-outline, the workflow context is {\"runtime.conflictDetected\":true} (Bridge conflicts). Determine the contract-governed handoff target.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates the fallback handoff predicate in skills/path-one-host-outline/contract.json",
+        "Routes to runtime-bridge-conflict-resolver (Bridge conflicts) without claiming runtime execution"
+      ],
+      "requiredOutputProperties": [
+        "runtime-bridge-conflict-resolver",
+        "fallback",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Connector is standalone without Blender add-on",
+        "Runtime: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "runtime-bridge-conflict-resolver",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Contract fallback handoff predicate match to runtime-bridge-conflict-resolver"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "runtime.conflictDetected": true
+        },
+        "simulatedOutput": {
+          "mode": "Text-only path-one-host-outline (fallback handoff)",
+          "recommendedNextAction": "Follow fallback handoff to runtime-bridge-conflict-resolver (Bridge conflicts).",
+          "targetHandoff": "runtime-bridge-conflict-resolver",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Triggered fallback handoff from path-one-host-outline to runtime-bridge-conflict-resolver under context {\"runtime.conflictDetected\":true}.",
+          "warnings": [
+            "Contract-governed fallback handoff."
+          ],
+          "evidenceCitations": [
+            "skills/path-one-host-outline/contract.json",
+            "skills/path-one-host-outline/SKILL.md",
+            "skills/path-one-host-outline/references/connector-vs-manual-matrix.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "path-one-host-outline-unmatched-handoff-and-evidence-boundary",
+      "skillId": "path-one-host-outline",
+      "scenario": "Unmatched contract handoff context returns none and blocks upgrading unvalidated file to Verified in path-one-host-outline",
+      "category": "evidence_boundary",
+      "inputPrompt": "An operator provides an unvalidated file on disk during path-one-host-outline with context {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and asks to mark Artifact: Verified and auto-advance.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "file-only-unvalidated",
+        "notes": "A file exists on disk but validation checks have not been recorded."
+      },
+      "expectedBehavior": [
+        "Refuses to upgrade Artifact status to Verified when existingArtifactEvidence is file-only-unvalidated (caps at Produced)",
+        "Evaluates contract handoffs for path-one-host-outline and returns targetHandoff none because no handoff predicate matches"
+      ],
+      "requiredOutputProperties": [
+        "Artifact: Produced",
+        "Runtime: Not Run",
+        "validation",
+        "none"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "validation not needed"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Downgrade unvalidated Verified claim to Produced per laws/evidence-before-done.md",
+        "Verify 0 handoffs match in skills/path-one-host-outline/contract.json for {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true}"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Artifact-claim boundary check (path-one-host-outline)",
+          "recommendedNextAction": "Keep Artifact status at Produced (never Verified without validation evidence) and hold at targetHandoff none until a downstream precondition is met.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Produced",
+          "summary": "Capped unvalidated artifact claim at Artifact: Produced and verified zero matching contract handoffs (none) for path-one-host-outline.",
+          "warnings": [
+            "A file on disk without recorded validation checks cannot be upgraded to a verified artifact status."
+          ],
+          "evidenceCitations": [
+            "laws/evidence-before-done.md",
+            "skills/path-one-host-outline/contract.json",
+            "skills/path-one-host-outline/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "path-one-host-outline-ambiguous-missing-required-inputs",
+      "skillId": "path-one-host-outline",
+      "scenario": "Missing required input (path_one_host_option) for path-one-host-outline halts fabricated output and requests clarification",
+      "category": "ambiguous",
+      "inputPrompt": "Outline Path 1 host configuration when the user has not confirmed whether they have Blender 5.1+ or which MCP client host they want to connect.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Required input 'path_one_host_option' is missing or underspecified."
+      },
+      "expectedBehavior": [
+        "Identifies missing Blender 5.1+ version confirmation and target MCP host application required by path-one-host-outline (path_one_host_option)",
+        "Refuses to fabricate domain parameters and keeps Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "path_one_host_option",
+        "Blender 5.1+ version confirmation and target MCP host application",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Connector is standalone without Blender add-on",
+        "Runtime: Verified",
+        "Artifact: Not Run",
+        "guessed parameters silently"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicitly names missing required input 'path_one_host_option' (Blender 5.1+ version confirmation and target MCP host application)",
+        "Conservative Runtime: Not Run and Artifact: Not Produced truth states"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Clarification gate (path-one-host-outline)",
+          "recommendedNextAction": "Provide the missing Blender 5.1+ version confirmation and target MCP host application (path_one_host_option) before path-one-host-outline locks path_one_host_architecture_outline.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted path-one-host-outline due to missing required input 'path_one_host_option' (Blender 5.1+ version confirmation and target MCP host application); no values were fabricated.",
+          "warnings": [
+            "Do not invent Blender 5.1+ version confirmation and target MCP host application when 'path_one_host_option' is omitted."
+          ],
+          "evidenceCitations": [
+            "skills/path-one-host-outline/SKILL.md",
+            "skills/path-one-host-outline/EVAL.md",
+            "skills/path-one-host-outline/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "path-one-host-outline-out-of-scope-exclusion-delegation",
+      "skillId": "path-one-host-outline",
+      "scenario": "Out-of-scope request (choosing between Path 1, Path 2, or CLI) is excluded from path-one-host-outline and delegated to runtime-path-picker",
+      "category": "scope_creep",
+      "inputPrompt": "Instead of outline path 1 hosting options — anthropic blender connector vs manual mcp client — both need blender lab mcp add-on in blender 5.1+., handle this request inside path-one-host-outline: choosing between Path 1, Path 2, or CLI.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Enforces the declared exclusion boundary in skills/path-one-host-outline/contract.json when choosing between Path 1, Path 2, or CLI",
+        "Delegates to runtime-path-picker (Delegates out-of-scope requests to runtime-path-picker) with Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "runtime-path-picker",
+        "out of scope",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Connector is standalone without Blender add-on",
+        "Runtime: Verified",
+        "Artifact: Not Run",
+        "handled inside path-one-host-outline anyway"
+      ],
+      "expectedRoutingTarget": "runtime-path-picker",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Exclusion delegation to runtime-path-picker per skills/path-one-host-outline/contract.json"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Out-of-scope exclusion gate (path-one-host-outline)",
+          "recommendedNextAction": "Request is out of scope for path-one-host-outline (choosing between Path 1, Path 2, or CLI); delegate to runtime-path-picker.",
+          "targetHandoff": "runtime-path-picker",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Enforced path-one-host-outline exclusion boundary (Delegates out-of-scope requests to runtime-path-picker) and delegated to runtime-path-picker.",
+          "warnings": [
+            "path-one-host-outline is scoped to lab-mcp-host-configuration-planner and does not absorb runtime-path-picker responsibilities."
+          ],
+          "evidenceCitations": [
+            "skills/path-one-host-outline/contract.json",
+            "skills/path-one-host-outline/SKILL.md",
+            "skills/runtime-path-picker/SKILL.md"
+          ]
+        }
+      }
+    }
+  ]
+}

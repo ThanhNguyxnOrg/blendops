@@ -1,0 +1,325 @@
+{
+  "schemaVersion": "2.0.0",
+  "skillId": "acceptance-criteria-builder",
+  "category": "process-discipline",
+  "isContractedSkill": true,
+  "isRoutingParticipant": false,
+  "contractPath": "skills/acceptance-criteria-builder/contract.json",
+  "skillMarkdownPath": "skills/acceptance-criteria-builder/SKILL.md",
+  "evalMarkdownPath": "skills/acceptance-criteria-builder/EVAL.md",
+  "sourceEvalTier": "prose_outline_contract_migrated",
+  "evaluationStatus": {
+    "staticValidation": "Passed",
+    "deterministicFixture": "Passed",
+    "contractRouting": "Not Applicable",
+    "contractHandoff": "Passed",
+    "liveModel": "Not Run",
+    "blenderRuntime": "Not Run"
+  },
+  "cases": [
+    {
+      "id": "acceptance-criteria-builder-normal-in-scope-handoff",
+      "skillId": "acceptance-criteria-builder",
+      "scenario": "Normal in-scope execution of acceptance-criteria-builder (measurable-acceptance-table-builder) with contract handoff to blender-stop-condition-decider",
+      "category": "normal",
+      "inputPrompt": "Use acceptance-criteria-builder to turn our locked cyberpunk sneaker product-hero-v0 brief (16:9 PNG + web GLB under 10 MB) into a measurable Pass/Warn/Fail acceptance table before camera and lighting planning.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Primary inputs (locked_3d_brief) provided in text-only planning/audit mode."
+      },
+      "expectedBehavior": [
+        "Produces measurable_acceptance_criteria_table, pass_warn_fail_thresholds, evidence_hook_mappings for role measurable-acceptance-table-builder",
+        "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
+        "Evaluates contract handoff predicate and hands off to blender-stop-condition-decider (Done / stop condition)"
+      ],
+      "requiredOutputProperties": [
+        "Pass/Warn/Fail",
+        "verification method",
+        "measurable threshold",
+        "blender-stop-condition-decider",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "looks good",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "blender-stop-condition-decider",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Outputs measurable_acceptance_criteria_table, pass_warn_fail_thresholds, evidence_hook_mappings conforming to skills/acceptance-criteria-builder/SKILL.md",
+        "Matches contract handoff predicate to blender-stop-condition-decider in skills/acceptance-criteria-builder/contract.json"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "brief.locked": true,
+          "stage.current": "stop_condition"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only measurable-acceptance-table-builder (acceptance-criteria-builder)",
+          "recommendedNextAction": "Complete measurable_acceptance_criteria_table and hand off to blender-stop-condition-decider (Done / stop condition).",
+          "targetHandoff": "blender-stop-condition-decider",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Built measurable 7-row Pass/Warn/Fail acceptance criteria table with explicit verification methods and thresholds for product-hero-v0. Delivered Pass/Warn/Fail, verification method, measurable threshold and routed to blender-stop-condition-decider.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/acceptance-criteria-builder/SKILL.md",
+            "skills/acceptance-criteria-builder/EVAL.md",
+            "skills/acceptance-criteria-builder/contract.json",
+            "skills/acceptance-criteria-builder/references/brief-to-criteria-mapper.md",
+            "skills/acceptance-criteria-builder/references/checklist-patterns.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "acceptance-criteria-builder-secondary-contract-handoff",
+      "skillId": "acceptance-criteria-builder",
+      "scenario": "Secondary upstream_reference contract handoff from acceptance-criteria-builder to intent-to-3d-brief-writer",
+      "category": "structured_skip",
+      "inputPrompt": "While applying acceptance-criteria-builder, the workflow context is {\"goal.clarity\":\"clear\",\"brief.locked\":false} (Brief source). Determine the contract-governed handoff target.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates the upstream_reference handoff predicate in skills/acceptance-criteria-builder/contract.json",
+        "Routes to intent-to-3d-brief-writer (Brief source) without claiming runtime execution"
+      ],
+      "requiredOutputProperties": [
+        "intent-to-3d-brief-writer",
+        "upstream_reference",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "looks good",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "intent-to-3d-brief-writer",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Contract upstream_reference handoff predicate match to intent-to-3d-brief-writer"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "goal.clarity": "clear",
+          "brief.locked": false
+        },
+        "simulatedOutput": {
+          "mode": "Text-only acceptance-criteria-builder (upstream_reference handoff)",
+          "recommendedNextAction": "Follow upstream_reference handoff to intent-to-3d-brief-writer (Brief source).",
+          "targetHandoff": "intent-to-3d-brief-writer",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Triggered upstream_reference handoff from acceptance-criteria-builder to intent-to-3d-brief-writer under context {\"goal.clarity\":\"clear\",\"brief.locked\":false}.",
+          "warnings": [
+            "Contract-governed upstream_reference handoff."
+          ],
+          "evidenceCitations": [
+            "skills/acceptance-criteria-builder/contract.json",
+            "skills/acceptance-criteria-builder/SKILL.md",
+            "skills/acceptance-criteria-builder/references/brief-to-criteria-mapper.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "acceptance-criteria-builder-unmatched-handoff-and-evidence-boundary",
+      "skillId": "acceptance-criteria-builder",
+      "scenario": "Unmatched contract handoff context returns none and blocks upgrading unvalidated file to Verified in acceptance-criteria-builder",
+      "category": "evidence_boundary",
+      "inputPrompt": "An operator provides an unvalidated file on disk during acceptance-criteria-builder with context {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and asks to mark Artifact: Verified and auto-advance.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "file-only-unvalidated",
+        "notes": "A file exists on disk but validation checks have not been recorded."
+      },
+      "expectedBehavior": [
+        "Refuses to upgrade Artifact status to Verified when existingArtifactEvidence is file-only-unvalidated (caps at Produced)",
+        "Evaluates contract handoffs for acceptance-criteria-builder and returns targetHandoff none because no handoff predicate matches"
+      ],
+      "requiredOutputProperties": [
+        "Artifact: Produced",
+        "Runtime: Not Run",
+        "validation",
+        "none"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "validation not needed"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Downgrade unvalidated Verified claim to Produced per laws/evidence-before-done.md",
+        "Verify 0 handoffs match in skills/acceptance-criteria-builder/contract.json for {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true}"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Artifact-claim boundary check (acceptance-criteria-builder)",
+          "recommendedNextAction": "Keep Artifact status at Produced (never Verified without validation evidence) and hold at targetHandoff none until a downstream precondition is met.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Produced",
+          "summary": "Capped unvalidated artifact claim at Artifact: Produced and verified zero matching contract handoffs (none) for acceptance-criteria-builder.",
+          "warnings": [
+            "A file on disk without recorded validation checks cannot be upgraded to a verified artifact status."
+          ],
+          "evidenceCitations": [
+            "laws/evidence-before-done.md",
+            "skills/acceptance-criteria-builder/contract.json",
+            "skills/acceptance-criteria-builder/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "acceptance-criteria-builder-ambiguous-missing-required-inputs",
+      "skillId": "acceptance-criteria-builder",
+      "scenario": "Missing required input (locked_3d_brief) for acceptance-criteria-builder halts fabricated output and requests clarification",
+      "category": "ambiguous",
+      "inputPrompt": "Build an acceptance criteria table for our 3D project, even though we have not locked the 8-slot brief, target resolution, or consumer delivery format yet.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Required input 'locked_3d_brief' is missing or underspecified."
+      },
+      "expectedBehavior": [
+        "Identifies missing locked 8-slot brief and target delivery constraints required by acceptance-criteria-builder (locked_3d_brief)",
+        "Refuses to fabricate domain parameters and keeps Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "locked_3d_brief",
+        "locked 8-slot brief and target delivery constraints",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "looks good",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "guessed parameters silently"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicitly names missing required input 'locked_3d_brief' (locked 8-slot brief and target delivery constraints)",
+        "Conservative Runtime: Not Run and Artifact: Not Produced truth states"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Clarification gate (acceptance-criteria-builder)",
+          "recommendedNextAction": "Provide the missing locked 8-slot brief and target delivery constraints (locked_3d_brief) before acceptance-criteria-builder locks measurable_acceptance_criteria_table.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted acceptance-criteria-builder due to missing required input 'locked_3d_brief' (locked 8-slot brief and target delivery constraints); no values were fabricated.",
+          "warnings": [
+            "Do not invent locked 8-slot brief and target delivery constraints when 'locked_3d_brief' is omitted."
+          ],
+          "evidenceCitations": [
+            "skills/acceptance-criteria-builder/SKILL.md",
+            "skills/acceptance-criteria-builder/EVAL.md",
+            "skills/acceptance-criteria-builder/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "acceptance-criteria-builder-out-of-scope-exclusion-delegation",
+      "skillId": "acceptance-criteria-builder",
+      "scenario": "Out-of-scope request (pure exploration without a locked deliverable) is excluded from acceptance-criteria-builder and delegated to blender-brainstorming",
+      "category": "scope_creep",
+      "inputPrompt": "Instead of turn a locked 3d brief plus chosen recipe into a measurable acceptance checklist with evidence hooks., handle this request inside acceptance-criteria-builder: pure exploration without a locked deliverable.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Enforces the declared exclusion boundary in skills/acceptance-criteria-builder/contract.json when pure exploration without a locked deliverable",
+        "Delegates to blender-brainstorming (use blender-brainstorming) with Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "blender-brainstorming",
+        "out of scope",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "looks good",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "handled inside acceptance-criteria-builder anyway"
+      ],
+      "expectedRoutingTarget": "blender-brainstorming",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Exclusion delegation to blender-brainstorming per skills/acceptance-criteria-builder/contract.json"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Out-of-scope exclusion gate (acceptance-criteria-builder)",
+          "recommendedNextAction": "Request is out of scope for acceptance-criteria-builder (pure exploration without a locked deliverable); delegate to blender-brainstorming.",
+          "targetHandoff": "blender-brainstorming",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Enforced acceptance-criteria-builder exclusion boundary (use blender-brainstorming) and delegated to blender-brainstorming.",
+          "warnings": [
+            "acceptance-criteria-builder is scoped to measurable-acceptance-table-builder and does not absorb blender-brainstorming responsibilities."
+          ],
+          "evidenceCitations": [
+            "skills/acceptance-criteria-builder/contract.json",
+            "skills/acceptance-criteria-builder/SKILL.md",
+            "skills/blender-brainstorming/SKILL.md"
+          ]
+        }
+      }
+    }
+  ]
+}

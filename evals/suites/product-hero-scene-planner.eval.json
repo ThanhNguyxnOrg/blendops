@@ -1,0 +1,325 @@
+{
+  "schemaVersion": "2.0.0",
+  "skillId": "product-hero-scene-planner",
+  "category": "scene-planners",
+  "isContractedSkill": true,
+  "isRoutingParticipant": false,
+  "contractPath": "skills/product-hero-scene-planner/contract.json",
+  "skillMarkdownPath": "skills/product-hero-scene-planner/SKILL.md",
+  "evalMarkdownPath": "skills/product-hero-scene-planner/EVAL.md",
+  "sourceEvalTier": "prose_outline_contract_migrated",
+  "evaluationStatus": {
+    "staticValidation": "Passed",
+    "deterministicFixture": "Passed",
+    "contractRouting": "Not Applicable",
+    "contractHandoff": "Passed",
+    "liveModel": "Not Run",
+    "blenderRuntime": "Not Run"
+  },
+  "cases": [
+    {
+      "id": "product-hero-scene-planner-normal-in-scope-handoff",
+      "skillId": "product-hero-scene-planner",
+      "scenario": "Normal in-scope execution of product-hero-scene-planner (single-product-hero-scene-architect) with contract handoff to blender-composition-camera-planner",
+      "category": "normal",
+      "inputPrompt": "Use product-hero-scene-planner to create a complete text-only scene plan for a single matte-black wireless headphone hero shot on a dark slate pedestal (16:9 still + web GLB spin).",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Primary inputs (locked_3d_brief) provided in text-only planning/audit mode."
+      },
+      "expectedBehavior": [
+        "Produces hero_product_staging_and_pedestal_plan, camera_and_lookdev_handoff_inputs, scene_quality_validation_hooks for role single-product-hero-scene-architect",
+        "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
+        "Evaluates contract handoff predicate and hands off to blender-composition-camera-planner (Next (deep-dive framing & camera))"
+      ],
+      "requiredOutputProperties": [
+        "hero subject staging",
+        "pedestal anchor",
+        "assumptions and caveats",
+        "blender-composition-camera-planner",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "scene rendered in Blender",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "blender-composition-camera-planner",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Outputs hero_product_staging_and_pedestal_plan, camera_and_lookdev_handoff_inputs, scene_quality_validation_hooks conforming to skills/product-hero-scene-planner/SKILL.md",
+        "Matches contract handoff predicate to blender-composition-camera-planner in skills/product-hero-scene-planner/contract.json"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "brief.locked": true,
+          "stage.current": "camera_planning"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only single-product-hero-scene-architect (product-hero-scene-planner)",
+          "recommendedNextAction": "Complete hero_product_staging_and_pedestal_plan and hand off to blender-composition-camera-planner (Next (deep-dive framing & camera)).",
+          "targetHandoff": "blender-composition-camera-planner",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Authored complete single-product hero scene architecture covering subject placement, pedestal staging, camera/lighting handoff anchors, and explicit text-only assumptions. Delivered hero subject staging, pedestal anchor, assumptions and caveats and routed to blender-composition-camera-planner.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/product-hero-scene-planner/SKILL.md",
+            "skills/product-hero-scene-planner/EVAL.md",
+            "skills/product-hero-scene-planner/contract.json",
+            "skills/product-hero-scene-planner/references/clarification-patterns.md",
+            "skills/product-hero-scene-planner/references/cyberpunk-shoe-example.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "product-hero-scene-planner-secondary-contract-handoff",
+      "skillId": "product-hero-scene-planner",
+      "scenario": "Secondary fallback contract handoff from product-hero-scene-planner to acceptance-criteria-builder",
+      "category": "blocked_or_adversarial",
+      "inputPrompt": "While applying product-hero-scene-planner, the workflow context is {\"brief.locked\":true,\"stage.current\":\"acceptance_criteria\"} (Then (measurable pass/fail rows)). Determine the contract-governed handoff target.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates the fallback handoff predicate in skills/product-hero-scene-planner/contract.json",
+        "Routes to acceptance-criteria-builder (Then (measurable pass/fail rows)) without claiming runtime execution"
+      ],
+      "requiredOutputProperties": [
+        "acceptance-criteria-builder",
+        "fallback",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "scene rendered in Blender",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "acceptance-criteria-builder",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Contract fallback handoff predicate match to acceptance-criteria-builder"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "brief.locked": true,
+          "stage.current": "acceptance_criteria"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only product-hero-scene-planner (fallback handoff)",
+          "recommendedNextAction": "Follow fallback handoff to acceptance-criteria-builder (Then (measurable pass/fail rows)).",
+          "targetHandoff": "acceptance-criteria-builder",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Triggered fallback handoff from product-hero-scene-planner to acceptance-criteria-builder under context {\"brief.locked\":true,\"stage.current\":\"acceptance_criteria\"}.",
+          "warnings": [
+            "Contract-governed fallback handoff."
+          ],
+          "evidenceCitations": [
+            "skills/product-hero-scene-planner/contract.json",
+            "skills/product-hero-scene-planner/SKILL.md",
+            "skills/product-hero-scene-planner/references/clarification-patterns.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "product-hero-scene-planner-unmatched-handoff-and-evidence-boundary",
+      "skillId": "product-hero-scene-planner",
+      "scenario": "Unmatched contract handoff context returns none and blocks upgrading unvalidated file to Verified in product-hero-scene-planner",
+      "category": "evidence_boundary",
+      "inputPrompt": "An operator provides an unvalidated file on disk during product-hero-scene-planner with context {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and asks to mark Artifact: Verified and auto-advance.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "file-only-unvalidated",
+        "notes": "A file exists on disk but validation checks have not been recorded."
+      },
+      "expectedBehavior": [
+        "Refuses to upgrade Artifact status to Verified when existingArtifactEvidence is file-only-unvalidated (caps at Produced)",
+        "Evaluates contract handoffs for product-hero-scene-planner and returns targetHandoff none because no handoff predicate matches"
+      ],
+      "requiredOutputProperties": [
+        "Artifact: Produced",
+        "Runtime: Not Run",
+        "validation",
+        "none"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "validation not needed"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Downgrade unvalidated Verified claim to Produced per laws/evidence-before-done.md",
+        "Verify 0 handoffs match in skills/product-hero-scene-planner/contract.json for {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true}"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Artifact-claim boundary check (product-hero-scene-planner)",
+          "recommendedNextAction": "Keep Artifact status at Produced (never Verified without validation evidence) and hold at targetHandoff none until a downstream precondition is met.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Produced",
+          "summary": "Capped unvalidated artifact claim at Artifact: Produced and verified zero matching contract handoffs (none) for product-hero-scene-planner.",
+          "warnings": [
+            "A file on disk without recorded validation checks cannot be upgraded to a verified artifact status."
+          ],
+          "evidenceCitations": [
+            "laws/evidence-before-done.md",
+            "skills/product-hero-scene-planner/contract.json",
+            "skills/product-hero-scene-planner/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "product-hero-scene-planner-ambiguous-missing-required-inputs",
+      "skillId": "product-hero-scene-planner",
+      "scenario": "Missing required input (locked_3d_brief) for product-hero-scene-planner halts fabricated output and requests clarification",
+      "category": "ambiguous",
+      "inputPrompt": "Create a complete product hero scene plan when the 8-slot brief is unlocked and the product category, mood, and deliverables are unknown.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Required input 'locked_3d_brief' is missing or underspecified."
+      },
+      "expectedBehavior": [
+        "Identifies missing locked 8-slot brief, hero product subject, and target deliverables required by product-hero-scene-planner (locked_3d_brief)",
+        "Refuses to fabricate domain parameters and keeps Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "locked_3d_brief",
+        "locked 8-slot brief, hero product subject, and target deliverables",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "scene rendered in Blender",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "guessed parameters silently"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicitly names missing required input 'locked_3d_brief' (locked 8-slot brief, hero product subject, and target deliverables)",
+        "Conservative Runtime: Not Run and Artifact: Not Produced truth states"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Clarification gate (product-hero-scene-planner)",
+          "recommendedNextAction": "Provide the missing locked 8-slot brief, hero product subject, and target deliverables (locked_3d_brief) before product-hero-scene-planner locks hero_product_staging_and_pedestal_plan.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted product-hero-scene-planner due to missing required input 'locked_3d_brief' (locked 8-slot brief, hero product subject, and target deliverables); no values were fabricated.",
+          "warnings": [
+            "Do not invent locked 8-slot brief, hero product subject, and target deliverables when 'locked_3d_brief' is omitted."
+          ],
+          "evidenceCitations": [
+            "skills/product-hero-scene-planner/SKILL.md",
+            "skills/product-hero-scene-planner/EVAL.md",
+            "skills/product-hero-scene-planner/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "product-hero-scene-planner-out-of-scope-exclusion-delegation",
+      "skillId": "product-hero-scene-planner",
+      "scenario": "Out-of-scope request (to execute Blender commands, write Python, or claim generated artifacts) is excluded from product-hero-scene-planner and delegated to intent-to-3d-brief-writer",
+      "category": "scope_creep",
+      "inputPrompt": "Instead of generate a complete product-hero scene plan from non-blender-user intent with explicit assumptions and gates., handle this request inside product-hero-scene-planner: to execute Blender commands, write Python, or claim generated artifacts.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Enforces the declared exclusion boundary in skills/product-hero-scene-planner/contract.json when to execute Blender commands, write Python, or claim generated artifacts",
+        "Delegates to intent-to-3d-brief-writer (Delegates out-of-scope requests to intent-to-3d-brief-writer) with Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "intent-to-3d-brief-writer",
+        "out of scope",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "scene rendered in Blender",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "handled inside product-hero-scene-planner anyway"
+      ],
+      "expectedRoutingTarget": "intent-to-3d-brief-writer",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Exclusion delegation to intent-to-3d-brief-writer per skills/product-hero-scene-planner/contract.json"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Out-of-scope exclusion gate (product-hero-scene-planner)",
+          "recommendedNextAction": "Request is out of scope for product-hero-scene-planner (to execute Blender commands, write Python, or claim generated artifacts); delegate to intent-to-3d-brief-writer.",
+          "targetHandoff": "intent-to-3d-brief-writer",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Enforced product-hero-scene-planner exclusion boundary (Delegates out-of-scope requests to intent-to-3d-brief-writer) and delegated to intent-to-3d-brief-writer.",
+          "warnings": [
+            "product-hero-scene-planner is scoped to single-product-hero-scene-architect and does not absorb intent-to-3d-brief-writer responsibilities."
+          ],
+          "evidenceCitations": [
+            "skills/product-hero-scene-planner/contract.json",
+            "skills/product-hero-scene-planner/SKILL.md",
+            "skills/intent-to-3d-brief-writer/SKILL.md"
+          ]
+        }
+      }
+    }
+  ]
+}

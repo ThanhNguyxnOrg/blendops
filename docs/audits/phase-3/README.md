@@ -16,43 +16,46 @@ Phase 3 establishes a deterministic, schema-validated **Behavioral Evaluation & 
 
 | Component | Path | Responsibility |
 | :--- | :--- | :--- |
-| **Evaluation Suite Schema** | [`schemas/skill-eval.schema.json`](../../../schemas/skill-eval.schema.json) | Draft 2020-12 JSON Schema compiled with `Ajv2020({ allErrors: true, strict: true })`. Enforces `>= 5` cases per suite, required/forbidden output properties, truth-state separation (`Runtime` vs `Artifact`), and strict `additionalProperties: false`. |
-| **Pilot Evaluation Suites (12 Skills, 73 Cases)** | [`evals/index.json`](../../../evals/index.json) + `evals/pilot/*.eval.json` | Machine-readable evaluation suites covering all **4 contract-first routing skills** (`blendops-help`, `recipe-fit-assessor`, `pack-prerequisite-checker`, `workflow-stage-router`), all **8 structured `EVAL.md` table skills**, and the primary runtime gateway skill (`official-runtime-readiness-checker`). |
-| **Deterministic Evaluation Runner** | [`scripts/run-evals.mjs`](../../../scripts/run-evals.mjs) | Supports `--build`, `--check`, `--list`, `--skill <id>`, and `--suite <id>`. Validates schemas, checks `EVAL.md` alignment, evaluates required/forbidden output properties, verifies Evidence-Before-Done downgrades, and verifies `resolveRoutingWinner` + contract `when` predicates. |
-| **Phase 3 Automated Test Suite** | [`scripts/test-phase3.mjs`](../../../scripts/test-phase3.mjs) | Node test suite (`node:test`) verifying positive suite runs, `--skill`/`--suite` filters, schema rejection of malformed cases, and regression detection on forbidden overclaims or invalid truth states. |
+| **Evaluation Suite Schema** | [`schemas/skill-eval.schema.json`](../../../schemas/skill-eval.schema.json) | Draft 2020-12 JSON Schema (`2.0.0`) compiled with `Ajv2020({ allErrors: true, strict: true })`. Enforces `>= 4` cases per suite, required/forbidden output properties, truth-state separation (`Runtime` vs `Artifact`), routing-participant vs specialist `contract_handoff` rules, and strict `additionalProperties: false`. |
+| **Full-Catalog Evaluation Suites (48 Skills, 269 Cases)** | [`evals/index.json`](../../../evals/index.json) + `evals/suites/*.eval.json` | Machine-readable evaluation suites covering all **48 catalog skills** (**4 routing participants** with `21` `contract_routing` cases and **44 specialist skills** with `124` `contract_handoff` cases + `124` `deterministic_fixture` cases = `269` cases). |
+| **Deterministic Evaluation Runner** | [`scripts/run-evals.mjs`](../../../scripts/run-evals.mjs) | Supports `--build`, `--check`, `--list`, `--skill <id>`, and `--suite <id>`. Validates schemas, checks `EVAL.md`/`SKILL.md`/`contract.json` alignment, evaluates required/forbidden output properties, verifies Evidence-Before-Done downgrades, and verifies `resolveRoutingWinner` + contract `handoffs[].when` predicates against `registry/contract-context-fields.json`. |
+| **Phase 3 & Phase 6 Automated Test Suites** | [`scripts/test-phase3.mjs`](../../../scripts/test-phase3.mjs), [`scripts/test-phase6.mjs`](../../../scripts/test-phase6.mjs) | Node test suites (`node:test`) verifying positive suite runs across all 48 skills, `--skill`/`--suite` filters, schema rejection of malformed cases, `contract_handoff` predicate verification, and regression detection on forbidden overclaims or invalid truth states. |
 
 ### 1.2 Separation of Evaluation Modes & Truth States
 
-Every evaluation suite in `evals/pilot/*.eval.json` records five distinct evaluation mode states so static/fixture verification is never conflated with live model or Blender execution:
+Every evaluation suite in `evals/suites/*.eval.json` records six distinct evaluation mode states so static/fixture/contract verification is never conflated with live model or Blender execution:
 
-| Evaluation Mode | Meaning | Current Phase 3 Status |
+| Evaluation Mode | Meaning | Current Status |
 | :--- | :--- | :---: |
-| `staticValidation` | JSON Schema compliance (`Ajv2020`), `EVAL.md` alignment, and catalog target resolution | **`Passed`** (12/12 suites) |
-| `deterministicFixture` | Offline verification of required properties, forbidden overclaims, and Evidence-Before-Done truth-state rules against structured fixtures | **`Passed`** (73/73 cases) |
-| `contractRouting` | Verification of `resolveRoutingWinner` across the 16-state routing space and contract `handoffs[].when` predicate matching | **`Passed`** (4/4 contracted skills, 21 cases) / **`Not Implemented`** (8 uncontracted pilot skills) |
+| `staticValidation` | JSON Schema compliance (`Ajv2020`), `EVAL.md` / `SKILL.md` / `contract.json` alignment, and catalog target resolution | **`Passed`** (48/48 suites) |
+| `deterministicFixture` | Offline verification of required properties, forbidden overclaims, and Evidence-Before-Done truth-state rules against structured fixtures | **`Passed`** (48/48 suites, 269/269 cases) |
+| `contractRouting` | Verification of `resolveRoutingWinner` across the 16-state routing space and contract `handoffs[].when` predicate matching on the 4 routing participants | **`Passed`** (4/4 routing participants, 21 cases) / **`Not Applicable`** (44 specialist skills) |
+| `contractHandoff` | Verification of contract `handoffs[].when` predicate matching and 27-field `handoffContext` vocabulary compliance on the 44 specialist skills | **`Passed`** (44/44 specialist skills, 124 cases) / **`Not Applicable`** (4 routing participants) |
 | `liveModel` | Prompting a live LLM host with `SKILL.md` attached and grading live completions | **`Not Run`** |
 | `blenderRuntime` | Executing scene inspection, mutation, render, or GLB export against a live Blender MCP bridge or CLI process | **`Not Run`** |
 
 ---
 
-## 2. Migration Guide: Converting Prose `EVAL.md` to `.eval.json`
+## 2. Authoring Guide: Adding or Updating `.eval.json` Suites
 
-Currently, **12 of 48 skills** have machine-readable `evals/pilot/<skill-id>.eval.json` suites (`73` cases), while **36 of 48 skills** remain single-prompt prose outlines in `skills/<skill-id>/EVAL.md` (tracked in [`evals/index.json`](../../../evals/index.json) and [`../current/eval-inventory.json`](../current/eval-inventory.json)).
+All **48 of 48 catalog skills** ship machine-readable `evals/suites/<skill-id>.eval.json` suites (`269` total cases), with **0 remaining prose-only skills** (tracked in [`evals/index.json`](../../../evals/index.json) and [`../current/eval-inventory.json`](../current/eval-inventory.json)).
 
-To migrate any of the remaining 36 skills:
+When adding or updating a skill's evaluation suite:
 
 1. **Keep `skills/<skill-id>/EVAL.md` intact** for human readers and Claude skill ZIP exports (`scripts/export-claude-skills.mjs` packages both `SKILL.md` and `EVAL.md`).
-2. **Design at least 5 test cases** covering:
+2. **Design at least 4–5 test cases** covering:
    - `normal`: canonical in-scope prompt with complete inputs
    - `ambiguous`: missing brief slots or unclear parameters requiring batched clarification or upstream routing
    - `structured_skip`: inputs already complete or text-only iteration loop
    - `scope_creep`: mid-workflow addition of unapproved deliverables requiring delegation to `blender-scope-boundary-enforcer` or `blender-recipe-decomposer`
    - `blocked_or_adversarial` / `evidence_boundary`: unverified artifact claims, missing runtime readiness, or license conflicts
-3. **Encode each case in `evals/pilot/<skill-id>.eval.json`** conforming to `schemas/skill-eval.schema.json`:
+3. **Encode each case in `evals/suites/<skill-id>.eval.json`** conforming to `schemas/skill-eval.schema.json`:
    - Never assign `"Not Run"` to `truthStateExpectations.artifactStatus` (use `"Not Produced"`).
-   - If the skill has a `contract.json`, include `deterministicFixture.routingState` and `deterministicFixture.handoffContext` and set `evaluationType: "contract_routing"`.
+   - For the 4 routing participants (`isRoutingParticipant: true`), include `deterministicFixture.routingState` and `deterministicFixture.handoffContext` and set `evaluationType: "contract_routing"`.
+   - For the 44 specialist skills (`isRoutingParticipant: false`), omit `routingState`, include `deterministicFixture.handoffContext` on `contract_handoff` cases (`>= 2` per suite), and include `deterministic_fixture` cases (`>= 2` per suite).
 4. **Verify via CI commands:**
    ```bash
+   npm run evals:build
    npm run evals:check
    npm run evals:run -- --skill <skill-id>
    npm test

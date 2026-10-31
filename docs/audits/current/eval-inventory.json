@@ -1,31 +1,34 @@
 {
-  "schemaVersion": "1.2.0",
-  "auditPhase": "phase-5-current",
+  "schemaVersion": "1.3.0",
+  "auditPhase": "phase-6-current",
   "reconciledFromBaselineCommit": "3ea3c35c6b8a6e5e915bab9f63333d4a1c09bd4d",
   "repository": "ThanhNguyxnOrg/blendops",
   "branch": "main",
-  "sourceCommitSha": "75f3b5c8b16b2d7e174d6dba58965da5013cfb5e",
-  "sourceCommitShort": "75f3b5c",
-  "sourceCommitDate": "2026-10-31 08:02:39 +0000",
+  "sourceCommitSha": "f8301a3e39e05bee4da1b8f85f16fb13ff1c6b3e",
+  "sourceCommitShort": "f8301a3",
+  "sourceCommitDate": "2026-10-31 12:45:48 +0000",
   "auditProvenance": {
-    "sourceCommitSha": "75f3b5c8b16b2d7e174d6dba58965da5013cfb5e",
-    "sourceCommitShort": "75f3b5c",
-    "sourceCommitDate": "2026-10-31 08:02:39 +0000",
+    "sourceCommitSha": "f8301a3e39e05bee4da1b8f85f16fb13ff1c6b3e",
+    "sourceCommitShort": "f8301a3",
+    "sourceCommitDate": "2026-10-31 12:45:48 +0000",
     "workingTreeState": "dirty",
     "snapshotBasis": "working-tree-on-top-of-source-commit",
-    "uncommittedChangeCount": 101,
-    "auditedInputsSha256": "d1d27dd11a92df9b4a62a4ab671aa880325876cbdf1e69a9da1774c2ea4c758d",
+    "uncommittedChangeCount": 25,
+    "auditedInputsSha256": "d11685ac7793fa7aaaf4f1bfb300339f0bc98140b27a3bfd2a90a11d55ff69c7",
     "selfReferentialCommitRule": "A Git commit cannot contain its own final commit SHA inside tracked files. sourceCommitSha records the verified HEAD commit present when the generator ran, workingTreeState and snapshotBasis record whether uncommitted working-tree changes were present on top of sourceCommitSha, and auditedInputsSha256 digests the exact audited file contents."
   },
   "summary": {
     "totalEvalFiles": 48,
-    "machineReadablePilotSuitesCount": 12,
-    "totalMachineReadableCases": 73,
+    "machineReadableSuitesCount": 48,
+    "machineReadablePilotSuitesCount": 48,
+    "skillsWithoutSuitesCount": 0,
+    "totalMachineReadableCases": 269,
     "contractRoutingCasesCount": 21,
-    "deterministicFixtureCasesCount": 52,
+    "contractHandoffCasesCount": 124,
+    "deterministicFixtureCasesCount": 124,
     "structuredMultiCaseTableCount": 8,
     "singlePromptProseOutlineCount": 40,
-    "remainingUnmigratedProseSkillsCount": 36,
+    "remainingUnmigratedProseSkillsCount": 0,
     "totalStructuredEvalTableRows": 52,
     "automatedBehavioralRunnerPresent": true,
     "deterministicRunnerStatus": "Passed",
@@ -53,12 +56,20 @@
       "expectedBehaviorBulletCount": 3,
       "commonFailureModeBulletCount": 0,
       "evalTierClassification": "single_prompt_prose_outline",
-      "auditDisposition": "IMPROVE_MIGRATE_TO_EVAL_JSON",
-      "hasMachineReadableEvalJson": false,
-      "evalJsonPath": null,
-      "machineReadableCaseCount": 0,
-      "evaluationTypes": [],
-      "deterministicRunnerStatus": "Not Implemented",
+      "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "hasMachineReadableEvalJson": true,
+      "evalJsonPath": "evals/suites/acceptance-criteria-builder.eval.json",
+      "machineReadableCaseCount": 5,
+      "countsByEvaluationType": {
+        "contract_routing": 0,
+        "contract_handoff": 3,
+        "deterministic_fixture": 2
+      },
+      "evaluationTypes": [
+        "contract_handoff",
+        "deterministic_fixture"
+      ],
+      "deterministicRunnerStatus": "Passed",
       "liveModelStatus": "Not Run",
       "blenderRuntimeStatus": "Not Run"
     },
@@ -83,12 +94,20 @@
       "expectedBehaviorBulletCount": 6,
       "commonFailureModeBulletCount": 4,
       "evalTierClassification": "single_prompt_prose_outline",
-      "auditDisposition": "IMPROVE_MIGRATE_TO_EVAL_JSON",
-      "hasMachineReadableEvalJson": false,
-      "evalJsonPath": null,
-      "machineReadableCaseCount": 0,
-      "evaluationTypes": [],
-      "deterministicRunnerStatus": "Not Implemented",
+      "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "hasMachineReadableEvalJson": true,
+      "evalJsonPath": "evals/suites/asset-fallback-strategy.eval.json",
+      "machineReadableCaseCount": 5,
+      "countsByEvaluationType": {
+        "contract_routing": 0,
+        "contract_handoff": 3,
+        "deterministic_fixture": 2
+      },
+      "evaluationTypes": [
+        "contract_handoff",
+        "deterministic_fixture"
+      ],
+      "deterministicRunnerStatus": "Passed",
       "liveModelStatus": "Not Run",
       "blenderRuntimeStatus": "Not Run"
     },
@@ -112,12 +131,20 @@
       "expectedBehaviorBulletCount": 7,
       "commonFailureModeBulletCount": 0,
       "evalTierClassification": "single_prompt_prose_outline",
-      "auditDisposition": "IMPROVE_MIGRATE_TO_EVAL_JSON",
-      "hasMachineReadableEvalJson": false,
-      "evalJsonPath": null,
-      "machineReadableCaseCount": 0,
-      "evaluationTypes": [],
-      "deterministicRunnerStatus": "Not Implemented",
+      "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "hasMachineReadableEvalJson": true,
+      "evalJsonPath": "evals/suites/asset-library-organization-planner.eval.json",
+      "machineReadableCaseCount": 5,
+      "countsByEvaluationType": {
+        "contract_routing": 0,
+        "contract_handoff": 3,
+        "deterministic_fixture": 2
+      },
+      "evaluationTypes": [
+        "contract_handoff",
+        "deterministic_fixture"
+      ],
+      "deterministicRunnerStatus": "Passed",
       "liveModelStatus": "Not Run",
       "blenderRuntimeStatus": "Not Run"
     },
@@ -142,12 +169,20 @@
       "expectedBehaviorBulletCount": 5,
       "commonFailureModeBulletCount": 4,
       "evalTierClassification": "single_prompt_prose_outline",
-      "auditDisposition": "IMPROVE_MIGRATE_TO_EVAL_JSON",
-      "hasMachineReadableEvalJson": false,
-      "evalJsonPath": null,
-      "machineReadableCaseCount": 0,
-      "evaluationTypes": [],
-      "deterministicRunnerStatus": "Not Implemented",
+      "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "hasMachineReadableEvalJson": true,
+      "evalJsonPath": "evals/suites/asset-license-checker.eval.json",
+      "machineReadableCaseCount": 5,
+      "countsByEvaluationType": {
+        "contract_routing": 0,
+        "contract_handoff": 3,
+        "deterministic_fixture": 2
+      },
+      "evaluationTypes": [
+        "contract_handoff",
+        "deterministic_fixture"
+      ],
+      "deterministicRunnerStatus": "Passed",
       "liveModelStatus": "Not Run",
       "blenderRuntimeStatus": "Not Run"
     },
@@ -171,12 +206,20 @@
       "expectedBehaviorBulletCount": 5,
       "commonFailureModeBulletCount": 0,
       "evalTierClassification": "single_prompt_prose_outline",
-      "auditDisposition": "IMPROVE_MIGRATE_TO_EVAL_JSON",
-      "hasMachineReadableEvalJson": false,
-      "evalJsonPath": null,
-      "machineReadableCaseCount": 0,
-      "evaluationTypes": [],
-      "deterministicRunnerStatus": "Not Implemented",
+      "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "hasMachineReadableEvalJson": true,
+      "evalJsonPath": "evals/suites/asset-style-consistency-checker.eval.json",
+      "machineReadableCaseCount": 5,
+      "countsByEvaluationType": {
+        "contract_routing": 0,
+        "contract_handoff": 3,
+        "deterministic_fixture": 2
+      },
+      "evaluationTypes": [
+        "contract_handoff",
+        "deterministic_fixture"
+      ],
+      "deterministicRunnerStatus": "Passed",
       "liveModelStatus": "Not Run",
       "blenderRuntimeStatus": "Not Run"
     },
@@ -204,12 +247,18 @@
       "expectedBehaviorBulletCount": 6,
       "commonFailureModeBulletCount": 5,
       "evalTierClassification": "structured_multi_case_table",
-      "auditDisposition": "PILOT_JSON_IMPLEMENTED",
+      "auditDisposition": "EVAL_JSON_IMPLEMENTED",
       "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/pilot/blender-asset-discovery-planner.eval.json",
-      "machineReadableCaseCount": 7,
+      "evalJsonPath": "evals/suites/blender-asset-discovery-planner.eval.json",
+      "machineReadableCaseCount": 9,
+      "countsByEvaluationType": {
+        "contract_routing": 0,
+        "contract_handoff": 2,
+        "deterministic_fixture": 7
+      },
       "evaluationTypes": [
-        "deterministic_fixture"
+        "deterministic_fixture",
+        "contract_handoff"
       ],
       "deterministicRunnerStatus": "Passed",
       "liveModelStatus": "Not Run",
@@ -239,12 +288,18 @@
       "expectedBehaviorBulletCount": 7,
       "commonFailureModeBulletCount": 4,
       "evalTierClassification": "structured_multi_case_table",
-      "auditDisposition": "PILOT_JSON_IMPLEMENTED",
+      "auditDisposition": "EVAL_JSON_IMPLEMENTED",
       "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/pilot/blender-brainstorming.eval.json",
-      "machineReadableCaseCount": 5,
+      "evalJsonPath": "evals/suites/blender-brainstorming.eval.json",
+      "machineReadableCaseCount": 7,
+      "countsByEvaluationType": {
+        "contract_routing": 0,
+        "contract_handoff": 2,
+        "deterministic_fixture": 5
+      },
       "evaluationTypes": [
-        "deterministic_fixture"
+        "deterministic_fixture",
+        "contract_handoff"
       ],
       "deterministicRunnerStatus": "Passed",
       "liveModelStatus": "Not Run",
@@ -272,12 +327,20 @@
       "expectedBehaviorBulletCount": 7,
       "commonFailureModeBulletCount": 4,
       "evalTierClassification": "single_prompt_prose_outline",
-      "auditDisposition": "IMPROVE_MIGRATE_TO_EVAL_JSON",
-      "hasMachineReadableEvalJson": false,
-      "evalJsonPath": null,
-      "machineReadableCaseCount": 0,
-      "evaluationTypes": [],
-      "deterministicRunnerStatus": "Not Implemented",
+      "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "hasMachineReadableEvalJson": true,
+      "evalJsonPath": "evals/suites/blender-checklist-driven-workflow.eval.json",
+      "machineReadableCaseCount": 5,
+      "countsByEvaluationType": {
+        "contract_routing": 0,
+        "contract_handoff": 3,
+        "deterministic_fixture": 2
+      },
+      "evaluationTypes": [
+        "contract_handoff",
+        "deterministic_fixture"
+      ],
+      "deterministicRunnerStatus": "Passed",
       "liveModelStatus": "Not Run",
       "blenderRuntimeStatus": "Not Run"
     },
@@ -303,12 +366,20 @@
       "expectedBehaviorBulletCount": 3,
       "commonFailureModeBulletCount": 2,
       "evalTierClassification": "single_prompt_prose_outline",
-      "auditDisposition": "IMPROVE_MIGRATE_TO_EVAL_JSON",
-      "hasMachineReadableEvalJson": false,
-      "evalJsonPath": null,
-      "machineReadableCaseCount": 0,
-      "evaluationTypes": [],
-      "deterministicRunnerStatus": "Not Implemented",
+      "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "hasMachineReadableEvalJson": true,
+      "evalJsonPath": "evals/suites/blender-composition-camera-planner.eval.json",
+      "machineReadableCaseCount": 5,
+      "countsByEvaluationType": {
+        "contract_routing": 0,
+        "contract_handoff": 3,
+        "deterministic_fixture": 2
+      },
+      "evaluationTypes": [
+        "contract_handoff",
+        "deterministic_fixture"
+      ],
+      "deterministicRunnerStatus": "Passed",
       "liveModelStatus": "Not Run",
       "blenderRuntimeStatus": "Not Run"
     },
@@ -334,12 +405,20 @@
       "expectedBehaviorBulletCount": 3,
       "commonFailureModeBulletCount": 2,
       "evalTierClassification": "single_prompt_prose_outline",
-      "auditDisposition": "IMPROVE_MIGRATE_TO_EVAL_JSON",
-      "hasMachineReadableEvalJson": false,
-      "evalJsonPath": null,
-      "machineReadableCaseCount": 0,
-      "evaluationTypes": [],
-      "deterministicRunnerStatus": "Not Implemented",
+      "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "hasMachineReadableEvalJson": true,
+      "evalJsonPath": "evals/suites/blender-lighting-material-planner.eval.json",
+      "machineReadableCaseCount": 5,
+      "countsByEvaluationType": {
+        "contract_routing": 0,
+        "contract_handoff": 3,
+        "deterministic_fixture": 2
+      },
+      "evaluationTypes": [
+        "contract_handoff",
+        "deterministic_fixture"
+      ],
+      "deterministicRunnerStatus": "Passed",
       "liveModelStatus": "Not Run",
       "blenderRuntimeStatus": "Not Run"
     },
@@ -364,12 +443,20 @@
       "expectedBehaviorBulletCount": 6,
       "commonFailureModeBulletCount": 4,
       "evalTierClassification": "single_prompt_prose_outline",
-      "auditDisposition": "IMPROVE_MIGRATE_TO_EVAL_JSON",
-      "hasMachineReadableEvalJson": false,
-      "evalJsonPath": null,
-      "machineReadableCaseCount": 0,
-      "evaluationTypes": [],
-      "deterministicRunnerStatus": "Not Implemented",
+      "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "hasMachineReadableEvalJson": true,
+      "evalJsonPath": "evals/suites/blender-recipe-decomposer.eval.json",
+      "machineReadableCaseCount": 5,
+      "countsByEvaluationType": {
+        "contract_routing": 0,
+        "contract_handoff": 3,
+        "deterministic_fixture": 2
+      },
+      "evaluationTypes": [
+        "contract_handoff",
+        "deterministic_fixture"
+      ],
+      "deterministicRunnerStatus": "Passed",
       "liveModelStatus": "Not Run",
       "blenderRuntimeStatus": "Not Run"
     },
@@ -395,12 +482,20 @@
       "expectedBehaviorBulletCount": 3,
       "commonFailureModeBulletCount": 2,
       "evalTierClassification": "single_prompt_prose_outline",
-      "auditDisposition": "IMPROVE_MIGRATE_TO_EVAL_JSON",
-      "hasMachineReadableEvalJson": false,
-      "evalJsonPath": null,
-      "machineReadableCaseCount": 0,
-      "evaluationTypes": [],
-      "deterministicRunnerStatus": "Not Implemented",
+      "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "hasMachineReadableEvalJson": true,
+      "evalJsonPath": "evals/suites/blender-scene-quality-checker.eval.json",
+      "machineReadableCaseCount": 5,
+      "countsByEvaluationType": {
+        "contract_routing": 0,
+        "contract_handoff": 3,
+        "deterministic_fixture": 2
+      },
+      "evaluationTypes": [
+        "contract_handoff",
+        "deterministic_fixture"
+      ],
+      "deterministicRunnerStatus": "Passed",
       "liveModelStatus": "Not Run",
       "blenderRuntimeStatus": "Not Run"
     },
@@ -425,12 +520,20 @@
       "expectedBehaviorBulletCount": 5,
       "commonFailureModeBulletCount": 3,
       "evalTierClassification": "single_prompt_prose_outline",
-      "auditDisposition": "IMPROVE_MIGRATE_TO_EVAL_JSON",
-      "hasMachineReadableEvalJson": false,
-      "evalJsonPath": null,
-      "machineReadableCaseCount": 0,
-      "evaluationTypes": [],
-      "deterministicRunnerStatus": "Not Implemented",
+      "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "hasMachineReadableEvalJson": true,
+      "evalJsonPath": "evals/suites/blender-scope-boundary-enforcer.eval.json",
+      "machineReadableCaseCount": 5,
+      "countsByEvaluationType": {
+        "contract_routing": 0,
+        "contract_handoff": 3,
+        "deterministic_fixture": 2
+      },
+      "evaluationTypes": [
+        "contract_handoff",
+        "deterministic_fixture"
+      ],
+      "deterministicRunnerStatus": "Passed",
       "liveModelStatus": "Not Run",
       "blenderRuntimeStatus": "Not Run"
     },
@@ -455,12 +558,20 @@
       "expectedBehaviorBulletCount": 5,
       "commonFailureModeBulletCount": 4,
       "evalTierClassification": "single_prompt_prose_outline",
-      "auditDisposition": "IMPROVE_MIGRATE_TO_EVAL_JSON",
-      "hasMachineReadableEvalJson": false,
-      "evalJsonPath": null,
-      "machineReadableCaseCount": 0,
-      "evaluationTypes": [],
-      "deterministicRunnerStatus": "Not Implemented",
+      "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "hasMachineReadableEvalJson": true,
+      "evalJsonPath": "evals/suites/blender-stop-condition-decider.eval.json",
+      "machineReadableCaseCount": 5,
+      "countsByEvaluationType": {
+        "contract_routing": 0,
+        "contract_handoff": 3,
+        "deterministic_fixture": 2
+      },
+      "evaluationTypes": [
+        "contract_handoff",
+        "deterministic_fixture"
+      ],
+      "deterministicRunnerStatus": "Passed",
       "liveModelStatus": "Not Run",
       "blenderRuntimeStatus": "Not Run"
     },
@@ -488,12 +599,18 @@
       "expectedBehaviorBulletCount": 6,
       "commonFailureModeBulletCount": 5,
       "evalTierClassification": "structured_multi_case_table",
-      "auditDisposition": "PILOT_JSON_IMPLEMENTED",
+      "auditDisposition": "EVAL_JSON_IMPLEMENTED",
       "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/pilot/blender-troubleshooting.eval.json",
-      "machineReadableCaseCount": 6,
+      "evalJsonPath": "evals/suites/blender-troubleshooting.eval.json",
+      "machineReadableCaseCount": 8,
+      "countsByEvaluationType": {
+        "contract_routing": 0,
+        "contract_handoff": 2,
+        "deterministic_fixture": 6
+      },
       "evaluationTypes": [
-        "deterministic_fixture"
+        "deterministic_fixture",
+        "contract_handoff"
       ],
       "deterministicRunnerStatus": "Passed",
       "liveModelStatus": "Not Run",
@@ -522,10 +639,15 @@
       "expectedBehaviorBulletCount": 5,
       "commonFailureModeBulletCount": 5,
       "evalTierClassification": "structured_multi_case_table",
-      "auditDisposition": "PILOT_JSON_IMPLEMENTED",
+      "auditDisposition": "EVAL_JSON_IMPLEMENTED",
       "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/pilot/blendops-help.eval.json",
+      "evalJsonPath": "evals/suites/blendops-help.eval.json",
       "machineReadableCaseCount": 6,
+      "countsByEvaluationType": {
+        "contract_routing": 6,
+        "contract_handoff": 0,
+        "deterministic_fixture": 0
+      },
       "evaluationTypes": [
         "contract_routing"
       ],
@@ -555,12 +677,20 @@
       "expectedBehaviorBulletCount": 9,
       "commonFailureModeBulletCount": 4,
       "evalTierClassification": "single_prompt_prose_outline",
-      "auditDisposition": "IMPROVE_MIGRATE_TO_EVAL_JSON",
-      "hasMachineReadableEvalJson": false,
-      "evalJsonPath": null,
-      "machineReadableCaseCount": 0,
-      "evaluationTypes": [],
-      "deterministicRunnerStatus": "Not Implemented",
+      "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "hasMachineReadableEvalJson": true,
+      "evalJsonPath": "evals/suites/character-portrait-scene-planner.eval.json",
+      "machineReadableCaseCount": 5,
+      "countsByEvaluationType": {
+        "contract_routing": 0,
+        "contract_handoff": 3,
+        "deterministic_fixture": 2
+      },
+      "evaluationTypes": [
+        "contract_handoff",
+        "deterministic_fixture"
+      ],
+      "deterministicRunnerStatus": "Passed",
       "liveModelStatus": "Not Run",
       "blenderRuntimeStatus": "Not Run"
     },
@@ -584,12 +714,20 @@
       "expectedBehaviorBulletCount": 4,
       "commonFailureModeBulletCount": 0,
       "evalTierClassification": "single_prompt_prose_outline",
-      "auditDisposition": "IMPROVE_MIGRATE_TO_EVAL_JSON",
-      "hasMachineReadableEvalJson": false,
-      "evalJsonPath": null,
-      "machineReadableCaseCount": 0,
-      "evaluationTypes": [],
-      "deterministicRunnerStatus": "Not Implemented",
+      "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "hasMachineReadableEvalJson": true,
+      "evalJsonPath": "evals/suites/cli-appendix-job-outline.eval.json",
+      "machineReadableCaseCount": 5,
+      "countsByEvaluationType": {
+        "contract_routing": 0,
+        "contract_handoff": 3,
+        "deterministic_fixture": 2
+      },
+      "evaluationTypes": [
+        "contract_handoff",
+        "deterministic_fixture"
+      ],
+      "deterministicRunnerStatus": "Passed",
       "liveModelStatus": "Not Run",
       "blenderRuntimeStatus": "Not Run"
     },
@@ -613,12 +751,20 @@
       "expectedBehaviorBulletCount": 7,
       "commonFailureModeBulletCount": 0,
       "evalTierClassification": "single_prompt_prose_outline",
-      "auditDisposition": "IMPROVE_MIGRATE_TO_EVAL_JSON",
-      "hasMachineReadableEvalJson": false,
-      "evalJsonPath": null,
-      "machineReadableCaseCount": 0,
-      "evaluationTypes": [],
-      "deterministicRunnerStatus": "Not Implemented",
+      "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "hasMachineReadableEvalJson": true,
+      "evalJsonPath": "evals/suites/color-management-decision.eval.json",
+      "machineReadableCaseCount": 5,
+      "countsByEvaluationType": {
+        "contract_routing": 0,
+        "contract_handoff": 3,
+        "deterministic_fixture": 2
+      },
+      "evaluationTypes": [
+        "contract_handoff",
+        "deterministic_fixture"
+      ],
+      "deterministicRunnerStatus": "Passed",
       "liveModelStatus": "Not Run",
       "blenderRuntimeStatus": "Not Run"
     },
@@ -644,12 +790,20 @@
       "expectedBehaviorBulletCount": 5,
       "commonFailureModeBulletCount": 4,
       "evalTierClassification": "single_prompt_prose_outline",
-      "auditDisposition": "IMPROVE_MIGRATE_TO_EVAL_JSON",
-      "hasMachineReadableEvalJson": false,
-      "evalJsonPath": null,
-      "machineReadableCaseCount": 0,
-      "evaluationTypes": [],
-      "deterministicRunnerStatus": "Not Implemented",
+      "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "hasMachineReadableEvalJson": true,
+      "evalJsonPath": "evals/suites/composition-quality-checker.eval.json",
+      "machineReadableCaseCount": 5,
+      "countsByEvaluationType": {
+        "contract_routing": 0,
+        "contract_handoff": 3,
+        "deterministic_fixture": 2
+      },
+      "evaluationTypes": [
+        "contract_handoff",
+        "deterministic_fixture"
+      ],
+      "deterministicRunnerStatus": "Passed",
       "liveModelStatus": "Not Run",
       "blenderRuntimeStatus": "Not Run"
     },
@@ -673,12 +827,20 @@
       "expectedBehaviorBulletCount": 6,
       "commonFailureModeBulletCount": 0,
       "evalTierClassification": "single_prompt_prose_outline",
-      "auditDisposition": "IMPROVE_MIGRATE_TO_EVAL_JSON",
-      "hasMachineReadableEvalJson": false,
-      "evalJsonPath": null,
-      "machineReadableCaseCount": 0,
-      "evaluationTypes": [],
-      "deterministicRunnerStatus": "Not Implemented",
+      "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "hasMachineReadableEvalJson": true,
+      "evalJsonPath": "evals/suites/cycles-vs-eevee-decision.eval.json",
+      "machineReadableCaseCount": 5,
+      "countsByEvaluationType": {
+        "contract_routing": 0,
+        "contract_handoff": 3,
+        "deterministic_fixture": 2
+      },
+      "evaluationTypes": [
+        "contract_handoff",
+        "deterministic_fixture"
+      ],
+      "deterministicRunnerStatus": "Passed",
       "liveModelStatus": "Not Run",
       "blenderRuntimeStatus": "Not Run"
     },
@@ -704,12 +866,20 @@
       "expectedBehaviorBulletCount": 8,
       "commonFailureModeBulletCount": 4,
       "evalTierClassification": "single_prompt_prose_outline",
-      "auditDisposition": "IMPROVE_MIGRATE_TO_EVAL_JSON",
-      "hasMachineReadableEvalJson": false,
-      "evalJsonPath": null,
-      "machineReadableCaseCount": 0,
-      "evaluationTypes": [],
-      "deterministicRunnerStatus": "Not Implemented",
+      "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "hasMachineReadableEvalJson": true,
+      "evalJsonPath": "evals/suites/environment-establishing-shot-planner.eval.json",
+      "machineReadableCaseCount": 5,
+      "countsByEvaluationType": {
+        "contract_routing": 0,
+        "contract_handoff": 3,
+        "deterministic_fixture": 2
+      },
+      "evaluationTypes": [
+        "contract_handoff",
+        "deterministic_fixture"
+      ],
+      "deterministicRunnerStatus": "Passed",
       "liveModelStatus": "Not Run",
       "blenderRuntimeStatus": "Not Run"
     },
@@ -735,12 +905,20 @@
       "expectedBehaviorBulletCount": 5,
       "commonFailureModeBulletCount": 4,
       "evalTierClassification": "single_prompt_prose_outline",
-      "auditDisposition": "IMPROVE_MIGRATE_TO_EVAL_JSON",
-      "hasMachineReadableEvalJson": false,
-      "evalJsonPath": null,
-      "machineReadableCaseCount": 0,
-      "evaluationTypes": [],
-      "deterministicRunnerStatus": "Not Implemented",
+      "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "hasMachineReadableEvalJson": true,
+      "evalJsonPath": "evals/suites/glb-animation-handoff.eval.json",
+      "machineReadableCaseCount": 5,
+      "countsByEvaluationType": {
+        "contract_routing": 0,
+        "contract_handoff": 3,
+        "deterministic_fixture": 2
+      },
+      "evaluationTypes": [
+        "contract_handoff",
+        "deterministic_fixture"
+      ],
+      "deterministicRunnerStatus": "Passed",
       "liveModelStatus": "Not Run",
       "blenderRuntimeStatus": "Not Run"
     },
@@ -766,12 +944,20 @@
       "expectedBehaviorBulletCount": 6,
       "commonFailureModeBulletCount": 4,
       "evalTierClassification": "single_prompt_prose_outline",
-      "auditDisposition": "IMPROVE_MIGRATE_TO_EVAL_JSON",
-      "hasMachineReadableEvalJson": false,
-      "evalJsonPath": null,
-      "machineReadableCaseCount": 0,
-      "evaluationTypes": [],
-      "deterministicRunnerStatus": "Not Implemented",
+      "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "hasMachineReadableEvalJson": true,
+      "evalJsonPath": "evals/suites/glb-mobile-performance-budget.eval.json",
+      "machineReadableCaseCount": 5,
+      "countsByEvaluationType": {
+        "contract_routing": 0,
+        "contract_handoff": 3,
+        "deterministic_fixture": 2
+      },
+      "evaluationTypes": [
+        "contract_handoff",
+        "deterministic_fixture"
+      ],
+      "deterministicRunnerStatus": "Passed",
       "liveModelStatus": "Not Run",
       "blenderRuntimeStatus": "Not Run"
     },
@@ -797,12 +983,20 @@
       "expectedBehaviorBulletCount": 3,
       "commonFailureModeBulletCount": 2,
       "evalTierClassification": "single_prompt_prose_outline",
-      "auditDisposition": "IMPROVE_MIGRATE_TO_EVAL_JSON",
-      "hasMachineReadableEvalJson": false,
-      "evalJsonPath": null,
-      "machineReadableCaseCount": 0,
-      "evaluationTypes": [],
-      "deterministicRunnerStatus": "Not Implemented",
+      "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "hasMachineReadableEvalJson": true,
+      "evalJsonPath": "evals/suites/glb-web-handoff.eval.json",
+      "machineReadableCaseCount": 5,
+      "countsByEvaluationType": {
+        "contract_routing": 0,
+        "contract_handoff": 3,
+        "deterministic_fixture": 2
+      },
+      "evaluationTypes": [
+        "contract_handoff",
+        "deterministic_fixture"
+      ],
+      "deterministicRunnerStatus": "Passed",
       "liveModelStatus": "Not Run",
       "blenderRuntimeStatus": "Not Run"
     },
@@ -830,12 +1024,18 @@
       "expectedBehaviorBulletCount": 6,
       "commonFailureModeBulletCount": 5,
       "evalTierClassification": "structured_multi_case_table",
-      "auditDisposition": "PILOT_JSON_IMPLEMENTED",
+      "auditDisposition": "EVAL_JSON_IMPLEMENTED",
       "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/pilot/intent-to-3d-brief-writer.eval.json",
-      "machineReadableCaseCount": 7,
+      "evalJsonPath": "evals/suites/intent-to-3d-brief-writer.eval.json",
+      "machineReadableCaseCount": 9,
+      "countsByEvaluationType": {
+        "contract_routing": 0,
+        "contract_handoff": 2,
+        "deterministic_fixture": 7
+      },
       "evaluationTypes": [
-        "deterministic_fixture"
+        "deterministic_fixture",
+        "contract_handoff"
       ],
       "deterministicRunnerStatus": "Passed",
       "liveModelStatus": "Not Run",
@@ -863,12 +1063,20 @@
       "expectedBehaviorBulletCount": 9,
       "commonFailureModeBulletCount": 4,
       "evalTierClassification": "single_prompt_prose_outline",
-      "auditDisposition": "IMPROVE_MIGRATE_TO_EVAL_JSON",
-      "hasMachineReadableEvalJson": false,
-      "evalJsonPath": null,
-      "machineReadableCaseCount": 0,
-      "evaluationTypes": [],
-      "deterministicRunnerStatus": "Not Implemented",
+      "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "hasMachineReadableEvalJson": true,
+      "evalJsonPath": "evals/suites/interior-architectural-scene-planner.eval.json",
+      "machineReadableCaseCount": 5,
+      "countsByEvaluationType": {
+        "contract_routing": 0,
+        "contract_handoff": 3,
+        "deterministic_fixture": 2
+      },
+      "evaluationTypes": [
+        "contract_handoff",
+        "deterministic_fixture"
+      ],
+      "deterministicRunnerStatus": "Passed",
       "liveModelStatus": "Not Run",
       "blenderRuntimeStatus": "Not Run"
     },
@@ -894,12 +1102,20 @@
       "expectedBehaviorBulletCount": 6,
       "commonFailureModeBulletCount": 4,
       "evalTierClassification": "single_prompt_prose_outline",
-      "auditDisposition": "IMPROVE_MIGRATE_TO_EVAL_JSON",
-      "hasMachineReadableEvalJson": false,
-      "evalJsonPath": null,
-      "machineReadableCaseCount": 0,
-      "evaluationTypes": [],
-      "deterministicRunnerStatus": "Not Implemented",
+      "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "hasMachineReadableEvalJson": true,
+      "evalJsonPath": "evals/suites/lighting-quality-checker.eval.json",
+      "machineReadableCaseCount": 5,
+      "countsByEvaluationType": {
+        "contract_routing": 0,
+        "contract_handoff": 3,
+        "deterministic_fixture": 2
+      },
+      "evaluationTypes": [
+        "contract_handoff",
+        "deterministic_fixture"
+      ],
+      "deterministicRunnerStatus": "Passed",
       "liveModelStatus": "Not Run",
       "blenderRuntimeStatus": "Not Run"
     },
@@ -925,12 +1141,20 @@
       "expectedBehaviorBulletCount": 6,
       "commonFailureModeBulletCount": 4,
       "evalTierClassification": "single_prompt_prose_outline",
-      "auditDisposition": "IMPROVE_MIGRATE_TO_EVAL_JSON",
-      "hasMachineReadableEvalJson": false,
-      "evalJsonPath": null,
-      "machineReadableCaseCount": 0,
-      "evaluationTypes": [],
-      "deterministicRunnerStatus": "Not Implemented",
+      "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "hasMachineReadableEvalJson": true,
+      "evalJsonPath": "evals/suites/material-quality-checker.eval.json",
+      "machineReadableCaseCount": 5,
+      "countsByEvaluationType": {
+        "contract_routing": 0,
+        "contract_handoff": 3,
+        "deterministic_fixture": 2
+      },
+      "evaluationTypes": [
+        "contract_handoff",
+        "deterministic_fixture"
+      ],
+      "deterministicRunnerStatus": "Passed",
       "liveModelStatus": "Not Run",
       "blenderRuntimeStatus": "Not Run"
     },
@@ -956,12 +1180,20 @@
       "expectedBehaviorBulletCount": 3,
       "commonFailureModeBulletCount": 2,
       "evalTierClassification": "single_prompt_prose_outline",
-      "auditDisposition": "IMPROVE_MIGRATE_TO_EVAL_JSON",
-      "hasMachineReadableEvalJson": false,
-      "evalJsonPath": null,
-      "machineReadableCaseCount": 0,
-      "evaluationTypes": [],
-      "deterministicRunnerStatus": "Not Implemented",
+      "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "hasMachineReadableEvalJson": true,
+      "evalJsonPath": "evals/suites/non-blender-user-response-writer.eval.json",
+      "machineReadableCaseCount": 5,
+      "countsByEvaluationType": {
+        "contract_routing": 0,
+        "contract_handoff": 3,
+        "deterministic_fixture": 2
+      },
+      "evaluationTypes": [
+        "contract_handoff",
+        "deterministic_fixture"
+      ],
+      "deterministicRunnerStatus": "Passed",
       "liveModelStatus": "Not Run",
       "blenderRuntimeStatus": "Not Run"
     },
@@ -987,12 +1219,18 @@
       "expectedBehaviorBulletCount": 3,
       "commonFailureModeBulletCount": 2,
       "evalTierClassification": "single_prompt_prose_outline",
-      "auditDisposition": "PILOT_JSON_IMPLEMENTED",
+      "auditDisposition": "EVAL_JSON_IMPLEMENTED",
       "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/pilot/official-runtime-readiness-checker.eval.json",
-      "machineReadableCaseCount": 5,
+      "evalJsonPath": "evals/suites/official-runtime-readiness-checker.eval.json",
+      "machineReadableCaseCount": 7,
+      "countsByEvaluationType": {
+        "contract_routing": 0,
+        "contract_handoff": 2,
+        "deterministic_fixture": 5
+      },
       "evaluationTypes": [
-        "deterministic_fixture"
+        "deterministic_fixture",
+        "contract_handoff"
       ],
       "deterministicRunnerStatus": "Passed",
       "liveModelStatus": "Not Run",
@@ -1020,12 +1258,20 @@
       "expectedBehaviorBulletCount": 3,
       "commonFailureModeBulletCount": 2,
       "evalTierClassification": "single_prompt_prose_outline",
-      "auditDisposition": "IMPROVE_MIGRATE_TO_EVAL_JSON",
-      "hasMachineReadableEvalJson": false,
-      "evalJsonPath": null,
-      "machineReadableCaseCount": 0,
-      "evaluationTypes": [],
-      "deterministicRunnerStatus": "Not Implemented",
+      "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "hasMachineReadableEvalJson": true,
+      "evalJsonPath": "evals/suites/official-runtime-setup-guide.eval.json",
+      "machineReadableCaseCount": 5,
+      "countsByEvaluationType": {
+        "contract_routing": 0,
+        "contract_handoff": 3,
+        "deterministic_fixture": 2
+      },
+      "evaluationTypes": [
+        "contract_handoff",
+        "deterministic_fixture"
+      ],
+      "deterministicRunnerStatus": "Passed",
       "liveModelStatus": "Not Run",
       "blenderRuntimeStatus": "Not Run"
     },
@@ -1049,12 +1295,20 @@
       "expectedBehaviorBulletCount": 7,
       "commonFailureModeBulletCount": 0,
       "evalTierClassification": "single_prompt_prose_outline",
-      "auditDisposition": "IMPROVE_MIGRATE_TO_EVAL_JSON",
-      "hasMachineReadableEvalJson": false,
-      "evalJsonPath": null,
-      "machineReadableCaseCount": 0,
-      "evaluationTypes": [],
-      "deterministicRunnerStatus": "Not Implemented",
+      "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "hasMachineReadableEvalJson": true,
+      "evalJsonPath": "evals/suites/output-format-decision.eval.json",
+      "machineReadableCaseCount": 5,
+      "countsByEvaluationType": {
+        "contract_routing": 0,
+        "contract_handoff": 3,
+        "deterministic_fixture": 2
+      },
+      "evaluationTypes": [
+        "contract_handoff",
+        "deterministic_fixture"
+      ],
+      "deterministicRunnerStatus": "Passed",
       "liveModelStatus": "Not Run",
       "blenderRuntimeStatus": "Not Run"
     },
@@ -1078,10 +1332,15 @@
       "expectedBehaviorBulletCount": 4,
       "commonFailureModeBulletCount": 0,
       "evalTierClassification": "single_prompt_prose_outline",
-      "auditDisposition": "PILOT_JSON_IMPLEMENTED",
+      "auditDisposition": "EVAL_JSON_IMPLEMENTED",
       "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/pilot/pack-prerequisite-checker.eval.json",
+      "evalJsonPath": "evals/suites/pack-prerequisite-checker.eval.json",
       "machineReadableCaseCount": 5,
+      "countsByEvaluationType": {
+        "contract_routing": 5,
+        "contract_handoff": 0,
+        "deterministic_fixture": 0
+      },
       "evaluationTypes": [
         "contract_routing"
       ],
@@ -1109,12 +1368,20 @@
       "expectedBehaviorBulletCount": 4,
       "commonFailureModeBulletCount": 0,
       "evalTierClassification": "single_prompt_prose_outline",
-      "auditDisposition": "IMPROVE_MIGRATE_TO_EVAL_JSON",
-      "hasMachineReadableEvalJson": false,
-      "evalJsonPath": null,
-      "machineReadableCaseCount": 0,
-      "evaluationTypes": [],
-      "deterministicRunnerStatus": "Not Implemented",
+      "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "hasMachineReadableEvalJson": true,
+      "evalJsonPath": "evals/suites/path-one-host-outline.eval.json",
+      "machineReadableCaseCount": 5,
+      "countsByEvaluationType": {
+        "contract_routing": 0,
+        "contract_handoff": 3,
+        "deterministic_fixture": 2
+      },
+      "evaluationTypes": [
+        "contract_handoff",
+        "deterministic_fixture"
+      ],
+      "deterministicRunnerStatus": "Passed",
       "liveModelStatus": "Not Run",
       "blenderRuntimeStatus": "Not Run"
     },
@@ -1140,12 +1407,20 @@
       "expectedBehaviorBulletCount": 6,
       "commonFailureModeBulletCount": 4,
       "evalTierClassification": "single_prompt_prose_outline",
-      "auditDisposition": "IMPROVE_MIGRATE_TO_EVAL_JSON",
-      "hasMachineReadableEvalJson": false,
-      "evalJsonPath": null,
-      "machineReadableCaseCount": 0,
-      "evaluationTypes": [],
-      "deterministicRunnerStatus": "Not Implemented",
+      "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "hasMachineReadableEvalJson": true,
+      "evalJsonPath": "evals/suites/polycount-budget-checker.eval.json",
+      "machineReadableCaseCount": 5,
+      "countsByEvaluationType": {
+        "contract_routing": 0,
+        "contract_handoff": 3,
+        "deterministic_fixture": 2
+      },
+      "evaluationTypes": [
+        "contract_handoff",
+        "deterministic_fixture"
+      ],
+      "deterministicRunnerStatus": "Passed",
       "liveModelStatus": "Not Run",
       "blenderRuntimeStatus": "Not Run"
     },
@@ -1173,12 +1448,18 @@
       "expectedBehaviorBulletCount": 6,
       "commonFailureModeBulletCount": 5,
       "evalTierClassification": "structured_multi_case_table",
-      "auditDisposition": "PILOT_JSON_IMPLEMENTED",
+      "auditDisposition": "EVAL_JSON_IMPLEMENTED",
       "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/pilot/pre-handoff-verification.eval.json",
-      "machineReadableCaseCount": 7,
+      "evalJsonPath": "evals/suites/pre-handoff-verification.eval.json",
+      "machineReadableCaseCount": 9,
+      "countsByEvaluationType": {
+        "contract_routing": 0,
+        "contract_handoff": 2,
+        "deterministic_fixture": 7
+      },
       "evaluationTypes": [
-        "deterministic_fixture"
+        "deterministic_fixture",
+        "contract_handoff"
       ],
       "deterministicRunnerStatus": "Passed",
       "liveModelStatus": "Not Run",
@@ -1206,12 +1487,20 @@
       "expectedBehaviorBulletCount": 6,
       "commonFailureModeBulletCount": 3,
       "evalTierClassification": "single_prompt_prose_outline",
-      "auditDisposition": "IMPROVE_MIGRATE_TO_EVAL_JSON",
-      "hasMachineReadableEvalJson": false,
-      "evalJsonPath": null,
-      "machineReadableCaseCount": 0,
-      "evaluationTypes": [],
-      "deterministicRunnerStatus": "Not Implemented",
+      "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "hasMachineReadableEvalJson": true,
+      "evalJsonPath": "evals/suites/preview-report-template-writer.eval.json",
+      "machineReadableCaseCount": 5,
+      "countsByEvaluationType": {
+        "contract_routing": 0,
+        "contract_handoff": 3,
+        "deterministic_fixture": 2
+      },
+      "evaluationTypes": [
+        "contract_handoff",
+        "deterministic_fixture"
+      ],
+      "deterministicRunnerStatus": "Passed",
       "liveModelStatus": "Not Run",
       "blenderRuntimeStatus": "Not Run"
     },
@@ -1237,12 +1526,20 @@
       "expectedBehaviorBulletCount": 7,
       "commonFailureModeBulletCount": 4,
       "evalTierClassification": "single_prompt_prose_outline",
-      "auditDisposition": "IMPROVE_MIGRATE_TO_EVAL_JSON",
-      "hasMachineReadableEvalJson": false,
-      "evalJsonPath": null,
-      "machineReadableCaseCount": 0,
-      "evaluationTypes": [],
-      "deterministicRunnerStatus": "Not Implemented",
+      "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "hasMachineReadableEvalJson": true,
+      "evalJsonPath": "evals/suites/product-grid-scene-planner.eval.json",
+      "machineReadableCaseCount": 5,
+      "countsByEvaluationType": {
+        "contract_routing": 0,
+        "contract_handoff": 3,
+        "deterministic_fixture": 2
+      },
+      "evaluationTypes": [
+        "contract_handoff",
+        "deterministic_fixture"
+      ],
+      "deterministicRunnerStatus": "Passed",
       "liveModelStatus": "Not Run",
       "blenderRuntimeStatus": "Not Run"
     },
@@ -1268,12 +1565,20 @@
       "expectedBehaviorBulletCount": 3,
       "commonFailureModeBulletCount": 2,
       "evalTierClassification": "single_prompt_prose_outline",
-      "auditDisposition": "IMPROVE_MIGRATE_TO_EVAL_JSON",
-      "hasMachineReadableEvalJson": false,
-      "evalJsonPath": null,
-      "machineReadableCaseCount": 0,
-      "evaluationTypes": [],
-      "deterministicRunnerStatus": "Not Implemented",
+      "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "hasMachineReadableEvalJson": true,
+      "evalJsonPath": "evals/suites/product-hero-scene-planner.eval.json",
+      "machineReadableCaseCount": 5,
+      "countsByEvaluationType": {
+        "contract_routing": 0,
+        "contract_handoff": 3,
+        "deterministic_fixture": 2
+      },
+      "evaluationTypes": [
+        "contract_handoff",
+        "deterministic_fixture"
+      ],
+      "deterministicRunnerStatus": "Passed",
       "liveModelStatus": "Not Run",
       "blenderRuntimeStatus": "Not Run"
     },
@@ -1297,10 +1602,15 @@
       "expectedBehaviorBulletCount": 4,
       "commonFailureModeBulletCount": 0,
       "evalTierClassification": "single_prompt_prose_outline",
-      "auditDisposition": "PILOT_JSON_IMPLEMENTED",
+      "auditDisposition": "EVAL_JSON_IMPLEMENTED",
       "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/pilot/recipe-fit-assessor.eval.json",
+      "evalJsonPath": "evals/suites/recipe-fit-assessor.eval.json",
       "machineReadableCaseCount": 5,
+      "countsByEvaluationType": {
+        "contract_routing": 5,
+        "contract_handoff": 0,
+        "deterministic_fixture": 0
+      },
       "evaluationTypes": [
         "contract_routing"
       ],
@@ -1332,12 +1642,18 @@
       "expectedBehaviorBulletCount": 6,
       "commonFailureModeBulletCount": 8,
       "evalTierClassification": "structured_multi_case_table",
-      "auditDisposition": "PILOT_JSON_IMPLEMENTED",
+      "auditDisposition": "EVAL_JSON_IMPLEMENTED",
       "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/pilot/render-export-evidence.eval.json",
-      "machineReadableCaseCount": 8,
+      "evalJsonPath": "evals/suites/render-export-evidence.eval.json",
+      "machineReadableCaseCount": 10,
+      "countsByEvaluationType": {
+        "contract_routing": 0,
+        "contract_handoff": 2,
+        "deterministic_fixture": 8
+      },
       "evaluationTypes": [
-        "deterministic_fixture"
+        "deterministic_fixture",
+        "contract_handoff"
       ],
       "deterministicRunnerStatus": "Passed",
       "liveModelStatus": "Not Run",
@@ -1363,12 +1679,20 @@
       "expectedBehaviorBulletCount": 6,
       "commonFailureModeBulletCount": 0,
       "evalTierClassification": "single_prompt_prose_outline",
-      "auditDisposition": "IMPROVE_MIGRATE_TO_EVAL_JSON",
-      "hasMachineReadableEvalJson": false,
-      "evalJsonPath": null,
-      "machineReadableCaseCount": 0,
-      "evaluationTypes": [],
-      "deterministicRunnerStatus": "Not Implemented",
+      "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "hasMachineReadableEvalJson": true,
+      "evalJsonPath": "evals/suites/resolution-aspect-decision.eval.json",
+      "machineReadableCaseCount": 5,
+      "countsByEvaluationType": {
+        "contract_routing": 0,
+        "contract_handoff": 3,
+        "deterministic_fixture": 2
+      },
+      "evaluationTypes": [
+        "contract_handoff",
+        "deterministic_fixture"
+      ],
+      "deterministicRunnerStatus": "Passed",
       "liveModelStatus": "Not Run",
       "blenderRuntimeStatus": "Not Run"
     },
@@ -1392,12 +1716,20 @@
       "expectedBehaviorBulletCount": 4,
       "commonFailureModeBulletCount": 0,
       "evalTierClassification": "single_prompt_prose_outline",
-      "auditDisposition": "IMPROVE_MIGRATE_TO_EVAL_JSON",
-      "hasMachineReadableEvalJson": false,
-      "evalJsonPath": null,
-      "machineReadableCaseCount": 0,
-      "evaluationTypes": [],
-      "deterministicRunnerStatus": "Not Implemented",
+      "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "hasMachineReadableEvalJson": true,
+      "evalJsonPath": "evals/suites/runtime-attempt-report-writer.eval.json",
+      "machineReadableCaseCount": 5,
+      "countsByEvaluationType": {
+        "contract_routing": 0,
+        "contract_handoff": 3,
+        "deterministic_fixture": 2
+      },
+      "evaluationTypes": [
+        "contract_handoff",
+        "deterministic_fixture"
+      ],
+      "deterministicRunnerStatus": "Passed",
       "liveModelStatus": "Not Run",
       "blenderRuntimeStatus": "Not Run"
     },
@@ -1425,12 +1757,18 @@
       "expectedBehaviorBulletCount": 8,
       "commonFailureModeBulletCount": 5,
       "evalTierClassification": "structured_multi_case_table",
-      "auditDisposition": "PILOT_JSON_IMPLEMENTED",
+      "auditDisposition": "EVAL_JSON_IMPLEMENTED",
       "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/pilot/runtime-bridge-conflict-resolver.eval.json",
-      "machineReadableCaseCount": 7,
+      "evalJsonPath": "evals/suites/runtime-bridge-conflict-resolver.eval.json",
+      "machineReadableCaseCount": 9,
+      "countsByEvaluationType": {
+        "contract_routing": 0,
+        "contract_handoff": 2,
+        "deterministic_fixture": 7
+      },
       "evaluationTypes": [
-        "deterministic_fixture"
+        "deterministic_fixture",
+        "contract_handoff"
       ],
       "deterministicRunnerStatus": "Passed",
       "liveModelStatus": "Not Run",
@@ -1456,12 +1794,20 @@
       "expectedBehaviorBulletCount": 4,
       "commonFailureModeBulletCount": 0,
       "evalTierClassification": "single_prompt_prose_outline",
-      "auditDisposition": "IMPROVE_MIGRATE_TO_EVAL_JSON",
-      "hasMachineReadableEvalJson": false,
-      "evalJsonPath": null,
-      "machineReadableCaseCount": 0,
-      "evaluationTypes": [],
-      "deterministicRunnerStatus": "Not Implemented",
+      "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "hasMachineReadableEvalJson": true,
+      "evalJsonPath": "evals/suites/runtime-path-picker.eval.json",
+      "machineReadableCaseCount": 5,
+      "countsByEvaluationType": {
+        "contract_routing": 0,
+        "contract_handoff": 3,
+        "deterministic_fixture": 2
+      },
+      "evaluationTypes": [
+        "contract_handoff",
+        "deterministic_fixture"
+      ],
+      "deterministicRunnerStatus": "Passed",
       "liveModelStatus": "Not Run",
       "blenderRuntimeStatus": "Not Run"
     },
@@ -1487,12 +1833,20 @@
       "expectedBehaviorBulletCount": 10,
       "commonFailureModeBulletCount": 4,
       "evalTierClassification": "single_prompt_prose_outline",
-      "auditDisposition": "IMPROVE_MIGRATE_TO_EVAL_JSON",
-      "hasMachineReadableEvalJson": false,
-      "evalJsonPath": null,
-      "machineReadableCaseCount": 0,
-      "evaluationTypes": [],
-      "deterministicRunnerStatus": "Not Implemented",
+      "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "hasMachineReadableEvalJson": true,
+      "evalJsonPath": "evals/suites/three-fiber-component-shape-planner.eval.json",
+      "machineReadableCaseCount": 5,
+      "countsByEvaluationType": {
+        "contract_routing": 0,
+        "contract_handoff": 3,
+        "deterministic_fixture": 2
+      },
+      "evaluationTypes": [
+        "contract_handoff",
+        "deterministic_fixture"
+      ],
+      "deterministicRunnerStatus": "Passed",
       "liveModelStatus": "Not Run",
       "blenderRuntimeStatus": "Not Run"
     },
@@ -1516,10 +1870,15 @@
       "expectedBehaviorBulletCount": 3,
       "commonFailureModeBulletCount": 0,
       "evalTierClassification": "single_prompt_prose_outline",
-      "auditDisposition": "PILOT_JSON_IMPLEMENTED",
+      "auditDisposition": "EVAL_JSON_IMPLEMENTED",
       "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/pilot/workflow-stage-router.eval.json",
+      "evalJsonPath": "evals/suites/workflow-stage-router.eval.json",
       "machineReadableCaseCount": 5,
+      "countsByEvaluationType": {
+        "contract_routing": 5,
+        "contract_handoff": 0,
+        "deterministic_fixture": 0
+      },
       "evaluationTypes": [
         "contract_routing"
       ],

@@ -1,0 +1,325 @@
+{
+  "schemaVersion": "2.0.0",
+  "skillId": "lighting-quality-checker",
+  "category": "quality-validators",
+  "isContractedSkill": true,
+  "isRoutingParticipant": false,
+  "contractPath": "skills/lighting-quality-checker/contract.json",
+  "skillMarkdownPath": "skills/lighting-quality-checker/SKILL.md",
+  "evalMarkdownPath": "skills/lighting-quality-checker/EVAL.md",
+  "sourceEvalTier": "prose_outline_contract_migrated",
+  "evaluationStatus": {
+    "staticValidation": "Passed",
+    "deterministicFixture": "Passed",
+    "contractRouting": "Not Applicable",
+    "contractHandoff": "Passed",
+    "liveModel": "Not Run",
+    "blenderRuntime": "Not Run"
+  },
+  "cases": [
+    {
+      "id": "lighting-quality-checker-normal-in-scope-handoff",
+      "skillId": "lighting-quality-checker",
+      "scenario": "Normal in-scope execution of lighting-quality-checker (exposure-ratio-and-shadow-validator) with contract handoff to blender-scene-quality-checker",
+      "category": "normal",
+      "inputPrompt": "Use lighting-quality-checker to audit a 3-point product hero lighting plan: key light 400 W at 45 deg, fill light 100 W (4:1 ratio), rim light 200 W, studio HDRI at 0.6 strength, zero clipped highlights.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Primary inputs (lighting_rig_specification) provided in text-only planning/audit mode."
+      },
+      "expectedBehavior": [
+        "Produces lighting_quality_verdict_table, key_fill_rim_and_clipping_audit, lighting_remediation_instructions for role exposure-ratio-and-shadow-validator",
+        "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
+        "Evaluates contract handoff predicate and hands off to blender-scene-quality-checker (Broad readiness review)"
+      ],
+      "requiredOutputProperties": [
+        "key-to-fill ratio",
+        "highlight clipping",
+        "rim separation",
+        "blender-scene-quality-checker",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Lighting looks nice without per-check rows",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "blender-scene-quality-checker",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Outputs lighting_quality_verdict_table, key_fill_rim_and_clipping_audit, lighting_remediation_instructions conforming to skills/lighting-quality-checker/SKILL.md",
+        "Matches contract handoff predicate to blender-scene-quality-checker in skills/lighting-quality-checker/contract.json"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "quality.domain": "holistic",
+          "stage.current": "quality_validation"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only exposure-ratio-and-shadow-validator (lighting-quality-checker)",
+          "recommendedNextAction": "Complete lighting_quality_verdict_table and hand off to blender-scene-quality-checker (Broad readiness review).",
+          "targetHandoff": "blender-scene-quality-checker",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Evaluated 6 lighting quality rows (key-to-fill ratio, rim separation, shadow softness, highlight clipping guard, HDRI balance, mood match) with top-line Pass verdict. Delivered key-to-fill ratio, highlight clipping, rim separation and routed to blender-scene-quality-checker.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/lighting-quality-checker/SKILL.md",
+            "skills/lighting-quality-checker/EVAL.md",
+            "skills/lighting-quality-checker/contract.json",
+            "skills/lighting-quality-checker/references/hdri-balance-rules.md",
+            "skills/lighting-quality-checker/references/intensity-ranges.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "lighting-quality-checker-secondary-contract-handoff",
+      "skillId": "lighting-quality-checker",
+      "scenario": "Secondary retry contract handoff from lighting-quality-checker to blender-lighting-material-planner",
+      "category": "blocked_or_adversarial",
+      "inputPrompt": "While applying lighting-quality-checker, the workflow context is {\"quality.domain\":\"lighting\",\"quality.verdict\":\"Fail\"} (Lighting re-plan). Determine the contract-governed handoff target.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates the retry handoff predicate in skills/lighting-quality-checker/contract.json",
+        "Routes to blender-lighting-material-planner (Lighting re-plan) without claiming runtime execution"
+      ],
+      "requiredOutputProperties": [
+        "blender-lighting-material-planner",
+        "retry",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Lighting looks nice without per-check rows",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "blender-lighting-material-planner",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Contract retry handoff predicate match to blender-lighting-material-planner"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "quality.domain": "lighting",
+          "quality.verdict": "Fail"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only lighting-quality-checker (retry handoff)",
+          "recommendedNextAction": "Follow retry handoff to blender-lighting-material-planner (Lighting re-plan).",
+          "targetHandoff": "blender-lighting-material-planner",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Triggered retry handoff from lighting-quality-checker to blender-lighting-material-planner under context {\"quality.domain\":\"lighting\",\"quality.verdict\":\"Fail\"}.",
+          "warnings": [
+            "Bounded retry handoff to blender-lighting-material-planner (maxAttempts=2)."
+          ],
+          "evidenceCitations": [
+            "skills/lighting-quality-checker/contract.json",
+            "skills/lighting-quality-checker/SKILL.md",
+            "skills/lighting-quality-checker/references/hdri-balance-rules.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "lighting-quality-checker-unmatched-handoff-and-evidence-boundary",
+      "skillId": "lighting-quality-checker",
+      "scenario": "Unmatched contract handoff context returns none and blocks upgrading unvalidated file to Verified in lighting-quality-checker",
+      "category": "evidence_boundary",
+      "inputPrompt": "An operator provides an unvalidated file on disk during lighting-quality-checker with context {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and asks to mark Artifact: Verified and auto-advance.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "file-only-unvalidated",
+        "notes": "A file exists on disk but validation checks have not been recorded."
+      },
+      "expectedBehavior": [
+        "Refuses to upgrade Artifact status to Verified when existingArtifactEvidence is file-only-unvalidated (caps at Produced)",
+        "Evaluates contract handoffs for lighting-quality-checker and returns targetHandoff none because no handoff predicate matches"
+      ],
+      "requiredOutputProperties": [
+        "Artifact: Produced",
+        "Runtime: Not Run",
+        "validation",
+        "none"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "validation not needed"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Downgrade unvalidated Verified claim to Produced per laws/evidence-before-done.md",
+        "Verify 0 handoffs match in skills/lighting-quality-checker/contract.json for {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true}"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Artifact-claim boundary check (lighting-quality-checker)",
+          "recommendedNextAction": "Keep Artifact status at Produced (never Verified without validation evidence) and hold at targetHandoff none until a downstream precondition is met.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Produced",
+          "summary": "Capped unvalidated artifact claim at Artifact: Produced and verified zero matching contract handoffs (none) for lighting-quality-checker.",
+          "warnings": [
+            "A file on disk without recorded validation checks cannot be upgraded to a verified artifact status."
+          ],
+          "evidenceCitations": [
+            "laws/evidence-before-done.md",
+            "skills/lighting-quality-checker/contract.json",
+            "skills/lighting-quality-checker/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "lighting-quality-checker-ambiguous-missing-required-inputs",
+      "skillId": "lighting-quality-checker",
+      "scenario": "Missing required input (lighting_rig_specification) for lighting-quality-checker halts fabricated output and requests clarification",
+      "category": "ambiguous",
+      "inputPrompt": "Validate our scene lighting and mark it Pass without providing light sources, exposure ratios, shadow softness, or mood intent.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Required input 'lighting_rig_specification' is missing or underspecified."
+      },
+      "expectedBehavior": [
+        "Identifies missing light source inventory, key-to-fill exposure ratios, and mood reference required by lighting-quality-checker (lighting_rig_specification)",
+        "Refuses to fabricate domain parameters and keeps Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "lighting_rig_specification",
+        "light source inventory, key-to-fill exposure ratios, and mood reference",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Lighting looks nice without per-check rows",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "guessed parameters silently"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicitly names missing required input 'lighting_rig_specification' (light source inventory, key-to-fill exposure ratios, and mood reference)",
+        "Conservative Runtime: Not Run and Artifact: Not Produced truth states"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Clarification gate (lighting-quality-checker)",
+          "recommendedNextAction": "Provide the missing light source inventory, key-to-fill exposure ratios, and mood reference (lighting_rig_specification) before lighting-quality-checker locks lighting_quality_verdict_table.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted lighting-quality-checker due to missing required input 'lighting_rig_specification' (light source inventory, key-to-fill exposure ratios, and mood reference); no values were fabricated.",
+          "warnings": [
+            "Do not invent light source inventory, key-to-fill exposure ratios, and mood reference when 'lighting_rig_specification' is omitted."
+          ],
+          "evidenceCitations": [
+            "skills/lighting-quality-checker/SKILL.md",
+            "skills/lighting-quality-checker/EVAL.md",
+            "skills/lighting-quality-checker/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "lighting-quality-checker-out-of-scope-exclusion-delegation",
+      "skillId": "lighting-quality-checker",
+      "scenario": "Out-of-scope request (upstream lookdev and lighting planning) is excluded from lighting-quality-checker and delegated to blender-lighting-material-planner",
+      "category": "scope_creep",
+      "inputPrompt": "Instead of validate lighting intensity ranges, shadow softness, color temperature, and hdri use against the scene brief before render., handle this request inside lighting-quality-checker: upstream lookdev and lighting planning.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Enforces the declared exclusion boundary in skills/lighting-quality-checker/contract.json when upstream lookdev and lighting planning",
+        "Delegates to blender-lighting-material-planner (use blender-lighting-material-planner) with Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "blender-lighting-material-planner",
+        "out of scope",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Lighting looks nice without per-check rows",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "handled inside lighting-quality-checker anyway"
+      ],
+      "expectedRoutingTarget": "blender-lighting-material-planner",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Exclusion delegation to blender-lighting-material-planner per skills/lighting-quality-checker/contract.json"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Out-of-scope exclusion gate (lighting-quality-checker)",
+          "recommendedNextAction": "Request is out of scope for lighting-quality-checker (upstream lookdev and lighting planning); delegate to blender-lighting-material-planner.",
+          "targetHandoff": "blender-lighting-material-planner",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Enforced lighting-quality-checker exclusion boundary (use blender-lighting-material-planner) and delegated to blender-lighting-material-planner.",
+          "warnings": [
+            "lighting-quality-checker is scoped to exposure-ratio-and-shadow-validator and does not absorb blender-lighting-material-planner responsibilities."
+          ],
+          "evidenceCitations": [
+            "skills/lighting-quality-checker/contract.json",
+            "skills/lighting-quality-checker/SKILL.md",
+            "skills/blender-lighting-material-planner/SKILL.md"
+          ]
+        }
+      }
+    }
+  ]
+}

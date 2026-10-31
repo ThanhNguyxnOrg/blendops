@@ -1,0 +1,325 @@
+{
+  "schemaVersion": "2.0.0",
+  "skillId": "polycount-budget-checker",
+  "category": "quality-validators",
+  "isContractedSkill": true,
+  "isRoutingParticipant": false,
+  "contractPath": "skills/polycount-budget-checker/contract.json",
+  "skillMarkdownPath": "skills/polycount-budget-checker/SKILL.md",
+  "evalMarkdownPath": "skills/polycount-budget-checker/EVAL.md",
+  "sourceEvalTier": "prose_outline_contract_migrated",
+  "evaluationStatus": {
+    "staticValidation": "Passed",
+    "deterministicFixture": "Passed",
+    "contractRouting": "Not Applicable",
+    "contractHandoff": "Passed",
+    "liveModel": "Not Run",
+    "blenderRuntime": "Not Run"
+  },
+  "cases": [
+    {
+      "id": "polycount-budget-checker-normal-in-scope-handoff",
+      "skillId": "polycount-budget-checker",
+      "scenario": "Normal in-scope execution of polycount-budget-checker (geometry-and-topology-budget-validator) with contract handoff to blender-scene-quality-checker",
+      "category": "normal",
+      "inputPrompt": "Use polycount-budget-checker to audit a 4-mesh sneaker scene (`Upper_Mesh`: 28k tris, `Sole_Mesh`: 18k tris, `Laces_Mesh`: 14k tris, `Logo_Tag`: 2k tris; total 62k tris) against a 65k total and 25k per-mesh budget.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Primary inputs (scene_geometry_inventory) provided in text-only planning/audit mode."
+      },
+      "expectedBehavior": [
+        "Produces polycount_and_topology_verdict_table, top_budget_offenders_ranking, decimation_or_retopology_remediation_plan for role geometry-and-topology-budget-validator",
+        "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
+        "Evaluates contract handoff predicate and hands off to blender-scene-quality-checker (Broad readiness review)"
+      ],
+      "requiredOutputProperties": [
+        "per-mesh triangle row",
+        "worst offender",
+        "65k total cap",
+        "blender-scene-quality-checker",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "decimated mesh automatically inside skill",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "blender-scene-quality-checker",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Outputs polycount_and_topology_verdict_table, top_budget_offenders_ranking, decimation_or_retopology_remediation_plan conforming to skills/polycount-budget-checker/SKILL.md",
+        "Matches contract handoff predicate to blender-scene-quality-checker in skills/polycount-budget-checker/contract.json"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "quality.domain": "holistic",
+          "stage.current": "quality_validation"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only geometry-and-topology-budget-validator (polycount-budget-checker)",
+          "recommendedNextAction": "Complete polycount_and_topology_verdict_table and hand off to blender-scene-quality-checker (Broad readiness review).",
+          "targetHandoff": "blender-scene-quality-checker",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Evaluated per-mesh and total triangle counts against the 65k total / 25k per-mesh caps; flagged `Upper_Mesh` (28k > 25k cap) as worst offender with non-destructive topology hints. Delivered per-mesh triangle row, worst offender, 65k total cap and routed to blender-scene-quality-checker.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/polycount-budget-checker/SKILL.md",
+            "skills/polycount-budget-checker/EVAL.md",
+            "skills/polycount-budget-checker/contract.json",
+            "skills/polycount-budget-checker/references/instance-counting-rules.md",
+            "skills/polycount-budget-checker/references/per-mesh-rules.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "polycount-budget-checker-secondary-contract-handoff",
+      "skillId": "polycount-budget-checker",
+      "scenario": "Secondary upstream_reference contract handoff from polycount-budget-checker to glb-mobile-performance-budget",
+      "category": "structured_skip",
+      "inputPrompt": "While applying polycount-budget-checker, the workflow context is {\"artifact.type\":\"glb\",\"budget.pinned\":false} (Pinned budget source). Determine the contract-governed handoff target.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates the upstream_reference handoff predicate in skills/polycount-budget-checker/contract.json",
+        "Routes to glb-mobile-performance-budget (Pinned budget source) without claiming runtime execution"
+      ],
+      "requiredOutputProperties": [
+        "glb-mobile-performance-budget",
+        "upstream_reference",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "decimated mesh automatically inside skill",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "glb-mobile-performance-budget",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Contract upstream_reference handoff predicate match to glb-mobile-performance-budget"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "artifact.type": "glb",
+          "budget.pinned": false
+        },
+        "simulatedOutput": {
+          "mode": "Text-only polycount-budget-checker (upstream_reference handoff)",
+          "recommendedNextAction": "Follow upstream_reference handoff to glb-mobile-performance-budget (Pinned budget source).",
+          "targetHandoff": "glb-mobile-performance-budget",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Triggered upstream_reference handoff from polycount-budget-checker to glb-mobile-performance-budget under context {\"artifact.type\":\"glb\",\"budget.pinned\":false}.",
+          "warnings": [
+            "Contract-governed upstream_reference handoff."
+          ],
+          "evidenceCitations": [
+            "skills/polycount-budget-checker/contract.json",
+            "skills/polycount-budget-checker/SKILL.md",
+            "skills/polycount-budget-checker/references/instance-counting-rules.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "polycount-budget-checker-unmatched-handoff-and-evidence-boundary",
+      "skillId": "polycount-budget-checker",
+      "scenario": "Unmatched contract handoff context returns none and blocks upgrading unvalidated file to Verified in polycount-budget-checker",
+      "category": "evidence_boundary",
+      "inputPrompt": "An operator provides an unvalidated file on disk during polycount-budget-checker with context {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and asks to mark Artifact: Verified and auto-advance.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "file-only-unvalidated",
+        "notes": "A file exists on disk but validation checks have not been recorded."
+      },
+      "expectedBehavior": [
+        "Refuses to upgrade Artifact status to Verified when existingArtifactEvidence is file-only-unvalidated (caps at Produced)",
+        "Evaluates contract handoffs for polycount-budget-checker and returns targetHandoff none because no handoff predicate matches"
+      ],
+      "requiredOutputProperties": [
+        "Artifact: Produced",
+        "Runtime: Not Run",
+        "validation",
+        "none"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "validation not needed"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Downgrade unvalidated Verified claim to Produced per laws/evidence-before-done.md",
+        "Verify 0 handoffs match in skills/polycount-budget-checker/contract.json for {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true}"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Artifact-claim boundary check (polycount-budget-checker)",
+          "recommendedNextAction": "Keep Artifact status at Produced (never Verified without validation evidence) and hold at targetHandoff none until a downstream precondition is met.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Produced",
+          "summary": "Capped unvalidated artifact claim at Artifact: Produced and verified zero matching contract handoffs (none) for polycount-budget-checker.",
+          "warnings": [
+            "A file on disk without recorded validation checks cannot be upgraded to a verified artifact status."
+          ],
+          "evidenceCitations": [
+            "laws/evidence-before-done.md",
+            "skills/polycount-budget-checker/contract.json",
+            "skills/polycount-budget-checker/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "polycount-budget-checker-ambiguous-missing-required-inputs",
+      "skillId": "polycount-budget-checker",
+      "scenario": "Missing required input (scene_geometry_inventory) for polycount-budget-checker halts fabricated output and requests clarification",
+      "category": "ambiguous",
+      "inputPrompt": "Check if our polycount is within budget without providing per-mesh triangle counts or the target platform budget cap.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Required input 'scene_geometry_inventory' is missing or underspecified."
+      },
+      "expectedBehavior": [
+        "Identifies missing per-mesh triangle/vertex counts and pinned platform budget cap required by polycount-budget-checker (scene_geometry_inventory)",
+        "Refuses to fabricate domain parameters and keeps Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "scene_geometry_inventory",
+        "per-mesh triangle/vertex counts and pinned platform budget cap",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "decimated mesh automatically inside skill",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "guessed parameters silently"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicitly names missing required input 'scene_geometry_inventory' (per-mesh triangle/vertex counts and pinned platform budget cap)",
+        "Conservative Runtime: Not Run and Artifact: Not Produced truth states"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Clarification gate (polycount-budget-checker)",
+          "recommendedNextAction": "Provide the missing per-mesh triangle/vertex counts and pinned platform budget cap (scene_geometry_inventory) before polycount-budget-checker locks polycount_and_topology_verdict_table.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted polycount-budget-checker due to missing required input 'scene_geometry_inventory' (per-mesh triangle/vertex counts and pinned platform budget cap); no values were fabricated.",
+          "warnings": [
+            "Do not invent per-mesh triangle/vertex counts and pinned platform budget cap when 'scene_geometry_inventory' is omitted."
+          ],
+          "evidenceCitations": [
+            "skills/polycount-budget-checker/SKILL.md",
+            "skills/polycount-budget-checker/EVAL.md",
+            "skills/polycount-budget-checker/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "polycount-budget-checker-out-of-scope-exclusion-delegation",
+      "skillId": "polycount-budget-checker",
+      "scenario": "Out-of-scope request (pinning or negotiating the performance budget itself) is excluded from polycount-budget-checker and delegated to glb-mobile-performance-budget",
+      "category": "scope_creep",
+      "inputPrompt": "Instead of validate per-mesh and total-scene triangle counts against the pinned budget; flag worst offenders and topology hints without modeling., handle this request inside polycount-budget-checker: pinning or negotiating the performance budget itself.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Enforces the declared exclusion boundary in skills/polycount-budget-checker/contract.json when pinning or negotiating the performance budget itself",
+        "Delegates to glb-mobile-performance-budget (use glb-mobile-performance-budget) with Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "glb-mobile-performance-budget",
+        "out of scope",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "decimated mesh automatically inside skill",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "handled inside polycount-budget-checker anyway"
+      ],
+      "expectedRoutingTarget": "glb-mobile-performance-budget",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Exclusion delegation to glb-mobile-performance-budget per skills/polycount-budget-checker/contract.json"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Out-of-scope exclusion gate (polycount-budget-checker)",
+          "recommendedNextAction": "Request is out of scope for polycount-budget-checker (pinning or negotiating the performance budget itself); delegate to glb-mobile-performance-budget.",
+          "targetHandoff": "glb-mobile-performance-budget",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Enforced polycount-budget-checker exclusion boundary (use glb-mobile-performance-budget) and delegated to glb-mobile-performance-budget.",
+          "warnings": [
+            "polycount-budget-checker is scoped to geometry-and-topology-budget-validator and does not absorb glb-mobile-performance-budget responsibilities."
+          ],
+          "evidenceCitations": [
+            "skills/polycount-budget-checker/contract.json",
+            "skills/polycount-budget-checker/SKILL.md",
+            "skills/glb-mobile-performance-budget/SKILL.md"
+          ]
+        }
+      }
+    }
+  ]
+}

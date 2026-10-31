@@ -1,0 +1,324 @@
+{
+  "schemaVersion": "2.0.0",
+  "skillId": "asset-license-checker",
+  "category": "asset-and-sourcing",
+  "isContractedSkill": true,
+  "isRoutingParticipant": false,
+  "contractPath": "skills/asset-license-checker/contract.json",
+  "skillMarkdownPath": "skills/asset-license-checker/SKILL.md",
+  "evalMarkdownPath": "skills/asset-license-checker/EVAL.md",
+  "sourceEvalTier": "prose_outline_contract_migrated",
+  "evaluationStatus": {
+    "staticValidation": "Passed",
+    "deterministicFixture": "Passed",
+    "contractRouting": "Not Applicable",
+    "contractHandoff": "Passed",
+    "liveModel": "Not Run",
+    "blenderRuntime": "Not Run"
+  },
+  "cases": [
+    {
+      "id": "asset-license-checker-normal-in-scope-handoff",
+      "skillId": "asset-license-checker",
+      "scenario": "Normal in-scope execution of asset-license-checker (asset-license-and-provenance-gate) with contract handoff to asset-style-consistency-checker",
+      "category": "normal",
+      "inputPrompt": "Audit 4 external assets for our commercial product-hero-v0 launch: 2 Poly Haven CC0 HDRIs, 1 CC-BY-4.0 pedestal mesh, and 1 forum mesh with unknown authorship. Use asset-license-checker.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Primary inputs (candidate_assets) provided in text-only planning/audit mode."
+      },
+      "expectedBehavior": [
+        "Produces per_asset_license_verdict_table, attribution_obligations_list, quarantined_or_blocked_assets for role asset-license-and-provenance-gate",
+        "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
+        "Evaluates contract handoff predicate and hands off to asset-style-consistency-checker (Visual style validation)"
+      ],
+      "requiredOutputProperties": [
+        "CC0",
+        "attribution requirement",
+        "blocked unverified",
+        "asset-style-consistency-checker",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "safe for commercial use without license",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "asset-style-consistency-checker",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Outputs per_asset_license_verdict_table, attribution_obligations_list, quarantined_or_blocked_assets conforming to skills/asset-license-checker/SKILL.md",
+        "Matches contract handoff predicate to asset-style-consistency-checker in skills/asset-license-checker/contract.json"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "assets.licenseCleared": true,
+          "stage.current": "style_check"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only asset-license-and-provenance-gate (asset-license-checker)",
+          "recommendedNextAction": "Complete per_asset_license_verdict_table and hand off to asset-style-consistency-checker (Visual style validation).",
+          "targetHandoff": "asset-style-consistency-checker",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Audited per-asset license provenance: cleared CC0 HDRIs, flagged attribution requirement on CC-BY-4.0 mesh, and blocked the unverified forum mesh. Delivered CC0, attribution requirement, blocked unverified and routed to asset-style-consistency-checker.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/asset-license-checker/SKILL.md",
+            "skills/asset-license-checker/EVAL.md",
+            "skills/asset-license-checker/contract.json",
+            "skills/asset-license-checker/references/attribution-rendering-patterns.md",
+            "skills/asset-license-checker/references/common-license-mapping.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "asset-license-checker-secondary-contract-handoff",
+      "skillId": "asset-license-checker",
+      "scenario": "Secondary fallback contract handoff from asset-license-checker to asset-fallback-strategy",
+      "category": "blocked_or_adversarial",
+      "inputPrompt": "While applying asset-license-checker, the workflow context is {\"assets.fallbackNeeded\":true} (Rejected/blocked asset handling). Determine the contract-governed handoff target.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates the fallback handoff predicate in skills/asset-license-checker/contract.json",
+        "Routes to asset-fallback-strategy (Rejected/blocked asset handling) without claiming runtime execution"
+      ],
+      "requiredOutputProperties": [
+        "asset-fallback-strategy",
+        "fallback",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "safe for commercial use without license",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "asset-fallback-strategy",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Contract fallback handoff predicate match to asset-fallback-strategy"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "assets.fallbackNeeded": true
+        },
+        "simulatedOutput": {
+          "mode": "Text-only asset-license-checker (fallback handoff)",
+          "recommendedNextAction": "Follow fallback handoff to asset-fallback-strategy (Rejected/blocked asset handling).",
+          "targetHandoff": "asset-fallback-strategy",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Triggered fallback handoff from asset-license-checker to asset-fallback-strategy under context {\"assets.fallbackNeeded\":true}.",
+          "warnings": [
+            "Contract-governed fallback handoff."
+          ],
+          "evidenceCitations": [
+            "skills/asset-license-checker/contract.json",
+            "skills/asset-license-checker/SKILL.md",
+            "skills/asset-license-checker/references/attribution-rendering-patterns.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "asset-license-checker-unmatched-handoff-and-evidence-boundary",
+      "skillId": "asset-license-checker",
+      "scenario": "Unmatched contract handoff context returns none and blocks upgrading unvalidated file to Verified in asset-license-checker",
+      "category": "evidence_boundary",
+      "inputPrompt": "An operator provides an unvalidated file on disk during asset-license-checker with context {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and asks to mark Artifact: Verified and auto-advance.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "file-only-unvalidated",
+        "notes": "A file exists on disk but validation checks have not been recorded."
+      },
+      "expectedBehavior": [
+        "Refuses to upgrade Artifact status to Verified when existingArtifactEvidence is file-only-unvalidated (caps at Produced)",
+        "Evaluates contract handoffs for asset-license-checker and returns targetHandoff none because no handoff predicate matches"
+      ],
+      "requiredOutputProperties": [
+        "Artifact: Produced",
+        "Runtime: Not Run",
+        "validation",
+        "none"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "validation not needed"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Downgrade unvalidated Verified claim to Produced per laws/evidence-before-done.md",
+        "Verify 0 handoffs match in skills/asset-license-checker/contract.json for {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true}"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Artifact-claim boundary check (asset-license-checker)",
+          "recommendedNextAction": "Keep Artifact status at Produced (never Verified without validation evidence) and hold at targetHandoff none until a downstream precondition is met.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Produced",
+          "summary": "Capped unvalidated artifact claim at Artifact: Produced and verified zero matching contract handoffs (none) for asset-license-checker.",
+          "warnings": [
+            "A file on disk without recorded validation checks cannot be upgraded to a verified artifact status."
+          ],
+          "evidenceCitations": [
+            "laws/evidence-before-done.md",
+            "skills/asset-license-checker/contract.json",
+            "skills/asset-license-checker/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "asset-license-checker-ambiguous-missing-required-inputs",
+      "skillId": "asset-license-checker",
+      "scenario": "Missing required input (candidate_assets) for asset-license-checker halts fabricated output and requests clarification",
+      "category": "ambiguous",
+      "inputPrompt": "Check if our downloaded 3D models are legally safe to ship in a commercial web GLB, even though I have no source URLs, author names, or license SPDX identifiers.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Required input 'candidate_assets' is missing or underspecified."
+      },
+      "expectedBehavior": [
+        "Identifies missing asset source URLs, license identifiers, and commercial redistribution target required by asset-license-checker (candidate_assets)",
+        "Refuses to fabricate domain parameters and keeps Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "candidate_assets",
+        "asset source URLs, license identifiers, and commercial redistribution target",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "safe for commercial use without license",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "guessed parameters silently"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicitly names missing required input 'candidate_assets' (asset source URLs, license identifiers, and commercial redistribution target)",
+        "Conservative Runtime: Not Run and Artifact: Not Produced truth states"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Clarification gate (asset-license-checker)",
+          "recommendedNextAction": "Provide the missing asset source URLs, license identifiers, and commercial redistribution target (candidate_assets) before asset-license-checker locks per_asset_license_verdict_table.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted asset-license-checker due to missing required input 'candidate_assets' (asset source URLs, license identifiers, and commercial redistribution target); no values were fabricated.",
+          "warnings": [
+            "Do not invent asset source URLs, license identifiers, and commercial redistribution target when 'candidate_assets' is omitted."
+          ],
+          "evidenceCitations": [
+            "skills/asset-license-checker/SKILL.md",
+            "skills/asset-license-checker/EVAL.md",
+            "skills/asset-license-checker/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "asset-license-checker-out-of-scope-exclusion-delegation",
+      "skillId": "asset-license-checker",
+      "scenario": "Out-of-scope request (Sourcing or searching for candidate assets) is excluded from asset-license-checker and delegated to blender-asset-discovery-planner",
+      "category": "scope_creep",
+      "inputPrompt": "Instead of verify license compliance for downloaded 3d assets, textures, hdris, fonts before scene build or export., handle this request inside asset-license-checker: Sourcing or searching for candidate assets.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Enforces the declared exclusion boundary in skills/asset-license-checker/contract.json when Sourcing or searching for candidate assets",
+        "Delegates to blender-asset-discovery-planner (Delegates out-of-scope requests to blender-asset-discovery-planner) with Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "blender-asset-discovery-planner",
+        "out of scope",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "safe for commercial use without license",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "handled inside asset-license-checker anyway"
+      ],
+      "expectedRoutingTarget": "blender-asset-discovery-planner",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Exclusion delegation to blender-asset-discovery-planner per skills/asset-license-checker/contract.json"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Out-of-scope exclusion gate (asset-license-checker)",
+          "recommendedNextAction": "Request is out of scope for asset-license-checker (Sourcing or searching for candidate assets); delegate to blender-asset-discovery-planner.",
+          "targetHandoff": "blender-asset-discovery-planner",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Enforced asset-license-checker exclusion boundary (Delegates out-of-scope requests to blender-asset-discovery-planner) and delegated to blender-asset-discovery-planner.",
+          "warnings": [
+            "asset-license-checker is scoped to asset-license-and-provenance-gate and does not absorb blender-asset-discovery-planner responsibilities."
+          ],
+          "evidenceCitations": [
+            "skills/asset-license-checker/contract.json",
+            "skills/asset-license-checker/SKILL.md",
+            "skills/blender-asset-discovery-planner/SKILL.md"
+          ]
+        }
+      }
+    }
+  ]
+}

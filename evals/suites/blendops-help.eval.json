@@ -1,14 +1,18 @@
 {
-  "schemaVersion": "1.0.0",
+  "schemaVersion": "2.0.0",
   "skillId": "blendops-help",
   "category": "routing-and-governance",
   "isContractedSkill": true,
+  "isRoutingParticipant": true,
+  "contractPath": "skills/blendops-help/contract.json",
+  "skillMarkdownPath": "skills/blendops-help/SKILL.md",
   "evalMarkdownPath": "skills/blendops-help/EVAL.md",
   "sourceEvalTier": "structured_multi_case_table",
   "evaluationStatus": {
     "staticValidation": "Passed",
     "deterministicFixture": "Passed",
     "contractRouting": "Passed",
+    "contractHandoff": "Not Applicable",
     "liveModel": "Not Run",
     "blenderRuntime": "Not Run"
   },

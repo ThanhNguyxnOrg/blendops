@@ -1,14 +1,18 @@
 {
-  "schemaVersion": "1.0.0",
+  "schemaVersion": "2.0.0",
   "skillId": "blender-brainstorming",
   "category": "process-discipline",
-  "isContractedSkill": false,
+  "isContractedSkill": true,
+  "isRoutingParticipant": false,
+  "contractPath": "skills/blender-brainstorming/contract.json",
+  "skillMarkdownPath": "skills/blender-brainstorming/SKILL.md",
   "evalMarkdownPath": "skills/blender-brainstorming/EVAL.md",
   "sourceEvalTier": "structured_multi_case_table",
   "evaluationStatus": {
     "staticValidation": "Passed",
     "deterministicFixture": "Passed",
-    "contractRouting": "Not Implemented",
+    "contractRouting": "Not Applicable",
+    "contractHandoff": "Passed",
     "liveModel": "Not Run",
     "blenderRuntime": "Not Run"
   },
@@ -257,6 +261,125 @@
           "summary": "Detected complete brief inputs; skipping brainstorming because brief is complete and routing to intent-to-3d-brief-writer.",
           "warnings": [],
           "evidenceCitations": [
+            "skills/blender-brainstorming/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "blender-brainstorming-contract-handoff-primary",
+      "skillId": "blender-brainstorming",
+      "scenario": "Contract handoff predicate matches intent-to-3d-brief-writer (Lock the confirmed brief downstream)",
+      "category": "normal",
+      "inputPrompt": "Evaluate blender-brainstorming contract handoff when workflow context satisfies {\"goal.clarity\":\"clear\",\"brief.locked\":false} and verify progression to intent-to-3d-brief-writer.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates contract.json handoff predicates for blender-brainstorming against the workflow context",
+        "Selects intent-to-3d-brief-writer while preserving Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "intent-to-3d-brief-writer",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Not Run",
+        "Artifact: Verified",
+        "Blender executed"
+      ],
+      "expectedRoutingTarget": "intent-to-3d-brief-writer",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Contract handoff predicate match for intent-to-3d-brief-writer in skills/blender-brainstorming/contract.json",
+        "Truth-state conservation (Runtime: Not Run, Artifact: Not Produced)"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "goal.clarity": "clear",
+          "brief.locked": false
+        },
+        "simulatedOutput": {
+          "mode": "Text-only blender-brainstorming contract handoff evaluation",
+          "recommendedNextAction": "Hand off from blender-brainstorming to intent-to-3d-brief-writer (Lock the confirmed brief downstream).",
+          "targetHandoff": "intent-to-3d-brief-writer",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Matched contract handoff predicate in blender-brainstorming and routed to intent-to-3d-brief-writer.",
+          "warnings": [
+            "Specialist contract handoff evaluated without global routingPrecedence escalation."
+          ],
+          "evidenceCitations": [
+            "skills/blender-brainstorming/contract.json",
+            "skills/blender-brainstorming/SKILL.md",
+            "skills/blender-brainstorming/EVAL.md",
+            "skills/blender-brainstorming/references/alternative-scoping-templates.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "blender-brainstorming-contract-handoff-unmatched-none",
+      "skillId": "blender-brainstorming",
+      "scenario": "Contract handoff predicate returns none when no downstream handoff condition matches in blender-brainstorming",
+      "category": "evidence_boundary",
+      "inputPrompt": "Check blender-brainstorming contract handoff behavior when context is {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and no automatic handoff predicate is satisfied.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates all 3 contract handoffs in blender-brainstorming with fail-closed predicate semantics",
+        "Returns targetHandoff none when no handoff predicate matches and preserves conservative truth states"
+      ],
+      "requiredOutputProperties": [
+        "none",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Not Run",
+        "Artifact: Verified",
+        "invented handoff target"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Zero matching handoff predicates in skills/blender-brainstorming/contract.json for non-matching context"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Text-only blender-brainstorming contract boundary check",
+          "recommendedNextAction": "Remain at blender-brainstorming (targetHandoff: none) until a declared downstream handoff precondition is satisfied.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Verified fail-closed specialist handoff evaluation for blender-brainstorming when no contract predicate matches (secondary candidate official-runtime-readiness-checker remained inactive).",
+          "warnings": [
+            "Never fabricate an undeclared handoff when no contract predicate matches."
+          ],
+          "evidenceCitations": [
+            "skills/blender-brainstorming/contract.json",
             "skills/blender-brainstorming/EVAL.md"
           ]
         }

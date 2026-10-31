@@ -1,14 +1,18 @@
 {
-  "schemaVersion": "1.0.0",
+  "schemaVersion": "2.0.0",
   "skillId": "intent-to-3d-brief-writer",
   "category": "process-discipline",
-  "isContractedSkill": false,
+  "isContractedSkill": true,
+  "isRoutingParticipant": false,
+  "contractPath": "skills/intent-to-3d-brief-writer/contract.json",
+  "skillMarkdownPath": "skills/intent-to-3d-brief-writer/SKILL.md",
   "evalMarkdownPath": "skills/intent-to-3d-brief-writer/EVAL.md",
   "sourceEvalTier": "structured_multi_case_table",
   "evaluationStatus": {
     "staticValidation": "Passed",
     "deterministicFixture": "Passed",
-    "contractRouting": "Not Implemented",
+    "contractRouting": "Not Applicable",
+    "contractHandoff": "Passed",
     "liveModel": "Not Run",
     "blenderRuntime": "Not Run"
   },
@@ -355,6 +359,125 @@
           "summary": "Locked text-only plan brief with Slot 5 explicitly recording Runtime: Not Run and Artifact: Not Produced.",
           "warnings": [],
           "evidenceCitations": [
+            "skills/intent-to-3d-brief-writer/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "intent-to-3d-brief-writer-contract-handoff-primary",
+      "skillId": "intent-to-3d-brief-writer",
+      "scenario": "Contract handoff predicate matches acceptance-criteria-builder (Consuming skills (acceptance-criteria-builder))",
+      "category": "normal",
+      "inputPrompt": "Evaluate intent-to-3d-brief-writer contract handoff when workflow context satisfies {\"brief.locked\":true,\"stage.current\":\"acceptance_criteria\"} and verify progression to acceptance-criteria-builder.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates contract.json handoff predicates for intent-to-3d-brief-writer against the workflow context",
+        "Selects acceptance-criteria-builder while preserving Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "acceptance-criteria-builder",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Not Run",
+        "Artifact: Verified",
+        "Blender executed"
+      ],
+      "expectedRoutingTarget": "acceptance-criteria-builder",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Contract handoff predicate match for acceptance-criteria-builder in skills/intent-to-3d-brief-writer/contract.json",
+        "Truth-state conservation (Runtime: Not Run, Artifact: Not Produced)"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "brief.locked": true,
+          "stage.current": "acceptance_criteria"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only intent-to-3d-brief-writer contract handoff evaluation",
+          "recommendedNextAction": "Hand off from intent-to-3d-brief-writer to acceptance-criteria-builder (Consuming skills (acceptance-criteria-builder)).",
+          "targetHandoff": "acceptance-criteria-builder",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Matched contract handoff predicate in intent-to-3d-brief-writer and routed to acceptance-criteria-builder.",
+          "warnings": [
+            "Specialist contract handoff evaluated without global routingPrecedence escalation."
+          ],
+          "evidenceCitations": [
+            "skills/intent-to-3d-brief-writer/contract.json",
+            "skills/intent-to-3d-brief-writer/SKILL.md",
+            "skills/intent-to-3d-brief-writer/EVAL.md",
+            "skills/intent-to-3d-brief-writer/references/acceptance-criteria-patterns.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "intent-to-3d-brief-writer-contract-handoff-unmatched-none",
+      "skillId": "intent-to-3d-brief-writer",
+      "scenario": "Contract handoff predicate returns none when no downstream handoff condition matches in intent-to-3d-brief-writer",
+      "category": "evidence_boundary",
+      "inputPrompt": "Check intent-to-3d-brief-writer contract handoff behavior when context is {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and no automatic handoff predicate is satisfied.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates all 7 contract handoffs in intent-to-3d-brief-writer with fail-closed predicate semantics",
+        "Returns targetHandoff none when no handoff predicate matches and preserves conservative truth states"
+      ],
+      "requiredOutputProperties": [
+        "none",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Not Run",
+        "Artifact: Verified",
+        "invented handoff target"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Zero matching handoff predicates in skills/intent-to-3d-brief-writer/contract.json for non-matching context"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Text-only intent-to-3d-brief-writer contract boundary check",
+          "recommendedNextAction": "Remain at intent-to-3d-brief-writer (targetHandoff: none) until a declared downstream handoff precondition is satisfied.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Verified fail-closed specialist handoff evaluation for intent-to-3d-brief-writer when no contract predicate matches (secondary candidate blender-brainstorming remained inactive).",
+          "warnings": [
+            "Never fabricate an undeclared handoff when no contract predicate matches."
+          ],
+          "evidenceCitations": [
+            "skills/intent-to-3d-brief-writer/contract.json",
             "skills/intent-to-3d-brief-writer/EVAL.md"
           ]
         }

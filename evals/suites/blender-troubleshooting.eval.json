@@ -1,14 +1,18 @@
 {
-  "schemaVersion": "1.0.0",
+  "schemaVersion": "2.0.0",
   "skillId": "blender-troubleshooting",
   "category": "runtime-and-execution",
-  "isContractedSkill": false,
+  "isContractedSkill": true,
+  "isRoutingParticipant": false,
+  "contractPath": "skills/blender-troubleshooting/contract.json",
+  "skillMarkdownPath": "skills/blender-troubleshooting/SKILL.md",
   "evalMarkdownPath": "skills/blender-troubleshooting/EVAL.md",
   "sourceEvalTier": "structured_multi_case_table",
   "evaluationStatus": {
     "staticValidation": "Passed",
     "deterministicFixture": "Passed",
-    "contractRouting": "Not Implemented",
+    "contractRouting": "Not Applicable",
+    "contractHandoff": "Passed",
     "liveModel": "Not Run",
     "blenderRuntime": "Not Run"
   },
@@ -307,6 +311,124 @@
           "summary": "Ranked camera framing vs mesh scale by evidence weight and kept second cause as alternative pending more evidence.",
           "warnings": [],
           "evidenceCitations": [
+            "skills/blender-troubleshooting/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "blender-troubleshooting-contract-handoff-primary",
+      "skillId": "blender-troubleshooting",
+      "scenario": "Contract handoff predicate matches blender-brainstorming (If divergence at intent (blender-brainstorming))",
+      "category": "normal",
+      "inputPrompt": "Evaluate blender-troubleshooting contract handoff when workflow context satisfies {\"goal.clarity\":\"ambiguous_or_mixed\"} and verify progression to blender-brainstorming.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates contract.json handoff predicates for blender-troubleshooting against the workflow context",
+        "Selects blender-brainstorming while preserving Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "blender-brainstorming",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Not Run",
+        "Artifact: Verified",
+        "Blender executed"
+      ],
+      "expectedRoutingTarget": "blender-brainstorming",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Contract handoff predicate match for blender-brainstorming in skills/blender-troubleshooting/contract.json",
+        "Truth-state conservation (Runtime: Not Run, Artifact: Not Produced)"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "goal.clarity": "ambiguous_or_mixed"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only blender-troubleshooting contract handoff evaluation",
+          "recommendedNextAction": "Hand off from blender-troubleshooting to blender-brainstorming (If divergence at intent (blender-brainstorming)).",
+          "targetHandoff": "blender-brainstorming",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Matched contract handoff predicate in blender-troubleshooting and routed to blender-brainstorming.",
+          "warnings": [
+            "Specialist contract handoff evaluated without global routingPrecedence escalation."
+          ],
+          "evidenceCitations": [
+            "skills/blender-troubleshooting/contract.json",
+            "skills/blender-troubleshooting/SKILL.md",
+            "skills/blender-troubleshooting/EVAL.md",
+            "skills/blender-troubleshooting/references/common-symptom-playbooks.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "blender-troubleshooting-contract-handoff-unmatched-none",
+      "skillId": "blender-troubleshooting",
+      "scenario": "Contract handoff predicate returns none when no downstream handoff condition matches in blender-troubleshooting",
+      "category": "evidence_boundary",
+      "inputPrompt": "Check blender-troubleshooting contract handoff behavior when context is {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and no automatic handoff predicate is satisfied.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates all 16 contract handoffs in blender-troubleshooting with fail-closed predicate semantics",
+        "Returns targetHandoff none when no handoff predicate matches and preserves conservative truth states"
+      ],
+      "requiredOutputProperties": [
+        "none",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Not Run",
+        "Artifact: Verified",
+        "invented handoff target"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Zero matching handoff predicates in skills/blender-troubleshooting/contract.json for non-matching context"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Text-only blender-troubleshooting contract boundary check",
+          "recommendedNextAction": "Remain at blender-troubleshooting (targetHandoff: none) until a declared downstream handoff precondition is satisfied.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Verified fail-closed specialist handoff evaluation for blender-troubleshooting when no contract predicate matches (secondary candidate intent-to-3d-brief-writer remained inactive).",
+          "warnings": [
+            "Never fabricate an undeclared handoff when no contract predicate matches."
+          ],
+          "evidenceCitations": [
+            "skills/blender-troubleshooting/contract.json",
             "skills/blender-troubleshooting/EVAL.md"
           ]
         }

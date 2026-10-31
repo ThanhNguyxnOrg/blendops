@@ -1,0 +1,325 @@
+{
+  "schemaVersion": "2.0.0",
+  "skillId": "glb-animation-handoff",
+  "category": "evidence-and-handoff",
+  "isContractedSkill": true,
+  "isRoutingParticipant": false,
+  "contractPath": "skills/glb-animation-handoff/contract.json",
+  "skillMarkdownPath": "skills/glb-animation-handoff/SKILL.md",
+  "evalMarkdownPath": "skills/glb-animation-handoff/EVAL.md",
+  "sourceEvalTier": "prose_outline_contract_migrated",
+  "evaluationStatus": {
+    "staticValidation": "Passed",
+    "deterministicFixture": "Passed",
+    "contractRouting": "Not Applicable",
+    "contractHandoff": "Passed",
+    "liveModel": "Not Run",
+    "blenderRuntime": "Not Run"
+  },
+  "cases": [
+    {
+      "id": "glb-animation-handoff-normal-in-scope-handoff",
+      "skillId": "glb-animation-handoff",
+      "scenario": "Normal in-scope execution of glb-animation-handoff (rig-and-animation-clip-handoff-planner) with contract handoff to glb-web-handoff",
+      "category": "normal",
+      "inputPrompt": "Use glb-animation-handoff to specify the NLA clip contract (`Idle_Loop`, `Hover_Open`), 30 fps frame baking rules, and bone/morph target constraints for an interactive web GLB product showcase.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Primary inputs (animation_clip_inventory) provided in text-only planning/audit mode."
+      },
+      "expectedBehavior": [
+        "Produces per_clip_animation_contract_table, root_motion_and_interpolation_pins, consumer_playback_verification_checklist for role rig-and-animation-clip-handoff-planner",
+        "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
+        "Evaluates contract handoff predicate and hands off to glb-web-handoff (Web delivery handoff)"
+      ],
+      "requiredOutputProperties": [
+        "NLA action clip",
+        "keyframe baking",
+        "joint limit",
+        "glb-web-handoff",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "unbaked Blender constraints work in glTF",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "glb-web-handoff",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Outputs per_clip_animation_contract_table, root_motion_and_interpolation_pins, consumer_playback_verification_checklist conforming to skills/glb-animation-handoff/SKILL.md",
+        "Matches contract handoff predicate to glb-web-handoff in skills/glb-animation-handoff/contract.json"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "artifact.type": "glb",
+          "handoff.consumerStack": "web_glb"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only rig-and-animation-clip-handoff-planner (glb-animation-handoff)",
+          "recommendedNextAction": "Complete per_clip_animation_contract_table and hand off to glb-web-handoff (Web delivery handoff).",
+          "targetHandoff": "glb-web-handoff",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Defined NLA animation clip table (`Idle_Loop`, `Hover_Open`), keyframe baking at 30 fps, skinning joint limits, and consumer playback trigger contract. Delivered NLA action clip, keyframe baking, joint limit and routed to glb-web-handoff.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/glb-animation-handoff/SKILL.md",
+            "skills/glb-animation-handoff/EVAL.md",
+            "skills/glb-animation-handoff/contract.json",
+            "skills/glb-animation-handoff/references/animation-types.md",
+            "skills/glb-animation-handoff/references/transition-rules.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "glb-animation-handoff-secondary-contract-handoff",
+      "skillId": "glb-animation-handoff",
+      "scenario": "Secondary upstream_reference contract handoff from glb-animation-handoff to character-portrait-scene-planner",
+      "category": "structured_skip",
+      "inputPrompt": "While applying glb-animation-handoff, the workflow context is {\"brief.locked\":true,\"recipe.domain\":\"character_portrait\"} (Missing clip list / scene plan (character-portrait-scene-planner)). Determine the contract-governed handoff target.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates the upstream_reference handoff predicate in skills/glb-animation-handoff/contract.json",
+        "Routes to character-portrait-scene-planner (Missing clip list / scene plan (character-portrait-scene-planner)) without claiming runtime execution"
+      ],
+      "requiredOutputProperties": [
+        "character-portrait-scene-planner",
+        "upstream_reference",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "unbaked Blender constraints work in glTF",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "character-portrait-scene-planner",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Contract upstream_reference handoff predicate match to character-portrait-scene-planner"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "brief.locked": true,
+          "recipe.domain": "character_portrait"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only glb-animation-handoff (upstream_reference handoff)",
+          "recommendedNextAction": "Follow upstream_reference handoff to character-portrait-scene-planner (Missing clip list / scene plan (character-portrait-scene-planner)).",
+          "targetHandoff": "character-portrait-scene-planner",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Triggered upstream_reference handoff from glb-animation-handoff to character-portrait-scene-planner under context {\"brief.locked\":true,\"recipe.domain\":\"character_portrait\"}.",
+          "warnings": [
+            "Contract-governed upstream_reference handoff."
+          ],
+          "evidenceCitations": [
+            "skills/glb-animation-handoff/contract.json",
+            "skills/glb-animation-handoff/SKILL.md",
+            "skills/glb-animation-handoff/references/animation-types.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "glb-animation-handoff-unmatched-handoff-and-evidence-boundary",
+      "skillId": "glb-animation-handoff",
+      "scenario": "Unmatched contract handoff context returns none and blocks upgrading unvalidated file to Verified in glb-animation-handoff",
+      "category": "evidence_boundary",
+      "inputPrompt": "An operator provides an unvalidated file on disk during glb-animation-handoff with context {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and asks to mark Artifact: Verified and auto-advance.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "file-only-unvalidated",
+        "notes": "A file exists on disk but validation checks have not been recorded."
+      },
+      "expectedBehavior": [
+        "Refuses to upgrade Artifact status to Verified when existingArtifactEvidence is file-only-unvalidated (caps at Produced)",
+        "Evaluates contract handoffs for glb-animation-handoff and returns targetHandoff none because no handoff predicate matches"
+      ],
+      "requiredOutputProperties": [
+        "Artifact: Produced",
+        "Runtime: Not Run",
+        "validation",
+        "none"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "validation not needed"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Downgrade unvalidated Verified claim to Produced per laws/evidence-before-done.md",
+        "Verify 0 handoffs match in skills/glb-animation-handoff/contract.json for {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true}"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Artifact-claim boundary check (glb-animation-handoff)",
+          "recommendedNextAction": "Keep Artifact status at Produced (never Verified without validation evidence) and hold at targetHandoff none until a downstream precondition is met.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Produced",
+          "summary": "Capped unvalidated artifact claim at Artifact: Produced and verified zero matching contract handoffs (none) for glb-animation-handoff.",
+          "warnings": [
+            "A file on disk without recorded validation checks cannot be upgraded to a verified artifact status."
+          ],
+          "evidenceCitations": [
+            "laws/evidence-before-done.md",
+            "skills/glb-animation-handoff/contract.json",
+            "skills/glb-animation-handoff/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "glb-animation-handoff-ambiguous-missing-required-inputs",
+      "skillId": "glb-animation-handoff",
+      "scenario": "Missing required input (animation_clip_inventory) for glb-animation-handoff halts fabricated output and requests clarification",
+      "category": "ambiguous",
+      "inputPrompt": "Prepare the glTF animation handoff packet without telling me what animation clips exist, whether rigging uses armatures or shape keys, or what web engine plays them.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Required input 'animation_clip_inventory' is missing or underspecified."
+      },
+      "expectedBehavior": [
+        "Identifies missing animation clip inventory, rig/deformer type, and consumer runtime playback engine required by glb-animation-handoff (animation_clip_inventory)",
+        "Refuses to fabricate domain parameters and keeps Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "animation_clip_inventory",
+        "animation clip inventory, rig/deformer type, and consumer runtime playback engine",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "unbaked Blender constraints work in glTF",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "guessed parameters silently"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicitly names missing required input 'animation_clip_inventory' (animation clip inventory, rig/deformer type, and consumer runtime playback engine)",
+        "Conservative Runtime: Not Run and Artifact: Not Produced truth states"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Clarification gate (glb-animation-handoff)",
+          "recommendedNextAction": "Provide the missing animation clip inventory, rig/deformer type, and consumer runtime playback engine (animation_clip_inventory) before glb-animation-handoff locks per_clip_animation_contract_table.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted glb-animation-handoff due to missing required input 'animation_clip_inventory' (animation clip inventory, rig/deformer type, and consumer runtime playback engine); no values were fabricated.",
+          "warnings": [
+            "Do not invent animation clip inventory, rig/deformer type, and consumer runtime playback engine when 'animation_clip_inventory' is omitted."
+          ],
+          "evidenceCitations": [
+            "skills/glb-animation-handoff/SKILL.md",
+            "skills/glb-animation-handoff/EVAL.md",
+            "skills/glb-animation-handoff/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "glb-animation-handoff-out-of-scope-exclusion-delegation",
+      "skillId": "glb-animation-handoff",
+      "scenario": "Out-of-scope request (static GLBs with no animation) is excluded from glb-animation-handoff and delegated to glb-web-handoff",
+      "category": "scope_creep",
+      "inputPrompt": "Instead of document glb animation contract (skeletal vs morph, fps, looping, root motion, blend transitions) with truthful caveats for web playback., handle this request inside glb-animation-handoff: static GLBs with no animation.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Enforces the declared exclusion boundary in skills/glb-animation-handoff/contract.json when static GLBs with no animation",
+        "Delegates to glb-web-handoff (Delegates out-of-scope requests to glb-web-handoff) with Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "glb-web-handoff",
+        "out of scope",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "unbaked Blender constraints work in glTF",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "handled inside glb-animation-handoff anyway"
+      ],
+      "expectedRoutingTarget": "glb-web-handoff",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Exclusion delegation to glb-web-handoff per skills/glb-animation-handoff/contract.json"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Out-of-scope exclusion gate (glb-animation-handoff)",
+          "recommendedNextAction": "Request is out of scope for glb-animation-handoff (static GLBs with no animation); delegate to glb-web-handoff.",
+          "targetHandoff": "glb-web-handoff",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Enforced glb-animation-handoff exclusion boundary (Delegates out-of-scope requests to glb-web-handoff) and delegated to glb-web-handoff.",
+          "warnings": [
+            "glb-animation-handoff is scoped to rig-and-animation-clip-handoff-planner and does not absorb glb-web-handoff responsibilities."
+          ],
+          "evidenceCitations": [
+            "skills/glb-animation-handoff/contract.json",
+            "skills/glb-animation-handoff/SKILL.md",
+            "skills/glb-web-handoff/SKILL.md"
+          ]
+        }
+      }
+    }
+  ]
+}

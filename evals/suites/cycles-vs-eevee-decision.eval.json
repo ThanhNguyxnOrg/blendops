@@ -1,0 +1,324 @@
+{
+  "schemaVersion": "2.0.0",
+  "skillId": "cycles-vs-eevee-decision",
+  "category": "render-and-output-decisions",
+  "isContractedSkill": true,
+  "isRoutingParticipant": false,
+  "contractPath": "skills/cycles-vs-eevee-decision/contract.json",
+  "skillMarkdownPath": "skills/cycles-vs-eevee-decision/SKILL.md",
+  "evalMarkdownPath": "skills/cycles-vs-eevee-decision/EVAL.md",
+  "sourceEvalTier": "prose_outline_contract_migrated",
+  "evaluationStatus": {
+    "staticValidation": "Passed",
+    "deterministicFixture": "Passed",
+    "contractRouting": "Not Applicable",
+    "contractHandoff": "Passed",
+    "liveModel": "Not Run",
+    "blenderRuntime": "Not Run"
+  },
+  "cases": [
+    {
+      "id": "cycles-vs-eevee-decision-normal-in-scope-handoff",
+      "skillId": "cycles-vs-eevee-decision",
+      "scenario": "Normal in-scope execution of cycles-vs-eevee-decision (render-engine-tradeoff-selector) with contract handoff to output-format-decision",
+      "category": "normal",
+      "inputPrompt": "Apply cycles-vs-eevee-decision for a luxury perfume bottle hero render requiring glass refraction caustics and subsurface scattering, with a 10-minute per-frame budget on an NVIDIA OptiX GPU.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Primary inputs (deliverable_use_case) provided in text-only planning/audit mode."
+      },
+      "expectedBehavior": [
+        "Produces selected_render_engine_record, sample_and_denoiser_targets, engine_tradeoff_and_fallback_caveats for role render-engine-tradeoff-selector",
+        "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
+        "Evaluates contract handoff predicate and hands off to output-format-decision (Output container / codec decision)"
+      ],
+      "requiredOutputProperties": [
+        "Cycles",
+        "OptiX",
+        "256-512 samples",
+        "output-format-decision",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Eevee supports full accurate caustics",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "output-format-decision",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Outputs selected_render_engine_record, sample_and_denoiser_targets, engine_tradeoff_and_fallback_caveats conforming to skills/cycles-vs-eevee-decision/SKILL.md",
+        "Matches contract handoff predicate to output-format-decision in skills/cycles-vs-eevee-decision/contract.json"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": false
+        },
+        "simulatedOutput": {
+          "mode": "Text-only render-engine-tradeoff-selector (cycles-vs-eevee-decision)",
+          "recommendedNextAction": "Complete selected_render_engine_record and hand off to output-format-decision (Output container / codec decision).",
+          "targetHandoff": "output-format-decision",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Selected Cycles render engine with OptiX GPU acceleration, 256-512 adaptive samples + OpenImageDenoise, and documented Eevee refraction caveats. Delivered Cycles, OptiX, 256-512 samples and routed to output-format-decision.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/cycles-vs-eevee-decision/SKILL.md",
+            "skills/cycles-vs-eevee-decision/EVAL.md",
+            "skills/cycles-vs-eevee-decision/contract.json",
+            "skills/cycles-vs-eevee-decision/references/engine-feature-matrix.md",
+            "skills/cycles-vs-eevee-decision/references/gpu-device-rules.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "cycles-vs-eevee-decision-secondary-contract-handoff",
+      "skillId": "cycles-vs-eevee-decision",
+      "scenario": "Secondary upstream_reference contract handoff from cycles-vs-eevee-decision to blender-lighting-material-planner",
+      "category": "structured_skip",
+      "inputPrompt": "While applying cycles-vs-eevee-decision, the workflow context is {\"brief.locked\":true,\"stage.current\":\"lookdev_planning\"} (Lighting and material setup aligned with engine choice). Determine the contract-governed handoff target.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates the upstream_reference handoff predicate in skills/cycles-vs-eevee-decision/contract.json",
+        "Routes to blender-lighting-material-planner (Lighting and material setup aligned with engine choice) without claiming runtime execution"
+      ],
+      "requiredOutputProperties": [
+        "blender-lighting-material-planner",
+        "upstream_reference",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Eevee supports full accurate caustics",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "blender-lighting-material-planner",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Contract upstream_reference handoff predicate match to blender-lighting-material-planner"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "brief.locked": true,
+          "stage.current": "lookdev_planning"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only cycles-vs-eevee-decision (upstream_reference handoff)",
+          "recommendedNextAction": "Follow upstream_reference handoff to blender-lighting-material-planner (Lighting and material setup aligned with engine choice).",
+          "targetHandoff": "blender-lighting-material-planner",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Triggered upstream_reference handoff from cycles-vs-eevee-decision to blender-lighting-material-planner under context {\"brief.locked\":true,\"stage.current\":\"lookdev_planning\"}.",
+          "warnings": [
+            "Contract-governed upstream_reference handoff."
+          ],
+          "evidenceCitations": [
+            "skills/cycles-vs-eevee-decision/contract.json",
+            "skills/cycles-vs-eevee-decision/SKILL.md",
+            "skills/cycles-vs-eevee-decision/references/engine-feature-matrix.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "cycles-vs-eevee-decision-unmatched-handoff-and-evidence-boundary",
+      "skillId": "cycles-vs-eevee-decision",
+      "scenario": "Unmatched contract handoff context returns none and blocks upgrading unvalidated file to Verified in cycles-vs-eevee-decision",
+      "category": "evidence_boundary",
+      "inputPrompt": "An operator provides an unvalidated file on disk during cycles-vs-eevee-decision with context {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and asks to mark Artifact: Verified and auto-advance.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "file-only-unvalidated",
+        "notes": "A file exists on disk but validation checks have not been recorded."
+      },
+      "expectedBehavior": [
+        "Refuses to upgrade Artifact status to Verified when existingArtifactEvidence is file-only-unvalidated (caps at Produced)",
+        "Evaluates contract handoffs for cycles-vs-eevee-decision and returns targetHandoff none because no handoff predicate matches"
+      ],
+      "requiredOutputProperties": [
+        "Artifact: Produced",
+        "Runtime: Not Run",
+        "validation",
+        "none"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "validation not needed"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Downgrade unvalidated Verified claim to Produced per laws/evidence-before-done.md",
+        "Verify 0 handoffs match in skills/cycles-vs-eevee-decision/contract.json for {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true}"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Artifact-claim boundary check (cycles-vs-eevee-decision)",
+          "recommendedNextAction": "Keep Artifact status at Produced (never Verified without validation evidence) and hold at targetHandoff none until a downstream precondition is met.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Produced",
+          "summary": "Capped unvalidated artifact claim at Artifact: Produced and verified zero matching contract handoffs (none) for cycles-vs-eevee-decision.",
+          "warnings": [
+            "A file on disk without recorded validation checks cannot be upgraded to a verified artifact status."
+          ],
+          "evidenceCitations": [
+            "laws/evidence-before-done.md",
+            "skills/cycles-vs-eevee-decision/contract.json",
+            "skills/cycles-vs-eevee-decision/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "cycles-vs-eevee-decision-ambiguous-missing-required-inputs",
+      "skillId": "cycles-vs-eevee-decision",
+      "scenario": "Missing required input (deliverable_use_case) for cycles-vs-eevee-decision halts fabricated output and requests clarification",
+      "category": "ambiguous",
+      "inputPrompt": "Decide between Cycles and Eevee without telling me whether the scene needs raytraced glass/caustics, what hardware GPU is available, or what the render time budget is.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Required input 'deliverable_use_case' is missing or underspecified."
+      },
+      "expectedBehavior": [
+        "Identifies missing optical feature requirements (caustics/SSS), hardware GPU tier, and frame time budget required by cycles-vs-eevee-decision (deliverable_use_case)",
+        "Refuses to fabricate domain parameters and keeps Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "deliverable_use_case",
+        "optical feature requirements (caustics/SSS), hardware GPU tier, and frame time budget",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Eevee supports full accurate caustics",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "guessed parameters silently"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicitly names missing required input 'deliverable_use_case' (optical feature requirements (caustics/SSS), hardware GPU tier, and frame time budget)",
+        "Conservative Runtime: Not Run and Artifact: Not Produced truth states"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Clarification gate (cycles-vs-eevee-decision)",
+          "recommendedNextAction": "Provide the missing optical feature requirements (caustics/SSS), hardware GPU tier, and frame time budget (deliverable_use_case) before cycles-vs-eevee-decision locks selected_render_engine_record.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted cycles-vs-eevee-decision due to missing required input 'deliverable_use_case' (optical feature requirements (caustics/SSS), hardware GPU tier, and frame time budget); no values were fabricated.",
+          "warnings": [
+            "Do not invent optical feature requirements (caustics/SSS), hardware GPU tier, and frame time budget when 'deliverable_use_case' is omitted."
+          ],
+          "evidenceCitations": [
+            "skills/cycles-vs-eevee-decision/SKILL.md",
+            "skills/cycles-vs-eevee-decision/EVAL.md",
+            "skills/cycles-vs-eevee-decision/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "cycles-vs-eevee-decision-out-of-scope-exclusion-delegation",
+      "skillId": "cycles-vs-eevee-decision",
+      "scenario": "Out-of-scope request (for a known repeat render (engine already chosen)) is excluded from cycles-vs-eevee-decision and delegated to blender-lighting-material-planner",
+      "category": "scope_creep",
+      "inputPrompt": "Instead of pick cycles, eevee, or workbench for a render based on quality bar, time budget, and feature requirements (caustics, subsurface, etc.). note: eevee was named eevee next on blender 4.2-4.x only., handle this request inside cycles-vs-eevee-decision: for a known repeat render (engine already chosen).",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Enforces the declared exclusion boundary in skills/cycles-vs-eevee-decision/contract.json when for a known repeat render (engine already chosen)",
+        "Delegates to blender-lighting-material-planner (engine already chosen) with Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "blender-lighting-material-planner",
+        "out of scope",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Eevee supports full accurate caustics",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "handled inside cycles-vs-eevee-decision anyway"
+      ],
+      "expectedRoutingTarget": "blender-lighting-material-planner",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Exclusion delegation to blender-lighting-material-planner per skills/cycles-vs-eevee-decision/contract.json"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Out-of-scope exclusion gate (cycles-vs-eevee-decision)",
+          "recommendedNextAction": "Request is out of scope for cycles-vs-eevee-decision (for a known repeat render (engine already chosen)); delegate to blender-lighting-material-planner.",
+          "targetHandoff": "blender-lighting-material-planner",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Enforced cycles-vs-eevee-decision exclusion boundary (engine already chosen) and delegated to blender-lighting-material-planner.",
+          "warnings": [
+            "cycles-vs-eevee-decision is scoped to render-engine-tradeoff-selector and does not absorb blender-lighting-material-planner responsibilities."
+          ],
+          "evidenceCitations": [
+            "skills/cycles-vs-eevee-decision/contract.json",
+            "skills/cycles-vs-eevee-decision/SKILL.md",
+            "skills/blender-lighting-material-planner/SKILL.md"
+          ]
+        }
+      }
+    }
+  ]
+}

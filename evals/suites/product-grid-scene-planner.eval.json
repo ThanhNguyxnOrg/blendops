@@ -1,0 +1,324 @@
+{
+  "schemaVersion": "2.0.0",
+  "skillId": "product-grid-scene-planner",
+  "category": "scene-planners",
+  "isContractedSkill": true,
+  "isRoutingParticipant": false,
+  "contractPath": "skills/product-grid-scene-planner/contract.json",
+  "skillMarkdownPath": "skills/product-grid-scene-planner/SKILL.md",
+  "evalMarkdownPath": "skills/product-grid-scene-planner/EVAL.md",
+  "sourceEvalTier": "prose_outline_contract_migrated",
+  "evaluationStatus": {
+    "staticValidation": "Passed",
+    "deterministicFixture": "Passed",
+    "contractRouting": "Not Applicable",
+    "contractHandoff": "Passed",
+    "liveModel": "Not Run",
+    "blenderRuntime": "Not Run"
+  },
+  "cases": [
+    {
+      "id": "product-grid-scene-planner-normal-in-scope-handoff",
+      "skillId": "product-grid-scene-planner",
+      "scenario": "Normal in-scope execution of product-grid-scene-planner (multi-product-catalog-grid-architect) with contract handoff to output-format-decision",
+      "category": "normal",
+      "inputPrompt": "Use product-grid-scene-planner on a locked brief: \"4 sneaker colorways in a 2x2 e-commerce catalog grid, strict scale normalization, shared softbox lighting, neutral warm-gray cyclorama, 16:9 frame with bottom caption margin\".",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Primary inputs (locked_3d_brief) provided in text-only planning/audit mode."
+      },
+      "expectedBehavior": [
+        "Produces multi_product_grid_layout_matrix, scale_normalization_and_spacing_spec, uniform_catalog_camera_and_lighting_hooks for role multi-product-catalog-grid-architect",
+        "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
+        "Evaluates contract handoff predicate and hands off to output-format-decision (Variant / SKU file output format)"
+      ],
+      "requiredOutputProperties": [
+        "2x2 grid layout",
+        "shared lighting rig",
+        "scale normalization",
+        "output-format-decision",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "independent clashing lights per cell",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "output-format-decision",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Outputs multi_product_grid_layout_matrix, scale_normalization_and_spacing_spec, uniform_catalog_camera_and_lighting_hooks conforming to skills/product-grid-scene-planner/SKILL.md",
+        "Matches contract handoff predicate to output-format-decision in skills/product-grid-scene-planner/contract.json"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": false
+        },
+        "simulatedOutput": {
+          "mode": "Text-only multi-product-catalog-grid-architect (product-grid-scene-planner)",
+          "recommendedNextAction": "Complete multi_product_grid_layout_matrix and hand off to output-format-decision (Variant / SKU file output format).",
+          "targetHandoff": "output-format-decision",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Planned 2x2 multi-product catalog grid with uniform bounding-box scale normalization, shared studio lighting rig, orthographic/50mm cell alignment, and 15% caption safe zone. Delivered 2x2 grid layout, shared lighting rig, scale normalization and routed to output-format-decision.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/product-grid-scene-planner/SKILL.md",
+            "skills/product-grid-scene-planner/EVAL.md",
+            "skills/product-grid-scene-planner/contract.json",
+            "skills/product-grid-scene-planner/references/grid-consistency-rules.md",
+            "skills/product-grid-scene-planner/references/grid-layout-rules.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "product-grid-scene-planner-secondary-contract-handoff",
+      "skillId": "product-grid-scene-planner",
+      "scenario": "Secondary upstream_reference contract handoff from product-grid-scene-planner to intent-to-3d-brief-writer",
+      "category": "structured_skip",
+      "inputPrompt": "While applying product-grid-scene-planner, the workflow context is {\"goal.clarity\":\"clear\",\"brief.locked\":false} (Upstream brief). Determine the contract-governed handoff target.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates the upstream_reference handoff predicate in skills/product-grid-scene-planner/contract.json",
+        "Routes to intent-to-3d-brief-writer (Upstream brief) without claiming runtime execution"
+      ],
+      "requiredOutputProperties": [
+        "intent-to-3d-brief-writer",
+        "upstream_reference",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "independent clashing lights per cell",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "intent-to-3d-brief-writer",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Contract upstream_reference handoff predicate match to intent-to-3d-brief-writer"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "goal.clarity": "clear",
+          "brief.locked": false
+        },
+        "simulatedOutput": {
+          "mode": "Text-only product-grid-scene-planner (upstream_reference handoff)",
+          "recommendedNextAction": "Follow upstream_reference handoff to intent-to-3d-brief-writer (Upstream brief).",
+          "targetHandoff": "intent-to-3d-brief-writer",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Triggered upstream_reference handoff from product-grid-scene-planner to intent-to-3d-brief-writer under context {\"goal.clarity\":\"clear\",\"brief.locked\":false}.",
+          "warnings": [
+            "Contract-governed upstream_reference handoff."
+          ],
+          "evidenceCitations": [
+            "skills/product-grid-scene-planner/contract.json",
+            "skills/product-grid-scene-planner/SKILL.md",
+            "skills/product-grid-scene-planner/references/grid-consistency-rules.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "product-grid-scene-planner-unmatched-handoff-and-evidence-boundary",
+      "skillId": "product-grid-scene-planner",
+      "scenario": "Unmatched contract handoff context returns none and blocks upgrading unvalidated file to Verified in product-grid-scene-planner",
+      "category": "evidence_boundary",
+      "inputPrompt": "An operator provides an unvalidated file on disk during product-grid-scene-planner with context {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and asks to mark Artifact: Verified and auto-advance.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "file-only-unvalidated",
+        "notes": "A file exists on disk but validation checks have not been recorded."
+      },
+      "expectedBehavior": [
+        "Refuses to upgrade Artifact status to Verified when existingArtifactEvidence is file-only-unvalidated (caps at Produced)",
+        "Evaluates contract handoffs for product-grid-scene-planner and returns targetHandoff none because no handoff predicate matches"
+      ],
+      "requiredOutputProperties": [
+        "Artifact: Produced",
+        "Runtime: Not Run",
+        "validation",
+        "none"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "validation not needed"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Downgrade unvalidated Verified claim to Produced per laws/evidence-before-done.md",
+        "Verify 0 handoffs match in skills/product-grid-scene-planner/contract.json for {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true}"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Artifact-claim boundary check (product-grid-scene-planner)",
+          "recommendedNextAction": "Keep Artifact status at Produced (never Verified without validation evidence) and hold at targetHandoff none until a downstream precondition is met.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Produced",
+          "summary": "Capped unvalidated artifact claim at Artifact: Produced and verified zero matching contract handoffs (none) for product-grid-scene-planner.",
+          "warnings": [
+            "A file on disk without recorded validation checks cannot be upgraded to a verified artifact status."
+          ],
+          "evidenceCitations": [
+            "laws/evidence-before-done.md",
+            "skills/product-grid-scene-planner/contract.json",
+            "skills/product-grid-scene-planner/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "product-grid-scene-planner-ambiguous-missing-required-inputs",
+      "skillId": "product-grid-scene-planner",
+      "scenario": "Missing required input (locked_3d_brief) for product-grid-scene-planner halts fabricated output and requests clarification",
+      "category": "ambiguous",
+      "inputPrompt": "Plan a multi-product catalog grid without specifying the number of products, grid rows/columns, or aspect ratio.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Required input 'locked_3d_brief' is missing or underspecified."
+      },
+      "expectedBehavior": [
+        "Identifies missing product item count, grid row/column dimensions, and target aspect ratio required by product-grid-scene-planner (locked_3d_brief)",
+        "Refuses to fabricate domain parameters and keeps Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "locked_3d_brief",
+        "product item count, grid row/column dimensions, and target aspect ratio",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "independent clashing lights per cell",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "guessed parameters silently"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicitly names missing required input 'locked_3d_brief' (product item count, grid row/column dimensions, and target aspect ratio)",
+        "Conservative Runtime: Not Run and Artifact: Not Produced truth states"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Clarification gate (product-grid-scene-planner)",
+          "recommendedNextAction": "Provide the missing product item count, grid row/column dimensions, and target aspect ratio (locked_3d_brief) before product-grid-scene-planner locks multi_product_grid_layout_matrix.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted product-grid-scene-planner due to missing required input 'locked_3d_brief' (product item count, grid row/column dimensions, and target aspect ratio); no values were fabricated.",
+          "warnings": [
+            "Do not invent product item count, grid row/column dimensions, and target aspect ratio when 'locked_3d_brief' is omitted."
+          ],
+          "evidenceCitations": [
+            "skills/product-grid-scene-planner/SKILL.md",
+            "skills/product-grid-scene-planner/EVAL.md",
+            "skills/product-grid-scene-planner/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "product-grid-scene-planner-out-of-scope-exclusion-delegation",
+      "skillId": "product-grid-scene-planner",
+      "scenario": "Out-of-scope request (single product hero) is excluded from product-grid-scene-planner and delegated to product-hero-scene-planner",
+      "category": "scope_creep",
+      "inputPrompt": "Instead of plan a multi-product grid scene (e-commerce, catalog, comparison) before any modeling or render attempt; consistent lighting, camera, and grid spacing., handle this request inside product-grid-scene-planner: single product hero.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Enforces the declared exclusion boundary in skills/product-grid-scene-planner/contract.json when single product hero",
+        "Delegates to product-hero-scene-planner (use product-hero-scene-planner) with Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "product-hero-scene-planner",
+        "out of scope",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "independent clashing lights per cell",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "handled inside product-grid-scene-planner anyway"
+      ],
+      "expectedRoutingTarget": "product-hero-scene-planner",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Exclusion delegation to product-hero-scene-planner per skills/product-grid-scene-planner/contract.json"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Out-of-scope exclusion gate (product-grid-scene-planner)",
+          "recommendedNextAction": "Request is out of scope for product-grid-scene-planner (single product hero); delegate to product-hero-scene-planner.",
+          "targetHandoff": "product-hero-scene-planner",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Enforced product-grid-scene-planner exclusion boundary (use product-hero-scene-planner) and delegated to product-hero-scene-planner.",
+          "warnings": [
+            "product-grid-scene-planner is scoped to multi-product-catalog-grid-architect and does not absorb product-hero-scene-planner responsibilities."
+          ],
+          "evidenceCitations": [
+            "skills/product-grid-scene-planner/contract.json",
+            "skills/product-grid-scene-planner/SKILL.md",
+            "skills/product-hero-scene-planner/SKILL.md"
+          ]
+        }
+      }
+    }
+  ]
+}

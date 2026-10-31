@@ -1,14 +1,18 @@
 {
-  "schemaVersion": "1.0.0",
+  "schemaVersion": "2.0.0",
   "skillId": "blender-asset-discovery-planner",
   "category": "asset-and-sourcing",
-  "isContractedSkill": false,
+  "isContractedSkill": true,
+  "isRoutingParticipant": false,
+  "contractPath": "skills/blender-asset-discovery-planner/contract.json",
+  "skillMarkdownPath": "skills/blender-asset-discovery-planner/SKILL.md",
   "evalMarkdownPath": "skills/blender-asset-discovery-planner/EVAL.md",
   "sourceEvalTier": "structured_multi_case_table",
   "evaluationStatus": {
     "staticValidation": "Passed",
     "deterministicFixture": "Passed",
-    "contractRouting": "Not Implemented",
+    "contractRouting": "Not Applicable",
+    "contractHandoff": "Passed",
     "liveModel": "Not Run",
     "blenderRuntime": "Not Run"
   },
@@ -358,6 +362,125 @@
           "summary": "Halted asset discovery due to missing 8-slot brief and re-routed to intent-to-3d-brief-writer.",
           "warnings": [],
           "evidenceCitations": [
+            "skills/blender-asset-discovery-planner/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "blender-asset-discovery-planner-contract-handoff-primary",
+      "skillId": "blender-asset-discovery-planner",
+      "scenario": "Contract handoff predicate matches asset-license-checker (**License verdicts**)",
+      "category": "normal",
+      "inputPrompt": "Evaluate blender-asset-discovery-planner contract handoff when workflow context satisfies {\"assets.externalUsed\":true,\"assets.licenseCleared\":false} and verify progression to asset-license-checker.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates contract.json handoff predicates for blender-asset-discovery-planner against the workflow context",
+        "Selects asset-license-checker while preserving Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "asset-license-checker",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Not Run",
+        "Artifact: Verified",
+        "Blender executed"
+      ],
+      "expectedRoutingTarget": "asset-license-checker",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Contract handoff predicate match for asset-license-checker in skills/blender-asset-discovery-planner/contract.json",
+        "Truth-state conservation (Runtime: Not Run, Artifact: Not Produced)"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "assets.externalUsed": true,
+          "assets.licenseCleared": false
+        },
+        "simulatedOutput": {
+          "mode": "Text-only blender-asset-discovery-planner contract handoff evaluation",
+          "recommendedNextAction": "Hand off from blender-asset-discovery-planner to asset-license-checker (**License verdicts**).",
+          "targetHandoff": "asset-license-checker",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Matched contract handoff predicate in blender-asset-discovery-planner and routed to asset-license-checker.",
+          "warnings": [
+            "Specialist contract handoff evaluated without global routingPrecedence escalation."
+          ],
+          "evidenceCitations": [
+            "skills/blender-asset-discovery-planner/contract.json",
+            "skills/blender-asset-discovery-planner/SKILL.md",
+            "skills/blender-asset-discovery-planner/EVAL.md",
+            "skills/blender-asset-discovery-planner/references/asset-strategy-decision-tree.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "blender-asset-discovery-planner-contract-handoff-unmatched-none",
+      "skillId": "blender-asset-discovery-planner",
+      "scenario": "Contract handoff predicate returns none when no downstream handoff condition matches in blender-asset-discovery-planner",
+      "category": "evidence_boundary",
+      "inputPrompt": "Check blender-asset-discovery-planner contract handoff behavior when context is {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and no automatic handoff predicate is satisfied.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates all 12 contract handoffs in blender-asset-discovery-planner with fail-closed predicate semantics",
+        "Returns targetHandoff none when no handoff predicate matches and preserves conservative truth states"
+      ],
+      "requiredOutputProperties": [
+        "none",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Not Run",
+        "Artifact: Verified",
+        "invented handoff target"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Zero matching handoff predicates in skills/blender-asset-discovery-planner/contract.json for non-matching context"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Text-only blender-asset-discovery-planner contract boundary check",
+          "recommendedNextAction": "Remain at blender-asset-discovery-planner (targetHandoff: none) until a declared downstream handoff precondition is satisfied.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Verified fail-closed specialist handoff evaluation for blender-asset-discovery-planner when no contract predicate matches (secondary candidate intent-to-3d-brief-writer remained inactive).",
+          "warnings": [
+            "Never fabricate an undeclared handoff when no contract predicate matches."
+          ],
+          "evidenceCitations": [
+            "skills/blender-asset-discovery-planner/contract.json",
             "skills/blender-asset-discovery-planner/EVAL.md"
           ]
         }

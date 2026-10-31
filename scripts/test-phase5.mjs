@@ -603,12 +603,12 @@ describe('Phase 5 — Full Catalog Contract Coverage & F-03 Resolution (30 Scena
     }
   });
 
-  it('Scenario 25: all 12 pilot evaluation suites (73 deterministic & contract-routing cases) pass against the 48-skill registry', () => {
+  it('Scenario 25: all 48 catalog evaluation suites (269 deterministic, contract-routing & contract-handoff cases) pass against the 48-skill registry', () => {
     const evalRes = runEvalSuites({ rootDir: root, checkOnly: false });
     assert.equal(evalRes.ok, true, `Expected eval suites to pass, got: ${evalRes.errors.join('; ')}`);
-    assert.equal(evalRes.summary.suitesExecuted, 12);
-    assert.equal(evalRes.summary.totalCasesExecuted, 73);
-    assert.equal(evalRes.summary.passedCases, 73);
+    assert.equal(evalRes.summary.suitesExecuted, 48);
+    assert.equal(evalRes.summary.totalCasesExecuted, 269);
+    assert.equal(evalRes.summary.passedCases, 269);
     assert.equal(evalRes.summary.failedCases, 0);
   });
 
@@ -691,7 +691,7 @@ describe('Phase 5 — Full Catalog Contract Coverage & F-03 Resolution (30 Scena
     }
   });
 
-  it('Scenario 28: docs/audits/current/scorecard.json records 81.0/100 (+26.5) with Pillar 1 = 15.0 and Pillar 2 = 15.0 while Phase 0 baseline stays 54.5/100', () => {
+  it('Scenario 28: docs/audits/current/scorecard.json records 86.5/100 (+32.0) with Pillar 1 = 15.0, Pillar 2 = 15.0, and Pillar 3 = 16.0 while Phase 0 baseline stays 54.5/100', () => {
     const scorecard = JSON.parse(
       fs.readFileSync(path.join(root, 'docs', 'audits', 'current', 'scorecard.json'), 'utf8'),
     );
@@ -700,13 +700,15 @@ describe('Phase 5 — Full Catalog Contract Coverage & F-03 Resolution (30 Scena
     );
     assert.equal(baseline.totals.measuredScore, 54.5);
     assert.equal(scorecard.totals.historicalBaselineScore, 54.5);
-    assert.equal(scorecard.totals.measuredScore, 81.0);
-    assert.equal(scorecard.totals.scoreDelta, '+26.5');
+    assert.equal(scorecard.totals.measuredScore, 86.5);
+    assert.equal(scorecard.totals.scoreDelta, '+32.0');
 
     const p1 = scorecard.pillars.find((p) => p.id === 'pillar-1-skill-quality-and-contracts');
     const p2 = scorecard.pillars.find((p) => p.id === 'pillar-2-workflow-architecture-and-routing');
+    const p3 = scorecard.pillars.find((p) => p.id === 'pillar-3-behavioral-evaluation');
     assert.equal(p1?.measuredScore, 15.0);
     assert.equal(p2?.measuredScore, 15.0);
+    assert.equal(p3?.measuredScore, 16.0);
   });
 
   it('Scenario 29: audited-inputs.manifest.json covers all Phase 5 schemas, registries, contracts, and test-phase5.mjs', () => {

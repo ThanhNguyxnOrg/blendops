@@ -1,0 +1,323 @@
+{
+  "schemaVersion": "2.0.0",
+  "skillId": "output-format-decision",
+  "category": "render-and-output-decisions",
+  "isContractedSkill": true,
+  "isRoutingParticipant": false,
+  "contractPath": "skills/output-format-decision/contract.json",
+  "skillMarkdownPath": "skills/output-format-decision/SKILL.md",
+  "evalMarkdownPath": "skills/output-format-decision/EVAL.md",
+  "sourceEvalTier": "prose_outline_contract_migrated",
+  "evaluationStatus": {
+    "staticValidation": "Passed",
+    "deterministicFixture": "Passed",
+    "contractRouting": "Not Applicable",
+    "contractHandoff": "Passed",
+    "liveModel": "Not Run",
+    "blenderRuntime": "Not Run"
+  },
+  "cases": [
+    {
+      "id": "output-format-decision-normal-in-scope-handoff",
+      "skillId": "output-format-decision",
+      "scenario": "Normal in-scope execution of output-format-decision (still-animation-and-3d-format-selector) with contract handoff to render-export-evidence",
+      "category": "normal",
+      "inputPrompt": "Apply output-format-decision for a web hero still deliverable (1920x1080, sRGB consumer pipeline, optional transparent background badge variant) plus archival master pass.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Primary inputs (deliverable_channel_and_use) provided in text-only planning/audit mode."
+      },
+      "expectedBehavior": [
+        "Produces pinned_container_and_codec_spec, bit_depth_and_alpha_mode_record, color_space_and_export_verification_hooks for role still-animation-and-3d-format-selector",
+        "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
+        "Evaluates contract handoff predicate and hands off to render-export-evidence (Render file verification)"
+      ],
+      "requiredOutputProperties": [
+        "8-bit RGBA PNG",
+        "bit depth",
+        "alpha channel rule",
+        "render-export-evidence",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "32-bit EXR directly in web img tag",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "render-export-evidence",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Outputs pinned_container_and_codec_spec, bit_depth_and_alpha_mode_record, color_space_and_export_verification_hooks conforming to skills/output-format-decision/SKILL.md",
+        "Matches contract handoff predicate to render-export-evidence in skills/output-format-decision/contract.json"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "stage.current": "post_execution_audit"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only still-animation-and-3d-format-selector (output-format-decision)",
+          "recommendedNextAction": "Complete pinned_container_and_codec_spec and hand off to render-export-evidence (Render file verification).",
+          "targetHandoff": "render-export-evidence",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Pinned 8-bit RGBA PNG / lossless WebP for web hero delivery and 16-bit OpenEXR for archival master, including alpha premultiplication and bit-depth rules. Delivered 8-bit RGBA PNG, bit depth, alpha channel rule and routed to render-export-evidence.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/output-format-decision/SKILL.md",
+            "skills/output-format-decision/EVAL.md",
+            "skills/output-format-decision/contract.json",
+            "skills/output-format-decision/references/bit-depth-rules.md",
+            "skills/output-format-decision/references/compression-tradeoffs.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "output-format-decision-secondary-contract-handoff",
+      "skillId": "output-format-decision",
+      "scenario": "Secondary upstream_reference contract handoff from output-format-decision to color-management-decision",
+      "category": "structured_skip",
+      "inputPrompt": "While applying output-format-decision, the workflow context is {\"decision.colorLocked\":false} (Color management). Determine the contract-governed handoff target.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates the upstream_reference handoff predicate in skills/output-format-decision/contract.json",
+        "Routes to color-management-decision (Color management) without claiming runtime execution"
+      ],
+      "requiredOutputProperties": [
+        "color-management-decision",
+        "upstream_reference",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "32-bit EXR directly in web img tag",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "color-management-decision",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Contract upstream_reference handoff predicate match to color-management-decision"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.colorLocked": false
+        },
+        "simulatedOutput": {
+          "mode": "Text-only output-format-decision (upstream_reference handoff)",
+          "recommendedNextAction": "Follow upstream_reference handoff to color-management-decision (Color management).",
+          "targetHandoff": "color-management-decision",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Triggered upstream_reference handoff from output-format-decision to color-management-decision under context {\"decision.colorLocked\":false}.",
+          "warnings": [
+            "Contract-governed upstream_reference handoff."
+          ],
+          "evidenceCitations": [
+            "skills/output-format-decision/contract.json",
+            "skills/output-format-decision/SKILL.md",
+            "skills/output-format-decision/references/bit-depth-rules.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "output-format-decision-unmatched-handoff-and-evidence-boundary",
+      "skillId": "output-format-decision",
+      "scenario": "Unmatched contract handoff context returns none and blocks upgrading unvalidated file to Verified in output-format-decision",
+      "category": "evidence_boundary",
+      "inputPrompt": "An operator provides an unvalidated file on disk during output-format-decision with context {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and asks to mark Artifact: Verified and auto-advance.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "file-only-unvalidated",
+        "notes": "A file exists on disk but validation checks have not been recorded."
+      },
+      "expectedBehavior": [
+        "Refuses to upgrade Artifact status to Verified when existingArtifactEvidence is file-only-unvalidated (caps at Produced)",
+        "Evaluates contract handoffs for output-format-decision and returns targetHandoff none because no handoff predicate matches"
+      ],
+      "requiredOutputProperties": [
+        "Artifact: Produced",
+        "Runtime: Not Run",
+        "validation",
+        "none"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "validation not needed"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Downgrade unvalidated Verified claim to Produced per laws/evidence-before-done.md",
+        "Verify 0 handoffs match in skills/output-format-decision/contract.json for {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true}"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Artifact-claim boundary check (output-format-decision)",
+          "recommendedNextAction": "Keep Artifact status at Produced (never Verified without validation evidence) and hold at targetHandoff none until a downstream precondition is met.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Produced",
+          "summary": "Capped unvalidated artifact claim at Artifact: Produced and verified zero matching contract handoffs (none) for output-format-decision.",
+          "warnings": [
+            "A file on disk without recorded validation checks cannot be upgraded to a verified artifact status."
+          ],
+          "evidenceCitations": [
+            "laws/evidence-before-done.md",
+            "skills/output-format-decision/contract.json",
+            "skills/output-format-decision/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "output-format-decision-ambiguous-missing-required-inputs",
+      "skillId": "output-format-decision",
+      "scenario": "Missing required input (deliverable_channel_and_use) for output-format-decision halts fabricated output and requests clarification",
+      "category": "ambiguous",
+      "inputPrompt": "Choose the output file format and codec without telling me whether the deliverable is a still image, an animation video, or an interactive 3D web asset.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Required input 'deliverable_channel_and_use' is missing or underspecified."
+      },
+      "expectedBehavior": [
+        "Identifies missing deliverable media type (still vs animation vs 3D mesh) and consumer platform required by output-format-decision (deliverable_channel_and_use)",
+        "Refuses to fabricate domain parameters and keeps Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "deliverable_channel_and_use",
+        "deliverable media type (still vs animation vs 3D mesh) and consumer platform",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "32-bit EXR directly in web img tag",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "guessed parameters silently"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicitly names missing required input 'deliverable_channel_and_use' (deliverable media type (still vs animation vs 3D mesh) and consumer platform)",
+        "Conservative Runtime: Not Run and Artifact: Not Produced truth states"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Clarification gate (output-format-decision)",
+          "recommendedNextAction": "Provide the missing deliverable media type (still vs animation vs 3D mesh) and consumer platform (deliverable_channel_and_use) before output-format-decision locks pinned_container_and_codec_spec.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted output-format-decision due to missing required input 'deliverable_channel_and_use' (deliverable media type (still vs animation vs 3D mesh) and consumer platform); no values were fabricated.",
+          "warnings": [
+            "Do not invent deliverable media type (still vs animation vs 3D mesh) and consumer platform when 'deliverable_channel_and_use' is omitted."
+          ],
+          "evidenceCitations": [
+            "skills/output-format-decision/SKILL.md",
+            "skills/output-format-decision/EVAL.md",
+            "skills/output-format-decision/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "output-format-decision-out-of-scope-exclusion-delegation",
+      "skillId": "output-format-decision",
+      "scenario": "Out-of-scope request (raw modeling without rendering) is excluded from output-format-decision and delegated to cycles-vs-eevee-decision",
+      "category": "scope_creep",
+      "inputPrompt": "Instead of pick the right output file format (png / jpg / webp / openexr / tiff) per use case based on bit depth, compression, transparency, and consumer support., handle this request inside output-format-decision: raw modeling without rendering.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Enforces the declared exclusion boundary in skills/output-format-decision/contract.json when raw modeling without rendering",
+        "Delegates to cycles-vs-eevee-decision (Delegates out-of-scope requests to cycles-vs-eevee-decision) with Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "cycles-vs-eevee-decision",
+        "out of scope",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "32-bit EXR directly in web img tag",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "handled inside output-format-decision anyway"
+      ],
+      "expectedRoutingTarget": "cycles-vs-eevee-decision",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Exclusion delegation to cycles-vs-eevee-decision per skills/output-format-decision/contract.json"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Out-of-scope exclusion gate (output-format-decision)",
+          "recommendedNextAction": "Request is out of scope for output-format-decision (raw modeling without rendering); delegate to cycles-vs-eevee-decision.",
+          "targetHandoff": "cycles-vs-eevee-decision",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Enforced output-format-decision exclusion boundary (Delegates out-of-scope requests to cycles-vs-eevee-decision) and delegated to cycles-vs-eevee-decision.",
+          "warnings": [
+            "output-format-decision is scoped to still-animation-and-3d-format-selector and does not absorb cycles-vs-eevee-decision responsibilities."
+          ],
+          "evidenceCitations": [
+            "skills/output-format-decision/contract.json",
+            "skills/output-format-decision/SKILL.md",
+            "skills/cycles-vs-eevee-decision/SKILL.md"
+          ]
+        }
+      }
+    }
+  ]
+}

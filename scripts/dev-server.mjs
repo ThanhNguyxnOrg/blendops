@@ -9,7 +9,7 @@ const root = process.cwd();
 const port = Number(process.env.PORT || 3000);
 const phase0Dir = path.join(root, 'docs', 'audits', 'phase-0');
 const currentDir = path.join(root, 'docs', 'audits', 'current');
-const bundlePath = '/tmp/blendops-phase-5.bundle';
+const bundlePath = '/tmp/blendops-phase-6.bundle';
 
 function loadJsonFrom(dir, filename) {
   const full = path.join(dir, filename);
@@ -60,7 +60,7 @@ function renderHtml() {
   const skills = currentSkillInv ? currentSkillInv.skills : [];
   const pillars = currentScorecard ? currentScorecard.pillars : [];
   const findingsList = currentFindings ? currentFindings.findings : [];
-  const pilotSuites = evalIndex ? evalIndex.pilotSuites : [];
+  const suites = evalIndex ? (evalIndex.suites || evalIndex.pilotSuites || []) : [];
   const bundle = getBundleInfo();
 
   const currentCommitShort =
@@ -106,7 +106,7 @@ function renderHtml() {
 </script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BlendOps — Current Repository State &amp; Phase 5 Full-Catalog Contract Inspector</title>
+  <title>BlendOps — Current Repository State &amp; Phase 6 Full-Catalog Behavioral Evaluation Inspector</title>
   <style>
     :root {
       --bg: #0b0d12;
@@ -237,7 +237,8 @@ function renderHtml() {
       <span class="badge" style="color:var(--blue)">phase-3.1.1: 51f76d9</span>
       <span class="badge" style="color:var(--blue)">phase-4: a5ddece</span>
       <span class="badge" style="color:var(--blue)">phase-3-complete: 75f3b5c</span>
-      <span class="badge" style="color:var(--green)">phase-5-complete (source: ${currentCommitShort} &middot; ${auditProv ? auditProv.snapshotBasis : 'verified'}): ${currentScorecard ? currentScorecard.totals.measuredScore : 81.0}/100 &middot; CI PASS</span>
+      <span class="badge" style="color:var(--blue)">phase-5: f8301a3</span>
+      <span class="badge" style="color:var(--green)">phase-6-complete (source: ${currentCommitShort} &middot; ${auditProv ? auditProv.snapshotBasis : 'verified'}): ${currentScorecard ? currentScorecard.totals.measuredScore : 86.5}/100 &middot; CI PASS</span>
     </div>
   </header>
   <main>
@@ -248,7 +249,7 @@ function renderHtml() {
         <div>
           <div style="font-size:12px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:0.05em;">Verified Binary Git Bundle Ready (In-Memory Export — Zero Proxy)</div>
           <div class="mono" style="font-size:13px;margin-top:6px;">
-            File: <strong>blendops-phase-5.bundle</strong> &middot;
+            File: <strong>blendops-phase-6.bundle</strong> &middot;
             Size: <strong>${bundle.size.toLocaleString()} bytes</strong> &middot;
             Header: <strong>${bundle.header}</strong> &middot;
             SHA-256: <strong>${bundle.sha256}</strong>
@@ -275,8 +276,8 @@ function renderHtml() {
     <div class="kpi-grid">
       <div class="card" style="border-color:rgba(34,197,94,0.4);">
         <div class="kpi-label">Current Reconciled Score (main)</div>
-        <div class="kpi-val" style="color:var(--green)">${currentScorecard ? currentScorecard.totals.measuredScore : 81.0} / 100</div>
-        <div class="kpi-sub">Up ${currentScorecard ? currentScorecard.totals.scoreDelta : '+26.5'} from baseline &middot; <strong>0 active P0 blockers</strong></div>
+        <div class="kpi-val" style="color:var(--green)">${currentScorecard ? currentScorecard.totals.measuredScore : 86.5} / 100</div>
+        <div class="kpi-sub">Up ${currentScorecard ? currentScorecard.totals.scoreDelta : '+32.0'} from baseline &middot; <strong>0 active P0 blockers</strong></div>
       </div>
       <div class="card">
         <div class="kpi-label">Historical Phase 0 Baseline — Not Current</div>
@@ -294,9 +295,9 @@ function renderHtml() {
         <div class="kpi-sub"><code>${currentSkillInv ? currentSkillInv.summary.contractStatus : 'full-catalog'}</code> &middot; 4 routing + 44 specialist &middot; ${registryGraph ? registryGraph.summary.totalContractedEdges : 371} edges</div>
       </div>
       <div class="card">
-        <div class="kpi-label">Behavioral Eval Runner (Phase 3)</div>
-        <div class="kpi-val" style="color:var(--accent)">${currentEvalInv ? currentEvalInv.summary.machineReadablePilotSuitesCount : 12} / 48</div>
-        <div class="kpi-sub"><code>${currentEvalInv ? currentEvalInv.summary.totalMachineReadableCases : 73} / ${currentEvalInv ? currentEvalInv.summary.totalMachineReadableCases : 73}</code> deterministic cases Passed &middot; 36 prose pending</div>
+        <div class="kpi-label">Full-Catalog Eval Runner (Phase 6)</div>
+        <div class="kpi-val" style="color:var(--green)">${currentEvalInv ? (currentEvalInv.summary.machineReadableSuitesCount ?? 48) : 48} / 48</div>
+        <div class="kpi-sub"><code>${currentEvalInv ? currentEvalInv.summary.totalMachineReadableCases : 269} / ${currentEvalInv ? currentEvalInv.summary.totalMachineReadableCases : 269}</code> deterministic cases Passed &middot; 0 prose pending</div>
       </div>
       <div class="card">
         <div class="kpi-label">Live LLM &amp; Blender Runtime State</div>
@@ -367,29 +368,29 @@ function renderHtml() {
       </tbody>
     </table>
 
-    <h2>Phase 3 Behavioral Evaluation Pilot Suites (12 / 48 Skills &middot; 73 Machine-Readable Cases)</h2>
+    <h2>Phase 6 Full-Catalog Behavioral Evaluation Suites (48 / 48 Skills &middot; 269 Machine-Readable Cases)</h2>
     <table>
       <thead>
         <tr>
           <th>Skill ID</th>
           <th>Category</th>
-          <th>Contracted</th>
+          <th>Role</th>
           <th>Cases</th>
           <th>Evaluation Types</th>
-          <th>Deterministic / Routing</th>
+          <th>Deterministic / Routing / Handoff</th>
           <th>Live Model / Blender Runtime</th>
         </tr>
       </thead>
       <tbody>
-        ${pilotSuites
+        ${suites
           .map(
             (s) => `<tr>
           <td class="mono" style="font-weight:600">${s.skillId}</td>
           <td><span class="tag">${s.category}</span></td>
-          <td>${s.isContractedSkill ? '<span class="tag tag-blue">contract.json</span>' : '<span class="tag">prose-only</span>'}</td>
+          <td>${s.isRoutingParticipant ? '<span class="tag tag-blue">routing participant</span>' : '<span class="tag">specialist</span>'}</td>
           <td class="mono">${s.caseCount}</td>
           <td class="mono" style="font-size:12px;">${s.evaluationTypes.join(', ')}</td>
-          <td><span class="tag tag-keep">Static: ${s.evaluationStatus.staticValidation}</span><span class="tag tag-keep">Fixture: ${s.evaluationStatus.deterministicFixture}</span><span class="tag ${s.evaluationStatus.contractRouting === 'Passed' ? 'tag-keep' : ''}">Routing: ${s.evaluationStatus.contractRouting}</span></td>
+          <td><span class="tag tag-keep">Static: ${s.evaluationStatus.staticValidation}</span><span class="tag tag-keep">Fixture: ${s.evaluationStatus.deterministicFixture}</span><span class="tag ${s.evaluationStatus.contractRouting === 'Passed' ? 'tag-keep' : ''}">Routing: ${s.evaluationStatus.contractRouting}</span><span class="tag ${s.evaluationStatus.contractHandoff === 'Passed' ? 'tag-keep' : ''}">Handoff: ${s.evaluationStatus.contractHandoff || 'Not Applicable'}</span></td>
           <td><span class="tag">liveModel: ${s.evaluationStatus.liveModel}</span><span class="tag">blenderRuntime: ${s.evaluationStatus.blenderRuntime}</span></td>
         </tr>`,
           )
@@ -459,7 +460,7 @@ function renderHtml() {
       try {
         if (window.showSaveFilePicker) {
           var handle = await window.showSaveFilePicker({
-            suggestedName: 'blendops-phase-5.bundle',
+            suggestedName: 'blendops-phase-6.bundle',
             types: [{ description: 'Git v2 Bundle', accept: { 'application/octet-stream': ['.bundle'] } }]
           });
           var writable = await handle.createWritable();
@@ -476,7 +477,7 @@ function renderHtml() {
       var url = URL.createObjectURL(blob);
       var a = document.createElement('a');
       a.href = url;
-      a.download = 'blendops-phase-5.bundle';
+      a.download = 'blendops-phase-6.bundle';
       document.body.appendChild(a);
       a.click();
       setTimeout(function () {
@@ -492,7 +493,7 @@ function renderHtml() {
       if (!el) return;
       await navigator.clipboard.writeText(el.value.trim());
       status.style.display = 'block';
-      status.textContent = 'Copied Base64 payload to clipboard! Run in PowerShell: [IO.File]::WriteAllBytes("blendops-phase-5.bundle", [Convert]::FromBase64String((Get-Clipboard)))';
+      status.textContent = 'Copied Base64 payload to clipboard! Run in PowerShell: [IO.File]::WriteAllBytes("blendops-phase-6.bundle", [Convert]::FromBase64String((Get-Clipboard)))';
     }
   </script>
 </body>
@@ -512,7 +513,7 @@ const server = http.createServer((req, res) => {
     res.end(
       JSON.stringify({
         exists: info.exists,
-        filename: 'blendops-phase-5.bundle',
+        filename: 'blendops-phase-6.bundle',
         size: info.size,
         sha256: info.sha256,
         header: info.header,
@@ -520,7 +521,7 @@ const server = http.createServer((req, res) => {
     );
     return;
   }
-  if (url === '/blendops-phase-5.bundle') {
+  if (url === '/blendops-phase-6.bundle' || url === '/blendops-phase-5.bundle') {
     const info = getBundleInfo();
     if (!info.exists) {
       res.writeHead(404, { 'Content-Type': 'application/json' });
@@ -530,7 +531,7 @@ const server = http.createServer((req, res) => {
     const rawBuf = fs.readFileSync(bundlePath);
     res.writeHead(200, {
       'Content-Type': 'application/octet-stream',
-      'Content-Disposition': 'attachment; filename="blendops-phase-5.bundle"',
+      'Content-Disposition': 'attachment; filename="blendops-phase-6.bundle"',
       'Content-Length': String(rawBuf.length),
       'Cache-Control': 'no-store',
     });

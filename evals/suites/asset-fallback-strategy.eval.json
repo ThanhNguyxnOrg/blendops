@@ -1,0 +1,325 @@
+{
+  "schemaVersion": "2.0.0",
+  "skillId": "asset-fallback-strategy",
+  "category": "asset-and-sourcing",
+  "isContractedSkill": true,
+  "isRoutingParticipant": false,
+  "contractPath": "skills/asset-fallback-strategy/contract.json",
+  "skillMarkdownPath": "skills/asset-fallback-strategy/SKILL.md",
+  "evalMarkdownPath": "skills/asset-fallback-strategy/EVAL.md",
+  "sourceEvalTier": "prose_outline_contract_migrated",
+  "evaluationStatus": {
+    "staticValidation": "Passed",
+    "deterministicFixture": "Passed",
+    "contractRouting": "Not Applicable",
+    "contractHandoff": "Passed",
+    "liveModel": "Not Run",
+    "blenderRuntime": "Not Run"
+  },
+  "cases": [
+    {
+      "id": "asset-fallback-strategy-normal-in-scope-handoff",
+      "skillId": "asset-fallback-strategy",
+      "scenario": "Normal in-scope execution of asset-fallback-strategy (blocked-asset-replacement-planner) with contract handoff to asset-library-organization-planner",
+      "category": "normal",
+      "inputPrompt": "Our primary photogrammetry leather armchair mesh failed CC0 license verification and exceeds our 50k triangle budget. Use asset-fallback-strategy to plan a deterministic procedural/primitive proxy fallback.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Primary inputs (blocked_asset_entry) provided in text-only planning/audit mode."
+      },
+      "expectedBehavior": [
+        "Produces ranked_fallback_options, selected_replacement_plan, revalidation_routing_hooks for role blocked-asset-replacement-planner",
+        "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
+        "Evaluates contract handoff predicate and hands off to asset-library-organization-planner (Internal library lookup)"
+      ],
+      "requiredOutputProperties": [
+        "fallback tier",
+        "silhouette preservation",
+        "blocked asset",
+        "asset-library-organization-planner",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "use unlicensed mesh anyway",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "asset-library-organization-planner",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Outputs ranked_fallback_options, selected_replacement_plan, revalidation_routing_hooks conforming to skills/asset-fallback-strategy/SKILL.md",
+        "Matches contract handoff predicate to asset-library-organization-planner in skills/asset-fallback-strategy/contract.json"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "assets.discoveryComplete": true,
+          "stage.current": "library_organization"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only blocked-asset-replacement-planner (asset-fallback-strategy)",
+          "recommendedNextAction": "Complete ranked_fallback_options and hand off to asset-library-organization-planner (Internal library lookup).",
+          "targetHandoff": "asset-library-organization-planner",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Planned a 3-tier blocked-asset replacement strategy (procedural proxy + licensed library substitute) preserving silhouette and scale. Delivered fallback tier, silhouette preservation, blocked asset and routed to asset-library-organization-planner.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/asset-fallback-strategy/SKILL.md",
+            "skills/asset-fallback-strategy/EVAL.md",
+            "skills/asset-fallback-strategy/contract.json",
+            "skills/asset-fallback-strategy/references/drop-with-caveat-rules.md",
+            "skills/asset-fallback-strategy/references/fallback-option-types.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "asset-fallback-strategy-secondary-contract-handoff",
+      "skillId": "asset-fallback-strategy",
+      "scenario": "Secondary fallback contract handoff from asset-fallback-strategy to asset-license-checker",
+      "category": "blocked_or_adversarial",
+      "inputPrompt": "While applying asset-fallback-strategy, the workflow context is {\"assets.externalUsed\":true,\"assets.licenseCleared\":false} (License re-check on replacement). Determine the contract-governed handoff target.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates the fallback handoff predicate in skills/asset-fallback-strategy/contract.json",
+        "Routes to asset-license-checker (License re-check on replacement) without claiming runtime execution"
+      ],
+      "requiredOutputProperties": [
+        "asset-license-checker",
+        "fallback",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "use unlicensed mesh anyway",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "asset-license-checker",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Contract fallback handoff predicate match to asset-license-checker"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "assets.externalUsed": true,
+          "assets.licenseCleared": false
+        },
+        "simulatedOutput": {
+          "mode": "Text-only asset-fallback-strategy (fallback handoff)",
+          "recommendedNextAction": "Follow fallback handoff to asset-license-checker (License re-check on replacement).",
+          "targetHandoff": "asset-license-checker",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Triggered fallback handoff from asset-fallback-strategy to asset-license-checker under context {\"assets.externalUsed\":true,\"assets.licenseCleared\":false}.",
+          "warnings": [
+            "Contract-governed fallback handoff."
+          ],
+          "evidenceCitations": [
+            "skills/asset-fallback-strategy/contract.json",
+            "skills/asset-fallback-strategy/SKILL.md",
+            "skills/asset-fallback-strategy/references/drop-with-caveat-rules.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "asset-fallback-strategy-unmatched-handoff-and-evidence-boundary",
+      "skillId": "asset-fallback-strategy",
+      "scenario": "Unmatched contract handoff context returns none and blocks upgrading unvalidated file to Verified in asset-fallback-strategy",
+      "category": "evidence_boundary",
+      "inputPrompt": "An operator provides an unvalidated file on disk during asset-fallback-strategy with context {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and asks to mark Artifact: Verified and auto-advance.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "file-only-unvalidated",
+        "notes": "A file exists on disk but validation checks have not been recorded."
+      },
+      "expectedBehavior": [
+        "Refuses to upgrade Artifact status to Verified when existingArtifactEvidence is file-only-unvalidated (caps at Produced)",
+        "Evaluates contract handoffs for asset-fallback-strategy and returns targetHandoff none because no handoff predicate matches"
+      ],
+      "requiredOutputProperties": [
+        "Artifact: Produced",
+        "Runtime: Not Run",
+        "validation",
+        "none"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "validation not needed"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Downgrade unvalidated Verified claim to Produced per laws/evidence-before-done.md",
+        "Verify 0 handoffs match in skills/asset-fallback-strategy/contract.json for {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true}"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Artifact-claim boundary check (asset-fallback-strategy)",
+          "recommendedNextAction": "Keep Artifact status at Produced (never Verified without validation evidence) and hold at targetHandoff none until a downstream precondition is met.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Produced",
+          "summary": "Capped unvalidated artifact claim at Artifact: Produced and verified zero matching contract handoffs (none) for asset-fallback-strategy.",
+          "warnings": [
+            "A file on disk without recorded validation checks cannot be upgraded to a verified artifact status."
+          ],
+          "evidenceCitations": [
+            "laws/evidence-before-done.md",
+            "skills/asset-fallback-strategy/contract.json",
+            "skills/asset-fallback-strategy/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "asset-fallback-strategy-ambiguous-missing-required-inputs",
+      "skillId": "asset-fallback-strategy",
+      "scenario": "Missing required input (blocked_asset_entry) for asset-fallback-strategy halts fabricated output and requests clarification",
+      "category": "ambiguous",
+      "inputPrompt": "One of our 3D assets is blocked and we need a fallback plan right now, but I do not know which asset failed or whether the blocker is license, polycount, or missing textures.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Required input 'blocked_asset_entry' is missing or underspecified."
+      },
+      "expectedBehavior": [
+        "Identifies missing blocked asset identifier and failure reason (license vs budget vs corrupt file) required by asset-fallback-strategy (blocked_asset_entry)",
+        "Refuses to fabricate domain parameters and keeps Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "blocked_asset_entry",
+        "blocked asset identifier and failure reason (license vs budget vs corrupt file)",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "use unlicensed mesh anyway",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "guessed parameters silently"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicitly names missing required input 'blocked_asset_entry' (blocked asset identifier and failure reason (license vs budget vs corrupt file))",
+        "Conservative Runtime: Not Run and Artifact: Not Produced truth states"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Clarification gate (asset-fallback-strategy)",
+          "recommendedNextAction": "Provide the missing blocked asset identifier and failure reason (license vs budget vs corrupt file) (blocked_asset_entry) before asset-fallback-strategy locks ranked_fallback_options.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted asset-fallback-strategy due to missing required input 'blocked_asset_entry' (blocked asset identifier and failure reason (license vs budget vs corrupt file)); no values were fabricated.",
+          "warnings": [
+            "Do not invent blocked asset identifier and failure reason (license vs budget vs corrupt file) when 'blocked_asset_entry' is omitted."
+          ],
+          "evidenceCitations": [
+            "skills/asset-fallback-strategy/SKILL.md",
+            "skills/asset-fallback-strategy/EVAL.md",
+            "skills/asset-fallback-strategy/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "asset-fallback-strategy-out-of-scope-exclusion-delegation",
+      "skillId": "asset-fallback-strategy",
+      "scenario": "Out-of-scope request (when no asset has failed (nothing to fall back to)) is excluded from asset-fallback-strategy and delegated to asset-license-checker",
+      "category": "scope_creep",
+      "inputPrompt": "Instead of provide a fallback strategy when an asset is unavailable, over-budget, license-blocked, or style-incompatible — without halting the recipe., handle this request inside asset-fallback-strategy: when no asset has failed (nothing to fall back to).",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Enforces the declared exclusion boundary in skills/asset-fallback-strategy/contract.json when when no asset has failed (nothing to fall back to)",
+        "Delegates to asset-license-checker (nothing to fall back to) with Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "asset-license-checker",
+        "out of scope",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "use unlicensed mesh anyway",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "handled inside asset-fallback-strategy anyway"
+      ],
+      "expectedRoutingTarget": "asset-license-checker",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Exclusion delegation to asset-license-checker per skills/asset-fallback-strategy/contract.json"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Out-of-scope exclusion gate (asset-fallback-strategy)",
+          "recommendedNextAction": "Request is out of scope for asset-fallback-strategy (when no asset has failed (nothing to fall back to)); delegate to asset-license-checker.",
+          "targetHandoff": "asset-license-checker",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Enforced asset-fallback-strategy exclusion boundary (nothing to fall back to) and delegated to asset-license-checker.",
+          "warnings": [
+            "asset-fallback-strategy is scoped to blocked-asset-replacement-planner and does not absorb asset-license-checker responsibilities."
+          ],
+          "evidenceCitations": [
+            "skills/asset-fallback-strategy/contract.json",
+            "skills/asset-fallback-strategy/SKILL.md",
+            "skills/asset-license-checker/SKILL.md"
+          ]
+        }
+      }
+    }
+  ]
+}

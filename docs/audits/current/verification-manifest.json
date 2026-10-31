@@ -1,19 +1,19 @@
 {
-  "schemaVersion": "1.3.0",
-  "auditPhase": "phase-5-current",
+  "schemaVersion": "1.4.0",
+  "auditPhase": "phase-6-current",
   "repository": "ThanhNguyxnOrg/blendops",
   "branch": "main",
-  "sourceCommitSha": "75f3b5c8b16b2d7e174d6dba58965da5013cfb5e",
-  "sourceCommitShort": "75f3b5c",
-  "sourceCommitDate": "2026-10-31 08:02:39 +0000",
+  "sourceCommitSha": "f8301a3e39e05bee4da1b8f85f16fb13ff1c6b3e",
+  "sourceCommitShort": "f8301a3",
+  "sourceCommitDate": "2026-10-31 12:45:48 +0000",
   "auditProvenance": {
-    "sourceCommitSha": "75f3b5c8b16b2d7e174d6dba58965da5013cfb5e",
-    "sourceCommitShort": "75f3b5c",
-    "sourceCommitDate": "2026-10-31 08:02:39 +0000",
+    "sourceCommitSha": "f8301a3e39e05bee4da1b8f85f16fb13ff1c6b3e",
+    "sourceCommitShort": "f8301a3",
+    "sourceCommitDate": "2026-10-31 12:45:48 +0000",
     "workingTreeState": "dirty",
     "snapshotBasis": "working-tree-on-top-of-source-commit",
-    "uncommittedChangeCount": 101,
-    "auditedInputsSha256": "d1d27dd11a92df9b4a62a4ab671aa880325876cbdf1e69a9da1774c2ea4c758d",
+    "uncommittedChangeCount": 25,
+    "auditedInputsSha256": "d11685ac7793fa7aaaf4f1bfb300339f0bc98140b27a3bfd2a90a11d55ff69c7",
     "selfReferentialCommitRule": "A Git commit cannot contain its own final commit SHA inside tracked files. sourceCommitSha records the verified HEAD commit present when the generator ran, workingTreeState and snapshotBasis record whether uncommitted working-tree changes were present on top of sourceCommitSha, and auditedInputsSha256 digests the exact audited file contents."
   },
   "commitChain": [
@@ -66,17 +66,22 @@
       "phase": "Phase 3 Completion (E1–E4)",
       "commitSha": "75f3b5c8b16b2d7e174d6dba58965da5013cfb5e",
       "summary": "Runtime evidence packets, deterministic GLB 2.0 binary inspector (F-07 FIXED), L0-L3 capability policy & rollback protocol (F-10 FIXED), and 26-target compatibility matrix validation"
+    },
+    {
+      "phase": "Phase 5",
+      "commitSha": "f8301a3e39e05bee4da1b8f85f16fb13ff1c6b3e",
+      "summary": "Full 48-skill machine-readable contracts (F-03 FIXED), 27-field context vocabulary, 371-edge acyclic workflow graph, and managed Markdown synchronization"
     }
   ],
   "currentPhaseContext": {
-    "phase": "Phase 5 — Full Catalog Contract Coverage (F-03 Resolution)",
-    "title": "Full 48-Skill Machine-Readable Contracts, Context Field Vocabulary, 371-Edge Workflow Graph & Managed Markdown Sync",
-    "sourceCommitSha": "75f3b5c8b16b2d7e174d6dba58965da5013cfb5e",
+    "phase": "Phase 6 — Full Catalog Behavioral Evaluation Coverage (F-04 Resolution)",
+    "title": "Full 48-Skill Machine-Readable Behavioral Evaluation Suites (269 Deterministic Cases: 21 Contract-Routing, 124 Contract-Handoff, 124 Deterministic-Fixture)",
+    "sourceCommitSha": "f8301a3e39e05bee4da1b8f85f16fb13ff1c6b3e",
     "workingTreeState": "dirty",
     "snapshotBasis": "working-tree-on-top-of-source-commit",
-    "auditedInputsSha256": "d1d27dd11a92df9b4a62a4ab671aa880325876cbdf1e69a9da1774c2ea4c758d",
+    "auditedInputsSha256": "d11685ac7793fa7aaaf4f1bfb300339f0bc98140b27a3bfd2a90a11d55ff69c7",
     "auditedInputsManifest": "docs/audits/audited-inputs.manifest.json",
-    "relationshipToCommitChain": "Phase 5 is built directly on top of Phase 3 Completion (75f3b5c8b16b2d7e174d6dba58965da5013cfb5e). Because a Git commit cannot embed its own final SHA inside tracked files, verification-manifest.json records 75f3b5c8b16b2d7e174d6dba58965da5013cfb5e as the latest completed commit in commitChain and sourceCommitSha, while locking the exact Phase 5 audited inputs via auditedInputsSha256 and docs/audits/audited-inputs.manifest.json."
+    "relationshipToCommitChain": "Phase 6 is built directly on top of Phase 5 (f8301a3e39e05bee4da1b8f85f16fb13ff1c6b3e). Because a Git commit cannot embed its own final SHA inside tracked files, verification-manifest.json records f8301a3e39e05bee4da1b8f85f16fb13ff1c6b3e as the latest completed commit in commitChain and sourceCommitSha, while locking the exact Phase 6 audited inputs via auditedInputsSha256 and docs/audits/audited-inputs.manifest.json."
   },
   "ciVerificationPipeline": {
     "command": "npm run ci",
@@ -97,13 +102,13 @@
         "script": "npm run evals:check",
         "command": "node scripts/run-evals.mjs --check",
         "status": "Passed",
-        "verifiedScope": "Draft 2020-12 Ajv2020 evaluation schema validation across 12 pilot suites (73 cases) and evals/index.json synchronization"
+        "verifiedScope": "Draft 2020-12 Ajv2020 evaluation schema (2.0.0) validation across all 48/48 catalog suites (269 cases), 27-field handoffContext vocabulary validation, and evals/index.json synchronization"
       },
       {
         "script": "npm run evals:run",
         "command": "node scripts/run-evals.mjs",
         "status": "Passed",
-        "verifiedScope": "73/73 deterministic fixture, truth-state separation, and contract-routing assertions passed with all 5 condition predicate operators hardened (live_model: Not Run, blender_runtime: Not Run)"
+        "verifiedScope": "269/269 deterministic fixture, truth-state separation, contract-routing (21 cases), and specialist contract-handoff (124 cases) assertions passed across 48/48 skills (live_model: Not Run, blender_runtime: Not Run)"
       },
       {
         "script": "npm run skills:export",
@@ -113,16 +118,16 @@
       },
       {
         "script": "npm test",
-        "command": "node --test scripts/test-phase1.mjs scripts/test-phase2.mjs scripts/test-phase3.mjs scripts/test-phase4.mjs scripts/test-phase5.mjs",
+        "command": "node --test scripts/test-phase1.mjs scripts/test-phase2.mjs scripts/test-phase3.mjs scripts/test-phase4.mjs scripts/test-phase5.mjs scripts/test-phase6.mjs",
         "status": "Passed",
-        "verifiedScope": "Unit and integration suites across Phase 1, Phase 2 / 2.1, Phase 3 / 3.1 / 3.1.1, Phase 4, and Phase 5 (30 full-catalog contract & graph scenarios)"
+        "verifiedScope": "Unit and integration suites across Phase 1, Phase 2 / 2.1, Phase 3 / 3.1 / 3.1.1, Phase 4, Phase 5, and Phase 6 (full-catalog behavioral evaluation & F-04 closure scenarios)"
       }
     ]
   },
   "truthStates": {
     "staticValidation": "Verified",
     "contractRoutingPilot": "Verified (48/48 skills contracted; 4 routing participants + 44 specialist contracts)",
-    "deterministicEvalFixtures": "Verified (12/48 skills, 73 cases)",
+    "deterministicEvalFixtures": "Verified (48/48 skills, 269 cases: 21 contract_routing + 124 contract_handoff + 124 deterministic_fixture)",
     "liveModelEval": "Not Run",
     "blenderRuntimeExecution": "Not Run",
     "blenderArtifacts": "Not Produced"

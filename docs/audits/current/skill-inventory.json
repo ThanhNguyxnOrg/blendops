@@ -1,20 +1,20 @@
 {
-  "schemaVersion": "1.4.0",
-  "auditPhase": "phase-5-current",
+  "schemaVersion": "1.5.0",
+  "auditPhase": "phase-6-current",
   "reconciledFromBaselineCommit": "3ea3c35c6b8a6e5e915bab9f63333d4a1c09bd4d",
   "repository": "ThanhNguyxnOrg/blendops",
   "branch": "main",
-  "sourceCommitSha": "75f3b5c8b16b2d7e174d6dba58965da5013cfb5e",
-  "sourceCommitShort": "75f3b5c",
-  "sourceCommitDate": "2026-10-31 08:02:39 +0000",
+  "sourceCommitSha": "f8301a3e39e05bee4da1b8f85f16fb13ff1c6b3e",
+  "sourceCommitShort": "f8301a3",
+  "sourceCommitDate": "2026-10-31 12:45:48 +0000",
   "auditProvenance": {
-    "sourceCommitSha": "75f3b5c8b16b2d7e174d6dba58965da5013cfb5e",
-    "sourceCommitShort": "75f3b5c",
-    "sourceCommitDate": "2026-10-31 08:02:39 +0000",
+    "sourceCommitSha": "f8301a3e39e05bee4da1b8f85f16fb13ff1c6b3e",
+    "sourceCommitShort": "f8301a3",
+    "sourceCommitDate": "2026-10-31 12:45:48 +0000",
     "workingTreeState": "dirty",
     "snapshotBasis": "working-tree-on-top-of-source-commit",
-    "uncommittedChangeCount": 101,
-    "auditedInputsSha256": "d1d27dd11a92df9b4a62a4ab671aa880325876cbdf1e69a9da1774c2ea4c758d",
+    "uncommittedChangeCount": 25,
+    "auditedInputsSha256": "d11685ac7793fa7aaaf4f1bfb300339f0bc98140b27a3bfd2a90a11d55ff69c7",
     "selfReferentialCommitRule": "A Git commit cannot contain its own final commit SHA inside tracked files. sourceCommitSha records the verified HEAD commit present when the generator ran, workingTreeState and snapshotBasis record whether uncommitted working-tree changes were present on top of sourceCommitSha, and auditedInputsSha256 digests the exact audited file contents."
   },
   "summary": {
@@ -27,7 +27,9 @@
     "routingPrecedenceParticipantsCount": 4,
     "specialistContractsCount": 44,
     "totalWorkflowEdges": 371,
-    "machineReadableEvalSuitesCount": 12,
+    "machineReadableEvalSuitesCount": 48,
+    "skillsWithoutEvalSuitesCount": 0,
+    "totalMachineReadableEvalCases": 269,
     "dispositionBreakdown": {
       "KEEP": 48,
       "IMPROVE": 0,
@@ -135,8 +137,8 @@
       ],
       "hasContract": true,
       "hasManagedMarkdownSections": true,
-      "hasMachineReadableEvalSuite": false,
-      "machineReadableEvalCaseCount": 0
+      "hasMachineReadableEvalSuite": true,
+      "machineReadableEvalCaseCount": 5
     },
     {
       "id": "asset-fallback-strategy",
@@ -228,8 +230,8 @@
       ],
       "hasContract": true,
       "hasManagedMarkdownSections": true,
-      "hasMachineReadableEvalSuite": false,
-      "machineReadableEvalCaseCount": 0
+      "hasMachineReadableEvalSuite": true,
+      "machineReadableEvalCaseCount": 5
     },
     {
       "id": "asset-library-organization-planner",
@@ -319,8 +321,8 @@
       ],
       "hasContract": true,
       "hasManagedMarkdownSections": true,
-      "hasMachineReadableEvalSuite": false,
-      "machineReadableEvalCaseCount": 0
+      "hasMachineReadableEvalSuite": true,
+      "machineReadableEvalCaseCount": 5
     },
     {
       "id": "asset-license-checker",
@@ -410,8 +412,8 @@
       ],
       "hasContract": true,
       "hasManagedMarkdownSections": true,
-      "hasMachineReadableEvalSuite": false,
-      "machineReadableEvalCaseCount": 0
+      "hasMachineReadableEvalSuite": true,
+      "machineReadableEvalCaseCount": 5
     },
     {
       "id": "asset-style-consistency-checker",
@@ -505,8 +507,8 @@
       ],
       "hasContract": true,
       "hasManagedMarkdownSections": true,
-      "hasMachineReadableEvalSuite": false,
-      "machineReadableEvalCaseCount": 0
+      "hasMachineReadableEvalSuite": true,
+      "machineReadableEvalCaseCount": 5
     },
     {
       "id": "blender-asset-discovery-planner",
@@ -605,7 +607,7 @@
       "hasContract": true,
       "hasManagedMarkdownSections": true,
       "hasMachineReadableEvalSuite": true,
-      "machineReadableEvalCaseCount": 7
+      "machineReadableEvalCaseCount": 9
     },
     {
       "id": "blender-brainstorming",
@@ -695,7 +697,7 @@
       "hasContract": true,
       "hasManagedMarkdownSections": true,
       "hasMachineReadableEvalSuite": true,
-      "machineReadableEvalCaseCount": 5
+      "machineReadableEvalCaseCount": 7
     },
     {
       "id": "blender-checklist-driven-workflow",
@@ -802,8 +804,8 @@
       ],
       "hasContract": true,
       "hasManagedMarkdownSections": true,
-      "hasMachineReadableEvalSuite": false,
-      "machineReadableEvalCaseCount": 0
+      "hasMachineReadableEvalSuite": true,
+      "machineReadableEvalCaseCount": 5
     },
     {
       "id": "blender-composition-camera-planner",
@@ -894,8 +896,8 @@
       ],
       "hasContract": true,
       "hasManagedMarkdownSections": true,
-      "hasMachineReadableEvalSuite": false,
-      "machineReadableEvalCaseCount": 0
+      "hasMachineReadableEvalSuite": true,
+      "machineReadableEvalCaseCount": 5
     },
     {
       "id": "blender-lighting-material-planner",
@@ -989,8 +991,8 @@
       ],
       "hasContract": true,
       "hasManagedMarkdownSections": true,
-      "hasMachineReadableEvalSuite": false,
-      "machineReadableEvalCaseCount": 0
+      "hasMachineReadableEvalSuite": true,
+      "machineReadableEvalCaseCount": 5
     },
     {
       "id": "blender-recipe-decomposer",
@@ -1080,8 +1082,8 @@
       ],
       "hasContract": true,
       "hasManagedMarkdownSections": true,
-      "hasMachineReadableEvalSuite": false,
-      "machineReadableEvalCaseCount": 0
+      "hasMachineReadableEvalSuite": true,
+      "machineReadableEvalCaseCount": 5
     },
     {
       "id": "blender-scene-quality-checker",
@@ -1174,8 +1176,8 @@
       ],
       "hasContract": true,
       "hasManagedMarkdownSections": true,
-      "hasMachineReadableEvalSuite": false,
-      "machineReadableEvalCaseCount": 0
+      "hasMachineReadableEvalSuite": true,
+      "machineReadableEvalCaseCount": 5
     },
     {
       "id": "blender-scope-boundary-enforcer",
@@ -1266,8 +1268,8 @@
       ],
       "hasContract": true,
       "hasManagedMarkdownSections": true,
-      "hasMachineReadableEvalSuite": false,
-      "machineReadableEvalCaseCount": 0
+      "hasMachineReadableEvalSuite": true,
+      "machineReadableEvalCaseCount": 5
     },
     {
       "id": "blender-stop-condition-decider",
@@ -1358,8 +1360,8 @@
       ],
       "hasContract": true,
       "hasManagedMarkdownSections": true,
-      "hasMachineReadableEvalSuite": false,
-      "machineReadableEvalCaseCount": 0
+      "hasMachineReadableEvalSuite": true,
+      "machineReadableEvalCaseCount": 5
     },
     {
       "id": "blender-troubleshooting",
@@ -1462,7 +1464,7 @@
       "hasContract": true,
       "hasManagedMarkdownSections": true,
       "hasMachineReadableEvalSuite": true,
-      "machineReadableEvalCaseCount": 6
+      "machineReadableEvalCaseCount": 8
     },
     {
       "id": "blendops-help",
@@ -1655,8 +1657,8 @@
       ],
       "hasContract": true,
       "hasManagedMarkdownSections": true,
-      "hasMachineReadableEvalSuite": false,
-      "machineReadableEvalCaseCount": 0
+      "hasMachineReadableEvalSuite": true,
+      "machineReadableEvalCaseCount": 5
     },
     {
       "id": "cli-appendix-job-outline",
@@ -1746,8 +1748,8 @@
       ],
       "hasContract": true,
       "hasManagedMarkdownSections": true,
-      "hasMachineReadableEvalSuite": false,
-      "machineReadableEvalCaseCount": 0
+      "hasMachineReadableEvalSuite": true,
+      "machineReadableEvalCaseCount": 5
     },
     {
       "id": "color-management-decision",
@@ -1837,8 +1839,8 @@
       ],
       "hasContract": true,
       "hasManagedMarkdownSections": true,
-      "hasMachineReadableEvalSuite": false,
-      "machineReadableEvalCaseCount": 0
+      "hasMachineReadableEvalSuite": true,
+      "machineReadableEvalCaseCount": 5
     },
     {
       "id": "composition-quality-checker",
@@ -1929,8 +1931,8 @@
       ],
       "hasContract": true,
       "hasManagedMarkdownSections": true,
-      "hasMachineReadableEvalSuite": false,
-      "machineReadableEvalCaseCount": 0
+      "hasMachineReadableEvalSuite": true,
+      "machineReadableEvalCaseCount": 5
     },
     {
       "id": "cycles-vs-eevee-decision",
@@ -2020,8 +2022,8 @@
       ],
       "hasContract": true,
       "hasManagedMarkdownSections": true,
-      "hasMachineReadableEvalSuite": false,
-      "machineReadableEvalCaseCount": 0
+      "hasMachineReadableEvalSuite": true,
+      "machineReadableEvalCaseCount": 5
     },
     {
       "id": "environment-establishing-shot-planner",
@@ -2111,8 +2113,8 @@
       ],
       "hasContract": true,
       "hasManagedMarkdownSections": true,
-      "hasMachineReadableEvalSuite": false,
-      "machineReadableEvalCaseCount": 0
+      "hasMachineReadableEvalSuite": true,
+      "machineReadableEvalCaseCount": 5
     },
     {
       "id": "glb-animation-handoff",
@@ -2207,8 +2209,8 @@
       ],
       "hasContract": true,
       "hasManagedMarkdownSections": true,
-      "hasMachineReadableEvalSuite": false,
-      "machineReadableEvalCaseCount": 0
+      "hasMachineReadableEvalSuite": true,
+      "machineReadableEvalCaseCount": 5
     },
     {
       "id": "glb-mobile-performance-budget",
@@ -2306,8 +2308,8 @@
       ],
       "hasContract": true,
       "hasManagedMarkdownSections": true,
-      "hasMachineReadableEvalSuite": false,
-      "machineReadableEvalCaseCount": 0
+      "hasMachineReadableEvalSuite": true,
+      "machineReadableEvalCaseCount": 5
     },
     {
       "id": "glb-web-handoff",
@@ -2397,8 +2399,8 @@
       ],
       "hasContract": true,
       "hasManagedMarkdownSections": true,
-      "hasMachineReadableEvalSuite": false,
-      "machineReadableEvalCaseCount": 0
+      "hasMachineReadableEvalSuite": true,
+      "machineReadableEvalCaseCount": 5
     },
     {
       "id": "intent-to-3d-brief-writer",
@@ -2491,7 +2493,7 @@
       "hasContract": true,
       "hasManagedMarkdownSections": true,
       "hasMachineReadableEvalSuite": true,
-      "machineReadableEvalCaseCount": 7
+      "machineReadableEvalCaseCount": 9
     },
     {
       "id": "interior-architectural-scene-planner",
@@ -2588,8 +2590,8 @@
       ],
       "hasContract": true,
       "hasManagedMarkdownSections": true,
-      "hasMachineReadableEvalSuite": false,
-      "machineReadableEvalCaseCount": 0
+      "hasMachineReadableEvalSuite": true,
+      "machineReadableEvalCaseCount": 5
     },
     {
       "id": "lighting-quality-checker",
@@ -2679,8 +2681,8 @@
       ],
       "hasContract": true,
       "hasManagedMarkdownSections": true,
-      "hasMachineReadableEvalSuite": false,
-      "machineReadableEvalCaseCount": 0
+      "hasMachineReadableEvalSuite": true,
+      "machineReadableEvalCaseCount": 5
     },
     {
       "id": "material-quality-checker",
@@ -2773,8 +2775,8 @@
       ],
       "hasContract": true,
       "hasManagedMarkdownSections": true,
-      "hasMachineReadableEvalSuite": false,
-      "machineReadableEvalCaseCount": 0
+      "hasMachineReadableEvalSuite": true,
+      "machineReadableEvalCaseCount": 5
     },
     {
       "id": "non-blender-user-response-writer",
@@ -2868,8 +2870,8 @@
       ],
       "hasContract": true,
       "hasManagedMarkdownSections": true,
-      "hasMachineReadableEvalSuite": false,
-      "machineReadableEvalCaseCount": 0
+      "hasMachineReadableEvalSuite": true,
+      "machineReadableEvalCaseCount": 5
     },
     {
       "id": "official-runtime-readiness-checker",
@@ -2962,7 +2964,7 @@
       "hasContract": true,
       "hasManagedMarkdownSections": true,
       "hasMachineReadableEvalSuite": true,
-      "machineReadableEvalCaseCount": 5
+      "machineReadableEvalCaseCount": 7
     },
     {
       "id": "official-runtime-setup-guide",
@@ -3053,8 +3055,8 @@
       ],
       "hasContract": true,
       "hasManagedMarkdownSections": true,
-      "hasMachineReadableEvalSuite": false,
-      "machineReadableEvalCaseCount": 0
+      "hasMachineReadableEvalSuite": true,
+      "machineReadableEvalCaseCount": 5
     },
     {
       "id": "output-format-decision",
@@ -3145,8 +3147,8 @@
       ],
       "hasContract": true,
       "hasManagedMarkdownSections": true,
-      "hasMachineReadableEvalSuite": false,
-      "machineReadableEvalCaseCount": 0
+      "hasMachineReadableEvalSuite": true,
+      "machineReadableEvalCaseCount": 5
     },
     {
       "id": "pack-prerequisite-checker",
@@ -3333,8 +3335,8 @@
       ],
       "hasContract": true,
       "hasManagedMarkdownSections": true,
-      "hasMachineReadableEvalSuite": false,
-      "machineReadableEvalCaseCount": 0
+      "hasMachineReadableEvalSuite": true,
+      "machineReadableEvalCaseCount": 5
     },
     {
       "id": "polycount-budget-checker",
@@ -3425,8 +3427,8 @@
       ],
       "hasContract": true,
       "hasManagedMarkdownSections": true,
-      "hasMachineReadableEvalSuite": false,
-      "machineReadableEvalCaseCount": 0
+      "hasMachineReadableEvalSuite": true,
+      "machineReadableEvalCaseCount": 5
     },
     {
       "id": "pre-handoff-verification",
@@ -3526,7 +3528,7 @@
       "hasContract": true,
       "hasManagedMarkdownSections": true,
       "hasMachineReadableEvalSuite": true,
-      "machineReadableEvalCaseCount": 7
+      "machineReadableEvalCaseCount": 9
     },
     {
       "id": "preview-report-template-writer",
@@ -3619,8 +3621,8 @@
       ],
       "hasContract": true,
       "hasManagedMarkdownSections": true,
-      "hasMachineReadableEvalSuite": false,
-      "machineReadableEvalCaseCount": 0
+      "hasMachineReadableEvalSuite": true,
+      "machineReadableEvalCaseCount": 5
     },
     {
       "id": "product-grid-scene-planner",
@@ -3715,8 +3717,8 @@
       ],
       "hasContract": true,
       "hasManagedMarkdownSections": true,
-      "hasMachineReadableEvalSuite": false,
-      "machineReadableEvalCaseCount": 0
+      "hasMachineReadableEvalSuite": true,
+      "machineReadableEvalCaseCount": 5
     },
     {
       "id": "product-hero-scene-planner",
@@ -3809,8 +3811,8 @@
       ],
       "hasContract": true,
       "hasManagedMarkdownSections": true,
-      "hasMachineReadableEvalSuite": false,
-      "machineReadableEvalCaseCount": 0
+      "hasMachineReadableEvalSuite": true,
+      "machineReadableEvalCaseCount": 5
     },
     {
       "id": "recipe-fit-assessor",
@@ -4001,7 +4003,7 @@
       "hasContract": true,
       "hasManagedMarkdownSections": true,
       "hasMachineReadableEvalSuite": true,
-      "machineReadableEvalCaseCount": 8
+      "machineReadableEvalCaseCount": 10
     },
     {
       "id": "resolution-aspect-decision",
@@ -4091,8 +4093,8 @@
       ],
       "hasContract": true,
       "hasManagedMarkdownSections": true,
-      "hasMachineReadableEvalSuite": false,
-      "machineReadableEvalCaseCount": 0
+      "hasMachineReadableEvalSuite": true,
+      "machineReadableEvalCaseCount": 5
     },
     {
       "id": "runtime-attempt-report-writer",
@@ -4185,8 +4187,8 @@
       ],
       "hasContract": true,
       "hasManagedMarkdownSections": true,
-      "hasMachineReadableEvalSuite": false,
-      "machineReadableEvalCaseCount": 0
+      "hasMachineReadableEvalSuite": true,
+      "machineReadableEvalCaseCount": 5
     },
     {
       "id": "runtime-bridge-conflict-resolver",
@@ -4278,7 +4280,7 @@
       "hasContract": true,
       "hasManagedMarkdownSections": true,
       "hasMachineReadableEvalSuite": true,
-      "machineReadableEvalCaseCount": 7
+      "machineReadableEvalCaseCount": 9
     },
     {
       "id": "runtime-path-picker",
@@ -4369,8 +4371,8 @@
       ],
       "hasContract": true,
       "hasManagedMarkdownSections": true,
-      "hasMachineReadableEvalSuite": false,
-      "machineReadableEvalCaseCount": 0
+      "hasMachineReadableEvalSuite": true,
+      "machineReadableEvalCaseCount": 5
     },
     {
       "id": "three-fiber-component-shape-planner",
@@ -4461,8 +4463,8 @@
       ],
       "hasContract": true,
       "hasManagedMarkdownSections": true,
-      "hasMachineReadableEvalSuite": false,
-      "machineReadableEvalCaseCount": 0
+      "hasMachineReadableEvalSuite": true,
+      "machineReadableEvalCaseCount": 5
     },
     {
       "id": "workflow-stage-router",

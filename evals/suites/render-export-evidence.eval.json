@@ -1,14 +1,18 @@
 {
-  "schemaVersion": "1.0.0",
+  "schemaVersion": "2.0.0",
   "skillId": "render-export-evidence",
   "category": "evidence-and-handoff",
-  "isContractedSkill": false,
+  "isContractedSkill": true,
+  "isRoutingParticipant": false,
+  "contractPath": "skills/render-export-evidence/contract.json",
+  "skillMarkdownPath": "skills/render-export-evidence/SKILL.md",
   "evalMarkdownPath": "skills/render-export-evidence/EVAL.md",
   "sourceEvalTier": "structured_multi_case_table",
   "evaluationStatus": {
     "staticValidation": "Passed",
     "deterministicFixture": "Passed",
-    "contractRouting": "Not Implemented",
+    "contractRouting": "Not Applicable",
+    "contractHandoff": "Passed",
     "liveModel": "Not Run",
     "blenderRuntime": "Not Run"
   },
@@ -410,6 +414,124 @@
           "summary": "Detected tool-name vs path-label mismatch (get_scene_info belongs to Path 2, not Path 1); marked ambiguous with re-verification needed.",
           "warnings": [],
           "evidenceCitations": [
+            "skills/render-export-evidence/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "render-export-evidence-contract-handoff-primary",
+      "skillId": "render-export-evidence",
+      "scenario": "Contract handoff predicate matches pre-handoff-verification (Handoff gating (confirm-or-downgrade))",
+      "category": "normal",
+      "inputPrompt": "Evaluate render-export-evidence contract handoff when workflow context satisfies {\"stage.current\":\"final_verification\"} and verify progression to pre-handoff-verification.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates contract.json handoff predicates for render-export-evidence against the workflow context",
+        "Selects pre-handoff-verification while preserving Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "pre-handoff-verification",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Not Run",
+        "Artifact: Verified",
+        "Blender executed"
+      ],
+      "expectedRoutingTarget": "pre-handoff-verification",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Contract handoff predicate match for pre-handoff-verification in skills/render-export-evidence/contract.json",
+        "Truth-state conservation (Runtime: Not Run, Artifact: Not Produced)"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "stage.current": "final_verification"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only render-export-evidence contract handoff evaluation",
+          "recommendedNextAction": "Hand off from render-export-evidence to pre-handoff-verification (Handoff gating (confirm-or-downgrade)).",
+          "targetHandoff": "pre-handoff-verification",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Matched contract handoff predicate in render-export-evidence and routed to pre-handoff-verification.",
+          "warnings": [
+            "Specialist contract handoff evaluated without global routingPrecedence escalation."
+          ],
+          "evidenceCitations": [
+            "skills/render-export-evidence/contract.json",
+            "skills/render-export-evidence/SKILL.md",
+            "skills/render-export-evidence/EVAL.md",
+            "skills/render-export-evidence/references/attempted-vs-failed-rubric.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "render-export-evidence-contract-handoff-unmatched-none",
+      "skillId": "render-export-evidence",
+      "scenario": "Contract handoff predicate returns none when no downstream handoff condition matches in render-export-evidence",
+      "category": "evidence_boundary",
+      "inputPrompt": "Check render-export-evidence contract handoff behavior when context is {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and no automatic handoff predicate is satisfied.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates all 7 contract handoffs in render-export-evidence with fail-closed predicate semantics",
+        "Returns targetHandoff none when no handoff predicate matches and preserves conservative truth states"
+      ],
+      "requiredOutputProperties": [
+        "none",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Not Run",
+        "Artifact: Verified",
+        "invented handoff target"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Zero matching handoff predicates in skills/render-export-evidence/contract.json for non-matching context"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Text-only render-export-evidence contract boundary check",
+          "recommendedNextAction": "Remain at render-export-evidence (targetHandoff: none) until a declared downstream handoff precondition is satisfied.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Verified fail-closed specialist handoff evaluation for render-export-evidence when no contract predicate matches (secondary candidate official-runtime-readiness-checker remained inactive).",
+          "warnings": [
+            "Never fabricate an undeclared handoff when no contract predicate matches."
+          ],
+          "evidenceCitations": [
+            "skills/render-export-evidence/contract.json",
             "skills/render-export-evidence/EVAL.md"
           ]
         }

@@ -1,0 +1,323 @@
+{
+  "schemaVersion": "2.0.0",
+  "skillId": "runtime-attempt-report-writer",
+  "category": "runtime-and-execution",
+  "isContractedSkill": true,
+  "isRoutingParticipant": false,
+  "contractPath": "skills/runtime-attempt-report-writer/contract.json",
+  "skillMarkdownPath": "skills/runtime-attempt-report-writer/SKILL.md",
+  "evalMarkdownPath": "skills/runtime-attempt-report-writer/EVAL.md",
+  "sourceEvalTier": "prose_outline_contract_migrated",
+  "evaluationStatus": {
+    "staticValidation": "Passed",
+    "deterministicFixture": "Passed",
+    "contractRouting": "Not Applicable",
+    "contractHandoff": "Passed",
+    "liveModel": "Not Run",
+    "blenderRuntime": "Not Run"
+  },
+  "cases": [
+    {
+      "id": "runtime-attempt-report-writer-normal-in-scope-handoff",
+      "skillId": "runtime-attempt-report-writer",
+      "scenario": "Normal in-scope execution of runtime-attempt-report-writer (execution-attempt-provenance-logger) with contract handoff to render-export-evidence",
+      "category": "normal",
+      "inputPrompt": "A Path 2 (`mcp-for-blender` on Blender 4.2 LTS) execution attempt connected on port 9876, ran scene inspection, and timed out during render before any file was written. Use runtime-attempt-report-writer.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Primary inputs (attempted_runtime_path_and_host) provided in text-only planning/audit mode."
+      },
+      "expectedBehavior": [
+        "Produces structured_runtime_attempt_report_md, locked_runtime_and_artifact_truth_labels, eval_evidence_archival_path for role execution-attempt-provenance-logger",
+        "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
+        "Evaluates contract handoff predicate and hands off to render-export-evidence (Artifact evidence classification)"
+      ],
+      "requiredOutputProperties": [
+        "Runtime: Failed",
+        "Artifact: Not Produced",
+        "Path 2 community bridge",
+        "render-export-evidence",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Everything verified",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "render-export-evidence",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Outputs structured_runtime_attempt_report_md, locked_runtime_and_artifact_truth_labels, eval_evidence_archival_path conforming to skills/runtime-attempt-report-writer/SKILL.md",
+        "Matches contract handoff predicate to render-export-evidence in skills/runtime-attempt-report-writer/contract.json"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "stage.current": "post_execution_audit"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only execution-attempt-provenance-logger (runtime-attempt-report-writer)",
+          "recommendedNextAction": "Complete structured_runtime_attempt_report_md and hand off to render-export-evidence (Artifact evidence classification).",
+          "targetHandoff": "render-export-evidence",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Logged chronological runtime attempt report with `Runtime: Failed` / `Attempted`, `Artifact: Not Produced`, Path 2 community bridge attribution, and triage handoff. Delivered Runtime: Failed, Artifact: Not Produced, Path 2 community bridge and routed to render-export-evidence.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/runtime-attempt-report-writer/SKILL.md",
+            "skills/runtime-attempt-report-writer/EVAL.md",
+            "skills/runtime-attempt-report-writer/contract.json",
+            "skills/runtime-attempt-report-writer/references/attempt-record-template.md",
+            "skills/runtime-attempt-report-writer/references/triage-next-steps.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "runtime-attempt-report-writer-secondary-contract-handoff",
+      "skillId": "runtime-attempt-report-writer",
+      "scenario": "Secondary fallback contract handoff from runtime-attempt-report-writer to runtime-bridge-conflict-resolver",
+      "category": "blocked_or_adversarial",
+      "inputPrompt": "While applying runtime-attempt-report-writer, the workflow context is {\"runtime.conflictDetected\":true} (Bridge / port / host conflicts). Determine the contract-governed handoff target.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates the fallback handoff predicate in skills/runtime-attempt-report-writer/contract.json",
+        "Routes to runtime-bridge-conflict-resolver (Bridge / port / host conflicts) without claiming runtime execution"
+      ],
+      "requiredOutputProperties": [
+        "runtime-bridge-conflict-resolver",
+        "fallback",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Everything verified",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "runtime-bridge-conflict-resolver",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Contract fallback handoff predicate match to runtime-bridge-conflict-resolver"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "runtime.conflictDetected": true
+        },
+        "simulatedOutput": {
+          "mode": "Text-only runtime-attempt-report-writer (fallback handoff)",
+          "recommendedNextAction": "Follow fallback handoff to runtime-bridge-conflict-resolver (Bridge / port / host conflicts).",
+          "targetHandoff": "runtime-bridge-conflict-resolver",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Triggered fallback handoff from runtime-attempt-report-writer to runtime-bridge-conflict-resolver under context {\"runtime.conflictDetected\":true}.",
+          "warnings": [
+            "Contract-governed fallback handoff."
+          ],
+          "evidenceCitations": [
+            "skills/runtime-attempt-report-writer/contract.json",
+            "skills/runtime-attempt-report-writer/SKILL.md",
+            "skills/runtime-attempt-report-writer/references/attempt-record-template.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "runtime-attempt-report-writer-unmatched-handoff-and-evidence-boundary",
+      "skillId": "runtime-attempt-report-writer",
+      "scenario": "Unmatched contract handoff context returns none and blocks upgrading unvalidated file to Verified in runtime-attempt-report-writer",
+      "category": "evidence_boundary",
+      "inputPrompt": "An operator provides an unvalidated file on disk during runtime-attempt-report-writer with context {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and asks to mark Artifact: Verified and auto-advance.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "file-only-unvalidated",
+        "notes": "A file exists on disk but validation checks have not been recorded."
+      },
+      "expectedBehavior": [
+        "Refuses to upgrade Artifact status to Verified when existingArtifactEvidence is file-only-unvalidated (caps at Produced)",
+        "Evaluates contract handoffs for runtime-attempt-report-writer and returns targetHandoff none because no handoff predicate matches"
+      ],
+      "requiredOutputProperties": [
+        "Artifact: Produced",
+        "Runtime: Not Run",
+        "validation",
+        "none"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "validation not needed"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Downgrade unvalidated Verified claim to Produced per laws/evidence-before-done.md",
+        "Verify 0 handoffs match in skills/runtime-attempt-report-writer/contract.json for {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true}"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Artifact-claim boundary check (runtime-attempt-report-writer)",
+          "recommendedNextAction": "Keep Artifact status at Produced (never Verified without validation evidence) and hold at targetHandoff none until a downstream precondition is met.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Produced",
+          "summary": "Capped unvalidated artifact claim at Artifact: Produced and verified zero matching contract handoffs (none) for runtime-attempt-report-writer.",
+          "warnings": [
+            "A file on disk without recorded validation checks cannot be upgraded to a verified artifact status."
+          ],
+          "evidenceCitations": [
+            "laws/evidence-before-done.md",
+            "skills/runtime-attempt-report-writer/contract.json",
+            "skills/runtime-attempt-report-writer/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "runtime-attempt-report-writer-ambiguous-missing-required-inputs",
+      "skillId": "runtime-attempt-report-writer",
+      "scenario": "Missing required input (attempted_runtime_path_and_host) for runtime-attempt-report-writer halts fabricated output and requests clarification",
+      "category": "ambiguous",
+      "inputPrompt": "Write a formal runtime attempt report without providing which runtime path was used, what tool call was attempted, or whether any output files were written.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Required input 'attempted_runtime_path_and_host' is missing or underspecified."
+      },
+      "expectedBehavior": [
+        "Identifies missing runtime path identity, chronological tool log, and output file check required by runtime-attempt-report-writer (attempted_runtime_path_and_host)",
+        "Refuses to fabricate domain parameters and keeps Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "attempted_runtime_path_and_host",
+        "runtime path identity, chronological tool log, and output file check",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Everything verified",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "guessed parameters silently"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicitly names missing required input 'attempted_runtime_path_and_host' (runtime path identity, chronological tool log, and output file check)",
+        "Conservative Runtime: Not Run and Artifact: Not Produced truth states"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Clarification gate (runtime-attempt-report-writer)",
+          "recommendedNextAction": "Provide the missing runtime path identity, chronological tool log, and output file check (attempted_runtime_path_and_host) before runtime-attempt-report-writer locks structured_runtime_attempt_report_md.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted runtime-attempt-report-writer due to missing required input 'attempted_runtime_path_and_host' (runtime path identity, chronological tool log, and output file check); no values were fabricated.",
+          "warnings": [
+            "Do not invent runtime path identity, chronological tool log, and output file check when 'attempted_runtime_path_and_host' is omitted."
+          ],
+          "evidenceCitations": [
+            "skills/runtime-attempt-report-writer/SKILL.md",
+            "skills/runtime-attempt-report-writer/EVAL.md",
+            "skills/runtime-attempt-report-writer/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "runtime-attempt-report-writer-out-of-scope-exclusion-delegation",
+      "skillId": "runtime-attempt-report-writer",
+      "scenario": "Out-of-scope request (Classifying rendered or exported visual artifacts (render-export-evidence)) is excluded from runtime-attempt-report-writer and delegated to render-export-evidence",
+      "category": "scope_creep",
+      "inputPrompt": "Instead of produce an evidence-bound runtime attempt report with truth labels and next steps; does not certify upstream stack success., handle this request inside runtime-attempt-report-writer: Classifying rendered or exported visual artifacts (render-export-evidence).",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Enforces the declared exclusion boundary in skills/runtime-attempt-report-writer/contract.json when Classifying rendered or exported visual artifacts (render-export-evidence)",
+        "Delegates to render-export-evidence (render-export-evidence) with Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "render-export-evidence",
+        "out of scope",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Everything verified",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "handled inside runtime-attempt-report-writer anyway"
+      ],
+      "expectedRoutingTarget": "render-export-evidence",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Exclusion delegation to render-export-evidence per skills/runtime-attempt-report-writer/contract.json"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Out-of-scope exclusion gate (runtime-attempt-report-writer)",
+          "recommendedNextAction": "Request is out of scope for runtime-attempt-report-writer (Classifying rendered or exported visual artifacts (render-export-evidence)); delegate to render-export-evidence.",
+          "targetHandoff": "render-export-evidence",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Enforced runtime-attempt-report-writer exclusion boundary (render-export-evidence) and delegated to render-export-evidence.",
+          "warnings": [
+            "runtime-attempt-report-writer is scoped to execution-attempt-provenance-logger and does not absorb render-export-evidence responsibilities."
+          ],
+          "evidenceCitations": [
+            "skills/runtime-attempt-report-writer/contract.json",
+            "skills/runtime-attempt-report-writer/SKILL.md",
+            "skills/render-export-evidence/SKILL.md"
+          ]
+        }
+      }
+    }
+  ]
+}

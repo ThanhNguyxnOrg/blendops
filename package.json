@@ -40,7 +40,7 @@
     "evals:check": "node scripts/run-evals.mjs --check",
     "evals:list": "node scripts/run-evals.mjs --list",
     "evals:run": "node scripts/run-evals.mjs",
-    "test": "node --test scripts/test-phase1.mjs scripts/test-phase2.mjs scripts/test-phase3.mjs scripts/test-phase4.mjs scripts/test-phase5.mjs",
+    "test": "node --test scripts/test-phase1.mjs scripts/test-phase2.mjs scripts/test-phase3.mjs scripts/test-phase4.mjs scripts/test-phase5.mjs scripts/test-phase6.mjs",
     "docs:check": "node scripts/check-docs.mjs",
     "skills:export": "node scripts/export-claude-skills.mjs",
     "ci": "npm run docs:check && npm run registry:check && npm run evals:check && npm run evals:run && npm run skills:export && npm test"

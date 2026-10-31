@@ -1,0 +1,324 @@
+{
+  "schemaVersion": "2.0.0",
+  "skillId": "runtime-path-picker",
+  "category": "runtime-and-execution",
+  "isContractedSkill": true,
+  "isRoutingParticipant": false,
+  "contractPath": "skills/runtime-path-picker/contract.json",
+  "skillMarkdownPath": "skills/runtime-path-picker/SKILL.md",
+  "evalMarkdownPath": "skills/runtime-path-picker/EVAL.md",
+  "sourceEvalTier": "prose_outline_contract_migrated",
+  "evaluationStatus": {
+    "staticValidation": "Passed",
+    "deterministicFixture": "Passed",
+    "contractRouting": "Not Applicable",
+    "contractHandoff": "Passed",
+    "liveModel": "Not Run",
+    "blenderRuntime": "Not Run"
+  },
+  "cases": [
+    {
+      "id": "runtime-path-picker-normal-in-scope-handoff",
+      "skillId": "runtime-path-picker",
+      "scenario": "Normal in-scope execution of runtime-path-picker (execution-path-selector) with contract handoff to official-runtime-setup-guide",
+      "category": "normal",
+      "inputPrompt": "A user has Blender 4.2 LTS installed and wants interactive MCP scene steering from Cursor. Use runtime-path-picker to select the compatible execution path and explain version constraints.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Primary inputs (blender_version_posture) provided in text-only planning/audit mode."
+      },
+      "expectedBehavior": [
+        "Produces single_recommended_runtime_path, rejected_paths_comparison_table, path_specific_caveat_and_next_skill for role execution-path-selector",
+        "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
+        "Evaluates contract handoff predicate and hands off to official-runtime-setup-guide (Prerequisite framing)"
+      ],
+      "requiredOutputProperties": [
+        "Path 2",
+        "Blender 5.1+ floor for Path 1",
+        "mcp-for-blender",
+        "official-runtime-setup-guide",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "use Path 1 Lab MCP on Blender 4.2",
+        "Runtime: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "official-runtime-setup-guide",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Outputs single_recommended_runtime_path, rejected_paths_comparison_table, path_specific_caveat_and_next_skill conforming to skills/runtime-path-picker/SKILL.md",
+        "Matches contract handoff predicate to official-runtime-setup-guide in skills/runtime-path-picker/contract.json"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "runtime.path": "path_1",
+          "stage.current": "runtime_setup"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only execution-path-selector (runtime-path-picker)",
+          "recommendedNextAction": "Complete single_recommended_runtime_path and hand off to official-runtime-setup-guide (Prerequisite framing).",
+          "targetHandoff": "official-runtime-setup-guide",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Selected Path 2 (`mcp-for-blender`, Blender 3.0+) for Blender 4.2 LTS in Cursor, explaining that Path 1 requires the Blender Lab MCP add-on in Blender 5.1+. Delivered Path 2, Blender 5.1+ floor for Path 1, mcp-for-blender and routed to official-runtime-setup-guide.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/runtime-path-picker/SKILL.md",
+            "skills/runtime-path-picker/EVAL.md",
+            "skills/runtime-path-picker/contract.json",
+            "skills/runtime-path-picker/references/anti-patterns.md",
+            "skills/runtime-path-picker/references/decision-tree.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "runtime-path-picker-secondary-contract-handoff",
+      "skillId": "runtime-path-picker",
+      "scenario": "Secondary fallback contract handoff from runtime-path-picker to runtime-bridge-conflict-resolver",
+      "category": "blocked_or_adversarial",
+      "inputPrompt": "While applying runtime-path-picker, the workflow context is {\"runtime.conflictDetected\":true} (Bridge or port 9876 conflicts). Determine the contract-governed handoff target.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates the fallback handoff predicate in skills/runtime-path-picker/contract.json",
+        "Routes to runtime-bridge-conflict-resolver (Bridge or port 9876 conflicts) without claiming runtime execution"
+      ],
+      "requiredOutputProperties": [
+        "runtime-bridge-conflict-resolver",
+        "fallback",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "use Path 1 Lab MCP on Blender 4.2",
+        "Runtime: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "runtime-bridge-conflict-resolver",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Contract fallback handoff predicate match to runtime-bridge-conflict-resolver"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "runtime.conflictDetected": true
+        },
+        "simulatedOutput": {
+          "mode": "Text-only runtime-path-picker (fallback handoff)",
+          "recommendedNextAction": "Follow fallback handoff to runtime-bridge-conflict-resolver (Bridge or port 9876 conflicts).",
+          "targetHandoff": "runtime-bridge-conflict-resolver",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Triggered fallback handoff from runtime-path-picker to runtime-bridge-conflict-resolver under context {\"runtime.conflictDetected\":true}.",
+          "warnings": [
+            "Contract-governed fallback handoff."
+          ],
+          "evidenceCitations": [
+            "skills/runtime-path-picker/contract.json",
+            "skills/runtime-path-picker/SKILL.md",
+            "skills/runtime-path-picker/references/anti-patterns.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "runtime-path-picker-unmatched-handoff-and-evidence-boundary",
+      "skillId": "runtime-path-picker",
+      "scenario": "Unmatched contract handoff context returns none and blocks upgrading unvalidated file to Verified in runtime-path-picker",
+      "category": "evidence_boundary",
+      "inputPrompt": "An operator provides an unvalidated file on disk during runtime-path-picker with context {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and asks to mark Artifact: Verified and auto-advance.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "file-only-unvalidated",
+        "notes": "A file exists on disk but validation checks have not been recorded."
+      },
+      "expectedBehavior": [
+        "Refuses to upgrade Artifact status to Verified when existingArtifactEvidence is file-only-unvalidated (caps at Produced)",
+        "Evaluates contract handoffs for runtime-path-picker and returns targetHandoff none because no handoff predicate matches"
+      ],
+      "requiredOutputProperties": [
+        "Artifact: Produced",
+        "Runtime: Not Run",
+        "validation",
+        "none"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "validation not needed"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Downgrade unvalidated Verified claim to Produced per laws/evidence-before-done.md",
+        "Verify 0 handoffs match in skills/runtime-path-picker/contract.json for {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true}"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Artifact-claim boundary check (runtime-path-picker)",
+          "recommendedNextAction": "Keep Artifact status at Produced (never Verified without validation evidence) and hold at targetHandoff none until a downstream precondition is met.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Produced",
+          "summary": "Capped unvalidated artifact claim at Artifact: Produced and verified zero matching contract handoffs (none) for runtime-path-picker.",
+          "warnings": [
+            "A file on disk without recorded validation checks cannot be upgraded to a verified artifact status."
+          ],
+          "evidenceCitations": [
+            "laws/evidence-before-done.md",
+            "skills/runtime-path-picker/contract.json",
+            "skills/runtime-path-picker/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "runtime-path-picker-ambiguous-missing-required-inputs",
+      "skillId": "runtime-path-picker",
+      "scenario": "Missing required input (blender_version_posture) for runtime-path-picker halts fabricated output and requests clarification",
+      "category": "ambiguous",
+      "inputPrompt": "Pick the right Blender runtime path for my machine without knowing my Blender version, MCP host client, or whether I want interactive viewport control vs headless CI batch export.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Required input 'blender_version_posture' is missing or underspecified."
+      },
+      "expectedBehavior": [
+        "Identifies missing installed Blender version, MCP host client, and interactive vs headless mode required by runtime-path-picker (blender_version_posture)",
+        "Refuses to fabricate domain parameters and keeps Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "blender_version_posture",
+        "installed Blender version, MCP host client, and interactive vs headless mode",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "use Path 1 Lab MCP on Blender 4.2",
+        "Runtime: Verified",
+        "Artifact: Not Run",
+        "guessed parameters silently"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicitly names missing required input 'blender_version_posture' (installed Blender version, MCP host client, and interactive vs headless mode)",
+        "Conservative Runtime: Not Run and Artifact: Not Produced truth states"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Clarification gate (runtime-path-picker)",
+          "recommendedNextAction": "Provide the missing installed Blender version, MCP host client, and interactive vs headless mode (blender_version_posture) before runtime-path-picker locks single_recommended_runtime_path.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted runtime-path-picker due to missing required input 'blender_version_posture' (installed Blender version, MCP host client, and interactive vs headless mode); no values were fabricated.",
+          "warnings": [
+            "Do not invent installed Blender version, MCP host client, and interactive vs headless mode when 'blender_version_posture' is omitted."
+          ],
+          "evidenceCitations": [
+            "skills/runtime-path-picker/SKILL.md",
+            "skills/runtime-path-picker/EVAL.md",
+            "skills/runtime-path-picker/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "runtime-path-picker-out-of-scope-exclusion-delegation",
+      "skillId": "runtime-path-picker",
+      "scenario": "Out-of-scope request (prerequisite framing or install steps) is excluded from runtime-path-picker and delegated to official-runtime-setup-guide",
+      "category": "scope_creep",
+      "inputPrompt": "Instead of choose path 1 lab mcp, path 2 mcp-for-blender bridge, or cli appendix from constraints; connector hosts path 1 only with lab add-on inside blender., handle this request inside runtime-path-picker: prerequisite framing or install steps.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Enforces the declared exclusion boundary in skills/runtime-path-picker/contract.json when prerequisite framing or install steps",
+        "Delegates to official-runtime-setup-guide (Delegates out-of-scope requests to official-runtime-setup-guide) with Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "official-runtime-setup-guide",
+        "out of scope",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "use Path 1 Lab MCP on Blender 4.2",
+        "Runtime: Verified",
+        "Artifact: Not Run",
+        "handled inside runtime-path-picker anyway"
+      ],
+      "expectedRoutingTarget": "official-runtime-setup-guide",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Exclusion delegation to official-runtime-setup-guide per skills/runtime-path-picker/contract.json"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Out-of-scope exclusion gate (runtime-path-picker)",
+          "recommendedNextAction": "Request is out of scope for runtime-path-picker (prerequisite framing or install steps); delegate to official-runtime-setup-guide.",
+          "targetHandoff": "official-runtime-setup-guide",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Enforced runtime-path-picker exclusion boundary (Delegates out-of-scope requests to official-runtime-setup-guide) and delegated to official-runtime-setup-guide.",
+          "warnings": [
+            "runtime-path-picker is scoped to execution-path-selector and does not absorb official-runtime-setup-guide responsibilities."
+          ],
+          "evidenceCitations": [
+            "skills/runtime-path-picker/contract.json",
+            "skills/runtime-path-picker/SKILL.md",
+            "skills/official-runtime-setup-guide/SKILL.md"
+          ]
+        }
+      }
+    }
+  ]
+}

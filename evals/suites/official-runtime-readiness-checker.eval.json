@@ -1,14 +1,18 @@
 {
-  "schemaVersion": "1.0.0",
+  "schemaVersion": "2.0.0",
   "skillId": "official-runtime-readiness-checker",
   "category": "runtime-and-execution",
-  "isContractedSkill": false,
+  "isContractedSkill": true,
+  "isRoutingParticipant": false,
+  "contractPath": "skills/official-runtime-readiness-checker/contract.json",
+  "skillMarkdownPath": "skills/official-runtime-readiness-checker/SKILL.md",
   "evalMarkdownPath": "skills/official-runtime-readiness-checker/EVAL.md",
   "sourceEvalTier": "gateway_pilot_upgraded",
   "evaluationStatus": {
     "staticValidation": "Passed",
     "deterministicFixture": "Passed",
-    "contractRouting": "Not Implemented",
+    "contractRouting": "Not Applicable",
+    "contractHandoff": "Passed",
     "liveModel": "Not Run",
     "blenderRuntime": "Not Run"
   },
@@ -261,6 +265,124 @@
           "summary": "Assigned conservative Unknown readiness status and routed to official-runtime-setup-guide.",
           "warnings": [],
           "evidenceCitations": [
+            "skills/official-runtime-readiness-checker/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "official-runtime-readiness-checker-contract-handoff-primary",
+      "skillId": "official-runtime-readiness-checker",
+      "scenario": "Contract handoff predicate matches runtime-path-picker (If runtime path is not yet chosen)",
+      "category": "normal",
+      "inputPrompt": "Evaluate official-runtime-readiness-checker contract handoff when workflow context satisfies {\"runtime.path\":\"unselected\"} and verify progression to runtime-path-picker.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates contract.json handoff predicates for official-runtime-readiness-checker against the workflow context",
+        "Selects runtime-path-picker while preserving Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "runtime-path-picker",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Not Run",
+        "Artifact: Verified",
+        "Blender executed"
+      ],
+      "expectedRoutingTarget": "runtime-path-picker",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Contract handoff predicate match for runtime-path-picker in skills/official-runtime-readiness-checker/contract.json",
+        "Truth-state conservation (Runtime: Not Run, Artifact: Not Produced)"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "runtime.path": "unselected"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only official-runtime-readiness-checker contract handoff evaluation",
+          "recommendedNextAction": "Hand off from official-runtime-readiness-checker to runtime-path-picker (If runtime path is not yet chosen).",
+          "targetHandoff": "runtime-path-picker",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Matched contract handoff predicate in official-runtime-readiness-checker and routed to runtime-path-picker.",
+          "warnings": [
+            "Specialist contract handoff evaluated without global routingPrecedence escalation."
+          ],
+          "evidenceCitations": [
+            "skills/official-runtime-readiness-checker/contract.json",
+            "skills/official-runtime-readiness-checker/SKILL.md",
+            "skills/official-runtime-readiness-checker/EVAL.md",
+            "skills/official-runtime-readiness-checker/references/blocker-report-template.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "official-runtime-readiness-checker-contract-handoff-unmatched-none",
+      "skillId": "official-runtime-readiness-checker",
+      "scenario": "Contract handoff predicate returns none when no downstream handoff condition matches in official-runtime-readiness-checker",
+      "category": "evidence_boundary",
+      "inputPrompt": "Check official-runtime-readiness-checker contract handoff behavior when context is {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and no automatic handoff predicate is satisfied.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates all 7 contract handoffs in official-runtime-readiness-checker with fail-closed predicate semantics",
+        "Returns targetHandoff none when no handoff predicate matches and preserves conservative truth states"
+      ],
+      "requiredOutputProperties": [
+        "none",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Not Run",
+        "Artifact: Verified",
+        "invented handoff target"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Zero matching handoff predicates in skills/official-runtime-readiness-checker/contract.json for non-matching context"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Text-only official-runtime-readiness-checker contract boundary check",
+          "recommendedNextAction": "Remain at official-runtime-readiness-checker (targetHandoff: none) until a declared downstream handoff precondition is satisfied.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Verified fail-closed specialist handoff evaluation for official-runtime-readiness-checker when no contract predicate matches (secondary candidate path-one-host-outline remained inactive).",
+          "warnings": [
+            "Never fabricate an undeclared handoff when no contract predicate matches."
+          ],
+          "evidenceCitations": [
+            "skills/official-runtime-readiness-checker/contract.json",
             "skills/official-runtime-readiness-checker/EVAL.md"
           ]
         }

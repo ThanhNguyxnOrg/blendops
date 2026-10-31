@@ -1,0 +1,324 @@
+{
+  "schemaVersion": "2.0.0",
+  "skillId": "color-management-decision",
+  "category": "render-and-output-decisions",
+  "isContractedSkill": true,
+  "isRoutingParticipant": false,
+  "contractPath": "skills/color-management-decision/contract.json",
+  "skillMarkdownPath": "skills/color-management-decision/SKILL.md",
+  "evalMarkdownPath": "skills/color-management-decision/EVAL.md",
+  "sourceEvalTier": "prose_outline_contract_migrated",
+  "evaluationStatus": {
+    "staticValidation": "Passed",
+    "deterministicFixture": "Passed",
+    "contractRouting": "Not Applicable",
+    "contractHandoff": "Passed",
+    "liveModel": "Not Run",
+    "blenderRuntime": "Not Run"
+  },
+  "cases": [
+    {
+      "id": "color-management-decision-normal-in-scope-handoff",
+      "skillId": "color-management-decision",
+      "scenario": "Normal in-scope execution of color-management-decision (view-transform-and-colorspace-selector) with contract handoff to output-format-decision",
+      "category": "normal",
+      "inputPrompt": "Apply color-management-decision for a web hero PNG output targeting an sRGB consumer pipeline on Blender 4.2+ (comparing AgX vs Filmic/Standard and per-channel sRGB vs Non-Color texture rules).",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Primary inputs (target_delivery_pipeline) provided in text-only planning/audit mode."
+      },
+      "expectedBehavior": [
+        "Produces pinned_view_transform_and_look, display_and_working_colorspace_spec, cross_engine_and_web_color_caveats for role view-transform-and-colorspace-selector",
+        "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
+        "Evaluates contract handoff predicate and hands off to output-format-decision (Output format selection)"
+      ],
+      "requiredOutputProperties": [
+        "Display Device: sRGB",
+        "View Transform",
+        "Non-Color data texture",
+        "output-format-decision",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "skip texture color space rules",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "output-format-decision",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Outputs pinned_view_transform_and_look, display_and_working_colorspace_spec, cross_engine_and_web_color_caveats conforming to skills/color-management-decision/SKILL.md",
+        "Matches contract handoff predicate to output-format-decision in skills/color-management-decision/contract.json"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": false
+        },
+        "simulatedOutput": {
+          "mode": "Text-only view-transform-and-colorspace-selector (color-management-decision)",
+          "recommendedNextAction": "Complete pinned_view_transform_and_look and hand off to output-format-decision (Output format selection).",
+          "targetHandoff": "output-format-decision",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Pinned Display Device (sRGB), View Transform (AgX / Filmic with Medium High Contrast look), 8-bit sRGB PNG output rules, and Linear/Non-Color data texture rules. Delivered Display Device: sRGB, View Transform, Non-Color data texture and routed to output-format-decision.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/color-management-decision/SKILL.md",
+            "skills/color-management-decision/EVAL.md",
+            "skills/color-management-decision/contract.json",
+            "skills/color-management-decision/references/look-comparison.md",
+            "skills/color-management-decision/references/per-channel-rules.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "color-management-decision-secondary-contract-handoff",
+      "skillId": "color-management-decision",
+      "scenario": "Secondary progression contract handoff from color-management-decision to material-quality-checker",
+      "category": "structured_skip",
+      "inputPrompt": "While applying color-management-decision, the workflow context is {\"quality.domain\":\"material\",\"quality.verdict\":\"not_run\"} (Material texture color spaces). Determine the contract-governed handoff target.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates the progression handoff predicate in skills/color-management-decision/contract.json",
+        "Routes to material-quality-checker (Material texture color spaces) without claiming runtime execution"
+      ],
+      "requiredOutputProperties": [
+        "material-quality-checker",
+        "progression",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "skip texture color space rules",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "material-quality-checker",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Contract progression handoff predicate match to material-quality-checker"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "quality.domain": "material",
+          "quality.verdict": "not_run"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only color-management-decision (progression handoff)",
+          "recommendedNextAction": "Follow progression handoff to material-quality-checker (Material texture color spaces).",
+          "targetHandoff": "material-quality-checker",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Triggered progression handoff from color-management-decision to material-quality-checker under context {\"quality.domain\":\"material\",\"quality.verdict\":\"not_run\"}.",
+          "warnings": [
+            "Contract-governed progression handoff."
+          ],
+          "evidenceCitations": [
+            "skills/color-management-decision/contract.json",
+            "skills/color-management-decision/SKILL.md",
+            "skills/color-management-decision/references/look-comparison.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "color-management-decision-unmatched-handoff-and-evidence-boundary",
+      "skillId": "color-management-decision",
+      "scenario": "Unmatched contract handoff context returns none and blocks upgrading unvalidated file to Verified in color-management-decision",
+      "category": "evidence_boundary",
+      "inputPrompt": "An operator provides an unvalidated file on disk during color-management-decision with context {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and asks to mark Artifact: Verified and auto-advance.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "file-only-unvalidated",
+        "notes": "A file exists on disk but validation checks have not been recorded."
+      },
+      "expectedBehavior": [
+        "Refuses to upgrade Artifact status to Verified when existingArtifactEvidence is file-only-unvalidated (caps at Produced)",
+        "Evaluates contract handoffs for color-management-decision and returns targetHandoff none because no handoff predicate matches"
+      ],
+      "requiredOutputProperties": [
+        "Artifact: Produced",
+        "Runtime: Not Run",
+        "validation",
+        "none"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "validation not needed"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Downgrade unvalidated Verified claim to Produced per laws/evidence-before-done.md",
+        "Verify 0 handoffs match in skills/color-management-decision/contract.json for {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true}"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Artifact-claim boundary check (color-management-decision)",
+          "recommendedNextAction": "Keep Artifact status at Produced (never Verified without validation evidence) and hold at targetHandoff none until a downstream precondition is met.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Produced",
+          "summary": "Capped unvalidated artifact claim at Artifact: Produced and verified zero matching contract handoffs (none) for color-management-decision.",
+          "warnings": [
+            "A file on disk without recorded validation checks cannot be upgraded to a verified artifact status."
+          ],
+          "evidenceCitations": [
+            "laws/evidence-before-done.md",
+            "skills/color-management-decision/contract.json",
+            "skills/color-management-decision/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "color-management-decision-ambiguous-missing-required-inputs",
+      "skillId": "color-management-decision",
+      "scenario": "Missing required input (target_delivery_pipeline) for color-management-decision halts fabricated output and requests clarification",
+      "category": "ambiguous",
+      "inputPrompt": "Pick the Blender color management view transform and look without telling me whether the output is a web sRGB PNG, a print CMYK asset, or a linear EXR compositing pass.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Required input 'target_delivery_pipeline' is missing or underspecified."
+      },
+      "expectedBehavior": [
+        "Identifies missing consumer display pipeline and target output file format/bit-depth required by color-management-decision (target_delivery_pipeline)",
+        "Refuses to fabricate domain parameters and keeps Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "target_delivery_pipeline",
+        "consumer display pipeline and target output file format/bit-depth",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "skip texture color space rules",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "guessed parameters silently"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicitly names missing required input 'target_delivery_pipeline' (consumer display pipeline and target output file format/bit-depth)",
+        "Conservative Runtime: Not Run and Artifact: Not Produced truth states"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Clarification gate (color-management-decision)",
+          "recommendedNextAction": "Provide the missing consumer display pipeline and target output file format/bit-depth (target_delivery_pipeline) before color-management-decision locks pinned_view_transform_and_look.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted color-management-decision due to missing required input 'target_delivery_pipeline' (consumer display pipeline and target output file format/bit-depth); no values were fabricated.",
+          "warnings": [
+            "Do not invent consumer display pipeline and target output file format/bit-depth when 'target_delivery_pipeline' is omitted."
+          ],
+          "evidenceCitations": [
+            "skills/color-management-decision/SKILL.md",
+            "skills/color-management-decision/EVAL.md",
+            "skills/color-management-decision/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "color-management-decision-out-of-scope-exclusion-delegation",
+      "skillId": "color-management-decision",
+      "scenario": "Out-of-scope request (Post-render color grading or soft-proofing (handled by compositor / DCC after render).) is excluded from color-management-decision and delegated to output-format-decision",
+      "category": "scope_creep",
+      "inputPrompt": "Instead of pin display device, view transform, look, and sequencer per consumer pipeline (web srgb, vfx aces linear, game engine, print, glb-three.js) before render., handle this request inside color-management-decision: Post-render color grading or soft-proofing (handled by compositor / DCC after render)..",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Enforces the declared exclusion boundary in skills/color-management-decision/contract.json when Post-render color grading or soft-proofing (handled by compositor / DCC after render).",
+        "Delegates to output-format-decision (Delegates out-of-scope requests to output-format-decision) with Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "output-format-decision",
+        "out of scope",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "skip texture color space rules",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "handled inside color-management-decision anyway"
+      ],
+      "expectedRoutingTarget": "output-format-decision",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Exclusion delegation to output-format-decision per skills/color-management-decision/contract.json"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Out-of-scope exclusion gate (color-management-decision)",
+          "recommendedNextAction": "Request is out of scope for color-management-decision (Post-render color grading or soft-proofing (handled by compositor / DCC after render).); delegate to output-format-decision.",
+          "targetHandoff": "output-format-decision",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Enforced color-management-decision exclusion boundary (Delegates out-of-scope requests to output-format-decision) and delegated to output-format-decision.",
+          "warnings": [
+            "color-management-decision is scoped to view-transform-and-colorspace-selector and does not absorb output-format-decision responsibilities."
+          ],
+          "evidenceCitations": [
+            "skills/color-management-decision/contract.json",
+            "skills/color-management-decision/SKILL.md",
+            "skills/output-format-decision/SKILL.md"
+          ]
+        }
+      }
+    }
+  ]
+}

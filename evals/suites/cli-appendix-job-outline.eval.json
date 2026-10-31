@@ -1,0 +1,323 @@
+{
+  "schemaVersion": "2.0.0",
+  "skillId": "cli-appendix-job-outline",
+  "category": "runtime-and-execution",
+  "isContractedSkill": true,
+  "isRoutingParticipant": false,
+  "contractPath": "skills/cli-appendix-job-outline/contract.json",
+  "skillMarkdownPath": "skills/cli-appendix-job-outline/SKILL.md",
+  "evalMarkdownPath": "skills/cli-appendix-job-outline/EVAL.md",
+  "sourceEvalTier": "prose_outline_contract_migrated",
+  "evaluationStatus": {
+    "staticValidation": "Passed",
+    "deterministicFixture": "Passed",
+    "contractRouting": "Not Applicable",
+    "contractHandoff": "Passed",
+    "liveModel": "Not Run",
+    "blenderRuntime": "Not Run"
+  },
+  "cases": [
+    {
+      "id": "cli-appendix-job-outline-normal-in-scope-handoff",
+      "skillId": "cli-appendix-job-outline",
+      "scenario": "Normal in-scope execution of cli-appendix-job-outline (headless-cli-batch-job-planner) with contract handoff to output-format-decision",
+      "category": "normal",
+      "inputPrompt": "Our Linux CI runner must nightly export GLBs from `.blend` files in headless mode without an MCP server. Use cli-appendix-job-outline to structure the `blender --background --python` job phases and flag order.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Primary inputs (target_blend_scene_and_outputs) provided in text-only planning/audit mode."
+      },
+      "expectedBehavior": [
+        "Produces headless_cli_job_outline, appendix_governance_and_backup_gates, expected_output_evidence_hooks for role headless-cli-batch-job-planner",
+        "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
+        "Evaluates contract handoff predicate and hands off to output-format-decision (Export format choices)"
+      ],
+      "requiredOutputProperties": [
+        "--background",
+        "flag order",
+        "stateless CLI appendix",
+        "output-format-decision",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "in-repo CLI evidence verified",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "output-format-decision",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Outputs headless_cli_job_outline, appendix_governance_and_backup_gates, expected_output_evidence_hooks conforming to skills/cli-appendix-job-outline/SKILL.md",
+        "Matches contract handoff predicate to output-format-decision in skills/cli-appendix-job-outline/contract.json"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": false
+        },
+        "simulatedOutput": {
+          "mode": "Text-only headless-cli-batch-job-planner (cli-appendix-job-outline)",
+          "recommendedNextAction": "Complete headless_cli_job_outline and hand off to output-format-decision (Export format choices).",
+          "targetHandoff": "output-format-decision",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Outlined stateless headless CLI batch job (`blender -b <file.blend> --python-exit-code 1 -P <script>`) with flag-order rules and post-run evidence logging. Delivered --background, flag order, stateless CLI appendix and routed to output-format-decision.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/cli-appendix-job-outline/SKILL.md",
+            "skills/cli-appendix-job-outline/EVAL.md",
+            "skills/cli-appendix-job-outline/contract.json",
+            "skills/cli-appendix-job-outline/references/flag-order-reminders.md",
+            "skills/cli-appendix-job-outline/references/job-type-matrix.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "cli-appendix-job-outline-secondary-contract-handoff",
+      "skillId": "cli-appendix-job-outline",
+      "scenario": "Secondary upstream_reference contract handoff from cli-appendix-job-outline to runtime-path-picker",
+      "category": "structured_skip",
+      "inputPrompt": "While applying cli-appendix-job-outline, the workflow context is {\"runtime.path\":\"unselected\"} (Pick MCP vs CLI). Determine the contract-governed handoff target.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates the upstream_reference handoff predicate in skills/cli-appendix-job-outline/contract.json",
+        "Routes to runtime-path-picker (Pick MCP vs CLI) without claiming runtime execution"
+      ],
+      "requiredOutputProperties": [
+        "runtime-path-picker",
+        "upstream_reference",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "in-repo CLI evidence verified",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "runtime-path-picker",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Contract upstream_reference handoff predicate match to runtime-path-picker"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "runtime.path": "unselected"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only cli-appendix-job-outline (upstream_reference handoff)",
+          "recommendedNextAction": "Follow upstream_reference handoff to runtime-path-picker (Pick MCP vs CLI).",
+          "targetHandoff": "runtime-path-picker",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Triggered upstream_reference handoff from cli-appendix-job-outline to runtime-path-picker under context {\"runtime.path\":\"unselected\"}.",
+          "warnings": [
+            "Contract-governed upstream_reference handoff."
+          ],
+          "evidenceCitations": [
+            "skills/cli-appendix-job-outline/contract.json",
+            "skills/cli-appendix-job-outline/SKILL.md",
+            "skills/cli-appendix-job-outline/references/flag-order-reminders.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "cli-appendix-job-outline-unmatched-handoff-and-evidence-boundary",
+      "skillId": "cli-appendix-job-outline",
+      "scenario": "Unmatched contract handoff context returns none and blocks upgrading unvalidated file to Verified in cli-appendix-job-outline",
+      "category": "evidence_boundary",
+      "inputPrompt": "An operator provides an unvalidated file on disk during cli-appendix-job-outline with context {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and asks to mark Artifact: Verified and auto-advance.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "file-only-unvalidated",
+        "notes": "A file exists on disk but validation checks have not been recorded."
+      },
+      "expectedBehavior": [
+        "Refuses to upgrade Artifact status to Verified when existingArtifactEvidence is file-only-unvalidated (caps at Produced)",
+        "Evaluates contract handoffs for cli-appendix-job-outline and returns targetHandoff none because no handoff predicate matches"
+      ],
+      "requiredOutputProperties": [
+        "Artifact: Produced",
+        "Runtime: Not Run",
+        "validation",
+        "none"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "validation not needed"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Downgrade unvalidated Verified claim to Produced per laws/evidence-before-done.md",
+        "Verify 0 handoffs match in skills/cli-appendix-job-outline/contract.json for {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true}"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Artifact-claim boundary check (cli-appendix-job-outline)",
+          "recommendedNextAction": "Keep Artifact status at Produced (never Verified without validation evidence) and hold at targetHandoff none until a downstream precondition is met.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Produced",
+          "summary": "Capped unvalidated artifact claim at Artifact: Produced and verified zero matching contract handoffs (none) for cli-appendix-job-outline.",
+          "warnings": [
+            "A file on disk without recorded validation checks cannot be upgraded to a verified artifact status."
+          ],
+          "evidenceCitations": [
+            "laws/evidence-before-done.md",
+            "skills/cli-appendix-job-outline/contract.json",
+            "skills/cli-appendix-job-outline/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "cli-appendix-job-outline-ambiguous-missing-required-inputs",
+      "skillId": "cli-appendix-job-outline",
+      "scenario": "Missing required input (target_blend_scene_and_outputs) for cli-appendix-job-outline halts fabricated output and requests clarification",
+      "category": "ambiguous",
+      "inputPrompt": "Outline a headless Blender CLI batch job without specifying what input `.blend` files exist, what output format is needed, or what OS/environment runs the job.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Required input 'target_blend_scene_and_outputs' is missing or underspecified."
+      },
+      "expectedBehavior": [
+        "Identifies missing input .blend file inventory, target export format, and runner environment required by cli-appendix-job-outline (target_blend_scene_and_outputs)",
+        "Refuses to fabricate domain parameters and keeps Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "target_blend_scene_and_outputs",
+        "input .blend file inventory, target export format, and runner environment",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "in-repo CLI evidence verified",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "guessed parameters silently"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicitly names missing required input 'target_blend_scene_and_outputs' (input .blend file inventory, target export format, and runner environment)",
+        "Conservative Runtime: Not Run and Artifact: Not Produced truth states"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Clarification gate (cli-appendix-job-outline)",
+          "recommendedNextAction": "Provide the missing input .blend file inventory, target export format, and runner environment (target_blend_scene_and_outputs) before cli-appendix-job-outline locks headless_cli_job_outline.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted cli-appendix-job-outline due to missing required input 'target_blend_scene_and_outputs' (input .blend file inventory, target export format, and runner environment); no values were fabricated.",
+          "warnings": [
+            "Do not invent input .blend file inventory, target export format, and runner environment when 'target_blend_scene_and_outputs' is omitted."
+          ],
+          "evidenceCitations": [
+            "skills/cli-appendix-job-outline/SKILL.md",
+            "skills/cli-appendix-job-outline/EVAL.md",
+            "skills/cli-appendix-job-outline/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "cli-appendix-job-outline-out-of-scope-exclusion-delegation",
+      "skillId": "cli-appendix-job-outline",
+      "scenario": "Out-of-scope request (interactive viewport iteration primary goal) is excluded from cli-appendix-job-outline and delegated to runtime-path-picker",
+      "category": "scope_creep",
+      "inputPrompt": "Instead of plan headless blender --background export or render jobs when mcp chat control is a poor fit; cite upstream blender cli docs only., handle this request inside cli-appendix-job-outline: interactive viewport iteration primary goal.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Enforces the declared exclusion boundary in skills/cli-appendix-job-outline/contract.json when interactive viewport iteration primary goal",
+        "Delegates to runtime-path-picker (Delegates out-of-scope requests to runtime-path-picker) with Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "runtime-path-picker",
+        "out of scope",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "in-repo CLI evidence verified",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "handled inside cli-appendix-job-outline anyway"
+      ],
+      "expectedRoutingTarget": "runtime-path-picker",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Exclusion delegation to runtime-path-picker per skills/cli-appendix-job-outline/contract.json"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Out-of-scope exclusion gate (cli-appendix-job-outline)",
+          "recommendedNextAction": "Request is out of scope for cli-appendix-job-outline (interactive viewport iteration primary goal); delegate to runtime-path-picker.",
+          "targetHandoff": "runtime-path-picker",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Enforced cli-appendix-job-outline exclusion boundary (Delegates out-of-scope requests to runtime-path-picker) and delegated to runtime-path-picker.",
+          "warnings": [
+            "cli-appendix-job-outline is scoped to headless-cli-batch-job-planner and does not absorb runtime-path-picker responsibilities."
+          ],
+          "evidenceCitations": [
+            "skills/cli-appendix-job-outline/contract.json",
+            "skills/cli-appendix-job-outline/SKILL.md",
+            "skills/runtime-path-picker/SKILL.md"
+          ]
+        }
+      }
+    }
+  ]
+}

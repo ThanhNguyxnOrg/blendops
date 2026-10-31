@@ -1,0 +1,324 @@
+{
+  "schemaVersion": "2.0.0",
+  "skillId": "asset-library-organization-planner",
+  "category": "asset-and-sourcing",
+  "isContractedSkill": true,
+  "isRoutingParticipant": false,
+  "contractPath": "skills/asset-library-organization-planner/contract.json",
+  "skillMarkdownPath": "skills/asset-library-organization-planner/SKILL.md",
+  "evalMarkdownPath": "skills/asset-library-organization-planner/EVAL.md",
+  "sourceEvalTier": "prose_outline_contract_migrated",
+  "evaluationStatus": {
+    "staticValidation": "Passed",
+    "deterministicFixture": "Passed",
+    "contractRouting": "Not Applicable",
+    "contractHandoff": "Passed",
+    "liveModel": "Not Run",
+    "blenderRuntime": "Not Run"
+  },
+  "cases": [
+    {
+      "id": "asset-library-organization-planner-normal-in-scope-handoff",
+      "skillId": "asset-library-organization-planner",
+      "scenario": "Normal in-scope execution of asset-library-organization-planner (local-asset-library-taxonomy-planner) with contract handoff to glb-mobile-performance-budget",
+      "category": "normal",
+      "inputPrompt": "We have 45 local `.blend` furniture assets, HDRIs, and 4K PBR texture sets scattered across folders. Use asset-library-organization-planner to design a deterministic Blender Asset Browser catalog taxonomy and naming convention.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Primary inputs (raw_asset_inventory) provided in text-only planning/audit mode."
+      },
+      "expectedBehavior": [
+        "Produces directory_taxonomy_plan, datablock_naming_rules, quarantine_and_license_sidecar_policy for role local-asset-library-taxonomy-planner",
+        "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
+        "Evaluates contract handoff predicate and hands off to glb-mobile-performance-budget (File size and asset/polygon count pressure)"
+      ],
+      "requiredOutputProperties": [
+        "catalog taxonomy",
+        "relative path",
+        "naming convention",
+        "glb-mobile-performance-budget",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "files moved on disk automatically",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "glb-mobile-performance-budget",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Outputs directory_taxonomy_plan, datablock_naming_rules, quarantine_and_license_sidecar_policy conforming to skills/asset-library-organization-planner/SKILL.md",
+        "Matches contract handoff predicate to glb-mobile-performance-budget in skills/asset-library-organization-planner/contract.json"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "artifact.type": "glb",
+          "budget.pinned": false
+        },
+        "simulatedOutput": {
+          "mode": "Text-only local-asset-library-taxonomy-planner (asset-library-organization-planner)",
+          "recommendedNextAction": "Complete directory_taxonomy_plan and hand off to glb-mobile-performance-budget (File size and asset/polygon count pressure).",
+          "targetHandoff": "glb-mobile-performance-budget",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Defined hierarchical Blender Asset Browser catalog taxonomy, relative-path rules, and semantic naming conventions for 45 local assets. Delivered catalog taxonomy, relative path, naming convention and routed to glb-mobile-performance-budget.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/asset-library-organization-planner/SKILL.md",
+            "skills/asset-library-organization-planner/EVAL.md",
+            "skills/asset-library-organization-planner/contract.json",
+            "skills/asset-library-organization-planner/references/folder-structure-rules.md",
+            "skills/asset-library-organization-planner/references/metadata-schema.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "asset-library-organization-planner-secondary-contract-handoff",
+      "skillId": "asset-library-organization-planner",
+      "scenario": "Secondary fallback contract handoff from asset-library-organization-planner to asset-fallback-strategy",
+      "category": "blocked_or_adversarial",
+      "inputPrompt": "While applying asset-library-organization-planner, the workflow context is {\"assets.fallbackNeeded\":true} (Consuming this library as fastest fallback source). Determine the contract-governed handoff target.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates the fallback handoff predicate in skills/asset-library-organization-planner/contract.json",
+        "Routes to asset-fallback-strategy (Consuming this library as fastest fallback source) without claiming runtime execution"
+      ],
+      "requiredOutputProperties": [
+        "asset-fallback-strategy",
+        "fallback",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "files moved on disk automatically",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "asset-fallback-strategy",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Contract fallback handoff predicate match to asset-fallback-strategy"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "assets.fallbackNeeded": true
+        },
+        "simulatedOutput": {
+          "mode": "Text-only asset-library-organization-planner (fallback handoff)",
+          "recommendedNextAction": "Follow fallback handoff to asset-fallback-strategy (Consuming this library as fastest fallback source).",
+          "targetHandoff": "asset-fallback-strategy",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Triggered fallback handoff from asset-library-organization-planner to asset-fallback-strategy under context {\"assets.fallbackNeeded\":true}.",
+          "warnings": [
+            "Contract-governed fallback handoff."
+          ],
+          "evidenceCitations": [
+            "skills/asset-library-organization-planner/contract.json",
+            "skills/asset-library-organization-planner/SKILL.md",
+            "skills/asset-library-organization-planner/references/folder-structure-rules.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "asset-library-organization-planner-unmatched-handoff-and-evidence-boundary",
+      "skillId": "asset-library-organization-planner",
+      "scenario": "Unmatched contract handoff context returns none and blocks upgrading unvalidated file to Verified in asset-library-organization-planner",
+      "category": "evidence_boundary",
+      "inputPrompt": "An operator provides an unvalidated file on disk during asset-library-organization-planner with context {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and asks to mark Artifact: Verified and auto-advance.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "file-only-unvalidated",
+        "notes": "A file exists on disk but validation checks have not been recorded."
+      },
+      "expectedBehavior": [
+        "Refuses to upgrade Artifact status to Verified when existingArtifactEvidence is file-only-unvalidated (caps at Produced)",
+        "Evaluates contract handoffs for asset-library-organization-planner and returns targetHandoff none because no handoff predicate matches"
+      ],
+      "requiredOutputProperties": [
+        "Artifact: Produced",
+        "Runtime: Not Run",
+        "validation",
+        "none"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "validation not needed"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Downgrade unvalidated Verified claim to Produced per laws/evidence-before-done.md",
+        "Verify 0 handoffs match in skills/asset-library-organization-planner/contract.json for {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true}"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Artifact-claim boundary check (asset-library-organization-planner)",
+          "recommendedNextAction": "Keep Artifact status at Produced (never Verified without validation evidence) and hold at targetHandoff none until a downstream precondition is met.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Produced",
+          "summary": "Capped unvalidated artifact claim at Artifact: Produced and verified zero matching contract handoffs (none) for asset-library-organization-planner.",
+          "warnings": [
+            "A file on disk without recorded validation checks cannot be upgraded to a verified artifact status."
+          ],
+          "evidenceCitations": [
+            "laws/evidence-before-done.md",
+            "skills/asset-library-organization-planner/contract.json",
+            "skills/asset-library-organization-planner/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "asset-library-organization-planner-ambiguous-missing-required-inputs",
+      "skillId": "asset-library-organization-planner",
+      "scenario": "Missing required input (raw_asset_inventory) for asset-library-organization-planner halts fabricated output and requests clarification",
+      "category": "ambiguous",
+      "inputPrompt": "Organize our team Blender asset library and give me the catalog tree, without knowing what asset types we store or whether we use linked `.blend` files or GLB exports.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Required input 'raw_asset_inventory' is missing or underspecified."
+      },
+      "expectedBehavior": [
+        "Identifies missing asset inventory categories and linking/packing workflow mode required by asset-library-organization-planner (raw_asset_inventory)",
+        "Refuses to fabricate domain parameters and keeps Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "raw_asset_inventory",
+        "asset inventory categories and linking/packing workflow mode",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "files moved on disk automatically",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "guessed parameters silently"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicitly names missing required input 'raw_asset_inventory' (asset inventory categories and linking/packing workflow mode)",
+        "Conservative Runtime: Not Run and Artifact: Not Produced truth states"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Clarification gate (asset-library-organization-planner)",
+          "recommendedNextAction": "Provide the missing asset inventory categories and linking/packing workflow mode (raw_asset_inventory) before asset-library-organization-planner locks directory_taxonomy_plan.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted asset-library-organization-planner due to missing required input 'raw_asset_inventory' (asset inventory categories and linking/packing workflow mode); no values were fabricated.",
+          "warnings": [
+            "Do not invent asset inventory categories and linking/packing workflow mode when 'raw_asset_inventory' is omitted."
+          ],
+          "evidenceCitations": [
+            "skills/asset-library-organization-planner/SKILL.md",
+            "skills/asset-library-organization-planner/EVAL.md",
+            "skills/asset-library-organization-planner/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "asset-library-organization-planner-out-of-scope-exclusion-delegation",
+      "skillId": "asset-library-organization-planner",
+      "scenario": "Out-of-scope request (single-recipe repo with < 5 assets) is excluded from asset-library-organization-planner and delegated to blender-asset-discovery-planner",
+      "category": "scope_creep",
+      "inputPrompt": "Instead of plan an internal asset library structure (folders, naming, metadata, license tracking, version control) so future recipes find and reuse assets reliably., handle this request inside asset-library-organization-planner: single-recipe repo with < 5 assets.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Enforces the declared exclusion boundary in skills/asset-library-organization-planner/contract.json when single-recipe repo with < 5 assets",
+        "Delegates to blender-asset-discovery-planner (Delegates out-of-scope requests to blender-asset-discovery-planner) with Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "blender-asset-discovery-planner",
+        "out of scope",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "files moved on disk automatically",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "handled inside asset-library-organization-planner anyway"
+      ],
+      "expectedRoutingTarget": "blender-asset-discovery-planner",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Exclusion delegation to blender-asset-discovery-planner per skills/asset-library-organization-planner/contract.json"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Out-of-scope exclusion gate (asset-library-organization-planner)",
+          "recommendedNextAction": "Request is out of scope for asset-library-organization-planner (single-recipe repo with < 5 assets); delegate to blender-asset-discovery-planner.",
+          "targetHandoff": "blender-asset-discovery-planner",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Enforced asset-library-organization-planner exclusion boundary (Delegates out-of-scope requests to blender-asset-discovery-planner) and delegated to blender-asset-discovery-planner.",
+          "warnings": [
+            "asset-library-organization-planner is scoped to local-asset-library-taxonomy-planner and does not absorb blender-asset-discovery-planner responsibilities."
+          ],
+          "evidenceCitations": [
+            "skills/asset-library-organization-planner/contract.json",
+            "skills/asset-library-organization-planner/SKILL.md",
+            "skills/blender-asset-discovery-planner/SKILL.md"
+          ]
+        }
+      }
+    }
+  ]
+}

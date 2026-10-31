@@ -1,14 +1,18 @@
 {
-  "schemaVersion": "1.0.0",
+  "schemaVersion": "2.0.0",
   "skillId": "runtime-bridge-conflict-resolver",
   "category": "runtime-and-execution",
-  "isContractedSkill": false,
+  "isContractedSkill": true,
+  "isRoutingParticipant": false,
+  "contractPath": "skills/runtime-bridge-conflict-resolver/contract.json",
+  "skillMarkdownPath": "skills/runtime-bridge-conflict-resolver/SKILL.md",
   "evalMarkdownPath": "skills/runtime-bridge-conflict-resolver/EVAL.md",
   "sourceEvalTier": "structured_multi_case_table",
   "evaluationStatus": {
     "staticValidation": "Passed",
     "deterministicFixture": "Passed",
-    "contractRouting": "Not Implemented",
+    "contractRouting": "Not Applicable",
+    "contractHandoff": "Passed",
     "liveModel": "Not Run",
     "blenderRuntime": "Not Run"
   },
@@ -357,6 +361,125 @@
           "summary": "Created port isolation plan for separate processes (9876 vs 9877) and routed to official-runtime-readiness-checker.",
           "warnings": [],
           "evidenceCitations": [
+            "skills/runtime-bridge-conflict-resolver/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "runtime-bridge-conflict-resolver-contract-handoff-primary",
+      "skillId": "runtime-bridge-conflict-resolver",
+      "scenario": "Contract handoff predicate matches official-runtime-readiness-checker (When official-runtime-readiness-checker reports inconsistent signals)",
+      "category": "normal",
+      "inputPrompt": "Evaluate runtime-bridge-conflict-resolver contract handoff when workflow context satisfies {\"runtime.path\":\"path_1\",\"runtime.verifiedReady\":false} and verify progression to official-runtime-readiness-checker.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates contract.json handoff predicates for runtime-bridge-conflict-resolver against the workflow context",
+        "Selects official-runtime-readiness-checker while preserving Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "official-runtime-readiness-checker",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Not Run",
+        "Artifact: Verified",
+        "Blender executed"
+      ],
+      "expectedRoutingTarget": "official-runtime-readiness-checker",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Contract handoff predicate match for official-runtime-readiness-checker in skills/runtime-bridge-conflict-resolver/contract.json",
+        "Truth-state conservation (Runtime: Not Run, Artifact: Not Produced)"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "runtime.path": "path_1",
+          "runtime.verifiedReady": false
+        },
+        "simulatedOutput": {
+          "mode": "Text-only runtime-bridge-conflict-resolver contract handoff evaluation",
+          "recommendedNextAction": "Hand off from runtime-bridge-conflict-resolver to official-runtime-readiness-checker (When official-runtime-readiness-checker reports inconsistent signals).",
+          "targetHandoff": "official-runtime-readiness-checker",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Matched contract handoff predicate in runtime-bridge-conflict-resolver and routed to official-runtime-readiness-checker.",
+          "warnings": [
+            "Specialist contract handoff evaluated without global routingPrecedence escalation."
+          ],
+          "evidenceCitations": [
+            "skills/runtime-bridge-conflict-resolver/contract.json",
+            "skills/runtime-bridge-conflict-resolver/SKILL.md",
+            "skills/runtime-bridge-conflict-resolver/EVAL.md",
+            "skills/runtime-bridge-conflict-resolver/references/bridge-state-matrix-template.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "runtime-bridge-conflict-resolver-contract-handoff-unmatched-none",
+      "skillId": "runtime-bridge-conflict-resolver",
+      "scenario": "Contract handoff predicate returns none when no downstream handoff condition matches in runtime-bridge-conflict-resolver",
+      "category": "evidence_boundary",
+      "inputPrompt": "Check runtime-bridge-conflict-resolver contract handoff behavior when context is {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and no automatic handoff predicate is satisfied.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates all 4 contract handoffs in runtime-bridge-conflict-resolver with fail-closed predicate semantics",
+        "Returns targetHandoff none when no handoff predicate matches and preserves conservative truth states"
+      ],
+      "requiredOutputProperties": [
+        "none",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Not Run",
+        "Artifact: Verified",
+        "invented handoff target"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Zero matching handoff predicates in skills/runtime-bridge-conflict-resolver/contract.json for non-matching context"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Text-only runtime-bridge-conflict-resolver contract boundary check",
+          "recommendedNextAction": "Remain at runtime-bridge-conflict-resolver (targetHandoff: none) until a declared downstream handoff precondition is satisfied.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Verified fail-closed specialist handoff evaluation for runtime-bridge-conflict-resolver when no contract predicate matches (secondary candidate blender-troubleshooting remained inactive).",
+          "warnings": [
+            "Never fabricate an undeclared handoff when no contract predicate matches."
+          ],
+          "evidenceCitations": [
+            "skills/runtime-bridge-conflict-resolver/contract.json",
             "skills/runtime-bridge-conflict-resolver/EVAL.md"
           ]
         }

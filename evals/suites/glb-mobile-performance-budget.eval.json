@@ -1,0 +1,325 @@
+{
+  "schemaVersion": "2.0.0",
+  "skillId": "glb-mobile-performance-budget",
+  "category": "evidence-and-handoff",
+  "isContractedSkill": true,
+  "isRoutingParticipant": false,
+  "contractPath": "skills/glb-mobile-performance-budget/contract.json",
+  "skillMarkdownPath": "skills/glb-mobile-performance-budget/SKILL.md",
+  "evalMarkdownPath": "skills/glb-mobile-performance-budget/EVAL.md",
+  "sourceEvalTier": "prose_outline_contract_migrated",
+  "evaluationStatus": {
+    "staticValidation": "Passed",
+    "deterministicFixture": "Passed",
+    "contractRouting": "Not Applicable",
+    "contractHandoff": "Passed",
+    "liveModel": "Not Run",
+    "blenderRuntime": "Not Run"
+  },
+  "cases": [
+    {
+      "id": "glb-mobile-performance-budget-normal-in-scope-handoff",
+      "skillId": "glb-mobile-performance-budget",
+      "scenario": "Normal in-scope execution of glb-mobile-performance-budget (mobile-webgl-budget-validator) with contract handoff to blender-composition-camera-planner",
+      "category": "normal",
+      "inputPrompt": "Use glb-mobile-performance-budget to pin strict triangle, draw-call, texture memory, and file-size caps for an e-commerce sneaker GLB targeting mid-tier iOS Safari and Android Chrome mobile web.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Primary inputs (target_device_tier_and_network) provided in text-only planning/audit mode."
+      },
+      "expectedBehavior": [
+        "Produces pinned_glb_performance_budget_table, triangle_drawcall_and_texture_ceilings, compression_and_lod_requirements for role mobile-webgl-budget-validator",
+        "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
+        "Evaluates contract handoff predicate and hands off to blender-composition-camera-planner (Scene planning (consumes pinned budget) (blender-composition-camera-planner))"
+      ],
+      "requiredOutputProperties": [
+        "triangle cap",
+        "draw call limit",
+        "texture memory budget",
+        "blender-composition-camera-planner",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "unbounded 8K textures safe on mobile",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "blender-composition-camera-planner",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Outputs pinned_glb_performance_budget_table, triangle_drawcall_and_texture_ceilings, compression_and_lod_requirements conforming to skills/glb-mobile-performance-budget/SKILL.md",
+        "Matches contract handoff predicate to blender-composition-camera-planner in skills/glb-mobile-performance-budget/contract.json"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "brief.locked": true,
+          "stage.current": "camera_planning"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only mobile-webgl-budget-validator (glb-mobile-performance-budget)",
+          "recommendedNextAction": "Complete pinned_glb_performance_budget_table and hand off to blender-composition-camera-planner (Scene planning (consumes pinned budget) (blender-composition-camera-planner)).",
+          "targetHandoff": "blender-composition-camera-planner",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Pinned mobile WebGL performance budget (<= 65k triangles, <= 15 draw calls, <= 2K KTX2/WebP textures, <= 5 MB compressed GLB payload) with audit gates. Delivered triangle cap, draw call limit, texture memory budget and routed to blender-composition-camera-planner.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/glb-mobile-performance-budget/SKILL.md",
+            "skills/glb-mobile-performance-budget/EVAL.md",
+            "skills/glb-mobile-performance-budget/contract.json",
+            "skills/glb-mobile-performance-budget/references/budget-tiers.md",
+            "skills/glb-mobile-performance-budget/references/degradation-plan.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "glb-mobile-performance-budget-secondary-contract-handoff",
+      "skillId": "glb-mobile-performance-budget",
+      "scenario": "Secondary progression contract handoff from glb-mobile-performance-budget to blender-lighting-material-planner",
+      "category": "structured_skip",
+      "inputPrompt": "While applying glb-mobile-performance-budget, the workflow context is {\"brief.locked\":true,\"stage.current\":\"lookdev_planning\"} (Scene planning (consumes pinned budget) (blender-lighting-material-planner)). Determine the contract-governed handoff target.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates the progression handoff predicate in skills/glb-mobile-performance-budget/contract.json",
+        "Routes to blender-lighting-material-planner (Scene planning (consumes pinned budget) (blender-lighting-material-planner)) without claiming runtime execution"
+      ],
+      "requiredOutputProperties": [
+        "blender-lighting-material-planner",
+        "progression",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "unbounded 8K textures safe on mobile",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "blender-lighting-material-planner",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Contract progression handoff predicate match to blender-lighting-material-planner"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "brief.locked": true,
+          "stage.current": "lookdev_planning"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only glb-mobile-performance-budget (progression handoff)",
+          "recommendedNextAction": "Follow progression handoff to blender-lighting-material-planner (Scene planning (consumes pinned budget) (blender-lighting-material-planner)).",
+          "targetHandoff": "blender-lighting-material-planner",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Triggered progression handoff from glb-mobile-performance-budget to blender-lighting-material-planner under context {\"brief.locked\":true,\"stage.current\":\"lookdev_planning\"}.",
+          "warnings": [
+            "Contract-governed progression handoff."
+          ],
+          "evidenceCitations": [
+            "skills/glb-mobile-performance-budget/contract.json",
+            "skills/glb-mobile-performance-budget/SKILL.md",
+            "skills/glb-mobile-performance-budget/references/budget-tiers.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "glb-mobile-performance-budget-unmatched-handoff-and-evidence-boundary",
+      "skillId": "glb-mobile-performance-budget",
+      "scenario": "Unmatched contract handoff context returns none and blocks upgrading unvalidated file to Verified in glb-mobile-performance-budget",
+      "category": "evidence_boundary",
+      "inputPrompt": "An operator provides an unvalidated file on disk during glb-mobile-performance-budget with context {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and asks to mark Artifact: Verified and auto-advance.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "file-only-unvalidated",
+        "notes": "A file exists on disk but validation checks have not been recorded."
+      },
+      "expectedBehavior": [
+        "Refuses to upgrade Artifact status to Verified when existingArtifactEvidence is file-only-unvalidated (caps at Produced)",
+        "Evaluates contract handoffs for glb-mobile-performance-budget and returns targetHandoff none because no handoff predicate matches"
+      ],
+      "requiredOutputProperties": [
+        "Artifact: Produced",
+        "Runtime: Not Run",
+        "validation",
+        "none"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "validation not needed"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Downgrade unvalidated Verified claim to Produced per laws/evidence-before-done.md",
+        "Verify 0 handoffs match in skills/glb-mobile-performance-budget/contract.json for {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true}"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Artifact-claim boundary check (glb-mobile-performance-budget)",
+          "recommendedNextAction": "Keep Artifact status at Produced (never Verified without validation evidence) and hold at targetHandoff none until a downstream precondition is met.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Produced",
+          "summary": "Capped unvalidated artifact claim at Artifact: Produced and verified zero matching contract handoffs (none) for glb-mobile-performance-budget.",
+          "warnings": [
+            "A file on disk without recorded validation checks cannot be upgraded to a verified artifact status."
+          ],
+          "evidenceCitations": [
+            "laws/evidence-before-done.md",
+            "skills/glb-mobile-performance-budget/contract.json",
+            "skills/glb-mobile-performance-budget/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "glb-mobile-performance-budget-ambiguous-missing-required-inputs",
+      "skillId": "glb-mobile-performance-budget",
+      "scenario": "Missing required input (target_device_tier_and_network) for glb-mobile-performance-budget halts fabricated output and requests clarification",
+      "category": "ambiguous",
+      "inputPrompt": "Pin a mobile GLB performance budget without specifying whether the target is a single hero card or a 20-object AR scene, or what minimum device tier is supported.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Required input 'target_device_tier_and_network' is missing or underspecified."
+      },
+      "expectedBehavior": [
+        "Identifies missing target mobile device tier and scene instance count required by glb-mobile-performance-budget (target_device_tier_and_network)",
+        "Refuses to fabricate domain parameters and keeps Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "target_device_tier_and_network",
+        "target mobile device tier and scene instance count",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "unbounded 8K textures safe on mobile",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "guessed parameters silently"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicitly names missing required input 'target_device_tier_and_network' (target mobile device tier and scene instance count)",
+        "Conservative Runtime: Not Run and Artifact: Not Produced truth states"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Clarification gate (glb-mobile-performance-budget)",
+          "recommendedNextAction": "Provide the missing target mobile device tier and scene instance count (target_device_tier_and_network) before glb-mobile-performance-budget locks pinned_glb_performance_budget_table.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted glb-mobile-performance-budget due to missing required input 'target_device_tier_and_network' (target mobile device tier and scene instance count); no values were fabricated.",
+          "warnings": [
+            "Do not invent target mobile device tier and scene instance count when 'target_device_tier_and_network' is omitted."
+          ],
+          "evidenceCitations": [
+            "skills/glb-mobile-performance-budget/SKILL.md",
+            "skills/glb-mobile-performance-budget/EVAL.md",
+            "skills/glb-mobile-performance-budget/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "glb-mobile-performance-budget-out-of-scope-exclusion-delegation",
+      "skillId": "glb-mobile-performance-budget",
+      "scenario": "Out-of-scope request (desktop-only renders without web handoff) is excluded from glb-mobile-performance-budget and delegated to polycount-budget-checker",
+      "category": "scope_creep",
+      "inputPrompt": "Instead of set explicit triangle / texture / draw-call / file-size / animation budgets for glb targeted at mobile-web before any export decision., handle this request inside glb-mobile-performance-budget: desktop-only renders without web handoff.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Enforces the declared exclusion boundary in skills/glb-mobile-performance-budget/contract.json when desktop-only renders without web handoff",
+        "Delegates to polycount-budget-checker (Delegates out-of-scope requests to polycount-budget-checker) with Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "polycount-budget-checker",
+        "out of scope",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "unbounded 8K textures safe on mobile",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "handled inside glb-mobile-performance-budget anyway"
+      ],
+      "expectedRoutingTarget": "polycount-budget-checker",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Exclusion delegation to polycount-budget-checker per skills/glb-mobile-performance-budget/contract.json"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Out-of-scope exclusion gate (glb-mobile-performance-budget)",
+          "recommendedNextAction": "Request is out of scope for glb-mobile-performance-budget (desktop-only renders without web handoff); delegate to polycount-budget-checker.",
+          "targetHandoff": "polycount-budget-checker",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Enforced glb-mobile-performance-budget exclusion boundary (Delegates out-of-scope requests to polycount-budget-checker) and delegated to polycount-budget-checker.",
+          "warnings": [
+            "glb-mobile-performance-budget is scoped to mobile-webgl-budget-validator and does not absorb polycount-budget-checker responsibilities."
+          ],
+          "evidenceCitations": [
+            "skills/glb-mobile-performance-budget/contract.json",
+            "skills/glb-mobile-performance-budget/SKILL.md",
+            "skills/polycount-budget-checker/SKILL.md"
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,325 @@
+{
+  "schemaVersion": "2.0.0",
+  "skillId": "resolution-aspect-decision",
+  "category": "render-and-output-decisions",
+  "isContractedSkill": true,
+  "isRoutingParticipant": false,
+  "contractPath": "skills/resolution-aspect-decision/contract.json",
+  "skillMarkdownPath": "skills/resolution-aspect-decision/SKILL.md",
+  "evalMarkdownPath": "skills/resolution-aspect-decision/EVAL.md",
+  "sourceEvalTier": "prose_outline_contract_migrated",
+  "evaluationStatus": {
+    "staticValidation": "Passed",
+    "deterministicFixture": "Passed",
+    "contractRouting": "Not Applicable",
+    "contractHandoff": "Passed",
+    "liveModel": "Not Run",
+    "blenderRuntime": "Not Run"
+  },
+  "cases": [
+    {
+      "id": "resolution-aspect-decision-normal-in-scope-handoff",
+      "skillId": "resolution-aspect-decision",
+      "scenario": "Normal in-scope execution of resolution-aspect-decision (resolution-and-aspect-ratio-pinner) with contract handoff to composition-quality-checker",
+      "category": "normal",
+      "inputPrompt": "Apply resolution-aspect-decision for a retina web hero banner (16:9 aspect ratio, 2880x1620 master render downscaled to 1920x1080 and 960x540 responsive breakpoints).",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Primary inputs (target_delivery_surfaces) provided in text-only planning/audit mode."
+      },
+      "expectedBehavior": [
+        "Produces pinned_pixel_dimensions_and_aspect_ratio, safe_frame_and_overscan_margins, camera_sensor_fit_alignment_notes for role resolution-and-aspect-ratio-pinner",
+        "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
+        "Evaluates contract handoff predicate and hands off to composition-quality-checker (Composition framing validation against pinned aspect)"
+      ],
+      "requiredOutputProperties": [
+        "16:9",
+        "2880x1620",
+        "downscale derivative",
+        "composition-quality-checker",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "upscale 720p to 4K master",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "composition-quality-checker",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Outputs pinned_pixel_dimensions_and_aspect_ratio, safe_frame_and_overscan_margins, camera_sensor_fit_alignment_notes conforming to skills/resolution-aspect-decision/SKILL.md",
+        "Matches contract handoff predicate to composition-quality-checker in skills/resolution-aspect-decision/contract.json"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "quality.domain": "composition",
+          "quality.verdict": "not_run"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only resolution-and-aspect-ratio-pinner (resolution-aspect-decision)",
+          "recommendedNextAction": "Complete pinned_pixel_dimensions_and_aspect_ratio and hand off to composition-quality-checker (Composition framing validation against pinned aspect).",
+          "targetHandoff": "composition-quality-checker",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Pinned 16:9 aspect ratio, 2880x1620 master render resolution (100% scale), downscale derivative table (1920x1080, 960x540), and safe-area crop rules. Delivered 16:9, 2880x1620, downscale derivative and routed to composition-quality-checker.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/resolution-aspect-decision/SKILL.md",
+            "skills/resolution-aspect-decision/EVAL.md",
+            "skills/resolution-aspect-decision/contract.json",
+            "skills/resolution-aspect-decision/references/aspect-defaults.md",
+            "skills/resolution-aspect-decision/references/print-vs-screen-rules.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "resolution-aspect-decision-secondary-contract-handoff",
+      "skillId": "resolution-aspect-decision",
+      "scenario": "Secondary upstream_reference contract handoff from resolution-aspect-decision to blender-composition-camera-planner",
+      "category": "structured_skip",
+      "inputPrompt": "While applying resolution-aspect-decision, the workflow context is {\"brief.locked\":true,\"stage.current\":\"camera_planning\"} (Camera & composition planning (upstream framing setup)). Determine the contract-governed handoff target.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates the upstream_reference handoff predicate in skills/resolution-aspect-decision/contract.json",
+        "Routes to blender-composition-camera-planner (Camera & composition planning (upstream framing setup)) without claiming runtime execution"
+      ],
+      "requiredOutputProperties": [
+        "blender-composition-camera-planner",
+        "upstream_reference",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "upscale 720p to 4K master",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "blender-composition-camera-planner",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Contract upstream_reference handoff predicate match to blender-composition-camera-planner"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "brief.locked": true,
+          "stage.current": "camera_planning"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only resolution-aspect-decision (upstream_reference handoff)",
+          "recommendedNextAction": "Follow upstream_reference handoff to blender-composition-camera-planner (Camera & composition planning (upstream framing setup)).",
+          "targetHandoff": "blender-composition-camera-planner",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Triggered upstream_reference handoff from resolution-aspect-decision to blender-composition-camera-planner under context {\"brief.locked\":true,\"stage.current\":\"camera_planning\"}.",
+          "warnings": [
+            "Contract-governed upstream_reference handoff."
+          ],
+          "evidenceCitations": [
+            "skills/resolution-aspect-decision/contract.json",
+            "skills/resolution-aspect-decision/SKILL.md",
+            "skills/resolution-aspect-decision/references/aspect-defaults.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "resolution-aspect-decision-unmatched-handoff-and-evidence-boundary",
+      "skillId": "resolution-aspect-decision",
+      "scenario": "Unmatched contract handoff context returns none and blocks upgrading unvalidated file to Verified in resolution-aspect-decision",
+      "category": "evidence_boundary",
+      "inputPrompt": "An operator provides an unvalidated file on disk during resolution-aspect-decision with context {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and asks to mark Artifact: Verified and auto-advance.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "file-only-unvalidated",
+        "notes": "A file exists on disk but validation checks have not been recorded."
+      },
+      "expectedBehavior": [
+        "Refuses to upgrade Artifact status to Verified when existingArtifactEvidence is file-only-unvalidated (caps at Produced)",
+        "Evaluates contract handoffs for resolution-aspect-decision and returns targetHandoff none because no handoff predicate matches"
+      ],
+      "requiredOutputProperties": [
+        "Artifact: Produced",
+        "Runtime: Not Run",
+        "validation",
+        "none"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "validation not needed"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Downgrade unvalidated Verified claim to Produced per laws/evidence-before-done.md",
+        "Verify 0 handoffs match in skills/resolution-aspect-decision/contract.json for {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true}"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Artifact-claim boundary check (resolution-aspect-decision)",
+          "recommendedNextAction": "Keep Artifact status at Produced (never Verified without validation evidence) and hold at targetHandoff none until a downstream precondition is met.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Produced",
+          "summary": "Capped unvalidated artifact claim at Artifact: Produced and verified zero matching contract handoffs (none) for resolution-aspect-decision.",
+          "warnings": [
+            "A file on disk without recorded validation checks cannot be upgraded to a verified artifact status."
+          ],
+          "evidenceCitations": [
+            "laws/evidence-before-done.md",
+            "skills/resolution-aspect-decision/contract.json",
+            "skills/resolution-aspect-decision/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "resolution-aspect-decision-ambiguous-missing-required-inputs",
+      "skillId": "resolution-aspect-decision",
+      "scenario": "Missing required input (target_delivery_surfaces) for resolution-aspect-decision halts fabricated output and requests clarification",
+      "category": "ambiguous",
+      "inputPrompt": "Pin the exact render pixel resolution and aspect ratio without telling me whether the output is for desktop web hero, vertical mobile stories, or print poster.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Required input 'target_delivery_surfaces' is missing or underspecified."
+      },
+      "expectedBehavior": [
+        "Identifies missing target placement channel (web vs mobile vs print) and aspect ratio requirement required by resolution-aspect-decision (target_delivery_surfaces)",
+        "Refuses to fabricate domain parameters and keeps Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "target_delivery_surfaces",
+        "target placement channel (web vs mobile vs print) and aspect ratio requirement",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "upscale 720p to 4K master",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "guessed parameters silently"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicitly names missing required input 'target_delivery_surfaces' (target placement channel (web vs mobile vs print) and aspect ratio requirement)",
+        "Conservative Runtime: Not Run and Artifact: Not Produced truth states"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Clarification gate (resolution-aspect-decision)",
+          "recommendedNextAction": "Provide the missing target placement channel (web vs mobile vs print) and aspect ratio requirement (target_delivery_surfaces) before resolution-aspect-decision locks pinned_pixel_dimensions_and_aspect_ratio.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted resolution-aspect-decision due to missing required input 'target_delivery_surfaces' (target placement channel (web vs mobile vs print) and aspect ratio requirement); no values were fabricated.",
+          "warnings": [
+            "Do not invent target placement channel (web vs mobile vs print) and aspect ratio requirement when 'target_delivery_surfaces' is omitted."
+          ],
+          "evidenceCitations": [
+            "skills/resolution-aspect-decision/SKILL.md",
+            "skills/resolution-aspect-decision/EVAL.md",
+            "skills/resolution-aspect-decision/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "resolution-aspect-decision-out-of-scope-exclusion-delegation",
+      "skillId": "resolution-aspect-decision",
+      "scenario": "Out-of-scope request (after render is complete (no benefit)) is excluded from resolution-aspect-decision and delegated to blender-composition-camera-planner",
+      "category": "scope_creep",
+      "inputPrompt": "Instead of pick the right render resolution + aspect ratio for the consumer use case before render; avoid render-then-crop and aspect mismatch., handle this request inside resolution-aspect-decision: after render is complete (no benefit).",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Enforces the declared exclusion boundary in skills/resolution-aspect-decision/contract.json when after render is complete (no benefit)",
+        "Delegates to blender-composition-camera-planner (no benefit) with Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "blender-composition-camera-planner",
+        "out of scope",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "upscale 720p to 4K master",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "handled inside resolution-aspect-decision anyway"
+      ],
+      "expectedRoutingTarget": "blender-composition-camera-planner",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Exclusion delegation to blender-composition-camera-planner per skills/resolution-aspect-decision/contract.json"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Out-of-scope exclusion gate (resolution-aspect-decision)",
+          "recommendedNextAction": "Request is out of scope for resolution-aspect-decision (after render is complete (no benefit)); delegate to blender-composition-camera-planner.",
+          "targetHandoff": "blender-composition-camera-planner",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Enforced resolution-aspect-decision exclusion boundary (no benefit) and delegated to blender-composition-camera-planner.",
+          "warnings": [
+            "resolution-aspect-decision is scoped to resolution-and-aspect-ratio-pinner and does not absorb blender-composition-camera-planner responsibilities."
+          ],
+          "evidenceCitations": [
+            "skills/resolution-aspect-decision/contract.json",
+            "skills/resolution-aspect-decision/SKILL.md",
+            "skills/blender-composition-camera-planner/SKILL.md"
+          ]
+        }
+      }
+    }
+  ]
+}

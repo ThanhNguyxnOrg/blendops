@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/ThanhNguyxnOrg/blendops/schemas/skill-eval.schema.json",
   "title": "BlendOps Skill Behavioral Evaluation Suite Schema",
-  "description": "Draft 2020-12 JSON Schema for machine-readable BlendOps skill evaluation suites (Phase 3).",
+  "description": "Draft 2020-12 JSON Schema for machine-readable BlendOps skill evaluation suites across the full 48-skill catalog (Phase 6).",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -10,6 +10,9 @@
     "skillId",
     "category",
     "isContractedSkill",
+    "isRoutingParticipant",
+    "contractPath",
+    "skillMarkdownPath",
     "evalMarkdownPath",
     "sourceEvalTier",
     "evaluationStatus",
@@ -18,7 +21,7 @@
   "properties": {
     "schemaVersion": {
       "type": "string",
-      "const": "1.0.0"
+      "const": "2.0.0"
     },
     "skillId": {
       "type": "string",
@@ -40,7 +43,19 @@
       ]
     },
     "isContractedSkill": {
+      "type": "boolean",
+      "const": true
+    },
+    "isRoutingParticipant": {
       "type": "boolean"
+    },
+    "contractPath": {
+      "type": "string",
+      "pattern": "^skills/[a-z0-9-]+/contract\\.json$"
+    },
+    "skillMarkdownPath": {
+      "type": "string",
+      "pattern": "^skills/[a-z0-9-]+/SKILL\\.md$"
     },
     "evalMarkdownPath": {
       "type": "string",
@@ -51,7 +66,8 @@
       "enum": [
         "structured_multi_case_table",
         "routing_contract_pilot",
-        "gateway_pilot_upgraded"
+        "gateway_pilot_upgraded",
+        "prose_outline_contract_migrated"
       ]
     },
     "evaluationStatus": {
@@ -61,6 +77,7 @@
         "staticValidation",
         "deterministicFixture",
         "contractRouting",
+        "contractHandoff",
         "liveModel",
         "blenderRuntime"
       ],
@@ -72,6 +89,9 @@
           "$ref": "#/$defs/evalRunState"
         },
         "contractRouting": {
+          "$ref": "#/$defs/evalRunState"
+        },
+        "contractHandoff": {
           "$ref": "#/$defs/evalRunState"
         },
         "liveModel": {
@@ -86,17 +106,54 @@
     },
     "cases": {
       "type": "array",
-      "minItems": 5,
+      "minItems": 4,
       "items": {
         "$ref": "#/$defs/evalCase"
       }
     }
   },
+  "allOf": [
+    {
+      "if": {
+        "type": "object",
+        "properties": {
+          "isRoutingParticipant": { "type": "boolean", "const": true }
+        },
+        "required": ["isRoutingParticipant"]
+      },
+      "then": {
+        "type": "object",
+        "properties": {
+          "category": { "type": "string", "const": "routing-and-governance" },
+          "evaluationStatus": {
+            "type": "object",
+            "properties": {
+              "contractRouting": { "type": "string", "const": "Passed" },
+              "contractHandoff": { "type": "string", "enum": ["Not Applicable", "Not Implemented"] }
+            }
+          }
+        }
+      },
+      "else": {
+        "type": "object",
+        "properties": {
+          "evaluationStatus": {
+            "type": "object",
+            "properties": {
+              "contractRouting": { "type": "string", "enum": ["Not Applicable", "Not Implemented"] },
+              "contractHandoff": { "type": "string", "const": "Passed" }
+            }
+          }
+        }
+      }
+    }
+  ],
   "$defs": {
     "evalRunState": {
       "type": "string",
       "enum": [
         "Not Run",
+        "Not Applicable",
         "Not Implemented",
         "Not Verified",
         "Passed",
@@ -176,7 +233,7 @@
           "type": "string",
           "pattern": "^[a-z0-9-]+$",
           "minLength": 3,
-          "maxLength": 80
+          "maxLength": 96
         },
         "skillId": {
           "type": "string",
@@ -285,6 +342,7 @@
             "static_validation",
             "deterministic_fixture",
             "contract_routing",
+            "contract_handoff",
             "live_model",
             "blender_runtime"
           ]
@@ -317,6 +375,7 @@
             },
             "handoffContext": {
               "type": "object",
+              "minProperties": 1,
               "additionalProperties": {
                 "anyOf": [
                   { "type": "string" },
@@ -378,7 +437,73 @@
             }
           }
         }
-      }
+      },
+      "allOf": [
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "evaluationType": { "type": "string", "const": "contract_routing" }
+            },
+            "required": ["evaluationType"]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "deterministicFixture": {
+                "type": "object",
+                "required": ["routingState", "handoffContext"],
+                "properties": {
+                  "routingState": { "type": "object" },
+                  "handoffContext": { "type": "object" }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "evaluationType": { "type": "string", "const": "contract_handoff" }
+            },
+            "required": ["evaluationType"]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "deterministicFixture": {
+                "type": "object",
+                "required": ["handoffContext"],
+                "properties": {
+                  "handoffContext": { "type": "object" },
+                  "routingState": false
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "evaluationType": { "type": "string", "const": "deterministic_fixture" }
+            },
+            "required": ["evaluationType"]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "deterministicFixture": {
+                "type": "object",
+                "properties": {
+                  "routingState": false
+                }
+              }
+            }
+          }
+        }
+      ]
     }
   }
 }

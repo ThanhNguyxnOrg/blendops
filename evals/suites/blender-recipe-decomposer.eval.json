@@ -1,0 +1,325 @@
+{
+  "schemaVersion": "2.0.0",
+  "skillId": "blender-recipe-decomposer",
+  "category": "process-discipline",
+  "isContractedSkill": true,
+  "isRoutingParticipant": false,
+  "contractPath": "skills/blender-recipe-decomposer/contract.json",
+  "skillMarkdownPath": "skills/blender-recipe-decomposer/SKILL.md",
+  "evalMarkdownPath": "skills/blender-recipe-decomposer/EVAL.md",
+  "sourceEvalTier": "prose_outline_contract_migrated",
+  "evaluationStatus": {
+    "staticValidation": "Passed",
+    "deterministicFixture": "Passed",
+    "contractRouting": "Not Applicable",
+    "contractHandoff": "Passed",
+    "liveModel": "Not Run",
+    "blenderRuntime": "Not Run"
+  },
+  "cases": [
+    {
+      "id": "blender-recipe-decomposer-normal-in-scope-handoff",
+      "skillId": "blender-recipe-decomposer",
+      "scenario": "Normal in-scope execution of blender-recipe-decomposer (multi-deliverable-recipe-splitter) with contract handoff to intent-to-3d-brief-writer",
+      "category": "normal",
+      "inputPrompt": "Our stakeholder wants a single hero watch render, a 2x2 colorway catalog grid, and a mobile AR GLB export from one mega-request. Use blender-recipe-decomposer to split this into ordered single-recipe milestones.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Primary inputs (multi_deliverable_request) provided in text-only planning/audit mode."
+      },
+      "expectedBehavior": [
+        "Produces ordered_sub_workflow_tracks, shared_asset_and_brief_dependencies, first_track_next_skill for role multi-deliverable-recipe-splitter",
+        "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
+        "Evaluates contract handoff predicate and hands off to intent-to-3d-brief-writer (Full brief authoring for each split recipe)"
+      ],
+      "requiredOutputProperties": [
+        "sub-recipe",
+        "dependency order",
+        "single-deliverable milestone",
+        "intent-to-3d-brief-writer",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "merged into one single step",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "intent-to-3d-brief-writer",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Outputs ordered_sub_workflow_tracks, shared_asset_and_brief_dependencies, first_track_next_skill conforming to skills/blender-recipe-decomposer/SKILL.md",
+        "Matches contract handoff predicate to intent-to-3d-brief-writer in skills/blender-recipe-decomposer/contract.json"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "goal.clarity": "clear",
+          "brief.locked": false
+        },
+        "simulatedOutput": {
+          "mode": "Text-only multi-deliverable-recipe-splitter (blender-recipe-decomposer)",
+          "recommendedNextAction": "Complete ordered_sub_workflow_tracks and hand off to intent-to-3d-brief-writer (Full brief authoring for each split recipe).",
+          "targetHandoff": "intent-to-3d-brief-writer",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Decomposed multi-deliverable mega-request into 3 ordered single-recipe sub-plans with shared asset dependencies and independent acceptance gates. Delivered sub-recipe, dependency order, single-deliverable milestone and routed to intent-to-3d-brief-writer.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/blender-recipe-decomposer/SKILL.md",
+            "skills/blender-recipe-decomposer/EVAL.md",
+            "skills/blender-recipe-decomposer/contract.json",
+            "skills/blender-recipe-decomposer/references/dependency-patterns.md",
+            "skills/blender-recipe-decomposer/references/recipe-grouping-rules.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "blender-recipe-decomposer-secondary-contract-handoff",
+      "skillId": "blender-recipe-decomposer",
+      "scenario": "Secondary progression contract handoff from blender-recipe-decomposer to blender-stop-condition-decider",
+      "category": "structured_skip",
+      "inputPrompt": "While applying blender-recipe-decomposer, the workflow context is {\"brief.locked\":true,\"stage.current\":\"stop_condition\"} (Pinning formal done conditions per recipe). Determine the contract-governed handoff target.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates the progression handoff predicate in skills/blender-recipe-decomposer/contract.json",
+        "Routes to blender-stop-condition-decider (Pinning formal done conditions per recipe) without claiming runtime execution"
+      ],
+      "requiredOutputProperties": [
+        "blender-stop-condition-decider",
+        "progression",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "merged into one single step",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "blender-stop-condition-decider",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Contract progression handoff predicate match to blender-stop-condition-decider"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "brief.locked": true,
+          "stage.current": "stop_condition"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only blender-recipe-decomposer (progression handoff)",
+          "recommendedNextAction": "Follow progression handoff to blender-stop-condition-decider (Pinning formal done conditions per recipe).",
+          "targetHandoff": "blender-stop-condition-decider",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Triggered progression handoff from blender-recipe-decomposer to blender-stop-condition-decider under context {\"brief.locked\":true,\"stage.current\":\"stop_condition\"}.",
+          "warnings": [
+            "Contract-governed progression handoff."
+          ],
+          "evidenceCitations": [
+            "skills/blender-recipe-decomposer/contract.json",
+            "skills/blender-recipe-decomposer/SKILL.md",
+            "skills/blender-recipe-decomposer/references/dependency-patterns.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "blender-recipe-decomposer-unmatched-handoff-and-evidence-boundary",
+      "skillId": "blender-recipe-decomposer",
+      "scenario": "Unmatched contract handoff context returns none and blocks upgrading unvalidated file to Verified in blender-recipe-decomposer",
+      "category": "evidence_boundary",
+      "inputPrompt": "An operator provides an unvalidated file on disk during blender-recipe-decomposer with context {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and asks to mark Artifact: Verified and auto-advance.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "file-only-unvalidated",
+        "notes": "A file exists on disk but validation checks have not been recorded."
+      },
+      "expectedBehavior": [
+        "Refuses to upgrade Artifact status to Verified when existingArtifactEvidence is file-only-unvalidated (caps at Produced)",
+        "Evaluates contract handoffs for blender-recipe-decomposer and returns targetHandoff none because no handoff predicate matches"
+      ],
+      "requiredOutputProperties": [
+        "Artifact: Produced",
+        "Runtime: Not Run",
+        "validation",
+        "none"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "validation not needed"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Downgrade unvalidated Verified claim to Produced per laws/evidence-before-done.md",
+        "Verify 0 handoffs match in skills/blender-recipe-decomposer/contract.json for {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true}"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Artifact-claim boundary check (blender-recipe-decomposer)",
+          "recommendedNextAction": "Keep Artifact status at Produced (never Verified without validation evidence) and hold at targetHandoff none until a downstream precondition is met.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Produced",
+          "summary": "Capped unvalidated artifact claim at Artifact: Produced and verified zero matching contract handoffs (none) for blender-recipe-decomposer.",
+          "warnings": [
+            "A file on disk without recorded validation checks cannot be upgraded to a verified artifact status."
+          ],
+          "evidenceCitations": [
+            "laws/evidence-before-done.md",
+            "skills/blender-recipe-decomposer/contract.json",
+            "skills/blender-recipe-decomposer/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "blender-recipe-decomposer-ambiguous-missing-required-inputs",
+      "skillId": "blender-recipe-decomposer",
+      "scenario": "Missing required input (multi_deliverable_request) for blender-recipe-decomposer halts fabricated output and requests clarification",
+      "category": "ambiguous",
+      "inputPrompt": "Decompose our project into sub-recipes even though I have not listed what deliverables, platforms, or visual outputs we need.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Required input 'multi_deliverable_request' is missing or underspecified."
+      },
+      "expectedBehavior": [
+        "Identifies missing requested deliverable list and target consumer channels required by blender-recipe-decomposer (multi_deliverable_request)",
+        "Refuses to fabricate domain parameters and keeps Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "multi_deliverable_request",
+        "requested deliverable list and target consumer channels",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "merged into one single step",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "guessed parameters silently"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicitly names missing required input 'multi_deliverable_request' (requested deliverable list and target consumer channels)",
+        "Conservative Runtime: Not Run and Artifact: Not Produced truth states"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Clarification gate (blender-recipe-decomposer)",
+          "recommendedNextAction": "Provide the missing requested deliverable list and target consumer channels (multi_deliverable_request) before blender-recipe-decomposer locks ordered_sub_workflow_tracks.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted blender-recipe-decomposer due to missing required input 'multi_deliverable_request' (requested deliverable list and target consumer channels); no values were fabricated.",
+          "warnings": [
+            "Do not invent requested deliverable list and target consumer channels when 'multi_deliverable_request' is omitted."
+          ],
+          "evidenceCitations": [
+            "skills/blender-recipe-decomposer/SKILL.md",
+            "skills/blender-recipe-decomposer/EVAL.md",
+            "skills/blender-recipe-decomposer/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "blender-recipe-decomposer-out-of-scope-exclusion-delegation",
+      "skillId": "blender-recipe-decomposer",
+      "scenario": "Out-of-scope request (single deliverable that is already right-sized (hand off directly to intent-to-3d-brief-writer)) is excluded from blender-recipe-decomposer and delegated to intent-to-3d-brief-writer",
+      "category": "scope_creep",
+      "inputPrompt": "Instead of break over-scoped blender intent into 2-5 cohesive recipes with brief seeds, stop conditions, order, dependencies, shared assets, and handoffs., handle this request inside blender-recipe-decomposer: single deliverable that is already right-sized (hand off directly to intent-to-3d-brief-writer).",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Enforces the declared exclusion boundary in skills/blender-recipe-decomposer/contract.json when single deliverable that is already right-sized (hand off directly to intent-to-3d-brief-writer)",
+        "Delegates to intent-to-3d-brief-writer (hand off directly to intent-to-3d-brief-writer) with Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "intent-to-3d-brief-writer",
+        "out of scope",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "merged into one single step",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "handled inside blender-recipe-decomposer anyway"
+      ],
+      "expectedRoutingTarget": "intent-to-3d-brief-writer",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Exclusion delegation to intent-to-3d-brief-writer per skills/blender-recipe-decomposer/contract.json"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Out-of-scope exclusion gate (blender-recipe-decomposer)",
+          "recommendedNextAction": "Request is out of scope for blender-recipe-decomposer (single deliverable that is already right-sized (hand off directly to intent-to-3d-brief-writer)); delegate to intent-to-3d-brief-writer.",
+          "targetHandoff": "intent-to-3d-brief-writer",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Enforced blender-recipe-decomposer exclusion boundary (hand off directly to intent-to-3d-brief-writer) and delegated to intent-to-3d-brief-writer.",
+          "warnings": [
+            "blender-recipe-decomposer is scoped to multi-deliverable-recipe-splitter and does not absorb intent-to-3d-brief-writer responsibilities."
+          ],
+          "evidenceCitations": [
+            "skills/blender-recipe-decomposer/contract.json",
+            "skills/blender-recipe-decomposer/SKILL.md",
+            "skills/intent-to-3d-brief-writer/SKILL.md"
+          ]
+        }
+      }
+    }
+  ]
+}
