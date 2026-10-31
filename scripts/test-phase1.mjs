@@ -27,7 +27,7 @@ test('Phase 1 (F-02): export-claude-skills.mjs does not invoke OS zip or powersh
   assert.equal(scriptSrc.includes('fflate'), true, 'Exporter must use fflate');
 });
 
-test('Phase 1 (F-02): npm run skills:export generates 48 valid, uncorrupted ZIP archives and matching manifest', () => {
+test('Phase 1 & 2.1 (F-02 / Workstream C): npm run skills:export generates 48 valid ZIP archives with byte-identical SKILL.md, EVAL.md, and references', () => {
   execFileSync(process.execPath, [path.join(root, 'scripts', 'export-claude-skills.mjs')], {
     cwd: root,
     stdio: 'pipe',
@@ -44,8 +44,27 @@ test('Phase 1 (F-02): npm run skills:export generates 48 valid, uncorrupted ZIP 
 
   const zipFiles = fs.readdirSync(desktopDir).filter((f) => f.endsWith('.zip')).sort();
   assert.equal(zipFiles.length, 48, 'Expected 48 .zip files in dist/claude-skills/desktop-zips');
+  assert.deepEqual(
+    zipFiles,
+    expectedSkills.map((s) => `${s}.zip`),
+    'ZIP filenames must match the 48 canonical skills 1-to-1',
+  );
+
+  const codeDirs = fs
+    .readdirSync(codeDir, { withFileTypes: true })
+    .filter((d) => d.isDirectory())
+    .map((d) => d.name)
+    .sort();
+  assert.deepEqual(codeDirs, expectedSkills, 'Claude Code exported directories must match the 48 canonical skills');
 
   for (const skillName of expectedSkills) {
+    const srcSkillDir = path.join(skillsDir, skillName);
+    const srcSkillMdPath = path.join(srcSkillDir, 'SKILL.md');
+    const srcEvalMdPath = path.join(srcSkillDir, 'EVAL.md');
+
+    assert.equal(fs.existsSync(srcSkillMdPath), true, `Missing source SKILL.md for ${skillName}`);
+    assert.equal(fs.existsSync(srcEvalMdPath), true, `Missing source EVAL.md for ${skillName}`);
+
     const zipPath = path.join(desktopDir, `${skillName}.zip`);
     assert.equal(fs.existsSync(zipPath), true, `Missing ZIP for ${skillName}`);
 
@@ -64,24 +83,82 @@ test('Phase 1 (F-02): npm run skills:export generates 48 valid, uncorrupted ZIP 
       );
     }
 
-    // Must contain <skillName>/SKILL.md and <skillName>/EVAL.md with identical content to source
-    const expectedSkillMd = fs.readFileSync(path.join(skillsDir, skillName, 'SKILL.md'), 'utf8');
-    const actualSkillMd = strFromU8(entries[`${skillName}/SKILL.md`]);
-    assert.equal(actualSkillMd, expectedSkillMd, `SKILL.md content mismatch inside ${skillName}.zip`);
+    // 1. Verify <skillName>/SKILL.md exists and matches source byte-for-byte and text-for-text
+    const skillMdKey = `${skillName}/SKILL.md`;
+    assert.equal(Boolean(entries[skillMdKey]), true, `Missing ${skillMdKey} in ${skillName}.zip`);
+    const expectedSkillMdBuf = fs.readFileSync(srcSkillMdPath);
+    const actualSkillMdBuf = Buffer.from(entries[skillMdKey]);
+    assert.equal(
+      Buffer.compare(actualSkillMdBuf, expectedSkillMdBuf),
+      0,
+      `SKILL.md byte mismatch inside ${skillName}.zip`,
+    );
+    assert.equal(
+      strFromU8(entries[skillMdKey]),
+      expectedSkillMdBuf.toString('utf8'),
+      `SKILL.md text mismatch inside ${skillName}.zip`,
+    );
 
-    // Verify all reference files in source exist inside the ZIP
-    const refDir = path.join(skillsDir, skillName, 'references');
+    // 2. Verify <skillName>/EVAL.md exists and matches source byte-for-byte and text-for-text
+    const evalMdKey = `${skillName}/EVAL.md`;
+    assert.equal(Boolean(entries[evalMdKey]), true, `Missing ${evalMdKey} in ${skillName}.zip`);
+    const expectedEvalMdBuf = fs.readFileSync(srcEvalMdPath);
+    const actualEvalMdBuf = Buffer.from(entries[evalMdKey]);
+    assert.equal(
+      Buffer.compare(actualEvalMdBuf, expectedEvalMdBuf),
+      0,
+      `EVAL.md byte mismatch inside ${skillName}.zip`,
+    );
+    assert.equal(
+      strFromU8(entries[evalMdKey]),
+      expectedEvalMdBuf.toString('utf8'),
+      `EVAL.md text mismatch inside ${skillName}.zip`,
+    );
+
+    // 3. Verify all reference files in source exist inside the ZIP and match byte-for-byte
+    const refDir = path.join(srcSkillDir, 'references');
     if (fs.existsSync(refDir)) {
-      const refFiles = fs.readdirSync(refDir).filter((f) => f.endsWith('.md'));
+      const refFiles = fs
+        .readdirSync(refDir, { withFileTypes: true })
+        .filter((d) => d.isFile())
+        .map((d) => d.name)
+        .sort();
       for (const refFile of refFiles) {
         const refKey = `${skillName}/references/${refFile}`;
         assert.equal(Boolean(entries[refKey]), true, `Missing reference ${refKey} inside ${skillName}.zip`);
+        const expectedRefBuf = fs.readFileSync(path.join(refDir, refFile));
+        const actualRefBuf = Buffer.from(entries[refKey]);
+        assert.equal(
+          Buffer.compare(actualRefBuf, expectedRefBuf),
+          0,
+          `Reference ${refKey} byte mismatch inside ${skillName}.zip`,
+        );
+
+        const codeRefPath = path.join(codeDir, skillName, 'references', refFile);
+        assert.equal(fs.existsSync(codeRefPath), true, `Missing Claude Code reference ${codeRefPath}`);
+        assert.equal(
+          Buffer.compare(fs.readFileSync(codeRefPath), expectedRefBuf),
+          0,
+          `Claude Code reference byte mismatch for ${skillName}/references/${refFile}`,
+        );
       }
     }
 
-    // Also verify Claude Code folder copy
+    // 4. Verify Claude Code folder copy for SKILL.md and EVAL.md
     const codeSkillMdPath = path.join(codeDir, skillName, 'SKILL.md');
+    const codeEvalMdPath = path.join(codeDir, skillName, 'EVAL.md');
     assert.equal(fs.existsSync(codeSkillMdPath), true, `Missing Claude Code folder SKILL.md for ${skillName}`);
+    assert.equal(fs.existsSync(codeEvalMdPath), true, `Missing Claude Code folder EVAL.md for ${skillName}`);
+    assert.equal(
+      Buffer.compare(fs.readFileSync(codeSkillMdPath), expectedSkillMdBuf),
+      0,
+      `Claude Code SKILL.md byte mismatch for ${skillName}`,
+    );
+    assert.equal(
+      Buffer.compare(fs.readFileSync(codeEvalMdPath), expectedEvalMdBuf),
+      0,
+      `Claude Code EVAL.md byte mismatch for ${skillName}`,
+    );
   }
 });
 

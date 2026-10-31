@@ -42,6 +42,7 @@
     "ci": "npm run docs:check && npm run registry:check && npm run skills:export && npm test"
   },
   "devDependencies": {
+    "ajv": "8.20.0",
     "fflate": "0.8.3"
   }
 }

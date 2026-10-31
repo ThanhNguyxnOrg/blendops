@@ -26,6 +26,7 @@
     "id": {
       "type": "string",
       "pattern": "^[a-z0-9-]+$",
+      "minLength": 2,
       "maxLength": 64
     },
     "version": {
@@ -115,7 +116,7 @@
         "required": ["condition", "delegateTo", "reason"],
         "properties": {
           "condition": { "type": "string", "minLength": 5 },
-          "delegateTo": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+          "delegateTo": { "type": "string", "pattern": "^[a-z0-9-]+$", "maxLength": 64 },
           "reason": { "type": "string", "minLength": 5 }
         }
       }
@@ -128,29 +129,11 @@
         "required": {
           "type": "array",
           "minItems": 1,
-          "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "required": ["name", "type", "description"],
-            "properties": {
-              "name": { "type": "string", "pattern": "^[a-z0-9_]+$" },
-              "type": { "type": "string", "minLength": 2 },
-              "description": { "type": "string", "minLength": 5 }
-            }
-          }
+          "items": { "$ref": "#/$defs/inputParameter" }
         },
         "optional": {
           "type": "array",
-          "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "required": ["name", "type", "description"],
-            "properties": {
-              "name": { "type": "string", "pattern": "^[a-z0-9_]+$" },
-              "type": { "type": "string", "minLength": 2 },
-              "description": { "type": "string", "minLength": 5 }
-            }
-          }
+          "items": { "$ref": "#/$defs/inputParameter" }
         }
       }
     },
@@ -162,6 +145,7 @@
         "primary": {
           "type": "array",
           "minItems": 1,
+          "uniqueItems": true,
           "items": {
             "type": "string",
             "pattern": "^[a-z0-9_]+$"
@@ -198,7 +182,8 @@
         "properties": {
           "target": {
             "type": "string",
-            "pattern": "^[a-z0-9-]+$"
+            "pattern": "^[a-z0-9-]+$",
+            "maxLength": 64
           },
           "type": {
             "type": "string",
@@ -220,25 +205,65 @@
             "$ref": "#/$defs/conditionGroup"
           },
           "retryPolicy": {
-            "type": "object",
-            "additionalProperties": false,
-            "required": ["maxAttempts", "exitCondition"],
-            "properties": {
-              "maxAttempts": {
-                "type": "integer",
-                "minimum": 1,
-                "maximum": 5
-              },
-              "exitCondition": {
-                "$ref": "#/$defs/conditionGroup"
-              }
-            }
+            "$ref": "#/$defs/retryPolicy"
+          }
+        },
+        "if": {
+          "type": "object",
+          "properties": {
+            "type": { "const": "retry" }
+          },
+          "required": ["type"]
+        },
+        "then": {
+          "type": "object",
+          "properties": {
+            "retryPolicy": { "$ref": "#/$defs/retryPolicy" }
+          },
+          "required": ["retryPolicy"]
+        },
+        "else": {
+          "type": "object",
+          "properties": {
+            "retryPolicy": false
           }
         }
       }
     }
   },
   "$defs": {
+    "retryPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["maxAttempts", "exitCondition"],
+      "properties": {
+        "maxAttempts": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5
+        },
+        "exitCondition": {
+          "$ref": "#/$defs/conditionGroup"
+        }
+      }
+    },
+    "inputParameter": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "type", "description"],
+      "properties": {
+        "name": { "type": "string", "pattern": "^[a-z0-9_]+$" },
+        "type": { "type": "string", "minLength": 2, "maxLength": 64 },
+        "description": { "type": "string", "minLength": 5, "maxLength": 240 }
+      }
+    },
+    "scalarValue": {
+      "oneOf": [
+        { "type": "string", "minLength": 1 },
+        { "type": "number" },
+        { "type": "boolean" }
+      ]
+    },
     "predicate": {
       "type": "object",
       "additionalProperties": false,
@@ -253,9 +278,63 @@
           "enum": ["equals", "not_equals", "in", "not_in", "exists"]
         },
         "value": {
-          "type": ["string", "number", "boolean", "array"]
+          "oneOf": [
+            { "$ref": "#/$defs/scalarValue" },
+            {
+              "type": "array",
+              "minItems": 1,
+              "uniqueItems": true,
+              "items": { "$ref": "#/$defs/scalarValue" }
+            }
+          ]
         }
-      }
+      },
+      "allOf": [
+        {
+          "if": {
+            "type": "object",
+            "properties": { "operator": { "enum": ["in", "not_in"] } },
+            "required": ["operator"]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "value": {
+                "type": "array",
+                "minItems": 1,
+                "uniqueItems": true,
+                "items": { "$ref": "#/$defs/scalarValue" }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": { "operator": { "const": "exists" } },
+            "required": ["operator"]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "value": { "type": "boolean" }
+            }
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": { "operator": { "enum": ["equals", "not_equals"] } },
+            "required": ["operator"]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "value": { "$ref": "#/$defs/scalarValue" }
+            }
+          }
+        }
+      ]
     },
     "conditionGroup": {
       "type": "object",

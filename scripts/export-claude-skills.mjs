@@ -60,11 +60,24 @@ if (!fs.existsSync(skillsDir)) {
   process.exit(1);
 }
 
+const skillNames = listSkillDirs();
+
+for (const name of skillNames) {
+  const skillMdPath = path.join(skillsDir, name, 'SKILL.md');
+  const evalMdPath = path.join(skillsDir, name, 'EVAL.md');
+  if (!fs.existsSync(skillMdPath)) {
+    console.error(`Missing required SKILL.md for skill '${name}': ${skillMdPath}`);
+    process.exit(1);
+  }
+  if (!fs.existsSync(evalMdPath)) {
+    console.error(`Missing required EVAL.md for skill '${name}': ${evalMdPath}`);
+    process.exit(1);
+  }
+}
+
 rmrf(outRoot);
 mkdirp(desktopDir);
 mkdirp(codeDir);
-
-const skillNames = listSkillDirs();
 
 for (const name of skillNames) {
   const src = path.join(skillsDir, name);

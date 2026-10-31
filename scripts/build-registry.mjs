@@ -3,236 +3,200 @@ import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
+import Ajv2020 from 'ajv/dist/2020.js';
 
-const VALID_CATEGORIES = new Set([
-  'routing-and-governance',
-  'process-discipline',
-  'asset-and-sourcing',
-  'scene-planners',
-  'render-and-output-decisions',
-  'quality-validators',
-  'runtime-and-execution',
-  'evidence-and-handoff',
-]);
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const DEFAULT_SCHEMA_PATH = path.resolve(__dirname, '..', 'schemas', 'skill-contract.schema.json');
 
-const VALID_EDGE_TYPES = new Set([
-  'progression',
-  'conditional',
-  'alternative',
-  'fallback',
-  'retry',
-  'upstream_reference',
-  'boundary_delegation',
-]);
+export const ENUMERATED_GOAL_CLARITIES = Object.freeze(['ambiguous_or_mixed', 'clear']);
+const VALID_RUNTIME_GOAL_CLARITIES = new Set(ENUMERATED_GOAL_CLARITIES);
+const VALID_GATE_GOAL_CLARITIES = new Set(['ambiguous_or_mixed', 'clear', 'any']);
 
-const VALID_OPERATORS = new Set(['equals', 'not_equals', 'in', 'not_in', 'exists']);
+let cachedValidatorState = null;
 
-export function validateConditionGroup(group, ctxPath, errors) {
-  if (!group || typeof group !== 'object' || Array.isArray(group)) {
-    errors.push(`${ctxPath} must be an object with 'all' or 'any'`);
-    return;
+function getCompiledValidators(schemaPath = DEFAULT_SCHEMA_PATH) {
+  const resolvedPath = path.resolve(schemaPath);
+  const rawSchema = fs.readFileSync(resolvedPath, 'utf8');
+  const schemaHash = crypto.createHash('sha256').update(rawSchema, 'utf8').digest('hex');
+
+  if (cachedValidatorState && cachedValidatorState.schemaHash === schemaHash) {
+    return cachedValidatorState;
   }
-  const keys = Object.keys(group);
-  if (keys.length !== 1 || (keys[0] !== 'all' && keys[0] !== 'any')) {
-    errors.push(`${ctxPath} must have exactly one key: 'all' or 'any'`);
-    return;
-  }
-  const list = group[keys[0]];
-  if (!Array.isArray(list) || list.length === 0) {
-    errors.push(`${ctxPath}.${keys[0]} must be a non-empty array of predicates`);
-    return;
-  }
-  list.forEach((pred, idx) => {
-    const pPath = `${ctxPath}.${keys[0]}[${idx}]`;
-    if (!pred || typeof pred !== 'object' || Array.isArray(pred)) {
-      errors.push(`${pPath} must be a predicate object`);
-      return;
-    }
-    const pKeys = Object.keys(pred);
-    for (const k of pKeys) {
-      if (!['field', 'operator', 'value'].includes(k)) {
-        errors.push(`${pPath} has unknown key '${k}'`);
-      }
-    }
-    if (typeof pred.field !== 'string' || !/^[a-zA-Z0-9_.]+$/.test(pred.field)) {
-      errors.push(`${pPath}.field must be a valid dot-separated identifier`);
-    }
-    if (!VALID_OPERATORS.has(pred.operator)) {
-      errors.push(`${pPath}.operator '${pred.operator}' is not in [${[...VALID_OPERATORS].join(', ')}]`);
-    }
-    if (pred.value === undefined) {
-      errors.push(`${pPath}.value is required`);
-    }
+
+  const schemaObj = JSON.parse(rawSchema);
+  const ajv = new Ajv2020({
+    allErrors: true,
+    strict: true,
+    verbose: true,
   });
+
+  const validateContract = ajv.compile(schemaObj);
+  const schemaId = schemaObj.$id || 'https://github.com/ThanhNguyxnOrg/blendops/schemas/skill-contract.schema.json';
+  const validateConditionGroupSchema = ajv.getSchema(`${schemaId}#/$defs/conditionGroup`);
+
+  cachedValidatorState = {
+    schemaHash,
+    validateContract,
+    validateConditionGroupSchema,
+  };
+  return cachedValidatorState;
 }
 
-export function validateContractObject(contract, expectedId, catalogSkillSet) {
+function pointerToDotPath(instancePath, params = {}) {
+  const segments = (instancePath || '')
+    .split('/')
+    .filter(Boolean)
+    .map((s) => s.replace(/~1/g, '/').replace(/~0/g, '~'));
+
+  if (params.missingProperty) {
+    segments.push(params.missingProperty);
+  } else if (params.additionalProperty) {
+    segments.push(params.additionalProperty);
+  }
+
+  if (segments.length === 0) return '<root>';
+
+  let out = '';
+  for (const seg of segments) {
+    if (/^\d+$/.test(seg)) {
+      out += `[${seg}]`;
+    } else if (out.length === 0) {
+      out += seg;
+    } else {
+      out += `.${seg}`;
+    }
+  }
+  return out;
+}
+
+function formatAjvErrors(ajvErrors, prefix) {
+  const formatted = [];
+  const seen = new Set();
+
+  for (const err of ajvErrors || []) {
+    const pointer = err.instancePath || '/';
+    const dotPath = pointerToDotPath(err.instancePath, err.params);
+    let detail = err.message || 'schema validation error';
+
+    if (err.keyword === 'additionalProperties' && err.params?.additionalProperty) {
+      detail = `must NOT have additional property '${err.params.additionalProperty}'`;
+    } else if (err.keyword === 'required' && err.params?.missingProperty) {
+      if (err.params.missingProperty === 'retryPolicy') {
+        detail = `must have required property 'retryPolicy' (handoff of type 'retry' requires a retryPolicy object)`;
+      } else {
+        detail = `must have required property '${err.params.missingProperty}'`;
+      }
+    } else if (err.keyword === 'not' && /^\/handoffs\/\d+$/.test(pointer)) {
+      detail = `non-retry handoff must NOT include 'retryPolicy'`;
+    } else if (err.keyword === 'enum' && Array.isArray(err.params?.allowedValues)) {
+      detail = `${detail} [${err.params.allowedValues.join(', ')}]`;
+    }
+
+    let dataSuffix = '';
+    if (
+      err.data !== undefined &&
+      (typeof err.data === 'string' || typeof err.data === 'number' || typeof err.data === 'boolean')
+    ) {
+      dataSuffix = ` (received ${JSON.stringify(err.data)})`;
+    }
+
+    const msg = `${prefix} at ${pointer} (${dotPath}): ${detail}${dataSuffix}`;
+    if (!seen.has(msg)) {
+      seen.add(msg);
+      formatted.push(msg);
+    }
+  }
+
+  return formatted;
+}
+
+export function validateConditionGroup(group, ctxPath, errors) {
+  const { validateConditionGroupSchema } = getCompiledValidators();
+  const valid = validateConditionGroupSchema(group);
+  if (!valid) {
+    for (const err of validateConditionGroupSchema.errors || []) {
+      const subPath = pointerToDotPath(err.instancePath, err.params);
+      const fullPath = subPath === '<root>' ? ctxPath : `${ctxPath}.${subPath}`;
+      let dataSuffix = '';
+      if (
+        err.data !== undefined &&
+        (typeof err.data === 'string' || typeof err.data === 'number' || typeof err.data === 'boolean')
+      ) {
+        dataSuffix = ` (received ${JSON.stringify(err.data)})`;
+      }
+      errors.push(`${fullPath}: ${err.message}${dataSuffix}`);
+    }
+  }
+}
+
+export function validateContractObject(contract, expectedId, catalogSkillSet, schemaPath = DEFAULT_SCHEMA_PATH) {
   const errors = [];
   const prefix = `contract(${expectedId})`;
 
   if (!contract || typeof contract !== 'object' || Array.isArray(contract)) {
-    return [`${prefix}: root must be a JSON object`];
+    return [`${prefix} at / (<root>): root must be a JSON object`];
   }
 
-  const requiredTop = [
-    '$schema',
-    'id',
-    'version',
-    'category',
-    'role',
-    'purpose',
-    'routingPrecedence',
-    'triggers',
-    'exclusions',
-    'inputs',
-    'outputs',
-    'handoffs',
-  ];
-  for (const req of requiredTop) {
-    if (!(req in contract)) errors.push(`${prefix}: missing required property '${req}'`);
-  }
-  for (const k of Object.keys(contract)) {
-    if (!requiredTop.includes(k)) errors.push(`${prefix}: unexpected property '${k}'`);
+  const { validateContract } = getCompiledValidators(schemaPath);
+  const schemaValid = validateContract(contract);
+  if (!schemaValid) {
+    errors.push(...formatAjvErrors(validateContract.errors, prefix));
   }
 
-  if (contract.$schema !== '../../schemas/skill-contract.schema.json') {
-    errors.push(`${prefix}: $schema must equal '../../schemas/skill-contract.schema.json'`);
-  }
-  if (contract.id !== expectedId) {
-    errors.push(`${prefix}: id '${contract.id}' does not match directory '${expectedId}'`);
-  }
-  if (typeof contract.version !== 'string' || !/^\d+\.\d+\.\d+$/.test(contract.version)) {
-    errors.push(`${prefix}: version must be semver (e.g., 1.0.0)`);
-  }
-  if (!VALID_CATEGORIES.has(contract.category)) {
-    errors.push(`${prefix}: invalid category '${contract.category}'`);
-  }
-  if (typeof contract.role !== 'string' || contract.role.length < 3 || contract.role.length > 80) {
-    errors.push(`${prefix}: role must be 3..80 chars`);
-  }
-  if (typeof contract.purpose !== 'string' || contract.purpose.length < 10 || contract.purpose.length > 200) {
-    errors.push(`${prefix}: purpose must be 10..200 chars`);
+  // Semantic check 1: Contract ID must match directory name
+  if (typeof contract.id === 'string' && contract.id !== expectedId) {
+    errors.push(`${prefix} at /id (id): contract id '${contract.id}' does not match directory '${expectedId}'`);
   }
 
-  // routingPrecedence
-  const rp = contract.routingPrecedence;
-  if (!rp || typeof rp !== 'object') {
-    errors.push(`${prefix}: routingPrecedence must be an object`);
-  } else {
-    if (!['entry-and-stage-routing', 'domain-specialist'].includes(rp.group)) {
-      errors.push(`${prefix}: routingPrecedence.group is invalid`);
-    }
-    if (!Number.isInteger(rp.rank) || rp.rank < 1 || rp.rank > 100) {
-      errors.push(`${prefix}: routingPrecedence.rank must be an integer 1..100`);
-    }
-    const ag = rp.activationGate;
-    if (!ag || typeof ag !== 'object') {
-      errors.push(`${prefix}: routingPrecedence.activationGate is required`);
-    } else {
-      if (!['ambiguous_or_mixed', 'clear', 'any'].includes(ag.goalClarity)) {
-        errors.push(`${prefix}: activationGate.goalClarity is invalid`);
-      }
-      for (const boolKey of ['recipeSelected', 'preflightPassed', 'hasStageOrArtifactInventory']) {
-        if (typeof ag[boolKey] !== 'boolean') {
-          errors.push(`${prefix}: activationGate.${boolKey} must be a boolean`);
+  // Semantic check 2: Case-insensitive normalized duplicate trigger check
+  if (Array.isArray(contract.triggers)) {
+    const seenNormalized = new Map();
+    contract.triggers.forEach((t, idx) => {
+      if (typeof t === 'string') {
+        const norm = t.toLowerCase().trim();
+        if (seenNormalized.has(norm)) {
+          errors.push(
+            `${prefix} at /triggers/${idx} (triggers[${idx}]): duplicate trigger '${t}' (conflicts with triggers[${seenNormalized.get(norm)}])`,
+          );
+        } else {
+          seenNormalized.set(norm, idx);
         }
-      }
-    }
-  }
-
-  // triggers
-  if (!Array.isArray(contract.triggers) || contract.triggers.length < 2) {
-    errors.push(`${prefix}: triggers must be an array of at least 2 items`);
-  } else {
-    const seen = new Set();
-    for (const t of contract.triggers) {
-      if (typeof t !== 'string' || t.length < 3 || t.length > 120) {
-        errors.push(`${prefix}: invalid trigger '${t}'`);
-      }
-      const norm = String(t).toLowerCase().trim();
-      if (seen.has(norm)) errors.push(`${prefix}: duplicate trigger '${t}'`);
-      seen.add(norm);
-    }
-  }
-
-  // exclusions
-  if (!Array.isArray(contract.exclusions) || contract.exclusions.length < 2) {
-    errors.push(`${prefix}: exclusions must be an array of at least 2 items`);
-  } else {
-    contract.exclusions.forEach((ex, i) => {
-      if (!ex || typeof ex !== 'object') {
-        errors.push(`${prefix}: exclusions[${i}] must be an object`);
-        return;
-      }
-      if (typeof ex.condition !== 'string' || ex.condition.length < 5) {
-        errors.push(`${prefix}: exclusions[${i}].condition must be >= 5 chars`);
-      }
-      if (typeof ex.delegateTo !== 'string' || !catalogSkillSet.has(ex.delegateTo)) {
-        errors.push(`${prefix}: exclusions[${i}].delegateTo '${ex.delegateTo}' is not a valid catalog skill ID`);
-      }
-      if (ex.delegateTo === expectedId) {
-        errors.push(`${prefix}: exclusions[${i}].delegateTo cannot self-reference '${expectedId}'`);
-      }
-      if (typeof ex.reason !== 'string' || ex.reason.length < 5) {
-        errors.push(`${prefix}: exclusions[${i}].reason must be >= 5 chars`);
       }
     });
   }
 
-  // inputs & outputs
-  if (!contract.inputs || !Array.isArray(contract.inputs.required) || contract.inputs.required.length < 1) {
-    errors.push(`${prefix}: inputs.required must be a non-empty array`);
-  }
-  if (!contract.outputs || !Array.isArray(contract.outputs.primary) || contract.outputs.primary.length < 1) {
-    errors.push(`${prefix}: outputs.primary must be a non-empty array`);
-  } else {
-    const tsp = contract.outputs.truthStatePolicy;
-    if (
-      !tsp ||
-      tsp.runtimeDefault !== 'Not Run' ||
-      tsp.artifactDefault !== 'Not Produced' ||
-      tsp.mutationRule !== 'downgrade_only'
-    ) {
-      errors.push(`${prefix}: outputs.truthStatePolicy must lock Not Run / Not Produced / downgrade_only`);
-    }
+  // Semantic check 3: Exclusions delegateTo must exist in catalog and not self-reference
+  if (Array.isArray(contract.exclusions)) {
+    contract.exclusions.forEach((ex, i) => {
+      if (ex && typeof ex === 'object' && typeof ex.delegateTo === 'string') {
+        if (!catalogSkillSet.has(ex.delegateTo)) {
+          errors.push(
+            `${prefix} at /exclusions/${i}/delegateTo (exclusions[${i}].delegateTo): '${ex.delegateTo}' is not a valid catalog skill ID`,
+          );
+        }
+        if (ex.delegateTo === expectedId) {
+          errors.push(
+            `${prefix} at /exclusions/${i}/delegateTo (exclusions[${i}].delegateTo): cannot self-reference '${expectedId}'`,
+          );
+        }
+      }
+    });
   }
 
-  // handoffs
-  if (!Array.isArray(contract.handoffs) || contract.handoffs.length < 1) {
-    errors.push(`${prefix}: handoffs must be a non-empty array`);
-  } else {
+  // Semantic check 4: Handoff targets must exist in catalog and not self-reference
+  if (Array.isArray(contract.handoffs)) {
     contract.handoffs.forEach((h, i) => {
-      const hPath = `${prefix}: handoffs[${i}]`;
-      if (!h || typeof h !== 'object') {
-        errors.push(`${hPath} must be an object`);
-        return;
-      }
-      if (!catalogSkillSet.has(h.target)) {
-        errors.push(`${hPath}.target '${h.target}' does not exist in the 48-skill catalog`);
-      }
-      if (h.target === expectedId) {
-        errors.push(`${hPath}.target cannot self-reference '${expectedId}'`);
-      }
-      if (!VALID_EDGE_TYPES.has(h.type)) {
-        errors.push(`${hPath}.type '${h.type}' is invalid`);
-      }
-      if (typeof h.label !== 'string' || h.label.length < 5) {
-        errors.push(`${hPath}.label must be >= 5 chars`);
-      }
-      validateConditionGroup(h.when, `${hPath}.when`, errors);
-
-      if (h.type === 'retry') {
-        if (!h.retryPolicy || typeof h.retryPolicy !== 'object') {
-          errors.push(`${hPath} of type 'retry' requires a retryPolicy object`);
-        } else {
-          if (
-            !Number.isInteger(h.retryPolicy.maxAttempts) ||
-            h.retryPolicy.maxAttempts < 1 ||
-            h.retryPolicy.maxAttempts > 5
-          ) {
-            errors.push(`${hPath}.retryPolicy.maxAttempts must be an integer 1..5`);
-          }
-          validateConditionGroup(h.retryPolicy.exitCondition, `${hPath}.retryPolicy.exitCondition`, errors);
+      if (h && typeof h === 'object' && typeof h.target === 'string') {
+        if (!catalogSkillSet.has(h.target)) {
+          errors.push(
+            `${prefix} at /handoffs/${i}/target (handoffs[${i}].target): '${h.target}' does not exist in the 48-skill catalog`,
+          );
+        }
+        if (h.target === expectedId) {
+          errors.push(
+            `${prefix} at /handoffs/${i}/target (handoffs[${i}].target): cannot self-reference '${expectedId}'`,
+          );
         }
       }
     });
@@ -279,41 +243,180 @@ export function detectProgressionCycles(edges) {
   return cycles;
 }
 
+export function isContradictoryRoutingState(state) {
+  if (!state || typeof state !== 'object') return true;
+  // Preflight cannot pass when no recipe/pack is selected
+  if (state.preflightPassed === true && state.recipeSelected !== true) {
+    return true;
+  }
+  // In-flight stage/artifact inventory requires a selected recipe and passed preflight
+  if (
+    state.hasStageOrArtifactInventory === true &&
+    (state.recipeSelected !== true || state.preflightPassed !== true)
+  ) {
+    return true;
+  }
+  return false;
+}
+
+export function enumerateRoutingStateSpace({ includeContradictory = false } = {}) {
+  const states = [];
+  for (const goalClarity of ENUMERATED_GOAL_CLARITIES) {
+    for (const recipeSelected of [false, true]) {
+      for (const preflightPassed of [false, true]) {
+        for (const hasStageOrArtifactInventory of [false, true]) {
+          const candidate = {
+            goalClarity,
+            recipeSelected,
+            preflightPassed,
+            hasStageOrArtifactInventory,
+          };
+          if (includeContradictory || !isContradictoryRoutingState(candidate)) {
+            states.push(candidate);
+          }
+        }
+      }
+    }
+  }
+  return states;
+}
+
+export function doesGateMatchState(gate, state) {
+  if (!gate || typeof gate !== 'object' || !state || typeof state !== 'object') {
+    return false;
+  }
+  const clarityMatches = gate.goalClarity === 'any' || gate.goalClarity === state.goalClarity;
+  const recipeMatches = gate.recipeSelected === state.recipeSelected;
+  const preflightMatches = gate.preflightPassed === state.preflightPassed;
+  const invMatches = gate.hasStageOrArtifactInventory === state.hasStageOrArtifactInventory;
+  return clarityMatches && recipeMatches && preflightMatches && invMatches;
+}
+
 export function validatePrecedenceLadder(contracts) {
   const errors = [];
   const byGroup = new Map();
+
   for (const c of contracts) {
+    if (!c || typeof c !== 'object' || !c.routingPrecedence || typeof c.routingPrecedence !== 'object') {
+      errors.push(`Contract '${c?.id || '<unknown>'}' is missing a valid routingPrecedence object`);
+      continue;
+    }
     const g = c.routingPrecedence.group;
     if (!byGroup.has(g)) byGroup.set(g, []);
     byGroup.get(g).push(c);
   }
 
+  const allStates = enumerateRoutingStateSpace({ includeContradictory: true });
+  const validStates = enumerateRoutingStateSpace({ includeContradictory: false });
+
   for (const [group, list] of byGroup.entries()) {
     const seenRanks = new Map();
     const seenGateKeys = new Map();
+    const validGateContracts = [];
+
     for (const c of list) {
       const r = c.routingPrecedence.rank;
-      if (seenRanks.has(r)) {
+      if (!Number.isInteger(r) || r < 1 || r > 100) {
+        errors.push(`Invalid routingPrecedence.rank '${r}' on '${c.id}' in group '${group}'`);
+      } else if (seenRanks.has(r)) {
         errors.push(
           `Duplicate routingPrecedence.rank ${r} in group '${group}' between '${seenRanks.get(r)}' and '${c.id}'`,
         );
+      } else {
+        seenRanks.set(r, c.id);
       }
-      seenRanks.set(r, c.id);
 
-      const gKey = JSON.stringify(c.routingPrecedence.activationGate);
+      const gate = c.routingPrecedence.activationGate;
+      if (
+        !gate ||
+        typeof gate !== 'object' ||
+        !VALID_GATE_GOAL_CLARITIES.has(gate.goalClarity) ||
+        typeof gate.recipeSelected !== 'boolean' ||
+        typeof gate.preflightPassed !== 'boolean' ||
+        typeof gate.hasStageOrArtifactInventory !== 'boolean'
+      ) {
+        errors.push(
+          `Invalid activationGate in group '${group}' on '${c.id}': ${JSON.stringify(gate)}`,
+        );
+        continue;
+      }
+
+      const gKey = JSON.stringify({
+        goalClarity: gate.goalClarity,
+        recipeSelected: gate.recipeSelected,
+        preflightPassed: gate.preflightPassed,
+        hasStageOrArtifactInventory: gate.hasStageOrArtifactInventory,
+      });
       if (seenGateKeys.has(gKey)) {
         errors.push(
-          `Identical activationGate in group '${group}' between '${seenGateKeys.get(gKey)}' and '${c.id}'`,
+          `Identical activationGate in group '${group}' between '${seenGateKeys.get(gKey)}' and '${c.id}': ${gKey}`,
+        );
+      } else {
+        seenGateKeys.set(gKey, c.id);
+      }
+
+      validGateContracts.push(c);
+    }
+
+    const sorted = [...validGateContracts].sort(
+      (a, b) => a.routingPrecedence.rank - b.routingPrecedence.rank,
+    );
+
+    // 1. Deterministic state-space overlap detection across all state combinations
+    for (const state of allStates) {
+      const matching = sorted.filter((c) =>
+        doesGateMatchState(c.routingPrecedence.activationGate, state),
+      );
+      if (matching.length > 1) {
+        const names = matching
+          .map((c) => `'${c.id}' (rank ${c.routingPrecedence.rank})`)
+          .join(' and ');
+        errors.push(
+          `Overlapping activationGate in group '${group}' between ${names} on state vector ${JSON.stringify(state)}`,
         );
       }
-      seenGateKeys.set(gKey, c.id);
+    }
+
+    // 2. Unreachable activation gate detection against the valid runtime state space
+    const claimedStateKeys = new Map();
+    for (const c of sorted) {
+      const gate = c.routingPrecedence.activationGate;
+      const matchingValidStates = validStates.filter((s) => doesGateMatchState(gate, s));
+      if (matchingValidStates.length === 0) {
+        errors.push(
+          `Unreachable activationGate in group '${group}' for '${c.id}' (rank ${c.routingPrecedence.rank}): gate ${JSON.stringify(gate)} matches 0 valid runtime states (contradictory state requirement)`,
+        );
+        continue;
+      }
+
+      const unshadowedStates = matchingValidStates.filter(
+        (s) => !claimedStateKeys.has(JSON.stringify(s)),
+      );
+      if (unshadowedStates.length === 0) {
+        const shadowingOwners = [
+          ...new Set(matchingValidStates.map((s) => claimedStateKeys.get(JSON.stringify(s)))),
+        ];
+        errors.push(
+          `Unreachable activationGate in group '${group}' for '${c.id}' (rank ${c.routingPrecedence.rank}): all matching valid states are shadowed by ${shadowingOwners.map((id) => `'${id}'`).join(', ')}`,
+        );
+      }
+
+      for (const s of matchingValidStates) {
+        const sKey = JSON.stringify(s);
+        if (!claimedStateKeys.has(sKey)) {
+          claimedStateKeys.set(sKey, c.id);
+        }
+      }
     }
   }
+
   return errors;
 }
 
 export function resolveRoutingWinner(contracts, state) {
-  if (!state || typeof state !== 'object') return null;
+  if (!state || typeof state !== 'object' || Array.isArray(state)) return null;
+  if (!Array.isArray(contracts) || contracts.length === 0) return null;
+
   const requiredStateFields = [
     'goalClarity',
     'recipeSelected',
@@ -325,6 +428,12 @@ export function resolveRoutingWinner(contracts, state) {
       return null;
     }
   }
+
+  // Runtime state goalClarity must be a concrete enumerated value ('ambiguous_or_mixed' or 'clear'), never 'any' or unknown
+  if (typeof state.goalClarity !== 'string' || !VALID_RUNTIME_GOAL_CLARITIES.has(state.goalClarity)) {
+    return null;
+  }
+
   if (
     typeof state.recipeSelected !== 'boolean' ||
     typeof state.preflightPassed !== 'boolean' ||
@@ -333,14 +442,14 @@ export function resolveRoutingWinner(contracts, state) {
     return null;
   }
 
+  if (isContradictoryRoutingState(state)) {
+    return null;
+  }
+
   const sorted = [...contracts].sort((a, b) => a.routingPrecedence.rank - b.routingPrecedence.rank);
   for (const c of sorted) {
-    const gate = c.routingPrecedence.activationGate;
-    const clarityMatches = gate.goalClarity === 'any' || gate.goalClarity === state.goalClarity;
-    const recipeMatches = gate.recipeSelected === state.recipeSelected;
-    const preflightMatches = gate.preflightPassed === state.preflightPassed;
-    const invMatches = gate.hasStageOrArtifactInventory === state.hasStageOrArtifactInventory;
-    if (clarityMatches && recipeMatches && preflightMatches && invMatches) {
+    const gate = c.routingPrecedence?.activationGate;
+    if (doesGateMatchState(gate, state)) {
       return c.id;
     }
   }
@@ -426,6 +535,7 @@ export function buildRegistryArtifacts(rootDir) {
   );
 
   const contracts = [];
+  const validContracts = [];
   const rawInputsForChecksum = [];
 
   if (fs.existsSync(schemaPath)) {
@@ -444,15 +554,23 @@ export function buildRegistryArtifacts(rootDir) {
       errors.push(`Invalid JSON in skills/${id}/contract.json: ${err.message}`);
       continue;
     }
-    const cErrors = validateContractObject(parsed, id, catalogSkillSet);
+    const cErrors = validateContractObject(
+      parsed,
+      id,
+      catalogSkillSet,
+      fs.existsSync(schemaPath) ? schemaPath : DEFAULT_SCHEMA_PATH,
+    );
     errors.push(...cErrors);
     contracts.push(parsed);
+    if (cErrors.length === 0) {
+      validContracts.push(parsed);
+    }
   }
 
-  errors.push(...validatePrecedenceLadder(contracts));
+  errors.push(...validatePrecedenceLadder(validContracts));
 
   const graphEdges = [];
-  for (const c of contracts) {
+  for (const c of validContracts) {
     for (const h of c.handoffs || []) {
       const edge = {
         from: c.id,
@@ -478,7 +596,7 @@ export function buildRegistryArtifacts(rootDir) {
 
   const contractedSet = new Set(contractedSkillIds);
   const catalogNodes = catalogSkillIds.map((id) => {
-    const contract = contracts.find((c) => c.id === id);
+    const contract = validContracts.find((c) => c.id === id);
     return {
       id,
       status: contractedSet.has(id) ? 'contracted' : 'catalog-only',
@@ -488,25 +606,29 @@ export function buildRegistryArtifacts(rootDir) {
     };
   });
 
+  const sortedValidContracts = [...validContracts].sort(
+    (a, b) => a.routingPrecedence.rank - b.routingPrecedence.rank,
+  );
+
   const skillsRegistry = {
     schemaVersion: '1.0.0',
     coverage: 'routing-pilot',
-    contractedSkills: contracts.length,
+    contractedSkills: sortedValidContracts.length,
     catalogSkills: catalogSkillIds.length,
     sourceChecksum,
-    skills: contracts.sort((a, b) => a.routingPrecedence.rank - b.routingPrecedence.rank),
+    skills: sortedValidContracts,
   };
 
   const workflowGraph = {
     schemaVersion: '1.0.0',
     coverage: 'routing-pilot',
-    contractedSkills: contracts.length,
+    contractedSkills: sortedValidContracts.length,
     catalogSkills: catalogSkillIds.length,
     sourceChecksum,
     summary: {
       totalNodes: catalogNodes.length,
-      contractedNodes: contracts.length,
-      catalogOnlyNodes: catalogNodes.length - contracts.length,
+      contractedNodes: sortedValidContracts.length,
+      catalogOnlyNodes: catalogNodes.length - sortedValidContracts.length,
       totalContractedEdges: graphEdges.length,
       edgesByType: graphEdges.reduce((acc, e) => {
         acc[e.type] = (acc[e.type] || 0) + 1;
@@ -520,7 +642,7 @@ export function buildRegistryArtifacts(rootDir) {
 
   return {
     errors,
-    contracts,
+    contracts: sortedValidContracts,
     skillsRegistry,
     workflowGraph,
   };
@@ -539,7 +661,14 @@ function main() {
   const skillsJsonPath = path.join(registryDir, 'skills.json');
   const graphJsonPath = path.join(registryDir, 'workflow-graph.json');
 
-  // Check or sync SKILL.md managed sections for contracted skills
+  // If contract/schema/precedence/cycle validation already failed in build mode, abort before writing any file
+  if (!checkOnly && errors.length > 0) {
+    console.error('build-registry validation failed:');
+    for (const e of errors) console.error(`- ${e}`);
+    process.exit(1);
+  }
+
+  // Check or sync SKILL.md managed sections for validated contracts
   for (const contract of contracts) {
     const skillMdPath = path.join(skillsDir, contract.id, 'SKILL.md');
     const currentMd = fs.readFileSync(skillMdPath, 'utf8');
