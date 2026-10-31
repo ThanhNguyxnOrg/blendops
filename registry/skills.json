@@ -1,0 +1,1077 @@
+{
+  "schemaVersion": "1.0.0",
+  "coverage": "routing-pilot",
+  "contractedSkills": 4,
+  "catalogSkills": 48,
+  "sourceChecksum": "12ec3caa4eeb1344f4ac0f81485d882084811c690d4b9652558651b770fff5f2",
+  "skills": [
+    {
+      "$schema": "../../schemas/skill-contract.schema.json",
+      "id": "blendops-help",
+      "version": "1.0.0",
+      "category": "routing-and-governance",
+      "role": "ambiguous-intent-entry-router",
+      "purpose": "Route users to the right BlendOps skill, document, or next safe action without overclaiming runtime, artifact, or package readiness.",
+      "routingPrecedence": {
+        "group": "entry-and-stage-routing",
+        "rank": 1,
+        "activationGate": {
+          "goalClarity": "ambiguous_or_mixed",
+          "recipeSelected": false,
+          "preflightPassed": false,
+          "hasStageOrArtifactInventory": false
+        }
+      },
+      "triggers": [
+        "What should I do next?",
+        "Which BlendOps skill should I use?",
+        "Is this ready?",
+        "Can I run the runtime eval?",
+        "How do I package/install BlendOps?",
+        "What is blocked?"
+      ],
+      "exclusions": [
+        {
+          "condition": "The goal is clear, preflight is passed, and stage or artifact inventory already exists",
+          "delegateTo": "workflow-stage-router",
+          "reason": "Selects the single immediate next skill from a locked precedence order and exits to pre-handoff-verification on any failed gate"
+        },
+        {
+          "condition": "The goal is clear and the user wants to select the right recipe or pack",
+          "delegateTo": "recipe-fit-assessor",
+          "reason": "Scores candidate recipes/packs and detects multi-deliverable scope"
+        },
+        {
+          "condition": "A recipe or pack is already selected and needs preflight readiness verification",
+          "delegateTo": "pack-prerequisite-checker",
+          "reason": "Evaluates the preflight matrix across brief completeness, runtime posture, and asset readiness"
+        },
+        {
+          "condition": "The user explicitly asks to turn an idea into a structured 3D brief",
+          "delegateTo": "intent-to-3d-brief-writer",
+          "reason": "Locks the canonical 8-slot 3D brief before scene planning"
+        },
+        {
+          "condition": "The user asks to plan a product-hero scene directly",
+          "delegateTo": "product-hero-scene-planner",
+          "reason": "Handles domain-specific scene planning once brief and recipe are known"
+        },
+        {
+          "condition": "The user asks for render or export artifact verification",
+          "delegateTo": "render-export-evidence",
+          "reason": "Classifies artifact truth states from on-disk paths and validation notes"
+        },
+        {
+          "condition": "The user asks for Blender MCP runtime preflight verification",
+          "delegateTo": "official-runtime-readiness-checker",
+          "reason": "Verifies Path 1 or Path 2 runtime readiness without claiming execution"
+        }
+      ],
+      "inputs": {
+        "required": [
+          {
+            "name": "user_request",
+            "type": "string",
+            "description": "Ambiguous, mixed, or entry-level user question about BlendOps capabilities or next action"
+          }
+        ],
+        "optional": [
+          {
+            "name": "current_status_context",
+            "type": "object",
+            "description": "Optional context about known files, docs, or blockers"
+          }
+        ]
+      },
+      "outputs": {
+        "primary": [
+          "recommended_next_action",
+          "target_skill_or_doc",
+          "why_this_is_safe"
+        ],
+        "truthStatePolicy": {
+          "runtimeDefault": "Not Run",
+          "artifactDefault": "Not Produced",
+          "mutationRule": "downgrade_only"
+        }
+      },
+      "handoffs": [
+        {
+          "target": "recipe-fit-assessor",
+          "type": "progression",
+          "label": "Recipe or pack selection when goal becomes clear",
+          "when": {
+            "all": [
+              {
+                "field": "goal.clarity",
+                "operator": "equals",
+                "value": "clear"
+              },
+              {
+                "field": "recipe.selected",
+                "operator": "equals",
+                "value": false
+              }
+            ]
+          }
+        },
+        {
+          "target": "pack-prerequisite-checker",
+          "type": "conditional",
+          "label": "Pack preflight readiness check when recipe is already chosen",
+          "when": {
+            "all": [
+              {
+                "field": "recipe.selected",
+                "operator": "equals",
+                "value": true
+              },
+              {
+                "field": "preflight.passed",
+                "operator": "equals",
+                "value": false
+              }
+            ]
+          }
+        },
+        {
+          "target": "workflow-stage-router",
+          "type": "conditional",
+          "label": "In-flight workflow routing (clear goal + existing artifacts)",
+          "when": {
+            "all": [
+              {
+                "field": "goal.clarity",
+                "operator": "equals",
+                "value": "clear"
+              },
+              {
+                "field": "preflight.passed",
+                "operator": "equals",
+                "value": true
+              },
+              {
+                "field": "inventory.exists",
+                "operator": "equals",
+                "value": true
+              }
+            ]
+          }
+        },
+        {
+          "target": "intent-to-3d-brief-writer",
+          "type": "progression",
+          "label": "Initial 3D brief creation",
+          "when": {
+            "all": [
+              {
+                "field": "brief.locked",
+                "operator": "equals",
+                "value": false
+              }
+            ]
+          }
+        },
+        {
+          "target": "runtime-path-picker",
+          "type": "conditional",
+          "label": "Runtime path selection",
+          "when": {
+            "all": [
+              {
+                "field": "request.topic",
+                "operator": "equals",
+                "value": "runtime_selection"
+              }
+            ]
+          }
+        },
+        {
+          "target": "official-runtime-setup-guide",
+          "type": "conditional",
+          "label": "Official runtime setup",
+          "when": {
+            "all": [
+              {
+                "field": "request.topic",
+                "operator": "equals",
+                "value": "runtime_setup"
+              }
+            ]
+          }
+        },
+        {
+          "target": "official-runtime-readiness-checker",
+          "type": "conditional",
+          "label": "Runtime readiness preflight",
+          "when": {
+            "all": [
+              {
+                "field": "request.topic",
+                "operator": "equals",
+                "value": "runtime_readiness"
+              }
+            ]
+          }
+        },
+        {
+          "target": "runtime-bridge-conflict-resolver",
+          "type": "fallback",
+          "label": "MCP bridge port/session conflict",
+          "when": {
+            "all": [
+              {
+                "field": "runtime.conflictDetected",
+                "operator": "equals",
+                "value": true
+              }
+            ]
+          }
+        },
+        {
+          "target": "product-hero-scene-planner",
+          "type": "alternative",
+          "label": "Scene planning",
+          "when": {
+            "all": [
+              {
+                "field": "brief.locked",
+                "operator": "equals",
+                "value": true
+              },
+              {
+                "field": "recipe.id",
+                "operator": "equals",
+                "value": "product-hero-v0"
+              }
+            ]
+          }
+        },
+        {
+          "target": "render-export-evidence",
+          "type": "conditional",
+          "label": "Render/export evidence",
+          "when": {
+            "all": [
+              {
+                "field": "request.topic",
+                "operator": "equals",
+                "value": "artifact_evidence"
+              }
+            ]
+          }
+        },
+        {
+          "target": "pre-handoff-verification",
+          "type": "fallback",
+          "label": "Failed workflow gate / pre-handoff check",
+          "when": {
+            "all": [
+              {
+                "field": "gate.status",
+                "operator": "equals",
+                "value": "failed"
+              }
+            ]
+          }
+        },
+        {
+          "target": "glb-web-handoff",
+          "type": "conditional",
+          "label": "GLB handoff",
+          "when": {
+            "all": [
+              {
+                "field": "request.topic",
+                "operator": "equals",
+                "value": "glb_handoff"
+              }
+            ]
+          }
+        },
+        {
+          "target": "non-blender-user-response-writer",
+          "type": "progression",
+          "label": "Final response",
+          "when": {
+            "all": [
+              {
+                "field": "stage.current",
+                "operator": "equals",
+                "value": "final_communication"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "$schema": "../../schemas/skill-contract.schema.json",
+      "id": "recipe-fit-assessor",
+      "version": "1.0.0",
+      "category": "routing-and-governance",
+      "role": "recipe-and-pack-selector",
+      "purpose": "Score whether a user's 3D goal fits an existing BlendOps recipe or pack, or needs custom decomposition, and name the exact next skill.",
+      "routingPrecedence": {
+        "group": "entry-and-stage-routing",
+        "rank": 2,
+        "activationGate": {
+          "goalClarity": "clear",
+          "recipeSelected": false,
+          "preflightPassed": false,
+          "hasStageOrArtifactInventory": false
+        }
+      },
+      "triggers": [
+        "what recipe should I use",
+        "does product hero fit",
+        "closest workflow for X",
+        "which pack"
+      ],
+      "exclusions": [
+        {
+          "condition": "Diverging raw creative ideas before a delivery shape exists",
+          "delegateTo": "blender-brainstorming",
+          "reason": "Explores creative directions and clarifies vague ideas before recipe selection"
+        },
+        {
+          "condition": "General entry routing across BlendOps when the goal itself is unclear",
+          "delegateTo": "blendops-help",
+          "reason": "Handles ambiguous entry triage at precedence Rank 1"
+        },
+        {
+          "condition": "Checking whether a selected pack's preflight prerequisites are met",
+          "delegateTo": "pack-prerequisite-checker",
+          "reason": "Evaluates preflight readiness once the recipe/pack is already selected"
+        },
+        {
+          "condition": "Picking the next workflow stage after preflight passed and artifacts already exist",
+          "delegateTo": "workflow-stage-router",
+          "reason": "Routes active in-flight workflows at precedence Rank 4"
+        },
+        {
+          "condition": "Writing the structured 8-slot 3D brief after recipe fit is settled",
+          "delegateTo": "intent-to-3d-brief-writer",
+          "reason": "Authors the formal brief after recipe fit is determined"
+        },
+        {
+          "condition": "Detailed scene planning once a domain and brief are locked",
+          "delegateTo": "product-hero-scene-planner",
+          "reason": "Builds the domain-specific scene plan after preflight passes"
+        },
+        {
+          "condition": "Runtime setup, path selection, or bridge conflict troubleshooting",
+          "delegateTo": "runtime-path-picker",
+          "reason": "Handles MCP runtime selection and setup outside recipe scoring"
+        },
+        {
+          "condition": "Legal or asset license verification",
+          "delegateTo": "asset-license-checker",
+          "reason": "Audits asset provenance and license compatibility"
+        }
+      ],
+      "inputs": {
+        "required": [
+          {
+            "name": "user_goal_summary",
+            "type": "string",
+            "description": "Plain-language 3D goal and intended deliverable subject"
+          },
+          {
+            "name": "target_output_destination",
+            "type": "string",
+            "description": "Target format or channel (e.g., hero still, catalog grid, turntable, web GLB)"
+          }
+        ],
+        "optional": [
+          {
+            "name": "candidate_pack_hint",
+            "type": "string",
+            "description": "Optional pack or recipe the user is considering"
+          }
+        ]
+      },
+      "outputs": {
+        "primary": [
+          "recipe_fit_verdict",
+          "candidate_comparison_table",
+          "recommended_next_skill"
+        ],
+        "truthStatePolicy": {
+          "runtimeDefault": "Not Run",
+          "artifactDefault": "Not Produced",
+          "mutationRule": "downgrade_only"
+        }
+      },
+      "handoffs": [
+        {
+          "target": "blender-brainstorming",
+          "type": "upstream_reference",
+          "label": "Upstream creative divergence",
+          "when": {
+            "all": [
+              {
+                "field": "goal.clarity",
+                "operator": "equals",
+                "value": "ambiguous_or_mixed"
+              }
+            ]
+          }
+        },
+        {
+          "target": "blendops-help",
+          "type": "boundary_delegation",
+          "label": "General entry routing",
+          "when": {
+            "all": [
+              {
+                "field": "request.scope",
+                "operator": "equals",
+                "value": "general_help"
+              }
+            ]
+          }
+        },
+        {
+          "target": "blender-recipe-decomposer",
+          "type": "conditional",
+          "label": "Multi-deliverable scope split when prompt spans multiple incompatible recipes",
+          "when": {
+            "all": [
+              {
+                "field": "fit.multiDeliverableDetected",
+                "operator": "equals",
+                "value": true
+              }
+            ]
+          }
+        },
+        {
+          "target": "intent-to-3d-brief-writer",
+          "type": "progression",
+          "label": "Downstream structured brief",
+          "when": {
+            "all": [
+              {
+                "field": "fit.verdict",
+                "operator": "in",
+                "value": [
+                  "strong_fit",
+                  "partial_fit"
+                ]
+              },
+              {
+                "field": "brief.locked",
+                "operator": "equals",
+                "value": false
+              }
+            ]
+          }
+        },
+        {
+          "target": "pack-prerequisite-checker",
+          "type": "progression",
+          "label": "Pack prerequisite verification",
+          "when": {
+            "all": [
+              {
+                "field": "fit.verdict",
+                "operator": "equals",
+                "value": "strong_fit"
+              },
+              {
+                "field": "brief.locked",
+                "operator": "equals",
+                "value": true
+              }
+            ]
+          }
+        },
+        {
+          "target": "workflow-stage-router",
+          "type": "conditional",
+          "label": "Post-artifact stage routing",
+          "when": {
+            "all": [
+              {
+                "field": "preflight.passed",
+                "operator": "equals",
+                "value": true
+              },
+              {
+                "field": "inventory.exists",
+                "operator": "equals",
+                "value": true
+              }
+            ]
+          }
+        },
+        {
+          "target": "product-hero-scene-planner",
+          "type": "alternative",
+          "label": "Domain scene planner (product hero)",
+          "when": {
+            "all": [
+              {
+                "field": "brief.locked",
+                "operator": "equals",
+                "value": true
+              },
+              {
+                "field": "recipe.domain",
+                "operator": "equals",
+                "value": "product_hero"
+              }
+            ]
+          }
+        },
+        {
+          "target": "product-grid-scene-planner",
+          "type": "alternative",
+          "label": "Domain scene planner (product grid)",
+          "when": {
+            "all": [
+              {
+                "field": "brief.locked",
+                "operator": "equals",
+                "value": true
+              },
+              {
+                "field": "recipe.domain",
+                "operator": "equals",
+                "value": "product_grid"
+              }
+            ]
+          }
+        },
+        {
+          "target": "character-portrait-scene-planner",
+          "type": "alternative",
+          "label": "Domain scene planner (character portrait)",
+          "when": {
+            "all": [
+              {
+                "field": "brief.locked",
+                "operator": "equals",
+                "value": true
+              },
+              {
+                "field": "recipe.domain",
+                "operator": "equals",
+                "value": "character_portrait"
+              }
+            ]
+          }
+        },
+        {
+          "target": "environment-establishing-shot-planner",
+          "type": "alternative",
+          "label": "Domain scene planner (environment establishing shot)",
+          "when": {
+            "all": [
+              {
+                "field": "brief.locked",
+                "operator": "equals",
+                "value": true
+              },
+              {
+                "field": "recipe.domain",
+                "operator": "equals",
+                "value": "environment_shot"
+              }
+            ]
+          }
+        },
+        {
+          "target": "interior-architectural-scene-planner",
+          "type": "alternative",
+          "label": "Domain scene planner (interior architectural)",
+          "when": {
+            "all": [
+              {
+                "field": "brief.locked",
+                "operator": "equals",
+                "value": true
+              },
+              {
+                "field": "recipe.domain",
+                "operator": "equals",
+                "value": "interior_archviz"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "$schema": "../../schemas/skill-contract.schema.json",
+      "id": "pack-prerequisite-checker",
+      "version": "1.0.0",
+      "category": "routing-and-governance",
+      "role": "pack-preflight-readiness-gate",
+      "purpose": "Verify brief, runtime posture, skill coverage, and evidence habits before starting a BlendOps workflow pack, then emit a Go/No-Go decision and single next skill.",
+      "routingPrecedence": {
+        "group": "entry-and-stage-routing",
+        "rank": 3,
+        "activationGate": {
+          "goalClarity": "clear",
+          "recipeSelected": true,
+          "preflightPassed": false,
+          "hasStageOrArtifactInventory": false
+        }
+      },
+      "triggers": [
+        "are we ready to start",
+        "pre-flight for the pack",
+        "what's missing before we build",
+        "check prerequisites"
+      ],
+      "exclusions": [
+        {
+          "condition": "Goal or entry point is ambiguous and no pack is chosen yet",
+          "delegateTo": "blendops-help",
+          "reason": "Triages ambiguous entry requests at precedence Rank 1"
+        },
+        {
+          "condition": "Evaluating which recipe or pack fits the user's goal",
+          "delegateTo": "recipe-fit-assessor",
+          "reason": "Scores candidate recipes/packs at precedence Rank 2 before preflight"
+        },
+        {
+          "condition": "Workflow is already past preflight with existing stage or artifact inventory",
+          "delegateTo": "workflow-stage-router",
+          "reason": "Routes in-flight workflows at precedence Rank 4"
+        },
+        {
+          "condition": "Detailed Blender MCP runtime connection preflight",
+          "delegateTo": "official-runtime-readiness-checker",
+          "reason": "Inspects Path 1 or Path 2 runtime readiness in detail"
+        },
+        {
+          "condition": "Active MCP bridge port or add-on session conflicts",
+          "delegateTo": "runtime-bridge-conflict-resolver",
+          "reason": "Resolves port 9876 and dual-bridge conflicts"
+        },
+        {
+          "condition": "Debugging Blender scene or runtime execution errors",
+          "delegateTo": "blender-troubleshooting",
+          "reason": "Diagnoses runtime or scene failures"
+        },
+        {
+          "condition": "Auditing external 3D asset license compliance",
+          "delegateTo": "asset-license-checker",
+          "reason": "Performs dedicated asset license and provenance verification"
+        }
+      ],
+      "inputs": {
+        "required": [
+          {
+            "name": "target_pack_id",
+            "type": "string",
+            "description": "Selected BlendOps pack or recipe identifier (e.g., product-hero-v0)"
+          },
+          {
+            "name": "current_brief_status",
+            "type": "object",
+            "description": "Current 3D brief completeness across subject, destination, and constraints"
+          }
+        ],
+        "optional": [
+          {
+            "name": "declared_runtime_posture",
+            "type": "string",
+            "description": "Whether the session is text-only planning or targets Path 1 / Path 2 / CLI"
+          }
+        ]
+      },
+      "outputs": {
+        "primary": [
+          "prerequisite_matrix_rows",
+          "go_no_go_verdict",
+          "single_next_skill"
+        ],
+        "truthStatePolicy": {
+          "runtimeDefault": "Not Run",
+          "artifactDefault": "Not Produced",
+          "mutationRule": "downgrade_only"
+        }
+      },
+      "handoffs": [
+        {
+          "target": "recipe-fit-assessor",
+          "type": "upstream_reference",
+          "label": "Recipe selection",
+          "when": {
+            "all": [
+              {
+                "field": "recipe.selected",
+                "operator": "equals",
+                "value": false
+              }
+            ]
+          }
+        },
+        {
+          "target": "intent-to-3d-brief-writer",
+          "type": "fallback",
+          "label": "Brief completeness",
+          "when": {
+            "all": [
+              {
+                "field": "brief.complete",
+                "operator": "equals",
+                "value": false
+              }
+            ]
+          }
+        },
+        {
+          "target": "official-runtime-readiness-checker",
+          "type": "conditional",
+          "label": "Runtime detail",
+          "when": {
+            "all": [
+              {
+                "field": "runtime.mode",
+                "operator": "equals",
+                "value": "runtime_requested"
+              },
+              {
+                "field": "runtime.verifiedReady",
+                "operator": "equals",
+                "value": false
+              }
+            ]
+          }
+        },
+        {
+          "target": "runtime-bridge-conflict-resolver",
+          "type": "fallback",
+          "label": "Bridge conflicts",
+          "when": {
+            "all": [
+              {
+                "field": "runtime.conflictDetected",
+                "operator": "equals",
+                "value": true
+              }
+            ]
+          }
+        },
+        {
+          "target": "blender-troubleshooting",
+          "type": "fallback",
+          "label": "Runtime debugging",
+          "when": {
+            "all": [
+              {
+                "field": "runtime.errorDetected",
+                "operator": "equals",
+                "value": true
+              }
+            ]
+          }
+        },
+        {
+          "target": "asset-license-checker",
+          "type": "conditional",
+          "label": "License checks",
+          "when": {
+            "all": [
+              {
+                "field": "assets.externalUsed",
+                "operator": "equals",
+                "value": true
+              },
+              {
+                "field": "assets.licenseCleared",
+                "operator": "equals",
+                "value": false
+              }
+            ]
+          }
+        },
+        {
+          "target": "product-hero-scene-planner",
+          "type": "alternative",
+          "label": "Domain planner (product hero when Go)",
+          "when": {
+            "all": [
+              {
+                "field": "preflight.verdict",
+                "operator": "equals",
+                "value": "go"
+              },
+              {
+                "field": "recipe.domain",
+                "operator": "equals",
+                "value": "product_hero"
+              }
+            ]
+          }
+        },
+        {
+          "target": "product-grid-scene-planner",
+          "type": "alternative",
+          "label": "Domain planner (product grid when Go)",
+          "when": {
+            "all": [
+              {
+                "field": "preflight.verdict",
+                "operator": "equals",
+                "value": "go"
+              },
+              {
+                "field": "recipe.domain",
+                "operator": "equals",
+                "value": "product_grid"
+              }
+            ]
+          }
+        },
+        {
+          "target": "character-portrait-scene-planner",
+          "type": "alternative",
+          "label": "Domain planner (character portrait when Go)",
+          "when": {
+            "all": [
+              {
+                "field": "preflight.verdict",
+                "operator": "equals",
+                "value": "go"
+              },
+              {
+                "field": "recipe.domain",
+                "operator": "equals",
+                "value": "character_portrait"
+              }
+            ]
+          }
+        },
+        {
+          "target": "environment-establishing-shot-planner",
+          "type": "alternative",
+          "label": "Domain planner (environment establishing shot when Go)",
+          "when": {
+            "all": [
+              {
+                "field": "preflight.verdict",
+                "operator": "equals",
+                "value": "go"
+              },
+              {
+                "field": "recipe.domain",
+                "operator": "equals",
+                "value": "environment_shot"
+              }
+            ]
+          }
+        },
+        {
+          "target": "interior-architectural-scene-planner",
+          "type": "alternative",
+          "label": "Domain planner (interior architectural when Go)",
+          "when": {
+            "all": [
+              {
+                "field": "preflight.verdict",
+                "operator": "equals",
+                "value": "go"
+              },
+              {
+                "field": "recipe.domain",
+                "operator": "equals",
+                "value": "interior_archviz"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "$schema": "../../schemas/skill-contract.schema.json",
+      "id": "workflow-stage-router",
+      "version": "1.0.0",
+      "category": "routing-and-governance",
+      "role": "mid-workflow-stage-router",
+      "purpose": "Given current artifacts and intent, name the next BlendOps skill or workflow stage and preconditions to advance.",
+      "routingPrecedence": {
+        "group": "entry-and-stage-routing",
+        "rank": 4,
+        "activationGate": {
+          "goalClarity": "clear",
+          "recipeSelected": true,
+          "preflightPassed": true,
+          "hasStageOrArtifactInventory": true
+        }
+      },
+      "triggers": [
+        "where are we in the workflow",
+        "what's next",
+        "resume from here",
+        "next skill"
+      ],
+      "exclusions": [
+        {
+          "condition": "Initial goal is vague or entry point is unknown",
+          "delegateTo": "blendops-help",
+          "reason": "Triages ambiguous entry requests at precedence Rank 1"
+        },
+        {
+          "condition": "Goal is clear but no recipe or pack has been chosen yet",
+          "delegateTo": "recipe-fit-assessor",
+          "reason": "Selects the fitting recipe/pack at precedence Rank 2"
+        },
+        {
+          "condition": "Pack is selected and brief exists, but pack preflight has not completed yet",
+          "delegateTo": "pack-prerequisite-checker",
+          "reason": "Executes preflight readiness verification at precedence Rank 3 before stage routing"
+        },
+        {
+          "condition": "Active MCP runtime bridge conflict on port 9876",
+          "delegateTo": "runtime-bridge-conflict-resolver",
+          "reason": "Resolves port and dual add-on conflicts before advancing"
+        },
+        {
+          "condition": "Final stakeholder-facing wording and plain-language summary",
+          "delegateTo": "non-blender-user-response-writer",
+          "reason": "Formats validated workflow outputs for non-Blender users"
+        }
+      ],
+      "inputs": {
+        "required": [
+          {
+            "name": "current_artifact_inventory",
+            "type": "artifact_inventory",
+            "description": "Determines current milestone stage and downgrade-only truth labels"
+          },
+          {
+            "name": "active_intent",
+            "type": "string",
+            "description": "Prevents routing to the wrong domain branch"
+          }
+        ],
+        "optional": [
+          {
+            "name": "target_pack_or_recipe",
+            "type": "string",
+            "description": "Narrows milestone track"
+          }
+        ]
+      },
+      "outputs": {
+        "primary": [
+          "current_stage_name",
+          "single_immediate_next_skill",
+          "preconditions_checklist"
+        ],
+        "truthStatePolicy": {
+          "runtimeDefault": "Not Run",
+          "artifactDefault": "Not Produced",
+          "mutationRule": "downgrade_only"
+        }
+      },
+      "handoffs": [
+        {
+          "target": "pack-prerequisite-checker",
+          "type": "upstream_reference",
+          "label": "Pack entry preflight gate",
+          "when": {
+            "all": [
+              {
+                "field": "preflight.passed",
+                "operator": "equals",
+                "value": false
+              }
+            ]
+          }
+        },
+        {
+          "target": "official-runtime-readiness-checker",
+          "type": "conditional",
+          "label": "Runtime readiness check",
+          "when": {
+            "all": [
+              {
+                "field": "runtime.status",
+                "operator": "equals",
+                "value": "Not Run"
+              },
+              {
+                "field": "stage.requiresRuntime",
+                "operator": "equals",
+                "value": true
+              }
+            ]
+          }
+        },
+        {
+          "target": "runtime-bridge-conflict-resolver",
+          "type": "fallback",
+          "label": "Active MCP bridge conflict on port 9876",
+          "when": {
+            "all": [
+              {
+                "field": "runtime.conflictDetected",
+                "operator": "equals",
+                "value": true
+              }
+            ]
+          }
+        },
+        {
+          "target": "blender-scope-boundary-enforcer",
+          "type": "boundary_delegation",
+          "label": "Mid-workflow scope expansion or unapproved deliverable addition",
+          "when": {
+            "all": [
+              {
+                "field": "scope.driftDetected",
+                "operator": "equals",
+                "value": true
+              }
+            ]
+          }
+        },
+        {
+          "target": "render-export-evidence",
+          "type": "progression",
+          "label": "Evidence updates for render or export outputs",
+          "when": {
+            "all": [
+              {
+                "field": "stage.current",
+                "operator": "equals",
+                "value": "post_execution_audit"
+              }
+            ]
+          }
+        },
+        {
+          "target": "pre-handoff-verification",
+          "type": "fallback",
+          "label": "Failed gate / blocked mode exit / final gate",
+          "when": {
+            "any": [
+              {
+                "field": "gate.status",
+                "operator": "equals",
+                "value": "failed"
+              },
+              {
+                "field": "runtime.mode",
+                "operator": "equals",
+                "value": "blocked"
+              },
+              {
+                "field": "stage.current",
+                "operator": "equals",
+                "value": "final_verification"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

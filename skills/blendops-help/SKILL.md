@@ -30,24 +30,25 @@ Use this skill when:
 - an agent needs a concise entry-point recommendation before starting work
 
 ## When not to use
-
-Do not use this skill when:
-
-- the goal is clear and artifacts already exist; use `workflow-stage-router` (which selects the single immediate next skill from a locked precedence order and exits to `pre-handoff-verification` on any failed gate)
-- a narrower skill clearly applies and the next action is obvious
-- the user explicitly asks to turn an idea into a 3D brief (`intent-to-3d-brief-writer`) or plan a scene (`product-hero-scene-planner`, `character-portrait-scene-planner`, `environment-establishing-shot-planner`, `interior-architectural-scene-planner`, `product-grid-scene-planner`)
-- the user asks for render/export evidence; use `render-export-evidence`
-- the user asks for runtime preflight; use `official-runtime-readiness-checker`
-- the request would require claiming artifacts, runtime eval, package, or marketplace completion without evidence
+<!-- blendops:generated:start exclusions -->
+- The goal is clear, preflight is passed, and stage or artifact inventory already exists → use `../workflow-stage-router/SKILL.md` (Selects the single immediate next skill from a locked precedence order and exits to pre-handoff-verification on any failed gate)
+- The goal is clear and the user wants to select the right recipe or pack → use `../recipe-fit-assessor/SKILL.md` (Scores candidate recipes/packs and detects multi-deliverable scope)
+- A recipe or pack is already selected and needs preflight readiness verification → use `../pack-prerequisite-checker/SKILL.md` (Evaluates the preflight matrix across brief completeness, runtime posture, and asset readiness)
+- The user explicitly asks to turn an idea into a structured 3D brief → use `../intent-to-3d-brief-writer/SKILL.md` (Locks the canonical 8-slot 3D brief before scene planning)
+- The user asks to plan a product-hero scene directly → use `../product-hero-scene-planner/SKILL.md` (Handles domain-specific scene planning once brief and recipe are known)
+- The user asks for render or export artifact verification → use `../render-export-evidence/SKILL.md` (Classifies artifact truth states from on-disk paths and validation notes)
+- The user asks for Blender MCP runtime preflight verification → use `../official-runtime-readiness-checker/SKILL.md` (Verifies Path 1 or Path 2 runtime readiness without claiming execution)
+<!-- blendops:generated:end exclusions -->
 
 ## Trigger phrases
-
-- “What should I do next?”
-- “Which BlendOps skill should I use?”
-- “Is this ready?”
-- “Can I run the runtime eval?”
-- “How do I package/install BlendOps?”
-- “What is blocked?”
+<!-- blendops:generated:start triggers -->
+- "What should I do next?"
+- "Which BlendOps skill should I use?"
+- "Is this ready?"
+- "Can I run the runtime eval?"
+- "How do I package/install BlendOps?"
+- "What is blocked?"
+<!-- blendops:generated:end triggers -->
 
 ## Prerequisites / readiness
 
@@ -277,18 +278,21 @@ Why: <short reason>
 - Treating install docs as runtime evidence or future packaging tasks as completed.
 
 ## Cross-skill handoff
-
-- In-flight workflow routing (clear goal + existing artifacts) → `../workflow-stage-router/SKILL.md`
-- Failed workflow gate / pre-handoff check → `../pre-handoff-verification/SKILL.md`
-- Initial 3D brief creation → `../intent-to-3d-brief-writer/SKILL.md`
-- Runtime path selection → `../runtime-path-picker/SKILL.md`
-- Official runtime setup → `../official-runtime-setup-guide/SKILL.md`
-- Runtime readiness preflight → `../official-runtime-readiness-checker/SKILL.md`
-- MCP bridge port/session conflict → `../runtime-bridge-conflict-resolver/SKILL.md`
-- Scene planning → `../product-hero-scene-planner/SKILL.md`
-- Render/export evidence → `../render-export-evidence/SKILL.md`
-- GLB handoff → `../glb-web-handoff/SKILL.md`
-- Final response → `../non-blender-user-response-writer/SKILL.md`
+<!-- blendops:generated:start handoffs -->
+- [progression] Recipe or pack selection when goal becomes clear → `../recipe-fit-assessor/SKILL.md`
+- [conditional] Pack preflight readiness check when recipe is already chosen → `../pack-prerequisite-checker/SKILL.md`
+- [conditional] In-flight workflow routing (clear goal + existing artifacts) → `../workflow-stage-router/SKILL.md`
+- [progression] Initial 3D brief creation → `../intent-to-3d-brief-writer/SKILL.md`
+- [conditional] Runtime path selection → `../runtime-path-picker/SKILL.md`
+- [conditional] Official runtime setup → `../official-runtime-setup-guide/SKILL.md`
+- [conditional] Runtime readiness preflight → `../official-runtime-readiness-checker/SKILL.md`
+- [fallback] MCP bridge port/session conflict → `../runtime-bridge-conflict-resolver/SKILL.md`
+- [alternative] Scene planning → `../product-hero-scene-planner/SKILL.md`
+- [conditional] Render/export evidence → `../render-export-evidence/SKILL.md`
+- [fallback] Failed workflow gate / pre-handoff check → `../pre-handoff-verification/SKILL.md`
+- [conditional] GLB handoff → `../glb-web-handoff/SKILL.md`
+- [progression] Final response → `../non-blender-user-response-writer/SKILL.md`
+<!-- blendops:generated:end handoffs -->
 
 ## Non-goals
 

@@ -23,21 +23,24 @@ Map a user's stated goal to the closest documented BlendOps recipe or pack befor
 - before locking `intent-to-3d-brief-writer` output to a pack
 
 ## When not to use
-
-- Diverging raw creative ideas before a delivery shape exists (use `blender-brainstorming`)
-- Writing the structured 3D brief after fit is settled (use `intent-to-3d-brief-writer`)
-- Detailed scene planning once a domain is chosen (use `product-hero-scene-planner`, `product-grid-scene-planner`, `character-portrait-scene-planner`, `environment-establishing-shot-planner`, or `interior-architectural-scene-planner`)
-- Checking whether a pack's installation prerequisites are met (use `pack-prerequisite-checker`)
-- General entry routing across BlendOps (use `blendops-help`) or picking the next stage after artifacts already exist (use `workflow-stage-router`)
-- Runtime setup, path selection, or troubleshooting (use `runtime-path-picker`, `official-runtime-setup-guide`, `official-runtime-readiness-checker`, `blender-troubleshooting`, or `runtime-bridge-conflict-resolver`)
-- Legal or license verification (use `asset-license-checker`)
+<!-- blendops:generated:start exclusions -->
+- Diverging raw creative ideas before a delivery shape exists → use `../blender-brainstorming/SKILL.md` (Explores creative directions and clarifies vague ideas before recipe selection)
+- General entry routing across BlendOps when the goal itself is unclear → use `../blendops-help/SKILL.md` (Handles ambiguous entry triage at precedence Rank 1)
+- Checking whether a selected pack's preflight prerequisites are met → use `../pack-prerequisite-checker/SKILL.md` (Evaluates preflight readiness once the recipe/pack is already selected)
+- Picking the next workflow stage after preflight passed and artifacts already exist → use `../workflow-stage-router/SKILL.md` (Routes active in-flight workflows at precedence Rank 4)
+- Writing the structured 8-slot 3D brief after recipe fit is settled → use `../intent-to-3d-brief-writer/SKILL.md` (Authors the formal brief after recipe fit is determined)
+- Detailed scene planning once a domain and brief are locked → use `../product-hero-scene-planner/SKILL.md` (Builds the domain-specific scene plan after preflight passes)
+- Runtime setup, path selection, or bridge conflict troubleshooting → use `../runtime-path-picker/SKILL.md` (Handles MCP runtime selection and setup outside recipe scoring)
+- Legal or asset license verification → use `../asset-license-checker/SKILL.md` (Audits asset provenance and license compatibility)
+<!-- blendops:generated:end exclusions -->
 
 ## Trigger phrases
-
+<!-- blendops:generated:start triggers -->
 - "what recipe should I use"
 - "does product hero fit"
 - "closest workflow for X"
 - "which pack"
+<!-- blendops:generated:end triggers -->
 
 ## Prerequisites / readiness
 
@@ -140,13 +143,19 @@ Still usable; note runtime unavailable does not change recipe fit.
 | Fail | Poor fit but user insists on wrong pack without mitigations |
 
 ## Cross-skill handoff
-
-* Upstream creative divergence -> `../blender-brainstorming/SKILL.md`
-* General entry routing -> `../blendops-help/SKILL.md`
-* Downstream structured brief -> `../intent-to-3d-brief-writer/SKILL.md`
-* Pack prerequisite verification -> `../pack-prerequisite-checker/SKILL.md`
-* Post-artifact stage routing -> `../workflow-stage-router/SKILL.md`
-* Domain scene planners (pick one when brief is ready) -> `../product-hero-scene-planner/SKILL.md`, `../product-grid-scene-planner/SKILL.md`, `../character-portrait-scene-planner/SKILL.md`, `../environment-establishing-shot-planner/SKILL.md`, `../interior-architectural-scene-planner/SKILL.md`
+<!-- blendops:generated:start handoffs -->
+- [upstream_reference] Upstream creative divergence → `../blender-brainstorming/SKILL.md`
+- [boundary_delegation] General entry routing → `../blendops-help/SKILL.md`
+- [conditional] Multi-deliverable scope split when prompt spans multiple incompatible recipes → `../blender-recipe-decomposer/SKILL.md`
+- [progression] Downstream structured brief → `../intent-to-3d-brief-writer/SKILL.md`
+- [progression] Pack prerequisite verification → `../pack-prerequisite-checker/SKILL.md`
+- [conditional] Post-artifact stage routing → `../workflow-stage-router/SKILL.md`
+- [alternative] Domain scene planner (product hero) → `../product-hero-scene-planner/SKILL.md`
+- [alternative] Domain scene planner (product grid) → `../product-grid-scene-planner/SKILL.md`
+- [alternative] Domain scene planner (character portrait) → `../character-portrait-scene-planner/SKILL.md`
+- [alternative] Domain scene planner (environment establishing shot) → `../environment-establishing-shot-planner/SKILL.md`
+- [alternative] Domain scene planner (interior architectural) → `../interior-architectural-scene-planner/SKILL.md`
+<!-- blendops:generated:end handoffs -->
 
 ## References
 

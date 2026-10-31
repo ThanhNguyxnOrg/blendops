@@ -171,14 +171,15 @@ function renderHtml() {
 <body>
   <header>
     <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
-      <strong style="font-size:18px;">BlendOps — Phase 0 &amp; Phase 1 Inspector</strong>
+      <strong style="font-size:18px;">BlendOps — Phase 0, 1 &amp; 2 Inspector</strong>
       <span class="badge">base: 3ea3c35</span>
       <span class="badge" style="color:var(--blue)">phase-0: 27cfcb8</span>
-      <span class="badge" style="color:var(--green)">phase-1: f9d1043 (CI PASS)</span>
+      <span class="badge" style="color:var(--green)">phase-1: 00d2a1c</span>
+      <span class="badge" style="color:var(--accent)">phase-2 pilot: 4 contracts (CI PASS)</span>
     </div>
     <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-      <a href="/download/phase0-and-phase1.patch" download="phase0-and-phase1.patch" style="text-decoration:none;background:var(--accent);color:#000;font-weight:600;font-size:12px;padding:6px 12px;border-radius:6px;">Download Phase 0 + 1 Patch (.patch)</a>
-      <a href="/download/phase1-only.patch" download="phase1-only.patch" style="text-decoration:none;background:var(--surface-2);color:var(--text);border:1px solid var(--border);font-weight:600;font-size:12px;padding:6px 12px;border-radius:6px;">Download Phase 1 Only (.patch)</a>
+      <a href="/download/all-phases.patch" download="blendops-phases-0-1-2.patch" style="text-decoration:none;background:var(--accent);color:#000;font-weight:600;font-size:12px;padding:6px 12px;border-radius:6px;">Download All Commits (Phase 0+1+2 .patch)</a>
+      <a href="/download/phase0-and-phase1.patch" download="phase0-and-phase1.patch" style="text-decoration:none;background:var(--surface-2);color:var(--text);border:1px solid var(--border);font-weight:600;font-size:12px;padding:6px 12px;border-radius:6px;">Download Phase 0+1 (.patch)</a>
     </div>
   </header>
   <main>
@@ -283,8 +284,17 @@ import { execFileSync } from 'node:child_process';
 
 const server = http.createServer((req, res) => {
   const url = new URL(req.url || '/', `http://localhost:${port}`);
-  if (url.pathname === '/download/phase0-and-phase1.patch') {
+  if (url.pathname === '/download/all-phases.patch') {
     const patch = execFileSync('git', ['format-patch', 'origin/main..HEAD', '--stdout'], { cwd: root });
+    res.writeHead(200, {
+      'Content-Type': 'text/x-patch; charset=utf-8',
+      'Content-Disposition': 'attachment; filename="blendops-phases-0-1-2.patch"',
+    });
+    res.end(patch);
+    return;
+  }
+  if (url.pathname === '/download/phase0-and-phase1.patch') {
+    const patch = execFileSync('git', ['format-patch', 'origin/main..00d2a1c', '--stdout'], { cwd: root });
     res.writeHead(200, {
       'Content-Type': 'text/x-patch; charset=utf-8',
       'Content-Disposition': 'attachment; filename="phase0-and-phase1.patch"',

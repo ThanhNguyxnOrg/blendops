@@ -34,10 +34,12 @@
     "dev": "node scripts/dev-server.mjs",
     "start": "node scripts/dev-server.mjs",
     "build": "npm run ci",
-    "test": "node --test scripts/test-phase1.mjs",
+    "registry:build": "node scripts/build-registry.mjs",
+    "registry:check": "node scripts/build-registry.mjs --check",
+    "test": "node --test scripts/test-phase1.mjs scripts/test-phase2.mjs",
     "docs:check": "node scripts/check-docs.mjs",
     "skills:export": "node scripts/export-claude-skills.mjs",
-    "ci": "npm run docs:check && npm run skills:export && npm test"
+    "ci": "npm run docs:check && npm run registry:check && npm run skills:export && npm test"
   },
   "devDependencies": {
     "fflate": "0.8.3"

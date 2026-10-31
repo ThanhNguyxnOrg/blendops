@@ -1,0 +1,149 @@
+{
+  "$schema": "../../schemas/skill-contract.schema.json",
+  "id": "workflow-stage-router",
+  "version": "1.0.0",
+  "category": "routing-and-governance",
+  "role": "mid-workflow-stage-router",
+  "purpose": "Given current artifacts and intent, name the next BlendOps skill or workflow stage and preconditions to advance.",
+  "routingPrecedence": {
+    "group": "entry-and-stage-routing",
+    "rank": 4,
+    "activationGate": {
+      "goalClarity": "clear",
+      "recipeSelected": true,
+      "preflightPassed": true,
+      "hasStageOrArtifactInventory": true
+    }
+  },
+  "triggers": [
+    "where are we in the workflow",
+    "what's next",
+    "resume from here",
+    "next skill"
+  ],
+  "exclusions": [
+    {
+      "condition": "Initial goal is vague or entry point is unknown",
+      "delegateTo": "blendops-help",
+      "reason": "Triages ambiguous entry requests at precedence Rank 1"
+    },
+    {
+      "condition": "Goal is clear but no recipe or pack has been chosen yet",
+      "delegateTo": "recipe-fit-assessor",
+      "reason": "Selects the fitting recipe/pack at precedence Rank 2"
+    },
+    {
+      "condition": "Pack is selected and brief exists, but pack preflight has not completed yet",
+      "delegateTo": "pack-prerequisite-checker",
+      "reason": "Executes preflight readiness verification at precedence Rank 3 before stage routing"
+    },
+    {
+      "condition": "Active MCP runtime bridge conflict on port 9876",
+      "delegateTo": "runtime-bridge-conflict-resolver",
+      "reason": "Resolves port and dual add-on conflicts before advancing"
+    },
+    {
+      "condition": "Final stakeholder-facing wording and plain-language summary",
+      "delegateTo": "non-blender-user-response-writer",
+      "reason": "Formats validated workflow outputs for non-Blender users"
+    }
+  ],
+  "inputs": {
+    "required": [
+      {
+        "name": "current_artifact_inventory",
+        "type": "artifact_inventory",
+        "description": "Determines current milestone stage and downgrade-only truth labels"
+      },
+      {
+        "name": "active_intent",
+        "type": "string",
+        "description": "Prevents routing to the wrong domain branch"
+      }
+    ],
+    "optional": [
+      {
+        "name": "target_pack_or_recipe",
+        "type": "string",
+        "description": "Narrows milestone track"
+      }
+    ]
+  },
+  "outputs": {
+    "primary": [
+      "current_stage_name",
+      "single_immediate_next_skill",
+      "preconditions_checklist"
+    ],
+    "truthStatePolicy": {
+      "runtimeDefault": "Not Run",
+      "artifactDefault": "Not Produced",
+      "mutationRule": "downgrade_only"
+    }
+  },
+  "handoffs": [
+    {
+      "target": "pack-prerequisite-checker",
+      "type": "upstream_reference",
+      "label": "Pack entry preflight gate",
+      "when": {
+        "all": [
+          { "field": "preflight.passed", "operator": "equals", "value": false }
+        ]
+      }
+    },
+    {
+      "target": "official-runtime-readiness-checker",
+      "type": "conditional",
+      "label": "Runtime readiness check",
+      "when": {
+        "all": [
+          { "field": "runtime.status", "operator": "equals", "value": "Not Run" },
+          { "field": "stage.requiresRuntime", "operator": "equals", "value": true }
+        ]
+      }
+    },
+    {
+      "target": "runtime-bridge-conflict-resolver",
+      "type": "fallback",
+      "label": "Active MCP bridge conflict on port 9876",
+      "when": {
+        "all": [
+          { "field": "runtime.conflictDetected", "operator": "equals", "value": true }
+        ]
+      }
+    },
+    {
+      "target": "blender-scope-boundary-enforcer",
+      "type": "boundary_delegation",
+      "label": "Mid-workflow scope expansion or unapproved deliverable addition",
+      "when": {
+        "all": [
+          { "field": "scope.driftDetected", "operator": "equals", "value": true }
+        ]
+      }
+    },
+    {
+      "target": "render-export-evidence",
+      "type": "progression",
+      "label": "Evidence updates for render or export outputs",
+      "when": {
+        "all": [
+          { "field": "stage.current", "operator": "equals", "value": "post_execution_audit" }
+        ]
+      }
+    },
+    {
+      "target": "pre-handoff-verification",
+      "type": "fallback",
+      "label": "Failed gate / blocked mode exit / final gate",
+      "when": {
+        "any": [
+          { "field": "gate.status", "operator": "equals", "value": "failed" },
+          { "field": "runtime.mode", "operator": "equals", "value": "blocked" },
+          { "field": "stage.current", "operator": "equals", "value": "final_verification" }
+        ]
+      }
+    }
+  ]
+}

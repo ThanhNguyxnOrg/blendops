@@ -1,0 +1,219 @@
+{
+  "$schema": "../../schemas/skill-contract.schema.json",
+  "id": "recipe-fit-assessor",
+  "version": "1.0.0",
+  "category": "routing-and-governance",
+  "role": "recipe-and-pack-selector",
+  "purpose": "Score whether a user's 3D goal fits an existing BlendOps recipe or pack, or needs custom decomposition, and name the exact next skill.",
+  "routingPrecedence": {
+    "group": "entry-and-stage-routing",
+    "rank": 2,
+    "activationGate": {
+      "goalClarity": "clear",
+      "recipeSelected": false,
+      "preflightPassed": false,
+      "hasStageOrArtifactInventory": false
+    }
+  },
+  "triggers": [
+    "what recipe should I use",
+    "does product hero fit",
+    "closest workflow for X",
+    "which pack"
+  ],
+  "exclusions": [
+    {
+      "condition": "Diverging raw creative ideas before a delivery shape exists",
+      "delegateTo": "blender-brainstorming",
+      "reason": "Explores creative directions and clarifies vague ideas before recipe selection"
+    },
+    {
+      "condition": "General entry routing across BlendOps when the goal itself is unclear",
+      "delegateTo": "blendops-help",
+      "reason": "Handles ambiguous entry triage at precedence Rank 1"
+    },
+    {
+      "condition": "Checking whether a selected pack's preflight prerequisites are met",
+      "delegateTo": "pack-prerequisite-checker",
+      "reason": "Evaluates preflight readiness once the recipe/pack is already selected"
+    },
+    {
+      "condition": "Picking the next workflow stage after preflight passed and artifacts already exist",
+      "delegateTo": "workflow-stage-router",
+      "reason": "Routes active in-flight workflows at precedence Rank 4"
+    },
+    {
+      "condition": "Writing the structured 8-slot 3D brief after recipe fit is settled",
+      "delegateTo": "intent-to-3d-brief-writer",
+      "reason": "Authors the formal brief after recipe fit is determined"
+    },
+    {
+      "condition": "Detailed scene planning once a domain and brief are locked",
+      "delegateTo": "product-hero-scene-planner",
+      "reason": "Builds the domain-specific scene plan after preflight passes"
+    },
+    {
+      "condition": "Runtime setup, path selection, or bridge conflict troubleshooting",
+      "delegateTo": "runtime-path-picker",
+      "reason": "Handles MCP runtime selection and setup outside recipe scoring"
+    },
+    {
+      "condition": "Legal or asset license verification",
+      "delegateTo": "asset-license-checker",
+      "reason": "Audits asset provenance and license compatibility"
+    }
+  ],
+  "inputs": {
+    "required": [
+      {
+        "name": "user_goal_summary",
+        "type": "string",
+        "description": "Plain-language 3D goal and intended deliverable subject"
+      },
+      {
+        "name": "target_output_destination",
+        "type": "string",
+        "description": "Target format or channel (e.g., hero still, catalog grid, turntable, web GLB)"
+      }
+    ],
+    "optional": [
+      {
+        "name": "candidate_pack_hint",
+        "type": "string",
+        "description": "Optional pack or recipe the user is considering"
+      }
+    ]
+  },
+  "outputs": {
+    "primary": [
+      "recipe_fit_verdict",
+      "candidate_comparison_table",
+      "recommended_next_skill"
+    ],
+    "truthStatePolicy": {
+      "runtimeDefault": "Not Run",
+      "artifactDefault": "Not Produced",
+      "mutationRule": "downgrade_only"
+    }
+  },
+  "handoffs": [
+    {
+      "target": "blender-brainstorming",
+      "type": "upstream_reference",
+      "label": "Upstream creative divergence",
+      "when": {
+        "all": [
+          { "field": "goal.clarity", "operator": "equals", "value": "ambiguous_or_mixed" }
+        ]
+      }
+    },
+    {
+      "target": "blendops-help",
+      "type": "boundary_delegation",
+      "label": "General entry routing",
+      "when": {
+        "all": [
+          { "field": "request.scope", "operator": "equals", "value": "general_help" }
+        ]
+      }
+    },
+    {
+      "target": "blender-recipe-decomposer",
+      "type": "conditional",
+      "label": "Multi-deliverable scope split when prompt spans multiple incompatible recipes",
+      "when": {
+        "all": [
+          { "field": "fit.multiDeliverableDetected", "operator": "equals", "value": true }
+        ]
+      }
+    },
+    {
+      "target": "intent-to-3d-brief-writer",
+      "type": "progression",
+      "label": "Downstream structured brief",
+      "when": {
+        "all": [
+          { "field": "fit.verdict", "operator": "in", "value": ["strong_fit", "partial_fit"] },
+          { "field": "brief.locked", "operator": "equals", "value": false }
+        ]
+      }
+    },
+    {
+      "target": "pack-prerequisite-checker",
+      "type": "progression",
+      "label": "Pack prerequisite verification",
+      "when": {
+        "all": [
+          { "field": "fit.verdict", "operator": "equals", "value": "strong_fit" },
+          { "field": "brief.locked", "operator": "equals", "value": true }
+        ]
+      }
+    },
+    {
+      "target": "workflow-stage-router",
+      "type": "conditional",
+      "label": "Post-artifact stage routing",
+      "when": {
+        "all": [
+          { "field": "preflight.passed", "operator": "equals", "value": true },
+          { "field": "inventory.exists", "operator": "equals", "value": true }
+        ]
+      }
+    },
+    {
+      "target": "product-hero-scene-planner",
+      "type": "alternative",
+      "label": "Domain scene planner (product hero)",
+      "when": {
+        "all": [
+          { "field": "brief.locked", "operator": "equals", "value": true },
+          { "field": "recipe.domain", "operator": "equals", "value": "product_hero" }
+        ]
+      }
+    },
+    {
+      "target": "product-grid-scene-planner",
+      "type": "alternative",
+      "label": "Domain scene planner (product grid)",
+      "when": {
+        "all": [
+          { "field": "brief.locked", "operator": "equals", "value": true },
+          { "field": "recipe.domain", "operator": "equals", "value": "product_grid" }
+        ]
+      }
+    },
+    {
+      "target": "character-portrait-scene-planner",
+      "type": "alternative",
+      "label": "Domain scene planner (character portrait)",
+      "when": {
+        "all": [
+          { "field": "brief.locked", "operator": "equals", "value": true },
+          { "field": "recipe.domain", "operator": "equals", "value": "character_portrait" }
+        ]
+      }
+    },
+    {
+      "target": "environment-establishing-shot-planner",
+      "type": "alternative",
+      "label": "Domain scene planner (environment establishing shot)",
+      "when": {
+        "all": [
+          { "field": "brief.locked", "operator": "equals", "value": true },
+          { "field": "recipe.domain", "operator": "equals", "value": "environment_shot" }
+        ]
+      }
+    },
+    {
+      "target": "interior-architectural-scene-planner",
+      "type": "alternative",
+      "label": "Domain scene planner (interior architectural)",
+      "when": {
+        "all": [
+          { "field": "brief.locked", "operator": "equals", "value": true },
+          { "field": "recipe.domain", "operator": "equals", "value": "interior_archviz" }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,213 @@
+{
+  "$schema": "../../schemas/skill-contract.schema.json",
+  "id": "pack-prerequisite-checker",
+  "version": "1.0.0",
+  "category": "routing-and-governance",
+  "role": "pack-preflight-readiness-gate",
+  "purpose": "Verify brief, runtime posture, skill coverage, and evidence habits before starting a BlendOps workflow pack, then emit a Go/No-Go decision and single next skill.",
+  "routingPrecedence": {
+    "group": "entry-and-stage-routing",
+    "rank": 3,
+    "activationGate": {
+      "goalClarity": "clear",
+      "recipeSelected": true,
+      "preflightPassed": false,
+      "hasStageOrArtifactInventory": false
+    }
+  },
+  "triggers": [
+    "are we ready to start",
+    "pre-flight for the pack",
+    "what's missing before we build",
+    "check prerequisites"
+  ],
+  "exclusions": [
+    {
+      "condition": "Goal or entry point is ambiguous and no pack is chosen yet",
+      "delegateTo": "blendops-help",
+      "reason": "Triages ambiguous entry requests at precedence Rank 1"
+    },
+    {
+      "condition": "Evaluating which recipe or pack fits the user's goal",
+      "delegateTo": "recipe-fit-assessor",
+      "reason": "Scores candidate recipes/packs at precedence Rank 2 before preflight"
+    },
+    {
+      "condition": "Workflow is already past preflight with existing stage or artifact inventory",
+      "delegateTo": "workflow-stage-router",
+      "reason": "Routes in-flight workflows at precedence Rank 4"
+    },
+    {
+      "condition": "Detailed Blender MCP runtime connection preflight",
+      "delegateTo": "official-runtime-readiness-checker",
+      "reason": "Inspects Path 1 or Path 2 runtime readiness in detail"
+    },
+    {
+      "condition": "Active MCP bridge port or add-on session conflicts",
+      "delegateTo": "runtime-bridge-conflict-resolver",
+      "reason": "Resolves port 9876 and dual-bridge conflicts"
+    },
+    {
+      "condition": "Debugging Blender scene or runtime execution errors",
+      "delegateTo": "blender-troubleshooting",
+      "reason": "Diagnoses runtime or scene failures"
+    },
+    {
+      "condition": "Auditing external 3D asset license compliance",
+      "delegateTo": "asset-license-checker",
+      "reason": "Performs dedicated asset license and provenance verification"
+    }
+  ],
+  "inputs": {
+    "required": [
+      {
+        "name": "target_pack_id",
+        "type": "string",
+        "description": "Selected BlendOps pack or recipe identifier (e.g., product-hero-v0)"
+      },
+      {
+        "name": "current_brief_status",
+        "type": "object",
+        "description": "Current 3D brief completeness across subject, destination, and constraints"
+      }
+    ],
+    "optional": [
+      {
+        "name": "declared_runtime_posture",
+        "type": "string",
+        "description": "Whether the session is text-only planning or targets Path 1 / Path 2 / CLI"
+      }
+    ]
+  },
+  "outputs": {
+    "primary": [
+      "prerequisite_matrix_rows",
+      "go_no_go_verdict",
+      "single_next_skill"
+    ],
+    "truthStatePolicy": {
+      "runtimeDefault": "Not Run",
+      "artifactDefault": "Not Produced",
+      "mutationRule": "downgrade_only"
+    }
+  },
+  "handoffs": [
+    {
+      "target": "recipe-fit-assessor",
+      "type": "upstream_reference",
+      "label": "Recipe selection",
+      "when": {
+        "all": [
+          { "field": "recipe.selected", "operator": "equals", "value": false }
+        ]
+      }
+    },
+    {
+      "target": "intent-to-3d-brief-writer",
+      "type": "fallback",
+      "label": "Brief completeness",
+      "when": {
+        "all": [
+          { "field": "brief.complete", "operator": "equals", "value": false }
+        ]
+      }
+    },
+    {
+      "target": "official-runtime-readiness-checker",
+      "type": "conditional",
+      "label": "Runtime detail",
+      "when": {
+        "all": [
+          { "field": "runtime.mode", "operator": "equals", "value": "runtime_requested" },
+          { "field": "runtime.verifiedReady", "operator": "equals", "value": false }
+        ]
+      }
+    },
+    {
+      "target": "runtime-bridge-conflict-resolver",
+      "type": "fallback",
+      "label": "Bridge conflicts",
+      "when": {
+        "all": [
+          { "field": "runtime.conflictDetected", "operator": "equals", "value": true }
+        ]
+      }
+    },
+    {
+      "target": "blender-troubleshooting",
+      "type": "fallback",
+      "label": "Runtime debugging",
+      "when": {
+        "all": [
+          { "field": "runtime.errorDetected", "operator": "equals", "value": true }
+        ]
+      }
+    },
+    {
+      "target": "asset-license-checker",
+      "type": "conditional",
+      "label": "License checks",
+      "when": {
+        "all": [
+          { "field": "assets.externalUsed", "operator": "equals", "value": true },
+          { "field": "assets.licenseCleared", "operator": "equals", "value": false }
+        ]
+      }
+    },
+    {
+      "target": "product-hero-scene-planner",
+      "type": "alternative",
+      "label": "Domain planner (product hero when Go)",
+      "when": {
+        "all": [
+          { "field": "preflight.verdict", "operator": "equals", "value": "go" },
+          { "field": "recipe.domain", "operator": "equals", "value": "product_hero" }
+        ]
+      }
+    },
+    {
+      "target": "product-grid-scene-planner",
+      "type": "alternative",
+      "label": "Domain planner (product grid when Go)",
+      "when": {
+        "all": [
+          { "field": "preflight.verdict", "operator": "equals", "value": "go" },
+          { "field": "recipe.domain", "operator": "equals", "value": "product_grid" }
+        ]
+      }
+    },
+    {
+      "target": "character-portrait-scene-planner",
+      "type": "alternative",
+      "label": "Domain planner (character portrait when Go)",
+      "when": {
+        "all": [
+          { "field": "preflight.verdict", "operator": "equals", "value": "go" },
+          { "field": "recipe.domain", "operator": "equals", "value": "character_portrait" }
+        ]
+      }
+    },
+    {
+      "target": "environment-establishing-shot-planner",
+      "type": "alternative",
+      "label": "Domain planner (environment establishing shot when Go)",
+      "when": {
+        "all": [
+          { "field": "preflight.verdict", "operator": "equals", "value": "go" },
+          { "field": "recipe.domain", "operator": "equals", "value": "environment_shot" }
+        ]
+      }
+    },
+    {
+      "target": "interior-architectural-scene-planner",
+      "type": "alternative",
+      "label": "Domain planner (interior architectural when Go)",
+      "when": {
+        "all": [
+          { "field": "preflight.verdict", "operator": "equals", "value": "go" },
+          { "field": "recipe.domain", "operator": "equals", "value": "interior_archviz" }
+        ]
+      }
+    }
+  ]
+}

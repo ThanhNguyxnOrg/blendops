@@ -23,17 +23,21 @@ Reduce skill-choice paralysis by mapping **current state → next narrow skill**
 - resume after interruption
 
 ## When not to use
-
-- initial goal vague (use `blendops-help` / `blender-brainstorming`)
-- runtime bridge errors (use `runtime-bridge-conflict-resolver`)
-- final stakeholder wording (use `non-blender-user-response-writer`)
+<!-- blendops:generated:start exclusions -->
+- Initial goal is vague or entry point is unknown → use `../blendops-help/SKILL.md` (Triages ambiguous entry requests at precedence Rank 1)
+- Goal is clear but no recipe or pack has been chosen yet → use `../recipe-fit-assessor/SKILL.md` (Selects the fitting recipe/pack at precedence Rank 2)
+- Pack is selected and brief exists, but pack preflight has not completed yet → use `../pack-prerequisite-checker/SKILL.md` (Executes preflight readiness verification at precedence Rank 3 before stage routing)
+- Active MCP runtime bridge conflict on port 9876 → use `../runtime-bridge-conflict-resolver/SKILL.md` (Resolves port and dual add-on conflicts before advancing)
+- Final stakeholder-facing wording and plain-language summary → use `../non-blender-user-response-writer/SKILL.md` (Formats validated workflow outputs for non-Blender users)
+<!-- blendops:generated:end exclusions -->
 
 ## Trigger phrases
-
+<!-- blendops:generated:start triggers -->
 - "where are we in the workflow"
 - "what's next"
 - "resume from here"
 - "next skill"
+<!-- blendops:generated:end triggers -->
 
 ## Prerequisites / readiness
 
@@ -130,11 +134,14 @@ Do not route forward to planning or execution skills. Exit immediately to `pre-h
 | Fail | Failed gate, blocked mode, or evidence contradiction encountered — mandatory immediate exit to `pre-handoff-verification` (never forward) |
 
 ## Cross-skill handoff
-
-- Pack entry → `../pack-prerequisite-checker/SKILL.md`
-- Runtime readiness check → `../official-runtime-readiness-checker/SKILL.md`
-- Evidence updates → `../render-export-evidence/SKILL.md`
-- Failed gate / blocked mode exit / final gate → `../pre-handoff-verification/SKILL.md`
+<!-- blendops:generated:start handoffs -->
+- [upstream_reference] Pack entry preflight gate → `../pack-prerequisite-checker/SKILL.md`
+- [conditional] Runtime readiness check → `../official-runtime-readiness-checker/SKILL.md`
+- [fallback] Active MCP bridge conflict on port 9876 → `../runtime-bridge-conflict-resolver/SKILL.md`
+- [boundary_delegation] Mid-workflow scope expansion or unapproved deliverable addition → `../blender-scope-boundary-enforcer/SKILL.md`
+- [progression] Evidence updates for render or export outputs → `../render-export-evidence/SKILL.md`
+- [fallback] Failed gate / blocked mode exit / final gate → `../pre-handoff-verification/SKILL.md`
+<!-- blendops:generated:end handoffs -->
 
 ## References
 

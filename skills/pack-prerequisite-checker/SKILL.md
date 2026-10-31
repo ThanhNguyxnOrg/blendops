@@ -23,19 +23,23 @@ Block "half-ready" pack execution: confirm the user's brief, chosen pack/recipe,
 - when user jumps mid-pack without status context
 
 ## When not to use
-
-- micro decisions inside a single skill (too narrow)
-- runtime readiness detail (use `official-runtime-readiness-checker`)
-- runtime bridge conflicts (use `runtime-bridge-conflict-resolver`)
-- runtime debugging (use `blender-troubleshooting`)
-- license compliance (use `asset-license-checker`)
+<!-- blendops:generated:start exclusions -->
+- Goal or entry point is ambiguous and no pack is chosen yet → use `../blendops-help/SKILL.md` (Triages ambiguous entry requests at precedence Rank 1)
+- Evaluating which recipe or pack fits the user's goal → use `../recipe-fit-assessor/SKILL.md` (Scores candidate recipes/packs at precedence Rank 2 before preflight)
+- Workflow is already past preflight with existing stage or artifact inventory → use `../workflow-stage-router/SKILL.md` (Routes in-flight workflows at precedence Rank 4)
+- Detailed Blender MCP runtime connection preflight → use `../official-runtime-readiness-checker/SKILL.md` (Inspects Path 1 or Path 2 runtime readiness in detail)
+- Active MCP bridge port or add-on session conflicts → use `../runtime-bridge-conflict-resolver/SKILL.md` (Resolves port 9876 and dual-bridge conflicts)
+- Debugging Blender scene or runtime execution errors → use `../blender-troubleshooting/SKILL.md` (Diagnoses runtime or scene failures)
+- Auditing external 3D asset license compliance → use `../asset-license-checker/SKILL.md` (Performs dedicated asset license and provenance verification)
+<!-- blendops:generated:end exclusions -->
 
 ## Trigger phrases
-
+<!-- blendops:generated:start triggers -->
 - "are we ready to start"
 - "pre-flight for the pack"
 - "what's missing before we build"
 - "check prerequisites"
+<!-- blendops:generated:end triggers -->
 
 ## Prerequisites / readiness
 
@@ -135,14 +139,19 @@ Still check non-runtime rows (brief, assets plan, evidence).
 | Fail | Critical row Blocked without mitigation |
 
 ## Cross-skill handoff
-
-* Recipe selection → `../recipe-fit-assessor/SKILL.md`
-* Brief completeness → `../intent-to-3d-brief-writer/SKILL.md`
-* Runtime detail → `../official-runtime-readiness-checker/SKILL.md`
-* Bridge conflicts → `../runtime-bridge-conflict-resolver/SKILL.md`
-* Runtime debugging → `../blender-troubleshooting/SKILL.md`
-* License checks → `../asset-license-checker/SKILL.md`
-* Domain planners (when go) → `../product-hero-scene-planner/SKILL.md`, `../product-grid-scene-planner/SKILL.md`, `../character-portrait-scene-planner/SKILL.md`, `../environment-establishing-shot-planner/SKILL.md`, or `../interior-architectural-scene-planner/SKILL.md`
+<!-- blendops:generated:start handoffs -->
+- [upstream_reference] Recipe selection → `../recipe-fit-assessor/SKILL.md`
+- [fallback] Brief completeness → `../intent-to-3d-brief-writer/SKILL.md`
+- [conditional] Runtime detail → `../official-runtime-readiness-checker/SKILL.md`
+- [fallback] Bridge conflicts → `../runtime-bridge-conflict-resolver/SKILL.md`
+- [fallback] Runtime debugging → `../blender-troubleshooting/SKILL.md`
+- [conditional] License checks → `../asset-license-checker/SKILL.md`
+- [alternative] Domain planner (product hero when Go) → `../product-hero-scene-planner/SKILL.md`
+- [alternative] Domain planner (product grid when Go) → `../product-grid-scene-planner/SKILL.md`
+- [alternative] Domain planner (character portrait when Go) → `../character-portrait-scene-planner/SKILL.md`
+- [alternative] Domain planner (environment establishing shot when Go) → `../environment-establishing-shot-planner/SKILL.md`
+- [alternative] Domain planner (interior architectural when Go) → `../interior-architectural-scene-planner/SKILL.md`
+<!-- blendops:generated:end handoffs -->
 
 ## References
 
