@@ -2,6 +2,8 @@
 
 Status: Draft v0
 Confidence label: linked-only
+Upstream documentation reviewed: Yes (Anthropic Skills ZIP upload + Blender Connector docs reviewed)
+BlendOps empirical verification status: linked-only (`Linked Only (Not Verified)` — ZIP package structure verified, live UI upload unverified; see [`docs/evals/adapter-empirical-verification-phase-7.md`](../evals/adapter-empirical-verification-phase-7.md))
 
 ## Supported install scopes
 - docs-only/reference (default)

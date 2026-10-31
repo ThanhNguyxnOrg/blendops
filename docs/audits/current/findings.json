@@ -1,20 +1,20 @@
 {
   "schemaVersion": "1.4.0",
-  "auditPhase": "phase-6-current",
+  "auditPhase": "phase-7-current",
   "repository": "ThanhNguyxnOrg/blendops",
   "branch": "main",
   "baselineCommitSha": "3ea3c35c6b8a6e5e915bab9f63333d4a1c09bd4d",
-  "sourceCommitSha": "f8301a3e39e05bee4da1b8f85f16fb13ff1c6b3e",
-  "sourceCommitShort": "f8301a3",
-  "sourceCommitDate": "2026-10-31 12:45:48 +0000",
+  "sourceCommitSha": "4af8b16aad3bdf1dce4114c479002e0b397f3c99",
+  "sourceCommitShort": "4af8b16",
+  "sourceCommitDate": "2026-10-31 13:51:12 +0000",
   "auditProvenance": {
-    "sourceCommitSha": "f8301a3e39e05bee4da1b8f85f16fb13ff1c6b3e",
-    "sourceCommitShort": "f8301a3",
-    "sourceCommitDate": "2026-10-31 12:45:48 +0000",
+    "sourceCommitSha": "4af8b16aad3bdf1dce4114c479002e0b397f3c99",
+    "sourceCommitShort": "4af8b16",
+    "sourceCommitDate": "2026-10-31 13:51:12 +0000",
     "workingTreeState": "dirty",
     "snapshotBasis": "working-tree-on-top-of-source-commit",
-    "uncommittedChangeCount": 25,
-    "auditedInputsSha256": "4f80f977e892f1988773a63a87a430b5bfc25d879b6f7918f676a64097700303",
+    "uncommittedChangeCount": 23,
+    "auditedInputsSha256": "e272a20d827fbfa09845b1712c0984d869084c2178eaac6741947aec28ac5e06",
     "selfReferentialCommitRule": "A Git commit cannot contain its own final commit SHA inside tracked files. sourceCommitSha records the verified HEAD commit present when the generator ran, workingTreeState and snapshotBasis record whether uncommitted working-tree changes were present on top of sourceCommitSha, and auditedInputsSha256 digests the exact audited file contents."
   },
   "summary": {
@@ -39,7 +39,7 @@
       "phase0BaselineState": "OPEN (30/48 skills affected at 3ea3c35)",
       "currentLifecycleStatus": "FIXED",
       "resolvedInPhase": "Phase 1 (ac1ccdb)",
-      "lastVerifiedCommit": "f8301a3e39e05bee4da1b8f85f16fb13ff1c6b3e",
+      "lastVerifiedCommit": "4af8b16aad3bdf1dce4114c479002e0b397f3c99",
       "evidencePaths": [
         "scripts/check-docs.mjs",
         "scripts/test-phase1.mjs",
@@ -57,15 +57,15 @@
       "pillar": "Pillar 9 (CI, Release Governance & Maintenance)",
       "phase0BaselineState": "OPEN (spawnSync zip ENOENT on minimal Linux; CI skipped export)",
       "currentLifecycleStatus": "FIXED",
-      "resolvedInPhase": "Phase 1 (ac1ccdb) + Phase 2.1 (b1927ba)",
-      "lastVerifiedCommit": "f8301a3e39e05bee4da1b8f85f16fb13ff1c6b3e",
+      "resolvedInPhase": "Phase 1 (ac1ccdb) + Phase 2.1 (b1927ba) + Phase 6.1 (4af8b16)",
+      "lastVerifiedCommit": "4af8b16aad3bdf1dce4114c479002e0b397f3c99",
       "evidencePaths": [
         "scripts/export-claude-skills.mjs",
         "scripts/test-phase1.mjs",
         ".github/workflows/docs.yml",
         "package.json"
       ],
-      "verificationMethod": "Pure Node.js fflate (zlibSync) ZIP builder verified byte-for-byte across all 48 skills (SKILL.md, EVAL.md, and references/*) in scripts/test-phase1.mjs; .github/workflows/docs.yml executes npm run ci.",
+      "verificationMethod": "Pure Node.js fflate (zlibSync) ZIP builder verified byte-for-byte across all 48 skills (SKILL.md, EVAL.md, and references/*) with isolated --output-root concurrency safety in scripts/test-phase1.mjs; .github/workflows/docs.yml executes npm run ci.",
       "remainingScope": "None. Full 48-skill ZIP and folder export runs in CI."
     },
     {
@@ -76,7 +76,7 @@
       "phase0BaselineState": "OPEN (0/48 contracts, no registry/, split handoff notation)",
       "currentLifecycleStatus": "FIXED",
       "resolvedInPhase": "Phase 2 Pilot (f43385a) + Phase 2.1 Hardening (b1927ba) + Phase 5 Full Catalog (f8301a3)",
-      "lastVerifiedCommit": "f8301a3e39e05bee4da1b8f85f16fb13ff1c6b3e",
+      "lastVerifiedCommit": "4af8b16aad3bdf1dce4114c479002e0b397f3c99",
       "evidencePaths": [
         "schemas/skill-contract.schema.json",
         "schemas/contract-context-fields.schema.json",
@@ -102,8 +102,8 @@
       "pillar": "Pillar 3 (Behavioral Evaluation)",
       "phase0BaselineState": "OPEN (0 automated runners; 8/48 structured EVAL.md tables; 40/48 prose-only)",
       "currentLifecycleStatus": "FIXED",
-      "resolvedInPhase": "Phase 3 Foundation (88dc3bd) + Phase 3.1 (650f0a5) + Phase 6 Full Catalog",
-      "lastVerifiedCommit": "f8301a3e39e05bee4da1b8f85f16fb13ff1c6b3e",
+      "resolvedInPhase": "Phase 3 Foundation (88dc3bd) + Phase 3.1 (650f0a5) + Phase 6 Full Catalog (869462d)",
+      "lastVerifiedCommit": "4af8b16aad3bdf1dce4114c479002e0b397f3c99",
       "evidencePaths": [
         "schemas/skill-eval.schema.json",
         "scripts/run-evals.mjs",
@@ -124,7 +124,7 @@
       "phase0BaselineState": "OPEN (8/48 skills missing Decision tree, Playbooks, Failure handling, Troubleshooting, Best practices, Good/Bad examples, User-facing response template, Anti-patterns)",
       "currentLifecycleStatus": "FIXED",
       "resolvedInPhase": "Phase 4",
-      "lastVerifiedCommit": "f8301a3e39e05bee4da1b8f85f16fb13ff1c6b3e",
+      "lastVerifiedCommit": "4af8b16aad3bdf1dce4114c479002e0b397f3c99",
       "evidencePaths": [
         "skills/_template/SKILL.md",
         "scripts/check-docs.mjs",
@@ -150,7 +150,7 @@
       "phase0BaselineState": "OPEN (blendops-help omitted Batch 7 routing quartet; blender-scope-boundary-enforcer had 0 incoming forward edges)",
       "currentLifecycleStatus": "FIXED",
       "resolvedInPhase": "Phase 2 Pilot (f43385a)",
-      "lastVerifiedCommit": "f8301a3e39e05bee4da1b8f85f16fb13ff1c6b3e",
+      "lastVerifiedCommit": "4af8b16aad3bdf1dce4114c479002e0b397f3c99",
       "evidencePaths": [
         "skills/blendops-help/contract.json",
         "skills/blendops-help/SKILL.md",
@@ -169,7 +169,7 @@
       "phase0BaselineState": "OPEN (no inspect-glb.mjs or version matrices)",
       "currentLifecycleStatus": "FIXED",
       "resolvedInPhase": "Phase 3 (E1 & E2, 75f3b5c)",
-      "lastVerifiedCommit": "f8301a3e39e05bee4da1b8f85f16fb13ff1c6b3e",
+      "lastVerifiedCommit": "4af8b16aad3bdf1dce4114c479002e0b397f3c99",
       "evidencePaths": [
         "scripts/inspect-glb.mjs",
         "scripts/validate-evidence-packet.mjs",
@@ -188,19 +188,25 @@
       "pillar": "Pillar 7 (Cross-Agent Compatibility)",
       "phase0BaselineState": "OPEN (Windsurf, Continue, Cline, Roo, Aider listed as not researched; 10 targets missing from install-only table)",
       "currentLifecycleStatus": "PARTIALLY_FIXED",
-      "resolvedInPhase": "Phase 1 (ac1ccdb) + Phase 3 (E4, 75f3b5c)",
-      "lastVerifiedCommit": "f8301a3e39e05bee4da1b8f85f16fb13ff1c6b3e",
+      "resolvedInPhase": "Phase 1 (ac1ccdb) + Phase 3 (E4, 75f3b5c) + Phase 7 Empirical Verification & Evidence Hardening",
+      "lastVerifiedCommit": "4af8b16aad3bdf1dce4114c479002e0b397f3c99",
       "evidencePaths": [
         "docs/adapter-registry.md",
+        "docs/install/README.md",
+        "docs/install/cursor.md",
+        "docs/install/codex.md",
+        "docs/evals/adapter-install-v0-dry-run.md",
+        "docs/evals/adapter-empirical-verification-phase-7.md",
         "schemas/adapter-compatibility-matrix.schema.json",
         "registry/compatibility-matrix.json",
         "scripts/validate-compatibility-matrix.mjs",
         "scripts/check-docs.mjs",
         "scripts/test-phase1.mjs",
-        "scripts/test-phase3.mjs"
+        "scripts/test-phase3.mjs",
+        "scripts/test-phase7.mjs"
       ],
-      "verificationMethod": "scripts/validate-compatibility-matrix.mjs, scripts/check-docs.mjs, and scripts/test-phase3.mjs validate all 26 install targets in registry/compatibility-matrix.json and docs/adapter-registry.md and block promoting any linked-only target to verified-read without empirical evidence.",
-      "remainingScope": "2/26 targets (claude-code, generic-project) are verified-read; 24/26 targets remain linked-only (Not Verified) pending empirical host execution outside this repository."
+      "verificationMethod": "scripts/validate-compatibility-matrix.mjs, scripts/check-docs.mjs, scripts/test-phase3.mjs, and scripts/test-phase7.mjs validate all 26 install targets in registry/compatibility-matrix.json, docs/adapter-registry.md, docs/install/*.md, and docs/adapters/*.md; enforce target-specific empirical evidence matching under docs/evals/, calendar verification dates, capability integrity, and documentation confidence consistency; and record the Phase 7 26-target host availability and disposable /tmp fixture verification in docs/evals/adapter-empirical-verification-phase-7.md.",
+      "remainingScope": "2/26 targets (claude-code, generic-project) are verified-read (Verified Read (Repo-Local)); 24/26 targets remain linked-only (Not Verified) pending empirical execution inside live external target host applications/CLIs outside this container."
     },
     {
       "id": "F-09",
@@ -210,7 +216,7 @@
       "phase0BaselineState": "OPEN (96 manual summary files in bundles/ average 14 lines vs 225 lines in SKILL.md)",
       "currentLifecycleStatus": "OPEN",
       "resolvedInPhase": "Prerequisite satisfied in Phase 5 (48/48 contracts authored); bundle generator scheduled for Phase 8",
-      "lastVerifiedCommit": "f8301a3e39e05bee4da1b8f85f16fb13ff1c6b3e",
+      "lastVerifiedCommit": "4af8b16aad3bdf1dce4114c479002e0b397f3c99",
       "evidencePaths": [
         "bundles/claude-desktop-manual/",
         "bundles/skill-package/blendops/",
@@ -227,7 +233,7 @@
       "phase0BaselineState": "OPEN (only file-install ROLLBACK.md exists; no L0-L3 runtime capability model)",
       "currentLifecycleStatus": "FIXED",
       "resolvedInPhase": "Phase 3 (E3, 75f3b5c)",
-      "lastVerifiedCommit": "f8301a3e39e05bee4da1b8f85f16fb13ff1c6b3e",
+      "lastVerifiedCommit": "4af8b16aad3bdf1dce4114c479002e0b397f3c99",
       "evidencePaths": [
         "schemas/runtime-capability-policy.schema.json",
         "registry/runtime-capability-policy.json",

@@ -1,6 +1,7 @@
 # Install target: Gemini CLI
 
-Status/confidence: Draft v0, not researched
+Status/confidence: Draft v0, linked-only (native path not researched; generic project-local fallback only)
+BlendOps empirical verification status: `linked-only` (`Linked Only (Not Verified)`)
 
 ## Recommended near-term install mode
 

@@ -18,6 +18,7 @@ BlendOps evals are evidence records for laws, skills, workflows, recipes, and pa
 | Path 2 (`mcp-for-blender` (formerly `blender-mcp`)) | User-reported verified (operator statement, does not promote eval scope) | No formal evidence file yet; template at [`path-2-mcp-for-blender-readonly-template.md`](./path-2-mcp-for-blender-readonly-template.md) |
 | CLI fallback | Not Run | Documented upstream as a first-class Blender CLI surface; no in-repo evidence file yet |
 | Adapter install dry-run | Warn | Executed / Dry-run |
+| Adapter empirical verification (Phase 7 — F-08) | Warn (2 Pass repo-local, 24 Blocked host-absent) | Executed / Host discovery + disposable `/tmp` fixture verification |
 | Manual install beta v0 | Warn | Executed / Dry-run / No runtime / No global config writes |
 | Official runtime verification criteria | Prepared | Criteria only / Not Run |
 | Runtime availability checklist | Prepared | Readiness checklist only / Not Run |
@@ -59,6 +60,7 @@ BlendOps evals are evidence records for laws, skills, workflows, recipes, and pa
 | [blender-connector-read-only-smoke-test.md](./blender-connector-read-only-smoke-test.md) | Pass / Available (Path 1 read-only, likely Anthropic Connector host) | Read-only smoke evidence | Lab MCP tool surface (`get_blendfile_summary_*`, `get_objects_summary`) returned `status: ok` (attribution: consistent with Lab MCP; `path_info` attested only by this smoke test). No mutation, render, export, or artifacts. |
 | [path-2-mcp-for-blender-readonly-template.md](./path-2-mcp-for-blender-readonly-template.md) | Template only / Not Yet Run | Fill-in template | Use this template to record Path 2 read-only smoke evidence when running `mcp-for-blender` (formerly `blender-mcp`). |
 | [adapter-install-v0-dry-run.md](./adapter-install-v0-dry-run.md) | Warn | Dry-run install evidence | Adapter install evaluation report. |
+| [adapter-empirical-verification-phase-7.md](./adapter-empirical-verification-phase-7.md) | Warn (2 Pass repo-local, 24 Blocked) | Host discovery + disposable `/tmp` fixture evidence | Phase 7 empirical verification across all 26 install targets (`F-08`). |
 | [manual-install-beta-v0.md](./manual-install-beta-v0.md) | Warn | Dry-run fixture evidence | Manual install beta dry-run summary. |
 | [official-runtime-verification-criteria.md](./official-runtime-verification-criteria.md) | Prepared | Criteria only | Defines Draft v0 evidence rules for future official-runtime evals. |
 | [runtime-availability-checklist.md](./runtime-availability-checklist.md) | Prepared | Readiness checklist only | Preflight checklist for deciding whether an official-runtime eval can be attempted. |

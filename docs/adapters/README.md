@@ -19,15 +19,17 @@
 
 ## Adapter index
 
-| Target | Adapter doc | Primary use | Expected scope posture |
-|---|---|---|---|
-| Claude Code | [claude-code.md](./claude-code.md) | Claude Code workspace attachment | Project-local first, fallback if native path isn't verified |
-| Claude app/Desktop | [claude-app.md](./claude-app.md) | App/Desktop reference or project instructions | Docs-only/reference unless explicit attachment is safe |
-| OpenCode | [opencode.md](./opencode.md) | OpenCode workspace attachment | Project-local first |
-| Cursor | [cursor.md](./cursor.md) | Cursor workspace attachment | Project-local or generic-root fallback |
-| Codex | [codex.md](./codex.md) | Codex workspace attachment | Project-local or generic-root fallback |
-| Generic root | [generic-root.md](./generic-root.md) | Unknown or partially verified tools | `BLENDOPS.md` fallback |
-| Adapter template | [adapter-template.md](./adapter-template.md) | New adapter authoring | Requires scope, confidence, backup, rollback |
+See [`docs/evals/adapter-empirical-verification-phase-7.md`](../evals/adapter-empirical-verification-phase-7.md) for the Phase 7 empirical host verification report across all 6 adapters and 20 install-only targets.
+
+| Target | Adapter doc | BlendOps confidence | Primary use | Expected scope posture |
+|---|---|---|---|---|
+| Claude Code | [claude-code.md](./claude-code.md) | `verified-read` (repo-local) | Claude Code workspace attachment | Project-local first, fallback if native path isn't verified |
+| Claude app/Desktop | [claude-app.md](./claude-app.md) | `linked-only` | App/Desktop reference or project instructions | Docs-only/reference unless explicit attachment is safe |
+| OpenCode | [opencode.md](./opencode.md) | `linked-only` | OpenCode workspace attachment | Project-local first |
+| Cursor | [cursor.md](./cursor.md) | `linked-only` | Cursor workspace attachment | Project-local or generic-root fallback |
+| Codex | [codex.md](./codex.md) | `linked-only` | Codex workspace attachment | Project-local or generic-root fallback |
+| Generic root | [generic-root.md](./generic-root.md) | `verified-read` (repo-local) | Unknown or partially verified tools | `BLENDOPS.md` fallback |
+| Adapter template | [adapter-template.md](./adapter-template.md) | template | New adapter authoring | Requires scope, confidence, backup, rollback |
 
 ## Quick selection rule
 

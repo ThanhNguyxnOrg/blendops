@@ -585,7 +585,7 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
 
   const currentSkillInventory = {
     schemaVersion: '1.5.0',
-    auditPhase: 'phase-6-current',
+    auditPhase: 'phase-7-current',
     reconciledFromBaselineCommit: phase0SkillInv.commitSha,
     repository: 'ThanhNguyxnOrg/blendops',
     branch: branchName,
@@ -653,7 +653,7 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
 
   const currentEvalInventory = {
     schemaVersion: '1.3.0',
-    auditPhase: 'phase-6-current',
+    auditPhase: 'phase-7-current',
     reconciledFromBaselineCommit: phase0EvalInv.commitSha,
     repository: 'ThanhNguyxnOrg/blendops',
     branch: branchName,
@@ -710,7 +710,7 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
       pillar: 'Pillar 9 (CI, Release Governance & Maintenance)',
       phase0BaselineState: 'OPEN (spawnSync zip ENOENT on minimal Linux; CI skipped export)',
       currentLifecycleStatus: 'FIXED',
-      resolvedInPhase: 'Phase 1 (ac1ccdb) + Phase 2.1 (b1927ba)',
+      resolvedInPhase: 'Phase 1 (ac1ccdb) + Phase 2.1 (b1927ba) + Phase 6.1 (4af8b16)',
       lastVerifiedCommit: headSha,
       evidencePaths: [
         'scripts/export-claude-skills.mjs',
@@ -718,7 +718,7 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
         '.github/workflows/docs.yml',
         'package.json',
       ],
-      verificationMethod: 'Pure Node.js fflate (zlibSync) ZIP builder verified byte-for-byte across all 48 skills (SKILL.md, EVAL.md, and references/*) in scripts/test-phase1.mjs; .github/workflows/docs.yml executes npm run ci.',
+      verificationMethod: 'Pure Node.js fflate (zlibSync) ZIP builder verified byte-for-byte across all 48 skills (SKILL.md, EVAL.md, and references/*) with isolated --output-root concurrency safety in scripts/test-phase1.mjs; .github/workflows/docs.yml executes npm run ci.',
       remainingScope: 'None. Full 48-skill ZIP and folder export runs in CI.',
     },
     {
@@ -762,7 +762,7 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
       phase0BaselineState: 'OPEN (0 automated runners; 8/48 structured EVAL.md tables; 40/48 prose-only)',
       currentLifecycleStatus: f04Fixed ? 'FIXED' : 'PARTIALLY_FIXED',
       resolvedInPhase: f04Fixed
-        ? 'Phase 3 Foundation (88dc3bd) + Phase 3.1 (650f0a5) + Phase 6 Full Catalog'
+        ? 'Phase 3 Foundation (88dc3bd) + Phase 3.1 (650f0a5) + Phase 6 Full Catalog (869462d)'
         : 'Phase 3 Foundation (88dc3bd) + Phase 3.1 (650f0a5)',
       lastVerifiedCommit: headSha,
       evidencePaths: [
@@ -863,19 +863,25 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
       pillar: 'Pillar 7 (Cross-Agent Compatibility)',
       phase0BaselineState: 'OPEN (Windsurf, Continue, Cline, Roo, Aider listed as not researched; 10 targets missing from install-only table)',
       currentLifecycleStatus: 'PARTIALLY_FIXED',
-      resolvedInPhase: 'Phase 1 (ac1ccdb) + Phase 3 (E4, 75f3b5c)',
+      resolvedInPhase: 'Phase 1 (ac1ccdb) + Phase 3 (E4, 75f3b5c) + Phase 7 Empirical Verification & Evidence Hardening',
       lastVerifiedCommit: headSha,
       evidencePaths: [
         'docs/adapter-registry.md',
+        'docs/install/README.md',
+        'docs/install/cursor.md',
+        'docs/install/codex.md',
+        'docs/evals/adapter-install-v0-dry-run.md',
+        'docs/evals/adapter-empirical-verification-phase-7.md',
         'schemas/adapter-compatibility-matrix.schema.json',
         'registry/compatibility-matrix.json',
         'scripts/validate-compatibility-matrix.mjs',
         'scripts/check-docs.mjs',
         'scripts/test-phase1.mjs',
         'scripts/test-phase3.mjs',
+        'scripts/test-phase7.mjs',
       ],
-      verificationMethod: 'scripts/validate-compatibility-matrix.mjs, scripts/check-docs.mjs, and scripts/test-phase3.mjs validate all 26 install targets in registry/compatibility-matrix.json and docs/adapter-registry.md and block promoting any linked-only target to verified-read without empirical evidence.',
-      remainingScope: '2/26 targets (claude-code, generic-project) are verified-read; 24/26 targets remain linked-only (Not Verified) pending empirical host execution outside this repository.',
+      verificationMethod: 'scripts/validate-compatibility-matrix.mjs, scripts/check-docs.mjs, scripts/test-phase3.mjs, and scripts/test-phase7.mjs validate all 26 install targets in registry/compatibility-matrix.json, docs/adapter-registry.md, docs/install/*.md, and docs/adapters/*.md; enforce target-specific empirical evidence matching under docs/evals/, calendar verification dates, capability integrity, and documentation confidence consistency; and record the Phase 7 26-target host availability and disposable /tmp fixture verification in docs/evals/adapter-empirical-verification-phase-7.md.',
+      remainingScope: '2/26 targets (claude-code, generic-project) are verified-read (Verified Read (Repo-Local)); 24/26 targets remain linked-only (Not Verified) pending empirical execution inside live external target host applications/CLIs outside this container.',
     },
     {
       id: 'F-09',
@@ -944,7 +950,7 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
 
   const findings = {
     schemaVersion: '1.4.0',
-    auditPhase: 'phase-6-current',
+    auditPhase: 'phase-7-current',
     repository: 'ThanhNguyxnOrg/blendops',
     branch: branchName,
     baselineCommitSha: '3ea3c35c6b8a6e5e915bab9f63333d4a1c09bd4d',
@@ -985,7 +991,7 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
   // 4. Reassessed Current Scorecard (86.5 / 100 vs Historical 54.5 / 100)
   const currentScorecard = {
     schemaVersion: '1.5.0',
-    auditPhase: 'phase-6-current',
+    auditPhase: 'phase-7-current',
     status: 'reconciled-current-state',
     repository: 'ThanhNguyxnOrg/blendops',
     branch: branchName,
@@ -1003,13 +1009,13 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
     },
     methodology: {
       scoringPrinciple:
-        'Every point increase from the 54.5/100 Phase 0 baseline is backed by committed code, schemas, and automated CI tests in Phases 1, 2, 2.1, 3, 3.1, 3.1.1, 4, 5, and 6. Unimplemented or unrun capabilities (unrun live LLM/Blender runtime evaluations, 24 linked-only host targets, and ungenerated bundle reference summaries) receive 0 inflation.',
+        'Every point increase from the 54.5/100 Phase 0 baseline is backed by committed code, schemas, and automated CI tests in Phases 1, 2, 2.1, 3, 3.1, 3.1.1, 4, 5, 6, 6.1, and 7. Unimplemented or unrun capabilities (unrun live LLM/Blender runtime evaluations, 24 linked-only host targets, and ungenerated bundle reference summaries) receive 0 inflation.',
       zeroCompensationGate:
         'All three Phase 0 P0 zero-compensation blockers (F-01 truth-state contradiction, F-02 non-portable ZIP exporter/CI gap, and F-04 zero automated evaluation runner) have been resolved with deterministic CI runners.',
       activeZeroCompensationBlockers: [],
       resolvedZeroCompensationBlockers: [
         'RESOLVED (Phase 1, F-01): 0/48 SKILL.md files assign Not Run to Artifact status (was 30/48 at 3ea3c35). Guarded by scripts/check-docs.mjs and schemas.',
-        'RESOLVED (Phase 1 & 2.1, F-02): scripts/export-claude-skills.mjs uses pure-Node fflate across all 48 skills (SKILL.md + EVAL.md + references/*) and .github/workflows/docs.yml runs npm run ci.',
+        'RESOLVED (Phase 1, 2.1 & 6.1, F-02): scripts/export-claude-skills.mjs uses pure-Node fflate across all 48 skills (SKILL.md + EVAL.md + references/*) with isolated --output-root concurrency safety and .github/workflows/docs.yml runs npm run ci.',
         'RESOLVED (Phase 2, 2.1 & 5, F-03): 48/48 catalog skills ship validated contract.json files, compiled registry/skills.json + registry/workflow-graph.json (371 edges, 0 progression cycles), and synchronized relative-path Markdown handoff blocks.',
         'RESOLVED (Phase 3, 3.1 & 6, F-04): scripts/run-evals.mjs validates and executes 269 deterministic, contract-routing, and contract-handoff evaluation cases across all 48/48 catalog skills in CI (0 unmigrated prose skills); live_model and blender_runtime modes remain honestly marked Not Run.',
       ],
@@ -1286,10 +1292,13 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
         evidenceFiles: [
           'docs/adapter-registry.md',
           'docs/install/README.md',
+          'docs/evals/adapter-install-v0-dry-run.md',
+          'docs/evals/adapter-empirical-verification-phase-7.md',
           'schemas/adapter-compatibility-matrix.schema.json',
           'registry/compatibility-matrix.json',
           'scripts/validate-compatibility-matrix.mjs',
           'scripts/check-docs.mjs',
+          'scripts/test-phase7.mjs',
         ],
         criteria: [
           phase0Scorecard.pillars[6].criteria[0],
@@ -1300,7 +1309,7 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
             awardedPoints: 1.5,
             status: 'Pass',
             evidence:
-              'F-08 PARTIALLY_FIXED: docs/adapter-registry.md and registry/compatibility-matrix.json are 100% synchronized across all 26 docs/install/*.md targets and guarded against unverified promotion by scripts/validate-compatibility-matrix.mjs (2 verified-read targets, 24 linked-only targets pending live host execution).',
+              'F-08 PARTIALLY_FIXED: docs/adapter-registry.md, docs/install/*.md, docs/adapters/*.md, and registry/compatibility-matrix.json are 100% synchronized across all 26 install targets, documented in docs/evals/adapter-empirical-verification-phase-7.md, and guarded against unverified promotion by scripts/validate-compatibility-matrix.mjs and scripts/test-phase7.mjs (2 verified-read targets, 24 linked-only targets pending live host execution).',
           },
         ],
       },
@@ -1336,7 +1345,7 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
             maxPoints: 2,
             awardedPoints: 2.0,
             status: 'Pass',
-            evidence: 'F-02 FIXED: scripts/export-claude-skills.mjs uses pure-Node fflate (0 external binary calls) and .github/workflows/docs.yml executes npm run ci (docs:check + registry:check + evals:check + evals:run + skills:export + test).',
+            evidence: 'F-02 FIXED: scripts/export-claude-skills.mjs uses pure-Node fflate (0 external binary calls) with isolated --output-root concurrency safety and .github/workflows/docs.yml executes npm run ci (docs:check + registry:check + evals:check + evals:run + skills:export + test).',
           },
         ],
       },
@@ -1346,7 +1355,7 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
   // 5. Verification Manifest
   const verificationManifest = {
     schemaVersion: '1.4.0',
-    auditPhase: 'phase-6-current',
+    auditPhase: 'phase-7-current',
     repository: 'ThanhNguyxnOrg/blendops',
     branch: branchName,
     sourceCommitSha: headSha,
@@ -1409,17 +1418,27 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
         commitSha: 'f8301a3e39e05bee4da1b8f85f16fb13ff1c6b3e',
         summary: 'Full 48-skill machine-readable contracts (F-03 FIXED), 27-field context vocabulary, 371-edge acyclic workflow graph, and managed Markdown synchronization',
       },
+      {
+        phase: 'Phase 6',
+        commitSha: '869462d3b24acc131bd0e63203322b966dc01785',
+        summary: 'Full 48-skill machine-readable behavioral evaluation suites (269 deterministic cases: 21 contract_routing, 124 contract_handoff, 124 deterministic_fixture; F-04 FIXED)',
+      },
+      {
+        phase: 'Phase 6.1',
+        commitSha: '4af8b16aad3bdf1dce4114c479002e0b397f3c99',
+        summary: 'CI export concurrency stabilization (--output-root isolation for export-claude-skills.mjs across parallel test suites)',
+      },
     ],
     currentPhaseContext: {
-      phase: 'Phase 6 — Full Catalog Behavioral Evaluation Coverage (F-04 Resolution)',
-      title: 'Full 48-Skill Machine-Readable Behavioral Evaluation Suites (269 Deterministic Cases: 21 Contract-Routing, 124 Contract-Handoff, 124 Deterministic-Fixture)',
+      phase: 'Phase 7 — Adapter Empirical Verification & Evidence Integrity (F-08)',
+      title: '26-Target Host Availability Discovery, Disposable /tmp Fixture Verification, Documentation Confidence Alignment, and Promotion Validator Hardening',
       sourceCommitSha: headSha,
       workingTreeState,
       snapshotBasis,
       auditedInputsSha256,
       auditedInputsManifest: AUDITED_INPUTS_MANIFEST_REL,
       relationshipToCommitChain:
-        'Phase 6 is built directly on top of Phase 5 (f8301a3e39e05bee4da1b8f85f16fb13ff1c6b3e). Because a Git commit cannot embed its own final SHA inside tracked files, verification-manifest.json records f8301a3e39e05bee4da1b8f85f16fb13ff1c6b3e as the latest completed commit in commitChain and sourceCommitSha, while locking the exact Phase 6 audited inputs via auditedInputsSha256 and docs/audits/audited-inputs.manifest.json.',
+        'Phase 7 is built directly on top of Phase 6.1 (4af8b16aad3bdf1dce4114c479002e0b397f3c99). Because a Git commit cannot embed its own final SHA inside tracked files, verification-manifest.json records 4af8b16aad3bdf1dce4114c479002e0b397f3c99 as the latest completed commit in commitChain and sourceCommitSha, while locking the exact Phase 7 audited inputs via auditedInputsSha256 and docs/audits/audited-inputs.manifest.json.',
     },
     ciVerificationPipeline: {
       command: 'npm run ci',
@@ -1428,7 +1447,7 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
           script: 'npm run docs:check',
           command: 'node scripts/check-docs.mjs',
           status: 'Passed',
-          verifiedScope: 'Active Markdown files, frontmatter limits, relative links, Path 1 Blender 5.1+ attribution, F-01 truth-state guard, F-05 18-heading skill template structure guard, F-08 adapter registry guard',
+          verifiedScope: 'Active Markdown files, frontmatter limits, relative links, Path 1 Blender 5.1+ attribution, F-01 truth-state guard, F-05 18-heading skill template structure guard, F-08 adapter registry & install/adapter confidence consistency guard',
         },
         {
           script: 'npm run registry:check',
@@ -1452,13 +1471,13 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
           script: 'npm run skills:export',
           command: 'node scripts/export-claude-skills.mjs',
           status: 'Passed',
-          verifiedScope: '48 ZIP archives in dist/claude-skills-zip/ and 48 folders in dist/claude-code-skills/ with SKILL.md, EVAL.md, and references/* verified',
+          verifiedScope: '48 ZIP archives in dist/claude-skills/desktop-zips/ and 48 folders in dist/claude-skills/claude-code-skills/ with SKILL.md, EVAL.md, and references/* verified',
         },
         {
           script: 'npm test',
-          command: 'node --test scripts/test-phase1.mjs scripts/test-phase2.mjs scripts/test-phase3.mjs scripts/test-phase4.mjs scripts/test-phase5.mjs scripts/test-phase6.mjs',
+          command: 'node --test scripts/test-phase1.mjs scripts/test-phase2.mjs scripts/test-phase3.mjs scripts/test-phase4.mjs scripts/test-phase5.mjs scripts/test-phase6.mjs scripts/test-phase7.mjs',
           status: 'Passed',
-          verifiedScope: 'Unit and integration suites across Phase 1, Phase 2 / 2.1, Phase 3 / 3.1 / 3.1.1, Phase 4, Phase 5, and Phase 6 (full-catalog behavioral evaluation & F-04 closure scenarios)',
+          verifiedScope: 'Unit and integration suites across Phase 1, Phase 2 / 2.1, Phase 3 / 3.1 / 3.1.1, Phase 4, Phase 5, Phase 6 / 6.1, and Phase 7 (adapter empirical verification & F-08 promotion hardening)',
         },
       ],
     },
@@ -1485,12 +1504,12 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
 
 | Metric | Historical Phase 0 Baseline (\`3ea3c35\`) | Current Reconciled State (\`main\`) | Status / Change |
 | :--- | :---: | :---: | :--- |
-| **Overall Measured Score** | \`54.5 / 100\` | **\`${totalMeasuredScore.toFixed(1)} / 100\`** | **\`${totalScoreDelta}\`** (backed by Phases 1, 2, 2.1, 3, 3.1, 3.1.1, 4, 5, 6) |
+| **Overall Measured Score** | \`54.5 / 100\` | **\`${totalMeasuredScore.toFixed(1)} / 100\`** | **\`${totalScoreDelta}\`** (backed by Phases 1, 2, 2.1, 3, 3.1, 3.1.1, 4, 5, 6, 6.1, 7) |
 | **Active P0 Zero-Compensation Blockers** | \`3\` (\`F-01\`, \`F-02\`, \`F-04\`) | **\`0\`** | \`F-01\`, \`F-02\`, \`F-03\`, \`F-04\` **FIXED** |
 | **Skills with \`Artifact status: Not Run\` (\`F-01\`)** | \`30 / 48\` | **\`0 / 48\`** | **FIXED** in Phase 1 + guarded in \`scripts/check-docs.mjs\` |
 | **Extended Template Completeness (\`F-05\`)** | \`8 / 48\` skills missing sections | **\`${missingExtendedSkillsCount} / 48\` skills missing sections** | **${f05Fixed ? 'FIXED' : 'OPEN'}** in Phase 4 + 18-heading guard in \`scripts/check-docs.mjs\` |
-| **Portable ZIP Exporter & Full CI (\`F-02\`)** | \`spawnSync zip ENOENT\` | **Pure-Node \`fflate\` (48/48 ZIPs)** | **FIXED** in Phase 1 + \`EVAL.md\` verified in Phase 2.1 |
-| **Adapter Registry Sync (\`F-08\`)** | \`16 / 26\` targets synced | **\`26 / 26\` targets synced** | **PARTIALLY_FIXED** in Phase 1 & 3 (24 targets remain \`linked-only\`) |
+| **Portable ZIP Exporter & Full CI (\`F-02\`)** | \`spawnSync zip ENOENT\` | **Pure-Node \`fflate\` (48/48 ZIPs)** | **FIXED** in Phase 1 + \`EVAL.md\` verified in Phase 2.1 + isolated \`--output-root\` in Phase 6.1 |
+| **Adapter Registry & Evidence Integrity (\`F-08\`)** | \`16 / 26\` targets synced | **\`26 / 26\` targets synced & guarded** | **PARTIALLY_FIXED** in Phases 1, 3 & 7 (2 \`verified-read\`, 24 \`linked-only\`) |
 | **Machine-Readable Contracts (\`F-03\`)** | \`0 / 48\` | **\`${contractedCount} / 48\` (\`${f03Fixed ? 'full-catalog' : 'routing-pilot'}\`)** | **${f03Fixed ? 'FIXED' : 'PARTIALLY_FIXED'}** in Phase 5 (\`Ajv2020\` + 371-edge DAG + 0 bare-ID handoffs) |
 | **Machine-Readable Eval Suites (\`F-04\`)** | \`0 / 48\` (0 runners) | **\`${machineReadableSuitesCount} / 48\` (\`${totalEvalCasesCount}\` cases in CI)** | **${f04Fixed ? 'FIXED' : 'PARTIALLY_FIXED'}** in Phase 6 (\`${remainingProseSuitesCount} / 48\` prose-only pending) |
 | **Live LLM / Blender Runtime Evals** | \`Not Run\` | **\`Not Run\` / \`Not Produced\`** | Honest zero-fabrication boundary preserved |
@@ -1511,10 +1530,10 @@ Because a Git commit cannot honestly contain its own final commit SHA inside tra
 
 The \`auditedInputsSha256\` digest is governed by [\`../audited-inputs.manifest.json\`](../audited-inputs.manifest.json):
 
-- **Included Scope (\`requiredFiles\` + \`requiredDirectories\`):** Covers [\`../audited-inputs.manifest.json\`](../audited-inputs.manifest.json) itself, root governance & dependency files (\`AGENTS.md\`, \`README.md\`, \`TODO.md\`, \`LICENSE\`, \`package.json\`, \`package-lock.json\`, \`.github/workflows/docs.yml\`), core architecture & runtime docs (\`docs/README.md\`, \`docs/start-here.md\`, \`docs/runtime-stack-strategy.md\`, \`docs/adapter-registry.md\`, etc.), all validation/compiler/eval/test scripts (\`scripts/check-docs.mjs\`, \`scripts/export-claude-skills.mjs\`, \`scripts/build-registry.mjs\`, \`scripts/run-evals.mjs\`, \`scripts/generate-current-audit.mjs\`, \`scripts/test-phase1.mjs\`, \`scripts/test-phase2.mjs\`, \`scripts/test-phase3.mjs\`, \`scripts/test-phase4.mjs\`, \`scripts/test-phase5.mjs\`, \`scripts/test-phase6.mjs\`), and the complete directory trees \`docs/audits/phase-0\`, \`docs/audits/phase-2\`, \`docs/audits/phase-2.1\`, \`docs/audits/phase-3\`, \`docs/evals\`, \`docs/install\`, \`docs/adapters\`, \`laws\`, \`packs\`, \`bundles\`, \`skills\`, \`registry\`, \`evals\`, and \`schemas\`.
+- **Included Scope (\`requiredFiles\` + \`requiredDirectories\`):** Covers [\`../audited-inputs.manifest.json\`](../audited-inputs.manifest.json) itself, root governance & dependency files (\`AGENTS.md\`, \`README.md\`, \`TODO.md\`, \`LICENSE\`, \`package.json\`, \`package-lock.json\`, \`.github/workflows/docs.yml\`), core architecture & runtime docs (\`docs/README.md\`, \`docs/start-here.md\`, \`docs/runtime-stack-strategy.md\`, \`docs/adapter-registry.md\`, etc.), all validation/compiler/eval/test scripts (\`scripts/check-docs.mjs\`, \`scripts/export-claude-skills.mjs\`, \`scripts/build-registry.mjs\`, \`scripts/run-evals.mjs\`, \`scripts/generate-current-audit.mjs\`, \`scripts/test-phase1.mjs\`, \`scripts/test-phase2.mjs\`, \`scripts/test-phase3.mjs\`, \`scripts/test-phase4.mjs\`, \`scripts/test-phase5.mjs\`, \`scripts/test-phase6.mjs\`, \`scripts/test-phase7.mjs\`), and the complete directory trees \`docs/audits/phase-0\`, \`docs/audits/phase-2\`, \`docs/audits/phase-2.1\`, \`docs/audits/phase-3\`, \`docs/evals\`, \`docs/install\`, \`docs/adapters\`, \`laws\`, \`packs\`, \`bundles\`, \`skills\`, \`registry\`, \`evals\`, and \`schemas\`.
 - **Excluded Scope (\`excludedPrefixes\` & \`excludedExactPaths\`):** Excludes \`docs/audits/current/**\` (generated output directory to prevent self-referential hashing), \`.git/\`, \`node_modules/\`, \`dist/\`, \`.aistudio/\`, temporary files, and symbolic links.
 - **Digest Algorithm:** Expands all manifest files and directories into a deduplicated, lexicographically sorted list of normalized POSIX relative paths and computes a SHA-256 digest over unambiguous length-prefixed framing (\`path:<byteLength>:<relPath>\\0content:<byteLength>:\\0<bytes>\\0\`).
-- **Adding New Evidence Paths:** Whenever a new file or directory is referenced in \`scorecard.json\` (\`pillars[].evidenceFiles[]\`) or \`findings.json\` (\`findings[].evidencePaths[]\`), it **must** be covered by \`requiredFiles\` or \`requiredDirectories\` in [\`../audited-inputs.manifest.json\`](../audited-inputs.manifest.json). This invariant is enforced in CI by \`scripts/test-phase3.mjs\` and \`scripts/test-phase6.mjs\`.
+- **Adding New Evidence Paths:** Whenever a new file or directory is referenced in \`scorecard.json\` (\`pillars[].evidenceFiles[]\`) or \`findings.json\` (\`findings[].evidencePaths[]\`), it **must** be covered by \`requiredFiles\` or \`requiredDirectories\` in [\`../audited-inputs.manifest.json\`](../audited-inputs.manifest.json). This invariant is enforced in CI by \`scripts/test-phase3.mjs\`, \`scripts/test-phase6.mjs\`, and \`scripts/test-phase7.mjs\`.
 
 ---
 
@@ -1523,13 +1542,13 @@ The \`auditedInputsSha256\` digest is governed by [\`../audited-inputs.manifest.
 | ID | Priority | Finding | Phase 0 State | Current Status | Verification / Remaining Work |
 | :--- | :---: | :--- | :---: | :---: | :--- |
 | **F-01** | **P0** | \`Artifact status: Not Run\` contradiction in 30 skills | \`OPEN\` | **\`FIXED\`** | 0/48 skills affected; guarded in \`check-docs.mjs\` and \`test-phase1.mjs\`. |
-| **F-02** | **P0** | External \`zip\` binary dependency & partial CI workflow | \`OPEN\` | **\`FIXED\`** | Pure-Node \`fflate\` exports \`SKILL.md\`, \`EVAL.md\`, and \`references/*\`; \`docs.yml\` runs \`npm run ci\`. |
+| **F-02** | **P0** | External \`zip\` binary dependency & partial CI workflow | \`OPEN\` | **\`FIXED\`** | Pure-Node \`fflate\` exports \`SKILL.md\`, \`EVAL.md\`, and \`references/*\` with \`--output-root\` isolation; \`docs.yml\` runs \`npm run ci\`. |
 | **F-03** | **P0** | Machine-readable \`contract.json\` & compiled \`registry/\` | \`OPEN\` | **\`${f03Fixed ? 'FIXED' : 'PARTIALLY_FIXED'}\`** | ${f03Fixed ? '48/48 skills contracted (`4` routing participants + `44` specialist skills), 371-edge acyclic progression graph, and 48/48 relative-path Markdown handoffs.' : `${contractedCount}/48 skills contracted; ${updatedSkills.length - contractedCount}/48 skills pending.`} |
 | **F-04** | **P0** | Structured behavioral evaluation suites & automated runner | \`OPEN\` | **\`${f04Fixed ? 'FIXED' : 'PARTIALLY_FIXED'}\`** | ${f04Fixed ? `48/48 canonical \`.eval.json\` suites (${totalEvalCasesCount} cases: ${contractRoutingCasesCount} \`contract_routing\` + ${contractHandoffCasesCount} \`contract_handoff\` + ${deterministicFixtureCasesCount} \`deterministic_fixture\`, 0 prose-only pending) verified in CI; \`live_model\` and \`blender_runtime\` remain \`Not Run\`.` : `${machineReadableSuitesCount}/48 \`.eval.json\` suites (${totalEvalCasesCount} cases) in CI; ${remainingProseSuitesCount}/48 prose evals pending.`} |
 | **F-05** | **P1** | 8 Batch 7/8 skills omit 9–11 extended template sections | \`OPEN\` | **\`${f05Fixed ? 'FIXED' : 'OPEN'}\`** | ${f05Fixed ? '48/48 skills include all 9 core + 9 extended sections; guarded in `check-docs.mjs` and `test-phase4.mjs`.' : '8/48 skills still omit extended template sections; tracked in `skill-inventory.json`.'} |
 | **F-06** | **P1** | Routing quartet handoffs & \`blender-scope-boundary-enforcer\` reachability | \`OPEN\` | **\`FIXED\`** | Wired in \`blendops-help\` and \`workflow-stage-router\` contracts and verified in \`workflow-graph.json\`. |
 | **F-07** | **P1** | Deterministic GLB inspector & Blender version matrices | \`OPEN\` | **\`${f07Fixed ? 'FIXED' : 'OPEN'}\`** | ${f07Fixed ? '`scripts/inspect-glb.mjs`, `scripts/validate-evidence-packet.mjs`, and `docs/blender-version-compatibility.md` verified in CI.' : 'Scoped in Phase 3 Roadmap E1 (`docs/audits/phase-3/README.md`).'} |
-| **F-08** | **P1** | \`docs/adapter-registry.md\` drift from 26 \`docs/install/\` targets | \`OPEN\` | **\`PARTIALLY_FIXED\`** | All 26 install targets synced in \`docs/adapter-registry.md\` & \`registry/compatibility-matrix.json\`; 24 targets remain \`linked-only\` pending live host testing. |
+| **F-08** | **P1** | \`docs/adapter-registry.md\` drift from 26 \`docs/install/\` targets | \`OPEN\` | **\`PARTIALLY_FIXED\`** | All 26 install targets synced and verified in \`docs/evals/adapter-empirical-verification-phase-7.md\`; 2 targets (\`claude-code\`, \`generic-project\`) are \`verified-read\`; 24 targets remain \`linked-only\` pending live host testing. |
 | **F-09** | **P2** | Manual bundle reference summary drift risk | \`OPEN\` | **\`${f03Fixed ? 'OPEN' : 'DEFERRED'}\`** | ${f03Fixed ? 'Prerequisite satisfied (48/48 `contract.json` files compiled); bundle reference generator scheduled for Phase 8.' : 'Deferred until all 48 skills have `contract.json`.'} |
 | **F-10** | **P1** | Runtime capability tiers (L0–L3) & scene rollback protocol | \`OPEN\` | **\`${f10Fixed ? 'FIXED' : 'OPEN'}\`** | ${f10Fixed ? '`registry/runtime-capability-policy.json`, `scripts/validate-capability-policy.mjs`, and `docs/safety-model.md` enforce L0–L3 tiers and fail-closed `.blend` backup checks.' : 'Scoped in Phase 3 Roadmap E3 (`docs/audits/phase-3/README.md`).'} |
 
@@ -1541,7 +1560,7 @@ The \`auditedInputsSha256\` digest is governed by [\`../audited-inputs.manifest.
 - [\`findings.json\`](./findings.json) — Machine-readable lifecycle table for \`F-01\` through \`F-10\`.
 - [\`skill-inventory.json\`](./skill-inventory.json) — Live 48-skill inventory reflecting Phase 1 truth-state fixes, Phase 2/2.1/5 full-catalog contracts, Phase 3/6 full-catalog eval coverage, and Phase 4 extended template completion.
 - [\`eval-inventory.json\`](./eval-inventory.json) — Live 48-skill evaluation inventory covering all 48 machine-readable suites (${totalEvalCasesCount} cases) with 0 remaining prose-only skills.
-- [\`verification-manifest.json\`](./verification-manifest.json) — Verified commit chain through \`f8301a3e39e05bee4da1b8f85f16fb13ff1c6b3e\`, Phase 6 provenance context, CI pipeline commands, and runtime/artifact truth states.
+- [\`verification-manifest.json\`](./verification-manifest.json) — Verified commit chain through \`4af8b16aad3bdf1dce4114c479002e0b397f3c99\`, Phase 7 provenance context, CI pipeline commands, and runtime/artifact truth states.
 
 ## Related Documentation
 

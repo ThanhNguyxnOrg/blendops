@@ -2,6 +2,8 @@
 
 Status: Draft v0
 Confidence label: verified-read
+Upstream documentation reviewed: Yes (`CLAUDE.md` and `.claude/skills/` conventions reviewed)
+BlendOps empirical verification status: verified-read (`Verified Read (Repo-Local)` — repo-local `CLAUDE.md`/`BLENDOPS.md` attachment and rollback verified in [`docs/evals/adapter-install-v0-dry-run.md`](../evals/adapter-install-v0-dry-run.md) and [`docs/evals/adapter-empirical-verification-phase-7.md`](../evals/adapter-empirical-verification-phase-7.md); `.claude/skills/` native loader and live `claude` CLI binary remain unverified in container)
 
 ## Supported install scopes
 - project-local (default)

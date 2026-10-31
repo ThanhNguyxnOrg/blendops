@@ -1,6 +1,8 @@
 # Install target: Codex CLI/App
 
-Status/confidence: Draft v0, verified-read for AGENTS.md discovery (Codex docs read 2026-10-14)
+Status/confidence: Draft v0, linked-only (Not Verified in live Codex host)
+Upstream documentation reviewed: Yes — Codex `AGENTS.md` discovery docs reviewed 2026-10-14
+BlendOps empirical verification status: `linked-only` (`Linked Only (Not Verified)`) — see [`docs/adapter-registry.md`](../adapter-registry.md) and [`docs/evals/adapter-empirical-verification-phase-7.md`](../evals/adapter-empirical-verification-phase-7.md)
 
 ## Recommended near-term install mode
 
@@ -12,7 +14,7 @@ Project-local `AGENTS.md` (repository root and nested directories). `BLENDOPS.md
 Install BlendOps for Codex using project-local instruction files.
 
 Requirements:
-- Prefer root/nested `AGENTS.md` (verified Codex discovery: project root down to cwd, `AGENTS.override.md` wins per directory, 32 KiB default cap).
+- Prefer root/nested `AGENTS.md` (upstream-documented Codex discovery: project root down to cwd, `AGENTS.override.md` wins per directory, 32 KiB default cap).
 - Do not rely on `BLENDOPS.md` alone; Codex ignores filenames outside its discovery list unless configured. Either write the content into `AGENTS.md` or reference/import `BLENDOPS.md` from it.
 - Do not assume a native Codex skills loader exists.
 - Avoid global writes unless explicitly approved.
@@ -27,7 +29,7 @@ Artifact status: Not Produced.
 
 ## Expected files/folders
 
-Verified Codex-native path: root/nested `AGENTS.md` (plus `AGENTS.override.md` per-directory override). `BLENDOPS.md` is BlendOps fallback content, not a Codex discovery filename by default.
+Upstream-documented Codex-native path (Codex docs reviewed 2026-10-14; not empirically verified in a live Codex host by BlendOps): root/nested `AGENTS.md` (plus `AGENTS.override.md` per-directory override). `BLENDOPS.md` is BlendOps fallback content, not a Codex discovery filename by default.
 
 ## Rollback notes
 

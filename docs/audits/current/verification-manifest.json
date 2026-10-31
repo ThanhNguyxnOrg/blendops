@@ -1,19 +1,19 @@
 {
   "schemaVersion": "1.4.0",
-  "auditPhase": "phase-6-current",
+  "auditPhase": "phase-7-current",
   "repository": "ThanhNguyxnOrg/blendops",
   "branch": "main",
-  "sourceCommitSha": "f8301a3e39e05bee4da1b8f85f16fb13ff1c6b3e",
-  "sourceCommitShort": "f8301a3",
-  "sourceCommitDate": "2026-10-31 12:45:48 +0000",
+  "sourceCommitSha": "4af8b16aad3bdf1dce4114c479002e0b397f3c99",
+  "sourceCommitShort": "4af8b16",
+  "sourceCommitDate": "2026-10-31 13:51:12 +0000",
   "auditProvenance": {
-    "sourceCommitSha": "f8301a3e39e05bee4da1b8f85f16fb13ff1c6b3e",
-    "sourceCommitShort": "f8301a3",
-    "sourceCommitDate": "2026-10-31 12:45:48 +0000",
+    "sourceCommitSha": "4af8b16aad3bdf1dce4114c479002e0b397f3c99",
+    "sourceCommitShort": "4af8b16",
+    "sourceCommitDate": "2026-10-31 13:51:12 +0000",
     "workingTreeState": "dirty",
     "snapshotBasis": "working-tree-on-top-of-source-commit",
-    "uncommittedChangeCount": 25,
-    "auditedInputsSha256": "4f80f977e892f1988773a63a87a430b5bfc25d879b6f7918f676a64097700303",
+    "uncommittedChangeCount": 23,
+    "auditedInputsSha256": "e272a20d827fbfa09845b1712c0984d869084c2178eaac6741947aec28ac5e06",
     "selfReferentialCommitRule": "A Git commit cannot contain its own final commit SHA inside tracked files. sourceCommitSha records the verified HEAD commit present when the generator ran, workingTreeState and snapshotBasis record whether uncommitted working-tree changes were present on top of sourceCommitSha, and auditedInputsSha256 digests the exact audited file contents."
   },
   "commitChain": [
@@ -71,17 +71,27 @@
       "phase": "Phase 5",
       "commitSha": "f8301a3e39e05bee4da1b8f85f16fb13ff1c6b3e",
       "summary": "Full 48-skill machine-readable contracts (F-03 FIXED), 27-field context vocabulary, 371-edge acyclic workflow graph, and managed Markdown synchronization"
+    },
+    {
+      "phase": "Phase 6",
+      "commitSha": "869462d3b24acc131bd0e63203322b966dc01785",
+      "summary": "Full 48-skill machine-readable behavioral evaluation suites (269 deterministic cases: 21 contract_routing, 124 contract_handoff, 124 deterministic_fixture; F-04 FIXED)"
+    },
+    {
+      "phase": "Phase 6.1",
+      "commitSha": "4af8b16aad3bdf1dce4114c479002e0b397f3c99",
+      "summary": "CI export concurrency stabilization (--output-root isolation for export-claude-skills.mjs across parallel test suites)"
     }
   ],
   "currentPhaseContext": {
-    "phase": "Phase 6 — Full Catalog Behavioral Evaluation Coverage (F-04 Resolution)",
-    "title": "Full 48-Skill Machine-Readable Behavioral Evaluation Suites (269 Deterministic Cases: 21 Contract-Routing, 124 Contract-Handoff, 124 Deterministic-Fixture)",
-    "sourceCommitSha": "f8301a3e39e05bee4da1b8f85f16fb13ff1c6b3e",
+    "phase": "Phase 7 — Adapter Empirical Verification & Evidence Integrity (F-08)",
+    "title": "26-Target Host Availability Discovery, Disposable /tmp Fixture Verification, Documentation Confidence Alignment, and Promotion Validator Hardening",
+    "sourceCommitSha": "4af8b16aad3bdf1dce4114c479002e0b397f3c99",
     "workingTreeState": "dirty",
     "snapshotBasis": "working-tree-on-top-of-source-commit",
-    "auditedInputsSha256": "4f80f977e892f1988773a63a87a430b5bfc25d879b6f7918f676a64097700303",
+    "auditedInputsSha256": "e272a20d827fbfa09845b1712c0984d869084c2178eaac6741947aec28ac5e06",
     "auditedInputsManifest": "docs/audits/audited-inputs.manifest.json",
-    "relationshipToCommitChain": "Phase 6 is built directly on top of Phase 5 (f8301a3e39e05bee4da1b8f85f16fb13ff1c6b3e). Because a Git commit cannot embed its own final SHA inside tracked files, verification-manifest.json records f8301a3e39e05bee4da1b8f85f16fb13ff1c6b3e as the latest completed commit in commitChain and sourceCommitSha, while locking the exact Phase 6 audited inputs via auditedInputsSha256 and docs/audits/audited-inputs.manifest.json."
+    "relationshipToCommitChain": "Phase 7 is built directly on top of Phase 6.1 (4af8b16aad3bdf1dce4114c479002e0b397f3c99). Because a Git commit cannot embed its own final SHA inside tracked files, verification-manifest.json records 4af8b16aad3bdf1dce4114c479002e0b397f3c99 as the latest completed commit in commitChain and sourceCommitSha, while locking the exact Phase 7 audited inputs via auditedInputsSha256 and docs/audits/audited-inputs.manifest.json."
   },
   "ciVerificationPipeline": {
     "command": "npm run ci",
@@ -90,7 +100,7 @@
         "script": "npm run docs:check",
         "command": "node scripts/check-docs.mjs",
         "status": "Passed",
-        "verifiedScope": "Active Markdown files, frontmatter limits, relative links, Path 1 Blender 5.1+ attribution, F-01 truth-state guard, F-05 18-heading skill template structure guard, F-08 adapter registry guard"
+        "verifiedScope": "Active Markdown files, frontmatter limits, relative links, Path 1 Blender 5.1+ attribution, F-01 truth-state guard, F-05 18-heading skill template structure guard, F-08 adapter registry & install/adapter confidence consistency guard"
       },
       {
         "script": "npm run registry:check",
@@ -114,13 +124,13 @@
         "script": "npm run skills:export",
         "command": "node scripts/export-claude-skills.mjs",
         "status": "Passed",
-        "verifiedScope": "48 ZIP archives in dist/claude-skills-zip/ and 48 folders in dist/claude-code-skills/ with SKILL.md, EVAL.md, and references/* verified"
+        "verifiedScope": "48 ZIP archives in dist/claude-skills/desktop-zips/ and 48 folders in dist/claude-skills/claude-code-skills/ with SKILL.md, EVAL.md, and references/* verified"
       },
       {
         "script": "npm test",
-        "command": "node --test scripts/test-phase1.mjs scripts/test-phase2.mjs scripts/test-phase3.mjs scripts/test-phase4.mjs scripts/test-phase5.mjs scripts/test-phase6.mjs",
+        "command": "node --test scripts/test-phase1.mjs scripts/test-phase2.mjs scripts/test-phase3.mjs scripts/test-phase4.mjs scripts/test-phase5.mjs scripts/test-phase6.mjs scripts/test-phase7.mjs",
         "status": "Passed",
-        "verifiedScope": "Unit and integration suites across Phase 1, Phase 2 / 2.1, Phase 3 / 3.1 / 3.1.1, Phase 4, Phase 5, and Phase 6 (full-catalog behavioral evaluation & F-04 closure scenarios)"
+        "verifiedScope": "Unit and integration suites across Phase 1, Phase 2 / 2.1, Phase 3 / 3.1 / 3.1.1, Phase 4, Phase 5, Phase 6 / 6.1, and Phase 7 (adapter empirical verification & F-08 promotion hardening)"
       }
     ]
   },

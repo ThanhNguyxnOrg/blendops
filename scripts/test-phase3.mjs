@@ -438,7 +438,7 @@ describe('Phase 3 — Behavioral Evaluation Schema & Deterministic Runner', () =
     assert.equal(currentScorecard.totals.measuredScore, 86.5);
     assert.equal(currentScorecard.methodology.activeZeroCompensationBlockers.length, 0);
 
-    // Verify commitChain includes all verified commits through Phase 4 (a5ddece), Phase 3 Completion (75f3b5c), and Phase 5 (f8301a3)
+    // Verify commitChain includes all verified commits through Phase 6.1 (4af8b16)
     const chainShas = currentManifest.commitChain.map((c) => c.commitSha);
     assert.deepEqual(chainShas, [
       '3ea3c35c6b8a6e5e915bab9f63333d4a1c09bd4d',
@@ -452,6 +452,8 @@ describe('Phase 3 — Behavioral Evaluation Schema & Deterministic Runner', () =
       'a5ddece28e71d0ce89f6b7a741214f8832d37ee5',
       '75f3b5c8b16b2d7e174d6dba58965da5013cfb5e',
       'f8301a3e39e05bee4da1b8f85f16fb13ff1c6b3e',
+      '869462d3b24acc131bd0e63203322b966dc01785',
+      '4af8b16aad3bdf1dce4114c479002e0b397f3c99',
     ]);
 
     // Verify explicit auditProvenance on all 5 JSON artifacts and no ambiguous self-referential commitSha
@@ -471,14 +473,14 @@ describe('Phase 3 — Behavioral Evaluation Schema & Deterministic Runner', () =
       assert.ok(doc.auditProvenance, `${label} must include auditProvenance`);
       assert.equal(
         doc.sourceCommitSha,
-        'f8301a3e39e05bee4da1b8f85f16fb13ff1c6b3e',
-        `${label} sourceCommitSha must record Phase 5 completion base commit f8301a3e39e05bee4da1b8f85f16fb13ff1c6b3e`,
+        '4af8b16aad3bdf1dce4114c479002e0b397f3c99',
+        `${label} sourceCommitSha must record Phase 6.1 completion base commit 4af8b16aad3bdf1dce4114c479002e0b397f3c99`,
       );
       assert.equal(
         doc.auditProvenance.sourceCommitSha,
-        'f8301a3e39e05bee4da1b8f85f16fb13ff1c6b3e',
+        '4af8b16aad3bdf1dce4114c479002e0b397f3c99',
       );
-      assert.equal(doc.auditProvenance.sourceCommitShort, 'f8301a3');
+      assert.equal(doc.auditProvenance.sourceCommitShort, '4af8b16');
       assert.ok(
         doc.auditProvenance.workingTreeState === 'clean' ||
           doc.auditProvenance.workingTreeState === 'dirty',

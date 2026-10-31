@@ -1,20 +1,20 @@
 {
   "schemaVersion": "1.5.0",
-  "auditPhase": "phase-6-current",
+  "auditPhase": "phase-7-current",
   "status": "reconciled-current-state",
   "repository": "ThanhNguyxnOrg/blendops",
   "branch": "main",
-  "sourceCommitSha": "f8301a3e39e05bee4da1b8f85f16fb13ff1c6b3e",
-  "sourceCommitShort": "f8301a3",
-  "sourceCommitDate": "2026-10-31 12:45:48 +0000",
+  "sourceCommitSha": "4af8b16aad3bdf1dce4114c479002e0b397f3c99",
+  "sourceCommitShort": "4af8b16",
+  "sourceCommitDate": "2026-10-31 13:51:12 +0000",
   "auditProvenance": {
-    "sourceCommitSha": "f8301a3e39e05bee4da1b8f85f16fb13ff1c6b3e",
-    "sourceCommitShort": "f8301a3",
-    "sourceCommitDate": "2026-10-31 12:45:48 +0000",
+    "sourceCommitSha": "4af8b16aad3bdf1dce4114c479002e0b397f3c99",
+    "sourceCommitShort": "4af8b16",
+    "sourceCommitDate": "2026-10-31 13:51:12 +0000",
     "workingTreeState": "dirty",
     "snapshotBasis": "working-tree-on-top-of-source-commit",
-    "uncommittedChangeCount": 25,
-    "auditedInputsSha256": "4f80f977e892f1988773a63a87a430b5bfc25d879b6f7918f676a64097700303",
+    "uncommittedChangeCount": 23,
+    "auditedInputsSha256": "e272a20d827fbfa09845b1712c0984d869084c2178eaac6741947aec28ac5e06",
     "selfReferentialCommitRule": "A Git commit cannot contain its own final commit SHA inside tracked files. sourceCommitSha records the verified HEAD commit present when the generator ran, workingTreeState and snapshotBasis record whether uncommitted working-tree changes were present on top of sourceCommitSha, and auditedInputsSha256 digests the exact audited file contents."
   },
   "historicalBaseline": {
@@ -26,12 +26,12 @@
     "note": "Historical Phase 0 Baseline — Not Current. Preserved immutably for audit provenance."
   },
   "methodology": {
-    "scoringPrinciple": "Every point increase from the 54.5/100 Phase 0 baseline is backed by committed code, schemas, and automated CI tests in Phases 1, 2, 2.1, 3, 3.1, 3.1.1, 4, 5, and 6. Unimplemented or unrun capabilities (unrun live LLM/Blender runtime evaluations, 24 linked-only host targets, and ungenerated bundle reference summaries) receive 0 inflation.",
+    "scoringPrinciple": "Every point increase from the 54.5/100 Phase 0 baseline is backed by committed code, schemas, and automated CI tests in Phases 1, 2, 2.1, 3, 3.1, 3.1.1, 4, 5, 6, 6.1, and 7. Unimplemented or unrun capabilities (unrun live LLM/Blender runtime evaluations, 24 linked-only host targets, and ungenerated bundle reference summaries) receive 0 inflation.",
     "zeroCompensationGate": "All three Phase 0 P0 zero-compensation blockers (F-01 truth-state contradiction, F-02 non-portable ZIP exporter/CI gap, and F-04 zero automated evaluation runner) have been resolved with deterministic CI runners.",
     "activeZeroCompensationBlockers": [],
     "resolvedZeroCompensationBlockers": [
       "RESOLVED (Phase 1, F-01): 0/48 SKILL.md files assign Not Run to Artifact status (was 30/48 at 3ea3c35). Guarded by scripts/check-docs.mjs and schemas.",
-      "RESOLVED (Phase 1 & 2.1, F-02): scripts/export-claude-skills.mjs uses pure-Node fflate across all 48 skills (SKILL.md + EVAL.md + references/*) and .github/workflows/docs.yml runs npm run ci.",
+      "RESOLVED (Phase 1, 2.1 & 6.1, F-02): scripts/export-claude-skills.mjs uses pure-Node fflate across all 48 skills (SKILL.md + EVAL.md + references/*) with isolated --output-root concurrency safety and .github/workflows/docs.yml runs npm run ci.",
       "RESOLVED (Phase 2, 2.1 & 5, F-03): 48/48 catalog skills ship validated contract.json files, compiled registry/skills.json + registry/workflow-graph.json (371 edges, 0 progression cycles), and synchronized relative-path Markdown handoff blocks.",
       "RESOLVED (Phase 3, 3.1 & 6, F-04): scripts/run-evals.mjs validates and executes 269 deterministic, contract-routing, and contract-handoff evaluation cases across all 48/48 catalog skills in CI (0 unmigrated prose skills); live_model and blender_runtime modes remain honestly marked Not Run."
     ]
@@ -322,10 +322,13 @@
       "evidenceFiles": [
         "docs/adapter-registry.md",
         "docs/install/README.md",
+        "docs/evals/adapter-install-v0-dry-run.md",
+        "docs/evals/adapter-empirical-verification-phase-7.md",
         "schemas/adapter-compatibility-matrix.schema.json",
         "registry/compatibility-matrix.json",
         "scripts/validate-compatibility-matrix.mjs",
-        "scripts/check-docs.mjs"
+        "scripts/check-docs.mjs",
+        "scripts/test-phase7.mjs"
       ],
       "criteria": [
         {
@@ -342,7 +345,7 @@
           "maxPoints": 2,
           "awardedPoints": 1.5,
           "status": "Pass",
-          "evidence": "F-08 PARTIALLY_FIXED: docs/adapter-registry.md and registry/compatibility-matrix.json are 100% synchronized across all 26 docs/install/*.md targets and guarded against unverified promotion by scripts/validate-compatibility-matrix.mjs (2 verified-read targets, 24 linked-only targets pending live host execution)."
+          "evidence": "F-08 PARTIALLY_FIXED: docs/adapter-registry.md, docs/install/*.md, docs/adapters/*.md, and registry/compatibility-matrix.json are 100% synchronized across all 26 install targets, documented in docs/evals/adapter-empirical-verification-phase-7.md, and guarded against unverified promotion by scripts/validate-compatibility-matrix.mjs and scripts/test-phase7.mjs (2 verified-read targets, 24 linked-only targets pending live host execution)."
         }
       ]
     },
@@ -398,7 +401,7 @@
           "maxPoints": 2,
           "awardedPoints": 2,
           "status": "Pass",
-          "evidence": "F-02 FIXED: scripts/export-claude-skills.mjs uses pure-Node fflate (0 external binary calls) and .github/workflows/docs.yml executes npm run ci (docs:check + registry:check + evals:check + evals:run + skills:export + test)."
+          "evidence": "F-02 FIXED: scripts/export-claude-skills.mjs uses pure-Node fflate (0 external binary calls) with isolated --output-root concurrency safety and .github/workflows/docs.yml executes npm run ci (docs:check + registry:check + evals:check + evals:run + skills:export + test)."
         }
       ]
     }

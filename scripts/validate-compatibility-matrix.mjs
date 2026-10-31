@@ -541,7 +541,7 @@ function getMatrixSchemaValidator(schemaPath = DEFAULT_SCHEMA_PATH) {
 }
 
 export function buildExpectedCompatibilityMatrix() {
-  const sortedTargets = [...CANONICAL_26_TARGETS].sort((a, b) =>
+  const sortedTargets = CANONICAL_26_TARGETS.map((t) => structuredClone(t)).sort((a, b) =>
     a.id < b.id ? -1 : a.id > b.id ? 1 : 0,
   );
   const verifiedReadCount = sortedTargets.filter((t) => t.evidenceLevel === 'verified-read').length;
@@ -569,6 +569,224 @@ export function buildExpectedCompatibilityMatrix() {
   };
 }
 
+const VALID_CAPABILITIES = new Set([
+  'project-local-skill-read',
+  'skills-zip-upload',
+  'mcp-path-1-host-a',
+  'mcp-path-1-host-b',
+  'mcp-path-2-community',
+  'cli-appendix-execution',
+  'docs-only-reference',
+]);
+
+const CANONICAL_TARGET_MAP = new Map(CANONICAL_26_TARGETS.map((t) => [t.id, t]));
+
+export function isValidIsoCalendarDate(dateStr) {
+  if (typeof dateStr !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
+    return false;
+  }
+  const [yearStr, monthStr, dayStr] = dateStr.split('-');
+  const year = Number(yearStr);
+  const month = Number(monthStr);
+  const day = Number(dayStr);
+  if (!Number.isInteger(year) || !Number.isInteger(month) || !Number.isInteger(day)) {
+    return false;
+  }
+  if (year < 2020 || year > 2100 || month < 1 || month > 12 || day < 1 || day > 31) {
+    return false;
+  }
+  const dt = new Date(Date.UTC(year, month - 1, day));
+  return (
+    dt.getUTCFullYear() === year &&
+    dt.getUTCMonth() + 1 === month &&
+    dt.getUTCDate() === day
+  );
+}
+
+export function isSafeRepoSubpath(rootDir, relPath, requiredPrefixDir) {
+  if (typeof relPath !== 'string' || relPath.length === 0) return false;
+  if (relPath.includes('\\') || relPath.startsWith('/') || relPath.endsWith('/')) return false;
+  const segments = relPath.split('/');
+  if (segments.some((s) => s === '' || s === '.' || s === '..')) return false;
+  if (!relPath.startsWith(`${requiredPrefixDir}/`) || !relPath.endsWith('.md')) return false;
+  const resolvedRoot = path.resolve(rootDir, requiredPrefixDir);
+  const resolvedTarget = path.resolve(rootDir, relPath);
+  return resolvedTarget.startsWith(`${resolvedRoot}${path.sep}`);
+}
+
+export function verifyEvidenceRecordForTarget(rootDir, target) {
+  const relPath = target.verificationEvidencePath;
+  if (!isSafeRepoSubpath(rootDir, relPath, 'docs/evals')) {
+    return {
+      ok: false,
+      reason: `Target '${target.id}' verificationEvidencePath '${relPath}' must be a normalized Markdown path strictly under docs/evals/ (no '..' traversal or paths outside docs/evals/)`,
+    };
+  }
+  if (relPath === 'docs/evals/README.md') {
+    return {
+      ok: false,
+      reason: `Target '${target.id}' verificationEvidencePath cannot point to index file 'docs/evals/README.md'`,
+    };
+  }
+  const absPath = path.join(rootDir, relPath);
+  if (!fs.existsSync(absPath) || !fs.statSync(absPath).isFile()) {
+    return {
+      ok: false,
+      reason: `Target '${target.id}' with evidenceLevel 'verified-read' must reference an existing verificationEvidencePath under docs/evals/ (missing: ${relPath})`,
+    };
+  }
+
+  const content = fs.readFileSync(absPath, 'utf8');
+
+  // Case 1: Legacy dry-run report (docs/evals/adapter-install-v0-dry-run.md)
+  if (relPath === 'docs/evals/adapter-install-v0-dry-run.md') {
+    if (!target.adapterDocPath) {
+      return {
+        ok: false,
+        reason: `Evidence file '${relPath}' does not record a passing verified-read empirical result for target '${target.id}' (missing adapterDocPath)`,
+      };
+    }
+    const escapedAdapter = target.adapterDocPath.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const secRe = new RegExp(
+      `##\\s+[^\\r\\n]+\\r?\\n([\\s\\S]*?-\\s*Adapter used:\\s*\`${escapedAdapter}\`[\\s\\S]*?)(?=\\r?\\n##\\s+|$)`,
+    );
+    const match = content.match(secRe);
+    if (!match) {
+      return {
+        ok: false,
+        reason: `Evidence file '${relPath}' does not record a passing verified-read empirical result for target '${target.id}' (no dry-run section for ${target.adapterDocPath})`,
+      };
+    }
+    const body = match[1];
+    const isDocsOnly = /docs-only\/reference style/i.test(body);
+    const hasEntrypointFixture = /`(BLENDOPS\.md|CLAUDE\.md)`/.test(body);
+    if (isDocsOnly || !hasEntrypointFixture) {
+      return {
+        ok: false,
+        reason: `Evidence file '${relPath}' does not record a passing verified-read empirical result for target '${target.id}' (${target.adapterDocPath} is docs-only/reference in '${relPath}')`,
+      };
+    }
+    return { ok: true, content, sectionBody: body };
+  }
+
+  // Case 2: Structured Phase 7+ empirical verification report under docs/evals/
+  const escapedId = String(target.id).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const targetSecRe = new RegExp(`###\\s+Target:\\s+${escapedId}\\b([\\s\\S]*?)(?=\\r?\\n###\\s+|\\r?\\n##\\s+|$)`);
+  const targetMatch = content.match(targetSecRe);
+  if (!targetMatch) {
+    return {
+      ok: false,
+      reason: `Evidence file '${relPath}' does not record a passing verified-read empirical result for target '${target.id}' (missing '### Target: ${target.id}' section)`,
+    };
+  }
+  const secBody = targetMatch[1];
+  const hasTargetId = new RegExp(`-\\s*Target ID:\\s*\`${escapedId}\``).test(secBody);
+  const escapedAdapter = String(target.adapterDocPath || '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const hasAdapterDoc =
+    Boolean(target.adapterDocPath) &&
+    new RegExp(`-\\s*Adapter Document:\\s*\`${escapedAdapter}\``).test(secBody);
+  const hasVerifiedReadStatus = /-\s*Canonical Matrix Status:\s*`verified-read`/.test(secBody);
+  const hasPassVerdict = /-\s*Final Verdict:\s*`Pass`/.test(secBody);
+
+  if (!hasTargetId || !hasAdapterDoc || !hasVerifiedReadStatus || !hasPassVerdict) {
+    return {
+      ok: false,
+      reason: `Evidence file '${relPath}' does not record a passing verified-read empirical result for target '${target.id}'`,
+    };
+  }
+
+  return { ok: true, content, sectionBody: secBody };
+}
+
+export function validateAdapterAndInstallDocsConsistency(matrix, { rootDir = ROOT_DIR } = {}) {
+  const errors = [];
+  const targets = Array.isArray(matrix?.targets) ? matrix.targets : [];
+
+  for (const t of targets) {
+    if (!t || typeof t !== 'object') continue;
+    const installAbs = path.join(rootDir, `docs/install/${t.id}.md`);
+    if (fs.existsSync(installAbs) && fs.statSync(installAbs).isFile()) {
+      const installTxt = fs.readFileSync(installAbs, 'utf8');
+      const statusMatch = installTxt.match(/^Status\/confidence:\s*(.+)$/m);
+      if (!statusMatch) {
+        errors.push(`Install guide 'docs/install/${t.id}.md' is missing a 'Status/confidence:' line`);
+      } else {
+        const statusVal = statusMatch[1].trim();
+        if (t.evidenceLevel === 'linked-only') {
+          if (!/\blinked-only\b/i.test(statusVal)) {
+            errors.push(
+              `Install guide 'docs/install/${t.id}.md' Status/confidence '${statusVal}' must include 'linked-only' to match compatibility-matrix.json`,
+            );
+          }
+          if (/\bverified-read\b/i.test(statusVal)) {
+            errors.push(
+              `Install guide 'docs/install/${t.id}.md' Status/confidence '${statusVal}' contradicts compatibility-matrix.json ('${t.id}' is linked-only, not verified-read)`,
+            );
+          }
+        } else if (t.evidenceLevel === 'verified-read') {
+          if (!/\bverified-read\b/i.test(statusVal)) {
+            errors.push(
+              `Install guide 'docs/install/${t.id}.md' Status/confidence '${statusVal}' must include 'verified-read' to match compatibility-matrix.json`,
+            );
+          }
+        }
+      }
+    }
+
+    if (t.adapterDocPath && isSafeRepoSubpath(rootDir, t.adapterDocPath, 'docs/adapters')) {
+      const adapterAbs = path.join(rootDir, t.adapterDocPath);
+      if (fs.existsSync(adapterAbs) && fs.statSync(adapterAbs).isFile()) {
+        const adapterTxt = fs.readFileSync(adapterAbs, 'utf8');
+        const confMatch = adapterTxt.match(/^Confidence label:\s*(.+)$/m);
+        if (!confMatch) {
+          errors.push(`Adapter doc '${t.adapterDocPath}' is missing a 'Confidence label:' line`);
+        } else {
+          const confVal = confMatch[1].trim();
+          if (confVal !== t.evidenceLevel) {
+            errors.push(
+              `Adapter doc '${t.adapterDocPath}' Confidence label '${confVal}' does not match compatibility-matrix.json evidenceLevel '${t.evidenceLevel}' for target '${t.id}'`,
+            );
+          }
+        }
+      }
+    }
+  }
+
+  const installReadmeAbs = path.join(rootDir, 'docs', 'install', 'README.md');
+  if (fs.existsSync(installReadmeAbs) && fs.statSync(installReadmeAbs).isFile()) {
+    const readmeLines = fs.readFileSync(installReadmeAbs, 'utf8').split(/\r?\n/);
+    for (const t of targets) {
+      if (!t || typeof t !== 'object') continue;
+      const linkToken = `(./${t.id}.md)`;
+      const row = readmeLines.find((line) => line.trim().startsWith('|') && line.includes(linkToken));
+      if (!row) {
+        errors.push(`docs/install/README.md is missing a table row linking to './${t.id}.md'`);
+        continue;
+      }
+      const cells = row
+        .split('|')
+        .map((c) => c.trim())
+        .filter((_, idx, arr) => idx > 0 && idx < arr.length - 1);
+      const confidenceCell = cells[cells.length - 1] || '';
+      if (t.evidenceLevel === 'linked-only') {
+        if (!/\blinked-only\b/i.test(confidenceCell) || /\bverified-read\b/i.test(confidenceCell)) {
+          errors.push(
+            `docs/install/README.md row for '${t.id}' has Confidence '${confidenceCell}' which contradicts canonical evidenceLevel 'linked-only'`,
+          );
+        }
+      } else if (t.evidenceLevel === 'verified-read') {
+        if (!/\bverified-read\b/i.test(confidenceCell)) {
+          errors.push(
+            `docs/install/README.md row for '${t.id}' has Confidence '${confidenceCell}' which contradicts canonical evidenceLevel 'verified-read'`,
+          );
+        }
+      }
+    }
+  }
+
+  return errors;
+}
+
 export function validateCompatibilityMatrixObject(
   matrix,
   { rootDir = ROOT_DIR, schemaPath = DEFAULT_SCHEMA_PATH } = {},
@@ -586,6 +804,10 @@ export function validateCompatibilityMatrixObject(
     }
   }
 
+  if (matrix.promotionPolicy?.allowDocOnlyPromotion !== false) {
+    errors.push('promotionPolicy.allowDocOnlyPromotion must be false');
+  }
+
   const installDir = path.join(rootDir, 'docs', 'install');
   const discoveredInstallIds = fs.existsSync(installDir)
     ? fs
@@ -596,6 +818,7 @@ export function validateCompatibilityMatrixObject(
     : [];
 
   const seenIds = new Set();
+  const seenAdapterPaths = new Set();
   const targets = Array.isArray(matrix.targets) ? matrix.targets : [];
 
   for (const t of targets) {
@@ -611,17 +834,71 @@ export function validateCompatibilityMatrixObject(
         `Target '${t.id}' installGuidePath '${t.installGuidePath}' must equal '${expectedInstallRel}'`,
       );
     }
-    if (!fs.existsSync(path.join(rootDir, t.installGuidePath))) {
+    if (
+      !isSafeRepoSubpath(rootDir, t.installGuidePath, 'docs/install') ||
+      !fs.existsSync(path.join(rootDir, t.installGuidePath))
+    ) {
       errors.push(`Target '${t.id}' installGuidePath does not exist on disk: ${t.installGuidePath}`);
     }
 
     if (t.adapterDocPath !== null) {
-      if (!fs.existsSync(path.join(rootDir, t.adapterDocPath))) {
+      if (
+        !isSafeRepoSubpath(rootDir, t.adapterDocPath, 'docs/adapters') ||
+        t.adapterDocPath === 'docs/adapters/README.md' ||
+        t.adapterDocPath === 'docs/adapters/adapter-template.md'
+      ) {
+        errors.push(
+          `Target '${t.id}' adapterDocPath '${t.adapterDocPath}' must be a valid dedicated adapter document under docs/adapters/`,
+        );
+      } else if (!fs.existsSync(path.join(rootDir, t.adapterDocPath))) {
         errors.push(`Target '${t.id}' adapterDocPath does not exist on disk: ${t.adapterDocPath}`);
+      } else if (seenAdapterPaths.has(t.adapterDocPath)) {
+        errors.push(`Duplicate adapterDocPath '${t.adapterDocPath}' claimed by target '${t.id}'`);
+      } else {
+        seenAdapterPaths.add(t.adapterDocPath);
       }
     }
 
-    // Strict anti-promotion rule: never promote to verified-read based on docs alone
+    // Validate capabilities (no unknown capabilities, no overlap between available and missing/unverified)
+    const availCaps = Array.isArray(t.availableCapabilities) ? t.availableCapabilities : [];
+    const missingCaps = Array.isArray(t.missingOrUnverifiedCapabilities)
+      ? t.missingOrUnverifiedCapabilities
+      : [];
+    const seenAvail = new Set();
+    for (const cap of availCaps) {
+      if (!VALID_CAPABILITIES.has(cap)) {
+        errors.push(`Target '${t.id}' declares unsupported capability '${cap}' in availableCapabilities`);
+      }
+      if (seenAvail.has(cap)) {
+        errors.push(`Target '${t.id}' lists duplicate capability '${cap}' in availableCapabilities`);
+      }
+      seenAvail.add(cap);
+    }
+    for (const cap of missingCaps) {
+      if (!VALID_CAPABILITIES.has(cap)) {
+        errors.push(
+          `Target '${t.id}' declares unsupported capability '${cap}' in missingOrUnverifiedCapabilities`,
+        );
+      }
+      if (seenAvail.has(cap)) {
+        errors.push(
+          `Target '${t.id}' lists capability '${cap}' in both availableCapabilities and missingOrUnverifiedCapabilities`,
+        );
+      }
+    }
+
+    const canonicalTarget = CANONICAL_TARGET_MAP.get(t.id);
+    if (canonicalTarget) {
+      for (const cap of availCaps) {
+        if (!canonicalTarget.availableCapabilities.includes(cap)) {
+          errors.push(
+            `Target '${t.id}' claims unverified or unsupported capability '${cap}' in availableCapabilities`,
+          );
+        }
+      }
+    }
+
+    // Strict anti-promotion rule: never promote to verified-read or verified-e2e based on docs alone
     if (t.evidenceLevel === 'verified-read') {
       if (!EMPIRICALLY_VERIFIED_READ_TARGETS.has(t.id)) {
         errors.push(
@@ -636,15 +913,20 @@ export function validateCompatibilityMatrixObject(
           `Target '${t.id}' with evidenceLevel 'verified-read' must have verificationState 'Verified Read (Repo-Local)'`,
         );
       }
-      if (!/^\d{4}-\d{2}-\d{2}$/.test(t.verificationDate || '')) {
+      if (!isValidIsoCalendarDate(t.verificationDate)) {
         errors.push(
-          `Target '${t.id}' with evidenceLevel 'verified-read' must record an ISO verificationDate (YYYY-MM-DD)`,
+          `Target '${t.id}' with evidenceLevel 'verified-read' must record a valid calendar ISO verificationDate (YYYY-MM-DD, received '${t.verificationDate}')`,
         );
       }
-      if (!t.verificationEvidencePath || !fs.existsSync(path.join(rootDir, t.verificationEvidencePath))) {
+      if (!t.verificationEvidencePath) {
         errors.push(
           `Target '${t.id}' with evidenceLevel 'verified-read' must reference an existing verificationEvidencePath under docs/evals/`,
         );
+      } else {
+        const evCheck = verifyEvidenceRecordForTarget(rootDir, t);
+        if (!evCheck.ok) {
+          errors.push(evCheck.reason);
+        }
       }
     } else if (t.evidenceLevel === 'linked-only') {
       if (t.verificationState !== 'Not Verified') {
@@ -662,6 +944,50 @@ export function validateCompatibilityMatrixObject(
           `Target '${t.id}' with evidenceLevel 'linked-only' must have verificationEvidencePath: null`,
         );
       }
+    } else if (t.evidenceLevel === 'verified-e2e') {
+      errors.push(
+        `Unverified E2E promotion blocked for '${t.id}': cannot claim evidenceLevel 'verified-e2e' while Blender runtime execution is Not Run`,
+      );
+    }
+  }
+
+  // Validate summary counts against actual target entries
+  if (matrix.summary && typeof matrix.summary === 'object') {
+    const actualDedicated = targets.filter((t) => t && t.adapterDocPath !== null).length;
+    const actualInstallOnly = targets.filter((t) => t && t.adapterDocPath === null).length;
+    const actualVerifiedRead = targets.filter((t) => t && t.evidenceLevel === 'verified-read').length;
+    const actualLinkedOnly = targets.filter((t) => t && t.evidenceLevel === 'linked-only').length;
+    const actualVerifiedE2e = targets.filter((t) => t && t.evidenceLevel === 'verified-e2e').length;
+
+    if (matrix.summary.totalInstallTargets !== targets.length) {
+      errors.push(
+        `summary.totalInstallTargets (${matrix.summary.totalInstallTargets}) does not match targets.length (${targets.length})`,
+      );
+    }
+    if (matrix.summary.dedicatedAdapterDocs !== actualDedicated) {
+      errors.push(
+        `summary.dedicatedAdapterDocs (${matrix.summary.dedicatedAdapterDocs}) does not match actual targets with adapterDocPath (${actualDedicated})`,
+      );
+    }
+    if (matrix.summary.installOnlyTargets !== actualInstallOnly) {
+      errors.push(
+        `summary.installOnlyTargets (${matrix.summary.installOnlyTargets}) does not match actual install-only targets (${actualInstallOnly})`,
+      );
+    }
+    if (matrix.summary.verifiedReadCount !== actualVerifiedRead) {
+      errors.push(
+        `summary.verifiedReadCount (${matrix.summary.verifiedReadCount}) does not match actual verified-read targets (${actualVerifiedRead})`,
+      );
+    }
+    if (matrix.summary.linkedOnlyCount !== actualLinkedOnly) {
+      errors.push(
+        `summary.linkedOnlyCount (${matrix.summary.linkedOnlyCount}) does not match actual linked-only targets (${actualLinkedOnly})`,
+      );
+    }
+    if (matrix.summary.verifiedE2eCount !== actualVerifiedE2e) {
+      errors.push(
+        `summary.verifiedE2eCount (${matrix.summary.verifiedE2eCount}) does not match actual verified-e2e targets (${actualVerifiedE2e})`,
+      );
     }
   }
 
@@ -676,6 +1002,7 @@ export function validateCompatibilityMatrixObject(
   if (fs.existsSync(adapterRegistryPath)) {
     const regTxt = fs.readFileSync(adapterRegistryPath, 'utf8');
     for (const t of targets) {
+      if (!t || typeof t !== 'object') continue;
       const installFile = `${t.id}.md`;
       if (!regTxt.includes(installFile)) {
         errors.push(
@@ -683,6 +1010,12 @@ export function validateCompatibilityMatrixObject(
         );
       }
     }
+  }
+
+  // Cross-check install guides, adapter docs, and docs/install/README.md confidence alignment
+  const docConsistencyErrors = validateAdapterAndInstallDocsConsistency(matrix, { rootDir });
+  for (const err of docConsistencyErrors) {
+    errors.push(err);
   }
 
   return {

@@ -71,7 +71,12 @@ const requiredDocs = [
   'docs/capability-profile.md',
   'docs/adapters/claude-code.md',
   'docs/adapters/claude-app.md',
+  'docs/adapters/cursor.md',
+  'docs/adapters/codex.md',
+  'docs/adapters/opencode.md',
   'docs/adapters/generic-root.md',
+  'docs/evals/adapter-install-v0-dry-run.md',
+  'docs/evals/adapter-empirical-verification-phase-7.md',
   'docs/evals/skill-package-upload-readiness-v0.md',
 ];
 

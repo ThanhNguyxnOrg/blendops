@@ -29,7 +29,7 @@ Runtime status: Not Run.
 Artifact status: Not Produced.
 ```
 
-## MCP host evidence (verified-read)
+## Upstream MCP host documentation (reviewed; BlendOps status: linked-only)
 
 - Official goose Blender MCP tutorial: http://block.github.io/goose/docs/mcp/blender-mcp.
 - Tutorial PR: https://github.com/block/goose/pull/2122 (merged).

@@ -1,6 +1,8 @@
 # Install target: Cursor
 
-Status/confidence: Draft v0, verified-read for rules + AGENTS.md discovery (Cursor docs read 2026-10-14)
+Status/confidence: Draft v0, linked-only (Not Verified in live Cursor host)
+Upstream documentation reviewed: Yes — Cursor rules (`.cursor/rules/*.mdc`) and `AGENTS.md` discovery docs reviewed 2026-10-14
+BlendOps empirical verification status: `linked-only` (`Linked Only (Not Verified)`) — see [`docs/adapter-registry.md`](../adapter-registry.md) and [`docs/evals/adapter-empirical-verification-phase-7.md`](../evals/adapter-empirical-verification-phase-7.md)
 
 ## Recommended near-term install mode
 
@@ -28,7 +30,7 @@ Artifact status: Not Produced.
 ## Expected files/folders
 
 - Detection hint: `.cursor/` directory.
-- Verified: root/nested `AGENTS.md`; `.cursor/rules/*.mdc` with frontmatter.
+- Upstream-documented paths (Cursor docs reviewed 2026-10-14; not empirically verified in a live Cursor host by BlendOps): root/nested `AGENTS.md`; `.cursor/rules/*.mdc` with frontmatter.
 - Not valid: plain `.md` under `.cursor/rules/` (ignored by Cursor).
 
 ## Rollback notes
