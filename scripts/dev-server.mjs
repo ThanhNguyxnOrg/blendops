@@ -1,15 +1,60 @@
 #!/usr/bin/env node
 import http from 'node:http';
 import fs from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import { execFileSync } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
 
-const root = process.cwd();
-const port = Number(process.env.PORT || 3000);
-const phase0Dir = path.join(root, 'docs', 'audits', 'phase-0');
-const currentDir = path.join(root, 'docs', 'audits', 'current');
-const bundlePath = '/tmp/blendops-phase-8.1.1.bundle';
+export const CANONICAL_BUNDLE_FILENAME = 'blendops-phase-9.bundle';
+
+export const COMPATIBILITY_BUNDLE_ROUTES = Object.freeze([
+  '/blendops-phase-9.bundle',
+  '/blendops-phase-8.1.1.bundle',
+  '/blendops-phase-8.1.bundle',
+  '/blendops-phase-8.bundle',
+  '/blendops-phase-7.bundle',
+  '/blendops-phase-6.1.bundle',
+  '/blendops-phase-6.bundle',
+  '/blendops-phase-5.bundle',
+]);
+
+const COMPAT_ROUTE_SET = new Set(COMPATIBILITY_BUNDLE_ROUTES);
+const inFlightBundleLocks = new Map();
+
+export function resolveDefaultBundleCachePath(rootDir = process.cwd()) {
+  let canonicalRoot;
+  try {
+    canonicalRoot = fs.realpathSync(rootDir);
+  } catch {
+    canonicalRoot = path.resolve(rootDir);
+  }
+  const repoHash = crypto
+    .createHash('sha256')
+    .update(canonicalRoot)
+    .digest('hex')
+    .slice(0, 16);
+  return path.join(
+    os.tmpdir(),
+    `blendops-bundle-cache-${repoHash}`,
+    CANONICAL_BUNDLE_FILENAME,
+  );
+}
+
+export function resolveBundleCachePath(options = {}) {
+  const rootDir = path.resolve(
+    options.rootDir || process.env.BLENDOPS_REPO_ROOT || process.cwd(),
+  );
+  const explicitPath =
+    options.bundlePath !== undefined
+      ? options.bundlePath
+      : process.env.BLENDOPS_BUNDLE_PATH;
+  if (typeof explicitPath === 'string' && explicitPath.trim().length > 0) {
+    return path.resolve(explicitPath.trim());
+  }
+  return resolveDefaultBundleCachePath(rootDir);
+}
 
 function loadJsonFrom(dir, filename) {
   const full = path.join(dir, filename);
@@ -17,52 +62,261 @@ function loadJsonFrom(dir, filename) {
   return JSON.parse(fs.readFileSync(full, 'utf8'));
 }
 
-function getBundleInfo() {
+function resolveRepoExpectedRefs(rootDir) {
+  if (!rootDir || !fs.existsSync(rootDir) || !fs.statSync(rootDir).isDirectory()) {
+    throw new Error(`Repository root directory does not exist: ${rootDir}`);
+  }
+  let headSha;
+  let mainSha;
   try {
-    if (!fs.existsSync(bundlePath)) {
-      execFileSync(
-        'git',
-        [
-          'bundle',
-          'create',
-          bundlePath,
-          'HEAD',
-          'refs/heads/main',
-        ],
-        { cwd: root },
+    headSha = execFileSync('git', ['rev-parse', '--verify', 'HEAD'], {
+      cwd: rootDir,
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'pipe'],
+    }).trim();
+  } catch (err) {
+    const stderr = err.stderr ? String(err.stderr).trim() : String(err.message || err);
+    throw new Error(`Failed to resolve Git HEAD in ${rootDir}: ${stderr}`);
+  }
+  try {
+    mainSha = execFileSync('git', ['rev-parse', '--verify', 'refs/heads/main'], {
+      cwd: rootDir,
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'pipe'],
+    }).trim();
+  } catch (err) {
+    const stderr = err.stderr ? String(err.stderr).trim() : String(err.message || err);
+    throw new Error(`Failed to resolve refs/heads/main in ${rootDir}: ${stderr}`);
+  }
+
+  if (!/^[0-9a-f]{40}$/.test(headSha)) {
+    throw new Error(`Invalid Git HEAD SHA in ${rootDir}: ${JSON.stringify(headSha)}`);
+  }
+  if (!/^[0-9a-f]{40}$/.test(mainSha)) {
+    throw new Error(`Invalid refs/heads/main SHA in ${rootDir}: ${JSON.stringify(mainSha)}`);
+  }
+
+  return { headSha, mainSha };
+}
+
+function parseBundleListHeadsOutput(rawOutput) {
+  const refs = {};
+  const lines = String(rawOutput || '')
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean);
+  for (const line of lines) {
+    const match = /^([0-9a-f]{40})\s+(.+)$/.exec(line);
+    if (!match) {
+      throw new Error(`Malformed git bundle list-heads entry: ${JSON.stringify(line)}`);
+    }
+    refs[match[2]] = match[1];
+  }
+  return refs;
+}
+
+function inspectAndVerifyBundleFile(filePath, rootDir, expectedRefs) {
+  const bufferBefore = fs.readFileSync(filePath);
+  if (bufferBefore.length < 16) {
+    throw new Error(`Bundle file ${filePath} is truncated (${bufferBefore.length} bytes)`);
+  }
+  const newlineIndex = bufferBefore.indexOf(0x0a);
+  const header =
+    newlineIndex !== -1
+      ? bufferBefore.subarray(0, newlineIndex).toString('utf8').trim()
+      : '';
+  if (header !== '# v2 git bundle' && header !== '# v3 git bundle') {
+    throw new Error(
+      `Invalid Git bundle binary header in ${filePath}: ${JSON.stringify(header)}`,
+    );
+  }
+
+  let listHeadsOut;
+  try {
+    listHeadsOut = execFileSync('git', ['bundle', 'list-heads', filePath], {
+      cwd: rootDir,
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'pipe'],
+    });
+  } catch (err) {
+    const stderr = err.stderr ? String(err.stderr).trim() : String(err.message || err);
+    throw new Error(`git bundle list-heads failed for ${filePath}: ${stderr}`);
+  }
+
+  const refs = parseBundleListHeadsOutput(listHeadsOut);
+  if (refs.HEAD !== expectedRefs.headSha) {
+    throw new Error(
+      `Bundle HEAD ref mismatch: expected ${expectedRefs.headSha}, got ${refs.HEAD || 'missing'}`,
+    );
+  }
+  if (refs['refs/heads/main'] !== expectedRefs.mainSha) {
+    throw new Error(
+      `Bundle refs/heads/main mismatch: expected ${expectedRefs.mainSha}, got ${refs['refs/heads/main'] || 'missing'}`,
+    );
+  }
+
+  try {
+    execFileSync('git', ['bundle', 'verify', filePath], {
+      cwd: rootDir,
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'pipe'],
+    });
+  } catch (err) {
+    const stderr = err.stderr ? String(err.stderr).trim() : String(err.message || err);
+    throw new Error(`git bundle verify failed for ${filePath}: ${stderr}`);
+  }
+
+  const bufferAfter = fs.readFileSync(filePath);
+  if (!bufferBefore.equals(bufferAfter)) {
+    throw new Error(`Concurrent modification detected while verifying ${filePath}`);
+  }
+
+  const sha256 = crypto.createHash('sha256').update(bufferAfter).digest('hex');
+  return {
+    exists: true,
+    filename: CANONICAL_BUNDLE_FILENAME,
+    bundlePath: filePath,
+    size: bufferAfter.length,
+    sha256,
+    header,
+    headSha: expectedRefs.headSha,
+    mainSha: expectedRefs.mainSha,
+    refs,
+    buffer: bufferAfter,
+    b64: bufferAfter.toString('base64'),
+  };
+}
+
+export function getBundleInfo(options = {}) {
+  const rootDir = path.resolve(
+    options.rootDir || process.env.BLENDOPS_REPO_ROOT || process.cwd(),
+  );
+  const targetBundlePath = resolveBundleCachePath({
+    rootDir,
+    bundlePath: options.bundlePath,
+  });
+
+  try {
+    const expectedRefs = resolveRepoExpectedRefs(rootDir);
+
+    if (fs.existsSync(targetBundlePath)) {
+      const stat = fs.statSync(targetBundlePath);
+      if (stat.isDirectory()) {
+        throw new Error(
+          `Bundle cache path points to a directory instead of a file: ${targetBundlePath}`,
+        );
+      }
+      try {
+        return inspectAndVerifyBundleFile(targetBundlePath, rootDir, expectedRefs);
+      } catch {
+        // Cached bundle is stale or corrupted; remove it before regenerating atomically.
+        try {
+          fs.rmSync(targetBundlePath, { force: true });
+        } catch {
+          // Ignore unlink error here; atomic rename or directory check below will surface any permission errors.
+        }
+      }
+    }
+
+    const cacheDir = path.dirname(targetBundlePath);
+    if (fs.existsSync(cacheDir) && !fs.statSync(cacheDir).isDirectory()) {
+      throw new Error(
+        `Bundle cache parent path is not a directory: ${cacheDir}`,
       );
     }
-    const buf = fs.readFileSync(bundlePath);
-    const sha256 = crypto.createHash('sha256').update(buf).digest('hex');
-    const header = buf.subarray(0, 16).toString('utf8').trim();
-    const b64 = buf.toString('base64');
+    fs.mkdirSync(cacheDir, { recursive: true });
+
+    const tempPath = path.join(
+      cacheDir,
+      `.${path.basename(targetBundlePath)}.tmp-${process.pid}-${Date.now()}-${crypto.randomBytes(6).toString('hex')}`,
+    );
+
+    try {
+      execFileSync(
+        'git',
+        ['bundle', 'create', tempPath, 'HEAD', 'refs/heads/main'],
+        {
+          cwd: rootDir,
+          encoding: 'utf8',
+          stdio: ['ignore', 'pipe', 'pipe'],
+        },
+      );
+
+      const verifiedCandidate = inspectAndVerifyBundleFile(
+        tempPath,
+        rootDir,
+        expectedRefs,
+      );
+      fs.renameSync(tempPath, targetBundlePath);
+
+      return {
+        ...verifiedCandidate,
+        bundlePath: targetBundlePath,
+      };
+    } finally {
+      if (fs.existsSync(tempPath)) {
+        try {
+          fs.rmSync(tempPath, { force: true });
+        } catch {
+          // Best-effort cleanup of temporary candidate file.
+        }
+      }
+    }
+  } catch (err) {
     return {
-      exists: true,
-      size: buf.length,
-      sha256,
-      header,
-      b64,
+      exists: false,
+      filename: CANONICAL_BUNDLE_FILENAME,
+      bundlePath: targetBundlePath,
+      error: String(err && err.message ? err.message : err),
     };
-  } catch (e) {
-    return { exists: false, error: String(e.message || e) };
   }
 }
 
-function renderHtml() {
+export async function getBundleSnapshot(options = {}) {
+  const rootDir = path.resolve(
+    options.rootDir || process.env.BLENDOPS_REPO_ROOT || process.cwd(),
+  );
+  const targetBundlePath = resolveBundleCachePath({
+    rootDir,
+    bundlePath: options.bundlePath,
+  });
+  const lockKey = `${rootDir}::${targetBundlePath}`;
+
+  const previous = inFlightBundleLocks.get(lockKey) || Promise.resolve();
+  const nextPromise = previous
+    .catch(() => {})
+    .then(() => getBundleInfo({ rootDir, bundlePath: targetBundlePath }));
+
+  inFlightBundleLocks.set(lockKey, nextPromise);
+  try {
+    return await nextPromise;
+  } finally {
+    if (inFlightBundleLocks.get(lockKey) === nextPromise) {
+      inFlightBundleLocks.delete(lockKey);
+    }
+  }
+}
+
+function renderHtml(options = {}) {
+  const rootDir = path.resolve(
+    options.rootDir || process.env.BLENDOPS_REPO_ROOT || process.cwd(),
+  );
+  const phase0Dir = path.join(rootDir, 'docs', 'audits', 'phase-0');
+  const currentDir = path.join(rootDir, 'docs', 'audits', 'current');
+
   const currentScorecard = loadJsonFrom(currentDir, 'scorecard.json');
   const currentFindings = loadJsonFrom(currentDir, 'findings.json');
   const currentSkillInv = loadJsonFrom(currentDir, 'skill-inventory.json');
   const currentEvalInv = loadJsonFrom(currentDir, 'eval-inventory.json');
-  const currentManifest = loadJsonFrom(currentDir, 'verification-manifest.json');
   const phase0Scorecard = loadJsonFrom(phase0Dir, 'baseline-scorecard.json');
-  const evalIndex = loadJsonFrom(path.join(root, 'evals'), 'index.json');
-  const registryGraph = loadJsonFrom(path.join(root, 'registry'), 'workflow-graph.json');
+  const evalIndex = loadJsonFrom(path.join(rootDir, 'evals'), 'index.json');
+  const registryGraph = loadJsonFrom(path.join(rootDir, 'registry'), 'workflow-graph.json');
 
   const skills = currentSkillInv ? currentSkillInv.skills : [];
   const pillars = currentScorecard ? currentScorecard.pillars : [];
   const findingsList = currentFindings ? currentFindings.findings : [];
   const suites = evalIndex ? (evalIndex.suites || evalIndex.pilotSuites || []) : [];
-  const bundle = getBundleInfo();
+  const bundle = options.bundleSnapshot || getBundleInfo(options);
 
   const currentCommitShort =
     currentScorecard?.sourceCommitShort ||
@@ -244,7 +498,8 @@ function renderHtml() {
       <span class="badge" style="color:var(--blue)">phase-7: 9ba2d80</span>
       <span class="badge" style="color:var(--blue)">phase-8: defb847</span>
       <span class="badge" style="color:var(--blue)">phase-8.1: 42dadea</span>
-      <span class="badge" style="color:var(--green)">phase-8.1.1 (source: ${currentCommitShort} &middot; ${auditProv ? auditProv.snapshotBasis : 'verified'}): ${currentScorecard ? currentScorecard.totals.measuredScore : 87.0}/100 &middot; CI PASS</span>
+      <span class="badge" style="color:var(--blue)">phase-8.1.1: 3e72020</span>
+      <span class="badge" style="color:var(--green)">phase-9 (source: ${currentCommitShort} &middot; ${auditProv ? auditProv.snapshotBasis : 'verified'}): ${currentScorecard ? currentScorecard.totals.measuredScore : 87.0}/100 &middot; CI PASS</span>
     </div>
   </header>
   <main>
@@ -255,7 +510,7 @@ function renderHtml() {
         <div>
           <div style="font-size:12px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:0.05em;">Verified Binary Git Bundle Ready (In-Memory Export — Zero Proxy)</div>
           <div class="mono" style="font-size:13px;margin-top:6px;">
-            File: <strong>blendops-phase-8.1.1.bundle</strong> &middot;
+            File: <strong>${CANONICAL_BUNDLE_FILENAME}</strong> &middot;
             Size: <strong>${bundle.size.toLocaleString()} bytes</strong> &middot;
             Header: <strong>${bundle.header}</strong> &middot;
             SHA-256: <strong>${bundle.sha256}</strong>
@@ -466,7 +721,7 @@ function renderHtml() {
       try {
         if (window.showSaveFilePicker) {
           var handle = await window.showSaveFilePicker({
-            suggestedName: 'blendops-phase-8.1.1.bundle',
+            suggestedName: '${CANONICAL_BUNDLE_FILENAME}',
             types: [{ description: 'Git v2 Bundle', accept: { 'application/octet-stream': ['.bundle'] } }]
           });
           var writable = await handle.createWritable();
@@ -483,7 +738,7 @@ function renderHtml() {
       var url = URL.createObjectURL(blob);
       var a = document.createElement('a');
       a.href = url;
-      a.download = 'blendops-phase-8.1.1.bundle';
+      a.download = '${CANONICAL_BUNDLE_FILENAME}';
       document.body.appendChild(a);
       a.click();
       setTimeout(function () {
@@ -499,75 +754,133 @@ function renderHtml() {
       if (!el) return;
       await navigator.clipboard.writeText(el.value.trim());
       status.style.display = 'block';
-      status.textContent = 'Copied Base64 payload to clipboard! Run in PowerShell: [IO.File]::WriteAllBytes("blendops-phase-8.1.1.bundle", [Convert]::FromBase64String((Get-Clipboard)))';
+      status.textContent = 'Copied Base64 payload to clipboard! Run in PowerShell: [IO.File]::WriteAllBytes("${CANONICAL_BUNDLE_FILENAME}", [Convert]::FromBase64String((Get-Clipboard)))';
     }
   </script>
 </body>
 </html>`;
 }
 
-const server = http.createServer((req, res) => {
-  const url = (req.url || '/').split('?')[0];
-  if (url === '/api/health') {
-    res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({ status: 'ok', mode: 'reconciled-current-state-inspector' }));
-    return;
-  }
-  if (url === '/api/bundle-info') {
-    const info = getBundleInfo();
-    res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.end(
-      JSON.stringify({
-        exists: info.exists,
-        filename: 'blendops-phase-8.1.1.bundle',
-        size: info.size,
-        sha256: info.sha256,
-        header: info.header,
-      }),
-    );
-    return;
-  }
-  if (
-    url === '/blendops-phase-8.1.1.bundle' ||
-    url === '/blendops-phase-8.1.bundle' ||
-    url === '/blendops-phase-8.bundle' ||
-    url === '/blendops-phase-7.bundle' ||
-    url === '/blendops-phase-6.1.bundle' ||
-    url === '/blendops-phase-6.bundle' ||
-    url === '/blendops-phase-5.bundle'
-  ) {
-    const info = getBundleInfo();
-    if (!info.exists) {
-      res.writeHead(404, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify({ error: info.error || 'Bundle not found' }));
+export function createDevServer(options = {}) {
+  const getServerOptions = () => ({
+    rootDir:
+      options.rootDir !== undefined
+        ? options.rootDir
+        : process.env.BLENDOPS_REPO_ROOT || process.cwd(),
+    bundlePath:
+      options.bundlePath !== undefined
+        ? options.bundlePath
+        : process.env.BLENDOPS_BUNDLE_PATH,
+  });
+
+  return http.createServer(async (req, res) => {
+    const serverOpts = getServerOptions();
+    const rootDir = path.resolve(serverOpts.rootDir);
+    const currentDir = path.join(rootDir, 'docs', 'audits', 'current');
+    const url = (req.url || '/').split('?')[0];
+
+    if (url === '/api/health') {
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(
+        JSON.stringify({ status: 'ok', mode: 'reconciled-current-state-inspector' }),
+      );
       return;
     }
-    const rawBuf = fs.readFileSync(bundlePath);
-    res.writeHead(200, {
-      'Content-Type': 'application/octet-stream',
-      'Content-Disposition': 'attachment; filename="blendops-phase-8.1.1.bundle"',
-      'Content-Length': String(rawBuf.length),
-      'Cache-Control': 'no-store',
-    });
-    res.end(rawBuf);
-    return;
-  }
-  if (url === '/api/current-scorecard') {
-    const data = loadJsonFrom(currentDir, 'scorecard.json');
-    res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify(data || {}));
-    return;
-  }
-  if (url === '/api/current-findings') {
-    const data = loadJsonFrom(currentDir, 'findings.json');
-    res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify(data || {}));
-    return;
-  }
-  res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
-  res.end(renderHtml());
-});
 
-server.listen(port, '0.0.0.0', () => {
-  console.log(`BlendOps Reconciled Current-State Inspector listening on http://0.0.0.0:${port}`);
-});
+    if (url === '/api/bundle-info') {
+      const snapshot = await getBundleSnapshot(serverOpts);
+      if (!snapshot.exists) {
+        res.writeHead(503, {
+          'Content-Type': 'application/json',
+          'Cache-Control': 'no-store',
+        });
+        res.end(
+          JSON.stringify({
+            exists: false,
+            filename: CANONICAL_BUNDLE_FILENAME,
+            error: snapshot.error || 'Bundle unavailable',
+          }),
+        );
+        return;
+      }
+
+      res.writeHead(200, {
+        'Content-Type': 'application/json',
+        'Cache-Control': 'no-store',
+      });
+      res.end(
+        JSON.stringify({
+          exists: true,
+          filename: CANONICAL_BUNDLE_FILENAME,
+          size: snapshot.size,
+          sha256: snapshot.sha256,
+          header: snapshot.header,
+          headSha: snapshot.headSha,
+          mainSha: snapshot.mainSha,
+          refs: snapshot.refs,
+        }),
+      );
+      return;
+    }
+
+    if (COMPAT_ROUTE_SET.has(url)) {
+      const snapshot = await getBundleSnapshot(serverOpts);
+      if (!snapshot.exists || !Buffer.isBuffer(snapshot.buffer)) {
+        res.writeHead(503, {
+          'Content-Type': 'application/json',
+          'Cache-Control': 'no-store',
+        });
+        res.end(
+          JSON.stringify({
+            exists: false,
+            filename: CANONICAL_BUNDLE_FILENAME,
+            error: snapshot.error || 'Bundle unavailable',
+          }),
+        );
+        return;
+      }
+
+      res.writeHead(200, {
+        'Content-Type': 'application/octet-stream',
+        'Content-Disposition': `attachment; filename="${CANONICAL_BUNDLE_FILENAME}"`,
+        'Content-Length': String(snapshot.buffer.length),
+        'Cache-Control': 'no-store',
+      });
+      res.end(snapshot.buffer);
+      return;
+    }
+
+    if (url === '/api/current-scorecard') {
+      const data = loadJsonFrom(currentDir, 'scorecard.json');
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify(data || {}));
+      return;
+    }
+
+    if (url === '/api/current-findings') {
+      const data = loadJsonFrom(currentDir, 'findings.json');
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify(data || {}));
+      return;
+    }
+
+    const snapshot = await getBundleSnapshot(serverOpts);
+    res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
+    res.end(renderHtml({ ...serverOpts, bundleSnapshot: snapshot }));
+  });
+}
+
+const isMainModule =
+  Boolean(process.argv[1]) &&
+  path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+
+if (isMainModule) {
+  const port = Number(process.env.PORT || 3000);
+  const host = process.env.HOST || '0.0.0.0';
+  const server = createDevServer();
+  server.listen(port, host, () => {
+    console.log(
+      `BlendOps Reconciled Current-State Inspector listening on http://${host}:${port}`,
+    );
+  });
+}

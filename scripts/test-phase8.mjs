@@ -1752,50 +1752,47 @@ test('Scenario 39 (Phase 8.1.1 Fix B): Activation gate goalClarity accepts ambig
   }
 });
 
-test('Scenario 40 (Phase 8.1.1 Fix C): dev-server.mjs uses blendops-phase-8.1.1.bundle consistently across bundlePath, suggestedName, download attribute, PowerShell command, /api/bundle-info, and Content-Disposition', () => {
+test('Scenario 40 (Phase 8.1.1 Fix C): dev-server.mjs uses a single canonical bundle filename consistently across suggestedName, download attribute, PowerShell command, /api/bundle-info, and Content-Disposition while preserving Phase 8.1.1 compatibility routes', () => {
   const devServerPath = path.join(root, 'scripts', 'dev-server.mjs');
   const devServerSource = fs.readFileSync(devServerPath, 'utf8');
 
   assert.match(
     devServerSource,
-    /const bundlePath = '\/tmp\/blendops-phase-8\.1\.1\.bundle';/,
-    'bundlePath must point to /tmp/blendops-phase-8.1.1.bundle',
+    /export const CANONICAL_BUNDLE_FILENAME = 'blendops-phase-9\.bundle';/,
+    'CANONICAL_BUNDLE_FILENAME must be defined once as the single source of truth',
   );
   assert.match(
     devServerSource,
-    /suggestedName:\s*'blendops-phase-8\.1\.1\.bundle'/,
-    'showSaveFilePicker.suggestedName must be blendops-phase-8.1.1.bundle',
+    /suggestedName:\s*'\$\{CANONICAL_BUNDLE_FILENAME\}'/,
+    'showSaveFilePicker.suggestedName must use CANONICAL_BUNDLE_FILENAME',
   );
   assert.match(
     devServerSource,
-    /a\.download\s*=\s*'blendops-phase-8\.1\.1\.bundle'/,
-    'Browser download filename must be blendops-phase-8.1.1.bundle',
+    /a\.download\s*=\s*'\$\{CANONICAL_BUNDLE_FILENAME\}'/,
+    'Browser download filename must use CANONICAL_BUNDLE_FILENAME',
   );
   assert.match(
     devServerSource,
-    /WriteAllBytes\("blendops-phase-8\.1\.1\.bundle"/,
-    'PowerShell Base64 decoder instructions must use blendops-phase-8.1.1.bundle',
+    /WriteAllBytes\("\$\{CANONICAL_BUNDLE_FILENAME\}"/,
+    'PowerShell Base64 decoder instructions must use CANONICAL_BUNDLE_FILENAME',
   );
   assert.match(
     devServerSource,
-    /filename:\s*'blendops-phase-8\.1\.1\.bundle'/,
-    '/api/bundle-info metadata filename must be blendops-phase-8.1.1.bundle',
+    /filename:\s*CANONICAL_BUNDLE_FILENAME/,
+    '/api/bundle-info metadata filename must use CANONICAL_BUNDLE_FILENAME',
   );
   assert.match(
     devServerSource,
-    /Content-Disposition':\s*'attachment; filename="blendops-phase-8\.1\.1\.bundle"'/,
-    'Content-Disposition header must specify blendops-phase-8.1.1.bundle',
+    /'Content-Disposition':\s*`attachment; filename="\$\{CANONICAL_BUNDLE_FILENAME\}"`/,
+    'Content-Disposition header must use CANONICAL_BUNDLE_FILENAME',
   );
-  assert.match(
-    devServerSource,
-    /url === '\/blendops-phase-8\.1\.1\.bundle'/,
-    'Download route must serve /blendops-phase-8.1.1.bundle',
-  );
-  // Ensure compatibility routes for previous phases remain supported
-  assert.match(devServerSource, /url === '\/blendops-phase-8\.1\.bundle'/);
-  assert.match(devServerSource, /url === '\/blendops-phase-8\.bundle'/);
+  // Ensure compatibility routes for Phase 9, 8.1.1, 8.1, and 8 are preserved
+  assert.match(devServerSource, /'\/blendops-phase-9\.bundle'/);
+  assert.match(devServerSource, /'\/blendops-phase-8\.1\.1\.bundle'/);
+  assert.match(devServerSource, /'\/blendops-phase-8\.1\.bundle'/);
+  assert.match(devServerSource, /'\/blendops-phase-8\.bundle'/);
 
-  // Ensure no stale suggestedName or active download filename remains
+  // Ensure no hardcoded stale suggestedName or active download filename remains
   assert.equal(
     devServerSource.includes("suggestedName: 'blendops-phase-8.bundle'"),
     false,
