@@ -5,7 +5,7 @@ Purpose: Validate lighting intensity ranges, shadow softness, color temperature,
 
 Run a focused pass/warn/fail check on the scene's lighting setup per light — covering intensity ranges, shadow softness, color temperature, HDRI / explicit-light balance, and mood match — without expanding into material, composition, or lookdev planning concerns.
 
-Metadata: Category `quality-validators` | Role `exposure-ratio-and-shadow-validator` | Tier `L0` | Runtime default `Not Run` | Artifact default `Not Produced` | Mutation `downgrade_only`
+Metadata: Contract `v1.0.0` | Category `quality-validators` | Role `exposure-ratio-and-shadow-validator` | Tier `L0` | Runtime default `Not Run` | Artifact default `Not Produced` | Mutation `downgrade_only`
 
 ## When to use & trigger cues
 - before render
@@ -38,11 +38,11 @@ Metadata: Category `quality-validators` | Role `exposure-ratio-and-shadow-valida
 7. emit per-light verdicts (`Pass / Warn / Fail`) with remediation hints only + a top-line status
 
 ## Cross-skill handoffs
-- [progression] Broad readiness review → `blender-scene-quality-checker` (`references/skill-blender-scene-quality-checker.md`)
-- [upstream_reference] Material validation → `material-quality-checker` (`references/skill-material-quality-checker.md`)
-- [progression] Composition validation → `composition-quality-checker` (`references/skill-composition-quality-checker.md`)
-- [retry] Lighting re-plan → `blender-lighting-material-planner` (`references/skill-blender-lighting-material-planner.md`) (max retry attempts: 2)
-- [progression] Render evidence → `render-export-evidence` (`references/skill-render-export-evidence.md`)
+- [progression] Broad readiness review → `blender-scene-quality-checker` (`references/skill-blender-scene-quality-checker.md`) — `when.all: [quality.domain equals "holistic"; stage.current equals "quality_validation"]`
+- [upstream_reference] Material validation → `material-quality-checker` (`references/skill-material-quality-checker.md`) — `when.all: [quality.domain equals "material"; quality.verdict equals "not_run"]`
+- [progression] Composition validation → `composition-quality-checker` (`references/skill-composition-quality-checker.md`) — `when.all: [quality.domain equals "composition"; quality.verdict equals "not_run"]`
+- [retry] Lighting re-plan → `blender-lighting-material-planner` (`references/skill-blender-lighting-material-planner.md`) — `when.all: [quality.domain equals "lighting"; quality.verdict equals "Fail"]`; retryPolicy: `maxAttempts=2`, `exitCondition.all: [quality.verdict in ["Pass","Warn"]]`
+- [progression] Render evidence → `render-export-evidence` (`references/skill-render-export-evidence.md`) — `when.all: [stage.current equals "post_execution_audit"]`
 
 ## Safety boundaries & non-goals
 - Runtime boundary: This skill validates plans or measured scene snapshots only. It never modifies lights, runs Blender, or renders. Use measured scene description (plan output, runtime tool snapshot) — never invent values.

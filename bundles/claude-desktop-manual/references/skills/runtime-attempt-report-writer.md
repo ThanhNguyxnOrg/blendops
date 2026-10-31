@@ -52,12 +52,12 @@ Record a chronological, secret-free runtime attempt log—including version stam
 4. route improvements via `skills/runtime-attempt-report-writer/references/triage-next-steps.md`
 
 ## Handoff notes
-- **[upstream_reference]** Pre-attempt readiness check → `official-runtime-readiness-checker` (`references/skills/official-runtime-readiness-checker.md`)
-- **[upstream_reference]** Runtime path selection context → `runtime-path-picker` (`references/skills/runtime-path-picker.md`)
-- **[fallback]** Bridge / port / host conflicts → `runtime-bridge-conflict-resolver` (`references/skills/runtime-bridge-conflict-resolver.md`)
-- **[fallback]** Runtime or scene defect diagnosis → `blender-troubleshooting` (`references/skills/blender-troubleshooting.md`)
-- **[progression]** Artifact evidence classification → `render-export-evidence` (`references/skills/render-export-evidence.md`)
-- **[fallback]** Final handoff gate & failure exit → `pre-handoff-verification` (`references/skills/pre-handoff-verification.md`)
+- **[upstream_reference]** Pre-attempt readiness check → `official-runtime-readiness-checker` (`references/skills/official-runtime-readiness-checker.md`) — `when.all: [runtime.path not_equals "unselected"; runtime.verifiedReady equals false]`
+- **[upstream_reference]** Runtime path selection context → `runtime-path-picker` (`references/skills/runtime-path-picker.md`) — `when.all: [runtime.path equals "unselected"]`
+- **[fallback]** Bridge / port / host conflicts → `runtime-bridge-conflict-resolver` (`references/skills/runtime-bridge-conflict-resolver.md`) — `when.all: [runtime.conflictDetected equals true]`
+- **[fallback]** Runtime or scene defect diagnosis → `blender-troubleshooting` (`references/skills/blender-troubleshooting.md`) — `when.all: [runtime.errorDetected equals true]`
+- **[progression]** Artifact evidence classification → `render-export-evidence` (`references/skills/render-export-evidence.md`) — `when.all: [stage.current equals "post_execution_audit"]`
+- **[fallback]** Final handoff gate & failure exit → `pre-handoff-verification` (`references/skills/pre-handoff-verification.md`) — `when.any: [gate.status equals "failed"; runtime.mode equals "blocked"]`
 
 ## Safety boundaries & non-goals
 - **Runtime boundary:** Documentation skill only—never executes Blender or generates Python. Reports must strictly preserve upstream runtime distinctions: - **Path 1**: Official Blender Lab MCP in Blender 5.1+, hosted from (a) Anthropic Connector or (b) manual MCP client. The Connector is NOT standalone. - **Path 2**: Community `mcp-for-blender` (third-party, Blender 3.0+); document only with explicit caveats and never treat as release evidence. - **CLI fallback**: Appendix only (`blender --background --python`); remains upstream-documented with no in-repo evidence file unless a report written by this skill becomes one under `docs/evals/`.

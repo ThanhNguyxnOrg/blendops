@@ -5,7 +5,7 @@ Purpose: Turn a locked 3D brief plus chosen recipe into a measurable acceptance 
 
 Turn a locked 3D brief plus chosen recipe into a measurable acceptance checklist (`Criterion | Measurement | Evidence expected | Owner`) with evidence hooks, consumed by validators, `render-export-evidence`, and `pre-handoff-verification`. This skill is planning-only: it never executes Blender or Python, never produces artifacts, and never verifies files itself.
 
-Metadata: Category `process-discipline` | Role `measurable-acceptance-table-builder` | Tier `L0` | Runtime default `Not Run` | Artifact default `Not Produced` | Mutation `downgrade_only`
+Metadata: Contract `v1.0.0` | Category `process-discipline` | Role `measurable-acceptance-table-builder` | Tier `L0` | Runtime default `Not Run` | Artifact default `Not Produced` | Mutation `downgrade_only`
 
 ## When to use & trigger cues
 - after a brief is locked with `intent-to-3d-brief-writer` and a recipe is chosen, before expensive render or export stages
@@ -35,13 +35,13 @@ Metadata: Category `process-discipline` | Role `measurable-acceptance-table-buil
 4. format via `skills/acceptance-criteria-builder/references/brief-to-criteria-mapper.md`
 
 ## Cross-skill handoffs
-- [upstream_reference] Brief source → `intent-to-3d-brief-writer` (`references/skill-intent-to-3d-brief-writer.md`)
-- [progression] Done / stop condition → `blender-stop-condition-decider` (`references/skill-blender-stop-condition-decider.md`)
-- [progression] Per-stage gate enforcement → `blender-checklist-driven-workflow` (`references/skill-blender-checklist-driven-workflow.md`)
-- [progression] Scope boundary enforcement → `blender-scope-boundary-enforcer` (`references/skill-blender-scope-boundary-enforcer.md`)
-- [progression] License permissions → `asset-license-checker` (`references/skill-asset-license-checker.md`)
-- [progression] Artifact evidence classification → `render-export-evidence` (`references/skill-render-export-evidence.md`)
-- [progression] Handoff gate verification → `pre-handoff-verification` (`references/skill-pre-handoff-verification.md`)
+- [upstream_reference] Brief source → `intent-to-3d-brief-writer` (`references/skill-intent-to-3d-brief-writer.md`) — `when.all: [goal.clarity equals "clear"; brief.locked equals false]`
+- [progression] Done / stop condition → `blender-stop-condition-decider` (`references/skill-blender-stop-condition-decider.md`) — `when.all: [brief.locked equals true; stage.current equals "stop_condition"]`
+- [progression] Per-stage gate enforcement → `blender-checklist-driven-workflow` (`references/skill-blender-checklist-driven-workflow.md`) — `when.all: [brief.locked equals true; stage.current equals "stage_gates"]`
+- [progression] Scope boundary enforcement → `blender-scope-boundary-enforcer` (`references/skill-blender-scope-boundary-enforcer.md`) — `when.all: [scope.driftDetected equals true]`
+- [progression] License permissions → `asset-license-checker` (`references/skill-asset-license-checker.md`) — `when.all: [assets.externalUsed equals true; assets.licenseCleared equals false]`
+- [progression] Artifact evidence classification → `render-export-evidence` (`references/skill-render-export-evidence.md`) — `when.all: [stage.current equals "post_execution_audit"]`
+- [progression] Handoff gate verification → `pre-handoff-verification` (`references/skill-pre-handoff-verification.md`) — `when.all: [stage.current equals "final_verification"]`
 
 ## Safety boundaries & non-goals
 - Runtime boundary: This skill is strictly planning-only (no Python, no Blender execution). Checklists may define expected runtime evidence hooks, but must never execute tasks, verify files, or upgrade truth states beyond what upstream evidence skills report.

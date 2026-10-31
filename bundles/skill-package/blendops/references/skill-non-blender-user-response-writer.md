@@ -5,7 +5,7 @@ Purpose: Convert technical Blender workflow findings into plain-language user-fa
 
 Produce stakeholder-friendly outputs that preserve truthfulness, evidence boundaries, and clear next actions.
 
-Metadata: Category `evidence-and-handoff` | Role `plain-language-final-response-translator` | Tier `L0` | Runtime default `Not Run` | Artifact default `Not Produced` | Mutation `downgrade_only`
+Metadata: Contract `v1.0.0` | Category `evidence-and-handoff` | Role `plain-language-final-response-translator` | Tier `L0` | Runtime default `Not Run` | Artifact default `Not Produced` | Mutation `downgrade_only`
 
 ## When to use & trigger cues
 - in the final response phase to convert technical findings into plain-language user-facing wording
@@ -34,15 +34,15 @@ Metadata: Category `evidence-and-handoff` | Role `plain-language-final-response-
 4. follow suggested next-skill handoff
 
 ## Cross-skill handoffs
-- [upstream_reference] Upstream artifact evidence classification → `render-export-evidence` (`references/skill-render-export-evidence.md`)
-- [fallback] Upstream quality pass/warn/fail validation (blender-scene-quality-checker) → `blender-scene-quality-checker` (`references/skill-blender-scene-quality-checker.md`)
-- [fallback] Upstream quality pass/warn/fail validation (composition-quality-checker) → `composition-quality-checker` (`references/skill-composition-quality-checker.md`)
-- [fallback] Upstream quality pass/warn/fail validation (lighting-quality-checker) → `lighting-quality-checker` (`references/skill-lighting-quality-checker.md`)
-- [fallback] Upstream quality pass/warn/fail validation (material-quality-checker) → `material-quality-checker` (`references/skill-material-quality-checker.md`)
-- [fallback] Upstream quality pass/warn/fail validation (polycount-budget-checker) → `polycount-budget-checker` (`references/skill-polycount-budget-checker.md`)
-- [upstream_reference] Upstream GLB/web handoff summary → `glb-web-handoff` (`references/skill-glb-web-handoff.md`)
-- [upstream_reference] Upstream handoff gate check → `pre-handoff-verification` (`references/skill-pre-handoff-verification.md`)
-- [upstream_reference] Runtime readiness check when runtime is unverified → `official-runtime-readiness-checker` (`references/skill-official-runtime-readiness-checker.md`)
+- [upstream_reference] Upstream artifact evidence classification → `render-export-evidence` (`references/skill-render-export-evidence.md`) — `when.all: [stage.current equals "post_execution_audit"]`
+- [fallback] Upstream quality pass/warn/fail validation (blender-scene-quality-checker) → `blender-scene-quality-checker` (`references/skill-blender-scene-quality-checker.md`) — `when.all: [quality.domain equals "holistic"; stage.current equals "quality_validation"]`
+- [fallback] Upstream quality pass/warn/fail validation (composition-quality-checker) → `composition-quality-checker` (`references/skill-composition-quality-checker.md`) — `when.all: [quality.domain equals "composition"; quality.verdict equals "not_run"]`
+- [fallback] Upstream quality pass/warn/fail validation (lighting-quality-checker) → `lighting-quality-checker` (`references/skill-lighting-quality-checker.md`) — `when.all: [quality.domain equals "lighting"; quality.verdict equals "not_run"]`
+- [fallback] Upstream quality pass/warn/fail validation (material-quality-checker) → `material-quality-checker` (`references/skill-material-quality-checker.md`) — `when.all: [quality.domain equals "material"; quality.verdict equals "not_run"]`
+- [fallback] Upstream quality pass/warn/fail validation (polycount-budget-checker) → `polycount-budget-checker` (`references/skill-polycount-budget-checker.md`) — `when.all: [quality.domain equals "polycount"; budget.verdict equals "Not Run"]`
+- [upstream_reference] Upstream GLB/web handoff summary → `glb-web-handoff` (`references/skill-glb-web-handoff.md`) — `when.all: [artifact.type equals "glb"; handoff.consumerStack equals "web_glb"]`
+- [upstream_reference] Upstream handoff gate check → `pre-handoff-verification` (`references/skill-pre-handoff-verification.md`) — `when.all: [stage.current equals "final_verification"]`
+- [upstream_reference] Runtime readiness check when runtime is unverified → `official-runtime-readiness-checker` (`references/skill-official-runtime-readiness-checker.md`) — `when.all: [runtime.path not_equals "unselected"; runtime.verifiedReady equals false]`
 
 ## Safety boundaries & non-goals
 - Runtime boundary: Never imply runtime success or artifact existence without concrete evidence, never hide blockers, and never drop caveats for readability. Keep Runtime (`Not Run | Attempted | Produced | Verified | Failed`) and Artifact (`Not Run | Not Produced | Produced | Verified | Failed`, default `Not Produced`) truth states strictly downgrade-only — if upstream status language is contradictory, downgrade to safer wording. Keep runtime vocabulary strictly within the 2-path + CLI appendix model. This skill writes final wording only and never executes Python or Blender or replaces upstream evidence, validator, handoff, or gate skills.

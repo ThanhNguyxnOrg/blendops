@@ -3,17 +3,17 @@
   "auditPhase": "phase-8-current",
   "repository": "ThanhNguyxnOrg/blendops",
   "branch": "main",
-  "sourceCommitSha": "9ba2d80bc8c77e8dcbd21b8d2298a837c3728c86",
-  "sourceCommitShort": "9ba2d80",
-  "sourceCommitDate": "2026-10-31 14:37:40 +0000",
+  "sourceCommitSha": "defb847b58516afa75f090fd2fa7b066d01e5832",
+  "sourceCommitShort": "defb847",
+  "sourceCommitDate": "2026-10-31 15:18:09 +0000",
   "auditProvenance": {
-    "sourceCommitSha": "9ba2d80bc8c77e8dcbd21b8d2298a837c3728c86",
-    "sourceCommitShort": "9ba2d80",
-    "sourceCommitDate": "2026-10-31 14:37:40 +0000",
+    "sourceCommitSha": "defb847b58516afa75f090fd2fa7b066d01e5832",
+    "sourceCommitShort": "defb847",
+    "sourceCommitDate": "2026-10-31 15:18:09 +0000",
     "workingTreeState": "dirty",
     "snapshotBasis": "working-tree-on-top-of-source-commit",
-    "uncommittedChangeCount": 109,
-    "auditedInputsSha256": "7026ec6261cde20dd133edfb5914ff00ede5fbadadf783f653ae8546ad9752bc",
+    "uncommittedChangeCount": 101,
+    "auditedInputsSha256": "65cea835e31fd569ccbcf7ea2e492ce6d235d0d32ef3dc61722eea5aaa04abdc",
     "selfReferentialCommitRule": "A Git commit cannot contain its own final commit SHA inside tracked files. sourceCommitSha records the verified HEAD commit present when the generator ran, workingTreeState and snapshotBasis record whether uncommitted working-tree changes were present on top of sourceCommitSha, and auditedInputsSha256 digests the exact audited file contents."
   },
   "commitChain": [
@@ -86,17 +86,22 @@
       "phase": "Phase 7",
       "commitSha": "9ba2d80bc8c77e8dcbd21b8d2298a837c3728c86",
       "summary": "Adapter empirical verification & evidence integrity (F-08): 26-target host availability discovery, disposable /tmp fixture verification, and fail-closed promotion validator"
+    },
+    {
+      "phase": "Phase 8",
+      "commitSha": "defb847b58516afa75f090fd2fa7b066d01e5832",
+      "summary": "Deterministic 96-file bundle reference summary generator (F-09), bundle manifest synchronization, and CI check-mode verification"
     }
   ],
   "currentPhaseContext": {
-    "phase": "Phase 8 — Deterministic Bundle Reference Summary Generation (F-09)",
-    "title": "Deterministic 96-File Bundle Reference Summary Compiler, Bundle Manifest Synchronization, Check-Mode Verification, and 20-Scenario Regression Suite",
-    "sourceCommitSha": "9ba2d80bc8c77e8dcbd21b8d2298a837c3728c86",
+    "phase": "Phase 8.1 — Summary Semantic Integrity & Generator Hardening (F-09)",
+    "title": "Full Routing/Handoff Semantic Preservation, Canonical Ajv2020 Contract Schema Enforcement, Realpath/Symlink Confinement, Fail-Closed Manifest Validation, and F-09 Audit Predicate Hardening",
+    "sourceCommitSha": "defb847b58516afa75f090fd2fa7b066d01e5832",
     "workingTreeState": "dirty",
     "snapshotBasis": "working-tree-on-top-of-source-commit",
-    "auditedInputsSha256": "7026ec6261cde20dd133edfb5914ff00ede5fbadadf783f653ae8546ad9752bc",
+    "auditedInputsSha256": "65cea835e31fd569ccbcf7ea2e492ce6d235d0d32ef3dc61722eea5aaa04abdc",
     "auditedInputsManifest": "docs/audits/audited-inputs.manifest.json",
-    "relationshipToCommitChain": "Phase 8 is built directly on top of Phase 7 (9ba2d80bc8c77e8dcbd21b8d2298a837c3728c86). Because a Git commit cannot embed its own final SHA inside tracked files, verification-manifest.json records 9ba2d80bc8c77e8dcbd21b8d2298a837c3728c86 as the latest completed commit in commitChain and sourceCommitSha, while locking the exact Phase 8 audited inputs via auditedInputsSha256 and docs/audits/audited-inputs.manifest.json."
+    "relationshipToCommitChain": "Phase 8.1 is built directly on top of Phase 8 (defb847b58516afa75f090fd2fa7b066d01e5832). Because a Git commit cannot embed its own final SHA inside tracked files, verification-manifest.json records defb847b58516afa75f090fd2fa7b066d01e5832 as the latest completed commit in commitChain and sourceCommitSha, while locking the exact Phase 8.1 audited inputs via auditedInputsSha256 and docs/audits/audited-inputs.manifest.json."
   },
   "ciVerificationPipeline": {
     "command": "npm run ci",

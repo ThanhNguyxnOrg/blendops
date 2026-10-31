@@ -5,7 +5,7 @@ Purpose: Generate a complete product-hero scene plan from non-Blender-user inten
 
 Turn user intent or an upstream brief into a complete, plain-language product-hero scene plan (subject, composition, camera, lighting, material, environment, plus render, export, and web-handoff intent) before any runtime phase.
 
-Metadata: Category `scene-planners` | Role `single-product-hero-scene-architect` | Tier `L0` | Runtime default `Not Run` | Artifact default `Not Produced` | Mutation `downgrade_only`
+Metadata: Contract `v1.0.0` | Category `scene-planners` | Role `single-product-hero-scene-architect` | Tier `L0` | Runtime default `Not Run` | Artifact default `Not Produced` | Mutation `downgrade_only`
 
 ## When to use & trigger cues
 - single product-hero scene planning from user intent or an `intent-to-3d-brief-writer` brief
@@ -34,14 +34,14 @@ Metadata: Category `scene-planners` | Role `single-product-hero-scene-architect`
 4. follow suggested next-skill handoff
 
 ## Cross-skill handoffs
-- [upstream_reference] Upstream input (if raw prompt needs structuring) → `intent-to-3d-brief-writer` (`references/skill-intent-to-3d-brief-writer.md`)
-- [progression] Next (deep-dive framing & camera) → `blender-composition-camera-planner` (`references/skill-blender-composition-camera-planner.md`)
-- [progression] Next (deep-dive lookdev & lighting) → `blender-lighting-material-planner` (`references/skill-blender-lighting-material-planner.md`)
-- [fallback] Then (measurable pass/fail rows) → `acceptance-criteria-builder` (`references/skill-acceptance-criteria-builder.md`)
-- [upstream_reference] Then (pin done condition) → `blender-stop-condition-decider` (`references/skill-blender-stop-condition-decider.md`)
-- [progression] Later (post-build readiness review) → `blender-scene-quality-checker` (`references/skill-blender-scene-quality-checker.md`)
-- [conditional] Delivery handoff (when web/render output is targeted) (glb-web-handoff) → `glb-web-handoff` (`references/skill-glb-web-handoff.md`)
-- [conditional] Delivery handoff (when web/render output is targeted) (render-export-evidence) → `render-export-evidence` (`references/skill-render-export-evidence.md`)
+- [upstream_reference] Upstream input (if raw prompt needs structuring) → `intent-to-3d-brief-writer` (`references/skill-intent-to-3d-brief-writer.md`) — `when.all: [goal.clarity equals "clear"; brief.locked equals false]`
+- [progression] Next (deep-dive framing & camera) → `blender-composition-camera-planner` (`references/skill-blender-composition-camera-planner.md`) — `when.all: [brief.locked equals true; stage.current equals "camera_planning"]`
+- [progression] Next (deep-dive lookdev & lighting) → `blender-lighting-material-planner` (`references/skill-blender-lighting-material-planner.md`) — `when.all: [brief.locked equals true; stage.current equals "lookdev_planning"]`
+- [fallback] Then (measurable pass/fail rows) → `acceptance-criteria-builder` (`references/skill-acceptance-criteria-builder.md`) — `when.all: [brief.locked equals true; stage.current equals "acceptance_criteria"]`
+- [upstream_reference] Then (pin done condition) → `blender-stop-condition-decider` (`references/skill-blender-stop-condition-decider.md`) — `when.all: [brief.locked equals true; stage.current equals "stop_condition"]`
+- [progression] Later (post-build readiness review) → `blender-scene-quality-checker` (`references/skill-blender-scene-quality-checker.md`) — `when.all: [quality.domain equals "holistic"; stage.current equals "quality_validation"]`
+- [conditional] Delivery handoff (when web/render output is targeted) (glb-web-handoff) → `glb-web-handoff` (`references/skill-glb-web-handoff.md`) — `when.all: [artifact.type equals "glb"; handoff.consumerStack equals "web_glb"]`
+- [conditional] Delivery handoff (when web/render output is targeted) (render-export-evidence) → `render-export-evidence` (`references/skill-render-export-evidence.md`) — `when.all: [stage.current equals "post_execution_audit"]`
 
 ## Safety boundaries & non-goals
 - Runtime boundary: Planning-only skill: no Blender execution, no Python scripts, and no artifact generation. - Runtime truth state must remain `Not Run` (from canonical states `Not Run | Attempted | Produced | Verified | Failed`). - Artifact truth state must remain `Not Produced` (downgrade-only, never upgrade). - When a live scene exists, consume read-only inspection results (`get_objects_summary`) rather than assuming object dimensions, without executing scene mutations.

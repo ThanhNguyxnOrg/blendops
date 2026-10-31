@@ -5,7 +5,7 @@ Purpose: Socratic exploration of a non-Blender-user's 3D intent before scene pla
 
 Run a structured Socratic brainstorming pass on a vague non-Blender-user 3D request before any scene planner, runtime readiness, or evidence skill is invoked. Surface the user's actual intent, missing constraints, and decision points so downstream skills do not waste effort on the wrong direction.
 
-Metadata: Category `process-discipline` | Role `pre-brief-ideation-and-clarification` | Tier `L0` | Runtime default `Not Run` | Artifact default `Not Produced` | Mutation `downgrade_only`
+Metadata: Contract `v1.0.0` | Category `process-discipline` | Role `pre-brief-ideation-and-clarification` | Tier `L0` | Runtime default `Not Run` | Artifact default `Not Produced` | Mutation `downgrade_only`
 
 ## When to use & trigger cues
 - the user request is short, ambiguous, or missing critical context (subject, mood, deliverable, evidence expectations)
@@ -31,9 +31,9 @@ Metadata: Category `process-discipline` | Role `pre-brief-ideation-and-clarifica
 4. hand off to `intent-to-3d-brief-writer` once intent is confirmed
 
 ## Cross-skill handoffs
-- [progression] Lock the confirmed brief downstream → `intent-to-3d-brief-writer` (`references/skill-intent-to-3d-brief-writer.md`)
-- [progression] User pushes for execution mid-brainstorm → `official-runtime-readiness-checker` (`references/skill-official-runtime-readiness-checker.md`)
-- [progression] Explain blocked runtime status to user → `non-blender-user-response-writer` (`references/skill-non-blender-user-response-writer.md`)
+- [progression] Lock the confirmed brief downstream → `intent-to-3d-brief-writer` (`references/skill-intent-to-3d-brief-writer.md`) — `when.all: [goal.clarity equals "clear"; brief.locked equals false]`
+- [progression] User pushes for execution mid-brainstorm → `official-runtime-readiness-checker` (`references/skill-official-runtime-readiness-checker.md`) — `when.all: [runtime.path not_equals "unselected"; runtime.verifiedReady equals false]`
+- [progression] Explain blocked runtime status to user → `non-blender-user-response-writer` (`references/skill-non-blender-user-response-writer.md`) — `when.all: [stage.current equals "final_communication"]`
 
 ## Safety boundaries & non-goals
 - Runtime boundary: This skill does not install Blender, run Blender, or configure any MCP path. It is text-only conversation.

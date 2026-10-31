@@ -52,11 +52,11 @@ Avoid the most common Blender color mistake: rendering with the wrong color spac
 4. Emit the 4-line config record, caveats, truth states (`Not Run` / `Not Produced`), and handoff.
 
 ## Handoff notes
-- **[progression]** Output format selection → `output-format-decision` (`references/skills/output-format-decision.md`)
-- **[progression]** Material texture color spaces → `material-quality-checker` (`references/skills/material-quality-checker.md`)
-- **[progression]** Render engine choice → `cycles-vs-eevee-decision` (`references/skills/cycles-vs-eevee-decision.md`)
-- **[progression]** GLB Three.js delivery → `glb-web-handoff` (`references/skills/glb-web-handoff.md`)
-- **[progression]** Render evidence verification → `render-export-evidence` (`references/skills/render-export-evidence.md`)
+- **[progression]** Output format selection → `output-format-decision` (`references/skills/output-format-decision.md`) — `when.all: [decision.formatLocked equals false]`
+- **[progression]** Material texture color spaces → `material-quality-checker` (`references/skills/material-quality-checker.md`) — `when.all: [quality.domain equals "material"; quality.verdict equals "not_run"]`
+- **[progression]** Render engine choice → `cycles-vs-eevee-decision` (`references/skills/cycles-vs-eevee-decision.md`) — `when.all: [decision.engineLocked equals false]`
+- **[progression]** GLB Three.js delivery → `glb-web-handoff` (`references/skills/glb-web-handoff.md`) — `when.all: [artifact.type equals "glb"; handoff.consumerStack equals "web_glb"]`
+- **[progression]** Render evidence verification → `render-export-evidence` (`references/skills/render-export-evidence.md`) — `when.all: [stage.current equals "post_execution_audit"]`
 
 ## Safety boundaries & non-goals
 - **Runtime boundary:** Decision skill — does not run Blender. Pins config; operator applies in scene render properties.

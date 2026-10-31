@@ -53,22 +53,22 @@ Run a structured 4-phase root-cause analysis when a Blender output (render, expo
 4. hand off the fix proposal to the relevant planner / readiness / evidence skill
 
 ## Handoff notes
-- **[upstream_reference]** If divergence at intent (blender-brainstorming) → `blender-brainstorming` (`references/skills/blender-brainstorming.md`)
-- **[upstream_reference]** If divergence at intent (intent-to-3d-brief-writer) → `intent-to-3d-brief-writer` (`references/skills/intent-to-3d-brief-writer.md`)
-- **[conditional]** If divergence at planning (blender-composition-camera-planner) → `blender-composition-camera-planner` (`references/skills/blender-composition-camera-planner.md`)
-- **[conditional]** If divergence at planning (blender-lighting-material-planner) → `blender-lighting-material-planner` (`references/skills/blender-lighting-material-planner.md`)
-- **[alternative]** If divergence at planning (character-portrait-scene-planner) → `character-portrait-scene-planner` (`references/skills/character-portrait-scene-planner.md`)
-- **[alternative]** If divergence at planning (environment-establishing-shot-planner) → `environment-establishing-shot-planner` (`references/skills/environment-establishing-shot-planner.md`)
-- **[alternative]** If divergence at planning (interior-architectural-scene-planner) → `interior-architectural-scene-planner` (`references/skills/interior-architectural-scene-planner.md`)
-- **[alternative]** If divergence at planning (product-grid-scene-planner) → `product-grid-scene-planner` (`references/skills/product-grid-scene-planner.md`)
-- **[alternative]** If divergence at planning (product-hero-scene-planner) → `product-hero-scene-planner` (`references/skills/product-hero-scene-planner.md`)
-- **[upstream_reference]** If divergence at execution (official-runtime-readiness-checker) → `official-runtime-readiness-checker` (`references/skills/official-runtime-readiness-checker.md`)
-- **[fallback]** If divergence at execution (runtime-bridge-conflict-resolver) → `runtime-bridge-conflict-resolver` (`references/skills/runtime-bridge-conflict-resolver.md`)
-- **[upstream_reference]** If divergence at execution (runtime-path-picker) → `runtime-path-picker` (`references/skills/runtime-path-picker.md`)
-- **[conditional]** If divergence at output (glb-animation-handoff) → `glb-animation-handoff` (`references/skills/glb-animation-handoff.md`)
-- **[conditional]** If divergence at output (glb-web-handoff) → `glb-web-handoff` (`references/skills/glb-web-handoff.md`)
-- **[conditional]** If divergence at output (render-export-evidence) → `render-export-evidence` (`references/skills/render-export-evidence.md`)
-- **[conditional]** If divergence at response → `non-blender-user-response-writer` (`references/skills/non-blender-user-response-writer.md`)
+- **[upstream_reference]** If divergence at intent (blender-brainstorming) → `blender-brainstorming` (`references/skills/blender-brainstorming.md`) — `when.all: [goal.clarity equals "ambiguous_or_mixed"]`
+- **[upstream_reference]** If divergence at intent (intent-to-3d-brief-writer) → `intent-to-3d-brief-writer` (`references/skills/intent-to-3d-brief-writer.md`) — `when.all: [goal.clarity equals "clear"; brief.locked equals false]`
+- **[conditional]** If divergence at planning (blender-composition-camera-planner) → `blender-composition-camera-planner` (`references/skills/blender-composition-camera-planner.md`) — `when.all: [brief.locked equals true; stage.current equals "camera_planning"]`
+- **[conditional]** If divergence at planning (blender-lighting-material-planner) → `blender-lighting-material-planner` (`references/skills/blender-lighting-material-planner.md`) — `when.all: [brief.locked equals true; stage.current equals "lookdev_planning"]`
+- **[alternative]** If divergence at planning (character-portrait-scene-planner) → `character-portrait-scene-planner` (`references/skills/character-portrait-scene-planner.md`) — `when.all: [brief.locked equals true; recipe.domain equals "character_portrait"]`
+- **[alternative]** If divergence at planning (environment-establishing-shot-planner) → `environment-establishing-shot-planner` (`references/skills/environment-establishing-shot-planner.md`) — `when.all: [brief.locked equals true; recipe.domain equals "environment_shot"]`
+- **[alternative]** If divergence at planning (interior-architectural-scene-planner) → `interior-architectural-scene-planner` (`references/skills/interior-architectural-scene-planner.md`) — `when.all: [brief.locked equals true; recipe.domain equals "interior_archviz"]`
+- **[alternative]** If divergence at planning (product-grid-scene-planner) → `product-grid-scene-planner` (`references/skills/product-grid-scene-planner.md`) — `when.all: [brief.locked equals true; recipe.domain equals "product_grid"]`
+- **[alternative]** If divergence at planning (product-hero-scene-planner) → `product-hero-scene-planner` (`references/skills/product-hero-scene-planner.md`) — `when.all: [brief.locked equals true; recipe.domain equals "product_hero"]`
+- **[upstream_reference]** If divergence at execution (official-runtime-readiness-checker) → `official-runtime-readiness-checker` (`references/skills/official-runtime-readiness-checker.md`) — `when.all: [runtime.path not_equals "unselected"; runtime.verifiedReady equals false]`
+- **[fallback]** If divergence at execution (runtime-bridge-conflict-resolver) → `runtime-bridge-conflict-resolver` (`references/skills/runtime-bridge-conflict-resolver.md`) — `when.all: [runtime.conflictDetected equals true]`
+- **[upstream_reference]** If divergence at execution (runtime-path-picker) → `runtime-path-picker` (`references/skills/runtime-path-picker.md`) — `when.all: [runtime.path equals "unselected"]`
+- **[conditional]** If divergence at output (glb-animation-handoff) → `glb-animation-handoff` (`references/skills/glb-animation-handoff.md`) — `when.all: [artifact.hasAnimation equals true; stage.current equals "animation_handoff"]`
+- **[conditional]** If divergence at output (glb-web-handoff) → `glb-web-handoff` (`references/skills/glb-web-handoff.md`) — `when.all: [artifact.type equals "glb"; handoff.consumerStack equals "web_glb"]`
+- **[conditional]** If divergence at output (render-export-evidence) → `render-export-evidence` (`references/skills/render-export-evidence.md`) — `when.all: [stage.current equals "post_execution_audit"]`
+- **[conditional]** If divergence at response → `non-blender-user-response-writer` (`references/skills/non-blender-user-response-writer.md`) — `when.all: [stage.current equals "final_communication"]`
 
 ## Safety boundaries & non-goals
 - **Runtime boundary:** This skill does not install Blender, run Blender, mutate scenes, render, export, or claim artifacts. It guides diagnosis. Any actual re-run goes through the relevant runtime skill (`official-runtime-readiness-checker`, `render-export-evidence`).

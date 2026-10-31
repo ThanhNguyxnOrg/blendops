@@ -5,7 +5,7 @@ Purpose: Plan a wide environment / establishing-shot scene (locale, time of day,
 
 Translate a wide place-establishing intent (locale, time of day, weather, atmosphere, foreground/midground/background depth layers, and focal subject or explicit "none") into a structured scene plan with an explicit assumptions register. Distinct from `character-portrait-scene-planner` (single subject), `product-hero-scene-planner` (manufactured products), and `interior-architectural-scene-planner` (interior rooms/furniture/surfaces — an establishing shot of an interior room belongs there when furniture or surfaces dominate). Hands off asset rows to `blender-asset-discovery-planner` and validation to `composition-quality-checker`, `lighting-quality-checker`, and `blender-scene-quality-checker`.
 
-Metadata: Category `scene-planners` | Role `environment-establishing-shot-architect` | Tier `L0` | Runtime default `Not Run` | Artifact default `Not Produced` | Mutation `downgrade_only`
+Metadata: Contract `v1.0.0` | Category `scene-planners` | Role `environment-establishing-shot-architect` | Tier `L0` | Runtime default `Not Run` | Artifact default `Not Produced` | Mutation `downgrade_only`
 
 ## When to use & trigger cues
 - intent is establishing a wide place (landscape, cityscape, outdoor locale, or wide interior space where furniture/surfaces do not dominate)
@@ -33,11 +33,11 @@ Metadata: Category `scene-planners` | Role `environment-establishing-shot-archit
 6. flag asset rows for `blender-asset-discovery-planner` and emit validation handoffs with `Runtime status: Not Run` and `Artifact status: Not Produced`
 
 ## Cross-skill handoffs
-- [upstream_reference] Brief writer → `intent-to-3d-brief-writer` (`references/skill-intent-to-3d-brief-writer.md`)
-- [upstream_reference] Asset discovery → `blender-asset-discovery-planner` (`references/skill-blender-asset-discovery-planner.md`)
-- [progression] Composition validation → `composition-quality-checker` (`references/skill-composition-quality-checker.md`)
-- [progression] Lighting validation → `lighting-quality-checker` (`references/skill-lighting-quality-checker.md`)
-- [progression] Quality readiness → `blender-scene-quality-checker` (`references/skill-blender-scene-quality-checker.md`)
+- [upstream_reference] Brief writer → `intent-to-3d-brief-writer` (`references/skill-intent-to-3d-brief-writer.md`) — `when.all: [goal.clarity equals "clear"; brief.locked equals false]`
+- [upstream_reference] Asset discovery → `blender-asset-discovery-planner` (`references/skill-blender-asset-discovery-planner.md`) — `when.all: [brief.locked equals true; assets.discoveryComplete equals false]`
+- [progression] Composition validation → `composition-quality-checker` (`references/skill-composition-quality-checker.md`) — `when.all: [quality.domain equals "composition"; quality.verdict equals "not_run"]`
+- [progression] Lighting validation → `lighting-quality-checker` (`references/skill-lighting-quality-checker.md`) — `when.all: [quality.domain equals "lighting"; quality.verdict equals "not_run"]`
+- [progression] Quality readiness → `blender-scene-quality-checker` (`references/skill-blender-scene-quality-checker.md`) — `when.all: [quality.domain equals "holistic"; stage.current equals "quality_validation"]`
 
 ## Safety boundaries & non-goals
 - Runtime boundary: Planning-only skill: no modeling, no Geometry Nodes, no render, and no Blender execution. `Runtime status` stays `Not Run` and `Artifact status` stays `Not Produced` (downgrade-only, never upgrade). If the brief or locale scope is unclear, hand off to `intent-to-3d-brief-writer`.

@@ -50,16 +50,16 @@ Catch style mismatches between assets before they end up in the same scene where
 4. recommend remediation (drop / restyle / replace)
 
 ## Handoff notes
-- **[upstream_reference]** Upstream discovery → `blender-asset-discovery-planner` (`references/skills/blender-asset-discovery-planner.md`)
-- **[upstream_reference]** Upstream license gate → `asset-license-checker` (`references/skills/asset-license-checker.md`)
-- **[upstream_reference]** Upstream brief lock → `intent-to-3d-brief-writer` (`references/skills/intent-to-3d-brief-writer.md`)
-- **[boundary_delegation]** Scope enforcement → `blender-scope-boundary-enforcer` (`references/skills/blender-scope-boundary-enforcer.md`)
-- **[fallback]** Rejected asset fallback → `asset-fallback-strategy` (`references/skills/asset-fallback-strategy.md`)
-- **[progression]** Approved asset organization → `asset-library-organization-planner` (`references/skills/asset-library-organization-planner.md`)
-- **[progression]** Broad scene review → `blender-scene-quality-checker` (`references/skills/blender-scene-quality-checker.md`)
-- **[progression]** Material & lookdev boundary (blender-lighting-material-planner) → `blender-lighting-material-planner` (`references/skills/blender-lighting-material-planner.md`)
-- **[progression]** Material & lookdev boundary (material-quality-checker) → `material-quality-checker` (`references/skills/material-quality-checker.md`)
-- **[progression]** Budget & topology boundary → `polycount-budget-checker` (`references/skills/polycount-budget-checker.md`)
+- **[upstream_reference]** Upstream discovery → `blender-asset-discovery-planner` (`references/skills/blender-asset-discovery-planner.md`) — `when.all: [brief.locked equals true; assets.discoveryComplete equals false]`
+- **[upstream_reference]** Upstream license gate → `asset-license-checker` (`references/skills/asset-license-checker.md`) — `when.all: [assets.externalUsed equals true; assets.licenseCleared equals false]`
+- **[upstream_reference]** Upstream brief lock → `intent-to-3d-brief-writer` (`references/skills/intent-to-3d-brief-writer.md`) — `when.all: [goal.clarity equals "clear"; brief.locked equals false]`
+- **[boundary_delegation]** Scope enforcement → `blender-scope-boundary-enforcer` (`references/skills/blender-scope-boundary-enforcer.md`) — `when.all: [scope.driftDetected equals true]`
+- **[fallback]** Rejected asset fallback → `asset-fallback-strategy` (`references/skills/asset-fallback-strategy.md`) — `when.all: [assets.fallbackNeeded equals true]`
+- **[progression]** Approved asset organization → `asset-library-organization-planner` (`references/skills/asset-library-organization-planner.md`) — `when.all: [assets.discoveryComplete equals true; stage.current equals "library_organization"]`
+- **[progression]** Broad scene review → `blender-scene-quality-checker` (`references/skills/blender-scene-quality-checker.md`) — `when.all: [quality.domain equals "holistic"; stage.current equals "quality_validation"]`
+- **[progression]** Material & lookdev boundary (blender-lighting-material-planner) → `blender-lighting-material-planner` (`references/skills/blender-lighting-material-planner.md`) — `when.all: [brief.locked equals true; stage.current equals "lookdev_planning"]`
+- **[progression]** Material & lookdev boundary (material-quality-checker) → `material-quality-checker` (`references/skills/material-quality-checker.md`) — `when.all: [quality.domain equals "material"; quality.verdict equals "not_run"]`
+- **[progression]** Budget & topology boundary → `polycount-budget-checker` (`references/skills/polycount-budget-checker.md`) — `when.all: [quality.domain equals "polycount"; budget.verdict equals "Not Run"]`
 
 ## Safety boundaries & non-goals
 - **Runtime boundary:** Validation-only skill — never modifies or re-styles assets, and never executes Blender or Python. Per-asset verdicts (`Pass | Warn | Fail`) and drift classifications (`None | Minor | Major`) are derived solely from documented asset previews and the locked style brief, and are tracked separately from runtime/artifact truth states (which default to `Not Produced` for artifacts and are downgrade-only).

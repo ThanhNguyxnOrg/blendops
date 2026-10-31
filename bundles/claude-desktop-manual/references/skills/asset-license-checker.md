@@ -53,11 +53,11 @@ Catch license risk before assets go into a scene that will be rendered, exported
 4. Gate progression: hand off to `asset-style-consistency-checker`, `asset-library-organization-planner`, or `workflow-stage-router` only if all rows are `Pass` or explicitly accepted `Warn`; route any `Fail` rows to `asset-fallback-strategy`.
 
 ## Handoff notes
-- **[upstream_reference]** Upstream asset sourcing → `blender-asset-discovery-planner` (`references/skills/blender-asset-discovery-planner.md`)
-- **[progression]** Visual style validation → `asset-style-consistency-checker` (`references/skills/asset-style-consistency-checker.md`)
-- **[fallback]** Rejected/blocked asset handling → `asset-fallback-strategy` (`references/skills/asset-fallback-strategy.md`)
-- **[progression]** Asset library organization → `asset-library-organization-planner` (`references/skills/asset-library-organization-planner.md`)
-- **[progression]** Stage routing & scene planning gate → `workflow-stage-router` (`references/skills/workflow-stage-router.md`)
+- **[upstream_reference]** Upstream asset sourcing → `blender-asset-discovery-planner` (`references/skills/blender-asset-discovery-planner.md`) — `when.all: [brief.locked equals true; assets.discoveryComplete equals false]`
+- **[progression]** Visual style validation → `asset-style-consistency-checker` (`references/skills/asset-style-consistency-checker.md`) — `when.all: [assets.licenseCleared equals true; stage.current equals "style_check"]`
+- **[fallback]** Rejected/blocked asset handling → `asset-fallback-strategy` (`references/skills/asset-fallback-strategy.md`) — `when.all: [assets.fallbackNeeded equals true]`
+- **[progression]** Asset library organization → `asset-library-organization-planner` (`references/skills/asset-library-organization-planner.md`) — `when.all: [assets.discoveryComplete equals true; stage.current equals "library_organization"]`
+- **[progression]** Stage routing & scene planning gate → `workflow-stage-router` (`references/skills/workflow-stage-router.md`) — `when.all: [preflight.passed equals true; inventory.exists equals true]`
 
 ## Safety boundaries & non-goals
 - **Runtime boundary:** Validation skill — does not modify assets, does not run Blender. Verdicts are based on documented license terms, not legal interpretation. **Not legal advice**: when in doubt, recommend the user consult their legal team.

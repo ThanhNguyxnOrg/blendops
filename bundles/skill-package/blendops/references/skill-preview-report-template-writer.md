@@ -5,7 +5,7 @@ Purpose: Generate the structured preview-report Markdown that glb-web-handoff an
 
 Standardize how a preview / render / export run's evidence is summarized so that downstream skills (handoff, final response writer) consume a known schema instead of re-parsing free-form text.
 
-Metadata: Category `evidence-and-handoff` | Role `stakeholder-preview-packet-formatter` | Tier `L0` | Runtime default `Not Run` | Artifact default `Not Produced` | Mutation `downgrade_only`
+Metadata: Contract `v1.0.0` | Category `evidence-and-handoff` | Role `stakeholder-preview-packet-formatter` | Tier `L0` | Runtime default `Not Run` | Artifact default `Not Produced` | Mutation `downgrade_only`
 
 ## When to use & trigger cues
 - after `render-export-evidence` produces measurements
@@ -31,11 +31,11 @@ Metadata: Category `evidence-and-handoff` | Role `stakeholder-preview-packet-for
 4. mark unmeasured or unproduced fields as `Not Run` / `Not Produced` (no-run reports are full `Not Run` / `Not Produced` placeholders)
 
 ## Cross-skill handoffs
-- [upstream_reference] Measured evidence input (supplies measurements + truth states) → `render-export-evidence` (`references/skill-render-export-evidence.md`)
-- [progression] Handoff gate (gates handoffs before downstream delivery) → `pre-handoff-verification` (`references/skill-pre-handoff-verification.md`)
-- [progression] Web handoff consumer → `glb-web-handoff` (`references/skill-glb-web-handoff.md`)
-- [progression] Final non-Blender user response consumer → `non-blender-user-response-writer` (`references/skill-non-blender-user-response-writer.md`)
-- [fallback] Raw debug log triage (out of scope here) → `blender-troubleshooting` (`references/skill-blender-troubleshooting.md`)
+- [upstream_reference] Measured evidence input (supplies measurements + truth states) → `render-export-evidence` (`references/skill-render-export-evidence.md`) — `when.all: [stage.current equals "post_execution_audit"]`
+- [progression] Handoff gate (gates handoffs before downstream delivery) → `pre-handoff-verification` (`references/skill-pre-handoff-verification.md`) — `when.all: [stage.current equals "final_verification"]`
+- [progression] Web handoff consumer → `glb-web-handoff` (`references/skill-glb-web-handoff.md`) — `when.all: [artifact.type equals "glb"; handoff.consumerStack equals "web_glb"]`
+- [progression] Final non-Blender user response consumer → `non-blender-user-response-writer` (`references/skill-non-blender-user-response-writer.md`) — `when.all: [stage.current equals "final_communication"]`
+- [fallback] Raw debug log triage (out of scope here) → `blender-troubleshooting` (`references/skill-blender-troubleshooting.md`) — `when.all: [runtime.errorDetected equals true]`
 
 ## Safety boundaries & non-goals
 - Runtime boundary: This skill is documentation only. It never runs Blender, renders, exports, or parses logs (`render-export-evidence` supplies measurements; `blender-troubleshooting` owns raw debug logs). It only formats existing evidence into the canonical schema. If the run did not happen, the report is a full placeholder with every artifact at `Not Run` / `Not Produced`.

@@ -5,7 +5,7 @@ Purpose: Verify license compliance for downloaded 3D assets, textures, HDRIs, fo
 
 Catch license risk before assets go into a scene that will be rendered, exported, or shipped. This is a planning / validation skill — does not modify assets, does not consult lawyers.
 
-Metadata: Category `asset-and-sourcing` | Role `asset-license-and-provenance-gate` | Tier `L0` | Runtime default `Not Run` | Artifact default `Not Produced` | Mutation `downgrade_only`
+Metadata: Contract `v1.0.0` | Category `asset-and-sourcing` | Role `asset-license-and-provenance-gate` | Tier `L0` | Runtime default `Not Run` | Artifact default `Not Produced` | Mutation `downgrade_only`
 
 ## When to use & trigger cues
 - Immediately after `blender-asset-discovery-planner` produces a candidate asset list.
@@ -35,11 +35,11 @@ Metadata: Category `asset-and-sourcing` | Role `asset-license-and-provenance-gat
 4. Gate progression: hand off to `asset-style-consistency-checker`, `asset-library-organization-planner`, or `workflow-stage-router` only if all rows are `Pass` or explicitly accepted `Warn`; route any `Fail` rows to `asset-fallback-strategy`.
 
 ## Cross-skill handoffs
-- [upstream_reference] Upstream asset sourcing → `blender-asset-discovery-planner` (`references/skill-blender-asset-discovery-planner.md`)
-- [progression] Visual style validation → `asset-style-consistency-checker` (`references/skill-asset-style-consistency-checker.md`)
-- [fallback] Rejected/blocked asset handling → `asset-fallback-strategy` (`references/skill-asset-fallback-strategy.md`)
-- [progression] Asset library organization → `asset-library-organization-planner` (`references/skill-asset-library-organization-planner.md`)
-- [progression] Stage routing & scene planning gate → `workflow-stage-router` (`references/skill-workflow-stage-router.md`)
+- [upstream_reference] Upstream asset sourcing → `blender-asset-discovery-planner` (`references/skill-blender-asset-discovery-planner.md`) — `when.all: [brief.locked equals true; assets.discoveryComplete equals false]`
+- [progression] Visual style validation → `asset-style-consistency-checker` (`references/skill-asset-style-consistency-checker.md`) — `when.all: [assets.licenseCleared equals true; stage.current equals "style_check"]`
+- [fallback] Rejected/blocked asset handling → `asset-fallback-strategy` (`references/skill-asset-fallback-strategy.md`) — `when.all: [assets.fallbackNeeded equals true]`
+- [progression] Asset library organization → `asset-library-organization-planner` (`references/skill-asset-library-organization-planner.md`) — `when.all: [assets.discoveryComplete equals true; stage.current equals "library_organization"]`
+- [progression] Stage routing & scene planning gate → `workflow-stage-router` (`references/skill-workflow-stage-router.md`) — `when.all: [preflight.passed equals true; inventory.exists equals true]`
 
 ## Safety boundaries & non-goals
 - Runtime boundary: Validation skill — does not modify assets, does not run Blender. Verdicts are based on documented license terms, not legal interpretation. **Not legal advice**: when in doubt, recommend the user consult their legal team.

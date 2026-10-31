@@ -56,11 +56,11 @@ Run a focused pass/warn/fail check on the scene's lighting setup per light — c
 7. emit per-light verdicts (`Pass / Warn / Fail`) with remediation hints only + a top-line status
 
 ## Handoff notes
-- **[progression]** Broad readiness review → `blender-scene-quality-checker` (`references/skills/blender-scene-quality-checker.md`)
-- **[upstream_reference]** Material validation → `material-quality-checker` (`references/skills/material-quality-checker.md`)
-- **[progression]** Composition validation → `composition-quality-checker` (`references/skills/composition-quality-checker.md`)
-- **[retry]** Lighting re-plan → `blender-lighting-material-planner` (`references/skills/blender-lighting-material-planner.md`) (max retry attempts: 2)
-- **[progression]** Render evidence → `render-export-evidence` (`references/skills/render-export-evidence.md`)
+- **[progression]** Broad readiness review → `blender-scene-quality-checker` (`references/skills/blender-scene-quality-checker.md`) — `when.all: [quality.domain equals "holistic"; stage.current equals "quality_validation"]`
+- **[upstream_reference]** Material validation → `material-quality-checker` (`references/skills/material-quality-checker.md`) — `when.all: [quality.domain equals "material"; quality.verdict equals "not_run"]`
+- **[progression]** Composition validation → `composition-quality-checker` (`references/skills/composition-quality-checker.md`) — `when.all: [quality.domain equals "composition"; quality.verdict equals "not_run"]`
+- **[retry]** Lighting re-plan → `blender-lighting-material-planner` (`references/skills/blender-lighting-material-planner.md`) — `when.all: [quality.domain equals "lighting"; quality.verdict equals "Fail"]`; retryPolicy: `maxAttempts=2`, `exitCondition.all: [quality.verdict in ["Pass","Warn"]]`
+- **[progression]** Render evidence → `render-export-evidence` (`references/skills/render-export-evidence.md`) — `when.all: [stage.current equals "post_execution_audit"]`
 
 ## Safety boundaries & non-goals
 - **Runtime boundary:** This skill validates plans or measured scene snapshots only. It never modifies lights, runs Blender, or renders. Use measured scene description (plan output, runtime tool snapshot) — never invent values.

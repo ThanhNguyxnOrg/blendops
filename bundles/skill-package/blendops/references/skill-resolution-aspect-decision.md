@@ -5,7 +5,7 @@ Purpose: Pick the right render resolution + aspect ratio for the consumer use ca
 
 Avoid the most common render planning mistake: rendering at one aspect / resolution and cropping or upscaling to fit. Pick the consumer's required output upfront.
 
-Metadata: Category `render-and-output-decisions` | Role `resolution-and-aspect-ratio-pinner` | Tier `L0` | Runtime default `Not Run` | Artifact default `Not Produced` | Mutation `downgrade_only`
+Metadata: Contract `v1.0.0` | Category `render-and-output-decisions` | Role `resolution-and-aspect-ratio-pinner` | Tier `L0` | Runtime default `Not Run` | Artifact default `Not Produced` | Mutation `downgrade_only`
 
 ## When to use & trigger cues
 - before render
@@ -32,12 +32,12 @@ Metadata: Category `render-and-output-decisions` | Role `resolution-and-aspect-r
 5. Pin the record for the operator to enter in Blender scene render properties (no rendering, no post-render resizing).
 
 ## Cross-skill handoffs
-- [upstream_reference] Camera & composition planning (upstream framing setup) → `blender-composition-camera-planner` (`references/skill-blender-composition-camera-planner.md`)
-- [progression] Composition framing validation against pinned aspect → `composition-quality-checker` (`references/skill-composition-quality-checker.md`)
-- [upstream_reference] Color configuration decision → `color-management-decision` (`references/skill-color-management-decision.md`)
-- [progression] Container / codec decision → `output-format-decision` (`references/skill-output-format-decision.md`)
-- [progression] Render engine decision → `cycles-vs-eevee-decision` (`references/skill-cycles-vs-eevee-decision.md`)
-- [progression] Post-render saved file verification → `render-export-evidence` (`references/skill-render-export-evidence.md`)
+- [upstream_reference] Camera & composition planning (upstream framing setup) → `blender-composition-camera-planner` (`references/skill-blender-composition-camera-planner.md`) — `when.all: [brief.locked equals true; stage.current equals "camera_planning"]`
+- [progression] Composition framing validation against pinned aspect → `composition-quality-checker` (`references/skill-composition-quality-checker.md`) — `when.all: [quality.domain equals "composition"; quality.verdict equals "not_run"]`
+- [upstream_reference] Color configuration decision → `color-management-decision` (`references/skill-color-management-decision.md`) — `when.all: [decision.colorLocked equals false]`
+- [progression] Container / codec decision → `output-format-decision` (`references/skill-output-format-decision.md`) — `when.all: [decision.formatLocked equals false]`
+- [progression] Render engine decision → `cycles-vs-eevee-decision` (`references/skill-cycles-vs-eevee-decision.md`) — `when.all: [decision.engineLocked equals false]`
+- [progression] Post-render saved file verification → `render-export-evidence` (`references/skill-render-export-evidence.md`) — `when.all: [stage.current equals "post_execution_audit"]`
 
 ## Safety boundaries & non-goals
 - Runtime boundary: Decision skill — does not render. Pins resolution + aspect; operator applies in scene render properties.

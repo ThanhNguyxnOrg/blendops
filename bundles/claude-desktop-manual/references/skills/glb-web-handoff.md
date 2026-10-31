@@ -52,11 +52,11 @@ Define reliable handoff language and checks for GLB/web scenarios without overcl
 4. follow suggested next-skill handoff
 
 ## Handoff notes
-- **[upstream_reference]** Upstream scene readiness validation → `blender-scene-quality-checker` (`references/skills/blender-scene-quality-checker.md`)
-- **[upstream_reference]** Upstream artifact evidence classification → `render-export-evidence` (`references/skills/render-export-evidence.md`)
-- **[upstream_reference]** Mobile and file-size budget constraints → `glb-mobile-performance-budget` (`references/skills/glb-mobile-performance-budget.md`)
-- **[upstream_reference]** Animation playback and rig handoff contracts → `glb-animation-handoff` (`references/skills/glb-animation-handoff.md`)
-- **[progression]** Final user-facing response wording → `non-blender-user-response-writer` (`references/skills/non-blender-user-response-writer.md`)
+- **[upstream_reference]** Upstream scene readiness validation → `blender-scene-quality-checker` (`references/skills/blender-scene-quality-checker.md`) — `when.all: [quality.domain equals "holistic"; stage.current equals "quality_validation"]`
+- **[upstream_reference]** Upstream artifact evidence classification → `render-export-evidence` (`references/skills/render-export-evidence.md`) — `when.all: [stage.current equals "post_execution_audit"]`
+- **[upstream_reference]** Mobile and file-size budget constraints → `glb-mobile-performance-budget` (`references/skills/glb-mobile-performance-budget.md`) — `when.all: [artifact.type equals "glb"; budget.pinned equals false]`
+- **[upstream_reference]** Animation playback and rig handoff contracts → `glb-animation-handoff` (`references/skills/glb-animation-handoff.md`) — `when.all: [artifact.hasAnimation equals true; stage.current equals "animation_handoff"]`
+- **[progression]** Final user-facing response wording → `non-blender-user-response-writer` (`references/skills/non-blender-user-response-writer.md`) — `when.all: [stage.current equals "final_communication"]`
 
 ## Safety boundaries & non-goals
 - **Runtime boundary:** Never claim GLB or export success without concrete evidence tied to the current run, and never replace runtime export verification. Keep runtime vocabulary strictly within the 2-path (Path 1 Official Blender Lab MCP 5.1+, Path 2 community `mcp-for-blender`) + CLI appendix model. This skill never runs Blender or Python and never upgrades Runtime or Artifact truth states (downgrade-only).

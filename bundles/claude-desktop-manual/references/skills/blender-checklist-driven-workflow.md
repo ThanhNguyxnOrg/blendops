@@ -56,28 +56,28 @@ Enforce a checklist-driven discipline where every stage of a Blender recipe (bri
 4. record the gate result + evidence per stage
 
 ## Handoff notes
-- **[upstream_reference]** Brainstorming → `blender-brainstorming` (`references/skills/blender-brainstorming.md`)
-- **[upstream_reference]** Brief authoring → `intent-to-3d-brief-writer` (`references/skills/intent-to-3d-brief-writer.md`)
-- **[upstream_reference]** Recipe stage decomposition → `blender-recipe-decomposer` (`references/skills/blender-recipe-decomposer.md`)
-- **[upstream_reference]** Measurable acceptance rows → `acceptance-criteria-builder` (`references/skills/acceptance-criteria-builder.md`)
-- **[upstream_reference]** Overall done condition → `blender-stop-condition-decider` (`references/skills/blender-stop-condition-decider.md`)
-- **[progression]** Scope creep protection → `blender-scope-boundary-enforcer` (`references/skills/blender-scope-boundary-enforcer.md`)
-- **[progression]** Next-skill routing across stages → `workflow-stage-router` (`references/skills/workflow-stage-router.md`)
-- **[progression]** Asset discovery → `blender-asset-discovery-planner` (`references/skills/blender-asset-discovery-planner.md`)
-- **[progression]** Scene planners (blender-composition-camera-planner) → `blender-composition-camera-planner` (`references/skills/blender-composition-camera-planner.md`)
-- **[progression]** Scene planners (blender-lighting-material-planner) → `blender-lighting-material-planner` (`references/skills/blender-lighting-material-planner.md`)
-- **[alternative]** Scene planners (character-portrait-scene-planner) → `character-portrait-scene-planner` (`references/skills/character-portrait-scene-planner.md`)
-- **[alternative]** Scene planners (environment-establishing-shot-planner) → `environment-establishing-shot-planner` (`references/skills/environment-establishing-shot-planner.md`)
-- **[alternative]** Scene planners (interior-architectural-scene-planner) → `interior-architectural-scene-planner` (`references/skills/interior-architectural-scene-planner.md`)
-- **[alternative]** Scene planners (product-grid-scene-planner) → `product-grid-scene-planner` (`references/skills/product-grid-scene-planner.md`)
-- **[alternative]** Scene planners (product-hero-scene-planner) → `product-hero-scene-planner` (`references/skills/product-hero-scene-planner.md`)
-- **[progression]** Quality validators (blender-scene-quality-checker) → `blender-scene-quality-checker` (`references/skills/blender-scene-quality-checker.md`)
-- **[progression]** Quality validators (composition-quality-checker) → `composition-quality-checker` (`references/skills/composition-quality-checker.md`)
-- **[progression]** Quality validators (lighting-quality-checker) → `lighting-quality-checker` (`references/skills/lighting-quality-checker.md`)
-- **[progression]** Quality validators (material-quality-checker) → `material-quality-checker` (`references/skills/material-quality-checker.md`)
-- **[progression]** Quality validators (polycount-budget-checker) → `polycount-budget-checker` (`references/skills/polycount-budget-checker.md`)
-- **[fallback]** Repeated gate failures → `blender-troubleshooting` (`references/skills/blender-troubleshooting.md`)
-- **[progression]** Final 7-point gate → `pre-handoff-verification` (`references/skills/pre-handoff-verification.md`)
+- **[upstream_reference]** Brainstorming → `blender-brainstorming` (`references/skills/blender-brainstorming.md`) — `when.all: [goal.clarity equals "ambiguous_or_mixed"]`
+- **[upstream_reference]** Brief authoring → `intent-to-3d-brief-writer` (`references/skills/intent-to-3d-brief-writer.md`) — `when.all: [goal.clarity equals "clear"; brief.locked equals false]`
+- **[upstream_reference]** Recipe stage decomposition → `blender-recipe-decomposer` (`references/skills/blender-recipe-decomposer.md`) — `when.all: [fit.multiDeliverableDetected equals true]`
+- **[upstream_reference]** Measurable acceptance rows → `acceptance-criteria-builder` (`references/skills/acceptance-criteria-builder.md`) — `when.all: [brief.locked equals true; stage.current equals "acceptance_criteria"]`
+- **[upstream_reference]** Overall done condition → `blender-stop-condition-decider` (`references/skills/blender-stop-condition-decider.md`) — `when.all: [brief.locked equals true; stage.current equals "stop_condition"]`
+- **[progression]** Scope creep protection → `blender-scope-boundary-enforcer` (`references/skills/blender-scope-boundary-enforcer.md`) — `when.all: [scope.driftDetected equals true]`
+- **[progression]** Next-skill routing across stages → `workflow-stage-router` (`references/skills/workflow-stage-router.md`) — `when.all: [preflight.passed equals true; inventory.exists equals true]`
+- **[progression]** Asset discovery → `blender-asset-discovery-planner` (`references/skills/blender-asset-discovery-planner.md`) — `when.all: [brief.locked equals true; assets.discoveryComplete equals false]`
+- **[progression]** Scene planners (blender-composition-camera-planner) → `blender-composition-camera-planner` (`references/skills/blender-composition-camera-planner.md`) — `when.all: [brief.locked equals true; stage.current equals "camera_planning"]`
+- **[progression]** Scene planners (blender-lighting-material-planner) → `blender-lighting-material-planner` (`references/skills/blender-lighting-material-planner.md`) — `when.all: [brief.locked equals true; stage.current equals "lookdev_planning"]`
+- **[alternative]** Scene planners (character-portrait-scene-planner) → `character-portrait-scene-planner` (`references/skills/character-portrait-scene-planner.md`) — `when.all: [brief.locked equals true; recipe.domain equals "character_portrait"]`
+- **[alternative]** Scene planners (environment-establishing-shot-planner) → `environment-establishing-shot-planner` (`references/skills/environment-establishing-shot-planner.md`) — `when.all: [brief.locked equals true; recipe.domain equals "environment_shot"]`
+- **[alternative]** Scene planners (interior-architectural-scene-planner) → `interior-architectural-scene-planner` (`references/skills/interior-architectural-scene-planner.md`) — `when.all: [brief.locked equals true; recipe.domain equals "interior_archviz"]`
+- **[alternative]** Scene planners (product-grid-scene-planner) → `product-grid-scene-planner` (`references/skills/product-grid-scene-planner.md`) — `when.all: [brief.locked equals true; recipe.domain equals "product_grid"]`
+- **[alternative]** Scene planners (product-hero-scene-planner) → `product-hero-scene-planner` (`references/skills/product-hero-scene-planner.md`) — `when.all: [brief.locked equals true; recipe.domain equals "product_hero"]`
+- **[progression]** Quality validators (blender-scene-quality-checker) → `blender-scene-quality-checker` (`references/skills/blender-scene-quality-checker.md`) — `when.all: [quality.domain equals "holistic"; stage.current equals "quality_validation"]`
+- **[progression]** Quality validators (composition-quality-checker) → `composition-quality-checker` (`references/skills/composition-quality-checker.md`) — `when.all: [quality.domain equals "composition"; quality.verdict equals "not_run"]`
+- **[progression]** Quality validators (lighting-quality-checker) → `lighting-quality-checker` (`references/skills/lighting-quality-checker.md`) — `when.all: [quality.domain equals "lighting"; quality.verdict equals "not_run"]`
+- **[progression]** Quality validators (material-quality-checker) → `material-quality-checker` (`references/skills/material-quality-checker.md`) — `when.all: [quality.domain equals "material"; quality.verdict equals "not_run"]`
+- **[progression]** Quality validators (polycount-budget-checker) → `polycount-budget-checker` (`references/skills/polycount-budget-checker.md`) — `when.all: [quality.domain equals "polycount"; budget.verdict equals "Not Run"]`
+- **[fallback]** Repeated gate failures → `blender-troubleshooting` (`references/skills/blender-troubleshooting.md`) — `when.all: [runtime.errorDetected equals true]`
+- **[progression]** Final 7-point gate → `pre-handoff-verification` (`references/skills/pre-handoff-verification.md`) — `when.all: [stage.current equals "final_verification"]`
 
 ## Safety boundaries & non-goals
 - **Runtime boundary:** Process / discipline skill — does not run Blender. Gates are written and evaluated against produced artifacts (per `evidence-before-done.md`). Gate verdicts are honest labels, not motivation.

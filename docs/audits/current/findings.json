@@ -4,17 +4,17 @@
   "repository": "ThanhNguyxnOrg/blendops",
   "branch": "main",
   "baselineCommitSha": "3ea3c35c6b8a6e5e915bab9f63333d4a1c09bd4d",
-  "sourceCommitSha": "9ba2d80bc8c77e8dcbd21b8d2298a837c3728c86",
-  "sourceCommitShort": "9ba2d80",
-  "sourceCommitDate": "2026-10-31 14:37:40 +0000",
+  "sourceCommitSha": "defb847b58516afa75f090fd2fa7b066d01e5832",
+  "sourceCommitShort": "defb847",
+  "sourceCommitDate": "2026-10-31 15:18:09 +0000",
   "auditProvenance": {
-    "sourceCommitSha": "9ba2d80bc8c77e8dcbd21b8d2298a837c3728c86",
-    "sourceCommitShort": "9ba2d80",
-    "sourceCommitDate": "2026-10-31 14:37:40 +0000",
+    "sourceCommitSha": "defb847b58516afa75f090fd2fa7b066d01e5832",
+    "sourceCommitShort": "defb847",
+    "sourceCommitDate": "2026-10-31 15:18:09 +0000",
     "workingTreeState": "dirty",
     "snapshotBasis": "working-tree-on-top-of-source-commit",
-    "uncommittedChangeCount": 109,
-    "auditedInputsSha256": "7026ec6261cde20dd133edfb5914ff00ede5fbadadf783f653ae8546ad9752bc",
+    "uncommittedChangeCount": 101,
+    "auditedInputsSha256": "65cea835e31fd569ccbcf7ea2e492ce6d235d0d32ef3dc61722eea5aaa04abdc",
     "selfReferentialCommitRule": "A Git commit cannot contain its own final commit SHA inside tracked files. sourceCommitSha records the verified HEAD commit present when the generator ran, workingTreeState and snapshotBasis record whether uncommitted working-tree changes were present on top of sourceCommitSha, and auditedInputsSha256 digests the exact audited file contents."
   },
   "summary": {
@@ -39,7 +39,7 @@
       "phase0BaselineState": "OPEN (30/48 skills affected at 3ea3c35)",
       "currentLifecycleStatus": "FIXED",
       "resolvedInPhase": "Phase 1 (ac1ccdb)",
-      "lastVerifiedCommit": "9ba2d80bc8c77e8dcbd21b8d2298a837c3728c86",
+      "lastVerifiedCommit": "defb847b58516afa75f090fd2fa7b066d01e5832",
       "evidencePaths": [
         "scripts/check-docs.mjs",
         "scripts/test-phase1.mjs",
@@ -58,7 +58,7 @@
       "phase0BaselineState": "OPEN (spawnSync zip ENOENT on minimal Linux; CI skipped export)",
       "currentLifecycleStatus": "FIXED",
       "resolvedInPhase": "Phase 1 (ac1ccdb) + Phase 2.1 (b1927ba) + Phase 6.1 (4af8b16)",
-      "lastVerifiedCommit": "9ba2d80bc8c77e8dcbd21b8d2298a837c3728c86",
+      "lastVerifiedCommit": "defb847b58516afa75f090fd2fa7b066d01e5832",
       "evidencePaths": [
         "scripts/export-claude-skills.mjs",
         "scripts/test-phase1.mjs",
@@ -76,7 +76,7 @@
       "phase0BaselineState": "OPEN (0/48 contracts, no registry/, split handoff notation)",
       "currentLifecycleStatus": "FIXED",
       "resolvedInPhase": "Phase 2 Pilot (f43385a) + Phase 2.1 Hardening (b1927ba) + Phase 5 Full Catalog (f8301a3)",
-      "lastVerifiedCommit": "9ba2d80bc8c77e8dcbd21b8d2298a837c3728c86",
+      "lastVerifiedCommit": "defb847b58516afa75f090fd2fa7b066d01e5832",
       "evidencePaths": [
         "schemas/skill-contract.schema.json",
         "schemas/contract-context-fields.schema.json",
@@ -103,7 +103,7 @@
       "phase0BaselineState": "OPEN (0 automated runners; 8/48 structured EVAL.md tables; 40/48 prose-only)",
       "currentLifecycleStatus": "FIXED",
       "resolvedInPhase": "Phase 3 Foundation (88dc3bd) + Phase 3.1 (650f0a5) + Phase 6 Full Catalog (869462d)",
-      "lastVerifiedCommit": "9ba2d80bc8c77e8dcbd21b8d2298a837c3728c86",
+      "lastVerifiedCommit": "defb847b58516afa75f090fd2fa7b066d01e5832",
       "evidencePaths": [
         "schemas/skill-eval.schema.json",
         "scripts/run-evals.mjs",
@@ -124,7 +124,7 @@
       "phase0BaselineState": "OPEN (8/48 skills missing Decision tree, Playbooks, Failure handling, Troubleshooting, Best practices, Good/Bad examples, User-facing response template, Anti-patterns)",
       "currentLifecycleStatus": "FIXED",
       "resolvedInPhase": "Phase 4",
-      "lastVerifiedCommit": "9ba2d80bc8c77e8dcbd21b8d2298a837c3728c86",
+      "lastVerifiedCommit": "defb847b58516afa75f090fd2fa7b066d01e5832",
       "evidencePaths": [
         "skills/_template/SKILL.md",
         "scripts/check-docs.mjs",
@@ -150,7 +150,7 @@
       "phase0BaselineState": "OPEN (blendops-help omitted Batch 7 routing quartet; blender-scope-boundary-enforcer had 0 incoming forward edges)",
       "currentLifecycleStatus": "FIXED",
       "resolvedInPhase": "Phase 2 Pilot (f43385a)",
-      "lastVerifiedCommit": "9ba2d80bc8c77e8dcbd21b8d2298a837c3728c86",
+      "lastVerifiedCommit": "defb847b58516afa75f090fd2fa7b066d01e5832",
       "evidencePaths": [
         "skills/blendops-help/contract.json",
         "skills/blendops-help/SKILL.md",
@@ -169,7 +169,7 @@
       "phase0BaselineState": "OPEN (no inspect-glb.mjs or version matrices)",
       "currentLifecycleStatus": "FIXED",
       "resolvedInPhase": "Phase 3 (E1 & E2, 75f3b5c)",
-      "lastVerifiedCommit": "9ba2d80bc8c77e8dcbd21b8d2298a837c3728c86",
+      "lastVerifiedCommit": "defb847b58516afa75f090fd2fa7b066d01e5832",
       "evidencePaths": [
         "scripts/inspect-glb.mjs",
         "scripts/validate-evidence-packet.mjs",
@@ -189,7 +189,7 @@
       "phase0BaselineState": "OPEN (Windsurf, Continue, Cline, Roo, Aider listed as not researched; 10 targets missing from install-only table)",
       "currentLifecycleStatus": "PARTIALLY_FIXED",
       "resolvedInPhase": "Phase 1 (ac1ccdb) + Phase 3 (E4, 75f3b5c) + Phase 7 Empirical Verification & Evidence Hardening",
-      "lastVerifiedCommit": "9ba2d80bc8c77e8dcbd21b8d2298a837c3728c86",
+      "lastVerifiedCommit": "defb847b58516afa75f090fd2fa7b066d01e5832",
       "evidencePaths": [
         "docs/adapter-registry.md",
         "docs/install/README.md",
@@ -215,8 +215,8 @@
       "pillar": "Pillar 8 (Documentation & Bundle Maintenance)",
       "phase0BaselineState": "OPEN (96 manual summary files in bundles/ average 14 lines vs 225 lines in SKILL.md)",
       "currentLifecycleStatus": "FIXED",
-      "resolvedInPhase": "Phase 5 Contracts (f8301a3) + Phase 8 Deterministic Bundle Reference Generator",
-      "lastVerifiedCommit": "9ba2d80bc8c77e8dcbd21b8d2298a837c3728c86",
+      "resolvedInPhase": "Phase 5 Contracts (f8301a3) + Phase 8 Generator (defb847) + Phase 8.1 Semantic Integrity & Hardening",
+      "lastVerifiedCommit": "defb847b58516afa75f090fd2fa7b066d01e5832",
       "evidencePaths": [
         "scripts/generate-bundle-reference-summaries.mjs",
         "scripts/check-docs.mjs",
@@ -239,7 +239,7 @@
       "phase0BaselineState": "OPEN (only file-install ROLLBACK.md exists; no L0-L3 runtime capability model)",
       "currentLifecycleStatus": "FIXED",
       "resolvedInPhase": "Phase 3 (E3, 75f3b5c)",
-      "lastVerifiedCommit": "9ba2d80bc8c77e8dcbd21b8d2298a837c3728c86",
+      "lastVerifiedCommit": "defb847b58516afa75f090fd2fa7b066d01e5832",
       "evidencePaths": [
         "schemas/runtime-capability-policy.schema.json",
         "registry/runtime-capability-policy.json",

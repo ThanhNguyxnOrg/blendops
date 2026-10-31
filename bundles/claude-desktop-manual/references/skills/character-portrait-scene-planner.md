@@ -52,13 +52,13 @@ Translate a single-subject character-portrait intent (subject identity, pose, ex
 6. emit handoffs to `blender-composition-camera-planner`, `blender-lighting-material-planner`, and quality checkers with `Runtime status: Not Run` and `Artifact status: Not Produced`
 
 ## Handoff notes
-- **[upstream_reference]** Upstream brief → `intent-to-3d-brief-writer` (`references/skills/intent-to-3d-brief-writer.md`)
-- **[progression]** Framing deep-dive → `blender-composition-camera-planner` (`references/skills/blender-composition-camera-planner.md`)
-- **[progression]** Lookdev deep-dive → `blender-lighting-material-planner` (`references/skills/blender-lighting-material-planner.md`)
-- **[upstream_reference]** Asset discovery → `blender-asset-discovery-planner` (`references/skills/blender-asset-discovery-planner.md`)
-- **[progression]** Composition validation → `composition-quality-checker` (`references/skills/composition-quality-checker.md`)
-- **[progression]** Lighting validation → `lighting-quality-checker` (`references/skills/lighting-quality-checker.md`)
-- **[progression]** Scene quality validation → `blender-scene-quality-checker` (`references/skills/blender-scene-quality-checker.md`)
+- **[upstream_reference]** Upstream brief → `intent-to-3d-brief-writer` (`references/skills/intent-to-3d-brief-writer.md`) — `when.all: [goal.clarity equals "clear"; brief.locked equals false]`
+- **[progression]** Framing deep-dive → `blender-composition-camera-planner` (`references/skills/blender-composition-camera-planner.md`) — `when.all: [brief.locked equals true; stage.current equals "camera_planning"]`
+- **[progression]** Lookdev deep-dive → `blender-lighting-material-planner` (`references/skills/blender-lighting-material-planner.md`) — `when.all: [brief.locked equals true; stage.current equals "lookdev_planning"]`
+- **[upstream_reference]** Asset discovery → `blender-asset-discovery-planner` (`references/skills/blender-asset-discovery-planner.md`) — `when.all: [brief.locked equals true; assets.discoveryComplete equals false]`
+- **[progression]** Composition validation → `composition-quality-checker` (`references/skills/composition-quality-checker.md`) — `when.all: [quality.domain equals "composition"; quality.verdict equals "not_run"]`
+- **[progression]** Lighting validation → `lighting-quality-checker` (`references/skills/lighting-quality-checker.md`) — `when.all: [quality.domain equals "lighting"; quality.verdict equals "not_run"]`
+- **[progression]** Scene quality validation → `blender-scene-quality-checker` (`references/skills/blender-scene-quality-checker.md`) — `when.all: [quality.domain equals "holistic"; stage.current equals "quality_validation"]`
 
 ## Safety boundaries & non-goals
 - **Runtime boundary:** Planning-only skill: no modeling, no animation, no render, and no Blender execution. `Runtime status` stays `Not Run` and `Artifact status` stays `Not Produced` (downgrade-only, never upgrade). If the brief is unclear, hand off to `intent-to-3d-brief-writer`.

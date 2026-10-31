@@ -53,16 +53,16 @@ Translate a multi-product grid intent (e-commerce / catalog / comparison) into a
 6. record assumptions register and hand off to asset discovery, format decision, and quality checkers
 
 ## Handoff notes
-- **[upstream_reference]** Upstream brief → `intent-to-3d-brief-writer` (`references/skills/intent-to-3d-brief-writer.md`)
-- **[upstream_reference]** Single hero product alternative → `product-hero-scene-planner` (`references/skills/product-hero-scene-planner.md`)
-- **[upstream_reference]** Asset discovery → `blender-asset-discovery-planner` (`references/skills/blender-asset-discovery-planner.md`)
-- **[progression]** Variant / SKU file output format → `output-format-decision` (`references/skills/output-format-decision.md`)
-- **[progression]** Composition validation → `composition-quality-checker` (`references/skills/composition-quality-checker.md`)
-- **[progression]** Lighting validation → `lighting-quality-checker` (`references/skills/lighting-quality-checker.md`)
-- **[progression]** Material validation → `material-quality-checker` (`references/skills/material-quality-checker.md`)
-- **[progression]** Overall scene quality validation → `blender-scene-quality-checker` (`references/skills/blender-scene-quality-checker.md`)
-- **[upstream_reference]** Catalog sign-off & stop conditions (acceptance-criteria-builder) → `acceptance-criteria-builder` (`references/skills/acceptance-criteria-builder.md`)
-- **[upstream_reference]** Catalog sign-off & stop conditions (blender-stop-condition-decider) → `blender-stop-condition-decider` (`references/skills/blender-stop-condition-decider.md`)
+- **[upstream_reference]** Upstream brief → `intent-to-3d-brief-writer` (`references/skills/intent-to-3d-brief-writer.md`) — `when.all: [goal.clarity equals "clear"; brief.locked equals false]`
+- **[upstream_reference]** Single hero product alternative → `product-hero-scene-planner` (`references/skills/product-hero-scene-planner.md`) — `when.all: [brief.locked equals true; recipe.domain equals "product_hero"]`
+- **[upstream_reference]** Asset discovery → `blender-asset-discovery-planner` (`references/skills/blender-asset-discovery-planner.md`) — `when.all: [brief.locked equals true; assets.discoveryComplete equals false]`
+- **[progression]** Variant / SKU file output format → `output-format-decision` (`references/skills/output-format-decision.md`) — `when.all: [decision.formatLocked equals false]`
+- **[progression]** Composition validation → `composition-quality-checker` (`references/skills/composition-quality-checker.md`) — `when.all: [quality.domain equals "composition"; quality.verdict equals "not_run"]`
+- **[progression]** Lighting validation → `lighting-quality-checker` (`references/skills/lighting-quality-checker.md`) — `when.all: [quality.domain equals "lighting"; quality.verdict equals "not_run"]`
+- **[progression]** Material validation → `material-quality-checker` (`references/skills/material-quality-checker.md`) — `when.all: [quality.domain equals "material"; quality.verdict equals "not_run"]`
+- **[progression]** Overall scene quality validation → `blender-scene-quality-checker` (`references/skills/blender-scene-quality-checker.md`) — `when.all: [quality.domain equals "holistic"; stage.current equals "quality_validation"]`
+- **[upstream_reference]** Catalog sign-off & stop conditions (acceptance-criteria-builder) → `acceptance-criteria-builder` (`references/skills/acceptance-criteria-builder.md`) — `when.all: [brief.locked equals true; stage.current equals "acceptance_criteria"]`
+- **[upstream_reference]** Catalog sign-off & stop conditions (blender-stop-condition-decider) → `blender-stop-condition-decider` (`references/skills/blender-stop-condition-decider.md`) — `when.all: [brief.locked equals true; stage.current equals "stop_condition"]`
 
 ## Safety boundaries & non-goals
 - **Runtime boundary:** Planning-only skill — does not run Blender, model, source assets, or render. Runtime status must remain `Not Run` and Artifact status must remain `Not Produced` (truth states are downgrade-only, never upgrade). Hand off asset needs to `blender-asset-discovery-planner`, file output rules to `output-format-decision`, and validation to quality checkers.

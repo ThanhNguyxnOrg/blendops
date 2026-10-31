@@ -5,7 +5,7 @@ Purpose: Verification gate before claiming any deliverable is ready. Forces evid
 
 Run a structured verification pass before any BlendOps output is handed to the user as "ready" or "Verified". Forces explicit evidence checks per the `evidence-before-done` law and downgrades any unsupported claim to a lower truth label.
 
-Metadata: Category `evidence-and-handoff` | Role `final-7-point-release-gate` | Tier `L0` | Runtime default `Not Run` | Artifact default `Not Produced` | Mutation `downgrade_only`
+Metadata: Contract `v1.0.0` | Category `evidence-and-handoff` | Role `final-7-point-release-gate` | Tier `L0` | Runtime default `Not Run` | Artifact default `Not Produced` | Mutation `downgrade_only`
 
 ## When to use & trigger cues
 - `workflow-stage-router` routes here as the final gate before handoff, or exits here on any failed upstream gate to lock in an honest downgraded truth label
@@ -35,19 +35,19 @@ Metadata: Category `evidence-and-handoff` | Role `final-7-point-release-gate` | 
 4. gate handoff on all 7 checks passing or explicit caveats
 
 ## Cross-skill handoffs
-- [boundary_delegation] Entry wiring (blendops-help) → `blendops-help` (`references/skill-blendops-help.md`)
-- [upstream_reference] Entry wiring (workflow-stage-router) → `workflow-stage-router` (`references/skill-workflow-stage-router.md`)
-- [conditional] If verdict is Pass (non-blender-user-response-writer) → `non-blender-user-response-writer` (`references/skill-non-blender-user-response-writer.md`)
-- [upstream_reference] If verdict is Pass (render-export-evidence) → `render-export-evidence` (`references/skill-render-export-evidence.md`)
-- [upstream_reference] If verdict is Pass (runtime-attempt-report-writer) → `runtime-attempt-report-writer` (`references/skill-runtime-attempt-report-writer.md`)
-- [upstream_reference] scene/asset quality gap (blender-scene-quality-checker) → `blender-scene-quality-checker` (`references/skill-blender-scene-quality-checker.md`)
-- [upstream_reference] scene/asset quality gap (composition-quality-checker) → `composition-quality-checker` (`references/skill-composition-quality-checker.md`)
-- [upstream_reference] scene/asset quality gap (lighting-quality-checker) → `lighting-quality-checker` (`references/skill-lighting-quality-checker.md`)
-- [upstream_reference] scene/asset quality gap (material-quality-checker) → `material-quality-checker` (`references/skill-material-quality-checker.md`)
-- [upstream_reference] scene/asset quality gap (polycount-budget-checker) → `polycount-budget-checker` (`references/skill-polycount-budget-checker.md`)
-- [fallback] runtime/bridge failure (blender-troubleshooting) → `blender-troubleshooting` (`references/skill-blender-troubleshooting.md`)
-- [fallback] runtime/bridge failure (official-runtime-readiness-checker) → `official-runtime-readiness-checker` (`references/skill-official-runtime-readiness-checker.md`)
-- [fallback] runtime/bridge failure (runtime-bridge-conflict-resolver) → `runtime-bridge-conflict-resolver` (`references/skill-runtime-bridge-conflict-resolver.md`)
+- [boundary_delegation] Entry wiring (blendops-help) → `blendops-help` (`references/skill-blendops-help.md`) — `when.all: [request.scope equals "general_help"]`
+- [upstream_reference] Entry wiring (workflow-stage-router) → `workflow-stage-router` (`references/skill-workflow-stage-router.md`) — `when.all: [preflight.passed equals true; inventory.exists equals true]`
+- [conditional] If verdict is Pass (non-blender-user-response-writer) → `non-blender-user-response-writer` (`references/skill-non-blender-user-response-writer.md`) — `when.all: [stage.current equals "final_communication"]`
+- [upstream_reference] If verdict is Pass (render-export-evidence) → `render-export-evidence` (`references/skill-render-export-evidence.md`) — `when.all: [stage.current equals "post_execution_audit"]`
+- [upstream_reference] If verdict is Pass (runtime-attempt-report-writer) → `runtime-attempt-report-writer` (`references/skill-runtime-attempt-report-writer.md`) — `when.all: [runtime.status in ["Attempted","Produced","Verified","Failed"]; request.topic equals "attempt_report"]`
+- [upstream_reference] scene/asset quality gap (blender-scene-quality-checker) → `blender-scene-quality-checker` (`references/skill-blender-scene-quality-checker.md`) — `when.all: [quality.domain equals "holistic"; stage.current equals "quality_validation"]`
+- [upstream_reference] scene/asset quality gap (composition-quality-checker) → `composition-quality-checker` (`references/skill-composition-quality-checker.md`) — `when.all: [quality.domain equals "composition"; quality.verdict equals "not_run"]`
+- [upstream_reference] scene/asset quality gap (lighting-quality-checker) → `lighting-quality-checker` (`references/skill-lighting-quality-checker.md`) — `when.all: [quality.domain equals "lighting"; quality.verdict equals "not_run"]`
+- [upstream_reference] scene/asset quality gap (material-quality-checker) → `material-quality-checker` (`references/skill-material-quality-checker.md`) — `when.all: [quality.domain equals "material"; quality.verdict equals "not_run"]`
+- [upstream_reference] scene/asset quality gap (polycount-budget-checker) → `polycount-budget-checker` (`references/skill-polycount-budget-checker.md`) — `when.all: [quality.domain equals "polycount"; budget.verdict equals "Not Run"]`
+- [fallback] runtime/bridge failure (blender-troubleshooting) → `blender-troubleshooting` (`references/skill-blender-troubleshooting.md`) — `when.all: [runtime.errorDetected equals true]`
+- [fallback] runtime/bridge failure (official-runtime-readiness-checker) → `official-runtime-readiness-checker` (`references/skill-official-runtime-readiness-checker.md`) — `when.all: [runtime.path not_equals "unselected"; runtime.verifiedReady equals false]`
+- [fallback] runtime/bridge failure (runtime-bridge-conflict-resolver) → `runtime-bridge-conflict-resolver` (`references/skill-runtime-bridge-conflict-resolver.md`) — `when.all: [runtime.conflictDetected equals true]`
 
 ## Safety boundaries & non-goals
 - Runtime boundary: This skill does not run Blender, mutate scenes, or generate artifacts. It reads the proposed handoff and existing evidence, and either confirms or downgrades the truth label.

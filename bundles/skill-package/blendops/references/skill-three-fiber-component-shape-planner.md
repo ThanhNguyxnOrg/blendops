@@ -5,7 +5,7 @@ Purpose: Plan the React Three Fiber component shape (props, refs, Suspense, useG
 
 Translate a planned GLB delivery into the exact public surface a React Three Fiber component should expose, so the web engineer's contract is locked before code is written.
 
-Metadata: Category `evidence-and-handoff` | Role `r3f-component-contract-architect` | Tier `L0` | Runtime default `Not Run` | Artifact default `Not Produced` | Mutation `downgrade_only`
+Metadata: Contract `v1.0.0` | Category `evidence-and-handoff` | Role `r3f-component-contract-architect` | Tier `L0` | Runtime default `Not Run` | Artifact default `Not Produced` | Mutation `downgrade_only`
 
 ## When to use & trigger cues
 - the GLB will ship to a web app using React Three Fiber
@@ -32,12 +32,12 @@ Metadata: Category `evidence-and-handoff` | Role `r3f-component-contract-archite
 5. decide animation hook contract (auto-play, manual control)
 
 ## Cross-skill handoffs
-- [upstream_reference] Animation contract → `glb-animation-handoff` (`references/skill-glb-animation-handoff.md`)
-- [upstream_reference] Performance budget ceilings → `glb-mobile-performance-budget` (`references/skill-glb-mobile-performance-budget.md`)
-- [upstream_reference] Color and material checks (color-management-decision) → `color-management-decision` (`references/skill-color-management-decision.md`)
-- [upstream_reference] Color and material checks (material-quality-checker) → `material-quality-checker` (`references/skill-material-quality-checker.md`)
-- [upstream_reference] Web delivery packaging → `glb-web-handoff` (`references/skill-glb-web-handoff.md`)
-- [progression] Final user-facing response → `non-blender-user-response-writer` (`references/skill-non-blender-user-response-writer.md`)
+- [upstream_reference] Animation contract → `glb-animation-handoff` (`references/skill-glb-animation-handoff.md`) — `when.all: [artifact.hasAnimation equals true; stage.current equals "animation_handoff"]`
+- [upstream_reference] Performance budget ceilings → `glb-mobile-performance-budget` (`references/skill-glb-mobile-performance-budget.md`) — `when.all: [artifact.type equals "glb"; budget.pinned equals false]`
+- [upstream_reference] Color and material checks (color-management-decision) → `color-management-decision` (`references/skill-color-management-decision.md`) — `when.all: [decision.colorLocked equals false]`
+- [upstream_reference] Color and material checks (material-quality-checker) → `material-quality-checker` (`references/skill-material-quality-checker.md`) — `when.all: [quality.domain equals "material"; quality.verdict equals "not_run"]`
+- [upstream_reference] Web delivery packaging → `glb-web-handoff` (`references/skill-glb-web-handoff.md`) — `when.all: [artifact.type equals "glb"; handoff.consumerStack equals "web_glb"]`
+- [progression] Final user-facing response → `non-blender-user-response-writer` (`references/skill-non-blender-user-response-writer.md`) — `when.all: [stage.current equals "final_communication"]`
 
 ## Safety boundaries & non-goals
 - Runtime boundary: This skill produces **planning specs only**. It does not generate component code, run a web app, or claim that the resulting component will perform correctly without measured load tests. Web-side implementation is owned by the consumer team.

@@ -11,7 +11,7 @@ Block "half-ready" pack execution: confirm the user's brief, chosen pack/recipe,
 - **Contract:** `skills/pack-prerequisite-checker/contract.json` (`v1.0.0`)
 - **Category / role:** `routing-and-governance` / `pack-preflight-readiness-gate`
 - **Capability tier:** `L0`
-- **Routing precedence:** group `entry-and-stage-routing`, rank `3`
+- **Routing precedence:** group `entry-and-stage-routing`, rank `3` | activationGate: `goalClarity="clear"`, `recipeSelected=true`, `preflightPassed=false`, `hasStageOrArtifactInventory=false`
 - **Truth-state policy:** Runtime status defaults to `Not Run`; Artifact status defaults to `Not Produced`; mutation rule is `downgrade_only` (never upgrade without verified evidence).
 
 ## When to use
@@ -54,17 +54,17 @@ Block "half-ready" pack execution: confirm the user's brief, chosen pack/recipe,
 4. only then authorize entry into execution-heavy skills
 
 ## Handoff notes
-- **[upstream_reference]** Recipe selection → `recipe-fit-assessor` (`references/skills/recipe-fit-assessor.md`)
-- **[fallback]** Brief completeness → `intent-to-3d-brief-writer` (`references/skills/intent-to-3d-brief-writer.md`)
-- **[conditional]** Runtime detail → `official-runtime-readiness-checker` (`references/skills/official-runtime-readiness-checker.md`)
-- **[fallback]** Bridge conflicts → `runtime-bridge-conflict-resolver` (`references/skills/runtime-bridge-conflict-resolver.md`)
-- **[fallback]** Runtime debugging → `blender-troubleshooting` (`references/skills/blender-troubleshooting.md`)
-- **[conditional]** License checks → `asset-license-checker` (`references/skills/asset-license-checker.md`)
-- **[alternative]** Domain planner (product hero when Go) → `product-hero-scene-planner` (`references/skills/product-hero-scene-planner.md`)
-- **[alternative]** Domain planner (product grid when Go) → `product-grid-scene-planner` (`references/skills/product-grid-scene-planner.md`)
-- **[alternative]** Domain planner (character portrait when Go) → `character-portrait-scene-planner` (`references/skills/character-portrait-scene-planner.md`)
-- **[alternative]** Domain planner (environment establishing shot when Go) → `environment-establishing-shot-planner` (`references/skills/environment-establishing-shot-planner.md`)
-- **[alternative]** Domain planner (interior architectural when Go) → `interior-architectural-scene-planner` (`references/skills/interior-architectural-scene-planner.md`)
+- **[upstream_reference]** Recipe selection → `recipe-fit-assessor` (`references/skills/recipe-fit-assessor.md`) — `when.all: [recipe.selected equals false]`
+- **[fallback]** Brief completeness → `intent-to-3d-brief-writer` (`references/skills/intent-to-3d-brief-writer.md`) — `when.all: [brief.complete equals false]`
+- **[conditional]** Runtime detail → `official-runtime-readiness-checker` (`references/skills/official-runtime-readiness-checker.md`) — `when.all: [runtime.mode equals "runtime_requested"; runtime.verifiedReady equals false]`
+- **[fallback]** Bridge conflicts → `runtime-bridge-conflict-resolver` (`references/skills/runtime-bridge-conflict-resolver.md`) — `when.all: [runtime.conflictDetected equals true]`
+- **[fallback]** Runtime debugging → `blender-troubleshooting` (`references/skills/blender-troubleshooting.md`) — `when.all: [runtime.errorDetected equals true]`
+- **[conditional]** License checks → `asset-license-checker` (`references/skills/asset-license-checker.md`) — `when.all: [assets.externalUsed equals true; assets.licenseCleared equals false]`
+- **[alternative]** Domain planner (product hero when Go) → `product-hero-scene-planner` (`references/skills/product-hero-scene-planner.md`) — `when.all: [preflight.verdict equals "go"; recipe.domain equals "product_hero"]`
+- **[alternative]** Domain planner (product grid when Go) → `product-grid-scene-planner` (`references/skills/product-grid-scene-planner.md`) — `when.all: [preflight.verdict equals "go"; recipe.domain equals "product_grid"]`
+- **[alternative]** Domain planner (character portrait when Go) → `character-portrait-scene-planner` (`references/skills/character-portrait-scene-planner.md`) — `when.all: [preflight.verdict equals "go"; recipe.domain equals "character_portrait"]`
+- **[alternative]** Domain planner (environment establishing shot when Go) → `environment-establishing-shot-planner` (`references/skills/environment-establishing-shot-planner.md`) — `when.all: [preflight.verdict equals "go"; recipe.domain equals "environment_shot"]`
+- **[alternative]** Domain planner (interior architectural when Go) → `interior-architectural-scene-planner` (`references/skills/interior-architectural-scene-planner.md`) — `when.all: [preflight.verdict equals "go"; recipe.domain equals "interior_archviz"]`
 
 ## Safety boundaries & non-goals
 - **Runtime boundary:** Preflight gate only — never executes packs, domain planners, or Blender runtime. Uses the 2-path + CLI appendix model per `docs/runtime-stack-strategy.md`:

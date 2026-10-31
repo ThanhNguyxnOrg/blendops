@@ -5,7 +5,7 @@ Purpose: Plan the asset acquisition strategy (procedural, library, generative, p
 
 Decide where the assets in a scene will come from before the scene planner commits to a layout. Asset acquisition decisions affect poly budget, web GLB size, licensing, and time-to-handoff. This skill produces a per-asset plan with explicit confidence labels and licensing notes — without installing tools, running Blender, or fetching anything.
 
-Metadata: Category `asset-and-sourcing` | Role `asset-strategy-and-source-planner` | Tier `L0` | Runtime default `Not Run` | Artifact default `Not Produced` | Mutation `downgrade_only`
+Metadata: Contract `v1.0.0` | Category `asset-and-sourcing` | Role `asset-strategy-and-source-planner` | Tier `L0` | Runtime default `Not Run` | Artifact default `Not Produced` | Mutation `downgrade_only`
 
 ## When to use & trigger cues
 - after the 3D brief is locked, before any scene plan
@@ -33,18 +33,18 @@ Metadata: Category `asset-and-sourcing` | Role `asset-strategy-and-source-planne
 5. hand off to scene planner
 
 ## Cross-skill handoffs
-- [upstream_reference] **Before this skill** → `intent-to-3d-brief-writer` (`references/skill-intent-to-3d-brief-writer.md`)
-- [alternative] **Scene planners (primary handoff with brief + asset plan)** (character-portrait-scene-planner) → `character-portrait-scene-planner` (`references/skill-character-portrait-scene-planner.md`)
-- [alternative] **Scene planners (primary handoff with brief + asset plan)** (environment-establishing-shot-planner) → `environment-establishing-shot-planner` (`references/skill-environment-establishing-shot-planner.md`)
-- [alternative] **Scene planners (primary handoff with brief + asset plan)** (interior-architectural-scene-planner) → `interior-architectural-scene-planner` (`references/skill-interior-architectural-scene-planner.md`)
-- [alternative] **Scene planners (primary handoff with brief + asset plan)** (product-grid-scene-planner) → `product-grid-scene-planner` (`references/skill-product-grid-scene-planner.md`)
-- [alternative] **Scene planners (primary handoff with brief + asset plan)** (product-hero-scene-planner) → `product-hero-scene-planner` (`references/skill-product-hero-scene-planner.md`)
-- [progression] **License verdicts** → `asset-license-checker` (`references/skill-asset-license-checker.md`)
-- [progression] **Style re-checks** → `asset-style-consistency-checker` (`references/skill-asset-style-consistency-checker.md`)
-- [progression] **Budget reconciliation** (glb-mobile-performance-budget) → `glb-mobile-performance-budget` (`references/skill-glb-mobile-performance-budget.md`)
-- [progression] **Budget reconciliation** (polycount-budget-checker) → `polycount-budget-checker` (`references/skill-polycount-budget-checker.md`)
-- [upstream_reference] **Generative readiness** → `official-runtime-readiness-checker` (`references/skill-official-runtime-readiness-checker.md`)
-- [fallback] **Fallback / constraint updates** (asset-fallback-strategy) → `asset-fallback-strategy` (`references/skill-asset-fallback-strategy.md`)
+- [upstream_reference] **Before this skill** → `intent-to-3d-brief-writer` (`references/skill-intent-to-3d-brief-writer.md`) — `when.all: [goal.clarity equals "clear"; brief.locked equals false]`
+- [alternative] **Scene planners (primary handoff with brief + asset plan)** (character-portrait-scene-planner) → `character-portrait-scene-planner` (`references/skill-character-portrait-scene-planner.md`) — `when.all: [brief.locked equals true; recipe.domain equals "character_portrait"]`
+- [alternative] **Scene planners (primary handoff with brief + asset plan)** (environment-establishing-shot-planner) → `environment-establishing-shot-planner` (`references/skill-environment-establishing-shot-planner.md`) — `when.all: [brief.locked equals true; recipe.domain equals "environment_shot"]`
+- [alternative] **Scene planners (primary handoff with brief + asset plan)** (interior-architectural-scene-planner) → `interior-architectural-scene-planner` (`references/skill-interior-architectural-scene-planner.md`) — `when.all: [brief.locked equals true; recipe.domain equals "interior_archviz"]`
+- [alternative] **Scene planners (primary handoff with brief + asset plan)** (product-grid-scene-planner) → `product-grid-scene-planner` (`references/skill-product-grid-scene-planner.md`) — `when.all: [brief.locked equals true; recipe.domain equals "product_grid"]`
+- [alternative] **Scene planners (primary handoff with brief + asset plan)** (product-hero-scene-planner) → `product-hero-scene-planner` (`references/skill-product-hero-scene-planner.md`) — `when.all: [brief.locked equals true; recipe.domain equals "product_hero"]`
+- [progression] **License verdicts** → `asset-license-checker` (`references/skill-asset-license-checker.md`) — `when.all: [assets.externalUsed equals true; assets.licenseCleared equals false]`
+- [progression] **Style re-checks** → `asset-style-consistency-checker` (`references/skill-asset-style-consistency-checker.md`) — `when.all: [assets.licenseCleared equals true; stage.current equals "style_check"]`
+- [progression] **Budget reconciliation** (glb-mobile-performance-budget) → `glb-mobile-performance-budget` (`references/skill-glb-mobile-performance-budget.md`) — `when.all: [artifact.type equals "glb"; budget.pinned equals false]`
+- [progression] **Budget reconciliation** (polycount-budget-checker) → `polycount-budget-checker` (`references/skill-polycount-budget-checker.md`) — `when.all: [quality.domain equals "polycount"; budget.verdict equals "Not Run"]`
+- [upstream_reference] **Generative readiness** → `official-runtime-readiness-checker` (`references/skill-official-runtime-readiness-checker.md`) — `when.all: [runtime.path not_equals "unselected"; runtime.verifiedReady equals false]`
+- [fallback] **Fallback / constraint updates** (asset-fallback-strategy) → `asset-fallback-strategy` (`references/skill-asset-fallback-strategy.md`) — `when.all: [assets.fallbackNeeded equals true]`
 
 ## Safety boundaries & non-goals
 - Runtime boundary: This skill does not download, generate, fetch, or install any asset. It does not run Blender, configure any MCP path, or touch the network. It produces a plain-language plan in markdown.

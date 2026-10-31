@@ -50,9 +50,9 @@ Run a structured Socratic brainstorming pass on a vague non-Blender-user 3D requ
 4. hand off to `intent-to-3d-brief-writer` once intent is confirmed
 
 ## Handoff notes
-- **[progression]** Lock the confirmed brief downstream → `intent-to-3d-brief-writer` (`references/skills/intent-to-3d-brief-writer.md`)
-- **[progression]** User pushes for execution mid-brainstorm → `official-runtime-readiness-checker` (`references/skills/official-runtime-readiness-checker.md`)
-- **[progression]** Explain blocked runtime status to user → `non-blender-user-response-writer` (`references/skills/non-blender-user-response-writer.md`)
+- **[progression]** Lock the confirmed brief downstream → `intent-to-3d-brief-writer` (`references/skills/intent-to-3d-brief-writer.md`) — `when.all: [goal.clarity equals "clear"; brief.locked equals false]`
+- **[progression]** User pushes for execution mid-brainstorm → `official-runtime-readiness-checker` (`references/skills/official-runtime-readiness-checker.md`) — `when.all: [runtime.path not_equals "unselected"; runtime.verifiedReady equals false]`
+- **[progression]** Explain blocked runtime status to user → `non-blender-user-response-writer` (`references/skills/non-blender-user-response-writer.md`) — `when.all: [stage.current equals "final_communication"]`
 
 ## Safety boundaries & non-goals
 - **Runtime boundary:** This skill does not install Blender, run Blender, or configure any MCP path. It is text-only conversation.

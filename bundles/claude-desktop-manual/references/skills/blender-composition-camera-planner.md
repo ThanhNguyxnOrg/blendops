@@ -50,12 +50,12 @@ Design high-quality composition/camera strategy for product hero scenes in plain
 4. follow suggested next-skill handoff
 
 ## Handoff notes
-- **[upstream_reference]** Upstream input from → `product-hero-scene-planner` (`references/skills/product-hero-scene-planner.md`)
-- **[conditional]** Lateral output specs (if needed) (output-format-decision) → `output-format-decision` (`references/skills/output-format-decision.md`)
-- **[conditional]** Lateral output specs (if needed) (resolution-aspect-decision) → `resolution-aspect-decision` (`references/skills/resolution-aspect-decision.md`)
-- **[progression]** Next (lookdev & lighting) → `blender-lighting-material-planner` (`references/skills/blender-lighting-material-planner.md`)
-- **[progression]** Then (validation) (blender-scene-quality-checker) → `blender-scene-quality-checker` (`references/skills/blender-scene-quality-checker.md`)
-- **[progression]** Then (validation) (composition-quality-checker) → `composition-quality-checker` (`references/skills/composition-quality-checker.md`)
+- **[upstream_reference]** Upstream input from → `product-hero-scene-planner` (`references/skills/product-hero-scene-planner.md`) — `when.all: [brief.locked equals true; recipe.domain equals "product_hero"]`
+- **[conditional]** Lateral output specs (if needed) (output-format-decision) → `output-format-decision` (`references/skills/output-format-decision.md`) — `when.all: [decision.formatLocked equals false]`
+- **[conditional]** Lateral output specs (if needed) (resolution-aspect-decision) → `resolution-aspect-decision` (`references/skills/resolution-aspect-decision.md`) — `when.all: [decision.aspectLocked equals false]`
+- **[progression]** Next (lookdev & lighting) → `blender-lighting-material-planner` (`references/skills/blender-lighting-material-planner.md`) — `when.all: [brief.locked equals true; stage.current equals "lookdev_planning"]`
+- **[progression]** Then (validation) (blender-scene-quality-checker) → `blender-scene-quality-checker` (`references/skills/blender-scene-quality-checker.md`) — `when.all: [quality.domain equals "holistic"; stage.current equals "quality_validation"]`
+- **[progression]** Then (validation) (composition-quality-checker) → `composition-quality-checker` (`references/skills/composition-quality-checker.md`) — `when.all: [quality.domain equals "composition"; quality.verdict equals "not_run"]`
 
 ## Safety boundaries & non-goals
 - **Runtime boundary:** Planning-only skill: no Blender execution, no Python scripts, and no artifact generation. Runtime status stays `Not Run` and artifacts stay `Not Produced` (truth states are downgrade-only, never upgraded without verified evidence).

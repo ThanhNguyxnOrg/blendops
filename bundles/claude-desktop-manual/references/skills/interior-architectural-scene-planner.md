@@ -52,17 +52,17 @@ Translate an interior architectural visualization intent (room or interior space
 6. emit a structured plan with an assumptions register + handoff to `blender-asset-discovery-planner`, `glb-mobile-performance-budget`, `asset-style-consistency-checker`, and quality checkers
 
 ## Handoff notes
-- **[upstream_reference]** Upstream brief → `intent-to-3d-brief-writer` (`references/skills/intent-to-3d-brief-writer.md`)
-- **[upstream_reference]** Outdoor / wide establishing shot redirect → `environment-establishing-shot-planner` (`references/skills/environment-establishing-shot-planner.md`)
-- **[upstream_reference]** Single hero product redirect → `product-hero-scene-planner` (`references/skills/product-hero-scene-planner.md`)
-- **[upstream_reference]** Single character portrait redirect → `character-portrait-scene-planner` (`references/skills/character-portrait-scene-planner.md`)
-- **[upstream_reference]** Asset discovery → `blender-asset-discovery-planner` (`references/skills/blender-asset-discovery-planner.md`)
-- **[upstream_reference]** Performance / polycount budget → `glb-mobile-performance-budget` (`references/skills/glb-mobile-performance-budget.md`)
-- **[upstream_reference]** Style consistency check → `asset-style-consistency-checker` (`references/skills/asset-style-consistency-checker.md`)
-- **[progression]** Composition validation → `composition-quality-checker` (`references/skills/composition-quality-checker.md`)
-- **[progression]** Lighting validation → `lighting-quality-checker` (`references/skills/lighting-quality-checker.md`)
-- **[progression]** Material validation → `material-quality-checker` (`references/skills/material-quality-checker.md`)
-- **[progression]** Scene quality validation → `blender-scene-quality-checker` (`references/skills/blender-scene-quality-checker.md`)
+- **[upstream_reference]** Upstream brief → `intent-to-3d-brief-writer` (`references/skills/intent-to-3d-brief-writer.md`) — `when.all: [goal.clarity equals "clear"; brief.locked equals false]`
+- **[upstream_reference]** Outdoor / wide establishing shot redirect → `environment-establishing-shot-planner` (`references/skills/environment-establishing-shot-planner.md`) — `when.all: [brief.locked equals true; recipe.domain equals "environment_shot"]`
+- **[upstream_reference]** Single hero product redirect → `product-hero-scene-planner` (`references/skills/product-hero-scene-planner.md`) — `when.all: [brief.locked equals true; recipe.domain equals "product_hero"]`
+- **[upstream_reference]** Single character portrait redirect → `character-portrait-scene-planner` (`references/skills/character-portrait-scene-planner.md`) — `when.all: [brief.locked equals true; recipe.domain equals "character_portrait"]`
+- **[upstream_reference]** Asset discovery → `blender-asset-discovery-planner` (`references/skills/blender-asset-discovery-planner.md`) — `when.all: [brief.locked equals true; assets.discoveryComplete equals false]`
+- **[upstream_reference]** Performance / polycount budget → `glb-mobile-performance-budget` (`references/skills/glb-mobile-performance-budget.md`) — `when.all: [artifact.type equals "glb"; budget.pinned equals false]`
+- **[upstream_reference]** Style consistency check → `asset-style-consistency-checker` (`references/skills/asset-style-consistency-checker.md`) — `when.all: [assets.licenseCleared equals true; stage.current equals "style_check"]`
+- **[progression]** Composition validation → `composition-quality-checker` (`references/skills/composition-quality-checker.md`) — `when.all: [quality.domain equals "composition"; quality.verdict equals "not_run"]`
+- **[progression]** Lighting validation → `lighting-quality-checker` (`references/skills/lighting-quality-checker.md`) — `when.all: [quality.domain equals "lighting"; quality.verdict equals "not_run"]`
+- **[progression]** Material validation → `material-quality-checker` (`references/skills/material-quality-checker.md`) — `when.all: [quality.domain equals "material"; quality.verdict equals "not_run"]`
+- **[progression]** Scene quality validation → `blender-scene-quality-checker` (`references/skills/blender-scene-quality-checker.md`) — `when.all: [quality.domain equals "holistic"; stage.current equals "quality_validation"]`
 
 ## Safety boundaries & non-goals
 - **Runtime boundary:** Planning-only skill — does not model, source furniture, render, or execute Blender. Runtime status stays `Not Run` and artifact status stays `Not Produced` (downgrade-only, never upgrade). Hand off asset sourcing to `blender-asset-discovery-planner`, budget questions to `glb-mobile-performance-budget`, style checks to `asset-style-consistency-checker`, and validation to `composition-quality-checker`, `lighting-quality-checker`, `material-quality-checker`, and `blender-scene-quality-checker`.

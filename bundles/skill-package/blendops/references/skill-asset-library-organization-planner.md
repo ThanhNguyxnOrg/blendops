@@ -5,7 +5,7 @@ Purpose: Plan an internal asset library structure (folders, naming, metadata, li
 
 Plan a maintainable internal asset library structure (folder tree, naming convention, per-asset metadata schema, license-tracking strategy, version-control rules, migration steps, and review process) so future recipes can: - find existing assets quickly, - avoid re-licensing the same source, - reuse PBR materials and HDRIs, - track versions and revisions, - serve as the internal-library source for `blender-asset-discovery-planner` and `asset-fallback-strategy`.
 
-Metadata: Category `asset-and-sourcing` | Role `local-asset-library-taxonomy-planner` | Tier `L0` | Runtime default `Not Run` | Artifact default `Not Produced` | Mutation `downgrade_only`
+Metadata: Contract `v1.0.0` | Category `asset-and-sourcing` | Role `local-asset-library-taxonomy-planner` | Tier `L0` | Runtime default `Not Run` | Artifact default `Not Produced` | Mutation `downgrade_only`
 
 ## When to use & trigger cues
 - starting a new BlendOps repo with multiple recipes
@@ -36,11 +36,11 @@ Metadata: Category `asset-and-sourcing` | Role `local-asset-library-taxonomy-pla
 5. emit a library-init plan
 
 ## Cross-skill handoffs
-- [upstream_reference] External asset sourcing into this library → `blender-asset-discovery-planner` (`references/skill-blender-asset-discovery-planner.md`)
-- [upstream_reference] License verification (license file next to asset; unlicensed old assets to Quarantine) → `asset-license-checker` (`references/skill-asset-license-checker.md`)
-- [upstream_reference] Visual style consistency checks → `asset-style-consistency-checker` (`references/skill-asset-style-consistency-checker.md`)
-- [fallback] Consuming this library as fastest fallback source → `asset-fallback-strategy` (`references/skill-asset-fallback-strategy.md`)
-- [progression] File size and asset/polygon count pressure → `glb-mobile-performance-budget` (`references/skill-glb-mobile-performance-budget.md`)
+- [upstream_reference] External asset sourcing into this library → `blender-asset-discovery-planner` (`references/skill-blender-asset-discovery-planner.md`) — `when.all: [brief.locked equals true; assets.discoveryComplete equals false]`
+- [upstream_reference] License verification (license file next to asset; unlicensed old assets to Quarantine) → `asset-license-checker` (`references/skill-asset-license-checker.md`) — `when.all: [assets.externalUsed equals true; assets.licenseCleared equals false]`
+- [upstream_reference] Visual style consistency checks → `asset-style-consistency-checker` (`references/skill-asset-style-consistency-checker.md`) — `when.all: [assets.licenseCleared equals true; stage.current equals "style_check"]`
+- [fallback] Consuming this library as fastest fallback source → `asset-fallback-strategy` (`references/skill-asset-fallback-strategy.md`) — `when.all: [assets.fallbackNeeded equals true]`
+- [progression] File size and asset/polygon count pressure → `glb-mobile-performance-budget` (`references/skill-glb-mobile-performance-budget.md`) — `when.all: [artifact.type equals "glb"; budget.pinned equals false]`
 
 ## Safety boundaries & non-goals
 - Runtime boundary: Planning skill — never moves files, never configures git/LFS/DAM, never runs Blender, and never produces library files. Outputs a structure spec, migration steps, and review process only.

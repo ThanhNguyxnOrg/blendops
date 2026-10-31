@@ -583,14 +583,34 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
   const f10Fixed =
     fs.existsSync(path.join(rootDir, 'schemas', 'runtime-capability-policy.schema.json')) &&
     fs.existsSync(path.join(rootDir, 'registry', 'runtime-capability-policy.json'));
-  const hasBundlesDir = fs.existsSync(
+  const hasClaudeDesktopSummariesDir = fs.existsSync(
     path.join(rootDir, 'bundles', 'claude-desktop-manual', 'references', 'skills'),
   );
+  const hasPortablePackageSummariesDir = fs.existsSync(
+    path.join(rootDir, 'bundles', 'skill-package', 'blendops', 'references'),
+  );
+  const hasClaudeDesktopManifest = fs.existsSync(
+    path.join(rootDir, 'bundles', 'claude-desktop-manual', 'manifest.json'),
+  );
+  const hasSummaryGeneratorScript =
+    fs.existsSync(path.join(rootDir, 'scripts', 'generate-bundle-reference-summaries.mjs')) ||
+    fs.existsSync(path.join(ROOT_DIR, 'scripts', 'generate-bundle-reference-summaries.mjs'));
+  const hasPhase8TestSuite =
+    fs.existsSync(path.join(rootDir, 'scripts', 'test-phase8.mjs')) ||
+    fs.existsSync(path.join(ROOT_DIR, 'scripts', 'test-phase8.mjs'));
+  const bundleSummariesCheck =
+    hasClaudeDesktopSummariesDir && hasPortablePackageSummariesDir && hasClaudeDesktopManifest
+      ? checkBundleReferenceSummaries(rootDir)
+      : { ok: false, expectedSummaryCount: 0 };
   const f09Fixed =
     f03Fixed &&
-    (fs.existsSync(path.join(rootDir, 'scripts', 'generate-bundle-reference-summaries.mjs')) ||
-      fs.existsSync(path.join(ROOT_DIR, 'scripts', 'generate-bundle-reference-summaries.mjs'))) &&
-    (!hasBundlesDir || checkBundleReferenceSummaries(rootDir).ok);
+    hasSummaryGeneratorScript &&
+    hasPhase8TestSuite &&
+    hasClaudeDesktopSummariesDir &&
+    hasPortablePackageSummariesDir &&
+    hasClaudeDesktopManifest &&
+    bundleSummariesCheck.ok &&
+    bundleSummariesCheck.expectedSummaryCount === 96;
 
   const currentSkillInventory = {
     schemaVersion: '1.5.0',
@@ -902,7 +922,7 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
       resolvedInPhase: !f03Fixed
         ? 'Deferred until 48/48 skill contracts are authored'
         : f09Fixed
-          ? 'Phase 5 Contracts (f8301a3) + Phase 8 Deterministic Bundle Reference Generator'
+          ? 'Phase 5 Contracts (f8301a3) + Phase 8 Generator (defb847) + Phase 8.1 Semantic Integrity & Hardening'
           : 'Prerequisite satisfied in Phase 5 (48/48 contracts authored); bundle generator scheduled for Phase 8',
       lastVerifiedCommit: headSha,
       evidencePaths: f09Fixed
@@ -1485,17 +1505,22 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
         commitSha: '9ba2d80bc8c77e8dcbd21b8d2298a837c3728c86',
         summary: 'Adapter empirical verification & evidence integrity (F-08): 26-target host availability discovery, disposable /tmp fixture verification, and fail-closed promotion validator',
       },
+      {
+        phase: 'Phase 8',
+        commitSha: 'defb847b58516afa75f090fd2fa7b066d01e5832',
+        summary: 'Deterministic 96-file bundle reference summary generator (F-09), bundle manifest synchronization, and CI check-mode verification',
+      },
     ],
     currentPhaseContext: {
-      phase: 'Phase 8 — Deterministic Bundle Reference Summary Generation (F-09)',
-      title: 'Deterministic 96-File Bundle Reference Summary Compiler, Bundle Manifest Synchronization, Check-Mode Verification, and 20-Scenario Regression Suite',
+      phase: 'Phase 8.1 — Summary Semantic Integrity & Generator Hardening (F-09)',
+      title: 'Full Routing/Handoff Semantic Preservation, Canonical Ajv2020 Contract Schema Enforcement, Realpath/Symlink Confinement, Fail-Closed Manifest Validation, and F-09 Audit Predicate Hardening',
       sourceCommitSha: headSha,
       workingTreeState,
       snapshotBasis,
       auditedInputsSha256,
       auditedInputsManifest: AUDITED_INPUTS_MANIFEST_REL,
       relationshipToCommitChain:
-        'Phase 8 is built directly on top of Phase 7 (9ba2d80bc8c77e8dcbd21b8d2298a837c3728c86). Because a Git commit cannot embed its own final SHA inside tracked files, verification-manifest.json records 9ba2d80bc8c77e8dcbd21b8d2298a837c3728c86 as the latest completed commit in commitChain and sourceCommitSha, while locking the exact Phase 8 audited inputs via auditedInputsSha256 and docs/audits/audited-inputs.manifest.json.',
+        'Phase 8.1 is built directly on top of Phase 8 (defb847b58516afa75f090fd2fa7b066d01e5832). Because a Git commit cannot embed its own final SHA inside tracked files, verification-manifest.json records defb847b58516afa75f090fd2fa7b066d01e5832 as the latest completed commit in commitChain and sourceCommitSha, while locking the exact Phase 8.1 audited inputs via auditedInputsSha256 and docs/audits/audited-inputs.manifest.json.',
     },
     ciVerificationPipeline: {
       command: 'npm run ci',
@@ -1624,7 +1649,7 @@ The \`auditedInputsSha256\` digest is governed by [\`../audited-inputs.manifest.
 - [\`findings.json\`](./findings.json) — Machine-readable lifecycle table for \`F-01\` through \`F-10\`.
 - [\`skill-inventory.json\`](./skill-inventory.json) — Live 48-skill inventory reflecting Phase 1 truth-state fixes, Phase 2/2.1/5 full-catalog contracts, Phase 3/6 full-catalog eval coverage, and Phase 4 extended template completion.
 - [\`eval-inventory.json\`](./eval-inventory.json) — Live 48-skill evaluation inventory covering all 48 machine-readable suites (${totalEvalCasesCount} cases) with 0 remaining prose-only skills.
-- [\`verification-manifest.json\`](./verification-manifest.json) — Verified commit chain through \`9ba2d80bc8c77e8dcbd21b8d2298a837c3728c86\`, Phase 8 provenance context, CI pipeline commands, and runtime/artifact truth states.
+- [\`verification-manifest.json\`](./verification-manifest.json) — Verified commit chain through \`defb847b58516afa75f090fd2fa7b066d01e5832\`, Phase 8.1 provenance context, CI pipeline commands, and runtime/artifact truth states.
 
 ## Related Documentation
 

@@ -50,12 +50,12 @@ Translate a planned GLB delivery into the exact public surface a React Three Fib
 5. decide animation hook contract (auto-play, manual control)
 
 ## Handoff notes
-- **[upstream_reference]** Animation contract → `glb-animation-handoff` (`references/skills/glb-animation-handoff.md`)
-- **[upstream_reference]** Performance budget ceilings → `glb-mobile-performance-budget` (`references/skills/glb-mobile-performance-budget.md`)
-- **[upstream_reference]** Color and material checks (color-management-decision) → `color-management-decision` (`references/skills/color-management-decision.md`)
-- **[upstream_reference]** Color and material checks (material-quality-checker) → `material-quality-checker` (`references/skills/material-quality-checker.md`)
-- **[upstream_reference]** Web delivery packaging → `glb-web-handoff` (`references/skills/glb-web-handoff.md`)
-- **[progression]** Final user-facing response → `non-blender-user-response-writer` (`references/skills/non-blender-user-response-writer.md`)
+- **[upstream_reference]** Animation contract → `glb-animation-handoff` (`references/skills/glb-animation-handoff.md`) — `when.all: [artifact.hasAnimation equals true; stage.current equals "animation_handoff"]`
+- **[upstream_reference]** Performance budget ceilings → `glb-mobile-performance-budget` (`references/skills/glb-mobile-performance-budget.md`) — `when.all: [artifact.type equals "glb"; budget.pinned equals false]`
+- **[upstream_reference]** Color and material checks (color-management-decision) → `color-management-decision` (`references/skills/color-management-decision.md`) — `when.all: [decision.colorLocked equals false]`
+- **[upstream_reference]** Color and material checks (material-quality-checker) → `material-quality-checker` (`references/skills/material-quality-checker.md`) — `when.all: [quality.domain equals "material"; quality.verdict equals "not_run"]`
+- **[upstream_reference]** Web delivery packaging → `glb-web-handoff` (`references/skills/glb-web-handoff.md`) — `when.all: [artifact.type equals "glb"; handoff.consumerStack equals "web_glb"]`
+- **[progression]** Final user-facing response → `non-blender-user-response-writer` (`references/skills/non-blender-user-response-writer.md`) — `when.all: [stage.current equals "final_communication"]`
 
 ## Safety boundaries & non-goals
 - **Runtime boundary:** This skill produces **planning specs only**. It does not generate component code, run a web app, or claim that the resulting component will perform correctly without measured load tests. Web-side implementation is owned by the consumer team.

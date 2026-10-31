@@ -52,13 +52,13 @@ Translate a confirmed user intent (from `blender-brainstorming` or a clear initi
 4. hand off to downstream planners (e.g., `product-hero-scene-planner`) and `acceptance-criteria-builder` once confirmed
 
 ## Handoff notes
-- **[upstream_reference]** Preceding step → `blender-brainstorming` (`references/skills/blender-brainstorming.md`)
-- **[progression]** Consuming skills (acceptance-criteria-builder) → `acceptance-criteria-builder` (`references/skills/acceptance-criteria-builder.md`)
-- **[progression]** Consuming skills (blender-composition-camera-planner) → `blender-composition-camera-planner` (`references/skills/blender-composition-camera-planner.md`)
-- **[progression]** Consuming skills (blender-lighting-material-planner) → `blender-lighting-material-planner` (`references/skills/blender-lighting-material-planner.md`)
-- **[alternative]** Consuming skills (product-hero-scene-planner) → `product-hero-scene-planner` (`references/skills/product-hero-scene-planner.md`)
-- **[conditional]** If execution is requested → `official-runtime-readiness-checker` (`references/skills/official-runtime-readiness-checker.md`)
-- **[fallback]** If mid-execution re-briefing occurs → `blender-troubleshooting` (`references/skills/blender-troubleshooting.md`)
+- **[upstream_reference]** Preceding step → `blender-brainstorming` (`references/skills/blender-brainstorming.md`) — `when.all: [goal.clarity equals "ambiguous_or_mixed"]`
+- **[progression]** Consuming skills (acceptance-criteria-builder) → `acceptance-criteria-builder` (`references/skills/acceptance-criteria-builder.md`) — `when.all: [brief.locked equals true; stage.current equals "acceptance_criteria"]`
+- **[progression]** Consuming skills (blender-composition-camera-planner) → `blender-composition-camera-planner` (`references/skills/blender-composition-camera-planner.md`) — `when.all: [brief.locked equals true; stage.current equals "camera_planning"]`
+- **[progression]** Consuming skills (blender-lighting-material-planner) → `blender-lighting-material-planner` (`references/skills/blender-lighting-material-planner.md`) — `when.all: [brief.locked equals true; stage.current equals "lookdev_planning"]`
+- **[alternative]** Consuming skills (product-hero-scene-planner) → `product-hero-scene-planner` (`references/skills/product-hero-scene-planner.md`) — `when.all: [brief.locked equals true; recipe.domain equals "product_hero"]`
+- **[conditional]** If execution is requested → `official-runtime-readiness-checker` (`references/skills/official-runtime-readiness-checker.md`) — `when.all: [runtime.path not_equals "unselected"; runtime.verifiedReady equals false]`
+- **[fallback]** If mid-execution re-briefing occurs → `blender-troubleshooting` (`references/skills/blender-troubleshooting.md`) — `when.all: [runtime.errorDetected equals true]`
 
 ## Safety boundaries & non-goals
 - **Runtime boundary:** This skill does not install Blender, run Blender, configure MCP, or claim artifacts. Output is a structured text brief.

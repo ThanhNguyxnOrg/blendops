@@ -56,10 +56,10 @@ Resolve the single-bridge constraint when more than one MCP runtime path is conf
 5. hand off to `official-runtime-readiness-checker` to re-verify
 
 ## Handoff notes
-- **[upstream_reference]** When official-runtime-readiness-checker reports inconsistent signals → `official-runtime-readiness-checker` (`references/skills/official-runtime-readiness-checker.md`)
-- **[fallback]** If the bridge matrix is clean but failures persist → `blender-troubleshooting` (`references/skills/blender-troubleshooting.md`)
-- **[upstream_reference]** If the user wants to change paths or set up a path → `official-runtime-setup-guide` (`references/skills/official-runtime-setup-guide.md`)
-- **[upstream_reference]** If the intended runtime path has not been chosen yet → `runtime-path-picker` (`references/skills/runtime-path-picker.md`)
+- **[upstream_reference]** When official-runtime-readiness-checker reports inconsistent signals → `official-runtime-readiness-checker` (`references/skills/official-runtime-readiness-checker.md`) — `when.all: [runtime.path not_equals "unselected"; runtime.verifiedReady equals false]`
+- **[fallback]** If the bridge matrix is clean but failures persist → `blender-troubleshooting` (`references/skills/blender-troubleshooting.md`) — `when.all: [runtime.errorDetected equals true]`
+- **[upstream_reference]** If the user wants to change paths or set up a path → `official-runtime-setup-guide` (`references/skills/official-runtime-setup-guide.md`) — `when.all: [runtime.path not_equals "unselected"; stage.current equals "runtime_setup"]`
+- **[upstream_reference]** If the intended runtime path has not been chosen yet → `runtime-path-picker` (`references/skills/runtime-path-picker.md`) — `when.all: [runtime.path equals "unselected"]`
 
 ## Safety boundaries & non-goals
 - **Runtime boundary:** This skill never disables add-ons, edits MCP client configs, changes ports, kills processes, or runs Blender. It only diagnoses the conflict, proposes the cheapest resolution for the operator to perform, and hands off to `official-runtime-readiness-checker`.

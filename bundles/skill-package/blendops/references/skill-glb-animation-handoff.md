@@ -5,7 +5,7 @@ Purpose: Document GLB animation contract (skeletal vs morph, FPS, looping, root 
 
 When a GLB ships with animation, capture the exact playback contract the consumer needs (which clips exist, how to start them, what loops, what does not) so the web side does not guess.
 
-Metadata: Category `evidence-and-handoff` | Role `rig-and-animation-clip-handoff-planner` | Tier `L0` | Runtime default `Not Run` | Artifact default `Not Produced` | Mutation `downgrade_only`
+Metadata: Contract `v1.0.0` | Category `evidence-and-handoff` | Role `rig-and-animation-clip-handoff-planner` | Tier `L0` | Runtime default `Not Run` | Artifact default `Not Produced` | Mutation `downgrade_only`
 
 ## When to use & trigger cues
 - the GLB has at least one animation clip
@@ -32,16 +32,16 @@ Metadata: Category `evidence-and-handoff` | Role `rig-and-animation-clip-handoff
 4. flag web-playback caveats per clip (Three.js animationMixer, glTF spec quirks)
 
 ## Cross-skill handoffs
-- [upstream_reference] Missing clip list / scene plan (character-portrait-scene-planner) → `character-portrait-scene-planner` (`references/skill-character-portrait-scene-planner.md`)
-- [upstream_reference] Missing clip list / scene plan (environment-establishing-shot-planner) → `environment-establishing-shot-planner` (`references/skill-environment-establishing-shot-planner.md`)
-- [upstream_reference] Missing clip list / scene plan (interior-architectural-scene-planner) → `interior-architectural-scene-planner` (`references/skill-interior-architectural-scene-planner.md`)
-- [upstream_reference] Missing clip list / scene plan (product-grid-scene-planner) → `product-grid-scene-planner` (`references/skill-product-grid-scene-planner.md`)
-- [upstream_reference] Missing clip list / scene plan (product-hero-scene-planner) → `product-hero-scene-planner` (`references/skill-product-hero-scene-planner.md`)
-- [upstream_reference] Channel, bone, and morph ceilings → `glb-mobile-performance-budget` (`references/skill-glb-mobile-performance-budget.md`)
-- [upstream_reference] Export verification → `render-export-evidence` (`references/skill-render-export-evidence.md`)
-- [progression] Web delivery handoff → `glb-web-handoff` (`references/skill-glb-web-handoff.md`)
-- [progression] React Three Fiber component shape → `three-fiber-component-shape-planner` (`references/skill-three-fiber-component-shape-planner.md`)
-- [progression] Final user-facing wording → `non-blender-user-response-writer` (`references/skill-non-blender-user-response-writer.md`)
+- [upstream_reference] Missing clip list / scene plan (character-portrait-scene-planner) → `character-portrait-scene-planner` (`references/skill-character-portrait-scene-planner.md`) — `when.all: [brief.locked equals true; recipe.domain equals "character_portrait"]`
+- [upstream_reference] Missing clip list / scene plan (environment-establishing-shot-planner) → `environment-establishing-shot-planner` (`references/skill-environment-establishing-shot-planner.md`) — `when.all: [brief.locked equals true; recipe.domain equals "environment_shot"]`
+- [upstream_reference] Missing clip list / scene plan (interior-architectural-scene-planner) → `interior-architectural-scene-planner` (`references/skill-interior-architectural-scene-planner.md`) — `when.all: [brief.locked equals true; recipe.domain equals "interior_archviz"]`
+- [upstream_reference] Missing clip list / scene plan (product-grid-scene-planner) → `product-grid-scene-planner` (`references/skill-product-grid-scene-planner.md`) — `when.all: [brief.locked equals true; recipe.domain equals "product_grid"]`
+- [upstream_reference] Missing clip list / scene plan (product-hero-scene-planner) → `product-hero-scene-planner` (`references/skill-product-hero-scene-planner.md`) — `when.all: [brief.locked equals true; recipe.domain equals "product_hero"]`
+- [upstream_reference] Channel, bone, and morph ceilings → `glb-mobile-performance-budget` (`references/skill-glb-mobile-performance-budget.md`) — `when.all: [artifact.type equals "glb"; budget.pinned equals false]`
+- [upstream_reference] Export verification → `render-export-evidence` (`references/skill-render-export-evidence.md`) — `when.all: [stage.current equals "post_execution_audit"]`
+- [progression] Web delivery handoff → `glb-web-handoff` (`references/skill-glb-web-handoff.md`) — `when.all: [artifact.type equals "glb"; handoff.consumerStack equals "web_glb"]`
+- [progression] React Three Fiber component shape → `three-fiber-component-shape-planner` (`references/skill-three-fiber-component-shape-planner.md`) — `when.all: [artifact.type equals "glb"; handoff.consumerStack equals "react_three_fiber"]`
+- [progression] Final user-facing wording → `non-blender-user-response-writer` (`references/skill-non-blender-user-response-writer.md`) — `when.all: [stage.current equals "final_communication"]`
 
 ## Safety boundaries & non-goals
 - Runtime boundary: This skill is documentation-only. It never exports GLB, runs Blender, writes Python, or claims that a clip plays correctly without measured evidence (`render-export-evidence` for export proof plus manual viewer test for playback).

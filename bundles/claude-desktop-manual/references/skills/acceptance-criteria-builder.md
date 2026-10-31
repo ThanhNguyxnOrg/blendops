@@ -53,13 +53,13 @@ Turn a locked 3D brief plus chosen recipe into a measurable acceptance checklist
 4. format via `skills/acceptance-criteria-builder/references/brief-to-criteria-mapper.md`
 
 ## Handoff notes
-- **[upstream_reference]** Brief source → `intent-to-3d-brief-writer` (`references/skills/intent-to-3d-brief-writer.md`)
-- **[progression]** Done / stop condition → `blender-stop-condition-decider` (`references/skills/blender-stop-condition-decider.md`)
-- **[progression]** Per-stage gate enforcement → `blender-checklist-driven-workflow` (`references/skills/blender-checklist-driven-workflow.md`)
-- **[progression]** Scope boundary enforcement → `blender-scope-boundary-enforcer` (`references/skills/blender-scope-boundary-enforcer.md`)
-- **[progression]** License permissions → `asset-license-checker` (`references/skills/asset-license-checker.md`)
-- **[progression]** Artifact evidence classification → `render-export-evidence` (`references/skills/render-export-evidence.md`)
-- **[progression]** Handoff gate verification → `pre-handoff-verification` (`references/skills/pre-handoff-verification.md`)
+- **[upstream_reference]** Brief source → `intent-to-3d-brief-writer` (`references/skills/intent-to-3d-brief-writer.md`) — `when.all: [goal.clarity equals "clear"; brief.locked equals false]`
+- **[progression]** Done / stop condition → `blender-stop-condition-decider` (`references/skills/blender-stop-condition-decider.md`) — `when.all: [brief.locked equals true; stage.current equals "stop_condition"]`
+- **[progression]** Per-stage gate enforcement → `blender-checklist-driven-workflow` (`references/skills/blender-checklist-driven-workflow.md`) — `when.all: [brief.locked equals true; stage.current equals "stage_gates"]`
+- **[progression]** Scope boundary enforcement → `blender-scope-boundary-enforcer` (`references/skills/blender-scope-boundary-enforcer.md`) — `when.all: [scope.driftDetected equals true]`
+- **[progression]** License permissions → `asset-license-checker` (`references/skills/asset-license-checker.md`) — `when.all: [assets.externalUsed equals true; assets.licenseCleared equals false]`
+- **[progression]** Artifact evidence classification → `render-export-evidence` (`references/skills/render-export-evidence.md`) — `when.all: [stage.current equals "post_execution_audit"]`
+- **[progression]** Handoff gate verification → `pre-handoff-verification` (`references/skills/pre-handoff-verification.md`) — `when.all: [stage.current equals "final_verification"]`
 
 ## Safety boundaries & non-goals
 - **Runtime boundary:** This skill is strictly planning-only (no Python, no Blender execution). Checklists may define expected runtime evidence hooks, but must never execute tasks, verify files, or upgrade truth states beyond what upstream evidence skills report.

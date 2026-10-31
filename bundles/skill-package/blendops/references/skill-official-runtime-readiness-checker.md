@@ -5,7 +5,7 @@ Purpose: Evaluate whether official runtime appears ready using evidence-bound ch
 
 Run the evidence-bound readiness matrix to evaluate check completeness (`Ready | Partially Ready | Blocked | Unknown`) before any runtime attempt.
 
-Metadata: Category `runtime-and-execution` | Role `runtime-connection-and-version-preflight` | Tier `L0` | Runtime default `Not Run` | Artifact default `Not Produced` | Mutation `downgrade_only`
+Metadata: Contract `v1.0.0` | Category `runtime-and-execution` | Role `runtime-connection-and-version-preflight` | Tier `L0` | Runtime default `Not Run` | Artifact default `Not Produced` | Mutation `downgrade_only`
 
 ## When to use & trigger cues
 - to run the readiness matrix after prerequisites are framed (`official-runtime-setup-guide`) and a target path is selected (`runtime-path-picker`)
@@ -30,13 +30,13 @@ Metadata: Category `runtime-and-execution` | Role `runtime-connection-and-versio
 4. follow suggested next-skill handoff
 
 ## Cross-skill handoffs
-- [upstream_reference] If runtime path is not yet chosen → `runtime-path-picker` (`references/skill-runtime-path-picker.md`)
-- [upstream_reference] If Path 1 host (a) or (b) outline is needed → `path-one-host-outline` (`references/skill-path-one-host-outline.md`)
-- [fallback] If prerequisites/boundaries are missing (Blocked / Unknown) → `official-runtime-setup-guide` (`references/skill-official-runtime-setup-guide.md`)
-- [fallback] If bridge contention is detected → `runtime-bridge-conflict-resolver` (`references/skill-runtime-bridge-conflict-resolver.md`)
-- [upstream_reference] If CLI appendix job structure is needed → `cli-appendix-job-outline` (`references/skill-cli-appendix-job-outline.md`)
-- [alternative] If Ready / Partially Ready and moving to scene planning (product-hero-scene-planner) → `product-hero-scene-planner` (`references/skill-product-hero-scene-planner.md`)
-- [conditional] If Ready / Partially Ready and moving to scene planning (workflow-stage-router) → `workflow-stage-router` (`references/skill-workflow-stage-router.md`)
+- [upstream_reference] If runtime path is not yet chosen → `runtime-path-picker` (`references/skill-runtime-path-picker.md`) — `when.all: [runtime.path equals "unselected"]`
+- [upstream_reference] If Path 1 host (a) or (b) outline is needed → `path-one-host-outline` (`references/skill-path-one-host-outline.md`) — `when.all: [runtime.path equals "path_1"; stage.current equals "runtime_setup"]`
+- [fallback] If prerequisites/boundaries are missing (Blocked / Unknown) → `official-runtime-setup-guide` (`references/skill-official-runtime-setup-guide.md`) — `when.all: [runtime.path not_equals "unselected"; stage.current equals "runtime_setup"]`
+- [fallback] If bridge contention is detected → `runtime-bridge-conflict-resolver` (`references/skill-runtime-bridge-conflict-resolver.md`) — `when.all: [runtime.conflictDetected equals true]`
+- [upstream_reference] If CLI appendix job structure is needed → `cli-appendix-job-outline` (`references/skill-cli-appendix-job-outline.md`) — `when.all: [runtime.path equals "cli_appendix"; request.topic equals "cli_batch"]`
+- [alternative] If Ready / Partially Ready and moving to scene planning (product-hero-scene-planner) → `product-hero-scene-planner` (`references/skill-product-hero-scene-planner.md`) — `when.all: [brief.locked equals true; recipe.domain equals "product_hero"]`
+- [conditional] If Ready / Partially Ready and moving to scene planning (workflow-stage-router) → `workflow-stage-router` (`references/skill-workflow-stage-router.md`) — `when.all: [preflight.passed equals true; inventory.exists equals true]`
 
 ## Safety boundaries & non-goals
 - Runtime boundary: - Readiness ≠ execution: `Ready` means readiness checks passed, never that Blender executed or artifacts exist. - Readiness statuses (`Ready | Partially Ready | Blocked | Unknown`) describe check completeness only; never conflate them with runtime truth states (`Not Run | Attempted | Produced | Verified | Failed`, downgrade-only) or artifact state (default `Not Produced`). - This skill can check local readiness signals. - This skill must not claim runtime artifact production. - This skill must not claim execution success without execution evidence. - Path 1 Anthropic Connector is never standalone: it always requires the Official Blender Lab MCP add-on installed inside Blender 5.1+. - Path 2 (`mcp-for-blender`) is third-party only, carries mandatory caveats, and is never release evidence. - CLI fallback (`blender --background --python`) is appendix-only and never a peer path without an evaluation record.

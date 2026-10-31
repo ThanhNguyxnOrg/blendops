@@ -48,11 +48,11 @@ Structure **CLI fallback appendix** jobs (batch render, batch export, scripted s
 4. point user to upstream CLI manual for exact flags
 
 ## Handoff notes
-- **[upstream_reference]** Pick MCP vs CLI → `runtime-path-picker` (`references/skills/runtime-path-picker.md`)
-- **[upstream_reference]** Interactive MCP host outline → `path-one-host-outline` (`references/skills/path-one-host-outline.md`)
-- **[progression]** Export format choices → `output-format-decision` (`references/skills/output-format-decision.md`)
-- **[progression]** Actual CLI output evidence recording → `render-export-evidence` (`references/skills/render-export-evidence.md`)
-- **[progression]** Runtime attempt reporting → `runtime-attempt-report-writer` (`references/skills/runtime-attempt-report-writer.md`)
+- **[upstream_reference]** Pick MCP vs CLI → `runtime-path-picker` (`references/skills/runtime-path-picker.md`) — `when.all: [runtime.path equals "unselected"]`
+- **[upstream_reference]** Interactive MCP host outline → `path-one-host-outline` (`references/skills/path-one-host-outline.md`) — `when.all: [runtime.path equals "path_1"; stage.current equals "runtime_setup"]`
+- **[progression]** Export format choices → `output-format-decision` (`references/skills/output-format-decision.md`) — `when.all: [decision.formatLocked equals false]`
+- **[progression]** Actual CLI output evidence recording → `render-export-evidence` (`references/skills/render-export-evidence.md`) — `when.all: [stage.current equals "post_execution_audit"]`
+- **[progression]** Runtime attempt reporting → `runtime-attempt-report-writer` (`references/skills/runtime-attempt-report-writer.md`) — `when.all: [runtime.status in ["Attempted","Produced","Verified","Failed"]; request.topic equals "attempt_report"]`
 
 ## Safety boundaries & non-goals
 - **Runtime boundary:** Planning outline only — BlendOps never executes Blender and never presents arbitrary Python as the product surface. This CLI workflow is an **appendix only**, never a peer path without an eval record, and BlendOps has **no in-repo CLI evidence file yet**. Point users to the upstream Blender manual for exact CLI flags.

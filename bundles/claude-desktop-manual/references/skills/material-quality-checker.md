@@ -54,14 +54,14 @@ Run a focused pass/warn/fail check on each material in the scene against PBR san
 5. emit per-material verdicts + a top-line status
 
 ## Handoff notes
-- **[retry]** Upstream lookdev & material planning → `blender-lighting-material-planner` (`references/skills/blender-lighting-material-planner.md`) (max retry attempts: 2)
-- **[upstream_reference]** Mobile/web texture budget definition → `glb-mobile-performance-budget` (`references/skills/glb-mobile-performance-budget.md`)
-- **[progression]** Broad readiness review → `blender-scene-quality-checker` (`references/skills/blender-scene-quality-checker.md`)
-- **[progression]** Lighting validation → `lighting-quality-checker` (`references/skills/lighting-quality-checker.md`)
-- **[progression]** Composition validation → `composition-quality-checker` (`references/skills/composition-quality-checker.md`)
-- **[progression]** Polycount budget → `polycount-budget-checker` (`references/skills/polycount-budget-checker.md`)
-- **[progression]** Render / GLB export evidence → `render-export-evidence` (`references/skills/render-export-evidence.md`)
-- **[progression]** Web handoff → `glb-web-handoff` (`references/skills/glb-web-handoff.md`)
+- **[retry]** Upstream lookdev & material planning → `blender-lighting-material-planner` (`references/skills/blender-lighting-material-planner.md`) — `when.all: [quality.domain equals "material"; quality.verdict equals "Fail"]`; retryPolicy: `maxAttempts=2`, `exitCondition.all: [quality.verdict in ["Pass","Warn"]]`
+- **[upstream_reference]** Mobile/web texture budget definition → `glb-mobile-performance-budget` (`references/skills/glb-mobile-performance-budget.md`) — `when.all: [artifact.type equals "glb"; budget.pinned equals false]`
+- **[progression]** Broad readiness review → `blender-scene-quality-checker` (`references/skills/blender-scene-quality-checker.md`) — `when.all: [quality.domain equals "holistic"; stage.current equals "quality_validation"]`
+- **[progression]** Lighting validation → `lighting-quality-checker` (`references/skills/lighting-quality-checker.md`) — `when.all: [quality.domain equals "lighting"; quality.verdict equals "not_run"]`
+- **[progression]** Composition validation → `composition-quality-checker` (`references/skills/composition-quality-checker.md`) — `when.all: [quality.domain equals "composition"; quality.verdict equals "not_run"]`
+- **[progression]** Polycount budget → `polycount-budget-checker` (`references/skills/polycount-budget-checker.md`) — `when.all: [quality.domain equals "polycount"; budget.verdict equals "Not Run"]`
+- **[progression]** Render / GLB export evidence → `render-export-evidence` (`references/skills/render-export-evidence.md`) — `when.all: [stage.current equals "post_execution_audit"]`
+- **[progression]** Web handoff → `glb-web-handoff` (`references/skills/glb-web-handoff.md`) — `when.all: [artifact.type equals "glb"; handoff.consumerStack equals "web_glb"]`
 
 ## Safety boundaries & non-goals
 - **Runtime boundary:** This skill validates plans or measured scene snapshots. It never modifies materials, runs Blender, or exports a GLB. If actual material values are needed, rely on a measured scene description (plan output, runtime tool snapshot) — never invent values.

@@ -47,14 +47,14 @@ Evaluate scene/workflow readiness honestly and consistently before any success c
 4. follow suggested next-skill handoff
 
 ## Handoff notes
-- **[upstream_reference]** Focused domain validation (if gaps found) (composition-quality-checker) → `composition-quality-checker` (`references/skills/composition-quality-checker.md`)
-- **[upstream_reference]** Focused domain validation (if gaps found) (lighting-quality-checker) → `lighting-quality-checker` (`references/skills/lighting-quality-checker.md`)
-- **[upstream_reference]** Focused domain validation (if gaps found) (material-quality-checker) → `material-quality-checker` (`references/skills/material-quality-checker.md`)
-- **[upstream_reference]** Focused domain validation (if gaps found) (polycount-budget-checker) → `polycount-budget-checker` (`references/skills/polycount-budget-checker.md`)
-- **[progression]** Evidence classification → `render-export-evidence` (`references/skills/render-export-evidence.md`)
-- **[progression]** Handoff gate → `pre-handoff-verification` (`references/skills/pre-handoff-verification.md`)
-- **[conditional]** Web delivery (when applicable) → `glb-web-handoff` (`references/skills/glb-web-handoff.md`)
-- **[progression]** Final communication → `non-blender-user-response-writer` (`references/skills/non-blender-user-response-writer.md`)
+- **[upstream_reference]** Focused domain validation (if gaps found) (composition-quality-checker) → `composition-quality-checker` (`references/skills/composition-quality-checker.md`) — `when.all: [quality.domain equals "composition"; quality.verdict equals "not_run"]`
+- **[upstream_reference]** Focused domain validation (if gaps found) (lighting-quality-checker) → `lighting-quality-checker` (`references/skills/lighting-quality-checker.md`) — `when.all: [quality.domain equals "lighting"; quality.verdict equals "not_run"]`
+- **[upstream_reference]** Focused domain validation (if gaps found) (material-quality-checker) → `material-quality-checker` (`references/skills/material-quality-checker.md`) — `when.all: [quality.domain equals "material"; quality.verdict equals "not_run"]`
+- **[upstream_reference]** Focused domain validation (if gaps found) (polycount-budget-checker) → `polycount-budget-checker` (`references/skills/polycount-budget-checker.md`) — `when.all: [quality.domain equals "polycount"; budget.verdict equals "Not Run"]`
+- **[progression]** Evidence classification → `render-export-evidence` (`references/skills/render-export-evidence.md`) — `when.all: [stage.current equals "post_execution_audit"]`
+- **[progression]** Handoff gate → `pre-handoff-verification` (`references/skills/pre-handoff-verification.md`) — `when.all: [stage.current equals "final_verification"]`
+- **[conditional]** Web delivery (when applicable) → `glb-web-handoff` (`references/skills/glb-web-handoff.md`) — `when.all: [artifact.type equals "glb"; handoff.consumerStack equals "web_glb"]`
+- **[progression]** Final communication → `non-blender-user-response-writer` (`references/skills/non-blender-user-response-writer.md`) — `when.all: [stage.current equals "final_communication"]`
 
 ## Safety boundaries & non-goals
 - **Runtime boundary:** Review-only skill: never executes Blender, never runs or emits Python, and never produces artifacts. Runtime truth state stays `Not Run` unless a real attempt was recorded; artifact truth state defaults to `Not Produced` unless concrete output evidence from the current run exists. Truth states are downgrade-only (never upgrade). Text-only and blocked modes must remain explicit.

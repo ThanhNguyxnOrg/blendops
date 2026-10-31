@@ -54,12 +54,12 @@ Run a focused per-row Pass/Warn/Fail check on the camera and framing setup again
 5. emit per-row Pass/Warn/Fail verdicts, top-line status, and remediation hints (keep truth states separate and downgrade-only)
 
 ## Handoff notes
-- **[progression]** Broad scene readiness review (consumes these rows) → `blender-scene-quality-checker` (`references/skills/blender-scene-quality-checker.md`)
-- **[retry]** Camera & framing re-plan → `blender-composition-camera-planner` (`references/skills/blender-composition-camera-planner.md`) (max retry attempts: 2)
-- **[retry]** Aspect ratio & resolution locks → `resolution-aspect-decision` (`references/skills/resolution-aspect-decision.md`) (max retry attempts: 2)
-- **[progression]** Artifact evidence classification → `render-export-evidence` (`references/skills/render-export-evidence.md`)
-- **[upstream_reference]** Material validation → `material-quality-checker` (`references/skills/material-quality-checker.md`)
-- **[upstream_reference]** Lighting validation → `lighting-quality-checker` (`references/skills/lighting-quality-checker.md`)
+- **[progression]** Broad scene readiness review (consumes these rows) → `blender-scene-quality-checker` (`references/skills/blender-scene-quality-checker.md`) — `when.all: [quality.domain equals "holistic"; stage.current equals "quality_validation"]`
+- **[retry]** Camera & framing re-plan → `blender-composition-camera-planner` (`references/skills/blender-composition-camera-planner.md`) — `when.all: [quality.domain equals "composition"; quality.verdict equals "Fail"]`; retryPolicy: `maxAttempts=2`, `exitCondition.all: [quality.verdict in ["Pass","Warn"]]`
+- **[retry]** Aspect ratio & resolution locks → `resolution-aspect-decision` (`references/skills/resolution-aspect-decision.md`) — `when.all: [quality.domain equals "composition"; quality.verdict equals "Fail"]`; retryPolicy: `maxAttempts=2`, `exitCondition.all: [quality.verdict in ["Pass","Warn"]]`
+- **[progression]** Artifact evidence classification → `render-export-evidence` (`references/skills/render-export-evidence.md`) — `when.all: [stage.current equals "post_execution_audit"]`
+- **[upstream_reference]** Material validation → `material-quality-checker` (`references/skills/material-quality-checker.md`) — `when.all: [quality.domain equals "material"; quality.verdict equals "not_run"]`
+- **[upstream_reference]** Lighting validation → `lighting-quality-checker` (`references/skills/lighting-quality-checker.md`) — `when.all: [quality.domain equals "lighting"; quality.verdict equals "not_run"]`
 
 ## Safety boundaries & non-goals
 - **Runtime boundary:** This skill validates camera plans or measured scene snapshots only. It never moves the camera, never runs Blender, and never executes Python. Artifacts stay `Not Produced` unless concrete output evidence exists (classified by `render-export-evidence`), and truth states are strictly downgrade-only.

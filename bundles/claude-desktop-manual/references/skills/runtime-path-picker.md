@@ -52,12 +52,12 @@ Produce a **single primary** runtime execution choice among Path 1 (Blender Lab 
 4. document choice using `skills/runtime-path-picker/references/anti-patterns.md` guardrails
 
 ## Handoff notes
-- **[progression]** Prerequisite framing → `official-runtime-setup-guide` (`references/skills/official-runtime-setup-guide.md`)
-- **[progression]** Readiness matrix check → `official-runtime-readiness-checker` (`references/skills/official-runtime-readiness-checker.md`)
-- **[progression]** Host (a)/(b) specifics for Path 1 → `path-one-host-outline` (`references/skills/path-one-host-outline.md`)
-- **[progression]** Headless CLI appendix job outline → `cli-appendix-job-outline` (`references/skills/cli-appendix-job-outline.md`)
-- **[fallback]** Bridge or port 9876 conflicts → `runtime-bridge-conflict-resolver` (`references/skills/runtime-bridge-conflict-resolver.md`)
-- **[fallback]** Contradictory constraints failure exit → `pre-handoff-verification` (`references/skills/pre-handoff-verification.md`)
+- **[progression]** Prerequisite framing → `official-runtime-setup-guide` (`references/skills/official-runtime-setup-guide.md`) — `when.all: [runtime.path not_equals "unselected"; stage.current equals "runtime_setup"]`
+- **[progression]** Readiness matrix check → `official-runtime-readiness-checker` (`references/skills/official-runtime-readiness-checker.md`) — `when.all: [runtime.path not_equals "unselected"; runtime.verifiedReady equals false]`
+- **[progression]** Host (a)/(b) specifics for Path 1 → `path-one-host-outline` (`references/skills/path-one-host-outline.md`) — `when.all: [runtime.path equals "path_1"; stage.current equals "runtime_setup"]`
+- **[progression]** Headless CLI appendix job outline → `cli-appendix-job-outline` (`references/skills/cli-appendix-job-outline.md`) — `when.all: [runtime.path equals "cli_appendix"; request.topic equals "cli_batch"]`
+- **[fallback]** Bridge or port 9876 conflicts → `runtime-bridge-conflict-resolver` (`references/skills/runtime-bridge-conflict-resolver.md`) — `when.all: [runtime.conflictDetected equals true]`
+- **[fallback]** Contradictory constraints failure exit → `pre-handoff-verification` (`references/skills/pre-handoff-verification.md`) — `when.any: [gate.status equals "failed"; runtime.mode equals "blocked"]`
 
 ## Safety boundaries & non-goals
 - **Runtime boundary:** Decision skill only — chooses a single primary path from constraints and configures nothing (see `docs/runtime-stack-strategy.md` for the canonical model). - **Path 1**: Official Blender Lab MCP in Blender 5.1+ (add-on manifest literal `blender_version_min = "5.1.0"`), hosted from (a) Anthropic Connector in Claude Desktop or (b) any manually configured MCP client. Connector is NOT standalone. - **Path 2**: Community `mcp-for-blender` (renamed from `ahujasid/blender-mcp`), third-party, Blender 3.0+, recommended only with explicit caveats and **never as release evidence**. Manual configuration responsibility; see `docs/unofficial-runtime-bridges.md`. - **CLI fallback**: Appendix only (`blender --background --python`), never a peer path without an eval record. Documented upstream as a first-class Blender CLI surface (render/Cycles/format/Python sections read in the current Blender 5.2 LTS Manual); **no in-repo evidence file yet** for BlendOps-run CLI examples. - **Bridge limit**: One MCP bridge per Blender instance (default port 9876). - **Role boundary**: Prerequisite framing belongs to `official-runtime-setup-guide`; readiness matrix checks belong to `official-runtime-readiness-checker`; Path 1 host a/b details belong to `path-one-host-outline`; headless job outlines belong to `cli-appendix-job-outline`; bridge conflicts belong to `runtime-bridge-conflict-resolver`.

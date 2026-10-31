@@ -5,7 +5,7 @@ Purpose: Plan headless blender --background export or render jobs when MCP chat 
 
 Structure **CLI fallback appendix** jobs (batch render, batch export, scripted scene setup) using Blender's documented command-line interface — without presenting arbitrary Python as the user-facing product surface.
 
-Metadata: Category `runtime-and-execution` | Role `headless-cli-batch-job-planner` | Tier `L0` | Runtime default `Not Run` | Artifact default `Not Produced` | Mutation `downgrade_only`
+Metadata: Contract `v1.0.0` | Category `runtime-and-execution` | Role `headless-cli-batch-job-planner` | Tier `L0` | Runtime default `Not Run` | Artifact default `Not Produced` | Mutation `downgrade_only`
 
 ## When to use & trigger cues
 - CI / render farm / repeatable exports
@@ -30,11 +30,11 @@ Metadata: Category `runtime-and-execution` | Role `headless-cli-batch-job-planne
 4. point user to upstream CLI manual for exact flags
 
 ## Cross-skill handoffs
-- [upstream_reference] Pick MCP vs CLI → `runtime-path-picker` (`references/skill-runtime-path-picker.md`)
-- [upstream_reference] Interactive MCP host outline → `path-one-host-outline` (`references/skill-path-one-host-outline.md`)
-- [progression] Export format choices → `output-format-decision` (`references/skill-output-format-decision.md`)
-- [progression] Actual CLI output evidence recording → `render-export-evidence` (`references/skill-render-export-evidence.md`)
-- [progression] Runtime attempt reporting → `runtime-attempt-report-writer` (`references/skill-runtime-attempt-report-writer.md`)
+- [upstream_reference] Pick MCP vs CLI → `runtime-path-picker` (`references/skill-runtime-path-picker.md`) — `when.all: [runtime.path equals "unselected"]`
+- [upstream_reference] Interactive MCP host outline → `path-one-host-outline` (`references/skill-path-one-host-outline.md`) — `when.all: [runtime.path equals "path_1"; stage.current equals "runtime_setup"]`
+- [progression] Export format choices → `output-format-decision` (`references/skill-output-format-decision.md`) — `when.all: [decision.formatLocked equals false]`
+- [progression] Actual CLI output evidence recording → `render-export-evidence` (`references/skill-render-export-evidence.md`) — `when.all: [stage.current equals "post_execution_audit"]`
+- [progression] Runtime attempt reporting → `runtime-attempt-report-writer` (`references/skill-runtime-attempt-report-writer.md`) — `when.all: [runtime.status in ["Attempted","Produced","Verified","Failed"]; request.topic equals "attempt_report"]`
 
 ## Safety boundaries & non-goals
 - Runtime boundary: Planning outline only — BlendOps never executes Blender and never presents arbitrary Python as the product surface. This CLI workflow is an **appendix only**, never a peer path without an eval record, and BlendOps has **no in-repo CLI evidence file yet**. Point users to the upstream Blender manual for exact CLI flags.

@@ -5,7 +5,7 @@ Purpose: Detect mid-recipe scope creep and push back constructively before the r
 
 Catch mid-flight scope creep ("can you also do X?") and force an explicit recorded decision: (a) decline the expansion, (b) add now with explicit user agreement (updating the stop condition and stage gates), or (c) defer to a follow-up recipe. Prevents silent absorption that breaks gates and stop conditions. Trivial in-gate items may be absorbed only when existing gate criteria explicitly cover them — never by feel.
 
-Metadata: Category `process-discipline` | Role `scope-creep-and-change-request-guard` | Tier `L0` | Runtime default `Not Run` | Artifact default `Not Produced` | Mutation `downgrade_only`
+Metadata: Contract `v1.0.0` | Category `process-discipline` | Role `scope-creep-and-change-request-guard` | Tier `L0` | Runtime default `Not Run` | Artifact default `Not Produced` | Mutation `downgrade_only`
 
 ## When to use & trigger cues
 - mid-recipe, when user adds new requests beyond the brief
@@ -30,12 +30,12 @@ Metadata: Category `process-discipline` | Role `scope-creep-and-change-request-g
 3. record the decision before proceeding
 
 ## Cross-skill handoffs
-- [upstream_reference] Original brief → `intent-to-3d-brief-writer` (`references/skill-intent-to-3d-brief-writer.md`)
-- [upstream_reference] Stop condition pinned beforehand / updated on expansion → `blender-stop-condition-decider` (`references/skill-blender-stop-condition-decider.md`)
-- [upstream_reference] Per-stage gates enforced / updated on expansion → `blender-checklist-driven-workflow` (`references/skill-blender-checklist-driven-workflow.md`)
-- [boundary_delegation] Measurable acceptance rows for added scope → `acceptance-criteria-builder` (`references/skill-acceptance-criteria-builder.md`)
-- [boundary_delegation] Deferred scope split into follow-up recipes → `blender-recipe-decomposer` (`references/skill-blender-recipe-decomposer.md`)
-- [progression] Delivery gate after scope and gates settle → `pre-handoff-verification` (`references/skill-pre-handoff-verification.md`)
+- [upstream_reference] Original brief → `intent-to-3d-brief-writer` (`references/skill-intent-to-3d-brief-writer.md`) — `when.all: [goal.clarity equals "clear"; brief.locked equals false]`
+- [upstream_reference] Stop condition pinned beforehand / updated on expansion → `blender-stop-condition-decider` (`references/skill-blender-stop-condition-decider.md`) — `when.all: [brief.locked equals true; stage.current equals "stop_condition"]`
+- [upstream_reference] Per-stage gates enforced / updated on expansion → `blender-checklist-driven-workflow` (`references/skill-blender-checklist-driven-workflow.md`) — `when.all: [brief.locked equals true; stage.current equals "stage_gates"]`
+- [boundary_delegation] Measurable acceptance rows for added scope → `acceptance-criteria-builder` (`references/skill-acceptance-criteria-builder.md`) — `when.all: [brief.locked equals true; stage.current equals "acceptance_criteria"]`
+- [boundary_delegation] Deferred scope split into follow-up recipes → `blender-recipe-decomposer` (`references/skill-blender-recipe-decomposer.md`) — `when.all: [fit.multiDeliverableDetected equals true]`
+- [progression] Delivery gate after scope and gates settle → `pre-handoff-verification` (`references/skill-pre-handoff-verification.md`) — `when.all: [stage.current equals "final_verification"]`
 
 ## Safety boundaries & non-goals
 - Runtime boundary: Process / discipline skill — does not run Blender or execute Python. Decisions govern scope boundaries, stop conditions, and stage gates. A scope decision never upgrades runtime (`Not Run | Attempted | Produced | Verified | Failed`) or artifact (`Not Run | Not Produced | Produced | Verified | Failed`, default `Not Produced`) truth states; truth-state changes are downgrade-only (for example, when added scope invalidates a previously satisfied gate).

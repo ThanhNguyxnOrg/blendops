@@ -5,7 +5,7 @@ Purpose: Outline Path 1 hosting options — Anthropic Blender Connector vs manua
 
 Outline **Path 1 host surfaces** — **(a)** Anthropic Connector in Claude Desktop vs **(b)** any manually configured MCP client — while making clear that both require the Lab MCP add-on inside **Blender 5.1+** and that the Connector is **never standalone**. This skill provides an outline only; it never configures hosts and never runs Blender.
 
-Metadata: Category `runtime-and-execution` | Role `lab-mcp-host-configuration-planner` | Tier `L0` | Runtime default `Not Run` | Artifact default `Not Produced` | Mutation `downgrade_only`
+Metadata: Contract `v1.0.0` | Category `runtime-and-execution` | Role `lab-mcp-host-configuration-planner` | Tier `L0` | Runtime default `Not Run` | Artifact default `Not Produced` | Mutation `downgrade_only`
 
 ## When to use & trigger cues
 - user on Claude Desktop asking what the Anthropic Connector does vs the Blender-side add-on
@@ -34,11 +34,11 @@ Metadata: Category `runtime-and-execution` | Role `lab-mcp-host-configuration-pl
 4. emit checklist `skills/path-one-host-outline/references/host-checklist-template.md`
 
 ## Cross-skill handoffs
-- [upstream_reference] Path selection → `runtime-path-picker` (`references/skill-runtime-path-picker.md`)
-- [upstream_reference] Detailed setup and configuration → `official-runtime-setup-guide` (`references/skill-official-runtime-setup-guide.md`)
-- [progression] Readiness probing → `official-runtime-readiness-checker` (`references/skill-official-runtime-readiness-checker.md`)
-- [fallback] Bridge conflicts → `runtime-bridge-conflict-resolver` (`references/skill-runtime-bridge-conflict-resolver.md`)
-- [progression] CLI appendix workflows → `cli-appendix-job-outline` (`references/skill-cli-appendix-job-outline.md`)
+- [upstream_reference] Path selection → `runtime-path-picker` (`references/skill-runtime-path-picker.md`) — `when.all: [runtime.path equals "unselected"]`
+- [upstream_reference] Detailed setup and configuration → `official-runtime-setup-guide` (`references/skill-official-runtime-setup-guide.md`) — `when.all: [runtime.path not_equals "unselected"; stage.current equals "runtime_setup"]`
+- [progression] Readiness probing → `official-runtime-readiness-checker` (`references/skill-official-runtime-readiness-checker.md`) — `when.all: [runtime.path not_equals "unselected"; runtime.verifiedReady equals false]`
+- [fallback] Bridge conflicts → `runtime-bridge-conflict-resolver` (`references/skill-runtime-bridge-conflict-resolver.md`) — `when.all: [runtime.conflictDetected equals true]`
+- [progression] CLI appendix workflows → `cli-appendix-job-outline` (`references/skill-cli-appendix-job-outline.md`) — `when.all: [runtime.path equals "cli_appendix"; request.topic equals "cli_batch"]`
 
 ## Safety boundaries & non-goals
 - Runtime boundary: Outline only; never configures hosts and never runs Blender. Path 1 requires the Lab MCP add-on inside **Blender 5.1+** plus a host surface: **(a)** Anthropic Connector in Claude Desktop or **(b)** any manually configured MCP client. The Connector is **never standalone**. Path 2 (`mcp-for-blender`, formerly `ahujasid/blender-mcp`; see `docs/unofficial-runtime-bridges.md`) and CLI workflows (`cli-appendix-job-outline`) are out of scope here.

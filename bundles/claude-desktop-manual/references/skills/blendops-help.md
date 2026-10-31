@@ -11,7 +11,7 @@ Help an agent or user decide the single safest next action in BlendOps when the 
 - **Contract:** `skills/blendops-help/contract.json` (`v1.0.0`)
 - **Category / role:** `routing-and-governance` / `ambiguous-intent-entry-router`
 - **Capability tier:** `L0`
-- **Routing precedence:** group `entry-and-stage-routing`, rank `1`
+- **Routing precedence:** group `entry-and-stage-routing`, rank `1` | activationGate: `goalClarity="ambiguous_or_mixed"`, `recipeSelected=false`, `preflightPassed=false`, `hasStageOrArtifactInventory=false`
 - **Truth-state policy:** Runtime status defaults to `Not Run`; Artifact status defaults to `Not Produced`; mutation rule is `downgrade_only` (never upgrade without verified evidence).
 
 ## When to use
@@ -58,19 +58,19 @@ Help an agent or user decide the single safest next action in BlendOps when the 
 5. Preserve Draft v0, runtime, and artifact truth (downgrade-only, never upgrade).
 
 ## Handoff notes
-- **[progression]** Recipe or pack selection when goal becomes clear → `recipe-fit-assessor` (`references/skills/recipe-fit-assessor.md`)
-- **[conditional]** Pack preflight readiness check when recipe is already chosen → `pack-prerequisite-checker` (`references/skills/pack-prerequisite-checker.md`)
-- **[conditional]** In-flight workflow routing (clear goal + existing artifacts) → `workflow-stage-router` (`references/skills/workflow-stage-router.md`)
-- **[progression]** Initial 3D brief creation → `intent-to-3d-brief-writer` (`references/skills/intent-to-3d-brief-writer.md`)
-- **[conditional]** Runtime path selection → `runtime-path-picker` (`references/skills/runtime-path-picker.md`)
-- **[conditional]** Official runtime setup → `official-runtime-setup-guide` (`references/skills/official-runtime-setup-guide.md`)
-- **[conditional]** Runtime readiness preflight → `official-runtime-readiness-checker` (`references/skills/official-runtime-readiness-checker.md`)
-- **[fallback]** MCP bridge port/session conflict → `runtime-bridge-conflict-resolver` (`references/skills/runtime-bridge-conflict-resolver.md`)
-- **[alternative]** Scene planning → `product-hero-scene-planner` (`references/skills/product-hero-scene-planner.md`)
-- **[conditional]** Render/export evidence → `render-export-evidence` (`references/skills/render-export-evidence.md`)
-- **[fallback]** Failed workflow gate / pre-handoff check → `pre-handoff-verification` (`references/skills/pre-handoff-verification.md`)
-- **[conditional]** GLB handoff → `glb-web-handoff` (`references/skills/glb-web-handoff.md`)
-- **[progression]** Final response → `non-blender-user-response-writer` (`references/skills/non-blender-user-response-writer.md`)
+- **[progression]** Recipe or pack selection when goal becomes clear → `recipe-fit-assessor` (`references/skills/recipe-fit-assessor.md`) — `when.all: [goal.clarity equals "clear"; recipe.selected equals false]`
+- **[conditional]** Pack preflight readiness check when recipe is already chosen → `pack-prerequisite-checker` (`references/skills/pack-prerequisite-checker.md`) — `when.all: [recipe.selected equals true; preflight.passed equals false]`
+- **[conditional]** In-flight workflow routing (clear goal + existing artifacts) → `workflow-stage-router` (`references/skills/workflow-stage-router.md`) — `when.all: [goal.clarity equals "clear"; preflight.passed equals true; inventory.exists equals true]`
+- **[progression]** Initial 3D brief creation → `intent-to-3d-brief-writer` (`references/skills/intent-to-3d-brief-writer.md`) — `when.all: [brief.locked equals false]`
+- **[conditional]** Runtime path selection → `runtime-path-picker` (`references/skills/runtime-path-picker.md`) — `when.all: [request.topic equals "runtime_selection"]`
+- **[conditional]** Official runtime setup → `official-runtime-setup-guide` (`references/skills/official-runtime-setup-guide.md`) — `when.all: [request.topic equals "runtime_setup"]`
+- **[conditional]** Runtime readiness preflight → `official-runtime-readiness-checker` (`references/skills/official-runtime-readiness-checker.md`) — `when.all: [request.topic equals "runtime_readiness"]`
+- **[fallback]** MCP bridge port/session conflict → `runtime-bridge-conflict-resolver` (`references/skills/runtime-bridge-conflict-resolver.md`) — `when.all: [runtime.conflictDetected equals true]`
+- **[alternative]** Scene planning → `product-hero-scene-planner` (`references/skills/product-hero-scene-planner.md`) — `when.all: [brief.locked equals true; recipe.id equals "product-hero-v0"]`
+- **[conditional]** Render/export evidence → `render-export-evidence` (`references/skills/render-export-evidence.md`) — `when.all: [request.topic equals "artifact_evidence"]`
+- **[fallback]** Failed workflow gate / pre-handoff check → `pre-handoff-verification` (`references/skills/pre-handoff-verification.md`) — `when.all: [gate.status equals "failed"]`
+- **[conditional]** GLB handoff → `glb-web-handoff` (`references/skills/glb-web-handoff.md`) — `when.all: [request.topic equals "glb_handoff"]`
+- **[progression]** Final response → `non-blender-user-response-writer` (`references/skills/non-blender-user-response-writer.md`) — `when.all: [stage.current equals "final_communication"]`
 
 ## Safety boundaries & non-goals
 - **Runtime boundary:** Before runtime work, point to `docs/runtime-stack-strategy.md`, `runtime-path-picker`, and `official-runtime-readiness-checker`.

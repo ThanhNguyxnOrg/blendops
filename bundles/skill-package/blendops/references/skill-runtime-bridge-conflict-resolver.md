@@ -5,7 +5,7 @@ Purpose: Diagnose MCP bridge conflicts (Path 1 Official Blender Lab MCP 5.1+ vs 
 
 Resolve the single-bridge constraint when more than one MCP runtime path is configured against the same Blender instance (or when ports collide). Blender accepts only one MCP bridge session per instance (default port 9876) — so running Path 1 (Official Blender Lab MCP 5.1+) and Path 2 (community `mcp-for-blender`, renamed from `ahujasid/blender-mcp`) concurrently, connecting two MCP clients to one Blender instance, colliding on port 9876, or enabling both Path 1 host (a) and host (b) on one session causes inconsistent signals.
 
-Metadata: Category `runtime-and-execution` | Role `port-and-addon-conflict-resolver` | Tier `L0` | Runtime default `Not Run` | Artifact default `Not Produced` | Mutation `downgrade_only`
+Metadata: Contract `v1.0.0` | Category `runtime-and-execution` | Role `port-and-addon-conflict-resolver` | Tier `L0` | Runtime default `Not Run` | Artifact default `Not Produced` | Mutation `downgrade_only`
 
 ## When to use & trigger cues
 - `official-runtime-readiness-checker` reports inconsistent signals (e.g. host reports connected but tool calls return the wrong tool surface)
@@ -36,10 +36,10 @@ Metadata: Category `runtime-and-execution` | Role `port-and-addon-conflict-resol
 5. hand off to `official-runtime-readiness-checker` to re-verify
 
 ## Cross-skill handoffs
-- [upstream_reference] When official-runtime-readiness-checker reports inconsistent signals → `official-runtime-readiness-checker` (`references/skill-official-runtime-readiness-checker.md`)
-- [fallback] If the bridge matrix is clean but failures persist → `blender-troubleshooting` (`references/skill-blender-troubleshooting.md`)
-- [upstream_reference] If the user wants to change paths or set up a path → `official-runtime-setup-guide` (`references/skill-official-runtime-setup-guide.md`)
-- [upstream_reference] If the intended runtime path has not been chosen yet → `runtime-path-picker` (`references/skill-runtime-path-picker.md`)
+- [upstream_reference] When official-runtime-readiness-checker reports inconsistent signals → `official-runtime-readiness-checker` (`references/skill-official-runtime-readiness-checker.md`) — `when.all: [runtime.path not_equals "unselected"; runtime.verifiedReady equals false]`
+- [fallback] If the bridge matrix is clean but failures persist → `blender-troubleshooting` (`references/skill-blender-troubleshooting.md`) — `when.all: [runtime.errorDetected equals true]`
+- [upstream_reference] If the user wants to change paths or set up a path → `official-runtime-setup-guide` (`references/skill-official-runtime-setup-guide.md`) — `when.all: [runtime.path not_equals "unselected"; stage.current equals "runtime_setup"]`
+- [upstream_reference] If the intended runtime path has not been chosen yet → `runtime-path-picker` (`references/skill-runtime-path-picker.md`) — `when.all: [runtime.path equals "unselected"]`
 
 ## Safety boundaries & non-goals
 - Runtime boundary: This skill never disables add-ons, edits MCP client configs, changes ports, kills processes, or runs Blender. It only diagnoses the conflict, proposes the cheapest resolution for the operator to perform, and hands off to `official-runtime-readiness-checker`.

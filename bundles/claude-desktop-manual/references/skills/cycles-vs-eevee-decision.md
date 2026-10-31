@@ -51,11 +51,11 @@ Pick the render engine upfront based on quality + time tradeoff and feature requ
 5. Pin the 4-item engine record: engine + samples + GPU device (if applicable) + caveats.
 
 ## Handoff notes
-- **[upstream_reference]** Lighting and material setup aligned with engine choice → `blender-lighting-material-planner` (`references/skills/blender-lighting-material-planner.md`)
-- **[upstream_reference]** Color configuration decision → `color-management-decision` (`references/skills/color-management-decision.md`)
-- **[progression]** Output container / codec decision → `output-format-decision` (`references/skills/output-format-decision.md`)
-- **[upstream_reference]** Render resolution and aspect ratio decision → `resolution-aspect-decision` (`references/skills/resolution-aspect-decision.md`)
-- **[progression]** Post-render output verification → `render-export-evidence` (`references/skills/render-export-evidence.md`)
+- **[upstream_reference]** Lighting and material setup aligned with engine choice → `blender-lighting-material-planner` (`references/skills/blender-lighting-material-planner.md`) — `when.all: [brief.locked equals true; stage.current equals "lookdev_planning"]`
+- **[upstream_reference]** Color configuration decision → `color-management-decision` (`references/skills/color-management-decision.md`) — `when.all: [decision.colorLocked equals false]`
+- **[progression]** Output container / codec decision → `output-format-decision` (`references/skills/output-format-decision.md`) — `when.all: [decision.formatLocked equals false]`
+- **[upstream_reference]** Render resolution and aspect ratio decision → `resolution-aspect-decision` (`references/skills/resolution-aspect-decision.md`) — `when.all: [decision.aspectLocked equals false]`
+- **[progression]** Post-render output verification → `render-export-evidence` (`references/skills/render-export-evidence.md`) — `when.all: [stage.current equals "post_execution_audit"]`
 
 ## Safety boundaries & non-goals
 - **Runtime boundary:** Decision skill — does not run Blender. Pins config; operator applies in scene render properties.

@@ -5,7 +5,7 @@ Purpose: Pick the right output file format (PNG / JPG / WebP / OpenEXR / TIFF) p
 
 Avoid mismatched output formats (e.g., JPEG for VFX, EXR for web, TIFF for social). Match format to consumer pipeline.
 
-Metadata: Category `render-and-output-decisions` | Role `still-animation-and-3d-format-selector` | Tier `L0` | Runtime default `Not Run` | Artifact default `Not Produced` | Mutation `downgrade_only`
+Metadata: Contract `v1.0.0` | Category `render-and-output-decisions` | Role `still-animation-and-3d-format-selector` | Tier `L0` | Runtime default `Not Run` | Artifact default `Not Produced` | Mutation `downgrade_only`
 
 ## When to use & trigger cues
 - before render
@@ -31,13 +31,13 @@ Metadata: Category `render-and-output-decisions` | Role `still-animation-and-3d-
 4. emit a 4-line config
 
 ## Cross-skill handoffs
-- [upstream_reference] Color management → `color-management-decision` (`references/skill-color-management-decision.md`)
-- [upstream_reference] Resolution & aspect ratio → `resolution-aspect-decision` (`references/skill-resolution-aspect-decision.md`)
-- [upstream_reference] Engine choice → `cycles-vs-eevee-decision` (`references/skill-cycles-vs-eevee-decision.md`)
-- [progression] Render file verification → `render-export-evidence` (`references/skill-render-export-evidence.md`)
-- [progression] 3D / GLB exports (out of scope here) (glb-animation-handoff) → `glb-animation-handoff` (`references/skill-glb-animation-handoff.md`)
-- [boundary_delegation] 3D / GLB exports (out of scope here) (glb-mobile-performance-budget) → `glb-mobile-performance-budget` (`references/skill-glb-mobile-performance-budget.md`)
-- [progression] 3D / GLB exports (out of scope here) (glb-web-handoff) → `glb-web-handoff` (`references/skill-glb-web-handoff.md`)
+- [upstream_reference] Color management → `color-management-decision` (`references/skill-color-management-decision.md`) — `when.all: [decision.colorLocked equals false]`
+- [upstream_reference] Resolution & aspect ratio → `resolution-aspect-decision` (`references/skill-resolution-aspect-decision.md`) — `when.all: [decision.aspectLocked equals false]`
+- [upstream_reference] Engine choice → `cycles-vs-eevee-decision` (`references/skill-cycles-vs-eevee-decision.md`) — `when.all: [decision.engineLocked equals false]`
+- [progression] Render file verification → `render-export-evidence` (`references/skill-render-export-evidence.md`) — `when.all: [stage.current equals "post_execution_audit"]`
+- [progression] 3D / GLB exports (out of scope here) (glb-animation-handoff) → `glb-animation-handoff` (`references/skill-glb-animation-handoff.md`) — `when.all: [artifact.hasAnimation equals true; stage.current equals "animation_handoff"]`
+- [boundary_delegation] 3D / GLB exports (out of scope here) (glb-mobile-performance-budget) → `glb-mobile-performance-budget` (`references/skill-glb-mobile-performance-budget.md`) — `when.all: [artifact.type equals "glb"; budget.pinned equals false]`
+- [progression] 3D / GLB exports (out of scope here) (glb-web-handoff) → `glb-web-handoff` (`references/skill-glb-web-handoff.md`) — `when.all: [artifact.type equals "glb"; handoff.consumerStack equals "web_glb"]`
 
 ## Safety boundaries & non-goals
 - Runtime boundary: Decision skill — does not run Blender. Pins format; operator applies to scene render output.

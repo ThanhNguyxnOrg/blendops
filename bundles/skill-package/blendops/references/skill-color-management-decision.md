@@ -5,7 +5,7 @@ Purpose: Pin Display Device, View Transform, Look, and Sequencer per consumer pi
 
 Avoid the most common Blender color mistake: rendering with the wrong color space and then "fixing" it in post. Pick the color management strategy upfront based on the consumer's color pipeline.
 
-Metadata: Category `render-and-output-decisions` | Role `view-transform-and-colorspace-selector` | Tier `L0` | Runtime default `Not Run` | Artifact default `Not Produced` | Mutation `downgrade_only`
+Metadata: Contract `v1.0.0` | Category `render-and-output-decisions` | Role `view-transform-and-colorspace-selector` | Tier `L0` | Runtime default `Not Run` | Artifact default `Not Produced` | Mutation `downgrade_only`
 
 ## When to use & trigger cues
 - before render / lookdev pass
@@ -34,11 +34,11 @@ Metadata: Category `render-and-output-decisions` | Role `view-transform-and-colo
 4. Emit the 4-line config record, caveats, truth states (`Not Run` / `Not Produced`), and handoff.
 
 ## Cross-skill handoffs
-- [progression] Output format selection → `output-format-decision` (`references/skill-output-format-decision.md`)
-- [progression] Material texture color spaces → `material-quality-checker` (`references/skill-material-quality-checker.md`)
-- [progression] Render engine choice → `cycles-vs-eevee-decision` (`references/skill-cycles-vs-eevee-decision.md`)
-- [progression] GLB Three.js delivery → `glb-web-handoff` (`references/skill-glb-web-handoff.md`)
-- [progression] Render evidence verification → `render-export-evidence` (`references/skill-render-export-evidence.md`)
+- [progression] Output format selection → `output-format-decision` (`references/skill-output-format-decision.md`) — `when.all: [decision.formatLocked equals false]`
+- [progression] Material texture color spaces → `material-quality-checker` (`references/skill-material-quality-checker.md`) — `when.all: [quality.domain equals "material"; quality.verdict equals "not_run"]`
+- [progression] Render engine choice → `cycles-vs-eevee-decision` (`references/skill-cycles-vs-eevee-decision.md`) — `when.all: [decision.engineLocked equals false]`
+- [progression] GLB Three.js delivery → `glb-web-handoff` (`references/skill-glb-web-handoff.md`) — `when.all: [artifact.type equals "glb"; handoff.consumerStack equals "web_glb"]`
+- [progression] Render evidence verification → `render-export-evidence` (`references/skill-render-export-evidence.md`) — `when.all: [stage.current equals "post_execution_audit"]`
 
 ## Safety boundaries & non-goals
 - Runtime boundary: Decision skill — does not run Blender. Pins config; operator applies in scene render properties.

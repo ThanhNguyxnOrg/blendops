@@ -5,7 +5,7 @@ Purpose: Validate per-mesh and total-scene triangle counts against the pinned bu
 
 Run a focused pass/warn/fail check on per-mesh and total-scene triangle counts vs the pinned budget from `glb-mobile-performance-budget` (or any other pinned budget). Surface worst offenders and basic topology hints without performing modeling.
 
-Metadata: Category `quality-validators` | Role `geometry-and-topology-budget-validator` | Tier `L0` | Runtime default `Not Run` | Artifact default `Not Produced` | Mutation `downgrade_only`
+Metadata: Contract `v1.0.0` | Category `quality-validators` | Role `geometry-and-topology-budget-validator` | Tier `L0` | Runtime default `Not Run` | Artifact default `Not Produced` | Mutation `downgrade_only`
 
 ## When to use & trigger cues
 - before render
@@ -38,12 +38,12 @@ Metadata: Category `quality-validators` | Role `geometry-and-topology-budget-val
 5. flag worst offenders + give topology hints (no modeling)
 
 ## Cross-skill handoffs
-- [upstream_reference] Pinned budget source → `glb-mobile-performance-budget` (`references/skill-glb-mobile-performance-budget.md`)
-- [progression] Broad readiness review → `blender-scene-quality-checker` (`references/skill-blender-scene-quality-checker.md`)
-- [progression] Artifact evidence classification → `render-export-evidence` (`references/skill-render-export-evidence.md`)
-- [upstream_reference] Material validation → `material-quality-checker` (`references/skill-material-quality-checker.md`)
-- [upstream_reference] Lighting validation → `lighting-quality-checker` (`references/skill-lighting-quality-checker.md`)
-- [upstream_reference] Composition validation → `composition-quality-checker` (`references/skill-composition-quality-checker.md`)
+- [upstream_reference] Pinned budget source → `glb-mobile-performance-budget` (`references/skill-glb-mobile-performance-budget.md`) — `when.all: [artifact.type equals "glb"; budget.pinned equals false]`
+- [progression] Broad readiness review → `blender-scene-quality-checker` (`references/skill-blender-scene-quality-checker.md`) — `when.all: [quality.domain equals "holistic"; stage.current equals "quality_validation"]`
+- [progression] Artifact evidence classification → `render-export-evidence` (`references/skill-render-export-evidence.md`) — `when.all: [stage.current equals "post_execution_audit"]`
+- [upstream_reference] Material validation → `material-quality-checker` (`references/skill-material-quality-checker.md`) — `when.all: [quality.domain equals "material"; quality.verdict equals "not_run"]`
+- [upstream_reference] Lighting validation → `lighting-quality-checker` (`references/skill-lighting-quality-checker.md`) — `when.all: [quality.domain equals "lighting"; quality.verdict equals "not_run"]`
+- [upstream_reference] Composition validation → `composition-quality-checker` (`references/skill-composition-quality-checker.md`) — `when.all: [quality.domain equals "composition"; quality.verdict equals "not_run"]`
 
 ## Safety boundaries & non-goals
 - Runtime boundary: This skill validates plans or measured scene snapshots. It never decimates, retopologizes, or runs Blender. Hints are advisory.

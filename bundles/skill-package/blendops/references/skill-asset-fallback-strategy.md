@@ -5,7 +5,7 @@ Purpose: Provide a fallback strategy when an asset is unavailable, over-budget, 
 
 When `asset-license-checker`, `asset-style-consistency-checker`, or `glb-mobile-performance-budget` blocks an asset (or an asset is unavailable), this skill plans 2-3 actionable fallback options (replace / re-source / procedural / generative / drop-with-caveat) ordered by speed so the recipe can proceed. Any chosen replacement must re-pass `asset-license-checker` and `asset-style-consistency-checker` (plus `glb-mobile-performance-budget` when budget applies).
 
-Metadata: Category `asset-and-sourcing` | Role `blocked-asset-replacement-planner` | Tier `L0` | Runtime default `Not Run` | Artifact default `Not Produced` | Mutation `downgrade_only`
+Metadata: Contract `v1.0.0` | Category `asset-and-sourcing` | Role `blocked-asset-replacement-planner` | Tier `L0` | Runtime default `Not Run` | Artifact default `Not Produced` | Mutation `downgrade_only`
 
 ## When to use & trigger cues
 - after a checker fails an asset
@@ -33,13 +33,13 @@ Metadata: Category `asset-and-sourcing` | Role `blocked-asset-replacement-planne
 5. update the asset list and route any replacement back through `asset-license-checker` and `asset-style-consistency-checker` (and `glb-mobile-performance-budget` if budget-constrained)
 
 ## Cross-skill handoffs
-- [upstream_reference] Re-source external asset → `blender-asset-discovery-planner` (`references/skill-blender-asset-discovery-planner.md`)
-- [progression] Internal library lookup → `asset-library-organization-planner` (`references/skill-asset-library-organization-planner.md`)
-- [fallback] License re-check on replacement → `asset-license-checker` (`references/skill-asset-license-checker.md`)
-- [fallback] Style re-check on replacement → `asset-style-consistency-checker` (`references/skill-asset-style-consistency-checker.md`)
-- [progression] Budget re-check on replacement → `glb-mobile-performance-budget` (`references/skill-glb-mobile-performance-budget.md`)
-- [fallback] Scope reduction when no viable fallback exists → `blender-scope-boundary-enforcer` (`references/skill-blender-scope-boundary-enforcer.md`)
-- [fallback] Recipe split when no viable fallback exists → `blender-recipe-decomposer` (`references/skill-blender-recipe-decomposer.md`)
+- [upstream_reference] Re-source external asset → `blender-asset-discovery-planner` (`references/skill-blender-asset-discovery-planner.md`) — `when.all: [brief.locked equals true; assets.discoveryComplete equals false]`
+- [progression] Internal library lookup → `asset-library-organization-planner` (`references/skill-asset-library-organization-planner.md`) — `when.all: [assets.discoveryComplete equals true; stage.current equals "library_organization"]`
+- [fallback] License re-check on replacement → `asset-license-checker` (`references/skill-asset-license-checker.md`) — `when.all: [assets.externalUsed equals true; assets.licenseCleared equals false]`
+- [fallback] Style re-check on replacement → `asset-style-consistency-checker` (`references/skill-asset-style-consistency-checker.md`) — `when.all: [assets.licenseCleared equals true; stage.current equals "style_check"]`
+- [progression] Budget re-check on replacement → `glb-mobile-performance-budget` (`references/skill-glb-mobile-performance-budget.md`) — `when.all: [artifact.type equals "glb"; budget.pinned equals false]`
+- [fallback] Scope reduction when no viable fallback exists → `blender-scope-boundary-enforcer` (`references/skill-blender-scope-boundary-enforcer.md`) — `when.all: [scope.driftDetected equals true]`
+- [fallback] Recipe split when no viable fallback exists → `blender-recipe-decomposer` (`references/skill-blender-recipe-decomposer.md`) — `when.all: [fit.multiDeliverableDetected equals true]`
 
 ## Safety boundaries & non-goals
 - Runtime boundary: Process and planning skill only — never acquires, generates, or edits assets itself. Outputs a fallback plan and routes execution or re-verification to dedicated skills.

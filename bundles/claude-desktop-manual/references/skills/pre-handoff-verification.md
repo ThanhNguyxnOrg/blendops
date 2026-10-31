@@ -54,19 +54,19 @@ Run a structured verification pass before any BlendOps output is handed to the u
 4. gate handoff on all 7 checks passing or explicit caveats
 
 ## Handoff notes
-- **[boundary_delegation]** Entry wiring (blendops-help) → `blendops-help` (`references/skills/blendops-help.md`)
-- **[upstream_reference]** Entry wiring (workflow-stage-router) → `workflow-stage-router` (`references/skills/workflow-stage-router.md`)
-- **[conditional]** If verdict is Pass (non-blender-user-response-writer) → `non-blender-user-response-writer` (`references/skills/non-blender-user-response-writer.md`)
-- **[upstream_reference]** If verdict is Pass (render-export-evidence) → `render-export-evidence` (`references/skills/render-export-evidence.md`)
-- **[upstream_reference]** If verdict is Pass (runtime-attempt-report-writer) → `runtime-attempt-report-writer` (`references/skills/runtime-attempt-report-writer.md`)
-- **[upstream_reference]** scene/asset quality gap (blender-scene-quality-checker) → `blender-scene-quality-checker` (`references/skills/blender-scene-quality-checker.md`)
-- **[upstream_reference]** scene/asset quality gap (composition-quality-checker) → `composition-quality-checker` (`references/skills/composition-quality-checker.md`)
-- **[upstream_reference]** scene/asset quality gap (lighting-quality-checker) → `lighting-quality-checker` (`references/skills/lighting-quality-checker.md`)
-- **[upstream_reference]** scene/asset quality gap (material-quality-checker) → `material-quality-checker` (`references/skills/material-quality-checker.md`)
-- **[upstream_reference]** scene/asset quality gap (polycount-budget-checker) → `polycount-budget-checker` (`references/skills/polycount-budget-checker.md`)
-- **[fallback]** runtime/bridge failure (blender-troubleshooting) → `blender-troubleshooting` (`references/skills/blender-troubleshooting.md`)
-- **[fallback]** runtime/bridge failure (official-runtime-readiness-checker) → `official-runtime-readiness-checker` (`references/skills/official-runtime-readiness-checker.md`)
-- **[fallback]** runtime/bridge failure (runtime-bridge-conflict-resolver) → `runtime-bridge-conflict-resolver` (`references/skills/runtime-bridge-conflict-resolver.md`)
+- **[boundary_delegation]** Entry wiring (blendops-help) → `blendops-help` (`references/skills/blendops-help.md`) — `when.all: [request.scope equals "general_help"]`
+- **[upstream_reference]** Entry wiring (workflow-stage-router) → `workflow-stage-router` (`references/skills/workflow-stage-router.md`) — `when.all: [preflight.passed equals true; inventory.exists equals true]`
+- **[conditional]** If verdict is Pass (non-blender-user-response-writer) → `non-blender-user-response-writer` (`references/skills/non-blender-user-response-writer.md`) — `when.all: [stage.current equals "final_communication"]`
+- **[upstream_reference]** If verdict is Pass (render-export-evidence) → `render-export-evidence` (`references/skills/render-export-evidence.md`) — `when.all: [stage.current equals "post_execution_audit"]`
+- **[upstream_reference]** If verdict is Pass (runtime-attempt-report-writer) → `runtime-attempt-report-writer` (`references/skills/runtime-attempt-report-writer.md`) — `when.all: [runtime.status in ["Attempted","Produced","Verified","Failed"]; request.topic equals "attempt_report"]`
+- **[upstream_reference]** scene/asset quality gap (blender-scene-quality-checker) → `blender-scene-quality-checker` (`references/skills/blender-scene-quality-checker.md`) — `when.all: [quality.domain equals "holistic"; stage.current equals "quality_validation"]`
+- **[upstream_reference]** scene/asset quality gap (composition-quality-checker) → `composition-quality-checker` (`references/skills/composition-quality-checker.md`) — `when.all: [quality.domain equals "composition"; quality.verdict equals "not_run"]`
+- **[upstream_reference]** scene/asset quality gap (lighting-quality-checker) → `lighting-quality-checker` (`references/skills/lighting-quality-checker.md`) — `when.all: [quality.domain equals "lighting"; quality.verdict equals "not_run"]`
+- **[upstream_reference]** scene/asset quality gap (material-quality-checker) → `material-quality-checker` (`references/skills/material-quality-checker.md`) — `when.all: [quality.domain equals "material"; quality.verdict equals "not_run"]`
+- **[upstream_reference]** scene/asset quality gap (polycount-budget-checker) → `polycount-budget-checker` (`references/skills/polycount-budget-checker.md`) — `when.all: [quality.domain equals "polycount"; budget.verdict equals "Not Run"]`
+- **[fallback]** runtime/bridge failure (blender-troubleshooting) → `blender-troubleshooting` (`references/skills/blender-troubleshooting.md`) — `when.all: [runtime.errorDetected equals true]`
+- **[fallback]** runtime/bridge failure (official-runtime-readiness-checker) → `official-runtime-readiness-checker` (`references/skills/official-runtime-readiness-checker.md`) — `when.all: [runtime.path not_equals "unselected"; runtime.verifiedReady equals false]`
+- **[fallback]** runtime/bridge failure (runtime-bridge-conflict-resolver) → `runtime-bridge-conflict-resolver` (`references/skills/runtime-bridge-conflict-resolver.md`) — `when.all: [runtime.conflictDetected equals true]`
 
 ## Safety boundaries & non-goals
 - **Runtime boundary:** This skill does not run Blender, mutate scenes, or generate artifacts. It reads the proposed handoff and existing evidence, and either confirms or downgrades the truth label.

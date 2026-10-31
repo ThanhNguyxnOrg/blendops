@@ -52,13 +52,13 @@ Pin a single, explicit stop condition for one recipe BEFORE work begins—consis
 4. enforce: do not polish past the stop condition; do not declare done before it
 
 ## Handoff notes
-- **[upstream_reference]** Intent brief → `intent-to-3d-brief-writer` (`references/skills/intent-to-3d-brief-writer.md`)
-- **[boundary_delegation]** Scope splitting beforehand → `blender-recipe-decomposer` (`references/skills/blender-recipe-decomposer.md`)
-- **[upstream_reference]** Measurable acceptance rows → `acceptance-criteria-builder` (`references/skills/acceptance-criteria-builder.md`)
-- **[progression]** Per-stage workflow gates → `blender-checklist-driven-workflow` (`references/skills/blender-checklist-driven-workflow.md`)
-- **[progression]** Mid-flight scope drift → `blender-scope-boundary-enforcer` (`references/skills/blender-scope-boundary-enforcer.md`)
-- **[progression]** Artifact and render evidence → `render-export-evidence` (`references/skills/render-export-evidence.md`)
-- **[progression]** Final pre-handoff gate → `pre-handoff-verification` (`references/skills/pre-handoff-verification.md`)
+- **[upstream_reference]** Intent brief → `intent-to-3d-brief-writer` (`references/skills/intent-to-3d-brief-writer.md`) — `when.all: [goal.clarity equals "clear"; brief.locked equals false]`
+- **[boundary_delegation]** Scope splitting beforehand → `blender-recipe-decomposer` (`references/skills/blender-recipe-decomposer.md`) — `when.all: [fit.multiDeliverableDetected equals true]`
+- **[upstream_reference]** Measurable acceptance rows → `acceptance-criteria-builder` (`references/skills/acceptance-criteria-builder.md`) — `when.all: [brief.locked equals true; stage.current equals "acceptance_criteria"]`
+- **[progression]** Per-stage workflow gates → `blender-checklist-driven-workflow` (`references/skills/blender-checklist-driven-workflow.md`) — `when.all: [brief.locked equals true; stage.current equals "stage_gates"]`
+- **[progression]** Mid-flight scope drift → `blender-scope-boundary-enforcer` (`references/skills/blender-scope-boundary-enforcer.md`) — `when.all: [scope.driftDetected equals true]`
+- **[progression]** Artifact and render evidence → `render-export-evidence` (`references/skills/render-export-evidence.md`) — `when.all: [stage.current equals "post_execution_audit"]`
+- **[progression]** Final pre-handoff gate → `pre-handoff-verification` (`references/skills/pre-handoff-verification.md`) — `when.all: [stage.current equals "final_verification"]`
 
 ## Safety boundaries & non-goals
 - **Runtime boundary:** Process and discipline skill only—no Python code and no Blender execution. This skill writes the stop condition before work starts and routes handoff when the condition is met; it never executes runtime tasks or upgrades truth states.

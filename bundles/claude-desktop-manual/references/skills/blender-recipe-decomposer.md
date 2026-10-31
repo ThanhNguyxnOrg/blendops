@@ -50,11 +50,11 @@ When user intent is too big for one recipe (multiple deliverables, mixed modes, 
 4. pin recipe start order (linear or parallel-OK) and dependencies
 
 ## Handoff notes
-- **[progression]** Full brief authoring for each split recipe → `intent-to-3d-brief-writer` (`references/skills/intent-to-3d-brief-writer.md`)
-- **[progression]** Pinning formal done conditions per recipe → `blender-stop-condition-decider` (`references/skills/blender-stop-condition-decider.md`)
-- **[progression]** Workflow stage gates per recipe → `blender-checklist-driven-workflow` (`references/skills/blender-checklist-driven-workflow.md`)
-- **[progression]** Handling scope added after splitting → `blender-scope-boundary-enforcer` (`references/skills/blender-scope-boundary-enforcer.md`)
-- **[upstream_reference]** Pre-decomposition ideation when deliverables are unclear → `blender-brainstorming` (`references/skills/blender-brainstorming.md`)
+- **[progression]** Full brief authoring for each split recipe → `intent-to-3d-brief-writer` (`references/skills/intent-to-3d-brief-writer.md`) — `when.all: [goal.clarity equals "clear"; brief.locked equals false]`
+- **[progression]** Pinning formal done conditions per recipe → `blender-stop-condition-decider` (`references/skills/blender-stop-condition-decider.md`) — `when.all: [brief.locked equals true; stage.current equals "stop_condition"]`
+- **[progression]** Workflow stage gates per recipe → `blender-checklist-driven-workflow` (`references/skills/blender-checklist-driven-workflow.md`) — `when.all: [brief.locked equals true; stage.current equals "stage_gates"]`
+- **[progression]** Handling scope added after splitting → `blender-scope-boundary-enforcer` (`references/skills/blender-scope-boundary-enforcer.md`) — `when.all: [scope.driftDetected equals true]`
+- **[upstream_reference]** Pre-decomposition ideation when deliverables are unclear → `blender-brainstorming` (`references/skills/blender-brainstorming.md`) — `when.all: [goal.clarity equals "ambiguous_or_mixed"]`
 
 ## Safety boundaries & non-goals
 - **Runtime boundary:** Process / discipline skill — does not run Blender. Splits intent into recipe specs only.

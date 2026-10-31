@@ -5,7 +5,7 @@ Purpose: Apply multi-category readiness gates with pass/warn/fail and evidence-b
 
 Evaluate scene/workflow readiness honestly and consistently before any success claim.
 
-Metadata: Category `quality-validators` | Role `holistic-scene-readiness-aggregator` | Tier `L0` | Runtime default `Not Run` | Artifact default `Not Produced` | Mutation `downgrade_only`
+Metadata: Contract `v1.0.0` | Category `quality-validators` | Role `holistic-scene-readiness-aggregator` | Tier `L0` | Runtime default `Not Run` | Artifact default `Not Produced` | Mutation `downgrade_only`
 
 ## When to use & trigger cues
 - before readiness, export, or handoff claims to get a broad multi-category review
@@ -30,14 +30,14 @@ Metadata: Category `quality-validators` | Role `holistic-scene-readiness-aggrega
 4. follow suggested next-skill handoff
 
 ## Cross-skill handoffs
-- [upstream_reference] Focused domain validation (if gaps found) (composition-quality-checker) → `composition-quality-checker` (`references/skill-composition-quality-checker.md`)
-- [upstream_reference] Focused domain validation (if gaps found) (lighting-quality-checker) → `lighting-quality-checker` (`references/skill-lighting-quality-checker.md`)
-- [upstream_reference] Focused domain validation (if gaps found) (material-quality-checker) → `material-quality-checker` (`references/skill-material-quality-checker.md`)
-- [upstream_reference] Focused domain validation (if gaps found) (polycount-budget-checker) → `polycount-budget-checker` (`references/skill-polycount-budget-checker.md`)
-- [progression] Evidence classification → `render-export-evidence` (`references/skill-render-export-evidence.md`)
-- [progression] Handoff gate → `pre-handoff-verification` (`references/skill-pre-handoff-verification.md`)
-- [conditional] Web delivery (when applicable) → `glb-web-handoff` (`references/skill-glb-web-handoff.md`)
-- [progression] Final communication → `non-blender-user-response-writer` (`references/skill-non-blender-user-response-writer.md`)
+- [upstream_reference] Focused domain validation (if gaps found) (composition-quality-checker) → `composition-quality-checker` (`references/skill-composition-quality-checker.md`) — `when.all: [quality.domain equals "composition"; quality.verdict equals "not_run"]`
+- [upstream_reference] Focused domain validation (if gaps found) (lighting-quality-checker) → `lighting-quality-checker` (`references/skill-lighting-quality-checker.md`) — `when.all: [quality.domain equals "lighting"; quality.verdict equals "not_run"]`
+- [upstream_reference] Focused domain validation (if gaps found) (material-quality-checker) → `material-quality-checker` (`references/skill-material-quality-checker.md`) — `when.all: [quality.domain equals "material"; quality.verdict equals "not_run"]`
+- [upstream_reference] Focused domain validation (if gaps found) (polycount-budget-checker) → `polycount-budget-checker` (`references/skill-polycount-budget-checker.md`) — `when.all: [quality.domain equals "polycount"; budget.verdict equals "Not Run"]`
+- [progression] Evidence classification → `render-export-evidence` (`references/skill-render-export-evidence.md`) — `when.all: [stage.current equals "post_execution_audit"]`
+- [progression] Handoff gate → `pre-handoff-verification` (`references/skill-pre-handoff-verification.md`) — `when.all: [stage.current equals "final_verification"]`
+- [conditional] Web delivery (when applicable) → `glb-web-handoff` (`references/skill-glb-web-handoff.md`) — `when.all: [artifact.type equals "glb"; handoff.consumerStack equals "web_glb"]`
+- [progression] Final communication → `non-blender-user-response-writer` (`references/skill-non-blender-user-response-writer.md`) — `when.all: [stage.current equals "final_communication"]`
 
 ## Safety boundaries & non-goals
 - Runtime boundary: Review-only skill: never executes Blender, never runs or emits Python, and never produces artifacts. Runtime truth state stays `Not Run` unless a real attempt was recorded; artifact truth state defaults to `Not Produced` unless concrete output evidence from the current run exists. Truth states are downgrade-only (never upgrade). Text-only and blocked modes must remain explicit.

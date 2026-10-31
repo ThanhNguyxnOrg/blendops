@@ -5,7 +5,7 @@ Purpose: Build detailed lighting and material direction with portability and cav
 
 Create a high-quality, practical lighting/material plan that balances visual intent and web portability constraints.
 
-Metadata: Category `scene-planners` | Role `lighting-rig-and-lookdev-deep-planner` | Tier `L0` | Runtime default `Not Run` | Artifact default `Not Produced` | Mutation `downgrade_only`
+Metadata: Contract `v1.0.0` | Category `scene-planners` | Role `lighting-rig-and-lookdev-deep-planner` | Tier `L0` | Runtime default `Not Run` | Artifact default `Not Produced` | Mutation `downgrade_only`
 
 ## When to use & trigger cues
 - look-development strategy is needed
@@ -33,14 +33,14 @@ Metadata: Category `scene-planners` | Role `lighting-rig-and-lookdev-deep-planne
 4. follow suggested next-skill handoff
 
 ## Cross-skill handoffs
-- [upstream_reference] Upstream input from (blender-composition-camera-planner) → `blender-composition-camera-planner` (`references/skill-blender-composition-camera-planner.md`)
-- [progression] Upstream input from (color-management-decision) → `color-management-decision` (`references/skill-color-management-decision.md`)
-- [progression] Upstream input from (cycles-vs-eevee-decision) → `cycles-vs-eevee-decision` (`references/skill-cycles-vs-eevee-decision.md`)
-- [progression] Upstream input from (output-format-decision) → `output-format-decision` (`references/skill-output-format-decision.md`)
-- [progression] Next validation (lighting-quality-checker) → `lighting-quality-checker` (`references/skill-lighting-quality-checker.md`)
-- [progression] Next validation (material-quality-checker) → `material-quality-checker` (`references/skill-material-quality-checker.md`)
-- [progression] Then scene check → `blender-scene-quality-checker` (`references/skill-blender-scene-quality-checker.md`)
-- [progression] Then delivery → `glb-web-handoff` (`references/skill-glb-web-handoff.md`)
+- [upstream_reference] Upstream input from (blender-composition-camera-planner) → `blender-composition-camera-planner` (`references/skill-blender-composition-camera-planner.md`) — `when.all: [brief.locked equals true; stage.current equals "camera_planning"]`
+- [progression] Upstream input from (color-management-decision) → `color-management-decision` (`references/skill-color-management-decision.md`) — `when.all: [decision.colorLocked equals false]`
+- [progression] Upstream input from (cycles-vs-eevee-decision) → `cycles-vs-eevee-decision` (`references/skill-cycles-vs-eevee-decision.md`) — `when.all: [decision.engineLocked equals false]`
+- [progression] Upstream input from (output-format-decision) → `output-format-decision` (`references/skill-output-format-decision.md`) — `when.all: [decision.formatLocked equals false]`
+- [progression] Next validation (lighting-quality-checker) → `lighting-quality-checker` (`references/skill-lighting-quality-checker.md`) — `when.all: [quality.domain equals "lighting"; quality.verdict equals "not_run"]`
+- [progression] Next validation (material-quality-checker) → `material-quality-checker` (`references/skill-material-quality-checker.md`) — `when.all: [quality.domain equals "material"; quality.verdict equals "not_run"]`
+- [progression] Then scene check → `blender-scene-quality-checker` (`references/skill-blender-scene-quality-checker.md`) — `when.all: [quality.domain equals "holistic"; stage.current equals "quality_validation"]`
+- [progression] Then delivery → `glb-web-handoff` (`references/skill-glb-web-handoff.md`) — `when.all: [artifact.type equals "glb"; handoff.consumerStack equals "web_glb"]`
 
 ## Safety boundaries & non-goals
 - Runtime boundary: This is a planning-only skill: no Blender execution, no Python, and no artifact generation. Runtime status always remains `Not Run` and artifact status always remains `Not Produced` (truth states are downgrade-only, never upgrade). If referencing Eevee engine tokens from upstream `cycles-vs-eevee-decision`, use `BLENDER_EEVEE` on Blender 4.0–4.1 and 5.x, and `BLENDER_EEVEE_NEXT` only for 4.2–4.x — never present Eevee Next as the current name.

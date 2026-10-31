@@ -5,7 +5,8 @@ Purpose: Given current artifacts and intent, name the next BlendOps skill or wor
 
 Reduce skill-choice paralysis by mapping **current state → next narrow skill** across BlendOps workflows while preserving evidence and runtime boundaries.
 
-Metadata: Category `routing-and-governance` | Role `mid-workflow-stage-router` | Tier `L0` | Routing: `entry-and-stage-routing#4` | Runtime default `Not Run` | Artifact default `Not Produced` | Mutation `downgrade_only`
+Metadata: Contract `v1.0.0` | Category `routing-and-governance` | Role `mid-workflow-stage-router` | Tier `L0` | Runtime default `Not Run` | Artifact default `Not Produced` | Mutation `downgrade_only`
+Routing precedence: group `entry-and-stage-routing`, rank `4` | activationGate: `goalClarity="clear"`, `recipeSelected=true`, `preflightPassed=true`, `hasStageOrArtifactInventory=true`
 
 ## When to use & trigger cues
 - user asks "what skill next" after partial progress
@@ -33,12 +34,12 @@ Metadata: Category `routing-and-governance` | Role `mid-workflow-stage-router` |
 4. fill `skills/workflow-stage-router/references/stage-handoff-template.md`
 
 ## Cross-skill handoffs
-- [upstream_reference] Pack entry preflight gate → `pack-prerequisite-checker` (`references/skill-pack-prerequisite-checker.md`)
-- [conditional] Runtime readiness check → `official-runtime-readiness-checker` (`references/skill-official-runtime-readiness-checker.md`)
-- [fallback] Active MCP bridge conflict on port 9876 → `runtime-bridge-conflict-resolver` (`references/skill-runtime-bridge-conflict-resolver.md`)
-- [boundary_delegation] Mid-workflow scope expansion or unapproved deliverable addition → `blender-scope-boundary-enforcer` (`references/skill-blender-scope-boundary-enforcer.md`)
-- [progression] Evidence updates for render or export outputs → `render-export-evidence` (`references/skill-render-export-evidence.md`)
-- [fallback] Failed gate / blocked mode exit / final gate → `pre-handoff-verification` (`references/skill-pre-handoff-verification.md`)
+- [upstream_reference] Pack entry preflight gate → `pack-prerequisite-checker` (`references/skill-pack-prerequisite-checker.md`) — `when.all: [preflight.passed equals false]`
+- [conditional] Runtime readiness check → `official-runtime-readiness-checker` (`references/skill-official-runtime-readiness-checker.md`) — `when.all: [runtime.status equals "Not Run"; stage.requiresRuntime equals true]`
+- [fallback] Active MCP bridge conflict on port 9876 → `runtime-bridge-conflict-resolver` (`references/skill-runtime-bridge-conflict-resolver.md`) — `when.all: [runtime.conflictDetected equals true]`
+- [boundary_delegation] Mid-workflow scope expansion or unapproved deliverable addition → `blender-scope-boundary-enforcer` (`references/skill-blender-scope-boundary-enforcer.md`) — `when.all: [scope.driftDetected equals true]`
+- [progression] Evidence updates for render or export outputs → `render-export-evidence` (`references/skill-render-export-evidence.md`) — `when.all: [stage.current equals "post_execution_audit"]`
+- [fallback] Failed gate / blocked mode exit / final gate → `pre-handoff-verification` (`references/skill-pre-handoff-verification.md`) — `when.any: [gate.status equals "failed"; runtime.mode equals "blocked"; stage.current equals "final_verification"]`
 
 ## Safety boundaries & non-goals
 - Runtime boundary: Routing only — no Python and no Blender execution (`execute_blender_code` is never invoked here). If the next step requires runtime selection or configuration, route to `runtime-path-picker`, `official-runtime-setup-guide`, `official-runtime-readiness-checker`, `path-one-host-outline`, or `cli-appendix-job-outline` with these locked boundaries:

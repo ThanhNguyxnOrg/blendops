@@ -51,14 +51,14 @@ Turn user intent or an upstream brief into a complete, plain-language product-he
 4. follow suggested next-skill handoff
 
 ## Handoff notes
-- **[upstream_reference]** Upstream input (if raw prompt needs structuring) → `intent-to-3d-brief-writer` (`references/skills/intent-to-3d-brief-writer.md`)
-- **[progression]** Next (deep-dive framing & camera) → `blender-composition-camera-planner` (`references/skills/blender-composition-camera-planner.md`)
-- **[progression]** Next (deep-dive lookdev & lighting) → `blender-lighting-material-planner` (`references/skills/blender-lighting-material-planner.md`)
-- **[fallback]** Then (measurable pass/fail rows) → `acceptance-criteria-builder` (`references/skills/acceptance-criteria-builder.md`)
-- **[upstream_reference]** Then (pin done condition) → `blender-stop-condition-decider` (`references/skills/blender-stop-condition-decider.md`)
-- **[progression]** Later (post-build readiness review) → `blender-scene-quality-checker` (`references/skills/blender-scene-quality-checker.md`)
-- **[conditional]** Delivery handoff (when web/render output is targeted) (glb-web-handoff) → `glb-web-handoff` (`references/skills/glb-web-handoff.md`)
-- **[conditional]** Delivery handoff (when web/render output is targeted) (render-export-evidence) → `render-export-evidence` (`references/skills/render-export-evidence.md`)
+- **[upstream_reference]** Upstream input (if raw prompt needs structuring) → `intent-to-3d-brief-writer` (`references/skills/intent-to-3d-brief-writer.md`) — `when.all: [goal.clarity equals "clear"; brief.locked equals false]`
+- **[progression]** Next (deep-dive framing & camera) → `blender-composition-camera-planner` (`references/skills/blender-composition-camera-planner.md`) — `when.all: [brief.locked equals true; stage.current equals "camera_planning"]`
+- **[progression]** Next (deep-dive lookdev & lighting) → `blender-lighting-material-planner` (`references/skills/blender-lighting-material-planner.md`) — `when.all: [brief.locked equals true; stage.current equals "lookdev_planning"]`
+- **[fallback]** Then (measurable pass/fail rows) → `acceptance-criteria-builder` (`references/skills/acceptance-criteria-builder.md`) — `when.all: [brief.locked equals true; stage.current equals "acceptance_criteria"]`
+- **[upstream_reference]** Then (pin done condition) → `blender-stop-condition-decider` (`references/skills/blender-stop-condition-decider.md`) — `when.all: [brief.locked equals true; stage.current equals "stop_condition"]`
+- **[progression]** Later (post-build readiness review) → `blender-scene-quality-checker` (`references/skills/blender-scene-quality-checker.md`) — `when.all: [quality.domain equals "holistic"; stage.current equals "quality_validation"]`
+- **[conditional]** Delivery handoff (when web/render output is targeted) (glb-web-handoff) → `glb-web-handoff` (`references/skills/glb-web-handoff.md`) — `when.all: [artifact.type equals "glb"; handoff.consumerStack equals "web_glb"]`
+- **[conditional]** Delivery handoff (when web/render output is targeted) (render-export-evidence) → `render-export-evidence` (`references/skills/render-export-evidence.md`) — `when.all: [stage.current equals "post_execution_audit"]`
 
 ## Safety boundaries & non-goals
 - **Runtime boundary:** Planning-only skill: no Blender execution, no Python scripts, and no artifact generation. - Runtime truth state must remain `Not Run` (from canonical states `Not Run | Attempted | Produced | Verified | Failed`). - Artifact truth state must remain `Not Produced` (downgrade-only, never upgrade). - When a live scene exists, consume read-only inspection results (`get_objects_summary`) rather than assuming object dimensions, without executing scene mutations.

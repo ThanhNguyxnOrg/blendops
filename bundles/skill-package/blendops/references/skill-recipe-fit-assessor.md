@@ -5,7 +5,8 @@ Purpose: Score whether a user's 3D goal fits an existing BlendOps recipe or pack
 
 Map a user's stated goal to the closest documented BlendOps recipe or pack before expensive planning or runtime work, returning a fit verdict (`Strong` / `Partial` / `Poor`), rationale, explicit gap list, and **one** recommended next skill. This skill is planning-only and never runs Blender, packs, or runtime.
 
-Metadata: Category `routing-and-governance` | Role `recipe-and-pack-selector` | Tier `L0` | Routing: `entry-and-stage-routing#2` | Runtime default `Not Run` | Artifact default `Not Produced` | Mutation `downgrade_only`
+Metadata: Contract `v1.0.0` | Category `routing-and-governance` | Role `recipe-and-pack-selector` | Tier `L0` | Runtime default `Not Run` | Artifact default `Not Produced` | Mutation `downgrade_only`
+Routing precedence: group `entry-and-stage-routing`, rank `2` | activationGate: `goalClarity="clear"`, `recipeSelected=false`, `preflightPassed=false`, `hasStageOrArtifactInventory=false`
 
 ## When to use & trigger cues
 - user asks "which recipe / pack fits my idea"
@@ -36,17 +37,17 @@ Metadata: Category `routing-and-governance` | Role `recipe-and-pack-selector` | 
 4. list gap fixes or recommend a different workflow entrypoint
 
 ## Cross-skill handoffs
-- [upstream_reference] Upstream creative divergence → `blender-brainstorming` (`references/skill-blender-brainstorming.md`)
-- [boundary_delegation] General entry routing → `blendops-help` (`references/skill-blendops-help.md`)
-- [conditional] Multi-deliverable scope split when prompt spans multiple incompatible recipes → `blender-recipe-decomposer` (`references/skill-blender-recipe-decomposer.md`)
-- [progression] Downstream structured brief → `intent-to-3d-brief-writer` (`references/skill-intent-to-3d-brief-writer.md`)
-- [progression] Pack prerequisite verification → `pack-prerequisite-checker` (`references/skill-pack-prerequisite-checker.md`)
-- [conditional] Post-artifact stage routing → `workflow-stage-router` (`references/skill-workflow-stage-router.md`)
-- [alternative] Domain scene planner (product hero) → `product-hero-scene-planner` (`references/skill-product-hero-scene-planner.md`)
-- [alternative] Domain scene planner (product grid) → `product-grid-scene-planner` (`references/skill-product-grid-scene-planner.md`)
-- [alternative] Domain scene planner (character portrait) → `character-portrait-scene-planner` (`references/skill-character-portrait-scene-planner.md`)
-- [alternative] Domain scene planner (environment establishing shot) → `environment-establishing-shot-planner` (`references/skill-environment-establishing-shot-planner.md`)
-- [alternative] Domain scene planner (interior architectural) → `interior-architectural-scene-planner` (`references/skill-interior-architectural-scene-planner.md`)
+- [upstream_reference] Upstream creative divergence → `blender-brainstorming` (`references/skill-blender-brainstorming.md`) — `when.all: [goal.clarity equals "ambiguous_or_mixed"]`
+- [boundary_delegation] General entry routing → `blendops-help` (`references/skill-blendops-help.md`) — `when.all: [request.scope equals "general_help"]`
+- [conditional] Multi-deliverable scope split when prompt spans multiple incompatible recipes → `blender-recipe-decomposer` (`references/skill-blender-recipe-decomposer.md`) — `when.all: [fit.multiDeliverableDetected equals true]`
+- [progression] Downstream structured brief → `intent-to-3d-brief-writer` (`references/skill-intent-to-3d-brief-writer.md`) — `when.all: [fit.verdict in ["strong_fit","partial_fit"]; brief.locked equals false]`
+- [progression] Pack prerequisite verification → `pack-prerequisite-checker` (`references/skill-pack-prerequisite-checker.md`) — `when.all: [fit.verdict equals "strong_fit"; brief.locked equals true]`
+- [conditional] Post-artifact stage routing → `workflow-stage-router` (`references/skill-workflow-stage-router.md`) — `when.all: [preflight.passed equals true; inventory.exists equals true]`
+- [alternative] Domain scene planner (product hero) → `product-hero-scene-planner` (`references/skill-product-hero-scene-planner.md`) — `when.all: [brief.locked equals true; recipe.domain equals "product_hero"]`
+- [alternative] Domain scene planner (product grid) → `product-grid-scene-planner` (`references/skill-product-grid-scene-planner.md`) — `when.all: [brief.locked equals true; recipe.domain equals "product_grid"]`
+- [alternative] Domain scene planner (character portrait) → `character-portrait-scene-planner` (`references/skill-character-portrait-scene-planner.md`) — `when.all: [brief.locked equals true; recipe.domain equals "character_portrait"]`
+- [alternative] Domain scene planner (environment establishing shot) → `environment-establishing-shot-planner` (`references/skill-environment-establishing-shot-planner.md`) — `when.all: [brief.locked equals true; recipe.domain equals "environment_shot"]`
+- [alternative] Domain scene planner (interior architectural) → `interior-architectural-scene-planner` (`references/skill-interior-architectural-scene-planner.md`) — `when.all: [brief.locked equals true; recipe.domain equals "interior_archviz"]`
 
 ## Safety boundaries & non-goals
 - Runtime boundary: Planning-only skill. Does not configure MCP, Blender, or hosts. When mentioning runtime, use the 2-path + CLI appendix model from `docs/runtime-stack-strategy.md` only as context for whether a workflow expects interactive MCP vs batch CLI — never claim runtime success.

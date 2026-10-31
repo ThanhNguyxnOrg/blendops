@@ -5,7 +5,7 @@ Purpose: Provide detailed composition and camera planning for product hero outpu
 
 Design high-quality composition/camera strategy for product hero scenes in plain, actionable language.
 
-Metadata: Category `scene-planners` | Role `camera-rig-and-composition-deep-planner` | Tier `L0` | Runtime default `Not Run` | Artifact default `Not Produced` | Mutation `downgrade_only`
+Metadata: Contract `v1.0.0` | Category `scene-planners` | Role `camera-rig-and-composition-deep-planner` | Tier `L0` | Runtime default `Not Run` | Artifact default `Not Produced` | Mutation `downgrade_only`
 
 ## When to use & trigger cues
 - expanding an upstream scene brief from `product-hero-scene-planner` into detailed framing and camera direction
@@ -33,12 +33,12 @@ Metadata: Category `scene-planners` | Role `camera-rig-and-composition-deep-plan
 4. follow suggested next-skill handoff
 
 ## Cross-skill handoffs
-- [upstream_reference] Upstream input from → `product-hero-scene-planner` (`references/skill-product-hero-scene-planner.md`)
-- [conditional] Lateral output specs (if needed) (output-format-decision) → `output-format-decision` (`references/skill-output-format-decision.md`)
-- [conditional] Lateral output specs (if needed) (resolution-aspect-decision) → `resolution-aspect-decision` (`references/skill-resolution-aspect-decision.md`)
-- [progression] Next (lookdev & lighting) → `blender-lighting-material-planner` (`references/skill-blender-lighting-material-planner.md`)
-- [progression] Then (validation) (blender-scene-quality-checker) → `blender-scene-quality-checker` (`references/skill-blender-scene-quality-checker.md`)
-- [progression] Then (validation) (composition-quality-checker) → `composition-quality-checker` (`references/skill-composition-quality-checker.md`)
+- [upstream_reference] Upstream input from → `product-hero-scene-planner` (`references/skill-product-hero-scene-planner.md`) — `when.all: [brief.locked equals true; recipe.domain equals "product_hero"]`
+- [conditional] Lateral output specs (if needed) (output-format-decision) → `output-format-decision` (`references/skill-output-format-decision.md`) — `when.all: [decision.formatLocked equals false]`
+- [conditional] Lateral output specs (if needed) (resolution-aspect-decision) → `resolution-aspect-decision` (`references/skill-resolution-aspect-decision.md`) — `when.all: [decision.aspectLocked equals false]`
+- [progression] Next (lookdev & lighting) → `blender-lighting-material-planner` (`references/skill-blender-lighting-material-planner.md`) — `when.all: [brief.locked equals true; stage.current equals "lookdev_planning"]`
+- [progression] Then (validation) (blender-scene-quality-checker) → `blender-scene-quality-checker` (`references/skill-blender-scene-quality-checker.md`) — `when.all: [quality.domain equals "holistic"; stage.current equals "quality_validation"]`
+- [progression] Then (validation) (composition-quality-checker) → `composition-quality-checker` (`references/skill-composition-quality-checker.md`) — `when.all: [quality.domain equals "composition"; quality.verdict equals "not_run"]`
 
 ## Safety boundaries & non-goals
 - Runtime boundary: Planning-only skill: no Blender execution, no Python scripts, and no artifact generation. Runtime status stays `Not Run` and artifacts stay `Not Produced` (truth states are downgrade-only, never upgraded without verified evidence).

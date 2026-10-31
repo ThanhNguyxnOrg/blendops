@@ -53,13 +53,13 @@ Classify preview, render, `.blend`, and GLB/export evidence into a conservative,
 4. Pass the classified ledger to `pre-handoff-verification` to gate handoffs, `preview-report-template-writer` to render report Markdown, `glb-web-handoff` for web integration, or `non-blender-user-response-writer` for plain-language user responses.
 
 ## Handoff notes
-- **[upstream_reference]** Runtime readiness → `official-runtime-readiness-checker` (`references/skills/official-runtime-readiness-checker.md`)
-- **[upstream_reference]** Runtime attempt recording → `runtime-attempt-report-writer` (`references/skills/runtime-attempt-report-writer.md`)
-- **[upstream_reference]** Scene validation → `blender-scene-quality-checker` (`references/skills/blender-scene-quality-checker.md`)
-- **[progression]** Handoff gating (confirm-or-downgrade) → `pre-handoff-verification` (`references/skills/pre-handoff-verification.md`)
-- **[progression]** Report Markdown rendering → `preview-report-template-writer` (`references/skills/preview-report-template-writer.md`)
-- **[progression]** GLB/web handoff → `glb-web-handoff` (`references/skills/glb-web-handoff.md`)
-- **[progression]** User-facing explanation → `non-blender-user-response-writer` (`references/skills/non-blender-user-response-writer.md`)
+- **[upstream_reference]** Runtime readiness → `official-runtime-readiness-checker` (`references/skills/official-runtime-readiness-checker.md`) — `when.all: [runtime.path not_equals "unselected"; runtime.verifiedReady equals false]`
+- **[upstream_reference]** Runtime attempt recording → `runtime-attempt-report-writer` (`references/skills/runtime-attempt-report-writer.md`) — `when.all: [runtime.status in ["Attempted","Produced","Verified","Failed"]; request.topic equals "attempt_report"]`
+- **[upstream_reference]** Scene validation → `blender-scene-quality-checker` (`references/skills/blender-scene-quality-checker.md`) — `when.all: [quality.domain equals "holistic"; stage.current equals "quality_validation"]`
+- **[progression]** Handoff gating (confirm-or-downgrade) → `pre-handoff-verification` (`references/skills/pre-handoff-verification.md`) — `when.all: [stage.current equals "final_verification"]`
+- **[progression]** Report Markdown rendering → `preview-report-template-writer` (`references/skills/preview-report-template-writer.md`) — `when.all: [stage.current equals "report_formatting"; handoff.consumerStack equals "stakeholder_report"]`
+- **[progression]** GLB/web handoff → `glb-web-handoff` (`references/skills/glb-web-handoff.md`) — `when.all: [artifact.type equals "glb"; handoff.consumerStack equals "web_glb"]`
+- **[progression]** User-facing explanation → `non-blender-user-response-writer` (`references/skills/non-blender-user-response-writer.md`) — `when.all: [stage.current equals "final_communication"]`
 
 ## Safety boundaries & non-goals
 - **Runtime boundary:** This skill classifies evidence from the 2-path + CLI appendix runtime model (see `docs/runtime-stack-strategy.md`):

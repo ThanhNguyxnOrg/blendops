@@ -51,11 +51,11 @@ Translate a wide place-establishing intent (locale, time of day, weather, atmosp
 6. flag asset rows for `blender-asset-discovery-planner` and emit validation handoffs with `Runtime status: Not Run` and `Artifact status: Not Produced`
 
 ## Handoff notes
-- **[upstream_reference]** Brief writer → `intent-to-3d-brief-writer` (`references/skills/intent-to-3d-brief-writer.md`)
-- **[upstream_reference]** Asset discovery → `blender-asset-discovery-planner` (`references/skills/blender-asset-discovery-planner.md`)
-- **[progression]** Composition validation → `composition-quality-checker` (`references/skills/composition-quality-checker.md`)
-- **[progression]** Lighting validation → `lighting-quality-checker` (`references/skills/lighting-quality-checker.md`)
-- **[progression]** Quality readiness → `blender-scene-quality-checker` (`references/skills/blender-scene-quality-checker.md`)
+- **[upstream_reference]** Brief writer → `intent-to-3d-brief-writer` (`references/skills/intent-to-3d-brief-writer.md`) — `when.all: [goal.clarity equals "clear"; brief.locked equals false]`
+- **[upstream_reference]** Asset discovery → `blender-asset-discovery-planner` (`references/skills/blender-asset-discovery-planner.md`) — `when.all: [brief.locked equals true; assets.discoveryComplete equals false]`
+- **[progression]** Composition validation → `composition-quality-checker` (`references/skills/composition-quality-checker.md`) — `when.all: [quality.domain equals "composition"; quality.verdict equals "not_run"]`
+- **[progression]** Lighting validation → `lighting-quality-checker` (`references/skills/lighting-quality-checker.md`) — `when.all: [quality.domain equals "lighting"; quality.verdict equals "not_run"]`
+- **[progression]** Quality readiness → `blender-scene-quality-checker` (`references/skills/blender-scene-quality-checker.md`) — `when.all: [quality.domain equals "holistic"; stage.current equals "quality_validation"]`
 
 ## Safety boundaries & non-goals
 - **Runtime boundary:** Planning-only skill: no modeling, no Geometry Nodes, no render, and no Blender execution. `Runtime status` stays `Not Run` and `Artifact status` stays `Not Produced` (downgrade-only, never upgrade). If the brief or locale scope is unclear, hand off to `intent-to-3d-brief-writer`.

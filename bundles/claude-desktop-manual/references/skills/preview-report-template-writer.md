@@ -48,11 +48,11 @@ Standardize how a preview / render / export run's evidence is summarized so that
 4. mark unmeasured or unproduced fields as `Not Run` / `Not Produced` (no-run reports are full `Not Run` / `Not Produced` placeholders)
 
 ## Handoff notes
-- **[upstream_reference]** Measured evidence input (supplies measurements + truth states) → `render-export-evidence` (`references/skills/render-export-evidence.md`)
-- **[progression]** Handoff gate (gates handoffs before downstream delivery) → `pre-handoff-verification` (`references/skills/pre-handoff-verification.md`)
-- **[progression]** Web handoff consumer → `glb-web-handoff` (`references/skills/glb-web-handoff.md`)
-- **[progression]** Final non-Blender user response consumer → `non-blender-user-response-writer` (`references/skills/non-blender-user-response-writer.md`)
-- **[fallback]** Raw debug log triage (out of scope here) → `blender-troubleshooting` (`references/skills/blender-troubleshooting.md`)
+- **[upstream_reference]** Measured evidence input (supplies measurements + truth states) → `render-export-evidence` (`references/skills/render-export-evidence.md`) — `when.all: [stage.current equals "post_execution_audit"]`
+- **[progression]** Handoff gate (gates handoffs before downstream delivery) → `pre-handoff-verification` (`references/skills/pre-handoff-verification.md`) — `when.all: [stage.current equals "final_verification"]`
+- **[progression]** Web handoff consumer → `glb-web-handoff` (`references/skills/glb-web-handoff.md`) — `when.all: [artifact.type equals "glb"; handoff.consumerStack equals "web_glb"]`
+- **[progression]** Final non-Blender user response consumer → `non-blender-user-response-writer` (`references/skills/non-blender-user-response-writer.md`) — `when.all: [stage.current equals "final_communication"]`
+- **[fallback]** Raw debug log triage (out of scope here) → `blender-troubleshooting` (`references/skills/blender-troubleshooting.md`) — `when.all: [runtime.errorDetected equals true]`
 
 ## Safety boundaries & non-goals
 - **Runtime boundary:** This skill is documentation only. It never runs Blender, renders, exports, or parses logs (`render-export-evidence` supplies measurements; `blender-troubleshooting` owns raw debug logs). It only formats existing evidence into the canonical schema. If the run did not happen, the report is a full placeholder with every artifact at `Not Run` / `Not Produced`.

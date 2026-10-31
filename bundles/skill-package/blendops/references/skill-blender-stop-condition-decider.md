@@ -5,7 +5,7 @@ Purpose: Define explicit "done" conditions for a Blender recipe before starting 
 
 Pin a single, explicit stop condition for one recipe BEFORE work begins—consisting of one concrete sentence, an explicit out-of-scope list, and a handoff trigger—so the agent stops at the right point instead of drifting into endless polish. Firing the stop condition routes the deliverable to the next skill; it never upgrades any runtime or artifact truth state. Inspired by Anthropic Superpowers `/just-say-when-it's-done` analog.
 
-Metadata: Category `process-discipline` | Role `done-condition-and-iteration-cap-pinner` | Tier `L0` | Runtime default `Not Run` | Artifact default `Not Produced` | Mutation `downgrade_only`
+Metadata: Contract `v1.0.0` | Category `process-discipline` | Role `done-condition-and-iteration-cap-pinner` | Tier `L0` | Runtime default `Not Run` | Artifact default `Not Produced` | Mutation `downgrade_only`
 
 ## When to use & trigger cues
 - BEFORE starting work on any non-trivial single Blender recipe
@@ -35,13 +35,13 @@ Metadata: Category `process-discipline` | Role `done-condition-and-iteration-cap
 4. enforce: do not polish past the stop condition; do not declare done before it
 
 ## Cross-skill handoffs
-- [upstream_reference] Intent brief → `intent-to-3d-brief-writer` (`references/skill-intent-to-3d-brief-writer.md`)
-- [boundary_delegation] Scope splitting beforehand → `blender-recipe-decomposer` (`references/skill-blender-recipe-decomposer.md`)
-- [upstream_reference] Measurable acceptance rows → `acceptance-criteria-builder` (`references/skill-acceptance-criteria-builder.md`)
-- [progression] Per-stage workflow gates → `blender-checklist-driven-workflow` (`references/skill-blender-checklist-driven-workflow.md`)
-- [progression] Mid-flight scope drift → `blender-scope-boundary-enforcer` (`references/skill-blender-scope-boundary-enforcer.md`)
-- [progression] Artifact and render evidence → `render-export-evidence` (`references/skill-render-export-evidence.md`)
-- [progression] Final pre-handoff gate → `pre-handoff-verification` (`references/skill-pre-handoff-verification.md`)
+- [upstream_reference] Intent brief → `intent-to-3d-brief-writer` (`references/skill-intent-to-3d-brief-writer.md`) — `when.all: [goal.clarity equals "clear"; brief.locked equals false]`
+- [boundary_delegation] Scope splitting beforehand → `blender-recipe-decomposer` (`references/skill-blender-recipe-decomposer.md`) — `when.all: [fit.multiDeliverableDetected equals true]`
+- [upstream_reference] Measurable acceptance rows → `acceptance-criteria-builder` (`references/skill-acceptance-criteria-builder.md`) — `when.all: [brief.locked equals true; stage.current equals "acceptance_criteria"]`
+- [progression] Per-stage workflow gates → `blender-checklist-driven-workflow` (`references/skill-blender-checklist-driven-workflow.md`) — `when.all: [brief.locked equals true; stage.current equals "stage_gates"]`
+- [progression] Mid-flight scope drift → `blender-scope-boundary-enforcer` (`references/skill-blender-scope-boundary-enforcer.md`) — `when.all: [scope.driftDetected equals true]`
+- [progression] Artifact and render evidence → `render-export-evidence` (`references/skill-render-export-evidence.md`) — `when.all: [stage.current equals "post_execution_audit"]`
+- [progression] Final pre-handoff gate → `pre-handoff-verification` (`references/skill-pre-handoff-verification.md`) — `when.all: [stage.current equals "final_verification"]`
 
 ## Safety boundaries & non-goals
 - Runtime boundary: Process and discipline skill only—no Python code and no Blender execution. This skill writes the stop condition before work starts and routes handoff when the condition is met; it never executes runtime tasks or upgrades truth states.

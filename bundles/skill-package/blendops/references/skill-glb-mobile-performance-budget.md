@@ -5,7 +5,7 @@ Purpose: Set explicit triangle / texture / draw-call / file-size / animation bud
 
 Translate "make it work on mobile" intent into a concrete numeric planning ceiling table (triangles, vertices, GLB file size, texture pixels, materials, draw calls, animation channels, bones, morph targets) per device tier, scene scope, and target context. Pin this budget before scene mutation so downstream scene planners consume it, `polycount-budget-checker` and `material-quality-checker` validate counts and textures against it, `render-export-evidence` measures compliance, `glb-web-handoff` consumes it for web delivery, and `glb-animation-handoff` owns animation contracts.
 
-Metadata: Category `evidence-and-handoff` | Role `mobile-webgl-budget-validator` | Tier `L0` | Runtime default `Not Run` | Artifact default `Not Produced` | Mutation `downgrade_only`
+Metadata: Contract `v1.0.0` | Category `evidence-and-handoff` | Role `mobile-webgl-budget-validator` | Tier `L0` | Runtime default `Not Run` | Artifact default `Not Produced` | Mutation `downgrade_only`
 
 ## When to use & trigger cues
 - before scene plan is locked
@@ -32,19 +32,19 @@ Metadata: Category `evidence-and-handoff` | Role `mobile-webgl-budget-validator`
 4. treat any later violation as a blocker, not a warning
 
 ## Cross-skill handoffs
-- [progression] Scene planning (consumes pinned budget) (blender-composition-camera-planner) → `blender-composition-camera-planner` (`references/skill-blender-composition-camera-planner.md`)
-- [progression] Scene planning (consumes pinned budget) (blender-lighting-material-planner) → `blender-lighting-material-planner` (`references/skill-blender-lighting-material-planner.md`)
-- [alternative] Scene planning (consumes pinned budget) (character-portrait-scene-planner) → `character-portrait-scene-planner` (`references/skill-character-portrait-scene-planner.md`)
-- [alternative] Scene planning (consumes pinned budget) (environment-establishing-shot-planner) → `environment-establishing-shot-planner` (`references/skill-environment-establishing-shot-planner.md`)
-- [alternative] Scene planning (consumes pinned budget) (interior-architectural-scene-planner) → `interior-architectural-scene-planner` (`references/skill-interior-architectural-scene-planner.md`)
-- [alternative] Scene planning (consumes pinned budget) (product-grid-scene-planner) → `product-grid-scene-planner` (`references/skill-product-grid-scene-planner.md`)
-- [alternative] Scene planning (consumes pinned budget) (product-hero-scene-planner) → `product-hero-scene-planner` (`references/skill-product-hero-scene-planner.md`)
-- [progression] Count and texture budget validation (blender-scene-quality-checker) → `blender-scene-quality-checker` (`references/skill-blender-scene-quality-checker.md`)
-- [progression] Count and texture budget validation (material-quality-checker) → `material-quality-checker` (`references/skill-material-quality-checker.md`)
-- [progression] Count and texture budget validation (polycount-budget-checker) → `polycount-budget-checker` (`references/skill-polycount-budget-checker.md`)
-- [progression] Measured export compliance → `render-export-evidence` (`references/skill-render-export-evidence.md`)
-- [progression] Web delivery handoff (consumes pinned budget) → `glb-web-handoff` (`references/skill-glb-web-handoff.md`)
-- [progression] Animation contracts (owns animation contract details within pinned channel/bone/morph ceilings) → `glb-animation-handoff` (`references/skill-glb-animation-handoff.md`)
+- [progression] Scene planning (consumes pinned budget) (blender-composition-camera-planner) → `blender-composition-camera-planner` (`references/skill-blender-composition-camera-planner.md`) — `when.all: [brief.locked equals true; stage.current equals "camera_planning"]`
+- [progression] Scene planning (consumes pinned budget) (blender-lighting-material-planner) → `blender-lighting-material-planner` (`references/skill-blender-lighting-material-planner.md`) — `when.all: [brief.locked equals true; stage.current equals "lookdev_planning"]`
+- [alternative] Scene planning (consumes pinned budget) (character-portrait-scene-planner) → `character-portrait-scene-planner` (`references/skill-character-portrait-scene-planner.md`) — `when.all: [brief.locked equals true; recipe.domain equals "character_portrait"]`
+- [alternative] Scene planning (consumes pinned budget) (environment-establishing-shot-planner) → `environment-establishing-shot-planner` (`references/skill-environment-establishing-shot-planner.md`) — `when.all: [brief.locked equals true; recipe.domain equals "environment_shot"]`
+- [alternative] Scene planning (consumes pinned budget) (interior-architectural-scene-planner) → `interior-architectural-scene-planner` (`references/skill-interior-architectural-scene-planner.md`) — `when.all: [brief.locked equals true; recipe.domain equals "interior_archviz"]`
+- [alternative] Scene planning (consumes pinned budget) (product-grid-scene-planner) → `product-grid-scene-planner` (`references/skill-product-grid-scene-planner.md`) — `when.all: [brief.locked equals true; recipe.domain equals "product_grid"]`
+- [alternative] Scene planning (consumes pinned budget) (product-hero-scene-planner) → `product-hero-scene-planner` (`references/skill-product-hero-scene-planner.md`) — `when.all: [brief.locked equals true; recipe.domain equals "product_hero"]`
+- [progression] Count and texture budget validation (blender-scene-quality-checker) → `blender-scene-quality-checker` (`references/skill-blender-scene-quality-checker.md`) — `when.all: [quality.domain equals "holistic"; stage.current equals "quality_validation"]`
+- [progression] Count and texture budget validation (material-quality-checker) → `material-quality-checker` (`references/skill-material-quality-checker.md`) — `when.all: [quality.domain equals "material"; quality.verdict equals "not_run"]`
+- [progression] Count and texture budget validation (polycount-budget-checker) → `polycount-budget-checker` (`references/skill-polycount-budget-checker.md`) — `when.all: [quality.domain equals "polycount"; budget.verdict equals "Not Run"]`
+- [progression] Measured export compliance → `render-export-evidence` (`references/skill-render-export-evidence.md`) — `when.all: [stage.current equals "post_execution_audit"]`
+- [progression] Web delivery handoff (consumes pinned budget) → `glb-web-handoff` (`references/skill-glb-web-handoff.md`) — `when.all: [artifact.type equals "glb"; handoff.consumerStack equals "web_glb"]`
+- [progression] Animation contracts (owns animation contract details within pinned channel/bone/morph ceilings) → `glb-animation-handoff` (`references/skill-glb-animation-handoff.md`) — `when.all: [artifact.hasAnimation equals true; stage.current equals "animation_handoff"]`
 
 ## Safety boundaries & non-goals
 - Runtime boundary: BlendOps runtime guidance uses **2 MCP execution paths plus a CLI fallback appendix** (see `docs/runtime-stack-strategy.md`):
