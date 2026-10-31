@@ -9,7 +9,7 @@ const root = process.cwd();
 const port = Number(process.env.PORT || 3000);
 const phase0Dir = path.join(root, 'docs', 'audits', 'phase-0');
 const currentDir = path.join(root, 'docs', 'audits', 'current');
-const bundlePath = '/tmp/blendops-phase-6.bundle';
+const bundlePath = '/tmp/blendops-phase-6.1.bundle';
 
 function loadJsonFrom(dir, filename) {
   const full = path.join(dir, filename);
@@ -249,7 +249,7 @@ function renderHtml() {
         <div>
           <div style="font-size:12px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:0.05em;">Verified Binary Git Bundle Ready (In-Memory Export — Zero Proxy)</div>
           <div class="mono" style="font-size:13px;margin-top:6px;">
-            File: <strong>blendops-phase-6.bundle</strong> &middot;
+            File: <strong>blendops-phase-6.1.bundle</strong> &middot;
             Size: <strong>${bundle.size.toLocaleString()} bytes</strong> &middot;
             Header: <strong>${bundle.header}</strong> &middot;
             SHA-256: <strong>${bundle.sha256}</strong>
@@ -460,7 +460,7 @@ function renderHtml() {
       try {
         if (window.showSaveFilePicker) {
           var handle = await window.showSaveFilePicker({
-            suggestedName: 'blendops-phase-6.bundle',
+            suggestedName: 'blendops-phase-6.1.bundle',
             types: [{ description: 'Git v2 Bundle', accept: { 'application/octet-stream': ['.bundle'] } }]
           });
           var writable = await handle.createWritable();
@@ -477,7 +477,7 @@ function renderHtml() {
       var url = URL.createObjectURL(blob);
       var a = document.createElement('a');
       a.href = url;
-      a.download = 'blendops-phase-6.bundle';
+      a.download = 'blendops-phase-6.1.bundle';
       document.body.appendChild(a);
       a.click();
       setTimeout(function () {
@@ -493,7 +493,7 @@ function renderHtml() {
       if (!el) return;
       await navigator.clipboard.writeText(el.value.trim());
       status.style.display = 'block';
-      status.textContent = 'Copied Base64 payload to clipboard! Run in PowerShell: [IO.File]::WriteAllBytes("blendops-phase-6.bundle", [Convert]::FromBase64String((Get-Clipboard)))';
+      status.textContent = 'Copied Base64 payload to clipboard! Run in PowerShell: [IO.File]::WriteAllBytes("blendops-phase-6.1.bundle", [Convert]::FromBase64String((Get-Clipboard)))';
     }
   </script>
 </body>
@@ -513,7 +513,7 @@ const server = http.createServer((req, res) => {
     res.end(
       JSON.stringify({
         exists: info.exists,
-        filename: 'blendops-phase-6.bundle',
+        filename: 'blendops-phase-6.1.bundle',
         size: info.size,
         sha256: info.sha256,
         header: info.header,
@@ -521,7 +521,11 @@ const server = http.createServer((req, res) => {
     );
     return;
   }
-  if (url === '/blendops-phase-6.bundle' || url === '/blendops-phase-5.bundle') {
+  if (
+    url === '/blendops-phase-6.1.bundle' ||
+    url === '/blendops-phase-6.bundle' ||
+    url === '/blendops-phase-5.bundle'
+  ) {
     const info = getBundleInfo();
     if (!info.exists) {
       res.writeHead(404, { 'Content-Type': 'application/json' });
@@ -531,7 +535,7 @@ const server = http.createServer((req, res) => {
     const rawBuf = fs.readFileSync(bundlePath);
     res.writeHead(200, {
       'Content-Type': 'application/octet-stream',
-      'Content-Disposition': 'attachment; filename="blendops-phase-6.bundle"',
+      'Content-Disposition': 'attachment; filename="blendops-phase-6.1.bundle"',
       'Content-Length': String(rawBuf.length),
       'Cache-Control': 'no-store',
     });

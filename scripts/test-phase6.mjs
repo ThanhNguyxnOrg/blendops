@@ -645,34 +645,63 @@ describe('Phase 6 — Full-Catalog Behavioral Evaluation Coverage & F-04 Resolut
   });
 
   it('Scenario 23: scripts/export-claude-skills.mjs still exports all 48 skills with SKILL.md, EVAL.md, and references/', () => {
-    const out = execFileSync(
-      process.execPath,
-      [path.join(root, 'scripts', 'export-claude-skills.mjs')],
-      { cwd: root, encoding: 'utf8' },
-    );
-    assert.match(out, /Exported 48 Claude skill zips/i);
+    const tempExportRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-phase6-export-'));
+    try {
+      const out = execFileSync(
+        process.execPath,
+        [path.join(root, 'scripts', 'export-claude-skills.mjs'), '--output-root', tempExportRoot],
+        { cwd: root, encoding: 'utf8' },
+      );
+      assert.match(out, /Exported 48 Claude skill zips/i);
 
-    for (const skillId of catalogIds) {
-      const zipPath = path.join(root, 'dist', 'claude-skills', 'desktop-zips', `${skillId}.zip`);
-      const folderSkillMd = path.join(
-        root,
-        'dist',
-        'claude-skills',
-        'claude-code-skills',
-        skillId,
-        'SKILL.md',
-      );
-      const folderEvalMd = path.join(
-        root,
-        'dist',
-        'claude-skills',
-        'claude-code-skills',
-        skillId,
-        'EVAL.md',
-      );
-      assert.equal(fs.existsSync(zipPath), true);
-      assert.equal(fs.existsSync(folderSkillMd), true);
-      assert.equal(fs.existsSync(folderEvalMd), true);
+      const manifestPath = path.join(tempExportRoot, 'manifest.json');
+      assert.equal(fs.existsSync(manifestPath), true);
+      const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+      assert.equal(manifest.skillCount, 48);
+      assert.deepEqual(manifest.skills, catalogIds);
+
+      for (const skillId of catalogIds) {
+        const zipPath = path.join(tempExportRoot, 'desktop-zips', `${skillId}.zip`);
+        const folderSkillMd = path.join(
+          tempExportRoot,
+          'claude-code-skills',
+          skillId,
+          'SKILL.md',
+        );
+        const folderEvalMd = path.join(
+          tempExportRoot,
+          'claude-code-skills',
+          skillId,
+          'EVAL.md',
+        );
+        assert.equal(fs.existsSync(zipPath), true, `Missing ZIP for ${skillId}`);
+        assert.equal(fs.existsSync(folderSkillMd), true, `Missing SKILL.md for ${skillId}`);
+        assert.equal(fs.existsSync(folderEvalMd), true, `Missing EVAL.md for ${skillId}`);
+
+        const srcRefsDir = path.join(root, 'skills', skillId, 'references');
+        if (fs.existsSync(srcRefsDir)) {
+          const refFiles = fs
+            .readdirSync(srcRefsDir, { withFileTypes: true })
+            .filter((d) => d.isFile())
+            .map((d) => d.name);
+          for (const refFile of refFiles) {
+            const exportedRefPath = path.join(
+              tempExportRoot,
+              'claude-code-skills',
+              skillId,
+              'references',
+              refFile,
+            );
+            assert.equal(
+              fs.existsSync(exportedRefPath),
+              true,
+              `Missing exported reference ${skillId}/references/${refFile}`,
+            );
+          }
+        }
+      }
+    } finally {
+      fs.rmSync(tempExportRoot, { recursive: true, force: true });
     }
   });
 

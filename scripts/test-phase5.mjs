@@ -748,11 +748,40 @@ describe('Phase 5 — Full Catalog Contract Coverage & F-03 Resolution (30 Scena
     );
     assert.match(regCheckOut, /48 contracted skills, 371 edges/);
 
-    const exportOut = execFileSync(
-      process.execPath,
-      [path.join(root, 'scripts', 'export-claude-skills.mjs')],
-      { cwd: root, encoding: 'utf8' },
-    );
-    assert.match(exportOut, /Exported 48 Claude skill zips/i);
+    const tempExportRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-phase5-export-'));
+    try {
+      const exportOut = execFileSync(
+        process.execPath,
+        [path.join(root, 'scripts', 'export-claude-skills.mjs'), '--output-root', tempExportRoot],
+        { cwd: root, encoding: 'utf8' },
+      );
+      assert.match(exportOut, /Exported 48 Claude skill zips/i);
+
+      const manifest = JSON.parse(
+        fs.readFileSync(path.join(tempExportRoot, 'manifest.json'), 'utf8'),
+      );
+      assert.equal(manifest.skillCount, 48);
+      assert.deepEqual(manifest.skills, catalogSkillIds);
+      for (const skillId of catalogSkillIds) {
+        assert.equal(
+          fs.existsSync(path.join(tempExportRoot, 'desktop-zips', `${skillId}.zip`)),
+          true,
+        );
+        assert.equal(
+          fs.existsSync(
+            path.join(tempExportRoot, 'claude-code-skills', skillId, 'SKILL.md'),
+          ),
+          true,
+        );
+        assert.equal(
+          fs.existsSync(
+            path.join(tempExportRoot, 'claude-code-skills', skillId, 'EVAL.md'),
+          ),
+          true,
+        );
+      }
+    } finally {
+      fs.rmSync(tempExportRoot, { recursive: true, force: true });
+    }
   });
 });

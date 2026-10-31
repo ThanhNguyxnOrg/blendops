@@ -1,11 +1,175 @@
 #!/usr/bin/env node
 import fs from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
 import { zipSync } from 'fflate';
 
 const root = process.cwd();
 const skillsDir = path.join(root, 'skills');
-const outRoot = path.join(root, 'dist', 'claude-skills');
+
+const PROTECTED_REPO_ENTRIES = new Set([
+  '.git',
+  '.github',
+  '.aistudio',
+  'bundles',
+  'docs',
+  'evals',
+  'laws',
+  'node_modules',
+  'packs',
+  'registry',
+  'schemas',
+  'scripts',
+  'skill-reviews',
+  'skills',
+  'AGENTS.md',
+  'CHANGELOG.md',
+  'CODE_OF_CONDUCT.md',
+  'CONTRIBUTING.md',
+  'LICENSE',
+  'README.md',
+  'SECURITY.md',
+  'SUPPORT.md',
+  'TODO.md',
+  'package.json',
+  'package-lock.json',
+]);
+
+function resolveWithExistingAncestorRealpath(targetPath) {
+  const absTarget = path.resolve(targetPath);
+  const tailSegments = [];
+  let cursor = absTarget;
+
+  while (!fs.existsSync(cursor)) {
+    const parent = path.dirname(cursor);
+    if (parent === cursor) break;
+    tailSegments.unshift(path.basename(cursor));
+    cursor = parent;
+  }
+
+  const baseReal = fs.existsSync(cursor) ? fs.realpathSync(cursor) : cursor;
+  return tailSegments.length > 0 ? path.join(baseReal, ...tailSegments) : baseReal;
+}
+
+function parseCliArgs(argv) {
+  let outputRootArg = null;
+
+  for (let i = 0; i < argv.length; i += 1) {
+    const arg = argv[i];
+    if (arg === '--output-root') {
+      if (outputRootArg !== null) {
+        throw new Error('Duplicate --output-root argument');
+      }
+      if (i + 1 >= argv.length) {
+        throw new Error('Missing value for --output-root');
+      }
+      const nextVal = argv[i + 1];
+      if (typeof nextVal !== 'string' || nextVal.trim() === '' || nextVal.startsWith('-')) {
+        throw new Error(`Invalid path value for --output-root: ${String(nextVal)}`);
+      }
+      outputRootArg = nextVal;
+      i += 1;
+    } else if (typeof arg === 'string' && arg.startsWith('--output-root=')) {
+      if (outputRootArg !== null) {
+        throw new Error('Duplicate --output-root argument');
+      }
+      const eqVal = arg.slice('--output-root='.length);
+      if (eqVal.trim() === '' || eqVal.startsWith('-')) {
+        throw new Error(`Invalid path value for --output-root: ${eqVal}`);
+      }
+      outputRootArg = eqVal;
+    } else {
+      throw new Error(`Unknown or malformed CLI argument: ${String(arg)}`);
+    }
+  }
+
+  return { outputRootArg };
+}
+
+function resolveSafeOutputRoot(rawOutputRoot, rootDir = root) {
+  if (rawOutputRoot === null || rawOutputRoot === undefined) {
+    return path.join(rootDir, 'dist', 'claude-skills');
+  }
+  if (
+    typeof rawOutputRoot !== 'string' ||
+    rawOutputRoot.trim() === '' ||
+    rawOutputRoot.includes('\0')
+  ) {
+    throw new Error('Invalid --output-root path');
+  }
+
+  const realRoot = fs.realpathSync(rootDir);
+  const resolvedCandidate = path.resolve(rootDir, rawOutputRoot.trim());
+  const effectiveTarget = resolveWithExistingAncestorRealpath(resolvedCandidate);
+
+  if (
+    resolvedCandidate === path.parse(resolvedCandidate).root ||
+    effectiveTarget === path.parse(effectiveTarget).root
+  ) {
+    throw new Error(`Unsafe --output-root destination (filesystem root): ${rawOutputRoot}`);
+  }
+
+  const tmpResolved = path.resolve(os.tmpdir());
+  const tmpReal = fs.existsSync(tmpResolved) ? fs.realpathSync(tmpResolved) : tmpResolved;
+  if (resolvedCandidate === tmpResolved || effectiveTarget === tmpReal) {
+    throw new Error(`Unsafe --output-root destination (OS temp root itself): ${rawOutputRoot}`);
+  }
+
+  const relFromTargetToRoot = path.relative(effectiveTarget, realRoot);
+  if (
+    relFromTargetToRoot === '' ||
+    (!relFromTargetToRoot.startsWith('..') && !path.isAbsolute(relFromTargetToRoot))
+  ) {
+    throw new Error(
+      `Unsafe --output-root destination (repository root or ancestor): ${rawOutputRoot}`,
+    );
+  }
+
+  const relFromRootToTarget = path.relative(realRoot, effectiveTarget);
+  const isInsideRepo =
+    relFromRootToTarget !== '' &&
+    !relFromRootToTarget.startsWith('..') &&
+    !path.isAbsolute(relFromRootToTarget);
+
+  if (isInsideRepo) {
+    const segments = relFromRootToTarget.split(path.sep);
+    const topSegment = segments[0];
+    if (PROTECTED_REPO_ENTRIES.has(topSegment)) {
+      throw new Error(
+        `Unsafe --output-root destination (protected repository path '${topSegment}'): ${rawOutputRoot}`,
+      );
+    }
+    if (topSegment === 'dist' && segments.length < 2) {
+      throw new Error(
+        `Unsafe --output-root destination (must be a subdirectory inside dist/, not dist/ itself): ${rawOutputRoot}`,
+      );
+    }
+  }
+
+  if (fs.existsSync(effectiveTarget) && fs.statSync(effectiveTarget).isFile()) {
+    throw new Error(`Unsafe --output-root destination (existing file): ${rawOutputRoot}`);
+  }
+
+  return resolvedCandidate;
+}
+
+function formatManifestOutputPrefix(targetPath, rootDir = root) {
+  const rel = path.relative(rootDir, targetPath);
+  if (rel && !rel.startsWith('..') && !path.isAbsolute(rel)) {
+    return rel.split(path.sep).join('/');
+  }
+  return targetPath.split(path.sep).join('/');
+}
+
+let outRoot;
+try {
+  const { outputRootArg } = parseCliArgs(process.argv.slice(2));
+  outRoot = resolveSafeOutputRoot(outputRootArg, root);
+} catch (err) {
+  console.error(err instanceof Error ? err.message : String(err));
+  process.exit(1);
+}
+
 const desktopDir = path.join(outRoot, 'desktop-zips');
 const codeDir = path.join(outRoot, 'claude-code-skills');
 
@@ -86,18 +250,21 @@ for (const name of skillNames) {
   zipDir(codeDest, path.join(desktopDir, `${name}.zip`));
 }
 
+const desktopDisplay = formatManifestOutputPrefix(desktopDir, root);
+const codeDisplay = formatManifestOutputPrefix(codeDir, root);
+
 const manifest = {
   generatedAt: new Date().toISOString(),
   source: 'skills/*/SKILL.md',
   skillCount: skillNames.length,
   outputs: {
-    claudeDesktop: 'dist/claude-skills/desktop-zips/*.zip',
-    claudeCode: 'dist/claude-skills/claude-code-skills/*/SKILL.md',
+    claudeDesktop: `${desktopDisplay}/*.zip`,
+    claudeCode: `${codeDisplay}/*/SKILL.md`,
   },
   skills: skillNames,
 };
 
 fs.writeFileSync(path.join(outRoot, 'manifest.json'), `${JSON.stringify(manifest, null, 2)}\n`);
 
-console.log(`Exported ${skillNames.length} Claude skill zips to ${path.relative(root, desktopDir)}`);
-console.log(`Exported ${skillNames.length} Claude Code skill folders to ${path.relative(root, codeDir)}`);
+console.log(`Exported ${skillNames.length} Claude skill zips to ${desktopDisplay}`);
+console.log(`Exported ${skillNames.length} Claude Code skill folders to ${codeDisplay}`);
