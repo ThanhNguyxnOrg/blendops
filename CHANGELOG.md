@@ -5,9 +5,20 @@ content layer (docs + skills + laws + packs); it does not own runtime execution,
 which is redirected to upstream (Blender Lab MCP, Anthropic Connector,
 community `mcp-for-blender`, Blender CLI).
 
-## [Unreleased] — Phases 10–13 (Installer, Distributable CLI, Web-Ready GLB Delivery & Repository Finalization)
+## [Unreleased]
+
+## [v0.9.0-draft] — 2026-11-01 (Draft v9: Deterministic ZIP Export & CI Closure)
+
+This release candidate closes the repository-owned implementation scope through Phase 13.1. It remains a draft content/workflow layer, not a production or stable runtime release.
+
+### Verified
+- Phase 13.1 bundle identity was verified locally: 3,066,010 bytes; SHA-256 `0fe7a97b1dbb6193a9ababf2c05c8c9910ff105d590b106278af57251a7b478d`; Git bundle integrity and all 10 refs passed.
+- Commit `d1b2e6b4c539171456d229f16433f5e12202dbee` contains the Phase 13.1 implementation.
+- GitHub Actions run [#180](https://github.com/ThanhNguyxnOrg/blendops/actions/runs/41323580235) passed all four jobs: Windows CLI tests, macOS CLI tests, Ubuntu CLI tests, and docs `npm run ci`.
+- The npm package remains private and unpublished; no npm registry release is included.
 
 ### Added
+- **Phase 13.1 Deterministic ZIP Export & CI Closure (`scripts/export-claude-skills.mjs`, `scripts/test-phase13.mjs`)**: Fixed ZIP entry timestamps to a canonical DOS timestamp, replaced locale-dependent entry sorting with deterministic code-unit ordering, and added cross-time-zone byte-identity checks. The Phase 13.1 cross-platform workflow passed on Windows, macOS, Ubuntu, and the docs CI job.
 - **Phase 13 Repository Architecture, Organization & Finalization (`scripts/validate-repository-architecture.mjs`, `docs/audits/current/repository-inventory.json`, `scripts/test-phase13.mjs`)**: Added complete machine-readable repository inventory classifying all tracked files, automated internal reference & schema integrity verification (`npm run arch:check`), `.gitattributes` and `.editorconfig` cross-platform hygiene, Windows drive-root & parallel suite guard remediation for Phase 12 CI, and comprehensive architecture documentation (`docs/architecture.md`).
 - **Phase 12 Web-Ready GLB Delivery & Viewer Integration (`schemas/glb-web-handoff-manifest.schema.json`, `scripts/inspect-glb.mjs`, `scripts/generate-glb-handoff-report.mjs`, `docs/examples/glb-web-handoff/`)**: Added GLB 2.0 scene hierarchy, accessor bounds, extension, and URI safety inspection, deterministic JSON/Markdown/HTML web handoff reports, CLI subcommands (`blendops glb-inspect`, `blendops glb-handoff`, `blendops glb-validate-manifest`), and Three.js / React Three Fiber viewer integration modules (`scripts/test-phase12.mjs`).
 - **Phase 11 Distributable CLI (`bin/blendops.mjs`)**: Added `blendops` CLI entrypoint (`blendops --version`, `blendops --help`, `blendops doctor`, `blendops install`, `blendops rollback`), `package.json` `"bin"` and `"files"` allowlist for deterministic `npm pack` tarballs, runtime `fflate` dependency, and end-to-end consumer tarball test suite (`scripts/test-phase11.mjs`). Package remains unpublished (`"private": true`).

@@ -17,7 +17,7 @@
 [![Path 2 user-reported: verified](https://img.shields.io/badge/path%202%20user--reported-verified-2ea44f.svg?style=flat-square)](./docs/unofficial-runtime-bridges.md)
 [![Full runtime eval: Not Run](https://img.shields.io/badge/full%20runtime%20eval-Not%20Run-lightgrey.svg?style=flat-square)](./docs/release-readiness-rollup-v0.md)
 [![Artifacts: Not Produced](https://img.shields.io/badge/artifacts-Not%20Produced-lightgrey.svg?style=flat-square)](./docs/release-readiness-rollup-v0.md)
-[![Release: v0.7.0-draft](https://img.shields.io/github/v/release/ThanhNguyxnOrg/blendops?include_prereleases&label=release&color=2ea44f&style=flat-square)](https://github.com/ThanhNguyxnOrg/blendops/releases/tag/v0.7.0-draft)
+[![Release: v0.9.0-draft](https://img.shields.io/github/v/release/ThanhNguyxnOrg/blendops?include_prereleases&label=release&color=2ea44f&style=flat-square)](https://github.com/ThanhNguyxnOrg/blendops/releases/tag/v0.9.0-draft)
 
 [![Skills: 48](https://img.shields.io/badge/skills-48-1f6feb.svg?style=flat-square)](./skills/README.md)
 [![Laws: 4](https://img.shields.io/badge/laws-4-1f6feb.svg?style=flat-square)](./laws/README.md)
@@ -89,7 +89,7 @@ Human intent (non-Blender user)
 
 **What this means for "completeness":**
 
-- The **skills layer** (48 skills = 3× baseline + workflows + install docs + ZIP generation + CI guards) is **complete** at Draft v0 — nothing upstream blocks it. Milestones: tag `v0.4.0-draft` @ 40 skills, tag `v0.5.0-draft` @ 48 skills (full roadmap).
+- The **skills layer** (48 skills = 3× baseline + workflows + install docs + ZIP generation + CI guards) is **complete** at Draft v0 — nothing upstream blocks it. Historical milestones: `v0.4.0-draft` @ 40 skills, `v0.5.0-draft` @ 48 skills, `v0.7.0-draft` @ 26 install targets, and `v0.8.0-draft` @ review hardening. The `v0.9.0-draft` candidate records deterministic ZIP export and cross-platform CI closure.
 - Whether the **upstream runtime paths work in your environment** is up to upstream Blender Foundation / Anthropic / community `mcp-for-blender` (Path 1 + Path 2 are user-reported verified by the repo owner — operator statement, does not promote eval scope; CLI is upstream-documented). BlendOps **redirects** to them via per-target install docs but does not own their stability.
 - The "Full runtime eval: Not Run" / "Artifacts: Not Produced" labels refer to **in-repo provenance evidence files only** — operator-side records under `docs/evals/`. They do **not** mean "the upstream runtime paths don't work" or "BlendOps is incomplete."
 

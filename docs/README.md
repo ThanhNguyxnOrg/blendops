@@ -3,7 +3,7 @@
 The single index for everything in this repo. Bookmark this page.
 
 > [!WARNING]
-> BlendOps is **Draft v0**. It is a documentation + skill-pack project, not a production-ready tool. No marketplace listing. No published npm registry package (`bin/blendops.mjs` is packaged for local/tarball use with `"private": true`). Runtime evidence is partial (Path 1 read-only smoke only).
+> BlendOps remains a **Draft v0 content/workflow layer**, not a production-ready or stable runtime product. The Draft v9 / `v0.9.0-draft` release candidate closes repository implementation through Phase 13.1; its cross-platform GitHub Actions run passed 4/4 jobs. No marketplace listing or published npm package is claimed (`"private": true`). Runtime execution/artifacts remain `Not Run` / `Not Produced` unless separately evidenced.
 
 ---
 
@@ -19,7 +19,7 @@ The single index for everything in this repo. Bookmark this page.
 | CLI fallback | Not Run | **Documented upstream** as a first-class Blender CLI surface; no in-repo evidence file yet. |
 | Full runtime manual eval (any path) | Not Run | Mutation/render/export not attempted. |
 | Runtime artifacts | Not Produced | No fresh preview/render/GLB. |
-| Release tag (`v0.1.0-draft`) | 🟡 Tag-able now | Skills layer is complete; tagging is a publishing decision, not gated on upstream runtime evidence. |
+| Draft v9 release (`v0.9.0-draft`) | Candidate ready; GitHub publication pending | Phase 13.1 bundle verified and GitHub Actions run #180 passed all four jobs; npm remains private and unpublished. |
 | Local CLI / tarball package | Implemented locally (`Not Published`) | `bin/blendops.mjs` + `scripts/install-skills.mjs` verified via `npm pack`; no public npm registry or marketplace listing claimed. |
 | GLB Web Handoff & Viewer Integration | Implemented (`Not Run` / `Not Produced` for live Blender exports) | `schemas/glb-web-handoff-manifest.schema.json`, `scripts/inspect-glb.mjs`, `scripts/generate-glb-handoff-report.mjs`, CLI `glb-inspect` / `glb-handoff` / `glb-validate-manifest`, and Three.js + R3F examples in [`examples/glb-web-handoff/README.md`](./examples/glb-web-handoff/README.md). |
 | Repository architecture & file inventory | Verified (`npm run arch:check`) | Canonical source, generated artifact, historical record, documentation, runtime/test, distribution, and config classification in [`architecture.md`](./architecture.md) and [`audits/current/repository-inventory.json`](./audits/current/repository-inventory.json). |
@@ -268,5 +268,5 @@ Legacy quick links below cover only the **baseline 16**; the [`skills/README.md`
 - BlendOps does not install Blender, configure the Anthropic Blender Connector, configure the Blender Lab MCP add-on, configure the community `mcp-for-blender` stack, or run Blender.
 - Read-only smoke evidence is not mutation/render/export evidence.
 - CLI fallback is **documented upstream** as a first-class Blender CLI surface; no in-repo evidence file yet.
-- No marketplace / npm / `npx` listing. No tag.
+- Draft v9 / `v0.9.0-draft` GitHub release candidate is prepared; its GitHub release record still needs publication. No marketplace or npm / `npx` package listing is claimed.
 - See [`release-readiness.md`](./release-readiness.md) for the full readiness state.

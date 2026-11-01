@@ -44,6 +44,17 @@ The `auditedInputsSha256` digest is governed by [`../audited-inputs.manifest.jso
 
 ---
 
+### 1.3 Post-snapshot release closure verification (Phase 13.1)
+
+The generated audit score and JSON provenance above remain the recorded snapshot from their documented `auditProvenance`; this release addendum does not rewrite that historical snapshot or claim a newly computed score. The following repository-closeout evidence is independently verified:
+
+| Gate | Verified result | Evidence |
+| :--- | :--- | :--- |
+| Phase 13.1 commit | `d1b2e6b4c539171456d229f16433f5e12202dbee` on `main`, parent `3bf6b50b5aaa891b55395681fde97858ce756600` | [Commit](https://github.com/ThanhNguyxnOrg/blendops/commit/d1b2e6b4c539171456d229f16433f5e12202dbee) |
+| Deterministic ZIP bundle | 3,066,010 bytes; SHA-256 `0fe7a97b1dbb6193a9ababf2c05c8c9910ff105d590b106278af57251a7b478d`; Git bundle verification passed | Operator-side verification record for `blendops-phase-13.1-deterministic-zip-ci-closure.bundle` |
+| Cross-platform CI | 4/4 jobs passed: Windows CLI, macOS CLI, Ubuntu CLI, and docs `npm run ci` | [GitHub Actions run #180](https://github.com/ThanhNguyxnOrg/blendops/actions/runs/41323580235) |
+| Release boundary | Draft candidate only; npm package remains private; runtime/artifact states remain `Not Run` / `Not Produced` absent evidence | `package.json`, `docs/release-readiness.md` |
+
 ## 2. Finding Lifecycle Summary (`F-01` through `F-10`)
 
 | ID | Priority | Finding | Phase 0 State | Current Status | Verification / Remaining Work |
