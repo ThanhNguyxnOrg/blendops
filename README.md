@@ -85,7 +85,7 @@ Human intent (non-Blender user)
 | 4 laws (evidence-before-done, official-runtime-only, no-arbitrary-python-interface, non-blender-user-language) | **Path 1 host (a) — Anthropic Blender Connector** (Claude-Desktop-specific MCP host). Owner: Anthropic. Source: [claude.com/.../using-the-blender-connector-in-claude](https://claude.com/resources/tutorials/using-the-blender-connector-in-claude) |
 | 1 pack (`product-hero-v0`), 3 bundles (skill-package, claude-desktop-manual, generic-project-local) | **Path 2 — Community `mcp-for-blender` (formerly `blender-mcp`)** (different add-on/server). Owner: mature community project. Source: [github.com/ahujasid/mcp-for-blender](https://github.com/ahujasid/mcp-for-blender) |
 | 26 install target docs + 3 mode auto-detect install flow | **CLI fallback** (`blender --background --python ...`). Owner: Blender Foundation. Source: [docs.blender.org/manual/.../command_line](https://docs.blender.org/manual/en/latest/advanced/command_line/index.html) |
-| Skill ZIP / OpenAI YAML / canonical bundle generation (`npm run skills:export` → 48 ZIPs, one per `skills/*/SKILL.md`) + distributable local CLI (`bin/blendops.mjs` / `scripts/install-skills.mjs`, packable via `npm pack`) | The Blender executable, MCP servers, MCP host clients, OS, GPU drivers, network. |
+| Skill ZIP / OpenAI YAML / canonical bundle generation (`npm run skills:export` → 48 ZIPs, one per `skills/*/SKILL.md`) + distributable local CLI (`bin/blendops.mjs` / `scripts/install-skills.mjs`, packable via `npm pack`) + GLB 2.0 web handoff toolkit (`blendops glb-inspect`, `blendops glb-handoff`, `blendops glb-validate-manifest`, Three.js & R3F integration examples in [`docs/examples/glb-web-handoff/README.md`](./docs/examples/glb-web-handoff/README.md)) | The Blender executable, MCP servers, MCP host clients, OS, GPU drivers, network. |
 
 **What this means for "completeness":**
 
@@ -136,6 +136,7 @@ BlendOps recognizes **2 MCP execution paths + a CLI fallback appendix** ([full d
 | 5-minute orientation | [`docs/start-here.md`](./docs/start-here.md) |
 | Set up Blender runtime | [`docs/external-runtime-setup.md`](./docs/external-runtime-setup.md) |
 | Install BlendOps in your AI tool | [`docs/install/README.md`](./docs/install/README.md) |
+| Inspect a GLB & generate a web handoff report (Three.js / R3F) | [`docs/examples/glb-web-handoff/README.md`](./docs/examples/glb-web-handoff/README.md) |
 | Browse skills / laws / packs | [`skills/README.md`](./skills/README.md) · [`laws/README.md`](./laws/README.md) · [`packs/README.md`](./packs/README.md) |
 | Check release readiness | [`docs/release-readiness.md`](./docs/release-readiness.md) |
 | See the canonical portable skill package | [`bundles/skill-package/blendops/`](./bundles/skill-package/blendops/) |

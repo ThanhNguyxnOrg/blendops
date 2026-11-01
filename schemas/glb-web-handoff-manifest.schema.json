@@ -1,0 +1,744 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/ThanhNguyxnOrg/blendops/schemas/glb-web-handoff-manifest.schema.json",
+  "title": "BlendOps GLB Web Handoff Manifest",
+  "description": "Machine-readable schema for GLB 2.0 web delivery handoff manifests enforcing the 4-tier validation boundary, 5-state truth taxonomy, viewer compatibility assumptions, and synthetic-vs-production provenance.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "manifestId",
+    "skillId",
+    "artifact",
+    "truthStates",
+    "contents",
+    "extensionsAndCompression",
+    "spatialAndTransformAssumptions",
+    "targetViewer",
+    "validationSummary",
+    "unresolvedIssues",
+    "nextActions"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "schemaVersion": {
+      "const": "1.0.0"
+    },
+    "manifestId": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+      "minLength": 3,
+      "maxLength": 120
+    },
+    "skillId": {
+      "const": "glb-web-handoff"
+    },
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "filename",
+        "format",
+        "byteSize",
+        "sha256",
+        "gltfVersion",
+        "generator",
+        "provenance"
+      ],
+      "properties": {
+        "filename": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 255,
+          "pattern": "\\.(glb|gltf)$"
+        },
+        "format": {
+          "const": "GLB 2.0"
+        },
+        "byteSize": {
+          "type": ["integer", "null"],
+          "minimum": 0
+        },
+        "sha256": {
+          "type": ["string", "null"],
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "gltfVersion": {
+          "type": ["string", "null"],
+          "enum": ["2.0", null]
+        },
+        "generator": {
+          "type": ["string", "null"],
+          "maxLength": 200
+        },
+        "provenance": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "sourceKind",
+            "isSyntheticFixture",
+            "currentRunProvenanceVerified",
+            "notes"
+          ],
+          "properties": {
+            "sourceKind": {
+              "type": "string",
+              "enum": [
+                "synthetic_fixture",
+                "user_supplied",
+                "blender_export",
+                "unverified"
+              ]
+            },
+            "isSyntheticFixture": {
+              "type": "boolean"
+            },
+            "currentRunProvenanceVerified": {
+              "type": "boolean"
+            },
+            "notes": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 600
+            }
+          }
+        }
+      }
+    },
+    "truthStates": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "runtimeStatus",
+        "runtimePath",
+        "artifactStatus",
+        "releaseEligibility"
+      ],
+      "properties": {
+        "runtimeStatus": {
+          "type": "string",
+          "enum": [
+            "Not Run",
+            "Attempted",
+            "Produced",
+            "Verified",
+            "Failed"
+          ]
+        },
+        "runtimePath": {
+          "type": "string",
+          "enum": [
+            "path-1-host-a",
+            "path-1-host-b",
+            "path-2-community",
+            "cli-appendix",
+            "none"
+          ]
+        },
+        "artifactStatus": {
+          "type": "string",
+          "enum": [
+            "Not Produced",
+            "Produced",
+            "Verified",
+            "Failed"
+          ]
+        },
+        "releaseEligibility": {
+          "type": "string",
+          "enum": [
+            "release-eligible",
+            "non-release",
+            "not-applicable"
+          ]
+        }
+      }
+    },
+    "contents": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "counts",
+        "defaultSceneIndex",
+        "scenes",
+        "meshes",
+        "materials",
+        "textures",
+        "animations"
+      ],
+      "properties": {
+        "counts": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "scenes",
+            "nodes",
+            "meshes",
+            "primitives",
+            "vertices",
+            "trianglesEstimate",
+            "materials",
+            "textures",
+            "images",
+            "samplers",
+            "animations",
+            "skins",
+            "accessors",
+            "bufferViews",
+            "buffers"
+          ],
+          "properties": {
+            "scenes": { "type": "integer", "minimum": 0 },
+            "nodes": { "type": "integer", "minimum": 0 },
+            "meshes": { "type": "integer", "minimum": 0 },
+            "primitives": { "type": "integer", "minimum": 0 },
+            "vertices": { "type": "integer", "minimum": 0 },
+            "trianglesEstimate": { "type": "integer", "minimum": 0 },
+            "materials": { "type": "integer", "minimum": 0 },
+            "textures": { "type": "integer", "minimum": 0 },
+            "images": { "type": "integer", "minimum": 0 },
+            "samplers": { "type": "integer", "minimum": 0 },
+            "animations": { "type": "integer", "minimum": 0 },
+            "skins": { "type": "integer", "minimum": 0 },
+            "accessors": { "type": "integer", "minimum": 0 },
+            "bufferViews": { "type": "integer", "minimum": 0 },
+            "buffers": { "type": "integer", "minimum": 0 }
+          }
+        },
+        "defaultSceneIndex": {
+          "type": ["integer", "null"],
+          "minimum": 0
+        },
+        "scenes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["index", "name", "rootNodeIndices"],
+            "properties": {
+              "index": { "type": "integer", "minimum": 0 },
+              "name": { "type": ["string", "null"] },
+              "rootNodeIndices": {
+                "type": "array",
+                "items": { "type": "integer", "minimum": 0 }
+              }
+            }
+          }
+        },
+        "meshes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "index",
+              "name",
+              "primitiveCount",
+              "vertexCount",
+              "triangleEstimate",
+              "attributes",
+              "materialIndices",
+              "morphTargetCount"
+            ],
+            "properties": {
+              "index": { "type": "integer", "minimum": 0 },
+              "name": { "type": ["string", "null"] },
+              "primitiveCount": { "type": "integer", "minimum": 0 },
+              "vertexCount": { "type": "integer", "minimum": 0 },
+              "triangleEstimate": { "type": "integer", "minimum": 0 },
+              "attributes": {
+                "type": "array",
+                "items": { "type": "string" }
+              },
+              "materialIndices": {
+                "type": "array",
+                "items": { "type": "integer", "minimum": 0 }
+              },
+              "morphTargetCount": { "type": "integer", "minimum": 0 }
+            }
+          }
+        },
+        "materials": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "index",
+              "name",
+              "alphaMode",
+              "doubleSided",
+              "unlit",
+              "hasBaseColorTexture",
+              "hasMetallicRoughnessTexture",
+              "hasNormalTexture",
+              "hasOcclusionTexture",
+              "hasEmissiveTexture",
+              "baseColorFactor",
+              "metallicFactor",
+              "roughnessFactor",
+              "extensions"
+            ],
+            "properties": {
+              "index": { "type": "integer", "minimum": 0 },
+              "name": { "type": ["string", "null"] },
+              "alphaMode": {
+                "type": "string",
+                "enum": ["OPAQUE", "MASK", "BLEND"]
+              },
+              "doubleSided": { "type": "boolean" },
+              "unlit": { "type": "boolean" },
+              "hasBaseColorTexture": { "type": "boolean" },
+              "hasMetallicRoughnessTexture": { "type": "boolean" },
+              "hasNormalTexture": { "type": "boolean" },
+              "hasOcclusionTexture": { "type": "boolean" },
+              "hasEmissiveTexture": { "type": "boolean" },
+              "baseColorFactor": {
+                "type": "array",
+                "minItems": 4,
+                "maxItems": 4,
+                "items": { "type": "number" }
+              },
+              "metallicFactor": { "type": "number", "minimum": 0, "maximum": 1 },
+              "roughnessFactor": { "type": "number", "minimum": 0, "maximum": 1 },
+              "extensions": {
+                "type": "array",
+                "items": { "type": "string" }
+              }
+            }
+          }
+        },
+        "textures": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "index",
+              "name",
+              "sourceImageIndex",
+              "samplerIndex",
+              "mimeType",
+              "storageKind",
+              "uri"
+            ],
+            "properties": {
+              "index": { "type": "integer", "minimum": 0 },
+              "name": { "type": ["string", "null"] },
+              "sourceImageIndex": { "type": ["integer", "null"], "minimum": 0 },
+              "samplerIndex": { "type": ["integer", "null"], "minimum": 0 },
+              "mimeType": { "type": ["string", "null"] },
+              "storageKind": {
+                "type": "string",
+                "enum": ["bufferView", "dataUri", "externalUri", "extensionSource", "missing"]
+              },
+              "uri": { "type": ["string", "null"] }
+            }
+          }
+        },
+        "animations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "index",
+              "name",
+              "channelCount",
+              "samplerCount",
+              "durationSeconds",
+              "targetPaths",
+              "interpolationModes"
+            ],
+            "properties": {
+              "index": { "type": "integer", "minimum": 0 },
+              "name": { "type": ["string", "null"] },
+              "channelCount": { "type": "integer", "minimum": 0 },
+              "samplerCount": { "type": "integer", "minimum": 0 },
+              "durationSeconds": { "type": ["number", "null"], "minimum": 0 },
+              "targetPaths": {
+                "type": "array",
+                "items": { "type": "string" }
+              },
+              "interpolationModes": {
+                "type": "array",
+                "items": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "extensionsAndCompression": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "extensionsUsed",
+        "extensionsRequired",
+        "undeclaredExtensionsFound",
+        "compression",
+        "externalResources"
+      ],
+      "properties": {
+        "extensionsUsed": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "extensionsRequired": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "undeclaredExtensionsFound": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "compression": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["draco", "meshopt", "ktx2BasisU", "webp"],
+          "properties": {
+            "draco": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["used", "required", "decoderRequired"],
+              "properties": {
+                "used": { "type": "boolean" },
+                "required": { "type": "boolean" },
+                "decoderRequired": { "type": "boolean" }
+              }
+            },
+            "meshopt": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["used", "required", "decoderRequired"],
+              "properties": {
+                "used": { "type": "boolean" },
+                "required": { "type": "boolean" },
+                "decoderRequired": { "type": "boolean" }
+              }
+            },
+            "ktx2BasisU": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["used", "required", "transcoderRequired"],
+              "properties": {
+                "used": { "type": "boolean" },
+                "required": { "type": "boolean" },
+                "transcoderRequired": { "type": "boolean" }
+              }
+            },
+            "webp": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["used", "required"],
+              "properties": {
+                "used": { "type": "boolean" },
+                "required": { "type": "boolean" }
+              }
+            }
+          }
+        },
+        "externalResources": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["kind", "index", "uri", "isExternalFile"],
+            "properties": {
+              "kind": {
+                "type": "string",
+                "enum": ["buffer", "image"]
+              },
+              "index": { "type": "integer", "minimum": 0 },
+              "uri": { "type": "string", "minLength": 1 },
+              "isExternalFile": { "type": "boolean" }
+            }
+          }
+        }
+      }
+    },
+    "spatialAndTransformAssumptions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "unitScaleMetersPerUnit",
+        "coordinateSystem",
+        "originPolicy",
+        "sceneBoundingBox",
+        "rootNodeTransforms"
+      ],
+      "properties": {
+        "unitScaleMetersPerUnit": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "coordinateSystem": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "upAxis",
+            "forwardAxis",
+            "handedness",
+            "sourceUpAxisConversionNote"
+          ],
+          "properties": {
+            "upAxis": {
+              "const": "+Y"
+            },
+            "forwardAxis": {
+              "type": "string",
+              "enum": ["+Z", "-Z"]
+            },
+            "handedness": {
+              "const": "right-handed"
+            },
+            "sourceUpAxisConversionNote": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "originPolicy": {
+          "type": "string",
+          "enum": [
+            "bottom-center",
+            "geometric-center",
+            "scene-origin",
+            "custom",
+            "unverified"
+          ]
+        },
+        "sceneBoundingBox": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["min", "max", "dimensions", "center"],
+          "properties": {
+            "min": {
+              "type": ["array", "null"],
+              "minItems": 3,
+              "maxItems": 3,
+              "items": { "type": "number" }
+            },
+            "max": {
+              "type": ["array", "null"],
+              "minItems": 3,
+              "maxItems": 3,
+              "items": { "type": "number" }
+            },
+            "dimensions": {
+              "type": ["array", "null"],
+              "minItems": 3,
+              "maxItems": 3,
+              "items": { "type": "number" }
+            },
+            "center": {
+              "type": ["array", "null"],
+              "minItems": 3,
+              "maxItems": 3,
+              "items": { "type": "number" }
+            }
+          }
+        },
+        "rootNodeTransforms": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "nodeIndex",
+              "name",
+              "translation",
+              "rotation",
+              "scale",
+              "hasNonIdentityScale",
+              "hasNegativeScale"
+            ],
+            "properties": {
+              "nodeIndex": { "type": "integer", "minimum": 0 },
+              "name": { "type": ["string", "null"] },
+              "translation": {
+                "type": "array",
+                "minItems": 3,
+                "maxItems": 3,
+                "items": { "type": "number" }
+              },
+              "rotation": {
+                "type": "array",
+                "minItems": 4,
+                "maxItems": 4,
+                "items": { "type": "number" }
+              },
+              "scale": {
+                "type": "array",
+                "minItems": 3,
+                "maxItems": 3,
+                "items": { "type": "number" }
+              },
+              "hasNonIdentityScale": { "type": "boolean" },
+              "hasNegativeScale": { "type": "boolean" }
+            }
+          }
+        }
+      }
+    },
+    "targetViewer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "stack",
+        "dracoDecoderPath",
+        "ktx2TranscoderPath",
+        "meshoptDecoderRequired",
+        "toneMappingAssumption",
+        "outputColorSpaceAssumption",
+        "environmentLightingAssumption"
+      ],
+      "properties": {
+        "stack": {
+          "type": "string",
+          "enum": [
+            "threejs",
+            "react-three-fiber",
+            "model-viewer",
+            "babylonjs",
+            "generic-webgl"
+          ]
+        },
+        "dracoDecoderPath": {
+          "type": ["string", "null"]
+        },
+        "ktx2TranscoderPath": {
+          "type": ["string", "null"]
+        },
+        "meshoptDecoderRequired": {
+          "type": "boolean"
+        },
+        "toneMappingAssumption": {
+          "type": "string",
+          "minLength": 1
+        },
+        "outputColorSpaceAssumption": {
+          "type": "string",
+          "minLength": 1
+        },
+        "environmentLightingAssumption": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "validationSummary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "overallVerdict",
+        "tiers",
+        "errors",
+        "warnings",
+        "performanceWarnings"
+      ],
+      "properties": {
+        "overallVerdict": {
+          "type": "string",
+          "enum": ["Pass", "Warn", "Fail"]
+        },
+        "tiers": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "containerStructural",
+            "gltfSpecification",
+            "visualQuality",
+            "liveRuntime"
+          ],
+          "properties": {
+            "containerStructural": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "status",
+                "tool",
+                "errorCount",
+                "warningCount",
+                "summary"
+              ],
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "enum": ["Passed", "Warn", "Failed", "Not Run"]
+                },
+                "tool": { "type": "string", "minLength": 1 },
+                "errorCount": { "type": "integer", "minimum": 0 },
+                "warningCount": { "type": "integer", "minimum": 0 },
+                "summary": { "type": "string", "minLength": 1 }
+              }
+            },
+            "gltfSpecification": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["status", "tool", "summary"],
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "enum": ["Passed", "Warn", "Failed", "Not Run", "Unavailable"]
+                },
+                "tool": { "type": "string", "minLength": 1 },
+                "summary": { "type": "string", "minLength": 1 }
+              }
+            },
+            "visualQuality": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["status", "summary"],
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "enum": ["Passed", "Warn", "Failed", "Not Run"]
+                },
+                "summary": { "type": "string", "minLength": 1 }
+              }
+            },
+            "liveRuntime": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["status", "summary"],
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "enum": ["Passed", "Warn", "Failed", "Not Run"]
+                },
+                "summary": { "type": "string", "minLength": 1 }
+              }
+            }
+          }
+        },
+        "errors": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "warnings": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "performanceWarnings": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "unresolvedIssues": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "nextActions": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 1 }
+    }
+  }
+}

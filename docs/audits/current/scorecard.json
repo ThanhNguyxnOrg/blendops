@@ -1,20 +1,20 @@
 {
   "schemaVersion": "1.5.0",
-  "auditPhase": "phase-11-current",
+  "auditPhase": "phase-12-current",
   "status": "reconciled-current-state",
   "repository": "ThanhNguyxnOrg/blendops",
   "branch": "main",
-  "sourceCommitSha": "f0804fd64a9fa4f263a9ec59c5de84ed21733747",
-  "sourceCommitShort": "f0804fd",
-  "sourceCommitDate": "2026-11-01 05:18:53 +0000",
+  "sourceCommitSha": "fdae0e77187c970893bc5414166aed448677f951",
+  "sourceCommitShort": "fdae0e7",
+  "sourceCommitDate": "2026-11-01 08:24:52 +0000",
   "auditProvenance": {
-    "sourceCommitSha": "f0804fd64a9fa4f263a9ec59c5de84ed21733747",
-    "sourceCommitShort": "f0804fd",
-    "sourceCommitDate": "2026-11-01 05:18:53 +0000",
+    "sourceCommitSha": "fdae0e77187c970893bc5414166aed448677f951",
+    "sourceCommitShort": "fdae0e7",
+    "sourceCommitDate": "2026-11-01 08:24:52 +0000",
     "workingTreeState": "dirty",
     "snapshotBasis": "working-tree-on-top-of-source-commit",
-    "uncommittedChangeCount": 26,
-    "auditedInputsSha256": "2079dfccd53845138ca8ef6f7f0b746670299436de414a12a3ea4518a61e62fe",
+    "uncommittedChangeCount": 21,
+    "auditedInputsSha256": "233d6deea44b35a0f95c1880db3d0b8ed2ea69eb1800b2584a7e1c7c07b10553",
     "selfReferentialCommitRule": "A Git commit cannot contain its own final commit SHA inside tracked files. sourceCommitSha records the verified HEAD commit present when the generator ran, workingTreeState and snapshotBasis record whether uncommitted working-tree changes were present on top of sourceCommitSha, and auditedInputsSha256 digests the exact audited file contents."
   },
   "historicalBaseline": {
@@ -199,6 +199,12 @@
         "docs/runtime-stack-strategy.md",
         "docs/blender-version-compatibility.md",
         "scripts/inspect-glb.mjs",
+        "scripts/generate-glb-handoff-report.mjs",
+        "schemas/glb-web-handoff-manifest.schema.json",
+        "docs/examples/glb-web-handoff/README.md",
+        "docs/examples/glb-web-handoff/threejs-glb-viewer.mjs",
+        "docs/examples/glb-web-handoff/r3f-glb-viewer.tsx",
+        "scripts/test-phase12.mjs",
         "docs/audits/current/skill-inventory.json"
       ],
       "criteria": [
@@ -224,7 +230,7 @@
           "maxPoints": 4,
           "awardedPoints": 4,
           "status": "Pass",
-          "evidence": "F-07 FIXED: scripts/inspect-glb.mjs validates GLB 2.0 binary headers, JSON/BIN chunk alignment, buffer/accessor bounds, and optional Khronos gltf-validator status; docs/blender-version-compatibility.md documents Blender 3.6 LTS, 4.2 LTS, and 5.1+ shader, engine, color management, and glTF 2.0 matrices."
+          "evidence": "F-07 FIXED: scripts/inspect-glb.mjs and scripts/generate-glb-handoff-report.mjs validate GLB 2.0 binary headers, JSON/BIN chunk alignment, buffer/accessor bounds, scene/node/skin/animation/material/texture/extension inventory, and optional Khronos gltf-validator status; schemas/glb-web-handoff-manifest.schema.json and docs/examples/glb-web-handoff/ provide deterministic web handoff manifests, HTML/Markdown reports, and Three.js / React Three Fiber viewer integration; docs/blender-version-compatibility.md documents Blender 3.6 LTS, 4.2 LTS, and 5.1+ shader, engine, color management, and glTF 2.0 matrices."
         }
       ]
     },

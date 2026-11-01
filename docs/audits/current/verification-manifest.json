@@ -1,19 +1,19 @@
 {
   "schemaVersion": "1.4.0",
-  "auditPhase": "phase-11-current",
+  "auditPhase": "phase-12-current",
   "repository": "ThanhNguyxnOrg/blendops",
   "branch": "main",
-  "sourceCommitSha": "f0804fd64a9fa4f263a9ec59c5de84ed21733747",
-  "sourceCommitShort": "f0804fd",
-  "sourceCommitDate": "2026-11-01 05:18:53 +0000",
+  "sourceCommitSha": "fdae0e77187c970893bc5414166aed448677f951",
+  "sourceCommitShort": "fdae0e7",
+  "sourceCommitDate": "2026-11-01 08:24:52 +0000",
   "auditProvenance": {
-    "sourceCommitSha": "f0804fd64a9fa4f263a9ec59c5de84ed21733747",
-    "sourceCommitShort": "f0804fd",
-    "sourceCommitDate": "2026-11-01 05:18:53 +0000",
+    "sourceCommitSha": "fdae0e77187c970893bc5414166aed448677f951",
+    "sourceCommitShort": "fdae0e7",
+    "sourceCommitDate": "2026-11-01 08:24:52 +0000",
     "workingTreeState": "dirty",
     "snapshotBasis": "working-tree-on-top-of-source-commit",
-    "uncommittedChangeCount": 26,
-    "auditedInputsSha256": "2079dfccd53845138ca8ef6f7f0b746670299436de414a12a3ea4518a61e62fe",
+    "uncommittedChangeCount": 21,
+    "auditedInputsSha256": "233d6deea44b35a0f95c1880db3d0b8ed2ea69eb1800b2584a7e1c7c07b10553",
     "selfReferentialCommitRule": "A Git commit cannot contain its own final commit SHA inside tracked files. sourceCommitSha records the verified HEAD commit present when the generator ran, workingTreeState and snapshotBasis record whether uncommitted working-tree changes were present on top of sourceCommitSha, and auditedInputsSha256 digests the exact audited file contents."
   },
   "commitChain": [
@@ -121,17 +121,22 @@
       "phase": "Phase 10.2",
       "commitSha": "f0804fd64a9fa4f263a9ec59c5de84ed21733747",
       "summary": "Transactional project-local writes, crash recovery journal, and user-edit preservation across reruns & rollback"
+    },
+    {
+      "phase": "Phase 11",
+      "commitSha": "fdae0e77187c970893bc5414166aed448677f951",
+      "summary": "Distributable CLI entrypoint (bin/blendops.mjs), npm pack tarball consumer verification, and cross-platform CI pipeline (Ubuntu, Windows, macOS)"
     }
   ],
   "currentPhaseContext": {
-    "phase": "Phase 11 — Distributable CLI & Package Readiness",
-    "title": "Distributable CLI Entrypoint (bin/blendops.mjs), npm Pack Tarball Readiness, and End-to-End Packaged Consumer Verification",
-    "sourceCommitSha": "f0804fd64a9fa4f263a9ec59c5de84ed21733747",
+    "phase": "Phase 12 — Web-Ready GLB Delivery & Viewer Integration",
+    "title": "Deterministic GLB 2.0 Deep Inspection, Web Handoff Manifest Schema & Report Generator, Three.js / React Three Fiber Viewer Integration, and CLI Subcommands",
+    "sourceCommitSha": "fdae0e77187c970893bc5414166aed448677f951",
     "workingTreeState": "dirty",
     "snapshotBasis": "working-tree-on-top-of-source-commit",
-    "auditedInputsSha256": "2079dfccd53845138ca8ef6f7f0b746670299436de414a12a3ea4518a61e62fe",
+    "auditedInputsSha256": "233d6deea44b35a0f95c1880db3d0b8ed2ea69eb1800b2584a7e1c7c07b10553",
     "auditedInputsManifest": "docs/audits/audited-inputs.manifest.json",
-    "relationshipToCommitChain": "Phase 11 is built directly on top of Phase 10.2 (f0804fd64a9fa4f263a9ec59c5de84ed21733747). Because a Git commit cannot embed its own final SHA inside tracked files, verification-manifest.json records f0804fd64a9fa4f263a9ec59c5de84ed21733747 as the latest completed commit in commitChain and sourceCommitSha, while locking the exact Phase 11 audited inputs via auditedInputsSha256 and docs/audits/audited-inputs.manifest.json."
+    "relationshipToCommitChain": "Phase 12 is built directly on top of Phase 11 (fdae0e77187c970893bc5414166aed448677f951). Because a Git commit cannot embed its own final SHA inside tracked files, verification-manifest.json records fdae0e77187c970893bc5414166aed448677f951 as the latest completed commit in commitChain and sourceCommitSha, while locking the exact Phase 12 audited inputs via auditedInputsSha256 and docs/audits/audited-inputs.manifest.json."
   },
   "ciVerificationPipeline": {
     "command": "npm run ci",
@@ -174,9 +179,9 @@
       },
       {
         "script": "npm test",
-        "command": "node --test scripts/test-phase1.mjs scripts/test-phase2.mjs scripts/test-phase3.mjs scripts/test-phase4.mjs scripts/test-phase5.mjs scripts/test-phase6.mjs scripts/test-phase7.mjs scripts/test-phase8.mjs scripts/test-phase9.mjs scripts/test-phase10.mjs scripts/test-phase11.mjs",
+        "command": "node --test scripts/test-phase1.mjs scripts/test-phase2.mjs scripts/test-phase3.mjs scripts/test-phase4.mjs scripts/test-phase5.mjs scripts/test-phase6.mjs scripts/test-phase7.mjs scripts/test-phase8.mjs scripts/test-phase9.mjs scripts/test-phase10.mjs scripts/test-phase11.mjs scripts/test-phase12.mjs",
         "status": "Passed",
-        "verifiedScope": "Unit and integration suites across Phase 1, Phase 2 / 2.1, Phase 3 / 3.1 / 3.1.1, Phase 4, Phase 5, Phase 6 / 6.1, Phase 7, Phase 8 / 8.1 / 8.1.1, Phase 9, Phase 10 / 10.1 / 10.2, and Phase 11 (distributable CLI & npm pack tarball consumer verification)"
+        "verifiedScope": "Unit and integration suites across Phase 1, Phase 2 / 2.1, Phase 3 / 3.1 / 3.1.1, Phase 4, Phase 5, Phase 6 / 6.1, Phase 7, Phase 8 / 8.1 / 8.1.1, Phase 9, Phase 10 / 10.1 / 10.2, Phase 11, and Phase 12 (web-ready GLB delivery & viewer integration toolkit)"
       }
     ]
   },

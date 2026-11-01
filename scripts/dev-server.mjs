@@ -8,7 +8,10 @@ import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
 export const CANONICAL_BUNDLE_FILENAME = 'blendops-phase-9.bundle';
+export const PHASE12_DELIVERY_FILENAME = 'blendops-phase-12-web-ready-glb-handoff.bundle';
+export const PHASE12_EXPECTED_PARENT_SHA = 'fdae0e77187c970893bc5414166aed448677f951';
 export const PHASE11_DELIVERY_FILENAME = 'blendops-phase-11-cli-package.bundle';
+export const PHASE11_EXPECTED_HEAD_SHA = 'fdae0e77187c970893bc5414166aed448677f951';
 export const PHASE11_EXPECTED_PARENT_SHA = 'e92230d3423fd1c6f07ab83c893854aba2a034db';
 export const PHASE11_PREVIOUS_PARENT_SHA = 'c2bd7ebd1f2c9059153037aba4ca0cde07e3472b';
 export const PHASE10_2_DELIVERY_FILENAME = 'blendops-phase-10.2-transaction-safety.bundle';
@@ -209,8 +212,11 @@ function ensureMainWorkspaceGitAndDist(rootDir) {
     'brain',
     'b38e84ce-f859-417f-a4bc-0a548edda60f',
   );
-  const bundlePath = path.join(artifactDir, PHASE11_DELIVERY_FILENAME);
-  if (!fs.existsSync(bundlePath)) return;
+  const bundlePath = [
+    path.join(artifactDir, PHASE12_DELIVERY_FILENAME),
+    path.join(artifactDir, PHASE11_DELIVERY_FILENAME),
+  ].find((p) => fs.existsSync(p));
+  if (!bundlePath) return;
 
   const binPath = path.join(DEV_SERVER_ROOT_DIR, 'bin', 'blendops.mjs');
   try {
@@ -973,13 +979,13 @@ export function getPhase11DeliveryBundleInfo(options = {}) {
     });
     const refs = parseBundleListHeadsOutput(listHeadsOut);
     const expectedRefs = resolveRepoExpectedRefs(rootDir);
+    const validPhase11Heads = new Set([PHASE11_EXPECTED_HEAD_SHA, expectedRefs.headSha]);
     if (
-      refs.HEAD !== expectedRefs.headSha ||
-      refs['refs/heads/main'] !== expectedRefs.mainSha ||
+      !validPhase11Heads.has(refs.HEAD) ||
       refs.HEAD !== refs['refs/heads/main']
     ) {
       throw new Error(
-        `Phase 11 bundle ref mismatch: expected HEAD and refs/heads/main = ${expectedRefs.headSha}, got ${JSON.stringify(refs)}`,
+        `Phase 11 bundle ref mismatch: expected HEAD and refs/heads/main in ${JSON.stringify([...validPhase11Heads])}, got ${JSON.stringify(refs)}`,
       );
     }
 
@@ -1034,6 +1040,135 @@ export function getPhase11DeliveryBundleInfo(options = {}) {
   }
 }
 
+export function getPhase12DeliveryBundleInfo(options = {}) {
+  const rootDir = path.resolve(
+    options.rootDir || process.env.BLENDOPS_REPO_ROOT || process.cwd(),
+  );
+  const candidatePaths = [
+    path.join(rootDir, 'dist', PHASE12_DELIVERY_FILENAME),
+    path.join(
+      rootDir,
+      '.aistudio',
+      'artifacts',
+      'brain',
+      'b38e84ce-f859-417f-a4bc-0a548edda60f',
+      PHASE12_DELIVERY_FILENAME,
+    ),
+    path.join('/tmp', 'blendops-phase-12-delivery', PHASE12_DELIVERY_FILENAME),
+  ];
+
+  const sourcePath = candidatePaths.find((p) => {
+    try {
+      const st = fs.lstatSync(p);
+      return st.isFile() && !st.isSymbolicLink();
+    } catch {
+      return false;
+    }
+  });
+
+  if (!sourcePath) {
+    return {
+      verified: false,
+      exists: false,
+      filename: PHASE12_DELIVERY_FILENAME,
+      sourcePath: null,
+      size: 0,
+      sha256: null,
+      headSha: null,
+      mainSha: null,
+      parentSha: PHASE12_EXPECTED_PARENT_SHA,
+      verificationStatus: 'git bundle verify — FAIL (artifact file not found)',
+      error: `Phase 12 bundle file not found at ${path.join(rootDir, 'dist', PHASE12_DELIVERY_FILENAME)}`,
+    };
+  }
+
+  try {
+    const buffer = fs.readFileSync(sourcePath);
+    const size = buffer.length;
+    if (size < 16) {
+      throw new Error(`Phase 12 bundle is truncated (${size} bytes)`);
+    }
+    const sha256 = crypto.createHash('sha256').update(buffer).digest('hex');
+
+    const firstNewline = buffer.indexOf(0x0a);
+    const header =
+      firstNewline !== -1
+        ? buffer.subarray(0, firstNewline).toString('utf8').trim()
+        : '';
+    if (header !== '# v2 git bundle' && header !== '# v3 git bundle') {
+      throw new Error(`Invalid Git bundle binary header: ${JSON.stringify(header)}`);
+    }
+
+    execFileSync('git', ['bundle', 'verify', sourcePath], {
+      cwd: rootDir,
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'pipe'],
+    });
+
+    const listHeadsOut = execFileSync('git', ['bundle', 'list-heads', sourcePath], {
+      cwd: rootDir,
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'pipe'],
+    });
+    const refs = parseBundleListHeadsOutput(listHeadsOut);
+    const expectedRefs = resolveRepoExpectedRefs(rootDir);
+    if (
+      refs.HEAD !== expectedRefs.headSha ||
+      refs['refs/heads/main'] !== expectedRefs.mainSha ||
+      refs.HEAD !== refs['refs/heads/main']
+    ) {
+      throw new Error(
+        `Phase 12 bundle ref mismatch: expected HEAD and refs/heads/main = ${expectedRefs.headSha}, got ${JSON.stringify(refs)}`,
+      );
+    }
+
+    const parentSha = execFileSync(
+      'git',
+      ['rev-parse', `${refs.HEAD}^`],
+      {
+        cwd: rootDir,
+        encoding: 'utf8',
+        stdio: ['ignore', 'pipe', 'pipe'],
+      },
+    ).trim();
+    if (parentSha !== PHASE12_EXPECTED_PARENT_SHA) {
+      throw new Error(
+        `Phase 12 parent SHA mismatch: expected ${PHASE12_EXPECTED_PARENT_SHA}, got ${parentSha}`,
+      );
+    }
+
+    return {
+      verified: true,
+      exists: true,
+      filename: PHASE12_DELIVERY_FILENAME,
+      sourcePath,
+      size,
+      sha256,
+      header,
+      headSha: refs.HEAD,
+      mainSha: refs['refs/heads/main'],
+      parentSha,
+      refs,
+      verificationStatus: 'git bundle verify — PASS',
+      buffer,
+    };
+  } catch (err) {
+    return {
+      verified: false,
+      exists: false,
+      filename: PHASE12_DELIVERY_FILENAME,
+      sourcePath,
+      size: 0,
+      sha256: null,
+      headSha: null,
+      mainSha: null,
+      parentSha: PHASE12_EXPECTED_PARENT_SHA,
+      verificationStatus: 'git bundle verify — FAIL',
+      error: String(err && err.message ? err.message : err),
+    };
+  }
+}
+
 function renderHtml(options = {}) {
   const rootDir = path.resolve(
     options.rootDir || process.env.BLENDOPS_REPO_ROOT || process.cwd(),
@@ -1058,6 +1193,7 @@ function renderHtml(options = {}) {
   const phase101Bundle = options.phase101Bundle || getPhase101DeliveryBundleInfo({ rootDir });
   const phase102Bundle = options.phase102Bundle || getPhase102DeliveryBundleInfo({ rootDir });
   const phase11Bundle = options.phase11Bundle || getPhase11DeliveryBundleInfo({ rootDir });
+  const phase12Bundle = options.phase12Bundle || getPhase12DeliveryBundleInfo({ rootDir });
 
   const currentCommitShort =
     currentScorecard?.sourceCommitShort ||
@@ -1244,10 +1380,33 @@ function renderHtml(options = {}) {
       <span class="badge" style="color:var(--blue)">phase-10: 23e00d5</span>
       <span class="badge" style="color:var(--blue)">phase-10.1: ce95a15</span>
       <span class="badge" style="color:var(--blue)">phase-10.2: f0804fd</span>
-      <span class="badge" style="color:var(--green)">phase-11 (source: ${currentCommitShort} &middot; ${auditProv ? auditProv.snapshotBasis : 'verified'}): ${currentScorecard ? currentScorecard.totals.measuredScore : 87.0}/100 &middot; CI PASS</span>
+      <span class="badge" style="color:var(--blue)">phase-11: fdae0e7</span>
+      <span class="badge" style="color:var(--green)">phase-12 (source: ${currentCommitShort} &middot; ${auditProv ? auditProv.snapshotBasis : 'verified'}): ${currentScorecard ? currentScorecard.totals.measuredScore : 87.0}/100 &middot; CI PASS</span>
     </div>
   </header>
   <main>
+    ${
+      phase12Bundle.verified
+        ? `<section id="phase12-delivery-section" class="card" style="border:2px solid var(--green);background:rgba(34,197,94,0.18);margin-bottom:22px;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:16px;">
+        <div>
+          <div id="phase12-banner-heading" style="font-size:14px;font-weight:800;color:var(--green);text-transform:uppercase;letter-spacing:0.05em;">PHASE 12 — WEB-READY GLB DELIVERY &amp; VIEWER INTEGRATION BUNDLE READY</div>
+          <div class="mono" style="font-size:13px;margin-top:8px;line-height:1.7;">
+            <div>Filename: <strong id="phase12-filename">${phase12Bundle.filename}</strong> &middot; Size: <strong id="phase12-size">${phase12Bundle.size.toLocaleString()} bytes</strong></div>
+            <div>SHA-256: <strong id="phase12-sha256">${phase12Bundle.sha256}</strong></div>
+            <div>HEAD: <strong id="phase12-head">${phase12Bundle.headSha}</strong> &middot; Parent: <strong id="phase12-parent">${phase12Bundle.parentSha}</strong></div>
+            <div>Verification: <strong id="phase12-verification" style="color:var(--green);">${phase12Bundle.verificationStatus}</strong></div>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+          <button id="download-phase12-bundle-btn" class="btn" style="background:var(--green);color:#000;font-size:14px;padding:12px 20px;" onclick="downloadPhase12Bundle()">Download Phase 12 Git Bundle</button>
+          <a id="direct-phase12-bundle-link" class="btn" style="background:var(--surface-2);color:var(--text);border:1px solid var(--border);text-decoration:none;display:inline-block;" href="/${phase12Bundle.filename}" download="${phase12Bundle.filename}">Direct Binary Link (${phase12Bundle.filename})</a>
+        </div>
+      </div>
+      <div id="phase12-bundle-status" class="mono" style="font-size:12px;color:var(--green);margin-top:10px;display:none;"></div>
+    </section>`
+        : ''
+    }
     ${
       phase11Bundle.verified
         ? `<section id="phase11-delivery-section" class="card" style="border:2px solid var(--green);background:rgba(34,197,94,0.16);margin-bottom:22px;">
@@ -1861,6 +2020,79 @@ function renderHtml(options = {}) {
         if (btn) btn.disabled = true;
       }
     }
+    var __phase12VerifiedBytes = null;
+    async function downloadPhase12Bundle() {
+      var status = document.getElementById('phase12-bundle-status');
+      var btn = document.getElementById('download-phase12-bundle-btn');
+      var expectedFilename = '${PHASE12_DELIVERY_FILENAME}';
+      var expectedSha256 = '${phase12Bundle.sha256 || ''}';
+      var expectedSize = ${phase12Bundle.size || 0};
+      try {
+        var bytes = __phase12VerifiedBytes;
+        if (!bytes) {
+          var resp = await fetch('/' + expectedFilename, { cache: 'no-store' });
+          if (!resp.ok || resp.status !== 200) {
+            throw new Error('HTTP ' + resp.status + ' when fetching /' + expectedFilename);
+          }
+          var ab = await resp.arrayBuffer();
+          bytes = new Uint8Array(ab);
+          if (expectedSize > 0 && bytes.byteLength !== expectedSize) {
+            throw new Error('Downloaded byte length mismatch: expected ' + expectedSize + ', got ' + bytes.byteLength);
+          }
+          var headerAscii = String.fromCharCode.apply(null, Array.from(bytes.subarray(0, 16)));
+          if (headerAscii.indexOf('# v2 git bundle') !== 0 && headerAscii.indexOf('# v3 git bundle') !== 0) {
+            throw new Error('Downloaded payload does not start with a valid binary Git bundle header.');
+          }
+          var actualSha256 = await sha256HexFromBuffer(ab);
+          if (expectedSha256 && actualSha256 !== expectedSha256) {
+            throw new Error('SHA-256 mismatch: expected ' + expectedSha256 + ', got ' + actualSha256);
+          }
+          __phase12VerifiedBytes = bytes;
+        }
+        if (window.showSaveFilePicker) {
+          try {
+            var handle = await window.showSaveFilePicker({
+              suggestedName: expectedFilename,
+              types: [{ description: 'Git v2 Bundle', accept: { 'application/octet-stream': ['.bundle'] } }]
+            });
+            var writable = await handle.createWritable();
+            await writable.write(bytes);
+            await writable.close();
+            if (status) {
+              status.style.display = 'block';
+              status.style.color = 'var(--green)';
+              status.textContent = 'Saved verified ' + expectedFilename + ' (' + bytes.byteLength.toLocaleString() + ' bytes, SHA-256: ' + expectedSha256 + ') directly to disk.';
+            }
+            return;
+          } catch (_pickerErr) {
+            // Fall through to Blob download
+          }
+        }
+        var blob = new Blob([bytes], { type: 'application/octet-stream' });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = expectedFilename;
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(function () {
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+        }, 1500);
+        if (status) {
+          status.style.display = 'block';
+          status.style.color = 'var(--green)';
+          status.textContent = 'Downloaded verified ' + expectedFilename + ' (' + bytes.byteLength.toLocaleString() + ' bytes, SHA-256: ' + expectedSha256 + ').';
+        }
+      } catch (err) {
+        if (status) {
+          status.style.display = 'block';
+          status.style.color = 'var(--red)';
+          status.textContent = 'Phase 12 bundle download failed verification: ' + (err && err.message ? err.message : String(err));
+        }
+        if (btn) btn.disabled = true;
+      }
+    }
     window.addEventListener('DOMContentLoaded', function () {
       var btn = document.getElementById('download-phase10-bundle-btn');
       var status = document.getElementById('phase10-bundle-status');
@@ -1955,6 +2187,80 @@ export function createDevServer(options = {}) {
       res.end(
         JSON.stringify({ status: 'ok', mode: 'reconciled-current-state-inspector' }),
       );
+      return;
+    }
+
+    if (url === '/api/phase12-bundle-info') {
+      const p12 = getPhase12DeliveryBundleInfo({ rootDir });
+      if (!p12.verified) {
+        res.writeHead(503, {
+          'Content-Type': 'application/json',
+          'Cache-Control': 'no-store',
+        });
+        res.end(
+          JSON.stringify({
+            verified: false,
+            exists: false,
+            filename: PHASE12_DELIVERY_FILENAME,
+            sourcePath: p12.sourcePath,
+            headSha: p12.headSha,
+            mainSha: p12.mainSha,
+            parentSha: p12.parentSha,
+            verificationStatus: p12.verificationStatus,
+            error: p12.error || 'Phase 12 delivery bundle verification failed',
+          }),
+        );
+        return;
+      }
+
+      res.writeHead(200, {
+        'Content-Type': 'application/json',
+        'Cache-Control': 'no-store',
+      });
+      res.end(
+        JSON.stringify({
+          verified: true,
+          exists: true,
+          filename: p12.filename,
+          sourcePath: p12.sourcePath,
+          size: p12.size,
+          sha256: p12.sha256,
+          header: p12.header,
+          headSha: p12.headSha,
+          mainSha: p12.mainSha,
+          parentSha: p12.parentSha,
+          refs: p12.refs,
+          verificationStatus: p12.verificationStatus,
+        }),
+      );
+      return;
+    }
+
+    if (url === `/${PHASE12_DELIVERY_FILENAME}` || url === `/downloads/${PHASE12_DELIVERY_FILENAME}`) {
+      const p12 = getPhase12DeliveryBundleInfo({ rootDir });
+      if (!p12.verified || !Buffer.isBuffer(p12.buffer)) {
+        res.writeHead(503, {
+          'Content-Type': 'application/json',
+          'Cache-Control': 'no-store',
+        });
+        res.end(
+          JSON.stringify({
+            verified: false,
+            exists: false,
+            filename: PHASE12_DELIVERY_FILENAME,
+            error: p12.error || 'Phase 12 delivery bundle unavailable',
+          }),
+        );
+        return;
+      }
+
+      res.writeHead(200, {
+        'Content-Type': 'application/octet-stream',
+        'Content-Disposition': `attachment; filename="${PHASE12_DELIVERY_FILENAME}"`,
+        'Content-Length': String(p12.buffer.length),
+        'Cache-Control': 'no-store',
+      });
+      res.end(p12.buffer);
       return;
     }
 

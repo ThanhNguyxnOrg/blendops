@@ -47,6 +47,7 @@
     "scripts/build-registry.mjs",
     "scripts/run-evals.mjs",
     "scripts/inspect-glb.mjs",
+    "scripts/generate-glb-handoff-report.mjs",
     "scripts/validate-evidence-packet.mjs",
     "scripts/validate-capability-policy.mjs",
     "scripts/validate-compatibility-matrix.mjs",
@@ -64,7 +65,8 @@
     "scripts/test-phase8.mjs",
     "scripts/test-phase9.mjs",
     "scripts/test-phase10.mjs",
-    "scripts/test-phase11.mjs"
+    "scripts/test-phase11.mjs",
+    "scripts/test-phase12.mjs"
   ],
   "requiredDirectories": [
     "docs/audits/phase-0",
@@ -72,6 +74,7 @@
     "docs/audits/phase-2.1",
     "docs/audits/phase-3",
     "docs/evals",
+    "docs/examples/glb-web-handoff",
     "docs/install",
     "docs/adapters",
     "laws",

@@ -32,4 +32,4 @@ jobs:
         with:
           node-version: 20
       - run: npm ci
-      - run: node --test scripts/test-phase11.mjs
+      - run: node --test scripts/test-phase11.mjs scripts/test-phase12.mjs

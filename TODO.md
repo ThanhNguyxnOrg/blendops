@@ -278,8 +278,8 @@ Status without these files: **skills layer still complete and shippable**. Runti
 ## 🔵 Future work (deliberately deferred)
 
 - [x] Phase 10 & Phase 11 — Safe project-local installer (`scripts/install-skills.mjs`) and distributable CLI (`bin/blendops.mjs`) with `npm pack` tarball readiness (`"private": true` retained; public `npm publish` deferred until human release approval). Spec at `docs/install/installer-spec.md`.
+- [x] Phase 12 — Web-Ready GLB Delivery & Viewer Integration (`schemas/glb-web-handoff-manifest.schema.json`, `scripts/inspect-glb.mjs`, `scripts/generate-glb-handoff-report.mjs`, `blendops glb-inspect` / `glb-handoff` / `glb-validate-manifest`, and Three.js + React Three Fiber integration modules in [`docs/examples/glb-web-handoff/README.md`](./docs/examples/glb-web-handoff/README.md)). Live Blender runtime execution remains `Not Run` and production GLB artifacts remain `Not Produced` until an operator runtime evidence record is captured.
 - [ ] Public npm registry release (`npm publish`) — deferred until explicit human maintainer release approval.
-- [ ] Phase 5 — Web-ready 3D output specifics (GLB handoff implementation, preview report tooling, React Three Fiber / Three.js usage helpers). Currently planning-only in `skills/glb-web-handoff/SKILL.md`.
 
 ## ⚪ Not a blocker — Skills UI upload
 

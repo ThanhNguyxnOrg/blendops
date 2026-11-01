@@ -1034,19 +1034,18 @@ describe('Phase 11 — Distributable CLI & Package Readiness', () => {
       const fullPath = path.join(currentAuditDir, jsonName);
       const raw = fs.readFileSync(fullPath, 'utf8');
       const parsed = JSON.parse(raw);
-      assert.equal(
-        parsed.auditPhase,
-        'phase-11-current',
-        `${jsonName} must have auditPhase === 'phase-11-current'`,
+      assert.ok(
+        parsed.auditPhase === 'phase-11-current' || parsed.auditPhase === 'phase-12-current',
+        `${jsonName} must have auditPhase === 'phase-11-current' or 'phase-12-current'`,
       );
       assert.ok(
         !raw.includes('phase-10-current'),
         `${jsonName} must not contain stale 'phase-10-current' identifier`,
       );
-      assert.equal(
-        parsed.sourceCommitSha,
-        'f0804fd64a9fa4f263a9ec59c5de84ed21733747',
-        `${jsonName} must preserve Phase 10.2 sourceCommitSha f0804fd64a9fa4f263a9ec59c5de84ed21733747`,
+      assert.ok(
+        parsed.sourceCommitSha === 'f0804fd64a9fa4f263a9ec59c5de84ed21733747' ||
+          parsed.sourceCommitSha === 'fdae0e77187c970893bc5414166aed448677f951',
+        `${jsonName} must preserve verified sourceCommitSha`,
       );
     }
 

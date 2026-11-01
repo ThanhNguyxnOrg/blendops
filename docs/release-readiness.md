@@ -21,6 +21,7 @@ Date: 2026-05-09 (scope clarified; expanded to 48 skills + 26 install targets)
 | Skill depth and gate review | Ready for Draft v0 review | All 48 skills at Expanded Draft v0; gate review pass for the original 16 baseline (snapshot in `skill-reviews/reports/v0-skill-gate-review.md`); Batches 1–8 inherit the same SKILL.md + EVAL.md + 3 references shape. |
 | Skill ZIP / package generation | Ready for Draft v0 review | `npm run skills:export` produces one ZIP + one Claude Code folder per `skills/*/SKILL.md` (currently 48). Anthropic Skills frontmatter spec compliance verified. |
 | Local installer & CLI tarball readiness | Ready for Draft v0 review (Unpublished) | `bin/blendops.mjs` + `scripts/install-skills.mjs` verified via `scripts/test-phase10.mjs` and `scripts/test-phase11.mjs` (`npm pack` + isolated consumer tarball install). Package remains `"private": true` (Not Published to npm). |
+| GLB Web Handoff & Viewer Integration | Ready for Draft v0 review (`Not Run` / `Not Produced` for live Blender exports) | `schemas/glb-web-handoff-manifest.schema.json`, `scripts/inspect-glb.mjs`, `scripts/generate-glb-handoff-report.mjs`, CLI `glb-inspect` / `glb-handoff` / `glb-validate-manifest`, and Three.js + React Three Fiber examples ([docs/examples/glb-web-handoff/README.md](./examples/glb-web-handoff/README.md)) verified in `scripts/test-phase12.mjs`. |
 | Adapter install dry-run | Warn | Adapter architecture and dry-run install eval are complete, with native-path confidence still environment-dependent. |
 | Manual install beta | Warn | Evidence report: [docs/evals/manual-install-beta-v0.md](./evals/manual-install-beta-v0.md). |
 | CI guards | Ready for Draft v0 review | `npm run docs:check` validates active markdown files (see script footer count). |
@@ -99,6 +100,7 @@ The previously-listed "blockers" are now correctly scoped:
 - [x] 3-mode auto-detect install flow (Mode A / B / C) in `docs/ai-agent-quickstart.md` + README 30-second prompt.
 - [x] Skill ZIP / package generation working (`npm run skills:export` produces one ZIP + one Claude Code folder per `skills/*/SKILL.md`, currently 48).
 - [x] Safe project-local installer (`scripts/install-skills.mjs`) and distributable CLI (`bin/blendops.mjs`) verified end-to-end via `npm pack` (`scripts/test-phase10.mjs`, `scripts/test-phase11.mjs`), with `"private": true` retained to prevent accidental registry publishing.
+- [x] Web-ready GLB 2.0 inspection, handoff manifest schema (`schemas/glb-web-handoff-manifest.schema.json`), HTML/Markdown/JSON report generator (`scripts/generate-glb-handoff-report.mjs`), and Three.js / React Three Fiber viewer integration examples (`docs/examples/glb-web-handoff/README.md`) verified via `scripts/test-phase12.mjs`.
 - [x] CI guards passing (`npm run docs:check` validates active markdown files; see script footer count).
 - [x] Runtime-stack-strategy 2-path + CLI appendix documented with upstream redirect clarity.
 - [x] CLI compatibility considerations researched + documented (GLB export, add-on enablement, GPU flags, viewport limits, stateless caveat).

@@ -88,13 +88,13 @@ Never claim GLB or export success without concrete evidence tied to the current 
 
 ## Operating procedure
 1. Enumerate expected handoff artifacts (GLB, preview renders, reports) and check current-run provenance for any pre-existing files.
-2. Record Runtime status (`Not Run | Attempted | Produced | Verified | Failed`) and mark each artifact status (`Not Run | Not Produced | Produced | Verified | Failed`, default `Not Produced`) using `render-export-evidence` without upgrading any state.
-3. Document transform/scale/origin assumptions and caveats.
-4. Document material/texture portability assumptions and caveats.
-5. Document loader/extensions and target web stack compatibility assumptions without inventing unsupported guarantees.
-6. Document performance caveats and uncertainty (incorporating `glb-mobile-performance-budget` if size budgets apply, and `glb-animation-handoff` if animation contracts apply).
-7. Verify compliance with evidence boundaries and upstream `blender-scene-quality-checker` findings.
-8. Produce the plain-language handoff summary with actionable next checks and hand off to `non-blender-user-response-writer` for final user-facing wording.
+2. Inspect the GLB 2.0 binary container with `scripts/inspect-glb.mjs` (`blendops glb-inspect`) and generate/validate the structured handoff manifest (`schemas/glb-web-handoff-manifest.schema.json`) via `scripts/generate-glb-handoff-report.mjs` (`blendops glb-handoff`) across all four validation tiers (Tier 1 Container Structural, Tier 2 Khronos glTF 2.0 Specification, Tier 3 Visual Quality, Tier 4 Live Blender Runtime).
+3. Record Runtime status (`Not Run | Attempted | Produced | Verified | Failed`) and mark each artifact status (`Not Produced | Produced | Verified | Failed`, default `Not Produced`) using `render-export-evidence` without upgrading any state.
+4. Document transform/scale/origin assumptions and caveats (`+Y up, +Z forward, -X right`, `1 unit = 1 meter`, non-identity or negative root scale checks).
+5. Document material/texture portability assumptions and caveats (embedded `bufferView` vs external URI textures, KTX2/WebP transcoders, alpha modes).
+6. Document loader/extensions and target web stack compatibility assumptions (`DRACOLoader`, `MeshoptDecoder`, `KTX2Loader`, Three.js / React Three Fiber integration modules in `docs/examples/glb-web-handoff/README.md`) without inventing unsupported guarantees.
+7. Document performance caveats and uncertainty (incorporating `glb-mobile-performance-budget` if size budgets apply, and `glb-animation-handoff` if animation contracts apply).
+8. Verify compliance with evidence boundaries and upstream `blender-scene-quality-checker` findings, then hand off to `non-blender-user-response-writer` for final user-facing wording.
 
 ## Decision tree
 - If concrete current-run GLB evidence is classified by `render-export-evidence` -> report `Produced` or `Verified` (matching evidence, never upgraded) + full compatibility caveats.
@@ -124,13 +124,14 @@ Never claim GLB or export success without concrete evidence tied to the current 
 
 ## Validation checklist
 - [ ] Runtime status (`Not Run | Attempted | Produced | Verified | Failed`) explicit
-- [ ] GLB and preview per-artifact statuses (`Not Run | Not Produced | Produced | Verified | Failed`, default `Not Produced`) explicit
-- [ ] current-run provenance verified for any pre-existing files
+- [ ] GLB and preview per-artifact statuses (`Not Produced | Produced | Verified | Failed`, default `Not Produced`) explicit
+- [ ] current-run provenance verified for any pre-existing files (synthetic test fixtures remain `Not Produced`)
 - [ ] truth states strictly downgrade-only (never upgraded)
+- [ ] 4-tier validation summary explicit (Container Structural, glTF 2.0 Specification, Visual Quality, Live Runtime)
 - [ ] transform/scale/origin assumptions documented
 - [ ] material/texture portability caveats documented
-- [ ] loader/extensions assumptions documented
-- [ ] target stack assumptions documented
+- [ ] loader/extensions assumptions documented (`DRACOLoader`, `MeshoptDecoder`, `KTX2Loader`)
+- [ ] target stack assumptions documented (`threejs`, `react-three-fiber`, `model-viewer`, `babylonjs`)
 - [ ] performance caveats documented
 - [ ] no unsupported readiness guarantees or role blur with evidence/quality/budget/animation/response skills
 - [ ] actionable next checks and handoff to `non-blender-user-response-writer` included
@@ -205,3 +206,7 @@ Never claim GLB or export success without concrete evidence tied to the current 
 - https://www.blender.org/lab/mcp-server/
 - https://claude.com/resources/tutorials/using-the-blender-connector-in-claude
 - https://docs.blender.org/manual/en/latest/advanced/command_line/index.html
+- [`../../schemas/glb-web-handoff-manifest.schema.json`](../../schemas/glb-web-handoff-manifest.schema.json)
+- [`../../scripts/inspect-glb.mjs`](../../scripts/inspect-glb.mjs)
+- [`../../scripts/generate-glb-handoff-report.mjs`](../../scripts/generate-glb-handoff-report.mjs)
+- [`../../docs/examples/glb-web-handoff/README.md`](../../docs/examples/glb-web-handoff/README.md)

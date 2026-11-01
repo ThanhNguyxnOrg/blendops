@@ -39,8 +39,11 @@ export function ensureMainRepoGitRestored(rootDir = ROOT_DIR) {
     'brain',
     'b38e84ce-f859-417f-a4bc-0a548edda60f',
   );
-  const bundlePath = path.join(artifactDir, 'blendops-phase-11-cli-package.bundle');
-  if (!fs.existsSync(bundlePath)) return;
+  const bundlePath = [
+    path.join(artifactDir, 'blendops-phase-12-web-ready-glb-handoff.bundle'),
+    path.join(artifactDir, 'blendops-phase-11-cli-package.bundle'),
+  ].find((p) => fs.existsSync(p));
+  if (!bundlePath) return;
 
   const binPath = path.join(ROOT_DIR, 'bin', 'blendops.mjs');
   try {
@@ -86,14 +89,18 @@ export function ensureMainRepoGitRestored(rootDir = ROOT_DIR) {
       }
     }
     if (fs.existsSync(gitDir)) {
-      execFileSync('git', ['config', 'user.name', 'ThanhNguyxn'], {
+      execFileSync('git', ['config', 'user.name', 'Thanh Nguyen'], {
         cwd: ROOT_DIR,
         stdio: ['ignore', 'ignore', 'ignore'],
       });
-      execFileSync('git', ['config', 'user.email', 'thanhnguyxn@users.noreply.github.com'], {
-        cwd: ROOT_DIR,
-        stdio: ['ignore', 'ignore', 'ignore'],
-      });
+      execFileSync(
+        'git',
+        ['config', 'user.email', '274720769+RealThanhNguyxn@users.noreply.github.com'],
+        {
+          cwd: ROOT_DIR,
+          stdio: ['ignore', 'ignore', 'ignore'],
+        },
+      );
       execFileSync(
         'git',
         ['remote', 'set-url', 'origin', 'https://github.com/ThanhNguyxnOrg/blendops.git'],
@@ -292,6 +299,7 @@ export function computeAuditedInputsDigest(rootDir = ROOT_DIR) {
 }
 
 export const PHASE_11_SOURCE_COMMIT_SHA = 'f0804fd64a9fa4f263a9ec59c5de84ed21733747';
+export const PHASE_12_SOURCE_COMMIT_SHA = 'fdae0e77187c970893bc5414166aed448677f951';
 
 function hasCommitInRepo(rootDir, commitSha) {
   try {
@@ -539,15 +547,15 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
 
   const evalRunResult = runEvalSuites({ rootDir, checkOnly: false });
 
-  const usePhase11SourceCommit = hasCommitInRepo(rootDir, PHASE_11_SOURCE_COMMIT_SHA);
-  const headSha = usePhase11SourceCommit
-    ? PHASE_11_SOURCE_COMMIT_SHA
+  const usePhase12SourceCommit = hasCommitInRepo(rootDir, PHASE_12_SOURCE_COMMIT_SHA);
+  const headSha = usePhase12SourceCommit
+    ? PHASE_12_SOURCE_COMMIT_SHA
     : gitRequired(rootDir, ['rev-parse', 'HEAD']);
   const headShort = gitRequired(rootDir, ['rev-parse', '--short', headSha]);
   const headDate = gitRequired(rootDir, ['log', '-1', '--format=%ci', headSha]);
   const branchName = gitRequired(rootDir, ['rev-parse', '--abbrev-ref', 'HEAD']);
   const { workingTreeState, snapshotBasis, uncommittedChangeCount } =
-    inspectWorkingTreeProvenance(rootDir, usePhase11SourceCommit ? headSha : null);
+    inspectWorkingTreeProvenance(rootDir, usePhase12SourceCommit ? headSha : null);
   const auditedInputsSha256 = computeAuditedInputsDigest(rootDir);
 
   const auditProvenance = {
@@ -751,7 +759,7 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
 
   const currentSkillInventory = {
     schemaVersion: '1.5.0',
-    auditPhase: 'phase-11-current',
+    auditPhase: 'phase-12-current',
     reconciledFromBaselineCommit: phase0SkillInv.commitSha,
     repository: 'ThanhNguyxnOrg/blendops',
     branch: branchName,
@@ -819,7 +827,7 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
 
   const currentEvalInventory = {
     schemaVersion: '1.3.0',
-    auditPhase: 'phase-11-current',
+    auditPhase: 'phase-12-current',
     reconciledFromBaselineCommit: phase0EvalInv.commitSha,
     repository: 'ThanhNguyxnOrg/blendops',
     branch: branchName,
@@ -1003,23 +1011,31 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
       pillar: 'Pillar 4 & 5 (Blender Domain Correctness & Artifact Verification)',
       phase0BaselineState: 'OPEN (no inspect-glb.mjs or version matrices)',
       currentLifecycleStatus: f07Fixed ? 'FIXED' : 'OPEN',
-      resolvedInPhase: f07Fixed ? 'Phase 3 (E1 & E2, 75f3b5c)' : 'Planned in Roadmap E1 & E2 (docs/audits/phase-3/README.md)',
+      resolvedInPhase: f07Fixed
+        ? 'Phase 3 (E1 & E2, 75f3b5c) + Phase 12 Web-Ready GLB Delivery & Viewer Integration'
+        : 'Planned in Roadmap E1 & E2 (docs/audits/phase-3/README.md)',
       lastVerifiedCommit: headSha,
       evidencePaths: f07Fixed
         ? [
             'scripts/inspect-glb.mjs',
+            'scripts/generate-glb-handoff-report.mjs',
             'scripts/validate-evidence-packet.mjs',
             'schemas/runtime-evidence-packet.schema.json',
+            'schemas/glb-web-handoff-manifest.schema.json',
             'docs/blender-version-compatibility.md',
+            'docs/examples/glb-web-handoff/README.md',
+            'docs/examples/glb-web-handoff/threejs-glb-viewer.mjs',
+            'docs/examples/glb-web-handoff/r3f-glb-viewer.tsx',
             'docs/audits/phase-3/README.md',
             'scripts/test-phase3.mjs',
+            'scripts/test-phase12.mjs',
           ]
         : ['docs/audits/phase-3/README.md'],
       verificationMethod: f07Fixed
-        ? 'Verified in scripts/test-phase3.mjs: scripts/inspect-glb.mjs parses GLB 2.0 headers, JSON/BIN chunk alignment, buffer/accessor bounds, and optional Khronos gltf-validator status; scripts/validate-evidence-packet.mjs enforces runtime/artifact truth-state laws; docs/blender-version-compatibility.md documents Blender 3.6 LTS, 4.2 LTS, and 5.1+ compatibility matrices.'
+        ? 'Verified in scripts/test-phase3.mjs and scripts/test-phase12.mjs: scripts/inspect-glb.mjs parses GLB 2.0 headers, JSON/BIN chunk alignment, buffer/accessor bounds, scene/node/skin/animation/material/texture/extension inventory, and optional Khronos gltf-validator status; scripts/generate-glb-handoff-report.mjs generates schema-validated JSON manifests and escaped HTML/Markdown handoff reports; docs/examples/glb-web-handoff/ provides Three.js and React Three Fiber integration modules; scripts/validate-evidence-packet.mjs enforces runtime/artifact truth-state laws; docs/blender-version-compatibility.md documents Blender 3.6 LTS, 4.2 LTS, and 5.1+ compatibility matrices.'
         : 'Roadmap E1/E2 specification in docs/audits/phase-3/README.md; no inspect-glb.mjs binary parser or glTF-Validator runner is wired yet.',
       remainingScope: f07Fixed
-        ? 'None for static container inspection, evidence packet validation, and version compatibility matrices. Live Blender runtime exports remain Not Produced.'
+        ? 'None for static container inspection, web handoff manifest/report generation, viewer integration helpers, evidence packet validation, and version compatibility matrices. Live Blender runtime exports remain Not Produced.'
         : 'Implement scripts/inspect-glb.mjs, optional Khronos glTF-Validator runner, and Blender 3.6/4.2/5.1 shader/exporter compatibility tables.',
     },
     {
@@ -1140,7 +1156,7 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
 
   const findings = {
     schemaVersion: '1.4.0',
-    auditPhase: 'phase-11-current',
+    auditPhase: 'phase-12-current',
     repository: 'ThanhNguyxnOrg/blendops',
     branch: branchName,
     baselineCommitSha: '3ea3c35c6b8a6e5e915bab9f63333d4a1c09bd4d',
@@ -1183,7 +1199,7 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
   // 4. Reassessed Current Scorecard (87.0 / 100 vs Historical 54.5 / 100)
   const currentScorecard = {
     schemaVersion: '1.5.0',
-    auditPhase: 'phase-11-current',
+    auditPhase: 'phase-12-current',
     status: 'reconciled-current-state',
     repository: 'ThanhNguyxnOrg/blendops',
     branch: branchName,
@@ -1389,6 +1405,12 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
           'docs/runtime-stack-strategy.md',
           'docs/blender-version-compatibility.md',
           'scripts/inspect-glb.mjs',
+          'scripts/generate-glb-handoff-report.mjs',
+          'schemas/glb-web-handoff-manifest.schema.json',
+          'docs/examples/glb-web-handoff/README.md',
+          'docs/examples/glb-web-handoff/threejs-glb-viewer.mjs',
+          'docs/examples/glb-web-handoff/r3f-glb-viewer.tsx',
+          'scripts/test-phase12.mjs',
           'docs/audits/current/skill-inventory.json',
         ],
         criteria: [
@@ -1401,7 +1423,7 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
             awardedPoints: p4c3Awarded,
             status: f07Fixed ? 'Pass' : 'Warn',
             evidence: f07Fixed
-              ? 'F-07 FIXED: scripts/inspect-glb.mjs validates GLB 2.0 binary headers, JSON/BIN chunk alignment, buffer/accessor bounds, and optional Khronos gltf-validator status; docs/blender-version-compatibility.md documents Blender 3.6 LTS, 4.2 LTS, and 5.1+ shader, engine, color management, and glTF 2.0 matrices.'
+              ? 'F-07 FIXED: scripts/inspect-glb.mjs and scripts/generate-glb-handoff-report.mjs validate GLB 2.0 binary headers, JSON/BIN chunk alignment, buffer/accessor bounds, scene/node/skin/animation/material/texture/extension inventory, and optional Khronos gltf-validator status; schemas/glb-web-handoff-manifest.schema.json and docs/examples/glb-web-handoff/ provide deterministic web handoff manifests, HTML/Markdown reports, and Three.js / React Three Fiber viewer integration; docs/blender-version-compatibility.md documents Blender 3.6 LTS, 4.2 LTS, and 5.1+ shader, engine, color management, and glTF 2.0 matrices.'
               : phase0Scorecard.pillars[3].criteria[2].evidence,
           },
         ],
@@ -1576,7 +1598,7 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
   // 5. Verification Manifest
   const verificationManifest = {
     schemaVersion: '1.4.0',
-    auditPhase: 'phase-11-current',
+    auditPhase: 'phase-12-current',
     repository: 'ThanhNguyxnOrg/blendops',
     branch: branchName,
     sourceCommitSha: headSha,
@@ -1689,17 +1711,22 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
         commitSha: 'f0804fd64a9fa4f263a9ec59c5de84ed21733747',
         summary: 'Transactional project-local writes, crash recovery journal, and user-edit preservation across reruns & rollback',
       },
+      {
+        phase: 'Phase 11',
+        commitSha: 'fdae0e77187c970893bc5414166aed448677f951',
+        summary: 'Distributable CLI entrypoint (bin/blendops.mjs), npm pack tarball consumer verification, and cross-platform CI pipeline (Ubuntu, Windows, macOS)',
+      },
     ],
     currentPhaseContext: {
-      phase: 'Phase 11 — Distributable CLI & Package Readiness',
-      title: 'Distributable CLI Entrypoint (bin/blendops.mjs), npm Pack Tarball Readiness, and End-to-End Packaged Consumer Verification',
+      phase: 'Phase 12 — Web-Ready GLB Delivery & Viewer Integration',
+      title: 'Deterministic GLB 2.0 Deep Inspection, Web Handoff Manifest Schema & Report Generator, Three.js / React Three Fiber Viewer Integration, and CLI Subcommands',
       sourceCommitSha: headSha,
       workingTreeState,
       snapshotBasis,
       auditedInputsSha256,
       auditedInputsManifest: AUDITED_INPUTS_MANIFEST_REL,
       relationshipToCommitChain:
-        'Phase 11 is built directly on top of Phase 10.2 (f0804fd64a9fa4f263a9ec59c5de84ed21733747). Because a Git commit cannot embed its own final SHA inside tracked files, verification-manifest.json records f0804fd64a9fa4f263a9ec59c5de84ed21733747 as the latest completed commit in commitChain and sourceCommitSha, while locking the exact Phase 11 audited inputs via auditedInputsSha256 and docs/audits/audited-inputs.manifest.json.',
+        'Phase 12 is built directly on top of Phase 11 (fdae0e77187c970893bc5414166aed448677f951). Because a Git commit cannot embed its own final SHA inside tracked files, verification-manifest.json records fdae0e77187c970893bc5414166aed448677f951 as the latest completed commit in commitChain and sourceCommitSha, while locking the exact Phase 12 audited inputs via auditedInputsSha256 and docs/audits/audited-inputs.manifest.json.',
     },
     ciVerificationPipeline: {
       command: 'npm run ci',
@@ -1742,9 +1769,9 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
         },
         {
           script: 'npm test',
-          command: 'node --test scripts/test-phase1.mjs scripts/test-phase2.mjs scripts/test-phase3.mjs scripts/test-phase4.mjs scripts/test-phase5.mjs scripts/test-phase6.mjs scripts/test-phase7.mjs scripts/test-phase8.mjs scripts/test-phase9.mjs scripts/test-phase10.mjs scripts/test-phase11.mjs',
+          command: 'node --test scripts/test-phase1.mjs scripts/test-phase2.mjs scripts/test-phase3.mjs scripts/test-phase4.mjs scripts/test-phase5.mjs scripts/test-phase6.mjs scripts/test-phase7.mjs scripts/test-phase8.mjs scripts/test-phase9.mjs scripts/test-phase10.mjs scripts/test-phase11.mjs scripts/test-phase12.mjs',
           status: 'Passed',
-          verifiedScope: 'Unit and integration suites across Phase 1, Phase 2 / 2.1, Phase 3 / 3.1 / 3.1.1, Phase 4, Phase 5, Phase 6 / 6.1, Phase 7, Phase 8 / 8.1 / 8.1.1, Phase 9, Phase 10 / 10.1 / 10.2, and Phase 11 (distributable CLI & npm pack tarball consumer verification)',
+          verifiedScope: 'Unit and integration suites across Phase 1, Phase 2 / 2.1, Phase 3 / 3.1 / 3.1.1, Phase 4, Phase 5, Phase 6 / 6.1, Phase 7, Phase 8 / 8.1 / 8.1.1, Phase 9, Phase 10 / 10.1 / 10.2, Phase 11, and Phase 12 (web-ready GLB delivery & viewer integration toolkit)',
         },
       ],
     },
@@ -1771,7 +1798,7 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
 
 | Metric | Historical Phase 0 Baseline (\`3ea3c35\`) | Current Reconciled State (\`main\`) | Status / Change |
 | :--- | :---: | :---: | :--- |
-| **Overall Measured Score** | \`54.5 / 100\` | **\`${totalMeasuredScore.toFixed(1)} / 100\`** | **\`${totalScoreDelta}\`** (backed by Phases 1, 2, 2.1, 3, 3.1, 3.1.1, 4, 5, 6, 6.1, 7, 8, 8.1, 8.1.1, 9, 10, 10.1, 10.2, 11) |
+| **Overall Measured Score** | \`54.5 / 100\` | **\`${totalMeasuredScore.toFixed(1)} / 100\`** | **\`${totalScoreDelta}\`** (backed by Phases 1, 2, 2.1, 3, 3.1, 3.1.1, 4, 5, 6, 6.1, 7, 8, 8.1, 8.1.1, 9, 10, 10.1, 10.2, 11, 12) |
 | **Active P0 Zero-Compensation Blockers** | \`3\` (\`F-01\`, \`F-02\`, \`F-04\`) | **\`0\`** | \`F-01\`, \`F-02\`, \`F-03\`, \`F-04\` **FIXED** |
 | **Skills with \`Artifact status: Not Run\` (\`F-01\`)** | \`30 / 48\` | **\`0 / 48\`** | **FIXED** in Phase 1 + guarded in \`scripts/check-docs.mjs\` |
 | **Extended Template Completeness (\`F-05\`)** | \`8 / 48\` skills missing sections | **\`${missingExtendedSkillsCount} / 48\` skills missing sections** | **${f05Fixed ? 'FIXED' : 'OPEN'}** in Phase 4 + 18-heading guard in \`scripts/check-docs.mjs\` |
@@ -1798,7 +1825,7 @@ Because a Git commit cannot honestly contain its own final commit SHA inside tra
 
 The \`auditedInputsSha256\` digest is governed by [\`../audited-inputs.manifest.json\`](../audited-inputs.manifest.json):
 
-- **Included Scope (\`requiredFiles\` + \`requiredDirectories\`):** Covers [\`../audited-inputs.manifest.json\`](../audited-inputs.manifest.json) itself, root governance & dependency files (\`AGENTS.md\`, \`README.md\`, \`TODO.md\`, \`LICENSE\`, \`package.json\`, \`package-lock.json\`, \`.github/workflows/docs.yml\`), core architecture & runtime docs (\`docs/README.md\`, \`docs/start-here.md\`, \`docs/runtime-stack-strategy.md\`, \`docs/adapter-registry.md\`, \`docs/distribution-strategy.md\`, etc.), all CLI/validation/compiler/eval/bundle/installer/test scripts (\`bin/blendops.mjs\`, \`scripts/check-docs.mjs\`, \`scripts/export-claude-skills.mjs\`, \`scripts/build-registry.mjs\`, \`scripts/run-evals.mjs\`, \`scripts/generate-bundle-reference-summaries.mjs\`, \`scripts/generate-current-audit.mjs\`, \`scripts/dev-server.mjs\`, \`scripts/install-skills.mjs\`, \`scripts/test-phase1.mjs\` through \`scripts/test-phase11.mjs\`), and the complete directory trees \`docs/audits/phase-0\`, \`docs/audits/phase-2\`, \`docs/audits/phase-2.1\`, \`docs/audits/phase-3\`, \`docs/evals\`, \`docs/install\`, \`docs/adapters\`, \`laws\`, \`packs\`, \`bundles\`, \`skills\`, \`registry\`, \`evals\`, and \`schemas\`.
+- **Included Scope (\`requiredFiles\` + \`requiredDirectories\`):** Covers [\`../audited-inputs.manifest.json\`](../audited-inputs.manifest.json) itself, root governance & dependency files (\`AGENTS.md\`, \`README.md\`, \`TODO.md\`, \`LICENSE\`, \`package.json\`, \`package-lock.json\`, \`.github/workflows/docs.yml\`), core architecture & runtime docs (\`docs/README.md\`, \`docs/start-here.md\`, \`docs/runtime-stack-strategy.md\`, \`docs/adapter-registry.md\`, \`docs/distribution-strategy.md\`, etc.), all CLI/validation/compiler/eval/bundle/installer/test scripts (\`bin/blendops.mjs\`, \`scripts/check-docs.mjs\`, \`scripts/export-claude-skills.mjs\`, \`scripts/build-registry.mjs\`, \`scripts/run-evals.mjs\`, \`scripts/inspect-glb.mjs\`, \`scripts/generate-glb-handoff-report.mjs\`, \`scripts/generate-bundle-reference-summaries.mjs\`, \`scripts/generate-current-audit.mjs\`, \`scripts/dev-server.mjs\`, \`scripts/install-skills.mjs\`, \`scripts/test-phase1.mjs\` through \`scripts/test-phase12.mjs\`), and the complete directory trees \`docs/audits/phase-0\`, \`docs/audits/phase-2\`, \`docs/audits/phase-2.1\`, \`docs/audits/phase-3\`, \`docs/evals\`, \`docs/examples/glb-web-handoff\`, \`docs/install\`, \`docs/adapters\`, \`laws\`, \`packs\`, \`bundles\`, \`skills\`, \`registry\`, \`evals\`, and \`schemas\`.
 - **Excluded Scope (\`excludedPrefixes\` & \`excludedExactPaths\`):** Excludes \`docs/audits/current/**\` (generated output directory to prevent self-referential hashing), \`.git/\`, \`node_modules/\`, \`dist/\`, \`.aistudio/\`, temporary files, and symbolic links.
 - **Digest Algorithm:** Expands all manifest files and directories into a deduplicated, lexicographically sorted list of normalized POSIX relative paths and computes a SHA-256 digest over unambiguous length-prefixed framing (\`path:<byteLength>:<relPath>\\0content:<byteLength>:\\0<bytes>\\0\`).
 - **Adding New Evidence Paths:** Whenever a new file or directory is referenced in \`scorecard.json\` (\`pillars[].evidenceFiles[]\`) or \`findings.json\` (\`findings[].evidencePaths[]\`), it **must** be covered by \`requiredFiles\` or \`requiredDirectories\` in [\`../audited-inputs.manifest.json\`](../audited-inputs.manifest.json). This invariant is enforced in CI by \`scripts/test-phase3.mjs\`, \`scripts/test-phase6.mjs\`, \`scripts/test-phase7.mjs\`, and \`scripts/test-phase8.mjs\`.
@@ -1815,7 +1842,7 @@ The \`auditedInputsSha256\` digest is governed by [\`../audited-inputs.manifest.
 | **F-04** | **P0** | Structured behavioral evaluation suites & automated runner | \`OPEN\` | **\`${f04Fixed ? 'FIXED' : 'PARTIALLY_FIXED'}\`** | ${f04Fixed ? `48/48 canonical \`.eval.json\` suites (${totalEvalCasesCount} cases: ${contractRoutingCasesCount} \`contract_routing\` + ${contractHandoffCasesCount} \`contract_handoff\` + ${deterministicFixtureCasesCount} \`deterministic_fixture\`, 0 prose-only pending) verified in CI; \`live_model\` and \`blender_runtime\` remain \`Not Run\`.` : `${machineReadableSuitesCount}/48 \`.eval.json\` suites (${totalEvalCasesCount} cases) in CI; ${remainingProseSuitesCount}/48 prose evals pending.`} |
 | **F-05** | **P1** | 8 Batch 7/8 skills omit 9–11 extended template sections | \`OPEN\` | **\`${f05Fixed ? 'FIXED' : 'OPEN'}\`** | ${f05Fixed ? '48/48 skills include all 9 core + 9 extended sections; guarded in `check-docs.mjs` and `test-phase4.mjs`.' : '8/48 skills still omit extended template sections; tracked in `skill-inventory.json`.'} |
 | **F-06** | **P1** | Routing quartet handoffs & \`blender-scope-boundary-enforcer\` reachability | \`OPEN\` | **\`FIXED\`** | Wired in \`blendops-help\` and \`workflow-stage-router\` contracts and verified in \`workflow-graph.json\`. |
-| **F-07** | **P1** | Deterministic GLB inspector & Blender version matrices | \`OPEN\` | **\`${f07Fixed ? 'FIXED' : 'OPEN'}\`** | ${f07Fixed ? '`scripts/inspect-glb.mjs`, `scripts/validate-evidence-packet.mjs`, and `docs/blender-version-compatibility.md` verified in CI.' : 'Scoped in Phase 3 Roadmap E1 (`docs/audits/phase-3/README.md`).'} |
+| **F-07** | **P1** | Deterministic GLB inspector & Blender version matrices | \`OPEN\` | **\`${f07Fixed ? 'FIXED' : 'OPEN'}\`** | ${f07Fixed ? '`scripts/inspect-glb.mjs`, `scripts/generate-glb-handoff-report.mjs`, `schemas/glb-web-handoff-manifest.schema.json`, `docs/examples/glb-web-handoff/`, `scripts/validate-evidence-packet.mjs`, and `docs/blender-version-compatibility.md` verified in CI.' : 'Scoped in Phase 3 Roadmap E1 (`docs/audits/phase-3/README.md`).'} |
 | **F-08** | **P1** | \`docs/adapter-registry.md\` drift from 26 \`docs/install/\` targets | \`OPEN\` | **\`PARTIALLY_FIXED\`** | All 26 install targets synced and verified in \`docs/evals/adapter-empirical-verification-phase-7.md\`; \`bin/blendops.mjs\`, \`scripts/install-skills.mjs\`, \`scripts/test-phase10.mjs\`, and \`scripts/test-phase11.mjs\` verify safe project-local attachment, rollback, and packaged CLI tarball execution; 2 targets (\`claude-code\`, \`generic-project\`) are \`verified-read\`; 24 targets remain \`linked-only\` pending live host testing. |
 | **F-09** | **P2** | Manual bundle reference summary drift risk | \`OPEN\` | **\`${!f03Fixed ? 'DEFERRED' : f09Fixed ? 'FIXED' : 'OPEN'}\`** | ${f09Fixed ? '96/96 bundle reference summaries (48 Claude Desktop + 48 portable skill package) and `bundles/claude-desktop-manual/manifest.json` deterministically generated and verified via `npm run bundles:summaries:check` and `scripts/test-phase8.mjs`.' : f03Fixed ? 'Prerequisite satisfied (48/48 `contract.json` files compiled); bundle reference generator scheduled for Phase 8.' : 'Deferred until all 48 skills have `contract.json`.'} |
 | **F-10** | **P1** | Runtime capability tiers (L0–L3) & scene rollback protocol | \`OPEN\` | **\`${f10Fixed ? 'FIXED' : 'OPEN'}\`** | ${f10Fixed ? '`registry/runtime-capability-policy.json`, `scripts/validate-capability-policy.mjs`, and `docs/safety-model.md` enforce L0–L3 tiers and fail-closed `.blend` backup checks.' : 'Scoped in Phase 3 Roadmap E3 (`docs/audits/phase-3/README.md`).'} |
@@ -1828,7 +1855,7 @@ The \`auditedInputsSha256\` digest is governed by [\`../audited-inputs.manifest.
 - [\`findings.json\`](./findings.json) — Machine-readable lifecycle table for \`F-01\` through \`F-10\`.
 - [\`skill-inventory.json\`](./skill-inventory.json) — Live 48-skill inventory reflecting Phase 1 truth-state fixes, Phase 2/2.1/5 full-catalog contracts, Phase 3/6 full-catalog eval coverage, and Phase 4 extended template completion.
 - [\`eval-inventory.json\`](./eval-inventory.json) — Live 48-skill evaluation inventory covering all 48 machine-readable suites (${totalEvalCasesCount} cases) with 0 remaining prose-only skills.
-- [\`verification-manifest.json\`](./verification-manifest.json) — Verified commit chain through \`f0804fd64a9fa4f263a9ec59c5de84ed21733747\`, Phase 10 / 10.1 / 10.2 / 11 provenance context, CI pipeline commands, and runtime/artifact truth states.
+- [\`verification-manifest.json\`](./verification-manifest.json) — Verified commit chain through \`fdae0e77187c970893bc5414166aed448677f951\`, Phase 10 / 10.1 / 10.2 / 11 / 12 provenance context, CI pipeline commands, and runtime/artifact truth states.
 
 ## Related Documentation
 
