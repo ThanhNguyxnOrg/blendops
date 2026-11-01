@@ -14,6 +14,7 @@ import {
   validateDestinationRoot,
   validatePlanStoreDirectory,
   validateRollbackManifestSchema,
+  recoverPendingTransactionJournal,
   computeBlendOpsSourceFingerprint,
   formatInstallerReport,
   formatInstallerHelp,
@@ -1659,3 +1660,468 @@ test('Scenario 32 (Phase 10.1 P2): Reruns fail closed if a prior backup recorded
   }
 });
 
+test('Scenario 33 (Phase 10.2 P1): Transactional write recovery restores target files, manifest, report, and backups consistently across first-install, rerun, report-write, and crash failures', () => {
+  const tempBase = makeTempDir('blendops-p10-2-tx-recovery-');
+  const planDir = path.join(tempBase, 'plans');
+
+  try {
+    // Part A: First-install failure when no previous manifest or report exists
+    const firstProj = path.join(tempBase, 'first-install-proj');
+    fs.mkdirSync(firstProj, { recursive: true });
+    const firstAgentsPath = path.join(firstProj, 'AGENTS.md');
+    const origFirstAgents = '# Original Pre-Install AGENTS\n';
+    fs.writeFileSync(firstAgentsPath, origFirstAgents, 'utf8');
+    const origFirstAgentsSha = sha256File(firstAgentsPath);
+
+    runInstaller(
+      ['--dry-run', '--target', 'claude-code', '--project', firstProj, '--patch-agents-md'],
+      { repoRoot: ROOT, planDir },
+    );
+
+    // Fail on the 2nd target operation ('CLAUDE.md') after 'BLENDOPS.md', '.blendops/backups/AGENTS.md.bak', and provisional manifest were already written
+    let blendopsExistedMidTx = false;
+    let provisionalManifestExistedMidTx = false;
+    assert.throws(
+      () =>
+        runInstaller(
+          ['--write', '--target', 'claude-code', '--project', firstProj, '--patch-agents-md'],
+          {
+            repoRoot: ROOT,
+            planDir,
+            faultInjection: {
+              beforeTargetOperation: ({ index }) => {
+                if (index === 1) {
+                  blendopsExistedMidTx = fs.existsSync(path.join(firstProj, 'BLENDOPS.md'));
+                  provisionalManifestExistedMidTx = fs.existsSync(
+                    path.join(firstProj, '.blendops', 'install-manifest.json'),
+                  );
+                  throw new Error('Simulated mid-transaction failure on second target file');
+                }
+              },
+            },
+          },
+        ),
+      /Simulated mid-transaction failure on second target file/,
+    );
+    assert.equal(blendopsExistedMidTx, true, 'first target file was written before failure on second target');
+    assert.equal(provisionalManifestExistedMidTx, true, 'provisional manifest was persisted before target mutation');
+    assert.ok(!fs.existsSync(path.join(firstProj, 'BLENDOPS.md')), 'created BLENDOPS.md must be removed on failed first install');
+    assert.ok(!fs.existsSync(path.join(firstProj, 'CLAUDE.md')), 'CLAUDE.md must not exist');
+    assert.equal(sha256File(firstAgentsPath), origFirstAgentsSha, 'AGENTS.md must remain byte-for-byte identical');
+    assert.ok(!fs.existsSync(path.join(firstProj, '.blendops')), 'provisional manifest, new backups, and .blendops must be removed on failed first install');
+
+    // Also test first-install failure during report write AFTER all target files were mutated
+    assert.throws(
+      () =>
+        runInstaller(
+          ['--write', '--target', 'claude-code', '--project', firstProj, '--patch-agents-md'],
+          {
+            repoRoot: ROOT,
+            planDir,
+            faultInjection: {
+              afterReportWriteBeforeVerify: ({ reportAbsPath }) => {
+                fs.writeFileSync(reportAbsPath, 'corrupted report bytes', 'utf8');
+              },
+            },
+          },
+        ),
+      /Post-write hash verification failed for \.blendops\/INSTALL_REPORT\.md/,
+    );
+    assert.ok(!fs.existsSync(path.join(firstProj, 'BLENDOPS.md')), 'created BLENDOPS.md must be rolled back when report verification fails');
+    assert.ok(!fs.existsSync(path.join(firstProj, 'CLAUDE.md')), 'created CLAUDE.md must be rolled back when report verification fails');
+    assert.equal(sha256File(firstAgentsPath), origFirstAgentsSha, 'modified AGENTS.md must be restored byte-for-byte when report verification fails');
+    assert.ok(!fs.existsSync(path.join(firstProj, '.blendops')), 'all metadata and backups must be cleaned up when first-install report fails');
+
+    // Verify normal write and rollback succeed after simulated first-install failures
+    const cleanFirstWrite = runInstaller(
+      ['--write', '--target', 'claude-code', '--project', firstProj, '--patch-agents-md'],
+      { repoRoot: ROOT, planDir },
+    );
+    assert.equal(cleanFirstWrite.ok, true);
+    const cleanFirstRollback = runInstaller(
+      ['--rollback', '--project', firstProj],
+      { repoRoot: ROOT, planDir },
+    );
+    assert.equal(cleanFirstRollback.ok, true);
+    assert.equal(sha256File(firstAgentsPath), origFirstAgentsSha);
+
+    // Part B: Rerun failure on second target file after first target file was modified on disk
+    const rerunProj = path.join(tempBase, 'rerun-proj');
+    fs.mkdirSync(rerunProj, { recursive: true });
+    const rerunAgentsPath = path.join(rerunProj, 'AGENTS.md');
+    const rerunClaudePath = path.join(rerunProj, 'CLAUDE.md');
+    const origRerunAgents = '# Pre-Existing Team AGENTS\n';
+    const origRerunClaude = '# Pre-Existing Team CLAUDE\n';
+    fs.writeFileSync(rerunAgentsPath, origRerunAgents, 'utf8');
+    fs.writeFileSync(rerunClaudePath, origRerunClaude, 'utf8');
+    const origRerunAgentsSha = sha256File(rerunAgentsPath);
+    const origRerunClaudeSha = sha256File(rerunClaudePath);
+
+    // Install #1: generic-project + --patch-agents-md (creates BLENDOPS.md, modifies AGENTS.md, creates .blendops/backups/AGENTS.md.bak)
+    runInstaller(
+      ['--dry-run', '--target', 'generic-project', '--project', rerunProj, '--patch-agents-md'],
+      { repoRoot: ROOT, planDir },
+    );
+    runInstaller(
+      ['--write', '--target', 'generic-project', '--project', rerunProj, '--patch-agents-md'],
+      { repoRoot: ROOT, planDir },
+    );
+
+    const blendopsPath = path.join(rerunProj, 'BLENDOPS.md');
+    const manifestPath = path.join(rerunProj, '.blendops', 'install-manifest.json');
+    const reportPath = path.join(rerunProj, '.blendops', 'INSTALL_REPORT.md');
+    const agentsBackupPath = path.join(rerunProj, '.blendops', 'backups', 'AGENTS.md.bak');
+    const claudeBackupPath = path.join(rerunProj, '.blendops', 'backups', 'CLAUDE.md.bak');
+
+    const preRerunBlendopsSha = sha256File(blendopsPath);
+    const preRerunAgentsSha = sha256File(rerunAgentsPath);
+    const preRerunManifestSha = sha256File(manifestPath);
+    const preRerunReportSha = sha256File(reportPath);
+    const preRerunAgentsBackupSha = sha256File(agentsBackupPath);
+
+    // Prepare Install #2: --target claude-code --patch-agents-md
+    // Operations in Install #2:
+    // op[0]: modify BLENDOPS.md (changes attachment metadata from generic-project to claude-code)
+    // op[1]: modify CLAUDE.md (creates new backup .blendops/backups/CLAUDE.md.bak and patches CLAUDE.md)
+    // op[2]: modify AGENTS.md (updates managed section for claude-code)
+    runInstaller(
+      ['--dry-run', '--target', 'claude-code', '--project', rerunProj, '--patch-agents-md'],
+      { repoRoot: ROOT, planDir },
+    );
+
+    // 1. Fail on op[1] (CLAUDE.md) AFTER op[0] (BLENDOPS.md), provisional manifest, and new CLAUDE.md.bak were written to disk
+    let blendopsChangedMidRerun = false;
+    let claudeBackupExistedMidRerun = false;
+    assert.throws(
+      () =>
+        runInstaller(
+          ['--write', '--target', 'claude-code', '--project', rerunProj, '--patch-agents-md'],
+          {
+            repoRoot: ROOT,
+            planDir,
+            faultInjection: {
+              beforeTargetOperation: ({ index }) => {
+                if (index === 1) {
+                  blendopsChangedMidRerun = sha256File(blendopsPath) !== preRerunBlendopsSha;
+                  claudeBackupExistedMidRerun = fs.existsSync(claudeBackupPath);
+                  throw new Error('Simulated failure on 2nd target during rerun');
+                }
+              },
+            },
+          },
+        ),
+      /Simulated failure on 2nd target during rerun/,
+    );
+    assert.equal(blendopsChangedMidRerun, true, '1st target (BLENDOPS.md) was mutated on disk before 2nd target failed');
+    assert.equal(claudeBackupExistedMidRerun, true, 'new backup CLAUDE.md.bak was created before 2nd target failed');
+    assert.equal(sha256File(blendopsPath), preRerunBlendopsSha, '1st target (BLENDOPS.md) must be restored byte-for-byte');
+    assert.equal(sha256File(rerunClaudePath), origRerunClaudeSha, '2nd target (CLAUDE.md) must remain unchanged');
+    assert.equal(sha256File(rerunAgentsPath), preRerunAgentsSha, '3rd target (AGENTS.md) must remain unchanged');
+    assert.equal(sha256File(manifestPath), preRerunManifestSha, 'previous install-manifest.json must be restored byte-for-byte');
+    assert.equal(sha256File(reportPath), preRerunReportSha, 'previous INSTALL_REPORT.md must be restored byte-for-byte');
+    assert.ok(!fs.existsSync(claudeBackupPath), 'newly created CLAUDE.md.bak from failed transaction must be removed');
+    assert.equal(sha256File(agentsBackupPath), preRerunAgentsBackupSha, 'pre-existing AGENTS.md.bak from install #1 must survive untouched');
+
+    // 2. Fail during report write AFTER all 3 target files were mutated on disk
+    assert.throws(
+      () =>
+        runInstaller(
+          ['--write', '--target', 'claude-code', '--project', rerunProj, '--patch-agents-md'],
+          {
+            repoRoot: ROOT,
+            planDir,
+            faultInjection: {
+              beforeReportWrite: () => {
+                throw new Error('Simulated report write failure on rerun');
+              },
+            },
+          },
+        ),
+      /Simulated report write failure on rerun/,
+    );
+    assert.equal(sha256File(blendopsPath), preRerunBlendopsSha, 'BLENDOPS.md restored byte-for-byte after report failure');
+    assert.equal(sha256File(rerunClaudePath), origRerunClaudeSha, 'CLAUDE.md restored byte-for-byte after report failure');
+    assert.equal(sha256File(rerunAgentsPath), preRerunAgentsSha, 'AGENTS.md restored byte-for-byte after report failure');
+    assert.equal(sha256File(manifestPath), preRerunManifestSha, 'previous manifest restored byte-for-byte after report failure');
+    assert.equal(sha256File(reportPath), preRerunReportSha, 'previous report restored byte-for-byte after report failure');
+    assert.ok(!fs.existsSync(claudeBackupPath), 'new backup removed after report failure');
+    assert.equal(sha256File(agentsBackupPath), preRerunAgentsBackupSha, 'prior backup preserved after report failure');
+
+    // 3. Simulate process crash mid-transaction (leaving .blendops/transaction-journal.json on disk) and verify automatic journal recovery
+    assert.throws(
+      () =>
+        runInstaller(
+          ['--write', '--target', 'claude-code', '--project', rerunProj, '--patch-agents-md'],
+          {
+            repoRoot: ROOT,
+            planDir,
+            faultInjection: {
+              simulateProcessCrashOnFailure: true,
+              afterTargetOperation: ({ index }) => {
+                if (index === 1) {
+                  throw new Error('Simulated process crash after modifying BLENDOPS.md and CLAUDE.md');
+                }
+              },
+            },
+          },
+        ),
+      /Simulated process crash/,
+    );
+    assert.ok(fs.existsSync(path.join(rerunProj, '.blendops', 'transaction-journal.json')), 'journal remains on disk after simulated crash');
+    const recoveryRes = recoverPendingTransactionJournal(fs.realpathSync(rerunProj));
+    assert.equal(recoveryRes.recovered, true);
+    assert.equal(sha256File(blendopsPath), preRerunBlendopsSha, 'journal recovery restores BLENDOPS.md');
+    assert.equal(sha256File(rerunClaudePath), origRerunClaudeSha, 'journal recovery restores CLAUDE.md');
+    assert.equal(sha256File(manifestPath), preRerunManifestSha, 'journal recovery restores previous manifest');
+    assert.equal(sha256File(reportPath), preRerunReportSha, 'journal recovery restores previous report');
+    assert.ok(!fs.existsSync(claudeBackupPath), 'journal recovery removes new backup');
+
+    // 4. Verify cleanup/restoration failures are explicitly surfaced and never silently swallowed
+    assert.throws(
+      () =>
+        runInstaller(
+          ['--write', '--target', 'claude-code', '--project', rerunProj, '--patch-agents-md'],
+          {
+            repoRoot: ROOT,
+            planDir,
+            faultInjection: {
+              beforeReportWrite: () => {
+                throw new Error('Primary write error');
+              },
+              afterRollbackTargetWrite: (rec) => {
+                if (rec.relPath === 'CLAUDE.md') {
+                  fs.writeFileSync(rec.absPath, 'corrupted during rollback', 'utf8');
+                }
+              },
+            },
+          },
+        ),
+      /Transactional rollback incomplete after write failure \(Primary write error\): .*Post-rollback SHA-256 verification failed for target 'CLAUDE\.md'/,
+    );
+    // Recover from the still-present journal after fixing the fault
+    recoverPendingTransactionJournal(fs.realpathSync(rerunProj));
+    assert.equal(sha256File(rerunClaudePath), origRerunClaudeSha);
+
+    // 5. Verify subsequent normal --write and --rollback succeed cleanly after all simulated failures
+    const rerunWriteOk = runInstaller(
+      ['--write', '--target', 'claude-code', '--project', rerunProj, '--patch-agents-md'],
+      { repoRoot: ROOT, planDir },
+    );
+    assert.equal(rerunWriteOk.ok, true);
+    const finalRollbackOk = runInstaller(
+      ['--rollback', '--project', rerunProj],
+      { repoRoot: ROOT, planDir },
+    );
+    assert.equal(finalRollbackOk.ok, true);
+    assert.equal(sha256File(rerunAgentsPath), origRerunAgentsSha);
+    assert.equal(sha256File(rerunClaudePath), origRerunClaudeSha);
+    assert.ok(!fs.existsSync(blendopsPath));
+  } finally {
+    fs.rmSync(tempBase, { recursive: true, force: true });
+  }
+});
+
+test('Scenario 34 (Phase 10.2 P1): User edits on installer-created files (BLENDOPS.md, AGENTS.md, CLAUDE.md, .cursor/rules/blendops.mdc) are preserved across reruns and survive rollback instead of being deleted', () => {
+  const tempBase = makeTempDir('blendops-p10-2-user-edits-');
+  const planDir = path.join(tempBase, 'plans');
+
+  try {
+    // 1. BLENDOPS.md created by installer -> user adds custom section outside managed block -> rerun --dry-run + --write -> custom section preserved -> --rollback preserves user content instead of deleting BLENDOPS.md
+    const proj1 = path.join(tempBase, 'proj-blendops-edited');
+    fs.mkdirSync(proj1, { recursive: true });
+
+    runInstaller(['--dry-run', '--target', 'generic-project', '--project', proj1], { repoRoot: ROOT, planDir });
+    runInstaller(['--write', '--target', 'generic-project', '--project', proj1], { repoRoot: ROOT, planDir });
+
+    const blendops1Path = path.join(proj1, 'BLENDOPS.md');
+    const manifest1Path = path.join(proj1, '.blendops', 'install-manifest.json');
+    const initialManifest1 = JSON.parse(fs.readFileSync(manifest1Path, 'utf8'));
+    assert.ok(initialManifest1.files_created.includes('BLENDOPS.md'));
+
+    const userCustomNotes = '\n## Studio Custom Conventions\n\n- Keep lighting rigs in `Collection_Lights`.\n- Export scale: 1.0 meters.\n';
+    const userEditedBlendops1 = `${fs.readFileSync(blendops1Path, 'utf8')}${userCustomNotes}`;
+    fs.writeFileSync(blendops1Path, userEditedBlendops1, 'utf8');
+    const userEditedBlendops1Sha = sha256File(blendops1Path);
+
+    // Rerun with same target (generic-project) AND then rerun with target switch (claude-code)
+    const dryRerunSame = runInstaller(
+      ['--dry-run', '--target', 'generic-project', '--project', proj1],
+      { repoRoot: ROOT, planDir },
+    );
+    assert.equal(dryRerunSame.ok, true);
+    assert.ok(dryRerunSame.filesModified.includes('BLENDOPS.md'), 'user-edited BLENDOPS.md must be planned as modify to transition ownership');
+
+    const writeRerunSame = runInstaller(
+      ['--write', '--target', 'generic-project', '--project', proj1],
+      { repoRoot: ROOT, planDir },
+    );
+    assert.equal(writeRerunSame.ok, true);
+    assert.ok(fs.readFileSync(blendops1Path, 'utf8').includes('## Studio Custom Conventions'), 'custom section must remain intact after rerun');
+
+    const manifestAfterRerun = JSON.parse(fs.readFileSync(manifest1Path, 'utf8'));
+    assert.ok(!manifestAfterRerun.files_created.includes('BLENDOPS.md'), 'user-edited BLENDOPS.md must be removed from files_created');
+    assert.ok(manifestAfterRerun.files_modified.includes('BLENDOPS.md'), 'user-edited BLENDOPS.md must transition to files_modified');
+    assert.equal(
+      sha256File(path.join(proj1, '.blendops', 'backups', 'BLENDOPS.md.bak')),
+      userEditedBlendops1Sha,
+      'backup must capture exact pre-rerun user-edited BLENDOPS.md bytes',
+    );
+
+    // Switching target to claude-code updates the managed block while preserving the user custom section and original user-edited backup
+    runInstaller(['--dry-run', '--target', 'claude-code', '--project', proj1], { repoRoot: ROOT, planDir });
+    runInstaller(['--write', '--target', 'claude-code', '--project', proj1], { repoRoot: ROOT, planDir });
+    const blendopsAfterSwitch = fs.readFileSync(blendops1Path, 'utf8');
+    assert.ok(blendopsAfterSwitch.includes('## Studio Custom Conventions'), 'custom section preserved after target switch');
+    assert.ok(blendopsAfterSwitch.includes('Target selected: `claude-code`'), 'managed section updated to claude-code');
+
+    // Rollback restores the user's edited BLENDOPS.md instead of deleting it!
+    const rollback1 = runInstaller(['--rollback', '--project', proj1], { repoRoot: ROOT, planDir });
+    assert.equal(rollback1.ok, true);
+    assert.ok(fs.existsSync(blendops1Path), 'user-edited BLENDOPS.md must NOT be deleted on rollback');
+    assert.equal(
+      sha256File(blendops1Path),
+      userEditedBlendops1Sha,
+      'rollback must restore user-edited BLENDOPS.md byte-for-byte',
+    );
+    assert.ok(!fs.existsSync(path.join(proj1, 'CLAUDE.md')), 'unedited installer-created CLAUDE.md must be removed on rollback');
+
+    // 2. Repeat the same protection test with installer-created CLAUDE.md, AGENTS.md, and .cursor/rules/blendops.mdc
+    const proj2 = path.join(tempBase, 'proj-claude-agents-edited');
+    fs.mkdirSync(proj2, { recursive: true });
+
+    runInstaller(
+      ['--dry-run', '--target', 'claude-code', '--project', proj2, '--patch-agents-md'],
+      { repoRoot: ROOT, planDir },
+    );
+    runInstaller(
+      ['--write', '--target', 'claude-code', '--project', proj2, '--patch-agents-md'],
+      { repoRoot: ROOT, planDir },
+    );
+
+    const claude2Path = path.join(proj2, 'CLAUDE.md');
+    const agents2Path = path.join(proj2, 'AGENTS.md');
+    const blendops2Path = path.join(proj2, 'BLENDOPS.md');
+
+    const editedClaude2 = `${fs.readFileSync(claude2Path, 'utf8')}\n## Custom Claude Team Rules\nPrefer non-destructive modifiers.\n`;
+    const editedAgents2 = `# Team Pre-Header\n\n${fs.readFileSync(agents2Path, 'utf8')}\n## Custom Agent Footer\nKeep scene units metric.\n`;
+    fs.writeFileSync(claude2Path, editedClaude2, 'utf8');
+    fs.writeFileSync(agents2Path, editedAgents2, 'utf8');
+    const editedClaude2Sha = sha256File(claude2Path);
+    const editedAgents2Sha = sha256File(agents2Path);
+
+    // Rerun installer on proj2 (BLENDOPS.md is unchanged; CLAUDE.md and AGENTS.md were edited by user)
+    const dry2 = runInstaller(
+      ['--dry-run', '--target', 'claude-code', '--project', proj2, '--patch-agents-md'],
+      { repoRoot: ROOT, planDir },
+    );
+    assert.equal(dry2.ok, true);
+    assert.deepEqual(dry2.filesModified.sort(), ['AGENTS.md', 'CLAUDE.md']);
+
+    const write2 = runInstaller(
+      ['--write', '--target', 'claude-code', '--project', proj2, '--patch-agents-md'],
+      { repoRoot: ROOT, planDir },
+    );
+    assert.equal(write2.ok, true);
+    assert.ok(fs.readFileSync(claude2Path, 'utf8').includes('## Custom Claude Team Rules'));
+    assert.ok(fs.readFileSync(agents2Path, 'utf8').includes('## Custom Agent Footer'));
+
+    // Subsequent rerun with no new edits is idempotent
+    const dry2Idempotent = runInstaller(
+      ['--dry-run', '--target', 'claude-code', '--project', proj2, '--patch-agents-md'],
+      { repoRoot: ROOT, planDir },
+    );
+    assert.equal(dry2Idempotent.filesModified.length, 0, 'subsequent rerun without new edits must be idempotent');
+
+    // Rollback on proj2 removes unedited BLENDOPS.md and restores user-edited CLAUDE.md and AGENTS.md
+    const rollback2 = runInstaller(['--rollback', '--project', proj2], { repoRoot: ROOT, planDir });
+    assert.equal(rollback2.ok, true);
+    assert.ok(!fs.existsSync(blendops2Path), 'unedited BLENDOPS.md must be deleted on rollback');
+    assert.equal(sha256File(claude2Path), editedClaude2Sha, 'user-edited CLAUDE.md must survive rollback byte-for-byte');
+    assert.equal(sha256File(agents2Path), editedAgents2Sha, 'user-edited AGENTS.md must survive rollback byte-for-byte');
+
+    // Also verify .cursor/rules/blendops.mdc user edits outside managed block are preserved across rerun & rollback
+    const projCursor = path.join(tempBase, 'proj-cursor-edited');
+    fs.mkdirSync(projCursor, { recursive: true });
+    runInstaller(
+      ['--dry-run', '--target', 'cursor', '--project', projCursor, '--confirm-target-path'],
+      { repoRoot: ROOT, planDir },
+    );
+    runInstaller(
+      ['--write', '--target', 'cursor', '--project', projCursor, '--confirm-target-path'],
+      { repoRoot: ROOT, planDir },
+    );
+    const mdcPath = path.join(projCursor, '.cursor', 'rules', 'blendops.mdc');
+    const editedMdc = `${fs.readFileSync(mdcPath, 'utf8')}\n## Custom Cursor Note\nPreserve naming conventions.\n`;
+    fs.writeFileSync(mdcPath, editedMdc, 'utf8');
+    const editedMdcSha = sha256File(mdcPath);
+
+    runInstaller(
+      ['--dry-run', '--target', 'cursor', '--project', projCursor, '--confirm-target-path'],
+      { repoRoot: ROOT, planDir },
+    );
+    runInstaller(
+      ['--write', '--target', 'cursor', '--project', projCursor, '--confirm-target-path'],
+      { repoRoot: ROOT, planDir },
+    );
+    assert.ok(fs.readFileSync(mdcPath, 'utf8').includes('## Custom Cursor Note'));
+    runInstaller(['--rollback', '--project', projCursor], { repoRoot: ROOT, planDir });
+    assert.equal(sha256File(mdcPath), editedMdcSha, 'user-edited .cursor/rules/blendops.mdc must survive rollback');
+
+    // 3. Fail closed when preservation cannot be guaranteed (missing markers, duplicated markers, edits inside managed block, or post-install edits on files_modified)
+    const projFailClosed = path.join(tempBase, 'proj-fail-closed');
+    fs.mkdirSync(projFailClosed, { recursive: true });
+    runInstaller(
+      ['--dry-run', '--target', 'generic-project', '--project', projFailClosed, '--patch-agents-md'],
+      { repoRoot: ROOT, planDir },
+    );
+    runInstaller(
+      ['--write', '--target', 'generic-project', '--project', projFailClosed, '--patch-agents-md'],
+      { repoRoot: ROOT, planDir },
+    );
+
+    const fcBlendopsPath = path.join(projFailClosed, 'BLENDOPS.md');
+    const fcManifestPath = path.join(projFailClosed, '.blendops', 'install-manifest.json');
+    const origFcBlendops = fs.readFileSync(fcBlendopsPath, 'utf8');
+    const origFcManifest = fs.readFileSync(fcManifestPath, 'utf8');
+
+    // Case 3a: User removes managed markers from installer-created file
+    fs.writeFileSync(fcBlendopsPath, '# User replaced whole file without markers\n', 'utf8');
+    assert.throws(
+      () =>
+        runInstaller(
+          ['--dry-run', '--target', 'generic-project', '--project', projFailClosed, '--patch-agents-md'],
+          { repoRoot: ROOT, planDir },
+        ),
+      /managed BlendOps section markers were removed, so user edits cannot be safely preserved/,
+    );
+    assert.equal(fs.readFileSync(fcManifestPath, 'utf8'), origFcManifest, 'ownership hashes must not be refreshed on failed check');
+
+    // Case 3b: Duplicated markers
+    fs.writeFileSync(fcBlendopsPath, `${origFcBlendops}\n${MANAGED_SECTION_START}\n${MANAGED_SECTION_END}\n`, 'utf8');
+    assert.throws(
+      () =>
+        runInstaller(
+          ['--dry-run', '--target', 'generic-project', '--project', projFailClosed, '--patch-agents-md'],
+          { repoRoot: ROOT, planDir },
+        ),
+      /managed BlendOps section markers are malformed or duplicated/,
+    );
+
+    // Case 3c: User edits INSIDE the managed block of an installer-created file
+    fs.writeFileSync(
+      fcBlendopsPath,
+      origFcBlendops.replace('Target selected: `generic-project`', 'Target selected: `generic-project` (USER INNER EDIT)'),
+      'utf8',
+    );
+    assert.throws(
+      () =>
+        runInstaller(
+          ['--dry-run', '--target', 'generic-project', '--project', projFailClosed, '--patch-agents-md'],
+          { repoRoot: ROOT, planDir },
+        ),
+      /installer-created file was edited inside the managed BlendOps section, so preservation of user edits cannot be guaranteed/,
+    );
+  } finally {
+    fs.rmSync(tempBase, { recursive: true, force: true });
+  }
+});

@@ -156,9 +156,9 @@ Global writes must never be the fallback path.
 | Generic project | `generic-project` | Project-root `BLENDOPS.md`; optional backed-up `AGENTS.md`. | verified-read fallback |
 | Claude Desktop | `claude-desktop` | User-managed manual import/copy bundle under `--out`; no UI automation. | linked-only/manual |
 
-## Rollback manifest
+## Rollback manifest, transactional writes, and user-edit preservation
 
-Every write-mode run must create a rollback manifest before changing files.
+Every write-mode run executes as a single recoverable transaction backed by `.blendops/transaction-journal.json` and persists a provisional rollback manifest before mutating target project files.
 
 Manifest fields:
 
@@ -173,10 +173,25 @@ Manifest fields:
 | files_modified | List of modified paths. |
 | backups | Backup paths for every modified existing file. |
 | files_skipped | Skipped paths and reasons. |
+| created_file_hashes | Exact post-install SHA-256 hashes for every file in `files_created`. |
+| modified_file_hashes | Pre-install backup SHA-256, post-install SHA-256, and `.blendops/backups/*.bak` path for every file in `files_modified`. |
+| metadata_files | SHA-256 integrity metadata for `.blendops/INSTALL_REPORT.md` and `.blendops/install-manifest.json`. |
 | global_touched | `false` unless explicitly approved. |
 | runtime_status | Always `Not Run` for install. |
 | artifact_status | Always `Not Produced` for install. |
 | rollback_steps | File-specific restore/remove commands. |
+
+### Transactional write recovery
+
+1. Before any disk write, the installer captures the exact pre-transaction bytes and existence state of `.blendops/install-manifest.json`, `.blendops/INSTALL_REPORT.md`, every backup file newly created by the transaction, and every target file to be created or modified.
+2. During `--write`, the installer records a transaction journal, writes newly created backups, persists the provisional rollback manifest, applies target file writes with immediate path and SHA-256 revalidation, and writes and verifies `.blendops/INSTALL_REPORT.md` inside the same transaction `try / catch`.
+3. If any target write or report write fails, transactional recovery restores modified target files byte-for-byte, removes only target files newly created by the failed transaction, restores the previous manifest and report byte-for-byte (or removes them if this was the first install), removes only backups created by the failed transaction, verifies every restoration with SHA-256, and explicitly surfaces any cleanup/restoration error.
+
+### User-edit preservation on installer-created files
+
+1. Before modifying any path previously recorded in `files_created`, the installer compares the file's current SHA-256 against the previous manifest's `created_file_hashes[path]`.
+2. When an installer-created file (`BLENDOPS.md`, `AGENTS.md`, `CLAUDE.md`, or `.cursor/rules/blendops.mdc`) has been edited by the user outside the intact `<!-- BLENDOPS:BEGIN --> ... <!-- BLENDOPS:END -->` managed block, rerunning the installer transitions the file from `files_created` to `files_modified`, saves a verified backup of the user's pre-rerun bytes under `.blendops/backups/`, preserves the user's custom section while updating only the managed block, and restores the user-edited file on `--rollback` instead of deleting it.
+3. If preservation cannot be guaranteed (missing, duplicated, or out-of-order managed markers; edits made inside the managed block; binary/NUL content; or unrolled-back edits on a file already in `files_modified`), `--dry-run` and `--write` fail closed without modifying target files or refreshing ownership hashes.
 
 ## Install report contract
 

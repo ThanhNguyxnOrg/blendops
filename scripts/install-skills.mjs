@@ -774,14 +774,8 @@ function buildCanonicalBlendOpsMd(repoRoot, { selectedTarget, confidence, effect
   ].join('\n');
 }
 
-function buildCursorRuleMdcContent({ selectedTarget, confidence }) {
+function buildCursorRuleMdcManagedBlock({ selectedTarget, confidence }) {
   return [
-    '---',
-    'description: BlendOps project-local workflow guidance for Blender planning, readiness, evidence, and handoff (Runtime: Not Run, Artifacts: Not Produced)',
-    'globs:',
-    'alwaysApply: false',
-    '---',
-    '',
     MANAGED_SECTION_START,
     '# BlendOps Cursor Project Rule',
     '',
@@ -793,8 +787,75 @@ function buildCursorRuleMdcContent({ selectedTarget, confidence }) {
     '- Runtime status: `Not Run`',
     '- Artifact status: `Not Produced`',
     MANAGED_SECTION_END,
+  ].join('\n');
+}
+
+function buildCursorRuleMdcContent({ selectedTarget, confidence }) {
+  return [
+    '---',
+    'description: BlendOps project-local workflow guidance for Blender planning, readiness, evidence, and handoff (Runtime: Not Run, Artifacts: Not Produced)',
+    'globs:',
+    'alwaysApply: false',
+    '---',
+    '',
+    buildCursorRuleMdcManagedBlock({ selectedTarget, confidence }),
     '',
   ].join('\n');
+}
+
+function countOccurrences(text, needle) {
+  if (!needle) return 0;
+  let count = 0;
+  let pos = 0;
+  while (true) {
+    const idx = text.indexOf(needle, pos);
+    if (idx === -1) break;
+    count += 1;
+    pos = idx + needle.length;
+  }
+  return count;
+}
+
+function inspectManagedMarkers(text) {
+  const startCount = countOccurrences(text, MANAGED_SECTION_START);
+  const endCount = countOccurrences(text, MANAGED_SECTION_END);
+
+  if (startCount === 0 && endCount === 0) {
+    return {
+      status: 'none',
+      startIdx: -1,
+      endIdx: -1,
+      managedBlock: null,
+    };
+  }
+  if (startCount !== 1 || endCount !== 1) {
+    return {
+      status: 'malformed',
+      reason: `expected exactly 1 '${MANAGED_SECTION_START}' and 1 '${MANAGED_SECTION_END}', found ${startCount} start and ${endCount} end marker(s)`,
+      startIdx: -1,
+      endIdx: -1,
+      managedBlock: null,
+    };
+  }
+
+  const startIdx = text.indexOf(MANAGED_SECTION_START);
+  const endIdx = text.indexOf(MANAGED_SECTION_END);
+  if (endIdx < startIdx) {
+    return {
+      status: 'malformed',
+      reason: `'${MANAGED_SECTION_END}' appears before '${MANAGED_SECTION_START}'`,
+      startIdx,
+      endIdx,
+      managedBlock: null,
+    };
+  }
+
+  return {
+    status: 'valid',
+    startIdx,
+    endIdx,
+    managedBlock: text.slice(startIdx, endIdx + MANAGED_SECTION_END.length),
+  };
 }
 
 function applyManagedBlockToDocument(existingContent, managedBlock, defaultHeaderTitle) {
@@ -805,12 +866,16 @@ function applyManagedBlockToDocument(existingContent, managedBlock, defaultHeade
     return `${defaultHeaderTitle}\n\n${managedBlock.trim()}\n`;
   }
 
-  const startIdx = existingContent.indexOf(MANAGED_SECTION_START);
-  const endIdx = existingContent.indexOf(MANAGED_SECTION_END);
+  const markerInfo = inspectManagedMarkers(existingContent);
+  if (markerInfo.status === 'malformed') {
+    throw new Error(
+      `Cannot apply managed BlendOps section: existing document has malformed markers (${markerInfo.reason}).`,
+    );
+  }
 
-  if (startIdx !== -1 && endIdx !== -1 && endIdx > startIdx) {
-    const before = existingContent.slice(0, startIdx);
-    const after = existingContent.slice(endIdx + MANAGED_SECTION_END.length);
+  if (markerInfo.status === 'valid') {
+    const before = existingContent.slice(0, markerInfo.startIdx);
+    const after = existingContent.slice(markerInfo.endIdx + MANAGED_SECTION_END.length);
     return `${before}${managedBlock.trim()}${after}`;
   }
 
@@ -818,43 +883,138 @@ function applyManagedBlockToDocument(existingContent, managedBlock, defaultHeade
   return `${trimmed}\n\n${managedBlock.trim()}\n`;
 }
 
-function planSingleFileOperation(projectReal, relPath, desiredContent) {
+function planSingleFileOperation(projectReal, relPath, desiredContent, options = {}) {
   const { norm, absTarget, exists } = validateSafeRelativeTargetFile(projectReal, relPath);
-  const desiredBuf = Buffer.from(desiredContent, 'utf8');
-  const desiredSha256 = sha256Buffer(desiredBuf);
+  const previousManifest = options.previousManifest || null;
+  const initialFileContent =
+    options.initialFileContent !== undefined ? options.initialFileContent : desiredContent;
+  const extractedFromInitial = inspectManagedMarkers(initialFileContent);
+  const canonicalManagedBlock = (
+    options.managedBlock !== undefined
+      ? options.managedBlock
+      : extractedFromInitial.status === 'valid'
+        ? extractedFromInitial.managedBlock
+        : desiredContent
+  ).trim();
+  const desiredManagedBlockSha256 = sha256String(canonicalManagedBlock);
+
+  const wasCreatedByInstaller = Boolean(
+    previousManifest &&
+      Array.isArray(previousManifest.files_created) &&
+      previousManifest.files_created.includes(norm),
+  );
+  const wasModifiedByInstaller = Boolean(
+    previousManifest &&
+      Array.isArray(previousManifest.files_modified) &&
+      previousManifest.files_modified.includes(norm),
+  );
+  const prevCreatedHash = wasCreatedByInstaller
+    ? previousManifest.created_file_hashes?.[norm]
+    : null;
+  const prevModifiedMeta = wasModifiedByInstaller
+    ? previousManifest.modified_file_hashes?.[norm]
+    : null;
 
   if (!exists) {
+    if (wasModifiedByInstaller) {
+      throw new Error(
+        `Refusing to modify '${norm}': previously modified target file is missing on disk; restore the file or run --rollback --force-rollback before re-running.`,
+      );
+    }
+    const desiredBuf = Buffer.from(initialFileContent, 'utf8');
+    const desiredSha256 = sha256Buffer(desiredBuf);
     return {
       action: 'create',
       path: norm,
       absPath: absTarget,
-      desiredContent,
+      desiredContent: initialFileContent,
       desiredSha256,
+      desiredManagedBlockSha256,
       preExistingSha256: null,
       backupRelPath: null,
+      transitionedFromCreated: false,
     };
   }
 
   const currentBuf = fs.readFileSync(absTarget);
+  if (currentBuf.includes(0x00)) {
+    throw new Error(
+      `Refusing to modify binary or NUL-containing file '${norm}': preservation of user content cannot be guaranteed.`,
+    );
+  }
   const currentSha256 = sha256Buffer(currentBuf);
+  const currentText = currentBuf.toString('utf8');
 
-  if (currentSha256 === desiredSha256 && currentBuf.equals(desiredBuf)) {
-    return {
-      action: 'skip',
-      path: norm,
-      absPath: absTarget,
-      reason: 'Already up to date (idempotent)',
-      desiredContent,
-      desiredSha256,
-      preExistingSha256: currentSha256,
-      backupRelPath: null,
-    };
+  const userEditedCreatedFile = Boolean(
+    wasCreatedByInstaller && (!isSha256Hex(prevCreatedHash) || currentSha256 !== prevCreatedHash),
+  );
+  const userEditedModifiedFile = Boolean(
+    wasModifiedByInstaller &&
+      (!prevModifiedMeta ||
+        !isSha256Hex(prevModifiedMeta.post_install_sha256) ||
+        currentSha256 !== prevModifiedMeta.post_install_sha256),
+  );
+
+  const markerInfo = inspectManagedMarkers(currentText);
+  if (markerInfo.status === 'malformed') {
+    throw new Error(
+      `Refusing to modify '${norm}': managed BlendOps section markers are malformed or duplicated (${markerInfo.reason}), so user edits cannot be safely preserved.`,
+    );
   }
 
-  const currentText = currentBuf.toString('utf8');
-  const mergedText = applyManagedBlockToDocument(currentText, desiredContent, null);
+  if (markerInfo.status === 'none') {
+    if (wasCreatedByInstaller || wasModifiedByInstaller) {
+      throw new Error(
+        `Refusing to modify '${norm}': file was modified after installation and its managed BlendOps section markers were removed, so user edits cannot be safely preserved.`,
+      );
+    }
+  } else if (markerInfo.status === 'valid') {
+    const currentManagedBlockHash = sha256String(markerInfo.managedBlock.trim());
+    if (userEditedCreatedFile) {
+      const expectedPrevManagedHash = previousManifest?.created_managed_block_hashes?.[norm];
+      if (isSha256Hex(expectedPrevManagedHash) && currentManagedBlockHash !== expectedPrevManagedHash) {
+        throw new Error(
+          `Refusing to modify '${norm}': installer-created file was edited inside the managed BlendOps section, so preservation of user edits cannot be guaranteed.`,
+        );
+      }
+      // Fallback check when created_managed_block_hashes was not recorded: if outside text matches initial template, edit was inside managed block
+      const initialWithCurrentManaged = applyManagedBlockToDocument(
+        initialFileContent,
+        markerInfo.managedBlock,
+        null,
+      );
+      if (currentText === initialWithCurrentManaged) {
+        throw new Error(
+          `Refusing to modify '${norm}': installer-created file was edited inside the managed BlendOps section, so preservation of user edits cannot be guaranteed.`,
+        );
+      }
+    }
+    if (userEditedModifiedFile) {
+      throw new Error(
+        `Refusing to modify '${norm}': file in files_modified was edited after installation (expected post-install SHA-256 ${prevModifiedMeta?.post_install_sha256?.slice(0, 12) || 'unknown'}, got ${currentSha256.slice(0, 12)}), so preserving both the original pre-install backup and new post-install user edits cannot be guaranteed.`,
+      );
+    }
+  }
+
+  const mergedText = applyManagedBlockToDocument(currentText, canonicalManagedBlock, null);
   const mergedBuf = Buffer.from(mergedText, 'utf8');
   const mergedSha256 = sha256Buffer(mergedBuf);
+  const encodedBackupName = `${norm.replace(/\//g, '__')}.bak`;
+  const backupRelPath = `.blendops/backups/${encodedBackupName}`;
+
+  if (userEditedCreatedFile) {
+    return {
+      action: 'modify',
+      path: norm,
+      absPath: absTarget,
+      desiredContent: mergedText,
+      desiredSha256: mergedSha256,
+      desiredManagedBlockSha256,
+      preExistingSha256: currentSha256,
+      backupRelPath,
+      transitionedFromCreated: true,
+    };
+  }
 
   if (currentSha256 === mergedSha256 && currentBuf.equals(mergedBuf)) {
     return {
@@ -864,13 +1024,12 @@ function planSingleFileOperation(projectReal, relPath, desiredContent) {
       reason: 'Managed section already up to date (idempotent)',
       desiredContent: mergedText,
       desiredSha256: mergedSha256,
+      desiredManagedBlockSha256,
       preExistingSha256: currentSha256,
       backupRelPath: null,
+      transitionedFromCreated: false,
     };
   }
-
-  const encodedBackupName = `${norm.replace(/\//g, '__')}.bak`;
-  const backupRelPath = `.blendops/backups/${encodedBackupName}`;
 
   return {
     action: 'modify',
@@ -878,8 +1037,10 @@ function planSingleFileOperation(projectReal, relPath, desiredContent) {
     absPath: absTarget,
     desiredContent: mergedText,
     desiredSha256: mergedSha256,
+    desiredManagedBlockSha256,
     preExistingSha256: currentSha256,
-    backupRelPath,
+    backupRelPath: wasCreatedByInstaller ? null : backupRelPath,
+    transitionedFromCreated: false,
   };
 }
 
@@ -1107,13 +1268,45 @@ function buildProjectInstallPlan({
     }
   }
 
+  const rollbackManifestRel = '.blendops/install-manifest.json';
+  const installReportRel = '.blendops/INSTALL_REPORT.md';
+
+  const journalCandidateAbs = path.join(projectReal, '.blendops', 'transaction-journal.json');
+  try {
+    if (fs.lstatSync(journalCandidateAbs).isFile()) {
+      recoverPendingTransactionJournal(projectReal);
+    }
+  } catch (err) {
+    if (!err || (err.code !== 'ENOENT' && err.code !== 'ENOTDIR')) {
+      throw err;
+    }
+  }
+
+  let previousManifest = null;
+  const { absTarget: prevManifestAbs, exists: prevManifestExists } =
+    validateSafeRelativeTargetFile(projectReal, rollbackManifestRel);
+  if (prevManifestExists) {
+    try {
+      previousManifest = JSON.parse(fs.readFileSync(prevManifestAbs, 'utf8'));
+    } catch {
+      throw new Error(`Malformed existing rollback manifest JSON at ${prevManifestAbs}`);
+    }
+    validateRollbackManifestSchema(previousManifest, prevManifestAbs);
+  }
+
   const operations = [];
   const blendopsMdContent = buildCanonicalBlendOpsMd(repoRootReal, {
     selectedTarget,
     confidence,
     effectiveBehavior,
   });
-  operations.push(planSingleFileOperation(projectReal, 'BLENDOPS.md', blendopsMdContent));
+  operations.push(
+    planSingleFileOperation(projectReal, 'BLENDOPS.md', blendopsMdContent, {
+      managedBlock: blendopsMdContent.trim(),
+      initialFileContent: blendopsMdContent,
+      previousManifest,
+    }),
+  );
 
   const managedSection = buildManagedBlendOpsSection({
     selectedTarget,
@@ -1121,14 +1314,14 @@ function buildProjectInstallPlan({
   });
 
   if (selectedTarget === 'claude-code') {
-    const claudeMdDesired = applyManagedBlockToDocument(
-      fs.existsSync(path.join(projectReal, 'CLAUDE.md'))
-        ? fs.readFileSync(path.join(projectReal, 'CLAUDE.md'), 'utf8')
-        : null,
-      managedSection,
-      '# CLAUDE.md',
+    const claudeInitial = applyManagedBlockToDocument(null, managedSection, '# CLAUDE.md');
+    operations.push(
+      planSingleFileOperation(projectReal, 'CLAUDE.md', claudeInitial, {
+        managedBlock: managedSection,
+        initialFileContent: claudeInitial,
+        previousManifest,
+      }),
     );
-    operations.push(planSingleFileOperation(projectReal, 'CLAUDE.md', claudeMdDesired));
     skippedEntries.push({
       path: '.claude/skills/',
       reason:
@@ -1145,9 +1338,14 @@ function buildProjectInstallPlan({
       reason: 'Plain .md files under .cursor/rules/ are ignored by Cursor and are never written.',
     });
     if (effectiveBehavior === 'cursor-mdc-project-local') {
+      const mdcManagedBlock = buildCursorRuleMdcManagedBlock({ selectedTarget, confidence });
       const mdcContent = buildCursorRuleMdcContent({ selectedTarget, confidence });
       operations.push(
-        planSingleFileOperation(projectReal, '.cursor/rules/blendops.mdc', mdcContent),
+        planSingleFileOperation(projectReal, '.cursor/rules/blendops.mdc', mdcContent, {
+          managedBlock: mdcManagedBlock,
+          initialFileContent: mdcContent,
+          previousManifest,
+        }),
       );
       limitations.push(
         'Cursor .cursor/rules/blendops.mdc is documented upstream (linked-only); live Cursor host verification and .cursor/mcp.json setup remain separate.',
@@ -1170,14 +1368,14 @@ function buildProjectInstallPlan({
 
   if (selectedTarget === 'codex') {
     if (shouldPatchAgentsMd) {
-      const agentsDesired = applyManagedBlockToDocument(
-        fs.existsSync(path.join(projectReal, 'AGENTS.md'))
-          ? fs.readFileSync(path.join(projectReal, 'AGENTS.md'), 'utf8')
-          : null,
-        managedSection,
-        '# AGENTS.md',
+      const agentsInitial = applyManagedBlockToDocument(null, managedSection, '# AGENTS.md');
+      operations.push(
+        planSingleFileOperation(projectReal, 'AGENTS.md', agentsInitial, {
+          managedBlock: managedSection,
+          initialFileContent: agentsInitial,
+          previousManifest,
+        }),
       );
-      operations.push(planSingleFileOperation(projectReal, 'AGENTS.md', agentsDesired));
       limitations.push(
         'Codex target is linked-only (no native Codex skills loader exists); AGENTS.md references BLENDOPS.md for Codex discovery.',
       );
@@ -1192,14 +1390,14 @@ function buildProjectInstallPlan({
       );
     }
   } else if (patchAgentsMd) {
-    const agentsDesired = applyManagedBlockToDocument(
-      fs.existsSync(path.join(projectReal, 'AGENTS.md'))
-        ? fs.readFileSync(path.join(projectReal, 'AGENTS.md'), 'utf8')
-        : null,
-      managedSection,
-      '# AGENTS.md',
+    const agentsInitial = applyManagedBlockToDocument(null, managedSection, '# AGENTS.md');
+    operations.push(
+      planSingleFileOperation(projectReal, 'AGENTS.md', agentsInitial, {
+        managedBlock: managedSection,
+        initialFileContent: agentsInitial,
+        previousManifest,
+      }),
     );
-    operations.push(planSingleFileOperation(projectReal, 'AGENTS.md', agentsDesired));
   } else {
     skippedEntries.push({
       path: 'AGENTS.md',
@@ -1252,7 +1450,7 @@ function buildProjectInstallPlan({
   const filesToCreate = operations.filter((op) => op.action === 'create').map((op) => op.path);
   const filesToModify = operations.filter((op) => op.action === 'modify').map((op) => op.path);
   const backupsToCreate = operations
-    .filter((op) => op.action === 'modify')
+    .filter((op) => op.action === 'modify' && Boolean(op.backupRelPath))
     .map((op) => ({
       path: op.path,
       backup_path: op.backupRelPath,
@@ -1277,9 +1475,6 @@ function buildProjectInstallPlan({
     detectedMarkers,
   );
 
-  const rollbackManifestRel = '.blendops/install-manifest.json';
-  const installReportRel = '.blendops/INSTALL_REPORT.md';
-
   const planPayload = {
     installerVersion: INSTALLER_VERSION,
     requestedTarget,
@@ -1298,9 +1493,11 @@ function buildProjectInstallPlan({
       action: op.action,
       path: op.path,
       desiredSha256: op.desiredSha256,
+      desiredManagedBlockSha256: op.desiredManagedBlockSha256,
       desiredContent: op.desiredContent,
       preExistingSha256: op.preExistingSha256,
       backupRelPath: op.backupRelPath,
+      transitionedFromCreated: Boolean(op.transitionedFromCreated),
       reason: op.reason || null,
     })),
     filesToCreate,
@@ -1776,6 +1973,44 @@ export function validateRollbackManifestSchema(manifest, manifestAbs) {
     seenBackupPaths.add(b.backup_path);
   }
 
+  if (manifest.created_managed_block_hashes !== undefined) {
+    if (
+      !manifest.created_managed_block_hashes ||
+      typeof manifest.created_managed_block_hashes !== 'object' ||
+      Array.isArray(manifest.created_managed_block_hashes)
+    ) {
+      throw new Error(
+        `Rollback refused: invalid created_managed_block_hashes object at ${manifestAbs}`,
+      );
+    }
+    for (const [key, val] of Object.entries(manifest.created_managed_block_hashes)) {
+      if (!createdSet.has(key) || !isSha256Hex(val)) {
+        throw new Error(
+          `Rollback refused: invalid created_managed_block_hashes entry for '${key}' at ${manifestAbs}`,
+        );
+      }
+    }
+  }
+
+  if (manifest.modified_managed_block_hashes !== undefined) {
+    if (
+      !manifest.modified_managed_block_hashes ||
+      typeof manifest.modified_managed_block_hashes !== 'object' ||
+      Array.isArray(manifest.modified_managed_block_hashes)
+    ) {
+      throw new Error(
+        `Rollback refused: invalid modified_managed_block_hashes object at ${manifestAbs}`,
+      );
+    }
+    for (const [key, val] of Object.entries(manifest.modified_managed_block_hashes)) {
+      if (!modifiedSet.has(key) || !isSha256Hex(val)) {
+        throw new Error(
+          `Rollback refused: invalid modified_managed_block_hashes entry for '${key}' at ${manifestAbs}`,
+        );
+      }
+    }
+  }
+
   if (manifest.metadata_files !== undefined) {
     if (
       !manifest.metadata_files ||
@@ -1830,7 +2065,278 @@ function pruneEmptyParentDirectories(startFileAbs, stopRootReal) {
   }
 }
 
-function executeWriteProjectPlan(livePlan) {
+function rollbackWriteTransaction(projectReal, txState, faultInjection = null) {
+  const cleanupErrors = [];
+  const blendopsDir = path.join(projectReal, '.blendops');
+  const backupsDir = path.join(blendopsDir, 'backups');
+
+  // 1. Restore modified target files or remove newly created target files
+  for (const rec of txState.targetRecords) {
+    try {
+      if (faultInjection?.onRollbackTarget) {
+        faultInjection.onRollbackTarget(rec);
+      }
+      if (!rec.existedBefore) {
+        // Target file did not exist before transaction; remove only if created by this transaction
+        if (fs.existsSync(rec.absPath)) {
+          let shouldRemove = Boolean(rec.writeAttempted);
+          if (!shouldRemove && rec.fromJournal) {
+            try {
+              const diskHash = sha256Buffer(fs.readFileSync(rec.absPath));
+              if (diskHash === rec.desiredSha256) {
+                shouldRemove = true;
+              }
+            } catch {
+              shouldRemove = false;
+            }
+          }
+          if (shouldRemove) {
+            fs.rmSync(rec.absPath, { force: true });
+            if (fs.existsSync(rec.absPath)) {
+              throw new Error(`Failed to remove newly created target file '${rec.relPath}'`);
+            }
+            pruneEmptyParentDirectories(rec.absPath, projectReal);
+          }
+        }
+      } else {
+        // Target file existed before transaction; restore exact pre-transaction bytes and verify SHA-256
+        let restoreBytes = rec.preBytes;
+        if (!restoreBytes && rec.stagingAbsPath && fs.existsSync(rec.stagingAbsPath)) {
+          restoreBytes = fs.readFileSync(rec.stagingAbsPath);
+        }
+        if (!restoreBytes) {
+          throw new Error(
+            `Missing pre-transaction snapshot bytes for modified target '${rec.relPath}'`,
+          );
+        }
+        const preSnapshotHash = sha256Buffer(restoreBytes);
+        if (preSnapshotHash !== rec.preSha256) {
+          throw new Error(
+            `Pre-transaction snapshot hash mismatch for '${rec.relPath}' (expected ${rec.preSha256}, got ${preSnapshotHash})`,
+          );
+        }
+        writeAtomicFile(rec.absPath, restoreBytes);
+        if (faultInjection?.afterRollbackTargetWrite) {
+          faultInjection.afterRollbackTargetWrite(rec);
+        }
+        const diskHash = sha256Buffer(fs.readFileSync(rec.absPath));
+        if (diskHash !== rec.preSha256) {
+          throw new Error(
+            `Post-rollback SHA-256 verification failed for target '${rec.relPath}' (expected ${rec.preSha256}, got ${diskHash})`,
+          );
+        }
+      }
+    } catch (err) {
+      cleanupErrors.push(
+        `target '${rec.relPath}': ${err instanceof Error ? err.message : String(err)}`,
+      );
+    }
+  }
+
+  // 2. Remove only backups newly created by the failed transaction
+  for (const b of txState.newlyCreatedBackups) {
+    try {
+      if (faultInjection?.onRollbackBackup) {
+        faultInjection.onRollbackBackup(b);
+      }
+      if (fs.existsSync(b.backupAbsPath)) {
+        fs.rmSync(b.backupAbsPath, { force: true });
+        if (fs.existsSync(b.backupAbsPath)) {
+          throw new Error(`Failed to remove newly created backup '${b.backupRelPath}'`);
+        }
+      }
+    } catch (err) {
+      cleanupErrors.push(
+        `backup '${b.backupRelPath}': ${err instanceof Error ? err.message : String(err)}`,
+      );
+    }
+  }
+
+  // 3. Restore or remove .blendops/INSTALL_REPORT.md
+  try {
+    if (faultInjection?.onRollbackReport) {
+      faultInjection.onRollbackReport(txState.reportState);
+    }
+    const rep = txState.reportState;
+    if (rep.existedBefore) {
+      let restoreBytes = rep.preBytes;
+      if (!restoreBytes && rep.stagingAbsPath && fs.existsSync(rep.stagingAbsPath)) {
+        restoreBytes = fs.readFileSync(rep.stagingAbsPath);
+      }
+      if (!restoreBytes) {
+        throw new Error(`Missing pre-transaction snapshot bytes for '${rep.relPath}'`);
+      }
+      writeAtomicFile(rep.absPath, restoreBytes);
+      if (faultInjection?.afterRollbackReportWrite) {
+        faultInjection.afterRollbackReportWrite(rep);
+      }
+      const diskHash = sha256Buffer(fs.readFileSync(rep.absPath));
+      if (diskHash !== rep.preSha256) {
+        throw new Error(
+          `Post-rollback SHA-256 verification failed for '${rep.relPath}' (expected ${rep.preSha256}, got ${diskHash})`,
+        );
+      }
+    } else if (fs.existsSync(rep.absPath)) {
+      fs.rmSync(rep.absPath, { force: true });
+      if (fs.existsSync(rep.absPath)) {
+        throw new Error(`Failed to remove newly written '${rep.relPath}'`);
+      }
+    }
+  } catch (err) {
+    cleanupErrors.push(
+      `report '${txState.reportState.relPath}': ${err instanceof Error ? err.message : String(err)}`,
+    );
+  }
+
+  // 4. Restore or remove .blendops/install-manifest.json
+  try {
+    if (faultInjection?.onRollbackManifest) {
+      faultInjection.onRollbackManifest(txState.manifestState);
+    }
+    const man = txState.manifestState;
+    if (man.existedBefore) {
+      let restoreBytes = man.preBytes;
+      if (!restoreBytes && man.stagingAbsPath && fs.existsSync(man.stagingAbsPath)) {
+        restoreBytes = fs.readFileSync(man.stagingAbsPath);
+      }
+      if (!restoreBytes) {
+        throw new Error(`Missing pre-transaction snapshot bytes for '${man.relPath}'`);
+      }
+      writeAtomicFile(man.absPath, restoreBytes);
+      if (faultInjection?.afterRollbackManifestWrite) {
+        faultInjection.afterRollbackManifestWrite(man);
+      }
+      const diskHash = sha256Buffer(fs.readFileSync(man.absPath));
+      if (diskHash !== man.preSha256) {
+        throw new Error(
+          `Post-rollback SHA-256 verification failed for '${man.relPath}' (expected ${man.preSha256}, got ${diskHash})`,
+        );
+      }
+    } else if (fs.existsSync(man.absPath)) {
+      fs.rmSync(man.absPath, { force: true });
+      if (fs.existsSync(man.absPath)) {
+        throw new Error(`Failed to remove provisional '${man.relPath}'`);
+      }
+    }
+  } catch (err) {
+    cleanupErrors.push(
+      `manifest '${txState.manifestState.relPath}': ${err instanceof Error ? err.message : String(err)}`,
+    );
+  }
+
+  // 5. Clean up transaction staging/journal and prune empty installer-created metadata directories only when all restorations succeeded
+  if (cleanupErrors.length === 0) {
+    try {
+      if (txState.txStagingDir && fs.existsSync(txState.txStagingDir)) {
+        fs.rmSync(txState.txStagingDir, { recursive: true, force: true });
+      }
+      if (txState.journalAbsPath && fs.existsSync(txState.journalAbsPath)) {
+        fs.rmSync(txState.journalAbsPath, { force: true });
+      }
+      if (!txState.backupsDirExistedBefore && fs.existsSync(backupsDir)) {
+        if (fs.readdirSync(backupsDir).length === 0) {
+          fs.rmdirSync(backupsDir);
+        }
+      }
+      if (!txState.blendopsExistedBefore && fs.existsSync(blendopsDir)) {
+        if (fs.readdirSync(blendopsDir).length === 0) {
+          fs.rmdirSync(blendopsDir);
+        }
+      }
+    } catch (err) {
+      cleanupErrors.push(
+        `transaction metadata cleanup: ${err instanceof Error ? err.message : String(err)}`,
+      );
+    }
+  }
+
+  return cleanupErrors;
+}
+
+export function recoverPendingTransactionJournal(projectReal, options = {}) {
+  const journalRel = '.blendops/transaction-journal.json';
+  const { absTarget: journalAbsPath, exists: journalExists } = validateSafeRelativeTargetFile(
+    projectReal,
+    journalRel,
+  );
+  if (!journalExists) {
+    return { recovered: false };
+  }
+
+  let journal;
+  try {
+    journal = JSON.parse(fs.readFileSync(journalAbsPath, 'utf8'));
+  } catch {
+    throw new Error(
+      `Pending transaction recovery failed: malformed transaction journal JSON at ${journalAbsPath}`,
+    );
+  }
+  if (!journal || typeof journal !== 'object' || Array.isArray(journal)) {
+    throw new Error(
+      `Pending transaction recovery failed: invalid transaction journal schema at ${journalAbsPath}`,
+    );
+  }
+
+  const txStagingDir = path.join(projectReal, '.blendops', 'tx-staging');
+  const txState = {
+    journalAbsPath,
+    txStagingDir,
+    blendopsExistedBefore: Boolean(journal.blendops_existed_before),
+    backupsDirExistedBefore: Boolean(journal.backups_dir_existed_before),
+    manifestState: {
+      relPath: journal.manifest_state.rel_path,
+      absPath: path.join(projectReal, journal.manifest_state.rel_path),
+      existedBefore: Boolean(journal.manifest_state.existed_before),
+      preBytes: null,
+      preSha256: journal.manifest_state.pre_sha256 || null,
+      stagingAbsPath: journal.manifest_state.staging_rel_path
+        ? path.join(projectReal, journal.manifest_state.staging_rel_path)
+        : null,
+    },
+    reportState: {
+      relPath: journal.report_state.rel_path,
+      absPath: path.join(projectReal, journal.report_state.rel_path),
+      existedBefore: Boolean(journal.report_state.existed_before),
+      preBytes: null,
+      preSha256: journal.report_state.pre_sha256 || null,
+      stagingAbsPath: journal.report_state.staging_rel_path
+        ? path.join(projectReal, journal.report_state.staging_rel_path)
+        : null,
+    },
+    newlyCreatedBackups: (journal.newly_created_backups || []).map((b) => ({
+      targetRelPath: b.target_rel_path,
+      backupRelPath: b.backup_rel_path,
+      backupAbsPath: path.join(projectReal, b.backup_rel_path),
+    })),
+    targetRecords: (journal.target_records || []).map((r) => ({
+      relPath: r.rel_path,
+      absPath: path.join(projectReal, r.rel_path),
+      action: r.action,
+      existedBefore: Boolean(r.existed_before),
+      preBytes: null,
+      preSha256: r.pre_sha256 || null,
+      desiredSha256: r.desired_sha256 || null,
+      stagingAbsPath: r.staging_rel_path ? path.join(projectReal, r.staging_rel_path) : null,
+      writeAttempted: true,
+      fromJournal: true,
+    })),
+  };
+
+  const cleanupErrors = rollbackWriteTransaction(
+    projectReal,
+    txState,
+    options.faultInjection || null,
+  );
+  if (cleanupErrors.length > 0) {
+    throw new Error(
+      `Pending transaction recovery failed for ${projectReal}: ${cleanupErrors.join('; ')}`,
+    );
+  }
+  return { recovered: true };
+}
+
+function executeWriteProjectPlan(livePlan, options = {}) {
+  const faultInjection = options.faultInjection || null;
   const projectReal = livePlan.projectPath;
   const blendopsDir = path.join(projectReal, '.blendops');
   const backupsDir = path.join(blendopsDir, 'backups');
@@ -1841,28 +2347,41 @@ function executeWriteProjectPlan(livePlan) {
   assertNoSymlinkedAncestorsWithin(projectReal, manifestAbsPath);
   assertNoSymlinkedAncestorsWithin(projectReal, reportAbsPath);
 
-  if (fs.existsSync(blendopsDir)) {
+  const blendopsExistedBefore = fs.existsSync(blendopsDir);
+  if (blendopsExistedBefore) {
     const blendopsLstat = fs.lstatSync(blendopsDir);
     if (blendopsLstat.isSymbolicLink() || !blendopsLstat.isDirectory()) {
       throw new Error(`Unsafe .blendops metadata path at ${blendopsDir}: must be a regular directory`);
     }
   }
-  if (fs.existsSync(backupsDir)) {
+  const backupsDirExistedBefore = fs.existsSync(backupsDir);
+  if (backupsDirExistedBefore) {
     const backupsLstat = fs.lstatSync(backupsDir);
     if (backupsLstat.isSymbolicLink() || !backupsLstat.isDirectory()) {
       throw new Error(`Unsafe .blendops/backups path at ${backupsDir}: must be a regular directory`);
     }
   }
 
-  // Load and strictly validate any prior install manifest so reruns preserve original pre-install backups
+  if (fs.existsSync(path.join(blendopsDir, 'transaction-journal.json'))) {
+    recoverPendingTransactionJournal(projectReal);
+  }
+
+  // Capture exact pre-transaction bytes and existence state of .blendops/install-manifest.json and .blendops/INSTALL_REPORT.md
   let previousManifest = null;
+  let prevManifestExisted = false;
+  let prevManifestBytes = null;
+  let prevManifestSha256 = null;
+
   if (fs.existsSync(manifestAbsPath)) {
     const lstat = fs.lstatSync(manifestAbsPath);
     if (lstat.isSymbolicLink() || !lstat.isFile() || lstat.nlink > 1) {
       throw new Error(`Unsafe existing rollback manifest at ${manifestAbsPath}`);
     }
+    prevManifestExisted = true;
+    prevManifestBytes = fs.readFileSync(manifestAbsPath);
+    prevManifestSha256 = sha256Buffer(prevManifestBytes);
     try {
-      previousManifest = JSON.parse(fs.readFileSync(manifestAbsPath, 'utf8'));
+      previousManifest = JSON.parse(prevManifestBytes.toString('utf8'));
     } catch {
       throw new Error(`Malformed existing rollback manifest JSON at ${manifestAbsPath}`);
     }
@@ -1885,39 +2404,39 @@ function executeWriteProjectPlan(livePlan) {
         );
       }
     }
+  }
 
-    // Verify existing .blendops/INSTALL_REPORT.md if present was not replaced by a symlink/hardlink or edited
-    const { absTarget: prevReportAbs, exists: prevReportExists } = validateSafeRelativeTargetFile(
-      projectReal,
-      livePlan.installReportRel,
-    );
-    if (prevReportExists && previousManifest.metadata_files?.[livePlan.installReportRel]) {
-      const actualPrevReportHash = sha256Buffer(fs.readFileSync(prevReportAbs));
-      const expectedPrevReportHash = previousManifest.metadata_files[livePlan.installReportRel];
-      if (actualPrevReportHash !== expectedPrevReportHash) {
-        throw new Error(
-          `Existing installer report '${livePlan.installReportRel}' was modified after installation; refusing to overwrite user changes.`,
-        );
+  const { absTarget: prevReportAbs, exists: prevReportExists } = validateSafeRelativeTargetFile(
+    projectReal,
+    livePlan.installReportRel,
+  );
+  let prevReportBytes = null;
+  let prevReportSha256 = null;
+  if (prevReportExists) {
+    prevReportBytes = fs.readFileSync(prevReportAbs);
+    prevReportSha256 = sha256Buffer(prevReportBytes);
+    if (prevManifestExisted) {
+      if (previousManifest.metadata_files?.[livePlan.installReportRel]) {
+        const expectedPrevReportHash = previousManifest.metadata_files[livePlan.installReportRel];
+        if (prevReportSha256 !== expectedPrevReportHash) {
+          throw new Error(
+            `Existing installer report '${livePlan.installReportRel}' was modified after installation; refusing to overwrite user changes.`,
+          );
+        }
       }
-    }
-  } else {
-    const { exists: untrackedReportExists } = validateSafeRelativeTargetFile(
-      projectReal,
-      livePlan.installReportRel,
-    );
-    if (untrackedReportExists) {
+    } else {
       throw new Error(
         `Refusing to overwrite pre-existing untracked file at '${livePlan.installReportRel}'`,
       );
     }
   }
 
-  fs.mkdirSync(blendopsDir, { recursive: true });
-
   const createdFilesSet = new Set(previousManifest ? previousManifest.files_created : []);
   const modifiedFilesSet = new Set(previousManifest ? previousManifest.files_modified : []);
   const createdFileHashes = { ...(previousManifest?.created_file_hashes || {}) };
   const modifiedFileHashes = { ...(previousManifest?.modified_file_hashes || {}) };
+  const createdManagedBlockHashes = { ...(previousManifest?.created_managed_block_hashes || {}) };
+  const modifiedManagedBlockHashes = { ...(previousManifest?.modified_managed_block_hashes || {}) };
   const backupsMap = new Map();
   if (previousManifest) {
     for (const b of previousManifest.backups) {
@@ -1925,17 +2444,47 @@ function executeWriteProjectPlan(livePlan) {
     }
   }
 
-  // Step 1: Verify and create byte-identical backups for all files to be modified BEFORE mutating any target file
+  // Capture exact pre-transaction state for all target files and newly created backups BEFORE any disk write
+  const newlyCreatedBackups = [];
+  const targetRecords = [];
+
   for (const op of livePlan.operations) {
+    if (op.action === 'skip') {
+      if (createdFilesSet.has(op.path) && isSha256Hex(op.desiredManagedBlockSha256)) {
+        createdManagedBlockHashes[op.path] = op.desiredManagedBlockSha256;
+      } else if (modifiedFilesSet.has(op.path) && isSha256Hex(op.desiredManagedBlockSha256)) {
+        modifiedManagedBlockHashes[op.path] = op.desiredManagedBlockSha256;
+      }
+      continue;
+    }
+
     if (op.action === 'create') {
-      const { exists } = validateSafeRelativeTargetFile(projectReal, op.path);
+      const { absTarget, exists } = validateSafeRelativeTargetFile(projectReal, op.path);
       if (exists) {
         throw new Error(
           `Target file '${op.path}' appeared after dry-run planning; aborting write.`,
         );
       }
+      targetRecords.push({
+        relPath: op.path,
+        absPath: absTarget,
+        action: 'create',
+        existedBefore: false,
+        preBytes: null,
+        preSha256: null,
+        desiredContent: op.desiredContent,
+        desiredSha256: op.desiredSha256,
+        stagingAbsPath: null,
+        writeAttempted: false,
+      });
+      createdFilesSet.add(op.path);
+      createdFileHashes[op.path] = op.desiredSha256;
+      if (isSha256Hex(op.desiredManagedBlockSha256)) {
+        createdManagedBlockHashes[op.path] = op.desiredManagedBlockSha256;
+      }
       continue;
     }
+
     if (op.action !== 'modify') continue;
 
     const { absTarget, exists } = validateSafeRelativeTargetFile(projectReal, op.path);
@@ -1952,14 +2501,43 @@ function executeWriteProjectPlan(livePlan) {
       );
     }
 
+    targetRecords.push({
+      relPath: op.path,
+      absPath: absTarget,
+      action: 'modify',
+      existedBefore: true,
+      preBytes: currentBytes,
+      preSha256: currentHash,
+      desiredContent: op.desiredContent,
+      desiredSha256: op.desiredSha256,
+      stagingAbsPath: null,
+      writeAttempted: false,
+    });
+
     if (createdFilesSet.has(op.path)) {
-      createdFileHashes[op.path] = op.desiredSha256;
-      continue;
+      const prevCreatedHash = previousManifest?.created_file_hashes?.[op.path];
+      const wasEditedByUser =
+        Boolean(op.transitionedFromCreated) ||
+        !isSha256Hex(prevCreatedHash) ||
+        currentHash !== prevCreatedHash;
+      if (!wasEditedByUser) {
+        // File was not edited by the user; keep in files_created and refresh its hash
+        createdFileHashes[op.path] = op.desiredSha256;
+        if (isSha256Hex(op.desiredManagedBlockSha256)) {
+          createdManagedBlockHashes[op.path] = op.desiredManagedBlockSha256;
+        }
+        continue;
+      }
+      // User edited an installer-created file: transition ownership from files_created to files_modified
+      createdFilesSet.delete(op.path);
+      delete createdFileHashes[op.path];
+      delete createdManagedBlockHashes[op.path];
     }
 
+    const encodedBackupName = `${op.path.replace(/\//g, '__')}.bak`;
     const backupRelPath = backupsMap.has(op.path)
       ? backupsMap.get(op.path).backup_path
-      : op.backupRelPath;
+      : op.backupRelPath || `.blendops/backups/${encodedBackupName}`;
     const { absTarget: backupAbsPath, exists: backupAlreadyExists } =
       validateSafeRelativeTargetFile(projectReal, backupRelPath);
 
@@ -1988,12 +2566,13 @@ function executeWriteProjectPlan(livePlan) {
           `Refusing to overwrite unexpected pre-existing file at backup path '${backupRelPath}'`,
         );
       }
-      fs.mkdirSync(path.dirname(backupAbsPath), { recursive: true });
-      writeAtomicFile(backupAbsPath, currentBytes);
-      const verifyBackupHash = sha256Buffer(fs.readFileSync(backupAbsPath));
-      if (verifyBackupHash !== currentHash) {
-        throw new Error(`Backup verification failed for ${backupRelPath}`);
-      }
+      newlyCreatedBackups.push({
+        targetRelPath: op.path,
+        backupRelPath,
+        backupAbsPath,
+        bytes: currentBytes,
+        sha256: currentHash,
+      });
       backupsMap.set(op.path, {
         path: op.path,
         backup_path: backupRelPath,
@@ -2008,12 +2587,9 @@ function executeWriteProjectPlan(livePlan) {
     }
 
     modifiedFilesSet.add(op.path);
-  }
-
-  for (const op of livePlan.operations) {
-    if (op.action !== 'create') continue;
-    createdFilesSet.add(op.path);
-    createdFileHashes[op.path] = op.desiredSha256;
+    if (isSha256Hex(op.desiredManagedBlockSha256)) {
+      modifiedManagedBlockHashes[op.path] = op.desiredManagedBlockSha256;
+    }
   }
 
   // Ensure every created file in createdFilesSet has a valid SHA-256 in createdFileHashes
@@ -2027,6 +2603,12 @@ function executeWriteProjectPlan(livePlan) {
     }
   }
 
+  for (const key of Object.keys(createdManagedBlockHashes)) {
+    if (!createdFilesSet.has(key)) {
+      delete createdManagedBlockHashes[key];
+    }
+  }
+
   // Ensure every modified file in modifiedFilesSet has up-to-date post_install_sha256
   for (const modRel of modifiedFilesSet) {
     if (createdFilesSet.has(modRel)) continue;
@@ -2034,6 +2616,12 @@ function executeWriteProjectPlan(livePlan) {
     const bEntry = backupsMap.get(modRel);
     if (!meta || !bEntry) {
       throw new Error(`Missing backup metadata for modified file '${modRel}'`);
+    }
+  }
+
+  for (const key of Object.keys(modifiedManagedBlockHashes)) {
+    if (!modifiedFilesSet.has(key) || createdFilesSet.has(key)) {
+      delete modifiedManagedBlockHashes[key];
     }
   }
 
@@ -2090,6 +2678,8 @@ function executeWriteProjectPlan(livePlan) {
     files_skipped: livePlan.filesToSkip,
     created_file_hashes: createdFileHashes,
     modified_file_hashes: modifiedFileHashes,
+    created_managed_block_hashes: createdManagedBlockHashes,
+    modified_managed_block_hashes: modifiedManagedBlockHashes,
     metadata_files: {
       [livePlan.installReportRel]: reportSha256,
       [livePlan.rollbackManifestRel]: 'self',
@@ -2102,71 +2692,201 @@ function executeWriteProjectPlan(livePlan) {
 
   validateRollbackManifestSchema(manifestData, manifestAbsPath);
 
-  // Step 2: Persist rollback manifest BEFORE mutating any target project instruction files
-  writeAtomicFile(manifestAbsPath, `${JSON.stringify(manifestData, null, 2)}\n`);
+  const txStagingDir = path.join(blendopsDir, 'tx-staging');
+  const journalAbsPath = path.join(blendopsDir, 'transaction-journal.json');
 
-  // Step 3: Atomically write created and modified target files with immediate pre-write revalidation
-  const newlyAppliedBackups = [];
-  const newlyCreatedPaths = [];
+  const txState = {
+    journalAbsPath,
+    txStagingDir,
+    blendopsExistedBefore,
+    backupsDirExistedBefore,
+    manifestState: {
+      relPath: livePlan.rollbackManifestRel,
+      absPath: manifestAbsPath,
+      existedBefore: prevManifestExisted,
+      preBytes: prevManifestBytes,
+      preSha256: prevManifestSha256,
+      stagingAbsPath: prevManifestExisted ? path.join(txStagingDir, 'prev-manifest.bin') : null,
+    },
+    reportState: {
+      relPath: livePlan.installReportRel,
+      absPath: reportAbsPath,
+      existedBefore: prevReportExists,
+      preBytes: prevReportBytes,
+      preSha256: prevReportSha256,
+      stagingAbsPath: prevReportExists ? path.join(txStagingDir, 'prev-report.bin') : null,
+    },
+    newlyCreatedBackups,
+    targetRecords,
+  };
+
+  // Begin recoverable write transaction
   try {
-    for (const op of livePlan.operations) {
-      if (op.action !== 'create' && op.action !== 'modify') continue;
-      const { absTarget, exists } = validateSafeRelativeTargetFile(projectReal, op.path);
-      if (op.action === 'create') {
+    fs.mkdirSync(blendopsDir, { recursive: true });
+    fs.mkdirSync(txStagingDir, { recursive: true });
+
+    if (prevManifestExisted && prevManifestBytes) {
+      writeAtomicFile(txState.manifestState.stagingAbsPath, prevManifestBytes);
+    }
+    if (prevReportExists && prevReportBytes) {
+      writeAtomicFile(txState.reportState.stagingAbsPath, prevReportBytes);
+    }
+    for (let i = 0; i < targetRecords.length; i += 1) {
+      const rec = targetRecords[i];
+      if (rec.existedBefore && rec.preBytes) {
+        const stagingFileName = `target-${i}-${rec.relPath.replace(/\//g, '__')}.bin`;
+        rec.stagingAbsPath = path.join(txStagingDir, stagingFileName);
+        writeAtomicFile(rec.stagingAbsPath, rec.preBytes);
+      }
+    }
+
+    const journalData = {
+      installer_version: INSTALLER_VERSION,
+      started_at: new Date().toISOString(),
+      project: projectReal,
+      blendops_existed_before: blendopsExistedBefore,
+      backups_dir_existed_before: backupsDirExistedBefore,
+      manifest_state: {
+        rel_path: livePlan.rollbackManifestRel,
+        existed_before: prevManifestExisted,
+        pre_sha256: prevManifestSha256,
+        staging_rel_path: prevManifestExisted ? '.blendops/tx-staging/prev-manifest.bin' : null,
+      },
+      report_state: {
+        rel_path: livePlan.installReportRel,
+        existed_before: prevReportExists,
+        pre_sha256: prevReportSha256,
+        staging_rel_path: prevReportExists ? '.blendops/tx-staging/prev-report.bin' : null,
+      },
+      newly_created_backups: newlyCreatedBackups.map((b) => ({
+        target_rel_path: b.targetRelPath,
+        backup_rel_path: b.backupRelPath,
+        sha256: b.sha256,
+      })),
+      target_records: targetRecords.map((rec, idx) => ({
+        rel_path: rec.relPath,
+        action: rec.action,
+        existed_before: rec.existedBefore,
+        pre_sha256: rec.preSha256,
+        desired_sha256: rec.desiredSha256,
+        staging_rel_path: rec.existedBefore
+          ? `.blendops/tx-staging/target-${idx}-${rec.relPath.replace(/\//g, '__')}.bin`
+          : null,
+      })),
+    };
+    writeAtomicFile(journalAbsPath, `${JSON.stringify(journalData, null, 2)}\n`);
+
+    // Step 1: Write and verify newly created backups before mutating manifest or targets
+    for (const b of newlyCreatedBackups) {
+      const { exists: nowExists } = validateSafeRelativeTargetFile(projectReal, b.backupRelPath);
+      if (nowExists) {
+        throw new Error(
+          `Refusing to overwrite unexpected file at backup path '${b.backupRelPath}'`,
+        );
+      }
+      fs.mkdirSync(path.dirname(b.backupAbsPath), { recursive: true });
+      writeAtomicFile(b.backupAbsPath, b.bytes);
+      const verifyBackupHash = sha256Buffer(fs.readFileSync(b.backupAbsPath));
+      if (verifyBackupHash !== b.sha256) {
+        throw new Error(`Backup verification failed for ${b.backupRelPath}`);
+      }
+      if (faultInjection?.afterBackupWrite) {
+        faultInjection.afterBackupWrite({ backup: b, projectReal });
+      }
+    }
+
+    // Step 2: Persist provisional rollback manifest BEFORE mutating any target project instruction files
+    const manifestJsonText = `${JSON.stringify(manifestData, null, 2)}\n`;
+    const expectedManifestSha = sha256Buffer(Buffer.from(manifestJsonText, 'utf8'));
+    writeAtomicFile(manifestAbsPath, manifestJsonText);
+    const writtenManifestSha = sha256Buffer(fs.readFileSync(manifestAbsPath));
+    if (writtenManifestSha !== expectedManifestSha) {
+      throw new Error(`Post-write hash verification failed for ${livePlan.rollbackManifestRel}`);
+    }
+    if (faultInjection?.afterProvisionalManifestWrite) {
+      faultInjection.afterProvisionalManifestWrite({ manifestAbsPath, projectReal });
+    }
+
+    // Step 3: Atomically write created and modified target files with immediate pre-write revalidation
+    for (let i = 0; i < targetRecords.length; i += 1) {
+      const rec = targetRecords[i];
+      if (faultInjection?.beforeTargetOperation) {
+        faultInjection.beforeTargetOperation({ index: i, op: rec, projectReal });
+      }
+      const { absTarget, exists } = validateSafeRelativeTargetFile(projectReal, rec.relPath);
+      if (rec.action === 'create') {
         if (exists) {
           throw new Error(
-            `Target file '${op.path}' appeared after planning right before write; aborting write.`,
+            `Target file '${rec.relPath}' appeared after planning right before write; aborting write.`,
           );
         }
-        newlyCreatedPaths.push(absTarget);
-      } else if (op.action === 'modify') {
+      } else if (rec.action === 'modify') {
         if (!exists) {
           throw new Error(
-            `Target file '${op.path}' disappeared right before write; aborting write.`,
+            `Target file '${rec.relPath}' disappeared right before write; aborting write.`,
           );
         }
         const preWriteBytes = fs.readFileSync(absTarget);
         const preWriteHash = sha256Buffer(preWriteBytes);
-        if (preWriteHash !== op.preExistingSha256) {
+        if (preWriteHash !== rec.preSha256) {
           throw new Error(
-            `Target file '${op.path}' changed right before atomic replacement; aborting write.`,
+            `Target file '${rec.relPath}' changed right before atomic replacement; aborting write.`,
           );
         }
-        newlyAppliedBackups.push({
-          absTarget,
-          preUpdateBytes: preWriteBytes,
-        });
       }
-      writeAtomicFile(absTarget, op.desiredContent);
+      rec.writeAttempted = true;
+      writeAtomicFile(absTarget, rec.desiredContent);
+      if (faultInjection?.afterTargetWriteBeforeVerify) {
+        faultInjection.afterTargetWriteBeforeVerify({ index: i, op: rec, projectReal });
+      }
       const writtenHash = sha256Buffer(fs.readFileSync(absTarget));
-      if (writtenHash !== op.desiredSha256) {
-        throw new Error(`Post-write hash verification failed for ${op.path}`);
+      if (writtenHash !== rec.desiredSha256) {
+        throw new Error(`Post-write hash verification failed for ${rec.relPath}`);
+      }
+      if (faultInjection?.afterTargetOperation) {
+        faultInjection.afterTargetOperation({ index: i, op: rec, projectReal });
       }
     }
-  } catch (writeErr) {
-    // Best-effort transactional rollback if an unexpected error occurs mid-write
-    for (const createdAbs of newlyCreatedPaths) {
-      try {
-        fs.rmSync(createdAbs, { force: true });
-        pruneEmptyParentDirectories(createdAbs, projectReal);
-      } catch {
-        // Ignore cleanup error
-      }
-    }
-    for (const item of newlyAppliedBackups) {
-      try {
-        writeAtomicFile(item.absTarget, item.preUpdateBytes);
-      } catch {
-        // Ignore cleanup error
-      }
-    }
-    throw writeErr;
-  }
 
-  writeAtomicFile(reportAbsPath, result.report);
-  const writtenReportHash = sha256Buffer(fs.readFileSync(reportAbsPath));
-  if (writtenReportHash !== reportSha256) {
-    throw new Error(`Post-write hash verification failed for ${livePlan.installReportRel}`);
+    // Step 4: Write and verify .blendops/INSTALL_REPORT.md inside the same transaction
+    if (faultInjection?.beforeReportWrite) {
+      faultInjection.beforeReportWrite({ reportAbsPath, projectReal });
+    }
+    validateSafeRelativeTargetFile(projectReal, livePlan.installReportRel);
+    writeAtomicFile(reportAbsPath, result.report);
+    if (faultInjection?.afterReportWriteBeforeVerify) {
+      faultInjection.afterReportWriteBeforeVerify({ reportAbsPath, projectReal });
+    }
+    const writtenReportHash = sha256Buffer(fs.readFileSync(reportAbsPath));
+    if (writtenReportHash !== reportSha256) {
+      throw new Error(`Post-write hash verification failed for ${livePlan.installReportRel}`);
+    }
+    if (faultInjection?.afterReportOperation) {
+      faultInjection.afterReportOperation({ reportAbsPath, projectReal });
+    }
+
+    // Step 5: Finalize transaction only after all steps succeed
+    if (faultInjection?.beforeTransactionFinalize) {
+      faultInjection.beforeTransactionFinalize({ journalAbsPath, projectReal });
+    }
+    if (fs.existsSync(txStagingDir)) {
+      fs.rmSync(txStagingDir, { recursive: true, force: true });
+    }
+    if (fs.existsSync(journalAbsPath)) {
+      fs.rmSync(journalAbsPath, { force: true });
+    }
+  } catch (txErr) {
+    if (faultInjection?.simulateProcessCrashOnFailure) {
+      throw txErr;
+    }
+    const cleanupErrors = rollbackWriteTransaction(projectReal, txState, faultInjection);
+    if (cleanupErrors.length > 0) {
+      const origMsg = txErr instanceof Error ? txErr.message : String(txErr);
+      throw new Error(
+        `Transactional rollback incomplete after write failure (${origMsg}): ${cleanupErrors.join('; ')}`,
+      );
+    }
+    throw txErr;
   }
 
   return result;
@@ -2454,6 +3174,10 @@ function executeRollbackMode({ repoRootReal, project, out, forceRollback = false
     if (backupsLstat.isSymbolicLink() || !backupsLstat.isDirectory()) {
       throw new Error(`Rollback refused: unsafe .blendops/backups path at ${backupsDir}`);
     }
+  }
+
+  if (fs.existsSync(path.join(blendopsDir, 'transaction-journal.json'))) {
+    recoverPendingTransactionJournal(targetRootReal);
   }
 
   const manifestRel = '.blendops/install-manifest.json';
@@ -2858,7 +3582,9 @@ export function runInstaller(rawArgsOrOptions, options = {}) {
   if (isBundleTarget) {
     return executeWriteClaudeDesktopPlan(livePlan);
   }
-  return executeWriteProjectPlan(livePlan);
+  return executeWriteProjectPlan(livePlan, {
+    faultInjection: options.faultInjection || null,
+  });
 }
 
 function parseInstallerArgsFromObject(obj = {}) {

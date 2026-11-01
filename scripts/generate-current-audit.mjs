@@ -1536,17 +1536,22 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
         commitSha: '23e00d5d735190049ec0cb224bec4ae7fd67a990',
         summary: 'Dry-run-gated project-local skill installer, pre-write backups, rollback manifest & verification, and bundle cache path safety',
       },
+      {
+        phase: 'Phase 10.1',
+        commitSha: 'ce95a155362b0281f228dcfa89ada0ccfa21533d',
+        summary: 'Staging-verified Claude Desktop export, ownership-aware rollback, strict manifest schema & hash verification, and recursive source fingerprinting',
+      },
     ],
     currentPhaseContext: {
-      phase: 'Phase 10 — Safe Project-Local Installer Foundation (Phase 10.1 Safety & Rollback Remediation)',
-      title: 'Dry-Run-Gated Project-Local Skill Installer, Staging-Verified Claude Desktop Export, Ownership-Aware Rollback, and Recursive Source Fingerprinting',
+      phase: 'Phase 10 — Safe Project-Local Installer Foundation (Phase 10.2 Transactional Write & User-Edit Preservation)',
+      title: 'Transactional Project-Local Writes, Crash Journal Recovery, and User-Edit Preservation Across Reruns & Rollback',
       sourceCommitSha: headSha,
       workingTreeState,
       snapshotBasis,
       auditedInputsSha256,
       auditedInputsManifest: AUDITED_INPUTS_MANIFEST_REL,
       relationshipToCommitChain:
-        'Phase 10.1 is built directly on top of Phase 10 (23e00d5d735190049ec0cb224bec4ae7fd67a990). Because a Git commit cannot embed its own final SHA inside tracked files, verification-manifest.json records 23e00d5d735190049ec0cb224bec4ae7fd67a990 as the latest completed commit in commitChain and sourceCommitSha, while locking the exact Phase 10.1 audited inputs via auditedInputsSha256 and docs/audits/audited-inputs.manifest.json.',
+        'Phase 10.2 is built directly on top of Phase 10.1 (ce95a155362b0281f228dcfa89ada0ccfa21533d). Because a Git commit cannot embed its own final SHA inside tracked files, verification-manifest.json records ce95a155362b0281f228dcfa89ada0ccfa21533d as the latest completed commit in commitChain and sourceCommitSha, while locking the exact Phase 10.2 audited inputs via auditedInputsSha256 and docs/audits/audited-inputs.manifest.json.',
     },
     ciVerificationPipeline: {
       command: 'npm run ci',

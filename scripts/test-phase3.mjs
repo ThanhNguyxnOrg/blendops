@@ -460,6 +460,7 @@ describe('Phase 3 — Behavioral Evaluation Schema & Deterministic Runner', () =
       '3e72020fb64af4d5aeadeb942c9cbb0314c11cba',
       'f06fce82e5dae19f3ea9449c460e2fe2083c474d',
       '23e00d5d735190049ec0cb224bec4ae7fd67a990',
+      'ce95a155362b0281f228dcfa89ada0ccfa21533d',
     ]);
 
     // Verify explicit auditProvenance on all 5 JSON artifacts and no ambiguous self-referential commitSha
@@ -479,14 +480,14 @@ describe('Phase 3 — Behavioral Evaluation Schema & Deterministic Runner', () =
       assert.ok(doc.auditProvenance, `${label} must include auditProvenance`);
       assert.equal(
         doc.sourceCommitSha,
-        '23e00d5d735190049ec0cb224bec4ae7fd67a990',
-        `${label} sourceCommitSha must record Phase 10 completion base commit 23e00d5d735190049ec0cb224bec4ae7fd67a990`,
+        'ce95a155362b0281f228dcfa89ada0ccfa21533d',
+        `${label} sourceCommitSha must record Phase 10.1 completion base commit ce95a155362b0281f228dcfa89ada0ccfa21533d`,
       );
       assert.equal(
         doc.auditProvenance.sourceCommitSha,
-        '23e00d5d735190049ec0cb224bec4ae7fd67a990',
+        'ce95a155362b0281f228dcfa89ada0ccfa21533d',
       );
-      assert.equal(doc.auditProvenance.sourceCommitShort, '23e00d5');
+      assert.equal(doc.auditProvenance.sourceCommitShort, 'ce95a15');
       assert.ok(
         doc.auditProvenance.workingTreeState === 'clean' ||
           doc.auditProvenance.workingTreeState === 'dirty',
