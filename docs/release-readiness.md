@@ -1,12 +1,12 @@
 # 🚦 Release Readiness
 
-Status: Draft v0; Draft v9 / `v0.9.0-draft` release candidate; not production, not stable  
-Date: 2026-11-01 (Phase 13.1 deterministic ZIP export and cross-platform CI closure)
+Status: Draft v0, not production, not stable  
+Date: 2026-05-09 (scope clarified; expanded to 48 skills + 26 install targets)
 
 > [!IMPORTANT]
 > **Scope: BlendOps publishes the skills layer; runtime paths are an upstream redirect.** This readiness report grades only what BlendOps **owns**: 48 skills + 4 laws + 1 pack + 3 bundles + 26 install target docs + ZIP/package generation + CI guards. Runtime execution (Path 1 Lab MCP, Path 2 `ahujasid` community, CLI) is owned by Blender Foundation / Anthropic / the community — BlendOps redirects users via per-target install docs and does **not** claim ownership of those upstream paths' stability.
 >
-> The skills layer is **Ready for Draft v0**. Published draft tags/releases run through `v0.8.0-draft` (48-skill review hardening + runtime consistency sweep). The `v0.9.0-draft` candidate closes Phase 13.1 deterministic ZIP export and cross-platform CI; its GitHub release record is the remaining publication action.
+> The skills layer is **Ready for Draft v0**. Tags shipped: `v0.1.0-draft` (16) → `v0.2.0-draft` (24) → `v0.3.0-draft` (32) → `v0.4.0-draft` (40) → `v0.5.0-draft` (48) → `v0.6.0-draft` (20 install targets) → `v0.7.0-draft` (26 install targets) → `v0.8.0-draft` (48-skill review hardening + runtime consistency sweep).
 >
 > Phase 3.3 rollup: [docs/release-readiness-rollup-v0.md](./release-readiness-rollup-v0.md)
 
@@ -24,8 +24,8 @@ Date: 2026-11-01 (Phase 13.1 deterministic ZIP export and cross-platform CI clos
 | GLB Web Handoff & Viewer Integration | Ready for Draft v0 review (`Not Run` / `Not Produced` for live Blender exports) | `schemas/glb-web-handoff-manifest.schema.json`, `scripts/inspect-glb.mjs`, `scripts/generate-glb-handoff-report.mjs`, CLI `glb-inspect` / `glb-handoff` / `glb-validate-manifest`, and Three.js + React Three Fiber examples ([docs/examples/glb-web-handoff/README.md](./examples/glb-web-handoff/README.md)) verified in `scripts/test-phase12.mjs`. |
 | Adapter install dry-run | Warn | Adapter architecture and dry-run install eval are complete, with native-path confidence still environment-dependent. |
 | Manual install beta | Warn | Evidence report: [docs/evals/manual-install-beta-v0.md](./evals/manual-install-beta-v0.md). |
-| CI and deterministic export closure | Verified | GitHub Actions run [#180](https://github.com/ThanhNguyxnOrg/blendops/actions/runs/41323580235) passed Windows, macOS, Ubuntu, and docs (`npm run ci`) jobs for Phase 13.1 commit `d1b2e6b`. |
-| **`v0.9.0-draft` GitHub prerelease** | **Ready; publication pending** | **Phase 13.1 bundle, commit lineage, and 4/4 CI jobs are verified. npm publication remains out of scope (`private: true`).** |
+| CI guards | Ready for Draft v0 review | `npm run docs:check` validates active markdown files (see script footer count). |
+| **`v0.1.0-draft` tag** | **🟡 Tag-able now** | **Skills layer is complete. Tagging is a publishing decision, not gated on upstream runtime evidence.** |
 
 ## Runtime paths dashboard (BlendOps redirects to — owned by upstream)
 
@@ -78,9 +78,9 @@ The following are **not** "Not Ready" items in the publishing sense — they are
 
 ---
 
-## 🧱 Draft v9 release decision
+## 🧱 No blockers for `v0.1.0-draft`
 
-No known BlendOps-owned implementation blocker remains for the `v0.9.0-draft` candidate: Phase 13.1 is on `main`, the supplied Git bundle passed local integrity/identity checks, and GitHub Actions run #180 passed all four jobs. Runtime-eval and artifact-evidence gaps remain explicitly outside this release's publisher scope because BlendOps redirects to upstream execution paths. The GitHub tag/release record is the remaining publication action; npm stays unpublished.
+There are no skills-layer blockers for the `v0.1.0-draft` tag (already shipped on 2026-05-09 alongside subsequent batch tags). Earlier drafts of this report listed runtime-eval-evidence items as blockers; that framing was wrong because BlendOps does not own runtime execution paths — it redirects to upstream. Skills layer has clean CI, all 48 skills are Expanded Draft v0, all 26 install targets are documented, and skill ZIP / package generation is verified at source level.
 
 The previously-listed "blockers" are now correctly scoped:
 
@@ -92,7 +92,7 @@ The previously-listed "blockers" are now correctly scoped:
 
 ---
 
-## 🧾 Draft v9 / `v0.9.0-draft` release-candidate checklist
+## 🧾 Ready for `v0.1.0-draft` tag
 
 - [x] 48 skills at Expanded Draft v0 with frontmatter spec compliance (16 baseline + 32 expansion across Batches 1–8).
 - [x] 4 laws + 1 pack + 3 bundle fixtures.
@@ -102,14 +102,14 @@ The previously-listed "blockers" are now correctly scoped:
 - [x] Safe project-local installer (`scripts/install-skills.mjs`) and distributable CLI (`bin/blendops.mjs`) verified end-to-end via `npm pack` (`scripts/test-phase10.mjs`, `scripts/test-phase11.mjs`), with `"private": true` retained to prevent accidental registry publishing.
 - [x] Web-ready GLB 2.0 inspection, handoff manifest schema (`schemas/glb-web-handoff-manifest.schema.json`), HTML/Markdown/JSON report generator (`scripts/generate-glb-handoff-report.mjs`), and Three.js / React Three Fiber viewer integration examples (`docs/examples/glb-web-handoff/README.md`) verified via `scripts/test-phase12.mjs`.
 - [x] Repository architecture, complete tracked-file classification (`docs/audits/current/repository-inventory.json`), root hygiene (`.gitattributes`, `.editorconfig`, `.gitignore`), and internal reference integrity verified via `scripts/validate-repository-architecture.mjs` (`npm run arch:check`) and `scripts/test-phase13.mjs`.
-- [x] Phase 13.1 deterministic ZIP export verified by GitHub Actions run #180: Windows, macOS, Ubuntu CLI suites and docs `npm run ci` all passed.
+- [x] CI guards passing (`npm run docs:check` validates active markdown files; see script footer count).
 - [x] Runtime-stack-strategy 2-path + CLI appendix documented with upstream redirect clarity.
 - [x] CLI compatibility considerations researched + documented (GLB export, add-on enablement, GPU flags, viewport limits, stateless caveat).
 - [x] AGENTS.md, CONTRIBUTING.md, GitHub PR / issue templates, package.json metadata.
 - [x] TODO.md scope-corrected: optional operator-side provenance items separated from BlendOps publishing items.
 
 > [!NOTE]
-> Phase 13.1's bundle identity and CI gates are verified. Creating the GitHub `v0.9.0-draft` prerelease is a distribution action; it does not promote the product to stable or change the runtime/artifact truth labels. `Not Run` / `Not Produced` continue to refer to evidence captured inside this repository.
+> Whether to actually cut the `v0.1.0-draft` tag is a publishing decision (release notes, GitHub release page, etc.). Nothing in the skills layer blocks it. The "Not Run" / "Not Produced" labels on runtime/artifact badges refer to **in-repo provenance under `docs/evals/`**, not to whether the upstream redirect targets work — they do.
 
 ---
 

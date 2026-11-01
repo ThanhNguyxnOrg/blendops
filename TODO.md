@@ -1,9 +1,9 @@
 # BlendOps Roadmap (Product-Layer Rebuild)
 
-_Last updated: 2026-11-01 (Phase 13.1 deterministic ZIP export and cross-platform CI closure verified; Draft v9 / v0.9.0-draft release candidate prepared.)_
+_Last updated: 2026-05-09 (Batches 7+8 complete — 48 skills shipped, 3x baseline target reached. Tags v0.4.0-draft (40) and v0.5.0-draft (48) pushed with GitHub Releases attached. Skills layer roadmap done.)_
 
 > [!NOTE]
-> BlendOps publishes one thing: a **skills layer** (**48 skills** — Batches 1–8 complete 2026-05-09; **3× baseline target reached**) + 4 laws + 1 pack + 3 bundles + **26 install target docs** + ZIP/package generation + CI guards. The layer is **complete and shippable** at Draft v0. Milestone tags: `v0.1.0-draft` (16) → `v0.2.0-draft` (24) → `v0.3.0-draft` (32) → `v0.4.0-draft` (40) → `v0.5.0-draft` (48) → `v0.6.0-draft` (20 install targets) → `v0.7.0-draft` (26 install targets) → `v0.8.0-draft` (48-skill review hardening). Draft v9 is tracked as the `v0.9.0-draft` release candidate.
+> BlendOps publishes one thing: a **skills layer** (**48 skills** — Batches 1–8 complete 2026-05-09; **3× baseline target reached**) + 4 laws + 1 pack + 3 bundles + **26 install target docs** + ZIP/package generation + CI guards. The layer is **complete and shippable** at Draft v0. Milestone tags: `v0.1.0-draft` (16) → `v0.2.0-draft` (24) → `v0.3.0-draft` (32) → `v0.4.0-draft` (40) → `v0.5.0-draft` (48) → `v0.6.0-draft` (20 install targets) → **`v0.7.0-draft` (26 install targets — +6 popular MCP-aware agents)**.
 >
 > Everything related to actually running Blender — the Blender executable, the MCP servers, the MCP hosts, the CLI — is **upstream**, owned by Blender Foundation / Anthropic / the `ahujasid` community. BlendOps **redirects** users to the right upstream docs per per-target install doc. Whether those upstream paths work in a given environment is upstream's claim, not BlendOps'. Path 1 + Path 2 are **user-reported verified by the repo owner**; CLI is **documented upstream as a first-class Blender CLI surface** (no in-repo evidence file yet).
 >
@@ -275,20 +275,12 @@ These are useful for any operator who wants a **captured in-repo eval record** u
 
 Status without these files: **skills layer still complete and shippable**. Runtime path stability is upstream's claim, not ours. Path 1 + Path 2 are user-reported verified by the repo owner (operator statement, does not promote eval scope); CLI is upstream-documented.
 
-## ✅ Draft v9 technical closure
-
-- [x] Phase 10 & Phase 11 — Safe project-local installer (`scripts/install-skills.mjs`) and distributable CLI (`bin/blendops.mjs`) with `npm pack` tarball readiness (`"private": true` retained; public `npm publish` deferred). Spec at `docs/install/installer-spec.md`.
-- [x] Phase 12 — Web-Ready GLB Delivery & Viewer Integration (`schemas/glb-web-handoff-manifest.schema.json`, `scripts/inspect-glb.mjs`, `scripts/generate-glb-handoff-report.mjs`, `blendops glb-inspect` / `glb-handoff` / `glb-validate-manifest`, and Three.js + React Three Fiber integration modules in [`docs/examples/glb-web-handoff/README.md`](./docs/examples/glb-web-handoff/README.md)). Live Blender runtime execution remains `Not Run` and production GLB artifacts remain `Not Produced` until an operator runtime evidence record is captured.
-- [x] Phase 13 — Repository Architecture, Organization & Finalization (`docs/architecture.md`, `docs/audits/current/repository-inventory.json`, `scripts/validate-repository-architecture.mjs`, `.gitattributes`, `.editorconfig`, and `scripts/test-phase13.mjs`).
-- [x] Phase 13.1 — Deterministic ZIP Export & CI Closure: canonical ZIP timestamps, locale-independent entry ordering, and cross-time-zone byte-identical export checks. Verified bundle: 3,066,010 bytes, SHA-256 `0fe7a97b1dbb6193a9ababf2c05c8c9910ff105d590b106278af57251a7b478d`; commit `d1b2e6b4c539171456d229f16433f5e12202dbee`.
-- [x] GitHub Actions verification for Phase 13.1: [run #180](https://github.com/ThanhNguyxnOrg/blendops/actions/runs/41323580235), 4/4 jobs passed (Windows, macOS, Ubuntu, docs).
-- [x] Draft v9 documentation and package metadata synchronized to `0.9.0-draft`; npm package remains private and unpublished.
-
 ## 🔵 Future work (deliberately deferred)
 
-- [ ] Publish the GitHub `v0.9.0-draft` prerelease — release notes and target commit are prepared; publication is the remaining GitHub release action.
-- [ ] Public npm registry release (`npm publish`) — explicitly deferred; `package.json` remains `"private": true`.
-- [ ] Knowledge Architecture & Retrieval and external open-source research/adoption — deliberately deferred until after Draft v9; no Phase 13.2+ or Phase 14 work is part of this closure.
+- [x] Phase 10 & Phase 11 — Safe project-local installer (`scripts/install-skills.mjs`) and distributable CLI (`bin/blendops.mjs`) with `npm pack` tarball readiness (`"private": true` retained; public `npm publish` deferred until human release approval). Spec at `docs/install/installer-spec.md`.
+- [x] Phase 12 — Web-Ready GLB Delivery & Viewer Integration (`schemas/glb-web-handoff-manifest.schema.json`, `scripts/inspect-glb.mjs`, `scripts/generate-glb-handoff-report.mjs`, `blendops glb-inspect` / `glb-handoff` / `glb-validate-manifest`, and Three.js + React Three Fiber integration modules in [`docs/examples/glb-web-handoff/README.md`](./docs/examples/glb-web-handoff/README.md)). Live Blender runtime execution remains `Not Run` and production GLB artifacts remain `Not Produced` until an operator runtime evidence record is captured.
+- [x] Phase 13 — Repository Architecture, Organization & Finalization (`docs/architecture.md`, `docs/audits/current/repository-inventory.json`, `scripts/validate-repository-architecture.mjs`, `.gitattributes`, `.editorconfig`, and `scripts/test-phase13.mjs`).
+- [ ] Public npm registry release (`npm publish`) — deferred until explicit human maintainer release approval.
 
 ## ⚪ Not a blocker — Skills UI upload
 
@@ -315,6 +307,6 @@ These items used to appear as "[ ] keep X unchecked until evidence" in earlier d
 
 ## 🎯 What changes the picture
 
-Skills layer is **complete**. Published draft releases currently reach `v0.8.0-draft`; Draft v9 is represented by the `v0.9.0-draft` release candidate prepared on 2026-11-01. Phase 13.1 code and cross-platform CI are complete; GitHub release publication remains the final distribution action.
+Skills layer is **complete and tagged**. Tags shipped: `v0.1.0-draft` (16) → `v0.2.0-draft` (24) → `v0.3.0-draft` (32) → `v0.4.0-draft` (40) → `v0.5.0-draft` (48 = 3x baseline). GitHub Releases attached.
 
 If the operator wants to remove the "Full runtime eval: Not Run" badge from in-repo provenance perspective, they can run any recipe through Path 1 / Path 2 / CLI on their machine and save the evidence file under `docs/evals/`. That is **provenance**, not a "fix" — the upstream paths already work; the badge just describes what's captured **inside this repo**, not whether the redirect targets work upstream.
