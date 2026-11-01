@@ -1531,17 +1531,22 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
         commitSha: 'f06fce82e5dae19f3ea9449c460e2fe2083c474d',
         summary: 'Bundle export freshness, atomic temp candidate generation, single-source snapshot delivery, and real HTTP integration verification',
       },
+      {
+        phase: 'Phase 10',
+        commitSha: '23e00d5d735190049ec0cb224bec4ae7fd67a990',
+        summary: 'Dry-run-gated project-local skill installer, pre-write backups, rollback manifest & verification, and bundle cache path safety',
+      },
     ],
     currentPhaseContext: {
-      phase: 'Phase 10 — Safe Project-Local Installer Foundation',
-      title: 'Dry-Run-Gated Project-Local Skill Installer, Pre-Write Backups, Rollback Manifest & Verification, and Bundle Cache Path Safety',
+      phase: 'Phase 10 — Safe Project-Local Installer Foundation (Phase 10.1 Safety & Rollback Remediation)',
+      title: 'Dry-Run-Gated Project-Local Skill Installer, Staging-Verified Claude Desktop Export, Ownership-Aware Rollback, and Recursive Source Fingerprinting',
       sourceCommitSha: headSha,
       workingTreeState,
       snapshotBasis,
       auditedInputsSha256,
       auditedInputsManifest: AUDITED_INPUTS_MANIFEST_REL,
       relationshipToCommitChain:
-        'Phase 10 is built directly on top of Phase 9 (f06fce82e5dae19f3ea9449c460e2fe2083c474d). Because a Git commit cannot embed its own final SHA inside tracked files, verification-manifest.json records f06fce82e5dae19f3ea9449c460e2fe2083c474d as the latest completed commit in commitChain and sourceCommitSha, while locking the exact Phase 10 audited inputs via auditedInputsSha256 and docs/audits/audited-inputs.manifest.json.',
+        'Phase 10.1 is built directly on top of Phase 10 (23e00d5d735190049ec0cb224bec4ae7fd67a990). Because a Git commit cannot embed its own final SHA inside tracked files, verification-manifest.json records 23e00d5d735190049ec0cb224bec4ae7fd67a990 as the latest completed commit in commitChain and sourceCommitSha, while locking the exact Phase 10.1 audited inputs via auditedInputsSha256 and docs/audits/audited-inputs.manifest.json.',
     },
     ciVerificationPipeline: {
       command: 'npm run ci',
@@ -1670,7 +1675,7 @@ The \`auditedInputsSha256\` digest is governed by [\`../audited-inputs.manifest.
 - [\`findings.json\`](./findings.json) — Machine-readable lifecycle table for \`F-01\` through \`F-10\`.
 - [\`skill-inventory.json\`](./skill-inventory.json) — Live 48-skill inventory reflecting Phase 1 truth-state fixes, Phase 2/2.1/5 full-catalog contracts, Phase 3/6 full-catalog eval coverage, and Phase 4 extended template completion.
 - [\`eval-inventory.json\`](./eval-inventory.json) — Live 48-skill evaluation inventory covering all 48 machine-readable suites (${totalEvalCasesCount} cases) with 0 remaining prose-only skills.
-- [\`verification-manifest.json\`](./verification-manifest.json) — Verified commit chain through \`f06fce82e5dae19f3ea9449c460e2fe2083c474d\`, Phase 10 provenance context, CI pipeline commands, and runtime/artifact truth states.
+- [\`verification-manifest.json\`](./verification-manifest.json) — Verified commit chain through \`23e00d5d735190049ec0cb224bec4ae7fd67a990\`, Phase 10 / 10.1 provenance context, CI pipeline commands, and runtime/artifact truth states.
 
 ## Related Documentation
 

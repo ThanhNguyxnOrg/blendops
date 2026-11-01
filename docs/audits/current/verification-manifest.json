@@ -3,17 +3,17 @@
   "auditPhase": "phase-10-current",
   "repository": "ThanhNguyxnOrg/blendops",
   "branch": "main",
-  "sourceCommitSha": "f06fce82e5dae19f3ea9449c460e2fe2083c474d",
-  "sourceCommitShort": "f06fce8",
-  "sourceCommitDate": "2026-10-31 16:47:27 +0000",
+  "sourceCommitSha": "23e00d5d735190049ec0cb224bec4ae7fd67a990",
+  "sourceCommitShort": "23e00d5",
+  "sourceCommitDate": "2026-11-01 03:52:25 +0000",
   "auditProvenance": {
-    "sourceCommitSha": "f06fce82e5dae19f3ea9449c460e2fe2083c474d",
-    "sourceCommitShort": "f06fce8",
-    "sourceCommitDate": "2026-10-31 16:47:27 +0000",
+    "sourceCommitSha": "23e00d5d735190049ec0cb224bec4ae7fd67a990",
+    "sourceCommitShort": "23e00d5",
+    "sourceCommitDate": "2026-11-01 03:52:25 +0000",
     "workingTreeState": "dirty",
     "snapshotBasis": "working-tree-on-top-of-source-commit",
-    "uncommittedChangeCount": 13,
-    "auditedInputsSha256": "450a5d446ef1dd536bc4b6504893438ac133b3d32047eb9b697fab47a296ec7c",
+    "uncommittedChangeCount": 6,
+    "auditedInputsSha256": "c2d372481dafabc3e4e006af50bbba65eb9ebb851416723dfcac8291e99c10cb",
     "selfReferentialCommitRule": "A Git commit cannot contain its own final commit SHA inside tracked files. sourceCommitSha records the verified HEAD commit present when the generator ran, workingTreeState and snapshotBasis record whether uncommitted working-tree changes were present on top of sourceCommitSha, and auditedInputsSha256 digests the exact audited file contents."
   },
   "commitChain": [
@@ -106,17 +106,22 @@
       "phase": "Phase 9",
       "commitSha": "f06fce82e5dae19f3ea9449c460e2fe2083c474d",
       "summary": "Bundle export freshness, atomic temp candidate generation, single-source snapshot delivery, and real HTTP integration verification"
+    },
+    {
+      "phase": "Phase 10",
+      "commitSha": "23e00d5d735190049ec0cb224bec4ae7fd67a990",
+      "summary": "Dry-run-gated project-local skill installer, pre-write backups, rollback manifest & verification, and bundle cache path safety"
     }
   ],
   "currentPhaseContext": {
-    "phase": "Phase 10 — Safe Project-Local Installer Foundation",
-    "title": "Dry-Run-Gated Project-Local Skill Installer, Pre-Write Backups, Rollback Manifest & Verification, and Bundle Cache Path Safety",
-    "sourceCommitSha": "f06fce82e5dae19f3ea9449c460e2fe2083c474d",
+    "phase": "Phase 10 — Safe Project-Local Installer Foundation (Phase 10.1 Safety & Rollback Remediation)",
+    "title": "Dry-Run-Gated Project-Local Skill Installer, Staging-Verified Claude Desktop Export, Ownership-Aware Rollback, and Recursive Source Fingerprinting",
+    "sourceCommitSha": "23e00d5d735190049ec0cb224bec4ae7fd67a990",
     "workingTreeState": "dirty",
     "snapshotBasis": "working-tree-on-top-of-source-commit",
-    "auditedInputsSha256": "450a5d446ef1dd536bc4b6504893438ac133b3d32047eb9b697fab47a296ec7c",
+    "auditedInputsSha256": "c2d372481dafabc3e4e006af50bbba65eb9ebb851416723dfcac8291e99c10cb",
     "auditedInputsManifest": "docs/audits/audited-inputs.manifest.json",
-    "relationshipToCommitChain": "Phase 10 is built directly on top of Phase 9 (f06fce82e5dae19f3ea9449c460e2fe2083c474d). Because a Git commit cannot embed its own final SHA inside tracked files, verification-manifest.json records f06fce82e5dae19f3ea9449c460e2fe2083c474d as the latest completed commit in commitChain and sourceCommitSha, while locking the exact Phase 10 audited inputs via auditedInputsSha256 and docs/audits/audited-inputs.manifest.json."
+    "relationshipToCommitChain": "Phase 10.1 is built directly on top of Phase 10 (23e00d5d735190049ec0cb224bec4ae7fd67a990). Because a Git commit cannot embed its own final SHA inside tracked files, verification-manifest.json records 23e00d5d735190049ec0cb224bec4ae7fd67a990 as the latest completed commit in commitChain and sourceCommitSha, while locking the exact Phase 10.1 audited inputs via auditedInputsSha256 and docs/audits/audited-inputs.manifest.json."
   },
   "ciVerificationPipeline": {
     "command": "npm run ci",

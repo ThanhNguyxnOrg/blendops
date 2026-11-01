@@ -376,7 +376,6 @@ export function parseInstallerArgs(argv = []) {
   let target = null;
   let project = null;
   let out = null;
-  let planDir = null;
   let doctor = false;
   let dryRun = false;
   let write = false;
@@ -431,11 +430,6 @@ export function parseInstallerArgs(argv = []) {
       i += 1;
     } else if (typeof arg === 'string' && arg.startsWith('--out=')) {
       out = takeEqValue('--out', out, arg);
-    } else if (arg === '--plan-dir') {
-      planDir = takeValue('--plan-dir', planDir, argv, i);
-      i += 1;
-    } else if (typeof arg === 'string' && arg.startsWith('--plan-dir=')) {
-      planDir = takeEqValue('--plan-dir', planDir, arg);
     } else if (arg === '--doctor') {
       doctor = true;
     } else if (arg === '--dry-run') {
@@ -471,7 +465,6 @@ export function parseInstallerArgs(argv = []) {
       target,
       project,
       out,
-      planDir,
       forceRollback,
       confirmTargetPath,
       patchAgentsMd,
@@ -548,7 +541,6 @@ export function parseInstallerArgs(argv = []) {
     target,
     project,
     out,
-    planDir,
     forceRollback,
     confirmTargetPath,
     patchAgentsMd,
@@ -590,8 +582,26 @@ export function detectProjectTargetMarkers(projectRoot) {
   return detectedByTarget;
 }
 
+function compareCodeUnitOrder(a, b) {
+  return a < b ? -1 : a > b ? 1 : 0;
+}
+
+function assertCanonicalInsideRepoRoot(realRepoRoot, absPath, relLabel) {
+  const realTarget = fs.realpathSync(absPath);
+  const rel = path.relative(realRepoRoot, realTarget);
+  if (rel === '' || rel.startsWith('..') || path.isAbsolute(rel)) {
+    throw new Error(
+      `BlendOps source file escapes canonical repository root (${realRepoRoot}): ${relLabel}`,
+    );
+  }
+}
+
 export function computeBlendOpsSourceFingerprint(repoRoot = DEFAULT_REPO_ROOT) {
-  const requiredFiles = [
+  if (!fs.existsSync(repoRoot)) {
+    throw new Error(`Missing BlendOps repository root: ${repoRoot}`);
+  }
+  const realRepoRoot = fs.realpathSync(repoRoot);
+  const requiredExactFiles = [
     'bundles/generic-project-local/BLENDOPS.md',
     'bundles/generic-project-local/ROLLBACK.md',
     'bundles/generic-project-local/INSTALL_REPORT_TEMPLATE.md',
@@ -599,9 +609,9 @@ export function computeBlendOpsSourceFingerprint(repoRoot = DEFAULT_REPO_ROOT) {
     'bundles/claude-desktop-manual/manifest.json',
     'scripts/export-claude-skills.mjs',
   ];
-  const hash = crypto.createHash('sha256');
-  for (const rel of requiredFiles) {
-    const abs = path.join(repoRoot, rel);
+
+  for (const rel of requiredExactFiles) {
+    const abs = path.join(realRepoRoot, rel);
     if (!fs.existsSync(abs)) {
       throw new Error(`Missing required BlendOps source file: ${rel}`);
     }
@@ -609,6 +619,7 @@ export function computeBlendOpsSourceFingerprint(repoRoot = DEFAULT_REPO_ROOT) {
     if (lstat.isSymbolicLink() || !lstat.isFile()) {
       throw new Error(`Unsafe or non-regular BlendOps source file: ${rel}`);
     }
+    assertCanonicalInsideRepoRoot(realRepoRoot, abs, rel);
     const content = fs.readFileSync(abs);
     if (content.length === 0) {
       throw new Error(`Empty required BlendOps source file: ${rel}`);
@@ -631,40 +642,98 @@ export function computeBlendOpsSourceFingerprint(repoRoot = DEFAULT_REPO_ROOT) {
       }
       if (
         rel === 'bundles/claude-desktop-manual/manifest.json' &&
-        (typeof parsed.bundle_name !== 'string' || typeof parsed.target !== 'string' || !Array.isArray(parsed.files))
+        (typeof parsed.bundle_name !== 'string' ||
+          typeof parsed.target !== 'string' ||
+          !Array.isArray(parsed.files))
       ) {
         throw new Error(`Malformed claude-desktop-manual manifest schema in ${rel}`);
       }
     }
-    hash.update(`file:${rel}:${content.length}:`);
-    hash.update(content);
-    hash.update('\0');
   }
-  const skillsDir = path.join(repoRoot, 'skills');
-  if (!fs.existsSync(skillsDir)) {
-    throw new Error(`Missing required BlendOps skills directory: ${skillsDir}`);
+
+  const collectedRelFiles = new Set(['scripts/export-claude-skills.mjs']);
+
+  function walkSourceSubtree(relDir, { skipTopChildName = null } = {}) {
+    const absDir = path.join(realRepoRoot, relDir);
+    if (!fs.existsSync(absDir)) {
+      throw new Error(`Missing required BlendOps source directory: ${relDir}`);
+    }
+    const dirLstat = fs.lstatSync(absDir);
+    if (dirLstat.isSymbolicLink() || !dirLstat.isDirectory()) {
+      throw new Error(`Unsafe or non-directory BlendOps source path: ${relDir}`);
+    }
+    assertCanonicalInsideRepoRoot(realRepoRoot, absDir, relDir);
+
+    const entries = fs
+      .readdirSync(absDir, { withFileTypes: true })
+      .sort((a, b) => compareCodeUnitOrder(a.name, b.name));
+
+    for (const entry of entries) {
+      if (skipTopChildName && entry.name === skipTopChildName) {
+        continue;
+      }
+      const childRel = `${relDir.replace(/\\/g, '/')}/${entry.name}`;
+      const childAbs = path.join(absDir, entry.name);
+      const childLstat = fs.lstatSync(childAbs);
+      if (childLstat.isSymbolicLink()) {
+        throw new Error(`Unsafe symbolic link in BlendOps source tree: ${childRel}`);
+      }
+      assertCanonicalInsideRepoRoot(realRepoRoot, childAbs, childRel);
+
+      if (childLstat.isDirectory()) {
+        walkSourceSubtree(childRel);
+      } else if (childLstat.isFile()) {
+        collectedRelFiles.add(childRel);
+      } else {
+        throw new Error(`Unsupported non-regular file in BlendOps source tree: ${childRel}`);
+      }
+    }
   }
+
+  walkSourceSubtree('bundles/generic-project-local');
+  walkSourceSubtree('bundles/claude-desktop-manual');
+  walkSourceSubtree('skills', { skipTopChildName: '_template' });
+
+  const skillsDir = path.join(realRepoRoot, 'skills');
   const skillDirs = fs
     .readdirSync(skillsDir, { withFileTypes: true })
     .filter((d) => d.isDirectory() && d.name !== '_template')
     .map((d) => d.name)
-    .sort();
+    .sort(compareCodeUnitOrder);
   if (skillDirs.length === 0) {
     throw new Error(`No canonical skills found in ${skillsDir}`);
   }
+
   const skillNames = [];
   for (const name of skillDirs) {
-    const skillMdAbs = path.join(skillsDir, name, 'SKILL.md');
+    const skillMdRel = `skills/${name}/SKILL.md`;
+    const evalMdRel = `skills/${name}/EVAL.md`;
+    const skillMdAbs = path.join(realRepoRoot, skillMdRel);
+    const evalMdAbs = path.join(realRepoRoot, evalMdRel);
     if (!fs.existsSync(skillMdAbs)) {
       throw new Error(`Missing SKILL.md for canonical skill '${name}' in ${skillsDir}`);
     }
+    if (!fs.existsSync(evalMdAbs)) {
+      throw new Error(`Missing EVAL.md for canonical skill '${name}' in ${skillsDir}`);
+    }
     skillNames.push(name);
   }
+
+  const sortedRelFiles = [...collectedRelFiles].sort(compareCodeUnitOrder);
+  const hash = crypto.createHash('sha256');
+  for (const relPosix of sortedRelFiles) {
+    const absFile = path.join(realRepoRoot, relPosix);
+    const content = fs.readFileSync(absFile);
+    const fileDigest = sha256Buffer(content);
+    hash.update(`file:${relPosix}:${content.length}:${fileDigest}\0`);
+  }
   hash.update(`skills:${skillNames.length}:${skillNames.join(',')}\0`);
+
   return {
     fingerprint: hash.digest('hex'),
     skillCount: skillNames.length,
     skillNames,
+    sourceFileCount: sortedRelFiles.length,
   };
 }
 
@@ -841,19 +910,133 @@ function captureTargetStateSnapshot(targetRootReal, candidateRelPaths, detectedM
   };
 }
 
+export function validatePlanStoreDirectory(
+  rawPlanDir,
+  { repoRootReal = DEFAULT_REPO_ROOT, targetRootReal = null } = {},
+) {
+  if (typeof rawPlanDir !== 'string' || rawPlanDir.trim().length === 0 || rawPlanDir.includes('\0')) {
+    throw new Error('Invalid planDir path: must be a non-empty path string');
+  }
+  const trimmed = rawPlanDir.trim();
+  if (trimmed === '~' || trimmed.startsWith('~/') || trimmed.startsWith('~\\')) {
+    throw new Error(`Global home-directory planDir (${trimmed}) is rejected`);
+  }
+  if (/^[a-zA-Z]:[\\/]?$/.test(trimmed) || trimmed.startsWith('\\\\')) {
+    throw new Error(`Unsafe planDir path (Windows drive root or UNC path is forbidden): ${rawPlanDir}`);
+  }
+
+  const normalizedInput = trimmed.replace(/\\/g, path.sep);
+  const absCandidate = path.resolve(normalizedInput);
+  const parsedRoot = path.parse(absCandidate).root;
+  if (absCandidate === parsedRoot) {
+    throw new Error(`Unsafe planDir path (filesystem root is forbidden): ${rawPlanDir}`);
+  }
+
+  const tmpResolved = path.resolve(os.tmpdir());
+  const tmpReal = fs.existsSync(tmpResolved) ? fs.realpathSync(tmpResolved) : tmpResolved;
+  const effectiveCandidate = resolveWithExistingAncestorRealpath(absCandidate);
+
+  if (absCandidate === tmpResolved || effectiveCandidate === tmpReal) {
+    throw new Error(`Unsafe planDir path (OS temp root itself is forbidden): ${rawPlanDir}`);
+  }
+
+  if (isGlobalAgentPath(absCandidate) || isGlobalAgentPath(effectiveCandidate)) {
+    throw new Error(`Global configuration planDir (${rawPlanDir}) is rejected`);
+  }
+
+  const realRepo = fs.existsSync(repoRootReal) ? fs.realpathSync(repoRootReal) : path.resolve(repoRootReal);
+  const relFromRepoToPlan = path.relative(realRepo, effectiveCandidate);
+  const relFromPlanToRepo = path.relative(effectiveCandidate, realRepo);
+  if (
+    effectiveCandidate === realRepo ||
+    (relFromRepoToPlan !== '' && !relFromRepoToPlan.startsWith('..') && !path.isAbsolute(relFromRepoToPlan)) ||
+    (relFromPlanToRepo !== '' && !relFromPlanToRepo.startsWith('..') && !path.isAbsolute(relFromPlanToRepo))
+  ) {
+    throw new Error(
+      `Unsafe planDir path (cannot be inside or an ancestor of the BlendOps repository root): ${rawPlanDir}`,
+    );
+  }
+
+  if (targetRootReal) {
+    const relFromTargetToPlan = path.relative(targetRootReal, effectiveCandidate);
+    const relFromPlanToTarget = path.relative(effectiveCandidate, targetRootReal);
+    if (
+      effectiveCandidate === targetRootReal ||
+      (relFromTargetToPlan !== '' &&
+        !relFromTargetToPlan.startsWith('..') &&
+        !path.isAbsolute(relFromTargetToPlan)) ||
+      (relFromPlanToTarget !== '' &&
+        !relFromPlanToTarget.startsWith('..') &&
+        !path.isAbsolute(relFromPlanToTarget))
+    ) {
+      throw new Error(
+        `Unsafe planDir path (cannot be inside or an ancestor of the target project/output root): ${rawPlanDir}`,
+      );
+    }
+  }
+
+  // Verify no existing segment from absCandidate up to its nearest existing directory is a symlink
+  let cursor = absCandidate;
+  while (true) {
+    let lstat = null;
+    try {
+      lstat = fs.lstatSync(cursor);
+    } catch (err) {
+      if (!err || err.code !== 'ENOENT') {
+        throw err;
+      }
+    }
+    if (lstat) {
+      if (lstat.isSymbolicLink()) {
+        throw new Error(`Refusing symbolic link in planDir path: ${cursor}`);
+      }
+      if (!lstat.isDirectory()) {
+        throw new Error(`Unsafe planDir path (existing non-directory at ${cursor})`);
+      }
+      break;
+    }
+    const parent = path.dirname(cursor);
+    if (parent === cursor) break;
+    cursor = parent;
+  }
+
+  return effectiveCandidate;
+}
+
 function resolvePlanStorePath({
   planDir,
   repoRootReal,
   targetRootReal,
   requestedTarget,
 }) {
-  const basePlanDir = path.resolve(
-    planDir ||
-      process.env.BLENDOPS_INSTALLER_PLAN_DIR ||
-      path.join(os.tmpdir(), 'blendops-installer-plans'),
-  );
+  const defaultPlanDir = path.join(os.tmpdir(), 'blendops-installer-plans');
+  const rawPlanDir = planDir || process.env.BLENDOPS_INSTALLER_PLAN_DIR || defaultPlanDir;
+  const validatedPlanDir = validatePlanStoreDirectory(rawPlanDir, {
+    repoRootReal,
+    targetRootReal,
+  });
   const key = sha256String(`${repoRootReal}::${targetRootReal}::${requestedTarget}`).slice(0, 24);
-  return path.join(basePlanDir, `plan-${key}.json`);
+  const planFilePath = path.join(validatedPlanDir, `plan-${key}.json`);
+
+  let existingLstat = null;
+  try {
+    existingLstat = fs.lstatSync(planFilePath);
+  } catch (err) {
+    if (!err || err.code !== 'ENOENT') {
+      throw err;
+    }
+  }
+  if (existingLstat) {
+    if (
+      existingLstat.isSymbolicLink() ||
+      !existingLstat.isFile() ||
+      (typeof existingLstat.nlink === 'number' && existingLstat.nlink > 1)
+    ) {
+      throw new Error(`Unsafe existing plan file at ${planFilePath}`);
+    }
+  }
+
+  return planFilePath;
 }
 
 function buildProjectInstallPlan({
@@ -1140,6 +1323,21 @@ function buildProjectInstallPlan({
 }
 
 function buildClaudeDesktopPlan({ repoRootReal, outReal, requestedTarget }) {
+  let outAlreadyExists = false;
+  try {
+    fs.lstatSync(outReal);
+    outAlreadyExists = true;
+  } catch (err) {
+    if (!err || err.code !== 'ENOENT') {
+      throw err;
+    }
+  }
+  if (outAlreadyExists) {
+    throw new Error(
+      `Refusing to use existing --out destination (${outReal}): Claude Desktop export requires a non-existent output directory path so existing files are never overwritten or deleted.`,
+    );
+  }
+
   const sourceInfo = computeBlendOpsSourceFingerprint(repoRootReal);
   const filesToCreate = [
     ...sourceInfo.skillNames.map((name) => `desktop-zips/${name}.zip`),
@@ -1153,12 +1351,9 @@ function buildClaudeDesktopPlan({ repoRootReal, outReal, requestedTarget }) {
     'claude-desktop-manual/manifest.json',
   ];
 
-  const existingEntries = fs.existsSync(outReal)
-    ? fs.readdirSync(outReal).sort()
-    : [];
   const targetStateSnapshot = {
-    outExists: fs.existsSync(outReal),
-    existingEntries,
+    outExists: false,
+    existingEntries: [],
   };
 
   const limitations = [
@@ -1399,7 +1594,243 @@ function runDoctorMode({ repoRootReal, project, target }) {
   return result;
 }
 
-function executeWriteProjectPlan(livePlan, planFilePath) {
+function isSha256Hex(val) {
+  return typeof val === 'string' && /^[0-9a-f]{64}$/.test(val);
+}
+
+function validateSafeRelativeManifestPath(relPath, { allowInsideBlendops = false } = {}) {
+  if (typeof relPath !== 'string' || relPath.trim().length === 0 || relPath.includes('\0')) {
+    throw new Error(`Rollback refused: invalid relative path in manifest: ${JSON.stringify(relPath)}`);
+  }
+  if (relPath.includes('\\') || relPath.startsWith('/') || /^[a-zA-Z]:/.test(relPath)) {
+    throw new Error(
+      `Rollback refused: non-normalized or absolute path in manifest: ${JSON.stringify(relPath)}`,
+    );
+  }
+  const segments = relPath.split('/');
+  if (segments.some((s) => s === '' || s === '.' || s === '..')) {
+    throw new Error(
+      `Rollback refused: path traversal or empty segment in manifest: ${JSON.stringify(relPath)}`,
+    );
+  }
+  if (!allowInsideBlendops && (relPath === '.blendops' || relPath.startsWith('.blendops/'))) {
+    throw new Error(
+      `Rollback refused: target file entry cannot reference internal .blendops metadata directory: ${relPath}`,
+    );
+  }
+}
+
+export function validateRollbackManifestSchema(manifest, manifestAbs) {
+  if (!manifest || typeof manifest !== 'object' || Array.isArray(manifest)) {
+    throw new Error(`Rollback refused: invalid rollback manifest schema at ${manifestAbs}`);
+  }
+  if (typeof manifest.target !== 'string' || manifest.target.trim().length === 0) {
+    throw new Error(`Rollback refused: invalid rollback manifest schema (missing target) at ${manifestAbs}`);
+  }
+  if (manifest.scope !== 'project-local' && manifest.scope !== 'bundle-output') {
+    throw new Error(`Rollback refused: invalid rollback manifest schema (invalid scope) at ${manifestAbs}`);
+  }
+  if (
+    !Array.isArray(manifest.files_created) ||
+    !Array.isArray(manifest.files_modified) ||
+    !Array.isArray(manifest.backups)
+  ) {
+    throw new Error(
+      `Rollback refused: invalid rollback manifest schema (files_created, files_modified, and backups must be arrays) at ${manifestAbs}`,
+    );
+  }
+  if (
+    !manifest.created_file_hashes ||
+    typeof manifest.created_file_hashes !== 'object' ||
+    Array.isArray(manifest.created_file_hashes)
+  ) {
+    throw new Error(
+      `Rollback refused: invalid rollback manifest schema (missing created_file_hashes object) at ${manifestAbs}`,
+    );
+  }
+  if (
+    !manifest.modified_file_hashes ||
+    typeof manifest.modified_file_hashes !== 'object' ||
+    Array.isArray(manifest.modified_file_hashes)
+  ) {
+    throw new Error(
+      `Rollback refused: invalid rollback manifest schema (missing modified_file_hashes object) at ${manifestAbs}`,
+    );
+  }
+
+  const createdSet = new Set();
+  for (const relPath of manifest.files_created) {
+    validateSafeRelativeManifestPath(relPath, { allowInsideBlendops: false });
+    if (createdSet.has(relPath)) {
+      throw new Error(
+        `Rollback refused: duplicate files_created entry '${relPath}' in manifest at ${manifestAbs}`,
+      );
+    }
+    createdSet.add(relPath);
+    const expectedDigest = manifest.created_file_hashes[relPath];
+    if (!isSha256Hex(expectedDigest)) {
+      throw new Error(
+        `Rollback refused: missing or invalid SHA-256 hash in created_file_hashes for '${relPath}' at ${manifestAbs}`,
+      );
+    }
+  }
+
+  for (const hashKey of Object.keys(manifest.created_file_hashes)) {
+    if (!createdSet.has(hashKey)) {
+      throw new Error(
+        `Rollback refused: inconsistent created_file_hashes entry '${hashKey}' not listed in files_created at ${manifestAbs}`,
+      );
+    }
+  }
+
+  const modifiedSet = new Set();
+  for (const relPath of manifest.files_modified) {
+    validateSafeRelativeManifestPath(relPath, { allowInsideBlendops: false });
+    if (createdSet.has(relPath)) {
+      throw new Error(
+        `Rollback refused: overlapping path '${relPath}' present in both files_created and files_modified at ${manifestAbs}`,
+      );
+    }
+    if (modifiedSet.has(relPath)) {
+      throw new Error(
+        `Rollback refused: duplicate files_modified entry '${relPath}' in manifest at ${manifestAbs}`,
+      );
+    }
+    modifiedSet.add(relPath);
+
+    const meta = manifest.modified_file_hashes[relPath];
+    if (!meta || typeof meta !== 'object' || Array.isArray(meta)) {
+      throw new Error(
+        `Rollback refused: missing backup metadata in modified_file_hashes for '${relPath}' at ${manifestAbs}`,
+      );
+    }
+    validateSafeRelativeManifestPath(meta.backup_path, { allowInsideBlendops: true });
+    if (
+      !meta.backup_path.startsWith('.blendops/backups/') ||
+      meta.backup_path.slice('.blendops/backups/'.length).includes('/') ||
+      !meta.backup_path.endsWith('.bak')
+    ) {
+      throw new Error(
+        `Rollback refused: invalid backup_path '${meta.backup_path}' for '${relPath}' at ${manifestAbs}`,
+      );
+    }
+    if (!isSha256Hex(meta.pre_install_sha256)) {
+      throw new Error(
+        `Rollback refused: missing or invalid pre_install_sha256 for '${relPath}' at ${manifestAbs}`,
+      );
+    }
+    if (!isSha256Hex(meta.post_install_sha256)) {
+      throw new Error(
+        `Rollback refused: missing or invalid post_install_sha256 for '${relPath}' at ${manifestAbs}`,
+      );
+    }
+  }
+
+  for (const modKey of Object.keys(manifest.modified_file_hashes)) {
+    if (!modifiedSet.has(modKey)) {
+      throw new Error(
+        `Rollback refused: inconsistent modified_file_hashes entry '${modKey}' not listed in files_modified at ${manifestAbs}`,
+      );
+    }
+  }
+
+  if (manifest.backups.length !== manifest.files_modified.length) {
+    throw new Error(
+      `Rollback refused: inconsistent backups array length (${manifest.backups.length}) vs files_modified (${manifest.files_modified.length}) at ${manifestAbs}`,
+    );
+  }
+
+  const seenBackupTargets = new Set();
+  const seenBackupPaths = new Set();
+  for (const b of manifest.backups) {
+    if (!b || typeof b !== 'object' || Array.isArray(b)) {
+      throw new Error(`Rollback refused: malformed entry in backups array at ${manifestAbs}`);
+    }
+    if (!modifiedSet.has(b.path)) {
+      throw new Error(
+        `Rollback refused: backups entry for '${String(b.path)}' is not listed in files_modified at ${manifestAbs}`,
+      );
+    }
+    if (seenBackupTargets.has(b.path)) {
+      throw new Error(
+        `Rollback refused: duplicate backups entry for target '${b.path}' at ${manifestAbs}`,
+      );
+    }
+    seenBackupTargets.add(b.path);
+
+    const meta = manifest.modified_file_hashes[b.path];
+    if (
+      b.backup_path !== meta.backup_path ||
+      b.pre_install_sha256 !== meta.pre_install_sha256 ||
+      (b.post_install_sha256 !== undefined && b.post_install_sha256 !== meta.post_install_sha256)
+    ) {
+      throw new Error(
+        `Rollback refused: backups array entry for '${b.path}' disagrees with modified_file_hashes at ${manifestAbs}`,
+      );
+    }
+    if (seenBackupPaths.has(b.backup_path)) {
+      throw new Error(
+        `Rollback refused: duplicate backup_path '${b.backup_path}' in backups array at ${manifestAbs}`,
+      );
+    }
+    seenBackupPaths.add(b.backup_path);
+  }
+
+  if (manifest.metadata_files !== undefined) {
+    if (
+      !manifest.metadata_files ||
+      typeof manifest.metadata_files !== 'object' ||
+      Array.isArray(manifest.metadata_files)
+    ) {
+      throw new Error(`Rollback refused: invalid metadata_files object at ${manifestAbs}`);
+    }
+    for (const [metaKey, metaVal] of Object.entries(manifest.metadata_files)) {
+      if (metaKey === '.blendops/INSTALL_REPORT.md') {
+        if (!isSha256Hex(metaVal)) {
+          throw new Error(
+            `Rollback refused: invalid SHA-256 hash for '.blendops/INSTALL_REPORT.md' in metadata_files at ${manifestAbs}`,
+          );
+        }
+      } else if (metaKey === '.blendops/install-manifest.json') {
+        if (metaVal !== 'self' && !isSha256Hex(metaVal)) {
+          throw new Error(
+            `Rollback refused: invalid metadata_files entry for '.blendops/install-manifest.json' at ${manifestAbs}`,
+          );
+        }
+      } else {
+        throw new Error(
+          `Rollback refused: unexpected metadata_files path '${metaKey}' in manifest at ${manifestAbs}`,
+        );
+      }
+    }
+  }
+}
+
+function pruneEmptyParentDirectories(startFileAbs, stopRootReal) {
+  let parentDir = path.dirname(startFileAbs);
+  while (parentDir !== stopRootReal && parentDir.startsWith(stopRootReal)) {
+    const rel = path.relative(stopRootReal, parentDir);
+    if (!rel || rel.startsWith('..') || path.isAbsolute(rel)) {
+      break;
+    }
+    try {
+      const lstat = fs.lstatSync(parentDir);
+      if (lstat.isSymbolicLink() || !lstat.isDirectory()) {
+        break;
+      }
+      if (fs.readdirSync(parentDir).length === 0) {
+        fs.rmdirSync(parentDir);
+        parentDir = path.dirname(parentDir);
+      } else {
+        break;
+      }
+    } catch {
+      break;
+    }
+  }
+}
+
+function executeWriteProjectPlan(livePlan) {
   const projectReal = livePlan.projectPath;
   const blendopsDir = path.join(projectReal, '.blendops');
   const backupsDir = path.join(blendopsDir, 'backups');
@@ -1423,7 +1854,7 @@ function executeWriteProjectPlan(livePlan, planFilePath) {
     }
   }
 
-  // Load any prior install manifest so idempotent re-runs preserve initial backups & created-file tracking
+  // Load and strictly validate any prior install manifest so reruns preserve original pre-install backups
   let previousManifest = null;
   if (fs.existsSync(manifestAbsPath)) {
     const lstat = fs.lstatSync(manifestAbsPath);
@@ -1435,35 +1866,84 @@ function executeWriteProjectPlan(livePlan, planFilePath) {
     } catch {
       throw new Error(`Malformed existing rollback manifest JSON at ${manifestAbsPath}`);
     }
-    if (
-      !previousManifest ||
-      typeof previousManifest !== 'object' ||
-      Array.isArray(previousManifest) ||
-      !Array.isArray(previousManifest.files_created)
-    ) {
-      throw new Error(`Malformed existing rollback manifest schema at ${manifestAbsPath}`);
+    validateRollbackManifestSchema(previousManifest, manifestAbsPath);
+
+    // Verify all previously recorded backup files exist, are safe regular files, and match pre_install_sha256
+    for (const relPath of previousManifest.files_modified) {
+      const prevMeta = previousManifest.modified_file_hashes[relPath];
+      const { absTarget: prevBackupAbs, exists: prevBackupExists } =
+        validateSafeRelativeTargetFile(projectReal, prevMeta.backup_path);
+      if (!prevBackupExists) {
+        throw new Error(
+          `Existing backup file '${prevMeta.backup_path}' referenced by prior install manifest is missing on disk; refusing to overwrite original backup state.`,
+        );
+      }
+      const prevBackupHash = sha256Buffer(fs.readFileSync(prevBackupAbs));
+      if (prevBackupHash !== prevMeta.pre_install_sha256) {
+        throw new Error(
+          `Existing backup file '${prevMeta.backup_path}' failed SHA-256 verification against prior install manifest; refusing to overwrite corrupted backup.`,
+        );
+      }
+    }
+
+    // Verify existing .blendops/INSTALL_REPORT.md if present was not replaced by a symlink/hardlink or edited
+    const { absTarget: prevReportAbs, exists: prevReportExists } = validateSafeRelativeTargetFile(
+      projectReal,
+      livePlan.installReportRel,
+    );
+    if (prevReportExists && previousManifest.metadata_files?.[livePlan.installReportRel]) {
+      const actualPrevReportHash = sha256Buffer(fs.readFileSync(prevReportAbs));
+      const expectedPrevReportHash = previousManifest.metadata_files[livePlan.installReportRel];
+      if (actualPrevReportHash !== expectedPrevReportHash) {
+        throw new Error(
+          `Existing installer report '${livePlan.installReportRel}' was modified after installation; refusing to overwrite user changes.`,
+        );
+      }
+    }
+  } else {
+    const { exists: untrackedReportExists } = validateSafeRelativeTargetFile(
+      projectReal,
+      livePlan.installReportRel,
+    );
+    if (untrackedReportExists) {
+      throw new Error(
+        `Refusing to overwrite pre-existing untracked file at '${livePlan.installReportRel}'`,
+      );
     }
   }
 
   fs.mkdirSync(blendopsDir, { recursive: true });
 
-  const createdFilesSet = new Set(previousManifest ? previousManifest.files_created || [] : []);
-  const modifiedFilesSet = new Set(previousManifest ? previousManifest.files_modified || [] : []);
+  const createdFilesSet = new Set(previousManifest ? previousManifest.files_created : []);
+  const modifiedFilesSet = new Set(previousManifest ? previousManifest.files_modified : []);
   const createdFileHashes = { ...(previousManifest?.created_file_hashes || {}) };
   const modifiedFileHashes = { ...(previousManifest?.modified_file_hashes || {}) };
   const backupsMap = new Map();
-  if (previousManifest && Array.isArray(previousManifest.backups)) {
+  if (previousManifest) {
     for (const b of previousManifest.backups) {
-      if (b && typeof b === 'object' && b.path) {
-        backupsMap.set(b.path, b);
-      }
+      backupsMap.set(b.path, { ...b });
     }
   }
 
-  // Step 1: Create byte-identical backups for all files to be modified BEFORE mutating any target file
+  // Step 1: Verify and create byte-identical backups for all files to be modified BEFORE mutating any target file
   for (const op of livePlan.operations) {
+    if (op.action === 'create') {
+      const { exists } = validateSafeRelativeTargetFile(projectReal, op.path);
+      if (exists) {
+        throw new Error(
+          `Target file '${op.path}' appeared after dry-run planning; aborting write.`,
+        );
+      }
+      continue;
+    }
     if (op.action !== 'modify') continue;
-    const { absTarget } = validateSafeRelativeTargetFile(projectReal, op.path);
+
+    const { absTarget, exists } = validateSafeRelativeTargetFile(projectReal, op.path);
+    if (!exists) {
+      throw new Error(
+        `Target file '${op.path}' disappeared after dry-run planning; aborting write.`,
+      );
+    }
     const currentBytes = fs.readFileSync(absTarget);
     const currentHash = sha256Buffer(currentBytes);
     if (currentHash !== op.preExistingSha256) {
@@ -1472,43 +1952,62 @@ function executeWriteProjectPlan(livePlan, planFilePath) {
       );
     }
 
-    const backupAbsPath = path.join(projectReal, op.backupRelPath);
-    assertNoSymlinkedAncestorsWithin(projectReal, backupAbsPath);
-    fs.mkdirSync(path.dirname(backupAbsPath), { recursive: true });
+    if (createdFilesSet.has(op.path)) {
+      createdFileHashes[op.path] = op.desiredSha256;
+      continue;
+    }
 
-    // Only write backup if a prior install didn't already back up the original pre-install state
-    if (!backupsMap.has(op.path) || !fs.existsSync(backupAbsPath)) {
-      writeAtomicFile(backupAbsPath, currentBytes);
-      const verifyBackupHash = sha256Buffer(fs.readFileSync(backupAbsPath));
-      if (verifyBackupHash !== currentHash) {
-        throw new Error(`Backup verification failed for ${op.backupRelPath}`);
-      }
-      backupsMap.set(op.path, {
-        path: op.path,
-        backup_path: op.backupRelPath,
-        pre_install_sha256: currentHash,
-        post_install_sha256: op.desiredSha256,
-      });
-      modifiedFileHashes[op.path] = {
-        pre_install_sha256: currentHash,
-        post_install_sha256: op.desiredSha256,
-        backup_path: op.backupRelPath,
-      };
-    } else {
+    const backupRelPath = backupsMap.has(op.path)
+      ? backupsMap.get(op.path).backup_path
+      : op.backupRelPath;
+    const { absTarget: backupAbsPath, exists: backupAlreadyExists } =
+      validateSafeRelativeTargetFile(projectReal, backupRelPath);
+
+    if (backupsMap.has(op.path)) {
       const existingEntry = backupsMap.get(op.path);
+      if (!backupAlreadyExists) {
+        throw new Error(
+          `Original backup '${backupRelPath}' for '${op.path}' is missing on disk; refusing to overwrite original pre-install backup with post-install file content.`,
+        );
+      }
+      const existingBackupHash = sha256Buffer(fs.readFileSync(backupAbsPath));
+      if (existingBackupHash !== existingEntry.pre_install_sha256) {
+        throw new Error(
+          `Original backup '${backupRelPath}' for '${op.path}' failed SHA-256 integrity check; refusing to continue.`,
+        );
+      }
       existingEntry.post_install_sha256 = op.desiredSha256;
       modifiedFileHashes[op.path] = {
         pre_install_sha256: existingEntry.pre_install_sha256,
         post_install_sha256: op.desiredSha256,
         backup_path: existingEntry.backup_path,
       };
+    } else {
+      if (backupAlreadyExists) {
+        throw new Error(
+          `Refusing to overwrite unexpected pre-existing file at backup path '${backupRelPath}'`,
+        );
+      }
+      fs.mkdirSync(path.dirname(backupAbsPath), { recursive: true });
+      writeAtomicFile(backupAbsPath, currentBytes);
+      const verifyBackupHash = sha256Buffer(fs.readFileSync(backupAbsPath));
+      if (verifyBackupHash !== currentHash) {
+        throw new Error(`Backup verification failed for ${backupRelPath}`);
+      }
+      backupsMap.set(op.path, {
+        path: op.path,
+        backup_path: backupRelPath,
+        pre_install_sha256: currentHash,
+        post_install_sha256: op.desiredSha256,
+      });
+      modifiedFileHashes[op.path] = {
+        pre_install_sha256: currentHash,
+        post_install_sha256: op.desiredSha256,
+        backup_path: backupRelPath,
+      };
     }
 
-    if (createdFilesSet.has(op.path)) {
-      createdFileHashes[op.path] = op.desiredSha256;
-    } else {
-      modifiedFilesSet.add(op.path);
-    }
+    modifiedFilesSet.add(op.path);
   }
 
   for (const op of livePlan.operations) {
@@ -1517,83 +2016,30 @@ function executeWriteProjectPlan(livePlan, planFilePath) {
     createdFileHashes[op.path] = op.desiredSha256;
   }
 
+  // Ensure every created file in createdFilesSet has a valid SHA-256 in createdFileHashes
+  for (const createdRel of createdFilesSet) {
+    if (!isSha256Hex(createdFileHashes[createdRel])) {
+      const { absTarget, exists } = validateSafeRelativeTargetFile(projectReal, createdRel);
+      if (!exists) {
+        throw new Error(`Missing hash and file for created path '${createdRel}'`);
+      }
+      createdFileHashes[createdRel] = sha256Buffer(fs.readFileSync(absTarget));
+    }
+  }
+
+  // Ensure every modified file in modifiedFilesSet has up-to-date post_install_sha256
+  for (const modRel of modifiedFilesSet) {
+    if (createdFilesSet.has(modRel)) continue;
+    const meta = modifiedFileHashes[modRel];
+    const bEntry = backupsMap.get(modRel);
+    if (!meta || !bEntry) {
+      throw new Error(`Missing backup metadata for modified file '${modRel}'`);
+    }
+  }
+
   const finalFilesCreated = [...createdFilesSet];
   const finalFilesModified = [...modifiedFilesSet].filter((p) => !createdFilesSet.has(p));
   const finalBackups = [...backupsMap.values()].filter((b) => !createdFilesSet.has(b.path));
-
-  const rollbackSteps = [
-    `node scripts/install-skills.mjs --rollback --project "${projectReal}"`,
-    ...finalBackups.map((b) => `cp "${b.backup_path}" "${b.path}"`),
-    ...finalFilesCreated.map((f) => `rm -f "${f}"`),
-    'rm -rf .blendops',
-  ];
-
-  const manifestData = {
-    installer_version: INSTALLER_VERSION,
-    timestamp: new Date().toISOString(),
-    target: livePlan.selectedTarget,
-    requested_target: livePlan.requestedTarget,
-    confidence: livePlan.confidence,
-    scope: livePlan.scope,
-    project: projectReal,
-    plan_hash: livePlan.planHash,
-    source_fingerprint: livePlan.sourceFingerprint,
-    files_created: finalFilesCreated,
-    files_modified: finalFilesModified,
-    backups: finalBackups,
-    files_skipped: livePlan.filesToSkip,
-    created_file_hashes: createdFileHashes,
-    modified_file_hashes: modifiedFileHashes,
-    global_touched: false,
-    runtime_status: 'Not Run',
-    artifact_status: 'Not Produced',
-    rollback_steps: rollbackSteps,
-  };
-
-  // Step 2: Persist rollback manifest BEFORE mutating any target project instruction files
-  writeAtomicFile(manifestAbsPath, `${JSON.stringify(manifestData, null, 2)}\n`);
-
-  // Step 3: Atomically write created and modified target files
-  const newlyAppliedBackups = [];
-  const newlyCreatedPaths = [];
-  try {
-    for (const op of livePlan.operations) {
-      if (op.action !== 'create' && op.action !== 'modify') continue;
-      const { absTarget, exists } = validateSafeRelativeTargetFile(projectReal, op.path);
-      if (op.action === 'create' && !exists) {
-        newlyCreatedPaths.push(absTarget);
-      } else if (op.action === 'modify') {
-        newlyAppliedBackups.push({
-          absTarget,
-          backupAbsPath: path.join(projectReal, op.backupRelPath),
-        });
-      }
-      writeAtomicFile(absTarget, op.desiredContent);
-      const writtenHash = sha256Buffer(fs.readFileSync(absTarget));
-      if (writtenHash !== op.desiredSha256) {
-        throw new Error(`Post-write hash verification failed for ${op.path}`);
-      }
-    }
-  } catch (writeErr) {
-    // Best-effort transactional rollback if an unexpected error occurs mid-write
-    for (const createdAbs of newlyCreatedPaths) {
-      try {
-        fs.rmSync(createdAbs, { force: true });
-      } catch {
-        // Ignore cleanup error
-      }
-    }
-    for (const item of newlyAppliedBackups) {
-      try {
-        if (fs.existsSync(item.backupAbsPath)) {
-          fs.copyFileSync(item.backupAbsPath, item.absTarget);
-        }
-      } catch {
-        // Ignore cleanup error
-      }
-    }
-    throw writeErr;
-  }
 
   const result = {
     ok: true,
@@ -1617,9 +2063,121 @@ function executeWriteProjectPlan(livePlan, planFilePath) {
   };
 
   result.report = formatInstallerReport(result);
+  const reportSha256 = sha256Buffer(Buffer.from(result.report, 'utf8'));
+
+  const rollbackSteps = [
+    `node scripts/install-skills.mjs --rollback --project "${projectReal}"`,
+    ...finalBackups.map((b) => `cp "${b.backup_path}" "${b.path}"`),
+    ...finalFilesCreated.map((f) => `rm -f "${f}"`),
+    ...finalBackups.map((b) => `rm -f "${b.backup_path}"`),
+    'rm -f ".blendops/INSTALL_REPORT.md" ".blendops/install-manifest.json"',
+    'rmdir ".blendops/backups" ".blendops" 2>/dev/null || true',
+  ];
+
+  const manifestData = {
+    installer_version: INSTALLER_VERSION,
+    timestamp: new Date().toISOString(),
+    target: livePlan.selectedTarget,
+    requested_target: livePlan.requestedTarget,
+    confidence: livePlan.confidence,
+    scope: livePlan.scope,
+    project: projectReal,
+    plan_hash: livePlan.planHash,
+    source_fingerprint: livePlan.sourceFingerprint,
+    files_created: finalFilesCreated,
+    files_modified: finalFilesModified,
+    backups: finalBackups,
+    files_skipped: livePlan.filesToSkip,
+    created_file_hashes: createdFileHashes,
+    modified_file_hashes: modifiedFileHashes,
+    metadata_files: {
+      [livePlan.installReportRel]: reportSha256,
+      [livePlan.rollbackManifestRel]: 'self',
+    },
+    global_touched: false,
+    runtime_status: 'Not Run',
+    artifact_status: 'Not Produced',
+    rollback_steps: rollbackSteps,
+  };
+
+  validateRollbackManifestSchema(manifestData, manifestAbsPath);
+
+  // Step 2: Persist rollback manifest BEFORE mutating any target project instruction files
+  writeAtomicFile(manifestAbsPath, `${JSON.stringify(manifestData, null, 2)}\n`);
+
+  // Step 3: Atomically write created and modified target files with immediate pre-write revalidation
+  const newlyAppliedBackups = [];
+  const newlyCreatedPaths = [];
+  try {
+    for (const op of livePlan.operations) {
+      if (op.action !== 'create' && op.action !== 'modify') continue;
+      const { absTarget, exists } = validateSafeRelativeTargetFile(projectReal, op.path);
+      if (op.action === 'create') {
+        if (exists) {
+          throw new Error(
+            `Target file '${op.path}' appeared after planning right before write; aborting write.`,
+          );
+        }
+        newlyCreatedPaths.push(absTarget);
+      } else if (op.action === 'modify') {
+        if (!exists) {
+          throw new Error(
+            `Target file '${op.path}' disappeared right before write; aborting write.`,
+          );
+        }
+        const preWriteBytes = fs.readFileSync(absTarget);
+        const preWriteHash = sha256Buffer(preWriteBytes);
+        if (preWriteHash !== op.preExistingSha256) {
+          throw new Error(
+            `Target file '${op.path}' changed right before atomic replacement; aborting write.`,
+          );
+        }
+        newlyAppliedBackups.push({
+          absTarget,
+          preUpdateBytes: preWriteBytes,
+        });
+      }
+      writeAtomicFile(absTarget, op.desiredContent);
+      const writtenHash = sha256Buffer(fs.readFileSync(absTarget));
+      if (writtenHash !== op.desiredSha256) {
+        throw new Error(`Post-write hash verification failed for ${op.path}`);
+      }
+    }
+  } catch (writeErr) {
+    // Best-effort transactional rollback if an unexpected error occurs mid-write
+    for (const createdAbs of newlyCreatedPaths) {
+      try {
+        fs.rmSync(createdAbs, { force: true });
+        pruneEmptyParentDirectories(createdAbs, projectReal);
+      } catch {
+        // Ignore cleanup error
+      }
+    }
+    for (const item of newlyAppliedBackups) {
+      try {
+        writeAtomicFile(item.absTarget, item.preUpdateBytes);
+      } catch {
+        // Ignore cleanup error
+      }
+    }
+    throw writeErr;
+  }
+
   writeAtomicFile(reportAbsPath, result.report);
+  const writtenReportHash = sha256Buffer(fs.readFileSync(reportAbsPath));
+  if (writtenReportHash !== reportSha256) {
+    throw new Error(`Post-write hash verification failed for ${livePlan.installReportRel}`);
+  }
 
   return result;
+}
+
+function formatManifestOutputPrefix(targetPath, rootDir) {
+  const rel = path.relative(rootDir, targetPath);
+  if (rel && !rel.startsWith('..') && !path.isAbsolute(rel)) {
+    return rel.split(path.sep).join('/');
+  }
+  return targetPath.split(path.sep).join('/');
 }
 
 function executeWriteClaudeDesktopPlan(livePlan) {
@@ -1627,151 +2185,251 @@ function executeWriteClaudeDesktopPlan(livePlan) {
   const repoRootReal = livePlan.repoRootPath;
   const sourceInfo = computeBlendOpsSourceFingerprint(repoRootReal);
 
-  fs.mkdirSync(outReal, { recursive: true });
-  const exporterPath = path.join(repoRootReal, 'scripts', 'export-claude-skills.mjs');
-  execFileSync(process.execPath, [exporterPath, '--output-root', outReal], {
-    cwd: repoRootReal,
-    stdio: ['ignore', 'pipe', 'pipe'],
-  });
-
-  const manualSrc = path.join(repoRootReal, 'bundles', 'claude-desktop-manual');
-  const manualDest = path.join(outReal, 'claude-desktop-manual');
-  fs.cpSync(manualSrc, manualDest, { recursive: true });
-
-  const topReadmeContent = [
-    '# BlendOps — Claude Desktop Manual Upload Output',
-    '',
-    'This directory was generated by `node scripts/install-skills.mjs --target claude-desktop --out <path> --write`.',
-    '',
-    '## Contents',
-    '',
-    `- \`desktop-zips/*.zip\` — ${sourceInfo.skillCount} per-skill ZIP packages (each containing exactly one \`<skill-name>/SKILL.md\` at its root) for Claude.ai / Claude Desktop upload.`,
-    `- \`claude-code-skills/<skill-name>/SKILL.md\` — ${sourceInfo.skillCount} extracted skill folders.`,
-    '- `claude-desktop-manual/` — Single-skill manual upload bundle (`SKILL.md`, `BLENDOPS_SINGLE_FILE.md`, `IMPORT_STEPS.md`, `manifest.json`, and `references/`).',
-    '- `manifest.json` — Export manifest listing all canonical skills and artifact paths.',
-    '- `.blendops/install-manifest.json` — Rollback manifest for removing this output cleanly.',
-    '',
-    '## Truth-State & Runtime Boundaries',
-    '',
-    '- Global files touched: No',
-    '- Runtime status: `Not Run`',
-    '- Artifact status: `Not Produced`',
-    '- Runtime setup: Separate; not performed by this installer.',
-    '',
-  ].join('\n');
-  writeAtomicFile(path.join(outReal, 'README.md'), topReadmeContent);
-
-  // Verify exported manifest, README, and all 48 ZIP outputs + folder outputs
-  const topManifestAbs = path.join(outReal, 'manifest.json');
-  if (!fs.existsSync(topManifestAbs)) {
-    throw new Error(`Claude Desktop bundle verification failed: missing ${topManifestAbs}`);
+  // Fail closed if destination already exists before staging
+  let destExistsBefore = false;
+  try {
+    fs.lstatSync(outReal);
+    destExistsBefore = true;
+  } catch (err) {
+    if (!err || err.code !== 'ENOENT') {
+      throw err;
+    }
   }
-  const topManifest = JSON.parse(fs.readFileSync(topManifestAbs, 'utf8'));
-  if (topManifest.skillCount !== sourceInfo.skillCount) {
+  if (destExistsBefore) {
     throw new Error(
-      `Claude Desktop bundle verification failed: expected ${sourceInfo.skillCount} skills in manifest.json, got ${topManifest.skillCount}`,
+      `Refusing to overwrite existing --out destination (${outReal}): destination must not exist prior to write.`,
     );
   }
-  for (const skillName of sourceInfo.skillNames) {
-    const zipAbs = path.join(outReal, 'desktop-zips', `${skillName}.zip`);
-    if (!fs.existsSync(zipAbs)) {
-      throw new Error(`Claude Desktop bundle verification failed: missing expected ZIP ${zipAbs}`);
-    }
-    const zipBuf = fs.readFileSync(zipAbs);
-    if (
-      zipBuf.length < 22 ||
-      zipBuf[0] !== 0x50 ||
-      zipBuf[1] !== 0x4b ||
-      zipBuf[2] !== 0x03 ||
-      zipBuf[3] !== 0x04
-    ) {
-      throw new Error(`Claude Desktop bundle verification failed: invalid ZIP header in ${zipAbs}`);
-    }
-    const skillMdAbs = path.join(outReal, 'claude-code-skills', skillName, 'SKILL.md');
-    if (!fs.existsSync(skillMdAbs)) {
-      throw new Error(
-        `Claude Desktop bundle verification failed: missing exported SKILL.md at ${skillMdAbs}`,
-      );
-    }
-  }
-  if (!fs.existsSync(path.join(outReal, 'claude-desktop-manual', 'README.md'))) {
-    throw new Error('Claude Desktop bundle verification failed: missing claude-desktop-manual/README.md');
+
+  const parentDir = path.dirname(outReal);
+  fs.mkdirSync(parentDir, { recursive: true });
+  const parentLstat = fs.lstatSync(parentDir);
+  if (parentLstat.isSymbolicLink() || !parentLstat.isDirectory()) {
+    throw new Error(`Unsafe parent directory for --out destination: ${parentDir}`);
   }
 
-  // Collect hashes of all generated files for rollback safety
-  const createdFiles = [];
-  const createdFileHashes = {};
-  function walkGenerated(dirAbs) {
-    for (const entry of fs.readdirSync(dirAbs, { withFileTypes: true }).sort((a, b) => a.name.localeCompare(b.name))) {
-      const absChild = path.join(dirAbs, entry.name);
-      const relChild = path.relative(outReal, absChild).split(path.sep).join('/');
-      if (relChild === '.blendops' || relChild.startsWith('.blendops/')) continue;
-      if (entry.isDirectory()) {
-        walkGenerated(absChild);
-      } else if (entry.isFile()) {
-        createdFiles.push(relChild);
-        createdFileHashes[relChild] = sha256Buffer(fs.readFileSync(absChild));
+  const stagingDir = path.join(
+    parentDir,
+    `.blendops-claude-desktop-staging-${process.pid}-${Date.now()}-${crypto.randomBytes(6).toString('hex')}`,
+  );
+
+  try {
+    fs.mkdirSync(stagingDir, { recursive: false });
+    const exporterPath = path.join(repoRootReal, 'scripts', 'export-claude-skills.mjs');
+    execFileSync(process.execPath, [exporterPath, '--output-root', stagingDir], {
+      cwd: repoRootReal,
+      stdio: ['ignore', 'pipe', 'pipe'],
+    });
+
+    // Normalize manifest.json output paths inside stagingDir to reference the final outReal destination
+    const stagingManifestAbs = path.join(stagingDir, 'manifest.json');
+    if (!fs.existsSync(stagingManifestAbs)) {
+      throw new Error(`Claude Desktop bundle verification failed: missing ${stagingManifestAbs}`);
+    }
+    const stagingManifest = JSON.parse(fs.readFileSync(stagingManifestAbs, 'utf8'));
+    if (stagingManifest.skillCount !== sourceInfo.skillCount) {
+      throw new Error(
+        `Claude Desktop bundle verification failed: expected ${sourceInfo.skillCount} skills in manifest.json, got ${stagingManifest.skillCount}`,
+      );
+    }
+    const desktopDisplay = formatManifestOutputPrefix(
+      path.join(outReal, 'desktop-zips'),
+      repoRootReal,
+    );
+    const codeDisplay = formatManifestOutputPrefix(
+      path.join(outReal, 'claude-code-skills'),
+      repoRootReal,
+    );
+    stagingManifest.outputs = {
+      claudeDesktop: `${desktopDisplay}/*.zip`,
+      claudeCode: `${codeDisplay}/*/SKILL.md`,
+    };
+    writeAtomicFile(stagingManifestAbs, `${JSON.stringify(stagingManifest, null, 2)}\n`);
+
+    const manualSrc = path.join(repoRootReal, 'bundles', 'claude-desktop-manual');
+    const manualDest = path.join(stagingDir, 'claude-desktop-manual');
+    fs.cpSync(manualSrc, manualDest, { recursive: true });
+
+    const topReadmeContent = [
+      '# BlendOps — Claude Desktop Manual Upload Output',
+      '',
+      'This directory was generated by `node scripts/install-skills.mjs --target claude-desktop --out <path> --write`.',
+      '',
+      '## Contents',
+      '',
+      `- \`desktop-zips/*.zip\` — ${sourceInfo.skillCount} per-skill ZIP packages (each containing exactly one \`<skill-name>/SKILL.md\` at its root) for Claude.ai / Claude Desktop upload.`,
+      `- \`claude-code-skills/<skill-name>/SKILL.md\` — ${sourceInfo.skillCount} extracted skill folders.`,
+      '- `claude-desktop-manual/` — Single-skill manual upload bundle (`SKILL.md`, `BLENDOPS_SINGLE_FILE.md`, `IMPORT_STEPS.md`, `manifest.json`, and `references/`).',
+      '- `manifest.json` — Export manifest listing all canonical skills and artifact paths.',
+      '- `.blendops/install-manifest.json` — Rollback manifest for removing this output cleanly.',
+      '',
+      '## Truth-State & Runtime Boundaries',
+      '',
+      '- Global files touched: No',
+      '- Runtime status: `Not Run`',
+      '- Artifact status: `Not Produced`',
+      '- Runtime setup: Separate; not performed by this installer.',
+      '',
+    ].join('\n');
+    writeAtomicFile(path.join(stagingDir, 'README.md'), topReadmeContent);
+
+    // Verify all 48 ZIPs, extracted skill folders, manual bundle, README, and manifest inside staging
+    for (const skillName of sourceInfo.skillNames) {
+      const zipAbs = path.join(stagingDir, 'desktop-zips', `${skillName}.zip`);
+      if (!fs.existsSync(zipAbs)) {
+        throw new Error(`Claude Desktop bundle verification failed: missing expected ZIP ${zipAbs}`);
+      }
+      const zipBuf = fs.readFileSync(zipAbs);
+      if (
+        zipBuf.length < 22 ||
+        zipBuf[0] !== 0x50 ||
+        zipBuf[1] !== 0x4b ||
+        zipBuf[2] !== 0x03 ||
+        zipBuf[3] !== 0x04
+      ) {
+        throw new Error(`Claude Desktop bundle verification failed: invalid ZIP header in ${zipAbs}`);
+      }
+      const skillMdAbs = path.join(stagingDir, 'claude-code-skills', skillName, 'SKILL.md');
+      const evalMdAbs = path.join(stagingDir, 'claude-code-skills', skillName, 'EVAL.md');
+      if (!fs.existsSync(skillMdAbs)) {
+        throw new Error(
+          `Claude Desktop bundle verification failed: missing exported SKILL.md at ${skillMdAbs}`,
+        );
+      }
+      if (!fs.existsSync(evalMdAbs)) {
+        throw new Error(
+          `Claude Desktop bundle verification failed: missing exported EVAL.md at ${evalMdAbs}`,
+        );
+      }
+    }
+    for (const reqManualFile of [
+      'README.md',
+      'SKILL.md',
+      'BLENDOPS_SINGLE_FILE.md',
+      'IMPORT_STEPS.md',
+      'manifest.json',
+    ]) {
+      if (!fs.existsSync(path.join(stagingDir, 'claude-desktop-manual', reqManualFile))) {
+        throw new Error(
+          `Claude Desktop bundle verification failed: missing claude-desktop-manual/${reqManualFile}`,
+        );
+      }
+    }
+
+    // Collect hashes of all generated files inside stagingDir for rollback safety
+    const createdFiles = [];
+    const createdFileHashes = {};
+    function walkStaging(dirAbs) {
+      const entries = fs
+        .readdirSync(dirAbs, { withFileTypes: true })
+        .sort((a, b) => compareCodeUnitOrder(a.name, b.name));
+      for (const entry of entries) {
+        const absChild = path.join(dirAbs, entry.name);
+        const relChild = path.relative(stagingDir, absChild).split(path.sep).join('/');
+        if (relChild === '.blendops' || relChild.startsWith('.blendops/')) continue;
+        const childLstat = fs.lstatSync(absChild);
+        if (childLstat.isSymbolicLink()) {
+          throw new Error(`Refusing symbolic link inside staging output: ${relChild}`);
+        }
+        if (childLstat.isDirectory()) {
+          walkStaging(absChild);
+        } else if (childLstat.isFile()) {
+          createdFiles.push(relChild);
+          createdFileHashes[relChild] = sha256Buffer(fs.readFileSync(absChild));
+        }
+      }
+    }
+    walkStaging(stagingDir);
+
+    const finalManifestAbsPath = path.join(outReal, livePlan.rollbackManifestRel);
+    const stagingManifestMetaAbs = path.join(stagingDir, livePlan.rollbackManifestRel);
+    const stagingReportMetaAbs = path.join(stagingDir, livePlan.installReportRel);
+
+    const result = {
+      ok: true,
+      mode: 'write',
+      targetRequested: livePlan.requestedTarget,
+      targetSelected: 'claude-desktop',
+      resolvedInstallMode: livePlan.effectiveBehavior,
+      confidence: livePlan.confidence,
+      scope: 'bundle-output',
+      projectOrOutPath: outReal,
+      detectedMarkers: [],
+      filesCreated: createdFiles,
+      filesModified: [],
+      filesSkipped: [],
+      backups: [],
+      rollbackManifestPath: finalManifestAbsPath,
+      skillMdCountPerZip: 1,
+      zipCount: sourceInfo.skillCount,
+      globalTouched: false,
+      runtimeStatus: 'Not Run',
+      artifactStatus: 'Not Produced',
+      limitations: livePlan.limitations,
+    };
+
+    result.report = formatInstallerReport(result);
+    const reportSha256 = sha256Buffer(Buffer.from(result.report, 'utf8'));
+
+    const manifestData = {
+      installer_version: INSTALLER_VERSION,
+      timestamp: new Date().toISOString(),
+      target: 'claude-desktop',
+      requested_target: livePlan.requestedTarget,
+      confidence: livePlan.confidence,
+      scope: 'bundle-output',
+      project: outReal,
+      plan_hash: livePlan.planHash,
+      source_fingerprint: livePlan.sourceFingerprint,
+      files_created: createdFiles,
+      files_modified: [],
+      backups: [],
+      files_skipped: [],
+      created_file_hashes: createdFileHashes,
+      modified_file_hashes: {},
+      metadata_files: {
+        [livePlan.installReportRel]: reportSha256,
+        [livePlan.rollbackManifestRel]: 'self',
+      },
+      global_touched: false,
+      runtime_status: 'Not Run',
+      artifact_status: 'Not Produced',
+      rollback_steps: [
+        `node scripts/install-skills.mjs --rollback --out "${outReal}"`,
+      ],
+    };
+
+    validateRollbackManifestSchema(manifestData, stagingManifestMetaAbs);
+    writeAtomicFile(stagingReportMetaAbs, result.report);
+    writeAtomicFile(stagingManifestMetaAbs, `${JSON.stringify(manifestData, null, 2)}\n`);
+
+    // Recheck destination state immediately before publishing so --out cannot be created after --dry-run
+    let destExistsRightBeforePublish = false;
+    try {
+      fs.lstatSync(outReal);
+      destExistsRightBeforePublish = true;
+    } catch (err) {
+      if (!err || err.code !== 'ENOENT') {
+        throw err;
+      }
+    }
+    if (destExistsRightBeforePublish) {
+      throw new Error(
+        `Destination --out directory appeared during staging (${outReal}); refusing to overwrite existing destination.`,
+      );
+    }
+
+    fs.renameSync(stagingDir, outReal);
+    return result;
+  } finally {
+    if (fs.existsSync(stagingDir)) {
+      try {
+        fs.rmSync(stagingDir, { recursive: true, force: true });
+      } catch {
+        // Best-effort cleanup of installer-owned staging directory only
       }
     }
   }
-  walkGenerated(outReal);
-
-  const manifestAbsPath = path.join(outReal, livePlan.rollbackManifestRel);
-  const reportAbsPath = path.join(outReal, livePlan.installReportRel);
-
-  const manifestData = {
-    installer_version: INSTALLER_VERSION,
-    timestamp: new Date().toISOString(),
-    target: 'claude-desktop',
-    requested_target: livePlan.requestedTarget,
-    confidence: livePlan.confidence,
-    scope: 'bundle-output',
-    project: outReal,
-    plan_hash: livePlan.planHash,
-    source_fingerprint: livePlan.sourceFingerprint,
-    files_created: createdFiles,
-    files_modified: [],
-    backups: [],
-    files_skipped: [],
-    created_file_hashes: createdFileHashes,
-    modified_file_hashes: {},
-    global_touched: false,
-    runtime_status: 'Not Run',
-    artifact_status: 'Not Produced',
-    rollback_steps: [
-      `node scripts/install-skills.mjs --rollback --out "${outReal}"`,
-      `rm -rf "${outReal}"`,
-    ],
-  };
-
-  writeAtomicFile(manifestAbsPath, `${JSON.stringify(manifestData, null, 2)}\n`);
-
-  const result = {
-    ok: true,
-    mode: 'write',
-    targetRequested: livePlan.requestedTarget,
-    targetSelected: 'claude-desktop',
-    resolvedInstallMode: livePlan.effectiveBehavior,
-    confidence: livePlan.confidence,
-    scope: 'bundle-output',
-    projectOrOutPath: outReal,
-    detectedMarkers: [],
-    filesCreated: createdFiles,
-    filesModified: [],
-    filesSkipped: [],
-    backups: [],
-    rollbackManifestPath: manifestAbsPath,
-    skillMdCountPerZip: 1,
-    zipCount: sourceInfo.skillCount,
-    globalTouched: false,
-    runtimeStatus: 'Not Run',
-    artifactStatus: 'Not Produced',
-    limitations: livePlan.limitations,
-  };
-
-  result.report = formatInstallerReport(result);
-  writeAtomicFile(reportAbsPath, result.report);
-  return result;
 }
 
 function executeRollbackMode({ repoRootReal, project, out, forceRollback = false }) {
@@ -1782,6 +2440,21 @@ function executeRollbackMode({ repoRootReal, project, out, forceRollback = false
     repoRoot: repoRootReal,
     mustExist: true,
   });
+
+  const blendopsDir = path.join(targetRootReal, '.blendops');
+  const backupsDir = path.join(blendopsDir, 'backups');
+  if (fs.existsSync(blendopsDir)) {
+    const blendopsLstat = fs.lstatSync(blendopsDir);
+    if (blendopsLstat.isSymbolicLink() || !blendopsLstat.isDirectory()) {
+      throw new Error(`Rollback refused: unsafe .blendops path at ${blendopsDir}`);
+    }
+  }
+  if (fs.existsSync(backupsDir)) {
+    const backupsLstat = fs.lstatSync(backupsDir);
+    if (backupsLstat.isSymbolicLink() || !backupsLstat.isDirectory()) {
+      throw new Error(`Rollback refused: unsafe .blendops/backups path at ${backupsDir}`);
+    }
+  }
 
   const manifestRel = '.blendops/install-manifest.json';
   const { absTarget: manifestAbs, exists: manifestExists } = validateSafeRelativeTargetFile(
@@ -1800,41 +2473,34 @@ function executeRollbackMode({ repoRootReal, project, out, forceRollback = false
   } catch {
     throw new Error(`Rollback refused: malformed rollback manifest JSON at ${manifestAbs}`);
   }
-  if (
-    !manifest ||
-    typeof manifest !== 'object' ||
-    Array.isArray(manifest) ||
-    !Array.isArray(manifest.files_created) ||
-    !Array.isArray(manifest.files_modified) ||
-    typeof manifest.target !== 'string'
-  ) {
-    throw new Error(`Rollback refused: invalid rollback manifest schema at ${manifestAbs}`);
-  }
+
+  // Schema & integrity metadata validation (--force-rollback never bypasses schema/hash metadata checks)
+  validateRollbackManifestSchema(manifest, manifestAbs);
+
   const filesCreated = manifest.files_created;
   const filesModified = manifest.files_modified;
-  const createdHashes = manifest.created_file_hashes || {};
-  const modifiedHashes = manifest.modified_file_hashes || {};
+  const createdHashes = manifest.created_file_hashes;
+  const modifiedHashes = manifest.modified_file_hashes;
 
   // Phase 1: Preflight verification before deleting or restoring anything
+  const verifiedCreatedTargets = [];
   for (const relPath of filesCreated) {
     const { absTarget, exists } = validateSafeRelativeTargetFile(targetRootReal, relPath);
+    const expectedHash = createdHashes[relPath];
     if (!exists) continue;
     const currentHash = sha256Buffer(fs.readFileSync(absTarget));
-    const expectedHash = createdHashes[relPath];
-    if (expectedHash && currentHash !== expectedHash && !forceRollback) {
+    if (currentHash !== expectedHash && !forceRollback) {
       throw new Error(
         `Rollback refused: installer-created file '${relPath}' was modified after installation (expected SHA-256 ${expectedHash.slice(0, 12)}, got ${currentHash.slice(0, 12)}). Inspect changes manually or pass --force-rollback.`,
       );
     }
+    verifiedCreatedTargets.push({ relPath, absTarget });
   }
 
   const restoreTasks = [];
   for (const relPath of filesModified) {
     const { absTarget, exists } = validateSafeRelativeTargetFile(targetRootReal, relPath);
     const meta = modifiedHashes[relPath];
-    if (!meta || !meta.backup_path || !meta.pre_install_sha256) {
-      throw new Error(`Rollback refused: missing backup metadata in manifest for '${relPath}'`);
-    }
     const { absTarget: backupAbs, exists: backupExists } = validateSafeRelativeTargetFile(
       targetRootReal,
       meta.backup_path,
@@ -1850,7 +2516,13 @@ function executeRollbackMode({ repoRootReal, project, out, forceRollback = false
       );
     }
 
-    if (exists && meta.post_install_sha256 && !forceRollback) {
+    if (!exists && !forceRollback) {
+      throw new Error(
+        `Rollback refused: modified file '${relPath}' is missing on disk. Inspect changes manually or pass --force-rollback.`,
+      );
+    }
+
+    if (exists && !forceRollback) {
       const currentHash = sha256Buffer(fs.readFileSync(absTarget));
       if (currentHash !== meta.post_install_sha256) {
         throw new Error(
@@ -1862,9 +2534,32 @@ function executeRollbackMode({ repoRootReal, project, out, forceRollback = false
     restoreTasks.push({
       relPath,
       absTarget,
+      backupRelPath: meta.backup_path,
+      backupAbs,
       backupBytes,
       expectedPreHash: meta.pre_install_sha256,
     });
+  }
+
+  // Verify installer-owned .blendops/INSTALL_REPORT.md before deleting it
+  const reportRel = '.blendops/INSTALL_REPORT.md';
+  const { absTarget: reportAbs, exists: reportExists } = validateSafeRelativeTargetFile(
+    targetRootReal,
+    reportRel,
+  );
+  if (reportExists) {
+    const expectedReportHash = manifest.metadata_files?.[reportRel];
+    if (!isSha256Hex(expectedReportHash)) {
+      throw new Error(
+        `Rollback refused: missing expected SHA-256 hash for existing '${reportRel}' in rollback manifest at ${manifestAbs}`,
+      );
+    }
+    const actualReportHash = sha256Buffer(fs.readFileSync(reportAbs));
+    if (actualReportHash !== expectedReportHash) {
+      throw new Error(
+        `Rollback refused: installer metadata file '${reportRel}' was modified and failed SHA-256 verification at ${reportAbs}`,
+      );
+    }
   }
 
   // Phase 2: Execute restorations first
@@ -1878,31 +2573,30 @@ function executeRollbackMode({ repoRootReal, project, out, forceRollback = false
     restoredPaths.push(task.relPath);
   }
 
-  // Phase 3: Remove installer-created files and clean up empty directories
+  // Phase 3: Remove verified installer-created files and clean up empty parent directories
   const removedPaths = [];
-  for (const relPath of filesCreated) {
-    const absTarget = path.join(targetRootReal, relPath);
-    if (fs.existsSync(absTarget)) {
-      fs.rmSync(absTarget, { force: true });
-      removedPaths.push(relPath);
+  for (const item of verifiedCreatedTargets) {
+    if (fs.existsSync(item.absTarget)) {
+      fs.rmSync(item.absTarget, { force: true });
+      removedPaths.push(item.relPath);
     }
-    // Clean up empty parent directories inside targetRootReal if created by installer (e.g., .cursor/rules or desktop-zips)
-    let parentDir = path.dirname(absTarget);
-    while (parentDir !== targetRootReal && parentDir.startsWith(targetRootReal)) {
-      if (fs.existsSync(parentDir) && fs.readdirSync(parentDir).length === 0) {
-        fs.rmdirSync(parentDir);
-        parentDir = path.dirname(parentDir);
-      } else {
-        break;
-      }
-    }
+    pruneEmptyParentDirectories(item.absTarget, targetRootReal);
   }
 
-  // Phase 4: Remove .blendops metadata directory
-  const blendopsDir = path.join(targetRootReal, '.blendops');
-  if (fs.existsSync(blendopsDir)) {
-    fs.rmSync(blendopsDir, { recursive: true, force: true });
+  // Phase 4: Ownership-aware cleanup of verified installer backups and metadata files inside .blendops
+  for (const task of restoreTasks) {
+    if (fs.existsSync(task.backupAbs)) {
+      fs.rmSync(task.backupAbs, { force: true });
+    }
+    pruneEmptyParentDirectories(task.backupAbs, targetRootReal);
   }
+  if (reportExists && fs.existsSync(reportAbs)) {
+    fs.rmSync(reportAbs, { force: true });
+  }
+  if (fs.existsSync(manifestAbs)) {
+    fs.rmSync(manifestAbs, { force: true });
+  }
+  pruneEmptyParentDirectories(manifestAbs, targetRootReal);
 
   const result = {
     ok: true,
@@ -1940,6 +2634,12 @@ export function runInstaller(rawArgsOrOptions, options = {}) {
   const parsed = Array.isArray(rawArgsOrOptions)
     ? parseInstallerArgs(rawArgsOrOptions)
     : parseInstallerArgsFromObject(rawArgsOrOptions);
+
+  const programmaticPlanDir =
+    options.planDir ||
+    (!Array.isArray(rawArgsOrOptions) && rawArgsOrOptions && typeof rawArgsOrOptions === 'object'
+      ? rawArgsOrOptions.planDir
+      : null);
 
   if (parsed.mode === 'help') {
     return {
@@ -1982,30 +2682,51 @@ export function runInstaller(rawArgsOrOptions, options = {}) {
         mustExist: true,
       });
 
-  const livePlan = isBundleTarget
-    ? buildClaudeDesktopPlan({
-        repoRootReal,
-        outReal: destinationReal,
-        requestedTarget: parsed.target,
-      })
-    : buildProjectInstallPlan({
-        repoRootReal,
-        projectReal: destinationReal,
-        requestedTarget: parsed.target,
-        confirmTargetPath: parsed.confirmTargetPath,
-        patchAgentsMd: parsed.patchAgentsMd,
-      });
-
   const planFilePath = resolvePlanStorePath({
-    planDir: parsed.planDir || options.planDir,
+    planDir: programmaticPlanDir,
     repoRootReal,
     targetRootReal: destinationReal,
     requestedTarget: parsed.target,
   });
 
-  const rollbackManifestFullPath = path.join(destinationReal, livePlan.rollbackManifestRel);
-
   if (parsed.mode === 'dry-run') {
+    const livePlan = isBundleTarget
+      ? buildClaudeDesktopPlan({
+          repoRootReal,
+          outReal: destinationReal,
+          requestedTarget: parsed.target,
+        })
+      : buildProjectInstallPlan({
+          repoRootReal,
+          projectReal: destinationReal,
+          requestedTarget: parsed.target,
+          confirmTargetPath: parsed.confirmTargetPath,
+          patchAgentsMd: parsed.patchAgentsMd,
+        });
+
+    if (fs.existsSync(planFilePath)) {
+      let existingPlanObj = null;
+      try {
+        existingPlanObj = JSON.parse(fs.readFileSync(planFilePath, 'utf8'));
+      } catch {
+        throw new Error(
+          `Refusing to overwrite existing non-plan file at ${planFilePath}`,
+        );
+      }
+      if (
+        !existingPlanObj ||
+        typeof existingPlanObj !== 'object' ||
+        Array.isArray(existingPlanObj) ||
+        typeof existingPlanObj.installerVersion !== 'string' ||
+        typeof existingPlanObj.planHash !== 'string'
+      ) {
+        throw new Error(
+          `Refusing to overwrite existing non-plan file at ${planFilePath}`,
+        );
+      }
+    }
+
+    const rollbackManifestFullPath = path.join(destinationReal, livePlan.rollbackManifestRel);
     const planRecord = {
       ...livePlan,
       recordedAt: new Date().toISOString(),
@@ -2042,7 +2763,7 @@ export function runInstaller(rawArgsOrOptions, options = {}) {
     return result;
   }
 
-  // Mode === 'write': enforce mandatory dry-run gate
+  // Mode === 'write': enforce mandatory dry-run gate BEFORE building or executing write plan
   if (!fs.existsSync(planFilePath)) {
     throw new Error(
       `Write mode refused: no prior --dry-run plan exists for target '${parsed.target}' at '${destinationReal}'. Run with --dry-run first.`,
@@ -2078,6 +2799,34 @@ export function runInstaller(rawArgsOrOptions, options = {}) {
     );
   }
 
+  let livePlan;
+  try {
+    livePlan = isBundleTarget
+      ? buildClaudeDesktopPlan({
+          repoRootReal,
+          outReal: destinationReal,
+          requestedTarget: parsed.target,
+        })
+      : buildProjectInstallPlan({
+          repoRootReal,
+          projectReal: destinationReal,
+          requestedTarget: parsed.target,
+          confirmTargetPath: parsed.confirmTargetPath,
+          patchAgentsMd: parsed.patchAgentsMd,
+        });
+  } catch (err) {
+    if (
+      isBundleTarget &&
+      err instanceof Error &&
+      err.message.includes('Refusing to use existing --out destination')
+    ) {
+      throw new Error(
+        `Write mode refused: target --out directory (${destinationReal}) was created after --dry-run was recorded (stale dry-run plan); refusing to overwrite existing destination.`,
+      );
+    }
+    throw err;
+  }
+
   if (
     savedPlan.requestedTarget !== livePlan.requestedTarget ||
     savedPlan.selectedTarget !== livePlan.selectedTarget ||
@@ -2109,7 +2858,7 @@ export function runInstaller(rawArgsOrOptions, options = {}) {
   if (isBundleTarget) {
     return executeWriteClaudeDesktopPlan(livePlan);
   }
-  return executeWriteProjectPlan(livePlan, planFilePath);
+  return executeWriteProjectPlan(livePlan);
 }
 
 function parseInstallerArgsFromObject(obj = {}) {
@@ -2118,7 +2867,6 @@ function parseInstallerArgsFromObject(obj = {}) {
   if (obj.target) argv.push('--target', String(obj.target));
   if (obj.project) argv.push('--project', String(obj.project));
   if (obj.out) argv.push('--out', String(obj.out));
-  if (obj.planDir) argv.push('--plan-dir', String(obj.planDir));
   if (obj.doctor) argv.push('--doctor');
   if (obj.dryRun) argv.push('--dry-run');
   if (obj.write) argv.push('--write');

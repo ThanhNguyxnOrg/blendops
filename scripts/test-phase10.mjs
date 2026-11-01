@@ -12,6 +12,8 @@ import {
   parseInstallerArgs,
   detectProjectTargetMarkers,
   validateDestinationRoot,
+  validatePlanStoreDirectory,
+  validateRollbackManifestSchema,
   computeBlendOpsSourceFingerprint,
   formatInstallerReport,
   formatInstallerHelp,
@@ -357,11 +359,13 @@ test('Scenario 11: Modifying a target file after --dry-run invalidates the plan 
   }
 });
 
-test('Scenario 12: --rollback restores modified files byte-for-byte and removes installer-created files', () => {
+test('Scenario 12: --rollback restores modified files byte-for-byte, removes only installer-owned files, preserves unrelated user data in .blendops, and removes .blendops when empty', () => {
   const tempBase = makeTempDir('blendops-p10-rollback-');
   const projectDir = path.join(tempBase, 'generic-proj');
+  const projectWithUserMeta = path.join(tempBase, 'proj-with-user-blendops');
   const planDir = path.join(tempBase, 'plans');
   fs.mkdirSync(projectDir, { recursive: true });
+  fs.mkdirSync(projectWithUserMeta, { recursive: true });
 
   const agentsPath = path.join(projectDir, 'AGENTS.md');
   const originalAgentsBytes = Buffer.from('# Custom Team Rules\n\nLine 1\r\nLine 2\n', 'utf8');
@@ -369,6 +373,7 @@ test('Scenario 12: --rollback restores modified files byte-for-byte and removes 
   const originalSha = sha256File(agentsPath);
 
   try {
+    // 12a: Standard project where .blendops has only installer-owned files -> .blendops is removed when empty
     runInstaller(
       ['--dry-run', '--target', 'generic-project', '--project', projectDir, '--patch-agents-md'],
       { repoRoot: ROOT, planDir }
@@ -391,7 +396,38 @@ test('Scenario 12: --rollback restores modified files byte-for-byte and removes 
 
     assert.equal(sha256File(agentsPath), originalSha, 'AGENTS.md must be restored byte-for-byte');
     assert.ok(!fs.existsSync(path.join(projectDir, 'BLENDOPS.md')), 'BLENDOPS.md must be removed on rollback');
-    assert.ok(!fs.existsSync(path.join(projectDir, '.blendops')), '.blendops directory must be cleaned up on rollback');
+    assert.ok(!fs.existsSync(path.join(projectDir, '.blendops')), '.blendops directory must be removed when empty after owned files are deleted');
+
+    // 12b: Project where user also has unrelated files/dirs inside .blendops/ -> installer-owned files are removed while user data in .blendops survives
+    const agentsPath2 = path.join(projectWithUserMeta, 'AGENTS.md');
+    fs.writeFileSync(agentsPath2, originalAgentsBytes);
+    const userNotePath = path.join(projectWithUserMeta, '.blendops', 'user-notes.md');
+    const userNestedPath = path.join(projectWithUserMeta, '.blendops', 'custom', 'settings.json');
+    fs.mkdirSync(path.dirname(userNestedPath), { recursive: true });
+    fs.writeFileSync(userNotePath, '# User local notes inside .blendops\n', 'utf8');
+    fs.writeFileSync(userNestedPath, '{"preserve":true}\n', 'utf8');
+
+    runInstaller(
+      ['--dry-run', '--target', 'generic-project', '--project', projectWithUserMeta, '--patch-agents-md'],
+      { repoRoot: ROOT, planDir }
+    );
+    runInstaller(
+      ['--write', '--target', 'generic-project', '--project', projectWithUserMeta, '--patch-agents-md'],
+      { repoRoot: ROOT, planDir }
+    );
+
+    const rollbackRes2 = runInstaller(
+      ['--rollback', '--project', projectWithUserMeta],
+      { repoRoot: ROOT, planDir }
+    );
+    assert.equal(rollbackRes2.ok, true);
+    assert.equal(sha256File(agentsPath2), originalSha);
+    assert.ok(!fs.existsSync(path.join(projectWithUserMeta, 'BLENDOPS.md')));
+    assert.ok(!fs.existsSync(path.join(projectWithUserMeta, '.blendops', 'install-manifest.json')), 'installer manifest must be removed');
+    assert.ok(!fs.existsSync(path.join(projectWithUserMeta, '.blendops', 'INSTALL_REPORT.md')), 'installer report must be removed');
+    assert.ok(!fs.existsSync(path.join(projectWithUserMeta, '.blendops', 'backups')), 'empty .blendops/backups must be removed');
+    assert.equal(fs.readFileSync(userNotePath, 'utf8'), '# User local notes inside .blendops\n', 'unrelated user file in .blendops must survive rollback');
+    assert.equal(fs.readFileSync(userNestedPath, 'utf8'), '{"preserve":true}\n', 'unrelated nested user file in .blendops must survive rollback');
   } finally {
     fs.rmSync(tempBase, { recursive: true, force: true });
   }
@@ -1088,5 +1124,538 @@ test('Scenario 26: Current-state audit artifacts record active auditPhase phase-
   assert.equal(manifest.truthStates.liveModelEval, 'Not Run');
   assert.equal(manifest.truthStates.blenderRuntimeExecution, 'Not Run');
   assert.equal(manifest.truthStates.blenderArtifacts, 'Not Produced');
+});
+
+function createMinimalFixtureRepo(baseDir) {
+  const repoDir = path.join(baseDir, 'fixture-repo');
+  fs.mkdirSync(repoDir, { recursive: true });
+  for (const rel of [
+    'skills',
+    'laws',
+    'packs',
+    'bundles/generic-project-local',
+    'bundles/claude-desktop-manual',
+    'scripts',
+  ]) {
+    const src = path.join(ROOT, rel);
+    const dest = path.join(repoDir, rel);
+    if (rel === 'scripts') {
+      fs.mkdirSync(dest, { recursive: true });
+      fs.copyFileSync(
+        path.join(src, 'export-claude-skills.mjs'),
+        path.join(dest, 'export-claude-skills.mjs'),
+      );
+    } else {
+      fs.cpSync(src, dest, { recursive: true });
+    }
+  }
+  return repoDir;
+}
+
+test('Scenario 27 (Phase 10.1 P1): Claude Desktop export never deletes pre-existing --out directories, stages output safely, rejects destinations created after --dry-run, and cleans up staging on failure', () => {
+  const tempBase = makeTempDir('blendops-p10-1-cd-safety-');
+  const planDir = path.join(tempBase, 'plans');
+
+  try {
+    // 1. Pre-existing non-empty --out directory is rejected during --dry-run and user files survive untouched
+    const existingOut = path.join(tempBase, 'existing-user-out');
+    fs.mkdirSync(existingOut, { recursive: true });
+    const preciousFile = path.join(existingOut, 'precious-work.blend.txt');
+    fs.writeFileSync(preciousFile, 'DO NOT DELETE USER WORK\n', 'utf8');
+
+    assert.throws(
+      () =>
+        runInstaller(
+          ['--dry-run', '--target', 'claude-desktop', '--out', existingOut],
+          { repoRoot: ROOT, planDir }
+        ),
+      /Refusing to use existing --out destination/
+    );
+    assert.equal(
+      fs.readFileSync(preciousFile, 'utf8'),
+      'DO NOT DELETE USER WORK\n',
+      'existing user file in --out must remain untouched when --dry-run rejects existing destination'
+    );
+
+    // 2. Destination created after --dry-run before --write is rejected and user files survive untouched
+    const raceOut = path.join(tempBase, 'race-out');
+    const dryRace = runInstaller(
+      ['--dry-run', '--target', 'claude-desktop', '--out', raceOut],
+      { repoRoot: ROOT, planDir }
+    );
+    assert.equal(dryRace.ok, true);
+
+    fs.mkdirSync(raceOut, { recursive: true });
+    const raceUserFile = path.join(raceOut, 'created-after-dryrun.txt');
+    fs.writeFileSync(raceUserFile, 'USER CREATED AFTER DRY RUN\n', 'utf8');
+
+    assert.throws(
+      () =>
+        runInstaller(
+          ['--write', '--target', 'claude-desktop', '--out', raceOut],
+          { repoRoot: ROOT, planDir }
+        ),
+      /was created after --dry-run was recorded \(stale dry-run plan\); refusing to overwrite existing destination/
+    );
+    assert.equal(
+      fs.readFileSync(raceUserFile, 'utf8'),
+      'USER CREATED AFTER DRY RUN\n',
+      'user file created after --dry-run must never be deleted by --write'
+    );
+    assert.deepEqual(fs.readdirSync(raceOut), ['created-after-dryrun.txt']);
+
+    // 3. Direct invocation of export-claude-skills.mjs against a non-empty --output-root refuses to delete user files
+    const exporterScript = path.join(ROOT, 'scripts', 'export-claude-skills.mjs');
+    assert.throws(
+      () =>
+        execFileSync(process.execPath, [exporterScript, '--output-root', existingOut], {
+          cwd: ROOT,
+          stdio: 'pipe',
+        }),
+      /refusing to overwrite non-empty directory/i
+    );
+    assert.equal(
+      fs.readFileSync(preciousFile, 'utf8'),
+      'DO NOT DELETE USER WORK\n',
+      'export-claude-skills.mjs must never delete files in a non-empty --output-root'
+    );
+
+    // 4. Failed staging export cleans up only the temporary staging directory and never creates --out
+    const brokenRepo = createMinimalFixtureRepo(tempBase);
+    const brokenOutParent = path.join(tempBase, 'staging-cleanup-parent');
+    fs.mkdirSync(brokenOutParent, { recursive: true });
+    const siblingKeepFile = path.join(brokenOutParent, 'keep-sibling.txt');
+    fs.writeFileSync(siblingKeepFile, 'keep me\n', 'utf8');
+    const brokenOut = path.join(brokenOutParent, 'failed-export-dest');
+
+    const dryBroken = runInstaller(
+      ['--dry-run', '--target', 'claude-desktop', '--out', brokenOut],
+      { repoRoot: brokenRepo, planDir }
+    );
+    assert.equal(dryBroken.ok, true);
+
+    // Corrupt bundles/claude-desktop-manual/IMPORT_STEPS.md after dry-run? Wait: that would trigger sourceFingerprint mismatch before executeWriteClaudeDesktopPlan!
+    // To fail inside executeWriteClaudeDesktopPlan during staging verification, let's make export-claude-skills.mjs write an invalid skillCount in manifest.json? Wait: export-claude-skills.mjs is hashed in sourceFingerprint!
+    // What if a directory with the same name as outReal is created by a custom exporter? No, what if parentDir becomes read-only or we check that after normal write zero staging directories exist, and if staging fails (e.g., if we test executeWriteClaudeDesktopPlan failure by creating outReal via a race or making a non-hashed path fail)?
+    // Wait: during executeWriteClaudeDesktopPlan, node_modules is resolved from repoRootReal! In brokenRepo, node_modules does NOT exist unless linked, or if fflate is resolved from ROOT/node_modules. What if we place a broken fflate inside brokenRepo/node_modules/fflate/package.json so export-claude-skills.mjs fails when executed in brokenRepo (since node_modules is not in sourceFingerprint)?
+    const fakeFflateDir = path.join(brokenRepo, 'node_modules', 'fflate');
+    fs.mkdirSync(fakeFflateDir, { recursive: true });
+    fs.writeFileSync(path.join(fakeFflateDir, 'package.json'), '{"name":"fflate","main":"./missing.js"}\n', 'utf8');
+
+    assert.throws(
+      () =>
+        runInstaller(
+          ['--write', '--target', 'claude-desktop', '--out', brokenOut],
+          { repoRoot: brokenRepo, planDir }
+        )
+    );
+    assert.ok(!fs.existsSync(brokenOut), 'failed staging export must not publish --out');
+    assert.deepEqual(
+      fs.readdirSync(brokenOutParent),
+      ['keep-sibling.txt'],
+      'failed staging export must clean up temporary staging directory and preserve sibling files'
+    );
+  } finally {
+    fs.rmSync(tempBase, { recursive: true, force: true });
+  }
+});
+
+test('Scenario 28 (Phase 10.1 P1): Ownership-aware rollback verifies backup and metadata hashes before deletion and refuses to delete modified backups or unowned files', () => {
+  const tempBase = makeTempDir('blendops-p10-1-rollback-own-');
+  const projectDir = path.join(tempBase, 'proj');
+  const planDir = path.join(tempBase, 'plans');
+  fs.mkdirSync(projectDir, { recursive: true });
+
+  const agentsPath = path.join(projectDir, 'AGENTS.md');
+  fs.writeFileSync(agentsPath, '# Original Team AGENTS\n', 'utf8');
+
+  try {
+    runInstaller(
+      ['--dry-run', '--target', 'generic-project', '--project', projectDir, '--patch-agents-md'],
+      { repoRoot: ROOT, planDir }
+    );
+    runInstaller(
+      ['--write', '--target', 'generic-project', '--project', projectDir, '--patch-agents-md'],
+      { repoRoot: ROOT, planDir }
+    );
+
+    const backupPath = path.join(projectDir, '.blendops', 'backups', 'AGENTS.md.bak');
+    const reportPath = path.join(projectDir, '.blendops', 'INSTALL_REPORT.md');
+    const origBackupBytes = fs.readFileSync(backupPath);
+    const origReportBytes = fs.readFileSync(reportPath);
+
+    // 1. Corrupting backup file causes rollback to fail closed (even with --force-rollback) without deleting the backup
+    fs.writeFileSync(backupPath, '# Tampered backup content\n', 'utf8');
+    assert.throws(
+      () => runInstaller(['--rollback', '--project', projectDir], { repoRoot: ROOT, planDir }),
+      /backup file '\.blendops\/backups\/AGENTS\.md\.bak' failed SHA-256 integrity verification/
+    );
+    assert.throws(
+      () => runInstaller(['--rollback', '--force-rollback', '--project', projectDir], { repoRoot: ROOT, planDir }),
+      /backup file '\.blendops\/backups\/AGENTS\.md\.bak' failed SHA-256 integrity verification/
+    );
+    assert.ok(fs.existsSync(backupPath), 'tampered backup file must not be deleted');
+    fs.writeFileSync(backupPath, origBackupBytes);
+
+    // 2. Modifying .blendops/INSTALL_REPORT.md causes rollback to refuse deletion and report the exact path
+    fs.writeFileSync(reportPath, '# User edited install report\n', 'utf8');
+    assert.throws(
+      () => runInstaller(['--rollback', '--project', projectDir], { repoRoot: ROOT, planDir }),
+      /installer metadata file '\.blendops\/INSTALL_REPORT\.md' was modified and failed SHA-256 verification/
+    );
+    assert.ok(fs.existsSync(reportPath), 'modified INSTALL_REPORT.md must not be deleted');
+    fs.writeFileSync(reportPath, origReportBytes);
+
+    // 3. Unowned file inside .blendops/backups/ is preserved when rollback succeeds
+    const unownedBackup = path.join(projectDir, '.blendops', 'backups', 'user-manual-snapshot.bak');
+    fs.writeFileSync(unownedBackup, 'user snapshot\n', 'utf8');
+
+    const rollbackOk = runInstaller(['--rollback', '--project', projectDir], { repoRoot: ROOT, planDir });
+    assert.equal(rollbackOk.ok, true);
+    assert.ok(!fs.existsSync(backupPath), 'verified installer backup must be removed');
+    assert.ok(fs.existsSync(unownedBackup), 'unowned file in .blendops/backups must be preserved');
+  } finally {
+    fs.rmSync(tempBase, { recursive: true, force: true });
+  }
+});
+
+test('Scenario 29 (Phase 10.1 P1): Rollback requires complete integrity metadata and rejects missing hashes, malformed digests, duplicate/overlapping entries, and unsafe paths even with --force-rollback', () => {
+  const tempBase = makeTempDir('blendops-p10-1-manifest-schema-');
+  const projectDir = path.join(tempBase, 'proj');
+  const planDir = path.join(tempBase, 'plans');
+  fs.mkdirSync(projectDir, { recursive: true });
+
+  const agentsPath = path.join(projectDir, 'AGENTS.md');
+  fs.writeFileSync(agentsPath, '# Original AGENTS\n', 'utf8');
+
+  try {
+    runInstaller(
+      ['--dry-run', '--target', 'generic-project', '--project', projectDir, '--patch-agents-md'],
+      { repoRoot: ROOT, planDir }
+    );
+    runInstaller(
+      ['--write', '--target', 'generic-project', '--project', projectDir, '--patch-agents-md'],
+      { repoRoot: ROOT, planDir }
+    );
+
+    const manifestPath = path.join(projectDir, '.blendops', 'install-manifest.json');
+    const validManifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+
+    const invalidManifestCases = [
+      {
+        name: 'missing created_file_hashes entry for files_created item',
+        mutate: (m) => {
+          delete m.created_file_hashes['BLENDOPS.md'];
+        },
+        pattern: /missing or invalid SHA-256 hash in created_file_hashes for 'BLENDOPS\.md'/,
+      },
+      {
+        name: 'malformed non-hex digest in created_file_hashes',
+        mutate: (m) => {
+          m.created_file_hashes['BLENDOPS.md'] = 'not-a-valid-sha256-digest';
+        },
+        pattern: /missing or invalid SHA-256 hash in created_file_hashes for 'BLENDOPS\.md'/,
+      },
+      {
+        name: 'missing post_install_sha256 in modified_file_hashes',
+        mutate: (m) => {
+          delete m.modified_file_hashes['AGENTS.md'].post_install_sha256;
+        },
+        pattern: /missing or invalid post_install_sha256 for 'AGENTS\.md'/,
+      },
+      {
+        name: 'overlapping entry in both files_created and files_modified',
+        mutate: (m) => {
+          m.files_created.push('AGENTS.md');
+          m.created_file_hashes['AGENTS.md'] = m.modified_file_hashes['AGENTS.md'].post_install_sha256;
+        },
+        pattern: /overlapping path 'AGENTS\.md' present in both files_created and files_modified/,
+      },
+      {
+        name: 'duplicate entry in files_created',
+        mutate: (m) => {
+          m.files_created.push('BLENDOPS.md');
+        },
+        pattern: /duplicate files_created entry 'BLENDOPS\.md'/,
+      },
+      {
+        name: 'path traversal in files_created',
+        mutate: (m) => {
+          m.files_created.push('../outside.md');
+          m.created_file_hashes['../outside.md'] = 'a'.repeat(64);
+        },
+        pattern: /path traversal or empty segment in manifest/,
+      },
+      {
+        name: 'internal .blendops path injected into files_created',
+        mutate: (m) => {
+          m.files_created.push('.blendops/user-file.txt');
+          m.created_file_hashes['.blendops/user-file.txt'] = 'a'.repeat(64);
+        },
+        pattern: /cannot reference internal \.blendops metadata directory/,
+      },
+      {
+        name: 'inconsistent backups array vs files_modified',
+        mutate: (m) => {
+          m.backups = [];
+        },
+        pattern: /inconsistent backups array length/,
+      },
+    ];
+
+    for (const tc of invalidManifestCases) {
+      const candidate = structuredClone(validManifest);
+      tc.mutate(candidate);
+      fs.writeFileSync(manifestPath, JSON.stringify(candidate, null, 2), 'utf8');
+
+      assert.throws(
+        () => validateRollbackManifestSchema(candidate, manifestPath),
+        tc.pattern,
+        `Expected schema validator to reject: ${tc.name}`
+      );
+      assert.throws(
+        () =>
+          runInstaller(
+            ['--rollback', '--force-rollback', '--project', projectDir],
+            { repoRoot: ROOT, planDir }
+          ),
+        tc.pattern,
+        `Expected --rollback --force-rollback to fail closed on: ${tc.name}`
+      );
+    }
+
+    // Restore valid manifest and verify nothing was deleted during failed checks
+    fs.writeFileSync(manifestPath, JSON.stringify(validManifest, null, 2), 'utf8');
+    assert.ok(fs.existsSync(path.join(projectDir, 'BLENDOPS.md')));
+    assert.ok(fs.existsSync(agentsPath));
+  } finally {
+    fs.rmSync(tempBase, { recursive: true, force: true });
+  }
+});
+
+test('Scenario 30 (Phase 10.1 P2): Source fingerprinting hashes all skill files, references, and bundle files recursively and rejects symlinks in the source tree', () => {
+  const tempBase = makeTempDir('blendops-p10-1-fingerprint-');
+  const projectDir = path.join(tempBase, 'proj');
+  const planDir = path.join(tempBase, 'plans');
+  fs.mkdirSync(projectDir, { recursive: true });
+
+  try {
+    const fixtureRepo = createMinimalFixtureRepo(tempBase);
+    const baseInfo = computeBlendOpsSourceFingerprint(fixtureRepo);
+    assert.equal(baseInfo.skillCount, 48);
+    assert.ok(baseInfo.sourceFileCount > 250, 'must hash all recursive skill and bundle files');
+
+    // 1. Modifying a skill SKILL.md changes the fingerprint and invalidates a prior --dry-run plan
+    const dryRes = runInstaller(
+      ['--dry-run', '--target', 'generic-project', '--project', projectDir],
+      { repoRoot: fixtureRepo, planDir }
+    );
+    assert.equal(dryRes.ok, true);
+
+    const helpSkillMd = path.join(fixtureRepo, 'skills', 'blendops-help', 'SKILL.md');
+    const origHelpMd = fs.readFileSync(helpSkillMd, 'utf8');
+    fs.writeFileSync(helpSkillMd, `${origHelpMd}\n<!-- fingerprint test edit -->\n`, 'utf8');
+
+    const afterSkillEdit = computeBlendOpsSourceFingerprint(fixtureRepo);
+    assert.notEqual(afterSkillEdit.fingerprint, baseInfo.fingerprint, 'SKILL.md edit must change fingerprint');
+
+    assert.throws(
+      () =>
+        runInstaller(
+          ['--write', '--target', 'generic-project', '--project', projectDir],
+          { repoRoot: fixtureRepo, planDir }
+        ),
+      /BlendOps source files changed since --dry-run was recorded/
+    );
+    fs.writeFileSync(helpSkillMd, origHelpMd, 'utf8');
+    assert.equal(computeBlendOpsSourceFingerprint(fixtureRepo).fingerprint, baseInfo.fingerprint);
+
+    // 2. Modifying a skill EVAL.md changes the fingerprint
+    const helpEvalMd = path.join(fixtureRepo, 'skills', 'blendops-help', 'EVAL.md');
+    const origEvalMd = fs.readFileSync(helpEvalMd, 'utf8');
+    fs.writeFileSync(helpEvalMd, `${origEvalMd}\n<!-- eval edit -->\n`, 'utf8');
+    assert.notEqual(computeBlendOpsSourceFingerprint(fixtureRepo).fingerprint, baseInfo.fingerprint);
+    fs.writeFileSync(helpEvalMd, origEvalMd, 'utf8');
+
+    // 3. Modifying a nested skill reference file changes the fingerprint
+    const refFile = path.join(
+      fixtureRepo,
+      'bundles',
+      'claude-desktop-manual',
+      'references',
+      'skills',
+      'blendops-help.md'
+    );
+    const origRef = fs.readFileSync(refFile, 'utf8');
+    fs.writeFileSync(refFile, `${origRef}\n<!-- bundle ref edit -->\n`, 'utf8');
+    assert.notEqual(computeBlendOpsSourceFingerprint(fixtureRepo).fingerprint, baseInfo.fingerprint);
+    fs.writeFileSync(refFile, origRef, 'utf8');
+
+    // 4. Symlink inside skills/ or bundles/ fails closed
+    const rogueSymlink = path.join(fixtureRepo, 'skills', 'blendops-help', 'rogue-link.md');
+    fs.symlinkSync(helpSkillMd, rogueSymlink);
+    assert.throws(
+      () => computeBlendOpsSourceFingerprint(fixtureRepo),
+      /Unsafe symbolic link in BlendOps source tree/
+    );
+    fs.unlinkSync(rogueSymlink);
+  } finally {
+    fs.rmSync(tempBase, { recursive: true, force: true });
+  }
+});
+
+test('Scenario 31 (Phase 10.1 P2): Public CLI rejects --plan-dir and programmatic planDir enforces strict path and file safety', () => {
+  const tempBase = makeTempDir('blendops-p10-1-plandir-');
+  const projectDir = path.join(tempBase, 'proj');
+  fs.mkdirSync(projectDir, { recursive: true });
+
+  try {
+    // 1. Public CLI rejects --plan-dir and --plan-dir=...
+    assert.throws(
+      () => parseInstallerArgs(['--dry-run', '--target', 'generic-project', '--project', projectDir, '--plan-dir', tempBase]),
+      /Unknown or malformed CLI argument: --plan-dir/
+    );
+    assert.throws(
+      () => parseInstallerArgs(['--dry-run', '--target', 'generic-project', '--project', projectDir, `--plan-dir=${tempBase}`]),
+      /Unknown or malformed CLI argument: --plan-dir=/
+    );
+
+    // 2. Programmatic validatePlanStoreDirectory rejects unsafe locations
+    const homeDir = os.homedir();
+    for (const unsafePlanDir of [
+      '~',
+      homeDir,
+      path.join(homeDir, '.claude'),
+      '/',
+      os.tmpdir(),
+      ROOT,
+      path.join(ROOT, 'scripts'),
+      projectDir,
+      path.join(projectDir, '.blendops'),
+    ]) {
+      assert.throws(
+        () =>
+          validatePlanStoreDirectory(unsafePlanDir, {
+            repoRootReal: ROOT,
+            targetRootReal: fs.realpathSync(projectDir),
+          }),
+        /(Global|Unsafe)/
+      );
+    }
+
+    // 3. Symlinked planDir is rejected
+    const realPlanDir = path.join(tempBase, 'real-plans');
+    const symlinkPlanDir = path.join(tempBase, 'symlink-plans');
+    fs.mkdirSync(realPlanDir, { recursive: true });
+    fs.symlinkSync(realPlanDir, symlinkPlanDir);
+    assert.throws(
+      () =>
+        runInstaller(
+          ['--dry-run', '--target', 'generic-project', '--project', projectDir],
+          { repoRoot: ROOT, planDir: symlinkPlanDir }
+        ),
+      /Refusing symbolic link in planDir path/
+    );
+
+    // 4. Existing unrelated file at planFilePath is never overwritten
+    const dryRes = runInstaller(
+      ['--dry-run', '--target', 'generic-project', '--project', projectDir],
+      { repoRoot: ROOT, planDir: realPlanDir }
+    );
+    fs.writeFileSync(dryRes.planFilePath, '{"unrelated_user_file": true}\n', 'utf8');
+    assert.throws(
+      () =>
+        runInstaller(
+          ['--dry-run', '--target', 'generic-project', '--project', projectDir],
+          { repoRoot: ROOT, planDir: realPlanDir }
+        ),
+      /Refusing to overwrite existing non-plan file/
+    );
+    assert.equal(fs.readFileSync(dryRes.planFilePath, 'utf8'), '{"unrelated_user_file": true}\n');
+  } finally {
+    fs.rmSync(tempBase, { recursive: true, force: true });
+  }
+});
+
+test('Scenario 32 (Phase 10.1 P2): Reruns fail closed if a prior backup recorded in .blendops/install-manifest.json is missing or corrupted rather than overwriting original backup state', () => {
+  const tempBase = makeTempDir('blendops-p10-1-backup-preserve-');
+  const projectDir = path.join(tempBase, 'proj');
+  const planDir = path.join(tempBase, 'plans');
+  fs.mkdirSync(projectDir, { recursive: true });
+
+  const agentsPath = path.join(projectDir, 'AGENTS.md');
+  const originalContent = '# Original Pre-Install AGENTS.md\n';
+  fs.writeFileSync(agentsPath, originalContent, 'utf8');
+
+  try {
+    // Initial install with --target generic-project --patch-agents-md
+    runInstaller(
+      ['--dry-run', '--target', 'generic-project', '--project', projectDir, '--patch-agents-md'],
+      { repoRoot: ROOT, planDir }
+    );
+    runInstaller(
+      ['--write', '--target', 'generic-project', '--project', projectDir, '--patch-agents-md'],
+      { repoRoot: ROOT, planDir }
+    );
+
+    const backupPath = path.join(projectDir, '.blendops', 'backups', 'AGENTS.md.bak');
+    const origBackupBytes = fs.readFileSync(backupPath);
+    assert.equal(origBackupBytes.toString('utf8'), originalContent);
+
+    // 1. Delete the backup file on disk while keeping it referenced in .blendops/install-manifest.json,
+    // then attempt a second install with --target codex --confirm-target-path (which modifies AGENTS.md again)
+    fs.unlinkSync(backupPath);
+
+    runInstaller(
+      ['--dry-run', '--target', 'codex', '--project', projectDir, '--confirm-target-path'],
+      { repoRoot: ROOT, planDir }
+    );
+    assert.throws(
+      () =>
+        runInstaller(
+          ['--write', '--target', 'codex', '--project', projectDir, '--confirm-target-path'],
+          { repoRoot: ROOT, planDir }
+        ),
+      /Existing backup file '\.blendops\/backups\/AGENTS\.md\.bak' referenced by prior install manifest is missing on disk/
+    );
+    assert.ok(
+      !fs.existsSync(backupPath),
+      'installer must not recreate a missing backup from post-install AGENTS.md'
+    );
+
+    // 2. Restore backup file with corrupted bytes -> rerun fails closed
+    fs.writeFileSync(backupPath, '# Corrupted backup bytes\n', 'utf8');
+    assert.throws(
+      () =>
+        runInstaller(
+          ['--write', '--target', 'codex', '--project', projectDir, '--confirm-target-path'],
+          { repoRoot: ROOT, planDir }
+        ),
+      /Existing backup file '\.blendops\/backups\/AGENTS\.md\.bak' failed SHA-256 verification against prior install manifest/
+    );
+
+    // 3. Restore authentic backup bytes -> rerun succeeds and preserves original pre-install backup byte-for-byte
+    fs.writeFileSync(backupPath, origBackupBytes);
+    const writeCodex = runInstaller(
+      ['--write', '--target', 'codex', '--project', projectDir, '--confirm-target-path'],
+      { repoRoot: ROOT, planDir }
+    );
+    assert.equal(writeCodex.ok, true);
+    assert.equal(
+      fs.readFileSync(backupPath, 'utf8'),
+      originalContent,
+      'original pre-install backup must remain preserved after target switch rerun'
+    );
+
+    // And rollback after the second install restores the original pre-install AGENTS.md byte-for-byte!
+    const rollbackRes = runInstaller(['--rollback', '--project', projectDir], {
+      repoRoot: ROOT,
+      planDir,
+    });
+    assert.equal(rollbackRes.ok, true);
+    assert.equal(fs.readFileSync(agentsPath, 'utf8'), originalContent);
+  } finally {
+    fs.rmSync(tempBase, { recursive: true, force: true });
+  }
 });
 

@@ -146,8 +146,27 @@ function resolveSafeOutputRoot(rawOutputRoot, rootDir = root) {
     }
   }
 
-  if (fs.existsSync(effectiveTarget) && fs.statSync(effectiveTarget).isFile()) {
-    throw new Error(`Unsafe --output-root destination (existing file): ${rawOutputRoot}`);
+  if (fs.existsSync(resolvedCandidate)) {
+    const candLstat = fs.lstatSync(resolvedCandidate);
+    if (candLstat.isSymbolicLink()) {
+      throw new Error(`Unsafe --output-root destination (symbolic link): ${rawOutputRoot}`);
+    }
+  }
+
+  if (fs.existsSync(effectiveTarget)) {
+    const targetLstat = fs.lstatSync(effectiveTarget);
+    if (targetLstat.isSymbolicLink()) {
+      throw new Error(`Unsafe --output-root destination (symbolic link): ${rawOutputRoot}`);
+    }
+    if (!targetLstat.isDirectory()) {
+      throw new Error(`Unsafe --output-root destination (existing file): ${rawOutputRoot}`);
+    }
+    const existingEntries = fs.readdirSync(effectiveTarget);
+    if (existingEntries.length > 0) {
+      throw new Error(
+        `Unsafe --output-root destination (refusing to overwrite non-empty directory): ${rawOutputRoot}`,
+      );
+    }
   }
 
   return resolvedCandidate;
@@ -162,8 +181,10 @@ function formatManifestOutputPrefix(targetPath, rootDir = root) {
 }
 
 let outRoot;
+let isCustomOutputRoot = false;
 try {
   const { outputRootArg } = parseCliArgs(process.argv.slice(2));
+  isCustomOutputRoot = outputRootArg !== null && outputRootArg !== undefined;
   outRoot = resolveSafeOutputRoot(outputRootArg, root);
 } catch (err) {
   console.error(err instanceof Error ? err.message : String(err));
@@ -239,7 +260,18 @@ for (const name of skillNames) {
   }
 }
 
-rmrf(outRoot);
+if (isCustomOutputRoot) {
+  if (fs.existsSync(outRoot) && fs.readdirSync(outRoot).length > 0) {
+    console.error(
+      `Refusing to overwrite non-empty --output-root directory: ${outRoot}`,
+    );
+    process.exit(1);
+  }
+} else {
+  rmrf(desktopDir);
+  rmrf(codeDir);
+  fs.rmSync(path.join(outRoot, 'manifest.json'), { force: true });
+}
 mkdirp(desktopDir);
 mkdirp(codeDir);
 
