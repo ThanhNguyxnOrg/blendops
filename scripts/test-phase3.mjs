@@ -478,6 +478,12 @@ describe('Phase 3 — Behavioral Evaluation Schema & Deterministic Runner', () =
         false,
         `${label} must not use ambiguous top-level commitSha; use sourceCommitSha + auditProvenance`,
       );
+      assert.equal(
+        doc.auditPhase,
+        'phase-11-current',
+        `${label} auditPhase must be 'phase-11-current' (stale 'phase-10-current' is forbidden)`,
+      );
+      assert.notEqual(doc.auditPhase, 'phase-10-current');
       assert.ok(doc.auditProvenance, `${label} must include auditProvenance`);
       assert.equal(
         doc.sourceCommitSha,

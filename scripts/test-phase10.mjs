@@ -1103,20 +1103,27 @@ test('Scenario 25: Malformed manifests, missing sources, Windows-style path edge
   }
 });
 
-test('Scenario 26: Current-state audit artifacts record active auditPhase phase-10-current and preserve F-08 = PARTIALLY_FIXED and F-09 = FIXED', () => {
+test('Scenario 26: Current-state audit artifacts record active auditPhase phase-11-current (forbidding stale phase-10-current) and preserve F-08 = PARTIALLY_FIXED and F-09 = FIXED', () => {
   const scorecard = JSON.parse(
     fs.readFileSync(path.join(ROOT, 'docs', 'audits', 'current', 'scorecard.json'), 'utf8')
   );
   const findings = JSON.parse(
     fs.readFileSync(path.join(ROOT, 'docs', 'audits', 'current', 'findings.json'), 'utf8')
   );
+  const skillInventory = JSON.parse(
+    fs.readFileSync(path.join(ROOT, 'docs', 'audits', 'current', 'skill-inventory.json'), 'utf8')
+  );
+  const evalInventory = JSON.parse(
+    fs.readFileSync(path.join(ROOT, 'docs', 'audits', 'current', 'eval-inventory.json'), 'utf8')
+  );
   const manifest = JSON.parse(
     fs.readFileSync(path.join(ROOT, 'docs', 'audits', 'current', 'verification-manifest.json'), 'utf8')
   );
 
-  assert.equal(scorecard.auditPhase, 'phase-10-current');
-  assert.equal(findings.auditPhase, 'phase-10-current');
-  assert.equal(manifest.auditPhase, 'phase-10-current');
+  for (const doc of [scorecard, findings, skillInventory, evalInventory, manifest]) {
+    assert.equal(doc.auditPhase, 'phase-11-current');
+    assert.notEqual(doc.auditPhase, 'phase-10-current');
+  }
 
   const f08 = findings.findings.find((f) => f.id === 'F-08');
   const f09 = findings.findings.find((f) => f.id === 'F-09');

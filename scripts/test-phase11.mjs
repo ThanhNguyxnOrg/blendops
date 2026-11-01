@@ -25,6 +25,123 @@ function sha256File(filePath) {
   return sha256Buffer(fs.readFileSync(filePath));
 }
 
+// Strict character allow/deny check for Windows .cmd batch invocation via cmd.exe /d /c call.
+// Rejects cmd.exe metacharacters, variable expansion markers, quotes, and control characters
+// so untrusted input can never inject shell commands, while permitting spaces and Unicode paths.
+const UNSAFE_WINDOWS_CMD_METACHARS = /["%&|<>^()\r\n\0!;`]/;
+
+export function assertSafeWindowsCmdArgs(executablePath, args = []) {
+  if (typeof executablePath !== 'string' || executablePath.length === 0) {
+    throw new Error('Windows .cmd executablePath must be a non-empty string');
+  }
+  if (UNSAFE_WINDOWS_CMD_METACHARS.test(executablePath)) {
+    throw new Error(
+      `Unsafe executable path rejected for Windows .cmd execution: ${JSON.stringify(executablePath)}`,
+    );
+  }
+  if (!Array.isArray(args)) {
+    throw new Error('Windows .cmd args must be an array of strings');
+  }
+  for (const arg of args) {
+    if (typeof arg !== 'string') {
+      throw new Error(`Windows .cmd argument must be a string, got ${typeof arg}`);
+    }
+    if (UNSAFE_WINDOWS_CMD_METACHARS.test(arg)) {
+      throw new Error(
+        `Unsafe argument rejected for Windows .cmd execution: ${JSON.stringify(arg)}`,
+      );
+    }
+  }
+}
+
+export function resolveWindowsComSpec(env = process.env) {
+  const candidate = env.ComSpec || env.COMSPEC;
+  if (typeof candidate === 'string' && candidate.trim().length > 0) {
+    return candidate.trim();
+  }
+  const sysRoot = env.SystemRoot || env.SYSTEMROOT || 'C:\\Windows';
+  return path.win32.join(sysRoot, 'System32', 'cmd.exe');
+}
+
+export function resolveNpmCliScript(
+  scriptName,
+  { execPath = process.execPath, env = process.env } = {},
+) {
+  if (scriptName === 'npm-cli.js' && typeof env.npm_execpath === 'string' && env.npm_execpath.length > 0) {
+    if (/\.[cm]?js$/i.test(env.npm_execpath) && fs.existsSync(env.npm_execpath)) {
+      return env.npm_execpath;
+    }
+  }
+  if (typeof env.npm_execpath === 'string' && env.npm_execpath.length > 0) {
+    const sibling = path.join(path.dirname(env.npm_execpath), scriptName);
+    if (fs.existsSync(sibling)) {
+      return sibling;
+    }
+  }
+  const execDir = path.dirname(execPath);
+  const candidates = [
+    path.join(execDir, 'node_modules', 'npm', 'bin', scriptName),
+    path.join(execDir, '..', 'lib', 'node_modules', 'npm', 'bin', scriptName),
+  ];
+  for (const candidate of candidates) {
+    if (fs.existsSync(candidate)) {
+      return candidate;
+    }
+  }
+  return null;
+}
+
+export function buildSubprocessInvocation({
+  platform = process.platform,
+  executablePath,
+  args = [],
+  comSpec,
+  env = process.env,
+}) {
+  if (typeof executablePath !== 'string' || executablePath.length === 0) {
+    throw new Error('executablePath must be a non-empty string');
+  }
+  if (!Array.isArray(args) || !args.every((a) => typeof a === 'string')) {
+    throw new Error('args must be an array of strings');
+  }
+
+  // On Windows, .cmd/.bat shims cannot be spawned directly by execFileSync without a command interpreter
+  // (Node CVE-2024-27980 throws EINVAL). Using cmd.exe with ['/d', '/c', 'call', executablePath, ...args]
+  // avoids shell: true and avoids string concatenation: 'call' ensures the first token after '/c' is not
+  // a quote character so cmd.exe never strips quotes when both executablePath and args contain spaces.
+  if (platform === 'win32' && /\.(?:cmd|bat)$/i.test(executablePath)) {
+    assertSafeWindowsCmdArgs(executablePath, args);
+    return {
+      file: comSpec || resolveWindowsComSpec(env),
+      args: ['/d', '/c', 'call', executablePath, ...args],
+      windowsHide: true,
+    };
+  }
+
+  return {
+    file: executablePath,
+    args: [...args],
+    windowsHide: true,
+  };
+}
+
+function execNpmTool(toolName, args, options = {}) {
+  const scriptName = toolName === 'npx' ? 'npx-cli.js' : 'npm-cli.js';
+  const cliJsPath = resolveNpmCliScript(scriptName);
+  if (cliJsPath) {
+    return execFileSync(process.execPath, [cliJsPath, ...args], {
+      windowsHide: true,
+      ...options,
+    });
+  }
+  const executablePath = process.platform === 'win32' ? `${toolName}.cmd` : toolName;
+  const invocation = buildSubprocessInvocation({ executablePath, args });
+  return execFileSync(invocation.file, invocation.args, {
+    windowsHide: invocation.windowsHide,
+    ...options,
+  });
+}
+
 describe('Phase 11 — Distributable CLI & Package Readiness', () => {
   let suiteTmpDir;
   let packDir;
@@ -33,6 +150,7 @@ describe('Phase 11 — Distributable CLI & Package Readiness', () => {
   let packMetadata;
   let tarballPath;
   let installedBinPath;
+  let installedJsEntrypoint;
   let installedPkgRoot;
 
   before(() => {
@@ -51,7 +169,7 @@ describe('Phase 11 — Distributable CLI & Package Readiness', () => {
       'utf8',
     );
 
-    const packJsonRaw = execFileSync(
+    const packJsonRaw = execNpmTool(
       'npm',
       ['pack', '--pack-destination', packDir, '--json'],
       { cwd: ROOT, encoding: 'utf8' },
@@ -62,7 +180,7 @@ describe('Phase 11 — Distributable CLI & Package Readiness', () => {
     tarballPath = path.join(packDir, packMetadata.filename);
     assert.ok(fs.existsSync(tarballPath), `Packed tarball must exist at ${tarballPath}`);
 
-    execFileSync(
+    execNpmTool(
       'npm',
       ['install', '--prefer-offline', '--no-audit', '--no-fund', tarballPath],
       { cwd: consumerDir, stdio: ['ignore', 'pipe', 'pipe'] },
@@ -75,6 +193,7 @@ describe('Phase 11 — Distributable CLI & Package Readiness', () => {
       process.platform === 'win32' ? 'blendops.cmd' : 'blendops',
     );
     installedPkgRoot = path.join(consumerDir, 'node_modules', 'blendops');
+    installedJsEntrypoint = path.join(installedPkgRoot, 'bin', 'blendops.mjs');
   });
 
   after(() => {
@@ -83,23 +202,38 @@ describe('Phase 11 — Distributable CLI & Package Readiness', () => {
     }
   });
 
-  function runInstalledCli(args, { cwd = unrelatedCwd, env = {} } = {}) {
-    return execFileSync(installedBinPath, args, {
-      cwd,
-      encoding: 'utf8',
-      env: { ...process.env, ...env },
-      stdio: ['ignore', 'pipe', 'pipe'],
-    });
-  }
-
-  function runInstalledCliExpectFailure(args, { cwd = unrelatedCwd, env = {} } = {}) {
-    try {
-      execFileSync(installedBinPath, args, {
+  function runInstalledCli(
+    args,
+    { cwd = unrelatedCwd, env = {}, via = 'shim', binPath = installedBinPath, jsEntrypoint = installedJsEntrypoint } = {},
+  ) {
+    if (via === 'js') {
+      return execFileSync(process.execPath, [jsEntrypoint, ...args], {
         cwd,
         encoding: 'utf8',
         env: { ...process.env, ...env },
         stdio: ['ignore', 'pipe', 'pipe'],
+        windowsHide: true,
       });
+    }
+    const invocation = buildSubprocessInvocation({
+      executablePath: binPath,
+      args,
+    });
+    return execFileSync(invocation.file, invocation.args, {
+      cwd,
+      encoding: 'utf8',
+      env: { ...process.env, ...env },
+      stdio: ['ignore', 'pipe', 'pipe'],
+      windowsHide: invocation.windowsHide,
+    });
+  }
+
+  function runInstalledCliExpectFailure(
+    args,
+    { cwd = unrelatedCwd, env = {}, via = 'shim', binPath = installedBinPath, jsEntrypoint = installedJsEntrypoint } = {},
+  ) {
+    try {
+      runInstalledCli(args, { cwd, env, via, binPath, jsEntrypoint });
       assert.fail(`Expected blendops ${args.join(' ')} to fail with non-zero exit code`);
     } catch (err) {
       if (err && err.code === 'ERR_ASSERTION') {
@@ -265,26 +399,37 @@ describe('Phase 11 — Distributable CLI & Package Readiness', () => {
     }
   });
 
-  test('Scenario C: Consumer installation works from an unrelated working directory via both node_modules/.bin/blendops and npx --no-install blendops', () => {
-    assert.ok(fs.existsSync(installedBinPath), 'node_modules/.bin/blendops must exist in consumer project');
+  test('Scenario C: Consumer installation works from an unrelated working directory via node_modules/.bin shim, packaged bin/blendops.mjs entrypoint, and npx --no-install blendops', () => {
+    assert.ok(fs.existsSync(installedBinPath), 'node_modules/.bin/blendops shim must exist in consumer project');
+    assert.ok(fs.existsSync(installedJsEntrypoint), 'node_modules/blendops/bin/blendops.mjs must exist in consumer project');
     assert.ok(fs.existsSync(installedPkgRoot), 'node_modules/blendops must exist in consumer project');
     assert.ok(
       fs.existsSync(path.join(consumerDir, 'node_modules', 'fflate')),
       'Runtime dependency fflate must be installed in consumer node_modules',
     );
 
-    // Invoke via node_modules/.bin/blendops from an unrelated working directory
-    const binVer = runInstalledCli(['--version'], { cwd: unrelatedCwd });
+    // 1. Invoke via generated npm bin shim (node_modules/.bin/blendops or blendops.cmd on Windows) from an unrelated cwd
+    const binVer = runInstalledCli(['--version'], { cwd: unrelatedCwd, via: 'shim' });
     assert.equal(binVer.trim(), `blendops ${INSTALLER_VERSION}`);
 
-    // Invoke via npx --no-install blendops inside consumerDir
-    const npxVer = execFileSync('npx', ['--no-install', 'blendops', '--version'], {
+    // 2. Invoke via packaged JavaScript entrypoint (node_modules/blendops/bin/blendops.mjs) from an unrelated cwd
+    const jsVer = runInstalledCli(['--version'], { cwd: unrelatedCwd, via: 'js' });
+    assert.equal(jsVer.trim(), `blendops ${INSTALLER_VERSION}`);
+
+    const jsDoc = runInstalledCli(['doctor'], { cwd: unrelatedCwd, via: 'js' });
+    assert.match(jsDoc, /Mode: doctor/);
+    assert.match(jsDoc, /48 canonical skills verified/);
+    assert.match(jsDoc, /Runtime status: Not Run/);
+    assert.match(jsDoc, /Artifact status: Not Produced/);
+
+    // 3. Invoke via npx --no-install blendops inside consumerDir
+    const npxVer = execNpmTool('npx', ['--no-install', 'blendops', '--version'], {
       cwd: consumerDir,
       encoding: 'utf8',
     });
     assert.equal(npxVer.trim(), `blendops ${INSTALLER_VERSION}`);
 
-    // Verify backward-compatible npm run skills:install -- --help in the source repository
+    // 4. Verify backward-compatible npm run skills:install -- --help in the source repository
     const repoScriptHelp = execFileSync(
       process.execPath,
       [path.join(ROOT, 'scripts', 'install-skills.mjs'), '--help'],
@@ -675,6 +820,209 @@ describe('Phase 11 — Distributable CLI & Package Readiness', () => {
       fs.readdirSync(outDir),
       [],
       'Clean Claude Desktop bundle rollback must remove all generated bundle files and .blendops metadata',
+    );
+  });
+
+  test('Scenario I: Cross-platform paths with spaces and Unicode work end-to-end across npm install, packaged JS entrypoint, generated npm bin shim, and Windows .cmd invocation guard', () => {
+    const unicodeBase = path.join(suiteTmpDir, 'unicode space suite — Tiếng Việt テスト αβγ');
+    const unicodeConsumerDir = path.join(unicodeBase, 'consumer with spaces — 空間');
+    const unicodeProjectJs = path.join(unicodeBase, 'target project js — Dự Án テスト');
+    const unicodeProjectShim = path.join(unicodeBase, 'target project shim — Dự Án テスト');
+    const unicodePlanDir = path.join(unicodeBase, 'plans with spaces — 計画');
+
+    fs.mkdirSync(unicodeConsumerDir, { recursive: true });
+    fs.mkdirSync(unicodeProjectJs, { recursive: true });
+    fs.mkdirSync(unicodeProjectShim, { recursive: true });
+
+    fs.writeFileSync(
+      path.join(unicodeConsumerDir, 'package.json'),
+      `${JSON.stringify({ name: 'unicode-space-consumer', version: '1.0.0', private: true }, null, 2)}\n`,
+      'utf8',
+    );
+
+    // 1. npm install into a consumer path containing spaces and Unicode
+    execNpmTool(
+      'npm',
+      ['install', '--prefer-offline', '--no-audit', '--no-fund', tarballPath],
+      { cwd: unicodeConsumerDir, stdio: ['ignore', 'pipe', 'pipe'] },
+    );
+
+    const unicodeBinShim = path.join(
+      unicodeConsumerDir,
+      'node_modules',
+      '.bin',
+      process.platform === 'win32' ? 'blendops.cmd' : 'blendops',
+    );
+    const unicodeJsEntry = path.join(
+      unicodeConsumerDir,
+      'node_modules',
+      'blendops',
+      'bin',
+      'blendops.mjs',
+    );
+    assert.ok(fs.existsSync(unicodeBinShim), 'Generated npm command shim must exist in space+Unicode consumer path');
+    assert.ok(fs.existsSync(unicodeJsEntry), 'Packaged JS entrypoint must exist in space+Unicode consumer path');
+
+    const envUnicodePlans = { BLENDOPS_INSTALLER_PLAN_DIR: unicodePlanDir };
+
+    // 2. Full lifecycle (doctor -> dry-run -> write -> rollback) via packaged JS entrypoint on space+Unicode paths
+    const jsDoctor = runInstalledCli(['doctor', '--project', unicodeProjectJs], {
+      via: 'js',
+      jsEntrypoint: unicodeJsEntry,
+      env: envUnicodePlans,
+    });
+    assert.match(jsDoctor, /Mode: doctor/);
+    assert.match(jsDoctor, /Runtime status: Not Run/);
+
+    runInstalledCli(
+      ['install', '--target', 'generic-project', '--project', unicodeProjectJs, '--dry-run'],
+      { via: 'js', jsEntrypoint: unicodeJsEntry, env: envUnicodePlans },
+    );
+    runInstalledCli(
+      ['install', '--target', 'generic-project', '--project', unicodeProjectJs, '--write'],
+      { via: 'js', jsEntrypoint: unicodeJsEntry, env: envUnicodePlans },
+    );
+    assert.ok(fs.existsSync(path.join(unicodeProjectJs, 'BLENDOPS.md')));
+    runInstalledCli(['rollback', '--project', unicodeProjectJs], {
+      via: 'js',
+      jsEntrypoint: unicodeJsEntry,
+      env: envUnicodePlans,
+    });
+    assert.deepEqual(fs.readdirSync(unicodeProjectJs), []);
+
+    // 3. Full lifecycle (doctor -> dry-run -> write -> rollback) via generated npm command shim on space+Unicode paths
+    const shimDoctor = runInstalledCli(['doctor', '--project', unicodeProjectShim], {
+      via: 'shim',
+      binPath: unicodeBinShim,
+      env: envUnicodePlans,
+    });
+    assert.match(shimDoctor, /Mode: doctor/);
+    assert.match(shimDoctor, /Runtime status: Not Run/);
+
+    runInstalledCli(
+      ['install', '--target', 'generic-project', '--project', unicodeProjectShim, '--dry-run'],
+      { via: 'shim', binPath: unicodeBinShim, env: envUnicodePlans },
+    );
+    runInstalledCli(
+      ['install', '--target', 'generic-project', '--project', unicodeProjectShim, '--write'],
+      { via: 'shim', binPath: unicodeBinShim, env: envUnicodePlans },
+    );
+    assert.ok(fs.existsSync(path.join(unicodeProjectShim, 'BLENDOPS.md')));
+    runInstalledCli(['rollback', '--project', unicodeProjectShim], {
+      via: 'shim',
+      binPath: unicodeBinShim,
+      env: envUnicodePlans,
+    });
+    assert.deepEqual(fs.readdirSync(unicodeProjectShim), []);
+
+    // 4. Verify Windows .cmd invocation builder and strict untrusted-argument metacharacter rejection
+    const winCmdPath = 'C:\\Users\\Test User — Tiếng Việt\\app\\node_modules\\.bin\\blendops.cmd';
+    const winProjectPath = 'D:\\Workspaces\\Project With Spaces — テスト';
+    const winInvocation = buildSubprocessInvocation({
+      platform: 'win32',
+      executablePath: winCmdPath,
+      args: ['install', '--target', 'generic-project', '--project', winProjectPath, '--dry-run'],
+      comSpec: 'C:\\Windows\\System32\\cmd.exe',
+    });
+    assert.equal(winInvocation.file, 'C:\\Windows\\System32\\cmd.exe');
+    assert.deepEqual(winInvocation.args, [
+      '/d',
+      '/c',
+      'call',
+      winCmdPath,
+      'install',
+      '--target',
+      'generic-project',
+      '--project',
+      winProjectPath,
+      '--dry-run',
+    ]);
+    assert.equal(winInvocation.windowsHide, true);
+
+    // Reject shell injection metacharacters fail-closed when building Windows .cmd invocations
+    for (const unsafeArg of [
+      'proj & calc.exe',
+      'proj | whoami',
+      'proj > out.txt',
+      'proj < in.txt',
+      'proj ^ escape',
+      'proj %PATH%',
+      'proj !VAR!',
+      'proj "quoted"',
+      'proj (subshell)',
+      'proj ; semicolon',
+      'proj `backtick`',
+      'proj\ninjected',
+      'proj\rinjected',
+    ]) {
+      assert.throws(
+        () =>
+          buildSubprocessInvocation({
+            platform: 'win32',
+            executablePath: winCmdPath,
+            args: ['--project', unsafeArg],
+          }),
+        /Unsafe argument rejected for Windows \.cmd execution/,
+      );
+    }
+  });
+
+  test('Scenario J: Cross-platform CI workflow, Phase 11 audit identity (phase-11-current), and publishing/E404 boundaries remain enforced', () => {
+    // 1. Verify .github/workflows/docs.yml preserves Ubuntu npm run ci and runs Phase 11 CLI tests on ubuntu-latest, windows-latest, and macos-latest
+    const workflowYaml = fs.readFileSync(path.join(ROOT, '.github', 'workflows', 'docs.yml'), 'utf8');
+    assert.match(workflowYaml, /runs-on:\s*ubuntu-latest/);
+    assert.match(workflowYaml, /run:\s*npm run ci/);
+    assert.match(workflowYaml, /cli-cross-platform:/);
+    assert.match(workflowYaml, /-\s*ubuntu-latest/);
+    assert.match(workflowYaml, /-\s*windows-latest/);
+    assert.match(workflowYaml, /-\s*macos-latest/);
+    assert.match(workflowYaml, /run:\s*node --test scripts\/test-phase11\.mjs/);
+
+    // 2. Verify package.json preserves private: true and Node >=18
+    const pkgJson = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8'));
+    assert.equal(pkgJson.private, true, 'package.json must keep "private": true');
+    assert.equal(pkgJson.engines?.node, '>=18', 'package.json must retain Node >=18 engine requirement');
+
+    // 3. Verify docs/distribution-strategy.md documents the npm registry E404 boundary and Not Published posture
+    const distDoc = fs.readFileSync(path.join(ROOT, 'docs', 'distribution-strategy.md'), 'utf8');
+    assert.match(distDoc, /E404/);
+    assert.match(distDoc, /does \*\*not\*\* guarantee reservation rights/i);
+    assert.match(distDoc, /scope ownership/i);
+    assert.match(distDoc, /"private":\s*true/);
+    assert.match(distDoc, /Not Published/);
+
+    // 4. Verify all generated docs/audits/current/* files use phase-11-current and never stale phase-10-current
+    const currentAuditDir = path.join(ROOT, 'docs', 'audits', 'current');
+    for (const jsonName of [
+      'scorecard.json',
+      'findings.json',
+      'skill-inventory.json',
+      'eval-inventory.json',
+      'verification-manifest.json',
+    ]) {
+      const fullPath = path.join(currentAuditDir, jsonName);
+      const raw = fs.readFileSync(fullPath, 'utf8');
+      const parsed = JSON.parse(raw);
+      assert.equal(
+        parsed.auditPhase,
+        'phase-11-current',
+        `${jsonName} must have auditPhase === 'phase-11-current'`,
+      );
+      assert.ok(
+        !raw.includes('phase-10-current'),
+        `${jsonName} must not contain stale 'phase-10-current' identifier`,
+      );
+      assert.equal(
+        parsed.sourceCommitSha,
+        'f0804fd64a9fa4f263a9ec59c5de84ed21733747',
+        `${jsonName} must preserve Phase 10.2 sourceCommitSha f0804fd64a9fa4f263a9ec59c5de84ed21733747`,
+      );
+    }
+
+    const currentAuditReadme = fs.readFileSync(path.join(currentAuditDir, 'README.md'), 'utf8');
+    assert.ok(
+      !currentAuditReadme.includes('phase-10-current'),
+      'docs/audits/current/README.md must not contain stale phase-10-current identifier',
     );
   });
 });

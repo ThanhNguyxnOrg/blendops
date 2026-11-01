@@ -478,7 +478,7 @@ test('Scenario 7 (Phase 9 Fix A): Repository cache isolation under default cache
   }
 });
 
-test('Scenario 8 (Phase 9 Fix A/B/C): Fail-closed error handling on invalid repo state or uncreatable bundle path, plus CLI subprocess verification', async () => {
+test('Scenario 8 (Phase 9 Fix A/B/C): Strict guardrails on invalid repo state or uncreatable bundle path, plus CLI subprocess verification', async () => {
   const nonGitDir = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-p9-s8-nongit-'));
   const repoMissingMain = createIsolatedGitRepo('blendops-p9-s8-nomain-');
   const validRepo = createIsolatedGitRepo('blendops-p9-s8-valid-');

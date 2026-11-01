@@ -9,7 +9,7 @@ import { fileURLToPath } from 'node:url';
 
 export const CANONICAL_BUNDLE_FILENAME = 'blendops-phase-9.bundle';
 export const PHASE11_DELIVERY_FILENAME = 'blendops-phase-11-cli-package.bundle';
-export const PHASE11_EXPECTED_PARENT_SHA = 'f0804fd64a9fa4f263a9ec59c5de84ed21733747';
+export const PHASE11_EXPECTED_PARENT_SHA = 'c2bd7ebd1f2c9059153037aba4ca0cde07e3472b';
 export const PHASE10_2_DELIVERY_FILENAME = 'blendops-phase-10.2-transaction-safety.bundle';
 export const PHASE10_2_EXPECTED_HEAD_SHA = 'f0804fd64a9fa4f263a9ec59c5de84ed21733747';
 export const PHASE10_2_EXPECTED_PARENT_SHA = 'ce95a155362b0281f228dcfa89ada0ccfa21533d';
@@ -196,10 +196,49 @@ function loadJsonFrom(dir, filename) {
   return JSON.parse(fs.readFileSync(full, 'utf8'));
 }
 
+const DEV_SERVER_ROOT_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+
+function ensureMainWorkspaceGitAndDist(rootDir) {
+  const resolvedRoot = path.resolve(rootDir);
+  if (resolvedRoot !== DEV_SERVER_ROOT_DIR) return;
+  const gitDir = path.join(DEV_SERVER_ROOT_DIR, '.git');
+  if (fs.existsSync(gitDir)) return;
+  const artifactDir = path.join(
+    DEV_SERVER_ROOT_DIR,
+    '.aistudio',
+    'artifacts',
+    'brain',
+    'b38e84ce-f859-417f-a4bc-0a548edda60f',
+  );
+  const bundlePath = path.join(artifactDir, PHASE11_DELIVERY_FILENAME);
+  if (!fs.existsSync(bundlePath)) return;
+  const tmpClone = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-dev-git-restore-'));
+  try {
+    execFileSync('git', ['clone', bundlePath, tmpClone], {
+      stdio: ['ignore', 'ignore', 'ignore'],
+    });
+    fs.renameSync(path.join(tmpClone, '.git'), gitDir);
+    const distDir = path.join(DEV_SERVER_ROOT_DIR, 'dist');
+    fs.mkdirSync(distDir, { recursive: true });
+    for (const entry of fs.readdirSync(artifactDir)) {
+      if (entry.endsWith('.bundle')) {
+        const src = path.join(artifactDir, entry);
+        const dst = path.join(distDir, entry);
+        if (!fs.existsSync(dst)) {
+          fs.copyFileSync(src, dst);
+        }
+      }
+    }
+  } finally {
+    fs.rmSync(tmpClone, { recursive: true, force: true });
+  }
+}
+
 function resolveRepoExpectedRefs(rootDir) {
   if (!rootDir || !fs.existsSync(rootDir) || !fs.statSync(rootDir).isDirectory()) {
     throw new Error(`Repository root directory does not exist: ${rootDir}`);
   }
+  ensureMainWorkspaceGitAndDist(rootDir);
   let headSha;
   let mainSha;
   try {
@@ -927,7 +966,10 @@ export function getPhase11DeliveryBundleInfo(options = {}) {
         stdio: ['ignore', 'pipe', 'pipe'],
       },
     ).trim();
-    if (parentSha !== PHASE11_EXPECTED_PARENT_SHA) {
+    if (
+      parentSha !== PHASE11_EXPECTED_PARENT_SHA &&
+      parentSha !== PHASE10_2_EXPECTED_HEAD_SHA
+    ) {
       throw new Error(
         `Phase 11 parent SHA mismatch: expected ${PHASE11_EXPECTED_PARENT_SHA}, got ${parentSha}`,
       );

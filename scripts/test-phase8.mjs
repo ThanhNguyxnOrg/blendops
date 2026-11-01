@@ -1163,7 +1163,7 @@ test('Scenario 30 (Phase 8.1 #11): Manifest with duplicate paths or malformed JS
   }
 });
 
-test('Scenario 31 (Phase 8.1 #12): Failed builds do not partially write or delete bundle summary files', () => {
+test('Scenario 31 (Phase 8.1 #12): Aborted builds do not partially write or delete bundle summary files', () => {
   const tempRoot = createIsolatedFixtureRepo();
   try {
     // Seed a stale summary file that would be unlinked on a successful build
@@ -1549,7 +1549,7 @@ test('Scenario 36 (Phase 8.1.1 Fix A): Condition expressions with single/multipl
   }
 });
 
-test('Scenario 37 (Phase 8.1.1 Fix A): Malformed condition expressions fail closed with actionable errors and never use unsafe evaluation', () => {
+test('Scenario 37 (Phase 8.1.1 Fix A): Malformed condition expressions are rejected with actionable diagnostics and never use unsafe evaluation', () => {
   // 1. Empty expression
   assert.throws(
     () => parseConditionGroupExpression('all', '   '),

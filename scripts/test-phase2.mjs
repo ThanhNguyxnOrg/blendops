@@ -458,7 +458,7 @@ test('Phase 2.1 (Workstream B): resolveRoutingWinner rejects invalid goalClarity
   }
 });
 
-test('Phase 2.1 (Workstream D): --check is strictly read-only and failed validation never writes partial or misleading registry output', () => {
+test('Phase 2.1 (Workstream D): --check is strictly read-only and rejected validation never writes partial or misleading registry output', () => {
   const tmpRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-p21-test-'));
   try {
     fs.cpSync(path.join(root, 'schemas'), path.join(tmpRoot, 'schemas'), { recursive: true });

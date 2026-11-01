@@ -64,6 +64,16 @@ If the canonical package source `bundles/skill-package/blendops/` is used as upl
 
 ---
 
+## npm package readiness & registry `E404` boundary
+
+Phase 11 packages BlendOps as a self-contained CLI (`bin/blendops.mjs`) that can be packed into a local tarball (`npm pack`) and installed into a local consumer project (`npm install ./blendops-0.1.0-draft.tgz`, invoked via `node_modules/.bin/blendops`, `node node_modules/blendops/bin/blendops.mjs`, or `npx --no-install blendops`).
+
+- **`"private": true` preserved:** `package.json` intentionally retains `"private": true` as a hard guard against accidental `npm publish`.
+- **No public npm release:** BlendOps is **not** published to the public npm registry (`Not Published`). Do not claim that `npx blendops` or `npm install -g blendops` can fetch a publicly published package.
+- **Registry `E404` check limitation:** During Phase 11 namespace verification, querying the public npm registry (`npm view`) for `blendops`, `@blendops/cli`, and `@thanhnguyxn/blendops` returned `E404` (`Not Found`). An npm registry `E404` only means a package name was not found during that check; it does **not** guarantee reservation rights, npm similarity/anti-typosquatting clearance at publish time, trademark rights, or scope ownership (such as `@blendops` or `@thanhnguyxn`).
+
+---
+
 ## Release policy
 
 - v0 should not depend on official marketplace acceptance.
