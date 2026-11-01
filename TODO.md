@@ -279,6 +279,7 @@ Status without these files: **skills layer still complete and shippable**. Runti
 
 - [x] Phase 10 & Phase 11 — Safe project-local installer (`scripts/install-skills.mjs`) and distributable CLI (`bin/blendops.mjs`) with `npm pack` tarball readiness (`"private": true` retained; public `npm publish` deferred until human release approval). Spec at `docs/install/installer-spec.md`.
 - [x] Phase 12 — Web-Ready GLB Delivery & Viewer Integration (`schemas/glb-web-handoff-manifest.schema.json`, `scripts/inspect-glb.mjs`, `scripts/generate-glb-handoff-report.mjs`, `blendops glb-inspect` / `glb-handoff` / `glb-validate-manifest`, and Three.js + React Three Fiber integration modules in [`docs/examples/glb-web-handoff/README.md`](./docs/examples/glb-web-handoff/README.md)). Live Blender runtime execution remains `Not Run` and production GLB artifacts remain `Not Produced` until an operator runtime evidence record is captured.
+- [x] Phase 13 — Repository Architecture, Organization & Finalization (`docs/architecture.md`, `docs/audits/current/repository-inventory.json`, `scripts/validate-repository-architecture.mjs`, `.gitattributes`, `.editorconfig`, and `scripts/test-phase13.mjs`).
 - [ ] Public npm registry release (`npm publish`) — deferred until explicit human maintainer release approval.
 
 ## ⚪ Not a blocker — Skills UI upload

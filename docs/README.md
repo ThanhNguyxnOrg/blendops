@@ -22,6 +22,7 @@ The single index for everything in this repo. Bookmark this page.
 | Release tag (`v0.1.0-draft`) | 🟡 Tag-able now | Skills layer is complete; tagging is a publishing decision, not gated on upstream runtime evidence. |
 | Local CLI / tarball package | Implemented locally (`Not Published`) | `bin/blendops.mjs` + `scripts/install-skills.mjs` verified via `npm pack`; no public npm registry or marketplace listing claimed. |
 | GLB Web Handoff & Viewer Integration | Implemented (`Not Run` / `Not Produced` for live Blender exports) | `schemas/glb-web-handoff-manifest.schema.json`, `scripts/inspect-glb.mjs`, `scripts/generate-glb-handoff-report.mjs`, CLI `glb-inspect` / `glb-handoff` / `glb-validate-manifest`, and Three.js + R3F examples in [`examples/glb-web-handoff/README.md`](./examples/glb-web-handoff/README.md). |
+| Repository architecture & file inventory | Verified (`npm run arch:check`) | Canonical source, generated artifact, historical record, documentation, runtime/test, distribution, and config classification in [`architecture.md`](./architecture.md) and [`audits/current/repository-inventory.json`](./audits/current/repository-inventory.json). |
 
 ---
 
@@ -48,7 +49,7 @@ The single index for everything in this repo. Bookmark this page.
 | Review workflow behavior | [`workflow-contract.md`](./workflow-contract.md) | [`first-user-journey.md`](./first-user-journey.md), [`safety-model.md`](./safety-model.md) |
 | Install BlendOps into a tool | [`ai-agent-quickstart.md`](./ai-agent-quickstart.md) | [`ai-agent-install-flow.md`](./ai-agent-install-flow.md), [`install-scopes.md`](./install-scopes.md), [`multi-agent-install-strategy.md`](./multi-agent-install-strategy.md), [`adapters/README.md`](./adapters/README.md), [`install/README.md`](./install/README.md) |
 | Inspect a GLB & integrate into Three.js / React Three Fiber | [`examples/glb-web-handoff/README.md`](./examples/glb-web-handoff/README.md) | [`../skills/glb-web-handoff/SKILL.md`](../skills/glb-web-handoff/SKILL.md), [`../schemas/glb-web-handoff-manifest.schema.json`](../schemas/glb-web-handoff-manifest.schema.json) |
-| Check eval evidence | [`evals/README.md`](./evals/README.md) | [`release-readiness.md`](./release-readiness.md), [`release-readiness-rollup-v0.md`](./release-readiness-rollup-v0.md) |
+| Check eval evidence & repository audit | [`evals/README.md`](./evals/README.md) | [`audits/current/README.md`](./audits/current/README.md), [`audits/current/repository-inventory.json`](./audits/current/repository-inventory.json), [`release-readiness.md`](./release-readiness.md), [`release-readiness-rollup-v0.md`](./release-readiness-rollup-v0.md) |
 | Review v0 pack content | [`../packs/README.md`](../packs/README.md) | [`../skills/README.md`](../skills/README.md), [`workflows/README.md`](./workflows/README.md), [`recipes/README.md`](./recipes/README.md) |
 
 ---

@@ -101,6 +101,7 @@ The previously-listed "blockers" are now correctly scoped:
 - [x] Skill ZIP / package generation working (`npm run skills:export` produces one ZIP + one Claude Code folder per `skills/*/SKILL.md`, currently 48).
 - [x] Safe project-local installer (`scripts/install-skills.mjs`) and distributable CLI (`bin/blendops.mjs`) verified end-to-end via `npm pack` (`scripts/test-phase10.mjs`, `scripts/test-phase11.mjs`), with `"private": true` retained to prevent accidental registry publishing.
 - [x] Web-ready GLB 2.0 inspection, handoff manifest schema (`schemas/glb-web-handoff-manifest.schema.json`), HTML/Markdown/JSON report generator (`scripts/generate-glb-handoff-report.mjs`), and Three.js / React Three Fiber viewer integration examples (`docs/examples/glb-web-handoff/README.md`) verified via `scripts/test-phase12.mjs`.
+- [x] Repository architecture, complete tracked-file classification (`docs/audits/current/repository-inventory.json`), root hygiene (`.gitattributes`, `.editorconfig`, `.gitignore`), and internal reference integrity verified via `scripts/validate-repository-architecture.mjs` (`npm run arch:check`) and `scripts/test-phase13.mjs`.
 - [x] CI guards passing (`npm run docs:check` validates active markdown files; see script footer count).
 - [x] Runtime-stack-strategy 2-path + CLI appendix documented with upstream redirect clarity.
 - [x] CLI compatibility considerations researched + documented (GLB export, add-on enablement, GPU flags, viewport limits, stateless caveat).

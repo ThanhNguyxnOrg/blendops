@@ -595,11 +595,19 @@ describe('Phase 12 — Web-Ready GLB Delivery & Viewer Integration', () => {
     const sampleGlb = path.join(suiteTmpDir, 'sample-path-guard.glb');
     fs.writeFileSync(sampleGlb, buildMinimalValidGlbBuffer());
 
-    // 1. Filesystem root
+    // 1. Filesystem root & Windows drive root
     const fsRoot = path.parse(ROOT).root;
     assert.throws(
       () => validateSafeReportOutputDir(fsRoot, { repoRoot: ROOT }),
-      /filesystem root is forbidden/,
+      /filesystem root|drive root/,
+    );
+    assert.throws(
+      () => validateSafeReportOutputDir('/', { repoRoot: ROOT }),
+      /filesystem root|drive root/,
+    );
+    assert.throws(
+      () => validateSafeReportOutputDir('C:\\', { repoRoot: ROOT }),
+      /filesystem root|drive root/,
     );
 
     // 2. Home directory

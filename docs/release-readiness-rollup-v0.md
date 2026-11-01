@@ -1,14 +1,17 @@
 # Release Readiness Rollup v0
 
-Status: Draft v0, pre-runtime rollup  
+Status: Historical Draft v0 snapshot (Phase 3.3 pre-runtime rollup — preserved for audit provenance; see [`docs/release-readiness.md`](./release-readiness.md) and [`docs/audits/current/README.md`](./audits/current/README.md) for current Phase 13 readiness)
 Date: 2026-04-29 (original); runtime-evidence section corrected 2026-05-08; scope corrected 2026-05-09 (skills layer = BlendOps-owned; runtime paths = upstream redirect)
+
+> [!NOTE]
+> **Historical Snapshot Notice (v0):** This file is an immutable historical Phase 3.3 pre-runtime rollup snapshot retained for audit provenance (`classification: historical_record`). For current repository release readiness, see [`docs/release-readiness.md`](./release-readiness.md) and [`docs/audits/current/README.md`](./audits/current/README.md).
 
 > [!IMPORTANT]
 > **Scope correction (2026-05-09): BlendOps publishes the skills layer; runtime paths are an upstream redirect.** Earlier drafts of this rollup framed runtime-eval-evidence items as v0.1.0-tagging blockers. That was wrong because BlendOps does not own runtime execution paths — it redirects to upstream Blender Foundation Lab + Anthropic Connector + community `ahujasid` + Blender CLI. Skills layer is **complete and tag-able as `v0.1.0-draft`**; in-repo runtime evidence files are **optional operator-side provenance**, not publishing blockers.
 >
 > Historical attribution context (kept for record): the 2026-04-29 rollup originally claimed "Stack 1 — Claude Desktop official connector stack read-only smoke test: Pass / Available". A previous correction (commit `ac04686`) called this attribution ambiguous. After re-reading upstream docs, the original "Claude Desktop Connector" attribution is **consistent** with the recorded Lab MCP tool names (`get_blendfile_summary_*`, `get_objects_summary`) since Anthropic Connector hosts the same Lab MCP stack. The runtime-evidence section below uses the 2-path + CLI appendix model.
 
-This rollup summarizes the current pre-runtime release position for BlendOps. It does not claim stable readiness, production readiness, official runtime compatibility confirmation, official runtime manual eval completion, or generated runtime artifacts.
+This rollup summarizes the historical Phase 3.3 pre-runtime release position for BlendOps. It does not claim stable readiness, production readiness, official runtime compatibility confirmation, official runtime manual eval completion, or generated runtime artifacts.
 
 ---
 

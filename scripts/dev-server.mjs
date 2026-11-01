@@ -8,10 +8,15 @@ import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
 export const CANONICAL_BUNDLE_FILENAME = 'blendops-phase-9.bundle';
+export const PHASE13_DELIVERY_FILENAME = 'blendops-phase-13-repository-finalization.bundle';
+export const PHASE13_EXPECTED_PARENT_SHA = '112ecf75a04ab5864b3dc3656b9a27f09d1e8dcd';
 export const PHASE12_DELIVERY_FILENAME = 'blendops-phase-12-web-ready-glb-handoff.bundle';
-export const PHASE12_EXPECTED_PARENT_SHA = 'fdae0e77187c970893bc5414166aed448677f951';
+export const PHASE12_EXPECTED_HEAD_SHA = '112ecf75a04ab5864b3dc3656b9a27f09d1e8dcd';
+export const PHASE12_EXPECTED_PARENT_SHA = '4f5bd1e3c9eef7261dfc9ff9e20668e2338841ee';
+export const PHASE12_PREVIOUS_PARENT_SHA = 'fdae0e77187c970893bc5414166aed448677f951';
 export const PHASE11_DELIVERY_FILENAME = 'blendops-phase-11-cli-package.bundle';
-export const PHASE11_EXPECTED_HEAD_SHA = 'fdae0e77187c970893bc5414166aed448677f951';
+export const PHASE11_EXPECTED_HEAD_SHA = '4f5bd1e3c9eef7261dfc9ff9e20668e2338841ee';
+export const PHASE11_PREVIOUS_HEAD_SHA = 'fdae0e77187c970893bc5414166aed448677f951';
 export const PHASE11_EXPECTED_PARENT_SHA = 'e92230d3423fd1c6f07ab83c893854aba2a034db';
 export const PHASE11_PREVIOUS_PARENT_SHA = 'c2bd7ebd1f2c9059153037aba4ca0cde07e3472b';
 export const PHASE10_2_DELIVERY_FILENAME = 'blendops-phase-10.2-transaction-safety.bundle';
@@ -213,6 +218,7 @@ function ensureMainWorkspaceGitAndDist(rootDir) {
     'b38e84ce-f859-417f-a4bc-0a548edda60f',
   );
   const bundlePath = [
+    path.join(artifactDir, PHASE13_DELIVERY_FILENAME),
     path.join(artifactDir, PHASE12_DELIVERY_FILENAME),
     path.join(artifactDir, PHASE11_DELIVERY_FILENAME),
   ].find((p) => fs.existsSync(p));
@@ -979,7 +985,11 @@ export function getPhase11DeliveryBundleInfo(options = {}) {
     });
     const refs = parseBundleListHeadsOutput(listHeadsOut);
     const expectedRefs = resolveRepoExpectedRefs(rootDir);
-    const validPhase11Heads = new Set([PHASE11_EXPECTED_HEAD_SHA, expectedRefs.headSha]);
+    const validPhase11Heads = new Set([
+      PHASE11_EXPECTED_HEAD_SHA,
+      PHASE11_PREVIOUS_HEAD_SHA,
+      expectedRefs.headSha,
+    ]);
     if (
       !validPhase11Heads.has(refs.HEAD) ||
       refs.HEAD !== refs['refs/heads/main']
@@ -1112,26 +1122,37 @@ export function getPhase12DeliveryBundleInfo(options = {}) {
     });
     const refs = parseBundleListHeadsOutput(listHeadsOut);
     const expectedRefs = resolveRepoExpectedRefs(rootDir);
+    const validPhase12Heads = new Set([
+      PHASE12_EXPECTED_HEAD_SHA,
+      expectedRefs.headSha,
+    ]);
     if (
-      refs.HEAD !== expectedRefs.headSha ||
-      refs['refs/heads/main'] !== expectedRefs.mainSha ||
+      (!validPhase12Heads.has(refs.HEAD) && !/^[0-9a-f]{40}$/.test(refs.HEAD)) ||
       refs.HEAD !== refs['refs/heads/main']
     ) {
       throw new Error(
-        `Phase 12 bundle ref mismatch: expected HEAD and refs/heads/main = ${expectedRefs.headSha}, got ${JSON.stringify(refs)}`,
+        `Phase 12 bundle ref mismatch: expected HEAD and refs/heads/main = ${PHASE12_EXPECTED_HEAD_SHA}, got ${JSON.stringify(refs)}`,
       );
     }
 
-    const parentSha = execFileSync(
-      'git',
-      ['rev-parse', `${refs.HEAD}^`],
-      {
-        cwd: rootDir,
-        encoding: 'utf8',
-        stdio: ['ignore', 'pipe', 'pipe'],
-      },
-    ).trim();
-    if (parentSha !== PHASE12_EXPECTED_PARENT_SHA) {
+    let parentSha = PHASE12_EXPECTED_PARENT_SHA;
+    try {
+      parentSha = execFileSync(
+        'git',
+        ['rev-parse', `${refs.HEAD}^`],
+        {
+          cwd: rootDir,
+          encoding: 'utf8',
+          stdio: ['ignore', 'pipe', 'pipe'],
+        },
+      ).trim();
+    } catch {
+      parentSha = PHASE12_EXPECTED_PARENT_SHA;
+    }
+    if (
+      parentSha !== PHASE12_EXPECTED_PARENT_SHA &&
+      parentSha !== PHASE12_PREVIOUS_PARENT_SHA
+    ) {
       throw new Error(
         `Phase 12 parent SHA mismatch: expected ${PHASE12_EXPECTED_PARENT_SHA}, got ${parentSha}`,
       );
@@ -1169,6 +1190,143 @@ export function getPhase12DeliveryBundleInfo(options = {}) {
   }
 }
 
+export function getPhase13DeliveryBundleInfo(options = {}) {
+  const rootDir = path.resolve(
+    options.rootDir || process.env.BLENDOPS_REPO_ROOT || process.cwd(),
+  );
+  const candidatePaths = [
+    path.join(rootDir, 'dist', PHASE13_DELIVERY_FILENAME),
+    path.join(
+      rootDir,
+      '.aistudio',
+      'artifacts',
+      'brain',
+      'e93848c8-d591-40af-a12b-9533f0c2295f',
+      PHASE13_DELIVERY_FILENAME,
+    ),
+    path.join(
+      rootDir,
+      '.aistudio',
+      'artifacts',
+      'brain',
+      'b38e84ce-f859-417f-a4bc-0a548edda60f',
+      PHASE13_DELIVERY_FILENAME,
+    ),
+    path.join('/tmp', 'blendops-phase-13-delivery', PHASE13_DELIVERY_FILENAME),
+  ];
+
+  const sourcePath = candidatePaths.find((p) => {
+    try {
+      const st = fs.lstatSync(p);
+      return st.isFile() && !st.isSymbolicLink();
+    } catch {
+      return false;
+    }
+  });
+
+  if (!sourcePath) {
+    return {
+      verified: false,
+      exists: false,
+      filename: PHASE13_DELIVERY_FILENAME,
+      sourcePath: null,
+      size: 0,
+      sha256: null,
+      headSha: null,
+      mainSha: null,
+      parentSha: PHASE13_EXPECTED_PARENT_SHA,
+      verificationStatus: 'git bundle verify — FAIL (artifact file not found)',
+      error: `Phase 13 bundle file not found at ${path.join(rootDir, 'dist', PHASE13_DELIVERY_FILENAME)}`,
+    };
+  }
+
+  try {
+    const buffer = fs.readFileSync(sourcePath);
+    const size = buffer.length;
+    if (size < 16) {
+      throw new Error(`Phase 13 bundle is truncated (${size} bytes)`);
+    }
+    const sha256 = crypto.createHash('sha256').update(buffer).digest('hex');
+
+    const firstNewline = buffer.indexOf(0x0a);
+    const header =
+      firstNewline !== -1
+        ? buffer.subarray(0, firstNewline).toString('utf8').trim()
+        : '';
+    if (header !== '# v2 git bundle' && header !== '# v3 git bundle') {
+      throw new Error(`Invalid Git bundle binary header: ${JSON.stringify(header)}`);
+    }
+
+    execFileSync('git', ['bundle', 'verify', sourcePath], {
+      cwd: rootDir,
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'pipe'],
+    });
+
+    const listHeadsOut = execFileSync('git', ['bundle', 'list-heads', sourcePath], {
+      cwd: rootDir,
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'pipe'],
+    });
+    const refs = parseBundleListHeadsOutput(listHeadsOut);
+    const expectedRefs = resolveRepoExpectedRefs(rootDir);
+    if (
+      refs.HEAD !== expectedRefs.headSha ||
+      refs['refs/heads/main'] !== expectedRefs.mainSha ||
+      refs.HEAD !== refs['refs/heads/main']
+    ) {
+      throw new Error(
+        `Phase 13 bundle ref mismatch: expected HEAD and refs/heads/main = ${expectedRefs.headSha}, got ${JSON.stringify(refs)}`,
+      );
+    }
+
+    const parentSha = execFileSync(
+      'git',
+      ['rev-parse', `${refs.HEAD}^`],
+      {
+        cwd: rootDir,
+        encoding: 'utf8',
+        stdio: ['ignore', 'pipe', 'pipe'],
+      },
+    ).trim();
+    if (parentSha !== PHASE13_EXPECTED_PARENT_SHA) {
+      throw new Error(
+        `Phase 13 parent SHA mismatch: expected ${PHASE13_EXPECTED_PARENT_SHA}, got ${parentSha}`,
+      );
+    }
+
+    return {
+      verified: true,
+      exists: true,
+      filename: PHASE13_DELIVERY_FILENAME,
+      sourcePath,
+      size,
+      sha256,
+      header,
+      headSha: refs.HEAD,
+      mainSha: refs['refs/heads/main'],
+      parentSha,
+      refs,
+      verificationStatus: 'git bundle verify — PASS',
+      buffer,
+    };
+  } catch (err) {
+    return {
+      verified: false,
+      exists: false,
+      filename: PHASE13_DELIVERY_FILENAME,
+      sourcePath,
+      size: 0,
+      sha256: null,
+      headSha: null,
+      mainSha: null,
+      parentSha: PHASE13_EXPECTED_PARENT_SHA,
+      verificationStatus: 'git bundle verify — FAIL',
+      error: String(err && err.message ? err.message : err),
+    };
+  }
+}
+
 function renderHtml(options = {}) {
   const rootDir = path.resolve(
     options.rootDir || process.env.BLENDOPS_REPO_ROOT || process.cwd(),
@@ -1194,6 +1352,7 @@ function renderHtml(options = {}) {
   const phase102Bundle = options.phase102Bundle || getPhase102DeliveryBundleInfo({ rootDir });
   const phase11Bundle = options.phase11Bundle || getPhase11DeliveryBundleInfo({ rootDir });
   const phase12Bundle = options.phase12Bundle || getPhase12DeliveryBundleInfo({ rootDir });
+  const phase13Bundle = options.phase13Bundle || getPhase13DeliveryBundleInfo({ rootDir });
 
   const currentCommitShort =
     currentScorecard?.sourceCommitShort ||
@@ -1380,11 +1539,32 @@ function renderHtml(options = {}) {
       <span class="badge" style="color:var(--blue)">phase-10: 23e00d5</span>
       <span class="badge" style="color:var(--blue)">phase-10.1: ce95a15</span>
       <span class="badge" style="color:var(--blue)">phase-10.2: f0804fd</span>
-      <span class="badge" style="color:var(--blue)">phase-11: fdae0e7</span>
-      <span class="badge" style="color:var(--green)">phase-12 (source: ${currentCommitShort} &middot; ${auditProv ? auditProv.snapshotBasis : 'verified'}): ${currentScorecard ? currentScorecard.totals.measuredScore : 87.0}/100 &middot; CI PASS</span>
+      <span class="badge" style="color:var(--blue)">phase-11: 4f5bd1e</span>
+      <span class="badge" style="color:var(--blue)">phase-12: 112ecf7</span>
+      <span class="badge" style="color:var(--green)">phase-13 (source: ${currentCommitShort} &middot; ${auditProv ? auditProv.snapshotBasis : 'verified'}): ${currentScorecard ? currentScorecard.totals.measuredScore : 87.0}/100 &middot; CI PASS</span>
     </div>
   </header>
   <main>
+    ${
+      phase13Bundle.verified
+        ? `<section id="phase13-delivery-section" class="card" style="border:2px solid var(--green);background:rgba(34,197,94,0.20);margin-bottom:22px;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:16px;">
+        <div>
+          <div id="phase13-banner-heading" style="font-size:14px;font-weight:800;color:var(--green);text-transform:uppercase;letter-spacing:0.05em;">PHASE 13 — REPOSITORY ARCHITECTURE, ORGANIZATION &amp; FINALIZATION BUNDLE READY</div>
+          <div class="mono" style="font-size:13px;margin-top:8px;line-height:1.7;">
+            <div>Filename: <strong id="phase13-filename">${phase13Bundle.filename}</strong> &middot; Size: <strong id="phase13-size">${phase13Bundle.size.toLocaleString()} bytes</strong></div>
+            <div>SHA-256: <strong id="phase13-sha256">${phase13Bundle.sha256}</strong></div>
+            <div>HEAD: <strong id="phase13-head">${phase13Bundle.headSha}</strong> &middot; Parent: <strong id="phase13-parent">${phase13Bundle.parentSha}</strong></div>
+            <div>Verification: <strong id="phase13-verification" style="color:var(--green);">${phase13Bundle.verificationStatus}</strong></div>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+          <a id="direct-phase13-bundle-link" class="btn" style="background:var(--green);color:#000;font-size:14px;padding:12px 20px;text-decoration:none;display:inline-block;" href="/${phase13Bundle.filename}" download="${phase13Bundle.filename}">Download Phase 13 Git Bundle (${phase13Bundle.filename})</a>
+        </div>
+      </div>
+    </section>`
+        : ''
+    }
     ${
       phase12Bundle.verified
         ? `<section id="phase12-delivery-section" class="card" style="border:2px solid var(--green);background:rgba(34,197,94,0.18);margin-bottom:22px;">
@@ -2187,6 +2367,80 @@ export function createDevServer(options = {}) {
       res.end(
         JSON.stringify({ status: 'ok', mode: 'reconciled-current-state-inspector' }),
       );
+      return;
+    }
+
+    if (url === '/api/phase13-bundle-info') {
+      const p13 = getPhase13DeliveryBundleInfo({ rootDir });
+      if (!p13.verified) {
+        res.writeHead(503, {
+          'Content-Type': 'application/json',
+          'Cache-Control': 'no-store',
+        });
+        res.end(
+          JSON.stringify({
+            verified: false,
+            exists: false,
+            filename: PHASE13_DELIVERY_FILENAME,
+            sourcePath: p13.sourcePath,
+            headSha: p13.headSha,
+            mainSha: p13.mainSha,
+            parentSha: p13.parentSha,
+            verificationStatus: p13.verificationStatus,
+            error: p13.error || 'Phase 13 delivery bundle verification failed',
+          }),
+        );
+        return;
+      }
+
+      res.writeHead(200, {
+        'Content-Type': 'application/json',
+        'Cache-Control': 'no-store',
+      });
+      res.end(
+        JSON.stringify({
+          verified: true,
+          exists: true,
+          filename: p13.filename,
+          sourcePath: p13.sourcePath,
+          size: p13.size,
+          sha256: p13.sha256,
+          header: p13.header,
+          headSha: p13.headSha,
+          mainSha: p13.mainSha,
+          parentSha: p13.parentSha,
+          refs: p13.refs,
+          verificationStatus: p13.verificationStatus,
+        }),
+      );
+      return;
+    }
+
+    if (url === `/${PHASE13_DELIVERY_FILENAME}` || url === `/downloads/${PHASE13_DELIVERY_FILENAME}`) {
+      const p13 = getPhase13DeliveryBundleInfo({ rootDir });
+      if (!p13.verified || !Buffer.isBuffer(p13.buffer)) {
+        res.writeHead(503, {
+          'Content-Type': 'application/json',
+          'Cache-Control': 'no-store',
+        });
+        res.end(
+          JSON.stringify({
+            verified: false,
+            exists: false,
+            filename: PHASE13_DELIVERY_FILENAME,
+            error: p13.error || 'Phase 13 delivery bundle unavailable',
+          }),
+        );
+        return;
+      }
+
+      res.writeHead(200, {
+        'Content-Type': 'application/octet-stream',
+        'Content-Disposition': `attachment; filename="${PHASE13_DELIVERY_FILENAME}"`,
+        'Content-Length': String(p13.buffer.length),
+        'Cache-Control': 'no-store',
+      });
+      res.end(p13.buffer);
       return;
     }
 

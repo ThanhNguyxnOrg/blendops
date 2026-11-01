@@ -2,7 +2,7 @@
 
 Thanks for contributing.
 
-BlendOps is a **product/workflow + Skills-pack layer** for non-Blender users. It is **not** a Blender runtime, MCP server, or installer.
+BlendOps is a **product/workflow + Skills-pack layer** for non-Blender users, paired with a project-local skill installer (`bin/blendops.mjs`, `scripts/install-skills.mjs`) and GLB 2.0 web handoff inspection toolkit (`scripts/inspect-glb.mjs`, `scripts/generate-glb-handoff-report.mjs`). It is **not** a Blender runtime, MCP server, or Blender add-on.
 
 ---
 
@@ -10,17 +10,18 @@ BlendOps is a **product/workflow + Skills-pack layer** for non-Blender users. It
 
 Welcome:
 
-- product / workflow doc clarity (README, hub, runtime, install)
+- product / workflow doc clarity (README, hub, runtime, install, architecture)
 - scene / workflow planning skill contracts (`skills/`)
 - shared guardrail laws (`laws/`)
 - pack manifests (`packs/`)
 - per-target install docs (`docs/install/`) and adapter mappings (`docs/adapters/`)
 - bundle fixtures (`bundles/skill-package/`, `bundles/claude-desktop-manual/`, `bundles/generic-project-local/`)
+- GLB 2.0 container inspection and web viewer handoff examples (`docs/examples/glb-web-handoff/`)
 - evidence records under `docs/evals/` when you actually run a path
 
 Out of scope (will be rejected):
 
-- shipping a BlendOps-owned CLI / MCP server / Blender add-on (intentionally external — see `laws/official-runtime-only.md`)
+- shipping a BlendOps-owned Blender runtime, MCP server, or Blender add-on (intentionally external — see `laws/official-runtime-only.md`)
 - making arbitrary Python the user-facing surface (see `laws/no-arbitrary-python-interface.md`)
 - claiming runtime / artifact success without an evidence file (see `laws/evidence-before-done.md`)
 - introducing dense Blender jargon into user-facing outputs (see `laws/non-blender-user-language.md`)
@@ -41,14 +42,20 @@ Node 18 or newer is required.
 
 ## Required pre-PR checks
 
-Run BOTH before opening a PR. CI runs `docs:check` on every PR.
+Run the full CI suite before opening a PR. GitHub Actions runs `npm run ci` and cross-platform CLI tests (`ubuntu-latest`, `windows-latest`, `macos-latest`) on every PR and push to `main`.
 
 ```bash
-npm run docs:check     # validates active markdown files under docs/skills/laws/packs/skill-reviews (see script footer count): frontmatter spec, runtime model, link integrity, Blender 5.1+ for Path 1, evidence rules
-npm run skills:export  # produces one ZIP + one Claude Code folder per skills/*/SKILL.md (currently 48) into dist/claude-skills/
+npm run docs:check               # validates active markdown files, frontmatter spec, runtime model, link integrity, Blender 5.1+ for Path 1, evidence rules
+npm run arch:check               # validates repository inventory classification, root policy, duplicate rules, and internal references
+npm run registry:check           # verifies registry/skills.json and registry/workflow-graph.json match skills/*/contract.json
+npm run evals:check              # validates evals/*.json against schemas/skill-eval.schema.json
+npm run evals:run                # runs deterministic behavioral evaluations across all 48 skills
+npm run bundles:summaries:check  # verifies 96 generated bundle reference summaries are in sync
+npm run skills:export            # produces one ZIP + one Claude Code folder per skills/*/SKILL.md (48 total) into dist/claude-skills/
+npm test                         # runs all phase regression test suites (test-phase1.mjs .. test-phase13.mjs)
 ```
 
-Or run both with the convenience script:
+Or run the entire pipeline with the single convenience script:
 
 ```bash
 npm run ci

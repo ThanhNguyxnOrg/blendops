@@ -1,20 +1,20 @@
 {
   "schemaVersion": "1.5.0",
-  "auditPhase": "phase-12-current",
+  "auditPhase": "phase-13-current",
   "status": "reconciled-current-state",
   "repository": "ThanhNguyxnOrg/blendops",
   "branch": "main",
-  "sourceCommitSha": "fdae0e77187c970893bc5414166aed448677f951",
-  "sourceCommitShort": "fdae0e7",
-  "sourceCommitDate": "2026-11-01 08:24:52 +0000",
+  "sourceCommitSha": "112ecf75a04ab5864b3dc3656b9a27f09d1e8dcd",
+  "sourceCommitShort": "112ecf7",
+  "sourceCommitDate": "2026-11-01 04:55:09 -0500",
   "auditProvenance": {
-    "sourceCommitSha": "fdae0e77187c970893bc5414166aed448677f951",
-    "sourceCommitShort": "fdae0e7",
-    "sourceCommitDate": "2026-11-01 08:24:52 +0000",
+    "sourceCommitSha": "112ecf75a04ab5864b3dc3656b9a27f09d1e8dcd",
+    "sourceCommitShort": "112ecf7",
+    "sourceCommitDate": "2026-11-01 04:55:09 -0500",
     "workingTreeState": "dirty",
     "snapshotBasis": "working-tree-on-top-of-source-commit",
-    "uncommittedChangeCount": 21,
-    "auditedInputsSha256": "233d6deea44b35a0f95c1880db3d0b8ed2ea69eb1800b2584a7e1c7c07b10553",
+    "uncommittedChangeCount": 23,
+    "auditedInputsSha256": "584b3df141ef686bf70336a2b9daed03cdbd9009dd8227a12e247063e72fb570",
     "selfReferentialCommitRule": "A Git commit cannot contain its own final commit SHA inside tracked files. sourceCommitSha records the verified HEAD commit present when the generator ran, workingTreeState and snapshotBasis record whether uncommitted working-tree changes were present on top of sourceCommitSha, and auditedInputsSha256 digests the exact audited file contents."
   },
   "historicalBaseline": {
@@ -399,11 +399,18 @@
       "verdict": "Pass",
       "evidenceFiles": [
         ".github/workflows/docs.yml",
+        ".gitattributes",
+        ".editorconfig",
+        ".gitignore",
+        "docs/architecture.md",
+        "docs/audits/current/repository-inventory.json",
         "scripts/check-docs.mjs",
+        "scripts/validate-repository-architecture.mjs",
         "scripts/export-claude-skills.mjs",
         "scripts/build-registry.mjs",
         "scripts/run-evals.mjs",
-        "scripts/generate-bundle-reference-summaries.mjs"
+        "scripts/generate-bundle-reference-summaries.mjs",
+        "scripts/test-phase13.mjs"
       ],
       "criteria": [
         {
@@ -420,7 +427,7 @@
           "maxPoints": 2,
           "awardedPoints": 2,
           "status": "Pass",
-          "evidence": "F-02 FIXED: scripts/export-claude-skills.mjs uses pure-Node fflate (0 external binary calls) with isolated --output-root concurrency safety and .github/workflows/docs.yml executes npm run ci (docs:check + registry:check + evals:check + evals:run + bundles:summaries:check + skills:export + test)."
+          "evidence": "F-02 FIXED: scripts/export-claude-skills.mjs uses pure-Node fflate (0 external binary calls) with isolated --output-root concurrency safety, scripts/validate-repository-architecture.mjs validates full tracked-file classification and internal references, and .github/workflows/docs.yml executes npm run ci (docs:check + arch:check + registry:check + evals:check + evals:run + bundles:summaries:check + skills:export + test)."
         }
       ]
     }

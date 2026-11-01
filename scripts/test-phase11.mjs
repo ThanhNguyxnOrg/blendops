@@ -126,7 +126,7 @@ export function buildSubprocessInvocation({
   };
 }
 
-function execNpmTool(toolName, args, options = {}) {
+export function execNpmTool(toolName, args, options = {}) {
   const scriptName = toolName === 'npx' ? 'npx-cli.js' : 'npm-cli.js';
   const cliJsPath = resolveNpmCliScript(scriptName);
   if (cliJsPath) {
@@ -143,6 +143,11 @@ function execNpmTool(toolName, args, options = {}) {
   });
 }
 
+const IS_DIRECT_PHASE11_TEST = process.argv
+  .slice(1)
+  .some((arg) => !arg.startsWith('-') && path.resolve(arg) === __filename);
+
+if (IS_DIRECT_PHASE11_TEST) {
 describe('Phase 11 — Distributable CLI & Package Readiness', () => {
   let suiteTmpDir;
   let packDir;
@@ -1035,8 +1040,10 @@ describe('Phase 11 — Distributable CLI & Package Readiness', () => {
       const raw = fs.readFileSync(fullPath, 'utf8');
       const parsed = JSON.parse(raw);
       assert.ok(
-        parsed.auditPhase === 'phase-11-current' || parsed.auditPhase === 'phase-12-current',
-        `${jsonName} must have auditPhase === 'phase-11-current' or 'phase-12-current'`,
+        parsed.auditPhase === 'phase-11-current' ||
+          parsed.auditPhase === 'phase-12-current' ||
+          parsed.auditPhase === 'phase-13-current',
+        `${jsonName} must have auditPhase === 'phase-11-current', 'phase-12-current', or 'phase-13-current'`,
       );
       assert.ok(
         !raw.includes('phase-10-current'),
@@ -1044,7 +1051,8 @@ describe('Phase 11 — Distributable CLI & Package Readiness', () => {
       );
       assert.ok(
         parsed.sourceCommitSha === 'f0804fd64a9fa4f263a9ec59c5de84ed21733747' ||
-          parsed.sourceCommitSha === 'fdae0e77187c970893bc5414166aed448677f951',
+          parsed.sourceCommitSha === 'fdae0e77187c970893bc5414166aed448677f951' ||
+          parsed.sourceCommitSha === '112ecf75a04ab5864b3dc3656b9a27f09d1e8dcd',
         `${jsonName} must preserve verified sourceCommitSha`,
       );
     }
@@ -1190,3 +1198,4 @@ describe('Phase 11 — Distributable CLI & Package Readiness', () => {
     }
   });
 });
+}

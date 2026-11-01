@@ -1920,6 +1920,16 @@ export async function generateGlbHandoffReportFromBuffer(
   });
 }
 
+function pathsEqualOnPlatform(pathA, pathB) {
+  if (!pathA || !pathB) return false;
+  const normA = path.resolve(pathA);
+  const normB = path.resolve(pathB);
+  if (process.platform === 'win32') {
+    return normA.toLowerCase() === normB.toLowerCase();
+  }
+  return normA === normB;
+}
+
 export function validateSafeReportOutputDir(
   rawOutDir,
   { repoRoot = path.resolve(__dirname, '..'), inputGlbPath = null } = {},
@@ -1931,28 +1941,31 @@ export function validateSafeReportOutputDir(
   if (trimmed === '~' || trimmed.startsWith('~/') || trimmed.startsWith('~\\')) {
     throw new Error(`Unsafe --out-dir path (home directory '${trimmed}' is rejected)`);
   }
-  if (/^[a-zA-Z]:[\\/]?$/.test(trimmed) || trimmed.startsWith('\\\\')) {
-    throw new Error(`Unsafe --out-dir path (drive root or UNC path is rejected): ${rawOutDir}`);
+  if (/^[a-zA-Z]:[\\/]?$/.test(trimmed) || trimmed.startsWith('\\\\') || trimmed === '/' || trimmed === '\\') {
+    throw new Error(
+      `Unsafe --out-dir path (filesystem root, drive root, or UNC path is forbidden): ${rawOutDir}`,
+    );
   }
 
   const absOut = path.resolve(trimmed.replace(/\\/g, path.sep));
   const parsedRoot = path.parse(absOut).root;
-  if (absOut === parsedRoot) {
+  if (pathsEqualOnPlatform(absOut, parsedRoot)) {
     throw new Error(`Unsafe --out-dir path (filesystem root is forbidden): ${rawOutDir}`);
   }
 
   const home = os.homedir ? path.resolve(os.homedir()) : '';
-  if (home && absOut === home) {
+  const homeReal = home && fs.existsSync(home) ? fs.realpathSync(home) : home;
+  if ((home && pathsEqualOnPlatform(absOut, home)) || (homeReal && pathsEqualOnPlatform(absOut, homeReal))) {
     throw new Error(`Unsafe --out-dir path (user home root is forbidden): ${rawOutDir}`);
   }
 
   const tmpRoot = path.resolve(os.tmpdir());
   const tmpReal = fs.existsSync(tmpRoot) ? fs.realpathSync(tmpRoot) : tmpRoot;
-  if (absOut === tmpRoot || absOut === tmpReal) {
+  if (pathsEqualOnPlatform(absOut, tmpRoot) || pathsEqualOnPlatform(absOut, tmpReal)) {
     throw new Error(`Unsafe --out-dir path (OS temp root itself is forbidden): ${rawOutDir}`);
   }
 
-  // Check ancestors for symlinks
+  // Check nearest existing directory and ancestors for symlinks/junctions
   let cursor = absOut;
   const tail = [];
   while (!fs.existsSync(cursor)) {
@@ -1968,15 +1981,47 @@ export function validateSafeReportOutputDir(
   if (!existingLstat.isDirectory()) {
     throw new Error(`Target --out-dir path or ancestor is not a directory: ${cursor}`);
   }
+
+  const realRepoRoot = fs.existsSync(repoRoot) ? fs.realpathSync(repoRoot) : path.resolve(repoRoot);
+  let ancestorCheck = cursor;
+  while (ancestorCheck && !pathsEqualOnPlatform(ancestorCheck, path.parse(ancestorCheck).root)) {
+    if (
+      pathsEqualOnPlatform(ancestorCheck, tmpRoot) ||
+      pathsEqualOnPlatform(ancestorCheck, tmpReal) ||
+      pathsEqualOnPlatform(ancestorCheck, realRepoRoot)
+    ) {
+      break;
+    }
+    const st = fs.lstatSync(ancestorCheck);
+    if (st.isSymbolicLink()) {
+      throw new Error(`Refusing symbolic link in --out-dir path: ${ancestorCheck}`);
+    }
+    const nextParent = path.dirname(ancestorCheck);
+    if (nextParent === ancestorCheck) break;
+    ancestorCheck = nextParent;
+  }
+
   const realBase = fs.realpathSync(cursor);
   const resolvedOut = tail.length > 0 ? path.join(realBase, ...tail) : realBase;
 
-  const realRepoRoot = fs.existsSync(repoRoot) ? fs.realpathSync(repoRoot) : path.resolve(repoRoot);
-  if (resolvedOut === realRepoRoot || absOut === realRepoRoot) {
+  if (pathsEqualOnPlatform(resolvedOut, tmpRoot) || pathsEqualOnPlatform(resolvedOut, tmpReal)) {
+    throw new Error(`Unsafe --out-dir path (OS temp root itself is forbidden): ${rawOutDir}`);
+  }
+  if (
+    (home && pathsEqualOnPlatform(resolvedOut, home)) ||
+    (homeReal && pathsEqualOnPlatform(resolvedOut, homeReal))
+  ) {
+    throw new Error(`Unsafe --out-dir path (user home root is forbidden): ${rawOutDir}`);
+  }
+
+  if (pathsEqualOnPlatform(resolvedOut, realRepoRoot) || pathsEqualOnPlatform(absOut, realRepoRoot)) {
     throw new Error(`Refusing to write handoff report files directly into repository root (${realRepoRoot})`);
   }
 
-  const relFromRepo = path.relative(realRepoRoot, resolvedOut);
+  const relFromRepo = path.relative(
+    process.platform === 'win32' ? realRepoRoot.toLowerCase() : realRepoRoot,
+    process.platform === 'win32' ? resolvedOut.toLowerCase() : resolvedOut,
+  );
   const isInsideRepo = relFromRepo !== '' && !relFromRepo.startsWith('..') && !path.isAbsolute(relFromRepo);
   if (isInsideRepo) {
     const topSeg = relFromRepo.split(path.sep)[0];
@@ -1992,7 +2037,12 @@ export function validateSafeReportOutputDir(
 
   if (inputGlbPath) {
     const absGlb = path.resolve(inputGlbPath);
-    if (absGlb === resolvedOut || absGlb === absOut) {
+    const realGlb = fs.existsSync(absGlb) ? fs.realpathSync(absGlb) : absGlb;
+    if (
+      pathsEqualOnPlatform(absGlb, resolvedOut) ||
+      pathsEqualOnPlatform(absGlb, absOut) ||
+      pathsEqualOnPlatform(realGlb, resolvedOut)
+    ) {
       throw new Error('Refusing --out-dir that collides with the input GLB file path');
     }
   }

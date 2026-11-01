@@ -139,6 +139,7 @@ BlendOps recognizes **2 MCP execution paths + a CLI fallback appendix** ([full d
 | Inspect a GLB & generate a web handoff report (Three.js / R3F) | [`docs/examples/glb-web-handoff/README.md`](./docs/examples/glb-web-handoff/README.md) |
 | Browse skills / laws / packs | [`skills/README.md`](./skills/README.md) · [`laws/README.md`](./laws/README.md) · [`packs/README.md`](./packs/README.md) |
 | Check release readiness | [`docs/release-readiness.md`](./docs/release-readiness.md) |
+| Inspect repository architecture & file inventory | [`docs/architecture.md`](./docs/architecture.md) · [`docs/audits/current/repository-inventory.json`](./docs/audits/current/repository-inventory.json) |
 | See the canonical portable skill package | [`bundles/skill-package/blendops/`](./bundles/skill-package/blendops/) |
 
 ---

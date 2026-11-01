@@ -1,0 +1,18 @@
+# BlendOps cross-platform line-ending and binary file attributes
+* text=auto eol=lf
+
+# Windows batch files require CRLF when present
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Binary assets and archives
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.gif binary
+*.ico binary
+*.glb binary
+*.zip binary
+*.tgz binary
+*.bundle binary

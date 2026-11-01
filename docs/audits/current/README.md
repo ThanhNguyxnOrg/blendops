@@ -10,7 +10,7 @@
 
 | Metric | Historical Phase 0 Baseline (`3ea3c35`) | Current Reconciled State (`main`) | Status / Change |
 | :--- | :---: | :---: | :--- |
-| **Overall Measured Score** | `54.5 / 100` | **`87.0 / 100`** | **`+32.5`** (backed by Phases 1, 2, 2.1, 3, 3.1, 3.1.1, 4, 5, 6, 6.1, 7, 8, 8.1, 8.1.1, 9, 10, 10.1, 10.2, 11, 12) |
+| **Overall Measured Score** | `54.5 / 100` | **`87.0 / 100`** | **`+32.5`** (backed by Phases 1, 2, 2.1, 3, 3.1, 3.1.1, 4, 5, 6, 6.1, 7, 8, 8.1, 8.1.1, 9, 10, 10.1, 10.2, 11, 12, 13) |
 | **Active P0 Zero-Compensation Blockers** | `3` (`F-01`, `F-02`, `F-04`) | **`0`** | `F-01`, `F-02`, `F-03`, `F-04` **FIXED** |
 | **Skills with `Artifact status: Not Run` (`F-01`)** | `30 / 48` | **`0 / 48`** | **FIXED** in Phase 1 + guarded in `scripts/check-docs.mjs` |
 | **Extended Template Completeness (`F-05`)** | `8 / 48` skills missing sections | **`0 / 48` skills missing sections** | **FIXED** in Phase 4 + 18-heading guard in `scripts/check-docs.mjs` |
@@ -27,17 +27,17 @@ Because a Git commit cannot honestly contain its own final commit SHA inside tra
 
 | Provenance Field | Recorded Value | Explanation |
 | :--- | :--- | :--- |
-| `sourceCommitSha` | `fdae0e77187c970893bc5414166aed448677f951` (`fdae0e7`) | Latest verified commit in Git history when the generator executed |
+| `sourceCommitSha` | `112ecf75a04ab5864b3dc3656b9a27f09d1e8dcd` (`112ecf7`) | Latest verified commit in Git history when the generator executed |
 | `workingTreeState` | `dirty` | Whether audited files had uncommitted changes on top of `sourceCommitSha` |
 | `snapshotBasis` | `working-tree-on-top-of-source-commit` | Explicit distinction between a clean committed tree and a working tree on top of `sourceCommitSha` |
-| `uncommittedChangeCount` | `21` | Count of modified/staged/deleted/untracked repository paths outside `docs/audits/current/**` |
-| `auditedInputsSha256` | `233d6deea44b35a0f95c1880db3d0b8ed2ea69eb1800b2584a7e1c7c07b10553` | Deterministic SHA-256 content digest across all manifest-declared repository inputs |
+| `uncommittedChangeCount` | `23` | Count of modified/staged/deleted/untracked repository paths outside `docs/audits/current/**` |
+| `auditedInputsSha256` | `584b3df141ef686bf70336a2b9daed03cdbd9009dd8227a12e247063e72fb570` | Deterministic SHA-256 content digest across all manifest-declared repository inputs |
 
 ### 1.2 Audited Input Digest Scope & Manifest Governance
 
 The `auditedInputsSha256` digest is governed by [`../audited-inputs.manifest.json`](../audited-inputs.manifest.json):
 
-- **Included Scope (`requiredFiles` + `requiredDirectories`):** Covers [`../audited-inputs.manifest.json`](../audited-inputs.manifest.json) itself, root governance & dependency files (`AGENTS.md`, `README.md`, `TODO.md`, `LICENSE`, `package.json`, `package-lock.json`, `.github/workflows/docs.yml`), core architecture & runtime docs (`docs/README.md`, `docs/start-here.md`, `docs/runtime-stack-strategy.md`, `docs/adapter-registry.md`, `docs/distribution-strategy.md`, etc.), all CLI/validation/compiler/eval/bundle/installer/test scripts (`bin/blendops.mjs`, `scripts/check-docs.mjs`, `scripts/export-claude-skills.mjs`, `scripts/build-registry.mjs`, `scripts/run-evals.mjs`, `scripts/inspect-glb.mjs`, `scripts/generate-glb-handoff-report.mjs`, `scripts/generate-bundle-reference-summaries.mjs`, `scripts/generate-current-audit.mjs`, `scripts/dev-server.mjs`, `scripts/install-skills.mjs`, `scripts/test-phase1.mjs` through `scripts/test-phase12.mjs`), and the complete directory trees `docs/audits/phase-0`, `docs/audits/phase-2`, `docs/audits/phase-2.1`, `docs/audits/phase-3`, `docs/evals`, `docs/examples/glb-web-handoff`, `docs/install`, `docs/adapters`, `laws`, `packs`, `bundles`, `skills`, `registry`, `evals`, and `schemas`.
+- **Included Scope (`requiredFiles` + `requiredDirectories`):** Covers [`../audited-inputs.manifest.json`](../audited-inputs.manifest.json) itself, root governance & dependency files (`.editorconfig`, `.gitattributes`, `.gitignore`, `AGENTS.md`, `CHANGELOG.md`, `CODE_OF_CONDUCT.md`, `CONTRIBUTING.md`, `README.md`, `SECURITY.md`, `SUPPORT.md`, `TODO.md`, `LICENSE`, `package.json`, `package-lock.json`, `.github/workflows/docs.yml`), core architecture & runtime docs (`docs/README.md`, `docs/architecture.md`, `docs/start-here.md`, `docs/runtime-stack-strategy.md`, `docs/adapter-registry.md`, `docs/distribution-strategy.md`, `docs/release-readiness-rollup-v0.md`, etc.), all CLI/validation/compiler/eval/bundle/installer/test scripts (`bin/blendops.mjs`, `scripts/check-docs.mjs`, `scripts/validate-repository-architecture.mjs`, `scripts/export-claude-skills.mjs`, `scripts/build-registry.mjs`, `scripts/run-evals.mjs`, `scripts/inspect-glb.mjs`, `scripts/generate-glb-handoff-report.mjs`, `scripts/generate-bundle-reference-summaries.mjs`, `scripts/generate-current-audit.mjs`, `scripts/dev-server.mjs`, `scripts/install-skills.mjs`, `scripts/test-phase1.mjs` through `scripts/test-phase13.mjs`), and the complete directory trees `docs/audits/phase-0`, `docs/audits/phase-2`, `docs/audits/phase-2.1`, `docs/audits/phase-3`, `docs/evals`, `docs/examples/glb-web-handoff`, `docs/install`, `docs/adapters`, `laws`, `packs`, `bundles`, `skills`, `registry`, `evals`, and `schemas`.
 - **Excluded Scope (`excludedPrefixes` & `excludedExactPaths`):** Excludes `docs/audits/current/**` (generated output directory to prevent self-referential hashing), `.git/`, `node_modules/`, `dist/`, `.aistudio/`, temporary files, and symbolic links.
 - **Digest Algorithm:** Expands all manifest files and directories into a deduplicated, lexicographically sorted list of normalized POSIX relative paths and computes a SHA-256 digest over unambiguous length-prefixed framing (`path:<byteLength>:<relPath>\0content:<byteLength>:\0<bytes>\0`).
 - **Adding New Evidence Paths:** Whenever a new file or directory is referenced in `scorecard.json` (`pillars[].evidenceFiles[]`) or `findings.json` (`findings[].evidencePaths[]`), it **must** be covered by `requiredFiles` or `requiredDirectories` in [`../audited-inputs.manifest.json`](../audited-inputs.manifest.json). This invariant is enforced in CI by `scripts/test-phase3.mjs`, `scripts/test-phase6.mjs`, `scripts/test-phase7.mjs`, and `scripts/test-phase8.mjs`.
@@ -67,10 +67,12 @@ The `auditedInputsSha256` digest is governed by [`../audited-inputs.manifest.jso
 - [`findings.json`](./findings.json) — Machine-readable lifecycle table for `F-01` through `F-10`.
 - [`skill-inventory.json`](./skill-inventory.json) — Live 48-skill inventory reflecting Phase 1 truth-state fixes, Phase 2/2.1/5 full-catalog contracts, Phase 3/6 full-catalog eval coverage, and Phase 4 extended template completion.
 - [`eval-inventory.json`](./eval-inventory.json) — Live 48-skill evaluation inventory covering all 48 machine-readable suites (269 cases) with 0 remaining prose-only skills.
-- [`verification-manifest.json`](./verification-manifest.json) — Verified commit chain through `fdae0e77187c970893bc5414166aed448677f951`, Phase 10 / 10.1 / 10.2 / 11 / 12 provenance context, CI pipeline commands, and runtime/artifact truth states.
+- [`verification-manifest.json`](./verification-manifest.json) — Verified commit chain through `112ecf75a04ab5864b3dc3656b9a27f09d1e8dcd`, Phase 10 / 10.1 / 10.2 / 11 / 12 / 13 provenance context, CI pipeline commands, and runtime/artifact truth states.
+- [`repository-inventory.json`](./repository-inventory.json) — Complete machine-readable inventory classifying every tracked repository file across 7 canonical categories (`canonical_source`, `generated_artifact`, `historical_record`, `documentation`, `runtime_build_test_infrastructure`, `distribution_artifact`, `configuration`).
 
 ## Related Documentation
 
+- Repository Architecture & Directory Guide: [`../../architecture.md`](../../architecture.md)
 - Audited Input Digest Manifest: [`../audited-inputs.manifest.json`](../audited-inputs.manifest.json)
 - Historical Phase 0 Audit: [`../phase-0/README.md`](../phase-0/README.md)
 - Phase 2.1 Hardening Report: [`../phase-2.1/README.md`](../phase-2.1/README.md)

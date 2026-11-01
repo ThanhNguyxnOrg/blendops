@@ -438,7 +438,7 @@ describe('Phase 3 — Behavioral Evaluation Schema & Deterministic Runner', () =
     assert.equal(currentScorecard.totals.measuredScore, 87.0);
     assert.equal(currentScorecard.methodology.activeZeroCompensationBlockers.length, 0);
 
-    // Verify commitChain includes all verified commits through Phase 11 (fdae0e7)
+    // Verify commitChain includes all verified commits through Phase 12 (112ecf7)
     const chainShas = currentManifest.commitChain.map((c) => c.commitSha);
     assert.deepEqual(chainShas, [
       '3ea3c35c6b8a6e5e915bab9f63333d4a1c09bd4d',
@@ -462,7 +462,8 @@ describe('Phase 3 — Behavioral Evaluation Schema & Deterministic Runner', () =
       '23e00d5d735190049ec0cb224bec4ae7fd67a990',
       'ce95a155362b0281f228dcfa89ada0ccfa21533d',
       'f0804fd64a9fa4f263a9ec59c5de84ed21733747',
-      'fdae0e77187c970893bc5414166aed448677f951',
+      '4f5bd1e3c9eef7261dfc9ff9e20668e2338841ee',
+      '112ecf75a04ab5864b3dc3656b9a27f09d1e8dcd',
     ]);
 
     // Verify explicit auditProvenance on all 5 JSON artifacts and no ambiguous self-referential commitSha
@@ -481,21 +482,21 @@ describe('Phase 3 — Behavioral Evaluation Schema & Deterministic Runner', () =
       );
       assert.equal(
         doc.auditPhase,
-        'phase-12-current',
-        `${label} auditPhase must be 'phase-12-current' (stale 'phase-10-current' is forbidden)`,
+        'phase-13-current',
+        `${label} auditPhase must be 'phase-13-current' (stale 'phase-10-current' is forbidden)`,
       );
       assert.notEqual(doc.auditPhase, 'phase-10-current');
       assert.ok(doc.auditProvenance, `${label} must include auditProvenance`);
       assert.equal(
         doc.sourceCommitSha,
-        'fdae0e77187c970893bc5414166aed448677f951',
-        `${label} sourceCommitSha must record Phase 11 completion base commit fdae0e77187c970893bc5414166aed448677f951`,
+        '112ecf75a04ab5864b3dc3656b9a27f09d1e8dcd',
+        `${label} sourceCommitSha must record Phase 12 completion base commit 112ecf75a04ab5864b3dc3656b9a27f09d1e8dcd`,
       );
       assert.equal(
         doc.auditProvenance.sourceCommitSha,
-        'fdae0e77187c970893bc5414166aed448677f951',
+        '112ecf75a04ab5864b3dc3656b9a27f09d1e8dcd',
       );
-      assert.equal(doc.auditProvenance.sourceCommitShort, 'fdae0e7');
+      assert.equal(doc.auditProvenance.sourceCommitShort, '112ecf7');
       assert.ok(
         doc.auditProvenance.workingTreeState === 'clean' ||
           doc.auditProvenance.workingTreeState === 'dirty',

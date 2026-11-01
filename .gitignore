@@ -38,6 +38,11 @@ screenshots/
 *.fbx
 *.blend1
 
-# Local agent tool state
+# Local agent tool state and scratch artifacts
 .claude/
 .omc/
+.aistudio/
+.playwright-cli/
+.blendops/
+bun.lock
+*.tgz

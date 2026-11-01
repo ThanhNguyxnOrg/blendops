@@ -1103,7 +1103,7 @@ test('Scenario 25: Malformed manifests, missing sources, Windows-style path edge
   }
 });
 
-test('Scenario 26: Current-state audit artifacts record active auditPhase phase-12-current (forbidding stale phase-10-current) and preserve F-08 = PARTIALLY_FIXED and F-09 = FIXED', () => {
+test('Scenario 26: Current-state audit artifacts record active auditPhase phase-13-current (forbidding stale phase-10-current) and preserve F-08 = PARTIALLY_FIXED and F-09 = FIXED', () => {
   const scorecard = JSON.parse(
     fs.readFileSync(path.join(ROOT, 'docs', 'audits', 'current', 'scorecard.json'), 'utf8')
   );
@@ -1121,8 +1121,10 @@ test('Scenario 26: Current-state audit artifacts record active auditPhase phase-
   );
 
   for (const doc of [scorecard, findings, skillInventory, evalInventory, manifest]) {
-    assert.equal(doc.auditPhase, 'phase-12-current');
+    assert.equal(doc.auditPhase, 'phase-13-current');
     assert.notEqual(doc.auditPhase, 'phase-10-current');
+    assert.notEqual(doc.auditPhase, 'phase-11-current');
+    assert.notEqual(doc.auditPhase, 'phase-12-current');
   }
 
   const f08 = findings.findings.find((f) => f.id === 'F-08');

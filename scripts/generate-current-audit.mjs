@@ -39,7 +39,16 @@ export function ensureMainRepoGitRestored(rootDir = ROOT_DIR) {
     'brain',
     'b38e84ce-f859-417f-a4bc-0a548edda60f',
   );
+  const currentArtifactDir = path.join(
+    ROOT_DIR,
+    '.aistudio',
+    'artifacts',
+    'brain',
+    'e93848c8-d591-40af-a12b-9533f0c2295f',
+  );
   const bundlePath = [
+    path.join(currentArtifactDir, 'blendops-phase-13-repository-finalization.bundle'),
+    path.join(artifactDir, 'blendops-phase-13-repository-finalization.bundle'),
     path.join(artifactDir, 'blendops-phase-12-web-ready-glb-handoff.bundle'),
     path.join(artifactDir, 'blendops-phase-11-cli-package.bundle'),
   ].find((p) => fs.existsSync(p));
@@ -89,7 +98,7 @@ export function ensureMainRepoGitRestored(rootDir = ROOT_DIR) {
       }
     }
     if (fs.existsSync(gitDir)) {
-      execFileSync('git', ['config', 'user.name', 'Thanh Nguyen'], {
+      execFileSync('git', ['config', 'user.name', 'RealThanhNguyxn'], {
         cwd: ROOT_DIR,
         stdio: ['ignore', 'ignore', 'ignore'],
       });
@@ -300,6 +309,7 @@ export function computeAuditedInputsDigest(rootDir = ROOT_DIR) {
 
 export const PHASE_11_SOURCE_COMMIT_SHA = 'f0804fd64a9fa4f263a9ec59c5de84ed21733747';
 export const PHASE_12_SOURCE_COMMIT_SHA = 'fdae0e77187c970893bc5414166aed448677f951';
+export const PHASE_13_SOURCE_COMMIT_SHA = '112ecf75a04ab5864b3dc3656b9a27f09d1e8dcd';
 
 function hasCommitInRepo(rootDir, commitSha) {
   try {
@@ -547,15 +557,15 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
 
   const evalRunResult = runEvalSuites({ rootDir, checkOnly: false });
 
-  const usePhase12SourceCommit = hasCommitInRepo(rootDir, PHASE_12_SOURCE_COMMIT_SHA);
-  const headSha = usePhase12SourceCommit
-    ? PHASE_12_SOURCE_COMMIT_SHA
+  const usePhase13SourceCommit = hasCommitInRepo(rootDir, PHASE_13_SOURCE_COMMIT_SHA);
+  const headSha = usePhase13SourceCommit
+    ? PHASE_13_SOURCE_COMMIT_SHA
     : gitRequired(rootDir, ['rev-parse', 'HEAD']);
   const headShort = gitRequired(rootDir, ['rev-parse', '--short', headSha]);
   const headDate = gitRequired(rootDir, ['log', '-1', '--format=%ci', headSha]);
   const branchName = gitRequired(rootDir, ['rev-parse', '--abbrev-ref', 'HEAD']);
   const { workingTreeState, snapshotBasis, uncommittedChangeCount } =
-    inspectWorkingTreeProvenance(rootDir, usePhase12SourceCommit ? headSha : null);
+    inspectWorkingTreeProvenance(rootDir, usePhase13SourceCommit ? headSha : null);
   const auditedInputsSha256 = computeAuditedInputsDigest(rootDir);
 
   const auditProvenance = {
@@ -759,7 +769,7 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
 
   const currentSkillInventory = {
     schemaVersion: '1.5.0',
-    auditPhase: 'phase-12-current',
+    auditPhase: 'phase-13-current',
     reconciledFromBaselineCommit: phase0SkillInv.commitSha,
     repository: 'ThanhNguyxnOrg/blendops',
     branch: branchName,
@@ -827,7 +837,7 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
 
   const currentEvalInventory = {
     schemaVersion: '1.3.0',
-    auditPhase: 'phase-12-current',
+    auditPhase: 'phase-13-current',
     reconciledFromBaselineCommit: phase0EvalInv.commitSha,
     repository: 'ThanhNguyxnOrg/blendops',
     branch: branchName,
@@ -1156,7 +1166,7 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
 
   const findings = {
     schemaVersion: '1.4.0',
-    auditPhase: 'phase-12-current',
+    auditPhase: 'phase-13-current',
     repository: 'ThanhNguyxnOrg/blendops',
     branch: branchName,
     baselineCommitSha: '3ea3c35c6b8a6e5e915bab9f63333d4a1c09bd4d',
@@ -1199,7 +1209,7 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
   // 4. Reassessed Current Scorecard (87.0 / 100 vs Historical 54.5 / 100)
   const currentScorecard = {
     schemaVersion: '1.5.0',
-    auditPhase: 'phase-12-current',
+    auditPhase: 'phase-13-current',
     status: 'reconciled-current-state',
     repository: 'ThanhNguyxnOrg/blendops',
     branch: branchName,
@@ -1574,11 +1584,18 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
         verdict: 'Pass',
         evidenceFiles: [
           '.github/workflows/docs.yml',
+          '.gitattributes',
+          '.editorconfig',
+          '.gitignore',
+          'docs/architecture.md',
+          'docs/audits/current/repository-inventory.json',
           'scripts/check-docs.mjs',
+          'scripts/validate-repository-architecture.mjs',
           'scripts/export-claude-skills.mjs',
           'scripts/build-registry.mjs',
           'scripts/run-evals.mjs',
           'scripts/generate-bundle-reference-summaries.mjs',
+          'scripts/test-phase13.mjs',
         ],
         criteria: [
           phase0Scorecard.pillars[8].criteria[0],
@@ -1588,7 +1605,7 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
             maxPoints: 2,
             awardedPoints: 2.0,
             status: 'Pass',
-            evidence: 'F-02 FIXED: scripts/export-claude-skills.mjs uses pure-Node fflate (0 external binary calls) with isolated --output-root concurrency safety and .github/workflows/docs.yml executes npm run ci (docs:check + registry:check + evals:check + evals:run + bundles:summaries:check + skills:export + test).',
+            evidence: 'F-02 FIXED: scripts/export-claude-skills.mjs uses pure-Node fflate (0 external binary calls) with isolated --output-root concurrency safety, scripts/validate-repository-architecture.mjs validates full tracked-file classification and internal references, and .github/workflows/docs.yml executes npm run ci (docs:check + arch:check + registry:check + evals:check + evals:run + bundles:summaries:check + skills:export + test).',
           },
         ],
       },
@@ -1598,7 +1615,7 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
   // 5. Verification Manifest
   const verificationManifest = {
     schemaVersion: '1.4.0',
-    auditPhase: 'phase-12-current',
+    auditPhase: 'phase-13-current',
     repository: 'ThanhNguyxnOrg/blendops',
     branch: branchName,
     sourceCommitSha: headSha,
@@ -1713,20 +1730,25 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
       },
       {
         phase: 'Phase 11',
-        commitSha: 'fdae0e77187c970893bc5414166aed448677f951',
+        commitSha: '4f5bd1e3c9eef7261dfc9ff9e20668e2338841ee',
         summary: 'Distributable CLI entrypoint (bin/blendops.mjs), npm pack tarball consumer verification, and cross-platform CI pipeline (Ubuntu, Windows, macOS)',
+      },
+      {
+        phase: 'Phase 12',
+        commitSha: '112ecf75a04ab5864b3dc3656b9a27f09d1e8dcd',
+        summary: 'Web-Ready GLB Delivery & Viewer Integration: GLB 2.0 deep inspection, handoff manifest schema (schemas/glb-web-handoff-manifest.schema.json), HTML/Markdown/JSON report generator (scripts/generate-glb-handoff-report.mjs), CLI glb-inspect/glb-handoff/glb-validate-manifest, and Three.js + React Three Fiber viewer integration modules',
       },
     ],
     currentPhaseContext: {
-      phase: 'Phase 12 — Web-Ready GLB Delivery & Viewer Integration',
-      title: 'Deterministic GLB 2.0 Deep Inspection, Web Handoff Manifest Schema & Report Generator, Three.js / React Three Fiber Viewer Integration, and CLI Subcommands',
+      phase: 'Phase 13 — Repository Architecture, Organization & Finalization',
+      title: 'Full Repository Inventory & Classification, Root Policy & Naming Hygiene, Internal Reference Validator, Windows CI Drive-Root & Parallel Import Fix, and Verified Downloadable Bundle',
       sourceCommitSha: headSha,
       workingTreeState,
       snapshotBasis,
       auditedInputsSha256,
       auditedInputsManifest: AUDITED_INPUTS_MANIFEST_REL,
       relationshipToCommitChain:
-        'Phase 12 is built directly on top of Phase 11 (fdae0e77187c970893bc5414166aed448677f951). Because a Git commit cannot embed its own final SHA inside tracked files, verification-manifest.json records fdae0e77187c970893bc5414166aed448677f951 as the latest completed commit in commitChain and sourceCommitSha, while locking the exact Phase 12 audited inputs via auditedInputsSha256 and docs/audits/audited-inputs.manifest.json.',
+        'Phase 13 is built directly on top of Phase 12 (112ecf75a04ab5864b3dc3656b9a27f09d1e8dcd). Because a Git commit cannot embed its own final SHA inside tracked files, verification-manifest.json records 112ecf75a04ab5864b3dc3656b9a27f09d1e8dcd as the latest completed commit in commitChain and sourceCommitSha, while locking the exact Phase 13 audited inputs via auditedInputsSha256 and docs/audits/audited-inputs.manifest.json.',
     },
     ciVerificationPipeline: {
       command: 'npm run ci',
@@ -1736,6 +1758,12 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
           command: 'node scripts/check-docs.mjs',
           status: 'Passed',
           verifiedScope: 'Active Markdown files, frontmatter limits, relative links, Path 1 Blender 5.1+ attribution, F-01 truth-state guard, F-05 18-heading skill template structure guard, F-08 adapter registry & install/adapter confidence consistency guard, F-09 96-file bundle summary guard',
+        },
+        {
+          script: 'npm run arch:check',
+          command: 'node scripts/validate-repository-architecture.mjs --check',
+          status: 'Passed',
+          verifiedScope: 'Complete tracked-file classification across 7 canonical categories (docs/audits/current/repository-inventory.json), root-level policy, naming conventions, duplicate policy, and internal reference integrity (Markdown links, HTML assets, relative ESM imports, package.json, workflows, JSON Schemas, and audited-inputs.manifest.json)',
         },
         {
           script: 'npm run registry:check',
@@ -1769,9 +1797,9 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
         },
         {
           script: 'npm test',
-          command: 'node --test scripts/test-phase1.mjs scripts/test-phase2.mjs scripts/test-phase3.mjs scripts/test-phase4.mjs scripts/test-phase5.mjs scripts/test-phase6.mjs scripts/test-phase7.mjs scripts/test-phase8.mjs scripts/test-phase9.mjs scripts/test-phase10.mjs scripts/test-phase11.mjs scripts/test-phase12.mjs',
+          command: 'node --test scripts/test-phase1.mjs scripts/test-phase2.mjs scripts/test-phase3.mjs scripts/test-phase4.mjs scripts/test-phase5.mjs scripts/test-phase6.mjs scripts/test-phase7.mjs scripts/test-phase8.mjs scripts/test-phase9.mjs scripts/test-phase10.mjs scripts/test-phase11.mjs scripts/test-phase12.mjs scripts/test-phase13.mjs',
           status: 'Passed',
-          verifiedScope: 'Unit and integration suites across Phase 1, Phase 2 / 2.1, Phase 3 / 3.1 / 3.1.1, Phase 4, Phase 5, Phase 6 / 6.1, Phase 7, Phase 8 / 8.1 / 8.1.1, Phase 9, Phase 10 / 10.1 / 10.2, Phase 11, and Phase 12 (web-ready GLB delivery & viewer integration toolkit)',
+          verifiedScope: 'Unit and integration suites across Phase 1, Phase 2 / 2.1, Phase 3 / 3.1 / 3.1.1, Phase 4, Phase 5, Phase 6 / 6.1, Phase 7, Phase 8 / 8.1 / 8.1.1, Phase 9, Phase 10 / 10.1 / 10.2, Phase 11, Phase 12, and Phase 13 (repository architecture, organization, and finalization)',
         },
       ],
     },
@@ -1798,7 +1826,7 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
 
 | Metric | Historical Phase 0 Baseline (\`3ea3c35\`) | Current Reconciled State (\`main\`) | Status / Change |
 | :--- | :---: | :---: | :--- |
-| **Overall Measured Score** | \`54.5 / 100\` | **\`${totalMeasuredScore.toFixed(1)} / 100\`** | **\`${totalScoreDelta}\`** (backed by Phases 1, 2, 2.1, 3, 3.1, 3.1.1, 4, 5, 6, 6.1, 7, 8, 8.1, 8.1.1, 9, 10, 10.1, 10.2, 11, 12) |
+| **Overall Measured Score** | \`54.5 / 100\` | **\`${totalMeasuredScore.toFixed(1)} / 100\`** | **\`${totalScoreDelta}\`** (backed by Phases 1, 2, 2.1, 3, 3.1, 3.1.1, 4, 5, 6, 6.1, 7, 8, 8.1, 8.1.1, 9, 10, 10.1, 10.2, 11, 12, 13) |
 | **Active P0 Zero-Compensation Blockers** | \`3\` (\`F-01\`, \`F-02\`, \`F-04\`) | **\`0\`** | \`F-01\`, \`F-02\`, \`F-03\`, \`F-04\` **FIXED** |
 | **Skills with \`Artifact status: Not Run\` (\`F-01\`)** | \`30 / 48\` | **\`0 / 48\`** | **FIXED** in Phase 1 + guarded in \`scripts/check-docs.mjs\` |
 | **Extended Template Completeness (\`F-05\`)** | \`8 / 48\` skills missing sections | **\`${missingExtendedSkillsCount} / 48\` skills missing sections** | **${f05Fixed ? 'FIXED' : 'OPEN'}** in Phase 4 + 18-heading guard in \`scripts/check-docs.mjs\` |
@@ -1825,7 +1853,7 @@ Because a Git commit cannot honestly contain its own final commit SHA inside tra
 
 The \`auditedInputsSha256\` digest is governed by [\`../audited-inputs.manifest.json\`](../audited-inputs.manifest.json):
 
-- **Included Scope (\`requiredFiles\` + \`requiredDirectories\`):** Covers [\`../audited-inputs.manifest.json\`](../audited-inputs.manifest.json) itself, root governance & dependency files (\`AGENTS.md\`, \`README.md\`, \`TODO.md\`, \`LICENSE\`, \`package.json\`, \`package-lock.json\`, \`.github/workflows/docs.yml\`), core architecture & runtime docs (\`docs/README.md\`, \`docs/start-here.md\`, \`docs/runtime-stack-strategy.md\`, \`docs/adapter-registry.md\`, \`docs/distribution-strategy.md\`, etc.), all CLI/validation/compiler/eval/bundle/installer/test scripts (\`bin/blendops.mjs\`, \`scripts/check-docs.mjs\`, \`scripts/export-claude-skills.mjs\`, \`scripts/build-registry.mjs\`, \`scripts/run-evals.mjs\`, \`scripts/inspect-glb.mjs\`, \`scripts/generate-glb-handoff-report.mjs\`, \`scripts/generate-bundle-reference-summaries.mjs\`, \`scripts/generate-current-audit.mjs\`, \`scripts/dev-server.mjs\`, \`scripts/install-skills.mjs\`, \`scripts/test-phase1.mjs\` through \`scripts/test-phase12.mjs\`), and the complete directory trees \`docs/audits/phase-0\`, \`docs/audits/phase-2\`, \`docs/audits/phase-2.1\`, \`docs/audits/phase-3\`, \`docs/evals\`, \`docs/examples/glb-web-handoff\`, \`docs/install\`, \`docs/adapters\`, \`laws\`, \`packs\`, \`bundles\`, \`skills\`, \`registry\`, \`evals\`, and \`schemas\`.
+- **Included Scope (\`requiredFiles\` + \`requiredDirectories\`):** Covers [\`../audited-inputs.manifest.json\`](../audited-inputs.manifest.json) itself, root governance & dependency files (\`.editorconfig\`, \`.gitattributes\`, \`.gitignore\`, \`AGENTS.md\`, \`CHANGELOG.md\`, \`CODE_OF_CONDUCT.md\`, \`CONTRIBUTING.md\`, \`README.md\`, \`SECURITY.md\`, \`SUPPORT.md\`, \`TODO.md\`, \`LICENSE\`, \`package.json\`, \`package-lock.json\`, \`.github/workflows/docs.yml\`), core architecture & runtime docs (\`docs/README.md\`, \`docs/architecture.md\`, \`docs/start-here.md\`, \`docs/runtime-stack-strategy.md\`, \`docs/adapter-registry.md\`, \`docs/distribution-strategy.md\`, \`docs/release-readiness-rollup-v0.md\`, etc.), all CLI/validation/compiler/eval/bundle/installer/test scripts (\`bin/blendops.mjs\`, \`scripts/check-docs.mjs\`, \`scripts/validate-repository-architecture.mjs\`, \`scripts/export-claude-skills.mjs\`, \`scripts/build-registry.mjs\`, \`scripts/run-evals.mjs\`, \`scripts/inspect-glb.mjs\`, \`scripts/generate-glb-handoff-report.mjs\`, \`scripts/generate-bundle-reference-summaries.mjs\`, \`scripts/generate-current-audit.mjs\`, \`scripts/dev-server.mjs\`, \`scripts/install-skills.mjs\`, \`scripts/test-phase1.mjs\` through \`scripts/test-phase13.mjs\`), and the complete directory trees \`docs/audits/phase-0\`, \`docs/audits/phase-2\`, \`docs/audits/phase-2.1\`, \`docs/audits/phase-3\`, \`docs/evals\`, \`docs/examples/glb-web-handoff\`, \`docs/install\`, \`docs/adapters\`, \`laws\`, \`packs\`, \`bundles\`, \`skills\`, \`registry\`, \`evals\`, and \`schemas\`.
 - **Excluded Scope (\`excludedPrefixes\` & \`excludedExactPaths\`):** Excludes \`docs/audits/current/**\` (generated output directory to prevent self-referential hashing), \`.git/\`, \`node_modules/\`, \`dist/\`, \`.aistudio/\`, temporary files, and symbolic links.
 - **Digest Algorithm:** Expands all manifest files and directories into a deduplicated, lexicographically sorted list of normalized POSIX relative paths and computes a SHA-256 digest over unambiguous length-prefixed framing (\`path:<byteLength>:<relPath>\\0content:<byteLength>:\\0<bytes>\\0\`).
 - **Adding New Evidence Paths:** Whenever a new file or directory is referenced in \`scorecard.json\` (\`pillars[].evidenceFiles[]\`) or \`findings.json\` (\`findings[].evidencePaths[]\`), it **must** be covered by \`requiredFiles\` or \`requiredDirectories\` in [\`../audited-inputs.manifest.json\`](../audited-inputs.manifest.json). This invariant is enforced in CI by \`scripts/test-phase3.mjs\`, \`scripts/test-phase6.mjs\`, \`scripts/test-phase7.mjs\`, and \`scripts/test-phase8.mjs\`.
@@ -1855,10 +1883,12 @@ The \`auditedInputsSha256\` digest is governed by [\`../audited-inputs.manifest.
 - [\`findings.json\`](./findings.json) — Machine-readable lifecycle table for \`F-01\` through \`F-10\`.
 - [\`skill-inventory.json\`](./skill-inventory.json) — Live 48-skill inventory reflecting Phase 1 truth-state fixes, Phase 2/2.1/5 full-catalog contracts, Phase 3/6 full-catalog eval coverage, and Phase 4 extended template completion.
 - [\`eval-inventory.json\`](./eval-inventory.json) — Live 48-skill evaluation inventory covering all 48 machine-readable suites (${totalEvalCasesCount} cases) with 0 remaining prose-only skills.
-- [\`verification-manifest.json\`](./verification-manifest.json) — Verified commit chain through \`fdae0e77187c970893bc5414166aed448677f951\`, Phase 10 / 10.1 / 10.2 / 11 / 12 provenance context, CI pipeline commands, and runtime/artifact truth states.
+- [\`verification-manifest.json\`](./verification-manifest.json) — Verified commit chain through \`112ecf75a04ab5864b3dc3656b9a27f09d1e8dcd\`, Phase 10 / 10.1 / 10.2 / 11 / 12 / 13 provenance context, CI pipeline commands, and runtime/artifact truth states.
+- [\`repository-inventory.json\`](./repository-inventory.json) — Complete machine-readable inventory classifying every tracked repository file across 7 canonical categories (\`canonical_source\`, \`generated_artifact\`, \`historical_record\`, \`documentation\`, \`runtime_build_test_infrastructure\`, \`distribution_artifact\`, \`configuration\`).
 
 ## Related Documentation
 
+- Repository Architecture & Directory Guide: [\`../../architecture.md\`](../../architecture.md)
 - Audited Input Digest Manifest: [\`../audited-inputs.manifest.json\`](../audited-inputs.manifest.json)
 - Historical Phase 0 Audit: [\`../phase-0/README.md\`](../phase-0/README.md)
 - Phase 2.1 Hardening Report: [\`../phase-2.1/README.md\`](../phase-2.1/README.md)
