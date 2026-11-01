@@ -124,7 +124,7 @@ Every mode must avoid these actions:
 - do not run Blender,
 - do not run runtime eval,
 - do not create/render/export or claim preview/render/GLB artifacts,
-- do not claim an `npm`/`npx` installer or marketplace listing exists.
+- do not claim a published `npm`/`npx` registry package or marketplace listing exists.
 
 ## Target confidence table
 
@@ -228,22 +228,23 @@ Minimal report shape:
 
 For a static generic project-local fixture example, see [`bundles/generic-project-local/`](../bundles/generic-project-local/). It demonstrates rollback/report templates only and does not run an installer or runtime.
 
-## Local repository CLI vs future `npx` command shape
+## Local repository & tarball CLI vs future published `npx` registry usage
 
-Inside a local checkout of the BlendOps repository, `scripts/install-skills.mjs` is implemented for safe project-local attachment (`--doctor`, `--dry-run`, `--write`, `--rollback`) and Claude Desktop export preparation (`--target claude-desktop --out <path>`). See [installer-spec.md](./install/installer-spec.md) for the full contract.
-
-By contrast, published `npx` package commands remain future UX examples only — no `npm` package or `npx blendops` CLI is published:
+Inside a local checkout of the BlendOps repository or after installing a locally packed tarball (`npm pack` -> `npm install ./blendops-0.1.0-draft.tgz`), `bin/blendops.mjs` (`blendops`) and `scripts/install-skills.mjs` are implemented for safe project-local attachment (`doctor`, `install --dry-run`, `install --write`, `rollback`) and Claude Desktop export preparation (`install --target claude-desktop --out <path>`). See [installer-spec.md](./install/installer-spec.md) for the full contract:
 
 ```sh
-# Future only — not published to npm
-npx blendops skills install --target auto --project .
+# Local checkout or installed tarball CLI (available now)
+blendops doctor --project /path/to/project
+blendops install --target auto --project /path/to/project --dry-run
+blendops install --target auto --project /path/to/project --write
+blendops rollback --project /path/to/project
+```
 
-# Future only — not published to npm
-npx blendops skills install --target claude-code --project .
+By contrast, public npm registry `npx blendops` commands remain unpublished (`"private": true` in `package.json`) until an explicit maintainer release decision:
 
-# Future only — not published to npm
-npx blendops skills install --target antigravity --project .
-
-# Future only — not published to npm
-npx blendops skills doctor
+```sh
+# Future public registry invocation only — package is currently "private": true and not published to npm
+npx blendops install --target auto --project .
+npx blendops install --target claude-code --project .
+npx blendops doctor --project .
 ```

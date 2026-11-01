@@ -892,7 +892,7 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
       pillar: 'Pillar 7 (Cross-Agent Compatibility)',
       phase0BaselineState: 'OPEN (Windsurf, Continue, Cline, Roo, Aider listed as not researched; 10 targets missing from install-only table)',
       currentLifecycleStatus: 'PARTIALLY_FIXED',
-      resolvedInPhase: 'Phase 1 (ac1ccdb) + Phase 3 (E4, 75f3b5c) + Phase 7 Empirical Verification & Evidence Hardening + Phase 10 Safe Project-Local Installer Foundation',
+      resolvedInPhase: 'Phase 1 (ac1ccdb) + Phase 3 (E4, 75f3b5c) + Phase 7 Empirical Verification & Evidence Hardening + Phase 10 Safe Project-Local Installer Foundation + Phase 11 Distributable CLI & Package Readiness',
       lastVerifiedCommit: headSha,
       evidencePaths: [
         'docs/adapter-registry.md',
@@ -900,19 +900,22 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
         'docs/install/installer-spec.md',
         'docs/install/cursor.md',
         'docs/install/codex.md',
+        'docs/distribution-strategy.md',
         'docs/evals/adapter-install-v0-dry-run.md',
         'docs/evals/adapter-empirical-verification-phase-7.md',
         'schemas/adapter-compatibility-matrix.schema.json',
         'registry/compatibility-matrix.json',
         'scripts/validate-compatibility-matrix.mjs',
+        'bin/blendops.mjs',
         'scripts/install-skills.mjs',
         'scripts/check-docs.mjs',
         'scripts/test-phase1.mjs',
         'scripts/test-phase3.mjs',
         'scripts/test-phase7.mjs',
         'scripts/test-phase10.mjs',
+        'scripts/test-phase11.mjs',
       ],
-      verificationMethod: 'scripts/validate-compatibility-matrix.mjs, scripts/install-skills.mjs, scripts/check-docs.mjs, scripts/test-phase3.mjs, scripts/test-phase7.mjs, and scripts/test-phase10.mjs validate all 26 install targets in registry/compatibility-matrix.json, docs/adapter-registry.md, docs/install/*.md, and docs/adapters/*.md; enforce dry-run-gated project-local installation, byte-for-byte backup/rollback, and honest Not Run / Not Produced truth states; and record the Phase 7 26-target host availability and disposable /tmp fixture verification in docs/evals/adapter-empirical-verification-phase-7.md.',
+      verificationMethod: 'scripts/validate-compatibility-matrix.mjs, bin/blendops.mjs, scripts/install-skills.mjs, scripts/check-docs.mjs, scripts/test-phase3.mjs, scripts/test-phase7.mjs, scripts/test-phase10.mjs, and scripts/test-phase11.mjs validate all 26 install targets in registry/compatibility-matrix.json, docs/adapter-registry.md, docs/install/*.md, and docs/adapters/*.md; enforce dry-run-gated project-local installation, byte-for-byte backup/rollback, packaged tarball execution (npm pack), and honest Not Run / Not Produced / Not Published truth states; and record the Phase 7 26-target host availability and disposable /tmp fixture verification in docs/evals/adapter-empirical-verification-phase-7.md.',
       remainingScope: '2/26 targets (claude-code, generic-project) are verified-read (Verified Read (Repo-Local)); 24/26 targets remain linked-only (Not Verified) pending empirical execution inside live external target host applications/CLIs outside this container.',
     },
     {
@@ -1345,15 +1348,18 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
           'docs/adapter-registry.md',
           'docs/install/README.md',
           'docs/install/installer-spec.md',
+          'docs/distribution-strategy.md',
           'docs/evals/adapter-install-v0-dry-run.md',
           'docs/evals/adapter-empirical-verification-phase-7.md',
           'schemas/adapter-compatibility-matrix.schema.json',
           'registry/compatibility-matrix.json',
           'scripts/validate-compatibility-matrix.mjs',
+          'bin/blendops.mjs',
           'scripts/install-skills.mjs',
           'scripts/check-docs.mjs',
           'scripts/test-phase7.mjs',
           'scripts/test-phase10.mjs',
+          'scripts/test-phase11.mjs',
         ],
         criteria: [
           phase0Scorecard.pillars[6].criteria[0],
@@ -1364,7 +1370,7 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
             awardedPoints: 1.5,
             status: 'Pass',
             evidence:
-              'F-08 PARTIALLY_FIXED: docs/adapter-registry.md, docs/install/*.md, docs/adapters/*.md, and registry/compatibility-matrix.json are 100% synchronized across all 26 install targets, backed by the safe project-local installer (scripts/install-skills.mjs + scripts/test-phase10.mjs), documented in docs/evals/adapter-empirical-verification-phase-7.md, and guarded against unverified promotion by scripts/validate-compatibility-matrix.mjs and scripts/test-phase7.mjs (2 verified-read targets, 24 linked-only targets pending live host execution).',
+              'F-08 PARTIALLY_FIXED: docs/adapter-registry.md, docs/install/*.md, docs/adapters/*.md, and registry/compatibility-matrix.json are 100% synchronized across all 26 install targets, backed by the safe project-local installer and packaged CLI (bin/blendops.mjs + scripts/install-skills.mjs + scripts/test-phase10.mjs + scripts/test-phase11.mjs), documented in docs/evals/adapter-empirical-verification-phase-7.md, and guarded against unverified promotion by scripts/validate-compatibility-matrix.mjs and scripts/test-phase7.mjs (2 verified-read targets, 24 linked-only targets pending live host execution).',
           },
         ],
       },
@@ -1541,17 +1547,22 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
         commitSha: 'ce95a155362b0281f228dcfa89ada0ccfa21533d',
         summary: 'Staging-verified Claude Desktop export, ownership-aware rollback, strict manifest schema & hash verification, and recursive source fingerprinting',
       },
+      {
+        phase: 'Phase 10.2',
+        commitSha: 'f0804fd64a9fa4f263a9ec59c5de84ed21733747',
+        summary: 'Transactional project-local writes, crash recovery journal, and user-edit preservation across reruns & rollback',
+      },
     ],
     currentPhaseContext: {
-      phase: 'Phase 10 — Safe Project-Local Installer Foundation (Phase 10.2 Transactional Write & User-Edit Preservation)',
-      title: 'Transactional Project-Local Writes, Crash Journal Recovery, and User-Edit Preservation Across Reruns & Rollback',
+      phase: 'Phase 11 — Distributable CLI & Package Readiness',
+      title: 'Distributable CLI Entrypoint (bin/blendops.mjs), npm Pack Tarball Readiness, and End-to-End Packaged Consumer Verification',
       sourceCommitSha: headSha,
       workingTreeState,
       snapshotBasis,
       auditedInputsSha256,
       auditedInputsManifest: AUDITED_INPUTS_MANIFEST_REL,
       relationshipToCommitChain:
-        'Phase 10.2 is built directly on top of Phase 10.1 (ce95a155362b0281f228dcfa89ada0ccfa21533d). Because a Git commit cannot embed its own final SHA inside tracked files, verification-manifest.json records ce95a155362b0281f228dcfa89ada0ccfa21533d as the latest completed commit in commitChain and sourceCommitSha, while locking the exact Phase 10.2 audited inputs via auditedInputsSha256 and docs/audits/audited-inputs.manifest.json.',
+        'Phase 11 is built directly on top of Phase 10.2 (f0804fd64a9fa4f263a9ec59c5de84ed21733747). Because a Git commit cannot embed its own final SHA inside tracked files, verification-manifest.json records f0804fd64a9fa4f263a9ec59c5de84ed21733747 as the latest completed commit in commitChain and sourceCommitSha, while locking the exact Phase 11 audited inputs via auditedInputsSha256 and docs/audits/audited-inputs.manifest.json.',
     },
     ciVerificationPipeline: {
       command: 'npm run ci',
@@ -1594,9 +1605,9 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
         },
         {
           script: 'npm test',
-          command: 'node --test scripts/test-phase1.mjs scripts/test-phase2.mjs scripts/test-phase3.mjs scripts/test-phase4.mjs scripts/test-phase5.mjs scripts/test-phase6.mjs scripts/test-phase7.mjs scripts/test-phase8.mjs scripts/test-phase9.mjs scripts/test-phase10.mjs',
+          command: 'node --test scripts/test-phase1.mjs scripts/test-phase2.mjs scripts/test-phase3.mjs scripts/test-phase4.mjs scripts/test-phase5.mjs scripts/test-phase6.mjs scripts/test-phase7.mjs scripts/test-phase8.mjs scripts/test-phase9.mjs scripts/test-phase10.mjs scripts/test-phase11.mjs',
           status: 'Passed',
-          verifiedScope: 'Unit and integration suites across Phase 1, Phase 2 / 2.1, Phase 3 / 3.1 / 3.1.1, Phase 4, Phase 5, Phase 6 / 6.1, Phase 7, Phase 8 / 8.1 / 8.1.1, Phase 9, and Phase 10 (safe project-local installer & rollback verification)',
+          verifiedScope: 'Unit and integration suites across Phase 1, Phase 2 / 2.1, Phase 3 / 3.1 / 3.1.1, Phase 4, Phase 5, Phase 6 / 6.1, Phase 7, Phase 8 / 8.1 / 8.1.1, Phase 9, Phase 10 / 10.1 / 10.2, and Phase 11 (distributable CLI & npm pack tarball consumer verification)',
         },
       ],
     },
@@ -1680,7 +1691,7 @@ The \`auditedInputsSha256\` digest is governed by [\`../audited-inputs.manifest.
 - [\`findings.json\`](./findings.json) — Machine-readable lifecycle table for \`F-01\` through \`F-10\`.
 - [\`skill-inventory.json\`](./skill-inventory.json) — Live 48-skill inventory reflecting Phase 1 truth-state fixes, Phase 2/2.1/5 full-catalog contracts, Phase 3/6 full-catalog eval coverage, and Phase 4 extended template completion.
 - [\`eval-inventory.json\`](./eval-inventory.json) — Live 48-skill evaluation inventory covering all 48 machine-readable suites (${totalEvalCasesCount} cases) with 0 remaining prose-only skills.
-- [\`verification-manifest.json\`](./verification-manifest.json) — Verified commit chain through \`23e00d5d735190049ec0cb224bec4ae7fd67a990\`, Phase 10 / 10.1 provenance context, CI pipeline commands, and runtime/artifact truth states.
+- [\`verification-manifest.json\`](./verification-manifest.json) — Verified commit chain through \`f0804fd64a9fa4f263a9ec59c5de84ed21733747\`, Phase 10 / 10.1 / 10.2 / 11 provenance context, CI pipeline commands, and runtime/artifact truth states.
 
 ## Related Documentation
 

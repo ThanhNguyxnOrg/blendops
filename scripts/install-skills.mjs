@@ -373,6 +373,7 @@ function validateSafeRelativeTargetFile(rootReal, relPath) {
 }
 
 export function parseInstallerArgs(argv = []) {
+  let subcommand = null;
   let target = null;
   let project = null;
   let out = null;
@@ -384,7 +385,9 @@ export function parseInstallerArgs(argv = []) {
   let allowGlobal = false;
   let confirmTargetPath = false;
   let patchAgentsMd = false;
+  let patchClaudeMd = false;
   let help = false;
+  let version = false;
 
   const takeValue = (flagName, currentVal, args, index) => {
     if (currentVal !== null) {
@@ -411,10 +414,25 @@ export function parseInstallerArgs(argv = []) {
     return val;
   };
 
+  const KNOWN_SUBCOMMANDS = new Set(['doctor', 'install', 'rollback', 'version', 'help']);
+
   for (let i = 0; i < argv.length; i += 1) {
     const arg = argv[i];
-    if (arg === '--help' || arg === '-h') {
+    if (i === 0 && typeof arg === 'string' && !arg.startsWith('-') && KNOWN_SUBCOMMANDS.has(arg)) {
+      subcommand = arg;
+      if (arg === 'doctor') {
+        doctor = true;
+      } else if (arg === 'rollback') {
+        rollback = true;
+      } else if (arg === 'version') {
+        version = true;
+      } else if (arg === 'help') {
+        help = true;
+      }
+    } else if (arg === '--help' || arg === '-h') {
       help = true;
+    } else if (arg === '--version' || arg === '-v') {
+      version = true;
     } else if (arg === '--target') {
       target = takeValue('--target', target, argv, i);
       i += 1;
@@ -425,11 +443,13 @@ export function parseInstallerArgs(argv = []) {
       i += 1;
     } else if (typeof arg === 'string' && arg.startsWith('--project=')) {
       project = takeEqValue('--project', project, arg);
-    } else if (arg === '--out') {
+    } else if (arg === '--out' || arg === '--output') {
       out = takeValue('--out', out, argv, i);
       i += 1;
     } else if (typeof arg === 'string' && arg.startsWith('--out=')) {
       out = takeEqValue('--out', out, arg);
+    } else if (typeof arg === 'string' && arg.startsWith('--output=')) {
+      out = takeEqValue('--output', out, arg);
     } else if (arg === '--doctor') {
       doctor = true;
     } else if (arg === '--dry-run') {
@@ -448,6 +468,8 @@ export function parseInstallerArgs(argv = []) {
       confirmTargetPath = true;
     } else if (arg === '--patch-agents-md') {
       patchAgentsMd = true;
+    } else if (arg === '--patch-claude-md') {
+      patchClaudeMd = true;
     } else {
       throw new Error(`Unknown or malformed CLI argument: ${String(arg)}`);
     }
@@ -462,25 +484,39 @@ export function parseInstallerArgs(argv = []) {
   if (help) {
     return {
       mode: 'help',
+      subcommand,
       target,
       project,
       out,
       forceRollback,
       confirmTargetPath,
       patchAgentsMd,
+      patchClaudeMd,
     };
   }
 
   const activeModes = [
+    version ? 'version' : null,
     doctor ? 'doctor' : null,
     dryRun ? 'dry-run' : null,
     write ? 'write' : null,
     rollback ? 'rollback' : null,
   ].filter(Boolean);
 
-  if (activeModes.length === 0) {
+  if (subcommand === 'install' && (doctor || rollback || version)) {
     throw new Error(
-      'Missing operation mode: specify exactly one of --doctor, --dry-run, --write, --rollback, or --help.',
+      `Conflicting operation modes (install, ${activeModes.join(', ')}): specify exactly one mode per invocation.`,
+    );
+  }
+
+  if (activeModes.length === 0) {
+    if (subcommand === 'install') {
+      throw new Error(
+        "Missing operation mode for 'install': specify either --dry-run or --write.",
+      );
+    }
+    throw new Error(
+      'Missing operation mode: specify a command (doctor, install, rollback) or one of --doctor, --dry-run, --write, --rollback, --version, or --help.',
     );
   }
   if (activeModes.length > 1) {
@@ -491,11 +527,28 @@ export function parseInstallerArgs(argv = []) {
 
   const mode = activeModes[0];
 
+  if (mode === 'version') {
+    return {
+      mode: 'version',
+      subcommand,
+      target,
+      project,
+      out,
+      forceRollback,
+      confirmTargetPath,
+      patchAgentsMd,
+      patchClaudeMd,
+    };
+  }
+
   if (forceRollback && mode !== 'rollback') {
     throw new Error('--force / --force-rollback is only valid with --rollback.');
   }
 
   if (mode === 'dry-run' || mode === 'write') {
+    if (!target && subcommand === 'install' && project && !out) {
+      target = 'auto';
+    }
     if (!target) {
       throw new Error(`Missing required --target <name> for --${mode}.`);
     }
@@ -538,12 +591,14 @@ export function parseInstallerArgs(argv = []) {
 
   return {
     mode,
+    subcommand,
     target,
     project,
     out,
     forceRollback,
     confirmTargetPath,
     patchAgentsMd,
+    patchClaudeMd,
   };
 }
 
@@ -1206,6 +1261,7 @@ function buildProjectInstallPlan({
   requestedTarget,
   confirmTargetPath,
   patchAgentsMd,
+  patchClaudeMd = false,
 }) {
   const detectedMarkers = detectProjectTargetMarkers(projectReal);
   const sourceInfo = computeBlendOpsSourceFingerprint(repoRootReal);
@@ -1329,6 +1385,15 @@ function buildProjectInstallPlan({
     });
     limitations.push(
       'Claude Code project-local adapter (CLAUDE.md / BLENDOPS.md) is verified-read; native .claude/skills/ loader and live claude CLI execution remain unverified.',
+    );
+  } else if (patchClaudeMd) {
+    const claudeInitial = applyManagedBlockToDocument(null, managedSection, '# CLAUDE.md');
+    operations.push(
+      planSingleFileOperation(projectReal, 'CLAUDE.md', claudeInitial, {
+        managedBlock: managedSection,
+        initialFileContent: claudeInitial,
+        previousManifest,
+      }),
     );
   }
 
@@ -1486,6 +1551,7 @@ function buildProjectInstallPlan({
     repoRootPath: repoRootReal,
     confirmTargetPath: Boolean(confirmTargetPath),
     patchAgentsMd: Boolean(patchAgentsMd),
+    ...(patchClaudeMd ? { patchClaudeMd: true } : {}),
     sourceFingerprint: sourceInfo.fingerprint,
     detectedMarkers,
     targetStateSnapshot,
@@ -1618,12 +1684,22 @@ export function formatInstallerHelp() {
     (t) => `  - ${t.id.padEnd(16, ' ')} [${t.confidence}] ${t.description}`,
   );
   return [
-    '## BlendOps Safe Project-Local Installer (`scripts/install-skills.mjs`)',
+    '## BlendOps Distributable CLI & Safe Project-Local Installer (`blendops` / `scripts/install-skills.mjs`)',
     '',
-    'Usage:',
+    'CLI Usage:',
+    '  blendops --version',
+    '  blendops --help',
+    '  blendops doctor [--target <name>] [--project <path>]',
+    '  blendops install [--target <name>] --project <path> [--confirm-target-path] [--patch-agents-md] [--patch-claude-md] --dry-run',
+    '  blendops install [--target <name>] --project <path> [--confirm-target-path] [--patch-agents-md] [--patch-claude-md] --write',
+    '  blendops install --target claude-desktop --out <path> --dry-run',
+    '  blendops install --target claude-desktop --out <path> --write',
+    '  blendops rollback (--project <path> | --out <path>) [--force-rollback]',
+    '',
+    'Repository Script Usage (equivalent):',
     '  node scripts/install-skills.mjs --doctor [--target <name>] [--project <path>]',
-    '  node scripts/install-skills.mjs --target <name> --project <path> [--confirm-target-path] [--patch-agents-md] --dry-run',
-    '  node scripts/install-skills.mjs --target <name> --project <path> [--confirm-target-path] [--patch-agents-md] --write',
+    '  node scripts/install-skills.mjs --target <name> --project <path> [--confirm-target-path] [--patch-agents-md] [--patch-claude-md] --dry-run',
+    '  node scripts/install-skills.mjs --target <name> --project <path> [--confirm-target-path] [--patch-agents-md] [--patch-claude-md] --write',
     '  node scripts/install-skills.mjs --target claude-desktop --out <path> --dry-run',
     '  node scripts/install-skills.mjs --target claude-desktop --out <path> --write',
     '  node scripts/install-skills.mjs --rollback (--project <path> | --out <path>) [--force-rollback]',
@@ -1632,22 +1708,24 @@ export function formatInstallerHelp() {
     'Options:',
     '  --target <name>         Target profile (auto, claude-code, opencode, cursor, codex, gemini, antigravity, github-copilot, generic-project, claude-desktop)',
     '  --project <path>        Target project root directory (required for project-local targets)',
-    '  --out <path>            Output directory for bundle targets (--target claude-desktop)',
+    '  --out, --output <path>  Output directory for bundle targets (--target claude-desktop)',
     '  --doctor                Run strictly read-only repository and target diagnostics',
     '  --dry-run               Inspect target and record a verified dry-run plan without modifying target files',
     '  --write                 Execute a previously recorded, non-stale dry-run plan with atomic writes and backups',
     '  --rollback              Restore pre-install backups and remove installer-created files from .blendops/install-manifest.json',
-    '  --force-rollback        Override post-install file edit protection during --rollback',
+    '  --force-rollback        Override post-install file edit protection during --rollback (alias: --force)',
     '  --confirm-target-path   Confirm target-specific writes for documented linked-only targets (cursor .mdc, codex AGENTS.md)',
     '  --patch-agents-md       Create or append a managed BlendOps section in AGENTS.md with backup',
+    '  --patch-claude-md       Create or append a managed BlendOps section in CLAUDE.md with backup',
     '  --allow-global          Rejected in Phase 10 (global writes are disabled)',
+    '  --version, -v           Show CLI version and exit without writing files',
     '  --help, -h              Show this help output and exit without writing files',
     '',
     'Supported targets:',
     ...targetLines,
     '',
     'Boundaries:',
-    '- Local repository content installer only (no npm/npx package, no marketplace listing, no Blender install or MCP setup).',
+    '- Local content & CLI package installer only (unpublished npm package; no public npx registry release, no marketplace listing, no Blender install or MCP setup).',
     '- Global files touched: No',
     '- Runtime status: Not Run',
     '- Artifact status: Not Produced',
@@ -1743,7 +1821,7 @@ function runDoctorMode({ repoRootReal, project, target }) {
   let inspectedProjectPath = repoRootReal;
   let detectedMarkers = [];
   const limitations = [
-    `Read-only diagnostics completed (${sourceInfo.skillCount} canonical skills verified). No files were written, no runtime was configured or executed, and no artifacts were produced.`,
+    `Read-only diagnostics completed (${sourceInfo.skillCount} canonical skills verified, Node.js ${process.versions.node}). No files were written, no runtime was configured or executed, and no artifacts were produced.`,
   ];
 
   if (project) {
@@ -1758,6 +1836,52 @@ function runDoctorMode({ repoRootReal, project, target }) {
       limitations.push(
         `Multiple target markers detected (${detectedMarkers.map((d) => d.target).join(', ')}); an explicit --target <name> will be required before installing.`,
       );
+    }
+
+    // Read-only inspection of existing .blendops state (never mutates target files)
+    const journalPath = path.join(projectReal, '.blendops', 'transaction-journal.json');
+    try {
+      const journalStat = fs.lstatSync(journalPath);
+      if (journalStat.isSymbolicLink()) {
+        limitations.push(
+          'Warning: .blendops/transaction-journal.json is a symbolic link; inspect and remove unsafe symlink before installing.',
+        );
+      } else if (journalStat.isFile()) {
+        limitations.push(
+          'Pending transaction journal detected (.blendops/transaction-journal.json); run blendops install --dry-run or blendops rollback --project <path> to recover interrupted transaction state.',
+        );
+      }
+    } catch (err) {
+      if (!err || (err.code !== 'ENOENT' && err.code !== 'ENOTDIR')) {
+        throw err;
+      }
+    }
+
+    const manifestPath = path.join(projectReal, '.blendops', 'install-manifest.json');
+    try {
+      const manifestStat = fs.lstatSync(manifestPath);
+      if (manifestStat.isSymbolicLink()) {
+        limitations.push(
+          'Warning: .blendops/install-manifest.json is a symbolic link; inspect and remove unsafe symlink before installing.',
+        );
+      } else if (manifestStat.isFile()) {
+        try {
+          const parsedManifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+          validateRollbackManifestSchema(parsedManifest, manifestPath);
+          limitations.push(
+            `Existing install manifest verified (.blendops/install-manifest.json, target=${parsedManifest.target}).`,
+          );
+        } catch (manifestErr) {
+          const msg = manifestErr instanceof Error ? manifestErr.message : String(manifestErr);
+          limitations.push(
+            `Warning: existing .blendops/install-manifest.json failed validation (${msg}).`,
+          );
+        }
+      }
+    } catch (err) {
+      if (!err || (err.code !== 'ENOENT' && err.code !== 'ENOTDIR')) {
+        throw err;
+      }
     }
   }
 
@@ -3365,6 +3489,18 @@ export function runInstaller(rawArgsOrOptions, options = {}) {
       ? rawArgsOrOptions.planDir
       : null);
 
+  if (parsed.mode === 'version') {
+    return {
+      ok: true,
+      mode: 'version',
+      version: INSTALLER_VERSION,
+      globalTouched: false,
+      runtimeStatus: 'Not Run',
+      artifactStatus: 'Not Produced',
+      report: `blendops ${INSTALLER_VERSION}\n`,
+    };
+  }
+
   if (parsed.mode === 'help') {
     return {
       ok: true,
@@ -3426,6 +3562,7 @@ export function runInstaller(rawArgsOrOptions, options = {}) {
           requestedTarget: parsed.target,
           confirmTargetPath: parsed.confirmTargetPath,
           patchAgentsMd: parsed.patchAgentsMd,
+          patchClaudeMd: parsed.patchClaudeMd,
         });
 
     if (fs.existsSync(planFilePath)) {
@@ -3537,6 +3674,7 @@ export function runInstaller(rawArgsOrOptions, options = {}) {
           requestedTarget: parsed.target,
           confirmTargetPath: parsed.confirmTargetPath,
           patchAgentsMd: parsed.patchAgentsMd,
+          patchClaudeMd: parsed.patchClaudeMd,
         });
   } catch (err) {
     if (
@@ -3556,7 +3694,8 @@ export function runInstaller(rawArgsOrOptions, options = {}) {
     savedPlan.selectedTarget !== livePlan.selectedTarget ||
     savedPlan.projectPath !== livePlan.projectPath ||
     savedPlan.confirmTargetPath !== livePlan.confirmTargetPath ||
-    savedPlan.patchAgentsMd !== livePlan.patchAgentsMd
+    savedPlan.patchAgentsMd !== livePlan.patchAgentsMd ||
+    Boolean(savedPlan.patchClaudeMd) !== Boolean(livePlan.patchClaudeMd)
   ) {
     throw new Error(
       'Write mode refused: options or resolved target do not match the recorded --dry-run plan. Re-run --dry-run with matching arguments.',
@@ -3589,6 +3728,8 @@ export function runInstaller(rawArgsOrOptions, options = {}) {
 
 function parseInstallerArgsFromObject(obj = {}) {
   const argv = [];
+  if (obj.subcommand) argv.push(String(obj.subcommand));
+  if (obj.version) argv.push('--version');
   if (obj.help) argv.push('--help');
   if (obj.target) argv.push('--target', String(obj.target));
   if (obj.project) argv.push('--project', String(obj.project));
@@ -3601,16 +3742,13 @@ function parseInstallerArgsFromObject(obj = {}) {
   if (obj.allowGlobal) argv.push('--allow-global');
   if (obj.confirmTargetPath) argv.push('--confirm-target-path');
   if (obj.patchAgentsMd) argv.push('--patch-agents-md');
+  if (obj.patchClaudeMd) argv.push('--patch-claude-md');
   return parseInstallerArgs(argv);
 }
 
-const isMainModule =
-  Boolean(process.argv[1]) &&
-  path.resolve(process.argv[1]) === __filename;
-
-if (isMainModule) {
+export function runCli(argv = process.argv.slice(2), options = {}) {
   try {
-    const res = runInstaller(process.argv.slice(2));
+    const res = runInstaller(argv, options);
     process.stdout.write(res.report);
     process.exit(0);
   } catch (err) {
@@ -3628,4 +3766,18 @@ if (isMainModule) {
     );
     process.exit(1);
   }
+}
+
+const isMainModule =
+  Boolean(process.argv[1]) &&
+  (() => {
+    try {
+      return fs.realpathSync(path.resolve(process.argv[1])) === fs.realpathSync(__filename);
+    } catch {
+      return path.resolve(process.argv[1]) === __filename;
+    }
+  })();
+
+if (isMainModule) {
+  runCli(process.argv.slice(2));
 }

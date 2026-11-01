@@ -14,7 +14,7 @@ Welcome to BlendOps! This guide helps you understand what BlendOps is, where it 
 | **Product version** | Draft v0 | Workflow specs documented, no stable release claim |
 | **Runtime eval** | Not Run | Official runtime manual eval has not been executed |
 | **Artifacts** | Not Produced | No preview/render/GLB files generated in this repo |
-| **Package/marketplace** | Not Published | No npm package, no marketplace listing |
+| **Package/marketplace** | Not Published | Local/tarball CLI (`bin/blendops.mjs`) implemented; no published npm registry package or marketplace listing |
 | **Canonical skill package** | Draft fixture | `bundles/skill-package/blendops/` exists as draft source |
 
 ---
@@ -40,9 +40,9 @@ Pick the path that matches what you want to do:
 ### 📦 I want to install/use the skill package
 
 **Current reality:**
-- BlendOps is not published to npm or any marketplace
-- No `npx blendops` installer exists yet
-- Installation is manual, project-local or multiple-skill-zip-prepared, and reversible
+- BlendOps is not published to the public npm registry (`"private": true`) or any marketplace
+- A local/tarball CLI (`bin/blendops.mjs` / `scripts/install-skills.mjs`) is implemented and packable via `npm pack`, but no public `npx blendops` registry release exists yet
+- Installation is project-local or multiple-skill-zip-prepared, transactional, and reversible
 
 Use the short prompt from [README.md](../README.md#-use-in-30-seconds). The agent will read [AI Agent Quickstart](./ai-agent-quickstart.md) and auto-select project-local install or multiple Skills ZIP preparation.
 

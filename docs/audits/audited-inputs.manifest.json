@@ -20,16 +20,19 @@
   "requiredFiles": [
     "docs/audits/audited-inputs.manifest.json",
     "AGENTS.md",
+    "CHANGELOG.md",
     "README.md",
     "TODO.md",
     "LICENSE",
     "package.json",
     "package-lock.json",
     ".github/workflows/docs.yml",
+    "bin/blendops.mjs",
     "docs/README.md",
     "docs/start-here.md",
     "docs/ai-agent-quickstart.md",
     "docs/ai-agent-install-flow.md",
+    "docs/distribution-strategy.md",
     "docs/runtime-stack-strategy.md",
     "docs/external-runtime-setup.md",
     "docs/reference-runtime.md",
@@ -60,7 +63,8 @@
     "scripts/test-phase7.mjs",
     "scripts/test-phase8.mjs",
     "scripts/test-phase9.mjs",
-    "scripts/test-phase10.mjs"
+    "scripts/test-phase10.mjs",
+    "scripts/test-phase11.mjs"
   ],
   "requiredDirectories": [
     "docs/audits/phase-0",

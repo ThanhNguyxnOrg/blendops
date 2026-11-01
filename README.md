@@ -85,7 +85,7 @@ Human intent (non-Blender user)
 | 4 laws (evidence-before-done, official-runtime-only, no-arbitrary-python-interface, non-blender-user-language) | **Path 1 host (a) — Anthropic Blender Connector** (Claude-Desktop-specific MCP host). Owner: Anthropic. Source: [claude.com/.../using-the-blender-connector-in-claude](https://claude.com/resources/tutorials/using-the-blender-connector-in-claude) |
 | 1 pack (`product-hero-v0`), 3 bundles (skill-package, claude-desktop-manual, generic-project-local) | **Path 2 — Community `mcp-for-blender` (formerly `blender-mcp`)** (different add-on/server). Owner: mature community project. Source: [github.com/ahujasid/mcp-for-blender](https://github.com/ahujasid/mcp-for-blender) |
 | 26 install target docs + 3 mode auto-detect install flow | **CLI fallback** (`blender --background --python ...`). Owner: Blender Foundation. Source: [docs.blender.org/manual/.../command_line](https://docs.blender.org/manual/en/latest/advanced/command_line/index.html) |
-| Skill ZIP / OpenAI YAML / canonical bundle generation (`npm run skills:export` → 48 ZIPs, one per `skills/*/SKILL.md`) + safe project-local installer (`scripts/install-skills.mjs`) | The Blender executable, MCP servers, MCP host clients, OS, GPU drivers, network. |
+| Skill ZIP / OpenAI YAML / canonical bundle generation (`npm run skills:export` → 48 ZIPs, one per `skills/*/SKILL.md`) + distributable local CLI (`bin/blendops.mjs` / `scripts/install-skills.mjs`, packable via `npm pack`) | The Blender executable, MCP servers, MCP host clients, OS, GPU drivers, network. |
 
 **What this means for "completeness":**
 
@@ -144,7 +144,7 @@ BlendOps recognizes **2 MCP execution paths + a CLI fallback appendix** ([full d
 
 ## 🚫 What it does **not** do
 
-BlendOps does not install Blender, ship its own runtime, configure Anthropic Connector or the Lab MCP add-on for you, run Blender, claim mutation/render/export artifacts, ship an `npx` installer, or claim a marketplace listing. See [`docs/release-readiness.md`](./docs/release-readiness.md) for the honest current state.
+BlendOps does not install Blender, ship its own runtime, configure Anthropic Connector or the Lab MCP add-on for you, run Blender, claim mutation/render/export artifacts, publish an npm registry package (the `blendops` CLI is packaged for local/tarball use with `"private": true`), or claim a marketplace listing. See [`docs/release-readiness.md`](./docs/release-readiness.md) for the honest current state.
 
 ---
 

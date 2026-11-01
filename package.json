@@ -30,6 +30,25 @@
   "engines": {
     "node": ">=18"
   },
+  "bin": {
+    "blendops": "bin/blendops.mjs"
+  },
+  "files": [
+    "bin/",
+    "scripts/install-skills.mjs",
+    "scripts/export-claude-skills.mjs",
+    "skills/",
+    "laws/",
+    "packs/",
+    "bundles/generic-project-local/",
+    "bundles/claude-desktop-manual/",
+    "bundles/skill-package/",
+    "registry/",
+    "schemas/",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
   "scripts": {
     "dev": "node scripts/dev-server.mjs",
     "start": "node scripts/dev-server.mjs",
@@ -43,13 +62,15 @@
     "bundles:summaries:build": "node scripts/generate-bundle-reference-summaries.mjs",
     "bundles:summaries:check": "node scripts/generate-bundle-reference-summaries.mjs --check",
     "skills:install": "node scripts/install-skills.mjs",
-    "test": "node --test scripts/test-phase1.mjs scripts/test-phase2.mjs scripts/test-phase3.mjs scripts/test-phase4.mjs scripts/test-phase5.mjs scripts/test-phase6.mjs scripts/test-phase7.mjs scripts/test-phase8.mjs scripts/test-phase9.mjs scripts/test-phase10.mjs",
+    "test": "node --test scripts/test-phase1.mjs scripts/test-phase2.mjs scripts/test-phase3.mjs scripts/test-phase4.mjs scripts/test-phase5.mjs scripts/test-phase6.mjs scripts/test-phase7.mjs scripts/test-phase8.mjs scripts/test-phase9.mjs scripts/test-phase10.mjs scripts/test-phase11.mjs",
     "docs:check": "node scripts/check-docs.mjs",
     "skills:export": "node scripts/export-claude-skills.mjs",
     "ci": "npm run docs:check && npm run registry:check && npm run evals:check && npm run evals:run && npm run bundles:summaries:check && npm run skills:export && npm test"
   },
-  "devDependencies": {
-    "ajv": "8.20.0",
+  "dependencies": {
     "fflate": "0.8.3"
+  },
+  "devDependencies": {
+    "ajv": "8.20.0"
   }
 }

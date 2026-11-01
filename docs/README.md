@@ -3,7 +3,7 @@
 The single index for everything in this repo. Bookmark this page.
 
 > [!WARNING]
-> BlendOps is **Draft v0**. It is a documentation + skill-pack project, not a production-ready tool. No marketplace listing. No `npx` installer yet. Runtime evidence is partial (Path 1 read-only smoke only).
+> BlendOps is **Draft v0**. It is a documentation + skill-pack project, not a production-ready tool. No marketplace listing. No published npm registry package (`bin/blendops.mjs` is packaged for local/tarball use with `"private": true`). Runtime evidence is partial (Path 1 read-only smoke only).
 
 ---
 
@@ -20,7 +20,7 @@ The single index for everything in this repo. Bookmark this page.
 | Full runtime manual eval (any path) | Not Run | Mutation/render/export not attempted. |
 | Runtime artifacts | Not Produced | No fresh preview/render/GLB. |
 | Release tag (`v0.1.0-draft`) | 🟡 Tag-able now | Skills layer is complete; tagging is a publishing decision, not gated on upstream runtime evidence. |
-| Marketplace / `npx` listing | Not Published | None claimed. |
+| Local CLI / tarball package | Implemented locally (`Not Published`) | `bin/blendops.mjs` + `scripts/install-skills.mjs` verified via `npm pack`; no public npm registry or marketplace listing claimed. |
 
 ---
 
@@ -91,7 +91,7 @@ The single index for everything in this repo. Bookmark this page.
 | Adapter index | [`adapters/README.md`](./adapters/README.md) |
 | Adapter registry (promotion ladder) | [`adapter-registry.md`](./adapter-registry.md) |
 | Capability profile schema | [`capability-profile.md`](./capability-profile.md) |
-| Future installer script spec | [`install/installer-spec.md`](./install/installer-spec.md) |
+| Local installer & CLI spec | [`install/installer-spec.md`](./install/installer-spec.md) |
 | Bundle: canonical portable skill package | [`../bundles/skill-package/README.md`](../bundles/skill-package/README.md) |
 | Bundle: Claude Desktop manual import | [`../bundles/claude-desktop-manual/README.md`](../bundles/claude-desktop-manual/README.md) |
 | Bundle: generic project-local fallback | [`../bundles/generic-project-local/README.md`](../bundles/generic-project-local/README.md) |
@@ -152,7 +152,7 @@ All 21 accept BlendOps via project-local files and can host MCP for Blender via 
 | Target | Doc | Selected mode | Confidence |
 |---|---|---|---|
 | Generic project | [`install/generic-project.md`](./install/generic-project.md) | project-local install fallback | verified-read fallback |
-| Installer script spec (future) | [`install/installer-spec.md`](./install/installer-spec.md) | future only | Draft spec only |
+| Local installer & CLI spec | [`install/installer-spec.md`](./install/installer-spec.md) | local CLI & tarball (`bin/blendops.mjs`, `scripts/install-skills.mjs`) | Implemented locally; unpublished (`"private": true`) |
 
 ---
 

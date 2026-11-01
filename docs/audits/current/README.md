@@ -27,11 +27,11 @@ Because a Git commit cannot honestly contain its own final commit SHA inside tra
 
 | Provenance Field | Recorded Value | Explanation |
 | :--- | :--- | :--- |
-| `sourceCommitSha` | `ce95a155362b0281f228dcfa89ada0ccfa21533d` (`ce95a15`) | Latest verified commit in Git history when the generator executed |
+| `sourceCommitSha` | `f0804fd64a9fa4f263a9ec59c5de84ed21733747` (`f0804fd`) | Latest verified commit in Git history when the generator executed |
 | `workingTreeState` | `dirty` | Whether audited files had uncommitted changes on top of `sourceCommitSha` |
 | `snapshotBasis` | `working-tree-on-top-of-source-commit` | Explicit distinction between a clean committed tree and a working tree on top of `sourceCommitSha` |
-| `uncommittedChangeCount` | `6` | Count of modified/staged/deleted/untracked repository paths outside `docs/audits/current/**` |
-| `auditedInputsSha256` | `b0f1be6602f262154fb38b82a2651e19496c5097a551738f1f1fd219cfc9d5ef` | Deterministic SHA-256 content digest across all manifest-declared repository inputs |
+| `uncommittedChangeCount` | `21` | Count of modified/staged/deleted/untracked repository paths outside `docs/audits/current/**` |
+| `auditedInputsSha256` | `43b971365c0342fdbde28e6fad71bade47d6d917cb2dcb4201debbb7f9498ca8` | Deterministic SHA-256 content digest across all manifest-declared repository inputs |
 
 ### 1.2 Audited Input Digest Scope & Manifest Governance
 
@@ -67,7 +67,7 @@ The `auditedInputsSha256` digest is governed by [`../audited-inputs.manifest.jso
 - [`findings.json`](./findings.json) — Machine-readable lifecycle table for `F-01` through `F-10`.
 - [`skill-inventory.json`](./skill-inventory.json) — Live 48-skill inventory reflecting Phase 1 truth-state fixes, Phase 2/2.1/5 full-catalog contracts, Phase 3/6 full-catalog eval coverage, and Phase 4 extended template completion.
 - [`eval-inventory.json`](./eval-inventory.json) — Live 48-skill evaluation inventory covering all 48 machine-readable suites (269 cases) with 0 remaining prose-only skills.
-- [`verification-manifest.json`](./verification-manifest.json) — Verified commit chain through `23e00d5d735190049ec0cb224bec4ae7fd67a990`, Phase 10 / 10.1 provenance context, CI pipeline commands, and runtime/artifact truth states.
+- [`verification-manifest.json`](./verification-manifest.json) — Verified commit chain through `f0804fd64a9fa4f263a9ec59c5de84ed21733747`, Phase 10 / 10.1 / 10.2 / 11 provenance context, CI pipeline commands, and runtime/artifact truth states.
 
 ## Related Documentation
 

@@ -38,7 +38,7 @@ _Last updated: 2026-05-09 (Batches 7+8 complete — 48 skills shipped, 3x baseli
 | Item | Why optional | Where |
 |---|---|---|
 | In-repo per-path evidence file (`docs/evals/path-X-...md`) | Useful provenance for an operator who wants a captured eval record. NOT a BlendOps publishing blocker because BlendOps redirects to upstream paths and does not run Blender. | `docs/evals/path-2-mcp-for-blender-readonly-template.md` is a fill-in template. |
-| `npx blendops` installer | Spec only at `docs/install/installer-spec.md`. Future Phase 4 work, deliberately deferred. | — |
+| Local/tarball `blendops` CLI & project-local installer | ✅ Implemented locally (`bin/blendops.mjs` + `scripts/install-skills.mjs`, verified via `npm pack` + consumer tarball install in `scripts/test-phase11.mjs`). Public npm registry publish remains deferred (`"private": true`). | `docs/install/installer-spec.md` |
 | Marketplace / plugin listing | Future Phase work. Gated on upstream listing acceptance. | — |
 
 **Bottom line**: clone the repo today → paste 30-second prompt → agent auto-detects and installs/prepares ZIPs → plan a scene with **48 skills** → follow per-target install doc to enable an upstream runtime path → drive Blender via Path 1 / Path 2 (both user-reported verified by the repo owner — operator statement) or CLI (upstream-documented). Skills roadmap **48/48** complete (`v0.5.0-draft`). Runtime paths remain **upstream's deliverable**, not BlendOps'.
@@ -277,7 +277,8 @@ Status without these files: **skills layer still complete and shippable**. Runti
 
 ## 🔵 Future work (deliberately deferred)
 
-- [ ] Phase 4 — `npx blendops` installer. Spec at `docs/install/installer-spec.md`. Build when there is a clear product requirement.
+- [x] Phase 10 & Phase 11 — Safe project-local installer (`scripts/install-skills.mjs`) and distributable CLI (`bin/blendops.mjs`) with `npm pack` tarball readiness (`"private": true` retained; public `npm publish` deferred until human release approval). Spec at `docs/install/installer-spec.md`.
+- [ ] Public npm registry release (`npm publish`) — deferred until explicit human maintainer release approval.
 - [ ] Phase 5 — Web-ready 3D output specifics (GLB handoff implementation, preview report tooling, React Three Fiber / Three.js usage helpers). Currently planning-only in `skills/glb-web-handoff/SKILL.md`.
 
 ## ⚪ Not a blocker — Skills UI upload

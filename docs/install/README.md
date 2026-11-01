@@ -8,7 +8,7 @@ Start with the concise prompt in [`README.md`](../../README.md#-use-in-30-second
 - **Multiple Skills ZIP preparation** for Claude Desktop / Claude.ai / chat-only contexts without project write access.
 - **Blocked-needs-input** when target choice, permissions, source fetch, or ZIP creation is unclear.
 
-These pages are detailed fallbacks and target notes. They do not describe a packaged installer, npm package, marketplace listing, or runtime setup.
+These pages are detailed fallbacks and target notes. For the local repository and tarball CLI (`bin/blendops.mjs` / `scripts/install-skills.mjs`), see [installer-spec.md](./installer-spec.md). They do not claim a published npm registry package, marketplace listing, or runtime setup.
 
 The canonical portable package source is `bundles/skill-package/blendops/`. Its `SKILL.md` plus `references/` are the target-neutral content layer; `agents/openai.yaml` is OpenAI/ChatGPT Skills UI metadata only, not the universal adapter layer for the targets below.
 
@@ -65,7 +65,7 @@ These are LLM hosts, not coding agents. They don't have project-local-file conve
 | Target | Doc | Selected mode | Confidence |
 |---|---|---|---|
 | Generic project | [generic-project.md](./generic-project.md) | project-local install fallback (when target type is unknown) | verified-read fallback |
-| Installer script spec (future) | [installer-spec.md](./installer-spec.md) | future only | Draft spec only |
+| Local installer & CLI spec | [installer-spec.md](./installer-spec.md) | local/tarball CLI (`bin/blendops.mjs`, `scripts/install-skills.mjs`) | Implemented locally; unpublished (`"private": true`) |
 
 ## Shared rules
 

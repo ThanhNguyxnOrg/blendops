@@ -13,10 +13,10 @@ Scope: BlendOps content distribution, not Blender runtime distribution
 | Level | Name | Meaning | Current v0 posture |
 |---:|---|---|---|
 | 0 | Docs-only/reference | Users read docs, copy prompts, or link source material without installing files. | Present in repo docs now. |
-| 1 | Project-local file install | Users or agents copy/reference BlendOps docs, skills, laws, and packs inside a project. | Preferred near-term route; use [AI Agent Install Flow](./ai-agent-install-flow.md). |
-| 2 | User-managed Claude Desktop skill import | User manually imports or attaches BlendOps skill content through Claude Desktop UI. | Candidate route; must stay separate from connector setup. |
+| 1 | Project-local file install | Users or agents copy/reference BlendOps docs, skills, laws, and packs inside a project. | Preferred near-term route; supported via [AI Agent Install Flow](./ai-agent-install-flow.md) and local CLI (`bin/blendops.mjs` / `scripts/install-skills.mjs`). |
+| 2 | User-managed Claude Desktop skill import | User manually imports or attaches BlendOps skill content through Claude Desktop UI. | Candidate route; exportable via `npm run skills:export` or `blendops install --target claude-desktop --out <dir> --write`; must stay separate from connector setup. |
 | 3 | GitHub/raw/plugin-from-repo install | Tool consumes content directly from a GitHub URL, raw file, or repo plugin reference. | Future; must follow target tool format. |
-| 4 | Tool-native package/extension | BlendOps ships in a package format native to an agent/tool. | Future; requires format and install testing. |
+| 4 | Tool-native package/extension & CLI tarball | BlendOps ships in a packable CLI tarball (`npm pack`) or tool-native package format. | Local CLI & `npm pack` tarball verified in `scripts/test-phase11.mjs`; public npm registry publish remains deferred (`"private": true`). |
 | 5 | Official marketplace listing | BlendOps appears in an official marketplace/catalog with review or approval as required. | Future only; do not claim until published and verified. |
 
 v0 should not depend on Level 5.

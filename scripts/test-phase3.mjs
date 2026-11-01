@@ -438,7 +438,7 @@ describe('Phase 3 — Behavioral Evaluation Schema & Deterministic Runner', () =
     assert.equal(currentScorecard.totals.measuredScore, 87.0);
     assert.equal(currentScorecard.methodology.activeZeroCompensationBlockers.length, 0);
 
-    // Verify commitChain includes all verified commits through Phase 10 (23e00d5)
+    // Verify commitChain includes all verified commits through Phase 10.2 (f0804fd)
     const chainShas = currentManifest.commitChain.map((c) => c.commitSha);
     assert.deepEqual(chainShas, [
       '3ea3c35c6b8a6e5e915bab9f63333d4a1c09bd4d',
@@ -461,6 +461,7 @@ describe('Phase 3 — Behavioral Evaluation Schema & Deterministic Runner', () =
       'f06fce82e5dae19f3ea9449c460e2fe2083c474d',
       '23e00d5d735190049ec0cb224bec4ae7fd67a990',
       'ce95a155362b0281f228dcfa89ada0ccfa21533d',
+      'f0804fd64a9fa4f263a9ec59c5de84ed21733747',
     ]);
 
     // Verify explicit auditProvenance on all 5 JSON artifacts and no ambiguous self-referential commitSha
@@ -480,14 +481,14 @@ describe('Phase 3 — Behavioral Evaluation Schema & Deterministic Runner', () =
       assert.ok(doc.auditProvenance, `${label} must include auditProvenance`);
       assert.equal(
         doc.sourceCommitSha,
-        'ce95a155362b0281f228dcfa89ada0ccfa21533d',
-        `${label} sourceCommitSha must record Phase 10.1 completion base commit ce95a155362b0281f228dcfa89ada0ccfa21533d`,
+        'f0804fd64a9fa4f263a9ec59c5de84ed21733747',
+        `${label} sourceCommitSha must record Phase 10.2 completion base commit f0804fd64a9fa4f263a9ec59c5de84ed21733747`,
       );
       assert.equal(
         doc.auditProvenance.sourceCommitSha,
-        'ce95a155362b0281f228dcfa89ada0ccfa21533d',
+        'f0804fd64a9fa4f263a9ec59c5de84ed21733747',
       );
-      assert.equal(doc.auditProvenance.sourceCommitShort, 'ce95a15');
+      assert.equal(doc.auditProvenance.sourceCommitShort, 'f0804fd');
       assert.ok(
         doc.auditProvenance.workingTreeState === 'clean' ||
           doc.auditProvenance.workingTreeState === 'dirty',

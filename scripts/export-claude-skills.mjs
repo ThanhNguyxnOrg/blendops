@@ -2,9 +2,11 @@
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { zipSync } from 'fflate';
 
-const root = process.cwd();
+const scriptRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const root = fs.existsSync(path.join(process.cwd(), 'skills')) ? process.cwd() : scriptRoot;
 const skillsDir = path.join(root, 'skills');
 
 const PROTECTED_REPO_ENTRIES = new Set([

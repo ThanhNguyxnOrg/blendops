@@ -5,6 +5,12 @@ content layer (docs + skills + laws + packs); it does not own runtime execution,
 which is redirected to upstream (Blender Lab MCP, Anthropic Connector,
 community `mcp-for-blender`, Blender CLI).
 
+## [Unreleased] — Phase 10 & Phase 11 (Installer & Distributable CLI Readiness)
+
+### Added
+- **Phase 11 Distributable CLI (`bin/blendops.mjs`)**: Added `blendops` CLI entrypoint (`blendops --version`, `blendops --help`, `blendops doctor`, `blendops install`, `blendops rollback`), `package.json` `"bin"` and `"files"` allowlist for deterministic `npm pack` tarballs, runtime `fflate` dependency, and end-to-end consumer tarball test suite (`scripts/test-phase11.mjs`). Package remains unpublished (`"private": true`).
+- **Phase 10 Safe Project-Local Installer (`scripts/install-skills.mjs`)**: Implemented `--doctor`, `--dry-run`, `--write`, and `--rollback` across supported project-local and bundle-output targets with transactional writes, crash-recovery journals (`.blendops/transaction-journal.json`), SHA-256 ownership tracking (`.blendops/install-manifest.json`), and user-edit preservation (`scripts/test-phase10.mjs`).
+
 ## [v0.8.0-draft] — 2026-10-16
 
 Skills-layer review hardening + runtime consistency. `npm run ci` green
