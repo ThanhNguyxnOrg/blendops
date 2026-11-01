@@ -5069,8 +5069,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 9492,
-      "sha256": "aa1ddc7c2612f7d4ae83b6adc284adeb433ce44ba857fe48967570a2f13282b6"
+      "byteSize": 14693,
+      "sha256": "03640816b7478a915bca821a2f53ab85fb9f5e65adab7efd57907880e97f19be"
     },
     {
       "path": "scripts/generate-bundle-reference-summaries.mjs",
@@ -5234,8 +5234,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 20902,
-      "sha256": "e8626ec9fdb7c9d06ebff5d3306bf3f7600518200bddfd6216c495be6f5e62e8"
+      "byteSize": 25482,
+      "sha256": "1b2227f1a1f1272ab93a0d7d367c62c6d0a548d2ea5f8c02f6d75a3c3bda7738"
     },
     {
       "path": "scripts/test-phase2.mjs",

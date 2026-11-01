@@ -182,19 +182,36 @@ function formatManifestOutputPrefix(targetPath, rootDir = root) {
   return targetPath.split(path.sep).join('/');
 }
 
-let outRoot;
-let isCustomOutputRoot = false;
-try {
-  const { outputRootArg } = parseCliArgs(process.argv.slice(2));
-  isCustomOutputRoot = outputRootArg !== null && outputRootArg !== undefined;
-  outRoot = resolveSafeOutputRoot(outputRootArg, root);
-} catch (err) {
-  console.error(err instanceof Error ? err.message : String(err));
-  process.exit(1);
+export const DETERMINISTIC_ZIP_TIMESTAMP_ISO = '1980-01-01T00:00:00.000Z';
+export const DETERMINISTIC_ZIP_DOS_TIME = 0x0000; // 00:00:00
+export const DETERMINISTIC_ZIP_DOS_DATE = 0x0021; // 1980-01-01 ((1980 - 1980) << 9 | (1 << 5) | 1)
+export const DETERMINISTIC_ZIP_COMPRESSION_LEVEL = 6;
+export const DETERMINISTIC_ZIP_OS = 0; // MS-DOS / FAT portable OS byte
+export const DETERMINISTIC_ZIP_ATTRS = 0; // Normalized external file attributes
+
+/**
+ * fflate's ZIP header writer (wzh) reads local Date getters (getFullYear, getMonth,
+ * getDate, getHours, getMinutes, getSeconds) to encode the MS-DOS 32-bit timestamp.
+ * Constructing a Date from the UTC components of DETERMINISTIC_ZIP_TIMESTAMP_ISO
+ * guarantees that fflate writes dosDate=0x0021 (1980-01-01) and dosTime=0x0000 (00:00:00)
+ * deterministically across all host timezones and operating systems.
+ */
+export function getDeterministicZipMtime() {
+  const utc = new Date(DETERMINISTIC_ZIP_TIMESTAMP_ISO);
+  return new Date(
+    utc.getUTCFullYear(),
+    utc.getUTCMonth(),
+    utc.getUTCDate(),
+    utc.getUTCHours(),
+    utc.getUTCMinutes(),
+    utc.getUTCSeconds(),
+    utc.getUTCMilliseconds(),
+  );
 }
 
-const desktopDir = path.join(outRoot, 'desktop-zips');
-const codeDir = path.join(outRoot, 'claude-code-skills');
+export function compareCodeUnitOrder(a, b) {
+  return a < b ? -1 : a > b ? 1 : 0;
+}
 
 function rmrf(target) {
   fs.rmSync(target, { recursive: true, force: true });
@@ -208,28 +225,132 @@ function copyDir(src, dest) {
   fs.cpSync(src, dest, { recursive: true });
 }
 
-function collectZipEntries(dir, baseDir, entries = {}) {
+function collectZipFileList(dir, baseDir, fileList = []) {
   const items = fs
     .readdirSync(dir, { withFileTypes: true })
-    .sort((a, b) => a.name.localeCompare(b.name));
+    .sort((a, b) => compareCodeUnitOrder(a.name, b.name));
 
   for (const item of items) {
     const fullPath = path.join(dir, item.name);
     if (item.isDirectory()) {
-      collectZipEntries(fullPath, baseDir, entries);
+      collectZipFileList(fullPath, baseDir, fileList);
     } else if (item.isFile()) {
       const relPath = path.relative(baseDir, fullPath).split(path.sep).join('/');
-      entries[relPath] = new Uint8Array(fs.readFileSync(fullPath));
+      fileList.push({ relPath, fullPath });
     }
+  }
+  return fileList;
+}
+
+export function collectZipEntries(dir, baseDir, entries = {}) {
+  const sortedFiles = collectZipFileList(dir, baseDir).sort((a, b) =>
+    compareCodeUnitOrder(a.relPath, b.relPath),
+  );
+  const mtime = getDeterministicZipMtime();
+
+  for (const { relPath, fullPath } of sortedFiles) {
+    entries[relPath] = [
+      new Uint8Array(fs.readFileSync(fullPath)),
+      {
+        level: DETERMINISTIC_ZIP_COMPRESSION_LEVEL,
+        mtime,
+        os: DETERMINISTIC_ZIP_OS,
+        attrs: DETERMINISTIC_ZIP_ATTRS,
+      },
+    ];
   }
   return entries;
 }
 
-function zipDir(srcDir, zipPath) {
+export function zipDir(srcDir, zipPath) {
   const parent = path.dirname(srcDir);
   const entries = collectZipEntries(srcDir, parent);
-  const zipped = zipSync(entries, { level: 6 });
+  const mtime = getDeterministicZipMtime();
+  const zipped = zipSync(entries, {
+    level: DETERMINISTIC_ZIP_COMPRESSION_LEVEL,
+    mtime,
+    os: DETERMINISTIC_ZIP_OS,
+    attrs: DETERMINISTIC_ZIP_ATTRS,
+  });
   fs.writeFileSync(zipPath, Buffer.from(zipped));
+}
+
+export function inspectZipMetadata(zipBuffer) {
+  const buf = Buffer.isBuffer(zipBuffer) ? zipBuffer : Buffer.from(zipBuffer);
+  const localHeaders = [];
+  const centralHeaders = [];
+  let offset = 0;
+
+  while (offset + 4 <= buf.length) {
+    const sig = buf.readUInt32LE(offset);
+    if (sig === 0x04034b50) {
+      const versionNeeded = buf.readUInt16LE(offset + 4);
+      const flags = buf.readUInt16LE(offset + 6);
+      const compression = buf.readUInt16LE(offset + 8);
+      const dosTime = buf.readUInt16LE(offset + 10);
+      const dosDate = buf.readUInt16LE(offset + 12);
+      const crc32 = buf.readUInt32LE(offset + 14);
+      const compressedSize = buf.readUInt32LE(offset + 18);
+      const uncompressedSize = buf.readUInt32LE(offset + 22);
+      const fileNameLength = buf.readUInt16LE(offset + 26);
+      const extraLength = buf.readUInt16LE(offset + 28);
+      const fileName = buf.subarray(offset + 30, offset + 30 + fileNameLength).toString('utf8');
+      localHeaders.push({
+        fileName,
+        versionNeeded,
+        flags,
+        compression,
+        dosTime,
+        dosDate,
+        crc32,
+        compressedSize,
+        uncompressedSize,
+        extraLength,
+      });
+      offset += 30 + fileNameLength + extraLength + compressedSize;
+    } else if (sig === 0x02014b50) {
+      const versionMadeBy = buf.readUInt8(offset + 4);
+      const os = buf.readUInt8(offset + 5);
+      const versionNeeded = buf.readUInt16LE(offset + 6);
+      const flags = buf.readUInt16LE(offset + 8);
+      const compression = buf.readUInt16LE(offset + 10);
+      const dosTime = buf.readUInt16LE(offset + 12);
+      const dosDate = buf.readUInt16LE(offset + 14);
+      const crc32 = buf.readUInt32LE(offset + 16);
+      const compressedSize = buf.readUInt32LE(offset + 20);
+      const uncompressedSize = buf.readUInt32LE(offset + 24);
+      const fileNameLength = buf.readUInt16LE(offset + 28);
+      const extraLength = buf.readUInt16LE(offset + 30);
+      const commentLength = buf.readUInt16LE(offset + 32);
+      const externalAttrs = buf.readUInt32LE(offset + 38);
+      const localHeaderOffset = buf.readUInt32LE(offset + 42);
+      const fileName = buf.subarray(offset + 46, offset + 46 + fileNameLength).toString('utf8');
+      centralHeaders.push({
+        fileName,
+        versionMadeBy,
+        os,
+        versionNeeded,
+        flags,
+        compression,
+        dosTime,
+        dosDate,
+        crc32,
+        compressedSize,
+        uncompressedSize,
+        extraLength,
+        commentLength,
+        externalAttrs,
+        localHeaderOffset,
+      });
+      offset += 46 + fileNameLength + extraLength + commentLength;
+    } else if (sig === 0x06054b50) {
+      break;
+    } else {
+      throw new Error(`Unexpected ZIP header signature 0x${sig.toString(16)} at offset ${offset}`);
+    }
+  }
+
+  return { localHeaders, centralHeaders };
 }
 
 function listSkillDirs() {
@@ -239,66 +360,89 @@ function listSkillDirs() {
     .map((entry) => entry.name)
     .filter((name) => name !== '_template')
     .filter((name) => fs.existsSync(path.join(skillsDir, name, 'SKILL.md')))
-    .sort();
+    .sort(compareCodeUnitOrder);
 }
 
-if (!fs.existsSync(skillsDir)) {
-  console.error(`Missing skills directory: ${skillsDir}`);
-  process.exit(1);
-}
+const isDirectExecution =
+  process.argv[1] &&
+  fs.existsSync(process.argv[1]) &&
+  fs.realpathSync(path.resolve(process.argv[1])) ===
+    fs.realpathSync(fileURLToPath(import.meta.url));
 
-const skillNames = listSkillDirs();
-
-for (const name of skillNames) {
-  const skillMdPath = path.join(skillsDir, name, 'SKILL.md');
-  const evalMdPath = path.join(skillsDir, name, 'EVAL.md');
-  if (!fs.existsSync(skillMdPath)) {
-    console.error(`Missing required SKILL.md for skill '${name}': ${skillMdPath}`);
+if (isDirectExecution) {
+  let outRoot;
+  let isCustomOutputRoot = false;
+  try {
+    const { outputRootArg } = parseCliArgs(process.argv.slice(2));
+    isCustomOutputRoot = outputRootArg !== null && outputRootArg !== undefined;
+    outRoot = resolveSafeOutputRoot(outputRootArg, root);
+  } catch (err) {
+    console.error(err instanceof Error ? err.message : String(err));
     process.exit(1);
   }
-  if (!fs.existsSync(evalMdPath)) {
-    console.error(`Missing required EVAL.md for skill '${name}': ${evalMdPath}`);
+
+  const desktopDir = path.join(outRoot, 'desktop-zips');
+  const codeDir = path.join(outRoot, 'claude-code-skills');
+
+  if (!fs.existsSync(skillsDir)) {
+    console.error(`Missing skills directory: ${skillsDir}`);
     process.exit(1);
   }
-}
 
-if (isCustomOutputRoot) {
-  if (fs.existsSync(outRoot) && fs.readdirSync(outRoot).length > 0) {
-    console.error(
-      `Refusing to overwrite non-empty --output-root directory: ${outRoot}`,
-    );
-    process.exit(1);
+  const skillNames = listSkillDirs();
+
+  for (const name of skillNames) {
+    const skillMdPath = path.join(skillsDir, name, 'SKILL.md');
+    const evalMdPath = path.join(skillsDir, name, 'EVAL.md');
+    if (!fs.existsSync(skillMdPath)) {
+      console.error(`Missing required SKILL.md for skill '${name}': ${skillMdPath}`);
+      process.exit(1);
+    }
+    if (!fs.existsSync(evalMdPath)) {
+      console.error(`Missing required EVAL.md for skill '${name}': ${evalMdPath}`);
+      process.exit(1);
+    }
   }
-} else {
-  rmrf(desktopDir);
-  rmrf(codeDir);
-  fs.rmSync(path.join(outRoot, 'manifest.json'), { force: true });
+
+  if (isCustomOutputRoot) {
+    if (fs.existsSync(outRoot) && fs.readdirSync(outRoot).length > 0) {
+      console.error(
+        `Refusing to overwrite non-empty --output-root directory: ${outRoot}`,
+      );
+      process.exit(1);
+    }
+  } else {
+    rmrf(desktopDir);
+    rmrf(codeDir);
+    fs.rmSync(path.join(outRoot, 'manifest.json'), { force: true });
+  }
+  mkdirp(desktopDir);
+  mkdirp(codeDir);
+
+  for (const name of skillNames) {
+    const src = path.join(skillsDir, name);
+    const codeDest = path.join(codeDir, name);
+    copyDir(src, codeDest);
+    zipDir(codeDest, path.join(desktopDir, `${name}.zip`));
+  }
+
+  const desktopDisplay = formatManifestOutputPrefix(desktopDir, root);
+  const codeDisplay = formatManifestOutputPrefix(codeDir, root);
+
+  const manifest = {
+    generatedAt: new Date().toISOString(),
+    source: 'skills/*/SKILL.md',
+    skillCount: skillNames.length,
+    outputs: {
+      claudeDesktop: `${desktopDisplay}/*.zip`,
+      claudeCode: `${codeDisplay}/*/SKILL.md`,
+    },
+    skills: skillNames,
+  };
+
+  fs.writeFileSync(path.join(outRoot, 'manifest.json'), `${JSON.stringify(manifest, null, 2)}\n`);
+
+  console.log(`Exported ${skillNames.length} Claude skill zips to ${desktopDisplay}`);
+  console.log(`Exported ${skillNames.length} Claude Code skill folders to ${codeDisplay}`);
 }
-mkdirp(desktopDir);
-mkdirp(codeDir);
 
-for (const name of skillNames) {
-  const src = path.join(skillsDir, name);
-  const codeDest = path.join(codeDir, name);
-  copyDir(src, codeDest);
-  zipDir(codeDest, path.join(desktopDir, `${name}.zip`));
-}
-
-const desktopDisplay = formatManifestOutputPrefix(desktopDir, root);
-const codeDisplay = formatManifestOutputPrefix(codeDir, root);
-
-const manifest = {
-  generatedAt: new Date().toISOString(),
-  source: 'skills/*/SKILL.md',
-  skillCount: skillNames.length,
-  outputs: {
-    claudeDesktop: `${desktopDisplay}/*.zip`,
-    claudeCode: `${codeDisplay}/*/SKILL.md`,
-  },
-  skills: skillNames,
-};
-
-fs.writeFileSync(path.join(outRoot, 'manifest.json'), `${JSON.stringify(manifest, null, 2)}\n`);
-
-console.log(`Exported ${skillNames.length} Claude skill zips to ${desktopDisplay}`);
-console.log(`Exported ${skillNames.length} Claude Code skill folders to ${codeDisplay}`);

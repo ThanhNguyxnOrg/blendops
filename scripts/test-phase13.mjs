@@ -21,8 +21,20 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+import crypto from 'node:crypto';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
+import { unzipSync } from 'fflate';
+import {
+  DETERMINISTIC_ZIP_TIMESTAMP_ISO,
+  DETERMINISTIC_ZIP_DOS_TIME,
+  DETERMINISTIC_ZIP_DOS_DATE,
+  DETERMINISTIC_ZIP_COMPRESSION_LEVEL,
+  DETERMINISTIC_ZIP_OS,
+  DETERMINISTIC_ZIP_ATTRS,
+  compareCodeUnitOrder,
+  inspectZipMetadata,
+} from './export-claude-skills.mjs';
 
 import {
   VALID_CLASSIFICATIONS,
@@ -298,30 +310,122 @@ describe('Phase 13 — Repository Architecture, Organization & Finalization', ()
       .filter((f) => f.endsWith('.md') && f !== 'README.md' && f !== 'installer-spec.md');
     assert.equal(installTargets.length, 26);
 
+    assert.equal(DETERMINISTIC_ZIP_TIMESTAMP_ISO, '1980-01-01T00:00:00.000Z');
+    assert.equal(DETERMINISTIC_ZIP_DOS_TIME, 0x0000);
+    assert.equal(DETERMINISTIC_ZIP_DOS_DATE, 0x0021);
+    assert.equal(DETERMINISTIC_ZIP_COMPRESSION_LEVEL, 6);
+    assert.equal(DETERMINISTIC_ZIP_OS, 0);
+    assert.equal(DETERMINISTIC_ZIP_ATTRS, 0);
+
     const exportOut1 = path.join(suiteTmpDir, 'claude-skills-export-1');
     const exportOut2 = path.join(suiteTmpDir, 'claude-skills-export-2');
     execFileSync(
       process.execPath,
       [path.join(ROOT, 'scripts', 'export-claude-skills.mjs'), '--output-root', exportOut1],
-      { cwd: ROOT, stdio: ['ignore', 'pipe', 'pipe'] },
+      { cwd: ROOT, env: { ...process.env, TZ: 'UTC' }, stdio: ['ignore', 'pipe', 'pipe'] },
     );
     execFileSync(
       process.execPath,
       [path.join(ROOT, 'scripts', 'export-claude-skills.mjs'), '--output-root', exportOut2],
-      { cwd: ROOT, stdio: ['ignore', 'pipe', 'pipe'] },
+      { cwd: ROOT, env: { ...process.env, TZ: 'America/Los_Angeles' }, stdio: ['ignore', 'pipe', 'pipe'] },
     );
+
+    // Refuses to overwrite non-empty --output-root directory
+    assert.throws(
+      () =>
+        execFileSync(
+          process.execPath,
+          [path.join(ROOT, 'scripts', 'export-claude-skills.mjs'), '--output-root', exportOut1],
+          { cwd: ROOT, stdio: ['ignore', 'pipe', 'pipe'] },
+        ),
+      /non-empty/,
+    );
+
+    const manifest1 = JSON.parse(fs.readFileSync(path.join(exportOut1, 'manifest.json'), 'utf8'));
+    const manifest2 = JSON.parse(fs.readFileSync(path.join(exportOut2, 'manifest.json'), 'utf8'));
+    assert.equal(manifest1.skillCount, 48);
+    assert.equal(manifest2.skillCount, 48);
+    assert.deepEqual(manifest1.skills, skillsDirs);
+    assert.deepEqual(manifest2.skills, skillsDirs);
 
     const zipsDir1 = path.join(exportOut1, 'desktop-zips');
     const zipsDir2 = path.join(exportOut2, 'desktop-zips');
     const codeSkillsDir1 = path.join(exportOut1, 'claude-code-skills');
-    const claudeSkillsZips = fs.readdirSync(zipsDir1).filter((f) => f.endsWith('.zip')).sort();
-    const claudeCodeFolders = fs.readdirSync(codeSkillsDir1).sort();
+    const codeSkillsDir2 = path.join(exportOut2, 'claude-code-skills');
+    const claudeSkillsZips = fs.readdirSync(zipsDir1).filter((f) => f.endsWith('.zip')).sort(compareCodeUnitOrder);
+    const claudeSkillsZips2 = fs.readdirSync(zipsDir2).filter((f) => f.endsWith('.zip')).sort(compareCodeUnitOrder);
+    const claudeCodeFolders = fs.readdirSync(codeSkillsDir1).sort(compareCodeUnitOrder);
+    const claudeCodeFolders2 = fs.readdirSync(codeSkillsDir2).sort(compareCodeUnitOrder);
     assert.equal(claudeSkillsZips.length, 48);
+    assert.deepEqual(claudeSkillsZips, claudeSkillsZips2);
     assert.equal(claudeCodeFolders.length, 48);
+    assert.deepEqual(claudeCodeFolders, claudeCodeFolders2);
+
     for (const zipName of claudeSkillsZips) {
+      const skillId = zipName.replace(/\.zip$/, '');
       const buf1 = fs.readFileSync(path.join(zipsDir1, zipName));
       const buf2 = fs.readFileSync(path.join(zipsDir2, zipName));
       assert.equal(buf1.equals(buf2), true, `Expected deterministic zip output for ${zipName}`);
+
+      const sha1 = crypto.createHash('sha256').update(buf1).digest('hex');
+      const sha2 = crypto.createHash('sha256').update(buf2).digest('hex');
+      assert.equal(sha1, sha2, `Expected identical ZIP SHA-256 across repeated exports for ${zipName}`);
+
+      const meta = inspectZipMetadata(buf1);
+      assert.ok(meta.localHeaders.length >= 4, `Expected >= 4 files inside ${zipName}`);
+      assert.equal(meta.localHeaders.length, meta.centralHeaders.length);
+
+      const headerNames = meta.centralHeaders.map((h) => h.fileName);
+      const sortedHeaderNames = [...headerNames].sort(compareCodeUnitOrder);
+      assert.deepEqual(
+        headerNames,
+        sortedHeaderNames,
+        `Expected locale-independent deterministic entry order in ${zipName}`,
+      );
+
+      for (let i = 0; i < meta.localHeaders.length; i += 1) {
+        const lh = meta.localHeaders[i];
+        const ch = meta.centralHeaders[i];
+        assert.equal(lh.fileName, ch.fileName);
+        assert.equal(
+          lh.dosTime,
+          DETERMINISTIC_ZIP_DOS_TIME,
+          `Expected deterministic DOS time 0x0000 in local header for ${lh.fileName} (${zipName})`,
+        );
+        assert.equal(
+          lh.dosDate,
+          DETERMINISTIC_ZIP_DOS_DATE,
+          `Expected deterministic DOS date 0x0021 (1980-01-01) in local header for ${lh.fileName} (${zipName})`,
+        );
+        assert.equal(
+          ch.dosTime,
+          DETERMINISTIC_ZIP_DOS_TIME,
+          `Expected deterministic DOS time 0x0000 in central header for ${ch.fileName} (${zipName})`,
+        );
+        assert.equal(
+          ch.dosDate,
+          DETERMINISTIC_ZIP_DOS_DATE,
+          `Expected deterministic DOS date 0x0021 (1980-01-01) in central header for ${ch.fileName} (${zipName})`,
+        );
+        assert.equal(ch.os, DETERMINISTIC_ZIP_OS, `Expected normalized OS=0 for ${ch.fileName} (${zipName})`);
+        assert.equal(
+          ch.externalAttrs,
+          DETERMINISTIC_ZIP_ATTRS,
+          `Expected normalized externalAttrs=0 for ${ch.fileName} (${zipName})`,
+        );
+      }
+
+      const entries = unzipSync(new Uint8Array(buf1));
+      for (const reqEntry of ['SKILL.md', 'EVAL.md', 'contract.json']) {
+        const entryKey = `${skillId}/${reqEntry}`;
+        assert.ok(entries[entryKey], `Missing ${entryKey} in ${zipName}`);
+        const srcBytes = fs.readFileSync(path.join(ROOT, 'skills', skillId, reqEntry));
+        assert.equal(
+          Buffer.from(entries[entryKey]).equals(srcBytes),
+          true,
+          `Expected byte-identical ${entryKey} in ${zipName}`,
+        );
+      }
     }
   });
 
