@@ -3,7 +3,7 @@ import crypto from 'node:crypto';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { execFileSync } from 'node:child_process';
+import { execFileSync, spawnSync } from 'node:child_process';
 import { after, before, describe, test } from 'node:test';
 import { fileURLToPath } from 'node:url';
 
@@ -12,6 +12,7 @@ import {
   MANAGED_SECTION_START,
   MANAGED_SECTION_END,
 } from './install-skills.mjs';
+import { ensureMainRepoGitRestored } from './generate-current-audit.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -154,6 +155,7 @@ describe('Phase 11 — Distributable CLI & Package Readiness', () => {
   let installedPkgRoot;
 
   before(() => {
+    ensureMainRepoGitRestored(ROOT);
     suiteTmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-test-phase11-'));
     packDir = path.join(suiteTmpDir, 'pack');
     consumerDir = path.join(suiteTmpDir, 'consumer');
@@ -226,6 +228,34 @@ describe('Phase 11 — Distributable CLI & Package Readiness', () => {
       stdio: ['ignore', 'pipe', 'pipe'],
       windowsHide: invocation.windowsHide,
     });
+  }
+
+  function spawnInstalledCli(
+    args,
+    { cwd = unrelatedCwd, env = {}, via = 'shim', binPath = installedBinPath, jsEntrypoint = installedJsEntrypoint } = {},
+  ) {
+    const file = via === 'js' ? process.execPath : buildSubprocessInvocation({ executablePath: binPath, args }).file;
+    const finalArgs =
+      via === 'js'
+        ? [jsEntrypoint, ...args]
+        : buildSubprocessInvocation({ executablePath: binPath, args }).args;
+    const spawned = spawnSync(file, finalArgs, {
+      cwd,
+      encoding: 'utf8',
+      env: { ...process.env, ...env },
+      stdio: ['ignore', 'pipe', 'pipe'],
+      windowsHide: true,
+      maxBuffer: 16 * 1024 * 1024,
+    });
+    if (spawned.error) {
+      throw spawned.error;
+    }
+    return {
+      status: spawned.status,
+      signal: spawned.signal,
+      stdout: String(spawned.stdout || ''),
+      stderr: String(spawned.stderr || ''),
+    };
   }
 
   function runInstalledCliExpectFailure(
@@ -648,7 +678,7 @@ describe('Phase 11 — Distributable CLI & Package Readiness', () => {
     );
   });
 
-  test('Scenario G: Failure and recovery from installed tarball (interrupted transaction journal recovery and corrupted package asset fail-closed check)', () => {
+  test('Scenario G: Transaction recovery and package integrity from installed tarball (interrupted transaction journal recovery and corrupted package asset fail-closed check)', () => {
     const envPlans = { BLENDOPS_INSTALLER_PLAN_DIR: path.join(suiteTmpDir, 'plans-g') };
     const projDir = path.join(suiteTmpDir, 'scenario-g-proj');
     fs.mkdirSync(projDir, { recursive: true });
@@ -806,6 +836,7 @@ describe('Phase 11 — Distributable CLI & Package Readiness', () => {
     assert.match(writeOut, /Mode: write/);
     assert.match(writeOut, /Runtime status: Not Run/);
     assert.match(writeOut, /Artifact status: Not Produced/);
+    assert.match(writeOut, /Runtime setup: Separate; not performed/);
 
     const zipFiles = fs.readdirSync(path.join(outDir, 'desktop-zips')).filter((f) => f.endsWith('.zip'));
     assert.equal(zipFiles.length, 48, 'Must generate all 48 per-skill ZIP archives from installed tarball');
@@ -1024,5 +1055,139 @@ describe('Phase 11 — Distributable CLI & Package Readiness', () => {
       !currentAuditReadme.includes('phase-10-current'),
       'docs/audits/current/README.md must not contain stale phase-10-current identifier',
     );
+  });
+
+  test('Scenario K: Large CLI output payloads drain completely across child process pipes with intact trailing truth-state lines and exit codes', () => {
+    const envPlans = { BLENDOPS_INSTALLER_PLAN_DIR: path.join(suiteTmpDir, 'plans-k') };
+
+    // 1. Verify real Claude Desktop export over a child-process pipe flushes full report with exit code 0 and empty stderr
+    const desktopPipeOutDir = path.join(suiteTmpDir, 'scenario-k-desktop-pipe-out');
+    const dryPipeRes = spawnInstalledCli(
+      ['install', '--target', 'claude-desktop', '--out', desktopPipeOutDir, '--dry-run'],
+      { via: 'shim', env: envPlans },
+    );
+    assert.equal(dryPipeRes.status, 0, 'Claude Desktop --dry-run must exit with status 0');
+    assert.equal(dryPipeRes.stderr, '', 'Claude Desktop --dry-run must produce empty stderr');
+    assert.match(dryPipeRes.stdout, /Runtime status: Not Run/);
+    assert.match(dryPipeRes.stdout, /Artifact status: Not Produced/);
+    assert.match(dryPipeRes.stdout, /Runtime setup: Separate; not performed/);
+
+    const writePipeRes = spawnInstalledCli(
+      ['install', '--target', 'claude-desktop', '--out', desktopPipeOutDir, '--write'],
+      { via: 'shim', env: envPlans },
+    );
+    assert.equal(writePipeRes.status, 0, 'Claude Desktop --write must exit with status 0');
+    assert.equal(writePipeRes.stderr, '', 'Claude Desktop --write must produce empty stderr');
+    assert.ok(
+      Buffer.byteLength(writePipeRes.stdout, 'utf8') > 16 * 1024,
+      'Claude Desktop --write report must include full multi-kilobyte Files created output',
+    );
+    assert.match(writePipeRes.stdout, /- Files created:.*desktop-zips\/workflow-stage-router\.zip/);
+    assert.match(writePipeRes.stdout, /Runtime status: Not Run/);
+    assert.match(writePipeRes.stdout, /Artifact status: Not Produced/);
+    assert.match(writePipeRes.stdout, /Runtime setup: Separate; not performed/);
+
+    // 2. Verify >150 KB stdout payloads (exceeding 16 KB macOS and 64 KB Linux pipe buffers before trailing truth states)
+    // drain completely for both the packaged JS entrypoint and the installed npm command shim
+    for (const viaMode of ['js', 'shim']) {
+      const largeStdoutProj = path.join(suiteTmpDir, `scenario-k-large-stdout-${viaMode}`);
+      const blendopsMetaDir = path.join(largeStdoutProj, '.blendops');
+      fs.mkdirSync(blendopsMetaDir, { recursive: true });
+
+      const sampleContent = '# BlendOps Managed Fixture\n';
+      const sampleSha = sha256Buffer(Buffer.from(sampleContent, 'utf8'));
+      fs.writeFileSync(path.join(largeStdoutProj, 'BLENDOPS.md'), sampleContent, 'utf8');
+
+      const largeRequestedTarget = `generic-project-${'a'.repeat(80000)}`;
+      const largeConfidence = `verified-read-${'b'.repeat(80000)}`;
+      const manifestObj = {
+        installer_version: INSTALLER_VERSION,
+        timestamp: new Date().toISOString(),
+        target: 'generic-project',
+        requested_target: largeRequestedTarget,
+        confidence: largeConfidence,
+        scope: 'project-local',
+        project: largeStdoutProj,
+        files_created: ['BLENDOPS.md'],
+        files_modified: [],
+        backups: [],
+        files_skipped: [],
+        created_file_hashes: {
+          'BLENDOPS.md': sampleSha,
+        },
+        modified_file_hashes: {},
+        global_touched: false,
+        runtime_status: 'Not Run',
+        artifact_status: 'Not Produced',
+      };
+      fs.writeFileSync(
+        path.join(blendopsMetaDir, 'install-manifest.json'),
+        `${JSON.stringify(manifestObj, null, 2)}\n`,
+        'utf8',
+      );
+
+      const largeRes = spawnInstalledCli(['rollback', '--project', largeStdoutProj], {
+        via: viaMode,
+        env: envPlans,
+      });
+      assert.equal(largeRes.status, 0, `Large stdout CLI invocation (${viaMode}) must exit with code 0`);
+      assert.equal(largeRes.stderr, '', `Large stdout CLI invocation (${viaMode}) must have empty stderr`);
+      assert.ok(
+        Buffer.byteLength(largeRes.stdout, 'utf8') > 150 * 1024,
+        `Large stdout payload (${viaMode}) must exceed 150 KB pipe buffer threshold`,
+      );
+      assert.ok(
+        largeRes.stdout.includes(largeRequestedTarget) && largeRes.stdout.includes(largeConfidence),
+        `Large stdout payload (${viaMode}) must preserve full preceding report lines without truncation`,
+      );
+      assert.match(largeRes.stdout, /Runtime status: Not Run/);
+      assert.match(largeRes.stdout, /Artifact status: Not Produced/);
+      assert.match(largeRes.stdout, /Runtime setup: Separate; not performed/);
+    }
+
+    // 3. Verify >150 KB stderr diagnostic output on error path drains completely with nonzero exit code (1) and empty stdout
+    for (const viaMode of ['js', 'shim']) {
+      const largeStderrProj = path.join(suiteTmpDir, `scenario-k-large-stderr-${viaMode}`);
+      const blendopsMetaDir = path.join(largeStderrProj, '.blendops');
+      fs.mkdirSync(blendopsMetaDir, { recursive: true });
+
+      const longFakeRelPath = `missing-hash-${'e'.repeat(160000)}.md`;
+      const badManifestObj = {
+        installer_version: INSTALLER_VERSION,
+        timestamp: new Date().toISOString(),
+        target: 'generic-project',
+        scope: 'project-local',
+        project: largeStderrProj,
+        files_created: [longFakeRelPath],
+        files_modified: [],
+        backups: [],
+        created_file_hashes: {},
+        modified_file_hashes: {},
+      };
+      fs.writeFileSync(
+        path.join(blendopsMetaDir, 'install-manifest.json'),
+        `${JSON.stringify(badManifestObj, null, 2)}\n`,
+        'utf8',
+      );
+
+      const errRes = spawnInstalledCli(['rollback', '--project', largeStderrProj], {
+        via: viaMode,
+        env: envPlans,
+      });
+      assert.equal(errRes.status, 1, `Large stderr CLI invocation (${viaMode}) must exit with code 1`);
+      assert.equal(errRes.stdout, '', `Large stderr CLI invocation (${viaMode}) must produce empty stdout`);
+      assert.ok(
+        Buffer.byteLength(errRes.stderr, 'utf8') > 150 * 1024,
+        `Large stderr payload (${viaMode}) must exceed 150 KB pipe buffer threshold`,
+      );
+      assert.match(errRes.stderr, /## BlendOps installer error/);
+      assert.ok(
+        errRes.stderr.includes(longFakeRelPath),
+        `Large stderr payload (${viaMode}) must preserve the full diagnostic message`,
+      );
+      assert.match(errRes.stderr, /Global files touched: No/);
+      assert.match(errRes.stderr, /Runtime status: Not Run/);
+      assert.match(errRes.stderr, /Artifact status: Not Produced/);
+    }
   });
 });

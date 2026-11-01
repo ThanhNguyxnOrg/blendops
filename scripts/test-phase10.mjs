@@ -791,7 +791,7 @@ test('Scenario 20: Symlink escape, hardlinked target files, directory/file type 
   }
 });
 
-test('Scenario 21: CLI execution via child_process reports honest truth states across --doctor, --dry-run, --write, --rollback, and error outputs', () => {
+test('Scenario 21: CLI execution via child_process reports honest truth states across --doctor, --dry-run, --write, --rollback, and diagnostic outputs', () => {
   const tempBase = makeTempDir('blendops-p10-cli-');
   const projectDir = path.join(tempBase, 'cli-proj');
   fs.mkdirSync(projectDir, { recursive: true });
@@ -1007,7 +1007,7 @@ test('Scenario 24: Write mode rejects tampered dry-run plans and plans requestin
   }
 });
 
-test('Scenario 25: Malformed manifests, missing sources, Windows-style path edge cases, and rollback metadata creation failure fail closed with zero target writes', () => {
+test('Scenario 25: Malformed manifests, missing sources, Windows-style path edge cases, and blocked rollback metadata creation fail closed with zero target writes', () => {
   const tempBase = makeTempDir('blendops-p10-fail-closed-');
   const projectDir = path.join(tempBase, 'proj');
   const planDir = path.join(tempBase, 'plans');
@@ -1160,7 +1160,7 @@ function createMinimalFixtureRepo(baseDir) {
   return repoDir;
 }
 
-test('Scenario 27 (Phase 10.1 P1): Claude Desktop export never deletes pre-existing --out directories, stages output safely, rejects destinations created after --dry-run, and cleans up staging on failure', () => {
+test('Scenario 27 (Phase 10.1 P1): Claude Desktop export never deletes pre-existing --out directories, stages output safely, rejects destinations created after --dry-run, and cleans up aborted staging', () => {
   const tempBase = makeTempDir('blendops-p10-1-cd-safety-');
   const planDir = path.join(tempBase, 'plans');
 
@@ -1667,7 +1667,7 @@ test('Scenario 32 (Phase 10.1 P2): Reruns fail closed if a prior backup recorded
   }
 });
 
-test('Scenario 33 (Phase 10.2 P1): Transactional write recovery restores target files, manifest, report, and backups consistently across first-install, rerun, report-write, and crash failures', () => {
+test('Scenario 33 (Phase 10.2 P1): Transactional write recovery restores target files, manifest, report, and backups consistently across first-install, rerun, report-write, and interrupted writes', () => {
   const tempBase = makeTempDir('blendops-p10-2-tx-recovery-');
   const planDir = path.join(tempBase, 'plans');
 

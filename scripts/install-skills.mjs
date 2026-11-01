@@ -3750,7 +3750,8 @@ export function runCli(argv = process.argv.slice(2), options = {}) {
   try {
     const res = runInstaller(argv, options);
     process.stdout.write(res.report);
-    process.exit(0);
+    process.exitCode = 0;
+    return res;
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
     process.stderr.write(
@@ -3764,7 +3765,8 @@ export function runCli(argv = process.argv.slice(2), options = {}) {
         '',
       ].join('\n'),
     );
-    process.exit(1);
+    process.exitCode = 1;
+    return null;
   }
 }
 

@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import fs from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import { execFileSync } from 'node:child_process';
@@ -31,16 +32,6 @@ const ROOT_DIR = path.resolve(__dirname, '..');
 export function ensureMainRepoGitRestored(rootDir = ROOT_DIR) {
   const resolvedRoot = path.resolve(rootDir);
   if (resolvedRoot !== ROOT_DIR) return;
-  const gitDir = path.join(ROOT_DIR, '.git');
-  const binPath = path.join(ROOT_DIR, 'bin', 'blendops.mjs');
-  try {
-    if (fs.existsSync(binPath)) {
-      fs.chmodSync(binPath, 0o755);
-    }
-  } catch {
-    // ignore chmod error
-  }
-  if (fs.existsSync(gitDir)) return;
   const artifactDir = path.join(
     ROOT_DIR,
     '.aistudio',
@@ -50,29 +41,21 @@ export function ensureMainRepoGitRestored(rootDir = ROOT_DIR) {
   );
   const bundlePath = path.join(artifactDir, 'blendops-phase-11-cli-package.bundle');
   if (!fs.existsSync(bundlePath)) return;
-  const tmpClone = fs.mkdtempSync(path.join('/tmp', 'blendops-git-restore-'));
+
+  const binPath = path.join(ROOT_DIR, 'bin', 'blendops.mjs');
   try {
-    execFileSync('git', ['clone', bundlePath, tmpClone], {
-      stdio: ['ignore', 'ignore', 'ignore'],
-    });
-    fs.renameSync(path.join(tmpClone, '.git'), gitDir);
-    execFileSync('git', ['config', 'user.name', 'ThanhNguyxn'], {
-      cwd: ROOT_DIR,
-      stdio: ['ignore', 'ignore', 'ignore'],
-    });
-    execFileSync('git', ['config', 'user.email', 'thanhnguyxn@users.noreply.github.com'], {
-      cwd: ROOT_DIR,
-      stdio: ['ignore', 'ignore', 'ignore'],
-    });
-    execFileSync(
-      'git',
-      ['remote', 'set-url', 'origin', 'https://github.com/ThanhNguyxnOrg/blendops.git'],
-      {
-        cwd: ROOT_DIR,
-        stdio: ['ignore', 'ignore', 'ignore'],
-      },
-    );
-    const distDir = path.join(ROOT_DIR, 'dist');
+    if (fs.existsSync(binPath)) {
+      const mode = fs.statSync(binPath).mode;
+      if ((mode & 0o111) === 0) {
+        fs.chmodSync(binPath, 0o755);
+      }
+    }
+  } catch {
+    // ignore chmod error
+  }
+
+  const distDir = path.join(ROOT_DIR, 'dist');
+  try {
     fs.mkdirSync(distDir, { recursive: true });
     for (const entry of fs.readdirSync(artifactDir)) {
       if (entry.endsWith('.bundle')) {
@@ -82,6 +65,43 @@ export function ensureMainRepoGitRestored(rootDir = ROOT_DIR) {
           fs.copyFileSync(src, dst);
         }
       }
+    }
+  } catch {
+    // ignore concurrent dist copy
+  }
+
+  const gitDir = path.join(ROOT_DIR, '.git');
+  if (fs.existsSync(gitDir)) return;
+
+  const tmpClone = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-git-restore-'));
+  try {
+    execFileSync('git', ['clone', bundlePath, tmpClone], {
+      stdio: ['ignore', 'ignore', 'ignore'],
+    });
+    if (!fs.existsSync(gitDir)) {
+      try {
+        fs.renameSync(path.join(tmpClone, '.git'), gitDir);
+      } catch {
+        // another concurrent process already restored .git
+      }
+    }
+    if (fs.existsSync(gitDir)) {
+      execFileSync('git', ['config', 'user.name', 'ThanhNguyxn'], {
+        cwd: ROOT_DIR,
+        stdio: ['ignore', 'ignore', 'ignore'],
+      });
+      execFileSync('git', ['config', 'user.email', 'thanhnguyxn@users.noreply.github.com'], {
+        cwd: ROOT_DIR,
+        stdio: ['ignore', 'ignore', 'ignore'],
+      });
+      execFileSync(
+        'git',
+        ['remote', 'set-url', 'origin', 'https://github.com/ThanhNguyxnOrg/blendops.git'],
+        {
+          cwd: ROOT_DIR,
+          stdio: ['ignore', 'ignore', 'ignore'],
+        },
+      );
     }
   } finally {
     fs.rmSync(tmpClone, { recursive: true, force: true });

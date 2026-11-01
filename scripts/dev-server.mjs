@@ -9,7 +9,8 @@ import { fileURLToPath } from 'node:url';
 
 export const CANONICAL_BUNDLE_FILENAME = 'blendops-phase-9.bundle';
 export const PHASE11_DELIVERY_FILENAME = 'blendops-phase-11-cli-package.bundle';
-export const PHASE11_EXPECTED_PARENT_SHA = 'c2bd7ebd1f2c9059153037aba4ca0cde07e3472b';
+export const PHASE11_EXPECTED_PARENT_SHA = 'e92230d3423fd1c6f07ab83c893854aba2a034db';
+export const PHASE11_PREVIOUS_PARENT_SHA = 'c2bd7ebd1f2c9059153037aba4ca0cde07e3472b';
 export const PHASE10_2_DELIVERY_FILENAME = 'blendops-phase-10.2-transaction-safety.bundle';
 export const PHASE10_2_EXPECTED_HEAD_SHA = 'f0804fd64a9fa4f263a9ec59c5de84ed21733747';
 export const PHASE10_2_EXPECTED_PARENT_SHA = 'ce95a155362b0281f228dcfa89ada0ccfa21533d';
@@ -201,8 +202,6 @@ const DEV_SERVER_ROOT_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.
 function ensureMainWorkspaceGitAndDist(rootDir) {
   const resolvedRoot = path.resolve(rootDir);
   if (resolvedRoot !== DEV_SERVER_ROOT_DIR) return;
-  const gitDir = path.join(DEV_SERVER_ROOT_DIR, '.git');
-  if (fs.existsSync(gitDir)) return;
   const artifactDir = path.join(
     DEV_SERVER_ROOT_DIR,
     '.aistudio',
@@ -212,13 +211,21 @@ function ensureMainWorkspaceGitAndDist(rootDir) {
   );
   const bundlePath = path.join(artifactDir, PHASE11_DELIVERY_FILENAME);
   if (!fs.existsSync(bundlePath)) return;
-  const tmpClone = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-dev-git-restore-'));
+
+  const binPath = path.join(DEV_SERVER_ROOT_DIR, 'bin', 'blendops.mjs');
   try {
-    execFileSync('git', ['clone', bundlePath, tmpClone], {
-      stdio: ['ignore', 'ignore', 'ignore'],
-    });
-    fs.renameSync(path.join(tmpClone, '.git'), gitDir);
-    const distDir = path.join(DEV_SERVER_ROOT_DIR, 'dist');
+    if (fs.existsSync(binPath)) {
+      const mode = fs.statSync(binPath).mode;
+      if ((mode & 0o111) === 0) {
+        fs.chmodSync(binPath, 0o755);
+      }
+    }
+  } catch {
+    // ignore chmod error
+  }
+
+  const distDir = path.join(DEV_SERVER_ROOT_DIR, 'dist');
+  try {
     fs.mkdirSync(distDir, { recursive: true });
     for (const entry of fs.readdirSync(artifactDir)) {
       if (entry.endsWith('.bundle')) {
@@ -227,6 +234,25 @@ function ensureMainWorkspaceGitAndDist(rootDir) {
         if (!fs.existsSync(dst)) {
           fs.copyFileSync(src, dst);
         }
+      }
+    }
+  } catch {
+    // ignore concurrent dist copy
+  }
+
+  const gitDir = path.join(DEV_SERVER_ROOT_DIR, '.git');
+  if (fs.existsSync(gitDir)) return;
+
+  const tmpClone = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-dev-git-restore-'));
+  try {
+    execFileSync('git', ['clone', bundlePath, tmpClone], {
+      stdio: ['ignore', 'ignore', 'ignore'],
+    });
+    if (!fs.existsSync(gitDir)) {
+      try {
+        fs.renameSync(path.join(tmpClone, '.git'), gitDir);
+      } catch {
+        // another concurrent process already restored .git
       }
     }
   } finally {
@@ -968,6 +994,7 @@ export function getPhase11DeliveryBundleInfo(options = {}) {
     ).trim();
     if (
       parentSha !== PHASE11_EXPECTED_PARENT_SHA &&
+      parentSha !== PHASE11_PREVIOUS_PARENT_SHA &&
       parentSha !== PHASE10_2_EXPECTED_HEAD_SHA
     ) {
       throw new Error(
