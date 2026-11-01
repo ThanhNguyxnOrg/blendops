@@ -438,7 +438,7 @@ describe('Phase 3 — Behavioral Evaluation Schema & Deterministic Runner', () =
     assert.equal(currentScorecard.totals.measuredScore, 87.0);
     assert.equal(currentScorecard.methodology.activeZeroCompensationBlockers.length, 0);
 
-    // Verify commitChain includes all verified commits through Phase 8.1.1 (3e72020)
+    // Verify commitChain includes all verified commits through Phase 9 (f06fce8)
     const chainShas = currentManifest.commitChain.map((c) => c.commitSha);
     assert.deepEqual(chainShas, [
       '3ea3c35c6b8a6e5e915bab9f63333d4a1c09bd4d',
@@ -458,6 +458,7 @@ describe('Phase 3 — Behavioral Evaluation Schema & Deterministic Runner', () =
       'defb847b58516afa75f090fd2fa7b066d01e5832',
       '42dadea8d92c384dcd5eae419880d15d4b9ccce4',
       '3e72020fb64af4d5aeadeb942c9cbb0314c11cba',
+      'f06fce82e5dae19f3ea9449c460e2fe2083c474d',
     ]);
 
     // Verify explicit auditProvenance on all 5 JSON artifacts and no ambiguous self-referential commitSha
@@ -477,14 +478,14 @@ describe('Phase 3 — Behavioral Evaluation Schema & Deterministic Runner', () =
       assert.ok(doc.auditProvenance, `${label} must include auditProvenance`);
       assert.equal(
         doc.sourceCommitSha,
-        '3e72020fb64af4d5aeadeb942c9cbb0314c11cba',
-        `${label} sourceCommitSha must record Phase 8.1.1 completion base commit 3e72020fb64af4d5aeadeb942c9cbb0314c11cba`,
+        'f06fce82e5dae19f3ea9449c460e2fe2083c474d',
+        `${label} sourceCommitSha must record Phase 9 completion base commit f06fce82e5dae19f3ea9449c460e2fe2083c474d`,
       );
       assert.equal(
         doc.auditProvenance.sourceCommitSha,
-        '3e72020fb64af4d5aeadeb942c9cbb0314c11cba',
+        'f06fce82e5dae19f3ea9449c460e2fe2083c474d',
       );
-      assert.equal(doc.auditProvenance.sourceCommitShort, '3e72020');
+      assert.equal(doc.auditProvenance.sourceCommitShort, 'f06fce8');
       assert.ok(
         doc.auditProvenance.workingTreeState === 'clean' ||
           doc.auditProvenance.workingTreeState === 'dirty',

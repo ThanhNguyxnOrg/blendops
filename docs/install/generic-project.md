@@ -36,9 +36,18 @@ Artifact status: Not Produced.
   - `INSTALL_REPORT_TEMPLATE.md` install report template
   - `manifest.json` fixture metadata
 
+## Local repository CLI (optional)
+
+When running from a local BlendOps repository checkout, you can run the deterministic project-local installer (`--dry-run` is required before `--write`):
+
+```sh
+node scripts/install-skills.mjs --target generic-project --project /path/to/project --dry-run
+node scripts/install-skills.mjs --target generic-project --project /path/to/project --write
+```
+
 ## Rollback notes
 
-Delete `BLENDOPS.md` and restore any modified file from backup. Use the fixture rollback notes as a starting point, adapting paths to the target project.
+Run `node scripts/install-skills.mjs --rollback --project /path/to/project` (or manually delete `BLENDOPS.md`, restore any modified file from `.blendops/backups/`, and remove `.blendops/`). Use the fixture rollback notes as a starting point when performing manual installs.
 
 ## Runtime boundary
 

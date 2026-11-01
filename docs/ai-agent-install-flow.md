@@ -228,22 +228,22 @@ Minimal report shape:
 
 For a static generic project-local fixture example, see [`bundles/generic-project-local/`](../bundles/generic-project-local/). It demonstrates rollback/report templates only and does not run an installer or runtime.
 
-## Future command shape (documentation only)
+## Local repository CLI vs future `npx` command shape
 
-These are proposed future UX examples only. They are not implemented or tested commands, and users should not run them yet.
+Inside a local checkout of the BlendOps repository, `scripts/install-skills.mjs` is implemented for safe project-local attachment (`--doctor`, `--dry-run`, `--write`, `--rollback`) and Claude Desktop export preparation (`--target claude-desktop --out <path>`). See [installer-spec.md](./install/installer-spec.md) for the full contract.
+
+By contrast, published `npx` package commands remain future UX examples only — no `npm` package or `npx blendops` CLI is published:
 
 ```sh
-# Future only — not implemented
+# Future only — not published to npm
 npx blendops skills install --target auto --project .
 
-# Future only — not implemented
+# Future only — not published to npm
 npx blendops skills install --target claude-code --project .
 
-# Future only — not implemented
+# Future only — not published to npm
 npx blendops skills install --target antigravity --project .
 
-# Future only — not implemented
+# Future only — not published to npm
 npx blendops skills doctor
 ```
-
-Before any command is promoted, BlendOps needs an implemented package, install tests, rollback tests, target-specific evidence, and conservative runtime/artifact status handling. See [installer-spec.md](./install/installer-spec.md) for the design-only behavior contract.

@@ -1,19 +1,19 @@
 {
   "schemaVersion": "1.4.0",
-  "auditPhase": "phase-8-current",
+  "auditPhase": "phase-10-current",
   "repository": "ThanhNguyxnOrg/blendops",
   "branch": "main",
-  "sourceCommitSha": "3e72020fb64af4d5aeadeb942c9cbb0314c11cba",
-  "sourceCommitShort": "3e72020",
-  "sourceCommitDate": "2026-10-31 16:18:51 +0000",
+  "sourceCommitSha": "f06fce82e5dae19f3ea9449c460e2fe2083c474d",
+  "sourceCommitShort": "f06fce8",
+  "sourceCommitDate": "2026-10-31 16:47:27 +0000",
   "auditProvenance": {
-    "sourceCommitSha": "3e72020fb64af4d5aeadeb942c9cbb0314c11cba",
-    "sourceCommitShort": "3e72020",
-    "sourceCommitDate": "2026-10-31 16:18:51 +0000",
+    "sourceCommitSha": "f06fce82e5dae19f3ea9449c460e2fe2083c474d",
+    "sourceCommitShort": "f06fce8",
+    "sourceCommitDate": "2026-10-31 16:47:27 +0000",
     "workingTreeState": "dirty",
     "snapshotBasis": "working-tree-on-top-of-source-commit",
-    "uncommittedChangeCount": 7,
-    "auditedInputsSha256": "20ecf428a34eb6aa1183ac5d45a7d2e7a1f1381038edb211061656c4eaa0bfb3",
+    "uncommittedChangeCount": 13,
+    "auditedInputsSha256": "450a5d446ef1dd536bc4b6504893438ac133b3d32047eb9b697fab47a296ec7c",
     "selfReferentialCommitRule": "A Git commit cannot contain its own final commit SHA inside tracked files. sourceCommitSha records the verified HEAD commit present when the generator ran, workingTreeState and snapshotBasis record whether uncommitted working-tree changes were present on top of sourceCommitSha, and auditedInputsSha256 digests the exact audited file contents."
   },
   "commitChain": [
@@ -101,17 +101,22 @@
       "phase": "Phase 8.1.1",
       "commitSha": "3e72020fb64af4d5aeadeb942c9cbb0314c11cba",
       "summary": "Generator edge-case hardening (quoted-string condition parser, canonical routing rank 1–100 & goalClarity any schema alignment, and bundle delivery consistency)"
+    },
+    {
+      "phase": "Phase 9",
+      "commitSha": "f06fce82e5dae19f3ea9449c460e2fe2083c474d",
+      "summary": "Bundle export freshness, atomic temp candidate generation, single-source snapshot delivery, and real HTTP integration verification"
     }
   ],
   "currentPhaseContext": {
-    "phase": "Phase 9 — Bundle Export Freshness, Atomicity & End-to-End Verification",
-    "title": "Ref-Aware & Integrity-Verified Bundle Cache, Atomic Temp Candidate Generation, Single-Source Snapshot Delivery, and Real HTTP Integration Testing",
-    "sourceCommitSha": "3e72020fb64af4d5aeadeb942c9cbb0314c11cba",
+    "phase": "Phase 10 — Safe Project-Local Installer Foundation",
+    "title": "Dry-Run-Gated Project-Local Skill Installer, Pre-Write Backups, Rollback Manifest & Verification, and Bundle Cache Path Safety",
+    "sourceCommitSha": "f06fce82e5dae19f3ea9449c460e2fe2083c474d",
     "workingTreeState": "dirty",
     "snapshotBasis": "working-tree-on-top-of-source-commit",
-    "auditedInputsSha256": "20ecf428a34eb6aa1183ac5d45a7d2e7a1f1381038edb211061656c4eaa0bfb3",
+    "auditedInputsSha256": "450a5d446ef1dd536bc4b6504893438ac133b3d32047eb9b697fab47a296ec7c",
     "auditedInputsManifest": "docs/audits/audited-inputs.manifest.json",
-    "relationshipToCommitChain": "Phase 9 is built directly on top of Phase 8.1.1 (3e72020fb64af4d5aeadeb942c9cbb0314c11cba). Because a Git commit cannot embed its own final SHA inside tracked files, verification-manifest.json records 3e72020fb64af4d5aeadeb942c9cbb0314c11cba as the latest completed commit in commitChain and sourceCommitSha, while locking the exact Phase 9 audited inputs via auditedInputsSha256 and docs/audits/audited-inputs.manifest.json."
+    "relationshipToCommitChain": "Phase 10 is built directly on top of Phase 9 (f06fce82e5dae19f3ea9449c460e2fe2083c474d). Because a Git commit cannot embed its own final SHA inside tracked files, verification-manifest.json records f06fce82e5dae19f3ea9449c460e2fe2083c474d as the latest completed commit in commitChain and sourceCommitSha, while locking the exact Phase 10 audited inputs via auditedInputsSha256 and docs/audits/audited-inputs.manifest.json."
   },
   "ciVerificationPipeline": {
     "command": "npm run ci",
@@ -154,9 +159,9 @@
       },
       {
         "script": "npm test",
-        "command": "node --test scripts/test-phase1.mjs scripts/test-phase2.mjs scripts/test-phase3.mjs scripts/test-phase4.mjs scripts/test-phase5.mjs scripts/test-phase6.mjs scripts/test-phase7.mjs scripts/test-phase8.mjs scripts/test-phase9.mjs",
+        "command": "node --test scripts/test-phase1.mjs scripts/test-phase2.mjs scripts/test-phase3.mjs scripts/test-phase4.mjs scripts/test-phase5.mjs scripts/test-phase6.mjs scripts/test-phase7.mjs scripts/test-phase8.mjs scripts/test-phase9.mjs scripts/test-phase10.mjs",
         "status": "Passed",
-        "verifiedScope": "Unit and integration suites across Phase 1, Phase 2 / 2.1, Phase 3 / 3.1 / 3.1.1, Phase 4, Phase 5, Phase 6 / 6.1, Phase 7, Phase 8 / 8.1 / 8.1.1, and Phase 9 (fresh & atomic bundle export verification)"
+        "verifiedScope": "Unit and integration suites across Phase 1, Phase 2 / 2.1, Phase 3 / 3.1 / 3.1.1, Phase 4, Phase 5, Phase 6 / 6.1, Phase 7, Phase 8 / 8.1 / 8.1.1, Phase 9, and Phase 10 (safe project-local installer & rollback verification)"
       }
     ]
   },

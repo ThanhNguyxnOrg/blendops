@@ -10,6 +10,8 @@ import { fileURLToPath } from 'node:url';
 export const CANONICAL_BUNDLE_FILENAME = 'blendops-phase-9.bundle';
 
 export const COMPATIBILITY_BUNDLE_ROUTES = Object.freeze([
+  '/blendops-phase-10.bundle',
+  '/blendops-phase-9.1.bundle',
   '/blendops-phase-9.bundle',
   '/blendops-phase-8.1.1.bundle',
   '/blendops-phase-8.1.bundle',
@@ -22,6 +24,42 @@ export const COMPATIBILITY_BUNDLE_ROUTES = Object.freeze([
 
 const COMPAT_ROUTE_SET = new Set(COMPATIBILITY_BUNDLE_ROUTES);
 const inFlightBundleLocks = new Map();
+
+function resolveWithExistingAncestorRealpath(targetPath) {
+  const absTarget = path.resolve(targetPath);
+  const tailSegments = [];
+  let cursor = absTarget;
+
+  while (!fs.existsSync(cursor)) {
+    const parent = path.dirname(cursor);
+    if (parent === cursor) break;
+    tailSegments.unshift(path.basename(cursor));
+    cursor = parent;
+  }
+
+  const baseReal = fs.existsSync(cursor) ? fs.realpathSync(cursor) : cursor;
+  return tailSegments.length > 0 ? path.join(baseReal, ...tailSegments) : baseReal;
+}
+
+function hasBundleBinaryHeader(filePath) {
+  try {
+    const fd = fs.openSync(filePath, 'r');
+    try {
+      const buf = Buffer.alloc(32);
+      const bytesRead = fs.readSync(fd, buf, 0, 32, 0);
+      if (bytesRead < 16) return false;
+      const slice = buf.subarray(0, bytesRead);
+      const nl = slice.indexOf(0x0a);
+      if (nl === -1) return false;
+      const hdr = slice.subarray(0, nl).toString('utf8').trim();
+      return hdr === '# v2 git bundle' || hdr === '# v3 git bundle';
+    } finally {
+      fs.closeSync(fd);
+    }
+  } catch {
+    return false;
+  }
+}
 
 export function resolveDefaultBundleCachePath(rootDir = process.cwd()) {
   let canonicalRoot;
@@ -40,6 +78,88 @@ export function resolveDefaultBundleCachePath(rootDir = process.cwd()) {
     `blendops-bundle-cache-${repoHash}`,
     CANONICAL_BUNDLE_FILENAME,
   );
+}
+
+export function validateBundleCachePath(bundlePath, rootDir = process.cwd(), options = {}) {
+  if (typeof bundlePath !== 'string' || bundlePath.trim().length === 0 || bundlePath.includes('\0')) {
+    throw new Error('Invalid bundle cache path: must be a non-empty string');
+  }
+
+  const resolvedTarget = path.resolve(bundlePath.trim());
+  const parsedRoot = path.parse(resolvedTarget).root;
+  if (resolvedTarget === parsedRoot) {
+    throw new Error(`Unsafe bundle cache path (filesystem root): ${resolvedTarget}`);
+  }
+
+  const realRepoRoot = fs.existsSync(rootDir) ? fs.realpathSync(rootDir) : path.resolve(rootDir);
+  const effectiveTarget = resolveWithExistingAncestorRealpath(resolvedTarget);
+
+  const relToRepo = path.relative(realRepoRoot, effectiveTarget);
+  if (relToRepo === '' || (!relToRepo.startsWith('..') && !path.isAbsolute(relToRepo))) {
+    throw new Error(
+      `Refusing bundle cache path inside repository root (${realRepoRoot}): ${resolvedTarget}`,
+    );
+  }
+
+  // Walk existing ancestors to reject any symlinked parent directory
+  let cursor = path.dirname(resolvedTarget);
+  while (true) {
+    if (fs.existsSync(cursor)) {
+      const ancestorLstat = fs.lstatSync(cursor);
+      if (ancestorLstat.isSymbolicLink()) {
+        throw new Error(`Refusing bundle cache path under symbolic link directory: ${cursor}`);
+      }
+      if (!ancestorLstat.isDirectory()) {
+        throw new Error(`Bundle cache parent path is not a directory: ${cursor}`);
+      }
+    }
+    const parent = path.dirname(cursor);
+    if (parent === cursor) break;
+    cursor = parent;
+  }
+
+  const defaultCachePath = resolveDefaultBundleCachePath(rootDir);
+  const isDefaultCache =
+    options.isDefaultCache !== undefined
+      ? Boolean(options.isDefaultCache)
+      : resolvedTarget === path.resolve(defaultCachePath);
+
+  if (fs.existsSync(resolvedTarget) || (() => {
+    try {
+      return Boolean(fs.lstatSync(resolvedTarget));
+    } catch {
+      return false;
+    }
+  })()) {
+    const lstat = fs.lstatSync(resolvedTarget);
+    if (lstat.isSymbolicLink()) {
+      throw new Error(`Refusing symbolic link at bundle cache path: ${resolvedTarget}`);
+    }
+    if (lstat.isDirectory()) {
+      throw new Error(
+        `Bundle cache path points to a directory instead of a file: ${resolvedTarget}`,
+      );
+    }
+    if (!lstat.isFile()) {
+      throw new Error(`Bundle cache path is not a regular file: ${resolvedTarget}`);
+    }
+    if (typeof lstat.nlink === 'number' && lstat.nlink > 1) {
+      throw new Error(
+        `Refusing hardlinked file at bundle cache path (nlink=${lstat.nlink}): ${resolvedTarget}`,
+      );
+    }
+    if (!isDefaultCache && !resolvedTarget.endsWith('.bundle') && !hasBundleBinaryHeader(resolvedTarget)) {
+      throw new Error(
+        `Refusing to overwrite existing non-bundle file at explicit bundle path: ${resolvedTarget}`,
+      );
+    }
+  }
+
+  return {
+    resolvedTarget,
+    effectiveTarget,
+    isDefaultCache,
+  };
 }
 
 export function resolveBundleCachePath(options = {}) {
@@ -99,23 +219,28 @@ function resolveRepoExpectedRefs(rootDir) {
   return { headSha, mainSha };
 }
 
-function parseBundleListHeadsOutput(rawOutput) {
+export function parseBundleListHeadsOutput(rawOutput) {
   const refs = {};
   const lines = String(rawOutput || '')
     .split(/\r?\n/)
     .map((line) => line.trim())
     .filter(Boolean);
   for (const line of lines) {
-    const match = /^([0-9a-f]{40})\s+(.+)$/.exec(line);
+    const match = /^([0-9a-f]{40})\s+(\S+)$/.exec(line);
     if (!match) {
       throw new Error(`Malformed git bundle list-heads entry: ${JSON.stringify(line)}`);
     }
-    refs[match[2]] = match[1];
+    const sha = match[1];
+    const refName = match[2];
+    if (Object.hasOwn(refs, refName)) {
+      throw new Error(`Duplicate advertised ref in git bundle list-heads: ${refName}`);
+    }
+    refs[refName] = sha;
   }
   return refs;
 }
 
-function inspectAndVerifyBundleFile(filePath, rootDir, expectedRefs) {
+export function inspectAndVerifyBundleFile(filePath, rootDir, expectedRefs) {
   const bufferBefore = fs.readFileSync(filePath);
   if (bufferBefore.length < 16) {
     throw new Error(`Bundle file ${filePath} is truncated (${bufferBefore.length} bytes)`);
@@ -144,6 +269,16 @@ function inspectAndVerifyBundleFile(filePath, rootDir, expectedRefs) {
   }
 
   const refs = parseBundleListHeadsOutput(listHeadsOut);
+  const advertisedRefNames = Object.keys(refs).sort();
+  if (
+    advertisedRefNames.length !== 2 ||
+    advertisedRefNames[0] !== 'HEAD' ||
+    advertisedRefNames[1] !== 'refs/heads/main'
+  ) {
+    throw new Error(
+      `Bundle advertised ref set mismatch: expected exactly HEAD and refs/heads/main, got [${advertisedRefNames.join(', ')}]`,
+    );
+  }
   if (refs.HEAD !== expectedRefs.headSha) {
     throw new Error(
       `Bundle HEAD ref mismatch: expected ${expectedRefs.headSha}, got ${refs.HEAD || 'missing'}`,
@@ -191,21 +326,21 @@ export function getBundleInfo(options = {}) {
   const rootDir = path.resolve(
     options.rootDir || process.env.BLENDOPS_REPO_ROOT || process.cwd(),
   );
+  const explicitRaw =
+    options.bundlePath !== undefined
+      ? options.bundlePath
+      : process.env.BLENDOPS_BUNDLE_PATH;
+  const isDefaultCache = !(typeof explicitRaw === 'string' && explicitRaw.trim().length > 0);
   const targetBundlePath = resolveBundleCachePath({
     rootDir,
     bundlePath: options.bundlePath,
   });
 
   try {
+    validateBundleCachePath(targetBundlePath, rootDir, { isDefaultCache });
     const expectedRefs = resolveRepoExpectedRefs(rootDir);
 
     if (fs.existsSync(targetBundlePath)) {
-      const stat = fs.statSync(targetBundlePath);
-      if (stat.isDirectory()) {
-        throw new Error(
-          `Bundle cache path points to a directory instead of a file: ${targetBundlePath}`,
-        );
-      }
       try {
         return inspectAndVerifyBundleFile(targetBundlePath, rootDir, expectedRefs);
       } catch {
@@ -247,6 +382,7 @@ export function getBundleInfo(options = {}) {
         rootDir,
         expectedRefs,
       );
+      validateBundleCachePath(targetBundlePath, rootDir, { isDefaultCache });
       fs.renameSync(tempPath, targetBundlePath);
 
       return {
@@ -499,7 +635,8 @@ function renderHtml(options = {}) {
       <span class="badge" style="color:var(--blue)">phase-8: defb847</span>
       <span class="badge" style="color:var(--blue)">phase-8.1: 42dadea</span>
       <span class="badge" style="color:var(--blue)">phase-8.1.1: 3e72020</span>
-      <span class="badge" style="color:var(--green)">phase-9 (source: ${currentCommitShort} &middot; ${auditProv ? auditProv.snapshotBasis : 'verified'}): ${currentScorecard ? currentScorecard.totals.measuredScore : 87.0}/100 &middot; CI PASS</span>
+      <span class="badge" style="color:var(--blue)">phase-9: f06fce8</span>
+      <span class="badge" style="color:var(--green)">phase-10 (source: ${currentCommitShort} &middot; ${auditProv ? auditProv.snapshotBasis : 'verified'}): ${currentScorecard ? currentScorecard.totals.measuredScore : 87.0}/100 &middot; CI PASS</span>
     </div>
   </header>
   <main>

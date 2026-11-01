@@ -17,6 +17,7 @@ const requiredRootFiles = [
   'package.json',
   'scripts/export-claude-skills.mjs',
   'scripts/generate-bundle-reference-summaries.mjs',
+  'scripts/install-skills.mjs',
 ];
 
 const requiredRootDirs = [
@@ -497,9 +498,9 @@ const requiredMarketplaceSnippets = [
 ];
 
 const requiredInstallerSpecSnippets = [
-  'This is a specification only.',
-  '`scripts/install-skills.mjs` is not implemented yet.',
-  'Do not tell users to run these commands until the script exists',
+  '`scripts/install-skills.mjs` is implemented as the local repository installer',
+  'No `npx blendops` CLI, published npm package, or marketplace listing exists',
+  '--rollback',
   'does not install Blender',
   'does not run Blender or runtime eval',
   'Runtime status remains `Not Run`.',

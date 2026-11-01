@@ -198,9 +198,9 @@ BlendOps documents **two MCP execution paths** plus a **CLI fallback appendix** 
 **Per-target install docs:**
 - [docs/install/README.md](./install/README.md) — all target-specific guides
 
-**Future installer/npx:**
-- Spec exists: [docs/install/installer-spec.md](./install/installer-spec.md)
-- Implementation: Not done, do not claim `npx blendops` works
+**Local repository installer & future `npx`:**
+- Local repository script: `node scripts/install-skills.mjs` (`--doctor`, `--dry-run`, `--write`, `--rollback`) — see [docs/install/installer-spec.md](./install/installer-spec.md)
+- Published `npm`/`npx`: Not published; do not claim `npx blendops` works
 
 ---
 

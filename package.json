@@ -42,7 +42,8 @@
     "evals:run": "node scripts/run-evals.mjs",
     "bundles:summaries:build": "node scripts/generate-bundle-reference-summaries.mjs",
     "bundles:summaries:check": "node scripts/generate-bundle-reference-summaries.mjs --check",
-    "test": "node --test scripts/test-phase1.mjs scripts/test-phase2.mjs scripts/test-phase3.mjs scripts/test-phase4.mjs scripts/test-phase5.mjs scripts/test-phase6.mjs scripts/test-phase7.mjs scripts/test-phase8.mjs scripts/test-phase9.mjs",
+    "skills:install": "node scripts/install-skills.mjs",
+    "test": "node --test scripts/test-phase1.mjs scripts/test-phase2.mjs scripts/test-phase3.mjs scripts/test-phase4.mjs scripts/test-phase5.mjs scripts/test-phase6.mjs scripts/test-phase7.mjs scripts/test-phase8.mjs scripts/test-phase9.mjs scripts/test-phase10.mjs",
     "docs:check": "node scripts/check-docs.mjs",
     "skills:export": "node scripts/export-claude-skills.mjs",
     "ci": "npm run docs:check && npm run registry:check && npm run evals:check && npm run evals:run && npm run bundles:summaries:check && npm run skills:export && npm test"

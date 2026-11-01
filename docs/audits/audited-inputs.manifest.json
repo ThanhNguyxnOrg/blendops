@@ -50,6 +50,7 @@
     "scripts/generate-bundle-reference-summaries.mjs",
     "scripts/generate-current-audit.mjs",
     "scripts/dev-server.mjs",
+    "scripts/install-skills.mjs",
     "scripts/test-phase1.mjs",
     "scripts/test-phase2.mjs",
     "scripts/test-phase3.mjs",
@@ -58,7 +59,8 @@
     "scripts/test-phase6.mjs",
     "scripts/test-phase7.mjs",
     "scripts/test-phase8.mjs",
-    "scripts/test-phase9.mjs"
+    "scripts/test-phase9.mjs",
+    "scripts/test-phase10.mjs"
   ],
   "requiredDirectories": [
     "docs/audits/phase-0",
