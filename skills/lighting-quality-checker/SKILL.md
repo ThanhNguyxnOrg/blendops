@@ -25,12 +25,12 @@ Run a focused pass/warn/fail check on the scene's lighting setup per light — c
 
 ## When not to use
 <!-- blendops:generated:start exclusions -->
-- upstream lookdev and lighting planning → use `../blender-lighting-material-planner/SKILL.md` (use blender-lighting-material-planner)
+- upstream lookdev and lighting planning → use `../lighting-material-plan/SKILL.md` (use lighting-material-plan)
 - material validation → use `../material-quality-checker/SKILL.md` (use material-quality-checker)
 - composition / camera validation → use `../composition-quality-checker/SKILL.md` (use composition-quality-checker)
-- broad pass/warn/fail scene readiness → use `../blender-scene-quality-checker/SKILL.md` (use blender-scene-quality-checker)
+- broad pass/warn/fail scene readiness → use `../scene-readiness/SKILL.md` (use scene-readiness)
 - classifying render or export artifact evidence → use `../render-export-evidence/SKILL.md` (use render-export-evidence)
-- to fix or edit lights (this skill validates and gives remediation hints only; it never edits) → use `../blender-scene-quality-checker/SKILL.md` (this skill validates and gives remediation hints only; it never edits)
+- to fix or edit lights (this skill validates and gives remediation hints only; it never edits) → use `../scene-readiness/SKILL.md` (this skill validates and gives remediation hints only; it never edits)
 <!-- blendops:generated:end exclusions -->
 
 ## Trigger phrases
@@ -42,7 +42,7 @@ Run a focused pass/warn/fail check on the scene's lighting setup per light — c
 <!-- blendops:generated:end triggers -->
 
 ## Prerequisites / readiness
-- light list known (from `blender-lighting-material-planner` scene plan or measured scene snapshot)
+- light list known (from `lighting-material-plan` scene plan or measured scene snapshot)
 - consumer target known (render or export target)
 - mood / look brief known (from `intent-to-3d-brief-writer`)
 
@@ -101,7 +101,7 @@ This skill validates plans or measured scene snapshots only. It never modifies l
 For runtime path attribution, see `../../docs/runtime-stack-strategy.md`.
 
 ## Operating procedure
-1. Read the light list from the `blender-lighting-material-planner` plan or measured scene snapshot.
+1. Read the light list from the `lighting-material-plan` plan or measured scene snapshot.
 2. For each light, evaluate intensity range (see `references/intensity-ranges.md`).
 3. Evaluate shadow softness consistency (see `references/shadow-softness-rules.md`).
 4. Evaluate color temperature consistency.
@@ -109,7 +109,7 @@ For runtime path attribution, see `../../docs/runtime-stack-strategy.md`.
 6. Cross-check overall setup with the mood brief from `intent-to-3d-brief-writer`.
 7. Assign per-light verdict (`Pass / Warn / Fail`) and provide brief remediation hints only (never edit lights).
 8. Compute top-line status, highlight worst offenders, and record downgrade-only truth states (`Artifact status: Not Produced` by default unless concrete output evidence exists).
-9. Hand off to `blender-scene-quality-checker` (broad review), `blender-lighting-material-planner` (re-plan), `material-quality-checker` (materials), `composition-quality-checker` (framing), or `render-export-evidence` (artifact evidence classification).
+9. Hand off to `scene-readiness` (broad review), `lighting-material-plan` (re-plan), `material-quality-checker` (materials), `composition-quality-checker` (framing), or `render-export-evidence` (artifact evidence classification).
 
 ## Decision tree
 
@@ -176,7 +176,7 @@ Skip rows that depend on missing live measurement, mark limitations explicitly, 
 
 | Problem | Remediation hint (lighting only) |
 |---|---|
-| Scene lighting too dark | Hint to recheck explicit light intensity ranges and HDRI balance in `blender-lighting-material-planner` (route color/exposure questions to `color-management-decision`). |
+| Scene lighting too dark | Hint to recheck explicit light intensity ranges and HDRI balance in `lighting-material-plan` (route color/exposure questions to `color-management-decision`). |
 | Scene lighting too bright | Hint to lower competing explicit light intensities or HDRI strength (route render clamping questions to `cycles-vs-eevee-decision`). |
 | Shadows missing or harsh | Hint to check per-light shadow softness settings and key-to-fill intensity ratio. |
 | Unintended color cast | Hint to check HDRI tint and color temperature consistency across key, fill, and rim lights. |
@@ -215,28 +215,28 @@ Runtime status: Not Run | Attempted | Produced | Verified | Failed
 Artifact status: Not Produced | Produced | Verified | Failed
 Evidence used: <links, paths, logs, or "none">
 Limitations: <known gaps>
-Next: blender-scene-quality-checker | blender-lighting-material-planner | material-quality-checker | composition-quality-checker | render-export-evidence
+Next: scene-readiness | lighting-material-plan | material-quality-checker | composition-quality-checker | render-export-evidence
 ```
 
 ## Anti-patterns
-- Editing lights or generating full lighting recipes inside this skill (use `blender-lighting-material-planner`).
+- Editing lights or generating full lighting recipes inside this skill (use `lighting-material-plan`).
 - Inventing light intensity, color, or softness values.
 - Upgrading Runtime or Artifact truth states (truth states are downgrade-only; artifacts stay `Not Produced` unless concrete evidence exists).
 - Mixing material checks (`material-quality-checker`), camera/framing checks (`composition-quality-checker`), or artifact evidence classification (`render-export-evidence`) into lighting validation.
 
 ## Cross-skill handoff
 <!-- blendops:generated:start handoffs -->
-- [progression] Broad readiness review → `../blender-scene-quality-checker/SKILL.md`
+- [progression] Broad readiness review → `../scene-readiness/SKILL.md`
 - [upstream_reference] Material validation → `../material-quality-checker/SKILL.md`
 - [progression] Composition validation → `../composition-quality-checker/SKILL.md`
-- [retry] Lighting re-plan → `../blender-lighting-material-planner/SKILL.md`
+- [retry] Lighting re-plan → `../lighting-material-plan/SKILL.md`
 - [progression] Render evidence → `../render-export-evidence/SKILL.md`
 <!-- blendops:generated:end handoffs -->
 
 ## Non-goals
 - Edit lights.
 - Generate light setup recipes.
-- Replace `blender-scene-quality-checker`.
+- Replace `scene-readiness`.
 - Run Blender.
 
 ## References

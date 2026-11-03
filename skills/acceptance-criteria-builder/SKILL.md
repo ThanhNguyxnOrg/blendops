@@ -20,15 +20,15 @@ Turn a locked 3D brief plus chosen recipe into a measurable acceptance checklist
 
 - after a brief is locked with `intent-to-3d-brief-writer` and a recipe is chosen, before expensive render or export stages
 - when translating qualitative brief goals into measurable checklist rows with evidence hooks
-- after `blender-scope-boundary-enforcer` approves a brief or recipe delta that requires updated acceptance rows
+- after `scope-guard` approves a brief or recipe delta that requires updated acceptance rows
 
 ## When not to use
 <!-- blendops:generated:start exclusions -->
 - pure exploration without a locked deliverable → use `../blender-brainstorming/SKILL.md` (use blender-brainstorming)
 - writing or locking the brief itself → use `../intent-to-3d-brief-writer/SKILL.md` (use intent-to-3d-brief-writer)
-- pinning the stop or done condition → use `../blender-stop-condition-decider/SKILL.md` (use blender-stop-condition-decider)
-- enforcing per-stage workflow gates → use `../blender-checklist-driven-workflow/SKILL.md` (use blender-checklist-driven-workflow)
-- guarding or deciding scope boundaries → use `../blender-scope-boundary-enforcer/SKILL.md` (use blender-scope-boundary-enforcer)
+- pinning the stop or done condition → use `../done-criteria/SKILL.md` (use done-criteria)
+- enforcing per-stage workflow gates → use `../stage-gates/SKILL.md` (use stage-gates)
+- guarding or deciding scope boundaries → use `../scope-guard/SKILL.md` (use scope-guard)
 - legal or license-permission language → use `../asset-license-checker/SKILL.md` (use asset-license-checker)
 - classifying artifact evidence → use `../pre-handoff-verification/SKILL.md` (use pre-handoff-verification)
 <!-- blendops:generated:end exclusions -->
@@ -112,7 +112,7 @@ Is a target recipe or pack identified?
   No → route to recipe-fit-assessor to anchor deliverable expectations
   Yes → continue
 Does the request ask to approve mid-stream scope additions?
-  Yes → route to blender-scope-boundary-enforcer before updating acceptance rows
+  Yes → route to scope-guard before updating acceptance rows
   No → continue
 Does a criterion involve asset licensing, redistribution, or attribution rules?
   Yes → delegate license rows to asset-license-checker; keep technical/visual rows here
@@ -126,7 +126,7 @@ Are any P0 rows inherently aesthetic or mood-driven (e.g., "cyberpunk atmosphere
 
 ### Playbook A: Product hero still + web GLB acceptance table
 
-- Map brief subject, framing, lighting contrast, output resolution (`resolution-aspect-decision`), file format (`output-format-decision`), and mobile/web GLB budget (`glb-mobile-performance-budget`) into `Criterion | Measurement | Evidence expected | Owner` rows.
+- Map brief subject, framing, lighting contrast, output resolution (`resolution-aspect-decision`), file format (`output-format-decision`), and mobile/web GLB budget (`mobile-glb-budget`) into `Criterion | Measurement | Evidence expected | Owner` rows.
 - Tag contractually required deliverables as `P0` and secondary polish items as `P1`/`P2`.
 - Keep `Runtime status: Not Run` and `Artifact status: Not Produced` while authoring the table.
 
@@ -138,7 +138,7 @@ Are any P0 rows inherently aesthetic or mood-driven (e.g., "cyberpunk atmosphere
 
 ### Playbook C: Post-delta criteria revision
 
-- After `blender-scope-boundary-enforcer` approves a brief or recipe change, update only the affected checklist rows and record the brief version ID in `Evidence used`.
+- After `scope-guard` approves a brief or recipe change, update only the affected checklist rows and record the brief version ID in `Evidence used`.
 - Preserve downgrade-only truth states (`Runtime status: Not Run`, `Artifact status: Not Produced`) until `render-export-evidence` re-evaluates any affected outputs.
 
 ## Mode handling
@@ -189,14 +189,14 @@ Keep the measurable criteria table intact, record the blocker under `Limitations
 ## Best practices
 
 - Keep `P0` rows concise, observable, and directly tied to a brief slot or recipe constraint (`references/brief-to-criteria-mapper.md`).
-- Name the exact downstream validator or evidence skill in `Owner` / `Evidence expected` (for example, `polycount-budget-checker`, `glb-mobile-performance-budget`, `render-export-evidence`).
+- Name the exact downstream validator or evidence skill in `Owner` / `Evidence expected` (for example, `polycount-budget-checker`, `mobile-glb-budget`, `render-export-evidence`).
 - Separate objective technical thresholds from subjective creative sign-off rows so automated gates and human reviews never collide.
 - Always emit `Runtime status: Not Run` and `Artifact status: Not Produced` when publishing or updating criteria tables.
 
 ## Good examples
 
 - "`P0 | Hero PNG resolution & alpha | 2048x2048 RGBA PNG with transparent background | Output path + image header check in render-export-evidence (target: Verified) | render-export-evidence`"
-- "`P0 | Web GLB file size & triangle budget | <= 5 MB total file size, <= 50k triangles | GLB inspection ledger via polycount-budget-checker + glb-mobile-performance-budget | render-export-evidence`"
+- "`P0 | Web GLB file size & triangle budget | <= 5 MB total file size, <= 50k triangles | GLB inspection ledger via polycount-budget-checker + mobile-glb-budget | render-export-evidence`"
 - "`P1 | Cyberpunk neon mood read [Subjective] | Cyan/magenta rim contrast + wet ground specular read; requires human art-direction sign-off | Preview render + signed stakeholder note | Stakeholder + lighting-quality-checker`"
 
 ## Bad examples
@@ -221,7 +221,7 @@ Runtime status: Not Run
 Artifact status: Not Produced
 Evidence used: <brief version ID + recipe path + reference docs consulted>
 Limitations: <planning-only checklist; does not execute Blender or verify files>
-Next skill: <blender-checklist-driven-workflow | render-export-evidence | pre-handoff-verification>
+Next skill: <stage-gates | render-export-evidence | pre-handoff-verification>
 ```
 
 ## Anti-patterns
@@ -230,14 +230,14 @@ Next skill: <blender-checklist-driven-workflow | render-export-evidence | pre-ha
 - Writing `Artifact status: Not Run` instead of `Artifact status: Not Produced` (or inventing a `Blocked` truth state).
 - Accepting vague adjectives ("clean", "pop", "realistic") as `P0` measurements without either a quantifiable proxy or an explicit `[Subjective]` stakeholder sign-off flag.
 - Authoring legal copyright or license clearance criteria here instead of handing off to `asset-license-checker`.
-- Replacing `blender-stop-condition-decider`, `blender-checklist-driven-workflow`, or `pre-handoff-verification` with ad-hoc gate logic.
+- Replacing `done-criteria`, `stage-gates`, or `pre-handoff-verification` with ad-hoc gate logic.
 
 ## Cross-skill handoff
 <!-- blendops:generated:start handoffs -->
 - [upstream_reference] Brief source → `../intent-to-3d-brief-writer/SKILL.md`
-- [progression] Done / stop condition → `../blender-stop-condition-decider/SKILL.md`
-- [progression] Per-stage gate enforcement → `../blender-checklist-driven-workflow/SKILL.md`
-- [progression] Scope boundary enforcement → `../blender-scope-boundary-enforcer/SKILL.md`
+- [progression] Done / stop condition → `../done-criteria/SKILL.md`
+- [progression] Per-stage gate enforcement → `../stage-gates/SKILL.md`
+- [progression] Scope boundary enforcement → `../scope-guard/SKILL.md`
 - [progression] License permissions → `../asset-license-checker/SKILL.md`
 - [progression] Artifact evidence classification → `../render-export-evidence/SKILL.md`
 - [progression] Handoff gate verification → `../pre-handoff-verification/SKILL.md`

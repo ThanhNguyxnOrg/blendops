@@ -59,13 +59,13 @@ When a GLB ships with animation, capture the exact playback contract the consume
 
 | Input | Use |
 |---|---|
-| Channel, bone, and morph ceilings | Sourced from `glb-mobile-performance-budget` to keep contract within budget |
+| Channel, bone, and morph ceilings | Sourced from `mobile-glb-budget` to keep contract within budget |
 | Target consumer stack | Tailors caveats for Three.js, R3F, Babylon, or model-viewer |
 
 ### Assumptions to confirm
 - Animation timing is recorded in seconds (not just frames) for portability.
 - Interpolation type (`LINEAR` / `STEP` / `CUBICSPLINE`) and binary root-motion treatment (`bake` or `strip`) are explicitly pinned for every clip.
-- Channel, bone, and morph target ceilings are pinned by `glb-mobile-performance-budget`.
+- Channel, bone, and morph target ceilings are pinned by `mobile-glb-budget`.
 
 ## Output schema
 
@@ -75,7 +75,7 @@ A structured animation contract before `glb-web-handoff`: per-clip rows with typ
 ### Secondary output
 - consumer-stack-specific caveats (Three.js / R3F / Babylon / model-viewer)
 - a "what to verify after export" checklist (paired with `render-export-evidence` and manual viewer test)
-- explicit assumptions, budget ceiling references (`glb-mobile-performance-budget`), and named next handoff
+- explicit assumptions, budget ceiling references (`mobile-glb-budget`), and named next handoff
 
 ### Evidence / caveat output
 
@@ -103,20 +103,20 @@ If runtime execution is needed, refer to `../../docs/runtime-stack-strategy.md` 
 ## Operating procedure
 
 1. Read the existing clip list from the upstream scene plan or verified export report (never invent clips).
-2. Confirm animation channel, bone, and morph ceilings from `glb-mobile-performance-budget`.
+2. Confirm animation channel, bone, and morph ceilings from `mobile-glb-budget`.
 3. For each clip, fill the contract row: type (`skeletal` / `morph` / `both`), length, FPS, `loop` / `one-shot` / `chain`, trigger, blend, root-motion (`bake` or `strip`), and interpolation (`LINEAR` / `STEP` / `CUBICSPLINE`).
 4. Apply consumer-stack caveats (`references/web-stack-caveats.md`), animation-type caveats (`references/animation-types.md`), and transition rules (`references/transition-rules.md`).
 5. Attach the "what to verify after export" checklist covering `render-export-evidence` and manual viewer testing.
 6. Record truth states (`Runtime status: Not Run`, `Artifact status: Not Produced` default; downgrade-only, never upgrade).
-7. Hand off to `glb-web-handoff` (and `three-fiber-component-shape-planner` if R3F, then `non-blender-user-response-writer` for final user wording).
+7. Hand off to `glb-web-handoff` (and `r3f-component-plan` if R3F, then `plain-language-response` for final user wording).
 
 ## Decision tree
 
 ```txt
 Clip list unknown?
-  → Do not invent clips; hand off to product-hero-scene-planner, character-portrait-scene-planner, environment-establishing-shot-planner, interior-architectural-scene-planner, or product-grid-scene-planner first
+  → Do not invent clips; hand off to product-hero-scene-planner, character-portrait, environment-shot, interior-scene, or product-grid-scene-planner first
 Channel, bone, or morph ceiling unpinned or exceeded?
-  → Hand off to glb-mobile-performance-budget
+  → Hand off to mobile-glb-budget
 Multiple clips meant to chain or transition?
   → Document blend duration explicitly per clip pair
 Root motion present?
@@ -162,7 +162,7 @@ Produce the planning contract with `Runtime status: Not Run` and `Artifact statu
 * [ ] Trigger model and blend duration explicit per clip
 * [ ] Root-motion treatment chosen as binary (`bake` or `strip`, never both)
 * [ ] Interpolation pinned per clip (`LINEAR` / `STEP` / `CUBICSPLINE`)
-* [ ] Channel, bone, and morph counts checked against ceilings from `glb-mobile-performance-budget`
+* [ ] Channel, bone, and morph counts checked against ceilings from `mobile-glb-budget`
 * [ ] Consumer-stack caveats and what-to-verify checklist included
 * [ ] Truth states default to `Runtime status: Not Run` and `Artifact status: Not Produced` (downgrade-only, never upgraded)
 * [ ] No smoothness promises and no Python snippets
@@ -178,9 +178,9 @@ Produce the planning contract with `Runtime status: Not Run` and `Artifact statu
 
 ## Failure handling
 
-* If clip list is unknown → do not invent clips; hand off to the appropriate scene planner (`product-hero-scene-planner`, `character-portrait-scene-planner`, `environment-establishing-shot-planner`, `interior-architectural-scene-planner`, or `product-grid-scene-planner`).
+* If clip list is unknown → do not invent clips; hand off to the appropriate scene planner (`product-hero-scene-planner`, `character-portrait`, `environment-shot`, `interior-scene`, or `product-grid-scene-planner`).
 * If consumer stack is unknown → list caveats per stack and ask the user to confirm before `glb-web-handoff`.
-* If channel, bone, or morph counts exceed ceilings → hand off to `glb-mobile-performance-budget`.
+* If channel, bone, or morph counts exceed ceilings → hand off to `mobile-glb-budget`.
 * If export proof is missing → keep `Runtime status: Not Run` and `Artifact status: Not Produced`, and hand off to `render-export-evidence`.
 
 ## Troubleshooting
@@ -189,19 +189,19 @@ Produce the planning contract with `Runtime status: Not Run` and `Artifact statu
 |---|---|
 | Clip plays at wrong speed in web viewer | Check that the contracted FPS and clip length in seconds match the consumer stack playback settings during manual viewer test. |
 | Clip transition pops or loops abruptly | Verify `loop` / `one-shot` / `chain` semantics, blend duration, and pinned interpolation (`LINEAR` / `STEP` / `CUBICSPLINE`) in the contract. |
-| Bone or channel limits exceeded on target device | Hand off to `glb-mobile-performance-budget` to enforce bone, morph, and animation channel ceilings. |
+| Bone or channel limits exceeded on target device | Hand off to `mobile-glb-budget` to enforce bone, morph, and animation channel ceilings. |
 | Unverified export or missing clips in file | Hand off to `render-export-evidence` for export verification and perform a manual viewer test. |
 
 ## Best practices
 
 * Always pin FPS and interpolation (`LINEAR` / `STEP` / `CUBICSPLINE`) per clip, even when the user thinks defaults are sufficient.
 * Treat root motion as a strict binary choice (`bake` or `strip`), never undefined or mixed.
-* Always pair with `glb-mobile-performance-budget` for channel, bone, and morph ceilings.
+* Always pair with `mobile-glb-budget` for channel, bone, and morph ceilings.
 * Never invent clips and never promise playback smoothness.
 
 ## Good examples
 
-* "Clips: `idle` (`skeletal`, `4s`, `30fps`, `loop`, `auto`, blend `0ms`, root-motion `strip`, `LINEAR`), `wave` (`skeletal`, `2s`, `30fps`, `one-shot` chain to `idle`, `hover`, blend `250ms`, root-motion `strip`, `LINEAR`). Ceilings (via `glb-mobile-performance-budget`): channels 24/50, bones 32/64, morphs 0/8. What to verify: confirm export via `render-export-evidence` and manual viewer test. `Runtime status: Not Run`, `Artifact status: Not Produced`. Next: `glb-web-handoff`."
+* "Clips: `idle` (`skeletal`, `4s`, `30fps`, `loop`, `auto`, blend `0ms`, root-motion `strip`, `LINEAR`), `wave` (`skeletal`, `2s`, `30fps`, `one-shot` chain to `idle`, `hover`, blend `250ms`, root-motion `strip`, `LINEAR`). Ceilings (via `mobile-glb-budget`): channels 24/50, bones 32/64, morphs 0/8. What to verify: confirm export via `render-export-evidence` and manual viewer test. `Runtime status: Not Run`, `Artifact status: Not Produced`. Next: `glb-web-handoff`."
 
 ## Bad examples
 
@@ -217,7 +217,7 @@ Clip contract:
 Consumer stack: <three.js / r3f / babylon / model-viewer>
 Stack-specific caveats: <list>
 
-Budget check (from glb-mobile-performance-budget):
+Budget check (from mobile-glb-budget):
   Animation channels: <N> of <ceiling>
   Bones: <N> of <ceiling>
   Morph targets: <N> of <ceiling>
@@ -245,16 +245,16 @@ Next: glb-web-handoff
 
 ## Cross-skill handoff
 <!-- blendops:generated:start handoffs -->
-- [upstream_reference] Missing clip list / scene plan (character-portrait-scene-planner) → `../character-portrait-scene-planner/SKILL.md`
-- [upstream_reference] Missing clip list / scene plan (environment-establishing-shot-planner) → `../environment-establishing-shot-planner/SKILL.md`
-- [upstream_reference] Missing clip list / scene plan (interior-architectural-scene-planner) → `../interior-architectural-scene-planner/SKILL.md`
+- [upstream_reference] Missing clip list / scene plan (character-portrait) → `../character-portrait/SKILL.md`
+- [upstream_reference] Missing clip list / scene plan (environment-shot) → `../environment-shot/SKILL.md`
+- [upstream_reference] Missing clip list / scene plan (interior-scene) → `../interior-scene/SKILL.md`
 - [upstream_reference] Missing clip list / scene plan (product-grid-scene-planner) → `../product-grid-scene-planner/SKILL.md`
 - [upstream_reference] Missing clip list / scene plan (product-hero-scene-planner) → `../product-hero-scene-planner/SKILL.md`
-- [upstream_reference] Channel, bone, and morph ceilings → `../glb-mobile-performance-budget/SKILL.md`
+- [upstream_reference] Channel, bone, and morph ceilings → `../mobile-glb-budget/SKILL.md`
 - [upstream_reference] Export verification → `../render-export-evidence/SKILL.md`
 - [progression] Web delivery handoff → `../glb-web-handoff/SKILL.md`
-- [progression] React Three Fiber component shape → `../three-fiber-component-shape-planner/SKILL.md`
-- [progression] Final user-facing wording → `../non-blender-user-response-writer/SKILL.md`
+- [progression] React Three Fiber component shape → `../r3f-component-plan/SKILL.md`
+- [progression] Final user-facing wording → `../plain-language-response/SKILL.md`
 <!-- blendops:generated:end handoffs -->
 
 ## Non-goals

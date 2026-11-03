@@ -19,7 +19,7 @@ Goal: decide where every asset comes from before scene plan.
 
 | Skill | Role |
 |---|---|
-| `blender-asset-discovery-planner` | Per-asset strategy (procedural / library / generative / photogrammetry) + license + budget |
+| `asset-discovery` | Per-asset strategy (procedural / library / generative / photogrammetry) + license + budget |
 
 Exit gate: asset plan reconciled against brief constraints. Generative strategy flagged with Path 2 caveat if used.
 
@@ -29,9 +29,9 @@ Goal: confirm operator can actually run Blender, OR explicitly stay in text-only
 
 | Skill | Role |
 |---|---|
-| `official-runtime-setup-guide` | Choose runtime path (Path 1 host a/b, Path 2, CLI fallback) prerequisites |
-| `official-runtime-readiness-checker` | Build readiness matrix; verdict Ready / Partially Ready / Blocked / Unknown |
-| `runtime-bridge-conflict-resolver` | If readiness signals are inconsistent (Path 1 + Path 2 both installed, port collision, two MCP clients) |
+| `runtime-setup` | Choose runtime path (Path 1 host a/b, Path 2, CLI fallback) prerequisites |
+| `runtime-readiness` | Build readiness matrix; verdict Ready / Partially Ready / Blocked / Unknown |
+| `bridge-conflicts` | If readiness signals are inconsistent (Path 1 + Path 2 both installed, port collision, two MCP clients) |
 
 Exit gate: ONE runtime path selected and ready, OR explicit "stay text-only" decision.
 
@@ -42,8 +42,8 @@ Goal: produce the structured plan downstream skills can act on.
 | Skill | Role |
 |---|---|
 | `product-hero-scene-planner` | Subject + scene structure |
-| `blender-composition-camera-planner` | Framing + camera |
-| `blender-lighting-material-planner` | Mood / lookdev / portability |
+| `camera-composition` | Framing + camera |
+| `lighting-material-plan` | Mood / lookdev / portability |
 
 Exit gate: plans reviewable in plain language; no jargon leaks.
 
@@ -53,7 +53,7 @@ Goal: gate runtime work, capture evidence honestly, downgrade unsupported claims
 
 | Skill | Role |
 |---|---|
-| `blender-scene-quality-checker` | Pass/Warn/Fail readiness verdict before runtime mutation |
+| `scene-readiness` | Pass/Warn/Fail readiness verdict before runtime mutation |
 | `blender-troubleshooting` | When output diverges from intent (4-phase root-cause) |
 | `render-export-evidence` | Classify artifact evidence (Not Run / Attempted / Produced / Verified / Failed) |
 | `pre-handoff-verification` | 7-point gate before any "ready" / `Verified` claim leaves the workflow |
@@ -67,7 +67,7 @@ Goal: communicate status to the non-Blender user without jargon.
 | Skill | Role |
 |---|---|
 | `glb-web-handoff` | If GLB / web is in scope, frame caveats + R3F / Three.js snippets |
-| `non-blender-user-response-writer` | Plain-language final response with truth labels visible |
+| `plain-language-response` | Plain-language final response with truth labels visible |
 
 Exit gate: response confirmed plain-language by check 7 of `pre-handoff-verification`.
 

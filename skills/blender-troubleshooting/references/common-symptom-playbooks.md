@@ -10,7 +10,7 @@ Pre-canned diagnostic patterns for the 5 most common Blender output divergences.
   2. Camera occluded by hidden geometry.
   3. World HDRI not enabled in render settings.
   4. Render engine mismatch (Eevee vs Cycles render-time vs viewport).
-- Phase 4 fix: route to `blender-lighting-material-planner`. Pass criteria: re-render shows visible key-light contribution.
+- Phase 4 fix: route to `lighting-material-plan`. Pass criteria: re-render shows visible key-light contribution.
 
 ## Playbook 2: "GLB is empty / mis-scaled / fails web import"
 
@@ -28,7 +28,7 @@ Pre-canned diagnostic patterns for the 5 most common Blender output divergences.
 - Phase 3 likely root causes:
   1. Response writer received raw plan dump without translation step.
   2. Plan itself contained jargon (upstream).
-- Phase 4 fix: route to `non-blender-user-response-writer`. Pass criteria: response readable to a non-Blender user with no follow-up clarifications.
+- Phase 4 fix: route to `plain-language-response`. Pass criteria: response readable to a non-Blender user with no follow-up clarifications.
 
 ## Playbook 4: "Recipe blocked despite recent smoke pass"
 
@@ -38,7 +38,7 @@ Pre-canned diagnostic patterns for the 5 most common Blender output divergences.
   2. Two MCP clients targeting same Blender.
   3. Port collision (commonly `localhost:9876`).
   4. Anthropic Connector + manual `mcpServers.blender` both ON (both Path 1 host options targeting same Lab stack).
-- Phase 4 fix: route to `runtime-bridge-conflict-resolver`. Pass criteria: bridge state matrix shows exactly one active path.
+- Phase 4 fix: route to `bridge-conflicts`. Pass criteria: bridge state matrix shows exactly one active path.
 
 ## Playbook 5: "Output exists but doesn't match brief"
 

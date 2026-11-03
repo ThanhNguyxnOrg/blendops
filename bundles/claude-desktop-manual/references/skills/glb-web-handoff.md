@@ -14,9 +14,9 @@ Define reliable handoff language and checks for GLB/web scenarios without overcl
 - **Truth-state policy:** Runtime status defaults to `Not Run`; Artifact status defaults to `Not Produced`; mutation rule is `downgrade_only` (never upgrade without verified evidence).
 
 ## When to use
-- when writing the GLB/web handoff summary after upstream validation from `blender-scene-quality-checker` and evidence classification from `render-export-evidence`
+- when writing the GLB/web handoff summary after upstream validation from `scene-readiness` and evidence classification from `render-export-evidence`
 - when summarizing per-artifact export statuses and web compatibility assumptions/caveats (transform/scale/origin, material/texture portability, loader/extensions, stack, performance)
-- when preparing truthful next checks before passing final wording to `non-blender-user-response-writer`
+- when preparing truthful next checks before passing final wording to `plain-language-response`
 
 ## Trigger cues
 - "prepare web handoff"
@@ -24,13 +24,13 @@ Define reliable handoff language and checks for GLB/web scenarios without overcl
 - "summarize export status"
 
 ## When not to use
-- to claim GLB or export success without concrete evidence → delegate to `blender-scene-quality-checker` (`references/skills/blender-scene-quality-checker.md`; Delegates out-of-scope requests to blender-scene-quality-checker)
+- to claim GLB or export success without concrete evidence → delegate to `scene-readiness` (`references/skills/scene-readiness.md`; Delegates out-of-scope requests to scene-readiness)
 - to replace runtime export verification → delegate to `render-export-evidence` (`references/skills/render-export-evidence.md`; Delegates out-of-scope requests to render-export-evidence)
-- to validate upstream scene readiness → delegate to `blender-scene-quality-checker` (`references/skills/blender-scene-quality-checker.md`; use blender-scene-quality-checker)
+- to validate upstream scene readiness → delegate to `scene-readiness` (`references/skills/scene-readiness.md`; use scene-readiness)
 - to classify raw render/export artifact evidence → delegate to `render-export-evidence` (`references/skills/render-export-evidence.md`; use render-export-evidence)
-- to define mobile or file-size performance budgets → delegate to `glb-mobile-performance-budget` (`references/skills/glb-mobile-performance-budget.md`; use glb-mobile-performance-budget)
+- to define mobile or file-size performance budgets → delegate to `mobile-glb-budget` (`references/skills/mobile-glb-budget.md`; use mobile-glb-budget)
 - to define animation playback or rig contracts → delegate to `glb-animation-handoff` (`references/skills/glb-animation-handoff.md`; use glb-animation-handoff)
-- to write the final user-facing response wording → delegate to `non-blender-user-response-writer` (`references/skills/non-blender-user-response-writer.md`; use non-blender-user-response-writer)
+- to write the final user-facing response wording → delegate to `plain-language-response` (`references/skills/plain-language-response.md`; use plain-language-response)
 
 ## Inputs & output/evidence contract
 ### Required inputs
@@ -38,7 +38,7 @@ Define reliable handoff language and checks for GLB/web scenarios without overcl
 - `target_web_viewer_stack` (`string`): Target web runtime (Three.js, React Three Fiber, <model-viewer>, Babylon.js)
 
 ### Optional inputs
-- `animation_and_budget_contracts` (`object`): Optional linked contracts from glb-animation-handoff and glb-mobile-performance-budget
+- `animation_and_budget_contracts` (`object`): Optional linked contracts from glb-animation-handoff and mobile-glb-budget
 
 ### Primary outputs
 - `web_glb_delivery_handoff_packet`
@@ -52,17 +52,17 @@ Define reliable handoff language and checks for GLB/web scenarios without overcl
 4. follow suggested next-skill handoff
 
 ## Handoff notes
-- **[upstream_reference]** Upstream scene readiness validation → `blender-scene-quality-checker` (`references/skills/blender-scene-quality-checker.md`) — `when.all: [quality.domain equals "holistic"; stage.current equals "quality_validation"]`
+- **[upstream_reference]** Upstream scene readiness validation → `scene-readiness` (`references/skills/scene-readiness.md`) — `when.all: [quality.domain equals "holistic"; stage.current equals "quality_validation"]`
 - **[upstream_reference]** Upstream artifact evidence classification → `render-export-evidence` (`references/skills/render-export-evidence.md`) — `when.all: [stage.current equals "post_execution_audit"]`
-- **[upstream_reference]** Mobile and file-size budget constraints → `glb-mobile-performance-budget` (`references/skills/glb-mobile-performance-budget.md`) — `when.all: [artifact.type equals "glb"; budget.pinned equals false]`
+- **[upstream_reference]** Mobile and file-size budget constraints → `mobile-glb-budget` (`references/skills/mobile-glb-budget.md`) — `when.all: [artifact.type equals "glb"; budget.pinned equals false]`
 - **[upstream_reference]** Animation playback and rig handoff contracts → `glb-animation-handoff` (`references/skills/glb-animation-handoff.md`) — `when.all: [artifact.hasAnimation equals true; stage.current equals "animation_handoff"]`
-- **[progression]** Final user-facing response wording → `non-blender-user-response-writer` (`references/skills/non-blender-user-response-writer.md`) — `when.all: [stage.current equals "final_communication"]`
+- **[progression]** Final user-facing response wording → `plain-language-response` (`references/skills/plain-language-response.md`) — `when.all: [stage.current equals "final_communication"]`
 
 ## Safety boundaries & non-goals
 - **Runtime boundary:** Never claim GLB or export success without concrete evidence tied to the current run, and never replace runtime export verification. Keep runtime vocabulary strictly within the 2-path (Path 1 Official Blender Lab MCP 5.1+, Path 2 community `mcp-for-blender`) + CLI appendix model. This skill never runs Blender or Python and never upgrades Runtime or Artifact truth states (downgrade-only).
 - Generating Python scripts or executing Blender exports
 - Replacing runtime export verification
 - Upgrading Runtime or Artifact truth states or accepting pre-existing files without current-run provenance
-- Classifying raw render/export evidence (`render-export-evidence`) or validating upstream scene quality (`blender-scene-quality-checker`)
-- Defining size budgets (`glb-mobile-performance-budget`), animation contracts (`glb-animation-handoff`), or final user-facing wording (`non-blender-user-response-writer`)
+- Classifying raw render/export evidence (`render-export-evidence`) or validating upstream scene quality (`scene-readiness`)
+- Defining size budgets (`mobile-glb-budget`), animation contracts (`glb-animation-handoff`), or final user-facing wording (`plain-language-response`)
 - Making unsupported web stack or loader compatibility guarantees

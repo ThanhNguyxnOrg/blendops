@@ -2,7 +2,7 @@
   "schemaVersion": "1.4.0",
   "auditPhase": "phase-13-current",
   "repository": "ThanhNguyxnOrg/blendops",
-  "branch": "main",
+  "branch": "HEAD",
   "baselineCommitSha": "3ea3c35c6b8a6e5e915bab9f63333d4a1c09bd4d",
   "sourceCommitSha": "112ecf75a04ab5864b3dc3656b9a27f09d1e8dcd",
   "sourceCommitShort": "112ecf7",
@@ -13,8 +13,8 @@
     "sourceCommitDate": "2026-11-01 04:55:09 -0500",
     "workingTreeState": "dirty",
     "snapshotBasis": "working-tree-on-top-of-source-commit",
-    "uncommittedChangeCount": 24,
-    "auditedInputsSha256": "92d003820bc75f1084d9cb0aaf852daa3a728cac0504e3f2a73c0113b94539be",
+    "uncommittedChangeCount": 397,
+    "auditedInputsSha256": "882fb54d1bc8de065c19d5d4ca036769b1aa334f4a36d9c49ae62846c1798d9b",
     "selfReferentialCommitRule": "A Git commit cannot contain its own final commit SHA inside tracked files. sourceCommitSha records the verified HEAD commit present when the generator ran, workingTreeState and snapshotBasis record whether uncommitted working-tree changes were present on top of sourceCommitSha, and auditedInputsSha256 digests the exact audited file contents."
   },
   "summary": {
@@ -135,7 +135,7 @@
         "skills/pack-prerequisite-checker/SKILL.md",
         "skills/path-one-host-outline/SKILL.md",
         "skills/recipe-fit-assessor/SKILL.md",
-        "skills/runtime-attempt-report-writer/SKILL.md",
+        "skills/runtime-attempt-report/SKILL.md",
         "skills/runtime-path-picker/SKILL.md",
         "skills/workflow-stage-router/SKILL.md"
       ],
@@ -144,10 +144,10 @@
     },
     {
       "id": "F-06",
-      "title": "Routing quartet handoffs in blendops-help and forward reachability of blender-scope-boundary-enforcer",
+      "title": "Routing quartet handoffs in blendops-help and forward reachability of scope-guard",
       "severity": "P1",
       "pillar": "Pillar 2 (Workflow Architecture & Routing)",
-      "phase0BaselineState": "OPEN (blendops-help omitted Batch 7 routing quartet; blender-scope-boundary-enforcer had 0 incoming forward edges)",
+      "phase0BaselineState": "OPEN (blendops-help omitted Batch 7 routing quartet; scope-guard had 0 incoming forward edges)",
       "currentLifecycleStatus": "FIXED",
       "resolvedInPhase": "Phase 2 Pilot (f43385a)",
       "lastVerifiedCommit": "112ecf75a04ab5864b3dc3656b9a27f09d1e8dcd",

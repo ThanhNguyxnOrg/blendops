@@ -25,18 +25,18 @@
     },
     {
       "condition": "pinning the stop or done condition",
-      "delegateTo": "blender-stop-condition-decider",
-      "reason": "use blender-stop-condition-decider"
+      "delegateTo": "done-criteria",
+      "reason": "use done-criteria"
     },
     {
       "condition": "enforcing per-stage workflow gates",
-      "delegateTo": "blender-checklist-driven-workflow",
-      "reason": "use blender-checklist-driven-workflow"
+      "delegateTo": "stage-gates",
+      "reason": "use stage-gates"
     },
     {
       "condition": "guarding or deciding scope boundaries",
-      "delegateTo": "blender-scope-boundary-enforcer",
-      "reason": "use blender-scope-boundary-enforcer"
+      "delegateTo": "scope-guard",
+      "reason": "use scope-guard"
     },
     {
       "condition": "legal or license-permission language",
@@ -66,7 +66,7 @@
       {
         "name": "performance_budget_pins",
         "type": "object",
-        "description": "Optional triangle, texture, and file-size ceilings from glb-mobile-performance-budget"
+        "description": "Optional triangle, texture, and file-size ceilings from mobile-glb-budget"
       }
     ]
   },
@@ -103,7 +103,7 @@
       }
     },
     {
-      "target": "blender-stop-condition-decider",
+      "target": "done-criteria",
       "type": "progression",
       "label": "Done / stop condition",
       "when": {
@@ -122,7 +122,7 @@
       }
     },
     {
-      "target": "blender-checklist-driven-workflow",
+      "target": "stage-gates",
       "type": "progression",
       "label": "Per-stage gate enforcement",
       "when": {
@@ -141,7 +141,7 @@
       }
     },
     {
-      "target": "blender-scope-boundary-enforcer",
+      "target": "scope-guard",
       "type": "progression",
       "label": "Scope boundary enforcement",
       "when": {

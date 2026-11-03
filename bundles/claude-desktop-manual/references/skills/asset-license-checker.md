@@ -14,8 +14,8 @@ Catch license risk before assets go into a scene that will be rendered, exported
 - **Truth-state policy:** Runtime status defaults to `Not Run`; Artifact status defaults to `Not Produced`; mutation rule is `downgrade_only` (never upgrade without verified evidence).
 
 ## When to use
-- Immediately after `blender-asset-discovery-planner` produces a candidate asset list.
-- Before handing off to `asset-style-consistency-checker`, `asset-library-organization-planner`, or scene planners (`product-hero-scene-planner`, `character-portrait-scene-planner`, `environment-establishing-shot-planner`, `interior-architectural-scene-planner`, `product-grid-scene-planner`).
+- Immediately after `asset-discovery` produces a candidate asset list.
+- Before handing off to `asset-style-check`, `asset-library-plan`, or scene planners (`product-hero-scene-planner`, `character-portrait`, `environment-shot`, `interior-scene`, `product-grid-scene-planner`).
 - Before `pre-handoff-verification`, `render-export-evidence`, `glb-web-handoff`, or `glb-animation-handoff`.
 - Whenever a previously sourced asset's license or attribution requirement is unclear.
 
@@ -26,12 +26,12 @@ Catch license risk before assets go into a scene that will be rendered, exported
 - "license check"
 
 ## When not to use
-- Sourcing or searching for candidate assets → delegate to `blender-asset-discovery-planner` (`references/skills/blender-asset-discovery-planner.md`; Delegates out-of-scope requests to blender-asset-discovery-planner)
-- Checking visual consistency, scale, or aesthetic fit across assets → delegate to `asset-style-consistency-checker` (`references/skills/asset-style-consistency-checker.md`; Delegates out-of-scope requests to asset-style-consistency-checker)
+- Sourcing or searching for candidate assets → delegate to `asset-discovery` (`references/skills/asset-discovery.md`; Delegates out-of-scope requests to asset-discovery)
+- Checking visual consistency, scale, or aesthetic fit across assets → delegate to `asset-style-check` (`references/skills/asset-style-check.md`; Delegates out-of-scope requests to asset-style-check)
 - Replacing or working around rejected/blocked assets → delegate to `asset-fallback-strategy` (`references/skills/asset-fallback-strategy.md`; Delegates out-of-scope requests to asset-fallback-strategy)
-- Structuring folders, naming conventions, or catalog storage → delegate to `asset-library-organization-planner` (`references/skills/asset-library-organization-planner.md`; Delegates out-of-scope requests to asset-library-organization-planner)
-- First-party assets authored entirely in-house with no external dependencies. → delegate to `blender-asset-discovery-planner` (`references/skills/blender-asset-discovery-planner.md`; Delegates out-of-scope requests to blender-asset-discovery-planner)
-- Legal advice or binding legal interpretation (this skill flags risk only; escalate ambiguity to legal). → delegate to `asset-style-consistency-checker` (`references/skills/asset-style-consistency-checker.md`; Delegates out-of-scope requests to asset-style-consistency-checker)
+- Structuring folders, naming conventions, or catalog storage → delegate to `asset-library-plan` (`references/skills/asset-library-plan.md`; Delegates out-of-scope requests to asset-library-plan)
+- First-party assets authored entirely in-house with no external dependencies. → delegate to `asset-discovery` (`references/skills/asset-discovery.md`; Delegates out-of-scope requests to asset-discovery)
+- Legal advice or binding legal interpretation (this skill flags risk only; escalate ambiguity to legal). → delegate to `asset-style-check` (`references/skills/asset-style-check.md`; Delegates out-of-scope requests to asset-style-check)
 
 ## Inputs & output/evidence contract
 ### Required inputs
@@ -47,23 +47,23 @@ Catch license risk before assets go into a scene that will be rendered, exported
 - `quarantined_or_blocked_assets`
 
 ## Quick-start procedure
-1. Receive the sourced external asset list from `blender-asset-discovery-planner` (models, textures, HDRIs, fonts, sounds, brushes).
+1. Receive the sourced external asset list from `asset-discovery` (models, textures, HDRIs, fonts, sounds, brushes).
 2. Record source URL, documented license name, and stated permissions per asset.
 3. Flag risk per asset (`Pass` / `Warn` / `Fail`) and specify required attribution lines and attribution plan.
-4. Gate progression: hand off to `asset-style-consistency-checker`, `asset-library-organization-planner`, or `workflow-stage-router` only if all rows are `Pass` or explicitly accepted `Warn`; route any `Fail` rows to `asset-fallback-strategy`.
+4. Gate progression: hand off to `asset-style-check`, `asset-library-plan`, or `workflow-stage-router` only if all rows are `Pass` or explicitly accepted `Warn`; route any `Fail` rows to `asset-fallback-strategy`.
 
 ## Handoff notes
-- **[upstream_reference]** Upstream asset sourcing → `blender-asset-discovery-planner` (`references/skills/blender-asset-discovery-planner.md`) — `when.all: [brief.locked equals true; assets.discoveryComplete equals false]`
-- **[progression]** Visual style validation → `asset-style-consistency-checker` (`references/skills/asset-style-consistency-checker.md`) — `when.all: [assets.licenseCleared equals true; stage.current equals "style_check"]`
+- **[upstream_reference]** Upstream asset sourcing → `asset-discovery` (`references/skills/asset-discovery.md`) — `when.all: [brief.locked equals true; assets.discoveryComplete equals false]`
+- **[progression]** Visual style validation → `asset-style-check` (`references/skills/asset-style-check.md`) — `when.all: [assets.licenseCleared equals true; stage.current equals "style_check"]`
 - **[fallback]** Rejected/blocked asset handling → `asset-fallback-strategy` (`references/skills/asset-fallback-strategy.md`) — `when.all: [assets.fallbackNeeded equals true]`
-- **[progression]** Asset library organization → `asset-library-organization-planner` (`references/skills/asset-library-organization-planner.md`) — `when.all: [assets.discoveryComplete equals true; stage.current equals "library_organization"]`
+- **[progression]** Asset library organization → `asset-library-plan` (`references/skills/asset-library-plan.md`) — `when.all: [assets.discoveryComplete equals true; stage.current equals "library_organization"]`
 - **[progression]** Stage routing & scene planning gate → `workflow-stage-router` (`references/skills/workflow-stage-router.md`) — `when.all: [preflight.passed equals true; inventory.exists equals true]`
 
 ## Safety boundaries & non-goals
 - **Runtime boundary:** Validation skill — does not modify assets, does not run Blender. Verdicts are based on documented license terms, not legal interpretation. **Not legal advice**: when in doubt, recommend the user consult their legal team.
 - Give legal advice or interpret complex contracts (escalate ambiguity to legal).
-- Source or discover candidate assets (`blender-asset-discovery-planner`).
-- Check visual style or aesthetic consistency (`asset-style-consistency-checker`).
+- Source or discover candidate assets (`asset-discovery`).
+- Check visual style or aesthetic consistency (`asset-style-check`).
 - Plan fallbacks or replacements for failed assets (`asset-fallback-strategy`).
-- Organize asset libraries or folder structures (`asset-library-organization-planner`).
+- Organize asset libraries or folder structures (`asset-library-plan`).
 - Modify asset files, write Python, or run Blender.

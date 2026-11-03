@@ -202,7 +202,7 @@
     {
       "id": "recipe-fit-interior-dining-room-domain",
       "skillId": "recipe-fit-assessor",
-      "scenario": "Interior dining room hero with locked brief routes to interior-architectural-scene-planner",
+      "scenario": "Interior dining room hero with locked brief routes to interior-scene",
       "category": "normal",
       "inputPrompt": "We have a locked brief for a cinematic interior dining room hero for a furniture brand website. Which domain planner fits?",
       "preconditions": {
@@ -212,10 +212,10 @@
       },
       "expectedBehavior": [
         "Recognizes interior architectural domain over single-object product-hero-v0",
-        "Routes to interior-architectural-scene-planner when brief is locked"
+        "Routes to interior-scene when brief is locked"
       ],
       "requiredOutputProperties": [
-        "interior-architectural-scene-planner",
+        "interior-scene",
         "interior caveat",
         "Runtime: Not Run"
       ],
@@ -223,7 +223,7 @@
         "use product-hero-v0 with no interior caveat",
         "Artifact: Verified"
       ],
-      "expectedRoutingTarget": "interior-architectural-scene-planner",
+      "expectedRoutingTarget": "interior-scene",
       "truthStateExpectations": {
         "runtimeStatus": "Not Run",
         "artifactStatus": "Not Produced"
@@ -231,7 +231,7 @@
       "evaluationType": "contract_routing",
       "severity": "P1",
       "evidenceRequirements": [
-        "Alternative handoff to interior-architectural-scene-planner"
+        "Alternative handoff to interior-scene"
       ],
       "deterministicFixture": {
         "routingState": {
@@ -246,11 +246,11 @@
         },
         "simulatedOutput": {
           "mode": "Text-only recipe fit scoring",
-          "recommendedNextAction": "Route to interior-architectural-scene-planner with interior caveat for room-scale lighting and camera blocking.",
-          "targetHandoff": "interior-architectural-scene-planner",
+          "recommendedNextAction": "Route to interior-scene with interior caveat for room-scale lighting and camera blocking.",
+          "targetHandoff": "interior-scene",
           "runtimeStatus": "Not Run",
           "artifactStatus": "Not Produced",
-          "summary": "Matched room-scale dining room brief to interior-architectural-scene-planner.",
+          "summary": "Matched room-scale dining room brief to interior-scene.",
           "warnings": [
             "product-hero-v0 is only partial fit unless scoped to a single hero furniture piece."
           ],

@@ -3,7 +3,7 @@
   "auditPhase": "phase-13-current",
   "reconciledFromBaselineCommit": "3ea3c35c6b8a6e5e915bab9f63333d4a1c09bd4d",
   "repository": "ThanhNguyxnOrg/blendops",
-  "branch": "main",
+  "branch": "HEAD",
   "sourceCommitSha": "112ecf75a04ab5864b3dc3656b9a27f09d1e8dcd",
   "sourceCommitShort": "112ecf7",
   "sourceCommitDate": "2026-11-01 04:55:09 -0500",
@@ -13,8 +13,8 @@
     "sourceCommitDate": "2026-11-01 04:55:09 -0500",
     "workingTreeState": "dirty",
     "snapshotBasis": "working-tree-on-top-of-source-commit",
-    "uncommittedChangeCount": 24,
-    "auditedInputsSha256": "92d003820bc75f1084d9cb0aaf852daa3a728cac0504e3f2a73c0113b94539be",
+    "uncommittedChangeCount": 397,
+    "auditedInputsSha256": "882fb54d1bc8de065c19d5d4ca036769b1aa334f4a36d9c49ae62846c1798d9b",
     "selfReferentialCommitRule": "A Git commit cannot contain its own final commit SHA inside tracked files. sourceCommitSha records the verified HEAD commit present when the generator ran, workingTreeState and snapshotBasis record whether uncommitted working-tree changes were present on top of sourceCommitSha, and auditedInputsSha256 digests the exact audited file contents."
   },
   "summary": {
@@ -122,15 +122,17 @@
         "incomingBoundary": 0,
         "outgoingBoundary": 1
       },
+      "path": "skills/acceptance-criteria-builder/SKILL.md",
+      "evalPath": "skills/acceptance-criteria-builder/EVAL.md",
       "missingExtendedTemplateHeadings": [],
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
       "declaredHandoffTargets": [
         "intent-to-3d-brief-writer",
-        "blender-stop-condition-decider",
-        "blender-checklist-driven-workflow",
-        "blender-scope-boundary-enforcer",
+        "done-criteria",
+        "stage-gates",
+        "scope-guard",
         "asset-license-checker",
         "render-export-evidence",
         "pre-handoff-verification"
@@ -215,17 +217,19 @@
         "incomingBoundary": 0,
         "outgoingBoundary": 1
       },
+      "path": "skills/asset-fallback-strategy/SKILL.md",
+      "evalPath": "skills/asset-fallback-strategy/EVAL.md",
       "missingExtendedTemplateHeadings": [],
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
       "declaredHandoffTargets": [
-        "blender-asset-discovery-planner",
-        "asset-library-organization-planner",
+        "asset-discovery",
+        "asset-library-plan",
         "asset-license-checker",
-        "asset-style-consistency-checker",
-        "glb-mobile-performance-budget",
-        "blender-scope-boundary-enforcer",
+        "asset-style-check",
+        "mobile-glb-budget",
+        "scope-guard",
         "blender-recipe-decomposer"
       ],
       "hasContract": true,
@@ -234,7 +238,7 @@
       "machineReadableEvalCaseCount": 5
     },
     {
-      "id": "asset-library-organization-planner",
+      "id": "asset-library-plan",
       "name": "asset-library-organization-planner",
       "description": "Plan an internal asset library structure (folders, naming, metadata, license tracking, version control) so future recipes find and reuse assets reliably.",
       "descriptionLength": 153,
@@ -308,16 +312,18 @@
         "incomingBoundary": 0,
         "outgoingBoundary": 0
       },
+      "path": "skills/asset-library-plan/SKILL.md",
+      "evalPath": "skills/asset-library-plan/EVAL.md",
       "missingExtendedTemplateHeadings": [],
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
       "declaredHandoffTargets": [
-        "blender-asset-discovery-planner",
+        "asset-discovery",
         "asset-license-checker",
-        "asset-style-consistency-checker",
+        "asset-style-check",
         "asset-fallback-strategy",
-        "glb-mobile-performance-budget"
+        "mobile-glb-budget"
       ],
       "hasContract": true,
       "hasManagedMarkdownSections": true,
@@ -399,15 +405,17 @@
         "incomingBoundary": 0,
         "outgoingBoundary": 0
       },
+      "path": "skills/asset-license-checker/SKILL.md",
+      "evalPath": "skills/asset-license-checker/EVAL.md",
       "missingExtendedTemplateHeadings": [],
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
       "declaredHandoffTargets": [
-        "blender-asset-discovery-planner",
-        "asset-style-consistency-checker",
+        "asset-discovery",
+        "asset-style-check",
         "asset-fallback-strategy",
-        "asset-library-organization-planner",
+        "asset-library-plan",
         "workflow-stage-router"
       ],
       "hasContract": true,
@@ -416,7 +424,7 @@
       "machineReadableEvalCaseCount": 5
     },
     {
-      "id": "asset-style-consistency-checker",
+      "id": "asset-style-check",
       "name": "asset-style-consistency-checker",
       "description": "Verify chosen assets share visual style (realism, detail, color treatment) before scene build; flag style drift between assets early.",
       "descriptionLength": 133,
@@ -489,19 +497,21 @@
         "incomingBoundary": 0,
         "outgoingBoundary": 4
       },
+      "path": "skills/asset-style-check/SKILL.md",
+      "evalPath": "skills/asset-style-check/EVAL.md",
       "missingExtendedTemplateHeadings": [],
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
       "declaredHandoffTargets": [
-        "blender-asset-discovery-planner",
+        "asset-discovery",
         "asset-license-checker",
         "intent-to-3d-brief-writer",
-        "blender-scope-boundary-enforcer",
+        "scope-guard",
         "asset-fallback-strategy",
-        "asset-library-organization-planner",
-        "blender-scene-quality-checker",
-        "blender-lighting-material-planner",
+        "asset-library-plan",
+        "scene-readiness",
+        "lighting-material-plan",
         "material-quality-checker",
         "polycount-budget-checker"
       ],
@@ -511,7 +521,7 @@
       "machineReadableEvalCaseCount": 5
     },
     {
-      "id": "blender-asset-discovery-planner",
+      "id": "asset-discovery",
       "name": "blender-asset-discovery-planner",
       "description": "Plan the asset acquisition strategy (procedural, library, generative, photogrammetry) for a Blender scene without installing or executing. Use after the brief, before scene planning.",
       "descriptionLength": 182,
@@ -586,22 +596,24 @@
         "incomingBoundary": 0,
         "outgoingBoundary": 0
       },
+      "path": "skills/asset-discovery/SKILL.md",
+      "evalPath": "skills/asset-discovery/EVAL.md",
       "missingExtendedTemplateHeadings": [],
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
       "declaredHandoffTargets": [
         "intent-to-3d-brief-writer",
-        "character-portrait-scene-planner",
-        "environment-establishing-shot-planner",
-        "interior-architectural-scene-planner",
+        "character-portrait",
+        "environment-shot",
+        "interior-scene",
         "product-grid-scene-planner",
         "product-hero-scene-planner",
         "asset-license-checker",
-        "asset-style-consistency-checker",
-        "glb-mobile-performance-budget",
+        "asset-style-check",
+        "mobile-glb-budget",
         "polycount-budget-checker",
-        "official-runtime-readiness-checker",
+        "runtime-readiness",
         "asset-fallback-strategy"
       ],
       "hasContract": true,
@@ -685,14 +697,16 @@
         "incomingBoundary": 0,
         "outgoingBoundary": 0
       },
+      "path": "skills/blender-brainstorming/SKILL.md",
+      "evalPath": "skills/blender-brainstorming/EVAL.md",
       "missingExtendedTemplateHeadings": [],
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
       "declaredHandoffTargets": [
         "intent-to-3d-brief-writer",
-        "official-runtime-readiness-checker",
-        "non-blender-user-response-writer"
+        "runtime-readiness",
+        "plain-language-response"
       ],
       "hasContract": true,
       "hasManagedMarkdownSections": true,
@@ -700,7 +714,7 @@
       "machineReadableEvalCaseCount": 7
     },
     {
-      "id": "blender-checklist-driven-workflow",
+      "id": "stage-gates",
       "name": "blender-checklist-driven-workflow",
       "description": "Define explicit per-stage gates and acceptance checklists before any modeling, render, or export work — work only proceeds gate by gate.",
       "descriptionLength": 136,
@@ -774,6 +788,8 @@
         "incomingBoundary": 0,
         "outgoingBoundary": 1
       },
+      "path": "skills/stage-gates/SKILL.md",
+      "evalPath": "skills/stage-gates/EVAL.md",
       "missingExtendedTemplateHeadings": [],
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
@@ -783,18 +799,18 @@
         "intent-to-3d-brief-writer",
         "blender-recipe-decomposer",
         "acceptance-criteria-builder",
-        "blender-stop-condition-decider",
-        "blender-scope-boundary-enforcer",
+        "done-criteria",
+        "scope-guard",
         "workflow-stage-router",
-        "blender-asset-discovery-planner",
-        "blender-composition-camera-planner",
-        "blender-lighting-material-planner",
-        "character-portrait-scene-planner",
-        "environment-establishing-shot-planner",
-        "interior-architectural-scene-planner",
+        "asset-discovery",
+        "camera-composition",
+        "lighting-material-plan",
+        "character-portrait",
+        "environment-shot",
+        "interior-scene",
         "product-grid-scene-planner",
         "product-hero-scene-planner",
-        "blender-scene-quality-checker",
+        "scene-readiness",
         "composition-quality-checker",
         "lighting-quality-checker",
         "material-quality-checker",
@@ -808,7 +824,7 @@
       "machineReadableEvalCaseCount": 5
     },
     {
-      "id": "blender-composition-camera-planner",
+      "id": "camera-composition",
       "name": "blender-composition-camera-planner",
       "description": "Provide detailed composition and camera planning for product hero outputs.",
       "descriptionLength": 74,
@@ -882,6 +898,8 @@
         "incomingBoundary": 0,
         "outgoingBoundary": 2
       },
+      "path": "skills/camera-composition/SKILL.md",
+      "evalPath": "skills/camera-composition/EVAL.md",
       "missingExtendedTemplateHeadings": [],
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
@@ -890,8 +908,8 @@
         "product-hero-scene-planner",
         "output-format-decision",
         "resolution-aspect-decision",
-        "blender-lighting-material-planner",
-        "blender-scene-quality-checker",
+        "lighting-material-plan",
+        "scene-readiness",
         "composition-quality-checker"
       ],
       "hasContract": true,
@@ -900,7 +918,7 @@
       "machineReadableEvalCaseCount": 5
     },
     {
-      "id": "blender-lighting-material-planner",
+      "id": "lighting-material-plan",
       "name": "blender-lighting-material-planner",
       "description": "Build detailed lighting and material direction with portability and caveat handling for Blender/web-3D outputs.",
       "descriptionLength": 111,
@@ -975,18 +993,20 @@
         "incomingBoundary": 1,
         "outgoingBoundary": 0
       },
+      "path": "skills/lighting-material-plan/SKILL.md",
+      "evalPath": "skills/lighting-material-plan/EVAL.md",
       "missingExtendedTemplateHeadings": [],
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
       "declaredHandoffTargets": [
-        "blender-composition-camera-planner",
+        "camera-composition",
         "color-management-decision",
         "cycles-vs-eevee-decision",
         "output-format-decision",
         "lighting-quality-checker",
         "material-quality-checker",
-        "blender-scene-quality-checker",
+        "scene-readiness",
         "glb-web-handoff"
       ],
       "hasContract": true,
@@ -1069,15 +1089,17 @@
         "incomingBoundary": 0,
         "outgoingBoundary": 1
       },
+      "path": "skills/blender-recipe-decomposer/SKILL.md",
+      "evalPath": "skills/blender-recipe-decomposer/EVAL.md",
       "missingExtendedTemplateHeadings": [],
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
       "declaredHandoffTargets": [
         "intent-to-3d-brief-writer",
-        "blender-stop-condition-decider",
-        "blender-checklist-driven-workflow",
-        "blender-scope-boundary-enforcer",
+        "done-criteria",
+        "stage-gates",
+        "scope-guard",
         "blender-brainstorming"
       ],
       "hasContract": true,
@@ -1086,7 +1108,7 @@
       "machineReadableEvalCaseCount": 5
     },
     {
-      "id": "blender-scene-quality-checker",
+      "id": "scene-readiness",
       "name": "blender-scene-quality-checker",
       "description": "Apply multi-category readiness gates with pass/warn/fail and evidence-bound verdicts.",
       "descriptionLength": 85,
@@ -1160,6 +1182,8 @@
         "incomingBoundary": 0,
         "outgoingBoundary": 0
       },
+      "path": "skills/scene-readiness/SKILL.md",
+      "evalPath": "skills/scene-readiness/EVAL.md",
       "missingExtendedTemplateHeadings": [],
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
@@ -1172,7 +1196,7 @@
         "render-export-evidence",
         "pre-handoff-verification",
         "glb-web-handoff",
-        "non-blender-user-response-writer"
+        "plain-language-response"
       ],
       "hasContract": true,
       "hasManagedMarkdownSections": true,
@@ -1180,7 +1204,7 @@
       "machineReadableEvalCaseCount": 5
     },
     {
-      "id": "blender-scope-boundary-enforcer",
+      "id": "scope-guard",
       "name": "blender-scope-boundary-enforcer",
       "description": "Detect mid-recipe scope creep and push back constructively before the recipe drifts; require explicit user agreement before scope expansion.",
       "descriptionLength": 140,
@@ -1254,14 +1278,16 @@
         "incomingBoundary": 6,
         "outgoingBoundary": 0
       },
+      "path": "skills/scope-guard/SKILL.md",
+      "evalPath": "skills/scope-guard/EVAL.md",
       "missingExtendedTemplateHeadings": [],
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
       "declaredHandoffTargets": [
         "intent-to-3d-brief-writer",
-        "blender-stop-condition-decider",
-        "blender-checklist-driven-workflow",
+        "done-criteria",
+        "stage-gates",
         "acceptance-criteria-builder",
         "blender-recipe-decomposer",
         "pre-handoff-verification"
@@ -1272,7 +1298,7 @@
       "machineReadableEvalCaseCount": 5
     },
     {
-      "id": "blender-stop-condition-decider",
+      "id": "done-criteria",
       "name": "blender-stop-condition-decider",
       "description": "Define explicit \"done\" conditions for a Blender recipe before starting work, so the agent stops at the right point instead of drifting into endless polish.",
       "descriptionLength": 155,
@@ -1345,6 +1371,8 @@
         "incomingBoundary": 0,
         "outgoingBoundary": 1
       },
+      "path": "skills/done-criteria/SKILL.md",
+      "evalPath": "skills/done-criteria/EVAL.md",
       "missingExtendedTemplateHeadings": [],
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
@@ -1353,8 +1381,8 @@
         "intent-to-3d-brief-writer",
         "blender-recipe-decomposer",
         "acceptance-criteria-builder",
-        "blender-checklist-driven-workflow",
-        "blender-scope-boundary-enforcer",
+        "stage-gates",
+        "scope-guard",
         "render-export-evidence",
         "pre-handoff-verification"
       ],
@@ -1439,6 +1467,8 @@
         "incomingBoundary": 0,
         "outgoingBoundary": 0
       },
+      "path": "skills/blender-troubleshooting/SKILL.md",
+      "evalPath": "skills/blender-troubleshooting/EVAL.md",
       "missingExtendedTemplateHeadings": [],
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
@@ -1446,20 +1476,20 @@
       "declaredHandoffTargets": [
         "blender-brainstorming",
         "intent-to-3d-brief-writer",
-        "blender-composition-camera-planner",
-        "blender-lighting-material-planner",
-        "character-portrait-scene-planner",
-        "environment-establishing-shot-planner",
-        "interior-architectural-scene-planner",
+        "camera-composition",
+        "lighting-material-plan",
+        "character-portrait",
+        "environment-shot",
+        "interior-scene",
         "product-grid-scene-planner",
         "product-hero-scene-planner",
-        "official-runtime-readiness-checker",
-        "runtime-bridge-conflict-resolver",
+        "runtime-readiness",
+        "bridge-conflicts",
         "runtime-path-picker",
         "glb-animation-handoff",
         "glb-web-handoff",
         "render-export-evidence",
-        "non-blender-user-response-writer"
+        "plain-language-response"
       ],
       "hasContract": true,
       "hasManagedMarkdownSections": true,
@@ -1543,6 +1573,8 @@
         "incomingBoundary": 0,
         "outgoingBoundary": 0
       },
+      "path": "skills/blendops-help/SKILL.md",
+      "evalPath": "skills/blendops-help/EVAL.md",
       "missingExtendedTemplateHeadings": [],
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
@@ -1553,14 +1585,14 @@
         "workflow-stage-router",
         "intent-to-3d-brief-writer",
         "runtime-path-picker",
-        "official-runtime-setup-guide",
-        "official-runtime-readiness-checker",
-        "runtime-bridge-conflict-resolver",
+        "runtime-setup",
+        "runtime-readiness",
+        "bridge-conflicts",
         "product-hero-scene-planner",
         "render-export-evidence",
         "pre-handoff-verification",
         "glb-web-handoff",
-        "non-blender-user-response-writer"
+        "plain-language-response"
       ],
       "hasContract": true,
       "hasManagedMarkdownSections": true,
@@ -1568,7 +1600,7 @@
       "machineReadableEvalCaseCount": 6
     },
     {
-      "id": "character-portrait-scene-planner",
+      "id": "character-portrait",
       "name": "character-portrait-scene-planner",
       "description": "Plan a character-portrait scene (subject, pose, expression, wardrobe, framing, lighting, background) before any modeling or render attempt.",
       "descriptionLength": 139,
@@ -1642,18 +1674,20 @@
         "incomingBoundary": 0,
         "outgoingBoundary": 0
       },
+      "path": "skills/character-portrait/SKILL.md",
+      "evalPath": "skills/character-portrait/EVAL.md",
       "missingExtendedTemplateHeadings": [],
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
       "declaredHandoffTargets": [
         "intent-to-3d-brief-writer",
-        "blender-composition-camera-planner",
-        "blender-lighting-material-planner",
-        "blender-asset-discovery-planner",
+        "camera-composition",
+        "lighting-material-plan",
+        "asset-discovery",
         "composition-quality-checker",
         "lighting-quality-checker",
-        "blender-scene-quality-checker"
+        "scene-readiness"
       ],
       "hasContract": true,
       "hasManagedMarkdownSections": true,
@@ -1735,6 +1769,8 @@
         "incomingBoundary": 0,
         "outgoingBoundary": 0
       },
+      "path": "skills/cli-appendix-job-outline/SKILL.md",
+      "evalPath": "skills/cli-appendix-job-outline/EVAL.md",
       "missingExtendedTemplateHeadings": [],
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
@@ -1744,7 +1780,7 @@
         "path-one-host-outline",
         "output-format-decision",
         "render-export-evidence",
-        "runtime-attempt-report-writer"
+        "runtime-attempt-report"
       ],
       "hasContract": true,
       "hasManagedMarkdownSections": true,
@@ -1826,6 +1862,8 @@
         "incomingBoundary": 0,
         "outgoingBoundary": 0
       },
+      "path": "skills/color-management-decision/SKILL.md",
+      "evalPath": "skills/color-management-decision/EVAL.md",
       "missingExtendedTemplateHeadings": [],
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
@@ -1917,13 +1955,15 @@
         "incomingBoundary": 0,
         "outgoingBoundary": 0
       },
+      "path": "skills/composition-quality-checker/SKILL.md",
+      "evalPath": "skills/composition-quality-checker/EVAL.md",
       "missingExtendedTemplateHeadings": [],
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
       "declaredHandoffTargets": [
-        "blender-scene-quality-checker",
-        "blender-composition-camera-planner",
+        "scene-readiness",
+        "camera-composition",
         "resolution-aspect-decision",
         "render-export-evidence",
         "material-quality-checker",
@@ -2009,12 +2049,14 @@
         "incomingBoundary": 0,
         "outgoingBoundary": 0
       },
+      "path": "skills/cycles-vs-eevee-decision/SKILL.md",
+      "evalPath": "skills/cycles-vs-eevee-decision/EVAL.md",
       "missingExtendedTemplateHeadings": [],
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
       "declaredHandoffTargets": [
-        "blender-lighting-material-planner",
+        "lighting-material-plan",
         "color-management-decision",
         "output-format-decision",
         "resolution-aspect-decision",
@@ -2026,7 +2068,7 @@
       "machineReadableEvalCaseCount": 5
     },
     {
-      "id": "environment-establishing-shot-planner",
+      "id": "environment-shot",
       "name": "environment-establishing-shot-planner",
       "description": "Plan a wide environment / establishing-shot scene (locale, time of day, weather, focal subject, depth, atmosphere) before any modeling or render attempt.",
       "descriptionLength": 153,
@@ -2100,16 +2142,18 @@
         "incomingBoundary": 0,
         "outgoingBoundary": 0
       },
+      "path": "skills/environment-shot/SKILL.md",
+      "evalPath": "skills/environment-shot/EVAL.md",
       "missingExtendedTemplateHeadings": [],
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
       "declaredHandoffTargets": [
         "intent-to-3d-brief-writer",
-        "blender-asset-discovery-planner",
+        "asset-discovery",
         "composition-quality-checker",
         "lighting-quality-checker",
-        "blender-scene-quality-checker"
+        "scene-readiness"
       ],
       "hasContract": true,
       "hasManagedMarkdownSections": true,
@@ -2191,21 +2235,23 @@
         "incomingBoundary": 0,
         "outgoingBoundary": 0
       },
+      "path": "skills/glb-animation-handoff/SKILL.md",
+      "evalPath": "skills/glb-animation-handoff/EVAL.md",
       "missingExtendedTemplateHeadings": [],
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
       "declaredHandoffTargets": [
-        "character-portrait-scene-planner",
-        "environment-establishing-shot-planner",
-        "interior-architectural-scene-planner",
+        "character-portrait",
+        "environment-shot",
+        "interior-scene",
         "product-grid-scene-planner",
         "product-hero-scene-planner",
-        "glb-mobile-performance-budget",
+        "mobile-glb-budget",
         "render-export-evidence",
         "glb-web-handoff",
-        "three-fiber-component-shape-planner",
-        "non-blender-user-response-writer"
+        "r3f-component-plan",
+        "plain-language-response"
       ],
       "hasContract": true,
       "hasManagedMarkdownSections": true,
@@ -2213,7 +2259,7 @@
       "machineReadableEvalCaseCount": 5
     },
     {
-      "id": "glb-mobile-performance-budget",
+      "id": "mobile-glb-budget",
       "name": "glb-mobile-performance-budget",
       "description": "Set explicit triangle / texture / draw-call / file-size / animation budgets for GLB targeted at mobile-web before any export decision.",
       "descriptionLength": 134,
@@ -2287,19 +2333,21 @@
         "incomingBoundary": 0,
         "outgoingBoundary": 0
       },
+      "path": "skills/mobile-glb-budget/SKILL.md",
+      "evalPath": "skills/mobile-glb-budget/EVAL.md",
       "missingExtendedTemplateHeadings": [],
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
       "declaredHandoffTargets": [
-        "blender-composition-camera-planner",
-        "blender-lighting-material-planner",
-        "character-portrait-scene-planner",
-        "environment-establishing-shot-planner",
-        "interior-architectural-scene-planner",
+        "camera-composition",
+        "lighting-material-plan",
+        "character-portrait",
+        "environment-shot",
+        "interior-scene",
         "product-grid-scene-planner",
         "product-hero-scene-planner",
-        "blender-scene-quality-checker",
+        "scene-readiness",
         "material-quality-checker",
         "polycount-budget-checker",
         "render-export-evidence",
@@ -2386,16 +2434,18 @@
         "incomingBoundary": 0,
         "outgoingBoundary": 0
       },
+      "path": "skills/glb-web-handoff/SKILL.md",
+      "evalPath": "skills/glb-web-handoff/EVAL.md",
       "missingExtendedTemplateHeadings": [],
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
       "declaredHandoffTargets": [
-        "blender-scene-quality-checker",
+        "scene-readiness",
         "render-export-evidence",
-        "glb-mobile-performance-budget",
+        "mobile-glb-budget",
         "glb-animation-handoff",
-        "non-blender-user-response-writer"
+        "plain-language-response"
       ],
       "hasContract": true,
       "hasManagedMarkdownSections": true,
@@ -2477,6 +2527,8 @@
         "incomingBoundary": 0,
         "outgoingBoundary": 0
       },
+      "path": "skills/intent-to-3d-brief-writer/SKILL.md",
+      "evalPath": "skills/intent-to-3d-brief-writer/EVAL.md",
       "missingExtendedTemplateHeadings": [],
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
@@ -2484,10 +2536,10 @@
       "declaredHandoffTargets": [
         "blender-brainstorming",
         "acceptance-criteria-builder",
-        "blender-composition-camera-planner",
-        "blender-lighting-material-planner",
+        "camera-composition",
+        "lighting-material-plan",
         "product-hero-scene-planner",
-        "official-runtime-readiness-checker",
+        "runtime-readiness",
         "blender-troubleshooting"
       ],
       "hasContract": true,
@@ -2496,7 +2548,7 @@
       "machineReadableEvalCaseCount": 9
     },
     {
-      "id": "interior-architectural-scene-planner",
+      "id": "interior-scene",
       "name": "interior-architectural-scene-planner",
       "description": "Plan an interior architectural visualization scene (room layout, furniture, materials, natural + artificial lighting) before any modeling or render attempt.",
       "descriptionLength": 156,
@@ -2571,22 +2623,24 @@
         "incomingBoundary": 0,
         "outgoingBoundary": 0
       },
+      "path": "skills/interior-scene/SKILL.md",
+      "evalPath": "skills/interior-scene/EVAL.md",
       "missingExtendedTemplateHeadings": [],
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
       "declaredHandoffTargets": [
         "intent-to-3d-brief-writer",
-        "environment-establishing-shot-planner",
+        "environment-shot",
         "product-hero-scene-planner",
-        "character-portrait-scene-planner",
-        "blender-asset-discovery-planner",
-        "glb-mobile-performance-budget",
-        "asset-style-consistency-checker",
+        "character-portrait",
+        "asset-discovery",
+        "mobile-glb-budget",
+        "asset-style-check",
         "composition-quality-checker",
         "lighting-quality-checker",
         "material-quality-checker",
-        "blender-scene-quality-checker"
+        "scene-readiness"
       ],
       "hasContract": true,
       "hasManagedMarkdownSections": true,
@@ -2668,15 +2722,17 @@
         "incomingBoundary": 0,
         "outgoingBoundary": 0
       },
+      "path": "skills/lighting-quality-checker/SKILL.md",
+      "evalPath": "skills/lighting-quality-checker/EVAL.md",
       "missingExtendedTemplateHeadings": [],
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
       "declaredHandoffTargets": [
-        "blender-scene-quality-checker",
+        "scene-readiness",
         "material-quality-checker",
         "composition-quality-checker",
-        "blender-lighting-material-planner",
+        "lighting-material-plan",
         "render-export-evidence"
       ],
       "hasContract": true,
@@ -2759,14 +2815,16 @@
         "incomingBoundary": 1,
         "outgoingBoundary": 0
       },
+      "path": "skills/material-quality-checker/SKILL.md",
+      "evalPath": "skills/material-quality-checker/EVAL.md",
       "missingExtendedTemplateHeadings": [],
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
       "declaredHandoffTargets": [
-        "blender-lighting-material-planner",
-        "glb-mobile-performance-budget",
-        "blender-scene-quality-checker",
+        "lighting-material-plan",
+        "mobile-glb-budget",
+        "scene-readiness",
         "lighting-quality-checker",
         "composition-quality-checker",
         "polycount-budget-checker",
@@ -2779,7 +2837,7 @@
       "machineReadableEvalCaseCount": 5
     },
     {
-      "id": "non-blender-user-response-writer",
+      "id": "plain-language-response",
       "name": "non-blender-user-response-writer",
       "description": "Convert technical Blender workflow findings into plain-language user-facing responses with honest caveats.",
       "descriptionLength": 106,
@@ -2853,20 +2911,22 @@
         "incomingBoundary": 0,
         "outgoingBoundary": 0
       },
+      "path": "skills/plain-language-response/SKILL.md",
+      "evalPath": "skills/plain-language-response/EVAL.md",
       "missingExtendedTemplateHeadings": [],
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
       "declaredHandoffTargets": [
         "render-export-evidence",
-        "blender-scene-quality-checker",
+        "scene-readiness",
         "composition-quality-checker",
         "lighting-quality-checker",
         "material-quality-checker",
         "polycount-budget-checker",
         "glb-web-handoff",
         "pre-handoff-verification",
-        "official-runtime-readiness-checker"
+        "runtime-readiness"
       ],
       "hasContract": true,
       "hasManagedMarkdownSections": true,
@@ -2874,7 +2934,7 @@
       "machineReadableEvalCaseCount": 5
     },
     {
-      "id": "official-runtime-readiness-checker",
+      "id": "runtime-readiness",
       "name": "official-runtime-readiness-checker",
       "description": "Evaluate whether official runtime appears ready using evidence-bound checks and explicit readiness states.",
       "descriptionLength": 106,
@@ -2948,6 +3008,8 @@
         "incomingBoundary": 0,
         "outgoingBoundary": 0
       },
+      "path": "skills/runtime-readiness/SKILL.md",
+      "evalPath": "skills/runtime-readiness/EVAL.md",
       "missingExtendedTemplateHeadings": [],
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
@@ -2955,8 +3017,8 @@
       "declaredHandoffTargets": [
         "runtime-path-picker",
         "path-one-host-outline",
-        "official-runtime-setup-guide",
-        "runtime-bridge-conflict-resolver",
+        "runtime-setup",
+        "bridge-conflicts",
         "cli-appendix-job-outline",
         "product-hero-scene-planner",
         "workflow-stage-router"
@@ -2967,7 +3029,7 @@
       "machineReadableEvalCaseCount": 7
     },
     {
-      "id": "official-runtime-setup-guide",
+      "id": "runtime-setup",
       "name": "official-runtime-setup-guide",
       "description": "Establish official runtime prerequisites and setup boundaries before any Blender execution claim.",
       "descriptionLength": 97,
@@ -3041,6 +3103,8 @@
         "incomingBoundary": 0,
         "outgoingBoundary": 0
       },
+      "path": "skills/runtime-setup/SKILL.md",
+      "evalPath": "skills/runtime-setup/EVAL.md",
       "missingExtendedTemplateHeadings": [],
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
@@ -3049,8 +3113,8 @@
         "runtime-path-picker",
         "path-one-host-outline",
         "cli-appendix-job-outline",
-        "runtime-bridge-conflict-resolver",
-        "official-runtime-readiness-checker",
+        "bridge-conflicts",
+        "runtime-readiness",
         "product-hero-scene-planner"
       ],
       "hasContract": true,
@@ -3132,6 +3196,8 @@
         "incomingBoundary": 1,
         "outgoingBoundary": 0
       },
+      "path": "skills/output-format-decision/SKILL.md",
+      "evalPath": "skills/output-format-decision/EVAL.md",
       "missingExtendedTemplateHeadings": [],
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
@@ -3142,7 +3208,7 @@
         "cycles-vs-eevee-decision",
         "render-export-evidence",
         "glb-animation-handoff",
-        "glb-mobile-performance-budget",
+        "mobile-glb-budget",
         "glb-web-handoff"
       ],
       "hasContract": true,
@@ -3225,6 +3291,8 @@
         "incomingBoundary": 0,
         "outgoingBoundary": 0
       },
+      "path": "skills/pack-prerequisite-checker/SKILL.md",
+      "evalPath": "skills/pack-prerequisite-checker/EVAL.md",
       "missingExtendedTemplateHeadings": [],
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
@@ -3232,15 +3300,15 @@
       "declaredHandoffTargets": [
         "recipe-fit-assessor",
         "intent-to-3d-brief-writer",
-        "official-runtime-readiness-checker",
-        "runtime-bridge-conflict-resolver",
+        "runtime-readiness",
+        "bridge-conflicts",
         "blender-troubleshooting",
         "asset-license-checker",
         "product-hero-scene-planner",
         "product-grid-scene-planner",
-        "character-portrait-scene-planner",
-        "environment-establishing-shot-planner",
-        "interior-architectural-scene-planner"
+        "character-portrait",
+        "environment-shot",
+        "interior-scene"
       ],
       "hasContract": true,
       "hasManagedMarkdownSections": true,
@@ -3322,15 +3390,17 @@
         "incomingBoundary": 0,
         "outgoingBoundary": 0
       },
+      "path": "skills/path-one-host-outline/SKILL.md",
+      "evalPath": "skills/path-one-host-outline/EVAL.md",
       "missingExtendedTemplateHeadings": [],
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
       "declaredHandoffTargets": [
         "runtime-path-picker",
-        "official-runtime-setup-guide",
-        "official-runtime-readiness-checker",
-        "runtime-bridge-conflict-resolver",
+        "runtime-setup",
+        "runtime-readiness",
+        "bridge-conflicts",
         "cli-appendix-job-outline"
       ],
       "hasContract": true,
@@ -3413,13 +3483,15 @@
         "incomingBoundary": 1,
         "outgoingBoundary": 0
       },
+      "path": "skills/polycount-budget-checker/SKILL.md",
+      "evalPath": "skills/polycount-budget-checker/EVAL.md",
       "missingExtendedTemplateHeadings": [],
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
       "declaredHandoffTargets": [
-        "glb-mobile-performance-budget",
-        "blender-scene-quality-checker",
+        "mobile-glb-budget",
+        "scene-readiness",
         "render-export-evidence",
         "material-quality-checker",
         "lighting-quality-checker",
@@ -3506,6 +3578,8 @@
         "incomingBoundary": 0,
         "outgoingBoundary": 0
       },
+      "path": "skills/pre-handoff-verification/SKILL.md",
+      "evalPath": "skills/pre-handoff-verification/EVAL.md",
       "missingExtendedTemplateHeadings": [],
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
@@ -3513,17 +3587,17 @@
       "declaredHandoffTargets": [
         "blendops-help",
         "workflow-stage-router",
-        "non-blender-user-response-writer",
+        "plain-language-response",
         "render-export-evidence",
-        "runtime-attempt-report-writer",
-        "blender-scene-quality-checker",
+        "runtime-attempt-report",
+        "scene-readiness",
         "composition-quality-checker",
         "lighting-quality-checker",
         "material-quality-checker",
         "polycount-budget-checker",
         "blender-troubleshooting",
-        "official-runtime-readiness-checker",
-        "runtime-bridge-conflict-resolver"
+        "runtime-readiness",
+        "bridge-conflicts"
       ],
       "hasContract": true,
       "hasManagedMarkdownSections": true,
@@ -3531,7 +3605,7 @@
       "machineReadableEvalCaseCount": 9
     },
     {
-      "id": "preview-report-template-writer",
+      "id": "preview-report",
       "name": "preview-report-template-writer",
       "description": "Generate the structured preview-report Markdown that glb-web-handoff and non-blender-user-response-writer consume after a render or export run.",
       "descriptionLength": 143,
@@ -3608,6 +3682,8 @@
         "incomingBoundary": 0,
         "outgoingBoundary": 0
       },
+      "path": "skills/preview-report/SKILL.md",
+      "evalPath": "skills/preview-report/EVAL.md",
       "missingExtendedTemplateHeadings": [],
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
@@ -3616,7 +3692,7 @@
         "render-export-evidence",
         "pre-handoff-verification",
         "glb-web-handoff",
-        "non-blender-user-response-writer",
+        "plain-language-response",
         "blender-troubleshooting"
       ],
       "hasContract": true,
@@ -3699,6 +3775,8 @@
         "incomingBoundary": 0,
         "outgoingBoundary": 0
       },
+      "path": "skills/product-grid-scene-planner/SKILL.md",
+      "evalPath": "skills/product-grid-scene-planner/EVAL.md",
       "missingExtendedTemplateHeadings": [],
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
@@ -3706,14 +3784,14 @@
       "declaredHandoffTargets": [
         "intent-to-3d-brief-writer",
         "product-hero-scene-planner",
-        "blender-asset-discovery-planner",
+        "asset-discovery",
         "output-format-decision",
         "composition-quality-checker",
         "lighting-quality-checker",
         "material-quality-checker",
-        "blender-scene-quality-checker",
+        "scene-readiness",
         "acceptance-criteria-builder",
-        "blender-stop-condition-decider"
+        "done-criteria"
       ],
       "hasContract": true,
       "hasManagedMarkdownSections": true,
@@ -3795,17 +3873,19 @@
         "incomingBoundary": 0,
         "outgoingBoundary": 0
       },
+      "path": "skills/product-hero-scene-planner/SKILL.md",
+      "evalPath": "skills/product-hero-scene-planner/EVAL.md",
       "missingExtendedTemplateHeadings": [],
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
       "declaredHandoffTargets": [
         "intent-to-3d-brief-writer",
-        "blender-composition-camera-planner",
-        "blender-lighting-material-planner",
+        "camera-composition",
+        "lighting-material-plan",
         "acceptance-criteria-builder",
-        "blender-stop-condition-decider",
-        "blender-scene-quality-checker",
+        "done-criteria",
+        "scene-readiness",
         "glb-web-handoff",
         "render-export-evidence"
       ],
@@ -3889,6 +3969,8 @@
         "incomingBoundary": 0,
         "outgoingBoundary": 0
       },
+      "path": "skills/recipe-fit-assessor/SKILL.md",
+      "evalPath": "skills/recipe-fit-assessor/EVAL.md",
       "missingExtendedTemplateHeadings": [],
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
@@ -3902,9 +3984,9 @@
         "workflow-stage-router",
         "product-hero-scene-planner",
         "product-grid-scene-planner",
-        "character-portrait-scene-planner",
-        "environment-establishing-shot-planner",
-        "interior-architectural-scene-planner"
+        "character-portrait",
+        "environment-shot",
+        "interior-scene"
       ],
       "hasContract": true,
       "hasManagedMarkdownSections": true,
@@ -3987,18 +4069,20 @@
         "incomingBoundary": 0,
         "outgoingBoundary": 0
       },
+      "path": "skills/render-export-evidence/SKILL.md",
+      "evalPath": "skills/render-export-evidence/EVAL.md",
       "missingExtendedTemplateHeadings": [],
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
       "declaredHandoffTargets": [
-        "official-runtime-readiness-checker",
-        "runtime-attempt-report-writer",
-        "blender-scene-quality-checker",
+        "runtime-readiness",
+        "runtime-attempt-report",
+        "scene-readiness",
         "pre-handoff-verification",
-        "preview-report-template-writer",
+        "preview-report",
         "glb-web-handoff",
-        "non-blender-user-response-writer"
+        "plain-language-response"
       ],
       "hasContract": true,
       "hasManagedMarkdownSections": true,
@@ -4079,12 +4163,14 @@
         "incomingBoundary": 1,
         "outgoingBoundary": 0
       },
+      "path": "skills/resolution-aspect-decision/SKILL.md",
+      "evalPath": "skills/resolution-aspect-decision/EVAL.md",
       "missingExtendedTemplateHeadings": [],
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
       "declaredHandoffTargets": [
-        "blender-composition-camera-planner",
+        "camera-composition",
         "composition-quality-checker",
         "color-management-decision",
         "output-format-decision",
@@ -4097,7 +4183,7 @@
       "machineReadableEvalCaseCount": 5
     },
     {
-      "id": "runtime-attempt-report-writer",
+      "id": "runtime-attempt-report",
       "name": "runtime-attempt-report-writer",
       "description": "Produce an evidence-bound runtime attempt report with truth labels and next steps; does not certify upstream stack success.",
       "descriptionLength": 123,
@@ -4173,14 +4259,16 @@
         "incomingBoundary": 0,
         "outgoingBoundary": 0
       },
+      "path": "skills/runtime-attempt-report/SKILL.md",
+      "evalPath": "skills/runtime-attempt-report/EVAL.md",
       "missingExtendedTemplateHeadings": [],
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
       "declaredHandoffTargets": [
-        "official-runtime-readiness-checker",
+        "runtime-readiness",
         "runtime-path-picker",
-        "runtime-bridge-conflict-resolver",
+        "bridge-conflicts",
         "blender-troubleshooting",
         "render-export-evidence",
         "pre-handoff-verification"
@@ -4191,7 +4279,7 @@
       "machineReadableEvalCaseCount": 5
     },
     {
-      "id": "runtime-bridge-conflict-resolver",
+      "id": "bridge-conflicts",
       "name": "runtime-bridge-conflict-resolver",
       "description": "Diagnose MCP bridge conflicts (Path 1 Official Blender Lab MCP 5.1+ vs Path 2 mcp-for-blender, port 9876 collisions, host mismatch) and hand off to official-runtime-readiness-checker.",
       "descriptionLength": 183,
@@ -4267,14 +4355,16 @@
         "incomingBoundary": 0,
         "outgoingBoundary": 0
       },
+      "path": "skills/bridge-conflicts/SKILL.md",
+      "evalPath": "skills/bridge-conflicts/EVAL.md",
       "missingExtendedTemplateHeadings": [],
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
       "declaredHandoffTargets": [
-        "official-runtime-readiness-checker",
+        "runtime-readiness",
         "blender-troubleshooting",
-        "official-runtime-setup-guide",
+        "runtime-setup",
         "runtime-path-picker"
       ],
       "hasContract": true,
@@ -4357,16 +4447,18 @@
         "incomingBoundary": 0,
         "outgoingBoundary": 0
       },
+      "path": "skills/runtime-path-picker/SKILL.md",
+      "evalPath": "skills/runtime-path-picker/EVAL.md",
       "missingExtendedTemplateHeadings": [],
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
       "declaredHandoffTargets": [
-        "official-runtime-setup-guide",
-        "official-runtime-readiness-checker",
+        "runtime-setup",
+        "runtime-readiness",
         "path-one-host-outline",
         "cli-appendix-job-outline",
-        "runtime-bridge-conflict-resolver",
+        "bridge-conflicts",
         "pre-handoff-verification"
       ],
       "hasContract": true,
@@ -4375,7 +4467,7 @@
       "machineReadableEvalCaseCount": 5
     },
     {
-      "id": "three-fiber-component-shape-planner",
+      "id": "r3f-component-plan",
       "name": "three-fiber-component-shape-planner",
       "description": "Plan the React Three Fiber component shape (props, refs, Suspense, useGLTF cache, animation hooks) before delivering a GLB to a web team.",
       "descriptionLength": 137,
@@ -4449,17 +4541,19 @@
         "incomingBoundary": 0,
         "outgoingBoundary": 0
       },
+      "path": "skills/r3f-component-plan/SKILL.md",
+      "evalPath": "skills/r3f-component-plan/EVAL.md",
       "missingExtendedTemplateHeadings": [],
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
       "declaredHandoffTargets": [
         "glb-animation-handoff",
-        "glb-mobile-performance-budget",
+        "mobile-glb-budget",
         "color-management-decision",
         "material-quality-checker",
         "glb-web-handoff",
-        "non-blender-user-response-writer"
+        "plain-language-response"
       ],
       "hasContract": true,
       "hasManagedMarkdownSections": true,
@@ -4541,15 +4635,17 @@
         "incomingBoundary": 0,
         "outgoingBoundary": 0
       },
+      "path": "skills/workflow-stage-router/SKILL.md",
+      "evalPath": "skills/workflow-stage-router/EVAL.md",
       "missingExtendedTemplateHeadings": [],
       "missingOtherTemplateHeadings": [
         "Runtime route requirements"
       ],
       "declaredHandoffTargets": [
         "pack-prerequisite-checker",
-        "official-runtime-readiness-checker",
-        "runtime-bridge-conflict-resolver",
-        "blender-scope-boundary-enforcer",
+        "runtime-readiness",
+        "bridge-conflicts",
+        "scope-guard",
         "render-export-evidence",
         "pre-handoff-verification"
       ],

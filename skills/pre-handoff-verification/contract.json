@@ -16,7 +16,7 @@
   "exclusions": [
     {
       "condition": "the workflow is still in planning / brainstorming / brief stage (no claim to verify yet)",
-      "delegateTo": "blender-scene-quality-checker",
+      "delegateTo": "scene-readiness",
       "reason": "no claim to verify yet"
     },
     {
@@ -98,9 +98,9 @@
       }
     },
     {
-      "target": "non-blender-user-response-writer",
+      "target": "plain-language-response",
       "type": "conditional",
-      "label": "If verdict is Pass (non-blender-user-response-writer)",
+      "label": "If verdict is Pass (plain-language-response)",
       "when": {
         "all": [
           {
@@ -126,9 +126,9 @@
       }
     },
     {
-      "target": "runtime-attempt-report-writer",
+      "target": "runtime-attempt-report",
       "type": "upstream_reference",
-      "label": "If verdict is Pass (runtime-attempt-report-writer)",
+      "label": "If verdict is Pass (runtime-attempt-report)",
       "when": {
         "all": [
           {
@@ -150,9 +150,9 @@
       }
     },
     {
-      "target": "blender-scene-quality-checker",
+      "target": "scene-readiness",
       "type": "upstream_reference",
-      "label": "scene/asset quality gap (blender-scene-quality-checker)",
+      "label": "scene/asset quality gap (scene-readiness)",
       "when": {
         "all": [
           {
@@ -259,9 +259,9 @@
       }
     },
     {
-      "target": "official-runtime-readiness-checker",
+      "target": "runtime-readiness",
       "type": "fallback",
-      "label": "runtime/bridge failure (official-runtime-readiness-checker)",
+      "label": "runtime/bridge failure (runtime-readiness)",
       "when": {
         "all": [
           {
@@ -278,9 +278,9 @@
       }
     },
     {
-      "target": "runtime-bridge-conflict-resolver",
+      "target": "bridge-conflicts",
       "type": "fallback",
-      "label": "runtime/bridge failure (runtime-bridge-conflict-resolver)",
+      "label": "runtime/bridge failure (bridge-conflicts)",
       "when": {
         "all": [
           {

@@ -17,7 +17,7 @@ Metadata: Contract `v1.0.0` | Category `process-discipline` | Role `multi-delive
 ## When not to use (delegation boundaries)
 - single deliverable that is already right-sized (hand off directly to intent-to-3d-brief-writer) → use `intent-to-3d-brief-writer` (`references/skill-intent-to-3d-brief-writer.md`; hand off directly to intent-to-3d-brief-writer)
 - pure exploration or open ideation → use `blender-brainstorming` (`references/skill-blender-brainstorming.md`; use blender-brainstorming instead)
-- after recipes are already split or running → use `blender-scope-boundary-enforcer` (`references/skill-blender-scope-boundary-enforcer.md`; use blender-scope-boundary-enforcer for added scope or blender-stop-condition-decider to evaluate completion)
+- after recipes are already split or running → use `scope-guard` (`references/skill-scope-guard.md`; use scope-guard for added scope or done-criteria to evaluate completion)
 
 ## Input & output contract
 - Required input `multi_deliverable_request` (`string`): User request spanning multiple scenes, deliverables, or incompatible output channels
@@ -33,16 +33,16 @@ Metadata: Contract `v1.0.0` | Category `process-discipline` | Role `multi-delive
 
 ## Cross-skill handoffs
 - [progression] Full brief authoring for each split recipe → `intent-to-3d-brief-writer` (`references/skill-intent-to-3d-brief-writer.md`) — `when.all: [goal.clarity equals "clear"; brief.locked equals false]`
-- [progression] Pinning formal done conditions per recipe → `blender-stop-condition-decider` (`references/skill-blender-stop-condition-decider.md`) — `when.all: [brief.locked equals true; stage.current equals "stop_condition"]`
-- [progression] Workflow stage gates per recipe → `blender-checklist-driven-workflow` (`references/skill-blender-checklist-driven-workflow.md`) — `when.all: [brief.locked equals true; stage.current equals "stage_gates"]`
-- [progression] Handling scope added after splitting → `blender-scope-boundary-enforcer` (`references/skill-blender-scope-boundary-enforcer.md`) — `when.all: [scope.driftDetected equals true]`
+- [progression] Pinning formal done conditions per recipe → `done-criteria` (`references/skill-done-criteria.md`) — `when.all: [brief.locked equals true; stage.current equals "stop_condition"]`
+- [progression] Workflow stage gates per recipe → `stage-gates` (`references/skill-stage-gates.md`) — `when.all: [brief.locked equals true; stage.current equals "stage_gates"]`
+- [progression] Handling scope added after splitting → `scope-guard` (`references/skill-scope-guard.md`) — `when.all: [scope.driftDetected equals true]`
 - [upstream_reference] Pre-decomposition ideation when deliverables are unclear → `blender-brainstorming` (`references/skill-blender-brainstorming.md`) — `when.all: [goal.clarity equals "ambiguous_or_mixed"]`
 
 ## Safety boundaries & non-goals
 - Runtime boundary: Process / discipline skill — does not run Blender. Splits intent into recipe specs only.
 - Run Blender, write Python, or render/export any artifacts.
 - Author full 3D briefs (belongs to `intent-to-3d-brief-writer`).
-- Pin formal acceptance/stop gates (belongs to `blender-stop-condition-decider`).
-- Run per-recipe checklist stage gates (belongs to `blender-checklist-driven-workflow`).
-- Enforce scope creep after recipes are already split (belongs to `blender-scope-boundary-enforcer`).
+- Pin formal acceptance/stop gates (belongs to `done-criteria`).
+- Run per-recipe checklist stage gates (belongs to `stage-gates`).
+- Enforce scope creep after recipes are already split (belongs to `scope-guard`).
 - Make or upgrade runtime or artifact truth claims.

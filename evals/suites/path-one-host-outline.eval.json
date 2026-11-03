@@ -20,7 +20,7 @@
     {
       "id": "path-one-host-outline-normal-in-scope-handoff",
       "skillId": "path-one-host-outline",
-      "scenario": "Normal in-scope execution of path-one-host-outline (lab-mcp-host-configuration-planner) with contract handoff to official-runtime-readiness-checker",
+      "scenario": "Normal in-scope execution of path-one-host-outline (lab-mcp-host-configuration-planner) with contract handoff to runtime-readiness",
       "category": "normal",
       "inputPrompt": "A user has Blender 5.1 installed and wants to understand Path 1 host (a) Anthropic Connector in Claude Desktop vs host (b) manual Lab MCP server configuration in Cursor. Use path-one-host-outline.",
       "preconditions": {
@@ -32,13 +32,13 @@
       "expectedBehavior": [
         "Produces path_one_host_architecture_outline, connector_not_standalone_boundary_check, host_to_readiness_handoff for role lab-mcp-host-configuration-planner",
         "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
-        "Evaluates contract handoff predicate and hands off to official-runtime-readiness-checker (Readiness probing)"
+        "Evaluates contract handoff predicate and hands off to runtime-readiness (Readiness probing)"
       ],
       "requiredOutputProperties": [
         "Blender Lab MCP add-on",
         "Blender 5.1+",
         "host (a) vs host (b)",
-        "official-runtime-readiness-checker",
+        "runtime-readiness",
         "Runtime: Not Run",
         "Artifact: Not Produced"
       ],
@@ -48,7 +48,7 @@
         "Artifact: Not Run",
         "Artifact: Not Run"
       ],
-      "expectedRoutingTarget": "official-runtime-readiness-checker",
+      "expectedRoutingTarget": "runtime-readiness",
       "truthStateExpectations": {
         "runtimeStatus": "Not Run",
         "artifactStatus": "Not Produced"
@@ -57,7 +57,7 @@
       "severity": "P0",
       "evidenceRequirements": [
         "Outputs path_one_host_architecture_outline, connector_not_standalone_boundary_check, host_to_readiness_handoff conforming to skills/path-one-host-outline/SKILL.md",
-        "Matches contract handoff predicate to official-runtime-readiness-checker in skills/path-one-host-outline/contract.json"
+        "Matches contract handoff predicate to runtime-readiness in skills/path-one-host-outline/contract.json"
       ],
       "deterministicFixture": {
         "handoffContext": {
@@ -66,11 +66,11 @@
         },
         "simulatedOutput": {
           "mode": "Text-only lab-mcp-host-configuration-planner (path-one-host-outline)",
-          "recommendedNextAction": "Complete path_one_host_architecture_outline and hand off to official-runtime-readiness-checker (Readiness probing).",
-          "targetHandoff": "official-runtime-readiness-checker",
+          "recommendedNextAction": "Complete path_one_host_architecture_outline and hand off to runtime-readiness (Readiness probing).",
+          "targetHandoff": "runtime-readiness",
           "runtimeStatus": "Not Run",
           "artifactStatus": "Not Produced",
-          "summary": "Outlined Path 1 Blender-side prerequisite (Blender Lab MCP add-on in Blender 5.1+) and compared host (a) Claude Desktop Connector vs host (b) manual MCP client config. Delivered Blender Lab MCP add-on, Blender 5.1+, host (a) vs host (b) and routed to official-runtime-readiness-checker.",
+          "summary": "Outlined Path 1 Blender-side prerequisite (Blender Lab MCP add-on in Blender 5.1+) and compared host (a) Claude Desktop Connector vs host (b) manual MCP client config. Delivered Blender Lab MCP add-on, Blender 5.1+, host (a) vs host (b) and routed to runtime-readiness.",
           "warnings": [
             "Text-only workflow output; no live Blender session or artifact was executed."
           ],
@@ -87,7 +87,7 @@
     {
       "id": "path-one-host-outline-secondary-contract-handoff",
       "skillId": "path-one-host-outline",
-      "scenario": "Secondary fallback contract handoff from path-one-host-outline to runtime-bridge-conflict-resolver",
+      "scenario": "Secondary fallback contract handoff from path-one-host-outline to bridge-conflicts",
       "category": "blocked_or_adversarial",
       "inputPrompt": "While applying path-one-host-outline, the workflow context is {\"runtime.conflictDetected\":true} (Bridge conflicts). Determine the contract-governed handoff target.",
       "preconditions": {
@@ -97,10 +97,10 @@
       },
       "expectedBehavior": [
         "Evaluates the fallback handoff predicate in skills/path-one-host-outline/contract.json",
-        "Routes to runtime-bridge-conflict-resolver (Bridge conflicts) without claiming runtime execution"
+        "Routes to bridge-conflicts (Bridge conflicts) without claiming runtime execution"
       ],
       "requiredOutputProperties": [
-        "runtime-bridge-conflict-resolver",
+        "bridge-conflicts",
         "fallback",
         "Runtime: Not Run",
         "Artifact: Not Produced"
@@ -111,7 +111,7 @@
         "Artifact: Not Run",
         "Artifact: Not Run"
       ],
-      "expectedRoutingTarget": "runtime-bridge-conflict-resolver",
+      "expectedRoutingTarget": "bridge-conflicts",
       "truthStateExpectations": {
         "runtimeStatus": "Not Run",
         "artifactStatus": "Not Produced"
@@ -119,7 +119,7 @@
       "evaluationType": "contract_handoff",
       "severity": "P1",
       "evidenceRequirements": [
-        "Contract fallback handoff predicate match to runtime-bridge-conflict-resolver"
+        "Contract fallback handoff predicate match to bridge-conflicts"
       ],
       "deterministicFixture": {
         "handoffContext": {
@@ -127,11 +127,11 @@
         },
         "simulatedOutput": {
           "mode": "Text-only path-one-host-outline (fallback handoff)",
-          "recommendedNextAction": "Follow fallback handoff to runtime-bridge-conflict-resolver (Bridge conflicts).",
-          "targetHandoff": "runtime-bridge-conflict-resolver",
+          "recommendedNextAction": "Follow fallback handoff to bridge-conflicts (Bridge conflicts).",
+          "targetHandoff": "bridge-conflicts",
           "runtimeStatus": "Not Run",
           "artifactStatus": "Not Produced",
-          "summary": "Triggered fallback handoff from path-one-host-outline to runtime-bridge-conflict-resolver under context {\"runtime.conflictDetected\":true}.",
+          "summary": "Triggered fallback handoff from path-one-host-outline to bridge-conflicts under context {\"runtime.conflictDetected\":true}.",
           "warnings": [
             "Contract-governed fallback handoff."
           ],

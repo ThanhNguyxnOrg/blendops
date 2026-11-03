@@ -21,7 +21,7 @@ Instances reduce **triangle budget** but not **draw call budget**. 100 instances
 - Triangles: tree triangle count (once)
 - Draw calls: ~100 (one per node, depending on stack)
 
-This is why `glb-mobile-performance-budget` includes a draw call budget separate from triangles.
+This is why `mobile-glb-budget` includes a draw call budget separate from triangles.
 
 ## What counts as an "instance" in Blender
 

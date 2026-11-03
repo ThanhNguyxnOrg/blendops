@@ -18,9 +18,9 @@
       "reason": "Delegates out-of-scope requests to cycles-vs-eevee-decision"
     },
     {
-      "condition": "3D/GLB exports (out of scope — use glb-web-handoff, glb-mobile-performance-budget, or glb-animation-handoff)",
+      "condition": "3D/GLB exports (out of scope — use glb-web-handoff, mobile-glb-budget, or glb-animation-handoff)",
       "delegateTo": "glb-animation-handoff",
-      "reason": "out of scope — use glb-web-handoff, glb-mobile-performance-budget, or glb-animation-handoff"
+      "reason": "out of scope — use glb-web-handoff, mobile-glb-budget, or glb-animation-handoff"
     },
     {
       "condition": "verifying saved files on disk after rendering",
@@ -45,7 +45,7 @@
       {
         "name": "file_size_ceiling",
         "type": "string",
-        "description": "Optional delivery file size cap from glb-mobile-performance-budget or web spec"
+        "description": "Optional delivery file size cap from mobile-glb-budget or web spec"
       }
     ]
   },
@@ -138,9 +138,9 @@
       }
     },
     {
-      "target": "glb-mobile-performance-budget",
+      "target": "mobile-glb-budget",
       "type": "boundary_delegation",
-      "label": "3D / GLB exports (out of scope here) (glb-mobile-performance-budget)",
+      "label": "3D / GLB exports (out of scope here) (mobile-glb-budget)",
       "when": {
         "all": [
           {

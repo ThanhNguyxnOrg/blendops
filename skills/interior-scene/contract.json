@@ -1,0 +1,277 @@
+{
+  "$schema": "../../schemas/skill-contract.schema.json",
+  "id": "interior-scene",
+  "version": "1.0.0",
+  "category": "scene-planners",
+  "role": "interior-archviz-scene-architect",
+  "purpose": "Plan an interior architectural visualization scene (room layout, furniture, materials, natural + artificial lighting) before any modeling or render attempt.",
+  "capabilityTier": "L0",
+  "triggers": [
+    "interior of",
+    "living room scene",
+    "office showcase",
+    "hotel lobby",
+    "kitchen showroom"
+  ],
+  "exclusions": [
+    {
+      "condition": "outdoor establishing",
+      "delegateTo": "environment-shot",
+      "reason": "use environment-shot"
+    },
+    {
+      "condition": "single hero product",
+      "delegateTo": "product-hero-scene-planner",
+      "reason": "use product-hero-scene-planner"
+    },
+    {
+      "condition": "character portrait",
+      "delegateTo": "character-portrait",
+      "reason": "use character-portrait"
+    }
+  ],
+  "inputs": {
+    "required": [
+      {
+        "name": "locked_3d_brief",
+        "type": "object",
+        "description": "Locked 3D brief specifying room type, architectural style, focal zone, and daylight/artificial mood"
+      },
+      {
+        "name": "room_dimensions_and_openings",
+        "type": "object",
+        "description": "Architectural envelope, window/door openings, and primary furniture anchor zones"
+      }
+    ],
+    "optional": [
+      {
+        "name": "sourced_furniture_and_finish_assets",
+        "type": "array",
+        "description": "Available furniture and architectural material assets from asset-discovery"
+      }
+    ]
+  },
+  "outputs": {
+    "primary": [
+      "interior_zone_and_circulation_plan",
+      "window_portal_and_fixture_lighting_plan",
+      "two_point_vertical_camera_constraints"
+    ],
+    "truthStatePolicy": {
+      "runtimeDefault": "Not Run",
+      "artifactDefault": "Not Produced",
+      "mutationRule": "downgrade_only"
+    }
+  },
+  "handoffs": [
+    {
+      "target": "intent-to-3d-brief-writer",
+      "type": "upstream_reference",
+      "label": "Upstream brief",
+      "when": {
+        "all": [
+          {
+            "field": "goal.clarity",
+            "operator": "equals",
+            "value": "clear"
+          },
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": false
+          }
+        ]
+      }
+    },
+    {
+      "target": "environment-shot",
+      "type": "upstream_reference",
+      "label": "Outdoor / wide establishing shot redirect",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "recipe.domain",
+            "operator": "equals",
+            "value": "environment_shot"
+          }
+        ]
+      }
+    },
+    {
+      "target": "product-hero-scene-planner",
+      "type": "upstream_reference",
+      "label": "Single hero product redirect",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "recipe.domain",
+            "operator": "equals",
+            "value": "product_hero"
+          }
+        ]
+      }
+    },
+    {
+      "target": "character-portrait",
+      "type": "upstream_reference",
+      "label": "Single character portrait redirect",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "recipe.domain",
+            "operator": "equals",
+            "value": "character_portrait"
+          }
+        ]
+      }
+    },
+    {
+      "target": "asset-discovery",
+      "type": "upstream_reference",
+      "label": "Asset discovery",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "assets.discoveryComplete",
+            "operator": "equals",
+            "value": false
+          }
+        ]
+      }
+    },
+    {
+      "target": "mobile-glb-budget",
+      "type": "upstream_reference",
+      "label": "Performance / polycount budget",
+      "when": {
+        "all": [
+          {
+            "field": "artifact.type",
+            "operator": "equals",
+            "value": "glb"
+          },
+          {
+            "field": "budget.pinned",
+            "operator": "equals",
+            "value": false
+          }
+        ]
+      }
+    },
+    {
+      "target": "asset-style-check",
+      "type": "upstream_reference",
+      "label": "Style consistency check",
+      "when": {
+        "all": [
+          {
+            "field": "assets.licenseCleared",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "style_check"
+          }
+        ]
+      }
+    },
+    {
+      "target": "composition-quality-checker",
+      "type": "progression",
+      "label": "Composition validation",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "composition"
+          },
+          {
+            "field": "quality.verdict",
+            "operator": "equals",
+            "value": "not_run"
+          }
+        ]
+      }
+    },
+    {
+      "target": "lighting-quality-checker",
+      "type": "progression",
+      "label": "Lighting validation",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "lighting"
+          },
+          {
+            "field": "quality.verdict",
+            "operator": "equals",
+            "value": "not_run"
+          }
+        ]
+      }
+    },
+    {
+      "target": "material-quality-checker",
+      "type": "progression",
+      "label": "Material validation",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "material"
+          },
+          {
+            "field": "quality.verdict",
+            "operator": "equals",
+            "value": "not_run"
+          }
+        ]
+      }
+    },
+    {
+      "target": "scene-readiness",
+      "type": "progression",
+      "label": "Scene quality validation",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "holistic"
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "quality_validation"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -11,13 +11,13 @@ Metadata: Contract `v1.0.0` | Category `process-discipline` | Role `pre-brief-id
 - the user request is short, ambiguous, or missing critical context (subject, mood, deliverable, evidence expectations)
 - multiple plausible interpretations exist (e.g. "make me a cool product render" — what product, what mood, web or print, GLB or render?)
 - the user is non-Blender-technical and may not realize what BlendOps must know to plan well
-- before any planner skill (`product-hero-scene-planner`, `blender-composition-camera-planner`, …)
+- before any planner skill (`product-hero-scene-planner`, `camera-composition`, …)
 - Trigger phrases: "I want a 3D render of..." (vague)", "Make me something cool with...", "Help me plan a Blender scene" (no constraints given)", "I'm not sure what I want exactly...", "Brainstorm with me about..."
 
 ## When not to use (delegation boundaries)
 - the user already provided a structured brief (route directly to intent-to-3d-brief-writer to lock the brief before any planner runs) → use `intent-to-3d-brief-writer` (`references/skill-intent-to-3d-brief-writer.md`; route directly to intent-to-3d-brief-writer to lock the brief before any planner runs)
 - the user explicitly asked to skip clarification (record explicit assumptions and route to intent-to-3d-brief-writer) → use `intent-to-3d-brief-writer` (`references/skill-intent-to-3d-brief-writer.md`; record explicit assumptions and route to intent-to-3d-brief-writer)
-- the user pushes for immediate execution rather than exploration → use `official-runtime-readiness-checker` (`references/skill-official-runtime-readiness-checker.md`; route to official-runtime-readiness-checker)
+- the user pushes for immediate execution rather than exploration → use `runtime-readiness` (`references/skill-runtime-readiness.md`; route to runtime-readiness)
 
 ## Input & output contract
 - Required input `initial_user_idea` (`string`): Vague, exploratory, or open-ended 3D concept from the user
@@ -32,8 +32,8 @@ Metadata: Contract `v1.0.0` | Category `process-discipline` | Role `pre-brief-id
 
 ## Cross-skill handoffs
 - [progression] Lock the confirmed brief downstream → `intent-to-3d-brief-writer` (`references/skill-intent-to-3d-brief-writer.md`) — `when.all: [goal.clarity equals "clear"; brief.locked equals false]`
-- [progression] User pushes for execution mid-brainstorm → `official-runtime-readiness-checker` (`references/skill-official-runtime-readiness-checker.md`) — `when.all: [runtime.path not_equals "unselected"; runtime.verifiedReady equals false]`
-- [progression] Explain blocked runtime status to user → `non-blender-user-response-writer` (`references/skill-non-blender-user-response-writer.md`) — `when.all: [stage.current equals "final_communication"]`
+- [progression] User pushes for execution mid-brainstorm → `runtime-readiness` (`references/skill-runtime-readiness.md`) — `when.all: [runtime.path not_equals "unselected"; runtime.verifiedReady equals false]`
+- [progression] Explain blocked runtime status to user → `plain-language-response` (`references/skill-plain-language-response.md`) — `when.all: [stage.current equals "final_communication"]`
 
 ## Safety boundaries & non-goals
 - Runtime boundary: This skill does not install Blender, run Blender, or configure any MCP path. It is text-only conversation.

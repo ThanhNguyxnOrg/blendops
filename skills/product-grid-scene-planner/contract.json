@@ -20,18 +20,18 @@
     },
     {
       "condition": "character portrait",
-      "delegateTo": "character-portrait-scene-planner",
-      "reason": "use character-portrait-scene-planner"
+      "delegateTo": "character-portrait",
+      "reason": "use character-portrait"
     },
     {
       "condition": "outdoor environment scene",
-      "delegateTo": "environment-establishing-shot-planner",
-      "reason": "use environment-establishing-shot-planner"
+      "delegateTo": "environment-shot",
+      "reason": "use environment-shot"
     },
     {
       "condition": "interior room scene",
-      "delegateTo": "interior-architectural-scene-planner",
-      "reason": "use interior-architectural-scene-planner"
+      "delegateTo": "interior-scene",
+      "reason": "use interior-scene"
     }
   ],
   "inputs": {
@@ -107,7 +107,7 @@
       }
     },
     {
-      "target": "blender-asset-discovery-planner",
+      "target": "asset-discovery",
       "type": "upstream_reference",
       "label": "Asset discovery",
       "when": {
@@ -197,7 +197,7 @@
       }
     },
     {
-      "target": "blender-scene-quality-checker",
+      "target": "scene-readiness",
       "type": "progression",
       "label": "Overall scene quality validation",
       "when": {
@@ -235,9 +235,9 @@
       }
     },
     {
-      "target": "blender-stop-condition-decider",
+      "target": "done-criteria",
       "type": "upstream_reference",
-      "label": "Catalog sign-off & stop conditions (blender-stop-condition-decider)",
+      "label": "Catalog sign-off & stop conditions (done-criteria)",
       "when": {
         "all": [
           {

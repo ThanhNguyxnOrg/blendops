@@ -15,17 +15,17 @@ Metadata: Contract `v1.0.0` | Category `quality-validators` | Role `pbr-and-shad
 - Trigger phrases: "are the materials okay", "check PBR sanity", "texture budget for materials", "will the materials work in Three.js"
 
 ## When not to use (delegation boundaries)
-- upstream lookdev and material planning → use `blender-lighting-material-planner` (`references/skill-blender-lighting-material-planner.md`; use blender-lighting-material-planner)
+- upstream lookdev and material planning → use `lighting-material-plan` (`references/skill-lighting-material-plan.md`; use lighting-material-plan)
 - lighting validation → use `lighting-quality-checker` (`references/skill-lighting-quality-checker.md`; use lighting-quality-checker)
 - composition / camera validation → use `composition-quality-checker` (`references/skill-composition-quality-checker.md`; use composition-quality-checker)
-- broad pass/warn/fail scene readiness → use `blender-scene-quality-checker` (`references/skill-blender-scene-quality-checker.md`; use blender-scene-quality-checker)
+- broad pass/warn/fail scene readiness → use `scene-readiness` (`references/skill-scene-readiness.md`; use scene-readiness)
 - web integration and viewer handoff → use `glb-web-handoff` (`references/skill-glb-web-handoff.md`; use glb-web-handoff)
-- to fix or edit materials (this skill validates and emits remediation hints only; it never edits) → use `blender-lighting-material-planner` (`references/skill-blender-lighting-material-planner.md`; this skill validates and emits remediation hints only; it never edits)
+- to fix or edit materials (this skill validates and emits remediation hints only; it never edits) → use `lighting-material-plan` (`references/skill-lighting-material-plan.md`; this skill validates and emits remediation hints only; it never edits)
 
 ## Input & output contract
 - Required input `material_and_shader_inventory` (`array`): Principled BSDF parameter ranges, texture maps, UV channels, and normal map conventions
 - Required input `target_consumption_surface` (`string`): Whether materials target offline Cycles/Eevee rendering or glTF 2.0 PBR web export
-- Optional input `texture_memory_budget` (`object`): Maximum texture resolution and VRAM budget from glb-mobile-performance-budget
+- Optional input `texture_memory_budget` (`object`): Maximum texture resolution and VRAM budget from mobile-glb-budget
 - Output contract: `pbr_material_verdict_table`, `gltf_shader_portability_risks`, `material_remediation_steps` (Runtime status: `Not Run`, Artifact status: `Not Produced`, `downgrade_only`).
 
 ## Quick-start steps
@@ -36,9 +36,9 @@ Metadata: Contract `v1.0.0` | Category `quality-validators` | Role `pbr-and-shad
 5. emit per-material verdicts + a top-line status
 
 ## Cross-skill handoffs
-- [retry] Upstream lookdev & material planning → `blender-lighting-material-planner` (`references/skill-blender-lighting-material-planner.md`) — `when.all: [quality.domain equals "material"; quality.verdict equals "Fail"]`; retryPolicy: `maxAttempts=2`, `exitCondition.all: [quality.verdict in ["Pass","Warn"]]`
-- [upstream_reference] Mobile/web texture budget definition → `glb-mobile-performance-budget` (`references/skill-glb-mobile-performance-budget.md`) — `when.all: [artifact.type equals "glb"; budget.pinned equals false]`
-- [progression] Broad readiness review → `blender-scene-quality-checker` (`references/skill-blender-scene-quality-checker.md`) — `when.all: [quality.domain equals "holistic"; stage.current equals "quality_validation"]`
+- [retry] Upstream lookdev & material planning → `lighting-material-plan` (`references/skill-lighting-material-plan.md`) — `when.all: [quality.domain equals "material"; quality.verdict equals "Fail"]`; retryPolicy: `maxAttempts=2`, `exitCondition.all: [quality.verdict in ["Pass","Warn"]]`
+- [upstream_reference] Mobile/web texture budget definition → `mobile-glb-budget` (`references/skill-mobile-glb-budget.md`) — `when.all: [artifact.type equals "glb"; budget.pinned equals false]`
+- [progression] Broad readiness review → `scene-readiness` (`references/skill-scene-readiness.md`) — `when.all: [quality.domain equals "holistic"; stage.current equals "quality_validation"]`
 - [progression] Lighting validation → `lighting-quality-checker` (`references/skill-lighting-quality-checker.md`) — `when.all: [quality.domain equals "lighting"; quality.verdict equals "not_run"]`
 - [progression] Composition validation → `composition-quality-checker` (`references/skill-composition-quality-checker.md`) — `when.all: [quality.domain equals "composition"; quality.verdict equals "not_run"]`
 - [progression] Polycount budget → `polycount-budget-checker` (`references/skill-polycount-budget-checker.md`) — `when.all: [quality.domain equals "polycount"; budget.verdict equals "Not Run"]`
@@ -49,5 +49,5 @@ Metadata: Contract `v1.0.0` | Category `quality-validators` | Role `pbr-and-shad
 - Runtime boundary: This skill validates plans or measured scene snapshots. It never modifies materials, runs Blender, or exports a GLB. If actual material values are needed, rely on a measured scene description (plan output, runtime tool snapshot) — never invent values.
 - Edit materials.
 - Generate shader code.
-- Replace `blender-scene-quality-checker` (this skill is one of its inputs).
+- Replace `scene-readiness` (this skill is one of its inputs).
 - Run Blender.

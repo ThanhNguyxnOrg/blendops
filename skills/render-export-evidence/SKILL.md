@@ -13,14 +13,14 @@ Classify preview, render, `.blend`, and GLB/export evidence into a conservative,
 - **Artifact truth states:** `Not Run | Not Produced | Produced | Verified | Failed` (default `Not Produced`; never use `Attempted` for an artifact)
 - **Direction:** Downgrade-only, never upgrade.
 
-Role boundary: `render-export-evidence` classifies artifact evidence into a ledger; `pre-handoff-verification` gates handoffs (confirm-or-downgrade); `preview-report-template-writer` renders the report Markdown; `glb-web-handoff` owns web handoff. This skill does not run Blender or create artifacts.
+Role boundary: `render-export-evidence` classifies artifact evidence into a ledger; `pre-handoff-verification` gates handoffs (confirm-or-downgrade); `preview-report` renders the report Markdown; `glb-web-handoff` owns web handoff. This skill does not run Blender or create artifacts.
 
 ## Quick start
 
 1. Identify the runtime state (`Not Run | Attempted | Produced | Verified | Failed`) and list one ledger row per claimed artifact type.
 2. Collect command/tool (plus exact command and exit code for CLI), input/script/scene, output path, current-run provenance, file existence, validation notes, and limitations.
 3. Assign the most conservative valid artifact status (`Not Run | Not Produced | Produced | Verified | Failed`, defaulting to `Not Produced`, downgrade-only) and label any Path 2 evidence as `non-release`.
-4. Pass the classified ledger to `pre-handoff-verification` to gate handoffs, `preview-report-template-writer` to render report Markdown, `glb-web-handoff` for web integration, or `non-blender-user-response-writer` for plain-language user responses.
+4. Pass the classified ledger to `pre-handoff-verification` to gate handoffs, `preview-report` to render report Markdown, `glb-web-handoff` for web integration, or `plain-language-response` for plain-language user responses.
 
 ## When to use
 
@@ -28,15 +28,15 @@ Use this skill when:
 
 - a user asks whether a preview, render, `.blend`, or GLB/export was actually produced or verified
 - an agent needs to classify raw runtime outputs into a structured, one-row-per-artifact-type evidence ledger
-- a runtime attempt (`runtime-attempt-report-writer`) recorded commands, tools, or output files that need artifact status labels
-- `pre-handoff-verification` or `preview-report-template-writer` requires classified artifact truth labels as input
+- a runtime attempt (`runtime-attempt-report`) recorded commands, tools, or output files that need artifact status labels
+- `pre-handoff-verification` or `preview-report` requires classified artifact truth labels as input
 
 ## When not to use
 <!-- blendops:generated:start exclusions -->
-- the user only needs a scene plan with no runtime or artifact evidence → use `../official-runtime-readiness-checker/SKILL.md` (Delegates out-of-scope requests to official-runtime-readiness-checker)
-- runtime readiness or path selection has not been completed and the user wants setup or routing; use official-runtime-readiness-checker or runtime-path-picker → use `../official-runtime-readiness-checker/SKILL.md` (Delegates out-of-scope requests to official-runtime-readiness-checker)
+- the user only needs a scene plan with no runtime or artifact evidence → use `../runtime-readiness/SKILL.md` (Delegates out-of-scope requests to runtime-readiness)
+- runtime readiness or path selection has not been completed and the user wants setup or routing; use runtime-readiness or runtime-path-picker → use `../runtime-readiness/SKILL.md` (Delegates out-of-scope requests to runtime-readiness)
 - the task is gating a handoff via confirm-or-downgrade rules; use pre-handoff-verification → use `../pre-handoff-verification/SKILL.md` (Delegates out-of-scope requests to pre-handoff-verification)
-- the task is rendering the formatted preview/eval report Markdown; use preview-report-template-writer → use `../preview-report-template-writer/SKILL.md` (Delegates out-of-scope requests to preview-report-template-writer)
+- the task is rendering the formatted preview/eval report Markdown; use preview-report → use `../preview-report/SKILL.md` (Delegates out-of-scope requests to preview-report)
 - the task is GLB web integration after evidence is already classified and gated; use glb-web-handoff → use `../glb-web-handoff/SKILL.md` (Delegates out-of-scope requests to glb-web-handoff)
 <!-- blendops:generated:end exclusions -->
 
@@ -79,7 +79,7 @@ Use this skill when:
 | File size/hash or modification timestamp | Strengthens current-run provenance for generated files. |
 | Screenshot/render thumbnail path | Supports visible-output claims as a `preview` artifact row. |
 | Detailed stdout/stderr logs | Supplements failed-attempt or warning analysis alongside required CLI exit codes. |
-| User-facing target | Informs downstream handoff to `pre-handoff-verification`, `preview-report-template-writer`, or `non-blender-user-response-writer`. |
+| User-facing target | Informs downstream handoff to `pre-handoff-verification`, `preview-report`, or `plain-language-response`. |
 
 ### Assumptions to confirm
 
@@ -100,7 +100,7 @@ A one-row-per-artifact-type evidence ledger separating runtime truth from artifa
 - runtime status and stack identity
 - per-artifact conservative status (`Not Run | Not Produced | Produced | Verified | Failed`)
 - missing evidence and provenance gaps
-- next safe skill handoff (`pre-handoff-verification`, `preview-report-template-writer`, `glb-web-handoff`, or `non-blender-user-response-writer`)
+- next safe skill handoff (`pre-handoff-verification`, `preview-report`, `glb-web-handoff`, or `plain-language-response`)
 
 ### Evidence / caveat output
 
@@ -118,7 +118,7 @@ Artifact ledger (one row per artifact type):
 |---|---|---|---|---|---|
 | <preview | render | blend | GLB/export> | <status> | <exact command + exit code, or MCP tool> | <path + provenance> | <notes or missing> | <caveats> |
 
-Next safe action: <pre-handoff-verification | preview-report-template-writer | glb-web-handoff | non-blender-user-response-writer>
+Next safe action: <pre-handoff-verification | preview-report | glb-web-handoff | plain-language-response>
 ```
 
 ## Required laws
@@ -150,7 +150,7 @@ This skill must not run Blender, render, export GLB, mutate scenes, install runt
    - validation notes
    - limitations, failures, and `non-release` label if Path 2
 4. Assign conservative artifact status (`Not Run | Not Produced | Produced | Verified | Failed`, default `Not Produced`) using the decision tree (downgrade-only, never upgrade).
-5. Hand the ledger to `pre-handoff-verification` before any user-facing handoff or to `preview-report-template-writer` for Markdown report rendering.
+5. Hand the ledger to `pre-handoff-verification` before any user-facing handoff or to `preview-report` for Markdown report rendering.
 
 ## Decision tree
 
@@ -173,7 +173,7 @@ Output file exists with current-run provenance AND validation notes pass?
 
 - Runtime status: `Not Run`.
 - Artifact status: `Not Produced` (default).
-- Next action: `official-runtime-readiness-checker` or `runtime-path-picker`.
+- Next action: `runtime-readiness` or `runtime-path-picker`.
 
 ### Playbook B: CLI fallback (appendix) output
 
@@ -269,7 +269,7 @@ Use when runtime was unavailable; record blockers and keep artifacts `Not Produc
 - Keep runtime states (`Not Run | Attempted | Produced | Verified | Failed`) distinct from artifact states (`Not Run | Not Produced | Produced | Verified | Failed`, default `Not Produced`).
 - Apply downgrade-only status changes; never upgrade an upstream status claim.
 - Require exact command + exit code for CLI fallback and label all Path 2 rows `non-release`.
-- Route classified ledgers to `pre-handoff-verification` to gate handoffs and `preview-report-template-writer` to format Markdown reports before calling `glb-web-handoff` or `non-blender-user-response-writer`.
+- Route classified ledgers to `pre-handoff-verification` to gate handoffs and `preview-report` to format Markdown reports before calling `glb-web-handoff` or `plain-language-response`.
 
 ## Good examples
 
@@ -297,7 +297,7 @@ Artifact evidence ledger
 | blend | <Not Run | Not Produced | Produced | Verified | Failed> | <cmd/exit or tool> | <path + provenance> | <notes> | <caveats> |
 | GLB/export | <Not Run | Not Produced | Produced | Verified | Failed> | <cmd/exit or tool> | <path + provenance> | <notes> | <caveats> |
 
-- Next safe action: <pre-handoff-verification | preview-report-template-writer | glb-web-handoff | non-blender-user-response-writer>
+- Next safe action: <pre-handoff-verification | preview-report | glb-web-handoff | plain-language-response>
 ```
 
 ## Anti-patterns
@@ -309,17 +309,17 @@ Artifact evidence ledger
 - Accepting CLI fallback evidence without both the exact command and exit code.
 - Treating Path 2 (`mcp-for-blender`) output as official release evidence or omitting the `non-release` label.
 - Merging `preview`, `render`, `blend`, and `GLB/export` into a single status instead of one row per artifact type.
-- Blurring boundaries with `pre-handoff-verification` (gating handoffs), `preview-report-template-writer` (rendering report Markdown), or `glb-web-handoff` (web handoff).
+- Blurring boundaries with `pre-handoff-verification` (gating handoffs), `preview-report` (rendering report Markdown), or `glb-web-handoff` (web handoff).
 
 ## Cross-skill handoff
 <!-- blendops:generated:start handoffs -->
-- [upstream_reference] Runtime readiness → `../official-runtime-readiness-checker/SKILL.md`
-- [upstream_reference] Runtime attempt recording → `../runtime-attempt-report-writer/SKILL.md`
-- [upstream_reference] Scene validation → `../blender-scene-quality-checker/SKILL.md`
+- [upstream_reference] Runtime readiness → `../runtime-readiness/SKILL.md`
+- [upstream_reference] Runtime attempt recording → `../runtime-attempt-report/SKILL.md`
+- [upstream_reference] Scene validation → `../scene-readiness/SKILL.md`
 - [progression] Handoff gating (confirm-or-downgrade) → `../pre-handoff-verification/SKILL.md`
-- [progression] Report Markdown rendering → `../preview-report-template-writer/SKILL.md`
+- [progression] Report Markdown rendering → `../preview-report/SKILL.md`
 - [progression] GLB/web handoff → `../glb-web-handoff/SKILL.md`
-- [progression] User-facing explanation → `../non-blender-user-response-writer/SKILL.md`
+- [progression] User-facing explanation → `../plain-language-response/SKILL.md`
 <!-- blendops:generated:end handoffs -->
 
 ## Non-goals
@@ -327,7 +327,7 @@ Artifact evidence ledger
 - Run Blender, render images, export GLB, or modify scene data.
 - Install or configure runtime bridges.
 - Gate handoffs or perform confirm-or-downgrade release decisions (`pre-handoff-verification`).
-- Render the formatted preview or evaluation report Markdown (`preview-report-template-writer`).
+- Render the formatted preview or evaluation report Markdown (`preview-report`).
 - Own GLB web integration handoffs (`glb-web-handoff`).
 
 ## References

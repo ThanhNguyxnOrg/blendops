@@ -20,7 +20,7 @@
     {
       "id": "glb-web-handoff-normal-in-scope-handoff",
       "skillId": "glb-web-handoff",
-      "scenario": "Normal in-scope execution of glb-web-handoff (web-glb-delivery-packager) with contract handoff to non-blender-user-response-writer",
+      "scenario": "Normal in-scope execution of glb-web-handoff (web-glb-delivery-packager) with contract handoff to plain-language-response",
       "category": "normal",
       "inputPrompt": "Use glb-web-handoff to package the delivery specification for a 4.2 MB Draco-compressed sneaker `.glb` targeting `<model-viewer>` and React Three Fiber with neutral studio environment lighting.",
       "preconditions": {
@@ -32,13 +32,13 @@
       "expectedBehavior": [
         "Produces web_glb_delivery_handoff_packet, scale_orientation_and_compression_manifest, viewer_integration_caveats for role web-glb-delivery-packager",
         "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
-        "Evaluates contract handoff predicate and hands off to non-blender-user-response-writer (Final user-facing response wording)"
+        "Evaluates contract handoff predicate and hands off to plain-language-response (Final user-facing response wording)"
       ],
       "requiredOutputProperties": [
         "Draco / Meshopt compression",
         "Y-up meter scale",
         "viewer integration checklist",
-        "non-blender-user-response-writer",
+        "plain-language-response",
         "Runtime: Not Run",
         "Artifact: Not Produced"
       ],
@@ -48,7 +48,7 @@
         "Artifact: Not Run",
         "Artifact: Not Run"
       ],
-      "expectedRoutingTarget": "non-blender-user-response-writer",
+      "expectedRoutingTarget": "plain-language-response",
       "truthStateExpectations": {
         "runtimeStatus": "Not Run",
         "artifactStatus": "Not Produced"
@@ -57,7 +57,7 @@
       "severity": "P0",
       "evidenceRequirements": [
         "Outputs web_glb_delivery_handoff_packet, scale_orientation_and_compression_manifest, viewer_integration_caveats conforming to skills/glb-web-handoff/SKILL.md",
-        "Matches contract handoff predicate to non-blender-user-response-writer in skills/glb-web-handoff/contract.json"
+        "Matches contract handoff predicate to plain-language-response in skills/glb-web-handoff/contract.json"
       ],
       "deterministicFixture": {
         "handoffContext": {
@@ -65,11 +65,11 @@
         },
         "simulatedOutput": {
           "mode": "Text-only web-glb-delivery-packager (glb-web-handoff)",
-          "recommendedNextAction": "Complete web_glb_delivery_handoff_packet and hand off to non-blender-user-response-writer (Final user-facing response wording).",
-          "targetHandoff": "non-blender-user-response-writer",
+          "recommendedNextAction": "Complete web_glb_delivery_handoff_packet and hand off to plain-language-response (Final user-facing response wording).",
+          "targetHandoff": "plain-language-response",
           "runtimeStatus": "Not Run",
           "artifactStatus": "Not Produced",
-          "summary": "Authored web GLB handoff specification covering Draco/Meshopt compression requirements, Y-up meter scale normalization, camera orbit bounds, and consumer integration checklist. Delivered Draco / Meshopt compression, Y-up meter scale, viewer integration checklist and routed to non-blender-user-response-writer.",
+          "summary": "Authored web GLB handoff specification covering Draco/Meshopt compression requirements, Y-up meter scale normalization, camera orbit bounds, and consumer integration checklist. Delivered Draco / Meshopt compression, Y-up meter scale, viewer integration checklist and routed to plain-language-response.",
           "warnings": [
             "Text-only workflow output; no live Blender session or artifact was executed."
           ],
@@ -86,7 +86,7 @@
     {
       "id": "glb-web-handoff-secondary-contract-handoff",
       "skillId": "glb-web-handoff",
-      "scenario": "Secondary upstream_reference contract handoff from glb-web-handoff to blender-scene-quality-checker",
+      "scenario": "Secondary upstream_reference contract handoff from glb-web-handoff to scene-readiness",
       "category": "structured_skip",
       "inputPrompt": "While applying glb-web-handoff, the workflow context is {\"quality.domain\":\"holistic\",\"stage.current\":\"quality_validation\"} (Upstream scene readiness validation). Determine the contract-governed handoff target.",
       "preconditions": {
@@ -96,10 +96,10 @@
       },
       "expectedBehavior": [
         "Evaluates the upstream_reference handoff predicate in skills/glb-web-handoff/contract.json",
-        "Routes to blender-scene-quality-checker (Upstream scene readiness validation) without claiming runtime execution"
+        "Routes to scene-readiness (Upstream scene readiness validation) without claiming runtime execution"
       ],
       "requiredOutputProperties": [
-        "blender-scene-quality-checker",
+        "scene-readiness",
         "upstream_reference",
         "Runtime: Not Run",
         "Artifact: Not Produced"
@@ -110,7 +110,7 @@
         "Artifact: Not Run",
         "Artifact: Not Run"
       ],
-      "expectedRoutingTarget": "blender-scene-quality-checker",
+      "expectedRoutingTarget": "scene-readiness",
       "truthStateExpectations": {
         "runtimeStatus": "Not Run",
         "artifactStatus": "Not Produced"
@@ -118,7 +118,7 @@
       "evaluationType": "contract_handoff",
       "severity": "P1",
       "evidenceRequirements": [
-        "Contract upstream_reference handoff predicate match to blender-scene-quality-checker"
+        "Contract upstream_reference handoff predicate match to scene-readiness"
       ],
       "deterministicFixture": {
         "handoffContext": {
@@ -127,11 +127,11 @@
         },
         "simulatedOutput": {
           "mode": "Text-only glb-web-handoff (upstream_reference handoff)",
-          "recommendedNextAction": "Follow upstream_reference handoff to blender-scene-quality-checker (Upstream scene readiness validation).",
-          "targetHandoff": "blender-scene-quality-checker",
+          "recommendedNextAction": "Follow upstream_reference handoff to scene-readiness (Upstream scene readiness validation).",
+          "targetHandoff": "scene-readiness",
           "runtimeStatus": "Not Run",
           "artifactStatus": "Not Produced",
-          "summary": "Triggered upstream_reference handoff from glb-web-handoff to blender-scene-quality-checker under context {\"quality.domain\":\"holistic\",\"stage.current\":\"quality_validation\"}.",
+          "summary": "Triggered upstream_reference handoff from glb-web-handoff to scene-readiness under context {\"quality.domain\":\"holistic\",\"stage.current\":\"quality_validation\"}.",
           "warnings": [
             "Contract-governed upstream_reference handoff."
           ],
@@ -267,7 +267,7 @@
     {
       "id": "glb-web-handoff-out-of-scope-exclusion-delegation",
       "skillId": "glb-web-handoff",
-      "scenario": "Out-of-scope request (to claim GLB or export success without concrete evidence) is excluded from glb-web-handoff and delegated to blender-scene-quality-checker",
+      "scenario": "Out-of-scope request (to claim GLB or export success without concrete evidence) is excluded from glb-web-handoff and delegated to scene-readiness",
       "category": "scope_creep",
       "inputPrompt": "Instead of prepare truthful glb/web handoff output with explicit artifact status, assumptions, and caveats., handle this request inside glb-web-handoff: to claim GLB or export success without concrete evidence.",
       "preconditions": {
@@ -277,10 +277,10 @@
       },
       "expectedBehavior": [
         "Enforces the declared exclusion boundary in skills/glb-web-handoff/contract.json when to claim GLB or export success without concrete evidence",
-        "Delegates to blender-scene-quality-checker (Delegates out-of-scope requests to blender-scene-quality-checker) with Runtime: Not Run and Artifact: Not Produced"
+        "Delegates to scene-readiness (Delegates out-of-scope requests to scene-readiness) with Runtime: Not Run and Artifact: Not Produced"
       ],
       "requiredOutputProperties": [
-        "blender-scene-quality-checker",
+        "scene-readiness",
         "out of scope",
         "Runtime: Not Run",
         "Artifact: Not Produced"
@@ -291,7 +291,7 @@
         "Artifact: Not Run",
         "handled inside glb-web-handoff anyway"
       ],
-      "expectedRoutingTarget": "blender-scene-quality-checker",
+      "expectedRoutingTarget": "scene-readiness",
       "truthStateExpectations": {
         "runtimeStatus": "Not Run",
         "artifactStatus": "Not Produced"
@@ -299,23 +299,23 @@
       "evaluationType": "deterministic_fixture",
       "severity": "P1",
       "evidenceRequirements": [
-        "Exclusion delegation to blender-scene-quality-checker per skills/glb-web-handoff/contract.json"
+        "Exclusion delegation to scene-readiness per skills/glb-web-handoff/contract.json"
       ],
       "deterministicFixture": {
         "simulatedOutput": {
           "mode": "Out-of-scope exclusion gate (glb-web-handoff)",
-          "recommendedNextAction": "Request is out of scope for glb-web-handoff (to claim GLB or export success without concrete evidence); delegate to blender-scene-quality-checker.",
-          "targetHandoff": "blender-scene-quality-checker",
+          "recommendedNextAction": "Request is out of scope for glb-web-handoff (to claim GLB or export success without concrete evidence); delegate to scene-readiness.",
+          "targetHandoff": "scene-readiness",
           "runtimeStatus": "Not Run",
           "artifactStatus": "Not Produced",
-          "summary": "Enforced glb-web-handoff exclusion boundary (Delegates out-of-scope requests to blender-scene-quality-checker) and delegated to blender-scene-quality-checker.",
+          "summary": "Enforced glb-web-handoff exclusion boundary (Delegates out-of-scope requests to scene-readiness) and delegated to scene-readiness.",
           "warnings": [
-            "glb-web-handoff is scoped to web-glb-delivery-packager and does not absorb blender-scene-quality-checker responsibilities."
+            "glb-web-handoff is scoped to web-glb-delivery-packager and does not absorb scene-readiness responsibilities."
           ],
           "evidenceCitations": [
             "skills/glb-web-handoff/contract.json",
             "skills/glb-web-handoff/SKILL.md",
-            "skills/blender-scene-quality-checker/SKILL.md"
+            "skills/scene-readiness/SKILL.md"
           ]
         }
       }

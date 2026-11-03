@@ -30,25 +30,25 @@ blendops-help.zip
 # Process / discipline (Superpowers + BMad inspired)
 blender-brainstorming.zip
 intent-to-3d-brief-writer.zip
-blender-asset-discovery-planner.zip
+asset-discovery.zip
 blender-troubleshooting.zip
 pre-handoff-verification.zip
-runtime-bridge-conflict-resolver.zip
+bridge-conflicts.zip
 
 # Runtime
-official-runtime-setup-guide.zip
-official-runtime-readiness-checker.zip
+runtime-setup.zip
+runtime-readiness.zip
 
 # Scene planning (domain)
 product-hero-scene-planner.zip
-blender-composition-camera-planner.zip
-blender-lighting-material-planner.zip
-blender-scene-quality-checker.zip
+camera-composition.zip
+lighting-material-plan.zip
+scene-readiness.zip
 
 # Evidence + handoff
 render-export-evidence.zip
 glb-web-handoff.zip
-non-blender-user-response-writer.zip
+plain-language-response.zip
 ```
 
 Each ZIP must contain:

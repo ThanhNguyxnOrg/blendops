@@ -15,13 +15,13 @@
   "exclusions": [
     {
       "condition": "Sourcing or searching for candidate assets",
-      "delegateTo": "blender-asset-discovery-planner",
-      "reason": "Delegates out-of-scope requests to blender-asset-discovery-planner"
+      "delegateTo": "asset-discovery",
+      "reason": "Delegates out-of-scope requests to asset-discovery"
     },
     {
       "condition": "Checking visual consistency, scale, or aesthetic fit across assets",
-      "delegateTo": "asset-style-consistency-checker",
-      "reason": "Delegates out-of-scope requests to asset-style-consistency-checker"
+      "delegateTo": "asset-style-check",
+      "reason": "Delegates out-of-scope requests to asset-style-check"
     },
     {
       "condition": "Replacing or working around rejected/blocked assets",
@@ -30,18 +30,18 @@
     },
     {
       "condition": "Structuring folders, naming conventions, or catalog storage",
-      "delegateTo": "asset-library-organization-planner",
-      "reason": "Delegates out-of-scope requests to asset-library-organization-planner"
+      "delegateTo": "asset-library-plan",
+      "reason": "Delegates out-of-scope requests to asset-library-plan"
     },
     {
       "condition": "First-party assets authored entirely in-house with no external dependencies.",
-      "delegateTo": "blender-asset-discovery-planner",
-      "reason": "Delegates out-of-scope requests to blender-asset-discovery-planner"
+      "delegateTo": "asset-discovery",
+      "reason": "Delegates out-of-scope requests to asset-discovery"
     },
     {
       "condition": "Legal advice or binding legal interpretation (this skill flags risk only; escalate ambiguity to legal).",
-      "delegateTo": "asset-style-consistency-checker",
-      "reason": "Delegates out-of-scope requests to asset-style-consistency-checker"
+      "delegateTo": "asset-style-check",
+      "reason": "Delegates out-of-scope requests to asset-style-check"
     }
   ],
   "inputs": {
@@ -79,7 +79,7 @@
   },
   "handoffs": [
     {
-      "target": "blender-asset-discovery-planner",
+      "target": "asset-discovery",
       "type": "upstream_reference",
       "label": "Upstream asset sourcing",
       "when": {
@@ -98,7 +98,7 @@
       }
     },
     {
-      "target": "asset-style-consistency-checker",
+      "target": "asset-style-check",
       "type": "progression",
       "label": "Visual style validation",
       "when": {
@@ -131,7 +131,7 @@
       }
     },
     {
-      "target": "asset-library-organization-planner",
+      "target": "asset-library-plan",
       "type": "progression",
       "label": "Asset library organization",
       "when": {

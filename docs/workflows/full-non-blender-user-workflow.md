@@ -34,20 +34,20 @@ Stage 1 — Intent
   intent-to-3d-brief-writer             (8-slot structured brief)
 
 Stage 2 — Asset planning
-  blender-asset-discovery-planner       (per-asset strategy + license + budget)
+  asset-discovery       (per-asset strategy + license + budget)
 
 Stage 3 — Runtime readiness
-  official-runtime-setup-guide          (path + host prerequisites)
-  official-runtime-readiness-checker    (matrix + verdict)
-  runtime-bridge-conflict-resolver      (only if readiness signals are inconsistent)
+  runtime-setup          (path + host prerequisites)
+  runtime-readiness    (matrix + verdict)
+  bridge-conflicts      (only if readiness signals are inconsistent)
 
 Stage 4 — Scene planning
   product-hero-scene-planner            (subject + scene structure)
-  blender-composition-camera-planner    (framing + camera)
-  blender-lighting-material-planner     (mood + lookdev + portability)
+  camera-composition    (framing + camera)
+  lighting-material-plan     (mood + lookdev + portability)
 
 Stage 5 — Quality gate
-  blender-scene-quality-checker         (Pass / Warn / Fail readiness verdict)
+  scene-readiness         (Pass / Warn / Fail readiness verdict)
   blender-troubleshooting               (only if output diverges from intent)
 
 Stage 6 — Evidence + verification
@@ -56,7 +56,7 @@ Stage 6 — Evidence + verification
 
 Stage 7 — Handoff + final response
   glb-web-handoff                       (web/GLB framing if in scope)
-  non-blender-user-response-writer      (plain-language final response)
+  plain-language-response      (plain-language final response)
 
 Routing utility (always available)
   blendops-help                         (load when next safe action is unclear)
@@ -80,7 +80,7 @@ Exit gate: brief locked. Runtime status `Not Run`. Artifact status `Not Produced
 
 Goal: per-asset acquisition strategy with license + confidence + budget reconciliation.
 
-- Load `blender-asset-discovery-planner`. Walk the 5-step decision tree (brand-restricted? specific? tight budget? iteration? mood-specific?).
+- Load `asset-discovery`. Walk the 5-step decision tree (brand-restricted? specific? tight budget? iteration? mood-specific?).
 - Per asset class, record strategy (procedural / library / generative / photogrammetry) + source candidate + license + confidence label + risk.
 - Sum poly / GLB-size budget vs Slot 4 of the brief. Surface conflicts.
 - If generative is chosen: flag with Path 2 caveat; route through Stage 3 readiness check before runtime.
@@ -91,9 +91,9 @@ Exit gate: asset plan reconciled with brief. Runtime status unchanged.
 
 Goal: ONE selected runtime path that's actually ready, OR explicit "stay text-only" decision.
 
-- Load `official-runtime-setup-guide` to choose Path 1 host (a or b), Path 2, or CLI fallback per client + Blender version + brief preferences.
-- Load `official-runtime-readiness-checker` to build the readiness matrix (Blender version, MCP host product, Blender-side add-on, MCP server source, output path readiness, single-bridge constraint).
-- If readiness signals are inconsistent (e.g. tool surface doesn't match labeled path, two MCP clients targeting same Blender, port `9876` collision): load `runtime-bridge-conflict-resolver`. Build the bridge state matrix. Propose the cheapest resolution. Operator executes. Re-run readiness checker.
+- Load `runtime-setup` to choose Path 1 host (a or b), Path 2, or CLI fallback per client + Blender version + brief preferences.
+- Load `runtime-readiness` to build the readiness matrix (Blender version, MCP host product, Blender-side add-on, MCP server source, output path readiness, single-bridge constraint).
+- If readiness signals are inconsistent (e.g. tool surface doesn't match labeled path, two MCP clients targeting same Blender, port `9876` collision): load `bridge-conflicts`. Build the bridge state matrix. Propose the cheapest resolution. Operator executes. Re-run readiness checker.
 
 Exit gate: readiness verdict `Ready` or `Partially Ready` (with documented caveats), OR explicit "stay text-only — runtime out of scope for this run".
 
@@ -102,8 +102,8 @@ Exit gate: readiness verdict `Ready` or `Partially Ready` (with documented cavea
 Goal: structured scene plan ready for runtime mutation.
 
 - Load `product-hero-scene-planner` (subject, scene scope, hero placement, support elements).
-- Load `blender-composition-camera-planner` (framing, focal length, negative space, hero centering).
-- Load `blender-lighting-material-planner` (mood lookdev, light placement, material portability per deliverable target).
+- Load `camera-composition` (framing, focal length, negative space, hero centering).
+- Load `lighting-material-plan` (mood lookdev, light placement, material portability per deliverable target).
 
 Exit gate: plans reviewable in plain language; no jargon leak. Runtime status still `Not Run`.
 
@@ -111,7 +111,7 @@ Exit gate: plans reviewable in plain language; no jargon leak. Runtime status st
 
 Goal: Pass / Warn / Fail readiness verdict before any runtime mutation.
 
-- Load `blender-scene-quality-checker`. Score the plan against the rubric.
+- Load `scene-readiness`. Score the plan against the rubric.
 - If verdict is Pass: proceed to Stage 6.
 - If verdict is Warn: record explicit caveats; user decides whether to proceed.
 - If verdict is Fail: route back to the relevant Stage 4 planner.
@@ -133,7 +133,7 @@ Exit gate: evidence file exists + 7-point gate verdict (Pass / Warn / Fail) reco
 Goal: plain-language response to non-Blender stakeholders.
 
 - If GLB / web is in scope: load `glb-web-handoff`. Add R3F / Three.js snippets, performance caveats, artifact-status language per the bundled references.
-- Always: load `non-blender-user-response-writer`. Produce final user-facing response. Cite truth labels (`Not Run` / `Verified` etc.) explicitly. No Blender jargon without inline explanation.
+- Always: load `plain-language-response`. Produce final user-facing response. Cite truth labels (`Not Run` / `Verified` etc.) explicitly. No Blender jargon without inline explanation.
 
 Exit gate: response confirmed plain-language by check 7 of `pre-handoff-verification` (which already ran in Stage 6).
 

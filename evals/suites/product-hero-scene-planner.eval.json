@@ -20,7 +20,7 @@
     {
       "id": "product-hero-scene-planner-normal-in-scope-handoff",
       "skillId": "product-hero-scene-planner",
-      "scenario": "Normal in-scope execution of product-hero-scene-planner (single-product-hero-scene-architect) with contract handoff to blender-composition-camera-planner",
+      "scenario": "Normal in-scope execution of product-hero-scene-planner (single-product-hero-scene-architect) with contract handoff to camera-composition",
       "category": "normal",
       "inputPrompt": "Use product-hero-scene-planner to create a complete text-only scene plan for a single matte-black wireless headphone hero shot on a dark slate pedestal (16:9 still + web GLB spin).",
       "preconditions": {
@@ -32,13 +32,13 @@
       "expectedBehavior": [
         "Produces hero_product_staging_and_pedestal_plan, camera_and_lookdev_handoff_inputs, scene_quality_validation_hooks for role single-product-hero-scene-architect",
         "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
-        "Evaluates contract handoff predicate and hands off to blender-composition-camera-planner (Next (deep-dive framing & camera))"
+        "Evaluates contract handoff predicate and hands off to camera-composition (Next (deep-dive framing & camera))"
       ],
       "requiredOutputProperties": [
         "hero subject staging",
         "pedestal anchor",
         "assumptions and caveats",
-        "blender-composition-camera-planner",
+        "camera-composition",
         "Runtime: Not Run",
         "Artifact: Not Produced"
       ],
@@ -48,7 +48,7 @@
         "Artifact: Not Run",
         "Artifact: Not Run"
       ],
-      "expectedRoutingTarget": "blender-composition-camera-planner",
+      "expectedRoutingTarget": "camera-composition",
       "truthStateExpectations": {
         "runtimeStatus": "Not Run",
         "artifactStatus": "Not Produced"
@@ -57,7 +57,7 @@
       "severity": "P0",
       "evidenceRequirements": [
         "Outputs hero_product_staging_and_pedestal_plan, camera_and_lookdev_handoff_inputs, scene_quality_validation_hooks conforming to skills/product-hero-scene-planner/SKILL.md",
-        "Matches contract handoff predicate to blender-composition-camera-planner in skills/product-hero-scene-planner/contract.json"
+        "Matches contract handoff predicate to camera-composition in skills/product-hero-scene-planner/contract.json"
       ],
       "deterministicFixture": {
         "handoffContext": {
@@ -66,11 +66,11 @@
         },
         "simulatedOutput": {
           "mode": "Text-only single-product-hero-scene-architect (product-hero-scene-planner)",
-          "recommendedNextAction": "Complete hero_product_staging_and_pedestal_plan and hand off to blender-composition-camera-planner (Next (deep-dive framing & camera)).",
-          "targetHandoff": "blender-composition-camera-planner",
+          "recommendedNextAction": "Complete hero_product_staging_and_pedestal_plan and hand off to camera-composition (Next (deep-dive framing & camera)).",
+          "targetHandoff": "camera-composition",
           "runtimeStatus": "Not Run",
           "artifactStatus": "Not Produced",
-          "summary": "Authored complete single-product hero scene architecture covering subject placement, pedestal staging, camera/lighting handoff anchors, and explicit text-only assumptions. Delivered hero subject staging, pedestal anchor, assumptions and caveats and routed to blender-composition-camera-planner.",
+          "summary": "Authored complete single-product hero scene architecture covering subject placement, pedestal staging, camera/lighting handoff anchors, and explicit text-only assumptions. Delivered hero subject staging, pedestal anchor, assumptions and caveats and routed to camera-composition.",
           "warnings": [
             "Text-only workflow output; no live Blender session or artifact was executed."
           ],

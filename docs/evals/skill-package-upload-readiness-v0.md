@@ -126,15 +126,15 @@ description: Blender skills pack for non-Blender users. Use for scene planning, 
 | Evidence rules | Pass | `references/evidence-rules.md` |
 | Install boundary | Pass | `references/install-boundary.md` |
 | BlendOps helper summary | Pass | `references/skill-blendops-help.md` |
-| Official runtime setup guide summary | Pass | `references/skill-official-runtime-setup-guide.md` |
+| Official runtime setup guide summary | Pass | `references/skill-runtime-setup.md` |
 | Product hero scene planner summary | Pass | `references/skill-product-hero-scene-planner.md` |
-| Official runtime readiness checker summary | Pass | `references/skill-official-runtime-readiness-checker.md` |
+| Official runtime readiness checker summary | Pass | `references/skill-runtime-readiness.md` |
 | Render/export evidence summary | Pass | `references/skill-render-export-evidence.md` |
 | GLB web handoff summary | Pass | `references/skill-glb-web-handoff.md` |
-| Composition/camera planner summary | Pass | `references/skill-blender-composition-camera-planner.md` |
-| Lighting/material planner summary | Pass | `references/skill-blender-lighting-material-planner.md` |
-| Scene quality checker summary | Pass | `references/skill-blender-scene-quality-checker.md` |
-| Non-Blender-user response writer summary | Pass | `references/skill-non-blender-user-response-writer.md` |
+| Composition/camera planner summary | Pass | `references/skill-camera-composition.md` |
+| Lighting/material planner summary | Pass | `references/skill-lighting-material-plan.md` |
+| Scene quality checker summary | Pass | `references/skill-scene-readiness.md` |
+| Non-Blender-user response writer summary | Pass | `references/skill-plain-language-response.md` |
 | Evidence law summary | Pass | `references/law-evidence-before-done.md` |
 | Official runtime law summary | Pass | `references/law-official-runtime-only.md` |
 | No arbitrary Python interface law summary | Pass | `references/law-no-arbitrary-python-interface.md` |

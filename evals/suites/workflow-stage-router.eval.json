@@ -89,10 +89,10 @@
       },
       "expectedBehavior": [
         "Detects stage.requiresRuntime is true while runtime.status is Not Run",
-        "Routes to official-runtime-readiness-checker before any execution step"
+        "Routes to runtime-readiness before any execution step"
       ],
       "requiredOutputProperties": [
-        "official-runtime-readiness-checker",
+        "runtime-readiness",
         "Runtime: Not Run",
         "preconditions"
       ],
@@ -100,7 +100,7 @@
         "Start rendering now",
         "Runtime: Verified"
       ],
-      "expectedRoutingTarget": "official-runtime-readiness-checker",
+      "expectedRoutingTarget": "runtime-readiness",
       "truthStateExpectations": {
         "runtimeStatus": "Not Run",
         "artifactStatus": "Not Produced"
@@ -108,7 +108,7 @@
       "evaluationType": "contract_routing",
       "severity": "P0",
       "evidenceRequirements": [
-        "Conditional handoff to official-runtime-readiness-checker"
+        "Conditional handoff to runtime-readiness"
       ],
       "deterministicFixture": {
         "routingState": {
@@ -123,11 +123,11 @@
         },
         "simulatedOutput": {
           "mode": "Text-only stage routing",
-          "recommendedNextAction": "Route to official-runtime-readiness-checker to verify runtime preconditions before any Blender execution.",
-          "targetHandoff": "official-runtime-readiness-checker",
+          "recommendedNextAction": "Route to runtime-readiness to verify runtime preconditions before any Blender execution.",
+          "targetHandoff": "runtime-readiness",
           "runtimeStatus": "Not Run",
           "artifactStatus": "Not Produced",
-          "summary": "Gated transition from planning to execution on official-runtime-readiness-checker.",
+          "summary": "Gated transition from planning to execution on runtime-readiness.",
           "warnings": [
             "Never jump directly to rendering without verified runtime readiness."
           ],
@@ -141,7 +141,7 @@
     {
       "id": "workflow-stage-mid-workflow-scope-creep",
       "skillId": "workflow-stage-router",
-      "scenario": "Mid-workflow scope expansion delegates to blender-scope-boundary-enforcer",
+      "scenario": "Mid-workflow scope expansion delegates to scope-guard",
       "category": "scope_creep",
       "inputPrompt": "While routing our product-hero-v0 lighting stage, the stakeholder just asked to add a 60-second character animation and fluid simulation.",
       "preconditions": {
@@ -151,10 +151,10 @@
       },
       "expectedBehavior": [
         "Detects mid-workflow scope drift outside the locked brief",
-        "Delegates to blender-scope-boundary-enforcer"
+        "Delegates to scope-guard"
       ],
       "requiredOutputProperties": [
-        "blender-scope-boundary-enforcer",
+        "scope-guard",
         "scope",
         "Runtime: Not Run"
       ],
@@ -162,7 +162,7 @@
         "added fluid simulation to current stage",
         "Artifact: Produced"
       ],
-      "expectedRoutingTarget": "blender-scope-boundary-enforcer",
+      "expectedRoutingTarget": "scope-guard",
       "truthStateExpectations": {
         "runtimeStatus": "Not Run",
         "artifactStatus": "Not Produced"
@@ -170,7 +170,7 @@
       "evaluationType": "contract_routing",
       "severity": "P1",
       "evidenceRequirements": [
-        "Boundary delegation handoff to blender-scope-boundary-enforcer"
+        "Boundary delegation handoff to scope-guard"
       ],
       "deterministicFixture": {
         "routingState": {
@@ -184,17 +184,17 @@
         },
         "simulatedOutput": {
           "mode": "Text-only stage routing",
-          "recommendedNextAction": "Pause stage progression and route to blender-scope-boundary-enforcer to handle mid-workflow scope expansion.",
-          "targetHandoff": "blender-scope-boundary-enforcer",
+          "recommendedNextAction": "Pause stage progression and route to scope-guard to handle mid-workflow scope expansion.",
+          "targetHandoff": "scope-guard",
           "runtimeStatus": "Not Run",
           "artifactStatus": "Not Produced",
-          "summary": "Intercepted mid-workflow scope expansion and delegated to blender-scope-boundary-enforcer.",
+          "summary": "Intercepted mid-workflow scope expansion and delegated to scope-guard.",
           "warnings": [
             "Unapproved deliverables cannot be injected mid-pack without a formal scope decision."
           ],
           "evidenceCitations": [
             "skills/workflow-stage-router/contract.json",
-            "skills/blender-scope-boundary-enforcer/SKILL.md"
+            "skills/scope-guard/SKILL.md"
           ]
         }
       }
@@ -260,7 +260,7 @@
     {
       "id": "workflow-stage-bridge-conflict-fallback",
       "skillId": "workflow-stage-router",
-      "scenario": "Active MCP bridge conflict during stage transition routes to runtime-bridge-conflict-resolver",
+      "scenario": "Active MCP bridge conflict during stage transition routes to bridge-conflicts",
       "category": "blocked_or_adversarial",
       "inputPrompt": "Mid-workflow before runtime handoff, port 9876 shows a conflict between two MCP clients.",
       "preconditions": {
@@ -269,11 +269,11 @@
         "existingArtifactEvidence": "none"
       },
       "expectedBehavior": [
-        "Halts stage progression and routes to runtime-bridge-conflict-resolver",
+        "Halts stage progression and routes to bridge-conflicts",
         "Keeps Runtime status Not Run"
       ],
       "requiredOutputProperties": [
-        "runtime-bridge-conflict-resolver",
+        "bridge-conflicts",
         "port 9876",
         "Runtime: Not Run"
       ],
@@ -281,7 +281,7 @@
         "Runtime: Verified",
         "Artifact: Produced"
       ],
-      "expectedRoutingTarget": "runtime-bridge-conflict-resolver",
+      "expectedRoutingTarget": "bridge-conflicts",
       "truthStateExpectations": {
         "runtimeStatus": "Not Run",
         "artifactStatus": "Not Produced"
@@ -289,7 +289,7 @@
       "evaluationType": "contract_routing",
       "severity": "P1",
       "evidenceRequirements": [
-        "Fallback handoff to runtime-bridge-conflict-resolver"
+        "Fallback handoff to bridge-conflicts"
       ],
       "deterministicFixture": {
         "routingState": {
@@ -303,11 +303,11 @@
         },
         "simulatedOutput": {
           "mode": "Text-only stage routing",
-          "recommendedNextAction": "Route to runtime-bridge-conflict-resolver to clear the port 9876 MCP client collision.",
-          "targetHandoff": "runtime-bridge-conflict-resolver",
+          "recommendedNextAction": "Route to bridge-conflicts to clear the port 9876 MCP client collision.",
+          "targetHandoff": "bridge-conflicts",
           "runtimeStatus": "Not Run",
           "artifactStatus": "Not Produced",
-          "summary": "Routed mid-workflow MCP port conflict to runtime-bridge-conflict-resolver.",
+          "summary": "Routed mid-workflow MCP port conflict to bridge-conflicts.",
           "warnings": [],
           "evidenceCitations": [
             "skills/workflow-stage-router/contract.json"

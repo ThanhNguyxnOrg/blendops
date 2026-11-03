@@ -20,7 +20,7 @@
     {
       "id": "asset-license-checker-normal-in-scope-handoff",
       "skillId": "asset-license-checker",
-      "scenario": "Normal in-scope execution of asset-license-checker (asset-license-and-provenance-gate) with contract handoff to asset-style-consistency-checker",
+      "scenario": "Normal in-scope execution of asset-license-checker (asset-license-and-provenance-gate) with contract handoff to asset-style-check",
       "category": "normal",
       "inputPrompt": "Audit 4 external assets for our commercial product-hero-v0 launch: 2 Poly Haven CC0 HDRIs, 1 CC-BY-4.0 pedestal mesh, and 1 forum mesh with unknown authorship. Use asset-license-checker.",
       "preconditions": {
@@ -32,13 +32,13 @@
       "expectedBehavior": [
         "Produces per_asset_license_verdict_table, attribution_obligations_list, quarantined_or_blocked_assets for role asset-license-and-provenance-gate",
         "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
-        "Evaluates contract handoff predicate and hands off to asset-style-consistency-checker (Visual style validation)"
+        "Evaluates contract handoff predicate and hands off to asset-style-check (Visual style validation)"
       ],
       "requiredOutputProperties": [
         "CC0",
         "attribution requirement",
         "blocked unverified",
-        "asset-style-consistency-checker",
+        "asset-style-check",
         "Runtime: Not Run",
         "Artifact: Not Produced"
       ],
@@ -48,7 +48,7 @@
         "Artifact: Not Run",
         "Artifact: Not Run"
       ],
-      "expectedRoutingTarget": "asset-style-consistency-checker",
+      "expectedRoutingTarget": "asset-style-check",
       "truthStateExpectations": {
         "runtimeStatus": "Not Run",
         "artifactStatus": "Not Produced"
@@ -57,7 +57,7 @@
       "severity": "P0",
       "evidenceRequirements": [
         "Outputs per_asset_license_verdict_table, attribution_obligations_list, quarantined_or_blocked_assets conforming to skills/asset-license-checker/SKILL.md",
-        "Matches contract handoff predicate to asset-style-consistency-checker in skills/asset-license-checker/contract.json"
+        "Matches contract handoff predicate to asset-style-check in skills/asset-license-checker/contract.json"
       ],
       "deterministicFixture": {
         "handoffContext": {
@@ -66,11 +66,11 @@
         },
         "simulatedOutput": {
           "mode": "Text-only asset-license-and-provenance-gate (asset-license-checker)",
-          "recommendedNextAction": "Complete per_asset_license_verdict_table and hand off to asset-style-consistency-checker (Visual style validation).",
-          "targetHandoff": "asset-style-consistency-checker",
+          "recommendedNextAction": "Complete per_asset_license_verdict_table and hand off to asset-style-check (Visual style validation).",
+          "targetHandoff": "asset-style-check",
           "runtimeStatus": "Not Run",
           "artifactStatus": "Not Produced",
-          "summary": "Audited per-asset license provenance: cleared CC0 HDRIs, flagged attribution requirement on CC-BY-4.0 mesh, and blocked the unverified forum mesh. Delivered CC0, attribution requirement, blocked unverified and routed to asset-style-consistency-checker.",
+          "summary": "Audited per-asset license provenance: cleared CC0 HDRIs, flagged attribution requirement on CC-BY-4.0 mesh, and blocked the unverified forum mesh. Delivered CC0, attribution requirement, blocked unverified and routed to asset-style-check.",
           "warnings": [
             "Text-only workflow output; no live Blender session or artifact was executed."
           ],
@@ -267,7 +267,7 @@
     {
       "id": "asset-license-checker-out-of-scope-exclusion-delegation",
       "skillId": "asset-license-checker",
-      "scenario": "Out-of-scope request (Sourcing or searching for candidate assets) is excluded from asset-license-checker and delegated to blender-asset-discovery-planner",
+      "scenario": "Out-of-scope request (Sourcing or searching for candidate assets) is excluded from asset-license-checker and delegated to asset-discovery",
       "category": "scope_creep",
       "inputPrompt": "Instead of verify license compliance for downloaded 3d assets, textures, hdris, fonts before scene build or export., handle this request inside asset-license-checker: Sourcing or searching for candidate assets.",
       "preconditions": {
@@ -277,10 +277,10 @@
       },
       "expectedBehavior": [
         "Enforces the declared exclusion boundary in skills/asset-license-checker/contract.json when Sourcing or searching for candidate assets",
-        "Delegates to blender-asset-discovery-planner (Delegates out-of-scope requests to blender-asset-discovery-planner) with Runtime: Not Run and Artifact: Not Produced"
+        "Delegates to asset-discovery (Delegates out-of-scope requests to asset-discovery) with Runtime: Not Run and Artifact: Not Produced"
       ],
       "requiredOutputProperties": [
-        "blender-asset-discovery-planner",
+        "asset-discovery",
         "out of scope",
         "Runtime: Not Run",
         "Artifact: Not Produced"
@@ -291,7 +291,7 @@
         "Artifact: Not Run",
         "handled inside asset-license-checker anyway"
       ],
-      "expectedRoutingTarget": "blender-asset-discovery-planner",
+      "expectedRoutingTarget": "asset-discovery",
       "truthStateExpectations": {
         "runtimeStatus": "Not Run",
         "artifactStatus": "Not Produced"
@@ -299,23 +299,23 @@
       "evaluationType": "deterministic_fixture",
       "severity": "P1",
       "evidenceRequirements": [
-        "Exclusion delegation to blender-asset-discovery-planner per skills/asset-license-checker/contract.json"
+        "Exclusion delegation to asset-discovery per skills/asset-license-checker/contract.json"
       ],
       "deterministicFixture": {
         "simulatedOutput": {
           "mode": "Out-of-scope exclusion gate (asset-license-checker)",
-          "recommendedNextAction": "Request is out of scope for asset-license-checker (Sourcing or searching for candidate assets); delegate to blender-asset-discovery-planner.",
-          "targetHandoff": "blender-asset-discovery-planner",
+          "recommendedNextAction": "Request is out of scope for asset-license-checker (Sourcing or searching for candidate assets); delegate to asset-discovery.",
+          "targetHandoff": "asset-discovery",
           "runtimeStatus": "Not Run",
           "artifactStatus": "Not Produced",
-          "summary": "Enforced asset-license-checker exclusion boundary (Delegates out-of-scope requests to blender-asset-discovery-planner) and delegated to blender-asset-discovery-planner.",
+          "summary": "Enforced asset-license-checker exclusion boundary (Delegates out-of-scope requests to asset-discovery) and delegated to asset-discovery.",
           "warnings": [
-            "asset-license-checker is scoped to asset-license-and-provenance-gate and does not absorb blender-asset-discovery-planner responsibilities."
+            "asset-license-checker is scoped to asset-license-and-provenance-gate and does not absorb asset-discovery responsibilities."
           ],
           "evidenceCitations": [
             "skills/asset-license-checker/contract.json",
             "skills/asset-license-checker/SKILL.md",
-            "skills/blender-asset-discovery-planner/SKILL.md"
+            "skills/asset-discovery/SKILL.md"
           ]
         }
       }

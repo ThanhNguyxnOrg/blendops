@@ -12,20 +12,20 @@ When the user's intent is unclear, walk this tree top-down. Stop at the first ma
    NO  → continue to 3.
 
 3. Are SCENE ASSETS not trivially given (e.g. "a shoe" without a model)?
-   YES → load `blender-asset-discovery-planner` (per-asset strategy).
+   YES → load `asset-discovery` (per-asset strategy).
    NO  → continue to 4.
 
 4. Does the user want to RUN BLENDER right now?
-   YES → load `official-runtime-readiness-checker` first.
-         If readiness reports inconsistent signals → `runtime-bridge-conflict-resolver`.
-         If readiness reports Blocked / Unknown    → `official-runtime-setup-guide`.
+   YES → load `runtime-readiness` first.
+         If readiness reports inconsistent signals → `bridge-conflicts`.
+         If readiness reports Blocked / Unknown    → `runtime-setup`.
    NO  → continue to 5.
 
 5. Is the user asking for a SCENE / COMPOSITION / LIGHTING / MATERIAL plan?
    Scene plan      → `product-hero-scene-planner`
-   Composition     → `blender-composition-camera-planner`
-   Lighting/material → `blender-lighting-material-planner`
-   Quality gate    → `blender-scene-quality-checker`
+   Composition     → `camera-composition`
+   Lighting/material → `lighting-material-plan`
+   Quality gate    → `scene-readiness`
 
 6. Has output ALREADY EXISTED but it looks WRONG?
    YES → load `blender-troubleshooting` (4-phase root-cause).
@@ -40,7 +40,7 @@ When the user's intent is unclear, walk this tree top-down. Stop at the first ma
    YES → load `glb-web-handoff` (caveats + R3F snippets).
 
 10. Does the user need a PLAIN-LANGUAGE SUMMARY for non-Blender stakeholders?
-    YES → load `non-blender-user-response-writer` (final response).
+    YES → load `plain-language-response` (final response).
 ```
 
 ## Multi-skill chains
@@ -49,9 +49,9 @@ Most real workflows chain 4-7 skills. Common chains:
 
 | Chain | Skills in order |
 |---|---|
-| First-time user, vague request | `blender-brainstorming` → `intent-to-3d-brief-writer` → `blender-asset-discovery-planner` → planners → quality gate → evidence → verification → response |
+| First-time user, vague request | `blender-brainstorming` → `intent-to-3d-brief-writer` → `asset-discovery` → planners → quality gate → evidence → verification → response |
 | Iteration on existing scene | `blender-troubleshooting` → relevant planner → quality gate → evidence → verification → response |
 | Pre-release verification | `pre-handoff-verification` → (downgrade if needed) → response |
-| Runtime conflict triage | `official-runtime-readiness-checker` → `runtime-bridge-conflict-resolver` → readiness re-check |
+| Runtime conflict triage | `runtime-readiness` → `bridge-conflicts` → readiness re-check |
 
 See `docs/workflows/full-non-blender-user-workflow.md` for the full canonical chain.

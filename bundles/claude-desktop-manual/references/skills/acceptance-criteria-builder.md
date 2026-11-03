@@ -16,7 +16,7 @@ Turn a locked 3D brief plus chosen recipe into a measurable acceptance checklist
 ## When to use
 - after a brief is locked with `intent-to-3d-brief-writer` and a recipe is chosen, before expensive render or export stages
 - when translating qualitative brief goals into measurable checklist rows with evidence hooks
-- after `blender-scope-boundary-enforcer` approves a brief or recipe delta that requires updated acceptance rows
+- after `scope-guard` approves a brief or recipe delta that requires updated acceptance rows
 
 ## Trigger cues
 - "acceptance criteria"
@@ -27,9 +27,9 @@ Turn a locked 3D brief plus chosen recipe into a measurable acceptance checklist
 ## When not to use
 - pure exploration without a locked deliverable → delegate to `blender-brainstorming` (`references/skills/blender-brainstorming.md`; use blender-brainstorming)
 - writing or locking the brief itself → delegate to `intent-to-3d-brief-writer` (`references/skills/intent-to-3d-brief-writer.md`; use intent-to-3d-brief-writer)
-- pinning the stop or done condition → delegate to `blender-stop-condition-decider` (`references/skills/blender-stop-condition-decider.md`; use blender-stop-condition-decider)
-- enforcing per-stage workflow gates → delegate to `blender-checklist-driven-workflow` (`references/skills/blender-checklist-driven-workflow.md`; use blender-checklist-driven-workflow)
-- guarding or deciding scope boundaries → delegate to `blender-scope-boundary-enforcer` (`references/skills/blender-scope-boundary-enforcer.md`; use blender-scope-boundary-enforcer)
+- pinning the stop or done condition → delegate to `done-criteria` (`references/skills/done-criteria.md`; use done-criteria)
+- enforcing per-stage workflow gates → delegate to `stage-gates` (`references/skills/stage-gates.md`; use stage-gates)
+- guarding or deciding scope boundaries → delegate to `scope-guard` (`references/skills/scope-guard.md`; use scope-guard)
 - legal or license-permission language → delegate to `asset-license-checker` (`references/skills/asset-license-checker.md`; use asset-license-checker)
 - classifying artifact evidence → delegate to `pre-handoff-verification` (`references/skills/pre-handoff-verification.md`; use pre-handoff-verification)
 
@@ -39,7 +39,7 @@ Turn a locked 3D brief plus chosen recipe into a measurable acceptance checklist
 - `target_deliverable_channels` (`array`): Target delivery surfaces (hero still, catalog grid, turntable, or web GLB)
 
 ### Optional inputs
-- `performance_budget_pins` (`object`): Optional triangle, texture, and file-size ceilings from glb-mobile-performance-budget
+- `performance_budget_pins` (`object`): Optional triangle, texture, and file-size ceilings from mobile-glb-budget
 
 ### Primary outputs
 - `measurable_acceptance_criteria_table`
@@ -54,9 +54,9 @@ Turn a locked 3D brief plus chosen recipe into a measurable acceptance checklist
 
 ## Handoff notes
 - **[upstream_reference]** Brief source → `intent-to-3d-brief-writer` (`references/skills/intent-to-3d-brief-writer.md`) — `when.all: [goal.clarity equals "clear"; brief.locked equals false]`
-- **[progression]** Done / stop condition → `blender-stop-condition-decider` (`references/skills/blender-stop-condition-decider.md`) — `when.all: [brief.locked equals true; stage.current equals "stop_condition"]`
-- **[progression]** Per-stage gate enforcement → `blender-checklist-driven-workflow` (`references/skills/blender-checklist-driven-workflow.md`) — `when.all: [brief.locked equals true; stage.current equals "stage_gates"]`
-- **[progression]** Scope boundary enforcement → `blender-scope-boundary-enforcer` (`references/skills/blender-scope-boundary-enforcer.md`) — `when.all: [scope.driftDetected equals true]`
+- **[progression]** Done / stop condition → `done-criteria` (`references/skills/done-criteria.md`) — `when.all: [brief.locked equals true; stage.current equals "stop_condition"]`
+- **[progression]** Per-stage gate enforcement → `stage-gates` (`references/skills/stage-gates.md`) — `when.all: [brief.locked equals true; stage.current equals "stage_gates"]`
+- **[progression]** Scope boundary enforcement → `scope-guard` (`references/skills/scope-guard.md`) — `when.all: [scope.driftDetected equals true]`
 - **[progression]** License permissions → `asset-license-checker` (`references/skills/asset-license-checker.md`) — `when.all: [assets.externalUsed equals true; assets.licenseCleared equals false]`
 - **[progression]** Artifact evidence classification → `render-export-evidence` (`references/skills/render-export-evidence.md`) — `when.all: [stage.current equals "post_execution_audit"]`
 - **[progression]** Handoff gate verification → `pre-handoff-verification` (`references/skills/pre-handoff-verification.md`) — `when.all: [stage.current equals "final_verification"]`

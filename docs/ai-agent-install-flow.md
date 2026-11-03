@@ -73,19 +73,19 @@ Expected ZIP set (one per `skills/*/SKILL.md`, currently 48 — run `npm run ski
 blendops-help.zip
 blender-brainstorming.zip
 intent-to-3d-brief-writer.zip
-blender-asset-discovery-planner.zip
+asset-discovery.zip
 blender-troubleshooting.zip
 pre-handoff-verification.zip
-runtime-bridge-conflict-resolver.zip
-official-runtime-setup-guide.zip
-official-runtime-readiness-checker.zip
+bridge-conflicts.zip
+runtime-setup.zip
+runtime-readiness.zip
 product-hero-scene-planner.zip
-blender-composition-camera-planner.zip
-blender-lighting-material-planner.zip
-blender-scene-quality-checker.zip
+camera-composition.zip
+lighting-material-plan.zip
+scene-readiness.zip
 render-export-evidence.zip
 glb-web-handoff.zip
-non-blender-user-response-writer.zip
+plain-language-response.zip
 ```
 
 ZIP requirements:

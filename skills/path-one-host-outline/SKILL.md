@@ -25,9 +25,9 @@ Outline **Path 1 host surfaces** — **(a)** Anthropic Connector in Claude Deskt
 ## When not to use
 <!-- blendops:generated:start exclusions -->
 - choosing between Path 1, Path 2, or CLI → use `../runtime-path-picker/SKILL.md` (Delegates out-of-scope requests to runtime-path-picker)
-- step-by-step host or add-on installation and configuration → use `../official-runtime-setup-guide/SKILL.md` (Delegates out-of-scope requests to official-runtime-setup-guide)
-- probing live runtime readiness → use `../official-runtime-readiness-checker/SKILL.md` (Delegates out-of-scope requests to official-runtime-readiness-checker)
-- resolving conflicts between official and unofficial bridges → use `../runtime-bridge-conflict-resolver/SKILL.md` (Delegates out-of-scope requests to runtime-bridge-conflict-resolver)
+- step-by-step host or add-on installation and configuration → use `../runtime-setup/SKILL.md` (Delegates out-of-scope requests to runtime-setup)
+- probing live runtime readiness → use `../runtime-readiness/SKILL.md` (Delegates out-of-scope requests to runtime-readiness)
+- resolving conflicts between official and unofficial bridges → use `../bridge-conflicts/SKILL.md` (Delegates out-of-scope requests to bridge-conflicts)
 - Path 2 community bridge specifics → use `../runtime-path-picker/SKILL.md` (Delegates out-of-scope requests to runtime-path-picker)
 - CLI appendix job outlining → use `../cli-appendix-job-outline/SKILL.md` (Delegates out-of-scope requests to cli-appendix-job-outline)
 <!-- blendops:generated:end exclusions -->
@@ -63,7 +63,7 @@ Outline **Path 1 host surfaces** — **(a)** Anthropic Connector in Claude Deskt
 
 ### Primary output
 
-- host-specific outline using **(a)** Anthropic Connector in Claude Desktop vs **(b)** manually configured MCP client framing (outline only — never configure hosts or dump executable setup scripts; hand off setup details to `official-runtime-setup-guide`)
+- host-specific outline using **(a)** Anthropic Connector in Claude Desktop vs **(b)** manually configured MCP client framing (outline only — never configure hosts or dump executable setup scripts; hand off setup details to `runtime-setup`)
 - explicit prerequisite line stating that both Host **(a)** and Host **(b)** require the Lab MCP add-on inside **Blender 5.1+**
 - explicit statement that the Anthropic Connector is **never standalone** whenever Connector is discussed
 
@@ -94,7 +94,7 @@ Outline only; never configures hosts and never runs Blender. Path 1 requires the
 1. Verify the **Blender 5.1+** version floor for Path 1 (route path selection questions to `runtime-path-picker`).
 2. Identify the target host surface as **(a)** Anthropic Connector in Claude Desktop or **(b)** a manually configured MCP client using `references/connector-vs-manual-matrix.md`.
 3. State explicitly that the Lab MCP add-on inside Blender 5.1+ is required for both **(a)** and **(b)**, and reiterate that the Connector is **never standalone** (`references/lab-addon-reminders.md`).
-4. Emit the conceptual checklist (`references/host-checklist-template.md`) with pointers to `docs/install/claude-desktop.md` or `official-runtime-setup-guide` without performing host configuration.
+4. Emit the conceptual checklist (`references/host-checklist-template.md`) with pointers to `docs/install/claude-desktop.md` or `runtime-setup` without performing host configuration.
 
 ## Decision tree
 
@@ -109,11 +109,11 @@ Which Path 1 host surface is the user targeting (`references/connector-vs-manual
   Host (a) Claude Desktop with Anthropic Blender Connector →
     1. Require Blender 5.1+ and Lab MCP add-on inside Blender first
     2. State explicitly that the Anthropic Connector is NEVER standalone
-    3. Point to `docs/install/claude-desktop.md` and `official-runtime-setup-guide`
+    3. Point to `docs/install/claude-desktop.md` and `runtime-setup`
   Host (b) Manually configured MCP client (Cursor, Claude Code, Codex, OpenCode, Zed, Windsurf, etc.) →
     1. Require Blender 5.1+ and Lab MCP add-on inside Blender first
     2. Outline host MCP server entry pointing at the Blender Lab MCP server
-    3. Point to `docs/external-runtime-setup.md`, `docs/install/<target>.md`, and `official-runtime-setup-guide`
+    3. Point to `docs/external-runtime-setup.md`, `docs/install/<target>.md`, and `runtime-setup`
   Host unknown / comparing both →
     Emit side-by-side Host (a) vs Host (b) outline sharing the mandatory Blender 5.1+ Lab add-on invariant
 ```
@@ -124,7 +124,7 @@ Which Path 1 host surface is the user targeting (`references/connector-vs-manual
 
 - Lead with the shared Path 1 invariant from `references/lab-addon-reminders.md`: **Blender 5.1+** (`blender_version_min = "5.1.0"`) and the **Official Blender Lab MCP add-on** inside Blender must be installed and enabled first.
 - Explain that **Host (a)** (Anthropic Connector in Claude Desktop) is a host-side convenience layer that attaches to the Lab MCP add-on after Blender-side setup — the Connector is **never standalone**.
-- Emit the 5-step outline from `references/host-checklist-template.md` and route step-by-step installation to `../official-runtime-setup-guide/SKILL.md`.
+- Emit the 5-step outline from `references/host-checklist-template.md` and route step-by-step installation to `../runtime-setup/SKILL.md`.
 
 ### Playbook B: Coding agent user (Cursor, Claude Code, Codex, OpenCode) on Path 1 (`Host (b)`)
 
@@ -145,7 +145,7 @@ References only; no credential paths.
 
 ### Runtime-ready mode
 
-Suggest pairing with `official-runtime-readiness-checker`.
+Suggest pairing with `runtime-readiness`.
 
 ### Blocked runtime mode
 
@@ -171,15 +171,15 @@ Still explain host conceptual split.
 ## Failure handling
 
 - If the user's environment is pinned below **Blender 5.1** (for example, Blender 4.2 LTS or 3.6 LTS), state clearly that Path 1 (both Host (a) and Host (b)) is unavailable because the Lab MCP add-on requires `blender_version_min = "5.1.0"`, and route to `../runtime-path-picker/SKILL.md`.
-- If the user asks this skill to write live MCP client JSON configs, edit system credential files, or execute Blender, decline and route setup execution to `../official-runtime-setup-guide/SKILL.md`.
-- If both Path 1 Lab MCP and Path 2 `mcp-for-blender` (formerly `ahujasid/blender-mcp`) are active on the same Blender instance, route immediately to `../runtime-bridge-conflict-resolver/SKILL.md`.
+- If the user asks this skill to write live MCP client JSON configs, edit system credential files, or execute Blender, decline and route setup execution to `../runtime-setup/SKILL.md`.
+- If both Path 1 Lab MCP and Path 2 `mcp-for-blender` (formerly `ahujasid/blender-mcp`) are active on the same Blender instance, route immediately to `../bridge-conflicts/SKILL.md`.
 - Preserve downgrade-only truth states (`Runtime status: Not Run`, `Artifact status: Not Produced`).
 
 ## Troubleshooting
 
 | Symptom | Cause | Safe resolution |
 |---|---|---|
-| User enabled Anthropic Connector in Claude Desktop but nothing connects | Lab MCP add-on was never installed/enabled inside Blender 5.1+ (Anthropic tutorial step 2 skipped) | Reiterate that the Anthropic Connector is **never standalone**; require installing and enabling the Lab MCP add-on inside Blender 5.1+ first, then route to `../official-runtime-setup-guide/SKILL.md`. |
+| User enabled Anthropic Connector in Claude Desktop but nothing connects | Lab MCP add-on was never installed/enabled inside Blender 5.1+ (Anthropic tutorial step 2 skipped) | Reiterate that the Anthropic Connector is **never standalone**; require installing and enabling the Lab MCP add-on inside Blender 5.1+ first, then route to `../runtime-setup/SKILL.md`. |
 | User cites Anthropic tutorial prerequisite "Blender 4.2 or later" for Path 1 | Upstream tutorial text lags the Lab add-on manifest floor | Explain that the binding floor in the Lab MCP add-on manifest is `blender_version_min = "5.1.0"` (**Blender 5.1+**), which governs both Host (a) and Host (b). |
 | User confuses Path 1 Host (b) with Path 2 `mcp-for-blender` | Both use manual MCP client configuration in coding agents | Clarify that Path 1 Host (b) connects to the official Blender Lab MCP add-on in Blender 5.1+, whereas Path 2 connects to the third-party `mcp-for-blender` (`ahujasid/blender-mcp`) add-on (`../../docs/unofficial-runtime-bridges.md`). |
 
@@ -188,12 +188,12 @@ Still explain host conceptual split.
 - Always state the Blender-side prerequisite (**Blender 5.1+** + **Lab MCP add-on** inside Blender) **before** describing either Host (a) or Host (b).
 - Include the explicit reminder that **the Anthropic Connector is never standalone** whenever Host (a) or Claude Desktop is mentioned.
 - Cite the community Path 2 bridge as `mcp-for-blender` (formerly `ahujasid/blender-mcp`), never bare `blender-mcp`.
-- Keep this skill strictly at the architectural outline level and hand off step-by-step installation to `../official-runtime-setup-guide/SKILL.md` and live checks to `../official-runtime-readiness-checker/SKILL.md`.
+- Keep this skill strictly at the architectural outline level and hand off step-by-step installation to `../runtime-setup/SKILL.md` and live checks to `../runtime-readiness/SKILL.md`.
 
 ## Good examples
 
 - "For Path 1 on Claude Desktop (**Host (a)**): 1) Install **Blender 5.1+** (`blender_version_min = \"5.1.0\"`). 2) Install and enable the **Official Blender Lab MCP add-on** inside Blender. 3) Connect the Anthropic Blender Connector in Claude Desktop — the Connector is **never standalone** and depends on the Lab add-on running inside Blender 5.1+. `Runtime status: Not Run`. `Artifact status: Not Produced`."
-- "For Path 1 in Cursor or Claude Code (**Host (b)**): Both Host (a) and Host (b) require the **Lab MCP add-on inside Blender 5.1+**. On the host side, configure your agent's manual MCP client to point at the Lab MCP server and ensure no Path 2 (`mcp-for-blender`, formerly `ahujasid/blender-mcp`) bridge is attached to the same Blender instance. Hand off to `../official-runtime-setup-guide/SKILL.md`."
+- "For Path 1 in Cursor or Claude Code (**Host (b)**): Both Host (a) and Host (b) require the **Lab MCP add-on inside Blender 5.1+**. On the host side, configure your agent's manual MCP client to point at the Lab MCP server and ensure no Path 2 (`mcp-for-blender`, formerly `ahujasid/blender-mcp`) bridge is attached to the same Blender instance. Hand off to `../runtime-setup/SKILL.md`."
 
 ## Bad examples
 
@@ -216,7 +216,7 @@ Runtime status: Not Run
 Artifact status: Not Produced
 Evidence used: <docs/runtime-stack-strategy.md, docs/install/claude-desktop.md, skill references>
 Limitations: <outline only — does not configure hosts or run Blender>
-Next skill: <official-runtime-setup-guide | official-runtime-readiness-checker | runtime-path-picker>
+Next skill: <runtime-setup | runtime-readiness | runtime-path-picker>
 ```
 
 ## Anti-patterns
@@ -230,17 +230,17 @@ Next skill: <official-runtime-setup-guide | official-runtime-readiness-checker |
 ## Cross-skill handoff
 <!-- blendops:generated:start handoffs -->
 - [upstream_reference] Path selection → `../runtime-path-picker/SKILL.md`
-- [upstream_reference] Detailed setup and configuration → `../official-runtime-setup-guide/SKILL.md`
-- [progression] Readiness probing → `../official-runtime-readiness-checker/SKILL.md`
-- [fallback] Bridge conflicts → `../runtime-bridge-conflict-resolver/SKILL.md`
+- [upstream_reference] Detailed setup and configuration → `../runtime-setup/SKILL.md`
+- [progression] Readiness probing → `../runtime-readiness/SKILL.md`
+- [fallback] Bridge conflicts → `../bridge-conflicts/SKILL.md`
 - [progression] CLI appendix workflows → `../cli-appendix-job-outline/SKILL.md`
 <!-- blendops:generated:end handoffs -->
 
 ## Non-goals
 
 - Choosing between Path 1, Path 2, and the CLI appendix (owned by `../runtime-path-picker/SKILL.md`).
-- Performing step-by-step installation or editing host MCP configuration files (owned by `../official-runtime-setup-guide/SKILL.md`).
-- Probing whether a live Blender MCP session is currently connected (owned by `../official-runtime-readiness-checker/SKILL.md`).
+- Performing step-by-step installation or editing host MCP configuration files (owned by `../runtime-setup/SKILL.md`).
+- Probing whether a live Blender MCP session is currently connected (owned by `../runtime-readiness/SKILL.md`).
 - Documenting Path 2 community bridge internals or headless CLI batch scripts.
 
 ## References

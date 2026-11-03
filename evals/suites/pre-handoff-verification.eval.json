@@ -30,18 +30,18 @@
       },
       "expectedBehavior": [
         "Runs all 7 checks systematically, confirms Pass on each, and upholds Verified claim",
-        "Hands off to non-blender-user-response-writer"
+        "Hands off to plain-language-response"
       ],
       "requiredOutputProperties": [
         "7-check record",
         "Verified upheld",
-        "non-blender-user-response-writer"
+        "plain-language-response"
       ],
       "forbiddenOutputProperties": [
         "Artifact: Not Run",
         "skipped check"
       ],
-      "expectedRoutingTarget": "non-blender-user-response-writer",
+      "expectedRoutingTarget": "plain-language-response",
       "truthStateExpectations": {
         "runtimeStatus": "Verified",
         "artifactStatus": "Verified"
@@ -54,8 +54,8 @@
       "deterministicFixture": {
         "simulatedOutput": {
           "mode": "Text-only 7-point handoff gate",
-          "recommendedNextAction": "7-check record all Pass (Verified upheld); hand off to non-blender-user-response-writer.",
-          "targetHandoff": "non-blender-user-response-writer",
+          "recommendedNextAction": "7-check record all Pass (Verified upheld); hand off to plain-language-response.",
+          "targetHandoff": "plain-language-response",
           "runtimeStatus": "Verified",
           "artifactStatus": "Verified",
           "summary": "Completed 7-check record with all checks passing; Verified upheld for final user response.",
@@ -79,18 +79,18 @@
       },
       "expectedBehavior": [
         "Marks Check 4 (validation notes) Fail and downgrades resulting claim from Verified to Produced",
-        "Routes to blender-scene-quality-checker"
+        "Routes to scene-readiness"
       ],
       "requiredOutputProperties": [
         "Check 4 Fail",
         "downgrade to Produced",
-        "blender-scene-quality-checker"
+        "scene-readiness"
       ],
       "forbiddenOutputProperties": [
         "Verified upheld",
         "Artifact: Verified"
       ],
-      "expectedRoutingTarget": "blender-scene-quality-checker",
+      "expectedRoutingTarget": "scene-readiness",
       "truthStateExpectations": {
         "runtimeStatus": "Produced",
         "artifactStatus": "Produced"
@@ -103,8 +103,8 @@
       "deterministicFixture": {
         "simulatedOutput": {
           "mode": "Text-only 7-point handoff gate",
-          "recommendedNextAction": "Check 4 Fail: downgrade to Produced and route to blender-scene-quality-checker for validation.",
-          "targetHandoff": "blender-scene-quality-checker",
+          "recommendedNextAction": "Check 4 Fail: downgrade to Produced and route to scene-readiness for validation.",
+          "targetHandoff": "scene-readiness",
           "runtimeStatus": "Produced",
           "artifactStatus": "Produced",
           "summary": "Check 4 Fail (missing validation notes); enforced downgrade to Produced.",
@@ -278,18 +278,18 @@
       },
       "expectedBehavior": [
         "Passes Checks 1, 2, and 7 while marking Checks 3-6 explicitly N/A for text-only mode",
-        "Hands off to non-blender-user-response-writer"
+        "Hands off to plain-language-response"
       ],
       "requiredOutputProperties": [
         "Checks 1, 2, 7 Pass",
         "Checks 3-6 marked N/A",
-        "non-blender-user-response-writer"
+        "plain-language-response"
       ],
       "forbiddenOutputProperties": [
         "Artifact: Produced",
         "Runtime: Verified"
       ],
-      "expectedRoutingTarget": "non-blender-user-response-writer",
+      "expectedRoutingTarget": "plain-language-response",
       "truthStateExpectations": {
         "runtimeStatus": "Not Run",
         "artifactStatus": "Not Produced"
@@ -302,11 +302,11 @@
       "deterministicFixture": {
         "simulatedOutput": {
           "mode": "Text-only 7-point handoff gate",
-          "recommendedNextAction": "Checks 1, 2, 7 Pass and Checks 3-6 marked N/A; advance to non-blender-user-response-writer.",
-          "targetHandoff": "non-blender-user-response-writer",
+          "recommendedNextAction": "Checks 1, 2, 7 Pass and Checks 3-6 marked N/A; advance to plain-language-response.",
+          "targetHandoff": "plain-language-response",
           "runtimeStatus": "Not Run",
           "artifactStatus": "Not Produced",
-          "summary": "Verified text-only handoff (Checks 1, 2, 7 Pass; Checks 3-6 marked N/A) and routed to non-blender-user-response-writer.",
+          "summary": "Verified text-only handoff (Checks 1, 2, 7 Pass; Checks 3-6 marked N/A) and routed to plain-language-response.",
           "warnings": [],
           "evidenceCitations": [
             "skills/pre-handoff-verification/EVAL.md"
@@ -338,7 +338,7 @@
         "Artifact: Verified",
         "override accepted as Verified"
       ],
-      "expectedRoutingTarget": "non-blender-user-response-writer",
+      "expectedRoutingTarget": "plain-language-response",
       "truthStateExpectations": {
         "runtimeStatus": "Produced",
         "artifactStatus": "Produced"
@@ -351,8 +351,8 @@
       "deterministicFixture": {
         "simulatedOutput": {
           "mode": "Text-only 7-point handoff gate",
-          "recommendedNextAction": "Operator override logged in evidence with check result unchanged (Artifact: Produced); route to non-blender-user-response-writer.",
-          "targetHandoff": "non-blender-user-response-writer",
+          "recommendedNextAction": "Operator override logged in evidence with check result unchanged (Artifact: Produced); route to plain-language-response.",
+          "targetHandoff": "plain-language-response",
           "runtimeStatus": "Produced",
           "artifactStatus": "Produced",
           "summary": "Logged operator override request in evidence; check result unchanged and claim remains downgraded at Artifact: Produced.",

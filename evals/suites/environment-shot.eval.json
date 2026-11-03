@@ -1,0 +1,325 @@
+{
+  "schemaVersion": "2.0.0",
+  "skillId": "environment-shot",
+  "category": "scene-planners",
+  "isContractedSkill": true,
+  "isRoutingParticipant": false,
+  "contractPath": "skills/environment-shot/contract.json",
+  "skillMarkdownPath": "skills/environment-shot/SKILL.md",
+  "evalMarkdownPath": "skills/environment-shot/EVAL.md",
+  "sourceEvalTier": "prose_outline_contract_migrated",
+  "evaluationStatus": {
+    "staticValidation": "Passed",
+    "deterministicFixture": "Passed",
+    "contractRouting": "Not Applicable",
+    "contractHandoff": "Passed",
+    "liveModel": "Not Run",
+    "blenderRuntime": "Not Run"
+  },
+  "cases": [
+    {
+      "id": "environment-shot-normal-in-scope-handoff",
+      "skillId": "environment-shot",
+      "scenario": "Normal in-scope execution of environment-shot (environment-establishing-shot-architect) with contract handoff to composition-quality-checker",
+      "category": "normal",
+      "inputPrompt": "Use environment-shot on a locked brief: \"cyberpunk city street at night, light rain, wet asphalt reflections, neon signage focal subject, cinematic 2.39:1 wide shot\".",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Primary inputs (locked_3d_brief) provided in text-only planning/audit mode."
+      },
+      "expectedBehavior": [
+        "Produces foreground_midground_background_layer_plan, sun_sky_atmosphere_specification, horizon_and_scale_anchor_plan for role environment-establishing-shot-architect",
+        "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
+        "Evaluates contract handoff predicate and hands off to composition-quality-checker (Composition validation)"
+      ],
+      "requiredOutputProperties": [
+        "FG / MG / BG depth layers",
+        "2.39:1",
+        "atmosphere volume",
+        "composition-quality-checker",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "no depth layers needed",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "composition-quality-checker",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Outputs foreground_midground_background_layer_plan, sun_sky_atmosphere_specification, horizon_and_scale_anchor_plan conforming to skills/environment-shot/SKILL.md",
+        "Matches contract handoff predicate to composition-quality-checker in skills/environment-shot/contract.json"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "quality.domain": "composition",
+          "quality.verdict": "not_run"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only environment-establishing-shot-architect (environment-shot)",
+          "recommendedNextAction": "Complete foreground_midground_background_layer_plan and hand off to composition-quality-checker (Composition validation).",
+          "targetHandoff": "composition-quality-checker",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Planned wide 2.39:1 environment establishing shot with explicit foreground/midground/background depth layers, night rain atmosphere/fog volume, and 24mm camera rig. Delivered FG / MG / BG depth layers, 2.39:1, atmosphere volume and routed to composition-quality-checker.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/environment-shot/SKILL.md",
+            "skills/environment-shot/EVAL.md",
+            "skills/environment-shot/contract.json",
+            "skills/environment-shot/references/depth-layering-rules.md",
+            "skills/environment-shot/references/time-and-weather-rules.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "environment-shot-secondary-contract-handoff",
+      "skillId": "environment-shot",
+      "scenario": "Secondary upstream_reference contract handoff from environment-shot to intent-to-3d-brief-writer",
+      "category": "structured_skip",
+      "inputPrompt": "While applying environment-shot, the workflow context is {\"goal.clarity\":\"clear\",\"brief.locked\":false} (Brief writer). Determine the contract-governed handoff target.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates the upstream_reference handoff predicate in skills/environment-shot/contract.json",
+        "Routes to intent-to-3d-brief-writer (Brief writer) without claiming runtime execution"
+      ],
+      "requiredOutputProperties": [
+        "intent-to-3d-brief-writer",
+        "upstream_reference",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "no depth layers needed",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "intent-to-3d-brief-writer",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Contract upstream_reference handoff predicate match to intent-to-3d-brief-writer"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "goal.clarity": "clear",
+          "brief.locked": false
+        },
+        "simulatedOutput": {
+          "mode": "Text-only environment-shot (upstream_reference handoff)",
+          "recommendedNextAction": "Follow upstream_reference handoff to intent-to-3d-brief-writer (Brief writer).",
+          "targetHandoff": "intent-to-3d-brief-writer",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Triggered upstream_reference handoff from environment-shot to intent-to-3d-brief-writer under context {\"goal.clarity\":\"clear\",\"brief.locked\":false}.",
+          "warnings": [
+            "Contract-governed upstream_reference handoff."
+          ],
+          "evidenceCitations": [
+            "skills/environment-shot/contract.json",
+            "skills/environment-shot/SKILL.md",
+            "skills/environment-shot/references/depth-layering-rules.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "environment-shot-unmatched-handoff-and-evidence-boundary",
+      "skillId": "environment-shot",
+      "scenario": "Unmatched contract handoff context returns none and blocks upgrading unvalidated file to Verified in environment-shot",
+      "category": "evidence_boundary",
+      "inputPrompt": "An operator provides an unvalidated file on disk during environment-shot with context {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and asks to mark Artifact: Verified and auto-advance.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "file-only-unvalidated",
+        "notes": "A file exists on disk but validation checks have not been recorded."
+      },
+      "expectedBehavior": [
+        "Refuses to upgrade Artifact status to Verified when existingArtifactEvidence is file-only-unvalidated (caps at Produced)",
+        "Evaluates contract handoffs for environment-shot and returns targetHandoff none because no handoff predicate matches"
+      ],
+      "requiredOutputProperties": [
+        "Artifact: Produced",
+        "Runtime: Not Run",
+        "validation",
+        "none"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "validation not needed"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Downgrade unvalidated Verified claim to Produced per laws/evidence-before-done.md",
+        "Verify 0 handoffs match in skills/environment-shot/contract.json for {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true}"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Artifact-claim boundary check (environment-shot)",
+          "recommendedNextAction": "Keep Artifact status at Produced (never Verified without validation evidence) and hold at targetHandoff none until a downstream precondition is met.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Produced",
+          "summary": "Capped unvalidated artifact claim at Artifact: Produced and verified zero matching contract handoffs (none) for environment-shot.",
+          "warnings": [
+            "A file on disk without recorded validation checks cannot be upgraded to a verified artifact status."
+          ],
+          "evidenceCitations": [
+            "laws/evidence-before-done.md",
+            "skills/environment-shot/contract.json",
+            "skills/environment-shot/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "environment-shot-ambiguous-missing-required-inputs",
+      "skillId": "environment-shot",
+      "scenario": "Missing required input (locked_3d_brief) for environment-shot halts fabricated output and requests clarification",
+      "category": "ambiguous",
+      "inputPrompt": "Plan an environment establishing shot without specifying the locale, time of day, weather atmosphere, or focal anchor.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Required input 'locked_3d_brief' is missing or underspecified."
+      },
+      "expectedBehavior": [
+        "Identifies missing environment locale, time-of-day/weather state, and focal subject anchor required by environment-shot (locked_3d_brief)",
+        "Refuses to fabricate domain parameters and keeps Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "locked_3d_brief",
+        "environment locale, time-of-day/weather state, and focal subject anchor",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "no depth layers needed",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "guessed parameters silently"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicitly names missing required input 'locked_3d_brief' (environment locale, time-of-day/weather state, and focal subject anchor)",
+        "Conservative Runtime: Not Run and Artifact: Not Produced truth states"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Clarification gate (environment-shot)",
+          "recommendedNextAction": "Provide the missing environment locale, time-of-day/weather state, and focal subject anchor (locked_3d_brief) before environment-shot locks foreground_midground_background_layer_plan.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted environment-shot due to missing required input 'locked_3d_brief' (environment locale, time-of-day/weather state, and focal subject anchor); no values were fabricated.",
+          "warnings": [
+            "Do not invent environment locale, time-of-day/weather state, and focal subject anchor when 'locked_3d_brief' is omitted."
+          ],
+          "evidenceCitations": [
+            "skills/environment-shot/SKILL.md",
+            "skills/environment-shot/EVAL.md",
+            "skills/environment-shot/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "environment-shot-out-of-scope-exclusion-delegation",
+      "skillId": "environment-shot",
+      "scenario": "Out-of-scope request (character portrait) is excluded from environment-shot and delegated to character-portrait",
+      "category": "scope_creep",
+      "inputPrompt": "Instead of plan a wide environment / establishing-shot scene (locale, time of day, weather, focal subject, depth, atmosphere) before any modeling or render attempt., handle this request inside environment-shot: character portrait.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Enforces the declared exclusion boundary in skills/environment-shot/contract.json when character portrait",
+        "Delegates to character-portrait (use character-portrait) with Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "character-portrait",
+        "out of scope",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "no depth layers needed",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "handled inside environment-shot anyway"
+      ],
+      "expectedRoutingTarget": "character-portrait",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Exclusion delegation to character-portrait per skills/environment-shot/contract.json"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Out-of-scope exclusion gate (environment-shot)",
+          "recommendedNextAction": "Request is out of scope for environment-shot (character portrait); delegate to character-portrait.",
+          "targetHandoff": "character-portrait",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Enforced environment-shot exclusion boundary (use character-portrait) and delegated to character-portrait.",
+          "warnings": [
+            "environment-shot is scoped to environment-establishing-shot-architect and does not absorb character-portrait responsibilities."
+          ],
+          "evidenceCitations": [
+            "skills/environment-shot/contract.json",
+            "skills/environment-shot/SKILL.md",
+            "skills/character-portrait/SKILL.md"
+          ]
+        }
+      }
+    }
+  ]
+}

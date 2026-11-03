@@ -15,8 +15,8 @@
   "exclusions": [
     {
       "condition": "pinning or negotiating the performance budget itself",
-      "delegateTo": "glb-mobile-performance-budget",
-      "reason": "use glb-mobile-performance-budget"
+      "delegateTo": "mobile-glb-budget",
+      "reason": "use mobile-glb-budget"
     },
     {
       "condition": "material validation",
@@ -35,8 +35,8 @@
     },
     {
       "condition": "broad scene readiness review",
-      "delegateTo": "blender-scene-quality-checker",
-      "reason": "use blender-scene-quality-checker"
+      "delegateTo": "scene-readiness",
+      "reason": "use scene-readiness"
     },
     {
       "condition": "classifying render or export artifact evidence",
@@ -45,7 +45,7 @@
     },
     {
       "condition": "fixing topology, decimating, or retopologizing (this skill validates; it never edits or models)",
-      "delegateTo": "glb-mobile-performance-budget",
+      "delegateTo": "mobile-glb-budget",
       "reason": "this skill validates; it never edits or models"
     }
   ],
@@ -59,7 +59,7 @@
       {
         "name": "pinned_geometry_budget",
         "type": "object",
-        "description": "Target triangle and draw-call ceilings from glb-mobile-performance-budget or brief"
+        "description": "Target triangle and draw-call ceilings from mobile-glb-budget or brief"
       }
     ],
     "optional": [
@@ -84,7 +84,7 @@
   },
   "handoffs": [
     {
-      "target": "glb-mobile-performance-budget",
+      "target": "mobile-glb-budget",
       "type": "upstream_reference",
       "label": "Pinned budget source",
       "when": {
@@ -103,7 +103,7 @@
       }
     },
     {
-      "target": "blender-scene-quality-checker",
+      "target": "scene-readiness",
       "type": "progression",
       "label": "Broad readiness review",
       "when": {

@@ -15,7 +15,7 @@
   "exclusions": [
     {
       "condition": "for a known repeat render (engine already chosen)",
-      "delegateTo": "blender-lighting-material-planner",
+      "delegateTo": "lighting-material-plan",
       "reason": "engine already chosen"
     },
     {
@@ -64,7 +64,7 @@
   },
   "handoffs": [
     {
-      "target": "blender-lighting-material-planner",
+      "target": "lighting-material-plan",
       "type": "upstream_reference",
       "label": "Lighting and material setup aligned with engine choice",
       "when": {

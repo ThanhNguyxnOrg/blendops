@@ -6,7 +6,7 @@ description: Validate per-mesh and total-scene triangle counts against the pinne
 # polycount-budget-checker
 
 ## Purpose
-Run a focused pass/warn/fail check on per-mesh and total-scene triangle counts vs the pinned budget from `glb-mobile-performance-budget` (or any other pinned budget). Surface worst offenders and basic topology hints without performing modeling.
+Run a focused pass/warn/fail check on per-mesh and total-scene triangle counts vs the pinned budget from `mobile-glb-budget` (or any other pinned budget). Surface worst offenders and basic topology hints without performing modeling.
 
 ## Quick start
 - read the pinned budget (per-mesh + total-scene)
@@ -20,17 +20,17 @@ Run a focused pass/warn/fail check on per-mesh and total-scene triangle counts v
 - before GLB export
 - after a mesh change request
 - as a sub-check during full quality review
-- when `glb-mobile-performance-budget` is pinned
+- when `mobile-glb-budget` is pinned
 
 ## When not to use
 <!-- blendops:generated:start exclusions -->
-- pinning or negotiating the performance budget itself → use `../glb-mobile-performance-budget/SKILL.md` (use glb-mobile-performance-budget)
+- pinning or negotiating the performance budget itself → use `../mobile-glb-budget/SKILL.md` (use mobile-glb-budget)
 - material validation → use `../material-quality-checker/SKILL.md` (use material-quality-checker)
 - lighting validation → use `../lighting-quality-checker/SKILL.md` (use lighting-quality-checker)
 - composition validation → use `../composition-quality-checker/SKILL.md` (use composition-quality-checker)
-- broad scene readiness review → use `../blender-scene-quality-checker/SKILL.md` (use blender-scene-quality-checker)
+- broad scene readiness review → use `../scene-readiness/SKILL.md` (use scene-readiness)
 - classifying render or export artifact evidence → use `../render-export-evidence/SKILL.md` (use render-export-evidence)
-- fixing topology, decimating, or retopologizing (this skill validates; it never edits or models) → use `../glb-mobile-performance-budget/SKILL.md` (this skill validates; it never edits or models)
+- fixing topology, decimating, or retopologizing (this skill validates; it never edits or models) → use `../mobile-glb-budget/SKILL.md` (this skill validates; it never edits or models)
 <!-- blendops:generated:end exclusions -->
 
 ## Trigger phrases
@@ -42,7 +42,7 @@ Run a focused pass/warn/fail check on per-mesh and total-scene triangle counts v
 <!-- blendops:generated:end triggers -->
 
 ## Prerequisites / readiness
-- pinned budget known (from `glb-mobile-performance-budget` or explicit user)
+- pinned budget known (from `mobile-glb-budget` or explicit user)
 - mesh list known (scene plan or measured scene)
 
 ## Input schema
@@ -51,7 +51,7 @@ Run a focused pass/warn/fail check on per-mesh and total-scene triangle counts v
 
 | Input | Why it is required |
 |---|---|
-| Pinned budget (per-mesh + total-scene caps) | Anchors the check (from `glb-mobile-performance-budget`) |
+| Pinned budget (per-mesh + total-scene caps) | Anchors the check (from `mobile-glb-budget`) |
 | Mesh list (name + triangle count + count basis + instance count) | Defines scope, evaluated cost, and per-scene instance multiplier |
 
 ### Optional inputs
@@ -101,7 +101,7 @@ Note: Truth states are downgrade-only (never upgrade). Validation verdicts (`Pas
 This skill validates plans or measured scene snapshots. It never decimates, retopologizes, or runs Blender. Hints are advisory.
 
 ## Operating procedure
-1. Read the pinned budget from `glb-mobile-performance-budget` output (or explicit user input).
+1. Read the pinned budget from `mobile-glb-budget` output (or explicit user input).
 2. Read the mesh list, triangle counts, instance counts (`N`), and stated count basis (`base` / `viewport` / `evaluated render mesh`). If a mesh's count or basis is unknown, mark its row `Not Run` — never guess.
 3. Verify whether counts reflect the **evaluated render mesh** (base mesh + full modifier stack at render levels, accounting for Subdivision, Multiresolution, Solidify, and Scene Simplify). Flag viewport-only counts as undercounting risks.
 4. For each unique mesh, compare its evaluated triangle count once against the per-mesh cap (see `references/per-mesh-rules.md`).
@@ -109,7 +109,7 @@ This skill validates plans or measured scene snapshots. It never decimates, reto
 6. Identify worst offenders (top 1–3 by evaluated count or scene contribution).
 7. Generate advisory topology hints per `references/topology-hints.md` (never model, decimate, or retopologize).
 8. Compute top-line validation status (`Pass` / `Warn` / `Fail`) separately from downgrade-only truth states.
-9. Hand off rows to `blender-scene-quality-checker` (broad review), `glb-mobile-performance-budget` (budget re-pinning), or `render-export-evidence` (artifact evidence classification).
+9. Hand off rows to `scene-readiness` (broad review), `mobile-glb-budget` (budget re-pinning), or `render-export-evidence` (artifact evidence classification).
 
 ## Decision tree
 
@@ -135,13 +135,13 @@ Scene Simplify enabled at render time?
 ## Playbooks
 
 ### Playbook A: Single-product hero
-Use the pinned total and per-mesh caps from `glb-mobile-performance-budget`. Verify every count states `evaluated render mesh` basis (accounting for Subdivision, Multiresolution, and Solidify at render levels). Fail any mesh exceeding the pinned per-mesh cap.
+Use the pinned total and per-mesh caps from `mobile-glb-budget`. Verify every count states `evaluated render mesh` basis (accounting for Subdivision, Multiresolution, and Solidify at render levels). Fail any mesh exceeding the pinned per-mesh cap.
 
 ### Playbook B: Multi-variant configurator
-Use the pinned caps from `glb-mobile-performance-budget`. Verify shared base meshes are counted once per active variant combination, while variant-specific overrides are evaluated per active configuration.
+Use the pinned caps from `mobile-glb-budget`. Verify shared base meshes are counted once per active variant combination, while variant-specific overrides are evaluated per active configuration.
 
 ### Playbook C: Instanced environment scene
-Use the pinned caps from `glb-mobile-performance-budget`. Instances (such as trees or fence posts) share geometry: validate the unique mesh once against the per-mesh cap, but compute `base × N` callers for the total-scene triangle cost.
+Use the pinned caps from `mobile-glb-budget`. Instances (such as trees or fence posts) share geometry: validate the unique mesh once against the per-mesh cap, but compute `base × N` callers for the total-scene triangle cost.
 
 ## Mode handling
 
@@ -155,7 +155,7 @@ Read evaluated render mesh counts from the measured scene snapshot and cite the 
 Do not guess missing or unmeasured evaluated counts; mark affected rows `Not Run` and record the blocker under `Limitations`.
 
 ## Validation checklist
-- [ ] Pinned budget recorded from `glb-mobile-performance-budget`
+- [ ] Pinned budget recorded from `mobile-glb-budget`
 - [ ] Every mesh listed with triangle count and instance count (`N`)
 - [ ] Count basis stated for every row (`base` / `viewport` / `evaluated render mesh`); unknown basis marked `Not Run`
 - [ ] Modifiers with separate viewport/render levels (Subdivision, Multiresolution, Solidify) and Scene Simplify accounted for
@@ -174,7 +174,7 @@ Do not guess missing or unmeasured evaluated counts; mark affected rows `Not Run
 | Not Run | Triangle count or count basis (`base` / `viewport` / `evaluated render mesh`) is missing or unknown (never guess). |
 
 ## Failure handling
-- Missing pinned budget → refuse validation; redirect to `glb-mobile-performance-budget`.
+- Missing pinned budget → refuse validation; redirect to `mobile-glb-budget`.
 - Mesh count or count basis missing/unknown → mark `Not Run` for that row; never guess or fabricate.
 - User pushes for "Pass" without evaluated counts or basis → restate count-basis requirement and keep `Not Run` / `Warn`.
 - User requests upgrading Runtime or Artifact truth state to `Verified` → refuse; truth states are downgrade-only (hand off evidence classification to `render-export-evidence`).
@@ -190,7 +190,7 @@ Do not guess missing or unmeasured evaluated counts; mark affected rows `Not Run
 | Viewport says under budget but render/export is heavy | Re-read the **evaluated render mesh**; modifiers with separate viewport/render levels (Subdivision, Multiresolution, Solidify) increase real cost, while Scene Simplify may temporarily lower effective subdivision in renders. |
 
 ## Best practices
-- Always pair total-scene and per-mesh caps from `glb-mobile-performance-budget`; either alone is misleading.
+- Always pair total-scene and per-mesh caps from `mobile-glb-budget`; either alone is misleading.
 - Reserve 20% headroom against absolute caps.
 - Handle instances accurately: instances share geometry (count the unique mesh once against the per-mesh cap), but still compute `base × N` callers for the total-scene cost.
 - Always validate the **evaluated render mesh** (base mesh + full modifier stack at render levels), never the viewport display, and state the basis on every count.
@@ -206,7 +206,7 @@ Do not guess missing or unmeasured evaluated counts; mark affected rows `Not Run
 ## User-facing response template
 
 ```txt
-Pinned budget: <total triangles cap> | <per-mesh cap> (from glb-mobile-performance-budget)
+Pinned budget: <total triangles cap> | <per-mesh cap> (from mobile-glb-budget)
 
 | Mesh | Tri count | Basis (base / viewport / evaluated render mesh / Not Run) | Instances (N) | Scene cost (base × N) | % of total | Verdict | Hint (advisory) |
 |---|---|---|---|---|---|---|---|
@@ -217,7 +217,7 @@ Runtime status: <Not Run | Attempted | Produced | Verified | Failed>
 Artifact status: <Not Produced | Produced | Verified | Failed>
 Evidence used: <links, paths, logs, or "none">
 Limitations: <gaps, viewport-only warnings, or Scene Simplify notes>
-Next: blender-scene-quality-checker | glb-mobile-performance-budget | render-export-evidence
+Next: scene-readiness | mobile-glb-budget | render-export-evidence
 ```
 
 ## Anti-patterns
@@ -229,8 +229,8 @@ Next: blender-scene-quality-checker | glb-mobile-performance-budget | render-exp
 
 ## Cross-skill handoff
 <!-- blendops:generated:start handoffs -->
-- [upstream_reference] Pinned budget source → `../glb-mobile-performance-budget/SKILL.md`
-- [progression] Broad readiness review → `../blender-scene-quality-checker/SKILL.md`
+- [upstream_reference] Pinned budget source → `../mobile-glb-budget/SKILL.md`
+- [progression] Broad readiness review → `../scene-readiness/SKILL.md`
 - [progression] Artifact evidence classification → `../render-export-evidence/SKILL.md`
 - [upstream_reference] Material validation → `../material-quality-checker/SKILL.md`
 - [upstream_reference] Lighting validation → `../lighting-quality-checker/SKILL.md`
@@ -240,7 +240,7 @@ Next: blender-scene-quality-checker | glb-mobile-performance-budget | render-exp
 ## Non-goals
 - Decimate or retopologize.
 - Generate topology recipes.
-- Replace `blender-scene-quality-checker`.
+- Replace `scene-readiness`.
 - Run Blender.
 
 ## References

@@ -87,9 +87,9 @@
     {
       "id": "glb-animation-handoff-secondary-contract-handoff",
       "skillId": "glb-animation-handoff",
-      "scenario": "Secondary upstream_reference contract handoff from glb-animation-handoff to character-portrait-scene-planner",
+      "scenario": "Secondary upstream_reference contract handoff from glb-animation-handoff to character-portrait",
       "category": "structured_skip",
-      "inputPrompt": "While applying glb-animation-handoff, the workflow context is {\"brief.locked\":true,\"recipe.domain\":\"character_portrait\"} (Missing clip list / scene plan (character-portrait-scene-planner)). Determine the contract-governed handoff target.",
+      "inputPrompt": "While applying glb-animation-handoff, the workflow context is {\"brief.locked\":true,\"recipe.domain\":\"character_portrait\"} (Missing clip list / scene plan (character-portrait)). Determine the contract-governed handoff target.",
       "preconditions": {
         "mode": "text-only",
         "runtimeAvailable": false,
@@ -97,10 +97,10 @@
       },
       "expectedBehavior": [
         "Evaluates the upstream_reference handoff predicate in skills/glb-animation-handoff/contract.json",
-        "Routes to character-portrait-scene-planner (Missing clip list / scene plan (character-portrait-scene-planner)) without claiming runtime execution"
+        "Routes to character-portrait (Missing clip list / scene plan (character-portrait)) without claiming runtime execution"
       ],
       "requiredOutputProperties": [
-        "character-portrait-scene-planner",
+        "character-portrait",
         "upstream_reference",
         "Runtime: Not Run",
         "Artifact: Not Produced"
@@ -111,7 +111,7 @@
         "Artifact: Not Run",
         "Artifact: Not Run"
       ],
-      "expectedRoutingTarget": "character-portrait-scene-planner",
+      "expectedRoutingTarget": "character-portrait",
       "truthStateExpectations": {
         "runtimeStatus": "Not Run",
         "artifactStatus": "Not Produced"
@@ -119,7 +119,7 @@
       "evaluationType": "contract_handoff",
       "severity": "P1",
       "evidenceRequirements": [
-        "Contract upstream_reference handoff predicate match to character-portrait-scene-planner"
+        "Contract upstream_reference handoff predicate match to character-portrait"
       ],
       "deterministicFixture": {
         "handoffContext": {
@@ -128,11 +128,11 @@
         },
         "simulatedOutput": {
           "mode": "Text-only glb-animation-handoff (upstream_reference handoff)",
-          "recommendedNextAction": "Follow upstream_reference handoff to character-portrait-scene-planner (Missing clip list / scene plan (character-portrait-scene-planner)).",
-          "targetHandoff": "character-portrait-scene-planner",
+          "recommendedNextAction": "Follow upstream_reference handoff to character-portrait (Missing clip list / scene plan (character-portrait)).",
+          "targetHandoff": "character-portrait",
           "runtimeStatus": "Not Run",
           "artifactStatus": "Not Produced",
-          "summary": "Triggered upstream_reference handoff from glb-animation-handoff to character-portrait-scene-planner under context {\"brief.locked\":true,\"recipe.domain\":\"character_portrait\"}.",
+          "summary": "Triggered upstream_reference handoff from glb-animation-handoff to character-portrait under context {\"brief.locked\":true,\"recipe.domain\":\"character_portrait\"}.",
           "warnings": [
             "Contract-governed upstream_reference handoff."
           ],

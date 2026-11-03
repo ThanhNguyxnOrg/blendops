@@ -16,7 +16,7 @@ Related repository artifacts:
 - GLB 2.0 binary & structural inspector: [`../../../scripts/inspect-glb.mjs`](../../../scripts/inspect-glb.mjs)
 - Web handoff report & manifest generator: [`../../../scripts/generate-glb-handoff-report.mjs`](../../../scripts/generate-glb-handoff-report.mjs)
 - GLB web handoff skill: [`../../../skills/glb-web-handoff/SKILL.md`](../../../skills/glb-web-handoff/SKILL.md)
-- React Three Fiber component planner skill: [`../../../skills/three-fiber-component-shape-planner/SKILL.md`](../../../skills/three-fiber-component-shape-planner/SKILL.md)
+- React Three Fiber component planner skill: [`../../../skills/r3f-component-plan/SKILL.md`](../../../skills/r3f-component-plan/SKILL.md)
 - Workflow contract: [`../../workflow-contract.md`](../../workflow-contract.md)
 - Golden-path reference: [`../../golden-path-cyberpunk-shoe.md`](../../golden-path-cyberpunk-shoe.md)
 

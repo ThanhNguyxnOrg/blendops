@@ -19,8 +19,8 @@
     },
     {
       "condition": "to skip unresolved critical ambiguity or hide missing inputs",
-      "delegateTo": "blender-composition-camera-planner",
-      "reason": "Delegates out-of-scope requests to blender-composition-camera-planner"
+      "delegateTo": "camera-composition",
+      "reason": "Delegates out-of-scope requests to camera-composition"
     },
     {
       "condition": "when raw user intent still needs initial brief normalization",
@@ -34,13 +34,13 @@
     },
     {
       "condition": "when deep-diving camera/framing mechanics",
-      "delegateTo": "blender-composition-camera-planner",
-      "reason": "use blender-lighting-material-planner"
+      "delegateTo": "camera-composition",
+      "reason": "use lighting-material-plan"
     },
     {
       "condition": "when writing measurable pass/fail acceptance tables",
       "delegateTo": "acceptance-criteria-builder",
-      "reason": "use blender-scene-quality-checker"
+      "reason": "use scene-readiness"
     }
   ],
   "inputs": {
@@ -53,7 +53,7 @@
       {
         "name": "sourced_product_asset_status",
         "type": "object",
-        "description": "Hero product model posture and material readiness from blender-asset-discovery-planner"
+        "description": "Hero product model posture and material readiness from asset-discovery"
       }
     ],
     "optional": [
@@ -97,7 +97,7 @@
       }
     },
     {
-      "target": "blender-composition-camera-planner",
+      "target": "camera-composition",
       "type": "progression",
       "label": "Next (deep-dive framing & camera)",
       "when": {
@@ -116,7 +116,7 @@
       }
     },
     {
-      "target": "blender-lighting-material-planner",
+      "target": "lighting-material-plan",
       "type": "progression",
       "label": "Next (deep-dive lookdev & lighting)",
       "when": {
@@ -154,7 +154,7 @@
       }
     },
     {
-      "target": "blender-stop-condition-decider",
+      "target": "done-criteria",
       "type": "upstream_reference",
       "label": "Then (pin done condition)",
       "when": {
@@ -173,7 +173,7 @@
       }
     },
     {
-      "target": "blender-scene-quality-checker",
+      "target": "scene-readiness",
       "type": "progression",
       "label": "Later (post-build readiness review)",
       "when": {

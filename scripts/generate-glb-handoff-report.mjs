@@ -38,7 +38,7 @@ const PROTECTED_REPO_DIRS = new Set([
   'skills',
 ]);
 
-// Mid-mobile hero card planning ceilings from skills/glb-mobile-performance-budget
+// Mid-mobile hero card planning ceilings from skills/mobile-glb-budget
 export const DEFAULT_WEB_PERFORMANCE_BUDGET = Object.freeze({
   tier: 'mid-mobile-hero-default',
   maxFileSizeBytes: 5 * 1024 * 1024, // 5 MB
@@ -599,7 +599,7 @@ export function buildGlbWebHandoffManifestFromInspection(
     );
   }
   nextActions.push(
-    'Pass this handoff manifest and summary to non-blender-user-response-writer when preparing the final plain-language delivery note.',
+    'Pass this handoff manifest and summary to plain-language-response when preparing the final plain-language delivery note.',
   );
 
   const overallVerdict =

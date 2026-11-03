@@ -36,7 +36,7 @@ When a GLB ships with animation, capture the exact playback contract the consume
 - `interactive_playback_triggers` (`object`): Target loop/one-shot semantics, crossfade durations, root-motion policy, and consumer triggers
 
 ### Optional inputs
-- `mobile_rig_budget_ceilings` (`object`): Bone count, morph target, and keyframe channel ceilings from glb-mobile-performance-budget
+- `mobile_rig_budget_ceilings` (`object`): Bone count, morph target, and keyframe channel ceilings from mobile-glb-budget
 
 ### Primary outputs
 - `per_clip_animation_contract_table`
@@ -50,16 +50,16 @@ When a GLB ships with animation, capture the exact playback contract the consume
 4. flag web-playback caveats per clip (Three.js animationMixer, glTF spec quirks)
 
 ## Handoff notes
-- **[upstream_reference]** Missing clip list / scene plan (character-portrait-scene-planner) → `character-portrait-scene-planner` (`references/skills/character-portrait-scene-planner.md`) — `when.all: [brief.locked equals true; recipe.domain equals "character_portrait"]`
-- **[upstream_reference]** Missing clip list / scene plan (environment-establishing-shot-planner) → `environment-establishing-shot-planner` (`references/skills/environment-establishing-shot-planner.md`) — `when.all: [brief.locked equals true; recipe.domain equals "environment_shot"]`
-- **[upstream_reference]** Missing clip list / scene plan (interior-architectural-scene-planner) → `interior-architectural-scene-planner` (`references/skills/interior-architectural-scene-planner.md`) — `when.all: [brief.locked equals true; recipe.domain equals "interior_archviz"]`
+- **[upstream_reference]** Missing clip list / scene plan (character-portrait) → `character-portrait` (`references/skills/character-portrait.md`) — `when.all: [brief.locked equals true; recipe.domain equals "character_portrait"]`
+- **[upstream_reference]** Missing clip list / scene plan (environment-shot) → `environment-shot` (`references/skills/environment-shot.md`) — `when.all: [brief.locked equals true; recipe.domain equals "environment_shot"]`
+- **[upstream_reference]** Missing clip list / scene plan (interior-scene) → `interior-scene` (`references/skills/interior-scene.md`) — `when.all: [brief.locked equals true; recipe.domain equals "interior_archviz"]`
 - **[upstream_reference]** Missing clip list / scene plan (product-grid-scene-planner) → `product-grid-scene-planner` (`references/skills/product-grid-scene-planner.md`) — `when.all: [brief.locked equals true; recipe.domain equals "product_grid"]`
 - **[upstream_reference]** Missing clip list / scene plan (product-hero-scene-planner) → `product-hero-scene-planner` (`references/skills/product-hero-scene-planner.md`) — `when.all: [brief.locked equals true; recipe.domain equals "product_hero"]`
-- **[upstream_reference]** Channel, bone, and morph ceilings → `glb-mobile-performance-budget` (`references/skills/glb-mobile-performance-budget.md`) — `when.all: [artifact.type equals "glb"; budget.pinned equals false]`
+- **[upstream_reference]** Channel, bone, and morph ceilings → `mobile-glb-budget` (`references/skills/mobile-glb-budget.md`) — `when.all: [artifact.type equals "glb"; budget.pinned equals false]`
 - **[upstream_reference]** Export verification → `render-export-evidence` (`references/skills/render-export-evidence.md`) — `when.all: [stage.current equals "post_execution_audit"]`
 - **[progression]** Web delivery handoff → `glb-web-handoff` (`references/skills/glb-web-handoff.md`) — `when.all: [artifact.type equals "glb"; handoff.consumerStack equals "web_glb"]`
-- **[progression]** React Three Fiber component shape → `three-fiber-component-shape-planner` (`references/skills/three-fiber-component-shape-planner.md`) — `when.all: [artifact.type equals "glb"; handoff.consumerStack equals "react_three_fiber"]`
-- **[progression]** Final user-facing wording → `non-blender-user-response-writer` (`references/skills/non-blender-user-response-writer.md`) — `when.all: [stage.current equals "final_communication"]`
+- **[progression]** React Three Fiber component shape → `r3f-component-plan` (`references/skills/r3f-component-plan.md`) — `when.all: [artifact.type equals "glb"; handoff.consumerStack equals "react_three_fiber"]`
+- **[progression]** Final user-facing wording → `plain-language-response` (`references/skills/plain-language-response.md`) — `when.all: [stage.current equals "final_communication"]`
 
 ## Safety boundaries & non-goals
 - **Runtime boundary:** This skill is documentation-only. It never exports GLB, runs Blender, writes Python, or claims that a clip plays correctly without measured evidence (`render-export-evidence` for export proof plus manual viewer test for playback).

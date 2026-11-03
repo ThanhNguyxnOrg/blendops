@@ -40,12 +40,12 @@
     },
     {
       "condition": "Detailed Blender MCP runtime connection preflight",
-      "delegateTo": "official-runtime-readiness-checker",
+      "delegateTo": "runtime-readiness",
       "reason": "Inspects Path 1 or Path 2 runtime readiness in detail"
     },
     {
       "condition": "Active MCP bridge port or add-on session conflicts",
-      "delegateTo": "runtime-bridge-conflict-resolver",
+      "delegateTo": "bridge-conflicts",
       "reason": "Resolves port 9876 and dual-bridge conflicts"
     },
     {
@@ -114,7 +114,7 @@
       }
     },
     {
-      "target": "official-runtime-readiness-checker",
+      "target": "runtime-readiness",
       "type": "conditional",
       "label": "Runtime detail",
       "when": {
@@ -125,7 +125,7 @@
       }
     },
     {
-      "target": "runtime-bridge-conflict-resolver",
+      "target": "bridge-conflicts",
       "type": "fallback",
       "label": "Bridge conflicts",
       "when": {
@@ -178,7 +178,7 @@
       }
     },
     {
-      "target": "character-portrait-scene-planner",
+      "target": "character-portrait",
       "type": "alternative",
       "label": "Domain planner (character portrait when Go)",
       "when": {
@@ -189,7 +189,7 @@
       }
     },
     {
-      "target": "environment-establishing-shot-planner",
+      "target": "environment-shot",
       "type": "alternative",
       "label": "Domain planner (environment establishing shot when Go)",
       "when": {
@@ -200,7 +200,7 @@
       }
     },
     {
-      "target": "interior-architectural-scene-planner",
+      "target": "interior-scene",
       "type": "alternative",
       "label": "Domain planner (interior architectural when Go)",
       "when": {

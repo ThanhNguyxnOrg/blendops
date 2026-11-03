@@ -34,7 +34,7 @@ Metadata: Contract `v1.0.0` | Category `runtime-and-execution` | Role `headless-
 - [upstream_reference] Interactive MCP host outline → `path-one-host-outline` (`references/skill-path-one-host-outline.md`) — `when.all: [runtime.path equals "path_1"; stage.current equals "runtime_setup"]`
 - [progression] Export format choices → `output-format-decision` (`references/skill-output-format-decision.md`) — `when.all: [decision.formatLocked equals false]`
 - [progression] Actual CLI output evidence recording → `render-export-evidence` (`references/skill-render-export-evidence.md`) — `when.all: [stage.current equals "post_execution_audit"]`
-- [progression] Runtime attempt reporting → `runtime-attempt-report-writer` (`references/skill-runtime-attempt-report-writer.md`) — `when.all: [runtime.status in ["Attempted","Produced","Verified","Failed"]; request.topic equals "attempt_report"]`
+- [progression] Runtime attempt reporting → `runtime-attempt-report` (`references/skill-runtime-attempt-report.md`) — `when.all: [runtime.status in ["Attempted","Produced","Verified","Failed"]; request.topic equals "attempt_report"]`
 
 ## Safety boundaries & non-goals
 - Runtime boundary: Planning outline only — BlendOps never executes Blender and never presents arbitrary Python as the product surface. This CLI workflow is an **appendix only**, never a peer path without an eval record, and BlendOps has **no in-repo CLI evidence file yet**. Point users to the upstream Blender manual for exact CLI flags.

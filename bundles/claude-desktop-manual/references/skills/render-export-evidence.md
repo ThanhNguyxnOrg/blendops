@@ -16,8 +16,8 @@ Classify preview, render, `.blend`, and GLB/export evidence into a conservative,
 ## When to use
 - a user asks whether a preview, render, `.blend`, or GLB/export was actually produced or verified
 - an agent needs to classify raw runtime outputs into a structured, one-row-per-artifact-type evidence ledger
-- a runtime attempt (`runtime-attempt-report-writer`) recorded commands, tools, or output files that need artifact status labels
-- `pre-handoff-verification` or `preview-report-template-writer` requires classified artifact truth labels as input
+- a runtime attempt (`runtime-attempt-report`) recorded commands, tools, or output files that need artifact status labels
+- `pre-handoff-verification` or `preview-report` requires classified artifact truth labels as input
 
 ## Trigger cues
 - "Did the render produce?"
@@ -27,10 +27,10 @@ Classify preview, render, `.blend`, and GLB/export evidence into a conservative,
 - "Summarize preview/render/GLB evidence."
 
 ## When not to use
-- the user only needs a scene plan with no runtime or artifact evidence → delegate to `official-runtime-readiness-checker` (`references/skills/official-runtime-readiness-checker.md`; Delegates out-of-scope requests to official-runtime-readiness-checker)
-- runtime readiness or path selection has not been completed and the user wants setup or routing; use official-runtime-readiness-checker or runtime-path-picker → delegate to `official-runtime-readiness-checker` (`references/skills/official-runtime-readiness-checker.md`; Delegates out-of-scope requests to official-runtime-readiness-checker)
+- the user only needs a scene plan with no runtime or artifact evidence → delegate to `runtime-readiness` (`references/skills/runtime-readiness.md`; Delegates out-of-scope requests to runtime-readiness)
+- runtime readiness or path selection has not been completed and the user wants setup or routing; use runtime-readiness or runtime-path-picker → delegate to `runtime-readiness` (`references/skills/runtime-readiness.md`; Delegates out-of-scope requests to runtime-readiness)
 - the task is gating a handoff via confirm-or-downgrade rules; use pre-handoff-verification → delegate to `pre-handoff-verification` (`references/skills/pre-handoff-verification.md`; Delegates out-of-scope requests to pre-handoff-verification)
-- the task is rendering the formatted preview/eval report Markdown; use preview-report-template-writer → delegate to `preview-report-template-writer` (`references/skills/preview-report-template-writer.md`; Delegates out-of-scope requests to preview-report-template-writer)
+- the task is rendering the formatted preview/eval report Markdown; use preview-report → delegate to `preview-report` (`references/skills/preview-report.md`; Delegates out-of-scope requests to preview-report)
 - the task is GLB web integration after evidence is already classified and gated; use glb-web-handoff → delegate to `glb-web-handoff` (`references/skills/glb-web-handoff.md`; Delegates out-of-scope requests to glb-web-handoff)
 
 ## Inputs & output/evidence contract
@@ -50,21 +50,21 @@ Classify preview, render, `.blend`, and GLB/export evidence into a conservative,
 1. Identify the runtime state (`Not Run | Attempted | Produced | Verified | Failed`) and list one ledger row per claimed artifact type.
 2. Collect command/tool (plus exact command and exit code for CLI), input/script/scene, output path, current-run provenance, file existence, validation notes, and limitations.
 3. Assign the most conservative valid artifact status (`Not Run | Not Produced | Produced | Verified | Failed`, defaulting to `Not Produced`, downgrade-only) and label any Path 2 evidence as `non-release`.
-4. Pass the classified ledger to `pre-handoff-verification` to gate handoffs, `preview-report-template-writer` to render report Markdown, `glb-web-handoff` for web integration, or `non-blender-user-response-writer` for plain-language user responses.
+4. Pass the classified ledger to `pre-handoff-verification` to gate handoffs, `preview-report` to render report Markdown, `glb-web-handoff` for web integration, or `plain-language-response` for plain-language user responses.
 
 ## Handoff notes
-- **[upstream_reference]** Runtime readiness → `official-runtime-readiness-checker` (`references/skills/official-runtime-readiness-checker.md`) — `when.all: [runtime.path not_equals "unselected"; runtime.verifiedReady equals false]`
-- **[upstream_reference]** Runtime attempt recording → `runtime-attempt-report-writer` (`references/skills/runtime-attempt-report-writer.md`) — `when.all: [runtime.status in ["Attempted","Produced","Verified","Failed"]; request.topic equals "attempt_report"]`
-- **[upstream_reference]** Scene validation → `blender-scene-quality-checker` (`references/skills/blender-scene-quality-checker.md`) — `when.all: [quality.domain equals "holistic"; stage.current equals "quality_validation"]`
+- **[upstream_reference]** Runtime readiness → `runtime-readiness` (`references/skills/runtime-readiness.md`) — `when.all: [runtime.path not_equals "unselected"; runtime.verifiedReady equals false]`
+- **[upstream_reference]** Runtime attempt recording → `runtime-attempt-report` (`references/skills/runtime-attempt-report.md`) — `when.all: [runtime.status in ["Attempted","Produced","Verified","Failed"]; request.topic equals "attempt_report"]`
+- **[upstream_reference]** Scene validation → `scene-readiness` (`references/skills/scene-readiness.md`) — `when.all: [quality.domain equals "holistic"; stage.current equals "quality_validation"]`
 - **[progression]** Handoff gating (confirm-or-downgrade) → `pre-handoff-verification` (`references/skills/pre-handoff-verification.md`) — `when.all: [stage.current equals "final_verification"]`
-- **[progression]** Report Markdown rendering → `preview-report-template-writer` (`references/skills/preview-report-template-writer.md`) — `when.all: [stage.current equals "report_formatting"; handoff.consumerStack equals "stakeholder_report"]`
+- **[progression]** Report Markdown rendering → `preview-report` (`references/skills/preview-report.md`) — `when.all: [stage.current equals "report_formatting"; handoff.consumerStack equals "stakeholder_report"]`
 - **[progression]** GLB/web handoff → `glb-web-handoff` (`references/skills/glb-web-handoff.md`) — `when.all: [artifact.type equals "glb"; handoff.consumerStack equals "web_glb"]`
-- **[progression]** User-facing explanation → `non-blender-user-response-writer` (`references/skills/non-blender-user-response-writer.md`) — `when.all: [stage.current equals "final_communication"]`
+- **[progression]** User-facing explanation → `plain-language-response` (`references/skills/plain-language-response.md`) — `when.all: [stage.current equals "final_communication"]`
 
 ## Safety boundaries & non-goals
 - **Runtime boundary:** This skill classifies evidence from the 2-path + CLI appendix runtime model (see `docs/runtime-stack-strategy.md`):
 - Run Blender, render images, export GLB, or modify scene data.
 - Install or configure runtime bridges.
 - Gate handoffs or perform confirm-or-downgrade release decisions (`pre-handoff-verification`).
-- Render the formatted preview or evaluation report Markdown (`preview-report-template-writer`).
+- Render the formatted preview or evaluation report Markdown (`preview-report`).
 - Own GLB web integration handoffs (`glb-web-handoff`).

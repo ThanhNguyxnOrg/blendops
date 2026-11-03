@@ -14,7 +14,7 @@ This skill **never upgrades** a claim. It either confirms or downgrades. Use thi
 | Smoke `Pass` | check 6 (mutation tool found in list) | non-smoke evidence; relabel as `Produced` if file exists, else `Attempted` |
 | Any | check 1 (no truth label named) | **Reject handoff** until operator names a label |
 | Any | check 2 (no path attribution) | Add caveat; downgrade by one truth step until attribution recorded |
-| Any | check 7 (jargon-heavy user-facing summary) | Send back to `non-blender-user-response-writer` before retrying |
+| Any | check 7 (jargon-heavy user-facing summary) | Send back to `plain-language-response` before retrying |
 
 ## Multiple-failure rule
 

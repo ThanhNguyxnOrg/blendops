@@ -25,14 +25,14 @@ This skill **complements** `render-export-evidence` (which classifies artifact e
 - `workflow-stage-router` routes here as the final gate before handoff, or exits here on any failed upstream gate to lock in an honest downgraded truth label
 - `blendops-help` routes a user directly to verify an existing deliverable or evidence claim
 - a planner / executor / response writer says "the output is ready"
-- before saving an evidence file under `docs/evals/path-X-...md` via `runtime-attempt-report-writer` or `render-export-evidence`
+- before saving an evidence file under `docs/evals/path-X-...md` via `runtime-attempt-report` or `render-export-evidence`
 - before answering a user with `Verified` or `Produced` status
 - before tagging a release or confirming whether a claim holds or must be downgraded
 - when the operator is tempted to claim "done" but evidence is fuzzy
 
 ## When not to use
 <!-- blendops:generated:start exclusions -->
-- the workflow is still in planning / brainstorming / brief stage (no claim to verify yet) → use `../blender-scene-quality-checker/SKILL.md` (no claim to verify yet)
+- the workflow is still in planning / brainstorming / brief stage (no claim to verify yet) → use `../scene-readiness/SKILL.md` (no claim to verify yet)
 - the user explicitly asked for a draft, not a verified deliverable → use `../blender-troubleshooting/SKILL.md` (Delegates out-of-scope requests to blender-troubleshooting)
 - runtime status is Not Run and the user knows it (no verification needed when Not Run is the explicit state) → use `../render-export-evidence/SKILL.md` (no verification needed when Not Run is the explicit state)
 <!-- blendops:generated:end exclusions -->
@@ -69,7 +69,7 @@ This skill **complements** `render-export-evidence` (which classifies artifact e
 ### Optional inputs
 
 - prior evidence record paths
-- validation notes from `blender-scene-quality-checker`, `material-quality-checker`, `lighting-quality-checker`, `composition-quality-checker`, `polycount-budget-checker`, or `render-export-evidence`
+- validation notes from `scene-readiness`, `material-quality-checker`, `lighting-quality-checker`, `composition-quality-checker`, `polycount-budget-checker`, or `render-export-evidence`
 - user's explicit acceptance level ("draft is fine" vs. "must be production-ready")
 
 ### Assumptions to confirm
@@ -134,8 +134,8 @@ Run all 7 checks. Each applicable check must pass before a claim is upheld; othe
 
 - Playbook A: "Operator wants to confirm `Verified`" — run all 7 checks; downgrade to `Produced` if validation notes (check 4) are missing, or to `Attempted` / `Not Produced` if artifact paths (check 3) are missing. Ensure Path 2 is never accepted as release evidence.
 - Playbook B: "Operator wants to confirm read-only smoke test evidence" — run all 7 checks: confirm runtime truth label (check 1), Path 1 host a/b on Blender 5.1+ or caveated Path 2 (check 2), artifact state `Not Produced` (check 3), smoke validation notes (check 4), read-only tool names recorded (check 5), explicit no-`execute_blender_code` guarantee (check 6), and plain-language summary (check 7).
-- Playbook C: "Final user-facing response" — run all 7 checks with strict enforcement of check 7 via `non-blender-user-response-writer`.
-- Playbook D: "Evidence file save" — run checks 1-6 strictly for the record (`runtime-attempt-report-writer` / `render-export-evidence`), and check 7 for any user-facing summary section.
+- Playbook C: "Final user-facing response" — run all 7 checks with strict enforcement of check 7 via `plain-language-response`.
+- Playbook D: "Evidence file save" — run checks 1-6 strictly for the record (`runtime-attempt-report` / `render-export-evidence`), and check 7 for any user-facing summary section.
 
 ## Mode handling
 
@@ -190,7 +190,7 @@ Run all 7 checks. Each applicable check must pass before a claim is upheld; othe
 ## Troubleshooting
 
 - if 3+ checks fail, the workflow upstream has bigger problems — route to `blender-troubleshooting`.
-- if check 7 fails repeatedly, route through `non-blender-user-response-writer` before re-attempting verification.
+- if check 7 fails repeatedly, route through `plain-language-response` before re-attempting verification.
 
 ## Best practices
 
@@ -224,17 +224,17 @@ Run all 7 checks. Each applicable check must pass before a claim is upheld; othe
 <!-- blendops:generated:start handoffs -->
 - [boundary_delegation] Entry wiring (blendops-help) → `../blendops-help/SKILL.md`
 - [upstream_reference] Entry wiring (workflow-stage-router) → `../workflow-stage-router/SKILL.md`
-- [conditional] If verdict is Pass (non-blender-user-response-writer) → `../non-blender-user-response-writer/SKILL.md`
+- [conditional] If verdict is Pass (plain-language-response) → `../plain-language-response/SKILL.md`
 - [upstream_reference] If verdict is Pass (render-export-evidence) → `../render-export-evidence/SKILL.md`
-- [upstream_reference] If verdict is Pass (runtime-attempt-report-writer) → `../runtime-attempt-report-writer/SKILL.md`
-- [upstream_reference] scene/asset quality gap (blender-scene-quality-checker) → `../blender-scene-quality-checker/SKILL.md`
+- [upstream_reference] If verdict is Pass (runtime-attempt-report) → `../runtime-attempt-report/SKILL.md`
+- [upstream_reference] scene/asset quality gap (scene-readiness) → `../scene-readiness/SKILL.md`
 - [upstream_reference] scene/asset quality gap (composition-quality-checker) → `../composition-quality-checker/SKILL.md`
 - [upstream_reference] scene/asset quality gap (lighting-quality-checker) → `../lighting-quality-checker/SKILL.md`
 - [upstream_reference] scene/asset quality gap (material-quality-checker) → `../material-quality-checker/SKILL.md`
 - [upstream_reference] scene/asset quality gap (polycount-budget-checker) → `../polycount-budget-checker/SKILL.md`
 - [fallback] runtime/bridge failure (blender-troubleshooting) → `../blender-troubleshooting/SKILL.md`
-- [fallback] runtime/bridge failure (official-runtime-readiness-checker) → `../official-runtime-readiness-checker/SKILL.md`
-- [fallback] runtime/bridge failure (runtime-bridge-conflict-resolver) → `../runtime-bridge-conflict-resolver/SKILL.md`
+- [fallback] runtime/bridge failure (runtime-readiness) → `../runtime-readiness/SKILL.md`
+- [fallback] runtime/bridge failure (bridge-conflicts) → `../bridge-conflicts/SKILL.md`
 <!-- blendops:generated:end handoffs -->
 
 ## Non-goals

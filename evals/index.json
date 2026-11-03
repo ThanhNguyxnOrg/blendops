@@ -70,6 +70,35 @@
       }
     },
     {
+      "skillId": "asset-discovery",
+      "category": "asset-and-sourcing",
+      "isContractedSkill": true,
+      "isRoutingParticipant": false,
+      "sourceEvalTier": "structured_multi_case_table",
+      "evalJsonPath": "evals/suites/asset-discovery.eval.json",
+      "contractPath": "skills/asset-discovery/contract.json",
+      "skillMarkdownPath": "skills/asset-discovery/SKILL.md",
+      "evalMarkdownPath": "skills/asset-discovery/EVAL.md",
+      "caseCount": 9,
+      "countsByEvaluationType": {
+        "contract_routing": 0,
+        "contract_handoff": 2,
+        "deterministic_fixture": 7
+      },
+      "evaluationTypes": [
+        "deterministic_fixture",
+        "contract_handoff"
+      ],
+      "evaluationStatus": {
+        "staticValidation": "Passed",
+        "deterministicFixture": "Passed",
+        "contractRouting": "Not Applicable",
+        "contractHandoff": "Passed",
+        "liveModel": "Not Run",
+        "blenderRuntime": "Not Run"
+      }
+    },
+    {
       "skillId": "asset-fallback-strategy",
       "category": "asset-and-sourcing",
       "isContractedSkill": true,
@@ -99,15 +128,15 @@
       }
     },
     {
-      "skillId": "asset-library-organization-planner",
+      "skillId": "asset-library-plan",
       "category": "asset-and-sourcing",
       "isContractedSkill": true,
       "isRoutingParticipant": false,
       "sourceEvalTier": "prose_outline_contract_migrated",
-      "evalJsonPath": "evals/suites/asset-library-organization-planner.eval.json",
-      "contractPath": "skills/asset-library-organization-planner/contract.json",
-      "skillMarkdownPath": "skills/asset-library-organization-planner/SKILL.md",
-      "evalMarkdownPath": "skills/asset-library-organization-planner/EVAL.md",
+      "evalJsonPath": "evals/suites/asset-library-plan.eval.json",
+      "contractPath": "skills/asset-library-plan/contract.json",
+      "skillMarkdownPath": "skills/asset-library-plan/SKILL.md",
+      "evalMarkdownPath": "skills/asset-library-plan/EVAL.md",
       "caseCount": 5,
       "countsByEvaluationType": {
         "contract_routing": 0,
@@ -157,15 +186,15 @@
       }
     },
     {
-      "skillId": "asset-style-consistency-checker",
+      "skillId": "asset-style-check",
       "category": "asset-and-sourcing",
       "isContractedSkill": true,
       "isRoutingParticipant": false,
       "sourceEvalTier": "prose_outline_contract_migrated",
-      "evalJsonPath": "evals/suites/asset-style-consistency-checker.eval.json",
-      "contractPath": "skills/asset-style-consistency-checker/contract.json",
-      "skillMarkdownPath": "skills/asset-style-consistency-checker/SKILL.md",
-      "evalMarkdownPath": "skills/asset-style-consistency-checker/EVAL.md",
+      "evalJsonPath": "evals/suites/asset-style-check.eval.json",
+      "contractPath": "skills/asset-style-check/contract.json",
+      "skillMarkdownPath": "skills/asset-style-check/SKILL.md",
+      "evalMarkdownPath": "skills/asset-style-check/EVAL.md",
       "caseCount": 5,
       "countsByEvaluationType": {
         "contract_routing": 0,
@@ -175,35 +204,6 @@
       "evaluationTypes": [
         "contract_handoff",
         "deterministic_fixture"
-      ],
-      "evaluationStatus": {
-        "staticValidation": "Passed",
-        "deterministicFixture": "Passed",
-        "contractRouting": "Not Applicable",
-        "contractHandoff": "Passed",
-        "liveModel": "Not Run",
-        "blenderRuntime": "Not Run"
-      }
-    },
-    {
-      "skillId": "blender-asset-discovery-planner",
-      "category": "asset-and-sourcing",
-      "isContractedSkill": true,
-      "isRoutingParticipant": false,
-      "sourceEvalTier": "structured_multi_case_table",
-      "evalJsonPath": "evals/suites/blender-asset-discovery-planner.eval.json",
-      "contractPath": "skills/blender-asset-discovery-planner/contract.json",
-      "skillMarkdownPath": "skills/blender-asset-discovery-planner/SKILL.md",
-      "evalMarkdownPath": "skills/blender-asset-discovery-planner/EVAL.md",
-      "caseCount": 9,
-      "countsByEvaluationType": {
-        "contract_routing": 0,
-        "contract_handoff": 2,
-        "deterministic_fixture": 7
-      },
-      "evaluationTypes": [
-        "deterministic_fixture",
-        "contract_handoff"
       ],
       "evaluationStatus": {
         "staticValidation": "Passed",
@@ -244,93 +244,6 @@
       }
     },
     {
-      "skillId": "blender-checklist-driven-workflow",
-      "category": "process-discipline",
-      "isContractedSkill": true,
-      "isRoutingParticipant": false,
-      "sourceEvalTier": "prose_outline_contract_migrated",
-      "evalJsonPath": "evals/suites/blender-checklist-driven-workflow.eval.json",
-      "contractPath": "skills/blender-checklist-driven-workflow/contract.json",
-      "skillMarkdownPath": "skills/blender-checklist-driven-workflow/SKILL.md",
-      "evalMarkdownPath": "skills/blender-checklist-driven-workflow/EVAL.md",
-      "caseCount": 5,
-      "countsByEvaluationType": {
-        "contract_routing": 0,
-        "contract_handoff": 3,
-        "deterministic_fixture": 2
-      },
-      "evaluationTypes": [
-        "contract_handoff",
-        "deterministic_fixture"
-      ],
-      "evaluationStatus": {
-        "staticValidation": "Passed",
-        "deterministicFixture": "Passed",
-        "contractRouting": "Not Applicable",
-        "contractHandoff": "Passed",
-        "liveModel": "Not Run",
-        "blenderRuntime": "Not Run"
-      }
-    },
-    {
-      "skillId": "blender-composition-camera-planner",
-      "category": "scene-planners",
-      "isContractedSkill": true,
-      "isRoutingParticipant": false,
-      "sourceEvalTier": "prose_outline_contract_migrated",
-      "evalJsonPath": "evals/suites/blender-composition-camera-planner.eval.json",
-      "contractPath": "skills/blender-composition-camera-planner/contract.json",
-      "skillMarkdownPath": "skills/blender-composition-camera-planner/SKILL.md",
-      "evalMarkdownPath": "skills/blender-composition-camera-planner/EVAL.md",
-      "caseCount": 5,
-      "countsByEvaluationType": {
-        "contract_routing": 0,
-        "contract_handoff": 3,
-        "deterministic_fixture": 2
-      },
-      "evaluationTypes": [
-        "contract_handoff",
-        "deterministic_fixture"
-      ],
-      "evaluationStatus": {
-        "staticValidation": "Passed",
-        "deterministicFixture": "Passed",
-        "contractRouting": "Not Applicable",
-        "contractHandoff": "Passed",
-        "liveModel": "Not Run",
-        "blenderRuntime": "Not Run"
-      }
-    },
-    {
-      "skillId": "blender-lighting-material-planner",
-      "category": "scene-planners",
-      "isContractedSkill": true,
-      "isRoutingParticipant": false,
-      "sourceEvalTier": "prose_outline_contract_migrated",
-      "evalJsonPath": "evals/suites/blender-lighting-material-planner.eval.json",
-      "contractPath": "skills/blender-lighting-material-planner/contract.json",
-      "skillMarkdownPath": "skills/blender-lighting-material-planner/SKILL.md",
-      "evalMarkdownPath": "skills/blender-lighting-material-planner/EVAL.md",
-      "caseCount": 5,
-      "countsByEvaluationType": {
-        "contract_routing": 0,
-        "contract_handoff": 3,
-        "deterministic_fixture": 2
-      },
-      "evaluationTypes": [
-        "contract_handoff",
-        "deterministic_fixture"
-      ],
-      "evaluationStatus": {
-        "staticValidation": "Passed",
-        "deterministicFixture": "Passed",
-        "contractRouting": "Not Applicable",
-        "contractHandoff": "Passed",
-        "liveModel": "Not Run",
-        "blenderRuntime": "Not Run"
-      }
-    },
-    {
       "skillId": "blender-recipe-decomposer",
       "category": "process-discipline",
       "isContractedSkill": true,
@@ -340,93 +253,6 @@
       "contractPath": "skills/blender-recipe-decomposer/contract.json",
       "skillMarkdownPath": "skills/blender-recipe-decomposer/SKILL.md",
       "evalMarkdownPath": "skills/blender-recipe-decomposer/EVAL.md",
-      "caseCount": 5,
-      "countsByEvaluationType": {
-        "contract_routing": 0,
-        "contract_handoff": 3,
-        "deterministic_fixture": 2
-      },
-      "evaluationTypes": [
-        "contract_handoff",
-        "deterministic_fixture"
-      ],
-      "evaluationStatus": {
-        "staticValidation": "Passed",
-        "deterministicFixture": "Passed",
-        "contractRouting": "Not Applicable",
-        "contractHandoff": "Passed",
-        "liveModel": "Not Run",
-        "blenderRuntime": "Not Run"
-      }
-    },
-    {
-      "skillId": "blender-scene-quality-checker",
-      "category": "quality-validators",
-      "isContractedSkill": true,
-      "isRoutingParticipant": false,
-      "sourceEvalTier": "prose_outline_contract_migrated",
-      "evalJsonPath": "evals/suites/blender-scene-quality-checker.eval.json",
-      "contractPath": "skills/blender-scene-quality-checker/contract.json",
-      "skillMarkdownPath": "skills/blender-scene-quality-checker/SKILL.md",
-      "evalMarkdownPath": "skills/blender-scene-quality-checker/EVAL.md",
-      "caseCount": 5,
-      "countsByEvaluationType": {
-        "contract_routing": 0,
-        "contract_handoff": 3,
-        "deterministic_fixture": 2
-      },
-      "evaluationTypes": [
-        "contract_handoff",
-        "deterministic_fixture"
-      ],
-      "evaluationStatus": {
-        "staticValidation": "Passed",
-        "deterministicFixture": "Passed",
-        "contractRouting": "Not Applicable",
-        "contractHandoff": "Passed",
-        "liveModel": "Not Run",
-        "blenderRuntime": "Not Run"
-      }
-    },
-    {
-      "skillId": "blender-scope-boundary-enforcer",
-      "category": "process-discipline",
-      "isContractedSkill": true,
-      "isRoutingParticipant": false,
-      "sourceEvalTier": "prose_outline_contract_migrated",
-      "evalJsonPath": "evals/suites/blender-scope-boundary-enforcer.eval.json",
-      "contractPath": "skills/blender-scope-boundary-enforcer/contract.json",
-      "skillMarkdownPath": "skills/blender-scope-boundary-enforcer/SKILL.md",
-      "evalMarkdownPath": "skills/blender-scope-boundary-enforcer/EVAL.md",
-      "caseCount": 5,
-      "countsByEvaluationType": {
-        "contract_routing": 0,
-        "contract_handoff": 3,
-        "deterministic_fixture": 2
-      },
-      "evaluationTypes": [
-        "contract_handoff",
-        "deterministic_fixture"
-      ],
-      "evaluationStatus": {
-        "staticValidation": "Passed",
-        "deterministicFixture": "Passed",
-        "contractRouting": "Not Applicable",
-        "contractHandoff": "Passed",
-        "liveModel": "Not Run",
-        "blenderRuntime": "Not Run"
-      }
-    },
-    {
-      "skillId": "blender-stop-condition-decider",
-      "category": "process-discipline",
-      "isContractedSkill": true,
-      "isRoutingParticipant": false,
-      "sourceEvalTier": "prose_outline_contract_migrated",
-      "evalJsonPath": "evals/suites/blender-stop-condition-decider.eval.json",
-      "contractPath": "skills/blender-stop-condition-decider/contract.json",
-      "skillMarkdownPath": "skills/blender-stop-condition-decider/SKILL.md",
-      "evalMarkdownPath": "skills/blender-stop-condition-decider/EVAL.md",
       "caseCount": 5,
       "countsByEvaluationType": {
         "contract_routing": 0,
@@ -504,15 +330,73 @@
       }
     },
     {
-      "skillId": "character-portrait-scene-planner",
+      "skillId": "bridge-conflicts",
+      "category": "runtime-and-execution",
+      "isContractedSkill": true,
+      "isRoutingParticipant": false,
+      "sourceEvalTier": "structured_multi_case_table",
+      "evalJsonPath": "evals/suites/bridge-conflicts.eval.json",
+      "contractPath": "skills/bridge-conflicts/contract.json",
+      "skillMarkdownPath": "skills/bridge-conflicts/SKILL.md",
+      "evalMarkdownPath": "skills/bridge-conflicts/EVAL.md",
+      "caseCount": 9,
+      "countsByEvaluationType": {
+        "contract_routing": 0,
+        "contract_handoff": 2,
+        "deterministic_fixture": 7
+      },
+      "evaluationTypes": [
+        "deterministic_fixture",
+        "contract_handoff"
+      ],
+      "evaluationStatus": {
+        "staticValidation": "Passed",
+        "deterministicFixture": "Passed",
+        "contractRouting": "Not Applicable",
+        "contractHandoff": "Passed",
+        "liveModel": "Not Run",
+        "blenderRuntime": "Not Run"
+      }
+    },
+    {
+      "skillId": "camera-composition",
       "category": "scene-planners",
       "isContractedSkill": true,
       "isRoutingParticipant": false,
       "sourceEvalTier": "prose_outline_contract_migrated",
-      "evalJsonPath": "evals/suites/character-portrait-scene-planner.eval.json",
-      "contractPath": "skills/character-portrait-scene-planner/contract.json",
-      "skillMarkdownPath": "skills/character-portrait-scene-planner/SKILL.md",
-      "evalMarkdownPath": "skills/character-portrait-scene-planner/EVAL.md",
+      "evalJsonPath": "evals/suites/camera-composition.eval.json",
+      "contractPath": "skills/camera-composition/contract.json",
+      "skillMarkdownPath": "skills/camera-composition/SKILL.md",
+      "evalMarkdownPath": "skills/camera-composition/EVAL.md",
+      "caseCount": 5,
+      "countsByEvaluationType": {
+        "contract_routing": 0,
+        "contract_handoff": 3,
+        "deterministic_fixture": 2
+      },
+      "evaluationTypes": [
+        "contract_handoff",
+        "deterministic_fixture"
+      ],
+      "evaluationStatus": {
+        "staticValidation": "Passed",
+        "deterministicFixture": "Passed",
+        "contractRouting": "Not Applicable",
+        "contractHandoff": "Passed",
+        "liveModel": "Not Run",
+        "blenderRuntime": "Not Run"
+      }
+    },
+    {
+      "skillId": "character-portrait",
+      "category": "scene-planners",
+      "isContractedSkill": true,
+      "isRoutingParticipant": false,
+      "sourceEvalTier": "prose_outline_contract_migrated",
+      "evalJsonPath": "evals/suites/character-portrait.eval.json",
+      "contractPath": "skills/character-portrait/contract.json",
+      "skillMarkdownPath": "skills/character-portrait/SKILL.md",
+      "evalMarkdownPath": "skills/character-portrait/EVAL.md",
       "caseCount": 5,
       "countsByEvaluationType": {
         "contract_routing": 0,
@@ -649,15 +533,44 @@
       }
     },
     {
-      "skillId": "environment-establishing-shot-planner",
+      "skillId": "done-criteria",
+      "category": "process-discipline",
+      "isContractedSkill": true,
+      "isRoutingParticipant": false,
+      "sourceEvalTier": "prose_outline_contract_migrated",
+      "evalJsonPath": "evals/suites/done-criteria.eval.json",
+      "contractPath": "skills/done-criteria/contract.json",
+      "skillMarkdownPath": "skills/done-criteria/SKILL.md",
+      "evalMarkdownPath": "skills/done-criteria/EVAL.md",
+      "caseCount": 5,
+      "countsByEvaluationType": {
+        "contract_routing": 0,
+        "contract_handoff": 3,
+        "deterministic_fixture": 2
+      },
+      "evaluationTypes": [
+        "contract_handoff",
+        "deterministic_fixture"
+      ],
+      "evaluationStatus": {
+        "staticValidation": "Passed",
+        "deterministicFixture": "Passed",
+        "contractRouting": "Not Applicable",
+        "contractHandoff": "Passed",
+        "liveModel": "Not Run",
+        "blenderRuntime": "Not Run"
+      }
+    },
+    {
+      "skillId": "environment-shot",
       "category": "scene-planners",
       "isContractedSkill": true,
       "isRoutingParticipant": false,
       "sourceEvalTier": "prose_outline_contract_migrated",
-      "evalJsonPath": "evals/suites/environment-establishing-shot-planner.eval.json",
-      "contractPath": "skills/environment-establishing-shot-planner/contract.json",
-      "skillMarkdownPath": "skills/environment-establishing-shot-planner/SKILL.md",
-      "evalMarkdownPath": "skills/environment-establishing-shot-planner/EVAL.md",
+      "evalJsonPath": "evals/suites/environment-shot.eval.json",
+      "contractPath": "skills/environment-shot/contract.json",
+      "skillMarkdownPath": "skills/environment-shot/SKILL.md",
+      "evalMarkdownPath": "skills/environment-shot/EVAL.md",
       "caseCount": 5,
       "countsByEvaluationType": {
         "contract_routing": 0,
@@ -687,35 +600,6 @@
       "contractPath": "skills/glb-animation-handoff/contract.json",
       "skillMarkdownPath": "skills/glb-animation-handoff/SKILL.md",
       "evalMarkdownPath": "skills/glb-animation-handoff/EVAL.md",
-      "caseCount": 5,
-      "countsByEvaluationType": {
-        "contract_routing": 0,
-        "contract_handoff": 3,
-        "deterministic_fixture": 2
-      },
-      "evaluationTypes": [
-        "contract_handoff",
-        "deterministic_fixture"
-      ],
-      "evaluationStatus": {
-        "staticValidation": "Passed",
-        "deterministicFixture": "Passed",
-        "contractRouting": "Not Applicable",
-        "contractHandoff": "Passed",
-        "liveModel": "Not Run",
-        "blenderRuntime": "Not Run"
-      }
-    },
-    {
-      "skillId": "glb-mobile-performance-budget",
-      "category": "evidence-and-handoff",
-      "isContractedSkill": true,
-      "isRoutingParticipant": false,
-      "sourceEvalTier": "prose_outline_contract_migrated",
-      "evalJsonPath": "evals/suites/glb-mobile-performance-budget.eval.json",
-      "contractPath": "skills/glb-mobile-performance-budget/contract.json",
-      "skillMarkdownPath": "skills/glb-mobile-performance-budget/SKILL.md",
-      "evalMarkdownPath": "skills/glb-mobile-performance-budget/EVAL.md",
       "caseCount": 5,
       "countsByEvaluationType": {
         "contract_routing": 0,
@@ -794,15 +678,44 @@
       }
     },
     {
-      "skillId": "interior-architectural-scene-planner",
+      "skillId": "interior-scene",
       "category": "scene-planners",
       "isContractedSkill": true,
       "isRoutingParticipant": false,
       "sourceEvalTier": "prose_outline_contract_migrated",
-      "evalJsonPath": "evals/suites/interior-architectural-scene-planner.eval.json",
-      "contractPath": "skills/interior-architectural-scene-planner/contract.json",
-      "skillMarkdownPath": "skills/interior-architectural-scene-planner/SKILL.md",
-      "evalMarkdownPath": "skills/interior-architectural-scene-planner/EVAL.md",
+      "evalJsonPath": "evals/suites/interior-scene.eval.json",
+      "contractPath": "skills/interior-scene/contract.json",
+      "skillMarkdownPath": "skills/interior-scene/SKILL.md",
+      "evalMarkdownPath": "skills/interior-scene/EVAL.md",
+      "caseCount": 5,
+      "countsByEvaluationType": {
+        "contract_routing": 0,
+        "contract_handoff": 3,
+        "deterministic_fixture": 2
+      },
+      "evaluationTypes": [
+        "contract_handoff",
+        "deterministic_fixture"
+      ],
+      "evaluationStatus": {
+        "staticValidation": "Passed",
+        "deterministicFixture": "Passed",
+        "contractRouting": "Not Applicable",
+        "contractHandoff": "Passed",
+        "liveModel": "Not Run",
+        "blenderRuntime": "Not Run"
+      }
+    },
+    {
+      "skillId": "lighting-material-plan",
+      "category": "scene-planners",
+      "isContractedSkill": true,
+      "isRoutingParticipant": false,
+      "sourceEvalTier": "prose_outline_contract_migrated",
+      "evalJsonPath": "evals/suites/lighting-material-plan.eval.json",
+      "contractPath": "skills/lighting-material-plan/contract.json",
+      "skillMarkdownPath": "skills/lighting-material-plan/SKILL.md",
+      "evalMarkdownPath": "skills/lighting-material-plan/EVAL.md",
       "caseCount": 5,
       "countsByEvaluationType": {
         "contract_routing": 0,
@@ -881,73 +794,15 @@
       }
     },
     {
-      "skillId": "non-blender-user-response-writer",
+      "skillId": "mobile-glb-budget",
       "category": "evidence-and-handoff",
       "isContractedSkill": true,
       "isRoutingParticipant": false,
       "sourceEvalTier": "prose_outline_contract_migrated",
-      "evalJsonPath": "evals/suites/non-blender-user-response-writer.eval.json",
-      "contractPath": "skills/non-blender-user-response-writer/contract.json",
-      "skillMarkdownPath": "skills/non-blender-user-response-writer/SKILL.md",
-      "evalMarkdownPath": "skills/non-blender-user-response-writer/EVAL.md",
-      "caseCount": 5,
-      "countsByEvaluationType": {
-        "contract_routing": 0,
-        "contract_handoff": 3,
-        "deterministic_fixture": 2
-      },
-      "evaluationTypes": [
-        "contract_handoff",
-        "deterministic_fixture"
-      ],
-      "evaluationStatus": {
-        "staticValidation": "Passed",
-        "deterministicFixture": "Passed",
-        "contractRouting": "Not Applicable",
-        "contractHandoff": "Passed",
-        "liveModel": "Not Run",
-        "blenderRuntime": "Not Run"
-      }
-    },
-    {
-      "skillId": "official-runtime-readiness-checker",
-      "category": "runtime-and-execution",
-      "isContractedSkill": true,
-      "isRoutingParticipant": false,
-      "sourceEvalTier": "gateway_pilot_upgraded",
-      "evalJsonPath": "evals/suites/official-runtime-readiness-checker.eval.json",
-      "contractPath": "skills/official-runtime-readiness-checker/contract.json",
-      "skillMarkdownPath": "skills/official-runtime-readiness-checker/SKILL.md",
-      "evalMarkdownPath": "skills/official-runtime-readiness-checker/EVAL.md",
-      "caseCount": 7,
-      "countsByEvaluationType": {
-        "contract_routing": 0,
-        "contract_handoff": 2,
-        "deterministic_fixture": 5
-      },
-      "evaluationTypes": [
-        "deterministic_fixture",
-        "contract_handoff"
-      ],
-      "evaluationStatus": {
-        "staticValidation": "Passed",
-        "deterministicFixture": "Passed",
-        "contractRouting": "Not Applicable",
-        "contractHandoff": "Passed",
-        "liveModel": "Not Run",
-        "blenderRuntime": "Not Run"
-      }
-    },
-    {
-      "skillId": "official-runtime-setup-guide",
-      "category": "runtime-and-execution",
-      "isContractedSkill": true,
-      "isRoutingParticipant": false,
-      "sourceEvalTier": "prose_outline_contract_migrated",
-      "evalJsonPath": "evals/suites/official-runtime-setup-guide.eval.json",
-      "contractPath": "skills/official-runtime-setup-guide/contract.json",
-      "skillMarkdownPath": "skills/official-runtime-setup-guide/SKILL.md",
-      "evalMarkdownPath": "skills/official-runtime-setup-guide/EVAL.md",
+      "evalJsonPath": "evals/suites/mobile-glb-budget.eval.json",
+      "contractPath": "skills/mobile-glb-budget/contract.json",
+      "skillMarkdownPath": "skills/mobile-glb-budget/SKILL.md",
+      "evalMarkdownPath": "skills/mobile-glb-budget/EVAL.md",
       "caseCount": 5,
       "countsByEvaluationType": {
         "contract_routing": 0,
@@ -1054,6 +909,35 @@
       }
     },
     {
+      "skillId": "plain-language-response",
+      "category": "evidence-and-handoff",
+      "isContractedSkill": true,
+      "isRoutingParticipant": false,
+      "sourceEvalTier": "prose_outline_contract_migrated",
+      "evalJsonPath": "evals/suites/plain-language-response.eval.json",
+      "contractPath": "skills/plain-language-response/contract.json",
+      "skillMarkdownPath": "skills/plain-language-response/SKILL.md",
+      "evalMarkdownPath": "skills/plain-language-response/EVAL.md",
+      "caseCount": 5,
+      "countsByEvaluationType": {
+        "contract_routing": 0,
+        "contract_handoff": 3,
+        "deterministic_fixture": 2
+      },
+      "evaluationTypes": [
+        "contract_handoff",
+        "deterministic_fixture"
+      ],
+      "evaluationStatus": {
+        "staticValidation": "Passed",
+        "deterministicFixture": "Passed",
+        "contractRouting": "Not Applicable",
+        "contractHandoff": "Passed",
+        "liveModel": "Not Run",
+        "blenderRuntime": "Not Run"
+      }
+    },
+    {
       "skillId": "polycount-budget-checker",
       "category": "quality-validators",
       "isContractedSkill": true,
@@ -1112,15 +996,15 @@
       }
     },
     {
-      "skillId": "preview-report-template-writer",
+      "skillId": "preview-report",
       "category": "evidence-and-handoff",
       "isContractedSkill": true,
       "isRoutingParticipant": false,
       "sourceEvalTier": "prose_outline_contract_migrated",
-      "evalJsonPath": "evals/suites/preview-report-template-writer.eval.json",
-      "contractPath": "skills/preview-report-template-writer/contract.json",
-      "skillMarkdownPath": "skills/preview-report-template-writer/SKILL.md",
-      "evalMarkdownPath": "skills/preview-report-template-writer/EVAL.md",
+      "evalJsonPath": "evals/suites/preview-report.eval.json",
+      "contractPath": "skills/preview-report/contract.json",
+      "skillMarkdownPath": "skills/preview-report/SKILL.md",
+      "evalMarkdownPath": "skills/preview-report/EVAL.md",
       "caseCount": 5,
       "countsByEvaluationType": {
         "contract_routing": 0,
@@ -1179,6 +1063,35 @@
       "contractPath": "skills/product-hero-scene-planner/contract.json",
       "skillMarkdownPath": "skills/product-hero-scene-planner/SKILL.md",
       "evalMarkdownPath": "skills/product-hero-scene-planner/EVAL.md",
+      "caseCount": 5,
+      "countsByEvaluationType": {
+        "contract_routing": 0,
+        "contract_handoff": 3,
+        "deterministic_fixture": 2
+      },
+      "evaluationTypes": [
+        "contract_handoff",
+        "deterministic_fixture"
+      ],
+      "evaluationStatus": {
+        "staticValidation": "Passed",
+        "deterministicFixture": "Passed",
+        "contractRouting": "Not Applicable",
+        "contractHandoff": "Passed",
+        "liveModel": "Not Run",
+        "blenderRuntime": "Not Run"
+      }
+    },
+    {
+      "skillId": "r3f-component-plan",
+      "category": "evidence-and-handoff",
+      "isContractedSkill": true,
+      "isRoutingParticipant": false,
+      "sourceEvalTier": "prose_outline_contract_migrated",
+      "evalJsonPath": "evals/suites/r3f-component-plan.eval.json",
+      "contractPath": "skills/r3f-component-plan/contract.json",
+      "skillMarkdownPath": "skills/r3f-component-plan/SKILL.md",
+      "evalMarkdownPath": "skills/r3f-component-plan/EVAL.md",
       "caseCount": 5,
       "countsByEvaluationType": {
         "contract_routing": 0,
@@ -1285,15 +1198,15 @@
       }
     },
     {
-      "skillId": "runtime-attempt-report-writer",
+      "skillId": "runtime-attempt-report",
       "category": "runtime-and-execution",
       "isContractedSkill": true,
       "isRoutingParticipant": false,
       "sourceEvalTier": "prose_outline_contract_migrated",
-      "evalJsonPath": "evals/suites/runtime-attempt-report-writer.eval.json",
-      "contractPath": "skills/runtime-attempt-report-writer/contract.json",
-      "skillMarkdownPath": "skills/runtime-attempt-report-writer/SKILL.md",
-      "evalMarkdownPath": "skills/runtime-attempt-report-writer/EVAL.md",
+      "evalJsonPath": "evals/suites/runtime-attempt-report.eval.json",
+      "contractPath": "skills/runtime-attempt-report/contract.json",
+      "skillMarkdownPath": "skills/runtime-attempt-report/SKILL.md",
+      "evalMarkdownPath": "skills/runtime-attempt-report/EVAL.md",
       "caseCount": 5,
       "countsByEvaluationType": {
         "contract_routing": 0,
@@ -1303,35 +1216,6 @@
       "evaluationTypes": [
         "contract_handoff",
         "deterministic_fixture"
-      ],
-      "evaluationStatus": {
-        "staticValidation": "Passed",
-        "deterministicFixture": "Passed",
-        "contractRouting": "Not Applicable",
-        "contractHandoff": "Passed",
-        "liveModel": "Not Run",
-        "blenderRuntime": "Not Run"
-      }
-    },
-    {
-      "skillId": "runtime-bridge-conflict-resolver",
-      "category": "runtime-and-execution",
-      "isContractedSkill": true,
-      "isRoutingParticipant": false,
-      "sourceEvalTier": "structured_multi_case_table",
-      "evalJsonPath": "evals/suites/runtime-bridge-conflict-resolver.eval.json",
-      "contractPath": "skills/runtime-bridge-conflict-resolver/contract.json",
-      "skillMarkdownPath": "skills/runtime-bridge-conflict-resolver/SKILL.md",
-      "evalMarkdownPath": "skills/runtime-bridge-conflict-resolver/EVAL.md",
-      "caseCount": 9,
-      "countsByEvaluationType": {
-        "contract_routing": 0,
-        "contract_handoff": 2,
-        "deterministic_fixture": 7
-      },
-      "evaluationTypes": [
-        "deterministic_fixture",
-        "contract_handoff"
       ],
       "evaluationStatus": {
         "staticValidation": "Passed",
@@ -1372,15 +1256,131 @@
       }
     },
     {
-      "skillId": "three-fiber-component-shape-planner",
-      "category": "evidence-and-handoff",
+      "skillId": "runtime-readiness",
+      "category": "runtime-and-execution",
+      "isContractedSkill": true,
+      "isRoutingParticipant": false,
+      "sourceEvalTier": "gateway_pilot_upgraded",
+      "evalJsonPath": "evals/suites/runtime-readiness.eval.json",
+      "contractPath": "skills/runtime-readiness/contract.json",
+      "skillMarkdownPath": "skills/runtime-readiness/SKILL.md",
+      "evalMarkdownPath": "skills/runtime-readiness/EVAL.md",
+      "caseCount": 7,
+      "countsByEvaluationType": {
+        "contract_routing": 0,
+        "contract_handoff": 2,
+        "deterministic_fixture": 5
+      },
+      "evaluationTypes": [
+        "deterministic_fixture",
+        "contract_handoff"
+      ],
+      "evaluationStatus": {
+        "staticValidation": "Passed",
+        "deterministicFixture": "Passed",
+        "contractRouting": "Not Applicable",
+        "contractHandoff": "Passed",
+        "liveModel": "Not Run",
+        "blenderRuntime": "Not Run"
+      }
+    },
+    {
+      "skillId": "runtime-setup",
+      "category": "runtime-and-execution",
       "isContractedSkill": true,
       "isRoutingParticipant": false,
       "sourceEvalTier": "prose_outline_contract_migrated",
-      "evalJsonPath": "evals/suites/three-fiber-component-shape-planner.eval.json",
-      "contractPath": "skills/three-fiber-component-shape-planner/contract.json",
-      "skillMarkdownPath": "skills/three-fiber-component-shape-planner/SKILL.md",
-      "evalMarkdownPath": "skills/three-fiber-component-shape-planner/EVAL.md",
+      "evalJsonPath": "evals/suites/runtime-setup.eval.json",
+      "contractPath": "skills/runtime-setup/contract.json",
+      "skillMarkdownPath": "skills/runtime-setup/SKILL.md",
+      "evalMarkdownPath": "skills/runtime-setup/EVAL.md",
+      "caseCount": 5,
+      "countsByEvaluationType": {
+        "contract_routing": 0,
+        "contract_handoff": 3,
+        "deterministic_fixture": 2
+      },
+      "evaluationTypes": [
+        "contract_handoff",
+        "deterministic_fixture"
+      ],
+      "evaluationStatus": {
+        "staticValidation": "Passed",
+        "deterministicFixture": "Passed",
+        "contractRouting": "Not Applicable",
+        "contractHandoff": "Passed",
+        "liveModel": "Not Run",
+        "blenderRuntime": "Not Run"
+      }
+    },
+    {
+      "skillId": "scene-readiness",
+      "category": "quality-validators",
+      "isContractedSkill": true,
+      "isRoutingParticipant": false,
+      "sourceEvalTier": "prose_outline_contract_migrated",
+      "evalJsonPath": "evals/suites/scene-readiness.eval.json",
+      "contractPath": "skills/scene-readiness/contract.json",
+      "skillMarkdownPath": "skills/scene-readiness/SKILL.md",
+      "evalMarkdownPath": "skills/scene-readiness/EVAL.md",
+      "caseCount": 5,
+      "countsByEvaluationType": {
+        "contract_routing": 0,
+        "contract_handoff": 3,
+        "deterministic_fixture": 2
+      },
+      "evaluationTypes": [
+        "contract_handoff",
+        "deterministic_fixture"
+      ],
+      "evaluationStatus": {
+        "staticValidation": "Passed",
+        "deterministicFixture": "Passed",
+        "contractRouting": "Not Applicable",
+        "contractHandoff": "Passed",
+        "liveModel": "Not Run",
+        "blenderRuntime": "Not Run"
+      }
+    },
+    {
+      "skillId": "scope-guard",
+      "category": "process-discipline",
+      "isContractedSkill": true,
+      "isRoutingParticipant": false,
+      "sourceEvalTier": "prose_outline_contract_migrated",
+      "evalJsonPath": "evals/suites/scope-guard.eval.json",
+      "contractPath": "skills/scope-guard/contract.json",
+      "skillMarkdownPath": "skills/scope-guard/SKILL.md",
+      "evalMarkdownPath": "skills/scope-guard/EVAL.md",
+      "caseCount": 5,
+      "countsByEvaluationType": {
+        "contract_routing": 0,
+        "contract_handoff": 3,
+        "deterministic_fixture": 2
+      },
+      "evaluationTypes": [
+        "contract_handoff",
+        "deterministic_fixture"
+      ],
+      "evaluationStatus": {
+        "staticValidation": "Passed",
+        "deterministicFixture": "Passed",
+        "contractRouting": "Not Applicable",
+        "contractHandoff": "Passed",
+        "liveModel": "Not Run",
+        "blenderRuntime": "Not Run"
+      }
+    },
+    {
+      "skillId": "stage-gates",
+      "category": "process-discipline",
+      "isContractedSkill": true,
+      "isRoutingParticipant": false,
+      "sourceEvalTier": "prose_outline_contract_migrated",
+      "evalJsonPath": "evals/suites/stage-gates.eval.json",
+      "contractPath": "skills/stage-gates/contract.json",
+      "skillMarkdownPath": "skills/stage-gates/SKILL.md",
+      "evalMarkdownPath": "skills/stage-gates/EVAL.md",
       "caseCount": 5,
       "countsByEvaluationType": {
         "contract_routing": 0,

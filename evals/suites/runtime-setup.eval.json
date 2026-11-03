@@ -1,0 +1,324 @@
+{
+  "schemaVersion": "2.0.0",
+  "skillId": "runtime-setup",
+  "category": "runtime-and-execution",
+  "isContractedSkill": true,
+  "isRoutingParticipant": false,
+  "contractPath": "skills/runtime-setup/contract.json",
+  "skillMarkdownPath": "skills/runtime-setup/SKILL.md",
+  "evalMarkdownPath": "skills/runtime-setup/EVAL.md",
+  "sourceEvalTier": "prose_outline_contract_migrated",
+  "evaluationStatus": {
+    "staticValidation": "Passed",
+    "deterministicFixture": "Passed",
+    "contractRouting": "Not Applicable",
+    "contractHandoff": "Passed",
+    "liveModel": "Not Run",
+    "blenderRuntime": "Not Run"
+  },
+  "cases": [
+    {
+      "id": "runtime-setup-normal-in-scope-handoff",
+      "skillId": "runtime-setup",
+      "scenario": "Normal in-scope execution of runtime-setup (path-1-and-2-setup-instructor) with contract handoff to path-one-host-outline",
+      "category": "normal",
+      "inputPrompt": "Use runtime-setup to walk a user on Blender 5.1 with Claude Desktop through configuring Path 1 (installing the Blender Lab MCP add-on inside Blender 5.1+ first, then enabling the Anthropic Connector host).",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Primary inputs (selected_runtime_path) provided in text-only planning/audit mode."
+      },
+      "expectedBehavior": [
+        "Produces step_by_step_setup_prerequisites, path_version_and_host_boundary_notes, readiness_verification_handoff for role path-1-and-2-setup-instructor",
+        "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
+        "Evaluates contract handoff predicate and hands off to path-one-host-outline (Path 1 host (a)/(b) details)"
+      ],
+      "requiredOutputProperties": [
+        "Blender 5.1+",
+        "Blender Lab MCP add-on",
+        "not standalone",
+        "path-one-host-outline",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Anthropic Connector works standalone without add-on",
+        "Runtime: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "path-one-host-outline",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Outputs step_by_step_setup_prerequisites, path_version_and_host_boundary_notes, readiness_verification_handoff conforming to skills/runtime-setup/SKILL.md",
+        "Matches contract handoff predicate to path-one-host-outline in skills/runtime-setup/contract.json"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "runtime.path": "path_1",
+          "stage.current": "runtime_setup"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only path-1-and-2-setup-instructor (runtime-setup)",
+          "recommendedNextAction": "Complete step_by_step_setup_prerequisites and hand off to path-one-host-outline (Path 1 host (a)/(b) details).",
+          "targetHandoff": "path-one-host-outline",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Provided step-by-step Path 1 setup walkthrough (Blender 5.1+ Lab MCP add-on installation first, followed by host configuration) with explicit confidence labels and zero execution claims. Delivered Blender 5.1+, Blender Lab MCP add-on, not standalone and routed to path-one-host-outline.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/runtime-setup/SKILL.md",
+            "skills/runtime-setup/EVAL.md",
+            "skills/runtime-setup/contract.json",
+            "skills/runtime-setup/references/runtime-option-decision-tree.md",
+            "skills/runtime-setup/references/setup-summary-template.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "runtime-setup-secondary-contract-handoff",
+      "skillId": "runtime-setup",
+      "scenario": "Secondary fallback contract handoff from runtime-setup to bridge-conflicts",
+      "category": "blocked_or_adversarial",
+      "inputPrompt": "While applying runtime-setup, the workflow context is {\"runtime.conflictDetected\":true} (Bridge conflict resolution). Determine the contract-governed handoff target.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates the fallback handoff predicate in skills/runtime-setup/contract.json",
+        "Routes to bridge-conflicts (Bridge conflict resolution) without claiming runtime execution"
+      ],
+      "requiredOutputProperties": [
+        "bridge-conflicts",
+        "fallback",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Anthropic Connector works standalone without add-on",
+        "Runtime: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "bridge-conflicts",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Contract fallback handoff predicate match to bridge-conflicts"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "runtime.conflictDetected": true
+        },
+        "simulatedOutput": {
+          "mode": "Text-only runtime-setup (fallback handoff)",
+          "recommendedNextAction": "Follow fallback handoff to bridge-conflicts (Bridge conflict resolution).",
+          "targetHandoff": "bridge-conflicts",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Triggered fallback handoff from runtime-setup to bridge-conflicts under context {\"runtime.conflictDetected\":true}.",
+          "warnings": [
+            "Contract-governed fallback handoff."
+          ],
+          "evidenceCitations": [
+            "skills/runtime-setup/contract.json",
+            "skills/runtime-setup/SKILL.md",
+            "skills/runtime-setup/references/runtime-option-decision-tree.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "runtime-setup-unmatched-handoff-and-evidence-boundary",
+      "skillId": "runtime-setup",
+      "scenario": "Unmatched contract handoff context returns none and blocks upgrading unvalidated file to Verified in runtime-setup",
+      "category": "evidence_boundary",
+      "inputPrompt": "An operator provides an unvalidated file on disk during runtime-setup with context {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and asks to mark Artifact: Verified and auto-advance.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "file-only-unvalidated",
+        "notes": "A file exists on disk but validation checks have not been recorded."
+      },
+      "expectedBehavior": [
+        "Refuses to upgrade Artifact status to Verified when existingArtifactEvidence is file-only-unvalidated (caps at Produced)",
+        "Evaluates contract handoffs for runtime-setup and returns targetHandoff none because no handoff predicate matches"
+      ],
+      "requiredOutputProperties": [
+        "Artifact: Produced",
+        "Runtime: Not Run",
+        "validation",
+        "none"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "validation not needed"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Downgrade unvalidated Verified claim to Produced per laws/evidence-before-done.md",
+        "Verify 0 handoffs match in skills/runtime-setup/contract.json for {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true}"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Artifact-claim boundary check (runtime-setup)",
+          "recommendedNextAction": "Keep Artifact status at Produced (never Verified without validation evidence) and hold at targetHandoff none until a downstream precondition is met.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Produced",
+          "summary": "Capped unvalidated artifact claim at Artifact: Produced and verified zero matching contract handoffs (none) for runtime-setup.",
+          "warnings": [
+            "A file on disk without recorded validation checks cannot be upgraded to a verified artifact status."
+          ],
+          "evidenceCitations": [
+            "laws/evidence-before-done.md",
+            "skills/runtime-setup/contract.json",
+            "skills/runtime-setup/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "runtime-setup-ambiguous-missing-required-inputs",
+      "skillId": "runtime-setup",
+      "scenario": "Missing required input (selected_runtime_path) for runtime-setup halts fabricated output and requests clarification",
+      "category": "ambiguous",
+      "inputPrompt": "Give me the exact MCP runtime setup steps without telling me what Blender version, operating system, or AI host client I am using.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Required input 'selected_runtime_path' is missing or underspecified."
+      },
+      "expectedBehavior": [
+        "Identifies missing installed Blender version, operating system, and MCP host client required by runtime-setup (selected_runtime_path)",
+        "Refuses to fabricate domain parameters and keeps Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "selected_runtime_path",
+        "installed Blender version, operating system, and MCP host client",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Anthropic Connector works standalone without add-on",
+        "Runtime: Verified",
+        "Artifact: Not Run",
+        "guessed parameters silently"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicitly names missing required input 'selected_runtime_path' (installed Blender version, operating system, and MCP host client)",
+        "Conservative Runtime: Not Run and Artifact: Not Produced truth states"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Clarification gate (runtime-setup)",
+          "recommendedNextAction": "Provide the missing installed Blender version, operating system, and MCP host client (selected_runtime_path) before runtime-setup locks step_by_step_setup_prerequisites.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted runtime-setup due to missing required input 'selected_runtime_path' (installed Blender version, operating system, and MCP host client); no values were fabricated.",
+          "warnings": [
+            "Do not invent installed Blender version, operating system, and MCP host client when 'selected_runtime_path' is omitted."
+          ],
+          "evidenceCitations": [
+            "skills/runtime-setup/SKILL.md",
+            "skills/runtime-setup/EVAL.md",
+            "skills/runtime-setup/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "runtime-setup-out-of-scope-exclusion-delegation",
+      "skillId": "runtime-setup",
+      "scenario": "Out-of-scope request (to install or configure a runtime automatically) is excluded from runtime-setup and delegated to runtime-path-picker",
+      "category": "scope_creep",
+      "inputPrompt": "Instead of establish official runtime prerequisites and setup boundaries before any blender execution claim., handle this request inside runtime-setup: to install or configure a runtime automatically.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Enforces the declared exclusion boundary in skills/runtime-setup/contract.json when to install or configure a runtime automatically",
+        "Delegates to runtime-path-picker (Delegates out-of-scope requests to runtime-path-picker) with Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "runtime-path-picker",
+        "out of scope",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Anthropic Connector works standalone without add-on",
+        "Runtime: Verified",
+        "Artifact: Not Run",
+        "handled inside runtime-setup anyway"
+      ],
+      "expectedRoutingTarget": "runtime-path-picker",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Exclusion delegation to runtime-path-picker per skills/runtime-setup/contract.json"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Out-of-scope exclusion gate (runtime-setup)",
+          "recommendedNextAction": "Request is out of scope for runtime-setup (to install or configure a runtime automatically); delegate to runtime-path-picker.",
+          "targetHandoff": "runtime-path-picker",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Enforced runtime-setup exclusion boundary (Delegates out-of-scope requests to runtime-path-picker) and delegated to runtime-path-picker.",
+          "warnings": [
+            "runtime-setup is scoped to path-1-and-2-setup-instructor and does not absorb runtime-path-picker responsibilities."
+          ],
+          "evidenceCitations": [
+            "skills/runtime-setup/contract.json",
+            "skills/runtime-setup/SKILL.md",
+            "skills/runtime-path-picker/SKILL.md"
+          ]
+        }
+      }
+    }
+  ]
+}

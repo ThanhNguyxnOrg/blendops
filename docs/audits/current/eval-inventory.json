@@ -3,7 +3,7 @@
   "auditPhase": "phase-13-current",
   "reconciledFromBaselineCommit": "3ea3c35c6b8a6e5e915bab9f63333d4a1c09bd4d",
   "repository": "ThanhNguyxnOrg/blendops",
-  "branch": "main",
+  "branch": "HEAD",
   "sourceCommitSha": "112ecf75a04ab5864b3dc3656b9a27f09d1e8dcd",
   "sourceCommitShort": "112ecf7",
   "sourceCommitDate": "2026-11-01 04:55:09 -0500",
@@ -13,8 +13,8 @@
     "sourceCommitDate": "2026-11-01 04:55:09 -0500",
     "workingTreeState": "dirty",
     "snapshotBasis": "working-tree-on-top-of-source-commit",
-    "uncommittedChangeCount": 24,
-    "auditedInputsSha256": "92d003820bc75f1084d9cb0aaf852daa3a728cac0504e3f2a73c0113b94539be",
+    "uncommittedChangeCount": 397,
+    "auditedInputsSha256": "882fb54d1bc8de065c19d5d4ca036769b1aa334f4a36d9c49ae62846c1798d9b",
     "selfReferentialCommitRule": "A Git commit cannot contain its own final commit SHA inside tracked files. sourceCommitSha records the verified HEAD commit present when the generator ran, workingTreeState and snapshotBasis record whether uncommitted working-tree changes were present on top of sourceCommitSha, and auditedInputsSha256 digests the exact audited file contents."
   },
   "summary": {
@@ -57,6 +57,7 @@
       "commonFailureModeBulletCount": 0,
       "evalTierClassification": "single_prompt_prose_outline",
       "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "evalPath": "skills/acceptance-criteria-builder/EVAL.md",
       "hasMachineReadableEvalJson": true,
       "evalJsonPath": "evals/suites/acceptance-criteria-builder.eval.json",
       "machineReadableCaseCount": 5,
@@ -95,6 +96,7 @@
       "commonFailureModeBulletCount": 4,
       "evalTierClassification": "single_prompt_prose_outline",
       "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "evalPath": "skills/asset-fallback-strategy/EVAL.md",
       "hasMachineReadableEvalJson": true,
       "evalJsonPath": "evals/suites/asset-fallback-strategy.eval.json",
       "machineReadableCaseCount": 5,
@@ -112,7 +114,7 @@
       "blenderRuntimeStatus": "Not Run"
     },
     {
-      "id": "asset-library-organization-planner",
+      "id": "asset-library-plan",
       "category": "asset-and-sourcing",
       "isGatewaySkill": false,
       "lineCount": 29,
@@ -132,8 +134,9 @@
       "commonFailureModeBulletCount": 0,
       "evalTierClassification": "single_prompt_prose_outline",
       "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "evalPath": "skills/asset-library-plan/EVAL.md",
       "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/asset-library-organization-planner.eval.json",
+      "evalJsonPath": "evals/suites/asset-library-plan.eval.json",
       "machineReadableCaseCount": 5,
       "countsByEvaluationType": {
         "contract_routing": 0,
@@ -170,6 +173,7 @@
       "commonFailureModeBulletCount": 4,
       "evalTierClassification": "single_prompt_prose_outline",
       "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "evalPath": "skills/asset-license-checker/EVAL.md",
       "hasMachineReadableEvalJson": true,
       "evalJsonPath": "evals/suites/asset-license-checker.eval.json",
       "machineReadableCaseCount": 5,
@@ -187,7 +191,7 @@
       "blenderRuntimeStatus": "Not Run"
     },
     {
-      "id": "asset-style-consistency-checker",
+      "id": "asset-style-check",
       "category": "asset-and-sourcing",
       "isGatewaySkill": false,
       "lineCount": 27,
@@ -207,8 +211,9 @@
       "commonFailureModeBulletCount": 0,
       "evalTierClassification": "single_prompt_prose_outline",
       "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "evalPath": "skills/asset-style-check/EVAL.md",
       "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/asset-style-consistency-checker.eval.json",
+      "evalJsonPath": "evals/suites/asset-style-check.eval.json",
       "machineReadableCaseCount": 5,
       "countsByEvaluationType": {
         "contract_routing": 0,
@@ -224,7 +229,7 @@
       "blenderRuntimeStatus": "Not Run"
     },
     {
-      "id": "blender-asset-discovery-planner",
+      "id": "asset-discovery",
       "category": "asset-and-sourcing",
       "isGatewaySkill": false,
       "lineCount": 82,
@@ -248,8 +253,9 @@
       "commonFailureModeBulletCount": 5,
       "evalTierClassification": "structured_multi_case_table",
       "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "evalPath": "skills/asset-discovery/EVAL.md",
       "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/blender-asset-discovery-planner.eval.json",
+      "evalJsonPath": "evals/suites/asset-discovery.eval.json",
       "machineReadableCaseCount": 9,
       "countsByEvaluationType": {
         "contract_routing": 0,
@@ -289,6 +295,7 @@
       "commonFailureModeBulletCount": 4,
       "evalTierClassification": "structured_multi_case_table",
       "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "evalPath": "skills/blender-brainstorming/EVAL.md",
       "hasMachineReadableEvalJson": true,
       "evalJsonPath": "evals/suites/blender-brainstorming.eval.json",
       "machineReadableCaseCount": 7,
@@ -306,7 +313,7 @@
       "blenderRuntimeStatus": "Not Run"
     },
     {
-      "id": "blender-checklist-driven-workflow",
+      "id": "stage-gates",
       "category": "process-discipline",
       "isGatewaySkill": false,
       "lineCount": 41,
@@ -328,8 +335,9 @@
       "commonFailureModeBulletCount": 4,
       "evalTierClassification": "single_prompt_prose_outline",
       "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "evalPath": "skills/stage-gates/EVAL.md",
       "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/blender-checklist-driven-workflow.eval.json",
+      "evalJsonPath": "evals/suites/stage-gates.eval.json",
       "machineReadableCaseCount": 5,
       "countsByEvaluationType": {
         "contract_routing": 0,
@@ -345,7 +353,7 @@
       "blenderRuntimeStatus": "Not Run"
     },
     {
-      "id": "blender-composition-camera-planner",
+      "id": "camera-composition",
       "category": "scene-planners",
       "isGatewaySkill": false,
       "lineCount": 33,
@@ -367,8 +375,9 @@
       "commonFailureModeBulletCount": 2,
       "evalTierClassification": "single_prompt_prose_outline",
       "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "evalPath": "skills/camera-composition/EVAL.md",
       "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/blender-composition-camera-planner.eval.json",
+      "evalJsonPath": "evals/suites/camera-composition.eval.json",
       "machineReadableCaseCount": 5,
       "countsByEvaluationType": {
         "contract_routing": 0,
@@ -384,7 +393,7 @@
       "blenderRuntimeStatus": "Not Run"
     },
     {
-      "id": "blender-lighting-material-planner",
+      "id": "lighting-material-plan",
       "category": "scene-planners",
       "isGatewaySkill": false,
       "lineCount": 33,
@@ -406,8 +415,9 @@
       "commonFailureModeBulletCount": 2,
       "evalTierClassification": "single_prompt_prose_outline",
       "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "evalPath": "skills/lighting-material-plan/EVAL.md",
       "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/blender-lighting-material-planner.eval.json",
+      "evalJsonPath": "evals/suites/lighting-material-plan.eval.json",
       "machineReadableCaseCount": 5,
       "countsByEvaluationType": {
         "contract_routing": 0,
@@ -444,6 +454,7 @@
       "commonFailureModeBulletCount": 4,
       "evalTierClassification": "single_prompt_prose_outline",
       "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "evalPath": "skills/blender-recipe-decomposer/EVAL.md",
       "hasMachineReadableEvalJson": true,
       "evalJsonPath": "evals/suites/blender-recipe-decomposer.eval.json",
       "machineReadableCaseCount": 5,
@@ -461,7 +472,7 @@
       "blenderRuntimeStatus": "Not Run"
     },
     {
-      "id": "blender-scene-quality-checker",
+      "id": "scene-readiness",
       "category": "quality-validators",
       "isGatewaySkill": true,
       "lineCount": 34,
@@ -483,8 +494,9 @@
       "commonFailureModeBulletCount": 2,
       "evalTierClassification": "single_prompt_prose_outline",
       "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "evalPath": "skills/scene-readiness/EVAL.md",
       "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/blender-scene-quality-checker.eval.json",
+      "evalJsonPath": "evals/suites/scene-readiness.eval.json",
       "machineReadableCaseCount": 5,
       "countsByEvaluationType": {
         "contract_routing": 0,
@@ -500,7 +512,7 @@
       "blenderRuntimeStatus": "Not Run"
     },
     {
-      "id": "blender-scope-boundary-enforcer",
+      "id": "scope-guard",
       "category": "process-discipline",
       "isGatewaySkill": false,
       "lineCount": 34,
@@ -521,8 +533,9 @@
       "commonFailureModeBulletCount": 3,
       "evalTierClassification": "single_prompt_prose_outline",
       "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "evalPath": "skills/scope-guard/EVAL.md",
       "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/blender-scope-boundary-enforcer.eval.json",
+      "evalJsonPath": "evals/suites/scope-guard.eval.json",
       "machineReadableCaseCount": 5,
       "countsByEvaluationType": {
         "contract_routing": 0,
@@ -538,7 +551,7 @@
       "blenderRuntimeStatus": "Not Run"
     },
     {
-      "id": "blender-stop-condition-decider",
+      "id": "done-criteria",
       "category": "process-discipline",
       "isGatewaySkill": false,
       "lineCount": 34,
@@ -559,8 +572,9 @@
       "commonFailureModeBulletCount": 4,
       "evalTierClassification": "single_prompt_prose_outline",
       "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "evalPath": "skills/done-criteria/EVAL.md",
       "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/blender-stop-condition-decider.eval.json",
+      "evalJsonPath": "evals/suites/done-criteria.eval.json",
       "machineReadableCaseCount": 5,
       "countsByEvaluationType": {
         "contract_routing": 0,
@@ -600,6 +614,7 @@
       "commonFailureModeBulletCount": 5,
       "evalTierClassification": "structured_multi_case_table",
       "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "evalPath": "skills/blender-troubleshooting/EVAL.md",
       "hasMachineReadableEvalJson": true,
       "evalJsonPath": "evals/suites/blender-troubleshooting.eval.json",
       "machineReadableCaseCount": 8,
@@ -640,6 +655,7 @@
       "commonFailureModeBulletCount": 5,
       "evalTierClassification": "structured_multi_case_table",
       "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "evalPath": "skills/blendops-help/EVAL.md",
       "hasMachineReadableEvalJson": true,
       "evalJsonPath": "evals/suites/blendops-help.eval.json",
       "machineReadableCaseCount": 6,
@@ -656,7 +672,7 @@
       "blenderRuntimeStatus": "Not Run"
     },
     {
-      "id": "character-portrait-scene-planner",
+      "id": "character-portrait",
       "category": "scene-planners",
       "isGatewaySkill": false,
       "lineCount": 43,
@@ -678,8 +694,9 @@
       "commonFailureModeBulletCount": 4,
       "evalTierClassification": "single_prompt_prose_outline",
       "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "evalPath": "skills/character-portrait/EVAL.md",
       "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/character-portrait-scene-planner.eval.json",
+      "evalJsonPath": "evals/suites/character-portrait.eval.json",
       "machineReadableCaseCount": 5,
       "countsByEvaluationType": {
         "contract_routing": 0,
@@ -715,6 +732,7 @@
       "commonFailureModeBulletCount": 0,
       "evalTierClassification": "single_prompt_prose_outline",
       "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "evalPath": "skills/cli-appendix-job-outline/EVAL.md",
       "hasMachineReadableEvalJson": true,
       "evalJsonPath": "evals/suites/cli-appendix-job-outline.eval.json",
       "machineReadableCaseCount": 5,
@@ -752,6 +770,7 @@
       "commonFailureModeBulletCount": 0,
       "evalTierClassification": "single_prompt_prose_outline",
       "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "evalPath": "skills/color-management-decision/EVAL.md",
       "hasMachineReadableEvalJson": true,
       "evalJsonPath": "evals/suites/color-management-decision.eval.json",
       "machineReadableCaseCount": 5,
@@ -791,6 +810,7 @@
       "commonFailureModeBulletCount": 4,
       "evalTierClassification": "single_prompt_prose_outline",
       "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "evalPath": "skills/composition-quality-checker/EVAL.md",
       "hasMachineReadableEvalJson": true,
       "evalJsonPath": "evals/suites/composition-quality-checker.eval.json",
       "machineReadableCaseCount": 5,
@@ -828,6 +848,7 @@
       "commonFailureModeBulletCount": 0,
       "evalTierClassification": "single_prompt_prose_outline",
       "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "evalPath": "skills/cycles-vs-eevee-decision/EVAL.md",
       "hasMachineReadableEvalJson": true,
       "evalJsonPath": "evals/suites/cycles-vs-eevee-decision.eval.json",
       "machineReadableCaseCount": 5,
@@ -845,7 +866,7 @@
       "blenderRuntimeStatus": "Not Run"
     },
     {
-      "id": "environment-establishing-shot-planner",
+      "id": "environment-shot",
       "category": "scene-planners",
       "isGatewaySkill": false,
       "lineCount": 45,
@@ -867,8 +888,9 @@
       "commonFailureModeBulletCount": 4,
       "evalTierClassification": "single_prompt_prose_outline",
       "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "evalPath": "skills/environment-shot/EVAL.md",
       "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/environment-establishing-shot-planner.eval.json",
+      "evalJsonPath": "evals/suites/environment-shot.eval.json",
       "machineReadableCaseCount": 5,
       "countsByEvaluationType": {
         "contract_routing": 0,
@@ -906,6 +928,7 @@
       "commonFailureModeBulletCount": 4,
       "evalTierClassification": "single_prompt_prose_outline",
       "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "evalPath": "skills/glb-animation-handoff/EVAL.md",
       "hasMachineReadableEvalJson": true,
       "evalJsonPath": "evals/suites/glb-animation-handoff.eval.json",
       "machineReadableCaseCount": 5,
@@ -923,7 +946,7 @@
       "blenderRuntimeStatus": "Not Run"
     },
     {
-      "id": "glb-mobile-performance-budget",
+      "id": "mobile-glb-budget",
       "category": "evidence-and-handoff",
       "isGatewaySkill": false,
       "lineCount": 41,
@@ -945,8 +968,9 @@
       "commonFailureModeBulletCount": 4,
       "evalTierClassification": "single_prompt_prose_outline",
       "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "evalPath": "skills/mobile-glb-budget/EVAL.md",
       "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/glb-mobile-performance-budget.eval.json",
+      "evalJsonPath": "evals/suites/mobile-glb-budget.eval.json",
       "machineReadableCaseCount": 5,
       "countsByEvaluationType": {
         "contract_routing": 0,
@@ -984,6 +1008,7 @@
       "commonFailureModeBulletCount": 2,
       "evalTierClassification": "single_prompt_prose_outline",
       "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "evalPath": "skills/glb-web-handoff/EVAL.md",
       "hasMachineReadableEvalJson": true,
       "evalJsonPath": "evals/suites/glb-web-handoff.eval.json",
       "machineReadableCaseCount": 5,
@@ -1025,6 +1050,7 @@
       "commonFailureModeBulletCount": 5,
       "evalTierClassification": "structured_multi_case_table",
       "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "evalPath": "skills/intent-to-3d-brief-writer/EVAL.md",
       "hasMachineReadableEvalJson": true,
       "evalJsonPath": "evals/suites/intent-to-3d-brief-writer.eval.json",
       "machineReadableCaseCount": 9,
@@ -1042,7 +1068,7 @@
       "blenderRuntimeStatus": "Not Run"
     },
     {
-      "id": "interior-architectural-scene-planner",
+      "id": "interior-scene",
       "category": "scene-planners",
       "isGatewaySkill": false,
       "lineCount": 45,
@@ -1064,8 +1090,9 @@
       "commonFailureModeBulletCount": 4,
       "evalTierClassification": "single_prompt_prose_outline",
       "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "evalPath": "skills/interior-scene/EVAL.md",
       "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/interior-architectural-scene-planner.eval.json",
+      "evalJsonPath": "evals/suites/interior-scene.eval.json",
       "machineReadableCaseCount": 5,
       "countsByEvaluationType": {
         "contract_routing": 0,
@@ -1103,6 +1130,7 @@
       "commonFailureModeBulletCount": 4,
       "evalTierClassification": "single_prompt_prose_outline",
       "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "evalPath": "skills/lighting-quality-checker/EVAL.md",
       "hasMachineReadableEvalJson": true,
       "evalJsonPath": "evals/suites/lighting-quality-checker.eval.json",
       "machineReadableCaseCount": 5,
@@ -1142,6 +1170,7 @@
       "commonFailureModeBulletCount": 4,
       "evalTierClassification": "single_prompt_prose_outline",
       "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "evalPath": "skills/material-quality-checker/EVAL.md",
       "hasMachineReadableEvalJson": true,
       "evalJsonPath": "evals/suites/material-quality-checker.eval.json",
       "machineReadableCaseCount": 5,
@@ -1159,7 +1188,7 @@
       "blenderRuntimeStatus": "Not Run"
     },
     {
-      "id": "non-blender-user-response-writer",
+      "id": "plain-language-response",
       "category": "evidence-and-handoff",
       "isGatewaySkill": true,
       "lineCount": 34,
@@ -1181,8 +1210,9 @@
       "commonFailureModeBulletCount": 2,
       "evalTierClassification": "single_prompt_prose_outline",
       "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "evalPath": "skills/plain-language-response/EVAL.md",
       "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/non-blender-user-response-writer.eval.json",
+      "evalJsonPath": "evals/suites/plain-language-response.eval.json",
       "machineReadableCaseCount": 5,
       "countsByEvaluationType": {
         "contract_routing": 0,
@@ -1198,7 +1228,7 @@
       "blenderRuntimeStatus": "Not Run"
     },
     {
-      "id": "official-runtime-readiness-checker",
+      "id": "runtime-readiness",
       "category": "runtime-and-execution",
       "isGatewaySkill": true,
       "lineCount": 34,
@@ -1220,8 +1250,9 @@
       "commonFailureModeBulletCount": 2,
       "evalTierClassification": "single_prompt_prose_outline",
       "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "evalPath": "skills/runtime-readiness/EVAL.md",
       "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/official-runtime-readiness-checker.eval.json",
+      "evalJsonPath": "evals/suites/runtime-readiness.eval.json",
       "machineReadableCaseCount": 7,
       "countsByEvaluationType": {
         "contract_routing": 0,
@@ -1237,7 +1268,7 @@
       "blenderRuntimeStatus": "Not Run"
     },
     {
-      "id": "official-runtime-setup-guide",
+      "id": "runtime-setup",
       "category": "runtime-and-execution",
       "isGatewaySkill": false,
       "lineCount": 34,
@@ -1259,8 +1290,9 @@
       "commonFailureModeBulletCount": 2,
       "evalTierClassification": "single_prompt_prose_outline",
       "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "evalPath": "skills/runtime-setup/EVAL.md",
       "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/official-runtime-setup-guide.eval.json",
+      "evalJsonPath": "evals/suites/runtime-setup.eval.json",
       "machineReadableCaseCount": 5,
       "countsByEvaluationType": {
         "contract_routing": 0,
@@ -1296,6 +1328,7 @@
       "commonFailureModeBulletCount": 0,
       "evalTierClassification": "single_prompt_prose_outline",
       "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "evalPath": "skills/output-format-decision/EVAL.md",
       "hasMachineReadableEvalJson": true,
       "evalJsonPath": "evals/suites/output-format-decision.eval.json",
       "machineReadableCaseCount": 5,
@@ -1333,6 +1366,7 @@
       "commonFailureModeBulletCount": 0,
       "evalTierClassification": "single_prompt_prose_outline",
       "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "evalPath": "skills/pack-prerequisite-checker/EVAL.md",
       "hasMachineReadableEvalJson": true,
       "evalJsonPath": "evals/suites/pack-prerequisite-checker.eval.json",
       "machineReadableCaseCount": 5,
@@ -1369,6 +1403,7 @@
       "commonFailureModeBulletCount": 0,
       "evalTierClassification": "single_prompt_prose_outline",
       "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "evalPath": "skills/path-one-host-outline/EVAL.md",
       "hasMachineReadableEvalJson": true,
       "evalJsonPath": "evals/suites/path-one-host-outline.eval.json",
       "machineReadableCaseCount": 5,
@@ -1408,6 +1443,7 @@
       "commonFailureModeBulletCount": 4,
       "evalTierClassification": "single_prompt_prose_outline",
       "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "evalPath": "skills/polycount-budget-checker/EVAL.md",
       "hasMachineReadableEvalJson": true,
       "evalJsonPath": "evals/suites/polycount-budget-checker.eval.json",
       "machineReadableCaseCount": 5,
@@ -1449,6 +1485,7 @@
       "commonFailureModeBulletCount": 5,
       "evalTierClassification": "structured_multi_case_table",
       "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "evalPath": "skills/pre-handoff-verification/EVAL.md",
       "hasMachineReadableEvalJson": true,
       "evalJsonPath": "evals/suites/pre-handoff-verification.eval.json",
       "machineReadableCaseCount": 9,
@@ -1466,7 +1503,7 @@
       "blenderRuntimeStatus": "Not Run"
     },
     {
-      "id": "preview-report-template-writer",
+      "id": "preview-report",
       "category": "evidence-and-handoff",
       "isGatewaySkill": false,
       "lineCount": 40,
@@ -1488,8 +1525,9 @@
       "commonFailureModeBulletCount": 3,
       "evalTierClassification": "single_prompt_prose_outline",
       "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "evalPath": "skills/preview-report/EVAL.md",
       "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/preview-report-template-writer.eval.json",
+      "evalJsonPath": "evals/suites/preview-report.eval.json",
       "machineReadableCaseCount": 5,
       "countsByEvaluationType": {
         "contract_routing": 0,
@@ -1527,6 +1565,7 @@
       "commonFailureModeBulletCount": 4,
       "evalTierClassification": "single_prompt_prose_outline",
       "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "evalPath": "skills/product-grid-scene-planner/EVAL.md",
       "hasMachineReadableEvalJson": true,
       "evalJsonPath": "evals/suites/product-grid-scene-planner.eval.json",
       "machineReadableCaseCount": 5,
@@ -1566,6 +1605,7 @@
       "commonFailureModeBulletCount": 2,
       "evalTierClassification": "single_prompt_prose_outline",
       "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "evalPath": "skills/product-hero-scene-planner/EVAL.md",
       "hasMachineReadableEvalJson": true,
       "evalJsonPath": "evals/suites/product-hero-scene-planner.eval.json",
       "machineReadableCaseCount": 5,
@@ -1603,6 +1643,7 @@
       "commonFailureModeBulletCount": 0,
       "evalTierClassification": "single_prompt_prose_outline",
       "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "evalPath": "skills/recipe-fit-assessor/EVAL.md",
       "hasMachineReadableEvalJson": true,
       "evalJsonPath": "evals/suites/recipe-fit-assessor.eval.json",
       "machineReadableCaseCount": 5,
@@ -1643,6 +1684,7 @@
       "commonFailureModeBulletCount": 8,
       "evalTierClassification": "structured_multi_case_table",
       "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "evalPath": "skills/render-export-evidence/EVAL.md",
       "hasMachineReadableEvalJson": true,
       "evalJsonPath": "evals/suites/render-export-evidence.eval.json",
       "machineReadableCaseCount": 10,
@@ -1680,6 +1722,7 @@
       "commonFailureModeBulletCount": 0,
       "evalTierClassification": "single_prompt_prose_outline",
       "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "evalPath": "skills/resolution-aspect-decision/EVAL.md",
       "hasMachineReadableEvalJson": true,
       "evalJsonPath": "evals/suites/resolution-aspect-decision.eval.json",
       "machineReadableCaseCount": 5,
@@ -1697,7 +1740,7 @@
       "blenderRuntimeStatus": "Not Run"
     },
     {
-      "id": "runtime-attempt-report-writer",
+      "id": "runtime-attempt-report",
       "category": "runtime-and-execution",
       "isGatewaySkill": false,
       "lineCount": 27,
@@ -1717,8 +1760,9 @@
       "commonFailureModeBulletCount": 0,
       "evalTierClassification": "single_prompt_prose_outline",
       "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "evalPath": "skills/runtime-attempt-report/EVAL.md",
       "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/runtime-attempt-report-writer.eval.json",
+      "evalJsonPath": "evals/suites/runtime-attempt-report.eval.json",
       "machineReadableCaseCount": 5,
       "countsByEvaluationType": {
         "contract_routing": 0,
@@ -1734,7 +1778,7 @@
       "blenderRuntimeStatus": "Not Run"
     },
     {
-      "id": "runtime-bridge-conflict-resolver",
+      "id": "bridge-conflicts",
       "category": "runtime-and-execution",
       "isGatewaySkill": false,
       "lineCount": 84,
@@ -1758,8 +1802,9 @@
       "commonFailureModeBulletCount": 5,
       "evalTierClassification": "structured_multi_case_table",
       "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "evalPath": "skills/bridge-conflicts/EVAL.md",
       "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/runtime-bridge-conflict-resolver.eval.json",
+      "evalJsonPath": "evals/suites/bridge-conflicts.eval.json",
       "machineReadableCaseCount": 9,
       "countsByEvaluationType": {
         "contract_routing": 0,
@@ -1795,6 +1840,7 @@
       "commonFailureModeBulletCount": 0,
       "evalTierClassification": "single_prompt_prose_outline",
       "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "evalPath": "skills/runtime-path-picker/EVAL.md",
       "hasMachineReadableEvalJson": true,
       "evalJsonPath": "evals/suites/runtime-path-picker.eval.json",
       "machineReadableCaseCount": 5,
@@ -1812,7 +1858,7 @@
       "blenderRuntimeStatus": "Not Run"
     },
     {
-      "id": "three-fiber-component-shape-planner",
+      "id": "r3f-component-plan",
       "category": "evidence-and-handoff",
       "isGatewaySkill": false,
       "lineCount": 44,
@@ -1834,8 +1880,9 @@
       "commonFailureModeBulletCount": 4,
       "evalTierClassification": "single_prompt_prose_outline",
       "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "evalPath": "skills/r3f-component-plan/EVAL.md",
       "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/three-fiber-component-shape-planner.eval.json",
+      "evalJsonPath": "evals/suites/r3f-component-plan.eval.json",
       "machineReadableCaseCount": 5,
       "countsByEvaluationType": {
         "contract_routing": 0,
@@ -1871,6 +1918,7 @@
       "commonFailureModeBulletCount": 0,
       "evalTierClassification": "single_prompt_prose_outline",
       "auditDisposition": "EVAL_JSON_IMPLEMENTED",
+      "evalPath": "skills/workflow-stage-router/EVAL.md",
       "hasMachineReadableEvalJson": true,
       "evalJsonPath": "evals/suites/workflow-stage-router.eval.json",
       "machineReadableCaseCount": 5,

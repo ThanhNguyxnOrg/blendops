@@ -113,7 +113,7 @@ describe('Phase 5 — Full Catalog Contract Coverage & F-03 Resolution (30 Scena
 
   it('Scenario 4: adding routingPrecedence to a specialist contract fails schema validation and precedence ladder validation', () => {
     const specialist = JSON.parse(
-      fs.readFileSync(path.join(skillsDir, 'blender-composition-camera-planner', 'contract.json'), 'utf8'),
+      fs.readFileSync(path.join(skillsDir, 'camera-composition', 'contract.json'), 'utf8'),
     );
     const mutated = {
       ...specialist,
@@ -131,7 +131,7 @@ describe('Phase 5 — Full Catalog Contract Coverage & F-03 Resolution (30 Scena
     };
     const errs = validateContractObject(
       mutated,
-      'blender-composition-camera-planner',
+      'camera-composition',
       catalogSkillSet,
       undefined,
       { rootDir: root, contextFieldMap },
@@ -210,12 +210,12 @@ describe('Phase 5 — Full Catalog Contract Coverage & F-03 Resolution (30 Scena
     }
 
     const sample = JSON.parse(
-      fs.readFileSync(path.join(skillsDir, 'blender-lighting-material-planner', 'contract.json'), 'utf8'),
+      fs.readFileSync(path.join(skillsDir, 'lighting-material-plan', 'contract.json'), 'utf8'),
     );
     const escalated = { ...sample, capabilityTier: 'L1' };
     const errs = validateContractObject(
       escalated,
-      'blender-lighting-material-planner',
+      'lighting-material-plan',
       catalogSkillSet,
       undefined,
       { rootDir: root, contextFieldMap, capabilityPolicyMap: policyMap },
@@ -316,21 +316,21 @@ describe('Phase 5 — Full Catalog Contract Coverage & F-03 Resolution (30 Scena
 
   it('Scenario 11: unknown or self-referencing exclusion delegateTo or handoff target is rejected by validateContractObject', () => {
     const sample = JSON.parse(
-      fs.readFileSync(path.join(skillsDir, 'asset-style-consistency-checker', 'contract.json'), 'utf8'),
+      fs.readFileSync(path.join(skillsDir, 'asset-style-check', 'contract.json'), 'utf8'),
     );
     const badTargets = structuredClone(sample);
     badTargets.exclusions[0].delegateTo = 'non-existent-skill';
-    badTargets.handoffs[0].target = 'asset-style-consistency-checker';
+    badTargets.handoffs[0].target = 'asset-style-check';
 
     const errs = validateContractObject(
       badTargets,
-      'asset-style-consistency-checker',
+      'asset-style-check',
       catalogSkillSet,
       undefined,
       { rootDir: root, contextFieldMap },
     );
     assert.equal(errs.some((e) => e.includes("'non-existent-skill' is not a valid catalog skill ID")), true);
-    assert.equal(errs.some((e) => e.includes("cannot self-reference 'asset-style-consistency-checker'")), true);
+    assert.equal(errs.some((e) => e.includes("cannot self-reference 'asset-style-check'")), true);
   });
 
   it('Scenario 12: registry/contract-context-fields.json validates cleanly against schemas/contract-context-fields.schema.json', () => {
@@ -360,14 +360,14 @@ describe('Phase 5 — Full Catalog Contract Coverage & F-03 Resolution (30 Scena
 
   it('Scenario 14: unknown context field in a handoff when or retryPolicy.exitCondition predicate is rejected', () => {
     const sample = JSON.parse(
-      fs.readFileSync(path.join(skillsDir, 'blender-composition-camera-planner', 'contract.json'), 'utf8'),
+      fs.readFileSync(path.join(skillsDir, 'camera-composition', 'contract.json'), 'utf8'),
     );
     const mutated = structuredClone(sample);
     mutated.handoffs[0].when = {
       all: [{ field: 'unknown.domainField', operator: 'equals', value: 'passed' }],
     };
 
-    const errs = validateContractContextFields(mutated, 'blender-composition-camera-planner', contextFieldMap);
+    const errs = validateContractContextFields(mutated, 'camera-composition', contextFieldMap);
     assert.equal(
       errs.some((e) => e.includes("unknown context field 'unknown.domainField'")),
       true,
@@ -376,13 +376,13 @@ describe('Phase 5 — Full Catalog Contract Coverage & F-03 Resolution (30 Scena
 
   it('Scenario 15: wrong valueType or disallowed enum value in a context field predicate is rejected', () => {
     const sample = JSON.parse(
-      fs.readFileSync(path.join(skillsDir, 'blender-composition-camera-planner', 'contract.json'), 'utf8'),
+      fs.readFileSync(path.join(skillsDir, 'camera-composition', 'contract.json'), 'utf8'),
     );
     const badEnum = structuredClone(sample);
     badEnum.handoffs[0].when = {
       all: [{ field: 'gate.status', operator: 'equals', value: 'invented_gate_status' }],
     };
-    const errsEnum = validateContractContextFields(badEnum, 'blender-composition-camera-planner', contextFieldMap);
+    const errsEnum = validateContractContextFields(badEnum, 'camera-composition', contextFieldMap);
     assert.equal(
       errsEnum.some((e) => e.includes('not in allowedValues')),
       true,
@@ -392,7 +392,7 @@ describe('Phase 5 — Full Catalog Contract Coverage & F-03 Resolution (30 Scena
     badType.handoffs[0].when = {
       all: [{ field: 'brief.locked', operator: 'equals', value: 'yes' }],
     };
-    const errsType = validateContractContextFields(badType, 'blender-composition-camera-planner', contextFieldMap);
+    const errsType = validateContractContextFields(badType, 'camera-composition', contextFieldMap);
     assert.equal(
       errsType.some((e) => e.includes("expects valueType 'boolean'")),
       true,
@@ -521,8 +521,8 @@ describe('Phase 5 — Full Catalog Contract Coverage & F-03 Resolution (30 Scena
     }
 
     assert.ok(
-      (inDegree.get('blender-scope-boundary-enforcer') || 0) >= 2,
-      'blender-scope-boundary-enforcer must have incoming handoff edges',
+      (inDegree.get('scope-guard') || 0) >= 2,
+      'scope-guard must have incoming handoff edges',
     );
   });
 
@@ -542,7 +542,7 @@ describe('Phase 5 — Full Catalog Contract Coverage & F-03 Resolution (30 Scena
   });
 
   it('Scenario 22: managed section drift in any SKILL.md file is detected and rejected', () => {
-    const skillId = 'blender-lighting-material-planner';
+    const skillId = 'lighting-material-plan';
     const contract = JSON.parse(
       fs.readFileSync(path.join(skillsDir, skillId, 'contract.json'), 'utf8'),
     );
@@ -720,7 +720,7 @@ describe('Phase 5 — Full Catalog Contract Coverage & F-03 Resolution (30 Scena
       'registry/skills.json',
       'registry/workflow-graph.json',
       'scripts/test-phase5.mjs',
-      'skills/blender-composition-camera-planner/contract.json',
+      'skills/camera-composition/contract.json',
       'skills/workflow-stage-router/contract.json',
     ]) {
       assert.equal(

@@ -20,7 +20,7 @@
     {
       "id": "material-quality-checker-normal-in-scope-handoff",
       "skillId": "material-quality-checker",
-      "scenario": "Normal in-scope execution of material-quality-checker (pbr-and-shader-portability-validator) with contract handoff to blender-scene-quality-checker",
+      "scenario": "Normal in-scope execution of material-quality-checker (pbr-and-shader-portability-validator) with contract handoff to scene-readiness",
       "category": "normal",
       "inputPrompt": "Use material-quality-checker on a glTF-mobile scene plan with 5 Principled BSDF materials (anodized aluminum, rubber sole, woven mesh, clearcoat logo, glass lens) against a 4 MP total texture budget.",
       "preconditions": {
@@ -32,13 +32,13 @@
       "expectedBehavior": [
         "Produces pbr_material_verdict_table, gltf_shader_portability_risks, material_remediation_steps for role pbr-and-shader-portability-validator",
         "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
-        "Evaluates contract handoff predicate and hands off to blender-scene-quality-checker (Broad readiness review)"
+        "Evaluates contract handoff predicate and hands off to scene-readiness (Broad readiness review)"
       ],
       "requiredOutputProperties": [
         "per-material rows",
         "albedo energy conservation",
         "glTF 2.0 portability",
-        "blender-scene-quality-checker",
+        "scene-readiness",
         "Runtime: Not Run",
         "Artifact: Not Produced"
       ],
@@ -48,7 +48,7 @@
         "Artifact: Not Run",
         "Artifact: Not Run"
       ],
-      "expectedRoutingTarget": "blender-scene-quality-checker",
+      "expectedRoutingTarget": "scene-readiness",
       "truthStateExpectations": {
         "runtimeStatus": "Not Run",
         "artifactStatus": "Not Produced"
@@ -57,7 +57,7 @@
       "severity": "P0",
       "evidenceRequirements": [
         "Outputs pbr_material_verdict_table, gltf_shader_portability_risks, material_remediation_steps conforming to skills/material-quality-checker/SKILL.md",
-        "Matches contract handoff predicate to blender-scene-quality-checker in skills/material-quality-checker/contract.json"
+        "Matches contract handoff predicate to scene-readiness in skills/material-quality-checker/contract.json"
       ],
       "deterministicFixture": {
         "handoffContext": {
@@ -66,11 +66,11 @@
         },
         "simulatedOutput": {
           "mode": "Text-only pbr-and-shader-portability-validator (material-quality-checker)",
-          "recommendedNextAction": "Complete pbr_material_verdict_table and hand off to blender-scene-quality-checker (Broad readiness review).",
-          "targetHandoff": "blender-scene-quality-checker",
+          "recommendedNextAction": "Complete pbr_material_verdict_table and hand off to scene-readiness (Broad readiness review).",
+          "targetHandoff": "scene-readiness",
           "runtimeStatus": "Not Run",
           "artifactStatus": "Not Produced",
-          "summary": "Audited 5 per-material rows for albedo energy conservation, metallic/roughness PBR bounds, Non-Color normal maps, glTF 2.0 node portability, and 4 MP texture cap. Delivered per-material rows, albedo energy conservation, glTF 2.0 portability and routed to blender-scene-quality-checker.",
+          "summary": "Audited 5 per-material rows for albedo energy conservation, metallic/roughness PBR bounds, Non-Color normal maps, glTF 2.0 node portability, and 4 MP texture cap. Delivered per-material rows, albedo energy conservation, glTF 2.0 portability and routed to scene-readiness.",
           "warnings": [
             "Text-only workflow output; no live Blender session or artifact was executed."
           ],
@@ -87,7 +87,7 @@
     {
       "id": "material-quality-checker-secondary-contract-handoff",
       "skillId": "material-quality-checker",
-      "scenario": "Secondary retry contract handoff from material-quality-checker to blender-lighting-material-planner",
+      "scenario": "Secondary retry contract handoff from material-quality-checker to lighting-material-plan",
       "category": "blocked_or_adversarial",
       "inputPrompt": "While applying material-quality-checker, the workflow context is {\"quality.domain\":\"material\",\"quality.verdict\":\"Fail\"} (Upstream lookdev & material planning). Determine the contract-governed handoff target.",
       "preconditions": {
@@ -97,10 +97,10 @@
       },
       "expectedBehavior": [
         "Evaluates the retry handoff predicate in skills/material-quality-checker/contract.json",
-        "Routes to blender-lighting-material-planner (Upstream lookdev & material planning) without claiming runtime execution"
+        "Routes to lighting-material-plan (Upstream lookdev & material planning) without claiming runtime execution"
       ],
       "requiredOutputProperties": [
-        "blender-lighting-material-planner",
+        "lighting-material-plan",
         "retry",
         "Runtime: Not Run",
         "Artifact: Not Produced"
@@ -111,7 +111,7 @@
         "Artifact: Not Run",
         "Artifact: Not Run"
       ],
-      "expectedRoutingTarget": "blender-lighting-material-planner",
+      "expectedRoutingTarget": "lighting-material-plan",
       "truthStateExpectations": {
         "runtimeStatus": "Not Run",
         "artifactStatus": "Not Produced"
@@ -119,7 +119,7 @@
       "evaluationType": "contract_handoff",
       "severity": "P1",
       "evidenceRequirements": [
-        "Contract retry handoff predicate match to blender-lighting-material-planner"
+        "Contract retry handoff predicate match to lighting-material-plan"
       ],
       "deterministicFixture": {
         "handoffContext": {
@@ -128,13 +128,13 @@
         },
         "simulatedOutput": {
           "mode": "Text-only material-quality-checker (retry handoff)",
-          "recommendedNextAction": "Follow retry handoff to blender-lighting-material-planner (Upstream lookdev & material planning).",
-          "targetHandoff": "blender-lighting-material-planner",
+          "recommendedNextAction": "Follow retry handoff to lighting-material-plan (Upstream lookdev & material planning).",
+          "targetHandoff": "lighting-material-plan",
           "runtimeStatus": "Not Run",
           "artifactStatus": "Not Produced",
-          "summary": "Triggered retry handoff from material-quality-checker to blender-lighting-material-planner under context {\"quality.domain\":\"material\",\"quality.verdict\":\"Fail\"}.",
+          "summary": "Triggered retry handoff from material-quality-checker to lighting-material-plan under context {\"quality.domain\":\"material\",\"quality.verdict\":\"Fail\"}.",
           "warnings": [
-            "Bounded retry handoff to blender-lighting-material-planner (maxAttempts=2)."
+            "Bounded retry handoff to lighting-material-plan (maxAttempts=2)."
           ],
           "evidenceCitations": [
             "skills/material-quality-checker/contract.json",
@@ -268,7 +268,7 @@
     {
       "id": "material-quality-checker-out-of-scope-exclusion-delegation",
       "skillId": "material-quality-checker",
-      "scenario": "Out-of-scope request (upstream lookdev and material planning) is excluded from material-quality-checker and delegated to blender-lighting-material-planner",
+      "scenario": "Out-of-scope request (upstream lookdev and material planning) is excluded from material-quality-checker and delegated to lighting-material-plan",
       "category": "scope_creep",
       "inputPrompt": "Instead of validate pbr material sanity, texture budgets, and web/runtime compatibility per material before render or export., handle this request inside material-quality-checker: upstream lookdev and material planning.",
       "preconditions": {
@@ -278,10 +278,10 @@
       },
       "expectedBehavior": [
         "Enforces the declared exclusion boundary in skills/material-quality-checker/contract.json when upstream lookdev and material planning",
-        "Delegates to blender-lighting-material-planner (use blender-lighting-material-planner) with Runtime: Not Run and Artifact: Not Produced"
+        "Delegates to lighting-material-plan (use lighting-material-plan) with Runtime: Not Run and Artifact: Not Produced"
       ],
       "requiredOutputProperties": [
-        "blender-lighting-material-planner",
+        "lighting-material-plan",
         "out of scope",
         "Runtime: Not Run",
         "Artifact: Not Produced"
@@ -292,7 +292,7 @@
         "Artifact: Not Run",
         "handled inside material-quality-checker anyway"
       ],
-      "expectedRoutingTarget": "blender-lighting-material-planner",
+      "expectedRoutingTarget": "lighting-material-plan",
       "truthStateExpectations": {
         "runtimeStatus": "Not Run",
         "artifactStatus": "Not Produced"
@@ -300,23 +300,23 @@
       "evaluationType": "deterministic_fixture",
       "severity": "P1",
       "evidenceRequirements": [
-        "Exclusion delegation to blender-lighting-material-planner per skills/material-quality-checker/contract.json"
+        "Exclusion delegation to lighting-material-plan per skills/material-quality-checker/contract.json"
       ],
       "deterministicFixture": {
         "simulatedOutput": {
           "mode": "Out-of-scope exclusion gate (material-quality-checker)",
-          "recommendedNextAction": "Request is out of scope for material-quality-checker (upstream lookdev and material planning); delegate to blender-lighting-material-planner.",
-          "targetHandoff": "blender-lighting-material-planner",
+          "recommendedNextAction": "Request is out of scope for material-quality-checker (upstream lookdev and material planning); delegate to lighting-material-plan.",
+          "targetHandoff": "lighting-material-plan",
           "runtimeStatus": "Not Run",
           "artifactStatus": "Not Produced",
-          "summary": "Enforced material-quality-checker exclusion boundary (use blender-lighting-material-planner) and delegated to blender-lighting-material-planner.",
+          "summary": "Enforced material-quality-checker exclusion boundary (use lighting-material-plan) and delegated to lighting-material-plan.",
           "warnings": [
-            "material-quality-checker is scoped to pbr-and-shader-portability-validator and does not absorb blender-lighting-material-planner responsibilities."
+            "material-quality-checker is scoped to pbr-and-shader-portability-validator and does not absorb lighting-material-plan responsibilities."
           ],
           "evidenceCitations": [
             "skills/material-quality-checker/contract.json",
             "skills/material-quality-checker/SKILL.md",
-            "skills/blender-lighting-material-planner/SKILL.md"
+            "skills/lighting-material-plan/SKILL.md"
           ]
         }
       }

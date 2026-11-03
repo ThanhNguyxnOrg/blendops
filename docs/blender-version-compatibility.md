@@ -30,7 +30,7 @@ See [`runtime-stack-strategy.md`](./runtime-stack-strategy.md) and [`external-ru
 
 ## 3. Principled BSDF Shader Socket Matrix (`3.6 LTS` vs `4.2 LTS` vs `5.1+`)
 
-Blender `4.0` overhauled the **Principled BSDF** node (`ShaderNodeBsdfPrincipled`), renaming several inputs and reorganizing coat, sheen, subsurface, specular, and emission layers. Skills that plan materials (`blender-lighting-material-planner`, `material-quality-checker`) must distinguish `3.6 LTS` (Principled v1) from `4.2 LTS` and `5.1+` (Principled v2).
+Blender `4.0` overhauled the **Principled BSDF** node (`ShaderNodeBsdfPrincipled`), renaming several inputs and reorganizing coat, sheen, subsurface, specular, and emission layers. Skills that plan materials (`lighting-material-plan`, `material-quality-checker`) must distinguish `3.6 LTS` (Principled v1) from `4.2 LTS` and `5.1+` (Principled v2).
 
 | Material Property | Blender `3.6 LTS` (Principled v1) | Blender `4.2 LTS` (Principled v2) | Blender `5.1+` (Principled v2) | Domain & glTF 2.0 Impact |
 | :--- | :--- | :--- | :--- | :--- |
@@ -50,7 +50,7 @@ Blender `4.0` overhauled the **Principled BSDF** node (`ShaderNodeBsdfPrincipled
 
 ## 4. Render Engine & Lighting Compatibility Matrix (`3.6 LTS` vs `4.2 LTS` vs `5.1+`)
 
-Skills that plan rendering and lighting (`cycles-vs-eevee-decision`, `blender-lighting-material-planner`, `lighting-quality-checker`) must account for the EEVEE Next transition in `4.2 LTS` and unified identifier handling in `5.0+` / `5.1+`.
+Skills that plan rendering and lighting (`cycles-vs-eevee-decision`, `lighting-material-plan`, `lighting-quality-checker`) must account for the EEVEE Next transition in `4.2 LTS` and unified identifier handling in `5.0+` / `5.1+`.
 
 | Capability / Identifier | Blender `3.6 LTS` | Blender `4.2 LTS` | Blender `5.1+` | Planning Guidance |
 | :--- | :--- | :--- | :--- | :--- |
@@ -68,7 +68,7 @@ Skills that govern color management (`color-management-decision`, `product-hero-
 
 | View Transform | Blender `3.6 LTS` | Blender `4.2 LTS` | Blender `5.1+` | Recommended Use Case |
 | :--- | :--- | :--- | :--- | :--- |
-| **`AgX`** | Not built-in | **Default view transform** | **Default view transform** | Default for photographic/cinematic hero renders (`product-hero-scene-planner`, `character-portrait-scene-planner`) with graceful highlight desaturation. |
+| **`AgX`** | Not built-in | **Default view transform** | **Default view transform** | Default for photographic/cinematic hero renders (`product-hero-scene-planner`, `character-portrait`) with graceful highlight desaturation. |
 | **`Khronos PBR Neutral`** | Not built-in | **Built-in (`4.2+`)** | **Built-in (`5.1+`)** | Best match for e-commerce product shots and web GLB parity where brand-accurate sRGB base colors must not hue-shift under studio white light. |
 | **`Filmic`** | **Default view transform** | Built-in (legacy compatibility) | Built-in (legacy compatibility) | Use on `3.6 LTS` or when matching existing `3.x` studio look-LUT pipelines. |
 | **`Standard`** | Built-in | Built-in | Built-in | Uncompressed linear-to-sRGB transfer; use only for UI flat graphics or strict unlit color matching. |

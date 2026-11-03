@@ -10,7 +10,7 @@ Blender 5.1+ AND user will install Lab MCP add-on?
   No → Path 2 IF user accepts community bridge profile
 
 Multiple bridges configured on same instance?
-  → STOP — runtime-bridge-conflict-resolver
+  → STOP — bridge-conflicts
 
 Uncertain Blender version?
   → WARN branch: conditional recommendation table

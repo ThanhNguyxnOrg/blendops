@@ -15,8 +15,8 @@
   "exclusions": [
     {
       "condition": "upstream lookdev and material planning",
-      "delegateTo": "blender-lighting-material-planner",
-      "reason": "use blender-lighting-material-planner"
+      "delegateTo": "lighting-material-plan",
+      "reason": "use lighting-material-plan"
     },
     {
       "condition": "lighting validation",
@@ -30,8 +30,8 @@
     },
     {
       "condition": "broad pass/warn/fail scene readiness",
-      "delegateTo": "blender-scene-quality-checker",
-      "reason": "use blender-scene-quality-checker"
+      "delegateTo": "scene-readiness",
+      "reason": "use scene-readiness"
     },
     {
       "condition": "web integration and viewer handoff",
@@ -40,7 +40,7 @@
     },
     {
       "condition": "to fix or edit materials (this skill validates and emits remediation hints only; it never edits)",
-      "delegateTo": "blender-lighting-material-planner",
+      "delegateTo": "lighting-material-plan",
       "reason": "this skill validates and emits remediation hints only; it never edits"
     }
   ],
@@ -61,7 +61,7 @@
       {
         "name": "texture_memory_budget",
         "type": "object",
-        "description": "Maximum texture resolution and VRAM budget from glb-mobile-performance-budget"
+        "description": "Maximum texture resolution and VRAM budget from mobile-glb-budget"
       }
     ]
   },
@@ -79,7 +79,7 @@
   },
   "handoffs": [
     {
-      "target": "blender-lighting-material-planner",
+      "target": "lighting-material-plan",
       "type": "retry",
       "label": "Upstream lookdev & material planning",
       "when": {
@@ -113,7 +113,7 @@
       }
     },
     {
-      "target": "glb-mobile-performance-budget",
+      "target": "mobile-glb-budget",
       "type": "upstream_reference",
       "label": "Mobile/web texture budget definition",
       "when": {
@@ -132,7 +132,7 @@
       }
     },
     {
-      "target": "blender-scene-quality-checker",
+      "target": "scene-readiness",
       "type": "progression",
       "label": "Broad readiness review",
       "when": {

@@ -1,0 +1,324 @@
+{
+  "schemaVersion": "2.0.0",
+  "skillId": "scope-guard",
+  "category": "process-discipline",
+  "isContractedSkill": true,
+  "isRoutingParticipant": false,
+  "contractPath": "skills/scope-guard/contract.json",
+  "skillMarkdownPath": "skills/scope-guard/SKILL.md",
+  "evalMarkdownPath": "skills/scope-guard/EVAL.md",
+  "sourceEvalTier": "prose_outline_contract_migrated",
+  "evaluationStatus": {
+    "staticValidation": "Passed",
+    "deterministicFixture": "Passed",
+    "contractRouting": "Not Applicable",
+    "contractHandoff": "Passed",
+    "liveModel": "Not Run",
+    "blenderRuntime": "Not Run"
+  },
+  "cases": [
+    {
+      "id": "scope-guard-normal-in-scope-handoff",
+      "skillId": "scope-guard",
+      "scenario": "Normal in-scope execution of scope-guard (scope-creep-and-change-request-guard) with contract handoff to pre-handoff-verification",
+      "category": "normal",
+      "inputPrompt": "Mid-recipe during our single product-hero-v0 watch render, the stakeholder asks: \"Can you also add 4 strap color variants and a 15-second exploded-view animation?\" Apply scope-guard.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Primary inputs (locked_baseline_brief) provided in text-only planning/audit mode."
+      },
+      "expectedBehavior": [
+        "Produces scope_classification_verdict, impact_on_locked_brief_and_budget, defer_split_or_reopen_decision for role scope-creep-and-change-request-guard",
+        "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
+        "Evaluates contract handoff predicate and hands off to pre-handoff-verification (Delivery gate after scope and gates settle)"
+      ],
+      "requiredOutputProperties": [
+        "decline / add-now / defer",
+        "scope expansion",
+        "decision required",
+        "pre-handoff-verification",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "silently absorbed into current scope",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "pre-handoff-verification",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Outputs scope_classification_verdict, impact_on_locked_brief_and_budget, defer_split_or_reopen_decision conforming to skills/scope-guard/SKILL.md",
+        "Matches contract handoff predicate to pre-handoff-verification in skills/scope-guard/contract.json"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "stage.current": "final_verification"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only scope-creep-and-change-request-guard (scope-guard)",
+          "recommendedNextAction": "Complete scope_classification_verdict and hand off to pre-handoff-verification (Delivery gate after scope and gates settle).",
+          "targetHandoff": "pre-handoff-verification",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Flagged mid-flight scope expansion (4 color variants + exploded animation), presented 3 explicit options (decline / add-now / defer), and recommended deferring to a follow-up recipe. Delivered decline / add-now / defer, scope expansion, decision required and routed to pre-handoff-verification.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/scope-guard/SKILL.md",
+            "skills/scope-guard/EVAL.md",
+            "skills/scope-guard/contract.json",
+            "skills/scope-guard/references/options-language-template.md",
+            "skills/scope-guard/references/recurring-creep-patterns.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "scope-guard-secondary-contract-handoff",
+      "skillId": "scope-guard",
+      "scenario": "Secondary upstream_reference contract handoff from scope-guard to intent-to-3d-brief-writer",
+      "category": "structured_skip",
+      "inputPrompt": "While applying scope-guard, the workflow context is {\"goal.clarity\":\"clear\",\"brief.locked\":false} (Original brief). Determine the contract-governed handoff target.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates the upstream_reference handoff predicate in skills/scope-guard/contract.json",
+        "Routes to intent-to-3d-brief-writer (Original brief) without claiming runtime execution"
+      ],
+      "requiredOutputProperties": [
+        "intent-to-3d-brief-writer",
+        "upstream_reference",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "silently absorbed into current scope",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "intent-to-3d-brief-writer",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Contract upstream_reference handoff predicate match to intent-to-3d-brief-writer"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "goal.clarity": "clear",
+          "brief.locked": false
+        },
+        "simulatedOutput": {
+          "mode": "Text-only scope-guard (upstream_reference handoff)",
+          "recommendedNextAction": "Follow upstream_reference handoff to intent-to-3d-brief-writer (Original brief).",
+          "targetHandoff": "intent-to-3d-brief-writer",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Triggered upstream_reference handoff from scope-guard to intent-to-3d-brief-writer under context {\"goal.clarity\":\"clear\",\"brief.locked\":false}.",
+          "warnings": [
+            "Contract-governed upstream_reference handoff."
+          ],
+          "evidenceCitations": [
+            "skills/scope-guard/contract.json",
+            "skills/scope-guard/SKILL.md",
+            "skills/scope-guard/references/options-language-template.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "scope-guard-unmatched-handoff-and-evidence-boundary",
+      "skillId": "scope-guard",
+      "scenario": "Unmatched contract handoff context returns none and blocks upgrading unvalidated file to Verified in scope-guard",
+      "category": "evidence_boundary",
+      "inputPrompt": "An operator provides an unvalidated file on disk during scope-guard with context {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and asks to mark Artifact: Verified and auto-advance.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "file-only-unvalidated",
+        "notes": "A file exists on disk but validation checks have not been recorded."
+      },
+      "expectedBehavior": [
+        "Refuses to upgrade Artifact status to Verified when existingArtifactEvidence is file-only-unvalidated (caps at Produced)",
+        "Evaluates contract handoffs for scope-guard and returns targetHandoff none because no handoff predicate matches"
+      ],
+      "requiredOutputProperties": [
+        "Artifact: Produced",
+        "Runtime: Not Run",
+        "validation",
+        "none"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "validation not needed"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Downgrade unvalidated Verified claim to Produced per laws/evidence-before-done.md",
+        "Verify 0 handoffs match in skills/scope-guard/contract.json for {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true}"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Artifact-claim boundary check (scope-guard)",
+          "recommendedNextAction": "Keep Artifact status at Produced (never Verified without validation evidence) and hold at targetHandoff none until a downstream precondition is met.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Produced",
+          "summary": "Capped unvalidated artifact claim at Artifact: Produced and verified zero matching contract handoffs (none) for scope-guard.",
+          "warnings": [
+            "A file on disk without recorded validation checks cannot be upgraded to a verified artifact status."
+          ],
+          "evidenceCitations": [
+            "laws/evidence-before-done.md",
+            "skills/scope-guard/contract.json",
+            "skills/scope-guard/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "scope-guard-ambiguous-missing-required-inputs",
+      "skillId": "scope-guard",
+      "scenario": "Missing required input (locked_baseline_brief) for scope-guard halts fabricated output and requests clarification",
+      "category": "ambiguous",
+      "inputPrompt": "Enforce scope boundaries on a stakeholder change request when neither the original locked brief nor the requested addition has been described.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Required input 'locked_baseline_brief' is missing or underspecified."
+      },
+      "expectedBehavior": [
+        "Identifies missing baseline locked brief scope and specific stakeholder change request required by scope-guard (locked_baseline_brief)",
+        "Refuses to fabricate domain parameters and keeps Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "locked_baseline_brief",
+        "baseline locked brief scope and specific stakeholder change request",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "silently absorbed into current scope",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "guessed parameters silently"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicitly names missing required input 'locked_baseline_brief' (baseline locked brief scope and specific stakeholder change request)",
+        "Conservative Runtime: Not Run and Artifact: Not Produced truth states"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Clarification gate (scope-guard)",
+          "recommendedNextAction": "Provide the missing baseline locked brief scope and specific stakeholder change request (locked_baseline_brief) before scope-guard locks scope_classification_verdict.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted scope-guard due to missing required input 'locked_baseline_brief' (baseline locked brief scope and specific stakeholder change request); no values were fabricated.",
+          "warnings": [
+            "Do not invent baseline locked brief scope and specific stakeholder change request when 'locked_baseline_brief' is omitted."
+          ],
+          "evidenceCitations": [
+            "skills/scope-guard/SKILL.md",
+            "skills/scope-guard/EVAL.md",
+            "skills/scope-guard/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "scope-guard-out-of-scope-exclusion-delegation",
+      "skillId": "scope-guard",
+      "scenario": "Out-of-scope request (early planning before scope is pinned) is excluded from scope-guard and delegated to done-criteria",
+      "category": "scope_creep",
+      "inputPrompt": "Instead of detect mid-recipe scope creep and push back constructively before the recipe drifts; require explicit user agreement before scope expansion., handle this request inside scope-guard: early planning before scope is pinned.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Enforces the declared exclusion boundary in skills/scope-guard/contract.json when early planning before scope is pinned",
+        "Delegates to done-criteria (use intent-to-3d-brief-writer and done-criteria) with Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "done-criteria",
+        "out of scope",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "silently absorbed into current scope",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "handled inside scope-guard anyway"
+      ],
+      "expectedRoutingTarget": "done-criteria",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Exclusion delegation to done-criteria per skills/scope-guard/contract.json"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Out-of-scope exclusion gate (scope-guard)",
+          "recommendedNextAction": "Request is out of scope for scope-guard (early planning before scope is pinned); delegate to done-criteria.",
+          "targetHandoff": "done-criteria",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Enforced scope-guard exclusion boundary (use intent-to-3d-brief-writer and done-criteria) and delegated to done-criteria.",
+          "warnings": [
+            "scope-guard is scoped to scope-creep-and-change-request-guard and does not absorb done-criteria responsibilities."
+          ],
+          "evidenceCitations": [
+            "skills/scope-guard/contract.json",
+            "skills/scope-guard/SKILL.md",
+            "skills/done-criteria/SKILL.md"
+          ]
+        }
+      }
+    }
+  ]
+}

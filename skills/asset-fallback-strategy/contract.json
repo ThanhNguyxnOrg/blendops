@@ -20,7 +20,7 @@
     },
     {
       "condition": "pure exploration (no concrete asset list)",
-      "delegateTo": "blender-asset-discovery-planner",
+      "delegateTo": "asset-discovery",
       "reason": "no concrete asset list"
     },
     {
@@ -46,7 +46,7 @@
       {
         "name": "local_library_manifest",
         "type": "object",
-        "description": "Optional inventory of cleared local assets from asset-library-organization-planner"
+        "description": "Optional inventory of cleared local assets from asset-library-plan"
       }
     ]
   },
@@ -64,7 +64,7 @@
   },
   "handoffs": [
     {
-      "target": "blender-asset-discovery-planner",
+      "target": "asset-discovery",
       "type": "upstream_reference",
       "label": "Re-source external asset",
       "when": {
@@ -83,7 +83,7 @@
       }
     },
     {
-      "target": "asset-library-organization-planner",
+      "target": "asset-library-plan",
       "type": "progression",
       "label": "Internal library lookup",
       "when": {
@@ -121,7 +121,7 @@
       }
     },
     {
-      "target": "asset-style-consistency-checker",
+      "target": "asset-style-check",
       "type": "fallback",
       "label": "Style re-check on replacement",
       "when": {
@@ -140,7 +140,7 @@
       }
     },
     {
-      "target": "glb-mobile-performance-budget",
+      "target": "mobile-glb-budget",
       "type": "progression",
       "label": "Budget re-check on replacement",
       "when": {
@@ -159,7 +159,7 @@
       }
     },
     {
-      "target": "blender-scope-boundary-enforcer",
+      "target": "scope-guard",
       "type": "fallback",
       "label": "Scope reduction when no viable fallback exists",
       "when": {

@@ -37,7 +37,7 @@ Use this skill when:
 - The user explicitly asks to turn an idea into a structured 3D brief → use `../intent-to-3d-brief-writer/SKILL.md` (Locks the canonical 8-slot 3D brief before scene planning)
 - The user asks to plan a product-hero scene directly → use `../product-hero-scene-planner/SKILL.md` (Handles domain-specific scene planning once brief and recipe are known)
 - The user asks for render or export artifact verification → use `../render-export-evidence/SKILL.md` (Classifies artifact truth states from on-disk paths and validation notes)
-- The user asks for Blender MCP runtime preflight verification → use `../official-runtime-readiness-checker/SKILL.md` (Verifies Path 1 or Path 2 runtime readiness without claiming execution)
+- The user asks for Blender MCP runtime preflight verification → use `../runtime-readiness/SKILL.md` (Verifies Path 1 or Path 2 runtime readiness without claiming execution)
 <!-- blendops:generated:end exclusions -->
 
 ## Trigger phrases
@@ -113,7 +113,7 @@ Why this is safe: <reason>
 
 ## Official runtime boundary
 
-Before runtime work, point to `../../docs/runtime-stack-strategy.md`, `runtime-path-picker`, and `official-runtime-readiness-checker`.
+Before runtime work, point to `../../docs/runtime-stack-strategy.md`, `runtime-path-picker`, and `runtime-readiness`.
 
 BlendOps runtime guidance uses **2 MCP execution paths plus a CLI fallback appendix**:
 
@@ -121,7 +121,7 @@ BlendOps runtime guidance uses **2 MCP execution paths plus a CLI fallback appen
 2. **Path 2 — Community `mcp-for-blender` (renamed from `ahujasid/blender-mcp`)**, third-party, Blender 3.0+, started via `uvx mcp-for-blender`. Use only with caveats and **never** accepted as release evidence.
 3. **CLI fallback (appendix only)** — `blender --background --python` (documented flags: `--background`, `--python`, `-E/--engine`; run `blender -E help` for exact engine tokens). Appendix only, **never** a peer path without an eval record.
 
-Single-bridge constraint: One MCP bridge is allowed per Blender instance (default port 9876; side-by-side on separate instances via per-instance `--port 9877` is supported upstream). If bridge conflicts occur, route to `runtime-bridge-conflict-resolver`.
+Single-bridge constraint: One MCP bridge is allowed per Blender instance (default port 9876; side-by-side on separate instances via per-instance `--port 9877` is supported upstream). If bridge conflicts occur, route to `bridge-conflicts`.
 
 This skill does not run Blender, mutate scenes, render, export, install runtimes, or claim artifacts.
 
@@ -152,9 +152,9 @@ Goal clear and artifacts already exist?
 Need to turn a rough idea into a 3D brief?
   → intent-to-3d-brief-writer
 Need an initial scene plan (no artifacts yet)?
-  → product-hero-scene-planner (or character-portrait-scene-planner / environment-establishing-shot-planner / interior-architectural-scene-planner / product-grid-scene-planner)
+  → product-hero-scene-planner (or character-portrait / environment-shot / interior-scene / product-grid-scene-planner)
 Need runtime path choice, setup, or preflight?
-  → runtime-path-picker / official-runtime-setup-guide / official-runtime-readiness-checker
+  → runtime-path-picker / runtime-setup / runtime-readiness
 Need artifact proof?
   → render-export-evidence
 Need install/package docs?
@@ -173,7 +173,7 @@ Need release readiness docs?
 
 ### Playbook B: Runtime request
 
-- Route to `runtime-path-picker`, `official-runtime-setup-guide`, or `official-runtime-readiness-checker`.
+- Route to `runtime-path-picker`, `runtime-setup`, or `runtime-readiness`.
 - Require read-only inspection smoke test before mutation (`execute_blender_code`), render, or export.
 - Do not treat readiness as runtime success; keep states downgrade-only.
 
@@ -247,7 +247,7 @@ Name blocker and suggest the next non-runtime planning or documentation step.
 
 ## Good examples
 
-- “Next safe action: run `official-runtime-readiness-checker` for Path 1 (Official Blender Lab MCP 5.1+, host (a) Anthropic Connector in Claude Desktop with Lab add-on installed). Runtime status: Not Run. Artifact status: Not Produced.”
+- “Next safe action: run `runtime-readiness` for Path 1 (Official Blender Lab MCP 5.1+, host (a) Anthropic Connector in Claude Desktop with Lab add-on installed). Runtime status: Not Run. Artifact status: Not Produced.”
 - “Next safe action: use `product-hero-scene-planner` to plan the scene; no runtime is needed yet. Runtime status: Not Run. Artifact status: Not Produced.”
 - “Next safe action: hand off to `workflow-stage-router` because your goal is clear and scene artifacts already exist.”
 
@@ -284,14 +284,14 @@ Why: <short reason>
 - [conditional] In-flight workflow routing (clear goal + existing artifacts) → `../workflow-stage-router/SKILL.md`
 - [progression] Initial 3D brief creation → `../intent-to-3d-brief-writer/SKILL.md`
 - [conditional] Runtime path selection → `../runtime-path-picker/SKILL.md`
-- [conditional] Official runtime setup → `../official-runtime-setup-guide/SKILL.md`
-- [conditional] Runtime readiness preflight → `../official-runtime-readiness-checker/SKILL.md`
-- [fallback] MCP bridge port/session conflict → `../runtime-bridge-conflict-resolver/SKILL.md`
+- [conditional] Official runtime setup → `../runtime-setup/SKILL.md`
+- [conditional] Runtime readiness preflight → `../runtime-readiness/SKILL.md`
+- [fallback] MCP bridge port/session conflict → `../bridge-conflicts/SKILL.md`
 - [alternative] Scene planning → `../product-hero-scene-planner/SKILL.md`
 - [conditional] Render/export evidence → `../render-export-evidence/SKILL.md`
 - [fallback] Failed workflow gate / pre-handoff check → `../pre-handoff-verification/SKILL.md`
 - [conditional] GLB handoff → `../glb-web-handoff/SKILL.md`
-- [progression] Final response → `../non-blender-user-response-writer/SKILL.md`
+- [progression] Final response → `../plain-language-response/SKILL.md`
 <!-- blendops:generated:end handoffs -->
 
 ## Non-goals

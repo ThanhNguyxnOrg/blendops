@@ -29,8 +29,8 @@ Reduce skill-choice paralysis by mapping **current state → next narrow skill**
 - Initial goal is vague or entry point is unknown → delegate to `blendops-help` (`references/skills/blendops-help.md`; Triages ambiguous entry requests at precedence Rank 1)
 - Goal is clear but no recipe or pack has been chosen yet → delegate to `recipe-fit-assessor` (`references/skills/recipe-fit-assessor.md`; Selects the fitting recipe/pack at precedence Rank 2)
 - Pack is selected and brief exists, but pack preflight has not completed yet → delegate to `pack-prerequisite-checker` (`references/skills/pack-prerequisite-checker.md`; Executes preflight readiness verification at precedence Rank 3 before stage routing)
-- Active MCP runtime bridge conflict on port 9876 → delegate to `runtime-bridge-conflict-resolver` (`references/skills/runtime-bridge-conflict-resolver.md`; Resolves port and dual add-on conflicts before advancing)
-- Final stakeholder-facing wording and plain-language summary → delegate to `non-blender-user-response-writer` (`references/skills/non-blender-user-response-writer.md`; Formats validated workflow outputs for non-Blender users)
+- Active MCP runtime bridge conflict on port 9876 → delegate to `bridge-conflicts` (`references/skills/bridge-conflicts.md`; Resolves port and dual add-on conflicts before advancing)
+- Final stakeholder-facing wording and plain-language summary → delegate to `plain-language-response` (`references/skills/plain-language-response.md`; Formats validated workflow outputs for non-Blender users)
 
 ## Inputs & output/evidence contract
 ### Required inputs
@@ -53,15 +53,15 @@ Reduce skill-choice paralysis by mapping **current state → next narrow skill**
 
 ## Handoff notes
 - **[upstream_reference]** Pack entry preflight gate → `pack-prerequisite-checker` (`references/skills/pack-prerequisite-checker.md`) — `when.all: [preflight.passed equals false]`
-- **[conditional]** Runtime readiness check → `official-runtime-readiness-checker` (`references/skills/official-runtime-readiness-checker.md`) — `when.all: [runtime.status equals "Not Run"; stage.requiresRuntime equals true]`
-- **[fallback]** Active MCP bridge conflict on port 9876 → `runtime-bridge-conflict-resolver` (`references/skills/runtime-bridge-conflict-resolver.md`) — `when.all: [runtime.conflictDetected equals true]`
-- **[boundary_delegation]** Mid-workflow scope expansion or unapproved deliverable addition → `blender-scope-boundary-enforcer` (`references/skills/blender-scope-boundary-enforcer.md`) — `when.all: [scope.driftDetected equals true]`
+- **[conditional]** Runtime readiness check → `runtime-readiness` (`references/skills/runtime-readiness.md`) — `when.all: [runtime.status equals "Not Run"; stage.requiresRuntime equals true]`
+- **[fallback]** Active MCP bridge conflict on port 9876 → `bridge-conflicts` (`references/skills/bridge-conflicts.md`) — `when.all: [runtime.conflictDetected equals true]`
+- **[boundary_delegation]** Mid-workflow scope expansion or unapproved deliverable addition → `scope-guard` (`references/skills/scope-guard.md`) — `when.all: [scope.driftDetected equals true]`
 - **[progression]** Evidence updates for render or export outputs → `render-export-evidence` (`references/skills/render-export-evidence.md`) — `when.all: [stage.current equals "post_execution_audit"]`
 - **[fallback]** Failed gate / blocked mode exit / final gate → `pre-handoff-verification` (`references/skills/pre-handoff-verification.md`) — `when.any: [gate.status equals "failed"; runtime.mode equals "blocked"; stage.current equals "final_verification"]`
 
 ## Safety boundaries & non-goals
-- **Runtime boundary:** Routing only — no Python and no Blender execution (`execute_blender_code` is never invoked here). If the next step requires runtime selection or configuration, route to `runtime-path-picker`, `official-runtime-setup-guide`, `official-runtime-readiness-checker`, `path-one-host-outline`, or `cli-appendix-job-outline` with these locked boundaries:
+- **Runtime boundary:** Routing only — no Python and no Blender execution (`execute_blender_code` is never invoked here). If the next step requires runtime selection or configuration, route to `runtime-path-picker`, `runtime-setup`, `runtime-readiness`, `path-one-host-outline`, or `cli-appendix-job-outline` with these locked boundaries:
 - Initial entry triage when the user's goal is unclear (use `blendops-help`).
 - Selecting a recipe/pack (`recipe-fit-assessor`) or running initial pack preflight (`pack-prerequisite-checker`).
 - Executing domain scene planning, running Blender or Python, or verifying artifact files directly.
-- Writing final stakeholder-facing delivery copy (use `non-blender-user-response-writer` after verification).
+- Writing final stakeholder-facing delivery copy (use `plain-language-response` after verification).

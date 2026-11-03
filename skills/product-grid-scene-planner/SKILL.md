@@ -6,7 +6,7 @@ description: Plan a multi-product grid scene (e-commerce, catalog, comparison) b
 # product-grid-scene-planner
 
 ## Purpose
-Translate a multi-product grid intent (e-commerce / catalog / comparison) into a structured scene plan. Distinct from `product-hero-scene-planner` (single product, hero) and `interior-architectural-scene-planner` (room scene).
+Translate a multi-product grid intent (e-commerce / catalog / comparison) into a structured scene plan. Distinct from `product-hero-scene-planner` (single product, hero) and `interior-scene` (room scene).
 
 ## Quick start
 - pin product list (count + per-product type and relative real-world size)
@@ -25,9 +25,9 @@ Translate a multi-product grid intent (e-commerce / catalog / comparison) into a
 ## When not to use
 <!-- blendops:generated:start exclusions -->
 - single product hero → use `../product-hero-scene-planner/SKILL.md` (use product-hero-scene-planner)
-- character portrait → use `../character-portrait-scene-planner/SKILL.md` (use character-portrait-scene-planner)
-- outdoor environment scene → use `../environment-establishing-shot-planner/SKILL.md` (use environment-establishing-shot-planner)
-- interior room scene → use `../interior-architectural-scene-planner/SKILL.md` (use interior-architectural-scene-planner)
+- character portrait → use `../character-portrait/SKILL.md` (use character-portrait)
+- outdoor environment scene → use `../environment-shot/SKILL.md` (use environment-shot)
+- interior room scene → use `../interior-scene/SKILL.md` (use interior-scene)
 <!-- blendops:generated:end exclusions -->
 
 ## Trigger phrases
@@ -72,7 +72,7 @@ Translate a multi-product grid intent (e-commerce / catalog / comparison) into a
 A structured product-grid plan: Product list, Scale normalization rule (normalized or split), Grid layout (rows × cols + spacing), Consistency level (strict / loose), Per-cell composition and camera rules, Shared lighting plan, Shared background and palette, Aspect + framing, and Assumptions register.
 
 ### Secondary output
-- per-product asset rows flagged for `blender-asset-discovery-planner`
+- per-product asset rows flagged for `asset-discovery`
 - variant / SKU file output notes routed to `output-format-decision`
 - downstream validation and sign-off handoff list
 
@@ -93,7 +93,7 @@ Limitations: <known gaps>
 
 ## Official runtime boundary
 
-Planning-only skill — does not run Blender, model, source assets, or render. Runtime status must remain `Not Run` and Artifact status must remain `Not Produced` (truth states are downgrade-only, never upgrade). Hand off asset needs to `blender-asset-discovery-planner`, file output rules to `output-format-decision`, and validation to quality checkers.
+Planning-only skill — does not run Blender, model, source assets, or render. Runtime status must remain `Not Run` and Artifact status must remain `Not Produced` (truth states are downgrade-only, never upgrade). Hand off asset needs to `asset-discovery`, file output rules to `output-format-decision`, and validation to quality checkers.
 
 ## Operating procedure
 1. Read product list from user or `intent-to-3d-brief-writer`; pin count, per-product description, and relative sizes.
@@ -103,7 +103,7 @@ Planning-only skill — does not run Blender, model, source assets, or render. R
 5. Plan shared palette, shared lighting (one setup applied uniformly), and shared background.
 6. Plan per-cell camera + framing (including caption/label space).
 7. Define per-product asset rows and document the assumptions register.
-8. Hand off to `blender-asset-discovery-planner`, `output-format-decision` (if variant/SKU file outputs apply), `composition-quality-checker`, `lighting-quality-checker`, `material-quality-checker`, `blender-scene-quality-checker`, `acceptance-criteria-builder`, and `blender-stop-condition-decider`.
+8. Hand off to `asset-discovery`, `output-format-decision` (if variant/SKU file outputs apply), `composition-quality-checker`, `lighting-quality-checker`, `material-quality-checker`, `scene-readiness`, `acceptance-criteria-builder`, and `done-criteria`.
 
 ## Decision tree
 
@@ -153,7 +153,7 @@ Emit the complete grid plan and assumptions register; flag unconfirmed inputs un
 - [ ] Shared palette, lighting plan, and background present
 - [ ] Per-cell camera and framing consistent (or variation explicit)
 - [ ] Assumptions register included
-- [ ] Asset rows flagged for `blender-asset-discovery-planner`
+- [ ] Asset rows flagged for `asset-discovery`
 - [ ] Validation and sign-off handoffs named
 
 ## Pass / Warn / Fail rubric
@@ -205,12 +205,12 @@ Caption / label space: <location + proportion>
 Mood + style: <line>
 Assumptions register: <explicit assumptions to confirm>
 
-Assets to discover: <per-product rows for blender-asset-discovery-planner>
+Assets to discover: <per-product rows for asset-discovery>
 Runtime status: Not Run
 Artifact status: Not Produced
 Evidence used: <links, paths, logs, or "none">
 Limitations: <known gaps>
-Next: blender-asset-discovery-planner | output-format-decision | composition-quality-checker | lighting-quality-checker | material-quality-checker | blender-scene-quality-checker | acceptance-criteria-builder | blender-stop-condition-decider
+Next: asset-discovery | output-format-decision | composition-quality-checker | lighting-quality-checker | material-quality-checker | scene-readiness | acceptance-criteria-builder | done-criteria
 ```
 
 ## Anti-patterns
@@ -223,14 +223,14 @@ Next: blender-asset-discovery-planner | output-format-decision | composition-qua
 <!-- blendops:generated:start handoffs -->
 - [upstream_reference] Upstream brief → `../intent-to-3d-brief-writer/SKILL.md`
 - [upstream_reference] Single hero product alternative → `../product-hero-scene-planner/SKILL.md`
-- [upstream_reference] Asset discovery → `../blender-asset-discovery-planner/SKILL.md`
+- [upstream_reference] Asset discovery → `../asset-discovery/SKILL.md`
 - [progression] Variant / SKU file output format → `../output-format-decision/SKILL.md`
 - [progression] Composition validation → `../composition-quality-checker/SKILL.md`
 - [progression] Lighting validation → `../lighting-quality-checker/SKILL.md`
 - [progression] Material validation → `../material-quality-checker/SKILL.md`
-- [progression] Overall scene quality validation → `../blender-scene-quality-checker/SKILL.md`
+- [progression] Overall scene quality validation → `../scene-readiness/SKILL.md`
 - [upstream_reference] Catalog sign-off & stop conditions (acceptance-criteria-builder) → `../acceptance-criteria-builder/SKILL.md`
-- [upstream_reference] Catalog sign-off & stop conditions (blender-stop-condition-decider) → `../blender-stop-condition-decider/SKILL.md`
+- [upstream_reference] Catalog sign-off & stop conditions (done-criteria) → `../done-criteria/SKILL.md`
 <!-- blendops:generated:end handoffs -->
 
 ## Non-goals

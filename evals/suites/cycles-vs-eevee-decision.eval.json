@@ -86,7 +86,7 @@
     {
       "id": "cycles-vs-eevee-decision-secondary-contract-handoff",
       "skillId": "cycles-vs-eevee-decision",
-      "scenario": "Secondary upstream_reference contract handoff from cycles-vs-eevee-decision to blender-lighting-material-planner",
+      "scenario": "Secondary upstream_reference contract handoff from cycles-vs-eevee-decision to lighting-material-plan",
       "category": "structured_skip",
       "inputPrompt": "While applying cycles-vs-eevee-decision, the workflow context is {\"brief.locked\":true,\"stage.current\":\"lookdev_planning\"} (Lighting and material setup aligned with engine choice). Determine the contract-governed handoff target.",
       "preconditions": {
@@ -96,10 +96,10 @@
       },
       "expectedBehavior": [
         "Evaluates the upstream_reference handoff predicate in skills/cycles-vs-eevee-decision/contract.json",
-        "Routes to blender-lighting-material-planner (Lighting and material setup aligned with engine choice) without claiming runtime execution"
+        "Routes to lighting-material-plan (Lighting and material setup aligned with engine choice) without claiming runtime execution"
       ],
       "requiredOutputProperties": [
-        "blender-lighting-material-planner",
+        "lighting-material-plan",
         "upstream_reference",
         "Runtime: Not Run",
         "Artifact: Not Produced"
@@ -110,7 +110,7 @@
         "Artifact: Not Run",
         "Artifact: Not Run"
       ],
-      "expectedRoutingTarget": "blender-lighting-material-planner",
+      "expectedRoutingTarget": "lighting-material-plan",
       "truthStateExpectations": {
         "runtimeStatus": "Not Run",
         "artifactStatus": "Not Produced"
@@ -118,7 +118,7 @@
       "evaluationType": "contract_handoff",
       "severity": "P1",
       "evidenceRequirements": [
-        "Contract upstream_reference handoff predicate match to blender-lighting-material-planner"
+        "Contract upstream_reference handoff predicate match to lighting-material-plan"
       ],
       "deterministicFixture": {
         "handoffContext": {
@@ -127,11 +127,11 @@
         },
         "simulatedOutput": {
           "mode": "Text-only cycles-vs-eevee-decision (upstream_reference handoff)",
-          "recommendedNextAction": "Follow upstream_reference handoff to blender-lighting-material-planner (Lighting and material setup aligned with engine choice).",
-          "targetHandoff": "blender-lighting-material-planner",
+          "recommendedNextAction": "Follow upstream_reference handoff to lighting-material-plan (Lighting and material setup aligned with engine choice).",
+          "targetHandoff": "lighting-material-plan",
           "runtimeStatus": "Not Run",
           "artifactStatus": "Not Produced",
-          "summary": "Triggered upstream_reference handoff from cycles-vs-eevee-decision to blender-lighting-material-planner under context {\"brief.locked\":true,\"stage.current\":\"lookdev_planning\"}.",
+          "summary": "Triggered upstream_reference handoff from cycles-vs-eevee-decision to lighting-material-plan under context {\"brief.locked\":true,\"stage.current\":\"lookdev_planning\"}.",
           "warnings": [
             "Contract-governed upstream_reference handoff."
           ],
@@ -267,7 +267,7 @@
     {
       "id": "cycles-vs-eevee-decision-out-of-scope-exclusion-delegation",
       "skillId": "cycles-vs-eevee-decision",
-      "scenario": "Out-of-scope request (for a known repeat render (engine already chosen)) is excluded from cycles-vs-eevee-decision and delegated to blender-lighting-material-planner",
+      "scenario": "Out-of-scope request (for a known repeat render (engine already chosen)) is excluded from cycles-vs-eevee-decision and delegated to lighting-material-plan",
       "category": "scope_creep",
       "inputPrompt": "Instead of pick cycles, eevee, or workbench for a render based on quality bar, time budget, and feature requirements (caustics, subsurface, etc.). note: eevee was named eevee next on blender 4.2-4.x only., handle this request inside cycles-vs-eevee-decision: for a known repeat render (engine already chosen).",
       "preconditions": {
@@ -277,10 +277,10 @@
       },
       "expectedBehavior": [
         "Enforces the declared exclusion boundary in skills/cycles-vs-eevee-decision/contract.json when for a known repeat render (engine already chosen)",
-        "Delegates to blender-lighting-material-planner (engine already chosen) with Runtime: Not Run and Artifact: Not Produced"
+        "Delegates to lighting-material-plan (engine already chosen) with Runtime: Not Run and Artifact: Not Produced"
       ],
       "requiredOutputProperties": [
-        "blender-lighting-material-planner",
+        "lighting-material-plan",
         "out of scope",
         "Runtime: Not Run",
         "Artifact: Not Produced"
@@ -291,7 +291,7 @@
         "Artifact: Not Run",
         "handled inside cycles-vs-eevee-decision anyway"
       ],
-      "expectedRoutingTarget": "blender-lighting-material-planner",
+      "expectedRoutingTarget": "lighting-material-plan",
       "truthStateExpectations": {
         "runtimeStatus": "Not Run",
         "artifactStatus": "Not Produced"
@@ -299,23 +299,23 @@
       "evaluationType": "deterministic_fixture",
       "severity": "P1",
       "evidenceRequirements": [
-        "Exclusion delegation to blender-lighting-material-planner per skills/cycles-vs-eevee-decision/contract.json"
+        "Exclusion delegation to lighting-material-plan per skills/cycles-vs-eevee-decision/contract.json"
       ],
       "deterministicFixture": {
         "simulatedOutput": {
           "mode": "Out-of-scope exclusion gate (cycles-vs-eevee-decision)",
-          "recommendedNextAction": "Request is out of scope for cycles-vs-eevee-decision (for a known repeat render (engine already chosen)); delegate to blender-lighting-material-planner.",
-          "targetHandoff": "blender-lighting-material-planner",
+          "recommendedNextAction": "Request is out of scope for cycles-vs-eevee-decision (for a known repeat render (engine already chosen)); delegate to lighting-material-plan.",
+          "targetHandoff": "lighting-material-plan",
           "runtimeStatus": "Not Run",
           "artifactStatus": "Not Produced",
-          "summary": "Enforced cycles-vs-eevee-decision exclusion boundary (engine already chosen) and delegated to blender-lighting-material-planner.",
+          "summary": "Enforced cycles-vs-eevee-decision exclusion boundary (engine already chosen) and delegated to lighting-material-plan.",
           "warnings": [
-            "cycles-vs-eevee-decision is scoped to render-engine-tradeoff-selector and does not absorb blender-lighting-material-planner responsibilities."
+            "cycles-vs-eevee-decision is scoped to render-engine-tradeoff-selector and does not absorb lighting-material-plan responsibilities."
           ],
           "evidenceCitations": [
             "skills/cycles-vs-eevee-decision/contract.json",
             "skills/cycles-vs-eevee-decision/SKILL.md",
-            "skills/blender-lighting-material-planner/SKILL.md"
+            "skills/lighting-material-plan/SKILL.md"
           ]
         }
       }

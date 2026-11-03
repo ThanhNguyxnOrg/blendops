@@ -23,12 +23,12 @@ Run a focused pass/warn/fail check on each material in the scene against PBR san
 
 ## When not to use
 <!-- blendops:generated:start exclusions -->
-- upstream lookdev and material planning → use `../blender-lighting-material-planner/SKILL.md` (use blender-lighting-material-planner)
+- upstream lookdev and material planning → use `../lighting-material-plan/SKILL.md` (use lighting-material-plan)
 - lighting validation → use `../lighting-quality-checker/SKILL.md` (use lighting-quality-checker)
 - composition / camera validation → use `../composition-quality-checker/SKILL.md` (use composition-quality-checker)
-- broad pass/warn/fail scene readiness → use `../blender-scene-quality-checker/SKILL.md` (use blender-scene-quality-checker)
+- broad pass/warn/fail scene readiness → use `../scene-readiness/SKILL.md` (use scene-readiness)
 - web integration and viewer handoff → use `../glb-web-handoff/SKILL.md` (use glb-web-handoff)
-- to fix or edit materials (this skill validates and emits remediation hints only; it never edits) → use `../blender-lighting-material-planner/SKILL.md` (this skill validates and emits remediation hints only; it never edits)
+- to fix or edit materials (this skill validates and emits remediation hints only; it never edits) → use `../lighting-material-plan/SKILL.md` (this skill validates and emits remediation hints only; it never edits)
 <!-- blendops:generated:end exclusions -->
 
 ## Trigger phrases
@@ -42,7 +42,7 @@ Run a focused pass/warn/fail check on each material in the scene against PBR san
 ## Prerequisites / readiness
 - material list known (from scene plan or measured scene)
 - consumer stack target known (Cycles render / Eevee preview / GLB → web)
-- texture budget pinned (typically from `glb-mobile-performance-budget`)
+- texture budget pinned (typically from `mobile-glb-budget`)
 
 ## Input schema
 
@@ -108,7 +108,7 @@ For runtime path attribution, see `../../docs/runtime-stack-strategy.md`.
 5. Assign per-material verdict; collect notes.
 6. Compute top-line status (any Fail → Fail; any Warn → Warn; otherwise Pass).
 7. Highlight worst offenders; emit remediation hints.
-8. Hand off to `blender-scene-quality-checker` (broader review) or `render-export-evidence` (next runtime step).
+8. Hand off to `scene-readiness` (broader review) or `render-export-evidence` (next runtime step).
 
 ## Decision tree
 
@@ -224,7 +224,7 @@ Runtime status: <Not Run | Attempted | Produced | Verified | Failed>
 Artifact status: <Not Produced | Produced | Verified | Failed>
 Evidence used: <links, paths, logs, or "none">
 Limitations: <gaps>
-Next: <blender-scene-quality-checker | render-export-evidence | glb-web-handoff | blender-lighting-material-planner>
+Next: <scene-readiness | render-export-evidence | glb-web-handoff | lighting-material-plan>
 ```
 
 ## Anti-patterns
@@ -237,9 +237,9 @@ Next: <blender-scene-quality-checker | render-export-evidence | glb-web-handoff 
 
 ## Cross-skill handoff
 <!-- blendops:generated:start handoffs -->
-- [retry] Upstream lookdev & material planning → `../blender-lighting-material-planner/SKILL.md`
-- [upstream_reference] Mobile/web texture budget definition → `../glb-mobile-performance-budget/SKILL.md`
-- [progression] Broad readiness review → `../blender-scene-quality-checker/SKILL.md`
+- [retry] Upstream lookdev & material planning → `../lighting-material-plan/SKILL.md`
+- [upstream_reference] Mobile/web texture budget definition → `../mobile-glb-budget/SKILL.md`
+- [progression] Broad readiness review → `../scene-readiness/SKILL.md`
 - [progression] Lighting validation → `../lighting-quality-checker/SKILL.md`
 - [progression] Composition validation → `../composition-quality-checker/SKILL.md`
 - [progression] Polycount budget → `../polycount-budget-checker/SKILL.md`
@@ -250,7 +250,7 @@ Next: <blender-scene-quality-checker | render-export-evidence | glb-web-handoff 
 ## Non-goals
 - Edit materials.
 - Generate shader code.
-- Replace `blender-scene-quality-checker` (this skill is one of its inputs).
+- Replace `scene-readiness` (this skill is one of its inputs).
 - Run Blender.
 
 ## References

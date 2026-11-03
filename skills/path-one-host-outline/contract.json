@@ -20,18 +20,18 @@
     },
     {
       "condition": "step-by-step host or add-on installation and configuration",
-      "delegateTo": "official-runtime-setup-guide",
-      "reason": "Delegates out-of-scope requests to official-runtime-setup-guide"
+      "delegateTo": "runtime-setup",
+      "reason": "Delegates out-of-scope requests to runtime-setup"
     },
     {
       "condition": "probing live runtime readiness",
-      "delegateTo": "official-runtime-readiness-checker",
-      "reason": "Delegates out-of-scope requests to official-runtime-readiness-checker"
+      "delegateTo": "runtime-readiness",
+      "reason": "Delegates out-of-scope requests to runtime-readiness"
     },
     {
       "condition": "resolving conflicts between official and unofficial bridges",
-      "delegateTo": "runtime-bridge-conflict-resolver",
-      "reason": "Delegates out-of-scope requests to runtime-bridge-conflict-resolver"
+      "delegateTo": "bridge-conflicts",
+      "reason": "Delegates out-of-scope requests to bridge-conflicts"
     },
     {
       "condition": "Path 2 community bridge specifics",
@@ -93,7 +93,7 @@
       }
     },
     {
-      "target": "official-runtime-setup-guide",
+      "target": "runtime-setup",
       "type": "upstream_reference",
       "label": "Detailed setup and configuration",
       "when": {
@@ -112,7 +112,7 @@
       }
     },
     {
-      "target": "official-runtime-readiness-checker",
+      "target": "runtime-readiness",
       "type": "progression",
       "label": "Readiness probing",
       "when": {
@@ -131,7 +131,7 @@
       }
     },
     {
-      "target": "runtime-bridge-conflict-resolver",
+      "target": "bridge-conflicts",
       "type": "fallback",
       "label": "Bridge conflicts",
       "when": {

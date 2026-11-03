@@ -6,7 +6,7 @@ Score each row **Ready**, **Needs input**, or **Blocked**.
 |---|---|
 | Goal & scope | Is the brief locked enough for planners (subject, mood, shots)? |
 | Deliverables | Still / turntable / GLB / animation explicitly prioritized? |
-| Asset plan | Discovery + license path planned (`blender-asset-discovery-planner` / `asset-license-checker`)? |
+| Asset plan | Discovery + license path planned (`asset-discovery` / `asset-license-checker`)? |
 | Quality bar | Which validators will run (scene quality + domain narrow checks)? |
 | Runtime posture | Path 1, Path 2, or CLI appendix intent stated? Connector never standalone. |
 | Evidence habit | User accepts `Not Produced` default until evidence exists? |

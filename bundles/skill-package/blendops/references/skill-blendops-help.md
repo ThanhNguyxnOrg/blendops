@@ -23,7 +23,7 @@ Routing precedence: group `entry-and-stage-routing`, rank `1` | activationGate: 
 - The user explicitly asks to turn an idea into a structured 3D brief → use `intent-to-3d-brief-writer` (`references/skill-intent-to-3d-brief-writer.md`; Locks the canonical 8-slot 3D brief before scene planning)
 - The user asks to plan a product-hero scene directly → use `product-hero-scene-planner` (`references/skill-product-hero-scene-planner.md`; Handles domain-specific scene planning once brief and recipe are known)
 - The user asks for render or export artifact verification → use `render-export-evidence` (`references/skill-render-export-evidence.md`; Classifies artifact truth states from on-disk paths and validation notes)
-- The user asks for Blender MCP runtime preflight verification → use `official-runtime-readiness-checker` (`references/skill-official-runtime-readiness-checker.md`; Verifies Path 1 or Path 2 runtime readiness without claiming execution)
+- The user asks for Blender MCP runtime preflight verification → use `runtime-readiness` (`references/skill-runtime-readiness.md`; Verifies Path 1 or Path 2 runtime readiness without claiming execution)
 
 ## Input & output contract
 - Required input `user_request` (`string`): Ambiguous, mixed, or entry-level user question about BlendOps capabilities or next action
@@ -43,17 +43,17 @@ Routing precedence: group `entry-and-stage-routing`, rank `1` | activationGate: 
 - [conditional] In-flight workflow routing (clear goal + existing artifacts) → `workflow-stage-router` (`references/skill-workflow-stage-router.md`) — `when.all: [goal.clarity equals "clear"; preflight.passed equals true; inventory.exists equals true]`
 - [progression] Initial 3D brief creation → `intent-to-3d-brief-writer` (`references/skill-intent-to-3d-brief-writer.md`) — `when.all: [brief.locked equals false]`
 - [conditional] Runtime path selection → `runtime-path-picker` (`references/skill-runtime-path-picker.md`) — `when.all: [request.topic equals "runtime_selection"]`
-- [conditional] Official runtime setup → `official-runtime-setup-guide` (`references/skill-official-runtime-setup-guide.md`) — `when.all: [request.topic equals "runtime_setup"]`
-- [conditional] Runtime readiness preflight → `official-runtime-readiness-checker` (`references/skill-official-runtime-readiness-checker.md`) — `when.all: [request.topic equals "runtime_readiness"]`
-- [fallback] MCP bridge port/session conflict → `runtime-bridge-conflict-resolver` (`references/skill-runtime-bridge-conflict-resolver.md`) — `when.all: [runtime.conflictDetected equals true]`
+- [conditional] Official runtime setup → `runtime-setup` (`references/skill-runtime-setup.md`) — `when.all: [request.topic equals "runtime_setup"]`
+- [conditional] Runtime readiness preflight → `runtime-readiness` (`references/skill-runtime-readiness.md`) — `when.all: [request.topic equals "runtime_readiness"]`
+- [fallback] MCP bridge port/session conflict → `bridge-conflicts` (`references/skill-bridge-conflicts.md`) — `when.all: [runtime.conflictDetected equals true]`
 - [alternative] Scene planning → `product-hero-scene-planner` (`references/skill-product-hero-scene-planner.md`) — `when.all: [brief.locked equals true; recipe.id equals "product-hero-v0"]`
 - [conditional] Render/export evidence → `render-export-evidence` (`references/skill-render-export-evidence.md`) — `when.all: [request.topic equals "artifact_evidence"]`
 - [fallback] Failed workflow gate / pre-handoff check → `pre-handoff-verification` (`references/skill-pre-handoff-verification.md`) — `when.all: [gate.status equals "failed"]`
 - [conditional] GLB handoff → `glb-web-handoff` (`references/skill-glb-web-handoff.md`) — `when.all: [request.topic equals "glb_handoff"]`
-- [progression] Final response → `non-blender-user-response-writer` (`references/skill-non-blender-user-response-writer.md`) — `when.all: [stage.current equals "final_communication"]`
+- [progression] Final response → `plain-language-response` (`references/skill-plain-language-response.md`) — `when.all: [stage.current equals "final_communication"]`
 
 ## Safety boundaries & non-goals
-- Runtime boundary: Before runtime work, point to `docs/runtime-stack-strategy.md`, `runtime-path-picker`, and `official-runtime-readiness-checker`.
+- Runtime boundary: Before runtime work, point to `docs/runtime-stack-strategy.md`, `runtime-path-picker`, and `runtime-readiness`.
 - Replace or duplicate `workflow-stage-router` precedence logic once the goal is clear and artifacts exist.
 - Install Blender or runtimes.
 - Run Blender or execute Python.

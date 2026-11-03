@@ -15,13 +15,13 @@ Metadata: Contract `v1.0.0` | Category `render-and-output-decisions` | Role `sti
 
 ## When not to use (delegation boundaries)
 - raw modeling without rendering → use `cycles-vs-eevee-decision` (`references/skill-cycles-vs-eevee-decision.md`; Delegates out-of-scope requests to cycles-vs-eevee-decision)
-- 3D/GLB exports (out of scope — use glb-web-handoff, glb-mobile-performance-budget, or glb-animation-handoff) → use `glb-animation-handoff` (`references/skill-glb-animation-handoff.md`; out of scope — use glb-web-handoff, glb-mobile-performance-budget, or glb-animation-handoff)
+- 3D/GLB exports (out of scope — use glb-web-handoff, mobile-glb-budget, or glb-animation-handoff) → use `glb-animation-handoff` (`references/skill-glb-animation-handoff.md`; out of scope — use glb-web-handoff, mobile-glb-budget, or glb-animation-handoff)
 - verifying saved files on disk after rendering → use `render-export-evidence` (`references/skill-render-export-evidence.md`; use render-export-evidence)
 
 ## Input & output contract
 - Required input `deliverable_channel_and_use` (`string`): Downstream consumer surface (web hero image, compositing EXR pipeline, turntable video, interactive WebGL)
 - Required input `alpha_and_bit_depth_needs` (`object`): Transparency (straight vs premultiplied alpha) and dynamic range (8-bit, 16-bit, 32-bit float) requirements
-- Optional input `file_size_ceiling` (`string`): Optional delivery file size cap from glb-mobile-performance-budget or web spec
+- Optional input `file_size_ceiling` (`string`): Optional delivery file size cap from mobile-glb-budget or web spec
 - Output contract: `pinned_container_and_codec_spec`, `bit_depth_and_alpha_mode_record`, `color_space_and_export_verification_hooks` (Runtime status: `Not Run`, Artifact status: `Not Produced`, `downgrade_only`).
 
 ## Quick-start steps
@@ -36,7 +36,7 @@ Metadata: Contract `v1.0.0` | Category `render-and-output-decisions` | Role `sti
 - [upstream_reference] Engine choice → `cycles-vs-eevee-decision` (`references/skill-cycles-vs-eevee-decision.md`) — `when.all: [decision.engineLocked equals false]`
 - [progression] Render file verification → `render-export-evidence` (`references/skill-render-export-evidence.md`) — `when.all: [stage.current equals "post_execution_audit"]`
 - [progression] 3D / GLB exports (out of scope here) (glb-animation-handoff) → `glb-animation-handoff` (`references/skill-glb-animation-handoff.md`) — `when.all: [artifact.hasAnimation equals true; stage.current equals "animation_handoff"]`
-- [boundary_delegation] 3D / GLB exports (out of scope here) (glb-mobile-performance-budget) → `glb-mobile-performance-budget` (`references/skill-glb-mobile-performance-budget.md`) — `when.all: [artifact.type equals "glb"; budget.pinned equals false]`
+- [boundary_delegation] 3D / GLB exports (out of scope here) (mobile-glb-budget) → `mobile-glb-budget` (`references/skill-mobile-glb-budget.md`) — `when.all: [artifact.type equals "glb"; budget.pinned equals false]`
 - [progression] 3D / GLB exports (out of scope here) (glb-web-handoff) → `glb-web-handoff` (`references/skill-glb-web-handoff.md`) — `when.all: [artifact.type equals "glb"; handoff.consumerStack equals "web_glb"]`
 
 ## Safety boundaries & non-goals

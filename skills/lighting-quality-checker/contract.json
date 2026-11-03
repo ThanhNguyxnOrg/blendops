@@ -15,8 +15,8 @@
   "exclusions": [
     {
       "condition": "upstream lookdev and lighting planning",
-      "delegateTo": "blender-lighting-material-planner",
-      "reason": "use blender-lighting-material-planner"
+      "delegateTo": "lighting-material-plan",
+      "reason": "use lighting-material-plan"
     },
     {
       "condition": "material validation",
@@ -30,8 +30,8 @@
     },
     {
       "condition": "broad pass/warn/fail scene readiness",
-      "delegateTo": "blender-scene-quality-checker",
-      "reason": "use blender-scene-quality-checker"
+      "delegateTo": "scene-readiness",
+      "reason": "use scene-readiness"
     },
     {
       "condition": "classifying render or export artifact evidence",
@@ -40,7 +40,7 @@
     },
     {
       "condition": "to fix or edit lights (this skill validates and gives remediation hints only; it never edits)",
-      "delegateTo": "blender-scene-quality-checker",
+      "delegateTo": "scene-readiness",
       "reason": "this skill validates and gives remediation hints only; it never edits"
     }
   ],
@@ -49,7 +49,7 @@
       {
         "name": "lighting_rig_specification",
         "type": "object",
-        "description": "Key-to-fill ratios, light placements, HDRI rotation, and shadow softness from blender-lighting-material-planner"
+        "description": "Key-to-fill ratios, light placements, HDRI rotation, and shadow softness from lighting-material-plan"
       },
       {
         "name": "color_management_pins",
@@ -79,7 +79,7 @@
   },
   "handoffs": [
     {
-      "target": "blender-scene-quality-checker",
+      "target": "scene-readiness",
       "type": "progression",
       "label": "Broad readiness review",
       "when": {
@@ -136,7 +136,7 @@
       }
     },
     {
-      "target": "blender-lighting-material-planner",
+      "target": "lighting-material-plan",
       "type": "retry",
       "label": "Lighting re-plan",
       "when": {

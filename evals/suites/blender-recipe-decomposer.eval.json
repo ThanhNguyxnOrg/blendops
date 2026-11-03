@@ -87,7 +87,7 @@
     {
       "id": "blender-recipe-decomposer-secondary-contract-handoff",
       "skillId": "blender-recipe-decomposer",
-      "scenario": "Secondary progression contract handoff from blender-recipe-decomposer to blender-stop-condition-decider",
+      "scenario": "Secondary progression contract handoff from blender-recipe-decomposer to done-criteria",
       "category": "structured_skip",
       "inputPrompt": "While applying blender-recipe-decomposer, the workflow context is {\"brief.locked\":true,\"stage.current\":\"stop_condition\"} (Pinning formal done conditions per recipe). Determine the contract-governed handoff target.",
       "preconditions": {
@@ -97,10 +97,10 @@
       },
       "expectedBehavior": [
         "Evaluates the progression handoff predicate in skills/blender-recipe-decomposer/contract.json",
-        "Routes to blender-stop-condition-decider (Pinning formal done conditions per recipe) without claiming runtime execution"
+        "Routes to done-criteria (Pinning formal done conditions per recipe) without claiming runtime execution"
       ],
       "requiredOutputProperties": [
-        "blender-stop-condition-decider",
+        "done-criteria",
         "progression",
         "Runtime: Not Run",
         "Artifact: Not Produced"
@@ -111,7 +111,7 @@
         "Artifact: Not Run",
         "Artifact: Not Run"
       ],
-      "expectedRoutingTarget": "blender-stop-condition-decider",
+      "expectedRoutingTarget": "done-criteria",
       "truthStateExpectations": {
         "runtimeStatus": "Not Run",
         "artifactStatus": "Not Produced"
@@ -119,7 +119,7 @@
       "evaluationType": "contract_handoff",
       "severity": "P1",
       "evidenceRequirements": [
-        "Contract progression handoff predicate match to blender-stop-condition-decider"
+        "Contract progression handoff predicate match to done-criteria"
       ],
       "deterministicFixture": {
         "handoffContext": {
@@ -128,11 +128,11 @@
         },
         "simulatedOutput": {
           "mode": "Text-only blender-recipe-decomposer (progression handoff)",
-          "recommendedNextAction": "Follow progression handoff to blender-stop-condition-decider (Pinning formal done conditions per recipe).",
-          "targetHandoff": "blender-stop-condition-decider",
+          "recommendedNextAction": "Follow progression handoff to done-criteria (Pinning formal done conditions per recipe).",
+          "targetHandoff": "done-criteria",
           "runtimeStatus": "Not Run",
           "artifactStatus": "Not Produced",
-          "summary": "Triggered progression handoff from blender-recipe-decomposer to blender-stop-condition-decider under context {\"brief.locked\":true,\"stage.current\":\"stop_condition\"}.",
+          "summary": "Triggered progression handoff from blender-recipe-decomposer to done-criteria under context {\"brief.locked\":true,\"stage.current\":\"stop_condition\"}.",
           "warnings": [
             "Contract-governed progression handoff."
           ],

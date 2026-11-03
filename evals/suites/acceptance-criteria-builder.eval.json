@@ -20,7 +20,7 @@
     {
       "id": "acceptance-criteria-builder-normal-in-scope-handoff",
       "skillId": "acceptance-criteria-builder",
-      "scenario": "Normal in-scope execution of acceptance-criteria-builder (measurable-acceptance-table-builder) with contract handoff to blender-stop-condition-decider",
+      "scenario": "Normal in-scope execution of acceptance-criteria-builder (measurable-acceptance-table-builder) with contract handoff to done-criteria",
       "category": "normal",
       "inputPrompt": "Use acceptance-criteria-builder to turn our locked cyberpunk sneaker product-hero-v0 brief (16:9 PNG + web GLB under 10 MB) into a measurable Pass/Warn/Fail acceptance table before camera and lighting planning.",
       "preconditions": {
@@ -32,13 +32,13 @@
       "expectedBehavior": [
         "Produces measurable_acceptance_criteria_table, pass_warn_fail_thresholds, evidence_hook_mappings for role measurable-acceptance-table-builder",
         "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
-        "Evaluates contract handoff predicate and hands off to blender-stop-condition-decider (Done / stop condition)"
+        "Evaluates contract handoff predicate and hands off to done-criteria (Done / stop condition)"
       ],
       "requiredOutputProperties": [
         "Pass/Warn/Fail",
         "verification method",
         "measurable threshold",
-        "blender-stop-condition-decider",
+        "done-criteria",
         "Runtime: Not Run",
         "Artifact: Not Produced"
       ],
@@ -48,7 +48,7 @@
         "Artifact: Not Run",
         "Artifact: Not Run"
       ],
-      "expectedRoutingTarget": "blender-stop-condition-decider",
+      "expectedRoutingTarget": "done-criteria",
       "truthStateExpectations": {
         "runtimeStatus": "Not Run",
         "artifactStatus": "Not Produced"
@@ -57,7 +57,7 @@
       "severity": "P0",
       "evidenceRequirements": [
         "Outputs measurable_acceptance_criteria_table, pass_warn_fail_thresholds, evidence_hook_mappings conforming to skills/acceptance-criteria-builder/SKILL.md",
-        "Matches contract handoff predicate to blender-stop-condition-decider in skills/acceptance-criteria-builder/contract.json"
+        "Matches contract handoff predicate to done-criteria in skills/acceptance-criteria-builder/contract.json"
       ],
       "deterministicFixture": {
         "handoffContext": {
@@ -66,11 +66,11 @@
         },
         "simulatedOutput": {
           "mode": "Text-only measurable-acceptance-table-builder (acceptance-criteria-builder)",
-          "recommendedNextAction": "Complete measurable_acceptance_criteria_table and hand off to blender-stop-condition-decider (Done / stop condition).",
-          "targetHandoff": "blender-stop-condition-decider",
+          "recommendedNextAction": "Complete measurable_acceptance_criteria_table and hand off to done-criteria (Done / stop condition).",
+          "targetHandoff": "done-criteria",
           "runtimeStatus": "Not Run",
           "artifactStatus": "Not Produced",
-          "summary": "Built measurable 7-row Pass/Warn/Fail acceptance criteria table with explicit verification methods and thresholds for product-hero-v0. Delivered Pass/Warn/Fail, verification method, measurable threshold and routed to blender-stop-condition-decider.",
+          "summary": "Built measurable 7-row Pass/Warn/Fail acceptance criteria table with explicit verification methods and thresholds for product-hero-v0. Delivered Pass/Warn/Fail, verification method, measurable threshold and routed to done-criteria.",
           "warnings": [
             "Text-only workflow output; no live Blender session or artifact was executed."
           ],

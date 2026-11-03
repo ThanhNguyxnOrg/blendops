@@ -8,7 +8,7 @@
 ## Runtime unknown but mutation requested
 
 - Require explicit path selection via `runtime-path-picker`.
-- Then `official-runtime-setup-guide` + `official-runtime-readiness-checker`.
+- Then `runtime-setup` + `runtime-readiness`.
 
 ## Asset licenses unknown
 
@@ -16,10 +16,10 @@
 
 ## Conflicting outputs
 
-- Force prioritization using `blender-scope-boundary-enforcer`.
+- Force prioritization using `scope-guard`.
 
 ## Bridge conflict suspected
 
-- `runtime-bridge-conflict-resolver` before any MCP instructions.
+- `bridge-conflicts` before any MCP instructions.
 
 Never bypass Blocked rows by assuming upstream success.

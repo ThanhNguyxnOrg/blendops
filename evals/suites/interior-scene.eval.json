@@ -1,0 +1,325 @@
+{
+  "schemaVersion": "2.0.0",
+  "skillId": "interior-scene",
+  "category": "scene-planners",
+  "isContractedSkill": true,
+  "isRoutingParticipant": false,
+  "contractPath": "skills/interior-scene/contract.json",
+  "skillMarkdownPath": "skills/interior-scene/SKILL.md",
+  "evalMarkdownPath": "skills/interior-scene/EVAL.md",
+  "sourceEvalTier": "prose_outline_contract_migrated",
+  "evaluationStatus": {
+    "staticValidation": "Passed",
+    "deterministicFixture": "Passed",
+    "contractRouting": "Not Applicable",
+    "contractHandoff": "Passed",
+    "liveModel": "Not Run",
+    "blenderRuntime": "Not Run"
+  },
+  "cases": [
+    {
+      "id": "interior-scene-normal-in-scope-handoff",
+      "skillId": "interior-scene",
+      "scenario": "Normal in-scope execution of interior-scene (interior-archviz-scene-architect) with contract handoff to composition-quality-checker",
+      "category": "normal",
+      "inputPrompt": "Use interior-scene on a locked brief: \"Scandinavian minimalist dining room, late-afternoon sun through floor-to-ceiling west windows, oak table focal anchor, 16:9 architectural hero\".",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Primary inputs (locked_3d_brief) provided in text-only planning/audit mode."
+      },
+      "expectedBehavior": [
+        "Produces interior_zone_and_circulation_plan, window_portal_and_fixture_lighting_plan, two_point_vertical_camera_constraints for role interior-archviz-scene-architect",
+        "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
+        "Evaluates contract handoff predicate and hands off to composition-quality-checker (Composition validation)"
+      ],
+      "requiredOutputProperties": [
+        "light portal",
+        "two-point perspective",
+        "room shell",
+        "composition-quality-checker",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "fisheye vertical distortion",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "composition-quality-checker",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Outputs interior_zone_and_circulation_plan, window_portal_and_fixture_lighting_plan, two_point_vertical_camera_constraints conforming to skills/interior-scene/SKILL.md",
+        "Matches contract handoff predicate to composition-quality-checker in skills/interior-scene/contract.json"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "quality.domain": "composition",
+          "quality.verdict": "not_run"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only interior-archviz-scene-architect (interior-scene)",
+          "recommendedNextAction": "Complete interior_zone_and_circulation_plan and hand off to composition-quality-checker (Composition validation).",
+          "targetHandoff": "composition-quality-checker",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Planned interior archviz scene with room shell dimensions, window light portal layout, 28mm two-point perspective camera (vertical tilt lock), and hero furniture hierarchy. Delivered light portal, two-point perspective, room shell and routed to composition-quality-checker.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/interior-scene/SKILL.md",
+            "skills/interior-scene/EVAL.md",
+            "skills/interior-scene/contract.json",
+            "skills/interior-scene/references/furniture-layout-rules.md",
+            "skills/interior-scene/references/interior-architecture-rules.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "interior-scene-secondary-contract-handoff",
+      "skillId": "interior-scene",
+      "scenario": "Secondary upstream_reference contract handoff from interior-scene to intent-to-3d-brief-writer",
+      "category": "structured_skip",
+      "inputPrompt": "While applying interior-scene, the workflow context is {\"goal.clarity\":\"clear\",\"brief.locked\":false} (Upstream brief). Determine the contract-governed handoff target.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates the upstream_reference handoff predicate in skills/interior-scene/contract.json",
+        "Routes to intent-to-3d-brief-writer (Upstream brief) without claiming runtime execution"
+      ],
+      "requiredOutputProperties": [
+        "intent-to-3d-brief-writer",
+        "upstream_reference",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "fisheye vertical distortion",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "intent-to-3d-brief-writer",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Contract upstream_reference handoff predicate match to intent-to-3d-brief-writer"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "goal.clarity": "clear",
+          "brief.locked": false
+        },
+        "simulatedOutput": {
+          "mode": "Text-only interior-scene (upstream_reference handoff)",
+          "recommendedNextAction": "Follow upstream_reference handoff to intent-to-3d-brief-writer (Upstream brief).",
+          "targetHandoff": "intent-to-3d-brief-writer",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Triggered upstream_reference handoff from interior-scene to intent-to-3d-brief-writer under context {\"goal.clarity\":\"clear\",\"brief.locked\":false}.",
+          "warnings": [
+            "Contract-governed upstream_reference handoff."
+          ],
+          "evidenceCitations": [
+            "skills/interior-scene/contract.json",
+            "skills/interior-scene/SKILL.md",
+            "skills/interior-scene/references/furniture-layout-rules.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "interior-scene-unmatched-handoff-and-evidence-boundary",
+      "skillId": "interior-scene",
+      "scenario": "Unmatched contract handoff context returns none and blocks upgrading unvalidated file to Verified in interior-scene",
+      "category": "evidence_boundary",
+      "inputPrompt": "An operator provides an unvalidated file on disk during interior-scene with context {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and asks to mark Artifact: Verified and auto-advance.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "file-only-unvalidated",
+        "notes": "A file exists on disk but validation checks have not been recorded."
+      },
+      "expectedBehavior": [
+        "Refuses to upgrade Artifact status to Verified when existingArtifactEvidence is file-only-unvalidated (caps at Produced)",
+        "Evaluates contract handoffs for interior-scene and returns targetHandoff none because no handoff predicate matches"
+      ],
+      "requiredOutputProperties": [
+        "Artifact: Produced",
+        "Runtime: Not Run",
+        "validation",
+        "none"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "validation not needed"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Downgrade unvalidated Verified claim to Produced per laws/evidence-before-done.md",
+        "Verify 0 handoffs match in skills/interior-scene/contract.json for {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true}"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Artifact-claim boundary check (interior-scene)",
+          "recommendedNextAction": "Keep Artifact status at Produced (never Verified without validation evidence) and hold at targetHandoff none until a downstream precondition is met.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Produced",
+          "summary": "Capped unvalidated artifact claim at Artifact: Produced and verified zero matching contract handoffs (none) for interior-scene.",
+          "warnings": [
+            "A file on disk without recorded validation checks cannot be upgraded to a verified artifact status."
+          ],
+          "evidenceCitations": [
+            "laws/evidence-before-done.md",
+            "skills/interior-scene/contract.json",
+            "skills/interior-scene/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "interior-scene-ambiguous-missing-required-inputs",
+      "skillId": "interior-scene",
+      "scenario": "Missing required input (locked_3d_brief) for interior-scene halts fabricated output and requests clarification",
+      "category": "ambiguous",
+      "inputPrompt": "Plan an interior architectural scene without specifying the room type, window daylight openings, focal furniture group, or camera aspect ratio.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Required input 'locked_3d_brief' is missing or underspecified."
+      },
+      "expectedBehavior": [
+        "Identifies missing room typology, natural daylight openings, and focal furniture anchor required by interior-scene (locked_3d_brief)",
+        "Refuses to fabricate domain parameters and keeps Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "locked_3d_brief",
+        "room typology, natural daylight openings, and focal furniture anchor",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "fisheye vertical distortion",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "guessed parameters silently"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicitly names missing required input 'locked_3d_brief' (room typology, natural daylight openings, and focal furniture anchor)",
+        "Conservative Runtime: Not Run and Artifact: Not Produced truth states"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Clarification gate (interior-scene)",
+          "recommendedNextAction": "Provide the missing room typology, natural daylight openings, and focal furniture anchor (locked_3d_brief) before interior-scene locks interior_zone_and_circulation_plan.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted interior-scene due to missing required input 'locked_3d_brief' (room typology, natural daylight openings, and focal furniture anchor); no values were fabricated.",
+          "warnings": [
+            "Do not invent room typology, natural daylight openings, and focal furniture anchor when 'locked_3d_brief' is omitted."
+          ],
+          "evidenceCitations": [
+            "skills/interior-scene/SKILL.md",
+            "skills/interior-scene/EVAL.md",
+            "skills/interior-scene/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "interior-scene-out-of-scope-exclusion-delegation",
+      "skillId": "interior-scene",
+      "scenario": "Out-of-scope request (outdoor establishing) is excluded from interior-scene and delegated to environment-shot",
+      "category": "scope_creep",
+      "inputPrompt": "Instead of plan an interior architectural visualization scene (room layout, furniture, materials, natural + artificial lighting) before any modeling or render attempt., handle this request inside interior-scene: outdoor establishing.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Enforces the declared exclusion boundary in skills/interior-scene/contract.json when outdoor establishing",
+        "Delegates to environment-shot (use environment-shot) with Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "environment-shot",
+        "out of scope",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "fisheye vertical distortion",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "handled inside interior-scene anyway"
+      ],
+      "expectedRoutingTarget": "environment-shot",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Exclusion delegation to environment-shot per skills/interior-scene/contract.json"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Out-of-scope exclusion gate (interior-scene)",
+          "recommendedNextAction": "Request is out of scope for interior-scene (outdoor establishing); delegate to environment-shot.",
+          "targetHandoff": "environment-shot",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Enforced interior-scene exclusion boundary (use environment-shot) and delegated to environment-shot.",
+          "warnings": [
+            "interior-scene is scoped to interior-archviz-scene-architect and does not absorb environment-shot responsibilities."
+          ],
+          "evidenceCitations": [
+            "skills/interior-scene/contract.json",
+            "skills/interior-scene/SKILL.md",
+            "skills/environment-shot/SKILL.md"
+          ]
+        }
+      }
+    }
+  ]
+}

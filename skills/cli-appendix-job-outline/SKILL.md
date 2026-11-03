@@ -112,7 +112,7 @@ Which batch job pattern applies (`references/job-type-matrix.md`)?
   Batch GLB export → outline startup, .blend load, collection visibility/export check categories, and GLB size/validator hooks
   Scripted scene hygiene / prep → outline factory-startup caution, `--python` ordering reminder, and file diff/hash hooks
 Did the operator already run the CLI job and produce logs or files?
-  Yes → route logs to runtime-attempt-report-writer and output files to render-export-evidence
+  Yes → route logs to runtime-attempt-report and output files to render-export-evidence
   No → emit planning outline with Runtime status: Not Run and Artifact status: Not Produced
 ```
 
@@ -144,7 +144,7 @@ Provide the phased CLI job outline, flag categories, and stateless limitations. 
 
 ### Runtime-ready mode
 
-Specify validation and logging hooks (where logs and output files should land), then hand off post-run verification to `render-export-evidence` and `runtime-attempt-report-writer`. Outlining never upgrades truth states.
+Specify validation and logging hooks (where logs and output files should land), then hand off post-run verification to `render-export-evidence` and `runtime-attempt-report`. Outlining never upgrades truth states.
 
 ### Blocked runtime mode
 
@@ -171,7 +171,7 @@ Outline the intended phased job structure and record blockers on a separate line
 
 - If the user asks for a copy-paste Python script or raw `bpy` batch code, refuse the code dump per `laws/no-arbitrary-python-interface.md` and provide a plain-language phased job outline plus upstream manual pointers instead.
 - If the user wants live interactive viewport adjustments through the CLI appendix, stop and route back to `runtime-path-picker` or `path-one-host-outline`.
-- If a prior CLI run failed silently (for example, flags placed after the scene filename were ignored before load), keep `Runtime status: Failed` (or `Attempted`), keep `Artifact status: Not Produced`, and route the log capture to `runtime-attempt-report-writer`.
+- If a prior CLI run failed silently (for example, flags placed after the scene filename were ignored before load), keep `Runtime status: Failed` (or `Attempted`), keep `Artifact status: Not Produced`, and route the log capture to `runtime-attempt-report`.
 - Never promote the CLI fallback appendix to a peer MCP runtime path when no in-repo CLI evaluation record exists under `docs/evals/`.
 
 ## Troubleshooting
@@ -180,7 +180,7 @@ Outline the intended phased job structure and record blockers on a separate line
 |---|---|---|
 | CLI job renders default cube or wrong settings | Flag order error in `blender --background` (settings placed after render trigger or scene file) | Review `references/flag-order-reminders.md` and verify exact flag ordering in the upstream Blender command-line manual for the installed Blender version. |
 | Custom script arguments disappear in headless run | Missing `--` argument separator after `--python` script path | Note the argument-separator check prompt from `references/flag-order-reminders.md` and consult upstream CLI docs. |
-| Export add-on or GPU device missing on CI runner | Factory startup or headless runner profile differs from artist workstation | Flag the environment gap under `Limitations` (`references/stateless-limitations.md`) and require stdout/stderr device capture in `runtime-attempt-report-writer`. |
+| Export add-on or GPU device missing on CI runner | Factory startup or headless runner profile differs from artist workstation | Flag the environment gap under `Limitations` (`references/stateless-limitations.md`) and require stdout/stderr device capture in `runtime-attempt-report`. |
 
 ## Best practices
 
@@ -217,7 +217,7 @@ Blockers: <none or specific environment/policy blockers>
 Runtime status: Not Run
 Artifact status: Not Produced
 Evidence used: <none during outlining>
-Next skill: <render-export-evidence | runtime-attempt-report-writer | output-format-decision>
+Next skill: <render-export-evidence | runtime-attempt-report | output-format-decision>
 ```
 
 ## Anti-patterns
@@ -234,7 +234,7 @@ Next skill: <render-export-evidence | runtime-attempt-report-writer | output-for
 - [upstream_reference] Interactive MCP host outline → `../path-one-host-outline/SKILL.md`
 - [progression] Export format choices → `../output-format-decision/SKILL.md`
 - [progression] Actual CLI output evidence recording → `../render-export-evidence/SKILL.md`
-- [progression] Runtime attempt reporting → `../runtime-attempt-report-writer/SKILL.md`
+- [progression] Runtime attempt reporting → `../runtime-attempt-report/SKILL.md`
 <!-- blendops:generated:end handoffs -->
 
 ## Non-goals

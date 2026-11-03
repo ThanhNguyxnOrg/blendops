@@ -24,11 +24,11 @@ Produce a **single primary** runtime execution choice among Path 1 (Blender Lab 
 
 ## When not to use
 <!-- blendops:generated:start exclusions -->
-- prerequisite framing or install steps → use `../official-runtime-setup-guide/SKILL.md` (Delegates out-of-scope requests to official-runtime-setup-guide)
-- running the readiness matrix → use `../official-runtime-readiness-checker/SKILL.md` (Delegates out-of-scope requests to official-runtime-readiness-checker)
+- prerequisite framing or install steps → use `../runtime-setup/SKILL.md` (Delegates out-of-scope requests to runtime-setup)
+- running the readiness matrix → use `../runtime-readiness/SKILL.md` (Delegates out-of-scope requests to runtime-readiness)
 - detailing Path 1 host (a) Connector vs (b) manual MCP client → use `../path-one-host-outline/SKILL.md` (Delegates out-of-scope requests to path-one-host-outline)
 - outlining headless CLI jobs → use `../cli-appendix-job-outline/SKILL.md` (Delegates out-of-scope requests to cli-appendix-job-outline)
-- resolving active bridge or port collisions → use `../runtime-bridge-conflict-resolver/SKILL.md` (Delegates out-of-scope requests to runtime-bridge-conflict-resolver)
+- resolving active bridge or port collisions → use `../bridge-conflicts/SKILL.md` (Delegates out-of-scope requests to bridge-conflicts)
 - halting on contradictory constraints before handoff → use `../pre-handoff-verification/SKILL.md` (Delegates out-of-scope requests to pre-handoff-verification)
 <!-- blendops:generated:end exclusions -->
 
@@ -97,7 +97,7 @@ Decision skill only — chooses a single primary path from constraints and confi
 - **Path 2**: Community `mcp-for-blender` (renamed from `ahujasid/blender-mcp`), third-party, Blender 3.0+, recommended only with explicit caveats and **never as release evidence**. Manual configuration responsibility; see `docs/unofficial-runtime-bridges.md`.
 - **CLI fallback**: Appendix only (`blender --background --python`), never a peer path without an eval record. Documented upstream as a first-class Blender CLI surface (render/Cycles/format/Python sections read in the current Blender 5.2 LTS Manual); **no in-repo evidence file yet** for BlendOps-run CLI examples.
 - **Bridge limit**: One MCP bridge per Blender instance (default port 9876).
-- **Role boundary**: Prerequisite framing belongs to `official-runtime-setup-guide`; readiness matrix checks belong to `official-runtime-readiness-checker`; Path 1 host a/b details belong to `path-one-host-outline`; headless job outlines belong to `cli-appendix-job-outline`; bridge conflicts belong to `runtime-bridge-conflict-resolver`.
+- **Role boundary**: Prerequisite framing belongs to `runtime-setup`; readiness matrix checks belong to `runtime-readiness`; Path 1 host a/b details belong to `path-one-host-outline`; headless job outlines belong to `cli-appendix-job-outline`; bridge conflicts belong to `bridge-conflicts`.
 
 ## Operating procedure
 
@@ -105,7 +105,7 @@ Decision skill only — chooses a single primary path from constraints and confi
 2. Gate **Path 1** on Blender 5.1+ feasibility (`blender_version_min = "5.1.0"`) with host (a) Anthropic Connector in Claude Desktop or (b) manually configured MCP client (handoff host details to `path-one-host-outline`).
 3. If Path 1 is impossible, Blender is `3.0+`, and interactive MCP is required → select **Path 2** (`mcp-for-blender`, formerly `ahujasid/blender-mcp`) only with explicit third-party caveats and a **non-release evidence** label.
 4. If batch, headless, or CI constraints dominate → select the **CLI fallback** (`blender --background --python`) labeled strictly as **appendix-only** (never a peer path without an eval record) and hand off job structure to `cli-appendix-job-outline`.
-5. Enforce the one MCP bridge per Blender instance rule (default port 9876); if multiple bridges are active or requested on one instance, hand off to `runtime-bridge-conflict-resolver`.
+5. Enforce the one MCP bridge per Blender instance rule (default port 9876); if multiple bridges are active or requested on one instance, hand off to `bridge-conflicts`.
 
 ## Decision tree
 
@@ -114,7 +114,7 @@ Are the user's constraints mutually contradictory (e.g., demands official Path 1
   Yes → STOP; record contradiction on Blockers line and exit to pre-handoff-verification
   No → continue
 Are both Path 1 and Path 2 bridges configured or requested simultaneously on the same Blender instance (port 9876)?
-  Yes → STOP; route to runtime-bridge-conflict-resolver (Single-bridge constraint)
+  Yes → STOP; route to bridge-conflicts (Single-bridge constraint)
   No → continue
 Does the workflow require non-interactive CI, render-farm, or headless batch automation rather than interactive viewport steering?
   Yes → select CLI fallback (`blender --background --python`) with mandatory **appendix-only** label (never a peer path without an eval record) and hand off to cli-appendix-job-outline
@@ -133,7 +133,7 @@ Is Blender 5.1+ (`blender_version_min = "5.1.0"`) available and can the Official
 
 - Verify Blender `>= 5.1.0` (`blender_version_min = "5.1.0"`) against `references/path-constraints-table.md`.
 - Recommend **Path 1 — Official Blender Lab MCP** as the single primary path, explicitly noting both host options — **(a)** Anthropic Connector in Claude Desktop and **(b)** manual MCP client — and stating that the Lab MCP add-on inside Blender is required for both (**Connector is NOT standalone**).
-- Reject Path 2 (unnecessary third-party surface when 5.1+ is available) and CLI appendix (poor fit for interactive look-dev), then hand off to `../path-one-host-outline/SKILL.md` or `../official-runtime-setup-guide/SKILL.md`.
+- Reject Path 2 (unnecessary third-party surface when 5.1+ is available) and CLI appendix (poor fit for interactive look-dev), then hand off to `../path-one-host-outline/SKILL.md` or `../runtime-setup/SKILL.md`.
 
 ### Playbook B: Blender 3.0–4.x LTS interactive MCP request (`Path 2` selected with caveats)
 
@@ -154,7 +154,7 @@ Deliver a single hypothetical path recommendation with rejected-paths rationale,
 
 ### Runtime-ready mode
 
-Cross-check constraints against `official-runtime-readiness-checker` output if present; preserve or downgrade truth states (downgrade-only, never upgrade; artifacts default `Not Produced`).
+Cross-check constraints against `runtime-readiness` output if present; preserve or downgrade truth states (downgrade-only, never upgrade; artifacts default `Not Produced`).
 
 ### Blocked runtime mode
 
@@ -182,14 +182,14 @@ Record blockers on a separate line, keep truth states downgraded (`Not Run` / `F
 
 - If constraints are contradictory (such as requiring official Path 1 release certification while locked to Blender 4.2 LTS, or demanding live MCP steering where local sockets and add-ons are banned by policy), do not force a broken pick; record the contradiction under `Blockers`, keep `Runtime status: Not Run` and `Artifact status: Not Produced`, and exit to `../pre-handoff-verification/SKILL.md`.
 - If the user's Blender version is unknown, emit a `Warn`-level conditional pick that branches explicitly on `Blender >= 5.1.0` (Path 1) vs `Blender 3.0–5.0` (Path 2 with non-release caveats) until the version is confirmed.
-- If the user attempts to attach both Path 1 and Path 2 to the same Blender instance, stop path selection and route to `../runtime-bridge-conflict-resolver/SKILL.md`.
+- If the user attempts to attach both Path 1 and Path 2 to the same Blender instance, stop path selection and route to `../bridge-conflicts/SKILL.md`.
 
 ## Troubleshooting
 
 | Symptom | Cause | Safe resolution |
 |---|---|---|
 | User on Blender 4.2 LTS asks to install the Anthropic Blender Connector | Anthropic tutorial prose mentions "Blender 4.2 or later", but the Lab MCP add-on manifest enforces `blender_version_min = "5.1.0"` | Explain the binding 5.1.0 manifest floor; reject Path 1 unless the user upgrades to Blender 5.1+, or recommend Path 2 (`mcp-for-blender`) with third-party non-release caveats. |
-| User wants to run Path 1 in Claude Desktop and Path 2 in Cursor against one open Blender window | Violates the Single-bridge constraint on port `9876` | Warn that Blender accepts only one active MCP bridge session per instance and route to `../runtime-bridge-conflict-resolver/SKILL.md`. |
+| User wants to run Path 1 in Claude Desktop and Path 2 in Cursor against one open Blender window | Violates the Single-bridge constraint on port `9876` | Warn that Blender accepts only one active MCP bridge session per instance and route to `../bridge-conflicts/SKILL.md`. |
 | User treats `blender --background` as "Path 3 MCP" | Confusion between MCP bridges and Blender's native command-line interface | Clarify that `blender --background --python` is the **CLI fallback appendix** (no MCP involved, not a peer path without an eval record) and hand off to `../cli-appendix-job-outline/SKILL.md`. |
 
 ## Best practices
@@ -231,7 +231,7 @@ Runtime status: Not Run
 Artifact status: Not Produced
 Evidence used: <user-stated constraints + docs/runtime-stack-strategy.md>
 Limitations: <unverified Blender build or host permissions>
-Next skill: <path-one-host-outline | official-runtime-setup-guide | cli-appendix-job-outline | runtime-bridge-conflict-resolver | pre-handoff-verification>
+Next skill: <path-one-host-outline | runtime-setup | cli-appendix-job-outline | bridge-conflicts | pre-handoff-verification>
 ```
 
 ## Anti-patterns
@@ -245,18 +245,18 @@ Next skill: <path-one-host-outline | official-runtime-setup-guide | cli-appendix
 
 ## Cross-skill handoff
 <!-- blendops:generated:start handoffs -->
-- [progression] Prerequisite framing → `../official-runtime-setup-guide/SKILL.md`
-- [progression] Readiness matrix check → `../official-runtime-readiness-checker/SKILL.md`
+- [progression] Prerequisite framing → `../runtime-setup/SKILL.md`
+- [progression] Readiness matrix check → `../runtime-readiness/SKILL.md`
 - [progression] Host (a)/(b) specifics for Path 1 → `../path-one-host-outline/SKILL.md`
 - [progression] Headless CLI appendix job outline → `../cli-appendix-job-outline/SKILL.md`
-- [fallback] Bridge or port 9876 conflicts → `../runtime-bridge-conflict-resolver/SKILL.md`
+- [fallback] Bridge or port 9876 conflicts → `../bridge-conflicts/SKILL.md`
 - [fallback] Contradictory constraints failure exit → `../pre-handoff-verification/SKILL.md`
 <!-- blendops:generated:end handoffs -->
 
 ## Non-goals
 
-- Walking through step-by-step add-on installation or host config file edits (owned by `../official-runtime-setup-guide/SKILL.md`).
-- Probing live runtime connectivity (owned by `../official-runtime-readiness-checker/SKILL.md`).
+- Walking through step-by-step add-on installation or host config file edits (owned by `../runtime-setup/SKILL.md`).
+- Probing live runtime connectivity (owned by `../runtime-readiness/SKILL.md`).
 - Detailing Path 1 Host (a) vs Host (b) architecture (owned by `../path-one-host-outline/SKILL.md`) or CLI batch job phases (owned by `../cli-appendix-job-outline/SKILL.md`).
 - Executing Blender, generating Python code, or verifying artifacts.
 

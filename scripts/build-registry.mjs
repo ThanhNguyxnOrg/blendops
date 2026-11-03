@@ -852,19 +852,19 @@ export function buildRegistryArtifacts(rootDir) {
   const rawInputsForChecksum = [];
 
   if (fs.existsSync(schemaPath)) {
-    rawInputsForChecksum.push(`schema:${fs.readFileSync(schemaPath, 'utf8')}`);
+    rawInputsForChecksum.push(`schema:${fs.readFileSync(schemaPath, 'utf8').replace(/\r\n/g, '\n')}`);
   }
   if (fs.existsSync(vocabSchemaPath)) {
-    rawInputsForChecksum.push(`vocabSchema:${fs.readFileSync(vocabSchemaPath, 'utf8')}`);
+    rawInputsForChecksum.push(`vocabSchema:${fs.readFileSync(vocabSchemaPath, 'utf8').replace(/\r\n/g, '\n')}`);
   }
   if (fs.existsSync(vocabJsonPath)) {
-    rawInputsForChecksum.push(`vocab:${fs.readFileSync(vocabJsonPath, 'utf8')}`);
+    rawInputsForChecksum.push(`vocab:${fs.readFileSync(vocabJsonPath, 'utf8').replace(/\r\n/g, '\n')}`);
   }
   rawInputsForChecksum.push(`catalog:${catalogSkillIds.join(',')}`);
 
   for (const id of contractedSkillIds) {
     const cPath = path.join(skillsDir, id, 'contract.json');
-    const rawTxt = fs.readFileSync(cPath, 'utf8');
+    const rawTxt = fs.readFileSync(cPath, 'utf8').replace(/\r\n/g, '\n');
     rawInputsForChecksum.push(`contract:${id}:${rawTxt}`);
     let parsed;
     try {
@@ -1045,7 +1045,7 @@ function main() {
   // Check or sync SKILL.md managed sections for validated contracts
   for (const contract of contracts) {
     const skillMdPath = path.join(skillsDir, contract.id, 'SKILL.md');
-    const currentMd = fs.readFileSync(skillMdPath, 'utf8');
+    const currentMd = fs.readFileSync(skillMdPath, 'utf8').replace(/\r\n/g, '\n');
     const expectedMd = applyManagedSectionsToSkillMd(currentMd, contract);
 
     if (syncSkills && !checkOnly) {
@@ -1066,13 +1066,13 @@ function main() {
   if (checkOnly) {
     if (!fs.existsSync(skillsJsonPath)) {
       errors.push('Missing registry/skills.json (run node scripts/build-registry.mjs)');
-    } else if (fs.readFileSync(skillsJsonPath, 'utf8') !== expectedSkillsJson) {
+    } else if (fs.readFileSync(skillsJsonPath, 'utf8').replace(/\r\n/g, '\n') !== expectedSkillsJson) {
       errors.push('Stale registry/skills.json does not match current contracts');
     }
 
     if (!fs.existsSync(graphJsonPath)) {
       errors.push('Missing registry/workflow-graph.json (run node scripts/build-registry.mjs)');
-    } else if (fs.readFileSync(graphJsonPath, 'utf8') !== expectedGraphJson) {
+    } else if (fs.readFileSync(graphJsonPath, 'utf8').replace(/\r\n/g, '\n') !== expectedGraphJson) {
       errors.push('Stale registry/workflow-graph.json does not match current contracts');
     }
 

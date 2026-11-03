@@ -16,7 +16,7 @@ Translate a confirmed user intent (from `blender-brainstorming` or a clear initi
 ## When to use
 - right after `blender-brainstorming` confirms user intent
 - when the user provides a structured request that just needs format normalization
-- before any planner skill (`product-hero-scene-planner`, `blender-composition-camera-planner`, `blender-lighting-material-planner`)
+- before any planner skill (`product-hero-scene-planner`, `camera-composition`, `lighting-material-plan`)
 - before `acceptance-criteria-builder` consumes brief rows to build criteria
 - when multiple planners need to share the same source-of-truth brief
 
@@ -29,7 +29,7 @@ Translate a confirmed user intent (from `blender-brainstorming` or a clear initi
 ## When not to use
 - intent is still ambiguous (run blender-brainstorming first) → delegate to `blender-brainstorming` (`references/skills/blender-brainstorming.md`; run blender-brainstorming first)
 - the user is mid-execution and asks for a re-brief → delegate to `blender-troubleshooting` (`references/skills/blender-troubleshooting.md`; route to blender-troubleshooting instead)
-- the user pushes for immediate execution → delegate to `official-runtime-readiness-checker` (`references/skills/official-runtime-readiness-checker.md`; route to official-runtime-readiness-checker)
+- the user pushes for immediate execution → delegate to `runtime-readiness` (`references/skills/runtime-readiness.md`; route to runtime-readiness)
 - the request is iteration on existing output ("make it darker") — that's a planner-level edit, not a new brief → delegate to `blender-brainstorming` (`references/skills/blender-brainstorming.md`; Delegates out-of-scope requests to blender-brainstorming)
 
 ## Inputs & output/evidence contract
@@ -54,10 +54,10 @@ Translate a confirmed user intent (from `blender-brainstorming` or a clear initi
 ## Handoff notes
 - **[upstream_reference]** Preceding step → `blender-brainstorming` (`references/skills/blender-brainstorming.md`) — `when.all: [goal.clarity equals "ambiguous_or_mixed"]`
 - **[progression]** Consuming skills (acceptance-criteria-builder) → `acceptance-criteria-builder` (`references/skills/acceptance-criteria-builder.md`) — `when.all: [brief.locked equals true; stage.current equals "acceptance_criteria"]`
-- **[progression]** Consuming skills (blender-composition-camera-planner) → `blender-composition-camera-planner` (`references/skills/blender-composition-camera-planner.md`) — `when.all: [brief.locked equals true; stage.current equals "camera_planning"]`
-- **[progression]** Consuming skills (blender-lighting-material-planner) → `blender-lighting-material-planner` (`references/skills/blender-lighting-material-planner.md`) — `when.all: [brief.locked equals true; stage.current equals "lookdev_planning"]`
+- **[progression]** Consuming skills (camera-composition) → `camera-composition` (`references/skills/camera-composition.md`) — `when.all: [brief.locked equals true; stage.current equals "camera_planning"]`
+- **[progression]** Consuming skills (lighting-material-plan) → `lighting-material-plan` (`references/skills/lighting-material-plan.md`) — `when.all: [brief.locked equals true; stage.current equals "lookdev_planning"]`
 - **[alternative]** Consuming skills (product-hero-scene-planner) → `product-hero-scene-planner` (`references/skills/product-hero-scene-planner.md`) — `when.all: [brief.locked equals true; recipe.domain equals "product_hero"]`
-- **[conditional]** If execution is requested → `official-runtime-readiness-checker` (`references/skills/official-runtime-readiness-checker.md`) — `when.all: [runtime.path not_equals "unselected"; runtime.verifiedReady equals false]`
+- **[conditional]** If execution is requested → `runtime-readiness` (`references/skills/runtime-readiness.md`) — `when.all: [runtime.path not_equals "unselected"; runtime.verifiedReady equals false]`
 - **[fallback]** If mid-execution re-briefing occurs → `blender-troubleshooting` (`references/skills/blender-troubleshooting.md`) — `when.all: [runtime.errorDetected equals true]`
 
 ## Safety boundaries & non-goals
@@ -65,4 +65,4 @@ Translate a confirmed user intent (from `blender-brainstorming` or a clear initi
 - making the plan (planner's job)
 - running Blender
 - setting up runtime
-- writing the final user response (`non-blender-user-response-writer`'s job)
+- writing the final user response (`plain-language-response`'s job)

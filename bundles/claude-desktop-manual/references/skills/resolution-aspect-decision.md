@@ -24,7 +24,7 @@ Avoid the most common render planning mistake: rendering at one aspect / resolut
 - "16:9 or square"
 
 ## When not to use
-- after render is complete (no benefit) → delegate to `blender-composition-camera-planner` (`references/skills/blender-composition-camera-planner.md`; no benefit)
+- after render is complete (no benefit) → delegate to `camera-composition` (`references/skills/camera-composition.md`; no benefit)
 - pure modeling → delegate to `output-format-decision` (`references/skills/output-format-decision.md`; Delegates out-of-scope requests to output-format-decision)
 - internal preview-only renders (any reasonable size works) → delegate to `composition-quality-checker` (`references/skills/composition-quality-checker.md`; any reasonable size works)
 
@@ -49,7 +49,7 @@ Avoid the most common render planning mistake: rendering at one aspect / resolut
 5. Pin the record for the operator to enter in Blender scene render properties (no rendering, no post-render resizing).
 
 ## Handoff notes
-- **[upstream_reference]** Camera & composition planning (upstream framing setup) → `blender-composition-camera-planner` (`references/skills/blender-composition-camera-planner.md`) — `when.all: [brief.locked equals true; stage.current equals "camera_planning"]`
+- **[upstream_reference]** Camera & composition planning (upstream framing setup) → `camera-composition` (`references/skills/camera-composition.md`) — `when.all: [brief.locked equals true; stage.current equals "camera_planning"]`
 - **[progression]** Composition framing validation against pinned aspect → `composition-quality-checker` (`references/skills/composition-quality-checker.md`) — `when.all: [quality.domain equals "composition"; quality.verdict equals "not_run"]`
 - **[upstream_reference]** Color configuration decision → `color-management-decision` (`references/skills/color-management-decision.md`) — `when.all: [decision.colorLocked equals false]`
 - **[progression]** Container / codec decision → `output-format-decision` (`references/skills/output-format-decision.md`) — `when.all: [decision.formatLocked equals false]`

@@ -727,7 +727,7 @@ export function writeOrCheckRepositoryInventory(rootDir = DEFAULT_ROOT, { checkO
         inventory: report.inventory,
       };
     }
-    const existing = fs.readFileSync(targetPath, 'utf8');
+    const existing = fs.readFileSync(targetPath, 'utf8').replace(/\r\n/g, '\n');
     if (existing !== serialized) {
       return {
         ok: false,

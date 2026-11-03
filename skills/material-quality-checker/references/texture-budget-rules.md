@@ -20,7 +20,7 @@
 
 ## Total scene texture pixel budget
 
-Sum the pixel area of every unique texture (do not double-count shared textures across materials). Compare against the pinned tier budget from `glb-mobile-performance-budget`.
+Sum the pixel area of every unique texture (do not double-count shared textures across materials). Compare against the pinned tier budget from `mobile-glb-budget`.
 
 ## Resolution-vs-tier overrides
 

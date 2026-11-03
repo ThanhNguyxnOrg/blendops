@@ -24,7 +24,7 @@ When user intent is too big for one recipe (multiple deliverables, mixed modes, 
 <!-- blendops:generated:start exclusions -->
 - single deliverable that is already right-sized (hand off directly to intent-to-3d-brief-writer) → use `../intent-to-3d-brief-writer/SKILL.md` (hand off directly to intent-to-3d-brief-writer)
 - pure exploration or open ideation → use `../blender-brainstorming/SKILL.md` (use blender-brainstorming instead)
-- after recipes are already split or running → use `../blender-scope-boundary-enforcer/SKILL.md` (use blender-scope-boundary-enforcer for added scope or blender-stop-condition-decider to evaluate completion)
+- after recipes are already split or running → use `../scope-guard/SKILL.md` (use scope-guard for added scope or done-criteria to evaluate completion)
 <!-- blendops:generated:end exclusions -->
 
 ## Trigger phrases
@@ -97,9 +97,9 @@ Process / discipline skill — does not run Blender. Splits intent into recipe s
 6. Recommend the start recipe (typically shared-asset prep or foundational hero scene first).
 7. Respect downstream role boundaries:
    - Hand each recipe to `intent-to-3d-brief-writer` to author its full brief.
-   - Hand each recipe to `blender-stop-condition-decider` to pin its formal done condition.
-   - Gate each recipe's execution with `blender-checklist-driven-workflow`.
-   - Route any scope added after splitting to `blender-scope-boundary-enforcer`.
+   - Hand each recipe to `done-criteria` to pin its formal done condition.
+   - Gate each recipe's execution with `stage-gates`.
+   - Route any scope added after splitting to `scope-guard`.
 
 ## Decision tree
 
@@ -117,7 +117,7 @@ Conflicting briefs (e.g., realistic + stylized in one ask)?
 Shared assets across deliverables?
   → Plan shared-asset prep early; downstream recipes declare it as a dependency
 Scope added after decomposition is agreed?
-  → Route to `blender-scope-boundary-enforcer`
+  → Route to `scope-guard`
 ```
 
 ## Playbooks
@@ -174,8 +174,8 @@ Decomposition proceeds normally as pre-work. Keep `Runtime status: Not Run` and 
 ## Failure handling
 - Single mega-recipe → force split into 2-5 cohesive recipes per `references/recipe-grouping-rules.md`.
 - > 5 fragments → consolidate adjacent deliverables into 2-5 cohesive recipes or defer excess to a backlog.
-- Scope added after splitting → hand off to `blender-scope-boundary-enforcer`.
-- User refuses split → document as risk; warn that `blender-checklist-driven-workflow` gates and `blender-stop-condition-decider` criteria will be fragile.
+- Scope added after splitting → hand off to `scope-guard`.
+- User refuses split → document as risk; warn that `stage-gates` gates and `done-criteria` criteria will be fragile.
 
 ## Troubleshooting
 
@@ -218,9 +218,9 @@ Shared assets (planned early): <list>
 Recommended start: <recipe name>
 Next role handoffs:
 - Full brief per recipe: `intent-to-3d-brief-writer`
-- Done condition per recipe: `blender-stop-condition-decider`
-- Stage gating per recipe: `blender-checklist-driven-workflow`
-- Post-split scope additions: `blender-scope-boundary-enforcer`
+- Done condition per recipe: `done-criteria`
+- Stage gating per recipe: `stage-gates`
+- Post-split scope additions: `scope-guard`
 
 Runtime status: Not Run
 Artifact status: Not Produced
@@ -237,18 +237,18 @@ Limitations: <gaps>
 ## Cross-skill handoff
 <!-- blendops:generated:start handoffs -->
 - [progression] Full brief authoring for each split recipe → `../intent-to-3d-brief-writer/SKILL.md`
-- [progression] Pinning formal done conditions per recipe → `../blender-stop-condition-decider/SKILL.md`
-- [progression] Workflow stage gates per recipe → `../blender-checklist-driven-workflow/SKILL.md`
-- [progression] Handling scope added after splitting → `../blender-scope-boundary-enforcer/SKILL.md`
+- [progression] Pinning formal done conditions per recipe → `../done-criteria/SKILL.md`
+- [progression] Workflow stage gates per recipe → `../stage-gates/SKILL.md`
+- [progression] Handling scope added after splitting → `../scope-guard/SKILL.md`
 - [upstream_reference] Pre-decomposition ideation when deliverables are unclear → `../blender-brainstorming/SKILL.md`
 <!-- blendops:generated:end handoffs -->
 
 ## Non-goals
 - Run Blender, write Python, or render/export any artifacts.
 - Author full 3D briefs (belongs to `intent-to-3d-brief-writer`).
-- Pin formal acceptance/stop gates (belongs to `blender-stop-condition-decider`).
-- Run per-recipe checklist stage gates (belongs to `blender-checklist-driven-workflow`).
-- Enforce scope creep after recipes are already split (belongs to `blender-scope-boundary-enforcer`).
+- Pin formal acceptance/stop gates (belongs to `done-criteria`).
+- Run per-recipe checklist stage gates (belongs to `stage-gates`).
+- Enforce scope creep after recipes are already split (belongs to `scope-guard`).
 - Make or upgrade runtime or artifact truth claims.
 
 ## References

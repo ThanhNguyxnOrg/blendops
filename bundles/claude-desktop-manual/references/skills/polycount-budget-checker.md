@@ -4,7 +4,7 @@
 ## Purpose
 Validate per-mesh and total-scene triangle counts against the pinned budget; flag worst offenders and topology hints without modeling.
 
-Run a focused pass/warn/fail check on per-mesh and total-scene triangle counts vs the pinned budget from `glb-mobile-performance-budget` (or any other pinned budget). Surface worst offenders and basic topology hints without performing modeling.
+Run a focused pass/warn/fail check on per-mesh and total-scene triangle counts vs the pinned budget from `mobile-glb-budget` (or any other pinned budget). Surface worst offenders and basic topology hints without performing modeling.
 
 ## Metadata & truth boundary
 - **Canonical skill:** `skills/polycount-budget-checker/SKILL.md`
@@ -18,7 +18,7 @@ Run a focused pass/warn/fail check on per-mesh and total-scene triangle counts v
 - before GLB export
 - after a mesh change request
 - as a sub-check during full quality review
-- when `glb-mobile-performance-budget` is pinned
+- when `mobile-glb-budget` is pinned
 
 ## Trigger cues
 - "is the polycount okay"
@@ -27,18 +27,18 @@ Run a focused pass/warn/fail check on per-mesh and total-scene triangle counts v
 - "topology issue?"
 
 ## When not to use
-- pinning or negotiating the performance budget itself → delegate to `glb-mobile-performance-budget` (`references/skills/glb-mobile-performance-budget.md`; use glb-mobile-performance-budget)
+- pinning or negotiating the performance budget itself → delegate to `mobile-glb-budget` (`references/skills/mobile-glb-budget.md`; use mobile-glb-budget)
 - material validation → delegate to `material-quality-checker` (`references/skills/material-quality-checker.md`; use material-quality-checker)
 - lighting validation → delegate to `lighting-quality-checker` (`references/skills/lighting-quality-checker.md`; use lighting-quality-checker)
 - composition validation → delegate to `composition-quality-checker` (`references/skills/composition-quality-checker.md`; use composition-quality-checker)
-- broad scene readiness review → delegate to `blender-scene-quality-checker` (`references/skills/blender-scene-quality-checker.md`; use blender-scene-quality-checker)
+- broad scene readiness review → delegate to `scene-readiness` (`references/skills/scene-readiness.md`; use scene-readiness)
 - classifying render or export artifact evidence → delegate to `render-export-evidence` (`references/skills/render-export-evidence.md`; use render-export-evidence)
-- fixing topology, decimating, or retopologizing (this skill validates; it never edits or models) → delegate to `glb-mobile-performance-budget` (`references/skills/glb-mobile-performance-budget.md`; this skill validates; it never edits or models)
+- fixing topology, decimating, or retopologizing (this skill validates; it never edits or models) → delegate to `mobile-glb-budget` (`references/skills/mobile-glb-budget.md`; this skill validates; it never edits or models)
 
 ## Inputs & output/evidence contract
 ### Required inputs
 - `scene_geometry_inventory` (`array`): Per-object triangle, vertex, modifier stack, and subdivision level counts
-- `pinned_geometry_budget` (`object`): Target triangle and draw-call ceilings from glb-mobile-performance-budget or brief
+- `pinned_geometry_budget` (`object`): Target triangle and draw-call ceilings from mobile-glb-budget or brief
 
 ### Optional inputs
 - `deformation_or_rig_requirements` (`object`): Optional skeletal deformation or silhouette curvature constraints
@@ -56,8 +56,8 @@ Run a focused pass/warn/fail check on per-mesh and total-scene triangle counts v
 5. flag worst offenders + give topology hints (no modeling)
 
 ## Handoff notes
-- **[upstream_reference]** Pinned budget source → `glb-mobile-performance-budget` (`references/skills/glb-mobile-performance-budget.md`) — `when.all: [artifact.type equals "glb"; budget.pinned equals false]`
-- **[progression]** Broad readiness review → `blender-scene-quality-checker` (`references/skills/blender-scene-quality-checker.md`) — `when.all: [quality.domain equals "holistic"; stage.current equals "quality_validation"]`
+- **[upstream_reference]** Pinned budget source → `mobile-glb-budget` (`references/skills/mobile-glb-budget.md`) — `when.all: [artifact.type equals "glb"; budget.pinned equals false]`
+- **[progression]** Broad readiness review → `scene-readiness` (`references/skills/scene-readiness.md`) — `when.all: [quality.domain equals "holistic"; stage.current equals "quality_validation"]`
 - **[progression]** Artifact evidence classification → `render-export-evidence` (`references/skills/render-export-evidence.md`) — `when.all: [stage.current equals "post_execution_audit"]`
 - **[upstream_reference]** Material validation → `material-quality-checker` (`references/skills/material-quality-checker.md`) — `when.all: [quality.domain equals "material"; quality.verdict equals "not_run"]`
 - **[upstream_reference]** Lighting validation → `lighting-quality-checker` (`references/skills/lighting-quality-checker.md`) — `when.all: [quality.domain equals "lighting"; quality.verdict equals "not_run"]`
@@ -67,5 +67,5 @@ Run a focused pass/warn/fail check on per-mesh and total-scene triangle counts v
 - **Runtime boundary:** This skill validates plans or measured scene snapshots. It never decimates, retopologizes, or runs Blender. Hints are advisory.
 - Decimate or retopologize.
 - Generate topology recipes.
-- Replace `blender-scene-quality-checker`.
+- Replace `scene-readiness`.
 - Run Blender.

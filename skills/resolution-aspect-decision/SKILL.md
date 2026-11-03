@@ -22,7 +22,7 @@ Avoid the most common render planning mistake: rendering at one aspect / resolut
 
 ## When not to use
 <!-- blendops:generated:start exclusions -->
-- after render is complete (no benefit) → use `../blender-composition-camera-planner/SKILL.md` (no benefit)
+- after render is complete (no benefit) → use `../camera-composition/SKILL.md` (no benefit)
 - pure modeling → use `../output-format-decision/SKILL.md` (Delegates out-of-scope requests to output-format-decision)
 - internal preview-only renders (any reasonable size works) → use `../composition-quality-checker/SKILL.md` (any reasonable size works)
 <!-- blendops:generated:end exclusions -->
@@ -97,7 +97,7 @@ Decision skill — does not render. Pins resolution + aspect; operator applies i
 1. Identify the consumer use case and all target delivery streams.
 2. Pin the required aspect ratio (`W:H`) for each stream from the consumer spec (or mark fallback defaults as assumptions to confirm).
 3. Pin the exact render resolution (`W × H`) and `DPI / PPI` (for print) to be set directly in scene render properties—do not prescribe post-render resizing, cropping, or upscaling.
-4. For multi-aspect deliverables, define a separate resolution record per stream and hand off camera framing to `blender-composition-camera-planner` and `composition-quality-checker`.
+4. For multi-aspect deliverables, define a separate resolution record per stream and hand off camera framing to `camera-composition` and `composition-quality-checker`.
 5. Record caveats and set truth states to `Runtime status: Not Run` and `Artifact status: Not Produced`.
 
 ## Decision tree
@@ -127,7 +127,7 @@ Pin the target aspect ratio (such as `16:9`) and exact delivery `W × H` require
 
 ### Playbook B: Multi-stream social campaign
 
-Emit separate resolution records for each stream (for example, `9:16` vertical, `1:1` square, and `16:9` widescreen) with their respective target `W × H`. Hand off to `blender-composition-camera-planner` and `composition-quality-checker` so each aspect is properly framed in-camera rather than cropped post-render.
+Emit separate resolution records for each stream (for example, `9:16` vertical, `1:1` square, and `16:9` widescreen) with their respective target `W × H`. Hand off to `camera-composition` and `composition-quality-checker` so each aspect is properly framed in-camera rather than cropped post-render.
 
 ### Playbook C: Print deliverable
 
@@ -170,7 +170,7 @@ Return the resolution record, caveats, and truth states (`Runtime status: Not Ru
 ## Failure handling
 
 * Consumer spec unspecified → ask once for placement and target dimensions; if unavailable, state a fallback aspect and `W × H` explicitly as an unconfirmed assumption in Caveats.
-* Multi-aspect request → emit separate per-stream resolution records and route framing to `blender-composition-camera-planner` and `composition-quality-checker` (never advise silent cropping).
+* Multi-aspect request → emit separate per-stream resolution records and route framing to `camera-composition` and `composition-quality-checker` (never advise silent cropping).
 * Resolution exceeds hardware memory or render time budget → flag in Caveats and recommend operator review before rendering.
 
 ## Troubleshooting
@@ -184,7 +184,7 @@ Return the resolution record, caveats, and truth states (`Runtime status: Not Ru
 
 ## Best practices
 
-* Always pin the delivery aspect ratio before camera setup so `blender-composition-camera-planner` and `composition-quality-checker` frame against the true boundary.
+* Always pin the delivery aspect ratio before camera setup so `camera-composition` and `composition-quality-checker` frame against the true boundary.
 * Render directly at the required delivery resolution (`W × H`); keep post-render resizing, cropping, or format conversion outside this skill.
 * For multi-aspect deliverables, output explicit per-stream records and require per-aspect camera validation.
 * Pass the pinned resolution record to `render-export-evidence` so rendered files can be checked against target dimensions after execution.
@@ -212,7 +212,7 @@ Runtime status: Not Run
 Artifact status: Not Produced
 Evidence used: <consumer spec or "none">
 Limitations: <known gaps>
-Next: blender-composition-camera-planner -> composition-quality-checker -> render-export-evidence
+Next: camera-composition -> composition-quality-checker -> render-export-evidence
 ```
 
 ## Anti-patterns
@@ -223,7 +223,7 @@ Next: blender-composition-camera-planner -> composition-quality-checker -> rende
 
 ## Cross-skill handoff
 <!-- blendops:generated:start handoffs -->
-- [upstream_reference] Camera & composition planning (upstream framing setup) → `../blender-composition-camera-planner/SKILL.md`
+- [upstream_reference] Camera & composition planning (upstream framing setup) → `../camera-composition/SKILL.md`
 - [progression] Composition framing validation against pinned aspect → `../composition-quality-checker/SKILL.md`
 - [upstream_reference] Color configuration decision → `../color-management-decision/SKILL.md`
 - [progression] Container / codec decision → `../output-format-decision/SKILL.md`

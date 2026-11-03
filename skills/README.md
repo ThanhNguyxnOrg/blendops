@@ -33,22 +33,22 @@ Core guide: [docs/skill-system.md](../docs/skill-system.md)
 
 | Skill | Purpose | Use when | Depth status | Gate review | Eval |
 |---|---|---|---|---|---|
-| `official-runtime-setup-guide` | Runtime prerequisite guidance and confidence labels | Runtime setup path is unclear | Expanded Draft v0 | Pass | [EVAL](./official-runtime-setup-guide/EVAL.md) |
-| `official-runtime-readiness-checker` | Readiness matrix and blocker reporting; canonical role `runtime-readiness` | Before a runtime eval attempt | Expanded Draft v0 | Pass | [EVAL](./official-runtime-readiness-checker/EVAL.md) |
+| `runtime-setup` | Runtime prerequisite guidance and confidence labels | Runtime setup path is unclear | Expanded Draft v0 | Pass | [EVAL](./runtime-setup/EVAL.md) |
+| `runtime-readiness` | Readiness matrix and blocker reporting; canonical role `runtime-readiness` | Before a runtime eval attempt | Expanded Draft v0 | Pass | [EVAL](./runtime-readiness/EVAL.md) |
 
 ### 🎬 Planning
 
 | Skill | Purpose | Use when | Depth status | Gate review | Eval |
 |---|---|---|---|---|---|
 | `product-hero-scene-planner` | Full product-hero scene plan schema; canonical role `scene-planning` for product-hero workflows | User asks for hero scene planning | Expanded Draft v0 | Pass | [EVAL](./product-hero-scene-planner/EVAL.md) |
-| `blender-composition-camera-planner` | Composition and camera strategy | Framing or camera decisions need depth | Expanded Draft v0 | Pass | [EVAL](./blender-composition-camera-planner/EVAL.md) |
-| `blender-lighting-material-planner` | Lighting/material lookdev plan plus portability caveats | Lookdev strategy is required | Expanded Draft v0 | Pass | [EVAL](./blender-lighting-material-planner/EVAL.md) |
+| `camera-composition` | Composition and camera strategy | Framing or camera decisions need depth | Expanded Draft v0 | Pass | [EVAL](./camera-composition/EVAL.md) |
+| `lighting-material-plan` | Lighting/material lookdev plan plus portability caveats | Lookdev strategy is required | Expanded Draft v0 | Pass | [EVAL](./lighting-material-plan/EVAL.md) |
 
 ### ✅ Quality and eval
 
 | Skill | Purpose | Use when | Depth status | Gate review | Eval |
 |---|---|---|---|---|---|
-| `blender-scene-quality-checker` | Pass/warn/fail readiness and verdict | A readiness decision is needed | Expanded Draft v0 | Pass | [EVAL](./blender-scene-quality-checker/EVAL.md) |
+| `scene-readiness` | Pass/warn/fail readiness and verdict | A readiness decision is needed | Expanded Draft v0 | Pass | [EVAL](./scene-readiness/EVAL.md) |
 | `render-export-evidence` | Preview/render/GLB evidence ledger and artifact truth labels | Artifact status must be proven or downgraded | Expanded Draft v0 | Pass | [EVAL](./render-export-evidence/EVAL.md) |
 
 ### 📦 Handoff and communication
@@ -56,7 +56,7 @@ Core guide: [docs/skill-system.md](../docs/skill-system.md)
 | Skill | Purpose | Use when | Depth status | Gate review | Eval |
 |---|---|---|---|---|---|
 | `glb-web-handoff` | GLB/web handoff status and caveats | Handoff clarity is required | Expanded Draft v0 | Pass | [EVAL](./glb-web-handoff/EVAL.md) |
-| `non-blender-user-response-writer` | Plain-language final response | Stakeholder-facing summary is needed | Expanded Draft v0 | Pass | [EVAL](./non-blender-user-response-writer/EVAL.md) |
+| `plain-language-response` | Plain-language final response | Stakeholder-facing summary is needed | Expanded Draft v0 | Pass | [EVAL](./plain-language-response/EVAL.md) |
 
 ### 🌐 Web 3D handoff deep (Batch 1, post-v0.1.0-draft)
 
@@ -64,21 +64,21 @@ Each ships with `SKILL.md` + `EVAL.md` + 3 `references/` files.
 
 | Skill | Purpose | Use when | Depth status | Eval | References |
 |---|---|---|---|---|---|
-| `glb-mobile-performance-budget` | Set explicit triangle / texture / draw-call / file-size / animation budgets per device tier before any export decision | User mentions "mobile" / "phone" / "low-end" / "for the web" | Expanded Draft v0 | [EVAL](./glb-mobile-performance-budget/EVAL.md) | budget-tiers / violation-rules / degradation-plan |
+| `mobile-glb-budget` | Set explicit triangle / texture / draw-call / file-size / animation budgets per device tier before any export decision | User mentions "mobile" / "phone" / "low-end" / "for the web" | Expanded Draft v0 | [EVAL](./mobile-glb-budget/EVAL.md) | budget-tiers / violation-rules / degradation-plan |
 | `glb-animation-handoff` | Document GLB animation contract (skeletal / morph, FPS, looping, root motion, blend) with web-stack caveats | GLB ships with at least one animation clip and consumer is a web app | Expanded Draft v0 | [EVAL](./glb-animation-handoff/EVAL.md) | animation-types / web-stack-caveats / transition-rules |
-| `three-fiber-component-shape-planner` | Plan the React Three Fiber component shape (props, refs, Suspense, useGLTF cache, animation hook) before delivering a GLB to the web team | Consumer is using R3F, before component code is written | Expanded Draft v0 | [EVAL](./three-fiber-component-shape-planner/EVAL.md) | component-shape-patterns / suspense-placement-rules / usegltf-caching-rules |
-| `preview-report-template-writer` | Generate the structured preview-report Markdown that glb-web-handoff and non-blender-user-response-writer consume | After render-export-evidence produces measurements, before web/final handoff | Expanded Draft v0 | [EVAL](./preview-report-template-writer/EVAL.md) | report-schema / truth-label-rules / handoff-recipients |
+| `r3f-component-plan` | Plan the React Three Fiber component shape (props, refs, Suspense, useGLTF cache, animation hook) before delivering a GLB to the web team | Consumer is using R3F, before component code is written | Expanded Draft v0 | [EVAL](./r3f-component-plan/EVAL.md) | component-shape-patterns / suspense-placement-rules / usegltf-caching-rules |
+| `preview-report` | Generate the structured preview-report Markdown that glb-web-handoff and plain-language-response consume | After render-export-evidence produces measurements, before web/final handoff | Expanded Draft v0 | [EVAL](./preview-report/EVAL.md) | report-schema / truth-label-rules / handoff-recipients |
 
 ### 🔍 Quality validation deep (Batch 2, post-v0.1.0-draft)
 
-Each ships with `SKILL.md` + `EVAL.md` + 3 `references/` files. These four narrow validators complement the broader `blender-scene-quality-checker` — use them when you need a focused per-domain check (material / lighting / composition / polycount) instead of holistic readiness.
+Each ships with `SKILL.md` + `EVAL.md` + 3 `references/` files. These four narrow validators complement the broader `scene-readiness` — use them when you need a focused per-domain check (material / lighting / composition / polycount) instead of holistic readiness.
 
 | Skill | Purpose | Use when | Depth status | Eval | References |
 |---|---|---|---|---|---|
 | `material-quality-checker` | Validate PBR material sanity, texture budgets, consumer-stack compatibility per material | Before render / GLB export, after a material change | Expanded Draft v0 | [EVAL](./material-quality-checker/EVAL.md) | pbr-sanity-rules / texture-budget-rules / consumer-stack-rules |
 | `lighting-quality-checker` | Validate intensity ranges, shadow softness, color temperature, HDRI / explicit-light balance vs mood brief | Before render, after a lighting change, when render mood feels off | Expanded Draft v0 | [EVAL](./lighting-quality-checker/EVAL.md) | intensity-ranges / shadow-softness-rules / hdri-balance-rules |
 | `composition-quality-checker` | Validate framing, subject placement, headroom/lead-room, visual hierarchy vs framing intent | Before render, after a camera change | Expanded Draft v0 | [EVAL](./composition-quality-checker/EVAL.md) | composition-rules / headroom-leadroom-rules / aspect-ratio-rules |
-| `polycount-budget-checker` | Validate per-mesh + total-scene triangle counts vs pinned budget; flag worst offenders and topology hints without modeling | After scene plan, before GLB export, when `glb-mobile-performance-budget` is pinned | Expanded Draft v0 | [EVAL](./polycount-budget-checker/EVAL.md) | per-mesh-rules / topology-hints / instance-counting-rules |
+| `polycount-budget-checker` | Validate per-mesh + total-scene triangle counts vs pinned budget; flag worst offenders and topology hints without modeling | After scene plan, before GLB export, when `mobile-glb-budget` is pinned | Expanded Draft v0 | [EVAL](./polycount-budget-checker/EVAL.md) | per-mesh-rules / topology-hints / instance-counting-rules |
 
 ### 🎬 Domain scene planners (Batch 3, post-v0.2.0-draft)
 
@@ -86,9 +86,9 @@ Four narrowly-scoped scene planners that complement `product-hero-scene-planner`
 
 | Skill | Purpose | Use when | Depth status | Eval | References |
 |---|---|---|---|---|---|
-| `character-portrait-scene-planner` | Plan a single-character portrait scene (subject, pose, expression, wardrobe, framing, lighting, background) | Intent is a character / person / creature portrait | Expanded Draft v0 | [EVAL](./character-portrait-scene-planner/EVAL.md) | portrait-framing-rules / portrait-lighting-patterns / style-consistency-rules |
-| `environment-establishing-shot-planner` | Plan a wide environment / establishing shot (locale, time, weather, atmosphere, depth layers, focal subject) | Intent is establishing a place (wide / outdoor / landscape / cityscape) | Expanded Draft v0 | [EVAL](./environment-establishing-shot-planner/EVAL.md) | time-and-weather-rules / wide-shot-camera-rules / depth-layering-rules |
-| `interior-architectural-scene-planner` | Plan an interior arch viz scene (room dims, style, furniture, materials, natural + artificial lighting, camera) | Intent is an interior room / venue / showroom | Expanded Draft v0 | [EVAL](./interior-architectural-scene-planner/EVAL.md) | interior-architecture-rules / furniture-layout-rules / interior-camera-rules |
+| `character-portrait` | Plan a single-character portrait scene (subject, pose, expression, wardrobe, framing, lighting, background) | Intent is a character / person / creature portrait | Expanded Draft v0 | [EVAL](./character-portrait/EVAL.md) | portrait-framing-rules / portrait-lighting-patterns / style-consistency-rules |
+| `environment-shot` | Plan a wide environment / establishing shot (locale, time, weather, atmosphere, depth layers, focal subject) | Intent is establishing a place (wide / outdoor / landscape / cityscape) | Expanded Draft v0 | [EVAL](./environment-shot/EVAL.md) | time-and-weather-rules / wide-shot-camera-rules / depth-layering-rules |
+| `interior-scene` | Plan an interior arch viz scene (room dims, style, furniture, materials, natural + artificial lighting, camera) | Intent is an interior room / venue / showroom | Expanded Draft v0 | [EVAL](./interior-scene/EVAL.md) | interior-architecture-rules / furniture-layout-rules / interior-camera-rules |
 | `product-grid-scene-planner` | Plan a multi-product grid scene with consistent lighting, camera, background, grid spacing | Intent is multi-product display (4+ products in same scene, e-commerce / catalog / comparison) | Expanded Draft v0 | [EVAL](./product-grid-scene-planner/EVAL.md) | grid-layout-rules / grid-consistency-rules / grid-output-naming-rules |
 
 ### 🧰 Process discipline (Batch 4, post-v0.2.0-draft, Superpowers-inspired)
@@ -97,9 +97,9 @@ Four process / discipline skills that prevent scope drift, enforce gates, and pi
 
 | Skill | Purpose | Use when | Depth status | Eval | References |
 |---|---|---|---|---|---|
-| `blender-checklist-driven-workflow` | Enforce per-stage gates and acceptance checklists; work advances only when each previous gate `Pass` | Complex multi-stage recipe (4+ stages), or before runtime work | Expanded Draft v0 | [EVAL](./blender-checklist-driven-workflow/EVAL.md) | gate-template / stage-decomposition-patterns / failed-gate-handling |
-| `blender-stop-condition-decider` | Define one explicit "done" condition for a recipe before starting work, plus an out-of-scope list | Before any non-trivial recipe, when previous attempts drifted into endless polish | Expanded Draft v0 | [EVAL](./blender-stop-condition-decider/EVAL.md) | stop-condition-templates / out-of-scope-patterns / done-vs-perfect |
-| `blender-scope-boundary-enforcer` | Detect mid-recipe scope creep and force decline / agree-to-new-scope / defer; prevents silent absorption | Mid-recipe when scope drift is detected ("can you also...") | Expanded Draft v0 | [EVAL](./blender-scope-boundary-enforcer/EVAL.md) | scope-addition-classification / options-language-template / recurring-creep-patterns |
+| `stage-gates` | Enforce per-stage gates and acceptance checklists; work advances only when each previous gate `Pass` | Complex multi-stage recipe (4+ stages), or before runtime work | Expanded Draft v0 | [EVAL](./stage-gates/EVAL.md) | gate-template / stage-decomposition-patterns / failed-gate-handling |
+| `done-criteria` | Define one explicit "done" condition for a recipe before starting work, plus an out-of-scope list | Before any non-trivial recipe, when previous attempts drifted into endless polish | Expanded Draft v0 | [EVAL](./done-criteria/EVAL.md) | stop-condition-templates / out-of-scope-patterns / done-vs-perfect |
+| `scope-guard` | Detect mid-recipe scope creep and force decline / agree-to-new-scope / defer; prevents silent absorption | Mid-recipe when scope drift is detected ("can you also...") | Expanded Draft v0 | [EVAL](./scope-guard/EVAL.md) | scope-addition-classification / options-language-template / recurring-creep-patterns |
 | `blender-recipe-decomposer` | Break a complex / over-scoped intent into 2-5 smaller cohesive recipes with brief, stop condition, handoff | Intent has multiple distinct deliverables or crosses scene types | Expanded Draft v0 | [EVAL](./blender-recipe-decomposer/EVAL.md) | recipe-grouping-rules / dependency-patterns / recipe-naming-rules |
 
 ### 🗂️ Asset / sourcing (Batch 5, post-v0.3.0-draft)
@@ -109,9 +109,9 @@ Four asset-management skills covering license, style consistency, fallback, and 
 | Skill | Purpose | Use when | Depth status | Eval | References |
 |---|---|---|---|---|---|
 | `asset-license-checker` | Verify license compliance for downloaded 3D assets, textures, HDRIs, fonts before scene build / mutation / export | After asset-discovery produces asset list | Expanded Draft v0 | [EVAL](./asset-license-checker/EVAL.md) | common-license-mapping / license-source-rules / attribution-rendering-patterns |
-| `asset-style-consistency-checker` | Verify chosen assets share visual style (realism / detail / color / surface) before scene build | Before scene build, when scene preview shows visible style mismatch | Expanded Draft v0 | [EVAL](./asset-style-consistency-checker/EVAL.md) | style-axes / drift-classification / intentional-mixed-style |
+| `asset-style-check` | Verify chosen assets share visual style (realism / detail / color / surface) before scene build | Before scene build, when scene preview shows visible style mismatch | Expanded Draft v0 | [EVAL](./asset-style-check/EVAL.md) | style-axes / drift-classification / intentional-mixed-style |
 | `asset-fallback-strategy` | Provide 2-3 fallback options when asset is unavailable / blocked / over-budget — without halting the recipe | After a checker fails an asset | Expanded Draft v0 | [EVAL](./asset-fallback-strategy/EVAL.md) | fallback-option-types / scoring-rubric / drop-with-caveat-rules |
-| `asset-library-organization-planner` | Plan internal asset library (folders, naming, metadata, license tracking, version control) for repeat reuse | Starting new repo with multiple recipes, or before scaling to 50+ assets | Expanded Draft v0 | [EVAL](./asset-library-organization-planner/EVAL.md) | folder-structure-rules / naming-rules / metadata-schema |
+| `asset-library-plan` | Plan internal asset library (folders, naming, metadata, license tracking, version control) for repeat reuse | Starting new repo with multiple recipes, or before scaling to 50+ assets | Expanded Draft v0 | [EVAL](./asset-library-plan/EVAL.md) | folder-structure-rules / naming-rules / metadata-schema |
 
 ### 🎨 Color / format / output decisions (Batch 6, post-v0.3.0-draft)
 
@@ -144,7 +144,7 @@ Four skills that separate Path 1 hosting, Path 2 community bridge, and CLI appen
 | `runtime-path-picker` | Choose Path 1 Lab MCP, Path 2 `mcp-for-blender`, or CLI appendix from constraints | User frozen between official Lab stack, community bridge, or headless batch | Expanded Draft v0 | [EVAL](./runtime-path-picker/EVAL.md) | path-constraints-table / decision-tree / anti-patterns |
 | `path-one-host-outline` | Connector vs manual MCP for Path 1; Lab add-on inside Blender 5.1+ always | Claude Desktop tutorial vs coding-agent MCP config explanations | Expanded Draft v0 | [EVAL](./path-one-host-outline/EVAL.md) | connector-vs-manual-matrix / lab-addon-reminders / host-checklist-template |
 | `cli-appendix-job-outline` | Phased headless job outline; upstream CLI manual is authority | CI / farm / policy-blocked MCP scenarios | Expanded Draft v0 | [EVAL](./cli-appendix-job-outline/EVAL.md) | job-type-matrix / flag-order-reminders / stateless-limitations |
-| `runtime-attempt-report-writer` | Structured attempt report with truth labels for Path 1 / Path 2 / CLI | After connect tries; provenance for evals or stakeholders | Expanded Draft v0 | [EVAL](./runtime-attempt-report-writer/EVAL.md) | truth-label-blocks / attempt-record-template / triage-next-steps |
+| `runtime-attempt-report` | Structured attempt report with truth labels for Path 1 / Path 2 / CLI | After connect tries; provenance for evals or stakeholders | Expanded Draft v0 | [EVAL](./runtime-attempt-report/EVAL.md) | truth-label-blocks / attempt-record-template / triage-next-steps |
 
 ### 🧠 Process and discipline (Phase 4 expansion — Superpowers + BMad inspired)
 
@@ -156,8 +156,8 @@ Each ships with `SKILL.md` + `EVAL.md` + 3 `references/` files (templates / play
 | `blender-troubleshooting` | 4-phase root-cause analysis when output looks wrong (Superpowers `/systematic-debugging` analog) | Render / GLB / response diverges from intent | Expanded Draft v0 | [EVAL](./blender-troubleshooting/EVAL.md) | four-phase-template / divergence-routing-table / common-symptom-playbooks |
 | `pre-handoff-verification` | 7-point evidence gate before any "ready" / `Verified` claim (Superpowers `/verification-before-completion` analog) | Before any handoff, evidence file save, or release | Expanded Draft v0 | [EVAL](./pre-handoff-verification/EVAL.md) | seven-point-checklist / downgrade-rules / text-only-mode-handling |
 | `intent-to-3d-brief-writer` | Convert NL intent → 8-slot structured 3D brief (BMad analysis-phase analog) | First step before any planner | Expanded Draft v0 | [EVAL](./intent-to-3d-brief-writer/EVAL.md) | eight-slot-template / acceptance-criteria-patterns / mixed-audience-handling |
-| `blender-asset-discovery-planner` | Per-asset strategy (procedural / library / generative / photogrammetry) before scene plan | Brief is locked, scene plan needs asset commitment | Expanded Draft v0 | [EVAL](./blender-asset-discovery-planner/EVAL.md) | asset-strategy-decision-tree / license-confidence-table / budget-reconciliation-patterns |
-| `runtime-bridge-conflict-resolver` | Diagnose Single-bridge constraint conflicts (Path 1 + Path 2 + port `9876`) | Readiness signals inconsistent or two bridges installed | Expanded Draft v0 | [EVAL](./runtime-bridge-conflict-resolver/EVAL.md) | bridge-state-matrix-template / conflict-playbooks / do-not-reminders |
+| `asset-discovery` | Per-asset strategy (procedural / library / generative / photogrammetry) before scene plan | Brief is locked, scene plan needs asset commitment | Expanded Draft v0 | [EVAL](./asset-discovery/EVAL.md) | asset-strategy-decision-tree / license-confidence-table / budget-reconciliation-patterns |
+| `bridge-conflicts` | Diagnose Single-bridge constraint conflicts (Path 1 + Path 2 + port `9876`) | Readiness signals inconsistent or two bridges installed | Expanded Draft v0 | [EVAL](./bridge-conflicts/EVAL.md) | bridge-state-matrix-template / conflict-playbooks / do-not-reminders |
 
 ---
 
@@ -207,7 +207,7 @@ Start from [`_template/SKILL.md`](./_template/SKILL.md).
 |---|---|
 | Use kebab-case folder names | `render-export-evidence` |
 | Match `name` to folder slug | `name: render-export-evidence` |
-| Prefer domain/action names | `blender-lighting-material-planner` |
+| Prefer domain/action names | `lighting-material-plan` |
 | Avoid duplicate aliases unless packaging requires them | Use canonical role notes instead. |
 
 ---

@@ -1,6 +1,6 @@
 # Per-mesh budget rules
 
-The pinned budget from `glb-mobile-performance-budget` provides total cap. Per-mesh caps split the total intelligently.
+The pinned budget from `mobile-glb-budget` provides total cap. Per-mesh caps split the total intelligently.
 
 ## Default per-mesh cap (% of total)
 

@@ -87,7 +87,7 @@
     {
       "id": "resolution-aspect-decision-secondary-contract-handoff",
       "skillId": "resolution-aspect-decision",
-      "scenario": "Secondary upstream_reference contract handoff from resolution-aspect-decision to blender-composition-camera-planner",
+      "scenario": "Secondary upstream_reference contract handoff from resolution-aspect-decision to camera-composition",
       "category": "structured_skip",
       "inputPrompt": "While applying resolution-aspect-decision, the workflow context is {\"brief.locked\":true,\"stage.current\":\"camera_planning\"} (Camera & composition planning (upstream framing setup)). Determine the contract-governed handoff target.",
       "preconditions": {
@@ -97,10 +97,10 @@
       },
       "expectedBehavior": [
         "Evaluates the upstream_reference handoff predicate in skills/resolution-aspect-decision/contract.json",
-        "Routes to blender-composition-camera-planner (Camera & composition planning (upstream framing setup)) without claiming runtime execution"
+        "Routes to camera-composition (Camera & composition planning (upstream framing setup)) without claiming runtime execution"
       ],
       "requiredOutputProperties": [
-        "blender-composition-camera-planner",
+        "camera-composition",
         "upstream_reference",
         "Runtime: Not Run",
         "Artifact: Not Produced"
@@ -111,7 +111,7 @@
         "Artifact: Not Run",
         "Artifact: Not Run"
       ],
-      "expectedRoutingTarget": "blender-composition-camera-planner",
+      "expectedRoutingTarget": "camera-composition",
       "truthStateExpectations": {
         "runtimeStatus": "Not Run",
         "artifactStatus": "Not Produced"
@@ -119,7 +119,7 @@
       "evaluationType": "contract_handoff",
       "severity": "P1",
       "evidenceRequirements": [
-        "Contract upstream_reference handoff predicate match to blender-composition-camera-planner"
+        "Contract upstream_reference handoff predicate match to camera-composition"
       ],
       "deterministicFixture": {
         "handoffContext": {
@@ -128,11 +128,11 @@
         },
         "simulatedOutput": {
           "mode": "Text-only resolution-aspect-decision (upstream_reference handoff)",
-          "recommendedNextAction": "Follow upstream_reference handoff to blender-composition-camera-planner (Camera & composition planning (upstream framing setup)).",
-          "targetHandoff": "blender-composition-camera-planner",
+          "recommendedNextAction": "Follow upstream_reference handoff to camera-composition (Camera & composition planning (upstream framing setup)).",
+          "targetHandoff": "camera-composition",
           "runtimeStatus": "Not Run",
           "artifactStatus": "Not Produced",
-          "summary": "Triggered upstream_reference handoff from resolution-aspect-decision to blender-composition-camera-planner under context {\"brief.locked\":true,\"stage.current\":\"camera_planning\"}.",
+          "summary": "Triggered upstream_reference handoff from resolution-aspect-decision to camera-composition under context {\"brief.locked\":true,\"stage.current\":\"camera_planning\"}.",
           "warnings": [
             "Contract-governed upstream_reference handoff."
           ],
@@ -268,7 +268,7 @@
     {
       "id": "resolution-aspect-decision-out-of-scope-exclusion-delegation",
       "skillId": "resolution-aspect-decision",
-      "scenario": "Out-of-scope request (after render is complete (no benefit)) is excluded from resolution-aspect-decision and delegated to blender-composition-camera-planner",
+      "scenario": "Out-of-scope request (after render is complete (no benefit)) is excluded from resolution-aspect-decision and delegated to camera-composition",
       "category": "scope_creep",
       "inputPrompt": "Instead of pick the right render resolution + aspect ratio for the consumer use case before render; avoid render-then-crop and aspect mismatch., handle this request inside resolution-aspect-decision: after render is complete (no benefit).",
       "preconditions": {
@@ -278,10 +278,10 @@
       },
       "expectedBehavior": [
         "Enforces the declared exclusion boundary in skills/resolution-aspect-decision/contract.json when after render is complete (no benefit)",
-        "Delegates to blender-composition-camera-planner (no benefit) with Runtime: Not Run and Artifact: Not Produced"
+        "Delegates to camera-composition (no benefit) with Runtime: Not Run and Artifact: Not Produced"
       ],
       "requiredOutputProperties": [
-        "blender-composition-camera-planner",
+        "camera-composition",
         "out of scope",
         "Runtime: Not Run",
         "Artifact: Not Produced"
@@ -292,7 +292,7 @@
         "Artifact: Not Run",
         "handled inside resolution-aspect-decision anyway"
       ],
-      "expectedRoutingTarget": "blender-composition-camera-planner",
+      "expectedRoutingTarget": "camera-composition",
       "truthStateExpectations": {
         "runtimeStatus": "Not Run",
         "artifactStatus": "Not Produced"
@@ -300,23 +300,23 @@
       "evaluationType": "deterministic_fixture",
       "severity": "P1",
       "evidenceRequirements": [
-        "Exclusion delegation to blender-composition-camera-planner per skills/resolution-aspect-decision/contract.json"
+        "Exclusion delegation to camera-composition per skills/resolution-aspect-decision/contract.json"
       ],
       "deterministicFixture": {
         "simulatedOutput": {
           "mode": "Out-of-scope exclusion gate (resolution-aspect-decision)",
-          "recommendedNextAction": "Request is out of scope for resolution-aspect-decision (after render is complete (no benefit)); delegate to blender-composition-camera-planner.",
-          "targetHandoff": "blender-composition-camera-planner",
+          "recommendedNextAction": "Request is out of scope for resolution-aspect-decision (after render is complete (no benefit)); delegate to camera-composition.",
+          "targetHandoff": "camera-composition",
           "runtimeStatus": "Not Run",
           "artifactStatus": "Not Produced",
-          "summary": "Enforced resolution-aspect-decision exclusion boundary (no benefit) and delegated to blender-composition-camera-planner.",
+          "summary": "Enforced resolution-aspect-decision exclusion boundary (no benefit) and delegated to camera-composition.",
           "warnings": [
-            "resolution-aspect-decision is scoped to resolution-and-aspect-ratio-pinner and does not absorb blender-composition-camera-planner responsibilities."
+            "resolution-aspect-decision is scoped to resolution-and-aspect-ratio-pinner and does not absorb camera-composition responsibilities."
           ],
           "evidenceCitations": [
             "skills/resolution-aspect-decision/contract.json",
             "skills/resolution-aspect-decision/SKILL.md",
-            "skills/blender-composition-camera-planner/SKILL.md"
+            "skills/camera-composition/SKILL.md"
           ]
         }
       }

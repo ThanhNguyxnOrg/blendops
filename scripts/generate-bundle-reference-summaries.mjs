@@ -1836,8 +1836,8 @@ export function checkBundleReferenceSummaries(rootDir = DEFAULT_ROOT, options = 
       );
       continue;
     }
-    const actualContent = fs.readFileSync(absPath, 'utf8');
-    if (actualContent !== expectedContent) {
+    const actualContent = fs.readFileSync(absPath, 'utf8').replace(/\r\n/g, '\n');
+    if (actualContent !== expectedContent.replace(/\r\n/g, '\n')) {
       errors.push(
         `Stale or manually modified bundle summary: ${relPath} does not match canonical SKILL.md + contract.json (run "npm run bundles:summaries:build")`,
       );
@@ -1946,7 +1946,7 @@ export function checkBundleReferenceSummaries(rootDir = DEFAULT_ROOT, options = 
     if (
       manifestErrors.length === 0 &&
       expectedManifestContent !== undefined &&
-      rawManifest !== expectedManifestContent
+      rawManifest.replace(/\r\n/g, '\n') !== expectedManifestContent.replace(/\r\n/g, '\n')
     ) {
       errors.push(
         `Out-of-sync bundle manifest: ${manifestRel} (run "npm run bundles:summaries:build")`,

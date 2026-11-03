@@ -23,11 +23,11 @@ Run a focused per-row Pass/Warn/Fail check on the camera and framing setup again
 
 ## When not to use
 <!-- blendops:generated:start exclusions -->
-- planning or editing camera framing → use `../blender-composition-camera-planner/SKILL.md` (use blender-composition-camera-planner)
+- planning or editing camera framing → use `../camera-composition/SKILL.md` (use camera-composition)
 - locking aspect ratio or resolution → use `../resolution-aspect-decision/SKILL.md` (use resolution-aspect-decision)
 - material validation → use `../material-quality-checker/SKILL.md` (use material-quality-checker)
 - lighting validation → use `../lighting-quality-checker/SKILL.md` (use lighting-quality-checker)
-- broad scene Pass/Warn/Fail readiness review → use `../blender-scene-quality-checker/SKILL.md` (use blender-scene-quality-checker)
+- broad scene Pass/Warn/Fail readiness review → use `../scene-readiness/SKILL.md` (use scene-readiness)
 - classifying render or export artifact evidence → use `../render-export-evidence/SKILL.md` (use render-export-evidence)
 <!-- blendops:generated:end exclusions -->
 
@@ -106,7 +106,7 @@ This skill validates camera plans or measured scene snapshots only. It never mov
 7. Check lens / FOV plausibility for distortion or flattening against the brief.
 8. Assign per-row `Pass | Warn | Fail` verdicts and remediation hints.
 9. Compute top-line status and highlight worst offenders; record downgrade-only Runtime and Artifact truth states separately (defaulting Artifact status to `Not Produced`).
-10. Hand off to `blender-scene-quality-checker` (broad review), `blender-composition-camera-planner` (camera re-plan), `resolution-aspect-decision` (aspect/resolution changes), or `render-export-evidence` (artifact evidence classification).
+10. Hand off to `scene-readiness` (broad review), `camera-composition` (camera re-plan), `resolution-aspect-decision` (aspect/resolution changes), or `render-export-evidence` (artifact evidence classification).
 
 ## Decision tree
 
@@ -182,17 +182,17 @@ Skip preview-dependent verification, flag limitations explicitly, keep `Artifact
 
 | Problem | Remediation hint (do not execute) |
 |---|---|
-| Subject feels off-center or unbalanced | Hint: verify rule-of-thirds vs centered intent; route to `blender-composition-camera-planner` if camera re-aiming is needed. |
-| Excessive or cramped headroom | Hint: adjust framing tightness or subject framing height in `blender-composition-camera-planner`. |
-| Unintended close-up perspective distortion | Hint: increase camera distance and use a longer focal length / narrower FOV in `blender-composition-camera-planner`. |
-| Flat staging with weak depth cues | Hint: increase foreground/background separation or staging depth in `blender-composition-camera-planner`. |
+| Subject feels off-center or unbalanced | Hint: verify rule-of-thirds vs centered intent; route to `camera-composition` if camera re-aiming is needed. |
+| Excessive or cramped headroom | Hint: adjust framing tightness or subject framing height in `camera-composition`. |
+| Unintended close-up perspective distortion | Hint: increase camera distance and use a longer focal length / narrower FOV in `camera-composition`. |
+| Flat staging with weak depth cues | Hint: increase foreground/background separation or staging depth in `camera-composition`. |
 | Aspect ratio mismatch with target delivery | Hint: route to `resolution-aspect-decision` to lock the proper aspect ratio before re-planning framing. |
 
 ## Best practices
 - Confirm the upstream aspect-ratio lock from `resolution-aspect-decision` before judging framing margins.
 - Apply composition checks relative to framing intent, not as rigid universal formulas.
 - Treat negative space and depth cues as intentional design elements anchored to the brief.
-- Provide remediation hints only — leave camera edits to `blender-composition-camera-planner` and broad scene sign-off to `blender-scene-quality-checker`.
+- Provide remediation hints only — leave camera edits to `camera-composition` and broad scene sign-off to `scene-readiness`.
 
 ## Good examples
 - "16:9 hero card; subject right-third 60% width; headroom 18%; lead room not applicable (static); negative space left for CTA; FOV 50mm equivalent. Verdict: Pass."
@@ -225,7 +225,7 @@ Runtime status: Not Run | Attempted | Produced | Verified | Failed
 Artifact status: Not Produced | Produced | Verified | Failed (default: Not Produced)
 Evidence used: <links, paths, logs, or "none">
 Limitations: <gaps>
-Next: blender-scene-quality-checker | blender-composition-camera-planner | resolution-aspect-decision | render-export-evidence
+Next: scene-readiness | camera-composition | resolution-aspect-decision | render-export-evidence
 ```
 
 ## Anti-patterns
@@ -236,8 +236,8 @@ Next: blender-scene-quality-checker | blender-composition-camera-planner | resol
 
 ## Cross-skill handoff
 <!-- blendops:generated:start handoffs -->
-- [progression] Broad scene readiness review (consumes these rows) → `../blender-scene-quality-checker/SKILL.md`
-- [retry] Camera & framing re-plan → `../blender-composition-camera-planner/SKILL.md`
+- [progression] Broad scene readiness review (consumes these rows) → `../scene-readiness/SKILL.md`
+- [retry] Camera & framing re-plan → `../camera-composition/SKILL.md`
 - [retry] Aspect ratio & resolution locks → `../resolution-aspect-decision/SKILL.md`
 - [progression] Artifact evidence classification → `../render-export-evidence/SKILL.md`
 - [upstream_reference] Material validation → `../material-quality-checker/SKILL.md`
@@ -245,10 +245,10 @@ Next: blender-scene-quality-checker | blender-composition-camera-planner | resol
 <!-- blendops:generated:end handoffs -->
 
 ## Non-goals
-- Move or edit the camera (owned by `blender-composition-camera-planner`).
+- Move or edit the camera (owned by `camera-composition`).
 - Lock aspect ratio or resolution (owned by `resolution-aspect-decision`).
 - Validate materials (`material-quality-checker`) or lighting (`lighting-quality-checker`).
-- Replace broad scene review (`blender-scene-quality-checker`).
+- Replace broad scene review (`scene-readiness`).
 - Classify render or export artifact evidence (`render-export-evidence`).
 - Run Blender or execute Python.
 

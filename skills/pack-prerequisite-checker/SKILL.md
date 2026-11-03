@@ -27,8 +27,8 @@ Block "half-ready" pack execution: confirm the user's brief, chosen pack/recipe,
 - Goal or entry point is ambiguous and no pack is chosen yet → use `../blendops-help/SKILL.md` (Triages ambiguous entry requests at precedence Rank 1)
 - Evaluating which recipe or pack fits the user's goal → use `../recipe-fit-assessor/SKILL.md` (Scores candidate recipes/packs at precedence Rank 2 before preflight)
 - Workflow is already past preflight with existing stage or artifact inventory → use `../workflow-stage-router/SKILL.md` (Routes in-flight workflows at precedence Rank 4)
-- Detailed Blender MCP runtime connection preflight → use `../official-runtime-readiness-checker/SKILL.md` (Inspects Path 1 or Path 2 runtime readiness in detail)
-- Active MCP bridge port or add-on session conflicts → use `../runtime-bridge-conflict-resolver/SKILL.md` (Resolves port 9876 and dual-bridge conflicts)
+- Detailed Blender MCP runtime connection preflight → use `../runtime-readiness/SKILL.md` (Inspects Path 1 or Path 2 runtime readiness in detail)
+- Active MCP bridge port or add-on session conflicts → use `../bridge-conflicts/SKILL.md` (Resolves port 9876 and dual-bridge conflicts)
 - Debugging Blender scene or runtime execution errors → use `../blender-troubleshooting/SKILL.md` (Diagnoses runtime or scene failures)
 - Auditing external 3D asset license compliance → use `../asset-license-checker/SKILL.md` (Performs dedicated asset license and provenance verification)
 <!-- blendops:generated:end exclusions -->
@@ -98,8 +98,8 @@ Truth-state rules:
 Preflight gate only — never executes packs, domain planners, or Blender runtime. Uses the 2-path + CLI appendix model per `docs/runtime-stack-strategy.md`:
 
 * Path 1 always implies the Lab MCP add-on inside Blender 5.1+; Connector is never standalone.
-* Path 2 and CLI appendix require explicit scope caveats and readiness confirmation via `official-runtime-readiness-checker`.
-* Defer runtime detail to `official-runtime-readiness-checker`, bridge conflicts to `runtime-bridge-conflict-resolver`, and runtime errors to `blender-troubleshooting`.
+* Path 2 and CLI appendix require explicit scope caveats and readiness confirmation via `runtime-readiness`.
+* Defer runtime detail to `runtime-readiness`, bridge conflicts to `bridge-conflicts`, and runtime errors to `blender-troubleshooting`.
 
 ## Operating procedure
 
@@ -120,12 +120,12 @@ Has preflight already passed and do stage/artifact inventories already exist?
 Are critical rows (Goal & scope, Deliverables, Evidence habit) all Ready?
   No → verdict = NO-GO; apply `references/blocked-start-playbook.md` and route to the single blocking upstream skill:
     - Brief incomplete → intent-to-3d-brief-writer
-    - Conflicting multi-deliverable scope → blender-scope-boundary-enforcer
+    - Conflicting multi-deliverable scope → scope-guard
     - Unchecked third-party asset licenses → asset-license-checker
-    - Active MCP bridge collision on port 9876 → runtime-bridge-conflict-resolver
+    - Active MCP bridge collision on port 9876 → bridge-conflicts
   Yes → check whether immediate runtime mutation is requested:
     - Planning-only start → verdict = GO (or GO with Warn on non-critical Needs input); route to target domain scene planner
-    - Immediate runtime mutation requested with unverified runtime posture → route to official-runtime-readiness-checker
+    - Immediate runtime mutation requested with unverified runtime posture → route to runtime-readiness
 ```
 
 ## Playbooks
@@ -145,7 +145,7 @@ Are critical rows (Goal & scope, Deliverables, Evidence habit) all Ready?
 ### Playbook C: Mid-pack jump with runtime or bridge confusion (`NO-GO`)
 
 - When a user jumps directly to pack execution while both Path 1 and Path 2 bridges are enabled on port `9876` (or claims the Anthropic Connector works without Blender 5.1+ and the Lab add-on), mark `Runtime posture` / `Single-bridge` as `Blocked`.
-- Route to `../runtime-bridge-conflict-resolver/SKILL.md` or `../official-runtime-readiness-checker/SKILL.md` before allowing any mutation-dependent pack step.
+- Route to `../bridge-conflicts/SKILL.md` or `../runtime-readiness/SKILL.md` before allowing any mutation-dependent pack step.
 
 ## Mode handling
 
@@ -155,7 +155,7 @@ Mark runtime rows as Needs input unless user supplied path choice.
 
 ### Runtime-ready mode
 
-User-declared path must pair with `official-runtime-readiness-checker` handoff suggestion.
+User-declared path must pair with `runtime-readiness` handoff suggestion.
 
 ### Blocked runtime mode
 
@@ -181,7 +181,7 @@ Still check non-runtime rows (brief, assets plan, evidence).
 
 - If any critical prerequisite row (`Goal & scope`, `Deliverables`, `Evidence habit`) is `Blocked`, issue an explicit `NO-GO` verdict and route to the single upstream remediation skill from `references/blocked-start-playbook.md`.
 - If the user claims `Artifact status: Verified` before the pack has even started, reject the upgraded truth state, reset `Artifact status: Not Produced` (downgrade-only), and mark `Evidence habit` as `Blocked` until acknowledged.
-- If an active MCP port `9876` collision or dual-bridge setup is reported, halt preflight and hand off to `../runtime-bridge-conflict-resolver/SKILL.md`.
+- If an active MCP port `9876` collision or dual-bridge setup is reported, halt preflight and hand off to `../bridge-conflicts/SKILL.md`.
 - Never execute domain scene planning, asset license audits, or runtime debugging inside this gate skill.
 
 ## Troubleshooting
@@ -189,7 +189,7 @@ Still check non-runtime rows (brief, assets plan, evidence).
 | Symptom | Cause | Safe resolution |
 |---|---|---|
 | User wants to start scene planning in text-only mode without Blender installed | `Runtime posture` is `Needs input`, but no runtime mutation is requested yet | Allow `Summary: GO` (with `Warn` note on `Runtime posture: Needs input`) if `Goal & scope`, `Deliverables`, and `Evidence habit` are `Ready`. |
-| User assumes Claude Desktop Connector satisfies Path 1 prerequisites by itself | Standalone Connector misconception | Mark `Runtime posture` as `Needs input` / `Blocked`, state that Path 1 requires Blender 5.1+ plus the Lab MCP add-on inside Blender, and route readiness probing to `../official-runtime-readiness-checker/SKILL.md`. |
+| User assumes Claude Desktop Connector satisfies Path 1 prerequisites by itself | Standalone Connector misconception | Mark `Runtime posture` as `Needs input` / `Blocked`, state that Path 1 requires Blender 5.1+ plus the Lab MCP add-on inside Blender, and route readiness probing to `../runtime-readiness/SKILL.md`. |
 | Multiple rows are `Blocked` simultaneously | User skipped both brief writing and asset planning | Order the minimum fixes per `references/blocked-start-playbook.md` and name the single earliest upstream blocker (`../intent-to-3d-brief-writer/SKILL.md`) as the immediate next skill. |
 
 ## Best practices
@@ -206,7 +206,7 @@ Still check non-runtime rows (brief, assets plan, evidence).
 
 ## Bad examples
 
-- "`Summary: GO` — Brief is still vague, we will figure out deliverables and licenses during rendering. Next skills: `product-hero-scene-planner`, `blender-lighting-material-planner`, and `render-export-evidence`." — bypasses blocked critical rows and recommends multiple skills at once.
+- "`Summary: GO` — Brief is still vague, we will figure out deliverables and licenses during rendering. Next skills: `product-hero-scene-planner`, `lighting-material-plan`, and `render-export-evidence`." — bypasses blocked critical rows and recommends multiple skills at once.
 - "`Summary: GO` — Preflight passed so `Runtime status: Verified` and `Artifact status: Produced`." — fabricates runtime and artifact truth states from a planning gate.
 - "I inspected your third-party FBX EULA and cleared the license." — overreaches into `asset-license-checker`.
 
@@ -247,15 +247,15 @@ Limitations: <unverified runtime or asset assumptions>
 <!-- blendops:generated:start handoffs -->
 - [upstream_reference] Recipe selection → `../recipe-fit-assessor/SKILL.md`
 - [fallback] Brief completeness → `../intent-to-3d-brief-writer/SKILL.md`
-- [conditional] Runtime detail → `../official-runtime-readiness-checker/SKILL.md`
-- [fallback] Bridge conflicts → `../runtime-bridge-conflict-resolver/SKILL.md`
+- [conditional] Runtime detail → `../runtime-readiness/SKILL.md`
+- [fallback] Bridge conflicts → `../bridge-conflicts/SKILL.md`
 - [fallback] Runtime debugging → `../blender-troubleshooting/SKILL.md`
 - [conditional] License checks → `../asset-license-checker/SKILL.md`
 - [alternative] Domain planner (product hero when Go) → `../product-hero-scene-planner/SKILL.md`
 - [alternative] Domain planner (product grid when Go) → `../product-grid-scene-planner/SKILL.md`
-- [alternative] Domain planner (character portrait when Go) → `../character-portrait-scene-planner/SKILL.md`
-- [alternative] Domain planner (environment establishing shot when Go) → `../environment-establishing-shot-planner/SKILL.md`
-- [alternative] Domain planner (interior architectural when Go) → `../interior-architectural-scene-planner/SKILL.md`
+- [alternative] Domain planner (character portrait when Go) → `../character-portrait/SKILL.md`
+- [alternative] Domain planner (environment establishing shot when Go) → `../environment-shot/SKILL.md`
+- [alternative] Domain planner (interior architectural when Go) → `../interior-scene/SKILL.md`
 <!-- blendops:generated:end handoffs -->
 
 ## Non-goals

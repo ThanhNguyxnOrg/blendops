@@ -1,0 +1,392 @@
+{
+  "schemaVersion": "2.0.0",
+  "skillId": "runtime-readiness",
+  "category": "runtime-and-execution",
+  "isContractedSkill": true,
+  "isRoutingParticipant": false,
+  "contractPath": "skills/runtime-readiness/contract.json",
+  "skillMarkdownPath": "skills/runtime-readiness/SKILL.md",
+  "evalMarkdownPath": "skills/runtime-readiness/EVAL.md",
+  "sourceEvalTier": "gateway_pilot_upgraded",
+  "evaluationStatus": {
+    "staticValidation": "Passed",
+    "deterministicFixture": "Passed",
+    "contractRouting": "Not Applicable",
+    "contractHandoff": "Passed",
+    "liveModel": "Not Run",
+    "blenderRuntime": "Not Run"
+  },
+  "cases": [
+    {
+      "id": "readiness-checker-path1-blender-version-below-floor",
+      "skillId": "runtime-readiness",
+      "scenario": "User wants Path 1 (Blender Lab MCP) but has Blender 4.2 installed (< 5.1 floor)",
+      "category": "blocked_or_adversarial",
+      "inputPrompt": "I want to use Path 1 (Anthropic Connector + Blender Lab MCP add-on), and my installed Blender version is 4.2 LTS. Check readiness.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Marks Path 1 Blocked because the Blender Lab MCP add-on manifest requires Blender 5.1+",
+        "Explains that Path 2 (mcp-for-blender, Blender 3.0+) or CLI fallback does not have the 5.1+ floor, and routes to runtime-path-picker"
+      ],
+      "requiredOutputProperties": [
+        "Blocked",
+        "Blender 5.1+",
+        "Path 1",
+        "runtime-path-picker"
+      ],
+      "forbiddenOutputProperties": [
+        "Path 1 Ready on Blender 4.2",
+        "Runtime: Verified"
+      ],
+      "expectedRoutingTarget": "runtime-path-picker",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Readiness matrix showing Blender 5.1+ floor bound to Path 1 Lab add-on"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only runtime readiness check",
+          "recommendedNextAction": "Path 1 is Blocked on Blender 4.2 (Lab MCP add-on requires Blender 5.1+); route to runtime-path-picker or upgrade to Blender 5.1+.",
+          "targetHandoff": "runtime-path-picker",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Marked Path 1 Blocked because Blender 5.1+ is required by the Lab MCP add-on manifest; routed to runtime-path-picker.",
+          "warnings": [
+            "The Blender 5.1+ floor applies only to Path 1 (Lab MCP add-on), not Path 2 (3.0+) or CLI fallback."
+          ],
+          "evidenceCitations": [
+            "docs/runtime-stack-strategy.md",
+            "skills/runtime-readiness/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "readiness-checker-standalone-connector-misconception",
+      "skillId": "runtime-readiness",
+      "scenario": "User enabled Claude Desktop Connector toggle but did not install the Blender Lab MCP add-on inside Blender 5.1+",
+      "category": "evidence_boundary",
+      "inputPrompt": "I toggled ON the Anthropic Blender Connector in Claude Desktop on Blender 5.1, so I do not need any Blender add-on, right?",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Marks status Partially Ready / Blocked and states that Anthropic Connector is NOT standalone (Step 2 requires installing the Blender Lab MCP add-on inside Blender 5.1+)",
+        "Routes to runtime-setup"
+      ],
+      "requiredOutputProperties": [
+        "Partially Ready",
+        "not standalone",
+        "Blender Lab MCP add-on",
+        "runtime-setup"
+      ],
+      "forbiddenOutputProperties": [
+        "Connector works standalone without add-on",
+        "Runtime: Verified"
+      ],
+      "expectedRoutingTarget": "runtime-setup",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Explicit non-standalone Connector check + route to runtime-setup"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only runtime readiness check",
+          "recommendedNextAction": "Status Partially Ready: Anthropic Connector is not standalone; install the Blender Lab MCP add-on via runtime-setup.",
+          "targetHandoff": "runtime-setup",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Flagged missing Blender Lab MCP add-on; explained that Anthropic Connector is not standalone and routed to runtime-setup.",
+          "warnings": [],
+          "evidenceCitations": [
+            "docs/external-runtime-setup.md",
+            "skills/runtime-readiness/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "readiness-checker-ready-is-not-execution",
+      "skillId": "runtime-readiness",
+      "scenario": "All Path 1 host (a) checks pass, but readiness must not be conflated with execution or artifact creation",
+      "category": "normal",
+      "inputPrompt": "Blender 5.1 is open, Blender Lab MCP add-on is enabled on port 9876, and Claude Desktop Connector is connected with zero conflicts.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Reports readiness status Ready (verified-read confidence) while keeping Runtime execution status Not Run and Artifact status Not Produced",
+        "Hands off to product-hero-scene-planner"
+      ],
+      "requiredOutputProperties": [
+        "Readiness: Ready",
+        "Runtime: Not Run",
+        "Artifact: Not Produced",
+        "product-hero-scene-planner"
+      ],
+      "forbiddenOutputProperties": [
+        "Runtime: Verified",
+        "Artifact: Produced"
+      ],
+      "expectedRoutingTarget": "product-hero-scene-planner",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Separation between Readiness: Ready and Runtime: Not Run / Artifact: Not Produced"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only runtime readiness check",
+          "recommendedNextAction": "Readiness: Ready for Path 1 host (a), while Runtime: Not Run and Artifact: Not Produced until execution; proceed to product-hero-scene-planner.",
+          "targetHandoff": "product-hero-scene-planner",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Verified Readiness: Ready for Path 1 host (a) without conflating readiness with runtime execution (Runtime: Not Run).",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/runtime-readiness/EVAL.md",
+            "laws/evidence-before-done.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "readiness-checker-dual-bridge-conflict-detected",
+      "skillId": "runtime-readiness",
+      "scenario": "Readiness matrix detects both Lab MCP add-on and community mcp-for-blender enabled",
+      "category": "blocked_or_adversarial",
+      "inputPrompt": "Check my readiness: Blender 5.1 has both Lab MCP add-on and ahujasid mcp-for-blender enabled on port 9876.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Marks readiness Blocked due to single-bridge constraint violation",
+        "Routes to bridge-conflicts"
+      ],
+      "requiredOutputProperties": [
+        "Blocked",
+        "single-bridge constraint",
+        "bridge-conflicts"
+      ],
+      "forbiddenOutputProperties": [
+        "Readiness: Ready",
+        "Runtime: Verified"
+      ],
+      "expectedRoutingTarget": "bridge-conflicts",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Blocked status + route to bridge-conflicts"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only runtime readiness check",
+          "recommendedNextAction": "Readiness Blocked by single-bridge constraint violation; route to bridge-conflicts.",
+          "targetHandoff": "bridge-conflicts",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Marked readiness Blocked due to dual MCP add-ons enabled simultaneously; routed to bridge-conflicts.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/runtime-readiness/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "readiness-checker-no-environment-info-unknown",
+      "skillId": "runtime-readiness",
+      "scenario": "User provides zero information about Blender version, add-on, or MCP client",
+      "category": "ambiguous",
+      "inputPrompt": "Am I ready to run Blender MCP? I have not checked my Blender version or installed any add-ons yet.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Marks readiness status Unknown / Blocked with linked-only or unknown confidence",
+        "Routes to runtime-setup"
+      ],
+      "requiredOutputProperties": [
+        "Unknown",
+        "runtime-setup",
+        "Runtime: Not Run"
+      ],
+      "forbiddenOutputProperties": [
+        "Readiness: Ready",
+        "Artifact: Produced"
+      ],
+      "expectedRoutingTarget": "runtime-setup",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Conservative Unknown status + route to runtime-setup"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only runtime readiness check",
+          "recommendedNextAction": "Readiness status is Unknown; follow runtime-setup to verify Blender version and MCP add-on setup.",
+          "targetHandoff": "runtime-setup",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Assigned conservative Unknown readiness status and routed to runtime-setup.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/runtime-readiness/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "runtime-readiness-contract-handoff-primary",
+      "skillId": "runtime-readiness",
+      "scenario": "Contract handoff predicate matches runtime-path-picker (If runtime path is not yet chosen)",
+      "category": "normal",
+      "inputPrompt": "Evaluate runtime-readiness contract handoff when workflow context satisfies {\"runtime.path\":\"unselected\"} and verify progression to runtime-path-picker.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates contract.json handoff predicates for runtime-readiness against the workflow context",
+        "Selects runtime-path-picker while preserving Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "runtime-path-picker",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Not Run",
+        "Artifact: Verified",
+        "Blender executed"
+      ],
+      "expectedRoutingTarget": "runtime-path-picker",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Contract handoff predicate match for runtime-path-picker in skills/runtime-readiness/contract.json",
+        "Truth-state conservation (Runtime: Not Run, Artifact: Not Produced)"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "runtime.path": "unselected"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only runtime-readiness contract handoff evaluation",
+          "recommendedNextAction": "Hand off from runtime-readiness to runtime-path-picker (If runtime path is not yet chosen).",
+          "targetHandoff": "runtime-path-picker",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Matched contract handoff predicate in runtime-readiness and routed to runtime-path-picker.",
+          "warnings": [
+            "Specialist contract handoff evaluated without global routingPrecedence escalation."
+          ],
+          "evidenceCitations": [
+            "skills/runtime-readiness/contract.json",
+            "skills/runtime-readiness/SKILL.md",
+            "skills/runtime-readiness/EVAL.md",
+            "skills/runtime-readiness/references/blocker-report-template.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "runtime-readiness-contract-handoff-unmatched-none",
+      "skillId": "runtime-readiness",
+      "scenario": "Contract handoff predicate returns none when no downstream handoff condition matches in runtime-readiness",
+      "category": "evidence_boundary",
+      "inputPrompt": "Check runtime-readiness contract handoff behavior when context is {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and no automatic handoff predicate is satisfied.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates all 7 contract handoffs in runtime-readiness with fail-closed predicate semantics",
+        "Returns targetHandoff none when no handoff predicate matches and preserves conservative truth states"
+      ],
+      "requiredOutputProperties": [
+        "none",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Not Run",
+        "Artifact: Verified",
+        "invented handoff target"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Zero matching handoff predicates in skills/runtime-readiness/contract.json for non-matching context"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Text-only runtime-readiness contract boundary check",
+          "recommendedNextAction": "Remain at runtime-readiness (targetHandoff: none) until a declared downstream handoff precondition is satisfied.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Verified fail-closed specialist handoff evaluation for runtime-readiness when no contract predicate matches (secondary candidate path-one-host-outline remained inactive).",
+          "warnings": [
+            "Never fabricate an undeclared handoff when no contract predicate matches."
+          ],
+          "evidenceCitations": [
+            "skills/runtime-readiness/contract.json",
+            "skills/runtime-readiness/EVAL.md"
+          ]
+        }
+      }
+    }
+  ]
+}

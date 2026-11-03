@@ -30,8 +30,8 @@ Because a Git commit cannot honestly contain its own final commit SHA inside tra
 | `sourceCommitSha` | `112ecf75a04ab5864b3dc3656b9a27f09d1e8dcd` (`112ecf7`) | Latest verified commit in Git history when the generator executed |
 | `workingTreeState` | `dirty` | Whether audited files had uncommitted changes on top of `sourceCommitSha` |
 | `snapshotBasis` | `working-tree-on-top-of-source-commit` | Explicit distinction between a clean committed tree and a working tree on top of `sourceCommitSha` |
-| `uncommittedChangeCount` | `24` | Count of modified/staged/deleted/untracked repository paths outside `docs/audits/current/**` |
-| `auditedInputsSha256` | `92d003820bc75f1084d9cb0aaf852daa3a728cac0504e3f2a73c0113b94539be` | Deterministic SHA-256 content digest across all manifest-declared repository inputs |
+| `uncommittedChangeCount` | `397` | Count of modified/staged/deleted/untracked repository paths outside `docs/audits/current/**` |
+| `auditedInputsSha256` | `882fb54d1bc8de065c19d5d4ca036769b1aa334f4a36d9c49ae62846c1798d9b` | Deterministic SHA-256 content digest across all manifest-declared repository inputs |
 
 ### 1.2 Audited Input Digest Scope & Manifest Governance
 
@@ -42,18 +42,19 @@ The `auditedInputsSha256` digest is governed by [`../audited-inputs.manifest.jso
 - **Digest Algorithm:** Expands all manifest files and directories into a deduplicated, lexicographically sorted list of normalized POSIX relative paths and computes a SHA-256 digest over unambiguous length-prefixed framing (`path:<byteLength>:<relPath>\0content:<byteLength>:\0<bytes>\0`).
 - **Adding New Evidence Paths:** Whenever a new file or directory is referenced in `scorecard.json` (`pillars[].evidenceFiles[]`) or `findings.json` (`findings[].evidencePaths[]`), it **must** be covered by `requiredFiles` or `requiredDirectories` in [`../audited-inputs.manifest.json`](../audited-inputs.manifest.json). This invariant is enforced in CI by `scripts/test-phase3.mjs`, `scripts/test-phase6.mjs`, `scripts/test-phase7.mjs`, and `scripts/test-phase8.mjs`.
 
----
+### 1.3 Post-snapshot audit provenance & CI repair verification (Phase 13.2)
 
-### 1.3 Post-snapshot release closure verification (Phase 13.1)
-
-The generated audit score and JSON provenance above remain the recorded snapshot from their documented `auditProvenance`; this release addendum does not rewrite that historical snapshot or claim a newly computed score. The following repository-closeout evidence is independently verified:
+Following the Phase 13.1 release candidate audit, Phase 13.2 completed the 20-skill Friendly Skill Naming refactor across all 48 canonical skills and resolved cross-platform CRLF and provenance checks on baseline commit `cf6b0e76915906a1b4fb48d83c766b947cbcebeb`:
 
 | Gate | Verified result | Evidence |
 | :--- | :--- | :--- |
-| Phase 13.1 commit | `d1b2e6b4c539171456d229f16433f5e12202dbee` on `main`, parent `3bf6b50b5aaa891b55395681fde97858ce756600` | [Commit](https://github.com/ThanhNguyxnOrg/blendops/commit/d1b2e6b4c539171456d229f16433f5e12202dbee) |
-| Deterministic ZIP bundle | 3,066,010 bytes; SHA-256 `0fe7a97b1dbb6193a9ababf2c05c8c9910ff105d590b106278af57251a7b478d`; Git bundle verification passed | Operator-side verification record for `blendops-phase-13.1-deterministic-zip-ci-closure.bundle` |
-| Cross-platform CI | 4/4 jobs passed: Windows CLI, macOS CLI, Ubuntu CLI, and docs `npm run ci` | [GitHub Actions run #180](https://github.com/ThanhNguyxnOrg/blendops/actions/runs/41323580235) |
-| Release boundary | Draft candidate only; npm package remains private; runtime/artifact states remain `Not Run` / `Not Produced` absent evidence | `package.json`, `docs/release-readiness.md` |
+| Baseline commit | `cf6b0e76915906a1b4fb48d83c766b947cbcebeb` on `main` | [Commit](https://github.com/ThanhNguyxnOrg/blendops/commit/cf6b0e76915906a1b4fb48d83c766b947cbcebeb) |
+| Friendly Skill Naming | 20 approved skill ID renames applied across `skills/`, `evals/suites/`, `bundles/`, `registry/`, and docs; all 48 canonical skills preserved | `registry/skills.json`, `docs/audits/current/skill-inventory.json` |
+| Audited inputs digest | Canonical `auditedInputsSha256` synchronized with `docs/audits/audited-inputs.manifest.json` | `scripts/generate-current-audit.mjs` |
+| Cross-platform CI repairs | CRLF-resilient registry, bundle summary, eval index, and architecture inventory checks | `scripts/build-registry.mjs`, `scripts/generate-bundle-reference-summaries.mjs`, `scripts/run-evals.mjs`, `scripts/validate-repository-architecture.mjs` |
+| Regression suites | 217/217 tests passing across all 13 phases (0 failures, 0 skipped) | `npm test` verified on Node.js 20+ |
+
+---
 
 ## 2. Finding Lifecycle Summary (`F-01` through `F-10`)
 
@@ -64,7 +65,7 @@ The generated audit score and JSON provenance above remain the recorded snapshot
 | **F-03** | **P0** | Machine-readable `contract.json` & compiled `registry/` | `OPEN` | **`FIXED`** | 48/48 skills contracted (`4` routing participants + `44` specialist skills), 371-edge acyclic progression graph, and 48/48 relative-path Markdown handoffs. |
 | **F-04** | **P0** | Structured behavioral evaluation suites & automated runner | `OPEN` | **`FIXED`** | 48/48 canonical `.eval.json` suites (269 cases: 21 `contract_routing` + 124 `contract_handoff` + 124 `deterministic_fixture`, 0 prose-only pending) verified in CI; `live_model` and `blender_runtime` remain `Not Run`. |
 | **F-05** | **P1** | 8 Batch 7/8 skills omit 9–11 extended template sections | `OPEN` | **`FIXED`** | 48/48 skills include all 9 core + 9 extended sections; guarded in `check-docs.mjs` and `test-phase4.mjs`. |
-| **F-06** | **P1** | Routing quartet handoffs & `blender-scope-boundary-enforcer` reachability | `OPEN` | **`FIXED`** | Wired in `blendops-help` and `workflow-stage-router` contracts and verified in `workflow-graph.json`. |
+| **F-06** | **P1** | Routing quartet handoffs & `scope-guard` reachability | `OPEN` | **`FIXED`** | Wired in `blendops-help` and `workflow-stage-router` contracts and verified in `workflow-graph.json`. |
 | **F-07** | **P1** | Deterministic GLB inspector & Blender version matrices | `OPEN` | **`FIXED`** | `scripts/inspect-glb.mjs`, `scripts/generate-glb-handoff-report.mjs`, `schemas/glb-web-handoff-manifest.schema.json`, `docs/examples/glb-web-handoff/`, `scripts/validate-evidence-packet.mjs`, and `docs/blender-version-compatibility.md` verified in CI. |
 | **F-08** | **P1** | `docs/adapter-registry.md` drift from 26 `docs/install/` targets | `OPEN` | **`PARTIALLY_FIXED`** | All 26 install targets synced and verified in `docs/evals/adapter-empirical-verification-phase-7.md`; `bin/blendops.mjs`, `scripts/install-skills.mjs`, `scripts/test-phase10.mjs`, and `scripts/test-phase11.mjs` verify safe project-local attachment, rollback, and packaged CLI tarball execution; 2 targets (`claude-code`, `generic-project`) are `verified-read`; 24 targets remain `linked-only` pending live host testing. |
 | **F-09** | **P2** | Manual bundle reference summary drift risk | `OPEN` | **`FIXED`** | 96/96 bundle reference summaries (48 Claude Desktop + 48 portable skill package) and `bundles/claude-desktop-manual/manifest.json` deterministically generated and verified via `npm run bundles:summaries:check` and `scripts/test-phase8.mjs`. |

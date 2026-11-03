@@ -192,19 +192,19 @@ Legacy quick links below cover only the **baseline 16**; the [`skills/README.md`
 | `blendops-help` (router) | [`../skills/blendops-help/SKILL.md`](../skills/blendops-help/SKILL.md) | Help |
 | `blender-brainstorming` (Superpowers `/brainstorming` analog) | [`../skills/blender-brainstorming/SKILL.md`](../skills/blender-brainstorming/SKILL.md) | Process |
 | `intent-to-3d-brief-writer` (BMad analysis-phase analog) | [`../skills/intent-to-3d-brief-writer/SKILL.md`](../skills/intent-to-3d-brief-writer/SKILL.md) | Process |
-| `blender-asset-discovery-planner` | [`../skills/blender-asset-discovery-planner/SKILL.md`](../skills/blender-asset-discovery-planner/SKILL.md) | Process |
-| `official-runtime-setup-guide` | [`../skills/official-runtime-setup-guide/SKILL.md`](../skills/official-runtime-setup-guide/SKILL.md) | Runtime |
-| `official-runtime-readiness-checker` | [`../skills/official-runtime-readiness-checker/SKILL.md`](../skills/official-runtime-readiness-checker/SKILL.md) | Runtime |
-| `runtime-bridge-conflict-resolver` (Single-bridge constraint) | [`../skills/runtime-bridge-conflict-resolver/SKILL.md`](../skills/runtime-bridge-conflict-resolver/SKILL.md) | Runtime |
+| `asset-discovery` | [`../skills/asset-discovery/SKILL.md`](../skills/asset-discovery/SKILL.md) | Process |
+| `runtime-setup` | [`../skills/runtime-setup/SKILL.md`](../skills/runtime-setup/SKILL.md) | Runtime |
+| `runtime-readiness` | [`../skills/runtime-readiness/SKILL.md`](../skills/runtime-readiness/SKILL.md) | Runtime |
+| `bridge-conflicts` (Single-bridge constraint) | [`../skills/bridge-conflicts/SKILL.md`](../skills/bridge-conflicts/SKILL.md) | Runtime |
 | `product-hero-scene-planner` | [`../skills/product-hero-scene-planner/SKILL.md`](../skills/product-hero-scene-planner/SKILL.md) | Planning |
-| `blender-composition-camera-planner` | [`../skills/blender-composition-camera-planner/SKILL.md`](../skills/blender-composition-camera-planner/SKILL.md) | Planning |
-| `blender-lighting-material-planner` | [`../skills/blender-lighting-material-planner/SKILL.md`](../skills/blender-lighting-material-planner/SKILL.md) | Planning |
-| `blender-scene-quality-checker` | [`../skills/blender-scene-quality-checker/SKILL.md`](../skills/blender-scene-quality-checker/SKILL.md) | Quality |
+| `camera-composition` | [`../skills/camera-composition/SKILL.md`](../skills/camera-composition/SKILL.md) | Planning |
+| `lighting-material-plan` | [`../skills/lighting-material-plan/SKILL.md`](../skills/lighting-material-plan/SKILL.md) | Planning |
+| `scene-readiness` | [`../skills/scene-readiness/SKILL.md`](../skills/scene-readiness/SKILL.md) | Quality |
 | `blender-troubleshooting` (Superpowers `/systematic-debugging` analog) | [`../skills/blender-troubleshooting/SKILL.md`](../skills/blender-troubleshooting/SKILL.md) | Quality |
 | `render-export-evidence` | [`../skills/render-export-evidence/SKILL.md`](../skills/render-export-evidence/SKILL.md) | Evidence |
 | `pre-handoff-verification` (Superpowers `/verification-before-completion` analog) | [`../skills/pre-handoff-verification/SKILL.md`](../skills/pre-handoff-verification/SKILL.md) | Evidence |
 | `glb-web-handoff` | [`../skills/glb-web-handoff/SKILL.md`](../skills/glb-web-handoff/SKILL.md) | Handoff |
-| `non-blender-user-response-writer` | [`../skills/non-blender-user-response-writer/SKILL.md`](../skills/non-blender-user-response-writer/SKILL.md) | Handoff |
+| `plain-language-response` | [`../skills/plain-language-response/SKILL.md`](../skills/plain-language-response/SKILL.md) | Handoff |
 
 ---
 

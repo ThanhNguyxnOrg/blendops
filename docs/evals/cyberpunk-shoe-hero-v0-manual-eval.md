@@ -28,11 +28,11 @@ Evaluate whether the v0 product hero pack helps an AI produce a useful Blender/w
 - laws/no-arbitrary-python-interface
 - laws/evidence-before-done
 - laws/non-blender-user-language
-- skills/official-runtime-setup-guide
+- skills/runtime-setup
 - skills/product-hero-scene-planner
-- skills/blender-scene-quality-checker
+- skills/scene-readiness
 - skills/glb-web-handoff
-- skills/non-blender-user-response-writer
+- skills/plain-language-response
 - workflow/product-hero-workflow
 - recipe/cyberpunk-shoe-hero
 - pack/v0-product-hero-pack

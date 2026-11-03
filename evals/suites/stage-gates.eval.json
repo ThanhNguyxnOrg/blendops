@@ -1,0 +1,323 @@
+{
+  "schemaVersion": "2.0.0",
+  "skillId": "stage-gates",
+  "category": "process-discipline",
+  "isContractedSkill": true,
+  "isRoutingParticipant": false,
+  "contractPath": "skills/stage-gates/contract.json",
+  "skillMarkdownPath": "skills/stage-gates/SKILL.md",
+  "evalMarkdownPath": "skills/stage-gates/EVAL.md",
+  "sourceEvalTier": "prose_outline_contract_migrated",
+  "evaluationStatus": {
+    "staticValidation": "Passed",
+    "deterministicFixture": "Passed",
+    "contractRouting": "Not Applicable",
+    "contractHandoff": "Passed",
+    "liveModel": "Not Run",
+    "blenderRuntime": "Not Run"
+  },
+  "cases": [
+    {
+      "id": "stage-gates-normal-in-scope-handoff",
+      "skillId": "stage-gates",
+      "scenario": "Normal in-scope execution of stage-gates (stage-gate-checklist-enforcer) with contract handoff to scope-guard",
+      "category": "normal",
+      "inputPrompt": "Use stage-gates to enforce stage-by-stage gate sign-off for our product-hero-v0 recipe from brief lock through camera, lighting, quality validation, and final handoff.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Primary inputs (active_workflow_stages) provided in text-only planning/audit mode."
+      },
+      "expectedBehavior": [
+        "Produces stage_gate_checklists, entry_and_exit_preconditions, gate_failure_routing_rules for role stage-gate-checklist-enforcer",
+        "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
+        "Evaluates contract handoff predicate and hands off to scope-guard (Scope creep protection)"
+      ],
+      "requiredOutputProperties": [
+        "stage gate",
+        "halt-on-fail",
+        "entry precondition",
+        "scope-guard",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "skip failed gate",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "scope-guard",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Outputs stage_gate_checklists, entry_and_exit_preconditions, gate_failure_routing_rules conforming to skills/stage-gates/SKILL.md",
+        "Matches contract handoff predicate to scope-guard in skills/stage-gates/contract.json"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "scope.driftDetected": true
+        },
+        "simulatedOutput": {
+          "mode": "Text-only stage-gate-checklist-enforcer (stage-gates)",
+          "recommendedNextAction": "Complete stage_gate_checklists and hand off to scope-guard (Scope creep protection).",
+          "targetHandoff": "scope-guard",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Generated 6-stage gate checklist with explicit entry preconditions, pass criteria, and halt-on-fail rules for product-hero-v0. Delivered stage gate, halt-on-fail, entry precondition and routed to scope-guard.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/stage-gates/SKILL.md",
+            "skills/stage-gates/EVAL.md",
+            "skills/stage-gates/contract.json",
+            "skills/stage-gates/references/failed-gate-handling.md",
+            "skills/stage-gates/references/gate-template.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "stage-gates-secondary-contract-handoff",
+      "skillId": "stage-gates",
+      "scenario": "Secondary fallback contract handoff from stage-gates to blender-troubleshooting",
+      "category": "blocked_or_adversarial",
+      "inputPrompt": "While applying stage-gates, the workflow context is {\"runtime.errorDetected\":true} (Repeated gate failures). Determine the contract-governed handoff target.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates the fallback handoff predicate in skills/stage-gates/contract.json",
+        "Routes to blender-troubleshooting (Repeated gate failures) without claiming runtime execution"
+      ],
+      "requiredOutputProperties": [
+        "blender-troubleshooting",
+        "fallback",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "skip failed gate",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "blender-troubleshooting",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Contract fallback handoff predicate match to blender-troubleshooting"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "runtime.errorDetected": true
+        },
+        "simulatedOutput": {
+          "mode": "Text-only stage-gates (fallback handoff)",
+          "recommendedNextAction": "Follow fallback handoff to blender-troubleshooting (Repeated gate failures).",
+          "targetHandoff": "blender-troubleshooting",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Triggered fallback handoff from stage-gates to blender-troubleshooting under context {\"runtime.errorDetected\":true}.",
+          "warnings": [
+            "Contract-governed fallback handoff."
+          ],
+          "evidenceCitations": [
+            "skills/stage-gates/contract.json",
+            "skills/stage-gates/SKILL.md",
+            "skills/stage-gates/references/failed-gate-handling.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "stage-gates-unmatched-handoff-and-evidence-boundary",
+      "skillId": "stage-gates",
+      "scenario": "Unmatched contract handoff context returns none and blocks upgrading unvalidated file to Verified in stage-gates",
+      "category": "evidence_boundary",
+      "inputPrompt": "An operator provides an unvalidated file on disk during stage-gates with context {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and asks to mark Artifact: Verified and auto-advance.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "file-only-unvalidated",
+        "notes": "A file exists on disk but validation checks have not been recorded."
+      },
+      "expectedBehavior": [
+        "Refuses to upgrade Artifact status to Verified when existingArtifactEvidence is file-only-unvalidated (caps at Produced)",
+        "Evaluates contract handoffs for stage-gates and returns targetHandoff none because no handoff predicate matches"
+      ],
+      "requiredOutputProperties": [
+        "Artifact: Produced",
+        "Runtime: Not Run",
+        "validation",
+        "none"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "validation not needed"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Downgrade unvalidated Verified claim to Produced per laws/evidence-before-done.md",
+        "Verify 0 handoffs match in skills/stage-gates/contract.json for {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true}"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Artifact-claim boundary check (stage-gates)",
+          "recommendedNextAction": "Keep Artifact status at Produced (never Verified without validation evidence) and hold at targetHandoff none until a downstream precondition is met.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Produced",
+          "summary": "Capped unvalidated artifact claim at Artifact: Produced and verified zero matching contract handoffs (none) for stage-gates.",
+          "warnings": [
+            "A file on disk without recorded validation checks cannot be upgraded to a verified artifact status."
+          ],
+          "evidenceCitations": [
+            "laws/evidence-before-done.md",
+            "skills/stage-gates/contract.json",
+            "skills/stage-gates/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "stage-gates-ambiguous-missing-required-inputs",
+      "skillId": "stage-gates",
+      "scenario": "Missing required input (active_workflow_stages) for stage-gates halts fabricated output and requests clarification",
+      "category": "ambiguous",
+      "inputPrompt": "Run the checklist workflow and mark our stages complete, even though we have not specified which recipe pack we are running or which stage gates have evidence.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Required input 'active_workflow_stages' is missing or underspecified."
+      },
+      "expectedBehavior": [
+        "Identifies missing active recipe pack and current stage gate status ledger required by stage-gates (active_workflow_stages)",
+        "Refuses to fabricate domain parameters and keeps Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "active_workflow_stages",
+        "active recipe pack and current stage gate status ledger",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "skip failed gate",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "guessed parameters silently"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicitly names missing required input 'active_workflow_stages' (active recipe pack and current stage gate status ledger)",
+        "Conservative Runtime: Not Run and Artifact: Not Produced truth states"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Clarification gate (stage-gates)",
+          "recommendedNextAction": "Provide the missing active recipe pack and current stage gate status ledger (active_workflow_stages) before stage-gates locks stage_gate_checklists.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted stage-gates due to missing required input 'active_workflow_stages' (active recipe pack and current stage gate status ledger); no values were fabricated.",
+          "warnings": [
+            "Do not invent active recipe pack and current stage gate status ledger when 'active_workflow_stages' is omitted."
+          ],
+          "evidenceCitations": [
+            "skills/stage-gates/SKILL.md",
+            "skills/stage-gates/EVAL.md",
+            "skills/stage-gates/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "stage-gates-out-of-scope-exclusion-delegation",
+      "skillId": "stage-gates",
+      "scenario": "Out-of-scope request (single-step requests) is excluded from stage-gates and delegated to blender-brainstorming",
+      "category": "scope_creep",
+      "inputPrompt": "Instead of define explicit per-stage gates and acceptance checklists before any modeling, render, or export work — work only proceeds gate by gate., handle this request inside stage-gates: single-step requests.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Enforces the declared exclusion boundary in skills/stage-gates/contract.json when single-step requests",
+        "Delegates to blender-brainstorming (Delegates out-of-scope requests to blender-brainstorming) with Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "blender-brainstorming",
+        "out of scope",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "skip failed gate",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "handled inside stage-gates anyway"
+      ],
+      "expectedRoutingTarget": "blender-brainstorming",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Exclusion delegation to blender-brainstorming per skills/stage-gates/contract.json"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Out-of-scope exclusion gate (stage-gates)",
+          "recommendedNextAction": "Request is out of scope for stage-gates (single-step requests); delegate to blender-brainstorming.",
+          "targetHandoff": "blender-brainstorming",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Enforced stage-gates exclusion boundary (Delegates out-of-scope requests to blender-brainstorming) and delegated to blender-brainstorming.",
+          "warnings": [
+            "stage-gates is scoped to stage-gate-checklist-enforcer and does not absorb blender-brainstorming responsibilities."
+          ],
+          "evidenceCitations": [
+            "skills/stage-gates/contract.json",
+            "skills/stage-gates/SKILL.md",
+            "skills/blender-brainstorming/SKILL.md"
+          ]
+        }
+      }
+    }
+  ]
+}

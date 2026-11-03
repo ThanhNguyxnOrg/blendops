@@ -1,0 +1,324 @@
+{
+  "schemaVersion": "2.0.0",
+  "skillId": "asset-style-check",
+  "category": "asset-and-sourcing",
+  "isContractedSkill": true,
+  "isRoutingParticipant": false,
+  "contractPath": "skills/asset-style-check/contract.json",
+  "skillMarkdownPath": "skills/asset-style-check/SKILL.md",
+  "evalMarkdownPath": "skills/asset-style-check/EVAL.md",
+  "sourceEvalTier": "prose_outline_contract_migrated",
+  "evaluationStatus": {
+    "staticValidation": "Passed",
+    "deterministicFixture": "Passed",
+    "contractRouting": "Not Applicable",
+    "contractHandoff": "Passed",
+    "liveModel": "Not Run",
+    "blenderRuntime": "Not Run"
+  },
+  "cases": [
+    {
+      "id": "asset-style-check-normal-in-scope-handoff",
+      "skillId": "asset-style-check",
+      "scenario": "Normal in-scope execution of asset-style-check (cross-asset-visual-coherence-validator) with contract handoff to asset-library-plan",
+      "category": "normal",
+      "inputPrompt": "Use asset-style-check to audit a 4-asset desk scene combining a photoreal brushed-aluminum laptop, a stylized hand-painted coffee mug, a low-poly plant, and a realistic wood table.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Primary inputs (candidate_asset_list) provided in text-only planning/audit mode."
+      },
+      "expectedBehavior": [
+        "Produces style_coherence_matrix, mismatched_asset_flags, remediation_or_fallback_recommendations for role cross-asset-visual-coherence-validator",
+        "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
+        "Evaluates contract handoff predicate and hands off to asset-library-plan (Approved asset organization)"
+      ],
+      "requiredOutputProperties": [
+        "texel density",
+        "shader realism",
+        "style outlier",
+        "asset-library-plan",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "all assets match perfectly",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "asset-library-plan",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Outputs style_coherence_matrix, mismatched_asset_flags, remediation_or_fallback_recommendations conforming to skills/asset-style-check/SKILL.md",
+        "Matches contract handoff predicate to asset-library-plan in skills/asset-style-check/contract.json"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "assets.discoveryComplete": true,
+          "stage.current": "library_organization"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only cross-asset-visual-coherence-validator (asset-style-check)",
+          "recommendedNextAction": "Complete style_coherence_matrix and hand off to asset-library-plan (Approved asset organization).",
+          "targetHandoff": "asset-library-plan",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Evaluated cross-asset visual coherence across scale, texel density, shader realism, and edge bevel language; flagged stylized mug and low-poly plant as style outliers. Delivered texel density, shader realism, style outlier and routed to asset-library-plan.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/asset-style-check/SKILL.md",
+            "skills/asset-style-check/EVAL.md",
+            "skills/asset-style-check/contract.json",
+            "skills/asset-style-check/references/drift-classification.md",
+            "skills/asset-style-check/references/intentional-mixed-style.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "asset-style-check-secondary-contract-handoff",
+      "skillId": "asset-style-check",
+      "scenario": "Secondary fallback contract handoff from asset-style-check to asset-fallback-strategy",
+      "category": "blocked_or_adversarial",
+      "inputPrompt": "While applying asset-style-check, the workflow context is {\"assets.fallbackNeeded\":true} (Rejected asset fallback). Determine the contract-governed handoff target.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates the fallback handoff predicate in skills/asset-style-check/contract.json",
+        "Routes to asset-fallback-strategy (Rejected asset fallback) without claiming runtime execution"
+      ],
+      "requiredOutputProperties": [
+        "asset-fallback-strategy",
+        "fallback",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "all assets match perfectly",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "asset-fallback-strategy",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Contract fallback handoff predicate match to asset-fallback-strategy"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "assets.fallbackNeeded": true
+        },
+        "simulatedOutput": {
+          "mode": "Text-only asset-style-check (fallback handoff)",
+          "recommendedNextAction": "Follow fallback handoff to asset-fallback-strategy (Rejected asset fallback).",
+          "targetHandoff": "asset-fallback-strategy",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Triggered fallback handoff from asset-style-check to asset-fallback-strategy under context {\"assets.fallbackNeeded\":true}.",
+          "warnings": [
+            "Contract-governed fallback handoff."
+          ],
+          "evidenceCitations": [
+            "skills/asset-style-check/contract.json",
+            "skills/asset-style-check/SKILL.md",
+            "skills/asset-style-check/references/drift-classification.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "asset-style-check-unmatched-handoff-and-evidence-boundary",
+      "skillId": "asset-style-check",
+      "scenario": "Unmatched contract handoff context returns none and blocks upgrading unvalidated file to Verified in asset-style-check",
+      "category": "evidence_boundary",
+      "inputPrompt": "An operator provides an unvalidated file on disk during asset-style-check with context {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and asks to mark Artifact: Verified and auto-advance.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "file-only-unvalidated",
+        "notes": "A file exists on disk but validation checks have not been recorded."
+      },
+      "expectedBehavior": [
+        "Refuses to upgrade Artifact status to Verified when existingArtifactEvidence is file-only-unvalidated (caps at Produced)",
+        "Evaluates contract handoffs for asset-style-check and returns targetHandoff none because no handoff predicate matches"
+      ],
+      "requiredOutputProperties": [
+        "Artifact: Produced",
+        "Runtime: Not Run",
+        "validation",
+        "none"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "validation not needed"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Downgrade unvalidated Verified claim to Produced per laws/evidence-before-done.md",
+        "Verify 0 handoffs match in skills/asset-style-check/contract.json for {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true}"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Artifact-claim boundary check (asset-style-check)",
+          "recommendedNextAction": "Keep Artifact status at Produced (never Verified without validation evidence) and hold at targetHandoff none until a downstream precondition is met.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Produced",
+          "summary": "Capped unvalidated artifact claim at Artifact: Produced and verified zero matching contract handoffs (none) for asset-style-check.",
+          "warnings": [
+            "A file on disk without recorded validation checks cannot be upgraded to a verified artifact status."
+          ],
+          "evidenceCitations": [
+            "laws/evidence-before-done.md",
+            "skills/asset-style-check/contract.json",
+            "skills/asset-style-check/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "asset-style-check-ambiguous-missing-required-inputs",
+      "skillId": "asset-style-check",
+      "scenario": "Missing required input (candidate_asset_list) for asset-style-check halts fabricated output and requests clarification",
+      "category": "ambiguous",
+      "inputPrompt": "Check whether our scene assets are stylistically consistent, without providing the target art direction, reference anchor asset, or per-asset material descriptions.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Required input 'candidate_asset_list' is missing or underspecified."
+      },
+      "expectedBehavior": [
+        "Identifies missing target art-direction anchor and per-asset scale/shader inventory required by asset-style-check (candidate_asset_list)",
+        "Refuses to fabricate domain parameters and keeps Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "candidate_asset_list",
+        "target art-direction anchor and per-asset scale/shader inventory",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "all assets match perfectly",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "guessed parameters silently"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicitly names missing required input 'candidate_asset_list' (target art-direction anchor and per-asset scale/shader inventory)",
+        "Conservative Runtime: Not Run and Artifact: Not Produced truth states"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Clarification gate (asset-style-check)",
+          "recommendedNextAction": "Provide the missing target art-direction anchor and per-asset scale/shader inventory (candidate_asset_list) before asset-style-check locks style_coherence_matrix.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted asset-style-check due to missing required input 'candidate_asset_list' (target art-direction anchor and per-asset scale/shader inventory); no values were fabricated.",
+          "warnings": [
+            "Do not invent target art-direction anchor and per-asset scale/shader inventory when 'candidate_asset_list' is omitted."
+          ],
+          "evidenceCitations": [
+            "skills/asset-style-check/SKILL.md",
+            "skills/asset-style-check/EVAL.md",
+            "skills/asset-style-check/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "asset-style-check-out-of-scope-exclusion-delegation",
+      "skillId": "asset-style-check",
+      "scenario": "Out-of-scope request (single isolated asset where no multi-asset or scene-brief consistency check is requested) is excluded from asset-style-check and delegated to asset-discovery",
+      "category": "scope_creep",
+      "inputPrompt": "Instead of verify chosen assets share visual style (realism, detail, color treatment) before scene build; flag style drift between assets early., handle this request inside asset-style-check: single isolated asset where no multi-asset or scene-brief consistency check is requested.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Enforces the declared exclusion boundary in skills/asset-style-check/contract.json when single isolated asset where no multi-asset or scene-brief consistency check is requested",
+        "Delegates to asset-discovery (Delegates out-of-scope requests to asset-discovery) with Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "asset-discovery",
+        "out of scope",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "all assets match perfectly",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "handled inside asset-style-check anyway"
+      ],
+      "expectedRoutingTarget": "asset-discovery",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Exclusion delegation to asset-discovery per skills/asset-style-check/contract.json"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Out-of-scope exclusion gate (asset-style-check)",
+          "recommendedNextAction": "Request is out of scope for asset-style-check (single isolated asset where no multi-asset or scene-brief consistency check is requested); delegate to asset-discovery.",
+          "targetHandoff": "asset-discovery",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Enforced asset-style-check exclusion boundary (Delegates out-of-scope requests to asset-discovery) and delegated to asset-discovery.",
+          "warnings": [
+            "asset-style-check is scoped to cross-asset-visual-coherence-validator and does not absorb asset-discovery responsibilities."
+          ],
+          "evidenceCitations": [
+            "skills/asset-style-check/contract.json",
+            "skills/asset-style-check/SKILL.md",
+            "skills/asset-discovery/SKILL.md"
+          ]
+        }
+      }
+    }
+  ]
+}

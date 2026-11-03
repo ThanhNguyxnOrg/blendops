@@ -14,7 +14,7 @@
   "exclusions": [
     {
       "condition": "after render is complete (no benefit)",
-      "delegateTo": "blender-composition-camera-planner",
+      "delegateTo": "camera-composition",
       "reason": "no benefit"
     },
     {
@@ -63,7 +63,7 @@
   },
   "handoffs": [
     {
-      "target": "blender-composition-camera-planner",
+      "target": "camera-composition",
       "type": "upstream_reference",
       "label": "Camera & composition planning (upstream framing setup)",
       "when": {

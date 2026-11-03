@@ -1,0 +1,325 @@
+{
+  "schemaVersion": "2.0.0",
+  "skillId": "done-criteria",
+  "category": "process-discipline",
+  "isContractedSkill": true,
+  "isRoutingParticipant": false,
+  "contractPath": "skills/done-criteria/contract.json",
+  "skillMarkdownPath": "skills/done-criteria/SKILL.md",
+  "evalMarkdownPath": "skills/done-criteria/EVAL.md",
+  "sourceEvalTier": "prose_outline_contract_migrated",
+  "evaluationStatus": {
+    "staticValidation": "Passed",
+    "deterministicFixture": "Passed",
+    "contractRouting": "Not Applicable",
+    "contractHandoff": "Passed",
+    "liveModel": "Not Run",
+    "blenderRuntime": "Not Run"
+  },
+  "cases": [
+    {
+      "id": "done-criteria-normal-in-scope-handoff",
+      "skillId": "done-criteria",
+      "scenario": "Normal in-scope execution of done-criteria (done-condition-and-iteration-cap-pinner) with contract handoff to stage-gates",
+      "category": "normal",
+      "inputPrompt": "Use done-criteria on our cyberpunk shoe product-hero-v0 recipe to pin one measurable done condition, an iteration cap of 3 lookdev passes, and 4 explicit out-of-scope items.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Primary inputs (locked_3d_brief) provided in text-only planning/audit mode."
+      },
+      "expectedBehavior": [
+        "Produces definition_of_done_checklist, max_iteration_caps_per_stage, halt_and_escalation_triggers for role done-condition-and-iteration-cap-pinner",
+        "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
+        "Evaluates contract handoff predicate and hands off to stage-gates (Per-stage workflow gates)"
+      ],
+      "requiredOutputProperties": [
+        "single measurable stop condition",
+        "out-of-scope list",
+        "iteration cap",
+        "stage-gates",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "done when it looks good",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "stage-gates",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Outputs definition_of_done_checklist, max_iteration_caps_per_stage, halt_and_escalation_triggers conforming to skills/done-criteria/SKILL.md",
+        "Matches contract handoff predicate to stage-gates in skills/done-criteria/contract.json"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "brief.locked": true,
+          "stage.current": "stage_gates"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only done-condition-and-iteration-cap-pinner (done-criteria)",
+          "recommendedNextAction": "Complete definition_of_done_checklist and hand off to stage-gates (Per-stage workflow gates).",
+          "targetHandoff": "stage-gates",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Pinned single measurable stop condition, 3-pass lookdev iteration cap, and 4 explicit out-of-scope exclusions before execution. Delivered single measurable stop condition, out-of-scope list, iteration cap and routed to stage-gates.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/done-criteria/SKILL.md",
+            "skills/done-criteria/EVAL.md",
+            "skills/done-criteria/contract.json",
+            "skills/done-criteria/references/done-vs-perfect.md",
+            "skills/done-criteria/references/out-of-scope-patterns.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "done-criteria-secondary-contract-handoff",
+      "skillId": "done-criteria",
+      "scenario": "Secondary upstream_reference contract handoff from done-criteria to intent-to-3d-brief-writer",
+      "category": "structured_skip",
+      "inputPrompt": "While applying done-criteria, the workflow context is {\"goal.clarity\":\"clear\",\"brief.locked\":false} (Intent brief). Determine the contract-governed handoff target.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates the upstream_reference handoff predicate in skills/done-criteria/contract.json",
+        "Routes to intent-to-3d-brief-writer (Intent brief) without claiming runtime execution"
+      ],
+      "requiredOutputProperties": [
+        "intent-to-3d-brief-writer",
+        "upstream_reference",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "done when it looks good",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "intent-to-3d-brief-writer",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Contract upstream_reference handoff predicate match to intent-to-3d-brief-writer"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "goal.clarity": "clear",
+          "brief.locked": false
+        },
+        "simulatedOutput": {
+          "mode": "Text-only done-criteria (upstream_reference handoff)",
+          "recommendedNextAction": "Follow upstream_reference handoff to intent-to-3d-brief-writer (Intent brief).",
+          "targetHandoff": "intent-to-3d-brief-writer",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Triggered upstream_reference handoff from done-criteria to intent-to-3d-brief-writer under context {\"goal.clarity\":\"clear\",\"brief.locked\":false}.",
+          "warnings": [
+            "Contract-governed upstream_reference handoff."
+          ],
+          "evidenceCitations": [
+            "skills/done-criteria/contract.json",
+            "skills/done-criteria/SKILL.md",
+            "skills/done-criteria/references/done-vs-perfect.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "done-criteria-unmatched-handoff-and-evidence-boundary",
+      "skillId": "done-criteria",
+      "scenario": "Unmatched contract handoff context returns none and blocks upgrading unvalidated file to Verified in done-criteria",
+      "category": "evidence_boundary",
+      "inputPrompt": "An operator provides an unvalidated file on disk during done-criteria with context {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and asks to mark Artifact: Verified and auto-advance.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "file-only-unvalidated",
+        "notes": "A file exists on disk but validation checks have not been recorded."
+      },
+      "expectedBehavior": [
+        "Refuses to upgrade Artifact status to Verified when existingArtifactEvidence is file-only-unvalidated (caps at Produced)",
+        "Evaluates contract handoffs for done-criteria and returns targetHandoff none because no handoff predicate matches"
+      ],
+      "requiredOutputProperties": [
+        "Artifact: Produced",
+        "Runtime: Not Run",
+        "validation",
+        "none"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "validation not needed"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Downgrade unvalidated Verified claim to Produced per laws/evidence-before-done.md",
+        "Verify 0 handoffs match in skills/done-criteria/contract.json for {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true}"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Artifact-claim boundary check (done-criteria)",
+          "recommendedNextAction": "Keep Artifact status at Produced (never Verified without validation evidence) and hold at targetHandoff none until a downstream precondition is met.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Produced",
+          "summary": "Capped unvalidated artifact claim at Artifact: Produced and verified zero matching contract handoffs (none) for done-criteria.",
+          "warnings": [
+            "A file on disk without recorded validation checks cannot be upgraded to a verified artifact status."
+          ],
+          "evidenceCitations": [
+            "laws/evidence-before-done.md",
+            "skills/done-criteria/contract.json",
+            "skills/done-criteria/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "done-criteria-ambiguous-missing-required-inputs",
+      "skillId": "done-criteria",
+      "scenario": "Missing required input (locked_3d_brief) for done-criteria halts fabricated output and requests clarification",
+      "category": "ambiguous",
+      "inputPrompt": "Define the stop condition for our Blender project without telling me what deliverable is being produced or what quality bar applies.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Required input 'locked_3d_brief' is missing or underspecified."
+      },
+      "expectedBehavior": [
+        "Identifies missing target deliverable specification and acceptance quality bar required by done-criteria (locked_3d_brief)",
+        "Refuses to fabricate domain parameters and keeps Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "locked_3d_brief",
+        "target deliverable specification and acceptance quality bar",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "done when it looks good",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "guessed parameters silently"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicitly names missing required input 'locked_3d_brief' (target deliverable specification and acceptance quality bar)",
+        "Conservative Runtime: Not Run and Artifact: Not Produced truth states"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Clarification gate (done-criteria)",
+          "recommendedNextAction": "Provide the missing target deliverable specification and acceptance quality bar (locked_3d_brief) before done-criteria locks definition_of_done_checklist.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted done-criteria due to missing required input 'locked_3d_brief' (target deliverable specification and acceptance quality bar); no values were fabricated.",
+          "warnings": [
+            "Do not invent target deliverable specification and acceptance quality bar when 'locked_3d_brief' is omitted."
+          ],
+          "evidenceCitations": [
+            "skills/done-criteria/SKILL.md",
+            "skills/done-criteria/EVAL.md",
+            "skills/done-criteria/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "done-criteria-out-of-scope-exclusion-delegation",
+      "skillId": "done-criteria",
+      "scenario": "Out-of-scope request (pure exploration or brainstorming) is excluded from done-criteria and delegated to blender-brainstorming",
+      "category": "scope_creep",
+      "inputPrompt": "Instead of define explicit \"done\" conditions for a blender recipe before starting work, so the agent stops at the right point instead of drifting into endless polish., handle this request inside done-criteria: pure exploration or brainstorming.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Enforces the declared exclusion boundary in skills/done-criteria/contract.json when pure exploration or brainstorming",
+        "Delegates to blender-brainstorming (use blender-brainstorming; goal is divergence) with Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "blender-brainstorming",
+        "out of scope",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "done when it looks good",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "handled inside done-criteria anyway"
+      ],
+      "expectedRoutingTarget": "blender-brainstorming",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Exclusion delegation to blender-brainstorming per skills/done-criteria/contract.json"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Out-of-scope exclusion gate (done-criteria)",
+          "recommendedNextAction": "Request is out of scope for done-criteria (pure exploration or brainstorming); delegate to blender-brainstorming.",
+          "targetHandoff": "blender-brainstorming",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Enforced done-criteria exclusion boundary (use blender-brainstorming; goal is divergence) and delegated to blender-brainstorming.",
+          "warnings": [
+            "done-criteria is scoped to done-condition-and-iteration-cap-pinner and does not absorb blender-brainstorming responsibilities."
+          ],
+          "evidenceCitations": [
+            "skills/done-criteria/contract.json",
+            "skills/done-criteria/SKILL.md",
+            "skills/blender-brainstorming/SKILL.md"
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -40,12 +40,12 @@
     },
     {
       "condition": "Active MCP runtime bridge conflict on port 9876",
-      "delegateTo": "runtime-bridge-conflict-resolver",
+      "delegateTo": "bridge-conflicts",
       "reason": "Resolves port and dual add-on conflicts before advancing"
     },
     {
       "condition": "Final stakeholder-facing wording and plain-language summary",
-      "delegateTo": "non-blender-user-response-writer",
+      "delegateTo": "plain-language-response",
       "reason": "Formats validated workflow outputs for non-Blender users"
     }
   ],
@@ -94,7 +94,7 @@
       }
     },
     {
-      "target": "official-runtime-readiness-checker",
+      "target": "runtime-readiness",
       "type": "conditional",
       "label": "Runtime readiness check",
       "when": {
@@ -105,7 +105,7 @@
       }
     },
     {
-      "target": "runtime-bridge-conflict-resolver",
+      "target": "bridge-conflicts",
       "type": "fallback",
       "label": "Active MCP bridge conflict on port 9876",
       "when": {
@@ -115,7 +115,7 @@
       }
     },
     {
-      "target": "blender-scope-boundary-enforcer",
+      "target": "scope-guard",
       "type": "boundary_delegation",
       "label": "Mid-workflow scope expansion or unapproved deliverable addition",
       "when": {

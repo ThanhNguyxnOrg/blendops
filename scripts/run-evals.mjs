@@ -979,7 +979,7 @@ export function runEvalSuites({
   } = buildEvalArtifacts(rootDir);
   errors.push(...buildErrors);
 
-  const actualIndexRaw = fs.readFileSync(indexPath, 'utf8');
+  const actualIndexRaw = fs.readFileSync(indexPath, 'utf8').replace(/\r\n/g, '\n');
   const expectedIndexRaw = JSON.stringify(expectedIndex, null, 2) + '\n';
   if (actualIndexRaw !== expectedIndexRaw) {
     errors.push(

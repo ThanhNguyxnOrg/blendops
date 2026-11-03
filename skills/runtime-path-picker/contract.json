@@ -15,13 +15,13 @@
   "exclusions": [
     {
       "condition": "prerequisite framing or install steps",
-      "delegateTo": "official-runtime-setup-guide",
-      "reason": "Delegates out-of-scope requests to official-runtime-setup-guide"
+      "delegateTo": "runtime-setup",
+      "reason": "Delegates out-of-scope requests to runtime-setup"
     },
     {
       "condition": "running the readiness matrix",
-      "delegateTo": "official-runtime-readiness-checker",
-      "reason": "Delegates out-of-scope requests to official-runtime-readiness-checker"
+      "delegateTo": "runtime-readiness",
+      "reason": "Delegates out-of-scope requests to runtime-readiness"
     },
     {
       "condition": "detailing Path 1 host (a) Connector vs (b) manual MCP client",
@@ -35,8 +35,8 @@
     },
     {
       "condition": "resolving active bridge or port collisions",
-      "delegateTo": "runtime-bridge-conflict-resolver",
-      "reason": "Delegates out-of-scope requests to runtime-bridge-conflict-resolver"
+      "delegateTo": "bridge-conflicts",
+      "reason": "Delegates out-of-scope requests to bridge-conflicts"
     },
     {
       "condition": "halting on contradictory constraints before handoff",
@@ -79,7 +79,7 @@
   },
   "handoffs": [
     {
-      "target": "official-runtime-setup-guide",
+      "target": "runtime-setup",
       "type": "progression",
       "label": "Prerequisite framing",
       "when": {
@@ -98,7 +98,7 @@
       }
     },
     {
-      "target": "official-runtime-readiness-checker",
+      "target": "runtime-readiness",
       "type": "progression",
       "label": "Readiness matrix check",
       "when": {
@@ -155,7 +155,7 @@
       }
     },
     {
-      "target": "runtime-bridge-conflict-resolver",
+      "target": "bridge-conflicts",
       "type": "fallback",
       "label": "Bridge or port 9876 conflicts",
       "when": {

@@ -26,7 +26,7 @@ Pick the render engine upfront based on quality + time tradeoff and feature requ
 - "render is too slow"
 
 ## When not to use
-- for a known repeat render (engine already chosen) → delegate to `blender-lighting-material-planner` (`references/skills/blender-lighting-material-planner.md`; engine already chosen)
+- for a known repeat render (engine already chosen) → delegate to `lighting-material-plan` (`references/skills/lighting-material-plan.md`; engine already chosen)
 - for non-render work (modeling / animation prep) → delegate to `output-format-decision` (`references/skills/output-format-decision.md`; modeling / animation prep)
 
 ## Inputs & output/evidence contract
@@ -51,7 +51,7 @@ Pick the render engine upfront based on quality + time tradeoff and feature requ
 5. Pin the 4-item engine record: engine + samples + GPU device (if applicable) + caveats.
 
 ## Handoff notes
-- **[upstream_reference]** Lighting and material setup aligned with engine choice → `blender-lighting-material-planner` (`references/skills/blender-lighting-material-planner.md`) — `when.all: [brief.locked equals true; stage.current equals "lookdev_planning"]`
+- **[upstream_reference]** Lighting and material setup aligned with engine choice → `lighting-material-plan` (`references/skills/lighting-material-plan.md`) — `when.all: [brief.locked equals true; stage.current equals "lookdev_planning"]`
 - **[upstream_reference]** Color configuration decision → `color-management-decision` (`references/skills/color-management-decision.md`) — `when.all: [decision.colorLocked equals false]`
 - **[progression]** Output container / codec decision → `output-format-decision` (`references/skills/output-format-decision.md`) — `when.all: [decision.formatLocked equals false]`
 - **[upstream_reference]** Render resolution and aspect ratio decision → `resolution-aspect-decision` (`references/skills/resolution-aspect-decision.md`) — `when.all: [decision.aspectLocked equals false]`

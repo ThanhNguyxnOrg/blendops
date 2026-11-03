@@ -1,0 +1,145 @@
+{
+  "$schema": "../../schemas/skill-contract.schema.json",
+  "id": "bridge-conflicts",
+  "version": "1.0.0",
+  "category": "runtime-and-execution",
+  "role": "port-and-addon-conflict-resolver",
+  "purpose": "Diagnose MCP bridge conflicts (Path 1 Official Blender Lab MCP 5.1+ vs Path 2 mcp-for-blender, port 9876 collisions, host mismatch) and hand off to runtime-readiness.",
+  "capabilityTier": "L0",
+  "triggers": [
+    "tool surface looks wrong",
+    "smoke test passed yesterday but recipe fails today",
+    "Lab MCP and ahujasid both installed",
+    "Claude Desktop and Cursor both pointing at Blender",
+    "port 9876 already in use",
+    "single-bridge constraint violation"
+  ],
+  "exclusions": [
+    {
+      "condition": "no readiness signal yet (run runtime-readiness first)",
+      "delegateTo": "runtime-readiness",
+      "reason": "run runtime-readiness first"
+    },
+    {
+      "condition": "no runtime path has been chosen yet",
+      "delegateTo": "runtime-path-picker",
+      "reason": "route to runtime-path-picker"
+    },
+    {
+      "condition": "the user wants to switch or set up a path from scratch",
+      "delegateTo": "runtime-setup",
+      "reason": "route to runtime-setup"
+    },
+    {
+      "condition": "the bridge matrix is clean and only one path is active, but smoke tests still fail",
+      "delegateTo": "blender-troubleshooting",
+      "reason": "route to blender-troubleshooting"
+    },
+    {
+      "condition": "the user explicitly wants both paths configured for separate Blender instances on different ports (requires explicit port isolation)",
+      "delegateTo": "runtime-readiness",
+      "reason": "requires explicit port isolation"
+    }
+  ],
+  "inputs": {
+    "required": [
+      {
+        "name": "target_blender_instance",
+        "type": "string",
+        "description": "Running Blender session identifier or binary path experiencing bridge or port collisions"
+      },
+      {
+        "name": "configured_mcp_hosts_and_addons",
+        "type": "object",
+        "description": "Inventory of enabled Blender add-ons (Lab MCP vs mcp-for-blender) and active MCP client connections"
+      }
+    ],
+    "optional": [
+      {
+        "name": "port_9876_diagnostics",
+        "type": "string",
+        "description": "Optional socket/port binding diagnostics around default port 9876"
+      }
+    ]
+  },
+  "outputs": {
+    "primary": [
+      "bridge_conflict_diagnosis_matrix",
+      "single_bridge_isolation_steps",
+      "post_resolution_readiness_recheck_route"
+    ],
+    "truthStatePolicy": {
+      "runtimeDefault": "Not Run",
+      "artifactDefault": "Not Produced",
+      "mutationRule": "downgrade_only"
+    }
+  },
+  "handoffs": [
+    {
+      "target": "runtime-readiness",
+      "type": "upstream_reference",
+      "label": "When runtime-readiness reports inconsistent signals",
+      "when": {
+        "all": [
+          {
+            "field": "runtime.path",
+            "operator": "not_equals",
+            "value": "unselected"
+          },
+          {
+            "field": "runtime.verifiedReady",
+            "operator": "equals",
+            "value": false
+          }
+        ]
+      }
+    },
+    {
+      "target": "blender-troubleshooting",
+      "type": "fallback",
+      "label": "If the bridge matrix is clean but failures persist",
+      "when": {
+        "all": [
+          {
+            "field": "runtime.errorDetected",
+            "operator": "equals",
+            "value": true
+          }
+        ]
+      }
+    },
+    {
+      "target": "runtime-setup",
+      "type": "upstream_reference",
+      "label": "If the user wants to change paths or set up a path",
+      "when": {
+        "all": [
+          {
+            "field": "runtime.path",
+            "operator": "not_equals",
+            "value": "unselected"
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "runtime_setup"
+          }
+        ]
+      }
+    },
+    {
+      "target": "runtime-path-picker",
+      "type": "upstream_reference",
+      "label": "If the intended runtime path has not been chosen yet",
+      "when": {
+        "all": [
+          {
+            "field": "runtime.path",
+            "operator": "equals",
+            "value": "unselected"
+          }
+        ]
+      }
+    }
+  ]
+}

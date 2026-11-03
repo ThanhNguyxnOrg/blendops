@@ -15,7 +15,7 @@ Metadata: Contract `v1.0.0` | Category `render-and-output-decisions` | Role `ren
 - Trigger phrases: "Cycles or Eevee", "what render engine", "is Eevee enough", "render is too slow"
 
 ## When not to use (delegation boundaries)
-- for a known repeat render (engine already chosen) → use `blender-lighting-material-planner` (`references/skill-blender-lighting-material-planner.md`; engine already chosen)
+- for a known repeat render (engine already chosen) → use `lighting-material-plan` (`references/skill-lighting-material-plan.md`; engine already chosen)
 - for non-render work (modeling / animation prep) → use `output-format-decision` (`references/skill-output-format-decision.md`; modeling / animation prep)
 
 ## Input & output contract
@@ -33,7 +33,7 @@ Metadata: Contract `v1.0.0` | Category `render-and-output-decisions` | Role `ren
 5. Pin the 4-item engine record: engine + samples + GPU device (if applicable) + caveats.
 
 ## Cross-skill handoffs
-- [upstream_reference] Lighting and material setup aligned with engine choice → `blender-lighting-material-planner` (`references/skill-blender-lighting-material-planner.md`) — `when.all: [brief.locked equals true; stage.current equals "lookdev_planning"]`
+- [upstream_reference] Lighting and material setup aligned with engine choice → `lighting-material-plan` (`references/skill-lighting-material-plan.md`) — `when.all: [brief.locked equals true; stage.current equals "lookdev_planning"]`
 - [upstream_reference] Color configuration decision → `color-management-decision` (`references/skill-color-management-decision.md`) — `when.all: [decision.colorLocked equals false]`
 - [progression] Output container / codec decision → `output-format-decision` (`references/skill-output-format-decision.md`) — `when.all: [decision.formatLocked equals false]`
 - [upstream_reference] Render resolution and aspect ratio decision → `resolution-aspect-decision` (`references/skill-resolution-aspect-decision.md`) — `when.all: [decision.aspectLocked equals false]`

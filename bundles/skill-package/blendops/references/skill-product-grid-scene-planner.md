@@ -3,7 +3,7 @@
 
 Purpose: Plan a multi-product grid scene (e-commerce, catalog, comparison) before any modeling or render attempt; consistent lighting, camera, and grid spacing.
 
-Translate a multi-product grid intent (e-commerce / catalog / comparison) into a structured scene plan. Distinct from `product-hero-scene-planner` (single product, hero) and `interior-architectural-scene-planner` (room scene).
+Translate a multi-product grid intent (e-commerce / catalog / comparison) into a structured scene plan. Distinct from `product-hero-scene-planner` (single product, hero) and `interior-scene` (room scene).
 
 Metadata: Contract `v1.0.0` | Category `scene-planners` | Role `multi-product-catalog-grid-architect` | Tier `L0` | Runtime default `Not Run` | Artifact default `Not Produced` | Mutation `downgrade_only`
 
@@ -16,9 +16,9 @@ Metadata: Contract `v1.0.0` | Category `scene-planners` | Role `multi-product-ca
 
 ## When not to use (delegation boundaries)
 - single product hero → use `product-hero-scene-planner` (`references/skill-product-hero-scene-planner.md`; use product-hero-scene-planner)
-- character portrait → use `character-portrait-scene-planner` (`references/skill-character-portrait-scene-planner.md`; use character-portrait-scene-planner)
-- outdoor environment scene → use `environment-establishing-shot-planner` (`references/skill-environment-establishing-shot-planner.md`; use environment-establishing-shot-planner)
-- interior room scene → use `interior-architectural-scene-planner` (`references/skill-interior-architectural-scene-planner.md`; use interior-architectural-scene-planner)
+- character portrait → use `character-portrait` (`references/skill-character-portrait.md`; use character-portrait)
+- outdoor environment scene → use `environment-shot` (`references/skill-environment-shot.md`; use environment-shot)
+- interior room scene → use `interior-scene` (`references/skill-interior-scene.md`; use interior-scene)
 
 ## Input & output contract
 - Required input `locked_3d_brief` (`object`): Locked 3D brief specifying product lineup count, grid rows/columns, and comparison goal
@@ -37,17 +37,17 @@ Metadata: Contract `v1.0.0` | Category `scene-planners` | Role `multi-product-ca
 ## Cross-skill handoffs
 - [upstream_reference] Upstream brief → `intent-to-3d-brief-writer` (`references/skill-intent-to-3d-brief-writer.md`) — `when.all: [goal.clarity equals "clear"; brief.locked equals false]`
 - [upstream_reference] Single hero product alternative → `product-hero-scene-planner` (`references/skill-product-hero-scene-planner.md`) — `when.all: [brief.locked equals true; recipe.domain equals "product_hero"]`
-- [upstream_reference] Asset discovery → `blender-asset-discovery-planner` (`references/skill-blender-asset-discovery-planner.md`) — `when.all: [brief.locked equals true; assets.discoveryComplete equals false]`
+- [upstream_reference] Asset discovery → `asset-discovery` (`references/skill-asset-discovery.md`) — `when.all: [brief.locked equals true; assets.discoveryComplete equals false]`
 - [progression] Variant / SKU file output format → `output-format-decision` (`references/skill-output-format-decision.md`) — `when.all: [decision.formatLocked equals false]`
 - [progression] Composition validation → `composition-quality-checker` (`references/skill-composition-quality-checker.md`) — `when.all: [quality.domain equals "composition"; quality.verdict equals "not_run"]`
 - [progression] Lighting validation → `lighting-quality-checker` (`references/skill-lighting-quality-checker.md`) — `when.all: [quality.domain equals "lighting"; quality.verdict equals "not_run"]`
 - [progression] Material validation → `material-quality-checker` (`references/skill-material-quality-checker.md`) — `when.all: [quality.domain equals "material"; quality.verdict equals "not_run"]`
-- [progression] Overall scene quality validation → `blender-scene-quality-checker` (`references/skill-blender-scene-quality-checker.md`) — `when.all: [quality.domain equals "holistic"; stage.current equals "quality_validation"]`
+- [progression] Overall scene quality validation → `scene-readiness` (`references/skill-scene-readiness.md`) — `when.all: [quality.domain equals "holistic"; stage.current equals "quality_validation"]`
 - [upstream_reference] Catalog sign-off & stop conditions (acceptance-criteria-builder) → `acceptance-criteria-builder` (`references/skill-acceptance-criteria-builder.md`) — `when.all: [brief.locked equals true; stage.current equals "acceptance_criteria"]`
-- [upstream_reference] Catalog sign-off & stop conditions (blender-stop-condition-decider) → `blender-stop-condition-decider` (`references/skill-blender-stop-condition-decider.md`) — `when.all: [brief.locked equals true; stage.current equals "stop_condition"]`
+- [upstream_reference] Catalog sign-off & stop conditions (done-criteria) → `done-criteria` (`references/skill-done-criteria.md`) — `when.all: [brief.locked equals true; stage.current equals "stop_condition"]`
 
 ## Safety boundaries & non-goals
-- Runtime boundary: Planning-only skill — does not run Blender, model, source assets, or render. Runtime status must remain `Not Run` and Artifact status must remain `Not Produced` (truth states are downgrade-only, never upgrade). Hand off asset needs to `blender-asset-discovery-planner`, file output rules to `output-format-decision`, and validation to quality checkers.
+- Runtime boundary: Planning-only skill — does not run Blender, model, source assets, or render. Runtime status must remain `Not Run` and Artifact status must remain `Not Produced` (truth states are downgrade-only, never upgrade). Hand off asset needs to `asset-discovery`, file output rules to `output-format-decision`, and validation to quality checkers.
 - Model the products.
 - Source the products.
 - Render.

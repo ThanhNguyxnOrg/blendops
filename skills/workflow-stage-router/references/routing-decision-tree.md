@@ -14,7 +14,7 @@ Need explicit Path 1 vs Path 2 vs CLI?
   → runtime-path-picker
 
 Bridge / port confusion?
-  → runtime-bridge-conflict-resolver
+  → bridge-conflicts
 
 Planning outputs missing for user's ask?
   → narrow planner (product hero / domain planner)
@@ -26,7 +26,7 @@ Artifacts claimed without proof?
   → render-export-evidence + downgrade claims
 
 Ready to ship words to non-Blender stakeholder?
-  → non-blender-user-response-writer (+ pre-handoff-verification if "ready" stated)
+  → plain-language-response (+ pre-handoff-verification if "ready" stated)
 ```
 
 Prefer **one** primary recommendation; list alternates only when user must choose tradeoffs.

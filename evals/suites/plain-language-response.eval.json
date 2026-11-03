@@ -1,0 +1,324 @@
+{
+  "schemaVersion": "2.0.0",
+  "skillId": "plain-language-response",
+  "category": "evidence-and-handoff",
+  "isContractedSkill": true,
+  "isRoutingParticipant": false,
+  "contractPath": "skills/plain-language-response/contract.json",
+  "skillMarkdownPath": "skills/plain-language-response/SKILL.md",
+  "evalMarkdownPath": "skills/plain-language-response/EVAL.md",
+  "sourceEvalTier": "prose_outline_contract_migrated",
+  "evaluationStatus": {
+    "staticValidation": "Passed",
+    "deterministicFixture": "Passed",
+    "contractRouting": "Not Applicable",
+    "contractHandoff": "Passed",
+    "liveModel": "Not Run",
+    "blenderRuntime": "Not Run"
+  },
+  "cases": [
+    {
+      "id": "plain-language-response-normal-in-scope-handoff",
+      "skillId": "plain-language-response",
+      "scenario": "Normal in-scope execution of plain-language-response (plain-language-final-response-translator) with contract handoff to render-export-evidence",
+      "category": "normal",
+      "inputPrompt": "Use plain-language-response to translate our technical quality-check and pre-handoff ledger (Runtime: Not Run, Artifact: Not Produced, 1 pending license check on pedestal mesh) into plain language for a brand manager.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Primary inputs (verified_workflow_and_evidence_state) provided in text-only planning/audit mode."
+      },
+      "expectedBehavior": [
+        "Produces plain_language_stakeholder_response, explicit_runtime_and_artifact_status_block, jargon_free_next_steps for role plain-language-final-response-translator",
+        "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
+        "Evaluates contract handoff predicate and hands off to render-export-evidence (Upstream artifact evidence classification)"
+      ],
+      "requiredOutputProperties": [
+        "plain-language summary",
+        "verified vs unverified split",
+        "single next action",
+        "render-export-evidence",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "paste this bpy Python script",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "render-export-evidence",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Outputs plain_language_stakeholder_response, explicit_runtime_and_artifact_status_block, jargon_free_next_steps conforming to skills/plain-language-response/SKILL.md",
+        "Matches contract handoff predicate to render-export-evidence in skills/plain-language-response/contract.json"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "stage.current": "post_execution_audit"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only plain-language-final-response-translator (plain-language-response)",
+          "recommendedNextAction": "Complete plain_language_stakeholder_response and hand off to render-export-evidence (Upstream artifact evidence classification).",
+          "targetHandoff": "render-export-evidence",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Translated technical workflow state into a jargon-free stakeholder summary separating verified planning items from unrun Blender execution and naming the single next action. Delivered plain-language summary, verified vs unverified split, single next action and routed to render-export-evidence.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/plain-language-response/SKILL.md",
+            "skills/plain-language-response/EVAL.md",
+            "skills/plain-language-response/contract.json",
+            "skills/plain-language-response/references/caveat-language.md",
+            "skills/plain-language-response/references/plain-language-patterns.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "plain-language-response-secondary-contract-handoff",
+      "skillId": "plain-language-response",
+      "scenario": "Secondary fallback contract handoff from plain-language-response to scene-readiness",
+      "category": "blocked_or_adversarial",
+      "inputPrompt": "While applying plain-language-response, the workflow context is {\"quality.domain\":\"holistic\",\"stage.current\":\"quality_validation\"} (Upstream quality pass/warn/fail validation (scene-readiness)). Determine the contract-governed handoff target.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates the fallback handoff predicate in skills/plain-language-response/contract.json",
+        "Routes to scene-readiness (Upstream quality pass/warn/fail validation (scene-readiness)) without claiming runtime execution"
+      ],
+      "requiredOutputProperties": [
+        "scene-readiness",
+        "fallback",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "paste this bpy Python script",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "scene-readiness",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Contract fallback handoff predicate match to scene-readiness"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "quality.domain": "holistic",
+          "stage.current": "quality_validation"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only plain-language-response (fallback handoff)",
+          "recommendedNextAction": "Follow fallback handoff to scene-readiness (Upstream quality pass/warn/fail validation (scene-readiness)).",
+          "targetHandoff": "scene-readiness",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Triggered fallback handoff from plain-language-response to scene-readiness under context {\"quality.domain\":\"holistic\",\"stage.current\":\"quality_validation\"}.",
+          "warnings": [
+            "Contract-governed fallback handoff."
+          ],
+          "evidenceCitations": [
+            "skills/plain-language-response/contract.json",
+            "skills/plain-language-response/SKILL.md",
+            "skills/plain-language-response/references/caveat-language.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "plain-language-response-unmatched-handoff-and-evidence-boundary",
+      "skillId": "plain-language-response",
+      "scenario": "Unmatched contract handoff context returns none and blocks upgrading unvalidated file to Verified in plain-language-response",
+      "category": "evidence_boundary",
+      "inputPrompt": "An operator provides an unvalidated file on disk during plain-language-response with context {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and asks to mark Artifact: Verified and auto-advance.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "file-only-unvalidated",
+        "notes": "A file exists on disk but validation checks have not been recorded."
+      },
+      "expectedBehavior": [
+        "Refuses to upgrade Artifact status to Verified when existingArtifactEvidence is file-only-unvalidated (caps at Produced)",
+        "Evaluates contract handoffs for plain-language-response and returns targetHandoff none because no handoff predicate matches"
+      ],
+      "requiredOutputProperties": [
+        "Artifact: Produced",
+        "Runtime: Not Run",
+        "validation",
+        "none"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "validation not needed"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Downgrade unvalidated Verified claim to Produced per laws/evidence-before-done.md",
+        "Verify 0 handoffs match in skills/plain-language-response/contract.json for {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true}"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Artifact-claim boundary check (plain-language-response)",
+          "recommendedNextAction": "Keep Artifact status at Produced (never Verified without validation evidence) and hold at targetHandoff none until a downstream precondition is met.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Produced",
+          "summary": "Capped unvalidated artifact claim at Artifact: Produced and verified zero matching contract handoffs (none) for plain-language-response.",
+          "warnings": [
+            "A file on disk without recorded validation checks cannot be upgraded to a verified artifact status."
+          ],
+          "evidenceCitations": [
+            "laws/evidence-before-done.md",
+            "skills/plain-language-response/contract.json",
+            "skills/plain-language-response/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "plain-language-response-ambiguous-missing-required-inputs",
+      "skillId": "plain-language-response",
+      "scenario": "Missing required input (verified_workflow_and_evidence_state) for plain-language-response halts fabricated output and requests clarification",
+      "category": "ambiguous",
+      "inputPrompt": "Write a final plain-language status update for the stakeholder without providing the current workflow stage, truth-state labels, or any blocker notes.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Required input 'verified_workflow_and_evidence_state' is missing or underspecified."
+      },
+      "expectedBehavior": [
+        "Identifies missing upstream truth-state ledger and blocker/check summary required by plain-language-response (verified_workflow_and_evidence_state)",
+        "Refuses to fabricate domain parameters and keeps Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "verified_workflow_and_evidence_state",
+        "upstream truth-state ledger and blocker/check summary",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "paste this bpy Python script",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "guessed parameters silently"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicitly names missing required input 'verified_workflow_and_evidence_state' (upstream truth-state ledger and blocker/check summary)",
+        "Conservative Runtime: Not Run and Artifact: Not Produced truth states"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Clarification gate (plain-language-response)",
+          "recommendedNextAction": "Provide the missing upstream truth-state ledger and blocker/check summary (verified_workflow_and_evidence_state) before plain-language-response locks plain_language_stakeholder_response.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted plain-language-response due to missing required input 'verified_workflow_and_evidence_state' (upstream truth-state ledger and blocker/check summary); no values were fabricated.",
+          "warnings": [
+            "Do not invent upstream truth-state ledger and blocker/check summary when 'verified_workflow_and_evidence_state' is omitted."
+          ],
+          "evidenceCitations": [
+            "skills/plain-language-response/SKILL.md",
+            "skills/plain-language-response/EVAL.md",
+            "skills/plain-language-response/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "plain-language-response-out-of-scope-exclusion-delegation",
+      "skillId": "plain-language-response",
+      "scenario": "Out-of-scope request (to hide blockers, drop caveats for readability, or overclaim runtime or artifact success) is excluded from plain-language-response and delegated to render-export-evidence",
+      "category": "scope_creep",
+      "inputPrompt": "Instead of convert technical blender workflow findings into plain-language user-facing responses with honest caveats., handle this request inside plain-language-response: to hide blockers, drop caveats for readability, or overclaim runtime or artifact success.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Enforces the declared exclusion boundary in skills/plain-language-response/contract.json when to hide blockers, drop caveats for readability, or overclaim runtime or artifact success",
+        "Delegates to render-export-evidence (Delegates out-of-scope requests to render-export-evidence) with Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "render-export-evidence",
+        "out of scope",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "paste this bpy Python script",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "handled inside plain-language-response anyway"
+      ],
+      "expectedRoutingTarget": "render-export-evidence",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Exclusion delegation to render-export-evidence per skills/plain-language-response/contract.json"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Out-of-scope exclusion gate (plain-language-response)",
+          "recommendedNextAction": "Request is out of scope for plain-language-response (to hide blockers, drop caveats for readability, or overclaim runtime or artifact success); delegate to render-export-evidence.",
+          "targetHandoff": "render-export-evidence",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Enforced plain-language-response exclusion boundary (Delegates out-of-scope requests to render-export-evidence) and delegated to render-export-evidence.",
+          "warnings": [
+            "plain-language-response is scoped to plain-language-final-response-translator and does not absorb render-export-evidence responsibilities."
+          ],
+          "evidenceCitations": [
+            "skills/plain-language-response/contract.json",
+            "skills/plain-language-response/SKILL.md",
+            "skills/render-export-evidence/SKILL.md"
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -9,25 +9,25 @@ description: Verify license compliance for downloaded 3D assets, textures, HDRIs
 Catch license risk before assets go into a scene that will be rendered, exported, or shipped. This is a planning / validation skill — does not modify assets, does not consult lawyers.
 
 ## Quick start
-- Receive the sourced external asset list from `blender-asset-discovery-planner` (models, textures, HDRIs, fonts, sounds, brushes).
+- Receive the sourced external asset list from `asset-discovery` (models, textures, HDRIs, fonts, sounds, brushes).
 - Record source URL, documented license name, and stated permissions per asset.
 - Flag risk per asset (`Pass` / `Warn` / `Fail`) and specify required attribution lines and attribution plan.
-- Gate progression: hand off to `asset-style-consistency-checker`, `asset-library-organization-planner`, or `workflow-stage-router` only if all rows are `Pass` or explicitly accepted `Warn`; route any `Fail` rows to `asset-fallback-strategy`.
+- Gate progression: hand off to `asset-style-check`, `asset-library-plan`, or `workflow-stage-router` only if all rows are `Pass` or explicitly accepted `Warn`; route any `Fail` rows to `asset-fallback-strategy`.
 
 ## When to use
-- Immediately after `blender-asset-discovery-planner` produces a candidate asset list.
-- Before handing off to `asset-style-consistency-checker`, `asset-library-organization-planner`, or scene planners (`product-hero-scene-planner`, `character-portrait-scene-planner`, `environment-establishing-shot-planner`, `interior-architectural-scene-planner`, `product-grid-scene-planner`).
+- Immediately after `asset-discovery` produces a candidate asset list.
+- Before handing off to `asset-style-check`, `asset-library-plan`, or scene planners (`product-hero-scene-planner`, `character-portrait`, `environment-shot`, `interior-scene`, `product-grid-scene-planner`).
 - Before `pre-handoff-verification`, `render-export-evidence`, `glb-web-handoff`, or `glb-animation-handoff`.
 - Whenever a previously sourced asset's license or attribution requirement is unclear.
 
 ## When not to use
 <!-- blendops:generated:start exclusions -->
-- Sourcing or searching for candidate assets → use `../blender-asset-discovery-planner/SKILL.md` (Delegates out-of-scope requests to blender-asset-discovery-planner)
-- Checking visual consistency, scale, or aesthetic fit across assets → use `../asset-style-consistency-checker/SKILL.md` (Delegates out-of-scope requests to asset-style-consistency-checker)
+- Sourcing or searching for candidate assets → use `../asset-discovery/SKILL.md` (Delegates out-of-scope requests to asset-discovery)
+- Checking visual consistency, scale, or aesthetic fit across assets → use `../asset-style-check/SKILL.md` (Delegates out-of-scope requests to asset-style-check)
 - Replacing or working around rejected/blocked assets → use `../asset-fallback-strategy/SKILL.md` (Delegates out-of-scope requests to asset-fallback-strategy)
-- Structuring folders, naming conventions, or catalog storage → use `../asset-library-organization-planner/SKILL.md` (Delegates out-of-scope requests to asset-library-organization-planner)
-- First-party assets authored entirely in-house with no external dependencies. → use `../blender-asset-discovery-planner/SKILL.md` (Delegates out-of-scope requests to blender-asset-discovery-planner)
-- Legal advice or binding legal interpretation (this skill flags risk only; escalate ambiguity to legal). → use `../asset-style-consistency-checker/SKILL.md` (Delegates out-of-scope requests to asset-style-consistency-checker)
+- Structuring folders, naming conventions, or catalog storage → use `../asset-library-plan/SKILL.md` (Delegates out-of-scope requests to asset-library-plan)
+- First-party assets authored entirely in-house with no external dependencies. → use `../asset-discovery/SKILL.md` (Delegates out-of-scope requests to asset-discovery)
+- Legal advice or binding legal interpretation (this skill flags risk only; escalate ambiguity to legal). → use `../asset-style-check/SKILL.md` (Delegates out-of-scope requests to asset-style-check)
 <!-- blendops:generated:end exclusions -->
 
 ## Trigger phrases
@@ -39,7 +39,7 @@ Catch license risk before assets go into a scene that will be rendered, exported
 <!-- blendops:generated:end triggers -->
 
 ## Prerequisites / readiness
-- Sourced asset list from `blender-asset-discovery-planner` with source URLs/origins recorded.
+- Sourced asset list from `asset-discovery` with source URLs/origins recorded.
 - Intended use case stated (commercial, non-commercial, internal, or open-source).
 - Target attribution plan defined (where and how attribution lines will be rendered, or whether attribution cannot be supported).
 
@@ -97,14 +97,14 @@ Validation skill — does not modify assets, does not run Blender. Verdicts are 
 
 ## Operating procedure
 
-1. Ingest the external asset list from `blender-asset-discovery-planner`.
+1. Ingest the external asset list from `asset-discovery`.
 2. Ensure every external asset has its own row; unknown or missing license immediately blocks use (`Fail`).
 3. Look up documented license terms per `references/license-source-rules.md` (do not interpret ambiguous legal language).
 4. Map documented permissions (commercial, modification, redistribution, attribution) against the stated intended use and attribution plan.
 5. Assign a per-asset validation verdict (`Pass` / `Warn` / `Fail`) separate from runtime/artifact truth states.
 6. Compile exact attribution lines and verify an attribution plan exists wherever attribution is required.
-7. Route any `Fail` assets to `asset-fallback-strategy` (or back to `blender-asset-discovery-planner` for re-sourcing).
-8. Gate downstream progression: proceed to `asset-style-consistency-checker`, `asset-library-organization-planner`, or `workflow-stage-router` only if all rows are `Pass` or explicitly accepted `Warn`.
+7. Route any `Fail` assets to `asset-fallback-strategy` (or back to `asset-discovery` for re-sourcing).
+8. Gate downstream progression: proceed to `asset-style-check`, `asset-library-plan`, or `workflow-stage-router` only if all rows are `Pass` or explicitly accepted `Warn`.
 
 ## Decision tree
 
@@ -167,14 +167,14 @@ If source URLs or license files are unreadable or missing, assign per-asset verd
 - Unknown or missing license → assign `Fail` and block asset use immediately.
 - Attribution required without a rendering plan → assign `Fail` and block until an attribution plan is established.
 - Vague or unverified assurance ("probably fine") → never assign `Pass`; mark `Warn` (if documented terms exist but need legal review) or `Fail` (if undocumented), and escalate ambiguity to legal.
-- Any `Fail` verdict → block downstream scene progression and hand off rejected assets to `asset-fallback-strategy` or `blender-asset-discovery-planner`.
+- Any `Fail` verdict → block downstream scene progression and hand off rejected assets to `asset-fallback-strategy` or `asset-discovery`.
 - Truth states → downgrade-only; never upgrade `Runtime status` or `Artifact status`.
 
 ## Troubleshooting
 
 | Problem | Response |
 |---|---|
-| License page unreachable / missing | Assign `Fail` (unknown license blocks use); route to `asset-fallback-strategy` or `blender-asset-discovery-planner`. |
+| License page unreachable / missing | Assign `Fail` (unknown license blocks use); route to `asset-fallback-strategy` or `asset-discovery`. |
 | License terms changed since download | Flag as `Warn` or `Fail` depending on whether dated proof of prior terms exists; do not assume grandfathering — escalate to legal. |
 | Mixed-license asset bundle | Split bundle so every individual external sub-asset gets its own row and verdict. |
 | AI-generated external asset | Treat as unknown/ambiguous unless platform terms are explicitly documented for the intended use; escalate ambiguity to legal. |
@@ -212,7 +212,7 @@ Runtime status: Not Run | Attempted | Produced | Verified | Failed
 Artifact status: Not Produced | Produced | Verified | Failed (default: Not Produced)
 Evidence used: <links, paths, logs, or "none">
 Limitations: <known gaps>
-Next: <if all Pass or explicitly accepted Warn: asset-style-consistency-checker / asset-library-organization-planner / workflow-stage-router | if any Fail: asset-fallback-strategy / blender-asset-discovery-planner>
+Next: <if all Pass or explicitly accepted Warn: asset-style-check / asset-library-plan / workflow-stage-router | if any Fail: asset-fallback-strategy / asset-discovery>
 ```
 
 ## Anti-patterns
@@ -223,19 +223,19 @@ Next: <if all Pass or explicitly accepted Warn: asset-style-consistency-checker 
 
 ## Cross-skill handoff
 <!-- blendops:generated:start handoffs -->
-- [upstream_reference] Upstream asset sourcing → `../blender-asset-discovery-planner/SKILL.md`
-- [progression] Visual style validation → `../asset-style-consistency-checker/SKILL.md`
+- [upstream_reference] Upstream asset sourcing → `../asset-discovery/SKILL.md`
+- [progression] Visual style validation → `../asset-style-check/SKILL.md`
 - [fallback] Rejected/blocked asset handling → `../asset-fallback-strategy/SKILL.md`
-- [progression] Asset library organization → `../asset-library-organization-planner/SKILL.md`
+- [progression] Asset library organization → `../asset-library-plan/SKILL.md`
 - [progression] Stage routing & scene planning gate → `../workflow-stage-router/SKILL.md`
 <!-- blendops:generated:end handoffs -->
 
 ## Non-goals
 - Give legal advice or interpret complex contracts (escalate ambiguity to legal).
-- Source or discover candidate assets (`blender-asset-discovery-planner`).
-- Check visual style or aesthetic consistency (`asset-style-consistency-checker`).
+- Source or discover candidate assets (`asset-discovery`).
+- Check visual style or aesthetic consistency (`asset-style-check`).
 - Plan fallbacks or replacements for failed assets (`asset-fallback-strategy`).
-- Organize asset libraries or folder structures (`asset-library-organization-planner`).
+- Organize asset libraries or folder structures (`asset-library-plan`).
 - Modify asset files, write Python, or run Blender.
 
 ## References

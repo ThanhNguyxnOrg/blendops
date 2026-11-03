@@ -57,7 +57,7 @@
     },
     {
       "condition": "The user asks for Blender MCP runtime preflight verification",
-      "delegateTo": "official-runtime-readiness-checker",
+      "delegateTo": "runtime-readiness",
       "reason": "Verifies Path 1 or Path 2 runtime readiness without claiming execution"
     }
   ],
@@ -145,7 +145,7 @@
       }
     },
     {
-      "target": "official-runtime-setup-guide",
+      "target": "runtime-setup",
       "type": "conditional",
       "label": "Official runtime setup",
       "when": {
@@ -155,7 +155,7 @@
       }
     },
     {
-      "target": "official-runtime-readiness-checker",
+      "target": "runtime-readiness",
       "type": "conditional",
       "label": "Runtime readiness preflight",
       "when": {
@@ -165,7 +165,7 @@
       }
     },
     {
-      "target": "runtime-bridge-conflict-resolver",
+      "target": "bridge-conflicts",
       "type": "fallback",
       "label": "MCP bridge port/session conflict",
       "when": {
@@ -216,7 +216,7 @@
       }
     },
     {
-      "target": "non-blender-user-response-writer",
+      "target": "plain-language-response",
       "type": "progression",
       "label": "Final response",
       "when": {

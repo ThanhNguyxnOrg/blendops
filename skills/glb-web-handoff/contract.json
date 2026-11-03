@@ -14,8 +14,8 @@
   "exclusions": [
     {
       "condition": "to claim GLB or export success without concrete evidence",
-      "delegateTo": "blender-scene-quality-checker",
-      "reason": "Delegates out-of-scope requests to blender-scene-quality-checker"
+      "delegateTo": "scene-readiness",
+      "reason": "Delegates out-of-scope requests to scene-readiness"
     },
     {
       "condition": "to replace runtime export verification",
@@ -24,8 +24,8 @@
     },
     {
       "condition": "to validate upstream scene readiness",
-      "delegateTo": "blender-scene-quality-checker",
-      "reason": "use blender-scene-quality-checker"
+      "delegateTo": "scene-readiness",
+      "reason": "use scene-readiness"
     },
     {
       "condition": "to classify raw render/export artifact evidence",
@@ -34,8 +34,8 @@
     },
     {
       "condition": "to define mobile or file-size performance budgets",
-      "delegateTo": "glb-mobile-performance-budget",
-      "reason": "use glb-mobile-performance-budget"
+      "delegateTo": "mobile-glb-budget",
+      "reason": "use mobile-glb-budget"
     },
     {
       "condition": "to define animation playback or rig contracts",
@@ -44,8 +44,8 @@
     },
     {
       "condition": "to write the final user-facing response wording",
-      "delegateTo": "non-blender-user-response-writer",
-      "reason": "use non-blender-user-response-writer"
+      "delegateTo": "plain-language-response",
+      "reason": "use plain-language-response"
     }
   ],
   "inputs": {
@@ -65,7 +65,7 @@
       {
         "name": "animation_and_budget_contracts",
         "type": "object",
-        "description": "Optional linked contracts from glb-animation-handoff and glb-mobile-performance-budget"
+        "description": "Optional linked contracts from glb-animation-handoff and mobile-glb-budget"
       }
     ]
   },
@@ -83,7 +83,7 @@
   },
   "handoffs": [
     {
-      "target": "blender-scene-quality-checker",
+      "target": "scene-readiness",
       "type": "upstream_reference",
       "label": "Upstream scene readiness validation",
       "when": {
@@ -116,7 +116,7 @@
       }
     },
     {
-      "target": "glb-mobile-performance-budget",
+      "target": "mobile-glb-budget",
       "type": "upstream_reference",
       "label": "Mobile and file-size budget constraints",
       "when": {
@@ -154,7 +154,7 @@
       }
     },
     {
-      "target": "non-blender-user-response-writer",
+      "target": "plain-language-response",
       "type": "progression",
       "label": "Final user-facing response wording",
       "when": {

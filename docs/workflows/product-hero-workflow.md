@@ -21,11 +21,11 @@ Use this workflow when a non-Blender user asks for a product hero 3D output with
 
 ## Skills composed
 
-- [../../skills/official-runtime-setup-guide/SKILL.md](../../skills/official-runtime-setup-guide/SKILL.md)
+- [../../skills/runtime-setup/SKILL.md](../../skills/runtime-setup/SKILL.md)
 - [../../skills/product-hero-scene-planner/SKILL.md](../../skills/product-hero-scene-planner/SKILL.md)
-- [../../skills/blender-scene-quality-checker/SKILL.md](../../skills/blender-scene-quality-checker/SKILL.md)
+- [../../skills/scene-readiness/SKILL.md](../../skills/scene-readiness/SKILL.md)
 - [../../skills/glb-web-handoff/SKILL.md](../../skills/glb-web-handoff/SKILL.md)
-- [../../skills/non-blender-user-response-writer/SKILL.md](../../skills/non-blender-user-response-writer/SKILL.md)
+- [../../skills/plain-language-response/SKILL.md](../../skills/plain-language-response/SKILL.md)
 
 ## Stages
 

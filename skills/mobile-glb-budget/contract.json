@@ -1,0 +1,309 @@
+{
+  "$schema": "../../schemas/skill-contract.schema.json",
+  "id": "mobile-glb-budget",
+  "version": "1.0.0",
+  "category": "evidence-and-handoff",
+  "role": "mobile-webgl-budget-validator",
+  "purpose": "Set explicit triangle / texture / draw-call / file-size / animation budgets for GLB targeted at mobile-web before any export decision.",
+  "capabilityTier": "L0",
+  "triggers": [
+    "what's a good polycount for mobile",
+    "how big can the GLB be",
+    "will this load on iPhone",
+    "what should I aim for on a phone"
+  ],
+  "exclusions": [
+    {
+      "condition": "desktop-only renders without web handoff",
+      "delegateTo": "polycount-budget-checker",
+      "reason": "Delegates out-of-scope requests to polycount-budget-checker"
+    },
+    {
+      "condition": "offline pre-rendered video (no real-time budget needed)",
+      "delegateTo": "material-quality-checker",
+      "reason": "no real-time budget needed"
+    },
+    {
+      "condition": "replacing engineering load testing (this skill sets a planning budget, not a real-world benchmark)",
+      "delegateTo": "glb-web-handoff",
+      "reason": "this skill sets a planning budget, not a real-world benchmark"
+    }
+  ],
+  "inputs": {
+    "required": [
+      {
+        "name": "target_device_tier_and_network",
+        "type": "string",
+        "description": "Target mobile/web hardware tier (iOS Safari, mid-range Android, desktop WebGL) and load budget"
+      },
+      {
+        "name": "scene_deliverable_type",
+        "type": "string",
+        "description": "Whether the GLB is a single hero product, multi-item configurator, or animated character"
+      }
+    ],
+    "optional": [
+      {
+        "name": "compression_pipeline_support",
+        "type": "object",
+        "description": "Whether the host app supports Draco, Meshopt, or KTX2 BasisU transcoding"
+      }
+    ]
+  },
+  "outputs": {
+    "primary": [
+      "pinned_glb_performance_budget_table",
+      "triangle_drawcall_and_texture_ceilings",
+      "compression_and_lod_requirements"
+    ],
+    "truthStatePolicy": {
+      "runtimeDefault": "Not Run",
+      "artifactDefault": "Not Produced",
+      "mutationRule": "downgrade_only"
+    }
+  },
+  "handoffs": [
+    {
+      "target": "camera-composition",
+      "type": "progression",
+      "label": "Scene planning (consumes pinned budget) (camera-composition)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "camera_planning"
+          }
+        ]
+      }
+    },
+    {
+      "target": "lighting-material-plan",
+      "type": "progression",
+      "label": "Scene planning (consumes pinned budget) (lighting-material-plan)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "lookdev_planning"
+          }
+        ]
+      }
+    },
+    {
+      "target": "character-portrait",
+      "type": "alternative",
+      "label": "Scene planning (consumes pinned budget) (character-portrait)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "recipe.domain",
+            "operator": "equals",
+            "value": "character_portrait"
+          }
+        ]
+      }
+    },
+    {
+      "target": "environment-shot",
+      "type": "alternative",
+      "label": "Scene planning (consumes pinned budget) (environment-shot)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "recipe.domain",
+            "operator": "equals",
+            "value": "environment_shot"
+          }
+        ]
+      }
+    },
+    {
+      "target": "interior-scene",
+      "type": "alternative",
+      "label": "Scene planning (consumes pinned budget) (interior-scene)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "recipe.domain",
+            "operator": "equals",
+            "value": "interior_archviz"
+          }
+        ]
+      }
+    },
+    {
+      "target": "product-grid-scene-planner",
+      "type": "alternative",
+      "label": "Scene planning (consumes pinned budget) (product-grid-scene-planner)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "recipe.domain",
+            "operator": "equals",
+            "value": "product_grid"
+          }
+        ]
+      }
+    },
+    {
+      "target": "product-hero-scene-planner",
+      "type": "alternative",
+      "label": "Scene planning (consumes pinned budget) (product-hero-scene-planner)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "recipe.domain",
+            "operator": "equals",
+            "value": "product_hero"
+          }
+        ]
+      }
+    },
+    {
+      "target": "scene-readiness",
+      "type": "progression",
+      "label": "Count and texture budget validation (scene-readiness)",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "holistic"
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "quality_validation"
+          }
+        ]
+      }
+    },
+    {
+      "target": "material-quality-checker",
+      "type": "progression",
+      "label": "Count and texture budget validation (material-quality-checker)",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "material"
+          },
+          {
+            "field": "quality.verdict",
+            "operator": "equals",
+            "value": "not_run"
+          }
+        ]
+      }
+    },
+    {
+      "target": "polycount-budget-checker",
+      "type": "progression",
+      "label": "Count and texture budget validation (polycount-budget-checker)",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "polycount"
+          },
+          {
+            "field": "budget.verdict",
+            "operator": "equals",
+            "value": "Not Run"
+          }
+        ]
+      }
+    },
+    {
+      "target": "render-export-evidence",
+      "type": "progression",
+      "label": "Measured export compliance",
+      "when": {
+        "all": [
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "post_execution_audit"
+          }
+        ]
+      }
+    },
+    {
+      "target": "glb-web-handoff",
+      "type": "progression",
+      "label": "Web delivery handoff (consumes pinned budget)",
+      "when": {
+        "all": [
+          {
+            "field": "artifact.type",
+            "operator": "equals",
+            "value": "glb"
+          },
+          {
+            "field": "handoff.consumerStack",
+            "operator": "equals",
+            "value": "web_glb"
+          }
+        ]
+      }
+    },
+    {
+      "target": "glb-animation-handoff",
+      "type": "progression",
+      "label": "Animation contracts (owns animation contract details within pinned channel/bone/morph ceilings)",
+      "when": {
+        "all": [
+          {
+            "field": "artifact.hasAnimation",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "animation_handoff"
+          }
+        ]
+      }
+    }
+  ]
+}

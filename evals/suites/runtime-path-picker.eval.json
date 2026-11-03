@@ -20,7 +20,7 @@
     {
       "id": "runtime-path-picker-normal-in-scope-handoff",
       "skillId": "runtime-path-picker",
-      "scenario": "Normal in-scope execution of runtime-path-picker (execution-path-selector) with contract handoff to official-runtime-setup-guide",
+      "scenario": "Normal in-scope execution of runtime-path-picker (execution-path-selector) with contract handoff to runtime-setup",
       "category": "normal",
       "inputPrompt": "A user has Blender 4.2 LTS installed and wants interactive MCP scene steering from Cursor. Use runtime-path-picker to select the compatible execution path and explain version constraints.",
       "preconditions": {
@@ -32,13 +32,13 @@
       "expectedBehavior": [
         "Produces single_recommended_runtime_path, rejected_paths_comparison_table, path_specific_caveat_and_next_skill for role execution-path-selector",
         "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
-        "Evaluates contract handoff predicate and hands off to official-runtime-setup-guide (Prerequisite framing)"
+        "Evaluates contract handoff predicate and hands off to runtime-setup (Prerequisite framing)"
       ],
       "requiredOutputProperties": [
         "Path 2",
         "Blender 5.1+ floor for Path 1",
         "mcp-for-blender",
-        "official-runtime-setup-guide",
+        "runtime-setup",
         "Runtime: Not Run",
         "Artifact: Not Produced"
       ],
@@ -48,7 +48,7 @@
         "Artifact: Not Run",
         "Artifact: Not Run"
       ],
-      "expectedRoutingTarget": "official-runtime-setup-guide",
+      "expectedRoutingTarget": "runtime-setup",
       "truthStateExpectations": {
         "runtimeStatus": "Not Run",
         "artifactStatus": "Not Produced"
@@ -57,7 +57,7 @@
       "severity": "P0",
       "evidenceRequirements": [
         "Outputs single_recommended_runtime_path, rejected_paths_comparison_table, path_specific_caveat_and_next_skill conforming to skills/runtime-path-picker/SKILL.md",
-        "Matches contract handoff predicate to official-runtime-setup-guide in skills/runtime-path-picker/contract.json"
+        "Matches contract handoff predicate to runtime-setup in skills/runtime-path-picker/contract.json"
       ],
       "deterministicFixture": {
         "handoffContext": {
@@ -66,11 +66,11 @@
         },
         "simulatedOutput": {
           "mode": "Text-only execution-path-selector (runtime-path-picker)",
-          "recommendedNextAction": "Complete single_recommended_runtime_path and hand off to official-runtime-setup-guide (Prerequisite framing).",
-          "targetHandoff": "official-runtime-setup-guide",
+          "recommendedNextAction": "Complete single_recommended_runtime_path and hand off to runtime-setup (Prerequisite framing).",
+          "targetHandoff": "runtime-setup",
           "runtimeStatus": "Not Run",
           "artifactStatus": "Not Produced",
-          "summary": "Selected Path 2 (`mcp-for-blender`, Blender 3.0+) for Blender 4.2 LTS in Cursor, explaining that Path 1 requires the Blender Lab MCP add-on in Blender 5.1+. Delivered Path 2, Blender 5.1+ floor for Path 1, mcp-for-blender and routed to official-runtime-setup-guide.",
+          "summary": "Selected Path 2 (`mcp-for-blender`, Blender 3.0+) for Blender 4.2 LTS in Cursor, explaining that Path 1 requires the Blender Lab MCP add-on in Blender 5.1+. Delivered Path 2, Blender 5.1+ floor for Path 1, mcp-for-blender and routed to runtime-setup.",
           "warnings": [
             "Text-only workflow output; no live Blender session or artifact was executed."
           ],
@@ -87,7 +87,7 @@
     {
       "id": "runtime-path-picker-secondary-contract-handoff",
       "skillId": "runtime-path-picker",
-      "scenario": "Secondary fallback contract handoff from runtime-path-picker to runtime-bridge-conflict-resolver",
+      "scenario": "Secondary fallback contract handoff from runtime-path-picker to bridge-conflicts",
       "category": "blocked_or_adversarial",
       "inputPrompt": "While applying runtime-path-picker, the workflow context is {\"runtime.conflictDetected\":true} (Bridge or port 9876 conflicts). Determine the contract-governed handoff target.",
       "preconditions": {
@@ -97,10 +97,10 @@
       },
       "expectedBehavior": [
         "Evaluates the fallback handoff predicate in skills/runtime-path-picker/contract.json",
-        "Routes to runtime-bridge-conflict-resolver (Bridge or port 9876 conflicts) without claiming runtime execution"
+        "Routes to bridge-conflicts (Bridge or port 9876 conflicts) without claiming runtime execution"
       ],
       "requiredOutputProperties": [
-        "runtime-bridge-conflict-resolver",
+        "bridge-conflicts",
         "fallback",
         "Runtime: Not Run",
         "Artifact: Not Produced"
@@ -111,7 +111,7 @@
         "Artifact: Not Run",
         "Artifact: Not Run"
       ],
-      "expectedRoutingTarget": "runtime-bridge-conflict-resolver",
+      "expectedRoutingTarget": "bridge-conflicts",
       "truthStateExpectations": {
         "runtimeStatus": "Not Run",
         "artifactStatus": "Not Produced"
@@ -119,7 +119,7 @@
       "evaluationType": "contract_handoff",
       "severity": "P1",
       "evidenceRequirements": [
-        "Contract fallback handoff predicate match to runtime-bridge-conflict-resolver"
+        "Contract fallback handoff predicate match to bridge-conflicts"
       ],
       "deterministicFixture": {
         "handoffContext": {
@@ -127,11 +127,11 @@
         },
         "simulatedOutput": {
           "mode": "Text-only runtime-path-picker (fallback handoff)",
-          "recommendedNextAction": "Follow fallback handoff to runtime-bridge-conflict-resolver (Bridge or port 9876 conflicts).",
-          "targetHandoff": "runtime-bridge-conflict-resolver",
+          "recommendedNextAction": "Follow fallback handoff to bridge-conflicts (Bridge or port 9876 conflicts).",
+          "targetHandoff": "bridge-conflicts",
           "runtimeStatus": "Not Run",
           "artifactStatus": "Not Produced",
-          "summary": "Triggered fallback handoff from runtime-path-picker to runtime-bridge-conflict-resolver under context {\"runtime.conflictDetected\":true}.",
+          "summary": "Triggered fallback handoff from runtime-path-picker to bridge-conflicts under context {\"runtime.conflictDetected\":true}.",
           "warnings": [
             "Contract-governed fallback handoff."
           ],
@@ -267,7 +267,7 @@
     {
       "id": "runtime-path-picker-out-of-scope-exclusion-delegation",
       "skillId": "runtime-path-picker",
-      "scenario": "Out-of-scope request (prerequisite framing or install steps) is excluded from runtime-path-picker and delegated to official-runtime-setup-guide",
+      "scenario": "Out-of-scope request (prerequisite framing or install steps) is excluded from runtime-path-picker and delegated to runtime-setup",
       "category": "scope_creep",
       "inputPrompt": "Instead of choose path 1 lab mcp, path 2 mcp-for-blender bridge, or cli appendix from constraints; connector hosts path 1 only with lab add-on inside blender., handle this request inside runtime-path-picker: prerequisite framing or install steps.",
       "preconditions": {
@@ -277,10 +277,10 @@
       },
       "expectedBehavior": [
         "Enforces the declared exclusion boundary in skills/runtime-path-picker/contract.json when prerequisite framing or install steps",
-        "Delegates to official-runtime-setup-guide (Delegates out-of-scope requests to official-runtime-setup-guide) with Runtime: Not Run and Artifact: Not Produced"
+        "Delegates to runtime-setup (Delegates out-of-scope requests to runtime-setup) with Runtime: Not Run and Artifact: Not Produced"
       ],
       "requiredOutputProperties": [
-        "official-runtime-setup-guide",
+        "runtime-setup",
         "out of scope",
         "Runtime: Not Run",
         "Artifact: Not Produced"
@@ -291,7 +291,7 @@
         "Artifact: Not Run",
         "handled inside runtime-path-picker anyway"
       ],
-      "expectedRoutingTarget": "official-runtime-setup-guide",
+      "expectedRoutingTarget": "runtime-setup",
       "truthStateExpectations": {
         "runtimeStatus": "Not Run",
         "artifactStatus": "Not Produced"
@@ -299,23 +299,23 @@
       "evaluationType": "deterministic_fixture",
       "severity": "P1",
       "evidenceRequirements": [
-        "Exclusion delegation to official-runtime-setup-guide per skills/runtime-path-picker/contract.json"
+        "Exclusion delegation to runtime-setup per skills/runtime-path-picker/contract.json"
       ],
       "deterministicFixture": {
         "simulatedOutput": {
           "mode": "Out-of-scope exclusion gate (runtime-path-picker)",
-          "recommendedNextAction": "Request is out of scope for runtime-path-picker (prerequisite framing or install steps); delegate to official-runtime-setup-guide.",
-          "targetHandoff": "official-runtime-setup-guide",
+          "recommendedNextAction": "Request is out of scope for runtime-path-picker (prerequisite framing or install steps); delegate to runtime-setup.",
+          "targetHandoff": "runtime-setup",
           "runtimeStatus": "Not Run",
           "artifactStatus": "Not Produced",
-          "summary": "Enforced runtime-path-picker exclusion boundary (Delegates out-of-scope requests to official-runtime-setup-guide) and delegated to official-runtime-setup-guide.",
+          "summary": "Enforced runtime-path-picker exclusion boundary (Delegates out-of-scope requests to runtime-setup) and delegated to runtime-setup.",
           "warnings": [
-            "runtime-path-picker is scoped to execution-path-selector and does not absorb official-runtime-setup-guide responsibilities."
+            "runtime-path-picker is scoped to execution-path-selector and does not absorb runtime-setup responsibilities."
           ],
           "evidenceCitations": [
             "skills/runtime-path-picker/contract.json",
             "skills/runtime-path-picker/SKILL.md",
-            "skills/official-runtime-setup-guide/SKILL.md"
+            "skills/runtime-setup/SKILL.md"
           ]
         }
       }

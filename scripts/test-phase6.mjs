@@ -124,12 +124,12 @@ describe('Phase 6 — Full-Catalog Behavioral Evaluation Coverage & F-04 Resolut
       'workflow-stage-router': 5,
       'blender-brainstorming': 7,
       'intent-to-3d-brief-writer': 9,
-      'blender-asset-discovery-planner': 9,
+      'asset-discovery': 9,
       'blender-troubleshooting': 8,
       'pre-handoff-verification': 9,
       'render-export-evidence': 10,
-      'runtime-bridge-conflict-resolver': 9,
-      'official-runtime-readiness-checker': 7,
+      'bridge-conflicts': 9,
+      'runtime-readiness': 7,
     };
     for (const [id, expectedCount] of Object.entries(expectedPilotMinCounts)) {
       const suite = loadSuite(id);
@@ -536,8 +536,8 @@ describe('Phase 6 — Full-Catalog Behavioral Evaluation Coverage & F-04 Resolut
   });
 
   it('Scenario 19: Path 1 (5.1+ Lab MCP add-on), Path 2 (mcp-for-blender, 3.0+), and CLI fallback semantics are preserved across runtime suites', () => {
-    const readinessSuite = loadSuite('official-runtime-readiness-checker');
-    const setupSuite = loadSuite('official-runtime-setup-guide');
+    const readinessSuite = loadSuite('runtime-readiness');
+    const setupSuite = loadSuite('runtime-setup');
     const hostOutlineSuite = loadSuite('path-one-host-outline');
     const pathPickerSuite = loadSuite('runtime-path-picker');
     const cliSuite = loadSuite('cli-appendix-job-outline');
@@ -585,19 +585,19 @@ describe('Phase 6 — Full-Catalog Behavioral Evaluation Coverage & F-04 Resolut
   it('Scenario 21: --skill <id> and --suite <id> execute only the requested suite and fail on unknown skill IDs', () => {
     const skillRes = runEvalSuites({
       rootDir: root,
-      skillFilter: 'three-fiber-component-shape-planner',
+      skillFilter: 'r3f-component-plan',
       checkOnly: false,
     });
     assert.equal(skillRes.ok, true);
     assert.equal(skillRes.summary.suitesExecuted, 1);
     assert.equal(skillRes.summary.totalCasesExecuted, 5);
-    assert.equal(skillRes.suiteResults[0].skillId, 'three-fiber-component-shape-planner');
+    assert.equal(skillRes.suiteResults[0].skillId, 'r3f-component-plan');
     assert.equal(skillRes.suiteResults[0].contractHandoff, 'Passed');
     assert.equal(skillRes.suiteResults[0].contractRouting, 'Not Applicable');
 
     const suiteRes = runEvalSuites({
       rootDir: root,
-      suiteFilter: 'glb-mobile-performance-budget',
+      suiteFilter: 'mobile-glb-budget',
       checkOnly: false,
     });
     assert.equal(suiteRes.ok, true);

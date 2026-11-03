@@ -120,7 +120,7 @@
       }
     },
     {
-      "target": "runtime-attempt-report-writer",
+      "target": "runtime-attempt-report",
       "type": "progression",
       "label": "Runtime attempt reporting",
       "when": {

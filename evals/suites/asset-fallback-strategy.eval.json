@@ -20,7 +20,7 @@
     {
       "id": "asset-fallback-strategy-normal-in-scope-handoff",
       "skillId": "asset-fallback-strategy",
-      "scenario": "Normal in-scope execution of asset-fallback-strategy (blocked-asset-replacement-planner) with contract handoff to asset-library-organization-planner",
+      "scenario": "Normal in-scope execution of asset-fallback-strategy (blocked-asset-replacement-planner) with contract handoff to asset-library-plan",
       "category": "normal",
       "inputPrompt": "Our primary photogrammetry leather armchair mesh failed CC0 license verification and exceeds our 50k triangle budget. Use asset-fallback-strategy to plan a deterministic procedural/primitive proxy fallback.",
       "preconditions": {
@@ -32,13 +32,13 @@
       "expectedBehavior": [
         "Produces ranked_fallback_options, selected_replacement_plan, revalidation_routing_hooks for role blocked-asset-replacement-planner",
         "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
-        "Evaluates contract handoff predicate and hands off to asset-library-organization-planner (Internal library lookup)"
+        "Evaluates contract handoff predicate and hands off to asset-library-plan (Internal library lookup)"
       ],
       "requiredOutputProperties": [
         "fallback tier",
         "silhouette preservation",
         "blocked asset",
-        "asset-library-organization-planner",
+        "asset-library-plan",
         "Runtime: Not Run",
         "Artifact: Not Produced"
       ],
@@ -48,7 +48,7 @@
         "Artifact: Not Run",
         "Artifact: Not Run"
       ],
-      "expectedRoutingTarget": "asset-library-organization-planner",
+      "expectedRoutingTarget": "asset-library-plan",
       "truthStateExpectations": {
         "runtimeStatus": "Not Run",
         "artifactStatus": "Not Produced"
@@ -57,7 +57,7 @@
       "severity": "P0",
       "evidenceRequirements": [
         "Outputs ranked_fallback_options, selected_replacement_plan, revalidation_routing_hooks conforming to skills/asset-fallback-strategy/SKILL.md",
-        "Matches contract handoff predicate to asset-library-organization-planner in skills/asset-fallback-strategy/contract.json"
+        "Matches contract handoff predicate to asset-library-plan in skills/asset-fallback-strategy/contract.json"
       ],
       "deterministicFixture": {
         "handoffContext": {
@@ -66,11 +66,11 @@
         },
         "simulatedOutput": {
           "mode": "Text-only blocked-asset-replacement-planner (asset-fallback-strategy)",
-          "recommendedNextAction": "Complete ranked_fallback_options and hand off to asset-library-organization-planner (Internal library lookup).",
-          "targetHandoff": "asset-library-organization-planner",
+          "recommendedNextAction": "Complete ranked_fallback_options and hand off to asset-library-plan (Internal library lookup).",
+          "targetHandoff": "asset-library-plan",
           "runtimeStatus": "Not Run",
           "artifactStatus": "Not Produced",
-          "summary": "Planned a 3-tier blocked-asset replacement strategy (procedural proxy + licensed library substitute) preserving silhouette and scale. Delivered fallback tier, silhouette preservation, blocked asset and routed to asset-library-organization-planner.",
+          "summary": "Planned a 3-tier blocked-asset replacement strategy (procedural proxy + licensed library substitute) preserving silhouette and scale. Delivered fallback tier, silhouette preservation, blocked asset and routed to asset-library-plan.",
           "warnings": [
             "Text-only workflow output; no live Blender session or artifact was executed."
           ],

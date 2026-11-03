@@ -140,7 +140,7 @@ Does the prompt request multiple incompatible deliverables at once (e.g., studio
 ### Playbook B:Adjacent domain or hybrid deliverable (`Partial` fit)
 
 - When the user wants an architectural interior, character portrait, environment establishing shot, or multi-item product grid, score `product-hero-v0` as `Partial` (or anchor on `docs/workflows/full-non-blender-user-workflow.md` + the matching domain planner).
-- List each scope gap and mitigation explicitly per `references/scope-gap-rules.md` (for example, switching the downstream scene planner to `../interior-architectural-scene-planner/SKILL.md` or prioritizing the hero still before optional GLB export).
+- List each scope gap and mitigation explicitly per `references/scope-gap-rules.md` (for example, switching the downstream scene planner to `../interior-scene/SKILL.md` or prioritizing the hero still before optional GLB export).
 - Recommend `../intent-to-3d-brief-writer/SKILL.md` to lock the adapted 8-slot brief.
 
 ### Playbook C: Bundled multi-project ask (`Poor` fit / decomposition needed)
@@ -189,7 +189,7 @@ Still usable; note runtime unavailable does not change recipe fit.
 
 | Symptom | Cause | Safe resolution |
 |---|---|---|
-| User asks for an interior room scene using `product-hero-v0` | Studio product pack assumes isolated hero subject lighting rather than enclosed room bounce light | Score `product-hero-v0` as `Partial` / `Poor` for full room architecture, document the lighting/camera gap, and anchor the workflow on `../interior-architectural-scene-planner/SKILL.md` after `../intent-to-3d-brief-writer/SKILL.md`. |
+| User asks for an interior room scene using `product-hero-v0` | Studio product pack assumes isolated hero subject lighting rather than enclosed room bounce light | Score `product-hero-v0` as `Partial` / `Poor` for full room architecture, document the lighting/camera gap, and anchor the workflow on `../interior-scene/SKILL.md` after `../intent-to-3d-brief-writer/SKILL.md`. |
 | User wants both a 4K offline Cycles still and a <5 MB mobile GLB from one unprioritized brief | Real-time web budget conflicts with heavy cinematic shader setup (`references/scope-gap-rules.md`) | Downgrade verdict to `Partial`, list material/polycount dual-target gaps, and require primary/secondary deliverable prioritization in `../intent-to-3d-brief-writer/SKILL.md`. |
 | User asks "which pack fits" when preflight and scene plans are already finished | Workflow is already in flight past Rank 2 | Hand off immediately to `../workflow-stage-router/SKILL.md` instead of re-running initial recipe selection. |
 
@@ -203,13 +203,13 @@ Still usable; note runtime unavailable does not change recipe fit.
 ## Good examples
 
 - "`Fit verdict: Strong` — Single sneaker hero still + web GLB spin aligns directly with `packs/product-hero-v0/PACK.md` and `docs/recipes/cyberpunk-shoe-hero.md`. `Gaps: none`. Recommended next skill: `../intent-to-3d-brief-writer/SKILL.md`. `Runtime status: Not Run`. `Artifact status: Not Produced`."
-- "`Fit verdict: Partial` — Cinematic dining room furniture showcase overlaps `docs/workflows/full-non-blender-user-workflow.md` and `../interior-architectural-scene-planner/SKILL.md`, whereas `product-hero-v0` assumes studio isolation. `Gaps`: (1) use interior architectural camera/lighting planner instead of studio sweep; (2) mark optional GLB spin as secondary deliverable. Recommended next skill: `../intent-to-3d-brief-writer/SKILL.md`."
+- "`Fit verdict: Partial` — Cinematic dining room furniture showcase overlaps `docs/workflows/full-non-blender-user-workflow.md` and `../interior-scene/SKILL.md`, whereas `product-hero-v0` assumes studio isolation. `Gaps`: (1) use interior architectural camera/lighting planner instead of studio sweep; (2) mark optional GLB spin as secondary deliverable. Recommended next skill: `../intent-to-3d-brief-writer/SKILL.md`."
 
 ## Bad examples
 
 - "`Fit verdict: Strong` — Use the `character-rigging-pro-v2` pack and start rendering immediately." — invents a non-existent pack and skips brief/preflight gates.
 - "Use `product-hero-v0` for your 50-character crowd battle animation; no gaps." — ignores `references/recipe-catalog.md` weak-fit rules.
-- "Recommended next skills: `intent-to-3d-brief-writer`, `pack-prerequisite-checker`, `product-hero-scene-planner`, and `blender-lighting-material-planner`. `Artifact status: Produced`." — violates the single-next-skill contract and fabricates artifact status.
+- "Recommended next skills: `intent-to-3d-brief-writer`, `pack-prerequisite-checker`, `product-hero-scene-planner`, and `lighting-material-plan`. `Artifact status: Produced`." — violates the single-next-skill contract and fabricates artifact status.
 
 ## User-facing response template
 
@@ -246,9 +246,9 @@ Limitations: <unconfirmed user constraints or catalog coverage boundaries>
 - [conditional] Post-artifact stage routing → `../workflow-stage-router/SKILL.md`
 - [alternative] Domain scene planner (product hero) → `../product-hero-scene-planner/SKILL.md`
 - [alternative] Domain scene planner (product grid) → `../product-grid-scene-planner/SKILL.md`
-- [alternative] Domain scene planner (character portrait) → `../character-portrait-scene-planner/SKILL.md`
-- [alternative] Domain scene planner (environment establishing shot) → `../environment-establishing-shot-planner/SKILL.md`
-- [alternative] Domain scene planner (interior architectural) → `../interior-architectural-scene-planner/SKILL.md`
+- [alternative] Domain scene planner (character portrait) → `../character-portrait/SKILL.md`
+- [alternative] Domain scene planner (environment establishing shot) → `../environment-shot/SKILL.md`
+- [alternative] Domain scene planner (interior architectural) → `../interior-scene/SKILL.md`
 <!-- blendops:generated:end handoffs -->
 
 ## Non-goals

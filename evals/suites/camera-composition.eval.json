@@ -1,0 +1,325 @@
+{
+  "schemaVersion": "2.0.0",
+  "skillId": "camera-composition",
+  "category": "scene-planners",
+  "isContractedSkill": true,
+  "isRoutingParticipant": false,
+  "contractPath": "skills/camera-composition/contract.json",
+  "skillMarkdownPath": "skills/camera-composition/SKILL.md",
+  "evalMarkdownPath": "skills/camera-composition/EVAL.md",
+  "sourceEvalTier": "prose_outline_contract_migrated",
+  "evaluationStatus": {
+    "staticValidation": "Passed",
+    "deterministicFixture": "Passed",
+    "contractRouting": "Not Applicable",
+    "contractHandoff": "Passed",
+    "liveModel": "Not Run",
+    "blenderRuntime": "Not Run"
+  },
+  "cases": [
+    {
+      "id": "camera-composition-normal-in-scope-handoff",
+      "skillId": "camera-composition",
+      "scenario": "Normal in-scope execution of camera-composition (camera-rig-and-composition-deep-planner) with contract handoff to lighting-material-plan",
+      "category": "normal",
+      "inputPrompt": "Use camera-composition to design the camera rig for our locked 16:9 luxury watch product-hero-v0 brief (85mm portrait lens, rule-of-thirds right anchor, shallow DOF f/2.8, 15-degree hero three-quarter angle).",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Primary inputs (domain_scene_plan) provided in text-only planning/audit mode."
+      },
+      "expectedBehavior": [
+        "Produces camera_rig_specification, focal_length_and_dof_plan, composition_anchor_guidelines for role camera-rig-and-composition-deep-planner",
+        "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
+        "Evaluates contract handoff predicate and hands off to lighting-material-plan (Next (lookdev & lighting))"
+      ],
+      "requiredOutputProperties": [
+        "85mm",
+        "rule-of-thirds",
+        "safe-frame margin",
+        "lighting-material-plan",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "camera created in Blender",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "lighting-material-plan",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Outputs camera_rig_specification, focal_length_and_dof_plan, composition_anchor_guidelines conforming to skills/camera-composition/SKILL.md",
+        "Matches contract handoff predicate to lighting-material-plan in skills/camera-composition/contract.json"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "brief.locked": true,
+          "stage.current": "lookdev_planning"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only camera-rig-and-composition-deep-planner (camera-composition)",
+          "recommendedNextAction": "Complete camera_rig_specification and hand off to lighting-material-plan (Next (lookdev & lighting)).",
+          "targetHandoff": "lighting-material-plan",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Planned 85mm camera focal length, sensor fit, 3/4 hero camera coordinates, DOF focus target, and 16:9 safe-frame margins. Delivered 85mm, rule-of-thirds, safe-frame margin and routed to lighting-material-plan.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/camera-composition/SKILL.md",
+            "skills/camera-composition/EVAL.md",
+            "skills/camera-composition/contract.json",
+            "skills/camera-composition/references/camera-presets.md",
+            "skills/camera-composition/references/camera-rubric.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "camera-composition-secondary-contract-handoff",
+      "skillId": "camera-composition",
+      "scenario": "Secondary upstream_reference contract handoff from camera-composition to product-hero-scene-planner",
+      "category": "structured_skip",
+      "inputPrompt": "While applying camera-composition, the workflow context is {\"brief.locked\":true,\"recipe.domain\":\"product_hero\"} (Upstream input from). Determine the contract-governed handoff target.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates the upstream_reference handoff predicate in skills/camera-composition/contract.json",
+        "Routes to product-hero-scene-planner (Upstream input from) without claiming runtime execution"
+      ],
+      "requiredOutputProperties": [
+        "product-hero-scene-planner",
+        "upstream_reference",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "camera created in Blender",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "product-hero-scene-planner",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Contract upstream_reference handoff predicate match to product-hero-scene-planner"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "brief.locked": true,
+          "recipe.domain": "product_hero"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only camera-composition (upstream_reference handoff)",
+          "recommendedNextAction": "Follow upstream_reference handoff to product-hero-scene-planner (Upstream input from).",
+          "targetHandoff": "product-hero-scene-planner",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Triggered upstream_reference handoff from camera-composition to product-hero-scene-planner under context {\"brief.locked\":true,\"recipe.domain\":\"product_hero\"}.",
+          "warnings": [
+            "Contract-governed upstream_reference handoff."
+          ],
+          "evidenceCitations": [
+            "skills/camera-composition/contract.json",
+            "skills/camera-composition/SKILL.md",
+            "skills/camera-composition/references/camera-presets.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "camera-composition-unmatched-handoff-and-evidence-boundary",
+      "skillId": "camera-composition",
+      "scenario": "Unmatched contract handoff context returns none and blocks upgrading unvalidated file to Verified in camera-composition",
+      "category": "evidence_boundary",
+      "inputPrompt": "An operator provides an unvalidated file on disk during camera-composition with context {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and asks to mark Artifact: Verified and auto-advance.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "file-only-unvalidated",
+        "notes": "A file exists on disk but validation checks have not been recorded."
+      },
+      "expectedBehavior": [
+        "Refuses to upgrade Artifact status to Verified when existingArtifactEvidence is file-only-unvalidated (caps at Produced)",
+        "Evaluates contract handoffs for camera-composition and returns targetHandoff none because no handoff predicate matches"
+      ],
+      "requiredOutputProperties": [
+        "Artifact: Produced",
+        "Runtime: Not Run",
+        "validation",
+        "none"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "validation not needed"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Downgrade unvalidated Verified claim to Produced per laws/evidence-before-done.md",
+        "Verify 0 handoffs match in skills/camera-composition/contract.json for {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true}"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Artifact-claim boundary check (camera-composition)",
+          "recommendedNextAction": "Keep Artifact status at Produced (never Verified without validation evidence) and hold at targetHandoff none until a downstream precondition is met.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Produced",
+          "summary": "Capped unvalidated artifact claim at Artifact: Produced and verified zero matching contract handoffs (none) for camera-composition.",
+          "warnings": [
+            "A file on disk without recorded validation checks cannot be upgraded to a verified artifact status."
+          ],
+          "evidenceCitations": [
+            "laws/evidence-before-done.md",
+            "skills/camera-composition/contract.json",
+            "skills/camera-composition/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "camera-composition-ambiguous-missing-required-inputs",
+      "skillId": "camera-composition",
+      "scenario": "Missing required input (domain_scene_plan) for camera-composition halts fabricated output and requests clarification",
+      "category": "ambiguous",
+      "inputPrompt": "Plan the exact camera focal length, position, and depth-of-field for our shot without telling me the subject dimensions, aspect ratio, or framing mood.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Required input 'domain_scene_plan' is missing or underspecified."
+      },
+      "expectedBehavior": [
+        "Identifies missing subject bounding dimensions, target aspect ratio, and framing intent required by camera-composition (domain_scene_plan)",
+        "Refuses to fabricate domain parameters and keeps Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "domain_scene_plan",
+        "subject bounding dimensions, target aspect ratio, and framing intent",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "camera created in Blender",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "guessed parameters silently"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicitly names missing required input 'domain_scene_plan' (subject bounding dimensions, target aspect ratio, and framing intent)",
+        "Conservative Runtime: Not Run and Artifact: Not Produced truth states"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Clarification gate (camera-composition)",
+          "recommendedNextAction": "Provide the missing subject bounding dimensions, target aspect ratio, and framing intent (domain_scene_plan) before camera-composition locks camera_rig_specification.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted camera-composition due to missing required input 'domain_scene_plan' (subject bounding dimensions, target aspect ratio, and framing intent); no values were fabricated.",
+          "warnings": [
+            "Do not invent subject bounding dimensions, target aspect ratio, and framing intent when 'domain_scene_plan' is omitted."
+          ],
+          "evidenceCitations": [
+            "skills/camera-composition/SKILL.md",
+            "skills/camera-composition/EVAL.md",
+            "skills/camera-composition/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "camera-composition-out-of-scope-exclusion-delegation",
+      "skillId": "camera-composition",
+      "scenario": "Out-of-scope request (as proof of rendered output quality or to validate an existing framing) is excluded from camera-composition and delegated to composition-quality-checker",
+      "category": "scope_creep",
+      "inputPrompt": "Instead of provide detailed composition and camera planning for product hero outputs., handle this request inside camera-composition: as proof of rendered output quality or to validate an existing framing.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Enforces the declared exclusion boundary in skills/camera-composition/contract.json when as proof of rendered output quality or to validate an existing framing",
+        "Delegates to composition-quality-checker (use composition-quality-checker) with Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "composition-quality-checker",
+        "out of scope",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "camera created in Blender",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "handled inside camera-composition anyway"
+      ],
+      "expectedRoutingTarget": "composition-quality-checker",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Exclusion delegation to composition-quality-checker per skills/camera-composition/contract.json"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Out-of-scope exclusion gate (camera-composition)",
+          "recommendedNextAction": "Request is out of scope for camera-composition (as proof of rendered output quality or to validate an existing framing); delegate to composition-quality-checker.",
+          "targetHandoff": "composition-quality-checker",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Enforced camera-composition exclusion boundary (use composition-quality-checker) and delegated to composition-quality-checker.",
+          "warnings": [
+            "camera-composition is scoped to camera-rig-and-composition-deep-planner and does not absorb composition-quality-checker responsibilities."
+          ],
+          "evidenceCitations": [
+            "skills/camera-composition/contract.json",
+            "skills/camera-composition/SKILL.md",
+            "skills/composition-quality-checker/SKILL.md"
+          ]
+        }
+      }
+    }
+  ]
+}

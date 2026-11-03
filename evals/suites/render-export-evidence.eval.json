@@ -132,18 +132,18 @@
       },
       "expectedBehavior": [
         "Classifies Artifact status as Produced (never Verified without validation notes)",
-        "Routes to blender-scene-quality-checker to complete validation checks"
+        "Routes to scene-readiness to complete validation checks"
       ],
       "requiredOutputProperties": [
         "Artifact: Produced",
         "validation notes pending",
-        "blender-scene-quality-checker"
+        "scene-readiness"
       ],
       "forbiddenOutputProperties": [
         "Artifact: Verified",
         "validation complete"
       ],
-      "expectedRoutingTarget": "blender-scene-quality-checker",
+      "expectedRoutingTarget": "scene-readiness",
       "truthStateExpectations": {
         "runtimeStatus": "Produced",
         "artifactStatus": "Produced"
@@ -156,8 +156,8 @@
       "deterministicFixture": {
         "simulatedOutput": {
           "mode": "Text-only artifact evidence classification",
-          "recommendedNextAction": "Record Artifact: Produced (validation notes pending) and route to blender-scene-quality-checker.",
-          "targetHandoff": "blender-scene-quality-checker",
+          "recommendedNextAction": "Record Artifact: Produced (validation notes pending) and route to scene-readiness.",
+          "targetHandoff": "scene-readiness",
           "runtimeStatus": "Produced",
           "artifactStatus": "Produced",
           "summary": "Classified renders/hero.png as Artifact: Produced because validation notes are still pending.",
@@ -383,18 +383,18 @@
       },
       "expectedBehavior": [
         "Flags tool-name vs path-label inconsistency as ambiguous and refuses to count it as verified evidence",
-        "Recommends re-verification via official-runtime-readiness-checker"
+        "Recommends re-verification via runtime-readiness"
       ],
       "requiredOutputProperties": [
         "ambiguous",
         "re-verification needed",
-        "official-runtime-readiness-checker"
+        "runtime-readiness"
       ],
       "forbiddenOutputProperties": [
         "Artifact: Verified",
         "Artifact: Produced"
       ],
-      "expectedRoutingTarget": "official-runtime-readiness-checker",
+      "expectedRoutingTarget": "runtime-readiness",
       "truthStateExpectations": {
         "runtimeStatus": "Attempted",
         "artifactStatus": "Attempted"
@@ -407,8 +407,8 @@
       "deterministicFixture": {
         "simulatedOutput": {
           "mode": "Text-only artifact evidence classification",
-          "recommendedNextAction": "Mark path attribution ambiguous (re-verification needed) and route to official-runtime-readiness-checker.",
-          "targetHandoff": "official-runtime-readiness-checker",
+          "recommendedNextAction": "Mark path attribution ambiguous (re-verification needed) and route to runtime-readiness.",
+          "targetHandoff": "runtime-readiness",
           "runtimeStatus": "Attempted",
           "artifactStatus": "Attempted",
           "summary": "Detected tool-name vs path-label mismatch (get_scene_info belongs to Path 2, not Path 1); marked ambiguous with re-verification needed.",
@@ -526,7 +526,7 @@
           "targetHandoff": "none",
           "runtimeStatus": "Not Run",
           "artifactStatus": "Not Produced",
-          "summary": "Verified fail-closed specialist handoff evaluation for render-export-evidence when no contract predicate matches (secondary candidate official-runtime-readiness-checker remained inactive).",
+          "summary": "Verified fail-closed specialist handoff evaluation for render-export-evidence when no contract predicate matches (secondary candidate runtime-readiness remained inactive).",
           "warnings": [
             "Never fabricate an undeclared handoff when no contract predicate matches."
           ],

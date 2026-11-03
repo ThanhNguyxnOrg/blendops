@@ -77,7 +77,7 @@
       "domain": "assets",
       "valueType": "string",
       "allowedValues": ["Pass", "Warn", "Fail"],
-      "description": "Top-line visual coherence verdict across realism, detail, color, and surface axes from asset-style-consistency-checker."
+      "description": "Top-line visual coherence verdict across realism, detail, color, and surface axes from asset-style-check."
     },
     {
       "field": "brief.complete",
@@ -105,7 +105,7 @@
       "domain": "budget",
       "valueType": "string",
       "allowedValues": ["Pass", "Warn", "Fail", "Not Run"],
-      "description": "Validation verdict from polycount-budget-checker or glb-mobile-performance-budget comparison."
+      "description": "Validation verdict from polycount-budget-checker or mobile-glb-budget comparison."
     },
     {
       "field": "decision.aspectLocked",
@@ -301,7 +301,7 @@
       "domain": "runtime",
       "valueType": "string",
       "allowedValues": ["Ready", "Partially Ready", "Blocked", "Unknown"],
-      "description": "Readiness matrix check completeness verdict from official-runtime-readiness-checker."
+      "description": "Readiness matrix check completeness verdict from runtime-readiness."
     },
     {
       "field": "runtime.status",
@@ -322,7 +322,7 @@
       "domain": "scope",
       "valueType": "string",
       "allowedValues": ["decline", "add_now", "defer_to_followup"],
-      "description": "Recorded operator/user decision on a mid-workflow scope addition from blender-scope-boundary-enforcer."
+      "description": "Recorded operator/user decision on a mid-workflow scope addition from scope-guard."
     },
     {
       "field": "scope.driftDetected",

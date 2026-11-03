@@ -1,0 +1,194 @@
+---
+name: lighting-material-plan
+description: Build detailed lighting and material direction with portability and caveat handling for Blender/web-3D outputs.
+---
+
+# lighting-material-plan
+
+## Purpose
+Create a high-quality, practical lighting/material plan that balances visual intent and web portability constraints.
+
+## Quick start
+- confirm this skill fits your goal
+- provide required inputs first
+- keep runtime claims evidence-bound
+- follow suggested next-skill handoff
+
+## When to use
+- look-development strategy is needed
+- lighting/material choices drive scene mood
+- web/GLB portability caveats must be explicit
+
+## When not to use
+<!-- blendops:generated:start exclusions -->
+- to claim final rendered quality or executed results → use `../camera-composition/SKILL.md` (Delegates out-of-scope requests to camera-composition)
+- to skip composition/camera context from camera-composition → use `../camera-composition/SKILL.md` (Delegates out-of-scope requests to camera-composition)
+- to validate existing lighting or materials → use `../lighting-quality-checker/SKILL.md` (use lighting-quality-checker and material-quality-checker)
+- to decide render engines (cycles-vs-eevee-decision), color management (color-management-decision), or file formats (output-format-decision) → use `../color-management-decision/SKILL.md` (output-format-decision)
+- to execute Blender or generate Python scripts → use `../color-management-decision/SKILL.md` (Delegates out-of-scope requests to color-management-decision)
+<!-- blendops:generated:end exclusions -->
+
+## Trigger phrases
+<!-- blendops:generated:start triggers -->
+- "plan lighting and materials"
+- "design cyberpunk lookdev"
+- "define PBR and reflection strategy"
+<!-- blendops:generated:end triggers -->
+
+## Prerequisites / readiness
+- framing and camera plan received from `camera-composition` when chaining upstream planners (or clear subject and destination context for standalone use)
+- upstream constraints known from `cycles-vs-eevee-decision`, `color-management-decision`, and `output-format-decision` when applicable
+- target delivery context known
+
+## Input schema
+
+### Required inputs
+- style intent
+- subject material constraints
+- output destination
+
+### Optional inputs
+- brand color/style constraints
+- performance budget hints
+- preferred mood references
+
+### Assumptions to confirm
+- realism vs stylized priority
+- reflection intensity tolerance
+- portability strictness for web handoff
+
+## Output schema
+
+### Primary output
+- lighting rig strategy (key/fill/rim, mood accents, reflection behavior) + material lookdev strategy (hierarchy, PBR targets, naming)
+
+### Secondary output
+- portability simplification recommendations
+
+### Evidence / caveat output
+- unverified visual assumptions
+- explicit truth states: `Runtime: Not Run`, `Artifacts: Not Produced` (downgrade-only, never upgrade)
+
+## Required laws
+- ../../laws/evidence-before-done.md
+- ../../laws/non-blender-user-language.md
+- ../../laws/official-runtime-only.md
+- ../../laws/no-arbitrary-python-interface.md
+
+## Official runtime boundary
+This is a planning-only skill: no Blender execution, no Python, and no artifact generation. Runtime status always remains `Not Run` and artifact status always remains `Not Produced` (truth states are downgrade-only, never upgrade). If referencing Eevee engine tokens from upstream `cycles-vs-eevee-decision`, use `BLENDER_EEVEE` on Blender 4.0–4.1 and 5.x, and `BLENDER_EEVEE_NEXT` only for 4.2–4.x — never present Eevee Next as the current name.
+
+## Operating procedure
+1. Define lighting objective (readability vs drama balance).
+2. Choose key/fill/rim strategy.
+3. Add neon/cyberpunk accent pattern where requested.
+4. Define reflective floor behavior and caveats.
+5. Choose material classes and hierarchy.
+6. Define PBR portability assumptions.
+7. Identify web simplification opportunities.
+8. Define texture/material naming expectations.
+9. Add GLB/web handoff caveats.
+10. Provide user-facing summary with uncertainty markers.
+
+## Decision tree
+- If style is cyberpunk + product clarity required → neon accents + controlled reflections.
+- If web performance priority high → simplify material stack and reflection complexity.
+- If portability uncertain → keep assumptions explicit and request runtime validation.
+
+## Playbooks
+- Playbook A: text-only lookdev planning (`Runtime: Not Run`, `Artifacts: Not Produced`)
+- Playbook B: runtime-ready lookdev planning with verification targets prepared for `lighting-quality-checker` and `material-quality-checker` (`Runtime: Not Run`, `Artifacts: Not Produced`)
+- Playbook C: blocked-runtime conservative lookdev planning with strict portability caveats (`Runtime: Not Run`, `Artifacts: Not Produced`)
+
+## Mode handling
+
+### Text-only mode
+- produce lighting rig and material lookdev plan only
+- report `Runtime: Not Run` and `Artifacts: Not Produced`
+
+### Runtime-ready mode
+- produce lookdev plan and define checklist targets for downstream `lighting-quality-checker` and `material-quality-checker`
+- keep `Runtime: Not Run` and `Artifacts: Not Produced` within this skill
+
+### Blocked runtime mode
+- provide conservative lookdev plan and explicit portability caveats
+- keep `Runtime: Not Run` and `Artifacts: Not Produced` with no rendered output claims
+
+## Validation checklist
+- [ ] key/fill/rim strategy documented
+- [ ] style-specific lighting notes documented
+- [ ] reflective floor caveats documented
+- [ ] material hierarchy documented
+- [ ] PBR portability assumptions documented
+- [ ] web simplification recommendations provided
+- [ ] naming expectations provided
+- [ ] handoff caveats provided
+- [ ] uncertainty markers explicit
+- [ ] no evidence overclaims
+
+## Pass / Warn / Fail rubric
+
+| Category | Pass | Warn | Fail |
+|---|---|---|---|
+| Lighting strategy | Clear and goal-aligned | Basic but usable | Missing/contradictory |
+| Material strategy | Coherent and portable-aware | Partial portability | No portability consideration |
+| Web caveats | Explicit and actionable | Present but vague | Missing caveats |
+| Evidence boundary | No visual overclaims | Minor ambiguity | Claims rendered results without evidence |
+
+## Failure handling
+- Missing style detail: request targeted clarification.
+- Conflicting constraints: output option sets with trade-offs.
+- Unknown runtime state: keep plan-only with explicit caveats.
+
+## Troubleshooting
+- Overly harsh reflections: reduce floor reflectance assumptions.
+- Muddy lighting plan: simplify key/fill ratio assumptions.
+- Material complexity too high for web: propose simplification tiers.
+
+## Best practices
+- prioritize readability before stylization extremes
+- map each lookdev decision to user-facing outcome
+- preserve portability caveats explicitly
+
+## Good examples
+“Use key+soft fill for product readability, neon rim accents for mood, and limit reflective floor intensity to avoid detail washout in web contexts.”
+
+## Bad examples
+“Make it look cool with neon materials.” (no constraints, no caveats)
+
+## User-facing response template
+- Lighting plan summary
+- Material plan summary
+- Portability caveats
+- Truth states: `Runtime: Not Run` | `Artifacts: Not Produced`
+- Next handoff step (`lighting-quality-checker`, `material-quality-checker`, `scene-readiness`, `glb-web-handoff`)
+
+## Anti-patterns
+- skipping required laws or runtime boundary statements
+- claiming runtime/artifact success without evidence
+- upgrading truth states above `Runtime: Not Run` or `Artifacts: Not Produced`
+- blurring roles by validating lighting/materials instead of handing off to `lighting-quality-checker` and `material-quality-checker`
+- making render engine, color config, or file format decisions owned by `cycles-vs-eevee-decision`, `color-management-decision`, or `output-format-decision`
+- presenting `BLENDER_EEVEE_NEXT` / Eevee Next as the current Blender 5.x engine name
+- including Python snippets, Blender execution commands, or unhedged jargon
+
+## Cross-skill handoff
+<!-- blendops:generated:start handoffs -->
+- [upstream_reference] Upstream input from (camera-composition) → `../camera-composition/SKILL.md`
+- [progression] Upstream input from (color-management-decision) → `../color-management-decision/SKILL.md`
+- [progression] Upstream input from (cycles-vs-eevee-decision) → `../cycles-vs-eevee-decision/SKILL.md`
+- [progression] Upstream input from (output-format-decision) → `../output-format-decision/SKILL.md`
+- [progression] Next validation (lighting-quality-checker) → `../lighting-quality-checker/SKILL.md`
+- [progression] Next validation (material-quality-checker) → `../material-quality-checker/SKILL.md`
+- [progression] Then scene check → `../scene-readiness/SKILL.md`
+- [progression] Then delivery → `../glb-web-handoff/SKILL.md`
+<!-- blendops:generated:end handoffs -->
+
+## Non-goals
+- shader/runtime implementation code
+- rendered quality claims without evidence
+
+## References
+- https://www.blender.org/lab/mcp-server/
+- https://claude.com/resources/tutorials/using-the-blender-connector-in-claude
+- https://docs.blender.org/manual/en/latest/advanced/command_line/index.html

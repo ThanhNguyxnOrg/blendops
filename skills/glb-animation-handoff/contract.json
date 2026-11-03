@@ -46,7 +46,7 @@
       {
         "name": "mobile_rig_budget_ceilings",
         "type": "object",
-        "description": "Bone count, morph target, and keyframe channel ceilings from glb-mobile-performance-budget"
+        "description": "Bone count, morph target, and keyframe channel ceilings from mobile-glb-budget"
       }
     ]
   },
@@ -64,9 +64,9 @@
   },
   "handoffs": [
     {
-      "target": "character-portrait-scene-planner",
+      "target": "character-portrait",
       "type": "upstream_reference",
-      "label": "Missing clip list / scene plan (character-portrait-scene-planner)",
+      "label": "Missing clip list / scene plan (character-portrait)",
       "when": {
         "all": [
           {
@@ -83,9 +83,9 @@
       }
     },
     {
-      "target": "environment-establishing-shot-planner",
+      "target": "environment-shot",
       "type": "upstream_reference",
-      "label": "Missing clip list / scene plan (environment-establishing-shot-planner)",
+      "label": "Missing clip list / scene plan (environment-shot)",
       "when": {
         "all": [
           {
@@ -102,9 +102,9 @@
       }
     },
     {
-      "target": "interior-architectural-scene-planner",
+      "target": "interior-scene",
       "type": "upstream_reference",
-      "label": "Missing clip list / scene plan (interior-architectural-scene-planner)",
+      "label": "Missing clip list / scene plan (interior-scene)",
       "when": {
         "all": [
           {
@@ -159,7 +159,7 @@
       }
     },
     {
-      "target": "glb-mobile-performance-budget",
+      "target": "mobile-glb-budget",
       "type": "upstream_reference",
       "label": "Channel, bone, and morph ceilings",
       "when": {
@@ -211,7 +211,7 @@
       }
     },
     {
-      "target": "three-fiber-component-shape-planner",
+      "target": "r3f-component-plan",
       "type": "progression",
       "label": "React Three Fiber component shape",
       "when": {
@@ -230,7 +230,7 @@
       }
     },
     {
-      "target": "non-blender-user-response-writer",
+      "target": "plain-language-response",
       "type": "progression",
       "label": "Final user-facing wording",
       "when": {

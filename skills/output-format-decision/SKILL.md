@@ -22,7 +22,7 @@ Avoid mismatched output formats (e.g., JPEG for VFX, EXR for web, TIFF for socia
 ## When not to use
 <!-- blendops:generated:start exclusions -->
 - raw modeling without rendering → use `../cycles-vs-eevee-decision/SKILL.md` (Delegates out-of-scope requests to cycles-vs-eevee-decision)
-- 3D/GLB exports (out of scope — use glb-web-handoff, glb-mobile-performance-budget, or glb-animation-handoff) → use `../glb-animation-handoff/SKILL.md` (out of scope — use glb-web-handoff, glb-mobile-performance-budget, or glb-animation-handoff)
+- 3D/GLB exports (out of scope — use glb-web-handoff, mobile-glb-budget, or glb-animation-handoff) → use `../glb-animation-handoff/SKILL.md` (out of scope — use glb-web-handoff, mobile-glb-budget, or glb-animation-handoff)
 - verifying saved files on disk after rendering → use `../render-export-evidence/SKILL.md` (use render-export-evidence)
 <!-- blendops:generated:end exclusions -->
 
@@ -206,7 +206,7 @@ Next: render-export-evidence
 - [upstream_reference] Engine choice → `../cycles-vs-eevee-decision/SKILL.md`
 - [progression] Render file verification → `../render-export-evidence/SKILL.md`
 - [progression] 3D / GLB exports (out of scope here) (glb-animation-handoff) → `../glb-animation-handoff/SKILL.md`
-- [boundary_delegation] 3D / GLB exports (out of scope here) (glb-mobile-performance-budget) → `../glb-mobile-performance-budget/SKILL.md`
+- [boundary_delegation] 3D / GLB exports (out of scope here) (mobile-glb-budget) → `../mobile-glb-budget/SKILL.md`
 - [progression] 3D / GLB exports (out of scope here) (glb-web-handoff) → `../glb-web-handoff/SKILL.md`
 <!-- blendops:generated:end handoffs -->
 

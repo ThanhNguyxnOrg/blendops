@@ -14,7 +14,7 @@ Metadata: Contract `v1.0.0` | Category `render-and-output-decisions` | Role `res
 - Trigger phrases: "what resolution", "how big should the render be", "16:9 or square"
 
 ## When not to use (delegation boundaries)
-- after render is complete (no benefit) → use `blender-composition-camera-planner` (`references/skill-blender-composition-camera-planner.md`; no benefit)
+- after render is complete (no benefit) → use `camera-composition` (`references/skill-camera-composition.md`; no benefit)
 - pure modeling → use `output-format-decision` (`references/skill-output-format-decision.md`; Delegates out-of-scope requests to output-format-decision)
 - internal preview-only renders (any reasonable size works) → use `composition-quality-checker` (`references/skill-composition-quality-checker.md`; any reasonable size works)
 
@@ -32,7 +32,7 @@ Metadata: Contract `v1.0.0` | Category `render-and-output-decisions` | Role `res
 5. Pin the record for the operator to enter in Blender scene render properties (no rendering, no post-render resizing).
 
 ## Cross-skill handoffs
-- [upstream_reference] Camera & composition planning (upstream framing setup) → `blender-composition-camera-planner` (`references/skill-blender-composition-camera-planner.md`) — `when.all: [brief.locked equals true; stage.current equals "camera_planning"]`
+- [upstream_reference] Camera & composition planning (upstream framing setup) → `camera-composition` (`references/skill-camera-composition.md`) — `when.all: [brief.locked equals true; stage.current equals "camera_planning"]`
 - [progression] Composition framing validation against pinned aspect → `composition-quality-checker` (`references/skill-composition-quality-checker.md`) — `when.all: [quality.domain equals "composition"; quality.verdict equals "not_run"]`
 - [upstream_reference] Color configuration decision → `color-management-decision` (`references/skill-color-management-decision.md`) — `when.all: [decision.colorLocked equals false]`
 - [progression] Container / codec decision → `output-format-decision` (`references/skill-output-format-decision.md`) — `when.all: [decision.formatLocked equals false]`

@@ -20,9 +20,9 @@
       "reason": "run intent-to-3d-brief-writer first"
     },
     {
-      "condition": "runtime has never been attempted (run official-runtime-readiness-checker first)",
-      "delegateTo": "official-runtime-readiness-checker",
-      "reason": "run official-runtime-readiness-checker first"
+      "condition": "runtime has never been attempted (run runtime-readiness first)",
+      "delegateTo": "runtime-readiness",
+      "reason": "run runtime-readiness first"
     },
     {
       "condition": "the request is creative iteration (\"can we make it more dramatic\"), not debugging",
@@ -52,7 +52,7 @@
       {
         "name": "runtime_attempt_notes",
         "type": "string",
-        "description": "Optional error output or attempt timeline from runtime-attempt-report-writer"
+        "description": "Optional error output or attempt timeline from runtime-attempt-report"
       }
     ]
   },
@@ -103,9 +103,9 @@
       }
     },
     {
-      "target": "blender-composition-camera-planner",
+      "target": "camera-composition",
       "type": "conditional",
-      "label": "If divergence at planning (blender-composition-camera-planner)",
+      "label": "If divergence at planning (camera-composition)",
       "when": {
         "all": [
           {
@@ -122,9 +122,9 @@
       }
     },
     {
-      "target": "blender-lighting-material-planner",
+      "target": "lighting-material-plan",
       "type": "conditional",
-      "label": "If divergence at planning (blender-lighting-material-planner)",
+      "label": "If divergence at planning (lighting-material-plan)",
       "when": {
         "all": [
           {
@@ -141,9 +141,9 @@
       }
     },
     {
-      "target": "character-portrait-scene-planner",
+      "target": "character-portrait",
       "type": "alternative",
-      "label": "If divergence at planning (character-portrait-scene-planner)",
+      "label": "If divergence at planning (character-portrait)",
       "when": {
         "all": [
           {
@@ -160,9 +160,9 @@
       }
     },
     {
-      "target": "environment-establishing-shot-planner",
+      "target": "environment-shot",
       "type": "alternative",
-      "label": "If divergence at planning (environment-establishing-shot-planner)",
+      "label": "If divergence at planning (environment-shot)",
       "when": {
         "all": [
           {
@@ -179,9 +179,9 @@
       }
     },
     {
-      "target": "interior-architectural-scene-planner",
+      "target": "interior-scene",
       "type": "alternative",
-      "label": "If divergence at planning (interior-architectural-scene-planner)",
+      "label": "If divergence at planning (interior-scene)",
       "when": {
         "all": [
           {
@@ -236,9 +236,9 @@
       }
     },
     {
-      "target": "official-runtime-readiness-checker",
+      "target": "runtime-readiness",
       "type": "upstream_reference",
-      "label": "If divergence at execution (official-runtime-readiness-checker)",
+      "label": "If divergence at execution (runtime-readiness)",
       "when": {
         "all": [
           {
@@ -255,9 +255,9 @@
       }
     },
     {
-      "target": "runtime-bridge-conflict-resolver",
+      "target": "bridge-conflicts",
       "type": "fallback",
-      "label": "If divergence at execution (runtime-bridge-conflict-resolver)",
+      "label": "If divergence at execution (bridge-conflicts)",
       "when": {
         "all": [
           {
@@ -335,7 +335,7 @@
       }
     },
     {
-      "target": "non-blender-user-response-writer",
+      "target": "plain-language-response",
       "type": "conditional",
       "label": "If divergence at response",
       "when": {

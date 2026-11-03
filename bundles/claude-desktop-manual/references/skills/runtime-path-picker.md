@@ -25,11 +25,11 @@ Produce a **single primary** runtime execution choice among Path 1 (Blender Lab 
 - "CLI vs MCP"
 
 ## When not to use
-- prerequisite framing or install steps → delegate to `official-runtime-setup-guide` (`references/skills/official-runtime-setup-guide.md`; Delegates out-of-scope requests to official-runtime-setup-guide)
-- running the readiness matrix → delegate to `official-runtime-readiness-checker` (`references/skills/official-runtime-readiness-checker.md`; Delegates out-of-scope requests to official-runtime-readiness-checker)
+- prerequisite framing or install steps → delegate to `runtime-setup` (`references/skills/runtime-setup.md`; Delegates out-of-scope requests to runtime-setup)
+- running the readiness matrix → delegate to `runtime-readiness` (`references/skills/runtime-readiness.md`; Delegates out-of-scope requests to runtime-readiness)
 - detailing Path 1 host (a) Connector vs (b) manual MCP client → delegate to `path-one-host-outline` (`references/skills/path-one-host-outline.md`; Delegates out-of-scope requests to path-one-host-outline)
 - outlining headless CLI jobs → delegate to `cli-appendix-job-outline` (`references/skills/cli-appendix-job-outline.md`; Delegates out-of-scope requests to cli-appendix-job-outline)
-- resolving active bridge or port collisions → delegate to `runtime-bridge-conflict-resolver` (`references/skills/runtime-bridge-conflict-resolver.md`; Delegates out-of-scope requests to runtime-bridge-conflict-resolver)
+- resolving active bridge or port collisions → delegate to `bridge-conflicts` (`references/skills/bridge-conflicts.md`; Delegates out-of-scope requests to bridge-conflicts)
 - halting on contradictory constraints before handoff → delegate to `pre-handoff-verification` (`references/skills/pre-handoff-verification.md`; Delegates out-of-scope requests to pre-handoff-verification)
 
 ## Inputs & output/evidence contract
@@ -52,16 +52,16 @@ Produce a **single primary** runtime execution choice among Path 1 (Blender Lab 
 4. document choice using `skills/runtime-path-picker/references/anti-patterns.md` guardrails
 
 ## Handoff notes
-- **[progression]** Prerequisite framing → `official-runtime-setup-guide` (`references/skills/official-runtime-setup-guide.md`) — `when.all: [runtime.path not_equals "unselected"; stage.current equals "runtime_setup"]`
-- **[progression]** Readiness matrix check → `official-runtime-readiness-checker` (`references/skills/official-runtime-readiness-checker.md`) — `when.all: [runtime.path not_equals "unselected"; runtime.verifiedReady equals false]`
+- **[progression]** Prerequisite framing → `runtime-setup` (`references/skills/runtime-setup.md`) — `when.all: [runtime.path not_equals "unselected"; stage.current equals "runtime_setup"]`
+- **[progression]** Readiness matrix check → `runtime-readiness` (`references/skills/runtime-readiness.md`) — `when.all: [runtime.path not_equals "unselected"; runtime.verifiedReady equals false]`
 - **[progression]** Host (a)/(b) specifics for Path 1 → `path-one-host-outline` (`references/skills/path-one-host-outline.md`) — `when.all: [runtime.path equals "path_1"; stage.current equals "runtime_setup"]`
 - **[progression]** Headless CLI appendix job outline → `cli-appendix-job-outline` (`references/skills/cli-appendix-job-outline.md`) — `when.all: [runtime.path equals "cli_appendix"; request.topic equals "cli_batch"]`
-- **[fallback]** Bridge or port 9876 conflicts → `runtime-bridge-conflict-resolver` (`references/skills/runtime-bridge-conflict-resolver.md`) — `when.all: [runtime.conflictDetected equals true]`
+- **[fallback]** Bridge or port 9876 conflicts → `bridge-conflicts` (`references/skills/bridge-conflicts.md`) — `when.all: [runtime.conflictDetected equals true]`
 - **[fallback]** Contradictory constraints failure exit → `pre-handoff-verification` (`references/skills/pre-handoff-verification.md`) — `when.any: [gate.status equals "failed"; runtime.mode equals "blocked"]`
 
 ## Safety boundaries & non-goals
-- **Runtime boundary:** Decision skill only — chooses a single primary path from constraints and configures nothing (see `docs/runtime-stack-strategy.md` for the canonical model). - **Path 1**: Official Blender Lab MCP in Blender 5.1+ (add-on manifest literal `blender_version_min = "5.1.0"`), hosted from (a) Anthropic Connector in Claude Desktop or (b) any manually configured MCP client. Connector is NOT standalone. - **Path 2**: Community `mcp-for-blender` (renamed from `ahujasid/blender-mcp`), third-party, Blender 3.0+, recommended only with explicit caveats and **never as release evidence**. Manual configuration responsibility; see `docs/unofficial-runtime-bridges.md`. - **CLI fallback**: Appendix only (`blender --background --python`), never a peer path without an eval record. Documented upstream as a first-class Blender CLI surface (render/Cycles/format/Python sections read in the current Blender 5.2 LTS Manual); **no in-repo evidence file yet** for BlendOps-run CLI examples. - **Bridge limit**: One MCP bridge per Blender instance (default port 9876). - **Role boundary**: Prerequisite framing belongs to `official-runtime-setup-guide`; readiness matrix checks belong to `official-runtime-readiness-checker`; Path 1 host a/b details belong to `path-one-host-outline`; headless job outlines belong to `cli-appendix-job-outline`; bridge conflicts belong to `runtime-bridge-conflict-resolver`.
-- Walking through step-by-step add-on installation or host config file edits (owned by `official-runtime-setup-guide`).
-- Probing live runtime connectivity (owned by `official-runtime-readiness-checker`).
+- **Runtime boundary:** Decision skill only — chooses a single primary path from constraints and configures nothing (see `docs/runtime-stack-strategy.md` for the canonical model). - **Path 1**: Official Blender Lab MCP in Blender 5.1+ (add-on manifest literal `blender_version_min = "5.1.0"`), hosted from (a) Anthropic Connector in Claude Desktop or (b) any manually configured MCP client. Connector is NOT standalone. - **Path 2**: Community `mcp-for-blender` (renamed from `ahujasid/blender-mcp`), third-party, Blender 3.0+, recommended only with explicit caveats and **never as release evidence**. Manual configuration responsibility; see `docs/unofficial-runtime-bridges.md`. - **CLI fallback**: Appendix only (`blender --background --python`), never a peer path without an eval record. Documented upstream as a first-class Blender CLI surface (render/Cycles/format/Python sections read in the current Blender 5.2 LTS Manual); **no in-repo evidence file yet** for BlendOps-run CLI examples. - **Bridge limit**: One MCP bridge per Blender instance (default port 9876). - **Role boundary**: Prerequisite framing belongs to `runtime-setup`; readiness matrix checks belong to `runtime-readiness`; Path 1 host a/b details belong to `path-one-host-outline`; headless job outlines belong to `cli-appendix-job-outline`; bridge conflicts belong to `bridge-conflicts`.
+- Walking through step-by-step add-on installation or host config file edits (owned by `runtime-setup`).
+- Probing live runtime connectivity (owned by `runtime-readiness`).
 - Detailing Path 1 Host (a) vs Host (b) architecture (owned by `path-one-host-outline`) or CLI batch job phases (owned by `cli-appendix-job-outline`).
 - Executing Blender, generating Python code, or verifying artifacts.

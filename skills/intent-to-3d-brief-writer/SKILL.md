@@ -22,7 +22,7 @@ This skill produces **a brief, not a plan**. The brief has 8 fixed slots: subjec
 
 - right after `blender-brainstorming` confirms user intent
 - when the user provides a structured request that just needs format normalization
-- before any planner skill (`product-hero-scene-planner`, `blender-composition-camera-planner`, `blender-lighting-material-planner`)
+- before any planner skill (`product-hero-scene-planner`, `camera-composition`, `lighting-material-plan`)
 - before `acceptance-criteria-builder` consumes brief rows to build criteria
 - when multiple planners need to share the same source-of-truth brief
 
@@ -30,7 +30,7 @@ This skill produces **a brief, not a plan**. The brief has 8 fixed slots: subjec
 <!-- blendops:generated:start exclusions -->
 - intent is still ambiguous (run blender-brainstorming first) → use `../blender-brainstorming/SKILL.md` (run blender-brainstorming first)
 - the user is mid-execution and asks for a re-brief → use `../blender-troubleshooting/SKILL.md` (route to blender-troubleshooting instead)
-- the user pushes for immediate execution → use `../official-runtime-readiness-checker/SKILL.md` (route to official-runtime-readiness-checker)
+- the user pushes for immediate execution → use `../runtime-readiness/SKILL.md` (route to runtime-readiness)
 - the request is iteration on existing output ("make it darker") — that's a planner-level edit, not a new brief → use `../blender-brainstorming/SKILL.md` (Delegates out-of-scope requests to blender-brainstorming)
 <!-- blendops:generated:end exclusions -->
 
@@ -112,7 +112,7 @@ This skill does not install Blender, run Blender, configure MCP, or claim artifa
 1. Read confirmed intent (from `blender-brainstorming` or original request).
 2. Pull each of the 8 slots one at a time. If a slot is missing, ask one targeted question per missing slot in a single batch.
 3. Write the brief in markdown using the 8-slot template.
-4. List decisions deferred to planners (e.g. "lighting style left to `blender-lighting-material-planner` per mood").
+4. List decisions deferred to planners (e.g. "lighting style left to `lighting-material-plan` per mood").
 5. Echo the brief to the user. Ask for confirm or edit.
 6. After confirmation, hand off to the relevant planner (e.g., `product-hero-scene-planner`) and `acceptance-criteria-builder`.
 
@@ -142,7 +142,7 @@ This skill does not install Blender, run Blender, configure MCP, or claim artifa
 
 - still text-only for this skill (brief is always text)
 - runtime status remains `Not Run`
-- execution pushes route to `official-runtime-readiness-checker`
+- execution pushes route to `runtime-readiness`
 
 ### Blocked runtime mode
 
@@ -181,7 +181,7 @@ This skill does not install Blender, run Blender, configure MCP, or claim artifa
 ## Troubleshooting
 
 - if the brief feels too long, write a "TL;DR" line at top but keep all 8 slots
-- if the user pushes for execution, route to `official-runtime-readiness-checker`; brief stays as locked contract
+- if the user pushes for execution, route to `runtime-readiness`; brief stays as locked contract
 - if the user requests mid-execution re-briefing, route to `blender-troubleshooting`
 
 ## Best practices
@@ -192,7 +192,7 @@ This skill does not install Blender, run Blender, configure MCP, or claim artifa
 
 ## Good examples
 
-- "Brief: Cyberpunk Shoe Web Hero. Subject: floating cyberpunk sneaker. Mood: neon-lit, glossy dark floor, dramatic. Deliverables: preview image + GLB for web. Constraints: poly budget for mobile web; brand neon palette. Evidence: `Verified` requires render path + GLB path + validation notes. Acceptance: subject framing centered, neon visible, web GLB ≤ 10MB. Audience: marketing team (non-Blender). Owner: <user>. Deferred: exact lighting placement to `blender-lighting-material-planner`; exact camera angle to `blender-composition-camera-planner`."
+- "Brief: Cyberpunk Shoe Web Hero. Subject: floating cyberpunk sneaker. Mood: neon-lit, glossy dark floor, dramatic. Deliverables: preview image + GLB for web. Constraints: poly budget for mobile web; brand neon palette. Evidence: `Verified` requires render path + GLB path + validation notes. Acceptance: subject framing centered, neon visible, web GLB ≤ 10MB. Audience: marketing team (non-Blender). Owner: <user>. Deferred: exact lighting placement to `lighting-material-plan`; exact camera angle to `camera-composition`."
 
 ## Bad examples
 
@@ -216,10 +216,10 @@ This skill does not install Blender, run Blender, configure MCP, or claim artifa
 <!-- blendops:generated:start handoffs -->
 - [upstream_reference] Preceding step → `../blender-brainstorming/SKILL.md`
 - [progression] Consuming skills (acceptance-criteria-builder) → `../acceptance-criteria-builder/SKILL.md`
-- [progression] Consuming skills (blender-composition-camera-planner) → `../blender-composition-camera-planner/SKILL.md`
-- [progression] Consuming skills (blender-lighting-material-planner) → `../blender-lighting-material-planner/SKILL.md`
+- [progression] Consuming skills (camera-composition) → `../camera-composition/SKILL.md`
+- [progression] Consuming skills (lighting-material-plan) → `../lighting-material-plan/SKILL.md`
 - [alternative] Consuming skills (product-hero-scene-planner) → `../product-hero-scene-planner/SKILL.md`
-- [conditional] If execution is requested → `../official-runtime-readiness-checker/SKILL.md`
+- [conditional] If execution is requested → `../runtime-readiness/SKILL.md`
 - [fallback] If mid-execution re-briefing occurs → `../blender-troubleshooting/SKILL.md`
 <!-- blendops:generated:end handoffs -->
 
@@ -228,7 +228,7 @@ This skill does not install Blender, run Blender, configure MCP, or claim artifa
 - making the plan (planner's job)
 - running Blender
 - setting up runtime
-- writing the final user response (`non-blender-user-response-writer`'s job)
+- writing the final user response (`plain-language-response`'s job)
 
 ## References
 

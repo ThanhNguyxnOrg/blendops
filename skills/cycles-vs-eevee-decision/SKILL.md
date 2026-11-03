@@ -23,7 +23,7 @@ Pick the render engine upfront based on quality + time tradeoff and feature requ
 
 ## When not to use
 <!-- blendops:generated:start exclusions -->
-- for a known repeat render (engine already chosen) → use `../blender-lighting-material-planner/SKILL.md` (engine already chosen)
+- for a known repeat render (engine already chosen) → use `../lighting-material-plan/SKILL.md` (engine already chosen)
 - for non-render work (modeling / animation prep) → use `../output-format-decision/SKILL.md` (modeling / animation prep)
 <!-- blendops:generated:end exclusions -->
 
@@ -228,7 +228,7 @@ Next: color-management-decision -> resolution-aspect-decision -> output-format-d
 
 ## Cross-skill handoff
 <!-- blendops:generated:start handoffs -->
-- [upstream_reference] Lighting and material setup aligned with engine choice → `../blender-lighting-material-planner/SKILL.md`
+- [upstream_reference] Lighting and material setup aligned with engine choice → `../lighting-material-plan/SKILL.md`
 - [upstream_reference] Color configuration decision → `../color-management-decision/SKILL.md`
 - [progression] Output container / codec decision → `../output-format-decision/SKILL.md`
 - [upstream_reference] Render resolution and aspect ratio decision → `../resolution-aspect-decision/SKILL.md`

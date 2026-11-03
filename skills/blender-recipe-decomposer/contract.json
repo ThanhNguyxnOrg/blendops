@@ -25,8 +25,8 @@
     },
     {
       "condition": "after recipes are already split or running",
-      "delegateTo": "blender-scope-boundary-enforcer",
-      "reason": "use blender-scope-boundary-enforcer for added scope or blender-stop-condition-decider to evaluate completion"
+      "delegateTo": "scope-guard",
+      "reason": "use scope-guard for added scope or done-criteria to evaluate completion"
     }
   ],
   "inputs": {
@@ -83,7 +83,7 @@
       }
     },
     {
-      "target": "blender-stop-condition-decider",
+      "target": "done-criteria",
       "type": "progression",
       "label": "Pinning formal done conditions per recipe",
       "when": {
@@ -102,7 +102,7 @@
       }
     },
     {
-      "target": "blender-checklist-driven-workflow",
+      "target": "stage-gates",
       "type": "progression",
       "label": "Workflow stage gates per recipe",
       "when": {
@@ -121,7 +121,7 @@
       }
     },
     {
-      "target": "blender-scope-boundary-enforcer",
+      "target": "scope-guard",
       "type": "progression",
       "label": "Handling scope added after splitting",
       "when": {

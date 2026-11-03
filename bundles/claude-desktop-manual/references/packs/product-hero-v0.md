@@ -4,13 +4,13 @@ Status: Draft v0
 
 ## Included skills
 - product-hero-scene-planner
-- blender-composition-camera-planner
-- blender-lighting-material-planner
-- blender-scene-quality-checker
-- official-runtime-readiness-checker
+- camera-composition
+- lighting-material-plan
+- scene-readiness
+- runtime-readiness
 - render-export-evidence
 - glb-web-handoff
-- non-blender-user-response-writer
+- plain-language-response
 
 ## Intended flow
 1. Planning (scene, composition, lighting)

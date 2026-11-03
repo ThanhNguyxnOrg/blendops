@@ -15,15 +15,15 @@ Metadata: Contract `v1.0.0` | Category `scene-planners` | Role `single-product-h
 
 ## When not to use (delegation boundaries)
 - to execute Blender commands, write Python, or claim generated artifacts → use `intent-to-3d-brief-writer` (`references/skill-intent-to-3d-brief-writer.md`; Delegates out-of-scope requests to intent-to-3d-brief-writer)
-- to skip unresolved critical ambiguity or hide missing inputs → use `blender-composition-camera-planner` (`references/skill-blender-composition-camera-planner.md`; Delegates out-of-scope requests to blender-composition-camera-planner)
+- to skip unresolved critical ambiguity or hide missing inputs → use `camera-composition` (`references/skill-camera-composition.md`; Delegates out-of-scope requests to camera-composition)
 - when raw user intent still needs initial brief normalization → use `intent-to-3d-brief-writer` (`references/skill-intent-to-3d-brief-writer.md`; use intent-to-3d-brief-writer first)
 - when planning a multi-item catalog or grid layout → use `product-grid-scene-planner` (`references/skill-product-grid-scene-planner.md`; use product-grid-scene-planner)
-- when deep-diving camera/framing mechanics → use `blender-composition-camera-planner` (`references/skill-blender-composition-camera-planner.md`; use blender-lighting-material-planner)
-- when writing measurable pass/fail acceptance tables → use `acceptance-criteria-builder` (`references/skill-acceptance-criteria-builder.md`; use blender-scene-quality-checker)
+- when deep-diving camera/framing mechanics → use `camera-composition` (`references/skill-camera-composition.md`; use lighting-material-plan)
+- when writing measurable pass/fail acceptance tables → use `acceptance-criteria-builder` (`references/skill-acceptance-criteria-builder.md`; use scene-readiness)
 
 ## Input & output contract
 - Required input `locked_3d_brief` (`object`): Locked 8-slot 3D brief defining the hero product, hero feature callout, mood, and output channel
-- Required input `sourced_product_asset_status` (`object`): Hero product model posture and material readiness from blender-asset-discovery-planner
+- Required input `sourced_product_asset_status` (`object`): Hero product model posture and material readiness from asset-discovery
 - Optional input `pack_context` (`string`): Optional pack reference such as packs/product-hero-v0/PACK.md
 - Output contract: `hero_product_staging_and_pedestal_plan`, `camera_and_lookdev_handoff_inputs`, `scene_quality_validation_hooks` (Runtime status: `Not Run`, Artifact status: `Not Produced`, `downgrade_only`).
 
@@ -35,11 +35,11 @@ Metadata: Contract `v1.0.0` | Category `scene-planners` | Role `single-product-h
 
 ## Cross-skill handoffs
 - [upstream_reference] Upstream input (if raw prompt needs structuring) → `intent-to-3d-brief-writer` (`references/skill-intent-to-3d-brief-writer.md`) — `when.all: [goal.clarity equals "clear"; brief.locked equals false]`
-- [progression] Next (deep-dive framing & camera) → `blender-composition-camera-planner` (`references/skill-blender-composition-camera-planner.md`) — `when.all: [brief.locked equals true; stage.current equals "camera_planning"]`
-- [progression] Next (deep-dive lookdev & lighting) → `blender-lighting-material-planner` (`references/skill-blender-lighting-material-planner.md`) — `when.all: [brief.locked equals true; stage.current equals "lookdev_planning"]`
+- [progression] Next (deep-dive framing & camera) → `camera-composition` (`references/skill-camera-composition.md`) — `when.all: [brief.locked equals true; stage.current equals "camera_planning"]`
+- [progression] Next (deep-dive lookdev & lighting) → `lighting-material-plan` (`references/skill-lighting-material-plan.md`) — `when.all: [brief.locked equals true; stage.current equals "lookdev_planning"]`
 - [fallback] Then (measurable pass/fail rows) → `acceptance-criteria-builder` (`references/skill-acceptance-criteria-builder.md`) — `when.all: [brief.locked equals true; stage.current equals "acceptance_criteria"]`
-- [upstream_reference] Then (pin done condition) → `blender-stop-condition-decider` (`references/skill-blender-stop-condition-decider.md`) — `when.all: [brief.locked equals true; stage.current equals "stop_condition"]`
-- [progression] Later (post-build readiness review) → `blender-scene-quality-checker` (`references/skill-blender-scene-quality-checker.md`) — `when.all: [quality.domain equals "holistic"; stage.current equals "quality_validation"]`
+- [upstream_reference] Then (pin done condition) → `done-criteria` (`references/skill-done-criteria.md`) — `when.all: [brief.locked equals true; stage.current equals "stop_condition"]`
+- [progression] Later (post-build readiness review) → `scene-readiness` (`references/skill-scene-readiness.md`) — `when.all: [quality.domain equals "holistic"; stage.current equals "quality_validation"]`
 - [conditional] Delivery handoff (when web/render output is targeted) (glb-web-handoff) → `glb-web-handoff` (`references/skill-glb-web-handoff.md`) — `when.all: [artifact.type equals "glb"; handoff.consumerStack equals "web_glb"]`
 - [conditional] Delivery handoff (when web/render output is targeted) (render-export-evidence) → `render-export-evidence` (`references/skill-render-export-evidence.md`) — `when.all: [stage.current equals "post_execution_audit"]`
 
@@ -48,4 +48,4 @@ Metadata: Contract `v1.0.0` | Category `scene-planners` | Role `single-product-h
 - executing Blender commands, MCP mutations, or CLI jobs
 - writing Python scripts
 - claiming `Attempted`, `Produced`, or `Verified` runtime/artifact states
-- replacing `intent-to-3d-brief-writer` (upstream brief), `blender-composition-camera-planner` (deep framing), `blender-lighting-material-planner` (deep lookdev), `acceptance-criteria-builder` (measurable acceptance rows), `blender-stop-condition-decider` (done conditions), or `blender-scene-quality-checker` (readiness review)
+- replacing `intent-to-3d-brief-writer` (upstream brief), `camera-composition` (deep framing), `lighting-material-plan` (deep lookdev), `acceptance-criteria-builder` (measurable acceptance rows), `done-criteria` (done conditions), or `scene-readiness` (readiness review)

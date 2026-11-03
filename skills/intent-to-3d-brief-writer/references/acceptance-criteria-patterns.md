@@ -36,7 +36,7 @@ When numeric thresholds don't fit:
 When validation depends on a downstream tool:
 
 - "GLB passes `gltf-validator` with 0 errors, ≤ 3 warnings."
-- "Render passes the `blender-scene-quality-checker` rubric with verdict Pass."
+- "Render passes the `scene-readiness` rubric with verdict Pass."
 - "Web import test (operator-defined): asset visible in Three.js viewer, no console errors."
 
 ## Anti-patterns

@@ -7,7 +7,7 @@ User has locked brief + composition plan text, no renders, no GLB, wants to proc
 ## Expected behavior
 
 - Stage = planning / lookdev boundary
-- Next = `blender-lighting-material-planner` after confirming composition plan consumed
+- Next = `lighting-material-plan` after confirming composition plan consumed
 - Note readiness if runtime mutation next
 
 ## Pass / Warn / Fail criteria

@@ -63,9 +63,9 @@ Map a user's stated goal to the closest documented BlendOps recipe or pack befor
 - **[conditional]** Post-artifact stage routing → `workflow-stage-router` (`references/skills/workflow-stage-router.md`) — `when.all: [preflight.passed equals true; inventory.exists equals true]`
 - **[alternative]** Domain scene planner (product hero) → `product-hero-scene-planner` (`references/skills/product-hero-scene-planner.md`) — `when.all: [brief.locked equals true; recipe.domain equals "product_hero"]`
 - **[alternative]** Domain scene planner (product grid) → `product-grid-scene-planner` (`references/skills/product-grid-scene-planner.md`) — `when.all: [brief.locked equals true; recipe.domain equals "product_grid"]`
-- **[alternative]** Domain scene planner (character portrait) → `character-portrait-scene-planner` (`references/skills/character-portrait-scene-planner.md`) — `when.all: [brief.locked equals true; recipe.domain equals "character_portrait"]`
-- **[alternative]** Domain scene planner (environment establishing shot) → `environment-establishing-shot-planner` (`references/skills/environment-establishing-shot-planner.md`) — `when.all: [brief.locked equals true; recipe.domain equals "environment_shot"]`
-- **[alternative]** Domain scene planner (interior architectural) → `interior-architectural-scene-planner` (`references/skills/interior-architectural-scene-planner.md`) — `when.all: [brief.locked equals true; recipe.domain equals "interior_archviz"]`
+- **[alternative]** Domain scene planner (character portrait) → `character-portrait` (`references/skills/character-portrait.md`) — `when.all: [brief.locked equals true; recipe.domain equals "character_portrait"]`
+- **[alternative]** Domain scene planner (environment establishing shot) → `environment-shot` (`references/skills/environment-shot.md`) — `when.all: [brief.locked equals true; recipe.domain equals "environment_shot"]`
+- **[alternative]** Domain scene planner (interior architectural) → `interior-scene` (`references/skills/interior-scene.md`) — `when.all: [brief.locked equals true; recipe.domain equals "interior_archviz"]`
 
 ## Safety boundaries & non-goals
 - **Runtime boundary:** Planning-only skill. Does not configure MCP, Blender, or hosts. When mentioning runtime, use the 2-path + CLI appendix model from `docs/runtime-stack-strategy.md` only as context for whether a workflow expects interactive MCP vs batch CLI — never claim runtime success.

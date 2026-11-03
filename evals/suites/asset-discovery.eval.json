@@ -1,0 +1,490 @@
+{
+  "schemaVersion": "2.0.0",
+  "skillId": "asset-discovery",
+  "category": "asset-and-sourcing",
+  "isContractedSkill": true,
+  "isRoutingParticipant": false,
+  "contractPath": "skills/asset-discovery/contract.json",
+  "skillMarkdownPath": "skills/asset-discovery/SKILL.md",
+  "evalMarkdownPath": "skills/asset-discovery/EVAL.md",
+  "sourceEvalTier": "structured_multi_case_table",
+  "evaluationStatus": {
+    "staticValidation": "Passed",
+    "deterministicFixture": "Passed",
+    "contractRouting": "Not Applicable",
+    "contractHandoff": "Passed",
+    "liveModel": "Not Run",
+    "blenderRuntime": "Not Run"
+  },
+  "cases": [
+    {
+      "id": "asset-discovery-cyberpunk-shoe-web-hero",
+      "skillId": "asset-discovery",
+      "scenario": "Cyberpunk shoe web hero brief (<=10MB GLB constraint)",
+      "category": "normal",
+      "inputPrompt": "Plan asset strategy for a floating cyberpunk shoe hero with neon glossy floor under a 10MB GLB budget.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Produces per-asset strategy table, sums estimated GLB budget (8MB vs 10MB limit), and flags Path 2 generative caveat",
+        "Hands off to product-hero-scene-planner without downloading or generating files"
+      ],
+      "requiredOutputProperties": [
+        "asset table",
+        "budget sum",
+        "Path 2 generative caveat",
+        "product-hero-scene-planner"
+      ],
+      "forbiddenOutputProperties": [
+        "downloaded asset",
+        "Artifact: Produced"
+      ],
+      "expectedRoutingTarget": "product-hero-scene-planner",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Per-asset strategy table + GLB budget sum + Path 2 generative caveat"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only asset discovery plan",
+          "recommendedNextAction": "Proceed to product-hero-scene-planner with the 8MB estimated asset table and Path 2 generative caveat.",
+          "targetHandoff": "product-hero-scene-planner",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Built full asset table with budget sum (8MB / 10MB) and explicit Path 2 generative caveat.",
+          "warnings": [
+            "Generative 3D integrations belong to community Path 2 (mcp-for-blender) and require readiness verification."
+          ],
+          "evidenceCitations": [
+            "skills/asset-discovery/EVAL.md",
+            "docs/unofficial-runtime-bridges.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "asset-discovery-brand-restricted-library",
+      "skillId": "asset-discovery",
+      "scenario": "Brand product render restricted to brand-approved library only",
+      "category": "normal",
+      "inputPrompt": "Subject is an official brand sneaker; constraint requires brand-restricted asset library only and zero third-party meshes.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Enforces brand-only library source for subject and procedural environment",
+        "Routes to asset-license-checker to record brand-restricted license compliance"
+      ],
+      "requiredOutputProperties": [
+        "brand-restricted",
+        "license risk callout",
+        "asset-license-checker"
+      ],
+      "forbiddenOutputProperties": [
+        "use any free model from the internet",
+        "Artifact: Produced"
+      ],
+      "expectedRoutingTarget": "asset-license-checker",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Brand-restricted enforcement + license risk callout"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only asset discovery plan",
+          "recommendedNextAction": "Verify brand-restricted terms in asset-license-checker before scene planning.",
+          "targetHandoff": "asset-license-checker",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Enforced brand-restricted library for hero asset and procedural environment with explicit license risk callout.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/asset-discovery/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "asset-discovery-procedural-iteration-sketch",
+      "skillId": "asset-discovery",
+      "scenario": "Text-only iteration sketch prioritizes procedural primitives and CC0 HDRI",
+      "category": "structured_skip",
+      "inputPrompt": "Deliverable is a fast text-only blocking sketch loop with zero external mesh dependencies.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Assigns procedural-first strategy for geometry and CC0 Poly Haven HDRI for lighting",
+        "Hands off to product-hero-scene-planner"
+      ],
+      "requiredOutputProperties": [
+        "procedural-first",
+        "Poly Haven CC0",
+        "product-hero-scene-planner"
+      ],
+      "forbiddenOutputProperties": [
+        "fetched external model",
+        "Artifact: Produced"
+      ],
+      "expectedRoutingTarget": "product-hero-scene-planner",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P2",
+      "evidenceRequirements": [
+        "Procedural-first asset assignment with low license risk"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only asset discovery plan",
+          "recommendedNextAction": "Hand off procedural-first asset table with Poly Haven CC0 HDRI to product-hero-scene-planner.",
+          "targetHandoff": "product-hero-scene-planner",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Selected procedural-first blocking primitives and Poly Haven CC0 lighting with low license risk.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/asset-discovery/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "asset-discovery-generative-without-path2-blocked",
+      "skillId": "asset-discovery",
+      "scenario": "User requests Hyper3D generative mesh without Path 2 readiness",
+      "category": "blocked_or_adversarial",
+      "inputPrompt": "Use Hyper3D to generate the hero sneaker mesh right now even though Path 2 is not configured.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Marks generative strategy blocked, offers procedural/library fallback, and routes to runtime-readiness",
+        "Never claims Hyper3D generated an asset"
+      ],
+      "requiredOutputProperties": [
+        "generative blocked",
+        "runtime-readiness",
+        "procedural/library alternatives"
+      ],
+      "forbiddenOutputProperties": [
+        "generated Hyper3D mesh",
+        "Artifact: Produced"
+      ],
+      "expectedRoutingTarget": "runtime-readiness",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Blocked flag + procedural/library alternatives + route to runtime-readiness"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only asset discovery plan",
+          "recommendedNextAction": "Generative blocked without Path 2: route to runtime-readiness or use procedural/library alternatives.",
+          "targetHandoff": "runtime-readiness",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Marked Hyper3D generative strategy blocked and offered procedural/library alternatives.",
+          "warnings": [
+            "Hyper3D requires community Path 2 (mcp-for-blender) readiness and third-party caveats."
+          ],
+          "evidenceCitations": [
+            "skills/asset-discovery/EVAL.md",
+            "docs/unofficial-runtime-bridges.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "asset-discovery-skipped-license-tbd",
+      "skillId": "asset-discovery",
+      "scenario": "User says license \"doesn't matter\" for web commercial deployment",
+      "category": "evidence_boundary",
+      "inputPrompt": "Just grab any 3D watch mesh, license does not matter to us.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Marks license column as TBD (never silently approved) and requires follow-up via asset-license-checker",
+        "Preserves Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "TBD",
+        "asset-license-checker",
+        "follow-up required"
+      ],
+      "forbiddenOutputProperties": [
+        "license approved automatically",
+        "Artifact: Verified"
+      ],
+      "expectedRoutingTarget": "asset-license-checker",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicit TBD license marker + handoff to asset-license-checker"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only asset discovery plan",
+          "recommendedNextAction": "License marked TBD (follow-up required): route to asset-license-checker before downstream planner consumes.",
+          "targetHandoff": "asset-license-checker",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Refused to skip license tracking; marked license TBD with follow-up required via asset-license-checker.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/asset-discovery/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "asset-discovery-conflicting-2mb-brand-cad",
+      "skillId": "asset-discovery",
+      "scenario": "Conflicting constraints: unoptimized 80MB CAD brand asset vs <=2MB GLB target",
+      "category": "blocked_or_adversarial",
+      "inputPrompt": "Use our raw 80MB CAD shoe assembly with 4K uncompressed textures inside a <=2MB mobile GLB budget.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Surfaces budget conflict between raw CAD source and <=2MB GLB constraint",
+        "Routes to asset-fallback-strategy to plan decimation/baking or proxy replacement"
+      ],
+      "requiredOutputProperties": [
+        "conflict callout",
+        "asset-fallback-strategy",
+        "2MB"
+      ],
+      "forbiddenOutputProperties": [
+        "80MB fits inside 2MB without changes",
+        "Artifact: Produced"
+      ],
+      "expectedRoutingTarget": "asset-fallback-strategy",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicit budget conflict callout + route to asset-fallback-strategy"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only asset discovery plan",
+          "recommendedNextAction": "Surface 80MB vs 2MB conflict callout and route to asset-fallback-strategy.",
+          "targetHandoff": "asset-fallback-strategy",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Raised conflict callout on 80MB CAD asset vs 2MB GLB constraint and routed to asset-fallback-strategy.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/asset-discovery/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "asset-discovery-missing-brief-reroute",
+      "skillId": "asset-discovery",
+      "scenario": "No 8-slot brief provided before asset discovery",
+      "category": "ambiguous",
+      "inputPrompt": "Pick assets for my project right now (no brief provided).",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Refuses to guess asset classes without an 8-slot brief",
+        "Routes back to intent-to-3d-brief-writer"
+      ],
+      "requiredOutputProperties": [
+        "intent-to-3d-brief-writer",
+        "missing 8-slot brief",
+        "Runtime: Not Run"
+      ],
+      "forbiddenOutputProperties": [
+        "invented asset table",
+        "Artifact: Produced"
+      ],
+      "expectedRoutingTarget": "intent-to-3d-brief-writer",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Re-route message to intent-to-3d-brief-writer"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only asset discovery plan",
+          "recommendedNextAction": "Route back to intent-to-3d-brief-writer because of missing 8-slot brief.",
+          "targetHandoff": "intent-to-3d-brief-writer",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted asset discovery due to missing 8-slot brief and re-routed to intent-to-3d-brief-writer.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/asset-discovery/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "asset-discovery-contract-handoff-primary",
+      "skillId": "asset-discovery",
+      "scenario": "Contract handoff predicate matches asset-license-checker (**License verdicts**)",
+      "category": "normal",
+      "inputPrompt": "Evaluate asset-discovery contract handoff when workflow context satisfies {\"assets.externalUsed\":true,\"assets.licenseCleared\":false} and verify progression to asset-license-checker.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates contract.json handoff predicates for asset-discovery against the workflow context",
+        "Selects asset-license-checker while preserving Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "asset-license-checker",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Not Run",
+        "Artifact: Verified",
+        "Blender executed"
+      ],
+      "expectedRoutingTarget": "asset-license-checker",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Contract handoff predicate match for asset-license-checker in skills/asset-discovery/contract.json",
+        "Truth-state conservation (Runtime: Not Run, Artifact: Not Produced)"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "assets.externalUsed": true,
+          "assets.licenseCleared": false
+        },
+        "simulatedOutput": {
+          "mode": "Text-only asset-discovery contract handoff evaluation",
+          "recommendedNextAction": "Hand off from asset-discovery to asset-license-checker (**License verdicts**).",
+          "targetHandoff": "asset-license-checker",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Matched contract handoff predicate in asset-discovery and routed to asset-license-checker.",
+          "warnings": [
+            "Specialist contract handoff evaluated without global routingPrecedence escalation."
+          ],
+          "evidenceCitations": [
+            "skills/asset-discovery/contract.json",
+            "skills/asset-discovery/SKILL.md",
+            "skills/asset-discovery/EVAL.md",
+            "skills/asset-discovery/references/asset-strategy-decision-tree.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "asset-discovery-contract-handoff-unmatched-none",
+      "skillId": "asset-discovery",
+      "scenario": "Contract handoff predicate returns none when no downstream handoff condition matches in asset-discovery",
+      "category": "evidence_boundary",
+      "inputPrompt": "Check asset-discovery contract handoff behavior when context is {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and no automatic handoff predicate is satisfied.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates all 12 contract handoffs in asset-discovery with fail-closed predicate semantics",
+        "Returns targetHandoff none when no handoff predicate matches and preserves conservative truth states"
+      ],
+      "requiredOutputProperties": [
+        "none",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Not Run",
+        "Artifact: Verified",
+        "invented handoff target"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Zero matching handoff predicates in skills/asset-discovery/contract.json for non-matching context"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Text-only asset-discovery contract boundary check",
+          "recommendedNextAction": "Remain at asset-discovery (targetHandoff: none) until a declared downstream handoff precondition is satisfied.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Verified fail-closed specialist handoff evaluation for asset-discovery when no contract predicate matches (secondary candidate intent-to-3d-brief-writer remained inactive).",
+          "warnings": [
+            "Never fabricate an undeclared handoff when no contract predicate matches."
+          ],
+          "evidenceCitations": [
+            "skills/asset-discovery/contract.json",
+            "skills/asset-discovery/EVAL.md"
+          ]
+        }
+      }
+    }
+  ]
+}

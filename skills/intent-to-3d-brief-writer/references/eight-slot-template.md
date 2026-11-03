@@ -48,9 +48,9 @@ Use this exact template for every brief. Fill or mark `Unknown` per slot. The br
 
 | Decision | Deferred to skill |
 |---|---|
-| <e.g. exact lighting placement> | `blender-lighting-material-planner` |
-| <e.g. exact camera focal length> | `blender-composition-camera-planner` |
-| <e.g. material portability for web> | `blender-lighting-material-planner` |
+| <e.g. exact lighting placement> | `lighting-material-plan` |
+| <e.g. exact camera focal length> | `camera-composition` |
+| <e.g. material portability for web> | `lighting-material-plan` |
 
 ## Unknowns
 
@@ -106,10 +106,10 @@ Operator: <user>. Verification by: `pre-handoff-verification` before release.
 ## Decisions deferred
 | Decision | Deferred to skill |
 |---|---|
-| Exact lighting placement | `blender-lighting-material-planner` |
-| Exact camera focal length and angle | `blender-composition-camera-planner` |
-| Shoe surface material (procedural vs imported PBR) | `blender-lighting-material-planner` |
-| Asset acquisition strategy | `blender-asset-discovery-planner` |
+| Exact lighting placement | `lighting-material-plan` |
+| Exact camera focal length and angle | `camera-composition` |
+| Shoe surface material (procedural vs imported PBR) | `lighting-material-plan` |
+| Asset acquisition strategy | `asset-discovery` |
 
 ## Unknowns
 - Final shoe model source (brand library vs generative). Decided after asset discovery planner runs.

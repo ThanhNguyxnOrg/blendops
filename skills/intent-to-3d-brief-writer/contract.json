@@ -25,8 +25,8 @@
     },
     {
       "condition": "the user pushes for immediate execution",
-      "delegateTo": "official-runtime-readiness-checker",
-      "reason": "route to official-runtime-readiness-checker"
+      "delegateTo": "runtime-readiness",
+      "reason": "route to runtime-readiness"
     },
     {
       "condition": "the request is iteration on existing output (\"make it darker\") — that's a planner-level edit, not a new brief",
@@ -102,9 +102,9 @@
       }
     },
     {
-      "target": "blender-composition-camera-planner",
+      "target": "camera-composition",
       "type": "progression",
-      "label": "Consuming skills (blender-composition-camera-planner)",
+      "label": "Consuming skills (camera-composition)",
       "when": {
         "all": [
           {
@@ -121,9 +121,9 @@
       }
     },
     {
-      "target": "blender-lighting-material-planner",
+      "target": "lighting-material-plan",
       "type": "progression",
-      "label": "Consuming skills (blender-lighting-material-planner)",
+      "label": "Consuming skills (lighting-material-plan)",
       "when": {
         "all": [
           {
@@ -159,7 +159,7 @@
       }
     },
     {
-      "target": "official-runtime-readiness-checker",
+      "target": "runtime-readiness",
       "type": "conditional",
       "label": "If execution is requested",
       "when": {

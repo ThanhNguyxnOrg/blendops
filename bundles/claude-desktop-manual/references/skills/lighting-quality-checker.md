@@ -26,16 +26,16 @@ Run a focused pass/warn/fail check on the scene's lighting setup per light — c
 - "is the HDRI balanced"
 
 ## When not to use
-- upstream lookdev and lighting planning → delegate to `blender-lighting-material-planner` (`references/skills/blender-lighting-material-planner.md`; use blender-lighting-material-planner)
+- upstream lookdev and lighting planning → delegate to `lighting-material-plan` (`references/skills/lighting-material-plan.md`; use lighting-material-plan)
 - material validation → delegate to `material-quality-checker` (`references/skills/material-quality-checker.md`; use material-quality-checker)
 - composition / camera validation → delegate to `composition-quality-checker` (`references/skills/composition-quality-checker.md`; use composition-quality-checker)
-- broad pass/warn/fail scene readiness → delegate to `blender-scene-quality-checker` (`references/skills/blender-scene-quality-checker.md`; use blender-scene-quality-checker)
+- broad pass/warn/fail scene readiness → delegate to `scene-readiness` (`references/skills/scene-readiness.md`; use scene-readiness)
 - classifying render or export artifact evidence → delegate to `render-export-evidence` (`references/skills/render-export-evidence.md`; use render-export-evidence)
-- to fix or edit lights (this skill validates and gives remediation hints only; it never edits) → delegate to `blender-scene-quality-checker` (`references/skills/blender-scene-quality-checker.md`; this skill validates and gives remediation hints only; it never edits)
+- to fix or edit lights (this skill validates and gives remediation hints only; it never edits) → delegate to `scene-readiness` (`references/skills/scene-readiness.md`; this skill validates and gives remediation hints only; it never edits)
 
 ## Inputs & output/evidence contract
 ### Required inputs
-- `lighting_rig_specification` (`object`): Key-to-fill ratios, light placements, HDRI rotation, and shadow softness from blender-lighting-material-planner
+- `lighting_rig_specification` (`object`): Key-to-fill ratios, light placements, HDRI rotation, and shadow softness from lighting-material-plan
 - `color_management_pins` (`object`): Pinned view transform (AgX/Filmic/Standard) and exposure target from color-management-decision
 
 ### Optional inputs
@@ -56,15 +56,15 @@ Run a focused pass/warn/fail check on the scene's lighting setup per light — c
 7. emit per-light verdicts (`Pass / Warn / Fail`) with remediation hints only + a top-line status
 
 ## Handoff notes
-- **[progression]** Broad readiness review → `blender-scene-quality-checker` (`references/skills/blender-scene-quality-checker.md`) — `when.all: [quality.domain equals "holistic"; stage.current equals "quality_validation"]`
+- **[progression]** Broad readiness review → `scene-readiness` (`references/skills/scene-readiness.md`) — `when.all: [quality.domain equals "holistic"; stage.current equals "quality_validation"]`
 - **[upstream_reference]** Material validation → `material-quality-checker` (`references/skills/material-quality-checker.md`) — `when.all: [quality.domain equals "material"; quality.verdict equals "not_run"]`
 - **[progression]** Composition validation → `composition-quality-checker` (`references/skills/composition-quality-checker.md`) — `when.all: [quality.domain equals "composition"; quality.verdict equals "not_run"]`
-- **[retry]** Lighting re-plan → `blender-lighting-material-planner` (`references/skills/blender-lighting-material-planner.md`) — `when.all: [quality.domain equals "lighting"; quality.verdict equals "Fail"]`; retryPolicy: `maxAttempts=2`, `exitCondition.all: [quality.verdict in ["Pass","Warn"]]`
+- **[retry]** Lighting re-plan → `lighting-material-plan` (`references/skills/lighting-material-plan.md`) — `when.all: [quality.domain equals "lighting"; quality.verdict equals "Fail"]`; retryPolicy: `maxAttempts=2`, `exitCondition.all: [quality.verdict in ["Pass","Warn"]]`
 - **[progression]** Render evidence → `render-export-evidence` (`references/skills/render-export-evidence.md`) — `when.all: [stage.current equals "post_execution_audit"]`
 
 ## Safety boundaries & non-goals
 - **Runtime boundary:** This skill validates plans or measured scene snapshots only. It never modifies lights, runs Blender, or renders. Use measured scene description (plan output, runtime tool snapshot) — never invent values.
 - Edit lights.
 - Generate light setup recipes.
-- Replace `blender-scene-quality-checker`.
+- Replace `scene-readiness`.
 - Run Blender.

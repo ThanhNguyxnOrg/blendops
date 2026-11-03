@@ -15,19 +15,19 @@ Define reliable handoff language and checks for GLB/web scenarios without overcl
 - follow suggested next-skill handoff
 
 ## When to use
-- when writing the GLB/web handoff summary after upstream validation from `blender-scene-quality-checker` and evidence classification from `render-export-evidence`
+- when writing the GLB/web handoff summary after upstream validation from `scene-readiness` and evidence classification from `render-export-evidence`
 - when summarizing per-artifact export statuses and web compatibility assumptions/caveats (transform/scale/origin, material/texture portability, loader/extensions, stack, performance)
-- when preparing truthful next checks before passing final wording to `non-blender-user-response-writer`
+- when preparing truthful next checks before passing final wording to `plain-language-response`
 
 ## When not to use
 <!-- blendops:generated:start exclusions -->
-- to claim GLB or export success without concrete evidence → use `../blender-scene-quality-checker/SKILL.md` (Delegates out-of-scope requests to blender-scene-quality-checker)
+- to claim GLB or export success without concrete evidence → use `../scene-readiness/SKILL.md` (Delegates out-of-scope requests to scene-readiness)
 - to replace runtime export verification → use `../render-export-evidence/SKILL.md` (Delegates out-of-scope requests to render-export-evidence)
-- to validate upstream scene readiness → use `../blender-scene-quality-checker/SKILL.md` (use blender-scene-quality-checker)
+- to validate upstream scene readiness → use `../scene-readiness/SKILL.md` (use scene-readiness)
 - to classify raw render/export artifact evidence → use `../render-export-evidence/SKILL.md` (use render-export-evidence)
-- to define mobile or file-size performance budgets → use `../glb-mobile-performance-budget/SKILL.md` (use glb-mobile-performance-budget)
+- to define mobile or file-size performance budgets → use `../mobile-glb-budget/SKILL.md` (use mobile-glb-budget)
 - to define animation playback or rig contracts → use `../glb-animation-handoff/SKILL.md` (use glb-animation-handoff)
-- to write the final user-facing response wording → use `../non-blender-user-response-writer/SKILL.md` (use non-blender-user-response-writer)
+- to write the final user-facing response wording → use `../plain-language-response/SKILL.md` (use plain-language-response)
 <!-- blendops:generated:end exclusions -->
 
 ## Trigger phrases
@@ -38,7 +38,7 @@ Define reliable handoff language and checks for GLB/web scenarios without overcl
 <!-- blendops:generated:end triggers -->
 
 ## Prerequisites / readiness
-- upstream readiness output from `blender-scene-quality-checker` available (or marked unverified)
+- upstream readiness output from `scene-readiness` available (or marked unverified)
 - classified artifact evidence state from `render-export-evidence` known
 - runtime mode known (within the 2-path + CLI appendix runtime model)
 
@@ -46,11 +46,11 @@ Define reliable handoff language and checks for GLB/web scenarios without overcl
 
 ### Required inputs
 - per-artifact status evidence from `render-export-evidence` (with provenance to the current run for any pre-existing files)
-- upstream readiness summary from `blender-scene-quality-checker`
+- upstream readiness summary from `scene-readiness`
 - handoff target context and known compatibility assumptions
 
 ### Optional inputs
-- size/performance budget outputs from `glb-mobile-performance-budget`
+- size/performance budget outputs from `mobile-glb-budget`
 - animation handoff notes from `glb-animation-handoff`
 - expected downstream web stack details
 
@@ -93,16 +93,16 @@ Never claim GLB or export success without concrete evidence tied to the current 
 4. Document transform/scale/origin assumptions and caveats (`+Y up, +Z forward, -X right`, `1 unit = 1 meter`, non-identity or negative root scale checks).
 5. Document material/texture portability assumptions and caveats (embedded `bufferView` vs external URI textures, KTX2/WebP transcoders, alpha modes).
 6. Document loader/extensions and target web stack compatibility assumptions (`DRACOLoader`, `MeshoptDecoder`, `KTX2Loader`, Three.js / React Three Fiber integration modules in `docs/examples/glb-web-handoff/README.md`) without inventing unsupported guarantees.
-7. Document performance caveats and uncertainty (incorporating `glb-mobile-performance-budget` if size budgets apply, and `glb-animation-handoff` if animation contracts apply).
-8. Verify compliance with evidence boundaries and upstream `blender-scene-quality-checker` findings, then hand off to `non-blender-user-response-writer` for final user-facing wording.
+7. Document performance caveats and uncertainty (incorporating `mobile-glb-budget` if size budgets apply, and `glb-animation-handoff` if animation contracts apply).
+8. Verify compliance with evidence boundaries and upstream `scene-readiness` findings, then hand off to `plain-language-response` for final user-facing wording.
 
 ## Decision tree
 - If concrete current-run GLB evidence is classified by `render-export-evidence` -> report `Produced` or `Verified` (matching evidence, never upgraded) + full compatibility caveats.
 - If a GLB file exists on disk but lacks provenance to the current run -> do not claim `Produced` or `Verified`; downgrade to `Not Produced` with a provenance caveat.
 - If runtime was not executed -> mark Runtime `Not Run` and artifacts `Not Run` or default `Not Produced`.
 - If runtime was `Attempted` or `Failed` and no valid GLB was exported -> mark artifact `Not Produced` or `Failed` with failure notes and next checks.
-- If size budgets or animation contracts are needed -> route to `glb-mobile-performance-budget` or `glb-animation-handoff` respectively.
-- Once handoff summary is complete -> hand off to `non-blender-user-response-writer` for final user-facing wording.
+- If size budgets or animation contracts are needed -> route to `mobile-glb-budget` or `glb-animation-handoff` respectively.
+- Once handoff summary is complete -> hand off to `plain-language-response` for final user-facing wording.
 
 ## Playbooks
 - Playbook A: text-only planning path
@@ -134,7 +134,7 @@ Never claim GLB or export success without concrete evidence tied to the current 
 - [ ] target stack assumptions documented (`threejs`, `react-three-fiber`, `model-viewer`, `babylonjs`)
 - [ ] performance caveats documented
 - [ ] no unsupported readiness guarantees or role blur with evidence/quality/budget/animation/response skills
-- [ ] actionable next checks and handoff to `non-blender-user-response-writer` included
+- [ ] actionable next checks and handoff to `plain-language-response` included
 
 ## Pass / Warn / Fail rubric
 
@@ -159,10 +159,10 @@ Never claim GLB or export success without concrete evidence tied to the current 
 ## Best practices
 - Always pair every per-artifact status with its matching compatibility caveats.
 - Enforce downgrade-only truth states and verify current-run provenance before accepting any file as `Produced` or `Verified`.
-- Keep handoff notes in plain language and hand off final user-facing phrasing to `non-blender-user-response-writer`.
+- Keep handoff notes in plain language and hand off final user-facing phrasing to `plain-language-response`.
 
 ## Good examples
-"Runtime status: `Not Run`. Artifact statuses: GLB `Not Produced` (default), Preview `Not Produced`. Compatibility assumptions & caveats: transform/scale/origin (1 unit = 1m, Z-up to Y-up conversion unverified), material/texture portability (procedural nodes must be baked before GLB export), loader/extensions (unverified compression/extension support), stack (target web viewer unspecified), performance (draw-call and file-size budget unverified; route to `glb-mobile-performance-budget` if constrained). Next checks: run export via configured runtime path, classify evidence with `render-export-evidence`, and pass summary to `non-blender-user-response-writer`."
+"Runtime status: `Not Run`. Artifact statuses: GLB `Not Produced` (default), Preview `Not Produced`. Compatibility assumptions & caveats: transform/scale/origin (1 unit = 1m, Z-up to Y-up conversion unverified), material/texture portability (procedural nodes must be baked before GLB export), loader/extensions (unverified compression/extension support), stack (target web viewer unspecified), performance (draw-call and file-size budget unverified; route to `mobile-glb-budget` if constrained). Next checks: run export via configured runtime path, classify evidence with `render-export-evidence`, and pass summary to `plain-language-response`."
 
 ## Bad examples
 “GLB is ready for production.” (no artifact proof)
@@ -177,7 +177,7 @@ Never claim GLB or export success without concrete evidence tied to the current 
   - Target stack
   - Performance
 - Unverified risks and next checks
-- Cross-skill handoff (to `non-blender-user-response-writer` for final user-facing wording)
+- Cross-skill handoff (to `plain-language-response` for final user-facing wording)
 
 ## Anti-patterns
 - skipping required laws or runtime boundary statements
@@ -187,19 +187,19 @@ Never claim GLB or export success without concrete evidence tied to the current 
 
 ## Cross-skill handoff
 <!-- blendops:generated:start handoffs -->
-- [upstream_reference] Upstream scene readiness validation → `../blender-scene-quality-checker/SKILL.md`
+- [upstream_reference] Upstream scene readiness validation → `../scene-readiness/SKILL.md`
 - [upstream_reference] Upstream artifact evidence classification → `../render-export-evidence/SKILL.md`
-- [upstream_reference] Mobile and file-size budget constraints → `../glb-mobile-performance-budget/SKILL.md`
+- [upstream_reference] Mobile and file-size budget constraints → `../mobile-glb-budget/SKILL.md`
 - [upstream_reference] Animation playback and rig handoff contracts → `../glb-animation-handoff/SKILL.md`
-- [progression] Final user-facing response wording → `../non-blender-user-response-writer/SKILL.md`
+- [progression] Final user-facing response wording → `../plain-language-response/SKILL.md`
 <!-- blendops:generated:end handoffs -->
 
 ## Non-goals
 - Generating Python scripts or executing Blender exports
 - Replacing runtime export verification
 - Upgrading Runtime or Artifact truth states or accepting pre-existing files without current-run provenance
-- Classifying raw render/export evidence (`render-export-evidence`) or validating upstream scene quality (`blender-scene-quality-checker`)
-- Defining size budgets (`glb-mobile-performance-budget`), animation contracts (`glb-animation-handoff`), or final user-facing wording (`non-blender-user-response-writer`)
+- Classifying raw render/export evidence (`render-export-evidence`) or validating upstream scene quality (`scene-readiness`)
+- Defining size budgets (`mobile-glb-budget`), animation contracts (`glb-animation-handoff`), or final user-facing wording (`plain-language-response`)
 - Making unsupported web stack or loader compatibility guarantees
 
 ## References

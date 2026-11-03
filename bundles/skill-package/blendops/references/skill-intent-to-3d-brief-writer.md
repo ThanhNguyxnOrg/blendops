@@ -10,7 +10,7 @@ Metadata: Contract `v1.0.0` | Category `process-discipline` | Role `canonical-8-
 ## When to use & trigger cues
 - right after `blender-brainstorming` confirms user intent
 - when the user provides a structured request that just needs format normalization
-- before any planner skill (`product-hero-scene-planner`, `blender-composition-camera-planner`, `blender-lighting-material-planner`)
+- before any planner skill (`product-hero-scene-planner`, `camera-composition`, `lighting-material-plan`)
 - before `acceptance-criteria-builder` consumes brief rows to build criteria
 - when multiple planners need to share the same source-of-truth brief
 - Trigger phrases: "lock the brief", "write the brief from this conversation", "what's the formal scope?", "before planning, write the spec"
@@ -18,7 +18,7 @@ Metadata: Contract `v1.0.0` | Category `process-discipline` | Role `canonical-8-
 ## When not to use (delegation boundaries)
 - intent is still ambiguous (run blender-brainstorming first) → use `blender-brainstorming` (`references/skill-blender-brainstorming.md`; run blender-brainstorming first)
 - the user is mid-execution and asks for a re-brief → use `blender-troubleshooting` (`references/skill-blender-troubleshooting.md`; route to blender-troubleshooting instead)
-- the user pushes for immediate execution → use `official-runtime-readiness-checker` (`references/skill-official-runtime-readiness-checker.md`; route to official-runtime-readiness-checker)
+- the user pushes for immediate execution → use `runtime-readiness` (`references/skill-runtime-readiness.md`; route to runtime-readiness)
 - the request is iteration on existing output ("make it darker") — that's a planner-level edit, not a new brief → use `blender-brainstorming` (`references/skill-blender-brainstorming.md`; Delegates out-of-scope requests to blender-brainstorming)
 
 ## Input & output contract
@@ -36,10 +36,10 @@ Metadata: Contract `v1.0.0` | Category `process-discipline` | Role `canonical-8-
 ## Cross-skill handoffs
 - [upstream_reference] Preceding step → `blender-brainstorming` (`references/skill-blender-brainstorming.md`) — `when.all: [goal.clarity equals "ambiguous_or_mixed"]`
 - [progression] Consuming skills (acceptance-criteria-builder) → `acceptance-criteria-builder` (`references/skill-acceptance-criteria-builder.md`) — `when.all: [brief.locked equals true; stage.current equals "acceptance_criteria"]`
-- [progression] Consuming skills (blender-composition-camera-planner) → `blender-composition-camera-planner` (`references/skill-blender-composition-camera-planner.md`) — `when.all: [brief.locked equals true; stage.current equals "camera_planning"]`
-- [progression] Consuming skills (blender-lighting-material-planner) → `blender-lighting-material-planner` (`references/skill-blender-lighting-material-planner.md`) — `when.all: [brief.locked equals true; stage.current equals "lookdev_planning"]`
+- [progression] Consuming skills (camera-composition) → `camera-composition` (`references/skill-camera-composition.md`) — `when.all: [brief.locked equals true; stage.current equals "camera_planning"]`
+- [progression] Consuming skills (lighting-material-plan) → `lighting-material-plan` (`references/skill-lighting-material-plan.md`) — `when.all: [brief.locked equals true; stage.current equals "lookdev_planning"]`
 - [alternative] Consuming skills (product-hero-scene-planner) → `product-hero-scene-planner` (`references/skill-product-hero-scene-planner.md`) — `when.all: [brief.locked equals true; recipe.domain equals "product_hero"]`
-- [conditional] If execution is requested → `official-runtime-readiness-checker` (`references/skill-official-runtime-readiness-checker.md`) — `when.all: [runtime.path not_equals "unselected"; runtime.verifiedReady equals false]`
+- [conditional] If execution is requested → `runtime-readiness` (`references/skill-runtime-readiness.md`) — `when.all: [runtime.path not_equals "unselected"; runtime.verifiedReady equals false]`
 - [fallback] If mid-execution re-briefing occurs → `blender-troubleshooting` (`references/skill-blender-troubleshooting.md`) — `when.all: [runtime.errorDetected equals true]`
 
 ## Safety boundaries & non-goals
@@ -47,4 +47,4 @@ Metadata: Contract `v1.0.0` | Category `process-discipline` | Role `canonical-8-
 - making the plan (planner's job)
 - running Blender
 - setting up runtime
-- writing the final user response (`non-blender-user-response-writer`'s job)
+- writing the final user response (`plain-language-response`'s job)

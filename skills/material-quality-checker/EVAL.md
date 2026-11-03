@@ -32,7 +32,7 @@ Use material-quality-checker on a glTF-mobile scene plan with 5 PBR materials an
 - 5 material rows
 - Top-line: derived from rows
 - Worst offenders: 1-2 named
-- Next: blender-scene-quality-checker / render-export-evidence
+- Next: scene-readiness / render-export-evidence
 
 ## Sample failing response outline
 - "Materials look good"

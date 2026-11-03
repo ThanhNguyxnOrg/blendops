@@ -94,10 +94,10 @@
       },
       "expectedBehavior": [
         "Flags runtime row as Needs Input / Unverified",
-        "Routes to official-runtime-readiness-checker before any scene execution"
+        "Routes to runtime-readiness before any scene execution"
       ],
       "requiredOutputProperties": [
-        "official-runtime-readiness-checker",
+        "runtime-readiness",
         "Needs input",
         "Runtime: Not Run"
       ],
@@ -105,7 +105,7 @@
         "Runtime: Verified",
         "Blender is connected and ready"
       ],
-      "expectedRoutingTarget": "official-runtime-readiness-checker",
+      "expectedRoutingTarget": "runtime-readiness",
       "truthStateExpectations": {
         "runtimeStatus": "Not Run",
         "artifactStatus": "Not Produced"
@@ -113,7 +113,7 @@
       "evaluationType": "contract_routing",
       "severity": "P0",
       "evidenceRequirements": [
-        "Conditional handoff to official-runtime-readiness-checker"
+        "Conditional handoff to runtime-readiness"
       ],
       "deterministicFixture": {
         "routingState": {
@@ -128,11 +128,11 @@
         },
         "simulatedOutput": {
           "mode": "Text-only pack preflight check",
-          "recommendedNextAction": "Runtime row Needs input: run official-runtime-readiness-checker before attempting MCP execution.",
-          "targetHandoff": "official-runtime-readiness-checker",
+          "recommendedNextAction": "Runtime row Needs input: run runtime-readiness before attempting MCP execution.",
+          "targetHandoff": "runtime-readiness",
           "runtimeStatus": "Not Run",
           "artifactStatus": "Not Produced",
-          "summary": "Gated pack execution on official-runtime-readiness-checker.",
+          "summary": "Gated pack execution on runtime-readiness.",
           "warnings": [
             "Runtime status remains Not Run during preflight verification."
           ],
@@ -278,10 +278,10 @@
       },
       "expectedBehavior": [
         "Blocks preflight with No-Go due to dual MCP bridge conflict",
-        "Routes to runtime-bridge-conflict-resolver"
+        "Routes to bridge-conflicts"
       ],
       "requiredOutputProperties": [
-        "runtime-bridge-conflict-resolver",
+        "bridge-conflicts",
         "No-Go",
         "Runtime: Not Run"
       ],
@@ -289,7 +289,7 @@
         "Go to product-hero-scene-planner",
         "Runtime: Verified"
       ],
-      "expectedRoutingTarget": "runtime-bridge-conflict-resolver",
+      "expectedRoutingTarget": "bridge-conflicts",
       "truthStateExpectations": {
         "runtimeStatus": "Not Run",
         "artifactStatus": "Not Produced"
@@ -297,7 +297,7 @@
       "evaluationType": "contract_routing",
       "severity": "P1",
       "evidenceRequirements": [
-        "Fallback handoff to runtime-bridge-conflict-resolver"
+        "Fallback handoff to bridge-conflicts"
       ],
       "deterministicFixture": {
         "routingState": {
@@ -311,11 +311,11 @@
         },
         "simulatedOutput": {
           "mode": "Text-only pack preflight check",
-          "recommendedNextAction": "No-Go: resolve the dual MCP bridge conflict via runtime-bridge-conflict-resolver before starting the pack.",
-          "targetHandoff": "runtime-bridge-conflict-resolver",
+          "recommendedNextAction": "No-Go: resolve the dual MCP bridge conflict via bridge-conflicts before starting the pack.",
+          "targetHandoff": "bridge-conflicts",
           "runtimeStatus": "Not Run",
           "artifactStatus": "Not Produced",
-          "summary": "Preflight blocked on dual-bridge conflict; routed to runtime-bridge-conflict-resolver.",
+          "summary": "Preflight blocked on dual-bridge conflict; routed to bridge-conflicts.",
           "warnings": [],
           "evidenceCitations": [
             "skills/pack-prerequisite-checker/contract.json"

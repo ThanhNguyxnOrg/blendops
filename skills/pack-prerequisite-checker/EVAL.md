@@ -9,7 +9,7 @@ User picked `product-hero-v0`, brief has mood + product silhouette but no asset 
 - Flag asset strategy + web handoff skills as needed inputs
 - Runtime row = Needs input until path chosen
 - Warn if GLB web targets unstated (mobile tier)
-- Hand off to `blender-asset-discovery-planner` or `runtime-path-picker`
+- Hand off to `asset-discovery` or `runtime-path-picker`
 
 ## Pass / Warn / Fail criteria
 

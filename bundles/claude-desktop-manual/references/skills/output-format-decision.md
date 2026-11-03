@@ -25,7 +25,7 @@ Avoid mismatched output formats (e.g., JPEG for VFX, EXR for web, TIFF for socia
 
 ## When not to use
 - raw modeling without rendering → delegate to `cycles-vs-eevee-decision` (`references/skills/cycles-vs-eevee-decision.md`; Delegates out-of-scope requests to cycles-vs-eevee-decision)
-- 3D/GLB exports (out of scope — use glb-web-handoff, glb-mobile-performance-budget, or glb-animation-handoff) → delegate to `glb-animation-handoff` (`references/skills/glb-animation-handoff.md`; out of scope — use glb-web-handoff, glb-mobile-performance-budget, or glb-animation-handoff)
+- 3D/GLB exports (out of scope — use glb-web-handoff, mobile-glb-budget, or glb-animation-handoff) → delegate to `glb-animation-handoff` (`references/skills/glb-animation-handoff.md`; out of scope — use glb-web-handoff, mobile-glb-budget, or glb-animation-handoff)
 - verifying saved files on disk after rendering → delegate to `render-export-evidence` (`references/skills/render-export-evidence.md`; use render-export-evidence)
 
 ## Inputs & output/evidence contract
@@ -34,7 +34,7 @@ Avoid mismatched output formats (e.g., JPEG for VFX, EXR for web, TIFF for socia
 - `alpha_and_bit_depth_needs` (`object`): Transparency (straight vs premultiplied alpha) and dynamic range (8-bit, 16-bit, 32-bit float) requirements
 
 ### Optional inputs
-- `file_size_ceiling` (`string`): Optional delivery file size cap from glb-mobile-performance-budget or web spec
+- `file_size_ceiling` (`string`): Optional delivery file size cap from mobile-glb-budget or web spec
 
 ### Primary outputs
 - `pinned_container_and_codec_spec`
@@ -53,7 +53,7 @@ Avoid mismatched output formats (e.g., JPEG for VFX, EXR for web, TIFF for socia
 - **[upstream_reference]** Engine choice → `cycles-vs-eevee-decision` (`references/skills/cycles-vs-eevee-decision.md`) — `when.all: [decision.engineLocked equals false]`
 - **[progression]** Render file verification → `render-export-evidence` (`references/skills/render-export-evidence.md`) — `when.all: [stage.current equals "post_execution_audit"]`
 - **[progression]** 3D / GLB exports (out of scope here) (glb-animation-handoff) → `glb-animation-handoff` (`references/skills/glb-animation-handoff.md`) — `when.all: [artifact.hasAnimation equals true; stage.current equals "animation_handoff"]`
-- **[boundary_delegation]** 3D / GLB exports (out of scope here) (glb-mobile-performance-budget) → `glb-mobile-performance-budget` (`references/skills/glb-mobile-performance-budget.md`) — `when.all: [artifact.type equals "glb"; budget.pinned equals false]`
+- **[boundary_delegation]** 3D / GLB exports (out of scope here) (mobile-glb-budget) → `mobile-glb-budget` (`references/skills/mobile-glb-budget.md`) — `when.all: [artifact.type equals "glb"; budget.pinned equals false]`
 - **[progression]** 3D / GLB exports (out of scope here) (glb-web-handoff) → `glb-web-handoff` (`references/skills/glb-web-handoff.md`) — `when.all: [artifact.type equals "glb"; handoff.consumerStack equals "web_glb"]`
 
 ## Safety boundaries & non-goals

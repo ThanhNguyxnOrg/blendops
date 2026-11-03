@@ -27,7 +27,7 @@ const ORIGINALLY_AFFECTED_SKILLS = [
   'pack-prerequisite-checker',
   'path-one-host-outline',
   'recipe-fit-assessor',
-  'runtime-attempt-report-writer',
+  'runtime-attempt-report',
   'runtime-path-picker',
   'workflow-stage-router',
 ];

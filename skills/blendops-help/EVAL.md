@@ -20,7 +20,7 @@ Use blendops-help to choose the next safe BlendOps action from an unclear or mix
 | Case | Input condition | Expected routing | Required status language |
 |---|---|---|---|
 | Unclear next step | User asks what to do next without a concrete goal | Recommend exactly one safe next action and name the target doc/skill | No runtime or artifact status upgrade |
-| Runtime request | User asks whether BlendOps can run Blender now | Route to `official-runtime-readiness-checker` and runtime stack docs | Runtime: `Not Run` until a real eval occurs |
+| Runtime request | User asks whether BlendOps can run Blender now | Route to `runtime-readiness` and runtime stack docs | Runtime: `Not Run` until a real eval occurs |
 | Artifact claim without evidence | User says a render/export/GLB exists but provides no path or validation | Route to `render-export-evidence` | Artifact: `Not Produced` or `Attempted`, never `Produced`/`Verified` |
 | Package/marketplace request | User asks to package, publish, list, or install from a marketplace | Route to install/distribution docs | Package/listing: future or unverified unless evidence exists |
 | Unsupported direct official MCP request | User asks to use direct official MCP from non-Claude Desktop agents | Route to runtime stack strategy and mark as future research | Direct official MCP for non-Claude agents: unverified and not a supported route |

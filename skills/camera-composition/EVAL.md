@@ -1,0 +1,32 @@
+# EVAL — camera-composition
+
+## Text-only eval prompt
+Use camera-composition to produce composition/camera plan for a product hero shot.
+
+## Expected behavior
+- focal hierarchy
+- framing/aspect/negative-space strategy
+- camera rationale in plain language
+
+## Pass / Warn / Fail criteria
+- Pass: complete camera-composition strategy with rationale
+- Warn: usable but partially justified plan
+- Fail: vague camera advice and overclaims
+
+## Common failure modes
+- no focal hierarchy
+- no web-copy space planning
+
+## Evidence expectations
+- explicit plan elements
+- caveat notes for unverified visual outcomes
+
+## Sample passing response outline
+- Scope and mode stated clearly
+- Evidence expectations listed
+- Pass/warn/fail reasoning tied to checks
+
+## Sample failing response outline
+- Overclaims runtime/artifact success
+- Missing caveats or blocker details
+- No clear next action

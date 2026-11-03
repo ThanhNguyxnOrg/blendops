@@ -23,13 +23,13 @@ Inspired by the `/brainstorming` skill in Anthropic Superpowers, adapted for the
 - the user request is short, ambiguous, or missing critical context (subject, mood, deliverable, evidence expectations)
 - multiple plausible interpretations exist (e.g. "make me a cool product render" — what product, what mood, web or print, GLB or render?)
 - the user is non-Blender-technical and may not realize what BlendOps must know to plan well
-- before any planner skill (`product-hero-scene-planner`, `blender-composition-camera-planner`, …)
+- before any planner skill (`product-hero-scene-planner`, `camera-composition`, …)
 
 ## When not to use
 <!-- blendops:generated:start exclusions -->
 - the user already provided a structured brief (route directly to intent-to-3d-brief-writer to lock the brief before any planner runs) → use `../intent-to-3d-brief-writer/SKILL.md` (route directly to intent-to-3d-brief-writer to lock the brief before any planner runs)
 - the user explicitly asked to skip clarification (record explicit assumptions and route to intent-to-3d-brief-writer) → use `../intent-to-3d-brief-writer/SKILL.md` (record explicit assumptions and route to intent-to-3d-brief-writer)
-- the user pushes for immediate execution rather than exploration → use `../official-runtime-readiness-checker/SKILL.md` (route to official-runtime-readiness-checker)
+- the user pushes for immediate execution rather than exploration → use `../runtime-readiness/SKILL.md` (route to runtime-readiness)
 <!-- blendops:generated:end exclusions -->
 
 ## Trigger phrases
@@ -72,7 +72,7 @@ Inspired by the `/brainstorming` skill in Anthropic Superpowers, adapted for the
 
 - user-confirmed one-paragraph intent summary in plain language (no Blender jargon)
 - explicit list of decisions taken vs. deferred
-- named handoff target (`intent-to-3d-brief-writer` to lock the brief, `official-runtime-readiness-checker` if execution is pushed, or `non-blender-user-response-writer` if blocked)
+- named handoff target (`intent-to-3d-brief-writer` to lock the brief, `runtime-readiness` if execution is pushed, or `plain-language-response` if blocked)
 
 ### Secondary output
 
@@ -96,7 +96,7 @@ Inspired by the `/brainstorming` skill in Anthropic Superpowers, adapted for the
 
 This skill does not install Blender, run Blender, or configure any MCP path. It is text-only conversation.
 
-If the user pushes for execution during brainstorming, route to `official-runtime-readiness-checker` and do not attempt runtime work from this skill.
+If the user pushes for execution during brainstorming, route to `runtime-readiness` and do not attempt runtime work from this skill.
 
 ## Operating procedure
 
@@ -107,13 +107,13 @@ If the user pushes for execution during brainstorming, route to `official-runtim
 5. Ask the user to pick one scoping or combine elements, and confirm the resulting one-paragraph intent summary in plain language (no Blender jargon).
 6. List decisions taken vs. deferred and record any remaining ambiguity as an explicit blocker.
 7. Maintain `Runtime: Not Run` and `Artifact: Not Produced` (downgrade-only, never upgrade).
-8. Hand off to `intent-to-3d-brief-writer` to lock the structured brief downstream before any planner skill is invoked (or route to `official-runtime-readiness-checker` if the user pushes for execution mid-brainstorm).
+8. Hand off to `intent-to-3d-brief-writer` to lock the structured brief downstream before any planner skill is invoked (or route to `runtime-readiness` if the user pushes for execution mid-brainstorm).
 
 ## Decision tree
 
 - request is vague or missing key facts → ask 3-5 batched clarifying questions covering missing facts and creative trade-offs, then propose 2-3 alternative scopings.
 - request is already a complete structured brief → skip brainstorming and route directly to `intent-to-3d-brief-writer`.
-- user pushes for execution mid-brainstorm → pause brainstorming and route immediately to `official-runtime-readiness-checker`.
+- user pushes for execution mid-brainstorm → pause brainstorming and route immediately to `runtime-readiness`.
 - user refuses to answer clarifying questions → record explicit assumptions and unresolved blockers, keep `Runtime: Not Run` and `Artifact: Not Produced` (never invent confidence labels), and hand off to `intent-to-3d-brief-writer`.
 
 ## Playbooks
@@ -133,12 +133,12 @@ If the user pushes for execution during brainstorming, route to `official-runtim
 ### Runtime-ready mode
 
 - brainstorming remains strictly conversation-only (`Runtime: Not Run`, `Artifact: Not Produced`)
-- if the user pushes for execution instead of scoping, route to `official-runtime-readiness-checker`
+- if the user pushes for execution instead of scoping, route to `runtime-readiness`
 
 ### Blocked runtime mode
 
 - brainstorming still runs as text-only conversation (`Runtime: Not Run`, `Artifact: Not Produced`)
-- note that downstream runtime execution is blocked and route to `non-blender-user-response-writer` to explain blocked status in plain language
+- note that downstream runtime execution is blocked and route to `plain-language-response` to explain blocked status in plain language
 
 ## Validation checklist
 
@@ -149,7 +149,7 @@ If the user pushes for execution during brainstorming, route to `official-runtim
 - [ ] decisions taken vs. deferred listed explicitly
 - [ ] truth states explicitly set to `Runtime: Not Run` and `Artifact: Not Produced` (downgrade-only, never upgrade)
 - [ ] no invented confidence or status labels used
-- [ ] named handoff target matches role split (`intent-to-3d-brief-writer`, `official-runtime-readiness-checker`, or `non-blender-user-response-writer`)
+- [ ] named handoff target matches role split (`intent-to-3d-brief-writer`, `runtime-readiness`, or `plain-language-response`)
 - [ ] no statement or question implies BlendOps installs or executes Blender
 - [ ] unresolved ambiguity flagged as an explicit blocker
 
@@ -160,13 +160,13 @@ If the user pushes for execution during brainstorming, route to `official-runtim
 | Clarification & scoping | 3-5 batched questions + 2-3 distinct alternative scopings | User declined questions; 2-3 scopings and explicit assumptions recorded | Drip-feed questioning (<3 batched questions) or <2 alternative scopings |
 | Intent summary | User-confirmed one-paragraph summary in plain language (no Blender jargon) | Plain-language one-paragraph summary awaiting final user confirmation | Jargon-heavy, multi-paragraph, or missing summary |
 | Runtime & truth states | `Runtime: Not Run`, `Artifact: Not Produced` (downgrade-only); no install/execution claims; no invented labels | Truth states present but blocker note could be clearer | Upgrades truth states, claims install/execution, or invents confidence/status labels |
-| Role boundary & handoff | Named handoff to `intent-to-3d-brief-writer`, `official-runtime-readiness-checker`, or `non-blender-user-response-writer` | Named valid handoff with minor caveat omission | No handoff, or bypasses `intent-to-3d-brief-writer` to jump straight into scene planning |
+| Role boundary & handoff | Named handoff to `intent-to-3d-brief-writer`, `runtime-readiness`, or `plain-language-response` | Named valid handoff with minor caveat omission | No handoff, or bypasses `intent-to-3d-brief-writer` to jump straight into scene planning |
 
 ## Failure handling
 
 - user gives one-word answers: record explicit assumption notes for remaining gaps, present the 2-3 alternative scopings, and ask the user to confirm the one-paragraph summary.
 - user contradicts themselves: surface the contradiction in plain language and ask which direction to lock in the summary.
-- user wants execution mid-brainstorm: pause brainstorming, route to `official-runtime-readiness-checker`, and keep `Runtime: Not Run` and `Artifact: Not Produced`.
+- user wants execution mid-brainstorm: pause brainstorming, route to `runtime-readiness`, and keep `Runtime: Not Run` and `Artifact: Not Produced`.
 
 ## Troubleshooting
 
@@ -195,7 +195,7 @@ If the user pushes for execution during brainstorming, route to `official-runtim
 - **Confirmed intent summary:** (one plain-language paragraph, no Blender jargon, confirmed by user)
 - **Decisions taken vs. deferred & blockers:** (explicit list)
 - **Status:** `Runtime: Not Run` | `Artifact: Not Produced` (conversation-only)
-- **Next step:** Hand off to `intent-to-3d-brief-writer` (or `official-runtime-readiness-checker` / `non-blender-user-response-writer` when applicable)
+- **Next step:** Hand off to `intent-to-3d-brief-writer` (or `runtime-readiness` / `plain-language-response` when applicable)
 
 ## Anti-patterns
 
@@ -209,8 +209,8 @@ If the user pushes for execution during brainstorming, route to `official-runtim
 ## Cross-skill handoff
 <!-- blendops:generated:start handoffs -->
 - [progression] Lock the confirmed brief downstream → `../intent-to-3d-brief-writer/SKILL.md`
-- [progression] User pushes for execution mid-brainstorm → `../official-runtime-readiness-checker/SKILL.md`
-- [progression] Explain blocked runtime status to user → `../non-blender-user-response-writer/SKILL.md`
+- [progression] User pushes for execution mid-brainstorm → `../runtime-readiness/SKILL.md`
+- [progression] Explain blocked runtime status to user → `../plain-language-response/SKILL.md`
 <!-- blendops:generated:end handoffs -->
 
 ## Non-goals

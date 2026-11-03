@@ -107,7 +107,7 @@ _Last updated: 2026-05-09 (Batches 7+8 complete — 48 skills shipped, 3x baseli
 - [x] benchmark Blender skill repos
 - [x] create canonical skill template (`skills/_template/SKILL.md`)
 - [x] create review gates (`skill-reviews/review-gates.md`)
-- [x] expand 8 root skills (later 10 with `official-runtime-setup-guide` and `blendops-help`)
+- [x] expand 8 root skills (later 10 with `runtime-setup` and `blendops-help`)
 - [x] add per-skill eval prompts
 - [x] update pack manifest
 
@@ -206,8 +206,8 @@ Added 6 new process / discipline skills based on web research of [Anthropic Supe
 - [x] `skills/blender-troubleshooting/` — Structured 4-phase root-cause analysis (Superpowers `/systematic-debugging` analog).
 - [x] `skills/pre-handoff-verification/` — 7-point evidence gate before any "ready" / `Verified` claim (Superpowers `/verification-before-completion` analog).
 - [x] `skills/intent-to-3d-brief-writer/` — Convert NL intent into 8-slot structured 3D brief (BMad analysis-phase analog).
-- [x] `skills/blender-asset-discovery-planner/` — Per-asset acquisition strategy (procedural / library / generative / photogrammetry) before scene planner (BlendOps-specific).
-- [x] `skills/runtime-bridge-conflict-resolver/` — Diagnose Single-bridge constraint conflicts (Path 1 + Path 2 + port `9876`) (BlendOps-specific).
+- [x] `skills/asset-discovery/` — Per-asset acquisition strategy (procedural / library / generative / photogrammetry) before scene planner (BlendOps-specific).
+- [x] `skills/bridge-conflicts/` — Diagnose Single-bridge constraint conflicts (Path 1 + Path 2 + port `9876`) (BlendOps-specific).
 
 All 6 ship with `SKILL.md` + `EVAL.md` + 3 `references/` files each (18 reference files total: templates, playbooks, decision trees, patterns, do-not lists). Frontmatter ≤200 chars, all required headings present, registered in `scripts/check-docs.mjs`, summarized in both bundles, indexed in `docs/skill-system.md`, `skills/README.md`, `docs/README.md`. All 6 promoted from Draft v0 → **Expanded Draft v0** after references/ added (matches the existing 8 Expanded Draft v0 skills' depth pattern). Skills export now produces 16 ZIPs + 16 Claude Code folders.
 
@@ -215,14 +215,14 @@ All 6 ship with `SKILL.md` + `EVAL.md` + 3 `references/` files each (18 referenc
 
 Roadmap target reached. Each batch adds 4 new Expanded Draft v0 skills (`SKILL.md` + `EVAL.md` + 3 `references/` files), registers in `scripts/check-docs.mjs`, ships bundle reference summaries in both `bundles/skill-package/` and `bundles/claude-desktop-manual/`, and updates `skills/README.md`.
 
-- [x] **Batch 1** Web 3D handoff deep — `glb-mobile-performance-budget`, `glb-animation-handoff`, `three-fiber-component-shape-planner`, `preview-report-template-writer` (16 → 20).
+- [x] **Batch 1** Web 3D handoff deep — `mobile-glb-budget`, `glb-animation-handoff`, `r3f-component-plan`, `preview-report` (16 → 20).
 - [x] **Batch 2** Quality validation deep — `material-quality-checker`, `lighting-quality-checker`, `composition-quality-checker`, `polycount-budget-checker` (20 → 24, tagged `v0.2.0-draft`).
-- [x] **Batch 3** Domain scene planners — `character-portrait-scene-planner`, `environment-establishing-shot-planner`, `interior-architectural-scene-planner`, `product-grid-scene-planner` (24 → 28).
-- [x] **Batch 4** Process discipline — `blender-checklist-driven-workflow`, `blender-stop-condition-decider`, `blender-scope-boundary-enforcer`, `blender-recipe-decomposer` (28 → 32, tagged `v0.3.0-draft`).
-- [x] **Batch 5** Asset / sourcing — `asset-license-checker`, `asset-style-consistency-checker`, `asset-fallback-strategy`, `asset-library-organization-planner` (32 → 36).
+- [x] **Batch 3** Domain scene planners — `character-portrait`, `environment-shot`, `interior-scene`, `product-grid-scene-planner` (24 → 28).
+- [x] **Batch 4** Process discipline — `stage-gates`, `done-criteria`, `scope-guard`, `blender-recipe-decomposer` (28 → 32, tagged `v0.3.0-draft`).
+- [x] **Batch 5** Asset / sourcing — `asset-license-checker`, `asset-style-check`, `asset-fallback-strategy`, `asset-library-plan` (32 → 36).
 - [x] **Batch 6** Color / format / output decisions — `color-management-decision`, `output-format-decision`, `resolution-aspect-decision`, `cycles-vs-eevee-decision` (36 → 40, tagged `v0.4.0-draft`).
 - [x] **Batch 7** Recipe / pack operations — `recipe-fit-assessor`, `pack-prerequisite-checker`, `workflow-stage-router`, `acceptance-criteria-builder` (40 → 44).
-- [x] **Batch 8** Runtime path discipline — `runtime-path-picker`, `path-one-host-outline`, `cli-appendix-job-outline`, `runtime-attempt-report-writer` (44 → 48, tagged `v0.5.0-draft`).
+- [x] **Batch 8** Runtime path discipline — `runtime-path-picker`, `path-one-host-outline`, `cli-appendix-job-outline`, `runtime-attempt-report` (44 → 48, tagged `v0.5.0-draft`).
 
 GitHub Releases shipped at v0.4.0-draft (40 ZIP assets) and v0.5.0-draft (48 ZIP assets). `npm run docs:check` passes 352 active markdown files (see script footer count). `npm run skills:export` produces 48 ZIPs + 48 Claude Code folders deterministically. **Roadmap 48/48 = 3x baseline target reached.**
 

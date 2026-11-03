@@ -15,15 +15,15 @@ Metadata: Contract `v1.0.0` | Category `quality-validators` | Role `framing-and-
 - Trigger phrases: "is the framing okay", "check composition", "subject feels off-center", "too much negative space"
 
 ## When not to use (delegation boundaries)
-- planning or editing camera framing → use `blender-composition-camera-planner` (`references/skill-blender-composition-camera-planner.md`; use blender-composition-camera-planner)
+- planning or editing camera framing → use `camera-composition` (`references/skill-camera-composition.md`; use camera-composition)
 - locking aspect ratio or resolution → use `resolution-aspect-decision` (`references/skill-resolution-aspect-decision.md`; use resolution-aspect-decision)
 - material validation → use `material-quality-checker` (`references/skill-material-quality-checker.md`; use material-quality-checker)
 - lighting validation → use `lighting-quality-checker` (`references/skill-lighting-quality-checker.md`; use lighting-quality-checker)
-- broad scene Pass/Warn/Fail readiness review → use `blender-scene-quality-checker` (`references/skill-blender-scene-quality-checker.md`; use blender-scene-quality-checker)
+- broad scene Pass/Warn/Fail readiness review → use `scene-readiness` (`references/skill-scene-readiness.md`; use scene-readiness)
 - classifying render or export artifact evidence → use `render-export-evidence` (`references/skill-render-export-evidence.md`; use render-export-evidence)
 
 ## Input & output contract
-- Required input `camera_and_framing_spec` (`object`): Camera focal length, sensor, angle, and subject placement from blender-composition-camera-planner
+- Required input `camera_and_framing_spec` (`object`): Camera focal length, sensor, angle, and subject placement from camera-composition
 - Required input `pinned_aspect_ratio_and_subject` (`object`): Locked aspect ratio and primary/secondary focal hierarchy from brief
 - Optional input `viewport_or_render_preview_notes` (`string`): Optional framing observations from a viewport or preview capture
 - Output contract: `composition_verdict_table`, `silhouette_and_headroom_assessment`, `camera_replan_remediation_hints` (Runtime status: `Not Run`, Artifact status: `Not Produced`, `downgrade_only`).
@@ -36,8 +36,8 @@ Metadata: Contract `v1.0.0` | Category `quality-validators` | Role `framing-and-
 5. emit per-row Pass/Warn/Fail verdicts, top-line status, and remediation hints (keep truth states separate and downgrade-only)
 
 ## Cross-skill handoffs
-- [progression] Broad scene readiness review (consumes these rows) → `blender-scene-quality-checker` (`references/skill-blender-scene-quality-checker.md`) — `when.all: [quality.domain equals "holistic"; stage.current equals "quality_validation"]`
-- [retry] Camera & framing re-plan → `blender-composition-camera-planner` (`references/skill-blender-composition-camera-planner.md`) — `when.all: [quality.domain equals "composition"; quality.verdict equals "Fail"]`; retryPolicy: `maxAttempts=2`, `exitCondition.all: [quality.verdict in ["Pass","Warn"]]`
+- [progression] Broad scene readiness review (consumes these rows) → `scene-readiness` (`references/skill-scene-readiness.md`) — `when.all: [quality.domain equals "holistic"; stage.current equals "quality_validation"]`
+- [retry] Camera & framing re-plan → `camera-composition` (`references/skill-camera-composition.md`) — `when.all: [quality.domain equals "composition"; quality.verdict equals "Fail"]`; retryPolicy: `maxAttempts=2`, `exitCondition.all: [quality.verdict in ["Pass","Warn"]]`
 - [retry] Aspect ratio & resolution locks → `resolution-aspect-decision` (`references/skill-resolution-aspect-decision.md`) — `when.all: [quality.domain equals "composition"; quality.verdict equals "Fail"]`; retryPolicy: `maxAttempts=2`, `exitCondition.all: [quality.verdict in ["Pass","Warn"]]`
 - [progression] Artifact evidence classification → `render-export-evidence` (`references/skill-render-export-evidence.md`) — `when.all: [stage.current equals "post_execution_audit"]`
 - [upstream_reference] Material validation → `material-quality-checker` (`references/skill-material-quality-checker.md`) — `when.all: [quality.domain equals "material"; quality.verdict equals "not_run"]`
@@ -45,9 +45,9 @@ Metadata: Contract `v1.0.0` | Category `quality-validators` | Role `framing-and-
 
 ## Safety boundaries & non-goals
 - Runtime boundary: This skill validates camera plans or measured scene snapshots only. It never moves the camera, never runs Blender, and never executes Python. Artifacts stay `Not Produced` unless concrete output evidence exists (classified by `render-export-evidence`), and truth states are strictly downgrade-only.
-- Move or edit the camera (owned by `blender-composition-camera-planner`).
+- Move or edit the camera (owned by `camera-composition`).
 - Lock aspect ratio or resolution (owned by `resolution-aspect-decision`).
 - Validate materials (`material-quality-checker`) or lighting (`lighting-quality-checker`).
-- Replace broad scene review (`blender-scene-quality-checker`).
+- Replace broad scene review (`scene-readiness`).
 - Classify render or export artifact evidence (`render-export-evidence`).
 - Run Blender or execute Python.

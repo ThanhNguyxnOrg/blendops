@@ -13,28 +13,28 @@ Baseline routes:
 - unclear next step → `blendops-help`
 - vague creative request, intent exploration → `blender-brainstorming` (Superpowers `/brainstorming` analog)
 - convert intent → 8-slot 3D brief → `intent-to-3d-brief-writer` (BMad analysis-phase analog)
-- per-asset acquisition strategy → `blender-asset-discovery-planner`
-- runtime setup prerequisites → `official-runtime-setup-guide`
-- runtime preflight/readiness → `official-runtime-readiness-checker`
-- MCP bridge conflicts (Path 1 + Path 2 + port 9876) → `runtime-bridge-conflict-resolver`
+- per-asset acquisition strategy → `asset-discovery`
+- runtime setup prerequisites → `runtime-setup`
+- runtime preflight/readiness → `runtime-readiness`
+- MCP bridge conflicts (Path 1 + Path 2 + port 9876) → `bridge-conflicts`
 - scene planning → `product-hero-scene-planner`
-- composition/camera planning → `blender-composition-camera-planner`
-- lighting/material planning → `blender-lighting-material-planner`
-- quality gate decision → `blender-scene-quality-checker`
+- composition/camera planning → `camera-composition`
+- lighting/material planning → `lighting-material-plan`
+- quality gate decision → `scene-readiness`
 - output looks wrong, root-cause analysis → `blender-troubleshooting` (Superpowers `/systematic-debugging` analog)
 - artifact truth/evidence → `render-export-evidence`
 - 7-point gate before any "ready" / `Verified` claim → `pre-handoff-verification` (Superpowers `/verification-before-completion` analog)
 - GLB/web handoff framing → `glb-web-handoff`
-- plain-language final answer → `non-blender-user-response-writer`
+- plain-language final answer → `plain-language-response`
 
 Expansion routes (load via the multi-file bundle for full SKILL.md content):
 - recipe/pack fit → `recipe-fit-assessor`; pre-flight → `pack-prerequisite-checker`; resume routing → `workflow-stage-router`; acceptance criteria → `acceptance-criteria-builder`
-- runtime path discipline: `runtime-path-picker`, `path-one-host-outline`, `cli-appendix-job-outline`, `runtime-attempt-report-writer`
-- web 3D deep: `glb-mobile-performance-budget`, `glb-animation-handoff`, `three-fiber-component-shape-planner`, `preview-report-template-writer`
+- runtime path discipline: `runtime-path-picker`, `path-one-host-outline`, `cli-appendix-job-outline`, `runtime-attempt-report`
+- web 3D deep: `mobile-glb-budget`, `glb-animation-handoff`, `r3f-component-plan`, `preview-report`
 - quality validators: `material-quality-checker`, `lighting-quality-checker`, `composition-quality-checker`, `polycount-budget-checker`
-- domain scene planners: `character-portrait-scene-planner`, `environment-establishing-shot-planner`, `interior-architectural-scene-planner`, `product-grid-scene-planner`
-- process discipline: `blender-checklist-driven-workflow`, `blender-stop-condition-decider`, `blender-scope-boundary-enforcer`, `blender-recipe-decomposer`
-- asset/sourcing: `asset-license-checker`, `asset-style-consistency-checker`, `asset-fallback-strategy`, `asset-library-organization-planner`
+- domain scene planners: `character-portrait`, `environment-shot`, `interior-scene`, `product-grid-scene-planner`
+- process discipline: `stage-gates`, `done-criteria`, `scope-guard`, `blender-recipe-decomposer`
+- asset/sourcing: `asset-license-checker`, `asset-style-check`, `asset-fallback-strategy`, `asset-library-plan`
 - color/format/output: `color-management-decision`, `output-format-decision`, `resolution-aspect-decision`, `cycles-vs-eevee-decision`
 
 ## Runtime boundary

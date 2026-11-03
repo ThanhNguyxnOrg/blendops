@@ -25,16 +25,16 @@ Turn user intent or an upstream brief into a complete, plain-language product-he
 
 ## When not to use
 - to execute Blender commands, write Python, or claim generated artifacts → delegate to `intent-to-3d-brief-writer` (`references/skills/intent-to-3d-brief-writer.md`; Delegates out-of-scope requests to intent-to-3d-brief-writer)
-- to skip unresolved critical ambiguity or hide missing inputs → delegate to `blender-composition-camera-planner` (`references/skills/blender-composition-camera-planner.md`; Delegates out-of-scope requests to blender-composition-camera-planner)
+- to skip unresolved critical ambiguity or hide missing inputs → delegate to `camera-composition` (`references/skills/camera-composition.md`; Delegates out-of-scope requests to camera-composition)
 - when raw user intent still needs initial brief normalization → delegate to `intent-to-3d-brief-writer` (`references/skills/intent-to-3d-brief-writer.md`; use intent-to-3d-brief-writer first)
 - when planning a multi-item catalog or grid layout → delegate to `product-grid-scene-planner` (`references/skills/product-grid-scene-planner.md`; use product-grid-scene-planner)
-- when deep-diving camera/framing mechanics → delegate to `blender-composition-camera-planner` (`references/skills/blender-composition-camera-planner.md`; use blender-lighting-material-planner)
-- when writing measurable pass/fail acceptance tables → delegate to `acceptance-criteria-builder` (`references/skills/acceptance-criteria-builder.md`; use blender-scene-quality-checker)
+- when deep-diving camera/framing mechanics → delegate to `camera-composition` (`references/skills/camera-composition.md`; use lighting-material-plan)
+- when writing measurable pass/fail acceptance tables → delegate to `acceptance-criteria-builder` (`references/skills/acceptance-criteria-builder.md`; use scene-readiness)
 
 ## Inputs & output/evidence contract
 ### Required inputs
 - `locked_3d_brief` (`object`): Locked 8-slot 3D brief defining the hero product, hero feature callout, mood, and output channel
-- `sourced_product_asset_status` (`object`): Hero product model posture and material readiness from blender-asset-discovery-planner
+- `sourced_product_asset_status` (`object`): Hero product model posture and material readiness from asset-discovery
 
 ### Optional inputs
 - `pack_context` (`string`): Optional pack reference such as packs/product-hero-v0/PACK.md
@@ -52,11 +52,11 @@ Turn user intent or an upstream brief into a complete, plain-language product-he
 
 ## Handoff notes
 - **[upstream_reference]** Upstream input (if raw prompt needs structuring) → `intent-to-3d-brief-writer` (`references/skills/intent-to-3d-brief-writer.md`) — `when.all: [goal.clarity equals "clear"; brief.locked equals false]`
-- **[progression]** Next (deep-dive framing & camera) → `blender-composition-camera-planner` (`references/skills/blender-composition-camera-planner.md`) — `when.all: [brief.locked equals true; stage.current equals "camera_planning"]`
-- **[progression]** Next (deep-dive lookdev & lighting) → `blender-lighting-material-planner` (`references/skills/blender-lighting-material-planner.md`) — `when.all: [brief.locked equals true; stage.current equals "lookdev_planning"]`
+- **[progression]** Next (deep-dive framing & camera) → `camera-composition` (`references/skills/camera-composition.md`) — `when.all: [brief.locked equals true; stage.current equals "camera_planning"]`
+- **[progression]** Next (deep-dive lookdev & lighting) → `lighting-material-plan` (`references/skills/lighting-material-plan.md`) — `when.all: [brief.locked equals true; stage.current equals "lookdev_planning"]`
 - **[fallback]** Then (measurable pass/fail rows) → `acceptance-criteria-builder` (`references/skills/acceptance-criteria-builder.md`) — `when.all: [brief.locked equals true; stage.current equals "acceptance_criteria"]`
-- **[upstream_reference]** Then (pin done condition) → `blender-stop-condition-decider` (`references/skills/blender-stop-condition-decider.md`) — `when.all: [brief.locked equals true; stage.current equals "stop_condition"]`
-- **[progression]** Later (post-build readiness review) → `blender-scene-quality-checker` (`references/skills/blender-scene-quality-checker.md`) — `when.all: [quality.domain equals "holistic"; stage.current equals "quality_validation"]`
+- **[upstream_reference]** Then (pin done condition) → `done-criteria` (`references/skills/done-criteria.md`) — `when.all: [brief.locked equals true; stage.current equals "stop_condition"]`
+- **[progression]** Later (post-build readiness review) → `scene-readiness` (`references/skills/scene-readiness.md`) — `when.all: [quality.domain equals "holistic"; stage.current equals "quality_validation"]`
 - **[conditional]** Delivery handoff (when web/render output is targeted) (glb-web-handoff) → `glb-web-handoff` (`references/skills/glb-web-handoff.md`) — `when.all: [artifact.type equals "glb"; handoff.consumerStack equals "web_glb"]`
 - **[conditional]** Delivery handoff (when web/render output is targeted) (render-export-evidence) → `render-export-evidence` (`references/skills/render-export-evidence.md`) — `when.all: [stage.current equals "post_execution_audit"]`
 
@@ -65,4 +65,4 @@ Turn user intent or an upstream brief into a complete, plain-language product-he
 - executing Blender commands, MCP mutations, or CLI jobs
 - writing Python scripts
 - claiming `Attempted`, `Produced`, or `Verified` runtime/artifact states
-- replacing `intent-to-3d-brief-writer` (upstream brief), `blender-composition-camera-planner` (deep framing), `blender-lighting-material-planner` (deep lookdev), `acceptance-criteria-builder` (measurable acceptance rows), `blender-stop-condition-decider` (done conditions), or `blender-scene-quality-checker` (readiness review)
+- replacing `intent-to-3d-brief-writer` (upstream brief), `camera-composition` (deep framing), `lighting-material-plan` (deep lookdev), `acceptance-criteria-builder` (measurable acceptance rows), `done-criteria` (done conditions), or `scene-readiness` (readiness review)

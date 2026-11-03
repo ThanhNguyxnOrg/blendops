@@ -16,13 +16,13 @@
   "exclusions": [
     {
       "condition": "the user only needs a scene plan with no runtime or artifact evidence",
-      "delegateTo": "official-runtime-readiness-checker",
-      "reason": "Delegates out-of-scope requests to official-runtime-readiness-checker"
+      "delegateTo": "runtime-readiness",
+      "reason": "Delegates out-of-scope requests to runtime-readiness"
     },
     {
-      "condition": "runtime readiness or path selection has not been completed and the user wants setup or routing; use official-runtime-readiness-checker or runtime-path-picker",
-      "delegateTo": "official-runtime-readiness-checker",
-      "reason": "Delegates out-of-scope requests to official-runtime-readiness-checker"
+      "condition": "runtime readiness or path selection has not been completed and the user wants setup or routing; use runtime-readiness or runtime-path-picker",
+      "delegateTo": "runtime-readiness",
+      "reason": "Delegates out-of-scope requests to runtime-readiness"
     },
     {
       "condition": "the task is gating a handoff via confirm-or-downgrade rules; use pre-handoff-verification",
@@ -30,9 +30,9 @@
       "reason": "Delegates out-of-scope requests to pre-handoff-verification"
     },
     {
-      "condition": "the task is rendering the formatted preview/eval report Markdown; use preview-report-template-writer",
-      "delegateTo": "preview-report-template-writer",
-      "reason": "Delegates out-of-scope requests to preview-report-template-writer"
+      "condition": "the task is rendering the formatted preview/eval report Markdown; use preview-report",
+      "delegateTo": "preview-report",
+      "reason": "Delegates out-of-scope requests to preview-report"
     },
     {
       "condition": "the task is GLB web integration after evidence is already classified and gated; use glb-web-handoff",
@@ -75,7 +75,7 @@
   },
   "handoffs": [
     {
-      "target": "official-runtime-readiness-checker",
+      "target": "runtime-readiness",
       "type": "upstream_reference",
       "label": "Runtime readiness",
       "when": {
@@ -94,7 +94,7 @@
       }
     },
     {
-      "target": "runtime-attempt-report-writer",
+      "target": "runtime-attempt-report",
       "type": "upstream_reference",
       "label": "Runtime attempt recording",
       "when": {
@@ -118,7 +118,7 @@
       }
     },
     {
-      "target": "blender-scene-quality-checker",
+      "target": "scene-readiness",
       "type": "upstream_reference",
       "label": "Scene validation",
       "when": {
@@ -151,7 +151,7 @@
       }
     },
     {
-      "target": "preview-report-template-writer",
+      "target": "preview-report",
       "type": "progression",
       "label": "Report Markdown rendering",
       "when": {
@@ -189,7 +189,7 @@
       }
     },
     {
-      "target": "non-blender-user-response-writer",
+      "target": "plain-language-response",
       "type": "progression",
       "label": "User-facing explanation",
       "when": {

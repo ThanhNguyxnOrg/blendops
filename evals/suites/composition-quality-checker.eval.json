@@ -20,7 +20,7 @@
     {
       "id": "composition-quality-checker-normal-in-scope-handoff",
       "skillId": "composition-quality-checker",
-      "scenario": "Normal in-scope execution of composition-quality-checker (framing-and-silhouette-validator) with contract handoff to blender-scene-quality-checker",
+      "scenario": "Normal in-scope execution of composition-quality-checker (framing-and-silhouette-validator) with contract handoff to scene-readiness",
       "category": "normal",
       "inputPrompt": "Use composition-quality-checker on a 16:9 product hero card camera plan where the subject is placed at the right-third intersection, occupies 60% frame width, has 12% headroom, and uses an 85mm lens.",
       "preconditions": {
@@ -32,13 +32,13 @@
       "expectedBehavior": [
         "Produces composition_verdict_table, silhouette_and_headroom_assessment, camera_replan_remediation_hints for role framing-and-silhouette-validator",
         "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
-        "Evaluates contract handoff predicate and hands off to blender-scene-quality-checker (Broad scene readiness review (consumes these rows))"
+        "Evaluates contract handoff predicate and hands off to scene-readiness (Broad scene readiness review (consumes these rows))"
       ],
       "requiredOutputProperties": [
         "7 check rows",
         "headroom",
         "negative space",
-        "blender-scene-quality-checker",
+        "scene-readiness",
         "Runtime: Not Run",
         "Artifact: Not Produced"
       ],
@@ -48,7 +48,7 @@
         "Artifact: Not Run",
         "Artifact: Not Run"
       ],
-      "expectedRoutingTarget": "blender-scene-quality-checker",
+      "expectedRoutingTarget": "scene-readiness",
       "truthStateExpectations": {
         "runtimeStatus": "Not Run",
         "artifactStatus": "Not Produced"
@@ -57,7 +57,7 @@
       "severity": "P0",
       "evidenceRequirements": [
         "Outputs composition_verdict_table, silhouette_and_headroom_assessment, camera_replan_remediation_hints conforming to skills/composition-quality-checker/SKILL.md",
-        "Matches contract handoff predicate to blender-scene-quality-checker in skills/composition-quality-checker/contract.json"
+        "Matches contract handoff predicate to scene-readiness in skills/composition-quality-checker/contract.json"
       ],
       "deterministicFixture": {
         "handoffContext": {
@@ -66,11 +66,11 @@
         },
         "simulatedOutput": {
           "mode": "Text-only framing-and-silhouette-validator (composition-quality-checker)",
-          "recommendedNextAction": "Complete composition_verdict_table and hand off to blender-scene-quality-checker (Broad scene readiness review (consumes these rows)).",
-          "targetHandoff": "blender-scene-quality-checker",
+          "recommendedNextAction": "Complete composition_verdict_table and hand off to scene-readiness (Broad scene readiness review (consumes these rows)).",
+          "targetHandoff": "scene-readiness",
           "runtimeStatus": "Not Run",
           "artifactStatus": "Not Produced",
-          "summary": "Evaluated 7 composition check rows (rule of thirds, subject placement, headroom, lead room, negative space, visual hierarchy, lens/FOV) with top-line Pass verdict. Delivered 7 check rows, headroom, negative space and routed to blender-scene-quality-checker.",
+          "summary": "Evaluated 7 composition check rows (rule of thirds, subject placement, headroom, lead room, negative space, visual hierarchy, lens/FOV) with top-line Pass verdict. Delivered 7 check rows, headroom, negative space and routed to scene-readiness.",
           "warnings": [
             "Text-only workflow output; no live Blender session or artifact was executed."
           ],
@@ -87,7 +87,7 @@
     {
       "id": "composition-quality-checker-secondary-contract-handoff",
       "skillId": "composition-quality-checker",
-      "scenario": "Secondary retry contract handoff from composition-quality-checker to blender-composition-camera-planner",
+      "scenario": "Secondary retry contract handoff from composition-quality-checker to camera-composition",
       "category": "blocked_or_adversarial",
       "inputPrompt": "While applying composition-quality-checker, the workflow context is {\"quality.domain\":\"composition\",\"quality.verdict\":\"Fail\"} (Camera & framing re-plan). Determine the contract-governed handoff target.",
       "preconditions": {
@@ -97,10 +97,10 @@
       },
       "expectedBehavior": [
         "Evaluates the retry handoff predicate in skills/composition-quality-checker/contract.json",
-        "Routes to blender-composition-camera-planner (Camera & framing re-plan) without claiming runtime execution"
+        "Routes to camera-composition (Camera & framing re-plan) without claiming runtime execution"
       ],
       "requiredOutputProperties": [
-        "blender-composition-camera-planner",
+        "camera-composition",
         "retry",
         "Runtime: Not Run",
         "Artifact: Not Produced"
@@ -111,7 +111,7 @@
         "Artifact: Not Run",
         "Artifact: Not Run"
       ],
-      "expectedRoutingTarget": "blender-composition-camera-planner",
+      "expectedRoutingTarget": "camera-composition",
       "truthStateExpectations": {
         "runtimeStatus": "Not Run",
         "artifactStatus": "Not Produced"
@@ -119,7 +119,7 @@
       "evaluationType": "contract_handoff",
       "severity": "P1",
       "evidenceRequirements": [
-        "Contract retry handoff predicate match to blender-composition-camera-planner"
+        "Contract retry handoff predicate match to camera-composition"
       ],
       "deterministicFixture": {
         "handoffContext": {
@@ -128,13 +128,13 @@
         },
         "simulatedOutput": {
           "mode": "Text-only composition-quality-checker (retry handoff)",
-          "recommendedNextAction": "Follow retry handoff to blender-composition-camera-planner (Camera & framing re-plan).",
-          "targetHandoff": "blender-composition-camera-planner",
+          "recommendedNextAction": "Follow retry handoff to camera-composition (Camera & framing re-plan).",
+          "targetHandoff": "camera-composition",
           "runtimeStatus": "Not Run",
           "artifactStatus": "Not Produced",
-          "summary": "Triggered retry handoff from composition-quality-checker to blender-composition-camera-planner under context {\"quality.domain\":\"composition\",\"quality.verdict\":\"Fail\"}.",
+          "summary": "Triggered retry handoff from composition-quality-checker to camera-composition under context {\"quality.domain\":\"composition\",\"quality.verdict\":\"Fail\"}.",
           "warnings": [
-            "Bounded retry handoff to blender-composition-camera-planner (maxAttempts=2)."
+            "Bounded retry handoff to camera-composition (maxAttempts=2)."
           ],
           "evidenceCitations": [
             "skills/composition-quality-checker/contract.json",
@@ -268,7 +268,7 @@
     {
       "id": "composition-quality-checker-out-of-scope-exclusion-delegation",
       "skillId": "composition-quality-checker",
-      "scenario": "Out-of-scope request (planning or editing camera framing) is excluded from composition-quality-checker and delegated to blender-composition-camera-planner",
+      "scenario": "Out-of-scope request (planning or editing camera framing) is excluded from composition-quality-checker and delegated to camera-composition",
       "category": "scope_creep",
       "inputPrompt": "Instead of validate camera framing, subject placement, headroom/lead-room, and visual hierarchy against the scene brief before render., handle this request inside composition-quality-checker: planning or editing camera framing.",
       "preconditions": {
@@ -278,10 +278,10 @@
       },
       "expectedBehavior": [
         "Enforces the declared exclusion boundary in skills/composition-quality-checker/contract.json when planning or editing camera framing",
-        "Delegates to blender-composition-camera-planner (use blender-composition-camera-planner) with Runtime: Not Run and Artifact: Not Produced"
+        "Delegates to camera-composition (use camera-composition) with Runtime: Not Run and Artifact: Not Produced"
       ],
       "requiredOutputProperties": [
-        "blender-composition-camera-planner",
+        "camera-composition",
         "out of scope",
         "Runtime: Not Run",
         "Artifact: Not Produced"
@@ -292,7 +292,7 @@
         "Artifact: Not Run",
         "handled inside composition-quality-checker anyway"
       ],
-      "expectedRoutingTarget": "blender-composition-camera-planner",
+      "expectedRoutingTarget": "camera-composition",
       "truthStateExpectations": {
         "runtimeStatus": "Not Run",
         "artifactStatus": "Not Produced"
@@ -300,23 +300,23 @@
       "evaluationType": "deterministic_fixture",
       "severity": "P1",
       "evidenceRequirements": [
-        "Exclusion delegation to blender-composition-camera-planner per skills/composition-quality-checker/contract.json"
+        "Exclusion delegation to camera-composition per skills/composition-quality-checker/contract.json"
       ],
       "deterministicFixture": {
         "simulatedOutput": {
           "mode": "Out-of-scope exclusion gate (composition-quality-checker)",
-          "recommendedNextAction": "Request is out of scope for composition-quality-checker (planning or editing camera framing); delegate to blender-composition-camera-planner.",
-          "targetHandoff": "blender-composition-camera-planner",
+          "recommendedNextAction": "Request is out of scope for composition-quality-checker (planning or editing camera framing); delegate to camera-composition.",
+          "targetHandoff": "camera-composition",
           "runtimeStatus": "Not Run",
           "artifactStatus": "Not Produced",
-          "summary": "Enforced composition-quality-checker exclusion boundary (use blender-composition-camera-planner) and delegated to blender-composition-camera-planner.",
+          "summary": "Enforced composition-quality-checker exclusion boundary (use camera-composition) and delegated to camera-composition.",
           "warnings": [
-            "composition-quality-checker is scoped to framing-and-silhouette-validator and does not absorb blender-composition-camera-planner responsibilities."
+            "composition-quality-checker is scoped to framing-and-silhouette-validator and does not absorb camera-composition responsibilities."
           ],
           "evidenceCitations": [
             "skills/composition-quality-checker/contract.json",
             "skills/composition-quality-checker/SKILL.md",
-            "skills/blender-composition-camera-planner/SKILL.md"
+            "skills/camera-composition/SKILL.md"
           ]
         }
       }

@@ -79,18 +79,18 @@
       },
       "expectedBehavior": [
         "Marks missing slots explicitly as Unknown and batches 3 targeted questions in one turn",
-        "Echoes draft 8-slot brief before handing off to blender-asset-discovery-planner"
+        "Echoes draft 8-slot brief before handing off to asset-discovery"
       ],
       "requiredOutputProperties": [
         "Unknown",
         "batched 3 missing-slot questions",
-        "blender-asset-discovery-planner"
+        "asset-discovery"
       ],
       "forbiddenOutputProperties": [
         "invented owner",
         "Artifact: Verified"
       ],
-      "expectedRoutingTarget": "blender-asset-discovery-planner",
+      "expectedRoutingTarget": "asset-discovery",
       "truthStateExpectations": {
         "runtimeStatus": "Not Run",
         "artifactStatus": "Not Produced"
@@ -103,8 +103,8 @@
       "deterministicFixture": {
         "simulatedOutput": {
           "mode": "Text-only 8-slot brief authoring",
-          "recommendedNextAction": "Resolve the batched 3 missing-slot questions (marked Unknown) and advance to blender-asset-discovery-planner.",
-          "targetHandoff": "blender-asset-discovery-planner",
+          "recommendedNextAction": "Resolve the batched 3 missing-slot questions (marked Unknown) and advance to asset-discovery.",
+          "targetHandoff": "asset-discovery",
           "runtimeStatus": "Not Run",
           "artifactStatus": "Not Produced",
           "summary": "Wrote draft 8-slot brief with Unknown slots explicitly flagged and batched 3 missing-slot questions.",
@@ -179,18 +179,18 @@
       },
       "expectedBehavior": [
         "Flags the conflict in Slot 4 (Constraints) and prompts user to resolve before locking",
-        "Routes to glb-mobile-performance-budget to reconcile mobile budget targets"
+        "Routes to mobile-glb-budget to reconcile mobile budget targets"
       ],
       "requiredOutputProperties": [
         "conflict flag",
         "Slot 4",
-        "glb-mobile-performance-budget"
+        "mobile-glb-budget"
       ],
       "forbiddenOutputProperties": [
         "no conflict found",
         "Artifact: Verified"
       ],
-      "expectedRoutingTarget": "glb-mobile-performance-budget",
+      "expectedRoutingTarget": "mobile-glb-budget",
       "truthStateExpectations": {
         "runtimeStatus": "Not Run",
         "artifactStatus": "Not Produced"
@@ -203,8 +203,8 @@
       "deterministicFixture": {
         "simulatedOutput": {
           "mode": "Text-only 8-slot brief authoring",
-          "recommendedNextAction": "Resolve the Slot 4 conflict flag via glb-mobile-performance-budget before locking the brief.",
-          "targetHandoff": "glb-mobile-performance-budget",
+          "recommendedNextAction": "Resolve the Slot 4 conflict flag via mobile-glb-budget before locking the brief.",
+          "targetHandoff": "mobile-glb-budget",
           "runtimeStatus": "Not Run",
           "artifactStatus": "Not Produced",
           "summary": "Raised conflict flag in Slot 4 between instant mobile web GLB delivery and 50MB budget.",

@@ -20,7 +20,7 @@
     {
       "id": "polycount-budget-checker-normal-in-scope-handoff",
       "skillId": "polycount-budget-checker",
-      "scenario": "Normal in-scope execution of polycount-budget-checker (geometry-and-topology-budget-validator) with contract handoff to blender-scene-quality-checker",
+      "scenario": "Normal in-scope execution of polycount-budget-checker (geometry-and-topology-budget-validator) with contract handoff to scene-readiness",
       "category": "normal",
       "inputPrompt": "Use polycount-budget-checker to audit a 4-mesh sneaker scene (`Upper_Mesh`: 28k tris, `Sole_Mesh`: 18k tris, `Laces_Mesh`: 14k tris, `Logo_Tag`: 2k tris; total 62k tris) against a 65k total and 25k per-mesh budget.",
       "preconditions": {
@@ -32,13 +32,13 @@
       "expectedBehavior": [
         "Produces polycount_and_topology_verdict_table, top_budget_offenders_ranking, decimation_or_retopology_remediation_plan for role geometry-and-topology-budget-validator",
         "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
-        "Evaluates contract handoff predicate and hands off to blender-scene-quality-checker (Broad readiness review)"
+        "Evaluates contract handoff predicate and hands off to scene-readiness (Broad readiness review)"
       ],
       "requiredOutputProperties": [
         "per-mesh triangle row",
         "worst offender",
         "65k total cap",
-        "blender-scene-quality-checker",
+        "scene-readiness",
         "Runtime: Not Run",
         "Artifact: Not Produced"
       ],
@@ -48,7 +48,7 @@
         "Artifact: Not Run",
         "Artifact: Not Run"
       ],
-      "expectedRoutingTarget": "blender-scene-quality-checker",
+      "expectedRoutingTarget": "scene-readiness",
       "truthStateExpectations": {
         "runtimeStatus": "Not Run",
         "artifactStatus": "Not Produced"
@@ -57,7 +57,7 @@
       "severity": "P0",
       "evidenceRequirements": [
         "Outputs polycount_and_topology_verdict_table, top_budget_offenders_ranking, decimation_or_retopology_remediation_plan conforming to skills/polycount-budget-checker/SKILL.md",
-        "Matches contract handoff predicate to blender-scene-quality-checker in skills/polycount-budget-checker/contract.json"
+        "Matches contract handoff predicate to scene-readiness in skills/polycount-budget-checker/contract.json"
       ],
       "deterministicFixture": {
         "handoffContext": {
@@ -66,11 +66,11 @@
         },
         "simulatedOutput": {
           "mode": "Text-only geometry-and-topology-budget-validator (polycount-budget-checker)",
-          "recommendedNextAction": "Complete polycount_and_topology_verdict_table and hand off to blender-scene-quality-checker (Broad readiness review).",
-          "targetHandoff": "blender-scene-quality-checker",
+          "recommendedNextAction": "Complete polycount_and_topology_verdict_table and hand off to scene-readiness (Broad readiness review).",
+          "targetHandoff": "scene-readiness",
           "runtimeStatus": "Not Run",
           "artifactStatus": "Not Produced",
-          "summary": "Evaluated per-mesh and total triangle counts against the 65k total / 25k per-mesh caps; flagged `Upper_Mesh` (28k > 25k cap) as worst offender with non-destructive topology hints. Delivered per-mesh triangle row, worst offender, 65k total cap and routed to blender-scene-quality-checker.",
+          "summary": "Evaluated per-mesh and total triangle counts against the 65k total / 25k per-mesh caps; flagged `Upper_Mesh` (28k > 25k cap) as worst offender with non-destructive topology hints. Delivered per-mesh triangle row, worst offender, 65k total cap and routed to scene-readiness.",
           "warnings": [
             "Text-only workflow output; no live Blender session or artifact was executed."
           ],
@@ -87,7 +87,7 @@
     {
       "id": "polycount-budget-checker-secondary-contract-handoff",
       "skillId": "polycount-budget-checker",
-      "scenario": "Secondary upstream_reference contract handoff from polycount-budget-checker to glb-mobile-performance-budget",
+      "scenario": "Secondary upstream_reference contract handoff from polycount-budget-checker to mobile-glb-budget",
       "category": "structured_skip",
       "inputPrompt": "While applying polycount-budget-checker, the workflow context is {\"artifact.type\":\"glb\",\"budget.pinned\":false} (Pinned budget source). Determine the contract-governed handoff target.",
       "preconditions": {
@@ -97,10 +97,10 @@
       },
       "expectedBehavior": [
         "Evaluates the upstream_reference handoff predicate in skills/polycount-budget-checker/contract.json",
-        "Routes to glb-mobile-performance-budget (Pinned budget source) without claiming runtime execution"
+        "Routes to mobile-glb-budget (Pinned budget source) without claiming runtime execution"
       ],
       "requiredOutputProperties": [
-        "glb-mobile-performance-budget",
+        "mobile-glb-budget",
         "upstream_reference",
         "Runtime: Not Run",
         "Artifact: Not Produced"
@@ -111,7 +111,7 @@
         "Artifact: Not Run",
         "Artifact: Not Run"
       ],
-      "expectedRoutingTarget": "glb-mobile-performance-budget",
+      "expectedRoutingTarget": "mobile-glb-budget",
       "truthStateExpectations": {
         "runtimeStatus": "Not Run",
         "artifactStatus": "Not Produced"
@@ -119,7 +119,7 @@
       "evaluationType": "contract_handoff",
       "severity": "P1",
       "evidenceRequirements": [
-        "Contract upstream_reference handoff predicate match to glb-mobile-performance-budget"
+        "Contract upstream_reference handoff predicate match to mobile-glb-budget"
       ],
       "deterministicFixture": {
         "handoffContext": {
@@ -128,11 +128,11 @@
         },
         "simulatedOutput": {
           "mode": "Text-only polycount-budget-checker (upstream_reference handoff)",
-          "recommendedNextAction": "Follow upstream_reference handoff to glb-mobile-performance-budget (Pinned budget source).",
-          "targetHandoff": "glb-mobile-performance-budget",
+          "recommendedNextAction": "Follow upstream_reference handoff to mobile-glb-budget (Pinned budget source).",
+          "targetHandoff": "mobile-glb-budget",
           "runtimeStatus": "Not Run",
           "artifactStatus": "Not Produced",
-          "summary": "Triggered upstream_reference handoff from polycount-budget-checker to glb-mobile-performance-budget under context {\"artifact.type\":\"glb\",\"budget.pinned\":false}.",
+          "summary": "Triggered upstream_reference handoff from polycount-budget-checker to mobile-glb-budget under context {\"artifact.type\":\"glb\",\"budget.pinned\":false}.",
           "warnings": [
             "Contract-governed upstream_reference handoff."
           ],
@@ -268,7 +268,7 @@
     {
       "id": "polycount-budget-checker-out-of-scope-exclusion-delegation",
       "skillId": "polycount-budget-checker",
-      "scenario": "Out-of-scope request (pinning or negotiating the performance budget itself) is excluded from polycount-budget-checker and delegated to glb-mobile-performance-budget",
+      "scenario": "Out-of-scope request (pinning or negotiating the performance budget itself) is excluded from polycount-budget-checker and delegated to mobile-glb-budget",
       "category": "scope_creep",
       "inputPrompt": "Instead of validate per-mesh and total-scene triangle counts against the pinned budget; flag worst offenders and topology hints without modeling., handle this request inside polycount-budget-checker: pinning or negotiating the performance budget itself.",
       "preconditions": {
@@ -278,10 +278,10 @@
       },
       "expectedBehavior": [
         "Enforces the declared exclusion boundary in skills/polycount-budget-checker/contract.json when pinning or negotiating the performance budget itself",
-        "Delegates to glb-mobile-performance-budget (use glb-mobile-performance-budget) with Runtime: Not Run and Artifact: Not Produced"
+        "Delegates to mobile-glb-budget (use mobile-glb-budget) with Runtime: Not Run and Artifact: Not Produced"
       ],
       "requiredOutputProperties": [
-        "glb-mobile-performance-budget",
+        "mobile-glb-budget",
         "out of scope",
         "Runtime: Not Run",
         "Artifact: Not Produced"
@@ -292,7 +292,7 @@
         "Artifact: Not Run",
         "handled inside polycount-budget-checker anyway"
       ],
-      "expectedRoutingTarget": "glb-mobile-performance-budget",
+      "expectedRoutingTarget": "mobile-glb-budget",
       "truthStateExpectations": {
         "runtimeStatus": "Not Run",
         "artifactStatus": "Not Produced"
@@ -300,23 +300,23 @@
       "evaluationType": "deterministic_fixture",
       "severity": "P1",
       "evidenceRequirements": [
-        "Exclusion delegation to glb-mobile-performance-budget per skills/polycount-budget-checker/contract.json"
+        "Exclusion delegation to mobile-glb-budget per skills/polycount-budget-checker/contract.json"
       ],
       "deterministicFixture": {
         "simulatedOutput": {
           "mode": "Out-of-scope exclusion gate (polycount-budget-checker)",
-          "recommendedNextAction": "Request is out of scope for polycount-budget-checker (pinning or negotiating the performance budget itself); delegate to glb-mobile-performance-budget.",
-          "targetHandoff": "glb-mobile-performance-budget",
+          "recommendedNextAction": "Request is out of scope for polycount-budget-checker (pinning or negotiating the performance budget itself); delegate to mobile-glb-budget.",
+          "targetHandoff": "mobile-glb-budget",
           "runtimeStatus": "Not Run",
           "artifactStatus": "Not Produced",
-          "summary": "Enforced polycount-budget-checker exclusion boundary (use glb-mobile-performance-budget) and delegated to glb-mobile-performance-budget.",
+          "summary": "Enforced polycount-budget-checker exclusion boundary (use mobile-glb-budget) and delegated to mobile-glb-budget.",
           "warnings": [
-            "polycount-budget-checker is scoped to geometry-and-topology-budget-validator and does not absorb glb-mobile-performance-budget responsibilities."
+            "polycount-budget-checker is scoped to geometry-and-topology-budget-validator and does not absorb mobile-glb-budget responsibilities."
           ],
           "evidenceCitations": [
             "skills/polycount-budget-checker/contract.json",
             "skills/polycount-budget-checker/SKILL.md",
-            "skills/glb-mobile-performance-budget/SKILL.md"
+            "skills/mobile-glb-budget/SKILL.md"
           ]
         }
       }

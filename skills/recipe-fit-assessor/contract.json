@@ -184,7 +184,7 @@
       }
     },
     {
-      "target": "character-portrait-scene-planner",
+      "target": "character-portrait",
       "type": "alternative",
       "label": "Domain scene planner (character portrait)",
       "when": {
@@ -195,7 +195,7 @@
       }
     },
     {
-      "target": "environment-establishing-shot-planner",
+      "target": "environment-shot",
       "type": "alternative",
       "label": "Domain scene planner (environment establishing shot)",
       "when": {
@@ -206,7 +206,7 @@
       }
     },
     {
-      "target": "interior-architectural-scene-planner",
+      "target": "interior-scene",
       "type": "alternative",
       "label": "Domain scene planner (interior architectural)",
       "when": {

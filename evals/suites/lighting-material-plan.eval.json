@@ -1,0 +1,324 @@
+{
+  "schemaVersion": "2.0.0",
+  "skillId": "lighting-material-plan",
+  "category": "scene-planners",
+  "isContractedSkill": true,
+  "isRoutingParticipant": false,
+  "contractPath": "skills/lighting-material-plan/contract.json",
+  "skillMarkdownPath": "skills/lighting-material-plan/SKILL.md",
+  "evalMarkdownPath": "skills/lighting-material-plan/EVAL.md",
+  "sourceEvalTier": "prose_outline_contract_migrated",
+  "evaluationStatus": {
+    "staticValidation": "Passed",
+    "deterministicFixture": "Passed",
+    "contractRouting": "Not Applicable",
+    "contractHandoff": "Passed",
+    "liveModel": "Not Run",
+    "blenderRuntime": "Not Run"
+  },
+  "cases": [
+    {
+      "id": "lighting-material-plan-normal-in-scope-handoff",
+      "skillId": "lighting-material-plan",
+      "scenario": "Normal in-scope execution of lighting-material-plan (lighting-rig-and-lookdev-deep-planner) with contract handoff to color-management-decision",
+      "category": "normal",
+      "inputPrompt": "Use lighting-material-plan to plan a 3-point studio area-light rig (key/fill/rim ratios 4:1:2) plus Principled BSDF brushed titanium and sapphire glass materials for our watch hero scene.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Primary inputs (domain_scene_plan) provided in text-only planning/audit mode."
+      },
+      "expectedBehavior": [
+        "Produces key_fill_rim_lighting_plan, pbr_material_and_roughness_spec, hdri_and_reflection_strategy for role lighting-rig-and-lookdev-deep-planner",
+        "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
+        "Evaluates contract handoff predicate and hands off to color-management-decision (Upstream input from (color-management-decision))"
+      ],
+      "requiredOutputProperties": [
+        "key/fill/rim ratio",
+        "Principled BSDF",
+        "roughness",
+        "color-management-decision",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "materials rendered and verified",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "color-management-decision",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Outputs key_fill_rim_lighting_plan, pbr_material_and_roughness_spec, hdri_and_reflection_strategy conforming to skills/lighting-material-plan/SKILL.md",
+        "Matches contract handoff predicate to color-management-decision in skills/lighting-material-plan/contract.json"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.colorLocked": false
+        },
+        "simulatedOutput": {
+          "mode": "Text-only lighting-rig-and-lookdev-deep-planner (lighting-material-plan)",
+          "recommendedNextAction": "Complete key_fill_rim_lighting_plan and hand off to color-management-decision (Upstream input from (color-management-decision)).",
+          "targetHandoff": "color-management-decision",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Specified 3-point area light rig (key/fill/rim exposure ratios, studio HDRI rotation) and Principled BSDF roughness/metallic/IOR parameters. Delivered key/fill/rim ratio, Principled BSDF, roughness and routed to color-management-decision.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/lighting-material-plan/SKILL.md",
+            "skills/lighting-material-plan/EVAL.md",
+            "skills/lighting-material-plan/contract.json",
+            "skills/lighting-material-plan/references/cyberpunk-lookdev.md",
+            "skills/lighting-material-plan/references/lighting-patterns.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "lighting-material-plan-secondary-contract-handoff",
+      "skillId": "lighting-material-plan",
+      "scenario": "Secondary upstream_reference contract handoff from lighting-material-plan to camera-composition",
+      "category": "structured_skip",
+      "inputPrompt": "While applying lighting-material-plan, the workflow context is {\"brief.locked\":true,\"stage.current\":\"camera_planning\"} (Upstream input from (camera-composition)). Determine the contract-governed handoff target.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates the upstream_reference handoff predicate in skills/lighting-material-plan/contract.json",
+        "Routes to camera-composition (Upstream input from (camera-composition)) without claiming runtime execution"
+      ],
+      "requiredOutputProperties": [
+        "camera-composition",
+        "upstream_reference",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "materials rendered and verified",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "camera-composition",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Contract upstream_reference handoff predicate match to camera-composition"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "brief.locked": true,
+          "stage.current": "camera_planning"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only lighting-material-plan (upstream_reference handoff)",
+          "recommendedNextAction": "Follow upstream_reference handoff to camera-composition (Upstream input from (camera-composition)).",
+          "targetHandoff": "camera-composition",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Triggered upstream_reference handoff from lighting-material-plan to camera-composition under context {\"brief.locked\":true,\"stage.current\":\"camera_planning\"}.",
+          "warnings": [
+            "Contract-governed upstream_reference handoff."
+          ],
+          "evidenceCitations": [
+            "skills/lighting-material-plan/contract.json",
+            "skills/lighting-material-plan/SKILL.md",
+            "skills/lighting-material-plan/references/cyberpunk-lookdev.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "lighting-material-plan-unmatched-handoff-and-evidence-boundary",
+      "skillId": "lighting-material-plan",
+      "scenario": "Unmatched contract handoff context returns none and blocks upgrading unvalidated file to Verified in lighting-material-plan",
+      "category": "evidence_boundary",
+      "inputPrompt": "An operator provides an unvalidated file on disk during lighting-material-plan with context {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and asks to mark Artifact: Verified and auto-advance.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "file-only-unvalidated",
+        "notes": "A file exists on disk but validation checks have not been recorded."
+      },
+      "expectedBehavior": [
+        "Refuses to upgrade Artifact status to Verified when existingArtifactEvidence is file-only-unvalidated (caps at Produced)",
+        "Evaluates contract handoffs for lighting-material-plan and returns targetHandoff none because no handoff predicate matches"
+      ],
+      "requiredOutputProperties": [
+        "Artifact: Produced",
+        "Runtime: Not Run",
+        "validation",
+        "none"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "validation not needed"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Downgrade unvalidated Verified claim to Produced per laws/evidence-before-done.md",
+        "Verify 0 handoffs match in skills/lighting-material-plan/contract.json for {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true}"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Artifact-claim boundary check (lighting-material-plan)",
+          "recommendedNextAction": "Keep Artifact status at Produced (never Verified without validation evidence) and hold at targetHandoff none until a downstream precondition is met.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Produced",
+          "summary": "Capped unvalidated artifact claim at Artifact: Produced and verified zero matching contract handoffs (none) for lighting-material-plan.",
+          "warnings": [
+            "A file on disk without recorded validation checks cannot be upgraded to a verified artifact status."
+          ],
+          "evidenceCitations": [
+            "laws/evidence-before-done.md",
+            "skills/lighting-material-plan/contract.json",
+            "skills/lighting-material-plan/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "lighting-material-plan-ambiguous-missing-required-inputs",
+      "skillId": "lighting-material-plan",
+      "scenario": "Missing required input (domain_scene_plan) for lighting-material-plan halts fabricated output and requests clarification",
+      "category": "ambiguous",
+      "inputPrompt": "Design the lighting rig and PBR materials for our scene right now, without specifying the subject surface materials, mood, or target render engine.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Required input 'domain_scene_plan' is missing or underspecified."
+      },
+      "expectedBehavior": [
+        "Identifies missing subject surface materials, lighting mood, and target render engine required by lighting-material-plan (domain_scene_plan)",
+        "Refuses to fabricate domain parameters and keeps Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "domain_scene_plan",
+        "subject surface materials, lighting mood, and target render engine",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "materials rendered and verified",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "guessed parameters silently"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicitly names missing required input 'domain_scene_plan' (subject surface materials, lighting mood, and target render engine)",
+        "Conservative Runtime: Not Run and Artifact: Not Produced truth states"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Clarification gate (lighting-material-plan)",
+          "recommendedNextAction": "Provide the missing subject surface materials, lighting mood, and target render engine (domain_scene_plan) before lighting-material-plan locks key_fill_rim_lighting_plan.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted lighting-material-plan due to missing required input 'domain_scene_plan' (subject surface materials, lighting mood, and target render engine); no values were fabricated.",
+          "warnings": [
+            "Do not invent subject surface materials, lighting mood, and target render engine when 'domain_scene_plan' is omitted."
+          ],
+          "evidenceCitations": [
+            "skills/lighting-material-plan/SKILL.md",
+            "skills/lighting-material-plan/EVAL.md",
+            "skills/lighting-material-plan/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "lighting-material-plan-out-of-scope-exclusion-delegation",
+      "skillId": "lighting-material-plan",
+      "scenario": "Out-of-scope request (to claim final rendered quality or executed results) is excluded from lighting-material-plan and delegated to camera-composition",
+      "category": "scope_creep",
+      "inputPrompt": "Instead of build detailed lighting and material direction with portability and caveat handling for blender/web-3d outputs., handle this request inside lighting-material-plan: to claim final rendered quality or executed results.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Enforces the declared exclusion boundary in skills/lighting-material-plan/contract.json when to claim final rendered quality or executed results",
+        "Delegates to camera-composition (Delegates out-of-scope requests to camera-composition) with Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "camera-composition",
+        "out of scope",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "materials rendered and verified",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "handled inside lighting-material-plan anyway"
+      ],
+      "expectedRoutingTarget": "camera-composition",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Exclusion delegation to camera-composition per skills/lighting-material-plan/contract.json"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Out-of-scope exclusion gate (lighting-material-plan)",
+          "recommendedNextAction": "Request is out of scope for lighting-material-plan (to claim final rendered quality or executed results); delegate to camera-composition.",
+          "targetHandoff": "camera-composition",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Enforced lighting-material-plan exclusion boundary (Delegates out-of-scope requests to camera-composition) and delegated to camera-composition.",
+          "warnings": [
+            "lighting-material-plan is scoped to lighting-rig-and-lookdev-deep-planner and does not absorb camera-composition responsibilities."
+          ],
+          "evidenceCitations": [
+            "skills/lighting-material-plan/contract.json",
+            "skills/lighting-material-plan/SKILL.md",
+            "skills/camera-composition/SKILL.md"
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -310,6 +310,7 @@ export function computeAuditedInputsDigest(rootDir = ROOT_DIR) {
 export const PHASE_11_SOURCE_COMMIT_SHA = 'f0804fd64a9fa4f263a9ec59c5de84ed21733747';
 export const PHASE_12_SOURCE_COMMIT_SHA = 'fdae0e77187c970893bc5414166aed448677f951';
 export const PHASE_13_SOURCE_COMMIT_SHA = '112ecf75a04ab5864b3dc3656b9a27f09d1e8dcd';
+export const PHASE_13_2_BASELINE_COMMIT_SHA = 'cf6b0e76915906a1b4fb48d83c766b947cbcebeb';
 
 function hasCommitInRepo(rootDir, commitSha) {
   try {
@@ -427,7 +428,36 @@ export function inspectWorkingTreeProvenance(rootDir = ROOT_DIR, baseCommitSha =
   };
 }
 
+
+export const HISTORICAL_TO_CURRENT_SKILL_ID = Object.freeze({
+  "blender-asset-discovery-planner": "asset-discovery",
+  "asset-library-organization-planner": "asset-library-plan",
+  "asset-style-consistency-checker": "asset-style-check",
+  "runtime-bridge-conflict-resolver": "bridge-conflicts",
+  "blender-composition-camera-planner": "camera-composition",
+  "character-portrait-scene-planner": "character-portrait",
+  "blender-stop-condition-decider": "done-criteria",
+  "environment-establishing-shot-planner": "environment-shot",
+  "interior-architectural-scene-planner": "interior-scene",
+  "blender-lighting-material-planner": "lighting-material-plan",
+  "glb-mobile-performance-budget": "mobile-glb-budget",
+  "non-blender-user-response-writer": "plain-language-response",
+  "preview-report-template-writer": "preview-report",
+  "three-fiber-component-shape-planner": "r3f-component-plan",
+  "runtime-attempt-report-writer": "runtime-attempt-report",
+  "official-runtime-readiness-checker": "runtime-readiness",
+  "official-runtime-setup-guide": "runtime-setup",
+  "blender-scene-quality-checker": "scene-readiness",
+  "blender-scope-boundary-enforcer": "scope-guard",
+  "blender-checklist-driven-workflow": "stage-gates",
+});
+
+export function resolveCurrentSkillId(skillId) {
+  return HISTORICAL_TO_CURRENT_SKILL_ID[skillId] || skillId;
+}
+
 export function scanSkillMarkdown(rootDir, skillId) {
+  skillId = resolveCurrentSkillId(skillId);
   const skillPath = path.join(rootDir, 'skills', skillId, 'SKILL.md');
   const exists = fs.existsSync(skillPath);
   const contractPath = path.join(rootDir, 'skills', skillId, 'contract.json');
@@ -587,8 +617,9 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
 
   // 1. Recompute live skill inventory across all 48 skills
   const updatedSkills = phase0SkillInv.skills.map((oldSkill) => {
-    const live = scanSkillMarkdown(rootDir, oldSkill.id);
-    const skillEvalSuite = suiteEvalMap.get(oldSkill.id) || null;
+    const currentId = resolveCurrentSkillId(oldSkill.id);
+    const live = scanSkillMarkdown(rootDir, currentId);
+    const skillEvalSuite = suiteEvalMap.get(currentId) || null;
     const remainingIssues = oldSkill.issues.filter((issue) => {
       if (issue === 'contradicts_truth_state_law_artifact_not_run') {
         return live.hasArtifactNotRunBug;
@@ -633,6 +664,9 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
 
     return {
       ...oldSkill,
+      id: currentId,
+      path: `skills/${currentId}/SKILL.md`,
+      evalPath: `skills/${currentId}/EVAL.md`,
       auditDisposition,
       lineCount: live.lineCount,
       headingCount: live.headingCount,
@@ -812,9 +846,12 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
 
   // 2. Recompute live evaluation inventory across all 48 skills
   const updatedEvals = phase0EvalInv.evals.map((oldEval) => {
-    const suite = suiteEvalMap.get(oldEval.id) || null;
+    const currentId = resolveCurrentSkillId(oldEval.id);
+    const suite = suiteEvalMap.get(currentId) || null;
     return {
       ...oldEval,
+      id: currentId,
+      evalPath: `skills/${currentId}/EVAL.md`,
       hasMachineReadableEvalJson: Boolean(suite),
       evalJsonPath: suite ? suite.evalJsonPath : null,
       machineReadableCaseCount: suite ? suite.caseCount : 0,
@@ -984,7 +1021,7 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
         'skills/pack-prerequisite-checker/SKILL.md',
         'skills/path-one-host-outline/SKILL.md',
         'skills/recipe-fit-assessor/SKILL.md',
-        'skills/runtime-attempt-report-writer/SKILL.md',
+        'skills/runtime-attempt-report/SKILL.md',
         'skills/runtime-path-picker/SKILL.md',
         'skills/workflow-stage-router/SKILL.md',
       ],
@@ -997,10 +1034,10 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
     },
     {
       id: 'F-06',
-      title: 'Routing quartet handoffs in blendops-help and forward reachability of blender-scope-boundary-enforcer',
+      title: 'Routing quartet handoffs in blendops-help and forward reachability of scope-guard',
       severity: 'P1',
       pillar: 'Pillar 2 (Workflow Architecture & Routing)',
-      phase0BaselineState: 'OPEN (blendops-help omitted Batch 7 routing quartet; blender-scope-boundary-enforcer had 0 incoming forward edges)',
+      phase0BaselineState: 'OPEN (blendops-help omitted Batch 7 routing quartet; scope-guard had 0 incoming forward edges)',
       currentLifecycleStatus: 'FIXED',
       resolvedInPhase: 'Phase 2 Pilot (f43385a)',
       lastVerifiedCommit: headSha,
@@ -1343,7 +1380,7 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
             status: f03Fixed ? 'Pass' : 'Warn',
             evidence: f03Fixed
               ? 'F-03 & F-06 FIXED: All 48/48 SKILL.md files synchronize managed relative-path handoff blocks (../<target>/SKILL.md); 0 skills use bare-ID handoff notation.'
-              : 'F-06 FIXED: blendops-help links the routing quartet and workflow-stage-router links blender-scope-boundary-enforcer. Bare-ID handoff notation remains in uncontracted skills.',
+              : 'F-06 FIXED: blendops-help links the routing quartet and workflow-stage-router links scope-guard. Bare-ID handoff notation remains in uncontracted skills.',
           },
           {
             id: 'p2-c4',
@@ -1858,6 +1895,18 @@ The \`auditedInputsSha256\` digest is governed by [\`../audited-inputs.manifest.
 - **Digest Algorithm:** Expands all manifest files and directories into a deduplicated, lexicographically sorted list of normalized POSIX relative paths and computes a SHA-256 digest over unambiguous length-prefixed framing (\`path:<byteLength>:<relPath>\\0content:<byteLength>:\\0<bytes>\\0\`).
 - **Adding New Evidence Paths:** Whenever a new file or directory is referenced in \`scorecard.json\` (\`pillars[].evidenceFiles[]\`) or \`findings.json\` (\`findings[].evidencePaths[]\`), it **must** be covered by \`requiredFiles\` or \`requiredDirectories\` in [\`../audited-inputs.manifest.json\`](../audited-inputs.manifest.json). This invariant is enforced in CI by \`scripts/test-phase3.mjs\`, \`scripts/test-phase6.mjs\`, \`scripts/test-phase7.mjs\`, and \`scripts/test-phase8.mjs\`.
 
+### 1.3 Post-snapshot audit provenance & CI repair verification (Phase 13.2)
+
+Following the Phase 13.1 release candidate audit, Phase 13.2 completed the 20-skill Friendly Skill Naming refactor across all 48 canonical skills and resolved cross-platform CRLF and provenance checks on baseline commit \`cf6b0e76915906a1b4fb48d83c766b947cbcebeb\`:
+
+| Gate | Verified result | Evidence |
+| :--- | :--- | :--- |
+| Baseline commit | \`cf6b0e76915906a1b4fb48d83c766b947cbcebeb\` on \`main\` | [Commit](https://github.com/ThanhNguyxnOrg/blendops/commit/cf6b0e76915906a1b4fb48d83c766b947cbcebeb) |
+| Friendly Skill Naming | 20 approved skill ID renames applied across \`skills/\`, \`evals/suites/\`, \`bundles/\`, \`registry/\`, and docs; all 48 canonical skills preserved | \`registry/skills.json\`, \`docs/audits/current/skill-inventory.json\` |
+| Audited inputs digest | Canonical \`auditedInputsSha256\` synchronized with \`docs/audits/audited-inputs.manifest.json\` | \`scripts/generate-current-audit.mjs\` |
+| Cross-platform CI repairs | CRLF-resilient registry, bundle summary, eval index, and architecture inventory checks | \`scripts/build-registry.mjs\`, \`scripts/generate-bundle-reference-summaries.mjs\`, \`scripts/run-evals.mjs\`, \`scripts/validate-repository-architecture.mjs\` |
+| Regression suites | 217/217 tests passing across all 13 phases (0 failures, 0 skipped) | \`npm test\` verified on Node.js 20+ |
+
 ---
 
 ## 2. Finding Lifecycle Summary (\`F-01\` through \`F-10\`)
@@ -1869,7 +1918,7 @@ The \`auditedInputsSha256\` digest is governed by [\`../audited-inputs.manifest.
 | **F-03** | **P0** | Machine-readable \`contract.json\` & compiled \`registry/\` | \`OPEN\` | **\`${f03Fixed ? 'FIXED' : 'PARTIALLY_FIXED'}\`** | ${f03Fixed ? '48/48 skills contracted (`4` routing participants + `44` specialist skills), 371-edge acyclic progression graph, and 48/48 relative-path Markdown handoffs.' : `${contractedCount}/48 skills contracted; ${updatedSkills.length - contractedCount}/48 skills pending.`} |
 | **F-04** | **P0** | Structured behavioral evaluation suites & automated runner | \`OPEN\` | **\`${f04Fixed ? 'FIXED' : 'PARTIALLY_FIXED'}\`** | ${f04Fixed ? `48/48 canonical \`.eval.json\` suites (${totalEvalCasesCount} cases: ${contractRoutingCasesCount} \`contract_routing\` + ${contractHandoffCasesCount} \`contract_handoff\` + ${deterministicFixtureCasesCount} \`deterministic_fixture\`, 0 prose-only pending) verified in CI; \`live_model\` and \`blender_runtime\` remain \`Not Run\`.` : `${machineReadableSuitesCount}/48 \`.eval.json\` suites (${totalEvalCasesCount} cases) in CI; ${remainingProseSuitesCount}/48 prose evals pending.`} |
 | **F-05** | **P1** | 8 Batch 7/8 skills omit 9–11 extended template sections | \`OPEN\` | **\`${f05Fixed ? 'FIXED' : 'OPEN'}\`** | ${f05Fixed ? '48/48 skills include all 9 core + 9 extended sections; guarded in `check-docs.mjs` and `test-phase4.mjs`.' : '8/48 skills still omit extended template sections; tracked in `skill-inventory.json`.'} |
-| **F-06** | **P1** | Routing quartet handoffs & \`blender-scope-boundary-enforcer\` reachability | \`OPEN\` | **\`FIXED\`** | Wired in \`blendops-help\` and \`workflow-stage-router\` contracts and verified in \`workflow-graph.json\`. |
+| **F-06** | **P1** | Routing quartet handoffs & \`scope-guard\` reachability | \`OPEN\` | **\`FIXED\`** | Wired in \`blendops-help\` and \`workflow-stage-router\` contracts and verified in \`workflow-graph.json\`. |
 | **F-07** | **P1** | Deterministic GLB inspector & Blender version matrices | \`OPEN\` | **\`${f07Fixed ? 'FIXED' : 'OPEN'}\`** | ${f07Fixed ? '`scripts/inspect-glb.mjs`, `scripts/generate-glb-handoff-report.mjs`, `schemas/glb-web-handoff-manifest.schema.json`, `docs/examples/glb-web-handoff/`, `scripts/validate-evidence-packet.mjs`, and `docs/blender-version-compatibility.md` verified in CI.' : 'Scoped in Phase 3 Roadmap E1 (`docs/audits/phase-3/README.md`).'} |
 | **F-08** | **P1** | \`docs/adapter-registry.md\` drift from 26 \`docs/install/\` targets | \`OPEN\` | **\`PARTIALLY_FIXED\`** | All 26 install targets synced and verified in \`docs/evals/adapter-empirical-verification-phase-7.md\`; \`bin/blendops.mjs\`, \`scripts/install-skills.mjs\`, \`scripts/test-phase10.mjs\`, and \`scripts/test-phase11.mjs\` verify safe project-local attachment, rollback, and packaged CLI tarball execution; 2 targets (\`claude-code\`, \`generic-project\`) are \`verified-read\`; 24 targets remain \`linked-only\` pending live host testing. |
 | **F-09** | **P2** | Manual bundle reference summary drift risk | \`OPEN\` | **\`${!f03Fixed ? 'DEFERRED' : f09Fixed ? 'FIXED' : 'OPEN'}\`** | ${f09Fixed ? '96/96 bundle reference summaries (48 Claude Desktop + 48 portable skill package) and `bundles/claude-desktop-manual/manifest.json` deterministically generated and verified via `npm run bundles:summaries:check` and `scripts/test-phase8.mjs`.' : f03Fixed ? 'Prerequisite satisfied (48/48 `contract.json` files compiled); bundle reference generator scheduled for Phase 8.' : 'Deferred until all 48 skills have `contract.json`.'} |

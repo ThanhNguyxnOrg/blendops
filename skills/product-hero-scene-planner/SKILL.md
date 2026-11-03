@@ -11,11 +11,11 @@ Turn user intent or an upstream brief into a complete, plain-language product-he
 Canonical role: high-level `scene-planning` for single product-hero workflows in BlendOps. Keep role boundaries strict:
 - `intent-to-3d-brief-writer` writes the upstream brief.
 - THIS skill (`product-hero-scene-planner`) produces the complete product-hero scene plan and assumptions register.
-- `blender-composition-camera-planner` deep-dives framing and lens setup.
-- `blender-lighting-material-planner` deep-dives lookdev and shader/light rigs.
+- `camera-composition` deep-dives framing and lens setup.
+- `lighting-material-plan` deep-dives lookdev and shader/light rigs.
 - `acceptance-criteria-builder` writes measurable acceptance rows.
-- `blender-stop-condition-decider` pins the done condition.
-- `blender-scene-quality-checker` reviews scene readiness later.
+- `done-criteria` pins the done condition.
+- `scene-readiness` reviews scene readiness later.
 
 ## Quick start
 - confirm this skill fits your goal
@@ -31,11 +31,11 @@ Canonical role: high-level `scene-planning` for single product-hero workflows in
 ## When not to use
 <!-- blendops:generated:start exclusions -->
 - to execute Blender commands, write Python, or claim generated artifacts → use `../intent-to-3d-brief-writer/SKILL.md` (Delegates out-of-scope requests to intent-to-3d-brief-writer)
-- to skip unresolved critical ambiguity or hide missing inputs → use `../blender-composition-camera-planner/SKILL.md` (Delegates out-of-scope requests to blender-composition-camera-planner)
+- to skip unresolved critical ambiguity or hide missing inputs → use `../camera-composition/SKILL.md` (Delegates out-of-scope requests to camera-composition)
 - when raw user intent still needs initial brief normalization → use `../intent-to-3d-brief-writer/SKILL.md` (use intent-to-3d-brief-writer first)
 - when planning a multi-item catalog or grid layout → use `../product-grid-scene-planner/SKILL.md` (use product-grid-scene-planner)
-- when deep-diving camera/framing mechanics → use `../blender-composition-camera-planner/SKILL.md` (use blender-lighting-material-planner)
-- when writing measurable pass/fail acceptance tables → use `../acceptance-criteria-builder/SKILL.md` (use blender-scene-quality-checker)
+- when deep-diving camera/framing mechanics → use `../camera-composition/SKILL.md` (use lighting-material-plan)
+- when writing measurable pass/fail acceptance tables → use `../acceptance-criteria-builder/SKILL.md` (use scene-readiness)
 <!-- blendops:generated:end exclusions -->
 
 ## Trigger phrases
@@ -48,7 +48,7 @@ Canonical role: high-level `scene-planning` for single product-hero workflows in
 ## Prerequisites / readiness
 - output destination clarified (web, app, game, or still/video render)
 - upstream brief from `intent-to-3d-brief-writer` provided or user intent clear enough to extract constraints
-- runtime readiness optionally checked via `official-runtime-readiness-checker` (does not alter this skill's truth states: Runtime stays `Not Run`, Artifacts stay `Not Produced`)
+- runtime readiness optionally checked via `runtime-readiness` (does not alter this skill's truth states: Runtime stays `Not Run`, Artifacts stay `Not Produced`)
 - if a live scene already exists, read-only inspection data (`get_objects_summary`) provided so real dimensions replace assumptions
 
 ## Input schema
@@ -107,13 +107,13 @@ Planning-only skill: no Blender execution, no Python scripts, and no artifact ge
 3. Extract hard constraints (brand, style, real-world sizing, delivery platform).
 4. Generate targeted clarification questions if critical data is missing.
 5. Build subject plan: define primary hero object, support props, and plausible real-world dimensions (use read-only `get_objects_summary` measurements instead of assumptions whenever a live scene exists).
-6. Build high-level composition plan (focal hierarchy, framing, negative space) ready for deep-dive in `blender-composition-camera-planner`.
-7. Build high-level camera plan (angle, focal length intent, depth strategy) ready for deep-dive in `blender-composition-camera-planner`.
-8. Build high-level lighting plan (key/fill/rim roles and mood intent) ready for deep-dive in `blender-lighting-material-planner`.
-9. Build high-level material plan (surface finish intent and export portability caveats) ready for deep-dive in `blender-lighting-material-planner`.
+6. Build high-level composition plan (focal hierarchy, framing, negative space) ready for deep-dive in `camera-composition`.
+7. Build high-level camera plan (angle, focal length intent, depth strategy) ready for deep-dive in `camera-composition`.
+8. Build high-level lighting plan (key/fill/rim roles and mood intent) ready for deep-dive in `lighting-material-plan`.
+9. Build high-level material plan (surface finish intent and export portability caveats) ready for deep-dive in `lighting-material-plan`.
 10. Build environment plan (backdrop, ground plane, ambient context).
 11. Define render/export intent and web-handoff intent (ensure every section in steps 5–11 is either present or explicitly deferred with a documented caveat).
-12. Populate the assumptions register, lock truth states (`Runtime: Not Run`, `Artifacts: Not Produced`), and specify next-skill handoffs (`acceptance-criteria-builder` for measurable acceptance rows, `blender-stop-condition-decider` for done conditions, and `blender-scene-quality-checker` for post-build review).
+12. Populate the assumptions register, lock truth states (`Runtime: Not Run`, `Artifacts: Not Produced`), and specify next-skill handoffs (`acceptance-criteria-builder` for measurable acceptance rows, `done-criteria` for done conditions, and `scene-readiness` for post-build review).
 
 ## Decision tree
 - If output destination is unknown → pause and ask for destination first, or provide explicitly caveated options.
@@ -151,7 +151,7 @@ Planning-only skill: no Blender execution, no Python scripts, and no artifact ge
 - [ ] clarification questions included for any unresolved critical inputs
 - [ ] truth states explicitly set to `Runtime: Not Run` and `Artifacts: Not Produced` (no overclaims or upgrades)
 - [ ] no Python code or Blender execution commands included
-- [ ] role boundaries respected with explicit handoffs to `blender-composition-camera-planner`, `blender-lighting-material-planner`, `acceptance-criteria-builder`, `blender-stop-condition-decider`, and `blender-scene-quality-checker`
+- [ ] role boundaries respected with explicit handoffs to `camera-composition`, `lighting-material-plan`, `acceptance-criteria-builder`, `done-criteria`, and `scene-readiness`
 
 ## Pass / Warn / Fail rubric
 
@@ -169,8 +169,8 @@ Planning-only skill: no Blender execution, no Python scripts, and no artifact ge
 
 ## Troubleshooting
 - Prompt too broad or unstructured: hand off upstream to `intent-to-3d-brief-writer` before finalizing the scene plan.
-- Web + cinematic conflict: flag trade-off in assumptions register and route to `cycles-vs-eevee-decision` or `glb-mobile-performance-budget`.
-- No source model available: log intake risk in assumptions register and route to `blender-asset-discovery-planner` or `asset-fallback-strategy`.
+- Web + cinematic conflict: flag trade-off in assumptions register and route to `cycles-vs-eevee-decision` or `mobile-glb-budget`.
+- No source model available: log intake risk in assumptions register and route to `asset-discovery` or `asset-fallback-strategy`.
 
 ## Best practices
 - preserve non-Blender user language and explain visual trade-offs plainly
@@ -206,11 +206,11 @@ Planning-only skill: no Blender execution, no Python scripts, and no artifact ge
 ## Cross-skill handoff
 <!-- blendops:generated:start handoffs -->
 - [upstream_reference] Upstream input (if raw prompt needs structuring) → `../intent-to-3d-brief-writer/SKILL.md`
-- [progression] Next (deep-dive framing & camera) → `../blender-composition-camera-planner/SKILL.md`
-- [progression] Next (deep-dive lookdev & lighting) → `../blender-lighting-material-planner/SKILL.md`
+- [progression] Next (deep-dive framing & camera) → `../camera-composition/SKILL.md`
+- [progression] Next (deep-dive lookdev & lighting) → `../lighting-material-plan/SKILL.md`
 - [fallback] Then (measurable pass/fail rows) → `../acceptance-criteria-builder/SKILL.md`
-- [upstream_reference] Then (pin done condition) → `../blender-stop-condition-decider/SKILL.md`
-- [progression] Later (post-build readiness review) → `../blender-scene-quality-checker/SKILL.md`
+- [upstream_reference] Then (pin done condition) → `../done-criteria/SKILL.md`
+- [progression] Later (post-build readiness review) → `../scene-readiness/SKILL.md`
 - [conditional] Delivery handoff (when web/render output is targeted) (glb-web-handoff) → `../glb-web-handoff/SKILL.md`
 - [conditional] Delivery handoff (when web/render output is targeted) (render-export-evidence) → `../render-export-evidence/SKILL.md`
 <!-- blendops:generated:end handoffs -->
@@ -219,7 +219,7 @@ Planning-only skill: no Blender execution, no Python scripts, and no artifact ge
 - executing Blender commands, MCP mutations, or CLI jobs
 - writing Python scripts
 - claiming `Attempted`, `Produced`, or `Verified` runtime/artifact states
-- replacing `intent-to-3d-brief-writer` (upstream brief), `blender-composition-camera-planner` (deep framing), `blender-lighting-material-planner` (deep lookdev), `acceptance-criteria-builder` (measurable acceptance rows), `blender-stop-condition-decider` (done conditions), or `blender-scene-quality-checker` (readiness review)
+- replacing `intent-to-3d-brief-writer` (upstream brief), `camera-composition` (deep framing), `lighting-material-plan` (deep lookdev), `acceptance-criteria-builder` (measurable acceptance rows), `done-criteria` (done conditions), or `scene-readiness` (readiness review)
 
 ## References
 - https://www.blender.org/lab/mcp-server/

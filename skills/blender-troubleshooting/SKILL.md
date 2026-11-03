@@ -29,7 +29,7 @@ This skill **does not run Blender**. It guides the operator through a discipline
 ## When not to use
 <!-- blendops:generated:start exclusions -->
 - the user has not yet stated a clear expected outcome (run intent-to-3d-brief-writer first) → use `../intent-to-3d-brief-writer/SKILL.md` (run intent-to-3d-brief-writer first)
-- runtime has never been attempted (run official-runtime-readiness-checker first) → use `../official-runtime-readiness-checker/SKILL.md` (run official-runtime-readiness-checker first)
+- runtime has never been attempted (run runtime-readiness first) → use `../runtime-readiness/SKILL.md` (run runtime-readiness first)
 - the request is creative iteration ("can we make it more dramatic"), not debugging → use `../blender-brainstorming/SKILL.md` (Delegates out-of-scope requests to blender-brainstorming)
 - the user wants a one-shot fix without diagnostic discipline → use `../intent-to-3d-brief-writer/SKILL.md` (Delegates out-of-scope requests to intent-to-3d-brief-writer)
 <!-- blendops:generated:end exclusions -->
@@ -87,7 +87,7 @@ This skill **does not run Blender**. It guides the operator through a discipline
 - list of evidence collected per phase
 - explicit `cannot determine` if a phase blocked
 - truth state discipline: Runtime (`Not Run | Attempted | Produced | Verified | Failed`); Artifacts (`Not Run | Not Produced | Produced | Verified | Failed`, default `Not Produced`)
-- downgrade-only, never upgrade; diagnosis never alters truth states itself (status updates require re-running `official-runtime-readiness-checker` or `render-export-evidence`)
+- downgrade-only, never upgrade; diagnosis never alters truth states itself (status updates require re-running `runtime-readiness` or `render-export-evidence`)
 
 ## Required laws
 
@@ -98,7 +98,7 @@ This skill **does not run Blender**. It guides the operator through a discipline
 
 ## Official runtime boundary
 
-This skill does not install Blender, run Blender, mutate scenes, render, export, or claim artifacts. It guides diagnosis. Any actual re-run goes through the relevant runtime skill (`official-runtime-readiness-checker`, `render-export-evidence`).
+This skill does not install Blender, run Blender, mutate scenes, render, export, or claim artifacts. It guides diagnosis. Any actual re-run goes through the relevant runtime skill (`runtime-readiness`, `render-export-evidence`).
 
 ## Operating procedure
 
@@ -131,17 +131,17 @@ This skill does not install Blender, run Blender, mutate scenes, render, export,
 
 - symptom not reproducible → mark intermittent, do not propose fix
 - divergence at intent / brief stage → fix is upstream; route to `blender-brainstorming` or `intent-to-3d-brief-writer`
-- divergence at plan stage → fix is in planning; route to relevant planner (`product-hero-scene-planner`, `blender-composition-camera-planner`, `blender-lighting-material-planner`, `character-portrait-scene-planner`, `environment-establishing-shot-planner`, `interior-architectural-scene-planner`, or `product-grid-scene-planner`)
-- divergence at execution stage → fix is in runtime setup; route to `official-runtime-readiness-checker`, `runtime-bridge-conflict-resolver`, or `runtime-path-picker`
+- divergence at plan stage → fix is in planning; route to relevant planner (`product-hero-scene-planner`, `camera-composition`, `lighting-material-plan`, `character-portrait`, `environment-shot`, `interior-scene`, or `product-grid-scene-planner`)
+- divergence at execution stage → fix is in runtime setup; route to `runtime-readiness`, `bridge-conflicts`, or `runtime-path-picker`
 - divergence at output stage → fix is in export/evidence; route to `render-export-evidence`, `glb-web-handoff`, or `glb-animation-handoff`
-- divergence at response stage → fix is in communication/wording; route to `non-blender-user-response-writer`
+- divergence at response stage → fix is in communication/wording; route to `plain-language-response`
 
 ## Playbooks
 
-- Playbook A: "Render is black / blown out" — narrow to lighting, materials, or render engine choice; hand off fix to `blender-lighting-material-planner` or `cycles-vs-eevee-decision`
-- Playbook B: "GLB is empty / mis-scaled" — narrow to scene hierarchy, transforms, or export parameters; hand off fix to `glb-web-handoff`, `glb-mobile-performance-budget`, or `render-export-evidence`
-- Playbook C: "Final response uses jargon" — narrow to user-facing wording and tone; hand off fix to `non-blender-user-response-writer`
-- Playbook D: "Recipe blocked despite smoke pass" — narrow to runtime environment or bridge path conflict; hand off fix to `runtime-bridge-conflict-resolver`
+- Playbook A: "Render is black / blown out" — narrow to lighting, materials, or render engine choice; hand off fix to `lighting-material-plan` or `cycles-vs-eevee-decision`
+- Playbook B: "GLB is empty / mis-scaled" — narrow to scene hierarchy, transforms, or export parameters; hand off fix to `glb-web-handoff`, `mobile-glb-budget`, or `render-export-evidence`
+- Playbook C: "Final response uses jargon" — narrow to user-facing wording and tone; hand off fix to `plain-language-response`
+- Playbook D: "Recipe blocked despite smoke pass" — narrow to runtime environment or bridge path conflict; hand off fix to `bridge-conflicts`
 
 ## Mode handling
 
@@ -155,14 +155,14 @@ This skill does not install Blender, run Blender, mutate scenes, render, export,
 ### Runtime-ready mode
 
 - diagnostic analysis only; this skill never re-runs Blender, renders, or mutates scenes
-- re-runs must be explicitly handed off to `official-runtime-readiness-checker` or `render-export-evidence`
+- re-runs must be explicitly handed off to `runtime-readiness` or `render-export-evidence`
 - truth state rule: diagnosis never upgrades truth states (runtime: `Not Run | Attempted | Produced | Verified | Failed`; artifacts: `Not Run | Not Produced | Produced | Verified | Failed`, default `Not Produced`); downgrade-only if evidence disproves prior state
 
 ### Blocked runtime mode
 
 - diagnose what is observable from existing evidence
 - mark phases blocked when evidence is missing
-- truth state rule: truth states remain unchanged or downgrade-only; hand off to `official-runtime-readiness-checker`
+- truth state rule: truth states remain unchanged or downgrade-only; hand off to `runtime-readiness`
 
 ## Validation checklist
 
@@ -205,7 +205,7 @@ This skill does not install Blender, run Blender, mutate scenes, render, export,
 
 ## Good examples
 
-- "Render came out black. Phase 1: reproducible (3/3). Phase 2: narrowed to 'no key light in lighting plan'. Phase 3: root cause = lighting plan missing required key light placement. Phase 4: fix = update lighting plan via `blender-lighting-material-planner`. Pass criteria: re-render shows visible key-light contribution."
+- "Render came out black. Phase 1: reproducible (3/3). Phase 2: narrowed to 'no key light in lighting plan'. Phase 3: root cause = lighting plan missing required key light placement. Phase 4: fix = update lighting plan via `lighting-material-plan`. Pass criteria: re-render shows visible key-light contribution."
 
 ## Bad examples
 
@@ -232,20 +232,20 @@ This skill does not install Blender, run Blender, mutate scenes, render, export,
 <!-- blendops:generated:start handoffs -->
 - [upstream_reference] If divergence at intent (blender-brainstorming) → `../blender-brainstorming/SKILL.md`
 - [upstream_reference] If divergence at intent (intent-to-3d-brief-writer) → `../intent-to-3d-brief-writer/SKILL.md`
-- [conditional] If divergence at planning (blender-composition-camera-planner) → `../blender-composition-camera-planner/SKILL.md`
-- [conditional] If divergence at planning (blender-lighting-material-planner) → `../blender-lighting-material-planner/SKILL.md`
-- [alternative] If divergence at planning (character-portrait-scene-planner) → `../character-portrait-scene-planner/SKILL.md`
-- [alternative] If divergence at planning (environment-establishing-shot-planner) → `../environment-establishing-shot-planner/SKILL.md`
-- [alternative] If divergence at planning (interior-architectural-scene-planner) → `../interior-architectural-scene-planner/SKILL.md`
+- [conditional] If divergence at planning (camera-composition) → `../camera-composition/SKILL.md`
+- [conditional] If divergence at planning (lighting-material-plan) → `../lighting-material-plan/SKILL.md`
+- [alternative] If divergence at planning (character-portrait) → `../character-portrait/SKILL.md`
+- [alternative] If divergence at planning (environment-shot) → `../environment-shot/SKILL.md`
+- [alternative] If divergence at planning (interior-scene) → `../interior-scene/SKILL.md`
 - [alternative] If divergence at planning (product-grid-scene-planner) → `../product-grid-scene-planner/SKILL.md`
 - [alternative] If divergence at planning (product-hero-scene-planner) → `../product-hero-scene-planner/SKILL.md`
-- [upstream_reference] If divergence at execution (official-runtime-readiness-checker) → `../official-runtime-readiness-checker/SKILL.md`
-- [fallback] If divergence at execution (runtime-bridge-conflict-resolver) → `../runtime-bridge-conflict-resolver/SKILL.md`
+- [upstream_reference] If divergence at execution (runtime-readiness) → `../runtime-readiness/SKILL.md`
+- [fallback] If divergence at execution (bridge-conflicts) → `../bridge-conflicts/SKILL.md`
 - [upstream_reference] If divergence at execution (runtime-path-picker) → `../runtime-path-picker/SKILL.md`
 - [conditional] If divergence at output (glb-animation-handoff) → `../glb-animation-handoff/SKILL.md`
 - [conditional] If divergence at output (glb-web-handoff) → `../glb-web-handoff/SKILL.md`
 - [conditional] If divergence at output (render-export-evidence) → `../render-export-evidence/SKILL.md`
-- [conditional] If divergence at response → `../non-blender-user-response-writer/SKILL.md`
+- [conditional] If divergence at response → `../plain-language-response/SKILL.md`
 <!-- blendops:generated:end handoffs -->
 
 ## Non-goals

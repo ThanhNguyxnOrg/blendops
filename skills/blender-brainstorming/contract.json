@@ -26,8 +26,8 @@
     },
     {
       "condition": "the user pushes for immediate execution rather than exploration",
-      "delegateTo": "official-runtime-readiness-checker",
-      "reason": "route to official-runtime-readiness-checker"
+      "delegateTo": "runtime-readiness",
+      "reason": "route to runtime-readiness"
     }
   ],
   "inputs": {
@@ -79,7 +79,7 @@
       }
     },
     {
-      "target": "official-runtime-readiness-checker",
+      "target": "runtime-readiness",
       "type": "progression",
       "label": "User pushes for execution mid-brainstorm",
       "when": {
@@ -98,7 +98,7 @@
       }
     },
     {
-      "target": "non-blender-user-response-writer",
+      "target": "plain-language-response",
       "type": "progression",
       "label": "Explain blocked runtime status to user",
       "when": {

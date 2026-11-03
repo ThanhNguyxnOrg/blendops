@@ -13,11 +13,11 @@
 
 ## Real-time / web
 
-- GLB budgets reference `glb-mobile-performance-budget` when consumer is web/mobile.
+- GLB budgets reference `mobile-glb-budget` when consumer is web/mobile.
 - Animation rules reference `glb-animation-handoff` if animated.
 
 ## Process
 
-- Stop conditions from `blender-stop-condition-decider` embedded as criteria where relevant.
+- Stop conditions from `done-criteria` embedded as criteria where relevant.
 
 Mark platform-specific rows **P0** only when contractually required.

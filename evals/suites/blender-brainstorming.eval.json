@@ -180,19 +180,19 @@
         "existingArtifactEvidence": "none"
       },
       "expectedBehavior": [
-        "Pauses expansion and prompts user to lock current scope or delegate to blender-scope-boundary-enforcer",
+        "Pauses expansion and prompts user to lock current scope or delegate to scope-guard",
         "Summarizes current baseline scope clearly"
       ],
       "requiredOutputProperties": [
         "lock current scope",
-        "blender-scope-boundary-enforcer",
+        "scope-guard",
         "Runtime: Not Run"
       ],
       "forbiddenOutputProperties": [
         "music video rendered",
         "Artifact: Produced"
       ],
-      "expectedRoutingTarget": "blender-scope-boundary-enforcer",
+      "expectedRoutingTarget": "scope-guard",
       "truthStateExpectations": {
         "runtimeStatus": "Not Run",
         "artifactStatus": "Not Produced"
@@ -205,11 +205,11 @@
       "deterministicFixture": {
         "simulatedOutput": {
           "mode": "Text-only Socratic intent exploration",
-          "recommendedNextAction": "Ask user to lock current scope and route scope expansion to blender-scope-boundary-enforcer.",
-          "targetHandoff": "blender-scope-boundary-enforcer",
+          "recommendedNextAction": "Ask user to lock current scope and route scope expansion to scope-guard.",
+          "targetHandoff": "scope-guard",
           "runtimeStatus": "Not Run",
           "artifactStatus": "Not Produced",
-          "summary": "Issued scope-lock prompt (\"lock current scope or keep expanding?\") and routed multi-deliverable creep to blender-scope-boundary-enforcer.",
+          "summary": "Issued scope-lock prompt (\"lock current scope or keep expanding?\") and routed multi-deliverable creep to scope-guard.",
           "warnings": [],
           "evidenceCitations": [
             "skills/blender-brainstorming/EVAL.md"
@@ -374,7 +374,7 @@
           "targetHandoff": "none",
           "runtimeStatus": "Not Run",
           "artifactStatus": "Not Produced",
-          "summary": "Verified fail-closed specialist handoff evaluation for blender-brainstorming when no contract predicate matches (secondary candidate official-runtime-readiness-checker remained inactive).",
+          "summary": "Verified fail-closed specialist handoff evaluation for blender-brainstorming when no contract predicate matches (secondary candidate runtime-readiness remained inactive).",
           "warnings": [
             "Never fabricate an undeclared handoff when no contract predicate matches."
           ],

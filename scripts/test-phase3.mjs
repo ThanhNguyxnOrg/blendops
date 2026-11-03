@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { execFileSync } from 'node:child_process';
 import {
   validateEvalSuiteObject,
@@ -18,6 +19,8 @@ import {
   inspectWorkingTreeProvenance,
   resolveAuditedInputFiles,
   AUDITED_INPUTS_MANIFEST_REL,
+  HISTORICAL_TO_CURRENT_SKILL_ID,
+  resolveCurrentSkillId,
 } from './generate-current-audit.mjs';
 import {
   buildMinimalValidGlbBuffer,
@@ -37,7 +40,7 @@ import {
   validateCompatibilityMatrixObject,
 } from './validate-compatibility-matrix.mjs';
 
-const root = process.cwd();
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const catalogSet = new Set(getCatalogSkillIds(root));
 const { contractsById, allContracts } = loadContractMap(root);
 
@@ -536,6 +539,8 @@ describe('Phase 3 — Behavioral Evaluation Schema & Deterministic Runner', () =
     assert.equal(f10?.currentLifecycleStatus, 'FIXED');
 
     assert.equal(currentSkillInv.summary.totalSkills, 48);
+    assert.equal(Object.keys(HISTORICAL_TO_CURRENT_SKILL_ID).length, 20);
+    assert.equal(resolveCurrentSkillId('blender-asset-discovery-planner'), 'asset-discovery');
     assert.equal(currentSkillInv.summary.contractedSkillsCount, 48);
     assert.equal(currentSkillInv.summary.skillsWithArtifactNotRunContradiction, 0);
     assert.equal(currentSkillInv.summary.skillsMissingExtendedTemplateSections, 0);

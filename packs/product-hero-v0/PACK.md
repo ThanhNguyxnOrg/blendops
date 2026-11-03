@@ -43,19 +43,19 @@ Compose the included skills to plan, validate, and communicate product-hero Blen
 | Help / routing | `../../skills/blendops-help/SKILL.md` | Expanded Draft v0 |
 | Process / discipline (Superpowers + BMad inspired) | `../../skills/blender-brainstorming/SKILL.md` | Expanded Draft v0 |
 | Process / discipline | `../../skills/intent-to-3d-brief-writer/SKILL.md` | Expanded Draft v0 |
-| Process / discipline | `../../skills/blender-asset-discovery-planner/SKILL.md` | Expanded Draft v0 |
-| Setup / readiness | `../../skills/official-runtime-setup-guide/SKILL.md` | Expanded Draft v0 |
-| Setup / readiness | `../../skills/official-runtime-readiness-checker/SKILL.md` | Expanded Draft v0 |
-| Setup / readiness | `../../skills/runtime-bridge-conflict-resolver/SKILL.md` | Expanded Draft v0 |
+| Process / discipline | `../../skills/asset-discovery/SKILL.md` | Expanded Draft v0 |
+| Setup / readiness | `../../skills/runtime-setup/SKILL.md` | Expanded Draft v0 |
+| Setup / readiness | `../../skills/runtime-readiness/SKILL.md` | Expanded Draft v0 |
+| Setup / readiness | `../../skills/bridge-conflicts/SKILL.md` | Expanded Draft v0 |
 | Planning | `../../skills/product-hero-scene-planner/SKILL.md` | Expanded Draft v0 |
-| Planning | `../../skills/blender-composition-camera-planner/SKILL.md` | Expanded Draft v0 |
-| Planning | `../../skills/blender-lighting-material-planner/SKILL.md` | Expanded Draft v0 |
-| Quality / eval | `../../skills/blender-scene-quality-checker/SKILL.md` | Expanded Draft v0 |
+| Planning | `../../skills/camera-composition/SKILL.md` | Expanded Draft v0 |
+| Planning | `../../skills/lighting-material-plan/SKILL.md` | Expanded Draft v0 |
+| Quality / eval | `../../skills/scene-readiness/SKILL.md` | Expanded Draft v0 |
 | Quality / debugging | `../../skills/blender-troubleshooting/SKILL.md` | Expanded Draft v0 |
 | Quality / evidence | `../../skills/render-export-evidence/SKILL.md` | Expanded Draft v0 |
 | Quality / pre-handoff | `../../skills/pre-handoff-verification/SKILL.md` | Expanded Draft v0 |
 | Handoff / communication | `../../skills/glb-web-handoff/SKILL.md` | Expanded Draft v0 |
-| Handoff / communication | `../../skills/non-blender-user-response-writer/SKILL.md` | Expanded Draft v0 |
+| Handoff / communication | `../../skills/plain-language-response/SKILL.md` | Expanded Draft v0 |
 
 ## Recipe scenario
 

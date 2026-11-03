@@ -155,7 +155,7 @@ This skill must not install Blender, run Blender, configure a runtime bridge, mu
 Need help choosing next step?
   → blendops-help
 Need runtime readiness?
-  → official-runtime-readiness-checker
+  → runtime-readiness
 Need scene plan?
   → product-hero-scene-planner and domain planners
 Need render/export proof?
@@ -163,7 +163,7 @@ Need render/export proof?
 Need GLB/web handoff wording?
   → glb-web-handoff
 Need final non-Blender-user summary?
-  → non-blender-user-response-writer
+  → plain-language-response
 ```
 
 ## Playbooks
@@ -272,11 +272,11 @@ Limitations: <gaps>
 
 ## Cross-skill handoff
 
-- Runtime readiness → `../official-runtime-readiness-checker/SKILL.md`
+- Runtime readiness → `../runtime-readiness/SKILL.md`
 - Scene planning → `../product-hero-scene-planner/SKILL.md`
 - Render/export evidence → `../render-export-evidence/SKILL.md`
 - GLB handoff → `../glb-web-handoff/SKILL.md`
-- Final response → `../non-blender-user-response-writer/SKILL.md`
+- Final response → `../plain-language-response/SKILL.md`
 
 ## Non-goals
 

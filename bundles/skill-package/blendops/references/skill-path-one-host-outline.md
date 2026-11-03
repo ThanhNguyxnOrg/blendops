@@ -15,9 +15,9 @@ Metadata: Contract `v1.0.0` | Category `runtime-and-execution` | Role `lab-mcp-h
 
 ## When not to use (delegation boundaries)
 - choosing between Path 1, Path 2, or CLI → use `runtime-path-picker` (`references/skill-runtime-path-picker.md`; Delegates out-of-scope requests to runtime-path-picker)
-- step-by-step host or add-on installation and configuration → use `official-runtime-setup-guide` (`references/skill-official-runtime-setup-guide.md`; Delegates out-of-scope requests to official-runtime-setup-guide)
-- probing live runtime readiness → use `official-runtime-readiness-checker` (`references/skill-official-runtime-readiness-checker.md`; Delegates out-of-scope requests to official-runtime-readiness-checker)
-- resolving conflicts between official and unofficial bridges → use `runtime-bridge-conflict-resolver` (`references/skill-runtime-bridge-conflict-resolver.md`; Delegates out-of-scope requests to runtime-bridge-conflict-resolver)
+- step-by-step host or add-on installation and configuration → use `runtime-setup` (`references/skill-runtime-setup.md`; Delegates out-of-scope requests to runtime-setup)
+- probing live runtime readiness → use `runtime-readiness` (`references/skill-runtime-readiness.md`; Delegates out-of-scope requests to runtime-readiness)
+- resolving conflicts between official and unofficial bridges → use `bridge-conflicts` (`references/skill-bridge-conflicts.md`; Delegates out-of-scope requests to bridge-conflicts)
 - Path 2 community bridge specifics → use `runtime-path-picker` (`references/skill-runtime-path-picker.md`; Delegates out-of-scope requests to runtime-path-picker)
 - CLI appendix job outlining → use `cli-appendix-job-outline` (`references/skill-cli-appendix-job-outline.md`; Delegates out-of-scope requests to cli-appendix-job-outline)
 
@@ -35,14 +35,14 @@ Metadata: Contract `v1.0.0` | Category `runtime-and-execution` | Role `lab-mcp-h
 
 ## Cross-skill handoffs
 - [upstream_reference] Path selection → `runtime-path-picker` (`references/skill-runtime-path-picker.md`) — `when.all: [runtime.path equals "unselected"]`
-- [upstream_reference] Detailed setup and configuration → `official-runtime-setup-guide` (`references/skill-official-runtime-setup-guide.md`) — `when.all: [runtime.path not_equals "unselected"; stage.current equals "runtime_setup"]`
-- [progression] Readiness probing → `official-runtime-readiness-checker` (`references/skill-official-runtime-readiness-checker.md`) — `when.all: [runtime.path not_equals "unselected"; runtime.verifiedReady equals false]`
-- [fallback] Bridge conflicts → `runtime-bridge-conflict-resolver` (`references/skill-runtime-bridge-conflict-resolver.md`) — `when.all: [runtime.conflictDetected equals true]`
+- [upstream_reference] Detailed setup and configuration → `runtime-setup` (`references/skill-runtime-setup.md`) — `when.all: [runtime.path not_equals "unselected"; stage.current equals "runtime_setup"]`
+- [progression] Readiness probing → `runtime-readiness` (`references/skill-runtime-readiness.md`) — `when.all: [runtime.path not_equals "unselected"; runtime.verifiedReady equals false]`
+- [fallback] Bridge conflicts → `bridge-conflicts` (`references/skill-bridge-conflicts.md`) — `when.all: [runtime.conflictDetected equals true]`
 - [progression] CLI appendix workflows → `cli-appendix-job-outline` (`references/skill-cli-appendix-job-outline.md`) — `when.all: [runtime.path equals "cli_appendix"; request.topic equals "cli_batch"]`
 
 ## Safety boundaries & non-goals
 - Runtime boundary: Outline only; never configures hosts and never runs Blender. Path 1 requires the Lab MCP add-on inside **Blender 5.1+** plus a host surface: **(a)** Anthropic Connector in Claude Desktop or **(b)** any manually configured MCP client. The Connector is **never standalone**. Path 2 (`mcp-for-blender`, formerly `ahujasid/blender-mcp`; see `docs/unofficial-runtime-bridges.md`) and CLI workflows (`cli-appendix-job-outline`) are out of scope here.
 - Choosing between Path 1, Path 2, and the CLI appendix (owned by `runtime-path-picker`).
-- Performing step-by-step installation or editing host MCP configuration files (owned by `official-runtime-setup-guide`).
-- Probing whether a live Blender MCP session is currently connected (owned by `official-runtime-readiness-checker`).
+- Performing step-by-step installation or editing host MCP configuration files (owned by `runtime-setup`).
+- Probing whether a live Blender MCP session is currently connected (owned by `runtime-readiness`).
 - Documenting Path 2 community bridge internals or headless CLI batch scripts.

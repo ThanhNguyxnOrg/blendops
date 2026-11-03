@@ -172,7 +172,7 @@ test('Phase 2 (5/7): Retry edges require bounded maxAttempts (1..5) and structur
   const catalogSet = getCatalogSet();
   const missingRetryPolicy = structuredClone(loadPilotContract('workflow-stage-router'));
   missingRetryPolicy.handoffs.push({
-    target: 'blender-scene-quality-checker',
+    target: 'scene-readiness',
     type: 'retry',
     label: 'Unbounded retry test',
     when: { all: [{ field: 'quality.verdict', operator: 'equals', value: 'fail' }] },

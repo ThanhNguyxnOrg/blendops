@@ -30,20 +30,20 @@
       },
       "expectedBehavior": [
         "Completes all 4 diagnostic phases (reproduce -> narrow -> identify -> propose)",
-        "Identifies missing key light / exposure in lighting plan and hands off to blender-lighting-material-planner"
+        "Identifies missing key light / exposure in lighting plan and hands off to lighting-material-plan"
       ],
       "requiredOutputProperties": [
         "Phase 1 (reproduce)",
         "Phase 2 (narrow)",
         "Phase 3 (identify)",
         "Phase 4 (propose)",
-        "blender-lighting-material-planner"
+        "lighting-material-plan"
       ],
       "forbiddenOutputProperties": [
         "I re-rendered the scene for you",
         "Artifact: Verified"
       ],
-      "expectedRoutingTarget": "blender-lighting-material-planner",
+      "expectedRoutingTarget": "lighting-material-plan",
       "truthStateExpectations": {
         "runtimeStatus": "Attempted",
         "artifactStatus": "Failed"
@@ -56,11 +56,11 @@
       "deterministicFixture": {
         "simulatedOutput": {
           "mode": "Text-only root-cause diagnosis",
-          "recommendedNextAction": "Phase 4 (propose): update key/rim exposure in blender-lighting-material-planner with observable luminance pass criteria.",
-          "targetHandoff": "blender-lighting-material-planner",
+          "recommendedNextAction": "Phase 4 (propose): update key/rim exposure in lighting-material-plan with observable luminance pass criteria.",
+          "targetHandoff": "lighting-material-plan",
           "runtimeStatus": "Attempted",
           "artifactStatus": "Failed",
-          "summary": "Completed Phase 1 (reproduce), Phase 2 (narrow), Phase 3 (identify), and Phase 4 (propose) for black render; routed to blender-lighting-material-planner.",
+          "summary": "Completed Phase 1 (reproduce), Phase 2 (narrow), Phase 3 (identify), and Phase 4 (propose) for black render; routed to lighting-material-plan.",
           "warnings": [],
           "evidenceCitations": [
             "skills/blender-troubleshooting/EVAL.md"
@@ -130,18 +130,18 @@
       },
       "expectedBehavior": [
         "Identifies missing plain-language translation step in Phase 3",
-        "Proposes routing through non-blender-user-response-writer in Phase 4"
+        "Proposes routing through plain-language-response in Phase 4"
       ],
       "requiredOutputProperties": [
         "missing translation step",
-        "non-blender-user-response-writer",
+        "plain-language-response",
         "Runtime: Not Run"
       ],
       "forbiddenOutputProperties": [
         "Artifact: Produced",
         "jargon is acceptable for non-Blender users"
       ],
-      "expectedRoutingTarget": "non-blender-user-response-writer",
+      "expectedRoutingTarget": "plain-language-response",
       "truthStateExpectations": {
         "runtimeStatus": "Not Run",
         "artifactStatus": "Not Produced"
@@ -149,16 +149,16 @@
       "evaluationType": "deterministic_fixture",
       "severity": "P1",
       "evidenceRequirements": [
-        "Root cause = missing translation step + handoff to non-blender-user-response-writer"
+        "Root cause = missing translation step + handoff to plain-language-response"
       ],
       "deterministicFixture": {
         "simulatedOutput": {
           "mode": "Text-only root-cause diagnosis",
-          "recommendedNextAction": "Route raw planner output through non-blender-user-response-writer to eliminate unglossed jargon.",
-          "targetHandoff": "non-blender-user-response-writer",
+          "recommendedNextAction": "Route raw planner output through plain-language-response to eliminate unglossed jargon.",
+          "targetHandoff": "plain-language-response",
           "runtimeStatus": "Not Run",
           "artifactStatus": "Not Produced",
-          "summary": "Identified missing translation step as root cause of jargon leak; proposed handoff to non-blender-user-response-writer.",
+          "summary": "Identified missing translation step as root cause of jargon leak; proposed handoff to plain-language-response.",
           "warnings": [],
           "evidenceCitations": [
             "skills/blender-troubleshooting/EVAL.md",
@@ -180,18 +180,18 @@
       },
       "expectedBehavior": [
         "Marks symptom intermittent in Phase 1 and requires >= 2 consistent reproductions before proposing a fix",
-        "Routes to runtime-attempt-report-writer to log structured reproduction attempts"
+        "Routes to runtime-attempt-report to log structured reproduction attempts"
       ],
       "requiredOutputProperties": [
         "intermittent",
         "no fix proposed yet",
-        "runtime-attempt-report-writer"
+        "runtime-attempt-report"
       ],
       "forbiddenOutputProperties": [
         "root cause confirmed",
         "Artifact: Verified"
       ],
-      "expectedRoutingTarget": "runtime-attempt-report-writer",
+      "expectedRoutingTarget": "runtime-attempt-report",
       "truthStateExpectations": {
         "runtimeStatus": "Not Run",
         "artifactStatus": "Not Produced"
@@ -204,8 +204,8 @@
       "deterministicFixture": {
         "simulatedOutput": {
           "mode": "Text-only root-cause diagnosis",
-          "recommendedNextAction": "Symptom marked intermittent (1/5): no fix proposed yet; record reproduction inputs via runtime-attempt-report-writer.",
-          "targetHandoff": "runtime-attempt-report-writer",
+          "recommendedNextAction": "Symptom marked intermittent (1/5): no fix proposed yet; record reproduction inputs via runtime-attempt-report.",
+          "targetHandoff": "runtime-attempt-report",
           "runtimeStatus": "Not Run",
           "artifactStatus": "Not Produced",
           "summary": "Halted at Phase 1 (intermittent 1/5 runs); no fix proposed yet until >= 2 consistent reproductions are logged.",
@@ -231,18 +231,18 @@
       },
       "expectedBehavior": [
         "Marks Phase 1 blocked due to missing observed evidence",
-        "Routes to official-runtime-readiness-checker / evidence collection without speculative fixes"
+        "Routes to runtime-readiness / evidence collection without speculative fixes"
       ],
       "requiredOutputProperties": [
         "Phase 1 blocked",
         "no speculative fix",
-        "official-runtime-readiness-checker"
+        "runtime-readiness"
       ],
       "forbiddenOutputProperties": [
         "probably needs better lighting",
         "Artifact: Produced"
       ],
-      "expectedRoutingTarget": "official-runtime-readiness-checker",
+      "expectedRoutingTarget": "runtime-readiness",
       "truthStateExpectations": {
         "runtimeStatus": "Not Run",
         "artifactStatus": "Not Produced"
@@ -255,8 +255,8 @@
       "deterministicFixture": {
         "simulatedOutput": {
           "mode": "Text-only root-cause diagnosis",
-          "recommendedNextAction": "Phase 1 blocked (missing observed evidence): route to official-runtime-readiness-checker with no speculative fix.",
-          "targetHandoff": "official-runtime-readiness-checker",
+          "recommendedNextAction": "Phase 1 blocked (missing observed evidence): route to runtime-readiness with no speculative fix.",
+          "targetHandoff": "runtime-readiness",
           "runtimeStatus": "Not Run",
           "artifactStatus": "Not Produced",
           "summary": "Marked Phase 1 blocked because no log or file path was supplied; issued no speculative fix.",
@@ -280,18 +280,18 @@
       },
       "expectedBehavior": [
         "Ranks primary cause by evidence weight and preserves secondary cause as \"alternative pending more evidence\"",
-        "Hands off to blender-composition-camera-planner"
+        "Hands off to camera-composition"
       ],
       "requiredOutputProperties": [
         "ranked by evidence weight",
         "alternative pending more evidence",
-        "blender-composition-camera-planner"
+        "camera-composition"
       ],
       "forbiddenOutputProperties": [
         "5 unranked causes",
         "Artifact: Verified"
       ],
-      "expectedRoutingTarget": "blender-composition-camera-planner",
+      "expectedRoutingTarget": "camera-composition",
       "truthStateExpectations": {
         "runtimeStatus": "Attempted",
         "artifactStatus": "Produced"
@@ -304,8 +304,8 @@
       "deterministicFixture": {
         "simulatedOutput": {
           "mode": "Text-only root-cause diagnosis",
-          "recommendedNextAction": "Verify camera distance in blender-composition-camera-planner (ranked by evidence weight; mesh scale kept as alternative pending more evidence).",
-          "targetHandoff": "blender-composition-camera-planner",
+          "recommendedNextAction": "Verify camera distance in camera-composition (ranked by evidence weight; mesh scale kept as alternative pending more evidence).",
+          "targetHandoff": "camera-composition",
           "runtimeStatus": "Attempted",
           "artifactStatus": "Produced",
           "summary": "Ranked camera framing vs mesh scale by evidence weight and kept second cause as alternative pending more evidence.",

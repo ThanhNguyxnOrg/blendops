@@ -27,7 +27,7 @@ Check BlendOps runtime readiness for my setup. I'm using <Path 1 host (a/b) / Pa
 Don't run Blender; just report readiness.
 ```
 
-**Agent should load:** `official-runtime-readiness-checker`. If signals inconsistent, escalate to `runtime-bridge-conflict-resolver`.
+**Agent should load:** `runtime-readiness`. If signals inconsistent, escalate to `bridge-conflicts`.
 
 ## Prompt 4 — "My render came out wrong, debug it"
 
@@ -47,7 +47,7 @@ Run BlendOps `pre-handoff-verification` 7-point gate before I claim it's ready.
 Downgrade the claim explicitly if any check fails.
 ```
 
-**Agent should load:** `pre-handoff-verification`. Only after Pass verdict, route to `non-blender-user-response-writer`.
+**Agent should load:** `pre-handoff-verification`. Only after Pass verdict, route to `plain-language-response`.
 
 ## Prompt 6 — "Write the final response for stakeholders"
 
@@ -56,7 +56,7 @@ Summarize the BlendOps run results for <audience> in plain language.
 Keep it non-technical. Cite evidence labels (`Verified` / `Produced` / `Not Run` etc.).
 ```
 
-**Agent should load:** `non-blender-user-response-writer`. If `pre-handoff-verification` did not run yet, route there first.
+**Agent should load:** `plain-language-response`. If `pre-handoff-verification` did not run yet, route there first.
 
 ## Anti-patterns
 

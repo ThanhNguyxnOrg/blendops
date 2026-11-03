@@ -108,7 +108,7 @@
       "userFacingPythonAllowed": false
     },
     {
-      "skillId": "asset-library-organization-planner",
+      "skillId": "asset-library-plan",
       "capabilityTier": "L0",
       "governedRuntimeCeiling": "L2",
       "requiresPreMutationBackupWhenExecuted": true,
@@ -126,7 +126,7 @@
       "userFacingPythonAllowed": false
     },
     {
-      "skillId": "asset-style-consistency-checker",
+      "skillId": "asset-style-check",
       "capabilityTier": "L0",
       "governedRuntimeCeiling": "L2",
       "requiresPreMutationBackupWhenExecuted": true,
@@ -135,7 +135,7 @@
       "userFacingPythonAllowed": false
     },
     {
-      "skillId": "blender-asset-discovery-planner",
+      "skillId": "asset-discovery",
       "capabilityTier": "L0",
       "governedRuntimeCeiling": "L2",
       "requiresPreMutationBackupWhenExecuted": true,
@@ -153,7 +153,7 @@
       "userFacingPythonAllowed": false
     },
     {
-      "skillId": "blender-checklist-driven-workflow",
+      "skillId": "stage-gates",
       "capabilityTier": "L0",
       "governedRuntimeCeiling": "L0",
       "requiresPreMutationBackupWhenExecuted": false,
@@ -162,7 +162,7 @@
       "userFacingPythonAllowed": false
     },
     {
-      "skillId": "blender-composition-camera-planner",
+      "skillId": "camera-composition",
       "capabilityTier": "L0",
       "governedRuntimeCeiling": "L1",
       "requiresPreMutationBackupWhenExecuted": true,
@@ -171,7 +171,7 @@
       "userFacingPythonAllowed": false
     },
     {
-      "skillId": "blender-lighting-material-planner",
+      "skillId": "lighting-material-plan",
       "capabilityTier": "L0",
       "governedRuntimeCeiling": "L1",
       "requiresPreMutationBackupWhenExecuted": true,
@@ -189,7 +189,7 @@
       "userFacingPythonAllowed": false
     },
     {
-      "skillId": "blender-scene-quality-checker",
+      "skillId": "scene-readiness",
       "capabilityTier": "L0",
       "governedRuntimeCeiling": "L0",
       "requiresPreMutationBackupWhenExecuted": false,
@@ -198,7 +198,7 @@
       "userFacingPythonAllowed": false
     },
     {
-      "skillId": "blender-scope-boundary-enforcer",
+      "skillId": "scope-guard",
       "capabilityTier": "L0",
       "governedRuntimeCeiling": "L0",
       "requiresPreMutationBackupWhenExecuted": false,
@@ -207,7 +207,7 @@
       "userFacingPythonAllowed": false
     },
     {
-      "skillId": "blender-stop-condition-decider",
+      "skillId": "done-criteria",
       "capabilityTier": "L0",
       "governedRuntimeCeiling": "L0",
       "requiresPreMutationBackupWhenExecuted": false,
@@ -234,7 +234,7 @@
       "userFacingPythonAllowed": false
     },
     {
-      "skillId": "character-portrait-scene-planner",
+      "skillId": "character-portrait",
       "capabilityTier": "L0",
       "governedRuntimeCeiling": "L1",
       "requiresPreMutationBackupWhenExecuted": true,
@@ -279,7 +279,7 @@
       "userFacingPythonAllowed": false
     },
     {
-      "skillId": "environment-establishing-shot-planner",
+      "skillId": "environment-shot",
       "capabilityTier": "L0",
       "governedRuntimeCeiling": "L1",
       "requiresPreMutationBackupWhenExecuted": true,
@@ -297,7 +297,7 @@
       "userFacingPythonAllowed": false
     },
     {
-      "skillId": "glb-mobile-performance-budget",
+      "skillId": "mobile-glb-budget",
       "capabilityTier": "L0",
       "governedRuntimeCeiling": "L2",
       "requiresPreMutationBackupWhenExecuted": true,
@@ -324,7 +324,7 @@
       "userFacingPythonAllowed": false
     },
     {
-      "skillId": "interior-architectural-scene-planner",
+      "skillId": "interior-scene",
       "capabilityTier": "L0",
       "governedRuntimeCeiling": "L1",
       "requiresPreMutationBackupWhenExecuted": true,
@@ -351,7 +351,7 @@
       "userFacingPythonAllowed": false
     },
     {
-      "skillId": "non-blender-user-response-writer",
+      "skillId": "plain-language-response",
       "capabilityTier": "L0",
       "governedRuntimeCeiling": "L0",
       "requiresPreMutationBackupWhenExecuted": false,
@@ -360,7 +360,7 @@
       "userFacingPythonAllowed": false
     },
     {
-      "skillId": "official-runtime-readiness-checker",
+      "skillId": "runtime-readiness",
       "capabilityTier": "L0",
       "governedRuntimeCeiling": "L0",
       "requiresPreMutationBackupWhenExecuted": false,
@@ -369,7 +369,7 @@
       "userFacingPythonAllowed": false
     },
     {
-      "skillId": "official-runtime-setup-guide",
+      "skillId": "runtime-setup",
       "capabilityTier": "L0",
       "governedRuntimeCeiling": "L0",
       "requiresPreMutationBackupWhenExecuted": false,
@@ -423,7 +423,7 @@
       "userFacingPythonAllowed": false
     },
     {
-      "skillId": "preview-report-template-writer",
+      "skillId": "preview-report",
       "capabilityTier": "L0",
       "governedRuntimeCeiling": "L0",
       "requiresPreMutationBackupWhenExecuted": false,
@@ -477,7 +477,7 @@
       "userFacingPythonAllowed": false
     },
     {
-      "skillId": "runtime-attempt-report-writer",
+      "skillId": "runtime-attempt-report",
       "capabilityTier": "L0",
       "governedRuntimeCeiling": "L0",
       "requiresPreMutationBackupWhenExecuted": false,
@@ -486,7 +486,7 @@
       "userFacingPythonAllowed": false
     },
     {
-      "skillId": "runtime-bridge-conflict-resolver",
+      "skillId": "bridge-conflicts",
       "capabilityTier": "L0",
       "governedRuntimeCeiling": "L0",
       "requiresPreMutationBackupWhenExecuted": false,
@@ -504,7 +504,7 @@
       "userFacingPythonAllowed": false
     },
     {
-      "skillId": "three-fiber-component-shape-planner",
+      "skillId": "r3f-component-plan",
       "capabilityTier": "L0",
       "governedRuntimeCeiling": "L0",
       "requiresPreMutationBackupWhenExecuted": false,
