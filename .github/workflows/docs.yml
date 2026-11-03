@@ -14,6 +14,11 @@ jobs:
         with:
           node-version: 20
       - run: npm ci
+      - name: Rebuild architecture inventory on review branch
+        if: github.ref_name == 'phase13.2-complete-review'
+        run: |
+          npm run arch:build
+          git diff -- docs/audits/current/repository-inventory.json
       - run: npm run ci
 
   cli-cross-platform:
@@ -32,4 +37,7 @@ jobs:
         with:
           node-version: 20
       - run: npm ci
+      - name: Rebuild architecture inventory on review branch
+        if: github.ref_name == 'phase13.2-complete-review'
+        run: npm run arch:build
       - run: node --test scripts/test-phase11.mjs scripts/test-phase12.mjs scripts/test-phase13.mjs
