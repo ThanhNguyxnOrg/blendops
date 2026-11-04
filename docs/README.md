@@ -21,6 +21,7 @@ The single index for everything in this repo. Bookmark this page.
 | Runtime artifacts | Not Produced | No fresh preview/render/GLB. |
 | Release tag (`v0.1.0-draft`) | 🟡 Tag-able now | Skills layer is complete; tagging is a publishing decision, not gated on upstream runtime evidence. |
 | Local CLI / tarball package | Implemented locally (`Not Published`) | `bin/blendops.mjs` + `scripts/install-skills.mjs` verified via `npm pack`; no public npm registry or marketplace listing claimed. |
+| Knowledge & Recipe Catalog (Phase 0 + Phase 1) | Implemented & Verified (`32/32` retrieval evals) | **30** `knowledge.*` records across **11** 3D domains, **10** `recipe.*` blueprints, **20** `source.*` citations, deterministic `catalog-search` / `catalog-resolve` CLI, and 48-skill / 151-reference architecture audit in [`knowledge-and-recipe-catalog.md`](./knowledge-and-recipe-catalog.md) and [`audits/skill-architecture-audit.md`](./audits/skill-architecture-audit.md). |
 | GLB Web Handoff & Viewer Integration | Implemented (`Not Run` / `Not Produced` for live Blender exports) | `schemas/glb-web-handoff-manifest.schema.json`, `scripts/inspect-glb.mjs`, `scripts/generate-glb-handoff-report.mjs`, CLI `glb-inspect` / `glb-handoff` / `glb-validate-manifest`, and Three.js + R3F examples in [`examples/glb-web-handoff/README.md`](./examples/glb-web-handoff/README.md). |
 | Repository architecture & file inventory | Verified (`npm run arch:check`) | Canonical source, generated artifact, historical record, documentation, runtime/test, distribution, and config classification in [`architecture.md`](./architecture.md) and [`audits/current/repository-inventory.json`](./audits/current/repository-inventory.json). |
 
@@ -47,6 +48,7 @@ The single index for everything in this repo. Bookmark this page.
 | Understand the product | [`product-direction.md`](./product-direction.md) | [`architecture.md`](./architecture.md), [`reference-runtime.md`](./reference-runtime.md) |
 | Set up Blender runtime | [`external-runtime-setup.md`](./external-runtime-setup.md) | [`runtime-stack-strategy.md`](./runtime-stack-strategy.md), [`reference-runtime.md`](./reference-runtime.md), [`unofficial-runtime-bridges.md`](./unofficial-runtime-bridges.md), [`../laws/official-runtime-only.md`](../laws/official-runtime-only.md) |
 | Review workflow behavior | [`workflow-contract.md`](./workflow-contract.md) | [`first-user-journey.md`](./first-user-journey.md), [`safety-model.md`](./safety-model.md) |
+| Search 3D domain knowledge & canonical recipes | [`knowledge-and-recipe-catalog.md`](./knowledge-and-recipe-catalog.md) | [`../registry/knowledge-catalog.json`](../registry/knowledge-catalog.json), [`../registry/recipe-catalog.json`](../registry/recipe-catalog.json), [`audits/skill-architecture-audit.md`](./audits/skill-architecture-audit.md) |
 | Install BlendOps into a tool | [`ai-agent-quickstart.md`](./ai-agent-quickstart.md) | [`ai-agent-install-flow.md`](./ai-agent-install-flow.md), [`install-scopes.md`](./install-scopes.md), [`multi-agent-install-strategy.md`](./multi-agent-install-strategy.md), [`adapters/README.md`](./adapters/README.md), [`install/README.md`](./install/README.md) |
 | Inspect a GLB & integrate into Three.js / React Three Fiber | [`examples/glb-web-handoff/README.md`](./examples/glb-web-handoff/README.md) | [`../skills/glb-web-handoff/SKILL.md`](../skills/glb-web-handoff/SKILL.md), [`../schemas/glb-web-handoff-manifest.schema.json`](../schemas/glb-web-handoff-manifest.schema.json) |
 | Check eval evidence & repository audit | [`evals/README.md`](./evals/README.md) | [`audits/current/README.md`](./audits/current/README.md), [`audits/current/repository-inventory.json`](./audits/current/repository-inventory.json), [`release-readiness.md`](./release-readiness.md), [`release-readiness-rollup-v0.md`](./release-readiness-rollup-v0.md) |
@@ -61,6 +63,8 @@ The single index for everything in this repo. Bookmark this page.
 | Product direction | [`product-direction.md`](./product-direction.md) |
 | Architecture | [`architecture.md`](./architecture.md) |
 | Skill system | [`skill-system.md`](./skill-system.md) |
+| Knowledge & recipe catalog | [`knowledge-and-recipe-catalog.md`](./knowledge-and-recipe-catalog.md) |
+| 48-skill & 151-reference architecture audit | [`audits/skill-architecture-audit.md`](./audits/skill-architecture-audit.md) |
 | Workflow contract | [`workflow-contract.md`](./workflow-contract.md) |
 | Safety model | [`safety-model.md`](./safety-model.md) |
 | First user journey | [`first-user-journey.md`](./first-user-journey.md) |

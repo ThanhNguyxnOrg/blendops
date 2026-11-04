@@ -36,9 +36,13 @@
   "files": [
     "bin/",
     "scripts/install-skills.mjs",
+    "scripts/build-knowledge-catalog.mjs",
     "scripts/export-claude-skills.mjs",
     "scripts/inspect-glb.mjs",
     "scripts/generate-glb-handoff-report.mjs",
+    "docs/knowledge-and-recipe-catalog.md",
+    "docs/recipes/",
+    "docs/workflows/",
     "docs/examples/glb-web-handoff/",
     "skills/",
     "laws/",
@@ -56,6 +60,9 @@
     "dev": "node scripts/dev-server.mjs",
     "start": "node scripts/dev-server.mjs",
     "build": "npm run ci",
+    "catalog:build": "node scripts/build-knowledge-catalog.mjs --build",
+    "catalog:check": "node scripts/build-knowledge-catalog.mjs --check",
+    "catalog:eval": "node scripts/build-knowledge-catalog.mjs --eval",
     "registry:build": "node scripts/build-registry.mjs",
     "registry:check": "node scripts/build-registry.mjs --check",
     "evals:build": "node scripts/run-evals.mjs --build",
@@ -69,10 +76,10 @@
     "glb:handoff": "node scripts/generate-glb-handoff-report.mjs",
     "arch:build": "node scripts/validate-repository-architecture.mjs",
     "arch:check": "node scripts/validate-repository-architecture.mjs --check",
-    "test": "node --test scripts/test-phase1.mjs scripts/test-phase2.mjs scripts/test-phase3.mjs scripts/test-phase4.mjs scripts/test-phase5.mjs scripts/test-phase6.mjs scripts/test-phase7.mjs scripts/test-phase8.mjs scripts/test-phase9.mjs scripts/test-phase10.mjs scripts/test-phase11.mjs scripts/test-phase12.mjs scripts/test-phase13.mjs",
+    "test": "node --test scripts/test-phase1.mjs scripts/test-phase2.mjs scripts/test-phase3.mjs scripts/test-phase4.mjs scripts/test-phase5.mjs scripts/test-phase6.mjs scripts/test-phase7.mjs scripts/test-phase8.mjs scripts/test-phase9.mjs scripts/test-phase10.mjs scripts/test-phase11.mjs scripts/test-phase12.mjs scripts/test-phase13.mjs scripts/test-phase14.mjs",
     "docs:check": "node scripts/check-docs.mjs",
     "skills:export": "node scripts/export-claude-skills.mjs",
-    "ci": "npm run docs:check && npm run arch:check && npm run registry:check && npm run evals:check && npm run evals:run && npm run bundles:summaries:check && npm run skills:export && npm test"
+    "ci": "npm run docs:check && npm run catalog:check && npm run arch:check && npm run registry:check && npm run evals:check && npm run evals:run && npm run bundles:summaries:check && npm run skills:export && npm test"
   },
   "dependencies": {
     "fflate": "0.8.3"

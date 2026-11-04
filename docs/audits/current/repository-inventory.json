@@ -2,9 +2,9 @@
   "schemaVersion": "1.0.0",
   "auditPhase": "phase-13-current",
   "summary": {
-    "totalTrackedFiles": 656,
-    "npmPackageIncludedFiles": 458,
-    "generatedTrackedFiles": 106,
+    "totalTrackedFiles": 669,
+    "npmPackageIncludedFiles": 472,
+    "generatedTrackedFiles": 110,
     "canonicalSkillsCount": 48,
     "lawsCount": 4,
     "packsCount": 1,
@@ -12,13 +12,13 @@
     "installTargetsCount": 26,
     "exactDuplicateGroupsCount": 1,
     "classificationCounts": {
-      "configuration": 24,
+      "configuration": 27,
       "documentation": 84,
       "historical_record": 26,
       "distribution_artifact": 15,
-      "canonical_source": 323,
-      "generated_artifact": 106,
-      "runtime_build_test_infrastructure": 78
+      "canonical_source": 326,
+      "generated_artifact": 110,
+      "runtime_build_test_infrastructure": 81
     },
     "subsystemCounts": {
       "repository-governance": 4,
@@ -27,17 +27,18 @@
       "cli-distribution": 1,
       "bundles-and-packaging": 130,
       "product-and-target-docs": 68,
-      "audits-and-provenance": 18,
+      "audits-and-provenance": 20,
       "runtime-and-adapter-evals": 13,
       "glb-web-handoff-toolkit": 3,
-      "behavioral-evals": 49,
+      "knowledge-and-recipe-catalog": 5,
+      "behavioral-evals": 50,
       "laws-and-packs": 7,
       "package-governance": 2,
       "registry-and-routing": 5,
-      "schemas-and-contracts": 7,
+      "schemas-and-contracts": 10,
+      "cli-and-runtime-tools": 5,
       "ci-and-build-generators": 10,
-      "cli-and-runtime-tools": 4,
-      "test-suites": 13,
+      "test-suites": 14,
       "quality-and-skill-reviews": 7,
       "skills-catalog": 297
     },
@@ -46,20 +47,20 @@
       ".github": 10,
       "bin": 1,
       "bundles": 130,
-      "docs": 102,
-      "evals": 49,
+      "docs": 105,
+      "evals": 50,
       "laws": 5,
       "packs": 2,
-      "registry": 5,
-      "schemas": 7,
-      "scripts": 27,
+      "registry": 9,
+      "schemas": 10,
+      "scripts": 29,
       "skill-reviews": 7,
       "skills": 297
     },
     "referenceIntegrity": {
-      "markdownFiles": 489,
-      "jsModules": 28,
-      "schemas": 7,
+      "markdownFiles": 491,
+      "jsModules": 30,
+      "schemas": 10,
       "workflows": 3
     }
   },
@@ -464,8 +465,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 28587,
-      "sha256": "e75f09fc0661ace5bba78784318a1edeeceae688cffae59fd0475dd34c7b4954"
+      "byteSize": 29306,
+      "sha256": "bd9835bb86178460b28a4f138b3e578293ca21d5e8c329d3346a980148599650"
     },
     {
       "path": "bin/blendops.mjs",
@@ -1439,8 +1440,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 2445,
-      "sha256": "3aa0359f3571457334ec5a64dfe860c641c0754e867ce1910ecb5310520bf6ad"
+      "byteSize": 2587,
+      "sha256": "50267fe8a30890e7052b7da211abeb2ad6793feed68b3e102f4365afd8c0a295"
     },
     {
       "path": "bundles/generic-project-local/INSTALL_REPORT_TEMPLATE.md",
@@ -1499,8 +1500,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 1601,
-      "sha256": "269fae10d335c8fcd3e51ce4822ea0ca57789f3bd08483f4bc2699f50b294f71"
+      "byteSize": 1755,
+      "sha256": "6bedd78082977c7a226b459000ad93f4df8c7485f9177abcd1d136d934d1e08a"
     },
     {
       "path": "bundles/skill-package/README.md",
@@ -2444,8 +2445,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 20546,
-      "sha256": "f38c2015dc6fc6a7758c720eef4d32a0b276510d4e5057b094263682db70c992"
+      "byteSize": 21604,
+      "sha256": "e66c97ded039ccff2192ad325f3032cb24cd15fce104daf32f6c4a5f47462dad"
     },
     {
       "path": "docs/adapter-registry.md",
@@ -2624,8 +2625,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 14990,
-      "sha256": "bb0a9043d70a7825f17427b1d20d34aae71735dbf2c8a640b938ca242c0b8c30"
+      "byteSize": 18761,
+      "sha256": "eee96f05cb111a312bf780e6c26fa6ae419f6563da9b0ffa2b88a53da34dbd99"
     },
     {
       "path": "docs/audits/audited-inputs.manifest.json",
@@ -2639,8 +2640,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 2910,
-      "sha256": "ae8b2c05e907c1852f63f2fa5b1d8fa754d458b4d1087ea5bb52242febc8fa07"
+      "byteSize": 3167,
+      "sha256": "689fc4bb6e03efac814022e811655493d20012b068d9cee6433d0095d0c5bb76"
     },
     {
       "path": "docs/audits/current/README.md",
@@ -2896,6 +2897,36 @@
       "safeToMoveOrRemove": false,
       "byteSize": 12759,
       "sha256": "3f948c44cfe2ad95e2683143432b74fba9c26c9348da18b278a6dd7fc14375bf"
+    },
+    {
+      "path": "docs/audits/skill-architecture-audit.json",
+      "fileType": ".json",
+      "classification": "generated_artifact",
+      "purpose": "Deterministically generated 48-skill and 151-reference architecture reconciliation audit (skill-architecture-audit.json)",
+      "owningSubsystem": "audits-and-provenance",
+      "includedInNpmPackage": false,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": true,
+      "generatorScript": "scripts/build-knowledge-catalog.mjs",
+      "safeToMoveOrRemove": false,
+      "byteSize": 157077,
+      "sha256": "f4b6ca6b9387b1048f17bbc04a498f3fa85a49190ea6fc8b15306cd1e6860b6c"
+    },
+    {
+      "path": "docs/audits/skill-architecture-audit.md",
+      "fileType": ".md",
+      "classification": "generated_artifact",
+      "purpose": "Deterministically generated 48-skill and 151-reference architecture reconciliation audit (skill-architecture-audit.md)",
+      "owningSubsystem": "audits-and-provenance",
+      "includedInNpmPackage": false,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": true,
+      "generatorScript": "scripts/build-knowledge-catalog.mjs",
+      "safeToMoveOrRemove": false,
+      "byteSize": 18561,
+      "sha256": "ec1b38dfdbc0dc4b421709a4ce5431d17b3ac3c09f29e653b81899a7d969bf67"
     },
     {
       "path": "docs/blender-version-compatibility.md",
@@ -3723,6 +3754,21 @@
       "sha256": "3218b1030640caad90d18efedd3e8b938aec9ee8d178ef72db9f1fb39ce8d3a1"
     },
     {
+      "path": "docs/knowledge-and-recipe-catalog.md",
+      "fileType": ".md",
+      "classification": "generated_artifact",
+      "purpose": "Deterministically generated human-readable index of 10 canonical recipes, 30 knowledge records, and 20 sources",
+      "owningSubsystem": "knowledge-and-recipe-catalog",
+      "includedInNpmPackage": true,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": true,
+      "generatorScript": "scripts/build-knowledge-catalog.mjs",
+      "safeToMoveOrRemove": false,
+      "byteSize": 36354,
+      "sha256": "b8082fce974e5baeac8f6e620d1380e18d397b362e2747324d9a0587a78c2538"
+    },
+    {
       "path": "docs/multi-agent-install-strategy.md",
       "fileType": ".md",
       "classification": "documentation",
@@ -3758,14 +3804,14 @@
       "classification": "documentation",
       "purpose": "Product, runtime, adapter, workflow, recipe, or target installation guide (docs/recipes/README.md)",
       "owningSubsystem": "product-and-target-docs",
-      "includedInNpmPackage": false,
+      "includedInNpmPackage": true,
       "referencedByCi": true,
       "referencedByOtherFiles": true,
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 289,
-      "sha256": "4327f31c97fc52bd1114fc7ba23d9b1f89633543b3b19e25c1a5c26cd7bca421"
+      "byteSize": 2247,
+      "sha256": "18c22d9c795b23bc5bedd9217309d6bc0f0e078023d6b066326ed6baafb1d6e0"
     },
     {
       "path": "docs/recipes/cyberpunk-shoe-hero.md",
@@ -3773,7 +3819,7 @@
       "classification": "documentation",
       "purpose": "Product, runtime, adapter, workflow, recipe, or target installation guide (docs/recipes/cyberpunk-shoe-hero.md)",
       "owningSubsystem": "product-and-target-docs",
-      "includedInNpmPackage": false,
+      "includedInNpmPackage": true,
       "referencedByCi": true,
       "referencedByOtherFiles": true,
       "isGenerated": false,
@@ -3869,8 +3915,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 12424,
-      "sha256": "953efec8b4195a089cd9f84859aa9a450bf82882117b47de1617233cde434e80"
+      "byteSize": 13506,
+      "sha256": "45e50812a2ae866d5834c0549cb77999e979bf924a86826421b7ae36425ec7a8"
     },
     {
       "path": "docs/start-here.md",
@@ -3923,7 +3969,7 @@
       "classification": "documentation",
       "purpose": "Product, runtime, adapter, workflow, recipe, or target installation guide (docs/workflows/README.md)",
       "owningSubsystem": "product-and-target-docs",
-      "includedInNpmPackage": false,
+      "includedInNpmPackage": true,
       "referencedByCi": true,
       "referencedByOtherFiles": true,
       "isGenerated": false,
@@ -3938,7 +3984,7 @@
       "classification": "documentation",
       "purpose": "Product, runtime, adapter, workflow, recipe, or target installation guide (docs/workflows/full-non-blender-user-workflow.md)",
       "owningSubsystem": "product-and-target-docs",
-      "includedInNpmPackage": false,
+      "includedInNpmPackage": true,
       "referencedByCi": true,
       "referencedByOtherFiles": true,
       "isGenerated": false,
@@ -3953,7 +3999,7 @@
       "classification": "documentation",
       "purpose": "Product, runtime, adapter, workflow, recipe, or target installation guide (docs/workflows/product-hero-workflow.md)",
       "owningSubsystem": "product-and-target-docs",
-      "includedInNpmPackage": false,
+      "includedInNpmPackage": true,
       "referencedByCi": true,
       "referencedByOtherFiles": true,
       "isGenerated": false,
@@ -3961,6 +4007,21 @@
       "safeToMoveOrRemove": false,
       "byteSize": 2951,
       "sha256": "7fc0f7b2f8ee334157d8499f0b3f9820a26d870ccb010a6d1abe30441d413e7e"
+    },
+    {
+      "path": "evals/catalog-retrieval-evals.json",
+      "fileType": ".json",
+      "classification": "runtime_build_test_infrastructure",
+      "purpose": "Deterministic 32-case knowledge & recipe catalog retrieval evaluation suite",
+      "owningSubsystem": "behavioral-evals",
+      "includedInNpmPackage": false,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 13924,
+      "sha256": "8cf76d7dfd55a4a33689e9b2c512a3db214a78d6e1a8c382b0ac619f95feb729"
     },
     {
       "path": "evals/index.json",
@@ -4799,8 +4860,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 3480,
-      "sha256": "32990acbe6a5518d11697e948dbecf4e00c5b073a353c5b80b95dc8ea7001f75"
+      "byteSize": 3878,
+      "sha256": "5e5447ce2ebd17ee22f554e669c0adcd0372a850a2d6e8c4d777aa1392f2c114"
     },
     {
       "path": "packs/README.md",
@@ -4833,10 +4894,25 @@
       "sha256": "769dcd5110b5ea67a1856ec321f18b38baca95662590ee3a89c53af93f1e1806"
     },
     {
+      "path": "registry/catalog-index.json",
+      "fileType": ".json",
+      "classification": "generated_artifact",
+      "purpose": "Deterministically generated knowledge and recipe search/cross-reference index",
+      "owningSubsystem": "knowledge-and-recipe-catalog",
+      "includedInNpmPackage": true,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": true,
+      "generatorScript": "scripts/build-knowledge-catalog.mjs",
+      "safeToMoveOrRemove": false,
+      "byteSize": 340138,
+      "sha256": "76c7ce4603677dc0b5350219ef6c6b901998cd87e8cbc2234284cef1475c0c7f"
+    },
+    {
       "path": "registry/compatibility-matrix.json",
       "fileType": ".json",
       "classification": "canonical_source",
-      "purpose": "Canonical machine-readable policy/matrix dataset (compatibility-matrix.json)",
+      "purpose": "Canonical machine-readable policy/catalog dataset (compatibility-matrix.json)",
       "owningSubsystem": "registry-and-routing",
       "includedInNpmPackage": true,
       "referencedByCi": true,
@@ -4851,7 +4927,7 @@
       "path": "registry/contract-context-fields.json",
       "fileType": ".json",
       "classification": "canonical_source",
-      "purpose": "Canonical machine-readable policy/matrix dataset (contract-context-fields.json)",
+      "purpose": "Canonical machine-readable policy/catalog dataset (contract-context-fields.json)",
       "owningSubsystem": "registry-and-routing",
       "includedInNpmPackage": true,
       "referencedByCi": true,
@@ -4863,10 +4939,55 @@
       "sha256": "907e42a8f8251a62ceebb35b9061c443ec1168a9673835254a058a4790fedcdb"
     },
     {
+      "path": "registry/knowledge-catalog.json",
+      "fileType": ".json",
+      "classification": "canonical_source",
+      "purpose": "Canonical machine-readable policy/catalog dataset (knowledge-catalog.json)",
+      "owningSubsystem": "knowledge-and-recipe-catalog",
+      "includedInNpmPackage": true,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 240893,
+      "sha256": "235e865530ff5a9a21c692fe9ee8153155dbb28a84e10856a10c492780f50afe"
+    },
+    {
+      "path": "registry/knowledge-sources.json",
+      "fileType": ".json",
+      "classification": "canonical_source",
+      "purpose": "Canonical machine-readable policy/catalog dataset (knowledge-sources.json)",
+      "owningSubsystem": "knowledge-and-recipe-catalog",
+      "includedInNpmPackage": true,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 18869,
+      "sha256": "6c1e650e5bc12ef4b985a75a97581de0b9c16fb96c3535afd4aae1fefb789462"
+    },
+    {
+      "path": "registry/recipe-catalog.json",
+      "fileType": ".json",
+      "classification": "canonical_source",
+      "purpose": "Canonical machine-readable policy/catalog dataset (recipe-catalog.json)",
+      "owningSubsystem": "knowledge-and-recipe-catalog",
+      "includedInNpmPackage": true,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 125103,
+      "sha256": "f7b3cfa5eaf2b326903196876b01c7638c1547eb6e7255b91c62935a1ac193f2"
+    },
+    {
       "path": "registry/runtime-capability-policy.json",
       "fileType": ".json",
       "classification": "canonical_source",
-      "purpose": "Canonical machine-readable policy/matrix dataset (runtime-capability-policy.json)",
+      "purpose": "Canonical machine-readable policy/catalog dataset (runtime-capability-policy.json)",
       "owningSubsystem": "registry-and-routing",
       "includedInNpmPackage": true,
       "referencedByCi": true,
@@ -4953,6 +5074,51 @@
       "sha256": "723b0fe4d9fcfa659f3d7cd303df8f8950cfc88ca8d22dbd435a453877392e52"
     },
     {
+      "path": "schemas/knowledge-record.schema.json",
+      "fileType": ".json",
+      "classification": "configuration",
+      "purpose": "JSON Schema Draft 2020-12 contract (knowledge-record.schema.json)",
+      "owningSubsystem": "schemas-and-contracts",
+      "includedInNpmPackage": true,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 11624,
+      "sha256": "fed2eb3bb0db628b345c41304835c135d8322fdf3357f5d51fe0292c7e9740c1"
+    },
+    {
+      "path": "schemas/knowledge-source-registry.schema.json",
+      "fileType": ".json",
+      "classification": "configuration",
+      "purpose": "JSON Schema Draft 2020-12 contract (knowledge-source-registry.schema.json)",
+      "owningSubsystem": "schemas-and-contracts",
+      "includedInNpmPackage": true,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 5635,
+      "sha256": "b0834dcb8b66381c466c6b808515acaf0d502b24605d8e9a6e240891fa5c3de2"
+    },
+    {
+      "path": "schemas/recipe-record.schema.json",
+      "fileType": ".json",
+      "classification": "configuration",
+      "purpose": "JSON Schema Draft 2020-12 contract (recipe-record.schema.json)",
+      "owningSubsystem": "schemas-and-contracts",
+      "includedInNpmPackage": true,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 11651,
+      "sha256": "556941380d070f945b7edc3f25c2b4467c2bcf886715e8a79e4dad548c0a3190"
+    },
+    {
       "path": "schemas/runtime-capability-policy.schema.json",
       "fileType": ".json",
       "classification": "configuration",
@@ -5013,6 +5179,21 @@
       "sha256": "a8fc8c09e5dc207ce7963bd321722abf04c4efb4d28caa18bd0e4640eb6692ce"
     },
     {
+      "path": "scripts/build-knowledge-catalog.mjs",
+      "fileType": ".mjs",
+      "classification": "runtime_build_test_infrastructure",
+      "purpose": "Packaged CLI and runtime verification tool (build-knowledge-catalog.mjs)",
+      "owningSubsystem": "cli-and-runtime-tools",
+      "includedInNpmPackage": true,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 60838,
+      "sha256": "4c9e17c456818a6ab067aad994bc54fd851d883c760e61171ba82c1a4be08ffb"
+    },
+    {
       "path": "scripts/build-registry.mjs",
       "fileType": ".mjs",
       "classification": "runtime_build_test_infrastructure",
@@ -5039,8 +5220,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 44413,
-      "sha256": "15eb132e74b90e101a35fe2e4aacd5ce6e0bac3b8468d71c49f4942f84c41a66"
+      "byteSize": 45411,
+      "sha256": "038af61e59e62a6ec08219c4691d43fe310a999706a647b6725adac2c348ef86"
     },
     {
       "path": "scripts/dev-server.mjs",
@@ -5144,8 +5325,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 148755,
-      "sha256": "8338d530460b05c5cd9ea49b053b620f0a0a2e88176d3bf934fb7883e25ac2fe"
+      "byteSize": 157034,
+      "sha256": "4725e84339f6a811b59082f7cb6d7acdab3c498258d377c9c2704635be0ebf3e"
     },
     {
       "path": "scripts/run-evals.mjs",
@@ -5204,8 +5385,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 51196,
-      "sha256": "70513e6963a862f4c251da13c5aef4f96a333c6d4d2adf7e05cc2a43bc5b3e3d"
+      "byteSize": 51377,
+      "sha256": "6e109b6ebcdf897771bbc7c1e352f135d48ac6baa9e547e0f9608b9f3d9a4bc7"
     },
     {
       "path": "scripts/test-phase12.mjs",
@@ -5234,8 +5415,23 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 25482,
-      "sha256": "1b2227f1a1f1272ab93a0d7d367c62c6d0a548d2ea5f8c02f6d75a3c3bda7738"
+      "byteSize": 25724,
+      "sha256": "1007b0374830d9dc59f3c41ea9ea09c0cdeab780fd8c1f55466bc0220464bbfc"
+    },
+    {
+      "path": "scripts/test-phase14.mjs",
+      "fileType": ".mjs",
+      "classification": "runtime_build_test_infrastructure",
+      "purpose": "Automated regression and verification test suite (test-phase14.mjs)",
+      "owningSubsystem": "test-suites",
+      "includedInNpmPackage": false,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 12987,
+      "sha256": "68b32b894a5996138656cb2e490cdd8718c9042893049115c704a7b707da1d6d"
     },
     {
       "path": "scripts/test-phase2.mjs",
@@ -5264,8 +5460,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 57231,
-      "sha256": "de98ac96b83f2e504be3df1e2ed832b78d3e2a3eda5fa3f8c96a0a5b29e7a213"
+      "byteSize": 57492,
+      "sha256": "ce3ce9388d0f2d5a06beee5f72ad7a8d6ab00e3028e89430034bbf68e2f11993"
     },
     {
       "path": "scripts/test-phase4.mjs",
@@ -5414,8 +5610,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 29958,
-      "sha256": "0b4a17429d4a1180e74f482ac705bbb774e4c7d239134f9db0cccb7111890d03"
+      "byteSize": 31549,
+      "sha256": "3cc5aba2a6ea87fa768a5145168453da29bafa9e8c45af7aff0be06f56c64e0d"
     },
     {
       "path": "skill-reviews/README.md",
@@ -6254,8 +6450,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 1729,
-      "sha256": "114f0fe9cd6828942d532eeff426f8a1e100e3e45a7bce7f936ea5ff1e3c44ea"
+      "byteSize": 3034,
+      "sha256": "4b8610b0cf32f6cdf9cf1e2e31baa769f9ab54f50df0be8ca933ab62e023473c"
     },
     {
       "path": "skills/blender-recipe-decomposer/references/recipe-naming-rules.md",
@@ -9029,8 +9225,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 913,
-      "sha256": "7e14a5a04979e9451e38c06f44e5600e08c3d4c22606657d3735ce7ebac104c3"
+      "byteSize": 4008,
+      "sha256": "3fb6b334de83faaf19315ea026bdb62b4efbec5a7dcab67d67910982c0b31016"
     },
     {
       "path": "skills/recipe-fit-assessor/references/scope-gap-rules.md",

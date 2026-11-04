@@ -5,6 +5,10 @@ import { fileURLToPath } from 'node:url';
 import { validateCompatibilityMatrixObject } from './validate-compatibility-matrix.mjs';
 import { validateCapabilityPolicyObject } from './validate-capability-policy.mjs';
 import { checkBundleReferenceSummaries } from './generate-bundle-reference-summaries.mjs';
+import {
+  validateKnowledgeAndRecipeCatalogs,
+  runCatalogRetrievalEvals,
+} from './build-knowledge-catalog.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const root = process.cwd();
@@ -81,6 +85,8 @@ const requiredDocs = [
   'docs/evals/adapter-install-v0-dry-run.md',
   'docs/evals/adapter-empirical-verification-phase-7.md',
   'docs/evals/skill-package-upload-readiness-v0.md',
+  'docs/knowledge-and-recipe-catalog.md',
+  'docs/audits/skill-architecture-audit.md',
 ];
 
 const requiredSkills = [
@@ -1049,6 +1055,26 @@ export function runDocsCheck(targetRoot = root) {
   if (!bundleSummaryCheck.ok) {
     for (const e of bundleSummaryCheck.errors) {
       errors.push(`bundle-summaries: ${e}`);
+    }
+  }
+
+  // Phase 14 (Phase 0 + Phase 1): Validate knowledge & recipe catalogs and retrieval evaluation suite
+  const catalogSourcesPath = path.join(targetRoot, 'registry/knowledge-sources.json');
+  if (fs.existsSync(catalogSourcesPath)) {
+    const catValidation = validateKnowledgeAndRecipeCatalogs(targetRoot);
+    if (!catValidation.valid) {
+      for (const e of catValidation.errors) {
+        errors.push(`knowledge-recipe-catalog: ${e}`);
+      }
+    }
+    const evalFilePath = path.join(targetRoot, 'evals/catalog-retrieval-evals.json');
+    if (fs.existsSync(evalFilePath)) {
+      const catEval = runCatalogRetrievalEvals(targetRoot);
+      if (!catEval.passed) {
+        for (const f of catEval.failures) {
+          errors.push(`catalog-retrieval-eval: ${f}`);
+        }
+      }
     }
   }
 

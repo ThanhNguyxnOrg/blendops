@@ -1,0 +1,319 @@
+{
+  "$schema": "../schemas/knowledge-source-registry.schema.json",
+  "schemaVersion": "1.0.0",
+  "taxonomy": {
+    "domains": [
+      {
+        "id": "modeling-and-topology",
+        "title": "Modeling and Topology",
+        "description": "Polygon mesh structure, quad-dominant subdivision edge flow, pole placement, manifold geometry, face orientation, and unit-scale transform hygiene."
+      },
+      {
+        "id": "hard-surface-and-organic",
+        "title": "Hard-Surface and Organic Workflows",
+        "description": "Non-destructive modifier stacks, boolean/bevel/weighted-normal shading control, CAD/panel detailing, and organic sculpt-to-retopology projection."
+      },
+      {
+        "id": "geometry-nodes-and-procedural",
+        "title": "Geometry Nodes and Procedural Generation",
+        "description": "Fields evaluation, anonymous and named attributes, point distribution, procedural instancing, and Realize Instances memory/export boundaries."
+      },
+      {
+        "id": "uv-texturing-and-baking",
+        "title": "UV Mapping, Texturing, and Baking",
+        "description": "UV seam placement, texel density consistency, single-atlas vs. UDIM packing, mipmap bleed margins, and tangent-space MikkTSpace normal/AO baking."
+      },
+      {
+        "id": "materials-shaders-and-pbr",
+        "title": "Materials, Shaders, and PBR",
+        "description": "Energy-conserving Principled BSDF v2 parameters, linear vs. sRGB color-space assignment, ORM channel packing, and shader-to-glTF export portability."
+      },
+      {
+        "id": "lighting-camera-and-rendering",
+        "title": "Lighting, Cameras, Composition, and Rendering",
+        "description": "Three-point and HDRI studio lighting ratios, physical camera optics and depth of field, AgX/Filmic view transforms, and Cycles vs. EEVEE rendering."
+      },
+      {
+        "id": "rigging-and-animation",
+        "title": "Rigging and Animation",
+        "description": "Armature joint hierarchies, 4-influence linear blend skinning normalization, NLA action baking, visual keying, and morph target (shape key) export."
+      },
+      {
+        "id": "simulation-and-vfx",
+        "title": "Simulation and VFX",
+        "description": "Rigid body and cloth simulation caching, collision proxy selection, volumetric fog/mist tradeoffs, and baking physics to deterministic keyframes/caches."
+      },
+      {
+        "id": "environment-and-architecture",
+        "title": "Environment and Architectural Scene Assembly",
+        "description": "Real-world metric scale conventions, modular architectural grid snapping, pivot placement, and foreground/midground/background depth layering."
+      },
+      {
+        "id": "optimization-lod-and-performance",
+        "title": "Optimization, LOD, and Performance",
+        "description": "Device-tier triangle, draw-call, and VRAM budgets, discrete LOD hierarchy generation, and KTX2/Draco/Meshopt compression tradeoffs."
+      },
+      {
+        "id": "interchange-gltf-and-web",
+        "title": "Interchange, glTF/GLB, and Web Delivery",
+        "description": "Khronos glTF 2.0 / GLB binary chunk specifications, coordinate system conversions (+Z up to +Y up), and Three.js / React Three Fiber visual parity."
+      }
+    ],
+    "knowledgeKinds": [
+      "topology-rule",
+      "modeling-workflow",
+      "procedural-system",
+      "uv-baking-rule",
+      "material-shader-profile",
+      "lighting-camera-rule",
+      "render-engine-profile",
+      "rigging-animation-rule",
+      "simulation-vfx-profile",
+      "scene-assembly-pattern",
+      "performance-budget-rule",
+      "interchange-export-rule"
+    ],
+    "evidenceStatuses": [
+      "authored",
+      "source-reviewed",
+      "version-checked",
+      "runtime-tested"
+    ],
+    "sourceAuthorities": [
+      "official-specification",
+      "official-manual",
+      "official-pipeline",
+      "peer-reviewed-research",
+      "reference-implementation"
+    ],
+    "supportedBlenderVersions": [
+      "3.0+",
+      "3.6 LTS",
+      "4.0+",
+      "4.2 LTS",
+      "5.1+"
+    ]
+  },
+  "sources": [
+    {
+      "id": "source.blender-manual-modeling",
+      "title": "Blender Reference Manual — Modeling, Meshes, Normals, and Modifiers",
+      "authority": "official-manual",
+      "organization": "Blender Foundation",
+      "url": "https://docs.blender.org/manual/en/latest/modeling/index.html",
+      "version_or_date": "Blender 4.2 LTS / 5.1 Manual",
+      "verification_status": "verified-reference",
+      "license_note": "CC-BY-SA 4.0 (referenced for factual behavior; no prose copied)",
+      "summary": "Authoritative specification of Blender mesh data structures, manifold geometry checks, normal recalculation, Bevel/Boolean/Weighted Normal/Subdivision Surface modifiers, and sculpting/retopology tools."
+    },
+    {
+      "id": "source.blender-manual-geometry-nodes",
+      "title": "Blender Reference Manual — Geometry Nodes, Fields, Attributes, and Instances",
+      "authority": "official-manual",
+      "organization": "Blender Foundation",
+      "url": "https://docs.blender.org/manual/en/latest/modeling/geometry_nodes/index.html",
+      "version_or_date": "Blender 3.6 LTS / 4.2 LTS Manual",
+      "verification_status": "verified-reference",
+      "license_note": "CC-BY-SA 4.0 (referenced for node evaluation semantics)",
+      "summary": "Official documentation of Geometry Nodes field evaluation, attribute domains (Point, Edge, Face, Face Corner, Instance), Distribute Points on Faces (Random/Poisson Disk), Instance on Points, and Realize Instances."
+    },
+    {
+      "id": "source.blender-manual-uv-baking",
+      "title": "Blender Reference Manual — UV Unwrapping, Texture Space, and Cycles Render Baking",
+      "authority": "official-manual",
+      "organization": "Blender Foundation",
+      "url": "https://docs.blender.org/manual/en/latest/modeling/meshes/uv/index.html",
+      "version_or_date": "Blender 4.2 LTS Manual",
+      "verification_status": "verified-reference",
+      "license_note": "CC-BY-SA 4.0 (referenced for UV and baking parameters)",
+      "summary": "Authoritative guide on UV seam marking, Angle Based vs. Conformal unwrapping, UDIM tile grids vs. 0-1 UV space, island margin padding, and Cycles tangent-space normal/ambient occlusion baking."
+    },
+    {
+      "id": "source.blender-manual-shading-color",
+      "title": "Blender Reference Manual — Shader Nodes, Principled BSDF, and Color Management (AgX / Filmic)",
+      "authority": "official-manual",
+      "organization": "Blender Foundation",
+      "url": "https://docs.blender.org/manual/en/latest/render/shader_nodes/shader/principled.html",
+      "version_or_date": "Blender 4.0+ / 4.2 LTS Manual",
+      "verification_status": "verified-reference",
+      "license_note": "CC-BY-SA 4.0 (referenced for Principled BSDF v2 and AgX color transforms)",
+      "summary": "Official reference for energy-conserving Principled BSDF v2 layered shading model (introduced in Blender 4.0), Non-Color vs. sRGB image texture color spaces, and AgX/Filmic view transforms."
+    },
+    {
+      "id": "source.blender-manual-lighting-rendering",
+      "title": "Blender Reference Manual — Cycles, EEVEE Next, Lighting, and Cameras",
+      "authority": "official-manual",
+      "organization": "Blender Foundation",
+      "url": "https://docs.blender.org/manual/en/latest/render/index.html",
+      "version_or_date": "Blender 4.2 LTS Manual",
+      "verification_status": "verified-reference",
+      "license_note": "CC-BY-SA 4.0 (referenced for Cycles and EEVEE Next rendering differences)",
+      "summary": "Official documentation of Cycles path tracing, EEVEE Next (Blender 4.2 LTS) screen-space/raytraced lighting and shadow buffers, physical camera sensor/focal-length/f-stop optics, and volumetric rendering."
+    },
+    {
+      "id": "source.blender-manual-rigging-animation",
+      "title": "Blender Reference Manual — Armatures, Skinning, Constraints, and NLA Action Baking",
+      "authority": "official-manual",
+      "organization": "Blender Foundation",
+      "url": "https://docs.blender.org/manual/en/latest/animation/index.html",
+      "version_or_date": "Blender 4.2 LTS Manual",
+      "verification_status": "verified-reference",
+      "license_note": "CC-BY-SA 4.0 (referenced for armature and NLA baking workflows)",
+      "summary": "Official reference for armature bone roll and hierarchy rules, vertex group weight normalization and limit total, Bake Action with Visual Keying, NLA strips, and shape keys."
+    },
+    {
+      "id": "source.blender-manual-physics",
+      "title": "Blender Reference Manual — Physics, Rigid Body, Cloth, and Point Cache Baking",
+      "authority": "official-manual",
+      "organization": "Blender Foundation",
+      "url": "https://docs.blender.org/manual/en/latest/physics/index.html",
+      "version_or_date": "Blender 4.2 LTS Manual",
+      "verification_status": "verified-reference",
+      "license_note": "CC-BY-SA 4.0 (referenced for physics caching and collision shapes)",
+      "summary": "Official specification of Rigid Body World substeps and collision shapes (Convex Hull vs. Mesh), Cloth quality steps and self-collision distance, and baking point caches to disk or keyframes."
+    },
+    {
+      "id": "source.blender-manual-gltf-io",
+      "title": "Blender Reference Manual — glTF 2.0 Import/Export Add-on Specification",
+      "authority": "official-manual",
+      "organization": "Blender Foundation",
+      "url": "https://docs.blender.org/manual/en/latest/addons/import_export/scene_gltf2.html",
+      "version_or_date": "Blender 4.2 LTS Manual",
+      "verification_status": "verified-reference",
+      "license_note": "CC-BY-SA 4.0 (referenced for glTF socket mapping and exporter options)",
+      "summary": "Authoritative mapping between Blender Principled BSDF sockets, Separate/Combine Color ORM packing, Normal Map, Emissive, KHR_materials_* extensions, and +Y Up coordinate conversion during glTF 2.0 export."
+    },
+    {
+      "id": "source.khronos-gltf-2-spec",
+      "title": "Khronos glTF 2.0 Specification & GLB Binary Container Format",
+      "authority": "official-specification",
+      "organization": "The Khronos Group",
+      "url": "https://registry.khronos.org/glTF/specs/2.0/glTF-2.0.html",
+      "version_or_date": "glTF 2.0 (ISO/IEC 12113:2022)",
+      "verification_status": "specification-standard",
+      "license_note": "CC-BY 4.0 / Khronos Specification License",
+      "summary": "Normative specification for glTF 2.0 JSON schemas, right-handed meter coordinate system (+Y up, +Z forward), metallic-roughness PBR math, MikkTSpace tangents, linearblend skinning (JOINTS_0/WEIGHTS_0), and GLB 12-byte header / 4-byte chunk alignment."
+    },
+    {
+      "id": "source.khronos-gltf-asset-auditor",
+      "title": "Khronos glTF Asset Auditor & Ecommerce 3D Asset Guidelines",
+      "authority": "official-pipeline",
+      "organization": "The Khronos Group 3D Commerce Working Group",
+      "url": "https://github.com/KhronosGroup/gltf-asset-auditor",
+      "version_or_date": "3D Commerce Asset Creation Guidelines v1.x",
+      "verification_status": "verified-reference",
+      "license_note": "Apache-2.0 (referenced for real-time asset budgets and validation metrics)",
+      "summary": "Khronos 3D Commerce validation criteria for triangle count budgets, texture dimensions, power-of-two sizing, draw call limits, manifold geometry, and real-world metric bounding box verification."
+    },
+    {
+      "id": "source.khronos-ktx2-draco-meshopt",
+      "title": "Khronos KHR_texture_basisu, KHR_draco_mesh_compression, and EXT_meshopt_compression",
+      "authority": "official-specification",
+      "organization": "The Khronos Group",
+      "url": "https://github.com/KhronosGroup/glTF/tree/main/extensions/2.0/Khronos",
+      "version_or_date": "glTF 2.0 Extensions",
+      "verification_status": "specification-standard",
+      "license_note": "Apache-2.0 / Khronos License",
+      "summary": "Specifications for GPU-compressed KTX2 textures (ETC1S for diffuse/low-frequency maps vs. UASTC for normal/ORM maps) and geometry compression via Draco (smallest file size) vs. Meshopt (fast decode + GPU-friendly vertex cache)."
+    },
+    {
+      "id": "source.blender-studio-pipeline",
+      "title": "Blender Studio Pipeline & Asset Creation Conventions",
+      "authority": "official-pipeline",
+      "organization": "Blender Studio",
+      "url": "https://studio.blender.org/pipeline/",
+      "version_or_date": "Blender Studio Pipeline Guide",
+      "verification_status": "verified-reference",
+      "license_note": "CC-BY 4.0 (referenced for asset naming, collection organization, and staging conventions)",
+      "summary": "Production pipeline conventions from Blender Studio covering collection hierarchy, datablock naming prefixes, metric unit scale, transform application before rigging/shading, and asset library publishing checks."
+    },
+    {
+      "id": "source.pixar-opensubdiv-topology",
+      "title": "Pixar OpenSubdiv Catmull-Clark Subdivision Surface Specification",
+      "authority": "official-specification",
+      "organization": "Pixar Animation Studios",
+      "url": "https://graphics.pixar.com/opensubdiv/docs/subdivision_surfaces.html",
+      "version_or_date": "OpenSubdiv 3.x",
+      "verification_status": "specification-standard",
+      "license_note": "Modified Apache-2.0 (referenced for Catmull-Clark valence and crease rules)",
+      "summary": "Mathematical and topological foundations of Catmull-Clark subdivision surfaces used by Blender's Subdivision Surface modifier, including extraordinary vertex (pole) valence behavior, boundary interpolation, and semi-sharp edge creases."
+    },
+    {
+      "id": "source.mikktspace-tangent-standard",
+      "title": "MikkTSpace — Tangent Space Standard for Normal Mapping (Morten S. Mikkelsen)",
+      "authority": "peer-reviewed-research",
+      "organization": "Morten S. Mikkelsen / Blender & Khronos Standard",
+      "url": "https://archive.blender.org/wiki/index.php/Dev:Shading/Tangent_Space_Normal_Maps/",
+      "version_or_date": "2008 / glTF 2.0 Normative Reference",
+      "verification_status": "specification-standard",
+      "license_note": "Public specification (normative in Blender and glTF 2.0)",
+      "summary": "Defines deterministic tangent-space generation across baking and rendering engines, requiring triangulation consistency and unwelded UV seam handling to prevent normal map shading seams."
+    },
+    {
+      "id": "source.threejs-color-and-gltf",
+      "title": "Three.js Documentation — Color Management, GLTFLoader, and PBR Lighting",
+      "authority": "official-manual",
+      "organization": "Three.js Authors",
+      "url": "https://threejs.org/docs/#manual/en/introduction/Color-management",
+      "version_or_date": "Three.js r152+ / r180",
+      "verification_status": "verified-reference",
+      "license_note": "MIT License",
+      "summary": "Documents linear workflow in Three.js, SRGBColorSpace vs. LinearSRGBColorSpace texture assignment, physically based light units (candela/lux), AgX/ACESFilmic tone mapping, and PMREMGenerator environment lighting."
+    },
+    {
+      "id": "source.blender-lab-mcp-and-runtime",
+      "title": "Blender Lab MCP Server & Command Line Interface Documentation",
+      "authority": "official-manual",
+      "organization": "Blender Foundation",
+      "url": "https://www.blender.org/lab/mcp-server/",
+      "version_or_date": "Blender 5.1+ Lab MCP / CLI Manual",
+      "verification_status": "verified-reference",
+      "license_note": "Blender Foundation official documentation",
+      "summary": "Defines Path 1 Official Blender Lab MCP (requiring Blender 5.1+ and Lab add-on installed in Blender) and the upstream headless Blender CLI (`blender --background --python`) execution boundary."
+    },
+    {
+      "id": "source.agentskills-specification",
+      "title": "Agent Skills Specification & Anthropic Claude Skills Best Practices",
+      "authority": "official-specification",
+      "organization": "Anthropic / AgentSkills.io",
+      "url": "https://agentskills.io/specification",
+      "version_or_date": "2025–2026 Specification",
+      "verification_status": "specification-standard",
+      "license_note": "Public specification",
+      "summary": "Defines portable SKILL.md structure, concise YAML frontmatter (`name` <= 64 chars, `description` <= 200 chars), progressive disclosure via reference files, and clear activation/exclusion boundaries."
+    },
+    {
+      "id": "source.3dviz-pro-max-architecture",
+      "title": "3dviz-pro-max — Evidence-Aware 3D Knowledge & Recipe Catalog Architecture Reference",
+      "authority": "reference-implementation",
+      "organization": "viettranx",
+      "url": "https://github.com/viettranx/3dviz-pro-max",
+      "version_or_date": "2026 Reference Architecture",
+      "verification_status": "architectural-reference",
+      "license_note": "MIT License (architectural pattern reference only; no catalog records copied)",
+      "summary": "Architectural reference demonstrating separation between skill workflow orchestration, structured knowledge records with source-backed claims and observable checks, composable multi-stage recipes, and deterministic local retrieval."
+    },
+    {
+      "id": "source.blender-release-notes",
+      "title": "Blender Developer Release Notes (Blender 3.6 LTS, 4.0, 4.1, 4.2 LTS, 5.1+)",
+      "authority": "official-manual",
+      "organization": "Blender Foundation",
+      "url": "https://developer.blender.org/docs/release_notes/",
+      "version_or_date": "Blender 3.6 LTS – 5.1+ Release Notes",
+      "verification_status": "verified-reference",
+      "license_note": "CC-BY-SA 4.0 (referenced for version-specific API, node, and modifier transitions)",
+      "summary": "Authoritative release notes documenting version-specific changes including Principled BSDF v2 and AgX in Blender 4.0, Bone Collections in 4.0, Auto Smooth replacement by Smooth by Angle modifier in 4.1, and EEVEE Next in 4.2 LTS."
+    },
+    {
+      "id": "source.google-filament-pbr",
+      "title": "Physically Based Rendering in Filament (Romain Guy & Mathias Agopian)",
+      "authority": "peer-reviewed-research",
+      "organization": "Google Filament Rendering Engine",
+      "url": "https://google.github.io/filament/Filament.html",
+      "version_or_date": "Filament PBR Specification",
+      "verification_status": "specification-standard",
+      "license_note": "Apache-2.0 (referenced for microfacet BRDF, dielectric F0, and photometric lighting math)",
+      "summary": "Standard physically based rendering specification covering GGX microfacet distribution, energy conservation, dielectric reflectance F0 = ((n-1)/(n+1))^2, specular anti-aliasing, and physical camera exposure (EV100)."
+    }
+  ]
+}

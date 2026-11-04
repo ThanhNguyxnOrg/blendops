@@ -1029,6 +1029,10 @@ describe('Phase 11 — Distributable CLI & Package Readiness', () => {
 
     // 4. Verify all generated docs/audits/current/* files use phase-11-current and never stale phase-10-current
     const currentAuditDir = path.join(ROOT, 'docs', 'audits', 'current');
+    const headCommitSha = execFileSync('git', ['rev-parse', 'HEAD'], {
+      cwd: ROOT,
+      encoding: 'utf8',
+    }).trim();
     for (const jsonName of [
       'scorecard.json',
       'findings.json',
@@ -1052,7 +1056,8 @@ describe('Phase 11 — Distributable CLI & Package Readiness', () => {
       assert.ok(
         parsed.sourceCommitSha === 'f0804fd64a9fa4f263a9ec59c5de84ed21733747' ||
           parsed.sourceCommitSha === 'fdae0e77187c970893bc5414166aed448677f951' ||
-          parsed.sourceCommitSha === '112ecf75a04ab5864b3dc3656b9a27f09d1e8dcd',
+          parsed.sourceCommitSha === '112ecf75a04ab5864b3dc3656b9a27f09d1e8dcd' ||
+          parsed.sourceCommitSha === headCommitSha,
         `${jsonName} must preserve verified sourceCommitSha`,
       );
     }

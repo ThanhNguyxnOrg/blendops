@@ -30,8 +30,8 @@ Because a Git commit cannot honestly contain its own final commit SHA inside tra
 | `sourceCommitSha` | `112ecf75a04ab5864b3dc3656b9a27f09d1e8dcd` (`112ecf7`) | Latest verified commit in Git history when the generator executed |
 | `workingTreeState` | `dirty` | Whether audited files had uncommitted changes on top of `sourceCommitSha` |
 | `snapshotBasis` | `working-tree-on-top-of-source-commit` | Explicit distinction between a clean committed tree and a working tree on top of `sourceCommitSha` |
-| `uncommittedChangeCount` | `397` | Count of modified/staged/deleted/untracked repository paths outside `docs/audits/current/**` |
-| `auditedInputsSha256` | `882fb54d1bc8de065c19d5d4ca036769b1aa334f4a36d9c49ae62846c1798d9b` | Deterministic SHA-256 content digest across all manifest-declared repository inputs |
+| `uncommittedChangeCount` | `416` | Count of modified/staged/deleted/untracked repository paths outside `docs/audits/current/**` |
+| `auditedInputsSha256` | `5e2fc88d4ec9b45af15d13233a2cbddef2e194a66aee4f66951196562afa93b0` | Deterministic SHA-256 content digest across all manifest-declared repository inputs |
 
 ### 1.2 Audited Input Digest Scope & Manifest Governance
 

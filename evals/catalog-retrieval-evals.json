@@ -1,0 +1,430 @@
+{
+  "schema_version": "1.0.0",
+  "description": "Deterministic local retrieval and disambiguation evaluation suite for BlendOps Phase 1 knowledge and recipe catalogs.",
+  "retrieval_method": "deterministic-lexical-and-field-weighted-index",
+  "cases": [
+    {
+      "id": "cat-eval-01-subdivision-topology",
+      "category": "single-domain-knowledge",
+      "query": "quad dominant subdivision surface edge loops poles catmull clark pinching",
+      "filters": {
+        "type": "knowledge",
+        "domain": "modeling-and-topology"
+      },
+      "expected_top_ids": [
+        "knowledge.quad-dominant-subdivision-topology"
+      ],
+      "max_rank": 2,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-02-manifold-scale-hygiene",
+      "category": "single-domain-knowledge",
+      "query": "non-manifold geometry inverted face normals unapplied scale negative scale",
+      "filters": {
+        "type": "knowledge",
+        "domain": "modeling-and-topology"
+      },
+      "expected_top_ids": [
+        "knowledge.mesh-manifold-normals-and-scale-hygiene"
+      ],
+      "max_rank": 2,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-03-hard-surface-modifier-stack",
+      "category": "single-domain-knowledge",
+      "query": "non-destructive modifier stack order mirror boolean bevel weighted normal",
+      "filters": {
+        "type": "knowledge",
+        "domain": "hard-surface-and-organic"
+      },
+      "expected_top_ids": [
+        "knowledge.non-destructive-hard-surface-modifier-stack",
+        "knowledge.cad-creases-and-panel-gap-detailing"
+      ],
+      "max_rank": 3,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-04-sculpt-retopology",
+      "category": "single-domain-knowledge",
+      "query": "voxel remesh high poly sculpt to low poly quad retopology shrinkwrap multires",
+      "filters": {
+        "type": "knowledge",
+        "domain": "hard-surface-and-organic"
+      },
+      "expected_top_ids": [
+        "knowledge.organic-sculpt-to-retopology-workflow"
+      ],
+      "max_rank": 2,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-05-geometry-nodes-fields",
+      "category": "single-domain-knowledge",
+      "query": "geometry nodes fields capture attribute store named attribute evaluation context",
+      "filters": {
+        "type": "knowledge",
+        "domain": "geometry-nodes-and-procedural"
+      },
+      "expected_top_ids": [
+        "knowledge.geometry-nodes-fields-and-anonymous-attributes"
+      ],
+      "max_rank": 2,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-06-poisson-disk-scatter",
+      "category": "single-domain-knowledge",
+      "query": "distribute points on faces poisson disk distance min slope mask normal dot product",
+      "filters": {
+        "type": "knowledge",
+        "domain": "geometry-nodes-and-procedural"
+      },
+      "expected_top_ids": [
+        "knowledge.procedural-scatter-poisson-disk-and-slope-masking"
+      ],
+      "max_rank": 2,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-07-uv-seam-texel-density",
+      "category": "single-domain-knowledge",
+      "query": "uv seam placement island margin bleed padding texel density pixels per meter",
+      "filters": {
+        "type": "knowledge",
+        "domain": "uv-texturing-and-baking"
+      },
+      "expected_top_ids": [
+        "knowledge.uv-seam-placement-and-texel-density"
+      ],
+      "max_rank": 2,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-08-normal-map-cage-baking",
+      "category": "single-domain-knowledge",
+      "query": "high to low poly tangent space normal map baking cage extrusion ray distance mikktspace",
+      "filters": {
+        "type": "knowledge",
+        "domain": "uv-texturing-and-baking"
+      },
+      "expected_top_ids": [
+        "knowledge.high-to-low-normal-and-ao-baking"
+      ],
+      "max_rank": 2,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-09-principled-bsdf-v2-pbr",
+      "category": "single-domain-knowledge",
+      "query": "principled bsdf v2 energy conservation dielectric albedo metallic binary ior coat",
+      "filters": {
+        "type": "knowledge",
+        "domain": "materials-shaders-and-pbr"
+      },
+      "expected_top_ids": [
+        "knowledge.principled-bsdf-v2-energy-conserving-pbr"
+      ],
+      "max_rank": 2,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-10-orm-channel-packing",
+      "category": "single-domain-knowledge",
+      "query": "orm occlusion roughness metallic channel packing non-color linear srgb normal map",
+      "filters": {
+        "type": "knowledge",
+        "domain": "materials-shaders-and-pbr"
+      },
+      "expected_top_ids": [
+        "knowledge.normal-roughness-and-orm-channel-packing"
+      ],
+      "max_rank": 2,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-11-studio-three-point-lighting",
+      "category": "single-domain-knowledge",
+      "query": "three point lighting key fill rim ratio hdri studio reflection contrast",
+      "filters": {
+        "type": "knowledge",
+        "domain": "lighting-camera-and-rendering"
+      },
+      "expected_top_ids": [
+        "knowledge.three-point-and-hdri-studio-lighting"
+      ],
+      "max_rank": 2,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-12-camera-lens-dof",
+      "category": "single-domain-knowledge",
+      "query": "camera focal length 85mm product portrait sensor width f-stop depth of field clipping",
+      "filters": {
+        "type": "knowledge",
+        "domain": "lighting-camera-and-rendering"
+      },
+      "expected_top_ids": [
+        "knowledge.physically-based-camera-lens-and-dof"
+      ],
+      "max_rank": 2,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-13-armature-skinning-joints",
+      "category": "single-domain-knowledge",
+      "query": "armature skinning max 4 joint weights per vertex normalize all bone roll rest pose",
+      "filters": {
+        "type": "knowledge",
+        "domain": "rigging-and-animation"
+      },
+      "expected_top_ids": [
+        "knowledge.armature-joint-hierarchy-and-linear-blend-skinning"
+      ],
+      "max_rank": 2,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-14-physics-cache-baking",
+      "category": "single-domain-knowledge",
+      "query": "rigid body cloth physics simulation substeps collision margin bake to keyframes",
+      "filters": {
+        "type": "knowledge",
+        "domain": "simulation-and-vfx"
+      },
+      "expected_top_ids": [
+        "knowledge.rigid-body-cloth-and-simulation-cache-baking"
+      ],
+      "max_rank": 2,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-15-modular-grid-architecture",
+      "category": "single-domain-knowledge",
+      "query": "modular architectural grid snapping corner pivot doorway height metric scale",
+      "filters": {
+        "type": "knowledge",
+        "domain": "environment-and-architecture"
+      },
+      "expected_top_ids": [
+        "knowledge.modular-architectural-grid-and-metric-scale"
+      ],
+      "max_rank": 2,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-16-triangle-vram-budgets",
+      "category": "single-domain-knowledge",
+      "query": "mobile web desktop triangle count budget draw calls uncompressed 4k texture vram",
+      "filters": {
+        "type": "knowledge",
+        "domain": "optimization-lod-and-performance"
+      },
+      "expected_top_ids": [
+        "knowledge.triangle-draw-call-and-vram-budgets"
+      ],
+      "max_rank": 2,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-17-gltf-coordinate-system",
+      "category": "single-domain-knowledge",
+      "query": "gltf 2.0 right handed +Y up +Z forward blender coordinate conversion trs shear",
+      "filters": {
+        "type": "knowledge",
+        "domain": "interchange-gltf-and-web"
+      },
+      "expected_top_ids": [
+        "knowledge.gltf-2-coordinate-system-and-transform-conventions"
+      ],
+      "max_rank": 2,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-18-recipe-product-hero",
+      "category": "recipe-discovery",
+      "query": "cyberpunk sneaker product hero scene studio cyclorama lighting render and glb export",
+      "filters": {
+        "type": "recipe"
+      },
+      "expected_top_ids": [
+        "recipe.product-hero-scene"
+      ],
+      "max_rank": 2,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-19-recipe-stylized-environment",
+      "category": "recipe-discovery",
+      "query": "stylized environment room diorama architectural blockout scatter foliage volumetric fog",
+      "filters": {
+        "type": "recipe"
+      },
+      "expected_top_ids": [
+        "recipe.stylized-environment-scene"
+      ],
+      "max_rank": 2,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-20-recipe-hard-surface-prop",
+      "category": "recipe-discovery",
+      "query": "hard surface mechanical prop boolean bevel weighted normal panel gap detailing",
+      "filters": {
+        "type": "recipe"
+      },
+      "expected_top_ids": [
+        "recipe.hard-surface-prop"
+      ],
+      "max_rank": 2,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-21-recipe-geometry-nodes",
+      "category": "recipe-discovery",
+      "query": "procedural geometry nodes asset parametric generator instance on points realize instances",
+      "filters": {
+        "type": "recipe"
+      },
+      "expected_top_ids": [
+        "recipe.procedural-geometry-nodes-asset"
+      ],
+      "max_rank": 2,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-22-recipe-uv-pbr-prep",
+      "category": "recipe-discovery",
+      "query": "uv unwrap seam placement texel density high to low poly normal baking orm pbr material",
+      "filters": {
+        "type": "recipe"
+      },
+      "expected_top_ids": [
+        "recipe.uv-and-pbr-material-preparation"
+      ],
+      "max_rank": 2,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-23-recipe-lighting-camera",
+      "category": "recipe-discovery",
+      "query": "presentation studio lighting three point rig camera lens dof agx cycles render",
+      "filters": {
+        "type": "recipe"
+      },
+      "expected_top_ids": [
+        "recipe.presentation-lighting-and-camera"
+      ],
+      "max_rank": 2,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-24-recipe-rigged-animated",
+      "category": "recipe-discovery",
+      "query": "rigged animated character armature skinning 4 bone weights nla action baking morph targets",
+      "filters": {
+        "type": "recipe"
+      },
+      "expected_top_ids": [
+        "recipe.rigged-and-animated-asset"
+      ],
+      "max_rank": 2,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-25-recipe-quality-inspection",
+      "category": "recipe-discovery",
+      "query": "scene quality inspection audit non-manifold normals unapplied scale collection cleanup",
+      "filters": {
+        "type": "recipe"
+      },
+      "expected_top_ids": [
+        "recipe.scene-quality-inspection-and-correction"
+      ],
+      "max_rank": 2,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-26-recipe-glb-handoff",
+      "category": "recipe-discovery",
+      "query": "blender to glb export handoff khronos gltf validator react three fiber component",
+      "filters": {
+        "type": "recipe"
+      },
+      "expected_top_ids": [
+        "recipe.blender-to-glb-handoff"
+      ],
+      "max_rank": 2,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-27-recipe-web-optimization",
+      "category": "recipe-discovery",
+      "query": "web ready mobile asset optimization decimate lod draco meshopt ktx2 compression",
+      "filters": {
+        "type": "recipe"
+      },
+      "expected_top_ids": [
+        "recipe.web-ready-asset-optimization"
+      ],
+      "max_rank": 2,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-28-disambiguation-draco-vs-ktx2",
+      "category": "disambiguation",
+      "query": "draco vs meshopt vs ktx2 basis universal texture vram vs geometry network compression",
+      "filters": {},
+      "expected_top_ids": [
+        "knowledge.texture-resolution-ktx2-and-draco-meshopt-compression",
+        "recipe.web-ready-asset-optimization"
+      ],
+      "max_rank": 3,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-29-disambiguation-udim-vs-atlas",
+      "category": "disambiguation",
+      "query": "udim multi tile 1001 1002 vs single 0-1 uv atlas gltf export compatibility",
+      "filters": {},
+      "expected_top_ids": [
+        "knowledge.udim-vs-single-atlas-uv-packing",
+        "knowledge.shader-node-gltf-export-portability"
+      ],
+      "max_rank": 3,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-30-multi-domain-threejs-metal-black",
+      "category": "multi-domain-workflow",
+      "query": "metallic material looks black in threejs r3f agx tone mapping environment ibl shader export",
+      "filters": {},
+      "expected_top_ids": [
+        "knowledge.threejs-r3f-tone-mapping-and-environment-parity",
+        "knowledge.shader-node-gltf-export-portability"
+      ],
+      "max_rank": 3,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-31-out-of-scope-houdini-vex",
+      "category": "out-of-scope-coverage-gap",
+      "query": "houdini vex wrangle pyro sparse solver USD solaris karma LOPs",
+      "filters": {},
+      "expected_top_ids": [],
+      "max_rank": 1,
+      "expect_no_match": true
+    },
+    {
+      "id": "cat-eval-32-out-of-scope-unreal-nanite",
+      "category": "out-of-scope-coverage-gap",
+      "query": "unreal engine 5 nanite lumen blueprint C++ niagara metasounds",
+      "filters": {},
+      "expected_top_ids": [],
+      "max_rank": 1,
+      "expect_no_match": true
+    }
+  ]
+}

@@ -1,0 +1,441 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/ThanhNguyxnOrg/blendops/schemas/recipe-record.schema.json",
+  "title": "BlendOps Recipe Catalog Schema (v1.0.0)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "schemaVersion",
+    "recipes"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "const": "../schemas/recipe-record.schema.json"
+    },
+    "schemaVersion": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "recipes": {
+      "type": "array",
+      "minItems": 8,
+      "items": {
+        "$ref": "#/$defs/recipeRecord"
+      }
+    }
+  },
+  "$defs": {
+    "sourceReference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_id", "locator"],
+      "properties": {
+        "source_id": {
+          "type": "string",
+          "pattern": "^source\\.[a-z0-9]+(?:-[a-z0-9]+)*$"
+        },
+        "locator": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 200
+        }
+      }
+    },
+    "recipeInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "type", "required", "description"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^[a-z0-9_]+$"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["string", "number", "boolean", "object", "array"]
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "default_value": {
+          "oneOf": [
+            { "type": "string" },
+            { "type": "number" },
+            { "type": "boolean" },
+            { "type": "null" }
+          ]
+        },
+        "description": {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 240
+        }
+      }
+    },
+    "recipeStage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "stage_number",
+        "id",
+        "title",
+        "objective",
+        "skill_ids",
+        "knowledge_ids",
+        "actions",
+        "stage_outputs",
+        "gate_check"
+      ],
+      "properties": {
+        "stage_number": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 20
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^stage-[a-z0-9-]+$"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 5,
+          "maxLength": 120
+        },
+        "objective": {
+          "type": "string",
+          "minLength": 15,
+          "maxLength": 260
+        },
+        "skill_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]+$"
+          }
+        },
+        "knowledge_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^knowledge\\.[a-z0-9]+(?:-[a-z0-9]+)*$"
+          }
+        },
+        "actions": {
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 360
+          }
+        },
+        "stage_outputs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9_]+$"
+          }
+        },
+        "gate_check": {
+          "type": "string",
+          "minLength": 15,
+          "maxLength": 260
+        }
+      }
+    },
+    "validationCriterion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "criterion", "measurement_method", "pass_threshold"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^vc\\.[a-z0-9-]+$"
+        },
+        "criterion": {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 220
+        },
+        "measurement_method": {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 220
+        },
+        "pass_threshold": {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 220
+        }
+      }
+    },
+    "failureMode": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["symptom", "root_cause", "recovery_action", "fallback_skill_id"],
+      "properties": {
+        "symptom": {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 220
+        },
+        "root_cause": {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 220
+        },
+        "recovery_action": {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 240
+        },
+        "fallback_skill_id": {
+          "type": "string",
+          "pattern": "^[a-z0-9-]+$"
+        }
+      }
+    },
+    "recipeRecord": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "title",
+        "domain",
+        "summary",
+        "aliases",
+        "intent",
+        "intent_signals",
+        "applicable_scenarios",
+        "prerequisites",
+        "inputs",
+        "stages",
+        "required_knowledge_ids",
+        "required_skill_ids",
+        "expected_outputs",
+        "validation_criteria",
+        "failure_modes",
+        "blender_versions",
+        "source_refs",
+        "evidence_status",
+        "related_recipes"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^recipe\\.[a-z0-9]+(?:-[a-z0-9]+)*$",
+          "minLength": 9,
+          "maxLength": 80
+        },
+        "title": {
+          "type": "string",
+          "minLength": 8,
+          "maxLength": 140
+        },
+        "domain": {
+          "type": "string",
+          "enum": [
+            "modeling-and-topology",
+            "hard-surface-and-organic",
+            "geometry-nodes-and-procedural",
+            "uv-texturing-and-baking",
+            "materials-shaders-and-pbr",
+            "lighting-camera-and-rendering",
+            "rigging-and-animation",
+            "simulation-and-vfx",
+            "environment-and-architecture",
+            "optimization-lod-and-performance",
+            "interchange-gltf-and-web"
+          ]
+        },
+        "summary": {
+          "type": "string",
+          "minLength": 30,
+          "maxLength": 360
+        },
+        "aliases": {
+          "type": "array",
+          "minItems": 2,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 80
+          }
+        },
+        "intent": {
+          "type": "string",
+          "minLength": 20,
+          "maxLength": 320
+        },
+        "intent_signals": {
+          "type": "array",
+          "minItems": 3,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 5,
+            "maxLength": 140
+          }
+        },
+        "applicable_scenarios": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["use_when", "do_not_use_when"],
+          "properties": {
+            "use_when": {
+              "type": "array",
+              "minItems": 1,
+              "items": { "type": "string", "minLength": 10, "maxLength": 260 }
+            },
+            "do_not_use_when": {
+              "type": "array",
+              "minItems": 1,
+              "items": { "type": "string", "minLength": 10, "maxLength": 260 }
+            }
+          }
+        },
+        "prerequisites": {
+          "type": "array",
+          "minItems": 2,
+          "items": { "type": "string", "minLength": 8, "maxLength": 220 }
+        },
+        "inputs": {
+          "type": "array",
+          "minItems": 2,
+          "items": { "$ref": "#/$defs/recipeInput" }
+        },
+        "stages": {
+          "type": "array",
+          "minItems": 4,
+          "items": { "$ref": "#/$defs/recipeStage" }
+        },
+        "required_knowledge_ids": {
+          "type": "array",
+          "minItems": 3,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^knowledge\\.[a-z0-9]+(?:-[a-z0-9]+)*$"
+          }
+        },
+        "required_skill_ids": {
+          "type": "array",
+          "minItems": 4,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]+$"
+          }
+        },
+        "expected_outputs": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["intermediate", "final", "truth_state_defaults"],
+          "properties": {
+            "intermediate": {
+              "type": "array",
+              "minItems": 2,
+              "items": { "type": "string", "pattern": "^[a-z0-9_]+$" }
+            },
+            "final": {
+              "type": "array",
+              "minItems": 1,
+              "items": { "type": "string", "pattern": "^[a-z0-9_]+$" }
+            },
+            "truth_state_defaults": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["runtime_status", "artifact_status"],
+              "properties": {
+                "runtime_status": { "type": "string", "const": "Not Run" },
+                "artifact_status": { "type": "string", "const": "Not Produced" }
+              }
+            }
+          }
+        },
+        "validation_criteria": {
+          "type": "array",
+          "minItems": 3,
+          "items": { "$ref": "#/$defs/validationCriterion" }
+        },
+        "failure_modes": {
+          "type": "array",
+          "minItems": 2,
+          "items": { "$ref": "#/$defs/failureMode" }
+        },
+        "blender_versions": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["minimum", "recommended", "version_considerations"],
+          "properties": {
+            "minimum": {
+              "type": "string",
+              "enum": ["3.0+", "3.6 LTS", "4.0+", "4.2 LTS", "5.1+"]
+            },
+            "recommended": {
+              "type": "string",
+              "enum": ["3.6 LTS", "4.2 LTS", "5.1+"]
+            },
+            "version_considerations": {
+              "type": "string",
+              "minLength": 15,
+              "maxLength": 320
+            }
+          }
+        },
+        "source_refs": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/sourceReference" }
+        },
+        "evidence_status": {
+          "type": "string",
+          "enum": [
+            "authored",
+            "source-reviewed",
+            "version-checked",
+            "runtime-tested"
+          ]
+        },
+        "evidence_packet_path": {
+          "type": "string",
+          "pattern": "^docs/evals/[a-z0-9._-]+\\.md$"
+        },
+        "documentation_path": {
+          "type": "string",
+          "pattern": "^docs/recipes/[a-z0-9-]+\\.md$"
+        },
+        "related_recipes": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^recipe\\.[a-z0-9]+(?:-[a-z0-9]+)*$"
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "evidence_status": { "const": "runtime-tested" }
+            },
+            "required": ["evidence_status"]
+          },
+          "then": {
+            "required": ["evidence_packet_path"]
+          }
+        }
+      ]
+    }
+  }
+}

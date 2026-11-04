@@ -21,17 +21,19 @@ Skills are intentionally composable. A helper skill routes the task, planning sk
 
 ---
 
-## How skills relate to laws, packs, evals, and runtime stacks
+## How skills relate to knowledge records, recipes, laws, packs, evals, and runtime stacks
 
 | Layer | Role | Example |
 |---|---|---|
 | Laws | Non-negotiable guardrails shared by every skill. | `laws/evidence-before-done.md` blocks artifact overclaims. |
-| Skills | Focused workflows loaded by an agent when relevant. | `skills/product-hero-scene-planner/SKILL.md` plans a product hero scene. |
+| Skills (`skills/*/SKILL.md`) | Focused operating workflows loaded by an agent when relevant (48 total). | `skills/product-hero-scene-planner/SKILL.md` plans a product hero scene. |
+| Knowledge (`registry/knowledge-catalog.json`) | Source-backed, version-aware 3D domain rules (`knowledge.*`, 30 records across 11 domains) cited by multiple skills and recipes. | `knowledge.principled-bsdf-v2-energy-conserving-pbr`, `knowledge.agx-filmic-color-management-and-cycles-eevee`. |
+| Recipes (`registry/recipe-catalog.json`) | Multi-stage composable blueprints (`recipe.*`, 10 canonical recipes) chaining skills and knowledge records for an end-to-end deliverable. | `recipe.product-hero-scene` (bound to `packs/product-hero-v0/PACK.md` and `docs/recipes/cyberpunk-shoe-hero.md`). |
 | Packs | Curated skill/law bundles for a scenario. | `packs/product-hero-v0/PACK.md` composes Draft v0 product-hero work. |
-| Evals | Evidence records and checklists. | `docs/evals/runtime-availability-checklist.md`. |
+| Evals & Audits | Deterministic behavioral/retrieval suites and evidence records. | `evals/catalog-retrieval-evals.json`, `docs/audits/skill-architecture-audit.md`, `docs/evals/runtime-availability-checklist.md`. |
 | Runtime paths | External execution choices, separate from skill install. | Path 1 Official Blender Lab MCP (host: Anthropic Connector OR manual MCP client), Path 2 community `mcp-for-blender`, CLI fallback (documented upstream as first-class Blender CLI; no in-repo evidence file yet). |
 
-A skill may point to runtime docs, but it must not imply runtime was installed or run.
+A skill may point to runtime docs, knowledge records (`knowledge.*`), or recipes (`recipe.*`), but it must not imply runtime was installed or run. See [`knowledge-and-recipe-catalog.md`](./knowledge-and-recipe-catalog.md) for the full catalog and [`audits/skill-architecture-audit.md`](./audits/skill-architecture-audit.md) for the 48-skill and 151-reference classification audit.
 
 ---
 

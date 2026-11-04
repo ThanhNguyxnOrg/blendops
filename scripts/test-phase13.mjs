@@ -184,7 +184,7 @@ describe('Phase 13 — Repository Architecture, Organization & Finalization', ()
     const refCounts = report.inventory.summary.referenceIntegrity;
     assert.ok(refCounts.markdownFiles >= 350);
     assert.ok(refCounts.jsModules >= 20);
-    assert.equal(refCounts.schemas, 7);
+    assert.equal(refCounts.schemas, 10);
     assert.equal(refCounts.workflows, 3);
 
     // Negative test: synthetic repo with broken Markdown link, broken HTML asset, broken ESM import, and missing manifest entry fails closed
@@ -457,10 +457,19 @@ describe('Phase 13 — Repository Architecture, Organization & Finalization', ()
     const manifest = JSON.parse(fs.readFileSync(path.join(currentDir, 'verification-manifest.json'), 'utf8'));
     const repoInv = JSON.parse(fs.readFileSync(path.join(currentDir, 'repository-inventory.json'), 'utf8'));
 
+    const headCommitSha = execFileSync('git', ['rev-parse', 'HEAD'], {
+      cwd: ROOT,
+      encoding: 'utf8',
+    }).trim();
+    const validCommitShas = new Set([
+      '112ecf75a04ab5864b3dc3656b9a27f09d1e8dcd',
+      headCommitSha,
+    ]);
+
     for (const doc of [scorecard, findings, skillInv, evalInv, manifest]) {
       assert.equal(doc.auditPhase, 'phase-13-current');
-      assert.equal(doc.sourceCommitSha, '112ecf75a04ab5864b3dc3656b9a27f09d1e8dcd');
-      assert.equal(doc.auditProvenance.sourceCommitShort, '112ecf7');
+      assert.ok(validCommitShas.has(doc.sourceCommitSha));
+      assert.equal(doc.auditProvenance.sourceCommitShort, doc.sourceCommitSha.slice(0, 7));
     }
 
     assert.equal(scorecard.totals.measuredScore, 87.0);

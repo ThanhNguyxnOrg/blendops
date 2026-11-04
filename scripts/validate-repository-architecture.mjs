@@ -191,17 +191,31 @@ export function classifyTrackedFile(relPath, pkgFiles = []) {
     isGenerated = true;
     generatorScript = 'scripts/build-registry.mjs';
     referencedByCi = true;
+  } else if (relPath === 'registry/catalog-index.json') {
+    classification = 'generated_artifact';
+    purpose = 'Deterministically generated knowledge and recipe search/cross-reference index';
+    owningSubsystem = 'knowledge-and-recipe-catalog';
+    isGenerated = true;
+    generatorScript = 'scripts/build-knowledge-catalog.mjs';
+    referencedByCi = true;
   } else if (relPath.startsWith('registry/')) {
     classification = 'canonical_source';
-    purpose = `Canonical machine-readable policy/matrix dataset (${path.basename(relPath)})`;
-    owningSubsystem = 'registry-and-routing';
+    purpose = `Canonical machine-readable policy/catalog dataset (${path.basename(relPath)})`;
+    owningSubsystem =
+      relPath === 'registry/knowledge-sources.json' ||
+      relPath === 'registry/knowledge-catalog.json' ||
+      relPath === 'registry/recipe-catalog.json'
+        ? 'knowledge-and-recipe-catalog'
+        : 'registry-and-routing';
     referencedByCi = true;
   } else if (relPath.startsWith('evals/')) {
     classification = 'runtime_build_test_infrastructure';
     purpose =
       relPath === 'evals/README.md'
         ? 'Behavioral evaluation dataset index and schema documentation'
-        : `Deterministic behavioral evaluation suite for skill '${path.basename(relPath, '.json')}'`;
+        : relPath === 'evals/catalog-retrieval-evals.json'
+          ? 'Deterministic 32-case knowledge & recipe catalog retrieval evaluation suite'
+          : `Deterministic behavioral evaluation suite for skill '${path.basename(relPath, '.json')}'`;
     owningSubsystem = 'behavioral-evals';
     referencedByCi = true;
   } else if (relPath.startsWith('skills/')) {
@@ -281,6 +295,7 @@ export function classifyTrackedFile(relPath, pkgFiles = []) {
       purpose = `Automated regression and verification test suite (${path.basename(relPath)})`;
     } else if (
       relPath === 'scripts/install-skills.mjs' ||
+      relPath === 'scripts/build-knowledge-catalog.mjs' ||
       relPath === 'scripts/export-claude-skills.mjs' ||
       relPath === 'scripts/inspect-glb.mjs' ||
       relPath === 'scripts/generate-glb-handoff-report.mjs'
@@ -297,6 +312,14 @@ export function classifyTrackedFile(relPath, pkgFiles = []) {
     if (relPath === 'docs/audits/audited-inputs.manifest.json') {
       classification = 'configuration';
       purpose = 'Manifest of repository files and directories hashed into auditedInputsSha256';
+    } else if (
+      relPath === 'docs/audits/skill-architecture-audit.json' ||
+      relPath === 'docs/audits/skill-architecture-audit.md'
+    ) {
+      classification = 'generated_artifact';
+      purpose = `Deterministically generated 48-skill and 151-reference architecture reconciliation audit (${path.basename(relPath)})`;
+      isGenerated = true;
+      generatorScript = 'scripts/build-knowledge-catalog.mjs';
     } else if (relPath.startsWith('docs/audits/current/')) {
       classification = 'generated_artifact';
       purpose = `Deterministically generated current-phase audit artifact (${path.basename(relPath)})`;
@@ -333,6 +356,12 @@ export function classifyTrackedFile(relPath, pkgFiles = []) {
     if (relPath === 'docs/release-readiness-rollup-v0.md') {
       classification = 'historical_record';
       purpose = 'Historical Draft v0 pre-runtime release readiness rollup snapshot';
+    } else if (relPath === 'docs/knowledge-and-recipe-catalog.md') {
+      classification = 'generated_artifact';
+      purpose = 'Deterministically generated human-readable index of 10 canonical recipes, 30 knowledge records, and 20 sources';
+      owningSubsystem = 'knowledge-and-recipe-catalog';
+      isGenerated = true;
+      generatorScript = 'scripts/build-knowledge-catalog.mjs';
     } else {
       classification = 'documentation';
       purpose = `Product, runtime, adapter, workflow, recipe, or target installation guide (${relPath})`;
