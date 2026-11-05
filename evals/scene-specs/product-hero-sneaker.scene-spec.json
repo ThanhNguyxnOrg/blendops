@@ -1,0 +1,131 @@
+{
+  "schema_version": "1.0.0",
+  "id": "scene-spec.product-hero-sneaker",
+  "title": "Athletic Sneaker Product Hero Studio Presentation + Web GLB",
+  "language": "en",
+  "intent": {
+    "summary": "Create a clean 3-point studio product hero presentation of an athletic sneaker with a curved cyclorama backdrop, producing a 4K Cycles AgX still render and a Three.js/R3F web-ready GLB.",
+    "primary_goal": "product_hero_presentation",
+    "target_audience_or_platform": "E-commerce product page hero banner and interactive Three.js 3D viewer",
+    "workflow_entry_stage": "discover",
+    "explicit_recipe_override": null
+  },
+  "blender_version_target": {
+    "min": "4.2",
+    "tested_range": "4.2 - 5.1",
+    "recommended": "5.1"
+  },
+  "runtime_preference": {
+    "preferred_path": "path-1-official-blender-lab-mcp",
+    "allow_cli_fallback": true
+  },
+  "objects_and_subjects": [
+    {
+      "id": "hero_sneaker",
+      "name": "Athletic_Sneaker_Hero",
+      "role": "hero",
+      "source_type": "existing_asset",
+      "poly_budget_triangles": 42000,
+      "transforms_applied": true,
+      "scale_factors": [1.0, 1.0, 1.0],
+      "uv_strategy": "single_0_1_atlas",
+      "modifiers": ["WeightedNormal"],
+      "has_non_manifold_or_scan_noise": false
+    },
+    {
+      "id": "studio_cyclorama",
+      "name": "Curved_Studio_Cyclorama",
+      "role": "backdrop",
+      "source_type": "procedural_primitive",
+      "poly_budget_triangles": 2400,
+      "transforms_applied": true,
+      "scale_factors": [1.0, 1.0, 1.0],
+      "uv_strategy": "single_0_1_atlas",
+      "modifiers": ["Bevel", "Subdivision"],
+      "has_non_manifold_or_scan_noise": false
+    }
+  ],
+  "style_and_materials": {
+    "aesthetic_style": "Clean athletic studio product photography with subtle micro-roughness contrast",
+    "shader_workflow": "principled_bsdf_pbr",
+    "uv_packing": "single_0_1_atlas",
+    "udim_tile_count": 1,
+    "bake_procedural_to_pbr": true,
+    "channel_packing": "orm_rgb",
+    "max_texture_resolution": 2048,
+    "normal_map_space": "tangent_mikktspace"
+  },
+  "lighting_and_environment": {
+    "rig_type": "studio_plus_hdri",
+    "key_to_fill_ratio": 3.5,
+    "hdri_lighting": true,
+    "volumetric_effects": {
+      "enabled": false,
+      "bake_or_card_fallback_for_realtime": false
+    }
+  },
+  "camera_and_framing": {
+    "focal_length_mm": 85,
+    "sensor_width_mm": 36,
+    "aspect_ratio": "4:5",
+    "resolution_px": {
+      "width": 2160,
+      "height": 2700
+    },
+    "depth_of_field": {
+      "enabled": true,
+      "f_stop": 5.6
+    },
+    "clip_start_m": 0.05,
+    "clip_end_m": 50.0,
+    "framing_style": "Three-quarter hero product angle with 15% breathing margin"
+  },
+  "render_and_color": {
+    "engine": "CYCLES",
+    "view_transform": "AgX",
+    "look": "AgX - Medium High Contrast",
+    "samples": 256,
+    "denoiser": "OPENIMAGEDENOISE"
+  },
+  "animation_and_rigging": {
+    "enabled": false,
+    "has_armature": false,
+    "max_bone_influences_per_vertex": 0,
+    "bake_nla_to_linear_keyframes": false,
+    "has_shape_keys": false,
+    "apply_modifiers_with_shape_keys": false,
+    "frame_rate_fps": 30,
+    "frame_range": [1, 1]
+  },
+  "simulation_and_vfx": {
+    "enabled": false,
+    "simulation_types": [],
+    "geometry_nodes_realize_instances": false,
+    "bake_to_alembic_or_keyframes": false
+  },
+  "optimization_and_budgets": {
+    "target_tier": "hybrid_render_and_web",
+    "max_triangles": 65000,
+    "max_draw_calls": 15,
+    "max_vram_mb": 128,
+    "max_file_size_mb": 10.0,
+    "mesh_compression": "draco",
+    "texture_compression": "ktx2_basisu",
+    "generate_lods": false
+  },
+  "deliverables": {
+    "formats": ["png_still", "glb_web_standard"],
+    "target_consumers": ["ecommerce_cdn", "threejs_r3f"],
+    "requires_standard_khronos_gltf_2_0": true
+  },
+  "quality_gates": [
+    "All object transforms applied to unit scale (1, 1, 1) and zero rotation",
+    "PBR albedo values remain within 0.04-0.90 linear sRGB and metallic is binary 0 or 1",
+    "Key-to-fill studio lighting ratio preserves highlight rolloff under AgX",
+    "Exported GLB passes Khronos glTF-Validator with zero errors and <= 65k triangles"
+  ],
+  "truth_state_defaults": {
+    "runtime_status": "Not Run",
+    "artifact_status": "Not Produced"
+  }
+}

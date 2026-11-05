@@ -15,7 +15,26 @@ import {
   resolveCatalogRecord,
   validateKnowledgeAndRecipeCatalogs,
   runCatalogRetrievalEvals,
+  buildSharedCatalogFilesMap,
 } from './build-knowledge-catalog.mjs';
+import { exportSharedCatalogArchive } from './export-claude-skills.mjs';
+import {
+  PRECEDENCE_HIERARCHY,
+  resolveCatalogPaths,
+  validateSceneSpec,
+  compileExecutionPlan,
+  inspectExecutionPlan,
+  runPlanCliSubcommand,
+} from './compile-scene-plan.mjs';
+
+export {
+  PRECEDENCE_HIERARCHY,
+  resolveCatalogPaths,
+  validateSceneSpec,
+  compileExecutionPlan,
+  inspectExecutionPlan,
+  runPlanCliSubcommand,
+};
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -760,6 +779,27 @@ export function computeBlendOpsSourceFingerprint(repoRoot = DEFAULT_REPO_ROOT) {
   walkSourceSubtree('bundles/claude-desktop-manual');
   walkSourceSubtree('skills', { skipTopChildName: '_template' });
 
+  if (fs.existsSync(path.join(realRepoRoot, 'registry', 'knowledge-catalog.json'))) {
+    walkSourceSubtree('registry');
+    if (fs.existsSync(path.join(realRepoRoot, 'schemas'))) {
+      walkSourceSubtree('schemas');
+    }
+    for (const extraScript of [
+      'scripts/build-knowledge-catalog.mjs',
+      'scripts/compile-scene-plan.mjs',
+    ]) {
+      const absExtra = path.join(realRepoRoot, extraScript);
+      if (fs.existsSync(absExtra)) {
+        const extraLstat = fs.lstatSync(absExtra);
+        if (extraLstat.isSymbolicLink() || !extraLstat.isFile()) {
+          throw new Error(`Unsafe or non-regular BlendOps source file: ${extraScript}`);
+        }
+        assertCanonicalInsideRepoRoot(realRepoRoot, absExtra, extraScript);
+        collectedRelFiles.add(extraScript);
+      }
+    }
+  }
+
   const skillsDir = path.join(realRepoRoot, 'skills');
   const skillDirs = fs
     .readdirSync(skillsDir, { withFileTypes: true })
@@ -812,6 +852,11 @@ function buildManagedBlendOpsSection({ selectedTarget, effectiveBehavior }) {
     '',
     'Read [`BLENDOPS.md`](./BLENDOPS.md) at the repository root for the canonical BlendOps workflow guidance, 2-path + CLI appendix runtime model, and evidence truth states.',
     '',
+    '### Local Shared Knowledge & Recipe Catalog (`.blendops/catalog/`)',
+    '',
+    '- Installed locally at `.blendops/catalog/knowledge-catalog.json`, `.blendops/catalog/recipe-catalog.json`, and `.blendops/catalog/catalog-index.json` (plus schemas in `.blendops/catalog/schemas/`).',
+    '- Query via CLI (`blendops catalog-search --project <dir> "<query>"`, `blendops catalog-resolve --project <dir> <id>`, `blendops plan-compile --project <dir> --spec <file>`) or read `.blendops/catalog/catalog-index.json` and `.blendops/catalog/recipe-catalog.json` directly when no CLI is invoked.',
+    '',
     '- Skill install is separate from Blender runtime setup.',
     '- Runtime status: `Not Run`',
     '- Artifact status: `Not Produced`',
@@ -833,6 +878,7 @@ function buildCanonicalBlendOpsMd(repoRoot, { selectedTarget, confidence, effect
     `- Target selected: \`${selectedTarget}\``,
     `- Confidence: \`${confidence}\``,
     `- Attachment behavior: \`${effectiveBehavior}\``,
+    '- Shared catalog installed: `.blendops/catalog/knowledge-catalog.json`, `.blendops/catalog/recipe-catalog.json`, `.blendops/catalog/catalog-index.json`',
     '- Runtime status: `Not Run`',
     '- Artifact status: `Not Produced`',
     MANAGED_SECTION_END,
@@ -848,6 +894,7 @@ function buildCursorRuleMdcManagedBlock({ selectedTarget, confidence }) {
     `Target profile: \`${selectedTarget}\` (\`${confidence}\`)`,
     '',
     'Refer to [`BLENDOPS.md`](../../BLENDOPS.md) at the project root for the full BlendOps workflow guidance, 2-path + CLI appendix runtime boundaries, and evidence truth states.',
+    'Local shared catalog files are available at `.blendops/catalog/knowledge-catalog.json`, `.blendops/catalog/recipe-catalog.json`, and `.blendops/catalog/catalog-index.json`.',
     '',
     '- Skill install does not configure `.cursor/mcp.json`, install Blender, or run Blender.',
     '- Runtime status: `Not Run`',
@@ -1108,6 +1155,71 @@ function planSingleFileOperation(projectReal, relPath, desiredContent, options =
     backupRelPath: wasCreatedByInstaller ? null : backupRelPath,
     transitionedFromCreated: false,
   };
+}
+
+function planCatalogFileOperation(projectReal, relPath, desiredContent, previousManifest = null) {
+  const { norm, absTarget, exists } = validateSafeRelativeTargetFile(projectReal, relPath);
+  const desiredBuf = Buffer.from(desiredContent, 'utf8');
+  const desiredSha256 = sha256Buffer(desiredBuf);
+
+  const wasCreatedByInstaller = Boolean(
+    previousManifest &&
+      Array.isArray(previousManifest.files_created) &&
+      previousManifest.files_created.includes(norm),
+  );
+  const prevCreatedHash = wasCreatedByInstaller
+    ? previousManifest.created_file_hashes?.[norm]
+    : null;
+
+  if (!exists) {
+    return {
+      action: 'create',
+      path: norm,
+      absPath: absTarget,
+      desiredContent,
+      desiredSha256,
+      desiredManagedBlockSha256: null,
+      preExistingSha256: null,
+      backupRelPath: null,
+      transitionedFromCreated: false,
+    };
+  }
+
+  const currentBuf = fs.readFileSync(absTarget);
+  const currentSha256 = sha256Buffer(currentBuf);
+
+  if (currentSha256 === desiredSha256 && currentBuf.equals(desiredBuf)) {
+    return {
+      action: 'skip',
+      path: norm,
+      absPath: absTarget,
+      reason: 'Shared catalog file already up to date (idempotent)',
+      desiredContent,
+      desiredSha256,
+      desiredManagedBlockSha256: null,
+      preExistingSha256: currentSha256,
+      backupRelPath: null,
+      transitionedFromCreated: false,
+    };
+  }
+
+  if (wasCreatedByInstaller && isSha256Hex(prevCreatedHash) && currentSha256 === prevCreatedHash) {
+    return {
+      action: 'modify',
+      path: norm,
+      absPath: absTarget,
+      desiredContent,
+      desiredSha256,
+      desiredManagedBlockSha256: null,
+      preExistingSha256: currentSha256,
+      backupRelPath: null,
+      transitionedFromCreated: false,
+    };
+  }
+
+  throw new Error(
+    `Refusing to overwrite modified or pre-existing catalog file '${norm}' (expected SHA-256 ${prevCreatedHash?.slice(0, 12) || 'none'}, got ${currentSha256.slice(0, 12)}). Run --rollback --force-rollback or inspect changes manually.`,
+  );
 }
 
 function captureTargetStateSnapshot(targetRootReal, candidateRelPaths, detectedMarkers) {
@@ -1523,6 +1635,18 @@ function buildProjectInstallPlan({
     );
   }
 
+  const catalogRelPaths = [];
+  if (fs.existsSync(path.join(repoRootReal, 'registry', 'knowledge-catalog.json'))) {
+    const sharedCatalogMap = buildSharedCatalogFilesMap(repoRootReal);
+    for (const [subRel, contentStr] of Object.entries(sharedCatalogMap)) {
+      const targetCatalogRel = `.blendops/catalog/${subRel}`;
+      catalogRelPaths.push(targetCatalogRel);
+      operations.push(
+        planCatalogFileOperation(projectReal, targetCatalogRel, contentStr, previousManifest),
+      );
+    }
+  }
+
   const filesToCreate = operations.filter((op) => op.action === 'create').map((op) => op.path);
   const filesToModify = operations.filter((op) => op.action === 'modify').map((op) => op.path);
   const backupsToCreate = operations
@@ -1544,6 +1668,7 @@ function buildProjectInstallPlan({
     'AGENTS.md',
     'CLAUDE.md',
     '.cursor/rules/blendops.mdc',
+    ...catalogRelPaths,
   ];
   const targetStateSnapshot = captureTargetStateSnapshot(
     projectReal,
@@ -1613,6 +1738,9 @@ function buildClaudeDesktopPlan({ repoRootReal, outReal, requestedTarget }) {
   }
 
   const sourceInfo = computeBlendOpsSourceFingerprint(repoRootReal);
+  const hasSharedCatalog = fs.existsSync(
+    path.join(repoRootReal, 'registry', 'knowledge-catalog.json'),
+  );
   const filesToCreate = [
     ...sourceInfo.skillNames.map((name) => `desktop-zips/${name}.zip`),
     ...sourceInfo.skillNames.map((name) => `claude-code-skills/${name}/SKILL.md`),
@@ -1623,6 +1751,13 @@ function buildClaudeDesktopPlan({ repoRootReal, outReal, requestedTarget }) {
     'claude-desktop-manual/BLENDOPS_SINGLE_FILE.md',
     'claude-desktop-manual/IMPORT_STEPS.md',
     'claude-desktop-manual/manifest.json',
+    ...(hasSharedCatalog
+      ? [
+          'shared-catalog/README.md',
+          'shared-catalog/manifest.json',
+          'shared-catalog/blendops-knowledge-and-recipes.zip',
+        ]
+      : []),
   ];
 
   const targetStateSnapshot = {
@@ -1631,7 +1766,7 @@ function buildClaudeDesktopPlan({ repoRootReal, outReal, requestedTarget }) {
   };
 
   const limitations = [
-    'Manual upload bundle only (48 per-skill ZIPs in desktop-zips/*.zip + claude-desktop-manual/). Does not automate Claude Desktop UI import, does not configure Anthropic Blender Connector or Lab MCP add-on, and does not run Blender.',
+    'Manual upload bundle only (48 per-skill ZIPs in desktop-zips/*.zip + claude-desktop-manual/ + shared-catalog/blendops-knowledge-and-recipes.zip). Does not automate Claude Desktop UI import, does not configure Anthropic Blender Connector or Lab MCP add-on, and does not run Blender.',
   ];
 
   const planPayload = {
@@ -1709,6 +1844,13 @@ export function formatInstallerHelp() {
     '  blendops glb-inspect <file.glb> [--strict-bounds] [--json]',
     '  blendops glb-handoff <file.glb> [--out-dir <dir>] [--viewer <stack>] [--synthetic] [--strict-bounds] [--json]',
     '  blendops glb-validate-manifest <manifest.json> [--json]',
+    '  blendops catalog-search "<query>" [--project <dir>] [--type knowledge|recipe|all] [--domain <domain>] [--kind <kind>] [--skill <id>] [--blender-version <ver>] [--evidence-status <status>] [--limit <n>] [--json]',
+    '  blendops catalog-resolve <id> [--project <dir>] [--json]',
+    '  blendops catalog-validate [--project <dir>] [--json]',
+    '  blendops catalog-eval [--json]',
+    '  blendops scene-spec-validate <scene-spec.json> [--project <dir>] [--json]',
+    '  blendops plan-compile --spec <scene-spec.json> [--project <dir>] [--out <execution-plan.json>] [--json]',
+    '  blendops plan-inspect <execution-plan.json> [--json]',
     '',
     'Repository Script Usage (equivalent):',
     '  node scripts/install-skills.mjs --doctor [--target <name>] [--project <path>]',
@@ -1948,7 +2090,13 @@ function validateSafeRelativeManifestPath(relPath, { allowInsideBlendops = false
       `Rollback refused: path traversal or empty segment in manifest: ${JSON.stringify(relPath)}`,
     );
   }
-  if (!allowInsideBlendops && (relPath === '.blendops' || relPath.startsWith('.blendops/'))) {
+  const isCatalogFile =
+    relPath.startsWith('.blendops/catalog/') && relPath.length > '.blendops/catalog/'.length;
+  if (
+    !allowInsideBlendops &&
+    !isCatalogFile &&
+    (relPath === '.blendops' || relPath.startsWith('.blendops/'))
+  ) {
     throw new Error(
       `Rollback refused: target file entry cannot reference internal .blendops metadata directory: ${relPath}`,
     );
@@ -3108,6 +3256,19 @@ function executeWriteClaudeDesktopPlan(livePlan) {
     const manualDest = path.join(stagingDir, 'claude-desktop-manual');
     fs.cpSync(manualSrc, manualDest, { recursive: true });
 
+    const hasSharedCatalog = fs.existsSync(
+      path.join(repoRootReal, 'registry', 'knowledge-catalog.json'),
+    );
+    if (hasSharedCatalog) {
+      exportSharedCatalogArchive(repoRootReal, path.join(stagingDir, 'shared-catalog'));
+      const sharedCatalogDisplay = formatManifestOutputPrefix(
+        path.join(outReal, 'shared-catalog', 'blendops-knowledge-and-recipes.zip'),
+        repoRootReal,
+      );
+      stagingManifest.outputs.sharedCatalog = sharedCatalogDisplay;
+      writeAtomicFile(stagingManifestAbs, `${JSON.stringify(stagingManifest, null, 2)}\n`);
+    }
+
     const topReadmeContent = [
       '# BlendOps — Claude Desktop Manual Upload Output',
       '',
@@ -3118,6 +3279,7 @@ function executeWriteClaudeDesktopPlan(livePlan) {
       `- \`desktop-zips/*.zip\` — ${sourceInfo.skillCount} per-skill ZIP packages (each containing exactly one \`<skill-name>/SKILL.md\` at its root) for Claude.ai / Claude Desktop upload.`,
       `- \`claude-code-skills/<skill-name>/SKILL.md\` — ${sourceInfo.skillCount} extracted skill folders.`,
       '- `claude-desktop-manual/` — Single-skill manual upload bundle (`SKILL.md`, `BLENDOPS_SINGLE_FILE.md`, `IMPORT_STEPS.md`, `manifest.json`, and `references/`).',
+      '- `shared-catalog/blendops-knowledge-and-recipes.zip` — Companion shared knowledge & recipe catalog archive for Claude Projects / reference attachment (contains zero `SKILL.md` files).',
       '- `manifest.json` — Export manifest listing all canonical skills and artifact paths.',
       '- `.blendops/install-manifest.json` — Rollback manifest for removing this output cleanly.',
       '',
@@ -4060,6 +4222,15 @@ const CATALOG_SUBCOMMANDS = new Set([
   '--catalog-eval',
 ]);
 
+const PLAN_SUBCOMMANDS = new Set([
+  'scene-spec-validate',
+  '--scene-spec-validate',
+  'plan-compile',
+  '--plan-compile',
+  'plan-inspect',
+  '--plan-inspect',
+]);
+
 export function runCatalogCliSubcommand(argv = [], options = {}) {
   const repoRoot = path.resolve(options.repoRoot || DEFAULT_REPO_ROOT);
   const rawSub = String(argv[0] || '').replace(/^--/, '');
@@ -4078,6 +4249,7 @@ export function runCatalogCliSubcommand(argv = [], options = {}) {
 
   if (rawSub === 'catalog-search') {
     let query = '';
+    let projectDir = null;
     let type = 'all';
     let domain = null;
     let kind = null;
@@ -4092,6 +4264,10 @@ export function runCatalogCliSubcommand(argv = [], options = {}) {
       const arg = rest[i];
       if (arg === '--json') {
         jsonOutput = true;
+      } else if (arg === '--project' && i + 1 < rest.length) {
+        projectDir = rest[++i];
+      } else if (typeof arg === 'string' && arg.startsWith('--project=')) {
+        projectDir = arg.slice('--project='.length).trim();
       } else if (arg === '--type' && i + 1 < rest.length) {
         type = rest[++i];
       } else if (arg === '--domain' && i + 1 < rest.length) {
@@ -4119,7 +4295,8 @@ export function runCatalogCliSubcommand(argv = [], options = {}) {
       query = positional.join(' ');
     }
 
-    const searchResult = searchCatalog(repoRoot, query, {
+    const effectiveRoot = projectDir ? path.resolve(projectDir) : repoRoot;
+    const searchResult = searchCatalog(effectiveRoot, query, {
       type,
       domain,
       kind,
@@ -4165,12 +4342,17 @@ export function runCatalogCliSubcommand(argv = [], options = {}) {
 
   if (rawSub === 'catalog-resolve') {
     let recordId = null;
+    let projectDir = null;
     let jsonOutput = false;
 
     for (let i = 0; i < rest.length; i += 1) {
       const arg = rest[i];
       if (arg === '--json') {
         jsonOutput = true;
+      } else if (arg === '--project' && i + 1 < rest.length) {
+        projectDir = rest[++i];
+      } else if (typeof arg === 'string' && arg.startsWith('--project=')) {
+        projectDir = arg.slice('--project='.length).trim();
       } else if (arg === '--id' && i + 1 < rest.length) {
         recordId = rest[++i];
       } else if (!arg.startsWith('-') && !recordId) {
@@ -4184,7 +4366,8 @@ export function runCatalogCliSubcommand(argv = [], options = {}) {
       throw new Error('catalog-resolve requires a <knowledge.*|recipe.*|source.*|skill-id> identifier.');
     }
 
-    const resolved = resolveCatalogRecord(repoRoot, recordId.trim());
+    const effectiveRoot = projectDir ? path.resolve(projectDir) : repoRoot;
+    const resolved = resolveCatalogRecord(effectiveRoot, recordId.trim());
     if (!resolved.found) {
       if (jsonOutput) {
         return {
@@ -4228,8 +4411,22 @@ export function runCatalogCliSubcommand(argv = [], options = {}) {
   }
 
   if (rawSub === 'catalog-validate') {
-    const jsonOutput = rest.includes('--json');
-    const validation = validateKnowledgeAndRecipeCatalogs(repoRoot);
+    let projectDir = null;
+    let jsonOutput = false;
+    for (let i = 0; i < rest.length; i += 1) {
+      const arg = rest[i];
+      if (arg === '--json') {
+        jsonOutput = true;
+      } else if (arg === '--project' && i + 1 < rest.length) {
+        projectDir = rest[++i];
+      } else if (typeof arg === 'string' && arg.startsWith('--project=')) {
+        projectDir = arg.slice('--project='.length).trim();
+      } else {
+        throw new Error(`Unknown or malformed catalog-validate argument: ${String(arg)}`);
+      }
+    }
+    const effectiveRoot = projectDir ? path.resolve(projectDir) : repoRoot;
+    const validation = validateKnowledgeAndRecipeCatalogs(effectiveRoot);
     if (!validation.valid && !jsonOutput) {
       throw new Error(`Catalog validation failed: ${validation.errors.join('; ')}`);
     }
@@ -4305,6 +4502,12 @@ export function runCli(argv = process.argv.slice(2), options = {}) {
       const res = runCatalogCliSubcommand(argv, options);
       process.stdout.write(res.report);
       process.exitCode = res.ok ? 0 : 1;
+      return res;
+    }
+    if (Array.isArray(argv) && argv.length > 0 && PLAN_SUBCOMMANDS.has(argv[0])) {
+      const res = runPlanCliSubcommand(argv, options);
+      process.stdout.write(res.report);
+      process.exitCode = typeof res.exitCode === 'number' ? res.exitCode : res.ok ? 0 : 1;
       return res;
     }
     const res = runInstaller(argv, options);

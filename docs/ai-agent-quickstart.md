@@ -51,6 +51,7 @@ Do this:
    - `skills/`
    - `laws/`
    - `packs/`
+   - project-local shared catalog under `.blendops/catalog/` (`knowledge-catalog.json`, `recipe-catalog.json`, `catalog-index.json`, `knowledge-sources.json`, `knowledge-and-recipe-catalog.md`, `schemas/*.schema.json`)
    - selected runtime boundary docs under `docs/`
 9. Create or update the safest project-local entrypoint for the target.
 10. Report files changed and rollback steps.
@@ -68,7 +69,7 @@ Create one ZIP per canonical skill from:
 skills/*/SKILL.md
 ```
 
-Expected output shape: **one ZIP per `skills/*/SKILL.md`** (currently 48 — 16 baseline + 32 expansion across Batches 1–8: web 3D handoff deep, quality validators, domain scene planners, process discipline, asset/sourcing, color/format/output decisions, recipe/pack ops, runtime path discipline). Run `npm run skills:export` to generate them deterministically into `dist/claude-skills/desktop-zips/`. The full skill inventory lives in [`skills/README.md`](../skills/README.md).
+Expected output shape: **one ZIP per `skills/*/SKILL.md`** (currently 48 — 16 baseline + 32 expansion across Batches 1–8: web 3D handoff deep, quality validators, domain scene planners, process discipline, asset/sourcing, color/format/output decisions, recipe/pack ops, runtime path discipline). Run `npm run skills:export` to generate them deterministically into `dist/claude-skills/desktop-zips/`, plus the separate shared catalog archive `dist/shared-catalog/blendops-knowledge-and-recipes.zip` (for Claude Project Knowledge / chat file attachment; contains zero `SKILL.md` files). The full skill inventory lives in [`skills/README.md`](../skills/README.md).
 
 Each ZIP must contain exactly one skill directory:
 
@@ -89,6 +90,7 @@ Rules:
 - Do not use `bundles/skill-package/blendops/` when the user wants multiple separate skills; that bundle is an umbrella fallback and intentionally contains one `SKILL.md`.
 - Do not include `skills/_template/`.
 - Keep each skill as its own ZIP for Claude Desktop / Claude.ai import.
+- Keep `dist/shared-catalog/blendops-knowledge-and-recipes.zip` separate from Claude Skill upload ZIPs (attach it to Claude Project Knowledge or chat attachments for structured `knowledge.*` and `recipe.*` lookup).
 - Also provide `claude-code-skills/` folder layout when possible for Claude Code users.
 - If ZIP creation is blocked, output the exact per-skill folder tree and ask for file/zip capability.
 

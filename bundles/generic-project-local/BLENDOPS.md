@@ -12,11 +12,13 @@ Reference the canonical BlendOps sources from the repository copy or attached pr
 - `docs/ai-agent-install-flow.md`
 - `docs/install/generic-project.md`
 - `docs/skill-system.md`
-- `docs/knowledge-and-recipe-catalog.md`
+- `docs/knowledge-and-recipe-catalog.md` (or project-local `.blendops/catalog/knowledge-and-recipe-catalog.md`)
 - `docs/runtime-stack-strategy.md`
-- `registry/knowledge-catalog.json`
-- `registry/recipe-catalog.json`
-- `registry/catalog-index.json`
+- `registry/knowledge-catalog.json` (or `.blendops/catalog/knowledge-catalog.json`)
+- `registry/recipe-catalog.json` (or `.blendops/catalog/recipe-catalog.json`)
+- `registry/catalog-index.json` (or `.blendops/catalog/catalog-index.json`)
+- `schemas/scene-spec.schema.json` (or `.blendops/catalog/schemas/scene-spec.schema.json`)
+- `schemas/execution-plan.schema.json` (or `.blendops/catalog/schemas/execution-plan.schema.json`)
 - `skills/README.md`
 - `laws/README.md`
 - `packs/README.md`

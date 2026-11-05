@@ -14,7 +14,8 @@ It provides:
 
 ## Preferred vs fallback
 
-- **Preferred:** upload/import canonical package source at `bundles/skill-package/blendops/`. The `agents/openai.yaml` file in that package is OpenAI/ChatGPT Skills UI metadata only and does not configure Claude Desktop Connector.
+- **Preferred:** upload/import canonical package source at `bundles/skill-package/blendops/` (or per-skill ZIPs in `dist/claude-skills/desktop-zips/*.zip`). The `agents/openai.yaml` file in that package is OpenAI/ChatGPT Skills UI metadata only and does not configure Claude Desktop Connector.
+- **Shared Knowledge & Recipe Catalog attachment (optional):** attach `dist/shared-catalog/blendops-knowledge-and-recipes.zip` as a Claude Project Knowledge / file attachment (contains `knowledge-catalog.json`, `recipe-catalog.json`, `catalog-index.json`, `knowledge-and-recipe-catalog.md`, and schemas; contains zero `SKILL.md` files and is not a Claude Skill upload ZIP).
 - **Manual copy fallback:** `SKILL.md` + `references/` from this manual bundle
 - **Fallback only:** `BLENDOPS_SINGLE_FILE.md` when import/copy supports only one file
 

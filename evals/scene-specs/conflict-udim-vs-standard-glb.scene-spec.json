@@ -1,0 +1,117 @@
+{
+  "schema_version": "1.0.0",
+  "id": "scene-spec.conflict-udim-vs-standard-glb",
+  "title": "Conflicting UDIM Multi-Tile Hero Asset Directly Exported to Standard Khronos GLB",
+  "language": "en",
+  "intent": {
+    "summary": "Export a 4-tile UDIM 1001-1004 character asset directly to a standard Khronos glTF 2.0 single-file GLB for Three.js without UV atlas baking or material splitting.",
+    "primary_goal": "web_glb_optimization_and_handoff",
+    "target_audience_or_platform": "Three.js web viewer",
+    "workflow_entry_stage": "plan",
+    "explicit_recipe_override": null
+  },
+  "blender_version_target": {
+    "min": "4.0",
+    "tested_range": "4.0 - 5.1",
+    "recommended": "5.1"
+  },
+  "runtime_preference": {
+    "preferred_path": "path-1-official-blender-lab-mcp",
+    "allow_cli_fallback": true
+  },
+  "objects_and_subjects": [
+    {
+      "id": "udim_hero_statue",
+      "name": "UDIM_Hero_Statue",
+      "role": "hero",
+      "source_type": "sculpted_or_retopologized",
+      "poly_budget_triangles": 40000,
+      "transforms_applied": true,
+      "scale_factors": [1.0, 1.0, 1.0],
+      "uv_strategy": "udim_multi_tile",
+      "modifiers": [],
+      "has_non_manifold_or_scan_noise": false
+    }
+  ],
+  "style_and_materials": {
+    "aesthetic_style": "Cinema multi-tile UDIM stone and gold leaf",
+    "shader_workflow": "principled_bsdf_pbr",
+    "uv_packing": "udim_tiles",
+    "udim_tile_count": 4,
+    "bake_procedural_to_pbr": false,
+    "channel_packing": "orm_rgb",
+    "max_texture_resolution": 4096,
+    "normal_map_space": "tangent_mikktspace"
+  },
+  "lighting_and_environment": {
+    "rig_type": "studio_plus_hdri",
+    "key_to_fill_ratio": 3.0,
+    "hdri_lighting": true,
+    "volumetric_effects": {
+      "enabled": false,
+      "bake_or_card_fallback_for_realtime": false
+    }
+  },
+  "camera_and_framing": {
+    "focal_length_mm": 85,
+    "sensor_width_mm": 36,
+    "aspect_ratio": "16:9",
+    "resolution_px": {
+      "width": 1920,
+      "height": 1080
+    },
+    "depth_of_field": {
+      "enabled": false,
+      "f_stop": 8.0
+    },
+    "clip_start_m": 0.05,
+    "clip_end_m": 50.0,
+    "framing_style": "Hero statue medium shot"
+  },
+  "render_and_color": {
+    "engine": "CYCLES",
+    "view_transform": "AgX",
+    "look": "AgX - Base Contrast",
+    "samples": 128,
+    "denoiser": "OPENIMAGEDENOISE"
+  },
+  "animation_and_rigging": {
+    "enabled": false,
+    "has_armature": false,
+    "max_bone_influences_per_vertex": 0,
+    "bake_nla_to_linear_keyframes": false,
+    "has_shape_keys": false,
+    "apply_modifiers_with_shape_keys": false,
+    "frame_rate_fps": 30,
+    "frame_range": [1, 1]
+  },
+  "simulation_and_vfx": {
+    "enabled": false,
+    "simulation_types": [],
+    "geometry_nodes_realize_instances": false,
+    "bake_to_alembic_or_keyframes": false
+  },
+  "optimization_and_budgets": {
+    "target_tier": "desktop_web",
+    "max_triangles": 50000,
+    "max_draw_calls": 10,
+    "max_vram_mb": 128,
+    "max_file_size_mb": 15.0,
+    "mesh_compression": "draco",
+    "texture_compression": "ktx2_basisu",
+    "generate_lods": false
+  },
+  "deliverables": {
+    "formats": ["glb_web_standard"],
+    "target_consumers": ["threejs_r3f"],
+    "requires_standard_khronos_gltf_2_0": true
+  },
+  "quality_gates": [
+    "Exported GLB passes Khronos glTF-Validator",
+    "All UV coordinates resolve correctly in Three.js"
+  ],
+  "truth_state_defaults": {
+    "runtime_status": "Not Run",
+    "artifact_status": "Not Produced"
+  }
+}

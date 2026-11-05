@@ -17,8 +17,9 @@ Status: Draft v0 manual procedure
    - ZIP root must contain `SKILL.md`, `agents/openai.yaml`, `references/*.md`, and `LICENSE.txt`.
    - `agents/openai.yaml` is OpenAI/ChatGPT Skills UI metadata only and does not configure Claude Desktop Connector.
 2. Upload/import `skill.zip` if your Claude Desktop workflow supports package upload/import.
-3. If package upload/import is unavailable, manually copy `SKILL.md` plus `references/` from this manual bundle.
-4. Use `BLENDOPS_SINGLE_FILE.md` only when your setup supports one file only.
+3. Optionally attach `dist/shared-catalog/blendops-knowledge-and-recipes.zip` to Claude Project Knowledge / chat attachments for structured `knowledge.*`, `recipe.*`, and `SceneSpec` lookup (do not upload this archive as a Claude Skill ZIP — it intentionally contains no `SKILL.md`).
+4. If package upload/import is unavailable, manually copy `SKILL.md` plus `references/` from this manual bundle.
+5. Use `BLENDOPS_SINGLE_FILE.md` only when your setup supports one file only.
 
 ## Manual checklist
 

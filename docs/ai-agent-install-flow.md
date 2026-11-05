@@ -230,13 +230,17 @@ For a static generic project-local fixture example, see [`bundles/generic-projec
 
 ## Local repository & tarball CLI vs future published `npx` registry usage
 
-Inside a local checkout of the BlendOps repository or after installing a locally packed tarball (`npm pack` -> `npm install ./blendops-0.1.0-draft.tgz`), `bin/blendops.mjs` (`blendops`) and `scripts/install-skills.mjs` are implemented for safe project-local attachment (`doctor`, `install --dry-run`, `install --write`, `rollback`) and Claude Desktop export preparation (`install --target claude-desktop --out <path>`). See [installer-spec.md](./install/installer-spec.md) for the full contract:
+Inside a local checkout of the BlendOps repository or after installing a locally packed tarball (`npm pack` -> `npm install ./blendops-0.1.0-draft.tgz`), `bin/blendops.mjs` (`blendops`) and `scripts/install-skills.mjs` are implemented for safe project-local attachment (`doctor`, `install --dry-run`, `install --write`, `rollback`), Claude Desktop export preparation (`install --target claude-desktop --out <path>`), project-local `.blendops/catalog/` queries (`catalog-search`, `catalog-resolve`, `catalog-validate`), and deterministic SceneSpec / ExecutionPlan compilation (`scene-spec-validate`, `plan-compile`, `plan-inspect`). See [installer-spec.md](./install/installer-spec.md) for the full contract:
 
 ```sh
 # Local checkout or installed tarball CLI (available now)
 blendops doctor --project /path/to/project
 blendops install --target auto --project /path/to/project --dry-run
 blendops install --target auto --project /path/to/project --write
+blendops catalog-search "cyberpunk shoe agx" --project /path/to/project
+blendops scene-spec-validate /path/to/scene-spec.json --project /path/to/project
+blendops plan-compile /path/to/scene-spec.json --project /path/to/project --out /path/to/plan.json
+blendops plan-inspect /path/to/plan.json
 blendops rollback --project /path/to/project
 ```
 

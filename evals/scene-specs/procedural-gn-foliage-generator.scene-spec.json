@@ -1,0 +1,118 @@
+{
+  "schema_version": "1.0.0",
+  "id": "scene-spec.procedural-gn-foliage-generator",
+  "title": "Parametric Geometry Nodes Rock & Fern Scatter Generator Baked to Realized GLB",
+  "language": "en",
+  "intent": {
+    "summary": "Build a Geometry Nodes parametric cliff rock and fern scatter assembly with exposed socket inputs, realize instances, convert named attributes to UVMap, bake procedural shaders to PBR textures, and export a web GLB.",
+    "primary_goal": "procedural_geometry_nodes_asset",
+    "target_audience_or_platform": "WebGL terrain prop library and Three.js scene builder",
+    "workflow_entry_stage": "plan",
+    "explicit_recipe_override": null
+  },
+  "blender_version_target": {
+    "min": "4.2",
+    "tested_range": "4.2 - 5.1",
+    "recommended": "5.1"
+  },
+  "runtime_preference": {
+    "preferred_path": "path-1-official-blender-lab-mcp",
+    "allow_cli_fallback": true
+  },
+  "objects_and_subjects": [
+    {
+      "id": "gn_rock_fern_assembly",
+      "name": "GN_Cliff_Rock_Fern_Assembly",
+      "role": "procedural_generator",
+      "source_type": "procedural_geometry_nodes",
+      "poly_budget_triangles": 55000,
+      "transforms_applied": true,
+      "scale_factors": [1.0, 1.0, 1.0],
+      "uv_strategy": "single_0_1_atlas",
+      "modifiers": ["Nodes"],
+      "has_non_manifold_or_scan_noise": false
+    }
+  ],
+  "style_and_materials": {
+    "aesthetic_style": "Naturalistic mossy basalt rock and translucent fern fronds baked to standard PBR maps",
+    "shader_workflow": "procedural_nodes_baked_to_textures",
+    "uv_packing": "single_0_1_atlas",
+    "udim_tile_count": 1,
+    "bake_procedural_to_pbr": true,
+    "channel_packing": "orm_rgb",
+    "max_texture_resolution": 2048,
+    "normal_map_space": "tangent_mikktspace"
+  },
+  "lighting_and_environment": {
+    "rig_type": "hdri_environment",
+    "key_to_fill_ratio": 2.5,
+    "hdri_lighting": true,
+    "volumetric_effects": {
+      "enabled": false,
+      "bake_or_card_fallback_for_realtime": false
+    }
+  },
+  "camera_and_framing": {
+    "focal_length_mm": 50,
+    "sensor_width_mm": 36,
+    "aspect_ratio": "1:1",
+    "resolution_px": {
+      "width": 2048,
+      "height": 2048
+    },
+    "depth_of_field": {
+      "enabled": false,
+      "f_stop": 8.0
+    },
+    "clip_start_m": 0.05,
+    "clip_end_m": 100.0,
+    "framing_style": "Centered turntable asset framing"
+  },
+  "render_and_color": {
+    "engine": "BLENDER_EEVEE_NEXT",
+    "view_transform": "AgX",
+    "look": "AgX - Base Contrast",
+    "samples": 64,
+    "denoiser": "NONE"
+  },
+  "animation_and_rigging": {
+    "enabled": false,
+    "has_armature": false,
+    "max_bone_influences_per_vertex": 0,
+    "bake_nla_to_linear_keyframes": false,
+    "has_shape_keys": false,
+    "apply_modifiers_with_shape_keys": false,
+    "frame_rate_fps": 30,
+    "frame_range": [1, 1]
+  },
+  "simulation_and_vfx": {
+    "enabled": true,
+    "simulation_types": ["geometry_nodes_scatter"],
+    "geometry_nodes_realize_instances": true,
+    "bake_to_alembic_or_keyframes": false
+  },
+  "optimization_and_budgets": {
+    "target_tier": "desktop_web",
+    "max_triangles": 75000,
+    "max_draw_calls": 12,
+    "max_vram_mb": 128,
+    "max_file_size_mb": 12.0,
+    "mesh_compression": "draco",
+    "texture_compression": "ktx2_basisu",
+    "generate_lods": true
+  },
+  "deliverables": {
+    "formats": ["glb_web_standard", "png_still"],
+    "target_consumers": ["threejs_r3f"],
+    "requires_standard_khronos_gltf_2_0": true
+  },
+  "quality_gates": [
+    "Realize Instances node evaluated before mesh export so exported GLB is not empty",
+    "Store Named Attribute outputs explicit Face Corner 2D Vector UVMap",
+    "Procedural shader nodes baked to standard Principled BSDF image textures before GLB export"
+  ],
+  "truth_state_defaults": {
+    "runtime_status": "Not Run",
+    "artifact_status": "Not Produced"
+  }
+}

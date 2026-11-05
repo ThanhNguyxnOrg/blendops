@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0.0",
+  "id": "invalid-id-without-prefix",
+  "title": "Bad",
+  "language": "fr",
+  "intent": {
+    "summary": "Too short"
+  },
+  "truth_state_defaults": {
+    "runtime_status": "Verified",
+    "artifact_status": "Produced"
+  }
+}

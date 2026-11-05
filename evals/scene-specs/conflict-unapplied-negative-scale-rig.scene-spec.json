@@ -1,0 +1,117 @@
+{
+  "schema_version": "1.0.0",
+  "id": "scene-spec.conflict-unapplied-negative-scale-rig",
+  "title": "Conflicting Unapplied Negative Scale Rig with 8 Bone Influences & Shape Key Modifier Apply",
+  "language": "en",
+  "intent": {
+    "summary": "Export a mirrored rigged character with unapplied negative scale [-1, 1, 1], 8 bone influences per vertex, and direct modifier application on a mesh with active Shape Keys to a standard GLB.",
+    "primary_goal": "rigged_character_or_animation",
+    "target_audience_or_platform": "Three.js R3F web character viewer",
+    "workflow_entry_stage": "execute",
+    "explicit_recipe_override": null
+  },
+  "blender_version_target": {
+    "min": "4.0",
+    "tested_range": "4.0 - 5.1",
+    "recommended": "5.1"
+  },
+  "runtime_preference": {
+    "preferred_path": "path-1-official-blender-lab-mcp",
+    "allow_cli_fallback": true
+  },
+  "objects_and_subjects": [
+    {
+      "id": "mirrored_rigged_hero",
+      "name": "Mirrored_Rigged_Hero",
+      "role": "character",
+      "source_type": "sculpted_or_retopologized",
+      "poly_budget_triangles": 30000,
+      "transforms_applied": false,
+      "scale_factors": [-1.0, 1.0, 1.0],
+      "uv_strategy": "single_0_1_atlas",
+      "modifiers": ["Subdivision", "Armature"],
+      "has_non_manifold_or_scan_noise": false
+    }
+  ],
+  "style_and_materials": {
+    "aesthetic_style": "Stylized character PBR",
+    "shader_workflow": "principled_bsdf_pbr",
+    "uv_packing": "single_0_1_atlas",
+    "udim_tile_count": 1,
+    "bake_procedural_to_pbr": true,
+    "channel_packing": "orm_rgb",
+    "max_texture_resolution": 2048,
+    "normal_map_space": "tangent_mikktspace"
+  },
+  "lighting_and_environment": {
+    "rig_type": "three_point_studio",
+    "key_to_fill_ratio": 2.5,
+    "hdri_lighting": true,
+    "volumetric_effects": {
+      "enabled": false,
+      "bake_or_card_fallback_for_realtime": false
+    }
+  },
+  "camera_and_framing": {
+    "focal_length_mm": 85,
+    "sensor_width_mm": 36,
+    "aspect_ratio": "16:9",
+    "resolution_px": {
+      "width": 1920,
+      "height": 1080
+    },
+    "depth_of_field": {
+      "enabled": false,
+      "f_stop": 5.6
+    },
+    "clip_start_m": 0.05,
+    "clip_end_m": 50.0,
+    "framing_style": "Full character shot"
+  },
+  "render_and_color": {
+    "engine": "BLENDER_EEVEE_NEXT",
+    "view_transform": "AgX",
+    "look": "AgX - Base Contrast",
+    "samples": 64,
+    "denoiser": "NONE"
+  },
+  "animation_and_rigging": {
+    "enabled": true,
+    "has_armature": true,
+    "max_bone_influences_per_vertex": 8,
+    "bake_nla_to_linear_keyframes": false,
+    "has_shape_keys": true,
+    "apply_modifiers_with_shape_keys": true,
+    "frame_rate_fps": 30,
+    "frame_range": [1, 60]
+  },
+  "simulation_and_vfx": {
+    "enabled": false,
+    "simulation_types": [],
+    "geometry_nodes_realize_instances": false,
+    "bake_to_alembic_or_keyframes": false
+  },
+  "optimization_and_budgets": {
+    "target_tier": "desktop_web",
+    "max_triangles": 40000,
+    "max_draw_calls": 8,
+    "max_vram_mb": 96,
+    "max_file_size_mb": 8.0,
+    "mesh_compression": "draco",
+    "texture_compression": "ktx2_basisu",
+    "generate_lods": false
+  },
+  "deliverables": {
+    "formats": ["glb_web_standard"],
+    "target_consumers": ["threejs_r3f"],
+    "requires_standard_khronos_gltf_2_0": true
+  },
+  "quality_gates": [
+    "Rigged GLB plays skeletal and morph target animations in Three.js without flipped normals",
+    "All vertex skin weights are normalized and compatible with glTF 2.0 JOINTS_0 / WEIGHTS_0"
+  ],
+  "truth_state_defaults": {
+    "runtime_status": "Not Run",
+    "artifact_status": "Not Produced"
+  }
+}

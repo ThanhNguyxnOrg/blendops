@@ -1,0 +1,118 @@
+{
+  "schema_version": "1.0.0",
+  "id": "scene-spec.vietnamese-product-studio-glb",
+  "title": "Thiết Lập Ánh Sáng Studio Sản Phẩm Đồng Hồ Thông Minh & Xuất GLB Web",
+  "language": "vi",
+  "intent": {
+    "summary": "Thiết lập ánh sáng studio 3 điểm kết hợp HDRI cho sản phẩm đồng hồ thông minh, chuẩn bị vật liệu PBR Principled BSDF v2, quản lý màu AgX và xuất file GLB tối ưu nén Draco/KTX2 cho Three.js.",
+    "primary_goal": "hybrid_render_and_web_glb",
+    "target_audience_or_platform": "Trang thương mại điện tử và trình xem 3D Three.js / React Three Fiber trên điện thoại và máy tính",
+    "workflow_entry_stage": "discover",
+    "explicit_recipe_override": null
+  },
+  "blender_version_target": {
+    "min": "4.2",
+    "tested_range": "4.2 - 5.1",
+    "recommended": "5.1"
+  },
+  "runtime_preference": {
+    "preferred_path": "path-1-official-blender-lab-mcp",
+    "allow_cli_fallback": true
+  },
+  "objects_and_subjects": [
+    {
+      "id": "dong_ho_thong_minh_hero",
+      "name": "Smartwatch_Hero_VN",
+      "role": "hero",
+      "source_type": "hard_surface_modeled",
+      "poly_budget_triangles": 34000,
+      "transforms_applied": true,
+      "scale_factors": [1.0, 1.0, 1.0],
+      "uv_strategy": "single_0_1_atlas",
+      "modifiers": ["Bevel", "WeightedNormal"],
+      "has_non_manifold_or_scan_noise": false
+    }
+  ],
+  "style_and_materials": {
+    "aesthetic_style": "Khung titan nhám và mặt kính sapphire phản chiếu ánh sáng studio sắc nét",
+    "shader_workflow": "principled_bsdf_pbr",
+    "uv_packing": "single_0_1_atlas",
+    "udim_tile_count": 1,
+    "bake_procedural_to_pbr": true,
+    "channel_packing": "orm_rgb",
+    "max_texture_resolution": 2048,
+    "normal_map_space": "tangent_mikktspace"
+  },
+  "lighting_and_environment": {
+    "rig_type": "studio_plus_hdri",
+    "key_to_fill_ratio": 3.5,
+    "hdri_lighting": true,
+    "volumetric_effects": {
+      "enabled": false,
+      "bake_or_card_fallback_for_realtime": false
+    }
+  },
+  "camera_and_framing": {
+    "focal_length_mm": 85,
+    "sensor_width_mm": 36,
+    "aspect_ratio": "1:1",
+    "resolution_px": {
+      "width": 2048,
+      "height": 2048
+    },
+    "depth_of_field": {
+      "enabled": true,
+      "f_stop": 5.6
+    },
+    "clip_start_m": 0.02,
+    "clip_end_m": 20.0,
+    "framing_style": "Góc chụp cận cảnh hero 3/4 làm nổi bật viền kim loại và mặt đồng hồ"
+  },
+  "render_and_color": {
+    "engine": "CYCLES",
+    "view_transform": "AgX",
+    "look": "AgX - Medium High Contrast",
+    "samples": 256,
+    "denoiser": "OPENIMAGEDENOISE"
+  },
+  "animation_and_rigging": {
+    "enabled": false,
+    "has_armature": false,
+    "max_bone_influences_per_vertex": 0,
+    "bake_nla_to_linear_keyframes": false,
+    "has_shape_keys": false,
+    "apply_modifiers_with_shape_keys": false,
+    "frame_rate_fps": 30,
+    "frame_range": [1, 1]
+  },
+  "simulation_and_vfx": {
+    "enabled": false,
+    "simulation_types": [],
+    "geometry_nodes_realize_instances": false,
+    "bake_to_alembic_or_keyframes": false
+  },
+  "optimization_and_budgets": {
+    "target_tier": "mobile_web",
+    "max_triangles": 45000,
+    "max_draw_calls": 10,
+    "max_vram_mb": 64,
+    "max_file_size_mb": 4.5,
+    "mesh_compression": "draco",
+    "texture_compression": "ktx2_basisu",
+    "generate_lods": true
+  },
+  "deliverables": {
+    "formats": ["png_still", "glb_web_standard"],
+    "target_consumers": ["ecommerce_cdn", "threejs_r3f"],
+    "requires_standard_khronos_gltf_2_0": true
+  },
+  "quality_gates": [
+    "Áp dụng toàn bộ biến đổi tỷ lệ (1, 1, 1) và xoay (0, 0, 0) trước khi xuất GLB",
+    "Nén KTX2 + Draco đảm bảo dung lượng dưới 5 MB và tổng tam giác <= 45,000",
+    "Kiểm tra đồng nhất tone mapping AgX giữa Blender và Three.js R3F"
+  ],
+  "truth_state_defaults": {
+    "runtime_status": "Not Run",
+    "artifact_status": "Not Produced"
+  }
+}

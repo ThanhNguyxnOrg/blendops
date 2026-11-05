@@ -214,8 +214,10 @@ export function classifyTrackedFile(relPath, pkgFiles = []) {
       relPath === 'evals/README.md'
         ? 'Behavioral evaluation dataset index and schema documentation'
         : relPath === 'evals/catalog-retrieval-evals.json'
-          ? 'Deterministic 32-case knowledge & recipe catalog retrieval evaluation suite'
-          : `Deterministic behavioral evaluation suite for skill '${path.basename(relPath, '.json')}'`;
+          ? 'Deterministic 90-case bilingual knowledge & recipe catalog retrieval evaluation suite'
+          : relPath.startsWith('evals/scene-specs/')
+            ? `Canonical SceneSpec fixture (${path.basename(relPath)}) for deterministic plan compilation and conflict detection`
+            : `Deterministic behavioral evaluation suite for skill '${path.basename(relPath, '.json')}'`;
     owningSubsystem = 'behavioral-evals';
     referencedByCi = true;
   } else if (relPath.startsWith('skills/')) {
@@ -296,6 +298,7 @@ export function classifyTrackedFile(relPath, pkgFiles = []) {
     } else if (
       relPath === 'scripts/install-skills.mjs' ||
       relPath === 'scripts/build-knowledge-catalog.mjs' ||
+      relPath === 'scripts/compile-scene-plan.mjs' ||
       relPath === 'scripts/export-claude-skills.mjs' ||
       relPath === 'scripts/inspect-glb.mjs' ||
       relPath === 'scripts/generate-glb-handoff-report.mjs'

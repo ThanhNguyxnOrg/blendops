@@ -1,0 +1,118 @@
+{
+  "schema_version": "1.0.0",
+  "id": "scene-spec.rigged-character-turntable",
+  "title": "Rigged Mascot Character Idle & Wave Animation for Web GLB & Turntable",
+  "language": "en",
+  "intent": {
+    "summary": "Prepare a rigged mascot character with clean deform bone hierarchy, <= 4 normalized bone weights per vertex, baked NLA linear keyframes, and facial morph targets for Three.js GLB playback and MP4 turntable.",
+    "primary_goal": "rigged_character_or_animation",
+    "target_audience_or_platform": "Interactive Three.js web mascot and social preview turntable",
+    "workflow_entry_stage": "plan",
+    "explicit_recipe_override": null
+  },
+  "blender_version_target": {
+    "min": "4.0",
+    "tested_range": "4.0 - 5.1",
+    "recommended": "5.1"
+  },
+  "runtime_preference": {
+    "preferred_path": "path-1-official-blender-lab-mcp",
+    "allow_cli_fallback": true
+  },
+  "objects_and_subjects": [
+    {
+      "id": "mascot_character_mesh",
+      "name": "Mascot_Character_Body",
+      "role": "character",
+      "source_type": "sculpted_or_retopologized",
+      "poly_budget_triangles": 32000,
+      "transforms_applied": true,
+      "scale_factors": [1.0, 1.0, 1.0],
+      "uv_strategy": "single_0_1_atlas",
+      "modifiers": ["Armature"],
+      "has_non_manifold_or_scan_noise": false
+    }
+  ],
+  "style_and_materials": {
+    "aesthetic_style": "Stylized vinyl character with subsurface scattering look in renders and clean PBR in GLB",
+    "shader_workflow": "principled_bsdf_pbr",
+    "uv_packing": "single_0_1_atlas",
+    "udim_tile_count": 1,
+    "bake_procedural_to_pbr": true,
+    "channel_packing": "orm_rgb",
+    "max_texture_resolution": 2048,
+    "normal_map_space": "tangent_mikktspace"
+  },
+  "lighting_and_environment": {
+    "rig_type": "three_point_studio",
+    "key_to_fill_ratio": 2.5,
+    "hdri_lighting": true,
+    "volumetric_effects": {
+      "enabled": false,
+      "bake_or_card_fallback_for_realtime": false
+    }
+  },
+  "camera_and_framing": {
+    "focal_length_mm": 85,
+    "sensor_width_mm": 36,
+    "aspect_ratio": "9:16",
+    "resolution_px": {
+      "width": 1080,
+      "height": 1920
+    },
+    "depth_of_field": {
+      "enabled": true,
+      "f_stop": 4.0
+    },
+    "clip_start_m": 0.05,
+    "clip_end_m": 30.0,
+    "framing_style": "Full-body character portrait with eye-level camera height"
+  },
+  "render_and_color": {
+    "engine": "BLENDER_EEVEE_NEXT",
+    "view_transform": "AgX",
+    "look": "AgX - Medium High Contrast",
+    "samples": 64,
+    "denoiser": "NONE"
+  },
+  "animation_and_rigging": {
+    "enabled": true,
+    "has_armature": true,
+    "max_bone_influences_per_vertex": 4,
+    "bake_nla_to_linear_keyframes": true,
+    "has_shape_keys": true,
+    "apply_modifiers_with_shape_keys": false,
+    "frame_rate_fps": 30,
+    "frame_range": [1, 120]
+  },
+  "simulation_and_vfx": {
+    "enabled": false,
+    "simulation_types": [],
+    "geometry_nodes_realize_instances": false,
+    "bake_to_alembic_or_keyframes": false
+  },
+  "optimization_and_budgets": {
+    "target_tier": "desktop_web",
+    "max_triangles": 45000,
+    "max_draw_calls": 8,
+    "max_vram_mb": 96,
+    "max_file_size_mb": 10.0,
+    "mesh_compression": "meshopt",
+    "texture_compression": "ktx2_basisu",
+    "generate_lods": false
+  },
+  "deliverables": {
+    "formats": ["glb_web_standard", "mp4_turntable"],
+    "target_consumers": ["threejs_r3f"],
+    "requires_standard_khronos_gltf_2_0": true
+  },
+  "quality_gates": [
+    "Armature and skinned mesh share identical world origin (0,0,0) and unit scale (1,1,1)",
+    "Vertex weights limited to <= 4 influences per vertex and normalized to sum = 1.0",
+    "IK/driver constraints baked to visual deformation bone keyframes with Deform Bones Only enabled"
+  ],
+  "truth_state_defaults": {
+    "runtime_status": "Not Run",
+    "artifact_status": "Not Produced"
+  }
+}

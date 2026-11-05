@@ -374,20 +374,48 @@
         "blender_versions": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["minimum", "recommended", "version_considerations"],
+          "required": [
+            "minimum",
+            "recommended",
+            "doc_checked_version",
+            "runtime_tested_version",
+            "maintained_lts_versions",
+            "legacy_compatibility_target",
+            "version_considerations"
+          ],
           "properties": {
             "minimum": {
               "type": "string",
-              "enum": ["3.0+", "3.6 LTS", "4.0+", "4.2 LTS", "5.1+"]
+              "enum": ["3.0+", "3.6 LTS", "4.0+", "4.2 LTS", "4.5 LTS", "4.5.15 LTS", "5.1+", "5.2 LTS", "5.2.3 LTS"]
             },
             "recommended": {
               "type": "string",
-              "enum": ["3.6 LTS", "4.2 LTS", "5.1+"]
+              "enum": ["3.6 LTS", "4.2 LTS", "4.5.15 LTS", "5.1+", "5.2.3 LTS"]
+            },
+            "doc_checked_version": {
+              "type": "string",
+              "enum": ["4.2 LTS", "4.5.15 LTS", "5.1+", "5.2.3 LTS"]
+            },
+            "runtime_tested_version": {
+              "type": ["string", "null"]
+            },
+            "maintained_lts_versions": {
+              "type": "array",
+              "minItems": 1,
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": ["3.6 LTS", "4.2 LTS", "4.5.15 LTS", "5.2.3 LTS"]
+              }
+            },
+            "legacy_compatibility_target": {
+              "type": "string",
+              "enum": ["3.0+", "3.6 LTS"]
             },
             "version_considerations": {
               "type": "string",
               "minLength": 15,
-              "maxLength": 320
+              "maxLength": 420
             }
           }
         },
@@ -407,7 +435,7 @@
         },
         "evidence_packet_path": {
           "type": "string",
-          "pattern": "^docs/evals/[a-z0-9._-]+\\.md$"
+          "pattern": "^docs/evals/[a-z0-9._-]+\\.(md|json)$"
         },
         "documentation_path": {
           "type": "string",

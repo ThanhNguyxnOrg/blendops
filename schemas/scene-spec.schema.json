@@ -1,0 +1,624 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/ThanhNguyxnOrg/blendops/schemas/scene-spec.schema.json",
+  "title": "BlendOps Structured SceneSpec",
+  "description": "Explicit, machine-validated 3D scene specification that sits between user intent/brainstorming and deterministic skill/recipe execution planning.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "id",
+    "title",
+    "intent",
+    "language",
+    "blender_version_target",
+    "runtime_preference",
+    "objects_and_subjects",
+    "style_and_materials",
+    "lighting_and_environment",
+    "camera_and_framing",
+    "render_and_color",
+    "animation_and_rigging",
+    "simulation_and_vfx",
+    "optimization_and_budgets",
+    "deliverables",
+    "quality_gates",
+    "truth_state_defaults"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^scene-spec\\.[a-z0-9-]+$"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 5
+    },
+    "language": {
+      "type": "string",
+      "enum": ["en", "vi", "mixed"]
+    },
+    "intent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "summary",
+        "primary_goal",
+        "target_audience_or_platform",
+        "workflow_entry_stage"
+      ],
+      "properties": {
+        "summary": {
+          "type": "string",
+          "minLength": 15
+        },
+        "primary_goal": {
+          "type": "string",
+          "enum": [
+            "product_hero_presentation",
+            "environment_or_diorama_scene",
+            "hard_surface_prop_asset",
+            "procedural_geometry_nodes_asset",
+            "rigged_character_or_animation",
+            "web_glb_optimization_and_handoff",
+            "scene_quality_inspection_and_cleanup",
+            "hybrid_render_and_web_glb"
+          ]
+        },
+        "target_audience_or_platform": {
+          "type": "string",
+          "minLength": 3
+        },
+        "workflow_entry_stage": {
+          "type": "string",
+          "enum": [
+            "discover",
+            "define",
+            "plan",
+            "source",
+            "execute",
+            "verify",
+            "deliver"
+          ]
+        },
+        "explicit_recipe_override": {
+          "type": ["string", "null"],
+          "pattern": "^recipe\\.[a-z0-9-]+$"
+        }
+      }
+    },
+    "blender_version_target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["min", "tested_range", "recommended"],
+      "properties": {
+        "min": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+$"
+        },
+        "tested_range": {
+          "type": "string",
+          "minLength": 3
+        },
+        "recommended": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+$"
+        }
+      }
+    },
+    "runtime_preference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["preferred_path", "allow_cli_fallback"],
+      "properties": {
+        "preferred_path": {
+          "type": "string",
+          "enum": [
+            "path-1-official-blender-lab-mcp",
+            "path-2-community-mcp-for-blender",
+            "cli-appendix-headless",
+            "unconfigured-planning-only"
+          ]
+        },
+        "allow_cli_fallback": {
+          "type": "boolean"
+        }
+      }
+    },
+    "objects_and_subjects": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "name",
+          "role",
+          "source_type",
+          "poly_budget_triangles",
+          "transforms_applied",
+          "scale_factors",
+          "uv_strategy",
+          "modifiers"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9_-]+$"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 2
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "hero",
+              "secondary",
+              "backdrop",
+              "prop",
+              "character",
+              "environment",
+              "procedural_generator",
+              "scanned_source"
+            ]
+          },
+          "source_type": {
+            "type": "string",
+            "enum": [
+              "existing_asset",
+              "procedural_primitive",
+              "procedural_geometry_nodes",
+              "hard_surface_modeled",
+              "sculpted_or_retopologized",
+              "photogrammetry_scan"
+            ]
+          },
+          "poly_budget_triangles": {
+            "type": "integer",
+            "minimum": 100
+          },
+          "transforms_applied": {
+            "type": "boolean"
+          },
+          "scale_factors": {
+            "type": "array",
+            "minItems": 3,
+            "maxItems": 3,
+            "items": {
+              "type": "number"
+            }
+          },
+          "uv_strategy": {
+            "type": "string",
+            "enum": [
+              "single_0_1_atlas",
+              "udim_multi_tile",
+              "triplanar_procedural",
+              "overlapping_trim_sheet"
+            ]
+          },
+          "modifiers": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "has_non_manifold_or_scan_noise": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "style_and_materials": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "aesthetic_style",
+        "shader_workflow",
+        "uv_packing",
+        "udim_tile_count",
+        "bake_procedural_to_pbr",
+        "channel_packing",
+        "max_texture_resolution",
+        "normal_map_space"
+      ],
+      "properties": {
+        "aesthetic_style": {
+          "type": "string",
+          "minLength": 3
+        },
+        "shader_workflow": {
+          "type": "string",
+          "enum": [
+            "principled_bsdf_pbr",
+            "procedural_nodes_unbaked",
+            "procedural_nodes_baked_to_textures",
+            "toon_npr_shader"
+          ]
+        },
+        "uv_packing": {
+          "type": "string",
+          "enum": ["single_0_1_atlas", "udim_tiles", "none"]
+        },
+        "udim_tile_count": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "bake_procedural_to_pbr": {
+          "type": "boolean"
+        },
+        "channel_packing": {
+          "type": "string",
+          "enum": ["orm_rgb", "separate_maps", "none"]
+        },
+        "max_texture_resolution": {
+          "type": "integer",
+          "enum": [512, 1024, 2048, 4096, 8192]
+        },
+        "normal_map_space": {
+          "type": "string",
+          "enum": ["tangent_mikktspace", "object_space"]
+        }
+      }
+    },
+    "lighting_and_environment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "rig_type",
+        "key_to_fill_ratio",
+        "hdri_lighting",
+        "volumetric_effects"
+      ],
+      "properties": {
+        "rig_type": {
+          "type": "string",
+          "enum": [
+            "three_point_studio",
+            "hdri_environment",
+            "studio_plus_hdri",
+            "sun_sky_exterior",
+            "interior_portals"
+          ]
+        },
+        "key_to_fill_ratio": {
+          "type": "number",
+          "minimum": 1
+        },
+        "hdri_lighting": {
+          "type": "boolean"
+        },
+        "volumetric_effects": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["enabled", "bake_or_card_fallback_for_realtime"],
+          "properties": {
+            "enabled": {
+              "type": "boolean"
+            },
+            "bake_or_card_fallback_for_realtime": {
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    },
+    "camera_and_framing": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "focal_length_mm",
+        "sensor_width_mm",
+        "aspect_ratio",
+        "resolution_px",
+        "depth_of_field",
+        "clip_start_m",
+        "clip_end_m",
+        "framing_style"
+      ],
+      "properties": {
+        "focal_length_mm": {
+          "type": "number",
+          "minimum": 10,
+          "maximum": 300
+        },
+        "sensor_width_mm": {
+          "type": "number",
+          "minimum": 10,
+          "maximum": 70
+        },
+        "aspect_ratio": {
+          "type": "string",
+          "enum": ["16:9", "1:1", "4:5", "9:16", "21:9"]
+        },
+        "resolution_px": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["width", "height"],
+          "properties": {
+            "width": {
+              "type": "integer",
+              "minimum": 256
+            },
+            "height": {
+              "type": "integer",
+              "minimum": 256
+            }
+          }
+        },
+        "depth_of_field": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["enabled", "f_stop"],
+          "properties": {
+            "enabled": {
+              "type": "boolean"
+            },
+            "f_stop": {
+              "type": "number",
+              "minimum": 0.7,
+              "maximum": 64
+            }
+          }
+        },
+        "clip_start_m": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "clip_end_m": {
+          "type": "number",
+          "minimum": 1
+        },
+        "framing_style": {
+          "type": "string",
+          "minLength": 3
+        }
+      }
+    },
+    "render_and_color": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "engine",
+        "view_transform",
+        "look",
+        "samples",
+        "denoiser"
+      ],
+      "properties": {
+        "engine": {
+          "type": "string",
+          "enum": ["CYCLES", "BLENDER_EEVEE_NEXT", "WORKBENCH"]
+        },
+        "view_transform": {
+          "type": "string",
+          "enum": ["AgX", "Standard", "Filmic"]
+        },
+        "look": {
+          "type": "string",
+          "minLength": 2
+        },
+        "samples": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "denoiser": {
+          "type": "string",
+          "enum": ["OPENIMAGEDENOISE", "OPTIX", "NONE"]
+        }
+      }
+    },
+    "animation_and_rigging": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "enabled",
+        "has_armature",
+        "max_bone_influences_per_vertex",
+        "bake_nla_to_linear_keyframes",
+        "has_shape_keys",
+        "apply_modifiers_with_shape_keys",
+        "frame_rate_fps",
+        "frame_range"
+      ],
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "has_armature": {
+          "type": "boolean"
+        },
+        "max_bone_influences_per_vertex": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 16
+        },
+        "bake_nla_to_linear_keyframes": {
+          "type": "boolean"
+        },
+        "has_shape_keys": {
+          "type": "boolean"
+        },
+        "apply_modifiers_with_shape_keys": {
+          "type": "boolean"
+        },
+        "frame_rate_fps": {
+          "type": "integer",
+          "enum": [24, 25, 30, 60]
+        },
+        "frame_range": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      }
+    },
+    "simulation_and_vfx": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "enabled",
+        "simulation_types",
+        "geometry_nodes_realize_instances",
+        "bake_to_alembic_or_keyframes"
+      ],
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "simulation_types": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "rigid_body",
+              "cloth",
+              "particles_or_hair",
+              "smoke_fire_mantaflow",
+              "geometry_nodes_scatter"
+            ]
+          }
+        },
+        "geometry_nodes_realize_instances": {
+          "type": "boolean"
+        },
+        "bake_to_alembic_or_keyframes": {
+          "type": "boolean"
+        }
+      }
+    },
+    "optimization_and_budgets": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "target_tier",
+        "max_triangles",
+        "max_draw_calls",
+        "max_vram_mb",
+        "max_file_size_mb",
+        "mesh_compression",
+        "texture_compression",
+        "generate_lods"
+      ],
+      "properties": {
+        "target_tier": {
+          "type": "string",
+          "enum": [
+            "mobile_web",
+            "desktop_web",
+            "offline_cinema",
+            "hybrid_render_and_web"
+          ]
+        },
+        "max_triangles": {
+          "type": "integer",
+          "minimum": 500
+        },
+        "max_draw_calls": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "max_vram_mb": {
+          "type": "integer",
+          "minimum": 16
+        },
+        "max_file_size_mb": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "mesh_compression": {
+          "type": "string",
+          "enum": ["draco", "meshopt", "none"]
+        },
+        "texture_compression": {
+          "type": "string",
+          "enum": ["ktx2_basisu", "webp", "png_jpeg"]
+        },
+        "generate_lods": {
+          "type": "boolean"
+        }
+      }
+    },
+    "deliverables": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "formats",
+        "target_consumers",
+        "requires_standard_khronos_gltf_2_0"
+      ],
+      "properties": {
+        "formats": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "enum": [
+              "png_still",
+              "exr_multilayer",
+              "mp4_turntable",
+              "glb_web_standard",
+              "gltf_extended",
+              "blend_source",
+              "inspection_audit_report"
+            ]
+          }
+        },
+        "target_consumers": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "enum": [
+              "threejs_r3f",
+              "model_viewer",
+              "babylonjs",
+              "offline_compositor",
+              "ecommerce_cdn",
+              "qa_pipeline"
+            ]
+          }
+        },
+        "requires_standard_khronos_gltf_2_0": {
+          "type": "boolean"
+        }
+      }
+    },
+    "quality_gates": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "string",
+        "minLength": 5
+      }
+    },
+    "truth_state_defaults": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["runtime_status", "artifact_status"],
+      "properties": {
+        "runtime_status": {
+          "type": "string",
+          "const": "Not Run"
+        },
+        "artifact_status": {
+          "type": "string",
+          "const": "Not Produced"
+        }
+      }
+    }
+  }
+}

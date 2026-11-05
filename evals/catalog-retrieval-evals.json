@@ -1,11 +1,12 @@
 {
-  "schema_version": "1.0.0",
-  "description": "Deterministic local retrieval and disambiguation evaluation suite for BlendOps Phase 1 knowledge and recipe catalogs.",
-  "retrieval_method": "deterministic-lexical-and-field-weighted-index",
+  "schema_version": "1.1.0",
+  "description": "Deterministic local retrieval, bilingual (English + Vietnamese) normalization, disambiguation, and coverage-gap evaluation suite for BlendOps knowledge and recipe catalogs (90 cases).",
+  "retrieval_method": "deterministic-lexical-field-weighted-and-bilingual-normalized-index",
   "cases": [
     {
       "id": "cat-eval-01-subdivision-topology",
       "category": "single-domain-knowledge",
+      "language": "en",
       "query": "quad dominant subdivision surface edge loops poles catmull clark pinching",
       "filters": {
         "type": "knowledge",
@@ -20,6 +21,7 @@
     {
       "id": "cat-eval-02-manifold-scale-hygiene",
       "category": "single-domain-knowledge",
+      "language": "en",
       "query": "non-manifold geometry inverted face normals unapplied scale negative scale",
       "filters": {
         "type": "knowledge",
@@ -34,6 +36,7 @@
     {
       "id": "cat-eval-03-hard-surface-modifier-stack",
       "category": "single-domain-knowledge",
+      "language": "en",
       "query": "non-destructive modifier stack order mirror boolean bevel weighted normal",
       "filters": {
         "type": "knowledge",
@@ -49,6 +52,7 @@
     {
       "id": "cat-eval-04-sculpt-retopology",
       "category": "single-domain-knowledge",
+      "language": "en",
       "query": "voxel remesh high poly sculpt to low poly quad retopology shrinkwrap multires",
       "filters": {
         "type": "knowledge",
@@ -63,6 +67,7 @@
     {
       "id": "cat-eval-05-geometry-nodes-fields",
       "category": "single-domain-knowledge",
+      "language": "en",
       "query": "geometry nodes fields capture attribute store named attribute evaluation context",
       "filters": {
         "type": "knowledge",
@@ -77,6 +82,7 @@
     {
       "id": "cat-eval-06-poisson-disk-scatter",
       "category": "single-domain-knowledge",
+      "language": "en",
       "query": "distribute points on faces poisson disk distance min slope mask normal dot product",
       "filters": {
         "type": "knowledge",
@@ -91,6 +97,7 @@
     {
       "id": "cat-eval-07-uv-seam-texel-density",
       "category": "single-domain-knowledge",
+      "language": "en",
       "query": "uv seam placement island margin bleed padding texel density pixels per meter",
       "filters": {
         "type": "knowledge",
@@ -105,6 +112,7 @@
     {
       "id": "cat-eval-08-normal-map-cage-baking",
       "category": "single-domain-knowledge",
+      "language": "en",
       "query": "high to low poly tangent space normal map baking cage extrusion ray distance mikktspace",
       "filters": {
         "type": "knowledge",
@@ -119,6 +127,7 @@
     {
       "id": "cat-eval-09-principled-bsdf-v2-pbr",
       "category": "single-domain-knowledge",
+      "language": "en",
       "query": "principled bsdf v2 energy conservation dielectric albedo metallic binary ior coat",
       "filters": {
         "type": "knowledge",
@@ -133,6 +142,7 @@
     {
       "id": "cat-eval-10-orm-channel-packing",
       "category": "single-domain-knowledge",
+      "language": "en",
       "query": "orm occlusion roughness metallic channel packing non-color linear srgb normal map",
       "filters": {
         "type": "knowledge",
@@ -147,6 +157,7 @@
     {
       "id": "cat-eval-11-studio-three-point-lighting",
       "category": "single-domain-knowledge",
+      "language": "en",
       "query": "three point lighting key fill rim ratio hdri studio reflection contrast",
       "filters": {
         "type": "knowledge",
@@ -161,6 +172,7 @@
     {
       "id": "cat-eval-12-camera-lens-dof",
       "category": "single-domain-knowledge",
+      "language": "en",
       "query": "camera focal length 85mm product portrait sensor width f-stop depth of field clipping",
       "filters": {
         "type": "knowledge",
@@ -175,6 +187,7 @@
     {
       "id": "cat-eval-13-armature-skinning-joints",
       "category": "single-domain-knowledge",
+      "language": "en",
       "query": "armature skinning max 4 joint weights per vertex normalize all bone roll rest pose",
       "filters": {
         "type": "knowledge",
@@ -189,6 +202,7 @@
     {
       "id": "cat-eval-14-physics-cache-baking",
       "category": "single-domain-knowledge",
+      "language": "en",
       "query": "rigid body cloth physics simulation substeps collision margin bake to keyframes",
       "filters": {
         "type": "knowledge",
@@ -203,6 +217,7 @@
     {
       "id": "cat-eval-15-modular-grid-architecture",
       "category": "single-domain-knowledge",
+      "language": "en",
       "query": "modular architectural grid snapping corner pivot doorway height metric scale",
       "filters": {
         "type": "knowledge",
@@ -217,6 +232,7 @@
     {
       "id": "cat-eval-16-triangle-vram-budgets",
       "category": "single-domain-knowledge",
+      "language": "en",
       "query": "mobile web desktop triangle count budget draw calls uncompressed 4k texture vram",
       "filters": {
         "type": "knowledge",
@@ -231,6 +247,7 @@
     {
       "id": "cat-eval-17-gltf-coordinate-system",
       "category": "single-domain-knowledge",
+      "language": "en",
       "query": "gltf 2.0 right handed +Y up +Z forward blender coordinate conversion trs shear",
       "filters": {
         "type": "knowledge",
@@ -245,6 +262,7 @@
     {
       "id": "cat-eval-18-recipe-product-hero",
       "category": "recipe-discovery",
+      "language": "en",
       "query": "cyberpunk sneaker product hero scene studio cyclorama lighting render and glb export",
       "filters": {
         "type": "recipe"
@@ -258,6 +276,7 @@
     {
       "id": "cat-eval-19-recipe-stylized-environment",
       "category": "recipe-discovery",
+      "language": "en",
       "query": "stylized environment room diorama architectural blockout scatter foliage volumetric fog",
       "filters": {
         "type": "recipe"
@@ -271,6 +290,7 @@
     {
       "id": "cat-eval-20-recipe-hard-surface-prop",
       "category": "recipe-discovery",
+      "language": "en",
       "query": "hard surface mechanical prop boolean bevel weighted normal panel gap detailing",
       "filters": {
         "type": "recipe"
@@ -284,6 +304,7 @@
     {
       "id": "cat-eval-21-recipe-geometry-nodes",
       "category": "recipe-discovery",
+      "language": "en",
       "query": "procedural geometry nodes asset parametric generator instance on points realize instances",
       "filters": {
         "type": "recipe"
@@ -297,6 +318,7 @@
     {
       "id": "cat-eval-22-recipe-uv-pbr-prep",
       "category": "recipe-discovery",
+      "language": "en",
       "query": "uv unwrap seam placement texel density high to low poly normal baking orm pbr material",
       "filters": {
         "type": "recipe"
@@ -310,6 +332,7 @@
     {
       "id": "cat-eval-23-recipe-lighting-camera",
       "category": "recipe-discovery",
+      "language": "en",
       "query": "presentation studio lighting three point rig camera lens dof agx cycles render",
       "filters": {
         "type": "recipe"
@@ -323,6 +346,7 @@
     {
       "id": "cat-eval-24-recipe-rigged-animated",
       "category": "recipe-discovery",
+      "language": "en",
       "query": "rigged animated character armature skinning 4 bone weights nla action baking morph targets",
       "filters": {
         "type": "recipe"
@@ -336,6 +360,7 @@
     {
       "id": "cat-eval-25-recipe-quality-inspection",
       "category": "recipe-discovery",
+      "language": "en",
       "query": "scene quality inspection audit non-manifold normals unapplied scale collection cleanup",
       "filters": {
         "type": "recipe"
@@ -349,6 +374,7 @@
     {
       "id": "cat-eval-26-recipe-glb-handoff",
       "category": "recipe-discovery",
+      "language": "en",
       "query": "blender to glb export handoff khronos gltf validator react three fiber component",
       "filters": {
         "type": "recipe"
@@ -362,6 +388,7 @@
     {
       "id": "cat-eval-27-recipe-web-optimization",
       "category": "recipe-discovery",
+      "language": "en",
       "query": "web ready mobile asset optimization decimate lod draco meshopt ktx2 compression",
       "filters": {
         "type": "recipe"
@@ -375,6 +402,7 @@
     {
       "id": "cat-eval-28-disambiguation-draco-vs-ktx2",
       "category": "disambiguation",
+      "language": "en",
       "query": "draco vs meshopt vs ktx2 basis universal texture vram vs geometry network compression",
       "filters": {},
       "expected_top_ids": [
@@ -387,6 +415,7 @@
     {
       "id": "cat-eval-29-disambiguation-udim-vs-atlas",
       "category": "disambiguation",
+      "language": "en",
       "query": "udim multi tile 1001 1002 vs single 0-1 uv atlas gltf export compatibility",
       "filters": {},
       "expected_top_ids": [
@@ -399,6 +428,7 @@
     {
       "id": "cat-eval-30-multi-domain-threejs-metal-black",
       "category": "multi-domain-workflow",
+      "language": "en",
       "query": "metallic material looks black in threejs r3f agx tone mapping environment ibl shader export",
       "filters": {},
       "expected_top_ids": [
@@ -411,6 +441,7 @@
     {
       "id": "cat-eval-31-out-of-scope-houdini-vex",
       "category": "out-of-scope-coverage-gap",
+      "language": "en",
       "query": "houdini vex wrangle pyro sparse solver USD solaris karma LOPs",
       "filters": {},
       "expected_top_ids": [],
@@ -420,7 +451,769 @@
     {
       "id": "cat-eval-32-out-of-scope-unreal-nanite",
       "category": "out-of-scope-coverage-gap",
+      "language": "en",
       "query": "unreal engine 5 nanite lumen blueprint C++ niagara metasounds",
+      "filters": {},
+      "expected_top_ids": [],
+      "max_rank": 1,
+      "expect_no_match": true
+    },
+    {
+      "id": "cat-eval-33-boolean-shading-cleanup",
+      "category": "single-domain-knowledge",
+      "language": "en",
+      "query": "boolean cylinder cutout shading artifacts bevel support loops weighted normal data transfer",
+      "filters": {
+        "type": "knowledge"
+      },
+      "expected_top_ids": [
+        "knowledge.boolean-bevel-shading-cleanup",
+        "knowledge.non-destructive-hard-surface-modifier-stack"
+      ],
+      "max_rank": 2,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-34-collection-naming-pivots",
+      "category": "single-domain-knowledge",
+      "language": "en",
+      "query": "modular architectural grid snapping corner pivot doorway height metric 1.0 unit scale",
+      "filters": {
+        "type": "knowledge"
+      },
+      "expected_top_ids": [
+        "knowledge.modular-architectural-grid-and-metric-scale"
+      ],
+      "max_rank": 2,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-35-cad-panel-gaps-creases",
+      "category": "single-domain-knowledge",
+      "language": "en",
+      "query": "mechanical industrial design bevel width consistency solidify panel seam gap",
+      "filters": {
+        "type": "knowledge"
+      },
+      "expected_top_ids": [
+        "knowledge.cad-creases-and-panel-gap-detailing",
+        "knowledge.non-destructive-hard-surface-modifier-stack"
+      ],
+      "max_rank": 2,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-36-gn-realize-instances-export",
+      "category": "single-domain-knowledge",
+      "language": "en",
+      "query": "geometry nodes realize instances vs gpu instancing uv_map attribute preservation glb export",
+      "filters": {
+        "type": "knowledge"
+      },
+      "expected_top_ids": [
+        "knowledge.procedural-instancing-and-realize-instances-budget",
+        "knowledge.geometry-nodes-fields-and-anonymous-attributes"
+      ],
+      "max_rank": 2,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-37-shader-gltf-portability",
+      "category": "single-domain-knowledge",
+      "language": "en",
+      "query": "why procedural noise voronoi colorramp shader nodes disappear in glb export bake textures",
+      "filters": {
+        "type": "knowledge"
+      },
+      "expected_top_ids": [
+        "knowledge.shader-node-gltf-export-portability"
+      ],
+      "max_rank": 2,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-38-agx-filmic-cycles-eevee",
+      "category": "single-domain-knowledge",
+      "language": "en",
+      "query": "agx vs filmic view transform highlight desaturation cycles path tracing vs eevee next",
+      "filters": {
+        "type": "knowledge"
+      },
+      "expected_top_ids": [
+        "knowledge.agx-filmic-color-management-and-cycles-eevee"
+      ],
+      "max_rank": 2,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-39-cycles-denoising-oidn",
+      "category": "single-domain-knowledge",
+      "language": "en",
+      "query": "cycles vs eevee next path tracing noise openimagedenoise agx color management",
+      "filters": {
+        "type": "knowledge"
+      },
+      "expected_top_ids": [
+        "knowledge.agx-filmic-color-management-and-cycles-eevee"
+      ],
+      "max_rank": 2,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-40-nla-action-baking-constraints",
+      "category": "single-domain-knowledge",
+      "language": "en",
+      "query": "bake ik constraints drivers to fk keyframes nla tracks shape keys morph targets glb",
+      "filters": {
+        "type": "knowledge"
+      },
+      "expected_top_ids": [
+        "knowledge.nla-action-baking-and-morph-target-export"
+      ],
+      "max_rank": 2,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-41-volumetric-fog-mantaflow",
+      "category": "single-domain-knowledge",
+      "language": "en",
+      "query": "principled volume fog density anisotropy step rate volumetric lighting tradeoffs",
+      "filters": {
+        "type": "knowledge"
+      },
+      "expected_top_ids": [
+        "knowledge.volumetrics-fog-and-principled-volume-tradeoffs"
+      ],
+      "max_rank": 2,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-42-environment-depth-layering",
+      "category": "single-domain-knowledge",
+      "language": "en",
+      "query": "environment foreground midground background depth layering atmospheric perspective mist",
+      "filters": {
+        "type": "knowledge"
+      },
+      "expected_top_ids": [
+        "knowledge.environment-depth-layering-and-atmospheric-perspective"
+      ],
+      "max_rank": 2,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-43-decimate-lod-hierarchy",
+      "category": "single-domain-knowledge",
+      "language": "en",
+      "query": "lod0 lod1 lod2 decimate collapse planar dissolve preserve uv seams normals",
+      "filters": {
+        "type": "knowledge"
+      },
+      "expected_top_ids": [
+        "knowledge.lod-hierarchy-and-decimation-strategy"
+      ],
+      "max_rank": 2,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-44-khronos-gltf-validator-tiers",
+      "category": "single-domain-knowledge",
+      "language": "en",
+      "query": "glb 2.0 binary magic header 0x46546c67 chunk alignment khronos gltf validator 4 tiers",
+      "filters": {
+        "type": "knowledge"
+      },
+      "expected_top_ids": [
+        "knowledge.glb-binary-chunk-alignment-and-khronos-validation"
+      ],
+      "max_rank": 2,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-45-vi-diacritics-metal-black-threejs",
+      "category": "bilingual-vietnamese",
+      "language": "vi",
+      "query": "vật liệu kim loại PBR bị đen trong Three.js R3F thiếu môi trường HDRI và tone mapping AgX",
+      "filters": {},
+      "expected_top_ids": [
+        "knowledge.threejs-r3f-tone-mapping-and-environment-parity",
+        "knowledge.shader-node-gltf-export-portability"
+      ],
+      "max_rank": 3,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-46-vi-diacritics-mobile-glb-optimization",
+      "category": "bilingual-vietnamese",
+      "language": "vi",
+      "query": "tối ưu hóa web mobile giảm đa giác nén Draco và KTX2 cho mô hình 3D điện thoại di động",
+      "filters": {},
+      "expected_top_ids": [
+        "recipe.web-ready-asset-optimization",
+        "knowledge.texture-resolution-ktx2-and-draco-meshopt-compression",
+        "knowledge.triangle-draw-call-and-vram-budgets"
+      ],
+      "max_rank": 3,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-47-vi-diacritics-studio-three-point-lighting",
+      "category": "bilingual-vietnamese",
+      "language": "vi",
+      "query": "thiết lập ánh sáng 3 điểm ánh sáng studio đèn chính đèn phụ đèn viền và HDRI sản phẩm hero",
+      "filters": {},
+      "expected_top_ids": [
+        "knowledge.three-point-and-hdri-studio-lighting",
+        "recipe.presentation-lighting-and-camera",
+        "recipe.product-hero-scene"
+      ],
+      "max_rank": 3,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-48-vi-diacritics-rigging-skinning",
+      "category": "bilingual-vietnamese",
+      "language": "vi",
+      "query": "gắn xương chuyển động nhân vật tối đa 4 xương trọng số xương mỗi đỉnh và nướng hoạt ảnh NLA",
+      "filters": {},
+      "expected_top_ids": [
+        "knowledge.armature-joint-hierarchy-and-linear-blend-skinning",
+        "recipe.rigged-and-animated-asset",
+        "knowledge.nla-action-baking-and-morph-target-export"
+      ],
+      "max_rank": 3,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-49-vi-diacritics-uv-normal-bake",
+      "category": "bilingual-vietnamese",
+      "language": "vi",
+      "query": "trải UV đường cắt seam mật độ texel và nướng normal map bản đồ pháp tuyến từ high poly sang low poly",
+      "filters": {},
+      "expected_top_ids": [
+        "recipe.uv-and-pbr-material-preparation",
+        "knowledge.uv-seam-placement-and-texel-density",
+        "knowledge.high-to-low-normal-and-ao-baking"
+      ],
+      "max_rank": 3,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-50-vi-diacritics-manifold-normals-hygiene",
+      "category": "bilingual-vietnamese",
+      "language": "vi",
+      "query": "kiểm tra chất lượng lỗi lưới không kín non-manifold đảo ngược pháp tuyến và áp dụng tỷ lệ scale",
+      "filters": {},
+      "expected_top_ids": [
+        "knowledge.mesh-manifold-normals-and-scale-hygiene",
+        "recipe.scene-quality-inspection-and-correction"
+      ],
+      "max_rank": 3,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-51-vi-diacritics-geometry-nodes-scatter",
+      "category": "bilingual-vietnamese",
+      "language": "vi",
+      "query": "rải phân bố cây cỏ đá theo độ dốc địa hình bằng nút hình học Geometry Nodes Poisson Disk",
+      "filters": {},
+      "expected_top_ids": [
+        "knowledge.procedural-scatter-poisson-disk-and-slope-masking",
+        "recipe.procedural-geometry-nodes-asset"
+      ],
+      "max_rank": 2,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-52-vi-diacritics-interior-daylight",
+      "category": "bilingual-vietnamese",
+      "language": "vi",
+      "query": "kiến trúc nội thất lưới kiến trúc mô-đun phân lớp tiền cảnh và bối cảnh môi trường",
+      "filters": {},
+      "expected_top_ids": [
+        "knowledge.modular-architectural-grid-and-metric-scale",
+        "knowledge.environment-depth-layering-and-atmospheric-perspective",
+        "recipe.stylized-environment-scene"
+      ],
+      "max_rank": 3,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-53-vi-diacritics-cycles-eevee-agx",
+      "category": "bilingual-vietnamese",
+      "language": "vi",
+      "query": "quản lý màu AgX so sánh Cycles và EEVEE khử nhiễu chống cháy sáng highlight",
+      "filters": {},
+      "expected_top_ids": [
+        "knowledge.agx-filmic-color-management-and-cycles-eevee",
+        "recipe.presentation-lighting-and-camera"
+      ],
+      "max_rank": 2,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-54-vi-diacritics-sculpt-retopo",
+      "category": "bilingual-vietnamese",
+      "language": "vi",
+      "query": "điêu khắc nhân vật high poly voxel remesh và đi lại lưới tứ giác retopology bằng shrinkwrap",
+      "filters": {},
+      "expected_top_ids": [
+        "knowledge.organic-sculpt-to-retopology-workflow",
+        "knowledge.quad-dominant-subdivision-topology"
+      ],
+      "max_rank": 2,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-55-vi-no-diacritics-product-hero",
+      "category": "bilingual-vietnamese-no-diacritics",
+      "language": "vi",
+      "query": "tao canh san pham hero giay sneaker anh sang studio 3 diem ket xuat anh va xuat file glb",
+      "filters": {},
+      "expected_top_ids": [
+        "recipe.product-hero-scene",
+        "knowledge.three-point-and-hdri-studio-lighting"
+      ],
+      "max_rank": 3,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-56-vi-no-diacritics-hard-surface",
+      "category": "bilingual-vietnamese-no-diacritics",
+      "language": "vi",
+      "query": "vat dung co khi hard surface cat boolean vat canh bevel va weighted normal khong pha huy",
+      "filters": {},
+      "expected_top_ids": [
+        "recipe.hard-surface-prop",
+        "knowledge.non-destructive-hard-surface-modifier-stack",
+        "knowledge.boolean-bevel-shading-cleanup"
+      ],
+      "max_rank": 3,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-57-vi-no-diacritics-camera-dof",
+      "category": "bilingual-vietnamese-no-diacritics",
+      "language": "vi",
+      "query": "may anh tieu cu 85mm khau do f-stop do sau truong anh xoa phong san pham va chan dung",
+      "filters": {},
+      "expected_top_ids": [
+        "knowledge.physically-based-camera-lens-and-dof",
+        "recipe.presentation-lighting-and-camera"
+      ],
+      "max_rank": 2,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-58-vi-no-diacritics-physics-bake",
+      "category": "bilingual-vietnamese-no-diacritics",
+      "language": "vi",
+      "query": "mo phong vat ly rigid body va vai cloth nuong bake sang keyframe truoc khi xuat glb",
+      "filters": {},
+      "expected_top_ids": [
+        "knowledge.rigid-body-cloth-and-simulation-cache-baking"
+      ],
+      "max_rank": 2,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-59-vi-no-diacritics-orm-packing",
+      "category": "bilingual-vietnamese-no-diacritics",
+      "language": "vi",
+      "query": "dong goi kenh orm occlusion do nham roughness kim loai metallic non-color srgb",
+      "filters": {},
+      "expected_top_ids": [
+        "knowledge.normal-roughness-and-orm-channel-packing",
+        "recipe.uv-and-pbr-material-preparation"
+      ],
+      "max_rank": 2,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-60-mixed-vi-en-r3f-handoff",
+      "category": "mixed-vi-en",
+      "language": "mixed",
+      "query": "bàn giao file GLB sang React Three Fiber kiểm tra Khronos glTF validator và hệ tọa độ +Y up",
+      "filters": {},
+      "expected_top_ids": [
+        "recipe.blender-to-glb-handoff",
+        "knowledge.glb-binary-chunk-alignment-and-khronos-validation",
+        "knowledge.gltf-2-coordinate-system-and-transform-conventions"
+      ],
+      "max_rank": 3,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-61-mixed-vi-en-agx-color",
+      "category": "mixed-vi-en",
+      "language": "mixed",
+      "query": "chọn quản lý màu AgX hay Filmic khi render Cycles và EEVEE Next để không bị cháy sáng highlight",
+      "filters": {},
+      "expected_top_ids": [
+        "knowledge.agx-filmic-color-management-and-cycles-eevee",
+        "recipe.presentation-lighting-and-camera"
+      ],
+      "max_rank": 2,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-62-mixed-vi-en-lod-decimate",
+      "category": "mixed-vi-en",
+      "language": "mixed",
+      "query": "mức độ chi tiết LOD giảm đa giác bằng Decimate modifier giữ nguyên silhouette cho web viewer",
+      "filters": {},
+      "expected_top_ids": [
+        "knowledge.lod-hierarchy-and-decimation-strategy",
+        "recipe.web-ready-asset-optimization"
+      ],
+      "max_rank": 3,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-63-mixed-vi-en-gn-realize-glb",
+      "category": "mixed-vi-en",
+      "language": "mixed",
+      "query": "hiện thực hóa instance Realize Instances trong Geometry Nodes trước khi export GLB để không mất mesh",
+      "filters": {},
+      "expected_top_ids": [
+        "knowledge.procedural-instancing-and-realize-instances-budget",
+        "recipe.procedural-geometry-nodes-asset"
+      ],
+      "max_rank": 2,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-64-mixed-vi-en-smoke-fog-glb-limit",
+      "category": "mixed-vi-en",
+      "language": "mixed",
+      "query": "sương mù thể tích Principled Volume trong EEVEE và Cycles giới hạn khi xuất GLB",
+      "filters": {},
+      "expected_top_ids": [
+        "knowledge.volumetrics-fog-and-principled-volume-tradeoffs"
+      ],
+      "max_rank": 2,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-65-version-specific-blender-4-0-principled-v2",
+      "category": "version-specific",
+      "language": "en",
+      "query": "Blender 4.0+ Principled BSDF v2 Specular IOR Level Coat Weight Sheen energy conservation",
+      "filters": {
+        "blender_version": "4.0+"
+      },
+      "expected_top_ids": [
+        "knowledge.principled-bsdf-v2-energy-conserving-pbr"
+      ],
+      "max_rank": 2,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-66-version-specific-blender-4-2-lts-eevee-next",
+      "category": "version-specific",
+      "language": "en",
+      "query": "Blender 4.2 LTS EEVEE Next screen space raytracing virtual shadow maps AgX tone mapping",
+      "filters": {
+        "blender_version": "4.2+"
+      },
+      "expected_top_ids": [
+        "knowledge.agx-filmic-color-management-and-cycles-eevee"
+      ],
+      "max_rank": 2,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-67-version-specific-blender-5-2-lts-gn-fields",
+      "category": "version-specific",
+      "language": "en",
+      "query": "Blender 5.2.3 LTS geometry nodes fields anonymous attributes capture attribute store named attribute",
+      "filters": {
+        "blender_version": "5.2.3 LTS"
+      },
+      "expected_top_ids": [
+        "knowledge.geometry-nodes-fields-and-anonymous-attributes",
+        "recipe.procedural-geometry-nodes-asset"
+      ],
+      "max_rank": 2,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-68-abbreviation-subd-ngon-pinch",
+      "category": "paraphrase-and-abbreviation",
+      "language": "en",
+      "query": "subd catmull-clark n-gon triangle pole pinching on curved surface",
+      "filters": {},
+      "expected_top_ids": [
+        "knowledge.quad-dominant-subdivision-topology"
+      ],
+      "max_rank": 2,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-69-abbreviation-mikktspace-normal-seam",
+      "category": "paraphrase-and-abbreviation",
+      "language": "en",
+      "query": "mikktspace tangent normal map seam line green channel y+ openGL vs directX",
+      "filters": {},
+      "expected_top_ids": [
+        "knowledge.high-to-low-normal-and-ao-baking",
+        "recipe.uv-and-pbr-material-preparation"
+      ],
+      "max_rank": 2,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-70-constraint-negative-scale-export",
+      "category": "constraint-and-anti-pattern",
+      "language": "en",
+      "query": "negative scale -1 unapplied scale flips face normals inside out non-manifold hygiene",
+      "filters": {},
+      "expected_top_ids": [
+        "knowledge.mesh-manifold-normals-and-scale-hygiene"
+      ],
+      "max_rank": 2,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-71-constraint-coplanar-boolean-flicker",
+      "category": "constraint-and-anti-pattern",
+      "language": "en",
+      "query": "exact boolean fails on coplanar overlapping faces bevel shading cleanup weighted normal",
+      "filters": {},
+      "expected_top_ids": [
+        "knowledge.boolean-bevel-shading-cleanup",
+        "recipe.hard-surface-prop"
+      ],
+      "max_rank": 3,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-72-constraint-camera-z-fighting-clip",
+      "category": "constraint-and-anti-pattern",
+      "language": "en",
+      "query": "physically based camera focal length sensor width f-stop depth of field near clip start z-fighting",
+      "filters": {},
+      "expected_top_ids": [
+        "knowledge.physically-based-camera-lens-and-dof"
+      ],
+      "max_rank": 2,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-73-constraint-non-uniform-armature-scale",
+      "category": "constraint-and-anti-pattern",
+      "language": "en",
+      "query": "non-uniform parent bone scale causes matrix shear and breaks gltf 2.0 trs decomposition",
+      "filters": {},
+      "expected_top_ids": [
+        "knowledge.gltf-2-coordinate-system-and-transform-conventions",
+        "knowledge.armature-joint-hierarchy-and-linear-blend-skinning"
+      ],
+      "max_rank": 2,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-74-conflicting-intent-hero-vs-mobile-glb",
+      "category": "conflicting-and-multi-recipe",
+      "language": "en",
+      "query": "4k photorealistic cycles hero render AND lightweight 50k triangle mobile web glb export from same asset",
+      "filters": {},
+      "expected_top_ids": [
+        "recipe.product-hero-scene",
+        "recipe.web-ready-asset-optimization",
+        "knowledge.triangle-draw-call-and-vram-budgets"
+      ],
+      "max_rank": 3,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-75-conflicting-intent-udim-cinema-vs-web-atlas",
+      "category": "conflicting-and-multi-recipe",
+      "language": "en",
+      "query": "hero character uses 4 UDIM 4K tiles in Cycles but needs single 0-1 UV atlas for Three.js GLB viewer",
+      "filters": {},
+      "expected_top_ids": [
+        "knowledge.udim-vs-single-atlas-uv-packing",
+        "recipe.uv-and-pbr-material-preparation"
+      ],
+      "max_rank": 2,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-76-multi-recipe-hard-surface-to-glb",
+      "category": "conflicting-and-multi-recipe",
+      "language": "en",
+      "query": "hard surface mechanical prop boolean bevel then uv unwrap pbr normal bake and blender to glb handoff khronos validator",
+      "filters": {
+        "type": "recipe"
+      },
+      "expected_top_ids": [
+        "recipe.hard-surface-prop",
+        "recipe.uv-and-pbr-material-preparation",
+        "recipe.blender-to-glb-handoff"
+      ],
+      "max_rank": 4,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-77-multi-recipe-inspect-and-optimize-scanned-mesh",
+      "category": "conflicting-and-multi-recipe",
+      "language": "en",
+      "query": "scene quality inspection audit imported mesh for non-manifold holes then decimate and compress KTX2 Draco for mobile web",
+      "filters": {
+        "type": "recipe"
+      },
+      "expected_top_ids": [
+        "recipe.scene-quality-inspection-and-correction",
+        "recipe.web-ready-asset-optimization"
+      ],
+      "max_rank": 3,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-78-skill-filter-glb-web-handoff",
+      "category": "skill-linked-retrieval",
+      "language": "en",
+      "query": "gltf coordinate conversion shader node export portability tone mapping parity",
+      "filters": {
+        "type": "knowledge",
+        "skill_id": "glb-web-handoff"
+      },
+      "expected_top_ids": [
+        "knowledge.shader-node-gltf-export-portability",
+        "knowledge.gltf-2-coordinate-system-and-transform-conventions"
+      ],
+      "max_rank": 2,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-79-skill-filter-mobile-glb-budget",
+      "category": "skill-linked-retrieval",
+      "language": "en",
+      "query": "mobile triangle budget draw calls ktx2 draco meshopt lod",
+      "filters": {
+        "skill_id": "mobile-glb-budget"
+      },
+      "expected_top_ids": [
+        "knowledge.triangle-draw-call-and-vram-budgets",
+        "knowledge.texture-resolution-ktx2-and-draco-meshopt-compression",
+        "recipe.web-ready-asset-optimization"
+      ],
+      "max_rank": 3,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-80-skill-filter-material-quality-checker",
+      "category": "skill-linked-retrieval",
+      "language": "en",
+      "query": "principled bsdf v2 orm channel packing non-color normal map shader export",
+      "filters": {
+        "type": "knowledge",
+        "skill_id": "material-quality-checker"
+      },
+      "expected_top_ids": [
+        "knowledge.principled-bsdf-v2-energy-conserving-pbr",
+        "knowledge.normal-roughness-and-orm-channel-packing",
+        "knowledge.shader-node-gltf-export-portability"
+      ],
+      "max_rank": 3,
+      "expect_no_match": false
+    },
+    {
+      "id": "cat-eval-81-out-of-scope-maya-arnold",
+      "category": "out-of-scope-coverage-gap",
+      "language": "en",
+      "query": "autodesk maya xgen interactive groom bifrost graph arnold aiStandardSurface hypershade",
+      "filters": {},
+      "expected_top_ids": [],
+      "max_rank": 1,
+      "expect_no_match": true
+    },
+    {
+      "id": "cat-eval-82-out-of-scope-cinema4d-mograph",
+      "category": "out-of-scope-coverage-gap",
+      "language": "en",
+      "query": "cinema 4d mograph cloner plain effector redshift rsMaterial xpresso fields",
+      "filters": {},
+      "expected_top_ids": [],
+      "max_rank": 1,
+      "expect_no_match": true
+    },
+    {
+      "id": "cat-eval-83-out-of-scope-3dsmax-vray",
+      "category": "out-of-scope-coverage-gap",
+      "language": "en",
+      "query": "3ds max tyflow vraymtl corona renderer railclone forest pack",
+      "filters": {},
+      "expected_top_ids": [],
+      "max_rank": 1,
+      "expect_no_match": true
+    },
+    {
+      "id": "cat-eval-84-out-of-scope-zbrush-zremesher",
+      "category": "out-of-scope-coverage-gap",
+      "language": "en",
+      "query": "zbrush zremesher dynamesh zspheres polypaint subtoolfibermesh",
+      "filters": {},
+      "expected_top_ids": [],
+      "max_rank": 1,
+      "expect_no_match": true
+    },
+    {
+      "id": "cat-eval-85-out-of-scope-substance-painter",
+      "category": "out-of-scope-coverage-gap",
+      "language": "en",
+      "query": "substance painter smart materials anchor points sbsar substance designer",
+      "filters": {},
+      "expected_top_ids": [],
+      "max_rank": 1,
+      "expect_no_match": true
+    },
+    {
+      "id": "cat-eval-86-out-of-scope-unity-shadergraph",
+      "category": "out-of-scope-coverage-gap",
+      "language": "en",
+      "query": "unity engine urp hdrp shadergraph addressable assetbundles C# monobehaviour",
+      "filters": {},
+      "expected_top_ids": [],
+      "max_rank": 1,
+      "expect_no_match": true
+    },
+    {
+      "id": "cat-eval-87-out-of-scope-vi-maya-vray",
+      "category": "out-of-scope-coverage-gap",
+      "language": "vi",
+      "query": "cách thiết lập vật liệu VRayMtl trong 3ds Max và Maya Arnold Hypershade",
+      "filters": {},
+      "expected_top_ids": [],
+      "max_rank": 1,
+      "expect_no_match": true
+    },
+    {
+      "id": "cat-eval-88-out-of-scope-vi-unreal-blueprint",
+      "category": "out-of-scope-coverage-gap",
+      "language": "vi",
+      "query": "lập trình Unreal Engine 5 Blueprint Nanite Lumen và hiệu ứng hạt Niagara",
+      "filters": {},
+      "expected_top_ids": [],
+      "max_rank": 1,
+      "expect_no_match": true
+    },
+    {
+      "id": "cat-eval-89-no-match-unrelated-database-sql",
+      "category": "out-of-scope-coverage-gap",
+      "language": "en",
+      "query": "postgresql btree index vacuum analyze foreign key constraint migration",
+      "filters": {},
+      "expected_top_ids": [],
+      "max_rank": 1,
+      "expect_no_match": true
+    },
+    {
+      "id": "cat-eval-90-no-match-unrelated-kubernetes-helm",
+      "category": "out-of-scope-coverage-gap",
+      "language": "en",
+      "query": "kubernetes ingress controller helm chart horizontal pod autoscaler",
       "filters": {},
       "expected_top_ids": [],
       "max_rank": 1,

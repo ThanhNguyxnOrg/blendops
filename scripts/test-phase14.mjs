@@ -196,10 +196,10 @@ describe('Phase 14 — Architecture Reconciliation & Knowledge/Recipe Foundation
     assert.equal(
       evalRes.passed,
       true,
-      `Expected all 32 catalog retrieval evals to pass, failures:\n${evalRes.failures.join('\n')}`,
+      `Expected all catalog retrieval evals to pass, failures:\n${evalRes.failures.join('\n')}`,
     );
-    assert.equal(evalRes.total, 32);
-    assert.equal(evalRes.passed_count, 32);
+    assert.ok(evalRes.total >= 80, `Expected >= 80 eval cases, got ${evalRes.total}`);
+    assert.equal(evalRes.passed_count, evalRes.total);
 
     // Explicit out-of-scope query must trigger coverage_gap: true rather than returning false-confidence hits
     const outOfScope = searchCatalog(ROOT, 'houdini vex pyro solver solaris USD karma LOPs');
@@ -263,6 +263,6 @@ describe('Phase 14 — Architecture Reconciliation & Knowledge/Recipe Foundation
       [path.join(ROOT, 'bin/blendops.mjs'), 'catalog-eval'],
       { cwd: ROOT, encoding: 'utf8' },
     );
-    assert.match(evalOut, /Passed: Yes \(32\/32\)/);
+    assert.match(evalOut, /Passed: Yes \(90\/90\)/);
   });
 });

@@ -363,6 +363,182 @@ function listSkillDirs() {
     .sort(compareCodeUnitOrder);
 }
 
+function deriveSkillWorkflowStageForExport(skillObj) {
+  const cat = String(skillObj.category || '').toLowerCase();
+  if (cat.includes('intake') || cat.includes('brief') || cat.includes('scope')) return 'intake';
+  if (cat.includes('plan') || cat.includes('camera') || cat.includes('light') || cat.includes('scene') || cat.includes('asset')) return 'planning';
+  if (cat.includes('readiness') || cat.includes('runtime') || cat.includes('bridge')) return 'readiness';
+  if (cat.includes('quality') || cat.includes('check') || cat.includes('budget')) return 'validation';
+  if (cat.includes('evidence') || cat.includes('report') || cat.includes('done') || cat.includes('gate')) return 'evidence';
+  if (cat.includes('handoff') || cat.includes('glb') || cat.includes('r3f') || cat.includes('output')) return 'handoff';
+  return 'orchestration';
+}
+
+function buildSharedCatalogFilesMapForExport(rootDir = root) {
+  const sourcesRaw = fs.readFileSync(path.join(rootDir, 'registry/knowledge-sources.json'), 'utf8');
+  const knowledgeRaw = fs.readFileSync(path.join(rootDir, 'registry/knowledge-catalog.json'), 'utf8');
+  const recipesRaw = fs.readFileSync(path.join(rootDir, 'registry/recipe-catalog.json'), 'utf8');
+  const indexRaw = fs.readFileSync(path.join(rootDir, 'registry/catalog-index.json'), 'utf8');
+  const indexData = JSON.parse(indexRaw);
+
+  const skillsData = JSON.parse(fs.readFileSync(path.join(rootDir, 'registry/skills.json'), 'utf8'));
+  const skillsSummary = {
+    schemaVersion: '1.0.0',
+    description: 'Compact canonical 48-skill summary for offline project-local and shared-catalog resolution.',
+    skills: skillsData.skills.map((s) => ({
+      id: s.id,
+      version: s.version || '1.0.0',
+      category: s.category,
+      role: s.role,
+      purpose: s.purpose,
+      capabilityTier: s.capabilityTier,
+      workflow_stage: deriveSkillWorkflowStageForExport(s),
+    })),
+  };
+  const skillsSummaryRaw = `${JSON.stringify(skillsSummary, null, 2)}\n`;
+
+  const sourcesSchemaRaw = fs.readFileSync(path.join(rootDir, 'schemas/knowledge-source-registry.schema.json'), 'utf8');
+  const knowledgeSchemaRaw = fs.readFileSync(path.join(rootDir, 'schemas/knowledge-record.schema.json'), 'utf8');
+  const recipeSchemaRaw = fs.readFileSync(path.join(rootDir, 'schemas/recipe-record.schema.json'), 'utf8');
+  const sceneSpecSchemaPath = path.join(rootDir, 'schemas/scene-spec.schema.json');
+  const executionPlanSchemaPath = path.join(rootDir, 'schemas/execution-plan.schema.json');
+  const hasSceneSpecSchema = fs.existsSync(sceneSpecSchemaPath);
+  const hasExecutionPlanSchema = fs.existsSync(executionPlanSchemaPath);
+
+  const fileList = [
+    'README.md',
+    'manifest.json',
+    'knowledge-sources.json',
+    'knowledge-catalog.json',
+    'recipe-catalog.json',
+    'catalog-index.json',
+    'skills-summary.json',
+    'schemas/knowledge-source-registry.schema.json',
+    'schemas/knowledge-record.schema.json',
+    'schemas/recipe-record.schema.json',
+    ...(hasSceneSpecSchema ? ['schemas/scene-spec.schema.json'] : []),
+    ...(hasExecutionPlanSchema ? ['schemas/execution-plan.schema.json'] : []),
+  ];
+
+  const manifestObj = {
+    schema_version: '1.0.0',
+    package_name: 'blendops-shared-knowledge-and-recipe-catalog',
+    generated_from: [
+      'registry/knowledge-sources.json',
+      'registry/knowledge-catalog.json',
+      'registry/recipe-catalog.json',
+      'registry/catalog-index.json',
+      'registry/skills.json',
+    ],
+    counts: indexData.counts,
+    version_baseline: JSON.parse(sourcesRaw).taxonomy.versionBaseline,
+    truth_state_defaults: {
+      runtime_status: 'Not Run',
+      artifact_status: 'Not Produced',
+    },
+    files: fileList,
+  };
+
+  const readmeContent = [
+    '# BlendOps Shared Knowledge & Recipe Catalog',
+    '',
+    'This portable catalog package contains the canonical BlendOps **Knowledge Layer** (`knowledge.*`), **Recipe Layer** (`recipe.*`), **Authoritative Source Registry** (`source.*`), and **Deterministic Bilingual (EN+VI) Retrieval Index**.',
+    '',
+    '## Contents',
+    '',
+    '- `knowledge-sources.json` — 20 authoritative Blender / Khronos glTF 2.0.1 / OpenSubdiv / MikkTSpace / Filament / Three.js sources and controlled domain taxonomy.',
+    '- `knowledge-catalog.json` — 30 canonical knowledge records across 11 3D/Blender domains.',
+    '- `recipe-catalog.json` — 10 composable multi-stage construction recipes linking required skills, knowledge records, stage gates, validation criteria, and failure recovery modes.',
+    '- `catalog-index.json` — Prebuilt deterministic bilingual (English + Vietnamese) search and cross-reference index.',
+    '- `skills-summary.json` — Compact metadata for all 48 canonical BlendOps skills so local resolution works standalone without requiring the full BlendOps git repository.',
+    '- `schemas/` — JSON Schema Draft 2020-12 definitions for sources, knowledge records, recipes, SceneSpec, and ExecutionPlan.',
+    '',
+    '## How Agents Use This Catalog',
+    '',
+    '1. **Project-Local CLI Lookup** (when installed in `.blendops/catalog/`):',
+    '   - Search by natural language (English or Vietnamese): `npx blendops catalog-search "<query>" [--project <project-dir>]`',
+    '   - Resolve full record & links: `npx blendops catalog-resolve <knowledge.id | recipe.id | source.id> [--project <project-dir>]`',
+    '   - Validate catalog integrity: `npx blendops catalog-validate [--project <project-dir>]`',
+    '   - Validate SceneSpec & compile ExecutionPlan: `npx blendops scene-spec-validate <spec.json> [--project <project-dir>]` / `npx blendops plan-compile <spec.json> [--project <project-dir>]`',
+    '2. **Direct File Consumption** (in Claude Desktop / Claude.ai Projects or offline agent context):',
+    '   - Attach or inspect `catalog-index.json` to locate matching `knowledge.*` and `recipe.*` IDs by domain, skill, or keyword.',
+    '   - Read the corresponding record in `knowledge-catalog.json` or `recipe-catalog.json` before planning or mutating a Blender scene.',
+    '',
+    '## Truth-State & Runtime Boundaries',
+    '',
+    '- **Runtime status**: `Not Run` (default unless backed by a validated runtime evidence packet)',
+    '- **Artifact status**: `Not Produced` (default unless backed by verified on-disk artifact hashes)',
+    '- **Global files touched**: `No`',
+    '',
+  ].join('\n');
+
+  const filesMap = {
+    'README.md': readmeContent,
+    'manifest.json': `${JSON.stringify(manifestObj, null, 2)}\n`,
+    'knowledge-sources.json': sourcesRaw,
+    'knowledge-catalog.json': knowledgeRaw,
+    'recipe-catalog.json': recipesRaw,
+    'catalog-index.json': indexRaw,
+    'skills-summary.json': skillsSummaryRaw,
+    'schemas/knowledge-source-registry.schema.json': sourcesSchemaRaw,
+    'schemas/knowledge-record.schema.json': knowledgeSchemaRaw,
+    'schemas/recipe-record.schema.json': recipeSchemaRaw,
+  };
+  if (hasSceneSpecSchema) {
+    filesMap['schemas/scene-spec.schema.json'] = fs.readFileSync(sceneSpecSchemaPath, 'utf8');
+  }
+  if (hasExecutionPlanSchema) {
+    filesMap['schemas/execution-plan.schema.json'] = fs.readFileSync(executionPlanSchemaPath, 'utf8');
+  }
+  return filesMap;
+}
+
+export function exportSharedCatalogArchive(
+  rootDir = root,
+  sharedCatalogDir = path.join(rootDir, 'dist', 'shared-catalog'),
+) {
+  const knowledgeCatalogPath = path.join(rootDir, 'registry', 'knowledge-catalog.json');
+  if (!fs.existsSync(knowledgeCatalogPath)) {
+    return null;
+  }
+  const filesMap = buildSharedCatalogFilesMapForExport(rootDir);
+  rmrf(sharedCatalogDir);
+  mkdirp(sharedCatalogDir);
+
+  fs.writeFileSync(path.join(sharedCatalogDir, 'README.md'), filesMap['README.md'], 'utf8');
+  fs.writeFileSync(path.join(sharedCatalogDir, 'manifest.json'), filesMap['manifest.json'], 'utf8');
+
+  const mtime = getDeterministicZipMtime();
+  const zipEntries = {};
+  const sortedRelPaths = Object.keys(filesMap).sort(compareCodeUnitOrder);
+  for (const relPath of sortedRelPaths) {
+    const entryName = `blendops-knowledge-and-recipes/${relPath}`;
+    zipEntries[entryName] = [
+      new Uint8Array(Buffer.from(filesMap[relPath], 'utf8')),
+      {
+        level: DETERMINISTIC_ZIP_COMPRESSION_LEVEL,
+        mtime,
+        os: DETERMINISTIC_ZIP_OS,
+        attrs: DETERMINISTIC_ZIP_ATTRS,
+      },
+    ];
+  }
+
+  const zipped = zipSync(zipEntries, {
+    level: DETERMINISTIC_ZIP_COMPRESSION_LEVEL,
+    mtime,
+    os: DETERMINISTIC_ZIP_OS,
+    attrs: DETERMINISTIC_ZIP_ATTRS,
+  });
+  const zipPath = path.join(sharedCatalogDir, 'blendops-knowledge-and-recipes.zip');
+  fs.writeFileSync(zipPath, Buffer.from(zipped));
+  return {
+    sharedCatalogDir,
+    zipPath,
+    files: sortedRelPaths,
+  };
+}
+
 const isDirectExecution =
   process.argv[1] &&
   fs.existsSync(process.argv[1]) &&
@@ -444,5 +620,14 @@ if (isDirectExecution) {
 
   console.log(`Exported ${skillNames.length} Claude skill zips to ${desktopDisplay}`);
   console.log(`Exported ${skillNames.length} Claude Code skill folders to ${codeDisplay}`);
+
+  if (!isCustomOutputRoot) {
+    const sharedRes = exportSharedCatalogArchive(root, path.join(root, 'dist', 'shared-catalog'));
+    if (sharedRes) {
+      const sharedDisplay = formatManifestOutputPrefix(sharedRes.zipPath, root);
+      console.log(`Exported shared knowledge & recipe catalog archive to ${sharedDisplay}`);
+    }
+  }
 }
+
 

@@ -1401,6 +1401,35 @@ export function getPhase13_2DeliveryBundleInfo(options = {}) {
   }
 }
 
+export const PHASE2_DELIVERABLES = Object.freeze([
+  { filename: 'blendops-phase2.bundle', contentType: 'application/octet-stream', label: 'Phase 2 Git Bundle (.bundle)' },
+  { filename: 'blendops-phase2.patch', contentType: 'text/x-diff; charset=utf-8', label: 'Phase 2 Git Patch (.patch)' },
+  { filename: 'blendops-phase2-source.zip', contentType: 'application/zip', label: 'Phase 2 Full Source (.zip)' },
+  { filename: 'DELIVERY-REPORT.md', contentType: 'text/markdown; charset=utf-8', label: 'Phase 2 Delivery Report (.md)' },
+]);
+
+export function getPhase2DeliverableFile(rootDir, filename) {
+  const candidates = [
+    path.join(rootDir, 'dist', filename),
+    path.join(rootDir, '.aistudio', 'artifacts', 'brain', '8f5208e5-f8ef-4313-91d7-6fb50ec0da1d', filename),
+    path.join('/.aistudio/artifacts/brain/8f5208e5-f8ef-4313-91d7-6fb50ec0da1d', filename),
+    path.join('/tmp', filename),
+  ];
+  for (const p of candidates) {
+    try {
+      const st = fs.lstatSync(p);
+      if (st.isFile() && !st.isSymbolicLink() && st.size > 0) {
+        const buffer = fs.readFileSync(p);
+        const sha256 = crypto.createHash('sha256').update(buffer).digest('hex');
+        return { exists: true, filename, sourcePath: p, size: buffer.length, sha256, buffer };
+      }
+    } catch {
+      // continue
+    }
+  }
+  return { exists: false, filename, sourcePath: null, size: 0, sha256: null, buffer: null };
+}
+
 export function renderArtifactPage(options = {}) {
   const p13_2 = getPhase13_2DeliveryBundleInfo(options);
   return `<!doctype html>
@@ -1746,6 +1775,24 @@ function renderHtml(options = {}) {
     </div>
   </header>
   <main>
+    <section id="phase2-latest-delivery-section" class="card" style="border:2px solid var(--green);background:rgba(34,197,94,0.10);margin-bottom:24px;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:16px;">
+        <div>
+          <div style="font-size:15px;font-weight:800;color:var(--green);text-transform:uppercase;letter-spacing:0.05em;">BlendOps Phase 2 (Phase 14.1 Hardening + Agent Consumption, SceneSpec &amp; Skill Harmonizer) — Download Deliverables</div>
+          <div class="mono" style="font-size:12px;margin-top:6px;color:var(--muted);">
+            Baseline: <strong>42e069aa863c2c13491271ff216955eafebcfa50</strong> &middot; Knowledge Records: <strong>30</strong> &middot; Recipes: <strong>10</strong> &middot; Retrieval Evals: <strong>90/90 PASS</strong> &middot; SceneSpec Fixtures: <strong>12</strong>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+          ${PHASE2_DELIVERABLES.map((item) => {
+            const info = getPhase2DeliverableFile(rootDir, item.filename);
+            return info.exists
+              ? `<a class="btn" style="background:var(--green);color:#022c22;text-decoration:none;display:inline-block;font-size:13px;padding:10px 16px;" href="/dist/${item.filename}" download="${item.filename}">${item.label} (${Math.max(1, Math.round(info.size / 1024))} KB)</a>`
+              : `<span class="badge" style="color:var(--muted);">${item.filename} (preparing)</span>`;
+          }).join('')}
+        </div>
+      </div>
+    </section>
     <div style="background:rgba(34,197,94,0.12);border:2px solid #22c55e;border-radius:10px;padding:24px 20px;margin-bottom:24px;text-align:center;box-shadow:0 4px 16px rgba(34,197,94,0.15);">
       <h2 style="margin:0 0 10px 0;color:#22c55e;font-size:20px;font-weight:700;">BlendOps Phase 13.2 Delivery Artifact</h2>
       <p style="margin:0 0 16px 0;color:#cbd5e1;font-size:14px;">Complete Cumulative Phase 13.2 Git Patch (20 Friendly Skill Renames + Cross-Platform CI Repairs) &middot; Baseline: cf6b0e7</p>
@@ -2619,6 +2666,29 @@ export function createDevServer(options = {}) {
       });
       res.end(p13_2.buffer);
       return;
+    }
+
+    for (const item of PHASE2_DELIVERABLES) {
+      if (
+        url === `/${item.filename}` ||
+        url === `/dist/${item.filename}` ||
+        url === `/downloads/${item.filename}`
+      ) {
+        const info = getPhase2DeliverableFile(rootDir, item.filename);
+        if (!info.exists || !Buffer.isBuffer(info.buffer)) {
+          res.writeHead(404, { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' });
+          res.end(JSON.stringify({ exists: false, filename: item.filename }));
+          return;
+        }
+        res.writeHead(200, {
+          'Content-Type': item.contentType,
+          'Content-Disposition': `attachment; filename="${item.filename}"`,
+          'Content-Length': String(info.buffer.length),
+          'Cache-Control': 'no-store',
+        });
+        res.end(info.buffer);
+        return;
+      }
     }
 
     if (url === '/api/artifact-ready') {

@@ -1,0 +1,119 @@
+{
+  "schema_version": "1.0.0",
+  "id": "scene-spec.hard-surface-mech-prop",
+  "title": "Hard-Surface Tactical Servo Actuator Prop with Boolean Bevel & Normal Bake",
+  "language": "en",
+  "intent": {
+    "summary": "Model a hard-surface mechanical servo actuator prop using non-destructive Boolean and Bevel + Weighted Normal stacks, bake MikkTSpace tangent normals and ORM maps onto a single 0-1 UV atlas, and export a verified GLB.",
+    "primary_goal": "hard_surface_prop_asset",
+    "target_audience_or_platform": "Real-time desktop web 3D configurator (Three.js / Babylon.js)",
+    "workflow_entry_stage": "define",
+    "explicit_recipe_override": null
+  },
+  "blender_version_target": {
+    "min": "4.1",
+    "tested_range": "4.1 - 5.1",
+    "recommended": "5.1"
+  },
+  "runtime_preference": {
+    "preferred_path": "path-1-official-blender-lab-mcp",
+    "allow_cli_fallback": true
+  },
+  "objects_and_subjects": [
+    {
+      "id": "servo_actuator_lowpoly",
+      "name": "Servo_Actuator_Prop",
+      "role": "prop",
+      "source_type": "hard_surface_modeled",
+      "poly_budget_triangles": 28000,
+      "transforms_applied": true,
+      "scale_factors": [1.0, 1.0, 1.0],
+      "uv_strategy": "single_0_1_atlas",
+      "modifiers": ["Boolean", "Bevel", "WeightedNormal"],
+      "has_non_manifold_or_scan_noise": false
+    }
+  ],
+  "style_and_materials": {
+    "aesthetic_style": "Industrial anodized aluminum and machined steel with chamfered edge highlights",
+    "shader_workflow": "principled_bsdf_pbr",
+    "uv_packing": "single_0_1_atlas",
+    "udim_tile_count": 1,
+    "bake_procedural_to_pbr": true,
+    "channel_packing": "orm_rgb",
+    "max_texture_resolution": 2048,
+    "normal_map_space": "tangent_mikktspace"
+  },
+  "lighting_and_environment": {
+    "rig_type": "studio_plus_hdri",
+    "key_to_fill_ratio": 3.0,
+    "hdri_lighting": true,
+    "volumetric_effects": {
+      "enabled": false,
+      "bake_or_card_fallback_for_realtime": false
+    }
+  },
+  "camera_and_framing": {
+    "focal_length_mm": 70,
+    "sensor_width_mm": 36,
+    "aspect_ratio": "16:9",
+    "resolution_px": {
+      "width": 1920,
+      "height": 1080
+    },
+    "depth_of_field": {
+      "enabled": false,
+      "f_stop": 8.0
+    },
+    "clip_start_m": 0.02,
+    "clip_end_m": 25.0,
+    "framing_style": "Isometric mechanical detail framing"
+  },
+  "render_and_color": {
+    "engine": "CYCLES",
+    "view_transform": "AgX",
+    "look": "AgX - Base Contrast",
+    "samples": 128,
+    "denoiser": "OPENIMAGEDENOISE"
+  },
+  "animation_and_rigging": {
+    "enabled": false,
+    "has_armature": false,
+    "max_bone_influences_per_vertex": 0,
+    "bake_nla_to_linear_keyframes": false,
+    "has_shape_keys": false,
+    "apply_modifiers_with_shape_keys": false,
+    "frame_rate_fps": 30,
+    "frame_range": [1, 1]
+  },
+  "simulation_and_vfx": {
+    "enabled": false,
+    "simulation_types": [],
+    "geometry_nodes_realize_instances": false,
+    "bake_to_alembic_or_keyframes": false
+  },
+  "optimization_and_budgets": {
+    "target_tier": "desktop_web",
+    "max_triangles": 45000,
+    "max_draw_calls": 10,
+    "max_vram_mb": 96,
+    "max_file_size_mb": 8.0,
+    "mesh_compression": "meshopt",
+    "texture_compression": "ktx2_basisu",
+    "generate_lods": true
+  },
+  "deliverables": {
+    "formats": ["glb_web_standard", "png_still"],
+    "target_consumers": ["threejs_r3f", "babylonjs"],
+    "requires_standard_khronos_gltf_2_0": true
+  },
+  "quality_gates": [
+    "Boolean cutters free of coplanar degenerate faces and zero-area slivers",
+    "Bevel clamp overlap active and Weighted Normal Keep Sharp enabled",
+    "Normal map and ORM texture channels set to Non-Color data space",
+    "UV islands split along all hard edges (>60 deg) with >= 8px padding at 2048px"
+  ],
+  "truth_state_defaults": {
+    "runtime_status": "Not Run",
+    "artifact_status": "Not Produced"
+  }
+}

@@ -261,8 +261,16 @@
       ],
       "blender_versions": {
         "minimum": "3.6 LTS",
-        "recommended": "4.2 LTS",
-        "version_considerations": "Blender 4.0+ introduces Principled BSDF v2 (Coat/Sheen/Specular IOR layers) and AgX view transform; Blender 5.1+ is required only if executing via Path 1 Official Blender Lab MCP."
+        "recommended": "4.5.15 LTS",
+        "doc_checked_version": "5.2.3 LTS",
+        "runtime_tested_version": null,
+        "maintained_lts_versions": [
+          "4.2 LTS",
+          "4.5.15 LTS",
+          "5.2.3 LTS"
+        ],
+        "legacy_compatibility_target": "3.6 LTS",
+        "version_considerations": "Blender 4.0+ introduces Principled BSDF v2 (Coat/Sheen/Specular IOR layers) and AgX view transform; Blender 5.1+ is required only if executing via Path 1 Official Blender Lab MCP. Reconciled with Blender 4.5.15 LTS and 5.2.3 LTS documentation baselines (live runtime: Not Run)."
       },
       "source_refs": [
         {
@@ -520,8 +528,16 @@
       ],
       "blender_versions": {
         "minimum": "3.6 LTS",
-        "recommended": "4.2 LTS",
-        "version_considerations": "EEVEE Next in Blender 4.2 LTS changes horizon scan raytracing and volumetric tile resolution settings compared to Legacy EEVEE in 3.6 LTS."
+        "recommended": "4.5.15 LTS",
+        "doc_checked_version": "5.2.3 LTS",
+        "runtime_tested_version": null,
+        "maintained_lts_versions": [
+          "4.2 LTS",
+          "4.5.15 LTS",
+          "5.2.3 LTS"
+        ],
+        "legacy_compatibility_target": "3.6 LTS",
+        "version_considerations": "EEVEE Next in Blender 4.2 LTS changes horizon scan raytracing and volumetric tile resolution settings compared to Legacy EEVEE in 3.6 LTS. Reconciled with Blender 4.5.15 LTS and 5.2.3 LTS documentation baselines (live runtime: Not Run)."
       },
       "source_refs": [
         {
@@ -588,7 +604,7 @@
           "name": "primary_bevel_width_mm",
           "type": "number",
           "required": false,
-          "default_value": 2.0,
+          "default_value": 2,
           "description": "Primary structural edge bevel width in millimeters (must be visible at camera distance)."
         }
       ],
@@ -766,8 +782,16 @@
       ],
       "blender_versions": {
         "minimum": "3.6 LTS",
-        "recommended": "4.2 LTS",
-        "version_considerations": "Blender 4.1+ replaced the legacy mesh Auto Smooth checkbox with the Smooth by Angle modifier / node group; Weighted Normal Keep Sharp continues to work with sharp edges in 4.2 LTS and 5.1+."
+        "recommended": "4.5.15 LTS",
+        "doc_checked_version": "5.2.3 LTS",
+        "runtime_tested_version": null,
+        "maintained_lts_versions": [
+          "4.2 LTS",
+          "4.5.15 LTS",
+          "5.2.3 LTS"
+        ],
+        "legacy_compatibility_target": "3.6 LTS",
+        "version_considerations": "Blender 4.1+ replaced the legacy mesh Auto Smooth checkbox with the Smooth by Angle modifier / node group; Weighted Normal Keep Sharp continues to work with sharp edges in 4.2 LTS and 5.1+. Reconciled with Blender 4.5.15 LTS and 5.2.3 LTS documentation baselines (live runtime: Not Run)."
       },
       "source_refs": [
         {
@@ -1007,8 +1031,16 @@
       ],
       "blender_versions": {
         "minimum": "3.6 LTS",
-        "recommended": "4.2 LTS",
-        "version_considerations": "Blender 3.0+ uses the Fields system; Blender 4.0+ adds Repeat Zones and Simulation Zones (Blender 3.6 LTS supports Simulation Zones), while Blender 4.1+ replaces Auto Smooth with the Smooth by Angle node group."
+        "recommended": "4.5.15 LTS",
+        "doc_checked_version": "5.2.3 LTS",
+        "runtime_tested_version": null,
+        "maintained_lts_versions": [
+          "4.2 LTS",
+          "4.5.15 LTS",
+          "5.2.3 LTS"
+        ],
+        "legacy_compatibility_target": "3.6 LTS",
+        "version_considerations": "Blender 3.0+ uses the Fields system; Blender 4.0+ adds Repeat Zones and Simulation Zones (Blender 3.6 LTS supports Simulation Zones), while Blender 4.1+ replaces Auto Smooth with the Smooth by Angle node group. Reconciled with Blender 4.5.15 LTS and 5.2.3 LTS documentation baselines (live runtime: Not Run)."
       },
       "source_refs": [
         {
@@ -1249,8 +1281,16 @@
       ],
       "blender_versions": {
         "minimum": "3.6 LTS",
-        "recommended": "4.2 LTS",
-        "version_considerations": "Blender 4.0+ Principled BSDF renamed Specular to Specular IOR Level and Subsurface to Subsurface Weight/Scale; Separate Color replaces legacy Separate RGB."
+        "recommended": "4.5.15 LTS",
+        "doc_checked_version": "5.2.3 LTS",
+        "runtime_tested_version": null,
+        "maintained_lts_versions": [
+          "4.2 LTS",
+          "4.5.15 LTS",
+          "5.2.3 LTS"
+        ],
+        "legacy_compatibility_target": "3.6 LTS",
+        "version_considerations": "Blender 4.0+ Principled BSDF renamed Specular to Specular IOR Level and Subsurface to Subsurface Weight/Scale; Separate Color replaces legacy Separate RGB. Reconciled with Blender 4.5.15 LTS and 5.2.3 LTS documentation baselines (live runtime: Not Run)."
       },
       "source_refs": [
         {
@@ -1502,8 +1542,16 @@
       ],
       "blender_versions": {
         "minimum": "3.6 LTS",
-        "recommended": "4.2 LTS",
-        "version_considerations": "AgX view transform ships natively in Blender 4.0+; Blender 3.6 LTS defaults to Filmic. EEVEE Next in Blender 4.2 LTS replaces legacy screen-space bloom with compositor Glare node."
+        "recommended": "4.5.15 LTS",
+        "doc_checked_version": "5.2.3 LTS",
+        "runtime_tested_version": null,
+        "maintained_lts_versions": [
+          "4.2 LTS",
+          "4.5.15 LTS",
+          "5.2.3 LTS"
+        ],
+        "legacy_compatibility_target": "3.6 LTS",
+        "version_considerations": "AgX view transform ships natively in Blender 4.0+; Blender 3.6 LTS defaults to Filmic. EEVEE Next in Blender 4.2 LTS replaces legacy screen-space bloom with compositor Glare node. Reconciled with Blender 4.5.15 LTS and 5.2.3 LTS documentation baselines (live runtime: Not Run)."
       },
       "source_refs": [
         {
@@ -1743,8 +1791,16 @@
       ],
       "blender_versions": {
         "minimum": "3.6 LTS",
-        "recommended": "4.2 LTS",
-        "version_considerations": "Blender 4.0+ replaced numbered Armature bone layers with named Bone Collections; glTF 2.0 exporter in 4.2 LTS supports exporting by Action Filter or NLA Tracks."
+        "recommended": "4.5.15 LTS",
+        "doc_checked_version": "5.2.3 LTS",
+        "runtime_tested_version": null,
+        "maintained_lts_versions": [
+          "4.2 LTS",
+          "4.5.15 LTS",
+          "5.2.3 LTS"
+        ],
+        "legacy_compatibility_target": "3.6 LTS",
+        "version_considerations": "Blender 4.0+ replaced numbered Armature bone layers with named Bone Collections; glTF 2.0 exporter in 4.2 LTS supports exporting by Action Filter or NLA Tracks. Reconciled with Blender 4.5.15 LTS and 5.2.3 LTS documentation baselines (live runtime: Not Run)."
       },
       "source_refs": [
         {
@@ -1984,8 +2040,16 @@
       ],
       "blender_versions": {
         "minimum": "3.6 LTS",
-        "recommended": "4.2 LTS",
-        "version_considerations": "Check whether the scene uses Blender 3.6 LTS (Auto Smooth property, Legacy EEVEE, Filmic) or Blender 4.2 LTS (Smooth by Angle modifier, EEVEE Next, AgX, Principled BSDF v2) before prescribing UI steps."
+        "recommended": "4.5.15 LTS",
+        "doc_checked_version": "5.2.3 LTS",
+        "runtime_tested_version": null,
+        "maintained_lts_versions": [
+          "4.2 LTS",
+          "4.5.15 LTS",
+          "5.2.3 LTS"
+        ],
+        "legacy_compatibility_target": "3.6 LTS",
+        "version_considerations": "Check whether the scene uses Blender 3.6 LTS (Auto Smooth property, Legacy EEVEE, Filmic) or Blender 4.2 LTS (Smooth by Angle modifier, EEVEE Next, AgX, Principled BSDF v2) before prescribing UI steps. Reconciled with Blender 4.5.15 LTS and 5.2.3 LTS documentation baselines (live runtime: Not Run)."
       },
       "source_refs": [
         {
@@ -2223,8 +2287,16 @@
       ],
       "blender_versions": {
         "minimum": "3.6 LTS",
-        "recommended": "4.2 LTS",
-        "version_considerations": "Blender 4.2 LTS glTF exporter includes updated KHR_materials_ior, KHR_materials_specular, KHR_materials_coat, and KHR_materials_sheen export mappings from Principled BSDF v2."
+        "recommended": "4.5.15 LTS",
+        "doc_checked_version": "5.2.3 LTS",
+        "runtime_tested_version": null,
+        "maintained_lts_versions": [
+          "4.2 LTS",
+          "4.5.15 LTS",
+          "5.2.3 LTS"
+        ],
+        "legacy_compatibility_target": "3.6 LTS",
+        "version_considerations": "Blender 4.2 LTS glTF exporter includes updated KHR_materials_ior, KHR_materials_specular, KHR_materials_coat, and KHR_materials_sheen export mappings from Principled BSDF v2. Reconciled with Blender 4.5.15 LTS and 5.2.3 LTS documentation baselines (live runtime: Not Run)."
       },
       "source_refs": [
         {
@@ -2289,7 +2361,7 @@
           "name": "max_file_size_mb",
           "type": "number",
           "required": false,
-          "default_value": 5.0,
+          "default_value": 5,
           "description": "Maximum compressed GLB payload size in megabytes."
         }
       ],
@@ -2461,8 +2533,16 @@
       ],
       "blender_versions": {
         "minimum": "3.6 LTS",
-        "recommended": "4.2 LTS",
-        "version_considerations": "Blender's built-in glTF exporter supports Draco (`KHR_draco_mesh_compression`) natively; KTX2 (`KHR_texture_basisu`) and Meshopt (`EXT_meshopt_compression`) are typically applied in the post-export glTF-Transform / gltfpack step."
+        "recommended": "4.5.15 LTS",
+        "doc_checked_version": "5.2.3 LTS",
+        "runtime_tested_version": null,
+        "maintained_lts_versions": [
+          "4.2 LTS",
+          "4.5.15 LTS",
+          "5.2.3 LTS"
+        ],
+        "legacy_compatibility_target": "3.6 LTS",
+        "version_considerations": "Blender's built-in glTF exporter supports Draco (`KHR_draco_mesh_compression`) natively; KTX2 (`KHR_texture_basisu`) and Meshopt (`EXT_meshopt_compression`) are typically applied in the post-export glTF-Transform / gltfpack step. Reconciled with Blender 4.5.15 LTS and 5.2.3 LTS documentation baselines (live runtime: Not Run)."
       },
       "source_refs": [
         {

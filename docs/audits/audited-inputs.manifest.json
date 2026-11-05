@@ -58,6 +58,7 @@
     "scripts/validate-repository-architecture.mjs",
     "scripts/export-claude-skills.mjs",
     "scripts/build-knowledge-catalog.mjs",
+    "scripts/compile-scene-plan.mjs",
     "scripts/build-registry.mjs",
     "scripts/run-evals.mjs",
     "scripts/inspect-glb.mjs",
@@ -82,7 +83,8 @@
     "scripts/test-phase11.mjs",
     "scripts/test-phase12.mjs",
     "scripts/test-phase13.mjs",
-    "scripts/test-phase14.mjs"
+    "scripts/test-phase14.mjs",
+    "scripts/test-phase15.mjs"
   ],
   "requiredDirectories": [
     "docs/audits/phase-0",

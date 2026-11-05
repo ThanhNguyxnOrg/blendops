@@ -184,7 +184,7 @@ describe('Phase 13 — Repository Architecture, Organization & Finalization', ()
     const refCounts = report.inventory.summary.referenceIntegrity;
     assert.ok(refCounts.markdownFiles >= 350);
     assert.ok(refCounts.jsModules >= 20);
-    assert.equal(refCounts.schemas, 10);
+    assert.ok(refCounts.schemas >= 10);
     assert.equal(refCounts.workflows, 3);
 
     // Negative test: synthetic repo with broken Markdown link, broken HTML asset, broken ESM import, and missing manifest entry fails closed

@@ -144,9 +144,19 @@
         "tested_or_targeted": [
           "3.6 LTS",
           "4.2 LTS",
-          "5.1+"
+          "4.5.15 LTS",
+          "5.1+",
+          "5.2.3 LTS"
         ],
-        "version_notes": "Catmull-Clark UV boundary smoothing options are consistent across Blender 3.6 LTS, 4.2 LTS, and 5.1+."
+        "doc_checked_version": "5.2.3 LTS",
+        "runtime_tested_version": null,
+        "maintained_lts_versions": [
+          "4.2 LTS",
+          "4.5.15 LTS",
+          "5.2.3 LTS"
+        ],
+        "legacy_compatibility_target": "3.6 LTS",
+        "version_notes": "Catmull-Clark UV boundary smoothing options are consistent across Blender 3.6 LTS, 4.2 LTS, and 5.1+. Verified against Blender 4.5.15 LTS and 5.2.3 LTS documentation (live runtime: Not Run)."
       },
       "evidence_status": "version-checked",
       "promoted_from_skill_refs": [
@@ -296,9 +306,19 @@
         "tested_or_targeted": [
           "3.6 LTS",
           "4.2 LTS",
-          "5.1+"
+          "4.5.15 LTS",
+          "5.1+",
+          "5.2.3 LTS"
         ],
-        "version_notes": "Universal across all Blender 3.x, 4.x, and 5.x releases."
+        "doc_checked_version": "5.2.3 LTS",
+        "runtime_tested_version": null,
+        "maintained_lts_versions": [
+          "4.2 LTS",
+          "4.5.15 LTS",
+          "5.2.3 LTS"
+        ],
+        "legacy_compatibility_target": "3.6 LTS",
+        "version_notes": "Universal across all Blender 3.x, 4.x, and 5.x releases. Verified against Blender 4.5.15 LTS and 5.2.3 LTS documentation (live runtime: Not Run)."
       },
       "evidence_status": "version-checked",
       "promoted_from_skill_refs": [
@@ -446,9 +466,19 @@
         "tested_or_targeted": [
           "3.6 LTS",
           "4.2 LTS",
-          "5.1+"
+          "4.5.15 LTS",
+          "5.1+",
+          "5.2.3 LTS"
         ],
-        "version_notes": "Critical version boundary at Blender 4.1+: use Smooth by Angle modifier instead of legacy mesh Auto Smooth."
+        "doc_checked_version": "5.2.3 LTS",
+        "runtime_tested_version": null,
+        "maintained_lts_versions": [
+          "4.2 LTS",
+          "4.5.15 LTS",
+          "5.2.3 LTS"
+        ],
+        "legacy_compatibility_target": "3.6 LTS",
+        "version_notes": "Critical version boundary at Blender 4.1+: use Smooth by Angle modifier instead of legacy mesh Auto Smooth. Verified against Blender 4.5.15 LTS and 5.2.3 LTS documentation (live runtime: Not Run)."
       },
       "evidence_status": "version-checked",
       "promoted_from_skill_refs": [
@@ -591,9 +621,19 @@
         "tested_or_targeted": [
           "3.6 LTS",
           "4.2 LTS",
-          "5.1+"
+          "4.5.15 LTS",
+          "5.1+",
+          "5.2.3 LTS"
         ],
-        "version_notes": "Modifier stack drag-and-drop and Exact boolean solver are available across 3.6 LTS, 4.2 LTS, and 5.1+."
+        "doc_checked_version": "5.2.3 LTS",
+        "runtime_tested_version": null,
+        "maintained_lts_versions": [
+          "4.2 LTS",
+          "4.5.15 LTS",
+          "5.2.3 LTS"
+        ],
+        "legacy_compatibility_target": "3.6 LTS",
+        "version_notes": "Modifier stack drag-and-drop and Exact boolean solver are available across 3.6 LTS, 4.2 LTS, and 5.1+. Verified against Blender 4.5.15 LTS and 5.2.3 LTS documentation (live runtime: Not Run)."
       },
       "evidence_status": "version-checked",
       "promoted_from_skill_refs": [
@@ -741,9 +781,19 @@
         "tested_or_targeted": [
           "3.6 LTS",
           "4.2 LTS",
-          "5.1+"
+          "4.5.15 LTS",
+          "5.1+",
+          "5.2.3 LTS"
         ],
-        "version_notes": "Blender 4.0+ adds the dedicated Retopology viewport shading overlay."
+        "doc_checked_version": "5.2.3 LTS",
+        "runtime_tested_version": null,
+        "maintained_lts_versions": [
+          "4.2 LTS",
+          "4.5.15 LTS",
+          "5.2.3 LTS"
+        ],
+        "legacy_compatibility_target": "3.6 LTS",
+        "version_notes": "Blender 4.0+ adds the dedicated Retopology viewport shading overlay. Verified against Blender 4.5.15 LTS and 5.2.3 LTS documentation (live runtime: Not Run)."
       },
       "evidence_status": "version-checked",
       "promoted_from_skill_refs": [
@@ -893,9 +943,19 @@
         "tested_or_targeted": [
           "3.6 LTS",
           "4.2 LTS",
-          "5.1+"
+          "4.5.15 LTS",
+          "5.1+",
+          "5.2.3 LTS"
         ],
-        "version_notes": "Bevel Width (Offset) in physical scene units works identically across 3.6 LTS, 4.2 LTS, and 5.1+."
+        "doc_checked_version": "5.2.3 LTS",
+        "runtime_tested_version": null,
+        "maintained_lts_versions": [
+          "4.2 LTS",
+          "4.5.15 LTS",
+          "5.2.3 LTS"
+        ],
+        "legacy_compatibility_target": "3.6 LTS",
+        "version_notes": "Bevel Width (Offset) in physical scene units works identically across 3.6 LTS, 4.2 LTS, and 5.1+. Verified against Blender 4.5.15 LTS and 5.2.3 LTS documentation (live runtime: Not Run)."
       },
       "evidence_status": "version-checked",
       "promoted_from_skill_refs": [
@@ -1039,9 +1099,19 @@
         "tested_or_targeted": [
           "3.6 LTS",
           "4.2 LTS",
-          "5.1+"
+          "4.5.15 LTS",
+          "5.1+",
+          "5.2.3 LTS"
         ],
-        "version_notes": "Blender 3.5+ unifies UV maps with Face Corner 2D Vector named attributes; Blender 4.0+ adds Repeat Zones and Menu Switch (4.1+)."
+        "doc_checked_version": "5.2.3 LTS",
+        "runtime_tested_version": null,
+        "maintained_lts_versions": [
+          "4.2 LTS",
+          "4.5.15 LTS",
+          "5.2.3 LTS"
+        ],
+        "legacy_compatibility_target": "3.6 LTS",
+        "version_notes": "Blender 3.5+ unifies UV maps with Face Corner 2D Vector named attributes; Blender 4.0+ adds Repeat Zones and Menu Switch (4.1+). Verified against Blender 4.5.15 LTS and 5.2.3 LTS documentation (live runtime: Not Run)."
       },
       "evidence_status": "version-checked",
       "promoted_from_skill_refs": [
@@ -1194,9 +1264,19 @@
         "tested_or_targeted": [
           "3.6 LTS",
           "4.2 LTS",
-          "5.1+"
+          "4.5.15 LTS",
+          "5.1+",
+          "5.2.3 LTS"
         ],
-        "version_notes": "`Realize Instances` in Blender 3.1+ automatically preserves named Face Corner UV maps instead of discarding them as in Blender 3.0."
+        "doc_checked_version": "5.2.3 LTS",
+        "runtime_tested_version": null,
+        "maintained_lts_versions": [
+          "4.2 LTS",
+          "4.5.15 LTS",
+          "5.2.3 LTS"
+        ],
+        "legacy_compatibility_target": "3.6 LTS",
+        "version_notes": "`Realize Instances` in Blender 3.1+ automatically preserves named Face Corner UV maps instead of discarding them as in Blender 3.0. Verified against Blender 4.5.15 LTS and 5.2.3 LTS documentation (live runtime: Not Run)."
       },
       "evidence_status": "version-checked",
       "promoted_from_skill_refs": [
@@ -1340,9 +1420,19 @@
         "tested_or_targeted": [
           "3.6 LTS",
           "4.2 LTS",
-          "5.1+"
+          "4.5.15 LTS",
+          "5.1+",
+          "5.2.3 LTS"
         ],
-        "version_notes": "Use `Align Euler to Vector` in Blender 3.6 LTS and `Align Rotation to Vector` in Blender 4.2 LTS / 5.1+."
+        "doc_checked_version": "5.2.3 LTS",
+        "runtime_tested_version": null,
+        "maintained_lts_versions": [
+          "4.2 LTS",
+          "4.5.15 LTS",
+          "5.2.3 LTS"
+        ],
+        "legacy_compatibility_target": "3.6 LTS",
+        "version_notes": "Use `Align Euler to Vector` in Blender 3.6 LTS and `Align Rotation to Vector` in Blender 4.2 LTS / 5.1+. Verified against Blender 4.5.15 LTS and 5.2.3 LTS documentation (live runtime: Not Run)."
       },
       "evidence_status": "version-checked",
       "promoted_from_skill_refs": [
@@ -1491,9 +1581,19 @@
         "tested_or_targeted": [
           "3.6 LTS",
           "4.2 LTS",
-          "5.1+"
+          "4.5.15 LTS",
+          "5.1+",
+          "5.2.3 LTS"
         ],
-        "version_notes": "Blender 3.6 LTS improved UV Pack Islands performance and non-square packing; Blender 4.3+/5.1+ adds SLIM (Minimum Stretch) unwrapping."
+        "doc_checked_version": "5.2.3 LTS",
+        "runtime_tested_version": null,
+        "maintained_lts_versions": [
+          "4.2 LTS",
+          "4.5.15 LTS",
+          "5.2.3 LTS"
+        ],
+        "legacy_compatibility_target": "3.6 LTS",
+        "version_notes": "Blender 3.6 LTS improved UV Pack Islands performance and non-square packing; Blender 4.3+/5.1+ adds SLIM (Minimum Stretch) unwrapping. Verified against Blender 4.5.15 LTS and 5.2.3 LTS documentation (live runtime: Not Run)."
       },
       "evidence_status": "version-checked",
       "promoted_from_skill_refs": [
@@ -1644,9 +1744,19 @@
         "tested_or_targeted": [
           "3.6 LTS",
           "4.2 LTS",
-          "5.1+"
+          "4.5.15 LTS",
+          "5.1+",
+          "5.2.3 LTS"
         ],
-        "version_notes": "UDIM tile creation and UV Pack Islands into 0-1 or active UDIM tile are supported in 3.6 LTS, 4.2 LTS, and 5.1+."
+        "doc_checked_version": "5.2.3 LTS",
+        "runtime_tested_version": null,
+        "maintained_lts_versions": [
+          "4.2 LTS",
+          "4.5.15 LTS",
+          "5.2.3 LTS"
+        ],
+        "legacy_compatibility_target": "3.6 LTS",
+        "version_notes": "UDIM tile creation and UV Pack Islands into 0-1 or active UDIM tile are supported in 3.6 LTS, 4.2 LTS, and 5.1+. Verified against Blender 4.5.15 LTS and 5.2.3 LTS documentation (live runtime: Not Run)."
       },
       "evidence_status": "version-checked",
       "promoted_from_skill_refs": [
@@ -1801,9 +1911,19 @@
         "tested_or_targeted": [
           "3.6 LTS",
           "4.2 LTS",
-          "5.1+"
+          "4.5.15 LTS",
+          "5.1+",
+          "5.2.3 LTS"
         ],
-        "version_notes": "Cycles render baking and Adjacent Faces margin filter are consistent across 3.6 LTS, 4.2 LTS, and 5.1+."
+        "doc_checked_version": "5.2.3 LTS",
+        "runtime_tested_version": null,
+        "maintained_lts_versions": [
+          "4.2 LTS",
+          "4.5.15 LTS",
+          "5.2.3 LTS"
+        ],
+        "legacy_compatibility_target": "3.6 LTS",
+        "version_notes": "Cycles render baking and Adjacent Faces margin filter are consistent across 3.6 LTS, 4.2 LTS, and 5.1+. Verified against Blender 4.5.15 LTS and 5.2.3 LTS documentation (live runtime: Not Run)."
       },
       "evidence_status": "version-checked",
       "promoted_from_skill_refs": [
@@ -1955,9 +2075,19 @@
         "tested_or_targeted": [
           "3.6 LTS",
           "4.2 LTS",
-          "5.1+"
+          "4.5.15 LTS",
+          "5.1+",
+          "5.2.3 LTS"
         ],
-        "version_notes": "Major socket and energy-conservation upgrade in Blender 4.0+ (Principled BSDF v2)."
+        "doc_checked_version": "5.2.3 LTS",
+        "runtime_tested_version": null,
+        "maintained_lts_versions": [
+          "4.2 LTS",
+          "4.5.15 LTS",
+          "5.2.3 LTS"
+        ],
+        "legacy_compatibility_target": "3.6 LTS",
+        "version_notes": "Major socket and energy-conservation upgrade in Blender 4.0+ (Principled BSDF v2). Verified against Blender 4.5.15 LTS and 5.2.3 LTS documentation (live runtime: Not Run)."
       },
       "evidence_status": "version-checked",
       "promoted_from_skill_refs": [
@@ -2106,9 +2236,19 @@
         "tested_or_targeted": [
           "3.6 LTS",
           "4.2 LTS",
-          "5.1+"
+          "4.5.15 LTS",
+          "5.1+",
+          "5.2.3 LTS"
         ],
-        "version_notes": "Blender 4.0+ uses `Separate Color` (replacing `Separate RGB`) and `glTF Material Output` (replacing manual `glTF Settings` node groups)."
+        "doc_checked_version": "5.2.3 LTS",
+        "runtime_tested_version": null,
+        "maintained_lts_versions": [
+          "4.2 LTS",
+          "4.5.15 LTS",
+          "5.2.3 LTS"
+        ],
+        "legacy_compatibility_target": "3.6 LTS",
+        "version_notes": "Blender 4.0+ uses `Separate Color` (replacing `Separate RGB`) and `glTF Material Output` (replacing manual `glTF Settings` node groups). Verified against Blender 4.5.15 LTS and 5.2.3 LTS documentation (live runtime: Not Run)."
       },
       "evidence_status": "version-checked",
       "promoted_from_skill_refs": [
@@ -2260,9 +2400,19 @@
         "tested_or_targeted": [
           "3.6 LTS",
           "4.2 LTS",
-          "5.1+"
+          "4.5.15 LTS",
+          "5.1+",
+          "5.2.3 LTS"
         ],
-        "version_notes": "Blender 4.2 LTS adds Export -> Materials -> Export Unused Images/Textures and expanded `KHR_materials_*` mapping from Principled BSDF v2."
+        "doc_checked_version": "5.2.3 LTS",
+        "runtime_tested_version": null,
+        "maintained_lts_versions": [
+          "4.2 LTS",
+          "4.5.15 LTS",
+          "5.2.3 LTS"
+        ],
+        "legacy_compatibility_target": "3.6 LTS",
+        "version_notes": "Blender 4.2 LTS adds Export -> Materials -> Export Unused Images/Textures and expanded `KHR_materials_*` mapping from Principled BSDF v2. Verified against Blender 4.5.15 LTS and 5.2.3 LTS documentation (live runtime: Not Run)."
       },
       "evidence_status": "version-checked",
       "promoted_from_skill_refs": [
@@ -2411,9 +2561,19 @@
         "tested_or_targeted": [
           "3.6 LTS",
           "4.2 LTS",
-          "5.1+"
+          "4.5.15 LTS",
+          "5.1+",
+          "5.2.3 LTS"
         ],
-        "version_notes": "Blender 4.2 LTS EEVEE Next adds raytraced soft shadows and Area Light Spread support."
+        "doc_checked_version": "5.2.3 LTS",
+        "runtime_tested_version": null,
+        "maintained_lts_versions": [
+          "4.2 LTS",
+          "4.5.15 LTS",
+          "5.2.3 LTS"
+        ],
+        "legacy_compatibility_target": "3.6 LTS",
+        "version_notes": "Blender 4.2 LTS EEVEE Next adds raytraced soft shadows and Area Light Spread support. Verified against Blender 4.5.15 LTS and 5.2.3 LTS documentation (live runtime: Not Run)."
       },
       "evidence_status": "version-checked",
       "promoted_from_skill_refs": [
@@ -2560,9 +2720,19 @@
         "tested_or_targeted": [
           "3.6 LTS",
           "4.2 LTS",
-          "5.1+"
+          "4.5.15 LTS",
+          "5.1+",
+          "5.2.3 LTS"
         ],
-        "version_notes": "Camera sensor, lens shift, and f-stop DoF parameters are identical across 3.6 LTS, 4.2 LTS, and 5.1+."
+        "doc_checked_version": "5.2.3 LTS",
+        "runtime_tested_version": null,
+        "maintained_lts_versions": [
+          "4.2 LTS",
+          "4.5.15 LTS",
+          "5.2.3 LTS"
+        ],
+        "legacy_compatibility_target": "3.6 LTS",
+        "version_notes": "Camera sensor, lens shift, and f-stop DoF parameters are identical across 3.6 LTS, 4.2 LTS, and 5.1+. Verified against Blender 4.5.15 LTS and 5.2.3 LTS documentation (live runtime: Not Run)."
       },
       "evidence_status": "version-checked",
       "promoted_from_skill_refs": [
@@ -2716,9 +2886,19 @@
         "tested_or_targeted": [
           "3.6 LTS",
           "4.2 LTS",
-          "5.1+"
+          "4.5.15 LTS",
+          "5.1+",
+          "5.2.3 LTS"
         ],
-        "version_notes": "Major version boundary: 3.6 LTS = Filmic + Legacy EEVEE; 4.2 LTS / 5.1+ = AgX / Khronos PBR Neutral + EEVEE Next."
+        "doc_checked_version": "5.2.3 LTS",
+        "runtime_tested_version": null,
+        "maintained_lts_versions": [
+          "4.2 LTS",
+          "4.5.15 LTS",
+          "5.2.3 LTS"
+        ],
+        "legacy_compatibility_target": "3.6 LTS",
+        "version_notes": "Major version boundary: 3.6 LTS = Filmic + Legacy EEVEE; 4.2 LTS / 5.1+ = AgX / Khronos PBR Neutral + EEVEE Next. Verified against Blender 4.5.15 LTS and 5.2.3 LTS documentation (live runtime: Not Run)."
       },
       "evidence_status": "version-checked",
       "promoted_from_skill_refs": [
@@ -2865,9 +3045,19 @@
         "tested_or_targeted": [
           "3.6 LTS",
           "4.2 LTS",
-          "5.1+"
+          "4.5.15 LTS",
+          "5.1+",
+          "5.2.3 LTS"
         ],
-        "version_notes": "Blender 4.0+ uses Bone Collections instead of numbered Bone Layers; Weight Paint Limit Total / Normalize All are identical."
+        "doc_checked_version": "5.2.3 LTS",
+        "runtime_tested_version": null,
+        "maintained_lts_versions": [
+          "4.2 LTS",
+          "4.5.15 LTS",
+          "5.2.3 LTS"
+        ],
+        "legacy_compatibility_target": "3.6 LTS",
+        "version_notes": "Blender 4.0+ uses Bone Collections instead of numbered Bone Layers; Weight Paint Limit Total / Normalize All are identical. Verified against Blender 4.5.15 LTS and 5.2.3 LTS documentation (live runtime: Not Run)."
       },
       "evidence_status": "version-checked",
       "promoted_from_skill_refs": [
@@ -3000,9 +3190,19 @@
         "tested_or_targeted": [
           "3.6 LTS",
           "4.2 LTS",
-          "5.1+"
+          "4.5.15 LTS",
+          "5.1+",
+          "5.2.3 LTS"
         ],
-        "version_notes": "Blender 4.4+ and 5.x support slotted Actions (Action Slots) in addition to NLA strips."
+        "doc_checked_version": "5.2.3 LTS",
+        "runtime_tested_version": null,
+        "maintained_lts_versions": [
+          "4.2 LTS",
+          "4.5.15 LTS",
+          "5.2.3 LTS"
+        ],
+        "legacy_compatibility_target": "3.6 LTS",
+        "version_notes": "Blender 4.4+ and 5.x support slotted Actions (Action Slots) in addition to NLA strips. Verified against Blender 4.5.15 LTS and 5.2.3 LTS documentation (live runtime: Not Run)."
       },
       "evidence_status": "version-checked",
       "promoted_from_skill_refs": [
@@ -3131,9 +3331,19 @@
           "3.0+",
           "3.6 LTS",
           "4.2 LTS",
-          "5.1+"
+          "4.5.15 LTS",
+          "5.1+",
+          "5.2.3 LTS"
         ],
-        "version_notes": "Rigid Body (Bullet) and Cloth solvers plus Bake to Keyframes are stable across Blender 3.x-5.x."
+        "doc_checked_version": "5.2.3 LTS",
+        "runtime_tested_version": null,
+        "maintained_lts_versions": [
+          "4.2 LTS",
+          "4.5.15 LTS",
+          "5.2.3 LTS"
+        ],
+        "legacy_compatibility_target": "3.6 LTS",
+        "version_notes": "Rigid Body (Bullet) and Cloth solvers plus Bake to Keyframes are stable across Blender 3.x-5.x. Verified against Blender 4.5.15 LTS and 5.2.3 LTS documentation (live runtime: Not Run)."
       },
       "evidence_status": "source-reviewed",
       "promoted_from_skill_refs": [
@@ -3262,9 +3472,19 @@
           "3.0+",
           "3.6 LTS",
           "4.2 LTS",
-          "5.1+"
+          "4.5.15 LTS",
+          "5.1+",
+          "5.2.3 LTS"
         ],
-        "version_notes": "EEVEE Next (Blender 4.2+) overhauled volume froxel temporal reprojection and horizon calculation."
+        "doc_checked_version": "5.2.3 LTS",
+        "runtime_tested_version": null,
+        "maintained_lts_versions": [
+          "4.2 LTS",
+          "4.5.15 LTS",
+          "5.2.3 LTS"
+        ],
+        "legacy_compatibility_target": "3.6 LTS",
+        "version_notes": "EEVEE Next (Blender 4.2+) overhauled volume froxel temporal reprojection and horizon calculation. Verified against Blender 4.5.15 LTS and 5.2.3 LTS documentation (live runtime: Not Run)."
       },
       "evidence_status": "version-checked",
       "promoted_from_skill_refs": [
@@ -3398,9 +3618,19 @@
           "3.0+",
           "3.6 LTS",
           "4.2 LTS",
-          "5.1+"
+          "4.5.15 LTS",
+          "5.1+",
+          "5.2.3 LTS"
         ],
-        "version_notes": "Blender 4.0+ added interactive Base Point snapping (B key during transform) for corner-to-corner modular alignment."
+        "doc_checked_version": "5.2.3 LTS",
+        "runtime_tested_version": null,
+        "maintained_lts_versions": [
+          "4.2 LTS",
+          "4.5.15 LTS",
+          "5.2.3 LTS"
+        ],
+        "legacy_compatibility_target": "3.6 LTS",
+        "version_notes": "Blender 4.0+ added interactive Base Point snapping (B key during transform) for corner-to-corner modular alignment. Verified against Blender 4.5.15 LTS and 5.2.3 LTS documentation (live runtime: Not Run)."
       },
       "evidence_status": "version-checked",
       "promoted_from_skill_refs": [
@@ -3528,9 +3758,19 @@
           "3.0+",
           "3.6 LTS",
           "4.2 LTS",
-          "5.1+"
+          "4.5.15 LTS",
+          "5.1+",
+          "5.2.3 LTS"
         ],
-        "version_notes": "Bevel modifier cyclorama and Cycles Shadow Catcher are consistent across Blender 3.x-5.x."
+        "doc_checked_version": "5.2.3 LTS",
+        "runtime_tested_version": null,
+        "maintained_lts_versions": [
+          "4.2 LTS",
+          "4.5.15 LTS",
+          "5.2.3 LTS"
+        ],
+        "legacy_compatibility_target": "3.6 LTS",
+        "version_notes": "Bevel modifier cyclorama and Cycles Shadow Catcher are consistent across Blender 3.x-5.x. Verified against Blender 4.5.15 LTS and 5.2.3 LTS documentation (live runtime: Not Run)."
       },
       "evidence_status": "source-reviewed",
       "promoted_from_skill_refs": [
@@ -3664,9 +3904,19 @@
           "3.0+",
           "3.6 LTS",
           "4.2 LTS",
-          "5.1+"
+          "4.5.15 LTS",
+          "5.1+",
+          "5.2.3 LTS"
         ],
-        "version_notes": "Viewport Statistics overlay and evaluated dependency graph triangle counts work across Blender 3.x-5.x."
+        "doc_checked_version": "5.2.3 LTS",
+        "runtime_tested_version": null,
+        "maintained_lts_versions": [
+          "4.2 LTS",
+          "4.5.15 LTS",
+          "5.2.3 LTS"
+        ],
+        "legacy_compatibility_target": "3.6 LTS",
+        "version_notes": "Viewport Statistics overlay and evaluated dependency graph triangle counts work across Blender 3.x-5.x. Verified against Blender 4.5.15 LTS and 5.2.3 LTS documentation (live runtime: Not Run)."
       },
       "evidence_status": "source-reviewed",
       "promoted_from_skill_refs": [
@@ -3794,9 +4044,19 @@
           "3.0+",
           "3.6 LTS",
           "4.2 LTS",
-          "5.1+"
+          "4.5.15 LTS",
+          "5.1+",
+          "5.2.3 LTS"
         ],
-        "version_notes": "Decimate modifier modes (Collapse, Un-Subdivide, Planar) are stable across Blender 3.x-5.x."
+        "doc_checked_version": "5.2.3 LTS",
+        "runtime_tested_version": null,
+        "maintained_lts_versions": [
+          "4.2 LTS",
+          "4.5.15 LTS",
+          "5.2.3 LTS"
+        ],
+        "legacy_compatibility_target": "3.6 LTS",
+        "version_notes": "Decimate modifier modes (Collapse, Un-Subdivide, Planar) are stable across Blender 3.x-5.x. Verified against Blender 4.5.15 LTS and 5.2.3 LTS documentation (live runtime: Not Run)."
       },
       "evidence_status": "source-reviewed",
       "promoted_from_skill_refs": [
@@ -3929,9 +4189,19 @@
           "3.0+",
           "3.6 LTS",
           "4.2 LTS",
-          "5.1+"
+          "4.5.15 LTS",
+          "5.1+",
+          "5.2.3 LTS"
         ],
-        "version_notes": "Native Draco encoder is bundled with Blender's official glTF 2.0 exporter across Blender 3.x-5.x."
+        "doc_checked_version": "5.2.3 LTS",
+        "runtime_tested_version": null,
+        "maintained_lts_versions": [
+          "4.2 LTS",
+          "4.5.15 LTS",
+          "5.2.3 LTS"
+        ],
+        "legacy_compatibility_target": "3.6 LTS",
+        "version_notes": "Native Draco encoder is bundled with Blender's official glTF 2.0 exporter across Blender 3.x-5.x. Verified against Blender 4.5.15 LTS and 5.2.3 LTS documentation (live runtime: Not Run)."
       },
       "evidence_status": "version-checked",
       "promoted_from_skill_refs": [
@@ -4058,9 +4328,19 @@
           "3.0+",
           "3.6 LTS",
           "4.2 LTS",
-          "5.1+"
+          "4.5.15 LTS",
+          "5.1+",
+          "5.2.3 LTS"
         ],
-        "version_notes": "Blender glTF 2.0 exporter defaults to +Y Up enabled across Blender 3.x-5.x."
+        "doc_checked_version": "5.2.3 LTS",
+        "runtime_tested_version": null,
+        "maintained_lts_versions": [
+          "4.2 LTS",
+          "4.5.15 LTS",
+          "5.2.3 LTS"
+        ],
+        "legacy_compatibility_target": "3.6 LTS",
+        "version_notes": "Blender glTF 2.0 exporter defaults to +Y Up enabled across Blender 3.x-5.x. Verified against Blender 4.5.15 LTS and 5.2.3 LTS documentation (live runtime: Not Run)."
       },
       "evidence_status": "source-reviewed",
       "promoted_from_skill_refs": [
@@ -4203,9 +4483,19 @@
           "3.0+",
           "3.6 LTS",
           "4.2 LTS",
-          "5.1+"
+          "4.5.15 LTS",
+          "5.1+",
+          "5.2.3 LTS"
         ],
-        "version_notes": "Blender 4.2 LTS+ adds persistent Collection Exporters in the Properties panel."
+        "doc_checked_version": "5.2.3 LTS",
+        "runtime_tested_version": null,
+        "maintained_lts_versions": [
+          "4.2 LTS",
+          "4.5.15 LTS",
+          "5.2.3 LTS"
+        ],
+        "legacy_compatibility_target": "3.6 LTS",
+        "version_notes": "Blender 4.2 LTS+ adds persistent Collection Exporters in the Properties panel. Verified against Blender 4.5.15 LTS and 5.2.3 LTS documentation (live runtime: Not Run)."
       },
       "evidence_status": "version-checked",
       "promoted_from_skill_refs": [
@@ -4334,9 +4624,19 @@
           "3.0+",
           "3.6 LTS",
           "4.2 LTS",
-          "5.1+"
+          "4.5.15 LTS",
+          "5.1+",
+          "5.2.3 LTS"
         ],
-        "version_notes": "Blender 4.0+ AgX view transform pairs directly with THREE.AgXToneMapping in Three.js."
+        "doc_checked_version": "5.2.3 LTS",
+        "runtime_tested_version": null,
+        "maintained_lts_versions": [
+          "4.2 LTS",
+          "4.5.15 LTS",
+          "5.2.3 LTS"
+        ],
+        "legacy_compatibility_target": "3.6 LTS",
+        "version_notes": "Blender 4.0+ AgX view transform pairs directly with THREE.AgXToneMapping in Three.js. Verified against Blender 4.5.15 LTS and 5.2.3 LTS documentation (live runtime: Not Run)."
       },
       "evidence_status": "version-checked",
       "promoted_from_skill_refs": [
