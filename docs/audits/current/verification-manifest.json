@@ -12,8 +12,8 @@
     "sourceCommitDate": "2026-11-01 04:55:09 -0500",
     "workingTreeState": "dirty",
     "snapshotBasis": "working-tree-on-top-of-source-commit",
-    "uncommittedChangeCount": 437,
-    "auditedInputsSha256": "aecf2ec62115f30d28cf8d5323e22660649af14be5217fdb3fb21a0a7c2b382d",
+    "uncommittedChangeCount": 445,
+    "auditedInputsSha256": "fb066c99dff25a9b631be0d26ba46751fe1027021de49365f9af51da60bfcad1",
     "selfReferentialCommitRule": "A Git commit cannot contain its own final commit SHA inside tracked files. sourceCommitSha records the verified HEAD commit present when the generator ran, workingTreeState and snapshotBasis record whether uncommitted working-tree changes were present on top of sourceCommitSha, and auditedInputsSha256 digests the exact audited file contents."
   },
   "commitChain": [
@@ -139,7 +139,7 @@
     "sourceCommitSha": "112ecf75a04ab5864b3dc3656b9a27f09d1e8dcd",
     "workingTreeState": "dirty",
     "snapshotBasis": "working-tree-on-top-of-source-commit",
-    "auditedInputsSha256": "aecf2ec62115f30d28cf8d5323e22660649af14be5217fdb3fb21a0a7c2b382d",
+    "auditedInputsSha256": "fb066c99dff25a9b631be0d26ba46751fe1027021de49365f9af51da60bfcad1",
     "auditedInputsManifest": "docs/audits/audited-inputs.manifest.json",
     "relationshipToCommitChain": "Phase 13 is built directly on top of Phase 12 (112ecf75a04ab5864b3dc3656b9a27f09d1e8dcd). Because a Git commit cannot embed its own final SHA inside tracked files, verification-manifest.json records 112ecf75a04ab5864b3dc3656b9a27f09d1e8dcd as the latest completed commit in commitChain and sourceCommitSha, while locking the exact Phase 13 audited inputs via auditedInputsSha256 and docs/audits/audited-inputs.manifest.json."
   },

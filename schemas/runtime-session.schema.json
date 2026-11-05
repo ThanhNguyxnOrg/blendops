@@ -1,0 +1,246 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/ThanhNguyxnOrg/blendops/schemas/runtime-session.schema.json",
+  "title": "BlendOps Runtime Session & Capability Negotiation Report",
+  "description": "Versioned machine-readable representation of an external Blender runtime discovery session, observed MCP tool manifest, negotiated capability tier, and readiness status.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "session_id",
+    "runtime_path",
+    "host_identity",
+    "addon_or_server_identity",
+    "blender_version",
+    "runtime_version",
+    "connection_status",
+    "readiness_flags",
+    "negotiated_capability_tier",
+    "governed_runtime_ceiling",
+    "available_tool_manifest",
+    "supported_operations",
+    "rejected_or_ambiguous_tools",
+    "discovery_timestamp",
+    "discovery_mutations_executed",
+    "provenance",
+    "known_limitations",
+    "truth_states"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "session_id": {
+      "type": "string",
+      "pattern": "^session\\.[a-z0-9-]+$",
+      "minLength": 10,
+      "maxLength": 96
+    },
+    "runtime_path": {
+      "type": "string",
+      "enum": [
+        "path-1-host-a",
+        "path-1-host-b",
+        "path-2-community",
+        "cli-appendix",
+        "none"
+      ]
+    },
+    "host_identity": {
+      "type": ["string", "null"],
+      "minLength": 2,
+      "maxLength": 120
+    },
+    "addon_or_server_identity": {
+      "type": ["string", "null"],
+      "minLength": 2,
+      "maxLength": 160
+    },
+    "blender_version": {
+      "type": ["string", "null"],
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "runtime_version": {
+      "type": ["string", "null"],
+      "minLength": 1,
+      "maxLength": 64
+    },
+    "connection_status": {
+      "type": "string",
+      "enum": [
+        "not_configured",
+        "configured_unreachable",
+        "connected",
+        "version_unsupported",
+        "missing_required_tools",
+        "invalid_tool_schema",
+        "bridge_conflict",
+        "incompatible_with_plan",
+        "host_context_only"
+      ]
+    },
+    "readiness_flags": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "read_only_available",
+        "mutation_available",
+        "export_available",
+        "backup_supported",
+        "restore_supported",
+        "plan_compatible"
+      ],
+      "properties": {
+        "read_only_available": { "type": "boolean" },
+        "mutation_available": { "type": "boolean" },
+        "export_available": { "type": "boolean" },
+        "backup_supported": { "type": "boolean" },
+        "restore_supported": { "type": "boolean" },
+        "plan_compatible": { "type": "boolean" }
+      }
+    },
+    "negotiated_capability_tier": {
+      "type": "string",
+      "enum": ["L0", "L1", "L2", "L3"]
+    },
+    "governed_runtime_ceiling": {
+      "type": "string",
+      "enum": ["L0", "L1", "L2", "L3"]
+    },
+    "available_tool_manifest": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "tool_name",
+          "description",
+          "schema_valid",
+          "input_schema",
+          "mapped_operation_ids"
+        ],
+        "properties": {
+          "tool_name": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 96
+          },
+          "description": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 400
+          },
+          "schema_valid": {
+            "type": "boolean"
+          },
+          "input_schema": {
+            "type": "object"
+          },
+          "mapped_operation_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^op\\.(inspect|mutate|export)\\.[a-z0-9-]+$"
+            }
+          }
+        }
+      }
+    },
+    "supported_operations": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^op\\.(inspect|mutate|export)\\.[a-z0-9-]+$"
+      },
+      "uniqueItems": true
+    },
+    "rejected_or_ambiguous_tools": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["tool_name", "reason"],
+        "properties": {
+          "tool_name": { "type": "string", "minLength": 1 },
+          "reason": { "type": "string", "minLength": 3 }
+        }
+      }
+    },
+    "discovery_timestamp": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}"
+    },
+    "discovery_mutations_executed": {
+      "type": "integer",
+      "const": 0
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "discovery_mode",
+        "upstream_owner",
+        "source_confidence",
+        "version_floor_rule",
+        "single_bridge_verified"
+      ],
+      "properties": {
+        "discovery_mode": {
+          "type": "string",
+          "enum": [
+            "unconfigured",
+            "config_file_inspection_only",
+            "host_capability_context",
+            "mock_mcp_transport_probe",
+            "live_mcp_transport_probe",
+            "cli_binary_probe"
+          ]
+        },
+        "upstream_owner": {
+          "type": "string",
+          "minLength": 3
+        },
+        "source_confidence": {
+          "type": "string",
+          "enum": ["verified-read", "linked-only", "unknown"]
+        },
+        "version_floor_rule": {
+          "type": "string",
+          "minLength": 5
+        },
+        "single_bridge_verified": {
+          "type": "boolean"
+        }
+      }
+    },
+    "known_limitations": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 5
+      }
+    },
+    "truth_states": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["runtime_status", "artifact_status", "is_mock_runtime"],
+      "properties": {
+        "runtime_status": {
+          "type": "string",
+          "enum": ["Not Run", "Attempted", "Produced", "Verified", "Failed"]
+        },
+        "artifact_status": {
+          "type": "string",
+          "enum": ["Not Produced", "Attempted", "Produced", "Verified", "Failed"]
+        },
+        "is_mock_runtime": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}

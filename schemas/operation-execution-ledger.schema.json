@@ -1,0 +1,321 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/ThanhNguyxnOrg/blendops/schemas/operation-execution-ledger.schema.json",
+  "title": "BlendOps Operation Execution Attempt & Transaction Ledger",
+  "description": "Audit ledger and transaction report governing preflight, pre-mutation .blend checkpoint verification, bounded execution, independent readback, postcondition verification, rollback, and redacted evidence.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "schema_version",
+    "execution_id",
+    "scene_spec_id",
+    "execution_plan_id",
+    "runtime_session_id",
+    "selected_runtime_path",
+    "blender_version",
+    "is_mock_runtime",
+    "lifecycle_status",
+    "lifecycle_history",
+    "preflight_result",
+    "checkpoint_record",
+    "operation_attempts",
+    "rollback_summary",
+    "secrets_redacted",
+    "evidence_packet",
+    "timestamps",
+    "truth_states"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "execution_id": {
+      "type": "string",
+      "pattern": "^exec\\.[a-z0-9-]+$",
+      "minLength": 8,
+      "maxLength": 96
+    },
+    "scene_spec_id": {
+      "type": ["string", "null"],
+      "pattern": "^scene-spec\\.[a-z0-9-]+$"
+    },
+    "execution_plan_id": {
+      "type": ["string", "null"],
+      "pattern": "^plan\\.[a-z0-9-]+$"
+    },
+    "runtime_session_id": {
+      "type": "string",
+      "pattern": "^session\\.[a-z0-9-]+$"
+    },
+    "selected_runtime_path": {
+      "type": "string",
+      "enum": [
+        "path-1-host-a",
+        "path-1-host-b",
+        "path-2-community",
+        "cli-appendix",
+        "none"
+      ]
+    },
+    "blender_version": {
+      "type": ["string", "null"],
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "is_mock_runtime": {
+      "type": "boolean"
+    },
+    "lifecycle_status": {
+      "type": "string",
+      "enum": [
+        "planned",
+        "preflight",
+        "checkpoint_verified",
+        "approved_if_required",
+        "executing",
+        "readback",
+        "postcondition_verified",
+        "committed",
+        "rejected",
+        "blocked",
+        "attempted",
+        "failed",
+        "rollback_attempted",
+        "rollback_verified",
+        "rollback_failed",
+        "rollback_unverified"
+      ]
+    },
+    "lifecycle_history": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "enum": [
+          "planned",
+          "preflight",
+          "checkpoint_verified",
+          "approved_if_required",
+          "executing",
+          "readback",
+          "postcondition_verified",
+          "committed",
+          "rejected",
+          "blocked",
+          "attempted",
+          "failed",
+          "rollback_attempted",
+          "rollback_verified",
+          "rollback_failed",
+          "rollback_unverified"
+        ]
+      }
+    },
+    "preflight_result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "passed",
+        "scene_spec_valid",
+        "execution_plan_valid",
+        "runtime_ready",
+        "version_compatible",
+        "tool_mapping_available",
+        "input_schema_valid",
+        "operation_allowlisted",
+        "capability_tier_granted",
+        "governed_ceiling_respected",
+        "backup_gate_ready",
+        "asset_license_cleared",
+        "stage_gates_satisfied",
+        "blocking_reasons"
+      ],
+      "properties": {
+        "passed": { "type": "boolean" },
+        "scene_spec_valid": { "type": "boolean" },
+        "execution_plan_valid": { "type": "boolean" },
+        "runtime_ready": { "type": "boolean" },
+        "version_compatible": { "type": "boolean" },
+        "tool_mapping_available": { "type": "boolean" },
+        "input_schema_valid": { "type": "boolean" },
+        "operation_allowlisted": { "type": "boolean" },
+        "capability_tier_granted": { "type": "string", "enum": ["L0", "L1", "L2", "L3"] },
+        "governed_ceiling_respected": { "type": "boolean" },
+        "backup_gate_ready": { "type": "boolean" },
+        "asset_license_cleared": { "type": "boolean" },
+        "stage_gates_satisfied": { "type": "boolean" },
+        "blocking_reasons": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "checkpoint_record": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": [
+        "required",
+        "sourceBlendPath",
+        "backupPath",
+        "byteSize",
+        "sha256",
+        "createdBeforeMutation",
+        "verifiedOnDisk",
+        "createdAt"
+      ],
+      "properties": {
+        "required": { "type": "boolean" },
+        "sourceBlendPath": { "type": ["string", "null"] },
+        "backupPath": { "type": ["string", "null"] },
+        "byteSize": { "type": ["integer", "null"], "minimum": 0 },
+        "sha256": { "type": ["string", "null"], "pattern": "^[a-f0-9]{64}$" },
+        "createdBeforeMutation": { "type": "boolean" },
+        "verifiedOnDisk": { "type": "boolean" },
+        "createdAt": { "type": ["string", "null"] }
+      }
+    },
+    "operation_attempts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "step_index",
+          "operation_id",
+          "required_capability",
+          "mapped_tool_name",
+          "idempotency_key",
+          "input_sha256",
+          "redacted_input",
+          "status",
+          "baseline_snapshot",
+          "tool_result",
+          "readback_result",
+          "postcondition_result",
+          "started_at",
+          "finished_at"
+        ],
+        "properties": {
+          "step_index": { "type": "integer", "minimum": 1 },
+          "operation_id": {
+            "type": "string",
+            "pattern": "^op\\.(inspect|mutate|export)\\.[a-z0-9-]+$"
+          },
+          "required_capability": {
+            "type": "string",
+            "enum": ["L0", "L1", "L2"]
+          },
+          "mapped_tool_name": { "type": "string", "minLength": 1 },
+          "idempotency_key": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+          "input_sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+          "redacted_input": { "type": "object" },
+          "status": {
+            "type": "string",
+            "enum": [
+              "committed",
+              "blocked",
+              "rejected",
+              "attempted",
+              "failed",
+              "skipped_duplicate",
+              "skipped_after_failure"
+            ]
+          },
+          "baseline_snapshot": { "type": ["object", "null"] },
+          "tool_result": { "type": ["object", "null"] },
+          "readback_result": { "type": ["object", "null"] },
+          "postcondition_result": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["verified", "checks"],
+            "properties": {
+              "verified": { "type": "boolean" },
+              "checks": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": ["check_id", "passed", "expected", "actual"],
+                  "properties": {
+                    "check_id": { "type": "string" },
+                    "passed": { "type": "boolean" },
+                    "expected": {},
+                    "actual": {}
+                  }
+                }
+              }
+            }
+          },
+          "started_at": { "type": "string" },
+          "finished_at": { "type": "string" }
+        }
+      }
+    },
+    "rollback_summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "triggered",
+        "status",
+        "restored_from_backup_path",
+        "restored_sha256_verified",
+        "scene_readback_verified",
+        "recovery_guidance"
+      ],
+      "properties": {
+        "triggered": { "type": "boolean" },
+        "status": {
+          "type": "string",
+          "enum": [
+            "not_needed",
+            "rollback_attempted",
+            "rollback_verified",
+            "rollback_failed",
+            "rollback_unverified"
+          ]
+        },
+        "restored_from_backup_path": { "type": ["string", "null"] },
+        "restored_sha256_verified": { "type": "boolean" },
+        "scene_readback_verified": { "type": "boolean" },
+        "recovery_guidance": { "type": "string" }
+      }
+    },
+    "secrets_redacted": {
+      "type": "boolean"
+    },
+    "evidence_packet": {
+      "type": "object"
+    },
+    "timestamps": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["started_at", "completed_at"],
+      "properties": {
+        "started_at": { "type": "string" },
+        "completed_at": { "type": "string" }
+      }
+    },
+    "truth_states": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["runtime_status", "artifact_status", "evidence_promotion_allowed"],
+      "properties": {
+        "runtime_status": {
+          "type": "string",
+          "enum": ["Not Run", "Attempted", "Produced", "Verified", "Failed"]
+        },
+        "artifact_status": {
+          "type": "string",
+          "enum": ["Not Produced", "Attempted", "Produced", "Verified", "Failed"]
+        },
+        "evidence_promotion_allowed": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}

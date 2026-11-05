@@ -17,8 +17,13 @@ Reference the canonical BlendOps sources from the repository copy or attached pr
 - `registry/knowledge-catalog.json` (or `.blendops/catalog/knowledge-catalog.json`)
 - `registry/recipe-catalog.json` (or `.blendops/catalog/recipe-catalog.json`)
 - `registry/catalog-index.json` (or `.blendops/catalog/catalog-index.json`)
+- `registry/runtime-operations.json` (or `.blendops/catalog/runtime-operations.json`)
+- `registry/runtime-capability-policy.json` (or `.blendops/catalog/runtime-capability-policy.json`)
 - `schemas/scene-spec.schema.json` (or `.blendops/catalog/schemas/scene-spec.schema.json`)
 - `schemas/execution-plan.schema.json` (or `.blendops/catalog/schemas/execution-plan.schema.json`)
+- `schemas/runtime-session.schema.json` (or `.blendops/catalog/schemas/runtime-session.schema.json`)
+- `schemas/runtime-operations.schema.json` (or `.blendops/catalog/schemas/runtime-operations.schema.json`)
+- `schemas/operation-execution-ledger.schema.json` (or `.blendops/catalog/schemas/operation-execution-ledger.schema.json`)
 - `skills/README.md`
 - `laws/README.md`
 - `packs/README.md`

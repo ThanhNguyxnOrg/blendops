@@ -1,0 +1,384 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/ThanhNguyxnOrg/blendops/schemas/runtime-operations.schema.json",
+  "title": "BlendOps Canonical Typed Runtime Operations Registry Schema",
+  "description": "Strict schema governing typed L0 read-only inspections, L1 bounded reversible mutations, and L2 gated export/import operations across Path 1 (Official Blender Lab MCP) and Path 2 (Community mcp-for-blender).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "schema_version",
+    "registry_id",
+    "title",
+    "governance_summary",
+    "blocked_arbitrary_interfaces",
+    "operations"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "registry_id": {
+      "type": "string",
+      "const": "blendops.runtime-operations"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 10
+    },
+    "governance_summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "external_runtime_ownership",
+        "capability_tier_distinction",
+        "default_runtime_status",
+        "default_artifact_status",
+        "user_facing_python_allowed"
+      ],
+      "properties": {
+        "external_runtime_ownership": { "type": "string", "minLength": 20 },
+        "capability_tier_distinction": { "type": "string", "minLength": 20 },
+        "default_runtime_status": { "const": "Not Run" },
+        "default_artifact_status": { "const": "Not Produced" },
+        "user_facing_python_allowed": { "const": false }
+      }
+    },
+    "blocked_arbitrary_interfaces": {
+      "type": "array",
+      "minItems": 3,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["interface_id", "tier", "status", "governing_law", "reason"],
+        "properties": {
+          "interface_id": { "type": "string", "minLength": 3 },
+          "tier": { "const": "L3" },
+          "status": { "const": "blocked_in_user_facing_registry" },
+          "governing_law": { "type": "string", "minLength": 5 },
+          "reason": { "type": "string", "minLength": 15 }
+        }
+      }
+    },
+    "operations": {
+      "type": "array",
+      "minItems": 15,
+      "items": {
+        "$ref": "#/$defs/operationRecord"
+      }
+    }
+  },
+  "$defs": {
+    "operationRecord": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "operation_id",
+        "display_name",
+        "purpose",
+        "category",
+        "supported_runtime_paths",
+        "runtime_tool_mappings",
+        "input_schema",
+        "output_schema",
+        "required_capability_tier",
+        "required_governed_runtime_ceiling",
+        "governing_skills",
+        "side_effect_classification",
+        "behavior",
+        "idempotency",
+        "required_preconditions",
+        "required_postconditions",
+        "backup_requirement",
+        "approval_requirement",
+        "asset_license_requirement",
+        "version_constraints",
+        "timeout_and_retry_policy",
+        "evidence_requirements",
+        "user_facing_python_allowed",
+        "known_limitations"
+      ],
+      "properties": {
+        "operation_id": {
+          "type": "string",
+          "pattern": "^op\\.(inspect|mutate|export)\\.[a-z0-9-]+$"
+        },
+        "display_name": {
+          "type": "string",
+          "minLength": 5,
+          "maxLength": 120
+        },
+        "purpose": {
+          "type": "string",
+          "minLength": 15,
+          "maxLength": 400
+        },
+        "category": {
+          "type": "string",
+          "enum": ["inspection", "mutation", "export_or_import"]
+        },
+        "supported_runtime_paths": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "enum": ["path-1-host-a", "path-1-host-b", "path-2-community", "cli-appendix"]
+          }
+        },
+        "runtime_tool_mappings": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "path-1-host-a": { "$ref": "#/$defs/toolMapping" },
+            "path-1-host-b": { "$ref": "#/$defs/toolMapping" },
+            "path-2-community": { "$ref": "#/$defs/toolMapping" },
+            "cli-appendix": { "$ref": "#/$defs/toolMapping" }
+          }
+        },
+        "input_schema": {
+          "type": "object",
+          "required": ["type", "additionalProperties", "required", "properties"],
+          "properties": {
+            "type": { "const": "object" },
+            "additionalProperties": { "const": false },
+            "required": {
+              "type": "array",
+              "items": { "type": "string" }
+            },
+            "properties": {
+              "type": "object"
+            }
+          }
+        },
+        "output_schema": {
+          "type": "object",
+          "required": ["type", "required", "properties"],
+          "properties": {
+            "type": { "const": "object" },
+            "required": {
+              "type": "array",
+              "items": { "type": "string" }
+            },
+            "properties": {
+              "type": "object"
+            }
+          }
+        },
+        "required_capability_tier": {
+          "type": "string",
+          "enum": ["L0", "L1", "L2"]
+        },
+        "required_governed_runtime_ceiling": {
+          "type": "string",
+          "enum": ["L0", "L1", "L2"]
+        },
+        "governing_skills": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]+$"
+          }
+        },
+        "side_effect_classification": {
+          "type": "string",
+          "enum": [
+            "none",
+            "reversible_scene_mutation",
+            "file_write_export",
+            "external_asset_import"
+          ]
+        },
+        "behavior": {
+          "type": "string",
+          "enum": ["read_only", "mutating", "export"]
+        },
+        "idempotency": {
+          "type": "string",
+          "enum": [
+            "idempotent_read",
+            "idempotent_set_state",
+            "non_idempotent_append_or_export"
+          ]
+        },
+        "required_preconditions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["check_id", "description", "blocking"],
+            "properties": {
+              "check_id": { "type": "string", "minLength": 3 },
+              "description": { "type": "string", "minLength": 10 },
+              "blocking": { "type": "boolean" }
+            }
+          }
+        },
+        "required_postconditions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["check_id", "description", "verification_method"],
+            "properties": {
+              "check_id": { "type": "string", "minLength": 3 },
+              "description": { "type": "string", "minLength": 10 },
+              "verification_method": {
+                "type": "string",
+                "enum": [
+                  "read_only_response_schema",
+                  "independent_scene_readback",
+                  "disk_file_and_sha256_verification",
+                  "glb_binary_semantic_inspection"
+                ]
+              }
+            }
+          }
+        },
+        "backup_requirement": {
+          "type": "string",
+          "enum": ["none", "verified_pre_mutation_blend_checkpoint"]
+        },
+        "approval_requirement": {
+          "type": "string",
+          "enum": [
+            "none",
+            "operator_confirmation_if_escalated",
+            "explicit_operator_confirmation"
+          ]
+        },
+        "asset_license_requirement": {
+          "type": "string",
+          "enum": ["none", "cleared_spdx_or_category"]
+        },
+        "version_constraints": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["path_1_min_blender", "path_2_min_blender"],
+          "properties": {
+            "path_1_min_blender": {
+              "type": "string",
+              "const": "5.1.0"
+            },
+            "path_2_min_blender": {
+              "type": "string",
+              "const": "3.0.0"
+            },
+            "cli_appendix_min_blender": {
+              "type": "string",
+              "pattern": "^\\d+\\.\\d+\\.\\d+$"
+            }
+          }
+        },
+        "timeout_and_retry_policy": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "timeout_ms",
+            "max_retries",
+            "retry_on_timeout",
+            "ambiguous_timeout_behavior"
+          ],
+          "properties": {
+            "timeout_ms": {
+              "type": "integer",
+              "minimum": 500,
+              "maximum": 120000
+            },
+            "max_retries": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 2
+            },
+            "retry_on_timeout": {
+              "type": "boolean"
+            },
+            "ambiguous_timeout_behavior": {
+              "type": "string",
+              "const": "halt_and_inspect_no_blind_retry"
+            }
+          }
+        },
+        "evidence_requirements": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "required_packet_type",
+            "requires_independent_readback",
+            "requires_checkpoint_hash"
+          ],
+          "properties": {
+            "required_packet_type": {
+              "type": "string",
+              "enum": [
+                "runtime-smoke",
+                "preview-check",
+                "render-export",
+                "glb-handoff"
+              ]
+            },
+            "requires_independent_readback": {
+              "type": "boolean"
+            },
+            "requires_checkpoint_hash": {
+              "type": "boolean"
+            }
+          }
+        },
+        "user_facing_python_allowed": {
+          "type": "boolean",
+          "const": false
+        },
+        "known_limitations": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 10
+          }
+        }
+      }
+    },
+    "toolMapping": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "primary_tool",
+        "readback_tools",
+        "parameter_adapter",
+        "mutation_transport_note"
+      ],
+      "properties": {
+        "primary_tool": {
+          "type": "string",
+          "minLength": 2
+        },
+        "secondary_tools": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 2 }
+        },
+        "readback_tools": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 2 }
+        },
+        "parameter_adapter": {
+          "type": "string",
+          "minLength": 3
+        },
+        "mutation_transport_note": {
+          "type": "string",
+          "minLength": 10
+        }
+      }
+    }
+  }
+}

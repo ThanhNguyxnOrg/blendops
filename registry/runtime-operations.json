@@ -1,0 +1,1784 @@
+{
+  "$schema": "../schemas/runtime-operations.schema.json",
+  "schema_version": "1.0.0",
+  "registry_id": "blendops.runtime-operations",
+  "title": "BlendOps Canonical Typed Runtime Operations Registry",
+  "governance_summary": {
+    "external_runtime_ownership": "BlendOps does not own or ship a Blender runtime, MCP server, or Blender add-on. External runtimes (Path 1 Official Blender Lab MCP 5.1+ and Path 2 Community mcp-for-blender 3.0+) own Blender execution; BlendOps governs typed operation planning, capability preflight, pre-mutation .blend checkpoints, independent readback, and truthful evidence.",
+    "capability_tier_distinction": "Every BlendOps skill operates at capabilityTier = L0 (planning/validation content layer), while governedRuntimeCeiling (L0-L3) bounds the maximum external runtime operation tier that skill may authorize.",
+    "default_runtime_status": "Not Run",
+    "default_artifact_status": "Not Produced",
+    "user_facing_python_allowed": false
+  },
+  "blocked_arbitrary_interfaces": [
+    {
+      "interface_id": "raw_python_or_bpy_eval",
+      "tier": "L3",
+      "status": "blocked_in_user_facing_registry",
+      "governing_law": "laws/no-arbitrary-python-interface.md",
+      "reason": "Unrestricted Python or raw bpy code passthrough (including raw user-facing execute_blender_code prompts) is prohibited as a BlendOps operation."
+    },
+    {
+      "interface_id": "arbitrary_shell_or_cli_command",
+      "tier": "L3",
+      "status": "blocked_in_user_facing_registry",
+      "governing_law": "laws/no-arbitrary-python-interface.md",
+      "reason": "Arbitrary shell commands and unvalidated CLI flags cannot be invoked through the typed runtime operation surface."
+    },
+    {
+      "interface_id": "unbounded_scene_destruction_or_file_delete",
+      "tier": "L3",
+      "status": "blocked_in_user_facing_registry",
+      "governing_law": "laws/evidence-before-done.md",
+      "reason": "Destructive multi-object deletion, arbitrary filesystem writes outside allowlisted directories, and unbacked scene resets are blocked."
+    }
+  ],
+  "operations": [
+    {
+      "operation_id": "op.inspect.runtime-session-info",
+      "display_name": "Inspect Runtime & Add-on Session Info",
+      "purpose": "Read active Blender file path status, add-on readiness, and session bridge metadata without modifying the scene.",
+      "category": "inspection",
+      "supported_runtime_paths": ["path-1-host-a", "path-1-host-b", "path-2-community"],
+      "runtime_tool_mappings": {
+        "path-1-host-a": {
+          "primary_tool": "get_blendfile_summary_path_info",
+          "readback_tools": ["get_blendfile_summary_path_info"],
+          "parameter_adapter": "lab_mcp_empty_params",
+          "mutation_transport_note": "Read-only Lab MCP path info inspection via Anthropic Connector host."
+        },
+        "path-1-host-b": {
+          "primary_tool": "get_blendfile_summary_path_info",
+          "readback_tools": ["get_blendfile_summary_path_info"],
+          "parameter_adapter": "lab_mcp_empty_params",
+          "mutation_transport_note": "Read-only Lab MCP path info inspection via manual MCP host."
+        },
+        "path-2-community": {
+          "primary_tool": "get_addon_status",
+          "secondary_tools": ["get_scene_info"],
+          "readback_tools": ["get_addon_status"],
+          "parameter_adapter": "community_mcp_empty_params",
+          "mutation_transport_note": "Read-only community mcp-for-blender add-on status inspection."
+        }
+      },
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [],
+        "properties": {
+          "include_bridge_diagnostics": { "type": "boolean" }
+        }
+      },
+      "output_schema": {
+        "type": "object",
+        "required": ["filepath", "saved", "dirty"],
+        "properties": {
+          "filepath": { "type": ["string", "null"] },
+          "saved": { "type": "boolean" },
+          "dirty": { "type": "boolean" },
+          "addon_status": { "type": "string" }
+        }
+      },
+      "required_capability_tier": "L0",
+      "required_governed_runtime_ceiling": "L0",
+      "governing_skills": ["runtime-readiness", "runtime-path-picker"],
+      "side_effect_classification": "none",
+      "behavior": "read_only",
+      "idempotency": "idempotent_read",
+      "required_preconditions": [
+        {
+          "check_id": "pre.runtime_connected",
+          "description": "External MCP runtime session must be connected and single-bridge verified.",
+          "blocking": true
+        }
+      ],
+      "required_postconditions": [
+        {
+          "check_id": "post.session_info_returned",
+          "description": "Response includes saved/dirty state and filepath without mutating the scene.",
+          "verification_method": "read_only_response_schema"
+        }
+      ],
+      "backup_requirement": "none",
+      "approval_requirement": "none",
+      "asset_license_requirement": "none",
+      "version_constraints": {
+        "path_1_min_blender": "5.1.0",
+        "path_2_min_blender": "3.0.0"
+      },
+      "timeout_and_retry_policy": {
+        "timeout_ms": 5000,
+        "max_retries": 1,
+        "retry_on_timeout": true,
+        "ambiguous_timeout_behavior": "halt_and_inspect_no_blind_retry"
+      },
+      "evidence_requirements": {
+        "required_packet_type": "runtime-smoke",
+        "requires_independent_readback": false,
+        "requires_checkpoint_hash": false
+      },
+      "user_facing_python_allowed": false,
+      "known_limitations": [
+        "Path 1 get_blendfile_summary_path_info does not always include the exact blender --version string unless queried from session metadata."
+      ]
+    },
+    {
+      "operation_id": "op.inspect.blendfile-summary",
+      "display_name": "Inspect Blender File & Datablock Summary",
+      "purpose": "Inspect the active .blend file path, saved state, and datablock counts (scenes, objects, meshes, materials, cameras, lights).",
+      "category": "inspection",
+      "supported_runtime_paths": ["path-1-host-a", "path-1-host-b", "path-2-community"],
+      "runtime_tool_mappings": {
+        "path-1-host-a": {
+          "primary_tool": "get_blendfile_summary_datablocks",
+          "secondary_tools": ["get_blendfile_summary_path_info"],
+          "readback_tools": ["get_blendfile_summary_datablocks"],
+          "parameter_adapter": "lab_mcp_datablocks_summary",
+          "mutation_transport_note": "Read-only Lab MCP datablock summary."
+        },
+        "path-1-host-b": {
+          "primary_tool": "get_blendfile_summary_datablocks",
+          "secondary_tools": ["get_blendfile_summary_path_info"],
+          "readback_tools": ["get_blendfile_summary_datablocks"],
+          "parameter_adapter": "lab_mcp_datablocks_summary",
+          "mutation_transport_note": "Read-only Lab MCP datablock summary."
+        },
+        "path-2-community": {
+          "primary_tool": "get_scene_info",
+          "readback_tools": ["get_scene_info"],
+          "parameter_adapter": "community_mcp_scene_info",
+          "mutation_transport_note": "Read-only community mcp-for-blender scene summary."
+        }
+      },
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [],
+        "properties": {
+          "include_datablock_counts": { "type": "boolean" }
+        }
+      },
+      "output_schema": {
+        "type": "object",
+        "required": ["scene_name", "datablock_counts"],
+        "properties": {
+          "filepath": { "type": ["string", "null"] },
+          "saved": { "type": "boolean" },
+          "scene_name": { "type": "string" },
+          "datablock_counts": { "type": "object" }
+        }
+      },
+      "required_capability_tier": "L0",
+      "required_governed_runtime_ceiling": "L0",
+      "governing_skills": ["scene-readiness", "runtime-readiness"],
+      "side_effect_classification": "none",
+      "behavior": "read_only",
+      "idempotency": "idempotent_read",
+      "required_preconditions": [
+        {
+          "check_id": "pre.runtime_connected",
+          "description": "External MCP runtime session must be connected.",
+          "blocking": true
+        }
+      ],
+      "required_postconditions": [
+        {
+          "check_id": "post.datablock_summary_valid",
+          "description": "Datablock counts and active scene name are returned without scene modification.",
+          "verification_method": "read_only_response_schema"
+        }
+      ],
+      "backup_requirement": "none",
+      "approval_requirement": "none",
+      "asset_license_requirement": "none",
+      "version_constraints": {
+        "path_1_min_blender": "5.1.0",
+        "path_2_min_blender": "3.0.0"
+      },
+      "timeout_and_retry_policy": {
+        "timeout_ms": 5000,
+        "max_retries": 1,
+        "retry_on_timeout": true,
+        "ambiguous_timeout_behavior": "halt_and_inspect_no_blind_retry"
+      },
+      "evidence_requirements": {
+        "required_packet_type": "runtime-smoke",
+        "requires_independent_readback": false,
+        "requires_checkpoint_hash": false
+      },
+      "user_facing_python_allowed": false,
+      "known_limitations": [
+        "Path 2 get_scene_info summarizes active scene objects rather than global unused datablocks."
+      ]
+    },
+    {
+      "operation_id": "op.inspect.scene-summary",
+      "display_name": "Inspect Active Scene Summary",
+      "purpose": "Inspect active scene name, render engine, world lighting state, and active object.",
+      "category": "inspection",
+      "supported_runtime_paths": ["path-1-host-a", "path-1-host-b", "path-2-community"],
+      "runtime_tool_mappings": {
+        "path-1-host-a": {
+          "primary_tool": "get_blendfile_summary_datablocks",
+          "readback_tools": ["get_blendfile_summary_datablocks"],
+          "parameter_adapter": "lab_mcp_scene_summary",
+          "mutation_transport_note": "Read-only Lab MCP scene summary."
+        },
+        "path-1-host-b": {
+          "primary_tool": "get_blendfile_summary_datablocks",
+          "readback_tools": ["get_blendfile_summary_datablocks"],
+          "parameter_adapter": "lab_mcp_scene_summary",
+          "mutation_transport_note": "Read-only Lab MCP scene summary."
+        },
+        "path-2-community": {
+          "primary_tool": "get_scene_info",
+          "readback_tools": ["get_scene_info"],
+          "parameter_adapter": "community_mcp_scene_info",
+          "mutation_transport_note": "Read-only community get_scene_info call."
+        }
+      },
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [],
+        "properties": {
+          "scene_name": { "type": "string", "minLength": 1 }
+        }
+      },
+      "output_schema": {
+        "type": "object",
+        "required": ["scene_name", "render_engine", "object_count"],
+        "properties": {
+          "scene_name": { "type": "string" },
+          "render_engine": { "type": "string" },
+          "object_count": { "type": "integer", "minimum": 0 },
+          "active_object": { "type": ["string", "null"] }
+        }
+      },
+      "required_capability_tier": "L0",
+      "required_governed_runtime_ceiling": "L0",
+      "governing_skills": ["scene-readiness", "product-hero-scene-planner"],
+      "side_effect_classification": "none",
+      "behavior": "read_only",
+      "idempotency": "idempotent_read",
+      "required_preconditions": [
+        {
+          "check_id": "pre.runtime_connected",
+          "description": "External MCP runtime session must be connected.",
+          "blocking": true
+        }
+      ],
+      "required_postconditions": [
+        {
+          "check_id": "post.scene_summary_returned",
+          "description": "Scene name, render engine, and object count are present.",
+          "verification_method": "read_only_response_schema"
+        }
+      ],
+      "backup_requirement": "none",
+      "approval_requirement": "none",
+      "asset_license_requirement": "none",
+      "version_constraints": {
+        "path_1_min_blender": "5.1.0",
+        "path_2_min_blender": "3.0.0"
+      },
+      "timeout_and_retry_policy": {
+        "timeout_ms": 5000,
+        "max_retries": 1,
+        "retry_on_timeout": true,
+        "ambiguous_timeout_behavior": "halt_and_inspect_no_blind_retry"
+      },
+      "evidence_requirements": {
+        "required_packet_type": "runtime-smoke",
+        "requires_independent_readback": false,
+        "requires_checkpoint_hash": false
+      },
+      "user_facing_python_allowed": false,
+      "known_limitations": [
+        "Read-only summary does not evaluate geometry modifier stacks."
+      ]
+    },
+    {
+      "operation_id": "op.inspect.object-list",
+      "display_name": "List & Inspect Scene Objects",
+      "purpose": "Retrieve the list of objects in the active scene with their types, visibility, and world transforms.",
+      "category": "inspection",
+      "supported_runtime_paths": ["path-1-host-a", "path-1-host-b", "path-2-community"],
+      "runtime_tool_mappings": {
+        "path-1-host-a": {
+          "primary_tool": "get_objects_summary",
+          "readback_tools": ["get_objects_summary"],
+          "parameter_adapter": "lab_mcp_objects_summary",
+          "mutation_transport_note": "Read-only Lab MCP get_objects_summary call."
+        },
+        "path-1-host-b": {
+          "primary_tool": "get_objects_summary",
+          "readback_tools": ["get_objects_summary"],
+          "parameter_adapter": "lab_mcp_objects_summary",
+          "mutation_transport_note": "Read-only Lab MCP get_objects_summary call."
+        },
+        "path-2-community": {
+          "primary_tool": "get_scene_info",
+          "secondary_tools": ["get_object_info"],
+          "readback_tools": ["get_scene_info"],
+          "parameter_adapter": "community_mcp_objects_from_scene",
+          "mutation_transport_note": "Read-only community get_scene_info / get_object_info inspection."
+        }
+      },
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [],
+        "properties": {
+          "filter_type": {
+            "type": "string",
+            "enum": ["ALL", "MESH", "CAMERA", "LIGHT", "ARMATURE", "EMPTY"]
+          }
+        }
+      },
+      "output_schema": {
+        "type": "object",
+        "required": ["objects"],
+        "properties": {
+          "objects": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["name", "type", "visible"],
+              "properties": {
+                "name": { "type": "string" },
+                "type": { "type": "string" },
+                "visible": { "type": "boolean" },
+                "location": { "type": "array" },
+                "rotation_euler": { "type": "array" },
+                "scale": { "type": "array" }
+              }
+            }
+          }
+        }
+      },
+      "required_capability_tier": "L0",
+      "required_governed_runtime_ceiling": "L0",
+      "governing_skills": ["scene-readiness", "composition-quality-checker"],
+      "side_effect_classification": "none",
+      "behavior": "read_only",
+      "idempotency": "idempotent_read",
+      "required_preconditions": [
+        {
+          "check_id": "pre.runtime_connected",
+          "description": "External MCP runtime session must be connected.",
+          "blocking": true
+        }
+      ],
+      "required_postconditions": [
+        {
+          "check_id": "post.object_inventory_returned",
+          "description": "Array of scene objects with name, type, and visibility is returned.",
+          "verification_method": "read_only_response_schema"
+        }
+      ],
+      "backup_requirement": "none",
+      "approval_requirement": "none",
+      "asset_license_requirement": "none",
+      "version_constraints": {
+        "path_1_min_blender": "5.1.0",
+        "path_2_min_blender": "3.0.0"
+      },
+      "timeout_and_retry_policy": {
+        "timeout_ms": 5000,
+        "max_retries": 1,
+        "retry_on_timeout": true,
+        "ambiguous_timeout_behavior": "halt_and_inspect_no_blind_retry"
+      },
+      "evidence_requirements": {
+        "required_packet_type": "runtime-smoke",
+        "requires_independent_readback": false,
+        "requires_checkpoint_hash": false
+      },
+      "user_facing_python_allowed": false,
+      "known_limitations": [
+        "Does not create or rename missing objects; reports exact scene inventory."
+      ]
+    },
+    {
+      "operation_id": "op.inspect.mesh-topology-stats",
+      "display_name": "Inspect Mesh & Topology Statistics",
+      "purpose": "Inspect triangle, vertex, face, and UV map counts for target mesh objects against platform budgets.",
+      "category": "inspection",
+      "supported_runtime_paths": ["path-1-host-a", "path-1-host-b", "path-2-community"],
+      "runtime_tool_mappings": {
+        "path-1-host-a": {
+          "primary_tool": "get_objects_summary",
+          "readback_tools": ["get_objects_summary"],
+          "parameter_adapter": "lab_mcp_mesh_stats",
+          "mutation_transport_note": "Read-only Lab MCP object/mesh summary inspection."
+        },
+        "path-1-host-b": {
+          "primary_tool": "get_objects_summary",
+          "readback_tools": ["get_objects_summary"],
+          "parameter_adapter": "lab_mcp_mesh_stats",
+          "mutation_transport_note": "Read-only Lab MCP object/mesh summary inspection."
+        },
+        "path-2-community": {
+          "primary_tool": "get_object_info",
+          "readback_tools": ["get_object_info"],
+          "parameter_adapter": "community_mcp_object_info",
+          "mutation_transport_note": "Read-only community get_object_info inspection."
+        }
+      },
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["object_name"],
+        "properties": {
+          "object_name": { "type": "string", "minLength": 1, "maxLength": 128 }
+        }
+      },
+      "output_schema": {
+        "type": "object",
+        "required": ["object_name", "triangles", "vertices"],
+        "properties": {
+          "object_name": { "type": "string" },
+          "triangles": { "type": "integer", "minimum": 0 },
+          "vertices": { "type": "integer", "minimum": 0 },
+          "uv_layers": { "type": "integer", "minimum": 0 }
+        }
+      },
+      "required_capability_tier": "L0",
+      "required_governed_runtime_ceiling": "L0",
+      "governing_skills": ["polycount-budget-checker", "mobile-glb-budget"],
+      "side_effect_classification": "none",
+      "behavior": "read_only",
+      "idempotency": "idempotent_read",
+      "required_preconditions": [
+        {
+          "check_id": "pre.target_mesh_exists",
+          "description": "Target mesh object must exist in the scene.",
+          "blocking": true
+        }
+      ],
+      "required_postconditions": [
+        {
+          "check_id": "post.topology_metrics_returned",
+          "description": "Triangle and vertex counts are returned as non-negative integers.",
+          "verification_method": "read_only_response_schema"
+        }
+      ],
+      "backup_requirement": "none",
+      "approval_requirement": "none",
+      "asset_license_requirement": "none",
+      "version_constraints": {
+        "path_1_min_blender": "5.1.0",
+        "path_2_min_blender": "3.0.0"
+      },
+      "timeout_and_retry_policy": {
+        "timeout_ms": 5000,
+        "max_retries": 1,
+        "retry_on_timeout": true,
+        "ambiguous_timeout_behavior": "halt_and_inspect_no_blind_retry"
+      },
+      "evidence_requirements": {
+        "required_packet_type": "preview-check",
+        "requires_independent_readback": false,
+        "requires_checkpoint_hash": false
+      },
+      "user_facing_python_allowed": false,
+      "known_limitations": [
+        "Reports evaluated or base mesh counts depending on upstream tool detail payload."
+      ]
+    },
+    {
+      "operation_id": "op.inspect.material-slots",
+      "display_name": "Inspect Material Slots & Principled BSDF Parameters",
+      "purpose": "Inspect assigned material slots and Principled BSDF roughness/metallic/base_color parameters on an object.",
+      "category": "inspection",
+      "supported_runtime_paths": ["path-1-host-a", "path-1-host-b", "path-2-community"],
+      "runtime_tool_mappings": {
+        "path-1-host-a": {
+          "primary_tool": "get_blendfile_summary_datablocks",
+          "secondary_tools": ["get_objects_summary"],
+          "readback_tools": ["get_blendfile_summary_datablocks"],
+          "parameter_adapter": "lab_mcp_material_inspection",
+          "mutation_transport_note": "Read-only Lab MCP material datablock inspection."
+        },
+        "path-1-host-b": {
+          "primary_tool": "get_blendfile_summary_datablocks",
+          "secondary_tools": ["get_objects_summary"],
+          "readback_tools": ["get_blendfile_summary_datablocks"],
+          "parameter_adapter": "lab_mcp_material_inspection",
+          "mutation_transport_note": "Read-only Lab MCP material datablock inspection."
+        },
+        "path-2-community": {
+          "primary_tool": "get_object_info",
+          "readback_tools": ["get_object_info"],
+          "parameter_adapter": "community_mcp_material_inspection",
+          "mutation_transport_note": "Read-only community get_object_info material slot inspection."
+        }
+      },
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["object_name"],
+        "properties": {
+          "object_name": { "type": "string", "minLength": 1, "maxLength": 128 }
+        }
+      },
+      "output_schema": {
+        "type": "object",
+        "required": ["object_name", "materials"],
+        "properties": {
+          "object_name": { "type": "string" },
+          "materials": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["name"],
+              "properties": {
+                "name": { "type": "string" },
+                "base_color_rgba": { "type": "array" },
+                "metallic": { "type": "number" },
+                "roughness": { "type": "number" }
+              }
+            }
+          }
+        }
+      },
+      "required_capability_tier": "L0",
+      "required_governed_runtime_ceiling": "L0",
+      "governing_skills": ["material-quality-checker", "lighting-material-plan"],
+      "side_effect_classification": "none",
+      "behavior": "read_only",
+      "idempotency": "idempotent_read",
+      "required_preconditions": [
+        {
+          "check_id": "pre.target_object_exists",
+          "description": "Target object must exist in the active scene.",
+          "blocking": true
+        }
+      ],
+      "required_postconditions": [
+        {
+          "check_id": "post.material_slots_returned",
+          "description": "Material slot list is returned without mutating shader nodes.",
+          "verification_method": "read_only_response_schema"
+        }
+      ],
+      "backup_requirement": "none",
+      "approval_requirement": "none",
+      "asset_license_requirement": "none",
+      "version_constraints": {
+        "path_1_min_blender": "5.1.0",
+        "path_2_min_blender": "3.0.0"
+      },
+      "timeout_and_retry_policy": {
+        "timeout_ms": 5000,
+        "max_retries": 1,
+        "retry_on_timeout": true,
+        "ambiguous_timeout_behavior": "halt_and_inspect_no_blind_retry"
+      },
+      "evidence_requirements": {
+        "required_packet_type": "preview-check",
+        "requires_independent_readback": false,
+        "requires_checkpoint_hash": false
+      },
+      "user_facing_python_allowed": false,
+      "known_limitations": [
+        "Custom procedural node groups are summarized by top-level slot name."
+      ]
+    },
+    {
+      "operation_id": "op.inspect.camera-and-lighting",
+      "display_name": "Inspect Camera & Lighting Rig State",
+      "purpose": "Inspect active camera transform, focal length, DOF settings, and scene light energy/color/transform parameters.",
+      "category": "inspection",
+      "supported_runtime_paths": ["path-1-host-a", "path-1-host-b", "path-2-community"],
+      "runtime_tool_mappings": {
+        "path-1-host-a": {
+          "primary_tool": "get_objects_summary",
+          "readback_tools": ["get_objects_summary"],
+          "parameter_adapter": "lab_mcp_camera_light_summary",
+          "mutation_transport_note": "Read-only Lab MCP camera and lighting inspection."
+        },
+        "path-1-host-b": {
+          "primary_tool": "get_objects_summary",
+          "readback_tools": ["get_objects_summary"],
+          "parameter_adapter": "lab_mcp_camera_light_summary",
+          "mutation_transport_note": "Read-only Lab MCP camera and lighting inspection."
+        },
+        "path-2-community": {
+          "primary_tool": "get_scene_info",
+          "secondary_tools": ["get_object_info"],
+          "readback_tools": ["get_scene_info", "get_object_info"],
+          "parameter_adapter": "community_mcp_camera_light_summary",
+          "mutation_transport_note": "Read-only community camera and light inspection."
+        }
+      },
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [],
+        "properties": {
+          "camera_name": { "type": "string", "minLength": 1 },
+          "light_names": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 }
+          }
+        }
+      },
+      "output_schema": {
+        "type": "object",
+        "required": ["cameras", "lights"],
+        "properties": {
+          "cameras": { "type": "array" },
+          "lights": { "type": "array" }
+        }
+      },
+      "required_capability_tier": "L0",
+      "required_governed_runtime_ceiling": "L0",
+      "governing_skills": ["camera-composition", "lighting-quality-checker", "composition-quality-checker"],
+      "side_effect_classification": "none",
+      "behavior": "read_only",
+      "idempotency": "idempotent_read",
+      "required_preconditions": [
+        {
+          "check_id": "pre.runtime_connected",
+          "description": "External MCP runtime session must be connected.",
+          "blocking": true
+        }
+      ],
+      "required_postconditions": [
+        {
+          "check_id": "post.camera_and_lights_returned",
+          "description": "Camera and light state arrays are returned without mutating the scene.",
+          "verification_method": "read_only_response_schema"
+        }
+      ],
+      "backup_requirement": "none",
+      "approval_requirement": "none",
+      "asset_license_requirement": "none",
+      "version_constraints": {
+        "path_1_min_blender": "5.1.0",
+        "path_2_min_blender": "3.0.0"
+      },
+      "timeout_and_retry_policy": {
+        "timeout_ms": 5000,
+        "max_retries": 1,
+        "retry_on_timeout": true,
+        "ambiguous_timeout_behavior": "halt_and_inspect_no_blind_retry"
+      },
+      "evidence_requirements": {
+        "required_packet_type": "preview-check",
+        "requires_independent_readback": false,
+        "requires_checkpoint_hash": false
+      },
+      "user_facing_python_allowed": false,
+      "known_limitations": [
+        "Reports existing cameras and lights only; does not synthesize missing rigs."
+      ]
+    },
+    {
+      "operation_id": "op.inspect.render-settings",
+      "display_name": "Inspect Render Engine, Resolution & Color Management",
+      "purpose": "Inspect active render engine (CYCLES or BLENDER_EEVEE), output resolution, sample budget, and AgX/Filmic view transform.",
+      "category": "inspection",
+      "supported_runtime_paths": ["path-1-host-a", "path-1-host-b", "path-2-community"],
+      "runtime_tool_mappings": {
+        "path-1-host-a": {
+          "primary_tool": "get_blendfile_summary_datablocks",
+          "readback_tools": ["get_blendfile_summary_datablocks"],
+          "parameter_adapter": "lab_mcp_render_settings",
+          "mutation_transport_note": "Read-only Lab MCP render settings inspection."
+        },
+        "path-1-host-b": {
+          "primary_tool": "get_blendfile_summary_datablocks",
+          "readback_tools": ["get_blendfile_summary_datablocks"],
+          "parameter_adapter": "lab_mcp_render_settings",
+          "mutation_transport_note": "Read-only Lab MCP render settings inspection."
+        },
+        "path-2-community": {
+          "primary_tool": "get_scene_info",
+          "readback_tools": ["get_scene_info"],
+          "parameter_adapter": "community_mcp_render_settings",
+          "mutation_transport_note": "Read-only community render settings inspection."
+        }
+      },
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [],
+        "properties": {
+          "scene_name": { "type": "string" }
+        }
+      },
+      "output_schema": {
+        "type": "object",
+        "required": ["render_engine", "resolution_x", "resolution_y", "view_transform"],
+        "properties": {
+          "render_engine": { "type": "string" },
+          "resolution_x": { "type": "integer" },
+          "resolution_y": { "type": "integer" },
+          "view_transform": { "type": "string" }
+        }
+      },
+      "required_capability_tier": "L0",
+      "required_governed_runtime_ceiling": "L0",
+      "governing_skills": ["cycles-vs-eevee-decision", "resolution-aspect-decision", "color-management-decision"],
+      "side_effect_classification": "none",
+      "behavior": "read_only",
+      "idempotency": "idempotent_read",
+      "required_preconditions": [
+        {
+          "check_id": "pre.runtime_connected",
+          "description": "External MCP runtime session must be connected.",
+          "blocking": true
+        }
+      ],
+      "required_postconditions": [
+        {
+          "check_id": "post.render_settings_returned",
+          "description": "Render engine, resolution, and view transform are returned.",
+          "verification_method": "read_only_response_schema"
+        }
+      ],
+      "backup_requirement": "none",
+      "approval_requirement": "none",
+      "asset_license_requirement": "none",
+      "version_constraints": {
+        "path_1_min_blender": "5.1.0",
+        "path_2_min_blender": "3.0.0"
+      },
+      "timeout_and_retry_policy": {
+        "timeout_ms": 5000,
+        "max_retries": 1,
+        "retry_on_timeout": true,
+        "ambiguous_timeout_behavior": "halt_and_inspect_no_blind_retry"
+      },
+      "evidence_requirements": {
+        "required_packet_type": "preview-check",
+        "requires_independent_readback": false,
+        "requires_checkpoint_hash": false
+      },
+      "user_facing_python_allowed": false,
+      "known_limitations": [
+        "Eevee identifier is BLENDER_EEVEE on Blender 5.x and BLENDER_EEVEE_NEXT on Blender 4.2-4.x."
+      ]
+    },
+    {
+      "operation_id": "op.inspect.scene-hierarchy",
+      "display_name": "Inspect Scene Hierarchy & Transform Scale Hygiene",
+      "purpose": "Inspect parent-child relationships, collection organization, and non-uniform or negative scale anomalies.",
+      "category": "inspection",
+      "supported_runtime_paths": ["path-1-host-a", "path-1-host-b", "path-2-community"],
+      "runtime_tool_mappings": {
+        "path-1-host-a": {
+          "primary_tool": "get_objects_summary",
+          "readback_tools": ["get_objects_summary"],
+          "parameter_adapter": "lab_mcp_hierarchy_summary",
+          "mutation_transport_note": "Read-only Lab MCP hierarchy inspection."
+        },
+        "path-1-host-b": {
+          "primary_tool": "get_objects_summary",
+          "readback_tools": ["get_objects_summary"],
+          "parameter_adapter": "lab_mcp_hierarchy_summary",
+          "mutation_transport_note": "Read-only Lab MCP hierarchy inspection."
+        },
+        "path-2-community": {
+          "primary_tool": "get_scene_info",
+          "readback_tools": ["get_scene_info"],
+          "parameter_adapter": "community_mcp_hierarchy_summary",
+          "mutation_transport_note": "Read-only community scene hierarchy inspection."
+        }
+      },
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [],
+        "properties": {
+          "check_unapplied_scale": { "type": "boolean" }
+        }
+      },
+      "output_schema": {
+        "type": "object",
+        "required": ["root_objects", "negative_scale_objects", "unapplied_scale_objects"],
+        "properties": {
+          "root_objects": { "type": "array" },
+          "negative_scale_objects": { "type": "array" },
+          "unapplied_scale_objects": { "type": "array" }
+        }
+      },
+      "required_capability_tier": "L0",
+      "required_governed_runtime_ceiling": "L0",
+      "governing_skills": ["scene-readiness", "pre-handoff-verification"],
+      "side_effect_classification": "none",
+      "behavior": "read_only",
+      "idempotency": "idempotent_read",
+      "required_preconditions": [
+        {
+          "check_id": "pre.runtime_connected",
+          "description": "External MCP runtime session must be connected.",
+          "blocking": true
+        }
+      ],
+      "required_postconditions": [
+        {
+          "check_id": "post.hierarchy_summary_returned",
+          "description": "Root objects and scale hygiene lists are returned.",
+          "verification_method": "read_only_response_schema"
+        }
+      ],
+      "backup_requirement": "none",
+      "approval_requirement": "none",
+      "asset_license_requirement": "none",
+      "version_constraints": {
+        "path_1_min_blender": "5.1.0",
+        "path_2_min_blender": "3.0.0"
+      },
+      "timeout_and_retry_policy": {
+        "timeout_ms": 5000,
+        "max_retries": 1,
+        "retry_on_timeout": true,
+        "ambiguous_timeout_behavior": "halt_and_inspect_no_blind_retry"
+      },
+      "evidence_requirements": {
+        "required_packet_type": "preview-check",
+        "requires_independent_readback": false,
+        "requires_checkpoint_hash": false
+      },
+      "user_facing_python_allowed": false,
+      "known_limitations": [
+        "Does not automatically apply transforms; flags unapplied or negative scale for preflight."
+      ]
+    },
+    {
+      "operation_id": "op.inspect.animation-metadata",
+      "display_name": "Inspect Animation Clips, NLA Tracks & Armature Metadata",
+      "purpose": "Inspect action datablocks, NLA strips, frame range, and armature skinning presence prior to GLB animation handoff.",
+      "category": "inspection",
+      "supported_runtime_paths": ["path-1-host-a", "path-1-host-b", "path-2-community"],
+      "runtime_tool_mappings": {
+        "path-1-host-a": {
+          "primary_tool": "get_blendfile_summary_datablocks",
+          "secondary_tools": ["get_objects_summary"],
+          "readback_tools": ["get_blendfile_summary_datablocks"],
+          "parameter_adapter": "lab_mcp_animation_metadata",
+          "mutation_transport_note": "Read-only Lab MCP action/armature datablock inspection."
+        },
+        "path-1-host-b": {
+          "primary_tool": "get_blendfile_summary_datablocks",
+          "secondary_tools": ["get_objects_summary"],
+          "readback_tools": ["get_blendfile_summary_datablocks"],
+          "parameter_adapter": "lab_mcp_animation_metadata",
+          "mutation_transport_note": "Read-only Lab MCP action/armature datablock inspection."
+        },
+        "path-2-community": {
+          "primary_tool": "get_scene_info",
+          "readback_tools": ["get_scene_info"],
+          "parameter_adapter": "community_mcp_animation_metadata",
+          "mutation_transport_note": "Read-only community animation metadata inspection."
+        }
+      },
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [],
+        "properties": {
+          "armature_name": { "type": "string" }
+        }
+      },
+      "output_schema": {
+        "type": "object",
+        "required": ["action_count", "armature_count", "frame_start", "frame_end"],
+        "properties": {
+          "action_count": { "type": "integer", "minimum": 0 },
+          "armature_count": { "type": "integer", "minimum": 0 },
+          "frame_start": { "type": "integer" },
+          "frame_end": { "type": "integer" }
+        }
+      },
+      "required_capability_tier": "L0",
+      "required_governed_runtime_ceiling": "L0",
+      "governing_skills": ["glb-animation-handoff", "scene-readiness"],
+      "side_effect_classification": "none",
+      "behavior": "read_only",
+      "idempotency": "idempotent_read",
+      "required_preconditions": [
+        {
+          "check_id": "pre.runtime_connected",
+          "description": "External MCP runtime session must be connected.",
+          "blocking": true
+        }
+      ],
+      "required_postconditions": [
+        {
+          "check_id": "post.animation_metadata_returned",
+          "description": "Action count, armature count, and frame range are returned.",
+          "verification_method": "read_only_response_schema"
+        }
+      ],
+      "backup_requirement": "none",
+      "approval_requirement": "none",
+      "asset_license_requirement": "none",
+      "version_constraints": {
+        "path_1_min_blender": "5.1.0",
+        "path_2_min_blender": "3.0.0"
+      },
+      "timeout_and_retry_policy": {
+        "timeout_ms": 5000,
+        "max_retries": 1,
+        "retry_on_timeout": true,
+        "ambiguous_timeout_behavior": "halt_and_inspect_no_blind_retry"
+      },
+      "evidence_requirements": {
+        "required_packet_type": "preview-check",
+        "requires_independent_readback": false,
+        "requires_checkpoint_hash": false
+      },
+      "user_facing_python_allowed": false,
+      "known_limitations": [
+        "Does not bake constraints or NLA strips during L0 inspection."
+      ]
+    },
+    {
+      "operation_id": "op.inspect.glb-export-readiness",
+      "display_name": "Inspect GLB Export Readiness (Zero File Write)",
+      "purpose": "Verify missing external textures, linked libraries, scale hygiene, and PBR compatibility before any GLB export is attempted.",
+      "category": "inspection",
+      "supported_runtime_paths": ["path-1-host-a", "path-1-host-b", "path-2-community"],
+      "runtime_tool_mappings": {
+        "path-1-host-a": {
+          "primary_tool": "get_blendfile_summary_missing_files",
+          "secondary_tools": [
+            "get_blendfile_summary_of_linked_libraries",
+            "get_objects_summary"
+          ],
+          "readback_tools": ["get_blendfile_summary_missing_files"],
+          "parameter_adapter": "lab_mcp_glb_readiness",
+          "mutation_transport_note": "Read-only Lab MCP missing-files and linked-library check."
+        },
+        "path-1-host-b": {
+          "primary_tool": "get_blendfile_summary_missing_files",
+          "secondary_tools": [
+            "get_blendfile_summary_of_linked_libraries",
+            "get_objects_summary"
+          ],
+          "readback_tools": ["get_blendfile_summary_missing_files"],
+          "parameter_adapter": "lab_mcp_glb_readiness",
+          "mutation_transport_note": "Read-only Lab MCP missing-files and linked-library check."
+        },
+        "path-2-community": {
+          "primary_tool": "get_scene_info",
+          "secondary_tools": ["get_object_info"],
+          "readback_tools": ["get_scene_info"],
+          "parameter_adapter": "community_mcp_glb_readiness",
+          "mutation_transport_note": "Read-only community scene and object GLB readiness check."
+        }
+      },
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [],
+        "properties": {
+          "target_profile": {
+            "type": "string",
+            "enum": ["desktop_web", "mobile_web", "hybrid_render_and_web"]
+          }
+        }
+      },
+      "output_schema": {
+        "type": "object",
+        "required": ["export_ready", "missing_files_count", "linked_libraries_count", "blockers"],
+        "properties": {
+          "export_ready": { "type": "boolean" },
+          "missing_files_count": { "type": "integer", "minimum": 0 },
+          "linked_libraries_count": { "type": "integer", "minimum": 0 },
+          "blockers": { "type": "array", "items": { "type": "string" } }
+        }
+      },
+      "required_capability_tier": "L0",
+      "required_governed_runtime_ceiling": "L0",
+      "governing_skills": ["pre-handoff-verification", "glb-web-handoff", "mobile-glb-budget"],
+      "side_effect_classification": "none",
+      "behavior": "read_only",
+      "idempotency": "idempotent_read",
+      "required_preconditions": [
+        {
+          "check_id": "pre.runtime_connected",
+          "description": "External MCP runtime session must be connected.",
+          "blocking": true
+        }
+      ],
+      "required_postconditions": [
+        {
+          "check_id": "post.glb_readiness_evaluated",
+          "description": "Readiness report is returned with zero files written to disk.",
+          "verification_method": "read_only_response_schema"
+        }
+      ],
+      "backup_requirement": "none",
+      "approval_requirement": "none",
+      "asset_license_requirement": "none",
+      "version_constraints": {
+        "path_1_min_blender": "5.1.0",
+        "path_2_min_blender": "3.0.0"
+      },
+      "timeout_and_retry_policy": {
+        "timeout_ms": 5000,
+        "max_retries": 1,
+        "retry_on_timeout": true,
+        "ambiguous_timeout_behavior": "halt_and_inspect_no_blind_retry"
+      },
+      "evidence_requirements": {
+        "required_packet_type": "preview-check",
+        "requires_independent_readback": false,
+        "requires_checkpoint_hash": false
+      },
+      "user_facing_python_allowed": false,
+      "known_limitations": [
+        "Does not perform a .glb file export; evaluates scene readiness only."
+      ]
+    },
+    {
+      "operation_id": "op.mutate.camera-transform-and-lens",
+      "display_name": "Update Existing Camera Transform & Lens Settings",
+      "purpose": "Apply bounded, reversible location, Euler rotation, focal length (mm), and DOF focus distance updates to an existing camera after a verified .blend checkpoint.",
+      "category": "mutation",
+      "supported_runtime_paths": ["path-1-host-a", "path-1-host-b", "path-2-community"],
+      "runtime_tool_mappings": {
+        "path-1-host-a": {
+          "primary_tool": "set_camera_properties_governed",
+          "readback_tools": ["get_objects_summary"],
+          "parameter_adapter": "lab_mcp_camera_mutation",
+          "mutation_transport_note": "Constrained camera property update on Path 1 after verified .blend checkpoint; never exposes raw Python to the user."
+        },
+        "path-1-host-b": {
+          "primary_tool": "set_camera_properties_governed",
+          "readback_tools": ["get_objects_summary"],
+          "parameter_adapter": "lab_mcp_camera_mutation",
+          "mutation_transport_note": "Constrained camera property update on Path 1 after verified .blend checkpoint; never exposes raw Python to the user."
+        },
+        "path-2-community": {
+          "primary_tool": "set_camera_properties_governed",
+          "readback_tools": ["get_scene_info", "get_object_info"],
+          "parameter_adapter": "community_mcp_camera_mutation",
+          "mutation_transport_note": "Constrained camera property update on Path 2 after verified .blend checkpoint; never exposes raw Python to the user."
+        }
+      },
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["camera_name", "location", "rotation_euler_deg", "focal_length_mm"],
+        "properties": {
+          "camera_name": { "type": "string", "minLength": 1, "maxLength": 128 },
+          "location": {
+            "type": "array",
+            "minItems": 3,
+            "maxItems": 3,
+            "items": { "type": "number", "minimum": -1000, "maximum": 1000 }
+          },
+          "rotation_euler_deg": {
+            "type": "array",
+            "minItems": 3,
+            "maxItems": 3,
+            "items": { "type": "number", "minimum": -360, "maximum": 360 }
+          },
+          "focal_length_mm": {
+            "type": "number",
+            "minimum": 12,
+            "maximum": 300
+          },
+          "dof_enabled": { "type": "boolean" },
+          "f_stop": { "type": "number", "minimum": 0.5, "maximum": 64 }
+        }
+      },
+      "output_schema": {
+        "type": "object",
+        "required": ["camera_name", "updated", "location", "rotation_euler_deg", "focal_length_mm"],
+        "properties": {
+          "camera_name": { "type": "string" },
+          "updated": { "type": "boolean" },
+          "location": { "type": "array" },
+          "rotation_euler_deg": { "type": "array" },
+          "focal_length_mm": { "type": "number" }
+        }
+      },
+      "required_capability_tier": "L1",
+      "required_governed_runtime_ceiling": "L1",
+      "governing_skills": ["camera-composition", "product-hero-scene-planner", "character-portrait"],
+      "side_effect_classification": "reversible_scene_mutation",
+      "behavior": "mutating",
+      "idempotency": "idempotent_set_state",
+      "required_preconditions": [
+        {
+          "check_id": "pre.verified_blend_checkpoint",
+          "description": "Pre-mutation .blend checkpoint must exist on disk with verified byteSize > 0 and SHA-256.",
+          "blocking": true
+        },
+        {
+          "check_id": "pre.camera_object_exists",
+          "description": "Target camera_name must already exist in the scene as a CAMERA object.",
+          "blocking": true
+        }
+      ],
+      "required_postconditions": [
+        {
+          "check_id": "post.camera_state_matches_readback",
+          "description": "Independent readback confirms camera location, rotation_euler_deg, and focal_length_mm match requested values within tolerance (0.001).",
+          "verification_method": "independent_scene_readback"
+        }
+      ],
+      "backup_requirement": "verified_pre_mutation_blend_checkpoint",
+      "approval_requirement": "none",
+      "asset_license_requirement": "none",
+      "version_constraints": {
+        "path_1_min_blender": "5.1.0",
+        "path_2_min_blender": "3.0.0"
+      },
+      "timeout_and_retry_policy": {
+        "timeout_ms": 8000,
+        "max_retries": 0,
+        "retry_on_timeout": false,
+        "ambiguous_timeout_behavior": "halt_and_inspect_no_blind_retry"
+      },
+      "evidence_requirements": {
+        "required_packet_type": "preview-check",
+        "requires_independent_readback": true,
+        "requires_checkpoint_hash": true
+      },
+      "user_facing_python_allowed": false,
+      "known_limitations": [
+        "Only updates an existing camera datablock; never creates or deletes cameras."
+      ]
+    },
+    {
+      "operation_id": "op.mutate.light-parameters",
+      "display_name": "Update Existing Light Energy, Color & Transform",
+      "purpose": "Apply bounded, reversible energy (Watts), RGB color, size, and transform updates to an existing light object after a verified .blend checkpoint.",
+      "category": "mutation",
+      "supported_runtime_paths": ["path-1-host-a", "path-1-host-b", "path-2-community"],
+      "runtime_tool_mappings": {
+        "path-1-host-a": {
+          "primary_tool": "set_light_properties_governed",
+          "readback_tools": ["get_objects_summary"],
+          "parameter_adapter": "lab_mcp_light_mutation",
+          "mutation_transport_note": "Constrained light parameter update on Path 1 after verified .blend checkpoint."
+        },
+        "path-1-host-b": {
+          "primary_tool": "set_light_properties_governed",
+          "readback_tools": ["get_objects_summary"],
+          "parameter_adapter": "lab_mcp_light_mutation",
+          "mutation_transport_note": "Constrained light parameter update on Path 1 after verified .blend checkpoint."
+        },
+        "path-2-community": {
+          "primary_tool": "set_light_properties_governed",
+          "readback_tools": ["get_scene_info", "get_object_info"],
+          "parameter_adapter": "community_mcp_light_mutation",
+          "mutation_transport_note": "Constrained light parameter update on Path 2 after verified .blend checkpoint."
+        }
+      },
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["light_name", "energy_watts", "color_rgb"],
+        "properties": {
+          "light_name": { "type": "string", "minLength": 1, "maxLength": 128 },
+          "energy_watts": { "type": "number", "minimum": 0, "maximum": 100000 },
+          "color_rgb": {
+            "type": "array",
+            "minItems": 3,
+            "maxItems": 3,
+            "items": { "type": "number", "minimum": 0, "maximum": 1 }
+          },
+          "location": {
+            "type": "array",
+            "minItems": 3,
+            "maxItems": 3,
+            "items": { "type": "number", "minimum": -1000, "maximum": 1000 }
+          },
+          "rotation_euler_deg": {
+            "type": "array",
+            "minItems": 3,
+            "maxItems": 3,
+            "items": { "type": "number", "minimum": -360, "maximum": 360 }
+          },
+          "area_size": { "type": "number", "minimum": 0.01, "maximum": 100 }
+        }
+      },
+      "output_schema": {
+        "type": "object",
+        "required": ["light_name", "updated", "energy_watts", "color_rgb"],
+        "properties": {
+          "light_name": { "type": "string" },
+          "updated": { "type": "boolean" },
+          "energy_watts": { "type": "number" },
+          "color_rgb": { "type": "array" },
+          "location": { "type": "array" }
+        }
+      },
+      "required_capability_tier": "L1",
+      "required_governed_runtime_ceiling": "L1",
+      "governing_skills": ["lighting-material-plan", "product-hero-scene-planner", "interior-scene"],
+      "side_effect_classification": "reversible_scene_mutation",
+      "behavior": "mutating",
+      "idempotency": "idempotent_set_state",
+      "required_preconditions": [
+        {
+          "check_id": "pre.verified_blend_checkpoint",
+          "description": "Pre-mutation .blend checkpoint must exist on disk with verified byteSize > 0 and SHA-256.",
+          "blocking": true
+        },
+        {
+          "check_id": "pre.light_object_exists",
+          "description": "Target light_name must already exist in the scene as a LIGHT object.",
+          "blocking": true
+        }
+      ],
+      "required_postconditions": [
+        {
+          "check_id": "post.light_state_matches_readback",
+          "description": "Independent readback confirms light energy_watts and color_rgb match requested values within tolerance (0.001).",
+          "verification_method": "independent_scene_readback"
+        }
+      ],
+      "backup_requirement": "verified_pre_mutation_blend_checkpoint",
+      "approval_requirement": "none",
+      "asset_license_requirement": "none",
+      "version_constraints": {
+        "path_1_min_blender": "5.1.0",
+        "path_2_min_blender": "3.0.0"
+      },
+      "timeout_and_retry_policy": {
+        "timeout_ms": 8000,
+        "max_retries": 0,
+        "retry_on_timeout": false,
+        "ambiguous_timeout_behavior": "halt_and_inspect_no_blind_retry"
+      },
+      "evidence_requirements": {
+        "required_packet_type": "preview-check",
+        "requires_independent_readback": true,
+        "requires_checkpoint_hash": true
+      },
+      "user_facing_python_allowed": false,
+      "known_limitations": [
+        "Only updates an existing LIGHT object; never creates duplicate lights."
+      ]
+    },
+    {
+      "operation_id": "op.mutate.material-pbr-properties",
+      "display_name": "Update Existing Material Principled BSDF Properties",
+      "purpose": "Apply bounded updates to allowlisted Principled BSDF inputs (base_color_rgba, metallic, roughness, ior) on an existing material.",
+      "category": "mutation",
+      "supported_runtime_paths": ["path-1-host-a", "path-1-host-b", "path-2-community"],
+      "runtime_tool_mappings": {
+        "path-1-host-a": {
+          "primary_tool": "set_material_pbr_governed",
+          "readback_tools": ["get_blendfile_summary_datablocks", "get_objects_summary"],
+          "parameter_adapter": "lab_mcp_material_mutation",
+          "mutation_transport_note": "Constrained Principled BSDF parameter update on Path 1 after verified .blend checkpoint."
+        },
+        "path-1-host-b": {
+          "primary_tool": "set_material_pbr_governed",
+          "readback_tools": ["get_blendfile_summary_datablocks", "get_objects_summary"],
+          "parameter_adapter": "lab_mcp_material_mutation",
+          "mutation_transport_note": "Constrained Principled BSDF parameter update on Path 1 after verified .blend checkpoint."
+        },
+        "path-2-community": {
+          "primary_tool": "set_material_pbr_governed",
+          "readback_tools": ["get_object_info"],
+          "parameter_adapter": "community_mcp_material_mutation",
+          "mutation_transport_note": "Constrained Principled BSDF parameter update on Path 2 after verified .blend checkpoint."
+        }
+      },
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["object_name", "material_name", "roughness", "metallic"],
+        "properties": {
+          "object_name": { "type": "string", "minLength": 1, "maxLength": 128 },
+          "material_name": { "type": "string", "minLength": 1, "maxLength": 128 },
+          "base_color_rgba": {
+            "type": "array",
+            "minItems": 4,
+            "maxItems": 4,
+            "items": { "type": "number", "minimum": 0, "maximum": 1 }
+          },
+          "metallic": { "type": "number", "minimum": 0, "maximum": 1 },
+          "roughness": { "type": "number", "minimum": 0, "maximum": 1 },
+          "ior": { "type": "number", "minimum": 1, "maximum": 3 }
+        }
+      },
+      "output_schema": {
+        "type": "object",
+        "required": ["material_name", "updated", "roughness", "metallic"],
+        "properties": {
+          "material_name": { "type": "string" },
+          "updated": { "type": "boolean" },
+          "roughness": { "type": "number" },
+          "metallic": { "type": "number" }
+        }
+      },
+      "required_capability_tier": "L1",
+      "required_governed_runtime_ceiling": "L1",
+      "governing_skills": ["lighting-material-plan", "product-hero-scene-planner"],
+      "side_effect_classification": "reversible_scene_mutation",
+      "behavior": "mutating",
+      "idempotency": "idempotent_set_state",
+      "required_preconditions": [
+        {
+          "check_id": "pre.verified_blend_checkpoint",
+          "description": "Pre-mutation .blend checkpoint must exist on disk with verified byteSize > 0 and SHA-256.",
+          "blocking": true
+        },
+        {
+          "check_id": "pre.material_slot_exists",
+          "description": "Target object and material slot must exist in the scene.",
+          "blocking": true
+        }
+      ],
+      "required_postconditions": [
+        {
+          "check_id": "post.material_pbr_matches_readback",
+          "description": "Independent readback confirms roughness and metallic values match requested inputs.",
+          "verification_method": "independent_scene_readback"
+        }
+      ],
+      "backup_requirement": "verified_pre_mutation_blend_checkpoint",
+      "approval_requirement": "none",
+      "asset_license_requirement": "none",
+      "version_constraints": {
+        "path_1_min_blender": "5.1.0",
+        "path_2_min_blender": "3.0.0"
+      },
+      "timeout_and_retry_policy": {
+        "timeout_ms": 8000,
+        "max_retries": 0,
+        "retry_on_timeout": false,
+        "ambiguous_timeout_behavior": "halt_and_inspect_no_blind_retry"
+      },
+      "evidence_requirements": {
+        "required_packet_type": "preview-check",
+        "requires_independent_readback": true,
+        "requires_checkpoint_hash": true
+      },
+      "user_facing_python_allowed": false,
+      "known_limitations": [
+        "Only updates scalar/color inputs on an existing Principled BSDF material; does not rewire arbitrary shader graphs."
+      ]
+    },
+    {
+      "operation_id": "op.mutate.object-transform",
+      "display_name": "Update Existing Object Transform (Positive Scale Guarded)",
+      "purpose": "Apply bounded location, Euler rotation, and positive scale updates to an existing scene object after a verified .blend checkpoint.",
+      "category": "mutation",
+      "supported_runtime_paths": ["path-1-host-a", "path-1-host-b", "path-2-community"],
+      "runtime_tool_mappings": {
+        "path-1-host-a": {
+          "primary_tool": "set_object_transform_governed",
+          "readback_tools": ["get_objects_summary"],
+          "parameter_adapter": "lab_mcp_object_transform",
+          "mutation_transport_note": "Constrained object transform update on Path 1 after verified .blend checkpoint."
+        },
+        "path-1-host-b": {
+          "primary_tool": "set_object_transform_governed",
+          "readback_tools": ["get_objects_summary"],
+          "parameter_adapter": "lab_mcp_object_transform",
+          "mutation_transport_note": "Constrained object transform update on Path 1 after verified .blend checkpoint."
+        },
+        "path-2-community": {
+          "primary_tool": "set_object_transform_governed",
+          "readback_tools": ["get_scene_info", "get_object_info"],
+          "parameter_adapter": "community_mcp_object_transform",
+          "mutation_transport_note": "Constrained object transform update on Path 2 after verified .blend checkpoint."
+        }
+      },
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["object_name", "location", "rotation_euler_deg", "scale"],
+        "properties": {
+          "object_name": { "type": "string", "minLength": 1, "maxLength": 128 },
+          "location": {
+            "type": "array",
+            "minItems": 3,
+            "maxItems": 3,
+            "items": { "type": "number", "minimum": -1000, "maximum": 1000 }
+          },
+          "rotation_euler_deg": {
+            "type": "array",
+            "minItems": 3,
+            "maxItems": 3,
+            "items": { "type": "number", "minimum": -360, "maximum": 360 }
+          },
+          "scale": {
+            "type": "array",
+            "minItems": 3,
+            "maxItems": 3,
+            "items": { "type": "number", "exclusiveMinimum": 0, "maximum": 100 }
+          }
+        }
+      },
+      "output_schema": {
+        "type": "object",
+        "required": ["object_name", "updated", "location", "rotation_euler_deg", "scale"],
+        "properties": {
+          "object_name": { "type": "string" },
+          "updated": { "type": "boolean" },
+          "location": { "type": "array" },
+          "rotation_euler_deg": { "type": "array" },
+          "scale": { "type": "array" }
+        }
+      },
+      "required_capability_tier": "L1",
+      "required_governed_runtime_ceiling": "L1",
+      "governing_skills": ["product-hero-scene-planner", "product-grid-scene-planner", "environment-shot"],
+      "side_effect_classification": "reversible_scene_mutation",
+      "behavior": "mutating",
+      "idempotency": "idempotent_set_state",
+      "required_preconditions": [
+        {
+          "check_id": "pre.verified_blend_checkpoint",
+          "description": "Pre-mutation .blend checkpoint must exist on disk with verified byteSize > 0 and SHA-256.",
+          "blocking": true
+        },
+        {
+          "check_id": "pre.target_object_exists",
+          "description": "Target object_name must already exist in the scene.",
+          "blocking": true
+        }
+      ],
+      "required_postconditions": [
+        {
+          "check_id": "post.object_transform_matches_readback",
+          "description": "Independent readback confirms object location, rotation, and positive scale match requested values.",
+          "verification_method": "independent_scene_readback"
+        }
+      ],
+      "backup_requirement": "verified_pre_mutation_blend_checkpoint",
+      "approval_requirement": "none",
+      "asset_license_requirement": "none",
+      "version_constraints": {
+        "path_1_min_blender": "5.1.0",
+        "path_2_min_blender": "3.0.0"
+      },
+      "timeout_and_retry_policy": {
+        "timeout_ms": 8000,
+        "max_retries": 0,
+        "retry_on_timeout": false,
+        "ambiguous_timeout_behavior": "halt_and_inspect_no_blind_retry"
+      },
+      "evidence_requirements": {
+        "required_packet_type": "preview-check",
+        "requires_independent_readback": true,
+        "requires_checkpoint_hash": true
+      },
+      "user_facing_python_allowed": false,
+      "known_limitations": [
+        "Rejects negative scale components to prevent inverted mesh normals in downstream GLB exports."
+      ]
+    },
+    {
+      "operation_id": "op.export.render-still",
+      "display_name": "Render Still Image to Governed Output Directory",
+      "purpose": "Render a still frame to an allowlisted output path and verify the produced file byteSize and SHA-256 on disk.",
+      "category": "export_or_import",
+      "supported_runtime_paths": ["path-1-host-a", "path-1-host-b", "path-2-community", "cli-appendix"],
+      "runtime_tool_mappings": {
+        "path-1-host-a": {
+          "primary_tool": "render_viewport_to_path",
+          "secondary_tools": ["render_thumbnail_to_path"],
+          "readback_tools": ["get_blendfile_summary_path_info"],
+          "parameter_adapter": "lab_mcp_render_to_path",
+          "mutation_transport_note": "Writes still image to allowlisted path via Lab MCP render_viewport_to_path."
+        },
+        "path-1-host-b": {
+          "primary_tool": "render_viewport_to_path",
+          "secondary_tools": ["render_thumbnail_to_path"],
+          "readback_tools": ["get_blendfile_summary_path_info"],
+          "parameter_adapter": "lab_mcp_render_to_path",
+          "mutation_transport_note": "Writes still image to allowlisted path via Lab MCP render_viewport_to_path."
+        },
+        "path-2-community": {
+          "primary_tool": "render_still_governed",
+          "readback_tools": ["get_scene_info"],
+          "parameter_adapter": "community_mcp_render_still",
+          "mutation_transport_note": "Governed still render to allowlisted output directory on Path 2."
+        },
+        "cli-appendix": {
+          "primary_tool": "blender_cli_render_still",
+          "readback_tools": ["filesystem_stat_and_sha256"],
+          "parameter_adapter": "cli_appendix_render_flags",
+          "mutation_transport_note": "Headless CLI appendix render (-b <file> -o <path> -F PNG -f 1)."
+        }
+      },
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["target_output_path", "output_directory_allowlist", "format"],
+        "properties": {
+          "target_output_path": { "type": "string", "minLength": 5 },
+          "output_directory_allowlist": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string", "minLength": 2 }
+          },
+          "format": { "type": "string", "enum": ["PNG", "OPEN_EXR", "JPEG", "WEBP"] }
+        }
+      },
+      "output_schema": {
+        "type": "object",
+        "required": ["artifact_path", "byte_size", "sha256"],
+        "properties": {
+          "artifact_path": { "type": "string" },
+          "byte_size": { "type": "integer", "minimum": 1 },
+          "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+        }
+      },
+      "required_capability_tier": "L2",
+      "required_governed_runtime_ceiling": "L2",
+      "governing_skills": ["render-export-evidence", "output-format-decision"],
+      "side_effect_classification": "file_write_export",
+      "behavior": "export",
+      "idempotency": "non_idempotent_append_or_export",
+      "required_preconditions": [
+        {
+          "check_id": "pre.output_path_in_allowlist",
+          "description": "target_output_path must resolve inside output_directory_allowlist without path traversal.",
+          "blocking": true
+        },
+        {
+          "check_id": "pre.verified_blend_checkpoint",
+          "description": "Pre-export .blend checkpoint must be verified before invoking L2 export.",
+          "blocking": true
+        }
+      ],
+      "required_postconditions": [
+        {
+          "check_id": "post.render_file_verified_on_disk",
+          "description": "Rendered image file exists on disk with byte_size > 0 and 64-hex SHA-256.",
+          "verification_method": "disk_file_and_sha256_verification"
+        }
+      ],
+      "backup_requirement": "verified_pre_mutation_blend_checkpoint",
+      "approval_requirement": "operator_confirmation_if_escalated",
+      "asset_license_requirement": "none",
+      "version_constraints": {
+        "path_1_min_blender": "5.1.0",
+        "path_2_min_blender": "3.0.0",
+        "cli_appendix_min_blender": "4.2.0"
+      },
+      "timeout_and_retry_policy": {
+        "timeout_ms": 60000,
+        "max_retries": 0,
+        "retry_on_timeout": false,
+        "ambiguous_timeout_behavior": "halt_and_inspect_no_blind_retry"
+      },
+      "evidence_requirements": {
+        "required_packet_type": "render-export",
+        "requires_independent_readback": true,
+        "requires_checkpoint_hash": true
+      },
+      "user_facing_python_allowed": false,
+      "known_limitations": [
+        "Separately gated at L2; deferred from the initial L0/L1 vertical slice unless L2 is explicitly granted."
+      ]
+    },
+    {
+      "operation_id": "op.export.glb-container",
+      "display_name": "Export GLB 2.0 Container to Governed Output Directory",
+      "purpose": "Export a binary .glb file to an allowlisted directory and validate its binary GLB 2.0 container and glTF semantics.",
+      "category": "export_or_import",
+      "supported_runtime_paths": ["path-1-host-a", "path-1-host-b", "path-2-community", "cli-appendix"],
+      "runtime_tool_mappings": {
+        "path-1-host-a": {
+          "primary_tool": "export_glb_governed",
+          "readback_tools": ["get_blendfile_summary_path_info"],
+          "parameter_adapter": "lab_mcp_glb_export",
+          "mutation_transport_note": "Governed GLB 2.0 export to allowlisted directory followed by binary GLB inspection."
+        },
+        "path-1-host-b": {
+          "primary_tool": "export_glb_governed",
+          "readback_tools": ["get_blendfile_summary_path_info"],
+          "parameter_adapter": "lab_mcp_glb_export",
+          "mutation_transport_note": "Governed GLB 2.0 export to allowlisted directory followed by binary GLB inspection."
+        },
+        "path-2-community": {
+          "primary_tool": "export_glb_governed",
+          "readback_tools": ["get_scene_info"],
+          "parameter_adapter": "community_mcp_glb_export",
+          "mutation_transport_note": "Governed GLB 2.0 export on Path 2 followed by binary GLB inspection."
+        },
+        "cli-appendix": {
+          "primary_tool": "blender_cli_export_glb",
+          "readback_tools": ["inspect_glb_binary_container"],
+          "parameter_adapter": "cli_appendix_gltf_export",
+          "mutation_transport_note": "Headless CLI appendix GLB export on Blender 4.5+."
+        }
+      },
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["target_output_path", "output_directory_allowlist"],
+        "properties": {
+          "target_output_path": { "type": "string", "pattern": "\\.glb$" },
+          "output_directory_allowlist": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string", "minLength": 2 }
+          },
+          "apply_modifiers": { "type": "boolean" },
+          "export_yup": { "type": "boolean" }
+        }
+      },
+      "output_schema": {
+        "type": "object",
+        "required": ["artifact_path", "byte_size", "sha256", "glb_inspection"],
+        "properties": {
+          "artifact_path": { "type": "string" },
+          "byte_size": { "type": "integer", "minimum": 12 },
+          "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+          "glb_inspection": { "type": "object" }
+        }
+      },
+      "required_capability_tier": "L2",
+      "required_governed_runtime_ceiling": "L2",
+      "governing_skills": ["glb-web-handoff", "mobile-glb-budget", "render-export-evidence"],
+      "side_effect_classification": "file_write_export",
+      "behavior": "export",
+      "idempotency": "non_idempotent_append_or_export",
+      "required_preconditions": [
+        {
+          "check_id": "pre.output_path_in_allowlist",
+          "description": "target_output_path must end with .glb and resolve inside output_directory_allowlist.",
+          "blocking": true
+        },
+        {
+          "check_id": "pre.verified_blend_checkpoint",
+          "description": "Pre-export .blend checkpoint must be verified on disk.",
+          "blocking": true
+        }
+      ],
+      "required_postconditions": [
+        {
+          "check_id": "post.glb_binary_container_valid",
+          "description": "Exported .glb passes binary container and semantic inspection (magic glTF, version 2).",
+          "verification_method": "glb_binary_semantic_inspection"
+        }
+      ],
+      "backup_requirement": "verified_pre_mutation_blend_checkpoint",
+      "approval_requirement": "operator_confirmation_if_escalated",
+      "asset_license_requirement": "cleared_spdx_or_category",
+      "version_constraints": {
+        "path_1_min_blender": "5.1.0",
+        "path_2_min_blender": "3.0.0",
+        "cli_appendix_min_blender": "4.5.0"
+      },
+      "timeout_and_retry_policy": {
+        "timeout_ms": 60000,
+        "max_retries": 0,
+        "retry_on_timeout": false,
+        "ambiguous_timeout_behavior": "halt_and_inspect_no_blind_retry"
+      },
+      "evidence_requirements": {
+        "required_packet_type": "glb-handoff",
+        "requires_independent_readback": true,
+        "requires_checkpoint_hash": true
+      },
+      "user_facing_python_allowed": false,
+      "known_limitations": [
+        "Separately gated at L2; requires binary GLB 2.0 inspection before claiming Produced/Verified."
+      ]
+    },
+    {
+      "operation_id": "op.export.import-cleared-asset",
+      "display_name": "Import License-Cleared External 3D / Material Asset",
+      "purpose": "Import an external asset only after asset-license-checker clearance and a verified pre-mutation .blend checkpoint.",
+      "category": "export_or_import",
+      "supported_runtime_paths": ["path-2-community"],
+      "runtime_tool_mappings": {
+        "path-2-community": {
+          "primary_tool": "import_asset",
+          "secondary_tools": ["search_assets"],
+          "readback_tools": ["get_scene_info", "get_object_info"],
+          "parameter_adapter": "community_mcp_import_asset",
+          "mutation_transport_note": "Uses Path 2 import_asset only after SPDX/category license clearance and .blend backup."
+        }
+      },
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["asset_id", "asset_source", "license_clearance"],
+        "properties": {
+          "asset_id": { "type": "string", "minLength": 1, "maxLength": 128 },
+          "asset_source": { "type": "string", "enum": ["polyhaven", "local_allowlisted_library"] },
+          "license_clearance": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["status", "spdxOrCategory", "verifiedBySkill"],
+            "properties": {
+              "status": { "const": "Cleared" },
+              "spdxOrCategory": {
+                "type": "string",
+                "enum": ["CC0-1.0", "CC-BY-4.0", "Royalty-Free-Commercial", "Proprietary-First-Party"]
+              },
+              "verifiedBySkill": { "const": "asset-license-checker" }
+            }
+          }
+        }
+      },
+      "output_schema": {
+        "type": "object",
+        "required": ["imported_asset_id", "imported_objects"],
+        "properties": {
+          "imported_asset_id": { "type": "string" },
+          "imported_objects": { "type": "array", "items": { "type": "string" } }
+        }
+      },
+      "required_capability_tier": "L2",
+      "required_governed_runtime_ceiling": "L2",
+      "governing_skills": ["asset-license-checker", "asset-discovery", "asset-style-check"],
+      "side_effect_classification": "external_asset_import",
+      "behavior": "mutating",
+      "idempotency": "non_idempotent_append_or_export",
+      "required_preconditions": [
+        {
+          "check_id": "pre.asset_license_cleared",
+          "description": "Asset must carry Cleared license status from asset-license-checker.",
+          "blocking": true
+        },
+        {
+          "check_id": "pre.verified_blend_checkpoint",
+          "description": "Pre-mutation .blend checkpoint must exist and be SHA-256 verified on disk.",
+          "blocking": true
+        }
+      ],
+      "required_postconditions": [
+        {
+          "check_id": "post.imported_object_present_in_readback",
+          "description": "Independent scene readback confirms the imported asset datablock exists in the scene.",
+          "verification_method": "independent_scene_readback"
+        }
+      ],
+      "backup_requirement": "verified_pre_mutation_blend_checkpoint",
+      "approval_requirement": "operator_confirmation_if_escalated",
+      "asset_license_requirement": "cleared_spdx_or_category",
+      "version_constraints": {
+        "path_1_min_blender": "5.1.0",
+        "path_2_min_blender": "3.0.0"
+      },
+      "timeout_and_retry_policy": {
+        "timeout_ms": 30000,
+        "max_retries": 0,
+        "retry_on_timeout": false,
+        "ambiguous_timeout_behavior": "halt_and_inspect_no_blind_retry"
+      },
+      "evidence_requirements": {
+        "required_packet_type": "preview-check",
+        "requires_independent_readback": true,
+        "requires_checkpoint_hash": true
+      },
+      "user_facing_python_allowed": false,
+      "known_limitations": [
+        "External asset import tool (import_asset) is only exposed on Path 2 community mcp-for-blender and remains gated at L2."
+      ]
+    }
+  ]
+}

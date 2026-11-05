@@ -186,9 +186,13 @@ To prevent implicit privilege escalation when transitioning from BlendOps workfl
 ### Pre-mutation `.blend` checkpoint and fail-closed rollback rule
 
 1. **Backup Before Mutation:** Any `L1`, `L2`, or `L3` scene-mutating operation must first record a verified `.blend` checkpoint (`sourceBlendPath`, `backupPath`, `byteSize > 0`, 64-character hex `sha256`, `createdBeforeMutation: true`, `verifiedOnDisk: true`).
-2. **Fail-Closed Enforcement:** If backup creation or on-disk SHA-256 verification fails, `evaluateRuntimeCapabilityInvocation` in `scripts/validate-capability-policy.mjs` strictly blocks the mutation (`allowed: false`, `mutationBlockedByBackupFailure: true`).
-3. **Post-Recovery Verification & Honest Truth State:** If a mutation fails and the `.blend` checkpoint is restored, the agent must verify scene restoration via Path 1 (`get_blendfile_summary_datablocks`, `get_objects_summary`) or Path 2 (`get_scene_info`, `get_object_info`) and report `Runtime status: Failed` (or `Attempted`) with `Artifact status: Not Produced`.
-4. **Honest Boundary:** BlendOps defines and validates this capability and rollback protocol in schemas, registry metadata, and CI tests; it does **not** ship or claim a live Blender rollback execution daemon inside this repository (`blenderRuntime: "Not Run"`).
+2. **Fail-Closed Enforcement:** If backup creation or on-disk SHA-256 verification fails, `evaluateRuntimeCapabilityInvocation` in `scripts/validate-capability-policy.mjs` and `executeTypedOperationSequence` in `scripts/runtime-orchestrator.mjs` strictly block the mutation (`allowed: false`, `mutationBlockedByBackupFailure: true`).
+3. **Typed Operation Registry (`registry/runtime-operations.json`) & Transaction State Machine:**
+   - BlendOps maps `ExecutionPlan` steps to 18 canonical typed operations (`11 L0` read-only inspections, `4 L1` bounded reversible mutations, `3 L2` separately gated export/import operations) validated against [`../schemas/runtime-operations.schema.json`](../schemas/runtime-operations.schema.json).
+   - Arbitrary Python (`op.blocked.arbitrary-python`), shell (`op.blocked.shell-execution`), and destructive resets (`op.blocked.unconfirmed-destructive-reset`) are explicitly blocked (`L3`).
+   - Every operation follows a strict state machine (`planned → preflight → checkpoint_verified → approved_if_required → executing → readback → postcondition_verified → committed`) with idempotency tracking, zero blind retries on mutation timeouts, independent scene readback, and verified rollback restoration (`rollback_verified` vs `rollback_failed`), recorded in an Operation Execution Ledger ([`../schemas/operation-execution-ledger.schema.json`](../schemas/operation-execution-ledger.schema.json)).
+4. **Post-Recovery Verification & Honest Truth State:** If a mutation fails and the `.blend` checkpoint is restored, the orchestrator verifies scene restoration via Path 1 (`get_blendfile_summary_datablocks`, `get_objects_summary`) or Path 2 (`get_scene_info`, `get_object_info`) and reports `Runtime status: Failed` (or `Attempted`) with `Artifact status: Not Produced`.
+5. **Honest Boundary:** BlendOps defines and validates this capability, typed operation, and rollback protocol in schemas, registry metadata, and deterministic mock MCP tests; it does **not** ship or claim a live Blender runtime daemon inside this repository (`blenderRuntime: "Not Run"`).
 
 ---
 
@@ -199,6 +203,7 @@ This safety model is enforced through:
 - `docs/workflow-contract.md` (input/intermediate/output contract)
 - `docs/golden-path-cyberpunk-shoe.md` (first concrete non-Blender-user journey)
 - `schemas/runtime-capability-policy.schema.json` and `registry/runtime-capability-policy.json` (`L0`–`L3` capability & rollback policy)
+- `schemas/runtime-operations.schema.json`, `registry/runtime-operations.json`, `schemas/operation-execution-ledger.schema.json`, and `scripts/runtime-orchestrator.mjs` (Phase 3 typed operations & transaction safety)
 
 ---
 

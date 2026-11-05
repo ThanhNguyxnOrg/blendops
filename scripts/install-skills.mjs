@@ -26,6 +26,21 @@ import {
   inspectExecutionPlan,
   runPlanCliSubcommand,
 } from './compile-scene-plan.mjs';
+import {
+  RUNTIME_CLI_SUBCOMMANDS,
+  RECOGNIZED_RUNTIME_PATHS,
+  resolveRuntimeGovernancePaths,
+  discoverRuntimeSession,
+  validateRuntimeOperationsRegistry,
+  listRuntimeOperations,
+  getRuntimeOperation,
+  runExecutionPreflight,
+  executeTypedOperationSequence,
+  runProductSceneVerticalSlice,
+  createMockMcpRuntime,
+  redactSensitiveData,
+  runRuntimeAndExecutionCliSubcommand,
+} from './runtime-orchestrator.mjs';
 
 export {
   PRECEDENCE_HIERARCHY,
@@ -34,6 +49,19 @@ export {
   compileExecutionPlan,
   inspectExecutionPlan,
   runPlanCliSubcommand,
+  RUNTIME_CLI_SUBCOMMANDS,
+  RECOGNIZED_RUNTIME_PATHS,
+  resolveRuntimeGovernancePaths,
+  discoverRuntimeSession,
+  validateRuntimeOperationsRegistry,
+  listRuntimeOperations,
+  getRuntimeOperation,
+  runExecutionPreflight,
+  executeTypedOperationSequence,
+  runProductSceneVerticalSlice,
+  createMockMcpRuntime,
+  redactSensitiveData,
+  runRuntimeAndExecutionCliSubcommand,
 };
 
 const __filename = fileURLToPath(import.meta.url);
@@ -1851,6 +1879,14 @@ export function formatInstallerHelp() {
     '  blendops scene-spec-validate <scene-spec.json> [--project <dir>] [--json]',
     '  blendops plan-compile --spec <scene-spec.json> [--project <dir>] [--out <execution-plan.json>] [--json]',
     '  blendops plan-inspect <execution-plan.json> [--json]',
+    '  blendops runtime doctor [--project <dir>] [--config <runtime-config.json>] [--plan <execution-plan.json>] [--json]',
+    '  blendops runtime inspect [--project <dir>] [--config <runtime-config.json>] [--json]',
+    '  blendops runtime capabilities [--project <dir>] [--config <runtime-config.json>] [--json]',
+    '  blendops operation list [--project <dir>] [--tier L0|L1|L2] [--category <cat>] [--runtime-path <path>] [--json]',
+    '  blendops operation validate [--project <dir>] [--json]',
+    '  blendops execution preflight --plan <execution-plan.json> [--project <dir>] [--config <runtime-config.json>] [--json]',
+    '  blendops execution report <ledger-or-evidence.json> [--json]',
+    '  blendops execution inspect <ledger-or-evidence.json> [--json]',
     '',
     'Repository Script Usage (equivalent):',
     '  node scripts/install-skills.mjs --doctor [--target <name>] [--project <path>]',
@@ -4506,6 +4542,12 @@ export function runCli(argv = process.argv.slice(2), options = {}) {
     }
     if (Array.isArray(argv) && argv.length > 0 && PLAN_SUBCOMMANDS.has(argv[0])) {
       const res = runPlanCliSubcommand(argv, options);
+      process.stdout.write(res.report);
+      process.exitCode = typeof res.exitCode === 'number' ? res.exitCode : res.ok ? 0 : 1;
+      return res;
+    }
+    if (Array.isArray(argv) && argv.length > 0 && RUNTIME_CLI_SUBCOMMANDS.has(argv[0])) {
+      const res = runRuntimeAndExecutionCliSubcommand(argv, options);
       process.stdout.write(res.report);
       process.exitCode = typeof res.exitCode === 'number' ? res.exitCode : res.ok ? 0 : 1;
       return res;

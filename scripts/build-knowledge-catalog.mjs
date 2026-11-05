@@ -1938,8 +1938,23 @@ export function buildSharedCatalogFilesMap(rootDir = DEFAULT_ROOT) {
   const recipeSchemaRaw = fs.readFileSync(path.join(rootDir, 'schemas/recipe-record.schema.json'), 'utf8');
   const sceneSpecSchemaPath = path.join(rootDir, 'schemas/scene-spec.schema.json');
   const executionPlanSchemaPath = path.join(rootDir, 'schemas/execution-plan.schema.json');
+  const runtimeOperationsPath = path.join(rootDir, 'registry/runtime-operations.json');
+  const runtimeCapabilityPolicyPath = path.join(rootDir, 'registry/runtime-capability-policy.json');
+  const runtimeSessionSchemaPath = path.join(rootDir, 'schemas/runtime-session.schema.json');
+  const runtimeOperationsSchemaPath = path.join(rootDir, 'schemas/runtime-operations.schema.json');
+  const operationExecutionLedgerSchemaPath = path.join(rootDir, 'schemas/operation-execution-ledger.schema.json');
+  const runtimeEvidencePacketSchemaPath = path.join(rootDir, 'schemas/runtime-evidence-packet.schema.json');
+  const runtimeCapabilityPolicySchemaPath = path.join(rootDir, 'schemas/runtime-capability-policy.schema.json');
+
   const hasSceneSpecSchema = fs.existsSync(sceneSpecSchemaPath);
   const hasExecutionPlanSchema = fs.existsSync(executionPlanSchemaPath);
+  const hasRuntimeOperations = fs.existsSync(runtimeOperationsPath);
+  const hasRuntimeCapabilityPolicy = fs.existsSync(runtimeCapabilityPolicyPath);
+  const hasRuntimeSessionSchema = fs.existsSync(runtimeSessionSchemaPath);
+  const hasRuntimeOperationsSchema = fs.existsSync(runtimeOperationsSchemaPath);
+  const hasOperationExecutionLedgerSchema = fs.existsSync(operationExecutionLedgerSchemaPath);
+  const hasRuntimeEvidencePacketSchema = fs.existsSync(runtimeEvidencePacketSchemaPath);
+  const hasRuntimeCapabilityPolicySchema = fs.existsSync(runtimeCapabilityPolicySchemaPath);
 
   const fileList = [
     'README.md',
@@ -1949,11 +1964,18 @@ export function buildSharedCatalogFilesMap(rootDir = DEFAULT_ROOT) {
     'recipe-catalog.json',
     'catalog-index.json',
     'skills-summary.json',
+    ...(hasRuntimeOperations ? ['runtime-operations.json'] : []),
+    ...(hasRuntimeCapabilityPolicy ? ['runtime-capability-policy.json'] : []),
     'schemas/knowledge-source-registry.schema.json',
     'schemas/knowledge-record.schema.json',
     'schemas/recipe-record.schema.json',
     ...(hasSceneSpecSchema ? ['schemas/scene-spec.schema.json'] : []),
-    ...(hasExecutionPlanSchema ? ['schemas/execution-plan.schema.json'] : [])
+    ...(hasExecutionPlanSchema ? ['schemas/execution-plan.schema.json'] : []),
+    ...(hasRuntimeSessionSchema ? ['schemas/runtime-session.schema.json'] : []),
+    ...(hasRuntimeOperationsSchema ? ['schemas/runtime-operations.schema.json'] : []),
+    ...(hasOperationExecutionLedgerSchema ? ['schemas/operation-execution-ledger.schema.json'] : []),
+    ...(hasRuntimeEvidencePacketSchema ? ['schemas/runtime-evidence-packet.schema.json'] : []),
+    ...(hasRuntimeCapabilityPolicySchema ? ['schemas/runtime-capability-policy.schema.json'] : [])
   ];
 
   const manifestObj = {
@@ -1964,7 +1986,9 @@ export function buildSharedCatalogFilesMap(rootDir = DEFAULT_ROOT) {
       'registry/knowledge-catalog.json',
       'registry/recipe-catalog.json',
       'registry/catalog-index.json',
-      'registry/skills.json'
+      'registry/skills.json',
+      ...(hasRuntimeOperations ? ['registry/runtime-operations.json'] : []),
+      ...(hasRuntimeCapabilityPolicy ? ['registry/runtime-capability-policy.json'] : [])
     ],
     counts: indexData.counts,
     version_baseline: readJson(path.join(rootDir, 'registry/knowledge-sources.json')).taxonomy.versionBaseline,
@@ -1978,7 +2002,7 @@ export function buildSharedCatalogFilesMap(rootDir = DEFAULT_ROOT) {
   const readmeContent = [
     '# BlendOps Shared Knowledge & Recipe Catalog',
     '',
-    'This portable catalog package contains the canonical BlendOps **Knowledge Layer** (`knowledge.*`), **Recipe Layer** (`recipe.*`), **Authoritative Source Registry** (`source.*`), and **Deterministic Bilingual (EN+VI) Retrieval Index**.',
+    'This portable catalog package contains the canonical BlendOps **Knowledge Layer** (`knowledge.*`), **Recipe Layer** (`recipe.*`), **Authoritative Source Registry** (`source.*`), **Typed Runtime Operations Registry** (`op.*`), and **Deterministic Bilingual (EN+VI) Retrieval Index**.',
     '',
     '## Contents',
     '',
@@ -1987,7 +2011,9 @@ export function buildSharedCatalogFilesMap(rootDir = DEFAULT_ROOT) {
     '- `recipe-catalog.json` — 10 composable multi-stage construction recipes linking required skills, knowledge records, stage gates, validation criteria, and failure recovery modes.',
     '- `catalog-index.json` — Prebuilt deterministic bilingual (English + Vietnamese) search and cross-reference index.',
     '- `skills-summary.json` — Compact metadata for all 48 canonical BlendOps skills so local resolution works standalone without requiring the full BlendOps git repository.',
-    '- `schemas/` — JSON Schema Draft 2020-12 definitions for sources, knowledge records, recipes, SceneSpec, and ExecutionPlan.',
+    '- `runtime-operations.json` — 18 canonical typed runtime operations (`op.inspect.*`, `op.mutate.*`, `op.export.*`, `op.import.*`) and blocked L3 interfaces.',
+    '- `runtime-capability-policy.json` — Governed runtime capability tiers (`L0`–`L3`) and enforcement policy.',
+    '- `schemas/` — JSON Schema Draft 2020-12 definitions for sources, knowledge records, recipes, SceneSpec, ExecutionPlan, RuntimeSession, RuntimeOperations, OperationExecutionLedger, RuntimeEvidencePacket, and RuntimeCapabilityPolicy.',
     '',
     '## How Agents Use This Catalog',
     '',
@@ -1996,6 +2022,7 @@ export function buildSharedCatalogFilesMap(rootDir = DEFAULT_ROOT) {
     '   - Resolve full record & links: `npx blendops catalog-resolve <knowledge.id | recipe.id | source.id> [--project <project-dir>]`',
     '   - Validate catalog integrity: `npx blendops catalog-validate [--project <project-dir>]`',
     '   - Validate SceneSpec & compile ExecutionPlan: `npx blendops scene-spec-validate <spec.json> [--project <project-dir>]` / `npx blendops plan-compile <spec.json> [--project <project-dir>]`',
+    '   - Check runtime readiness & operations: `npx blendops runtime doctor [--project <project-dir>]` / `npx blendops operation list [--project <project-dir>]`',
     '2. **Direct File Consumption** (in Claude Desktop / Claude.ai Projects or offline agent context):',
     '   - Attach or inspect `catalog-index.json` to locate matching `knowledge.*` and `recipe.*` IDs by domain, skill, or keyword.',
     '   - Read the corresponding record in `knowledge-catalog.json` or `recipe-catalog.json` before planning or mutating a Blender scene.',
@@ -2020,11 +2047,32 @@ export function buildSharedCatalogFilesMap(rootDir = DEFAULT_ROOT) {
     'schemas/knowledge-record.schema.json': knowledgeSchemaRaw,
     'schemas/recipe-record.schema.json': recipeSchemaRaw
   };
+  if (hasRuntimeOperations) {
+    filesMap['runtime-operations.json'] = fs.readFileSync(runtimeOperationsPath, 'utf8');
+  }
+  if (hasRuntimeCapabilityPolicy) {
+    filesMap['runtime-capability-policy.json'] = fs.readFileSync(runtimeCapabilityPolicyPath, 'utf8');
+  }
   if (hasSceneSpecSchema) {
     filesMap['schemas/scene-spec.schema.json'] = fs.readFileSync(sceneSpecSchemaPath, 'utf8');
   }
   if (hasExecutionPlanSchema) {
     filesMap['schemas/execution-plan.schema.json'] = fs.readFileSync(executionPlanSchemaPath, 'utf8');
+  }
+  if (hasRuntimeSessionSchema) {
+    filesMap['schemas/runtime-session.schema.json'] = fs.readFileSync(runtimeSessionSchemaPath, 'utf8');
+  }
+  if (hasRuntimeOperationsSchema) {
+    filesMap['schemas/runtime-operations.schema.json'] = fs.readFileSync(runtimeOperationsSchemaPath, 'utf8');
+  }
+  if (hasOperationExecutionLedgerSchema) {
+    filesMap['schemas/operation-execution-ledger.schema.json'] = fs.readFileSync(operationExecutionLedgerSchemaPath, 'utf8');
+  }
+  if (hasRuntimeEvidencePacketSchema) {
+    filesMap['schemas/runtime-evidence-packet.schema.json'] = fs.readFileSync(runtimeEvidencePacketSchemaPath, 'utf8');
+  }
+  if (hasRuntimeCapabilityPolicySchema) {
+    filesMap['schemas/runtime-capability-policy.schema.json'] = fs.readFileSync(runtimeCapabilityPolicySchemaPath, 'utf8');
   }
   return filesMap;
 }

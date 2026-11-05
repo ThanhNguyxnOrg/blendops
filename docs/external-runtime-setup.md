@@ -115,7 +115,15 @@ One MCP bridge session per Blender instance on the default port. Do not run **Pa
 
 ## Return to BlendOps
 
-Once one path is working, continue with BlendOps workflow docs:
+Once one path is working, continue with BlendOps workflow docs and local CLI verification:
+
+- Check runtime session readiness (read-only): `npx blendops runtime doctor [--project <dir>] [--config <runtime-config.json>]`
+- Inspect negotiated runtime capabilities: `npx blendops runtime capabilities [--project <dir>] [--config <runtime-config.json>]`
+- List & validate typed runtime operations (`L0`–`L2`): `npx blendops operation list` / `npx blendops operation validate`
+- Run execution preflight against a compiled `ExecutionPlan`: `npx blendops execution preflight --plan <execution-plan.json>`
+- Inspect an execution ledger or evidence packet: `npx blendops execution report <ledger-or-evidence.json>`
+
+Workflow references:
 
 - Runtime stack strategy: `./runtime-stack-strategy.md`
 - Reference runtime: `./reference-runtime.md`
@@ -126,10 +134,11 @@ Once one path is working, continue with BlendOps workflow docs:
 - Workflow contract: `./workflow-contract.md`
 - Safety model: `./safety-model.md`
 
-BlendOps role: `natural-language intent` → `scene/workflow plan` → `validation` → `render/export handoff` → `web-ready guidance`
+BlendOps role: `User Intent → SceneSpec → ExecutionPlan → Runtime Readiness → Typed Operations → Verified Scene Changes → Evidence Report`
 
 ---
 
 ## Safety boundary
 
 Both Path 1 and Path 2 expose Blender's Python API to LLM-generated code. Save before destructive operations and prefer disposable scenes for first runs, regardless of path.
+
