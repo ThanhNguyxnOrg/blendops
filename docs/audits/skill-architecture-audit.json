@@ -3,15 +3,16 @@
   "audit_scope": "phase-0-phase-1-and-phase-2-architecture-reconciliation",
   "workflow_stage_derivation_rule": "Derived deterministically from registry/skills.json category + role + skill ID: routing-and-governance/brief-and-scope/recipe-and-pack-governance -> discover-and-plan; asset-and-library-governance -> source-and-clear-assets; runtime-and-bridge-governance -> runtime-preflight; scene-and-domain-planning/color-and-render-decisions -> stage-camera-lighting-and-lookdev; quality-and-budget-validation -> inspect-and-validate; web-and-glb-handoff/evidence-and-reporting -> verify-evidence-and-handoff.",
   "classification_methodology": {
-    "summary": "Combines explicit promoted_from_skill_refs mappings (32 files), human-reviewed recipe & governance references (48 files), and rule-based path + heading inspection of skill-local operating instructions (71 files).",
+    "summary": "Combines explicit promoted_from_skill_refs mappings (37 files), rule-based governance & recipe prefix mappings (48 files), rule-based path + heading inspection of skill-local operating instructions (66 files), and verified human semantic reviews (0 files — requires traceable reviewer, timestamp, scope, and outcome evidence).",
     "methods_breakdown": {
       "knowledge_promotion_mapping": 37,
-      "human_semantic_review": 48,
-      "rule_based_path_and_heading_inspection": 66
+      "rule_based_governance_and_recipe_mapping": 48,
+      "rule_based_path_and_heading_inspection": 66,
+      "human_semantic_review": 0
     },
     "needs_semantic_review_count": 8,
     "historical_eval_evidence_files_in_docs_evals": 12,
-    "honesty_note": "outdated_or_duplicated is 0 for exact file hash collisions inside skills/*/references/*.md; 8 skill-local checklist references that border promoted domain topics are explicitly marked review_status=\"needs_semantic_review\" rather than claiming full semantic deduplication without manual review."
+    "honesty_note": "outdated_or_duplicated is 0 for exact file hash collisions inside skills/*/references/*.md; 8 skill-local checklist references that border promoted domain topics are explicitly marked review_status=\"needs_semantic_review\", and rule-based prefix classifications are never represented as human_semantic_review without traceable reviewer/timestamp/scope/outcome evidence."
   },
   "five_layer_architecture": {
     "skill_layer": {
@@ -80,8 +81,9 @@
     },
     "classification_method_breakdown": {
       "knowledge_promotion_mapping": 37,
-      "human_semantic_review": 48,
-      "rule_based_path_and_heading_inspection": 66
+      "rule_based_governance_and_recipe_mapping": 48,
+      "rule_based_path_and_heading_inspection": 66,
+      "human_semantic_review": 0
     },
     "needs_semantic_review_count": 8,
     "skills_with_linked_knowledge": 22,
@@ -121,9 +123,10 @@
           "title": "Lifecycle Phases",
           "line_count": 92,
           "classification": "workflow_or_pack_governance",
-          "classification_method": "human_semantic_review",
-          "review_status": "verified_synchronized",
-          "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+          "classification_method": "rule_based_governance_and_recipe_mapping",
+          "review_status": "rule_classified_governance_or_recipe",
+          "human_review_evidence": null,
+          "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
           "promoted_to_knowledge_ids": []
         },
         {
@@ -131,9 +134,10 @@
           "title": "Quick-Start Prompts",
           "line_count": 66,
           "classification": "workflow_or_pack_governance",
-          "classification_method": "human_semantic_review",
-          "review_status": "verified_synchronized",
-          "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+          "classification_method": "rule_based_governance_and_recipe_mapping",
+          "review_status": "rule_classified_governance_or_recipe",
+          "human_review_evidence": null,
+          "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
           "promoted_to_knowledge_ids": []
         },
         {
@@ -141,9 +145,10 @@
           "title": "Routing Decision Tree",
           "line_count": 58,
           "classification": "workflow_or_pack_governance",
-          "classification_method": "human_semantic_review",
-          "review_status": "verified_synchronized",
-          "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+          "classification_method": "rule_based_governance_and_recipe_mapping",
+          "review_status": "rule_classified_governance_or_recipe",
+          "human_review_evidence": null,
+          "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
           "promoted_to_knowledge_ids": []
         }
       ]
@@ -181,9 +186,10 @@
           "title": "Recipe / pack catalog (BlendOps v0 + Phase 1 Canonical Recipe Registry)",
           "line_count": 31,
           "classification": "recipe_specific_procedure",
-          "classification_method": "human_semantic_review",
-          "review_status": "verified_synchronized",
-          "rationale": "Reviewed and synchronized with registry/recipe-catalog.json for recipe fit scoring and multi-deliverable decomposition.",
+          "classification_method": "rule_based_governance_and_recipe_mapping",
+          "review_status": "rule_classified_governance_or_recipe",
+          "human_review_evidence": null,
+          "rationale": "Classified via deterministic skill-path rule and synchronized with registry/recipe-catalog.json for recipe fit scoring and multi-deliverable decomposition.",
           "promoted_to_knowledge_ids": []
         },
         {
@@ -191,9 +197,10 @@
           "title": "Scope gap rules",
           "line_count": 22,
           "classification": "recipe_specific_procedure",
-          "classification_method": "human_semantic_review",
-          "review_status": "verified_synchronized",
-          "rationale": "Reviewed and synchronized with registry/recipe-catalog.json for recipe fit scoring and multi-deliverable decomposition.",
+          "classification_method": "rule_based_governance_and_recipe_mapping",
+          "review_status": "rule_classified_governance_or_recipe",
+          "human_review_evidence": null,
+          "rationale": "Classified via deterministic skill-path rule and synchronized with registry/recipe-catalog.json for recipe fit scoring and multi-deliverable decomposition.",
           "promoted_to_knowledge_ids": []
         },
         {
@@ -201,9 +208,10 @@
           "title": "Workflow recommendation template",
           "line_count": 23,
           "classification": "recipe_specific_procedure",
-          "classification_method": "human_semantic_review",
-          "review_status": "verified_synchronized",
-          "rationale": "Reviewed and synchronized with registry/recipe-catalog.json for recipe fit scoring and multi-deliverable decomposition.",
+          "classification_method": "rule_based_governance_and_recipe_mapping",
+          "review_status": "rule_classified_governance_or_recipe",
+          "human_review_evidence": null,
+          "rationale": "Classified via deterministic skill-path rule and synchronized with registry/recipe-catalog.json for recipe fit scoring and multi-deliverable decomposition.",
           "promoted_to_knowledge_ids": []
         }
       ]
@@ -241,9 +249,10 @@
           "title": "Blocked start playbook",
           "line_count": 26,
           "classification": "workflow_or_pack_governance",
-          "classification_method": "human_semantic_review",
-          "review_status": "verified_synchronized",
-          "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+          "classification_method": "rule_based_governance_and_recipe_mapping",
+          "review_status": "rule_classified_governance_or_recipe",
+          "human_review_evidence": null,
+          "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
           "promoted_to_knowledge_ids": []
         },
         {
@@ -251,9 +260,10 @@
           "title": "Pack readiness output template",
           "line_count": 24,
           "classification": "workflow_or_pack_governance",
-          "classification_method": "human_semantic_review",
-          "review_status": "verified_synchronized",
-          "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+          "classification_method": "rule_based_governance_and_recipe_mapping",
+          "review_status": "rule_classified_governance_or_recipe",
+          "human_review_evidence": null,
+          "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
           "promoted_to_knowledge_ids": []
         },
         {
@@ -261,9 +271,10 @@
           "title": "Pack prerequisite matrix",
           "line_count": 16,
           "classification": "workflow_or_pack_governance",
-          "classification_method": "human_semantic_review",
-          "review_status": "verified_synchronized",
-          "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+          "classification_method": "rule_based_governance_and_recipe_mapping",
+          "review_status": "rule_classified_governance_or_recipe",
+          "human_review_evidence": null,
+          "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
           "promoted_to_knowledge_ids": []
         }
       ]
@@ -301,9 +312,10 @@
           "title": "Milestone model (conceptual)",
           "line_count": 19,
           "classification": "workflow_or_pack_governance",
-          "classification_method": "human_semantic_review",
-          "review_status": "verified_synchronized",
-          "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+          "classification_method": "rule_based_governance_and_recipe_mapping",
+          "review_status": "rule_classified_governance_or_recipe",
+          "human_review_evidence": null,
+          "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
           "promoted_to_knowledge_ids": []
         },
         {
@@ -311,9 +323,10 @@
           "title": "Routing decision tree",
           "line_count": 33,
           "classification": "workflow_or_pack_governance",
-          "classification_method": "human_semantic_review",
-          "review_status": "verified_synchronized",
-          "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+          "classification_method": "rule_based_governance_and_recipe_mapping",
+          "review_status": "rule_classified_governance_or_recipe",
+          "human_review_evidence": null,
+          "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
           "promoted_to_knowledge_ids": []
         },
         {
@@ -321,9 +334,10 @@
           "title": "Stage handoff template",
           "line_count": 25,
           "classification": "workflow_or_pack_governance",
-          "classification_method": "human_semantic_review",
-          "review_status": "verified_synchronized",
-          "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+          "classification_method": "rule_based_governance_and_recipe_mapping",
+          "review_status": "rule_classified_governance_or_recipe",
+          "human_review_evidence": null,
+          "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
           "promoted_to_knowledge_ids": []
         }
       ]
@@ -363,9 +377,10 @@
           "title": "Brief → criteria mapper",
           "line_count": 20,
           "classification": "workflow_or_pack_governance",
-          "classification_method": "human_semantic_review",
-          "review_status": "verified_synchronized",
-          "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+          "classification_method": "rule_based_governance_and_recipe_mapping",
+          "review_status": "rule_classified_governance_or_recipe",
+          "human_review_evidence": null,
+          "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
           "promoted_to_knowledge_ids": []
         },
         {
@@ -373,9 +388,10 @@
           "title": "Checklist patterns",
           "line_count": 24,
           "classification": "workflow_or_pack_governance",
-          "classification_method": "human_semantic_review",
-          "review_status": "verified_synchronized",
-          "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+          "classification_method": "rule_based_governance_and_recipe_mapping",
+          "review_status": "rule_classified_governance_or_recipe",
+          "human_review_evidence": null,
+          "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
           "promoted_to_knowledge_ids": []
         },
         {
@@ -383,9 +399,10 @@
           "title": "Evidence hook rules",
           "line_count": 15,
           "classification": "workflow_or_pack_governance",
-          "classification_method": "human_semantic_review",
-          "review_status": "verified_synchronized",
-          "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+          "classification_method": "rule_based_governance_and_recipe_mapping",
+          "review_status": "rule_classified_governance_or_recipe",
+          "human_review_evidence": null,
+          "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
           "promoted_to_knowledge_ids": []
         }
       ]
@@ -428,6 +445,7 @@
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "rule_classified_skill_local",
+          "human_review_evidence": null,
           "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
           "promoted_to_knowledge_ids": []
         },
@@ -438,6 +456,7 @@
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "rule_classified_skill_local",
+          "human_review_evidence": null,
           "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
           "promoted_to_knowledge_ids": []
         },
@@ -448,6 +467,7 @@
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "rule_classified_skill_local",
+          "human_review_evidence": null,
           "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
           "promoted_to_knowledge_ids": []
         }
@@ -490,6 +510,7 @@
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "rule_classified_skill_local",
+          "human_review_evidence": null,
           "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
           "promoted_to_knowledge_ids": []
         },
@@ -500,6 +521,7 @@
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "rule_classified_skill_local",
+          "human_review_evidence": null,
           "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
           "promoted_to_knowledge_ids": []
         },
@@ -510,6 +532,7 @@
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "rule_classified_skill_local",
+          "human_review_evidence": null,
           "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
           "promoted_to_knowledge_ids": []
         }
@@ -550,6 +573,7 @@
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "rule_classified_skill_local",
+          "human_review_evidence": null,
           "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
           "promoted_to_knowledge_ids": []
         },
@@ -560,6 +584,7 @@
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "rule_classified_skill_local",
+          "human_review_evidence": null,
           "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
           "promoted_to_knowledge_ids": []
         },
@@ -570,6 +595,7 @@
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "rule_classified_skill_local",
+          "human_review_evidence": null,
           "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
           "promoted_to_knowledge_ids": []
         }
@@ -613,6 +639,7 @@
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "rule_classified_skill_local",
+          "human_review_evidence": null,
           "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
           "promoted_to_knowledge_ids": []
         },
@@ -623,6 +650,7 @@
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "rule_classified_skill_local",
+          "human_review_evidence": null,
           "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
           "promoted_to_knowledge_ids": []
         },
@@ -633,6 +661,7 @@
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "rule_classified_skill_local",
+          "human_review_evidence": null,
           "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
           "promoted_to_knowledge_ids": []
         }
@@ -676,6 +705,7 @@
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "rule_classified_skill_local",
+          "human_review_evidence": null,
           "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
           "promoted_to_knowledge_ids": []
         },
@@ -686,6 +716,7 @@
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "rule_classified_skill_local",
+          "human_review_evidence": null,
           "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
           "promoted_to_knowledge_ids": []
         },
@@ -696,6 +727,7 @@
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "rule_classified_skill_local",
+          "human_review_evidence": null,
           "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
           "promoted_to_knowledge_ids": []
         }
@@ -736,6 +768,7 @@
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "rule_classified_skill_local",
+          "human_review_evidence": null,
           "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
           "promoted_to_knowledge_ids": []
         },
@@ -746,6 +779,7 @@
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "rule_classified_skill_local",
+          "human_review_evidence": null,
           "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
           "promoted_to_knowledge_ids": []
         },
@@ -756,6 +790,7 @@
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "rule_classified_skill_local",
+          "human_review_evidence": null,
           "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
           "promoted_to_knowledge_ids": []
         }
@@ -794,9 +829,10 @@
           "title": "Dependency patterns",
           "line_count": 54,
           "classification": "recipe_specific_procedure",
-          "classification_method": "human_semantic_review",
-          "review_status": "verified_synchronized",
-          "rationale": "Reviewed and synchronized with registry/recipe-catalog.json for recipe fit scoring and multi-deliverable decomposition.",
+          "classification_method": "rule_based_governance_and_recipe_mapping",
+          "review_status": "rule_classified_governance_or_recipe",
+          "human_review_evidence": null,
+          "rationale": "Classified via deterministic skill-path rule and synchronized with registry/recipe-catalog.json for recipe fit scoring and multi-deliverable decomposition.",
           "promoted_to_knowledge_ids": []
         },
         {
@@ -804,9 +840,10 @@
           "title": "Recipe grouping rules",
           "line_count": 59,
           "classification": "recipe_specific_procedure",
-          "classification_method": "human_semantic_review",
-          "review_status": "verified_synchronized",
-          "rationale": "Reviewed and synchronized with registry/recipe-catalog.json for recipe fit scoring and multi-deliverable decomposition.",
+          "classification_method": "rule_based_governance_and_recipe_mapping",
+          "review_status": "rule_classified_governance_or_recipe",
+          "human_review_evidence": null,
+          "rationale": "Classified via deterministic skill-path rule and synchronized with registry/recipe-catalog.json for recipe fit scoring and multi-deliverable decomposition.",
           "promoted_to_knowledge_ids": []
         },
         {
@@ -814,9 +851,10 @@
           "title": "Recipe naming rules",
           "line_count": 45,
           "classification": "recipe_specific_procedure",
-          "classification_method": "human_semantic_review",
-          "review_status": "verified_synchronized",
-          "rationale": "Reviewed and synchronized with registry/recipe-catalog.json for recipe fit scoring and multi-deliverable decomposition.",
+          "classification_method": "rule_based_governance_and_recipe_mapping",
+          "review_status": "rule_classified_governance_or_recipe",
+          "human_review_evidence": null,
+          "rationale": "Classified via deterministic skill-path rule and synchronized with registry/recipe-catalog.json for recipe fit scoring and multi-deliverable decomposition.",
           "promoted_to_knowledge_ids": []
         }
       ]
@@ -862,6 +900,7 @@
           "classification": "reusable_cross_skill_knowledge",
           "classification_method": "knowledge_promotion_mapping",
           "review_status": "verified_promoted",
+          "human_review_evidence": null,
           "rationale": "Domain rules promoted to canonical knowledge record(s): knowledge.mesh-manifold-normals-and-scale-hygiene, knowledge.boolean-bevel-shading-cleanup, knowledge.high-to-low-normal-and-ao-baking while remaining available as a progressive-disclosure skill reference.",
           "promoted_to_knowledge_ids": [
             "knowledge.mesh-manifold-normals-and-scale-hygiene",
@@ -876,6 +915,7 @@
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "rule_classified_skill_local",
+          "human_review_evidence": null,
           "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
           "promoted_to_knowledge_ids": []
         },
@@ -886,6 +926,7 @@
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "rule_classified_skill_local",
+          "human_review_evidence": null,
           "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
           "promoted_to_knowledge_ids": []
         }
@@ -924,9 +965,10 @@
           "title": "Bridge State Matrix Template",
           "line_count": 83,
           "classification": "workflow_or_pack_governance",
-          "classification_method": "human_semantic_review",
-          "review_status": "verified_synchronized",
-          "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+          "classification_method": "rule_based_governance_and_recipe_mapping",
+          "review_status": "rule_classified_governance_or_recipe",
+          "human_review_evidence": null,
+          "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
           "promoted_to_knowledge_ids": []
         },
         {
@@ -934,9 +976,10 @@
           "title": "Conflict Playbooks",
           "line_count": 100,
           "classification": "workflow_or_pack_governance",
-          "classification_method": "human_semantic_review",
-          "review_status": "verified_synchronized",
-          "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+          "classification_method": "rule_based_governance_and_recipe_mapping",
+          "review_status": "rule_classified_governance_or_recipe",
+          "human_review_evidence": null,
+          "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
           "promoted_to_knowledge_ids": []
         },
         {
@@ -944,9 +987,10 @@
           "title": "Do-Not Reminders",
           "line_count": 43,
           "classification": "workflow_or_pack_governance",
-          "classification_method": "human_semantic_review",
-          "review_status": "verified_synchronized",
-          "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+          "classification_method": "rule_based_governance_and_recipe_mapping",
+          "review_status": "rule_classified_governance_or_recipe",
+          "human_review_evidence": null,
+          "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
           "promoted_to_knowledge_ids": []
         }
       ]
@@ -993,6 +1037,7 @@
           "classification": "reusable_cross_skill_knowledge",
           "classification_method": "knowledge_promotion_mapping",
           "review_status": "verified_promoted",
+          "human_review_evidence": null,
           "rationale": "Domain rules promoted to canonical knowledge record(s): knowledge.physically-based-camera-lens-and-dof while remaining available as a progressive-disclosure skill reference.",
           "promoted_to_knowledge_ids": [
             "knowledge.physically-based-camera-lens-and-dof"
@@ -1005,6 +1050,7 @@
           "classification": "reusable_cross_skill_knowledge",
           "classification_method": "knowledge_promotion_mapping",
           "review_status": "verified_promoted",
+          "human_review_evidence": null,
           "rationale": "Domain rules promoted to canonical knowledge record(s): knowledge.physically-based-camera-lens-and-dof while remaining available as a progressive-disclosure skill reference.",
           "promoted_to_knowledge_ids": [
             "knowledge.physically-based-camera-lens-and-dof"
@@ -1017,6 +1063,7 @@
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "rule_classified_skill_local",
+          "human_review_evidence": null,
           "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
           "promoted_to_knowledge_ids": []
         },
@@ -1027,6 +1074,7 @@
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "rule_classified_skill_local",
+          "human_review_evidence": null,
           "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
           "promoted_to_knowledge_ids": []
         }
@@ -1074,6 +1122,7 @@
           "classification": "reusable_cross_skill_knowledge",
           "classification_method": "knowledge_promotion_mapping",
           "review_status": "verified_promoted",
+          "human_review_evidence": null,
           "rationale": "Domain rules promoted to canonical knowledge record(s): knowledge.physically-based-camera-lens-and-dof while remaining available as a progressive-disclosure skill reference.",
           "promoted_to_knowledge_ids": [
             "knowledge.physically-based-camera-lens-and-dof"
@@ -1086,6 +1135,7 @@
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "rule_classified_skill_local",
+          "human_review_evidence": null,
           "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
           "promoted_to_knowledge_ids": []
         },
@@ -1096,6 +1146,7 @@
           "classification": "reusable_cross_skill_knowledge",
           "classification_method": "knowledge_promotion_mapping",
           "review_status": "verified_promoted",
+          "human_review_evidence": null,
           "rationale": "Domain rules promoted to canonical knowledge record(s): knowledge.organic-sculpt-to-retopology-workflow while remaining available as a progressive-disclosure skill reference.",
           "promoted_to_knowledge_ids": [
             "knowledge.organic-sculpt-to-retopology-workflow"
@@ -1136,9 +1187,10 @@
           "title": "Flag order reminders",
           "line_count": 10,
           "classification": "workflow_or_pack_governance",
-          "classification_method": "human_semantic_review",
-          "review_status": "verified_synchronized",
-          "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+          "classification_method": "rule_based_governance_and_recipe_mapping",
+          "review_status": "rule_classified_governance_or_recipe",
+          "human_review_evidence": null,
+          "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
           "promoted_to_knowledge_ids": []
         },
         {
@@ -1146,9 +1198,10 @@
           "title": "Job type matrix",
           "line_count": 11,
           "classification": "workflow_or_pack_governance",
-          "classification_method": "human_semantic_review",
-          "review_status": "verified_synchronized",
-          "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+          "classification_method": "rule_based_governance_and_recipe_mapping",
+          "review_status": "rule_classified_governance_or_recipe",
+          "human_review_evidence": null,
+          "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
           "promoted_to_knowledge_ids": []
         },
         {
@@ -1156,9 +1209,10 @@
           "title": "Stateless limitations",
           "line_count": 9,
           "classification": "workflow_or_pack_governance",
-          "classification_method": "human_semantic_review",
-          "review_status": "verified_synchronized",
-          "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+          "classification_method": "rule_based_governance_and_recipe_mapping",
+          "review_status": "rule_classified_governance_or_recipe",
+          "human_review_evidence": null,
+          "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
           "promoted_to_knowledge_ids": []
         }
       ]
@@ -1205,6 +1259,7 @@
           "classification": "reusable_cross_skill_knowledge",
           "classification_method": "knowledge_promotion_mapping",
           "review_status": "verified_promoted",
+          "human_review_evidence": null,
           "rationale": "Domain rules promoted to canonical knowledge record(s): knowledge.agx-filmic-color-management-and-cycles-eevee, knowledge.threejs-r3f-tone-mapping-and-environment-parity while remaining available as a progressive-disclosure skill reference.",
           "promoted_to_knowledge_ids": [
             "knowledge.agx-filmic-color-management-and-cycles-eevee",
@@ -1218,6 +1273,7 @@
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "rule_classified_skill_local",
+          "human_review_evidence": null,
           "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
           "promoted_to_knowledge_ids": []
         },
@@ -1228,6 +1284,7 @@
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "rule_classified_skill_local",
+          "human_review_evidence": null,
           "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
           "promoted_to_knowledge_ids": []
         }
@@ -1276,6 +1333,7 @@
           "classification": "reusable_cross_skill_knowledge",
           "classification_method": "knowledge_promotion_mapping",
           "review_status": "verified_promoted",
+          "human_review_evidence": null,
           "rationale": "Domain rules promoted to canonical knowledge record(s): knowledge.environment-depth-layering-and-atmospheric-perspective while remaining available as a progressive-disclosure skill reference.",
           "promoted_to_knowledge_ids": [
             "knowledge.environment-depth-layering-and-atmospheric-perspective"
@@ -1288,6 +1346,7 @@
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "rule_classified_skill_local",
+          "human_review_evidence": null,
           "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
           "promoted_to_knowledge_ids": []
         },
@@ -1298,6 +1357,7 @@
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "rule_classified_skill_local",
+          "human_review_evidence": null,
           "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
           "promoted_to_knowledge_ids": []
         }
@@ -1347,6 +1407,7 @@
           "classification": "reusable_cross_skill_knowledge",
           "classification_method": "knowledge_promotion_mapping",
           "review_status": "verified_promoted",
+          "human_review_evidence": null,
           "rationale": "Domain rules promoted to canonical knowledge record(s): knowledge.agx-filmic-color-management-and-cycles-eevee, knowledge.volumetrics-fog-and-principled-volume-tradeoffs while remaining available as a progressive-disclosure skill reference.",
           "promoted_to_knowledge_ids": [
             "knowledge.agx-filmic-color-management-and-cycles-eevee",
@@ -1360,6 +1421,7 @@
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "rule_classified_skill_local",
+          "human_review_evidence": null,
           "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
           "promoted_to_knowledge_ids": []
         },
@@ -1370,6 +1432,7 @@
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "rule_classified_skill_local",
+          "human_review_evidence": null,
           "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
           "promoted_to_knowledge_ids": []
         }
@@ -1413,9 +1476,10 @@
           "title": "Done vs perfect",
           "line_count": 49,
           "classification": "workflow_or_pack_governance",
-          "classification_method": "human_semantic_review",
-          "review_status": "verified_synchronized",
-          "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+          "classification_method": "rule_based_governance_and_recipe_mapping",
+          "review_status": "rule_classified_governance_or_recipe",
+          "human_review_evidence": null,
+          "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
           "promoted_to_knowledge_ids": []
         },
         {
@@ -1423,9 +1487,10 @@
           "title": "Out-of-scope patterns",
           "line_count": 51,
           "classification": "workflow_or_pack_governance",
-          "classification_method": "human_semantic_review",
-          "review_status": "verified_synchronized",
-          "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+          "classification_method": "rule_based_governance_and_recipe_mapping",
+          "review_status": "rule_classified_governance_or_recipe",
+          "human_review_evidence": null,
+          "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
           "promoted_to_knowledge_ids": []
         },
         {
@@ -1433,9 +1498,10 @@
           "title": "Stop condition templates",
           "line_count": 40,
           "classification": "workflow_or_pack_governance",
-          "classification_method": "human_semantic_review",
-          "review_status": "verified_synchronized",
-          "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+          "classification_method": "rule_based_governance_and_recipe_mapping",
+          "review_status": "rule_classified_governance_or_recipe",
+          "human_review_evidence": null,
+          "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
           "promoted_to_knowledge_ids": []
         }
       ]
@@ -1483,6 +1549,7 @@
           "classification": "reusable_cross_skill_knowledge",
           "classification_method": "knowledge_promotion_mapping",
           "review_status": "verified_promoted",
+          "human_review_evidence": null,
           "rationale": "Domain rules promoted to canonical knowledge record(s): knowledge.procedural-scatter-poisson-disk-and-slope-masking, knowledge.volumetrics-fog-and-principled-volume-tradeoffs, knowledge.environment-depth-layering-and-atmospheric-perspective while remaining available as a progressive-disclosure skill reference.",
           "promoted_to_knowledge_ids": [
             "knowledge.procedural-scatter-poisson-disk-and-slope-masking",
@@ -1497,6 +1564,7 @@
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "rule_classified_skill_local",
+          "human_review_evidence": null,
           "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
           "promoted_to_knowledge_ids": []
         },
@@ -1507,6 +1575,7 @@
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "rule_classified_skill_local",
+          "human_review_evidence": null,
           "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
           "promoted_to_knowledge_ids": []
         }
@@ -1554,6 +1623,7 @@
           "classification": "reusable_cross_skill_knowledge",
           "classification_method": "knowledge_promotion_mapping",
           "review_status": "verified_promoted",
+          "human_review_evidence": null,
           "rationale": "Domain rules promoted to canonical knowledge record(s): knowledge.armature-joint-hierarchy-and-linear-blend-skinning, knowledge.nla-action-baking-and-morph-target-export, knowledge.rigid-body-cloth-and-simulation-cache-baking while remaining available as a progressive-disclosure skill reference.",
           "promoted_to_knowledge_ids": [
             "knowledge.armature-joint-hierarchy-and-linear-blend-skinning",
@@ -1568,6 +1638,7 @@
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "rule_classified_skill_local",
+          "human_review_evidence": null,
           "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
           "promoted_to_knowledge_ids": []
         },
@@ -1578,6 +1649,7 @@
           "classification": "reusable_cross_skill_knowledge",
           "classification_method": "knowledge_promotion_mapping",
           "review_status": "verified_promoted",
+          "human_review_evidence": null,
           "rationale": "Domain rules promoted to canonical knowledge record(s): knowledge.armature-joint-hierarchy-and-linear-blend-skinning, knowledge.nla-action-baking-and-morph-target-export, knowledge.rigid-body-cloth-and-simulation-cache-baking while remaining available as a progressive-disclosure skill reference.",
           "promoted_to_knowledge_ids": [
             "knowledge.armature-joint-hierarchy-and-linear-blend-skinning",
@@ -1640,6 +1712,7 @@
           "classification": "reusable_cross_skill_knowledge",
           "classification_method": "knowledge_promotion_mapping",
           "review_status": "verified_promoted",
+          "human_review_evidence": null,
           "rationale": "Domain rules promoted to canonical knowledge record(s): knowledge.texture-resolution-ktx2-and-draco-meshopt-compression, knowledge.gltf-2-coordinate-system-and-transform-conventions, knowledge.glb-binary-chunk-alignment-and-khronos-validation while remaining available as a progressive-disclosure skill reference.",
           "promoted_to_knowledge_ids": [
             "knowledge.texture-resolution-ktx2-and-draco-meshopt-compression",
@@ -1654,6 +1727,7 @@
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "rule_classified_skill_local",
+          "human_review_evidence": null,
           "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
           "promoted_to_knowledge_ids": []
         },
@@ -1664,6 +1738,7 @@
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "rule_classified_skill_local",
+          "human_review_evidence": null,
           "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
           "promoted_to_knowledge_ids": []
         },
@@ -1674,6 +1749,7 @@
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "rule_classified_skill_local",
+          "human_review_evidence": null,
           "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
           "promoted_to_knowledge_ids": []
         }
@@ -1720,6 +1796,7 @@
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "rule_classified_skill_local",
+          "human_review_evidence": null,
           "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
           "promoted_to_knowledge_ids": []
         },
@@ -1730,6 +1807,7 @@
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "rule_classified_skill_local",
+          "human_review_evidence": null,
           "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
           "promoted_to_knowledge_ids": []
         },
@@ -1740,6 +1818,7 @@
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "rule_classified_skill_local",
+          "human_review_evidence": null,
           "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
           "promoted_to_knowledge_ids": []
         }
@@ -1785,6 +1864,7 @@
           "classification": "reusable_cross_skill_knowledge",
           "classification_method": "knowledge_promotion_mapping",
           "review_status": "verified_promoted",
+          "human_review_evidence": null,
           "rationale": "Domain rules promoted to canonical knowledge record(s): knowledge.modular-architectural-grid-and-metric-scale while remaining available as a progressive-disclosure skill reference.",
           "promoted_to_knowledge_ids": [
             "knowledge.modular-architectural-grid-and-metric-scale"
@@ -1797,6 +1877,7 @@
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "rule_classified_skill_local",
+          "human_review_evidence": null,
           "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
           "promoted_to_knowledge_ids": []
         },
@@ -1807,6 +1888,7 @@
           "classification": "reusable_cross_skill_knowledge",
           "classification_method": "knowledge_promotion_mapping",
           "review_status": "verified_promoted",
+          "human_review_evidence": null,
           "rationale": "Domain rules promoted to canonical knowledge record(s): knowledge.physically-based-camera-lens-and-dof while remaining available as a progressive-disclosure skill reference.",
           "promoted_to_knowledge_ids": [
             "knowledge.physically-based-camera-lens-and-dof"
@@ -1867,6 +1949,7 @@
           "classification": "reusable_cross_skill_knowledge",
           "classification_method": "knowledge_promotion_mapping",
           "review_status": "verified_promoted",
+          "human_review_evidence": null,
           "rationale": "Domain rules promoted to canonical knowledge record(s): knowledge.volumetrics-fog-and-principled-volume-tradeoffs while remaining available as a progressive-disclosure skill reference.",
           "promoted_to_knowledge_ids": [
             "knowledge.volumetrics-fog-and-principled-volume-tradeoffs"
@@ -1879,6 +1962,7 @@
           "classification": "reusable_cross_skill_knowledge",
           "classification_method": "knowledge_promotion_mapping",
           "review_status": "verified_promoted",
+          "human_review_evidence": null,
           "rationale": "Domain rules promoted to canonical knowledge record(s): knowledge.three-point-and-hdri-studio-lighting while remaining available as a progressive-disclosure skill reference.",
           "promoted_to_knowledge_ids": [
             "knowledge.three-point-and-hdri-studio-lighting"
@@ -1891,6 +1975,7 @@
           "classification": "reusable_cross_skill_knowledge",
           "classification_method": "knowledge_promotion_mapping",
           "review_status": "verified_promoted",
+          "human_review_evidence": null,
           "rationale": "Domain rules promoted to canonical knowledge record(s): knowledge.uv-seam-placement-and-texel-density, knowledge.shader-node-gltf-export-portability while remaining available as a progressive-disclosure skill reference.",
           "promoted_to_knowledge_ids": [
             "knowledge.uv-seam-placement-and-texel-density",
@@ -1904,6 +1989,7 @@
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "rule_classified_skill_local",
+          "human_review_evidence": null,
           "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
           "promoted_to_knowledge_ids": []
         },
@@ -1914,6 +2000,7 @@
           "classification": "reusable_cross_skill_knowledge",
           "classification_method": "knowledge_promotion_mapping",
           "review_status": "verified_promoted",
+          "human_review_evidence": null,
           "rationale": "Domain rules promoted to canonical knowledge record(s): knowledge.normal-roughness-and-orm-channel-packing while remaining available as a progressive-disclosure skill reference.",
           "promoted_to_knowledge_ids": [
             "knowledge.normal-roughness-and-orm-channel-packing"
@@ -1964,6 +2051,7 @@
           "classification": "reusable_cross_skill_knowledge",
           "classification_method": "knowledge_promotion_mapping",
           "review_status": "verified_promoted",
+          "human_review_evidence": null,
           "rationale": "Domain rules promoted to canonical knowledge record(s): knowledge.three-point-and-hdri-studio-lighting while remaining available as a progressive-disclosure skill reference.",
           "promoted_to_knowledge_ids": [
             "knowledge.three-point-and-hdri-studio-lighting"
@@ -1976,6 +2064,7 @@
           "classification": "reusable_cross_skill_knowledge",
           "classification_method": "knowledge_promotion_mapping",
           "review_status": "verified_promoted",
+          "human_review_evidence": null,
           "rationale": "Domain rules promoted to canonical knowledge record(s): knowledge.three-point-and-hdri-studio-lighting while remaining available as a progressive-disclosure skill reference.",
           "promoted_to_knowledge_ids": [
             "knowledge.three-point-and-hdri-studio-lighting"
@@ -1988,6 +2077,7 @@
           "classification": "reusable_cross_skill_knowledge",
           "classification_method": "knowledge_promotion_mapping",
           "review_status": "verified_promoted",
+          "human_review_evidence": null,
           "rationale": "Domain rules promoted to canonical knowledge record(s): knowledge.three-point-and-hdri-studio-lighting while remaining available as a progressive-disclosure skill reference.",
           "promoted_to_knowledge_ids": [
             "knowledge.three-point-and-hdri-studio-lighting"
@@ -2047,6 +2137,7 @@
           "classification": "reusable_cross_skill_knowledge",
           "classification_method": "knowledge_promotion_mapping",
           "review_status": "verified_promoted",
+          "human_review_evidence": null,
           "rationale": "Domain rules promoted to canonical knowledge record(s): knowledge.shader-node-gltf-export-portability while remaining available as a progressive-disclosure skill reference.",
           "promoted_to_knowledge_ids": [
             "knowledge.shader-node-gltf-export-portability"
@@ -2059,6 +2150,7 @@
           "classification": "reusable_cross_skill_knowledge",
           "classification_method": "knowledge_promotion_mapping",
           "review_status": "verified_promoted",
+          "human_review_evidence": null,
           "rationale": "Domain rules promoted to canonical knowledge record(s): knowledge.high-to-low-normal-and-ao-baking, knowledge.principled-bsdf-v2-energy-conserving-pbr, knowledge.normal-roughness-and-orm-channel-packing while remaining available as a progressive-disclosure skill reference.",
           "promoted_to_knowledge_ids": [
             "knowledge.high-to-low-normal-and-ao-baking",
@@ -2073,6 +2165,7 @@
           "classification": "reusable_cross_skill_knowledge",
           "classification_method": "knowledge_promotion_mapping",
           "review_status": "verified_promoted",
+          "human_review_evidence": null,
           "rationale": "Domain rules promoted to canonical knowledge record(s): knowledge.uv-seam-placement-and-texel-density, knowledge.udim-vs-single-atlas-uv-packing while remaining available as a progressive-disclosure skill reference.",
           "promoted_to_knowledge_ids": [
             "knowledge.uv-seam-placement-and-texel-density",
@@ -2130,6 +2223,7 @@
           "classification": "reusable_cross_skill_knowledge",
           "classification_method": "knowledge_promotion_mapping",
           "review_status": "verified_promoted",
+          "human_review_evidence": null,
           "rationale": "Domain rules promoted to canonical knowledge record(s): knowledge.procedural-instancing-and-realize-instances-budget, knowledge.triangle-draw-call-and-vram-budgets, knowledge.texture-resolution-ktx2-and-draco-meshopt-compression while remaining available as a progressive-disclosure skill reference.",
           "promoted_to_knowledge_ids": [
             "knowledge.procedural-instancing-and-realize-instances-budget",
@@ -2144,6 +2238,7 @@
           "classification": "reusable_cross_skill_knowledge",
           "classification_method": "knowledge_promotion_mapping",
           "review_status": "verified_promoted",
+          "human_review_evidence": null,
           "rationale": "Domain rules promoted to canonical knowledge record(s): knowledge.udim-vs-single-atlas-uv-packing while remaining available as a progressive-disclosure skill reference.",
           "promoted_to_knowledge_ids": [
             "knowledge.udim-vs-single-atlas-uv-packing"
@@ -2156,6 +2251,7 @@
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "rule_classified_skill_local",
+          "human_review_evidence": null,
           "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
           "promoted_to_knowledge_ids": []
         }
@@ -2204,6 +2300,7 @@
           "classification": "reusable_cross_skill_knowledge",
           "classification_method": "knowledge_promotion_mapping",
           "review_status": "verified_promoted",
+          "human_review_evidence": null,
           "rationale": "Domain rules promoted to canonical knowledge record(s): knowledge.agx-filmic-color-management-and-cycles-eevee while remaining available as a progressive-disclosure skill reference.",
           "promoted_to_knowledge_ids": [
             "knowledge.agx-filmic-color-management-and-cycles-eevee"
@@ -2216,6 +2313,7 @@
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "rule_classified_skill_local",
+          "human_review_evidence": null,
           "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
           "promoted_to_knowledge_ids": []
         },
@@ -2226,6 +2324,7 @@
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "rule_classified_skill_local",
+          "human_review_evidence": null,
           "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
           "promoted_to_knowledge_ids": []
         }
@@ -2264,9 +2363,10 @@
           "title": "Connector vs manual MCP matrix (Path 1)",
           "line_count": 11,
           "classification": "workflow_or_pack_governance",
-          "classification_method": "human_semantic_review",
-          "review_status": "verified_synchronized",
-          "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+          "classification_method": "rule_based_governance_and_recipe_mapping",
+          "review_status": "rule_classified_governance_or_recipe",
+          "human_review_evidence": null,
+          "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
           "promoted_to_knowledge_ids": []
         },
         {
@@ -2274,9 +2374,10 @@
           "title": "Host checklist template",
           "line_count": 18,
           "classification": "workflow_or_pack_governance",
-          "classification_method": "human_semantic_review",
-          "review_status": "verified_synchronized",
-          "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+          "classification_method": "rule_based_governance_and_recipe_mapping",
+          "review_status": "rule_classified_governance_or_recipe",
+          "human_review_evidence": null,
+          "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
           "promoted_to_knowledge_ids": []
         },
         {
@@ -2284,9 +2385,10 @@
           "title": "Lab add-on reminders",
           "line_count": 9,
           "classification": "workflow_or_pack_governance",
-          "classification_method": "human_semantic_review",
-          "review_status": "verified_synchronized",
-          "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+          "classification_method": "rule_based_governance_and_recipe_mapping",
+          "review_status": "rule_classified_governance_or_recipe",
+          "human_review_evidence": null,
+          "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
           "promoted_to_knowledge_ids": []
         }
       ]
@@ -2337,6 +2439,7 @@
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "rule_classified_skill_local",
+          "human_review_evidence": null,
           "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
           "promoted_to_knowledge_ids": []
         },
@@ -2347,6 +2450,7 @@
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "rule_classified_skill_local",
+          "human_review_evidence": null,
           "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
           "promoted_to_knowledge_ids": []
         },
@@ -2357,6 +2461,7 @@
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "rule_classified_skill_local",
+          "human_review_evidence": null,
           "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
           "promoted_to_knowledge_ids": []
         },
@@ -2367,6 +2472,7 @@
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "rule_classified_skill_local",
+          "human_review_evidence": null,
           "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
           "promoted_to_knowledge_ids": []
         }
@@ -2428,6 +2534,7 @@
           "classification": "reusable_cross_skill_knowledge",
           "classification_method": "knowledge_promotion_mapping",
           "review_status": "verified_promoted",
+          "human_review_evidence": null,
           "rationale": "Domain rules promoted to canonical knowledge record(s): knowledge.geometry-nodes-fields-and-anonymous-attributes, knowledge.procedural-instancing-and-realize-instances-budget, knowledge.procedural-scatter-poisson-disk-and-slope-masking, knowledge.triangle-draw-call-and-vram-budgets, knowledge.lod-hierarchy-and-decimation-strategy while remaining available as a progressive-disclosure skill reference.",
           "promoted_to_knowledge_ids": [
             "knowledge.geometry-nodes-fields-and-anonymous-attributes",
@@ -2444,6 +2551,7 @@
           "classification": "reusable_cross_skill_knowledge",
           "classification_method": "knowledge_promotion_mapping",
           "review_status": "verified_promoted",
+          "human_review_evidence": null,
           "rationale": "Domain rules promoted to canonical knowledge record(s): knowledge.mesh-manifold-normals-and-scale-hygiene while remaining available as a progressive-disclosure skill reference.",
           "promoted_to_knowledge_ids": [
             "knowledge.mesh-manifold-normals-and-scale-hygiene"
@@ -2456,6 +2564,7 @@
           "classification": "reusable_cross_skill_knowledge",
           "classification_method": "knowledge_promotion_mapping",
           "review_status": "verified_promoted",
+          "human_review_evidence": null,
           "rationale": "Domain rules promoted to canonical knowledge record(s): knowledge.quad-dominant-subdivision-topology, knowledge.non-destructive-hard-surface-modifier-stack, knowledge.organic-sculpt-to-retopology-workflow while remaining available as a progressive-disclosure skill reference.",
           "promoted_to_knowledge_ids": [
             "knowledge.quad-dominant-subdivision-topology",
@@ -2516,6 +2625,7 @@
           "classification": "reusable_cross_skill_knowledge",
           "classification_method": "knowledge_promotion_mapping",
           "review_status": "verified_promoted",
+          "human_review_evidence": null,
           "rationale": "Domain rules promoted to canonical knowledge record(s): knowledge.glb-binary-chunk-alignment-and-khronos-validation while remaining available as a progressive-disclosure skill reference.",
           "promoted_to_knowledge_ids": [
             "knowledge.glb-binary-chunk-alignment-and-khronos-validation"
@@ -2528,6 +2638,7 @@
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "rule_classified_skill_local",
+          "human_review_evidence": null,
           "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
           "promoted_to_knowledge_ids": []
         },
@@ -2538,6 +2649,7 @@
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "rule_classified_skill_local",
+          "human_review_evidence": null,
           "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
           "promoted_to_knowledge_ids": []
         }
@@ -2580,6 +2692,7 @@
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "rule_classified_skill_local",
+          "human_review_evidence": null,
           "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
           "promoted_to_knowledge_ids": []
         },
@@ -2590,6 +2703,7 @@
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "rule_classified_skill_local",
+          "human_review_evidence": null,
           "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
           "promoted_to_knowledge_ids": []
         },
@@ -2600,6 +2714,7 @@
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "rule_classified_skill_local",
+          "human_review_evidence": null,
           "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
           "promoted_to_knowledge_ids": []
         }
@@ -2640,6 +2755,7 @@
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "rule_classified_skill_local",
+          "human_review_evidence": null,
           "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
           "promoted_to_knowledge_ids": []
         },
@@ -2650,6 +2766,7 @@
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "rule_classified_skill_local",
+          "human_review_evidence": null,
           "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
           "promoted_to_knowledge_ids": []
         },
@@ -2660,6 +2777,7 @@
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "rule_classified_skill_local",
+          "human_review_evidence": null,
           "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
           "promoted_to_knowledge_ids": []
         }
@@ -2712,6 +2830,7 @@
           "classification": "reusable_cross_skill_knowledge",
           "classification_method": "knowledge_promotion_mapping",
           "review_status": "verified_promoted",
+          "human_review_evidence": null,
           "rationale": "Domain rules promoted to canonical knowledge record(s): knowledge.modular-architectural-grid-and-metric-scale, knowledge.environment-depth-layering-and-atmospheric-perspective while remaining available as a progressive-disclosure skill reference.",
           "promoted_to_knowledge_ids": [
             "knowledge.modular-architectural-grid-and-metric-scale",
@@ -2725,6 +2844,7 @@
           "classification": "reusable_cross_skill_knowledge",
           "classification_method": "knowledge_promotion_mapping",
           "review_status": "verified_promoted",
+          "human_review_evidence": null,
           "rationale": "Domain rules promoted to canonical knowledge record(s): knowledge.cad-creases-and-panel-gap-detailing while remaining available as a progressive-disclosure skill reference.",
           "promoted_to_knowledge_ids": [
             "knowledge.cad-creases-and-panel-gap-detailing"
@@ -2737,6 +2857,7 @@
           "classification": "reusable_cross_skill_knowledge",
           "classification_method": "knowledge_promotion_mapping",
           "review_status": "verified_promoted",
+          "human_review_evidence": null,
           "rationale": "Domain rules promoted to canonical knowledge record(s): knowledge.non-destructive-hard-surface-modifier-stack, knowledge.cad-creases-and-panel-gap-detailing while remaining available as a progressive-disclosure skill reference.",
           "promoted_to_knowledge_ids": [
             "knowledge.non-destructive-hard-surface-modifier-stack",
@@ -2750,6 +2871,7 @@
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "needs_semantic_review",
+          "human_review_evidence": null,
           "rationale": "Provides skill-local checklists/templates adjacent to promoted domain knowledge; flagged as needs_semantic_review for future cross-skill consolidation.",
           "promoted_to_knowledge_ids": []
         }
@@ -2804,6 +2926,7 @@
           "classification": "reusable_cross_skill_knowledge",
           "classification_method": "knowledge_promotion_mapping",
           "review_status": "verified_promoted",
+          "human_review_evidence": null,
           "rationale": "Domain rules promoted to canonical knowledge record(s): knowledge.nla-action-baking-and-morph-target-export, knowledge.lod-hierarchy-and-decimation-strategy, knowledge.threejs-r3f-tone-mapping-and-environment-parity while remaining available as a progressive-disclosure skill reference.",
           "promoted_to_knowledge_ids": [
             "knowledge.nla-action-baking-and-morph-target-export",
@@ -2818,6 +2941,7 @@
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "needs_semantic_review",
+          "human_review_evidence": null,
           "rationale": "Provides skill-local checklists/templates adjacent to promoted domain knowledge; flagged as needs_semantic_review for future cross-skill consolidation.",
           "promoted_to_knowledge_ids": []
         },
@@ -2828,6 +2952,7 @@
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "needs_semantic_review",
+          "human_review_evidence": null,
           "rationale": "Provides skill-local checklists/templates adjacent to promoted domain knowledge; flagged as needs_semantic_review for future cross-skill consolidation.",
           "promoted_to_knowledge_ids": []
         }
@@ -2875,6 +3000,7 @@
           "classification": "reusable_cross_skill_knowledge",
           "classification_method": "knowledge_promotion_mapping",
           "review_status": "verified_promoted",
+          "human_review_evidence": null,
           "rationale": "Domain rules promoted to canonical knowledge record(s): knowledge.glb-binary-chunk-alignment-and-khronos-validation while remaining available as a progressive-disclosure skill reference.",
           "promoted_to_knowledge_ids": [
             "knowledge.glb-binary-chunk-alignment-and-khronos-validation"
@@ -2887,6 +3013,7 @@
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "needs_semantic_review",
+          "human_review_evidence": null,
           "rationale": "Provides skill-local checklists/templates adjacent to promoted domain knowledge; flagged as needs_semantic_review for future cross-skill consolidation.",
           "promoted_to_knowledge_ids": []
         },
@@ -2897,6 +3024,7 @@
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "needs_semantic_review",
+          "human_review_evidence": null,
           "rationale": "Provides skill-local checklists/templates adjacent to promoted domain knowledge; flagged as needs_semantic_review for future cross-skill consolidation.",
           "promoted_to_knowledge_ids": []
         }
@@ -2941,6 +3069,7 @@
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "needs_semantic_review",
+          "human_review_evidence": null,
           "rationale": "Provides skill-local checklists/templates adjacent to promoted domain knowledge; flagged as needs_semantic_review for future cross-skill consolidation.",
           "promoted_to_knowledge_ids": []
         },
@@ -2951,6 +3080,7 @@
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "needs_semantic_review",
+          "human_review_evidence": null,
           "rationale": "Provides skill-local checklists/templates adjacent to promoted domain knowledge; flagged as needs_semantic_review for future cross-skill consolidation.",
           "promoted_to_knowledge_ids": []
         },
@@ -2961,6 +3091,7 @@
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "rule_classified_skill_local",
+          "human_review_evidence": null,
           "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
           "promoted_to_knowledge_ids": []
         }
@@ -2999,9 +3130,10 @@
           "title": "Attempt record template",
           "line_count": 34,
           "classification": "workflow_or_pack_governance",
-          "classification_method": "human_semantic_review",
-          "review_status": "verified_synchronized",
-          "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+          "classification_method": "rule_based_governance_and_recipe_mapping",
+          "review_status": "rule_classified_governance_or_recipe",
+          "human_review_evidence": null,
+          "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
           "promoted_to_knowledge_ids": []
         },
         {
@@ -3009,9 +3141,10 @@
           "title": "Triage next steps",
           "line_count": 12,
           "classification": "workflow_or_pack_governance",
-          "classification_method": "human_semantic_review",
-          "review_status": "verified_synchronized",
-          "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+          "classification_method": "rule_based_governance_and_recipe_mapping",
+          "review_status": "rule_classified_governance_or_recipe",
+          "human_review_evidence": null,
+          "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
           "promoted_to_knowledge_ids": []
         },
         {
@@ -3019,9 +3152,10 @@
           "title": "Truth label blocks",
           "line_count": 20,
           "classification": "workflow_or_pack_governance",
-          "classification_method": "human_semantic_review",
-          "review_status": "verified_synchronized",
-          "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+          "classification_method": "rule_based_governance_and_recipe_mapping",
+          "review_status": "rule_classified_governance_or_recipe",
+          "human_review_evidence": null,
+          "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
           "promoted_to_knowledge_ids": []
         }
       ]
@@ -3059,9 +3193,10 @@
           "title": "Anti-patterns",
           "line_count": 8,
           "classification": "workflow_or_pack_governance",
-          "classification_method": "human_semantic_review",
-          "review_status": "verified_synchronized",
-          "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+          "classification_method": "rule_based_governance_and_recipe_mapping",
+          "review_status": "rule_classified_governance_or_recipe",
+          "human_review_evidence": null,
+          "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
           "promoted_to_knowledge_ids": []
         },
         {
@@ -3069,9 +3204,10 @@
           "title": "Decision tree",
           "line_count": 20,
           "classification": "workflow_or_pack_governance",
-          "classification_method": "human_semantic_review",
-          "review_status": "verified_synchronized",
-          "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+          "classification_method": "rule_based_governance_and_recipe_mapping",
+          "review_status": "rule_classified_governance_or_recipe",
+          "human_review_evidence": null,
+          "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
           "promoted_to_knowledge_ids": []
         },
         {
@@ -3079,9 +3215,10 @@
           "title": "Path constraints table",
           "line_count": 13,
           "classification": "workflow_or_pack_governance",
-          "classification_method": "human_semantic_review",
-          "review_status": "verified_synchronized",
-          "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+          "classification_method": "rule_based_governance_and_recipe_mapping",
+          "review_status": "rule_classified_governance_or_recipe",
+          "human_review_evidence": null,
+          "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
           "promoted_to_knowledge_ids": []
         }
       ]
@@ -3119,9 +3256,10 @@
           "title": "Blocker Report Template",
           "line_count": 24,
           "classification": "workflow_or_pack_governance",
-          "classification_method": "human_semantic_review",
-          "review_status": "verified_synchronized",
-          "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+          "classification_method": "rule_based_governance_and_recipe_mapping",
+          "review_status": "rule_classified_governance_or_recipe",
+          "human_review_evidence": null,
+          "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
           "promoted_to_knowledge_ids": []
         },
         {
@@ -3129,9 +3267,10 @@
           "title": "Evidence Examples",
           "line_count": 22,
           "classification": "workflow_or_pack_governance",
-          "classification_method": "human_semantic_review",
-          "review_status": "verified_synchronized",
-          "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+          "classification_method": "rule_based_governance_and_recipe_mapping",
+          "review_status": "rule_classified_governance_or_recipe",
+          "human_review_evidence": null,
+          "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
           "promoted_to_knowledge_ids": []
         },
         {
@@ -3139,9 +3278,10 @@
           "title": "Readiness Matrix",
           "line_count": 29,
           "classification": "workflow_or_pack_governance",
-          "classification_method": "human_semantic_review",
-          "review_status": "verified_synchronized",
-          "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+          "classification_method": "rule_based_governance_and_recipe_mapping",
+          "review_status": "rule_classified_governance_or_recipe",
+          "human_review_evidence": null,
+          "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
           "promoted_to_knowledge_ids": []
         }
       ]
@@ -3179,9 +3319,10 @@
           "title": "Runtime Option Decision Tree",
           "line_count": 23,
           "classification": "workflow_or_pack_governance",
-          "classification_method": "human_semantic_review",
-          "review_status": "verified_synchronized",
-          "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+          "classification_method": "rule_based_governance_and_recipe_mapping",
+          "review_status": "rule_classified_governance_or_recipe",
+          "human_review_evidence": null,
+          "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
           "promoted_to_knowledge_ids": []
         },
         {
@@ -3189,9 +3330,10 @@
           "title": "Setup Summary Template",
           "line_count": 25,
           "classification": "workflow_or_pack_governance",
-          "classification_method": "human_semantic_review",
-          "review_status": "verified_synchronized",
-          "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+          "classification_method": "rule_based_governance_and_recipe_mapping",
+          "review_status": "rule_classified_governance_or_recipe",
+          "human_review_evidence": null,
+          "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
           "promoted_to_knowledge_ids": []
         },
         {
@@ -3199,9 +3341,10 @@
           "title": "Source Confidence Labels",
           "line_count": 26,
           "classification": "workflow_or_pack_governance",
-          "classification_method": "human_semantic_review",
-          "review_status": "verified_synchronized",
-          "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+          "classification_method": "rule_based_governance_and_recipe_mapping",
+          "review_status": "rule_classified_governance_or_recipe",
+          "human_review_evidence": null,
+          "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
           "promoted_to_knowledge_ids": []
         }
       ]
@@ -3257,6 +3400,7 @@
           "classification": "reusable_cross_skill_knowledge",
           "classification_method": "knowledge_promotion_mapping",
           "review_status": "verified_promoted",
+          "human_review_evidence": null,
           "rationale": "Domain rules promoted to canonical knowledge record(s): knowledge.modular-architectural-grid-and-metric-scale, knowledge.gltf-2-coordinate-system-and-transform-conventions while remaining available as a progressive-disclosure skill reference.",
           "promoted_to_knowledge_ids": [
             "knowledge.modular-architectural-grid-and-metric-scale",
@@ -3270,6 +3414,7 @@
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "rule_classified_skill_local",
+          "human_review_evidence": null,
           "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
           "promoted_to_knowledge_ids": []
         },
@@ -3280,6 +3425,7 @@
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "needs_semantic_review",
+          "human_review_evidence": null,
           "rationale": "Provides skill-local checklists/templates adjacent to promoted domain knowledge; flagged as needs_semantic_review for future cross-skill consolidation.",
           "promoted_to_knowledge_ids": []
         },
@@ -3290,6 +3436,7 @@
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "rule_classified_skill_local",
+          "human_review_evidence": null,
           "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
           "promoted_to_knowledge_ids": []
         }
@@ -3330,9 +3477,10 @@
           "title": "Options-language template",
           "line_count": 52,
           "classification": "workflow_or_pack_governance",
-          "classification_method": "human_semantic_review",
-          "review_status": "verified_synchronized",
-          "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+          "classification_method": "rule_based_governance_and_recipe_mapping",
+          "review_status": "rule_classified_governance_or_recipe",
+          "human_review_evidence": null,
+          "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
           "promoted_to_knowledge_ids": []
         },
         {
@@ -3340,9 +3488,10 @@
           "title": "Recurring creep patterns",
           "line_count": 56,
           "classification": "workflow_or_pack_governance",
-          "classification_method": "human_semantic_review",
-          "review_status": "verified_synchronized",
-          "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+          "classification_method": "rule_based_governance_and_recipe_mapping",
+          "review_status": "rule_classified_governance_or_recipe",
+          "human_review_evidence": null,
+          "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
           "promoted_to_knowledge_ids": []
         },
         {
@@ -3350,9 +3499,10 @@
           "title": "Scope addition classification",
           "line_count": 56,
           "classification": "workflow_or_pack_governance",
-          "classification_method": "human_semantic_review",
-          "review_status": "verified_synchronized",
-          "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+          "classification_method": "rule_based_governance_and_recipe_mapping",
+          "review_status": "rule_classified_governance_or_recipe",
+          "human_review_evidence": null,
+          "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
           "promoted_to_knowledge_ids": []
         }
       ]
@@ -3396,9 +3546,10 @@
           "title": "Failed-gate handling",
           "line_count": 43,
           "classification": "workflow_or_pack_governance",
-          "classification_method": "human_semantic_review",
-          "review_status": "verified_synchronized",
-          "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+          "classification_method": "rule_based_governance_and_recipe_mapping",
+          "review_status": "rule_classified_governance_or_recipe",
+          "human_review_evidence": null,
+          "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
           "promoted_to_knowledge_ids": []
         },
         {
@@ -3406,9 +3557,10 @@
           "title": "Gate template",
           "line_count": 47,
           "classification": "workflow_or_pack_governance",
-          "classification_method": "human_semantic_review",
-          "review_status": "verified_synchronized",
-          "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+          "classification_method": "rule_based_governance_and_recipe_mapping",
+          "review_status": "rule_classified_governance_or_recipe",
+          "human_review_evidence": null,
+          "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
           "promoted_to_knowledge_ids": []
         },
         {
@@ -3416,9 +3568,10 @@
           "title": "Stage decomposition patterns",
           "line_count": 56,
           "classification": "workflow_or_pack_governance",
-          "classification_method": "human_semantic_review",
-          "review_status": "verified_synchronized",
-          "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+          "classification_method": "rule_based_governance_and_recipe_mapping",
+          "review_status": "rule_classified_governance_or_recipe",
+          "human_review_evidence": null,
+          "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
           "promoted_to_knowledge_ids": []
         }
       ]
@@ -3430,9 +3583,10 @@
       "title": "Lifecycle Phases",
       "line_count": 92,
       "classification": "workflow_or_pack_governance",
-      "classification_method": "human_semantic_review",
-      "review_status": "verified_synchronized",
-      "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+      "classification_method": "rule_based_governance_and_recipe_mapping",
+      "review_status": "rule_classified_governance_or_recipe",
+      "human_review_evidence": null,
+      "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
       "promoted_to_knowledge_ids": []
     },
     {
@@ -3440,9 +3594,10 @@
       "title": "Quick-Start Prompts",
       "line_count": 66,
       "classification": "workflow_or_pack_governance",
-      "classification_method": "human_semantic_review",
-      "review_status": "verified_synchronized",
-      "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+      "classification_method": "rule_based_governance_and_recipe_mapping",
+      "review_status": "rule_classified_governance_or_recipe",
+      "human_review_evidence": null,
+      "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
       "promoted_to_knowledge_ids": []
     },
     {
@@ -3450,9 +3605,10 @@
       "title": "Routing Decision Tree",
       "line_count": 58,
       "classification": "workflow_or_pack_governance",
-      "classification_method": "human_semantic_review",
-      "review_status": "verified_synchronized",
-      "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+      "classification_method": "rule_based_governance_and_recipe_mapping",
+      "review_status": "rule_classified_governance_or_recipe",
+      "human_review_evidence": null,
+      "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
       "promoted_to_knowledge_ids": []
     },
     {
@@ -3460,9 +3616,10 @@
       "title": "Recipe / pack catalog (BlendOps v0 + Phase 1 Canonical Recipe Registry)",
       "line_count": 31,
       "classification": "recipe_specific_procedure",
-      "classification_method": "human_semantic_review",
-      "review_status": "verified_synchronized",
-      "rationale": "Reviewed and synchronized with registry/recipe-catalog.json for recipe fit scoring and multi-deliverable decomposition.",
+      "classification_method": "rule_based_governance_and_recipe_mapping",
+      "review_status": "rule_classified_governance_or_recipe",
+      "human_review_evidence": null,
+      "rationale": "Classified via deterministic skill-path rule and synchronized with registry/recipe-catalog.json for recipe fit scoring and multi-deliverable decomposition.",
       "promoted_to_knowledge_ids": []
     },
     {
@@ -3470,9 +3627,10 @@
       "title": "Scope gap rules",
       "line_count": 22,
       "classification": "recipe_specific_procedure",
-      "classification_method": "human_semantic_review",
-      "review_status": "verified_synchronized",
-      "rationale": "Reviewed and synchronized with registry/recipe-catalog.json for recipe fit scoring and multi-deliverable decomposition.",
+      "classification_method": "rule_based_governance_and_recipe_mapping",
+      "review_status": "rule_classified_governance_or_recipe",
+      "human_review_evidence": null,
+      "rationale": "Classified via deterministic skill-path rule and synchronized with registry/recipe-catalog.json for recipe fit scoring and multi-deliverable decomposition.",
       "promoted_to_knowledge_ids": []
     },
     {
@@ -3480,9 +3638,10 @@
       "title": "Workflow recommendation template",
       "line_count": 23,
       "classification": "recipe_specific_procedure",
-      "classification_method": "human_semantic_review",
-      "review_status": "verified_synchronized",
-      "rationale": "Reviewed and synchronized with registry/recipe-catalog.json for recipe fit scoring and multi-deliverable decomposition.",
+      "classification_method": "rule_based_governance_and_recipe_mapping",
+      "review_status": "rule_classified_governance_or_recipe",
+      "human_review_evidence": null,
+      "rationale": "Classified via deterministic skill-path rule and synchronized with registry/recipe-catalog.json for recipe fit scoring and multi-deliverable decomposition.",
       "promoted_to_knowledge_ids": []
     },
     {
@@ -3490,9 +3649,10 @@
       "title": "Blocked start playbook",
       "line_count": 26,
       "classification": "workflow_or_pack_governance",
-      "classification_method": "human_semantic_review",
-      "review_status": "verified_synchronized",
-      "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+      "classification_method": "rule_based_governance_and_recipe_mapping",
+      "review_status": "rule_classified_governance_or_recipe",
+      "human_review_evidence": null,
+      "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
       "promoted_to_knowledge_ids": []
     },
     {
@@ -3500,9 +3660,10 @@
       "title": "Pack readiness output template",
       "line_count": 24,
       "classification": "workflow_or_pack_governance",
-      "classification_method": "human_semantic_review",
-      "review_status": "verified_synchronized",
-      "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+      "classification_method": "rule_based_governance_and_recipe_mapping",
+      "review_status": "rule_classified_governance_or_recipe",
+      "human_review_evidence": null,
+      "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
       "promoted_to_knowledge_ids": []
     },
     {
@@ -3510,9 +3671,10 @@
       "title": "Pack prerequisite matrix",
       "line_count": 16,
       "classification": "workflow_or_pack_governance",
-      "classification_method": "human_semantic_review",
-      "review_status": "verified_synchronized",
-      "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+      "classification_method": "rule_based_governance_and_recipe_mapping",
+      "review_status": "rule_classified_governance_or_recipe",
+      "human_review_evidence": null,
+      "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
       "promoted_to_knowledge_ids": []
     },
     {
@@ -3520,9 +3682,10 @@
       "title": "Milestone model (conceptual)",
       "line_count": 19,
       "classification": "workflow_or_pack_governance",
-      "classification_method": "human_semantic_review",
-      "review_status": "verified_synchronized",
-      "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+      "classification_method": "rule_based_governance_and_recipe_mapping",
+      "review_status": "rule_classified_governance_or_recipe",
+      "human_review_evidence": null,
+      "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
       "promoted_to_knowledge_ids": []
     },
     {
@@ -3530,9 +3693,10 @@
       "title": "Routing decision tree",
       "line_count": 33,
       "classification": "workflow_or_pack_governance",
-      "classification_method": "human_semantic_review",
-      "review_status": "verified_synchronized",
-      "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+      "classification_method": "rule_based_governance_and_recipe_mapping",
+      "review_status": "rule_classified_governance_or_recipe",
+      "human_review_evidence": null,
+      "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
       "promoted_to_knowledge_ids": []
     },
     {
@@ -3540,9 +3704,10 @@
       "title": "Stage handoff template",
       "line_count": 25,
       "classification": "workflow_or_pack_governance",
-      "classification_method": "human_semantic_review",
-      "review_status": "verified_synchronized",
-      "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+      "classification_method": "rule_based_governance_and_recipe_mapping",
+      "review_status": "rule_classified_governance_or_recipe",
+      "human_review_evidence": null,
+      "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
       "promoted_to_knowledge_ids": []
     },
     {
@@ -3550,9 +3715,10 @@
       "title": "Brief → criteria mapper",
       "line_count": 20,
       "classification": "workflow_or_pack_governance",
-      "classification_method": "human_semantic_review",
-      "review_status": "verified_synchronized",
-      "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+      "classification_method": "rule_based_governance_and_recipe_mapping",
+      "review_status": "rule_classified_governance_or_recipe",
+      "human_review_evidence": null,
+      "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
       "promoted_to_knowledge_ids": []
     },
     {
@@ -3560,9 +3726,10 @@
       "title": "Checklist patterns",
       "line_count": 24,
       "classification": "workflow_or_pack_governance",
-      "classification_method": "human_semantic_review",
-      "review_status": "verified_synchronized",
-      "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+      "classification_method": "rule_based_governance_and_recipe_mapping",
+      "review_status": "rule_classified_governance_or_recipe",
+      "human_review_evidence": null,
+      "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
       "promoted_to_knowledge_ids": []
     },
     {
@@ -3570,9 +3737,10 @@
       "title": "Evidence hook rules",
       "line_count": 15,
       "classification": "workflow_or_pack_governance",
-      "classification_method": "human_semantic_review",
-      "review_status": "verified_synchronized",
-      "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+      "classification_method": "rule_based_governance_and_recipe_mapping",
+      "review_status": "rule_classified_governance_or_recipe",
+      "human_review_evidence": null,
+      "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
       "promoted_to_knowledge_ids": []
     },
     {
@@ -3582,6 +3750,7 @@
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "rule_classified_skill_local",
+      "human_review_evidence": null,
       "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
       "promoted_to_knowledge_ids": []
     },
@@ -3592,6 +3761,7 @@
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "rule_classified_skill_local",
+      "human_review_evidence": null,
       "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
       "promoted_to_knowledge_ids": []
     },
@@ -3602,6 +3772,7 @@
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "rule_classified_skill_local",
+      "human_review_evidence": null,
       "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
       "promoted_to_knowledge_ids": []
     },
@@ -3612,6 +3783,7 @@
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "rule_classified_skill_local",
+      "human_review_evidence": null,
       "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
       "promoted_to_knowledge_ids": []
     },
@@ -3622,6 +3794,7 @@
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "rule_classified_skill_local",
+      "human_review_evidence": null,
       "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
       "promoted_to_knowledge_ids": []
     },
@@ -3632,6 +3805,7 @@
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "rule_classified_skill_local",
+      "human_review_evidence": null,
       "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
       "promoted_to_knowledge_ids": []
     },
@@ -3642,6 +3816,7 @@
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "rule_classified_skill_local",
+      "human_review_evidence": null,
       "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
       "promoted_to_knowledge_ids": []
     },
@@ -3652,6 +3827,7 @@
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "rule_classified_skill_local",
+      "human_review_evidence": null,
       "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
       "promoted_to_knowledge_ids": []
     },
@@ -3662,6 +3838,7 @@
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "rule_classified_skill_local",
+      "human_review_evidence": null,
       "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
       "promoted_to_knowledge_ids": []
     },
@@ -3672,6 +3849,7 @@
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "rule_classified_skill_local",
+      "human_review_evidence": null,
       "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
       "promoted_to_knowledge_ids": []
     },
@@ -3682,6 +3860,7 @@
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "rule_classified_skill_local",
+      "human_review_evidence": null,
       "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
       "promoted_to_knowledge_ids": []
     },
@@ -3692,6 +3871,7 @@
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "rule_classified_skill_local",
+      "human_review_evidence": null,
       "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
       "promoted_to_knowledge_ids": []
     },
@@ -3702,6 +3882,7 @@
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "rule_classified_skill_local",
+      "human_review_evidence": null,
       "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
       "promoted_to_knowledge_ids": []
     },
@@ -3712,6 +3893,7 @@
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "rule_classified_skill_local",
+      "human_review_evidence": null,
       "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
       "promoted_to_knowledge_ids": []
     },
@@ -3722,6 +3904,7 @@
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "rule_classified_skill_local",
+      "human_review_evidence": null,
       "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
       "promoted_to_knowledge_ids": []
     },
@@ -3732,6 +3915,7 @@
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "rule_classified_skill_local",
+      "human_review_evidence": null,
       "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
       "promoted_to_knowledge_ids": []
     },
@@ -3742,6 +3926,7 @@
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "rule_classified_skill_local",
+      "human_review_evidence": null,
       "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
       "promoted_to_knowledge_ids": []
     },
@@ -3752,6 +3937,7 @@
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "rule_classified_skill_local",
+      "human_review_evidence": null,
       "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
       "promoted_to_knowledge_ids": []
     },
@@ -3760,9 +3946,10 @@
       "title": "Dependency patterns",
       "line_count": 54,
       "classification": "recipe_specific_procedure",
-      "classification_method": "human_semantic_review",
-      "review_status": "verified_synchronized",
-      "rationale": "Reviewed and synchronized with registry/recipe-catalog.json for recipe fit scoring and multi-deliverable decomposition.",
+      "classification_method": "rule_based_governance_and_recipe_mapping",
+      "review_status": "rule_classified_governance_or_recipe",
+      "human_review_evidence": null,
+      "rationale": "Classified via deterministic skill-path rule and synchronized with registry/recipe-catalog.json for recipe fit scoring and multi-deliverable decomposition.",
       "promoted_to_knowledge_ids": []
     },
     {
@@ -3770,9 +3957,10 @@
       "title": "Recipe grouping rules",
       "line_count": 59,
       "classification": "recipe_specific_procedure",
-      "classification_method": "human_semantic_review",
-      "review_status": "verified_synchronized",
-      "rationale": "Reviewed and synchronized with registry/recipe-catalog.json for recipe fit scoring and multi-deliverable decomposition.",
+      "classification_method": "rule_based_governance_and_recipe_mapping",
+      "review_status": "rule_classified_governance_or_recipe",
+      "human_review_evidence": null,
+      "rationale": "Classified via deterministic skill-path rule and synchronized with registry/recipe-catalog.json for recipe fit scoring and multi-deliverable decomposition.",
       "promoted_to_knowledge_ids": []
     },
     {
@@ -3780,9 +3968,10 @@
       "title": "Recipe naming rules",
       "line_count": 45,
       "classification": "recipe_specific_procedure",
-      "classification_method": "human_semantic_review",
-      "review_status": "verified_synchronized",
-      "rationale": "Reviewed and synchronized with registry/recipe-catalog.json for recipe fit scoring and multi-deliverable decomposition.",
+      "classification_method": "rule_based_governance_and_recipe_mapping",
+      "review_status": "rule_classified_governance_or_recipe",
+      "human_review_evidence": null,
+      "rationale": "Classified via deterministic skill-path rule and synchronized with registry/recipe-catalog.json for recipe fit scoring and multi-deliverable decomposition.",
       "promoted_to_knowledge_ids": []
     },
     {
@@ -3792,6 +3981,7 @@
       "classification": "reusable_cross_skill_knowledge",
       "classification_method": "knowledge_promotion_mapping",
       "review_status": "verified_promoted",
+      "human_review_evidence": null,
       "rationale": "Domain rules promoted to canonical knowledge record(s): knowledge.mesh-manifold-normals-and-scale-hygiene, knowledge.boolean-bevel-shading-cleanup, knowledge.high-to-low-normal-and-ao-baking while remaining available as a progressive-disclosure skill reference.",
       "promoted_to_knowledge_ids": [
         "knowledge.mesh-manifold-normals-and-scale-hygiene",
@@ -3806,6 +3996,7 @@
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "rule_classified_skill_local",
+      "human_review_evidence": null,
       "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
       "promoted_to_knowledge_ids": []
     },
@@ -3816,6 +4007,7 @@
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "rule_classified_skill_local",
+      "human_review_evidence": null,
       "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
       "promoted_to_knowledge_ids": []
     },
@@ -3824,9 +4016,10 @@
       "title": "Bridge State Matrix Template",
       "line_count": 83,
       "classification": "workflow_or_pack_governance",
-      "classification_method": "human_semantic_review",
-      "review_status": "verified_synchronized",
-      "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+      "classification_method": "rule_based_governance_and_recipe_mapping",
+      "review_status": "rule_classified_governance_or_recipe",
+      "human_review_evidence": null,
+      "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
       "promoted_to_knowledge_ids": []
     },
     {
@@ -3834,9 +4027,10 @@
       "title": "Conflict Playbooks",
       "line_count": 100,
       "classification": "workflow_or_pack_governance",
-      "classification_method": "human_semantic_review",
-      "review_status": "verified_synchronized",
-      "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+      "classification_method": "rule_based_governance_and_recipe_mapping",
+      "review_status": "rule_classified_governance_or_recipe",
+      "human_review_evidence": null,
+      "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
       "promoted_to_knowledge_ids": []
     },
     {
@@ -3844,9 +4038,10 @@
       "title": "Do-Not Reminders",
       "line_count": 43,
       "classification": "workflow_or_pack_governance",
-      "classification_method": "human_semantic_review",
-      "review_status": "verified_synchronized",
-      "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+      "classification_method": "rule_based_governance_and_recipe_mapping",
+      "review_status": "rule_classified_governance_or_recipe",
+      "human_review_evidence": null,
+      "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
       "promoted_to_knowledge_ids": []
     },
     {
@@ -3856,6 +4051,7 @@
       "classification": "reusable_cross_skill_knowledge",
       "classification_method": "knowledge_promotion_mapping",
       "review_status": "verified_promoted",
+      "human_review_evidence": null,
       "rationale": "Domain rules promoted to canonical knowledge record(s): knowledge.physically-based-camera-lens-and-dof while remaining available as a progressive-disclosure skill reference.",
       "promoted_to_knowledge_ids": [
         "knowledge.physically-based-camera-lens-and-dof"
@@ -3868,6 +4064,7 @@
       "classification": "reusable_cross_skill_knowledge",
       "classification_method": "knowledge_promotion_mapping",
       "review_status": "verified_promoted",
+      "human_review_evidence": null,
       "rationale": "Domain rules promoted to canonical knowledge record(s): knowledge.physically-based-camera-lens-and-dof while remaining available as a progressive-disclosure skill reference.",
       "promoted_to_knowledge_ids": [
         "knowledge.physically-based-camera-lens-and-dof"
@@ -3880,6 +4077,7 @@
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "rule_classified_skill_local",
+      "human_review_evidence": null,
       "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
       "promoted_to_knowledge_ids": []
     },
@@ -3890,6 +4088,7 @@
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "rule_classified_skill_local",
+      "human_review_evidence": null,
       "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
       "promoted_to_knowledge_ids": []
     },
@@ -3900,6 +4099,7 @@
       "classification": "reusable_cross_skill_knowledge",
       "classification_method": "knowledge_promotion_mapping",
       "review_status": "verified_promoted",
+      "human_review_evidence": null,
       "rationale": "Domain rules promoted to canonical knowledge record(s): knowledge.physically-based-camera-lens-and-dof while remaining available as a progressive-disclosure skill reference.",
       "promoted_to_knowledge_ids": [
         "knowledge.physically-based-camera-lens-and-dof"
@@ -3912,6 +4112,7 @@
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "rule_classified_skill_local",
+      "human_review_evidence": null,
       "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
       "promoted_to_knowledge_ids": []
     },
@@ -3922,6 +4123,7 @@
       "classification": "reusable_cross_skill_knowledge",
       "classification_method": "knowledge_promotion_mapping",
       "review_status": "verified_promoted",
+      "human_review_evidence": null,
       "rationale": "Domain rules promoted to canonical knowledge record(s): knowledge.organic-sculpt-to-retopology-workflow while remaining available as a progressive-disclosure skill reference.",
       "promoted_to_knowledge_ids": [
         "knowledge.organic-sculpt-to-retopology-workflow"
@@ -3932,9 +4134,10 @@
       "title": "Flag order reminders",
       "line_count": 10,
       "classification": "workflow_or_pack_governance",
-      "classification_method": "human_semantic_review",
-      "review_status": "verified_synchronized",
-      "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+      "classification_method": "rule_based_governance_and_recipe_mapping",
+      "review_status": "rule_classified_governance_or_recipe",
+      "human_review_evidence": null,
+      "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
       "promoted_to_knowledge_ids": []
     },
     {
@@ -3942,9 +4145,10 @@
       "title": "Job type matrix",
       "line_count": 11,
       "classification": "workflow_or_pack_governance",
-      "classification_method": "human_semantic_review",
-      "review_status": "verified_synchronized",
-      "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+      "classification_method": "rule_based_governance_and_recipe_mapping",
+      "review_status": "rule_classified_governance_or_recipe",
+      "human_review_evidence": null,
+      "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
       "promoted_to_knowledge_ids": []
     },
     {
@@ -3952,9 +4156,10 @@
       "title": "Stateless limitations",
       "line_count": 9,
       "classification": "workflow_or_pack_governance",
-      "classification_method": "human_semantic_review",
-      "review_status": "verified_synchronized",
-      "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+      "classification_method": "rule_based_governance_and_recipe_mapping",
+      "review_status": "rule_classified_governance_or_recipe",
+      "human_review_evidence": null,
+      "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
       "promoted_to_knowledge_ids": []
     },
     {
@@ -3964,6 +4169,7 @@
       "classification": "reusable_cross_skill_knowledge",
       "classification_method": "knowledge_promotion_mapping",
       "review_status": "verified_promoted",
+      "human_review_evidence": null,
       "rationale": "Domain rules promoted to canonical knowledge record(s): knowledge.agx-filmic-color-management-and-cycles-eevee, knowledge.threejs-r3f-tone-mapping-and-environment-parity while remaining available as a progressive-disclosure skill reference.",
       "promoted_to_knowledge_ids": [
         "knowledge.agx-filmic-color-management-and-cycles-eevee",
@@ -3977,6 +4183,7 @@
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "rule_classified_skill_local",
+      "human_review_evidence": null,
       "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
       "promoted_to_knowledge_ids": []
     },
@@ -3987,6 +4194,7 @@
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "rule_classified_skill_local",
+      "human_review_evidence": null,
       "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
       "promoted_to_knowledge_ids": []
     },
@@ -3997,6 +4205,7 @@
       "classification": "reusable_cross_skill_knowledge",
       "classification_method": "knowledge_promotion_mapping",
       "review_status": "verified_promoted",
+      "human_review_evidence": null,
       "rationale": "Domain rules promoted to canonical knowledge record(s): knowledge.environment-depth-layering-and-atmospheric-perspective while remaining available as a progressive-disclosure skill reference.",
       "promoted_to_knowledge_ids": [
         "knowledge.environment-depth-layering-and-atmospheric-perspective"
@@ -4009,6 +4218,7 @@
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "rule_classified_skill_local",
+      "human_review_evidence": null,
       "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
       "promoted_to_knowledge_ids": []
     },
@@ -4019,6 +4229,7 @@
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "rule_classified_skill_local",
+      "human_review_evidence": null,
       "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
       "promoted_to_knowledge_ids": []
     },
@@ -4029,6 +4240,7 @@
       "classification": "reusable_cross_skill_knowledge",
       "classification_method": "knowledge_promotion_mapping",
       "review_status": "verified_promoted",
+      "human_review_evidence": null,
       "rationale": "Domain rules promoted to canonical knowledge record(s): knowledge.agx-filmic-color-management-and-cycles-eevee, knowledge.volumetrics-fog-and-principled-volume-tradeoffs while remaining available as a progressive-disclosure skill reference.",
       "promoted_to_knowledge_ids": [
         "knowledge.agx-filmic-color-management-and-cycles-eevee",
@@ -4042,6 +4254,7 @@
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "rule_classified_skill_local",
+      "human_review_evidence": null,
       "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
       "promoted_to_knowledge_ids": []
     },
@@ -4052,6 +4265,7 @@
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "rule_classified_skill_local",
+      "human_review_evidence": null,
       "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
       "promoted_to_knowledge_ids": []
     },
@@ -4060,9 +4274,10 @@
       "title": "Done vs perfect",
       "line_count": 49,
       "classification": "workflow_or_pack_governance",
-      "classification_method": "human_semantic_review",
-      "review_status": "verified_synchronized",
-      "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+      "classification_method": "rule_based_governance_and_recipe_mapping",
+      "review_status": "rule_classified_governance_or_recipe",
+      "human_review_evidence": null,
+      "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
       "promoted_to_knowledge_ids": []
     },
     {
@@ -4070,9 +4285,10 @@
       "title": "Out-of-scope patterns",
       "line_count": 51,
       "classification": "workflow_or_pack_governance",
-      "classification_method": "human_semantic_review",
-      "review_status": "verified_synchronized",
-      "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+      "classification_method": "rule_based_governance_and_recipe_mapping",
+      "review_status": "rule_classified_governance_or_recipe",
+      "human_review_evidence": null,
+      "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
       "promoted_to_knowledge_ids": []
     },
     {
@@ -4080,9 +4296,10 @@
       "title": "Stop condition templates",
       "line_count": 40,
       "classification": "workflow_or_pack_governance",
-      "classification_method": "human_semantic_review",
-      "review_status": "verified_synchronized",
-      "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+      "classification_method": "rule_based_governance_and_recipe_mapping",
+      "review_status": "rule_classified_governance_or_recipe",
+      "human_review_evidence": null,
+      "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
       "promoted_to_knowledge_ids": []
     },
     {
@@ -4092,6 +4309,7 @@
       "classification": "reusable_cross_skill_knowledge",
       "classification_method": "knowledge_promotion_mapping",
       "review_status": "verified_promoted",
+      "human_review_evidence": null,
       "rationale": "Domain rules promoted to canonical knowledge record(s): knowledge.procedural-scatter-poisson-disk-and-slope-masking, knowledge.volumetrics-fog-and-principled-volume-tradeoffs, knowledge.environment-depth-layering-and-atmospheric-perspective while remaining available as a progressive-disclosure skill reference.",
       "promoted_to_knowledge_ids": [
         "knowledge.procedural-scatter-poisson-disk-and-slope-masking",
@@ -4106,6 +4324,7 @@
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "rule_classified_skill_local",
+      "human_review_evidence": null,
       "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
       "promoted_to_knowledge_ids": []
     },
@@ -4116,6 +4335,7 @@
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "rule_classified_skill_local",
+      "human_review_evidence": null,
       "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
       "promoted_to_knowledge_ids": []
     },
@@ -4126,6 +4346,7 @@
       "classification": "reusable_cross_skill_knowledge",
       "classification_method": "knowledge_promotion_mapping",
       "review_status": "verified_promoted",
+      "human_review_evidence": null,
       "rationale": "Domain rules promoted to canonical knowledge record(s): knowledge.armature-joint-hierarchy-and-linear-blend-skinning, knowledge.nla-action-baking-and-morph-target-export, knowledge.rigid-body-cloth-and-simulation-cache-baking while remaining available as a progressive-disclosure skill reference.",
       "promoted_to_knowledge_ids": [
         "knowledge.armature-joint-hierarchy-and-linear-blend-skinning",
@@ -4140,6 +4361,7 @@
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "rule_classified_skill_local",
+      "human_review_evidence": null,
       "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
       "promoted_to_knowledge_ids": []
     },
@@ -4150,6 +4372,7 @@
       "classification": "reusable_cross_skill_knowledge",
       "classification_method": "knowledge_promotion_mapping",
       "review_status": "verified_promoted",
+      "human_review_evidence": null,
       "rationale": "Domain rules promoted to canonical knowledge record(s): knowledge.armature-joint-hierarchy-and-linear-blend-skinning, knowledge.nla-action-baking-and-morph-target-export, knowledge.rigid-body-cloth-and-simulation-cache-baking while remaining available as a progressive-disclosure skill reference.",
       "promoted_to_knowledge_ids": [
         "knowledge.armature-joint-hierarchy-and-linear-blend-skinning",
@@ -4164,6 +4387,7 @@
       "classification": "reusable_cross_skill_knowledge",
       "classification_method": "knowledge_promotion_mapping",
       "review_status": "verified_promoted",
+      "human_review_evidence": null,
       "rationale": "Domain rules promoted to canonical knowledge record(s): knowledge.texture-resolution-ktx2-and-draco-meshopt-compression, knowledge.gltf-2-coordinate-system-and-transform-conventions, knowledge.glb-binary-chunk-alignment-and-khronos-validation while remaining available as a progressive-disclosure skill reference.",
       "promoted_to_knowledge_ids": [
         "knowledge.texture-resolution-ktx2-and-draco-meshopt-compression",
@@ -4178,6 +4402,7 @@
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "rule_classified_skill_local",
+      "human_review_evidence": null,
       "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
       "promoted_to_knowledge_ids": []
     },
@@ -4188,6 +4413,7 @@
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "rule_classified_skill_local",
+      "human_review_evidence": null,
       "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
       "promoted_to_knowledge_ids": []
     },
@@ -4198,6 +4424,7 @@
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "rule_classified_skill_local",
+      "human_review_evidence": null,
       "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
       "promoted_to_knowledge_ids": []
     },
@@ -4208,6 +4435,7 @@
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "rule_classified_skill_local",
+      "human_review_evidence": null,
       "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
       "promoted_to_knowledge_ids": []
     },
@@ -4218,6 +4446,7 @@
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "rule_classified_skill_local",
+      "human_review_evidence": null,
       "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
       "promoted_to_knowledge_ids": []
     },
@@ -4228,6 +4457,7 @@
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "rule_classified_skill_local",
+      "human_review_evidence": null,
       "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
       "promoted_to_knowledge_ids": []
     },
@@ -4238,6 +4468,7 @@
       "classification": "reusable_cross_skill_knowledge",
       "classification_method": "knowledge_promotion_mapping",
       "review_status": "verified_promoted",
+      "human_review_evidence": null,
       "rationale": "Domain rules promoted to canonical knowledge record(s): knowledge.modular-architectural-grid-and-metric-scale while remaining available as a progressive-disclosure skill reference.",
       "promoted_to_knowledge_ids": [
         "knowledge.modular-architectural-grid-and-metric-scale"
@@ -4250,6 +4481,7 @@
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "rule_classified_skill_local",
+      "human_review_evidence": null,
       "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
       "promoted_to_knowledge_ids": []
     },
@@ -4260,6 +4492,7 @@
       "classification": "reusable_cross_skill_knowledge",
       "classification_method": "knowledge_promotion_mapping",
       "review_status": "verified_promoted",
+      "human_review_evidence": null,
       "rationale": "Domain rules promoted to canonical knowledge record(s): knowledge.physically-based-camera-lens-and-dof while remaining available as a progressive-disclosure skill reference.",
       "promoted_to_knowledge_ids": [
         "knowledge.physically-based-camera-lens-and-dof"
@@ -4272,6 +4505,7 @@
       "classification": "reusable_cross_skill_knowledge",
       "classification_method": "knowledge_promotion_mapping",
       "review_status": "verified_promoted",
+      "human_review_evidence": null,
       "rationale": "Domain rules promoted to canonical knowledge record(s): knowledge.volumetrics-fog-and-principled-volume-tradeoffs while remaining available as a progressive-disclosure skill reference.",
       "promoted_to_knowledge_ids": [
         "knowledge.volumetrics-fog-and-principled-volume-tradeoffs"
@@ -4284,6 +4518,7 @@
       "classification": "reusable_cross_skill_knowledge",
       "classification_method": "knowledge_promotion_mapping",
       "review_status": "verified_promoted",
+      "human_review_evidence": null,
       "rationale": "Domain rules promoted to canonical knowledge record(s): knowledge.three-point-and-hdri-studio-lighting while remaining available as a progressive-disclosure skill reference.",
       "promoted_to_knowledge_ids": [
         "knowledge.three-point-and-hdri-studio-lighting"
@@ -4296,6 +4531,7 @@
       "classification": "reusable_cross_skill_knowledge",
       "classification_method": "knowledge_promotion_mapping",
       "review_status": "verified_promoted",
+      "human_review_evidence": null,
       "rationale": "Domain rules promoted to canonical knowledge record(s): knowledge.uv-seam-placement-and-texel-density, knowledge.shader-node-gltf-export-portability while remaining available as a progressive-disclosure skill reference.",
       "promoted_to_knowledge_ids": [
         "knowledge.uv-seam-placement-and-texel-density",
@@ -4309,6 +4545,7 @@
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "rule_classified_skill_local",
+      "human_review_evidence": null,
       "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
       "promoted_to_knowledge_ids": []
     },
@@ -4319,6 +4556,7 @@
       "classification": "reusable_cross_skill_knowledge",
       "classification_method": "knowledge_promotion_mapping",
       "review_status": "verified_promoted",
+      "human_review_evidence": null,
       "rationale": "Domain rules promoted to canonical knowledge record(s): knowledge.normal-roughness-and-orm-channel-packing while remaining available as a progressive-disclosure skill reference.",
       "promoted_to_knowledge_ids": [
         "knowledge.normal-roughness-and-orm-channel-packing"
@@ -4331,6 +4569,7 @@
       "classification": "reusable_cross_skill_knowledge",
       "classification_method": "knowledge_promotion_mapping",
       "review_status": "verified_promoted",
+      "human_review_evidence": null,
       "rationale": "Domain rules promoted to canonical knowledge record(s): knowledge.three-point-and-hdri-studio-lighting while remaining available as a progressive-disclosure skill reference.",
       "promoted_to_knowledge_ids": [
         "knowledge.three-point-and-hdri-studio-lighting"
@@ -4343,6 +4582,7 @@
       "classification": "reusable_cross_skill_knowledge",
       "classification_method": "knowledge_promotion_mapping",
       "review_status": "verified_promoted",
+      "human_review_evidence": null,
       "rationale": "Domain rules promoted to canonical knowledge record(s): knowledge.three-point-and-hdri-studio-lighting while remaining available as a progressive-disclosure skill reference.",
       "promoted_to_knowledge_ids": [
         "knowledge.three-point-and-hdri-studio-lighting"
@@ -4355,6 +4595,7 @@
       "classification": "reusable_cross_skill_knowledge",
       "classification_method": "knowledge_promotion_mapping",
       "review_status": "verified_promoted",
+      "human_review_evidence": null,
       "rationale": "Domain rules promoted to canonical knowledge record(s): knowledge.three-point-and-hdri-studio-lighting while remaining available as a progressive-disclosure skill reference.",
       "promoted_to_knowledge_ids": [
         "knowledge.three-point-and-hdri-studio-lighting"
@@ -4367,6 +4608,7 @@
       "classification": "reusable_cross_skill_knowledge",
       "classification_method": "knowledge_promotion_mapping",
       "review_status": "verified_promoted",
+      "human_review_evidence": null,
       "rationale": "Domain rules promoted to canonical knowledge record(s): knowledge.shader-node-gltf-export-portability while remaining available as a progressive-disclosure skill reference.",
       "promoted_to_knowledge_ids": [
         "knowledge.shader-node-gltf-export-portability"
@@ -4379,6 +4621,7 @@
       "classification": "reusable_cross_skill_knowledge",
       "classification_method": "knowledge_promotion_mapping",
       "review_status": "verified_promoted",
+      "human_review_evidence": null,
       "rationale": "Domain rules promoted to canonical knowledge record(s): knowledge.high-to-low-normal-and-ao-baking, knowledge.principled-bsdf-v2-energy-conserving-pbr, knowledge.normal-roughness-and-orm-channel-packing while remaining available as a progressive-disclosure skill reference.",
       "promoted_to_knowledge_ids": [
         "knowledge.high-to-low-normal-and-ao-baking",
@@ -4393,6 +4636,7 @@
       "classification": "reusable_cross_skill_knowledge",
       "classification_method": "knowledge_promotion_mapping",
       "review_status": "verified_promoted",
+      "human_review_evidence": null,
       "rationale": "Domain rules promoted to canonical knowledge record(s): knowledge.uv-seam-placement-and-texel-density, knowledge.udim-vs-single-atlas-uv-packing while remaining available as a progressive-disclosure skill reference.",
       "promoted_to_knowledge_ids": [
         "knowledge.uv-seam-placement-and-texel-density",
@@ -4406,6 +4650,7 @@
       "classification": "reusable_cross_skill_knowledge",
       "classification_method": "knowledge_promotion_mapping",
       "review_status": "verified_promoted",
+      "human_review_evidence": null,
       "rationale": "Domain rules promoted to canonical knowledge record(s): knowledge.procedural-instancing-and-realize-instances-budget, knowledge.triangle-draw-call-and-vram-budgets, knowledge.texture-resolution-ktx2-and-draco-meshopt-compression while remaining available as a progressive-disclosure skill reference.",
       "promoted_to_knowledge_ids": [
         "knowledge.procedural-instancing-and-realize-instances-budget",
@@ -4420,6 +4665,7 @@
       "classification": "reusable_cross_skill_knowledge",
       "classification_method": "knowledge_promotion_mapping",
       "review_status": "verified_promoted",
+      "human_review_evidence": null,
       "rationale": "Domain rules promoted to canonical knowledge record(s): knowledge.udim-vs-single-atlas-uv-packing while remaining available as a progressive-disclosure skill reference.",
       "promoted_to_knowledge_ids": [
         "knowledge.udim-vs-single-atlas-uv-packing"
@@ -4432,6 +4678,7 @@
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "rule_classified_skill_local",
+      "human_review_evidence": null,
       "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
       "promoted_to_knowledge_ids": []
     },
@@ -4442,6 +4689,7 @@
       "classification": "reusable_cross_skill_knowledge",
       "classification_method": "knowledge_promotion_mapping",
       "review_status": "verified_promoted",
+      "human_review_evidence": null,
       "rationale": "Domain rules promoted to canonical knowledge record(s): knowledge.agx-filmic-color-management-and-cycles-eevee while remaining available as a progressive-disclosure skill reference.",
       "promoted_to_knowledge_ids": [
         "knowledge.agx-filmic-color-management-and-cycles-eevee"
@@ -4454,6 +4702,7 @@
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "rule_classified_skill_local",
+      "human_review_evidence": null,
       "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
       "promoted_to_knowledge_ids": []
     },
@@ -4464,6 +4713,7 @@
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "rule_classified_skill_local",
+      "human_review_evidence": null,
       "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
       "promoted_to_knowledge_ids": []
     },
@@ -4472,9 +4722,10 @@
       "title": "Connector vs manual MCP matrix (Path 1)",
       "line_count": 11,
       "classification": "workflow_or_pack_governance",
-      "classification_method": "human_semantic_review",
-      "review_status": "verified_synchronized",
-      "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+      "classification_method": "rule_based_governance_and_recipe_mapping",
+      "review_status": "rule_classified_governance_or_recipe",
+      "human_review_evidence": null,
+      "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
       "promoted_to_knowledge_ids": []
     },
     {
@@ -4482,9 +4733,10 @@
       "title": "Host checklist template",
       "line_count": 18,
       "classification": "workflow_or_pack_governance",
-      "classification_method": "human_semantic_review",
-      "review_status": "verified_synchronized",
-      "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+      "classification_method": "rule_based_governance_and_recipe_mapping",
+      "review_status": "rule_classified_governance_or_recipe",
+      "human_review_evidence": null,
+      "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
       "promoted_to_knowledge_ids": []
     },
     {
@@ -4492,9 +4744,10 @@
       "title": "Lab add-on reminders",
       "line_count": 9,
       "classification": "workflow_or_pack_governance",
-      "classification_method": "human_semantic_review",
-      "review_status": "verified_synchronized",
-      "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+      "classification_method": "rule_based_governance_and_recipe_mapping",
+      "review_status": "rule_classified_governance_or_recipe",
+      "human_review_evidence": null,
+      "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
       "promoted_to_knowledge_ids": []
     },
     {
@@ -4504,6 +4757,7 @@
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "rule_classified_skill_local",
+      "human_review_evidence": null,
       "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
       "promoted_to_knowledge_ids": []
     },
@@ -4514,6 +4768,7 @@
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "rule_classified_skill_local",
+      "human_review_evidence": null,
       "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
       "promoted_to_knowledge_ids": []
     },
@@ -4524,6 +4779,7 @@
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "rule_classified_skill_local",
+      "human_review_evidence": null,
       "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
       "promoted_to_knowledge_ids": []
     },
@@ -4534,6 +4790,7 @@
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "rule_classified_skill_local",
+      "human_review_evidence": null,
       "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
       "promoted_to_knowledge_ids": []
     },
@@ -4544,6 +4801,7 @@
       "classification": "reusable_cross_skill_knowledge",
       "classification_method": "knowledge_promotion_mapping",
       "review_status": "verified_promoted",
+      "human_review_evidence": null,
       "rationale": "Domain rules promoted to canonical knowledge record(s): knowledge.geometry-nodes-fields-and-anonymous-attributes, knowledge.procedural-instancing-and-realize-instances-budget, knowledge.procedural-scatter-poisson-disk-and-slope-masking, knowledge.triangle-draw-call-and-vram-budgets, knowledge.lod-hierarchy-and-decimation-strategy while remaining available as a progressive-disclosure skill reference.",
       "promoted_to_knowledge_ids": [
         "knowledge.geometry-nodes-fields-and-anonymous-attributes",
@@ -4560,6 +4818,7 @@
       "classification": "reusable_cross_skill_knowledge",
       "classification_method": "knowledge_promotion_mapping",
       "review_status": "verified_promoted",
+      "human_review_evidence": null,
       "rationale": "Domain rules promoted to canonical knowledge record(s): knowledge.mesh-manifold-normals-and-scale-hygiene while remaining available as a progressive-disclosure skill reference.",
       "promoted_to_knowledge_ids": [
         "knowledge.mesh-manifold-normals-and-scale-hygiene"
@@ -4572,6 +4831,7 @@
       "classification": "reusable_cross_skill_knowledge",
       "classification_method": "knowledge_promotion_mapping",
       "review_status": "verified_promoted",
+      "human_review_evidence": null,
       "rationale": "Domain rules promoted to canonical knowledge record(s): knowledge.quad-dominant-subdivision-topology, knowledge.non-destructive-hard-surface-modifier-stack, knowledge.organic-sculpt-to-retopology-workflow while remaining available as a progressive-disclosure skill reference.",
       "promoted_to_knowledge_ids": [
         "knowledge.quad-dominant-subdivision-topology",
@@ -4586,6 +4846,7 @@
       "classification": "reusable_cross_skill_knowledge",
       "classification_method": "knowledge_promotion_mapping",
       "review_status": "verified_promoted",
+      "human_review_evidence": null,
       "rationale": "Domain rules promoted to canonical knowledge record(s): knowledge.glb-binary-chunk-alignment-and-khronos-validation while remaining available as a progressive-disclosure skill reference.",
       "promoted_to_knowledge_ids": [
         "knowledge.glb-binary-chunk-alignment-and-khronos-validation"
@@ -4598,6 +4859,7 @@
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "rule_classified_skill_local",
+      "human_review_evidence": null,
       "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
       "promoted_to_knowledge_ids": []
     },
@@ -4608,6 +4870,7 @@
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "rule_classified_skill_local",
+      "human_review_evidence": null,
       "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
       "promoted_to_knowledge_ids": []
     },
@@ -4618,6 +4881,7 @@
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "rule_classified_skill_local",
+      "human_review_evidence": null,
       "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
       "promoted_to_knowledge_ids": []
     },
@@ -4628,6 +4892,7 @@
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "rule_classified_skill_local",
+      "human_review_evidence": null,
       "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
       "promoted_to_knowledge_ids": []
     },
@@ -4638,6 +4903,7 @@
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "rule_classified_skill_local",
+      "human_review_evidence": null,
       "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
       "promoted_to_knowledge_ids": []
     },
@@ -4648,6 +4914,7 @@
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "rule_classified_skill_local",
+      "human_review_evidence": null,
       "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
       "promoted_to_knowledge_ids": []
     },
@@ -4658,6 +4925,7 @@
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "rule_classified_skill_local",
+      "human_review_evidence": null,
       "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
       "promoted_to_knowledge_ids": []
     },
@@ -4668,6 +4936,7 @@
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "rule_classified_skill_local",
+      "human_review_evidence": null,
       "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
       "promoted_to_knowledge_ids": []
     },
@@ -4678,6 +4947,7 @@
       "classification": "reusable_cross_skill_knowledge",
       "classification_method": "knowledge_promotion_mapping",
       "review_status": "verified_promoted",
+      "human_review_evidence": null,
       "rationale": "Domain rules promoted to canonical knowledge record(s): knowledge.modular-architectural-grid-and-metric-scale, knowledge.environment-depth-layering-and-atmospheric-perspective while remaining available as a progressive-disclosure skill reference.",
       "promoted_to_knowledge_ids": [
         "knowledge.modular-architectural-grid-and-metric-scale",
@@ -4691,6 +4961,7 @@
       "classification": "reusable_cross_skill_knowledge",
       "classification_method": "knowledge_promotion_mapping",
       "review_status": "verified_promoted",
+      "human_review_evidence": null,
       "rationale": "Domain rules promoted to canonical knowledge record(s): knowledge.cad-creases-and-panel-gap-detailing while remaining available as a progressive-disclosure skill reference.",
       "promoted_to_knowledge_ids": [
         "knowledge.cad-creases-and-panel-gap-detailing"
@@ -4703,6 +4974,7 @@
       "classification": "reusable_cross_skill_knowledge",
       "classification_method": "knowledge_promotion_mapping",
       "review_status": "verified_promoted",
+      "human_review_evidence": null,
       "rationale": "Domain rules promoted to canonical knowledge record(s): knowledge.non-destructive-hard-surface-modifier-stack, knowledge.cad-creases-and-panel-gap-detailing while remaining available as a progressive-disclosure skill reference.",
       "promoted_to_knowledge_ids": [
         "knowledge.non-destructive-hard-surface-modifier-stack",
@@ -4716,6 +4988,7 @@
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "needs_semantic_review",
+      "human_review_evidence": null,
       "rationale": "Provides skill-local checklists/templates adjacent to promoted domain knowledge; flagged as needs_semantic_review for future cross-skill consolidation.",
       "promoted_to_knowledge_ids": []
     },
@@ -4726,6 +4999,7 @@
       "classification": "reusable_cross_skill_knowledge",
       "classification_method": "knowledge_promotion_mapping",
       "review_status": "verified_promoted",
+      "human_review_evidence": null,
       "rationale": "Domain rules promoted to canonical knowledge record(s): knowledge.nla-action-baking-and-morph-target-export, knowledge.lod-hierarchy-and-decimation-strategy, knowledge.threejs-r3f-tone-mapping-and-environment-parity while remaining available as a progressive-disclosure skill reference.",
       "promoted_to_knowledge_ids": [
         "knowledge.nla-action-baking-and-morph-target-export",
@@ -4740,6 +5014,7 @@
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "needs_semantic_review",
+      "human_review_evidence": null,
       "rationale": "Provides skill-local checklists/templates adjacent to promoted domain knowledge; flagged as needs_semantic_review for future cross-skill consolidation.",
       "promoted_to_knowledge_ids": []
     },
@@ -4750,6 +5025,7 @@
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "needs_semantic_review",
+      "human_review_evidence": null,
       "rationale": "Provides skill-local checklists/templates adjacent to promoted domain knowledge; flagged as needs_semantic_review for future cross-skill consolidation.",
       "promoted_to_knowledge_ids": []
     },
@@ -4760,6 +5036,7 @@
       "classification": "reusable_cross_skill_knowledge",
       "classification_method": "knowledge_promotion_mapping",
       "review_status": "verified_promoted",
+      "human_review_evidence": null,
       "rationale": "Domain rules promoted to canonical knowledge record(s): knowledge.glb-binary-chunk-alignment-and-khronos-validation while remaining available as a progressive-disclosure skill reference.",
       "promoted_to_knowledge_ids": [
         "knowledge.glb-binary-chunk-alignment-and-khronos-validation"
@@ -4772,6 +5049,7 @@
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "needs_semantic_review",
+      "human_review_evidence": null,
       "rationale": "Provides skill-local checklists/templates adjacent to promoted domain knowledge; flagged as needs_semantic_review for future cross-skill consolidation.",
       "promoted_to_knowledge_ids": []
     },
@@ -4782,6 +5060,7 @@
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "needs_semantic_review",
+      "human_review_evidence": null,
       "rationale": "Provides skill-local checklists/templates adjacent to promoted domain knowledge; flagged as needs_semantic_review for future cross-skill consolidation.",
       "promoted_to_knowledge_ids": []
     },
@@ -4792,6 +5071,7 @@
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "needs_semantic_review",
+      "human_review_evidence": null,
       "rationale": "Provides skill-local checklists/templates adjacent to promoted domain knowledge; flagged as needs_semantic_review for future cross-skill consolidation.",
       "promoted_to_knowledge_ids": []
     },
@@ -4802,6 +5082,7 @@
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "needs_semantic_review",
+      "human_review_evidence": null,
       "rationale": "Provides skill-local checklists/templates adjacent to promoted domain knowledge; flagged as needs_semantic_review for future cross-skill consolidation.",
       "promoted_to_knowledge_ids": []
     },
@@ -4812,6 +5093,7 @@
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "rule_classified_skill_local",
+      "human_review_evidence": null,
       "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
       "promoted_to_knowledge_ids": []
     },
@@ -4820,9 +5102,10 @@
       "title": "Attempt record template",
       "line_count": 34,
       "classification": "workflow_or_pack_governance",
-      "classification_method": "human_semantic_review",
-      "review_status": "verified_synchronized",
-      "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+      "classification_method": "rule_based_governance_and_recipe_mapping",
+      "review_status": "rule_classified_governance_or_recipe",
+      "human_review_evidence": null,
+      "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
       "promoted_to_knowledge_ids": []
     },
     {
@@ -4830,9 +5113,10 @@
       "title": "Triage next steps",
       "line_count": 12,
       "classification": "workflow_or_pack_governance",
-      "classification_method": "human_semantic_review",
-      "review_status": "verified_synchronized",
-      "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+      "classification_method": "rule_based_governance_and_recipe_mapping",
+      "review_status": "rule_classified_governance_or_recipe",
+      "human_review_evidence": null,
+      "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
       "promoted_to_knowledge_ids": []
     },
     {
@@ -4840,9 +5124,10 @@
       "title": "Truth label blocks",
       "line_count": 20,
       "classification": "workflow_or_pack_governance",
-      "classification_method": "human_semantic_review",
-      "review_status": "verified_synchronized",
-      "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+      "classification_method": "rule_based_governance_and_recipe_mapping",
+      "review_status": "rule_classified_governance_or_recipe",
+      "human_review_evidence": null,
+      "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
       "promoted_to_knowledge_ids": []
     },
     {
@@ -4850,9 +5135,10 @@
       "title": "Anti-patterns",
       "line_count": 8,
       "classification": "workflow_or_pack_governance",
-      "classification_method": "human_semantic_review",
-      "review_status": "verified_synchronized",
-      "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+      "classification_method": "rule_based_governance_and_recipe_mapping",
+      "review_status": "rule_classified_governance_or_recipe",
+      "human_review_evidence": null,
+      "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
       "promoted_to_knowledge_ids": []
     },
     {
@@ -4860,9 +5146,10 @@
       "title": "Decision tree",
       "line_count": 20,
       "classification": "workflow_or_pack_governance",
-      "classification_method": "human_semantic_review",
-      "review_status": "verified_synchronized",
-      "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+      "classification_method": "rule_based_governance_and_recipe_mapping",
+      "review_status": "rule_classified_governance_or_recipe",
+      "human_review_evidence": null,
+      "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
       "promoted_to_knowledge_ids": []
     },
     {
@@ -4870,9 +5157,10 @@
       "title": "Path constraints table",
       "line_count": 13,
       "classification": "workflow_or_pack_governance",
-      "classification_method": "human_semantic_review",
-      "review_status": "verified_synchronized",
-      "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+      "classification_method": "rule_based_governance_and_recipe_mapping",
+      "review_status": "rule_classified_governance_or_recipe",
+      "human_review_evidence": null,
+      "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
       "promoted_to_knowledge_ids": []
     },
     {
@@ -4880,9 +5168,10 @@
       "title": "Blocker Report Template",
       "line_count": 24,
       "classification": "workflow_or_pack_governance",
-      "classification_method": "human_semantic_review",
-      "review_status": "verified_synchronized",
-      "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+      "classification_method": "rule_based_governance_and_recipe_mapping",
+      "review_status": "rule_classified_governance_or_recipe",
+      "human_review_evidence": null,
+      "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
       "promoted_to_knowledge_ids": []
     },
     {
@@ -4890,9 +5179,10 @@
       "title": "Evidence Examples",
       "line_count": 22,
       "classification": "workflow_or_pack_governance",
-      "classification_method": "human_semantic_review",
-      "review_status": "verified_synchronized",
-      "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+      "classification_method": "rule_based_governance_and_recipe_mapping",
+      "review_status": "rule_classified_governance_or_recipe",
+      "human_review_evidence": null,
+      "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
       "promoted_to_knowledge_ids": []
     },
     {
@@ -4900,9 +5190,10 @@
       "title": "Readiness Matrix",
       "line_count": 29,
       "classification": "workflow_or_pack_governance",
-      "classification_method": "human_semantic_review",
-      "review_status": "verified_synchronized",
-      "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+      "classification_method": "rule_based_governance_and_recipe_mapping",
+      "review_status": "rule_classified_governance_or_recipe",
+      "human_review_evidence": null,
+      "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
       "promoted_to_knowledge_ids": []
     },
     {
@@ -4910,9 +5201,10 @@
       "title": "Runtime Option Decision Tree",
       "line_count": 23,
       "classification": "workflow_or_pack_governance",
-      "classification_method": "human_semantic_review",
-      "review_status": "verified_synchronized",
-      "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+      "classification_method": "rule_based_governance_and_recipe_mapping",
+      "review_status": "rule_classified_governance_or_recipe",
+      "human_review_evidence": null,
+      "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
       "promoted_to_knowledge_ids": []
     },
     {
@@ -4920,9 +5212,10 @@
       "title": "Setup Summary Template",
       "line_count": 25,
       "classification": "workflow_or_pack_governance",
-      "classification_method": "human_semantic_review",
-      "review_status": "verified_synchronized",
-      "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+      "classification_method": "rule_based_governance_and_recipe_mapping",
+      "review_status": "rule_classified_governance_or_recipe",
+      "human_review_evidence": null,
+      "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
       "promoted_to_knowledge_ids": []
     },
     {
@@ -4930,9 +5223,10 @@
       "title": "Source Confidence Labels",
       "line_count": 26,
       "classification": "workflow_or_pack_governance",
-      "classification_method": "human_semantic_review",
-      "review_status": "verified_synchronized",
-      "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+      "classification_method": "rule_based_governance_and_recipe_mapping",
+      "review_status": "rule_classified_governance_or_recipe",
+      "human_review_evidence": null,
+      "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
       "promoted_to_knowledge_ids": []
     },
     {
@@ -4942,6 +5236,7 @@
       "classification": "reusable_cross_skill_knowledge",
       "classification_method": "knowledge_promotion_mapping",
       "review_status": "verified_promoted",
+      "human_review_evidence": null,
       "rationale": "Domain rules promoted to canonical knowledge record(s): knowledge.modular-architectural-grid-and-metric-scale, knowledge.gltf-2-coordinate-system-and-transform-conventions while remaining available as a progressive-disclosure skill reference.",
       "promoted_to_knowledge_ids": [
         "knowledge.modular-architectural-grid-and-metric-scale",
@@ -4955,6 +5250,7 @@
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "rule_classified_skill_local",
+      "human_review_evidence": null,
       "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
       "promoted_to_knowledge_ids": []
     },
@@ -4965,6 +5261,7 @@
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "needs_semantic_review",
+      "human_review_evidence": null,
       "rationale": "Provides skill-local checklists/templates adjacent to promoted domain knowledge; flagged as needs_semantic_review for future cross-skill consolidation.",
       "promoted_to_knowledge_ids": []
     },
@@ -4975,6 +5272,7 @@
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "rule_classified_skill_local",
+      "human_review_evidence": null,
       "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
       "promoted_to_knowledge_ids": []
     },
@@ -4983,9 +5281,10 @@
       "title": "Options-language template",
       "line_count": 52,
       "classification": "workflow_or_pack_governance",
-      "classification_method": "human_semantic_review",
-      "review_status": "verified_synchronized",
-      "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+      "classification_method": "rule_based_governance_and_recipe_mapping",
+      "review_status": "rule_classified_governance_or_recipe",
+      "human_review_evidence": null,
+      "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
       "promoted_to_knowledge_ids": []
     },
     {
@@ -4993,9 +5292,10 @@
       "title": "Recurring creep patterns",
       "line_count": 56,
       "classification": "workflow_or_pack_governance",
-      "classification_method": "human_semantic_review",
-      "review_status": "verified_synchronized",
-      "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+      "classification_method": "rule_based_governance_and_recipe_mapping",
+      "review_status": "rule_classified_governance_or_recipe",
+      "human_review_evidence": null,
+      "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
       "promoted_to_knowledge_ids": []
     },
     {
@@ -5003,9 +5303,10 @@
       "title": "Scope addition classification",
       "line_count": 56,
       "classification": "workflow_or_pack_governance",
-      "classification_method": "human_semantic_review",
-      "review_status": "verified_synchronized",
-      "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+      "classification_method": "rule_based_governance_and_recipe_mapping",
+      "review_status": "rule_classified_governance_or_recipe",
+      "human_review_evidence": null,
+      "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
       "promoted_to_knowledge_ids": []
     },
     {
@@ -5013,9 +5314,10 @@
       "title": "Failed-gate handling",
       "line_count": 43,
       "classification": "workflow_or_pack_governance",
-      "classification_method": "human_semantic_review",
-      "review_status": "verified_synchronized",
-      "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+      "classification_method": "rule_based_governance_and_recipe_mapping",
+      "review_status": "rule_classified_governance_or_recipe",
+      "human_review_evidence": null,
+      "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
       "promoted_to_knowledge_ids": []
     },
     {
@@ -5023,9 +5325,10 @@
       "title": "Gate template",
       "line_count": 47,
       "classification": "workflow_or_pack_governance",
-      "classification_method": "human_semantic_review",
-      "review_status": "verified_synchronized",
-      "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+      "classification_method": "rule_based_governance_and_recipe_mapping",
+      "review_status": "rule_classified_governance_or_recipe",
+      "human_review_evidence": null,
+      "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
       "promoted_to_knowledge_ids": []
     },
     {
@@ -5033,9 +5336,10 @@
       "title": "Stage decomposition patterns",
       "line_count": 56,
       "classification": "workflow_or_pack_governance",
-      "classification_method": "human_semantic_review",
-      "review_status": "verified_synchronized",
-      "rationale": "Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
+      "classification_method": "rule_based_governance_and_recipe_mapping",
+      "review_status": "rule_classified_governance_or_recipe",
+      "human_review_evidence": null,
+      "rationale": "Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.",
       "promoted_to_knowledge_ids": []
     }
   ]

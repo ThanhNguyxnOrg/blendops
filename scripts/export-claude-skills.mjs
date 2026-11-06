@@ -4,6 +4,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { zipSync } from 'fflate';
+import { buildSharedCatalogFilesMap } from './build-knowledge-catalog.mjs';
 
 const scriptRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const root = fs.existsSync(path.join(process.cwd(), 'skills')) ? process.cwd() : scriptRoot;
@@ -226,12 +227,20 @@ function copyDir(src, dest) {
 }
 
 function collectZipFileList(dir, baseDir, fileList = []) {
+  const dirStat = fs.lstatSync(dir);
+  if (dirStat.isSymbolicLink()) {
+    throw new Error(`Unsafe symbolic link directory encountered during ZIP packaging: ${dir}`);
+  }
   const items = fs
     .readdirSync(dir, { withFileTypes: true })
     .sort((a, b) => compareCodeUnitOrder(a.name, b.name));
 
   for (const item of items) {
     const fullPath = path.join(dir, item.name);
+    const itemLstat = fs.lstatSync(fullPath);
+    if (item.isSymbolicLink() || itemLstat.isSymbolicLink()) {
+      throw new Error(`Unsafe symbolic link encountered during ZIP packaging: ${fullPath}`);
+    }
     if (item.isDirectory()) {
       collectZipFileList(fullPath, baseDir, fileList);
     } else if (item.isFile()) {
@@ -363,198 +372,141 @@ function listSkillDirs() {
     .sort(compareCodeUnitOrder);
 }
 
-function deriveSkillWorkflowStageForExport(skillObj) {
-  const cat = String(skillObj.category || '').toLowerCase();
-  if (cat.includes('intake') || cat.includes('brief') || cat.includes('scope')) return 'intake';
-  if (cat.includes('plan') || cat.includes('camera') || cat.includes('light') || cat.includes('scene') || cat.includes('asset')) return 'planning';
-  if (cat.includes('readiness') || cat.includes('runtime') || cat.includes('bridge')) return 'readiness';
-  if (cat.includes('quality') || cat.includes('check') || cat.includes('budget')) return 'validation';
-  if (cat.includes('evidence') || cat.includes('report') || cat.includes('done') || cat.includes('gate')) return 'evidence';
-  if (cat.includes('handoff') || cat.includes('glb') || cat.includes('r3f') || cat.includes('output')) return 'handoff';
-  return 'orchestration';
-}
+const ALLOWED_EXISTING_SHARED_CATALOG_FILES = new Set([
+  'README.md',
+  'manifest.json',
+  'blendops-knowledge-and-recipes.zip',
+]);
 
-function buildSharedCatalogFilesMapForExport(rootDir = root) {
-  const sourcesRaw = fs.readFileSync(path.join(rootDir, 'registry/knowledge-sources.json'), 'utf8');
-  const knowledgeRaw = fs.readFileSync(path.join(rootDir, 'registry/knowledge-catalog.json'), 'utf8');
-  const recipesRaw = fs.readFileSync(path.join(rootDir, 'registry/recipe-catalog.json'), 'utf8');
-  const indexRaw = fs.readFileSync(path.join(rootDir, 'registry/catalog-index.json'), 'utf8');
-  const indexData = JSON.parse(indexRaw);
+export function resolveSafeSharedCatalogDir(rawSharedCatalogDir, rootDir = root) {
+  if (
+    typeof rawSharedCatalogDir !== 'string' ||
+    rawSharedCatalogDir.trim() === '' ||
+    rawSharedCatalogDir.includes('\0')
+  ) {
+    throw new Error('Invalid sharedCatalogDir path');
+  }
 
-  const skillsData = JSON.parse(fs.readFileSync(path.join(rootDir, 'registry/skills.json'), 'utf8'));
-  const skillsSummary = {
-    schemaVersion: '1.0.0',
-    description: 'Compact canonical 48-skill summary for offline project-local and shared-catalog resolution.',
-    skills: skillsData.skills.map((s) => ({
-      id: s.id,
-      version: s.version || '1.0.0',
-      category: s.category,
-      role: s.role,
-      purpose: s.purpose,
-      capabilityTier: s.capabilityTier,
-      workflow_stage: deriveSkillWorkflowStageForExport(s),
-    })),
-  };
-  const skillsSummaryRaw = `${JSON.stringify(skillsSummary, null, 2)}\n`;
+  const realRoot = fs.realpathSync(rootDir);
+  const resolvedCandidate = path.resolve(rootDir, rawSharedCatalogDir.trim());
+  const effectiveTarget = resolveWithExistingAncestorRealpath(resolvedCandidate);
 
-  const sourcesSchemaRaw = fs.readFileSync(path.join(rootDir, 'schemas/knowledge-source-registry.schema.json'), 'utf8');
-  const knowledgeSchemaRaw = fs.readFileSync(path.join(rootDir, 'schemas/knowledge-record.schema.json'), 'utf8');
-  const recipeSchemaRaw = fs.readFileSync(path.join(rootDir, 'schemas/recipe-record.schema.json'), 'utf8');
-  const sceneSpecSchemaPath = path.join(rootDir, 'schemas/scene-spec.schema.json');
-  const executionPlanSchemaPath = path.join(rootDir, 'schemas/execution-plan.schema.json');
-  const runtimeOperationsPath = path.join(rootDir, 'registry/runtime-operations.json');
-  const runtimeCapabilityPolicyPath = path.join(rootDir, 'registry/runtime-capability-policy.json');
-  const runtimeSessionSchemaPath = path.join(rootDir, 'schemas/runtime-session.schema.json');
-  const runtimeOperationsSchemaPath = path.join(rootDir, 'schemas/runtime-operations.schema.json');
-  const operationExecutionLedgerSchemaPath = path.join(rootDir, 'schemas/operation-execution-ledger.schema.json');
-  const runtimeEvidencePacketSchemaPath = path.join(rootDir, 'schemas/runtime-evidence-packet.schema.json');
-  const runtimeCapabilityPolicySchemaPath = path.join(rootDir, 'schemas/runtime-capability-policy.schema.json');
+  if (
+    resolvedCandidate === path.parse(resolvedCandidate).root ||
+    effectiveTarget === path.parse(effectiveTarget).root
+  ) {
+    throw new Error(
+      `Unsafe sharedCatalogDir destination (filesystem root): ${rawSharedCatalogDir}`,
+    );
+  }
 
-  const hasSceneSpecSchema = fs.existsSync(sceneSpecSchemaPath);
-  const hasExecutionPlanSchema = fs.existsSync(executionPlanSchemaPath);
-  const hasRuntimeOperations = fs.existsSync(runtimeOperationsPath);
-  const hasRuntimeCapabilityPolicy = fs.existsSync(runtimeCapabilityPolicyPath);
-  const hasRuntimeSessionSchema = fs.existsSync(runtimeSessionSchemaPath);
-  const hasRuntimeOperationsSchema = fs.existsSync(runtimeOperationsSchemaPath);
-  const hasOperationExecutionLedgerSchema = fs.existsSync(operationExecutionLedgerSchemaPath);
-  const hasRuntimeEvidencePacketSchema = fs.existsSync(runtimeEvidencePacketSchemaPath);
-  const hasRuntimeCapabilityPolicySchema = fs.existsSync(runtimeCapabilityPolicySchemaPath);
+  const tmpResolved = path.resolve(os.tmpdir());
+  const tmpReal = fs.existsSync(tmpResolved) ? fs.realpathSync(tmpResolved) : tmpResolved;
+  if (resolvedCandidate === tmpResolved || effectiveTarget === tmpReal) {
+    throw new Error(
+      `Unsafe sharedCatalogDir destination (OS temp root itself): ${rawSharedCatalogDir}`,
+    );
+  }
 
-  const fileList = [
-    'README.md',
-    'manifest.json',
-    'knowledge-sources.json',
-    'knowledge-catalog.json',
-    'recipe-catalog.json',
-    'catalog-index.json',
-    'skills-summary.json',
-    ...(hasRuntimeOperations ? ['runtime-operations.json'] : []),
-    ...(hasRuntimeCapabilityPolicy ? ['runtime-capability-policy.json'] : []),
-    'schemas/knowledge-source-registry.schema.json',
-    'schemas/knowledge-record.schema.json',
-    'schemas/recipe-record.schema.json',
-    ...(hasSceneSpecSchema ? ['schemas/scene-spec.schema.json'] : []),
-    ...(hasExecutionPlanSchema ? ['schemas/execution-plan.schema.json'] : []),
-    ...(hasRuntimeSessionSchema ? ['schemas/runtime-session.schema.json'] : []),
-    ...(hasRuntimeOperationsSchema ? ['schemas/runtime-operations.schema.json'] : []),
-    ...(hasOperationExecutionLedgerSchema ? ['schemas/operation-execution-ledger.schema.json'] : []),
-    ...(hasRuntimeEvidencePacketSchema ? ['schemas/runtime-evidence-packet.schema.json'] : []),
-    ...(hasRuntimeCapabilityPolicySchema ? ['schemas/runtime-capability-policy.schema.json'] : []),
-  ];
+  const relFromTargetToRoot = path.relative(effectiveTarget, realRoot);
+  if (
+    relFromTargetToRoot === '' ||
+    (!relFromTargetToRoot.startsWith('..') && !path.isAbsolute(relFromTargetToRoot))
+  ) {
+    throw new Error(
+      `Unsafe sharedCatalogDir destination (repository root or ancestor): ${rawSharedCatalogDir}`,
+    );
+  }
 
-  const manifestObj = {
-    schema_version: '1.0.0',
-    package_name: 'blendops-shared-knowledge-and-recipe-catalog',
-    generated_from: [
-      'registry/knowledge-sources.json',
-      'registry/knowledge-catalog.json',
-      'registry/recipe-catalog.json',
-      'registry/catalog-index.json',
-      'registry/skills.json',
-      ...(hasRuntimeOperations ? ['registry/runtime-operations.json'] : []),
-      ...(hasRuntimeCapabilityPolicy ? ['registry/runtime-capability-policy.json'] : []),
-    ],
-    counts: indexData.counts,
-    version_baseline: JSON.parse(sourcesRaw).taxonomy.versionBaseline,
-    truth_state_defaults: {
-      runtime_status: 'Not Run',
-      artifact_status: 'Not Produced',
-    },
-    files: fileList,
-  };
+  const relFromRootToTarget = path.relative(realRoot, effectiveTarget);
+  const isInsideRepo =
+    relFromRootToTarget !== '' &&
+    !relFromRootToTarget.startsWith('..') &&
+    !path.isAbsolute(relFromRootToTarget);
 
-  const readmeContent = [
-    '# BlendOps Shared Knowledge & Recipe Catalog',
-    '',
-    'This portable catalog package contains the canonical BlendOps **Knowledge Layer** (`knowledge.*`), **Recipe Layer** (`recipe.*`), **Authoritative Source Registry** (`source.*`), **Typed Runtime Operations Registry** (`op.*`), and **Deterministic Bilingual (EN+VI) Retrieval Index**.',
-    '',
-    '## Contents',
-    '',
-    '- `knowledge-sources.json` — 20 authoritative Blender / Khronos glTF 2.0.1 / OpenSubdiv / MikkTSpace / Filament / Three.js sources and controlled domain taxonomy.',
-    '- `knowledge-catalog.json` — 30 canonical knowledge records across 11 3D/Blender domains.',
-    '- `recipe-catalog.json` — 10 composable multi-stage construction recipes linking required skills, knowledge records, stage gates, validation criteria, and failure recovery modes.',
-    '- `catalog-index.json` — Prebuilt deterministic bilingual (English + Vietnamese) search and cross-reference index.',
-    '- `skills-summary.json` — Compact metadata for all 48 canonical BlendOps skills so local resolution works standalone without requiring the full BlendOps git repository.',
-    '- `runtime-operations.json` — 18 canonical typed runtime operations (`op.inspect.*`, `op.mutate.*`, `op.export.*`, `op.import.*`) and blocked L3 interfaces.',
-    '- `runtime-capability-policy.json` — Governed runtime capability tiers (`L0`–`L3`) and enforcement policy.',
-    '- `schemas/` — JSON Schema Draft 2020-12 definitions for sources, knowledge records, recipes, SceneSpec, ExecutionPlan, RuntimeSession, RuntimeOperations, OperationExecutionLedger, RuntimeEvidencePacket, and RuntimeCapabilityPolicy.',
-    '',
-    '## How Agents Use This Catalog',
-    '',
-    '1. **Project-Local CLI Lookup** (when installed in `.blendops/catalog/`):',
-    '   - Search by natural language (English or Vietnamese): `npx blendops catalog-search "<query>" [--project <project-dir>]`',
-    '   - Resolve full record & links: `npx blendops catalog-resolve <knowledge.id | recipe.id | source.id> [--project <project-dir>]`',
-    '   - Validate catalog integrity: `npx blendops catalog-validate [--project <project-dir>]`',
-    '   - Validate SceneSpec & compile ExecutionPlan: `npx blendops scene-spec-validate <spec.json> [--project <project-dir>]` / `npx blendops plan-compile <spec.json> [--project <project-dir>]`',
-    '   - Check runtime readiness & operations: `npx blendops runtime doctor [--project <project-dir>]` / `npx blendops operation list [--project <project-dir>]`',
-    '2. **Direct File Consumption** (in Claude Desktop / Claude.ai Projects or offline agent context):',
-    '   - Attach or inspect `catalog-index.json` to locate matching `knowledge.*` and `recipe.*` IDs by domain, skill, or keyword.',
-    '   - Read the corresponding record in `knowledge-catalog.json` or `recipe-catalog.json` before planning or mutating a Blender scene.',
-    '',
-    '## Truth-State & Runtime Boundaries',
-    '',
-    '- **Runtime status**: `Not Run` (default unless backed by a validated runtime evidence packet)',
-    '- **Artifact status**: `Not Produced` (default unless backed by verified on-disk artifact hashes)',
-    '- **Global files touched**: `No`',
-    '',
-  ].join('\n');
+  if (isInsideRepo) {
+    const segments = relFromRootToTarget.split(path.sep);
+    const topSegment = segments[0];
+    if (PROTECTED_REPO_ENTRIES.has(topSegment)) {
+      throw new Error(
+        `Unsafe sharedCatalogDir destination (protected repository path '${topSegment}'): ${rawSharedCatalogDir}`,
+      );
+    }
+    if (topSegment === 'dist' && segments.length < 2) {
+      throw new Error(
+        `Unsafe sharedCatalogDir destination (must be a subdirectory inside dist/, not dist/ itself): ${rawSharedCatalogDir}`,
+      );
+    }
+  }
 
-  const filesMap = {
-    'README.md': readmeContent,
-    'manifest.json': `${JSON.stringify(manifestObj, null, 2)}\n`,
-    'knowledge-sources.json': sourcesRaw,
-    'knowledge-catalog.json': knowledgeRaw,
-    'recipe-catalog.json': recipesRaw,
-    'catalog-index.json': indexRaw,
-    'skills-summary.json': skillsSummaryRaw,
-    'schemas/knowledge-source-registry.schema.json': sourcesSchemaRaw,
-    'schemas/knowledge-record.schema.json': knowledgeSchemaRaw,
-    'schemas/recipe-record.schema.json': recipeSchemaRaw,
-  };
-  if (hasRuntimeOperations) {
-    filesMap['runtime-operations.json'] = fs.readFileSync(runtimeOperationsPath, 'utf8');
+  // Check for symbolic links anywhere along resolvedCandidate
+  const parsed = path.parse(resolvedCandidate);
+  const parts = resolvedCandidate.slice(parsed.root.length).split(path.sep).filter(Boolean);
+  let cur = parsed.root;
+  for (const part of parts) {
+    cur = path.join(cur, part);
+    try {
+      const st = fs.lstatSync(cur);
+      if (st.isSymbolicLink()) {
+        throw new Error(
+          `Unsafe sharedCatalogDir destination (symbolic link at ${cur}): ${rawSharedCatalogDir}`,
+        );
+      }
+    } catch (err) {
+      if (err.message && err.message.startsWith('Unsafe sharedCatalogDir')) throw err;
+    }
   }
-  if (hasRuntimeCapabilityPolicy) {
-    filesMap['runtime-capability-policy.json'] = fs.readFileSync(runtimeCapabilityPolicyPath, 'utf8');
+
+  if (fs.existsSync(effectiveTarget)) {
+    const targetLstat = fs.lstatSync(effectiveTarget);
+    if (targetLstat.isSymbolicLink()) {
+      throw new Error(
+        `Unsafe sharedCatalogDir destination (symbolic link): ${rawSharedCatalogDir}`,
+      );
+    }
+    if (!targetLstat.isDirectory()) {
+      throw new Error(
+        `Unsafe sharedCatalogDir destination (existing file): ${rawSharedCatalogDir}`,
+      );
+    }
+    const existingEntries = fs.readdirSync(effectiveTarget);
+    for (const entryName of existingEntries) {
+      const entryFull = path.join(effectiveTarget, entryName);
+      const entryStat = fs.lstatSync(entryFull);
+      if (
+        !ALLOWED_EXISTING_SHARED_CATALOG_FILES.has(entryName) ||
+        entryStat.isSymbolicLink() ||
+        entryStat.isDirectory()
+      ) {
+        throw new Error(
+          `Unsafe sharedCatalogDir destination (refusing to delete directory containing unrelated entry '${entryName}'): ${rawSharedCatalogDir}`,
+        );
+      }
+    }
   }
-  if (hasSceneSpecSchema) {
-    filesMap['schemas/scene-spec.schema.json'] = fs.readFileSync(sceneSpecSchemaPath, 'utf8');
-  }
-  if (hasExecutionPlanSchema) {
-    filesMap['schemas/execution-plan.schema.json'] = fs.readFileSync(executionPlanSchemaPath, 'utf8');
-  }
-  if (hasRuntimeSessionSchema) {
-    filesMap['schemas/runtime-session.schema.json'] = fs.readFileSync(runtimeSessionSchemaPath, 'utf8');
-  }
-  if (hasRuntimeOperationsSchema) {
-    filesMap['schemas/runtime-operations.schema.json'] = fs.readFileSync(runtimeOperationsSchemaPath, 'utf8');
-  }
-  if (hasOperationExecutionLedgerSchema) {
-    filesMap['schemas/operation-execution-ledger.schema.json'] = fs.readFileSync(operationExecutionLedgerSchemaPath, 'utf8');
-  }
-  if (hasRuntimeEvidencePacketSchema) {
-    filesMap['schemas/runtime-evidence-packet.schema.json'] = fs.readFileSync(runtimeEvidencePacketSchemaPath, 'utf8');
-  }
-  if (hasRuntimeCapabilityPolicySchema) {
-    filesMap['schemas/runtime-capability-policy.schema.json'] = fs.readFileSync(runtimeCapabilityPolicySchemaPath, 'utf8');
-  }
-  return filesMap;
+
+  return resolvedCandidate;
 }
 
 export function exportSharedCatalogArchive(
   rootDir = root,
   sharedCatalogDir = path.join(rootDir, 'dist', 'shared-catalog'),
 ) {
+  const safeSharedCatalogDir = resolveSafeSharedCatalogDir(sharedCatalogDir, rootDir);
   const knowledgeCatalogPath = path.join(rootDir, 'registry', 'knowledge-catalog.json');
   if (!fs.existsSync(knowledgeCatalogPath)) {
     return null;
   }
-  const filesMap = buildSharedCatalogFilesMapForExport(rootDir);
-  rmrf(sharedCatalogDir);
-  mkdirp(sharedCatalogDir);
+  const filesMap = buildSharedCatalogFilesMap(rootDir);
+  rmrf(safeSharedCatalogDir);
+  mkdirp(safeSharedCatalogDir);
 
-  fs.writeFileSync(path.join(sharedCatalogDir, 'README.md'), filesMap['README.md'], 'utf8');
-  fs.writeFileSync(path.join(sharedCatalogDir, 'manifest.json'), filesMap['manifest.json'], 'utf8');
+  fs.writeFileSync(path.join(safeSharedCatalogDir, 'README.md'), filesMap['README.md'], 'utf8');
+  fs.writeFileSync(
+    path.join(safeSharedCatalogDir, 'manifest.json'),
+    filesMap['manifest.json'],
+    'utf8',
+  );
 
   const mtime = getDeterministicZipMtime();
   const zipEntries = {};
@@ -578,10 +530,10 @@ export function exportSharedCatalogArchive(
     os: DETERMINISTIC_ZIP_OS,
     attrs: DETERMINISTIC_ZIP_ATTRS,
   });
-  const zipPath = path.join(sharedCatalogDir, 'blendops-knowledge-and-recipes.zip');
+  const zipPath = path.join(safeSharedCatalogDir, 'blendops-knowledge-and-recipes.zip');
   fs.writeFileSync(zipPath, Buffer.from(zipped));
   return {
-    sharedCatalogDir,
+    sharedCatalogDir: safeSharedCatalogDir,
     zipPath,
     files: sortedRelPaths,
   };

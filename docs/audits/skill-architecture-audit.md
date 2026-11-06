@@ -15,15 +15,15 @@
 ## 2. Skill Reference Classification & Methodology Summary (151 Files)
 
 - **Derivation Rule for Workflow Stages**: Derived deterministically from registry/skills.json category + role + skill ID: routing-and-governance/brief-and-scope/recipe-and-pack-governance -> discover-and-plan; asset-and-library-governance -> source-and-clear-assets; runtime-and-bridge-governance -> runtime-preflight; scene-and-domain-planning/color-and-render-decisions -> stage-camera-lighting-and-lookdev; quality-and-budget-validation -> inspect-and-validate; web-and-glb-handoff/evidence-and-reporting -> verify-evidence-and-handoff.
-- **Classification Methodology**: Combines explicit promoted_from_skill_refs mappings (32 files), human-reviewed recipe & governance references (48 files), and rule-based path + heading inspection of skill-local operating instructions (71 files).
-- **Honesty Note**: outdated_or_duplicated is 0 for exact file hash collisions inside skills/*/references/*.md; 8 skill-local checklist references that border promoted domain topics are explicitly marked review_status="needs_semantic_review" rather than claiming full semantic deduplication without manual review.
+- **Classification Methodology**: Combines explicit promoted_from_skill_refs mappings (37 files), rule-based governance & recipe prefix mappings (48 files), rule-based path + heading inspection of skill-local operating instructions (66 files), and verified human semantic reviews (0 files — requires traceable reviewer, timestamp, scope, and outcome evidence).
+- **Honesty Note**: outdated_or_duplicated is 0 for exact file hash collisions inside skills/*/references/*.md; 8 skill-local checklist references that border promoted domain topics are explicitly marked review_status="needs_semantic_review", and rule-based prefix classifications are never represented as human_semantic_review without traceable reviewer/timestamp/scope/outcome evidence.
 
 | Classification Category | File Count | Primary Method | Description |
 | :--- | ---: | :--- | :--- |
 | `reusable_cross_skill_knowledge` | 37 | `knowledge_promotion_mapping` | Domain rules promoted to canonical `knowledge.*` records in `registry/knowledge-catalog.json` |
 | `skill_specific_operating_instructions` | 66 | `rule_based_path_and_heading_inspection` (8 flagged `needs_semantic_review`) | Skill-local checklists, report templates, and step-by-step operating instructions |
-| `workflow_or_pack_governance` | 42 | `human_semantic_review` | Stage routing, intake clarification, pack prerequisite, stage gates, and runtime path governance |
-| `recipe_specific_procedure` | 6 | `human_semantic_review` | Recipe discovery catalog and recipe decomposition rules synchronized with `registry/recipe-catalog.json` |
+| `workflow_or_pack_governance` | 42 | `rule_based_governance_and_recipe_mapping` | Stage routing, intake clarification, pack prerequisite, stage gates, and runtime path governance |
+| `recipe_specific_procedure` | 6 | `rule_based_governance_and_recipe_mapping` | Recipe discovery catalog and recipe decomposition rules synchronized with `registry/recipe-catalog.json` |
 | `historical_or_eval_evidence` | 0 | Stored in `docs/evals/` (12 files) | Historical evaluation and runtime evidence records live under `docs/evals/` rather than inside `skills/*/references/` |
 | `outdated_or_duplicated` | 0 | Exact hash & promotion audit | Zero exact duplicate reference files; 8 adjacent checklist files tracked under `needs_semantic_review` |
 | **Total** | **151** | **100% accounted for** | **All 151 `skills/*/references/*.md` files classified with zero `undefined` fields** |
@@ -85,12 +85,12 @@
 
 | Reference File Path | Title | Classification | Method | Promoted To Canonical `knowledge.*` ID(s) |
 | :--- | :--- | :--- | :--- | :--- |
-| `skills/recipe-fit-assessor/references/recipe-catalog.md` | Recipe / pack catalog (BlendOps v0 + Phase 1 Canonical Recipe Registry) | `recipe_specific_procedure` | `human_semantic_review` | Synchronized with `registry/recipe-catalog.json` |
-| `skills/recipe-fit-assessor/references/scope-gap-rules.md` | Scope gap rules | `recipe_specific_procedure` | `human_semantic_review` | Synchronized with `registry/recipe-catalog.json` |
-| `skills/recipe-fit-assessor/references/workflow-recommendation-template.md` | Workflow recommendation template | `recipe_specific_procedure` | `human_semantic_review` | Synchronized with `registry/recipe-catalog.json` |
-| `skills/blender-recipe-decomposer/references/dependency-patterns.md` | Dependency patterns | `recipe_specific_procedure` | `human_semantic_review` | Synchronized with `registry/recipe-catalog.json` |
-| `skills/blender-recipe-decomposer/references/recipe-grouping-rules.md` | Recipe grouping rules | `recipe_specific_procedure` | `human_semantic_review` | Synchronized with `registry/recipe-catalog.json` |
-| `skills/blender-recipe-decomposer/references/recipe-naming-rules.md` | Recipe naming rules | `recipe_specific_procedure` | `human_semantic_review` | Synchronized with `registry/recipe-catalog.json` |
+| `skills/recipe-fit-assessor/references/recipe-catalog.md` | Recipe / pack catalog (BlendOps v0 + Phase 1 Canonical Recipe Registry) | `recipe_specific_procedure` | `rule_based_governance_and_recipe_mapping` | Synchronized with `registry/recipe-catalog.json` |
+| `skills/recipe-fit-assessor/references/scope-gap-rules.md` | Scope gap rules | `recipe_specific_procedure` | `rule_based_governance_and_recipe_mapping` | Synchronized with `registry/recipe-catalog.json` |
+| `skills/recipe-fit-assessor/references/workflow-recommendation-template.md` | Workflow recommendation template | `recipe_specific_procedure` | `rule_based_governance_and_recipe_mapping` | Synchronized with `registry/recipe-catalog.json` |
+| `skills/blender-recipe-decomposer/references/dependency-patterns.md` | Dependency patterns | `recipe_specific_procedure` | `rule_based_governance_and_recipe_mapping` | Synchronized with `registry/recipe-catalog.json` |
+| `skills/blender-recipe-decomposer/references/recipe-grouping-rules.md` | Recipe grouping rules | `recipe_specific_procedure` | `rule_based_governance_and_recipe_mapping` | Synchronized with `registry/recipe-catalog.json` |
+| `skills/blender-recipe-decomposer/references/recipe-naming-rules.md` | Recipe naming rules | `recipe_specific_procedure` | `rule_based_governance_and_recipe_mapping` | Synchronized with `registry/recipe-catalog.json` |
 | `skills/blender-troubleshooting/references/common-symptom-playbooks.md` | Common Symptom Playbooks | `reusable_cross_skill_knowledge` | `knowledge_promotion_mapping` | `knowledge.mesh-manifold-normals-and-scale-hygiene`, `knowledge.boolean-bevel-shading-cleanup`, `knowledge.high-to-low-normal-and-ao-baking` |
 | `skills/camera-composition/references/camera-presets.md` | Camera Presets | `reusable_cross_skill_knowledge` | `knowledge_promotion_mapping` | `knowledge.physically-based-camera-lens-and-dof` |
 | `skills/camera-composition/references/camera-rubric.md` | Camera Rubric | `reusable_cross_skill_knowledge` | `knowledge_promotion_mapping` | `knowledge.physically-based-camera-lens-and-dof` |

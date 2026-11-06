@@ -13,8 +13,8 @@
     "sourceCommitDate": "2026-11-01 04:55:09 -0500",
     "workingTreeState": "dirty",
     "snapshotBasis": "working-tree-on-top-of-source-commit",
-    "uncommittedChangeCount": 445,
-    "auditedInputsSha256": "fb066c99dff25a9b631be0d26ba46751fe1027021de49365f9af51da60bfcad1",
+    "uncommittedChangeCount": 446,
+    "auditedInputsSha256": "708d8a74ee896810e5c68fa4ea1243a2e92477e253ce3c315f2ea8e1a8f07556",
     "selfReferentialCommitRule": "A Git commit cannot contain its own final commit SHA inside tracked files. sourceCommitSha records the verified HEAD commit present when the generator ran, workingTreeState and snapshotBasis record whether uncommitted working-tree changes were present on top of sourceCommitSha, and auditedInputsSha256 digests the exact audited file contents."
   },
   "summary": {

@@ -446,9 +446,61 @@ const SEMANTIC_REVIEW_CANDIDATE_REFS = new Set([
   'skills/scene-readiness/references/quality-rubric.md'
 ]);
 
-function classifyReferenceFile(rootDir, relPath, promotedMap) {
+/**
+ * Validates that any record or classification entry claiming human semantic review
+ * includes traceable evidence (reviewer identity, ISO-8601 review timestamp,
+ * reviewed scope, and review outcome).
+ */
+export function validateHumanReviewProvenance(entry) {
+  const errors = [];
+  if (!entry || typeof entry !== 'object') {
+    return { valid: false, errors: ['Expected classification or audit record object.'] };
+  }
+  const claimsHumanReview =
+    entry.classification_method === 'human_semantic_review' ||
+    entry.review_status === 'human_reviewed';
+  if (!claimsHumanReview) {
+    return { valid: true, errors: [] };
+  }
+  const ev = entry.human_review_evidence;
+  if (!ev || typeof ev !== 'object') {
+    errors.push(
+      `Entry "${entry.path || entry.id || 'unknown'}" claims human_semantic_review without a human_review_evidence object.`,
+    );
+    return { valid: false, errors };
+  }
+  if (typeof ev.reviewer !== 'string' || ev.reviewer.trim().length < 2) {
+    errors.push('human_review_evidence.reviewer must be a non-empty reviewer identity string.');
+  }
+  if (
+    typeof ev.reviewed_at !== 'string' ||
+    !/^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}:\d{2}(\.\d+)?(Z|[+-]\d{2}:\d{2})?)?$/.test(ev.reviewed_at)
+  ) {
+    errors.push('human_review_evidence.reviewed_at must be an ISO-8601 date or timestamp.');
+  }
+  if (typeof ev.reviewed_scope !== 'string' || ev.reviewed_scope.trim().length < 3) {
+    errors.push('human_review_evidence.reviewed_scope must be a non-empty string.');
+  }
+  if (typeof ev.review_outcome !== 'string' || ev.review_outcome.trim().length < 3) {
+    errors.push('human_review_evidence.review_outcome must be a non-empty string.');
+  }
+  return { valid: errors.length === 0, errors };
+}
+
+function classifyReferenceFile(rootDir, relPath, promotedMap, humanReviewsMap = new Map()) {
   const promotedTo = promotedMap.get(relPath) || [];
   const fileMeta = inspectReferenceMarkdownFile(rootDir, relPath);
+  const humanEvidence = humanReviewsMap.get(relPath) || null;
+  if (humanEvidence) {
+    const check = validateHumanReviewProvenance({
+      path: relPath,
+      classification_method: 'human_semantic_review',
+      human_review_evidence: humanEvidence,
+    });
+    if (!check.valid) {
+      throw new Error(`Invalid human_review_evidence for ${relPath}: ${check.errors.join('; ')}`);
+    }
+  }
 
   if (
     relPath.startsWith('skills/recipe-fit-assessor/references/') ||
@@ -459,9 +511,15 @@ function classifyReferenceFile(rootDir, relPath, promotedMap) {
       title: fileMeta.title,
       line_count: fileMeta.lineCount,
       classification: 'recipe_specific_procedure',
-      classification_method: 'human_semantic_review',
-      review_status: 'verified_synchronized',
-      rationale: 'Reviewed and synchronized with registry/recipe-catalog.json for recipe fit scoring and multi-deliverable decomposition.',
+      classification_method: humanEvidence
+        ? 'human_semantic_review'
+        : 'rule_based_governance_and_recipe_mapping',
+      review_status: humanEvidence
+        ? 'human_reviewed'
+        : 'rule_classified_governance_or_recipe',
+      human_review_evidence: humanEvidence,
+      rationale:
+        'Classified via deterministic skill-path rule and synchronized with registry/recipe-catalog.json for recipe fit scoring and multi-deliverable decomposition.',
       promoted_to_knowledge_ids: promotedTo
     };
   }
@@ -474,6 +532,7 @@ function classifyReferenceFile(rootDir, relPath, promotedMap) {
       classification: 'reusable_cross_skill_knowledge',
       classification_method: 'knowledge_promotion_mapping',
       review_status: 'verified_promoted',
+      human_review_evidence: humanEvidence,
       rationale: `Domain rules promoted to canonical knowledge record(s): ${promotedTo.join(', ')} while remaining available as a progressive-disclosure skill reference.`,
       promoted_to_knowledge_ids: promotedTo
     };
@@ -500,9 +559,15 @@ function classifyReferenceFile(rootDir, relPath, promotedMap) {
       title: fileMeta.title,
       line_count: fileMeta.lineCount,
       classification: 'workflow_or_pack_governance',
-      classification_method: 'human_semantic_review',
-      review_status: 'verified_synchronized',
-      rationale: 'Governs BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.',
+      classification_method: humanEvidence
+        ? 'human_semantic_review'
+        : 'rule_based_governance_and_recipe_mapping',
+      review_status: humanEvidence
+        ? 'human_reviewed'
+        : 'rule_classified_governance_or_recipe',
+      human_review_evidence: humanEvidence,
+      rationale:
+        'Classified via deterministic governance skill-path rule covering BlendOps workflow stage routing, pack prerequisites, stage gates, stop criteria, or Path 1 / Path 2 / CLI runtime boundaries.',
       promoted_to_knowledge_ids: []
     };
   }
@@ -515,6 +580,7 @@ function classifyReferenceFile(rootDir, relPath, promotedMap) {
     classification: 'skill_specific_operating_instructions',
     classification_method: 'rule_based_path_and_heading_inspection',
     review_status: needsReview ? 'needs_semantic_review' : 'rule_classified_skill_local',
+    human_review_evidence: humanEvidence,
     rationale: needsReview
       ? 'Provides skill-local checklists/templates adjacent to promoted domain knowledge; flagged as needs_semantic_review for future cross-skill consolidation.'
       : 'Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.',
@@ -577,8 +643,9 @@ export function buildSkillArchitectureAuditData(rootDir = DEFAULT_ROOT) {
   };
   const classificationMethodCounts = {
     knowledge_promotion_mapping: 0,
-    human_semantic_review: 0,
-    rule_based_path_and_heading_inspection: 0
+    rule_based_governance_and_recipe_mapping: 0,
+    rule_based_path_and_heading_inspection: 0,
+    human_semantic_review: 0
   };
   let needsSemanticReviewCount = 0;
 
@@ -645,13 +712,12 @@ export function buildSkillArchitectureAuditData(rootDir = DEFAULT_ROOT) {
     audit_scope: 'phase-0-phase-1-and-phase-2-architecture-reconciliation',
     workflow_stage_derivation_rule: WORKFLOW_STAGE_DERIVATION_RULE,
     classification_methodology: {
-      summary:
-        'Combines explicit promoted_from_skill_refs mappings (32 files), human-reviewed recipe & governance references (48 files), and rule-based path + heading inspection of skill-local operating instructions (71 files).',
+      summary: `Combines explicit promoted_from_skill_refs mappings (${classificationMethodCounts.knowledge_promotion_mapping} files), rule-based governance & recipe prefix mappings (${classificationMethodCounts.rule_based_governance_and_recipe_mapping} files), rule-based path + heading inspection of skill-local operating instructions (${classificationMethodCounts.rule_based_path_and_heading_inspection} files), and verified human semantic reviews (${classificationMethodCounts.human_semantic_review} files — requires traceable reviewer, timestamp, scope, and outcome evidence).`,
       methods_breakdown: classificationMethodCounts,
       needs_semantic_review_count: needsSemanticReviewCount,
       historical_eval_evidence_files_in_docs_evals: historicalEvalFilesCount,
       honesty_note:
-        'outdated_or_duplicated is 0 for exact file hash collisions inside skills/*/references/*.md; 8 skill-local checklist references that border promoted domain topics are explicitly marked review_status="needs_semantic_review" rather than claiming full semantic deduplication without manual review.'
+        'outdated_or_duplicated is 0 for exact file hash collisions inside skills/*/references/*.md; 8 skill-local checklist references that border promoted domain topics are explicitly marked review_status="needs_semantic_review", and rule-based prefix classifications are never represented as human_semantic_review without traceable reviewer/timestamp/scope/outcome evidence.'
     },
     five_layer_architecture: {
       skill_layer: {
@@ -725,8 +791,8 @@ export function renderSkillArchitectureAuditMarkdown(auditData) {
     '| :--- | ---: | :--- | :--- |',
     `| \`reusable_cross_skill_knowledge\` | ${auditData.summary.reference_classification_breakdown.reusable_cross_skill_knowledge} | \`knowledge_promotion_mapping\` | Domain rules promoted to canonical \`knowledge.*\` records in \`registry/knowledge-catalog.json\` |`,
     `| \`skill_specific_operating_instructions\` | ${auditData.summary.reference_classification_breakdown.skill_specific_operating_instructions} | \`rule_based_path_and_heading_inspection\` (${auditData.summary.needs_semantic_review_count} flagged \`needs_semantic_review\`) | Skill-local checklists, report templates, and step-by-step operating instructions |`,
-    `| \`workflow_or_pack_governance\` | ${auditData.summary.reference_classification_breakdown.workflow_or_pack_governance} | \`human_semantic_review\` | Stage routing, intake clarification, pack prerequisite, stage gates, and runtime path governance |`,
-    `| \`recipe_specific_procedure\` | ${auditData.summary.reference_classification_breakdown.recipe_specific_procedure} | \`human_semantic_review\` | Recipe discovery catalog and recipe decomposition rules synchronized with \`registry/recipe-catalog.json\` |`,
+    `| \`workflow_or_pack_governance\` | ${auditData.summary.reference_classification_breakdown.workflow_or_pack_governance} | \`rule_based_governance_and_recipe_mapping\` | Stage routing, intake clarification, pack prerequisite, stage gates, and runtime path governance |`,
+    `| \`recipe_specific_procedure\` | ${auditData.summary.reference_classification_breakdown.recipe_specific_procedure} | \`rule_based_governance_and_recipe_mapping\` | Recipe discovery catalog and recipe decomposition rules synchronized with \`registry/recipe-catalog.json\` |`,
     `| \`historical_or_eval_evidence\` | ${auditData.summary.reference_classification_breakdown.historical_or_eval_evidence} | Stored in \`docs/evals/\` (${auditData.classification_methodology.historical_eval_evidence_files_in_docs_evals} files) | Historical evaluation and runtime evidence records live under \`docs/evals/\` rather than inside \`skills/*/references/\` |`,
     `| \`outdated_or_duplicated\` | ${auditData.summary.reference_classification_breakdown.outdated_or_duplicated} | Exact hash & promotion audit | Zero exact duplicate reference files; ${auditData.summary.needs_semantic_review_count} adjacent checklist files tracked under \`needs_semantic_review\` |`,
     `| **Total** | **${auditData.summary.total_skill_references_classified}** | **100% accounted for** | **All 151 \`skills/*/references/*.md\` files classified with zero \`undefined\` fields** |`,
@@ -1794,6 +1860,72 @@ export function resolveCatalogRecord(rootDir = DEFAULT_ROOT, recordId = '') {
   };
 }
 
+/**
+ * Computes retrieval metrics (Recall@k, Standard Precision@k, Target-Normalized Precision@k, MRR)
+ * for a single query result list against expected top IDs.
+ *
+ * - Deduplicates both `results` (preserving rank order) and `expectedTopIds` so duplicate returned IDs
+ *   or duplicate expected IDs can never inflate Precision@k or Recall@k.
+ * - `standard_precision_at_k` divides strictly by `k` (never `topSlice.length`), preventing short
+ *   result lists from inflating Precision@k.
+ * - `target_precision_at_k` divides by `min(k, |expectedUnique|)` (never `topSlice.length`),
+ *   preventing short result lists from inflating target-normalized precision.
+ */
+export function computeRetrievalMetricsForCase(results = [], expectedTopIds = [], kInput = 3) {
+  const k = Math.max(1, Math.floor(Number(kInput) || 3));
+
+  const seenResultIds = new Set();
+  const uniqueResults = [];
+  for (const r of Array.isArray(results) ? results : []) {
+    const id = typeof r === 'string' ? r : r?.id;
+    if (!id || seenResultIds.has(id)) continue;
+    seenResultIds.add(id);
+    uniqueResults.push(typeof r === 'string' ? { id } : r);
+  }
+
+  const seenExpectedIds = new Set();
+  const expectedUnique = [];
+  for (const expId of Array.isArray(expectedTopIds) ? expectedTopIds : []) {
+    if (!expId || seenExpectedIds.has(expId)) continue;
+    seenExpectedIds.add(expId);
+    expectedUnique.push(expId);
+  }
+
+  const topSlice = uniqueResults.slice(0, k).map((r) => r.id);
+  const matchedExpected = expectedUnique.filter((expId) => topSlice.includes(expId));
+  const missingExpected = expectedUnique.filter((expId) => !topSlice.includes(expId));
+
+  const recallAtK =
+    expectedUnique.length > 0 ? matchedExpected.length / expectedUnique.length : 1;
+  const standardPrecisionAtK = matchedExpected.length / k;
+  const targetDenominator =
+    expectedUnique.length > 0 ? Math.min(k, expectedUnique.length) : k;
+  const targetPrecisionAtK = matchedExpected.length / targetDenominator;
+
+  let firstRank = 0;
+  for (let idx = 0; idx < uniqueResults.length; idx += 1) {
+    if (seenExpectedIds.has(uniqueResults[idx].id)) {
+      firstRank = idx + 1;
+      break;
+    }
+  }
+  const reciprocalRank = firstRank > 0 ? 1 / firstRank : 0;
+
+  return {
+    k,
+    top_slice: topSlice,
+    expected_unique: expectedUnique,
+    matched_expected: matchedExpected,
+    missing_expected: missingExpected,
+    duplicate_result_ids_removed: (Array.isArray(results) ? results.length : 0) - uniqueResults.length,
+    recall_at_k: Number(recallAtK.toFixed(4)),
+    standard_precision_at_k: Number(standardPrecisionAtK.toFixed(4)),
+    target_precision_at_k: Number(targetPrecisionAtK.toFixed(4)),
+    reciprocal_rank: Number(reciprocalRank.toFixed(4)),
+    first_rank: firstRank,
+  };
+}
+
 export function runCatalogRetrievalEvals(rootDir = DEFAULT_ROOT) {
   const evalsPath = path.join(rootDir, 'evals/catalog-retrieval-evals.json');
   if (!fs.existsSync(evalsPath)) {
@@ -1810,7 +1942,8 @@ export function runCatalogRetrievalEvals(rootDir = DEFAULT_ROOT) {
 
   let positiveCasesCount = 0;
   let recallSum = 0;
-  let precisionSum = 0;
+  let targetPrecisionSum = 0;
+  let standardPrecisionSum = 0;
   let reciprocalRankSum = 0;
 
   let noMatchCasesCount = 0;
@@ -1854,29 +1987,20 @@ export function runCatalogRetrievalEvals(rootDir = DEFAULT_ROOT) {
     }
 
     const k = testCase.max_rank || 3;
-    const topSlice = response.results.slice(0, k).map((r) => r.id);
-    const expectedIds = testCase.expected_top_ids || [];
-    const matchedExpected = expectedIds.filter((expId) => topSlice.includes(expId));
-    const missingExpected = expectedIds.filter((expId) => !topSlice.includes(expId));
+    const caseMetrics = computeRetrievalMetricsForCase(
+      response.results,
+      testCase.expected_top_ids || [],
+      k
+    );
 
-    const caseRecall = expectedIds.length > 0 ? matchedExpected.length / expectedIds.length : 1;
-    const casePrecision = topSlice.length > 0 ? matchedExpected.length / Math.min(topSlice.length, expectedIds.length || 1) : 0;
-    recallSum += caseRecall;
-    precisionSum += Math.min(1, casePrecision);
+    recallSum += caseMetrics.recall_at_k;
+    targetPrecisionSum += caseMetrics.target_precision_at_k;
+    standardPrecisionSum += caseMetrics.standard_precision_at_k;
+    reciprocalRankSum += caseMetrics.reciprocal_rank;
 
-    // Reciprocal rank of first expected result
-    let firstRank = 0;
-    for (let idx = 0; idx < response.results.length; idx += 1) {
-      if (expectedIds.includes(response.results[idx].id)) {
-        firstRank = idx + 1;
-        break;
-      }
-    }
-    reciprocalRankSum += firstRank > 0 ? 1 / firstRank : 0;
-
-    if (missingExpected.length > 0) {
+    if (caseMetrics.missing_expected.length > 0) {
       failures.push(
-        `Case ${testCase.id}: expected [${expectedIds.join(', ')}] within top ${k}, got [${topSlice.join(', ')}]`
+        `Case ${testCase.id}: expected [${caseMetrics.expected_unique.join(', ')}] within top ${k}, got [${caseMetrics.top_slice.join(', ')}]`
       );
     } else {
       passedCount += 1;
@@ -1886,14 +2010,24 @@ export function runCatalogRetrievalEvals(rootDir = DEFAULT_ROOT) {
 
   const metrics = {
     recall_at_k: positiveCasesCount > 0 ? Number((recallSum / positiveCasesCount).toFixed(4)) : 1,
-    precision_at_k: positiveCasesCount > 0 ? Number((precisionSum / positiveCasesCount).toFixed(4)) : 1,
+    precision_at_k:
+      positiveCasesCount > 0 ? Number((targetPrecisionSum / positiveCasesCount).toFixed(4)) : 1,
+    standard_precision_at_k:
+      positiveCasesCount > 0 ? Number((standardPrecisionSum / positiveCasesCount).toFixed(4)) : 1,
+    target_precision_at_k:
+      positiveCasesCount > 0 ? Number((targetPrecisionSum / positiveCasesCount).toFixed(4)) : 1,
     mrr: positiveCasesCount > 0 ? Number((reciprocalRankSum / positiveCasesCount).toFixed(4)) : 1,
     no_match_accuracy: noMatchCasesCount > 0 ? Number((noMatchCorrectCount / noMatchCasesCount).toFixed(4)) : 1,
     unsupported_request_false_positive_rate:
       noMatchCasesCount > 0 ? Number((unsupportedFalsePositives / noMatchCasesCount).toFixed(4)) : 0,
     positive_cases: positiveCasesCount,
     no_match_cases: noMatchCasesCount,
-    language_coverage: langCounts
+    language_coverage: langCounts,
+    metric_definitions: {
+      recall_at_k: '|unique_relevant_in_top_k| / |expected_unique|',
+      precision_at_k: '|unique_relevant_in_top_k| / min(k, |expected_unique|) (target-normalized; never divides by result list length)',
+      standard_precision_at_k: '|unique_relevant_in_top_k| / k (strict IR Precision@k with fixed k denominator)'
+    }
   };
 
   return {

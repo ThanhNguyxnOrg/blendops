@@ -219,11 +219,26 @@
               "committed",
               "blocked",
               "rejected",
+              "rejected_idempotency_collision",
               "attempted",
               "failed",
               "skipped_duplicate",
               "skipped_after_failure"
             ]
+          },
+          "failure_classification": {
+            "type": ["string", "null"],
+            "enum": [
+              null,
+              "uncertain_remote_mutation_timeout",
+              "known_operation_failure",
+              "postcondition_verification_failed",
+              "idempotency_key_payload_collision",
+              "readback_tool_failed"
+            ]
+          },
+          "unknown_remote_execution_outcome": {
+            "type": "boolean"
           },
           "baseline_snapshot": { "type": ["object", "null"] },
           "tool_result": { "type": ["object", "null"] },

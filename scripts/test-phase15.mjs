@@ -86,7 +86,8 @@ describe('Phase 15 — Phase 14.1 Hardening + Phase 2 (Agent Consumption, SceneS
     assert.equal(audit.summary.needs_semantic_review_count, 8);
     assert.equal(audit.classification_methodology.needs_semantic_review_count, 8);
     assert.equal(audit.classification_methodology.methods_breakdown.knowledge_promotion_mapping, 37);
-    assert.equal(audit.classification_methodology.methods_breakdown.human_semantic_review, 48);
+    assert.equal(audit.classification_methodology.methods_breakdown.rule_based_governance_and_recipe_mapping, 48);
+    assert.equal(audit.classification_methodology.methods_breakdown.human_semantic_review, 0);
     assert.equal(audit.classification_methodology.methods_breakdown.rule_based_path_and_heading_inspection, 66);
 
     const needsReviewRefs = audit.reference_classifications.filter(

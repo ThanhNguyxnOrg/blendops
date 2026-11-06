@@ -1,17 +1,18 @@
 #!/usr/bin/env node
 /**
- * BlendOps Phase 2B & 2C — SceneSpec Validator, Skill Harmonizer & Deterministic Plan Compiler
+ * BlendOps Phase 2B, 2C & 3.1 — SceneSpec Validator, Skill Harmonizer & Deterministic Plan Compiler
  *
  * Implements:
- * - validateSceneSpec(specOrPath, options): Real JSON Schema Draft 2020-12 (Ajv2020) + semantic validation
+ * - validateSceneSpec(specOrPath, options): Real JSON Schema Draft 2020-12 (Ajv2020) + semantic + canonical catalog validation
  * - compileExecutionPlan(specOrPath, options): Deterministic recipe selection (recipe-fit-assessor),
  *   sub-goal decomposition (blender-recipe-decomposer), 8-layer precedence resolution, cross-skill
  *   conflict detection (blocking / warning / informational), and Ajv2020 ExecutionPlan validation
- * - inspectExecutionPlan(planOrPath, options): Plain-language + JSON inspection of a compiled plan
+ * - inspectExecutionPlan(planOrPath, options): Schema + cross-layer semantic invariant verification of a compiled plan
  * - runPlanCliSubcommand(argv, options): CLI integration for scene-spec-validate, plan-compile, plan-inspect
  */
 
 import fs from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import Ajv2020 from 'ajv/dist/2020.js';
@@ -90,6 +91,212 @@ function formatAjvErrors(errors = []) {
   });
 }
 
+const PROTECTED_REPO_PREFIXES = [
+  'registry',
+  'schemas',
+  'skills',
+  'scripts',
+  'laws',
+  'packs',
+  'bundles',
+  'bin',
+  'docs',
+  'evals',
+  '.git',
+  '.github',
+  'node_modules',
+];
+
+const PROTECTED_REPO_FILES = new Set([
+  'package.json',
+  'package-lock.json',
+  'AGENTS.md',
+  'README.md',
+  'TODO.md',
+  'CHANGELOG.md',
+  'CONTRIBUTING.md',
+  'CODE_OF_CONDUCT.md',
+  'SECURITY.md',
+  'SUPPORT.md',
+  'LICENSE',
+]);
+
+/**
+ * Validates a CLI `--out` file path to prevent overwriting repository sources,
+ * global agent home directories, existing directories, or symbolic links.
+ */
+export function validateSafeCliOutFilePath(outPath, options = {}) {
+  const repoRoot = path.resolve(options.repoRoot || DEFAULT_REPO_ROOT);
+  if (!outPath || typeof outPath !== 'string' || outPath.includes('\0') || !outPath.trim()) {
+    return {
+      valid: false,
+      absPath: null,
+      error: 'Output path must be a non-empty string without null bytes.',
+    };
+  }
+
+  const absOut = path.resolve(outPath);
+  const parsed = path.parse(absOut);
+  if (absOut === parsed.root) {
+    return {
+      valid: false,
+      absPath: absOut,
+      error: `Refusing to write to filesystem root: ${absOut}`,
+    };
+  }
+
+  const homeDir = os.homedir ? os.homedir() : process.env.HOME || '';
+  if (homeDir) {
+    const absHome = path.resolve(homeDir);
+    const forbiddenHomeDirs = [
+      '.claude',
+      '.cursor',
+      '.codex',
+      '.gemini',
+      '.windsurf',
+      '.continue',
+      '.cline',
+      '.roo',
+      '.github',
+      '.config',
+    ];
+    for (const dirName of forbiddenHomeDirs) {
+      const candidate = path.join(absHome, dirName);
+      if (absOut === candidate || absOut.startsWith(candidate + path.sep)) {
+        return {
+          valid: false,
+          absPath: absOut,
+          error: `Refusing to write to global agent/home configuration path: ${absOut}`,
+        };
+      }
+    }
+  }
+
+  // Prevent overwriting repository source-of-truth files or directories
+  const relToRepo = path.relative(repoRoot, absOut);
+  if (!relToRepo.startsWith('..') && !path.isAbsolute(relToRepo)) {
+    const normalizedRel = relToRepo.split(path.sep).join('/');
+    if (normalizedRel === '' || PROTECTED_REPO_FILES.has(normalizedRel)) {
+      return {
+        valid: false,
+        absPath: absOut,
+        error: `Refusing to overwrite protected repository file or root: ${absOut}`,
+      };
+    }
+    const topSegment = normalizedRel.split('/')[0];
+    if (PROTECTED_REPO_PREFIXES.includes(topSegment)) {
+      return {
+        valid: false,
+        absPath: absOut,
+        error: `Refusing to write CLI output inside protected repository directory "${topSegment}/": ${absOut}`,
+      };
+    }
+  }
+
+  // Walk from root to absOut and reject any symbolic link along the path or at the target
+  const segments = absOut.slice(parsed.root.length).split(path.sep).filter(Boolean);
+  let cur = parsed.root;
+  for (let i = 0; i < segments.length; i++) {
+    cur = path.join(cur, segments[i]);
+    if (fs.existsSync(cur)) {
+      const st = fs.lstatSync(cur);
+      if (st.isSymbolicLink()) {
+        return {
+          valid: false,
+          absPath: absOut,
+          error: `Refusing to write through symbolic link at: ${cur}`,
+        };
+      }
+      if (i === segments.length - 1 && st.isDirectory()) {
+        return {
+          valid: false,
+          absPath: absOut,
+          error: `Output path already exists as a directory: ${absOut}`,
+        };
+      }
+    } else {
+      try {
+        const st = fs.lstatSync(cur);
+        if (st.isSymbolicLink()) {
+          return {
+            valid: false,
+            absPath: absOut,
+            error: `Refusing to write through dangling symbolic link at: ${cur}`,
+          };
+        }
+      } catch {
+        // does not exist
+      }
+    }
+  }
+
+  return { valid: true, absPath: absOut, error: null };
+}
+
+export function writeFileAtomicallySafe(outPath, content, options = {}) {
+  const check = validateSafeCliOutFilePath(outPath, options);
+  if (!check.valid) {
+    throw new Error(check.error);
+  }
+  const absOut = check.absPath;
+  const parentDir = path.dirname(absOut);
+  fs.mkdirSync(parentDir, { recursive: true });
+  const parentStat = fs.lstatSync(parentDir);
+  if (parentStat.isSymbolicLink() || !parentStat.isDirectory()) {
+    throw new Error(`Output parent directory is not a real directory: ${parentDir}`);
+  }
+  const tmpPath = path.join(
+    parentDir,
+    `.${path.basename(absOut)}.tmp-${process.pid}-${Date.now()}`,
+  );
+  fs.writeFileSync(tmpPath, content, 'utf8');
+  fs.renameSync(tmpPath, absOut);
+  return absOut;
+}
+
+export function parseMajorMinorVersion(verStr) {
+  if (!verStr || typeof verStr !== 'string') return null;
+  const m = verStr.trim().match(/^(\d+)\.(\d+)/);
+  if (!m) return null;
+  const major = Number(m[1]);
+  const minor = Number(m[2]);
+  return { major, minor, num: major * 100 + minor };
+}
+
+export function extractBlenderVersionBounds(versionTarget) {
+  if (!versionTarget || typeof versionTarget !== 'object') {
+    return { minVer: null, recVer: null, rangeMinVer: null, rangeMaxVer: null, effectiveMaxVer: null };
+  }
+  const minParsed = parseMajorMinorVersion(versionTarget.min);
+  const recParsed = parseMajorMinorVersion(versionTarget.recommended);
+  let rangeMinParsed = null;
+  let rangeMaxParsed = null;
+  if (typeof versionTarget.tested_range === 'string') {
+    const parts = versionTarget.tested_range.split('-').map((s) => s.trim());
+    if (parts.length === 2) {
+      rangeMinParsed = parseMajorMinorVersion(parts[0]);
+      rangeMaxParsed = parseMajorMinorVersion(parts[1]);
+    } else if (parts.length === 1) {
+      rangeMinParsed = parseMajorMinorVersion(parts[0]);
+      rangeMaxParsed = rangeMinParsed;
+    }
+  }
+  const minVer = minParsed ? minParsed.num : null;
+  const recVer = recParsed ? recParsed.num : null;
+  const rangeMinVer = rangeMinParsed ? rangeMinParsed.num : null;
+  const rangeMaxVer = rangeMaxParsed ? rangeMaxParsed.num : null;
+  const candidates = [recVer, rangeMaxVer].filter((x) => x !== null);
+  const effectiveMaxVer =
+    candidates.length > 0 ? Math.max(...candidates) : minVer !== null ? minVer : null;
+  return {
+    minVer,
+    recVer,
+    rangeMinVer,
+    rangeMaxVer,
+    effectiveMaxVer,
+  };
+}
+
 /**
  * Resolves catalog files from either a project-local `.blendops/catalog` directory
  * (if `projectDir` is provided and installed) or the repository root.
@@ -113,6 +320,9 @@ export function resolveCatalogPaths(repoRoot = DEFAULT_REPO_ROOT, projectDir = n
         recipeCatalogPath: localRecipePath,
         knowledgeSourcesPath: localSourcesPath,
         catalogIndexPath: path.join(localCatalogDir, 'catalog-index.json'),
+        skillsPath: fs.existsSync(path.join(localCatalogDir, 'skills-summary.json'))
+          ? path.join(localCatalogDir, 'skills-summary.json')
+          : path.join(repoRoot, 'registry', 'skills.json'),
         schemasDir: fs.existsSync(path.join(localCatalogDir, 'schemas', 'scene-spec.schema.json'))
           ? path.join(localCatalogDir, 'schemas')
           : path.join(repoRoot, 'schemas'),
@@ -126,6 +336,7 @@ export function resolveCatalogPaths(repoRoot = DEFAULT_REPO_ROOT, projectDir = n
     recipeCatalogPath: path.join(repoRoot, 'registry', 'recipe-catalog.json'),
     knowledgeSourcesPath: path.join(repoRoot, 'registry', 'knowledge-sources.json'),
     catalogIndexPath: path.join(repoRoot, 'registry', 'catalog-index.json'),
+    skillsPath: path.join(repoRoot, 'registry', 'skills.json'),
     schemasDir: path.join(repoRoot, 'schemas'),
   };
 }
@@ -144,14 +355,26 @@ function loadInputJson(objOrPath) {
   throw new Error('Expected a file path or JSON object.');
 }
 
+export const PRIMARY_GOAL_TO_RECIPE_ID = {
+  product_hero_presentation: 'recipe.product-hero-scene',
+  environment_or_diorama_scene: 'recipe.stylized-environment-scene',
+  hard_surface_prop_asset: 'recipe.hard-surface-prop',
+  procedural_geometry_nodes_asset: 'recipe.procedural-geometry-nodes-asset',
+  rigged_character_or_animation: 'recipe.rigged-and-animated-asset',
+  web_glb_optimization_and_handoff: 'recipe.web-ready-asset-optimization',
+  scene_quality_inspection_and_cleanup: 'recipe.scene-quality-inspection-and-correction',
+  hybrid_render_and_web_glb: 'recipe.product-hero-scene',
+};
+
 /**
  * Validates a SceneSpec against schemas/scene-spec.schema.json (Draft 2020-12)
- * plus semantic invariants.
+ * plus semantic and canonical catalog invariants.
  */
 export function validateSceneSpec(specOrPath, options = {}) {
   const repoRoot = options.repoRoot || DEFAULT_REPO_ROOT;
   const projectDir = options.projectDir || null;
-  const { schemasDir } = resolveCatalogPaths(repoRoot, projectDir);
+  const catalogPaths = resolveCatalogPaths(repoRoot, projectDir);
+  const { schemasDir, recipeCatalogPath, sourceMode } = catalogPaths;
   const schemaPath = path.join(schemasDir, 'scene-spec.schema.json');
   const schema = readJsonFile(schemaPath);
 
@@ -163,6 +386,7 @@ export function validateSceneSpec(specOrPath, options = {}) {
       valid: false,
       errors: [err.message],
       warnings: [],
+      spec: null,
       spec_id: null,
       runtime_status: 'Not Run',
       artifact_status: 'Not Produced',
@@ -180,7 +404,55 @@ export function validateSceneSpec(specOrPath, options = {}) {
     }
   }
 
+  let recipesById = new Map();
+  try {
+    const recipeCatalog = readJsonFile(recipeCatalogPath);
+    recipesById = new Map((recipeCatalog.recipes || []).map((r) => [r.id, r]));
+  } catch (err) {
+    errors.push(`Failed to load canonical recipe catalog (${recipeCatalogPath}): ${err.message}`);
+  }
+
   if (spec && typeof spec === 'object') {
+    // 1. Canonical recipe override and primary goal recipe resolution check (Defect 2A)
+    const explicitOverride = spec.intent?.explicit_recipe_override;
+    if (explicitOverride !== undefined && explicitOverride !== null) {
+      if (typeof explicitOverride !== 'string' || !/^recipe\.[a-z0-9-]+$/.test(explicitOverride)) {
+        errors.push(
+          `Invalid intent.explicit_recipe_override "${String(explicitOverride)}": must match ^recipe\\.[a-z0-9-]+$.`,
+        );
+      } else if (!recipesById.has(explicitOverride)) {
+        errors.push(
+          `Unresolved intent.explicit_recipe_override "${explicitOverride}": recipe does not exist in canonical recipe catalog (${sourceMode}).`,
+        );
+      }
+    } else if (spec.intent?.primary_goal) {
+      const mappedPrimary = PRIMARY_GOAL_TO_RECIPE_ID[spec.intent.primary_goal];
+      if (!mappedPrimary || !recipesById.has(mappedPrimary)) {
+        errors.push(
+          `Cannot resolve canonical primary recipe for intent.primary_goal "${spec.intent.primary_goal}" in ${sourceMode} recipe catalog.`,
+        );
+      }
+    }
+
+    // 2. Blender version target internal ordering sanity check
+    if (spec.blender_version_target && typeof spec.blender_version_target === 'object') {
+      const bounds = extractBlenderVersionBounds(spec.blender_version_target);
+      if (bounds.minVer !== null && bounds.recVer !== null && bounds.minVer > bounds.recVer) {
+        errors.push(
+          `blender_version_target.min (${spec.blender_version_target.min}) cannot exceed recommended (${spec.blender_version_target.recommended}).`,
+        );
+      }
+      if (
+        bounds.rangeMinVer !== null &&
+        bounds.rangeMaxVer !== null &&
+        bounds.rangeMaxVer < bounds.rangeMinVer
+      ) {
+        errors.push(
+          `blender_version_target.tested_range (${spec.blender_version_target.tested_range}) has end version < start version.`,
+        );
+      }
+    }
+
     if (Array.isArray(spec.objects_and_subjects)) {
       const seenIds = new Set();
       for (const obj of spec.objects_and_subjects) {
@@ -228,24 +500,15 @@ export function validateSceneSpec(specOrPath, options = {}) {
     valid: errors.length === 0,
     errors,
     warnings,
+    spec: errors.length === 0 ? spec : spec || null,
     spec_id: spec?.id || null,
     title: spec?.title || null,
     language: spec?.language || null,
+    catalog_source_mode: sourceMode,
     runtime_status: 'Not Run',
     artifact_status: 'Not Produced',
   };
 }
-
-const PRIMARY_GOAL_TO_RECIPE_ID = {
-  product_hero_presentation: 'recipe.product-hero-scene',
-  environment_or_diorama_scene: 'recipe.stylized-environment-scene',
-  hard_surface_prop_asset: 'recipe.hard-surface-prop',
-  procedural_geometry_nodes_asset: 'recipe.procedural-geometry-nodes-asset',
-  rigged_character_or_animation: 'recipe.rigged-and-animated-asset',
-  web_glb_optimization_and_handoff: 'recipe.web-ready-asset-optimization',
-  scene_quality_inspection_and_cleanup: 'recipe.scene-quality-inspection-and-correction',
-  hybrid_render_and_web_glb: 'recipe.product-hero-scene',
-};
 
 /**
  * Resolves the primary recipe and supporting recipes using `recipe-fit-assessor`
@@ -256,6 +519,12 @@ function resolveRecipesForSpec(spec, recipesById) {
     spec.intent.explicit_recipe_override ||
     PRIMARY_GOAL_TO_RECIPE_ID[spec.intent.primary_goal] ||
     'recipe.product-hero-scene';
+
+  if (!recipesById.has(primaryRecipeId)) {
+    throw new Error(
+      `Unresolved primary recipe "${primaryRecipeId}": recipe does not exist in canonical catalog.`,
+    );
+  }
 
   const supportingSet = new Set();
 
@@ -316,19 +585,33 @@ function resolveRecipesForSpec(spec, recipesById) {
     }
   }
 
-  const supportingRecipeIds = [...supportingSet].filter((id) => recipesById.has(id));
+  const supportingRecipeIds = [];
+  for (const id of supportingSet) {
+    if (id === primaryRecipeId) continue;
+    if (!recipesById.has(id)) {
+      throw new Error(
+        `Unresolved supporting recipe "${id}": recipe does not exist in canonical catalog.`,
+      );
+    }
+    if (!supportingRecipeIds.includes(id)) {
+      supportingRecipeIds.push(id);
+    }
+  }
   const orderedRecipeIds = [primaryRecipeId, ...supportingRecipeIds];
 
   const decomposedSubGoals = orderedRecipeIds.map((recipeId, idx) => {
     const rec = recipesById.get(recipeId);
-    const recSkills = rec
-      ? [...new Set([...(rec.required_skill_ids || []), ...(rec.optional_skills || [])])]
-      : [];
-    const recKnowledge = rec ? [...(rec.required_knowledge_ids || [])] : [];
+    if (!rec) {
+      throw new Error(`Recipe "${recipeId}" missing from canonical catalog during decomposition.`);
+    }
+    const recSkills = [
+      ...new Set([...(rec.required_skill_ids || []), ...(rec.optional_skills || [])]),
+    ];
+    const recKnowledge = [...new Set([...(rec.required_knowledge_ids || [])])];
     return {
       step_index: idx + 1,
       recipe_id: recipeId,
-      sub_goal: rec ? `${rec.title}: ${rec.intent}` : recipeId,
+      sub_goal: `${rec.title}: ${rec.intent}`,
       skills: recSkills,
       knowledge_refs: recKnowledge,
     };
@@ -639,6 +922,49 @@ function detectConflicts(spec) {
     });
   }
 
+  // 13. Path-specific Blender version floor enforcement (Layer 3: runtime & version limits)
+  const vBounds = extractBlenderVersionBounds(spec.blender_version_target);
+  const preferredPath = spec.runtime_preference?.preferred_path;
+  if (
+    preferredPath === 'path-1-official-blender-lab-mcp' &&
+    ((vBounds.recVer !== null && vBounds.recVer < 501) ||
+      (vBounds.effectiveMaxVer !== null && vBounds.effectiveMaxVer < 501))
+  ) {
+    conflicts.push({
+      conflict_id: 'conflict.runtime-path-1-blender-version-floor',
+      severity: 'blocking',
+      rule_id: 'CONFLICT_RUNTIME_PATH_1_BLENDER_VERSION_FLOOR',
+      winning_layer_rank: 3,
+      winning_layer_id: 'layer_3_runtime_and_blender_version_limits',
+      losing_layer_id: 'layer_5_explicit_scene_spec_parameters',
+      summary: `SceneSpec selects Path 1 (Official Blender Lab MCP) with blender_version_target recommended="${spec.blender_version_target.recommended}" (tested_range="${spec.blender_version_target.tested_range}"), which is below the mandatory Blender 5.1+ floor required by the official Blender Lab MCP add-on manifest.`,
+      affected_skills: ['runtime-path-picker', 'runtime-readiness', 'path-one-host-outline'],
+      knowledge_refs: ['knowledge.mesh-manifold-normals-and-scale-hygiene'],
+      remediation:
+        'Upgrade blender_version_target.recommended / tested_range to Blender 5.1+ for Path 1 Official Blender Lab MCP, or switch runtime_preference.preferred_path to "path-2-community-mcp-for-blender" (supports Blender 3.0+) or "cli-appendix-headless".',
+    });
+  } else if (
+    (preferredPath === 'path-2-community-mcp-for-blender' ||
+      preferredPath === 'cli-appendix-headless') &&
+    ((vBounds.recVer !== null && vBounds.recVer < 300) ||
+      (vBounds.effectiveMaxVer !== null && vBounds.effectiveMaxVer < 300) ||
+      (vBounds.minVer !== null && vBounds.minVer < 300))
+  ) {
+    conflicts.push({
+      conflict_id: 'conflict.runtime-path-2-blender-version-floor',
+      severity: 'blocking',
+      rule_id: 'CONFLICT_RUNTIME_PATH_2_BLENDER_VERSION_FLOOR',
+      winning_layer_rank: 3,
+      winning_layer_id: 'layer_3_runtime_and_blender_version_limits',
+      losing_layer_id: 'layer_5_explicit_scene_spec_parameters',
+      summary: `SceneSpec selects ${preferredPath} with blender_version_target min="${spec.blender_version_target.min}" / recommended="${spec.blender_version_target.recommended}", which is below the Blender 3.0+ floor supported by Path 2 community mcp-for-blender and the CLI appendix.`,
+      affected_skills: ['runtime-path-picker', 'runtime-readiness'],
+      knowledge_refs: ['knowledge.mesh-manifold-normals-and-scale-hygiene'],
+      remediation:
+        'Target Blender 3.0+ (recommended 3.6 LTS - 5.1+) when using Path 2 community mcp-for-blender or CLI appendix headless execution.',
+    });
+  }
+
   return conflicts;
 }
 
@@ -661,7 +987,7 @@ export function compileExecutionPlan(specOrPath, options = {}) {
     };
   }
 
-  const spec = loadInputJson(specOrPath).data;
+  const spec = specValidation.spec || loadInputJson(specOrPath).data;
   const knowledgeCatalog = readJsonFile(catalogPaths.knowledgeCatalogPath);
   const recipeCatalog = readJsonFile(catalogPaths.recipeCatalogPath);
   const planSchema = readJsonFile(path.join(catalogPaths.schemasDir, 'execution-plan.schema.json'));
@@ -669,7 +995,22 @@ export function compileExecutionPlan(specOrPath, options = {}) {
   const knowledgeById = new Map(knowledgeCatalog.records.map((r) => [r.id, r]));
   const recipesById = new Map(recipeCatalog.recipes.map((r) => [r.id, r]));
 
-  const recipeResolution = resolveRecipesForSpec(spec, recipesById);
+  let recipeResolution;
+  try {
+    recipeResolution = resolveRecipesForSpec(spec, recipesById);
+  } catch (err) {
+    return {
+      ok: false,
+      validation: {
+        ...specValidation,
+        valid: false,
+        errors: [...specValidation.errors, err.message],
+      },
+      plan: null,
+      runtime_status: 'Not Run',
+      artifact_status: 'Not Produced',
+    };
+  }
   const conflicts = detectConflicts(spec);
 
   const blockingCount = conflicts.filter((c) => c.severity === 'blocking').length;
@@ -678,7 +1019,9 @@ export function compileExecutionPlan(specOrPath, options = {}) {
 
   const status =
     blockingCount > 0 ? 'blocked' : warningCount > 0 ? 'ready_with_warnings' : 'ready';
-  const canProceedToRuntime = blockingCount === 0;
+  const isPlanningOnlyPath =
+    spec.runtime_preference.preferred_path === 'unconfigured-planning-only';
+  const canProceedToRuntime = blockingCount === 0 && !isPlanningOnlyPath;
 
   const runtimeSkillMap = {
     'path-1-official-blender-lab-mcp': 'path-one-host-outline',
@@ -1043,12 +1386,15 @@ export function compileExecutionPlan(specOrPath, options = {}) {
 }
 
 /**
- * Validates and inspects an existing ExecutionPlan JSON object or file.
+ * Validates and inspects an existing ExecutionPlan JSON object or file,
+ * enforcing both JSON Schema Draft 2020-12 and cross-layer semantic invariants.
  */
 export function inspectExecutionPlan(planOrPath, options = {}) {
   const repoRoot = options.repoRoot || DEFAULT_REPO_ROOT;
   const projectDir = options.projectDir || null;
-  const { schemasDir } = resolveCatalogPaths(repoRoot, projectDir);
+  const catalogPaths = resolveCatalogPaths(repoRoot, projectDir);
+  const { schemasDir, knowledgeCatalogPath, recipeCatalogPath, skillsPath, sourceMode } =
+    catalogPaths;
   const planSchema = readJsonFile(path.join(schemasDir, 'execution-plan.schema.json'));
 
   let plan;
@@ -1073,9 +1419,320 @@ export function inspectExecutionPlan(planOrPath, options = {}) {
     }
   }
 
+  // Load canonical catalogs for semantic invariant verification (Defect 2C)
+  let knowledgeById = new Map();
+  let recipesById = new Map();
+  let canonicalSkillIds = new Set();
+  try {
+    const knowledgeCatalog = readJsonFile(knowledgeCatalogPath);
+    const recipeCatalog = readJsonFile(recipeCatalogPath);
+    const skillsData = readJsonFile(skillsPath);
+    knowledgeById = new Map((knowledgeCatalog.records || []).map((r) => [r.id, r]));
+    recipesById = new Map((recipeCatalog.recipes || []).map((r) => [r.id, r]));
+    canonicalSkillIds = new Set((skillsData.skills || []).map((s) => s.id));
+  } catch (err) {
+    errors.push(`Failed to load canonical catalogs for plan inspection: ${err.message}`);
+  }
+
+  if (plan && typeof plan === 'object') {
+    // 1. Conflict counts and status consistency invariants
+    const conflicts = Array.isArray(plan.conflicts) ? plan.conflicts : [];
+    const seenConflictIds = new Set();
+    for (const c of conflicts) {
+      if (c && c.conflict_id) {
+        if (seenConflictIds.has(c.conflict_id)) {
+          errors.push(`Duplicate conflict_id in conflicts[]: "${c.conflict_id}"`);
+        }
+        seenConflictIds.add(c.conflict_id);
+      }
+    }
+
+    const actualBlocking = conflicts.filter((c) => c?.severity === 'blocking').length;
+    const actualWarning = conflicts.filter((c) => c?.severity === 'warning').length;
+    const actualInfo = conflicts.filter((c) => c?.severity === 'informational').length;
+    const actualTotal = conflicts.length;
+
+    if (plan.conflict_summary && typeof plan.conflict_summary === 'object') {
+      if (plan.conflict_summary.blocking_count !== actualBlocking) {
+        errors.push(
+          `conflict_summary.blocking_count (${plan.conflict_summary.blocking_count}) does not match actual blocking conflicts (${actualBlocking}).`,
+        );
+      }
+      if (plan.conflict_summary.warning_count !== actualWarning) {
+        errors.push(
+          `conflict_summary.warning_count (${plan.conflict_summary.warning_count}) does not match actual warning conflicts (${actualWarning}).`,
+        );
+      }
+      if (plan.conflict_summary.informational_count !== actualInfo) {
+        errors.push(
+          `conflict_summary.informational_count (${plan.conflict_summary.informational_count}) does not match actual informational conflicts (${actualInfo}).`,
+        );
+      }
+      if (plan.conflict_summary.total_count !== actualTotal) {
+        errors.push(
+          `conflict_summary.total_count (${plan.conflict_summary.total_count}) does not match actual conflicts length (${actualTotal}).`,
+        );
+      }
+    }
+
+    const expectedStatus =
+      actualBlocking > 0 ? 'blocked' : actualWarning > 0 ? 'ready_with_warnings' : 'ready';
+    if (plan.status !== expectedStatus) {
+      errors.push(
+        `ExecutionPlan status "${plan.status}" contradicts conflicts (blocking=${actualBlocking}, warning=${actualWarning}; expected status="${expectedStatus}").`,
+      );
+    }
+
+    const isPlanningOnlyPath =
+      plan.runtime_preference?.preferred_path === 'unconfigured-planning-only';
+    const expectedCanProceed =
+      actualBlocking === 0 && plan.status !== 'blocked' && !isPlanningOnlyPath;
+    if (plan.can_proceed_to_runtime !== expectedCanProceed) {
+      errors.push(
+        `ExecutionPlan can_proceed_to_runtime (${plan.can_proceed_to_runtime}) contradicts plan readiness/runtime state (status="${plan.status}", blocking=${actualBlocking}, preferred_path="${plan.runtime_preference?.preferred_path}"; expected ${expectedCanProceed}).`,
+      );
+    }
+
+    // 2. Runtime path and version floor consistency
+    const runtimeSkillMap = {
+      'path-1-official-blender-lab-mcp': 'path-one-host-outline',
+      'path-2-community-mcp-for-blender': 'runtime-path-picker',
+      'cli-appendix-headless': 'cli-appendix-job-outline',
+      'unconfigured-planning-only': 'runtime-setup',
+    };
+    const prefPath = plan.runtime_preference?.preferred_path;
+    if (!prefPath || !Object.prototype.hasOwnProperty.call(runtimeSkillMap, prefPath)) {
+      errors.push(
+        `Invalid runtime_preference.preferred_path "${String(prefPath)}". Must be one of: ${Object.keys(runtimeSkillMap).join(', ')}.`,
+      );
+    } else if (plan.runtime_preference.selected_runtime_skill !== runtimeSkillMap[prefPath]) {
+      errors.push(
+        `runtime_preference.selected_runtime_skill "${plan.runtime_preference.selected_runtime_skill}" does not match preferred_path "${prefPath}" (expected "${runtimeSkillMap[prefPath]}").`,
+      );
+    }
+
+    if (plan.blender_version_target && typeof plan.blender_version_target === 'object') {
+      const vBounds = extractBlenderVersionBounds(plan.blender_version_target);
+      if (vBounds.minVer !== null && vBounds.recVer !== null && vBounds.minVer > vBounds.recVer) {
+        errors.push(
+          `blender_version_target.min (${plan.blender_version_target.min}) exceeds recommended (${plan.blender_version_target.recommended}).`,
+        );
+      }
+      if (
+        prefPath === 'path-1-official-blender-lab-mcp' &&
+        ((vBounds.recVer !== null && vBounds.recVer < 501) ||
+          (vBounds.effectiveMaxVer !== null && vBounds.effectiveMaxVer < 501)) &&
+        plan.status !== 'blocked'
+      ) {
+        errors.push(
+          `ExecutionPlan selects Path 1 Official Blender Lab MCP with Blender target below 5.1+ (${plan.blender_version_target.recommended}), but status is "${plan.status}" instead of "blocked".`,
+        );
+      }
+      if (
+        (prefPath === 'path-2-community-mcp-for-blender' ||
+          prefPath === 'cli-appendix-headless') &&
+        ((vBounds.recVer !== null && vBounds.recVer < 300) ||
+          (vBounds.effectiveMaxVer !== null && vBounds.effectiveMaxVer < 300) ||
+          (vBounds.minVer !== null && vBounds.minVer < 300)) &&
+        plan.status !== 'blocked'
+      ) {
+        errors.push(
+          `ExecutionPlan selects ${prefPath} with Blender target below 3.0+ (${plan.blender_version_target.recommended}), but status is "${plan.status}" instead of "blocked".`,
+        );
+      }
+    }
+
+    // 3. Recipe resolution integrity against canonical recipe catalog
+    const rr = plan.recipe_resolution;
+    if (rr && typeof rr === 'object') {
+      if (!rr.primary_recipe_id || !recipesById.has(rr.primary_recipe_id)) {
+        errors.push(
+          `Unresolved recipe_resolution.primary_recipe_id "${rr.primary_recipe_id}" in ${sourceMode} recipe catalog.`,
+        );
+      }
+      const suppIds = Array.isArray(rr.supporting_recipe_ids) ? rr.supporting_recipe_ids : [];
+      const seenSupp = new Set();
+      for (const sid of suppIds) {
+        if (!recipesById.has(sid)) {
+          errors.push(
+            `Unresolved recipe_resolution.supporting_recipe_ids entry "${sid}" in ${sourceMode} recipe catalog.`,
+          );
+        }
+        if (sid === rr.primary_recipe_id) {
+          errors.push(
+            `recipe_resolution.supporting_recipe_ids must not duplicate primary_recipe_id "${sid}".`,
+          );
+        }
+        if (seenSupp.has(sid)) {
+          errors.push(`Duplicate recipe ID "${sid}" in recipe_resolution.supporting_recipe_ids.`);
+        }
+        seenSupp.add(sid);
+      }
+
+      const subGoals = Array.isArray(rr.decomposed_sub_goals) ? rr.decomposed_sub_goals : [];
+      if (subGoals.length > 0 && subGoals[0]?.recipe_id !== rr.primary_recipe_id) {
+        errors.push(
+          `recipe_resolution.decomposed_sub_goals[0].recipe_id ("${subGoals[0]?.recipe_id}") must match primary_recipe_id ("${rr.primary_recipe_id}").`,
+        );
+      }
+      subGoals.forEach((sg, idx) => {
+        if (sg.step_index !== idx + 1) {
+          errors.push(
+            `decomposed_sub_goals[${idx}].step_index (${sg.step_index}) must be sequential (${idx + 1}).`,
+          );
+        }
+        if (!recipesById.has(sg.recipe_id)) {
+          errors.push(
+            `Unresolved decomposed_sub_goals[${idx}].recipe_id "${sg.recipe_id}" in ${sourceMode} recipe catalog.`,
+          );
+        }
+        for (const sk of sg.skills || []) {
+          if (!canonicalSkillIds.has(sk)) {
+            errors.push(
+              `Unknown skill "${sk}" in decomposed_sub_goals[${idx}].skills (not in canonical 48-skill registry).`,
+            );
+          }
+        }
+        for (const kr of sg.knowledge_refs || []) {
+          if (!knowledgeById.has(kr)) {
+            errors.push(
+              `Unknown knowledge ref "${kr}" in decomposed_sub_goals[${idx}].knowledge_refs.`,
+            );
+          }
+        }
+      });
+    }
+
+    // 4. Resolved skills & knowledge cross-reference integrity
+    const resolvedSkillSet = new Set();
+    if (Array.isArray(plan.resolved_skills)) {
+      for (const sk of plan.resolved_skills) {
+        if (resolvedSkillSet.has(sk)) {
+          errors.push(`Duplicate skill ID "${sk}" in resolved_skills.`);
+        }
+        resolvedSkillSet.add(sk);
+        if (!canonicalSkillIds.has(sk)) {
+          errors.push(
+            `Unknown skill ID "${sk}" in resolved_skills (not in canonical 48-skill registry).`,
+          );
+        }
+      }
+    }
+
+    const resolvedKnowledgeSet = new Set();
+    if (Array.isArray(plan.resolved_knowledge)) {
+      for (const kObj of plan.resolved_knowledge) {
+        if (!kObj || !kObj.id) continue;
+        if (resolvedKnowledgeSet.has(kObj.id)) {
+          errors.push(`Duplicate knowledge ID "${kObj.id}" in resolved_knowledge.`);
+        }
+        resolvedKnowledgeSet.add(kObj.id);
+        if (!knowledgeById.has(kObj.id)) {
+          errors.push(
+            `Unknown knowledge ID "${kObj.id}" in resolved_knowledge (not in canonical knowledge catalog).`,
+          );
+        }
+      }
+    }
+
+    // 5. 7-stage ordering and stage skill/knowledge references
+    const expectedStages = [
+      'discover',
+      'define',
+      'plan',
+      'source',
+      'execute',
+      'verify',
+      'deliver',
+    ];
+    if (Array.isArray(plan.stages)) {
+      plan.stages.forEach((st, idx) => {
+        if (st.stage_index !== idx + 1) {
+          errors.push(`stages[${idx}].stage_index (${st.stage_index}) must be ${idx + 1}.`);
+        }
+        if (st.stage_id !== expectedStages[idx]) {
+          errors.push(
+            `stages[${idx}].stage_id ("${st.stage_id}") must be "${expectedStages[idx]}" at stage_index ${idx + 1}.`,
+          );
+        }
+        for (const sk of st.skills || []) {
+          if (!canonicalSkillIds.has(sk)) {
+            errors.push(`Unknown skill ID "${sk}" in stages[${idx}].skills.`);
+          }
+          if (!resolvedSkillSet.has(sk)) {
+            errors.push(
+              `Skill "${sk}" in stages[${idx}].skills is missing from plan.resolved_skills.`,
+            );
+          }
+        }
+        for (const kr of st.knowledge_refs || []) {
+          if (!knowledgeById.has(kr)) {
+            errors.push(`Unknown knowledge ID "${kr}" in stages[${idx}].knowledge_refs.`);
+          }
+          if (!resolvedKnowledgeSet.has(kr)) {
+            errors.push(
+              `Knowledge "${kr}" in stages[${idx}].knowledge_refs is missing from plan.resolved_knowledge.`,
+            );
+          }
+        }
+      });
+    }
+
+    // 6. Stage gates, conflict references, and required evidence packets
+    for (const gate of plan.stage_gates || []) {
+      if (!canonicalSkillIds.has(gate.skill_id)) {
+        errors.push(`Unknown skill_id "${gate.skill_id}" in stage_gates (${gate.gate_id}).`);
+      }
+      if (!expectedStages.includes(gate.stage_id)) {
+        errors.push(`Invalid stage_id "${gate.stage_id}" in stage_gates (${gate.gate_id}).`);
+      }
+    }
+
+    for (const c of conflicts) {
+      for (const sk of c.affected_skills || []) {
+        if (!canonicalSkillIds.has(sk)) {
+          errors.push(`Unknown affected_skill "${sk}" in conflict "${c.conflict_id}".`);
+        }
+      }
+      for (const kr of c.knowledge_refs || []) {
+        if (!knowledgeById.has(kr)) {
+          errors.push(`Unknown knowledge_ref "${kr}" in conflict "${c.conflict_id}".`);
+        }
+      }
+    }
+
+    const packetTypes = new Set();
+    for (const pkt of plan.required_evidence_packets || []) {
+      packetTypes.add(pkt.packet_type);
+      if (!canonicalSkillIds.has(pkt.governing_skill)) {
+        errors.push(
+          `Unknown governing_skill "${pkt.governing_skill}" in required_evidence_packets (${pkt.packet_type}).`,
+        );
+      }
+    }
+    if (!packetTypes.has('runtime-smoke') || !packetTypes.has('preview-check')) {
+      errors.push(
+        `required_evidence_packets must include both "runtime-smoke" and "preview-check".`,
+      );
+    }
+
+    // 7. Truth-state invariants (Law 1: Evidence Before Done)
+    if (
+      !plan.truth_states ||
+      plan.truth_states.runtime_status !== 'Not Run' ||
+      plan.truth_states.artifact_status !== 'Not Produced' ||
+      plan.truth_states.evidence_gate_enforced !== true
+    ) {
+      errors.push(
+        `ExecutionPlan truth_states must remain runtime_status="Not Run", artifact_status="Not Produced", evidence_gate_enforced=true.`,
+      );
+    }
+  }
+
   return {
     valid: errors.length === 0,
     errors,
+    catalog_source_mode: sourceMode,
     plan_id: plan?.plan_id || null,
     scene_spec_id: plan?.scene_spec_id || null,
     status: plan?.status || null,
@@ -1108,7 +1765,7 @@ function formatPlanInspectionHumanReport(inspection) {
   const lines = [
     `# BlendOps ExecutionPlan — ${p.plan_id}`,
     `SceneSpec: ${p.scene_spec_id} (${p.scene_spec_title})`,
-    `Status: ${p.status} (Can proceed to runtime: ${p.can_proceed_to_runtime ? 'Yes' : 'No — blocked by conflicts'})`,
+    `Status: ${p.status} (Can proceed to runtime: ${p.can_proceed_to_runtime ? 'Yes' : 'No — blocked by conflicts or unconfigured runtime path'})`,
     `Primary Recipe: ${p.recipe_resolution.primary_recipe_id}`,
     `Supporting Recipes: ${p.recipe_resolution.supporting_recipe_ids.join(', ') || 'none'}`,
     `Resolved Skills (${p.resolved_skills.length}): ${p.resolved_skills.join(', ')}`,
@@ -1191,6 +1848,28 @@ export function runPlanCliSubcommand(argv, options = {}) {
   }
 
   if (sub === 'plan-compile') {
+    if (outPath) {
+      const outCheck = validateSafeCliOutFilePath(outPath, { repoRoot, projectDir });
+      if (!outCheck.valid) {
+        const errPayload = {
+          ok: false,
+          error: outCheck.error,
+          runtime_status: 'Not Run',
+          artifact_status: 'Not Produced',
+        };
+        return {
+          ok: false,
+          exitCode: 1,
+          report: asJson
+            ? JSON.stringify(errPayload, null, 2)
+            : `# BlendOps Plan Compilation Failed (Unsafe --out Path)\n  - ${outCheck.error}\nRuntime status: Not Run\nArtifact status: Not Produced`,
+          data: errPayload,
+          runtimeStatus: 'Not Run',
+          artifactStatus: 'Not Produced',
+        };
+      }
+    }
+
     const compiled = compileExecutionPlan(targetPath, { repoRoot, projectDir });
     if (!compiled.ok) {
       const report = asJson
@@ -1212,9 +1891,10 @@ export function runPlanCliSubcommand(argv, options = {}) {
     }
 
     if (outPath) {
-      const absOut = path.resolve(outPath);
-      fs.mkdirSync(path.dirname(absOut), { recursive: true });
-      fs.writeFileSync(absOut, JSON.stringify(compiled.plan, null, 2) + '\n', 'utf8');
+      writeFileAtomicallySafe(outPath, JSON.stringify(compiled.plan, null, 2) + '\n', {
+        repoRoot,
+        projectDir,
+      });
     }
 
     const inspection = inspectExecutionPlan(compiled.plan, { repoRoot, projectDir });

@@ -1401,6 +1401,13 @@ export function getPhase13_2DeliveryBundleInfo(options = {}) {
   }
 }
 
+export const PHASE3_1_DELIVERABLES = Object.freeze([
+  { filename: 'blendops-phase3.1.bundle', contentType: 'application/octet-stream', label: 'Phase 3.1 Git Bundle (.bundle)' },
+  { filename: 'blendops-phase3.1.patch', contentType: 'text/x-diff; charset=utf-8', label: 'Phase 3.1 Git Patch (.patch)' },
+  { filename: 'blendops-phase3.1-source.zip', contentType: 'application/zip', label: 'Phase 3.1 Full Source (.zip)' },
+  { filename: 'DELIVERY-REPORT.md', contentType: 'text/markdown; charset=utf-8', label: 'Phase 3.1 Delivery Report (.md)' },
+]);
+
 export const PHASE3_DELIVERABLES = Object.freeze([
   { filename: 'blendops-phase3.bundle', contentType: 'application/octet-stream', label: 'Phase 3 Git Bundle (.bundle)' },
   { filename: 'blendops-phase3.patch', contentType: 'text/x-diff; charset=utf-8', label: 'Phase 3 Git Patch (.patch)' },
@@ -1782,16 +1789,16 @@ function renderHtml(options = {}) {
     </div>
   </header>
   <main>
-    <section id="phase3-latest-delivery-section" class="card" style="border:2px solid var(--green);background:rgba(34,197,94,0.12);margin-bottom:24px;">
+    <section id="phase3-1-latest-delivery-section" class="card" style="border:2px solid var(--green);background:rgba(34,197,94,0.14);margin-bottom:24px;">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:16px;">
         <div>
-          <div style="font-size:15px;font-weight:800;color:var(--green);text-transform:uppercase;letter-spacing:0.05em;">BlendOps Phase 3 (Blender Production Layer &amp; Safe Runtime Integration) — Download Deliverables</div>
+          <div style="font-size:15px;font-weight:800;color:var(--green);text-transform:uppercase;letter-spacing:0.05em;">BlendOps Phase 3.1 (Adversarial Audit, Cross-Phase Hardening &amp; Production Verification) — Download Deliverables</div>
           <div class="mono" style="font-size:12px;margin-top:6px;color:var(--muted);">
-            Baseline: <strong>09fe4322d829b075235a52048dbca35164b5b058</strong> &middot; Typed Operations: <strong>18 (11 L0, 4 L1, 3 L2 + 3 Blocked L3)</strong> &middot; Schemas: <strong>15</strong> &middot; CI Tests: <strong>248/248 PASS</strong>
+            Phase 2 Baseline: <strong>09fe432</strong> &middot; Phase 3 Commit: <strong>7973308</strong> &middot; Typed Operations: <strong>18 (11 L0, 4 L1, 3 L2 + 3 Blocked L3)</strong> &middot; CI Suites: <strong>17/17 PASS (260/260 Tests)</strong>
           </div>
         </div>
         <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
-          ${PHASE3_DELIVERABLES.map((item) => {
+          ${PHASE3_1_DELIVERABLES.map((item) => {
             const info = getPhase2DeliverableFile(rootDir, item.filename);
             return info.exists
               ? `<a class="btn" style="background:var(--green);color:#022c22;text-decoration:none;display:inline-block;font-size:13px;padding:10px 16px;" href="/dist/${item.filename}" download="${item.filename}">${item.label} (${Math.max(1, Math.round(info.size / 1024))} KB)</a>`
@@ -2675,7 +2682,7 @@ export function createDevServer(options = {}) {
       return;
     }
 
-    for (const item of [...PHASE3_DELIVERABLES, ...PHASE2_DELIVERABLES]) {
+    for (const item of [...PHASE3_1_DELIVERABLES, ...PHASE3_DELIVERABLES, ...PHASE2_DELIVERABLES]) {
       if (
         url === `/${item.filename}` ||
         url === `/dist/${item.filename}` ||

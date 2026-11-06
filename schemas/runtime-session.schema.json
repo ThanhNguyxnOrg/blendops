@@ -80,7 +80,9 @@
         "invalid_tool_schema",
         "bridge_conflict",
         "incompatible_with_plan",
-        "host_context_only"
+        "host_context_only",
+        "stale_session",
+        "invalid_endpoint"
       ]
     },
     "readiness_flags": {
@@ -100,7 +102,8 @@
         "export_available": { "type": "boolean" },
         "backup_supported": { "type": "boolean" },
         "restore_supported": { "type": "boolean" },
-        "plan_compatible": { "type": "boolean" }
+        "plan_compatible": { "type": "boolean" },
+        "live_runtime_verified": { "type": "boolean" }
       }
     },
     "negotiated_capability_tier": {

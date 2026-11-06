@@ -22,7 +22,10 @@ import Ajv2020 from 'ajv/dist/2020.js';
 import {
   validateSceneSpec,
   compileExecutionPlan,
+  inspectExecutionPlan,
   resolveCatalogPaths,
+  validateSafeCliOutFilePath,
+  writeFileAtomicallySafe,
 } from './compile-scene-plan.mjs';
 import {
   TIER_RANKS,
@@ -170,8 +173,15 @@ export const RECOGNIZED_RUNTIME_PATHS = Object.freeze({
   },
 });
 
-const SECRET_KEY_PATTERN = /(password|passwd|secret|token|api[-_]?key|authorization|bearer|private[-_]?key|client[-_]?secret|credential)/i;
-const SECRET_VALUE_PATTERN = /(Bearer\s+[A-Za-z0-9._~+/=-]{8,}|sk-[A-Za-z0-9]{12,}|ghp_[A-Za-z0-9]{12,}|AIza[0-9A-Za-z-_]{16,})/g;
+const SECRET_KEY_PATTERN =
+  /(password|passwd|secret|token|api[-_]?key|authorization|bearer|private[-_]?key|client[-_]?secret|credential|session[-_]?key|access[-_]?key|auth[-_]?header|cookie|set[-_]?cookie)/i;
+const SECRET_VALUE_PATTERN =
+  /(Bearer\s+[A-Za-z0-9._~+/=-]{6,}|Basic\s+[A-Za-z0-9+/=]{8,}|sk-[A-Za-z0-9_-]{10,}|ghp_[A-Za-z0-9]{10,}|github_pat_[A-Za-z0-9_]{10,}|xox[baprs]-[A-Za-z0-9-]{10,}|AIza[0-9A-Za-z-_]{12,}|eyJ[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]{8,})/g;
+const URL_USERINFO_PATTERN = /([a-zA-Z][a-zA-Z0-9+.-]*:\/\/)([^/\s:@]+:[^/\s@]+)@/g;
+const URL_QUERY_SECRET_PATTERN =
+  /([?&](?:token|api_key|apikey|access_token|refresh_token|secret|password|passwd|auth|key|credential|client_secret|sig|signature)=)([^&#\s"']+)/gi;
+const INLINE_ASSIGN_SECRET_PATTERN =
+  /((?:password|passwd|secret|token|api[_-]?key|authorization|client[_-]?secret|private[_-]?key)\s*[:=]\s*["']?)([A-Za-z0-9._~+/=-]{6,})(["']?)/gi;
 
 function sha256Hex(input) {
   return crypto.createHash('sha256').update(input).digest('hex');
@@ -188,8 +198,28 @@ function stableCanonicalJson(value) {
   return `{${keys.map((k) => `${JSON.stringify(k)}:${stableCanonicalJson(value[k])}`).join(',')}}`;
 }
 
+function redactStringSecrets(str) {
+  let out = str;
+  let changed = false;
+
+  const replaceTrack = (pattern, replacer) => {
+    out = out.replace(pattern, (...args) => {
+      changed = true;
+      return typeof replacer === 'function' ? replacer(...args) : replacer;
+    });
+  };
+
+  replaceTrack(URL_USERINFO_PATTERN, '$1[REDACTED]@');
+  replaceTrack(URL_QUERY_SECRET_PATTERN, '$1[REDACTED]');
+  replaceTrack(SECRET_VALUE_PATTERN, '[REDACTED]');
+  replaceTrack(INLINE_ASSIGN_SECRET_PATTERN, '$1[REDACTED]$3');
+
+  return { value: out, changed };
+}
+
 /**
- * Redacts passwords, tokens, API keys, and private environment values from any object/array/string.
+ * Redacts passwords, tokens, API keys, URL query secrets, userinfo, JWTs,
+ * and Error objects from any object/array/string/Error.
  */
 export function redactSensitiveData(input) {
   let secretsRedacted = false;
@@ -200,14 +230,27 @@ export function redactSensitiveData(input) {
       return '[REDACTED]';
     }
     if (typeof val === 'string') {
-      if (SECRET_VALUE_PATTERN.test(val)) {
-        secretsRedacted = true;
-        return val.replace(SECRET_VALUE_PATTERN, '[REDACTED]');
-      }
-      return val;
+      const res = redactStringSecrets(val);
+      if (res.changed) secretsRedacted = true;
+      return res.value;
     }
     if (Array.isArray(val)) {
       return val.map((item) => walk(item, ''));
+    }
+    if (val instanceof Error) {
+      const errObj = {
+        name: val.name || 'Error',
+        message: walk(val.message || '', ''),
+      };
+      if (val.code !== undefined) errObj.code = walk(val.code, 'code');
+      if (val.stack !== undefined) errObj.stack = walk(val.stack, '');
+      if (val.cause !== undefined) errObj.cause = walk(val.cause, 'cause');
+      for (const [k, v] of Object.entries(val)) {
+        if (!(k in errObj)) {
+          errObj[k] = walk(v, k);
+        }
+      }
+      return errObj;
     }
     if (val && typeof val === 'object') {
       const out = {};
@@ -221,6 +264,205 @@ export function redactSensitiveData(input) {
 
   const redacted = walk(input, '');
   return { redacted, secretsRedacted };
+}
+
+/**
+ * Validates an MCP transport endpoint string, rejecting malformed URLs,
+ * unsafe schemes (file:, javascript:, data:, ftp:), embedded credentials,
+ * and non-loopback endpoints unless allowRemoteEndpoint is true.
+ */
+export function validateRuntimeTransportEndpoint(endpoint, options = {}) {
+  if (endpoint === null || endpoint === undefined) {
+    return { valid: true, normalized: null, reason: null, error: null };
+  }
+  if (typeof endpoint !== 'string' || !endpoint.trim() || endpoint.includes('\0')) {
+    const msg = 'Transport endpoint must be a non-empty string without null bytes.';
+    return {
+      valid: false,
+      normalized: null,
+      reason: msg,
+      error: msg,
+    };
+  }
+  const trimmed = endpoint.trim();
+  let parsed;
+  try {
+    parsed = new URL(trimmed);
+  } catch {
+    const msg = `Malformed MCP transport endpoint URL: ${redactStringSecrets(trimmed).value}`;
+    return {
+      valid: false,
+      normalized: null,
+      reason: msg,
+      error: msg,
+    };
+  }
+  const allowedProtocols = new Set(['http:', 'https:', 'ws:', 'wss:', 'stdio:']);
+  if (!allowedProtocols.has(parsed.protocol)) {
+    const msg = `Unsupported MCP transport protocol '${parsed.protocol}'. Allowed: http:, https:, ws:, wss:, stdio:.`;
+    return {
+      valid: false,
+      normalized: null,
+      reason: msg,
+      error: msg,
+    };
+  }
+  if (parsed.username || parsed.password) {
+    const msg = 'Transport endpoint URL must not contain embedded user:password credentials.';
+    return {
+      valid: false,
+      normalized: null,
+      reason: msg,
+      error: msg,
+    };
+  }
+  if (parsed.protocol !== 'stdio:') {
+    const host = (parsed.hostname || '').toLowerCase();
+    const isLoopback =
+      host === 'localhost' || host === '127.0.0.1' || host === '::1' || host === '[::1]';
+    if (!isLoopback && !options.allowRemoteEndpoint) {
+      const msg = `Non-loopback MCP transport endpoint '${host}' is rejected by default; local Blender MCP bridges must bind to loopback (127.0.0.1 / localhost / ::1) unless allowRemoteEndpoint is explicitly enabled.`;
+      return {
+        valid: false,
+        normalized: null,
+        reason: msg,
+        error: msg,
+      };
+    }
+  }
+  return { valid: true, normalized: parsed.toString(), reason: null, error: null };
+}
+
+const INDIRECT_CODE_INJECTION_PATTERNS = [
+  { id: 'bpy_import_or_api', regex: /\b(import\s+bpy|from\s+bpy\s+import|bpy\.ops\.|bpy\.context\.|bpy\.data\.)/i },
+  { id: 'python_dunder_or_eval', regex: /(\b__import__\s*\(|\beval\s*\(|\bexec\s*\(|\bcompile\s*\(|__builtins__|__subclasses__)/i },
+  { id: 'python_os_or_subprocess', regex: /\b(subprocess\.(run|Popen|call|check_output)|os\.(system|popen|execv|unlink|remove))\b/i },
+  { id: 'shell_command_injection', regex: /(;\s*rm\s+-rf\b|\|\s*sh\b|\|\s*bash\b|\$\([^)]+\)|`[^`]+`)/i },
+];
+
+/**
+ * Recursively inspects operation input payloads for indirect Python, bpy, or shell command injection.
+ * Returns null if safe, or a descriptive error string when an injection pattern is detected.
+ */
+export function detectIndirectCodeInjection(inputObj) {
+  const hits = [];
+
+  function inspect(val, pathPrefix = 'input') {
+    if (typeof val === 'string') {
+      for (const pat of INDIRECT_CODE_INJECTION_PATTERNS) {
+        if (pat.regex.test(val)) {
+          hits.push({
+            field: pathPrefix,
+            pattern_id: pat.id,
+          });
+        }
+      }
+      return;
+    }
+    if (Array.isArray(val)) {
+      val.forEach((item, idx) => inspect(item, `${pathPrefix}[${idx}]`));
+      return;
+    }
+    if (val && typeof val === 'object') {
+      for (const [k, v] of Object.entries(val)) {
+        if (/^(python_code|raw_python|bpy_script|shell_command|eval_code)$/i.test(k)) {
+          hits.push({
+            field: `${pathPrefix}.${k}`,
+            pattern_id: 'prohibited_arbitrary_code_property',
+          });
+        }
+        inspect(v, `${pathPrefix}.${k}`);
+      }
+    }
+  }
+
+  inspect(inputObj, 'input');
+  if (hits.length === 0) return null;
+  return `Indirect code/command injection detected in ${hits.map((h) => `${h.field} (${h.pattern_id})`).join(', ')}; arbitrary Python/bpy/shell execution is blocked per laws/no-arbitrary-python-interface.md.`;
+}
+
+/**
+ * Validates that sourceBlendPath and backupPath are safe, non-symlink, non-hardlinked,
+ * directory-contained `.blend` file paths before creating or restoring a checkpoint.
+ */
+export function validateSafeBlendCheckpointPaths(sourceBlendPath, backupPath = null) {
+  if (
+    !sourceBlendPath ||
+    typeof sourceBlendPath !== 'string' ||
+    sourceBlendPath.includes('\0') ||
+    !sourceBlendPath.endsWith('.blend')
+  ) {
+    const msg = 'Source .blend path must be a non-empty string ending in .blend without null bytes.';
+    return { valid: false, reason: msg, error: msg };
+  }
+  const rawSegments = sourceBlendPath.split(/[\\/]+/);
+  if (rawSegments.includes('..')) {
+    const msg = `Refusing source .blend path with parent directory traversal ('..'): ${sourceBlendPath}`;
+    return { valid: false, reason: msg, error: msg };
+  }
+
+  const absSource = path.resolve(sourceBlendPath);
+  let sourceStat;
+  try {
+    sourceStat = fs.lstatSync(absSource);
+  } catch {
+    const msg = `Source .blend file does not exist on disk: ${absSource}`;
+    return { valid: false, reason: msg, error: msg };
+  }
+  if (sourceStat.isSymbolicLink()) {
+    const msg = `Refusing symbolic link as source .blend checkpoint file: ${absSource}`;
+    return { valid: false, reason: msg, error: msg };
+  }
+  if (!sourceStat.isFile()) {
+    const msg = `Source .blend path is not a regular file: ${absSource}`;
+    return { valid: false, reason: msg, error: msg };
+  }
+  if (typeof sourceStat.nlink === 'number' && sourceStat.nlink > 1) {
+    const msg = `Refusing hardlinked source .blend file (nlink=${sourceStat.nlink}): ${absSource}`;
+    return { valid: false, reason: msg, error: msg };
+  }
+
+  const sourceParentStat = fs.lstatSync(path.dirname(absSource));
+  if (sourceParentStat.isSymbolicLink()) {
+    const msg = `Source .blend parent directory is a symbolic link: ${path.dirname(absSource)}`;
+    return { valid: false, reason: msg, error: msg };
+  }
+
+  if (backupPath !== null && backupPath !== undefined) {
+    if (
+      typeof backupPath !== 'string' ||
+      backupPath.includes('\0') ||
+      !backupPath.endsWith('.blend') ||
+      backupPath.split(/[\\/]+/).includes('..')
+    ) {
+      const msg = `Invalid backup .blend path: ${String(backupPath)}`;
+      return { valid: false, reason: msg, error: msg };
+    }
+    const absBackup = path.resolve(backupPath);
+    if (absBackup === absSource) {
+      const msg = 'Backup .blend path must be distinct from source .blend path.';
+      return { valid: false, reason: msg, error: msg };
+    }
+    if (path.dirname(absBackup) !== path.dirname(absSource)) {
+      const msg = `Backup .blend path (${absBackup}) must reside in the same verified directory as source .blend (${absSource}).`;
+      return { valid: false, reason: msg, error: msg };
+    }
+    try {
+      const bkStat = fs.lstatSync(absBackup);
+      if (bkStat.isSymbolicLink() || bkStat.isDirectory()) {
+        const msg = `Refusing to write or restore checkpoint through symbolic link or directory at: ${absBackup}`;
+        return { valid: false, reason: msg, error: msg };
+      }
+      if (typeof bkStat.nlink === 'number' && bkStat.nlink > 1) {
+        const msg = `Refusing hardlinked backup .blend file (nlink=${bkStat.nlink}): ${absBackup}`;
+        return { valid: false, reason: msg, error: msg };
+      }
+    } catch {
+      // backup file does not exist yet (valid prior to creation)
+    }
+  }
+
+  return { valid: true, absSource, reason: null, error: null };
 }
 
 /**
@@ -635,6 +877,22 @@ export function createMockMcpRuntime(options = {}) {
           error: 'Connection refused on MCP transport socket (127.0.0.1:9876)',
         };
       }
+      if (scenario === 'stale_session') {
+        return {
+          reachable: true,
+          stale: true,
+          lastHeartbeatMs: Date.now() - 120000,
+          sessionTtlMs: 30000,
+          hostIdentity: 'Anthropic Blender Connector (Stale Session)',
+          addonOrServerIdentity: 'Blender Lab MCP Add-on mcp-1.0.3 (bpype/blender_mcp)',
+          blenderVersion: reportedBlenderVersion,
+          runtimeVersion: '1.0.3',
+          singleBridgeVerified: true,
+          backupSupported: true,
+          restoreSupported: true,
+          tools: buildToolManifest(),
+        };
+      }
       if (scenario === 'host_context_only') {
         return {
           reachable: false,
@@ -682,10 +940,12 @@ export function createMockMcpRuntime(options = {}) {
       }
       const backupBytes = fs.readFileSync(backupPath);
       fs.writeFileSync(targetBlendPath, backupBytes);
-      const rawText = backupBytes.toString('utf8');
-      const lines = rawText.split('\n');
-      if (lines.length >= 2 && lines[1].startsWith('{')) {
-        sceneState = JSON.parse(lines[1]);
+      if (scenario !== 'rollback_unverified_readback') {
+        const rawText = backupBytes.toString('utf8');
+        const lines = rawText.split('\n');
+        if (lines.length >= 2 && lines[1].startsWith('{')) {
+          sceneState = JSON.parse(lines[1]);
+        }
       }
       return { restored: true, targetBlendPath };
     },
@@ -796,6 +1056,18 @@ export function createMockMcpRuntime(options = {}) {
         if (!cam) {
           throw new Error(`Camera '${input.camera_name}' not found in scene`);
         }
+        if (scenario === 'mutation_echo_without_scene_change') {
+          return {
+            status: 'ok',
+            data: {
+              camera_name: cam.name,
+              updated: true,
+              location: [...input.location],
+              rotation_euler_deg: [...input.rotation_euler_deg],
+              focal_length_mm: input.focal_length_mm,
+            },
+          };
+        }
         if (scenario !== 'postcondition_mismatch') {
           cam.location = [...input.location];
           cam.rotation_euler_deg = [...input.rotation_euler_deg];
@@ -822,6 +1094,32 @@ export function createMockMcpRuntime(options = {}) {
         );
         if (!light) {
           throw new Error(`Light '${input.light_name}' not found in scene`);
+        }
+        if (scenario === 'mutation_echo_without_scene_change') {
+          return {
+            status: 'ok',
+            data: {
+              light_name: light.name,
+              updated: true,
+              energy_watts: input.energy_watts,
+              color_rgb: [...input.color_rgb],
+              location: Array.isArray(input.location) ? [...input.location] : [...light.location],
+            },
+          };
+        }
+        if (scenario === 'rollback_unverified_readback') {
+          light.energy_watts = input.energy_watts + 999;
+          fs.writeFileSync(blendFilePath, serializeBlendBytes(sceneState));
+          return {
+            status: 'ok',
+            data: {
+              light_name: light.name,
+              updated: true,
+              energy_watts: light.energy_watts,
+              color_rgb: [...light.color_rgb],
+              location: [...light.location],
+            },
+          };
         }
         if (
           scenario !== 'postcondition_mismatch' &&
@@ -897,6 +1195,51 @@ export function createMockMcpRuntime(options = {}) {
         };
       }
 
+      // Governed L2 exports / imports
+      if (
+        toolName === 'render_viewport_to_path' ||
+        toolName === 'render_thumbnail_to_path' ||
+        toolName === 'render_still_governed' ||
+        toolName === 'export_glb_governed'
+      ) {
+        const outFile = input.output_path;
+        if (outFile && scenario !== 'postcondition_mismatch') {
+          fs.mkdirSync(path.dirname(path.resolve(outFile)), { recursive: true });
+          fs.writeFileSync(
+            path.resolve(outFile),
+            Buffer.from(`MOCK-ARTIFACT:${toolName}:${outFile}\n`, 'utf8'),
+          );
+        }
+        return {
+          status: 'ok',
+          data: {
+            output_path: outFile,
+            written: true,
+          },
+        };
+      }
+
+      if (toolName === 'import_asset') {
+        if (scenario !== 'postcondition_mismatch') {
+          sceneState.objects.push({
+            name: input.target_collection || 'ImportedAsset',
+            type: 'MESH',
+            visible: true,
+            location: [0, 0, 0],
+            rotation_euler_deg: [0, 0, 0],
+            scale: [1, 1, 1],
+          });
+          fs.writeFileSync(blendFilePath, serializeBlendBytes(sceneState));
+        }
+        return {
+          status: 'ok',
+          data: {
+            imported: true,
+            asset_path: input.asset_path,
+          },
+        };
+      }
+
       throw new Error(`Unrecognized or unmapped tool invocation: ${toolName}`);
     },
   };
@@ -950,6 +1293,18 @@ export function discoverRuntimeSession(options = {}) {
   const pathSpec = RECOGNIZED_RUNTIME_PATHS[requestedPath] || null;
   const executionPlan = options.executionPlan || null;
 
+  // Validate transport endpoint if supplied via options or config file
+  const configuredEndpoint = options.endpoint ?? configData?.endpoint ?? null;
+  let endpointValidationError = null;
+  if (configuredEndpoint !== null && configuredEndpoint !== undefined) {
+    const epVal = validateRuntimeTransportEndpoint(configuredEndpoint, {
+      allowRemoteEndpoint: Boolean(options.allowRemoteEndpoint),
+    });
+    if (!epVal.valid) {
+      endpointValidationError = epVal.reason;
+    }
+  }
+
   // 2. If no mockRuntime or liveTransportClient is supplied, never pretend a live runtime is connected!
   const runtimeClient = options.mockRuntime || options.liveTransportClient || null;
 
@@ -967,7 +1322,11 @@ export function discoverRuntimeSession(options = {}) {
   const rejectedOrAmbiguousTools = [];
   const knownLimitations = [];
 
-  if (!runtimeClient) {
+  if (endpointValidationError) {
+    connectionStatus = 'invalid_endpoint';
+    discoveryMode = 'config_file_inspection_only';
+    knownLimitations.push(endpointValidationError);
+  } else if (!runtimeClient) {
     if (options.hostCapabilityContext) {
       connectionStatus = 'host_context_only';
       discoveryMode = 'host_capability_context';
@@ -995,6 +1354,12 @@ export function discoverRuntimeSession(options = {}) {
       : 'live_mcp_transport_probe';
     const probe = runtimeClient.probeSession();
 
+    const isStaleProbe =
+      probe.stale === true ||
+      (typeof probe.lastHeartbeatMs === 'number' &&
+        typeof probe.sessionTtlMs === 'number' &&
+        Date.now() - probe.lastHeartbeatMs > probe.sessionTtlMs);
+
     if (probe.hostContextOnly) {
       connectionStatus = 'host_context_only';
       discoveryMode = 'host_capability_context';
@@ -1004,6 +1369,15 @@ export function discoverRuntimeSession(options = {}) {
       connectionStatus = 'configured_unreachable';
       knownLimitations.push(
         probe.error || 'Configured MCP transport endpoint is unreachable.',
+      );
+    } else if (isStaleProbe) {
+      connectionStatus = 'stale_session';
+      hostIdentity = probe.hostIdentity || null;
+      addonOrServerIdentity = probe.addonOrServerIdentity || null;
+      blenderVersion = probe.blenderVersion || null;
+      runtimeVersion = probe.runtimeVersion || null;
+      knownLimitations.push(
+        'Runtime session is stale or its heartbeat TTL expired; failing closed until a fresh session probe succeeds.',
       );
     } else {
       hostIdentity = probe.hostIdentity || null;
@@ -1153,7 +1527,7 @@ export function discoverRuntimeSession(options = {}) {
         connectionStatus = 'incompatible_with_plan';
       }
       knownLimitations.push(
-        `ExecutionPlan '${executionPlan.plan_id}' is blocked by ${executionPlan.conflict_summary?.blocking_count || 1} blocking conflict(s) and cannot proceed to runtime.`,
+        `ExecutionPlan '${executionPlan.plan_id}' is blocked or not runtime-executable (status='${executionPlan.status}', can_proceed_to_runtime=${executionPlan.can_proceed_to_runtime}) and cannot proceed to runtime.`,
       );
     } else if (connectionStatus === 'connected') {
       const requiresMutation = Boolean(options.requireMutationCapability) && !mutationAvailable;
@@ -1205,6 +1579,7 @@ export function discoverRuntimeSession(options = {}) {
       backup_supported: backupSupported,
       restore_supported: restoreSupported,
       plan_compatible: planCompatible,
+      live_runtime_verified: connectionStatus === 'connected' && !runtimeClient?.isMockRuntime,
     },
     negotiated_capability_tier: negotiatedTier,
     governed_runtime_ceiling: options.governedRuntimeCeiling || 'L1',
@@ -1272,20 +1647,37 @@ export function runExecutionPreflight(options = {}) {
   if (!resolvedPlan && resolvedSpec && sceneSpecValid) {
     const compiled = compileExecutionPlan(resolvedSpec, { repoRoot, projectDir });
     resolvedPlan = compiled.plan;
-    executionPlanValid = compiled.valid && compiled.plan?.status !== 'blocked';
+    executionPlanValid =
+      Boolean(compiled.ok) &&
+      compiled.plan?.status !== 'blocked' &&
+      compiled.plan?.can_proceed_to_runtime !== false;
     if (!executionPlanValid) {
+      const reasons = (compiled.plan?.conflicts || [])
+        .filter((c) => c.severity === 'blocking')
+        .map((c) => c.summary);
+      if (compiled.plan?.can_proceed_to_runtime === false && reasons.length === 0) {
+        reasons.push(
+          `ExecutionPlan has preferred_path='${compiled.plan?.runtime_target?.preferred_path}' with can_proceed_to_runtime=false (planning-only mode).`,
+        );
+      }
       blockingReasons.push(
-        `ExecutionPlan '${compiled.plan?.plan_id || 'unknown'}' is blocked: ${(compiled.plan?.conflicts || [])
-          .filter((c) => c.severity === 'blocking')
-          .map((c) => c.summary)
-          .join('; ')}`,
+        `ExecutionPlan '${compiled.plan?.plan_id || 'unknown'}' cannot proceed to runtime: ${reasons.join('; ')}`,
       );
     }
   } else if (resolvedPlan) {
-    if (resolvedPlan.status === 'blocked' || resolvedPlan.can_proceed_to_runtime === false) {
+    const planInspect = inspectExecutionPlan(resolvedPlan, { repoRoot, projectDir });
+    if (!planInspect.valid) {
       executionPlanValid = false;
       blockingReasons.push(
-        `ExecutionPlan '${resolvedPlan.plan_id}' has status 'blocked' and cannot proceed to runtime.`,
+        `ExecutionPlan '${resolvedPlan.plan_id || 'unknown'}' failed semantic inspection: ${planInspect.errors.join('; ')}`,
+      );
+    } else if (
+      resolvedPlan.status === 'blocked' ||
+      resolvedPlan.can_proceed_to_runtime === false
+    ) {
+      executionPlanValid = false;
+      blockingReasons.push(
+        `ExecutionPlan '${resolvedPlan.plan_id}' has status='${resolvedPlan.status}' and can_proceed_to_runtime=${resolvedPlan.can_proceed_to_runtime} and cannot proceed to runtime.`,
       );
     }
   }
@@ -1300,6 +1692,8 @@ export function runExecutionPreflight(options = {}) {
       mockRuntime: options.mockRuntime,
       liveTransportClient: options.liveTransportClient,
       executionPlan: resolvedPlan,
+      endpoint: options.endpoint,
+      allowRemoteEndpoint: options.allowRemoteEndpoint,
     });
 
   const runtimeReady = session.connection_status === 'connected';
@@ -1314,7 +1708,7 @@ export function runExecutionPreflight(options = {}) {
   }
 
   // 4. Operation allowlist, tool mapping, input schema, capability tier, governed ceiling
-  const operationId = options.operationId || 'op.inspect.scene-summary';
+  const operationId = options.operationId || 'op.inspect.blendfile-summary';
   const op = getRuntimeOperation(repoRoot, operationId, { projectDir });
 
   let operationAllowlisted = Boolean(op);
@@ -1326,6 +1720,20 @@ export function runExecutionPreflight(options = {}) {
   const stageGatesSatisfied = executionPlanValid;
 
   const grantedTier = options.grantedTier || session.negotiated_capability_tier || 'L0';
+  if (grantedTier === 'L3') {
+    governedCeilingRespected = false;
+    blockingReasons.push(
+      'Capability tier L3 (arbitrary Python execution) is permanently forbidden on the user-facing surface.',
+    );
+  }
+
+  // Check for indirect code/command injection in input payload
+  const injectionFinding = detectIndirectCodeInjection(options.input || {});
+  if (injectionFinding) {
+    inputSchemaValid = false;
+    governedCeilingRespected = false;
+    blockingReasons.push(injectionFinding);
+  }
 
   if (!op) {
     blockingReasons.push(
@@ -1345,8 +1753,9 @@ export function runExecutionPreflight(options = {}) {
     // Validate input against op.input_schema
     const ajv = new Ajv2020({ allErrors: true, strict: false });
     const validateInput = ajv.compile(op.input_schema);
-    inputSchemaValid = Boolean(validateInput(options.input || {}));
-    if (!inputSchemaValid) {
+    const ajvValid = Boolean(validateInput(options.input || {}));
+    inputSchemaValid = ajvValid && !injectionFinding;
+    if (!ajvValid) {
       const errs = (validateInput.errors || []).map(
         (e) => `${e.instancePath || '/'} ${e.message}`,
       );
@@ -1384,15 +1793,17 @@ export function runExecutionPreflight(options = {}) {
     // Backup gate check for L1+
     if (op.backup_requirement === 'verified_pre_mutation_blend_checkpoint') {
       const blendPath = options.sourceBlendPath || options.mockRuntime?.blendFilePath || null;
+      const safeBlendCheck = validateSafeBlendCheckpointPaths(blendPath);
       if (
         !session.readiness_flags.backup_supported ||
-        !blendPath ||
-        !blendPath.endsWith('.blend') ||
+        !safeBlendCheck.valid ||
         !fs.existsSync(blendPath)
       ) {
         backupGateReady = false;
         blockingReasons.push(
-          `Operation '${operationId}' requires a verified pre-mutation .blend checkpoint on disk, but source .blend path or runtime backup support is unavailable.`,
+          safeBlendCheck.valid
+            ? `Operation '${operationId}' requires a verified pre-mutation .blend checkpoint on disk, but source .blend path or runtime backup support is unavailable.`
+            : `Operation '${operationId}' rejected unsafe .blend checkpoint path: ${safeBlendCheck.reason}`,
         );
       }
     }
@@ -1436,7 +1847,7 @@ export function runExecutionPreflight(options = {}) {
     tool_mapping_available: toolMappingAvailable,
     input_schema_valid: inputSchemaValid,
     operation_allowlisted: operationAllowlisted,
-    capability_tier_granted: grantedTier,
+    capability_tier_granted: grantedTier === 'L3' ? 'L0' : grantedTier,
     governed_ceiling_respected: governedCeilingRespected,
     backup_gate_ready: backupGateReady,
     asset_license_cleared: assetLicenseCleared,
@@ -1576,6 +1987,62 @@ function verifyOperationPostconditions(op, input, readbackData) {
     };
   }
 
+  if (
+    op.operation_id === 'op.export.viewport-preview-to-file' ||
+    op.operation_id === 'op.export.render-still-to-file' ||
+    op.operation_id === 'op.export.glb-to-file'
+  ) {
+    const outFile = input.output_path ? path.resolve(input.output_path) : null;
+    const existsOnDisk = Boolean(outFile && fs.existsSync(outFile));
+    const stat = existsOnDisk ? fs.statSync(outFile) : null;
+    const nonZero = Boolean(stat && stat.isFile() && stat.size > 0);
+    const fileSha = nonZero ? sha256Hex(fs.readFileSync(outFile)) : null;
+    checks.push(
+      {
+        check_id: op.required_postconditions?.[0]?.check_id || 'post.artifact_file_non_zero',
+        passed: nonZero,
+        expected: 'byteSize > 0 on disk',
+        actual: nonZero ? `byteSize=${stat.size}` : 'missing or 0 bytes',
+      },
+      {
+        check_id: op.required_postconditions?.[1]?.check_id || 'post.artifact_sha256_recorded',
+        passed: Boolean(fileSha && /^[a-f0-9]{64}$/.test(fileSha)),
+        expected: '64-char hex sha256',
+        actual: fileSha,
+      },
+    );
+    return {
+      verified: checks.every((c) => c.passed),
+      checks,
+    };
+  }
+
+  if (op.operation_id === 'op.mutate.import-cleared-asset') {
+    const targetName = input.target_collection || 'ImportedAsset';
+    const found = (readbackData?.objects || []).some((o) => o.name === targetName);
+    const clearOk =
+      input.license_clearance?.status === 'Cleared' &&
+      input.license_clearance?.verified_by_skill === 'asset-license-checker';
+    checks.push(
+      {
+        check_id: 'post.imported_objects_present',
+        passed: found,
+        expected: targetName,
+        actual: found ? targetName : null,
+      },
+      {
+        check_id: 'post.asset_license_recorded',
+        passed: clearOk,
+        expected: 'Cleared by asset-license-checker',
+        actual: input.license_clearance?.status ?? null,
+      },
+    );
+    return {
+      verified: checks.every((c) => c.passed),
+      checks,
+    };
+  }
+
   return {
     verified: false,
     checks: [
@@ -1629,6 +2096,8 @@ export function executeTypedOperationSequence(options = {}) {
       liveTransportClient: options.liveTransportClient,
       executionPlan,
       requireMutationCapability: requiresMutation,
+      endpoint: options.endpoint,
+      allowRemoteEndpoint: options.allowRemoteEndpoint,
     });
 
   const lifecycleHistory = ['planned', 'preflight'];
@@ -1671,7 +2140,7 @@ export function executeTypedOperationSequence(options = {}) {
       sceneSpec,
       executionPlan,
       runtimeSession: session,
-      operationId: 'op.inspect.scene-summary',
+      operationId: 'op.inspect.blendfile-summary',
       input: {},
       grantedTier: options.grantedTier || session.negotiated_capability_tier,
     });
@@ -1718,17 +2187,34 @@ export function executeTypedOperationSequence(options = {}) {
         if (!sourceBlendPath || !fs.existsSync(sourceBlendPath)) {
           throw new Error('Source .blend file does not exist on disk for checkpoint creation');
         }
-        const sourceBytes = fs.readFileSync(sourceBlendPath);
-        sourceBlendBaselineSha256 = sha256Hex(sourceBytes);
         const safeTimestamp = startedAt.replace(/[:.]/g, '-');
         const backupFilename = `${path.basename(sourceBlendPath, '.blend')}.pre-phase3-${safeTimestamp}.blend`;
         const backupPath = path.join(path.dirname(sourceBlendPath), backupFilename);
+
+        const preCheckpointPathValidation = validateSafeBlendCheckpointPaths(
+          sourceBlendPath,
+          backupPath,
+        );
+        if (!preCheckpointPathValidation.valid) {
+          throw new Error(preCheckpointPathValidation.reason);
+        }
+
+        const sourceBytes = fs.readFileSync(sourceBlendPath);
+        sourceBlendBaselineSha256 = sha256Hex(sourceBytes);
 
         runtimeClient.createCheckpoint(sourceBlendPath, backupPath);
 
         if (!fs.existsSync(backupPath)) {
           throw new Error(`Checkpoint file was not written to disk at ${backupPath}`);
         }
+        const postCheckpointPathValidation = validateSafeBlendCheckpointPaths(
+          sourceBlendPath,
+          backupPath,
+        );
+        if (!postCheckpointPathValidation.valid) {
+          throw new Error(postCheckpointPathValidation.reason);
+        }
+
         const backupBytes = fs.readFileSync(backupPath);
         const backupSha256 = sha256Hex(backupBytes);
 
@@ -1784,8 +2270,11 @@ export function executeTypedOperationSequence(options = {}) {
         lifecycleHistory.push('blocked');
         aggregatePreflight.passed = false;
         aggregatePreflight.backup_gate_ready = false;
+        const { redacted: redactedCheckpointErr, secretsRedacted: cpRedacted } =
+          redactSensitiveData(checkpointErr.message);
+        if (cpRedacted) anySecretsRedacted = true;
         aggregatePreflight.blocking_reasons.push(
-          `Pre-mutation checkpoint failed: ${checkpointErr.message}`,
+          `Pre-mutation checkpoint failed: ${redactedCheckpointErr}`,
         );
       }
     } else {
@@ -1796,8 +2285,11 @@ export function executeTypedOperationSequence(options = {}) {
       lifecycleStatus = 'executing';
       lifecycleHistory.push('executing');
 
-      const seenMutationIdempotencyKeys = new Set();
+      // Map of idempotencyKey -> { operation_id, input_sha256 }
+      const seenMutationIdempotencyMap =
+        options.idempotencyStore instanceof Map ? options.idempotencyStore : new Map();
       let sequenceAbortedByFailure = false;
+      let anyMutatingStepExecuted = false;
 
       // Capture baseline read-only snapshot before any mutation
       const baselineReadTool = session.runtime_path.startsWith('path-1')
@@ -1821,7 +2313,10 @@ export function executeTypedOperationSequence(options = {}) {
 
         const canonicalInputStr = `${op.operation_id}:${stableCanonicalJson(redactedInput)}`;
         const inputSha256 = sha256Hex(canonicalInputStr);
-        const idempotencyKey = sha256Hex(`${session.session_id}:${canonicalInputStr}`);
+        const idempotencyKey =
+          typeof step.idempotency_key === 'string' && step.idempotency_key.trim().length >= 16
+            ? step.idempotency_key.trim()
+            : sha256Hex(`${session.session_id}:${canonicalInputStr}`);
         const stepStart = new Date().toISOString();
 
         if (sequenceAbortedByFailure) {
@@ -1834,6 +2329,8 @@ export function executeTypedOperationSequence(options = {}) {
             input_sha256: inputSha256,
             redacted_input: redactedInput,
             status: 'skipped_after_failure',
+            failure_classification: null,
+            unknown_remote_execution_outcome: false,
             baseline_snapshot: baselineSceneSnapshot,
             tool_result: null,
             readback_result: null,
@@ -1844,8 +2341,49 @@ export function executeTypedOperationSequence(options = {}) {
           continue;
         }
 
-        // Prevent duplicate mutating calls with identical idempotency key
-        if (op.behavior === 'mutating' && seenMutationIdempotencyKeys.has(idempotencyKey)) {
+        // Check idempotency key for mutating operations (detect duplicate vs payload collision)
+        if (op.behavior === 'mutating' && seenMutationIdempotencyMap.has(idempotencyKey)) {
+          const priorEntry = seenMutationIdempotencyMap.get(idempotencyKey);
+          if (
+            priorEntry.operation_id !== op.operation_id ||
+            priorEntry.input_sha256 !== inputSha256
+          ) {
+            operationAttempts.push({
+              step_index: idx + 1,
+              operation_id: op.operation_id,
+              required_capability: op.required_capability_tier,
+              mapped_tool_name: mapping.primary_tool,
+              idempotency_key: idempotencyKey,
+              input_sha256: inputSha256,
+              redacted_input: redactedInput,
+              status: 'rejected_idempotency_collision',
+              failure_classification: 'idempotency_key_payload_collision',
+              unknown_remote_execution_outcome: false,
+              baseline_snapshot: baselineSceneSnapshot,
+              tool_result: {
+                error: `Idempotency key '${idempotencyKey}' was reused with conflicting operation or input payload (expected input_sha256=${priorEntry.input_sha256}, actual=${inputSha256}).`,
+              },
+              readback_result: null,
+              postcondition_result: {
+                verified: false,
+                checks: [
+                  {
+                    check_id: 'post.idempotency_collision_rejected',
+                    passed: false,
+                    expected: priorEntry.input_sha256,
+                    actual: inputSha256,
+                  },
+                ],
+              },
+              started_at: stepStart,
+              finished_at: new Date().toISOString(),
+            });
+            sequenceAbortedByFailure = true;
+            lifecycleStatus = 'failed';
+            lifecycleHistory.push('failed');
+            continue;
+          }
+
           operationAttempts.push({
             step_index: idx + 1,
             operation_id: op.operation_id,
@@ -1855,6 +2393,8 @@ export function executeTypedOperationSequence(options = {}) {
             input_sha256: inputSha256,
             redacted_input: redactedInput,
             status: 'skipped_duplicate',
+            failure_classification: null,
+            unknown_remote_execution_outcome: false,
             baseline_snapshot: baselineSceneSnapshot,
             tool_result: { skipped_duplicate: true },
             readback_result: null,
@@ -1876,7 +2416,11 @@ export function executeTypedOperationSequence(options = {}) {
         }
 
         if (op.behavior === 'mutating') {
-          seenMutationIdempotencyKeys.add(idempotencyKey);
+          seenMutationIdempotencyMap.set(idempotencyKey, {
+            operation_id: op.operation_id,
+            input_sha256: inputSha256,
+          });
+          anyMutatingStepExecuted = true;
         }
 
         try {
@@ -1891,11 +2435,16 @@ export function executeTypedOperationSequence(options = {}) {
             );
           }
 
-          // Perform independent readback
+          // Perform independent L0 readback (never trust mutation tool's own return payload)
           if (!lifecycleHistory.includes('readback')) {
             lifecycleHistory.push('readback');
           }
           const readbackTool = mapping.readback_tools[0];
+          if (op.behavior === 'mutating' && readbackTool === mapping.primary_tool) {
+            throw new Error(
+              `Operation '${op.operation_id}' must use an independent L0 read-only tool for postcondition verification, not primary mutation tool '${mapping.primary_tool}'.`,
+            );
+          }
           const rawReadback = runtimeClient.invokeTool(readbackTool, rawInput);
           const { redacted: redactedReadback, secretsRedacted: rbRedacted } =
             redactSensitiveData(rawReadback?.data || null);
@@ -1917,6 +2466,8 @@ export function executeTypedOperationSequence(options = {}) {
               input_sha256: inputSha256,
               redacted_input: redactedInput,
               status: 'failed',
+              failure_classification: 'postcondition_verification_failed',
+              unknown_remote_execution_outcome: false,
               baseline_snapshot: baselineSceneSnapshot,
               tool_result: redactedToolRes,
               readback_result: redactedReadback,
@@ -1937,6 +2488,8 @@ export function executeTypedOperationSequence(options = {}) {
               input_sha256: inputSha256,
               redacted_input: redactedInput,
               status: 'committed',
+              failure_classification: null,
+              unknown_remote_execution_outcome: false,
               baseline_snapshot: baselineSceneSnapshot,
               tool_result: redactedToolRes,
               readback_result: redactedReadback,
@@ -1947,6 +2500,9 @@ export function executeTypedOperationSequence(options = {}) {
           }
         } catch (execErr) {
           const isTimeout = execErr.code === 'ETIMEDOUT' || /timed out/i.test(execErr.message);
+          const { redacted: redactedErrMsg, secretsRedacted: errRedacted } =
+            redactSensitiveData(execErr.message);
+          if (errRedacted) anySecretsRedacted = true;
           operationAttempts.push({
             step_index: idx + 1,
             operation_id: op.operation_id,
@@ -1956,9 +2512,13 @@ export function executeTypedOperationSequence(options = {}) {
             input_sha256: inputSha256,
             redacted_input: redactedInput,
             status: isTimeout ? 'attempted' : 'failed',
+            failure_classification: isTimeout
+              ? 'uncertain_remote_mutation_timeout'
+              : 'known_operation_failure',
+            unknown_remote_execution_outcome: isTimeout,
             baseline_snapshot: baselineSceneSnapshot,
             tool_result: {
-              error: execErr.message,
+              error: redactedErrMsg,
               timeout_no_blind_retry: isTimeout,
             },
             readback_result: null,
@@ -1969,7 +2529,7 @@ export function executeTypedOperationSequence(options = {}) {
                   check_id: 'post.execution_completed',
                   passed: false,
                   expected: 'status: ok',
-                  actual: execErr.message,
+                  actual: redactedErrMsg,
                 },
               ],
             },
@@ -1983,9 +2543,22 @@ export function executeTypedOperationSequence(options = {}) {
       }
 
       // If any mutation failed or timed out after a verified checkpoint, trigger rollback!
-      if (sequenceAbortedByFailure && requiresMutation && checkpointRecord.verifiedOnDisk) {
+      if (
+        sequenceAbortedByFailure &&
+        requiresMutation &&
+        anyMutatingStepExecuted &&
+        checkpointRecord.verifiedOnDisk
+      ) {
         lifecycleHistory.push('rollback_attempted');
         try {
+          const safeRestoreCheck = validateSafeBlendCheckpointPaths(
+            checkpointRecord.sourceBlendPath,
+            checkpointRecord.backupPath,
+          );
+          if (!safeRestoreCheck.valid) {
+            throw new Error(safeRestoreCheck.reason);
+          }
+
           runtimeClient.restoreCheckpoint(
             checkpointRecord.backupPath,
             checkpointRecord.sourceBlendPath,
@@ -2029,13 +2602,16 @@ export function executeTypedOperationSequence(options = {}) {
         } catch (rbErr) {
           lifecycleStatus = 'rollback_failed';
           lifecycleHistory.push('rollback_failed');
+          const { redacted: redactedRbErr, secretsRedacted: rbErrRedacted } =
+            redactSensitiveData(rbErr.message);
+          if (rbErrRedacted) anySecretsRedacted = true;
           rollbackSummary = {
             triggered: true,
             status: 'rollback_failed',
             restored_from_backup_path: checkpointRecord.backupPath,
             restored_sha256_verified: false,
             scene_readback_verified: false,
-            recovery_guidance: `Automatic checkpoint restore failed (${rbErr.message}). Do not continue mutating; manually open the preserved pre-mutation backup at ${checkpointRecord.backupPath}.`,
+            recovery_guidance: `Automatic checkpoint restore failed (${redactedRbErr}). Do not continue mutating; manually open the preserved pre-mutation backup at ${checkpointRecord.backupPath}.`,
           };
         }
       } else if (!sequenceAbortedByFailure) {
@@ -2132,7 +2708,7 @@ export function executeTypedOperationSequence(options = {}) {
     $schema: '../schemas/operation-execution-ledger.schema.json',
     schema_version: '1.0.0',
     execution_id: executionId,
-    scene_spec_id: sceneSpec?.scene_spec_id || executionPlan?.scene_spec_id || null,
+    scene_spec_id: sceneSpec?.id || sceneSpec?.scene_spec_id || executionPlan?.scene_spec_id || null,
     execution_plan_id: executionPlan?.plan_id || null,
     runtime_session_id: session.session_id,
     selected_runtime_path: session.runtime_path,
@@ -2172,6 +2748,141 @@ export function executeTypedOperationSequence(options = {}) {
   };
 }
 
+const DEFAULT_PRODUCT_HERO_SCENE_SPEC = {
+  schema_version: '1.0.0',
+  id: 'scene-spec.product-hero-sneaker',
+  title: 'Athletic Sneaker Product Hero Studio Presentation + Web GLB',
+  language: 'en',
+  intent: {
+    summary:
+      'Create a clean 3-point studio product hero presentation of an athletic sneaker with a curved cyclorama backdrop, producing a 4K Cycles AgX still render and a Three.js/R3F web-ready GLB.',
+    primary_goal: 'product_hero_presentation',
+    target_audience_or_platform:
+      'E-commerce product page hero banner and interactive Three.js 3D viewer',
+    workflow_entry_stage: 'discover',
+    explicit_recipe_override: null,
+  },
+  blender_version_target: {
+    min: '4.2',
+    tested_range: '4.2 - 5.1',
+    recommended: '5.1',
+  },
+  runtime_preference: {
+    preferred_path: 'path-1-official-blender-lab-mcp',
+    allow_cli_fallback: true,
+  },
+  objects_and_subjects: [
+    {
+      id: 'hero_sneaker',
+      name: 'Athletic_Sneaker_Hero',
+      role: 'hero',
+      source_type: 'existing_asset',
+      poly_budget_triangles: 42000,
+      transforms_applied: true,
+      scale_factors: [1.0, 1.0, 1.0],
+      uv_strategy: 'single_0_1_atlas',
+      modifiers: ['WeightedNormal'],
+      has_non_manifold_or_scan_noise: false,
+    },
+    {
+      id: 'studio_cyclorama',
+      name: 'Curved_Studio_Cyclorama',
+      role: 'backdrop',
+      source_type: 'procedural_primitive',
+      poly_budget_triangles: 2400,
+      transforms_applied: true,
+      scale_factors: [1.0, 1.0, 1.0],
+      uv_strategy: 'single_0_1_atlas',
+      modifiers: ['Bevel', 'Subdivision'],
+      has_non_manifold_or_scan_noise: false,
+    },
+  ],
+  style_and_materials: {
+    aesthetic_style:
+      'Clean athletic studio product photography with subtle micro-roughness contrast',
+    shader_workflow: 'principled_bsdf_pbr',
+    uv_packing: 'single_0_1_atlas',
+    udim_tile_count: 1,
+    bake_procedural_to_pbr: true,
+    channel_packing: 'orm_rgb',
+    max_texture_resolution: 2048,
+    normal_map_space: 'tangent_mikktspace',
+  },
+  lighting_and_environment: {
+    rig_type: 'studio_plus_hdri',
+    key_to_fill_ratio: 3.5,
+    hdri_lighting: true,
+    volumetric_effects: {
+      enabled: false,
+      bake_or_card_fallback_for_realtime: false,
+    },
+  },
+  camera_and_framing: {
+    focal_length_mm: 85,
+    sensor_width_mm: 36,
+    aspect_ratio: '4:5',
+    resolution_px: {
+      width: 2160,
+      height: 2700,
+    },
+    depth_of_field: {
+      enabled: true,
+      f_stop: 5.6,
+    },
+    clip_start_m: 0.05,
+    clip_end_m: 50.0,
+    framing_style: 'Three-quarter hero product angle with 15% breathing margin',
+  },
+  render_and_color: {
+    engine: 'CYCLES',
+    view_transform: 'AgX',
+    look: 'AgX - Medium High Contrast',
+    samples: 256,
+    denoiser: 'OPENIMAGEDENOISE',
+  },
+  animation_and_rigging: {
+    enabled: false,
+    has_armature: false,
+    max_bone_influences_per_vertex: 0,
+    bake_nla_to_linear_keyframes: false,
+    has_shape_keys: false,
+    apply_modifiers_with_shape_keys: false,
+    frame_rate_fps: 30,
+    frame_range: [1, 1],
+  },
+  simulation_and_vfx: {
+    enabled: false,
+    simulation_types: [],
+    geometry_nodes_realize_instances: false,
+    bake_to_alembic_or_keyframes: false,
+  },
+  optimization_and_budgets: {
+    target_tier: 'hybrid_render_and_web',
+    max_triangles: 65000,
+    max_draw_calls: 15,
+    max_vram_mb: 128,
+    max_file_size_mb: 10.0,
+    mesh_compression: 'draco',
+    texture_compression: 'ktx2_basisu',
+    generate_lods: false,
+  },
+  deliverables: {
+    formats: ['png_still', 'glb_web_standard'],
+    target_consumers: ['ecommerce_cdn', 'threejs_r3f'],
+    requires_standard_khronos_gltf_2_0: true,
+  },
+  quality_gates: [
+    'All object transforms applied to unit scale (1, 1, 1) and zero rotation',
+    'PBR albedo values remain within 0.04-0.90 linear sRGB and metallic is binary 0 or 1',
+    'Key-to-fill studio lighting ratio preserves highlight rolloff under AgX',
+    'Exported GLB passes Khronos glTF-Validator with zero errors and <= 65k triangles',
+  ],
+  truth_state_defaults: {
+    runtime_status: 'Not Run',
+    artifact_status: 'Not Produced',
+  },
+};
+
 /**
  * Phase 3D — Safe Blender Production Vertical Slice:
  * Inspect an existing product scene -> validate camera/lighting adjustment plan ->
@@ -2181,10 +2892,18 @@ export function executeTypedOperationSequence(options = {}) {
 export function runProductSceneVerticalSlice(options = {}) {
   const repoRoot = options.repoRoot || DEFAULT_REPO_ROOT;
   const projectDir = options.projectDir || null;
-  const specPath =
-    options.sceneSpecPath ||
-    path.join(repoRoot, 'evals', 'scene-specs', 'product-hero-sneaker.scene-spec.json');
-  const sceneSpec = JSON.parse(fs.readFileSync(specPath, 'utf8'));
+  const defaultSpecPath = path.join(
+    repoRoot,
+    'evals',
+    'scene-specs',
+    'product-hero-sneaker.scene-spec.json',
+  );
+  const specPath = options.sceneSpecPath || defaultSpecPath;
+  const sceneSpec = options.sceneSpecPath
+    ? JSON.parse(fs.readFileSync(specPath, 'utf8'))
+    : fs.existsSync(defaultSpecPath)
+      ? JSON.parse(fs.readFileSync(defaultSpecPath, 'utf8'))
+      : structuredClone(DEFAULT_PRODUCT_HERO_SCENE_SPEC);
   const compiled = compileExecutionPlan(sceneSpec, { repoRoot, projectDir });
 
   const operations = options.operations || [
@@ -2435,6 +3154,8 @@ export function runRuntimeAndExecutionCliSubcommand(argv = [], options = {}) {
         'invalid_tool_schema',
         'bridge_conflict',
         'incompatible_with_plan',
+        'stale_session',
+        'invalid_endpoint',
       ].includes(session.connection_status);
 
       return {
@@ -2529,7 +3250,7 @@ export function runRuntimeAndExecutionCliSubcommand(argv = [], options = {}) {
         sceneSpec,
         executionPlan,
         runtimePath: runtimePath || (mockRuntime ? mockRuntime.runtimePath : 'none'),
-        operationId: operationId || 'op.inspect.scene-summary',
+        operationId: operationId || 'op.inspect.blendfile-summary',
         mockRuntime,
       });
 
@@ -2577,9 +3298,10 @@ export function runRuntimeAndExecutionCliSubcommand(argv = [], options = {}) {
       });
 
       if (outPath) {
-        const absOut = path.resolve(outPath);
-        fs.mkdirSync(path.dirname(absOut), { recursive: true });
-        fs.writeFileSync(absOut, `${JSON.stringify(sliceRes.ledger, null, 2)}\n`, 'utf8');
+        writeFileAtomicallySafe(outPath, `${JSON.stringify(sliceRes.ledger, null, 2)}\n`, {
+          repoRoot,
+          projectDir,
+        });
       }
 
       const report = jsonOutput
