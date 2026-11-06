@@ -70,6 +70,94 @@
       "items": {
         "$ref": "#/$defs/operationRecord"
       }
+    },
+    "upstream_runtime_compatibility_matrix": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "upstream_tool_qualification_matrix": {
+      "type": "array",
+      "minItems": 30,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "tool_name",
+          "runtime_paths",
+          "server_identity",
+          "server_version",
+          "description",
+          "input_schema",
+          "tool_schema_fingerprint",
+          "output_shape_summary",
+          "side_effects",
+          "required_capability_tier",
+          "executes_arbitrary_code",
+          "modifies_scene_state",
+          "reads_files",
+          "writes_files",
+          "accesses_external_services",
+          "bounded_and_independently_verifiable",
+          "classification",
+          "qualification_rationale",
+          "evidence_source"
+        ],
+        "properties": {
+          "tool_name": { "type": "string", "minLength": 2 },
+          "runtime_paths": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "enum": ["path-1-host-a", "path-1-host-b", "path-2-community", "cli-appendix"]
+            }
+          },
+          "server_identity": { "type": "string", "minLength": 2 },
+          "server_version": { "type": "string", "minLength": 1 },
+          "description": { "type": "string", "minLength": 5 },
+          "input_schema": { "type": "object" },
+          "tool_schema_fingerprint": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "output_shape_summary": { "type": "string", "minLength": 3 },
+          "side_effects": {
+            "type": "string",
+            "enum": [
+              "none",
+              "scene_mutation",
+              "file_write",
+              "ui_state_mutation",
+              "external_network_and_scene_mutation",
+              "telemetry_or_config_mutation",
+              "arbitrary_code_execution",
+              "unknown_side_effects"
+            ]
+          },
+          "required_capability_tier": {
+            "type": "string",
+            "enum": ["L0", "L1", "L2", "L3"]
+          },
+          "executes_arbitrary_code": { "type": "boolean" },
+          "modifies_scene_state": { "type": "boolean" },
+          "reads_files": { "type": "boolean" },
+          "writes_files": { "type": "boolean" },
+          "accesses_external_services": { "type": "boolean" },
+          "bounded_and_independently_verifiable": { "type": "boolean" },
+          "classification": {
+            "type": "string",
+            "enum": [
+              "safe_direct",
+              "read_only_only",
+              "unsafe_raw_code",
+              "unsupported",
+              "unknown"
+            ]
+          },
+          "qualification_rationale": { "type": "string", "minLength": 10 },
+          "evidence_source": { "type": "string", "minLength": 5 }
+        }
+      }
     }
   },
   "$defs": {
@@ -375,6 +463,34 @@
           "minLength": 3
         },
         "mutation_transport_note": {
+          "type": "string",
+          "minLength": 10
+        },
+        "upstream_mcp_tool_name": {
+          "type": ["string", "null"]
+        },
+        "tool_schema_fingerprint": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "upstream_qualification_status": {
+          "type": "string",
+          "enum": [
+            "qualified_read_only",
+            "qualified_safe_direct",
+            "blocked_missing_bounded_upstream_tool",
+            "blocked_unbounded_upstream_side_effects",
+            "contract_only_appendix"
+          ]
+        },
+        "requires_bounded_governed_extension": {
+          "type": "boolean"
+        },
+        "rollback_strategy": {
+          "type": "string",
+          "minLength": 4
+        },
+        "qualification_evidence": {
           "type": "string",
           "minLength": 10
         }

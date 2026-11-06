@@ -39,26 +39,56 @@
       "display_name": "Inspect Runtime & Add-on Session Info",
       "purpose": "Read active Blender file path status, add-on readiness, and session bridge metadata without modifying the scene.",
       "category": "inspection",
-      "supported_runtime_paths": ["path-1-host-a", "path-1-host-b", "path-2-community"],
+      "supported_runtime_paths": [
+        "path-1-host-a",
+        "path-1-host-b",
+        "path-2-community"
+      ],
       "runtime_tool_mappings": {
         "path-1-host-a": {
           "primary_tool": "get_blendfile_summary_path_info",
-          "readback_tools": ["get_blendfile_summary_path_info"],
+          "readback_tools": [
+            "get_blendfile_summary_path_info"
+          ],
           "parameter_adapter": "lab_mcp_empty_params",
-          "mutation_transport_note": "Read-only Lab MCP path info inspection via Anthropic Connector host."
+          "mutation_transport_note": "Read-only Lab MCP path info inspection via Anthropic Connector host.",
+          "upstream_mcp_tool_name": "get_blendfile_summary_path_info",
+          "tool_schema_fingerprint": "c5083618ec6414ddb0ecc190f759a06330fbfe81f7b95e9ffc04fa169040b60b",
+          "upstream_qualification_status": "qualified_read_only",
+          "requires_bounded_governed_extension": false,
+          "rollback_strategy": "none_read_only",
+          "qualification_evidence": "Verified against real upstream Blender Lab MCP (blmcp) v1.0.2 tool get_blendfile_summary_path_info (https://projects.blender.org/lab/blender_mcp/src/branch/main/mcp/blmcp/tools/get_blendfile_summary_path_info.py)."
         },
         "path-1-host-b": {
           "primary_tool": "get_blendfile_summary_path_info",
-          "readback_tools": ["get_blendfile_summary_path_info"],
+          "readback_tools": [
+            "get_blendfile_summary_path_info"
+          ],
           "parameter_adapter": "lab_mcp_empty_params",
-          "mutation_transport_note": "Read-only Lab MCP path info inspection via manual MCP host."
+          "mutation_transport_note": "Read-only Lab MCP path info inspection via manual MCP host.",
+          "upstream_mcp_tool_name": "get_blendfile_summary_path_info",
+          "tool_schema_fingerprint": "c5083618ec6414ddb0ecc190f759a06330fbfe81f7b95e9ffc04fa169040b60b",
+          "upstream_qualification_status": "qualified_read_only",
+          "requires_bounded_governed_extension": false,
+          "rollback_strategy": "none_read_only",
+          "qualification_evidence": "Verified against real upstream Blender Lab MCP (blmcp) v1.0.2 tool get_blendfile_summary_path_info (https://projects.blender.org/lab/blender_mcp/src/branch/main/mcp/blmcp/tools/get_blendfile_summary_path_info.py)."
         },
         "path-2-community": {
           "primary_tool": "get_addon_status",
-          "secondary_tools": ["get_scene_info"],
-          "readback_tools": ["get_addon_status"],
+          "secondary_tools": [
+            "get_scene_info"
+          ],
+          "readback_tools": [
+            "get_addon_status"
+          ],
           "parameter_adapter": "community_mcp_empty_params",
-          "mutation_transport_note": "Read-only community mcp-for-blender add-on status inspection."
+          "mutation_transport_note": "Read-only community mcp-for-blender add-on status inspection.",
+          "upstream_mcp_tool_name": "get_addon_status",
+          "tool_schema_fingerprint": "e0a491a9f51fc8126dc51beb503a6bb12b2145811f9e2ec8e870eaa4926f9489",
+          "upstream_qualification_status": "qualified_read_only",
+          "requires_bounded_governed_extension": false,
+          "rollback_strategy": "none_read_only",
+          "qualification_evidence": "Verified against real upstream MCP for Blender (ahujasid/mcp-for-blender) v2.2.7 tool get_addon_status (https://github.com/ahujasid/blender-mcp/blob/main/src/blender_mcp/server.py#L451)."
         }
       },
       "input_schema": {
@@ -66,22 +96,42 @@
         "additionalProperties": false,
         "required": [],
         "properties": {
-          "include_bridge_diagnostics": { "type": "boolean" }
+          "include_bridge_diagnostics": {
+            "type": "boolean"
+          }
         }
       },
       "output_schema": {
         "type": "object",
-        "required": ["filepath", "saved", "dirty"],
+        "required": [
+          "filepath",
+          "saved",
+          "dirty"
+        ],
         "properties": {
-          "filepath": { "type": ["string", "null"] },
-          "saved": { "type": "boolean" },
-          "dirty": { "type": "boolean" },
-          "addon_status": { "type": "string" }
+          "filepath": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "saved": {
+            "type": "boolean"
+          },
+          "dirty": {
+            "type": "boolean"
+          },
+          "addon_status": {
+            "type": "string"
+          }
         }
       },
       "required_capability_tier": "L0",
       "required_governed_runtime_ceiling": "L0",
-      "governing_skills": ["runtime-readiness", "runtime-path-picker"],
+      "governing_skills": [
+        "runtime-readiness",
+        "runtime-path-picker"
+      ],
       "side_effect_classification": "none",
       "behavior": "read_only",
       "idempotency": "idempotent_read",
@@ -127,27 +177,59 @@
       "display_name": "Inspect Blender File & Datablock Summary",
       "purpose": "Inspect the active .blend file path, saved state, and datablock counts (scenes, objects, meshes, materials, cameras, lights).",
       "category": "inspection",
-      "supported_runtime_paths": ["path-1-host-a", "path-1-host-b", "path-2-community"],
+      "supported_runtime_paths": [
+        "path-1-host-a",
+        "path-1-host-b",
+        "path-2-community"
+      ],
       "runtime_tool_mappings": {
         "path-1-host-a": {
           "primary_tool": "get_blendfile_summary_datablocks",
-          "secondary_tools": ["get_blendfile_summary_path_info"],
-          "readback_tools": ["get_blendfile_summary_datablocks"],
+          "secondary_tools": [
+            "get_blendfile_summary_path_info"
+          ],
+          "readback_tools": [
+            "get_blendfile_summary_datablocks"
+          ],
           "parameter_adapter": "lab_mcp_datablocks_summary",
-          "mutation_transport_note": "Read-only Lab MCP datablock summary."
+          "mutation_transport_note": "Read-only Lab MCP datablock summary.",
+          "upstream_mcp_tool_name": "get_blendfile_summary_datablocks",
+          "tool_schema_fingerprint": "2b831a66bd41ba97d47055f4b5b51ce8b7387fbe7b2f2c294d251d4b8d658c73",
+          "upstream_qualification_status": "qualified_read_only",
+          "requires_bounded_governed_extension": false,
+          "rollback_strategy": "none_read_only",
+          "qualification_evidence": "Verified against real upstream Blender Lab MCP (blmcp) v1.0.2 tool get_blendfile_summary_datablocks (https://projects.blender.org/lab/blender_mcp/src/branch/main/mcp/blmcp/tools/get_blendfile_summary_datablocks.py)."
         },
         "path-1-host-b": {
           "primary_tool": "get_blendfile_summary_datablocks",
-          "secondary_tools": ["get_blendfile_summary_path_info"],
-          "readback_tools": ["get_blendfile_summary_datablocks"],
+          "secondary_tools": [
+            "get_blendfile_summary_path_info"
+          ],
+          "readback_tools": [
+            "get_blendfile_summary_datablocks"
+          ],
           "parameter_adapter": "lab_mcp_datablocks_summary",
-          "mutation_transport_note": "Read-only Lab MCP datablock summary."
+          "mutation_transport_note": "Read-only Lab MCP datablock summary.",
+          "upstream_mcp_tool_name": "get_blendfile_summary_datablocks",
+          "tool_schema_fingerprint": "2b831a66bd41ba97d47055f4b5b51ce8b7387fbe7b2f2c294d251d4b8d658c73",
+          "upstream_qualification_status": "qualified_read_only",
+          "requires_bounded_governed_extension": false,
+          "rollback_strategy": "none_read_only",
+          "qualification_evidence": "Verified against real upstream Blender Lab MCP (blmcp) v1.0.2 tool get_blendfile_summary_datablocks (https://projects.blender.org/lab/blender_mcp/src/branch/main/mcp/blmcp/tools/get_blendfile_summary_datablocks.py)."
         },
         "path-2-community": {
           "primary_tool": "get_scene_info",
-          "readback_tools": ["get_scene_info"],
+          "readback_tools": [
+            "get_scene_info"
+          ],
           "parameter_adapter": "community_mcp_scene_info",
-          "mutation_transport_note": "Read-only community mcp-for-blender scene summary."
+          "mutation_transport_note": "Read-only community mcp-for-blender scene summary.",
+          "upstream_mcp_tool_name": "get_scene_info",
+          "tool_schema_fingerprint": "caa384b8584c6d54ebfd6194ab612e0eaa3e6a54fa8bacdc5134b03cf7963566",
+          "upstream_qualification_status": "qualified_read_only",
+          "requires_bounded_governed_extension": false,
+          "rollback_strategy": "none_read_only",
+          "qualification_evidence": "Verified against real upstream MCP for Blender (ahujasid/mcp-for-blender) v2.2.7 tool get_scene_info (https://github.com/ahujasid/blender-mcp/blob/main/src/blender_mcp/server.py#L607)."
         }
       },
       "input_schema": {
@@ -155,22 +237,41 @@
         "additionalProperties": false,
         "required": [],
         "properties": {
-          "include_datablock_counts": { "type": "boolean" }
+          "include_datablock_counts": {
+            "type": "boolean"
+          }
         }
       },
       "output_schema": {
         "type": "object",
-        "required": ["scene_name", "datablock_counts"],
+        "required": [
+          "scene_name",
+          "datablock_counts"
+        ],
         "properties": {
-          "filepath": { "type": ["string", "null"] },
-          "saved": { "type": "boolean" },
-          "scene_name": { "type": "string" },
-          "datablock_counts": { "type": "object" }
+          "filepath": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "saved": {
+            "type": "boolean"
+          },
+          "scene_name": {
+            "type": "string"
+          },
+          "datablock_counts": {
+            "type": "object"
+          }
         }
       },
       "required_capability_tier": "L0",
       "required_governed_runtime_ceiling": "L0",
-      "governing_skills": ["scene-readiness", "runtime-readiness"],
+      "governing_skills": [
+        "scene-readiness",
+        "runtime-readiness"
+      ],
       "side_effect_classification": "none",
       "behavior": "read_only",
       "idempotency": "idempotent_read",
@@ -216,25 +317,53 @@
       "display_name": "Inspect Active Scene Summary",
       "purpose": "Inspect active scene name, render engine, world lighting state, and active object.",
       "category": "inspection",
-      "supported_runtime_paths": ["path-1-host-a", "path-1-host-b", "path-2-community"],
+      "supported_runtime_paths": [
+        "path-1-host-a",
+        "path-1-host-b",
+        "path-2-community"
+      ],
       "runtime_tool_mappings": {
         "path-1-host-a": {
           "primary_tool": "get_blendfile_summary_datablocks",
-          "readback_tools": ["get_blendfile_summary_datablocks"],
+          "readback_tools": [
+            "get_blendfile_summary_datablocks"
+          ],
           "parameter_adapter": "lab_mcp_scene_summary",
-          "mutation_transport_note": "Read-only Lab MCP scene summary."
+          "mutation_transport_note": "Read-only Lab MCP scene summary.",
+          "upstream_mcp_tool_name": "get_blendfile_summary_datablocks",
+          "tool_schema_fingerprint": "2b831a66bd41ba97d47055f4b5b51ce8b7387fbe7b2f2c294d251d4b8d658c73",
+          "upstream_qualification_status": "qualified_read_only",
+          "requires_bounded_governed_extension": false,
+          "rollback_strategy": "none_read_only",
+          "qualification_evidence": "Verified against real upstream Blender Lab MCP (blmcp) v1.0.2 tool get_blendfile_summary_datablocks (https://projects.blender.org/lab/blender_mcp/src/branch/main/mcp/blmcp/tools/get_blendfile_summary_datablocks.py)."
         },
         "path-1-host-b": {
           "primary_tool": "get_blendfile_summary_datablocks",
-          "readback_tools": ["get_blendfile_summary_datablocks"],
+          "readback_tools": [
+            "get_blendfile_summary_datablocks"
+          ],
           "parameter_adapter": "lab_mcp_scene_summary",
-          "mutation_transport_note": "Read-only Lab MCP scene summary."
+          "mutation_transport_note": "Read-only Lab MCP scene summary.",
+          "upstream_mcp_tool_name": "get_blendfile_summary_datablocks",
+          "tool_schema_fingerprint": "2b831a66bd41ba97d47055f4b5b51ce8b7387fbe7b2f2c294d251d4b8d658c73",
+          "upstream_qualification_status": "qualified_read_only",
+          "requires_bounded_governed_extension": false,
+          "rollback_strategy": "none_read_only",
+          "qualification_evidence": "Verified against real upstream Blender Lab MCP (blmcp) v1.0.2 tool get_blendfile_summary_datablocks (https://projects.blender.org/lab/blender_mcp/src/branch/main/mcp/blmcp/tools/get_blendfile_summary_datablocks.py)."
         },
         "path-2-community": {
           "primary_tool": "get_scene_info",
-          "readback_tools": ["get_scene_info"],
+          "readback_tools": [
+            "get_scene_info"
+          ],
           "parameter_adapter": "community_mcp_scene_info",
-          "mutation_transport_note": "Read-only community get_scene_info call."
+          "mutation_transport_note": "Read-only community get_scene_info call.",
+          "upstream_mcp_tool_name": "get_scene_info",
+          "tool_schema_fingerprint": "caa384b8584c6d54ebfd6194ab612e0eaa3e6a54fa8bacdc5134b03cf7963566",
+          "upstream_qualification_status": "qualified_read_only",
+          "requires_bounded_governed_extension": false,
+          "rollback_strategy": "none_read_only",
+          "qualification_evidence": "Verified against real upstream MCP for Blender (ahujasid/mcp-for-blender) v2.2.7 tool get_scene_info (https://github.com/ahujasid/blender-mcp/blob/main/src/blender_mcp/server.py#L607)."
         }
       },
       "input_schema": {
@@ -242,22 +371,44 @@
         "additionalProperties": false,
         "required": [],
         "properties": {
-          "scene_name": { "type": "string", "minLength": 1 }
+          "scene_name": {
+            "type": "string",
+            "minLength": 1
+          }
         }
       },
       "output_schema": {
         "type": "object",
-        "required": ["scene_name", "render_engine", "object_count"],
+        "required": [
+          "scene_name",
+          "render_engine",
+          "object_count"
+        ],
         "properties": {
-          "scene_name": { "type": "string" },
-          "render_engine": { "type": "string" },
-          "object_count": { "type": "integer", "minimum": 0 },
-          "active_object": { "type": ["string", "null"] }
+          "scene_name": {
+            "type": "string"
+          },
+          "render_engine": {
+            "type": "string"
+          },
+          "object_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "active_object": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
         }
       },
       "required_capability_tier": "L0",
       "required_governed_runtime_ceiling": "L0",
-      "governing_skills": ["scene-readiness", "product-hero-scene-planner"],
+      "governing_skills": [
+        "scene-readiness",
+        "product-hero-scene-planner"
+      ],
       "side_effect_classification": "none",
       "behavior": "read_only",
       "idempotency": "idempotent_read",
@@ -303,26 +454,56 @@
       "display_name": "List & Inspect Scene Objects",
       "purpose": "Retrieve the list of objects in the active scene with their types, visibility, and world transforms.",
       "category": "inspection",
-      "supported_runtime_paths": ["path-1-host-a", "path-1-host-b", "path-2-community"],
+      "supported_runtime_paths": [
+        "path-1-host-a",
+        "path-1-host-b",
+        "path-2-community"
+      ],
       "runtime_tool_mappings": {
         "path-1-host-a": {
           "primary_tool": "get_objects_summary",
-          "readback_tools": ["get_objects_summary"],
+          "readback_tools": [
+            "get_objects_summary"
+          ],
           "parameter_adapter": "lab_mcp_objects_summary",
-          "mutation_transport_note": "Read-only Lab MCP get_objects_summary call."
+          "mutation_transport_note": "Read-only Lab MCP get_objects_summary call.",
+          "upstream_mcp_tool_name": "get_objects_summary",
+          "tool_schema_fingerprint": "19105e512c7b198ac0a0cbf9f2b9f64d07258a4a97370a78c7b637379b33944f",
+          "upstream_qualification_status": "qualified_read_only",
+          "requires_bounded_governed_extension": false,
+          "rollback_strategy": "none_read_only",
+          "qualification_evidence": "Verified against real upstream Blender Lab MCP (blmcp) v1.0.2 tool get_objects_summary (https://projects.blender.org/lab/blender_mcp/src/branch/main/mcp/blmcp/tools/get_objects_summary.py)."
         },
         "path-1-host-b": {
           "primary_tool": "get_objects_summary",
-          "readback_tools": ["get_objects_summary"],
+          "readback_tools": [
+            "get_objects_summary"
+          ],
           "parameter_adapter": "lab_mcp_objects_summary",
-          "mutation_transport_note": "Read-only Lab MCP get_objects_summary call."
+          "mutation_transport_note": "Read-only Lab MCP get_objects_summary call.",
+          "upstream_mcp_tool_name": "get_objects_summary",
+          "tool_schema_fingerprint": "19105e512c7b198ac0a0cbf9f2b9f64d07258a4a97370a78c7b637379b33944f",
+          "upstream_qualification_status": "qualified_read_only",
+          "requires_bounded_governed_extension": false,
+          "rollback_strategy": "none_read_only",
+          "qualification_evidence": "Verified against real upstream Blender Lab MCP (blmcp) v1.0.2 tool get_objects_summary (https://projects.blender.org/lab/blender_mcp/src/branch/main/mcp/blmcp/tools/get_objects_summary.py)."
         },
         "path-2-community": {
           "primary_tool": "get_scene_info",
-          "secondary_tools": ["get_object_info"],
-          "readback_tools": ["get_scene_info"],
+          "secondary_tools": [
+            "get_object_info"
+          ],
+          "readback_tools": [
+            "get_scene_info"
+          ],
           "parameter_adapter": "community_mcp_objects_from_scene",
-          "mutation_transport_note": "Read-only community get_scene_info / get_object_info inspection."
+          "mutation_transport_note": "Read-only community get_scene_info / get_object_info inspection.",
+          "upstream_mcp_tool_name": "get_scene_info",
+          "tool_schema_fingerprint": "caa384b8584c6d54ebfd6194ab612e0eaa3e6a54fa8bacdc5134b03cf7963566",
+          "upstream_qualification_status": "qualified_read_only",
+          "requires_bounded_governed_extension": false,
+          "rollback_strategy": "none_read_only",
+          "qualification_evidence": "Verified against real upstream MCP for Blender (ahujasid/mcp-for-blender) v2.2.7 tool get_scene_info (https://github.com/ahujasid/blender-mcp/blob/main/src/blender_mcp/server.py#L607)."
         }
       },
       "input_schema": {
@@ -332,26 +513,51 @@
         "properties": {
           "filter_type": {
             "type": "string",
-            "enum": ["ALL", "MESH", "CAMERA", "LIGHT", "ARMATURE", "EMPTY"]
+            "enum": [
+              "ALL",
+              "MESH",
+              "CAMERA",
+              "LIGHT",
+              "ARMATURE",
+              "EMPTY"
+            ]
           }
         }
       },
       "output_schema": {
         "type": "object",
-        "required": ["objects"],
+        "required": [
+          "objects"
+        ],
         "properties": {
           "objects": {
             "type": "array",
             "items": {
               "type": "object",
-              "required": ["name", "type", "visible"],
+              "required": [
+                "name",
+                "type",
+                "visible"
+              ],
               "properties": {
-                "name": { "type": "string" },
-                "type": { "type": "string" },
-                "visible": { "type": "boolean" },
-                "location": { "type": "array" },
-                "rotation_euler": { "type": "array" },
-                "scale": { "type": "array" }
+                "name": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string"
+                },
+                "visible": {
+                  "type": "boolean"
+                },
+                "location": {
+                  "type": "array"
+                },
+                "rotation_euler": {
+                  "type": "array"
+                },
+                "scale": {
+                  "type": "array"
+                }
               }
             }
           }
@@ -359,7 +565,10 @@
       },
       "required_capability_tier": "L0",
       "required_governed_runtime_ceiling": "L0",
-      "governing_skills": ["scene-readiness", "composition-quality-checker"],
+      "governing_skills": [
+        "scene-readiness",
+        "composition-quality-checker"
+      ],
       "side_effect_classification": "none",
       "behavior": "read_only",
       "idempotency": "idempotent_read",
@@ -405,48 +614,100 @@
       "display_name": "Inspect Mesh & Topology Statistics",
       "purpose": "Inspect triangle, vertex, face, and UV map counts for target mesh objects against platform budgets.",
       "category": "inspection",
-      "supported_runtime_paths": ["path-1-host-a", "path-1-host-b", "path-2-community"],
+      "supported_runtime_paths": [
+        "path-1-host-a",
+        "path-1-host-b",
+        "path-2-community"
+      ],
       "runtime_tool_mappings": {
         "path-1-host-a": {
           "primary_tool": "get_objects_summary",
-          "readback_tools": ["get_objects_summary"],
+          "readback_tools": [
+            "get_objects_summary"
+          ],
           "parameter_adapter": "lab_mcp_mesh_stats",
-          "mutation_transport_note": "Read-only Lab MCP object/mesh summary inspection."
+          "mutation_transport_note": "Read-only Lab MCP object/mesh summary inspection.",
+          "upstream_mcp_tool_name": "get_objects_summary",
+          "tool_schema_fingerprint": "19105e512c7b198ac0a0cbf9f2b9f64d07258a4a97370a78c7b637379b33944f",
+          "upstream_qualification_status": "qualified_read_only",
+          "requires_bounded_governed_extension": false,
+          "rollback_strategy": "none_read_only",
+          "qualification_evidence": "Verified against real upstream Blender Lab MCP (blmcp) v1.0.2 tool get_objects_summary (https://projects.blender.org/lab/blender_mcp/src/branch/main/mcp/blmcp/tools/get_objects_summary.py)."
         },
         "path-1-host-b": {
           "primary_tool": "get_objects_summary",
-          "readback_tools": ["get_objects_summary"],
+          "readback_tools": [
+            "get_objects_summary"
+          ],
           "parameter_adapter": "lab_mcp_mesh_stats",
-          "mutation_transport_note": "Read-only Lab MCP object/mesh summary inspection."
+          "mutation_transport_note": "Read-only Lab MCP object/mesh summary inspection.",
+          "upstream_mcp_tool_name": "get_objects_summary",
+          "tool_schema_fingerprint": "19105e512c7b198ac0a0cbf9f2b9f64d07258a4a97370a78c7b637379b33944f",
+          "upstream_qualification_status": "qualified_read_only",
+          "requires_bounded_governed_extension": false,
+          "rollback_strategy": "none_read_only",
+          "qualification_evidence": "Verified against real upstream Blender Lab MCP (blmcp) v1.0.2 tool get_objects_summary (https://projects.blender.org/lab/blender_mcp/src/branch/main/mcp/blmcp/tools/get_objects_summary.py)."
         },
         "path-2-community": {
           "primary_tool": "get_object_info",
-          "readback_tools": ["get_object_info"],
+          "readback_tools": [
+            "get_object_info"
+          ],
           "parameter_adapter": "community_mcp_object_info",
-          "mutation_transport_note": "Read-only community get_object_info inspection."
+          "mutation_transport_note": "Read-only community get_object_info inspection.",
+          "upstream_mcp_tool_name": "get_object_info",
+          "tool_schema_fingerprint": "d0a91f92c0d4558c8eebc2f50a30d35363f6e9c480dc1635e1684492a3d6195f",
+          "upstream_qualification_status": "qualified_read_only",
+          "requires_bounded_governed_extension": false,
+          "rollback_strategy": "none_read_only",
+          "qualification_evidence": "Verified against real upstream MCP for Blender (ahujasid/mcp-for-blender) v2.2.7 tool get_object_info (https://github.com/ahujasid/blender-mcp/blob/main/src/blender_mcp/server.py#L2083)."
         }
       },
       "input_schema": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["object_name"],
+        "required": [
+          "object_name"
+        ],
         "properties": {
-          "object_name": { "type": "string", "minLength": 1, "maxLength": 128 }
+          "object_name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          }
         }
       },
       "output_schema": {
         "type": "object",
-        "required": ["object_name", "triangles", "vertices"],
+        "required": [
+          "object_name",
+          "triangles",
+          "vertices"
+        ],
         "properties": {
-          "object_name": { "type": "string" },
-          "triangles": { "type": "integer", "minimum": 0 },
-          "vertices": { "type": "integer", "minimum": 0 },
-          "uv_layers": { "type": "integer", "minimum": 0 }
+          "object_name": {
+            "type": "string"
+          },
+          "triangles": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "vertices": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "uv_layers": {
+            "type": "integer",
+            "minimum": 0
+          }
         }
       },
       "required_capability_tier": "L0",
       "required_governed_runtime_ceiling": "L0",
-      "governing_skills": ["polycount-budget-checker", "mobile-glb-budget"],
+      "governing_skills": [
+        "polycount-budget-checker",
+        "mobile-glb-budget"
+      ],
       "side_effect_classification": "none",
       "behavior": "read_only",
       "idempotency": "idempotent_read",
@@ -492,52 +753,105 @@
       "display_name": "Inspect Material Slots & Principled BSDF Parameters",
       "purpose": "Inspect assigned material slots and Principled BSDF roughness/metallic/base_color parameters on an object.",
       "category": "inspection",
-      "supported_runtime_paths": ["path-1-host-a", "path-1-host-b", "path-2-community"],
+      "supported_runtime_paths": [
+        "path-1-host-a",
+        "path-1-host-b",
+        "path-2-community"
+      ],
       "runtime_tool_mappings": {
         "path-1-host-a": {
           "primary_tool": "get_blendfile_summary_datablocks",
-          "secondary_tools": ["get_objects_summary"],
-          "readback_tools": ["get_blendfile_summary_datablocks"],
+          "secondary_tools": [
+            "get_objects_summary"
+          ],
+          "readback_tools": [
+            "get_blendfile_summary_datablocks"
+          ],
           "parameter_adapter": "lab_mcp_material_inspection",
-          "mutation_transport_note": "Read-only Lab MCP material datablock inspection."
+          "mutation_transport_note": "Read-only Lab MCP material datablock inspection.",
+          "upstream_mcp_tool_name": "get_blendfile_summary_datablocks",
+          "tool_schema_fingerprint": "2b831a66bd41ba97d47055f4b5b51ce8b7387fbe7b2f2c294d251d4b8d658c73",
+          "upstream_qualification_status": "qualified_read_only",
+          "requires_bounded_governed_extension": false,
+          "rollback_strategy": "none_read_only",
+          "qualification_evidence": "Verified against real upstream Blender Lab MCP (blmcp) v1.0.2 tool get_blendfile_summary_datablocks (https://projects.blender.org/lab/blender_mcp/src/branch/main/mcp/blmcp/tools/get_blendfile_summary_datablocks.py)."
         },
         "path-1-host-b": {
           "primary_tool": "get_blendfile_summary_datablocks",
-          "secondary_tools": ["get_objects_summary"],
-          "readback_tools": ["get_blendfile_summary_datablocks"],
+          "secondary_tools": [
+            "get_objects_summary"
+          ],
+          "readback_tools": [
+            "get_blendfile_summary_datablocks"
+          ],
           "parameter_adapter": "lab_mcp_material_inspection",
-          "mutation_transport_note": "Read-only Lab MCP material datablock inspection."
+          "mutation_transport_note": "Read-only Lab MCP material datablock inspection.",
+          "upstream_mcp_tool_name": "get_blendfile_summary_datablocks",
+          "tool_schema_fingerprint": "2b831a66bd41ba97d47055f4b5b51ce8b7387fbe7b2f2c294d251d4b8d658c73",
+          "upstream_qualification_status": "qualified_read_only",
+          "requires_bounded_governed_extension": false,
+          "rollback_strategy": "none_read_only",
+          "qualification_evidence": "Verified against real upstream Blender Lab MCP (blmcp) v1.0.2 tool get_blendfile_summary_datablocks (https://projects.blender.org/lab/blender_mcp/src/branch/main/mcp/blmcp/tools/get_blendfile_summary_datablocks.py)."
         },
         "path-2-community": {
           "primary_tool": "get_object_info",
-          "readback_tools": ["get_object_info"],
+          "readback_tools": [
+            "get_object_info"
+          ],
           "parameter_adapter": "community_mcp_material_inspection",
-          "mutation_transport_note": "Read-only community get_object_info material slot inspection."
+          "mutation_transport_note": "Read-only community get_object_info material slot inspection.",
+          "upstream_mcp_tool_name": "get_object_info",
+          "tool_schema_fingerprint": "d0a91f92c0d4558c8eebc2f50a30d35363f6e9c480dc1635e1684492a3d6195f",
+          "upstream_qualification_status": "qualified_read_only",
+          "requires_bounded_governed_extension": false,
+          "rollback_strategy": "none_read_only",
+          "qualification_evidence": "Verified against real upstream MCP for Blender (ahujasid/mcp-for-blender) v2.2.7 tool get_object_info (https://github.com/ahujasid/blender-mcp/blob/main/src/blender_mcp/server.py#L2083)."
         }
       },
       "input_schema": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["object_name"],
+        "required": [
+          "object_name"
+        ],
         "properties": {
-          "object_name": { "type": "string", "minLength": 1, "maxLength": 128 }
+          "object_name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          }
         }
       },
       "output_schema": {
         "type": "object",
-        "required": ["object_name", "materials"],
+        "required": [
+          "object_name",
+          "materials"
+        ],
         "properties": {
-          "object_name": { "type": "string" },
+          "object_name": {
+            "type": "string"
+          },
           "materials": {
             "type": "array",
             "items": {
               "type": "object",
-              "required": ["name"],
+              "required": [
+                "name"
+              ],
               "properties": {
-                "name": { "type": "string" },
-                "base_color_rgba": { "type": "array" },
-                "metallic": { "type": "number" },
-                "roughness": { "type": "number" }
+                "name": {
+                  "type": "string"
+                },
+                "base_color_rgba": {
+                  "type": "array"
+                },
+                "metallic": {
+                  "type": "number"
+                },
+                "roughness": {
+                  "type": "number"
+                }
               }
             }
           }
@@ -545,7 +859,10 @@
       },
       "required_capability_tier": "L0",
       "required_governed_runtime_ceiling": "L0",
-      "governing_skills": ["material-quality-checker", "lighting-material-plan"],
+      "governing_skills": [
+        "material-quality-checker",
+        "lighting-material-plan"
+      ],
       "side_effect_classification": "none",
       "behavior": "read_only",
       "idempotency": "idempotent_read",
@@ -591,26 +908,57 @@
       "display_name": "Inspect Camera & Lighting Rig State",
       "purpose": "Inspect active camera transform, focal length, DOF settings, and scene light energy/color/transform parameters.",
       "category": "inspection",
-      "supported_runtime_paths": ["path-1-host-a", "path-1-host-b", "path-2-community"],
+      "supported_runtime_paths": [
+        "path-1-host-a",
+        "path-1-host-b",
+        "path-2-community"
+      ],
       "runtime_tool_mappings": {
         "path-1-host-a": {
           "primary_tool": "get_objects_summary",
-          "readback_tools": ["get_objects_summary"],
+          "readback_tools": [
+            "get_objects_summary"
+          ],
           "parameter_adapter": "lab_mcp_camera_light_summary",
-          "mutation_transport_note": "Read-only Lab MCP camera and lighting inspection."
+          "mutation_transport_note": "Read-only Lab MCP camera and lighting inspection.",
+          "upstream_mcp_tool_name": "get_objects_summary",
+          "tool_schema_fingerprint": "19105e512c7b198ac0a0cbf9f2b9f64d07258a4a97370a78c7b637379b33944f",
+          "upstream_qualification_status": "qualified_read_only",
+          "requires_bounded_governed_extension": false,
+          "rollback_strategy": "none_read_only",
+          "qualification_evidence": "Verified against real upstream Blender Lab MCP (blmcp) v1.0.2 tool get_objects_summary (https://projects.blender.org/lab/blender_mcp/src/branch/main/mcp/blmcp/tools/get_objects_summary.py)."
         },
         "path-1-host-b": {
           "primary_tool": "get_objects_summary",
-          "readback_tools": ["get_objects_summary"],
+          "readback_tools": [
+            "get_objects_summary"
+          ],
           "parameter_adapter": "lab_mcp_camera_light_summary",
-          "mutation_transport_note": "Read-only Lab MCP camera and lighting inspection."
+          "mutation_transport_note": "Read-only Lab MCP camera and lighting inspection.",
+          "upstream_mcp_tool_name": "get_objects_summary",
+          "tool_schema_fingerprint": "19105e512c7b198ac0a0cbf9f2b9f64d07258a4a97370a78c7b637379b33944f",
+          "upstream_qualification_status": "qualified_read_only",
+          "requires_bounded_governed_extension": false,
+          "rollback_strategy": "none_read_only",
+          "qualification_evidence": "Verified against real upstream Blender Lab MCP (blmcp) v1.0.2 tool get_objects_summary (https://projects.blender.org/lab/blender_mcp/src/branch/main/mcp/blmcp/tools/get_objects_summary.py)."
         },
         "path-2-community": {
           "primary_tool": "get_scene_info",
-          "secondary_tools": ["get_object_info"],
-          "readback_tools": ["get_scene_info", "get_object_info"],
+          "secondary_tools": [
+            "get_object_info"
+          ],
+          "readback_tools": [
+            "get_scene_info",
+            "get_object_info"
+          ],
           "parameter_adapter": "community_mcp_camera_light_summary",
-          "mutation_transport_note": "Read-only community camera and light inspection."
+          "mutation_transport_note": "Read-only community camera and light inspection.",
+          "upstream_mcp_tool_name": "get_scene_info",
+          "tool_schema_fingerprint": "caa384b8584c6d54ebfd6194ab612e0eaa3e6a54fa8bacdc5134b03cf7963566",
+          "upstream_qualification_status": "qualified_read_only",
+          "requires_bounded_governed_extension": false,
+          "rollback_strategy": "none_read_only",
+          "qualification_evidence": "Verified against real upstream MCP for Blender (ahujasid/mcp-for-blender) v2.2.7 tool get_scene_info (https://github.com/ahujasid/blender-mcp/blob/main/src/blender_mcp/server.py#L607)."
         }
       },
       "input_schema": {
@@ -618,24 +966,41 @@
         "additionalProperties": false,
         "required": [],
         "properties": {
-          "camera_name": { "type": "string", "minLength": 1 },
+          "camera_name": {
+            "type": "string",
+            "minLength": 1
+          },
           "light_names": {
             "type": "array",
-            "items": { "type": "string", "minLength": 1 }
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
           }
         }
       },
       "output_schema": {
         "type": "object",
-        "required": ["cameras", "lights"],
+        "required": [
+          "cameras",
+          "lights"
+        ],
         "properties": {
-          "cameras": { "type": "array" },
-          "lights": { "type": "array" }
+          "cameras": {
+            "type": "array"
+          },
+          "lights": {
+            "type": "array"
+          }
         }
       },
       "required_capability_tier": "L0",
       "required_governed_runtime_ceiling": "L0",
-      "governing_skills": ["camera-composition", "lighting-quality-checker", "composition-quality-checker"],
+      "governing_skills": [
+        "camera-composition",
+        "lighting-quality-checker",
+        "composition-quality-checker"
+      ],
       "side_effect_classification": "none",
       "behavior": "read_only",
       "idempotency": "idempotent_read",
@@ -681,25 +1046,53 @@
       "display_name": "Inspect Render Engine, Resolution & Color Management",
       "purpose": "Inspect active render engine (CYCLES or BLENDER_EEVEE), output resolution, sample budget, and AgX/Filmic view transform.",
       "category": "inspection",
-      "supported_runtime_paths": ["path-1-host-a", "path-1-host-b", "path-2-community"],
+      "supported_runtime_paths": [
+        "path-1-host-a",
+        "path-1-host-b",
+        "path-2-community"
+      ],
       "runtime_tool_mappings": {
         "path-1-host-a": {
           "primary_tool": "get_blendfile_summary_datablocks",
-          "readback_tools": ["get_blendfile_summary_datablocks"],
+          "readback_tools": [
+            "get_blendfile_summary_datablocks"
+          ],
           "parameter_adapter": "lab_mcp_render_settings",
-          "mutation_transport_note": "Read-only Lab MCP render settings inspection."
+          "mutation_transport_note": "Read-only Lab MCP render settings inspection.",
+          "upstream_mcp_tool_name": "get_blendfile_summary_datablocks",
+          "tool_schema_fingerprint": "2b831a66bd41ba97d47055f4b5b51ce8b7387fbe7b2f2c294d251d4b8d658c73",
+          "upstream_qualification_status": "qualified_read_only",
+          "requires_bounded_governed_extension": false,
+          "rollback_strategy": "none_read_only",
+          "qualification_evidence": "Verified against real upstream Blender Lab MCP (blmcp) v1.0.2 tool get_blendfile_summary_datablocks (https://projects.blender.org/lab/blender_mcp/src/branch/main/mcp/blmcp/tools/get_blendfile_summary_datablocks.py)."
         },
         "path-1-host-b": {
           "primary_tool": "get_blendfile_summary_datablocks",
-          "readback_tools": ["get_blendfile_summary_datablocks"],
+          "readback_tools": [
+            "get_blendfile_summary_datablocks"
+          ],
           "parameter_adapter": "lab_mcp_render_settings",
-          "mutation_transport_note": "Read-only Lab MCP render settings inspection."
+          "mutation_transport_note": "Read-only Lab MCP render settings inspection.",
+          "upstream_mcp_tool_name": "get_blendfile_summary_datablocks",
+          "tool_schema_fingerprint": "2b831a66bd41ba97d47055f4b5b51ce8b7387fbe7b2f2c294d251d4b8d658c73",
+          "upstream_qualification_status": "qualified_read_only",
+          "requires_bounded_governed_extension": false,
+          "rollback_strategy": "none_read_only",
+          "qualification_evidence": "Verified against real upstream Blender Lab MCP (blmcp) v1.0.2 tool get_blendfile_summary_datablocks (https://projects.blender.org/lab/blender_mcp/src/branch/main/mcp/blmcp/tools/get_blendfile_summary_datablocks.py)."
         },
         "path-2-community": {
           "primary_tool": "get_scene_info",
-          "readback_tools": ["get_scene_info"],
+          "readback_tools": [
+            "get_scene_info"
+          ],
           "parameter_adapter": "community_mcp_render_settings",
-          "mutation_transport_note": "Read-only community render settings inspection."
+          "mutation_transport_note": "Read-only community render settings inspection.",
+          "upstream_mcp_tool_name": "get_scene_info",
+          "tool_schema_fingerprint": "caa384b8584c6d54ebfd6194ab612e0eaa3e6a54fa8bacdc5134b03cf7963566",
+          "upstream_qualification_status": "qualified_read_only",
+          "requires_bounded_governed_extension": false,
+          "rollback_strategy": "none_read_only",
+          "qualification_evidence": "Verified against real upstream MCP for Blender (ahujasid/mcp-for-blender) v2.2.7 tool get_scene_info (https://github.com/ahujasid/blender-mcp/blob/main/src/blender_mcp/server.py#L607)."
         }
       },
       "input_schema": {
@@ -707,22 +1100,41 @@
         "additionalProperties": false,
         "required": [],
         "properties": {
-          "scene_name": { "type": "string" }
+          "scene_name": {
+            "type": "string"
+          }
         }
       },
       "output_schema": {
         "type": "object",
-        "required": ["render_engine", "resolution_x", "resolution_y", "view_transform"],
+        "required": [
+          "render_engine",
+          "resolution_x",
+          "resolution_y",
+          "view_transform"
+        ],
         "properties": {
-          "render_engine": { "type": "string" },
-          "resolution_x": { "type": "integer" },
-          "resolution_y": { "type": "integer" },
-          "view_transform": { "type": "string" }
+          "render_engine": {
+            "type": "string"
+          },
+          "resolution_x": {
+            "type": "integer"
+          },
+          "resolution_y": {
+            "type": "integer"
+          },
+          "view_transform": {
+            "type": "string"
+          }
         }
       },
       "required_capability_tier": "L0",
       "required_governed_runtime_ceiling": "L0",
-      "governing_skills": ["cycles-vs-eevee-decision", "resolution-aspect-decision", "color-management-decision"],
+      "governing_skills": [
+        "cycles-vs-eevee-decision",
+        "resolution-aspect-decision",
+        "color-management-decision"
+      ],
       "side_effect_classification": "none",
       "behavior": "read_only",
       "idempotency": "idempotent_read",
@@ -768,25 +1180,53 @@
       "display_name": "Inspect Scene Hierarchy & Transform Scale Hygiene",
       "purpose": "Inspect parent-child relationships, collection organization, and non-uniform or negative scale anomalies.",
       "category": "inspection",
-      "supported_runtime_paths": ["path-1-host-a", "path-1-host-b", "path-2-community"],
+      "supported_runtime_paths": [
+        "path-1-host-a",
+        "path-1-host-b",
+        "path-2-community"
+      ],
       "runtime_tool_mappings": {
         "path-1-host-a": {
           "primary_tool": "get_objects_summary",
-          "readback_tools": ["get_objects_summary"],
+          "readback_tools": [
+            "get_objects_summary"
+          ],
           "parameter_adapter": "lab_mcp_hierarchy_summary",
-          "mutation_transport_note": "Read-only Lab MCP hierarchy inspection."
+          "mutation_transport_note": "Read-only Lab MCP hierarchy inspection.",
+          "upstream_mcp_tool_name": "get_objects_summary",
+          "tool_schema_fingerprint": "19105e512c7b198ac0a0cbf9f2b9f64d07258a4a97370a78c7b637379b33944f",
+          "upstream_qualification_status": "qualified_read_only",
+          "requires_bounded_governed_extension": false,
+          "rollback_strategy": "none_read_only",
+          "qualification_evidence": "Verified against real upstream Blender Lab MCP (blmcp) v1.0.2 tool get_objects_summary (https://projects.blender.org/lab/blender_mcp/src/branch/main/mcp/blmcp/tools/get_objects_summary.py)."
         },
         "path-1-host-b": {
           "primary_tool": "get_objects_summary",
-          "readback_tools": ["get_objects_summary"],
+          "readback_tools": [
+            "get_objects_summary"
+          ],
           "parameter_adapter": "lab_mcp_hierarchy_summary",
-          "mutation_transport_note": "Read-only Lab MCP hierarchy inspection."
+          "mutation_transport_note": "Read-only Lab MCP hierarchy inspection.",
+          "upstream_mcp_tool_name": "get_objects_summary",
+          "tool_schema_fingerprint": "19105e512c7b198ac0a0cbf9f2b9f64d07258a4a97370a78c7b637379b33944f",
+          "upstream_qualification_status": "qualified_read_only",
+          "requires_bounded_governed_extension": false,
+          "rollback_strategy": "none_read_only",
+          "qualification_evidence": "Verified against real upstream Blender Lab MCP (blmcp) v1.0.2 tool get_objects_summary (https://projects.blender.org/lab/blender_mcp/src/branch/main/mcp/blmcp/tools/get_objects_summary.py)."
         },
         "path-2-community": {
           "primary_tool": "get_scene_info",
-          "readback_tools": ["get_scene_info"],
+          "readback_tools": [
+            "get_scene_info"
+          ],
           "parameter_adapter": "community_mcp_hierarchy_summary",
-          "mutation_transport_note": "Read-only community scene hierarchy inspection."
+          "mutation_transport_note": "Read-only community scene hierarchy inspection.",
+          "upstream_mcp_tool_name": "get_scene_info",
+          "tool_schema_fingerprint": "caa384b8584c6d54ebfd6194ab612e0eaa3e6a54fa8bacdc5134b03cf7963566",
+          "upstream_qualification_status": "qualified_read_only",
+          "requires_bounded_governed_extension": false,
+          "rollback_strategy": "none_read_only",
+          "qualification_evidence": "Verified against real upstream MCP for Blender (ahujasid/mcp-for-blender) v2.2.7 tool get_scene_info (https://github.com/ahujasid/blender-mcp/blob/main/src/blender_mcp/server.py#L607)."
         }
       },
       "input_schema": {
@@ -794,21 +1234,36 @@
         "additionalProperties": false,
         "required": [],
         "properties": {
-          "check_unapplied_scale": { "type": "boolean" }
+          "check_unapplied_scale": {
+            "type": "boolean"
+          }
         }
       },
       "output_schema": {
         "type": "object",
-        "required": ["root_objects", "negative_scale_objects", "unapplied_scale_objects"],
+        "required": [
+          "root_objects",
+          "negative_scale_objects",
+          "unapplied_scale_objects"
+        ],
         "properties": {
-          "root_objects": { "type": "array" },
-          "negative_scale_objects": { "type": "array" },
-          "unapplied_scale_objects": { "type": "array" }
+          "root_objects": {
+            "type": "array"
+          },
+          "negative_scale_objects": {
+            "type": "array"
+          },
+          "unapplied_scale_objects": {
+            "type": "array"
+          }
         }
       },
       "required_capability_tier": "L0",
       "required_governed_runtime_ceiling": "L0",
-      "governing_skills": ["scene-readiness", "pre-handoff-verification"],
+      "governing_skills": [
+        "scene-readiness",
+        "pre-handoff-verification"
+      ],
       "side_effect_classification": "none",
       "behavior": "read_only",
       "idempotency": "idempotent_read",
@@ -854,27 +1309,59 @@
       "display_name": "Inspect Animation Clips, NLA Tracks & Armature Metadata",
       "purpose": "Inspect action datablocks, NLA strips, frame range, and armature skinning presence prior to GLB animation handoff.",
       "category": "inspection",
-      "supported_runtime_paths": ["path-1-host-a", "path-1-host-b", "path-2-community"],
+      "supported_runtime_paths": [
+        "path-1-host-a",
+        "path-1-host-b",
+        "path-2-community"
+      ],
       "runtime_tool_mappings": {
         "path-1-host-a": {
           "primary_tool": "get_blendfile_summary_datablocks",
-          "secondary_tools": ["get_objects_summary"],
-          "readback_tools": ["get_blendfile_summary_datablocks"],
+          "secondary_tools": [
+            "get_objects_summary"
+          ],
+          "readback_tools": [
+            "get_blendfile_summary_datablocks"
+          ],
           "parameter_adapter": "lab_mcp_animation_metadata",
-          "mutation_transport_note": "Read-only Lab MCP action/armature datablock inspection."
+          "mutation_transport_note": "Read-only Lab MCP action/armature datablock inspection.",
+          "upstream_mcp_tool_name": "get_blendfile_summary_datablocks",
+          "tool_schema_fingerprint": "2b831a66bd41ba97d47055f4b5b51ce8b7387fbe7b2f2c294d251d4b8d658c73",
+          "upstream_qualification_status": "qualified_read_only",
+          "requires_bounded_governed_extension": false,
+          "rollback_strategy": "none_read_only",
+          "qualification_evidence": "Verified against real upstream Blender Lab MCP (blmcp) v1.0.2 tool get_blendfile_summary_datablocks (https://projects.blender.org/lab/blender_mcp/src/branch/main/mcp/blmcp/tools/get_blendfile_summary_datablocks.py)."
         },
         "path-1-host-b": {
           "primary_tool": "get_blendfile_summary_datablocks",
-          "secondary_tools": ["get_objects_summary"],
-          "readback_tools": ["get_blendfile_summary_datablocks"],
+          "secondary_tools": [
+            "get_objects_summary"
+          ],
+          "readback_tools": [
+            "get_blendfile_summary_datablocks"
+          ],
           "parameter_adapter": "lab_mcp_animation_metadata",
-          "mutation_transport_note": "Read-only Lab MCP action/armature datablock inspection."
+          "mutation_transport_note": "Read-only Lab MCP action/armature datablock inspection.",
+          "upstream_mcp_tool_name": "get_blendfile_summary_datablocks",
+          "tool_schema_fingerprint": "2b831a66bd41ba97d47055f4b5b51ce8b7387fbe7b2f2c294d251d4b8d658c73",
+          "upstream_qualification_status": "qualified_read_only",
+          "requires_bounded_governed_extension": false,
+          "rollback_strategy": "none_read_only",
+          "qualification_evidence": "Verified against real upstream Blender Lab MCP (blmcp) v1.0.2 tool get_blendfile_summary_datablocks (https://projects.blender.org/lab/blender_mcp/src/branch/main/mcp/blmcp/tools/get_blendfile_summary_datablocks.py)."
         },
         "path-2-community": {
           "primary_tool": "get_scene_info",
-          "readback_tools": ["get_scene_info"],
+          "readback_tools": [
+            "get_scene_info"
+          ],
           "parameter_adapter": "community_mcp_animation_metadata",
-          "mutation_transport_note": "Read-only community animation metadata inspection."
+          "mutation_transport_note": "Read-only community animation metadata inspection.",
+          "upstream_mcp_tool_name": "get_scene_info",
+          "tool_schema_fingerprint": "caa384b8584c6d54ebfd6194ab612e0eaa3e6a54fa8bacdc5134b03cf7963566",
+          "upstream_qualification_status": "qualified_read_only",
+          "requires_bounded_governed_extension": false,
+          "rollback_strategy": "none_read_only",
+          "qualification_evidence": "Verified against real upstream MCP for Blender (ahujasid/mcp-for-blender) v2.2.7 tool get_scene_info (https://github.com/ahujasid/blender-mcp/blob/main/src/blender_mcp/server.py#L607)."
         }
       },
       "input_schema": {
@@ -882,22 +1369,42 @@
         "additionalProperties": false,
         "required": [],
         "properties": {
-          "armature_name": { "type": "string" }
+          "armature_name": {
+            "type": "string"
+          }
         }
       },
       "output_schema": {
         "type": "object",
-        "required": ["action_count", "armature_count", "frame_start", "frame_end"],
+        "required": [
+          "action_count",
+          "armature_count",
+          "frame_start",
+          "frame_end"
+        ],
         "properties": {
-          "action_count": { "type": "integer", "minimum": 0 },
-          "armature_count": { "type": "integer", "minimum": 0 },
-          "frame_start": { "type": "integer" },
-          "frame_end": { "type": "integer" }
+          "action_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "armature_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "frame_start": {
+            "type": "integer"
+          },
+          "frame_end": {
+            "type": "integer"
+          }
         }
       },
       "required_capability_tier": "L0",
       "required_governed_runtime_ceiling": "L0",
-      "governing_skills": ["glb-animation-handoff", "scene-readiness"],
+      "governing_skills": [
+        "glb-animation-handoff",
+        "scene-readiness"
+      ],
       "side_effect_classification": "none",
       "behavior": "read_only",
       "idempotency": "idempotent_read",
@@ -943,7 +1450,11 @@
       "display_name": "Inspect GLB Export Readiness (Zero File Write)",
       "purpose": "Verify missing external textures, linked libraries, scale hygiene, and PBR compatibility before any GLB export is attempted.",
       "category": "inspection",
-      "supported_runtime_paths": ["path-1-host-a", "path-1-host-b", "path-2-community"],
+      "supported_runtime_paths": [
+        "path-1-host-a",
+        "path-1-host-b",
+        "path-2-community"
+      ],
       "runtime_tool_mappings": {
         "path-1-host-a": {
           "primary_tool": "get_blendfile_summary_missing_files",
@@ -951,9 +1462,17 @@
             "get_blendfile_summary_of_linked_libraries",
             "get_objects_summary"
           ],
-          "readback_tools": ["get_blendfile_summary_missing_files"],
+          "readback_tools": [
+            "get_blendfile_summary_missing_files"
+          ],
           "parameter_adapter": "lab_mcp_glb_readiness",
-          "mutation_transport_note": "Read-only Lab MCP missing-files and linked-library check."
+          "mutation_transport_note": "Read-only Lab MCP missing-files and linked-library check.",
+          "upstream_mcp_tool_name": "get_blendfile_summary_missing_files",
+          "tool_schema_fingerprint": "51ac3be903d237d241ef285e86d899963306807b86b760d35fdb8089ea7d4c08",
+          "upstream_qualification_status": "qualified_read_only",
+          "requires_bounded_governed_extension": false,
+          "rollback_strategy": "none_read_only",
+          "qualification_evidence": "Verified against real upstream Blender Lab MCP (blmcp) v1.0.2 tool get_blendfile_summary_missing_files (https://projects.blender.org/lab/blender_mcp/src/branch/main/mcp/blmcp/tools/get_blendfile_summary_missing_files.py)."
         },
         "path-1-host-b": {
           "primary_tool": "get_blendfile_summary_missing_files",
@@ -961,16 +1480,34 @@
             "get_blendfile_summary_of_linked_libraries",
             "get_objects_summary"
           ],
-          "readback_tools": ["get_blendfile_summary_missing_files"],
+          "readback_tools": [
+            "get_blendfile_summary_missing_files"
+          ],
           "parameter_adapter": "lab_mcp_glb_readiness",
-          "mutation_transport_note": "Read-only Lab MCP missing-files and linked-library check."
+          "mutation_transport_note": "Read-only Lab MCP missing-files and linked-library check.",
+          "upstream_mcp_tool_name": "get_blendfile_summary_missing_files",
+          "tool_schema_fingerprint": "51ac3be903d237d241ef285e86d899963306807b86b760d35fdb8089ea7d4c08",
+          "upstream_qualification_status": "qualified_read_only",
+          "requires_bounded_governed_extension": false,
+          "rollback_strategy": "none_read_only",
+          "qualification_evidence": "Verified against real upstream Blender Lab MCP (blmcp) v1.0.2 tool get_blendfile_summary_missing_files (https://projects.blender.org/lab/blender_mcp/src/branch/main/mcp/blmcp/tools/get_blendfile_summary_missing_files.py)."
         },
         "path-2-community": {
           "primary_tool": "get_scene_info",
-          "secondary_tools": ["get_object_info"],
-          "readback_tools": ["get_scene_info"],
+          "secondary_tools": [
+            "get_object_info"
+          ],
+          "readback_tools": [
+            "get_scene_info"
+          ],
           "parameter_adapter": "community_mcp_glb_readiness",
-          "mutation_transport_note": "Read-only community scene and object GLB readiness check."
+          "mutation_transport_note": "Read-only community scene and object GLB readiness check.",
+          "upstream_mcp_tool_name": "get_scene_info",
+          "tool_schema_fingerprint": "caa384b8584c6d54ebfd6194ab612e0eaa3e6a54fa8bacdc5134b03cf7963566",
+          "upstream_qualification_status": "qualified_read_only",
+          "requires_bounded_governed_extension": false,
+          "rollback_strategy": "none_read_only",
+          "qualification_evidence": "Verified against real upstream MCP for Blender (ahujasid/mcp-for-blender) v2.2.7 tool get_scene_info (https://github.com/ahujasid/blender-mcp/blob/main/src/blender_mcp/server.py#L607)."
         }
       },
       "input_schema": {
@@ -980,23 +1517,49 @@
         "properties": {
           "target_profile": {
             "type": "string",
-            "enum": ["desktop_web", "mobile_web", "hybrid_render_and_web"]
+            "enum": [
+              "desktop_web",
+              "mobile_web",
+              "hybrid_render_and_web"
+            ]
           }
         }
       },
       "output_schema": {
         "type": "object",
-        "required": ["export_ready", "missing_files_count", "linked_libraries_count", "blockers"],
+        "required": [
+          "export_ready",
+          "missing_files_count",
+          "linked_libraries_count",
+          "blockers"
+        ],
         "properties": {
-          "export_ready": { "type": "boolean" },
-          "missing_files_count": { "type": "integer", "minimum": 0 },
-          "linked_libraries_count": { "type": "integer", "minimum": 0 },
-          "blockers": { "type": "array", "items": { "type": "string" } }
+          "export_ready": {
+            "type": "boolean"
+          },
+          "missing_files_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "linked_libraries_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "blockers": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
         }
       },
       "required_capability_tier": "L0",
       "required_governed_runtime_ceiling": "L0",
-      "governing_skills": ["pre-handoff-verification", "glb-web-handoff", "mobile-glb-budget"],
+      "governing_skills": [
+        "pre-handoff-verification",
+        "glb-web-handoff",
+        "mobile-glb-budget"
+      ],
       "side_effect_classification": "none",
       "behavior": "read_only",
       "idempotency": "idempotent_read",
@@ -1042,68 +1605,140 @@
       "display_name": "Update Existing Camera Transform & Lens Settings",
       "purpose": "Apply bounded, reversible location, Euler rotation, focal length (mm), and DOF focus distance updates to an existing camera after a verified .blend checkpoint.",
       "category": "mutation",
-      "supported_runtime_paths": ["path-1-host-a", "path-1-host-b", "path-2-community"],
+      "supported_runtime_paths": [
+        "path-1-host-a",
+        "path-1-host-b",
+        "path-2-community"
+      ],
       "runtime_tool_mappings": {
         "path-1-host-a": {
           "primary_tool": "set_camera_properties_governed",
-          "readback_tools": ["get_objects_summary"],
+          "readback_tools": [
+            "get_objects_summary"
+          ],
           "parameter_adapter": "lab_mcp_camera_mutation",
-          "mutation_transport_note": "Constrained camera property update on Path 1 after verified .blend checkpoint; never exposes raw Python to the user."
+          "mutation_transport_note": "Constrained camera property update on Path 1 after verified .blend checkpoint; never exposes raw Python to the user.",
+          "upstream_mcp_tool_name": null,
+          "tool_schema_fingerprint": "827d69856b08267683e41117cdab6879afb5eb56b7b954312b95f0d3adc0c542",
+          "upstream_qualification_status": "blocked_missing_bounded_upstream_tool",
+          "requires_bounded_governed_extension": true,
+          "rollback_strategy": "restore_verified_pre_mutation_blend_checkpoint_and_independent_l0_readback",
+          "qualification_evidence": "Upstream Blender Lab MCP v1.0.2 does not expose bounded tool set_camera_properties_governed and relies on execute_blender_code (unsafe_raw_code); blocked fail-closed on real upstream runtimes and never translated to generated Python."
         },
         "path-1-host-b": {
           "primary_tool": "set_camera_properties_governed",
-          "readback_tools": ["get_objects_summary"],
+          "readback_tools": [
+            "get_objects_summary"
+          ],
           "parameter_adapter": "lab_mcp_camera_mutation",
-          "mutation_transport_note": "Constrained camera property update on Path 1 after verified .blend checkpoint; never exposes raw Python to the user."
+          "mutation_transport_note": "Constrained camera property update on Path 1 after verified .blend checkpoint; never exposes raw Python to the user.",
+          "upstream_mcp_tool_name": null,
+          "tool_schema_fingerprint": "827d69856b08267683e41117cdab6879afb5eb56b7b954312b95f0d3adc0c542",
+          "upstream_qualification_status": "blocked_missing_bounded_upstream_tool",
+          "requires_bounded_governed_extension": true,
+          "rollback_strategy": "restore_verified_pre_mutation_blend_checkpoint_and_independent_l0_readback",
+          "qualification_evidence": "Upstream Blender Lab MCP v1.0.2 does not expose bounded tool set_camera_properties_governed and relies on execute_blender_code (unsafe_raw_code); blocked fail-closed on real upstream runtimes and never translated to generated Python."
         },
         "path-2-community": {
           "primary_tool": "set_camera_properties_governed",
-          "readback_tools": ["get_scene_info", "get_object_info"],
+          "readback_tools": [
+            "get_scene_info",
+            "get_object_info"
+          ],
           "parameter_adapter": "community_mcp_camera_mutation",
-          "mutation_transport_note": "Constrained camera property update on Path 2 after verified .blend checkpoint; never exposes raw Python to the user."
+          "mutation_transport_note": "Constrained camera property update on Path 2 after verified .blend checkpoint; never exposes raw Python to the user.",
+          "upstream_mcp_tool_name": null,
+          "tool_schema_fingerprint": "827d69856b08267683e41117cdab6879afb5eb56b7b954312b95f0d3adc0c542",
+          "upstream_qualification_status": "blocked_missing_bounded_upstream_tool",
+          "requires_bounded_governed_extension": true,
+          "rollback_strategy": "restore_verified_pre_mutation_blend_checkpoint_and_independent_l0_readback",
+          "qualification_evidence": "Upstream mcp-for-blender v2.2.7 does not expose bounded tool set_camera_properties_governed and relies on execute_blender_code (unsafe_raw_code); blocked fail-closed on real upstream runtimes and never translated to generated Python."
         }
       },
       "input_schema": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["camera_name", "location", "rotation_euler_deg", "focal_length_mm"],
+        "required": [
+          "camera_name",
+          "location",
+          "rotation_euler_deg",
+          "focal_length_mm"
+        ],
         "properties": {
-          "camera_name": { "type": "string", "minLength": 1, "maxLength": 128 },
+          "camera_name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
           "location": {
             "type": "array",
             "minItems": 3,
             "maxItems": 3,
-            "items": { "type": "number", "minimum": -1000, "maximum": 1000 }
+            "items": {
+              "type": "number",
+              "minimum": -1000,
+              "maximum": 1000
+            }
           },
           "rotation_euler_deg": {
             "type": "array",
             "minItems": 3,
             "maxItems": 3,
-            "items": { "type": "number", "minimum": -360, "maximum": 360 }
+            "items": {
+              "type": "number",
+              "minimum": -360,
+              "maximum": 360
+            }
           },
           "focal_length_mm": {
             "type": "number",
             "minimum": 12,
             "maximum": 300
           },
-          "dof_enabled": { "type": "boolean" },
-          "f_stop": { "type": "number", "minimum": 0.5, "maximum": 64 }
+          "dof_enabled": {
+            "type": "boolean"
+          },
+          "f_stop": {
+            "type": "number",
+            "minimum": 0.5,
+            "maximum": 64
+          }
         }
       },
       "output_schema": {
         "type": "object",
-        "required": ["camera_name", "updated", "location", "rotation_euler_deg", "focal_length_mm"],
+        "required": [
+          "camera_name",
+          "updated",
+          "location",
+          "rotation_euler_deg",
+          "focal_length_mm"
+        ],
         "properties": {
-          "camera_name": { "type": "string" },
-          "updated": { "type": "boolean" },
-          "location": { "type": "array" },
-          "rotation_euler_deg": { "type": "array" },
-          "focal_length_mm": { "type": "number" }
+          "camera_name": {
+            "type": "string"
+          },
+          "updated": {
+            "type": "boolean"
+          },
+          "location": {
+            "type": "array"
+          },
+          "rotation_euler_deg": {
+            "type": "array"
+          },
+          "focal_length_mm": {
+            "type": "number"
+          }
         }
       },
       "required_capability_tier": "L1",
       "required_governed_runtime_ceiling": "L1",
-      "governing_skills": ["camera-composition", "product-hero-scene-planner", "character-portrait"],
+      "governing_skills": [
+        "camera-composition",
+        "product-hero-scene-planner",
+        "character-portrait"
+      ],
       "side_effect_classification": "reversible_scene_mutation",
       "behavior": "mutating",
       "idempotency": "idempotent_set_state",
@@ -1154,69 +1789,145 @@
       "display_name": "Update Existing Light Energy, Color & Transform",
       "purpose": "Apply bounded, reversible energy (Watts), RGB color, size, and transform updates to an existing light object after a verified .blend checkpoint.",
       "category": "mutation",
-      "supported_runtime_paths": ["path-1-host-a", "path-1-host-b", "path-2-community"],
+      "supported_runtime_paths": [
+        "path-1-host-a",
+        "path-1-host-b",
+        "path-2-community"
+      ],
       "runtime_tool_mappings": {
         "path-1-host-a": {
           "primary_tool": "set_light_properties_governed",
-          "readback_tools": ["get_objects_summary"],
+          "readback_tools": [
+            "get_objects_summary"
+          ],
           "parameter_adapter": "lab_mcp_light_mutation",
-          "mutation_transport_note": "Constrained light parameter update on Path 1 after verified .blend checkpoint."
+          "mutation_transport_note": "Constrained light parameter update on Path 1 after verified .blend checkpoint.",
+          "upstream_mcp_tool_name": null,
+          "tool_schema_fingerprint": "7f64a3a4fe668c5337bcc858735b38dec1ee3893a769852cb7986cd99d7045a5",
+          "upstream_qualification_status": "blocked_missing_bounded_upstream_tool",
+          "requires_bounded_governed_extension": true,
+          "rollback_strategy": "restore_verified_pre_mutation_blend_checkpoint_and_independent_l0_readback",
+          "qualification_evidence": "Upstream Blender Lab MCP v1.0.2 does not expose bounded tool set_light_properties_governed and relies on execute_blender_code (unsafe_raw_code); blocked fail-closed on real upstream runtimes and never translated to generated Python."
         },
         "path-1-host-b": {
           "primary_tool": "set_light_properties_governed",
-          "readback_tools": ["get_objects_summary"],
+          "readback_tools": [
+            "get_objects_summary"
+          ],
           "parameter_adapter": "lab_mcp_light_mutation",
-          "mutation_transport_note": "Constrained light parameter update on Path 1 after verified .blend checkpoint."
+          "mutation_transport_note": "Constrained light parameter update on Path 1 after verified .blend checkpoint.",
+          "upstream_mcp_tool_name": null,
+          "tool_schema_fingerprint": "7f64a3a4fe668c5337bcc858735b38dec1ee3893a769852cb7986cd99d7045a5",
+          "upstream_qualification_status": "blocked_missing_bounded_upstream_tool",
+          "requires_bounded_governed_extension": true,
+          "rollback_strategy": "restore_verified_pre_mutation_blend_checkpoint_and_independent_l0_readback",
+          "qualification_evidence": "Upstream Blender Lab MCP v1.0.2 does not expose bounded tool set_light_properties_governed and relies on execute_blender_code (unsafe_raw_code); blocked fail-closed on real upstream runtimes and never translated to generated Python."
         },
         "path-2-community": {
           "primary_tool": "set_light_properties_governed",
-          "readback_tools": ["get_scene_info", "get_object_info"],
+          "readback_tools": [
+            "get_scene_info",
+            "get_object_info"
+          ],
           "parameter_adapter": "community_mcp_light_mutation",
-          "mutation_transport_note": "Constrained light parameter update on Path 2 after verified .blend checkpoint."
+          "mutation_transport_note": "Constrained light parameter update on Path 2 after verified .blend checkpoint.",
+          "upstream_mcp_tool_name": null,
+          "tool_schema_fingerprint": "7f64a3a4fe668c5337bcc858735b38dec1ee3893a769852cb7986cd99d7045a5",
+          "upstream_qualification_status": "blocked_missing_bounded_upstream_tool",
+          "requires_bounded_governed_extension": true,
+          "rollback_strategy": "restore_verified_pre_mutation_blend_checkpoint_and_independent_l0_readback",
+          "qualification_evidence": "Upstream mcp-for-blender v2.2.7 does not expose bounded tool set_light_properties_governed and relies on execute_blender_code (unsafe_raw_code); blocked fail-closed on real upstream runtimes and never translated to generated Python."
         }
       },
       "input_schema": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["light_name", "energy_watts", "color_rgb"],
+        "required": [
+          "light_name",
+          "energy_watts",
+          "color_rgb"
+        ],
         "properties": {
-          "light_name": { "type": "string", "minLength": 1, "maxLength": 128 },
-          "energy_watts": { "type": "number", "minimum": 0, "maximum": 100000 },
+          "light_name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "energy_watts": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100000
+          },
           "color_rgb": {
             "type": "array",
             "minItems": 3,
             "maxItems": 3,
-            "items": { "type": "number", "minimum": 0, "maximum": 1 }
+            "items": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            }
           },
           "location": {
             "type": "array",
             "minItems": 3,
             "maxItems": 3,
-            "items": { "type": "number", "minimum": -1000, "maximum": 1000 }
+            "items": {
+              "type": "number",
+              "minimum": -1000,
+              "maximum": 1000
+            }
           },
           "rotation_euler_deg": {
             "type": "array",
             "minItems": 3,
             "maxItems": 3,
-            "items": { "type": "number", "minimum": -360, "maximum": 360 }
+            "items": {
+              "type": "number",
+              "minimum": -360,
+              "maximum": 360
+            }
           },
-          "area_size": { "type": "number", "minimum": 0.01, "maximum": 100 }
+          "area_size": {
+            "type": "number",
+            "minimum": 0.01,
+            "maximum": 100
+          }
         }
       },
       "output_schema": {
         "type": "object",
-        "required": ["light_name", "updated", "energy_watts", "color_rgb"],
+        "required": [
+          "light_name",
+          "updated",
+          "energy_watts",
+          "color_rgb"
+        ],
         "properties": {
-          "light_name": { "type": "string" },
-          "updated": { "type": "boolean" },
-          "energy_watts": { "type": "number" },
-          "color_rgb": { "type": "array" },
-          "location": { "type": "array" }
+          "light_name": {
+            "type": "string"
+          },
+          "updated": {
+            "type": "boolean"
+          },
+          "energy_watts": {
+            "type": "number"
+          },
+          "color_rgb": {
+            "type": "array"
+          },
+          "location": {
+            "type": "array"
+          }
         }
       },
       "required_capability_tier": "L1",
       "required_governed_runtime_ceiling": "L1",
-      "governing_skills": ["lighting-material-plan", "product-hero-scene-planner", "interior-scene"],
+      "governing_skills": [
+        "lighting-material-plan",
+        "product-hero-scene-planner",
+        "interior-scene"
+      ],
       "side_effect_classification": "reversible_scene_mutation",
       "behavior": "mutating",
       "idempotency": "idempotent_set_state",
@@ -1267,58 +1978,133 @@
       "display_name": "Update Existing Material Principled BSDF Properties",
       "purpose": "Apply bounded updates to allowlisted Principled BSDF inputs (base_color_rgba, metallic, roughness, ior) on an existing material.",
       "category": "mutation",
-      "supported_runtime_paths": ["path-1-host-a", "path-1-host-b", "path-2-community"],
+      "supported_runtime_paths": [
+        "path-1-host-a",
+        "path-1-host-b",
+        "path-2-community"
+      ],
       "runtime_tool_mappings": {
         "path-1-host-a": {
           "primary_tool": "set_material_pbr_governed",
-          "readback_tools": ["get_blendfile_summary_datablocks", "get_objects_summary"],
+          "readback_tools": [
+            "get_blendfile_summary_datablocks",
+            "get_objects_summary"
+          ],
           "parameter_adapter": "lab_mcp_material_mutation",
-          "mutation_transport_note": "Constrained Principled BSDF parameter update on Path 1 after verified .blend checkpoint."
+          "mutation_transport_note": "Constrained Principled BSDF parameter update on Path 1 after verified .blend checkpoint.",
+          "upstream_mcp_tool_name": null,
+          "tool_schema_fingerprint": "0a7ea104353369d20883fd54dfa7542c592a1a931fe945e8cab07141a51637e1",
+          "upstream_qualification_status": "blocked_missing_bounded_upstream_tool",
+          "requires_bounded_governed_extension": true,
+          "rollback_strategy": "restore_verified_pre_mutation_blend_checkpoint_and_independent_l0_readback",
+          "qualification_evidence": "Upstream Blender Lab MCP v1.0.2 does not expose bounded tool set_material_pbr_governed and relies on execute_blender_code (unsafe_raw_code); blocked fail-closed on real upstream runtimes and never translated to generated Python."
         },
         "path-1-host-b": {
           "primary_tool": "set_material_pbr_governed",
-          "readback_tools": ["get_blendfile_summary_datablocks", "get_objects_summary"],
+          "readback_tools": [
+            "get_blendfile_summary_datablocks",
+            "get_objects_summary"
+          ],
           "parameter_adapter": "lab_mcp_material_mutation",
-          "mutation_transport_note": "Constrained Principled BSDF parameter update on Path 1 after verified .blend checkpoint."
+          "mutation_transport_note": "Constrained Principled BSDF parameter update on Path 1 after verified .blend checkpoint.",
+          "upstream_mcp_tool_name": null,
+          "tool_schema_fingerprint": "0a7ea104353369d20883fd54dfa7542c592a1a931fe945e8cab07141a51637e1",
+          "upstream_qualification_status": "blocked_missing_bounded_upstream_tool",
+          "requires_bounded_governed_extension": true,
+          "rollback_strategy": "restore_verified_pre_mutation_blend_checkpoint_and_independent_l0_readback",
+          "qualification_evidence": "Upstream Blender Lab MCP v1.0.2 does not expose bounded tool set_material_pbr_governed and relies on execute_blender_code (unsafe_raw_code); blocked fail-closed on real upstream runtimes and never translated to generated Python."
         },
         "path-2-community": {
           "primary_tool": "set_material_pbr_governed",
-          "readback_tools": ["get_object_info"],
+          "readback_tools": [
+            "get_object_info"
+          ],
           "parameter_adapter": "community_mcp_material_mutation",
-          "mutation_transport_note": "Constrained Principled BSDF parameter update on Path 2 after verified .blend checkpoint."
+          "mutation_transport_note": "Constrained Principled BSDF parameter update on Path 2 after verified .blend checkpoint.",
+          "upstream_mcp_tool_name": null,
+          "tool_schema_fingerprint": "0a7ea104353369d20883fd54dfa7542c592a1a931fe945e8cab07141a51637e1",
+          "upstream_qualification_status": "blocked_missing_bounded_upstream_tool",
+          "requires_bounded_governed_extension": true,
+          "rollback_strategy": "restore_verified_pre_mutation_blend_checkpoint_and_independent_l0_readback",
+          "qualification_evidence": "Upstream mcp-for-blender v2.2.7 does not expose bounded tool set_material_pbr_governed and relies on execute_blender_code (unsafe_raw_code); blocked fail-closed on real upstream runtimes and never translated to generated Python."
         }
       },
       "input_schema": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["object_name", "material_name", "roughness", "metallic"],
+        "required": [
+          "object_name",
+          "material_name",
+          "roughness",
+          "metallic"
+        ],
         "properties": {
-          "object_name": { "type": "string", "minLength": 1, "maxLength": 128 },
-          "material_name": { "type": "string", "minLength": 1, "maxLength": 128 },
+          "object_name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "material_name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
           "base_color_rgba": {
             "type": "array",
             "minItems": 4,
             "maxItems": 4,
-            "items": { "type": "number", "minimum": 0, "maximum": 1 }
+            "items": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            }
           },
-          "metallic": { "type": "number", "minimum": 0, "maximum": 1 },
-          "roughness": { "type": "number", "minimum": 0, "maximum": 1 },
-          "ior": { "type": "number", "minimum": 1, "maximum": 3 }
+          "metallic": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "roughness": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "ior": {
+            "type": "number",
+            "minimum": 1,
+            "maximum": 3
+          }
         }
       },
       "output_schema": {
         "type": "object",
-        "required": ["material_name", "updated", "roughness", "metallic"],
+        "required": [
+          "material_name",
+          "updated",
+          "roughness",
+          "metallic"
+        ],
         "properties": {
-          "material_name": { "type": "string" },
-          "updated": { "type": "boolean" },
-          "roughness": { "type": "number" },
-          "metallic": { "type": "number" }
+          "material_name": {
+            "type": "string"
+          },
+          "updated": {
+            "type": "boolean"
+          },
+          "roughness": {
+            "type": "number"
+          },
+          "metallic": {
+            "type": "number"
+          }
         }
       },
       "required_capability_tier": "L1",
       "required_governed_runtime_ceiling": "L1",
-      "governing_skills": ["lighting-material-plan", "product-hero-scene-planner"],
+      "governing_skills": [
+        "lighting-material-plan",
+        "product-hero-scene-planner"
+      ],
       "side_effect_classification": "reversible_scene_mutation",
       "behavior": "mutating",
       "idempotency": "idempotent_set_state",
@@ -1369,67 +2155,137 @@
       "display_name": "Update Existing Object Transform (Positive Scale Guarded)",
       "purpose": "Apply bounded location, Euler rotation, and positive scale updates to an existing scene object after a verified .blend checkpoint.",
       "category": "mutation",
-      "supported_runtime_paths": ["path-1-host-a", "path-1-host-b", "path-2-community"],
+      "supported_runtime_paths": [
+        "path-1-host-a",
+        "path-1-host-b",
+        "path-2-community"
+      ],
       "runtime_tool_mappings": {
         "path-1-host-a": {
           "primary_tool": "set_object_transform_governed",
-          "readback_tools": ["get_objects_summary"],
+          "readback_tools": [
+            "get_objects_summary"
+          ],
           "parameter_adapter": "lab_mcp_object_transform",
-          "mutation_transport_note": "Constrained object transform update on Path 1 after verified .blend checkpoint."
+          "mutation_transport_note": "Constrained object transform update on Path 1 after verified .blend checkpoint.",
+          "upstream_mcp_tool_name": null,
+          "tool_schema_fingerprint": "ee1e006ed63b39ec9c1c2cbfb6befb304374d4be504773f1558041ee1795f421",
+          "upstream_qualification_status": "blocked_missing_bounded_upstream_tool",
+          "requires_bounded_governed_extension": true,
+          "rollback_strategy": "restore_verified_pre_mutation_blend_checkpoint_and_independent_l0_readback",
+          "qualification_evidence": "Upstream Blender Lab MCP v1.0.2 does not expose bounded tool set_object_transform_governed and relies on execute_blender_code (unsafe_raw_code); blocked fail-closed on real upstream runtimes and never translated to generated Python."
         },
         "path-1-host-b": {
           "primary_tool": "set_object_transform_governed",
-          "readback_tools": ["get_objects_summary"],
+          "readback_tools": [
+            "get_objects_summary"
+          ],
           "parameter_adapter": "lab_mcp_object_transform",
-          "mutation_transport_note": "Constrained object transform update on Path 1 after verified .blend checkpoint."
+          "mutation_transport_note": "Constrained object transform update on Path 1 after verified .blend checkpoint.",
+          "upstream_mcp_tool_name": null,
+          "tool_schema_fingerprint": "ee1e006ed63b39ec9c1c2cbfb6befb304374d4be504773f1558041ee1795f421",
+          "upstream_qualification_status": "blocked_missing_bounded_upstream_tool",
+          "requires_bounded_governed_extension": true,
+          "rollback_strategy": "restore_verified_pre_mutation_blend_checkpoint_and_independent_l0_readback",
+          "qualification_evidence": "Upstream Blender Lab MCP v1.0.2 does not expose bounded tool set_object_transform_governed and relies on execute_blender_code (unsafe_raw_code); blocked fail-closed on real upstream runtimes and never translated to generated Python."
         },
         "path-2-community": {
           "primary_tool": "set_object_transform_governed",
-          "readback_tools": ["get_scene_info", "get_object_info"],
+          "readback_tools": [
+            "get_scene_info",
+            "get_object_info"
+          ],
           "parameter_adapter": "community_mcp_object_transform",
-          "mutation_transport_note": "Constrained object transform update on Path 2 after verified .blend checkpoint."
+          "mutation_transport_note": "Constrained object transform update on Path 2 after verified .blend checkpoint.",
+          "upstream_mcp_tool_name": null,
+          "tool_schema_fingerprint": "ee1e006ed63b39ec9c1c2cbfb6befb304374d4be504773f1558041ee1795f421",
+          "upstream_qualification_status": "blocked_missing_bounded_upstream_tool",
+          "requires_bounded_governed_extension": true,
+          "rollback_strategy": "restore_verified_pre_mutation_blend_checkpoint_and_independent_l0_readback",
+          "qualification_evidence": "Upstream mcp-for-blender v2.2.7 does not expose bounded tool set_object_transform_governed and relies on execute_blender_code (unsafe_raw_code); blocked fail-closed on real upstream runtimes and never translated to generated Python."
         }
       },
       "input_schema": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["object_name", "location", "rotation_euler_deg", "scale"],
+        "required": [
+          "object_name",
+          "location",
+          "rotation_euler_deg",
+          "scale"
+        ],
         "properties": {
-          "object_name": { "type": "string", "minLength": 1, "maxLength": 128 },
+          "object_name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
           "location": {
             "type": "array",
             "minItems": 3,
             "maxItems": 3,
-            "items": { "type": "number", "minimum": -1000, "maximum": 1000 }
+            "items": {
+              "type": "number",
+              "minimum": -1000,
+              "maximum": 1000
+            }
           },
           "rotation_euler_deg": {
             "type": "array",
             "minItems": 3,
             "maxItems": 3,
-            "items": { "type": "number", "minimum": -360, "maximum": 360 }
+            "items": {
+              "type": "number",
+              "minimum": -360,
+              "maximum": 360
+            }
           },
           "scale": {
             "type": "array",
             "minItems": 3,
             "maxItems": 3,
-            "items": { "type": "number", "exclusiveMinimum": 0, "maximum": 100 }
+            "items": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "maximum": 100
+            }
           }
         }
       },
       "output_schema": {
         "type": "object",
-        "required": ["object_name", "updated", "location", "rotation_euler_deg", "scale"],
+        "required": [
+          "object_name",
+          "updated",
+          "location",
+          "rotation_euler_deg",
+          "scale"
+        ],
         "properties": {
-          "object_name": { "type": "string" },
-          "updated": { "type": "boolean" },
-          "location": { "type": "array" },
-          "rotation_euler_deg": { "type": "array" },
-          "scale": { "type": "array" }
+          "object_name": {
+            "type": "string"
+          },
+          "updated": {
+            "type": "boolean"
+          },
+          "location": {
+            "type": "array"
+          },
+          "rotation_euler_deg": {
+            "type": "array"
+          },
+          "scale": {
+            "type": "array"
+          }
         }
       },
       "required_capability_tier": "L1",
       "required_governed_runtime_ceiling": "L1",
-      "governing_skills": ["product-hero-scene-planner", "product-grid-scene-planner", "environment-shot"],
+      "governing_skills": [
+        "product-hero-scene-planner",
+        "product-grid-scene-planner",
+        "environment-shot"
+      ],
       "side_effect_classification": "reversible_scene_mutation",
       "behavior": "mutating",
       "idempotency": "idempotent_set_state",
@@ -1480,61 +2336,135 @@
       "display_name": "Render Still Image to Governed Output Directory",
       "purpose": "Render a still frame to an allowlisted output path and verify the produced file byteSize and SHA-256 on disk.",
       "category": "export_or_import",
-      "supported_runtime_paths": ["path-1-host-a", "path-1-host-b", "path-2-community", "cli-appendix"],
+      "supported_runtime_paths": [
+        "path-1-host-a",
+        "path-1-host-b",
+        "path-2-community",
+        "cli-appendix"
+      ],
       "runtime_tool_mappings": {
         "path-1-host-a": {
           "primary_tool": "render_viewport_to_path",
-          "secondary_tools": ["render_thumbnail_to_path"],
-          "readback_tools": ["get_blendfile_summary_path_info"],
+          "secondary_tools": [
+            "render_thumbnail_to_path"
+          ],
+          "readback_tools": [
+            "get_blendfile_summary_path_info"
+          ],
           "parameter_adapter": "lab_mcp_render_to_path",
-          "mutation_transport_note": "Writes still image to allowlisted path via Lab MCP render_viewport_to_path."
+          "mutation_transport_note": "Writes still image to allowlisted path via Lab MCP render_viewport_to_path.",
+          "upstream_mcp_tool_name": "render_viewport_to_path",
+          "tool_schema_fingerprint": "288057920fe2cda5733db02228a417c98da75f4648a4524113ea78e0d75e4b25",
+          "upstream_qualification_status": "qualified_safe_direct",
+          "requires_bounded_governed_extension": false,
+          "rollback_strategy": "delete_unverified_export_and_restore_pre_mutation_blend_checkpoint",
+          "qualification_evidence": "Verified against real upstream Blender Lab MCP (blmcp) v1.0.2 tool render_viewport_to_path (https://projects.blender.org/lab/blender_mcp/src/branch/main/mcp/blmcp/tools/render_viewport_to_path.py); gated at L2 with output_directory_allowlist and checkpoint."
         },
         "path-1-host-b": {
           "primary_tool": "render_viewport_to_path",
-          "secondary_tools": ["render_thumbnail_to_path"],
-          "readback_tools": ["get_blendfile_summary_path_info"],
+          "secondary_tools": [
+            "render_thumbnail_to_path"
+          ],
+          "readback_tools": [
+            "get_blendfile_summary_path_info"
+          ],
           "parameter_adapter": "lab_mcp_render_to_path",
-          "mutation_transport_note": "Writes still image to allowlisted path via Lab MCP render_viewport_to_path."
+          "mutation_transport_note": "Writes still image to allowlisted path via Lab MCP render_viewport_to_path.",
+          "upstream_mcp_tool_name": "render_viewport_to_path",
+          "tool_schema_fingerprint": "288057920fe2cda5733db02228a417c98da75f4648a4524113ea78e0d75e4b25",
+          "upstream_qualification_status": "qualified_safe_direct",
+          "requires_bounded_governed_extension": false,
+          "rollback_strategy": "delete_unverified_export_and_restore_pre_mutation_blend_checkpoint",
+          "qualification_evidence": "Verified against real upstream Blender Lab MCP (blmcp) v1.0.2 tool render_viewport_to_path (https://projects.blender.org/lab/blender_mcp/src/branch/main/mcp/blmcp/tools/render_viewport_to_path.py); gated at L2 with output_directory_allowlist and checkpoint."
         },
         "path-2-community": {
           "primary_tool": "render_still_governed",
-          "readback_tools": ["get_scene_info"],
+          "readback_tools": [
+            "get_scene_info"
+          ],
           "parameter_adapter": "community_mcp_render_still",
-          "mutation_transport_note": "Governed still render to allowlisted output directory on Path 2."
+          "mutation_transport_note": "Governed still render to allowlisted output directory on Path 2.",
+          "upstream_mcp_tool_name": null,
+          "tool_schema_fingerprint": "46b38af59a88b08c00378cb65d966111d767e2b73355b32e16861b107ca39801",
+          "upstream_qualification_status": "blocked_missing_bounded_upstream_tool",
+          "requires_bounded_governed_extension": true,
+          "rollback_strategy": "delete_unverified_export_and_restore_pre_mutation_blend_checkpoint",
+          "qualification_evidence": "Upstream mcp-for-blender v2.2.7 does not expose bounded tool render_still_governed and relies on execute_blender_code (unsafe_raw_code); blocked fail-closed on real upstream runtimes and never translated to generated Python."
         },
         "cli-appendix": {
           "primary_tool": "blender_cli_render_still",
-          "readback_tools": ["filesystem_stat_and_sha256"],
+          "readback_tools": [
+            "filesystem_stat_and_sha256"
+          ],
           "parameter_adapter": "cli_appendix_render_flags",
-          "mutation_transport_note": "Headless CLI appendix render (-b <file> -o <path> -F PNG -f 1)."
+          "mutation_transport_note": "Headless CLI appendix render (-b <file> -o <path> -F PNG -f 1).",
+          "upstream_mcp_tool_name": null,
+          "tool_schema_fingerprint": "9cd25869377025e58de3809e2075679ac1dbacfb4a0539191e1f8cadbe206bb9",
+          "upstream_qualification_status": "contract_only_appendix",
+          "requires_bounded_governed_extension": true,
+          "rollback_strategy": "delete_unverified_export_and_restore_pre_mutation_blend_checkpoint",
+          "qualification_evidence": "Headless Blender CLI appendix surface (--background --render-output / glTF export); not an MCP server tool."
         }
       },
       "input_schema": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["target_output_path", "output_directory_allowlist", "format"],
+        "required": [
+          "target_output_path",
+          "output_directory_allowlist",
+          "format"
+        ],
         "properties": {
-          "target_output_path": { "type": "string", "minLength": 5 },
+          "target_output_path": {
+            "type": "string",
+            "minLength": 5
+          },
           "output_directory_allowlist": {
             "type": "array",
             "minItems": 1,
-            "items": { "type": "string", "minLength": 2 }
+            "items": {
+              "type": "string",
+              "minLength": 2
+            }
           },
-          "format": { "type": "string", "enum": ["PNG", "OPEN_EXR", "JPEG", "WEBP"] }
+          "format": {
+            "type": "string",
+            "enum": [
+              "PNG",
+              "OPEN_EXR",
+              "JPEG",
+              "WEBP"
+            ]
+          }
         }
       },
       "output_schema": {
         "type": "object",
-        "required": ["artifact_path", "byte_size", "sha256"],
+        "required": [
+          "artifact_path",
+          "byte_size",
+          "sha256"
+        ],
         "properties": {
-          "artifact_path": { "type": "string" },
-          "byte_size": { "type": "integer", "minimum": 1 },
-          "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+          "artifact_path": {
+            "type": "string"
+          },
+          "byte_size": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          }
         }
       },
       "required_capability_tier": "L2",
       "required_governed_runtime_ceiling": "L2",
-      "governing_skills": ["render-export-evidence", "output-format-decision"],
+      "governing_skills": [
+        "render-export-evidence",
+        "output-format-decision"
+      ],
       "side_effect_classification": "file_write_export",
       "behavior": "export",
       "idempotency": "non_idempotent_append_or_export",
@@ -1586,61 +2516,130 @@
       "display_name": "Export GLB 2.0 Container to Governed Output Directory",
       "purpose": "Export a binary .glb file to an allowlisted directory and validate its binary GLB 2.0 container and glTF semantics.",
       "category": "export_or_import",
-      "supported_runtime_paths": ["path-1-host-a", "path-1-host-b", "path-2-community", "cli-appendix"],
+      "supported_runtime_paths": [
+        "path-1-host-a",
+        "path-1-host-b",
+        "path-2-community",
+        "cli-appendix"
+      ],
       "runtime_tool_mappings": {
         "path-1-host-a": {
           "primary_tool": "export_glb_governed",
-          "readback_tools": ["get_blendfile_summary_path_info"],
+          "readback_tools": [
+            "get_blendfile_summary_path_info"
+          ],
           "parameter_adapter": "lab_mcp_glb_export",
-          "mutation_transport_note": "Governed GLB 2.0 export to allowlisted directory followed by binary GLB inspection."
+          "mutation_transport_note": "Governed GLB 2.0 export to allowlisted directory followed by binary GLB inspection.",
+          "upstream_mcp_tool_name": null,
+          "tool_schema_fingerprint": "7846bdb2b47c426a7f1b79f967ae90463303934c0d1c370cd2a567232d6b418e",
+          "upstream_qualification_status": "blocked_missing_bounded_upstream_tool",
+          "requires_bounded_governed_extension": true,
+          "rollback_strategy": "delete_unverified_export_and_restore_pre_mutation_blend_checkpoint",
+          "qualification_evidence": "Upstream Blender Lab MCP v1.0.2 does not expose bounded tool export_glb_governed and relies on execute_blender_code (unsafe_raw_code); blocked fail-closed on real upstream runtimes and never translated to generated Python."
         },
         "path-1-host-b": {
           "primary_tool": "export_glb_governed",
-          "readback_tools": ["get_blendfile_summary_path_info"],
+          "readback_tools": [
+            "get_blendfile_summary_path_info"
+          ],
           "parameter_adapter": "lab_mcp_glb_export",
-          "mutation_transport_note": "Governed GLB 2.0 export to allowlisted directory followed by binary GLB inspection."
+          "mutation_transport_note": "Governed GLB 2.0 export to allowlisted directory followed by binary GLB inspection.",
+          "upstream_mcp_tool_name": null,
+          "tool_schema_fingerprint": "7846bdb2b47c426a7f1b79f967ae90463303934c0d1c370cd2a567232d6b418e",
+          "upstream_qualification_status": "blocked_missing_bounded_upstream_tool",
+          "requires_bounded_governed_extension": true,
+          "rollback_strategy": "delete_unverified_export_and_restore_pre_mutation_blend_checkpoint",
+          "qualification_evidence": "Upstream Blender Lab MCP v1.0.2 does not expose bounded tool export_glb_governed and relies on execute_blender_code (unsafe_raw_code); blocked fail-closed on real upstream runtimes and never translated to generated Python."
         },
         "path-2-community": {
           "primary_tool": "export_glb_governed",
-          "readback_tools": ["get_scene_info"],
+          "readback_tools": [
+            "get_scene_info"
+          ],
           "parameter_adapter": "community_mcp_glb_export",
-          "mutation_transport_note": "Governed GLB 2.0 export on Path 2 followed by binary GLB inspection."
+          "mutation_transport_note": "Governed GLB 2.0 export on Path 2 followed by binary GLB inspection.",
+          "upstream_mcp_tool_name": null,
+          "tool_schema_fingerprint": "7846bdb2b47c426a7f1b79f967ae90463303934c0d1c370cd2a567232d6b418e",
+          "upstream_qualification_status": "blocked_missing_bounded_upstream_tool",
+          "requires_bounded_governed_extension": true,
+          "rollback_strategy": "delete_unverified_export_and_restore_pre_mutation_blend_checkpoint",
+          "qualification_evidence": "Upstream mcp-for-blender v2.2.7 does not expose bounded tool export_glb_governed and relies on execute_blender_code (unsafe_raw_code); blocked fail-closed on real upstream runtimes and never translated to generated Python."
         },
         "cli-appendix": {
           "primary_tool": "blender_cli_export_glb",
-          "readback_tools": ["inspect_glb_binary_container"],
+          "readback_tools": [
+            "inspect_glb_binary_container"
+          ],
           "parameter_adapter": "cli_appendix_gltf_export",
-          "mutation_transport_note": "Headless CLI appendix GLB export on Blender 4.5+."
+          "mutation_transport_note": "Headless CLI appendix GLB export on Blender 4.5+.",
+          "upstream_mcp_tool_name": null,
+          "tool_schema_fingerprint": "4d709b1382711ec4a0f143f412a2a8af4d77b02ab905329185a489906e627263",
+          "upstream_qualification_status": "contract_only_appendix",
+          "requires_bounded_governed_extension": true,
+          "rollback_strategy": "delete_unverified_export_and_restore_pre_mutation_blend_checkpoint",
+          "qualification_evidence": "Headless Blender CLI appendix surface (--background --render-output / glTF export); not an MCP server tool."
         }
       },
       "input_schema": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["target_output_path", "output_directory_allowlist"],
+        "required": [
+          "target_output_path",
+          "output_directory_allowlist"
+        ],
         "properties": {
-          "target_output_path": { "type": "string", "pattern": "\\.glb$" },
+          "target_output_path": {
+            "type": "string",
+            "pattern": "\\.glb$"
+          },
           "output_directory_allowlist": {
             "type": "array",
             "minItems": 1,
-            "items": { "type": "string", "minLength": 2 }
+            "items": {
+              "type": "string",
+              "minLength": 2
+            }
           },
-          "apply_modifiers": { "type": "boolean" },
-          "export_yup": { "type": "boolean" }
+          "apply_modifiers": {
+            "type": "boolean"
+          },
+          "export_yup": {
+            "type": "boolean"
+          }
         }
       },
       "output_schema": {
         "type": "object",
-        "required": ["artifact_path", "byte_size", "sha256", "glb_inspection"],
+        "required": [
+          "artifact_path",
+          "byte_size",
+          "sha256",
+          "glb_inspection"
+        ],
         "properties": {
-          "artifact_path": { "type": "string" },
-          "byte_size": { "type": "integer", "minimum": 12 },
-          "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
-          "glb_inspection": { "type": "object" }
+          "artifact_path": {
+            "type": "string"
+          },
+          "byte_size": {
+            "type": "integer",
+            "minimum": 12
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "glb_inspection": {
+            "type": "object"
+          }
         }
       },
       "required_capability_tier": "L2",
       "required_governed_runtime_ceiling": "L2",
-      "governing_skills": ["glb-web-handoff", "mobile-glb-budget", "render-export-evidence"],
+      "governing_skills": [
+        "glb-web-handoff",
+        "mobile-glb-budget",
+        "render-export-evidence"
+      ],
       "side_effect_classification": "file_write_export",
       "behavior": "export",
       "idempotency": "non_idempotent_append_or_export",
@@ -1692,49 +2691,103 @@
       "display_name": "Import License-Cleared External 3D / Material Asset",
       "purpose": "Import an external asset only after asset-license-checker clearance and a verified pre-mutation .blend checkpoint.",
       "category": "export_or_import",
-      "supported_runtime_paths": ["path-2-community"],
+      "supported_runtime_paths": [
+        "path-2-community"
+      ],
       "runtime_tool_mappings": {
         "path-2-community": {
           "primary_tool": "import_asset",
-          "secondary_tools": ["search_assets"],
-          "readback_tools": ["get_scene_info", "get_object_info"],
+          "secondary_tools": [
+            "search_assets"
+          ],
+          "readback_tools": [
+            "get_scene_info",
+            "get_object_info"
+          ],
           "parameter_adapter": "community_mcp_import_asset",
-          "mutation_transport_note": "Uses Path 2 import_asset only after SPDX/category license clearance and .blend backup."
+          "mutation_transport_note": "Uses Path 2 import_asset only after SPDX/category license clearance and .blend backup.",
+          "upstream_mcp_tool_name": "import_asset",
+          "tool_schema_fingerprint": "6732f0bb197417522e69d4e65810306da377a2545bf93b7eaac033b10866d949",
+          "upstream_qualification_status": "blocked_unbounded_upstream_side_effects",
+          "requires_bounded_governed_extension": true,
+          "rollback_strategy": "restore_verified_pre_mutation_blend_checkpoint_and_independent_l0_readback",
+          "qualification_evidence": "Upstream tool import_asset exists in MCP for Blender (ahujasid/mcp-for-blender) v2.2.7 (https://github.com/ahujasid/blender-mcp/blob/main/src/blender_mcp/server.py#L1951) but performs unbounded external network download and scene mutation without local SHA-256/license enforcement; blocked on real upstream unless governed contract extension is active."
         }
       },
       "input_schema": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["asset_id", "asset_source", "license_clearance"],
+        "required": [
+          "asset_id",
+          "asset_source",
+          "license_clearance"
+        ],
         "properties": {
-          "asset_id": { "type": "string", "minLength": 1, "maxLength": 128 },
-          "asset_source": { "type": "string", "enum": ["polyhaven", "local_allowlisted_library"] },
+          "asset_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "asset_source": {
+            "type": "string",
+            "enum": [
+              "polyhaven",
+              "local_allowlisted_library"
+            ]
+          },
           "license_clearance": {
             "type": "object",
             "additionalProperties": false,
-            "required": ["status", "spdxOrCategory", "verifiedBySkill"],
+            "required": [
+              "status",
+              "spdxOrCategory",
+              "verifiedBySkill"
+            ],
             "properties": {
-              "status": { "const": "Cleared" },
+              "status": {
+                "const": "Cleared"
+              },
               "spdxOrCategory": {
                 "type": "string",
-                "enum": ["CC0-1.0", "CC-BY-4.0", "Royalty-Free-Commercial", "Proprietary-First-Party"]
+                "enum": [
+                  "CC0-1.0",
+                  "CC-BY-4.0",
+                  "Royalty-Free-Commercial",
+                  "Proprietary-First-Party"
+                ]
               },
-              "verifiedBySkill": { "const": "asset-license-checker" }
+              "verifiedBySkill": {
+                "const": "asset-license-checker"
+              }
             }
           }
         }
       },
       "output_schema": {
         "type": "object",
-        "required": ["imported_asset_id", "imported_objects"],
+        "required": [
+          "imported_asset_id",
+          "imported_objects"
+        ],
         "properties": {
-          "imported_asset_id": { "type": "string" },
-          "imported_objects": { "type": "array", "items": { "type": "string" } }
+          "imported_asset_id": {
+            "type": "string"
+          },
+          "imported_objects": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
         }
       },
       "required_capability_tier": "L2",
       "required_governed_runtime_ceiling": "L2",
-      "governing_skills": ["asset-license-checker", "asset-discovery", "asset-style-check"],
+      "governing_skills": [
+        "asset-license-checker",
+        "asset-discovery",
+        "asset-style-check"
+      ],
       "side_effect_classification": "external_asset_import",
       "behavior": "mutating",
       "idempotency": "non_idempotent_append_or_export",
@@ -1779,6 +2832,1602 @@
       "known_limitations": [
         "External asset import tool (import_asset) is only exposed on Path 2 community mcp-for-blender and remains gated at L2."
       ]
+    }
+  ],
+  "upstream_runtime_compatibility_matrix": {
+    "audited_at": "2026-11-06T00:00:00Z",
+    "mcp_protocol_versions_supported": [
+      "2024-11-05",
+      "2025-03-26",
+      "2025-06-18"
+    ],
+    "transports_supported": [
+      "stdio",
+      "sse",
+      "streamable-http"
+    ],
+    "runtimes": {
+      "path-1-official-blender-lab-mcp": {
+        "runtime_paths": [
+          "path-1-host-a",
+          "path-1-host-b"
+        ],
+        "official_docs_url": "https://www.blender.org/lab/mcp-server/",
+        "source_repository_url": "https://projects.blender.org/lab/blender_mcp",
+        "server_package_name": "blender-mcp",
+        "server_entry_point": "blmcp:main",
+        "server_version": "1.0.2",
+        "addon_id": "mcp",
+        "addon_name": "MCP",
+        "addon_version": "1.0.0",
+        "blender_version_min": "5.1.0",
+        "mcp_sdk_dependency": "mcp[cli]>=1.2.0,<2",
+        "upstream_security_warning": "Official Blender Lab MCP documentation explicitly warns that execute_blender_code and execute_blender_code_for_cli execute LLM-generated Python inside Blender without built-in guards protecting user data.",
+        "real_upstream_qualification_summary": {
+          "advertised_tool_count": 26,
+          "read_only_only_count": 18,
+          "safe_direct_count": 2,
+          "unsafe_raw_code_count": 2,
+          "unsupported_count": 4,
+          "read_only_qualified": true,
+          "mutation_qualified": false,
+          "export_import_qualified": true,
+          "qualification_verdict": "read_only_and_export_qualified",
+          "mutation_blocking_reason": "Upstream blender-mcp v1.0.2 provides zero dedicated bounded L1 scene-mutation tools; all scene mutations upstream rely on execute_blender_code (unsafe_raw_code), which BlendOps permanently blocks."
+        }
+      },
+      "path-2-community-mcp-for-blender": {
+        "runtime_paths": [
+          "path-2-community"
+        ],
+        "source_repository_url": "https://github.com/ahujasid/mcp-for-blender",
+        "canonical_github_mirror": "https://github.com/ahujasid/blender-mcp",
+        "server_package_name": "mcp-for-blender",
+        "server_entry_point": "blender_mcp.server:main",
+        "server_version": "2.2.7",
+        "addon_name": "MCP for Blender",
+        "addon_version": "1.8.0",
+        "blender_version_min": "3.0.0",
+        "mcp_sdk_dependency": "mcp>=1.26.0,<2",
+        "upstream_security_warning": "Third-party community integration (not affiliated with Blender Foundation). Exposes execute_blender_code which runs arbitrary Python via exec() in Blender without sandboxing, plus cloud asset/3D generation tools.",
+        "real_upstream_qualification_summary": {
+          "advertised_tool_count": 16,
+          "read_only_only_count": 10,
+          "safe_direct_count": 0,
+          "unsafe_raw_code_count": 1,
+          "unsupported_count": 5,
+          "read_only_qualified": true,
+          "mutation_qualified": false,
+          "export_import_qualified": false,
+          "qualification_verdict": "read_only_qualified",
+          "mutation_blocking_reason": "Upstream mcp-for-blender v2.2.7 provides zero dedicated bounded L1 scene-mutation tools or local L2 GLB/render export tools; mutations rely on execute_blender_code (unsafe_raw_code) and import_asset downloads unverified remote assets."
+        }
+      }
+    }
+  },
+  "upstream_tool_qualification_matrix": [
+    {
+      "tool_name": "execute_blender_code",
+      "description": "Execute Python code in the connected Blender instance.",
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          }
+        }
+      },
+      "output_shape_summary": "dict[str, object] from arbitrary user/LLM Python result variable",
+      "side_effects": "arbitrary_code_execution",
+      "required_capability_tier": "L3",
+      "executes_arbitrary_code": true,
+      "modifies_scene_state": true,
+      "reads_files": true,
+      "writes_files": true,
+      "accesses_external_services": true,
+      "bounded_and_independently_verifiable": false,
+      "classification": "unsafe_raw_code",
+      "qualification_rationale": "Executes unrestricted LLM-generated Python inside Blender with full bpy/os/sys access and destructiveHint=True; permanently blocked per laws/no-arbitrary-python-interface.md.",
+      "evidence_source": "https://projects.blender.org/lab/blender_mcp/src/branch/main/mcp/blmcp/tools/execute_blender_code.py",
+      "runtime_paths": [
+        "path-1-host-a",
+        "path-1-host-b"
+      ],
+      "server_identity": "Blender Lab MCP (blmcp)",
+      "server_version": "1.0.2",
+      "tool_schema_fingerprint": "f7899e40e5884eb06aa99019527ec36aa9fe7c2b25f269cc8cc40dbec978e65b"
+    },
+    {
+      "tool_name": "execute_blender_code_for_cli",
+      "description": "Execute Python code in a background Blender process.",
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "blend_file",
+          "code"
+        ],
+        "properties": {
+          "blend_file": {
+            "type": "string"
+          },
+          "code": {
+            "type": "string"
+          }
+        }
+      },
+      "output_shape_summary": "dict[str, object] from background Blender CLI Python execution",
+      "side_effects": "arbitrary_code_execution",
+      "required_capability_tier": "L3",
+      "executes_arbitrary_code": true,
+      "modifies_scene_state": true,
+      "reads_files": true,
+      "writes_files": true,
+      "accesses_external_services": true,
+      "bounded_and_independently_verifiable": false,
+      "classification": "unsafe_raw_code",
+      "qualification_rationale": "Spawns background Blender CLI and executes arbitrary Python code without sandboxing; permanently blocked per laws/no-arbitrary-python-interface.md.",
+      "evidence_source": "https://projects.blender.org/lab/blender_mcp/src/branch/main/mcp/blmcp/tools/execute_blender_code.py",
+      "runtime_paths": [
+        "path-1-host-a",
+        "path-1-host-b"
+      ],
+      "server_identity": "Blender Lab MCP (blmcp)",
+      "server_version": "1.0.2",
+      "tool_schema_fingerprint": "1b5412044152b8dc1f9d33ec95008b6b39bc85771e9cecf376501dae228c2145"
+    },
+    {
+      "tool_name": "get_blendfile_summary_datablocks",
+      "description": "Return a summary of the blend file: data-block counts, active workspace, and render engine.",
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [],
+        "properties": {}
+      },
+      "output_shape_summary": "dict with datablock counts, active_workspace, and render_engine",
+      "side_effects": "none",
+      "required_capability_tier": "L0",
+      "executes_arbitrary_code": false,
+      "modifies_scene_state": false,
+      "reads_files": false,
+      "writes_files": false,
+      "accesses_external_services": false,
+      "bounded_and_independently_verifiable": true,
+      "classification": "read_only_only",
+      "qualification_rationale": "Fixed read-only toolcode template inspecting bpy.data counts and active scene render engine without scene mutation.",
+      "evidence_source": "https://projects.blender.org/lab/blender_mcp/src/branch/main/mcp/blmcp/tools/get_blendfile_summary_datablocks.py",
+      "runtime_paths": [
+        "path-1-host-a",
+        "path-1-host-b"
+      ],
+      "server_identity": "Blender Lab MCP (blmcp)",
+      "server_version": "1.0.2",
+      "tool_schema_fingerprint": "2b831a66bd41ba97d47055f4b5b51ce8b7387fbe7b2f2c294d251d4b8d658c73"
+    },
+    {
+      "tool_name": "get_blendfile_summary_datablocks_for_cli",
+      "description": "Return a data-block summary by opening blend_file in background Blender.",
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "blend_file"
+        ],
+        "properties": {
+          "blend_file": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "output_shape_summary": "dict with datablock counts for specified blend_file",
+      "side_effects": "none",
+      "required_capability_tier": "L0",
+      "executes_arbitrary_code": false,
+      "modifies_scene_state": false,
+      "reads_files": true,
+      "writes_files": false,
+      "accesses_external_services": false,
+      "bounded_and_independently_verifiable": true,
+      "classification": "read_only_only",
+      "qualification_rationale": "Read-only inspection of a .blend file in background CLI mode using fixed datablock summary toolcode.",
+      "evidence_source": "https://projects.blender.org/lab/blender_mcp/src/branch/main/mcp/blmcp/tools/get_blendfile_summary_datablocks.py",
+      "runtime_paths": [
+        "path-1-host-a",
+        "path-1-host-b"
+      ],
+      "server_identity": "Blender Lab MCP (blmcp)",
+      "server_version": "1.0.2",
+      "tool_schema_fingerprint": "ca69341ef4a1b166f6698394cdee4986badeab74c0632616709c86d5549a0581"
+    },
+    {
+      "tool_name": "get_blendfile_summary_missing_files",
+      "description": "Report external file references that are missing from disk (images, libraries, fonts, sounds, movie clips, caches, sequences).",
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [],
+        "properties": {}
+      },
+      "output_shape_summary": "dict listing missing external file paths by datablock category",
+      "side_effects": "none",
+      "required_capability_tier": "L0",
+      "executes_arbitrary_code": false,
+      "modifies_scene_state": false,
+      "reads_files": true,
+      "writes_files": false,
+      "accesses_external_services": false,
+      "bounded_and_independently_verifiable": true,
+      "classification": "read_only_only",
+      "qualification_rationale": "Read-only check of external file references in the open .blend session.",
+      "evidence_source": "https://projects.blender.org/lab/blender_mcp/src/branch/main/mcp/blmcp/tools/get_blendfile_summary_missing_files.py",
+      "runtime_paths": [
+        "path-1-host-a",
+        "path-1-host-b"
+      ],
+      "server_identity": "Blender Lab MCP (blmcp)",
+      "server_version": "1.0.2",
+      "tool_schema_fingerprint": "51ac3be903d237d241ef285e86d899963306807b86b760d35fdb8089ea7d4c08"
+    },
+    {
+      "tool_name": "get_blendfile_summary_missing_files_for_cli",
+      "description": "Report missing file references by opening blend_file in background Blender.",
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "blend_file"
+        ],
+        "properties": {
+          "blend_file": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "output_shape_summary": "dict listing missing external file paths for blend_file",
+      "side_effects": "none",
+      "required_capability_tier": "L0",
+      "executes_arbitrary_code": false,
+      "modifies_scene_state": false,
+      "reads_files": true,
+      "writes_files": false,
+      "accesses_external_services": false,
+      "bounded_and_independently_verifiable": true,
+      "classification": "read_only_only",
+      "qualification_rationale": "Read-only CLI inspection of missing external references.",
+      "evidence_source": "https://projects.blender.org/lab/blender_mcp/src/branch/main/mcp/blmcp/tools/get_blendfile_summary_missing_files.py",
+      "runtime_paths": [
+        "path-1-host-a",
+        "path-1-host-b"
+      ],
+      "server_identity": "Blender Lab MCP (blmcp)",
+      "server_version": "1.0.2",
+      "tool_schema_fingerprint": "d7e81c8daac75807f5bb9765ebb8103b18dcd39e78c3356da8fefe3fd9ffc3ec"
+    },
+    {
+      "tool_name": "get_blendfile_summary_of_linked_libraries",
+      "description": "Return a tree of directly and indirectly linked library files.",
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [],
+        "properties": {}
+      },
+      "output_shape_summary": "dict with linked library hierarchy",
+      "side_effects": "none",
+      "required_capability_tier": "L0",
+      "executes_arbitrary_code": false,
+      "modifies_scene_state": false,
+      "reads_files": true,
+      "writes_files": false,
+      "accesses_external_services": false,
+      "bounded_and_independently_verifiable": true,
+      "classification": "read_only_only",
+      "qualification_rationale": "Read-only inspection of bpy.data.libraries dependency tree.",
+      "evidence_source": "https://projects.blender.org/lab/blender_mcp/src/branch/main/mcp/blmcp/tools/get_blendfile_summary_of_linked_libraries.py",
+      "runtime_paths": [
+        "path-1-host-a",
+        "path-1-host-b"
+      ],
+      "server_identity": "Blender Lab MCP (blmcp)",
+      "server_version": "1.0.2",
+      "tool_schema_fingerprint": "bea4e96dd50b6a8cab3f5b02b0d40e45f0b9b761a211a6dd1550c25affb2d823"
+    },
+    {
+      "tool_name": "get_blendfile_summary_of_linked_libraries_for_cli",
+      "description": "Return linked-library info by opening blend_file in background Blender.",
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "blend_file"
+        ],
+        "properties": {
+          "blend_file": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "output_shape_summary": "dict with linked library hierarchy for blend_file",
+      "side_effects": "none",
+      "required_capability_tier": "L0",
+      "executes_arbitrary_code": false,
+      "modifies_scene_state": false,
+      "reads_files": true,
+      "writes_files": false,
+      "accesses_external_services": false,
+      "bounded_and_independently_verifiable": true,
+      "classification": "read_only_only",
+      "qualification_rationale": "Read-only CLI inspection of linked libraries.",
+      "evidence_source": "https://projects.blender.org/lab/blender_mcp/src/branch/main/mcp/blmcp/tools/get_blendfile_summary_of_linked_libraries.py",
+      "runtime_paths": [
+        "path-1-host-a",
+        "path-1-host-b"
+      ],
+      "server_identity": "Blender Lab MCP (blmcp)",
+      "server_version": "1.0.2",
+      "tool_schema_fingerprint": "c02f11b39d066dec26b428c34cd93fde4d13f68d1803f65060b046c5f8ad6ede"
+    },
+    {
+      "tool_name": "get_blendfile_summary_path_info",
+      "description": "Simple/fast access to the blend file path, save status, age, and backups.",
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [],
+        "properties": {}
+      },
+      "output_shape_summary": "dict with filepath, is_saved, is_dirty, and backup file metadata",
+      "side_effects": "none",
+      "required_capability_tier": "L0",
+      "executes_arbitrary_code": false,
+      "modifies_scene_state": false,
+      "reads_files": true,
+      "writes_files": false,
+      "accesses_external_services": false,
+      "bounded_and_independently_verifiable": true,
+      "classification": "read_only_only",
+      "qualification_rationale": "Read-only inspection of bpy.data.filepath, is_saved, and is_dirty flags.",
+      "evidence_source": "https://projects.blender.org/lab/blender_mcp/src/branch/main/mcp/blmcp/tools/get_blendfile_summary_path_info.py",
+      "runtime_paths": [
+        "path-1-host-a",
+        "path-1-host-b"
+      ],
+      "server_identity": "Blender Lab MCP (blmcp)",
+      "server_version": "1.0.2",
+      "tool_schema_fingerprint": "c5083618ec6414ddb0ecc190f759a06330fbfe81f7b95e9ffc04fa169040b60b"
+    },
+    {
+      "tool_name": "get_blendfile_summary_path_info_for_cli",
+      "description": "Return path info by opening blend_file in background Blender.",
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "blend_file"
+        ],
+        "properties": {
+          "blend_file": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "output_shape_summary": "dict with filepath and save status for blend_file",
+      "side_effects": "none",
+      "required_capability_tier": "L0",
+      "executes_arbitrary_code": false,
+      "modifies_scene_state": false,
+      "reads_files": true,
+      "writes_files": false,
+      "accesses_external_services": false,
+      "bounded_and_independently_verifiable": true,
+      "classification": "read_only_only",
+      "qualification_rationale": "Read-only CLI path metadata check.",
+      "evidence_source": "https://projects.blender.org/lab/blender_mcp/src/branch/main/mcp/blmcp/tools/get_blendfile_summary_path_info.py",
+      "runtime_paths": [
+        "path-1-host-a",
+        "path-1-host-b"
+      ],
+      "server_identity": "Blender Lab MCP (blmcp)",
+      "server_version": "1.0.2",
+      "tool_schema_fingerprint": "d507a7356c42189349da95fe56452e423e6a30f13016e7e814644b23cc6c3a6e"
+    },
+    {
+      "tool_name": "get_blendfile_summary_usage_guess",
+      "description": "Guess the primary use-cases of the current blend file (scored 0-100 with certainty).",
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [],
+        "properties": {}
+      },
+      "output_shape_summary": "dict with heuristic usage scores",
+      "side_effects": "none",
+      "required_capability_tier": "L0",
+      "executes_arbitrary_code": false,
+      "modifies_scene_state": false,
+      "reads_files": false,
+      "writes_files": false,
+      "accesses_external_services": false,
+      "bounded_and_independently_verifiable": true,
+      "classification": "read_only_only",
+      "qualification_rationale": "Read-only heuristic classification of scene datablocks.",
+      "evidence_source": "https://projects.blender.org/lab/blender_mcp/src/branch/main/mcp/blmcp/tools/get_blendfile_summary_usage_guess.py",
+      "runtime_paths": [
+        "path-1-host-a",
+        "path-1-host-b"
+      ],
+      "server_identity": "Blender Lab MCP (blmcp)",
+      "server_version": "1.0.2",
+      "tool_schema_fingerprint": "dfb1b381d46f7205df1a5bd1dc47a737231a7828501187720cf4e5b12bf1ab4c"
+    },
+    {
+      "tool_name": "get_blendfile_summary_usage_guess_for_cli",
+      "description": "Guess use-cases by opening blend_file in background Blender.",
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "blend_file"
+        ],
+        "properties": {
+          "blend_file": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "output_shape_summary": "dict with heuristic usage scores for blend_file",
+      "side_effects": "none",
+      "required_capability_tier": "L0",
+      "executes_arbitrary_code": false,
+      "modifies_scene_state": false,
+      "reads_files": true,
+      "writes_files": false,
+      "accesses_external_services": false,
+      "bounded_and_independently_verifiable": true,
+      "classification": "read_only_only",
+      "qualification_rationale": "Read-only CLI heuristic classification of scene datablocks.",
+      "evidence_source": "https://projects.blender.org/lab/blender_mcp/src/branch/main/mcp/blmcp/tools/get_blendfile_summary_usage_guess.py",
+      "runtime_paths": [
+        "path-1-host-a",
+        "path-1-host-b"
+      ],
+      "server_identity": "Blender Lab MCP (blmcp)",
+      "server_version": "1.0.2",
+      "tool_schema_fingerprint": "a1a1cbeb2145664522fc001a942cb376a43f249086302122dfbe32907945d776"
+    },
+    {
+      "tool_name": "get_object_detail_summary",
+      "description": "Return a structured summary of the object identified by name.",
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "output_shape_summary": "dict with object type, transforms, modifiers, constraints, materials, visibility, and collections",
+      "side_effects": "none",
+      "required_capability_tier": "L0",
+      "executes_arbitrary_code": false,
+      "modifies_scene_state": false,
+      "reads_files": false,
+      "writes_files": false,
+      "accesses_external_services": false,
+      "bounded_and_independently_verifiable": true,
+      "classification": "read_only_only",
+      "qualification_rationale": "Read-only fixed toolcode inspecting single object transforms, modifiers, and materials by name.",
+      "evidence_source": "https://projects.blender.org/lab/blender_mcp/src/branch/main/mcp/blmcp/tools/get_object_detail_summary.py",
+      "runtime_paths": [
+        "path-1-host-a",
+        "path-1-host-b"
+      ],
+      "server_identity": "Blender Lab MCP (blmcp)",
+      "server_version": "1.0.2",
+      "tool_schema_fingerprint": "8db3448bbdb791de024f7f0687148f6d60258a974ce70adfc122fac9a74bb16e"
+    },
+    {
+      "tool_name": "get_objects_summary",
+      "description": "Return the scene collection hierarchy and their objects.",
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [],
+        "properties": {}
+      },
+      "output_shape_summary": "dict with collection hierarchy and object descriptors",
+      "side_effects": "none",
+      "required_capability_tier": "L0",
+      "executes_arbitrary_code": false,
+      "modifies_scene_state": false,
+      "reads_files": false,
+      "writes_files": false,
+      "accesses_external_services": false,
+      "bounded_and_independently_verifiable": true,
+      "classification": "read_only_only",
+      "qualification_rationale": "Read-only fixed toolcode returning scene collection tree and object transforms/visibility.",
+      "evidence_source": "https://projects.blender.org/lab/blender_mcp/src/branch/main/mcp/blmcp/tools/get_objects_summary.py",
+      "runtime_paths": [
+        "path-1-host-a",
+        "path-1-host-b"
+      ],
+      "server_identity": "Blender Lab MCP (blmcp)",
+      "server_version": "1.0.2",
+      "tool_schema_fingerprint": "19105e512c7b198ac0a0cbf9f2b9f64d07258a4a97370a78c7b637379b33944f"
+    },
+    {
+      "tool_name": "get_python_api_docs",
+      "description": "Return the Blender Python API docs for identifier, or list modules matching a trailing-* discovery pattern.",
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "identifier"
+        ],
+        "properties": {
+          "identifier": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "output_shape_summary": "dict with bundled RST documentation text for identifier",
+      "side_effects": "none",
+      "required_capability_tier": "L0",
+      "executes_arbitrary_code": false,
+      "modifies_scene_state": false,
+      "reads_files": true,
+      "writes_files": false,
+      "accesses_external_services": false,
+      "bounded_and_independently_verifiable": true,
+      "classification": "read_only_only",
+      "qualification_rationale": "Queries static bundled Blender Python API RST files without touching the Blender scene.",
+      "evidence_source": "https://projects.blender.org/lab/blender_mcp/src/branch/main/mcp/blmcp/tools/get_python_api_docs.py",
+      "runtime_paths": [
+        "path-1-host-a",
+        "path-1-host-b"
+      ],
+      "server_identity": "Blender Lab MCP (blmcp)",
+      "server_version": "1.0.2",
+      "tool_schema_fingerprint": "10391a824fd3f783cec2ef55ac9c46bf51a1c8f162cd3a26fd6fd1b6e070d687"
+    },
+    {
+      "tool_name": "get_screenshot_of_area_as_image",
+      "description": "Take a screenshot of a single Blender area and return it as a PNG image.",
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "area_index"
+        ],
+        "properties": {
+          "area_index": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      },
+      "output_shape_summary": "MCP ImageContent (PNG bytes)",
+      "side_effects": "none",
+      "required_capability_tier": "L0",
+      "executes_arbitrary_code": false,
+      "modifies_scene_state": false,
+      "reads_files": false,
+      "writes_files": false,
+      "accesses_external_services": false,
+      "bounded_and_independently_verifiable": true,
+      "classification": "read_only_only",
+      "qualification_rationale": "Read-only UI area screenshot returned in-memory as MCP image content.",
+      "evidence_source": "https://projects.blender.org/lab/blender_mcp/src/branch/main/mcp/blmcp/tools/get_screenshot_of_area_as_image.py",
+      "runtime_paths": [
+        "path-1-host-a",
+        "path-1-host-b"
+      ],
+      "server_identity": "Blender Lab MCP (blmcp)",
+      "server_version": "1.0.2",
+      "tool_schema_fingerprint": "57bd80e58b7ee59d1d6c222518f025988beb81874fb07db3df24c2f2ad42e66f"
+    },
+    {
+      "tool_name": "get_screenshot_of_window_as_image",
+      "description": "Take a screenshot of the entire Blender window and return it as a PNG image.",
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [],
+        "properties": {}
+      },
+      "output_shape_summary": "MCP ImageContent (PNG bytes)",
+      "side_effects": "none",
+      "required_capability_tier": "L0",
+      "executes_arbitrary_code": false,
+      "modifies_scene_state": false,
+      "reads_files": false,
+      "writes_files": false,
+      "accesses_external_services": false,
+      "bounded_and_independently_verifiable": true,
+      "classification": "read_only_only",
+      "qualification_rationale": "Read-only full window screenshot returned in-memory as MCP image content.",
+      "evidence_source": "https://projects.blender.org/lab/blender_mcp/src/branch/main/mcp/blmcp/tools/get_screenshot_of_window_as_image.py",
+      "runtime_paths": [
+        "path-1-host-a",
+        "path-1-host-b"
+      ],
+      "server_identity": "Blender Lab MCP (blmcp)",
+      "server_version": "1.0.2",
+      "tool_schema_fingerprint": "33787ee15f1e224ebc495e6de06ebfba0b4dd9fa61c6d4174db192ea8ba47f4c"
+    },
+    {
+      "tool_name": "get_screenshot_of_window_as_json",
+      "description": "Return a JSON description of the Blender window layout, areas, active object, and selection.",
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [],
+        "properties": {}
+      },
+      "output_shape_summary": "dict describing window layout, areas, active object, and selection",
+      "side_effects": "none",
+      "required_capability_tier": "L0",
+      "executes_arbitrary_code": false,
+      "modifies_scene_state": false,
+      "reads_files": false,
+      "writes_files": false,
+      "accesses_external_services": false,
+      "bounded_and_independently_verifiable": true,
+      "classification": "read_only_only",
+      "qualification_rationale": "Read-only inspection of window layout and active selection.",
+      "evidence_source": "https://projects.blender.org/lab/blender_mcp/src/branch/main/mcp/blmcp/tools/get_screenshot_of_window_as_json.py",
+      "runtime_paths": [
+        "path-1-host-a",
+        "path-1-host-b"
+      ],
+      "server_identity": "Blender Lab MCP (blmcp)",
+      "server_version": "1.0.2",
+      "tool_schema_fingerprint": "0848f4ac37a2b70605b84a77f5735784b76528b3abeb9808a3f04c9016a2fd1c"
+    },
+    {
+      "tool_name": "jump_to_tab_by_name",
+      "description": "Switch the active workspace tab to name.",
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "output_shape_summary": "dict confirming workspace switch",
+      "side_effects": "ui_state_mutation",
+      "required_capability_tier": "L1",
+      "executes_arbitrary_code": false,
+      "modifies_scene_state": false,
+      "reads_files": false,
+      "writes_files": false,
+      "accesses_external_services": false,
+      "bounded_and_independently_verifiable": false,
+      "classification": "unsupported",
+      "qualification_rationale": "Mutates interactive Blender UI workspace tab state rather than governed scene datablocks; not mapped to any BlendOps canonical operation.",
+      "evidence_source": "https://projects.blender.org/lab/blender_mcp/src/branch/main/mcp/blmcp/tools/jump_to_tab_by_name.py",
+      "runtime_paths": [
+        "path-1-host-a",
+        "path-1-host-b"
+      ],
+      "server_identity": "Blender Lab MCP (blmcp)",
+      "server_version": "1.0.2",
+      "tool_schema_fingerprint": "210ca95b2b6ce7189ea75f4ed0f04770397504615c6ad6a9b54c44ad4e41682c"
+    },
+    {
+      "tool_name": "jump_to_tab_by_space_type",
+      "description": "Switch to a workspace whose main area matches space_type.",
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "space_type"
+        ],
+        "properties": {
+          "space_type": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "output_shape_summary": "dict confirming workspace switch by space_type",
+      "side_effects": "ui_state_mutation",
+      "required_capability_tier": "L1",
+      "executes_arbitrary_code": false,
+      "modifies_scene_state": false,
+      "reads_files": false,
+      "writes_files": false,
+      "accesses_external_services": false,
+      "bounded_and_independently_verifiable": false,
+      "classification": "unsupported",
+      "qualification_rationale": "Mutates interactive Blender UI workspace state; not mapped to any BlendOps canonical operation.",
+      "evidence_source": "https://projects.blender.org/lab/blender_mcp/src/branch/main/mcp/blmcp/tools/jump_to_tab_by_space_type.py",
+      "runtime_paths": [
+        "path-1-host-a",
+        "path-1-host-b"
+      ],
+      "server_identity": "Blender Lab MCP (blmcp)",
+      "server_version": "1.0.2",
+      "tool_schema_fingerprint": "2fa6ee4c0ed693600630b9fcb69d46c64e23d52ff1e55251f489ff2bb247183e"
+    },
+    {
+      "tool_name": "jump_to_view3d_object_by_name",
+      "description": "Move the 3D viewport to focus on an object by name.",
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "output_shape_summary": "dict confirming viewport focus change",
+      "side_effects": "ui_state_mutation",
+      "required_capability_tier": "L1",
+      "executes_arbitrary_code": false,
+      "modifies_scene_state": false,
+      "reads_files": false,
+      "writes_files": false,
+      "accesses_external_services": false,
+      "bounded_and_independently_verifiable": false,
+      "classification": "unsupported",
+      "qualification_rationale": "Mutates 3D viewport navigation camera rather than governed scene camera datablock.",
+      "evidence_source": "https://projects.blender.org/lab/blender_mcp/src/branch/main/mcp/blmcp/tools/jump_to_view3d_object_by_name.py",
+      "runtime_paths": [
+        "path-1-host-a",
+        "path-1-host-b"
+      ],
+      "server_identity": "Blender Lab MCP (blmcp)",
+      "server_version": "1.0.2",
+      "tool_schema_fingerprint": "460ef4d4d396a4d19f72eb65fb5ee025f213d093cc7111723ebbaeb8fe49602e"
+    },
+    {
+      "tool_name": "jump_to_view3d_object_data_by_name",
+      "description": "Move the 3D viewport to the object whose data block matches name.",
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "output_shape_summary": "dict confirming viewport focus change by data-block name",
+      "side_effects": "ui_state_mutation",
+      "required_capability_tier": "L1",
+      "executes_arbitrary_code": false,
+      "modifies_scene_state": false,
+      "reads_files": false,
+      "writes_files": false,
+      "accesses_external_services": false,
+      "bounded_and_independently_verifiable": false,
+      "classification": "unsupported",
+      "qualification_rationale": "Mutates 3D viewport navigation state rather than governed scene datablocks.",
+      "evidence_source": "https://projects.blender.org/lab/blender_mcp/src/branch/main/mcp/blmcp/tools/jump_to_view3d_object_data_by_name.py",
+      "runtime_paths": [
+        "path-1-host-a",
+        "path-1-host-b"
+      ],
+      "server_identity": "Blender Lab MCP (blmcp)",
+      "server_version": "1.0.2",
+      "tool_schema_fingerprint": "fc8bdf71b1808716a3c993fe8a9472dd922bedb301158d3800b31234135a3a0d"
+    },
+    {
+      "tool_name": "render_thumbnail_to_path",
+      "description": "Render a small, low-quality thumbnail to output_path (temporarily overrides settings).",
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "output_path"
+        ],
+        "properties": {
+          "output_path": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "output_shape_summary": "dict confirming thumbnail file written to output_path",
+      "side_effects": "file_write",
+      "required_capability_tier": "L2",
+      "executes_arbitrary_code": false,
+      "modifies_scene_state": false,
+      "reads_files": false,
+      "writes_files": true,
+      "accesses_external_services": false,
+      "bounded_and_independently_verifiable": true,
+      "classification": "safe_direct",
+      "qualification_rationale": "Even though upstream sets readOnlyHint=True, this tool temporarily overrides render settings and writes a file to output_path on disk. Classified as L2 safe_direct ONLY when gated by output_directory_allowlist and pre-export checkpoint.",
+      "evidence_source": "https://projects.blender.org/lab/blender_mcp/src/branch/main/mcp/blmcp/tools/render_thumbnail_to_path.py",
+      "runtime_paths": [
+        "path-1-host-a",
+        "path-1-host-b"
+      ],
+      "server_identity": "Blender Lab MCP (blmcp)",
+      "server_version": "1.0.2",
+      "tool_schema_fingerprint": "6b00317058217c0111d990cd62d2016c8dec87ee2f1abb38182bc8cbc06297aa"
+    },
+    {
+      "tool_name": "render_viewport_to_path",
+      "description": "Render the current scene to output_path using current render settings.",
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "output_path"
+        ],
+        "properties": {
+          "output_path": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "output_shape_summary": "dict confirming rendered image written to output_path",
+      "side_effects": "file_write",
+      "required_capability_tier": "L2",
+      "executes_arbitrary_code": false,
+      "modifies_scene_state": false,
+      "reads_files": false,
+      "writes_files": true,
+      "accesses_external_services": false,
+      "bounded_and_independently_verifiable": true,
+      "classification": "safe_direct",
+      "qualification_rationale": "Upstream sets readOnlyHint=True, but tool writes rendered image bytes to output_path on disk. Qualified as L2 safe_direct for op.export.render-still with mandatory output_directory_allowlist, checkpoint, and on-disk SHA-256 verification.",
+      "evidence_source": "https://projects.blender.org/lab/blender_mcp/src/branch/main/mcp/blmcp/tools/render_viewport_to_path.py",
+      "runtime_paths": [
+        "path-1-host-a",
+        "path-1-host-b"
+      ],
+      "server_identity": "Blender Lab MCP (blmcp)",
+      "server_version": "1.0.2",
+      "tool_schema_fingerprint": "288057920fe2cda5733db02228a417c98da75f4648a4524113ea78e0d75e4b25"
+    },
+    {
+      "tool_name": "search_api_docs",
+      "description": "Full-text search over the bundled Blender Python API reference.",
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "query"
+        ],
+        "properties": {
+          "query": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "output_shape_summary": "dict with matching API documentation snippets",
+      "side_effects": "none",
+      "required_capability_tier": "L0",
+      "executes_arbitrary_code": false,
+      "modifies_scene_state": false,
+      "reads_files": true,
+      "writes_files": false,
+      "accesses_external_services": false,
+      "bounded_and_independently_verifiable": true,
+      "classification": "read_only_only",
+      "qualification_rationale": "Read-only full-text search over static bundled API documentation.",
+      "evidence_source": "https://projects.blender.org/lab/blender_mcp/src/branch/main/mcp/blmcp/tools/search_api_docs.py",
+      "runtime_paths": [
+        "path-1-host-a",
+        "path-1-host-b"
+      ],
+      "server_identity": "Blender Lab MCP (blmcp)",
+      "server_version": "1.0.2",
+      "tool_schema_fingerprint": "02f06eeacde972ff7c654a5da292ebc96d7f6228aba9fe748590e1ef87877ca4"
+    },
+    {
+      "tool_name": "search_manual_docs",
+      "description": "Full-text search over the bundled Blender user manual.",
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "query"
+        ],
+        "properties": {
+          "query": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "output_shape_summary": "dict with matching Blender Manual snippets",
+      "side_effects": "none",
+      "required_capability_tier": "L0",
+      "executes_arbitrary_code": false,
+      "modifies_scene_state": false,
+      "reads_files": true,
+      "writes_files": false,
+      "accesses_external_services": false,
+      "bounded_and_independently_verifiable": true,
+      "classification": "read_only_only",
+      "qualification_rationale": "Read-only full-text search over static bundled Blender Manual RST files.",
+      "evidence_source": "https://projects.blender.org/lab/blender_mcp/src/branch/main/mcp/blmcp/tools/search_manual_docs.py",
+      "runtime_paths": [
+        "path-1-host-a",
+        "path-1-host-b"
+      ],
+      "server_identity": "Blender Lab MCP (blmcp)",
+      "server_version": "1.0.2",
+      "tool_schema_fingerprint": "ec0814996111a0694b64dac848d55abbada9556b81ef63fbcfac47b48e45ac01"
+    },
+    {
+      "tool_name": "get_addon_status",
+      "description": "Check the connected Blender: its version, whether the addon matches this server, and which asset libraries and 3D generators are switched on.",
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [],
+        "properties": {
+          "user_prompt": {
+            "type": "string"
+          }
+        }
+      },
+      "output_shape_summary": "string or JSON summary of Blender version, addon v1.8 match, and enabled integrations",
+      "side_effects": "none",
+      "required_capability_tier": "L0",
+      "executes_arbitrary_code": false,
+      "modifies_scene_state": false,
+      "reads_files": false,
+      "writes_files": false,
+      "accesses_external_services": false,
+      "bounded_and_independently_verifiable": true,
+      "classification": "read_only_only",
+      "qualification_rationale": "Read-only handshake inspection verifying Blender version and addon compatibility.",
+      "evidence_source": "https://github.com/ahujasid/blender-mcp/blob/main/src/blender_mcp/server.py#L451",
+      "runtime_paths": [
+        "path-2-community"
+      ],
+      "server_identity": "MCP for Blender (ahujasid/mcp-for-blender)",
+      "server_version": "2.2.7",
+      "tool_schema_fingerprint": "e0a491a9f51fc8126dc51beb503a6bb12b2145811f9e2ec8e870eaa4926f9489"
+    },
+    {
+      "tool_name": "disable_telemetry",
+      "description": "Turn OFF collection of prompts, code, screenshots and scene data.",
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [],
+        "properties": {
+          "user_prompt": {
+            "type": "string"
+          }
+        }
+      },
+      "output_shape_summary": "string confirmation of telemetry opt-out",
+      "side_effects": "telemetry_or_config_mutation",
+      "required_capability_tier": "L1",
+      "executes_arbitrary_code": false,
+      "modifies_scene_state": false,
+      "reads_files": false,
+      "writes_files": true,
+      "accesses_external_services": false,
+      "bounded_and_independently_verifiable": false,
+      "classification": "unsupported",
+      "qualification_rationale": "Mutates third-party add-on telemetry preferences rather than governed 3D scene state.",
+      "evidence_source": "https://github.com/ahujasid/blender-mcp/blob/main/src/blender_mcp/server.py#L501",
+      "runtime_paths": [
+        "path-2-community"
+      ],
+      "server_identity": "MCP for Blender (ahujasid/mcp-for-blender)",
+      "server_version": "2.2.7",
+      "tool_schema_fingerprint": "1513ad3e444c9963c6dc265cab89544b449c7eee5a72b9e4b9c484336758d43c"
+    },
+    {
+      "tool_name": "get_scene_info",
+      "description": "Facts about the scene as text/JSON: what is there, where, how big, and how healthy meshes and rigs are.",
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [],
+        "properties": {
+          "user_prompt": {
+            "type": "string"
+          },
+          "query": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "root": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "fields": {
+            "type": [
+              "array",
+              "null"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "limit": {
+            "type": "integer"
+          }
+        }
+      },
+      "output_shape_summary": "structured scene object, hierarchy, camera, light, and render summary",
+      "side_effects": "none",
+      "required_capability_tier": "L0",
+      "executes_arbitrary_code": false,
+      "modifies_scene_state": false,
+      "reads_files": false,
+      "writes_files": false,
+      "accesses_external_services": false,
+      "bounded_and_independently_verifiable": true,
+      "classification": "read_only_only",
+      "qualification_rationale": "Read-only inspection of active scene objects, transforms, cameras, lights, and hierarchy.",
+      "evidence_source": "https://github.com/ahujasid/blender-mcp/blob/main/src/blender_mcp/server.py#L607",
+      "runtime_paths": [
+        "path-2-community"
+      ],
+      "server_identity": "MCP for Blender (ahujasid/mcp-for-blender)",
+      "server_version": "2.2.7",
+      "tool_schema_fingerprint": "caa384b8584c6d54ebfd6194ab612e0eaa3e6a54fa8bacdc5134b03cf7963566"
+    },
+    {
+      "tool_name": "execute_blender_code",
+      "description": "Run Python in the user live Blender (bpy, bmesh, mathutils). Whatever it prints is returned.",
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "user_prompt": {
+            "type": "string"
+          }
+        }
+      },
+      "output_shape_summary": "stdout string from arbitrary exec() in Blender",
+      "side_effects": "arbitrary_code_execution",
+      "required_capability_tier": "L3",
+      "executes_arbitrary_code": true,
+      "modifies_scene_state": true,
+      "reads_files": true,
+      "writes_files": true,
+      "accesses_external_services": true,
+      "bounded_and_independently_verifiable": false,
+      "classification": "unsafe_raw_code",
+      "qualification_rationale": "Executes arbitrary Python via exec() inside Blender main thread without sandboxing; permanently blocked per laws/no-arbitrary-python-interface.md.",
+      "evidence_source": "https://github.com/ahujasid/blender-mcp/blob/main/src/blender_mcp/server.py#L791",
+      "runtime_paths": [
+        "path-2-community"
+      ],
+      "server_identity": "MCP for Blender (ahujasid/mcp-for-blender)",
+      "server_version": "2.2.7",
+      "tool_schema_fingerprint": "23ad5f7c9b3dce9b57112ae26d823a1f4b6315214c4d88ee7330443485d071b5"
+    },
+    {
+      "tool_name": "record_trajectory_feedback",
+      "description": "Record evaluation feedback for a captured trajectory step.",
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "feedback"
+        ],
+        "properties": {
+          "feedback": {
+            "type": "string"
+          },
+          "correction_text": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "step_index": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "user_prompt": {
+            "type": "string"
+          }
+        }
+      },
+      "output_shape_summary": "string telemetry recording status",
+      "side_effects": "telemetry_or_config_mutation",
+      "required_capability_tier": "L1",
+      "executes_arbitrary_code": false,
+      "modifies_scene_state": false,
+      "reads_files": false,
+      "writes_files": true,
+      "accesses_external_services": true,
+      "bounded_and_independently_verifiable": false,
+      "classification": "unsupported",
+      "qualification_rationale": "Records third-party trajectory telemetry; not a governed Blender scene operation.",
+      "evidence_source": "https://github.com/ahujasid/blender-mcp/blob/main/src/blender_mcp/server.py#L1484",
+      "runtime_paths": [
+        "path-2-community"
+      ],
+      "server_identity": "MCP for Blender (ahujasid/mcp-for-blender)",
+      "server_version": "2.2.7",
+      "tool_schema_fingerprint": "98a1b88827b1f5aac33e27de245031b28b5680e24553ad5524d9f092f7b41863"
+    },
+    {
+      "tool_name": "look",
+      "description": "Inspect viewport or camera views of the scene or specific target objects.",
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [],
+        "properties": {
+          "mode": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "target": {
+            "type": [
+              "array",
+              "null"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "max_size": {
+            "type": "integer"
+          },
+          "user_prompt": {
+            "type": "string"
+          }
+        }
+      },
+      "output_shape_summary": "viewport capture image content and view metadata",
+      "side_effects": "none",
+      "required_capability_tier": "L0",
+      "executes_arbitrary_code": false,
+      "modifies_scene_state": false,
+      "reads_files": false,
+      "writes_files": false,
+      "accesses_external_services": false,
+      "bounded_and_independently_verifiable": true,
+      "classification": "read_only_only",
+      "qualification_rationale": "Read-only viewport visual inspection tool.",
+      "evidence_source": "https://github.com/ahujasid/blender-mcp/blob/main/src/blender_mcp/server.py#L1562",
+      "runtime_paths": [
+        "path-2-community"
+      ],
+      "server_identity": "MCP for Blender (ahujasid/mcp-for-blender)",
+      "server_version": "2.2.7",
+      "tool_schema_fingerprint": "179cbb5fa704032e95430b287bb2c570c34877b5fdd97bbe2cf1215f6b4d30a2"
+    },
+    {
+      "tool_name": "generate_3d",
+      "description": "Generate a 3D model from text or image via external cloud providers (Rodin, Tripo, Hunyuan3D) and import into Blender.",
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [],
+        "properties": {
+          "prompt": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "image": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "name": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "provider": {
+            "type": "string"
+          },
+          "user_prompt": {
+            "type": "string"
+          }
+        }
+      },
+      "output_shape_summary": "cloud generation job status and imported mesh summary",
+      "side_effects": "external_network_and_scene_mutation",
+      "required_capability_tier": "L3",
+      "executes_arbitrary_code": false,
+      "modifies_scene_state": true,
+      "reads_files": true,
+      "writes_files": true,
+      "accesses_external_services": true,
+      "bounded_and_independently_verifiable": false,
+      "classification": "unsupported",
+      "qualification_rationale": "Calls external third-party cloud AI generation APIs and mutates the live scene without deterministic mesh/license/checkpoint guarantees.",
+      "evidence_source": "https://github.com/ahujasid/blender-mcp/blob/main/src/blender_mcp/server.py#L1757",
+      "runtime_paths": [
+        "path-2-community"
+      ],
+      "server_identity": "MCP for Blender (ahujasid/mcp-for-blender)",
+      "server_version": "2.2.7",
+      "tool_schema_fingerprint": "15195ee10da2d4979578c1d300d8cca89b039454057d30dedfa47c44c20e828f"
+    },
+    {
+      "tool_name": "search_assets",
+      "description": "Search external 3D/material/HDRI libraries (Poly Haven, Sketchfab, Poly Pizza, BlenderKit).",
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "source"
+        ],
+        "properties": {
+          "source": {
+            "type": "string"
+          },
+          "query": {
+            "type": "string"
+          },
+          "asset_type": {
+            "type": "string"
+          },
+          "limit": {
+            "type": "integer"
+          },
+          "user_prompt": {
+            "type": "string"
+          }
+        }
+      },
+      "output_shape_summary": "external asset search results",
+      "side_effects": "external_network_and_scene_mutation",
+      "required_capability_tier": "L2",
+      "executes_arbitrary_code": false,
+      "modifies_scene_state": false,
+      "reads_files": false,
+      "writes_files": false,
+      "accesses_external_services": true,
+      "bounded_and_independently_verifiable": false,
+      "classification": "unsupported",
+      "qualification_rationale": "Queries external third-party network catalogs rather than local governed scene state.",
+      "evidence_source": "https://github.com/ahujasid/blender-mcp/blob/main/src/blender_mcp/server.py#L1881",
+      "runtime_paths": [
+        "path-2-community"
+      ],
+      "server_identity": "MCP for Blender (ahujasid/mcp-for-blender)",
+      "server_version": "2.2.7",
+      "tool_schema_fingerprint": "753f2f24088a0772fbc681888f444ae6c0c860423375bd4c421072815dec9bfc"
+    },
+    {
+      "tool_name": "import_asset",
+      "description": "Download and import an asset from an external network source (Poly Haven, Sketchfab, Poly Pizza) into Blender.",
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "source",
+          "id"
+        ],
+        "properties": {
+          "source": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "asset_type": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "resolution": {
+            "type": "string"
+          },
+          "user_prompt": {
+            "type": "string"
+          }
+        }
+      },
+      "output_shape_summary": "string confirmation of downloaded and imported remote asset",
+      "side_effects": "external_network_and_scene_mutation",
+      "required_capability_tier": "L2",
+      "executes_arbitrary_code": false,
+      "modifies_scene_state": true,
+      "reads_files": true,
+      "writes_files": true,
+      "accesses_external_services": true,
+      "bounded_and_independently_verifiable": false,
+      "classification": "unsupported",
+      "qualification_rationale": "Upstream import_asset downloads arbitrary remote network files and mutates the live scene without enforcing BlendOps SPDX license preflight or pre-mutation .blend checkpoint.",
+      "evidence_source": "https://github.com/ahujasid/blender-mcp/blob/main/src/blender_mcp/server.py#L1951",
+      "runtime_paths": [
+        "path-2-community"
+      ],
+      "server_identity": "MCP for Blender (ahujasid/mcp-for-blender)",
+      "server_version": "2.2.7",
+      "tool_schema_fingerprint": "6732f0bb197417522e69d4e65810306da377a2545bf93b7eaac033b10866d949"
+    },
+    {
+      "tool_name": "search_mentions",
+      "description": "Search scene objects, materials and collections to @-mention in the composer.",
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [],
+        "properties": {
+          "query": {
+            "type": "string"
+          }
+        }
+      },
+      "output_shape_summary": "CallToolResult listing matching scene objects, materials, and collections",
+      "side_effects": "none",
+      "required_capability_tier": "L0",
+      "executes_arbitrary_code": false,
+      "modifies_scene_state": false,
+      "reads_files": false,
+      "writes_files": false,
+      "accesses_external_services": false,
+      "bounded_and_independently_verifiable": true,
+      "classification": "read_only_only",
+      "qualification_rationale": "Read-only search over scene objects, materials, and collections (_READ_ONLY annotation verified).",
+      "evidence_source": "https://github.com/ahujasid/blender-mcp/blob/main/src/blender_mcp/server.py#L2056",
+      "runtime_paths": [
+        "path-2-community"
+      ],
+      "server_identity": "MCP for Blender (ahujasid/mcp-for-blender)",
+      "server_version": "2.2.7",
+      "tool_schema_fingerprint": "a0c620c18f12c994aaab7c3f13a8c7b4e4f065f2eb0f2a757fde3d61a0a5998a"
+    },
+    {
+      "tool_name": "open_viewport",
+      "description": "Show the latest Blender viewport screenshot beside the conversation.",
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [],
+        "properties": {}
+      },
+      "output_shape_summary": "CallToolResult with cached viewport screenshot",
+      "side_effects": "none",
+      "required_capability_tier": "L0",
+      "executes_arbitrary_code": false,
+      "modifies_scene_state": false,
+      "reads_files": false,
+      "writes_files": false,
+      "accesses_external_services": false,
+      "bounded_and_independently_verifiable": true,
+      "classification": "read_only_only",
+      "qualification_rationale": "Read-only cached viewport display tool.",
+      "evidence_source": "https://github.com/ahujasid/blender-mcp/blob/main/src/blender_mcp/server.py#L2146",
+      "runtime_paths": [
+        "path-2-community"
+      ],
+      "server_identity": "MCP for Blender (ahujasid/mcp-for-blender)",
+      "server_version": "2.2.7",
+      "tool_schema_fingerprint": "48168ec62605a643ba676d5d25a68097e15d0208ba29aafe288e210c9df4da89"
+    },
+    {
+      "tool_name": "viewport_latest",
+      "description": "The latest viewport screenshot, if newer than since. Never touches Blender.",
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [],
+        "properties": {
+          "since": {
+            "type": "integer"
+          }
+        }
+      },
+      "output_shape_summary": "CallToolResult with cached viewport screenshot",
+      "side_effects": "none",
+      "required_capability_tier": "L0",
+      "executes_arbitrary_code": false,
+      "modifies_scene_state": false,
+      "reads_files": false,
+      "writes_files": false,
+      "accesses_external_services": false,
+      "bounded_and_independently_verifiable": true,
+      "classification": "read_only_only",
+      "qualification_rationale": "Read-only in-memory viewport cache lookup.",
+      "evidence_source": "https://github.com/ahujasid/blender-mcp/blob/main/src/blender_mcp/server.py#L2160",
+      "runtime_paths": [
+        "path-2-community"
+      ],
+      "server_identity": "MCP for Blender (ahujasid/mcp-for-blender)",
+      "server_version": "2.2.7",
+      "tool_schema_fingerprint": "4fd6668719852e23dad7610abdc056be867f7c4c0a8a17c69d463db0bbe761fb"
+    },
+    {
+      "tool_name": "viewport_capture",
+      "description": "Capture a fresh viewport screenshot for the Viewport app.",
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [],
+        "properties": {
+          "max_size": {
+            "type": "integer"
+          },
+          "auto": {
+            "type": "boolean"
+          }
+        }
+      },
+      "output_shape_summary": "CallToolResult with fresh viewport screenshot",
+      "side_effects": "none",
+      "required_capability_tier": "L0",
+      "executes_arbitrary_code": false,
+      "modifies_scene_state": false,
+      "reads_files": false,
+      "writes_files": false,
+      "accesses_external_services": false,
+      "bounded_and_independently_verifiable": true,
+      "classification": "read_only_only",
+      "qualification_rationale": "Read-only viewport capture into memory store.",
+      "evidence_source": "https://github.com/ahujasid/blender-mcp/blob/main/src/blender_mcp/server.py#L2166",
+      "runtime_paths": [
+        "path-2-community"
+      ],
+      "server_identity": "MCP for Blender (ahujasid/mcp-for-blender)",
+      "server_version": "2.2.7",
+      "tool_schema_fingerprint": "c438c0325426ec403d8aaff64785638d07902cfdf3e0c1c988811b29481554f7"
+    },
+    {
+      "tool_name": "viewport_pick",
+      "description": "The object under a click on viewport capture seq.",
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "seq",
+          "x",
+          "y"
+        ],
+        "properties": {
+          "seq": {
+            "type": "integer"
+          },
+          "x": {
+            "type": "number"
+          },
+          "y": {
+            "type": "number"
+          }
+        }
+      },
+      "output_shape_summary": "CallToolResult identifying object hit by raycast",
+      "side_effects": "none",
+      "required_capability_tier": "L0",
+      "executes_arbitrary_code": false,
+      "modifies_scene_state": false,
+      "reads_files": false,
+      "writes_files": false,
+      "accesses_external_services": false,
+      "bounded_and_independently_verifiable": true,
+      "classification": "read_only_only",
+      "qualification_rationale": "Read-only scene raycast query against a recorded camera view.",
+      "evidence_source": "https://github.com/ahujasid/blender-mcp/blob/main/src/blender_mcp/server.py#L2184",
+      "runtime_paths": [
+        "path-2-community"
+      ],
+      "server_identity": "MCP for Blender (ahujasid/mcp-for-blender)",
+      "server_version": "2.2.7",
+      "tool_schema_fingerprint": "d2e75a27dce793dbd02867ecee45f5c5ffff32118e46ddcb3dc2ca5825c3a791"
+    },
+    {
+      "tool_name": "get_object_info",
+      "description": "Return transform, material slots, and mesh topology statistics for a named Blender object (addon socket command / blender://object/{name} resource / legacy v1.x tool).",
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "object_name"
+        ],
+        "properties": {
+          "object_name": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "output_shape_summary": "dict with object transform, materials, and mesh vertex/triangle counts",
+      "side_effects": "none",
+      "required_capability_tier": "L0",
+      "executes_arbitrary_code": false,
+      "modifies_scene_state": false,
+      "reads_files": false,
+      "writes_files": false,
+      "accesses_external_services": false,
+      "bounded_and_independently_verifiable": true,
+      "classification": "read_only_only",
+      "qualification_rationale": "Read-only per-object inspection command implemented in addon.py get_object_info and exposed via resource blender://object/{name} in v2.2.7 and tool get_object_info in v1.x.",
+      "evidence_source": "https://github.com/ahujasid/blender-mcp/blob/main/src/blender_mcp/server.py#L2083",
+      "runtime_paths": [
+        "path-2-community"
+      ],
+      "server_identity": "MCP for Blender (ahujasid/mcp-for-blender)",
+      "server_version": "2.2.7",
+      "tool_schema_fingerprint": "d0a91f92c0d4558c8eebc2f50a30d35363f6e9c480dc1635e1684492a3d6195f"
+    },
+    {
+      "tool_name": "get_viewport_screenshot",
+      "description": "Legacy v1.x read-only viewport screenshot capture tool (superseded by look / viewport_capture in v2.2.7).",
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [],
+        "properties": {
+          "max_size": {
+            "type": "integer"
+          }
+        }
+      },
+      "output_shape_summary": "MCP ImageContent (PNG bytes)",
+      "side_effects": "none",
+      "required_capability_tier": "L0",
+      "executes_arbitrary_code": false,
+      "modifies_scene_state": false,
+      "reads_files": false,
+      "writes_files": false,
+      "accesses_external_services": false,
+      "bounded_and_independently_verifiable": true,
+      "classification": "read_only_only",
+      "qualification_rationale": "Read-only viewport capture in mcp-for-blender v1.x.",
+      "evidence_source": "https://github.com/ahujasid/blender-mcp/blob/main/addon.py",
+      "runtime_paths": [
+        "path-2-community"
+      ],
+      "server_identity": "MCP for Blender (ahujasid/mcp-for-blender)",
+      "server_version": "2.2.7",
+      "tool_schema_fingerprint": "c42722e11da8fd43b9befa9daf7ea6d7fdf9f1c40b921d523b4aa7ca4d126ede"
     }
   ]
 }

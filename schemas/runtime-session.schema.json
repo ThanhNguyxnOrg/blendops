@@ -82,7 +82,9 @@
         "incompatible_with_plan",
         "host_context_only",
         "stale_session",
-        "invalid_endpoint"
+        "invalid_endpoint",
+        "protocol_incompatible",
+        "identity_mismatch"
       ]
     },
     "readiness_flags": {
@@ -104,6 +106,69 @@
         "restore_supported": { "type": "boolean" },
         "plan_compatible": { "type": "boolean" },
         "live_runtime_verified": { "type": "boolean" }
+      }
+    },
+    "qualification_states": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "runtime_discovered",
+        "runtime_reachable",
+        "runtime_identity_verified",
+        "protocol_compatible",
+        "blender_version_compatible",
+        "tool_inventory_verified",
+        "read_only_qualified",
+        "mutation_qualified",
+        "export_import_qualified",
+        "live_runtime_verified"
+      ],
+      "properties": {
+        "runtime_discovered": { "type": "boolean" },
+        "runtime_reachable": { "type": "boolean" },
+        "runtime_identity_verified": { "type": "boolean" },
+        "protocol_compatible": { "type": "boolean" },
+        "blender_version_compatible": { "type": "boolean" },
+        "tool_inventory_verified": { "type": "boolean" },
+        "read_only_qualified": { "type": "boolean" },
+        "mutation_qualified": { "type": "boolean" },
+        "export_import_qualified": { "type": "boolean" },
+        "live_runtime_verified": { "type": "boolean" }
+      }
+    },
+    "qualification_verdict": {
+      "type": "string",
+      "enum": [
+        "unqualified",
+        "connected_unqualified",
+        "read_only_qualified",
+        "read_only_and_export_qualified",
+        "read_only_and_mutation_qualified",
+        "fully_qualified"
+      ]
+    },
+    "mcp_protocol_info": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol_version",
+        "transport_type",
+        "server_name",
+        "server_version",
+        "addon_version",
+        "tool_inventory_fingerprint"
+      ],
+      "properties": {
+        "protocol_version": { "type": ["string", "null"] },
+        "transport_type": { "type": "string" },
+        "server_name": { "type": ["string", "null"] },
+        "server_version": { "type": ["string", "null"] },
+        "addon_version": { "type": ["string", "null"] },
+        "tool_inventory_fingerprint": { "type": ["string", "null"] },
+        "session_mode": { "type": ["string", "null"] },
+        "session_id_header_used": { "type": "boolean" },
+        "schema_drift_detected": { "type": "boolean" },
+        "requalification_required": { "type": "boolean" }
       }
     },
     "negotiated_capability_tier": {

@@ -397,14 +397,15 @@ describe('Phase 3.1 (Phase 17) — Independent Adversarial Audit & Cross-Phase H
       48,
     );
 
-    // 5.3 Shared catalog map has all 19 canonical artifacts including Phase 3 runtime governance files and schemas
+    // 5.3 Shared catalog map has all 20 canonical artifacts including Phase 3 and Phase 3.2 runtime governance files and schemas
     const map = buildSharedCatalogFilesMap(ROOT);
     const mapKeys = Object.keys(map).sort();
     assert.ok(mapKeys.includes('runtime-capability-policy.json'));
     assert.ok(mapKeys.includes('runtime-operations.json'));
     assert.ok(mapKeys.includes('schemas/runtime-session.schema.json'));
     assert.ok(mapKeys.includes('schemas/operation-execution-ledger.schema.json'));
-    assert.equal(mapKeys.length, 19);
+    assert.ok(mapKeys.includes('schemas/runtime-qualification-report.schema.json'));
+    assert.equal(mapKeys.length, 20);
   });
 
   test('6. Section 2F — Safe CLI --out path containment, symlink rejection, and atomic write on plan-compile and execution-report', () => {

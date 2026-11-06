@@ -140,5 +140,29 @@ BlendOps role: `User Intent → SceneSpec → ExecutionPlan → Runtime Readines
 
 ## Safety boundary
 
-Both Path 1 and Path 2 expose Blender's Python API to LLM-generated code. Save before destructive operations and prefer disposable scenes for first runs, regardless of path.
+Both Path 1 and Path 2 expose Blender's Python API to LLM-generated code (`execute_blender_code` and `execute_blender_code_for_cli`). Save before destructive operations and prefer disposable scenes for first runs, regardless of path.
 
+---
+
+## Upstream MCP Runtime Compatibility & Qualification Matrix (Phase 3.2)
+
+BlendOps enforces its typed operation policies against the actual advertised tool inventories of upstream MCP servers (`registry/runtime-operations.json` and [`../schemas/runtime-qualification-report.schema.json`](../schemas/runtime-qualification-report.schema.json)):
+
+| Dimension | Path 1 — Official Blender Lab MCP (`projects.blender.org/lab/blender_mcp`) | Path 2 — Community `mcp-for-blender` (`github.com/ahujasid/mcp-for-blender`) |
+| :--- | :--- | :--- |
+| **Upstream Provenance** | First-party Blender Lab experimental project | Third-party community project (not affiliated with Blender Foundation) |
+| **Server Package & Version** | `blender-mcp` v`1.0.2` (`blmcp:main`, `mcp[cli]>=1.2.0,<2`) | `mcp-for-blender` v`2.2.7` (`blender_mcp.server:main`, `mcp>=1.26.0,<2`) |
+| **Blender Add-on Identity** | `id = "mcp"`, `version = "1.0.0"`, `blender_version_min = "5.1.0"` | `name = "MCP for Blender"`, `version = (1, 8)`, `blender = (3, 0, 0)` |
+| **Supported Transports** | `stdio` (default), `sse`, `streamable-http` | `stdio` (`uvx mcp-for-blender`) |
+| **Advertised Tool Inventory** | **26 tools**: 18 `read_only_only` (`L0`), 2 `safe_direct` (`L2` file-write: `render_viewport_to_path`, `render_thumbnail_to_path`), 4 `unsupported` (`jump_to_*`), 2 `unsafe_raw_code` (`execute_blender_code`, `execute_blender_code_for_cli`) | **14 `@mcp.tool` tools in v`2.2.7`** (+ 2 legacy v`1.x` read-only tools): 10 `read_only_only` (`L0`), 5 `unsupported` (`disable_telemetry`, `record_trajectory_feedback`, `generate_3d`, `search_assets`, `import_asset`), 1 `unsafe_raw_code` (`execute_blender_code`) |
+| **Real Upstream Qualification Verdict** | `read_only_and_export_qualified` (`read_only_qualified: true`, `mutation_qualified: false`, `export_import_qualified: true`) | `read_only_qualified` (`read_only_qualified: true`, `mutation_qualified: false`, `export_import_qualified: false`) |
+| **Fail-Closed L1 Mutation Rule** | Neither upstream server exposes bounded `L1` scene-mutation tools; all scene mutations upstream rely on `execute_blender_code`. BlendOps refuses to translate typed operations into generated Python, keeping `mutation_qualified: false` on unextended upstream servers. | Same fail-closed rule: `execute_blender_code` is permanently classified as `unsafe_raw_code` and blocked. |
+
+### CLI Qualification & Smoke Commands
+
+```bash
+blendops runtime qualify [--runtime-path <path-1-host-a|path-1-host-b|path-2-community>] [--json]
+blendops runtime tools [--runtime-path <path-1-host-a|path-2-community>] [--json]
+blendops operation mappings [--runtime-path <path-1-host-a|path-2-community>] [--json]
+blendops runtime smoke [--mode <offline_contract|live_runtime>] [--live-smoke-opt-in] [--json]
+```

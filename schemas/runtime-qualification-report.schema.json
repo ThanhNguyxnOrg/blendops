@@ -1,0 +1,495 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/ThanhNguyxnOrg/blendops/schemas/runtime-qualification-report.schema.json",
+  "title": "BlendOps Upstream MCP Runtime Qualification & Smoke Report Schema",
+  "description": "Machine-readable schema for BlendOps Phase 3.2 upstream Blender MCP runtime qualification, tool inventory classification, operation-to-tool mapping verification, and controlled offline/live smoke execution.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "schema_version",
+    "report_id",
+    "timestamp",
+    "qualification_mode",
+    "evidence_classification",
+    "runtime_path",
+    "runtime_server_identity",
+    "server_version",
+    "blender_version",
+    "addon_version",
+    "mcp_protocol_version",
+    "transport_type",
+    "runtime_reachability",
+    "qualification_states",
+    "qualification_verdict",
+    "upstream_tool_inventory",
+    "tool_inventory_fingerprint",
+    "unsafe_tool_inventory",
+    "operation_to_tool_mappings",
+    "qualification_results",
+    "executed_smoke_operations",
+    "independent_readback_evidence",
+    "checkpoint_details",
+    "postcondition_verification",
+    "rollback_verification",
+    "secrets_redacted",
+    "truth_states",
+    "known_limitations"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "report_id": {
+      "type": "string",
+      "pattern": "^qual\\.[a-z0-9-]+$",
+      "minLength": 10,
+      "maxLength": 120
+    },
+    "timestamp": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}"
+    },
+    "qualification_mode": {
+      "type": "string",
+      "enum": ["offline_contract", "live_runtime"]
+    },
+    "evidence_classification": {
+      "type": "string",
+      "enum": [
+        "mock_verified",
+        "contract_verified",
+        "live_discovered",
+        "live_read_only_verified",
+        "live_mutation_verified",
+        "live_export_verified",
+        "not_run"
+      ]
+    },
+    "runtime_path": {
+      "type": "string",
+      "enum": [
+        "path-1-host-a",
+        "path-1-host-b",
+        "path-2-community",
+        "cli-appendix",
+        "none"
+      ]
+    },
+    "runtime_server_identity": {
+      "type": ["string", "null"]
+    },
+    "server_version": {
+      "type": ["string", "null"]
+    },
+    "blender_version": {
+      "type": ["string", "null"]
+    },
+    "addon_version": {
+      "type": ["string", "null"]
+    },
+    "mcp_protocol_version": {
+      "type": ["string", "null"]
+    },
+    "transport_type": {
+      "type": "string",
+      "enum": [
+        "stdio",
+        "sse",
+        "streamable-http",
+        "mock-in-memory",
+        "cli-subprocess",
+        "unconfigured"
+      ]
+    },
+    "runtime_reachability": {
+      "type": "string",
+      "enum": [
+        "reachable",
+        "unreachable",
+        "not_configured",
+        "blocked_opt_in_missing",
+        "blocked_invalid_endpoint",
+        "protocol_error",
+        "identity_mismatch",
+        "version_unsupported"
+      ]
+    },
+    "qualification_states": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "runtime_discovered",
+        "runtime_reachable",
+        "runtime_identity_verified",
+        "protocol_compatible",
+        "blender_version_compatible",
+        "tool_inventory_verified",
+        "read_only_qualified",
+        "mutation_qualified",
+        "export_import_qualified",
+        "live_runtime_verified"
+      ],
+      "properties": {
+        "runtime_discovered": { "type": "boolean" },
+        "runtime_reachable": { "type": "boolean" },
+        "runtime_identity_verified": { "type": "boolean" },
+        "protocol_compatible": { "type": "boolean" },
+        "blender_version_compatible": { "type": "boolean" },
+        "tool_inventory_verified": { "type": "boolean" },
+        "read_only_qualified": { "type": "boolean" },
+        "mutation_qualified": { "type": "boolean" },
+        "export_import_qualified": { "type": "boolean" },
+        "live_runtime_verified": { "type": "boolean" }
+      }
+    },
+    "qualification_verdict": {
+      "type": "string",
+      "enum": [
+        "unqualified",
+        "connected_unqualified",
+        "read_only_qualified",
+        "read_only_and_export_qualified",
+        "read_only_and_mutation_qualified",
+        "fully_qualified"
+      ]
+    },
+    "upstream_tool_inventory": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "tool_name",
+          "server_identity",
+          "server_version",
+          "description",
+          "input_schema",
+          "tool_schema_fingerprint",
+          "output_shape_summary",
+          "side_effects",
+          "required_capability_tier",
+          "executes_arbitrary_code",
+          "modifies_scene_state",
+          "reads_files",
+          "writes_files",
+          "accesses_external_services",
+          "bounded_and_independently_verifiable",
+          "classification",
+          "schema_drift_detected",
+          "description_injection_detected",
+          "requalification_required",
+          "qualification_rationale"
+        ],
+        "properties": {
+          "tool_name": { "type": "string", "minLength": 1 },
+          "server_identity": { "type": ["string", "null"] },
+          "server_version": { "type": ["string", "null"] },
+          "description": { "type": "string" },
+          "input_schema": { "type": "object" },
+          "tool_schema_fingerprint": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "output_shape_summary": { "type": "string" },
+          "side_effects": {
+            "type": "string",
+            "enum": [
+              "none",
+              "scene_mutation",
+              "file_write",
+              "ui_state_mutation",
+              "external_network_and_scene_mutation",
+              "telemetry_or_config_mutation",
+              "arbitrary_code_execution",
+              "unknown_side_effects"
+            ]
+          },
+          "required_capability_tier": {
+            "type": "string",
+            "enum": ["L0", "L1", "L2", "L3"]
+          },
+          "executes_arbitrary_code": { "type": "boolean" },
+          "modifies_scene_state": { "type": "boolean" },
+          "reads_files": { "type": "boolean" },
+          "writes_files": { "type": "boolean" },
+          "accesses_external_services": { "type": "boolean" },
+          "bounded_and_independently_verifiable": { "type": "boolean" },
+          "classification": {
+            "type": "string",
+            "enum": [
+              "safe_direct",
+              "read_only_only",
+              "unsafe_raw_code",
+              "unsupported",
+              "unknown"
+            ]
+          },
+          "schema_drift_detected": { "type": "boolean" },
+          "description_injection_detected": { "type": "boolean" },
+          "requalification_required": { "type": "boolean" },
+          "qualification_rationale": { "type": "string", "minLength": 5 }
+        }
+      }
+    },
+    "tool_inventory_fingerprint": {
+      "type": ["string", "null"],
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "unsafe_tool_inventory": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "tool_name",
+          "classification",
+          "executes_arbitrary_code",
+          "blocking_reason"
+        ],
+        "properties": {
+          "tool_name": { "type": "string", "minLength": 1 },
+          "classification": {
+            "type": "string",
+            "enum": ["unsafe_raw_code", "unsupported", "unknown"]
+          },
+          "executes_arbitrary_code": { "type": "boolean" },
+          "blocking_reason": { "type": "string", "minLength": 5 }
+        }
+      }
+    },
+    "operation_to_tool_mappings": {
+      "type": "array",
+      "minItems": 18,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "operation_id",
+          "required_capability_tier",
+          "runtime_path",
+          "exact_upstream_mcp_tool_name",
+          "tool_schema_fingerprint",
+          "required_arguments",
+          "expected_side_effects",
+          "required_preconditions",
+          "required_postconditions",
+          "readback_strategy",
+          "checkpoint_requirement",
+          "rollback_strategy",
+          "qualification_status",
+          "evidence_supporting_decision"
+        ],
+        "properties": {
+          "operation_id": { "type": "string", "minLength": 3 },
+          "required_capability_tier": {
+            "type": "string",
+            "enum": ["L0", "L1", "L2", "L3"]
+          },
+          "runtime_path": { "type": "string" },
+          "exact_upstream_mcp_tool_name": { "type": ["string", "null"] },
+          "tool_schema_fingerprint": { "type": ["string", "null"] },
+          "required_arguments": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "expected_side_effects": { "type": "string" },
+          "required_preconditions": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "required_postconditions": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "readback_strategy": { "type": "string" },
+          "checkpoint_requirement": { "type": "string" },
+          "rollback_strategy": { "type": "string" },
+          "qualification_status": {
+            "type": "string",
+            "enum": [
+              "qualified_read_only",
+              "qualified_safe_direct",
+              "blocked_missing_bounded_upstream_tool",
+              "blocked_unsafe_raw_code_tool",
+              "blocked_unbounded_upstream_side_effects",
+              "blocked_schema_drift",
+              "blocked_capability_mismatch",
+              "blocked_runtime_unqualified",
+              "permanently_blocked_l3"
+            ]
+          },
+          "evidence_supporting_decision": { "type": "string", "minLength": 5 }
+        }
+      }
+    },
+    "qualification_results": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "total_canonical_operations",
+        "qualified_read_only_operations",
+        "qualified_mutation_operations",
+        "qualified_export_import_operations",
+        "blocked_operations",
+        "permanently_blocked_l3_interfaces"
+      ],
+      "properties": {
+        "total_canonical_operations": { "type": "integer", "minimum": 18 },
+        "qualified_read_only_operations": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "qualified_mutation_operations": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "qualified_export_import_operations": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "blocked_operations": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "permanently_blocked_l3_interfaces": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "executed_smoke_operations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "operation_id",
+          "mapped_tool_name",
+          "tier",
+          "status",
+          "independent_readback_verified"
+        ],
+        "properties": {
+          "operation_id": { "type": "string" },
+          "mapped_tool_name": { "type": ["string", "null"] },
+          "tier": { "type": "string", "enum": ["L0", "L1", "L2", "L3"] },
+          "status": {
+            "type": "string",
+            "enum": ["succeeded", "blocked", "failed", "not_run"]
+          },
+          "independent_readback_verified": { "type": "boolean" }
+        }
+      }
+    },
+    "independent_readback_evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["performed", "verified", "readback_tool_names", "summary"],
+      "properties": {
+        "performed": { "type": "boolean" },
+        "verified": { "type": "boolean" },
+        "readback_tool_names": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "summary": { "type": "string" }
+      }
+    },
+    "checkpoint_details": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": [
+        "required",
+        "verified_on_disk",
+        "source_blend_path",
+        "backup_path",
+        "sha256"
+      ],
+      "properties": {
+        "required": { "type": "boolean" },
+        "verified_on_disk": { "type": "boolean" },
+        "source_blend_path": { "type": ["string", "null"] },
+        "backup_path": { "type": ["string", "null"] },
+        "sha256": { "type": ["string", "null"] }
+      }
+    },
+    "postcondition_verification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["checked", "passed", "details"],
+      "properties": {
+        "checked": { "type": "boolean" },
+        "passed": { "type": "boolean" },
+        "details": { "type": "string" }
+      }
+    },
+    "rollback_verification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["triggered", "status", "details"],
+      "properties": {
+        "triggered": { "type": "boolean" },
+        "status": {
+          "type": "string",
+          "enum": [
+            "not_needed",
+            "rollback_verified",
+            "rollback_unverified",
+            "rollback_failed"
+          ]
+        },
+        "details": { "type": "string" }
+      }
+    },
+    "secrets_redacted": {
+      "type": "boolean"
+    },
+    "truth_states": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "runtime_status",
+        "artifact_status",
+        "live_qualification",
+        "is_mock_runtime"
+      ],
+      "properties": {
+        "runtime_status": {
+          "type": "string",
+          "enum": ["Not Run", "Attempted", "Produced", "Verified", "Failed"]
+        },
+        "artifact_status": {
+          "type": "string",
+          "enum": ["Not Produced", "Attempted", "Produced", "Verified", "Failed"]
+        },
+        "live_qualification": {
+          "type": "string",
+          "enum": [
+            "Not Run",
+            "Attempted",
+            "Discovered Only",
+            "Read-Only Verified",
+            "Mutation Verified",
+            "Failed"
+          ]
+        },
+        "is_mock_runtime": {
+          "type": "boolean"
+        }
+      }
+    },
+    "known_limitations": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 5
+      }
+    }
+  }
+}

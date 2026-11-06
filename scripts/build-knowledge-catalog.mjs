@@ -2079,6 +2079,7 @@ export function buildSharedCatalogFilesMap(rootDir = DEFAULT_ROOT) {
   const operationExecutionLedgerSchemaPath = path.join(rootDir, 'schemas/operation-execution-ledger.schema.json');
   const runtimeEvidencePacketSchemaPath = path.join(rootDir, 'schemas/runtime-evidence-packet.schema.json');
   const runtimeCapabilityPolicySchemaPath = path.join(rootDir, 'schemas/runtime-capability-policy.schema.json');
+  const runtimeQualificationReportSchemaPath = path.join(rootDir, 'schemas/runtime-qualification-report.schema.json');
 
   const hasSceneSpecSchema = fs.existsSync(sceneSpecSchemaPath);
   const hasExecutionPlanSchema = fs.existsSync(executionPlanSchemaPath);
@@ -2089,6 +2090,7 @@ export function buildSharedCatalogFilesMap(rootDir = DEFAULT_ROOT) {
   const hasOperationExecutionLedgerSchema = fs.existsSync(operationExecutionLedgerSchemaPath);
   const hasRuntimeEvidencePacketSchema = fs.existsSync(runtimeEvidencePacketSchemaPath);
   const hasRuntimeCapabilityPolicySchema = fs.existsSync(runtimeCapabilityPolicySchemaPath);
+  const hasRuntimeQualificationReportSchema = fs.existsSync(runtimeQualificationReportSchemaPath);
 
   const fileList = [
     'README.md',
@@ -2109,7 +2111,8 @@ export function buildSharedCatalogFilesMap(rootDir = DEFAULT_ROOT) {
     ...(hasRuntimeOperationsSchema ? ['schemas/runtime-operations.schema.json'] : []),
     ...(hasOperationExecutionLedgerSchema ? ['schemas/operation-execution-ledger.schema.json'] : []),
     ...(hasRuntimeEvidencePacketSchema ? ['schemas/runtime-evidence-packet.schema.json'] : []),
-    ...(hasRuntimeCapabilityPolicySchema ? ['schemas/runtime-capability-policy.schema.json'] : [])
+    ...(hasRuntimeCapabilityPolicySchema ? ['schemas/runtime-capability-policy.schema.json'] : []),
+    ...(hasRuntimeQualificationReportSchema ? ['schemas/runtime-qualification-report.schema.json'] : [])
   ];
 
   const manifestObj = {
@@ -2145,9 +2148,9 @@ export function buildSharedCatalogFilesMap(rootDir = DEFAULT_ROOT) {
     '- `recipe-catalog.json` — 10 composable multi-stage construction recipes linking required skills, knowledge records, stage gates, validation criteria, and failure recovery modes.',
     '- `catalog-index.json` — Prebuilt deterministic bilingual (English + Vietnamese) search and cross-reference index.',
     '- `skills-summary.json` — Compact metadata for all 48 canonical BlendOps skills so local resolution works standalone without requiring the full BlendOps git repository.',
-    '- `runtime-operations.json` — 18 canonical typed runtime operations (`op.inspect.*`, `op.mutate.*`, `op.export.*`, `op.import.*`) and blocked L3 interfaces.',
+    '- `runtime-operations.json` — 18 canonical typed runtime operations (`op.inspect.*`, `op.mutate.*`, `op.export.*`, `op.import.*`), upstream tool qualification matrix, and blocked L3 interfaces.',
     '- `runtime-capability-policy.json` — Governed runtime capability tiers (`L0`–`L3`) and enforcement policy.',
-    '- `schemas/` — JSON Schema Draft 2020-12 definitions for sources, knowledge records, recipes, SceneSpec, ExecutionPlan, RuntimeSession, RuntimeOperations, OperationExecutionLedger, RuntimeEvidencePacket, and RuntimeCapabilityPolicy.',
+    '- `schemas/` — JSON Schema Draft 2020-12 definitions for sources, knowledge records, recipes, SceneSpec, ExecutionPlan, RuntimeSession, RuntimeOperations, OperationExecutionLedger, RuntimeEvidencePacket, RuntimeCapabilityPolicy, and RuntimeQualificationReport.',
     '',
     '## How Agents Use This Catalog',
     '',
@@ -2156,7 +2159,7 @@ export function buildSharedCatalogFilesMap(rootDir = DEFAULT_ROOT) {
     '   - Resolve full record & links: `npx blendops catalog-resolve <knowledge.id | recipe.id | source.id> [--project <project-dir>]`',
     '   - Validate catalog integrity: `npx blendops catalog-validate [--project <project-dir>]`',
     '   - Validate SceneSpec & compile ExecutionPlan: `npx blendops scene-spec-validate <spec.json> [--project <project-dir>]` / `npx blendops plan-compile <spec.json> [--project <project-dir>]`',
-    '   - Check runtime readiness & operations: `npx blendops runtime doctor [--project <project-dir>]` / `npx blendops operation list [--project <project-dir>]`',
+    '   - Check runtime readiness, qualification & operations: `npx blendops runtime doctor [--project <project-dir>]` / `npx blendops runtime qualify [--project <project-dir>]` / `npx blendops runtime tools [--project <project-dir>]` / `npx blendops operation mappings [--project <project-dir>]` / `npx blendops runtime smoke [--project <project-dir>]`',
     '2. **Direct File Consumption** (in Claude Desktop / Claude.ai Projects or offline agent context):',
     '   - Attach or inspect `catalog-index.json` to locate matching `knowledge.*` and `recipe.*` IDs by domain, skill, or keyword.',
     '   - Read the corresponding record in `knowledge-catalog.json` or `recipe-catalog.json` before planning or mutating a Blender scene.',
@@ -2207,6 +2210,9 @@ export function buildSharedCatalogFilesMap(rootDir = DEFAULT_ROOT) {
   }
   if (hasRuntimeCapabilityPolicySchema) {
     filesMap['schemas/runtime-capability-policy.schema.json'] = fs.readFileSync(runtimeCapabilityPolicySchemaPath, 'utf8');
+  }
+  if (hasRuntimeQualificationReportSchema) {
+    filesMap['schemas/runtime-qualification-report.schema.json'] = fs.readFileSync(runtimeQualificationReportSchemaPath, 'utf8');
   }
   return filesMap;
 }
