@@ -56,7 +56,7 @@ jobs:
           NODE
       - name: Persist regenerated audit snapshots to review branch
         if: github.ref_name == 'phase13.2-complete-review'
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             const fs = require('fs');
