@@ -1,0 +1,26 @@
+name: CI
+
+on:
+  push:
+    branches: [main, phase13.2-complete-review]
+    paths-ignore:
+      - docs/audits/current/**
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: blendops-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    uses: ThanhNguyxnOrg/.github/.github/workflows/ci-node.yml@5d251b08e6d0360e2eee2da4f792bd179d87ccc9
+    with:
+      job_name: Verify (BlendOps)
+      node_version: "20"
+      package_manager: npm
+      cache: npm
+      validation_command: npm run arch:build && npm run ci
