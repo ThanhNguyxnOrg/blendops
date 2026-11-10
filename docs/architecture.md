@@ -43,7 +43,7 @@ blendops/
 ├── .github/                              # GitHub governance, templates, assets, and CI workflows
 │   ├── ISSUE_TEMPLATE/                   # Bug report & feature request intake templates
 │   ├── assets/                           # Brand marks & README social preview images
-│   ├── workflows/                        # CI workflows (`docs.yml`, `auto-assign.yml`, `auto-merge-dependabot.yml`)
+│   ├── workflows/                        # Project-specific CI and documentation workflows
 │   ├── dependabot.yml                    # Weekly dependency update configuration
 │   └── pull_request_template.md          # Pre-PR verification checklist
 ├── AGENTS.md                             # Mandatory rules for AI agents modifying this repository
