@@ -12,7 +12,7 @@ permissions:
 
 concurrency:
   group: blendops-audit-${{ github.ref }}
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   docs:
@@ -27,38 +27,7 @@ jobs:
         shell: bash
         run: |
           npm run arch:build
-          node --input-type=module <<'NODE'
-          import fs from 'node:fs';
-          import { computeAuditedInputsDigest } from './scripts/generate-current-audit.mjs';
-
-          const digest = computeAuditedInputsDigest(process.cwd());
-          const paths = [
-            'docs/audits/current/scorecard.json',
-            'docs/audits/current/findings.json',
-            'docs/audits/current/skill-inventory.json',
-            'docs/audits/current/eval-inventory.json',
-            'docs/audits/current/verification-manifest.json',
-          ];
-
-          function synchronize(value) {
-            if (Array.isArray(value)) {
-              value.forEach(synchronize);
-              return;
-            }
-            if (!value || typeof value !== 'object') return;
-            for (const [key, child] of Object.entries(value)) {
-              if (key === 'auditedInputsSha256') value[key] = digest;
-              else synchronize(child);
-            }
-          }
-
-          for (const path of paths) {
-            const document = JSON.parse(fs.readFileSync(path, 'utf8'));
-            synchronize(document);
-            fs.writeFileSync(path, JSON.stringify(document, null, 2) + '\n', 'utf8');
-          }
-          console.log(`Synchronized auditedInputsSha256: ${digest}`);
-          NODE
+          npm run audit:sync-digest
       - name: Mint repository-scoped ThanhNguyxnAgent token
         if: github.event_name == 'push'
         id: agent
@@ -182,36 +151,5 @@ jobs:
         shell: bash
         run: |
           npm run arch:build
-          node --input-type=module <<'NODE'
-          import fs from 'node:fs';
-          import { computeAuditedInputsDigest } from './scripts/generate-current-audit.mjs';
-
-          const digest = computeAuditedInputsDigest(process.cwd());
-          const paths = [
-            'docs/audits/current/scorecard.json',
-            'docs/audits/current/findings.json',
-            'docs/audits/current/skill-inventory.json',
-            'docs/audits/current/eval-inventory.json',
-            'docs/audits/current/verification-manifest.json',
-          ];
-
-          function synchronize(value) {
-            if (Array.isArray(value)) {
-              value.forEach(synchronize);
-              return;
-            }
-            if (!value || typeof value !== 'object') return;
-            for (const [key, child] of Object.entries(value)) {
-              if (key === 'auditedInputsSha256') value[key] = digest;
-              else synchronize(child);
-            }
-          }
-
-          for (const path of paths) {
-            const document = JSON.parse(fs.readFileSync(path, 'utf8'));
-            synchronize(document);
-            fs.writeFileSync(path, JSON.stringify(document, null, 2) + '\n', 'utf8');
-          }
-          console.log(`Synchronized auditedInputsSha256: ${digest}`);
-          NODE
+          npm run audit:sync-digest
       - run: node --test scripts/test-phase11.mjs scripts/test-phase12.mjs scripts/test-phase13.mjs
