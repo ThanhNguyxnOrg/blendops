@@ -2,7 +2,7 @@
   "schemaVersion": "1.0.0",
   "auditPhase": "phase-13-current",
   "summary": {
-    "totalTrackedFiles": 693,
+    "totalTrackedFiles": 694,
     "npmPackageIncludedFiles": 483,
     "generatedTrackedFiles": 110,
     "canonicalSkillsCount": 48,
@@ -18,7 +18,7 @@
       "distribution_artifact": 15,
       "canonical_source": 327,
       "generated_artifact": 110,
-      "runtime_build_test_infrastructure": 99
+      "runtime_build_test_infrastructure": 100
     },
     "subsystemCounts": {
       "repository-governance": 4,
@@ -37,7 +37,7 @@
       "registry-and-routing": 6,
       "schemas-and-contracts": 16,
       "cli-and-runtime-tools": 9,
-      "ci-and-build-generators": 8,
+      "ci-and-build-generators": 9,
       "test-suites": 18,
       "quality-and-skill-reviews": 7,
       "skills-catalog": 297
@@ -53,13 +53,13 @@
       "packs": 2,
       "registry": 10,
       "schemas": 16,
-      "scripts": 35,
+      "scripts": 36,
       "skill-reviews": 7,
       "skills": 297
     },
     "referenceIntegrity": {
       "markdownFiles": 491,
-      "jsModules": 36,
+      "jsModules": 37,
       "schemas": 16,
       "workflows": 2
     }
@@ -285,8 +285,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 560,
-      "sha256": "44850d64bb2a220894a554833691e2916e5234a27f680312f844bf7295bd4783"
+      "byteSize": 589,
+      "sha256": "1ecc7066039f63625632fccc4491f9c8c9acc66d75e976885f4eeb0dd149b701"
     },
     {
       "path": ".github/workflows/docs.yml",
@@ -300,8 +300,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 7806,
-      "sha256": "4df490adfd4763ec2868288a073e0495adafc373c064db4208864bf6e8185d8c"
+      "byteSize": 5275,
+      "sha256": "1c224c680b2c2d4ef770d16a5aa5d57990a169eba2b67e5ef20d2a20ff3617f8"
     },
     {
       "path": ".gitignore",
@@ -2625,8 +2625,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 3373,
-      "sha256": "efcccd04f04994b355803794303a9cbf153e708487feab7286f4d2b527277eac"
+      "byteSize": 3450,
+      "sha256": "b6b221d1cf52d95ee941b3c4feab8ff2e12c3da49a7994af71840158a1639e07"
     },
     {
       "path": "docs/audits/current/README.md",
@@ -5025,8 +5025,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 4304,
-      "sha256": "c38926a7ff7dab465ccdb063cb713c0b19ec30d5a4e585e31b95074d375d7be7"
+      "byteSize": 4375,
+      "sha256": "444a9b482d0e8477d2eb5810dd6efca8c294e7db4706ad8f8603fc3066f2a06f"
     },
     {
       "path": "packs/README.md",
@@ -5644,6 +5644,21 @@
       "sha256": "fbca5a4969c62790696091f31691e0cbb5dc017a9145ecd9ea2399968b3b4100"
     },
     {
+      "path": "scripts/sync-current-audit-digest.mjs",
+      "fileType": ".mjs",
+      "classification": "runtime_build_test_infrastructure",
+      "purpose": "Repository generator, validator, or preview server script (sync-current-audit-digest.mjs)",
+      "owningSubsystem": "ci-and-build-generators",
+      "includedInNpmPackage": false,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 1536,
+      "sha256": "2fb78e8b88ba4e335c96cff625981db760c4620e8072c721e9698929dabfe976"
+    },
+    {
       "path": "scripts/test-phase1.mjs",
       "fileType": ".mjs",
       "classification": "runtime_build_test_infrastructure",
@@ -5685,8 +5700,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 51377,
-      "sha256": "6e109b6ebcdf897771bbc7c1e352f135d48ac6baa9e547e0f9608b9f3d9a4bc7"
+      "byteSize": 51862,
+      "sha256": "d4fc9790d60f6cfc8c639ae4c030abc037c8697bdd126c8c908232a9a80ab475"
     },
     {
       "path": "scripts/test-phase12.mjs",
