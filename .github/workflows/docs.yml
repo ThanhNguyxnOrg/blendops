@@ -4,9 +4,15 @@ on:
   pull_request:
   push:
     branches: [main, phase13.2-complete-review]
+    paths-ignore:
+      - docs/audits/current/**
 
 permissions:
-  contents: write
+  contents: read
+
+concurrency:
+  group: blendops-audit-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
   docs:
@@ -18,7 +24,7 @@ jobs:
           node-version: 20
       - run: npm ci
       - name: Rebuild architecture inventory and synchronize audit digest
-        if: github.ref_name == 'phase13.2-complete-review'
+        if: github.event_name == 'push'
         shell: bash
         run: |
           npm run arch:build
@@ -54,13 +60,23 @@ jobs:
           }
           console.log(`Synchronized auditedInputsSha256: ${digest}`);
           NODE
-      - name: Persist regenerated audit snapshots to review branch
-        if: github.ref_name == 'phase13.2-complete-review'
+      - name: Mint repository-scoped ThanhNguyxnAgent token
+        if: github.event_name == 'push'
+        id: agent
+        uses: ThanhNguyxnOrg/.github/.github/actions/agent-token@da9d02544f60aeec92f8c851846ee3a587044beb
+        with:
+          profile: content
+          client-id: ${{ secrets.BOT_APP_ID }}
+          private-key: ${{ secrets.BOT_PRIVATE_KEY }}
+
+      - name: Persist regenerated audit snapshots as ThanhNguyxnAgent
+        if: github.event_name == 'push'
         uses: actions/github-script@v9
         with:
+          github-token: ${{ steps.agent.outputs.token }}
           script: |
             const fs = require('fs');
-            const branch = 'phase13.2-complete-review';
+            const branch = context.ref.replace(/^refs\/heads\//, '');
             const paths = [
               'docs/audits/current/repository-inventory.json',
               'docs/audits/current/scorecard.json',
@@ -124,16 +140,16 @@ jobs:
             const newCommit = await github.rest.git.createCommit({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              message: 'chore: persist regenerated Phase 13.2 audit snapshots',
+              message: 'chore(agent): refresh generated BlendOps audit snapshots',
               tree: newTree.data.sha,
               parents: [parentSha],
               author: {
-                name: 'RealThanhNguyxn',
-                email: '274720769+RealThanhNguyxn@users.noreply.github.com',
+                name: 'ThanhNguyxnAgent[bot]',
+                email: '296222857+thanhnguyxnagent[bot]@users.noreply.github.com',
               },
               committer: {
-                name: 'RealThanhNguyxn',
-                email: '274720769+RealThanhNguyxn@users.noreply.github.com',
+                name: 'ThanhNguyxnAgent[bot]',
+                email: '296222857+thanhnguyxnagent[bot]@users.noreply.github.com',
               },
             });
             await github.rest.git.updateRef({
@@ -145,7 +161,7 @@ jobs:
             });
             core.info(`Committed regenerated audit snapshots: ${newCommit.data.sha}`);
 
-      - run: npm run ci
+      - run: npm run arch:check
 
   cli-cross-platform:
     name: cli-cross-platform (${{ matrix.os }})
@@ -164,7 +180,7 @@ jobs:
           node-version: 20
       - run: npm ci
       - name: Rebuild architecture inventory and synchronize audit digest
-        if: github.ref_name == 'phase13.2-complete-review'
+        if: github.event_name == 'push'
         shell: bash
         run: |
           npm run arch:build
