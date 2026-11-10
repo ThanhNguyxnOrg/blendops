@@ -2,7 +2,7 @@
   "schemaVersion": "1.0.0",
   "auditPhase": "phase-13-current",
   "summary": {
-    "totalTrackedFiles": 694,
+    "totalTrackedFiles": 693,
     "npmPackageIncludedFiles": 483,
     "generatedTrackedFiles": 110,
     "canonicalSkillsCount": 48,
@@ -12,7 +12,7 @@
     "installTargetsCount": 26,
     "exactDuplicateGroupsCount": 1,
     "classificationCounts": {
-      "configuration": 33,
+      "configuration": 32,
       "documentation": 84,
       "historical_record": 26,
       "distribution_artifact": 15,
@@ -22,7 +22,7 @@
     },
     "subsystemCounts": {
       "repository-governance": 4,
-      "github-governance-ci": 10,
+      "github-governance-ci": 9,
       "documentation-governance": 8,
       "cli-distribution": 1,
       "bundles-and-packaging": 130,
@@ -44,7 +44,7 @@
     },
     "topLevelCounts": {
       "(root)": 14,
-      ".github": 10,
+      ".github": 9,
       "bin": 1,
       "bundles": 130,
       "docs": 105,
@@ -61,7 +61,7 @@
       "markdownFiles": 491,
       "jsModules": 36,
       "schemas": 16,
-      "workflows": 3
+      "workflows": 2
     }
   },
   "rootPolicy": {
@@ -274,7 +274,7 @@
       "sha256": "5e2ea5c9558920ad020f5a872208c61448b7f56eb0efda1a152eff7de5f606d0"
     },
     {
-      "path": ".github/workflows/auto-assign.yml",
+      "path": ".github/workflows/ci.yml",
       "fileType": ".yml",
       "classification": "configuration",
       "purpose": "GitHub Actions CI/CD and repository automation workflow definition",
@@ -285,23 +285,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 355,
-      "sha256": "76fda3177d18d3d020996f86b54e097408d8fee0b971760e5627fe12fa1f7122"
-    },
-    {
-      "path": ".github/workflows/auto-merge-dependabot.yml",
-      "fileType": ".yml",
-      "classification": "configuration",
-      "purpose": "GitHub Actions CI/CD and repository automation workflow definition",
-      "owningSubsystem": "github-governance-ci",
-      "includedInNpmPackage": false,
-      "referencedByCi": true,
-      "referencedByOtherFiles": true,
-      "isGenerated": false,
-      "generatorScript": null,
-      "safeToMoveOrRemove": false,
-      "byteSize": 3148,
-      "sha256": "29a5c5dceb476b8bb883e678e3dc3fb1af83c3548f6a6d3d6df9eafc148c9347"
+      "byteSize": 560,
+      "sha256": "44850d64bb2a220894a554833691e2916e5234a27f680312f844bf7295bd4783"
     },
     {
       "path": ".github/workflows/docs.yml",
@@ -315,8 +300,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 7335,
-      "sha256": "8d5d79748b7a12f22f2660588f9c23e0932c9b9851f761b6bebead6419f26b76"
+      "byteSize": 7806,
+      "sha256": "4df490adfd4763ec2868288a073e0495adafc373c064db4208864bf6e8185d8c"
     },
     {
       "path": ".gitignore",
@@ -2625,8 +2610,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 20679,
-      "sha256": "ce00d27056e670591db47daa36949d06de8608468fc337f2412cb87cb263734a"
+      "byteSize": 20653,
+      "sha256": "32f59905a660e54414272cf45d3f95717fe15faf31926bdab8eeb486f024ef90"
     },
     {
       "path": "docs/audits/audited-inputs.manifest.json",
@@ -5730,8 +5715,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 25723,
-      "sha256": "dc55a9ca7375f40277fb6e47d289068e51da45f7f83333e084540745546e0f7c"
+      "byteSize": 25943,
+      "sha256": "c32ec64edef86929bdbc13e18c271fba6028975269a35de1c84fa8737964808a"
     },
     {
       "path": "scripts/test-phase14.mjs",
