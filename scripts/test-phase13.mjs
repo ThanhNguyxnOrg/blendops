@@ -185,7 +185,11 @@ describe('Phase 13 — Repository Architecture, Organization & Finalization', ()
     assert.ok(refCounts.markdownFiles >= 350);
     assert.ok(refCounts.jsModules >= 20);
     assert.ok(refCounts.schemas >= 10);
-    assert.equal(refCounts.workflows, 3);
+    const trackedWorkflowCount = execFileSync('git', ['ls-files', '.github/workflows'], {
+      cwd: ROOT,
+      encoding: 'utf8',
+    }).split(/\r?\n/).filter((file) => file.endsWith('.yml')).length;
+    assert.equal(refCounts.workflows, trackedWorkflowCount);
 
     // Negative test: synthetic repo with broken Markdown link, broken HTML asset, broken ESM import, and missing manifest entry fails closed
     const badRefRepo = path.join(suiteTmpDir, 'bad-ref-repo');
