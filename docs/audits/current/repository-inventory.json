@@ -286,7 +286,7 @@
       "generatorScript": null,
       "safeToMoveOrRemove": false,
       "byteSize": 589,
-      "sha256": "1ecc7066039f63625632fccc4491f9c8c9acc66d75e976885f4eeb0dd149b701"
+      "sha256": "714232e2a7ef0d5fe9d9f09624ec5971bc5adb5771aac1b0b766f3cbd055e297"
     },
     {
       "path": ".github/workflows/docs.yml",
