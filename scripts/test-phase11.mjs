@@ -1008,8 +1008,7 @@ describe('Phase 11 — Distributable CLI & Package Readiness', () => {
     const workflowYaml = fs.readFileSync(path.join(ROOT, '.github', 'workflows', 'docs.yml'), 'utf8');
     assert.match(workflowYaml, /runs-on:\s*ubuntu-latest/);
     const ciWorkflowYaml = fs.readFileSync(path.join(ROOT, '.github', 'workflows', 'ci.yml'), 'utf8');
-    assert.match(
-      ciWorkflowYaml,
+    assert.ok(
       ciWorkflowYaml.includes('uses: ThanhNguyxnOrg/.github/.github/workflows/ci-node.yml@'),
       'Full BlendOps CI must use the organization shared Node workflow',
     );
