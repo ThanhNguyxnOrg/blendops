@@ -1004,10 +1004,19 @@ describe('Phase 11 — Distributable CLI & Package Readiness', () => {
   });
 
   test('Scenario J: Cross-platform CI workflow, Phase 11 audit identity (phase-11-current), and publishing/E404 boundaries remain enforced', () => {
-    // 1. Verify .github/workflows/docs.yml preserves Ubuntu npm run ci and runs Phase 11 CLI tests on ubuntu-latest, windows-latest, and macos-latest
+    // 1. Verify .github/workflows/ci.yml delegates full CI to the shared Node workflow and docs.yml retains cross-platform Phase 11 CLI tests
     const workflowYaml = fs.readFileSync(path.join(ROOT, '.github', 'workflows', 'docs.yml'), 'utf8');
     assert.match(workflowYaml, /runs-on:\s*ubuntu-latest/);
-    assert.match(workflowYaml, /run:\s*npm run ci/);
+    const ciWorkflowYaml = fs.readFileSync(path.join(ROOT, '.github', 'workflows', 'ci.yml'), 'utf8');
+    assert.ok(
+      ciWorkflowYaml.includes('uses: ThanhNguyxnOrg/.github/.github/workflows/ci-node.yml@'),
+      'Full BlendOps CI must use the organization shared Node workflow',
+    );
+    assert.match(
+      ciWorkflowYaml,
+      /validation_command:\s*npm run arch:build && npm run audit:sync-digest && npm run ci/,
+      'Shared CI must regenerate architecture metadata and synchronize audit digests before tests',
+    );
     assert.match(workflowYaml, /cli-cross-platform:/);
     assert.match(workflowYaml, /-\s*ubuntu-latest/);
     assert.match(workflowYaml, /-\s*windows-latest/);
