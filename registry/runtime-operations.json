@@ -2349,16 +2349,17 @@
             "render_thumbnail_to_path"
           ],
           "readback_tools": [
-            "get_blendfile_summary_path_info"
+            "get_blendfile_summary_path_info",
+            "get_blendfile_summary_datablocks"
           ],
           "parameter_adapter": "lab_mcp_render_to_path",
-          "mutation_transport_note": "Writes still image to allowlisted path via Lab MCP render_viewport_to_path.",
+          "mutation_transport_note": "Conditionally gated L2 render via Lab MCP render_viewport_to_path; blocked in unguarded live mode due to upstream issues #12 and #70.",
           "upstream_mcp_tool_name": "render_viewport_to_path",
           "tool_schema_fingerprint": "288057920fe2cda5733db02228a417c98da75f4648a4524113ea78e0d75e4b25",
-          "upstream_qualification_status": "qualified_safe_direct",
+          "upstream_qualification_status": "conditional_upstream_known_issues",
           "requires_bounded_governed_extension": false,
           "rollback_strategy": "delete_unverified_export_and_restore_pre_mutation_blend_checkpoint",
-          "qualification_evidence": "Verified against real upstream Blender Lab MCP (blmcp) v1.0.2 tool render_viewport_to_path (https://projects.blender.org/lab/blender_mcp/src/branch/main/mcp/blmcp/tools/render_viewport_to_path.py); gated at L2 with output_directory_allowlist and checkpoint."
+          "qualification_evidence": "Audited against upstream Blender Lab MCP (blmcp) v1.0.2 commit dbbf836ad4b1025f14a2b3b504c43903f39e0b04. Reclassified from safe_direct to conditional due to open upstream issues #12 (mutates scene.render.filepath directly on user scene until deferred callback) and #70 (render_thumbnail_to_path INVOKE_DEFAULT restores temporary settings before async render begins); blocked in live mode unless disposableSceneConfirmed + verified .blend checkpoint + isolated staging dir + pre/post render settings readback restoration check pass."
         },
         "path-1-host-b": {
           "primary_tool": "render_viewport_to_path",
@@ -2366,16 +2367,17 @@
             "render_thumbnail_to_path"
           ],
           "readback_tools": [
-            "get_blendfile_summary_path_info"
+            "get_blendfile_summary_path_info",
+            "get_blendfile_summary_datablocks"
           ],
           "parameter_adapter": "lab_mcp_render_to_path",
-          "mutation_transport_note": "Writes still image to allowlisted path via Lab MCP render_viewport_to_path.",
+          "mutation_transport_note": "Conditionally gated L2 render via Lab MCP render_viewport_to_path; blocked in unguarded live mode due to upstream issues #12 and #70.",
           "upstream_mcp_tool_name": "render_viewport_to_path",
           "tool_schema_fingerprint": "288057920fe2cda5733db02228a417c98da75f4648a4524113ea78e0d75e4b25",
-          "upstream_qualification_status": "qualified_safe_direct",
+          "upstream_qualification_status": "conditional_upstream_known_issues",
           "requires_bounded_governed_extension": false,
           "rollback_strategy": "delete_unverified_export_and_restore_pre_mutation_blend_checkpoint",
-          "qualification_evidence": "Verified against real upstream Blender Lab MCP (blmcp) v1.0.2 tool render_viewport_to_path (https://projects.blender.org/lab/blender_mcp/src/branch/main/mcp/blmcp/tools/render_viewport_to_path.py); gated at L2 with output_directory_allowlist and checkpoint."
+          "qualification_evidence": "Audited against upstream Blender Lab MCP (blmcp) v1.0.2 commit dbbf836ad4b1025f14a2b3b504c43903f39e0b04. Reclassified from safe_direct to conditional due to open upstream issues #12 (mutates scene.render.filepath directly on user scene until deferred callback) and #70 (render_thumbnail_to_path INVOKE_DEFAULT restores temporary settings before async render begins); blocked in live mode unless disposableSceneConfirmed + verified .blend checkpoint + isolated staging dir + pre/post render settings readback restoration check pass."
         },
         "path-2-community": {
           "primary_tool": "render_still_governed",
@@ -2835,7 +2837,7 @@
     }
   ],
   "upstream_runtime_compatibility_matrix": {
-    "audited_at": "2026-11-06T00:00:00Z",
+    "audited_at": "2026-11-08T00:00:00Z",
     "mcp_protocol_versions_supported": [
       "2024-11-05",
       "2025-03-26",
@@ -2854,6 +2856,8 @@
         ],
         "official_docs_url": "https://www.blender.org/lab/mcp-server/",
         "source_repository_url": "https://projects.blender.org/lab/blender_mcp",
+        "audited_commit_sha": "dbbf836ad4b1025f14a2b3b504c43903f39e0b04",
+        "audited_commit_date": "2026-09-29",
         "server_package_name": "blender-mcp",
         "server_entry_point": "blmcp:main",
         "server_version": "1.0.2",
@@ -2862,18 +2866,23 @@
         "addon_version": "1.0.0",
         "blender_version_min": "5.1.0",
         "mcp_sdk_dependency": "mcp[cli]>=1.2.0,<2",
+        "known_upstream_issues": [
+          "https://projects.blender.org/lab/blender_mcp/issues/12",
+          "https://projects.blender.org/lab/blender_mcp/issues/70"
+        ],
         "upstream_security_warning": "Official Blender Lab MCP documentation explicitly warns that execute_blender_code and execute_blender_code_for_cli execute LLM-generated Python inside Blender without built-in guards protecting user data.",
         "real_upstream_qualification_summary": {
           "advertised_tool_count": 26,
           "read_only_only_count": 18,
-          "safe_direct_count": 2,
+          "safe_direct_count": 0,
+          "conditional_count": 2,
           "unsafe_raw_code_count": 2,
           "unsupported_count": 4,
           "read_only_qualified": true,
           "mutation_qualified": false,
-          "export_import_qualified": true,
-          "qualification_verdict": "read_only_and_export_qualified",
-          "mutation_blocking_reason": "Upstream blender-mcp v1.0.2 provides zero dedicated bounded L1 scene-mutation tools; all scene mutations upstream rely on execute_blender_code (unsafe_raw_code), which BlendOps permanently blocks."
+          "export_import_qualified": false,
+          "qualification_verdict": "read_only_qualified",
+          "mutation_blocking_reason": "Upstream blender-mcp v1.0.2 (commit dbbf836ad4b1025f14a2b3b504c43903f39e0b04) provides zero dedicated bounded L1 scene-mutation tools; all scene mutations upstream rely on execute_blender_code (unsafe_raw_code), and render_viewport_to_path / render_thumbnail_to_path are classified as conditional due to open upstream issues #12 and #70."
         }
       },
       "path-2-community-mcp-for-blender": {
@@ -2882,11 +2891,14 @@
         ],
         "source_repository_url": "https://github.com/ahujasid/mcp-for-blender",
         "canonical_github_mirror": "https://github.com/ahujasid/blender-mcp",
+        "audited_commit_sha": "2e4b0bc294694b1570d76ed01be657c22e6d02a0",
+        "audited_commit_date": "2026-10-15",
         "server_package_name": "mcp-for-blender",
         "server_entry_point": "blender_mcp.server:main",
         "server_version": "2.2.7",
         "addon_name": "MCP for Blender",
         "addon_version": "1.8.0",
+        "addon_protocol_version": 15,
         "blender_version_min": "3.0.0",
         "mcp_sdk_dependency": "mcp>=1.26.0,<2",
         "upstream_security_warning": "Third-party community integration (not affiliated with Blender Foundation). Exposes execute_blender_code which runs arbitrary Python via exec() in Blender without sandboxing, plus cloud asset/3D generation tools.",
@@ -2894,13 +2906,14 @@
           "advertised_tool_count": 16,
           "read_only_only_count": 10,
           "safe_direct_count": 0,
+          "conditional_count": 0,
           "unsafe_raw_code_count": 1,
           "unsupported_count": 5,
           "read_only_qualified": true,
           "mutation_qualified": false,
           "export_import_qualified": false,
           "qualification_verdict": "read_only_qualified",
-          "mutation_blocking_reason": "Upstream mcp-for-blender v2.2.7 provides zero dedicated bounded L1 scene-mutation tools or local L2 GLB/render export tools; mutations rely on execute_blender_code (unsafe_raw_code) and import_asset downloads unverified remote assets."
+          "mutation_blocking_reason": "Upstream mcp-for-blender v2.2.7 (commit 2e4b0bc294694b1570d76ed01be657c22e6d02a0) provides zero dedicated bounded L1 scene-mutation tools or local L2 GLB/render export tools; mutations rely on execute_blender_code (unsafe_raw_code) and import_asset downloads unverified remote assets."
         }
       }
     }
@@ -3664,14 +3677,25 @@
       "side_effects": "file_write",
       "required_capability_tier": "L2",
       "executes_arbitrary_code": false,
-      "modifies_scene_state": false,
+      "modifies_scene_state": true,
       "reads_files": false,
       "writes_files": true,
       "accesses_external_services": false,
-      "bounded_and_independently_verifiable": true,
-      "classification": "safe_direct",
-      "qualification_rationale": "Even though upstream sets readOnlyHint=True, this tool temporarily overrides render settings and writes a file to output_path on disk. Classified as L2 safe_direct ONLY when gated by output_directory_allowlist and pre-export checkpoint.",
+      "bounded_and_independently_verifiable": false,
+      "classification": "conditional",
+      "qualification_rationale": "Upstream sets readOnlyHint=True, but open upstream issue #70 shows INVOKE_DEFAULT restores temporary resolution/simplify/sample overrides before interactive rendering starts, and issue #12 shows scene.render.filepath is mutated directly on the user scene until the deferred callback finishes while forcing output into os.path.join(bpy.app.tempdir, 'blender_mcp', basename). Reclassified as conditional: blocked in unguarded live mode unless disposableSceneConfirmed + verified .blend checkpoint + isolated governed staging directory + pre/post render settings readback restoration check pass.",
       "evidence_source": "https://projects.blender.org/lab/blender_mcp/src/branch/main/mcp/blmcp/tools/render_thumbnail_to_path.py",
+      "source_commit_sha": "dbbf836ad4b1025f14a2b3b504c43903f39e0b04",
+      "known_upstream_issues": [
+        "https://projects.blender.org/lab/blender_mcp/issues/12",
+        "https://projects.blender.org/lab/blender_mcp/issues/70"
+      ],
+      "conditional_execution_requirements": [
+        "disposable_scene_or_verified_blend_checkpoint",
+        "isolated_governed_staging_directory",
+        "pre_and_post_render_settings_readback_restoration_verified",
+        "on_disk_file_and_sha256_verified_before_promotion"
+      ],
       "runtime_paths": [
         "path-1-host-a",
         "path-1-host-b"
@@ -3700,14 +3724,25 @@
       "side_effects": "file_write",
       "required_capability_tier": "L2",
       "executes_arbitrary_code": false,
-      "modifies_scene_state": false,
+      "modifies_scene_state": true,
       "reads_files": false,
       "writes_files": true,
       "accesses_external_services": false,
-      "bounded_and_independently_verifiable": true,
-      "classification": "safe_direct",
-      "qualification_rationale": "Upstream sets readOnlyHint=True, but tool writes rendered image bytes to output_path on disk. Qualified as L2 safe_direct for op.export.render-still with mandatory output_directory_allowlist, checkpoint, and on-disk SHA-256 verification.",
+      "bounded_and_independently_verifiable": false,
+      "classification": "conditional",
+      "qualification_rationale": "Upstream sets readOnlyHint=True, but open upstream issue #12 shows render_viewport_to_path mutates scene.render.filepath directly on the user scene until the deferred callback finishes and forces output into os.path.join(bpy.app.tempdir, 'blender_mcp', basename). Reclassified as conditional: blocked in unguarded live mode unless disposableSceneConfirmed + verified .blend checkpoint + isolated governed staging directory + pre/post render settings readback restoration check pass.",
       "evidence_source": "https://projects.blender.org/lab/blender_mcp/src/branch/main/mcp/blmcp/tools/render_viewport_to_path.py",
+      "source_commit_sha": "dbbf836ad4b1025f14a2b3b504c43903f39e0b04",
+      "known_upstream_issues": [
+        "https://projects.blender.org/lab/blender_mcp/issues/12",
+        "https://projects.blender.org/lab/blender_mcp/issues/70"
+      ],
+      "conditional_execution_requirements": [
+        "disposable_scene_or_verified_blend_checkpoint",
+        "isolated_governed_staging_directory",
+        "pre_and_post_render_settings_readback_restoration_verified",
+        "on_disk_file_and_sha256_verified_before_promotion"
+      ],
       "runtime_paths": [
         "path-1-host-a",
         "path-1-host-b"

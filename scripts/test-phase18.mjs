@@ -591,10 +591,10 @@ describe('Phase 3.2 — Upstream MCP Runtime Qualification, Safety Boundary Enfo
         { cwd: unrelatedCwd, encoding: 'utf8' },
       );
       const qualifyJson = JSON.parse(qualifyOut);
-      assert.equal(qualifyJson.qualification_verdict, 'read_only_and_export_qualified');
+      assert.equal(qualifyJson.qualification_verdict, 'read_only_qualified');
       assert.equal(qualifyJson.qualification_states.read_only_qualified, true);
       assert.equal(qualifyJson.qualification_states.mutation_qualified, false);
-      assert.equal(qualifyJson.qualification_states.export_import_qualified, true);
+      assert.equal(qualifyJson.qualification_states.export_import_qualified, false);
 
       // 2. runtime tools from unrelated CWD targeting project-local .blendops
       const toolsOut = execFileSync(

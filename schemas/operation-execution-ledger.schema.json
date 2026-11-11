@@ -290,14 +290,26 @@
             "rollback_attempted",
             "rollback_verified",
             "rollback_failed",
-            "rollback_unverified"
+            "rollback_unverified",
+            "unknown_remote_execution_outcome"
           ]
         },
         "restored_from_backup_path": { "type": ["string", "null"] },
+        "restored_file_exists_and_safe": { "type": "boolean" },
+        "restored_byte_size_verified": { "type": "boolean" },
         "restored_sha256_verified": { "type": "boolean" },
+        "runtime_reachable_and_fresh": { "type": "boolean" },
         "scene_readback_verified": { "type": "boolean" },
-        "recovery_guidance": { "type": "string" }
+        "recovery_guidance": { "type": "string" },
+        "unknown_remote_execution_outcome": { "type": "boolean" },
+        "checks": {
+          "type": "array",
+          "items": { "type": "object" }
+        }
       }
+    },
+    "unknown_remote_execution_outcome": {
+      "type": "boolean"
     },
     "secrets_redacted": {
       "type": "boolean"

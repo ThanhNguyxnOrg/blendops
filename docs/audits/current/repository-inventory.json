@@ -2,7 +2,7 @@
   "schemaVersion": "1.0.0",
   "auditPhase": "phase-13-current",
   "summary": {
-    "totalTrackedFiles": 694,
+    "totalTrackedFiles": 695,
     "npmPackageIncludedFiles": 483,
     "generatedTrackedFiles": 110,
     "canonicalSkillsCount": 48,
@@ -18,7 +18,7 @@
       "distribution_artifact": 15,
       "canonical_source": 327,
       "generated_artifact": 110,
-      "runtime_build_test_infrastructure": 99
+      "runtime_build_test_infrastructure": 100
     },
     "subsystemCounts": {
       "repository-governance": 4,
@@ -38,7 +38,7 @@
       "schemas-and-contracts": 16,
       "cli-and-runtime-tools": 9,
       "ci-and-build-generators": 8,
-      "test-suites": 18,
+      "test-suites": 19,
       "quality-and-skill-reviews": 7,
       "skills-catalog": 297
     },
@@ -53,13 +53,13 @@
       "packs": 2,
       "registry": 10,
       "schemas": 16,
-      "scripts": 35,
+      "scripts": 36,
       "skill-reviews": 7,
       "skills": 297
     },
     "referenceIntegrity": {
       "markdownFiles": 491,
-      "jsModules": 36,
+      "jsModules": 37,
       "schemas": 16,
       "workflows": 3
     }
@@ -315,8 +315,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 7335,
-      "sha256": "8d5d79748b7a12f22f2660588f9c23e0932c9b9851f761b6bebead6419f26b76"
+      "byteSize": 935,
+      "sha256": "4d4ba616b50866333e08882a45aa52b1e636c4610c7e9cdc96b21b5de6d31bbd"
     },
     {
       "path": ".gitignore",
@@ -360,8 +360,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 3597,
-      "sha256": "20587d6f20a625a060fd1c900f4123af1170459946adba8435ba0d69e30091e5"
+      "byteSize": 4587,
+      "sha256": "30422ed2bfc266d076aacad6fb594315360267fe0f96003527db082815d213df"
     },
     {
       "path": "CODE_OF_CONDUCT.md",
@@ -2640,8 +2640,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 3373,
-      "sha256": "efcccd04f04994b355803794303a9cbf153e708487feab7286f4d2b527277eac"
+      "byteSize": 3405,
+      "sha256": "b47447ac818b8b202210b4685478e5104e6c59cbd17a9cd0626b2187f01b6d6b"
     },
     {
       "path": "docs/audits/current/README.md",
@@ -5025,8 +5025,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 2800,
-      "sha256": "3b0598d8b1bacd27fe5552a02f4b2cff84ab44a9538736628f10cbc586281fd2"
+      "byteSize": 43576,
+      "sha256": "75f3cfa6cad1d2f5e993109bd52aeff619a082cce7dccc181633719fc5e2e35f"
     },
     {
       "path": "package.json",
@@ -5040,8 +5040,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 4304,
-      "sha256": "c38926a7ff7dab465ccdb063cb713c0b19ec30d5a4e585e31b95074d375d7be7"
+      "byteSize": 4398,
+      "sha256": "e577235d2b4b5d2bd40e386a9c5124a937e72e1022713d6785697602661f4b25"
     },
     {
       "path": "packs/README.md",
@@ -5190,8 +5190,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 177985,
-      "sha256": "d7709d8c454bd8ae68971c087002fa8aa1e8814105abeab1bcff5b66f002a37b"
+      "byteSize": 181142,
+      "sha256": "f7190deedd733d5368143eaa8e5cb2cce6016ae52b32eb5a9665ec3ff7fedaad"
     },
     {
       "path": "registry/skills.json",
@@ -5325,8 +5325,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 10079,
-      "sha256": "04dcbfad7dc7ebeb507feab94de8269c3eeb6e5f308bb0054299205249c59e57"
+      "byteSize": 10553,
+      "sha256": "d7f3fefc21a87b59d8c7f226e3d00e8e50ddb34009edfcabf978808813985b1f"
     },
     {
       "path": "schemas/recipe-record.schema.json",
@@ -5385,8 +5385,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 15210,
-      "sha256": "908942667eb99bb2b9aeafaad9c1c4b50ab3b833923069fb34497ba86252c4e8"
+      "byteSize": 16745,
+      "sha256": "bbd9bbcef829f910d927cf8eb471a5e12c7b2b777f35f2d2b91d8f435e03c742"
     },
     {
       "path": "schemas/runtime-qualification-report.schema.json",
@@ -5400,8 +5400,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 14976,
-      "sha256": "b91b338bdd369297c04c150984a48ca496d635e983c4982b61960b600153bfb7"
+      "byteSize": 16572,
+      "sha256": "2c9355aabac4221040c1c1c5413a58b3883ed44d27b3e9bd11f2079192aaecdb"
     },
     {
       "path": "schemas/runtime-session.schema.json",
@@ -5415,8 +5415,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 8913,
-      "sha256": "2f1d27ca89ea4f19d600b6a64e0d36c6b0ed7226182a08e3b3bb96a1afd23aa2"
+      "byteSize": 10606,
+      "sha256": "2b4993ab38e4efeec8f81a2cb40ee422febef824d5a795f890fa329d697b2d28"
     },
     {
       "path": "schemas/scene-spec.schema.json",
@@ -5535,8 +5535,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 128622,
-      "sha256": "21853dec8306b22beffa92ffc22ea49e2e08a412991a81b8f912820c41c47cc4"
+      "byteSize": 131060,
+      "sha256": "52ad1a4b23b72f074dcc1f419bd94218c096a906da5ca548a50c9bfe3007c7fa"
     },
     {
       "path": "scripts/export-claude-skills.mjs",
@@ -5580,8 +5580,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 103509,
-      "sha256": "c5f8b82292e2c5bc64add83777d08c2f05280b074b2e94c0a425fc266dabee96"
+      "byteSize": 103953,
+      "sha256": "102b34ad0d55c9452f4a5e78a48fab1815850d4df587e7802e45a9a8b8a8fc61"
     },
     {
       "path": "scripts/generate-glb-handoff-report.mjs",
@@ -5625,8 +5625,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 168093,
-      "sha256": "fb529d71c6f853bbe8aa6c6718a41d48e7164bc9aa874daf2ff90d27d180a8ed"
+      "byteSize": 174595,
+      "sha256": "9ef15d34ee8cfb3306f1b064874b80c5ebfd210bc1e00aaaea2cf9ba3d346916"
     },
     {
       "path": "scripts/run-evals.mjs",
@@ -5655,8 +5655,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 208247,
-      "sha256": "fbca5a4969c62790696091f31691e0cbb5dc017a9145ecd9ea2399968b3b4100"
+      "byteSize": 295971,
+      "sha256": "419af09056d3a4b3d7bf0c973d6572ac65db31e517ffb9bac065e5a92156aaea"
     },
     {
       "path": "scripts/test-phase1.mjs",
@@ -5700,8 +5700,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 51377,
-      "sha256": "6e109b6ebcdf897771bbc7c1e352f135d48ac6baa9e547e0f9608b9f3d9a4bc7"
+      "byteSize": 51454,
+      "sha256": "d4d59d2440b59d23f619ff55c4ca4a7f8094f861370666d2775d1276cdacb9c9"
     },
     {
       "path": "scripts/test-phase12.mjs",
@@ -5805,8 +5805,23 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 26894,
-      "sha256": "4f8a68d95e70a67b6e6a90612f97719a410fc5ffdcd6832a2be478845e7b27ad"
+      "byteSize": 26884,
+      "sha256": "97576455a454540181004364954ad0fb486ff454507f8a6149c26a2b73af16dc"
+    },
+    {
+      "path": "scripts/test-phase19.mjs",
+      "fileType": ".mjs",
+      "classification": "runtime_build_test_infrastructure",
+      "purpose": "Automated regression and verification test suite (test-phase19.mjs)",
+      "owningSubsystem": "test-suites",
+      "includedInNpmPackage": false,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 46769,
+      "sha256": "17d1504b2bf49d7131f13b847b580bf060109c53f98b3104a1858dd1dd7812ff"
     },
     {
       "path": "scripts/test-phase2.mjs",

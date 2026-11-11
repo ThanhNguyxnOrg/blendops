@@ -29,8 +29,10 @@ import {
 import {
   RUNTIME_CLI_SUBCOMMANDS,
   RECOGNIZED_RUNTIME_PATHS,
+  CLI_EXIT_CODES,
   resolveRuntimeGovernancePaths,
   discoverRuntimeSession,
+  discoverRuntimeSessionAsync,
   validateRuntimeOperationsRegistry,
   listRuntimeOperations,
   getRuntimeOperation,
@@ -39,16 +41,30 @@ import {
   runProductSceneVerticalSlice,
   createMockMcpRuntime,
   createUpstreamRealityMockRuntime,
+  isTrustedMockRuntimeFixture,
   redactSensitiveData,
+  validateRuntimeTransportEndpoint,
+  validateStdioCommandConfig,
   computeToolSchemaFingerprint,
+  computeFullToolContractFingerprints,
   computeToolInventoryFingerprint,
+  inspectJsonSchemaSafety,
+  parseMcpCallToolResult,
+  evaluateRuntimeProvenance,
   detectToolDescriptionInjection,
   detectArbitraryCodeSchemaParameters,
   negotiateMcpProtocolCompatibility,
   qualifyUpstreamTool,
   qualifyUpstreamToolInventory,
   evaluateOperationMappingsAgainstUpstream,
+  verifyRollbackRestoration,
+  evaluateGltfValidatorReport,
+  verifyStagedOutputArtifact,
+  connectMcpRuntimeClient,
+  inspectLiveReadOnlyRuntimeAsync,
   runRuntimeQualificationAndSmoke,
+  runRuntimeQualificationAndSmokeAsync,
+  computeRuntimeCliExitCode,
   formatQualificationReportMarkdown,
   runRuntimeAndExecutionCliSubcommand,
 } from './runtime-orchestrator.mjs';
@@ -62,8 +78,10 @@ export {
   runPlanCliSubcommand,
   RUNTIME_CLI_SUBCOMMANDS,
   RECOGNIZED_RUNTIME_PATHS,
+  CLI_EXIT_CODES,
   resolveRuntimeGovernancePaths,
   discoverRuntimeSession,
+  discoverRuntimeSessionAsync,
   validateRuntimeOperationsRegistry,
   listRuntimeOperations,
   getRuntimeOperation,
@@ -72,16 +90,30 @@ export {
   runProductSceneVerticalSlice,
   createMockMcpRuntime,
   createUpstreamRealityMockRuntime,
+  isTrustedMockRuntimeFixture,
   redactSensitiveData,
+  validateRuntimeTransportEndpoint,
+  validateStdioCommandConfig,
   computeToolSchemaFingerprint,
+  computeFullToolContractFingerprints,
   computeToolInventoryFingerprint,
+  inspectJsonSchemaSafety,
+  parseMcpCallToolResult,
+  evaluateRuntimeProvenance,
   detectToolDescriptionInjection,
   detectArbitraryCodeSchemaParameters,
   negotiateMcpProtocolCompatibility,
   qualifyUpstreamTool,
   qualifyUpstreamToolInventory,
   evaluateOperationMappingsAgainstUpstream,
+  verifyRollbackRestoration,
+  evaluateGltfValidatorReport,
+  verifyStagedOutputArtifact,
+  connectMcpRuntimeClient,
+  inspectLiveReadOnlyRuntimeAsync,
   runRuntimeQualificationAndSmoke,
+  runRuntimeQualificationAndSmokeAsync,
+  computeRuntimeCliExitCode,
   formatQualificationReportMarkdown,
   runRuntimeAndExecutionCliSubcommand,
 };
@@ -159,6 +191,118 @@ export const SUPPORTED_TARGETS = Object.freeze({
     requiresOut: false,
     description: 'Project-local generic BLENDOPS.md fallback; no extension/marketplace claim.',
   },
+  cline: {
+    id: 'cline',
+    confidence: 'linked-only',
+    scope: 'project-local',
+    requiresProject: true,
+    requiresOut: false,
+    description: 'Project-local generic BLENDOPS.md fallback; native .clinerules skill pack loader unverified.',
+  },
+  'roo-code': {
+    id: 'roo-code',
+    confidence: 'linked-only',
+    scope: 'project-local',
+    requiresProject: true,
+    requiresOut: false,
+    description: 'Project-local generic BLENDOPS.md fallback; candidate .roo/rules/ skill pack loader unverified.',
+  },
+  'blackbox-ai': {
+    id: 'blackbox-ai',
+    confidence: 'linked-only',
+    scope: 'project-local',
+    requiresProject: true,
+    requiresOut: false,
+    description: 'Project-local generic BLENDOPS.md fallback; native Blackbox AI skill loader unverified.',
+  },
+  continue: {
+    id: 'continue',
+    confidence: 'linked-only',
+    scope: 'project-local',
+    requiresProject: true,
+    requiresOut: false,
+    description: 'Project-local generic BLENDOPS.md fallback; candidate .continue/rules/ skill loader unverified.',
+  },
+  zed: {
+    id: 'zed',
+    confidence: 'linked-only',
+    scope: 'project-local',
+    requiresProject: true,
+    requiresOut: false,
+    description: 'Project-local generic BLENDOPS.md fallback; native Zed skill pack loader unverified.',
+  },
+  windsurf: {
+    id: 'windsurf',
+    confidence: 'linked-only',
+    scope: 'project-local',
+    requiresProject: true,
+    requiresOut: false,
+    description: 'Project-local generic BLENDOPS.md fallback; candidate .windsurf/rules/ or .windsurfrules loader unverified.',
+  },
+  trae: {
+    id: 'trae',
+    confidence: 'linked-only',
+    scope: 'project-local',
+    requiresProject: true,
+    requiresOut: false,
+    description: 'Project-local generic BLENDOPS.md fallback; candidate .trae/rules/ skill loader unverified.',
+  },
+  'augment-code': {
+    id: 'augment-code',
+    confidence: 'linked-only',
+    scope: 'project-local',
+    requiresProject: true,
+    requiresOut: false,
+    description: 'Project-local generic BLENDOPS.md fallback; candidate .augment/guidelines skill loader unverified.',
+  },
+  goose: {
+    id: 'goose',
+    confidence: 'linked-only',
+    scope: 'project-local',
+    requiresProject: true,
+    requiresOut: false,
+    description: 'Project-local generic BLENDOPS.md fallback; candidate .goosehints skill loader unverified.',
+  },
+  openhands: {
+    id: 'openhands',
+    confidence: 'linked-only',
+    scope: 'project-local',
+    requiresProject: true,
+    requiresOut: false,
+    description: 'Project-local generic BLENDOPS.md fallback; candidate .openhands/microagents/ loader unverified.',
+  },
+  'jetbrains-junie': {
+    id: 'jetbrains-junie',
+    confidence: 'linked-only',
+    scope: 'project-local',
+    requiresProject: true,
+    requiresOut: false,
+    description: 'Project-local generic BLENDOPS.md fallback; candidate .junie/guidelines.md loader unverified.',
+  },
+  'sourcegraph-cody': {
+    id: 'sourcegraph-cody',
+    confidence: 'linked-only',
+    scope: 'project-local',
+    requiresProject: true,
+    requiresOut: false,
+    description: 'Project-local generic BLENDOPS.md fallback; candidate .cody/ context rules loader unverified.',
+  },
+  aider: {
+    id: 'aider',
+    confidence: 'linked-only',
+    scope: 'project-local',
+    requiresProject: true,
+    requiresOut: false,
+    description: 'Project-local generic BLENDOPS.md fallback; attach via --read BLENDOPS.md or .aider.conf.yml.',
+  },
+  'amazon-q-developer': {
+    id: 'amazon-q-developer',
+    confidence: 'linked-only',
+    scope: 'project-local',
+    requiresProject: true,
+    requiresOut: false,
+    description: 'Project-local generic BLENDOPS.md fallback; candidate .amazonq/rules/ loader unverified.',
+  },
   'generic-project': {
     id: 'generic-project',
     confidence: 'verified-read',
@@ -205,6 +349,62 @@ const TARGET_DETECTION_MARKERS = Object.freeze([
   {
     target: 'github-copilot',
     markers: ['.github/copilot-instructions.md'],
+  },
+  {
+    target: 'cline',
+    markers: ['.clinerules'],
+  },
+  {
+    target: 'roo-code',
+    markers: ['.roo', '.roorules'],
+  },
+  {
+    target: 'blackbox-ai',
+    markers: ['.blackbox', '.blackboxrules'],
+  },
+  {
+    target: 'continue',
+    markers: ['.continue', '.continuerules'],
+  },
+  {
+    target: 'zed',
+    markers: ['.zed'],
+  },
+  {
+    target: 'windsurf',
+    markers: ['.windsurf', '.windsurfrules'],
+  },
+  {
+    target: 'trae',
+    markers: ['.trae'],
+  },
+  {
+    target: 'augment-code',
+    markers: ['.augment', '.augment-guidelines'],
+  },
+  {
+    target: 'goose',
+    markers: ['.goosehints'],
+  },
+  {
+    target: 'openhands',
+    markers: ['.openhands', '.openhands_instructions'],
+  },
+  {
+    target: 'jetbrains-junie',
+    markers: ['.junie'],
+  },
+  {
+    target: 'sourcegraph-cody',
+    markers: ['.cody'],
+  },
+  {
+    target: 'aider',
+    markers: ['.aider.conf.yml'],
+  },
+  {
+    target: 'amazon-q-developer',
+    markers: ['.amazonq'],
   },
 ]);
 
@@ -1678,6 +1878,22 @@ function buildProjectInstallPlan({
     });
     limitations.push(
       'GitHub Copilot target is linked-only/generic; no extension or marketplace listing exists.',
+    );
+  } else if (
+    selectedTarget !== 'generic-project' &&
+    selectedTarget !== 'claude-code' &&
+    selectedTarget !== 'cursor' &&
+    selectedTarget !== 'codex' &&
+    SUPPORTED_TARGETS[selectedTarget]?.confidence === 'linked-only'
+  ) {
+    const markerEntry = TARGET_DETECTION_MARKERS.find((m) => m.target === selectedTarget);
+    const candidatePath = markerEntry?.markers?.[0] || `.${selectedTarget}/`;
+    skippedEntries.push({
+      path: candidatePath,
+      reason: `${selectedTarget} native skill-loader path (${candidatePath}) is linked-only/unverified; using generic project-local BLENDOPS.md fallback.`,
+    });
+    limitations.push(
+      `${selectedTarget} target is linked-only; no unverified ${candidatePath} native skill-loader path was created (installed BLENDOPS.md via generic-project fallback).`,
     );
   } else if (selectedTarget === 'generic-project' && limitations.length === 0) {
     limitations.push(

@@ -46,7 +46,18 @@ export function ensureMainRepoGitRestored(rootDir = ROOT_DIR) {
     'brain',
     'e93848c8-d591-40af-a12b-9533f0c2295f',
   );
+  const phase33ArtifactDir = path.join(
+    ROOT_DIR,
+    '.aistudio',
+    'artifacts',
+    'brain',
+    '8f5208e5-f8ef-4313-91d7-6fb50ec0da1d',
+  );
   const bundlePath = [
+    path.join(ROOT_DIR, 'dist', 'blendops-phase3.3-secure-async-mcp-client.bundle'),
+    path.join(ROOT_DIR, 'dist', 'blendops-phase3.3.bundle'),
+    path.join(ROOT_DIR, 'dist', 'blendops-phase3.2.bundle'),
+    path.join(phase33ArtifactDir, 'blendops-phase3.3-secure-async-mcp-client.bundle'),
     path.join(currentArtifactDir, 'blendops-phase-13-repository-finalization.bundle'),
     path.join(artifactDir, 'blendops-phase-13-repository-finalization.bundle'),
     path.join(artifactDir, 'blendops-phase-12-web-ready-glb-handoff.bundle'),

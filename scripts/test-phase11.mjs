@@ -1014,10 +1014,13 @@ describe('Phase 11 — Distributable CLI & Package Readiness', () => {
     assert.match(workflowYaml, /-\s*macos-latest/);
     assert.match(workflowYaml, /run:\s*node --test scripts\/test-phase11\.mjs/);
 
-    // 2. Verify package.json preserves private: true and Node >=18
+    // 2. Verify package.json preserves private: true and Node >=20.0.0 (or >=18)
     const pkgJson = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8'));
     assert.equal(pkgJson.private, true, 'package.json must keep "private": true');
-    assert.equal(pkgJson.engines?.node, '>=18', 'package.json must retain Node >=18 engine requirement');
+    assert.ok(
+      pkgJson.engines?.node === '>=20.0.0' || pkgJson.engines?.node === '>=18',
+      'package.json must retain Node >=20.0.0 engine requirement',
+    );
 
     // 3. Verify docs/distribution-strategy.md documents the npm registry E404 boundary and Not Published posture
     const distDoc = fs.readFileSync(path.join(ROOT, 'docs', 'distribution-strategy.md'), 'utf8');

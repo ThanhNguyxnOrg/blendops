@@ -148,6 +148,7 @@
             "type": "string",
             "enum": [
               "safe_direct",
+              "conditional",
               "read_only_only",
               "unsafe_raw_code",
               "unsupported",
@@ -155,7 +156,40 @@
             ]
           },
           "qualification_rationale": { "type": "string", "minLength": 10 },
-          "evidence_source": { "type": "string", "minLength": 5 }
+          "evidence_source": { "type": "string", "minLength": 5 },
+          "title": { "type": ["string", "null"] },
+          "output_schema": { "type": ["object", "null"] },
+          "annotations": { "type": ["object", "null"] },
+          "icons": { "type": ["array", "null"], "items": { "type": "object" } },
+          "execution_metadata": { "type": ["object", "null"] },
+          "known_upstream_issues": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "conditional_execution_requirements": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "source_commit_sha": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{40}$"
+          },
+          "contract_fingerprints": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "input_schema_fingerprint",
+              "output_schema_fingerprint",
+              "descriptive_metadata_fingerprint",
+              "execution_metadata_fingerprint"
+            ],
+            "properties": {
+              "input_schema_fingerprint": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+              "output_schema_fingerprint": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+              "descriptive_metadata_fingerprint": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+              "execution_metadata_fingerprint": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+            }
+          }
         }
       }
     }
@@ -478,6 +512,7 @@
           "enum": [
             "qualified_read_only",
             "qualified_safe_direct",
+            "conditional_upstream_known_issues",
             "blocked_missing_bounded_upstream_tool",
             "blocked_unbounded_upstream_side_effects",
             "contract_only_appendix"

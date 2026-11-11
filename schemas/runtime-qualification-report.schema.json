@@ -144,8 +144,28 @@
         "read_only_qualified": { "type": "boolean" },
         "mutation_qualified": { "type": "boolean" },
         "export_import_qualified": { "type": "boolean" },
-        "live_runtime_verified": { "type": "boolean" }
+        "live_runtime_verified": { "type": "boolean" },
+        "conditional_export_available": { "type": "boolean" }
       }
+    },
+    "connection_lifecycle_state": {
+      "type": "string",
+      "enum": [
+        "configured",
+        "transport_connected",
+        "initialized",
+        "protocol_negotiated",
+        "tools_discovered",
+        "contract_qualified",
+        "live_read_only_verified"
+      ]
+    },
+    "provenance_verification": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "tool_list_changed_events": {
+      "type": ["integer", "array"]
     },
     "qualification_verdict": {
       "type": "string",
@@ -155,7 +175,8 @@
         "read_only_qualified",
         "read_only_and_export_qualified",
         "read_only_and_mutation_qualified",
-        "fully_qualified"
+        "fully_qualified",
+        "fully_governed_qualified"
       ]
     },
     "upstream_tool_inventory": {
@@ -223,6 +244,7 @@
             "type": "string",
             "enum": [
               "safe_direct",
+              "conditional",
               "read_only_only",
               "unsafe_raw_code",
               "unsupported",
@@ -232,7 +254,23 @@
           "schema_drift_detected": { "type": "boolean" },
           "description_injection_detected": { "type": "boolean" },
           "requalification_required": { "type": "boolean" },
-          "qualification_rationale": { "type": "string", "minLength": 5 }
+          "qualification_rationale": { "type": "string", "minLength": 5 },
+          "title": { "type": ["string", "null"] },
+          "output_schema": { "type": ["object", "null"] },
+          "annotations": { "type": ["object", "null"] },
+          "icons": { "type": ["array", "null"] },
+          "execution_metadata": { "type": ["object", "null"] },
+          "contract_fingerprints": { "type": "object" },
+          "drift_severity": { "type": ["string", "null"] },
+          "synthetic_extension_spoof_detected": { "type": "boolean" },
+          "known_upstream_issues": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "conditional_execution_requirements": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
         }
       }
     },
@@ -255,7 +293,7 @@
           "tool_name": { "type": "string", "minLength": 1 },
           "classification": {
             "type": "string",
-            "enum": ["unsafe_raw_code", "unsupported", "unknown"]
+            "enum": ["unsafe_raw_code", "conditional", "unsupported", "unknown"]
           },
           "executes_arbitrary_code": { "type": "boolean" },
           "blocking_reason": { "type": "string", "minLength": 5 }
@@ -314,6 +352,7 @@
             "enum": [
               "qualified_read_only",
               "qualified_safe_direct",
+              "conditional_upstream_known_issues",
               "blocked_missing_bounded_upstream_tool",
               "blocked_unsafe_raw_code_tool",
               "blocked_unbounded_upstream_side_effects",
@@ -440,10 +479,16 @@
             "not_needed",
             "rollback_verified",
             "rollback_unverified",
-            "rollback_failed"
+            "rollback_failed",
+            "unknown_remote_execution_outcome"
           ]
         },
-        "details": { "type": "string" }
+        "details": { "type": "string" },
+        "unknown_remote_execution_outcome": { "type": "boolean" },
+        "checks": {
+          "type": "array",
+          "items": { "type": "object" }
+        }
       }
     },
     "secrets_redacted": {

@@ -102,6 +102,7 @@
         "read_only_available": { "type": "boolean" },
         "mutation_available": { "type": "boolean" },
         "export_available": { "type": "boolean" },
+        "conditional_export_available": { "type": "boolean" },
         "backup_supported": { "type": "boolean" },
         "restore_supported": { "type": "boolean" },
         "plan_compatible": { "type": "boolean" },
@@ -133,8 +134,21 @@
         "read_only_qualified": { "type": "boolean" },
         "mutation_qualified": { "type": "boolean" },
         "export_import_qualified": { "type": "boolean" },
-        "live_runtime_verified": { "type": "boolean" }
+        "live_runtime_verified": { "type": "boolean" },
+        "conditional_export_available": { "type": "boolean" }
       }
+    },
+    "connection_lifecycle_state": {
+      "type": "string",
+      "enum": [
+        "configured",
+        "transport_connected",
+        "initialized",
+        "protocol_negotiated",
+        "tools_discovered",
+        "contract_qualified",
+        "live_read_only_verified"
+      ]
     },
     "qualification_verdict": {
       "type": "string",
@@ -168,7 +182,14 @@
         "session_mode": { "type": ["string", "null"] },
         "session_id_header_used": { "type": "boolean" },
         "schema_drift_detected": { "type": "boolean" },
-        "requalification_required": { "type": "boolean" }
+        "requalification_required": { "type": "boolean" },
+        "tool_list_changed_supported": { "type": "boolean" },
+        "tool_list_changed_events_received": { "type": "integer", "minimum": 0 },
+        "tool_list_changed_count": { "type": "integer", "minimum": 0 },
+        "drift_severity": {
+          "type": ["string", "null"],
+          "enum": [null, "none", "metadata_only", "breaking_contract_drift"]
+        }
       }
     },
     "negotiated_capability_tier": {
@@ -214,7 +235,13 @@
               "type": "string",
               "pattern": "^op\\.(inspect|mutate|export)\\.[a-z0-9-]+$"
             }
-          }
+          },
+          "output_schema": { "type": ["object", "null"] },
+          "annotations": { "type": ["object", "null"] },
+          "title": { "type": ["string", "null"] },
+          "icons": { "type": ["array", "null"] },
+          "execution_metadata": { "type": ["object", "null"] },
+          "contract_fingerprints": { "type": "object" }
         }
       }
     },
@@ -282,7 +309,16 @@
         },
         "single_bridge_verified": {
           "type": "boolean"
-        }
+        },
+        "identity_claimed": { "type": ["string", "null"] },
+        "identity_claim_matches_expected": { "type": "boolean" },
+        "server_version_observed": { "type": ["string", "null"] },
+        "addon_version_observed": { "type": ["string", "null"] },
+        "blender_version_observed": { "type": ["string", "null"] },
+        "process_provenance_verified": { "type": "boolean" },
+        "source_provenance_verified": { "type": "boolean" },
+        "runtime_compatibility_verified": { "type": "boolean" },
+        "expected_vs_observed": { "type": "object" }
       }
     },
     "known_limitations": {

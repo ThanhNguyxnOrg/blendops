@@ -88,7 +88,8 @@
     "scripts/test-phase15.mjs",
     "scripts/test-phase16.mjs",
     "scripts/test-phase17.mjs",
-    "scripts/test-phase18.mjs"
+    "scripts/test-phase18.mjs",
+    "scripts/test-phase19.mjs"
   ],
   "requiredDirectories": [
     "docs/audits/phase-0",

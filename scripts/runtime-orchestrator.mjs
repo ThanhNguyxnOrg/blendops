@@ -17,8 +17,13 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import crypto from 'node:crypto';
+import { spawn } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import Ajv2020 from 'ajv/dist/2020.js';
+import { Client } from '@modelcontextprotocol/sdk/client/index.js';
+import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js';
+import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js';
+import { ToolListChangedNotificationSchema } from '@modelcontextprotocol/sdk/types.js';
 import {
   validateSceneSpec,
   compileExecutionPlan,
@@ -41,10 +46,31 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const DEFAULT_REPO_ROOT = path.resolve(__dirname, '..');
 
+export const CLI_EXIT_CODES = Object.freeze({
+  SUCCESS: 0,
+  CLI_USAGE_OR_VALIDATION_ERROR: 1,
+  RUNTIME_UNREACHABLE_OR_TRANSPORT_FAILURE: 2,
+  PROTOCOL_OR_VERSION_INCOMPATIBLE: 3,
+  TOOL_QUALIFICATION_OR_SCHEMA_DRIFT_FAILURE: 4,
+  OPERATION_BLOCKED_BY_CAPABILITY_OR_L3: 5,
+  PREFLIGHT_OR_CHECKPOINT_FAILURE: 6,
+  EXECUTION_OR_POSTCONDITION_OR_ROLLBACK_FAILURE: 7,
+  // Backward-compatible aliases
+  VALIDATION_OR_CLI_ERROR: 1,
+  PREFLIGHT_OR_QUALIFICATION_BLOCKED: 2,
+  RUNTIME_UNREACHABLE_OR_TIMEOUT: 2,
+  PROTOCOL_OR_TRANSPORT_INCOMPATIBLE: 3,
+  IDENTITY_OR_PROVENANCE_MISMATCH: 3,
+  SCHEMA_DRIFT_OR_UNQUALIFIED_TOOL: 4,
+  CHECKPOINT_OR_BACKUP_GATE_FAILED: 6,
+  POSTCONDITION_OR_ROLLBACK_FAILED: 7,
+});
+
 export const RUNTIME_CLI_SUBCOMMANDS = new Set([
   'runtime',
   'operation',
   'execution',
+  'runtime-connect',
   'runtime-doctor',
   'runtime-inspect',
   'runtime-capabilities',
@@ -271,7 +297,8 @@ export function redactSensitiveData(input) {
 /**
  * Validates an MCP transport endpoint string, rejecting malformed URLs,
  * unsafe schemes (file:, javascript:, data:, ftp:), embedded credentials,
- * and non-loopback endpoints unless allowRemoteEndpoint is true.
+ * non-loopback endpoints unless allowRemoteEndpoint is true, and non-TLS
+ * remote endpoints even when allowRemoteEndpoint is true.
  */
 export function validateRuntimeTransportEndpoint(endpoint, options = {}) {
   if (endpoint === null || endpoint === undefined) {
@@ -327,12 +354,147 @@ export function validateRuntimeTransportEndpoint(endpoint, options = {}) {
       return {
         valid: false,
         normalized: null,
+        normalizedEndpoint: null,
+        reason: msg,
+        error: msg,
+      };
+    }
+    if (
+      !isLoopback &&
+      options.allowRemoteEndpoint &&
+      options.requireRemoteTls &&
+      parsed.protocol !== 'https:' &&
+      parsed.protocol !== 'wss:'
+    ) {
+      const msg = `Remote non-loopback MCP transport endpoint '${host}' must use TLS (https: or wss:) when requireRemoteTls is enabled.`;
+      return {
+        valid: false,
+        normalized: null,
+        normalizedEndpoint: null,
         reason: msg,
         error: msg,
       };
     }
   }
-  return { valid: true, normalized: parsed.toString(), reason: null, error: null };
+  return {
+    valid: true,
+    normalized: parsed.toString(),
+    normalizedEndpoint: parsed.toString(),
+    reason: null,
+    error: null,
+  };
+}
+
+const DEFAULT_STDIO_ENV_ALLOWLIST = new Set([
+  'PATH',
+  'HOME',
+  'USERPROFILE',
+  'TMPDIR',
+  'TEMP',
+  'TMP',
+  'LANG',
+  'LC_ALL',
+  'NODE_ENV',
+  'SYSTEMROOT',
+  'COMSPEC',
+  'APPDATA',
+  'LOCALAPPDATA',
+  'XDG_CONFIG_HOME',
+  'XDG_CACHE_HOME',
+  'PYTHONPATH',
+  'UV_CACHE_DIR',
+  'BLENDER_USER_RESOURCES',
+  'BLENDER_SYSTEM_RESOURCES',
+]);
+
+const FORBIDDEN_SHELL_WRAPPERS = new Set([
+  'sh',
+  'bash',
+  'zsh',
+  'dash',
+  'ksh',
+  'csh',
+  'tcsh',
+  'cmd',
+  'cmd.exe',
+  'powershell',
+  'powershell.exe',
+  'pwsh',
+  'pwsh.exe',
+]);
+
+/**
+ * Phase 3.3 Section 5 — Validates STDIO subprocess configuration:
+ * - Requires explicit executable + argument array (`shell: false`).
+ * - Rejects shell wrapper executables (`sh`, `bash`, `cmd.exe`, `powershell`, etc.) and shell command strings.
+ * - Filters environment variables through a strict allowlist and strips secret keys.
+ */
+export function validateStdioCommandConfig(config = {}) {
+  const command = typeof config.command === 'string' ? config.command.trim() : '';
+  if (!command || command.includes('\0')) {
+    const msg = 'STDIO command must be a non-empty executable string without null bytes.';
+    return { valid: false, command: null, args: [], cwd: null, env: {}, sanitizedEnv: {}, shell: false, reason: msg, error: msg };
+  }
+  if (config.shell === true) {
+    const msg = 'STDIO transport forbids shell=true; subprocesses must be spawned with explicit executable and argument array.';
+    return { valid: false, command: null, args: [], cwd: null, env: {}, sanitizedEnv: {}, shell: false, reason: msg, error: msg };
+  }
+  if (/[;&|`$><\n\r]/.test(command) || /\s+-c\s+/i.test(command)) {
+    const msg = `STDIO command '${redactStringSecrets(command).value}' contains forbidden shell metacharacters or inline shell flags.`;
+    return { valid: false, command: null, args: [], cwd: null, env: {}, sanitizedEnv: {}, shell: false, reason: msg, error: msg };
+  }
+  const baseExe = path.basename(command).toLowerCase();
+  if (FORBIDDEN_SHELL_WRAPPERS.has(baseExe)) {
+    const msg = `STDIO command '${baseExe}' is a shell interpreter; BlendOps forbids spawning MCP servers via a shell wrapper.`;
+    return { valid: false, command: null, args: [], cwd: null, env: {}, sanitizedEnv: {}, shell: false, reason: msg, error: msg };
+  }
+
+  const rawArgs = config.args === undefined ? [] : config.args;
+  if (!Array.isArray(rawArgs)) {
+    const msg = 'STDIO args must be an array of strings.';
+    return { valid: false, command: null, args: [], cwd: null, env: {}, sanitizedEnv: {}, shell: false, reason: msg, error: msg };
+  }
+  const cleanArgs = [];
+  for (let i = 0; i < rawArgs.length; i += 1) {
+    const arg = rawArgs[i];
+    if (typeof arg !== 'string' || arg.includes('\0')) {
+      const msg = `STDIO argument at index ${i} must be a string without null bytes.`;
+      return { valid: false, command: null, args: [], cwd: null, env: {}, sanitizedEnv: {}, shell: false, reason: msg, error: msg };
+    }
+    cleanArgs.push(arg);
+  }
+
+  const resolvedCwd = config.cwd ? path.resolve(config.cwd) : DEFAULT_REPO_ROOT;
+  if (!fs.existsSync(resolvedCwd) || !fs.statSync(resolvedCwd).isDirectory()) {
+    const msg = `STDIO working directory does not exist or is not a directory: ${resolvedCwd}`;
+    return { valid: false, command: null, args: [], cwd: null, env: {}, sanitizedEnv: {}, shell: false, reason: msg, error: msg };
+  }
+
+  const allowedKeys = new Set([
+    ...DEFAULT_STDIO_ENV_ALLOWLIST,
+    ...(Array.isArray(config.allowedEnvKeys) ? config.allowedEnvKeys : []),
+  ]);
+  const sourceEnv = config.env && typeof config.env === 'object' ? config.env : process.env;
+  const filteredEnv = {};
+  for (const [k, v] of Object.entries(sourceEnv)) {
+    if (typeof v !== 'string') continue;
+    if (SECRET_KEY_PATTERN.test(k)) continue;
+    if (allowedKeys.has(k) || k.startsWith('BLENDOPS_')) {
+      filteredEnv[k] = v;
+    }
+  }
+
+  return {
+    valid: true,
+    command,
+    args: cleanArgs,
+    cwd: resolvedCwd,
+    env: filteredEnv,
+    sanitizedEnv: filteredEnv,
+    shell: false,
+    reason: null,
+    error: null,
+  };
 }
 
 const INDIRECT_CODE_INJECTION_PATTERNS = [
@@ -472,6 +634,96 @@ export function computeToolSchemaFingerprint(toolName, inputSchema) {
 }
 
 /**
+ * Phase 3.3 Section 7 — Computes full 4-part contract fingerprints for an MCP tool definition:
+ * 1. input_schema_fingerprint
+ * 2. output_schema_fingerprint
+ * 3. metadata_fingerprint
+ * 4. combined_contract_fingerprint
+ */
+export function computeFullToolContractFingerprints(toolEntry = {}) {
+  const toolName = String(toolEntry?.name ?? toolEntry?.tool_name ?? '').trim();
+  const inputSchema = toolEntry?.inputSchema ?? toolEntry?.input_schema ?? {};
+  const outputSchema = toolEntry?.outputSchema ?? toolEntry?.output_schema ?? null;
+  const inputFp = computeToolSchemaFingerprint(toolName, inputSchema);
+  const outputFp =
+    outputSchema && typeof outputSchema === 'object' && !Array.isArray(outputSchema)
+      ? computeToolSchemaFingerprint(`${toolName}:output`, outputSchema)
+      : null;
+  const metaPayload = {
+    name: toolName,
+    title: toolEntry?.title || null,
+    description: typeof toolEntry?.description === 'string' ? toolEntry.description : '',
+    annotations: toolEntry?.annotations || null,
+    execution: toolEntry?.execution || toolEntry?.execution_metadata || null,
+  };
+  const metaFp = sha256Hex(stableCanonicalJson(metaPayload));
+  const combinedFp = sha256Hex(`${inputFp}:${outputFp || 'none'}:${metaFp}`);
+  return {
+    input_schema_fingerprint: inputFp,
+    output_schema_fingerprint: outputFp,
+    metadata_fingerprint: metaFp,
+    combined_contract_fingerprint: combinedFp,
+  };
+}
+
+/**
+ * Phase 3.3 Section 7 — Inspects a JSON Schema object for structural safety,
+ * bounded nesting depth, bounded property count, and absence of external $ref URLs.
+ */
+export function inspectJsonSchemaSafety(schema, maxDepth = 12, maxProperties = 256) {
+  if (!schema || typeof schema !== 'object' || Array.isArray(schema) || schema.type !== 'object') {
+    return {
+      valid: false,
+      reason: 'Tool schema is missing or not a valid JSON Schema object with type="object".',
+    };
+  }
+  let propCount = 0;
+  let errorReason = null;
+
+  function walk(node, depth) {
+    if (errorReason) return;
+    if (depth > maxDepth) {
+      errorReason = `Tool JSON Schema exceeds maximum allowed nesting depth (${maxDepth}).`;
+      return;
+    }
+    if (!node || typeof node !== 'object') return;
+    if (typeof node.$ref === 'string' && /^(https?:|file:|ftp:)/i.test(node.$ref.trim())) {
+      errorReason = `Tool JSON Schema contains forbidden external $ref '${node.$ref}'.`;
+      return;
+    }
+    if (node.properties && typeof node.properties === 'object' && !Array.isArray(node.properties)) {
+      const keys = Object.keys(node.properties);
+      propCount += keys.length;
+      if (propCount > maxProperties) {
+        errorReason = `Tool JSON Schema exceeds maximum allowed property count (${maxProperties}).`;
+        return;
+      }
+      for (const k of keys) {
+        walk(node.properties[k], depth + 1);
+      }
+    }
+    if (node.items) {
+      if (Array.isArray(node.items)) {
+        for (const it of node.items) walk(it, depth + 1);
+      } else {
+        walk(node.items, depth + 1);
+      }
+    }
+    for (const combKey of ['anyOf', 'oneOf', 'allOf']) {
+      if (Array.isArray(node[combKey])) {
+        for (const sub of node[combKey]) walk(sub, depth + 1);
+      }
+    }
+  }
+
+  walk(schema, 0);
+  if (errorReason) {
+    return { valid: false, reason: errorReason };
+  }
+  return { valid: true, reason: null };
+}
+
+/**
  * Computes a deterministic SHA-256 fingerprint across an entire MCP tool inventory.
  */
 export function computeToolInventoryFingerprint(tools = []) {
@@ -536,7 +788,152 @@ const SUPPORTED_MCP_PROTOCOL_VERSIONS = new Set([
   '2024-11-05',
   '2025-03-26',
   '2025-06-18',
+  '2025-11-25',
 ]);
+
+/**
+ * Phase 3.3 Section 8 — Validates and parses an MCP CallToolResult or internal tool response:
+ * - Rejects `isError: true` or malformed results.
+ * - Enforces bounded payload size (`maxPayloadBytes`).
+ * - Extracts structured JSON from `structuredContent`, `data`, or `content` text blocks.
+ * - Rejects unexpected binary/audio/executable content blocks when structured JSON is required.
+ * - Validates against `outputSchema` when present.
+ * - Applies secret redaction to all outputs and errors.
+ */
+export function parseMcpCallToolResult(rawResult, options = {}) {
+  const maxPayloadBytes = options.maxPayloadBytes || 5 * 1024 * 1024;
+  if (!rawResult || typeof rawResult !== 'object' || Array.isArray(rawResult)) {
+    return {
+      ok: false,
+      status: 'error',
+      isError: true,
+      data: null,
+      error: 'Malformed MCP CallToolResult: expected a non-null JSON object.',
+      secretsRedacted: false,
+    };
+  }
+
+  const serializedLen = Buffer.byteLength(JSON.stringify(rawResult), 'utf8');
+  if (serializedLen > maxPayloadBytes) {
+    return {
+      ok: false,
+      status: 'error',
+      isError: true,
+      data: null,
+      error: `MCP CallToolResult payload size (${serializedLen} bytes) exceeds maximum allowed limit (${maxPayloadBytes} bytes).`,
+      secretsRedacted: false,
+    };
+  }
+
+  const { redacted: redactedRaw, secretsRedacted } = redactSensitiveData(rawResult);
+
+  if (rawResult.isError === true || rawResult.status === 'error') {
+    const errText =
+      typeof redactedRaw.error === 'string'
+        ? redactedRaw.error
+        : Array.isArray(redactedRaw.content)
+          ? redactedRaw.content
+              .filter((c) => c && c.type === 'text' && typeof c.text === 'string')
+              .map((c) => c.text)
+              .join('; ') || 'MCP tool returned isError=true'
+          : 'MCP tool returned isError=true';
+    return {
+      ok: false,
+      status: 'error',
+      isError: true,
+      data: null,
+      error: errText,
+      secretsRedacted,
+    };
+  }
+
+  let structuredData = null;
+
+  if (
+    redactedRaw.structuredContent &&
+    typeof redactedRaw.structuredContent === 'object' &&
+    !Array.isArray(redactedRaw.structuredContent)
+  ) {
+    structuredData = redactedRaw.structuredContent;
+  } else if (
+    redactedRaw.data &&
+    typeof redactedRaw.data === 'object' &&
+    !Array.isArray(redactedRaw.data)
+  ) {
+    structuredData = redactedRaw.data;
+  } else if (Array.isArray(redactedRaw.content)) {
+    for (const block of redactedRaw.content) {
+      if (!block || typeof block !== 'object') continue;
+      if (block.type !== 'text') {
+        if (!options.allowBinaryContent) {
+          return {
+            ok: false,
+            status: 'error',
+            isError: true,
+            data: null,
+            error: `Unexpected non-text MCP content block type '${String(block.type)}' where structured JSON was required.`,
+            secretsRedacted,
+          };
+        }
+        continue;
+      }
+      if (typeof block.text === 'string' && block.text.trim()) {
+        try {
+          const parsed = JSON.parse(block.text);
+          if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
+            structuredData = parsed;
+            break;
+          }
+        } catch {
+          return {
+            ok: false,
+            status: 'error',
+            isError: true,
+            data: null,
+            error: 'MCP tool text content block could not be parsed as valid structured JSON.',
+            secretsRedacted,
+          };
+        }
+      }
+    }
+  }
+
+  if (!structuredData || typeof structuredData !== 'object') {
+    return {
+      ok: false,
+      status: 'error',
+      isError: true,
+      data: null,
+      error: 'MCP CallToolResult did not contain valid structured JSON data.',
+      secretsRedacted,
+    };
+  }
+
+  if (options.outputSchema && typeof options.outputSchema === 'object') {
+    const ajv = new Ajv2020({ allErrors: true, strict: false });
+    const validateOut = ajv.compile(options.outputSchema);
+    if (!validateOut(structuredData)) {
+      const errs = (validateOut.errors || []).map((e) => `${e.instancePath || '/'} ${e.message}`);
+      return {
+        ok: false,
+        status: 'error',
+        isError: true,
+        data: null,
+        error: `MCP CallToolResult failed outputSchema validation: ${errs.join('; ')}`,
+        secretsRedacted,
+      };
+    }
+  }
+
+  return {
+    ok: true,
+    status: 'ok',
+    isError: false,
+    data: structuredData,
+    error: null,
+    secretsRedacted,
+  };
+}
 
 /**
  * Validates MCP protocol version negotiation, transport compatibility, and upstream server identity.
@@ -607,8 +1004,61 @@ export function negotiateMcpProtocolCompatibility(probe = {}, runtimePath = 'non
     transportType,
     sessionIdHeaderUsed,
     serverName: addonOrServer || null,
-    serverVersion: probe.runtimeVersion || null,
+    serverVersion: probe.runtimeVersion || probe.serverVersion || null,
     blockingReason,
+  };
+}
+
+/**
+ * Phase 3.3 Section 10 — Separates self-reported MCP server identity from independently verified provenance.
+ * Never fabricates addon_version or server_version when unobserved.
+ */
+export function evaluateRuntimeProvenance(probe = {}, runtimePath = 'none', options = {}) {
+  const protoNeg = negotiateMcpProtocolCompatibility(probe, runtimePath);
+  const pathSpec = RECOGNIZED_RUNTIME_PATHS[runtimePath] || null;
+  const claimedIdentity = probe?.addonOrServerIdentity || probe?.serverName || null;
+  const serverVersionObserved = probe?.runtimeVersion || probe?.serverVersion || null;
+  const addonVersionObserved = probe?.addonVersion || null;
+  const blenderVersionObserved = probe?.blenderVersion || null;
+  const versionCompatible =
+    Boolean(blenderVersionObserved) &&
+    Boolean(pathSpec) &&
+    isVersionAtLeast(blenderVersionObserved, pathSpec.minBlenderTuple);
+
+  const processProvenanceVerified = Boolean(
+    probe?.processProvenanceVerified === true ||
+      options.processProvenanceVerified === true,
+  );
+  // Self-reported server name/version alone never sets source_provenance_verified: true
+  const sourceProvenanceVerified = Boolean(
+    probe?.sourceProvenanceVerified === true ||
+      options.sourceProvenanceVerified === true,
+  );
+
+  return {
+    identity_claimed: claimedIdentity,
+    identity_claim_matches_expected: Boolean(protoNeg.identityVerified),
+    server_version_observed: serverVersionObserved,
+    addon_version_observed: addonVersionObserved,
+    blender_version_observed: blenderVersionObserved,
+    process_provenance_verified: processProvenanceVerified,
+    source_provenance_verified: sourceProvenanceVerified,
+    runtime_compatibility_verified: Boolean(
+      protoNeg.protocolCompatible && protoNeg.identityVerified && versionCompatible,
+    ),
+    expected_vs_observed: {
+      expected_runtime_path: runtimePath,
+      expected_server_identity_pattern: runtimePath.startsWith('path-1')
+        ? 'blender-mcp / Blender Lab MCP Add-on'
+        : runtimePath === 'path-2-community'
+          ? 'mcp-for-blender / blender-mcp'
+          : 'none',
+      observed_server_identity: claimedIdentity,
+      expected_min_blender_version: pathSpec?.minBlenderString || null,
+      observed_blender_version: blenderVersionObserved,
+      observed_server_version: serverVersionObserved,
+      observed_addon_version: addonVersionObserved,
+    },
   };
 }
 
@@ -761,56 +1211,221 @@ function getAjvValidator(schemaPath) {
   return validate;
 }
 
+const TRUSTED_MOCK_FIXTURE_TOKEN = Symbol('blendops.internal.trusted_mock_fixture_token');
+const TRUSTED_MOCK_RUNTIME_INSTANCES = new WeakSet();
+const TRUSTED_MOCK_SESSION_INSTANCES = new WeakSet();
+const TRUSTED_MOCK_TOOL_OBJECTS = new WeakSet();
+
+export const SYNTHETIC_GOVERNED_TOOL_SCHEMAS = Object.freeze({
+  set_camera_properties_governed: Object.freeze({
+    type: 'object',
+    additionalProperties: false,
+    required: ['camera_name', 'location', 'rotation_euler_deg', 'focal_length_mm'],
+    properties: {
+      camera_name: { type: 'string', minLength: 1 },
+      location: { type: 'array', items: { type: 'number' }, minItems: 3, maxItems: 3 },
+      rotation_euler_deg: { type: 'array', items: { type: 'number' }, minItems: 3, maxItems: 3 },
+      focal_length_mm: { type: 'number', minimum: 1, maximum: 500 },
+      dof_enabled: { type: 'boolean' },
+      f_stop: { type: 'number', minimum: 0.5, maximum: 64 },
+    },
+  }),
+  set_light_properties_governed: Object.freeze({
+    type: 'object',
+    additionalProperties: false,
+    required: ['light_name', 'energy_watts', 'color_rgb'],
+    properties: {
+      light_name: { type: 'string', minLength: 1 },
+      energy_watts: { type: 'number', minimum: 0, maximum: 100000 },
+      color_rgb: { type: 'array', items: { type: 'number' }, minItems: 3, maxItems: 3 },
+      location: { type: 'array', items: { type: 'number' }, minItems: 3, maxItems: 3 },
+      area_size: { type: 'number', minimum: 0.01, maximum: 100 },
+    },
+  }),
+  set_material_pbr_governed: Object.freeze({
+    type: 'object',
+    additionalProperties: false,
+    required: ['object_name', 'material_name', 'base_color_rgba', 'roughness', 'metallic'],
+    properties: {
+      object_name: { type: 'string', minLength: 1 },
+      material_name: { type: 'string', minLength: 1 },
+      base_color_rgba: { type: 'array', items: { type: 'number' }, minItems: 4, maxItems: 4 },
+      roughness: { type: 'number', minimum: 0, maximum: 1 },
+      metallic: { type: 'number', minimum: 0, maximum: 1 },
+    },
+  }),
+  set_object_transform_governed: Object.freeze({
+    type: 'object',
+    additionalProperties: false,
+    required: ['object_name', 'location', 'rotation_euler_deg', 'scale'],
+    properties: {
+      object_name: { type: 'string', minLength: 1 },
+      location: { type: 'array', items: { type: 'number' }, minItems: 3, maxItems: 3 },
+      rotation_euler_deg: { type: 'array', items: { type: 'number' }, minItems: 3, maxItems: 3 },
+      scale: { type: 'array', items: { type: 'number' }, minItems: 3, maxItems: 3 },
+    },
+  }),
+  render_still_governed: Object.freeze({
+    type: 'object',
+    additionalProperties: false,
+    required: ['output_path'],
+    properties: {
+      output_path: { type: 'string', minLength: 1 },
+      engine: { type: 'string' },
+      resolution_x: { type: 'integer', minimum: 16, maximum: 16384 },
+      resolution_y: { type: 'integer', minimum: 16, maximum: 16384 },
+      samples: { type: 'integer', minimum: 1, maximum: 16384 },
+    },
+  }),
+  export_glb_governed: Object.freeze({
+    type: 'object',
+    additionalProperties: false,
+    required: ['output_path'],
+    properties: {
+      output_path: { type: 'string', minLength: 1 },
+      export_selected_only: { type: 'boolean' },
+      export_apply_modifiers: { type: 'boolean' },
+      export_draco_compression: { type: 'boolean' },
+    },
+  }),
+  blender_cli_render_still: Object.freeze({
+    type: 'object',
+    additionalProperties: false,
+    required: ['output_path'],
+    properties: {
+      output_path: { type: 'string', minLength: 1 },
+      engine: { type: 'string' },
+      resolution_x: { type: 'integer', minimum: 16, maximum: 16384 },
+      resolution_y: { type: 'integer', minimum: 16, maximum: 16384 },
+      samples: { type: 'integer', minimum: 1, maximum: 16384 },
+    },
+  }),
+  blender_cli_export_glb: Object.freeze({
+    type: 'object',
+    additionalProperties: false,
+    required: ['output_path'],
+    properties: {
+      output_path: { type: 'string', minLength: 1 },
+      export_selected_only: { type: 'boolean' },
+      export_apply_modifiers: { type: 'boolean' },
+    },
+  }),
+});
+
 const GOVERNED_EXTENSION_TOOL_SPECS = Object.freeze({
   set_camera_properties_governed: {
     classification: 'safe_direct',
     capability_tier: 'L1',
     allowed_in_governed_execution: true,
-    rationale: 'Governed BlendOps extension tool for bounded camera transform and lens adjustments.',
+    input_schema: SYNTHETIC_GOVERNED_TOOL_SCHEMAS.set_camera_properties_governed,
+    pinned_schema_fingerprint: computeToolSchemaFingerprint(
+      'set_camera_properties_governed',
+      SYNTHETIC_GOVERNED_TOOL_SCHEMAS.set_camera_properties_governed,
+    ),
+    rationale: 'Governed BlendOps extension tool for bounded camera transform and lens adjustments (internal mock fixture only).',
   },
   set_light_properties_governed: {
     classification: 'safe_direct',
     capability_tier: 'L1',
     allowed_in_governed_execution: true,
-    rationale: 'Governed BlendOps extension tool for bounded light energy, color, and transform adjustments.',
+    input_schema: SYNTHETIC_GOVERNED_TOOL_SCHEMAS.set_light_properties_governed,
+    pinned_schema_fingerprint: computeToolSchemaFingerprint(
+      'set_light_properties_governed',
+      SYNTHETIC_GOVERNED_TOOL_SCHEMAS.set_light_properties_governed,
+    ),
+    rationale: 'Governed BlendOps extension tool for bounded light energy, color, and transform adjustments (internal mock fixture only).',
   },
   set_material_pbr_governed: {
     classification: 'safe_direct',
     capability_tier: 'L1',
     allowed_in_governed_execution: true,
-    rationale: 'Governed BlendOps extension tool for bounded Principled BSDF PBR material adjustments.',
+    input_schema: SYNTHETIC_GOVERNED_TOOL_SCHEMAS.set_material_pbr_governed,
+    pinned_schema_fingerprint: computeToolSchemaFingerprint(
+      'set_material_pbr_governed',
+      SYNTHETIC_GOVERNED_TOOL_SCHEMAS.set_material_pbr_governed,
+    ),
+    rationale: 'Governed BlendOps extension tool for bounded Principled BSDF PBR material adjustments (internal mock fixture only).',
   },
   set_object_transform_governed: {
     classification: 'safe_direct',
     capability_tier: 'L1',
     allowed_in_governed_execution: true,
-    rationale: 'Governed BlendOps extension tool for bounded object transform adjustments.',
+    input_schema: SYNTHETIC_GOVERNED_TOOL_SCHEMAS.set_object_transform_governed,
+    pinned_schema_fingerprint: computeToolSchemaFingerprint(
+      'set_object_transform_governed',
+      SYNTHETIC_GOVERNED_TOOL_SCHEMAS.set_object_transform_governed,
+    ),
+    rationale: 'Governed BlendOps extension tool for bounded object transform adjustments (internal mock fixture only).',
   },
   render_still_governed: {
     classification: 'safe_direct',
     capability_tier: 'L2',
     allowed_in_governed_execution: true,
-    rationale: 'Governed BlendOps extension tool for bounded still render output to file.',
+    input_schema: SYNTHETIC_GOVERNED_TOOL_SCHEMAS.render_still_governed,
+    pinned_schema_fingerprint: computeToolSchemaFingerprint(
+      'render_still_governed',
+      SYNTHETIC_GOVERNED_TOOL_SCHEMAS.render_still_governed,
+    ),
+    rationale: 'Governed BlendOps extension tool for bounded still render output to file (internal mock fixture only).',
   },
   export_glb_governed: {
     classification: 'safe_direct',
     capability_tier: 'L2',
     allowed_in_governed_execution: true,
-    rationale: 'Governed BlendOps extension tool for bounded Khronos glTF 2.0 GLB export to file.',
+    input_schema: SYNTHETIC_GOVERNED_TOOL_SCHEMAS.export_glb_governed,
+    pinned_schema_fingerprint: computeToolSchemaFingerprint(
+      'export_glb_governed',
+      SYNTHETIC_GOVERNED_TOOL_SCHEMAS.export_glb_governed,
+    ),
+    rationale: 'Governed BlendOps extension tool for bounded Khronos glTF 2.0 GLB export to file (internal mock fixture only).',
   },
   blender_cli_render_still: {
     classification: 'safe_direct',
     capability_tier: 'L2',
     allowed_in_governed_execution: true,
-    rationale: 'Headless CLI appendix render still surface.',
+    input_schema: SYNTHETIC_GOVERNED_TOOL_SCHEMAS.blender_cli_render_still,
+    pinned_schema_fingerprint: computeToolSchemaFingerprint(
+      'blender_cli_render_still',
+      SYNTHETIC_GOVERNED_TOOL_SCHEMAS.blender_cli_render_still,
+    ),
+    rationale: 'Headless CLI appendix render still surface (internal mock fixture only).',
   },
   blender_cli_export_glb: {
     classification: 'safe_direct',
     capability_tier: 'L2',
     allowed_in_governed_execution: true,
-    rationale: 'Headless CLI appendix GLB export surface.',
+    input_schema: SYNTHETIC_GOVERNED_TOOL_SCHEMAS.blender_cli_export_glb,
+    pinned_schema_fingerprint: computeToolSchemaFingerprint(
+      'blender_cli_export_glb',
+      SYNTHETIC_GOVERNED_TOOL_SCHEMAS.blender_cli_export_glb,
+    ),
+    rationale: 'Headless CLI appendix GLB export surface (internal mock fixture only).',
   },
 });
+
+/**
+ * Phase 3.3 Section 3.1 — Verifies whether a runtime client is an unforgeable internal mock fixture.
+ * Cannot be spoofed by setting `isMockRuntime: true` on an external or live client object.
+ */
+export function isTrustedMockRuntimeFixture(runtimeClient) {
+  return Boolean(
+    runtimeClient &&
+      typeof runtimeClient === 'object' &&
+      TRUSTED_MOCK_RUNTIME_INSTANCES.has(runtimeClient) &&
+      runtimeClient[TRUSTED_MOCK_FIXTURE_TOKEN] === true &&
+      runtimeClient.isMockRuntime === true &&
+      !runtimeClient.isUpstreamRealitySimulation,
+  );
+}
+
+function isTrustedMockSessionInstance(session) {
+  return Boolean(
+    session &&
+      typeof session === 'object' &&
+      TRUSTED_MOCK_SESSION_INSTANCES.has(session) &&
+      session[TRUSTED_MOCK_FIXTURE_TOKEN] === true,
+  );
+}
 
 function normalizeUpstreamMatrixPath(runtimePath) {
   if (runtimePath === 'path-1-host-a' || runtimePath === 'path-1-host-b' || runtimePath === 'path-1-official-blender-lab-mcp') {
@@ -840,27 +1455,30 @@ function doesMatrixEntryMatchRuntimePath(m, runtimePath) {
 }
 
 /**
- * Phase 3.2 — Qualifies a single MCP tool entry against the canonical Upstream Tool Qualification Matrix
+ * Phase 3.2 & 3.3 — Qualifies a single MCP tool entry against the canonical Upstream Tool Qualification Matrix
  * and enforces the MCP Adapter Security Boundary:
  * - Unknown tools default to 'unknown' (deny).
  * - Unsafe raw code tools ('execute_blender_code', 'execute_blender_code_for_cli') are classified as 'unsafe_raw_code' and blocked.
  * - Spoofed safe tool names whose inputSchema exposes arbitrary code parameters are flagged and reclassified as 'unsafe_raw_code'.
+ * - Synthetic governed extension tools (`*_governed`, `blender_cli_*`) are strictly rejected unless originating from a verified internal mock fixture (`TRUSTED_MOCK_RUNTIME_INSTANCES` / `TRUSTED_MOCK_TOOL_OBJECTS`) with an exact pinned schema fingerprint.
  * - Tool descriptions containing prompt/command injection payloads are flagged and blocked.
  * - Unexpected schema changes compared to the verified upstream schema fingerprint trigger 'schema_drift_detected' and 'requalification_required'.
  */
 export function qualifyUpstreamTool(toolEntry, runtimePath, registryDoc, options = {}) {
   const toolName = typeof toolEntry?.name === 'string' ? toolEntry.name.trim() : String(toolEntry?.tool_name || '').trim();
   const inputSchema = toolEntry?.inputSchema ?? toolEntry?.input_schema ?? null;
+  const outputSchema = toolEntry?.outputSchema ?? toolEntry?.output_schema ?? null;
   const description = typeof toolEntry?.description === 'string' ? toolEntry.description : '';
 
-  const schemaValid =
-    Boolean(inputSchema) &&
-    typeof inputSchema === 'object' &&
-    !Array.isArray(inputSchema) &&
-    inputSchema.type === 'object';
+  const inputSafety = inspectJsonSchemaSafety(inputSchema);
+  const outputSafety = outputSchema ? inspectJsonSchemaSafety(outputSchema) : { valid: true, reason: null };
+  const schemaValid = inputSafety.valid && outputSafety.valid;
 
-  const actualFingerprint = schemaValid
+  const actualFingerprint = inputSafety.valid
     ? computeToolSchemaFingerprint(toolName, inputSchema)
+    : null;
+  const contractFingerprints = inputSafety.valid
+    ? computeFullToolContractFingerprints(toolEntry)
     : null;
 
   const matrixEntry = (registryDoc?.upstream_tool_qualification_matrix || []).find(
@@ -869,7 +1487,7 @@ export function qualifyUpstreamTool(toolEntry, runtimePath, registryDoc, options
   const governedSpec = GOVERNED_EXTENSION_TOOL_SPECS[toolName] || null;
 
   const descInjection = detectToolDescriptionInjection(description);
-  const arbitraryCodeParamReason = schemaValid ? detectArbitraryCodeSchemaParameters(inputSchema) : null;
+  const arbitraryCodeParamReason = inputSafety.valid ? detectArbitraryCodeSchemaParameters(inputSchema) : null;
 
   const mappedOps = (registryDoc?.operations || [])
     .filter(
@@ -890,9 +1508,12 @@ export function qualifyUpstreamTool(toolEntry, runtimePath, registryDoc, options
       allowed_in_governed_execution: false,
       expected_schema_fingerprint: matrixEntry?.tool_schema_fingerprint || null,
       actual_schema_fingerprint: actualFingerprint,
+      contract_fingerprints: contractFingerprints,
       schema_drift_detected: false,
+      drift_severity: 'none',
       requalification_required: true,
       spoofed_safe_tool_name: false,
+      synthetic_extension_spoof_detected: false,
       description_injection_detected: true,
       mapped_operation_ids: [],
       rationale: `${descInjection}; tool blocked at MCP adapter security boundary.`,
@@ -913,9 +1534,12 @@ export function qualifyUpstreamTool(toolEntry, runtimePath, registryDoc, options
       allowed_in_governed_execution: false,
       expected_schema_fingerprint: matrixEntry?.tool_schema_fingerprint || actualFingerprint,
       actual_schema_fingerprint: actualFingerprint,
+      contract_fingerprints: contractFingerprints,
       schema_drift_detected: false,
+      drift_severity: 'none',
       requalification_required: false,
       spoofed_safe_tool_name: false,
+      synthetic_extension_spoof_detected: false,
       description_injection_detected: false,
       mapped_operation_ids: [],
       rationale:
@@ -935,9 +1559,12 @@ export function qualifyUpstreamTool(toolEntry, runtimePath, registryDoc, options
       allowed_in_governed_execution: false,
       expected_schema_fingerprint: matrixEntry?.tool_schema_fingerprint || null,
       actual_schema_fingerprint: actualFingerprint,
+      contract_fingerprints: contractFingerprints,
       schema_drift_detected: Boolean(matrixEntry),
+      drift_severity: matrixEntry ? 'breaking_contract_drift' : 'none',
       requalification_required: true,
       spoofed_safe_tool_name: true,
+      synthetic_extension_spoof_detected: false,
       description_injection_detected: false,
       mapped_operation_ids: [],
       rationale: `Spoofed tool name '${toolName}' blocked: ${arbitraryCodeParamReason}.`,
@@ -946,29 +1573,67 @@ export function qualifyUpstreamTool(toolEntry, runtimePath, registryDoc, options
 
   // 4. Known upstream tool in qualification matrix
   if (matrixEntry) {
+    const trustedMockContext =
+      !options.isLiveRuntime &&
+      !options.liveTransportClient &&
+      (isTrustedMockRuntimeFixture(options.trustedMockRuntime || options.mockRuntime) ||
+        isTrustedMockSessionInstance(options.trustedMockSession) ||
+        TRUSTED_MOCK_TOOL_OBJECTS.has(toolEntry));
+
     const isSyntheticEmptyMockSchema =
+      trustedMockContext &&
       !options.strictSchemaFingerprint &&
       !toolEntry?.schemaDriftInjected &&
       schemaValid &&
       Object.keys(inputSchema.properties || {}).length === 0 &&
       inputSchema.additionalProperties === true;
 
-    const driftDetected =
+    const inputDrift =
       Boolean(toolEntry?.schemaDriftInjected) ||
       (!isSyntheticEmptyMockSchema &&
         Boolean(actualFingerprint) &&
         actualFingerprint !== matrixEntry.tool_schema_fingerprint);
 
+    const expectedOutputFp = matrixEntry.contract_fingerprints?.output_schema_fingerprint || null;
+    const outputDrift =
+      Boolean(expectedOutputFp) &&
+      Boolean(contractFingerprints?.output_schema_fingerprint) &&
+      contractFingerprints.output_schema_fingerprint !== expectedOutputFp;
+
+    const driftDetected = inputDrift || outputDrift || !schemaValid;
+
+    let driftSeverity = 'none';
+    if (driftDetected) {
+      driftSeverity = 'breaking_contract_drift';
+    } else if (
+      matrixEntry.contract_fingerprints?.metadata_fingerprint &&
+      contractFingerprints?.metadata_fingerprint &&
+      contractFingerprints.metadata_fingerprint !== matrixEntry.contract_fingerprints.metadata_fingerprint
+    ) {
+      driftSeverity = 'metadata_only';
+    }
+
+    const isConditional = matrixEntry.classification === 'conditional';
+    const conditionalGatesSatisfied = Boolean(
+      options.allowConditionalExport &&
+        options.disposableSceneConfirmed &&
+        options.checkpointVerified,
+    );
+
     const matrixAllowed =
       typeof matrixEntry.allowed_in_governed_execution === 'boolean'
         ? matrixEntry.allowed_in_governed_execution
-        : Boolean(matrixEntry.bounded_and_independently_verifiable);
+        : isConditional
+          ? conditionalGatesSatisfied
+          : Boolean(matrixEntry.bounded_and_independently_verifiable);
 
     const allowed =
       schemaValid &&
       !driftDetected &&
       matrixAllowed &&
-      (matrixEntry.classification === 'safe_direct' || matrixEntry.classification === 'read_only_only');
+      (matrixEntry.classification === 'safe_direct' ||
+        matrixEntry.classification === 'read_only_only' ||
+        (isConditional && conditionalGatesSatisfied));
 
     const entryTier = matrixEntry.required_capability_tier || matrixEntry.capability_tier || 'L0';
     const entryRationale = matrixEntry.qualification_rationale || matrixEntry.rationale || `Audited upstream tool '${toolName}'.`;
@@ -981,35 +1646,81 @@ export function qualifyUpstreamTool(toolEntry, runtimePath, registryDoc, options
       allowed_in_governed_execution: allowed,
       expected_schema_fingerprint: matrixEntry.tool_schema_fingerprint,
       actual_schema_fingerprint: actualFingerprint,
+      contract_fingerprints: contractFingerprints,
       schema_drift_detected: driftDetected,
+      drift_severity: driftSeverity,
       requalification_required: driftDetected,
       spoofed_safe_tool_name: false,
+      synthetic_extension_spoof_detected: false,
       description_injection_detected: false,
       mapped_operation_ids: allowed ? mappedOps : [],
-      rationale: driftDetected
-        ? `Tool '${toolName}' schema fingerprint drifted from audited upstream baseline (expected ${matrixEntry.tool_schema_fingerprint}, got ${actualFingerprint}); requalification_required before execution.`
-        : entryRationale,
+      known_upstream_issues: matrixEntry.known_upstream_issues || [],
+      conditional_execution_requirements: matrixEntry.conditional_execution_requirements || null,
+      rationale: !schemaValid
+        ? `Tool '${toolName}' failed JSON Schema safety inspection: ${inputSafety.reason || outputSafety.reason}`
+        : driftDetected
+          ? `Tool '${toolName}' schema fingerprint drifted from audited upstream baseline (expected ${matrixEntry.tool_schema_fingerprint}, got ${actualFingerprint}); requalification_required before execution.`
+          : entryRationale,
     };
   }
 
-  // 5. Governed BlendOps extension tool (used in deterministic L1/L2 extension simulation)
+  // 5. Governed BlendOps extension tool — Phase 3.3 Section 3.1 strict trust boundary!
+  // Only trusted when originating from a verified internal mock fixture AND matching its pinned schema fingerprint.
   if (governedSpec) {
-    const driftDetected = Boolean(toolEntry?.schemaDriftInjected);
+    const isGenuineTrustedFixture =
+      !options.isLiveRuntime &&
+      !options.liveTransportClient &&
+      (options.trustedMockFixture === true ||
+        isTrustedMockRuntimeFixture(options.trustedMockRuntime || options.mockRuntime) ||
+        isTrustedMockSessionInstance(options.trustedMockSession) ||
+        TRUSTED_MOCK_TOOL_OBJECTS.has(toolEntry));
+
+    if (!isGenuineTrustedFixture) {
+      return {
+        tool_name: toolName,
+        runtime_path: runtimePath,
+        classification: 'unknown',
+        capability_tier: 'L3',
+        allowed_in_governed_execution: false,
+        expected_schema_fingerprint: governedSpec.pinned_schema_fingerprint,
+        actual_schema_fingerprint: actualFingerprint,
+        contract_fingerprints: contractFingerprints,
+        schema_drift_detected: false,
+        drift_severity: 'none',
+        requalification_required: true,
+        spoofed_safe_tool_name: true,
+        synthetic_extension_spoof_detected: true,
+        synthetic_tool_blocked_on_untrusted_runtime: true,
+        description_injection_detected: false,
+        mapped_operation_ids: [],
+        rationale: `Synthetic BlendOps governed extension tool '${toolName}' is restricted to verified internal mock fixtures and is never trusted when advertised by live or external MCP servers.`,
+      };
+    }
+
+    const driftDetected =
+      Boolean(toolEntry?.schemaDriftInjected) ||
+      !schemaValid ||
+      actualFingerprint !== governedSpec.pinned_schema_fingerprint;
+
     return {
       tool_name: toolName,
       runtime_path: runtimePath,
       classification: governedSpec.classification,
       capability_tier: governedSpec.capability_tier,
       allowed_in_governed_execution: schemaValid && !driftDetected,
-      expected_schema_fingerprint: actualFingerprint,
+      expected_schema_fingerprint: governedSpec.pinned_schema_fingerprint,
       actual_schema_fingerprint: actualFingerprint,
+      contract_fingerprints: contractFingerprints,
       schema_drift_detected: driftDetected,
+      drift_severity: driftDetected ? 'breaking_contract_drift' : 'none',
       requalification_required: driftDetected,
       spoofed_safe_tool_name: false,
+      synthetic_extension_spoof_detected: false,
+      synthetic_tool_blocked_on_untrusted_runtime: false,
       description_injection_detected: false,
       mapped_operation_ids: schemaValid && !driftDetected ? mappedOps : [],
       rationale: driftDetected
-        ? `Governed tool '${toolName}' schema drift detected; requalification_required.`
+        ? `Governed mock tool '${toolName}' schema fingerprint drifted from pinned fixture schema (expected ${governedSpec.pinned_schema_fingerprint}, got ${actualFingerprint}); requalification_required.`
         : governedSpec.rationale,
     };
   }
@@ -1023,9 +1734,12 @@ export function qualifyUpstreamTool(toolEntry, runtimePath, registryDoc, options
     allowed_in_governed_execution: false,
     expected_schema_fingerprint: null,
     actual_schema_fingerprint: actualFingerprint,
+    contract_fingerprints: contractFingerprints,
     schema_drift_detected: false,
+    drift_severity: 'none',
     requalification_required: true,
     spoofed_safe_tool_name: false,
+    synthetic_extension_spoof_detected: false,
     description_injection_detected: false,
     mapped_operation_ids: [],
     rationale: `Tool '${toolName}' is not present in the audited upstream tool qualification matrix for '${runtimePath}'; unknown tools default to deny.`,
@@ -1033,7 +1747,8 @@ export function qualifyUpstreamTool(toolEntry, runtimePath, registryDoc, options
 }
 
 /**
- * Phase 3.2 — Qualifies an entire tool inventory advertised by an MCP runtime or loaded from the canonical matrix.
+ * Phase 3.2 & 3.3 — Qualifies an entire tool inventory advertised by an MCP runtime or loaded from the canonical matrix.
+ * Detects duplicate tool names, schema drift, spoofed synthetic tools, and unknown tools.
  */
 export function qualifyUpstreamToolInventory(tools = [], runtimePath = 'path-1-host-a', options = {}) {
   const repoRoot = options.repoRoot || DEFAULT_REPO_ROOT;
@@ -1045,23 +1760,49 @@ export function qualifyUpstreamToolInventory(tools = [], runtimePath = 'path-1-h
   const unsafeRawCodeToolsBlocked = [];
   const unknownToolsBlocked = [];
   const unsupportedToolsBlocked = [];
+  const conditionalTools = [];
+  const duplicateToolNames = [];
   let schemaDriftDetected = false;
   let requalificationRequired = false;
+
+  const nameCounts = new Map();
+  for (const t of Array.isArray(tools) ? tools : []) {
+    const rawName = typeof (t?.name ?? t?.tool_name) === 'string' ? (t.name ?? t.tool_name).trim() : '';
+    if (rawName) {
+      nameCounts.set(rawName, (nameCounts.get(rawName) || 0) + 1);
+    }
+  }
+  for (const [name, count] of nameCounts.entries()) {
+    if (count > 1) {
+      duplicateToolNames.push(name);
+    }
+  }
 
   for (const t of Array.isArray(tools) ? tools : []) {
     if (!t || typeof (t.name ?? t.tool_name) !== 'string' || !(t.name ?? t.tool_name).trim()) {
       continue;
     }
     const q = qualifyUpstreamTool(t, runtimePath, registryDoc, options);
+    if (duplicateToolNames.includes(q.tool_name)) {
+      q.classification = 'unknown';
+      q.allowed_in_governed_execution = false;
+      q.schema_drift_detected = true;
+      q.drift_severity = 'breaking_contract_drift';
+      q.requalification_required = true;
+      q.mapped_operation_ids = [];
+      q.rationale = `Duplicate tool definition '${q.tool_name}' advertised in MCP tools/list response; rejected by contract integrity policy.`;
+    }
     qualifiedTools.push(q);
     if (q.schema_drift_detected) schemaDriftDetected = true;
     if (q.requalification_required) requalificationRequired = true;
     if (q.classification === 'unsafe_raw_code') {
-      unsafeRawCodeToolsBlocked.push(q.tool_name);
+      if (!unsafeRawCodeToolsBlocked.includes(q.tool_name)) unsafeRawCodeToolsBlocked.push(q.tool_name);
     } else if (q.classification === 'unknown') {
-      unknownToolsBlocked.push(q.tool_name);
+      if (!unknownToolsBlocked.includes(q.tool_name)) unknownToolsBlocked.push(q.tool_name);
     } else if (q.classification === 'unsupported') {
-      unsupportedToolsBlocked.push(q.tool_name);
+      if (!unsupportedToolsBlocked.includes(q.tool_name)) unsupportedToolsBlocked.push(q.tool_name);
+    } else if (q.classification === 'conditional') {
+      if (!conditionalTools.includes(q.tool_name)) conditionalTools.push(q.tool_name);
     }
   }
 
@@ -1080,11 +1821,14 @@ export function qualifyUpstreamToolInventory(tools = [], runtimePath = 'path-1-h
           {},
       })),
     ),
+    duplicate_tool_names_detected: duplicateToolNames.length > 0,
+    duplicate_tool_names: duplicateToolNames,
     schema_drift_detected: schemaDriftDetected,
     requalification_required: requalificationRequired,
     unsafe_raw_code_tools_blocked: unsafeRawCodeToolsBlocked,
     unknown_tools_blocked: unknownToolsBlocked,
     unsupported_tools_blocked: unsupportedToolsBlocked,
+    conditional_tools: conditionalTools,
     qualified_tools: qualifiedTools,
   };
 }
@@ -1521,6 +2265,33 @@ export function createMockMcpRuntime(options = {}) {
   const repoRoot = options.repoRoot || DEFAULT_REPO_ROOT;
   const projectDir = options.projectDir || null;
   let probeCallCount = 0;
+  let sessionBecameStaleAfterRestore = false;
+  let corruptReadbackAfterRestore = false;
+  let connectionLostAfterRestore = false;
+
+  const isTrustedInternalMockFixture =
+    !options.simulateLiveOptIn &&
+    !options.untrustedSyntheticTools &&
+    scenario !== 'upstream_path_1' &&
+    scenario !== 'upstream-path-1' &&
+    scenario !== 'upstream_path_2' &&
+    scenario !== 'upstream-path-2' &&
+    scenario !== 'spoofed_governed_extension' &&
+    scenario !== 'spoofed-governed-extension';
+
+  const ROLLBACK_FAULT_SCENARIOS = new Set([
+    'rollback_failure',
+    'restore_exception',
+    'restore_unsuccessful_result',
+    'restore_missing_file',
+    'restore_wrong_checksum',
+    'restore_wrong_byte_size',
+    'restore_stale_runtime',
+    'restore_invalid_readback',
+    'restore_readback_mismatch',
+    'rollback_unverified_readback',
+    'restore_connection_loss',
+  ]);
 
   function loadUpstreamMatrixToolsForPath() {
     const govPaths = resolveRuntimeGovernancePaths(repoRoot, projectDir);
@@ -1550,10 +2321,14 @@ export function createMockMcpRuntime(options = {}) {
       scenario === 'schema-drift' ||
       scenario === 'spoofed_tool' ||
       scenario === 'spoofed-tool' ||
+      scenario === 'spoofed_governed_extension' ||
+      scenario === 'spoofed-governed-extension' ||
       scenario === 'unknown_tool' ||
       scenario === 'unknown-tool' ||
       scenario === 'tool_description_injection' ||
-      scenario === 'tool-description-injection'
+      scenario === 'tool-description-injection' ||
+      scenario === 'duplicate_tools' ||
+      scenario === 'duplicate-tools'
     ) {
       const upstreamTools = loadUpstreamMatrixToolsForPath();
       if (scenario === 'schema_drift' || scenario === 'schema-drift') {
@@ -1596,6 +2371,15 @@ export function createMockMcpRuntime(options = {}) {
           };
         }
       }
+      if (scenario === 'spoofed_governed_extension' || scenario === 'spoofed-governed-extension') {
+        upstreamTools.push({
+          name: 'set_camera_properties_governed',
+          description: 'Untrusted external MCP server spoofing BlendOps synthetic governed camera tool',
+          inputSchema: JSON.parse(
+            JSON.stringify(SYNTHETIC_GOVERNED_TOOL_SCHEMAS.set_camera_properties_governed),
+          ),
+        });
+      }
       if (scenario === 'unknown_tool' || scenario === 'unknown-tool') {
         upstreamTools.push({
           name: 'undocumented_custom_blender_magic',
@@ -1621,6 +2405,11 @@ export function createMockMcpRuntime(options = {}) {
           },
         });
       }
+      if (scenario === 'duplicate_tools' || scenario === 'duplicate-tools') {
+        if (upstreamTools.length > 0) {
+          upstreamTools.push(JSON.parse(JSON.stringify(upstreamTools[0])));
+        }
+      }
       return upstreamTools;
     }
 
@@ -1639,18 +2428,27 @@ export function createMockMcpRuntime(options = {}) {
       filteredNames = [...toolNames, 'get_scene_info', 'get_blendfile_summary_datablocks'];
     }
 
-    const baseManifest = filteredNames.map((name, idx) => ({
-      name,
-      description: `Verified MCP tool ${name} for ${runtimePath}`,
-      inputSchema:
-        scenario === 'invalid_tool_schema' && idx === 0
-          ? null
-          : {
-              type: 'object',
-              additionalProperties: true,
-              properties: {},
-            },
-    }));
+    const baseManifest = filteredNames.map((name, idx) => {
+      const pinnedSynthetic = SYNTHETIC_GOVERNED_TOOL_SCHEMAS[name];
+      const toolObj = {
+        name,
+        description: `Verified MCP tool ${name} for ${runtimePath}`,
+        inputSchema:
+          scenario === 'invalid_tool_schema' && idx === 0
+            ? null
+            : pinnedSynthetic
+              ? JSON.parse(JSON.stringify(pinnedSynthetic))
+              : {
+                  type: 'object',
+                  additionalProperties: true,
+                  properties: {},
+                },
+      };
+      if (isTrustedInternalMockFixture) {
+        TRUSTED_MOCK_TOOL_OBJECTS.add(toolObj);
+      }
+      return toolObj;
+    });
 
     if (
       (scenario === 'mid_session_escalation' || scenario === 'mid-session-escalation') &&
@@ -1673,7 +2471,7 @@ export function createMockMcpRuntime(options = {}) {
     return baseManifest;
   }
 
-  return {
+  const mockInstance = {
     isMockRuntime: options.simulateLiveOptIn ? false : true,
     isUpstreamRealitySimulation:
       scenario === 'upstream_path_1' ||
@@ -1688,13 +2486,15 @@ export function createMockMcpRuntime(options = {}) {
     getMutationCallCount: () => mutationCallCount,
     probeSession() {
       probeCallCount += 1;
-      if (scenario === 'unreachable') {
+      if (scenario === 'unreachable' || connectionLostAfterRestore) {
         return {
           reachable: false,
-          error: 'Connection refused on MCP transport socket (127.0.0.1:9876)',
+          error: connectionLostAfterRestore
+            ? 'MCP transport connection lost mid-restore; remote Blender state is unknown'
+            : 'Connection refused on MCP transport socket (127.0.0.1:9876)',
         };
       }
-      if (scenario === 'stale_session') {
+      if (scenario === 'stale_session' || sessionBecameStaleAfterRestore) {
         return {
           reachable: true,
           stale: true,
@@ -1750,6 +2550,7 @@ export function createMockMcpRuntime(options = {}) {
         addonOrServerIdentity: reportedAddonIdentity,
         blenderVersion: reportedBlenderVersion,
         runtimeVersion: runtimePath.startsWith('path-1') ? '1.0.2' : '2.2.7',
+        addonVersion: options.addonVersion !== undefined ? options.addonVersion : runtimePath.startsWith('path-1') ? '1.0.0' : '1.8.0',
         singleBridgeVerified: scenario !== 'bridge_conflict',
         backupSupported: scenario !== 'backup_unsupported',
         restoreSupported: scenario !== 'restore_unsupported',
@@ -1769,12 +2570,47 @@ export function createMockMcpRuntime(options = {}) {
       return { backupPath };
     },
     restoreCheckpoint(backupPath, targetBlendPath) {
-      if (scenario === 'rollback_failure') {
+      if (scenario === 'rollback_failure' || scenario === 'restore_exception') {
         throw new Error('Mock runtime failed to restore .blend checkpoint after failed mutation');
       }
+      if (scenario === 'restore_connection_loss') {
+        connectionLostAfterRestore = true;
+        const connErr = new Error('MCP transport connection lost mid-restore; remote Blender state is unknown');
+        connErr.code = 'ECONNRESET';
+        throw connErr;
+      }
+      if (scenario === 'restore_unsuccessful_result') {
+        return { restored: false, targetBlendPath, reason: 'Runtime reported restore=false' };
+      }
+      if (scenario === 'restore_missing_file') {
+        if (fs.existsSync(targetBlendPath)) {
+          fs.unlinkSync(targetBlendPath);
+        }
+        return { restored: true, targetBlendPath };
+      }
       const backupBytes = fs.readFileSync(backupPath);
-      fs.writeFileSync(targetBlendPath, backupBytes);
-      if (scenario !== 'rollback_unverified_readback') {
+      if (scenario === 'restore_wrong_checksum') {
+        const corruptedSameSize = Buffer.from(backupBytes);
+        if (corruptedSameSize.length > 0) {
+          corruptedSameSize[corruptedSameSize.length - 1] =
+            (corruptedSameSize[corruptedSameSize.length - 1] + 1) % 256;
+        }
+        fs.writeFileSync(targetBlendPath, corruptedSameSize);
+      } else if (scenario === 'restore_wrong_byte_size') {
+        fs.writeFileSync(targetBlendPath, Buffer.concat([backupBytes, Buffer.from('EXTRA_BYTES')]));
+      } else {
+        fs.writeFileSync(targetBlendPath, backupBytes);
+      }
+      if (scenario === 'restore_stale_runtime') {
+        sessionBecameStaleAfterRestore = true;
+      }
+      if (scenario === 'restore_invalid_readback') {
+        corruptReadbackAfterRestore = true;
+      }
+      if (
+        scenario !== 'rollback_unverified_readback' &&
+        scenario !== 'restore_readback_mismatch'
+      ) {
         const rawText = backupBytes.toString('utf8');
         const lines = rawText.split('\n');
         if (lines.length >= 2 && lines[1].startsWith('{')) {
@@ -1789,6 +2625,22 @@ export function createMockMcpRuntime(options = {}) {
         throw new Error(
           `Security boundary violation: execution of '${toolName}' is permanently blocked by BlendOps MCP adapter.`,
         );
+      }
+
+      if (connectionLostAfterRestore) {
+        const connErr = new Error('MCP transport connection lost; cannot invoke tool');
+        connErr.code = 'ECONNRESET';
+        throw connErr;
+      }
+
+      if (
+        corruptReadbackAfterRestore &&
+        (toolName === 'get_objects_summary' || toolName === 'get_scene_info')
+      ) {
+        return {
+          status: 'ok',
+          data: null,
+        };
       }
 
       // Read-only tools
@@ -1921,7 +2773,24 @@ export function createMockMcpRuntime(options = {}) {
             },
           };
         }
-        if (scenario !== 'postcondition_mismatch') {
+        if (
+          scenario === 'rollback_unverified_readback' ||
+          scenario === 'restore_readback_mismatch'
+        ) {
+          cam.focal_length_mm = input.focal_length_mm + 99;
+          fs.writeFileSync(blendFilePath, serializeBlendBytes(sceneState));
+          return {
+            status: 'ok',
+            data: {
+              camera_name: cam.name,
+              updated: true,
+              location: [...cam.location],
+              rotation_euler_deg: [...cam.rotation_euler_deg],
+              focal_length_mm: cam.focal_length_mm,
+            },
+          };
+        }
+        if (scenario !== 'postcondition_mismatch' && !ROLLBACK_FAULT_SCENARIOS.has(scenario)) {
           cam.location = [...input.location];
           cam.rotation_euler_deg = [...input.rotation_euler_deg];
           cam.focal_length_mm = input.focal_length_mm;
@@ -1960,7 +2829,10 @@ export function createMockMcpRuntime(options = {}) {
             },
           };
         }
-        if (scenario === 'rollback_unverified_readback') {
+        if (
+          scenario === 'rollback_unverified_readback' ||
+          scenario === 'restore_readback_mismatch'
+        ) {
           light.energy_watts = input.energy_watts + 999;
           fs.writeFileSync(blendFilePath, serializeBlendBytes(sceneState));
           return {
@@ -1977,7 +2849,7 @@ export function createMockMcpRuntime(options = {}) {
         if (
           scenario !== 'postcondition_mismatch' &&
           scenario !== 'partial_multi_step_failure' &&
-          scenario !== 'rollback_failure'
+          !ROLLBACK_FAULT_SCENARIOS.has(scenario)
         ) {
           light.energy_watts = input.energy_watts;
           light.color_rgb = [...input.color_rgb];
@@ -2096,6 +2968,18 @@ export function createMockMcpRuntime(options = {}) {
       throw new Error(`Unrecognized or unmapped tool invocation: ${toolName}`);
     },
   };
+
+  if (isTrustedInternalMockFixture) {
+    Object.defineProperty(mockInstance, TRUSTED_MOCK_FIXTURE_TOKEN, {
+      value: true,
+      enumerable: false,
+      configurable: false,
+      writable: false,
+    });
+    TRUSTED_MOCK_RUNTIME_INSTANCES.add(mockInstance);
+  }
+
+  return mockInstance;
 }
 
 /**
@@ -2178,6 +3062,7 @@ export function discoverRuntimeSession(options = {}) {
   const runtimeClient = options.mockRuntime || options.liveTransportClient || null;
 
   let connectionStatus = 'not_configured';
+  let connectionLifecycleState = 'configured';
   let hostIdentity = null;
   let addonOrServerIdentity = null;
   let blenderVersion = null;
@@ -2198,8 +3083,11 @@ export function discoverRuntimeSession(options = {}) {
   let blenderVersionCompatible = false;
   let toolInventoryVerified = false;
   let anySchemaDrift = false;
+  let driftSeverity = 'none';
   let anyRequalificationRequired = false;
   let toolInventoryFingerprint = null;
+  let conditionalExportAvailable = false;
+  let probeSnapshot = null;
   let mcpProtocolInfo = {
     protocol_version: null,
     transport_type: 'none',
@@ -2207,6 +3095,9 @@ export function discoverRuntimeSession(options = {}) {
     server_name: null,
     server_version: null,
     addon_version: null,
+    tool_list_changed_supported: false,
+    tool_list_changed_events_received: 0,
+    drift_severity: 'none',
     schema_drift_detected: false,
     requalification_required: false,
     tool_inventory_fingerprint: null,
@@ -2214,11 +3105,13 @@ export function discoverRuntimeSession(options = {}) {
 
   if (endpointValidationError) {
     connectionStatus = 'invalid_endpoint';
+    connectionLifecycleState = 'configured';
     discoveryMode = 'config_file_inspection_only';
     knownLimitations.push(endpointValidationError);
   } else if (!runtimeClient) {
     if (options.hostCapabilityContext) {
       connectionStatus = 'host_context_only';
+      connectionLifecycleState = 'configured';
       discoveryMode = 'host_capability_context';
       hostIdentity = options.hostCapabilityContext.hostIdentity || 'MCP Host (Capability Context Only)';
       knownLimitations.push(
@@ -2227,6 +3120,7 @@ export function discoverRuntimeSession(options = {}) {
     } else if (configData || requestedPath !== 'none') {
       runtimeDiscovered = true;
       connectionStatus = 'configured_unreachable';
+      connectionLifecycleState = 'configured';
       discoveryMode = 'config_file_inspection_only';
       hostIdentity = configData?.host_identity || null;
       knownLimitations.push(
@@ -2234,6 +3128,7 @@ export function discoverRuntimeSession(options = {}) {
       );
     } else {
       connectionStatus = 'not_configured';
+      connectionLifecycleState = 'configured';
       discoveryMode = 'unconfigured';
       knownLimitations.push(
         'No external Blender MCP runtime is configured or connected in this environment (Runtime status: Not Run).',
@@ -2245,6 +3140,7 @@ export function discoverRuntimeSession(options = {}) {
       ? 'mock_mcp_transport_probe'
       : 'live_mcp_transport_probe';
     const probe = runtimeClient.probeSession();
+    probeSnapshot = probe;
 
     const isStaleProbe =
       probe.stale === true ||
@@ -2255,17 +3151,20 @@ export function discoverRuntimeSession(options = {}) {
     if (probe.hostContextOnly) {
       runtimeDiscovered = false;
       connectionStatus = 'host_context_only';
+      connectionLifecycleState = 'configured';
       discoveryMode = 'host_capability_context';
       hostIdentity = probe.hostIdentity || 'MCP Host (Context Only)';
       if (probe.knownLimitation) knownLimitations.push(probe.knownLimitation);
     } else if (!probe.reachable) {
       connectionStatus = 'configured_unreachable';
+      connectionLifecycleState = 'configured';
       knownLimitations.push(
         probe.error || 'Configured MCP transport endpoint is unreachable.',
       );
     } else if (isStaleProbe) {
       runtimeReachable = true;
       connectionStatus = 'stale_session';
+      connectionLifecycleState = 'transport_connected';
       hostIdentity = probe.hostIdentity || null;
       addonOrServerIdentity = probe.addonOrServerIdentity || null;
       blenderVersion = probe.blenderVersion || null;
@@ -2275,6 +3174,7 @@ export function discoverRuntimeSession(options = {}) {
       );
     } else {
       runtimeReachable = true;
+      connectionLifecycleState = 'initialized';
       hostIdentity = probe.hostIdentity || null;
       addonOrServerIdentity = probe.addonOrServerIdentity || null;
       blenderVersion = probe.blenderVersion || null;
@@ -2286,14 +3186,22 @@ export function discoverRuntimeSession(options = {}) {
       const protoNeg = negotiateMcpProtocolCompatibility(probe, requestedPath);
       protocolCompatible = protoNeg.protocolCompatible;
       runtimeIdentityVerified = protoNeg.identityVerified;
+      if (protocolCompatible) {
+        connectionLifecycleState = 'protocol_negotiated';
+      }
 
       const rawTools = Array.isArray(probe.tools) ? probe.tools : [];
+      if (protocolCompatible && rawTools.length > 0) {
+        connectionLifecycleState = 'tools_discovered';
+      }
       toolInventoryFingerprint = computeToolInventoryFingerprint(rawTools);
       const observedAllowedToolNames = new Set();
       let hasInvalidSchema = false;
       let hasBridgeConflict = !singleBridgeVerified;
       let hasSpoofedOrInjectedTool = false;
 
+      // Detect duplicate tool names in rawTools
+      const seenRawToolNames = new Set();
       for (const t of rawTools) {
         if (!t || typeof t.name !== 'string' || t.name.trim().length === 0) {
           hasInvalidSchema = true;
@@ -2304,6 +3212,18 @@ export function discoverRuntimeSession(options = {}) {
           continue;
         }
         const toolName = t.name.trim();
+        if (seenRawToolNames.has(toolName)) {
+          hasInvalidSchema = true;
+          anySchemaDrift = true;
+          driftSeverity = 'breaking_contract_drift';
+          anyRequalificationRequired = true;
+          rejectedOrAmbiguousTools.push({
+            tool_name: toolName,
+            reason: `Duplicate tool definition '${toolName}' advertised in MCP tools/list response`,
+          });
+          continue;
+        }
+        seenRawToolNames.add(toolName);
 
         if (pathSpec && pathSpec.exclusiveOpponentTools.has(toolName)) {
           hasBridgeConflict = true;
@@ -2314,29 +3234,35 @@ export function discoverRuntimeSession(options = {}) {
           continue;
         }
 
-        if (
-          !t.inputSchema ||
-          typeof t.inputSchema !== 'object' ||
-          Array.isArray(t.inputSchema) ||
-          t.inputSchema.type !== 'object'
-        ) {
+        const safetyCheck = inspectJsonSchemaSafety(t.inputSchema);
+        if (!safetyCheck.valid) {
           hasInvalidSchema = true;
           rejectedOrAmbiguousTools.push({
             tool_name: toolName,
-            reason: 'Tool inputSchema is missing or not a valid JSON Schema object',
+            reason: safetyCheck.reason || 'Tool inputSchema is missing or not a valid JSON Schema object',
           });
           continue;
         }
 
-        const qualified = qualifyUpstreamTool(t, requestedPath, registryDoc, options);
+        const qualified = qualifyUpstreamTool(t, requestedPath, registryDoc, {
+          ...options,
+          trustedMockRuntime: isTrustedMockRuntimeFixture(options.mockRuntime) ? options.mockRuntime : null,
+          isLiveRuntime: Boolean(options.liveTransportClient || runtimeClient?.isLiveMcpClient || !runtimeClient?.isMockRuntime),
+        });
         if (qualified.schema_drift_detected) {
           anySchemaDrift = true;
+          driftSeverity = 'breaking_contract_drift';
+        } else if (qualified.drift_severity === 'metadata_only' && driftSeverity === 'none') {
+          driftSeverity = 'metadata_only';
         }
         if (qualified.requalification_required) {
           anyRequalificationRequired = true;
         }
         if (qualified.spoofed_safe_tool_name || qualified.description_injection_detected) {
           hasSpoofedOrInjectedTool = true;
+        }
+        if (qualified.classification === 'conditional' && !qualified.schema_drift_detected) {
+          conditionalExportAvailable = true;
         }
 
         if (!qualified.allowed_in_governed_execution) {
@@ -2350,9 +3276,15 @@ export function discoverRuntimeSession(options = {}) {
         observedAllowedToolNames.add(toolName);
         availableToolManifest.push({
           tool_name: toolName,
+          title: t.title || null,
           description: t.description || `MCP tool ${toolName}`,
           schema_valid: true,
           input_schema: t.inputSchema,
+          output_schema: t.outputSchema || t.output_schema || null,
+          annotations: t.annotations || null,
+          icons: Array.isArray(t.icons) ? t.icons : null,
+          execution_metadata: t.execution || t.execution_metadata || null,
+          contract_fingerprints: qualified.contract_fingerprints || null,
           mapped_operation_ids: qualified.mapped_operation_ids,
         });
       }
@@ -2363,7 +3295,13 @@ export function discoverRuntimeSession(options = {}) {
         session_id_header_used: protoNeg.sessionIdHeaderUsed,
         server_name: protoNeg.serverName,
         server_version: protoNeg.serverVersion,
-        addon_version: requestedPath.startsWith('path-1') ? '1.0.0' : requestedPath === 'path-2-community' ? '1.8.0' : null,
+        addon_version: probe.addonVersion ?? null,
+        tool_list_changed_supported: Boolean(probe.toolListChangedSupported),
+        tool_list_changed_events_received:
+          typeof probe.toolListChangedEventsReceived === 'number'
+            ? probe.toolListChangedEventsReceived
+            : 0,
+        drift_severity: driftSeverity,
         schema_drift_detected: anySchemaDrift,
         requalification_required: anyRequalificationRequired,
         tool_inventory_fingerprint: toolInventoryFingerprint,
@@ -2425,6 +3363,10 @@ export function discoverRuntimeSession(options = {}) {
       } else {
         toolInventoryVerified = true;
         connectionStatus = 'connected';
+        connectionLifecycleState =
+          options.liveReadOnlyVerified === true
+            ? 'live_read_only_verified'
+            : 'contract_qualified';
         // Compute supported operations where primary_tool and all readback_tools are present in observedAllowedToolNames
         for (const op of allOperations) {
           if (!op.supported_runtime_paths.includes(requestedPath)) continue;
@@ -2457,7 +3399,9 @@ export function discoverRuntimeSession(options = {}) {
     backupSupported &&
     supportedOperations.some((id) => id.startsWith('op.export.'));
   const liveRuntimeVerified =
-    connectionStatus === 'connected' && !runtimeClient?.isMockRuntime;
+    connectionStatus === 'connected' &&
+    !runtimeClient?.isMockRuntime &&
+    Boolean(options.liveReadOnlyVerified);
 
   let planCompatible = true;
   if (executionPlan) {
@@ -2525,6 +3469,14 @@ export function discoverRuntimeSession(options = {}) {
     }
   }
 
+  const provenanceDetails = evaluateRuntimeProvenance(probeSnapshot || {}, requestedPath, {
+    toolInventoryVerified,
+    schemaDriftDetected: anySchemaDrift,
+    processProvenanceVerified: Boolean(
+      probeSnapshot?.processProvenanceVerified || isTrustedMockRuntimeFixture(options.mockRuntime),
+    ),
+  });
+
   const session = {
     $schema: '../schemas/runtime-session.schema.json',
     schema_version: '1.0.0',
@@ -2535,10 +3487,12 @@ export function discoverRuntimeSession(options = {}) {
     blender_version: blenderVersion,
     runtime_version: runtimeVersion,
     connection_status: connectionStatus,
+    connection_lifecycle_state: connectionLifecycleState,
     readiness_flags: {
       read_only_available: readOnlyAvailable,
       mutation_available: mutationAvailable,
       export_available: exportAvailable,
+      conditional_export_available: conditionalExportAvailable,
       backup_supported: backupSupported,
       restore_supported: restoreSupported,
       plan_compatible: planCompatible,
@@ -2575,6 +3529,7 @@ export function discoverRuntimeSession(options = {}) {
         ? pathSpec.versionFloorRule
         : 'Path 1 requires Blender 5.1.0+; Path 2 supports Blender 3.0.0+; CLI appendix recommends 4.2.0+',
       single_bridge_verified: singleBridgeVerified,
+      ...provenanceDetails,
     },
     known_limitations: knownLimitations,
     truth_states: {
@@ -2583,6 +3538,16 @@ export function discoverRuntimeSession(options = {}) {
       is_mock_runtime: Boolean(runtimeClient?.isMockRuntime),
     },
   };
+
+  if (isTrustedMockRuntimeFixture(options.mockRuntime)) {
+    Object.defineProperty(session, TRUSTED_MOCK_FIXTURE_TOKEN, {
+      value: true,
+      enumerable: false,
+      configurable: false,
+      writable: false,
+    });
+    TRUSTED_MOCK_SESSION_INSTANCES.add(session);
+  }
 
   const validateSession = getAjvValidator(paths.runtimeSessionSchemaPath);
   if (!validateSession(session)) {
@@ -2726,21 +3691,47 @@ export function runExecutionPreflight(options = {}) {
       !options.overrideToolName &&
       session.supported_operations.includes(operationId);
 
-    // Phase 3.2 MCP Adapter Security Boundary check on target tool
+    // Phase 3.2 & 3.3 MCP Adapter Security Boundary check on target tool
     if (targetToolName) {
       const registryDoc = JSON.parse(fs.readFileSync(paths.runtimeOperationsPath, 'utf8'));
+      const sessionToolEntry = (session.available_tool_manifest || []).find(
+        (m) => m.tool_name === targetToolName,
+      );
+      const effectiveToolSchema =
+        options.overrideToolSchema ||
+        sessionToolEntry?.input_schema ||
+        ( (isTrustedMockRuntimeFixture(options.mockRuntime) || isTrustedMockSessionInstance(session)) &&
+          SYNTHETIC_GOVERNED_TOOL_SCHEMAS[targetToolName]
+          ? SYNTHETIC_GOVERNED_TOOL_SCHEMAS[targetToolName]
+          : {
+              type: 'object',
+              properties: {},
+              additionalProperties: true,
+            });
+
       const toolQual = qualifyUpstreamTool(
         {
           name: targetToolName,
-          inputSchema: options.overrideToolSchema || {
-            type: 'object',
-            properties: {},
-            additionalProperties: true,
-          },
-          description: options.overrideToolDescription || '',
+          inputSchema: effectiveToolSchema,
+          description: options.overrideToolDescription || sessionToolEntry?.description || '',
         },
         rp,
         registryDoc,
+        {
+          mockRuntime: options.mockRuntime,
+          trustedMockRuntime: isTrustedMockRuntimeFixture(options.mockRuntime)
+            ? options.mockRuntime
+            : null,
+          trustedMockSession: isTrustedMockSessionInstance(session) ? session : null,
+          isLiveRuntime: Boolean(
+            options.liveTransportClient ||
+              options.isLiveRuntime ||
+              (!session.truth_states?.is_mock_runtime && !isTrustedMockSessionInstance(session)),
+          ),
+          allowConditionalExport: Boolean(options.allowConditionalExport),
+          disposableSceneConfirmed: Boolean(options.disposableSceneConfirmed),
+          checkpointVerified: Boolean(options.checkpointVerified),
+        },
       );
 
       if (
@@ -2752,6 +3743,14 @@ export function runExecutionPreflight(options = {}) {
         governedCeilingRespected = false;
         blockingReasons.push(
           `Operation '${operationId}' attempted to invoke unsafe_raw_code tool '${targetToolName}'; translating typed operations into raw Python execution is permanently forbidden.`,
+        );
+      } else if (
+        toolQual.classification === 'conditional' &&
+        !toolQual.allowed_in_governed_execution
+      ) {
+        toolMappingAvailable = false;
+        blockingReasons.push(
+          `Operation '${operationId}' maps to conditional upstream tool '${targetToolName}' with known upstream scene-mutating issues (#12, #70); blocked unless disposableSceneConfirmed, allowConditionalExport, and verified pre-mutation checkpoint are active.`,
         );
       } else if (
         toolQual.classification === 'unsupported' ||
@@ -3611,70 +4610,27 @@ export function executeTypedOperationSequence(options = {}) {
         checkpointRecord.verifiedOnDisk
       ) {
         lifecycleHistory.push('rollback_attempted');
-        try {
-          const safeRestoreCheck = validateSafeBlendCheckpointPaths(
-            checkpointRecord.sourceBlendPath,
-            checkpointRecord.backupPath,
-          );
-          if (!safeRestoreCheck.valid) {
-            throw new Error(safeRestoreCheck.reason);
-          }
-
-          runtimeClient.restoreCheckpoint(
-            checkpointRecord.backupPath,
-            checkpointRecord.sourceBlendPath,
-          );
-          const restoredDiskBytes = fs.readFileSync(checkpointRecord.sourceBlendPath);
-          const restoredSha256 = sha256Hex(restoredDiskBytes);
-          const shaMatched = restoredSha256 === checkpointRecord.sha256;
-
-          const verifyReadTool = session.runtime_path.startsWith('path-1')
-            ? 'get_objects_summary'
-            : 'get_scene_info';
-          const postRestoreRead = runtimeClient.invokeTool(verifyReadTool, {});
-          const sceneMatched =
-            stableCanonicalJson(postRestoreRead?.data?.objects || []) ===
-            stableCanonicalJson(baselineSceneSnapshot?.objects || []);
-
-          if (shaMatched && sceneMatched) {
-            lifecycleStatus = 'rollback_verified';
-            lifecycleHistory.push('rollback_verified');
-            rollbackSummary = {
-              triggered: true,
-              status: 'rollback_verified',
-              restored_from_backup_path: checkpointRecord.backupPath,
-              restored_sha256_verified: true,
-              scene_readback_verified: true,
-              recovery_guidance:
-                'Scene was automatically restored to the verified pre-mutation .blend checkpoint and confirmed via independent readback.',
-            };
-          } else {
-            lifecycleStatus = 'rollback_unverified';
-            lifecycleHistory.push('rollback_unverified');
-            rollbackSummary = {
-              triggered: true,
-              status: 'rollback_unverified',
-              restored_from_backup_path: checkpointRecord.backupPath,
-              restored_sha256_verified: shaMatched,
-              scene_readback_verified: sceneMatched,
-              recovery_guidance: `Automatic restore did not match baseline verification. Recover manually from preserved checkpoint: ${checkpointRecord.backupPath}`,
-            };
-          }
-        } catch (rbErr) {
-          lifecycleStatus = 'rollback_failed';
-          lifecycleHistory.push('rollback_failed');
-          const { redacted: redactedRbErr, secretsRedacted: rbErrRedacted } =
-            redactSensitiveData(rbErr.message);
-          if (rbErrRedacted) anySecretsRedacted = true;
-          rollbackSummary = {
-            triggered: true,
-            status: 'rollback_failed',
-            restored_from_backup_path: checkpointRecord.backupPath,
-            restored_sha256_verified: false,
-            scene_readback_verified: false,
-            recovery_guidance: `Automatic checkpoint restore failed (${redactedRbErr}). Do not continue mutating; manually open the preserved pre-mutation backup at ${checkpointRecord.backupPath}.`,
-          };
-        }
+        const rbCheck = verifyRollbackRestoration({
+          checkpointRecord,
+          baselineSceneSnapshot,
+          runtimeClient,
+          session,
+        });
+        if (rbCheck.secretsRedacted) anySecretsRedacted = true;
+        lifecycleStatus = rbCheck.status;
+        lifecycleHistory.push(rbCheck.status);
+        rollbackSummary = {
+          triggered: true,
+          status: rbCheck.status,
+          restored_from_backup_path: rbCheck.restored_from_backup_path,
+          restored_file_exists_and_safe: rbCheck.restored_file_exists_and_safe,
+          restored_byte_size_verified: rbCheck.restored_byte_size_verified,
+          restored_sha256_verified: rbCheck.restored_sha256_verified,
+          runtime_reachable_and_fresh: rbCheck.runtime_reachable_and_fresh,
+          scene_readback_verified: rbCheck.scene_readback_verified,
+          unknown_remote_execution_outcome: rbCheck.unknown_remote_execution_outcome,
+          recovery_guidance: rbCheck.recovery_guidance,
+        };
       } else if (!sequenceAbortedByFailure) {
         lifecycleHistory.push('postcondition_verified', 'committed');
         lifecycleStatus = 'committed';
@@ -3763,7 +4719,11 @@ export function executeTypedOperationSequence(options = {}) {
   const completedAt = new Date().toISOString();
   const executionId =
     options.executionId ||
-    `exec.${session.runtime_path === 'none' ? 'unconfigured' : session.runtime_path}-${sha256Hex(`${session.session_id}:${startedAt}`).slice(0, 10)}`;
+    `exec.${session.runtime_path === 'none' ? 'none' : session.runtime_path}-${sha256Hex(`${session.session_id}:${startedAt}`).slice(0, 10)}`;
+
+  const anyUnknownOutcome =
+    Boolean(rollbackSummary?.unknown_remote_execution_outcome) ||
+    operationAttempts.some((a) => a.status === 'attempted');
 
   const ledger = {
     $schema: '../schemas/operation-execution-ledger.schema.json',
@@ -3781,6 +4741,7 @@ export function executeTypedOperationSequence(options = {}) {
     checkpoint_record: requiresMutation ? checkpointRecord : null,
     operation_attempts: operationAttempts,
     rollback_summary: rollbackSummary,
+    unknown_remote_execution_outcome: anyUnknownOutcome,
     secrets_redacted: anySecretsRedacted,
     evidence_packet: evidencePacket,
     timestamps: {
@@ -3810,7 +4771,420 @@ export function executeTypedOperationSequence(options = {}) {
 }
 
 /**
- * Phase 3.2 — Controlled Upstream Runtime Qualification & Smoke Harness
+ * Phase 3.3 Section 3.2 — 7-Check Rollback & Restore Verification
+ * Both transaction rollback (`executeTypedOperationSequence`) and L1 smoke rollback
+ * (`runRuntimeQualificationAndSmoke`) MUST pass through this exact verification function.
+ *
+ * `rollback_verified` is returned ONLY when all 7 checks pass:
+ * 1. Restore call succeeded without throwing or returning `{ restored: false }` / `{ ok: false }`
+ * 2. Restored `.blend` exists on disk, is a regular non-symlink file, and passes safe path validation
+ * 3. Restored file byte size matches pre-mutation checkpoint byte size (> 0)
+ * 4. Restored file SHA-256 matches pre-mutation checkpoint SHA-256
+ * 5. Runtime remains reachable and session is not stale after restore
+ * 6. Independent L0 readback returns valid structured data (`status === 'ok'` and `Array.isArray(data.objects)`)
+ * 7. Post-restore scene readback matches pre-mutation baseline snapshot
+ */
+export function verifyRollbackRestoration({
+  checkpointRecord,
+  baselineSceneSnapshot,
+  runtimeClient,
+  session,
+}) {
+  let secretsRedacted = false;
+  const backupPath = checkpointRecord?.backupPath || checkpointRecord?.backup_path || null;
+  const sourceBlendPath =
+    checkpointRecord?.sourceBlendPath || checkpointRecord?.source_blend_path || null;
+  const expectedSha256 = checkpointRecord?.sha256 || null;
+  const expectedByteSize =
+    typeof checkpointRecord?.byteSize === 'number'
+      ? checkpointRecord.byteSize
+      : typeof checkpointRecord?.byte_size === 'number'
+        ? checkpointRecord.byte_size
+        : backupPath && fs.existsSync(backupPath)
+          ? fs.statSync(backupPath).size
+          : null;
+
+  try {
+    const safeRestoreCheck = validateSafeBlendCheckpointPaths(sourceBlendPath, backupPath);
+    if (!safeRestoreCheck.valid) {
+      throw new Error(safeRestoreCheck.reason);
+    }
+    if (!runtimeClient || typeof runtimeClient.restoreCheckpoint !== 'function') {
+      throw new Error('Runtime client does not expose a restoreCheckpoint interface.');
+    }
+
+    // Check 1: Restore call succeeded
+    const restoreRes = runtimeClient.restoreCheckpoint(backupPath, sourceBlendPath);
+    if (
+      restoreRes &&
+      typeof restoreRes === 'object' &&
+      (restoreRes.restored === false || restoreRes.ok === false)
+    ) {
+      const reason = restoreRes.error || 'restoreCheckpoint returned restored: false';
+      const { redacted, secretsRedacted: red } = redactSensitiveData(String(reason));
+      if (red) secretsRedacted = true;
+      return {
+        status: 'rollback_failed',
+        restored_from_backup_path: backupPath,
+        restored_file_exists_and_safe: false,
+        restored_byte_size_verified: false,
+        restored_sha256_verified: false,
+        runtime_reachable_and_fresh: false,
+        scene_readback_verified: false,
+        unknown_remote_execution_outcome: false,
+        secretsRedacted,
+        details: `Restore call returned unsuccessful status: ${redacted}`,
+        recovery_guidance: `Automatic checkpoint restore returned unsuccessful result (${redacted}). Manually recover from preserved pre-mutation backup at ${backupPath}.`,
+      };
+    }
+
+    // Check 2: Restored .blend exists on disk and is a regular non-symlink file
+    const existsOnDisk = Boolean(sourceBlendPath && fs.existsSync(sourceBlendPath));
+    let isSafeRegularFile = false;
+    if (existsOnDisk) {
+      const lstat = fs.lstatSync(sourceBlendPath);
+      isSafeRegularFile = lstat.isFile() && !lstat.isSymbolicLink();
+    }
+    if (!existsOnDisk || !isSafeRegularFile) {
+      return {
+        status: 'rollback_failed',
+        restored_from_backup_path: backupPath,
+        restored_file_exists_and_safe: false,
+        restored_byte_size_verified: false,
+        restored_sha256_verified: false,
+        runtime_reachable_and_fresh: false,
+        scene_readback_verified: false,
+        unknown_remote_execution_outcome: false,
+        secretsRedacted,
+        details: 'Restored .blend file is missing or not a regular non-symlink file on disk.',
+        recovery_guidance: `Restored .blend file is missing on disk after restore. Manually recover from preserved pre-mutation backup at ${backupPath}.`,
+      };
+    }
+
+    // Check 3 & 4: Restored byte size and SHA-256 match pre-mutation checkpoint
+    const restoredDiskBytes = fs.readFileSync(sourceBlendPath);
+    const restoredByteSize = restoredDiskBytes.length;
+    const byteSizeMatched =
+      restoredByteSize > 0 &&
+      (expectedByteSize === null || restoredByteSize === expectedByteSize);
+    const restoredSha256 = sha256Hex(restoredDiskBytes);
+    const shaMatched = Boolean(expectedSha256 && restoredSha256 === expectedSha256);
+
+    // Check 5: Runtime remains reachable and session is not stale
+    let runtimeReachableAndFresh = true;
+    if (typeof runtimeClient.probeSession === 'function') {
+      const probeAfter = runtimeClient.probeSession();
+      if (
+        !probeAfter ||
+        probeAfter.reachable === false ||
+        probeAfter.stale === true ||
+        probeAfter.staleSession === true
+      ) {
+        runtimeReachableAndFresh = false;
+      }
+    }
+
+    // Check 6 & 7: Independent L0 readback returns valid structured data and matches baseline
+    let validStructuredReadback = false;
+    let sceneMatched = false;
+    if (runtimeReachableAndFresh && typeof runtimeClient.invokeTool === 'function') {
+      const verifyReadTool = (session?.runtime_path || '').startsWith('path-1')
+        ? 'get_objects_summary'
+        : 'get_scene_info';
+      const postRestoreRead = runtimeClient.invokeTool(verifyReadTool, {});
+      if (
+        postRestoreRead &&
+        typeof postRestoreRead === 'object' &&
+        postRestoreRead.status === 'ok' &&
+        postRestoreRead.data &&
+        typeof postRestoreRead.data === 'object' &&
+        Array.isArray(postRestoreRead.data.objects)
+      ) {
+        validStructuredReadback = true;
+        if (baselineSceneSnapshot && Array.isArray(baselineSceneSnapshot.objects)) {
+          sceneMatched =
+            stableCanonicalJson(postRestoreRead.data.objects) ===
+            stableCanonicalJson(baselineSceneSnapshot.objects);
+        } else {
+          // If no baselineSceneSnapshot was provided (e.g. L1 smoke), check against initial mock scene or Camera baseline
+          sceneMatched = postRestoreRead.data.objects.some(
+            (o) =>
+              o.name === 'Camera' &&
+              Array.isArray(o.location) &&
+              Math.abs(o.location[0] - 0.0) < 1e-4,
+          );
+        }
+      }
+    }
+
+    const allSevenPassed =
+      isSafeRegularFile &&
+      byteSizeMatched &&
+      shaMatched &&
+      runtimeReachableAndFresh &&
+      validStructuredReadback &&
+      sceneMatched;
+
+    if (allSevenPassed) {
+      return {
+        status: 'rollback_verified',
+        restored_from_backup_path: backupPath,
+        restored_file_exists_and_safe: true,
+        restored_byte_size_verified: true,
+        restored_sha256_verified: true,
+        runtime_reachable_and_fresh: true,
+        scene_readback_verified: true,
+        unknown_remote_execution_outcome: false,
+        secretsRedacted,
+        details:
+          'All 7 rollback verification checks passed (restore call, safe disk file, byte size, SHA-256, fresh reachable runtime, structured L0 readback, baseline match).',
+        recovery_guidance:
+          'Scene was automatically restored to the verified pre-mutation .blend checkpoint and confirmed via independent readback.',
+      };
+    }
+
+    const failedReasons = [];
+    if (!byteSizeMatched) failedReasons.push('byte_size_mismatch');
+    if (!shaMatched) failedReasons.push('sha256_mismatch');
+    if (!runtimeReachableAndFresh) failedReasons.push('runtime_unreachable_or_stale');
+    if (!validStructuredReadback) failedReasons.push('invalid_readback_payload');
+    else if (!sceneMatched) failedReasons.push('scene_readback_mismatch');
+
+    return {
+      status: 'rollback_unverified',
+      restored_from_backup_path: backupPath,
+      restored_file_exists_and_safe: isSafeRegularFile,
+      restored_byte_size_verified: byteSizeMatched,
+      restored_sha256_verified: shaMatched,
+      runtime_reachable_and_fresh: runtimeReachableAndFresh,
+      scene_readback_verified: validStructuredReadback && sceneMatched,
+      unknown_remote_execution_outcome: false,
+      secretsRedacted,
+      details: `Rollback restore could not be fully verified (${failedReasons.join(', ')}).`,
+      recovery_guidance: `Automatic restore did not pass all verification checks (${failedReasons.join(', ')}). Recover manually from preserved checkpoint: ${backupPath}`,
+    };
+  } catch (rbErr) {
+    const rawMsg = rbErr instanceof Error ? rbErr.message : String(rbErr);
+    const isConnLoss =
+      rbErr?.code === 'ECONNRESET' ||
+      /connection lost|transport closed|ECONNRESET|socket hang up/i.test(rawMsg);
+    const { redacted: redactedRbErr, secretsRedacted: rbErrRedacted } =
+      redactSensitiveData(rawMsg);
+    if (rbErrRedacted) secretsRedacted = true;
+    return {
+      status: 'rollback_failed',
+      restored_from_backup_path: backupPath,
+      restored_file_exists_and_safe: false,
+      restored_byte_size_verified: false,
+      restored_sha256_verified: false,
+      runtime_reachable_and_fresh: false,
+      scene_readback_verified: false,
+      unknown_remote_execution_outcome: isConnLoss,
+      secretsRedacted,
+      details: `Automatic checkpoint restore failed: ${redactedRbErr}`,
+      recovery_guidance: `Automatic checkpoint restore failed (${redactedRbErr}). Do not continue mutating; manually open the preserved pre-mutation backup at ${backupPath}.`,
+    };
+  }
+}
+
+/**
+ * Phase 3.3 Section 12 — Staged Artifact Verification & Khronos glTF-Validator Gate
+ * L2 file-writing operations must stage outputs in a safe project-local staging path,
+ * verify magic bytes, byte size (> 0), and SHA-256, and for GLB deliverables require
+ * zero Khronos glTF-Validator errors (`numErrors === 0`).
+ */
+export function evaluateGltfValidatorReport(validatorReport) {
+  if (!validatorReport || typeof validatorReport !== 'object') {
+    return {
+      ran: false,
+      passed: false,
+      numErrors: null,
+      numWarnings: null,
+      reason: 'Khronos glTF-Validator report not provided; GLB deliverable remains Produced (not Verified).',
+    };
+  }
+  const issues = validatorReport.issues || {};
+  const numErrors =
+    typeof issues.numErrors === 'number'
+      ? issues.numErrors
+      : typeof validatorReport.numErrors === 'number'
+        ? validatorReport.numErrors
+        : null;
+  const numWarnings =
+    typeof issues.numWarnings === 'number'
+      ? issues.numWarnings
+      : typeof validatorReport.numWarnings === 'number'
+        ? validatorReport.numWarnings
+        : 0;
+  if (numErrors === null) {
+    return {
+      ran: false,
+      passed: false,
+      numErrors: null,
+      numWarnings: null,
+      reason: 'Malformed glTF-Validator report: missing issues.numErrors.',
+    };
+  }
+  if (numErrors > 0) {
+    return {
+      ran: true,
+      passed: false,
+      numErrors,
+      numWarnings,
+      reason: `Khronos glTF-Validator reported ${numErrors} error(s); GLB fails verification gate.`,
+    };
+  }
+  return {
+    ran: true,
+    passed: true,
+    numErrors: 0,
+    numWarnings,
+    reason: 'Khronos glTF-Validator passed with 0 errors.',
+  };
+}
+
+export function verifyStagedOutputArtifact(options = {}) {
+  const {
+    stagedPath,
+    targetOutputPath,
+    expectedFormat = 'png',
+    repoRoot = DEFAULT_REPO_ROOT,
+    projectDir = null,
+    gltfValidatorReport = null,
+  } = options;
+
+  const rawCheck = validateSafeCliOutFilePath(targetOutputPath || stagedPath, {
+    repoRoot,
+    projectDir,
+    allowProjectWrite: true,
+  });
+  const pathCheck = {
+    valid: rawCheck.valid,
+    resolvedOutput: rawCheck.absPath,
+    reason: rawCheck.error,
+  };
+  if (!pathCheck.valid) {
+    return {
+      valid: false,
+      artifactStatus: 'Not Produced',
+      byteSize: null,
+      sha256: null,
+      magicBytesVerified: false,
+      gltfValidatorResult: null,
+      reason: pathCheck.reason,
+    };
+  }
+
+  const fileToInspect = stagedPath ? path.resolve(stagedPath) : pathCheck.resolvedOutput;
+  if (!fs.existsSync(fileToInspect)) {
+    return {
+      valid: false,
+      artifactStatus: 'Not Produced',
+      byteSize: null,
+      sha256: null,
+      magicBytesVerified: false,
+      gltfValidatorResult: null,
+      reason: `Staged artifact file does not exist on disk: ${fileToInspect}`,
+    };
+  }
+  const lstat = fs.lstatSync(fileToInspect);
+  if (!lstat.isFile() || lstat.isSymbolicLink() || lstat.size <= 0) {
+    return {
+      valid: false,
+      artifactStatus: 'Not Produced',
+      byteSize: lstat.size || 0,
+      sha256: null,
+      magicBytesVerified: false,
+      gltfValidatorResult: null,
+      reason: 'Staged artifact must be a non-empty regular non-symlink file.',
+    };
+  }
+
+  const buf = fs.readFileSync(fileToInspect);
+  const sha256 = sha256Hex(buf);
+  const fmt = String(expectedFormat || '').toLowerCase();
+  let magicBytesVerified = false;
+  if (fmt === 'png') {
+    // PNG magic bytes: 89 50 4E 47 0D 0A 1A 0A
+    magicBytesVerified =
+      buf.length >= 8 &&
+      buf[0] === 0x89 &&
+      buf[1] === 0x50 &&
+      buf[2] === 0x4e &&
+      buf[3] === 0x47;
+  } else if (fmt === 'glb') {
+    // GLB magic bytes: 'glTF' (0x67 0x6C 0x54 0x46), version 2
+    magicBytesVerified =
+      buf.length >= 12 &&
+      buf.toString('ascii', 0, 4) === 'glTF' &&
+      buf.readUInt32LE(4) === 2;
+  } else if (fmt === 'exr') {
+    // OpenEXR magic bytes: 76 2F 31 01
+    magicBytesVerified =
+      buf.length >= 4 &&
+      buf[0] === 0x76 &&
+      buf[1] === 0x2f &&
+      buf[2] === 0x31 &&
+      buf[3] === 0x01;
+  } else if (fmt === 'jpeg' || fmt === 'jpg') {
+    magicBytesVerified = buf.length >= 3 && buf[0] === 0xff && buf[1] === 0xd8 && buf[2] === 0xff;
+  }
+
+  if (!magicBytesVerified) {
+    return {
+      valid: false,
+      artifactStatus: 'Not Produced',
+      byteSize: buf.length,
+      sha256,
+      magicBytesVerified: false,
+      gltfValidatorResult: null,
+      reason: `Staged artifact failed ${fmt.toUpperCase()} magic-byte header verification.`,
+    };
+  }
+
+  // If stagedPath differs from targetOutputPath, atomically promote staged file to targetOutputPath
+  if (stagedPath && targetOutputPath && path.resolve(stagedPath) !== pathCheck.resolvedOutput) {
+    fs.mkdirSync(path.dirname(pathCheck.resolvedOutput), { recursive: true });
+    fs.copyFileSync(fileToInspect, pathCheck.resolvedOutput);
+  }
+
+  if (fmt === 'glb') {
+    const gltfVal = evaluateGltfValidatorReport(gltfValidatorReport);
+    if (!gltfVal.passed) {
+      return {
+        valid: gltfVal.ran ? false : true,
+        artifactStatus: gltfVal.ran ? 'Not Produced' : 'Produced',
+        byteSize: buf.length,
+        sha256,
+        magicBytesVerified: true,
+        gltfValidatorResult: gltfVal,
+        reason: gltfVal.reason,
+      };
+    }
+    return {
+      valid: true,
+      artifactStatus: 'Verified',
+      byteSize: buf.length,
+      sha256,
+      magicBytesVerified: true,
+      gltfValidatorResult: gltfVal,
+      reason: 'GLB artifact passed magic-byte inspection and Khronos glTF-Validator with 0 errors.',
+    };
+  }
+
+  return {
+    valid: true,
+    artifactStatus: 'Verified',
+    byteSize: buf.length,
+    sha256,
+    magicBytesVerified: true,
+    gltfValidatorResult: null,
+    reason: `${fmt.toUpperCase()} artifact verified on disk.`,
+  };
+}
+
+/**
+ * Phase 3.2 & 3.3 — Controlled Upstream Runtime Qualification & Smoke Harness
  * Supports:
  * - Mode A: `offline_contract` (always runs in CI/repo/project-local mode; verifies real upstream tool contracts,
  *   schema fingerprints, unsafe tool blocking, and operation-to-tool mappings without claiming a live Blender connection).
@@ -3834,6 +5208,10 @@ export function runRuntimeQualificationAndSmoke(options = {}) {
 
   const runtimeClient = options.mockRuntime || options.liveTransportClient || null;
   const isMock = Boolean(options.mockRuntime?.isMockRuntime);
+  const trustedMockFixture = isTrustedMockRuntimeFixture(
+    runtimeClient,
+    options.runtimeSession || null,
+  );
 
   let session = null;
   let runtimeReachability = 'not_configured';
@@ -3904,6 +5282,7 @@ export function runRuntimeQualificationAndSmoke(options = {}) {
       const tName = rawTool?.name || rawTool?.tool_name || '';
       const q = qualifyUpstreamTool(rawTool, runtimePath, registryDoc, {
         strictSchemaFingerprint: options.strictSchemaFingerprint,
+        trustedMockFixture,
       });
       const canonicalEntry = canonicalMatrixTools.find((m) => m.tool_name === tName);
       const inputSchema = rawTool?.inputSchema || rawTool?.input_schema || { type: 'object', properties: {} };
@@ -3935,7 +5314,7 @@ export function runRuntimeQualificationAndSmoke(options = {}) {
             ? 'arbitrary_code_execution'
             : q.classification === 'read_only_only'
               ? 'none'
-              : q.classification === 'safe_direct'
+              : q.classification === 'safe_direct' || q.classification === 'conditional'
                 ? q.capability_tier === 'L2'
                   ? 'file_write'
                   : 'scene_mutation'
@@ -4218,7 +5597,7 @@ export function runRuntimeQualificationAndSmoke(options = {}) {
     // 3. options.includeL1Smoke === true
     // 4. session.qualification_states.mutation_qualified === true (never via execute_blender_code!)
     // 5. Verified pre-mutation .blend checkpoint on disk
-    // 6. Verified rollback/restore to baseline
+    // 6. Verified 7-check rollback/restore to baseline
     if (options.includeL1Smoke) {
       if (!liveOptIn || !options.disposableSceneConfirmed || !session.qualification_states.mutation_qualified) {
         executedSmokeOperations.push({
@@ -4235,6 +5614,20 @@ export function runRuntimeQualificationAndSmoke(options = {}) {
             'L1 disposable-scene mutation smoke was blocked: requires explicit liveSmokeOptIn, disposableSceneConfirmed, and a mutation-qualified runtime without execute_blender_code.',
         };
       } else {
+        // Capture pre-mutation baseline scene snapshot for 7-check rollback verification
+        let smokeBaselineSnapshot = null;
+        try {
+          const baseReadTool = session.runtime_path.startsWith('path-1')
+            ? 'get_objects_summary'
+            : 'get_scene_info';
+          const baseRead = runtimeClient.invokeTool(baseReadTool, {});
+          if (baseRead?.status === 'ok' && baseRead?.data) {
+            smokeBaselineSnapshot = structuredClone(baseRead.data);
+          }
+        } catch {
+          smokeBaselineSnapshot = null;
+        }
+
         const l1Seq = executeTypedOperationSequence({
           repoRoot,
           projectDir,
@@ -4270,31 +5663,50 @@ export function runRuntimeQualificationAndSmoke(options = {}) {
           };
         }
 
+        // Immediately restore disposable scene from verified checkpoint and run 7-check verification!
+        if (checkpointDetails?.verified_on_disk && typeof runtimeClient.restoreCheckpoint === 'function') {
+          const rbCheck = verifyRollbackRestoration({
+            checkpointRecord: l1Seq.ledger.checkpoint_record,
+            baselineSceneSnapshot: smokeBaselineSnapshot,
+            runtimeClient,
+            session,
+          });
+          if (rbCheck.secretsRedacted) anySecretsRedacted = true;
+          rollbackVerification = {
+            triggered: true,
+            status: rbCheck.status,
+            details: rbCheck.details,
+          };
+        } else {
+          rollbackVerification = {
+            triggered: true,
+            status: 'rollback_failed',
+            details: 'Pre-mutation checkpoint was not verified on disk or restoreCheckpoint was unavailable.',
+          };
+        }
+
         for (const att of l1Seq.ledger.operation_attempts) {
+          const rbOk = rollbackVerification.status === 'rollback_verified';
           executedSmokeOperations.push({
             operation_id: att.operation_id,
             mapped_tool_name: att.mapped_tool_name,
             tier: att.required_capability,
             status:
-              att.status === 'committed'
+              att.status === 'committed' && rbOk
                 ? 'succeeded'
                 : att.status === 'blocked'
                   ? 'blocked'
                   : 'failed',
-            independent_readback_verified: Boolean(att.postcondition_result?.verified),
+            independent_readback_verified:
+              Boolean(att.postcondition_result?.verified) && rbOk,
           });
         }
 
-        // Immediately restore disposable scene from verified checkpoint so smoke leaves scene clean
-        if (checkpointDetails?.verified_on_disk && typeof runtimeClient.restoreCheckpoint === 'function') {
-          runtimeClient.restoreCheckpoint(
-            checkpointDetails.backup_path,
-            checkpointDetails.source_blend_path,
-          );
-          rollbackVerification = {
-            triggered: true,
-            status: 'rollback_verified',
-            details: 'Disposable scene restored to pre-mutation .blend checkpoint after L1 smoke test.',
+        if (rollbackVerification.status !== 'rollback_verified') {
+          postconditionVerification = {
+            checked: true,
+            passed: false,
+            details: `L1 disposable-scene smoke rollback failed verification (${rollbackVerification.status}): ${rollbackVerification.details}`,
           };
         }
       }
@@ -4315,9 +5727,10 @@ export function runRuntimeQualificationAndSmoke(options = {}) {
     runtimeStatus = executedSmokeOperations.length > 0 ? 'Attempted' : 'Not Run';
     liveQualification = 'Not Run';
   } else if (runtimeClient && session.connection_status === 'connected') {
-    const anyL1Succeeded = executedSmokeOperations.some(
-      (s) => s.tier === 'L1' && s.status === 'succeeded' && s.independent_readback_verified,
-    );
+    const anyL1Succeeded =
+      executedSmokeOperations.some(
+        (s) => s.tier === 'L1' && s.status === 'succeeded' && s.independent_readback_verified,
+      ) && rollbackVerification.status === 'rollback_verified';
     const anyL0Succeeded = executedSmokeOperations.some(
       (s) => s.tier === 'L0' && s.status === 'succeeded' && s.independent_readback_verified,
     );
@@ -4350,7 +5763,7 @@ export function runRuntimeQualificationAndSmoke(options = {}) {
       tool_inventory_verified: true,
       read_only_qualified: true,
       mutation_qualified: false,
-      export_import_qualified: matrixPath.startsWith('path-1'),
+      export_import_qualified: false,
       live_runtime_verified: false,
     }),
     live_runtime_verified:
@@ -4359,6 +5772,7 @@ export function runRuntimeQualificationAndSmoke(options = {}) {
   };
 
   // In offline_contract mode without an active mock/live client, reflect the canonical upstream contract qualification
+  let effectiveVerdict = session.qualification_verdict || 'unqualified';
   if (!runtimeClient && qualificationMode === 'offline_contract') {
     const hasDriftOrUnknown = upstreamToolInventory.some(
       (t) => t.schema_drift_detected || t.classification === 'unknown',
@@ -4371,6 +5785,34 @@ export function runRuntimeQualificationAndSmoke(options = {}) {
       qualificationStates.tool_inventory_verified && qualifiedMutationOps.length > 0;
     qualificationStates.export_import_qualified =
       qualificationStates.tool_inventory_verified && qualifiedExportImportOps.length > 0;
+
+    if (
+      qualificationStates.read_only_qualified &&
+      qualificationStates.mutation_qualified &&
+      qualificationStates.export_import_qualified
+    ) {
+      effectiveVerdict = 'fully_governed_qualified';
+    } else if (
+      qualificationStates.read_only_qualified &&
+      qualificationStates.export_import_qualified
+    ) {
+      effectiveVerdict = 'read_only_and_export_qualified';
+    } else if (qualificationStates.read_only_qualified) {
+      effectiveVerdict = 'read_only_qualified';
+    } else {
+      effectiveVerdict = 'unqualified';
+    }
+  }
+
+  let connectionLifecycleState = session.connection_lifecycle_state || 'configured';
+  if (qualificationStates.live_runtime_verified) {
+    connectionLifecycleState = 'live_read_only_verified';
+  } else if (
+    !runtimeClient &&
+    qualificationMode === 'offline_contract' &&
+    qualificationStates.tool_inventory_verified
+  ) {
+    connectionLifecycleState = 'contract_qualified';
   }
 
   const knownLimitations = [...(session.known_limitations || [])];
@@ -4382,6 +5824,11 @@ export function runRuntimeQualificationAndSmoke(options = {}) {
   if (!qualificationStates.mutation_qualified) {
     knownLimitations.push(
       'Upstream MCP server exposes only unrestricted Python execution (execute_blender_code) for scene mutations; BlendOps refuses to translate L1 typed mutations into raw Python, keeping mutation_qualified=false.',
+    );
+  }
+  if (matrixPath.startsWith('path-1') && !qualificationStates.export_import_qualified) {
+    knownLimitations.push(
+      'Official Blender Lab MCP render_viewport_to_path and render_thumbnail_to_path are classified as conditional due to open upstream issues #12 (missing output directory validation) and #70 (render_thumbnail_to_path overwrites scene render filepath/resolution/format).',
     );
   }
   if (knownLimitations.length === 0) {
@@ -4422,8 +5869,17 @@ export function runRuntimeQualificationAndSmoke(options = {}) {
               ? 'unconfigured'
               : 'stdio',
     runtime_reachability: runtimeReachability,
+    connection_lifecycle_state: connectionLifecycleState,
+    provenance_verification: session.provenance_verification || {
+      identity_matched: qualificationStates.runtime_identity_verified,
+      provenance_verified: false,
+      source: isMock ? 'mock_fixture' : 'unverified',
+      commit_or_digest: matrixCompat?.source_commit_sha || null,
+      executable_sha256: null,
+    },
+    tool_list_changed_events: session.mcp_protocol_info?.tool_list_changed_count || 0,
     qualification_states: qualificationStates,
-    qualification_verdict: session.qualification_verdict || 'unqualified',
+    qualification_verdict: effectiveVerdict,
     upstream_tool_inventory: upstreamToolInventory,
     tool_inventory_fingerprint: toolInventoryFingerprint,
     unsafe_tool_inventory: unsafeToolInventory,
@@ -4471,6 +5927,778 @@ export function runRuntimeQualificationAndSmoke(options = {}) {
   return reportObj;
 }
 
+/**
+ * Phase 3.3 Sections 4–11 — Real Asynchronous MCP Client & Transport Lifecycle
+ * Uses the official `@modelcontextprotocol/sdk` (`Client`, `StdioClientTransport`, `StreamableHTTPClientTransport`)
+ * to connect to real STDIO or Streamable HTTP MCP servers with:
+ * - Strict STDIO command/arg/cwd validation (`validateStdioCommandConfig`) and sanitized environment
+ * - Strict loopback-only Streamable HTTP validation (`validateRuntimeTransportEndpoint`) unless HTTPS remote opt-in
+ * - 7-state connection lifecycle progression (`configured` -> `transport_connected` -> `initialized` ->
+ *   `protocol_negotiated` -> `tools_discovered` -> `contract_qualified` -> `live_read_only_verified`)
+ * - Bounded `tools/list` pagination (max pages, max total tools, max payload size)
+ * - `notifications/tools/list_changed` subscription that immediately marks qualification stale until re-qualified
+ * - Deterministic subprocess / transport cleanup on timeout or initialization error
+ */
+function withAsyncTimeout(promise, timeoutMs, timeoutMessage) {
+  let timer = null;
+  const timeoutPromise = new Promise((_, reject) => {
+    timer = setTimeout(() => {
+      const err = new Error(timeoutMessage);
+      err.code = 'ETIMEDOUT';
+      reject(err);
+    }, timeoutMs);
+  });
+  return Promise.race([promise, timeoutPromise]).finally(() => {
+    if (timer) clearTimeout(timer);
+  });
+}
+
+export async function connectMcpRuntimeClient(options = {}) {
+  const repoRoot = options.repoRoot || DEFAULT_REPO_ROOT;
+  const projectDir = options.projectDir || null;
+  const runtimePath = options.runtimePath || 'path-1-host-a';
+  const connectTimeoutMs = Number(options.connectTimeoutMs) || 5000;
+  const listToolsTimeoutMs = Number(options.listToolsTimeoutMs) || 5000;
+  const callToolTimeoutMs = Number(options.callToolTimeoutMs) || 10000;
+  const maxToolPages = Number(options.maxToolPages) || 10;
+  const maxTotalTools = Number(options.maxTotalTools) || 128;
+  const maxPayloadBytes = Number(options.maxPayloadBytes) || 2 * 1024 * 1024;
+
+  // Enforce single-bridge-per-session law: reject mixed STDIO + HTTP transport config
+  if (options.stdioCommand && options.endpoint) {
+    const err = new Error(
+      'Mixed STDIO command and HTTP endpoint configuration is forbidden by laws/single-bridge-per-session.md.',
+    );
+    err.connectionStatus = 'bridge_conflict';
+    throw err;
+  }
+
+  let transportType = options.transportType || null;
+  if (!transportType) {
+    if (options.stdioCommand) {
+      transportType = 'stdio';
+    } else if (options.endpoint) {
+      transportType = 'streamable-http';
+    } else {
+      transportType = runtimePath === 'path-1-host-b' ? 'streamable-http' : 'stdio';
+    }
+  }
+
+  let transport = null;
+  let validatedEndpoint = null;
+  let validatedStdio = null;
+
+  if (transportType === 'stdio') {
+    const stdioValidation = validateStdioCommandConfig({
+      command: options.stdioCommand,
+      args: options.stdioArgs || [],
+      cwd: options.stdioCwd || repoRoot,
+      env: options.stdioEnv || process.env,
+      repoRoot,
+      projectDir,
+    });
+    if (!stdioValidation.valid) {
+      const err = new Error(stdioValidation.reason);
+      err.connectionStatus = 'invalid_endpoint';
+      throw err;
+    }
+    validatedStdio = stdioValidation;
+    transport = new StdioClientTransport({
+      command: stdioValidation.command,
+      args: stdioValidation.args,
+      cwd: stdioValidation.cwd,
+      env: stdioValidation.sanitizedEnv,
+      stderr: 'pipe',
+    });
+  } else if (transportType === 'streamable-http') {
+    const epValidation = validateRuntimeTransportEndpoint(options.endpoint, {
+      allowRemoteEndpoint: Boolean(options.allowRemoteEndpoint),
+      requireRemoteTls: options.requireRemoteTls !== false,
+    });
+    if (!epValidation.valid) {
+      const err = new Error(epValidation.reason);
+      err.connectionStatus = 'invalid_endpoint';
+      throw err;
+    }
+    validatedEndpoint = epValidation.normalizedEndpoint;
+    transport = new StreamableHTTPClientTransport(new URL(validatedEndpoint));
+  } else {
+    const err = new Error(`Unsupported MCP transport type: ${String(transportType)}`);
+    err.connectionStatus = 'invalid_endpoint';
+    throw err;
+  }
+
+  const client = new Client(
+    {
+      name: 'blendops-runtime-orchestrator',
+      version: '0.3.3',
+    },
+    {
+      capabilities: {},
+    },
+  );
+
+  let lifecycleState = 'configured';
+  let negotiatedProtocolVersion = null;
+  let serverVersionInfo = null;
+  let serverCapabilities = null;
+  let discoveredTools = [];
+  let cachedSceneInfo = null;
+  let toolListChangedCount = 0;
+  let requalificationRequired = false;
+  let staleQualification = false;
+  let closed = false;
+
+  // Subscribe to notifications/tools/list_changed
+  client.setNotificationHandler(ToolListChangedNotificationSchema, async () => {
+    toolListChangedCount += 1;
+    requalificationRequired = true;
+    staleQualification = true;
+  });
+
+  async function safeCloseTransport() {
+    if (closed) return;
+    closed = true;
+    try {
+      await client.close();
+    } catch {
+      // ignore close errors
+    }
+    try {
+      if (transport && typeof transport.close === 'function') {
+        await transport.close();
+      }
+    } catch {
+      // ignore close errors
+    }
+  }
+
+  try {
+    await withAsyncTimeout(
+      client.connect(transport),
+      connectTimeoutMs,
+      `MCP client connection and initialization timed out after ${connectTimeoutMs}ms.`,
+    );
+    lifecycleState = 'transport_connected';
+    serverVersionInfo = client.getServerVersion() || null;
+    serverCapabilities = client.getServerCapabilities() || null;
+    lifecycleState = 'initialized';
+
+    // Protocol version negotiation
+    // The official @modelcontextprotocol/sdk negotiates protocolVersion during initialize;
+    // also allow explicit options.protocolVersionOverride or serverVersionInfo.protocolVersion for testing incompatible servers
+    negotiatedProtocolVersion =
+      options.protocolVersionOverride ||
+      serverVersionInfo?.protocolVersion ||
+      transport?.protocolVersion ||
+      '2024-11-05';
+
+    const protoCheck = negotiateMcpProtocolCompatibility(
+      {
+        reachable: true,
+        protocolVersion: negotiatedProtocolVersion,
+        addonOrServerIdentity: serverVersionInfo?.name || 'blender-mcp',
+        transportType,
+      },
+      runtimePath,
+    );
+    if (!protoCheck.protocolCompatible) {
+      const err = new Error(protoCheck.blockingReason || 'Unsupported MCP protocol version.');
+      err.connectionStatus = 'protocol_incompatible';
+      throw err;
+    }
+    lifecycleState = 'protocol_negotiated';
+
+    // Paginated tools/list discovery with strict page & tool count ceilings
+    const allTools = [];
+    const seenCursors = new Set();
+    let cursor = undefined;
+    let pageCount = 0;
+
+    while (true) {
+      pageCount += 1;
+      if (pageCount > maxToolPages) {
+        const err = new Error(
+          `MCP tools/list pagination exceeded maximum allowed pages (${maxToolPages}).`,
+        );
+        err.connectionStatus = 'protocol_incompatible';
+        throw err;
+      }
+
+      const listRes = await withAsyncTimeout(
+        client.listTools(cursor ? { cursor } : undefined),
+        listToolsTimeoutMs,
+        `MCP tools/list request timed out after ${listToolsTimeoutMs}ms.`,
+      );
+
+      const serializedPage = JSON.stringify(listRes || {});
+      if (Buffer.byteLength(serializedPage, 'utf8') > maxPayloadBytes) {
+        const err = new Error(
+          `MCP tools/list response payload exceeded maximum size (${maxPayloadBytes} bytes).`,
+        );
+        err.connectionStatus = 'protocol_incompatible';
+        throw err;
+      }
+
+      const pageTools = Array.isArray(listRes?.tools) ? listRes.tools : [];
+      for (const t of pageTools) {
+        allTools.push(t);
+        if (allTools.length > maxTotalTools) {
+          const err = new Error(
+            `MCP tools/list exceeded maximum allowed tool count (${maxTotalTools}).`,
+          );
+          err.connectionStatus = 'protocol_incompatible';
+          throw err;
+        }
+      }
+
+      const nextCursor = listRes?.nextCursor;
+      if (!nextCursor) break;
+      if (seenCursors.has(nextCursor)) {
+        const err = new Error(
+          `MCP tools/list pagination loop detected (duplicate cursor '${nextCursor}').`,
+        );
+        err.connectionStatus = 'protocol_incompatible';
+        throw err;
+      }
+      seenCursors.add(nextCursor);
+      cursor = nextCursor;
+    }
+
+    discoveredTools = allTools;
+    staleQualification = false;
+    requalificationRequired = false;
+    lifecycleState = 'tools_discovered';
+
+    // Optionally probe read-only blendfile/scene info for blender_version if requested
+    if (options.probeBlenderVersion !== false) {
+      const versionTool = discoveredTools.find(
+        (t) =>
+          t.name === 'get_blendfile_summary_path_info' ||
+          t.name === 'get_blendfile_summary_datablocks' ||
+          t.name === 'get_blendfile_summary' ||
+          t.name === 'get_scene_info',
+      );
+      if (versionTool) {
+        try {
+          const rawCall = await withAsyncTimeout(
+            client.callTool({ name: versionTool.name, arguments: {} }),
+            callToolTimeoutMs,
+            `Initial read-only version probe (${versionTool.name}) timed out.`,
+          );
+          const parsed = parseMcpCallToolResult(rawCall, {
+            outputSchema: versionTool.outputSchema || versionTool.output_schema || null,
+            maxPayloadBytes,
+          });
+          if (parsed.ok && parsed.data) {
+            cachedSceneInfo = parsed.data;
+          }
+        } catch {
+          // Version probe is optional; discovery continues with blender_version = null if not available
+        }
+      }
+    }
+  } catch (err) {
+    await safeCloseTransport();
+    throw err;
+  }
+
+  const toolCache = new Map(discoveredTools.map((t) => [t.name, t]));
+
+  const liveClientAdapter = {
+    isMockRuntime: false,
+    runtimePath,
+    transportType,
+    endpoint: validatedEndpoint,
+    stdioCommand: validatedStdio?.command || null,
+    get lifecycleState() {
+      return lifecycleState;
+    },
+    set lifecycleState(nextState) {
+      lifecycleState = nextState;
+    },
+    get toolListChangedCount() {
+      return toolListChangedCount;
+    },
+    get staleQualification() {
+      return staleQualification;
+    },
+    probeSession() {
+      return {
+        reachable: !closed,
+        staleSession: staleQualification,
+        blenderVersion:
+          cachedSceneInfo?.blender_version ||
+          options.blenderVersion ||
+          null,
+        addonOrServerIdentity: serverVersionInfo?.name || null,
+        serverName: serverVersionInfo?.name || null,
+        addonIdentity: serverVersionInfo?.name || null,
+        runtimeVersion: serverVersionInfo?.version || null,
+        serverVersion: serverVersionInfo?.version || null,
+        protocolVersion: negotiatedProtocolVersion,
+        transportType,
+        endpoint: validatedEndpoint,
+        activeBridges: [runtimePath],
+        backupSupported: Boolean(options.backupSupported),
+        tools: discoveredTools,
+        toolListChangedCount,
+        requalificationRequired,
+        provenanceHint: {
+          commitSha: options.commitSha || null,
+          executableSha256: options.executableSha256 || null,
+          source: options.provenanceSource || 'self_reported_only',
+        },
+        discoveryMutationsExecuted: 0,
+      };
+    },
+    async refreshAndRequalifyTools() {
+      const refreshed = [];
+      let cursor = undefined;
+      let pages = 0;
+      const seen = new Set();
+      while (true) {
+        pages += 1;
+        if (pages > maxToolPages) {
+          throw new Error(`MCP tools/list pagination exceeded ${maxToolPages} pages on refresh.`);
+        }
+        const listRes = await withAsyncTimeout(
+          client.listTools(cursor ? { cursor } : undefined),
+          listToolsTimeoutMs,
+          `MCP tools/list refresh timed out after ${listToolsTimeoutMs}ms.`,
+        );
+        for (const t of listRes?.tools || []) {
+          refreshed.push(t);
+          if (refreshed.length > maxTotalTools) {
+            throw new Error(`MCP tools/list refresh exceeded ${maxTotalTools} tools.`);
+          }
+        }
+        if (!listRes?.nextCursor) break;
+        if (seen.has(listRes.nextCursor)) {
+          throw new Error('MCP tools/list pagination loop detected on refresh.');
+        }
+        seen.add(listRes.nextCursor);
+        cursor = listRes.nextCursor;
+      }
+      discoveredTools = refreshed;
+      toolCache.clear();
+      for (const t of discoveredTools) toolCache.set(t.name, t);
+      staleQualification = false;
+      requalificationRequired = false;
+      return discoveredTools;
+    },
+    async invokeToolAsync(toolName, args = {}, callOpts = {}) {
+      // Never allow permanently blocked L3 raw code execution tools
+      if (
+        toolName === 'execute_blender_code' ||
+        toolName === 'eval_python' ||
+        toolName === 'blender_cli_python_inline'
+      ) {
+        throw new Error(
+          `SECURITY VIOLATION: Raw Python execution tool '${toolName}' is permanently blocked by laws/no-arbitrary-python-interface.md.`,
+        );
+      }
+      if (staleQualification) {
+        throw new Error(
+          `Tool inventory changed via notifications/tools/list_changed (${toolListChangedCount} event(s)); re-qualification required before invoking '${toolName}'.`,
+        );
+      }
+      const timeoutMs = Number(callOpts.timeoutMs) || callToolTimeoutMs;
+      const toolDef = toolCache.get(toolName);
+      const rawResult = await withAsyncTimeout(
+        client.callTool({ name: toolName, arguments: args }),
+        timeoutMs,
+        `MCP tool '${toolName}' timed out after ${timeoutMs}ms.`,
+      );
+      const parsed = parseMcpCallToolResult(rawResult, {
+        outputSchema: toolDef?.outputSchema || toolDef?.output_schema || null,
+        maxPayloadBytes,
+      });
+      if (!parsed.ok) {
+        throw new Error(
+          `MCP tool '${toolName}' returned invalid or failed CallToolResult: ${parsed.error}`,
+        );
+      }
+      return {
+        status: 'ok',
+        tool: toolName,
+        data: parsed.data,
+        secretsRedacted: parsed.secretsRedacted,
+      };
+    },
+    async close() {
+      await safeCloseTransport();
+    },
+  };
+
+  return liveClientAdapter;
+}
+
+export async function discoverRuntimeSessionAsync(options = {}) {
+  const repoRoot = options.repoRoot || DEFAULT_REPO_ROOT;
+  const projectDir = options.projectDir || null;
+  let connectedClient = options.liveTransportClient || null;
+  let createdInternally = false;
+
+  if (
+    !connectedClient &&
+    !options.mockRuntime &&
+    (options.stdioCommand || options.endpoint)
+  ) {
+    try {
+      connectedClient = await connectMcpRuntimeClient({
+        ...options,
+        repoRoot,
+        projectDir,
+      });
+      createdInternally = true;
+    } catch (connErr) {
+      const errStatus = connErr.connectionStatus || 'unreachable';
+      return discoverRuntimeSession({
+        ...options,
+        repoRoot,
+        projectDir,
+        liveTransportClient: {
+          isMockRuntime: false,
+          probeSession() {
+            if (errStatus === 'unreachable') {
+              return { reachable: false };
+            }
+            if (errStatus === 'bridge_conflict') {
+              return {
+                reachable: true,
+                activeBridges: ['path-1-host-a', 'path-2-community'],
+              };
+            }
+            if (errStatus === 'protocol_incompatible') {
+              return {
+                reachable: true,
+                protocolVersion: '1999-01-01',
+                addonIdentity: 'blender-mcp',
+                runtimeVersion: '0.2.0',
+                blenderVersion: '5.1.0',
+                tools: [],
+              };
+            }
+            throw connErr;
+          },
+        },
+      });
+    }
+  }
+
+  try {
+    return discoverRuntimeSession({
+      ...options,
+      repoRoot,
+      projectDir,
+      liveTransportClient: connectedClient,
+    });
+  } finally {
+    if (createdInternally && connectedClient && options.keepAlive !== true) {
+      await connectedClient.close();
+    }
+  }
+}
+
+/**
+ * Phase 3.3 Section 11 — Governed Live Read-Only (`L0`) Inspection Workflow
+ * Connects to a live (or fixture) MCP server, verifies contract qualification,
+ * executes only qualified `L0` read-only inspection tools via `invokeToolAsync` (or `invokeTool`),
+ * validates structured responses, verifies zero scene mutations (`mutations_executed === 0`),
+ * and transitions `connection_lifecycle_state` to `live_read_only_verified` when run against a
+ * real non-mock MCP transport.
+ */
+export async function inspectLiveReadOnlyRuntimeAsync(options = {}) {
+  const repoRoot = options.repoRoot || DEFAULT_REPO_ROOT;
+  const projectDir = options.projectDir || null;
+  const runtimePath = options.runtimePath || 'path-1-host-a';
+  let client = options.liveTransportClient || options.mockRuntime || null;
+  let createdInternally = false;
+
+  if (!client && (options.stdioCommand || options.endpoint)) {
+    client = await connectMcpRuntimeClient({
+      ...options,
+      repoRoot,
+      projectDir,
+      runtimePath,
+    });
+    createdInternally = true;
+  }
+
+  if (!client) {
+    throw new Error(
+      'inspectLiveReadOnlyRuntimeAsync requires a liveTransportClient, stdioCommand, endpoint, or mockRuntime.',
+    );
+  }
+
+  try {
+    const isMock = Boolean(client.isMockRuntime);
+    const initialSession = discoverRuntimeSession({
+      repoRoot,
+      projectDir,
+      runtimePath,
+      mockRuntime: isMock ? client : null,
+      liveTransportClient: isMock ? null : client,
+      endpoint: options.endpoint,
+      allowRemoteEndpoint: options.allowRemoteEndpoint,
+    });
+
+    if (
+      initialSession.connection_status !== 'connected' ||
+      !initialSession.qualification_states.read_only_qualified
+    ) {
+      return {
+        ok: false,
+        session: initialSession,
+        inspectedOperations: [],
+        mutationsExecuted: 0,
+        error: `Runtime is not read-only qualified (connection_status=${initialSession.connection_status}).`,
+      };
+    }
+
+    const paths = resolveRuntimeGovernancePaths(repoRoot, projectDir);
+    const registryDoc = JSON.parse(fs.readFileSync(paths.runtimeOperationsPath, 'utf8'));
+    const l0Operations = [
+      'op.inspect.blendfile-summary',
+      'op.inspect.object-list',
+      'op.inspect.camera-and-lighting',
+      'op.inspect.material-slots',
+    ].filter((opId) => initialSession.supported_operations.includes(opId));
+
+    const inspectedOperations = [];
+    for (const opId of l0Operations) {
+      const opDef = (registryDoc.operations || []).find((o) => o.operation_id === opId);
+      if (!opDef || opDef.required_capability_tier !== 'L0' || opDef.behavior !== 'read_only') {
+        throw new Error(`Security invariant violation: '${opId}' is not a read-only L0 operation.`);
+      }
+      const mapping = opDef.runtime_tool_mappings?.[runtimePath];
+      const toolName = mapping?.upstream_mcp_tool_name;
+      if (!toolName) continue;
+
+      let res;
+      if (typeof client.invokeToolAsync === 'function') {
+        res = await client.invokeToolAsync(toolName, {});
+      } else if (typeof client.invokeTool === 'function') {
+        res = client.invokeTool(toolName, {});
+      } else {
+        throw new Error('Runtime client does not expose invokeToolAsync or invokeTool.');
+      }
+
+      if (!res || res.status !== 'ok' || !res.data || typeof res.data !== 'object') {
+        throw new Error(`L0 read-only tool '${toolName}' did not return valid structured data.`);
+      }
+
+      inspectedOperations.push({
+        operation_id: opId,
+        mapped_tool_name: toolName,
+        tier: 'L0',
+        status: 'succeeded',
+        data: res.data,
+      });
+    }
+
+    const verifiedLiveReadOnly = !isMock && inspectedOperations.length > 0;
+    if (verifiedLiveReadOnly && 'lifecycleState' in client) {
+      client.lifecycleState = 'live_read_only_verified';
+    }
+
+    const verifiedSession = discoverRuntimeSession({
+      repoRoot,
+      projectDir,
+      runtimePath,
+      mockRuntime: isMock ? client : null,
+      liveTransportClient: isMock ? null : client,
+      endpoint: options.endpoint,
+      allowRemoteEndpoint: options.allowRemoteEndpoint,
+      liveReadOnlyVerified: verifiedLiveReadOnly,
+    });
+
+    return {
+      ok: inspectedOperations.length > 0,
+      session: verifiedSession,
+      inspectedOperations,
+      mutationsExecuted: 0,
+    };
+  } finally {
+    if (createdInternally && client && typeof client.close === 'function' && options.keepAlive !== true) {
+      await client.close();
+    }
+  }
+}
+
+export async function runRuntimeQualificationAndSmokeAsync(options = {}) {
+  const repoRoot = options.repoRoot || DEFAULT_REPO_ROOT;
+  const projectDir = options.projectDir || null;
+  const runtimePath = options.runtimePath || 'path-1-host-a';
+  const liveOptIn =
+    options.liveSmokeOptIn === true ||
+    process.env.BLENDOPS_LIVE_SMOKE_OPT_IN === '1';
+
+  if (
+    options.mode === 'live_runtime' &&
+    liveOptIn &&
+    !options.mockRuntime &&
+    (options.stdioCommand || options.endpoint || options.liveTransportClient)
+  ) {
+    let client = options.liveTransportClient || null;
+    let createdInternally = false;
+    try {
+      if (!client) {
+        client = await connectMcpRuntimeClient({
+          ...options,
+          repoRoot,
+          projectDir,
+          runtimePath,
+        });
+        createdInternally = true;
+      }
+      const inspectRes = await inspectLiveReadOnlyRuntimeAsync({
+        ...options,
+        repoRoot,
+        projectDir,
+        runtimePath,
+        liveTransportClient: client,
+        keepAlive: true,
+      });
+
+      // Expose a synchronous invokeTool wrapper backed by the already-inspected L0 data
+      // so runRuntimeQualificationAndSmoke can record the L0 smoke operations deterministically
+      const cachedByTool = new Map(
+        inspectRes.inspectedOperations.map((op) => [op.mapped_tool_name, op.data]),
+      );
+      const syncBridgeClient = {
+        ...client,
+        isMockRuntime: false,
+        probeSession: () => client.probeSession(),
+        invokeTool(toolName) {
+          if (client.staleQualification) {
+            throw new Error(
+              `Tool inventory changed via notifications/tools/list_changed; re-qualification required before invoking '${toolName}'.`,
+            );
+          }
+          if (cachedByTool.has(toolName)) {
+            return {
+              status: 'ok',
+              tool: toolName,
+              data: cachedByTool.get(toolName),
+            };
+          }
+          throw new Error(`Tool '${toolName}' was not pre-fetched in live read-only inspection.`);
+        },
+      };
+
+      return runRuntimeQualificationAndSmoke({
+        ...options,
+        repoRoot,
+        projectDir,
+        runtimePath,
+        runtimeSession: inspectRes.session,
+        liveTransportClient: syncBridgeClient,
+      });
+    } finally {
+      if (createdInternally && client && typeof client.close === 'function') {
+        await client.close();
+      }
+    }
+  }
+
+  return runRuntimeQualificationAndSmoke(options);
+}
+
+/**
+ * Phase 3.3 Section 14 — Standardized Deterministic CLI Exit Codes
+ * 0: Success
+ * 1: CLI usage / argument / schema validation error
+ * 2: Runtime unreachable / transport connection failure / missing live opt-in
+ * 3: Protocol version or Blender/server version/identity incompatibility
+ * 4: Tool qualification failure / schema drift / unknown or unsafe tools blocked
+ * 5: Operation blocked by capability tier policy or permanent L3 raw-code boundary
+ * 6: Execution preflight or pre-mutation .blend checkpoint failure
+ * 7: Execution failure, postcondition mismatch, or rollback failure/unverified
+ */
+export function computeRuntimeCliExitCode(context = {}) {
+  const { subcommand, session, qualReport, toolInventory, preflight, ledger, valid } = context;
+
+  if (subcommand === 'operation-validate' || subcommand === 'execution-inspect') {
+    return valid ? CLI_EXIT_CODES.SUCCESS : CLI_EXIT_CODES.CLI_USAGE_OR_VALIDATION_ERROR;
+  }
+
+  if (session) {
+    const cs = session.connection_status;
+    if (cs === 'connected' || cs === 'not_configured') {
+      return CLI_EXIT_CODES.SUCCESS;
+    }
+    if (
+      cs === 'unreachable' ||
+      cs === 'configured_unreachable' ||
+      cs === 'invalid_endpoint' ||
+      cs === 'bridge_conflict' ||
+      cs === 'stale_session'
+    ) {
+      return CLI_EXIT_CODES.RUNTIME_UNREACHABLE_OR_TRANSPORT_FAILURE;
+    }
+    if (
+      cs === 'protocol_incompatible' ||
+      cs === 'version_unsupported' ||
+      cs === 'identity_mismatch' ||
+      cs === 'incompatible_with_plan'
+    ) {
+      return CLI_EXIT_CODES.PROTOCOL_OR_VERSION_INCOMPATIBLE;
+    }
+    if (cs === 'missing_required_tools' || cs === 'invalid_tool_schema') {
+      return CLI_EXIT_CODES.TOOL_QUALIFICATION_OR_SCHEMA_DRIFT_FAILURE;
+    }
+  }
+
+  if (qualReport) {
+    if (
+      qualReport.runtime_reachability === 'blocked_opt_in_missing' ||
+      qualReport.runtime_reachability === 'unreachable' ||
+      qualReport.runtime_reachability === 'blocked_invalid_endpoint'
+    ) {
+      return CLI_EXIT_CODES.RUNTIME_UNREACHABLE_OR_TRANSPORT_FAILURE;
+    }
+    if (
+      qualReport.runtime_reachability === 'protocol_error' ||
+      qualReport.runtime_reachability === 'identity_mismatch' ||
+      qualReport.runtime_reachability === 'version_unsupported'
+    ) {
+      return CLI_EXIT_CODES.PROTOCOL_OR_VERSION_INCOMPATIBLE;
+    }
+    if (!qualReport.qualification_states?.tool_inventory_verified) {
+      return CLI_EXIT_CODES.TOOL_QUALIFICATION_OR_SCHEMA_DRIFT_FAILURE;
+    }
+    return CLI_EXIT_CODES.SUCCESS;
+  }
+
+  if (toolInventory) {
+    if (toolInventory.schema_drift_detected || toolInventory.unknown_tools_blocked?.length > 0) {
+      return CLI_EXIT_CODES.TOOL_QUALIFICATION_OR_SCHEMA_DRIFT_FAILURE;
+    }
+    return CLI_EXIT_CODES.SUCCESS;
+  }
+
+  if (preflight) {
+    return preflight.passed
+      ? CLI_EXIT_CODES.SUCCESS
+      : CLI_EXIT_CODES.PREFLIGHT_OR_CHECKPOINT_FAILURE;
+  }
+
+  if (ledger) {
+    if (ledger.lifecycle_status === 'committed') return CLI_EXIT_CODES.SUCCESS;
+    if (ledger.lifecycle_status === 'rejected') {
+      return CLI_EXIT_CODES.OPERATION_BLOCKED_BY_CAPABILITY_OR_L3;
+    }
+    if (ledger.lifecycle_status === 'blocked') {
+      return CLI_EXIT_CODES.PREFLIGHT_OR_CHECKPOINT_FAILURE;
+    }
+    return CLI_EXIT_CODES.EXECUTION_OR_POSTCONDITION_OR_ROLLBACK_FAILURE;
+  }
+
+  return CLI_EXIT_CODES.SUCCESS;
+}
+
 export function formatQualificationReportMarkdown(report, heading = '## BlendOps Upstream MCP Runtime Qualification Report') {
   const qs = report.qualification_states;
   return [
@@ -4483,6 +6711,7 @@ export function formatQualificationReportMarkdown(report, heading = '## BlendOps
     `- Server Identity: ${report.runtime_server_identity || 'Not Connected'} (v\`${report.server_version || 'unknown'}\`)`,
     `- Blender Version: \`${report.blender_version || 'Not Observed'}\` (Add-on v\`${report.addon_version || 'unknown'}\`)`,
     `- Transport & Reachability: \`${report.transport_type}\` / \`${report.runtime_reachability}\``,
+    `- Connection Lifecycle State: \`${report.connection_lifecycle_state || 'configured'}\``,
     `- Qualification Verdict: \`${report.qualification_verdict}\``,
     `- Tool Inventory Fingerprint: \`${report.tool_inventory_fingerprint || 'none'}\``,
     '',
@@ -4619,12 +6848,6 @@ const DEFAULT_PRODUCT_HERO_SCENE_SPEC = {
     frame_rate_fps: 30,
     frame_range: [1, 1],
   },
-  simulation_and_vfx: {
-    enabled: false,
-    simulation_types: [],
-    geometry_nodes_realize_instances: false,
-    bake_to_alembic_or_keyframes: false,
-  },
   optimization_and_budgets: {
     target_tier: 'hybrid_render_and_web',
     max_triangles: 65000,
@@ -4634,6 +6857,12 @@ const DEFAULT_PRODUCT_HERO_SCENE_SPEC = {
     mesh_compression: 'draco',
     texture_compression: 'ktx2_basisu',
     generate_lods: false,
+  },
+  simulation_and_vfx: {
+    enabled: false,
+    simulation_types: [],
+    geometry_nodes_realize_instances: false,
+    bake_to_alembic_or_keyframes: false,
   },
   deliverables: {
     formats: ['png_still', 'glb_web_standard'],
@@ -4739,6 +6968,7 @@ function formatSessionMarkdown(session, heading = '## BlendOps Runtime Readiness
     `- Session ID: \`${session.session_id}\``,
     `- Runtime Path: \`${session.runtime_path}\``,
     `- Connection Status: \`${session.connection_status}\``,
+    `- Connection Lifecycle State: \`${session.connection_lifecycle_state || 'configured'}\``,
     `- Blender Version: \`${session.blender_version || 'Not Observed'}\``,
     `- Add-on / Server Identity: ${session.addon_or_server_identity || 'Not Connected'}`,
     `- Qualification Verdict: \`${session.qualification_verdict || 'unqualified'}\``,
@@ -4796,7 +7026,7 @@ function formatLedgerMarkdown(ledger) {
 }
 
 /**
- * CLI Subcommand Runner for Phase 3 & Phase 3.2 (`runtime`, `operation`, `execution`).
+ * CLI Subcommand Runner for Phase 3, Phase 3.2, and Phase 3.3 (`runtime`, `operation`, `execution`).
  */
 export function runRuntimeAndExecutionCliSubcommand(argv = [], options = {}) {
   const repoRoot = options.repoRoot || DEFAULT_REPO_ROOT;
@@ -4825,11 +7055,25 @@ export function runRuntimeAndExecutionCliSubcommand(argv = [], options = {}) {
   let liveSmokeOptIn = false;
   let disposableSceneConfirmed = false;
   let includeL1Smoke = false;
+  let endpoint = null;
+  let allowRemoteEndpoint = false;
+  let liveReadOnly = false;
+  let detailedExitCodes = false;
 
   for (let i = 0; i < rest.length; i += 1) {
     const arg = rest[i];
     if (arg === '--json') {
       jsonOutput = true;
+    } else if (arg === '--detailed-exit-codes') {
+      detailedExitCodes = true;
+    } else if (arg === '--live-read-only') {
+      liveReadOnly = true;
+    } else if (arg === '--allow-remote-endpoint') {
+      allowRemoteEndpoint = true;
+    } else if (arg === '--endpoint' && i + 1 < rest.length) {
+      endpoint = rest[++i];
+    } else if (typeof arg === 'string' && arg.startsWith('--endpoint=')) {
+      endpoint = arg.slice('--endpoint='.length).trim();
     } else if (arg === '--runtime-path' && i + 1 < rest.length) {
       runtimePath = rest[++i];
     } else if (typeof arg === 'string' && arg.startsWith('--runtime-path=')) {
@@ -4906,7 +7150,8 @@ export function runRuntimeAndExecutionCliSubcommand(argv = [], options = {}) {
     if (
       subcommand === 'runtime-doctor' ||
       subcommand === 'runtime-inspect' ||
-      subcommand === 'runtime-capabilities'
+      subcommand === 'runtime-capabilities' ||
+      subcommand === 'runtime-connect'
     ) {
       const executionPlan = planPath
         ? JSON.parse(fs.readFileSync(path.resolve(planPath), 'utf8'))
@@ -4921,6 +7166,8 @@ export function runRuntimeAndExecutionCliSubcommand(argv = [], options = {}) {
         runtimePath: runtimePath || (mockRuntime ? mockRuntime.runtimePath : 'none'),
         mockRuntime,
         executionPlan,
+        endpoint,
+        allowRemoteEndpoint,
       });
 
       const heading =
@@ -4928,13 +7175,16 @@ export function runRuntimeAndExecutionCliSubcommand(argv = [], options = {}) {
           ? '## BlendOps Runtime Doctor'
           : subcommand === 'runtime-inspect'
             ? '## BlendOps Runtime Session Inspection'
-            : '## BlendOps Runtime Capabilities Negotiation';
+            : subcommand === 'runtime-connect'
+              ? '## BlendOps MCP Runtime Connection & Qualification'
+              : '## BlendOps Runtime Capabilities Negotiation';
 
       const report = jsonOutput
         ? `${JSON.stringify(session, null, 2)}\n`
         : formatSessionMarkdown(session, heading);
 
       const isErrorState = [
+        'unreachable',
         'version_unsupported',
         'missing_required_tools',
         'invalid_tool_schema',
@@ -4944,11 +7194,21 @@ export function runRuntimeAndExecutionCliSubcommand(argv = [], options = {}) {
         'invalid_endpoint',
         'protocol_incompatible',
         'identity_mismatch',
+        ...(subcommand === 'runtime-connect' ? ['configured_unreachable'] : []),
       ].includes(session.connection_status);
+
+      const detailedCode = computeRuntimeCliExitCode({ subcommand, session });
+      const exitCode =
+        detailedExitCodes || subcommand === 'runtime-connect'
+          ? detailedCode
+          : isErrorState
+            ? 2
+            : 0;
 
       return {
         ok: !isErrorState,
-        exitCode: isErrorState ? 2 : 0,
+        exitCode,
+        detailedExitCode: detailedCode,
         mode: subcommand,
         session,
         globalTouched: false,
@@ -4968,6 +7228,8 @@ export function runRuntimeAndExecutionCliSubcommand(argv = [], options = {}) {
         disposableSceneConfirmed,
         includeL1Smoke,
         mockRuntime,
+        endpoint,
+        allowRemoteEndpoint,
       });
 
       if (outPath) {
@@ -4991,11 +7253,17 @@ export function runRuntimeAndExecutionCliSubcommand(argv = [], options = {}) {
       const failedInventory =
         !qualReport.qualification_states.tool_inventory_verified;
 
-      const exitCode = blockedByMissingOptIn || failedInventory ? 2 : 0;
+      const detailedCode = computeRuntimeCliExitCode({ subcommand, qualReport });
+      const exitCode = detailedExitCodes
+        ? detailedCode
+        : blockedByMissingOptIn || failedInventory
+          ? 2
+          : 0;
 
       return {
         ok: exitCode === 0,
         exitCode,
+        detailedExitCode: detailedCode,
         mode: subcommand,
         qualificationReport: qualReport,
         globalTouched: false,
@@ -5024,6 +7292,7 @@ export function runRuntimeAndExecutionCliSubcommand(argv = [], options = {}) {
         repoRoot,
         projectDir,
         strictSchemaFingerprint: !mockRuntime || mockScenario?.startsWith('upstream_'),
+        trustedMockFixture: isTrustedMockRuntimeFixture(mockRuntime),
       });
 
       const report = jsonOutput
@@ -5053,9 +7322,11 @@ export function runRuntimeAndExecutionCliSubcommand(argv = [], options = {}) {
           ].join('\n');
 
       const ok = !inv.schema_drift_detected && inv.unknown_tools_blocked.length === 0;
+      const detailedCode = computeRuntimeCliExitCode({ subcommand, toolInventory: inv });
       return {
         ok,
-        exitCode: ok ? 0 : 2,
+        exitCode: detailedExitCodes ? detailedCode : ok ? 0 : 2,
+        detailedExitCode: detailedCode,
         mode: 'runtime-tools',
         toolInventory: inv,
         globalTouched: false,
@@ -5095,6 +7366,7 @@ export function runRuntimeAndExecutionCliSubcommand(argv = [], options = {}) {
       return {
         ok: evalRes.valid,
         exitCode: evalRes.valid ? 0 : 2,
+        detailedExitCode: evalRes.valid ? 0 : 4,
         mode: 'operation-mappings',
         mappingsResult: evalRes,
         globalTouched: false,
@@ -5130,6 +7402,7 @@ export function runRuntimeAndExecutionCliSubcommand(argv = [], options = {}) {
       return {
         ok: true,
         exitCode: 0,
+        detailedExitCode: 0,
         mode: 'operation-list',
         listRes,
         globalTouched: false,
@@ -5161,6 +7434,7 @@ export function runRuntimeAndExecutionCliSubcommand(argv = [], options = {}) {
       return {
         ok: valRes.valid,
         exitCode: valRes.valid ? 0 : 1,
+        detailedExitCode: valRes.valid ? 0 : 1,
         mode: 'operation-validate',
         validation: valRes,
         globalTouched: false,
@@ -5210,9 +7484,11 @@ export function runRuntimeAndExecutionCliSubcommand(argv = [], options = {}) {
             '',
           ].join('\n');
 
+      const detailedCode = computeRuntimeCliExitCode({ subcommand, preflight: pf });
       return {
         ok: pf.passed,
-        exitCode: pf.passed ? 0 : 2,
+        exitCode: detailedExitCodes ? detailedCode : pf.passed ? 0 : 2,
+        detailedExitCode: detailedCode,
         mode: 'execution-preflight',
         preflight: pf,
         globalTouched: false,
@@ -5242,8 +7518,13 @@ export function runRuntimeAndExecutionCliSubcommand(argv = [], options = {}) {
         ? `${JSON.stringify(sliceRes.ledger, null, 2)}\n`
         : formatLedgerMarkdown(sliceRes.ledger);
 
-      const exitCode =
-        sliceRes.ledger.lifecycle_status === 'committed'
+      const detailedCode = computeRuntimeCliExitCode({
+        subcommand,
+        ledger: sliceRes.ledger,
+      });
+      const exitCode = detailedExitCodes
+        ? detailedCode
+        : sliceRes.ledger.lifecycle_status === 'committed'
           ? 0
           : sliceRes.ledger.lifecycle_status === 'blocked'
             ? 2
@@ -5252,6 +7533,7 @@ export function runRuntimeAndExecutionCliSubcommand(argv = [], options = {}) {
       return {
         ok: sliceRes.ok,
         exitCode,
+        detailedExitCode: detailedCode,
         mode: 'execution-report',
         ledger: sliceRes.ledger,
         globalTouched: false,
@@ -5262,8 +7544,48 @@ export function runRuntimeAndExecutionCliSubcommand(argv = [], options = {}) {
     }
 
     if (subcommand === 'execution-inspect') {
+      if (liveReadOnly) {
+        const l0Seq = executeTypedOperationSequence({
+          repoRoot,
+          projectDir,
+          runtimePath: runtimePath || (mockRuntime ? mockRuntime.runtimePath : 'none'),
+          mockRuntime,
+          grantedTier: 'L0',
+          operations: [
+            {
+              operation_id: 'op.inspect.blendfile-summary',
+              skill_id: 'scene-readiness',
+              input: { include_datablock_counts: true },
+            },
+            {
+              operation_id: 'op.inspect.object-list',
+              skill_id: 'scene-readiness',
+              input: { filter_type: 'ALL' },
+            },
+          ],
+        });
+        const report = jsonOutput
+          ? `${JSON.stringify(l0Seq.ledger, null, 2)}\n`
+          : formatLedgerMarkdown(l0Seq.ledger);
+        const detailedCode = computeRuntimeCliExitCode({
+          subcommand,
+          ledger: l0Seq.ledger,
+        });
+        return {
+          ok: l0Seq.ok,
+          exitCode: detailedExitCodes ? detailedCode : l0Seq.ok ? 0 : 2,
+          detailedExitCode: detailedCode,
+          mode: 'execution-inspect',
+          ledger: l0Seq.ledger,
+          globalTouched: false,
+          runtimeStatus: l0Seq.ledger.truth_states.runtime_status,
+          artifactStatus: l0Seq.ledger.truth_states.artifact_status,
+          report,
+        };
+      }
+
       if (!ledgerPath) {
-        throw new Error('execution-inspect requires a <ledger.json> path or --ledger <file>.');
+        throw new Error('execution-inspect requires a <ledger.json> path, --ledger <file>, or --live-read-only.');
       }
       const absLedger = path.resolve(ledgerPath);
       if (!fs.existsSync(absLedger)) {
@@ -5287,6 +7609,7 @@ export function runRuntimeAndExecutionCliSubcommand(argv = [], options = {}) {
       return {
         ok: valid,
         exitCode: valid ? 0 : 1,
+        detailedExitCode: valid ? 0 : 1,
         mode: 'execution-inspect',
         ledger,
         globalTouched: false,

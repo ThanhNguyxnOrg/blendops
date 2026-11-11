@@ -28,7 +28,7 @@
     "non-blender-user"
   ],
   "engines": {
-    "node": ">=18"
+    "node": ">=20.0.0"
   },
   "bin": {
     "blendops": "bin/blendops.mjs"
@@ -82,14 +82,16 @@
     "glb:handoff": "node scripts/generate-glb-handoff-report.mjs",
     "arch:build": "node scripts/validate-repository-architecture.mjs",
     "arch:check": "node scripts/validate-repository-architecture.mjs --check",
-    "test": "node --test scripts/test-phase1.mjs scripts/test-phase2.mjs scripts/test-phase3.mjs scripts/test-phase4.mjs scripts/test-phase5.mjs scripts/test-phase6.mjs scripts/test-phase7.mjs scripts/test-phase8.mjs scripts/test-phase9.mjs scripts/test-phase10.mjs scripts/test-phase11.mjs scripts/test-phase12.mjs scripts/test-phase13.mjs scripts/test-phase14.mjs scripts/test-phase15.mjs scripts/test-phase16.mjs scripts/test-phase17.mjs scripts/test-phase18.mjs",
+    "test": "node --test scripts/test-phase1.mjs scripts/test-phase2.mjs scripts/test-phase3.mjs scripts/test-phase4.mjs scripts/test-phase5.mjs scripts/test-phase6.mjs scripts/test-phase7.mjs scripts/test-phase8.mjs scripts/test-phase9.mjs scripts/test-phase10.mjs scripts/test-phase11.mjs scripts/test-phase12.mjs scripts/test-phase13.mjs scripts/test-phase14.mjs scripts/test-phase15.mjs scripts/test-phase16.mjs scripts/test-phase17.mjs scripts/test-phase18.mjs scripts/test-phase19.mjs",
     "docs:check": "node scripts/check-docs.mjs",
     "skills:export": "node scripts/export-claude-skills.mjs",
     "ci": "npm run docs:check && npm run catalog:check && npm run operations:check && npm run arch:check && npm run registry:check && npm run evals:check && npm run evals:run && npm run bundles:summaries:check && npm run skills:export && npm test"
   },
   "dependencies": {
+    "@modelcontextprotocol/sdk": "1.32.2",
     "ajv": "8.20.0",
-    "fflate": "0.8.3"
+    "fflate": "0.8.3",
+    "zod": "3.25.76"
   },
   "devDependencies": {}
 }
