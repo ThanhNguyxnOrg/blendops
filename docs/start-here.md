@@ -147,7 +147,7 @@ Use the short prompt from [README.md](../README.md#-use-in-30-seconds). The agen
 - Draft v0, not production-ready
 - Runtime eval: Not Run
 - Artifacts: Not Produced
-- Release tag: Not Ready
+- Skills-layer draft tag: `v0.10.0-draft` ready (public stable release: Not Ready)
 
 **Start here:**
 - [Release readiness](./release-readiness.md) — current status

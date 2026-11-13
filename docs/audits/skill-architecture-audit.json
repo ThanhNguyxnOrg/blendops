@@ -194,8 +194,8 @@
         },
         {
           "path": "skills/recipe-fit-assessor/references/scope-gap-rules.md",
-          "title": "Scope gap rules",
-          "line_count": 22,
+          "title": "Scope Gap Rules",
+          "line_count": 28,
           "classification": "recipe_specific_procedure",
           "classification_method": "rule_based_governance_and_recipe_mapping",
           "review_status": "rule_classified_governance_or_recipe",
@@ -205,8 +205,8 @@
         },
         {
           "path": "skills/recipe-fit-assessor/references/workflow-recommendation-template.md",
-          "title": "Workflow recommendation template",
-          "line_count": 23,
+          "title": "Workflow Recommendation Template",
+          "line_count": 35,
           "classification": "recipe_specific_procedure",
           "classification_method": "rule_based_governance_and_recipe_mapping",
           "review_status": "rule_classified_governance_or_recipe",
@@ -246,8 +246,8 @@
       "references": [
         {
           "path": "skills/pack-prerequisite-checker/references/blocked-start-playbook.md",
-          "title": "Blocked start playbook",
-          "line_count": 26,
+          "title": "Blocked Start Playbook",
+          "line_count": 22,
           "classification": "workflow_or_pack_governance",
           "classification_method": "rule_based_governance_and_recipe_mapping",
           "review_status": "rule_classified_governance_or_recipe",
@@ -257,8 +257,8 @@
         },
         {
           "path": "skills/pack-prerequisite-checker/references/pack-readiness-template.md",
-          "title": "Pack readiness output template",
-          "line_count": 24,
+          "title": "Pack Readiness Output Template",
+          "line_count": 39,
           "classification": "workflow_or_pack_governance",
           "classification_method": "rule_based_governance_and_recipe_mapping",
           "review_status": "rule_classified_governance_or_recipe",
@@ -309,8 +309,8 @@
       "references": [
         {
           "path": "skills/workflow-stage-router/references/milestone-model.md",
-          "title": "Milestone model (conceptual)",
-          "line_count": 19,
+          "title": "Milestone Model (7 Canonical Stages)",
+          "line_count": 21,
           "classification": "workflow_or_pack_governance",
           "classification_method": "rule_based_governance_and_recipe_mapping",
           "review_status": "rule_classified_governance_or_recipe",
@@ -331,8 +331,8 @@
         },
         {
           "path": "skills/workflow-stage-router/references/stage-handoff-template.md",
-          "title": "Stage handoff template",
-          "line_count": 25,
+          "title": "Stage Handoff Template",
+          "line_count": 38,
           "classification": "workflow_or_pack_governance",
           "classification_method": "rule_based_governance_and_recipe_mapping",
           "review_status": "rule_classified_governance_or_recipe",
@@ -374,8 +374,8 @@
       "references": [
         {
           "path": "skills/acceptance-criteria-builder/references/brief-to-criteria-mapper.md",
-          "title": "Brief → criteria mapper",
-          "line_count": 20,
+          "title": "Brief -> Criteria Mapper",
+          "line_count": 23,
           "classification": "workflow_or_pack_governance",
           "classification_method": "rule_based_governance_and_recipe_mapping",
           "review_status": "rule_classified_governance_or_recipe",
@@ -385,8 +385,8 @@
         },
         {
           "path": "skills/acceptance-criteria-builder/references/checklist-patterns.md",
-          "title": "Checklist patterns",
-          "line_count": 24,
+          "title": "Acceptance Checklist Patterns",
+          "line_count": 23,
           "classification": "workflow_or_pack_governance",
           "classification_method": "rule_based_governance_and_recipe_mapping",
           "review_status": "rule_classified_governance_or_recipe",
@@ -1046,7 +1046,7 @@
         {
           "path": "skills/camera-composition/references/camera-rubric.md",
           "title": "Camera Rubric",
-          "line_count": 23,
+          "line_count": 25,
           "classification": "reusable_cross_skill_knowledge",
           "classification_method": "knowledge_promotion_mapping",
           "review_status": "verified_promoted",
@@ -1059,7 +1059,7 @@
         {
           "path": "skills/camera-composition/references/hero-composition-patterns.md",
           "title": "Hero Composition Patterns",
-          "line_count": 22,
+          "line_count": 25,
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "rule_classified_skill_local",
@@ -1708,7 +1708,7 @@
         {
           "path": "skills/glb-web-handoff/references/artifact-status-language.md",
           "title": "Artifact Status Language",
-          "line_count": 22,
+          "line_count": 27,
           "classification": "reusable_cross_skill_knowledge",
           "classification_method": "knowledge_promotion_mapping",
           "review_status": "verified_promoted",
@@ -1971,7 +1971,7 @@
         {
           "path": "skills/lighting-material-plan/references/material-portability.md",
           "title": "Material Portability",
-          "line_count": 22,
+          "line_count": 26,
           "classification": "reusable_cross_skill_knowledge",
           "classification_method": "knowledge_promotion_mapping",
           "review_status": "verified_promoted",
@@ -1996,7 +1996,7 @@
         {
           "path": "skills/lighting-material-plan/references/web-material-simplification.md",
           "title": "Web Material Simplification",
-          "line_count": 22,
+          "line_count": 24,
           "classification": "reusable_cross_skill_knowledge",
           "classification_method": "knowledge_promotion_mapping",
           "review_status": "verified_promoted",
@@ -2371,8 +2371,8 @@
         },
         {
           "path": "skills/path-one-host-outline/references/host-checklist-template.md",
-          "title": "Host checklist template",
-          "line_count": 18,
+          "title": "Path 1 Host Checklist Template",
+          "line_count": 36,
           "classification": "workflow_or_pack_governance",
           "classification_method": "rule_based_governance_and_recipe_mapping",
           "review_status": "rule_classified_governance_or_recipe",
@@ -2435,7 +2435,7 @@
         {
           "path": "skills/plain-language-response/references/caveat-language.md",
           "title": "Caveat Language",
-          "line_count": 22,
+          "line_count": 26,
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "rule_classified_skill_local",
@@ -2446,7 +2446,7 @@
         {
           "path": "skills/plain-language-response/references/plain-language-patterns.md",
           "title": "Plain-Language Patterns",
-          "line_count": 22,
+          "line_count": 31,
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "rule_classified_skill_local",
@@ -2457,7 +2457,7 @@
         {
           "path": "skills/plain-language-response/references/stakeholder-friendly-examples.md",
           "title": "Stakeholder-Friendly Examples",
-          "line_count": 22,
+          "line_count": 31,
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "rule_classified_skill_local",
@@ -2468,7 +2468,7 @@
         {
           "path": "skills/plain-language-response/references/status-summary-templates.md",
           "title": "Status Summary Templates",
-          "line_count": 23,
+          "line_count": 51,
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "rule_classified_skill_local",
@@ -2826,7 +2826,7 @@
         {
           "path": "skills/product-hero-scene-planner/references/clarification-patterns.md",
           "title": "Clarification Patterns",
-          "line_count": 24,
+          "line_count": 25,
           "classification": "reusable_cross_skill_knowledge",
           "classification_method": "knowledge_promotion_mapping",
           "review_status": "verified_promoted",
@@ -2840,7 +2840,7 @@
         {
           "path": "skills/product-hero-scene-planner/references/cyberpunk-shoe-example.md",
           "title": "Cyberpunk Shoe Example",
-          "line_count": 23,
+          "line_count": 29,
           "classification": "reusable_cross_skill_knowledge",
           "classification_method": "knowledge_promotion_mapping",
           "review_status": "verified_promoted",
@@ -3265,7 +3265,7 @@
         {
           "path": "skills/runtime-readiness/references/evidence-examples.md",
           "title": "Evidence Examples",
-          "line_count": 22,
+          "line_count": 24,
           "classification": "workflow_or_pack_governance",
           "classification_method": "rule_based_governance_and_recipe_mapping",
           "review_status": "rule_classified_governance_or_recipe",
@@ -3328,7 +3328,7 @@
         {
           "path": "skills/runtime-setup/references/setup-summary-template.md",
           "title": "Setup Summary Template",
-          "line_count": 25,
+          "line_count": 34,
           "classification": "workflow_or_pack_governance",
           "classification_method": "rule_based_governance_and_recipe_mapping",
           "review_status": "rule_classified_governance_or_recipe",
@@ -3339,7 +3339,7 @@
         {
           "path": "skills/runtime-setup/references/source-confidence-labels.md",
           "title": "Source Confidence Labels",
-          "line_count": 26,
+          "line_count": 24,
           "classification": "workflow_or_pack_governance",
           "classification_method": "rule_based_governance_and_recipe_mapping",
           "review_status": "rule_classified_governance_or_recipe",
@@ -3396,7 +3396,7 @@
         {
           "path": "skills/scene-readiness/references/blocker-catalog.md",
           "title": "Blocker Catalog",
-          "line_count": 22,
+          "line_count": 25,
           "classification": "reusable_cross_skill_knowledge",
           "classification_method": "knowledge_promotion_mapping",
           "review_status": "verified_promoted",
@@ -3410,7 +3410,7 @@
         {
           "path": "skills/scene-readiness/references/not-run-handling.md",
           "title": "Not Run Handling",
-          "line_count": 22,
+          "line_count": 23,
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "rule_classified_skill_local",
@@ -3624,8 +3624,8 @@
     },
     {
       "path": "skills/recipe-fit-assessor/references/scope-gap-rules.md",
-      "title": "Scope gap rules",
-      "line_count": 22,
+      "title": "Scope Gap Rules",
+      "line_count": 28,
       "classification": "recipe_specific_procedure",
       "classification_method": "rule_based_governance_and_recipe_mapping",
       "review_status": "rule_classified_governance_or_recipe",
@@ -3635,8 +3635,8 @@
     },
     {
       "path": "skills/recipe-fit-assessor/references/workflow-recommendation-template.md",
-      "title": "Workflow recommendation template",
-      "line_count": 23,
+      "title": "Workflow Recommendation Template",
+      "line_count": 35,
       "classification": "recipe_specific_procedure",
       "classification_method": "rule_based_governance_and_recipe_mapping",
       "review_status": "rule_classified_governance_or_recipe",
@@ -3646,8 +3646,8 @@
     },
     {
       "path": "skills/pack-prerequisite-checker/references/blocked-start-playbook.md",
-      "title": "Blocked start playbook",
-      "line_count": 26,
+      "title": "Blocked Start Playbook",
+      "line_count": 22,
       "classification": "workflow_or_pack_governance",
       "classification_method": "rule_based_governance_and_recipe_mapping",
       "review_status": "rule_classified_governance_or_recipe",
@@ -3657,8 +3657,8 @@
     },
     {
       "path": "skills/pack-prerequisite-checker/references/pack-readiness-template.md",
-      "title": "Pack readiness output template",
-      "line_count": 24,
+      "title": "Pack Readiness Output Template",
+      "line_count": 39,
       "classification": "workflow_or_pack_governance",
       "classification_method": "rule_based_governance_and_recipe_mapping",
       "review_status": "rule_classified_governance_or_recipe",
@@ -3679,8 +3679,8 @@
     },
     {
       "path": "skills/workflow-stage-router/references/milestone-model.md",
-      "title": "Milestone model (conceptual)",
-      "line_count": 19,
+      "title": "Milestone Model (7 Canonical Stages)",
+      "line_count": 21,
       "classification": "workflow_or_pack_governance",
       "classification_method": "rule_based_governance_and_recipe_mapping",
       "review_status": "rule_classified_governance_or_recipe",
@@ -3701,8 +3701,8 @@
     },
     {
       "path": "skills/workflow-stage-router/references/stage-handoff-template.md",
-      "title": "Stage handoff template",
-      "line_count": 25,
+      "title": "Stage Handoff Template",
+      "line_count": 38,
       "classification": "workflow_or_pack_governance",
       "classification_method": "rule_based_governance_and_recipe_mapping",
       "review_status": "rule_classified_governance_or_recipe",
@@ -3712,8 +3712,8 @@
     },
     {
       "path": "skills/acceptance-criteria-builder/references/brief-to-criteria-mapper.md",
-      "title": "Brief → criteria mapper",
-      "line_count": 20,
+      "title": "Brief -> Criteria Mapper",
+      "line_count": 23,
       "classification": "workflow_or_pack_governance",
       "classification_method": "rule_based_governance_and_recipe_mapping",
       "review_status": "rule_classified_governance_or_recipe",
@@ -3723,8 +3723,8 @@
     },
     {
       "path": "skills/acceptance-criteria-builder/references/checklist-patterns.md",
-      "title": "Checklist patterns",
-      "line_count": 24,
+      "title": "Acceptance Checklist Patterns",
+      "line_count": 23,
       "classification": "workflow_or_pack_governance",
       "classification_method": "rule_based_governance_and_recipe_mapping",
       "review_status": "rule_classified_governance_or_recipe",
@@ -4060,7 +4060,7 @@
     {
       "path": "skills/camera-composition/references/camera-rubric.md",
       "title": "Camera Rubric",
-      "line_count": 23,
+      "line_count": 25,
       "classification": "reusable_cross_skill_knowledge",
       "classification_method": "knowledge_promotion_mapping",
       "review_status": "verified_promoted",
@@ -4073,7 +4073,7 @@
     {
       "path": "skills/camera-composition/references/hero-composition-patterns.md",
       "title": "Hero Composition Patterns",
-      "line_count": 22,
+      "line_count": 25,
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "rule_classified_skill_local",
@@ -4383,7 +4383,7 @@
     {
       "path": "skills/glb-web-handoff/references/artifact-status-language.md",
       "title": "Artifact Status Language",
-      "line_count": 22,
+      "line_count": 27,
       "classification": "reusable_cross_skill_knowledge",
       "classification_method": "knowledge_promotion_mapping",
       "review_status": "verified_promoted",
@@ -4527,7 +4527,7 @@
     {
       "path": "skills/lighting-material-plan/references/material-portability.md",
       "title": "Material Portability",
-      "line_count": 22,
+      "line_count": 26,
       "classification": "reusable_cross_skill_knowledge",
       "classification_method": "knowledge_promotion_mapping",
       "review_status": "verified_promoted",
@@ -4552,7 +4552,7 @@
     {
       "path": "skills/lighting-material-plan/references/web-material-simplification.md",
       "title": "Web Material Simplification",
-      "line_count": 22,
+      "line_count": 24,
       "classification": "reusable_cross_skill_knowledge",
       "classification_method": "knowledge_promotion_mapping",
       "review_status": "verified_promoted",
@@ -4730,8 +4730,8 @@
     },
     {
       "path": "skills/path-one-host-outline/references/host-checklist-template.md",
-      "title": "Host checklist template",
-      "line_count": 18,
+      "title": "Path 1 Host Checklist Template",
+      "line_count": 36,
       "classification": "workflow_or_pack_governance",
       "classification_method": "rule_based_governance_and_recipe_mapping",
       "review_status": "rule_classified_governance_or_recipe",
@@ -4753,7 +4753,7 @@
     {
       "path": "skills/plain-language-response/references/caveat-language.md",
       "title": "Caveat Language",
-      "line_count": 22,
+      "line_count": 26,
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "rule_classified_skill_local",
@@ -4764,7 +4764,7 @@
     {
       "path": "skills/plain-language-response/references/plain-language-patterns.md",
       "title": "Plain-Language Patterns",
-      "line_count": 22,
+      "line_count": 31,
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "rule_classified_skill_local",
@@ -4775,7 +4775,7 @@
     {
       "path": "skills/plain-language-response/references/stakeholder-friendly-examples.md",
       "title": "Stakeholder-Friendly Examples",
-      "line_count": 22,
+      "line_count": 31,
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "rule_classified_skill_local",
@@ -4786,7 +4786,7 @@
     {
       "path": "skills/plain-language-response/references/status-summary-templates.md",
       "title": "Status Summary Templates",
-      "line_count": 23,
+      "line_count": 51,
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "rule_classified_skill_local",
@@ -4943,7 +4943,7 @@
     {
       "path": "skills/product-hero-scene-planner/references/clarification-patterns.md",
       "title": "Clarification Patterns",
-      "line_count": 24,
+      "line_count": 25,
       "classification": "reusable_cross_skill_knowledge",
       "classification_method": "knowledge_promotion_mapping",
       "review_status": "verified_promoted",
@@ -4957,7 +4957,7 @@
     {
       "path": "skills/product-hero-scene-planner/references/cyberpunk-shoe-example.md",
       "title": "Cyberpunk Shoe Example",
-      "line_count": 23,
+      "line_count": 29,
       "classification": "reusable_cross_skill_knowledge",
       "classification_method": "knowledge_promotion_mapping",
       "review_status": "verified_promoted",
@@ -5177,7 +5177,7 @@
     {
       "path": "skills/runtime-readiness/references/evidence-examples.md",
       "title": "Evidence Examples",
-      "line_count": 22,
+      "line_count": 24,
       "classification": "workflow_or_pack_governance",
       "classification_method": "rule_based_governance_and_recipe_mapping",
       "review_status": "rule_classified_governance_or_recipe",
@@ -5210,7 +5210,7 @@
     {
       "path": "skills/runtime-setup/references/setup-summary-template.md",
       "title": "Setup Summary Template",
-      "line_count": 25,
+      "line_count": 34,
       "classification": "workflow_or_pack_governance",
       "classification_method": "rule_based_governance_and_recipe_mapping",
       "review_status": "rule_classified_governance_or_recipe",
@@ -5221,7 +5221,7 @@
     {
       "path": "skills/runtime-setup/references/source-confidence-labels.md",
       "title": "Source Confidence Labels",
-      "line_count": 26,
+      "line_count": 24,
       "classification": "workflow_or_pack_governance",
       "classification_method": "rule_based_governance_and_recipe_mapping",
       "review_status": "rule_classified_governance_or_recipe",
@@ -5232,7 +5232,7 @@
     {
       "path": "skills/scene-readiness/references/blocker-catalog.md",
       "title": "Blocker Catalog",
-      "line_count": 22,
+      "line_count": 25,
       "classification": "reusable_cross_skill_knowledge",
       "classification_method": "knowledge_promotion_mapping",
       "review_status": "verified_promoted",
@@ -5246,7 +5246,7 @@
     {
       "path": "skills/scene-readiness/references/not-run-handling.md",
       "title": "Not Run Handling",
-      "line_count": 22,
+      "line_count": 23,
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "rule_classified_skill_local",

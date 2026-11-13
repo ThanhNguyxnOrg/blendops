@@ -1,22 +1,34 @@
-# Workflow recommendation template
+# Workflow Recommendation Template
+
+Use this exact plain-language recommendation card at the conclusion of `recipe-fit-assessor` so the user and downstream planning skills receive one clear primary anchor, honest gaps, and a single next skill.
 
 ```txt
-Goal summary: <one line>
-Deliverables: <list>
-Constraints: <time, realism, platform>
+Goal summary: <1 plain-English sentence capturing user intent>
+Deliverables: <explicit formats, e.g. still PNG (16:9) + interactive web .glb>
+Key constraints: <timeline, realism level, web MB/triangle cap, license posture>
 
 Fit verdict: Strong | Partial | Poor
-Primary anchor: <recipe or pack path>
-Alternate anchors: <if any>
+Primary anchor: <exact repo path, e.g. docs/recipes/cyberpunk-shoe-hero.md>
+Alternate anchor(s): <secondary recipe/pack path or "none">
 
-Gaps (if Partial/Poor):
-  - <gap + mitigation>
+Scope gaps & mitigations (required if Partial or Poor):
+  - Gap 1: <exact mismatch, e.g. "Recipe targets offline still PNG while web .glb < 5 MB is requested">
+    Mitigation: <e.g. "Pair recipe with mobile-glb-budget + glb-web-handoff after lighting plan">
 
-Recommended next skill: <skill slug>
-Notes for brief writer: <bullets>
-Catalog evidence: <paths read>
+Recommended next skill: <single slug, e.g. pack-prerequisite-checker | scope-guard | intent-to-3d-brief-writer>
+Notes for brief writer:
+  - <concrete slot detail preserved from user request>
+  - <unanswered question to confirm before build>
 
-Runtime note (context only): Not Run unless user explicitly proceeding — see runtime-path-picker if execution mode unclear.
+Catalog evidence inspected: <exact doc/catalog paths read>
+Runtime posture (context only):
+  Runtime status: Not Run (assessment is planning-only; see runtime-path-picker if execution requested)
+  Artifact status: Not Produced
 ```
 
-Keep language plain; define Blender terms on first use.
+## Authoring Rules
+- Keep terminology plain; translate unavoidable terms (`GLB = lightweight 3D web file`, `Cycles = realistic raytraced renderer`) on first use.
+- Never silently omit a `Partial` or `Poor` gap just to push a recipe forward.
+
+## Related skill
+[../SKILL.md](../SKILL.md)

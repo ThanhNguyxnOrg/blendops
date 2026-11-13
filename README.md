@@ -138,8 +138,9 @@ Do not install Blender, configure runtime connectors, run Blender, or claim gene
 # Via skills.sh ecosystem (pulls portable SKILL.md folders cleanly via skills.sh.json)
 npx skills add ThanhNguyxnOrg/blendops
 
-# Or from a local clone using the repository installer (supports 35+ targets + Lockfile v2)
-npm run skills:install -- --target universal --with-skills-dir --write
+# Or from a local clone using the transactional installer (35+ targets + Lockfile v2)
+npm run skills:install -- --target universal --project /path/to/your-project --with-skills-dir --dry-run
+npm run skills:install -- --target universal --project /path/to/your-project --with-skills-dir --write
 ```
 
 > [!NOTE]

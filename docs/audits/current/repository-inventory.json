@@ -346,8 +346,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 7386,
-      "sha256": "8c441550281205fb043adfec907dcc83c4b373c9ff0a5b8beeacea1b086cf643"
+      "byteSize": 7616,
+      "sha256": "689437f6e01fe28421a22281739859c478eaa875c5baca7437f5aabc06a8b368"
     },
     {
       "path": "CODE_OF_CONDUCT.md",
@@ -406,8 +406,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 16704,
-      "sha256": "f27ae116c59df627897eaa8fa8a4b5d4836ab2e309caa0f1b97761640dcd674b"
+      "byteSize": 16835,
+      "sha256": "263fa3d5a6f45b9f65f753fc9777cbdd27f16cfb0788e4b38a24a4b891fed7d8"
     },
     {
       "path": "SECURITY.md",
@@ -451,8 +451,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 29306,
-      "sha256": "bd9835bb86178460b28a4f138b3e578293ca21d5e8c329d3346a980148599650"
+      "byteSize": 30881,
+      "sha256": "294677c0e97728d9b4708b12b5f635dbd1511e7e5ed9234c37b6b4c4a2b25dd8"
     },
     {
       "path": "bin/blendops.mjs",
@@ -2431,8 +2431,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 21604,
-      "sha256": "e66c97ded039ccff2192ad325f3032cb24cd15fce104daf32f6c4a5f47462dad"
+      "byteSize": 21690,
+      "sha256": "c4ae64d96231eb72ae807bdb8235a2cec3f28762f2c3c1c32f2dd723c9bca99d"
     },
     {
       "path": "docs/adapter-registry.md",
@@ -2896,8 +2896,8 @@
       "isGenerated": true,
       "generatorScript": "scripts/build-knowledge-catalog.mjs",
       "safeToMoveOrRemove": false,
-      "byteSize": 284868,
-      "sha256": "42f7801bc8b84f5d14e297068d13276841e7f95c39151ff1e3699f54212aa335"
+      "byteSize": 284918,
+      "sha256": "50119a4fd2b03421c924ebd882a20aafcddc21c834ddf278aaf363454a5efc41"
     },
     {
       "path": "docs/audits/skill-architecture-audit.md",
@@ -2912,7 +2912,7 @@
       "generatorScript": "scripts/build-knowledge-catalog.mjs",
       "safeToMoveOrRemove": false,
       "byteSize": 25444,
-      "sha256": "8d29a901cdd9e7fe6af27eff846c22683f92f264863cf4becd70418e74342084"
+      "sha256": "54693823934259300d3999c7f50ee1308f4c4747a9f1e88f9a035a28460ad460"
     },
     {
       "path": "docs/blender-version-compatibility.md",
@@ -3856,8 +3856,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 13221,
-      "sha256": "3a6d189dcfdca0a8491cad055a0dbbcca93b2eb68cb27879f75e419191b213ad"
+      "byteSize": 13700,
+      "sha256": "e99b5230fcec01a7a2ea01d52446e60abefde19e7d827e59ee5820174ff8114c"
     },
     {
       "path": "docs/runtime-stack-strategy.md",
@@ -3916,8 +3916,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 11422,
-      "sha256": "8d53790722786ad335cfa22753309ee61ed8ebda2af5eef65f57bac6599ce2ea"
+      "byteSize": 11480,
+      "sha256": "83b04aad84eebc2986cad369e0bae66829b8b80bc27ae0adfc32495f1fec46ee"
     },
     {
       "path": "docs/unofficial-runtime-bridges.md",
@@ -6211,8 +6211,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 624,
-      "sha256": "531e78f3c4f8a0ff3c9101df0155702ad970cddde7f3e35871e87b3eba2ec538"
+      "byteSize": 2809,
+      "sha256": "b3a2c0ae5a96ed118818fa7f231130a35fd77c1348b7d8a8b34cf7dcbaa7c446"
     },
     {
       "path": "skills/acceptance-criteria-builder/references/checklist-patterns.md",
@@ -6226,8 +6226,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 758,
-      "sha256": "c905e69df274c08142e5f55b122068aa6189fc63881bbf61b106b551f3a39092"
+      "byteSize": 2412,
+      "sha256": "e0f7bdd9d03539eb71e4ecc649dda5b0ccf578fd633553bc0f77197dbe5322f9"
     },
     {
       "path": "skills/acceptance-criteria-builder/references/evidence-hook-rules.md",
@@ -7216,8 +7216,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 411,
-      "sha256": "6fffd81a8a12d9bd6f103b682b1f1182f751fb9d5af96112afe93e68d116b38b"
+      "byteSize": 2381,
+      "sha256": "7043d7e0b249bbd596d1b40d1e17d90c89236c4396648a8eac51c63c918ddf83"
     },
     {
       "path": "skills/camera-composition/references/hero-composition-patterns.md",
@@ -7231,8 +7231,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 429,
-      "sha256": "ff3a433fcad14b874d6c3aca9843fd6703bf06d34f583e548cd96afde76d1941"
+      "byteSize": 2381,
+      "sha256": "75af6d594b9c5ef71f4d31c0bf6082f285de1a6a7d511655963afbfd81dbd802"
     },
     {
       "path": "skills/camera-composition/references/web-layout-negative-space.md",
@@ -8026,8 +8026,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 312,
-      "sha256": "c36cc5e29f1f7b66032a2bf6f3cefba10d2973eb56ff29c538fb8a2d7facfb6f"
+      "byteSize": 2404,
+      "sha256": "be1eadd747a3f71cb196ac525fe19a5951547a3206bae40aa665cf3b2e79cef2"
     },
     {
       "path": "skills/glb-web-handoff/references/glb-handoff-checklist.md",
@@ -8341,8 +8341,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 446,
-      "sha256": "586c3d492b40b40136e5313ce99ffd9cae664b2929e901322edfcf2c152a9bbe"
+      "byteSize": 2381,
+      "sha256": "f8f65dbda04ffdbcda3d8cf05da1707c68a2096db31142928a09f22c94bf1195"
     },
     {
       "path": "skills/lighting-material-plan/references/reflective-floor-pattern.md",
@@ -8371,8 +8371,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 441,
-      "sha256": "1ce4d5d5d1cc790265313fc98ba78eb0c1e4411d73b2c878d714796975e19726"
+      "byteSize": 2094,
+      "sha256": "e3728528dfe4d5dd83db5a8249ad01d763c661b0a560f90850b4e83b3be86032"
     },
     {
       "path": "skills/lighting-quality-checker/EVAL.md",
@@ -8791,8 +8791,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 594,
-      "sha256": "45813ab5f0c6a1239e24aeb6321ec2b5198ba0e547ff3382079d359909d0ed14"
+      "byteSize": 2409,
+      "sha256": "7ef7e196a5d47b58adf15d641fa7698a8abf92f7aaa43f7339f9efccd350cc22"
     },
     {
       "path": "skills/pack-prerequisite-checker/references/pack-readiness-template.md",
@@ -8806,8 +8806,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 530,
-      "sha256": "78982e124cf9146ebc0ce1c898a74ff6d20ffc3854446bca12f22c9c73e6cc4e"
+      "byteSize": 2097,
+      "sha256": "fe50f9520811f29c023a1506000f3798c3c8eefdedb86dc22ff685807b1f2b45"
     },
     {
       "path": "skills/pack-prerequisite-checker/references/prerequisite-matrix.md",
@@ -8896,8 +8896,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 701,
-      "sha256": "b0a4ffbd4aae2bd6c8f5dfe8a904fc48d5755c00763d0960b137a8f9cf24070b"
+      "byteSize": 1883,
+      "sha256": "4a210d363edbf6cb279e8bde5bd5efaa0a661e9d0005ed73566b98b24f71c3bc"
     },
     {
       "path": "skills/path-one-host-outline/references/lab-addon-reminders.md",
@@ -8971,8 +8971,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 394,
-      "sha256": "3b37ea8588e54465473ced1917a3befa495d8643972026bbdad2e8b319f79292"
+      "byteSize": 1870,
+      "sha256": "030ecdc35ecf6d53a0269643c4791db5536525ebeafcebe8598e4a2788ea63cd"
     },
     {
       "path": "skills/plain-language-response/references/plain-language-patterns.md",
@@ -8986,8 +8986,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 430,
-      "sha256": "0ad07ad45aedd4804e177a116e3e3b81f789257e835d270bbcf9fd7852c7a38c"
+      "byteSize": 2095,
+      "sha256": "ff52062389cbcd4b6305a69238bdd59d68175c2f5364385a8b4a6193e316980c"
     },
     {
       "path": "skills/plain-language-response/references/stakeholder-friendly-examples.md",
@@ -9001,8 +9001,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 421,
-      "sha256": "f7ea5d139b974893ebbdb47edac0b48699c06fb2a8f3ac23acc3f233510009fe"
+      "byteSize": 2119,
+      "sha256": "8cc045734c74061fafced2637da906cf17270d0dd7cc9b6823b4e362fc82666d"
     },
     {
       "path": "skills/plain-language-response/references/status-summary-templates.md",
@@ -9016,8 +9016,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 469,
-      "sha256": "d1b05f5b604830280236e480ae75e40367fb78d0912a041b079c7df239e4096e"
+      "byteSize": 1977,
+      "sha256": "6ce522e2ccc6b5b50604c0e350fc3a0d75628cec19f3d392902891a84b3898ed"
     },
     {
       "path": "skills/polycount-budget-checker/EVAL.md",
@@ -9436,8 +9436,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 420,
-      "sha256": "8f2d4de14beb6a1bab680ac95297a055a4a87aa82ad01bb35ce953890a8cbf75"
+      "byteSize": 2164,
+      "sha256": "f0aa248f04dd1148cbf029fb784b62160325ea54885c320553afc22cae90fdf6"
     },
     {
       "path": "skills/product-hero-scene-planner/references/cyberpunk-shoe-example.md",
@@ -9451,8 +9451,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 448,
-      "sha256": "eaeabd0453d4e1c162b1736010d81aa33ffb8225b0a1c42422325c759685db4a"
+      "byteSize": 2286,
+      "sha256": "619d79265ece91c3b16f622a68fdcf47e3e097e962b8e08480354109da63f8bd"
     },
     {
       "path": "skills/product-hero-scene-planner/references/product-hero-playbooks.md",
@@ -9466,8 +9466,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 404,
-      "sha256": "7a17d5e7edb5f961fea6828ab5a65b74f8595484a368ea122944ef4780993572"
+      "byteSize": 2274,
+      "sha256": "b2157ed9bb98b60e5551ff91cf5336ea3ac2bac61dfaca2f438679c3594fed75"
     },
     {
       "path": "skills/product-hero-scene-planner/references/scene-plan-schema.md",
@@ -9646,8 +9646,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 874,
-      "sha256": "e2663ff51478d0e7e5ff4f6b25915b8966660c0537d92191d22e11958a36618b"
+      "byteSize": 2493,
+      "sha256": "12c58b8a65a405e9fc0cdb838da55570881ebd4b05ddce24e4f7e6828737ca1e"
     },
     {
       "path": "skills/recipe-fit-assessor/references/workflow-recommendation-template.md",
@@ -9661,8 +9661,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 571,
-      "sha256": "62b8ba6c84aa0a94fa4aa061689085b2b52ddbef1a29c7a442d35eedcd16c5ac"
+      "byteSize": 1669,
+      "sha256": "5a8d6415ce68fc2429a56b9c9056f5693dd6115610285980aac4c17c83ce6cd6"
     },
     {
       "path": "skills/render-export-evidence/EVAL.md",
@@ -10096,8 +10096,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 398,
-      "sha256": "bd11da43bd7c117f0dda600b2586d05fc487a038fa00ec143017f84d23e616a1"
+      "byteSize": 1802,
+      "sha256": "25b95040d8d5996af2f8ca241a603a7ec34c5dc98dbd2d38f04659ae7d8b9d9e"
     },
     {
       "path": "skills/runtime-readiness/references/readiness-matrix.md",
@@ -10186,8 +10186,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 457,
-      "sha256": "d671eab861223a7cbe8140ebe2939789c207cd83f8f1fce2fb5ebf4b6b460f23"
+      "byteSize": 1680,
+      "sha256": "9f34463127e15b0d2691ca908bc50a2c7734c339f8b31be8872ee8ae3b827b51"
     },
     {
       "path": "skills/runtime-setup/references/source-confidence-labels.md",
@@ -10201,8 +10201,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 447,
-      "sha256": "f072539877fe65ecd2bd16304411e300bbf3f7019bcea49501a62e8917761e28"
+      "byteSize": 2354,
+      "sha256": "2e0114b41a7c8948b38b75ac95a608f459810039a86231a9ef956a9a995f00bd"
     },
     {
       "path": "skills/scene-readiness/EVAL.md",
@@ -10261,8 +10261,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 370,
-      "sha256": "912fb4407669a0e2cfa205e480bca2e54a02e9c04e73352305315de50ae0ea5c"
+      "byteSize": 2361,
+      "sha256": "9a8cc34386f8ae84589d63f38f2d76e15cde282199d57fb8dd0c381d583c50d1"
     },
     {
       "path": "skills/scene-readiness/references/not-run-handling.md",
@@ -10276,8 +10276,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 399,
-      "sha256": "5d83b20bc5d12004908828d57669d102034eb0a6b16ebe50f2014457a543ad77"
+      "byteSize": 1882,
+      "sha256": "b5deaf2d8de965464981f3dc3a13199f999b1af1ce035312abae2e5792e8ca52"
     },
     {
       "path": "skills/scene-readiness/references/quality-rubric.md",
@@ -10306,8 +10306,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 342,
-      "sha256": "66f2fe4769553329c058d0426d7fb214bef3d54825914361d50c4aa82f6f98b3"
+      "byteSize": 2291,
+      "sha256": "c49886b4f30f47f9c799e3598f21820d35f5ed1e85ab862ff60ac5e1a4e99892"
     },
     {
       "path": "skills/scope-guard/EVAL.md",
@@ -10546,8 +10546,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 772,
-      "sha256": "28254273e15d9a8e16ca29b48eb217d3fd7c95f4591420144b48c6ae0d075d4e"
+      "byteSize": 3086,
+      "sha256": "b4860222338b5ba7afb60b044f8da979a92beeb8fb41cddeab8c17bc7675ee8d"
     },
     {
       "path": "skills/workflow-stage-router/references/routing-decision-tree.md",
@@ -10576,8 +10576,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 487,
-      "sha256": "5c769355db5db8a9e3e62d8c01dc997dc79d58c1f1c0bdd52d23182c346da4e9"
+      "byteSize": 1741,
+      "sha256": "48f1b229e345dd04ee9409f8ef2280028265ecf4d18aa9aefcb257b2f5b095eb"
     }
   ]
 }

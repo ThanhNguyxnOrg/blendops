@@ -86,8 +86,8 @@
 | Reference File Path | Title | Classification | Method | Promoted To Canonical `knowledge.*` ID(s) |
 | :--- | :--- | :--- | :--- | :--- |
 | `skills/recipe-fit-assessor/references/recipe-catalog.md` | Recipe / pack catalog (BlendOps v0 + Phase 1 Canonical Recipe Registry) | `recipe_specific_procedure` | `rule_based_governance_and_recipe_mapping` | Synchronized with `registry/recipe-catalog.json` |
-| `skills/recipe-fit-assessor/references/scope-gap-rules.md` | Scope gap rules | `recipe_specific_procedure` | `rule_based_governance_and_recipe_mapping` | Synchronized with `registry/recipe-catalog.json` |
-| `skills/recipe-fit-assessor/references/workflow-recommendation-template.md` | Workflow recommendation template | `recipe_specific_procedure` | `rule_based_governance_and_recipe_mapping` | Synchronized with `registry/recipe-catalog.json` |
+| `skills/recipe-fit-assessor/references/scope-gap-rules.md` | Scope Gap Rules | `recipe_specific_procedure` | `rule_based_governance_and_recipe_mapping` | Synchronized with `registry/recipe-catalog.json` |
+| `skills/recipe-fit-assessor/references/workflow-recommendation-template.md` | Workflow Recommendation Template | `recipe_specific_procedure` | `rule_based_governance_and_recipe_mapping` | Synchronized with `registry/recipe-catalog.json` |
 | `skills/blender-recipe-decomposer/references/dependency-patterns.md` | Dependency patterns | `recipe_specific_procedure` | `rule_based_governance_and_recipe_mapping` | Synchronized with `registry/recipe-catalog.json` |
 | `skills/blender-recipe-decomposer/references/recipe-grouping-rules.md` | Recipe grouping rules | `recipe_specific_procedure` | `rule_based_governance_and_recipe_mapping` | Synchronized with `registry/recipe-catalog.json` |
 | `skills/blender-recipe-decomposer/references/recipe-naming-rules.md` | Recipe naming rules | `recipe_specific_procedure` | `rule_based_governance_and_recipe_mapping` | Synchronized with `registry/recipe-catalog.json` |

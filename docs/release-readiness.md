@@ -24,8 +24,8 @@ Date: 2026-11-13 (expanded to 48 skills + 151 reference guides + 26 install targ
 | GLB Web Handoff & Viewer Integration | Ready for Draft v0 review (`Not Run` / `Not Produced` for live Blender exports) | `schemas/glb-web-handoff-manifest.schema.json`, `scripts/inspect-glb.mjs`, `scripts/generate-glb-handoff-report.mjs`, CLI `glb-inspect` / `glb-handoff` / `glb-validate-manifest`, and Three.js + React Three Fiber examples ([docs/examples/glb-web-handoff/README.md](./examples/glb-web-handoff/README.md)) verified in `scripts/test-phase12.mjs`. |
 | Adapter install dry-run | Warn | Adapter architecture and dry-run install eval are complete, with native-path confidence still environment-dependent. |
 | Manual install beta | Warn | Evidence report: [docs/evals/manual-install-beta-v0.md](./evals/manual-install-beta-v0.md). |
-| CI guards | Ready for Draft v0 review | `npm run docs:check` validates active markdown files (see script footer count). |
-| **`v0.1.0-draft` tag** | **🟡 Tag-able now** | **Skills layer is complete. Tagging is a publishing decision, not gated on upstream runtime evidence.** |
+| CI guards | Ready for Draft v0 review | `npm run ci` passes `docs:check`, `catalog:check`, `operations:check`, `arch:check`, `registry:check`, `evals:check`, `evals:run`, `bundles:summaries:check`, `skills:export`, and all 14 unit/integration suites (`scripts/test-phase1.mjs`–`test-phase19.mjs`). |
+| **`v0.10.0-draft` tag** | **🟡 Tag-able now** | **Skills layer (48 skills + 151 hardened references), deterministic CLI (`35+` targets + `skills.sh.json`), and 19-phase CI are complete. Tagging is a human maintainer publishing decision, not gated on upstream runtime evidence.** |
 
 ## Runtime paths dashboard (BlendOps redirects to — owned by upstream)
 
@@ -78,24 +78,24 @@ The following are **not** "Not Ready" items in the publishing sense — they are
 
 ---
 
-## 🧱 No blockers for `v0.1.0-draft`
+## 🧱 No blockers for `v0.10.0-draft`
 
-There are no skills-layer blockers for the `v0.1.0-draft` tag (already shipped on 2026-05-09 alongside subsequent batch tags). Earlier drafts of this report listed runtime-eval-evidence items as blockers; that framing was wrong because BlendOps does not own runtime execution paths — it redirects to upstream. Skills layer has clean CI, all 48 skills are Expanded Draft v0, all 26 install targets are documented, and skill ZIP / package generation is verified at source level.
+There are no skills-layer blockers for the `v0.10.0-draft` release tag (`v0.1.0-draft` through `v0.9.0-draft` already shipped on main). Earlier drafts of this report listed runtime-eval-evidence items as blockers; that framing was wrong because BlendOps does not own runtime execution paths — it redirects to upstream. Skills layer has clean 19-phase CI, all 48 skills and 151 references are hardened, all 26 install targets (`35+` CLI targets with `--with-skills-dir` & `skills.sh.json`) are documented, and skill ZIP / package generation is verified at source level.
 
 The previously-listed "blockers" are now correctly scoped:
 
 | Item | Old framing (wrong) | Correct framing |
 |---|---|---|
-| Official runtime manual eval evidence | Blocker for v0.1.0 | Optional operator-side provenance record. Path 1 + Path 2 are user-reported verified by repo owner. |
-| Runtime artifact evidence | Blocker for v0.1.0 | Optional operator-side provenance under `docs/evals/`. Upstream paths produce real artifacts; BlendOps does not run them. |
-| Adapter native-path certainty | Blocker | Documented Warn with linked-only confidence per environment. Not a v0.1.0 blocker. |
+| Official runtime manual eval evidence | Blocker for release | Optional operator-side provenance record. Path 1 + Path 2 are user-reported verified by repo owner. |
+| Runtime artifact evidence | Blocker for release | Optional operator-side provenance under `docs/evals/`. Upstream paths produce real artifacts; BlendOps does not run them. |
+| Adapter native-path certainty | Blocker | Documented Warn with linked-only confidence per environment. Not a Draft v0 blocker. |
 
 ---
 
-## 🧾 Ready for `v0.1.0-draft` tag
+## 🧾 Ready for `v0.10.0-draft` tag
 
-- [x] 48 skills at Expanded Draft v0 with frontmatter spec compliance (16 baseline + 32 expansion across Batches 1–8).
-- [x] 4 laws + 1 pack + 3 bundle fixtures.
+- [x] 48 skills at Expanded Draft v0 with frontmatter spec compliance (`151/151` hardened references, zero stub templates).
+- [x] 4 laws + 1 pack + 3 bundle fixtures + `skills.sh.json` 8-group catalog + Lockfile v2 (`skills-lock.json`).
 - [x] 26 install target docs (Claude Desktop, Claude Code, Cursor, Codex, OpenCode, Gemini, Antigravity, Copilot, Cline, Roo Code, Blackbox AI, Continue, Zed, Windsurf, Trae, Augment Code, goose, OpenHands, JetBrains Junie, Sourcegraph Cody, Aider, Amazon Q Developer, Ollama, LM Studio, Open WebUI, generic-project).
 - [x] 3-mode auto-detect install flow (Mode A / B / C) in `docs/ai-agent-quickstart.md` + README 30-second prompt.
 - [x] Skill ZIP / package generation working (`npm run skills:export` produces one ZIP + one Claude Code folder per `skills/*/SKILL.md`, currently 48).
