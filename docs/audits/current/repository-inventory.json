@@ -5011,8 +5011,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 43576,
-      "sha256": "75f3cfa6cad1d2f5e993109bd52aeff619a082cce7dccc181633719fc5e2e35f"
+      "byteSize": 43570,
+      "sha256": "67ef3efb646e6450ae4d9651131bec534e7e9f31f9908c69fbe90ad27da520f7"
     },
     {
       "path": "package.json",
@@ -5026,8 +5026,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 4491,
-      "sha256": "05046cdfaa93a088fd75b33531127be8d43b5c0e6d8ab57ffbdd65d50acf65f3"
+      "byteSize": 4489,
+      "sha256": "775273189ad8a7c4ecab5c3e332efb6aa3fa0909d432a754d3e7362aaf84ce78"
     },
     {
       "path": "packs/README.md",
