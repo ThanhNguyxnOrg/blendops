@@ -1,6 +1,6 @@
 ---
 name: lighting-material-plan
-description: Build detailed lighting and material direction with portability and caveat handling for Blender/web-3D outputs.
+description: Design studio lighting rigs (key/fill/rim ratios, Kelvin pairs) and Principled BSDF materials with AgX/PBR Neutral and glTF portability caveats.
 ---
 
 # lighting-material-plan

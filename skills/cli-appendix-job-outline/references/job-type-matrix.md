@@ -1,10 +1,13 @@
-# Job type matrix
+# CLI Appendix Job Type Matrix
 
-| Job pattern | Outline focus | Typical evidence |
-|---|---|---|
-| Batch still render | Camera + samples + output path naming | Render files + stderr |
-| Batch GLB export | Export opts + collection visibility | GLB sizes + validator script output |
-| Scripted scene gen | Factory startup vs user prefs caveats | `.blend` hash / timestamp |
-| Hygiene pass | Purge orphan data before export | File diff metrics |
+Choose headless Blender CLI jobs whenever repeatability, CI automation, or batch export matters more than conversational inspection. Always cross-check exact flags against the upstream Blender Command Line manual matching the user's binary version.
 
-Always instruct operators to confirm flags against the Blender manual version matching their executable.
+| Job Type | Planning Focus | Critical Manual Checks | Required Verification Evidence |
+|---|---|---|---|
+| **Batch still / turntable render** | Camera name, resolution, Color Management (`AgX` / `Khronos PBR Neutral`), engine (`CYCLES` / `EEVEE`), frame range | Frame `-f` / `-a` vs output `-o` placement; GPU device fallback if headless | Rendered frame paths on disk, non-zero byte sizes, exit code `0`, clean `stderr` |
+| **Headless GLB export** | Applied transforms (`Location/Rotation/Scale`), `Z=0` floor, modifier bake state, texture packing / compression settings | Extension flags per glTF 2.0 exporter version in target Blender release | Output `.glb` byte size, `blendops glb-inspect` / `gltf-validator` report, triangle/texture budget match |
+| **Scene hygiene / purge pass** | Orphan data cleanup (`outliner.orphans_purge`), missing texture check, color space audit | Confirm `--factory-startup` does not strip required project add-ons or OCIO config | Before/after triangle, material, and orphan-block counts + saved `.blend` SHA-256 |
+| **Deterministic scene build script** | Read inputs from JSON (`SceneSpec`), log structured JSON summary, never paste raw Python as final user chat output | Keep user script args strictly **after `--`** separator | Execution log, stdout JSON summary, explicit `Not Produced` for any skipped outputs |
+
+## Related skill
+- [SKILL.md](../SKILL.md)

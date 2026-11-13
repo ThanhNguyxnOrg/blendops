@@ -1,6 +1,6 @@
 ---
 name: scene-readiness
-description: Apply multi-category readiness gates with pass/warn/fail and evidence-bound verdicts.
+description: Run multi-category scene readiness gates (mesh, UVs, PBR, bake caches, camera, silhouette match) with PASS/WARN/FAIL verdicts before export.
 ---
 
 # scene-readiness

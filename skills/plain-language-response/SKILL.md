@@ -1,6 +1,6 @@
 ---
 name: plain-language-response
-description: Convert technical Blender workflow findings into plain-language user-facing responses with honest caveats.
+description: Translate technical Blender status, GLB handoffs, and quality caveats into jargon-free stakeholder updates for non-Blender users.
 ---
 
 # plain-language-response

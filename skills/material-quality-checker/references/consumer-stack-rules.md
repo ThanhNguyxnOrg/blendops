@@ -41,6 +41,17 @@ Almost everything is allowed. Sanity rules still apply (PBR plausibility, color 
 
 Most Principled features supported (Blender 4.2+ Eevee Next). Some clearcoat / iridescence / volume effects approximated. Use Eevee preview as a rough check, not a final compatibility test for glTF.
 
+## Multi-engine parity matrix (beyond Web glTF)
+
+When a material plan spans non-web targets, flag target-specific constraints cleanly:
+
+| Target stack | Texture packing | Normal convention | Alpha & tone calibration |
+|---|---|---|---|
+| **Web (Three.js / R3F / Babylon)** | ORM (`R=AO, G=Rough, B=Metal`) in `.glb` (WebP / KTX2) | OpenGL `+Y` up | Pair Blender `Khronos PBR Neutral` with `NeutralToneMapping` or match `AgX`; `MASK`/`DITHERED` preferred for foliage |
+| **Unreal Engine 5 (FBX / glTF)** | `ORM` (`R=AO, G=Rough, B=Metal`), linear | DirectX `-Y` up (flip green channel vs OpenGL) | Avoid unbaked shader graphs; verify `Nanite` displacement / masked alpha rules |
+| **Unity URP / HDRP (FBX)** | URP MetallicSmoothness (`RGB=Metal, A=1-Roughness`) | OpenGL `+Y` up | Triangulate FBX (`use_triangles`) so tangent space matches normal bakes |
+| **Godot 4 (.glb)** | glTF ORM (`R=AO, G=Rough, B=Metal`) | OpenGL `+Y` up | Custom properties export as glTF `extras`; prefer standard Principled subset |
+
 ## Verdict guidance
 
 - A material that uses only the Principled subset → likely Pass for glTF.

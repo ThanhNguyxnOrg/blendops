@@ -19,6 +19,19 @@ Core guide: [docs/skill-system.md](../docs/skill-system.md)
 | Draft-safe | Keep Draft v0, `Not Run`, and `Not Produced` caveats visible. |
 | Portable | Keep core skill logic tool-agnostic; adapters map to target agents later. |
 
+### 10-Second Routing Across the 8 `skills.sh.json` Groups
+
+| Group | Entry skills | Inherited reference upgrades |
+|---|---|---|
+| **1. Workflow & Intake** | `blendops-help`, `blender-brainstorming`, `intent-to-3d-brief-writer` | Superpowers Iron Law / Anti-Rationalization tables + Reference silhouette slot |
+| **2. Scene Planning** | `product-hero-scene-planner`, `character-portrait`, `environment-shot`, `interior-scene` | Six-face & paired-component product anatomy completeness (`-Y/+Y/+Z/-Z/-X/+X`) |
+| **3. Camera, Lighting & Materials** | `camera-composition`, `lighting-material-plan`, `*-quality-checker` | Principled BSDF IOR/Roughness/Albedo lookup, 5-layer wear stack, `AgX` vs `Khronos PBR Neutral` |
+| **4. Assets & Budgets** | `asset-discovery`, `asset-license-checker`, `polycount-budget-checker`, `mobile-glb-budget` | 6-gate mesh/UV QA tolerances (`1e-4` weld, sharp-edge UV seams `>60°`, texel density) |
+| **5. Render & Output** | `cycles-vs-eevee-decision`, `output-format-decision`, `render-export-evidence` | Simulation bake gate (`ALL` cache vs replay preview) & downgrade-only provenance |
+| **6. Scene Verification** | `scene-readiness`, `pre-handoff-verification`, `blender-troubleshooting` | 7-point Iron Law & Red-Flags table + Reference-Image-Match silhouette loop |
+| **7. Web 3D & GLB** | `glb-web-handoff`, `glb-animation-handoff`, `r3f-component-plan` | `EXT_meshopt_compression`/KTX2/WebP budgets + Godot/Unreal/Unity parity matrix |
+| **8. Runtime & MCP** | `runtime-path-picker`, `runtime-setup`, `runtime-readiness`, `runtime-attempt-report` | Secure async MCP (`L0`–`L3`), SHA-256 contract pinning, & no-upgrade truth blocks |
+
 ---
 
 ## Current skill inventory

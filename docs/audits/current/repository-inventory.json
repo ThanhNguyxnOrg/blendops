@@ -346,8 +346,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 4911,
-      "sha256": "d08205ff399fbabc50f9e4fb9d125c11bc84ba6cc4a4526c9c950cd154cab882"
+      "byteSize": 7386,
+      "sha256": "8c441550281205fb043adfec907dcc83c4b373c9ff0a5b8beeacea1b086cf643"
     },
     {
       "path": "CODE_OF_CONDUCT.md",
@@ -376,8 +376,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 6402,
-      "sha256": "dbc16d7bbac9124e5d9339076326a0d9360d83a5a4107eb0cdbbb7e80f8ef3da"
+      "byteSize": 6659,
+      "sha256": "fcd6ef89d9a56df2838c4f3fa6fc593c70e8794338b9499eae4995c23e863ab2"
     },
     {
       "path": "LICENSE",
@@ -406,8 +406,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 14125,
-      "sha256": "b3bf75bbae9bfeedb603110e9aba80de7e44efe36ae2ebb8d021749169991b24"
+      "byteSize": 16704,
+      "sha256": "f27ae116c59df627897eaa8fa8a4b5d4836ab2e309caa0f1b97761640dcd674b"
     },
     {
       "path": "SECURITY.md",
@@ -2896,8 +2896,8 @@
       "isGenerated": true,
       "generatorScript": "scripts/build-knowledge-catalog.mjs",
       "safeToMoveOrRemove": false,
-      "byteSize": 283719,
-      "sha256": "63d7f16042c07aee2125780742e9ddc8a85a495f9742d7374bc0d17862f802c9"
+      "byteSize": 284868,
+      "sha256": "42f7801bc8b84f5d14e297068d13276841e7f95c39151ff1e3699f54212aa335"
     },
     {
       "path": "docs/audits/skill-architecture-audit.md",
@@ -2911,8 +2911,8 @@
       "isGenerated": true,
       "generatorScript": "scripts/build-knowledge-catalog.mjs",
       "safeToMoveOrRemove": false,
-      "byteSize": 25383,
-      "sha256": "f10f82dae4c51bfea02f4a36c547b2dba3694b70c70582eeced55e382e5c6d98"
+      "byteSize": 25444,
+      "sha256": "8d29a901cdd9e7fe6af27eff846c22683f92f264863cf4becd70418e74342084"
     },
     {
       "path": "docs/blender-version-compatibility.md",
@@ -3331,8 +3331,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 6976,
-      "sha256": "283a73b3834a712eaf249ccad099bc1347864f27828a359973b74bdd8d322699"
+      "byteSize": 7446,
+      "sha256": "5749b99f85a7dd55ab47ee006c6fd5f5bfecf14277f82304cea418febc01eefc"
     },
     {
       "path": "docs/install/aider.md",
@@ -3856,8 +3856,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 12978,
-      "sha256": "0766a78965e4f32388073be52ba71ed748ade1afd9f08dadfe20055e194ded9b"
+      "byteSize": 13221,
+      "sha256": "3a6d189dcfdca0a8491cad055a0dbbcca93b2eb68cb27879f75e419191b213ad"
     },
     {
       "path": "docs/runtime-stack-strategy.md",
@@ -5521,8 +5521,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 137956,
-      "sha256": "5d487a8fbdeb4da2fe59b797eee1b7281e6f0b4621cd5fcc12737010499204df"
+      "byteSize": 121956,
+      "sha256": "f3e27afc30eb071f8764d7a8d81429d0dce36e17bde8e542728135fcc5ddf7ea"
     },
     {
       "path": "scripts/export-claude-skills.mjs",
@@ -6136,8 +6136,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 23924,
-      "sha256": "565fb681d67123951d8f4bc725b7869bf2f61517a0a793be6cfbfe1127045caa"
+      "byteSize": 25598,
+      "sha256": "e1ea1a43a3b9bf62515f8aa1e9ce82d324ba44cc76b66e1b0d14b20b6d956711"
     },
     {
       "path": "skills/_template/SKILL.md",
@@ -6241,8 +6241,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 522,
-      "sha256": "1e435296339b7aa7d316dbfd3d0eac0175a27b032093129105855d2d29bb8069"
+      "byteSize": 1456,
+      "sha256": "064b12dc76a3088230cb979b4c03f357fd7cf11393f1120c3f47a7dbc566ba87"
     },
     {
       "path": "skills/asset-discovery/EVAL.md",
@@ -6541,8 +6541,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 13861,
-      "sha256": "693d80bfb89fc42e44ceecd094625e9abca0a8d4468ede0d629f06006b3595cd"
+      "byteSize": 13900,
+      "sha256": "cbfa7225d568e7edbb32b905bd0de74d54dd3f9d2adb24762dea2c566d98e831"
     },
     {
       "path": "skills/asset-license-checker/contract.json",
@@ -7171,8 +7171,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 10204,
-      "sha256": "a84b9d383024ffac3baed867939a8daab2eacc9812400fcff2926832897470d1"
+      "byteSize": 10265,
+      "sha256": "b300eb1fc76a7e350208242c9467a100579e0259e9f002f2c97c8441f7833432"
     },
     {
       "path": "skills/camera-composition/contract.json",
@@ -7201,8 +7201,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 413,
-      "sha256": "706509f3bb8f4635ebbd67d9c22203540639c3a6934a13479831bdd732f5a5b5"
+      "byteSize": 2272,
+      "sha256": "f92fbeeb81cb11d4283253705f8930facb6acdd05a25b93834b0a5da5054e804"
     },
     {
       "path": "skills/camera-composition/references/camera-rubric.md",
@@ -7246,8 +7246,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 418,
-      "sha256": "399ff57e1c8c68d241581a27641224bc4388498426235263e04b0c8a9f324dff"
+      "byteSize": 1884,
+      "sha256": "9020664cba01ceb9e228530c0025dc95afe5ad41c05df793c48ff6ccd43304b2"
     },
     {
       "path": "skills/character-portrait/EVAL.md",
@@ -7396,8 +7396,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 617,
-      "sha256": "eb16041809e07c6c6c5b228c35183d971222ed3916e1f2e8d2e624707bf25e62"
+      "byteSize": 1640,
+      "sha256": "ef3a12a7397548546cbdda48242b84a937c2685ab5b08eb64ae9d6fa6b1dfbef"
     },
     {
       "path": "skills/cli-appendix-job-outline/references/job-type-matrix.md",
@@ -7411,8 +7411,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 536,
-      "sha256": "dd1199d471168c5c2fa3cb57314778b8fa058d27bb49cad5ce27ab3b03c7a670"
+      "byteSize": 1679,
+      "sha256": "93e09dd3f52fa28bf7222d8ae4697ffb4726454a665ca5c7b7fbe921cdadf99f"
     },
     {
       "path": "skills/cli-appendix-job-outline/references/stateless-limitations.md",
@@ -7426,8 +7426,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 625,
-      "sha256": "162e0605a681d88ad20e177b71cd651e42dc25b8bdc8cc0e11155a2b5c5d6c05"
+      "byteSize": 1504,
+      "sha256": "afdabe97cde5bce7ead6f144ef32fa8dd14670349d43eb1f7309ed127c14178c"
     },
     {
       "path": "skills/color-management-decision/EVAL.md",
@@ -7756,8 +7756,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 1772,
-      "sha256": "99adec3bb7280656985189899755fc39720232135a489956c80f52edce251150"
+      "byteSize": 2322,
+      "sha256": "bfd5328295aacadd590ba68abf53f3a59d1b3c44bcc7b8754f62d94a19ad9a61"
     },
     {
       "path": "skills/done-criteria/references/out-of-scope-patterns.md",
@@ -7996,8 +7996,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 13750,
-      "sha256": "86571dbb80669add3f52d69702faacd07a1145a2e3c19a1730f9331895dc9d6b"
+      "byteSize": 13792,
+      "sha256": "e9e672d03b12624cef2526fa44ae29ffe8e5d3c07dbc1ab53ede5c1ff2c576a1"
     },
     {
       "path": "skills/glb-web-handoff/contract.json",
@@ -8041,8 +8041,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 1529,
-      "sha256": "72d2cc17f781122daed676918cc8e4a817b712f1bb723f314181d1bf67f7c914"
+      "byteSize": 2203,
+      "sha256": "457187694fbd83b72d3f51322430fe7e81ffd16f5e7936b0903e3b970169737d"
     },
     {
       "path": "skills/glb-web-handoff/references/performance-caveats.md",
@@ -8056,8 +8056,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 414,
-      "sha256": "21a667fd1a33b4dd49ce131fb8e3f1075c3a4df6c5c7ff1fee3171e77ef02ee0"
+      "byteSize": 2031,
+      "sha256": "9a7ea90c5bae3e52db57454e5df344ff2fa6a84c861e90875f18ae4a92c2e6ae"
     },
     {
       "path": "skills/glb-web-handoff/references/threejs-r3f-handoff.md",
@@ -8071,8 +8071,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 1444,
-      "sha256": "56269e11391955c2f52554d0b6a5aa5679e0361cdf7adab19c983b54ea81c7f9"
+      "byteSize": 2416,
+      "sha256": "47b8c172f36b77346330b75f399b0ce21eda4182c51800638280e1b347f84073"
     },
     {
       "path": "skills/intent-to-3d-brief-writer/EVAL.md",
@@ -8146,8 +8146,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 3450,
-      "sha256": "06febc7e6b5dac274a5da0735a5a27fa68b2884c2ada7bea636589da3523ef84"
+      "byteSize": 3637,
+      "sha256": "802553fcb4e9fe5906344f860ec9e89baac12632c7fc991f4751001d3ff067b4"
     },
     {
       "path": "skills/intent-to-3d-brief-writer/references/mixed-audience-handling.md",
@@ -8281,8 +8281,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 9135,
-      "sha256": "2c58b9e9b7c03371574726477a96aaa792286060eeee510fff348ad9fcc46f41"
+      "byteSize": 9168,
+      "sha256": "24e19fdcc8918d354c0eda0dca889257d155ab45c68d9b0520fbe7e1e6d8bedc"
     },
     {
       "path": "skills/lighting-material-plan/contract.json",
@@ -8311,8 +8311,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 405,
-      "sha256": "256a2bbac163416d9b98dd6ce9a25787b8e124f39132fc098176bb1e10b71891"
+      "byteSize": 1966,
+      "sha256": "c89a86241c68ac48ee52d60807925b51353b4d60200c6f06bdf3c8a6e6b78a5f"
     },
     {
       "path": "skills/lighting-material-plan/references/lighting-patterns.md",
@@ -8326,8 +8326,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 406,
-      "sha256": "ae3e8b081a3498031be6b5091be583e35833ac709f8ae5d65454b191f88fac19"
+      "byteSize": 2424,
+      "sha256": "2173baa56d741e475328ccb8a8d86cf41fde23289227a86c78b5f5e3252b5ace"
     },
     {
       "path": "skills/lighting-material-plan/references/material-portability.md",
@@ -8356,8 +8356,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 434,
-      "sha256": "7106b5f1520c3e0f148d96628479cd4c44b5486c13ce2fb89e4f3493cfdcd69d"
+      "byteSize": 1860,
+      "sha256": "ad83b5b3816ba4b42a52cad9f78334986d7d05d0129fe39624137d994b71873c"
     },
     {
       "path": "skills/lighting-material-plan/references/web-material-simplification.md",
@@ -8446,8 +8446,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 1284,
-      "sha256": "0902b43df67a7ba6a701e0f9e383be816dd8369b41c5d59acd7385b7befdd96a"
+      "byteSize": 2429,
+      "sha256": "960948b5f0b4c9af97b61c9c0e84aee5aaa72bde60b24a0e272a7b700fec8212"
     },
     {
       "path": "skills/lighting-quality-checker/references/shadow-softness-rules.md",
@@ -8521,8 +8521,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 2708,
-      "sha256": "b7e6e5b47efd5a565d4c4a73d30d7f70812b32be259a1810f9da8e99f598b0cc"
+      "byteSize": 3720,
+      "sha256": "929c69d88c81cafdd559e922d4c417302244736260caccdc94a967f51af713d4"
     },
     {
       "path": "skills/material-quality-checker/references/pbr-sanity-rules.md",
@@ -8536,8 +8536,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 2075,
-      "sha256": "1804e9261d9fa0a93ee2a76bc1f01128715b29db6923eb533d74d08fece39be1"
+      "byteSize": 4667,
+      "sha256": "1841b06e95a6bd678ccca2ba762f0d9e7fc546a4ec9593c24a2a1a303ce1228a"
     },
     {
       "path": "skills/material-quality-checker/references/texture-budget-rules.md",
@@ -8821,8 +8821,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 905,
-      "sha256": "e7acc4cd131ff8fa6792aa83de80d44324aaf7de8da90ac9d75acf65be4fb871"
+      "byteSize": 2036,
+      "sha256": "16b942fa2d68b61dde0cc207eec6e021e2a7e9e15b384a5c1563105a922625ea"
     },
     {
       "path": "skills/path-one-host-outline/EVAL.md",
@@ -8881,8 +8881,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 652,
-      "sha256": "da01bc5291ea616b8427169fb654c95ba06a7b22e653b5a507906462b2b2be69"
+      "byteSize": 1537,
+      "sha256": "a809bf3cb22c8f0260d737a7d596d28309b8557fdcb41035915687a9c99ef291"
     },
     {
       "path": "skills/path-one-host-outline/references/host-checklist-template.md",
@@ -8911,8 +8911,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 527,
-      "sha256": "93cbd49459f3ee320561c14aea49c4d06cf923a3fd73919b386d9e3881229db6"
+      "byteSize": 1222,
+      "sha256": "c96ae7d0fb20accc392551e9e7e5548fe5cfba295124cc9ec1ef327724f42fb6"
     },
     {
       "path": "skills/plain-language-response/EVAL.md",
@@ -8941,8 +8941,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 13196,
-      "sha256": "da609322a3f295c567586f256f6c480b9f618aa6c541b26ca101fc1ac77508d2"
+      "byteSize": 13219,
+      "sha256": "f12ab5801889d474fb89b4f649cc01adc16edacf59bf34b9986c42331aa984dd"
     },
     {
       "path": "skills/plain-language-response/contract.json",
@@ -9106,8 +9106,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 1675,
-      "sha256": "717c60e90f7f1062c11977657d8b847221d8cb0fe86fefd5319b4ef056b1f73c"
+      "byteSize": 3080,
+      "sha256": "631457eabe64ea7edc22047997c12d3a82aa7a005fa542cdf5b0a67ecd3d5950"
     },
     {
       "path": "skills/pre-handoff-verification/EVAL.md",
@@ -9181,8 +9181,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 2291,
-      "sha256": "fc167d22bf8a5144c7ca202c384093d17dbc7853584f4e628775d15bf9b14c0e"
+      "byteSize": 3936,
+      "sha256": "238eb73df35fb47eb6a64c65e81cccc0b51f1b8bf9da485b4140181b59fbbed6"
     },
     {
       "path": "skills/pre-handoff-verification/references/text-only-mode-handling.md",
@@ -9406,8 +9406,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 15592,
-      "sha256": "1d25fe4c09d1febbf0de1e7a9218a76dd8ba7e7cd19a2a925452506fac7662f7"
+      "byteSize": 15630,
+      "sha256": "71aea22e109f7564ae99c70da5befabf32864d1318d411e912cce50962fee2ac"
     },
     {
       "path": "skills/product-hero-scene-planner/contract.json",
@@ -9481,8 +9481,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 502,
-      "sha256": "36ee626c3ffc1670013488c5b80d0022e1eb47b6f5f5ac2ca93eb980495c829f"
+      "byteSize": 1376,
+      "sha256": "498f3fa4859a2c8fc6a8fed14eb449ef0667347664aac3e1d9f840536a497d2a"
     },
     {
       "path": "skills/r3f-component-plan/EVAL.md",
@@ -9916,8 +9916,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 584,
-      "sha256": "745e6d975abe810102811bef4ee6f38ae204f93a7ad9c37913539e9adf452499"
+      "byteSize": 1814,
+      "sha256": "0fa7857b22c915778e95fd16bb5717716cb9f8fb701dd2dcfbbc018a29c424de"
     },
     {
       "path": "skills/runtime-attempt-report/references/truth-label-blocks.md",
@@ -9931,8 +9931,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 824,
-      "sha256": "33a9e24f2777f392f477a38a7b63e65d7c246c57033a83ce8d8377f0423f8823"
+      "byteSize": 1444,
+      "sha256": "d403e69c4bd1b4d973a70282650402d2d2e81e4e38e32a0ecfd09c47db723088"
     },
     {
       "path": "skills/runtime-path-picker/EVAL.md",
@@ -9991,8 +9991,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 635,
-      "sha256": "8b79ecf7dc4298d849f40306f240c8afa3b529751ab99d2b961d988c33d4a5c0"
+      "byteSize": 1532,
+      "sha256": "e081d8c3f7c326b179b6fdbcd8b92b6f446e0155bf6578236960f4a3b833c5dd"
     },
     {
       "path": "skills/runtime-path-picker/references/decision-tree.md",
@@ -10006,8 +10006,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 592,
-      "sha256": "67008477eee733e4e43028084988e9db7108c53c6e63010c9ec6349a73c65bcd"
+      "byteSize": 1892,
+      "sha256": "80204c05cf1ab0d314d98c3965b41203e1e45cd99fcb5644c551c6bb3b4b3915"
     },
     {
       "path": "skills/runtime-path-picker/references/path-constraints-table.md",
@@ -10021,8 +10021,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 870,
-      "sha256": "13260e2c6dab49681a07194362784b3ba8d54e1b4f78b41ffebb8a09ec5e1442"
+      "byteSize": 1771,
+      "sha256": "45dce42201ba974c4712349439f793610caa52f33cb2930727dc3395fcb12f2f"
     },
     {
       "path": "skills/runtime-readiness/EVAL.md",
@@ -10051,8 +10051,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 11836,
-      "sha256": "49c9f7f97c67b309c4419eef3c1c019aa48f9f85f85bc16b239190bb4ebe4b7a"
+      "byteSize": 11880,
+      "sha256": "27a4ad121b326a5ca6f35e99a05f76d80faa71e2b5c6ab10a8d9de260f59f98d"
     },
     {
       "path": "skills/runtime-readiness/contract.json",
@@ -10081,8 +10081,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 360,
-      "sha256": "1cce3c03c7eb329350619fd14a54ce12ba117e9ac07a676c7f71d62b00bd154a"
+      "byteSize": 1763,
+      "sha256": "8aced1a7975a5a78a42277d89469a50e4f380360fe3cf84d1ab967680b164659"
     },
     {
       "path": "skills/runtime-readiness/references/evidence-examples.md",
@@ -10141,8 +10141,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 13320,
-      "sha256": "2385877f6b98575b5c4281ff673848a1117999832c49e327e05a53ba9ac250ad"
+      "byteSize": 13372,
+      "sha256": "da2abaabaac7b85c88da0257784850aada9eef9d4a1630f0b8a4f93c660ac6d4"
     },
     {
       "path": "skills/runtime-setup/contract.json",
@@ -10171,8 +10171,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 753,
-      "sha256": "9a120d21628fc8bca71a36cb40b8b7a4c45c50eaab48292b45a8c30cd07e6f5a"
+      "byteSize": 1799,
+      "sha256": "2526fb0386cb4d7a50e1106878d5949a76028a3b613bbb44872f96aae7f8bf02"
     },
     {
       "path": "skills/runtime-setup/references/setup-summary-template.md",
@@ -10231,8 +10231,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 12385,
-      "sha256": "635e6710ae2945a86d139a637b0030ea8510d27a6593ec16973bab4b5b3a2031"
+      "byteSize": 12440,
+      "sha256": "7a00a20e1a7fc7eb52662a7401797ae6a50a44e142f4f6280e179fd5d243bc54"
     },
     {
       "path": "skills/scene-readiness/contract.json",
@@ -10291,8 +10291,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 389,
-      "sha256": "16dd635780b376a5df8540e4e94d19c27ecdd2be5770dd9f8e9cfc592c0ca8de"
+      "byteSize": 1253,
+      "sha256": "279de892ab5f1675f9bf7a6da3900978d7829ec54afe9de9b0437f1e7f8e0f3f"
     },
     {
       "path": "skills/scene-readiness/references/verdict-language.md",

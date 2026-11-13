@@ -60,12 +60,16 @@ These are LLM hosts, not coding agents. They don't have project-local-file conve
 | LM Studio | [lm-studio.md](./lm-studio.md) | `mcp.json` (Cursor-compatible notation) | linked-only |
 | Open WebUI | [open-webui.md](./open-webui.md) | Admin Settings → External Tools → Streamable HTTP MCP | linked-only |
 
+### 4) Open Agent Skills CLI (`skills.sh`) & Local Installer Targets (`35+` agents)
+
+BlendOps ships a root [`skills.sh.json`](../../skills.sh.json) grouping manifest organizing all 48 skills across 8 domain groups (`npx skills add ThanhNguyxnOrg/blendops`), plus `35+` canonical target skill directory mappings in `scripts/install-skills.mjs` (`--with-skills-dir`) backed by deterministic SHA-256 Lockfile v2 hashes (`.blendops/skills-lock.json`).
+
 ### Generic / future
 
 | Target | Doc | Selected mode | Confidence |
 |---|---|---|---|
 | Generic project | [generic-project.md](./generic-project.md) | project-local install fallback (when target type is unknown) | verified-read fallback |
-| Local installer & CLI spec | [installer-spec.md](./installer-spec.md) | local/tarball CLI (`bin/blendops.mjs`, `scripts/install-skills.mjs`) | Implemented locally; unpublished (`"private": true`) |
+| Local installer & CLI spec | [installer-spec.md](./installer-spec.md) | local/tarball CLI (`bin/blendops.mjs`, `scripts/install-skills.mjs`, `--with-skills-dir`) | Implemented locally; unpublished (`"private": true`) |
 
 ## Shared rules
 

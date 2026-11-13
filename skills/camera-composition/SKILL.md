@@ -1,6 +1,6 @@
 ---
 name: camera-composition
-description: Provide detailed composition and camera planning for product hero outputs.
+description: Plan hero camera framing, 35-105mm focal lengths, composition hierarchy, and web copy-safe negative space before lighting or rendering.
 ---
 
 # camera-composition

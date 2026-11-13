@@ -1,6 +1,6 @@
 ---
 name: glb-web-handoff
-description: Prepare truthful GLB/web handoff output with explicit artifact status, assumptions, and caveats.
+description: Prepare truthful GLB web handoff docs for Three.js, R3F, Godot, UE5, and Unity with Meshopt/KTX2 budgets, tone parity, and status caveats.
 ---
 
 # glb-web-handoff

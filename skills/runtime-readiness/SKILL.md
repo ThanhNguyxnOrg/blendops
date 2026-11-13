@@ -1,6 +1,6 @@
 ---
 name: runtime-readiness
-description: Evaluate whether official runtime appears ready using evidence-bound checks and explicit readiness states.
+description: Run evidence-bound Blender MCP readiness checks (version floor, add-on active, port collisions, handshake) -> Ready/Partially Ready/Not Ready/Unknown.
 ---
 
 # runtime-readiness

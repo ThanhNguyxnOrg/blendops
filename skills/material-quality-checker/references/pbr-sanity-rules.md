@@ -49,5 +49,30 @@ For glTF, prefer ORM channel-packed:
 
 Saves draw calls and file size. Other packings exist but ORM is the glTF convention.
 
+## Real-world PBR numeric lookup (Principled BSDF)
+
+Use these calibrated starting ranges when reviewing material plans or snapshots (`Roughness` linear; `Base Color` calibrated, never clipped):
+
+| Surface | Base Color (linear range) | Metallic | Roughness | IOR | Notes |
+|---|---|---|---|---|---|
+| Charcoal / Soot | `0.03–0.06` | `0.0` | `0.80–0.95` | `1.50` | Never pure `(0,0,0)` |
+| Matte plastic / ABS | `0.05–0.75` | `0.0` | `0.35–0.65` | `1.46–1.55` | Add ±15–25% subtle roughness variation |
+| Glossy lacquered plastic | `0.05–0.80` | `0.0` | `0.08–0.22` | `1.49` | Optional subtle Clearcoat (`Coat Weight`) |
+| Unfinished / natural wood | `0.15–0.45` warm brown | `0.0` | `0.50–0.80` | `1.50` | Lacquered wood drops roughness to `0.15–0.30` |
+| Brushed steel / iron | `(0.54, 0.56, 0.58)` | `1.0` | `0.25–0.45` | — | Use `Anisotropic` for directional brush lines |
+| Chrome / mirror metal | `(0.55, 0.56, 0.56)` | `1.0` | `0.02–0.10` | — | Pure mirror `0.0` still flags Warn; use `0.02+` |
+| Brushed aluminum | `(0.91, 0.92, 0.93)` | `1.0` | `0.20–0.40` | `1.39` | Metal tint sits cleanly below `0.95` |
+| Gold | `(1.00, 0.77, 0.34)` | `1.0` | `0.10–0.35` | — | Saturated metallic tint, never diffuse yellow |
+| Copper | `(0.95, 0.64, 0.54)` | `1.0` | `0.12–0.38` | — | Oxidized patina shifts to non-metallic green |
+| Glass / crystal | `(0.95, 0.98, 1.00)` | `0.0` | `0.01–0.08` | `1.50–1.52` | Requires `Transmission Weight` + thickness check |
+| Water (clear) | `(0.95, 0.98, 1.00)` | `0.0` | `0.01–0.05` | `1.333` | Refractive web viewers require `KHR_materials_transmission` |
+| Fabric / cloth | `0.08–0.75` | `0.0` | `0.75–0.95` | `1.50` | Pair with `Sheen Weight` for velvet/cotton |
+
+## Surface realism layering & shader hygiene (Blender 4.x / 5.x)
+
+- **Flat roughness smells synthetic**: Flag uniform scalar roughness on hero props if variation (`±15–25%` micro breakup) is missing.
+- **Physical wear stack**: Realistic weathered materials layer from inside out: **clean base → convex edge wear (metal/primer) → rust in cavities → crevice grime `(1 − AO)` → top-facing dust (`+Z` normal)**. For glTF/game targets, complex procedural masks must be baked to texture maps before export.
+- **5.x API safety**: Treat `material.use_nodes` as legacy/deprecated in Blender 5.x (materials carry node trees natively), resolve `Principled BSDF` inputs by name (`Specular IOR Level`, `Coat Weight`, `Transmission Weight`), and verify transparency mode (`DITHERED` cutout vs `BLENDED` glass) matches consumer capability.
+
 ## Related skill
 `../SKILL.md`

@@ -22,3 +22,25 @@ Run all 7 before any handoff. Each must Pass (or be N/A in text-only mode for ch
 | Read-only smoke evidence | Required | Required (check 6 especially important) |
 | Mutation / render / export claim | Required | Required |
 | Final user-facing response | Required | Required if response cites runtime claims |
+
+## The Iron Law & Red Flags (Anti-Rationalization)
+
+> **Violating the letter of the verification gate is violating the spirit of the verification gate. NO `Verified` or `Produced` CLAIM WITHOUT FRESH, INSPECTABLE EVIDENCE.**
+
+### Red Flags — STOP and Downgrade Immediately
+
+- Using hedging language as proof ("should work", "probably rendered", "looks clean", "seems ready")
+- Expressing completion before running checks ("Done!", "Perfect!", "Ship it!")
+- Treating a read-only smoke test as evidence that scene mutation, rendering, or GLB export succeeded
+- Treating Path 2 (`mcp-for-blender`) transcripts as official Draft/Release certification
+- Citing an old or unlinked pre-existing file without proving current-run provenance
+
+### Rationalization Prevention Table
+
+| Excuse | Reality |
+|---|---|
+| "The MCP call returned success, so the artifact is Verified." | A tool call transcript without a verified disk path and validation notes stays capped at `Produced` (or `Attempted`). |
+| "I already inspected the render mentally / from code." | Visual and structural checks require inspectable output artifacts; mental confidence is not evidence. |
+| "Just this once, the user knows what I mean by 'ready'." | Vague claims hide failure states. Name one exact state (`Not Run` / `Attempted` / `Produced` / `Verified` / `Failed`). |
+| "The smoke test passed, so Path 1 works end-to-end." | Smoke pass confirms read-only connectivity only (`Artifact status: Not Produced`). Never extrapolate to render/export. |
+| "Different wording means the 7-point gate doesn't apply." | Paraphrases of "finished" or "complete" trigger the same 7 checks. |

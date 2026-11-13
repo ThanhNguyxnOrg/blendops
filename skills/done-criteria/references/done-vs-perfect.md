@@ -44,5 +44,13 @@ Sometimes the stop condition is met but the result feels disappointing. In this 
 - Disappointment indicates the stop condition was the wrong target.
 - Document as a learning for the next recipe; do not extend this one silently.
 
+## Rationalization prevention table
+
+| Excuse | Reality |
+|---|---|
+| "Let me add one extra camera bevel/polish before stopping." | Polish past the written stop condition is silent scope creep. Stop and route to handoff. |
+| "The scene looks great, so the stop condition doesn't matter." | Subjectivity cannot replace the agreed acceptance row. Verify the row or downgrade to `Pending`. |
+| "I'll adjust the stop condition slightly to match what was built." | Moving the goalpost after execution corrupts truth discipline. Route to `scope-guard`. |
+
 ## Related skill
 `../SKILL.md`

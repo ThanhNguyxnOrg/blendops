@@ -1,6 +1,6 @@
 ---
 name: product-hero-scene-planner
-description: Generate a complete product-hero scene plan from non-Blender-user intent with explicit assumptions and gates.
+description: Build a complete product-hero scene plan (dimensions, Z=0 anchor, 6-face silhouette guard, lighting, camera, quality gates) from plain user intent.
 ---
 
 # product-hero-scene-planner

@@ -17,12 +17,12 @@
 [![Path 2 user-reported: verified](https://img.shields.io/badge/path%202%20user--reported-verified-2ea44f.svg?style=flat-square)](./docs/unofficial-runtime-bridges.md)
 [![Full runtime eval: Not Run](https://img.shields.io/badge/full%20runtime%20eval-Not%20Run-lightgrey.svg?style=flat-square)](./docs/release-readiness-rollup-v0.md)
 [![Artifacts: Not Produced](https://img.shields.io/badge/artifacts-Not%20Produced-lightgrey.svg?style=flat-square)](./docs/release-readiness-rollup-v0.md)
-[![Release: v0.7.0-draft](https://img.shields.io/github/v/release/ThanhNguyxnOrg/blendops?include_prereleases&label=release&color=2ea44f&style=flat-square)](https://github.com/ThanhNguyxnOrg/blendops/releases/tag/v0.7.0-draft)
+[![Release: v0.9.0-draft](https://img.shields.io/github/v/release/ThanhNguyxnOrg/blendops?include_prereleases&label=release&color=2ea44f&style=flat-square)](https://github.com/ThanhNguyxnOrg/blendops/releases/tag/v0.9.0-draft)
 
 [![Skills: 48](https://img.shields.io/badge/skills-48-1f6feb.svg?style=flat-square)](./skills/README.md)
 [![Laws: 4](https://img.shields.io/badge/laws-4-1f6feb.svg?style=flat-square)](./laws/README.md)
 [![Packs: 1](https://img.shields.io/badge/packs-1-1f6feb.svg?style=flat-square)](./packs/README.md)
-[![Install targets: 26](https://img.shields.io/badge/install%20targets-26-1f6feb.svg?style=flat-square)](./docs/install/README.md)
+[![Install docs: 26 • CLI targets: 35+](https://img.shields.io/badge/install%20docs-26%20%E2%80%A2%20CLI%20targets%2035%2B-1f6feb.svg?style=flat-square)](./docs/install/README.md)
 [![Adapters: 6](https://img.shields.io/badge/adapters-6-1f6feb.svg?style=flat-square)](./docs/adapters/README.md)
 [![Bundles: 3](https://img.shields.io/badge/bundles-3-1f6feb.svg?style=flat-square)](./bundles/)
 
@@ -84,18 +84,39 @@ Human intent (non-Blender user)
 | 48 skills (baseline + web 3D deep + quality validators + domain planners + process discipline + asset/sourcing + color/format/output + recipe/pack ops + runtime path discipline, …) | **Path 1 — Blender Lab MCP** (Lab add-on + Lab server). Owner: Blender Foundation. Source: [blender.org/lab/mcp-server](https://www.blender.org/lab/mcp-server/) |
 | 4 laws (evidence-before-done, official-runtime-only, no-arbitrary-python-interface, non-blender-user-language) | **Path 1 host (a) — Anthropic Blender Connector** (Claude-Desktop-specific MCP host). Owner: Anthropic. Source: [claude.com/.../using-the-blender-connector-in-claude](https://claude.com/resources/tutorials/using-the-blender-connector-in-claude) |
 | 1 pack (`product-hero-v0`), 3 bundles (skill-package, claude-desktop-manual, generic-project-local) | **Path 2 — Community `mcp-for-blender` (formerly `blender-mcp`)** (different add-on/server). Owner: mature community project. Source: [github.com/ahujasid/mcp-for-blender](https://github.com/ahujasid/mcp-for-blender) |
-| 26 install target docs + 3 mode auto-detect install flow | **CLI fallback** (`blender --background --python ...`). Owner: Blender Foundation. Source: [docs.blender.org/manual/.../command_line](https://docs.blender.org/manual/en/latest/advanced/command_line/index.html) |
+| 26 install target docs + **35+ CLI targets** (`--with-skills-dir`, `skills.sh.json`, `skills-lock.json` v2) + 3 mode auto-detect install flow | **CLI fallback** (`blender --background --python ...`). Owner: Blender Foundation. Source: [docs.blender.org/manual/.../command_line](https://docs.blender.org/manual/en/latest/advanced/command_line/index.html) |
 | Skill ZIP / OpenAI YAML / canonical bundle generation (`npm run skills:export` → 48 ZIPs, one per `skills/*/SKILL.md`) + distributable local CLI (`bin/blendops.mjs` / `scripts/install-skills.mjs`, packable via `npm pack`) + GLB 2.0 web handoff toolkit (`blendops glb-inspect`, `blendops glb-handoff`, `blendops glb-validate-manifest`, Three.js & R3F integration examples in [`docs/examples/glb-web-handoff/README.md`](./docs/examples/glb-web-handoff/README.md)) | The Blender executable, MCP servers, MCP host clients, OS, GPU drivers, network. |
 
 **What this means for "completeness":**
 
-- The **skills layer** (48 skills = 3× baseline + workflows + install docs + ZIP generation + CI guards) is **complete** at Draft v0 — nothing upstream blocks it. Milestones: tag `v0.4.0-draft` @ 40 skills, tag `v0.5.0-draft` @ 48 skills (full roadmap).
+- The **skills layer** (48 skills + 151 deep reference guides across 8 `skills.sh.json` groups + install docs + ZIP generation + deterministic CI guards) is **feature-complete for Draft v0** — nothing upstream blocks it. Milestones: `v0.4.0-draft` (40 skills) → `v0.5.0-draft` (48 skills) → `v0.8.0-draft` (hardening) → `v0.9.0-draft` (catalog & Phase 3.3 readiness).
 - Whether the **upstream runtime paths work in your environment** is up to upstream Blender Foundation / Anthropic / community `mcp-for-blender` (Path 1 + Path 2 are user-reported verified by the repo owner — operator statement, does not promote eval scope; CLI is upstream-documented). BlendOps **redirects** to them via per-target install docs but does not own their stability.
 - The "Full runtime eval: Not Run" / "Artifacts: Not Produced" labels refer to **in-repo provenance evidence files only** — operator-side records under `docs/evals/`. They do **not** mean "the upstream runtime paths don't work" or "BlendOps is incomplete."
 
 ---
 
+## 🧭 10-Second Skill Decision Tree
+
+Start at `blendops-help` or jump straight into the narrowest group from [`skills.sh.json`](./skills.sh.json) and [`skills/README.md`](./skills/README.md):
+
+```txt
+Goal unclear or messy request? ──▶ blendops-help / blender-brainstorming ──▶ intent-to-3d-brief-writer
+Know what you want to build?    ──▶ recipe-fit-assessor / workflow-stage-router
+                                    ├─ Product / Catalog ──▶ product-hero-scene-planner / product-grid-scene-planner
+                                    ├─ Character / Env   ──▶ character-portrait / environment-shot / interior-scene
+                                    └─ Complex (4+ steps)──▶ blender-recipe-decomposer ──▶ stage-gates ──▶ done-criteria
+Need visual / budget checks?    ──▶ lighting-quality-checker • material-quality-checker • composition-quality-checker • polycount-budget-checker
+Need render / format rules?     ──▶ color-management-decision • cycles-vs-eevee-decision • resolution-aspect-decision • output-format-decision
+Ready for Web 3D / GLB?         ──▶ mobile-glb-budget ──▶ glb-animation-handoff / r3f-component-plan ──▶ glb-web-handoff
+Setting up or auditing runtime? ──▶ runtime-path-picker ──▶ runtime-readiness ──▶ runtime-attempt-report (or bridge-conflicts)
+Ready to deliver / claim Pass?  ──▶ scene-readiness ──▶ render-export-evidence ──▶ pre-handoff-verification ──▶ plain-language-response
+```
+
+---
+
 ## ⚡ Use in 30 seconds
+
+### Option 1 — Universal Agent Prompt (works in any chat or IDE agent)
 
 Paste this into any AI agent:
 
@@ -111,7 +132,20 @@ Auto-detect your environment first, then pick one mode:
 Do not install Blender, configure runtime connectors, run Blender, or claim generated artifacts. Report the selected mode, files changed or ZIP filenames, runtime status, artifact status, and limitations.
 ```
 
-The agent auto-detects which mode applies. Coding agents (Claude Code, Cursor, Codex, OpenCode, Cline, Roo Code, Blackbox AI, Continue, Zed, Windsurf, Trae, Augment Code, goose, OpenHands, JetBrains Junie, Sourcegraph Cody, Aider, Amazon Q Developer, Gemini, Copilot, Antigravity) hit **Mode A** and install **project-locally**. Claude Desktop / Claude.ai / ChatGPT chats hit **Mode B** and output **separate ZIPs from skills/*/SKILL.md** (one per skill, 48 total) for you to drag-drop into the Skills UI manually. Anything else falls back to **Mode C — blocked-needs-input**. Full mode logic in [`docs/ai-agent-install-flow.md`](./docs/ai-agent-install-flow.md).
+### Option 2 — Direct `skills.sh` or Project-Local CLI Install
+
+```bash
+# Via skills.sh ecosystem (pulls portable SKILL.md folders cleanly via skills.sh.json)
+npx skills add ThanhNguyxnOrg/blendops
+
+# Or from a local clone using the repository installer (supports 35+ targets + Lockfile v2)
+npm run skills:install -- --target universal --with-skills-dir --write
+```
+
+> [!NOTE]
+> `package.json` intentionally retains `"private": true` (`npm package: Not Published` — no `npx blendops` registry package exists yet). Runtime status stays `Not Run` and artifact status stays `Not Produced` on install.
+
+The agent auto-detects which mode applies. Coding agents (Claude Code, Cursor, Codex, OpenCode, Cline, Roo Code, Blackbox AI, Continue, Zed, Windsurf, Trae, Augment Code, goose, OpenHands, JetBrains Junie, Sourcegraph Cody, Aider, Amazon Q Developer, Gemini, Copilot, Antigravity, Kiro, Amp, Droid, Kilo, OpenClaw, ClawdBot, VS Code, universal `.agents/skills/`) hit **Mode A** and install **project-locally**. Claude Desktop / Claude.ai / ChatGPT chats hit **Mode B** and output **separate ZIPs from skills/*/SKILL.md** (one per skill, 48 total) for you to drag-drop into the Skills UI manually. Anything else falls back to **Mode C — blocked-needs-input**. Full mode logic in [`docs/ai-agent-install-flow.md`](./docs/ai-agent-install-flow.md).
 
 ---
 

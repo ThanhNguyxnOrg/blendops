@@ -1,6 +1,6 @@
 ---
 name: asset-license-checker
-description: Verify license compliance for downloaded 3D assets, textures, HDRIs, fonts before scene build or export.
+description: Audit commercial rights, CC-BY attribution, NC/SA traps, and brand/trademark restrictions for downloaded 3D meshes, HDRIs, textures, and fonts.
 ---
 
 # asset-license-checker

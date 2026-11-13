@@ -36,7 +36,7 @@ cd blendops
 npm install
 ```
 
-Node 18 or newer is required.
+Node 20 or newer is required.
 
 ---
 
@@ -46,13 +46,15 @@ Run the full CI suite before opening a PR. GitHub Actions runs `npm run ci` and 
 
 ```bash
 npm run docs:check               # validates active markdown files, frontmatter spec, runtime model, link integrity, Blender 5.1+ for Path 1, evidence rules
+npm run catalog:check            # validates knowledge-sources (20), knowledge-catalog (30), recipe-catalog (10), and retrieval evals (90/90)
+npm run operations:check         # validates deterministic 18-operation MCP/CLI orchestrator contracts
 npm run arch:check               # validates repository inventory classification, root policy, duplicate rules, and internal references
 npm run registry:check           # verifies registry/skills.json and registry/workflow-graph.json match skills/*/contract.json
 npm run evals:check              # validates evals/*.json against schemas/skill-eval.schema.json
-npm run evals:run                # runs deterministic behavioral evaluations across all 48 skills
+npm run evals:run                # runs deterministic behavioral evaluations across all 48 skills (269 cases)
 npm run bundles:summaries:check  # verifies 96 generated bundle reference summaries are in sync
 npm run skills:export            # produces one ZIP + one Claude Code folder per skills/*/SKILL.md (48 total) into dist/claude-skills/
-npm test                         # runs all phase regression test suites (test-phase1.mjs .. test-phase13.mjs)
+npm test                         # runs all phase regression test suites (test-phase1.mjs .. test-phase19.mjs)
 ```
 
 Or run the entire pipeline with the single convenience script:

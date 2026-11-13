@@ -14,6 +14,10 @@ In the GLB web handoff reporting stage (`blendops glb-inspect` / `blendops glb-h
 - Material, texture storage (`bufferView` vs external URI), and compression decoder (`DRACOLoader`, `MeshoptDecoder`, `KTX2Loader`) caveats explicit
 - Next verification actions explicit
 
+- Web compression & budget hints explicit: prefer `EXT_meshopt_compression` + WebP (`q85`) or KTX2/Basis (`--texture-compress ktx2`), or `Draco` when decoding speed allows; target `<= 2–5 MB` per hero GLB (`<= 10–20 MB` scene, `<= 50–100` draw calls on mobile web)
+- Tone-mapping parity documented: match Blender `Khronos PBR Neutral` with Three.js `NeutralToneMapping` + `SRGBColorSpace`
+- Non-web engine hints (if multi-target delivery requested alongside GLB): Godot import suffixes (`-col`, `-colonly`, `-convcolonly`, `-loop`); Unreal FBX/Interchange (`UCX_` collisions, DirectX `-Y` normal, ORM packing); Unity FBX (`Humanoid` root at world origin facing `-Y`)
+
 ## Good example
 Includes `Runtime status: Not Run` and `Artifact status: Not Produced` (or current-run evidence-backed status) alongside the 4-tier validation summary and decoder setup notes.
 

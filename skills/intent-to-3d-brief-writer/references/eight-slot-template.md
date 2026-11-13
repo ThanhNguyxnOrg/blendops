@@ -12,6 +12,8 @@ Use this exact template for every brief. Fill or mark `Unknown` per slot. The br
 ## 1. Subject
 
 <what the scene is about — plain language, no Blender jargon>
+- Reference images / target silhouette: <URL/file paths if provided, or `Unknown`>
+- Approximate real-world scale & orientation: <metric bounds if known; default ground Z = 0, facing -Y>
 
 ## 2. Mood / style
 

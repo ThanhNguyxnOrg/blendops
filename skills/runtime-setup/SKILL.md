@@ -1,6 +1,6 @@
 ---
 name: runtime-setup
-description: Establish official runtime prerequisites and setup boundaries before any Blender execution claim.
+description: Establish Blender runtime prerequisites before execution claims across Path 1 Lab MCP (5.1+), Path 2 mcp-for-blender (3.0+), and single-bridge rules.
 ---
 
 # runtime-setup
