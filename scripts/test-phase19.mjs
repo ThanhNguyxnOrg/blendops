@@ -59,7 +59,14 @@ import {
   runRuntimeAndExecutionCliSubcommand,
 } from './runtime-orchestrator.mjs';
 
-import { runInstaller } from './install-skills.mjs';
+import {
+  runInstaller,
+  AGENT_SKILLS_SH_DIRECTORY_MAP,
+  computeSkillEntriesLockHash,
+  computeSkillFolderLockHash,
+  buildSkillsLockJsonV2,
+  validateSkillsShConfig,
+} from './install-skills.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -1184,10 +1191,20 @@ describe('Phase 3.3 — Secure Async MCP Client, Runtime Trust Verification & Go
     }
   });
 
-  it('Group H: Multi-provider installer supports all 21 coding-agent targets with conservative BLENDOPS.md fallback and Anthropic skill-creator frontmatter compliance', () => {
+  it('Group H: Multi-provider installer supports all coding-agent targets with conservative BLENDOPS.md fallback and Anthropic skill-creator frontmatter compliance', () => {
     const tmpProviderDir = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-p33-providers-'));
     try {
-      for (const providerTarget of ['windsurf', 'cline', 'roo-code', 'aider', 'amazon-q-developer']) {
+      for (const providerTarget of [
+        'windsurf',
+        'cline',
+        'roo-code',
+        'aider',
+        'amazon-q-developer',
+        'universal',
+        'kiro-cli',
+        'roo',
+        'gemini-cli',
+      ]) {
         const proj = path.join(tmpProviderDir, providerTarget);
         fs.mkdirSync(proj, { recursive: true });
         const dryRes = runInstaller(['--dry-run', '--target', providerTarget, '--project', proj]);
@@ -1204,5 +1221,137 @@ describe('Phase 3.3 — Secure Async MCP Client, Runtime Trust Verification & Go
       fs.rmSync(tmpProviderDir, { recursive: true, force: true });
     }
   });
+
+  it('Group I: skills.sh / vercel-labs/skills ecosystem integration — skills.sh.json validation, Lockfile v2 computedHash test vectors, and --with-skills-dir + --skill transactional install & rollback', () => {
+    // 1. Validate root skills.sh.json covers all 48 canonical skills across 8 domain groupings
+    const shValidation = validateSkillsShConfig(REPO_ROOT);
+    assert.equal(
+      shValidation.valid,
+      true,
+      `Expected skills.sh.json to be valid, got: ${shValidation.errors.join('; ')}`,
+    );
+    assert.equal(shValidation.groupCount, 8);
+    assert.equal(shValidation.skillCount, 48);
+
+    // 2. Verify computeSkillEntriesLockHash & computeSkillFolderLockHash against official vercel-labs/skills Lockfile v2 test vectors
+    assert.equal(
+      computeSkillEntriesLockHash([]),
+      'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',
+    );
+    assert.equal(
+      computeSkillEntriesLockHash([{ relPath: 'SKILL.md', content: '# hi\n' }]),
+      '93c36952d8843b33e68ae970ebabcc03e1687c9bb0dd1ecaf357060318952f55',
+    );
+    assert.equal(
+      computeSkillEntriesLockHash([
+        { relPath: 'docs/b.md', content: 'b\n' },
+        { relPath: 'SKILL.md', content: 'a\r\n' }, // CRLF normalized to LF for text
+        { relPath: 'metadata.json', content: '{"ignored":true}\n' }, // excluded per spec
+        { relPath: '__pycache__/foo.pyc', content: 'ignored' }, // excluded per spec
+      ]),
+      'b22c4d22aa319d2924312fa18fcbfedc88fa89c74dbd8f298c683e1caf7b7f24',
+    );
+
+    // 3. Verify buildSkillsLockJsonV2 across all 48 canonical BlendOps skills
+    const fullLock = buildSkillsLockJsonV2(REPO_ROOT);
+    assert.equal(fullLock.version, 2);
+    assert.equal(Object.keys(fullLock.skills).length, 48);
+    for (const [slug, entry] of Object.entries(fullLock.skills)) {
+      assert.equal(entry.source, 'ThanhNguyxnOrg/blendops');
+      assert.equal(entry.sourceType, 'github');
+      assert.equal(entry.skillPath, `skills/${slug}/SKILL.md`);
+      assert.match(entry.computedHash, /^[a-f0-9]{64}$/);
+    }
+
+    // 4. Verify --with-skills-dir (and --skills-sh) + --skill across multiple skills.sh agent providers with full rollback
+    const tmpSkillsShDir = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-p33-skillssh-'));
+    try {
+      const providerChecks = [
+        { target: 'universal', expectedDir: '.agents/skills' },
+        { target: 'claude-code', expectedDir: '.claude/skills' },
+        { target: 'windsurf', expectedDir: '.windsurf/skills' },
+        { target: 'roo', expectedDir: '.roo/skills' },
+        { target: 'kiro-cli', expectedDir: '.kiro/skills' },
+      ];
+
+      for (const { target, expectedDir } of providerChecks) {
+        assert.equal(AGENT_SKILLS_SH_DIRECTORY_MAP[target], expectedDir);
+        const proj = path.join(tmpSkillsShDir, target);
+        fs.mkdirSync(proj, { recursive: true });
+
+        const dryRes = runInstaller([
+          'install',
+          '--dry-run',
+          '--target',
+          target,
+          '--project',
+          proj,
+          '--with-skills-dir',
+          '--skill',
+          'camera-composition,scene-readiness',
+        ]);
+        assert.equal(dryRes.ok, true);
+        assert.ok(
+          dryRes.filesCreated.includes(`${expectedDir}/camera-composition/SKILL.md`),
+          `Expected ${expectedDir}/camera-composition/SKILL.md in dry-run plan`,
+        );
+        assert.ok(dryRes.filesCreated.includes('skills-lock.json'));
+
+        const writeRes = runInstaller([
+          'install',
+          '--write',
+          '--target',
+          target,
+          '--project',
+          proj,
+          '--with-skills-dir',
+          '--skill',
+          'camera-composition,scene-readiness',
+        ]);
+        assert.equal(writeRes.ok, true);
+        assert.equal(writeRes.runtimeStatus, 'Not Run');
+        assert.equal(writeRes.artifactStatus, 'Not Produced');
+
+        const installedSkillDir = path.join(proj, expectedDir, 'camera-composition');
+        assert.ok(fs.existsSync(path.join(installedSkillDir, 'SKILL.md')));
+        const lockJson = JSON.parse(fs.readFileSync(path.join(proj, 'skills-lock.json'), 'utf8'));
+        assert.equal(lockJson.version, 2);
+        assert.deepEqual(Object.keys(lockJson.skills), ['camera-composition', 'scene-readiness']);
+        assert.equal(
+          computeSkillFolderLockHash(installedSkillDir),
+          lockJson.skills['camera-composition'].computedHash,
+          'Installed skill folder computedHash must match skills-lock.json v2 entry byte-for-byte',
+        );
+
+        // Verify clean rollback removes skills-lock.json and the installed skill directories
+        const rbRes = runInstaller(['rollback', '--project', proj]);
+        assert.equal(rbRes.ok, true);
+        assert.equal(fs.existsSync(path.join(proj, 'skills-lock.json')), false);
+        assert.equal(fs.existsSync(installedSkillDir), false);
+      }
+
+      // Negative test: unknown --skill slug fails closed
+      const badProj = path.join(tmpSkillsShDir, 'bad-skill');
+      fs.mkdirSync(badProj, { recursive: true });
+      assert.throws(
+        () =>
+          runInstaller([
+            'install',
+            '--dry-run',
+            '--target',
+            'universal',
+            '--project',
+            badProj,
+            '--with-skills-dir',
+            '--skill',
+            'non-existent-blender-skill',
+          ]),
+        /Unknown canonical skill 'non-existent-blender-skill'/,
+      );
+    } finally {
+      fs.rmSync(tmpSkillsShDir, { recursive: true, force: true });
+    }
+  });
 });
+
 

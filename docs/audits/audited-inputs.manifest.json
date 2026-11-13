@@ -55,6 +55,7 @@
     "docs/unofficial-runtime-bridges.md",
     "package-lock.json",
     "package.json",
+    "skills.sh.json",
     "scripts/build-knowledge-catalog.mjs",
     "scripts/build-registry.mjs",
     "scripts/check-docs.mjs",

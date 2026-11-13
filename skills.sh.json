@@ -1,0 +1,102 @@
+{
+  "$schema": "https://skills.sh/schemas/skills.sh.schema.json",
+  "notGrouped": "bottom",
+  "groupings": [
+    {
+      "title": "Workflow & Intake",
+      "description": "Guided intake, brainstorming, 3D briefs, stage routing, scope guards, acceptance gates, and plain-language reporting for non-Blender users.",
+      "skills": [
+        "blendops-help",
+        "blender-brainstorming",
+        "intent-to-3d-brief-writer",
+        "workflow-stage-router",
+        "stage-gates",
+        "scope-guard",
+        "done-criteria",
+        "acceptance-criteria-builder",
+        "plain-language-response"
+      ]
+    },
+    {
+      "title": "Scene Planning",
+      "description": "Domain scene planners, recipe decomposition, fit assessment, and pack prerequisite checks before touching Blender.",
+      "skills": [
+        "product-hero-scene-planner",
+        "product-grid-scene-planner",
+        "character-portrait",
+        "environment-shot",
+        "interior-scene",
+        "blender-recipe-decomposer",
+        "recipe-fit-assessor",
+        "pack-prerequisite-checker"
+      ]
+    },
+    {
+      "title": "Camera, Lighting & Materials",
+      "description": "Camera framing, lighting rigs, PBR material planning, AgX/Filmic color management, and quality validators.",
+      "skills": [
+        "camera-composition",
+        "lighting-material-plan",
+        "composition-quality-checker",
+        "lighting-quality-checker",
+        "material-quality-checker",
+        "color-management-decision"
+      ]
+    },
+    {
+      "title": "Assets & Budgets",
+      "description": "3D asset discovery, license verification, style consistency, fallback strategies, library planning, and polycount/GLB budgets.",
+      "skills": [
+        "asset-discovery",
+        "asset-license-checker",
+        "asset-style-check",
+        "asset-fallback-strategy",
+        "asset-library-plan",
+        "polycount-budget-checker",
+        "mobile-glb-budget"
+      ]
+    },
+    {
+      "title": "Render & Output",
+      "description": "Cycles vs EEVEE engine selection, resolution and aspect ratio decisions, output format selection, preview reports, and export evidence.",
+      "skills": [
+        "cycles-vs-eevee-decision",
+        "resolution-aspect-decision",
+        "output-format-decision",
+        "preview-report",
+        "render-export-evidence"
+      ]
+    },
+    {
+      "title": "Scene Verification",
+      "description": "Pre-render scene readiness checks, pre-handoff verification gates, and deterministic Blender troubleshooting.",
+      "skills": [
+        "scene-readiness",
+        "pre-handoff-verification",
+        "blender-troubleshooting"
+      ]
+    },
+    {
+      "title": "Web 3D & GLB",
+      "description": "Production GLB web handoff, skeletal/keyframe animation handoff, and React Three Fiber (R3F) component planning.",
+      "skills": [
+        "glb-web-handoff",
+        "glb-animation-handoff",
+        "r3f-component-plan"
+      ]
+    },
+    {
+      "title": "Runtime & MCP",
+      "description": "2-path Blender MCP runtime setup, readiness checks, Path 1/Path 2/CLI selection, bridge conflict detection, and truth-state attempt reports.",
+      "skills": [
+        "runtime-setup",
+        "runtime-readiness",
+        "runtime-path-picker",
+        "path-one-host-outline",
+        "cli-appendix-job-outline",
+        "bridge-conflicts",
+        "runtime-attempt-report"
+      ]
+    }
+  ]
+}

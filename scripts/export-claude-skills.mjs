@@ -36,6 +36,7 @@ const PROTECTED_REPO_ENTRIES = new Set([
   'TODO.md',
   'package.json',
   'package-lock.json',
+  'skills.sh.json',
 ]);
 
 function resolveWithExistingAncestorRealpath(targetPath) {

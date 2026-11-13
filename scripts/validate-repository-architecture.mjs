@@ -26,6 +26,7 @@ export const ALLOWED_ROOT_FILES = new Set([
   'TODO.md',
   'package-lock.json',
   'package.json',
+  'skills.sh.json',
 ]);
 
 export const ALLOWED_ROOT_DIRECTORIES = new Set([
@@ -126,6 +127,11 @@ export function classifyTrackedFile(relPath, pkgFiles = []) {
         ? 'Canonical package manifest, CLI bin mapping, tarball allowlist, and CI scripts'
         : 'Deterministic npm dependency lockfile for reproducible CI and consumer installs';
     owningSubsystem = 'package-governance';
+    referencedByCi = true;
+  } else if (relPath === 'skills.sh.json') {
+    classification = 'configuration';
+    purpose = 'Canonical skills.sh repository grouping and catalog customization manifest for all 48 skills';
+    owningSubsystem = 'skills-catalog';
     referencedByCi = true;
   } else if (
     relPath === '.gitignore' ||

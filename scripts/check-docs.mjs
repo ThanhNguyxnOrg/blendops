@@ -9,6 +9,7 @@ import {
   validateKnowledgeAndRecipeCatalogs,
   runCatalogRetrievalEvals,
 } from './build-knowledge-catalog.mjs';
+import { validateSkillsShConfig } from './install-skills.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const root = process.cwd();
@@ -1074,6 +1075,16 @@ export function runDocsCheck(targetRoot = root) {
         for (const f of catEval.failures) {
           errors.push(`catalog-retrieval-eval: ${f}`);
         }
+      }
+    }
+  }
+
+  const skillsShPath = path.join(targetRoot, 'skills.sh.json');
+  if (fs.existsSync(skillsShPath)) {
+    const shVal = validateSkillsShConfig(targetRoot);
+    if (!shVal.valid) {
+      for (const e of shVal.errors) {
+        errors.push(`skills.sh.json: ${e}`);
       }
     }
   }

@@ -2,8 +2,8 @@
   "schemaVersion": "1.0.0",
   "auditPhase": "phase-13-current",
   "summary": {
-    "totalTrackedFiles": 695,
-    "npmPackageIncludedFiles": 483,
+    "totalTrackedFiles": 696,
+    "npmPackageIncludedFiles": 484,
     "generatedTrackedFiles": 110,
     "canonicalSkillsCount": 48,
     "lawsCount": 4,
@@ -12,7 +12,7 @@
     "installTargetsCount": 26,
     "exactDuplicateGroupsCount": 1,
     "classificationCounts": {
-      "configuration": 32,
+      "configuration": 33,
       "documentation": 84,
       "historical_record": 26,
       "distribution_artifact": 15,
@@ -40,10 +40,10 @@
       "ci-and-build-generators": 9,
       "test-suites": 19,
       "quality-and-skill-reviews": 7,
-      "skills-catalog": 297
+      "skills-catalog": 298
     },
     "topLevelCounts": {
-      "(root)": 14,
+      "(root)": 15,
       ".github": 9,
       "bin": 1,
       "bundles": 130,
@@ -79,7 +79,8 @@
       "SUPPORT.md",
       "TODO.md",
       "package-lock.json",
-      "package.json"
+      "package.json",
+      "skills.sh.json"
     ],
     "allowedRootDirectories": [
       ".github",
@@ -345,8 +346,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 4587,
-      "sha256": "30422ed2bfc266d076aacad6fb594315360267fe0f96003527db082815d213df"
+      "byteSize": 4911,
+      "sha256": "d08205ff399fbabc50f9e4fb9d125c11bc84ba6cc4a4526c9c950cd154cab882"
     },
     {
       "path": "CODE_OF_CONDUCT.md",
@@ -2625,8 +2626,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 3482,
-      "sha256": "373247d7fd0e743bab85d4a09716e82ffe1396dc003611850134e924cb34af24"
+      "byteSize": 3504,
+      "sha256": "ced6faf18e191987caa25a11e60d7b0bf408b0ec5d5de6ca8b16c8af929b904c"
     },
     {
       "path": "docs/audits/current/README.md",
@@ -5025,8 +5026,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 4469,
-      "sha256": "4707cabac90bf916d5acdabd44d347641abc79b9eb952bff21849a06eeb6e54d"
+      "byteSize": 4491,
+      "sha256": "05046cdfaa93a088fd75b33531127be8d43b5c0e6d8ab57ffbdd65d50acf65f3"
     },
     {
       "path": "packs/README.md",
@@ -5490,8 +5491,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 45411,
-      "sha256": "038af61e59e62a6ec08219c4691d43fe310a999706a647b6725adac2c348ef86"
+      "byteSize": 45755,
+      "sha256": "cc08990e5236f02075c52700850366f27f9f546bd26e37e857ba3566edb0f28f"
     },
     {
       "path": "scripts/compile-scene-plan.mjs",
@@ -5520,8 +5521,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 131060,
-      "sha256": "52ad1a4b23b72f074dcc1f419bd94218c096a906da5ca548a50c9bfe3007c7fa"
+      "byteSize": 137956,
+      "sha256": "5d487a8fbdeb4da2fe59b797eee1b7281e6f0b4621cd5fcc12737010499204df"
     },
     {
       "path": "scripts/export-claude-skills.mjs",
@@ -5535,8 +5536,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 21102,
-      "sha256": "e28e6d2fe0b4c15ee98e44f3ece57c4c0feea1ee6ee534d2fa92919366b79283"
+      "byteSize": 21122,
+      "sha256": "4925a58f063566310f07230ed6c5c4268b6d7a6d9bf0c56f2941ab17d4264b8b"
     },
     {
       "path": "scripts/generate-bundle-reference-summaries.mjs",
@@ -5610,8 +5611,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 174595,
-      "sha256": "9ef15d34ee8cfb3306f1b064874b80c5ebfd210bc1e00aaaea2cf9ba3d346916"
+      "byteSize": 193651,
+      "sha256": "eea6e3adbacafde0adb765fecb1bce26930b7ce6716cf41e02d98e7111c8bb15"
     },
     {
       "path": "scripts/run-evals.mjs",
@@ -5820,8 +5821,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 46769,
-      "sha256": "17d1504b2bf49d7131f13b847b580bf060109c53f98b3104a1858dd1dd7812ff"
+      "byteSize": 52598,
+      "sha256": "58fc19f426e284c1004cb6470b47623c1f5e8e0eef6e778ff44e27c1a550b90f"
     },
     {
       "path": "scripts/test-phase2.mjs",
@@ -6000,8 +6001,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 31976,
-      "sha256": "b17cf263ce980142f7bedbf713e8f26f03e690bc8e37b7480675c85b2d689e70"
+      "byteSize": 32256,
+      "sha256": "9917ce953bbc9aefdda5baa40ae9b75b4ed5980cd662d31ef7d542868d5c0a5c"
     },
     {
       "path": "skill-reviews/README.md",
@@ -6107,6 +6108,21 @@
       "safeToMoveOrRemove": false,
       "byteSize": 2425,
       "sha256": "fc1d550acd5b391f9e21f4a2b2831a75d094794a2c2d1c313401275c1ad891af"
+    },
+    {
+      "path": "skills.sh.json",
+      "fileType": ".json",
+      "classification": "configuration",
+      "purpose": "Canonical skills.sh repository grouping and catalog customization manifest for all 48 skills",
+      "owningSubsystem": "skills-catalog",
+      "includedInNpmPackage": true,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 3425,
+      "sha256": "786359fb1500c24c0ffa5800970449079395473614bb2e234efb4d880d870610"
     },
     {
       "path": "skills/README.md",

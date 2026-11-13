@@ -1456,6 +1456,55 @@ export function getPhase2DeliverableFile(rootDir, filename) {
       // continue
     }
   }
+
+  // Self-healing fallback: if dist/ artifacts were stripped across a container restart
+  // and .git is available, regenerate the Phase 3.3 bundle or source ZIP on demand.
+  const isPhase33Bundle =
+    filename === 'blendops-phase3.3-secure-async-mcp-client.bundle' ||
+    filename === 'blendops-phase3.3.bundle';
+  const isPhase33Zip = filename === 'blendops-phase3.3-source.zip';
+  if ((isPhase33Bundle || isPhase33Zip) && fs.existsSync(path.join(rootDir, '.git'))) {
+    const distDir = path.join(rootDir, 'dist');
+    const outPath = path.join(distDir, filename);
+    const tmpPath = path.join(
+      os.tmpdir(),
+      `.blendops-regen-${process.pid}-${Date.now()}-${crypto.randomBytes(4).toString('hex')}-${filename}`,
+    );
+    try {
+      if (isPhase33Bundle) {
+        execFileSync('git', ['bundle', 'create', tmpPath, 'HEAD', 'refs/heads/main'], {
+          cwd: rootDir,
+          encoding: 'utf8',
+          stdio: ['ignore', 'pipe', 'pipe'],
+        });
+        execFileSync('git', ['bundle', 'verify', tmpPath], {
+          cwd: rootDir,
+          encoding: 'utf8',
+          stdio: ['ignore', 'pipe', 'pipe'],
+        });
+      } else {
+        execFileSync('git', ['archive', '--format=zip', '--output', tmpPath, 'HEAD'], {
+          cwd: rootDir,
+          encoding: 'utf8',
+          stdio: ['ignore', 'pipe', 'pipe'],
+        });
+      }
+      fs.mkdirSync(distDir, { recursive: true });
+      fs.copyFileSync(tmpPath, outPath);
+      const buffer = fs.readFileSync(outPath);
+      const sha256 = crypto.createHash('sha256').update(buffer).digest('hex');
+      return { exists: true, filename, sourcePath: outPath, size: buffer.length, sha256, buffer };
+    } catch {
+      // fall through to exists: false
+    } finally {
+      try {
+        fs.rmSync(tmpPath, { force: true });
+      } catch {
+        // ignore cleanup error
+      }
+    }
+  }
+
   return { exists: false, filename, sourcePath: null, size: 0, sha256: null, buffer: null };
 }
 
@@ -1807,20 +1856,33 @@ function renderHtml(options = {}) {
     <section id="phase3-3-latest-delivery-section" class="card" style="border:2px solid var(--green);background:rgba(34,197,94,0.18);margin-bottom:24px;">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:16px;">
         <div>
-          <div style="font-size:15px;font-weight:800;color:var(--green);text-transform:uppercase;letter-spacing:0.05em;">BlendOps Phase 3.3 (Secure Async MCP Client, Runtime Trust Verification &amp; Multi-Provider Skills Installer) — Download Deliverables</div>
+          <div style="font-size:15px;font-weight:800;color:var(--green);text-transform:uppercase;letter-spacing:0.05em;">BlendOps Phase 3.3 (Secure Async MCP Client, Runtime Trust Verification &amp; skills.sh Multi-Provider Installer) — Download Deliverables</div>
           <div class="mono" style="font-size:12px;margin-top:6px;color:var(--muted);">
-            Phase 2: <strong>09fe432</strong> &middot; Phase 3: <strong>7973308</strong> &middot; Phase 3.1: <strong>9a1686d</strong> &middot; Phase 3.2: <strong>bd1812a</strong> &middot; MCP SDK: <strong>@modelcontextprotocol/sdk@1.32.2</strong> &middot; Providers: <strong>24 Targets</strong> &middot; CI Suites: <strong>19/19 PASS (293/293 Tests)</strong>
+            Phase 2: <strong>09fe432</strong> &middot; Phase 3: <strong>7973308</strong> &middot; Phase 3.1: <strong>9a1686d</strong> &middot; Phase 3.2: <strong>bd1812a</strong> &middot; MCP SDK: <strong>@modelcontextprotocol/sdk@1.32.2</strong> &middot; Skills: <strong>48 (skills.sh.json)</strong> &middot; Providers: <strong>35+ Targets</strong> &middot; CI Suites: <strong>19/19 PASS (294/294 Tests)</strong>
           </div>
+          ${(() => {
+            const p33Primary = getPhase2DeliverableFile(rootDir, 'blendops-phase3.3-secure-async-mcp-client.bundle');
+            return p33Primary.exists
+              ? `<div class="mono" style="font-size:11px;margin-top:6px;color:var(--text);">Primary Bundle: <strong>${p33Primary.size.toLocaleString()} bytes</strong> &middot; SHA-256: <strong>${p33Primary.sha256}</strong></div>`
+              : '';
+          })()}
         </div>
         <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+          ${(() => {
+            const p33Primary = getPhase2DeliverableFile(rootDir, 'blendops-phase3.3-secure-async-mcp-client.bundle');
+            return p33Primary.exists
+              ? `<button id="download-phase33-blob-btn" class="btn" style="background:var(--green);color:#022c22;font-size:13px;padding:10px 16px;" onclick="downloadPhase33Deliverable('/dist/${p33Primary.filename}', '${p33Primary.filename}', '${p33Primary.sha256}', ${p33Primary.size})">Save Verified 3.3 Bundle (Blob) (${Math.max(1, Math.round(p33Primary.size / 1024))} KB)</button>`
+              : '';
+          })()}
           ${PHASE3_3_DELIVERABLES.map((item) => {
             const info = getPhase2DeliverableFile(rootDir, item.filename);
             return info.exists
-              ? `<a class="btn" style="background:var(--green);color:#022c22;text-decoration:none;display:inline-block;font-size:13px;padding:10px 16px;" href="/dist/${item.filename}" download="${item.filename}">${item.label} (${Math.max(1, Math.round(info.size / 1024))} KB)</a>`
+              ? `<a class="btn" style="background:var(--surface-2);color:var(--text);border:1px solid var(--green);text-decoration:none;display:inline-block;font-size:13px;padding:10px 16px;" href="/dist/${item.filename}" download="${item.filename}">${item.label} (${Math.max(1, Math.round(info.size / 1024))} KB)</a>`
               : `<span class="badge" style="color:var(--muted);">${item.filename} (preparing)</span>`;
           }).join('')}
         </div>
       </div>
+      <div id="phase33-download-status" class="mono" style="font-size:12px;color:var(--green);margin-top:10px;display:none;"></div>
     </section>
     <section id="phase3-2-latest-delivery-section" class="card" style="border:2px solid var(--green);background:rgba(34,197,94,0.14);margin-bottom:24px;">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:16px;">
@@ -2649,6 +2711,76 @@ function renderHtml(options = {}) {
         if (btn) btn.disabled = true;
       }
     }
+    async function downloadPhase33Deliverable(urlPath, expectedFilename, expectedSha256, expectedSize) {
+      var status = document.getElementById('phase33-download-status');
+      try {
+        if (status) {
+          status.style.display = 'block';
+          status.style.color = 'var(--blue)';
+          status.textContent = 'Fetching and verifying ' + expectedFilename + '...';
+        }
+        var resp = await fetch(urlPath, { cache: 'no-store' });
+        if (!resp.ok || resp.status !== 200) {
+          throw new Error('HTTP ' + resp.status + ' fetching ' + urlPath);
+        }
+        var ab = await resp.arrayBuffer();
+        var bytes = new Uint8Array(ab);
+        if (expectedSize > 0 && bytes.byteLength !== expectedSize) {
+          throw new Error('Size mismatch: expected ' + expectedSize + ', got ' + bytes.byteLength);
+        }
+        if (expectedFilename.endsWith('.bundle')) {
+          var headerAscii = String.fromCharCode.apply(null, Array.from(bytes.subarray(0, 16)));
+          if (headerAscii.indexOf('# v2 git bundle') !== 0 && headerAscii.indexOf('# v3 git bundle') !== 0) {
+            throw new Error('Invalid Git bundle header.');
+          }
+        }
+        var actualSha256 = await sha256HexFromBuffer(ab);
+        if (expectedSha256 && actualSha256 !== expectedSha256) {
+          throw new Error('SHA-256 mismatch: expected ' + expectedSha256 + ', got ' + actualSha256);
+        }
+        if (window.showSaveFilePicker) {
+          try {
+            var handle = await window.showSaveFilePicker({
+              suggestedName: expectedFilename,
+              types: [{ description: 'Git Bundle', accept: { 'application/octet-stream': ['.bundle'] } }]
+            });
+            var writable = await handle.createWritable();
+            await writable.write(bytes);
+            await writable.close();
+            if (status) {
+              status.style.display = 'block';
+              status.style.color = 'var(--green)';
+              status.textContent = 'Saved verified ' + expectedFilename + ' (' + bytes.byteLength.toLocaleString() + ' bytes, SHA-256: ' + actualSha256 + ').';
+            }
+            return;
+          } catch (_pickerErr) {
+            // Fall through to Blob download
+          }
+        }
+        var blob = new Blob([bytes], { type: 'application/octet-stream' });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = expectedFilename;
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(function () {
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+        }, 1500);
+        if (status) {
+          status.style.display = 'block';
+          status.style.color = 'var(--green)';
+          status.textContent = 'Downloaded verified ' + expectedFilename + ' (' + bytes.byteLength.toLocaleString() + ' bytes, SHA-256: ' + actualSha256 + ').';
+        }
+      } catch (err) {
+        if (status) {
+          status.style.display = 'block';
+          status.style.color = 'var(--red)';
+          status.textContent = 'Phase 3.3 download failed: ' + (err && err.message ? err.message : String(err));
+        }
+      }
+    }
   </script>
 </body>
 </html>`;
@@ -2712,6 +2844,24 @@ export function createDevServer(options = {}) {
         'Cache-Control': 'no-store',
       });
       res.end(p13_2.buffer);
+      return;
+    }
+
+    if (url === '/api/phase3-3-bundle-info') {
+      const info = getPhase2DeliverableFile(rootDir, 'blendops-phase3.3-secure-async-mcp-client.bundle');
+      res.writeHead(info.exists ? 200 : 404, {
+        'Content-Type': 'application/json',
+        'Cache-Control': 'no-store',
+      });
+      res.end(
+        JSON.stringify({
+          exists: info.exists,
+          filename: info.filename,
+          size: info.size,
+          sha256: info.sha256,
+          url: `/dist/${info.filename}`,
+        }),
+      );
       return;
     }
 

@@ -303,6 +303,110 @@ export const SUPPORTED_TARGETS = Object.freeze({
     requiresOut: false,
     description: 'Project-local generic BLENDOPS.md fallback; candidate .amazonq/rules/ loader unverified.',
   },
+  universal: {
+    id: 'universal',
+    confidence: 'linked-only',
+    scope: 'project-local',
+    requiresProject: true,
+    requiresOut: false,
+    description: 'Universal skills.sh target (.agents/skills/<name> when --with-skills-dir is used; BLENDOPS.md fallback by default).',
+  },
+  amp: {
+    id: 'amp',
+    confidence: 'linked-only',
+    scope: 'project-local',
+    requiresProject: true,
+    requiresOut: false,
+    description: 'Project-local BLENDOPS.md fallback; .agents/skills/<name> when --with-skills-dir is used.',
+  },
+  droid: {
+    id: 'droid',
+    confidence: 'linked-only',
+    scope: 'project-local',
+    requiresProject: true,
+    requiresOut: false,
+    description: 'Project-local BLENDOPS.md fallback; .agents/skills/<name> when --with-skills-dir is used.',
+  },
+  kilo: {
+    id: 'kilo',
+    confidence: 'linked-only',
+    scope: 'project-local',
+    requiresProject: true,
+    requiresOut: false,
+    description: 'Project-local BLENDOPS.md fallback; .agents/skills/<name> when --with-skills-dir is used.',
+  },
+  'kiro-cli': {
+    id: 'kiro-cli',
+    confidence: 'linked-only',
+    scope: 'project-local',
+    requiresProject: true,
+    requiresOut: false,
+    description: 'Project-local BLENDOPS.md fallback; .kiro/skills/<name> when --with-skills-dir is used.',
+  },
+  openclaw: {
+    id: 'openclaw',
+    confidence: 'linked-only',
+    scope: 'project-local',
+    requiresProject: true,
+    requiresOut: false,
+    description: 'Project-local BLENDOPS.md fallback; skills/<name> when --with-skills-dir is used.',
+  },
+  clawdbot: {
+    id: 'clawdbot',
+    confidence: 'linked-only',
+    scope: 'project-local',
+    requiresProject: true,
+    requiresOut: false,
+    description: 'Project-local BLENDOPS.md fallback; skills/<name> when --with-skills-dir is used.',
+  },
+  roo: {
+    id: 'roo',
+    confidence: 'linked-only',
+    scope: 'project-local',
+    requiresProject: true,
+    requiresOut: false,
+    description: 'skills.sh alias for roo-code (.roo/skills/<name> when --with-skills-dir is used; BLENDOPS.md fallback by default).',
+  },
+  'gemini-cli': {
+    id: 'gemini-cli',
+    confidence: 'linked-only',
+    scope: 'project-local',
+    requiresProject: true,
+    requiresOut: false,
+    description: 'skills.sh alias for gemini (.agents/skills/<name> when --with-skills-dir is used; BLENDOPS.md fallback by default).',
+  },
+  augment: {
+    id: 'augment',
+    confidence: 'linked-only',
+    scope: 'project-local',
+    requiresProject: true,
+    requiresOut: false,
+    description: 'skills.sh alias for augment-code (.augment/skills/<name> when --with-skills-dir is used; BLENDOPS.md fallback by default).',
+  },
+  junie: {
+    id: 'junie',
+    confidence: 'linked-only',
+    scope: 'project-local',
+    requiresProject: true,
+    requiresOut: false,
+    description: 'skills.sh alias for jetbrains-junie (.junie/skills/<name> when --with-skills-dir is used; BLENDOPS.md fallback by default).',
+  },
+  'aider-desk': {
+    id: 'aider-desk',
+    confidence: 'linked-only',
+    scope: 'project-local',
+    requiresProject: true,
+    requiresOut: false,
+    description: 'Project-local BLENDOPS.md fallback; .aider-desk/skills/<name> when --with-skills-dir is used.',
+  },
+  vscode: {
+    id: 'vscode',
+    confidence: 'linked-only',
+    scope: 'project-local',
+    requiresProject: true,
+    requiresOut: false,
+    description: 'Project-local BLENDOPS.md fallback; .agents/skills/<name> when --with-skills-dir is used.',
+  },
   'generic-project': {
     id: 'generic-project',
     confidence: 'verified-read',
@@ -319,6 +423,44 @@ export const SUPPORTED_TARGETS = Object.freeze({
     requiresOut: true,
     description: 'User-managed manual import/upload package under --out (48 per-skill ZIPs + manual bundle); no UI automation.',
   },
+});
+
+export const AGENT_SKILLS_SH_DIRECTORY_MAP = Object.freeze({
+  universal: '.agents/skills',
+  'generic-project': '.agents/skills',
+  amp: '.agents/skills',
+  antigravity: '.agents/skills',
+  cline: '.agents/skills',
+  codex: '.agents/skills',
+  cursor: '.agents/skills',
+  droid: '.agents/skills',
+  gemini: '.agents/skills',
+  'gemini-cli': '.agents/skills',
+  'github-copilot': '.agents/skills',
+  kilo: '.agents/skills',
+  opencode: '.agents/skills',
+  zed: '.agents/skills',
+  vscode: '.agents/skills',
+  'claude-code': '.claude/skills',
+  windsurf: '.windsurf/skills',
+  'roo-code': '.roo/skills',
+  roo: '.roo/skills',
+  continue: '.continue/skills',
+  'augment-code': '.augment/skills',
+  augment: '.augment/skills',
+  goose: '.goose/skills',
+  'jetbrains-junie': '.junie/skills',
+  junie: '.junie/skills',
+  'kiro-cli': '.kiro/skills',
+  openhands: '.openhands/skills',
+  trae: '.trae/skills',
+  'aider-desk': '.aider-desk/skills',
+  aider: '.aider-desk/skills',
+  'amazon-q-developer': '.amazonq/skills',
+  'blackbox-ai': '.blackbox/skills',
+  'sourcegraph-cody': '.cody/skills',
+  openclaw: 'skills',
+  clawdbot: 'skills',
 });
 
 const TARGET_DETECTION_MARKERS = Object.freeze([
@@ -406,6 +548,34 @@ const TARGET_DETECTION_MARKERS = Object.freeze([
     target: 'amazon-q-developer',
     markers: ['.amazonq'],
   },
+  {
+    target: 'amp',
+    markers: ['.amp'],
+  },
+  {
+    target: 'droid',
+    markers: ['.factory'],
+  },
+  {
+    target: 'kilo',
+    markers: ['.kilocode'],
+  },
+  {
+    target: 'kiro-cli',
+    markers: ['.kiro'],
+  },
+  {
+    target: 'openclaw',
+    markers: ['.openclaw'],
+  },
+  {
+    target: 'clawdbot',
+    markers: ['.clawdbot'],
+  },
+  {
+    target: 'aider-desk',
+    markers: ['.aider-desk'],
+  },
 ]);
 
 const PROTECTED_BLENDOPS_REPO_ENTRIES = new Set([
@@ -423,6 +593,7 @@ const PROTECTED_BLENDOPS_REPO_ENTRIES = new Set([
   'scripts',
   'skill-reviews',
   'skills',
+  'skills.sh.json',
 ]);
 
 function sha256Buffer(buf) {
@@ -666,6 +837,8 @@ export function parseInstallerArgs(argv = []) {
   let confirmTargetPath = false;
   let patchAgentsMd = false;
   let patchClaudeMd = false;
+  let withSkillsDir = false;
+  const skillsFilterRaw = [];
   let help = false;
   let version = false;
 
@@ -750,10 +923,30 @@ export function parseInstallerArgs(argv = []) {
       patchAgentsMd = true;
     } else if (arg === '--patch-claude-md') {
       patchClaudeMd = true;
+    } else if (arg === '--with-skills-dir' || arg === '--skills-sh') {
+      withSkillsDir = true;
+    } else if (arg === '--skill') {
+      const val = takeValue('--skill', null, argv, i);
+      for (const s of val.split(',')) {
+        const clean = s.trim();
+        if (clean) skillsFilterRaw.push(clean);
+      }
+      i += 1;
+    } else if (typeof arg === 'string' && arg.startsWith('--skill=')) {
+      const val = takeEqValue('--skill', null, arg);
+      for (const s of val.split(',')) {
+        const clean = s.trim();
+        if (clean) skillsFilterRaw.push(clean);
+      }
     } else {
       throw new Error(`Unknown or malformed CLI argument: ${String(arg)}`);
     }
   }
+
+  const skillsFilter =
+    skillsFilterRaw.length > 0
+      ? [...new Set(skillsFilterRaw)].sort((a, b) => (a < b ? -1 : a > b ? 1 : 0))
+      : null;
 
   if (allowGlobal) {
     throw new Error(
@@ -772,6 +965,8 @@ export function parseInstallerArgs(argv = []) {
       confirmTargetPath,
       patchAgentsMd,
       patchClaudeMd,
+      ...(withSkillsDir ? { withSkillsDir: true } : {}),
+      ...(skillsFilter ? { skillsFilter } : {}),
     };
   }
 
@@ -818,6 +1013,8 @@ export function parseInstallerArgs(argv = []) {
       confirmTargetPath,
       patchAgentsMd,
       patchClaudeMd,
+      ...(withSkillsDir ? { withSkillsDir: true } : {}),
+      ...(skillsFilter ? { skillsFilter } : {}),
     };
   }
 
@@ -879,6 +1076,8 @@ export function parseInstallerArgs(argv = []) {
     confirmTargetPath,
     patchAgentsMd,
     patchClaudeMd,
+    ...(withSkillsDir ? { withSkillsDir: true } : {}),
+    ...(skillsFilter ? { skillsFilter } : {}),
   };
 }
 
@@ -1090,6 +1289,252 @@ export function computeBlendOpsSourceFingerprint(repoRoot = DEFAULT_REPO_ROOT) {
     skillCount: skillNames.length,
     skillNames,
     sourceFileCount: sortedRelFiles.length,
+  };
+}
+
+const SKILLS_LOCK_EXCLUDED_DIRS = new Set(['.git', '__pycache__', '__pypackages__']);
+
+export function computeSkillEntriesLockHash(entries = []) {
+  if (!Array.isArray(entries)) {
+    throw new Error('computeSkillEntriesLockHash requires an array of { relPath, content } entries');
+  }
+  const normalized = [];
+  for (const item of entries) {
+    if (!item || typeof item.relPath !== 'string' || item.relPath.trim() === '') continue;
+    const relPosix = item.relPath.replace(/\\/g, '/').replace(/^\/+/, '');
+    const segments = relPosix.split('/').filter(Boolean);
+    if (segments.length === 0) continue;
+    if (segments.some((seg) => SKILLS_LOCK_EXCLUDED_DIRS.has(seg))) continue;
+    const baseName = segments[segments.length - 1];
+    if (baseName === 'metadata.json') continue;
+
+    const rawBuf = Buffer.isBuffer(item.content)
+      ? item.content
+      : Buffer.from(String(item.content ?? ''), 'utf8');
+    const isBinary = rawBuf.includes(0x00);
+    const contentBuf = isBinary
+      ? rawBuf
+      : Buffer.from(rawBuf.toString('utf8').replace(/\r\n/g, '\n'), 'utf8');
+    normalized.push({
+      relPath: segments.join('/'),
+      content: contentBuf,
+    });
+  }
+
+  normalized.sort((a, b) => compareCodeUnitOrder(a.relPath, b.relPath));
+
+  const hash = crypto.createHash('sha256');
+  for (const file of normalized) {
+    hash.update(Buffer.from(file.relPath, 'utf8'));
+    hash.update(Buffer.from([0]));
+    hash.update(Buffer.from(String(file.content.length), 'ascii'));
+    hash.update(Buffer.from([0]));
+    hash.update(file.content);
+  }
+  return hash.digest('hex');
+}
+
+export function computeSkillFolderLockHash(skillDir) {
+  if (typeof skillDir !== 'string' || skillDir.trim() === '' || !fs.existsSync(skillDir)) {
+    throw new Error(`Missing or invalid skill directory for lockfile hash: ${String(skillDir)}`);
+  }
+  const realSkillRoot = fs.realpathSync(skillDir);
+  const rootStat = fs.lstatSync(realSkillRoot);
+  if (!rootStat.isDirectory()) {
+    throw new Error(`Skill path is not a directory: ${skillDir}`);
+  }
+
+  const entries = [];
+  function walk(currDir, relPrefix) {
+    const dirItems = fs
+      .readdirSync(currDir, { withFileTypes: true })
+      .sort((a, b) => compareCodeUnitOrder(a.name, b.name));
+    for (const dirent of dirItems) {
+      if (SKILLS_LOCK_EXCLUDED_DIRS.has(dirent.name)) continue;
+      const childAbs = path.join(currDir, dirent.name);
+      const childRel = relPrefix ? `${relPrefix}/${dirent.name}` : dirent.name;
+      let lstat;
+      try {
+        lstat = fs.lstatSync(childAbs);
+      } catch {
+        continue;
+      }
+      if (lstat.isSymbolicLink()) {
+        let targetReal;
+        try {
+          targetReal = fs.realpathSync(childAbs);
+        } catch {
+          // Skip broken symlinks per vercel-labs/skills Lockfile v2 spec
+          continue;
+        }
+        const relToRoot = path.relative(realSkillRoot, targetReal);
+        if (relToRoot === '' || relToRoot.startsWith('..') || path.isAbsolute(relToRoot)) {
+          // Skip symlinks that escape the skill directory
+          continue;
+        }
+        const targetStat = fs.statSync(targetReal);
+        if (targetStat.isDirectory()) {
+          walk(targetReal, childRel);
+        } else if (targetStat.isFile() && dirent.name !== 'metadata.json') {
+          entries.push({ relPath: childRel, content: fs.readFileSync(targetReal) });
+        }
+        continue;
+      }
+      if (lstat.isDirectory()) {
+        walk(childAbs, childRel);
+      } else if (lstat.isFile()) {
+        if (dirent.name === 'metadata.json') continue;
+        entries.push({ relPath: childRel, content: fs.readFileSync(childAbs) });
+      }
+    }
+  }
+
+  walk(realSkillRoot, '');
+  return computeSkillEntriesLockHash(entries);
+}
+
+export function buildSkillsLockJsonV2(
+  repoRoot = DEFAULT_REPO_ROOT,
+  skillNames = null,
+  options = {},
+) {
+  const realRepoRoot = fs.existsSync(repoRoot) ? fs.realpathSync(repoRoot) : path.resolve(repoRoot);
+  const sourceSlug = options.source || 'ThanhNguyxnOrg/blendops';
+  const sourceType = options.sourceType || 'github';
+  const skillsRoot = path.join(realRepoRoot, 'skills');
+  const targetNames =
+    Array.isArray(skillNames) && skillNames.length > 0
+      ? [...new Set(skillNames)].sort(compareCodeUnitOrder)
+      : fs
+          .readdirSync(skillsRoot, { withFileTypes: true })
+          .filter((d) => d.isDirectory() && d.name !== '_template')
+          .map((d) => d.name)
+          .sort(compareCodeUnitOrder);
+
+  const skillsObj = {};
+  for (const name of targetNames) {
+    const skillDirAbs = path.join(skillsRoot, name);
+    const skillMdAbs = path.join(skillDirAbs, 'SKILL.md');
+    if (!fs.existsSync(skillMdAbs)) {
+      throw new Error(`Cannot build skills-lock.json v2: missing skills/${name}/SKILL.md`);
+    }
+    const computedHash = computeSkillFolderLockHash(skillDirAbs);
+    skillsObj[name] = {
+      source: sourceSlug,
+      sourceType,
+      skillPath: `skills/${name}/SKILL.md`,
+      computedHash,
+    };
+  }
+
+  return {
+    version: 2,
+    skills: skillsObj,
+  };
+}
+
+export function validateSkillsShConfig(repoRoot = DEFAULT_REPO_ROOT) {
+  const realRepoRoot = fs.existsSync(repoRoot) ? fs.realpathSync(repoRoot) : path.resolve(repoRoot);
+  const configPath = path.join(realRepoRoot, 'skills.sh.json');
+  const errors = [];
+  if (!fs.existsSync(configPath)) {
+    return {
+      valid: false,
+      errors: [`Missing skills.sh.json at ${configPath}`],
+      groupCount: 0,
+      skillCount: 0,
+      skills: [],
+    };
+  }
+
+  let parsed;
+  try {
+    parsed = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+  } catch (err) {
+    return {
+      valid: false,
+      errors: [`Invalid JSON in skills.sh.json: ${err.message}`],
+      groupCount: 0,
+      skillCount: 0,
+      skills: [],
+    };
+  }
+
+  if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
+    errors.push('skills.sh.json root must be a JSON object');
+    return { valid: false, errors, groupCount: 0, skillCount: 0, skills: [] };
+  }
+
+  if (parsed.$schema !== 'https://skills.sh/schemas/skills.sh.schema.json') {
+    errors.push(
+      `skills.sh.json $schema must be 'https://skills.sh/schemas/skills.sh.schema.json', got '${String(parsed.$schema)}'`,
+    );
+  }
+  if (
+    parsed.notGrouped !== undefined &&
+    parsed.notGrouped !== 'bottom' &&
+    parsed.notGrouped !== 'hide'
+  ) {
+    errors.push(
+      `skills.sh.json notGrouped must be 'bottom' or 'hide', got '${String(parsed.notGrouped)}'`,
+    );
+  }
+  if (!Array.isArray(parsed.groupings) || parsed.groupings.length < 1 || parsed.groupings.length > 50) {
+    errors.push('skills.sh.json groupings must be a non-empty array with 1..50 groups');
+  }
+
+  const canonicalSkillDirs = new Set(
+    fs
+      .readdirSync(path.join(realRepoRoot, 'skills'), { withFileTypes: true })
+      .filter((d) => d.isDirectory() && d.name !== '_template')
+      .map((d) => d.name),
+  );
+
+  const seenSkills = new Set();
+  const seenTitles = new Set();
+  for (const group of parsed.groupings || []) {
+    if (!group || typeof group !== 'object' || Array.isArray(group)) {
+      errors.push('Each entry in skills.sh.json groupings must be an object');
+      continue;
+    }
+    if (typeof group.title !== 'string' || group.title.trim().length === 0) {
+      errors.push('Every group in skills.sh.json must have a non-empty title');
+    } else if (seenTitles.has(group.title.trim())) {
+      errors.push(`Duplicate group title in skills.sh.json: '${group.title.trim()}'`);
+    } else {
+      seenTitles.add(group.title.trim());
+    }
+    if (!Array.isArray(group.skills) || group.skills.length < 1 || group.skills.length > 500) {
+      errors.push(`Group '${String(group.title)}' must have 1..500 skill slugs`);
+      continue;
+    }
+    for (const slug of group.skills) {
+      if (typeof slug !== 'string' || !/^[a-z0-9-]+$/.test(slug)) {
+        errors.push(`Invalid skill slug '${String(slug)}' in group '${String(group.title)}'`);
+        continue;
+      }
+      if (seenSkills.has(slug)) {
+        errors.push(`Duplicate skill slug '${slug}' across skills.sh.json groupings`);
+      }
+      seenSkills.add(slug);
+      if (!canonicalSkillDirs.has(slug)) {
+        errors.push(`Skill slug '${slug}' in skills.sh.json does not exist under skills/${slug}/SKILL.md`);
+      }
+    }
+  }
+
+  for (const canonical of [...canonicalSkillDirs].sort(compareCodeUnitOrder)) {
+    if (!seenSkills.has(canonical)) {
+      errors.push(`Canonical skill '${canonical}' is missing from skills.sh.json groupings`);
+    }
+  }
+
+  return {
+    valid: errors.length === 0,
+    errors,
+    groupCount: Array.isArray(parsed.groupings) ? parsed.groupings.length : 0,
+    skillCount: seenSkills.size,
+    skills: [...seenSkills].sort(compareCodeUnitOrder),
   };
 }
 
@@ -1635,6 +2080,8 @@ function buildProjectInstallPlan({
   confirmTargetPath,
   patchAgentsMd,
   patchClaudeMd = false,
+  withSkillsDir = false,
+  skillsFilter = null,
 }) {
   const detectedMarkers = detectProjectTargetMarkers(projectReal);
   const sourceInfo = computeBlendOpsSourceFingerprint(repoRootReal);
@@ -1913,6 +2360,87 @@ function buildProjectInstallPlan({
     }
   }
 
+  const normalizedSkillsFilter =
+    Array.isArray(skillsFilter) && skillsFilter.length > 0
+      ? [...new Set(skillsFilter)].sort(compareCodeUnitOrder)
+      : null;
+
+  if (normalizedSkillsFilter) {
+    for (const requestedSlug of normalizedSkillsFilter) {
+      if (!sourceInfo.skillNames.includes(requestedSlug)) {
+        throw new Error(
+          `Unknown canonical skill '${requestedSlug}' requested via --skill. Available skills (${sourceInfo.skillNames.length}): ${sourceInfo.skillNames.slice(0, 8).join(', ')}, ...`,
+        );
+      }
+    }
+  }
+
+  if (withSkillsDir) {
+    const skillsDirPrefix = AGENT_SKILLS_SH_DIRECTORY_MAP[selectedTarget] || '.agents/skills';
+    const selectedSkillNames = normalizedSkillsFilter || sourceInfo.skillNames;
+
+    // Remove skippedEntry for skillsDirPrefix if it was pushed earlier (e.g. .claude/skills/)
+    for (let sIdx = skippedEntries.length - 1; sIdx >= 0; sIdx -= 1) {
+      if (
+        skippedEntries[sIdx].path === `${skillsDirPrefix}/` ||
+        skippedEntries[sIdx].path === skillsDirPrefix
+      ) {
+        skippedEntries.splice(sIdx, 1);
+      }
+    }
+
+    function collectSkillFiles(absSkillDir, relSubPrefix = '') {
+      const items = fs
+        .readdirSync(absSkillDir, { withFileTypes: true })
+        .sort((a, b) => compareCodeUnitOrder(a.name, b.name));
+      const collected = [];
+      for (const item of items) {
+        if (SKILLS_LOCK_EXCLUDED_DIRS.has(item.name) || item.name === 'metadata.json') continue;
+        const absChild = path.join(absSkillDir, item.name);
+        const relChild = relSubPrefix ? `${relSubPrefix}/${item.name}` : item.name;
+        const childStat = fs.lstatSync(absChild);
+        if (childStat.isSymbolicLink()) continue;
+        if (childStat.isDirectory()) {
+          collected.push(...collectSkillFiles(absChild, relChild));
+        } else if (childStat.isFile()) {
+          collected.push({
+            relChild,
+            contentStr: fs.readFileSync(absChild, 'utf8'),
+          });
+        }
+      }
+      return collected;
+    }
+
+    for (const skillName of selectedSkillNames) {
+      const absSkillDir = path.join(repoRootReal, 'skills', skillName);
+      const skillFiles = collectSkillFiles(absSkillDir);
+      for (const sf of skillFiles) {
+        const targetSkillFileRel = `${skillsDirPrefix}/${skillName}/${sf.relChild}`;
+        catalogRelPaths.push(targetSkillFileRel);
+        operations.push(
+          planCatalogFileOperation(
+            projectReal,
+            targetSkillFileRel,
+            sf.contentStr,
+            previousManifest,
+          ),
+        );
+      }
+    }
+
+    const lockfileObj = buildSkillsLockJsonV2(repoRootReal, selectedSkillNames);
+    const lockfileContent = `${JSON.stringify(lockfileObj, null, 2)}\n`;
+    catalogRelPaths.push('skills-lock.json');
+    operations.push(
+      planCatalogFileOperation(projectReal, 'skills-lock.json', lockfileContent, previousManifest),
+    );
+
+    limitations.push(
+      `skills.sh directory mode (--with-skills-dir): materialized ${selectedSkillNames.length} canonical skill folder(s) into '${skillsDirPrefix}/<skill>/' and wrote 'skills-lock.json' (Lockfile v2 computedHash). Runtime status remains Not Run and Artifact status remains Not Produced.`,
+    );
+  }
+
   const filesToCreate = operations.filter((op) => op.action === 'create').map((op) => op.path);
   const filesToModify = operations.filter((op) => op.action === 'modify').map((op) => op.path);
   const backupsToCreate = operations
@@ -1954,6 +2482,8 @@ function buildProjectInstallPlan({
     confirmTargetPath: Boolean(confirmTargetPath),
     patchAgentsMd: Boolean(patchAgentsMd),
     ...(patchClaudeMd ? { patchClaudeMd: true } : {}),
+    ...(withSkillsDir ? { withSkillsDir: true } : {}),
+    ...(normalizedSkillsFilter ? { skillsFilter: normalizedSkillsFilter } : {}),
     sourceFingerprint: sourceInfo.fingerprint,
     detectedMarkers,
     targetStateSnapshot,
@@ -4013,6 +4543,8 @@ export function runInstaller(rawArgsOrOptions, options = {}) {
           confirmTargetPath: parsed.confirmTargetPath,
           patchAgentsMd: parsed.patchAgentsMd,
           patchClaudeMd: parsed.patchClaudeMd,
+          withSkillsDir: Boolean(parsed.withSkillsDir),
+          skillsFilter: parsed.skillsFilter || null,
         });
 
     if (fs.existsSync(planFilePath)) {
@@ -4125,6 +4657,8 @@ export function runInstaller(rawArgsOrOptions, options = {}) {
           confirmTargetPath: parsed.confirmTargetPath,
           patchAgentsMd: parsed.patchAgentsMd,
           patchClaudeMd: parsed.patchClaudeMd,
+          withSkillsDir: Boolean(parsed.withSkillsDir),
+          skillsFilter: parsed.skillsFilter || null,
         });
   } catch (err) {
     if (
@@ -4145,7 +4679,9 @@ export function runInstaller(rawArgsOrOptions, options = {}) {
     savedPlan.projectPath !== livePlan.projectPath ||
     savedPlan.confirmTargetPath !== livePlan.confirmTargetPath ||
     savedPlan.patchAgentsMd !== livePlan.patchAgentsMd ||
-    Boolean(savedPlan.patchClaudeMd) !== Boolean(livePlan.patchClaudeMd)
+    Boolean(savedPlan.patchClaudeMd) !== Boolean(livePlan.patchClaudeMd) ||
+    Boolean(savedPlan.withSkillsDir) !== Boolean(livePlan.withSkillsDir) ||
+    JSON.stringify(savedPlan.skillsFilter || null) !== JSON.stringify(livePlan.skillsFilter || null)
   ) {
     throw new Error(
       'Write mode refused: options or resolved target do not match the recorded --dry-run plan. Re-run --dry-run with matching arguments.',
@@ -4193,6 +4729,12 @@ function parseInstallerArgsFromObject(obj = {}) {
   if (obj.confirmTargetPath) argv.push('--confirm-target-path');
   if (obj.patchAgentsMd) argv.push('--patch-agents-md');
   if (obj.patchClaudeMd) argv.push('--patch-claude-md');
+  if (obj.withSkillsDir || obj.skillsSh) argv.push('--with-skills-dir');
+  if (Array.isArray(obj.skillsFilter) && obj.skillsFilter.length > 0) {
+    argv.push('--skill', obj.skillsFilter.join(','));
+  } else if (typeof obj.skill === 'string' && obj.skill.trim()) {
+    argv.push('--skill', obj.skill.trim());
+  }
   return parseInstallerArgs(argv);
 }
 
