@@ -9,10 +9,8 @@
     "canonicalSkills": "skills/*/SKILL.md"
   },
   "local": {
-    "valid": false,
-    "errors": [
-      "package.json repository must point to https://github.com/ThanhNguyxnOrg/blendops.git"
-    ],
+    "valid": true,
+    "errors": [],
     "package": {
       "name": "blendops",
       "version": "1.0.0",
