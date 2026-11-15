@@ -382,8 +382,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 4714,
-      "sha256": "e260622f9f1dd4644b9cb18003e5594a33c028d0efd093770da5c0bf7e7590ba"
+      "byteSize": 4712,
+      "sha256": "c249e25010c3bb090ef11d321cfbb2c9744aebe9f496d2ebba70a351c036f1f8"
     },
     {
       "path": "CODE_OF_CONDUCT.md",
