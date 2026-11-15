@@ -323,7 +323,7 @@
       "generatorScript": null,
       "safeToMoveOrRemove": false,
       "byteSize": 583,
-      "sha256": "8eca82264c9be7bad5d33975768d248245d99ab15757d07dd59d0e23d53ec7c2"
+      "sha256": "d67164efe9fa53e325f0d537a2ac4c16c3199db3e9633cea02ef6e3617335a29"
     },
     {
       "path": ".github/workflows/docs.yml",
@@ -338,7 +338,7 @@
       "generatorScript": null,
       "safeToMoveOrRemove": false,
       "byteSize": 5350,
-      "sha256": "ed3813786efaeca584fbfef15a8ebd9b93b248ac1fc22444bdd6a8821dae666b"
+      "sha256": "bdcb14e2a484fb99e090e45a16d89064cb47fa1539006c2b40592b2db74a34c2"
     },
     {
       "path": ".gitignore",
@@ -5557,8 +5557,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 56600,
-      "sha256": "1eb78e73a9155b655a0807b8e14e7ebde2538136f6d2acce9447287a0a34dab8"
+      "byteSize": 56398,
+      "sha256": "7f9b47e636ac7581b2e0cb9bc07940cf71ba30f0e03ff9522561b5bbd5da43ed"
     },
     {
       "path": "scripts/test-bundle-summaries.mjs",
@@ -5602,8 +5602,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 51959,
-      "sha256": "5a10d837cb0c30a7bb9b838d2462f7be4175bcb426aed097fe6d63523caf320b"
+      "byteSize": 51728,
+      "sha256": "b5229a9afd34a5f9f2fb315fce78b45acefc12b8c01bdb93c61ccab6974e0735"
     },
     {
       "path": "scripts/test-dev-server.mjs",
@@ -5722,8 +5722,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 25915,
-      "sha256": "e51b12e12bbd89dcffaa8cdbee0265276729b5d172cf4372bd97215f4dd86528"
+      "byteSize": 25684,
+      "sha256": "58d6b4c6e4d351f2503e092ce8ac386c1f8a107f14f85671aadea72da1cacb16"
     },
     {
       "path": "scripts/test-routing-contracts.mjs",
