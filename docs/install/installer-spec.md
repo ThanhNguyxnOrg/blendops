@@ -1,10 +1,10 @@
 # Local Installer & Distributable CLI Spec
 
-Status: Draft v0 — local repository script (`scripts/install-skills.mjs`) and distributable CLI (`bin/blendops.mjs`) implemented
+Status: 1.0.0 — local repository script (`scripts/install-skills.mjs`) and distributable CLI (`bin/blendops.mjs`) implemented
 Scope: project-local installer and tarball-packable CLI for BlendOps skill/law/pack attachment and manual Claude Desktop export prep
 
 > [!IMPORTANT]
-> `scripts/install-skills.mjs` is implemented as the local repository installer and verified by `scripts/test-phase10.mjs`, and `bin/blendops.mjs` provides the distributable CLI entrypoint verified via `npm pack` + consumer tarball installation in `scripts/test-phase11.mjs`. Historically in Phase 10: No `npx blendops` CLI, published npm package, or marketplace listing exists; in Phase 11, the `blendops` CLI is implemented for local and tarball installation while `"private": true` remains set so no published npm registry package or marketplace listing exists. Global installs (`--allow-global`) remain disabled in Phase 10 and Phase 11.
+> `scripts/install-skills.mjs` is implemented as the local repository installer and verified by `scripts/test-project-installer.mjs`, and `bin/blendops.mjs` provides the distributable CLI entrypoint verified via `npm pack` + consumer tarball installation in `scripts/test-cli-package.mjs`. No `npx blendops` CLI, published npm package, or marketplace listing exists (`"private": true` remains set in `package.json`). Global installs (`--allow-global`) remain disabled.
 
 ## Purpose
 
@@ -61,7 +61,7 @@ node scripts/install-skills.mjs --rollback --project /path/to/project
 
 ## Package readiness & publish-safety boundary
 
-- `package.json` declares `"bin": { "blendops": "bin/blendops.mjs" }`, runtime `"dependencies": { "fflate": "0.8.3" }`, and an explicit `"files"` allowlist so `npm pack` produces a self-contained tarball (`blendops-0.1.0-draft.tgz`) containing all 48 skills, 4 laws, 1 pack, bundles, registry files, schemas, and scripts while excluding test suites, dev server, audit snapshots, and `.git` artifacts.
+- `package.json` declares `"bin": { "blendops": "bin/blendops.mjs" }`, runtime `"dependencies": { "fflate": "0.8.3" }`, and an explicit `"files"` allowlist so `npm pack` produces a self-contained tarball (`blendops-1.0.0.tgz`) containing all 48 skills, 4 laws, 1 pack, bundles, registry files, schemas, and scripts while excluding test suites, dev server, audit snapshots, and `.git` artifacts.
 - Registry name check (verified 2026-10-31 via `npm view`): `blendops`, `@thanhnguyxn/blendops`, and `@blendops/cli` all return `404 Not Found` (`E404`) on `https://registry.npmjs.org` (all three names are available).
 - `"private": true` is intentionally retained in `package.json` to prevent accidental `npm publish` until an explicit human maintainer release decision.
 
@@ -82,7 +82,7 @@ node scripts/install-skills.mjs --rollback --project /path/to/project
 | `--confirm-target-path` | Explicit opt-in for documented `linked-only` project-local target files (`.cursor/rules/blendops.mdc` for `cursor` or `AGENTS.md` for `codex`). Never invents unverified directories. |
 | `--patch-agents-md` | Explicit opt-in to create or append a managed BlendOps section in `AGENTS.md` (with pre-install backup when `AGENTS.md` already exists). |
 | `--patch-claude-md` | Explicit opt-in to create or append a managed BlendOps section in `CLAUDE.md` (with pre-install backup when `CLAUDE.md` already exists). |
-| `--allow-global` | Rejected in Phase 10 and Phase 11. Global writes are disabled. |
+| `--allow-global` | Disabled. Global writes are not permitted. |
 
 ## Dry-run-before-write requirement
 
@@ -182,7 +182,7 @@ Manifest fields:
 
 | Field | Required content |
 |---|---|
-| installer_version | Script version or `unknown` during draft. |
+| installer_version | Script version (`1.0.0` or package version). |
 | timestamp | Local timestamp. |
 | target | Selected target. |
 | scope | `project-local`, `docs-only`, `bundle-output`, or explicitly approved `global`. |
@@ -272,9 +272,9 @@ It must not claim:
 
 Runtime status remains `Not Run`. Artifact status remains `Not Produced`.
 
-## Implementation gates before promotion
+## Regression gates enforced
 
-Before this spec becomes an implemented script, require:
+Automated tests verify:
 
 - dry-run tests for every target key
 - write-mode tests in disposable fixture projects

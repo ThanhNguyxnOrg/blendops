@@ -1,26 +1,26 @@
 #!/usr/bin/env node
 /**
- * BlendOps — Phase 15 (Phase 14.1 Hardening + Phase 2A/2B/2C Agent Consumption, SceneSpec & Skill Harmonizer) Test Suite
+ * BlendOps — Agent Consumption, SceneSpec & Skill Harmonizer Test Suite
  *
  * Covers:
- * 1. Phase 14.1 Hardening:
+ * 1. Architecture Audit & Schema Hardening:
  *    - Reconciled Skill Architecture Audit (48 skills, 151 reference files, 8 needs_semantic_review).
  *    - Real JSON Schema Draft 2020-12 (Ajv2020) enforcement and negative schema rejection tests.
  *    - Evidence-state promotion/demotion gate (`evaluateEvidencePromotionGate`).
  *    - Source authority tier taxonomy + Blender/glTF version applicability across all 30 knowledge records and 10 recipes.
  *    - Bilingual (Vietnamese + English) query normalization & 90-case retrieval evaluation suite (`evals/catalog-retrieval-evals.json`).
- * 2. Phase 2A Shared Catalog Distribution & Project-Local Consumption:
+ * 2. Shared Catalog Distribution & Project-Local Consumption:
  *    - Deterministic `dist/shared-catalog/blendops-knowledge-and-recipes.zip` generation (zero `SKILL.md` files).
  *    - Project-local `.blendops/catalog/*` installation, manifest SHA-256 tracking, and `--rollback` cleanup.
  *    - `--target claude-desktop --out <dir>` includes `shared-catalog/blendops-knowledge-and-recipes.zip`.
  *    - Standalone `catalog-search --project <dir>`, `catalog-resolve --project <dir>`, and `catalog-validate --project <dir>`.
- * 3. Phase 2B SceneSpec Schema & Fixture Validation:
+ * 3. SceneSpec Schema & Fixture Validation:
  *    - `schemas/scene-spec.schema.json` and `schemas/execution-plan.schema.json` compile under Ajv 2020-12.
  *    - All 8 valid fixtures pass `validateSceneSpec()`; `invalid-missing-required-fields.scene-spec.json` fails closed.
- * 4. Phase 2C Skill Harmonizer & Deterministic Conflict Resolution:
+ * 4. Skill Harmonizer & Deterministic Conflict Resolution:
  *    - All 8 valid fixtures compile into schema-valid `ExecutionPlan`s (`status: "ready"` or `"ready_with_warnings"`) with 7 canonical stages, recipe decomposition, parameter decisions, stage gates, required evidence packets, and `Not Run` / `Not Produced` truth states.
  *    - All 3 conflicting fixtures compile into `status: "blocked"` plans with exact blocking `conflict_id`s, 8-level precedence citations, knowledge IDs, and remediation steps.
- * 5. Section 5 CLI Integration:
+ * 5. CLI Integration:
  *    - `blendops scene-spec-validate`, `blendops plan-compile`, and `blendops plan-inspect` (human + `--json`, exit code 2 on blocked plans).
  */
 
@@ -64,11 +64,11 @@ const ROOT = path.resolve(__dirname, '..');
 const BIN_BLENDOPS = path.join(ROOT, 'bin', 'blendops.mjs');
 const INSTALL_SCRIPT = path.join(ROOT, 'scripts', 'install-skills.mjs');
 
-describe('Phase 15 — Phase 14.1 Hardening + Phase 2 (Agent Consumption, SceneSpec & Skill Harmonizer)', () => {
+describe('Agent Consumption, SceneSpec & Skill Harmonizer', () => {
   let tmpRoot;
 
   before(() => {
-    tmpRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-phase15-'));
+    tmpRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-harmonizer-'));
   });
 
   after(() => {
@@ -77,7 +77,7 @@ describe('Phase 15 — Phase 14.1 Hardening + Phase 2 (Agent Consumption, SceneS
     }
   });
 
-  test('1. Phase 14.1 Hardening — Reconciled Skill Architecture Audit, honest classification, Ajv2020 validation, evidence gate, provenance, and 90-case bilingual retrieval', () => {
+  test('1. Schema Hardening — Reconciled Skill Architecture Audit, honest classification, Ajv2020 validation, evidence gate, provenance, and 90-case bilingual retrieval', () => {
     // 1.1 Reconciled Skill Architecture Audit counts & honest classification metadata
     const audit = generateSkillArchitectureAuditData(ROOT);
     assert.equal(audit.summary.total_skills_audited, 48);
@@ -159,7 +159,7 @@ describe('Phase 15 — Phase 14.1 Hardening + Phase 2 (Agent Consumption, SceneS
     assert.equal(evalRes.passed_count, 90);
   });
 
-  test('2. Phase 2A — Shared Catalog Distribution (ZIP export, project-local .blendops/catalog/* install & rollback, and standalone --project CLI queries)', () => {
+  test('2. Shared Catalog Distribution — ZIP export, project-local .blendops/catalog/* install & rollback, and standalone --project CLI queries', () => {
     // 2.1 Verify exportSharedCatalogArchive builds shared-catalog/blendops-knowledge-and-recipes.zip with zero SKILL.md files
     const sharedOutDir = path.join(tmpRoot, 'shared-catalog-out');
     const sharedExportRes = exportSharedCatalogArchive(ROOT, sharedOutDir);
@@ -305,7 +305,7 @@ describe('Phase 15 — Phase 14.1 Hardening + Phase 2 (Agent Consumption, SceneS
     assert.ok(fs.existsSync(path.join(cdOutDir, 'shared-catalog', 'manifest.json')));
   });
 
-  test('3. Phase 2B — SceneSpec & ExecutionPlan JSON Schema Draft 2020-12 validation across valid and invalid fixtures', () => {
+  test('3. SceneSpec & ExecutionPlan JSON Schema Draft 2020-12 validation across valid and invalid fixtures', () => {
     const ajv = new Ajv2020({ allErrors: true, strict: false });
     const sceneSpecSchema = JSON.parse(
       fs.readFileSync(path.join(ROOT, 'schemas', 'scene-spec.schema.json'), 'utf8'),
@@ -344,7 +344,7 @@ describe('Phase 15 — Phase 14.1 Hardening + Phase 2 (Agent Consumption, SceneS
     assert.ok(invalidRes.errors.length >= 2);
   });
 
-  test('4. Phase 2C — Skill Harmonizer & Deterministic Plan Compiler (8 valid plans + 3 conflicting blocked plans)', () => {
+  test('4. Skill Harmonizer & Deterministic Plan Compiler (8 valid plans + 3 conflicting blocked plans)', () => {
     assert.equal(PRECEDENCE_HIERARCHY.length, 8);
     assert.equal(PRECEDENCE_HIERARCHY[0].layer_id, 'layer_1_hard_laws_and_safety');
     assert.equal(PRECEDENCE_HIERARCHY[7].layer_id, 'layer_8_aesthetic_fallbacks');

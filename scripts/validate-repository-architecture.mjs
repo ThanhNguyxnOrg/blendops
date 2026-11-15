@@ -164,7 +164,7 @@ export function classifyTrackedFile(relPath, pkgFiles = []) {
     referencedByCi = true;
   } else if (relPath === 'CHANGELOG.md') {
     classification = 'historical_record';
-    purpose = 'Chronological release and milestone changelog across Draft v0 and Phases 10–13';
+    purpose = 'Chronological release and milestone changelog for BlendOps';
     owningSubsystem = 'documentation-governance';
     referencedByCi = true;
   } else if (
@@ -266,7 +266,7 @@ export function classifyTrackedFile(relPath, pkgFiles = []) {
     purpose =
       relPath === 'packs/README.md'
         ? 'Index of multi-skill domain workflow packs'
-        : 'Canonical Product Hero v0 multi-skill workflow pack manifest';
+        : 'Canonical Product Hero multi-skill workflow pack manifest (v1.0.0)';
   } else if (relPath.startsWith('bundles/')) {
     owningSubsystem = 'bundles-and-packaging';
     referencedByCi = true;
@@ -290,7 +290,7 @@ export function classifyTrackedFile(relPath, pkgFiles = []) {
     referencedByCi = true;
     if (relPath.startsWith('skill-reviews/reports/')) {
       classification = 'historical_record';
-      purpose = 'Historical v0 skill depth audit and gate review evidence report';
+      purpose = 'Skill depth audit and gate review evidence report';
     } else {
       classification = 'documentation';
       purpose = 'Skill quality standard, review gate rubric, or canonical template reference';
@@ -334,7 +334,7 @@ export function classifyTrackedFile(relPath, pkgFiles = []) {
       generatorScript = 'scripts/build-knowledge-catalog.mjs';
     } else if (relPath.startsWith('docs/audits/current/')) {
       classification = 'generated_artifact';
-      purpose = `Deterministically generated current-phase audit artifact (${path.basename(relPath)})`;
+      purpose = `Deterministically generated current-release audit artifact (${path.basename(relPath)})`;
       isGenerated = true;
       generatorScript =
         relPath === 'docs/audits/current/repository-inventory.json'
@@ -342,7 +342,7 @@ export function classifyTrackedFile(relPath, pkgFiles = []) {
           : 'scripts/generate-current-audit.mjs';
     } else {
       classification = 'historical_record';
-      purpose = `Immutable historical phase audit snapshot (${relPath})`;
+      purpose = `Audit archive artifact (${relPath})`;
     }
   } else if (relPath.startsWith('docs/evals/')) {
     owningSubsystem = 'runtime-and-adapter-evals';
@@ -365,10 +365,7 @@ export function classifyTrackedFile(relPath, pkgFiles = []) {
   } else if (relPath.startsWith('docs/')) {
     owningSubsystem = 'product-and-target-docs';
     referencedByCi = true;
-    if (relPath === 'docs/release-readiness-rollup-v0.md') {
-      classification = 'historical_record';
-      purpose = 'Historical Draft v0 pre-runtime release readiness rollup snapshot';
-    } else if (relPath === 'docs/knowledge-and-recipe-catalog.md') {
+    if (relPath === 'docs/knowledge-and-recipe-catalog.md') {
       classification = 'generated_artifact';
       purpose = 'Deterministically generated human-readable index of 10 canonical recipes, 30 knowledge records, and 20 sources';
       owningSubsystem = 'knowledge-and-recipe-catalog';
@@ -696,7 +693,7 @@ export function buildRepositoryArchitectureReport(rootDir = DEFAULT_ROOT) {
 
   const inventoryObject = {
     schemaVersion: '1.0.0',
-    auditPhase: 'phase-13-current',
+    auditPhase: 'v1.0.0-current',
     summary: {
       totalTrackedFiles: fileEntries.length,
       npmPackageIncludedFiles: npmIncludedCount,
@@ -733,9 +730,15 @@ export function buildRepositoryArchitectureReport(rootDir = DEFAULT_ROOT) {
             'Self-contained law reference copies inside the two offline upload bundles so each bundle remains portable when extracted standalone.',
         },
       ],
-      deletedObsoleteFilesInPhase13: [],
-      deletionPolicyNote:
-        'Zero tracked files were deleted in Phase 13 because all 651 baseline tracked files + Phase 13 governance/inventory/test additions serve active runtime, skill, bundle, CI, or historical audit provenance roles.',
+      archivedDevelopmentSnapshotsRemoved: [
+        'docs/audits/phase-0',
+        'docs/audits/phase-2',
+        'docs/audits/phase-2.1',
+        'docs/audits/phase-3',
+        'docs/release-readiness-rollup-v0.md',
+      ],
+      retentionPolicyNote:
+        'All build-time draft phase directories and redundant rollup snapshots were removed for the 1.0.0 release; every remaining tracked file serves an active runtime, skill, bundle, CI, documentation, or current audit role.',
     },
     files: fileEntries,
   };

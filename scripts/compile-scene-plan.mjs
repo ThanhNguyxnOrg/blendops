@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * BlendOps Phase 2B, 2C & 3.1 — SceneSpec Validator, Skill Harmonizer & Deterministic Plan Compiler
+ * BlendOps — SceneSpec Validator, Skill Harmonizer & Deterministic Plan Compiler
  *
  * Implements:
  * - validateSceneSpec(specOrPath, options): Real JSON Schema Draft 2020-12 (Ajv2020) + semantic + canonical catalog validation

@@ -2,7 +2,7 @@
 
 # Unofficial Runtime Bridges (Path 2 — `mcp-for-blender`, formerly `ahujasid/blender-mcp`)
 
-Status: Mature third-party / User-managed / Per-client manual config / Not yet covered by a formal BlendOps eval evidence record / Not used for Draft v0 release-readiness claims
+Status: Mature third-party / User-managed / Per-client manual config / Not yet covered by a formal BlendOps eval evidence record / Not used for BlendOps release-readiness claims
 
 > [!CAUTION]
 > This page is the longer write-up for **Path 2 — Community Blender MCP (`mcp-for-blender`)** in the [2-path runtime model](./runtime-stack-strategy.md). Path 2 is unofficial from both Anthropic's and Blender Foundation's perspective, but it is **not** experimental in the engineering-maturity sense — it is a mature, widely adopted project that pioneered the Blender + MCP pattern. The "unofficial" label here is about provenance, not maturity. Read this page before choosing Path 2, especially the safety section.

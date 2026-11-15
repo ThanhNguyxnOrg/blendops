@@ -1409,7 +1409,7 @@ export function renderGlbHandoffHtmlReport(manifest, snippets) {
   <div class="container">
     <header class="top-header">
       <div>
-        <div class="eyebrow">BlendOps Phase 12 · Web-Ready GLB Handoff Report</div>
+        <div class="eyebrow">BlendOps · Web-Ready GLB Handoff Report</div>
         <h1>${escapeHtml(art.filename)}</h1>
         <div class="metric-sub">
           SHA-256: <code>${escapeHtml(art.sha256 || 'none')}</code> · Size: <code>${(art.byteSize ?? 0).toLocaleString('en-US')} bytes</code> · Target stack: <code>${escapeHtml(manifest.targetViewer.stack)}</code>

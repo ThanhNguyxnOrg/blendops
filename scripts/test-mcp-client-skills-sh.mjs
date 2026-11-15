@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
- * BlendOps Phase 3.3 — Secure Async MCP Client, Runtime Trust Verification &
- * Governed Live Read-Only Integration Test Suite (scripts/test-phase19.mjs)
+ * BlendOps — Secure Async MCP Client, Runtime Trust Verification &
+ * Governed Live Read-Only Integration Test Suite (scripts/test-mcp-client-skills-sh.mjs)
  *
  * Covers mandatory test groups A–G:
  * - Group A: Critical Defect Regressions (Synthetic tool trust boundary & 9-fault 7-check rollback verification)
@@ -284,7 +284,7 @@ if (${JSON.stringify(hangOnInit)}) {
   return scriptPath;
 }
 
-describe('Phase 3.3 — Secure Async MCP Client, Runtime Trust Verification & Governed Live Read-Only Integration', () => {
+describe('Secure Async MCP Client, Runtime Trust Verification & Governed Live Read-Only Integration', () => {
   it('Group A.1 (Section 3.1): Synthetic governed tools advertised by an untrusted or spoofed MCP server are rejected as unknown and never qualify L1/L2', () => {
     const registryDoc = loadRegistryDoc();
     const syntheticTools = [
@@ -1147,7 +1147,7 @@ describe('Phase 3.3 — Secure Async MCP Client, Runtime Trust Verification & Go
     assert.equal(parsedLedger.truth_states.runtime_status, 'Attempted');
   });
 
-  it('Group G (Section 16): Project-local .blendops parity from an unrelated working directory preserves Phase 3.3 contracts', () => {
+  it('Group G (Section 16): Project-local .blendops parity from an unrelated working directory preserves v1.0.0 contracts', () => {
     const tmpProject = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-p33-proj-'));
     const unrelatedCwd = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-p33-cwd-'));
     const prevCwd = process.cwd();

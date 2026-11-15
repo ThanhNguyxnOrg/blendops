@@ -11,13 +11,13 @@
 **AI-native Blender workflow specs for people who do not know Blender.**
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-2ea44f.svg?style=flat-square)](./LICENSE)
-[![Status: Draft v0](https://img.shields.io/badge/status-draft%20v0-orange.svg?style=flat-square)](./docs/release-readiness.md)
+[![Status: v1.0.0](https://img.shields.io/badge/status-v1.0.0-2ea44f.svg?style=flat-square)](./docs/release-readiness.md)
 [![Runtime model: 2-path + CLI appendix](https://img.shields.io/badge/runtime%20model-2--path%20%2B%20CLI%20appendix-6f42c1.svg?style=flat-square)](./docs/runtime-stack-strategy.md)
 [![Path 1 read-only smoke: Pass](https://img.shields.io/badge/path%201%20smoke-Pass-2ea44f.svg?style=flat-square)](./docs/evals/blender-connector-read-only-smoke-test.md)
 [![Path 2 user-reported: verified](https://img.shields.io/badge/path%202%20user--reported-verified-2ea44f.svg?style=flat-square)](./docs/unofficial-runtime-bridges.md)
-[![Full runtime eval: Not Run](https://img.shields.io/badge/full%20runtime%20eval-Not%20Run-lightgrey.svg?style=flat-square)](./docs/release-readiness-rollup-v0.md)
-[![Artifacts: Not Produced](https://img.shields.io/badge/artifacts-Not%20Produced-lightgrey.svg?style=flat-square)](./docs/release-readiness-rollup-v0.md)
-[![Release: v0.9.0-draft](https://img.shields.io/github/v/release/ThanhNguyxnOrg/blendops?include_prereleases&label=release&color=2ea44f&style=flat-square)](https://github.com/ThanhNguyxnOrg/blendops/releases/tag/v0.9.0-draft)
+[![Full runtime eval: Not Run](https://img.shields.io/badge/full%20runtime%20eval-Not%20Run-lightgrey.svg?style=flat-square)](./docs/release-readiness.md)
+[![Artifacts: Not Produced](https://img.shields.io/badge/artifacts-Not%20Produced-lightgrey.svg?style=flat-square)](./docs/release-readiness.md)
+[![Release: v1.0.0](https://img.shields.io/github/v/release/ThanhNguyxnOrg/blendops?label=release&color=2ea44f&style=flat-square)](https://github.com/ThanhNguyxnOrg/blendops/releases/tag/v1.0.0)
 
 [![Skills: 48](https://img.shields.io/badge/skills-48-1f6feb.svg?style=flat-square)](./skills/README.md)
 [![Laws: 4](https://img.shields.io/badge/laws-4-1f6feb.svg?style=flat-square)](./laws/README.md)
@@ -89,7 +89,7 @@ Human intent (non-Blender user)
 
 **What this means for "completeness":**
 
-- The **skills layer** (48 skills + 151 deep reference guides across 8 `skills.sh.json` groups + install docs + ZIP generation + deterministic CI guards) is **feature-complete for Draft v0** — nothing upstream blocks it. Milestones: `v0.4.0-draft` (40 skills) → `v0.5.0-draft` (48 skills) → `v0.8.0-draft` (hardening) → `v0.9.0-draft` (catalog & Phase 3.3 readiness).
+- The **skills layer** (48 skills + 151 deep reference guides across 8 `skills.sh.json` groups + 26 install docs + 35+ CLI targets + ZIP/package export + deterministic CI guards) is **complete and production-ready at `v1.0.0`** — nothing upstream blocks it. Milestones: `v0.4.0-draft` (40 skills) → `v0.5.0-draft` (48 skills) → `v0.8.0-draft` (hardening) → `v0.9.0-draft` (catalog & CLI readiness) → **`v1.0.0` (production release)**.
 - Whether the **upstream runtime paths work in your environment** is up to upstream Blender Foundation / Anthropic / community `mcp-for-blender` (Path 1 + Path 2 are user-reported verified by the repo owner — operator statement, does not promote eval scope; CLI is upstream-documented). BlendOps **redirects** to them via per-target install docs but does not own their stability.
 - The "Full runtime eval: Not Run" / "Artifacts: Not Produced" labels refer to **in-repo provenance evidence files only** — operator-side records under `docs/evals/`. They do **not** mean "the upstream runtime paths don't work" or "BlendOps is incomplete."
 

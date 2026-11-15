@@ -126,7 +126,7 @@ Does the prompt request multiple incompatible deliverables at once (e.g., studio
   No → evaluate single-domain alignment:
     - Deliverable + style + budget match `product-hero-v0` or documented workflow → Strong fit → recommend `intent-to-3d-brief-writer` (or `pack-prerequisite-checker` if brief is already locked)
     - Domain matches a specialized planner (portrait, interior, environment, product grid) with manageable adaptations → Partial fit with explicit gap bullets → recommend `intent-to-3d-brief-writer`
-    - Request violates Draft v0 scope (e.g., multi-user live editing) → Poor fit → document mitigations and alternative entrypoint
+    - Request violates BlendOps 1.0.0 scope (e.g., multi-user live editing) → Poor fit → document mitigations and alternative entrypoint
 ```
 
 ## Playbooks

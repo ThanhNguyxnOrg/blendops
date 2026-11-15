@@ -1,9 +1,9 @@
 # Adapter: Generic Root Fallback
 
-Status: Draft v0
+Status: 1.0.0
 Confidence label: verified-read
 Upstream documentation reviewed: Yes (target-neutral `BLENDOPS.md` and `AGENTS.md` conventions)
-BlendOps empirical verification status: verified-read (`Verified Read (Repo-Local)` — repo-local `BLENDOPS.md` + backed-up `AGENTS.md` + rollback verified in [`docs/evals/adapter-install-v0-dry-run.md`](../evals/adapter-install-v0-dry-run.md) and [`docs/evals/adapter-empirical-verification-phase-7.md`](../evals/adapter-empirical-verification-phase-7.md))
+BlendOps empirical verification status: verified-read (`Verified Read (Repo-Local)` — repo-local `BLENDOPS.md` + backed-up `AGENTS.md` + rollback verified in [`docs/evals/adapter-install-v0-dry-run.md`](../evals/adapter-install-v0-dry-run.md) and [`docs/evals/adapter-empirical-verification.md`](../evals/adapter-empirical-verification.md))
 
 ## Supported install scopes
 - project-local (default fallback)

@@ -1,8 +1,8 @@
-# v0 Skill Gate Review
+# Core Skill Gate Review (16-Skill Baseline Snapshot)
 
-Status: Refreshed gate review covering all 16 root skills  
-Date: 2026-04-29 (original 8-skill snapshot) · 2026-05-09 (refresh covering all 16)  
-Scope: Root installable skills (`skills/*/SKILL.md`)
+Status: Historical baseline gate review covering the original 16 core skills (48 skills validated in CI)  
+Date: 2026-04-29 (original 8-skill snapshot) · 2026-05-09 (refresh covering all 16 core skills)  
+Scope: Baseline installable skills (`skills/*/SKILL.md`)
 
 ## Summary
 
@@ -50,7 +50,7 @@ The previous WARNING ("snapshot of 8 of 10 skills, partially outdated") is now o
 
 ## Notes
 
-- **G0 Warn for Phase 4 process skills** (`blender-brainstorming`, `intent-to-3d-brief-writer`, `blender-troubleshooting`): each carries a "Inspired by Anthropic Superpowers / BMad-Method" source line. The pattern provenance is linked, not the skill content itself. We treat this as the conservative policy default rather than a real concern. The skills do not copy any Superpowers / BMad code or protected wording.
+- **G0 Warn for process/discipline skills** (`blender-brainstorming`, `intent-to-3d-brief-writer`, `blender-troubleshooting`): each carries a "Inspired by Anthropic Superpowers / BMad-Method" source line. The pattern provenance is linked, not the skill content itself. We treat this as the conservative policy default rather than a real concern. The skills do not copy any Superpowers / BMad code or protected wording.
 - **G0 was Warn for the 8 originals in the 2026-04-29 snapshot** because of conservative source-provenance policy. After the 2026-05-08 runtime-model refresh, the 8 originals' source claims are tied directly to Anthropic + Blender Foundation upstream — verified-read for upstream URLs — so G0 lifted to Pass for those 8.
 - **G3 (Format / depth)** is now Pass for all 16 skills; every skill has all 9 required headings + a `references/` folder.
 - **G4 (Blender quality)** depends on upstream sources; for runtime-touching skills, claims are anchored to Anthropic tutorial + Blender Lab page (read 2026-05-08).
@@ -60,11 +60,11 @@ The previous WARNING ("snapshot of 8 of 10 skills, partially outdated") is now o
 
 All 16 root skills pass the gate review (3 Warn / 13 Pass / 0 Fail). The 3 Warn verdicts are policy-conservative source-provenance notes, not blocking issues.
 
-The skill collection is ready to remain Draft v0 with confidence that:
+The baseline skill collection meets 1.0.0 structural gates with confidence that:
 
-- structure and depth are consistent across all 16 skills
+- structure and depth are consistent across all skills
 - runtime model is correctly applied
 - evidence-before-done is enforced
 - plain-language discipline is preserved for user-facing output
 
-Promotion beyond Draft v0 still depends on **runtime evidence** (operator-supplied), not on docs gate review. See [`docs/release-readiness.md`](../../docs/release-readiness.md).
+Runtime qualification and artifact verification still depend on **operator-supplied runtime evidence** in `docs/evals/`, not on docs gate review. See [`docs/release-readiness.md`](../../docs/release-readiness.md).

@@ -1,6 +1,6 @@
 # BlendOps skill package
 
-Status: Draft v0 canonical portable skill package source
+Status: 1.0.0 canonical portable skill package source
 
 ## Purpose
 

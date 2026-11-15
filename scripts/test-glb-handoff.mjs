@@ -43,7 +43,7 @@ import {
   extractAnimationClipSummary,
   createThreeGlbViewer,
 } from '../docs/examples/glb-web-handoff/threejs-glb-viewer.mjs';
-import { buildSubprocessInvocation, resolveNpmCliScript } from './test-phase11.mjs';
+import { buildSubprocessInvocation, resolveNpmCliScript } from './test-cli-package.mjs';
 import { ensureMainRepoGitRestored } from './generate-current-audit.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -235,13 +235,13 @@ function buildRichSyntheticGlbBuffer() {
   });
 }
 
-describe('Phase 12 — Web-Ready GLB Delivery & Viewer Integration', () => {
+describe('Web-Ready GLB Delivery & Viewer Integration', () => {
   let suiteTmpDir;
   let ajvValidateManifest;
 
   before(() => {
     ensureMainRepoGitRestored(ROOT);
-    suiteTmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-test-phase12-'));
+    suiteTmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-test-glb-handoff-'));
     const rawSchema = JSON.parse(fs.readFileSync(DEFAULT_HANDOFF_MANIFEST_SCHEMA_PATH, 'utf8'));
     const ajv = new Ajv2020({ allErrors: true, strict: true });
     ajvValidateManifest = ajv.compile(rawSchema);
@@ -981,14 +981,14 @@ describe('Phase 12 — Web-Ready GLB Delivery & Viewer Integration', () => {
     assert.equal(failedInspect.status, 1);
     assert.match(String(failedInspect.stderr || ''), /GLB structural inspection failed/);
 
-    // 5. Verify packed npm tarball includes Phase 12 GLB toolkit and works in an isolated consumer project
+    // 5. Verify packed npm tarball includes GLB handoff toolkit and works in an isolated consumer project
     const packDir = path.join(suiteTmpDir, 'pack');
     const consumerDir = path.join(suiteTmpDir, 'consumer');
     fs.mkdirSync(packDir, { recursive: true });
     fs.mkdirSync(consumerDir, { recursive: true });
     fs.writeFileSync(
       path.join(consumerDir, 'package.json'),
-      `${JSON.stringify({ name: 'phase12-consumer-test', version: '1.0.0', private: true }, null, 2)}\n`,
+      `${JSON.stringify({ name: 'glb-handoff-consumer-test', version: '1.0.0', private: true }, null, 2)}\n`,
       'utf8',
     );
 

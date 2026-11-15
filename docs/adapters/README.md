@@ -1,7 +1,7 @@
 # Adapters
 
 > [!NOTE]
-> Status: Draft v0. Adapters are install mapping docs. They aren't runtime code and don't install Blender runtime.
+> Status: 1.0.0. Adapters are install mapping docs. They aren't runtime code and don't install Blender runtime.
 
 > [!IMPORTANT]
 > **Adapters are a smaller subset of the install layer.** This folder covers 6 verified-or-drafted adapters. New tool support starts as an install doc first, then graduates to an adapter only after the install path is verified. For the full per-target install guide, see [`docs/install/`](../install/README.md) (26 targets).
@@ -19,7 +19,7 @@
 
 ## Adapter index
 
-See [`docs/evals/adapter-empirical-verification-phase-7.md`](../evals/adapter-empirical-verification-phase-7.md) for the Phase 7 empirical host verification report across all 6 adapters and 20 install-only targets.
+See [`docs/evals/adapter-empirical-verification.md`](../evals/adapter-empirical-verification.md) for the empirical host verification report across all 6 adapters and 20 install-only targets.
 
 | Target | Adapter doc | BlendOps confidence | Primary use | Expected scope posture |
 |---|---|---|---|---|

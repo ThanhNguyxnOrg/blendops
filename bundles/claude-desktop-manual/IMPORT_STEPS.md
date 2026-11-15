@@ -1,6 +1,6 @@
 # Claude Desktop Manual Import Steps (BlendOps)
 
-Status: Draft v0 manual procedure
+Status: 1.0.0 manual procedure
 
 ## Important boundaries
 

@@ -1,6 +1,6 @@
 # EVAL — asset-discovery
 
-Status: Draft v0 text-only baseline  
+Status: 1.0.0 text-only baseline  
 Scope: per-asset strategy plan; no fetch / install / generate / runtime.
 
 ## Text-only eval prompt

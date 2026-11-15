@@ -1,6 +1,6 @@
-# Official Runtime Manual Eval Packet, Draft v0
+# Official Runtime Manual Eval Packet
 
-Status: Draft v0 packet only, not executed  
+Status: Prepared packet only, not executed  
 Date: 2026-04-29 (original); legacy 3-stack labels mapped to 2-path + CLI appendix model 2026-05-08  
 Source of truth: [official-runtime-verification-criteria.md](./official-runtime-verification-criteria.md)  
 Readiness preflight: [runtime-availability-checklist.md](./runtime-availability-checklist.md)  
@@ -26,7 +26,7 @@ Path decision: [../runtime-stack-strategy.md](../runtime-stack-strategy.md)
 
 This packet gives a future operator a conservative checklist for running runtime manual evals and recording evidence.
 
-The packet exists so BlendOps can keep Draft v0 status honest while preparing for runtime verification. A future result can only move from planned work to an evidence-backed result when it follows the criteria in the source document and records enough proof for review.
+The packet exists so BlendOps keeps live runtime status honest while operators prepare for runtime verification. A result can only move from planned work to an evidence-backed result when it follows the criteria in the source document and records enough proof for review.
 
 ---
 
@@ -79,8 +79,6 @@ This packet preserves these non-actions:
 - It does not introduce a custom runtime implementation.
 - It does not claim runtime compatibility is confirmed.
 - It does not mark actual runtime manual eval complete.
-- It does not move BlendOps out of Draft v0.
-- It does not prepare or claim a draft tag.
 
 ---
 
@@ -90,7 +88,7 @@ Before execution, complete the readiness preflight in [runtime-availability-chec
 
 Before execution, the future operator must confirm:
 
-- BlendOps status is still Draft v0 unless a newer release-readiness document says otherwise.
+- Live Blender runtime status remains `Not Run` unless a verified evidence packet states otherwise.
 - The selected runtime stack is named and its release-eval status is understood.
 - The current upstream instructions were checked on the eval date.
 - The eval environment is allowed to run Blender and produce files.
@@ -220,7 +218,7 @@ Artifact labels must be scoped per artifact type. A run can be `Verified` for pr
 - [ ] Use the pass/warn/fail rubric below.
 - [ ] Keep blocked environment cases as `Not Run` unless a runtime attempt was actually made and failed.
 - [ ] Do not claim runtime compatibility is confirmed unless the specific scoped eval passes with evidence.
-- [ ] Do not mark broader Phase 3 or runtime manual eval complete based on packet preparation.
+- [ ] Do not mark live runtime manual eval complete based on packet preparation.
 
 ---
 

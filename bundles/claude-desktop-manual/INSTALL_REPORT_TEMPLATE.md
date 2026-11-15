@@ -1,6 +1,6 @@
 # BlendOps Claude Desktop Manual Install Report
 
-Status: Draft v0 template
+Status: 1.0.0 template
 
 - Full bundle used: yes/no
 - Single-file fallback used: yes/no

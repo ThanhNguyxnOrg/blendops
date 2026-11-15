@@ -1,16 +1,16 @@
 #!/usr/bin/env node
 /**
- * BlendOps Phase 3 — Blender Production Layer & Safe Runtime Integration
+ * BlendOps Runtime Orchestrator — Blender Production Layer & Safe MCP Integration
  *
  * Implements:
- * - Phase 3A: Runtime Discovery, Session Contract & Capability Negotiation
- * - Phase 3B: Canonical Typed Operation Registry Validation & Lookup
- * - Phase 3C: Execution Safety State Machine, Pre-Mutation .blend Checkpoints,
- *             Idempotency, Independent Readback, Postcondition Verification & Rollback
- * - Phase 3D: Safe Blender Production Vertical Slice (L0 Inspection + Bounded L1 Camera/Light Mutation)
- * - Section 6: Redacted Operation Execution Ledger & Runtime Evidence Packet Integration
- * - Section 7: CLI Subcommands (runtime doctor/inspect/capabilities, operation list/validate, execution preflight/report/inspect)
- * - Section 8: Deterministic Realistic Mock MCP Runtime (with adversarial fault injection)
+ * - Runtime Discovery, Session Contract & Capability Negotiation
+ * - Canonical Typed Operation Registry Validation & Lookup
+ * - Execution Safety State Machine, Pre-Mutation .blend Checkpoints,
+ *   Idempotency, Independent Readback, Postcondition Verification & Rollback
+ * - Safe Blender Production Vertical Slice (L0 Inspection + Bounded L1 Camera/Light Mutation)
+ * - Redacted Operation Execution Ledger & Runtime Evidence Packet Integration
+ * - CLI Subcommands (runtime doctor/inspect/capabilities, operation list/validate, execution preflight/report/inspect)
+ * - Deterministic Mock MCP Runtime (with adversarial fault injection)
  */
 
 import fs from 'node:fs';
@@ -424,7 +424,7 @@ const FORBIDDEN_SHELL_WRAPPERS = new Set([
 ]);
 
 /**
- * Phase 3.3 Section 5 — Validates STDIO subprocess configuration:
+ * Validates STDIO subprocess configuration:
  * - Requires explicit executable + argument array (`shell: false`).
  * - Rejects shell wrapper executables (`sh`, `bash`, `cmd.exe`, `powershell`, etc.) and shell command strings.
  * - Filters environment variables through a strict allowlist and strips secret keys.
@@ -634,7 +634,7 @@ export function computeToolSchemaFingerprint(toolName, inputSchema) {
 }
 
 /**
- * Phase 3.3 Section 7 — Computes full 4-part contract fingerprints for an MCP tool definition:
+ * Computes full 4-part contract fingerprints for an MCP tool definition:
  * 1. input_schema_fingerprint
  * 2. output_schema_fingerprint
  * 3. metadata_fingerprint
@@ -667,7 +667,7 @@ export function computeFullToolContractFingerprints(toolEntry = {}) {
 }
 
 /**
- * Phase 3.3 Section 7 — Inspects a JSON Schema object for structural safety,
+ * Inspects a JSON Schema object for structural safety,
  * bounded nesting depth, bounded property count, and absence of external $ref URLs.
  */
 export function inspectJsonSchemaSafety(schema, maxDepth = 12, maxProperties = 256) {
@@ -792,7 +792,7 @@ const SUPPORTED_MCP_PROTOCOL_VERSIONS = new Set([
 ]);
 
 /**
- * Phase 3.3 Section 8 — Validates and parses an MCP CallToolResult or internal tool response:
+ * Validates and parses an MCP CallToolResult or internal tool response:
  * - Rejects `isError: true` or malformed results.
  * - Enforces bounded payload size (`maxPayloadBytes`).
  * - Extracts structured JSON from `structuredContent`, `data`, or `content` text blocks.
@@ -1010,7 +1010,7 @@ export function negotiateMcpProtocolCompatibility(probe = {}, runtimePath = 'non
 }
 
 /**
- * Phase 3.3 Section 10 — Separates self-reported MCP server identity from independently verified provenance.
+ * Separates self-reported MCP server identity from independently verified provenance.
  * Never fabricates addon_version or server_version when unobserved.
  */
 export function evaluateRuntimeProvenance(probe = {}, runtimePath = 'none', options = {}) {
@@ -1404,7 +1404,7 @@ const GOVERNED_EXTENSION_TOOL_SPECS = Object.freeze({
 });
 
 /**
- * Phase 3.3 Section 3.1 — Verifies whether a runtime client is an unforgeable internal mock fixture.
+ * Verifies whether a runtime client is an unforgeable internal mock fixture.
  * Cannot be spoofed by setting `isMockRuntime: true` on an external or live client object.
  */
 export function isTrustedMockRuntimeFixture(runtimeClient) {
@@ -1455,7 +1455,7 @@ function doesMatrixEntryMatchRuntimePath(m, runtimePath) {
 }
 
 /**
- * Phase 3.2 & 3.3 — Qualifies a single MCP tool entry against the canonical Upstream Tool Qualification Matrix
+ * Qualifies a single MCP tool entry against the canonical Upstream Tool Qualification Matrix
  * and enforces the MCP Adapter Security Boundary:
  * - Unknown tools default to 'unknown' (deny).
  * - Unsafe raw code tools ('execute_blender_code', 'execute_blender_code_for_cli') are classified as 'unsafe_raw_code' and blocked.
@@ -1664,7 +1664,7 @@ export function qualifyUpstreamTool(toolEntry, runtimePath, registryDoc, options
     };
   }
 
-  // 5. Governed BlendOps extension tool — Phase 3.3 Section 3.1 strict trust boundary!
+  // 5. Governed BlendOps extension tool — strict internal fixture trust boundary!
   // Only trusted when originating from a verified internal mock fixture AND matching its pinned schema fingerprint.
   if (governedSpec) {
     const isGenuineTrustedFixture =
@@ -1747,7 +1747,7 @@ export function qualifyUpstreamTool(toolEntry, runtimePath, registryDoc, options
 }
 
 /**
- * Phase 3.2 & 3.3 — Qualifies an entire tool inventory advertised by an MCP runtime or loaded from the canonical matrix.
+ * Qualifies an entire tool inventory advertised by an MCP runtime or loaded from the canonical matrix.
  * Detects duplicate tool names, schema drift, spoofed synthetic tools, and unknown tools.
  */
 export function qualifyUpstreamToolInventory(tools = [], runtimePath = 'path-1-host-a', options = {}) {
@@ -1834,7 +1834,7 @@ export function qualifyUpstreamToolInventory(tools = [], runtimePath = 'path-1-h
 }
 
 /**
- * Phase 3.2 — Evaluates all 18 canonical BlendOps operations (plus 3 blocked L3 interfaces)
+ * Evaluates all 18 canonical BlendOps operations (plus 3 blocked L3 interfaces)
  * against the audited upstream tool inventories for Path 1 and Path 2.
  * Also validates custom/override mappings to prevent mapping L0 operations to mutating tools
  * or mapping L1/L2 operations to unsafe_raw_code tools.
@@ -2983,7 +2983,7 @@ export function createMockMcpRuntime(options = {}) {
 }
 
 /**
- * Phase 3.2 — Convenience constructor for a mock runtime advertising the exact real upstream tool inventory
+ * Convenience constructor for a mock runtime advertising the exact real upstream tool inventory
  * from Official Blender Lab MCP v1.0.2 (26 tools) or Community mcp-for-blender v2.2.7 (16 tools).
  */
 export function createUpstreamRealityMockRuntime(options = {}) {
@@ -2998,7 +2998,7 @@ export function createUpstreamRealityMockRuntime(options = {}) {
 }
 
 /**
- * Phase 3A & 3.2 — Discovers runtime session state, performs MCP protocol/identity/schema qualification,
+ * Discovers runtime session state, performs MCP protocol/identity/schema qualification,
  * and computes the 10-state qualification model.
  * Never claims an active connection when only inspecting a config file or when no runtime responds.
  * Never executes Blender mutations during discovery.
@@ -3561,7 +3561,7 @@ export function discoverRuntimeSession(options = {}) {
 }
 
 /**
- * Phase 3C — Preflight check for a single operation or an operation sequence.
+ * Preflight check for a single operation or an operation sequence.
  */
 export function runExecutionPreflight(options = {}) {
   const repoRoot = options.repoRoot || DEFAULT_REPO_ROOT;
@@ -3691,7 +3691,7 @@ export function runExecutionPreflight(options = {}) {
       !options.overrideToolName &&
       session.supported_operations.includes(operationId);
 
-    // Phase 3.2 & 3.3 MCP Adapter Security Boundary check on target tool
+    // MCP Adapter Security Boundary check on target tool
     if (targetToolName) {
       const registryDoc = JSON.parse(fs.readFileSync(paths.runtimeOperationsPath, 'utf8'));
       const sessionToolEntry = (session.available_tool_manifest || []).find(
@@ -4086,7 +4086,7 @@ function verifyOperationPostconditions(op, input, readbackData) {
 }
 
 /**
- * Phase 3C & 3D — Executes a sequence of typed operations under the transaction state machine:
+ * Executes a sequence of typed operations under the transaction state machine:
  * planned -> preflight -> checkpoint_verified -> approved_if_required -> executing -> readback -> postcondition_verified -> committed
  */
 export function executeTypedOperationSequence(options = {}) {
@@ -4176,7 +4176,7 @@ export function executeTypedOperationSequence(options = {}) {
     });
   }
 
-  // Phase 3.2 — Mid-session tool inventory escalation / schema drift check
+  // Mid-session tool inventory escalation / schema drift check
   if (
     runtimeClient &&
     typeof runtimeClient.probeSession === 'function' &&
@@ -4248,7 +4248,7 @@ export function executeTypedOperationSequence(options = {}) {
           throw new Error('Source .blend file does not exist on disk for checkpoint creation');
         }
         const safeTimestamp = startedAt.replace(/[:.]/g, '-');
-        const backupFilename = `${path.basename(sourceBlendPath, '.blend')}.pre-phase3-${safeTimestamp}.blend`;
+        const backupFilename = `${path.basename(sourceBlendPath, '.blend')}.pre-mutation-${safeTimestamp}.blend`;
         const backupPath = path.join(path.dirname(sourceBlendPath), backupFilename);
 
         const preCheckpointPathValidation = validateSafeBlendCheckpointPaths(
@@ -4295,7 +4295,7 @@ export function executeTypedOperationSequence(options = {}) {
           createdAt: new Date().toISOString(),
         };
 
-        // Also validate through Phase 3 evaluateRuntimeCapabilityInvocation
+        // Also validate through evaluateRuntimeCapabilityInvocation
         const policy = JSON.parse(fs.readFileSync(paths.capabilityPolicyPath, 'utf8'));
         const capCheck = evaluateRuntimeCapabilityInvocation(
           {
@@ -4771,7 +4771,7 @@ export function executeTypedOperationSequence(options = {}) {
 }
 
 /**
- * Phase 3.3 Section 3.2 — 7-Check Rollback & Restore Verification
+ * 7-Check Rollback & Restore Verification
  * Both transaction rollback (`executeTypedOperationSequence`) and L1 smoke rollback
  * (`runRuntimeQualificationAndSmoke`) MUST pass through this exact verification function.
  *
@@ -4988,7 +4988,7 @@ export function verifyRollbackRestoration({
 }
 
 /**
- * Phase 3.3 Section 12 — Staged Artifact Verification & Khronos glTF-Validator Gate
+ * Staged Artifact Verification & Khronos glTF-Validator Gate
  * L2 file-writing operations must stage outputs in a safe project-local staging path,
  * verify magic bytes, byte size (> 0), and SHA-256, and for GLB deliverables require
  * zero Khronos glTF-Validator errors (`numErrors === 0`).
@@ -5184,7 +5184,7 @@ export function verifyStagedOutputArtifact(options = {}) {
 }
 
 /**
- * Phase 3.2 & 3.3 — Controlled Upstream Runtime Qualification & Smoke Harness
+ * Controlled Upstream Runtime Qualification & Smoke Harness
  * Supports:
  * - Mode A: `offline_contract` (always runs in CI/repo/project-local mode; verifies real upstream tool contracts,
  *   schema fingerprints, unsafe tool blocking, and operation-to-tool mappings without claiming a live Blender connection).
@@ -5928,7 +5928,7 @@ export function runRuntimeQualificationAndSmoke(options = {}) {
 }
 
 /**
- * Phase 3.3 Sections 4–11 — Real Asynchronous MCP Client & Transport Lifecycle
+ * Real Asynchronous MCP Client & Transport Lifecycle
  * Uses the official `@modelcontextprotocol/sdk` (`Client`, `StdioClientTransport`, `StreamableHTTPClientTransport`)
  * to connect to real STDIO or Streamable HTTP MCP servers with:
  * - Strict STDIO command/arg/cwd validation (`validateStdioCommandConfig`) and sanitized environment
@@ -6402,7 +6402,7 @@ export async function discoverRuntimeSessionAsync(options = {}) {
 }
 
 /**
- * Phase 3.3 Section 11 — Governed Live Read-Only (`L0`) Inspection Workflow
+ * Governed Live Read-Only (`L0`) Inspection Workflow
  * Connects to a live (or fixture) MCP server, verifies contract qualification,
  * executes only qualified `L0` read-only inspection tools via `invokeToolAsync` (or `invokeTool`),
  * validates structured responses, verifies zero scene mutations (`mutations_executed === 0`),
@@ -6607,7 +6607,7 @@ export async function runRuntimeQualificationAndSmokeAsync(options = {}) {
 }
 
 /**
- * Phase 3.3 Section 14 — Standardized Deterministic CLI Exit Codes
+ * Standardized Deterministic CLI Exit Codes
  * 0: Success
  * 1: CLI usage / argument / schema validation error
  * 2: Runtime unreachable / transport connection failure / missing live opt-in
@@ -6882,7 +6882,7 @@ const DEFAULT_PRODUCT_HERO_SCENE_SPEC = {
 };
 
 /**
- * Phase 3D — Safe Blender Production Vertical Slice:
+ * Safe Blender Production Vertical Slice:
  * Inspect an existing product scene -> validate camera/lighting adjustment plan ->
  * create pre-mutation .blend checkpoint -> apply bounded camera and lighting changes ->
  * inspect readback -> report verified result.
@@ -7026,7 +7026,7 @@ function formatLedgerMarkdown(ledger) {
 }
 
 /**
- * CLI Subcommand Runner for Phase 3, Phase 3.2, and Phase 3.3 (`runtime`, `operation`, `execution`).
+ * CLI Subcommand Runner (`runtime`, `operation`, `execution`).
  */
 export function runRuntimeAndExecutionCliSubcommand(argv = [], options = {}) {
   const repoRoot = options.repoRoot || DEFAULT_REPO_ROOT;

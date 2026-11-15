@@ -1,9 +1,9 @@
 # Adapter: OpenCode
 
-Status: Draft v0
+Status: 1.0.0
 Confidence label: linked-only
 Upstream documentation reviewed: Yes (candidate `.opencode/` and project-local conventions reviewed)
-BlendOps empirical verification status: linked-only (`Linked Only (Not Verified)` — see [`docs/evals/adapter-empirical-verification-phase-7.md`](../evals/adapter-empirical-verification-phase-7.md))
+BlendOps empirical verification status: linked-only (`Linked Only (Not Verified)` — see [`docs/evals/adapter-empirical-verification.md`](../evals/adapter-empirical-verification.md))
 
 ## Supported install scopes
 - project-local (default)

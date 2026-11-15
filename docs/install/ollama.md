@@ -1,6 +1,6 @@
 # Install target: Ollama (local LLM)
 
-Status/confidence: Draft v0, linked-only / experimental MCP
+Status/confidence: 1.0.0, linked-only / experimental MCP
 
 ## Recommended near-term install mode
 

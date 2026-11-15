@@ -1,6 +1,6 @@
 # Recipe: cyberpunk-shoe-hero
 
-Status: Draft v0
+Status: 1.0.0
 
 > [!NOTE]
 > This recipe is the **step-by-step template** for an AI agent to execute the cyberpunk-shoe-hero scenario. The matching **product/workflow specification** (the "what and why") lives at [`../golden-path-cyberpunk-shoe.md`](../golden-path-cyberpunk-shoe.md). The historical text-only runtime eval lives at [`../evals/cyberpunk-shoe-hero-v0-runtime-eval.md`](../evals/cyberpunk-shoe-hero-v0-runtime-eval.md). The pack that bundles the skills used here is [`packs/product-hero-v0/PACK.md`](../../packs/product-hero-v0/PACK.md).

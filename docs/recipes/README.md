@@ -1,4 +1,4 @@
-# Recipes (Draft v0 + Phase 1 Canonical Recipe Registry)
+# Recipes
 
 BlendOps organizes recipes across two linked surfaces so there is never a duplicate source of truth:
 

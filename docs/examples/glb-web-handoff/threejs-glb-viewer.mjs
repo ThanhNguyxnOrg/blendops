@@ -1,5 +1,5 @@
 /**
- * BlendOps Phase 12 — Reusable Three.js GLB Web Handoff Integration Module
+ * BlendOps — Reusable Three.js GLB Web Handoff Integration Module
  *
  * Provides a production-ready, deterministic Three.js GLB viewer harness and
  * helper utilities aligned with `schemas/glb-web-handoff-manifest.schema.json`

@@ -1,6 +1,6 @@
 # Install target: Claude Desktop
 
-Status/confidence: Draft v0, linked-only/manual
+Status/confidence: 1.0.0, linked-only/manual
 
 ## Recommended near-term install mode
 

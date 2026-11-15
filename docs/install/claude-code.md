@@ -1,6 +1,6 @@
 # Install target: Claude Code
 
-Status/confidence: Draft v0, verified-read for project-local adapter
+Status/confidence: 1.0.0, verified-read for project-local adapter
 
 ## Recommended near-term install mode
 

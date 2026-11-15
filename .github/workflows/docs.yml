@@ -3,7 +3,7 @@ name: Docs
 on:
   pull_request:
   push:
-    branches: [main, phase13.2-complete-review]
+    branches: [main]
     paths-ignore:
       - docs/audits/current/**
 
@@ -152,4 +152,4 @@ jobs:
         run: |
           npm run arch:build
           npm run audit:sync-digest
-      - run: node --test scripts/test-phase11.mjs scripts/test-phase12.mjs scripts/test-phase13.mjs
+      - run: node --test scripts/test-cli-package.mjs scripts/test-glb-handoff.mjs scripts/test-repository-architecture.mjs

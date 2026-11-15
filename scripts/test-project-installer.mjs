@@ -34,7 +34,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const ROOT = path.resolve(__dirname, '..');
 
-function makeTempDir(prefix = 'blendops-test-phase10-') {
+function makeTempDir(prefix = 'blendops-test-installer-') {
   return fs.mkdtempSync(path.join(os.tmpdir(), prefix));
 }
 
@@ -700,7 +700,7 @@ test('Scenario 19: --allow-global and global home-directory destination paths ar
           ['--dry-run', '--target', 'generic-project', '--project', projectDir, '--allow-global'],
           { repoRoot: ROOT, planDir }
         ),
-      /Global installation \(--allow-global\) is disabled in Phase 10/
+      /Global installation \(--allow-global\) is disabled in BlendOps CLI/
     );
 
     // 2. Home directory and global dot-directories
@@ -1103,7 +1103,7 @@ test('Scenario 25: Malformed manifests, missing sources, Windows-style path edge
   }
 });
 
-test('Scenario 26: Current-state audit artifacts record active auditPhase phase-13-current (forbidding stale phase-10-current) and preserve F-08 = PARTIALLY_FIXED and F-09 = FIXED', () => {
+test('Scenario 26: Current-state audit artifacts record active auditPhase v1.0.0-current and preserve F-08 = PARTIALLY_FIXED and F-09 = FIXED', () => {
   const scorecard = JSON.parse(
     fs.readFileSync(path.join(ROOT, 'docs', 'audits', 'current', 'scorecard.json'), 'utf8')
   );
@@ -1121,7 +1121,7 @@ test('Scenario 26: Current-state audit artifacts record active auditPhase phase-
   );
 
   for (const doc of [scorecard, findings, skillInventory, evalInventory, manifest]) {
-    assert.equal(doc.auditPhase, 'phase-13-current');
+    assert.equal(doc.auditPhase, 'v1.0.0-current');
     assert.notEqual(doc.auditPhase, 'phase-10-current');
     assert.notEqual(doc.auditPhase, 'phase-11-current');
     assert.notEqual(doc.auditPhase, 'phase-12-current');
@@ -1162,7 +1162,7 @@ function createMinimalFixtureRepo(baseDir) {
   return repoDir;
 }
 
-test('Scenario 27 (Phase 10.1 P1): Claude Desktop export never deletes pre-existing --out directories, stages output safely, rejects destinations created after --dry-run, and cleans up aborted staging', () => {
+test('Scenario 27: Claude Desktop export never deletes pre-existing --out directories, stages output safely, rejects destinations created after --dry-run, and cleans up aborted staging', () => {
   const tempBase = makeTempDir('blendops-p10-1-cd-safety-');
   const planDir = path.join(tempBase, 'plans');
 
@@ -1270,7 +1270,7 @@ test('Scenario 27 (Phase 10.1 P1): Claude Desktop export never deletes pre-exist
   }
 });
 
-test('Scenario 28 (Phase 10.1 P1): Ownership-aware rollback verifies backup and metadata hashes before deletion and refuses to delete modified backups or unowned files', () => {
+test('Scenario 28: Ownership-aware rollback verifies backup and metadata hashes before deletion and refuses to delete modified backups or unowned files', () => {
   const tempBase = makeTempDir('blendops-p10-1-rollback-own-');
   const projectDir = path.join(tempBase, 'proj');
   const planDir = path.join(tempBase, 'plans');
@@ -1329,7 +1329,7 @@ test('Scenario 28 (Phase 10.1 P1): Ownership-aware rollback verifies backup and 
   }
 });
 
-test('Scenario 29 (Phase 10.1 P1): Rollback requires complete integrity metadata and rejects missing hashes, malformed digests, duplicate/overlapping entries, and unsafe paths even with --force-rollback', () => {
+test('Scenario 29: Rollback requires complete integrity metadata and rejects missing hashes, malformed digests, duplicate/overlapping entries, and unsafe paths even with --force-rollback', () => {
   const tempBase = makeTempDir('blendops-p10-1-manifest-schema-');
   const projectDir = path.join(tempBase, 'proj');
   const planDir = path.join(tempBase, 'plans');
@@ -1443,7 +1443,7 @@ test('Scenario 29 (Phase 10.1 P1): Rollback requires complete integrity metadata
   }
 });
 
-test('Scenario 30 (Phase 10.1 P2): Source fingerprinting hashes all skill files, references, and bundle files recursively and rejects symlinks in the source tree', () => {
+test('Scenario 30: Source fingerprinting hashes all skill files, references, and bundle files recursively and rejects symlinks in the source tree', () => {
   const tempBase = makeTempDir('blendops-p10-1-fingerprint-');
   const projectDir = path.join(tempBase, 'proj');
   const planDir = path.join(tempBase, 'plans');
@@ -1514,7 +1514,7 @@ test('Scenario 30 (Phase 10.1 P2): Source fingerprinting hashes all skill files,
   }
 });
 
-test('Scenario 31 (Phase 10.1 P2): Public CLI rejects --plan-dir and programmatic planDir enforces strict path and file safety', () => {
+test('Scenario 31: Public CLI rejects --plan-dir and programmatic planDir enforces strict path and file safety', () => {
   const tempBase = makeTempDir('blendops-p10-1-plandir-');
   const projectDir = path.join(tempBase, 'proj');
   fs.mkdirSync(projectDir, { recursive: true });
@@ -1587,7 +1587,7 @@ test('Scenario 31 (Phase 10.1 P2): Public CLI rejects --plan-dir and programmati
   }
 });
 
-test('Scenario 32 (Phase 10.1 P2): Reruns fail closed if a prior backup recorded in .blendops/install-manifest.json is missing or corrupted rather than overwriting original backup state', () => {
+test('Scenario 32: Reruns fail closed if a prior backup recorded in .blendops/install-manifest.json is missing or corrupted rather than overwriting original backup state', () => {
   const tempBase = makeTempDir('blendops-p10-1-backup-preserve-');
   const projectDir = path.join(tempBase, 'proj');
   const planDir = path.join(tempBase, 'plans');
@@ -1669,7 +1669,7 @@ test('Scenario 32 (Phase 10.1 P2): Reruns fail closed if a prior backup recorded
   }
 });
 
-test('Scenario 33 (Phase 10.2 P1): Transactional write recovery restores target files, manifest, report, and backups consistently across first-install, rerun, report-write, and interrupted writes', () => {
+test('Scenario 33: Transactional write recovery restores target files, manifest, report, and backups consistently across first-install, rerun, report-write, and interrupted writes', () => {
   const tempBase = makeTempDir('blendops-p10-2-tx-recovery-');
   const planDir = path.join(tempBase, 'plans');
 
@@ -1930,7 +1930,7 @@ test('Scenario 33 (Phase 10.2 P1): Transactional write recovery restores target 
   }
 });
 
-test('Scenario 34 (Phase 10.2 P1): User edits on installer-created files (BLENDOPS.md, AGENTS.md, CLAUDE.md, .cursor/rules/blendops.mdc) are preserved across reruns and survive rollback instead of being deleted', () => {
+test('Scenario 34: User edits on installer-created files (BLENDOPS.md, AGENTS.md, CLAUDE.md, .cursor/rules/blendops.mdc) are preserved across reruns and survive rollback instead of being deleted', () => {
   const tempBase = makeTempDir('blendops-p10-2-user-edits-');
   const planDir = path.join(tempBase, 'plans');
 

@@ -1,4 +1,4 @@
-# Adapter Empirical Verification & Evidence Integrity Report (Phase 7 — F-08)
+# Adapter Empirical Verification & Evidence Integrity Report (`F-08`)
 
 Date: `2026-10-31`
 Baseline commit: `4af8b16aad3bdf1dce4114c479002e0b397f3c99`
@@ -10,7 +10,7 @@ Artifact status: `Not Produced`
 
 ## 1. Purpose & Evidence Integrity Rules
 
-This report records the Phase 7 empirical verification pass for Finding **F-08** (Pillar 7 — Cross-Agent Compatibility). It enforces the canonical promotion policy defined in [`docs/adapter-registry.md`](../adapter-registry.md) and [`registry/compatibility-matrix.json`](../../registry/compatibility-matrix.json):
+This report records the empirical verification pass for Finding **F-08** (Cross-Agent Compatibility). It enforces the canonical promotion policy defined in [`docs/adapter-registry.md`](../adapter-registry.md) and [`registry/compatibility-matrix.json`](../../registry/compatibility-matrix.json):
 
 > **No install target or adapter may be promoted from `linked-only` to `verified-read` or `verified-e2e` based on upstream documentation, static file inspection, simulated output, or generic shell reads alone.**
 
@@ -79,15 +79,15 @@ To prevent conflating different confidence levels, this report strictly separate
 - Adapter Document: `docs/adapters/generic-root.md`
 - Install Guide: `docs/install/generic-project.md`
 - Verification Date: `2026-10-31` (re-verifying `2026-05-08` baseline in [`adapter-install-v0-dry-run.md`](./adapter-install-v0-dry-run.md))
-- Disposable Fixture Path: `/tmp/blendops-phase7-generic-8aWoHx` (created via `fs.mkdtempSync`, cleaned up in `finally`)
+- Disposable Fixture Path: `/tmp/blendops-verify-generic-8aWoHx` (created via `fs.mkdtempSync`, cleaned up in `finally`)
 - Files Created / Tested:
   - `AGENTS.md` (pre-existing file, initial SHA-256 `ed3ac0d58ba7429f4193da73960efb6d3ecefc35b1590ddc2b370795cb752f02`)
   - `AGENTS.md.bak` (backup created prior to modification)
   - `BLENDOPS.md` (copied from canonical `bundles/generic-project-local/BLENDOPS.md` plus nonce footer)
-- Verification Nonce: `BLENDOPS-PHASE7-NONCE-GENERIC-9F4A2C1E`
+- Verification Nonce: `BLENDOPS-VERIFY-NONCE-GENERIC-9F4A2C1E`
 - Invocation / Method: Isolated Node.js fixture verification script executing project-root `BLENDOPS.md` attachment, backed-up `AGENTS.md` reference injection, deterministic read-back of the verification nonce across both files, and full rollback restoration.
-- Expected Result: Both `BLENDOPS.md` and `AGENTS.md` expose `BLENDOPS-PHASE7-NONCE-GENERIC-9F4A2C1E` and preserve `Runtime status: Not Run` / `Artifact status: Not Produced`; rollback removes `BLENDOPS.md` and `AGENTS.md.bak` and restores `AGENTS.md` to exact SHA-256 `ed3ac0d58ba7429f4193da73960efb6d3ecefc35b1590ddc2b370795cb752f02`.
-- Observed Result: Nonce `BLENDOPS-PHASE7-NONCE-GENERIC-9F4A2C1E` read back from both `BLENDOPS.md` and `AGENTS.md`; rollback restored `AGENTS.md` to exact SHA-256 `ed3ac0d58ba7429f4193da73960efb6d3ecefc35b1590ddc2b370795cb752f02` with zero leftover files before `/tmp/blendops-phase7-generic-8aWoHx` was deleted.
+- Expected Result: Both `BLENDOPS.md` and `AGENTS.md` expose `BLENDOPS-VERIFY-NONCE-GENERIC-9F4A2C1E` and preserve `Runtime status: Not Run` / `Artifact status: Not Produced`; rollback removes `BLENDOPS.md` and `AGENTS.md.bak` and restores `AGENTS.md` to exact SHA-256 `ed3ac0d58ba7429f4193da73960efb6d3ecefc35b1590ddc2b370795cb752f02`.
+- Observed Result: Nonce `BLENDOPS-VERIFY-NONCE-GENERIC-9F4A2C1E` read back from both `BLENDOPS.md` and `AGENTS.md`; rollback restored `AGENTS.md` to exact SHA-256 `ed3ac0d58ba7429f4193da73960efb6d3ecefc35b1590ddc2b370795cb752f02` with zero leftover files before `/tmp/blendops-verify-generic-8aWoHx` was deleted.
 - Evidence Type Breakdown:
   - Upstream documentation reviewed: `Yes`
   - Repository-local fixture verified: `Yes`
@@ -108,16 +108,16 @@ To prevent conflating different confidence levels, this report strictly separate
 - Adapter Document: `docs/adapters/claude-code.md`
 - Install Guide: `docs/install/claude-code.md`
 - Verification Date: `2026-10-31` (re-verifying `2026-05-08` baseline in [`adapter-install-v0-dry-run.md`](./adapter-install-v0-dry-run.md))
-- Disposable Fixture Path: `/tmp/blendops-phase7-claude-code-Hu7Mqm` (created via `fs.mkdtempSync`, cleaned up in `finally`)
+- Disposable Fixture Path: `/tmp/blendops-verify-claude-code-Hu7Mqm` (created via `fs.mkdtempSync`, cleaned up in `finally`)
 - Files Created / Tested:
   - `CLAUDE.md` (pre-existing file, initial SHA-256 `f0aa4504f330709d883b6ef890fdd78e04de15957279e35e0d3c9853c0b1b37b`)
   - `CLAUDE.md.bak` (backup created prior to modification)
   - `BLENDOPS.md` (project-local entrypoint with nonce)
   - `.blendops-export/claude-code-skills/*/SKILL.md` (isolated 48-skill export via `node scripts/export-claude-skills.mjs --output-root`)
-- Verification Nonce: `BLENDOPS-PHASE7-NONCE-CLAUDE-CODE-7B3D8E2A`
-- Invocation / Method: Isolated disposable fixture test verifying project-local `CLAUDE.md` + `BLENDOPS.md` attachment, isolated 48-skill Claude Code directory export (`48/48` skills with `SKILL.md`, `EVAL.md`, and `references/`), read-back of `BLENDOPS-PHASE7-NONCE-CLAUDE-CODE-7B3D8E2A`, and complete rollback restoration. Note: The `claude` CLI binary itself is not installed in this container (`BINARY_MISSING:claude`), so verification is strictly scoped to `Verified Read (Repo-Local)` and does **not** claim live `claude` CLI binary execution or `.claude/skills/` native skill-loader verification.
-- Expected Result: `CLAUDE.md` and `BLENDOPS.md` contain `BLENDOPS-PHASE7-NONCE-CLAUDE-CODE-7B3D8E2A`, isolated export produces 48 skill folders, and rollback restores `CLAUDE.md` to exact SHA-256 `f0aa4504f330709d883b6ef890fdd78e04de15957279e35e0d3c9853c0b1b37b`.
-- Observed Result: Nonce `BLENDOPS-PHASE7-NONCE-CLAUDE-CODE-7B3D8E2A` verified in `CLAUDE.md` and `BLENDOPS.md`, 48/48 exported skill directories verified, and rollback restored `CLAUDE.md` to exact SHA-256 `f0aa4504f330709d883b6ef890fdd78e04de15957279e35e0d3c9853c0b1b37b` before `/tmp/blendops-phase7-claude-code-Hu7Mqm` was deleted.
+- Verification Nonce: `BLENDOPS-VERIFY-NONCE-CLAUDE-CODE-7B3D8E2A`
+- Invocation / Method: Isolated disposable fixture test verifying project-local `CLAUDE.md` + `BLENDOPS.md` attachment, isolated 48-skill Claude Code directory export (`48/48` skills with `SKILL.md`, `EVAL.md`, and `references/`), read-back of `BLENDOPS-VERIFY-NONCE-CLAUDE-CODE-7B3D8E2A`, and complete rollback restoration. Note: The `claude` CLI binary itself is not installed in this container (`BINARY_MISSING:claude`), so verification is strictly scoped to `Verified Read (Repo-Local)` and does **not** claim live `claude` CLI binary execution or `.claude/skills/` native skill-loader verification.
+- Expected Result: `CLAUDE.md` and `BLENDOPS.md` contain `BLENDOPS-VERIFY-NONCE-CLAUDE-CODE-7B3D8E2A`, isolated export produces 48 skill folders, and rollback restores `CLAUDE.md` to exact SHA-256 `f0aa4504f330709d883b6ef890fdd78e04de15957279e35e0d3c9853c0b1b37b`.
+- Observed Result: Nonce `BLENDOPS-VERIFY-NONCE-CLAUDE-CODE-7B3D8E2A` verified in `CLAUDE.md` and `BLENDOPS.md`, 48/48 exported skill directories verified, and rollback restored `CLAUDE.md` to exact SHA-256 `f0aa4504f330709d883b6ef890fdd78e04de15957279e35e0d3c9853c0b1b37b` before `/tmp/blendops-verify-claude-code-Hu7Mqm` was deleted.
 - Evidence Type Breakdown:
   - Upstream documentation reviewed: `Yes`
   - Repository-local fixture verified: `Yes`
@@ -244,9 +244,9 @@ All 20 install-only targets (`aider`, `amazon-q-developer`, `antigravity`, `augm
 
 ---
 
-## 4. Summary of Canonical Compatibility Counts After Phase 7
+## 4. Summary of Canonical Compatibility Counts
 
-| Metric | Phase 6.1 Baseline | Phase 7 Verified Count | Notes |
+| Metric | Prior Baseline | Verified Count | Notes |
 |---|---:|---:|---|
 | Install targets (`docs/install/*.md`) | 26 | **26** | All 26 install guides synchronized with `registry/compatibility-matrix.json` |
 | Dedicated adapter docs (`docs/adapters/*.md`) | 6 | **6** | `claude-code`, `generic-root`, `claude-app`, `cursor`, `codex`, `opencode` |

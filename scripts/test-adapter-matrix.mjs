@@ -20,7 +20,7 @@ function sha256(buf) {
   return crypto.createHash('sha256').update(buf).digest('hex');
 }
 
-describe('Phase 7 — Adapter Empirical Verification & Evidence Integrity (F-08)', () => {
+describe('Adapter Empirical Verification & Evidence Integrity (F-08)', () => {
   it('Scenario 1: canonical compatibility matrix preserves 26 targets, 6 dedicated adapter docs, 20 install-only targets, 2 verified-read, 24 linked-only, and 0 verified-e2e', () => {
     const matrix = buildExpectedCompatibilityMatrix();
     const diskMatrix = JSON.parse(
@@ -41,8 +41,8 @@ describe('Phase 7 — Adapter Empirical Verification & Evidence Integrity (F-08)
     assert.deepEqual(matrix.promotionPolicy.verifiedReadAllowlist, ['claude-code', 'generic-project']);
   });
 
-  it('Scenario 2: Phase 7 empirical verification report exists, separates all 6 evidence categories, inventories all 26 targets, and verifies target-specific evidence matching', () => {
-    const reportRel = 'docs/evals/adapter-empirical-verification-phase-7.md';
+  it('Scenario 2: empirical verification report exists, separates all 6 evidence categories, inventories all 26 targets, and verifies target-specific evidence matching', () => {
+    const reportRel = 'docs/evals/adapter-empirical-verification.md';
     const reportAbs = path.join(root, reportRel);
     assert.equal(fs.existsSync(reportAbs), true, `${reportRel} must exist`);
 
@@ -111,9 +111,9 @@ describe('Phase 7 — Adapter Empirical Verification & Evidence Integrity (F-08)
   });
 
   it('Scenario 3: disposable /tmp fixture verification for generic-project and claude-code verifies nonce read-back and exact SHA-256 rollback restoration with zero leftover files', () => {
-    const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-test-phase7-fixture-'));
+    const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-test-adapter-fixture-'));
     try {
-      const nonce = 'BLENDOPS-PHASE7-TEST-NONCE-A1B2C3D4';
+      const nonce = 'BLENDOPS-ADAPTER-TEST-NONCE-A1B2C3D4';
       const origAgentsContent = '# Existing Project Agents\n\nDo not lose this content.\n';
       const agentsPath = path.join(tmpDir, 'AGENTS.md');
       const backupPath = path.join(tmpDir, 'AGENTS.md.bak');
@@ -159,19 +159,19 @@ describe('Phase 7 — Adapter Empirical Verification & Evidence Integrity (F-08)
 
     // Specifically verify cursor.md and codex.md separate upstream doc review from BlendOps empirical status
     const cursorInstall = fs.readFileSync(path.join(root, 'docs/install/cursor.md'), 'utf8');
-    assert.match(cursorInstall, /^Status\/confidence:\s*Draft v0,\s*linked-only/m);
+    assert.match(cursorInstall, /^Status\/confidence:\s*1\.0\.0,\s*linked-only/m);
     assert.match(cursorInstall, /^Upstream documentation reviewed:\s*Yes/m);
     assert.match(cursorInstall, /^BlendOps empirical verification status:\s*`linked-only`/m);
     assert.equal(/\bverified-read\b/i.test(cursorInstall), false);
 
     const codexInstall = fs.readFileSync(path.join(root, 'docs/install/codex.md'), 'utf8');
-    assert.match(codexInstall, /^Status\/confidence:\s*Draft v0,\s*linked-only/m);
+    assert.match(codexInstall, /^Status\/confidence:\s*1\.0\.0,\s*linked-only/m);
     assert.match(codexInstall, /^Upstream documentation reviewed:\s*Yes/m);
     assert.match(codexInstall, /^BlendOps empirical verification status:\s*`linked-only`/m);
     assert.equal(/\bverified-read\b/i.test(codexInstall), false);
 
     // Negative check in isolated temp repo: re-introducing 'verified-read' into docs/install/cursor.md or docs/install/README.md fails validation
-    const tmpRepo = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-phase7-doc-drift-'));
+    const tmpRepo = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-adapter-doc-drift-'));
     try {
       fs.mkdirSync(path.join(tmpRepo, 'docs', 'install'), { recursive: true });
       fs.mkdirSync(path.join(tmpRepo, 'docs', 'adapters'), { recursive: true });
@@ -191,7 +191,7 @@ describe('Phase 7 — Adapter Empirical Verification & Evidence Integrity (F-08)
       // Contradiction 1: cursor.md claiming verified-read
       const badCursor = cursorInstall.replace(
         /^Status\/confidence:.*$/m,
-        'Status/confidence: Draft v0, verified-read for rules + AGENTS.md discovery',
+        'Status/confidence: 1.0.0, verified-read for rules + AGENTS.md discovery',
       );
       fs.writeFileSync(path.join(tmpRepo, 'docs', 'install', 'cursor.md'), badCursor, 'utf8');
       const errs1 = validateAdapterAndInstallDocsConsistency(matrix, { rootDir: tmpRepo });
@@ -262,14 +262,14 @@ describe('Phase 7 — Adapter Empirical Verification & Evidence Integrity (F-08)
     );
   });
 
-  it('Scenario 7: rejects promoting a target using the old generic dry-run report or Phase 7 report when that report does not record Pass/verified-read for that target', () => {
+  it('Scenario 7: rejects promoting a target using the old generic dry-run report or empirical report when that report does not record Pass/verified-read for that target', () => {
     for (const [targetId, reportPath] of [
       ['cursor', 'docs/evals/adapter-install-v0-dry-run.md'],
       ['codex', 'docs/evals/adapter-install-v0-dry-run.md'],
       ['opencode', 'docs/evals/adapter-install-v0-dry-run.md'],
-      ['cursor', 'docs/evals/adapter-empirical-verification-phase-7.md'],
-      ['codex', 'docs/evals/adapter-empirical-verification-phase-7.md'],
-      ['opencode', 'docs/evals/adapter-empirical-verification-phase-7.md'],
+      ['cursor', 'docs/evals/adapter-empirical-verification.md'],
+      ['codex', 'docs/evals/adapter-empirical-verification.md'],
+      ['opencode', 'docs/evals/adapter-empirical-verification.md'],
     ]) {
       const matrix = buildExpectedCompatibilityMatrix();
       matrix.summary.verifiedReadCount = 3;
@@ -300,7 +300,7 @@ describe('Phase 7 — Adapter Empirical Verification & Evidence Integrity (F-08)
     aider.evidenceLevel = 'verified-read';
     aider.verificationState = 'Verified Read (Repo-Local)';
     aider.verificationDate = '2026-10-31';
-    aider.verificationEvidencePath = 'docs/evals/adapter-empirical-verification-phase-7.md';
+    aider.verificationEvidencePath = 'docs/evals/adapter-empirical-verification.md';
 
     const resA = validateCompatibilityMatrixObject(matrixA, { rootDir: root });
     assert.equal(resA.valid, false);
@@ -447,11 +447,11 @@ describe('Phase 7 — Adapter Empirical Verification & Evidence Integrity (F-08)
     );
   });
 
-  it('Scenario 13: docs/audits/current/* records Phase 7 F-08 verification evidence and keeps auditedInputsSha256 synchronized', () => {
+  it('Scenario 13: docs/audits/current/* records F-08 verification evidence and keeps auditedInputsSha256 synchronized', () => {
     const manifest = loadAuditedInputsManifest(root);
     assert.ok(
-      manifest.requiredFiles.includes('scripts/test-phase7.mjs'),
-      'audited-inputs.manifest.json must include scripts/test-phase7.mjs',
+      manifest.requiredFiles.includes('scripts/test-adapter-matrix.mjs'),
+      'audited-inputs.manifest.json must include scripts/test-adapter-matrix.mjs',
     );
 
     const currentFindings = JSON.parse(
@@ -461,12 +461,12 @@ describe('Phase 7 — Adapter Empirical Verification & Evidence Integrity (F-08)
     assert.ok(f08, 'F-08 must exist in findings.json');
     assert.equal(f08.currentLifecycleStatus, 'PARTIALLY_FIXED');
     assert.ok(
-      f08.evidencePaths.includes('docs/evals/adapter-empirical-verification-phase-7.md'),
-      'F-08 evidencePaths must include docs/evals/adapter-empirical-verification-phase-7.md',
+      f08.evidencePaths.includes('docs/evals/adapter-empirical-verification.md'),
+      'F-08 evidencePaths must include docs/evals/adapter-empirical-verification.md',
     );
     assert.ok(
-      f08.evidencePaths.includes('scripts/test-phase7.mjs'),
-      'F-08 evidencePaths must include scripts/test-phase7.mjs',
+      f08.evidencePaths.includes('scripts/test-adapter-matrix.mjs'),
+      'F-08 evidencePaths must include scripts/test-adapter-matrix.mjs',
     );
 
     const liveDigest = computeAuditedInputsDigest(root);

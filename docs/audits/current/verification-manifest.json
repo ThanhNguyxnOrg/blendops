@@ -1,147 +1,43 @@
 {
   "schemaVersion": "1.4.0",
-  "auditPhase": "phase-13-current",
+  "auditPhase": "v1.0.0-current",
+  "releaseVersion": "1.0.0",
   "repository": "ThanhNguyxnOrg/blendops",
   "branch": "main",
-  "sourceCommitSha": "112ecf75a04ab5864b3dc3656b9a27f09d1e8dcd",
-  "sourceCommitShort": "112ecf7",
-  "sourceCommitDate": "2026-11-01 04:55:09 -0500",
+  "sourceCommitSha": "9f6c85728d308a8e1669f3b64b56e235dc2193fa",
+  "sourceCommitShort": "9f6c857",
+  "sourceCommitDate": "2026-11-14 04:27:00 +0000",
   "auditProvenance": {
-    "sourceCommitSha": "112ecf75a04ab5864b3dc3656b9a27f09d1e8dcd",
-    "sourceCommitShort": "112ecf7",
-    "sourceCommitDate": "2026-11-01 04:55:09 -0500",
+    "sourceCommitSha": "9f6c85728d308a8e1669f3b64b56e235dc2193fa",
+    "sourceCommitShort": "9f6c857",
+    "sourceCommitDate": "2026-11-14 04:27:00 +0000",
     "workingTreeState": "dirty",
     "snapshotBasis": "working-tree-on-top-of-source-commit",
-    "uncommittedChangeCount": 450,
-    "auditedInputsSha256": "b07b01e84bc2c9a2ca26dcdf97d189fdddc2598f71ebd70b93994d92fe7361e5",
+    "uncommittedChangeCount": 171,
+    "auditedInputsSha256": "ee79cfad4407edccf09274cc3797aa08ac902a3866f049beaddcb323031d098b",
     "selfReferentialCommitRule": "A Git commit cannot contain its own final commit SHA inside tracked files. sourceCommitSha records the verified HEAD commit present when the generator ran, workingTreeState and snapshotBasis record whether uncommitted working-tree changes were present on top of sourceCommitSha, and auditedInputsSha256 digests the exact audited file contents."
   },
   "commitChain": [
     {
-      "phase": "Original Base",
+      "milestone": "Initial Audit Baseline",
       "commitSha": "3ea3c35c6b8a6e5e915bab9f63333d4a1c09bd4d",
       "summary": "Pre-audit repository baseline (54.5/100 provisional scorecard)"
     },
     {
-      "phase": "Phase 0",
-      "commitSha": "d9e70ed0a7191cd8e6f63bcb6d50d9964544e625",
-      "summary": "Full 48-skill repository audit, inventories, baseline scorecard, and Inspector UI"
-    },
-    {
-      "phase": "Phase 1",
-      "commitSha": "ac1ccdb96afe7c52c3064281bd5b0f2dde69468e",
-      "summary": "P0 remediation: F-01 truth-state normalization (30 skills), F-02 pure-Node fflate exporter & CI workflow, F-08 26-target adapter registry sync"
-    },
-    {
-      "phase": "Phase 2",
-      "commitSha": "f43385a8a07dace4c13ad48cb4d63ca111f3a2ff",
-      "summary": "Contract-first routing pilot (4 routing skills), registry compiler, progression cycle detector, and managed Markdown sections"
-    },
-    {
-      "phase": "Phase 2.1",
-      "commitSha": "b1927ba04bc9ac9c5ca476997ee6da7f8b8f4f78",
-      "summary": "Draft 2020-12 Ajv2020 schema enforcement, 16-state activationGate overlap/reachability verifier, and byte-for-byte EVAL.md ZIP export verification"
-    },
-    {
-      "phase": "Phase 2.2 & Phase 3",
-      "commitSha": "88dc3bddb6b907a7ca12b213bd988cb5c51659e1",
-      "summary": "Repository truth reconciliation (docs/audits/current/*) and Phase 3 behavioral evaluation foundation (12 pilot suites, 73 deterministic cases)"
-    },
-    {
-      "phase": "Phase 3.1",
-      "commitSha": "650f0a5979f1d6b9fea94a0e6378988ef1ab544e",
-      "summary": "Evaluation predicate hardening (all 5 condition operators) and explicit auditProvenance foundation"
-    },
-    {
-      "phase": "Phase 3.1.1",
-      "commitSha": "51f76d98d16deef4ed9d8d5991ff59c55ce1d27e",
-      "summary": "Audit provenance working-tree porcelain fix and manifest-backed auditedInputsSha256 digest coverage"
-    },
-    {
-      "phase": "Phase 4",
-      "commitSha": "a5ddece28e71d0ce89f6b7a741214f8832d37ee5",
-      "summary": "Catalog template completion (F-05 FIXED across all 48 skills), 18-heading structural validator in check-docs.mjs, and test-phase4.mjs suite"
-    },
-    {
-      "phase": "Phase 3 Completion (E1–E4)",
-      "commitSha": "75f3b5c8b16b2d7e174d6dba58965da5013cfb5e",
-      "summary": "Runtime evidence packets, deterministic GLB 2.0 binary inspector (F-07 FIXED), L0-L3 capability policy & rollback protocol (F-10 FIXED), and 26-target compatibility matrix validation"
-    },
-    {
-      "phase": "Phase 5",
-      "commitSha": "f8301a3e39e05bee4da1b8f85f16fb13ff1c6b3e",
-      "summary": "Full 48-skill machine-readable contracts (F-03 FIXED), 27-field context vocabulary, 371-edge acyclic workflow graph, and managed Markdown synchronization"
-    },
-    {
-      "phase": "Phase 6",
-      "commitSha": "869462d3b24acc131bd0e63203322b966dc01785",
-      "summary": "Full 48-skill machine-readable behavioral evaluation suites (269 deterministic cases: 21 contract_routing, 124 contract_handoff, 124 deterministic_fixture; F-04 FIXED)"
-    },
-    {
-      "phase": "Phase 6.1",
-      "commitSha": "4af8b16aad3bdf1dce4114c479002e0b397f3c99",
-      "summary": "CI export concurrency stabilization (--output-root isolation for export-claude-skills.mjs across parallel test suites)"
-    },
-    {
-      "phase": "Phase 7",
-      "commitSha": "9ba2d80bc8c77e8dcbd21b8d2298a837c3728c86",
-      "summary": "Adapter empirical verification & evidence integrity (F-08): 26-target host availability discovery, disposable /tmp fixture verification, and fail-closed promotion validator"
-    },
-    {
-      "phase": "Phase 8",
-      "commitSha": "defb847b58516afa75f090fd2fa7b066d01e5832",
-      "summary": "Deterministic 96-file bundle reference summary generator (F-09), bundle manifest synchronization, and CI check-mode verification"
-    },
-    {
-      "phase": "Phase 8.1",
-      "commitSha": "42dadea8d92c384dcd5eae419880d15d4b9ccce4",
-      "summary": "Summary semantic integrity (full handoff when/retryPolicy & routing activationGate preservation), Ajv2020 contract validation, realpath/symlink confinement, and fail-closed F-09 audit gate"
-    },
-    {
-      "phase": "Phase 8.1.1",
-      "commitSha": "3e72020fb64af4d5aeadeb942c9cbb0314c11cba",
-      "summary": "Generator edge-case hardening (quoted-string condition parser, canonical routing rank 1–100 & goalClarity any schema alignment, and bundle delivery consistency)"
-    },
-    {
-      "phase": "Phase 9",
-      "commitSha": "f06fce82e5dae19f3ea9449c460e2fe2083c474d",
-      "summary": "Bundle export freshness, atomic temp candidate generation, single-source snapshot delivery, and real HTTP integration verification"
-    },
-    {
-      "phase": "Phase 10",
-      "commitSha": "23e00d5d735190049ec0cb224bec4ae7fd67a990",
-      "summary": "Dry-run-gated project-local skill installer, pre-write backups, rollback manifest & verification, and bundle cache path safety"
-    },
-    {
-      "phase": "Phase 10.1",
-      "commitSha": "ce95a155362b0281f228dcfa89ada0ccfa21533d",
-      "summary": "Staging-verified Claude Desktop export, ownership-aware rollback, strict manifest schema & hash verification, and recursive source fingerprinting"
-    },
-    {
-      "phase": "Phase 10.2",
-      "commitSha": "f0804fd64a9fa4f263a9ec59c5de84ed21733747",
-      "summary": "Transactional project-local writes, crash recovery journal, and user-edit preservation across reruns & rollback"
-    },
-    {
-      "phase": "Phase 11",
-      "commitSha": "4f5bd1e3c9eef7261dfc9ff9e20668e2338841ee",
-      "summary": "Distributable CLI entrypoint (bin/blendops.mjs), npm pack tarball consumer verification, and cross-platform CI pipeline (Ubuntu, Windows, macOS)"
-    },
-    {
-      "phase": "Phase 12",
-      "commitSha": "112ecf75a04ab5864b3dc3656b9a27f09d1e8dcd",
-      "summary": "Web-Ready GLB Delivery & Viewer Integration: GLB 2.0 deep inspection, handoff manifest schema (schemas/glb-web-handoff-manifest.schema.json), HTML/Markdown/JSON report generator (scripts/generate-glb-handoff-report.mjs), CLI glb-inspect/glb-handoff/glb-validate-manifest, and Three.js + React Three Fiber viewer integration modules"
+      "milestone": "BlendOps v1.0.0 Head Snapshot",
+      "commitSha": "9f6c85728d308a8e1669f3b64b56e235dc2193fa",
+      "summary": "Verified production release baseline covering 48 skills, 4 laws, 10 recipes, SceneSpec/ExecutionPlan compilation, MCP qualification, GLB inspection, and 26 agent install targets"
     }
   ],
-  "currentPhaseContext": {
-    "phase": "Phase 13 — Repository Architecture, Organization & Finalization",
-    "title": "Full Repository Inventory & Classification, Root Policy & Naming Hygiene, Internal Reference Validator, Windows CI Drive-Root & Parallel Import Fix, and Verified Downloadable Bundle",
-    "sourceCommitSha": "112ecf75a04ab5864b3dc3656b9a27f09d1e8dcd",
+  "releaseContext": {
+    "releaseTag": "v1.0.0",
+    "title": "BlendOps 1.0.0 — Portable Blender Workflow, Knowledge Catalog, Safe Installer & Runtime Qualification",
+    "sourceCommitSha": "9f6c85728d308a8e1669f3b64b56e235dc2193fa",
     "workingTreeState": "dirty",
     "snapshotBasis": "working-tree-on-top-of-source-commit",
-    "auditedInputsSha256": "b07b01e84bc2c9a2ca26dcdf97d189fdddc2598f71ebd70b93994d92fe7361e5",
+    "auditedInputsSha256": "ee79cfad4407edccf09274cc3797aa08ac902a3866f049beaddcb323031d098b",
     "auditedInputsManifest": "docs/audits/audited-inputs.manifest.json",
-    "relationshipToCommitChain": "Phase 13 is built directly on top of Phase 12 (112ecf75a04ab5864b3dc3656b9a27f09d1e8dcd). Because a Git commit cannot embed its own final SHA inside tracked files, verification-manifest.json records 112ecf75a04ab5864b3dc3656b9a27f09d1e8dcd as the latest completed commit in commitChain and sourceCommitSha, while locking the exact Phase 13 audited inputs via auditedInputsSha256 and docs/audits/audited-inputs.manifest.json."
+    "provenanceNote": "A Git commit cannot embed its own final commit SHA inside tracked files; sourceCommitSha records the verified HEAD present when audit snapshots were generated, while auditedInputsSha256 hashes all inputs declared in docs/audits/audited-inputs.manifest.json."
   },
   "ciVerificationPipeline": {
     "command": "npm run ci",
@@ -150,49 +46,61 @@
         "script": "npm run docs:check",
         "command": "node scripts/check-docs.mjs",
         "status": "Passed",
-        "verifiedScope": "Active Markdown files, frontmatter limits, relative links, Path 1 Blender 5.1+ attribution, F-01 truth-state guard, F-05 18-heading skill template structure guard, F-08 adapter registry & install/adapter confidence consistency guard, F-09 96-file bundle summary guard"
+        "verifiedScope": "Active Markdown files, frontmatter limits, relative links, Path 1 Blender 5.1+ attribution, truth-state guard, 18-heading skill structure, 26-target adapter matrix consistency, and 96-file bundle summaries"
+      },
+      {
+        "script": "npm run catalog:check",
+        "command": "node scripts/build-knowledge-catalog.mjs --check",
+        "status": "Passed",
+        "verifiedScope": "Knowledge catalog (30 records, 20 sources), recipe catalog (10 recipes), retrieval eval suite, and five-layer architecture reconciliation audit"
+      },
+      {
+        "script": "npm run operations:check",
+        "command": "node scripts/runtime-orchestrator.mjs --check",
+        "status": "Passed",
+        "verifiedScope": "Typed operation registry validation and L0-L3 capability policy consistency"
       },
       {
         "script": "npm run arch:check",
         "command": "node scripts/validate-repository-architecture.mjs --check",
         "status": "Passed",
-        "verifiedScope": "Complete tracked-file classification across 7 canonical categories (docs/audits/current/repository-inventory.json), root-level policy, naming conventions, duplicate policy, and internal reference integrity (Markdown links, HTML assets, relative ESM imports, package.json, workflows, JSON Schemas, and audited-inputs.manifest.json)"
+        "verifiedScope": "Tracked-file classification across 7 canonical categories, root policy, naming hygiene, and internal reference integrity"
       },
       {
         "script": "npm run registry:check",
         "command": "node scripts/build-registry.mjs --check",
         "status": "Passed",
-        "verifiedScope": "Draft 2020-12 Ajv2020 contract schema validation across all 48/48 catalog skills (4 routing participants + 44 specialist skills), context field vocabulary check, 16-state precedence ladder overlap/reachability, 371-edge progression DAG acyclicity, and managed Markdown sync"
+        "verifiedScope": "Draft 2020-12 Ajv2020 contract schema validation across all 48/48 catalog skills, 16-state precedence ladder overlap/reachability, 371-edge acyclic progression DAG, and managed Markdown sync"
       },
       {
         "script": "npm run evals:check",
         "command": "node scripts/run-evals.mjs --check",
         "status": "Passed",
-        "verifiedScope": "Draft 2020-12 Ajv2020 evaluation schema (2.0.0) validation across all 48/48 catalog suites (269 cases), 27-field handoffContext vocabulary validation, and evals/index.json synchronization"
+        "verifiedScope": "Draft 2020-12 Ajv2020 evaluation schema (2.0.0) validation across all 48/48 catalog suites (269 cases) and evals/index.json synchronization"
       },
       {
         "script": "npm run evals:run",
         "command": "node scripts/run-evals.mjs",
         "status": "Passed",
-        "verifiedScope": "269/269 deterministic fixture, truth-state separation, contract-routing (21 cases), and specialist contract-handoff (124 cases) assertions passed across 48/48 skills (live_model: Not Run, blender_runtime: Not Run)"
+        "verifiedScope": "269/269 deterministic fixture, truth-state separation, contract-routing, and specialist contract-handoff assertions passed across 48/48 skills (live_model: Not Run, blender_runtime: Not Run)"
       },
       {
         "script": "npm run bundles:summaries:check",
         "command": "node scripts/generate-bundle-reference-summaries.mjs --check",
         "status": "Passed",
-        "verifiedScope": "Deterministic byte-for-byte verification of all 96 bundle reference summaries (48 Claude Desktop manual + 48 portable skill package) and bundles/claude-desktop-manual/manifest.json against canonical skills/<id>/SKILL.md + contract.json"
+        "verifiedScope": "Byte-for-byte verification of all 96 bundle reference summaries and bundles/claude-desktop-manual/manifest.json against canonical SKILL.md + contract.json"
       },
       {
         "script": "npm run skills:export",
         "command": "node scripts/export-claude-skills.mjs",
         "status": "Passed",
-        "verifiedScope": "48 ZIP archives in dist/claude-skills/desktop-zips/ and 48 folders in dist/claude-skills/claude-code-skills/ with SKILL.md, EVAL.md, and references/* verified"
+        "verifiedScope": "48 ZIP archives in dist/claude-skills/desktop-zips/ and 48 folders in dist/claude-skills/claude-code-skills/"
       },
       {
         "script": "npm test",
-        "command": "node --test scripts/test-phase1.mjs scripts/test-phase2.mjs scripts/test-phase3.mjs scripts/test-phase4.mjs scripts/test-phase5.mjs scripts/test-phase6.mjs scripts/test-phase7.mjs scripts/test-phase8.mjs scripts/test-phase9.mjs scripts/test-phase10.mjs scripts/test-phase11.mjs scripts/test-phase12.mjs scripts/test-phase13.mjs",
+        "command": "node --test scripts/test-*.mjs",
         "status": "Passed",
-        "verifiedScope": "Unit and integration suites across Phase 1, Phase 2 / 2.1, Phase 3 / 3.1 / 3.1.1, Phase 4, Phase 5, Phase 6 / 6.1, Phase 7, Phase 8 / 8.1 / 8.1.1, Phase 9, Phase 10 / 10.1 / 10.2, Phase 11, Phase 12, and Phase 13 (repository architecture, organization, and finalization)"
+        "verifiedScope": "All 19 unit, contract, installer, CLI, GLB handoff, knowledge catalog, scene-plan harmonizer, runtime orchestrator, MCP qualification, and skills.sh test suites"
       }
     ]
   },

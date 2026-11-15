@@ -1,6 +1,6 @@
 {
   "schema_version": "1.1.0",
-  "audit_scope": "phase-0-phase-1-and-phase-2-architecture-reconciliation",
+  "audit_scope": "five-layer-architecture-reconciliation",
   "workflow_stage_derivation_rule": "Derived deterministically from registry/skills.json category + role + skill ID: routing-and-governance/brief-and-scope/recipe-and-pack-governance -> discover-and-plan; asset-and-library-governance -> source-and-clear-assets; runtime-and-bridge-governance -> runtime-preflight; scene-and-domain-planning/color-and-render-decisions -> stage-camera-lighting-and-lookdev; quality-and-budget-validation -> inspect-and-validate; web-and-glb-handoff/evidence-and-reporting -> verify-evidence-and-handoff.",
   "classification_methodology": {
     "summary": "Combines explicit promoted_from_skill_refs mappings (37 files), rule-based governance & recipe prefix mappings (48 files), rule-based path + heading inspection of skill-local operating instructions (66 files), and verified human semantic reviews (0 files — requires traceable reviewer, timestamp, scope, and outcome evidence).",
@@ -97,7 +97,7 @@
       "category": "routing-and-governance",
       "contract_role": "ambiguous-intent-entry-router",
       "purpose": "Route users to the right BlendOps skill, document, or next safe action without overclaiming runtime, artifact, or package readiness.",
-      "frontmatter_description": "Help users and agents choose the next safe BlendOps action across skills, docs, runtime readiness, evals, packaging, and Draft v0 release boundaries.",
+      "frontmatter_description": "Help users and agents choose the next safe BlendOps action across skills, docs, runtime readiness, evals, packaging, and 1.0.0 release boundaries.",
       "derived_workflow_stage": "discover-and-plan",
       "workflow_stage": "discover-and-plan",
       "workflow_stage_is_derived": true,
@@ -183,7 +183,7 @@
       "references": [
         {
           "path": "skills/recipe-fit-assessor/references/recipe-catalog.md",
-          "title": "Recipe / pack catalog (BlendOps v0 + Phase 1 Canonical Recipe Registry)",
+          "title": "Recipe / pack catalog (BlendOps Canonical Recipe Registry)",
           "line_count": 31,
           "classification": "recipe_specific_procedure",
           "classification_method": "rule_based_governance_and_recipe_mapping",
@@ -3128,7 +3128,7 @@
         {
           "path": "skills/runtime-attempt-report/references/attempt-record-template.md",
           "title": "Attempt record template",
-          "line_count": 34,
+          "line_count": 50,
           "classification": "workflow_or_pack_governance",
           "classification_method": "rule_based_governance_and_recipe_mapping",
           "review_status": "rule_classified_governance_or_recipe",
@@ -3276,7 +3276,7 @@
         {
           "path": "skills/runtime-readiness/references/readiness-matrix.md",
           "title": "Readiness Matrix",
-          "line_count": 29,
+          "line_count": 47,
           "classification": "workflow_or_pack_governance",
           "classification_method": "rule_based_governance_and_recipe_mapping",
           "review_status": "rule_classified_governance_or_recipe",
@@ -3613,7 +3613,7 @@
     },
     {
       "path": "skills/recipe-fit-assessor/references/recipe-catalog.md",
-      "title": "Recipe / pack catalog (BlendOps v0 + Phase 1 Canonical Recipe Registry)",
+      "title": "Recipe / pack catalog (BlendOps Canonical Recipe Registry)",
       "line_count": 31,
       "classification": "recipe_specific_procedure",
       "classification_method": "rule_based_governance_and_recipe_mapping",
@@ -5100,7 +5100,7 @@
     {
       "path": "skills/runtime-attempt-report/references/attempt-record-template.md",
       "title": "Attempt record template",
-      "line_count": 34,
+      "line_count": 50,
       "classification": "workflow_or_pack_governance",
       "classification_method": "rule_based_governance_and_recipe_mapping",
       "review_status": "rule_classified_governance_or_recipe",
@@ -5188,7 +5188,7 @@
     {
       "path": "skills/runtime-readiness/references/readiness-matrix.md",
       "title": "Readiness Matrix",
-      "line_count": 29,
+      "line_count": 47,
       "classification": "workflow_or_pack_governance",
       "classification_method": "rule_based_governance_and_recipe_mapping",
       "review_status": "rule_classified_governance_or_recipe",

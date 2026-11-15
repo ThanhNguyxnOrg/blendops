@@ -1,8 +1,8 @@
 # Install target: Codex CLI/App
 
-Status/confidence: Draft v0, linked-only (Not Verified in live Codex host)
+Status/confidence: 1.0.0, linked-only (Not Verified in live Codex host)
 Upstream documentation reviewed: Yes — Codex `AGENTS.md` discovery docs reviewed 2026-10-14
-BlendOps empirical verification status: `linked-only` (`Linked Only (Not Verified)`) — see [`docs/adapter-registry.md`](../adapter-registry.md) and [`docs/evals/adapter-empirical-verification-phase-7.md`](../evals/adapter-empirical-verification-phase-7.md)
+BlendOps empirical verification status: `linked-only` (`Linked Only (Not Verified)`) — see [`docs/adapter-registry.md`](../adapter-registry.md) and [`docs/evals/adapter-empirical-verification.md`](../evals/adapter-empirical-verification.md)
 
 ## Recommended near-term install mode
 

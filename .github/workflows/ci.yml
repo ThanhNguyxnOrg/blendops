@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [main, phase13.2-complete-review]
+    branches: [main]
     paths-ignore:
       - docs/audits/current/**
   pull_request:

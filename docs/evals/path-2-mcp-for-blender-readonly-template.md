@@ -116,8 +116,6 @@ Path 1 (Lab MCP): unchanged by this record (still smoke-only)       ← keep ver
 CLI fallback: unchanged by this record (documented upstream; no in-repo evidence file yet)     ← keep verbatim
 Full official runtime manual eval: Not Run
 Runtime artifacts: Not Produced
-Stable release readiness: Not Ready
-v0.1.0 tag: <update only after both paths have full eval evidence OR the limitation is documented>
 ```
 
 ---
@@ -134,7 +132,6 @@ v0.1.0 tag: <update only after both paths have full eval evidence OR the limitat
 - [ ] Add a row to [`docs/evals/README.md`](./README.md) "Evidence and result index" pointing at the new file.
 - [ ] Update the verdict in [`docs/evals/README.md`](./README.md) "Verdict dashboard" Path 2 row from "User-reported verified" to "Verified" if the smoke test passed.
 - [ ] Update [`docs/release-readiness.md`](../release-readiness.md) status row for Path 2.
-- [ ] Update [`docs/release-readiness-rollup-v0.md`](../release-readiness-rollup-v0.md) Path 2 verification status.
 - [ ] Update [`docs/runtime-stack-strategy.md`](../runtime-stack-strategy.md) "BlendOps verification" cell for Path 2.
 - [ ] Update [`README.md`](../../README.md) badge for Path 2 if appropriate.
 - [ ] Run `npm run docs:check` and `npm run skills:export` to confirm no CI break.
@@ -148,4 +145,4 @@ v0.1.0 tag: <update only after both paths have full eval evidence OR the limitat
 - Does **not** install `uv` or `mcp-for-blender` for you.
 - Does **not** configure an MCP client.
 - Does **not** prove mutation, render, export, or GLB success.
-- Does **not** authorize tagging `v0.1.0`. That requires either a full eval record OR an explicit documented limitation acceptance.
+- Does **not** mark full mutation/render/export runtime verification complete.

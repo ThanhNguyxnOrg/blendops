@@ -1,8 +1,8 @@
 {
   "name": "blendops",
-  "version": "0.1.0-draft",
+  "version": "1.0.0",
   "private": true,
-  "description": "AI-native Blender workflow + skill pack for non-Blender users. Portable Anthropic Skills (48 skills = 3× baseline; Batches 1–8: web 3D deep, quality validators, domain planners, process discipline, asset/sourcing, color/format/output, recipe/pack ops, runtime path discipline; 4 laws, 1 pack) + 26 install targets across Claude Desktop, Claude Code, Cursor, Codex, OpenCode, Gemini, Antigravity, Copilot, Cline, Roo Code, Blackbox AI, Continue, Zed, Windsurf, Trae, Augment Code, goose, OpenHands, JetBrains Junie, Sourcegraph Cody, Aider, Amazon Q Developer, Ollama, LM Studio, Open WebUI, generic.",
+  "description": "AI-native Blender workflow, knowledge catalog, and portable skill pack for non-Blender users. Ships 48 Anthropic Skills, 4 hard guardrail laws, 10 canonical recipes, deterministic SceneSpec/ExecutionPlan compilation, MCP runtime qualification, GLB inspection, and 26+ agent install targets.",
   "homepage": "https://github.com/ThanhNguyxnOrg/blendops#readme",
   "repository": {
     "type": "git",
@@ -83,7 +83,7 @@
     "glb:handoff": "node scripts/generate-glb-handoff-report.mjs",
     "arch:build": "node scripts/validate-repository-architecture.mjs",
     "arch:check": "node scripts/validate-repository-architecture.mjs --check",
-    "test": "node --test scripts/test-phase1.mjs scripts/test-phase2.mjs scripts/test-phase3.mjs scripts/test-phase4.mjs scripts/test-phase5.mjs scripts/test-phase6.mjs scripts/test-phase7.mjs scripts/test-phase8.mjs scripts/test-phase9.mjs scripts/test-phase10.mjs scripts/test-phase11.mjs scripts/test-phase12.mjs scripts/test-phase13.mjs scripts/test-phase14.mjs scripts/test-phase15.mjs scripts/test-phase16.mjs scripts/test-phase17.mjs scripts/test-phase18.mjs scripts/test-phase19.mjs",
+    "test": "node --test scripts/test-skills-export.mjs scripts/test-routing-contracts.mjs scripts/test-behavioral-evals.mjs scripts/test-skill-templates.mjs scripts/test-catalog-contracts.mjs scripts/test-eval-coverage.mjs scripts/test-adapter-matrix.mjs scripts/test-bundle-summaries.mjs scripts/test-dev-server.mjs scripts/test-project-installer.mjs scripts/test-cli-package.mjs scripts/test-glb-handoff.mjs scripts/test-repository-architecture.mjs scripts/test-knowledge-catalog.mjs scripts/test-scene-spec-harmonizer.mjs scripts/test-runtime-orchestrator.mjs scripts/test-runtime-hardening.mjs scripts/test-mcp-qualification.mjs scripts/test-mcp-client-skills-sh.mjs",
     "docs:check": "node scripts/check-docs.mjs",
     "skills:export": "node scripts/export-claude-skills.mjs",
     "ci": "npm run docs:check && npm run catalog:check && npm run operations:check && npm run arch:check && npm run registry:check && npm run evals:check && npm run evals:run && npm run bundles:summaries:check && npm run skills:export && npm test",

@@ -2,7 +2,7 @@
 
 # Law: official-runtime-only
 
-Status: Draft v0
+Status: 1.0.0
 
 ## Purpose
 

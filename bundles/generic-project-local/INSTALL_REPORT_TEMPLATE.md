@@ -1,6 +1,6 @@
 # BlendOps Generic Project Install Report
 
-Status: Draft v0 report template  
+Status: 1.0.0 report template  
 Target: generic-project
 
 ## Summary

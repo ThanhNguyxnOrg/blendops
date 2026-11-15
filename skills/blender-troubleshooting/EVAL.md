@@ -1,6 +1,6 @@
 # EVAL — blender-troubleshooting
 
-Status: Draft v0 text-only baseline  
+Status: 1.0.0 text-only baseline  
 Scope: structured root-cause diagnosis only; no Blender execution; no artifact claims.
 
 ## Text-only eval prompt

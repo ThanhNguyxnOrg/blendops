@@ -1,6 +1,6 @@
-# Runtime Availability Checklist, Draft v0
+# Runtime Availability Checklist
 
-Status: Draft v0 readiness checklist only, not executed  
+Status: Prepared readiness checklist only, not executed  
 Date: 2026-04-29 (original); legacy 3-stack labels mapped to 2-path + CLI appendix model 2026-05-08  
 Related packet: [official-runtime-manual-eval-packet.md](./official-runtime-manual-eval-packet.md)  
 Related criteria: [official-runtime-verification-criteria.md](./official-runtime-verification-criteria.md)
@@ -58,8 +58,7 @@ It cannot support these claims:
 - A preview/render artifact exists.
 - A GLB/export artifact exists.
 - Runtime manual eval is complete.
-- Draft v0 is stable or production-ready.
-- A draft tag is ready.
+- Live Blender artifact provenance exists.
 
 ---
 
@@ -145,12 +144,10 @@ Do not claim preview/render/GLB output unless evidence exists in the eval record
 - This checklist does not introduce a custom runtime implementation.
 - This checklist does not claim runtime compatibility is confirmed.
 - This checklist does not mark official runtime manual eval complete.
-- This checklist does not move BlendOps out of Draft v0.
-- This checklist does not prepare or claim a draft tag.
 
 ---
 
-## Current Draft v0 decision
+## Current runtime evidence boundary
 
 > [!WARNING]
 > Current status remains readiness checklist prepared only. Runtime evals must stay `Not Run` or `Not Produced` until an official runtime path is actually executed and the required evidence is recorded.

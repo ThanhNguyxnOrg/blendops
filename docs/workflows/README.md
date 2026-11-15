@@ -1,4 +1,4 @@
-# Workflows (Draft v0)
+# Workflows
 
 Workflows compose laws + skills into multi-step product processes.
 

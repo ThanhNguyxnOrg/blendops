@@ -1,4 +1,4 @@
-# Recipe / pack catalog (BlendOps v0 + Phase 1 Canonical Recipe Registry)
+# Recipe / pack catalog (BlendOps Canonical Recipe Registry)
 
 Use this table for fast fit scoring. Machine-readable recipe definitions live in `registry/recipe-catalog.json` (indexed in `registry/catalog-index.json` and rendered in `docs/knowledge-and-recipe-catalog.md`); human-readable scenario examples and packs live under `docs/recipes/`, `docs/workflows/`, and `packs/`.
 

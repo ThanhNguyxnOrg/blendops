@@ -1,22 +1,22 @@
 #!/usr/bin/env node
 /**
- * BlendOps Phase 3.1 (Phase 17) — Independent Adversarial Audit, Cross-Phase Hardening
+ * BlendOps — Independent Adversarial Audit, Cross-Layer Hardening
  * & Production Readiness Verification Suite.
  *
- * Covers all adversarial scenarios from Phase 3.1 Sections 2A–2F, 3.1–3.5, 4, and 5:
- *   - Section 2A: Explicit recipe override integrity & duplicate supporting recipe rejection
- *   - Section 2B: Path-specific Blender version floor enforcement & planning-only vs runtime readiness
- *   - Section 2C: ExecutionPlan cross-layer semantic invariant verification (inspectExecutionPlan)
- *   - Section 2D: Retrieval metric mathematical honesty (dedup, standard vs target Precision@K, empty-result guard)
- *   - Section 2E: Single source of truth for shared catalog map & traceable human review provenance gate
- *   - Section 2F: Safe atomic CLI output path containment & symlink rejection
- *   - Section 3.1: Transport endpoint validation (non-loopback, bad scheme) & stale session detection
- *   - Section 3.2: Indirect bpy/Python/shell injection rejection & L3 escalation prevention
- *   - Section 3.3: Symlinked .blend checkpoint rejection, mutation echo lie detection via independent L0 readback,
- *                  uncertain timeout classification, and rollback_unverified readback detection
- *   - Section 3.4: Idempotency key payload collision rejection vs identical duplicate skipping
- *   - Section 3.5: Deep secret redaction across URLs, query params, JWTs, Basic/Bearer headers, and Error objects
- *   - Section 4: Cross-phase contract compatibility & project-local execution from unrelated working directory
+ * Covers all adversarial verification scenarios:
+ *   - Explicit recipe override integrity & duplicate supporting recipe rejection
+ *   - Path-specific Blender version floor enforcement & planning-only vs runtime readiness
+ *   - ExecutionPlan cross-layer semantic invariant verification (inspectExecutionPlan)
+ *   - Retrieval metric mathematical honesty (dedup, standard vs target Precision@K, empty-result guard)
+ *   - Single source of truth for shared catalog map & traceable human review provenance gate
+ *   - Safe atomic CLI output path containment & symlink rejection
+ *   - Transport endpoint validation (non-loopback, bad scheme) & stale session detection
+ *   - Indirect bpy/Python/shell injection rejection & L3 escalation prevention
+ *   - Symlinked .blend checkpoint rejection, mutation echo lie detection via independent L0 readback,
+ *     uncertain timeout classification, and rollback_unverified readback detection
+ *   - Idempotency key payload collision rejection vs identical duplicate skipping
+ *   - Deep secret redaction across URLs, query params, JWTs, Basic/Bearer headers, and Error objects
+ *   - Cross-layer contract compatibility & project-local execution from unrelated working directory
  */
 
 import { test, describe, before, after } from 'node:test';
@@ -70,11 +70,11 @@ function loadSneakerSceneSpec() {
   );
 }
 
-describe('Phase 3.1 (Phase 17) — Independent Adversarial Audit & Cross-Phase Hardening', () => {
+describe('Adversarial Audit & Cross-Layer Runtime Hardening', () => {
   let tmpRoot;
 
   before(() => {
-    tmpRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-phase17-'));
+    tmpRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-hardening-'));
   });
 
   after(() => {
@@ -397,7 +397,7 @@ describe('Phase 3.1 (Phase 17) — Independent Adversarial Audit & Cross-Phase H
       48,
     );
 
-    // 5.3 Shared catalog map has all 20 canonical artifacts including Phase 3 and Phase 3.2 runtime governance files and schemas
+    // 5.3 Shared catalog map has all 20 canonical artifacts including runtime governance files and schemas
     const map = buildSharedCatalogFilesMap(ROOT);
     const mapKeys = Object.keys(map).sort();
     assert.ok(mapKeys.includes('runtime-capability-policy.json'));
@@ -776,7 +776,7 @@ describe('Phase 3.1 (Phase 17) — Independent Adversarial Audit & Cross-Phase H
     assert.ok(!serialized.includes('secret_bearer_token_999999'), 'Error Bearer token must be redacted');
   });
 
-  test('12. Section 4 — Cross-phase contract compatibility: scene_spec_id preservation & project-local execution from an unrelated working directory', () => {
+  test('12. Cross-layer contract compatibility: scene_spec_id preservation & project-local execution from an unrelated working directory', () => {
     const projectDir = path.join(tmpRoot, 'isolated-consumer-project');
     fs.mkdirSync(projectDir, { recursive: true });
 
@@ -824,7 +824,7 @@ describe('Phase 3.1 (Phase 17) — Independent Adversarial Audit & Cross-Phase H
       assert.equal(
         sliceRes.ledger.scene_spec_id,
         'scene-spec.product-hero-sneaker',
-        'OperationExecutionLedger must preserve SceneSpec.id as scene_spec_id across Phase 2 -> Phase 3 boundary',
+        'OperationExecutionLedger must preserve SceneSpec.id as scene_spec_id across the SceneSpec -> ExecutionLedger boundary',
       );
       assert.equal(sliceRes.ledger.execution_plan_id, 'plan.product-hero-sneaker');
       assert.equal(sliceRes.ledger.truth_states.runtime_status, 'Attempted');

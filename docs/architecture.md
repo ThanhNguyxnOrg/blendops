@@ -47,7 +47,7 @@ blendops/
 │   ├── dependabot.yml                    # Weekly dependency update configuration
 │   └── pull_request_template.md          # Pre-PR verification checklist
 ├── AGENTS.md                             # Mandatory rules for AI agents modifying this repository
-├── CHANGELOG.md                          # Chronological release and phase history
+├── CHANGELOG.md                          # Chronological release history
 ├── CODE_OF_CONDUCT.md                    # Contributor Covenant code of conduct
 ├── CONTRIBUTING.md                       # Contributor guide and required pre-PR checks
 ├── LICENSE                               # MIT License
@@ -108,7 +108,7 @@ blendops/
 │   ├── catalog-retrieval-evals.json      # 90-case deterministic bilingual knowledge & recipe retrieval evaluation suite
 │   ├── scene-specs/*.json                # 12 canonical SceneSpec fixtures (8 valid + 4 negative/conflicting)
 │   └── suites/<skill-id>.eval.json       # 48 machine-readable positive/negative/edge behavioral test suites
-├── scripts/                              # Generators, validators, CLI tools, and phase regression test suites
+├── scripts/                              # Generators, validators, CLI tools, and regression test suites
 │   ├── build-knowledge-catalog.mjs       # Validates & builds `registry/catalog-index.json`, `docs/knowledge-and-recipe-catalog.md`, and `docs/audits/skill-architecture-audit.{json,md}`
 │   ├── build-registry.mjs                # Builds and validates `registry/skills.json` & `registry/workflow-graph.json`
 │   ├── check-docs.mjs                    # Enforces frontmatter, runtime model, links, headings, and policy guards
@@ -126,7 +126,7 @@ blendops/
 │   ├── validate-compatibility-matrix.mjs # Validates `registry/compatibility-matrix.json` against `docs/install/` & `docs/adapters/`
 │   ├── validate-evidence-packet.mjs      # Validates runtime evidence packets against truth-state promotion gates
 │   ├── validate-repository-architecture.mjs # Validates repository inventory, root policy, duplicates, and reference integrity
-│   └── test-phase1.mjs .. test-phase16.mjs # Comprehensive Node test suites (`npm test`)
+│   └── test-*.mjs                        # Descriptive Node test suites (`npm test`)
 ├── skill-reviews/                        # Skill quality rubrics, depth standards, and historical v0 review reports
 │   ├── README.md
 │   ├── acceptance-criteria.md
@@ -138,7 +138,7 @@ blendops/
     ├── README.md                         # Master documentation hub
     ├── knowledge-and-recipe-catalog.md   # [Generated] Human-readable index of 10 recipes, 30 knowledge records, and 20 sources
     ├── adapters/                         # Verified & drafted project-local adapter mappings (8 files)
-    ├── audits/                           # Historical phase audit snapshots (`phase-0`..`phase-3`), `skill-architecture-audit.{json,md}`, + `current/` audit state
+    ├── audits/                           # `skill-architecture-audit.{json,md}` + `current/` audit state
     ├── evals/                            # Runtime smoke tests, dry-run install evidence, and manual eval packets (12 files)
     ├── examples/glb-web-handoff/         # Three.js (`threejs-glb-viewer.mjs`) & React Three Fiber (`r3f-glb-viewer.tsx`) viewer modules
     ├── install/                          # Per-target install guides for 26 targets + `installer-spec.md` (28 files)
@@ -154,7 +154,7 @@ blendops/
 |---|---|---|
 | **Canonical Source** (`canonical_source`) | `skills/*/{SKILL.md,EVAL.md,contract.json,references/*}`, `laws/*.md`, `packs/*`, `registry/{compatibility-matrix,contract-context-fields,knowledge-sources,knowledge-catalog,recipe-catalog,runtime-capability-policy,runtime-operations}.json`, `bundles/*/BLENDOPS.md` | Authoritative source of truth. Edited directly and validated by CI. |
 | **Generated Artifacts** (`generated_artifact`) | `registry/{skills,workflow-graph,catalog-index}.json`, `docs/knowledge-and-recipe-catalog.md`, `docs/audits/skill-architecture-audit.{json,md}`, `bundles/claude-desktop-manual/references/skills/*.md` (48), `bundles/skill-package/blendops/references/skill-*.md` (48), `docs/audits/current/*`, `dist/*` (untracked build output) | Must **never** be hand-edited. Regenerated deterministically by `npm run catalog:build`, `npm run registry:build`, `npm run bundles:summaries:build`, `node scripts/generate-current-audit.mjs`, and `npm run arch:build`. |
-| **Historical Records** (`historical_record`) | `docs/audits/{phase-0,phase-2,phase-2.1,phase-3}/**`, `docs/release-readiness-rollup-v0.md`, `skill-reviews/reports/*`, `docs/evals/*.md`, `CHANGELOG.md` | Preserved for auditability and provenance. Historical snapshots must not be rewritten to falsify past baselines. |
+| **Historical Records** (`historical_record`) | `skill-reviews/reports/*`, `docs/evals/*.md`, `CHANGELOG.md` | Preserved for auditability and provenance. Historical review and eval records must not be rewritten to falsify past baselines (obsolete build-time phase snapshots were removed prior to `v1.0.0`). |
 | **Documentation** (`documentation`) | `README.md`, `TODO.md`, `AGENTS.md`, `CONTRIBUTING.md`, `SECURITY.md`, `SUPPORT.md`, `CODE_OF_CONDUCT.md`, `docs/*.md`, `docs/{install,adapters,recipes,workflows}/*.md` | User-facing and contributor-facing guides; validated for link integrity and runtime model accuracy by `npm run docs:check` and `npm run arch:check`. |
 | **Runtime, Build & Test Infrastructure** (`runtime_build_test_infrastructure`) | `scripts/*.mjs`, `evals/*.json`, `evals/suites/*.eval.json`, `docs/examples/glb-web-handoff/*.{mjs,tsx}` | Executed by `npm run ci`, `npm test`, and the `blendops` CLI. |
 | **Distribution Artifacts** (`distribution_artifact`) | `bin/blendops.mjs`, `bundles/*/manifest.json`, `bundles/skill-package/blendops/**` | Packaged into local `npm pack` tarballs and offline skill bundles. |
@@ -174,7 +174,7 @@ blendops/
 
 ## 5. npm Packaging & Permanent Scope Boundaries
 
-- **Packaged Tarball Scope (`package.json` `"files"`)**: Includes `bin/`, core runtime scripts (`install-skills.mjs`, `build-knowledge-catalog.mjs`, `compile-scene-plan.mjs`, `runtime-orchestrator.mjs`, `validate-capability-policy.mjs`, `validate-evidence-packet.mjs`, `export-claude-skills.mjs`, `inspect-glb.mjs`, `generate-glb-handoff-report.mjs`), `docs/knowledge-and-recipe-catalog.md`, `docs/recipes/`, `docs/workflows/`, `docs/examples/glb-web-handoff/`, `skills/`, `laws/`, `packs/`, `bundles/`, `registry/`, `schemas/`, `README.md`, `LICENSE`, and `CHANGELOG.md`. Excludes test suites (`scripts/test-phase*.mjs`), CI-only audit generators, dev server, `docs/audits/`, `evals/`, and `.github/`.
+- **Packaged Tarball Scope (`package.json` `"files"`)**: Includes `bin/`, core runtime scripts (`install-skills.mjs`, `build-knowledge-catalog.mjs`, `compile-scene-plan.mjs`, `runtime-orchestrator.mjs`, `validate-capability-policy.mjs`, `validate-evidence-packet.mjs`, `export-claude-skills.mjs`, `inspect-glb.mjs`, `generate-glb-handoff-report.mjs`), `docs/knowledge-and-recipe-catalog.md`, `docs/recipes/`, `docs/workflows/`, `docs/examples/glb-web-handoff/`, `skills/`, `laws/`, `packs/`, `bundles/`, `registry/`, `schemas/`, `README.md`, `LICENSE`, and `CHANGELOG.md`. Excludes test suites (`scripts/test-*.mjs`), CI-only audit generators, dev server, `docs/audits/`, `evals/`, and `.github/`.
 - **Permanent Non-Goals**:
   - `"private": true` remains set — npm publication status is `Not Published`.
   - Marketplace/plugin listing status is `Not Published`.

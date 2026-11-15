@@ -3,7 +3,7 @@
 Welcome to BlendOps! This guide helps you understand what BlendOps is, where it stands, and how to get started.
 
 > [!IMPORTANT]
-> BlendOps is **Draft v0**. It's a workflow specification project, not a production-ready tool. Read this guide to understand current status and limitations before diving in.
+> BlendOps is **v1.0.0 (Production)**. Read this guide to understand what BlendOps ships, how it connects to Blender via external runtime paths, and what truth guarantees it enforces.
 
 ---
 
@@ -11,11 +11,11 @@ Welcome to BlendOps! This guide helps you understand what BlendOps is, where it 
 
 | Area | Status | What it means |
 |---|---|---|
-| **Product version** | Draft v0 | Workflow specs documented, no stable release claim |
-| **Runtime eval** | Not Run | Official runtime manual eval has not been executed |
+| **Product version** | v1.0.0 | Production skills, knowledge/recipe catalogs, CLI tooling, and CI suite |
+| **Runtime eval** | Not Run | Live Blender official runtime manual eval is optional operator-side provenance |
 | **Artifacts** | Not Produced | No preview/render/GLB files generated in this repo |
-| **Package/marketplace** | Not Published | Local/tarball CLI (`bin/blendops.mjs`) implemented; no published npm registry package or marketplace listing |
-| **Canonical skill package** | Draft fixture | `bundles/skill-package/blendops/` exists as draft source |
+| **Package/marketplace** | Not Published | Local/tarball CLI (`bin/blendops.mjs`, `"private": true`) implemented; no published npm registry package or marketplace listing |
+| **Canonical skill package** | Verified fixture | `bundles/skill-package/blendops/` built and checked by CI |
 
 ---
 
@@ -144,14 +144,13 @@ Use the short prompt from [README.md](../README.md#-use-in-30-seconds). The agen
 ### 🧪 I want eval/release readiness
 
 **Current status:**
-- Draft v0, not production-ready
+- Production `v1.0.0` skills, knowledge, recipe, CLI, and CI layers
 - Runtime eval: Not Run
 - Artifacts: Not Produced
-- Skills-layer draft tag: `v0.10.0-draft` ready (public stable release: Not Ready)
+- Public npm / marketplace listing: Not Published (`"private": true`)
 
 **Start here:**
-- [Release readiness](./release-readiness.md) — current status
-- [Release readiness rollup v0](./release-readiness-rollup-v0.md) — Phase 3.3 pre-runtime summary
+- [Release readiness](./release-readiness.md) — current release readiness and scope boundaries
 - [Evals index](./evals/README.md) — all eval protocols and results
 
 **Eval evidence:**
@@ -183,17 +182,17 @@ BlendOps documents **two MCP execution paths** plus a **CLI fallback appendix** 
 **Canonical portable skill package:**
 - Source: `bundles/skill-package/blendops/`
 - Structure: `SKILL.md` + `references/` (target-neutral core) + `agents/openai.yaml` (OpenAI metadata only)
-- Status: Draft fixture, not published
+- Status: Verified local fixture (`1.0.0`), not published to a marketplace
 
 **Claude Desktop manual bundle:**
 - Source: `bundles/claude-desktop-manual/`
 - Purpose: Manual Personal Skill import for Claude Desktop
-- Status: Draft fixture, does not claim connector/runtime success
+- Status: Verified local fixture (`1.0.0`); does not claim connector/runtime success
 
 **Generic project-local fallback:**
 - Source: `bundles/generic-project-local/`
 - Purpose: Unknown/unsupported tool fallback
-- Status: Draft fixture with rollback notes
+- Status: Verified local fixture (`1.0.0`) with rollback notes
 
 **Per-target install docs:**
 - [docs/install/README.md](./install/README.md) — all target-specific guides
@@ -235,7 +234,7 @@ For exhaustive documentation navigation, see:
 
 ## 🤝 Contributing
 
-BlendOps is Draft v0 and not yet accepting external contributions. Focus is on internal validation and runtime eval completion first.
+See [CONTRIBUTING.md](../CONTRIBUTING.md) and [AGENTS.md](../AGENTS.md) for contributor guidelines and required pre-PR verification (`npm run ci`).
 
 ---
 

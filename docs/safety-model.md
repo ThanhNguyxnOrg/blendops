@@ -191,7 +191,7 @@ To prevent implicit privilege escalation when transitioning from BlendOps workfl
    - BlendOps maps `ExecutionPlan` steps to 18 canonical typed operations (`11 L0` read-only inspections, `4 L1` bounded reversible mutations, `3 L2` separately gated export/import operations) validated against [`../schemas/runtime-operations.schema.json`](../schemas/runtime-operations.schema.json).
    - Arbitrary Python (`raw_python_or_bpy_eval`), shell (`arbitrary_shell_or_cli_command`), and destructive resets (`unbounded_scene_destruction_or_file_delete`) are explicitly blocked (`L3`).
    - Every operation follows a strict state machine (`planned → preflight → checkpoint_verified → approved_if_required → executing → readback → postcondition_verified → committed`) with idempotency tracking, zero blind retries on mutation timeouts, independent scene readback, and verified rollback restoration (`rollback_verified` vs `rollback_failed`), recorded in an Operation Execution Ledger ([`../schemas/operation-execution-ledger.schema.json`](../schemas/operation-execution-ledger.schema.json)).
-4. **Upstream MCP Tool Qualification & Adapter Security Boundary (Phase 3.2):**
+4. **Upstream MCP Tool Qualification & Adapter Security Boundary:**
    - Every upstream MCP tool in Path 1 (`projects.blender.org/lab/blender_mcp` v`1.0.2`, 26 tools) and Path 2 (`github.com/ahujasid/mcp-for-blender` v`2.2.7`, 14 tools + 2 legacy v`1.x` read-only tools) is audited with a SHA-256 `tool_schema_fingerprint` and classified into `safe_direct`, `read_only_only`, `unsafe_raw_code`, `unsupported`, or `unknown` (defaulting to deny).
    - **Critical Fail-Closed Rule:** BlendOps never translates a typed `L1`/`L2` operation into generated Python sent through `execute_blender_code` or `execute_blender_code_for_cli`. Because upstream MCP servers currently rely on `execute_blender_code` for scene mutations, unextended upstream servers are qualified as `read_only_qualified: true` and `mutation_qualified: false`.
    - **10-State Qualification Model:** BlendOps tracks `runtime_discovered`, `runtime_reachable`, `runtime_identity_verified`, `protocol_compatible`, `blender_version_compatible`, `tool_inventory_verified`, `read_only_qualified`, `mutation_qualified`, `export_import_qualified`, and `live_runtime_verified` as independent states in [`../schemas/runtime-session.schema.json`](../schemas/runtime-session.schema.json) and [`../schemas/runtime-qualification-report.schema.json`](../schemas/runtime-qualification-report.schema.json).
@@ -208,7 +208,7 @@ This safety model is enforced through:
 - `docs/workflow-contract.md` (input/intermediate/output contract)
 - `docs/golden-path-cyberpunk-shoe.md` (first concrete non-Blender-user journey)
 - `schemas/runtime-capability-policy.schema.json` and `registry/runtime-capability-policy.json` (`L0`–`L3` capability & rollback policy)
-- `schemas/runtime-operations.schema.json`, `registry/runtime-operations.json`, `schemas/operation-execution-ledger.schema.json`, `schemas/runtime-qualification-report.schema.json`, and `scripts/runtime-orchestrator.mjs` (Phase 3 & Phase 3.2 typed operations, upstream MCP qualification, & transaction safety)
+- `schemas/runtime-operations.schema.json`, `registry/runtime-operations.json`, `schemas/operation-execution-ledger.schema.json`, `schemas/runtime-qualification-report.schema.json`, and `scripts/runtime-orchestrator.mjs` (typed operations, upstream MCP qualification, & transaction safety)
 
 ---
 

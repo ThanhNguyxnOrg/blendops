@@ -1,6 +1,6 @@
 # BlendOps Skill Review Gates
 
-Status: Draft v0
+Status: 1.0.0
 
 ## Gate 0 — Source/license review
 - no copied code/docs from external repos
@@ -78,4 +78,4 @@ Each skill must include:
 - pass/warn/fail result is possible
 
 ## Gate usage
-A skill should not be promoted beyond Draft v0 unless all gates are explicitly reviewed and any warnings are documented.
+A skill should not be promoted to Production 1.0.0 unless all gates are explicitly reviewed and any warnings are documented.

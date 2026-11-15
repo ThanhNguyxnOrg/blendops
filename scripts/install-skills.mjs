@@ -122,7 +122,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const DEFAULT_REPO_ROOT = path.resolve(__dirname, '..');
 
-export const INSTALLER_VERSION = '0.1.0-draft';
+export const INSTALLER_VERSION = '1.0.0';
 export const MANAGED_SECTION_START = '<!-- blendops:installer:start -->';
 export const MANAGED_SECTION_END = '<!-- blendops:installer:end -->';
 
@@ -683,7 +683,7 @@ export function validateDestinationRoot(rawPath, { kind = 'project', repoRoot = 
   const trimmed = rawPath.trim();
   if (trimmed === '~' || trimmed.startsWith('~/') || trimmed.startsWith('~\\')) {
     throw new Error(
-      `Global home-directory path (${trimmed}) is rejected in Phase 10; only project-local or explicit bundle output paths are allowed`,
+      `Global home-directory path (${trimmed}) is rejected by BlendOps CLI; only project-local or explicit bundle output paths are allowed`,
     );
   }
   if (/^[a-zA-Z]:[\\/]?$/.test(trimmed) || trimmed.startsWith('\\\\')) {
@@ -709,7 +709,7 @@ export function validateDestinationRoot(rawPath, { kind = 'project', repoRoot = 
 
   if (isGlobalAgentPath(absCandidate) || isGlobalAgentPath(effectiveCandidate)) {
     throw new Error(
-      `Global configuration destination (${rawPath}) is rejected in Phase 10; global writes are disabled`,
+      `Global configuration destination (${rawPath}) is rejected by BlendOps CLI; global writes are disabled`,
     );
   }
 
@@ -950,7 +950,7 @@ export function parseInstallerArgs(argv = []) {
 
   if (allowGlobal) {
     throw new Error(
-      'Global installation (--allow-global) is disabled in Phase 10; BlendOps installer only supports project-local (--project) or bundle-output (--out) scopes.',
+      'Global installation (--allow-global) is disabled in BlendOps CLI; BlendOps installer only supports project-local (--project) or bundle-output (--out) scopes.',
     );
   }
 
@@ -2677,7 +2677,7 @@ export function formatInstallerHelp() {
     '  --confirm-target-path   Confirm target-specific writes for documented linked-only targets (cursor .mdc, codex AGENTS.md)',
     '  --patch-agents-md       Create or append a managed BlendOps section in AGENTS.md with backup',
     '  --patch-claude-md       Create or append a managed BlendOps section in CLAUDE.md with backup',
-    '  --allow-global          Rejected in Phase 10 (global writes are disabled)',
+    '  --allow-global          Rejected by BlendOps CLI (global writes are disabled)',
     '  --version, -v           Show CLI version and exit without writing files',
     '  --help, -h              Show this help output and exit without writing files',
     '',
@@ -4310,7 +4310,7 @@ function executeRollbackMode({ repoRootReal, project, out, forceRollback = false
   const createdHashes = manifest.created_file_hashes;
   const modifiedHashes = manifest.modified_file_hashes;
 
-  // Phase 1: Preflight verification before deleting or restoring anything
+  // Step 1: Preflight verification before deleting or restoring anything
   const verifiedCreatedTargets = [];
   for (const relPath of filesCreated) {
     const { absTarget, exists } = validateSafeRelativeTargetFile(targetRootReal, relPath);
@@ -4390,7 +4390,7 @@ function executeRollbackMode({ repoRootReal, project, out, forceRollback = false
     }
   }
 
-  // Phase 2: Execute restorations first
+  // Step 2: Execute restorations first
   const restoredPaths = [];
   for (const task of restoreTasks) {
     writeAtomicFile(task.absTarget, task.backupBytes);
@@ -4401,7 +4401,7 @@ function executeRollbackMode({ repoRootReal, project, out, forceRollback = false
     restoredPaths.push(task.relPath);
   }
 
-  // Phase 3: Remove verified installer-created files and clean up empty parent directories
+  // Step 3: Remove verified installer-created files and clean up empty parent directories
   const removedPaths = [];
   for (const item of verifiedCreatedTargets) {
     if (fs.existsSync(item.absTarget)) {
@@ -4411,7 +4411,7 @@ function executeRollbackMode({ repoRootReal, project, out, forceRollback = false
     pruneEmptyParentDirectories(item.absTarget, targetRootReal);
   }
 
-  // Phase 4: Ownership-aware cleanup of verified installer backups and metadata files inside .blendops
+  // Step 4: Ownership-aware cleanup of verified installer backups and metadata files inside .blendops
   for (const task of restoreTasks) {
     if (fs.existsSync(task.backupAbs)) {
       fs.rmSync(task.backupAbs, { force: true });

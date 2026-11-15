@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/ThanhNguyxnOrg/blendops/schemas/skill-eval.schema.json",
   "title": "BlendOps Skill Behavioral Evaluation Suite Schema",
-  "description": "Draft 2020-12 JSON Schema for machine-readable BlendOps skill evaluation suites across the full 48-skill catalog (Phase 6).",
+  "description": "Draft 2020-12 JSON Schema for machine-readable BlendOps skill evaluation suites across the full 48-skill catalog.",
   "type": "object",
   "additionalProperties": false,
   "required": [

@@ -1,6 +1,6 @@
 # EVAL — bridge-conflicts
 
-Status: Draft v0 text-only baseline  
+Status: 1.0.0 text-only baseline  
 Scope: diagnose single-bridge constraint conflicts and propose resolutions; no execution.
 
 ## Text-only eval prompt

@@ -36,7 +36,7 @@ const root = process.cwd();
 const generatorScript = path.join(root, 'scripts', 'generate-bundle-reference-summaries.mjs');
 
 function createIsolatedFixtureRepo({ includeSchemas = true } = {}) {
-  const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-phase8-test-'));
+  const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-bundle-summaries-test-'));
   const dirs = includeSchemas ? ['skills', 'bundles', 'schemas'] : ['skills', 'bundles'];
   for (const dirRel of dirs) {
     fs.cpSync(path.join(root, dirRel), path.join(tempRoot, dirRel), { recursive: true });
@@ -681,10 +681,10 @@ test('Scenario 20: CLI check and build modes return non-zero exit codes on inval
 });
 
 // ============================================================================
-// Phase 8.1 Regression Scenarios (21 through 35)
+// Extended Hardening Scenarios (21 through 35)
 // ============================================================================
 
-test('Scenario 21 (Phase 8.1 #1 & #2): Handoff condition when.all and when.any modes plus every predicate field, operator, and scalar/array/boolean value are preserved in both profiles across all 48 skills', () => {
+test('Scenario 21: Handoff condition when.all and when.any modes plus every predicate field, operator, and scalar/array/boolean value are preserved in both profiles across all 48 skills', () => {
   const discovery = discoverCanonicalSkillIds(root);
   assert.equal(discovery.ok, true);
 
@@ -757,7 +757,7 @@ test('Scenario 21 (Phase 8.1 #1 & #2): Handoff condition when.all and when.any m
   assert.ok(observedNotEqualsPredicates >= 10, 'Expected not_equals predicates');
 });
 
-test('Scenario 22 (Phase 8.1 #3): Routing participant activationGate fields (goalClarity, recipeSelected, preflightPassed, hasStageOrArtifactInventory) are preserved in both profiles for all 4 routers', () => {
+test('Scenario 22: Routing participant activationGate fields (goalClarity, recipeSelected, preflightPassed, hasStageOrArtifactInventory) are preserved in both profiles for all 4 routers', () => {
   const discovery = discoverCanonicalSkillIds(root);
   assert.equal(discovery.ok, true);
 
@@ -799,7 +799,7 @@ test('Scenario 22 (Phase 8.1 #3): Routing participant activationGate fields (goa
   assert.equal(routerCount, 4);
 });
 
-test('Scenario 23 (Phase 8.1 #4): retryPolicy.maxAttempts and retryPolicy.exitCondition are preserved in both profiles when present', () => {
+test('Scenario 23: retryPolicy.maxAttempts and retryPolicy.exitCondition are preserved in both profiles when present', () => {
   const discovery = discoverCanonicalSkillIds(root);
   assert.equal(discovery.ok, true);
 
@@ -844,7 +844,7 @@ test('Scenario 23 (Phase 8.1 #4): retryPolicy.maxAttempts and retryPolicy.exitCo
   assert.equal(retryHandoffCount, 4);
 });
 
-test('Scenario 24 (Phase 8.1 #5): Malformed or incomplete optional inputs fail closed with a clear diagnostic', () => {
+test('Scenario 24: Malformed or incomplete optional inputs fail closed with a clear diagnostic', () => {
   const tempRoot = createIsolatedFixtureRepo();
   try {
     const contractPath = path.join(tempRoot, 'skills', 'blendops-help', 'contract.json');
@@ -891,7 +891,7 @@ test('Scenario 24 (Phase 8.1 #5): Malformed or incomplete optional inputs fail c
   }
 });
 
-test('Scenario 25 (Phase 8.1 #6): Missing required input type fails closed instead of defaulting to string', () => {
+test('Scenario 25: Missing required input type fails closed instead of defaulting to string', () => {
   const tempRoot = createIsolatedFixtureRepo();
   try {
     const contractPath = path.join(tempRoot, 'skills', 'blendops-help', 'contract.json');
@@ -912,7 +912,7 @@ test('Scenario 25 (Phase 8.1 #6): Missing required input type fails closed inste
   }
 });
 
-test('Scenario 26 (Phase 8.1 #7): Missing or invalid version fails closed instead of defaulting to 1.0.0', () => {
+test('Scenario 26: Missing or invalid version fails closed instead of defaulting to 1.0.0', () => {
   const tempRoot = createIsolatedFixtureRepo();
   try {
     const contractPath = path.join(tempRoot, 'skills', 'blendops-help', 'contract.json');
@@ -944,7 +944,7 @@ test('Scenario 26 (Phase 8.1 #7): Missing or invalid version fails closed instea
   }
 });
 
-test('Scenario 27 (Phase 8.1 #8): L4 capability tier fails closed while valid schema tiers (L0, L1, L2, L3) are accepted', () => {
+test('Scenario 27: L4 capability tier fails closed while valid schema tiers (L0, L1, L2, L3) are accepted', () => {
   assert.deepEqual([...VALID_CAPABILITY_TIERS], ['L0', 'L1', 'L2', 'L3']);
 
   const tempRoot = createIsolatedFixtureRepo();
@@ -982,7 +982,7 @@ test('Scenario 27 (Phase 8.1 #8): L4 capability tier fails closed while valid sc
   }
 });
 
-test('Scenario 28 (Phase 8.1 #9): Symlink escape attempts for source, output, and manifest paths fail closed', () => {
+test('Scenario 28: Symlink escape attempts for source, output, and manifest paths fail closed', () => {
   const tempRoot = createIsolatedFixtureRepo();
   const outsideDir = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-outside-target-'));
   const outsideFile = path.join(outsideDir, 'outside-secret.md');
@@ -1078,7 +1078,7 @@ test('Scenario 28 (Phase 8.1 #9): Symlink escape attempts for source, output, an
   }
 });
 
-test('Scenario 29 (Phase 8.1 #10): Manifest with a null, string, or missing-path entry fails closed without modifying existing files', () => {
+test('Scenario 29: Manifest with a null, string, or missing-path entry fails closed without modifying existing files', () => {
   const tempRoot = createIsolatedFixtureRepo();
   try {
     const manifestPath = path.join(tempRoot, CLAUDE_DESKTOP_MANIFEST_REL_PATH);
@@ -1117,7 +1117,7 @@ test('Scenario 29 (Phase 8.1 #10): Manifest with a null, string, or missing-path
   }
 });
 
-test('Scenario 30 (Phase 8.1 #11): Manifest with duplicate paths or malformed JSON fails closed without modifying existing files', () => {
+test('Scenario 30: Manifest with duplicate paths or malformed JSON fails closed without modifying existing files', () => {
   const tempRoot = createIsolatedFixtureRepo();
   try {
     const manifestPath = path.join(tempRoot, CLAUDE_DESKTOP_MANIFEST_REL_PATH);
@@ -1163,7 +1163,7 @@ test('Scenario 30 (Phase 8.1 #11): Manifest with duplicate paths or malformed JS
   }
 });
 
-test('Scenario 31 (Phase 8.1 #12): Aborted builds do not partially write or delete bundle summary files', () => {
+test('Scenario 31: Aborted builds do not partially write or delete bundle summary files', () => {
   const tempRoot = createIsolatedFixtureRepo();
   try {
     // Seed a stale summary file that would be unlinked on a successful build
@@ -1207,7 +1207,7 @@ test('Scenario 31 (Phase 8.1 #12): Aborted builds do not partially write or dele
   }
 });
 
-test('Scenario 32 (Phase 8.1 #13): Existing unrelated bundle files, maps, laws, packs, and templates remain untouched across builds', () => {
+test('Scenario 32: Existing unrelated bundle files, maps, laws, packs, and templates remain untouched across builds', () => {
   const tempRoot = createIsolatedFixtureRepo();
   try {
     const preservedSnapshots = new Map();
@@ -1242,15 +1242,14 @@ test('Scenario 32 (Phase 8.1 #13): Existing unrelated bundle files, maps, laws, 
   }
 });
 
-test('Scenario 33 (Phase 8.1 #14): F-09 audit status is OPEN (not FIXED) when either bundle summary directory is missing', () => {
+test('Scenario 33: F-09 audit status is OPEN (not FIXED) when either bundle summary directory is missing', () => {
   for (const missingDirRel of [
     CLAUDE_DESKTOP_SKILLS_REL_DIR,
     PORTABLE_PACKAGE_REFS_REL_DIR,
   ]) {
-    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-phase81-f09-audit-'));
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-f09-audit-'));
     try {
       for (const relDir of [
-        path.join('docs', 'audits', 'phase-0'),
         'registry',
         'evals',
         'schemas',
@@ -1262,6 +1261,7 @@ test('Scenario 33 (Phase 8.1 #14): F-09 audit status is OPEN (not FIXED) when ei
       // Remove one of the two required bundle summary directories
       fs.rmSync(path.join(tempDir, missingDirRel), { recursive: true, force: true });
 
+      fs.mkdirSync(path.dirname(path.join(tempDir, AUDITED_INPUTS_MANIFEST_REL)), { recursive: true });
       fs.writeFileSync(
         path.join(tempDir, AUDITED_INPUTS_MANIFEST_REL),
         JSON.stringify(
@@ -1269,7 +1269,6 @@ test('Scenario 33 (Phase 8.1 #14): F-09 audit status is OPEN (not FIXED) when ei
             schemaVersion: '1.0.0',
             requiredFiles: [AUDITED_INPUTS_MANIFEST_REL],
             requiredDirectories: [
-              'docs/audits/phase-0',
               'registry',
               'evals',
               'schemas',
@@ -1307,7 +1306,7 @@ test('Scenario 33 (Phase 8.1 #14): F-09 audit status is OPEN (not FIXED) when ei
   }
 });
 
-test('Scenario 34 (Phase 8.1 #15): Both profiles remain 100% semantically equivalent to each other and to contract.json across all 48 skills', () => {
+test('Scenario 34: Both profiles remain 100% semantically equivalent to each other and to contract.json across all 48 skills', () => {
   const discovery = discoverCanonicalSkillIds(root);
   assert.equal(discovery.ok, true);
 
@@ -1410,10 +1409,10 @@ test('Scenario 35: Contract validation rejects malformed handoff when conditions
 });
 
 // ============================================================================
-// Phase 8.1.1 Regression Scenarios (36 through 41)
+// Parser, Routing Gate, and Bundle Inspector Regression Scenarios (36 through 40)
 // ============================================================================
 
-test('Scenario 36 (Phase 8.1.1 Fix A): Condition expressions with single/multiple semicolons, escaped quotes, backslashes, Unicode, and array elements survive formatter -> summary -> extractor round trips in both profiles', () => {
+test('Scenario 36: Condition expressions with single/multiple semicolons, escaped quotes, backslashes, Unicode, and array elements survive formatter -> summary -> extractor round trips in both profiles', () => {
   const tempRoot = createIsolatedFixtureRepo();
   try {
     const contractPath = path.join(tempRoot, 'skills', 'blendops-help', 'contract.json');
@@ -1549,7 +1548,7 @@ test('Scenario 36 (Phase 8.1.1 Fix A): Condition expressions with single/multipl
   }
 });
 
-test('Scenario 37 (Phase 8.1.1 Fix A): Malformed condition expressions are rejected with actionable diagnostics and never use unsafe evaluation', () => {
+test('Scenario 37: Malformed condition expressions are rejected with actionable diagnostics and never use unsafe evaluation', () => {
   // 1. Empty expression
   assert.throws(
     () => parseConditionGroupExpression('all', '   '),
@@ -1619,7 +1618,7 @@ test('Scenario 37 (Phase 8.1.1 Fix A): Malformed condition expressions are rejec
   assert.deepEqual(parseConditionGroupExpression(innerMatch[1], innerMatch[2]), group);
 });
 
-test('Scenario 38 (Phase 8.1.1 Fix B): Routing precedence rank boundaries (1, 4, 100 accepted; 0, 101, non-integer rejected) match canonical schema', () => {
+test('Scenario 38: Routing precedence rank boundaries (1, 4, 100 accepted; 0, 101, non-integer rejected) match canonical schema', () => {
   const tempRoot = createIsolatedFixtureRepo();
   try {
     const contractPath = path.join(tempRoot, 'skills', 'blendops-help', 'contract.json');
@@ -1665,7 +1664,7 @@ test('Scenario 38 (Phase 8.1.1 Fix B): Routing precedence rank boundaries (1, 4,
   }
 });
 
-test('Scenario 39 (Phase 8.1.1 Fix B): Activation gate goalClarity accepts ambiguous_or_mixed, clear, and any while rejecting unsupported values and non-boolean gate fields', () => {
+test('Scenario 39: Activation gate goalClarity accepts ambiguous_or_mixed, clear, and any while rejecting unsupported values and non-boolean gate fields', () => {
   assert.deepEqual(
     [...VALID_GATE_GOAL_CLARITIES],
     ['ambiguous_or_mixed', 'clear', 'any'],
@@ -1752,29 +1751,29 @@ test('Scenario 39 (Phase 8.1.1 Fix B): Activation gate goalClarity accepts ambig
   }
 });
 
-test('Scenario 40 (Phase 8.1.1 Fix C): dev-server.mjs uses a single canonical bundle filename consistently across suggestedName, download attribute, PowerShell command, /api/bundle-info, and Content-Disposition while preserving Phase 8.1.1 compatibility routes', () => {
+test('Scenario 40: dev-server.mjs uses a single canonical v1.0.0 bundle filename consistently across download verification, PowerShell helper, /api/bundle-info, and Content-Disposition while preserving compatibility routes', () => {
   const devServerPath = path.join(root, 'scripts', 'dev-server.mjs');
   const devServerSource = fs.readFileSync(devServerPath, 'utf8');
 
   assert.match(
     devServerSource,
-    /export const CANONICAL_BUNDLE_FILENAME = 'blendops-phase-9\.bundle';/,
-    'CANONICAL_BUNDLE_FILENAME must be defined once as the single source of truth',
+    /export const CANONICAL_BUNDLE_FILENAME = 'blendops-v1\.0\.0\.bundle';/,
+    'CANONICAL_BUNDLE_FILENAME must be defined once as blendops-v1.0.0.bundle',
   );
   assert.match(
     devServerSource,
     /suggestedName:\s*'\$\{CANONICAL_BUNDLE_FILENAME\}'/,
-    'showSaveFilePicker.suggestedName must use CANONICAL_BUNDLE_FILENAME',
+    'PowerShell/save helper token must use CANONICAL_BUNDLE_FILENAME',
   );
   assert.match(
     devServerSource,
-    /a\.download\s*=\s*'\$\{CANONICAL_BUNDLE_FILENAME\}'/,
-    'Browser download filename must use CANONICAL_BUNDLE_FILENAME',
+    /a\.download\s*=\s*expectedFilename;/,
+    'Browser download filename must use expectedFilename',
   );
   assert.match(
     devServerSource,
     /WriteAllBytes\("\$\{CANONICAL_BUNDLE_FILENAME\}"/,
-    'PowerShell Base64 decoder instructions must use CANONICAL_BUNDLE_FILENAME',
+    'PowerShell Base64 decoder helper must use CANONICAL_BUNDLE_FILENAME',
   );
   assert.match(
     devServerSource,
@@ -1786,23 +1785,11 @@ test('Scenario 40 (Phase 8.1.1 Fix C): dev-server.mjs uses a single canonical bu
     /'Content-Disposition':\s*`attachment; filename="\$\{CANONICAL_BUNDLE_FILENAME\}"`/,
     'Content-Disposition header must use CANONICAL_BUNDLE_FILENAME',
   );
-  // Ensure compatibility routes for Phase 9, 8.1.1, 8.1, and 8 are preserved
-  assert.match(devServerSource, /'\/blendops-phase-9\.bundle'/);
-  assert.match(devServerSource, /'\/blendops-phase-8\.1\.1\.bundle'/);
-  assert.match(devServerSource, /'\/blendops-phase-8\.1\.bundle'/);
-  assert.match(devServerSource, /'\/blendops-phase-8\.bundle'/);
+  assert.match(devServerSource, /'\/blendops-v1\.0\.0\.bundle'/);
+  assert.match(devServerSource, /'\/blendops-release\.bundle'/);
+  assert.match(devServerSource, /'\/blendops-latest\.bundle'/);
 
-  // Ensure no hardcoded stale suggestedName or active download filename remains
-  assert.equal(
-    devServerSource.includes("suggestedName: 'blendops-phase-8.bundle'"),
-    false,
-  );
-  assert.equal(
-    devServerSource.includes("suggestedName: 'blendops-phase-8.1.bundle'"),
-    false,
-  );
-  assert.equal(
-    devServerSource.includes("a.download = 'blendops-phase-8.1.bundle'"),
-    false,
-  );
+  // Ensure no legacy development phase bundle filenames remain
+  assert.equal(devServerSource.includes('blendops-phase-'), false);
+  assert.equal(devServerSource.includes('phase3'), false);
 });

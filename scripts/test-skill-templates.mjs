@@ -54,7 +54,7 @@ function listRealCatalogSkills(rootDir = root) {
     .sort();
 }
 
-describe('Phase 4 — Catalog Template Completion & F-05 Resolution', () => {
+describe('Catalog Template Completion & F-05 Resolution', () => {
   it('Scenario 1: all 48 catalog skills contain all 9 extended template sections and all 9 core sections', () => {
     const skills = listRealCatalogSkills(root);
     assert.equal(skills.length, 48, 'Expected exactly 48 real catalog skills');
@@ -259,7 +259,7 @@ describe('Phase 4 — Catalog Template Completion & F-05 Resolution', () => {
     const f05 = currentFindings.findings.find((f) => f.id === 'F-05');
     assert.ok(f05, 'F-05 must exist in findings.json');
     assert.equal(f05.currentLifecycleStatus, 'FIXED');
-    assert.equal(f05.resolvedInPhase, 'Phase 4');
+    assert.equal(f05.resolvedInMilestone, 'Catalog Template Completion (a5ddece)');
 
     // Verify statusBreakdown matches the actual findings array
     const breakdown = {
@@ -277,10 +277,9 @@ describe('Phase 4 — Catalog Template Completion & F-05 Resolution', () => {
     assert.deepEqual(currentFindings.summary.statusBreakdown, breakdown);
 
     // Now test in an isolated temp repo that removing an extended heading causes F-05 to report OPEN
-    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-phase4-f05-'));
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-templates-f05-'));
     try {
       for (const relDir of [
-        path.join('docs', 'audits', 'phase-0'),
         'registry',
         'evals',
         'schemas',
@@ -288,13 +287,14 @@ describe('Phase 4 — Catalog Template Completion & F-05 Resolution', () => {
       ]) {
         fs.cpSync(path.join(root, relDir), path.join(tempDir, relDir), { recursive: true });
       }
+      fs.mkdirSync(path.dirname(path.join(tempDir, AUDITED_INPUTS_MANIFEST_REL)), { recursive: true });
       fs.writeFileSync(
         path.join(tempDir, AUDITED_INPUTS_MANIFEST_REL),
         JSON.stringify(
           {
             schemaVersion: '1.0.0',
             requiredFiles: [AUDITED_INPUTS_MANIFEST_REL],
-            requiredDirectories: ['docs/audits/phase-0', 'registry', 'evals', 'schemas', 'skills'],
+            requiredDirectories: ['registry', 'evals', 'schemas', 'skills'],
           },
           null,
           2,
@@ -325,23 +325,16 @@ describe('Phase 4 — Catalog Template Completion & F-05 Resolution', () => {
     }
   });
 
-  it('Scenario 9: historical Phase 0 baseline artifacts remain unchanged at 54.5 / 100', () => {
-    const baselineScorecard = JSON.parse(
-      fs.readFileSync(path.join(root, 'docs', 'audits', 'phase-0', 'baseline-scorecard.json'), 'utf8'),
+  it('Scenario 9: historical baseline provenance in docs/audits/current/scorecard.json preserves 54.5 / 100 at 3ea3c35', () => {
+    const scorecard = JSON.parse(
+      fs.readFileSync(path.join(root, 'docs', 'audits', 'current', 'scorecard.json'), 'utf8'),
     );
-    const phase0Inv = JSON.parse(
-      fs.readFileSync(path.join(root, 'docs', 'audits', 'phase-0', 'skill-inventory.json'), 'utf8'),
-    );
-    assert.equal(baselineScorecard.commitSha, '3ea3c35c6b8a6e5e915bab9f63333d4a1c09bd4d');
-    assert.equal(baselineScorecard.totals.measuredScore, 54.5);
-    assert.equal(phase0Inv.summary.skillsMissingExtendedTemplateSections, 8);
-    assert.equal(phase0Inv.summary.skillsWithArtifactNotRunContradiction, 30);
-
-    const diffOut = execFileSync('git', ['diff', 'HEAD', '--', 'docs/audits/phase-0'], {
-      cwd: root,
-      encoding: 'utf8',
-    });
-    assert.equal(diffOut, '', 'docs/audits/phase-0/* must have zero diff against HEAD');
+    assert.equal(scorecard.historicalBaseline.commitSha, '3ea3c35c6b8a6e5e915bab9f63333d4a1c09bd4d');
+    assert.equal(scorecard.historicalBaseline.measuredScore, 54.5);
+    assert.equal(scorecard.totals.historicalBaselineScore, 54.5);
+    assert.equal(scorecard.historicalBaseline.skillSummary.skillsMissingExtendedTemplateSections, 8);
+    assert.equal(scorecard.historicalBaseline.skillSummary.skillsWithArtifactNotRunContradiction, 30);
+    assert.equal(fs.existsSync(path.join(root, 'docs', 'audits', 'phase-0')), false);
   });
 
   it('Scenario 10: all 48 skills preserve valid Anthropic frontmatter and resolvable relative links', () => {

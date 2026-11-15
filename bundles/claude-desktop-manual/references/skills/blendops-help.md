@@ -55,7 +55,7 @@ Help an agent or user decide the single safest next action in BlendOps when the 
 2. If the goal is already clear and artifacts exist, hand off immediately to `workflow-stage-router`.
 3. Otherwise, identify whether the entry need is brief/planning setup, runtime readiness, evidence verification, install/package docs, or release review.
 4. Route to the single smallest safe skill or doc.
-5. Preserve Draft v0, runtime, and artifact truth (downgrade-only, never upgrade).
+5. Preserve release, runtime, and artifact truth (downgrade-only, never upgrade).
 
 ## Handoff notes
 - **[progression]** Recipe or pack selection when goal becomes clear → `recipe-fit-assessor` (`references/skills/recipe-fit-assessor.md`) — `when.all: [goal.clarity equals "clear"; recipe.selected equals false]`

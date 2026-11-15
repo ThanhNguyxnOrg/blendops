@@ -2,7 +2,7 @@
 
 # EVAL — render-export-evidence
 
-Status: Draft v0 text-only baseline  
+Status: 1.0.0 text-only baseline  
 Scope: artifact evidence classification only
 
 ## Text-only eval prompt

@@ -1,6 +1,6 @@
 # Golden Path — Cyberpunk Shoe Web Hero
 
-Status: Draft v0
+Status: 1.0.0
 
 > [!NOTE]
 > This document is the **product/workflow specification** for the cyberpunk-shoe-hero scenario (the "what and why"). The **step-by-step recipe template** for an AI agent to execute the same scenario lives at [`docs/recipes/cyberpunk-shoe-hero.md`](./recipes/cyberpunk-shoe-hero.md). The historical text-only runtime eval lives at [`docs/evals/cyberpunk-shoe-hero-v0-runtime-eval.md`](./evals/cyberpunk-shoe-hero-v0-runtime-eval.md).
@@ -132,7 +132,7 @@ BlendOps golden path assumes:
 - **Official Blender MCP Server** is the preferred Blender-side runtime target when available.
 - **Official Claude Blender Connector** is the preferred Claude-side connector path.
 - **Official Blender CLI** is the low-level runtime/process reference for execution behavior.
-- BlendOps does not claim to ship or clone a custom runtime in this phase.
+- BlendOps does not ship or clone a custom runtime.
 - Runtime execution capabilities may vary by environment, Blender version, and official integration setup quality.
 - Final user-facing language must stay workflow-oriented; do not expose raw low-level operational steps unless needed for failure explanation.
 
@@ -243,4 +243,4 @@ Output language policy:
 - No code implementation
 - No BlendOps-owned CLI/MCP/addon design
 - No raw shell or arbitrary-Python user interface definition
-- No React code in this phase
+- No React implementation inside this specification

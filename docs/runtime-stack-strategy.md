@@ -2,7 +2,7 @@
 
 # Runtime Stack Strategy
 
-Status: Draft v0 stack decision  
+Status: Release 1.0.0 stack decision  
 Scope: Runtime path selection for future BlendOps evals, not runtime execution
 
 > [!CAUTION]

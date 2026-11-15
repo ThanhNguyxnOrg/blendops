@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * BlendOps — Phase 14 (Phase 0 + Phase 1: Architecture Reconciliation & Knowledge/Recipe Foundation) Test Suite
+ * BlendOps — Architecture Reconciliation & Knowledge/Recipe Foundation Test Suite
  *
  * Covers:
  * 1. JSON Schema Draft 2020-12 validation of `registry/knowledge-sources.json` (20 sources),
@@ -46,7 +46,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const ROOT = path.resolve(__dirname, '..');
 
-describe('Phase 14 — Architecture Reconciliation & Knowledge/Recipe Foundation (Phase 0 + Phase 1)', () => {
+describe('Architecture Reconciliation & Knowledge/Recipe Foundation', () => {
   test('Scenario 1: Knowledge source registry, 30 knowledge records across 11 domains, and 10 recipes pass strict schema & cross-reference validation (including negative tests)', () => {
     const validation = validateKnowledgeAndRecipeCatalogs(ROOT);
     assert.equal(

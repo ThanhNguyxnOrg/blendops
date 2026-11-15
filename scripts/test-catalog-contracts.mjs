@@ -40,7 +40,7 @@ function listRealCatalogSkills(rootDir = root) {
     .sort();
 }
 
-describe('Phase 5 — Full Catalog Contract Coverage & F-03 Resolution (30 Scenarios)', () => {
+describe('Full Catalog Contract Coverage & F-03 Resolution (30 Scenarios)', () => {
   const catalogSkillIds = listRealCatalogSkills(root);
   const catalogSkillSet = new Set(catalogSkillIds);
   const { vocab, fieldMap: contextFieldMap, errors: vocabLoadErrors } = loadContextFieldVocabulary(root);
@@ -174,7 +174,7 @@ describe('Phase 5 — Full Catalog Contract Coverage & F-03 Resolution (30 Scena
   });
 
   it('Scenario 6: removing a contract.json file from an isolated catalog causes buildRegistryArtifacts to fail', () => {
-    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-phase5-missing-contract-'));
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-catalog-missing-contract-'));
     try {
       for (const rel of ['schemas', 'registry', 'skills']) {
         fs.cpSync(path.join(root, rel), path.join(tempDir, rel), { recursive: true });
@@ -554,15 +554,7 @@ describe('Phase 5 — Full Catalog Contract Coverage & F-03 Resolution (30 Scena
     assert.notEqual(applyManagedSectionsToSkillMd(driftedMd, contract), driftedMd);
   });
 
-  it('Scenario 23: all 48 SKILL.md files use canonical relative-path handoff notation and all 13 Phase 0 bare-ID skills are normalized', () => {
-    const phase0Inv = JSON.parse(
-      fs.readFileSync(path.join(root, 'docs', 'audits', 'phase-0', 'skill-inventory.json'), 'utf8'),
-    );
-    const originallyBareIdSkills = phase0Inv.skills
-      .filter((s) => s.handoffNotationStyle === 'bare_id')
-      .map((s) => s.id);
-    assert.equal(originallyBareIdSkills.length, 13);
-
+  it('Scenario 23: all 48 SKILL.md files use canonical relative-path handoff notation (0 bare-ID handoffs)', () => {
     for (const skillId of catalogSkillIds) {
       const scan = scanSkillMarkdown(root, skillId);
       assert.equal(scan.hasContract, true);
@@ -572,11 +564,6 @@ describe('Phase 5 — Full Catalog Contract Coverage & F-03 Resolution (30 Scena
         'relative_path',
         `Expected relative_path handoff notation for ${skillId}, got ${scan.handoffNotationStyle}`,
       );
-    }
-
-    for (const formerlyBareId of originallyBareIdSkills) {
-      const scan = scanSkillMarkdown(root, formerlyBareId);
-      assert.equal(scan.handoffNotationStyle, 'relative_path');
     }
   });
 
@@ -646,10 +633,9 @@ describe('Phase 5 — Full Catalog Contract Coverage & F-03 Resolution (30 Scena
     assert.equal(f03?.currentLifecycleStatus, 'FIXED');
     assert.equal(f09?.currentLifecycleStatus, 'FIXED');
 
-    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-phase5-f03-'));
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-catalog-f03-'));
     try {
       for (const relDir of [
-        path.join('docs', 'audits', 'phase-0'),
         'registry',
         'evals',
         'schemas',
@@ -657,13 +643,14 @@ describe('Phase 5 — Full Catalog Contract Coverage & F-03 Resolution (30 Scena
       ]) {
         fs.cpSync(path.join(root, relDir), path.join(tempDir, relDir), { recursive: true });
       }
+      fs.mkdirSync(path.dirname(path.join(tempDir, AUDITED_INPUTS_MANIFEST_REL)), { recursive: true });
       fs.writeFileSync(
         path.join(tempDir, AUDITED_INPUTS_MANIFEST_REL),
         JSON.stringify(
           {
             schemaVersion: '1.0.0',
             requiredFiles: [AUDITED_INPUTS_MANIFEST_REL],
-            requiredDirectories: ['docs/audits/phase-0', 'registry', 'evals', 'schemas', 'skills'],
+            requiredDirectories: ['registry', 'evals', 'schemas', 'skills'],
           },
           null,
           2,
@@ -691,14 +678,11 @@ describe('Phase 5 — Full Catalog Contract Coverage & F-03 Resolution (30 Scena
     }
   });
 
-  it('Scenario 28: docs/audits/current/scorecard.json records 87.0/100 (+32.5) with Pillar 1 = 15.0, Pillar 2 = 15.0, Pillar 3 = 16.0, and Pillar 8 = 5.0 while Phase 0 baseline stays 54.5/100', () => {
+  it('Scenario 28: docs/audits/current/scorecard.json records 87.0/100 (+32.5) with Pillar 1 = 15.0, Pillar 2 = 15.0, Pillar 3 = 16.0, and Pillar 8 = 5.0 while historical baseline stays 54.5/100', () => {
     const scorecard = JSON.parse(
       fs.readFileSync(path.join(root, 'docs', 'audits', 'current', 'scorecard.json'), 'utf8'),
     );
-    const baseline = JSON.parse(
-      fs.readFileSync(path.join(root, 'docs', 'audits', 'phase-0', 'baseline-scorecard.json'), 'utf8'),
-    );
-    assert.equal(baseline.totals.measuredScore, 54.5);
+    assert.equal(scorecard.historicalBaseline.measuredScore, 54.5);
     assert.equal(scorecard.totals.historicalBaselineScore, 54.5);
     assert.equal(scorecard.totals.measuredScore, 87.0);
     assert.equal(scorecard.totals.scoreDelta, '+32.5');
@@ -711,7 +695,7 @@ describe('Phase 5 — Full Catalog Contract Coverage & F-03 Resolution (30 Scena
     assert.equal(p3?.measuredScore, 16.0);
   });
 
-  it('Scenario 29: audited-inputs.manifest.json covers all Phase 5 schemas, registries, contracts, and test-phase5.mjs', () => {
+  it('Scenario 29: audited-inputs.manifest.json covers all contract schemas, registries, contracts, and test-catalog-contracts.mjs', () => {
     const resolved = new Set(resolveAuditedInputFiles(root));
     for (const expectedPath of [
       'schemas/skill-contract.schema.json',
@@ -719,7 +703,7 @@ describe('Phase 5 — Full Catalog Contract Coverage & F-03 Resolution (30 Scena
       'registry/contract-context-fields.json',
       'registry/skills.json',
       'registry/workflow-graph.json',
-      'scripts/test-phase5.mjs',
+      'scripts/test-catalog-contracts.mjs',
       'skills/camera-composition/contract.json',
       'skills/workflow-stage-router/contract.json',
     ]) {
@@ -748,7 +732,7 @@ describe('Phase 5 — Full Catalog Contract Coverage & F-03 Resolution (30 Scena
     );
     assert.match(regCheckOut, /48 contracted skills, 371 edges/);
 
-    const tempExportRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-phase5-export-'));
+    const tempExportRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-catalog-export-'));
     try {
       const exportOut = execFileSync(
         process.execPath,

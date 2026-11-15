@@ -1,19 +1,13 @@
 # BlendOps Skill Template (Benchmark-Informed)
 
-Status: Draft v0 template
+Status: 1.0.0 template
 
-Use this template for all root installable skills.
+Use this template for all root installable skills. Frontmatter contains only `name` and `description` (`description` ≤ 200 chars; no `version`, `status`, or `tags` keys).
 
 ```md
 ---
 name: <skill-name>
-description: <clear one-liner>
-version: 0.1.0-draft
-status: draft
-tags:
-  - blender
-  - official-runtime
-  - blendops
+description: <clear one-liner under 200 chars>
 ---
 
 # <skill-name>

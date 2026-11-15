@@ -1,6 +1,6 @@
 # EVAL — intent-to-3d-brief-writer
 
-Status: Draft v0 text-only baseline  
+Status: 1.0.0 text-only baseline  
 Scope: produces 8-slot structured brief; no runtime; no artifacts.
 
 ## Text-only eval prompt

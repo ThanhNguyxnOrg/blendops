@@ -1,7 +1,7 @@
 # Install Scopes
 
 > [!NOTE]
-> Status: Draft v0. BlendOps install/adoption uses scoped attachment modes, not hard-coded one-off tool logic.
+> Status: 1.0.0. BlendOps install/adoption uses scoped attachment modes, not hard-coded one-off tool logic.
 
 ## Scope selection at a glance
 

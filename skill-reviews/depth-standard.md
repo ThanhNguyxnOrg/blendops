@@ -1,6 +1,6 @@
 # BlendOps Skill Depth Standard
 
-Status: Draft v0
+Status: 1.0.0
 
 ## What makes a skill professional
 

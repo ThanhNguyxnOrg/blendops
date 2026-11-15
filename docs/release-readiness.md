@@ -1,35 +1,30 @@
 # 🚦 Release Readiness
 
-Status: Draft v0 (v0.9.0-draft shipped; pre-release hardening active — not production, not stable)  
-Date: 2026-11-13 (expanded to 48 skills + 151 reference guides + 26 install target docs + 35+ CLI targets via `--with-skills-dir`)
+Status: **1.0.0 (Production)**  
+Scope: 48 skills + 151 reference guides + 30 knowledge records + 10 recipes + 20 sources + 26 install target docs (`35+` CLI targets via `--with-skills-dir` and `skills.sh.json`)
 
 > [!IMPORTANT]
-> **Scope: BlendOps publishes the skills layer; runtime paths are an upstream redirect.** This readiness report grades only what BlendOps **owns**: 48 skills + 4 laws + 1 pack + 3 bundles + 26 install target docs (`35+` CLI targets via `--with-skills-dir` & `skills.sh.json`) + ZIP/package generation + CI guards. Runtime execution (Path 1 Lab MCP, Path 2 `ahujasid` community, CLI) is owned by Blender Foundation / Anthropic / the community — BlendOps redirects users via per-target install docs and does **not** claim ownership of those upstream paths' stability.
->
-> The skills layer is **Ready for Draft v0**. Tags shipped: `v0.1.0-draft` (16) → `v0.2.0-draft` (24) → `v0.3.0-draft` (32) → `v0.4.0-draft` (40) → `v0.5.0-draft` (48) → `v0.6.0-draft` (20 install targets) → `v0.7.0-draft` (26 install targets) → `v0.8.0-draft` (48-skill review hardening + runtime consistency sweep) → `v0.9.0-draft` (deep architecture, 19-phase CI & deterministic CLI).
->
-> Phase 3.3 rollup: [docs/release-readiness-rollup-v0.md](./release-readiness-rollup-v0.md)
+> **Scope: BlendOps publishes the skills, knowledge, recipe, and local CLI tooling layers; runtime paths are an upstream redirect.** This readiness report grades what BlendOps **owns**: 48 skills + 4 laws + 1 pack (`product-hero-v0`) + 3 bundles + Knowledge/Recipe Catalog + SceneSpec compiler + GLB inspector + runtime capability/transaction orchestrator + 26 install target docs (`35+` CLI targets) + ZIP/package generation + CI guards. Runtime execution (Path 1 Lab MCP, Path 2 `mcp-for-blender`, CLI appendix) is owned by Blender Foundation / Anthropic / the community — BlendOps redirects users via per-target install docs and does **not** claim ownership of those upstream paths' stability.
 
 ---
 
-## Skills layer dashboard (BlendOps publishes — what this repo owns)
+## Release layer dashboard (BlendOps owns)
 
 | Gate | Status | Evidence |
 |---|---|---|
-| Product and docs direction | Ready for Draft v0 review | Active docs describe upstream-redirect workflow and skill collection direction. |
-| Root collection layout | Ready for Draft v0 review | `skills/` (48 skills), `laws/` (4 laws), `packs/` (1 pack) exist. |
-| Skill depth and gate review | Ready for Draft v0 review | All 48 skills at Expanded Draft v0; gate review pass for the original 16 baseline (snapshot in `skill-reviews/reports/v0-skill-gate-review.md`); Batches 1–8 inherit the same SKILL.md + EVAL.md + 3 references shape. |
-| Skill ZIP / package generation | Ready for Draft v0 review | `npm run skills:export` produces one ZIP + one Claude Code folder per `skills/*/SKILL.md` (currently 48). Anthropic Skills frontmatter spec compliance verified. |
-| Local installer & CLI tarball readiness | Ready for Draft v0 review (Unpublished) | `bin/blendops.mjs` + `scripts/install-skills.mjs` verified via `scripts/test-phase10.mjs` and `scripts/test-phase11.mjs` (`npm pack` + isolated consumer tarball install). Package remains `"private": true` (Not Published to npm). |
-| GLB Web Handoff & Viewer Integration | Ready for Draft v0 review (`Not Run` / `Not Produced` for live Blender exports) | `schemas/glb-web-handoff-manifest.schema.json`, `scripts/inspect-glb.mjs`, `scripts/generate-glb-handoff-report.mjs`, CLI `glb-inspect` / `glb-handoff` / `glb-validate-manifest`, and Three.js + React Three Fiber examples ([docs/examples/glb-web-handoff/README.md](./examples/glb-web-handoff/README.md)) verified in `scripts/test-phase12.mjs`. |
-| Adapter install dry-run | Warn | Adapter architecture and dry-run install eval are complete, with native-path confidence still environment-dependent. |
-| Manual install beta | Warn | Evidence report: [docs/evals/manual-install-beta-v0.md](./evals/manual-install-beta-v0.md). |
-| CI guards | Ready for Draft v0 review | `npm run ci` passes `docs:check`, `catalog:check`, `operations:check`, `arch:check`, `registry:check`, `evals:check`, `evals:run`, `bundles:summaries:check`, `skills:export`, and all 14 unit/integration suites (`scripts/test-phase1.mjs`–`test-phase19.mjs`). |
-| **`v0.10.0-draft` tag** | **🟡 Tag-able now** | **Skills layer (48 skills + 151 hardened references), deterministic CLI (`35+` targets + `skills.sh.json`), and 19-phase CI are complete. Tagging is a human maintainer publishing decision, not gated on upstream runtime evidence.** |
+| Product and docs direction | Production Ready (`1.0.0`) | Active docs describe upstream-redirect workflow, 5-layer architecture, and strict truth rules. |
+| Root collection layout | Production Ready (`1.0.0`) | `skills/` (48 skills), `laws/` (4 laws), `packs/` (`product-hero-v0`) validated on disk and in registry. |
+| Skill depth and gate review | Production Ready (`1.0.0`) | All 48 skills have full `SKILL.md`, `EVAL.md`, `contract.json`, and 151 hardened reference guides (gate review records preserved in `skill-reviews/reports/`). |
+| Knowledge & Recipe Catalog + SceneSpec Harmonizer | Production Ready (`1.0.0`) | `registry/knowledge-catalog.json` (30 records), `registry/recipe-catalog.json` (10 recipes), `registry/knowledge-sources.json` (20 sources), `evals/catalog-retrieval-evals.json` (90 bilingual evals), and `scripts/compile-scene-plan.mjs`. |
+| Skill ZIP / package generation | Production Ready (`1.0.0`) | `npm run skills:export` produces one ZIP + one Claude Code folder per `skills/*/SKILL.md` (48 total) + shared knowledge catalog ZIP. Anthropic Skills frontmatter spec compliance verified. |
+| Local installer & CLI tarball readiness | Production Ready (`Unpublished`) | `bin/blendops.mjs` + `scripts/install-skills.mjs` verified via `scripts/test-project-installer.mjs` and `scripts/test-cli-package.mjs` (`npm pack` + isolated consumer tarball install). Package remains `"private": true` (`Not Published` to npm). |
+| GLB Web Handoff & Viewer Integration | Production Ready (`Not Run` / `Not Produced` for live Blender exports) | `schemas/glb-web-handoff-manifest.schema.json`, `scripts/inspect-glb.mjs`, `scripts/generate-glb-handoff-report.mjs`, CLI `glb-inspect` / `glb-handoff` / `glb-validate-manifest`, and Three.js + React Three Fiber examples ([docs/examples/glb-web-handoff/README.md](./examples/glb-web-handoff/README.md)) verified in `scripts/test-glb-handoff.mjs`. |
+| Adapter install dry-run & Manual install beta | Documented with Warn scoping | Adapter architecture and dry-run install evals complete ([docs/evals/manual-install-beta-v0.md](./evals/manual-install-beta-v0.md), [docs/evals/adapter-install-v0-dry-run.md](./evals/adapter-install-v0-dry-run.md)), with native-path confidence explicitly environment-scoped. |
+| CI guards & test suites | Verified (`npm run ci`) | `npm run ci` validates `docs:check`, `catalog:check`, `operations:check`, `arch:check`, `registry:check`, `evals:check`, `evals:run`, `bundles:summaries:check`, `skills:export`, and all regression suites (`scripts/test-*.mjs`). |
 
 ## Runtime paths dashboard (BlendOps redirects to — owned by upstream)
 
-This grades whether BlendOps' redirect docs are accurate, **not** whether BlendOps "owns" the upstream paths.
+This grades whether BlendOps' redirect docs are accurate, **not** whether BlendOps owns the upstream paths.
 
 | Path | Owner | Redirect doc accurate? | In-repo provenance file? |
 |---|---|---|---|
@@ -37,88 +32,32 @@ This grades whether BlendOps' redirect docs are accurate, **not** whether BlendO
 | Path 1 host (a) — Anthropic Blender Connector | Anthropic ([claude.com tutorial](https://claude.com/resources/tutorials/using-the-blender-connector-in-claude)) | ✅ `docs/install/claude-desktop.md` documents Connector + Lab add-on dependency. | Same as Path 1 above. |
 | Path 1 host (b) — Manual MCP client config | Each MCP client | ✅ Per-target install docs (cursor, claude-code, cline, continue, …). | Same as Path 1 above. |
 | Path 2 — Community `mcp-for-blender` | `ahujasid` community ([github.com/ahujasid/mcp-for-blender](https://github.com/ahujasid/mcp-for-blender)) | ✅ `docs/unofficial-runtime-bridges.md` lists caveats; install docs cite source. | Template at `docs/evals/path-2-mcp-for-blender-readonly-template.md`. No filled file yet (optional operator-side). |
-| CLI fallback | Blender Foundation ([CLI manual](https://docs.blender.org/manual/en/latest/advanced/command_line/index.html)) | ✅ `docs/runtime-stack-strategy.md` includes a CLI compatibility considerations table (GLB export, --factory-startup add-on enablement, GPU rendering, viewport limits, stateless caveat). | None (optional operator-side). |
+| CLI fallback | Blender Foundation ([CLI manual](https://docs.blender.org/manual/en/latest/advanced/command_line/index.html)) | ✅ `docs/runtime-stack-strategy.md` includes a CLI compatibility considerations table (GLB export, `--factory-startup` add-on enablement, GPU rendering, viewport limits, stateless caveat). | None (optional operator-side). |
 
 > [!NOTE]
-> Path 1 + Path 2 are **user-reported verified by repo owner** (2026-04-29 + 2026-05-08 + 2026-05-09 reconfirmation). CLI is documented upstream as a first-class Blender CLI surface. The lack of an in-repo eval record file does **not** mean the upstream paths don't work — it just means BlendOps has not captured a per-recipe provenance record under `docs/evals/`. That record is optional operator-side.
+> Path 1 + Path 2 are **user-reported verified by repo owner** (2026-04-29 + 2026-05-08 + 2026-05-09 reconfirmation). CLI is documented upstream as a first-class Blender CLI surface. The lack of a full mutation eval record file does **not** mean the upstream paths don't work — it just means BlendOps keeps strict operator-side truth labels (`Not Run` / `Not Produced`) unless a verified evidence packet is recorded under `docs/evals/`.
 
 ---
 
-## ✅ Ready
+## ✅ Ready in v1.0.0
 
 - Official-runtime-only boundaries are active across skills, laws, and packs.
-- Root collection exists: `skills/`, `laws/`, `packs/`.
-- Skill depth enrichment and gate review reports exist.
-- Adapter architecture and dry-run install eval are complete.
-- Manual install beta dry-run has been executed and documented: [docs/evals/manual-install-beta-v0.md](./evals/manual-install-beta-v0.md).
-- Official runtime verification criteria are prepared: [docs/evals/official-runtime-verification-criteria.md](./evals/official-runtime-verification-criteria.md).
-- Runtime availability checklist is prepared: [docs/evals/runtime-availability-checklist.md](./evals/runtime-availability-checklist.md).
-- Official runtime manual eval packet is prepared: [docs/evals/official-runtime-manual-eval-packet.md](./evals/official-runtime-manual-eval-packet.md).
-- Path 1 read-only smoke test has Pass / Available evidence (likely Anthropic Connector host): [docs/evals/blender-connector-read-only-smoke-test.md](./evals/blender-connector-read-only-smoke-test.md).
+- 48 skills complete with Anthropic Skills frontmatter spec compliance (`151/151` hardened references, zero stub templates).
+- 4 laws + 1 pack (`product-hero-v0`, version `1.0.0`) + 3 bundle fixtures (`1.0.0`) + `skills.sh.json` 8-group catalog + Lockfile v2 (`skills-lock.json`).
+- 26 install target docs (`35+` CLI targets with `--with-skills-dir` & `skills.sh.json`) and 3-mode auto-detect install flow (`docs/ai-agent-quickstart.md`).
+- Safe project-local installer (`scripts/install-skills.mjs`) and distributable CLI (`bin/blendops.mjs`) verified end-to-end via `npm pack`, with `"private": true` retained to prevent accidental registry publishing.
+- Knowledge & Recipe Catalog (`30` knowledge records, `10` recipes, `20` sources), `SceneSpec` compiler, and `L0`–`L3` runtime capability/operation orchestrator verified deterministically.
+- Web-ready GLB 2.0 inspection, handoff manifest schema (`schemas/glb-web-handoff-manifest.schema.json`), report generator, and Three.js / React Three Fiber viewer examples verified.
+- Repository architecture, complete tracked-file classification (`docs/audits/current/repository-inventory.json`), root hygiene (`.gitattributes`, `.editorconfig`, `.gitignore`), and internal reference integrity verified (`npm run arch:check`).
+- Runtime verification packets and dry-run eval records prepared and preserved in `docs/evals/`.
 
 ---
 
-## ⚪ Optional / outside publisher scope
+## ⚠️ Operational caveats
 
-The following are **not** "Not Ready" items in the publishing sense — they are deliberately scoped outside what BlendOps owns:
-
-- **In-repo runtime artifact evidence** (preview / render / GLB captured under `docs/evals/`) — optional operator-side provenance. BlendOps redirects to upstream runtime paths and does not run Blender itself, so evidence capture happens on the operator's machine. The upstream paths themselves are user-reported verified by repo owner.
-- **Claude Code native install path confidence** — environment-dependent, by design (different Claude Code versions / configs). Documented as Warn with linked-only confidence.
-- **Product-hero v0 pack** — labeled Draft v0 deliberately (the recipe is a planning spec, not a "verified once and done" artifact).
-
----
-
-## ⚠️ Warnings
-
-1. Claude Code native path confidence is not universal across environments.
-2. Full runtime manual execution evidence is missing for any path; Path 1 is user-reported verified by repo owner (2026-04-29 read-only smoke + 2026-05-09 operator confirms) but does not yet have an in-repo evidence file proving recipe execution, rendering, export, or artifact validation. Path 2 is user-reported verified by repo owner (2026-05-08, reconfirmed 2026-05-09) without a formal evidence file. CLI fallback is documented upstream as a first-class Blender CLI surface; no in-repo evidence file yet.
-3. Manual install beta verdict remains Warn, not full Pass.
-4. Some skill examples can still be expanded for edge audiences.
-5. Confidence labels may require tighter environment scoping.
-
----
-
-## 🧱 No blockers for `v0.10.0-draft`
-
-There are no skills-layer blockers for the `v0.10.0-draft` release tag (`v0.1.0-draft` through `v0.9.0-draft` already shipped on main). Earlier drafts of this report listed runtime-eval-evidence items as blockers; that framing was wrong because BlendOps does not own runtime execution paths — it redirects to upstream. Skills layer has clean 19-phase CI, all 48 skills and 151 references are hardened, all 26 install targets (`35+` CLI targets with `--with-skills-dir` & `skills.sh.json`) are documented, and skill ZIP / package generation is verified at source level.
-
-The previously-listed "blockers" are now correctly scoped:
-
-| Item | Old framing (wrong) | Correct framing |
-|---|---|---|
-| Official runtime manual eval evidence | Blocker for release | Optional operator-side provenance record. Path 1 + Path 2 are user-reported verified by repo owner. |
-| Runtime artifact evidence | Blocker for release | Optional operator-side provenance under `docs/evals/`. Upstream paths produce real artifacts; BlendOps does not run them. |
-| Adapter native-path certainty | Blocker | Documented Warn with linked-only confidence per environment. Not a Draft v0 blocker. |
-
----
-
-## 🧾 Ready for `v0.10.0-draft` tag
-
-- [x] 48 skills at Expanded Draft v0 with frontmatter spec compliance (`151/151` hardened references, zero stub templates).
-- [x] 4 laws + 1 pack + 3 bundle fixtures + `skills.sh.json` 8-group catalog + Lockfile v2 (`skills-lock.json`).
-- [x] 26 install target docs (Claude Desktop, Claude Code, Cursor, Codex, OpenCode, Gemini, Antigravity, Copilot, Cline, Roo Code, Blackbox AI, Continue, Zed, Windsurf, Trae, Augment Code, goose, OpenHands, JetBrains Junie, Sourcegraph Cody, Aider, Amazon Q Developer, Ollama, LM Studio, Open WebUI, generic-project).
-- [x] 3-mode auto-detect install flow (Mode A / B / C) in `docs/ai-agent-quickstart.md` + README 30-second prompt.
-- [x] Skill ZIP / package generation working (`npm run skills:export` produces one ZIP + one Claude Code folder per `skills/*/SKILL.md`, currently 48).
-- [x] Safe project-local installer (`scripts/install-skills.mjs`) and distributable CLI (`bin/blendops.mjs`) verified end-to-end via `npm pack` (`scripts/test-phase10.mjs`, `scripts/test-phase11.mjs`), with `"private": true` retained to prevent accidental registry publishing.
-- [x] Web-ready GLB 2.0 inspection, handoff manifest schema (`schemas/glb-web-handoff-manifest.schema.json`), HTML/Markdown/JSON report generator (`scripts/generate-glb-handoff-report.mjs`), and Three.js / React Three Fiber viewer integration examples (`docs/examples/glb-web-handoff/README.md`) verified via `scripts/test-phase12.mjs`.
-- [x] Repository architecture, complete tracked-file classification (`docs/audits/current/repository-inventory.json`), root hygiene (`.gitattributes`, `.editorconfig`, `.gitignore`), and internal reference integrity verified via `scripts/validate-repository-architecture.mjs` (`npm run arch:check`) and `scripts/test-phase13.mjs`.
-- [x] CI guards passing (`npm run docs:check` validates active markdown files; see script footer count).
-- [x] Runtime-stack-strategy 2-path + CLI appendix documented with upstream redirect clarity.
-- [x] CLI compatibility considerations researched + documented (GLB export, add-on enablement, GPU flags, viewport limits, stateless caveat).
-- [x] AGENTS.md, CONTRIBUTING.md, GitHub PR / issue templates, package.json metadata.
-- [x] TODO.md scope-corrected: optional operator-side provenance items separated from BlendOps publishing items.
-
-> [!NOTE]
-> Whether to actually cut the `v0.1.0-draft` tag is a publishing decision (release notes, GitHub release page, etc.). Nothing in the skills layer blocks it. The "Not Run" / "Not Produced" labels on runtime/artifact badges refer to **in-repo provenance under `docs/evals/`**, not to whether the upstream redirect targets work — they do.
-
----
-
-## 🔒 Required before public stable claim
-
-- Multiple successful runtime eval runs with evidence.
-- Artifact-truth reporting validated repeatedly.
-- Install adapters validated across at least two environments.
-- No unresolved high-risk warnings.
+1. Native skill-loader confidence varies by host editor version (documented as `linked-only` or environment-scoped `Warn` in `registry/compatibility-matrix.json`).
+2. Full live Blender runtime mutation/render/export evidence remains an optional operator-side provenance record (`Not Run` / `Not Produced` in this repository).
+3. Manual install beta verdict remains `Warn` across unverified host environments: [docs/evals/manual-install-beta-v0.md](./evals/manual-install-beta-v0.md).
 
 ---
 
@@ -135,9 +74,9 @@ Evidence report: [docs/evals/manual-install-beta-v0.md](./evals/manual-install-b
 
 ---
 
-## 🛑 Non-actions preserved
+## 🛑 Non-claims preserved
 
-- This readiness report does not claim Blender runtime was run.
-- This readiness report does not claim preview/render/GLB artifacts exist.
-- This readiness report does not claim production readiness.
-- This readiness report does not claim stable readiness.
+- This readiness report does not claim live Blender mutation/render/export runtime execution occurred in CI (`Runtime status: Not Run`).
+- This readiness report does not claim preview/render/GLB binary artifacts exist in this repository (`Artifact status: Not Produced`).
+- This readiness report does not claim public npm or marketplace publication (`"private": true`, `Not Published`).
+

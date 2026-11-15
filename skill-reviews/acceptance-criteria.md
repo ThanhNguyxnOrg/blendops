@@ -1,10 +1,10 @@
 # BlendOps Skill Acceptance Criteria
 
-Status: Draft v0
+Status: 1.0.0
 
-## Draft v0 checklist
+## Baseline checklist
 
-A skill is Draft v0 when:
+A skill meets baseline acceptance when:
 - required structure sections exist
 - runtime boundary is explicit in 2-path + CLI appendix terms
 - Path 2 appears only with third-party caveats; CLI appendix is never a peer path
@@ -12,9 +12,9 @@ A skill is Draft v0 when:
 - non-Blender-user response pattern is present
 - at least one text-only eval prompt exists
 
-## Active v0 checklist
+## Production 1.0.0 checklist
 
-A skill can be considered Active v0 when:
+A skill qualifies for Production 1.0.0 when:
 - all review gates are passed or warnings are explicitly accepted
 - text-only eval has documented pass/warn/fail result
 - runtime eval path and blocker handling are documented

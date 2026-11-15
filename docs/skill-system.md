@@ -1,6 +1,6 @@
 # BlendOps Skill System
 
-Status: Draft v0  
+Status: 1.0.0  
 Scope: portable skill architecture for Blender workflow agents
 
 > [!IMPORTANT]
@@ -30,7 +30,7 @@ Skills are intentionally composable. A helper skill routes the task, planning sk
 | Knowledge (`registry/knowledge-catalog.json`) | Source-backed, version-aware 3D domain rules (`knowledge.*`, 30 records across 11 domains) cited by multiple skills and recipes. | `knowledge.principled-bsdf-v2-energy-conserving-pbr`, `knowledge.agx-filmic-color-management-and-cycles-eevee`. |
 | Recipes (`registry/recipe-catalog.json`) | Multi-stage composable blueprints (`recipe.*`, 10 canonical recipes) chaining skills and knowledge records for an end-to-end deliverable. | `recipe.product-hero-scene` (bound to `packs/product-hero-v0/PACK.md` and `docs/recipes/cyberpunk-shoe-hero.md`). |
 | SceneSpec & Skill Harmonizer (`scripts/compile-scene-plan.mjs`) | Structured intermediate representation (`schemas/scene-spec.schema.json`) compiled into a 7-stage `ExecutionPlan` (`schemas/execution-plan.schema.json`) with an 8-level conflict precedence hierarchy (`1_laws` > `2_runtime_boundary_and_version_floor` > `3_hard_budget_and_export_constraints` > `4_scene_spec_explicit_constraints` > `5_recipe_stage_contracts` > `6_knowledge_record_rules` > `7_skill_heuristics` > `8_aesthetic_defaults`). | `blendops plan-compile evals/scene-specs/cyberpunk-shoe-hero.scene-spec.json` |
-| Packs | Curated skill/law bundles for a scenario. | `packs/product-hero-v0/PACK.md` composes Draft v0 product-hero work. |
+| Packs | Curated skill/law bundles for a scenario. | `packs/product-hero-v0/PACK.md` composes product-hero work. |
 | Evals & Audits | Deterministic behavioral/retrieval suites and evidence records. | `evals/catalog-retrieval-evals.json`, `evals/scene-specs/*.json`, `docs/audits/skill-architecture-audit.md`, `docs/evals/runtime-availability-checklist.md`. |
 | Runtime paths | External execution choices, separate from skill install. | Path 1 Official Blender Lab MCP (host: Anthropic Connector OR manual MCP client), Path 2 community `mcp-for-blender`, CLI fallback (documented upstream as first-class Blender CLI; no in-repo evidence file yet). |
 
@@ -141,7 +141,7 @@ For the current paste-this-into-your-agent install path, use [AI Agent Install F
 
 ## Future packaging map
 
-| Target | Draft v0 package stance |
+| Target | v1.0.0 package stance |
 |---|---|
 | Claude Desktop | User-managed skill import or docs attachment; connector setup remains separate. |
 | Claude Code | Project-local files first; native skill path remains environment-scoped. |
@@ -180,7 +180,7 @@ Every active skill ships with both `SKILL.md` (operating contract) and `EVAL.md`
 5. Define input, output, evidence, and handoff contracts.
 6. Add the skill to `skills/README.md` only when it is real and useful.
 7. Add it to `packs/product-hero-v0/PACK.md` only if it belongs in that pack.
-8. Update `scripts/check-docs.mjs` if the skill becomes required for Draft v0 checks.
+8. Update `scripts/check-docs.mjs` if the skill becomes required for CI validation.
 9. Run `npm run docs:check`.
 
 ---

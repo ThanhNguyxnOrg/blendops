@@ -1,6 +1,6 @@
 # EVAL — blendops-help
 
-Status: Draft v0 text-only baseline  
+Status: 1.0.0 text-only baseline  
 Scope: routing/triage only
 
 ## Text-only eval prompt

@@ -1,6 +1,6 @@
 # EVAL — pre-handoff-verification
 
-Status: Draft v0 text-only baseline  
+Status: 1.0.0 text-only baseline  
 Scope: gate handoff with 7-point checklist; never upgrades claims; only confirms or downgrades.
 
 ## Text-only eval prompt

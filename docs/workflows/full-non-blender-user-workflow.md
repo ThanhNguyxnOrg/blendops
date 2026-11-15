@@ -1,6 +1,6 @@
 # Workflow: full-non-blender-user-workflow
 
-Status: Draft v0
+Status: 1.0.0
 
 > [!NOTE]
 > This is the **canonical full-lifecycle workflow** that chains the **original 16** BlendOps core skills for a complete non-Blender-user run. The repo now ships **48** composable skills (see [`skills/README.md`](../../skills/README.md)); use [`workflow-stage-router`](../../skills/workflow-stage-router/SKILL.md) when you need to interleave expansion skills. `product-hero-workflow.md` is the narrower product-hero-specific subset.
@@ -65,7 +65,7 @@ Routing utility (always available)
 ## Stages
 
 > [!NOTE]
-> These are workflow stages (per-run pipeline steps), not project roadmap phases. Project phases live in [`TODO.md`](../../TODO.md).
+> These are workflow stages (per-run pipeline steps). Project roadmap and release checks live in [`TODO.md`](../../TODO.md).
 
 ### Stage 1 — Intent
 

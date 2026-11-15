@@ -1,6 +1,6 @@
 # EVAL — blender-brainstorming
 
-Status: Draft v0 text-only baseline  
+Status: 1.0.0 text-only baseline  
 Scope: Socratic intent exploration; no runtime execution; no artifact claims.
 
 ## Text-only eval prompt

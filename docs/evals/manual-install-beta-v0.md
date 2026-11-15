@@ -14,7 +14,7 @@ Date: 2026-04-29
 | Decision | Value |
 |---|---|
 | Overall verdict | **Warn** |
-| Release impact | Supports Draft v0 review only |
+| Release impact | Supports install-safety review only (no live Blender runtime proof) |
 | Runtime status | Not Run |
 | Artifact status | Not Produced |
 | Global config writes | None |

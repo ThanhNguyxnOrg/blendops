@@ -21,15 +21,15 @@ function listCanonicalSkills() {
     .sort();
 }
 
-test('Phase 1 (F-02): export-claude-skills.mjs does not invoke OS zip or powershell binaries', () => {
+test('Exporter (F-02): export-claude-skills.mjs does not invoke OS zip or powershell binaries', () => {
   const scriptSrc = fs.readFileSync(exporterScript, 'utf8');
   assert.equal(/execFileSync|spawnSync|child_process/.test(scriptSrc), false, 'Exporter must not use child_process');
   assert.equal(/Compress-Archive/i.test(scriptSrc), false, 'Exporter must not invoke PowerShell Compress-Archive');
   assert.equal(scriptSrc.includes('fflate'), true, 'Exporter must use fflate');
 });
 
-test('Phase 1 & 2.1 (F-02 / Workstream C): skills:export generates 48 valid ZIP archives with byte-identical SKILL.md, EVAL.md, and references in an isolated output root', () => {
-  const outRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-phase1-export-'));
+test('Exporter (F-02 / Workstream C): skills:export generates 48 valid ZIP archives with byte-identical SKILL.md, EVAL.md, and references in an isolated output root', () => {
+  const outRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-skills-export-'));
   const desktopDir = path.join(outRoot, 'desktop-zips');
   const codeDir = path.join(outRoot, 'claude-code-skills');
 
@@ -174,7 +174,7 @@ test('Phase 1 & 2.1 (F-02 / Workstream C): skills:export generates 48 valid ZIP 
   }
 });
 
-test('Phase 6.1: concurrent exporter invocations into distinct --output-root directories succeed without race conditions or cross-contamination', async () => {
+test('Exporter Concurrency: concurrent exporter invocations into distinct --output-root directories succeed without race conditions or cross-contamination', async () => {
   const expectedSkills = listCanonicalSkills();
   const outRootA = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-concurrent-a-'));
   const outRootB = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-concurrent-b-'));
@@ -234,7 +234,7 @@ test('Phase 6.1: concurrent exporter invocations into distinct --output-root dir
   }
 });
 
-test('Phase 6.1: export-claude-skills.mjs rejects malformed CLI arguments and unsafe --output-root destinations', () => {
+test('Exporter Validation: export-claude-skills.mjs rejects malformed CLI arguments and unsafe --output-root destinations', () => {
   const invalidArgsList = [
     ['--unknown-flag'],
     ['--output-root'],
@@ -269,7 +269,7 @@ test('Phase 6.1: export-claude-skills.mjs rejects malformed CLI arguments and un
   assert.equal(fs.existsSync(path.join(skillsDir, 'blendops-help', 'SKILL.md')), true);
 });
 
-test('Phase 1 (F-01): all 48 skills and _template separate Runtime status (Not Run) from Artifact status (Not Produced)', () => {
+test('Truth States (F-01): all 48 skills and _template separate Runtime status (Not Run) from Artifact status (Not Produced)', () => {
   const allDirs = [...listCanonicalSkills(), '_template'];
   for (const dir of allDirs) {
     const fPath = path.join(skillsDir, dir, 'SKILL.md');

@@ -1,6 +1,6 @@
 # BLENDOPS
 
-Status: Draft v0 project-local instruction fixture  
+Status: 1.0.0 project-local instruction fixture  
 Target: generic-project
 
 Use BlendOps as project-local workflow guidance for Blender planning, readiness, evidence, and handoff.

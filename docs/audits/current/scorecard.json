@@ -1,39 +1,42 @@
 {
   "schemaVersion": "1.5.0",
-  "auditPhase": "phase-13-current",
+  "auditPhase": "v1.0.0-current",
   "status": "reconciled-current-state",
   "repository": "ThanhNguyxnOrg/blendops",
   "branch": "main",
-  "sourceCommitSha": "112ecf75a04ab5864b3dc3656b9a27f09d1e8dcd",
-  "sourceCommitShort": "112ecf7",
-  "sourceCommitDate": "2026-11-01 04:55:09 -0500",
+  "sourceCommitSha": "9f6c85728d308a8e1669f3b64b56e235dc2193fa",
+  "sourceCommitShort": "9f6c857",
+  "sourceCommitDate": "2026-11-14 04:27:00 +0000",
   "auditProvenance": {
-    "sourceCommitSha": "112ecf75a04ab5864b3dc3656b9a27f09d1e8dcd",
-    "sourceCommitShort": "112ecf7",
-    "sourceCommitDate": "2026-11-01 04:55:09 -0500",
+    "sourceCommitSha": "9f6c85728d308a8e1669f3b64b56e235dc2193fa",
+    "sourceCommitShort": "9f6c857",
+    "sourceCommitDate": "2026-11-14 04:27:00 +0000",
     "workingTreeState": "dirty",
     "snapshotBasis": "working-tree-on-top-of-source-commit",
-    "uncommittedChangeCount": 450,
-    "auditedInputsSha256": "b07b01e84bc2c9a2ca26dcdf97d189fdddc2598f71ebd70b93994d92fe7361e5",
+    "uncommittedChangeCount": 171,
+    "auditedInputsSha256": "ee79cfad4407edccf09274cc3797aa08ac902a3866f049beaddcb323031d098b",
     "selfReferentialCommitRule": "A Git commit cannot contain its own final commit SHA inside tracked files. sourceCommitSha records the verified HEAD commit present when the generator ran, workingTreeState and snapshotBasis record whether uncommitted working-tree changes were present on top of sourceCommitSha, and auditedInputsSha256 digests the exact audited file contents."
   },
   "historicalBaseline": {
-    "auditPhase": "phase-0",
+    "auditLabel": "initial-baseline",
     "commitSha": "3ea3c35c6b8a6e5e915bab9f63333d4a1c09bd4d",
     "measuredScore": 54.5,
     "maxPossibleScore": 100,
-    "scorecardPath": "docs/audits/phase-0/baseline-scorecard.json",
-    "note": "Historical Phase 0 Baseline — Not Current. Preserved immutably for audit provenance."
+    "skillSummary": {
+      "skillsMissingExtendedTemplateSections": 8,
+      "skillsWithArtifactNotRunContradiction": 30
+    },
+    "note": "Historical initial baseline metrics retained for comparison only; not current release state."
   },
   "methodology": {
-    "scoringPrinciple": "Every point increase from the 54.5/100 Phase 0 baseline is backed by committed code, schemas, and automated CI tests in Phases 1, 2, 2.1, 3, 3.1, 3.1.1, 4, 5, 6, 6.1, 7, and 8. Unimplemented or unrun capabilities (unrun live LLM/Blender runtime evaluations and 24 linked-only host targets) receive 0 inflation.",
-    "zeroCompensationGate": "All three Phase 0 P0 zero-compensation blockers (F-01 truth-state contradiction, F-02 non-portable ZIP exporter/CI gap, and F-04 zero automated evaluation runner) have been resolved with deterministic CI runners.",
+    "scoringPrinciple": "Every point increase from the 54.5/100 initial baseline is backed by committed code, schemas, and automated CI tests. Unimplemented or unrun capabilities (unrun live LLM/Blender runtime evaluations and 24 linked-only host targets) receive 0 inflation.",
+    "zeroCompensationGate": "All three initial P0 zero-compensation blockers (F-01 truth-state contradiction, F-02 non-portable ZIP exporter/CI gap, and F-04 zero automated evaluation runner) have been resolved with deterministic CI runners.",
     "activeZeroCompensationBlockers": [],
     "resolvedZeroCompensationBlockers": [
-      "RESOLVED (Phase 1, F-01): 0/48 SKILL.md files assign Not Run to Artifact status (was 30/48 at 3ea3c35). Guarded by scripts/check-docs.mjs and schemas.",
-      "RESOLVED (Phase 1, 2.1 & 6.1, F-02): scripts/export-claude-skills.mjs uses pure-Node fflate across all 48 skills (SKILL.md + EVAL.md + references/*) with isolated --output-root concurrency safety and .github/workflows/docs.yml runs npm run ci.",
-      "RESOLVED (Phase 2, 2.1 & 5, F-03): 48/48 catalog skills ship validated contract.json files, compiled registry/skills.json + registry/workflow-graph.json (371 edges, 0 progression cycles), and synchronized relative-path Markdown handoff blocks.",
-      "RESOLVED (Phase 3, 3.1 & 6, F-04): scripts/run-evals.mjs validates and executes 269 deterministic, contract-routing, and contract-handoff evaluation cases across all 48/48 catalog skills in CI (0 unmigrated prose skills); live_model and blender_runtime modes remain honestly marked Not Run."
+      "RESOLVED (F-01): 0/48 SKILL.md files assign Not Run to Artifact status (was 30/48 at 3ea3c35). Guarded by scripts/check-docs.mjs and schemas.",
+      "RESOLVED (F-02): scripts/export-claude-skills.mjs uses pure-Node fflate across all 48 skills (SKILL.md + EVAL.md + references/*) with isolated --output-root concurrency safety and .github/workflows/docs.yml runs npm run ci.",
+      "RESOLVED (F-03): 48/48 catalog skills ship validated contract.json files, compiled registry/skills.json + registry/workflow-graph.json (371 edges, 0 progression cycles), and synchronized relative-path Markdown handoff blocks.",
+      "RESOLVED (F-04): scripts/run-evals.mjs validates and executes 269 deterministic, contract-routing, and contract-handoff evaluation cases across all 48/48 catalog skills in CI (0 unmigrated prose skills); live_model and blender_runtime modes remain honestly marked Not Run."
     ]
   },
   "totals": {
@@ -58,8 +61,8 @@
         "registry/contract-context-fields.json",
         "registry/skills.json",
         "scripts/check-docs.mjs",
-        "scripts/test-phase4.mjs",
-        "scripts/test-phase5.mjs"
+        "scripts/test-skill-templates.mjs",
+        "scripts/test-catalog-contracts.mjs"
       ],
       "criteria": [
         {
@@ -76,7 +79,7 @@
           "maxPoints": 4,
           "awardedPoints": 4,
           "status": "Pass",
-          "evidence": "F-01 FIXED & F-05 FIXED: 48/48 skills strictly separate Runtime status (Not Run) from Artifact status (Not Produced) and include all 9 core + 9 extended template sections enforced by scripts/check-docs.mjs and scripts/test-phase4.mjs."
+          "evidence": "F-01 FIXED & F-05 FIXED: 48/48 skills strictly separate Runtime status (Not Run) from Artifact status (Not Produced) and include all 9 core + 9 extended template sections enforced by scripts/check-docs.mjs and scripts/test-skill-templates.mjs."
         },
         {
           "id": "p1-c3",
@@ -107,8 +110,8 @@
         "registry/workflow-graph.json",
         "registry/contract-context-fields.json",
         "scripts/build-registry.mjs",
-        "scripts/test-phase2.mjs",
-        "scripts/test-phase5.mjs"
+        "scripts/test-routing-contracts.mjs",
+        "scripts/test-catalog-contracts.mjs"
       ],
       "criteria": [
         {
@@ -155,8 +158,8 @@
       "evidenceFiles": [
         "schemas/skill-eval.schema.json",
         "scripts/run-evals.mjs",
-        "scripts/test-phase3.mjs",
-        "scripts/test-phase6.mjs",
+        "scripts/test-behavioral-evals.mjs",
+        "scripts/test-eval-coverage.mjs",
         "evals/index.json",
         "evals/suites/",
         "docs/audits/current/eval-inventory.json"
@@ -168,7 +171,7 @@
           "maxPoints": 4,
           "awardedPoints": 4,
           "status": "Pass",
-          "evidence": "48/48 skills ship EVAL.md verified by check-docs.mjs and exported byte-for-byte into dist/claude-skills-zip/*.zip and dist/claude-code-skills/*/."
+          "evidence": "48/48 skills ship EVAL.md verified by check-docs.mjs and exported byte-for-byte into dist/claude-skills/desktop-zips/*.zip and dist/claude-skills/claude-code-skills/*/."
         },
         {
           "id": "p3-c2",
@@ -204,7 +207,7 @@
         "docs/examples/glb-web-handoff/README.md",
         "docs/examples/glb-web-handoff/threejs-glb-viewer.mjs",
         "docs/examples/glb-web-handoff/r3f-glb-viewer.tsx",
-        "scripts/test-phase12.mjs",
+        "scripts/test-glb-handoff.mjs",
         "docs/audits/current/skill-inventory.json"
       ],
       "criteria": [
@@ -331,16 +334,16 @@
         "docs/install/installer-spec.md",
         "docs/distribution-strategy.md",
         "docs/evals/adapter-install-v0-dry-run.md",
-        "docs/evals/adapter-empirical-verification-phase-7.md",
+        "docs/evals/adapter-empirical-verification.md",
         "schemas/adapter-compatibility-matrix.schema.json",
         "registry/compatibility-matrix.json",
         "scripts/validate-compatibility-matrix.mjs",
         "bin/blendops.mjs",
         "scripts/install-skills.mjs",
         "scripts/check-docs.mjs",
-        "scripts/test-phase7.mjs",
-        "scripts/test-phase10.mjs",
-        "scripts/test-phase11.mjs"
+        "scripts/test-adapter-matrix.mjs",
+        "scripts/test-project-installer.mjs",
+        "scripts/test-cli-package.mjs"
       ],
       "criteria": [
         {
@@ -357,7 +360,7 @@
           "maxPoints": 2,
           "awardedPoints": 1.5,
           "status": "Pass",
-          "evidence": "F-08 PARTIALLY_FIXED: docs/adapter-registry.md, docs/install/*.md, docs/adapters/*.md, and registry/compatibility-matrix.json are 100% synchronized across all 26 install targets, backed by the safe project-local installer and packaged CLI (bin/blendops.mjs + scripts/install-skills.mjs + scripts/test-phase10.mjs + scripts/test-phase11.mjs), documented in docs/evals/adapter-empirical-verification-phase-7.md, and guarded against unverified promotion by scripts/validate-compatibility-matrix.mjs and scripts/test-phase7.mjs (2 verified-read targets, 24 linked-only targets pending live host execution)."
+          "evidence": "F-08 PARTIALLY_FIXED: docs/adapter-registry.md, docs/install/*.md, docs/adapters/*.md, and registry/compatibility-matrix.json are 100% synchronized across all 26 install targets, backed by the safe project-local installer and packaged CLI (bin/blendops.mjs + scripts/install-skills.mjs + scripts/test-project-installer.mjs + scripts/test-cli-package.mjs), documented in docs/evals/adapter-empirical-verification.md, and guarded against unverified promotion by scripts/validate-compatibility-matrix.mjs and scripts/test-adapter-matrix.mjs (2 verified-read targets, 24 linked-only targets pending live host execution)."
         }
       ]
     },
@@ -377,7 +380,7 @@
         "bundles/skill-package/README.md",
         "scripts/generate-bundle-reference-summaries.mjs",
         "scripts/check-docs.mjs",
-        "scripts/test-phase8.mjs"
+        "scripts/test-bundle-summaries.mjs"
       ],
       "criteria": [
         {
@@ -386,7 +389,7 @@
           "maxPoints": 5,
           "awardedPoints": 5,
           "status": "Pass",
-          "evidence": "F-09 FIXED: 353 active markdown files pass relative link and policy checks in scripts/check-docs.mjs, and all 96 bundle reference summaries across bundles/claude-desktop-manual/references/skills/*.md and bundles/skill-package/blendops/references/skill-*.md are deterministically generated and verified via scripts/generate-bundle-reference-summaries.mjs and scripts/test-phase8.mjs."
+          "evidence": "F-09 FIXED: Active markdown files pass relative link and policy checks in scripts/check-docs.mjs, and all 96 bundle reference summaries across bundles/claude-desktop-manual/references/skills/*.md and bundles/skill-package/blendops/references/skill-*.md are deterministically generated and verified via scripts/generate-bundle-reference-summaries.mjs and scripts/test-bundle-summaries.mjs."
         }
       ]
     },
@@ -410,7 +413,7 @@
         "scripts/build-registry.mjs",
         "scripts/run-evals.mjs",
         "scripts/generate-bundle-reference-summaries.mjs",
-        "scripts/test-phase13.mjs"
+        "scripts/test-repository-architecture.mjs"
       ],
       "criteria": [
         {
@@ -427,7 +430,7 @@
           "maxPoints": 2,
           "awardedPoints": 2,
           "status": "Pass",
-          "evidence": "F-02 FIXED: scripts/export-claude-skills.mjs uses pure-Node fflate (0 external binary calls) with isolated --output-root concurrency safety, scripts/validate-repository-architecture.mjs validates full tracked-file classification and internal references, and .github/workflows/docs.yml executes npm run ci (docs:check + arch:check + registry:check + evals:check + evals:run + bundles:summaries:check + skills:export + test)."
+          "evidence": "F-02 FIXED: scripts/export-claude-skills.mjs uses pure-Node fflate (0 external binary calls) with isolated --output-root concurrency safety, scripts/validate-repository-architecture.mjs validates full tracked-file classification and internal references, and .github/workflows/docs.yml executes npm run ci."
         }
       ]
     }

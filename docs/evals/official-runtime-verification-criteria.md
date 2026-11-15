@@ -1,6 +1,6 @@
-# Official Runtime Verification Criteria, Draft v0
+# Official Runtime Verification Criteria
 
-Status: Draft v0 criteria only, not executed  
+Status: Prepared criteria only, not executed  
 Date: 2026-04-29 (original); legacy 3-stack labels mapped to 2-path + CLI appendix model 2026-05-08
 
 > [!CAUTION]
@@ -37,7 +37,7 @@ Path 1 + Path 2 are user-reported verified by repo owner (Path 1: 2026-04-29 rea
 
 BlendOps recognizes these runtime stacks for public guidance:
 
-| Runtime stack | Status in Draft v0 | Source stance |
+| Runtime stack | Current evidence status | Source stance |
 |---|---|---|
 | Stack 1 — Claude Desktop official connector stack | Only official connector stack currently verified for read-only smoke access | Use upstream Claude tutorial plus official Blender MCP project/page for the required Blender-side bridge/add-on. |
 | Stack 2 — Official Blender CLI fallback | Official deterministic fallback; full CLI eval `Not Run` | Use upstream Blender manual CLI documentation. |
@@ -195,11 +195,10 @@ Use this template in future runtime eval records.
 - This criteria document does not claim official runtime success.
 - This criteria document does not claim generated preview/render/GLB artifacts exist.
 - This criteria document does not introduce non-official runtime install strategies as official setup.
-- This criteria document does not mark Phase 3 complete.
 
 ---
 
-## Current Draft v0 decision
+## Current runtime evidence boundary
 
 > [!WARNING]
 > Current status remains criteria prepared only. Runtime evals must stay `Not Run` or `Not Produced` until an allowed runtime stack is actually executed and the required evidence is recorded.

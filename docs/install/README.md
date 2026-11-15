@@ -1,6 +1,6 @@
 # Install target: README
 
-Status: Draft v0 target install docs
+Status: 1.0.0 target install docs
 
 Start with the concise prompt in [`README.md`](../../README.md#-use-in-30-seconds). It points any AI/agent to the full [`AI Agent Quickstart`](../ai-agent-quickstart.md), which auto-selects one safe mode:
 

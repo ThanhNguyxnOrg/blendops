@@ -2,8 +2,8 @@
 
 The single index for everything in this repo. Bookmark this page.
 
-> [!WARNING]
-> BlendOps is **Draft v0**. It is a documentation + skill-pack project, not a production-ready tool. No marketplace listing. No published npm registry package (`bin/blendops.mjs` is packaged for local/tarball use with `"private": true`). Runtime evidence is partial (Path 1 read-only smoke only).
+> [!NOTE]
+> BlendOps is **v1.0.0 (Production)**. It is a portable AI-agent workflow, knowledge, and verification system for Blender. No marketplace listing. No published npm registry package (`bin/blendops.mjs` is packaged for local/tarball use with `"private": true`). In-repo live Blender runtime evidence remains partial (Path 1 read-only smoke only; mutation/render/export `Not Run` / `Not Produced`).
 
 ---
 
@@ -11,17 +11,17 @@ The single index for everything in this repo. Bookmark this page.
 
 | Area | Status | Meaning |
 |---|---|---|
-| Product direction | Draft v0 | Workflow specs are documented; no stable release claim. |
-| Skill / law / pack collection | Draft Pass | **48** portable skills (16 baseline + 32 expansion across Batches 1–8), 4 laws, 1 pack (`product-hero-v0`). Canonical index: [`../skills/README.md`](../skills/README.md). |
+| Product release | v1.0.0 (Production) | Canonical workflow specs, knowledge/recipe catalogs, CLI, and CI verification suites are released. |
+| Skill / law / pack collection | v1.0.0 | **48** portable skills, 4 laws, 1 pack (`product-hero-v0`). Canonical index: [`../skills/README.md`](../skills/README.md). |
 | Runtime path model | Active (2-path + CLI appendix) | Path 1 (Lab MCP, hosted from Anthropic Connector or manual MCP); Path 2 (community `mcp-for-blender`); CLI fallback (documented upstream as first-class Blender CLI; no in-repo evidence file yet). |
 | Path 1 read-only smoke | Pass / Available | 2026-04-29 record (likely Anthropic Connector host). |
 | Path 2 user-reported verified | Yes (2026-05-08) | No formal eval file yet. |
 | CLI fallback | Not Run | **Documented upstream** as a first-class Blender CLI surface; no in-repo evidence file yet. |
 | Full runtime manual eval (any path) | Not Run | Mutation/render/export not attempted. |
 | Runtime artifacts | Not Produced | No fresh preview/render/GLB. |
-| Release tag (`v0.10.0-draft`) | 🟡 Tag-able now | Skills layer (48 skills + 151 hardened references) + CLI (`35+` targets) are complete; tagging is a publishing decision, not gated on upstream runtime evidence. |
+| Release tag (`v1.0.0`) | Ready | Skills layer (48 skills + 151 hardened references), catalogs, CLI (`35+` targets), and full verification suite are complete. |
 | Local CLI / tarball package | Implemented locally (`Not Published`) | `bin/blendops.mjs` + `scripts/install-skills.mjs` verified via `npm pack`; no public npm registry or marketplace listing claimed. |
-| Knowledge & Recipe Catalog (Phases 14–19) | Implemented & Verified (`90/90` bilingual retrieval evals) | **30** `knowledge.*` records across **11** 3D domains, **10** `recipe.*` blueprints, **20** `source.*` citations, deterministic `catalog-search` / `catalog-resolve` / `plan-compile` CLI, and 48-skill / 151-reference architecture audit in [`knowledge-and-recipe-catalog.md`](./knowledge-and-recipe-catalog.md) and [`audits/skill-architecture-audit.md`](./audits/skill-architecture-audit.md). |
+| Knowledge & Recipe Catalog | Implemented & Verified (`90/90` bilingual retrieval evals) | **30** `knowledge.*` records across **11** 3D domains, **10** `recipe.*` blueprints, **20** `source.*` citations, deterministic `catalog-search` / `catalog-resolve` / `plan-compile` CLI, and 48-skill / 151-reference architecture audit in [`knowledge-and-recipe-catalog.md`](./knowledge-and-recipe-catalog.md) and [`audits/skill-architecture-audit.md`](./audits/skill-architecture-audit.md). |
 | GLB Web Handoff & Viewer Integration | Implemented (`Not Run` / `Not Produced` for live Blender exports) | `schemas/glb-web-handoff-manifest.schema.json`, `scripts/inspect-glb.mjs`, `scripts/generate-glb-handoff-report.mjs`, CLI `glb-inspect` / `glb-handoff` / `glb-validate-manifest`, and Three.js + R3F examples in [`examples/glb-web-handoff/README.md`](./examples/glb-web-handoff/README.md). |
 | Repository architecture & file inventory | Verified (`npm run arch:check`) | Canonical source, generated artifact, historical record, documentation, runtime/test, distribution, and config classification in [`architecture.md`](./architecture.md) and [`audits/current/repository-inventory.json`](./audits/current/repository-inventory.json). |
 
@@ -51,8 +51,8 @@ The single index for everything in this repo. Bookmark this page.
 | Search 3D domain knowledge & canonical recipes | [`knowledge-and-recipe-catalog.md`](./knowledge-and-recipe-catalog.md) | [`../registry/knowledge-catalog.json`](../registry/knowledge-catalog.json), [`../registry/recipe-catalog.json`](../registry/recipe-catalog.json), [`audits/skill-architecture-audit.md`](./audits/skill-architecture-audit.md) |
 | Install BlendOps into a tool | [`ai-agent-quickstart.md`](./ai-agent-quickstart.md) | [`ai-agent-install-flow.md`](./ai-agent-install-flow.md), [`install-scopes.md`](./install-scopes.md), [`multi-agent-install-strategy.md`](./multi-agent-install-strategy.md), [`adapters/README.md`](./adapters/README.md), [`install/README.md`](./install/README.md) |
 | Inspect a GLB & integrate into Three.js / React Three Fiber | [`examples/glb-web-handoff/README.md`](./examples/glb-web-handoff/README.md) | [`../skills/glb-web-handoff/SKILL.md`](../skills/glb-web-handoff/SKILL.md), [`../schemas/glb-web-handoff-manifest.schema.json`](../schemas/glb-web-handoff-manifest.schema.json) |
-| Check eval evidence & repository audit | [`evals/README.md`](./evals/README.md) | [`audits/current/README.md`](./audits/current/README.md), [`audits/current/repository-inventory.json`](./audits/current/repository-inventory.json), [`release-readiness.md`](./release-readiness.md), [`release-readiness-rollup-v0.md`](./release-readiness-rollup-v0.md) |
-| Review v0 pack content | [`../packs/README.md`](../packs/README.md) | [`../skills/README.md`](../skills/README.md), [`workflows/README.md`](./workflows/README.md), [`recipes/README.md`](./recipes/README.md) |
+| Check eval evidence & repository audit | [`evals/README.md`](./evals/README.md) | [`audits/current/README.md`](./audits/current/README.md), [`audits/current/repository-inventory.json`](./audits/current/repository-inventory.json), [`release-readiness.md`](./release-readiness.md) |
+| Review pack content | [`../packs/README.md`](../packs/README.md) | [`../skills/README.md`](../skills/README.md), [`workflows/README.md`](./workflows/README.md), [`recipes/README.md`](./recipes/README.md) |
 
 ---
 
@@ -237,7 +237,7 @@ Legacy quick links below cover only the **baseline 16**; the [`skills/README.md`
 
 | Area | Doc | Status |
 |---|---|---|
-| Evals index | [`evals/README.md`](./evals/README.md) | Draft v0 index |
+| Evals index | [`evals/README.md`](./evals/README.md) | Active eval index |
 | Path 1 read-only smoke test (likely Anthropic Connector host) | [`evals/blender-connector-read-only-smoke-test.md`](./evals/blender-connector-read-only-smoke-test.md) | Pass / Available |
 | Cyberpunk shoe v0 text-only eval | [`evals/cyberpunk-shoe-hero-v0-text-eval.md`](./evals/cyberpunk-shoe-hero-v0-text-eval.md) | Executed / Text-only |
 | Cyberpunk shoe v0 manual eval protocol | [`evals/cyberpunk-shoe-hero-v0-manual-eval.md`](./evals/cyberpunk-shoe-hero-v0-manual-eval.md) | Protocol / Not yet executed |
@@ -248,8 +248,7 @@ Legacy quick links below cover only the **baseline 16**; the [`skills/README.md`
 | Official runtime verification criteria | [`evals/official-runtime-verification-criteria.md`](./evals/official-runtime-verification-criteria.md) | Prepared |
 | Runtime availability checklist | [`evals/runtime-availability-checklist.md`](./evals/runtime-availability-checklist.md) | Prepared |
 | Official runtime manual eval packet | [`evals/official-runtime-manual-eval-packet.md`](./evals/official-runtime-manual-eval-packet.md) | Prepared |
-| Release readiness status | [`release-readiness.md`](./release-readiness.md) | Draft v0; do not tag yet |
-| Release readiness rollup v0 | [`release-readiness-rollup-v0.md`](./release-readiness-rollup-v0.md) | Phase 3.3 pre-runtime rollup |
+| Release readiness status | [`release-readiness.md`](./release-readiness.md) | v1.0.0 (Production) |
 
 ---
 
@@ -272,5 +271,5 @@ Legacy quick links below cover only the **baseline 16**; the [`skills/README.md`
 - BlendOps does not install Blender, configure the Anthropic Blender Connector, configure the Blender Lab MCP add-on, configure the community `mcp-for-blender` stack, or run Blender.
 - Read-only smoke evidence is not mutation/render/export evidence.
 - CLI fallback is **documented upstream** as a first-class Blender CLI surface; no in-repo evidence file yet.
-- No marketplace / npm / `npx` listing. No tag.
+- No marketplace / public npm / `npx` listing (`"private": true`).
 - See [`release-readiness.md`](./release-readiness.md) for the full readiness state.

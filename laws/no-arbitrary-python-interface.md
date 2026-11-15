@@ -1,6 +1,6 @@
 # Law: no-arbitrary-python-interface
 
-Status: Draft v0
+Status: 1.0.0
 
 ## Purpose
 Prevent arbitrary-code style final interfaces in user-facing BlendOps outputs.

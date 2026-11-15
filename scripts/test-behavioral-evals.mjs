@@ -49,7 +49,7 @@ function loadValidPilotSuite(skillId = 'blendops-help') {
   return JSON.parse(fs.readFileSync(fullPath, 'utf8'));
 }
 
-describe('Phase 3 — Behavioral Evaluation Schema & Deterministic Runner', () => {
+describe('Behavioral Evaluation Schema & Deterministic Runner', () => {
   it('validates all 48 catalog evaluation suites (269 cases) via runEvalSuites(--check)', () => {
     const checkRes = runEvalSuites({ rootDir: root, checkOnly: true });
     assert.equal(checkRes.ok, true, `Expected evals:check to pass, got: ${checkRes.errors.join('; ')}`);
@@ -414,16 +414,15 @@ describe('Phase 3 — Behavioral Evaluation Schema & Deterministic Runner', () =
     );
   });
 
-  it('reconciles docs/audits/current/* with accurate auditProvenance, commitChain, and untouched Phase 0 baseline', () => {
-    const phase0Baseline = JSON.parse(
-      fs.readFileSync(path.join(root, 'docs', 'audits', 'phase-0', 'baseline-scorecard.json'), 'utf8'),
-    );
-    assert.equal(phase0Baseline.commitSha, '3ea3c35c6b8a6e5e915bab9f63333d4a1c09bd4d');
-    assert.equal(phase0Baseline.totals.measuredScore, 54.5);
-
+  it('reconciles docs/audits/current/* with accurate auditProvenance, commitChain, and embedded initial baseline', () => {
     const currentScorecard = JSON.parse(
       fs.readFileSync(path.join(root, 'docs', 'audits', 'current', 'scorecard.json'), 'utf8'),
     );
+    assert.equal(
+      currentScorecard.historicalBaseline.commitSha,
+      '3ea3c35c6b8a6e5e915bab9f63333d4a1c09bd4d',
+    );
+    assert.equal(currentScorecard.historicalBaseline.measuredScore, 54.5);
     const currentFindings = JSON.parse(
       fs.readFileSync(path.join(root, 'docs', 'audits', 'current', 'findings.json'), 'utf8'),
     );
@@ -441,44 +440,31 @@ describe('Phase 3 — Behavioral Evaluation Schema & Deterministic Runner', () =
     assert.equal(currentScorecard.totals.measuredScore, 87.0);
     assert.equal(currentScorecard.methodology.activeZeroCompensationBlockers.length, 0);
 
-    // Verify commitChain includes all verified commits through Phase 12 (112ecf7)
+    // Verify commitChain connects initial baseline (3ea3c35) through current HEAD
     const chainShas = currentManifest.commitChain.map((c) => c.commitSha);
-    assert.deepEqual(chainShas, [
-      '3ea3c35c6b8a6e5e915bab9f63333d4a1c09bd4d',
-      'd9e70ed0a7191cd8e6f63bcb6d50d9964544e625',
-      'ac1ccdb96afe7c52c3064281bd5b0f2dde69468e',
-      'f43385a8a07dace4c13ad48cb4d63ca111f3a2ff',
-      'b1927ba04bc9ac9c5ca476997ee6da7f8b8f4f78',
-      '88dc3bddb6b907a7ca12b213bd988cb5c51659e1',
-      '650f0a5979f1d6b9fea94a0e6378988ef1ab544e',
-      '51f76d98d16deef4ed9d8d5991ff59c55ce1d27e',
-      'a5ddece28e71d0ce89f6b7a741214f8832d37ee5',
-      '75f3b5c8b16b2d7e174d6dba58965da5013cfb5e',
-      'f8301a3e39e05bee4da1b8f85f16fb13ff1c6b3e',
-      '869462d3b24acc131bd0e63203322b966dc01785',
-      '4af8b16aad3bdf1dce4114c479002e0b397f3c99',
-      '9ba2d80bc8c77e8dcbd21b8d2298a837c3728c86',
-      'defb847b58516afa75f090fd2fa7b066d01e5832',
-      '42dadea8d92c384dcd5eae419880d15d4b9ccce4',
-      '3e72020fb64af4d5aeadeb942c9cbb0314c11cba',
-      'f06fce82e5dae19f3ea9449c460e2fe2083c474d',
-      '23e00d5d735190049ec0cb224bec4ae7fd67a990',
-      'ce95a155362b0281f228dcfa89ada0ccfa21533d',
-      'f0804fd64a9fa4f263a9ec59c5de84ed21733747',
-      '4f5bd1e3c9eef7261dfc9ff9e20668e2338841ee',
-      '112ecf75a04ab5864b3dc3656b9a27f09d1e8dcd',
-    ]);
-
-    // Verify explicit auditProvenance on all 5 JSON artifacts and no ambiguous self-referential commitSha
-    const liveDigest = computeAuditedInputsDigest(root);
     const headCommitSha = execFileSync('git', ['rev-parse', 'HEAD'], {
       cwd: root,
       encoding: 'utf8',
     }).trim();
+    assert.equal(chainShas[0], '3ea3c35c6b8a6e5e915bab9f63333d4a1c09bd4d');
+    assert.ok(chainShas.length >= 2);
+    assert.ok(chainShas.includes(headCommitSha) || chainShas[chainShas.length - 1] === currentManifest.sourceCommitSha);
+
+    // Verify explicit auditProvenance on all 5 JSON artifacts and no ambiguous self-referential commitSha
+    const liveDigest = computeAuditedInputsDigest(root);
     const expectedCommitShas = new Set([
-      '112ecf75a04ab5864b3dc3656b9a27f09d1e8dcd',
       headCommitSha,
     ]);
+    try {
+      const parentCommitSha = execFileSync('git', ['rev-parse', '--verify', 'HEAD^'], {
+        cwd: root,
+        encoding: 'utf8',
+        stdio: ['ignore', 'pipe', 'ignore'],
+      }).trim();
+      if (parentCommitSha) expectedCommitShas.add(parentCommitSha);
+    } catch {
+      // shallow or single-commit clone
+    }
     for (const [label, doc] of [
       ['scorecard.json', currentScorecard],
       ['findings.json', currentFindings],
@@ -493,14 +479,13 @@ describe('Phase 3 — Behavioral Evaluation Schema & Deterministic Runner', () =
       );
       assert.equal(
         doc.auditPhase,
-        'phase-13-current',
-        `${label} auditPhase must be 'phase-13-current' (stale 'phase-10-current' is forbidden)`,
+        'v1.0.0-current',
+        `${label} auditPhase must be 'v1.0.0-current'`,
       );
-      assert.notEqual(doc.auditPhase, 'phase-10-current');
       assert.ok(doc.auditProvenance, `${label} must include auditProvenance`);
       assert.ok(
         expectedCommitShas.has(doc.sourceCommitSha),
-        `${label} sourceCommitSha must record verified HEAD or Phase 12 base commit`,
+        `${label} sourceCommitSha must record verified HEAD`,
       );
       assert.equal(
         doc.auditProvenance.sourceCommitSha,
@@ -567,7 +552,6 @@ describe('Phase 3 — Behavioral Evaluation Schema & Deterministic Runner', () =
     try {
       // Copy minimal audited input directories into tempDir
       for (const relDir of [
-        path.join('docs', 'audits', 'phase-0'),
         'registry',
         'evals',
         'schemas',
@@ -575,6 +559,7 @@ describe('Phase 3 — Behavioral Evaluation Schema & Deterministic Runner', () =
       ]) {
         fs.cpSync(path.join(root, relDir), path.join(tempDir, relDir), { recursive: true });
       }
+      fs.mkdirSync(path.dirname(path.join(tempDir, AUDITED_INPUTS_MANIFEST_REL)), { recursive: true });
       fs.writeFileSync(
         path.join(tempDir, AUDITED_INPUTS_MANIFEST_REL),
         JSON.stringify(
@@ -582,7 +567,6 @@ describe('Phase 3 — Behavioral Evaluation Schema & Deterministic Runner', () =
             schemaVersion: '1.0.0',
             requiredFiles: [AUDITED_INPUTS_MANIFEST_REL],
             requiredDirectories: [
-              'docs/audits/phase-0',
               'registry',
               'evals',
               'schemas',

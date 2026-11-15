@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/ThanhNguyxnOrg/blendops/schemas/runtime-qualification-report.schema.json",
   "title": "BlendOps Upstream MCP Runtime Qualification & Smoke Report Schema",
-  "description": "Machine-readable schema for BlendOps Phase 3.2 upstream Blender MCP runtime qualification, tool inventory classification, operation-to-tool mapping verification, and controlled offline/live smoke execution.",
+  "description": "Machine-readable schema for BlendOps upstream Blender MCP runtime qualification, tool inventory classification, operation-to-tool mapping verification, and controlled offline/live smoke execution.",
   "type": "object",
   "additionalProperties": false,
   "required": [

@@ -143,12 +143,12 @@ export function execNpmTool(toolName, args, options = {}) {
   });
 }
 
-const IS_DIRECT_PHASE11_TEST = process.argv
+const IS_DIRECT_CLI_PACKAGE_TEST = process.argv
   .slice(1)
   .some((arg) => !arg.startsWith('-') && path.resolve(arg) === __filename);
 
-if (IS_DIRECT_PHASE11_TEST) {
-describe('Phase 11 — Distributable CLI & Package Readiness', () => {
+if (IS_DIRECT_CLI_PACKAGE_TEST) {
+describe('Distributable CLI & Package Readiness', () => {
   let suiteTmpDir;
   let packDir;
   let consumerDir;
@@ -161,7 +161,7 @@ describe('Phase 11 — Distributable CLI & Package Readiness', () => {
 
   before(() => {
     ensureMainRepoGitRestored(ROOT);
-    suiteTmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-test-phase11-'));
+    suiteTmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-test-cli-package-'));
     packDir = path.join(suiteTmpDir, 'pack');
     consumerDir = path.join(suiteTmpDir, 'consumer');
     unrelatedCwd = path.join(suiteTmpDir, 'unrelated-cwd');
@@ -172,7 +172,7 @@ describe('Phase 11 — Distributable CLI & Package Readiness', () => {
 
     fs.writeFileSync(
       path.join(consumerDir, 'package.json'),
-      `${JSON.stringify({ name: 'phase11-consumer-fixture', version: '1.0.0', private: true }, null, 2)}\n`,
+      `${JSON.stringify({ name: 'blendops-consumer-fixture', version: '1.0.0', private: true }, null, 2)}\n`,
       'utf8',
     );
 
@@ -1003,8 +1003,8 @@ describe('Phase 11 — Distributable CLI & Package Readiness', () => {
     }
   });
 
-  test('Scenario J: Cross-platform CI workflow, Phase 11 audit identity (phase-11-current), and publishing/E404 boundaries remain enforced', () => {
-    // 1. Verify .github/workflows/ci.yml delegates full CI to the shared Node workflow and docs.yml retains cross-platform Phase 11 CLI tests
+  test('Scenario J: Cross-platform CI workflow, v1.0.0-current audit identity, and publishing/E404 boundaries remain enforced', () => {
+    // 1. Verify .github/workflows/ci.yml delegates full CI to the shared Node workflow and docs.yml retains cross-platform CLI package tests
     const workflowYaml = fs.readFileSync(path.join(ROOT, '.github', 'workflows', 'docs.yml'), 'utf8');
     assert.match(workflowYaml, /runs-on:\s*ubuntu-latest/);
     const ciWorkflowYaml = fs.readFileSync(path.join(ROOT, '.github', 'workflows', 'ci.yml'), 'utf8');
@@ -1021,7 +1021,7 @@ describe('Phase 11 — Distributable CLI & Package Readiness', () => {
     assert.match(workflowYaml, /-\s*ubuntu-latest/);
     assert.match(workflowYaml, /-\s*windows-latest/);
     assert.match(workflowYaml, /-\s*macos-latest/);
-    assert.match(workflowYaml, /run:\s*node --test scripts\/test-phase11\.mjs/);
+    assert.match(workflowYaml, /run:\s*node --test scripts\/test-cli-package\.mjs/);
 
     // 2. Verify package.json preserves private: true and Node >=20.0.0 (or >=18)
     const pkgJson = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8'));
@@ -1039,12 +1039,26 @@ describe('Phase 11 — Distributable CLI & Package Readiness', () => {
     assert.match(distDoc, /"private":\s*true/);
     assert.match(distDoc, /Not Published/);
 
-    // 4. Verify all generated docs/audits/current/* files use phase-11-current and never stale phase-10-current
+    // 4. Verify all generated docs/audits/current/* files use v1.0.0-current and never legacy draft phase-*-current IDs
     const currentAuditDir = path.join(ROOT, 'docs', 'audits', 'current');
     const headCommitSha = execFileSync('git', ['rev-parse', 'HEAD'], {
       cwd: ROOT,
       encoding: 'utf8',
     }).trim();
+    const validCommitShas = new Set([
+      '122af1abe4fb72574e6746c58788fbf9064c01c2',
+      headCommitSha,
+    ]);
+    try {
+      const parentSha = execFileSync('git', ['rev-parse', '--verify', 'HEAD^'], {
+        cwd: ROOT,
+        encoding: 'utf8',
+        stdio: ['ignore', 'pipe', 'ignore'],
+      }).trim();
+      if (parentSha) validCommitShas.add(parentSha);
+    } catch {
+      // shallow or single-commit clone
+    }
     for (const jsonName of [
       'scorecard.json',
       'findings.json',
@@ -1055,21 +1069,17 @@ describe('Phase 11 — Distributable CLI & Package Readiness', () => {
       const fullPath = path.join(currentAuditDir, jsonName);
       const raw = fs.readFileSync(fullPath, 'utf8');
       const parsed = JSON.parse(raw);
-      assert.ok(
-        parsed.auditPhase === 'phase-11-current' ||
-          parsed.auditPhase === 'phase-12-current' ||
-          parsed.auditPhase === 'phase-13-current',
-        `${jsonName} must have auditPhase === 'phase-11-current', 'phase-12-current', or 'phase-13-current'`,
+      assert.equal(
+        parsed.auditPhase,
+        'v1.0.0-current',
+        `${jsonName} must have auditPhase === 'v1.0.0-current'`,
       );
       assert.ok(
         !raw.includes('phase-10-current'),
         `${jsonName} must not contain stale 'phase-10-current' identifier`,
       );
       assert.ok(
-        parsed.sourceCommitSha === 'f0804fd64a9fa4f263a9ec59c5de84ed21733747' ||
-          parsed.sourceCommitSha === 'fdae0e77187c970893bc5414166aed448677f951' ||
-          parsed.sourceCommitSha === '112ecf75a04ab5864b3dc3656b9a27f09d1e8dcd' ||
-          parsed.sourceCommitSha === headCommitSha,
+        validCommitShas.has(parsed.sourceCommitSha),
         `${jsonName} must preserve verified sourceCommitSha`,
       );
     }

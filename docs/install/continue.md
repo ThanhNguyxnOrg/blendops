@@ -1,6 +1,6 @@
 # Install target: Continue.dev
 
-Status/confidence: Draft v0, linked-only
+Status/confidence: 1.0.0, linked-only
 
 ## Recommended near-term install mode
 

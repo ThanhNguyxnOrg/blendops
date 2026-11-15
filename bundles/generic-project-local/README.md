@@ -1,6 +1,6 @@
 # Generic Project-Local BlendOps Bundle
 
-Status: Draft v0 reference fixture  
+Status: 1.0.0 reference fixture  
 Target: `generic-project`
 
 ## What this bundle is
@@ -16,7 +16,7 @@ Use this bundle when:
 - no target-specific AI coding agent path is verified,
 - multiple targets are detected and the user chooses the generic fallback,
 - a project needs reversible BlendOps instructions without global config writes,
-- future installer work needs a small reference fixture to copy from or validate against.
+- automated or manual fallback installs need a small reference fixture to copy from or validate against.
 
 ## When not to use it
 
@@ -32,9 +32,9 @@ Do not use this bundle when:
 
 - Main paste prompt: [docs/ai-agent-install-flow.md](../../docs/ai-agent-install-flow.md)
 - Generic target doc: [docs/install/generic-project.md](../../docs/install/generic-project.md)
-- Future installer spec: [docs/install/installer-spec.md](../../docs/install/installer-spec.md)
+- Installer & CLI spec: [docs/install/installer-spec.md](../../docs/install/installer-spec.md)
 
-This fixture is the first static reference bundle for the future installer spec. The script is still not implemented.
+This fixture serves as the static manual reference alongside the local repository installer (`scripts/install-skills.mjs`) and distributable CLI (`bin/blendops.mjs`).
 
 ## Bundle contents
 

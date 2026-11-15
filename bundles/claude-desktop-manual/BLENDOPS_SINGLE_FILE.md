@@ -1,13 +1,13 @@
 # BlendOps Single-File Fallback (Claude Desktop)
 
-Status: Draft v0 fallback only
+Status: 1.0.0 fallback only
 
 > [!IMPORTANT]
 > This file is a **fallback only**. It is less complete than the full manual bundle (`SKILL.md` + `references/`). Use this only when your Claude Desktop import/copy path supports one file.
 
 ## Condensed skill map (baseline 16 — full inventory: 48 skills)
 
-The routes below cover the canonical baseline workflow (full inventory: **48 skills** = 16 baseline + 32 expansion across Batches 1–8: web 3D handoff deep, quality validators, domain scene planners, process discipline, asset/sourcing, color/format/output decisions, recipe/pack ops, runtime path discipline). For the full inventory, switch to the multi-file bundle (`bundles/claude-desktop-manual/references/skills/*.md`) or browse `skills/README.md` upstream. When in doubt, route to `blendops-help`.
+The routes below cover the canonical baseline workflow (full inventory: **48 skills** = 16 core + 32 specialized across web 3D handoff deep, quality validators, domain scene planners, process discipline, asset/sourcing, color/format/output decisions, recipe/pack ops, runtime path discipline). For the full inventory, switch to the multi-file bundle (`bundles/claude-desktop-manual/references/skills/*.md`) or browse `skills/README.md` upstream. When in doubt, route to `blendops-help`.
 
 Baseline routes:
 - unclear next step → `blendops-help`

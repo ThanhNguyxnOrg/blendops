@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
- * BlendOps Phase 3.2 — Upstream MCP Runtime Qualification, Safety Boundary
- * Enforcement & Controlled Live Integration Test Suite (test-phase18.mjs)
+ * BlendOps — Upstream MCP Runtime Qualification, Safety Boundary
+ * Enforcement & Controlled Live Integration Test Suite (test-mcp-qualification.mjs)
  *
  * Covers all 21 mandatory adversarial and regression scenarios in Section 8:
  *  1. Unknown upstream tool rejected (`unknown`, default-to-deny).
@@ -63,7 +63,7 @@ function loadRegistryDoc() {
   return JSON.parse(fs.readFileSync(govPaths.runtimeOperationsPath, 'utf8'));
 }
 
-describe('Phase 3.2 — Upstream MCP Runtime Qualification, Safety Boundary Enforcement & Controlled Live Integration', () => {
+describe('Upstream MCP Runtime Qualification, Safety Boundary Enforcement & Controlled Live Integration', () => {
   it('Scenario 1: Unknown upstream tool is rejected as unknown (default-to-deny)', () => {
     const registryDoc = loadRegistryDoc();
     const qualified = qualifyUpstreamTool(

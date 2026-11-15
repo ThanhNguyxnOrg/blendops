@@ -1,6 +1,6 @@
 # Distribution Strategy
 
-Status: Draft v0 strategy  
+Status: Release v1.0.0 strategy  
 Scope: BlendOps content distribution, not Blender runtime distribution
 
 > [!CAUTION]
@@ -10,16 +10,16 @@ Scope: BlendOps content distribution, not Blender runtime distribution
 
 ## Distribution levels
 
-| Level | Name | Meaning | Current v0 posture |
+| Level | Name | Meaning | Current v1.0.0 posture |
 |---:|---|---|---|
 | 0 | Docs-only/reference | Users read docs, copy prompts, or link source material without installing files. | Present in repo docs now. |
-| 1 | Project-local file install | Users or agents copy/reference BlendOps docs, skills, laws, packs, and `.blendops/catalog/*` inside a project. | Preferred near-term route; supported via [AI Agent Install Flow](./ai-agent-install-flow.md) and local CLI (`bin/blendops.mjs` / `scripts/install-skills.mjs`). |
-| 2 | User-managed Claude Desktop skill import + shared catalog attachment | User manually imports BlendOps skill ZIPs (`dist/claude-skills/desktop-zips/*.zip`) and optionally attaches `dist/shared-catalog/blendops-knowledge-and-recipes.zip` to Claude Project Knowledge. | Candidate route; exportable via `npm run skills:export` or `blendops install --target claude-desktop --out <dir> --write`; must stay separate from connector setup. |
+| 1 | Project-local file install | Users or agents copy/reference BlendOps docs, skills, laws, packs, and `.blendops/catalog/*` inside a project. | Preferred route; supported via [AI Agent Install Flow](./ai-agent-install-flow.md) and local CLI (`bin/blendops.mjs` / `scripts/install-skills.mjs`). |
+| 2 | User-managed Claude Desktop skill import + shared catalog attachment | User manually imports BlendOps skill ZIPs (`dist/claude-skills/desktop-zips/*.zip`) and optionally attaches `dist/shared-catalog/blendops-knowledge-and-recipes.zip` to Claude Project Knowledge. | Supported route; exportable via `npm run skills:export` or `blendops install --target claude-desktop --out <dir> --write`; must stay separate from connector setup. |
 | 3 | GitHub/raw/plugin-from-repo install | Tool consumes content directly from a GitHub URL, raw file, or repo plugin reference. | Future; must follow target tool format. |
-| 4 | Tool-native package/extension & CLI tarball | BlendOps ships in a packable CLI tarball (`npm pack`) or tool-native package format. | Local CLI & `npm pack` tarball verified in `scripts/test-phase11.mjs`; public npm registry publish remains deferred (`"private": true`). |
+| 4 | Tool-native package/extension & CLI tarball | BlendOps ships in a packable CLI tarball (`npm pack`) or tool-native package format. | Local CLI & `npm pack` tarball verified in `scripts/test-cli-package.mjs`; public npm registry publish remains deferred (`"private": true`). |
 | 5 | Official marketplace listing | BlendOps appears in an official marketplace/catalog with review or approval as required. | Future only; do not claim until published and verified. |
 
-v0 should not depend on Level 5.
+BlendOps v1.0.0 does not depend on Level 5.
 
 ---
 
@@ -66,18 +66,18 @@ If the canonical package source `bundles/skill-package/blendops/` is used as upl
 
 ## npm package readiness & registry `E404` boundary
 
-Phase 11 packages BlendOps as a self-contained CLI (`bin/blendops.mjs`) that can be packed into a local tarball (`npm pack`) and installed into a local consumer project (`npm install ./blendops-0.1.0-draft.tgz`, invoked via `node_modules/.bin/blendops`, `node node_modules/blendops/bin/blendops.mjs`, or `npx --no-install blendops`).
+BlendOps packages a self-contained CLI (`bin/blendops.mjs`) that can be packed into a local tarball (`npm pack`) and installed into a local consumer project (`npm install ./blendops-1.0.0.tgz`, invoked via `node_modules/.bin/blendops`, `node node_modules/blendops/bin/blendops.mjs`, or `npx --no-install blendops`).
 
 - **`"private": true` preserved:** `package.json` intentionally retains `"private": true` as a hard guard against accidental `npm publish`.
 - **No public npm release:** BlendOps is **not** published to the public npm registry (`Not Published`). Do not claim that `npx blendops` or `npm install -g blendops` can fetch a publicly published package.
-- **Registry `E404` check limitation:** During Phase 11 namespace verification, querying the public npm registry (`npm view`) for `blendops`, `@blendops/cli`, and `@thanhnguyxn/blendops` returned `E404` (`Not Found`). An npm registry `E404` only means a package name was not found during that check; it does **not** guarantee reservation rights, npm similarity/anti-typosquatting clearance at publish time, trademark rights, or scope ownership (such as `@blendops` or `@thanhnguyxn`).
+- **Registry `E404` check limitation:** During namespace verification, querying the public npm registry (`npm view`) for `blendops`, `@blendops/cli`, and `@thanhnguyxn/blendops` returned `E404` (`Not Found`). An npm registry `E404` only means a package name was not found during that check; it does **not** guarantee reservation rights, npm similarity/anti-typosquatting clearance at publish time, trademark rights, or scope ownership (such as `@blendops` or `@thanhnguyxn`).
 
 ---
 
 ## Release policy
 
-- v0 should not depend on official marketplace acceptance.
-- v0 can ship GitHub, project-local, docs-only, and manual install guidance.
+- `v1.0.0` does not depend on official marketplace acceptance.
+- `v1.0.0` ships GitHub, project-local, docs-only, local CLI tarball (`"private": true`), and manual install guidance.
 - Marketplace publishing is a later, evidence-gated distribution option.
 - Do not claim official marketplace listing until the listing is actually published and verified.
 - Do not claim broad install confidence until multiple target surfaces have install and rollback evidence.

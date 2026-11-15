@@ -1,6 +1,6 @@
 # BlendOps Claude Desktop Manual Bundle
 
-Status: Draft v0 fixture only  
+Status: 1.0.0 fixture  
 Target: `claude-desktop-manual`
 
 ## What this bundle is

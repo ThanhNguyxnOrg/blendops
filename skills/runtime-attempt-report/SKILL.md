@@ -201,7 +201,7 @@ Were any render/export files written to disk?
 
 - Claiming `Runtime status: Verified` and `Artifact status: Verified` from partial console logs or operator optimism without running `render-export-evidence`.
 - Pasting raw MCP configuration files containing API keys, bearer tokens, or unredacted personal filesystem paths into Section C or Section E.
-- Presenting a third-party Path 2 (`mcp-for-blender`) session transcript as official Draft v0 release certification.
+- Presenting a third-party Path 2 (`mcp-for-blender`) session transcript as official 1.0.0 release certification.
 
 ## User-facing response template
 

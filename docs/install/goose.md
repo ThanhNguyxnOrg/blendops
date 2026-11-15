@@ -1,6 +1,6 @@
 # Install target: goose (Block's open AI agent)
 
-Status/confidence: Draft v0, linked-only — but goose has a **dedicated upstream Blender MCP tutorial**
+Status/confidence: 1.0.0, linked-only — but goose has a **dedicated upstream Blender MCP tutorial**
 
 ## Recommended near-term install mode
 

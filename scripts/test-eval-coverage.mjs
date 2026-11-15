@@ -35,7 +35,7 @@ function loadSuite(skillId) {
   return JSON.parse(fs.readFileSync(fullPath, 'utf8'));
 }
 
-describe('Phase 6 — Full-Catalog Behavioral Evaluation Coverage & F-04 Resolution', () => {
+describe('Full-Catalog Behavioral Evaluation Coverage & F-04 Resolution', () => {
   it('Scenario 1: all 48 catalog skills have a valid .eval.json file under evals/suites/ and evals/pilot/ is removed', () => {
     assert.equal(catalogIds.length, 48);
     assert.equal(
@@ -64,7 +64,7 @@ describe('Phase 6 — Full-Catalog Behavioral Evaluation Coverage & F-04 Resolut
       fs.readFileSync(path.join(root, 'evals', 'index.json'), 'utf8'),
     );
     assert.equal(evalIndex.schemaVersion, '2.0.0');
-    assert.equal(evalIndex.phase, 'phase-6-full-catalog-behavioral-evals');
+    assert.equal(evalIndex.suiteScope, 'v1.0.0-full-catalog-behavioral-evals');
     assert.equal(evalIndex.coverageSummary.catalogSkills, 48);
     assert.equal(evalIndex.coverageSummary.machineReadableSuites, 48);
     assert.equal(evalIndex.coverageSummary.skillsWithoutSuites, 0);
@@ -107,7 +107,7 @@ describe('Phase 6 — Full-Catalog Behavioral Evaluation Coverage & F-04 Resolut
     }
   });
 
-  it('Scenario 4: every suite has at least 4 cases (actual minimum is 5) and preserves all 12 Phase 3 pilot suites', () => {
+  it('Scenario 4: every suite has at least 4 cases (actual minimum is 5) and preserves all 12 core pilot suites', () => {
     for (const skillId of catalogIds) {
       const suite = loadSuite(skillId);
       assert.ok(
@@ -116,7 +116,7 @@ describe('Phase 6 — Full-Catalog Behavioral Evaluation Coverage & F-04 Resolut
       );
     }
 
-    // Verify all 12 original Phase 3 pilot skills have preserved/expanded case counts
+    // Verify all 12 core pilot skills have preserved/expanded case counts
     const expectedPilotMinCounts = {
       'blendops-help': 6,
       'recipe-fit-assessor': 5,
@@ -138,7 +138,7 @@ describe('Phase 6 — Full-Catalog Behavioral Evaluation Coverage & F-04 Resolut
   });
 
   it('Scenario 5: removing a suite file from an isolated temp repo causes evals:check to fail', () => {
-    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-phase6-missing-suite-'));
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-eval-missing-suite-'));
     try {
       for (const rel of ['schemas', 'registry', 'skills', 'evals']) {
         fs.cpSync(path.join(root, rel), path.join(tempDir, rel), { recursive: true });
@@ -159,7 +159,7 @@ describe('Phase 6 — Full-Catalog Behavioral Evaluation Coverage & F-04 Resolut
   });
 
   it('Scenario 6: adding an orphan .eval.json file for a non-catalog skill or restoring evals/pilot/ causes evals:check to fail', () => {
-    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-phase6-orphan-suite-'));
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-eval-orphan-suite-'));
     try {
       for (const rel of ['schemas', 'registry', 'skills', 'evals']) {
         fs.cpSync(path.join(root, rel), path.join(tempDir, rel), { recursive: true });
@@ -202,7 +202,7 @@ describe('Phase 6 — Full-Catalog Behavioral Evaluation Coverage & F-04 Resolut
     assert.ok(intraErrs.some((e) => e.includes('duplicate case id')));
 
     // Cross-suite duplicate case ID in isolated repo
-    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-phase6-dup-case-'));
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-eval-dup-case-'));
     try {
       for (const rel of ['schemas', 'registry', 'skills', 'evals']) {
         fs.cpSync(path.join(root, rel), path.join(tempDir, rel), { recursive: true });
@@ -614,7 +614,7 @@ describe('Phase 6 — Full-Catalog Behavioral Evaluation Coverage & F-04 Resolut
   });
 
   it('Scenario 22: evals/index.json drift detection fails evals:check when a suite file is modified without rebuilding the index', () => {
-    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-phase6-index-drift-'));
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-eval-index-drift-'));
     try {
       for (const rel of ['schemas', 'registry', 'skills', 'evals']) {
         fs.cpSync(path.join(root, rel), path.join(tempDir, rel), { recursive: true });
@@ -645,7 +645,7 @@ describe('Phase 6 — Full-Catalog Behavioral Evaluation Coverage & F-04 Resolut
   });
 
   it('Scenario 23: scripts/export-claude-skills.mjs still exports all 48 skills with SKILL.md, EVAL.md, and references/', () => {
-    const tempExportRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-phase6-export-'));
+    const tempExportRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-eval-export-'));
     try {
       const out = execFileSync(
         process.execPath,
@@ -752,7 +752,7 @@ describe('Phase 6 — Full-Catalog Behavioral Evaluation Coverage & F-04 Resolut
     assert.equal(skillInv.summary.totalMachineReadableEvalCases, 269);
 
     const resolvedFiles = new Set(resolveAuditedInputFiles(root));
-    assert.equal(resolvedFiles.has('scripts/test-phase6.mjs'), true);
+    assert.equal(resolvedFiles.has('scripts/test-eval-coverage.mjs'), true);
     assert.equal(
       resolvedFiles.has('evals/suites/product-hero-scene-planner.eval.json'),
       true,
@@ -761,10 +761,9 @@ describe('Phase 6 — Full-Catalog Behavioral Evaluation Coverage & F-04 Resolut
   });
 
   it('Scenario 25: removing a suite or breaking a case in an isolated temp repo prevents F-04 from being marked FIXED', () => {
-    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-phase6-f04-revert-'));
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-eval-f04-revert-'));
     try {
       for (const relDir of [
-        path.join('docs', 'audits', 'phase-0'),
         'registry',
         'evals',
         'schemas',
@@ -772,13 +771,14 @@ describe('Phase 6 — Full-Catalog Behavioral Evaluation Coverage & F-04 Resolut
       ]) {
         fs.cpSync(path.join(root, relDir), path.join(tempDir, relDir), { recursive: true });
       }
+      fs.mkdirSync(path.dirname(path.join(tempDir, AUDITED_INPUTS_MANIFEST_REL)), { recursive: true });
       fs.writeFileSync(
         path.join(tempDir, AUDITED_INPUTS_MANIFEST_REL),
         JSON.stringify(
           {
             schemaVersion: '1.0.0',
             requiredFiles: [AUDITED_INPUTS_MANIFEST_REL],
-            requiredDirectories: ['docs/audits/phase-0', 'registry', 'evals', 'schemas', 'skills'],
+            requiredDirectories: ['registry', 'evals', 'schemas', 'skills'],
           },
           null,
           2,

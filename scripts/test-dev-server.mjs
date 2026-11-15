@@ -12,17 +12,17 @@ import {
   createDevServer,
 } from './dev-server.mjs';
 
-function createIsolatedGitRepo(prefix = 'blendops-phase9-repo-') {
+function createIsolatedGitRepo(prefix = 'blendops-dev-server-repo-') {
   const repoDir = fs.mkdtempSync(path.join(os.tmpdir(), prefix));
   execFileSync('git', ['init', '-b', 'main'], {
     cwd: repoDir,
     stdio: ['ignore', 'pipe', 'pipe'],
   });
-  execFileSync('git', ['config', 'user.name', 'Phase 9 Test Runner'], {
+  execFileSync('git', ['config', 'user.name', 'BlendOps Test Runner'], {
     cwd: repoDir,
     stdio: ['ignore', 'pipe', 'pipe'],
   });
-  execFileSync('git', ['config', 'user.email', 'phase9@example.com'], {
+  execFileSync('git', ['config', 'user.email', 'test-runner@example.com'], {
     cwd: repoDir,
     stdio: ['ignore', 'pipe', 'pipe'],
   });
@@ -110,11 +110,11 @@ function sha256Hex(buffer) {
   return crypto.createHash('sha256').update(buffer).digest('hex');
 }
 
-test('Scenario 1 & 2 (Phase 9 Fix A/B/C): Initial binary export and metadata/download consistency', async () => {
-  const repoDir = createIsolatedGitRepo('blendops-p9-s1-repo-');
-  const cacheWorkDir = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-p9-s1-cache-'));
+test('Scenario 1 & 2: Initial binary export and metadata/download consistency', async () => {
+  const repoDir = createIsolatedGitRepo('blendops-ds-s1-repo-');
+  const cacheWorkDir = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-ds-s1-cache-'));
   const bundlePath = path.join(cacheWorkDir, CANONICAL_BUNDLE_FILENAME);
-  const verifyWorkDir = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-p9-s1-verify-'));
+  const verifyWorkDir = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-ds-s1-verify-'));
 
   let srv = null;
   try {
@@ -139,7 +139,7 @@ test('Scenario 1 & 2 (Phase 9 Fix A/B/C): Initial binary export and metadata/dow
     const info = await infoRes.json();
 
     assert.equal(info.exists, true);
-    assert.equal(info.filename, 'blendops-phase-9.bundle');
+    assert.equal(info.filename, 'blendops-v1.0.0.bundle');
     assert.ok(info.size > 0, 'Bundle byte size must be > 0');
     assert.match(info.header, /^# v[23] git bundle$/);
     assert.equal(info.headSha, expectedHead);
@@ -149,12 +149,12 @@ test('Scenario 1 & 2 (Phase 9 Fix A/B/C): Initial binary export and metadata/dow
       'refs/heads/main': expectedMain,
     });
 
-    // 2. Download /blendops-phase-9.bundle
-    const dlRes = await fetch(`${srv.baseUrl}/blendops-phase-9.bundle`);
+    // 2. Download /blendops-v1.0.0.bundle
+    const dlRes = await fetch(`${srv.baseUrl}/blendops-v1.0.0.bundle`);
     assert.equal(dlRes.status, 200);
     assert.equal(
       dlRes.headers.get('content-disposition'),
-      'attachment; filename="blendops-phase-9.bundle"',
+      'attachment; filename="blendops-v1.0.0.bundle"',
     );
     assert.equal(dlRes.headers.get('content-length'), String(info.size));
 
@@ -204,11 +204,11 @@ test('Scenario 1 & 2 (Phase 9 Fix A/B/C): Initial binary export and metadata/dow
   }
 });
 
-test('Scenario 3 (Phase 9 Fix A): Freshness after a new commit without restarting the server', async () => {
-  const repoDir = createIsolatedGitRepo('blendops-p9-s3-repo-');
-  const cacheWorkDir = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-p9-s3-cache-'));
+test('Scenario 3: Freshness after a new commit without restarting the server', async () => {
+  const repoDir = createIsolatedGitRepo('blendops-ds-s3-repo-');
+  const cacheWorkDir = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-ds-s3-cache-'));
   const bundlePath = path.join(cacheWorkDir, CANONICAL_BUNDLE_FILENAME);
-  const verifyWorkDir = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-p9-s3-verify-'));
+  const verifyWorkDir = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-ds-s3-verify-'));
 
   let srv = null;
   try {
@@ -223,13 +223,13 @@ test('Scenario 3 (Phase 9 Fix A): Freshness after a new commit without restartin
     // Advance main with a new commit while the server remains running
     const { headSha: secondSha, mainSha: secondMainSha } = commitFile(
       repoDir,
-      'phase9-freshness.txt',
+      'freshness-check.txt',
       'New commit payload for freshness test\n',
       'feat: advance main for freshness verification',
     );
     assert.notEqual(secondSha, initialSha);
 
-    // Fetch /api/bundle-info and /blendops-phase-9.bundle without restarting server
+    // Fetch /api/bundle-info and /blendops-v1.0.0.bundle without restarting server
     const info2Res = await fetch(`${srv.baseUrl}/api/bundle-info`);
     assert.equal(info2Res.status, 200);
     const info2 = await info2Res.json();
@@ -243,7 +243,7 @@ test('Scenario 3 (Phase 9 Fix A): Freshness after a new commit without restartin
       'Regenerated bundle SHA-256 must differ from stale bundle',
     );
 
-    const dl2Res = await fetch(`${srv.baseUrl}/blendops-phase-9.bundle`);
+    const dl2Res = await fetch(`${srv.baseUrl}/blendops-v1.0.0.bundle`);
     assert.equal(dl2Res.status, 200);
     const dl2Bytes = Buffer.from(await dl2Res.arrayBuffer());
     assert.equal(sha256Hex(dl2Bytes), info2.sha256);
@@ -273,11 +273,11 @@ test('Scenario 3 (Phase 9 Fix A): Freshness after a new commit without restartin
   }
 });
 
-test('Scenario 4 (Phase 9 Fix A/B): Corrupted or truncated cache recovery', async () => {
-  const repoDir = createIsolatedGitRepo('blendops-p9-s4-repo-');
-  const cacheWorkDir = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-p9-s4-cache-'));
+test('Scenario 4: Corrupted or truncated cache recovery', async () => {
+  const repoDir = createIsolatedGitRepo('blendops-ds-s4-repo-');
+  const cacheWorkDir = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-ds-s4-cache-'));
   const bundlePath = path.join(cacheWorkDir, CANONICAL_BUNDLE_FILENAME);
-  const verifyWorkDir = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-p9-s4-verify-'));
+  const verifyWorkDir = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-ds-s4-verify-'));
 
   let srv = null;
   try {
@@ -298,7 +298,7 @@ test('Scenario 4 (Phase 9 Fix A/B): Corrupted or truncated cache recovery', asyn
     const corruptPayload2 = Buffer.from('# v2 git bundle\n0000000000000000000000000000000000000000 HEAD\n\nTRUNCATED', 'utf8');
     fs.writeFileSync(bundlePath, corruptPayload2);
 
-    const dlRes = await fetch(`${srv.baseUrl}/blendops-phase-9.bundle`);
+    const dlRes = await fetch(`${srv.baseUrl}/blendops-v1.0.0.bundle`);
     assert.equal(dlRes.status, 200);
     const dlBytes = Buffer.from(await dlRes.arrayBuffer());
     assert.notEqual(sha256Hex(dlBytes), sha256Hex(corruptPayload2));
@@ -318,9 +318,9 @@ test('Scenario 4 (Phase 9 Fix A/B): Corrupted or truncated cache recovery', asyn
   }
 });
 
-test('Scenario 5 (Phase 9 Fix C): Compatibility routes serve identical verified current bundle bytes', async () => {
-  const repoDir = createIsolatedGitRepo('blendops-p9-s5-repo-');
-  const cacheWorkDir = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-p9-s5-cache-'));
+test('Scenario 5: Compatibility routes serve identical verified current bundle bytes', async () => {
+  const repoDir = createIsolatedGitRepo('blendops-ds-s5-repo-');
+  const cacheWorkDir = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-ds-s5-cache-'));
   const bundlePath = path.join(cacheWorkDir, CANONICAL_BUNDLE_FILENAME);
 
   let srv = null;
@@ -329,17 +329,16 @@ test('Scenario 5 (Phase 9 Fix C): Compatibility routes serve identical verified 
     const info = await (await fetch(`${srv.baseUrl}/api/bundle-info`)).json();
     assert.equal(info.exists, true);
 
-    assert.ok(COMPATIBILITY_BUNDLE_ROUTES.includes('/blendops-phase-9.bundle'));
-    assert.ok(COMPATIBILITY_BUNDLE_ROUTES.includes('/blendops-phase-8.1.1.bundle'));
-    assert.ok(COMPATIBILITY_BUNDLE_ROUTES.includes('/blendops-phase-8.1.bundle'));
-    assert.ok(COMPATIBILITY_BUNDLE_ROUTES.includes('/blendops-phase-8.bundle'));
+    assert.ok(COMPATIBILITY_BUNDLE_ROUTES.includes('/blendops-v1.0.0.bundle'));
+    assert.ok(COMPATIBILITY_BUNDLE_ROUTES.includes('/blendops-release.bundle'));
+    assert.ok(COMPATIBILITY_BUNDLE_ROUTES.includes('/blendops-latest.bundle'));
 
     for (const route of COMPATIBILITY_BUNDLE_ROUTES) {
       const res = await fetch(`${srv.baseUrl}${route}`);
       assert.equal(res.status, 200, `Route ${route} must return HTTP 200`);
       assert.equal(
         res.headers.get('content-disposition'),
-        'attachment; filename="blendops-phase-9.bundle"',
+        'attachment; filename="blendops-v1.0.0.bundle"',
         `Route ${route} must set canonical Content-Disposition`,
       );
       const buf = Buffer.from(await res.arrayBuffer());
@@ -353,9 +352,9 @@ test('Scenario 5 (Phase 9 Fix C): Compatibility routes serve identical verified 
   }
 });
 
-test('Scenario 6 (Phase 9 Fix B): Concurrent requests return consistent verified artifacts with zero leaked temp files', async () => {
-  const repoDir = createIsolatedGitRepo('blendops-p9-s6-repo-');
-  const cacheWorkDir = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-p9-s6-cache-'));
+test('Scenario 6: Concurrent requests return consistent verified artifacts with zero leaked temp files', async () => {
+  const repoDir = createIsolatedGitRepo('blendops-ds-s6-repo-');
+  const cacheWorkDir = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-ds-s6-cache-'));
   const bundlePath = path.join(cacheWorkDir, CANONICAL_BUNDLE_FILENAME);
 
   let srv = null;
@@ -365,17 +364,17 @@ test('Scenario 6 (Phase 9 Fix B): Concurrent requests return consistent verified
     // Fire 12 concurrent requests against a cold cache
     const endpoints = [
       '/api/bundle-info',
-      '/blendops-phase-9.bundle',
+      '/blendops-v1.0.0.bundle',
       '/api/bundle-info',
-      '/blendops-phase-8.1.1.bundle',
-      '/blendops-phase-8.1.bundle',
-      '/blendops-phase-8.bundle',
+      '/blendops-release.bundle',
+      '/blendops-latest.bundle',
+      '/blendops-v1.0.0.bundle',
       '/api/bundle-info',
-      '/blendops-phase-9.bundle',
-      '/blendops-phase-7.bundle',
+      '/blendops-release.bundle',
+      '/blendops-latest.bundle',
       '/api/bundle-info',
-      '/blendops-phase-9.bundle',
-      '/blendops-phase-8.1.1.bundle',
+      '/blendops-v1.0.0.bundle',
+      '/blendops-release.bundle',
     ];
 
     const responses = await Promise.all(
@@ -419,9 +418,9 @@ test('Scenario 6 (Phase 9 Fix B): Concurrent requests return consistent verified
   }
 });
 
-test('Scenario 7 (Phase 9 Fix A): Repository cache isolation under default cache strategy', async () => {
-  const repoA = createIsolatedGitRepo('blendops-p9-s7-repoA-');
-  const repoB = createIsolatedGitRepo('blendops-p9-s7-repoB-');
+test('Scenario 7: Repository cache isolation under default cache strategy', async () => {
+  const repoA = createIsolatedGitRepo('blendops-ds-s7-repoA-');
+  const repoB = createIsolatedGitRepo('blendops-ds-s7-repoB-');
 
   const commitA = commitFile(
     repoA,
@@ -461,10 +460,10 @@ test('Scenario 7 (Phase 9 Fix A): Repository cache isolation under default cache
     assert.notEqual(infoA.sha256, infoB.sha256);
 
     const bytesA = Buffer.from(
-      await (await fetch(`${srvA.baseUrl}/blendops-phase-9.bundle`)).arrayBuffer(),
+      await (await fetch(`${srvA.baseUrl}/blendops-v1.0.0.bundle`)).arrayBuffer(),
     );
     const bytesB = Buffer.from(
-      await (await fetch(`${srvB.baseUrl}/blendops-phase-9.bundle`)).arrayBuffer(),
+      await (await fetch(`${srvB.baseUrl}/blendops-v1.0.0.bundle`)).arrayBuffer(),
     );
     assert.equal(sha256Hex(bytesA), infoA.sha256);
     assert.equal(sha256Hex(bytesB), infoB.sha256);
@@ -478,11 +477,11 @@ test('Scenario 7 (Phase 9 Fix A): Repository cache isolation under default cache
   }
 });
 
-test('Scenario 8 (Phase 9 Fix A/B/C): Strict guardrails on invalid repo state or uncreatable bundle path, plus CLI subprocess verification', async () => {
-  const nonGitDir = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-p9-s8-nongit-'));
-  const repoMissingMain = createIsolatedGitRepo('blendops-p9-s8-nomain-');
-  const validRepo = createIsolatedGitRepo('blendops-p9-s8-valid-');
-  const cacheWorkDir = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-p9-s8-cache-'));
+test('Scenario 8: Strict guardrails on invalid repo state or uncreatable bundle path, plus CLI subprocess verification', async () => {
+  const nonGitDir = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-ds-s8-nongit-'));
+  const repoMissingMain = createIsolatedGitRepo('blendops-ds-s8-nomain-');
+  const validRepo = createIsolatedGitRepo('blendops-ds-s8-valid-');
+  const cacheWorkDir = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-ds-s8-cache-'));
 
   let srvNonGit = null;
   let srvNoMain = null;
@@ -500,10 +499,10 @@ test('Scenario 8 (Phase 9 Fix A/B/C): Strict guardrails on invalid repo state or
     assert.equal(resNonGitInfo.status, 503);
     const bodyNonGitInfo = await resNonGitInfo.json();
     assert.equal(bodyNonGitInfo.exists, false);
-    assert.equal(bodyNonGitInfo.filename, 'blendops-phase-9.bundle');
+    assert.equal(bodyNonGitInfo.filename, 'blendops-v1.0.0.bundle');
     assert.match(bodyNonGitInfo.error, /Failed to resolve Git HEAD/i);
 
-    const resNonGitDl = await fetch(`${srvNonGit.baseUrl}/blendops-phase-9.bundle`);
+    const resNonGitDl = await fetch(`${srvNonGit.baseUrl}/blendops-v1.0.0.bundle`);
     assert.equal(resNonGitDl.status, 503);
 
     // 8b. Repository with a valid cached bundle that subsequently loses refs/heads/main must NOT serve the stale bundle
@@ -528,7 +527,7 @@ test('Scenario 8 (Phase 9 Fix A/B/C): Strict guardrails on invalid repo state or
     assert.match(afterBranchRenameInfo.error, /refs\/heads\/main/);
 
     const afterBranchRenameDlRes = await fetch(
-      `${srvNoMain.baseUrl}/blendops-phase-9.bundle`,
+      `${srvNoMain.baseUrl}/blendops-v1.0.0.bundle`,
     );
     assert.equal(afterBranchRenameDlRes.status, 503);
 
@@ -591,7 +590,7 @@ test('Scenario 8 (Phase 9 Fix A/B/C): Strict guardrails on invalid repo state or
     assert.equal(cliInfoRes.status, 200);
     const cliInfo = await cliInfoRes.json();
     assert.equal(cliInfo.exists, true);
-    assert.equal(cliInfo.filename, 'blendops-phase-9.bundle');
+    assert.equal(cliInfo.filename, 'blendops-v1.0.0.bundle');
     assert.equal(fs.existsSync(cliBundlePath), true);
   } finally {
     if (childProc && !childProc.killed) {

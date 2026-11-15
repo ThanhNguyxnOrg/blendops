@@ -54,7 +54,7 @@ npm run evals:check              # validates evals/*.json against schemas/skill-
 npm run evals:run                # runs deterministic behavioral evaluations across all 48 skills (269 cases)
 npm run bundles:summaries:check  # verifies 96 generated bundle reference summaries are in sync
 npm run skills:export            # produces one ZIP + one Claude Code folder per skills/*/SKILL.md (48 total) into dist/claude-skills/
-npm test                         # runs all phase regression test suites (test-phase1.mjs .. test-phase19.mjs)
+npm test                         # runs all 17 descriptive regression test suites (scripts/test-*.mjs)
 ```
 
 Or run the entire pipeline with the single convenience script:

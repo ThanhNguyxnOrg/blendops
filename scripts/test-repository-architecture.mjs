@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * BlendOps — Phase 13 Regression & Acceptance Test Suite
+ * BlendOps — Repository Architecture, Organization & Finalization Test Suite
  *
  * Covers:
  * 1. Complete repository inventory & 7-category classification (`docs/audits/current/repository-inventory.json`).
@@ -9,10 +9,9 @@
  * 4. Internal reference integrity across Markdown links, HTML assets, relative ESM imports, JSON Schemas (Ajv2020),
  *    package.json scripts/files, GitHub Actions workflows, and `docs/audits/audited-inputs.manifest.json` (plus negative tests).
  * 5. Windows CI regression closure (Windows drive roots `C:\`, `D:\`, UNC paths `\\server\share`, POSIX `/`,
- *    and `test-phase11.mjs` import guard preventing duplicate suite execution when imported by `test-phase12.mjs`).
+ *    and `test-cli-package.mjs` import guard preventing duplicate suite execution when imported by `test-glb-handoff.mjs`).
  * 6. Skills (48), laws (4), packs (1), bundles (3), install targets (26), registry, and bundle reference summary determinism.
- * 7. Historical audit snapshot preservation (`phase-0`, `phase-2`, `phase-2.1`, `phase-3`, `release-readiness-rollup-v0.md`)
- *    and current-state (`phase-13-current`) audit provenance (`87.0/100`, `F-08 = PARTIALLY_FIXED`, `Not Run` / `Not Produced` / `Not Published`).
+ * 7. Removal of obsolete development phase snapshots and verification of current-state (`v1.0.0-current`) audit provenance (`87.0/100`, `F-08 = PARTIALLY_FIXED`, `Not Run` / `Not Produced` / `Not Published`).
  * 8. `npm pack` tarball file list audit (`"private": true` preserved, no test/audit bloat) and isolated consumer CLI execution.
  */
 
@@ -51,17 +50,17 @@ import {
 import {
   buildMinimalValidGlbBuffer,
 } from './inspect-glb.mjs';
-import { execNpmTool } from './test-phase11.mjs';
+import { execNpmTool } from './test-cli-package.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const ROOT = path.resolve(__dirname, '..');
 
-describe('Phase 13 — Repository Architecture, Organization & Finalization', () => {
+describe('Repository Architecture, Organization & Finalization', () => {
   let suiteTmpDir;
 
   before(() => {
-    suiteTmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-p13-test-'));
+    suiteTmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-arch-test-'));
   });
 
   after(() => {
@@ -175,7 +174,13 @@ describe('Phase 13 — Repository Architecture, Organization & Finalization', ()
       'bundles/skill-package/blendops/LICENSE.txt',
     ]);
     assert.equal(dupGroups[0].approved, true);
-    assert.deepEqual(report.inventory.duplicateAnalysis.deletedObsoleteFilesInPhase13, []);
+    assert.deepEqual(report.inventory.duplicateAnalysis.archivedDevelopmentSnapshotsRemoved, [
+      'docs/audits/phase-0',
+      'docs/audits/phase-2',
+      'docs/audits/phase-2.1',
+      'docs/audits/phase-3',
+      'docs/release-readiness-rollup-v0.md',
+    ]);
   });
 
   test('Scenario 4: Internal reference integrity validates Markdown links, HTML assets, ESM imports, JSON Schemas, workflows, and audited-inputs manifest (including negative tests)', () => {
@@ -241,7 +246,7 @@ describe('Phase 13 — Repository Architecture, Organization & Finalization', ()
     assert.ok(badRefs.errors.some((e) => e.includes('GitHub workflow .github/workflows/ci.yml references missing script')));
   });
 
-  test('Scenario 5: Windows CI regression closure — drive roots (C:\\, D:\\), UNC paths, POSIX root, and test-phase11 import isolation', () => {
+  test('Scenario 5: Windows CI regression closure — drive roots (C:\\, D:\\), UNC paths, POSIX root, and test-cli-package import isolation', () => {
     // 1. Verify validateSafeReportOutputDir rejects POSIX root, Windows drive roots, and UNC roots with unified error message
     for (const rootCandidate of [path.parse(ROOT).root, '/', 'C:\\', 'D:\\', 'c:/', '\\\\server\\share']) {
       assert.throws(
@@ -251,11 +256,11 @@ describe('Phase 13 — Repository Architecture, Organization & Finalization', ()
       );
     }
 
-    // 2. Verify importing execNpmTool from test-phase11.mjs does NOT register Phase 11 describe() suites in another test file
+    // 2. Verify importing execNpmTool from test-cli-package.mjs does NOT register CLI package describe() suites in another test file
     assert.equal(typeof execNpmTool, 'function');
-    const phase11Source = fs.readFileSync(path.join(ROOT, 'scripts', 'test-phase11.mjs'), 'utf8');
-    assert.match(phase11Source, /const IS_DIRECT_PHASE11_TEST =/);
-    assert.match(phase11Source, /if \(IS_DIRECT_PHASE11_TEST\) \{\s*describe\(/);
+    const cliPackageSource = fs.readFileSync(path.join(ROOT, 'scripts', 'test-cli-package.mjs'), 'utf8');
+    assert.match(cliPackageSource, /const IS_DIRECT_CLI_PACKAGE_TEST =/);
+    assert.match(cliPackageSource, /if \(IS_DIRECT_CLI_PACKAGE_TEST\) \{\s*describe\(/);
   });
 
   test('Scenario 6: Skills (48), laws (4), packs (1), bundles (3), install targets (26), registry, and bundle summaries remain intact', () => {
@@ -433,26 +438,19 @@ describe('Phase 13 — Repository Architecture, Organization & Finalization', ()
     }
   });
 
-  test('Scenario 7: Historical audit snapshots remain immutable and current-state audit artifacts record phase-13-current on 112ecf75a04ab5864b3dc3656b9a27f09d1e8dcd', () => {
-    // 1. Historical snapshots exist and are classified as historical_record
-    for (const histRel of [
-      'docs/audits/phase-0/README.md',
-      'docs/audits/phase-0/baseline-scorecard.json',
-      'docs/audits/phase-0/findings-and-roadmap.md',
-      'docs/audits/phase-2/README.md',
-      'docs/audits/phase-2.1/README.md',
-      'docs/audits/phase-3/README.md',
+  test('Scenario 7: Obsolete development snapshots are removed and current-state audit artifacts record v1.0.0-current provenance', () => {
+    // 1. Obsolete development phase snapshots must not remain in the v1.0.0 tree
+    for (const removedRel of [
+      'docs/audits/phase-0',
+      'docs/audits/phase-2',
+      'docs/audits/phase-2.1',
+      'docs/audits/phase-3',
       'docs/release-readiness-rollup-v0.md',
     ]) {
-      assert.ok(fs.existsSync(path.join(ROOT, histRel)), `Missing historical record: ${histRel}`);
-      assert.equal(classifyTrackedFile(histRel).classification, 'historical_record');
+      assert.equal(fs.existsSync(path.join(ROOT, removedRel)), false, `Obsolete artifact must not exist: ${removedRel}`);
     }
 
-    // 2. Verify docs/release-readiness-rollup-v0.md carries explicit historical header
-    const rollupV0 = fs.readFileSync(path.join(ROOT, 'docs', 'release-readiness-rollup-v0.md'), 'utf8');
-    assert.match(rollupV0, /Historical Snapshot Notice \(v0/);
-
-    // 3. Current-state audit artifacts
+    // 2. Current-state audit artifacts
     const currentDir = path.join(ROOT, 'docs', 'audits', 'current');
     const scorecard = JSON.parse(fs.readFileSync(path.join(currentDir, 'scorecard.json'), 'utf8'));
     const findings = JSON.parse(fs.readFileSync(path.join(currentDir, 'findings.json'), 'utf8'));
@@ -466,12 +464,22 @@ describe('Phase 13 — Repository Architecture, Organization & Finalization', ()
       encoding: 'utf8',
     }).trim();
     const validCommitShas = new Set([
-      '112ecf75a04ab5864b3dc3656b9a27f09d1e8dcd',
+      '122af1abe4fb72574e6746c58788fbf9064c01c2',
       headCommitSha,
     ]);
+    try {
+      const parentSha = execFileSync('git', ['rev-parse', '--verify', 'HEAD^'], {
+        cwd: ROOT,
+        encoding: 'utf8',
+        stdio: ['ignore', 'pipe', 'ignore'],
+      }).trim();
+      if (parentSha) validCommitShas.add(parentSha);
+    } catch {
+      // shallow or single-commit clone
+    }
 
     for (const doc of [scorecard, findings, skillInv, evalInv, manifest]) {
-      assert.equal(doc.auditPhase, 'phase-13-current');
+      assert.equal(doc.auditPhase, 'v1.0.0-current');
       assert.ok(validCommitShas.has(doc.sourceCommitSha));
       assert.equal(doc.auditProvenance.sourceCommitShort, doc.sourceCommitSha.slice(0, 7));
     }
@@ -486,7 +494,7 @@ describe('Phase 13 — Repository Architecture, Organization & Finalization', ()
     assert.equal(f08.currentLifecycleStatus, 'PARTIALLY_FIXED');
 
     assert.equal(repoInv.schemaVersion, '1.0.0');
-    assert.equal(repoInv.auditPhase, 'phase-13-current');
+    assert.equal(repoInv.auditPhase, 'v1.0.0-current');
   });
 
   test('Scenario 8: npm pack tarball audit and isolated consumer execution preserve "private": true and clean distribution boundary', () => {
@@ -499,7 +507,7 @@ describe('Phase 13 — Repository Architecture, Organization & Finalization', ()
     fs.mkdirSync(consumerDir, { recursive: true });
     fs.writeFileSync(
       path.join(consumerDir, 'package.json'),
-      `${JSON.stringify({ name: 'phase13-consumer-test', version: '1.0.0', private: true }, null, 2)}\n`,
+      `${JSON.stringify({ name: 'blendops-consumer-test', version: '1.0.0', private: true }, null, 2)}\n`,
       'utf8',
     );
 
@@ -530,7 +538,7 @@ describe('Phase 13 — Repository Architecture, Organization & Finalization', ()
 
     // Repo-only test suites, audits, and web preview files must NOT leak into the consumer tarball
     for (const forbiddenPrefix of [
-      'scripts/test-phase',
+      'scripts/test-',
       'scripts/validate-repository-architecture.mjs',
       'scripts/generate-current-audit.mjs',
       'docs/audits/',

@@ -1,6 +1,6 @@
 # Install target: Generic project
 
-Status/confidence: Draft v0, verified-read fallback
+Status/confidence: 1.0.0, verified-read fallback
 
 ## Recommended near-term install mode
 

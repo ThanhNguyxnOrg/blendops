@@ -58,7 +58,7 @@ Do not use this skill when:
 
 ## Prerequisites / readiness
 
-- Current BlendOps status is known: Draft v0 unless a newer release-readiness doc says otherwise.
+- Current BlendOps status is known: 1.0.0 unless a newer release-readiness doc says otherwise.
 - Runtime state is one of: `Not Run`, `Attempted`, `Produced`, `Verified`, `Failed`.
 - If runtime is needed, identify the intended stack before execution.
 - If artifacts are discussed, evidence source and output paths must be available or marked missing.

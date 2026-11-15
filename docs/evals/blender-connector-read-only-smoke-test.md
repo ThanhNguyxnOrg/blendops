@@ -30,8 +30,7 @@ The Blender Lab MCP add-on responded to safe read-only tool calls against a live
 | Real Blender session responded | Available | All three read-only tools returned `status: ok`. |
 | Full official runtime manual eval | **Not Run** | No BlendOps recipe, mutation, render, export, or artifact validation was attempted. |
 | Preview/render/GLB artifacts | **Not Produced** | No file was created. |
-| Stable release readiness | **Not Ready** | Read-only access is not sufficient for stable readiness. |
-| `v0.1.0-draft` tag | 🟡 Tag-able now | Skills layer is complete; tagging is a publishing decision. This smoke evidence file is a captured Path 1 read-only record, not a tagging gate. |
+| Mutation/render/export runtime eval | **Not Run** | Read-only access is not sufficient to claim full runtime verification. |
 
 ---
 
@@ -97,8 +96,7 @@ Path 2 (community mcp-for-blender): User-reported verified separately; no formal
 CLI fallback: Not Run; documented upstream as first-class Blender CLI; no in-repo evidence file yet
 Full official runtime manual eval: Not Run
 Runtime artifacts: Not Produced
-Stable release readiness: Not Ready
-v0.1.0 tag: Do not tag yet
+Full runtime verification: Not Run (read-only smoke only)
 ```
 
 ---

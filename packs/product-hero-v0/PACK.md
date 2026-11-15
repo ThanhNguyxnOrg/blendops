@@ -1,15 +1,15 @@
 # PACK: product-hero-v0
 
 > [!NOTE]
-> Status: Draft v0. This pack composes laws and skills for product-hero planning, validation, and handoff under official-runtime-only boundaries.
+> Status: 1.0.0. This pack composes laws and skills for product-hero planning, validation, and handoff under official-runtime-only boundaries (retaining canonical pack identifier `product-hero-v0`).
 
 ## Pack status
 
 | Field | Value |
 |---|---|
 | Pack name | `product-hero-v0` |
-| Version | `0.1.0-draft` |
-| Release posture | Draft v0, not stable |
+| Version | `1.0.0` |
+| Release posture | Production (`v1.0.0`) |
 | Runtime posture | Official-runtime-only |
 | Runtime install | Not included |
 | Runtime execution guarantee | Not claimed |
@@ -40,22 +40,22 @@ Compose the included skills to plan, validate, and communicate product-hero Blen
 
 | Category | Skill path | Status |
 |---|---|---|
-| Help / routing | `../../skills/blendops-help/SKILL.md` | Expanded Draft v0 |
-| Process / discipline (Superpowers + BMad inspired) | `../../skills/blender-brainstorming/SKILL.md` | Expanded Draft v0 |
-| Process / discipline | `../../skills/intent-to-3d-brief-writer/SKILL.md` | Expanded Draft v0 |
-| Process / discipline | `../../skills/asset-discovery/SKILL.md` | Expanded Draft v0 |
-| Setup / readiness | `../../skills/runtime-setup/SKILL.md` | Expanded Draft v0 |
-| Setup / readiness | `../../skills/runtime-readiness/SKILL.md` | Expanded Draft v0 |
-| Setup / readiness | `../../skills/bridge-conflicts/SKILL.md` | Expanded Draft v0 |
-| Planning | `../../skills/product-hero-scene-planner/SKILL.md` | Expanded Draft v0 |
-| Planning | `../../skills/camera-composition/SKILL.md` | Expanded Draft v0 |
-| Planning | `../../skills/lighting-material-plan/SKILL.md` | Expanded Draft v0 |
-| Quality / eval | `../../skills/scene-readiness/SKILL.md` | Expanded Draft v0 |
-| Quality / debugging | `../../skills/blender-troubleshooting/SKILL.md` | Expanded Draft v0 |
-| Quality / evidence | `../../skills/render-export-evidence/SKILL.md` | Expanded Draft v0 |
-| Quality / pre-handoff | `../../skills/pre-handoff-verification/SKILL.md` | Expanded Draft v0 |
-| Handoff / communication | `../../skills/glb-web-handoff/SKILL.md` | Expanded Draft v0 |
-| Handoff / communication | `../../skills/plain-language-response/SKILL.md` | Expanded Draft v0 |
+| Help / routing | `../../skills/blendops-help/SKILL.md` | 1.0.0 |
+| Process / discipline (Superpowers + BMad inspired) | `../../skills/blender-brainstorming/SKILL.md` | 1.0.0 |
+| Process / discipline | `../../skills/intent-to-3d-brief-writer/SKILL.md` | 1.0.0 |
+| Process / discipline | `../../skills/asset-discovery/SKILL.md` | 1.0.0 |
+| Setup / readiness | `../../skills/runtime-setup/SKILL.md` | 1.0.0 |
+| Setup / readiness | `../../skills/runtime-readiness/SKILL.md` | 1.0.0 |
+| Setup / readiness | `../../skills/bridge-conflicts/SKILL.md` | 1.0.0 |
+| Planning | `../../skills/product-hero-scene-planner/SKILL.md` | 1.0.0 |
+| Planning | `../../skills/camera-composition/SKILL.md` | 1.0.0 |
+| Planning | `../../skills/lighting-material-plan/SKILL.md` | 1.0.0 |
+| Quality / eval | `../../skills/scene-readiness/SKILL.md` | 1.0.0 |
+| Quality / debugging | `../../skills/blender-troubleshooting/SKILL.md` | 1.0.0 |
+| Quality / evidence | `../../skills/render-export-evidence/SKILL.md` | 1.0.0 |
+| Quality / pre-handoff | `../../skills/pre-handoff-verification/SKILL.md` | 1.0.0 |
+| Handoff / communication | `../../skills/glb-web-handoff/SKILL.md` | 1.0.0 |
+| Handoff / communication | `../../skills/plain-language-response/SKILL.md` | 1.0.0 |
 
 ## Recipe scenario
 
@@ -77,8 +77,8 @@ This pack expects included skills to pass Gate 0 through Gate 8 in `skill-review
 
 | Expectation | Status language |
 |---|---|
-| Per-skill evals | Each included skill has `EVAL.md`. **All 16 skills are Expanded Draft v0 with `references/` folders** (8 originals + 6 Phase 4 + 2 final baselines `blendops-help` and `render-export-evidence` promoted 2026-05-09). |
-| Text-only eval | Baseline checks should pass before runtime eval. |
+| Per-skill evals | Each included skill ships `SKILL.md`, `contract.json`, `EVAL.md`, `evals/suites/<id>.eval.json`, and 3+ `references/` files. |
+| Automated deterministic evals | Verified across all 48 catalog skills (`269/269` deterministic cases via `npm run evals:run`). |
 | Runtime blockers | Must be recordable without overclaims. |
 | Depth audit | Tracked in `skill-reviews/reports/v0-skill-depth-audit.md`. |
 | Gate review | Tracked in `skill-reviews/reports/v0-skill-gate-review.md`. |
@@ -106,9 +106,9 @@ This pack expects included skills to pass Gate 0 through Gate 8 in `skill-review
 |---|---|
 | Law compliance | All outputs follow included laws. |
 | Evidence before done | No artifact or runtime success claims without evidence. |
-| Artifact status | Use `Produced`, `Not Produced`, or `Not Run`. |
+| Artifact status | Use `Produced`, `Not Produced`, `Verified`, or `Failed` (`Not Run` is reserved exclusively for Runtime/Eval status). |
 | Plain language | Preserve non-Blender-user clarity. |
 
-## Promotion criteria
+## Release gates
 
-Promote from draft only when the release readiness checklist is complete and evaluation evidence is recorded.
+Review gates (`Gate 0` through `Gate 8`), `npm run ci`, and deterministic behavioral evaluations must remain green across every skill and pack change; live runtime/artifact claims remain gated on recorded evidence under `docs/evals/`.

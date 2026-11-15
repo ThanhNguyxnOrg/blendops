@@ -1,6 +1,6 @@
 # BlendOps Skill Reviews
 
-Status: Draft v0
+Status: 1.0.0
 
 This folder defines the multi-layer review system for promoting Blender skills from draft quality to gate-approved quality.
 

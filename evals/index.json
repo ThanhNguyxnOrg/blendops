@@ -1,6 +1,6 @@
 {
   "schemaVersion": "2.0.0",
-  "phase": "phase-6-full-catalog-behavioral-evals",
+  "suiteScope": "v1.0.0-full-catalog-behavioral-evals",
   "generatedBy": "scripts/run-evals.mjs",
   "coverageSummary": {
     "catalogSkills": 48,

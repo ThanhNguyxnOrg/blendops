@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * BlendOps — Phase 3 (Phase 16 Suite): Blender Production Layer & Safe Runtime Integration
+ * BlendOps — Blender Production Layer & Safe Runtime Integration Test Suite
  *
  * Covers all 21 required deterministic automated scenarios plus the real-runtime smoke check gate:
  *  1. Runtime discovery across supported paths (`path-1-host-a`, `path-1-host-b`, `path-2-community`, `cli-appendix`).
@@ -24,7 +24,7 @@
  * 19. Partial multi-step execution & rollback (Step 1 camera mutation succeeds, Step 2 light mutation fails -> rollback restores Step 1 camera state).
  * 20. Evidence packet & operation ledger generation, schema validation, static/mock fixture promotion gate, and secret redaction.
  * 21. Project-local runtime catalog/config resolution, CLI commands (`runtime doctor|inspect|capabilities`, `operation list|validate`, `execution preflight|report|inspect`) in human + `--json` modes.
- * 22. Phase 3D End-to-End Safe Blender Production Vertical Slice (`product-hero-sneaker` SceneSpec -> ExecutionPlan -> Runtime Readiness -> Pre-Mutation Checkpoint -> Camera & Light Mutations -> Readback & Postconditions -> Evidence Report) across Path 1 and Path 2 mock runtimes, plus Real-Runtime Smoke Check Gate (`Not Run` in container without Blender).
+ * 22. End-to-End Safe Blender Production Vertical Slice (`product-hero-sneaker` SceneSpec -> ExecutionPlan -> Runtime Readiness -> Pre-Mutation Checkpoint -> Camera & Light Mutations -> Readback & Postconditions -> Evidence Report) across Path 1 and Path 2 mock runtimes, plus Real-Runtime Smoke Check Gate (`Not Run` in container without Blender).
  */
 
 import { describe, test, before, after } from 'node:test';
@@ -54,7 +54,7 @@ import {
   compileExecutionPlan,
 } from './install-skills.mjs';
 import { validateEvidencePacket } from './validate-evidence-packet.mjs';
-import { execNpmTool } from './test-phase11.mjs';
+import { execNpmTool } from './test-cli-package.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -66,7 +66,7 @@ function loadSchemaValidator(schemaRelPath) {
   return ajv.compile(schema);
 }
 
-describe('Phase 3 (Suite 16) — Blender Production Layer & Safe Runtime Integration', () => {
+describe('Blender Production Layer & Safe Runtime Integration', () => {
   let suiteTmpDir;
   let validateRuntimeSessionSchema;
   let validateRuntimeOperationsSchema;
@@ -726,7 +726,7 @@ describe('Phase 3 (Suite 16) — Blender Production Layer & Safe Runtime Integra
     assert.equal(parsedPreflight.passed, false);
   });
 
-  test('Scenario 22: Phase 3D Safe Blender Production Vertical Slice end-to-end (Path 1 & Path 2 mock runtimes) + Real-Runtime Smoke Check Gate', () => {
+  test('Scenario 22: Safe Blender Production Vertical Slice end-to-end (Path 1 & Path 2 mock runtimes) + Real-Runtime Smoke Check Gate', () => {
     const specPath = path.join(ROOT, 'evals/scene-specs/product-hero-sneaker.scene-spec.json');
 
     // Run vertical slice on Path 1 (Official Blender Lab MCP)

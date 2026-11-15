@@ -1,6 +1,6 @@
 # Law: non-blender-user-language
 
-Status: Draft v0
+Status: 1.0.0
 
 ## Purpose
 Ensure user-facing outputs remain understandable for non-Blender users.
@@ -26,7 +26,7 @@ All final summaries and user-facing response templates.
 - next actions are actionable
 
 ## Good example
-“Runtime was not executed yet, so artifact status is Not Run.”
+“Runtime was not executed yet (`Runtime status: Not Run`), so no output files were created (`Artifact status: Not Produced`).”
 
 ## Bad example
 “Deferred pipeline tangent-space mismatch requires shader graph remediation.”

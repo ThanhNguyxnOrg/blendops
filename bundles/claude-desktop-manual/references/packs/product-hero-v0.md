@@ -1,6 +1,6 @@
 # product-hero-v0 pack (summary)
 
-Status: Draft v0
+Status: 1.0.0
 
 ## Included skills
 - product-hero-scene-planner
@@ -24,7 +24,7 @@ Status: Draft v0
 - Artifact status: Not Produced until evidence exists
 - No preview/render/GLB claims without evidence
 
-## Draft v0 limitations
-- Text-only dry eval done; runtime manual eval still open
-- No stable release claim
-- Runtime artifacts remain Not Run/Not Produced unless eval record states otherwise
+## Scope and runtime boundaries
+- Text-only dry eval verified; runtime manual eval remains operator-supplied
+- Published/runtime status: Not Published / Not Run unless verified in `docs/evals/`
+- Runtime artifacts remain Not Run / Not Produced unless eval record states otherwise

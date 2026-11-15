@@ -1,6 +1,6 @@
 ---
 name: blendops-help
-description: Help users and agents choose the next safe BlendOps action across skills, docs, runtime readiness, evals, packaging, and Draft v0 release boundaries.
+description: Help users and agents choose the next safe BlendOps action across skills, docs, runtime readiness, evals, packaging, and 1.0.0 release boundaries.
 ---
 
 # blendops-help
@@ -17,7 +17,7 @@ Once the user's goal is clear and workflow artifacts exist, hand off routing to 
 2. If the goal is already clear and artifacts exist, hand off immediately to `workflow-stage-router`.
 3. Otherwise, identify whether the entry need is brief/planning setup, runtime readiness, evidence verification, install/package docs, or release review.
 4. Route to the single smallest safe skill or doc.
-5. Preserve Draft v0, runtime, and artifact truth (downgrade-only, never upgrade).
+5. Preserve release, runtime, and artifact truth (downgrade-only, never upgrade).
 
 ## When to use
 
@@ -160,7 +160,7 @@ Need artifact proof?
 Need install/package docs?
   → docs/ai-agent-install-flow.md + docs/distribution-strategy.md
 Need release readiness docs?
-  → docs/release-readiness.md + docs/release-readiness-rollup-v0.md
+  → docs/release-readiness.md
 ```
 
 ## Playbooks
@@ -242,7 +242,7 @@ Name blocker and suggest the next non-runtime planning or documentation step.
 
 - Keep recommendations short and pick one primary action.
 - Defer to `workflow-stage-router` as soon as the goal is clear and artifacts exist.
-- Preserve conservative Draft v0 status and downgrade-only truth states.
+- Preserve conservative 1.0.0 status and downgrade-only truth states.
 - Treat read-only MCP inspection access as scoped smoke evidence only, never artifact evidence.
 
 ## Good examples
@@ -308,5 +308,5 @@ Why: <short reason>
 - `../../docs/skill-system.md`
 - `../../docs/runtime-stack-strategy.md`
 - `../../docs/evals/runtime-availability-checklist.md`
-- `../../docs/release-readiness-rollup-v0.md`
+- `../../docs/release-readiness.md`
 - `../../docs/distribution-strategy.md`

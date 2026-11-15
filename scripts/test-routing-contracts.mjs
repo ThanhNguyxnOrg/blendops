@@ -40,7 +40,7 @@ function loadPilotContracts() {
   ];
 }
 
-test('Phase 2 (1/7): Schema validation passes for all 4 pilot contracts and rejects malformed contracts', () => {
+test('Routing Contracts (1/7): Schema validation passes for all 4 pilot contracts and rejects malformed contracts', () => {
   const catalogSet = getCatalogSet();
   const pilotIds = ['blendops-help', 'recipe-fit-assessor', 'pack-prerequisite-checker', 'workflow-stage-router'];
 
@@ -57,7 +57,7 @@ test('Phase 2 (1/7): Schema validation passes for all 4 pilot contracts and reje
   assert.equal(opErrors.some((e) => e.includes('eval_js')), true, 'Must reject unsupported DSL operator');
 });
 
-test('Phase 2 (2/7): Precedence ladder resolves non-overlapping winners across Ranks 1..4', () => {
+test('Routing Contracts (2/7): Precedence ladder resolves non-overlapping winners across Ranks 1..4', () => {
   const contracts = loadPilotContracts();
 
   const ladderErrors = validatePrecedenceLadder(contracts);
@@ -133,7 +133,7 @@ test('Phase 2 (2/7): Precedence ladder resolves non-overlapping winners across R
   assert.equal(validatePrecedenceLadder(colliding).length > 0, true, 'Must detect duplicate precedence rank');
 });
 
-test('Phase 2 (3/7): Unknown handoff target or exclusion delegateTo fails validation', () => {
+test('Routing Contracts (3/7): Unknown handoff target or exclusion delegateTo fails validation', () => {
   const catalogSet = getCatalogSet();
   const c = structuredClone(loadPilotContract('workflow-stage-router'));
   c.handoffs.push({
@@ -151,7 +151,7 @@ test('Phase 2 (3/7): Unknown handoff target or exclusion delegateTo fails valida
   );
 });
 
-test('Phase 2 (4/7): Progression cycle detection catches linear loops while permitting non-progression edges', () => {
+test('Routing Contracts (4/7): Progression cycle detection catches linear loops while permitting non-progression edges', () => {
   const acyclicEdges = [
     { from: 'blendops-help', to: 'recipe-fit-assessor', type: 'progression' },
     { from: 'recipe-fit-assessor', to: 'pack-prerequisite-checker', type: 'progression' },
@@ -168,7 +168,7 @@ test('Phase 2 (4/7): Progression cycle detection catches linear loops while perm
   assert.equal(cycles.length > 0, true, 'Must detect cycle in progression subgraph');
 });
 
-test('Phase 2 (5/7): Retry edges require bounded maxAttempts (1..5) and structured exitCondition', () => {
+test('Routing Contracts (5/7): Retry edges require bounded maxAttempts (1..5) and structured exitCondition', () => {
   const catalogSet = getCatalogSet();
   const missingRetryPolicy = structuredClone(loadPilotContract('workflow-stage-router'));
   missingRetryPolicy.handoffs.push({
@@ -195,7 +195,7 @@ test('Phase 2 (5/7): Retry edges require bounded maxAttempts (1..5) and structur
   assert.deepEqual(err2, [], 'Bounded retry edge with maxAttempts and exitCondition must pass');
 });
 
-test('Phase 2 (6/7): SKILL.md managed section drift is detected accurately without mutating files in --check mode', () => {
+test('Routing Contracts (6/7): SKILL.md managed section drift is detected accurately without mutating files in --check mode', () => {
   const contract = loadPilotContract('blendops-help');
   const currentSkillMd = fs.readFileSync(path.join(root, 'skills', 'blendops-help', 'SKILL.md'), 'utf8');
   const expectedSkillMd = applyManagedSectionsToSkillMd(currentSkillMd, contract);
@@ -210,7 +210,7 @@ test('Phase 2 (6/7): SKILL.md managed section drift is detected accurately witho
   );
 });
 
-test('Phase 2 (7/7): Deterministic registry build produces identical checksums and honest catalog coverage metadata', () => {
+test('Routing Contracts (7/7): Deterministic registry build produces identical checksums and honest catalog coverage metadata', () => {
   const run1 = buildRegistryArtifacts(root);
   const run2 = buildRegistryArtifacts(root);
 
@@ -230,10 +230,10 @@ test('Phase 2 (7/7): Deterministic registry build produces identical checksums a
 });
 
 // ============================================================================
-// Phase 2.1 Hardening Tests (Workstreams A, B, D)
+// Routing Hardening Tests (Workstreams A, B, D)
 // ============================================================================
 
-test('Phase 2.1 (Workstream A): Draft 2020-12 JSON Schema rejects invalid nested objects, unknown properties, and invalid predicate values with exact paths', () => {
+test('Routing Hardening (Workstream A): Draft 2020-12 JSON Schema rejects invalid nested objects, unknown properties, and invalid predicate values with exact paths', () => {
   const catalogSet = getCatalogSet();
 
   // 1. Unknown nested property inside inputs.required[0]
@@ -337,7 +337,7 @@ test('Phase 2.1 (Workstream A): Draft 2020-12 JSON Schema rejects invalid nested
   );
 });
 
-test('Phase 2.1 (Workstream B): Deterministic state-space overlap detection catches goalClarity:any overlaps, duplicate conditions, and unreachable gates', () => {
+test('Routing Hardening (Workstream B): Deterministic state-space overlap detection catches goalClarity:any overlaps, duplicate conditions, and unreachable gates', () => {
   const validStates = enumerateRoutingStateSpace({ includeContradictory: false });
   const allStates = enumerateRoutingStateSpace({ includeContradictory: true });
   assert.equal(allStates.length, 16, '4-variable routing state space must have 16 total combinations');
@@ -397,7 +397,7 @@ test('Phase 2.1 (Workstream B): Deterministic state-space overlap detection catc
   );
 });
 
-test('Phase 2.1 (Workstream B): resolveRoutingWinner rejects invalid goalClarity, missing fields, and all contradictory state combinations without selecting Rank 1', () => {
+test('Routing Hardening (Workstream B): resolveRoutingWinner rejects invalid goalClarity, missing fields, and all contradictory state combinations without selecting Rank 1', () => {
   const contracts = loadPilotContracts();
 
   // 1. Invalid clarity values (including wildcard 'any', empty string, unknown string, non-string)
@@ -458,7 +458,7 @@ test('Phase 2.1 (Workstream B): resolveRoutingWinner rejects invalid goalClarity
   }
 });
 
-test('Phase 2.1 (Workstream D): --check is strictly read-only and rejected validation never writes partial or misleading registry output', () => {
+test('Routing Hardening (Workstream D): --check is strictly read-only and rejected validation never writes partial or misleading registry output', () => {
   const tmpRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-p21-test-'));
   try {
     fs.cpSync(path.join(root, 'schemas'), path.join(tmpRoot, 'schemas'), { recursive: true });

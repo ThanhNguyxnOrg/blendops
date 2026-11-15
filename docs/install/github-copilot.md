@@ -1,6 +1,6 @@
 # Install target: GitHub Copilot
 
-Status/confidence: Draft v0 candidate, linked-only/generic
+Status/confidence: 1.0.0 candidate, linked-only/generic
 
 ## Recommended near-term install mode
 

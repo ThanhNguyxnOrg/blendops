@@ -1,6 +1,6 @@
 # AI Agent Install Flow
 
-Status: Draft v0  
+Status: 1.0.0  
 Scope: universal BlendOps install/prep UX across coding agents and Claude Desktop-style chat
 
 > [!IMPORTANT]
@@ -230,7 +230,7 @@ For a static generic project-local fixture example, see [`bundles/generic-projec
 
 ## Local repository & tarball CLI vs future published `npx` registry usage
 
-Inside a local checkout of the BlendOps repository or after installing a locally packed tarball (`npm pack` -> `npm install ./blendops-0.1.0-draft.tgz`), `bin/blendops.mjs` (`blendops`) and `scripts/install-skills.mjs` are implemented for safe project-local attachment (`doctor`, `install --dry-run`, `install --write`, `rollback`), Claude Desktop export preparation (`install --target claude-desktop --out <path>`), project-local `.blendops/catalog/` queries (`catalog-search`, `catalog-resolve`, `catalog-validate`), and deterministic SceneSpec / ExecutionPlan compilation (`scene-spec-validate`, `plan-compile`, `plan-inspect`). See [installer-spec.md](./install/installer-spec.md) for the full contract:
+Inside a local checkout of the BlendOps repository or after installing a locally packed tarball (`npm pack` -> `npm install ./blendops-1.0.0.tgz`), `bin/blendops.mjs` (`blendops`) and `scripts/install-skills.mjs` are implemented for safe project-local attachment (`doctor`, `install --dry-run`, `install --write`, `rollback`), Claude Desktop export preparation (`install --target claude-desktop --out <path>`), project-local `.blendops/catalog/` queries (`catalog-search`, `catalog-resolve`, `catalog-validate`), and deterministic SceneSpec / ExecutionPlan compilation (`scene-spec-validate`, `plan-compile`, `plan-inspect`). See [installer-spec.md](./install/installer-spec.md) for the full contract:
 
 ```sh
 # Local checkout or installed tarball CLI (available now)

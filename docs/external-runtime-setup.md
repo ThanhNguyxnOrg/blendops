@@ -144,7 +144,7 @@ Both Path 1 and Path 2 expose Blender's Python API to LLM-generated code (`execu
 
 ---
 
-## Upstream MCP Runtime Compatibility & Qualification Matrix (Phase 3.2)
+## Upstream MCP Runtime Compatibility & Qualification Matrix
 
 BlendOps enforces its typed operation policies against the actual advertised tool inventories of upstream MCP servers (`registry/runtime-operations.json` and [`../schemas/runtime-qualification-report.schema.json`](../schemas/runtime-qualification-report.schema.json)):
 

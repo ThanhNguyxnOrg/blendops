@@ -1,6 +1,6 @@
 # Generic Project-Local Rollback
 
-Status: Draft v0 rollback notes  
+Status: 1.0.0 rollback notes  
 Target: generic-project
 
 ## Remove BLENDOPS.md
@@ -17,9 +17,9 @@ On PowerShell:
 Remove-Item BLENDOPS.md
 ```
 
-## Restore AGENTS.md if patched later
+## Restore AGENTS.md if patched
 
-If a future install patched `AGENTS.md`, restore the backup recorded in the install report.
+If an install patched `AGENTS.md`, restore the backup recorded in the install report.
 
 Example:
 
@@ -35,9 +35,9 @@ Copy-Item AGENTS.md.blendops-backup AGENTS.md -Force
 
 Only run the restore command if that backup file exists and the install report confirms it was created.
 
-## Remove project-local metadata if added later
+## Remove project-local metadata
 
-If a future installer creates a project-local metadata folder such as `.blendops/`, remove only the folder listed in the install report.
+If the installer creates a project-local metadata folder such as `.blendops/`, remove only the folder listed in the install report.
 
 Example:
 

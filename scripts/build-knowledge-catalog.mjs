@@ -709,7 +709,7 @@ export function buildSkillArchitectureAuditData(rootDir = DEFAULT_ROOT) {
 
   return {
     schema_version: '1.1.0',
-    audit_scope: 'phase-0-phase-1-and-phase-2-architecture-reconciliation',
+    audit_scope: 'five-layer-architecture-reconciliation',
     workflow_stage_derivation_rule: WORKFLOW_STAGE_DERIVATION_RULE,
     classification_methodology: {
       summary: `Combines explicit promoted_from_skill_refs mappings (${classificationMethodCounts.knowledge_promotion_mapping} files), rule-based governance & recipe prefix mappings (${classificationMethodCounts.rule_based_governance_and_recipe_mapping} files), rule-based path + heading inspection of skill-local operating instructions (${classificationMethodCounts.rule_based_path_and_heading_inspection} files), and verified human semantic reviews (${classificationMethodCounts.human_semantic_review} files — requires traceable reviewer, timestamp, scope, and outcome evidence).`,
@@ -767,7 +767,7 @@ export function buildSkillArchitectureAuditData(rootDir = DEFAULT_ROOT) {
 
 export function renderSkillArchitectureAuditMarkdown(auditData) {
   const lines = [
-    '# BlendOps Phase 0, Phase 1 & Phase 2 — Skill Architecture & Reference Classification Audit',
+    '# BlendOps — Skill Architecture & Reference Classification Audit',
     '',
     '> Generated deterministically by `scripts/build-knowledge-catalog.mjs`. Maps all 48 canonical skills from `registry/skills.json` and `registry/runtime-capability-policy.json`, and classifies all 151 `skills/*/references/*.md` files across the 5-layer architecture.',
     '',

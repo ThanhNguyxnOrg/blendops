@@ -1,6 +1,6 @@
 # BlendOps Packs
 
-Status: Draft v0
+Status: 1.0.0
 
 Packs compose multiple skills and shared laws into versioned bundles.
 

@@ -1,6 +1,6 @@
 # Workflow: product-hero-workflow
 
-Status: Draft v0
+Status: 1.0.0
 
 ## Trigger
 
@@ -30,8 +30,7 @@ Use this workflow when a non-Blender user asks for a product hero 3D output with
 ## Stages
 
 > [!NOTE]
-> These are workflow stages (per-run pipeline steps), not project roadmap phases.
-> Project phases live in [`TODO.md`](../../TODO.md). They are unrelated.
+> These are workflow stages (per-run pipeline steps). Project roadmap and release checks live in [`TODO.md`](../../TODO.md).
 
 ### Stage 1 — Runtime readiness gate
 - Confirm official runtime path selection.
@@ -83,7 +82,7 @@ Every run must capture:
 - selected official runtime path
 - source confidence level
 - what was verified vs what remains linked-only
-- text-only dry-eval marker when runtime is not executed (`Not Run` artifact status)
+- text-only dry-eval marker when runtime is not executed (`Runtime status: Not Run`, `Artifact status: Not Produced`)
 
 ## Final response format
 

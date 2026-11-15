@@ -18,7 +18,7 @@ Use these objective thresholds in `recipe-fit-assessor` to score whether an exis
   3. Interactive R3F/Three.js handoff is requested on top of a still-only recipe (pair with `glb-web-handoff` + `web-material-simplification.md`).
 - **Trigger Poor Fit** when:
   1. User needs full rigged character animation or photoreal architectural interior lighting while inspecting a product-hero studio pack.
-  2. Request requires multi-user real-time collaborative editing or Blender server hosting (explicitly outside BlendOps Draft v0 scope).
+  2. Request requires multi-user real-time collaborative editing or Blender server hosting (explicitly outside BlendOps 1.0.0 scope).
 
 ## Documentation Rule
 - Every `Partial` or `Poor` finding must output bulleted `[Gap] -> [Mitigation / Recommended Skill]` pairs rather than silent workarounds.

@@ -872,7 +872,7 @@ export function buildEvalArtifacts(rootDir = ROOT_DIR) {
 
   const indexObj = {
     schemaVersion: '2.0.0',
-    phase: 'phase-6-full-catalog-behavioral-evals',
+    suiteScope: 'v1.0.0-full-catalog-behavioral-evals',
     generatedBy: 'scripts/run-evals.mjs',
     coverageSummary: {
       catalogSkills: catalogIds.length,
@@ -1097,7 +1097,7 @@ function main() {
 
   if (isList) {
     const { indexObj } = buildEvalArtifacts(ROOT_DIR);
-    console.log('BlendOps Phase 6 — Full-Catalog Behavioral Evaluation Inventory');
+    console.log('BlendOps — Full-Catalog Behavioral Evaluation Inventory');
     console.log(
       `Catalog coverage: ${indexObj.coverageSummary.machineReadableSuites}/${indexObj.coverageSummary.catalogSkills} machine-readable suites (${indexObj.coverageSummary.totalCases} cases) | ${indexObj.coverageSummary.proseOnlySkillsPendingMigration} prose-only EVAL.md files pending migration`,
     );

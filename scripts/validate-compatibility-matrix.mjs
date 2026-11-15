@@ -669,7 +669,7 @@ export function verifyEvidenceRecordForTarget(rootDir, target) {
     return { ok: true, content, sectionBody: body };
   }
 
-  // Case 2: Structured Phase 7+ empirical verification report under docs/evals/
+  // Case 2: Structured per-target empirical verification report under docs/evals/
   const escapedId = String(target.id).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   const targetSecRe = new RegExp(`###\\s+Target:\\s+${escapedId}\\b([\\s\\S]*?)(?=\\r?\\n###\\s+|\\r?\\n##\\s+|$)`);
   const targetMatch = content.match(targetSecRe);

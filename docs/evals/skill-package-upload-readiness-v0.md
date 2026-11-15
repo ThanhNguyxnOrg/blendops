@@ -21,7 +21,7 @@ Date: 2026-05-02 (re-verified 2026-05-08 against current frontmatter)
 | Artifact status | Not Produced |
 | Conservative release signal | Do not treat as full Pass |
 
-**Summary:** the canonical package source shape is ready for Draft v0 upload review, but no UI upload/import, platform acceptance, publication, runtime eval, or artifact production was performed.
+**Summary:** the canonical package source shape passes structural upload-readiness review, but no UI upload/import, platform acceptance, publication, runtime eval, or artifact production was performed.
 
 ---
 
@@ -160,7 +160,7 @@ description: Blender skills pack for non-Blender users. Use for scene planning, 
 
 | Rubric outcome | Criteria |
 |---|---|
-| **Pass** | Package shape and docs are ready for Draft v0 upload review: one root `SKILL.md`, required metadata files present, flattened references present, frontmatter is minimal and trigger-friendly, and runtime/artifact truth boundaries are preserved. |
+| **Pass** | Package shape and docs are ready for upload review: one root `SKILL.md`, required metadata files present, flattened references present, frontmatter is minimal and trigger-friendly, and runtime/artifact truth boundaries are preserved. |
 | **Warn** | Package source appears upload-review-ready, but actual UI upload/import has not been manually tested, platform acceptance is not verified, and publication is Not Published. |
 | **Fail** | Multiple `SKILL.md` files, invalid or missing required frontmatter, missing key references, nested `references/skills`/`references/laws`/`references/packs` directories, or runtime/artifact/package overclaims. |
 
@@ -176,7 +176,7 @@ description: Blender skills pack for non-Blender users. Use for scene planning, 
 | No nested reference collection directories | Pass | `references/skills`, `references/laws`, and `references/packs` are absent. |
 | Frontmatter has `name` and `description` | Pass | Both keys present. |
 | Frontmatter avoids extra `version`/`status` keys | Pass | No extra `version` or `status` frontmatter keys. |
-| Reference coverage is sufficient for Draft v0 package review | Pass | Required skill, law, runtime, evidence, install, and pack summaries are present. |
+| Reference coverage is sufficient for package upload review | Pass | Required skill, law, runtime, evidence, install, and pack summaries are present. |
 | UI upload/import completed | Not Tested | No upload/import attempt was made. |
 | External platform acceptance verified | Not Verified | No platform response or acceptance evidence exists. |
 | Runtime/artifact claims avoided | Pass | Not Run/Not Produced language preserved. |
@@ -206,12 +206,12 @@ description: Blender skills pack for non-Blender users. Use for scene planning, 
 
 | Question | Result | Confidence |
 |---|---|---|
-| Is the package source structurally ready for Draft v0 upload review? | Pass | Text-only package evidence present. |
+| Is the package source structurally ready for upload review? | Pass | Text-only package evidence present. |
 | Has the package been uploaded through Claude Desktop/ChatGPT UI? | Not Tested | No upload/import attempt was made. |
 | Can this be treated as a published package or marketplace listing? | No | Publication is Not Published and Not Verified. |
 | Does this eval prove runtime readiness? | No | Runtime eval remains Not Run. |
 | Does this eval prove artifact production? | No | Artifacts remain Not Produced. |
-| Should this be treated as full release readiness? | Warn | Draft v0 limitations remain. |
+| Should this eval alone be treated as live UI upload verification? | Warn | Actual UI upload/import remains Not Tested. |
 
 ---
 
@@ -219,7 +219,7 @@ description: Blender skills pack for non-Blender users. Use for scene planning, 
 
 1. Overall verdict remains Warn because actual UI upload/import is Not Tested.
 2. `agents/openai.yaml` is target-specific metadata; acceptance and interpretation may vary by upload/import surface.
-3. Package source shape is upload-review-ready as a Draft fixture, not a published release artifact.
+3. Package source shape is upload-review-ready as a local bundle fixture, not a marketplace listing.
 4. Marketplace/package availability remains Not Published.
 5. Runtime eval remains Not Run and artifacts remain Not Produced.
 
@@ -248,4 +248,4 @@ description: Blender skills pack for non-Blender users. Use for scene planning, 
 
 ## Final verdict
 
-**Warn**: the canonical package source shape passes Draft v0 upload-readiness review, but actual Claude Desktop/ChatGPT UI upload/import is Not Tested, marketplace/package release is Not Published, runtime eval is Not Run, and artifacts are Not Produced.
+**Warn**: the canonical package source shape passes structural upload-readiness review, but actual Claude Desktop/ChatGPT UI upload/import is Not Tested, marketplace/package release is Not Published, runtime eval is Not Run, and artifacts are Not Produced.

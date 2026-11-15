@@ -1,7 +1,7 @@
 # BlendOps Laws Collection
 
 > [!NOTE]
-> Status: Draft v0. These laws are shared guardrails for installable Blender skills in `skills/` and pack manifests in `packs/`.
+> Status: 1.0.0. These laws are shared guardrails for installable Blender skills in `skills/` and pack manifests in `packs/`.
 
 ## Law index
 
@@ -25,8 +25,8 @@
 
 | Field | Value |
 |---|---|
-| Collection status | Draft v0 |
+| Collection status | 1.0.0 |
 | Runtime posture | Official-runtime-only |
 | Runtime install | Not included |
 | Runtime execution guarantee | Not claimed |
-| Promotion requirement | Review and eval evidence must be recorded before any non-draft claim |
+| Promotion requirement | Review and eval evidence must be recorded before any runtime/artifact claim |

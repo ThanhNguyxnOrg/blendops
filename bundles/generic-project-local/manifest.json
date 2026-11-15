@@ -1,10 +1,10 @@
 {
   "bundle_name": "generic-project-local",
-  "version": "0.1.0-draft",
-  "status": "fixture only / not release",
+  "version": "1.0.0",
+  "status": "1.0.0 reference fixture",
   "target": "generic-project",
   "scope": "project-local",
-  "package_status": "fixture only / not release",
+  "package_status": "local fixture / not published to marketplace",
   "global_writes": false,
   "runtime_status": "Not Run",
   "artifact_status": "Not Produced",

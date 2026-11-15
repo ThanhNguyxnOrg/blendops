@@ -1,5 +1,5 @@
 /**
- * BlendOps Phase 12 — Reusable React Three Fiber (`@react-three/fiber` + `@react-three/drei`)
+ * BlendOps — Reusable React Three Fiber (`@react-three/fiber` + `@react-three/drei`)
  * GLB Viewer Integration Example
  *
  * Designed to pair directly with a BlendOps GLB Web Handoff Manifest

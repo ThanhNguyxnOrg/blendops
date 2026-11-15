@@ -54,7 +54,7 @@ const requiredDocs = [
   'docs/install/gemini.md',
   'docs/install/antigravity.md',
   'docs/install/github-copilot.md',
-  // Phase 4 agent expansion: MCP-first agents + local LLM runners
+  // MCP-first agents and local LLM runners:
   'docs/install/cline.md',
   'docs/install/continue.md',
   'docs/install/zed.md',
@@ -62,12 +62,11 @@ const requiredDocs = [
   'docs/install/ollama.md',
   'docs/install/lm-studio.md',
   'docs/install/open-webui.md',
-  // Phase 5 final agent expansion (post-v0.5.0-draft): popular MCP-aware coding agents
+  // Additional MCP-aware coding agents:
   'docs/install/roo-code.md',
   'docs/install/windsurf.md',
   'docs/install/openhands.md',
   'docs/install/jetbrains-junie.md',
-  // Phase 5b expansion (post-v0.6.0-draft): more MCP-aware agents
   'docs/install/blackbox-ai.md',
   'docs/install/augment-code.md',
   'docs/install/aider.md',
@@ -84,7 +83,7 @@ const requiredDocs = [
   'docs/adapters/opencode.md',
   'docs/adapters/generic-root.md',
   'docs/evals/adapter-install-v0-dry-run.md',
-  'docs/evals/adapter-empirical-verification-phase-7.md',
+  'docs/evals/adapter-empirical-verification.md',
   'docs/evals/skill-package-upload-readiness-v0.md',
   'docs/knowledge-and-recipe-catalog.md',
   'docs/audits/skill-architecture-audit.md',
@@ -102,49 +101,49 @@ const requiredSkills = [
   'skills/scene-readiness/SKILL.md',
   'skills/glb-web-handoff/SKILL.md',
   'skills/plain-language-response/SKILL.md',
-  // Phase 4 process / discipline / domain skills (Superpowers + BMad inspired):
+  // Process and workflow discipline skills:
   'skills/blender-brainstorming/SKILL.md',
   'skills/blender-troubleshooting/SKILL.md',
   'skills/pre-handoff-verification/SKILL.md',
   'skills/intent-to-3d-brief-writer/SKILL.md',
   'skills/asset-discovery/SKILL.md',
   'skills/bridge-conflicts/SKILL.md',
-  // Batch 1 (post-v0.1.0-draft): Web 3D handoff deep:
+  // Web 3D handoff deep:
   'skills/mobile-glb-budget/SKILL.md',
   'skills/glb-animation-handoff/SKILL.md',
   'skills/r3f-component-plan/SKILL.md',
   'skills/preview-report/SKILL.md',
-  // Batch 2 (post-v0.1.0-draft): Quality validation deep:
+  // Quality validation deep:
   'skills/material-quality-checker/SKILL.md',
   'skills/lighting-quality-checker/SKILL.md',
   'skills/composition-quality-checker/SKILL.md',
   'skills/polycount-budget-checker/SKILL.md',
-  // Batch 3 (post-v0.2.0-draft): Domain scene planners:
+  // Domain scene planners:
   'skills/character-portrait/SKILL.md',
   'skills/environment-shot/SKILL.md',
   'skills/interior-scene/SKILL.md',
   'skills/product-grid-scene-planner/SKILL.md',
-  // Batch 4 (post-v0.2.0-draft): Process discipline:
+  // Process discipline:
   'skills/stage-gates/SKILL.md',
   'skills/done-criteria/SKILL.md',
   'skills/scope-guard/SKILL.md',
   'skills/blender-recipe-decomposer/SKILL.md',
-  // Batch 5 (post-v0.3.0-draft): Asset / sourcing:
+  // Asset / sourcing:
   'skills/asset-license-checker/SKILL.md',
   'skills/asset-style-check/SKILL.md',
   'skills/asset-fallback-strategy/SKILL.md',
   'skills/asset-library-plan/SKILL.md',
-  // Batch 6 (post-v0.3.0-draft): Color / format / output decisions:
+  // Color / format / output decisions:
   'skills/color-management-decision/SKILL.md',
   'skills/output-format-decision/SKILL.md',
   'skills/resolution-aspect-decision/SKILL.md',
   'skills/cycles-vs-eevee-decision/SKILL.md',
-  // Batch 7 (post-v0.4.0-draft): Recipe / pack expansion:
+  // Recipe / pack operations:
   'skills/recipe-fit-assessor/SKILL.md',
   'skills/pack-prerequisite-checker/SKILL.md',
   'skills/workflow-stage-router/SKILL.md',
   'skills/acceptance-criteria-builder/SKILL.md',
-  // Batch 8 (post-v0.4.0-draft): Runtime path discipline:
+  // Runtime path discipline:
   'skills/runtime-path-picker/SKILL.md',
   'skills/path-one-host-outline/SKILL.md',
   'skills/cli-appendix-job-outline/SKILL.md',
@@ -168,42 +167,42 @@ const requiredSkillEvals = [
   'skills/intent-to-3d-brief-writer/EVAL.md',
   'skills/asset-discovery/EVAL.md',
   'skills/bridge-conflicts/EVAL.md',
-  // Batch 1 (post-v0.1.0-draft): Web 3D handoff deep:
+  // Web 3D handoff deep:
   'skills/mobile-glb-budget/EVAL.md',
   'skills/glb-animation-handoff/EVAL.md',
   'skills/r3f-component-plan/EVAL.md',
   'skills/preview-report/EVAL.md',
-  // Batch 2 (post-v0.1.0-draft): Quality validation deep:
+  // Quality validation deep:
   'skills/material-quality-checker/EVAL.md',
   'skills/lighting-quality-checker/EVAL.md',
   'skills/composition-quality-checker/EVAL.md',
   'skills/polycount-budget-checker/EVAL.md',
-  // Batch 3 (post-v0.2.0-draft): Domain scene planners:
+  // Domain scene planners:
   'skills/character-portrait/EVAL.md',
   'skills/environment-shot/EVAL.md',
   'skills/interior-scene/EVAL.md',
   'skills/product-grid-scene-planner/EVAL.md',
-  // Batch 4 (post-v0.2.0-draft): Process discipline:
+  // Process discipline:
   'skills/stage-gates/EVAL.md',
   'skills/done-criteria/EVAL.md',
   'skills/scope-guard/EVAL.md',
   'skills/blender-recipe-decomposer/EVAL.md',
-  // Batch 5 (post-v0.3.0-draft): Asset / sourcing:
+  // Asset / sourcing:
   'skills/asset-license-checker/EVAL.md',
   'skills/asset-style-check/EVAL.md',
   'skills/asset-fallback-strategy/EVAL.md',
   'skills/asset-library-plan/EVAL.md',
-  // Batch 6 (post-v0.3.0-draft): Color / format / output decisions:
+  // Color / format / output decisions:
   'skills/color-management-decision/EVAL.md',
   'skills/output-format-decision/EVAL.md',
   'skills/resolution-aspect-decision/EVAL.md',
   'skills/cycles-vs-eevee-decision/EVAL.md',
-  // Batch 7 (post-v0.4.0-draft): Recipe / pack expansion:
+  // Recipe / pack operations:
   'skills/recipe-fit-assessor/EVAL.md',
   'skills/pack-prerequisite-checker/EVAL.md',
   'skills/workflow-stage-router/EVAL.md',
   'skills/acceptance-criteria-builder/EVAL.md',
-  // Batch 8 (post-v0.4.0-draft): Runtime path discipline:
+  // Runtime path discipline:
   'skills/runtime-path-picker/EVAL.md',
   'skills/path-one-host-outline/EVAL.md',
   'skills/cli-appendix-job-outline/EVAL.md',
@@ -249,42 +248,42 @@ const requiredBundleFixture = [
   'bundles/claude-desktop-manual/references/skills/pre-handoff-verification.md',
   'bundles/claude-desktop-manual/references/skills/glb-web-handoff.md',
   'bundles/claude-desktop-manual/references/skills/plain-language-response.md',
-  // Batch 1 (post-v0.1.0-draft): Web 3D handoff deep:
+  // Web 3D handoff deep:
   'bundles/claude-desktop-manual/references/skills/mobile-glb-budget.md',
   'bundles/claude-desktop-manual/references/skills/glb-animation-handoff.md',
   'bundles/claude-desktop-manual/references/skills/r3f-component-plan.md',
   'bundles/claude-desktop-manual/references/skills/preview-report.md',
-  // Batch 2 (post-v0.1.0-draft): Quality validation deep:
+  // Quality validation deep:
   'bundles/claude-desktop-manual/references/skills/material-quality-checker.md',
   'bundles/claude-desktop-manual/references/skills/lighting-quality-checker.md',
   'bundles/claude-desktop-manual/references/skills/composition-quality-checker.md',
   'bundles/claude-desktop-manual/references/skills/polycount-budget-checker.md',
-  // Batch 3 (post-v0.2.0-draft): Domain scene planners:
+  // Domain scene planners:
   'bundles/claude-desktop-manual/references/skills/character-portrait.md',
   'bundles/claude-desktop-manual/references/skills/environment-shot.md',
   'bundles/claude-desktop-manual/references/skills/interior-scene.md',
   'bundles/claude-desktop-manual/references/skills/product-grid-scene-planner.md',
-  // Batch 4 (post-v0.2.0-draft): Process discipline:
+  // Process discipline:
   'bundles/claude-desktop-manual/references/skills/stage-gates.md',
   'bundles/claude-desktop-manual/references/skills/done-criteria.md',
   'bundles/claude-desktop-manual/references/skills/scope-guard.md',
   'bundles/claude-desktop-manual/references/skills/blender-recipe-decomposer.md',
-  // Batch 5 (post-v0.3.0-draft): Asset / sourcing:
+  // Asset / sourcing:
   'bundles/claude-desktop-manual/references/skills/asset-license-checker.md',
   'bundles/claude-desktop-manual/references/skills/asset-style-check.md',
   'bundles/claude-desktop-manual/references/skills/asset-fallback-strategy.md',
   'bundles/claude-desktop-manual/references/skills/asset-library-plan.md',
-  // Batch 6 (post-v0.3.0-draft): Color / format / output decisions:
+  // Color / format / output decisions:
   'bundles/claude-desktop-manual/references/skills/color-management-decision.md',
   'bundles/claude-desktop-manual/references/skills/output-format-decision.md',
   'bundles/claude-desktop-manual/references/skills/resolution-aspect-decision.md',
   'bundles/claude-desktop-manual/references/skills/cycles-vs-eevee-decision.md',
-  // Batch 7 (post-v0.4.0-draft): Recipe / pack expansion:
+  // Recipe / pack operations:
   'bundles/claude-desktop-manual/references/skills/recipe-fit-assessor.md',
   'bundles/claude-desktop-manual/references/skills/pack-prerequisite-checker.md',
   'bundles/claude-desktop-manual/references/skills/workflow-stage-router.md',
   'bundles/claude-desktop-manual/references/skills/acceptance-criteria-builder.md',
-  // Batch 8 (post-v0.4.0-draft): Runtime path discipline:
+  // Runtime path discipline:
   'bundles/claude-desktop-manual/references/skills/runtime-path-picker.md',
   'bundles/claude-desktop-manual/references/skills/path-one-host-outline.md',
   'bundles/claude-desktop-manual/references/skills/cli-appendix-job-outline.md',
@@ -320,42 +319,42 @@ const requiredBundleFixture = [
   'bundles/skill-package/blendops/references/skill-intent-to-3d-brief-writer.md',
   'bundles/skill-package/blendops/references/skill-asset-discovery.md',
   'bundles/skill-package/blendops/references/skill-bridge-conflicts.md',
-  // Batch 1 (post-v0.1.0-draft): Web 3D handoff deep:
+  // Web 3D handoff deep:
   'bundles/skill-package/blendops/references/skill-mobile-glb-budget.md',
   'bundles/skill-package/blendops/references/skill-glb-animation-handoff.md',
   'bundles/skill-package/blendops/references/skill-r3f-component-plan.md',
   'bundles/skill-package/blendops/references/skill-preview-report.md',
-  // Batch 2 (post-v0.1.0-draft): Quality validation deep:
+  // Quality validation deep:
   'bundles/skill-package/blendops/references/skill-material-quality-checker.md',
   'bundles/skill-package/blendops/references/skill-lighting-quality-checker.md',
   'bundles/skill-package/blendops/references/skill-composition-quality-checker.md',
   'bundles/skill-package/blendops/references/skill-polycount-budget-checker.md',
-  // Batch 3 (post-v0.2.0-draft): Domain scene planners:
+  // Domain scene planners:
   'bundles/skill-package/blendops/references/skill-character-portrait.md',
   'bundles/skill-package/blendops/references/skill-environment-shot.md',
   'bundles/skill-package/blendops/references/skill-interior-scene.md',
   'bundles/skill-package/blendops/references/skill-product-grid-scene-planner.md',
-  // Batch 4 (post-v0.2.0-draft): Process discipline:
+  // Process discipline:
   'bundles/skill-package/blendops/references/skill-stage-gates.md',
   'bundles/skill-package/blendops/references/skill-done-criteria.md',
   'bundles/skill-package/blendops/references/skill-scope-guard.md',
   'bundles/skill-package/blendops/references/skill-blender-recipe-decomposer.md',
-  // Batch 5 (post-v0.3.0-draft): Asset / sourcing:
+  // Asset / sourcing:
   'bundles/skill-package/blendops/references/skill-asset-license-checker.md',
   'bundles/skill-package/blendops/references/skill-asset-style-check.md',
   'bundles/skill-package/blendops/references/skill-asset-fallback-strategy.md',
   'bundles/skill-package/blendops/references/skill-asset-library-plan.md',
-  // Batch 6 (post-v0.3.0-draft): Color / format / output decisions:
+  // Color / format / output decisions:
   'bundles/skill-package/blendops/references/skill-color-management-decision.md',
   'bundles/skill-package/blendops/references/skill-output-format-decision.md',
   'bundles/skill-package/blendops/references/skill-resolution-aspect-decision.md',
   'bundles/skill-package/blendops/references/skill-cycles-vs-eevee-decision.md',
-  // Batch 7 (post-v0.4.0-draft): Recipe / pack expansion:
+  // Recipe / pack operations:
   'bundles/skill-package/blendops/references/skill-recipe-fit-assessor.md',
   'bundles/skill-package/blendops/references/skill-pack-prerequisite-checker.md',
   'bundles/skill-package/blendops/references/skill-workflow-stage-router.md',
   'bundles/skill-package/blendops/references/skill-acceptance-criteria-builder.md',
-  // Batch 8 (post-v0.4.0-draft): Runtime path discipline:
+  // Runtime path discipline:
   'bundles/skill-package/blendops/references/skill-runtime-path-picker.md',
   'bundles/skill-package/blendops/references/skill-path-one-host-outline.md',
   'bundles/skill-package/blendops/references/skill-cli-appendix-job-outline.md',
@@ -431,7 +430,7 @@ const requiredUnofficialBridgeDisclaimers = [
   'Path 2',
   'mcp-for-blender',
   'Not yet covered by a formal BlendOps eval evidence record',
-  'Not used for Draft v0 release-readiness claims',
+  'Not used for BlendOps release-readiness claims',
   'User-managed',
   'must not be counted as an official runtime eval',
   'not a substitute for the official runtime manual eval',
@@ -955,7 +954,7 @@ export function runDocsCheck(targetRoot = root) {
     }
   }
 
-  // Link existence check (catches future doc-collection moves like Phase 2.11 cleanup).
+  // Link existence check across active markdown files.
   assertRelativeLinksExist(activeMd);
 
   // The Blender 5.1+ requirement is bound to Path 1 because the Lab MCP add-on
@@ -982,7 +981,7 @@ export function runDocsCheck(targetRoot = root) {
     }
   }
 
-  // Phase 1 (F-01): Enforce separation between Runtime status ('Not Run') and Artifact status ('Not Produced').
+  // Enforce separation between Runtime status ('Not Run') and Artifact status ('Not Produced').
   // Schema declarations must never assign 'Not Run' to 'Artifact status:', while still permitting
   // negative examples in '## Anti-patterns' that warn against using `Artifact status: Not Run`.
   for (const skillFile of requiredSkills) {
@@ -1005,7 +1004,7 @@ export function runDocsCheck(targetRoot = root) {
     }
   }
 
-  // Phase 1 (F-08): Ensure docs/adapter-registry.md stays synchronized with all install targets.
+  // Ensure docs/adapter-registry.md stays synchronized with all install targets.
   const adapterRegistryTxt = fs.readFileSync(
     path.join(targetRoot, 'docs/adapter-registry.md'),
     'utf8',
@@ -1024,7 +1023,7 @@ export function runDocsCheck(targetRoot = root) {
     }
   }
 
-  // Phase 3 E3 & E4: Validate runtime-capability-policy.json and compatibility-matrix.json
+  // Validate runtime-capability-policy.json and compatibility-matrix.json
   const capPolicyPath = path.join(targetRoot, 'registry/runtime-capability-policy.json');
   if (!fs.existsSync(capPolicyPath)) {
     errors.push('Missing registry/runtime-capability-policy.json');
@@ -1051,7 +1050,7 @@ export function runDocsCheck(targetRoot = root) {
     }
   }
 
-  // Phase 8 (F-09): Verify deterministic bundle reference summaries (96 generated files + manifest sync)
+  // Verify deterministic bundle reference summaries (96 generated files + manifest sync)
   const bundleSummaryCheck = checkBundleReferenceSummaries(targetRoot);
   if (!bundleSummaryCheck.ok) {
     for (const e of bundleSummaryCheck.errors) {
@@ -1059,7 +1058,7 @@ export function runDocsCheck(targetRoot = root) {
     }
   }
 
-  // Phase 14 (Phase 0 + Phase 1): Validate knowledge & recipe catalogs and retrieval evaluation suite
+  // Validate knowledge & recipe catalogs and retrieval evaluation suite
   const catalogSourcesPath = path.join(targetRoot, 'registry/knowledge-sources.json');
   if (fs.existsSync(catalogSourcesPath)) {
     const catValidation = validateKnowledgeAndRecipeCatalogs(targetRoot);

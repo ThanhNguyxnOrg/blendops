@@ -1,6 +1,6 @@
 # Multi-Agent Install Strategy
 
-Status: Draft v0 strategy  
+Status: Release 1.0.0 strategy  
 Scope: BlendOps skill/law/pack installation, not Blender runtime installation
 
 > [!IMPORTANT]
@@ -33,7 +33,7 @@ BlendOps should plan for these targets while preserving confidence labels.
 | Claude Desktop Personal Skills | User-managed skill import through Claude Desktop UI when available. Separate from connector setup. |
 | Claude Desktop Blender Connector | Official runtime bridge path for Claude Desktop users. Separate from Personal Skills. |
 | Claude Code | Coding-agent target; project-local or tool-native install path should be verified per adapter. |
-| OpenCode | Candidate for plugin-style install later; current Draft v0 should remain project-local or documented until verified. |
+| OpenCode | Candidate for plugin-style install; remains project-local or documented until native path is verified. |
 | Cursor | Candidate for project/rules or tool-native attachment; verify before writing tool-specific paths. |
 | Codex CLI/App | Candidate for project instruction or plugin-style attachment; do not invent paths. |
 | Gemini CLI | Candidate future adapter; mark linked-only or not researched until verified. |
@@ -143,33 +143,33 @@ The primary near-term UX is a user-managed paste prompt: the user copies [AI Age
 
 This is an install-layer action only. It does not install Blender, configure runtime bridges, run runtime evals, or create preview/render/GLB artifacts. Unknown or mixed targets should use the generic project-local fallback or ask the user before writing.
 
-Per-target guidance lives in [docs/install/](./install/README.md). Future installer behavior is specified in [docs/install/installer-spec.md](./install/installer-spec.md) and remains unimplemented.
+Per-target guidance lives in [docs/install/](./install/README.md). Local repository & tarball installer behavior is specified in [docs/install/installer-spec.md](./install/installer-spec.md) (`scripts/install-skills.mjs` and `bin/blendops.mjs`, `"private": true`).
 
 ---
 
 ## Automation levels
 
-| Level | Meaning | BlendOps Draft v0 posture |
+| Level | Meaning | BlendOps v1.0.0 posture |
 |---|---|---|
 | Manual UI import | User imports or attaches skill content through an app UI. | Allowed when user-managed and caveated. |
-| Project-local file install | Files copied or referenced inside a project. | Default near-term route. |
+| Project-local file install | Files copied or referenced inside a project. | Default route. |
 | Tool-native plugin install | Tool-specific plugin/config path installs BlendOps content. | Future, only after verified. |
 | Marketplace/plugin install | Listed package or marketplace item. | Future, do not claim now. |
 | Docs-only/reference | No files installed; user reads or links docs. | Safe fallback. |
 
 ---
 
-## Future packaging phases
+## Packaging roadmap
 
-| Phase | Goal | Completion signal |
+| Stage | Goal | Completion signal |
 |---|---|---|
-| Phase A | Project-local generic package | Reversible copy/reference flow verified in disposable projects. |
-| Phase B | Claude Desktop Personal Skill bundle | User-managed import package tested without claiming connector/runtime success. |
-| Phase C | OpenCode installation options research | Source-backed install/config path and rollback verified before any tool-native claim. |
-| Phase D | Cursor/Codex/Gemini adapters | Each adapter has confidence labels, install scope, verification, and rollback. |
-| Phase E | Marketplace/package automation if justified | Published/listed package exists and install evidence is recorded. |
+| Stage A | Project-local generic package | Reversible copy/reference flow verified in disposable projects. |
+| Stage B | Claude Desktop Personal Skill bundle | User-managed import package tested without claiming connector/runtime success. |
+| Stage C | OpenCode installation options research | Source-backed install/config path and rollback verified before any tool-native claim. |
+| Stage D | Cursor/Codex/Gemini adapters | Each adapter has confidence labels, install scope, verification, and rollback. |
+| Stage E | Marketplace/package automation if justified | Published/listed package exists and install evidence is recorded. |
 
-Do not mark a phase complete until its evidence exists.
+Do not mark a stage complete until its evidence exists.
 
 ---
 

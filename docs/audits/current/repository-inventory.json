@@ -1,8 +1,8 @@
 {
   "schemaVersion": "1.0.0",
-  "auditPhase": "phase-13-current",
+  "auditPhase": "v1.0.0-current",
   "summary": {
-    "totalTrackedFiles": 696,
+    "totalTrackedFiles": 687,
     "npmPackageIncludedFiles": 484,
     "generatedTrackedFiles": 110,
     "canonicalSkillsCount": 48,
@@ -12,9 +12,9 @@
     "installTargetsCount": 26,
     "exactDuplicateGroupsCount": 1,
     "classificationCounts": {
-      "configuration": 33,
+      "configuration": 35,
       "documentation": 84,
-      "historical_record": 26,
+      "historical_record": 15,
       "distribution_artifact": 15,
       "canonical_source": 327,
       "generated_artifact": 110,
@@ -22,12 +22,12 @@
     },
     "subsystemCounts": {
       "repository-governance": 4,
-      "github-governance-ci": 9,
+      "github-governance-ci": 11,
       "documentation-governance": 8,
       "cli-distribution": 1,
       "bundles-and-packaging": 130,
-      "product-and-target-docs": 68,
-      "audits-and-provenance": 20,
+      "product-and-target-docs": 67,
+      "audits-and-provenance": 10,
       "runtime-and-adapter-evals": 13,
       "glb-web-handoff-toolkit": 3,
       "knowledge-and-recipe-catalog": 5,
@@ -44,10 +44,10 @@
     },
     "topLevelCounts": {
       "(root)": 15,
-      ".github": 9,
+      ".github": 11,
       "bin": 1,
       "bundles": 130,
-      "docs": 105,
+      "docs": 94,
       "evals": 62,
       "laws": 5,
       "packs": 2,
@@ -58,10 +58,10 @@
       "skills": 297
     },
     "referenceIntegrity": {
-      "markdownFiles": 491,
+      "markdownFiles": 484,
       "jsModules": 38,
       "schemas": 16,
-      "workflows": 2
+      "workflows": 4
     }
   },
   "rootPolicy": {
@@ -135,8 +135,14 @@
         "rationale": "Self-contained law reference copies inside the two offline upload bundles so each bundle remains portable when extracted standalone."
       }
     ],
-    "deletedObsoleteFilesInPhase13": [],
-    "deletionPolicyNote": "Zero tracked files were deleted in Phase 13 because all 651 baseline tracked files + Phase 13 governance/inventory/test additions serve active runtime, skill, bundle, CI, or historical audit provenance roles."
+    "archivedDevelopmentSnapshotsRemoved": [
+      "docs/audits/phase-0",
+      "docs/audits/phase-2",
+      "docs/audits/phase-2.1",
+      "docs/audits/phase-3",
+      "docs/release-readiness-rollup-v0.md"
+    ],
+    "retentionPolicyNote": "All build-time draft phase directories and redundant rollup snapshots were removed for the 1.0.0 release; every remaining tracked file serves an active runtime, skill, bundle, CI, documentation, or current audit role."
   },
   "files": [
     {
@@ -275,6 +281,36 @@
       "sha256": "5e2ea5c9558920ad020f5a872208c61448b7f56eb0efda1a152eff7de5f606d0"
     },
     {
+      "path": ".github/workflows/agent-pr-signal.yml",
+      "fileType": ".yml",
+      "classification": "configuration",
+      "purpose": "GitHub Actions CI/CD and repository automation workflow definition",
+      "owningSubsystem": "github-governance-ci",
+      "includedInNpmPackage": false,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 2638,
+      "sha256": "017a98b7c57320ba167187027df3909d5c1834a53704b0eb1cbce454e3468817"
+    },
+    {
+      "path": ".github/workflows/agent-pr-worker.yml",
+      "fileType": ".yml",
+      "classification": "configuration",
+      "purpose": "GitHub Actions CI/CD and repository automation workflow definition",
+      "owningSubsystem": "github-governance-ci",
+      "includedInNpmPackage": false,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 1526,
+      "sha256": "332c57ca02e51c736431cb92e635493abdce9502b5e23c69de4ecf330a544a21"
+    },
+    {
       "path": ".github/workflows/ci.yml",
       "fileType": ".yml",
       "classification": "configuration",
@@ -286,8 +322,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 589,
-      "sha256": "ac17f1002174ea3c4bc5682cb9bd076416b231dcb02c8fcbcfff3523fb016d2c"
+      "byteSize": 562,
+      "sha256": "391335d8a887f478d59449616bcaf5b88fcc9efa0ca7e342cb8c5ca4cd890bf2"
     },
     {
       "path": ".github/workflows/docs.yml",
@@ -301,8 +337,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 5275,
-      "sha256": "1c224c680b2c2d4ef770d16a5aa5d57990a169eba2b67e5ef20d2a20ff3617f8"
+      "byteSize": 5272,
+      "sha256": "369756d83cd42707b0b37fc31e878e3992caafe84894170ed5c500e9d317b741"
     },
     {
       "path": ".gitignore",
@@ -338,7 +374,7 @@
       "path": "CHANGELOG.md",
       "fileType": ".md",
       "classification": "historical_record",
-      "purpose": "Chronological release and milestone changelog across Draft v0 and Phases 10–13",
+      "purpose": "Chronological release and milestone changelog for BlendOps",
       "owningSubsystem": "documentation-governance",
       "includedInNpmPackage": true,
       "referencedByCi": true,
@@ -346,8 +382,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 7616,
-      "sha256": "689437f6e01fe28421a22281739859c478eaa875c5baca7437f5aabc06a8b368"
+      "byteSize": 4714,
+      "sha256": "e260622f9f1dd4644b9cb18003e5594a33c028d0efd093770da5c0bf7e7590ba"
     },
     {
       "path": "CODE_OF_CONDUCT.md",
@@ -376,8 +412,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 6659,
-      "sha256": "fcd6ef89d9a56df2838c4f3fa6fc593c70e8794338b9499eae4995c23e863ab2"
+      "byteSize": 6651,
+      "sha256": "1a523af1ffce01f7c9c110629e4d8f0ac9e2dd96eac390f8ac4ddc2df91a0543"
     },
     {
       "path": "LICENSE",
@@ -406,8 +442,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 16835,
-      "sha256": "263fa3d5a6f45b9f65f753fc9777cbdd27f16cfb0788e4b38a24a4b891fed7d8"
+      "byteSize": 16846,
+      "sha256": "5759d13352fd86088efb0442131576262ada1c31119617ef19dbe3a9c4b8cf41"
     },
     {
       "path": "SECURITY.md",
@@ -451,8 +487,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 30881,
-      "sha256": "294677c0e97728d9b4708b12b5f635dbd1511e7e5ed9234c37b6b4c4a2b25dd8"
+      "byteSize": 11195,
+      "sha256": "c740a45f0decc9c677df07f905d86634dd6839b42b7458c2b5a4d3e847483979"
     },
     {
       "path": "bin/blendops.mjs",
@@ -481,8 +517,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 4617,
-      "sha256": "53b6be55d1d37b9da9d51cb178a33902b48589ef74d1d4b862c3ff6bb52654e8"
+      "byteSize": 4597,
+      "sha256": "4d0d086e88c946eb955caadd31edad83eac6f281ac61bdc99309bab4070a67ed"
     },
     {
       "path": "bundles/claude-desktop-manual/IMPORT_STEPS.md",
@@ -496,8 +532,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 2146,
-      "sha256": "f9f27881c0e7910ee36ddf153242f136aed9cb4b0e96c7bea79a33303e3199c4"
+      "byteSize": 2143,
+      "sha256": "ce2b281863041b4ce4b338787790752fd55d75c76c88000e8acd2a57281e528e"
     },
     {
       "path": "bundles/claude-desktop-manual/INSTALL_REPORT_TEMPLATE.md",
@@ -511,8 +547,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 310,
-      "sha256": "a2ee87ff293fc36ebc8f36efa4aed20ccbaea52aada7671844d1fde168d9affe"
+      "byteSize": 307,
+      "sha256": "f26de15edfea7bb4dd771b86969e51b53e32879e329966afdabe6baa7ebbfdb0"
     },
     {
       "path": "bundles/claude-desktop-manual/README.md",
@@ -526,8 +562,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 3339,
-      "sha256": "7affedce23a4e160e4ba993539e8fe7584c6196f8f4b18afabca2ba676c4fa7a"
+      "byteSize": 3331,
+      "sha256": "40d0413894db0934c3427570df8ae1bda5c2d5e7a735e8ad8993bb01f7451fb7"
     },
     {
       "path": "bundles/claude-desktop-manual/SKILL.md",
@@ -556,8 +592,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 11208,
-      "sha256": "c9a48d93e106e4b64c9cdaed83861e8ea46625a8ea91be65067367a7db654b1b"
+      "byteSize": 11227,
+      "sha256": "715857202ed2f32d454db5a779139590fc6b5f3e467ea21d57a0b466d7c4596f"
     },
     {
       "path": "bundles/claude-desktop-manual/references/evidence-rules.md",
@@ -661,8 +697,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 756,
-      "sha256": "71eb932daa177b0a2d6fd8a65914a045530bd9d42683612edd1c9d183e999497"
+      "byteSize": 841,
+      "sha256": "9d771d7923ad9a91a782880a31d04e759a59ae3fcee0834a7738e7bccdf5f78f"
     },
     {
       "path": "bundles/claude-desktop-manual/references/runtime-stacks.md",
@@ -841,8 +877,8 @@
       "isGenerated": true,
       "generatorScript": "scripts/generate-bundle-reference-summaries.mjs",
       "safeToMoveOrRemove": false,
-      "byteSize": 7362,
-      "sha256": "c9046133619b40f6ffb876eedb3aee9f20d2623198c6aacf244b377a1f0f7b5d"
+      "byteSize": 7361,
+      "sha256": "c858ed9ecc72bf200cf9dad6344e3d55840e2c2d3a4d13d88dca2e941552fae9"
     },
     {
       "path": "bundles/claude-desktop-manual/references/skills/bridge-conflicts.md",
@@ -1426,8 +1462,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 3502,
-      "sha256": "52eac34999c4be111ffd74409dbcfe0ca52b5f58e7957d1283dba4dca9cc73ca"
+      "byteSize": 3499,
+      "sha256": "d6f318e5fe6d5a1efe3385659870f7a695ace23025a104456fd9e0aec693a26b"
     },
     {
       "path": "bundles/generic-project-local/INSTALL_REPORT_TEMPLATE.md",
@@ -1441,8 +1477,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 1428,
-      "sha256": "7e1680a3f9e514417b63509e9773f2a955663942628001acc2dd37c8a2182c38"
+      "byteSize": 1425,
+      "sha256": "1a66917d9e7f29bf046590821cdf8c702fb560535c54dd6d2c36d8a953880016"
     },
     {
       "path": "bundles/generic-project-local/README.md",
@@ -1456,8 +1492,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 2651,
-      "sha256": "c1cdcf122fb685b7db4ddffd0b9853b4f31ca922b5bfdf57f85d6e51649b0a60"
+      "byteSize": 2711,
+      "sha256": "4930f233f2840af92c94a4f07528adac13ba499d7407c8db8b371ead01a3c39b"
     },
     {
       "path": "bundles/generic-project-local/ROLLBACK.md",
@@ -1471,8 +1507,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 1497,
-      "sha256": "9dbf43af7ed41ac40898871ab064f2c0a7fad840daebc320d7710b9fd66c1403"
+      "byteSize": 1462,
+      "sha256": "faa69cf9e3a86a05a9398d4b4bbcfe480f61cef5649f6ff7157ad64a9cf0a668"
     },
     {
       "path": "bundles/generic-project-local/manifest.json",
@@ -1486,8 +1522,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 2104,
-      "sha256": "02b5167624a44bf796f93d2c80de753445dd80b24232c8285869c32186f25c64"
+      "byteSize": 2113,
+      "sha256": "27c906a1fb9791a54cf034dbd9287995083d87cb95c511562a3c46002a1a26ca"
     },
     {
       "path": "bundles/skill-package/README.md",
@@ -1501,8 +1537,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 3022,
-      "sha256": "8fd23214a2e7d2141b15ec1f76bd03c9f884499be0e4a8da39cc1cbde784aaa9"
+      "byteSize": 3019,
+      "sha256": "252417df5e9767059564912518a6d4445f28359dacf7ea2c5b748ea4256284c6"
     },
     {
       "path": "bundles/skill-package/blendops/LICENSE.txt",
@@ -1546,8 +1582,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 2425,
-      "sha256": "3e82fe955e904ce8c53edc4c2ae6a8da58221786ccdb900375cf0ce6fbbbb77f"
+      "byteSize": 2422,
+      "sha256": "b1f9e2d496da9ab42bd6ef46963e88e96305e9536ba719b672079824ca327c9c"
     },
     {
       "path": "bundles/skill-package/blendops/agents/openai.yaml",
@@ -1666,8 +1702,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 587,
-      "sha256": "9cc84cd3ea94d6939a2ab454ff3da5be309f53ee4022aca9bd8cb8c78423db4b"
+      "byteSize": 617,
+      "sha256": "95b8bda8279cf1ca8bb3152b1bb966065c613cdfb3da56d4adcae2da54dee948"
     },
     {
       "path": "bundles/skill-package/blendops/references/runtime-stacks.md",
@@ -1831,8 +1867,8 @@
       "isGenerated": true,
       "generatorScript": "scripts/generate-bundle-reference-summaries.mjs",
       "safeToMoveOrRemove": false,
-      "byteSize": 7054,
-      "sha256": "091b3185f5968baef81b46728d773eb20ae9a6b00baf9b54c7b6a63a8d9c2d28"
+      "byteSize": 7053,
+      "sha256": "8f1caa4f1eed932f5653b706a17fb0d8505fe52ac442aa757819351e4c9dc268"
     },
     {
       "path": "bundles/skill-package/blendops/references/skill-bridge-conflicts.md",
@@ -2431,8 +2467,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 21690,
-      "sha256": "c4ae64d96231eb72ae807bdb8235a2cec3f28762f2c3c1c32f2dd723c9bca99d"
+      "byteSize": 21522,
+      "sha256": "59a98f2459314cb575d5185f845d4346d040f90c6eec455973a506d42bef129e"
     },
     {
       "path": "docs/adapter-registry.md",
@@ -2446,8 +2482,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 8335,
-      "sha256": "bbcea5890071e704fa5aa0a1b3b918015460b88014eb2e4df83ba530095eac28"
+      "byteSize": 8242,
+      "sha256": "69b2d88ee3c64f337d0cd8efd1f6077f880667d92f95f08b59969cd0925e0511"
     },
     {
       "path": "docs/adapters/README.md",
@@ -2461,8 +2497,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 2699,
-      "sha256": "d4febba4f0a5edb0111847b4b2b066beb09fd17191ec25b70fef2510d29321c6"
+      "byteSize": 2672,
+      "sha256": "e3205e048f303c533c12a3d653bf7d2a535b9b24bc0d1a8ed5c222e8cd215d5c"
     },
     {
       "path": "docs/adapters/adapter-template.md",
@@ -2491,8 +2527,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 1665,
-      "sha256": "07f34941d34163905c3895dc3221da147a8fcc0f8f3318444229abd2c3f62fc1"
+      "byteSize": 1646,
+      "sha256": "4c8f6e610e0c4fd1d8c6af021bcad3e138c7faefa7aff85472d705968b365fb8"
     },
     {
       "path": "docs/adapters/claude-code.md",
@@ -2506,8 +2542,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 1905,
-      "sha256": "55985c17c1d12f91c7e8f304957ea6990db36846ab3a04922727e67dfecc36bf"
+      "byteSize": 1886,
+      "sha256": "5d56a81aa9a2b5893d2e82b83e982b71e169725d61f866232827baa2a20d665c"
     },
     {
       "path": "docs/adapters/codex.md",
@@ -2521,8 +2557,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 1206,
-      "sha256": "02cdc8b23dd8dcd9d0f6bc42b1c4b2970049434d62305bd45bab788858a9ee19"
+      "byteSize": 1187,
+      "sha256": "2d081471b5a505c1d19be175fd44518e4886ddc6e884ab4e5f5b2624c73ba7f2"
     },
     {
       "path": "docs/adapters/cursor.md",
@@ -2536,8 +2572,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 1249,
-      "sha256": "eb7f558afc7936fdfd7a34a0e058e6a0fde2af40d64773a595ca6f0958003d60"
+      "byteSize": 1230,
+      "sha256": "a01b6349a60d1fd8462fd8d60ecdf90817f7d7134b0d84b52253c4f5ea1fa281"
     },
     {
       "path": "docs/adapters/generic-root.md",
@@ -2551,8 +2587,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 1544,
-      "sha256": "15be58feaa5c644e9300ee3929dcd763f58efb77fff9533314c5c32095e77117"
+      "byteSize": 1525,
+      "sha256": "1d7ac15caeba0ab7290dcb106228dff3b349fd6923d490e773a732c22c185ba8"
     },
     {
       "path": "docs/adapters/opencode.md",
@@ -2566,8 +2602,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 1220,
-      "sha256": "9bee040d15aad18987f54ca7ebbe1343da023961c6872ff7fcf0399979d5400a"
+      "byteSize": 1201,
+      "sha256": "678f568c48dd1e5dc6840f5bdd13f9d84d1769a705d9adb44f637ae7b7881f09"
     },
     {
       "path": "docs/ai-agent-install-flow.md",
@@ -2581,8 +2617,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 15117,
-      "sha256": "209a9a243cf9b356b5d2ac4f8923885febc26baeba8b3a0156a2dde1f3290e2e"
+      "byteSize": 15108,
+      "sha256": "1d9c2bc8b82116fa830775a72adeb73e63858078860249a4b18054916971e9e5"
     },
     {
       "path": "docs/ai-agent-quickstart.md",
@@ -2611,8 +2647,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 20653,
-      "sha256": "32f59905a660e54414272cf45d3f95717fe15faf31926bdab8eeb486f024ef90"
+      "byteSize": 20560,
+      "sha256": "411c75429b0f0074a4972089458255604116f2700b7b0ea8b23bf4ae69265b54"
     },
     {
       "path": "docs/audits/audited-inputs.manifest.json",
@@ -2626,14 +2662,14 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 3504,
-      "sha256": "ced6faf18e191987caa25a11e60d7b0bf408b0ec5d5de6ca8b16c8af929b904c"
+      "byteSize": 3532,
+      "sha256": "ac8054ac6433a54c4f00c80c7b1d0ea1d6fa06970b857e79071a1a7e5e626177"
     },
     {
       "path": "docs/audits/current/README.md",
       "fileType": ".md",
       "classification": "generated_artifact",
-      "purpose": "Deterministically generated current-phase audit artifact (README.md)",
+      "purpose": "Deterministically generated current-release audit artifact (README.md)",
       "owningSubsystem": "audits-and-provenance",
       "includedInNpmPackage": false,
       "referencedByCi": true,
@@ -2648,7 +2684,7 @@
       "path": "docs/audits/current/eval-inventory.json",
       "fileType": ".json",
       "classification": "generated_artifact",
-      "purpose": "Deterministically generated current-phase audit artifact (eval-inventory.json)",
+      "purpose": "Deterministically generated current-release audit artifact (eval-inventory.json)",
       "owningSubsystem": "audits-and-provenance",
       "includedInNpmPackage": false,
       "referencedByCi": true,
@@ -2663,7 +2699,7 @@
       "path": "docs/audits/current/findings.json",
       "fileType": ".json",
       "classification": "generated_artifact",
-      "purpose": "Deterministically generated current-phase audit artifact (findings.json)",
+      "purpose": "Deterministically generated current-release audit artifact (findings.json)",
       "owningSubsystem": "audits-and-provenance",
       "includedInNpmPackage": false,
       "referencedByCi": true,
@@ -2678,7 +2714,7 @@
       "path": "docs/audits/current/repository-inventory.json",
       "fileType": ".json",
       "classification": "generated_artifact",
-      "purpose": "Deterministically generated current-phase audit artifact (repository-inventory.json)",
+      "purpose": "Deterministically generated current-release audit artifact (repository-inventory.json)",
       "owningSubsystem": "audits-and-provenance",
       "includedInNpmPackage": false,
       "referencedByCi": true,
@@ -2693,7 +2729,7 @@
       "path": "docs/audits/current/scorecard.json",
       "fileType": ".json",
       "classification": "generated_artifact",
-      "purpose": "Deterministically generated current-phase audit artifact (scorecard.json)",
+      "purpose": "Deterministically generated current-release audit artifact (scorecard.json)",
       "owningSubsystem": "audits-and-provenance",
       "includedInNpmPackage": false,
       "referencedByCi": true,
@@ -2708,7 +2744,7 @@
       "path": "docs/audits/current/skill-inventory.json",
       "fileType": ".json",
       "classification": "generated_artifact",
-      "purpose": "Deterministically generated current-phase audit artifact (skill-inventory.json)",
+      "purpose": "Deterministically generated current-release audit artifact (skill-inventory.json)",
       "owningSubsystem": "audits-and-provenance",
       "includedInNpmPackage": false,
       "referencedByCi": true,
@@ -2723,7 +2759,7 @@
       "path": "docs/audits/current/verification-manifest.json",
       "fileType": ".json",
       "classification": "generated_artifact",
-      "purpose": "Deterministically generated current-phase audit artifact (verification-manifest.json)",
+      "purpose": "Deterministically generated current-release audit artifact (verification-manifest.json)",
       "owningSubsystem": "audits-and-provenance",
       "includedInNpmPackage": false,
       "referencedByCi": true,
@@ -2733,156 +2769,6 @@
       "safeToMoveOrRemove": false,
       "byteSize": 0,
       "sha256": "dynamic-current-audit-artifact"
-    },
-    {
-      "path": "docs/audits/phase-0/README.md",
-      "fileType": ".md",
-      "classification": "historical_record",
-      "purpose": "Immutable historical phase audit snapshot (docs/audits/phase-0/README.md)",
-      "owningSubsystem": "audits-and-provenance",
-      "includedInNpmPackage": false,
-      "referencedByCi": true,
-      "referencedByOtherFiles": true,
-      "isGenerated": false,
-      "generatorScript": null,
-      "safeToMoveOrRemove": false,
-      "byteSize": 2635,
-      "sha256": "a0f826c6c99a92f29786b16ef3bcab9963c831993cc48434a3974b4f339ef4ce"
-    },
-    {
-      "path": "docs/audits/phase-0/baseline-scorecard.json",
-      "fileType": ".json",
-      "classification": "historical_record",
-      "purpose": "Immutable historical phase audit snapshot (docs/audits/phase-0/baseline-scorecard.json)",
-      "owningSubsystem": "audits-and-provenance",
-      "includedInNpmPackage": false,
-      "referencedByCi": true,
-      "referencedByOtherFiles": true,
-      "isGenerated": false,
-      "generatorScript": null,
-      "safeToMoveOrRemove": false,
-      "byteSize": 14215,
-      "sha256": "51aaa5ec8f64f6c87d2d8e341fd9fb738cb2a95089284babf580c4eefed8115c"
-    },
-    {
-      "path": "docs/audits/phase-0/eval-inventory.json",
-      "fileType": ".json",
-      "classification": "historical_record",
-      "purpose": "Immutable historical phase audit snapshot (docs/audits/phase-0/eval-inventory.json)",
-      "owningSubsystem": "audits-and-provenance",
-      "includedInNpmPackage": false,
-      "referencedByCi": true,
-      "referencedByOtherFiles": true,
-      "isGenerated": false,
-      "generatorScript": null,
-      "safeToMoveOrRemove": false,
-      "byteSize": 39114,
-      "sha256": "79f22bc785baa897e4a4ea6d442e84bf7a5ee1dafb9ab345779d526612c89791"
-    },
-    {
-      "path": "docs/audits/phase-0/findings-and-roadmap.md",
-      "fileType": ".md",
-      "classification": "historical_record",
-      "purpose": "Immutable historical phase audit snapshot (docs/audits/phase-0/findings-and-roadmap.md)",
-      "owningSubsystem": "audits-and-provenance",
-      "includedInNpmPackage": false,
-      "referencedByCi": true,
-      "referencedByOtherFiles": true,
-      "isGenerated": false,
-      "generatorScript": null,
-      "safeToMoveOrRemove": false,
-      "byteSize": 14764,
-      "sha256": "678cd2a26c1782b576c0b426dc039fc86355a282e684f560b0fcfc38779e5f03"
-    },
-    {
-      "path": "docs/audits/phase-0/handoff-inventory.json",
-      "fileType": ".json",
-      "classification": "historical_record",
-      "purpose": "Immutable historical phase audit snapshot (docs/audits/phase-0/handoff-inventory.json)",
-      "owningSubsystem": "audits-and-provenance",
-      "includedInNpmPackage": false,
-      "referencedByCi": true,
-      "referencedByOtherFiles": true,
-      "isGenerated": false,
-      "generatorScript": null,
-      "safeToMoveOrRemove": false,
-      "byteSize": 142215,
-      "sha256": "5780445751f53e526c26babf4618ad43b501d887cc3b61635b66d5ccd04f1ccd"
-    },
-    {
-      "path": "docs/audits/phase-0/routing-overlap.md",
-      "fileType": ".md",
-      "classification": "historical_record",
-      "purpose": "Immutable historical phase audit snapshot (docs/audits/phase-0/routing-overlap.md)",
-      "owningSubsystem": "audits-and-provenance",
-      "includedInNpmPackage": false,
-      "referencedByCi": true,
-      "referencedByOtherFiles": true,
-      "isGenerated": false,
-      "generatorScript": null,
-      "safeToMoveOrRemove": false,
-      "byteSize": 9973,
-      "sha256": "08be40a618ce38aaaa36cd7c18de5f0438b13081bfb0b7997c8a89af24ef969d"
-    },
-    {
-      "path": "docs/audits/phase-0/skill-inventory.json",
-      "fileType": ".json",
-      "classification": "historical_record",
-      "purpose": "Immutable historical phase audit snapshot (docs/audits/phase-0/skill-inventory.json)",
-      "owningSubsystem": "audits-and-provenance",
-      "includedInNpmPackage": false,
-      "referencedByCi": true,
-      "referencedByOtherFiles": true,
-      "isGenerated": false,
-      "generatorScript": null,
-      "safeToMoveOrRemove": false,
-      "byteSize": 127011,
-      "sha256": "b3c982757b0b07a623f0da32667edcfa3c0675d7a31335c51214b67710c0b2e8"
-    },
-    {
-      "path": "docs/audits/phase-2.1/README.md",
-      "fileType": ".md",
-      "classification": "historical_record",
-      "purpose": "Immutable historical phase audit snapshot (docs/audits/phase-2.1/README.md)",
-      "owningSubsystem": "audits-and-provenance",
-      "includedInNpmPackage": false,
-      "referencedByCi": true,
-      "referencedByOtherFiles": true,
-      "isGenerated": false,
-      "generatorScript": null,
-      "safeToMoveOrRemove": false,
-      "byteSize": 11436,
-      "sha256": "8661c0ef5feebfa113ee4e7a7e154bd198243f37f98dbfa855321322f0d1537b"
-    },
-    {
-      "path": "docs/audits/phase-2/README.md",
-      "fileType": ".md",
-      "classification": "historical_record",
-      "purpose": "Immutable historical phase audit snapshot (docs/audits/phase-2/README.md)",
-      "owningSubsystem": "audits-and-provenance",
-      "includedInNpmPackage": false,
-      "referencedByCi": true,
-      "referencedByOtherFiles": true,
-      "isGenerated": false,
-      "generatorScript": null,
-      "safeToMoveOrRemove": false,
-      "byteSize": 4496,
-      "sha256": "7d128ab4660d78da9cffe106389f806a1074117f2b22cda091484b7befa080ed"
-    },
-    {
-      "path": "docs/audits/phase-3/README.md",
-      "fileType": ".md",
-      "classification": "historical_record",
-      "purpose": "Immutable historical phase audit snapshot (docs/audits/phase-3/README.md)",
-      "owningSubsystem": "audits-and-provenance",
-      "includedInNpmPackage": false,
-      "referencedByCi": true,
-      "referencedByOtherFiles": true,
-      "isGenerated": false,
-      "generatorScript": null,
-      "safeToMoveOrRemove": false,
-      "byteSize": 12759,
-      "sha256": "3f948c44cfe2ad95e2683143432b74fba9c26c9348da18b278a6dd7fc14375bf"
     },
     {
       "path": "docs/audits/skill-architecture-audit.json",
@@ -2896,8 +2782,8 @@
       "isGenerated": true,
       "generatorScript": "scripts/build-knowledge-catalog.mjs",
       "safeToMoveOrRemove": false,
-      "byteSize": 284918,
-      "sha256": "50119a4fd2b03421c924ebd882a20aafcddc21c834ddf278aaf363454a5efc41"
+      "byteSize": 284872,
+      "sha256": "afb6a0cf179d9d1de4dc217356dcc36c5e771004b9b029b5dfdef9c31bfc6d2f"
     },
     {
       "path": "docs/audits/skill-architecture-audit.md",
@@ -2911,8 +2797,8 @@
       "isGenerated": true,
       "generatorScript": "scripts/build-knowledge-catalog.mjs",
       "safeToMoveOrRemove": false,
-      "byteSize": 25444,
-      "sha256": "54693823934259300d3999c7f50ee1308f4c4747a9f1e88f9a035a28460ad460"
+      "byteSize": 25404,
+      "sha256": "b7a0c2ba77a838d6d7813e6b113bbb247d5416560b1fd878518c466b62cba415"
     },
     {
       "path": "docs/blender-version-compatibility.md",
@@ -2941,8 +2827,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 4179,
-      "sha256": "08d7dbbe1c406b0e0db649e546e8a0b5db44afb2b79b3c720d0946b265a4bc3c"
+      "byteSize": 4176,
+      "sha256": "7c6096283e833c73d802dc7b3a267204baee86c2558919b70ac95c19ce1cf5db"
     },
     {
       "path": "docs/claude-app-setup.md",
@@ -2971,8 +2857,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 8680,
-      "sha256": "b82999820445d582c04962c88b7a3486f2a205165ddfacf3e48b8523d44812c6"
+      "byteSize": 8714,
+      "sha256": "e5c1c6b4f3f8cea021504c9c31bca483af24e1faf1e96c808e469cce0df6cb39"
     },
     {
       "path": "docs/evals/README.md",
@@ -2986,14 +2872,14 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 6348,
-      "sha256": "6a978f4787d731d6194ae9400b6f06fd9f0b89e12fba518ff5a40e6857a3c87b"
+      "byteSize": 6318,
+      "sha256": "bfb500d78f8147675f43e22b9d52b578fbb1b6d8810542c283385d65e0cc7863"
     },
     {
-      "path": "docs/evals/adapter-empirical-verification-phase-7.md",
+      "path": "docs/evals/adapter-empirical-verification.md",
       "fileType": ".md",
       "classification": "historical_record",
-      "purpose": "Evaluation packet or recorded verification evidence (adapter-empirical-verification-phase-7.md)",
+      "purpose": "Evaluation packet or recorded verification evidence (adapter-empirical-verification.md)",
       "owningSubsystem": "runtime-and-adapter-evals",
       "includedInNpmPackage": false,
       "referencedByCi": true,
@@ -3001,8 +2887,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 26183,
-      "sha256": "664f7d4b5d18844b9280b2bbe1d407ed1d7463090d0d0fdad724693d569a765f"
+      "byteSize": 26126,
+      "sha256": "3ddacd7045cff7a03b4fca0d303339d8b25734bc546a1a3c9d3dba5a1a6265ae"
     },
     {
       "path": "docs/evals/adapter-install-v0-dry-run.md",
@@ -3031,8 +2917,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 6195,
-      "sha256": "ed9f5d7b43dccdd41ab5c98807f9c7ea742f948aba172f1610f7c00d7137a6ab"
+      "byteSize": 6024,
+      "sha256": "3a99a811b8a350220bb12f0c7e26544b70b24a486c7c632b84734c6a7c0c806f"
     },
     {
       "path": "docs/evals/cyberpunk-shoe-hero-v0-manual-eval.md",
@@ -3091,8 +2977,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 5950,
-      "sha256": "b227b3e9be7cdb1de55eb24fedbcd0e795d2d7e3fdd36d7045d00376ac31438b"
+      "byteSize": 5988,
+      "sha256": "acc5368565cb3fae1a900fa6b51a5eb76e57044dbbee3a6a0028dce03dd8434a"
     },
     {
       "path": "docs/evals/official-runtime-manual-eval-packet.md",
@@ -3106,8 +2992,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 15119,
-      "sha256": "864dda82cbc4dc4772ef992909669259f560b0735c7f97eea594eab200d9243e"
+      "byteSize": 15014,
+      "sha256": "878ac4d02c322fd82474e04191362df4a0d8fb8e16c3279484c953353e98b372"
     },
     {
       "path": "docs/evals/official-runtime-verification-criteria.md",
@@ -3121,8 +3007,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 12523,
-      "sha256": "e63d1f12bd0d38e747a5efdab4f6e73820df6a93cda4cf42a592e5c112065ca3"
+      "byteSize": 12469,
+      "sha256": "9f48ce07fe0881cbf6c9358f34ffe994eb5cfd700c4c2ea2f0e8e1b912b14d26"
     },
     {
       "path": "docs/evals/path-2-mcp-for-blender-readonly-template.md",
@@ -3136,8 +3022,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 6673,
-      "sha256": "a842544c0768be55acf6cdf624aa7dede962792a9ce2f9817a78a30e5ea5ebb9"
+      "byteSize": 6369,
+      "sha256": "a0677bb0cf91459ab3f2402940e0e2e4a7b526b4677fcaf9386b3e54aaf25fd3"
     },
     {
       "path": "docs/evals/runtime-availability-checklist.md",
@@ -3151,8 +3037,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 12183,
-      "sha256": "8ebc9bf9fd7a286cd2daba7ed23085c07af228396dfa1a24f4a57b7682fd5c8c"
+      "byteSize": 12045,
+      "sha256": "a802e76dba3731aa1d2cd6161fdcff250972f7709a245b4b830e4bad75adfb28"
     },
     {
       "path": "docs/evals/skill-package-upload-readiness-v0.md",
@@ -3166,8 +3052,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 13493,
-      "sha256": "739ac905f7e5bf5acc07efba7e1c442e6fc13c0ca1ceaf4aa3ecca00a2c4f0d8"
+      "byteSize": 13512,
+      "sha256": "e97679b75e97eb77ad74cdc3eecb1ed5b55f5bcb822a8c5e8458d7892f38a1ec"
     },
     {
       "path": "docs/examples/agent-install-prompt.md",
@@ -3241,8 +3127,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 10160,
-      "sha256": "e0d6ef5bbfc64fbecf715cacff6952f08e3c84c725b5d09be631c409fda82590"
+      "byteSize": 10151,
+      "sha256": "158a7d1b5869bd62c290f6522b5766b1a3dd67c79fbe888b4669716f162cbc95"
     },
     {
       "path": "docs/examples/glb-web-handoff/threejs-glb-viewer.mjs",
@@ -3256,8 +3142,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 24611,
-      "sha256": "8c7c60809590f3eb5616ba682fc49b334b606c4409faade1dda4479c210adebd"
+      "byteSize": 24602,
+      "sha256": "125c3ede5b36e97aced1b879a9c87df3fcd3f529604cd37cefec7b8e54b6c770"
     },
     {
       "path": "docs/external-runtime-setup.md",
@@ -3271,8 +3157,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 12536,
-      "sha256": "c0487af3dd1a0ca10d842cf84b06a881624b51cd5b7a688ea85938332b46a44b"
+      "byteSize": 12524,
+      "sha256": "64351d3f7cef524ee1c636cfc9b05a29a710ba040531727e910683aa898772f4"
     },
     {
       "path": "docs/first-user-journey.md",
@@ -3301,8 +3187,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 8837,
-      "sha256": "ffea053bbf814c1678cdc775deeae90f7432ba54deed261e52365d34885aa73d"
+      "byteSize": 8833,
+      "sha256": "b23a8464a082793c74f3071374f555b2518daca1e2c99f9ae4584eb2dea8074b"
     },
     {
       "path": "docs/install-scopes.md",
@@ -3316,8 +3202,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 4986,
-      "sha256": "03548417f8348f2069c5461925cb77b85ddb40a82e9c14408a66f7f0e9868e85"
+      "byteSize": 4983,
+      "sha256": "1fdc964b8673bf4743b6c6d1c4a09c8bdc967a7959f0118c2aa593d31768f836"
     },
     {
       "path": "docs/install/README.md",
@@ -3331,8 +3217,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 7446,
-      "sha256": "5749b99f85a7dd55ab47ee006c6fd5f5bfecf14277f82304cea418febc01eefc"
+      "byteSize": 7443,
+      "sha256": "edaba5ad0d7c8be4a36acba4e40deab0e1b66fe27bf84f821e76f7be1f48f9b6"
     },
     {
       "path": "docs/install/aider.md",
@@ -3346,8 +3232,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 4765,
-      "sha256": "d1eaad32b533a257df0d6687d0ea847ce1d08ed4e0c552c034cd6241be22da3f"
+      "byteSize": 4762,
+      "sha256": "5f0a51bf1852319cb2103949acb957759a9421bc172846ea16be9943550c15af"
     },
     {
       "path": "docs/install/amazon-q-developer.md",
@@ -3361,8 +3247,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 4912,
-      "sha256": "9e32a826cf20c8a2055b0a2a729933b214a42c97ad15e509c10766b9ee480b44"
+      "byteSize": 4909,
+      "sha256": "adbd264e4a950c72a390a0edff6b08379347ceaa3b028dcb17a63add98f32510"
     },
     {
       "path": "docs/install/antigravity.md",
@@ -3376,8 +3262,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 4297,
-      "sha256": "e4d2fa541558d6f592428de310072086b51a23180773826677196ec59b33ce87"
+      "byteSize": 4294,
+      "sha256": "615d4465bf9b2a272551f93ec84f580e2b7c23d1821797ae14c5e744b67c11d1"
     },
     {
       "path": "docs/install/augment-code.md",
@@ -3391,8 +3277,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 4500,
-      "sha256": "ef5c0903a04f4d8b5e8e6f6804caf41982fcbd588320fd0031c545e0401a0cb0"
+      "byteSize": 4497,
+      "sha256": "d0655f8c1b87023c88bcc70d47057dfb4f2d20fccb2e7b7d8a3648e24b84117f"
     },
     {
       "path": "docs/install/blackbox-ai.md",
@@ -3406,8 +3292,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 4172,
-      "sha256": "08794ac20718360d5706bddcaaa6f7b2e897305390000d5a604c5a4ffbd7ccd3"
+      "byteSize": 4169,
+      "sha256": "5a6f9b53005d5e6dde9b1728906c36c65498716c82f5b9292aa5ca9b36257abe"
     },
     {
       "path": "docs/install/claude-code.md",
@@ -3421,8 +3307,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 1330,
-      "sha256": "ed1552f497751446354bd5c02b8b42dd2af426c6cc4c9eba02e5e9a052db960b"
+      "byteSize": 1327,
+      "sha256": "9a2b22ef37b23442de1633d23383d958d70a6e5b294c491286e5440943b7a2f6"
     },
     {
       "path": "docs/install/claude-desktop.md",
@@ -3436,8 +3322,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 9830,
-      "sha256": "e8794abdfdddf38781ff813c8890af843a79f5ad04b0da82beca53632e755bdc"
+      "byteSize": 9827,
+      "sha256": "e5b9ba172db9d324db826c728821e2b37ee359e73b4dd446ed44027f8129abc6"
     },
     {
       "path": "docs/install/cline.md",
@@ -3451,8 +3337,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 3477,
-      "sha256": "0af7d99aef4167d11c0ebe307d7fdce3ec55eec11010dae4731843912f7e5437"
+      "byteSize": 3474,
+      "sha256": "c76330c2fe25a7240cb0a2b765841e36a2da6fe1f17cdc545bfc26f0b95e3ccc"
     },
     {
       "path": "docs/install/codex.md",
@@ -3466,8 +3352,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 2298,
-      "sha256": "4c041a6195027a120e103ac60310b05bde76c1b06e59a71a4001f194df7ff0d0"
+      "byteSize": 2279,
+      "sha256": "753fe3c4ffd337540cc3b602b62517958739ea524097940041a9bc4f8d492752"
     },
     {
       "path": "docs/install/continue.md",
@@ -3481,8 +3367,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 3173,
-      "sha256": "d507c2566444dde15ccc8b9999de2cdeb0a3172f0ad29fc2fb70c39c57d84da2"
+      "byteSize": 3170,
+      "sha256": "97b5ff6b9d2501c04f06a425811f81918ee0d635f129e0f1208f6b3f540465a7"
     },
     {
       "path": "docs/install/cursor.md",
@@ -3496,8 +3382,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 2234,
-      "sha256": "66fbd65a3685c09434ec8789c3c08a990f71a0f1208384fe336c2cc49b32d7b7"
+      "byteSize": 2215,
+      "sha256": "51df0c18c0dee920bd99a064b982661861cd795f12d13a60ebca8ce98ed779ad"
     },
     {
       "path": "docs/install/gemini.md",
@@ -3511,8 +3397,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 1421,
-      "sha256": "8def9cd7b738d2a818afc6ac7ddccd8c153d67cf73aed28b8920c6ec6635a89c"
+      "byteSize": 1418,
+      "sha256": "d89a918160682e01cf3bd059ad5234eae6d59db7ccc1d14c79b19122710dbaa6"
     },
     {
       "path": "docs/install/generic-project.md",
@@ -3526,8 +3412,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 2246,
-      "sha256": "aa69757e0a41c00220d6ca9b9e299bb249786f628d982ac46ce305ccfebd8446"
+      "byteSize": 2243,
+      "sha256": "da8bb5da677693797dc03fcf5ac98bee472b1227b549562019bbf091f9a8bf8c"
     },
     {
       "path": "docs/install/github-copilot.md",
@@ -3541,8 +3427,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 1189,
-      "sha256": "1eb1452eab4d690e833f007fe4cded274b571e311f4d601c49a6f6925150acb7"
+      "byteSize": 1186,
+      "sha256": "6508ebaa552012b8d371efffbd810c00e1f9c9286d096fd085e66b60ae51eb65"
     },
     {
       "path": "docs/install/goose.md",
@@ -3556,8 +3442,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 4242,
-      "sha256": "d44a13c918cf96348b1984f5d8b9e9c000009616b7653977def3952e532219d0"
+      "byteSize": 4239,
+      "sha256": "1081ffbdfecda1cf1112b4073babf342a56a518cce652a0adf1ed8b3a8738ddd"
     },
     {
       "path": "docs/install/installer-spec.md",
@@ -3571,8 +3457,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 16259,
-      "sha256": "8a517d591e0837528235f91bcde34f527518222084f6e66681eeae133dc5aaee"
+      "byteSize": 16015,
+      "sha256": "b41d877556e47fdbbebc945dc928ccd1bc5d1a93c06af2331d48f2f0ac054936"
     },
     {
       "path": "docs/install/jetbrains-junie.md",
@@ -3586,8 +3472,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 4705,
-      "sha256": "f60ccf208ae1fa9012fe76f3a7aaef7f43838a9d8ea1707e5e084c4d9eebd2be"
+      "byteSize": 4702,
+      "sha256": "782fac87ff72ef2ed48137cd3c5a52f0c25c008df1497e11c8ca2085573954f0"
     },
     {
       "path": "docs/install/lm-studio.md",
@@ -3601,8 +3487,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 2892,
-      "sha256": "29752915591b7d5c01bc4a5bb7d8e52b053a2578b7423b7012bb81c57fb0b3c0"
+      "byteSize": 2889,
+      "sha256": "9458f4f0e82863ea0dcfd9203b34e109ee3c09020a902b964066fb7b5b530d8e"
     },
     {
       "path": "docs/install/ollama.md",
@@ -3616,8 +3502,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 3664,
-      "sha256": "ef88dfa7183cce4836ca90f07d21477cf608bfd00c64ee03b9f8e20c7567db5f"
+      "byteSize": 3661,
+      "sha256": "4189964ddff54d10df4402953a1d2d8b10374d7c539674a97ff9be18647aa4da"
     },
     {
       "path": "docs/install/open-webui.md",
@@ -3631,8 +3517,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 3260,
-      "sha256": "55c300ae587b754d18703093f15c5b15067d19bee03752e4945406bcce56f81d"
+      "byteSize": 3257,
+      "sha256": "1ee2993779ba08f1842fa585970bfeb9e70eade3dac655a2e7b896d99ed35b37"
     },
     {
       "path": "docs/install/opencode.md",
@@ -3646,8 +3532,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 1292,
-      "sha256": "e8ebf17e945bfb54c436c8d0a2019aa083dd8345f145ffd249e07ab20eef2290"
+      "byteSize": 1289,
+      "sha256": "557ab7e8e5398d518d20d4f3aa04b4d40dffbb0d8c55912483e77cabbe8b1757"
     },
     {
       "path": "docs/install/openhands.md",
@@ -3661,8 +3547,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 4153,
-      "sha256": "e2eb6bf32b4c6e7d08d859831f0b51f53cbf349de32bda635309f184943c5aa3"
+      "byteSize": 4150,
+      "sha256": "5573b944bf9355a935c1bd198f2092b545235742aaf5106cd6fed5b1552bc0a7"
     },
     {
       "path": "docs/install/roo-code.md",
@@ -3676,8 +3562,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 4026,
-      "sha256": "49d55744c561cb1ff1d255db0bd2ca7037abf6592e43bcd052149c00084ab181"
+      "byteSize": 4023,
+      "sha256": "f8d1494042fe06853e56c029f8ff5b68ffaf303f810d80f3e1affc2696366104"
     },
     {
       "path": "docs/install/sourcegraph-cody.md",
@@ -3691,8 +3577,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 4043,
-      "sha256": "9380dd91c3b57c57fd760d95e659f52620683be16e4a36bbb62cb877cf35836e"
+      "byteSize": 4040,
+      "sha256": "619b7bd1e55cee7425772d191f81d14de54ccb536d18f13d4000557cecacce24"
     },
     {
       "path": "docs/install/trae.md",
@@ -3706,8 +3592,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 4135,
-      "sha256": "68d4367fda819fa33bb3832e5a043d10602b6423121d0bc4e9ffbff908c8a9d2"
+      "byteSize": 4132,
+      "sha256": "6cb4a2fc7eeed2846612e3e45b0205ec57b3979dece5e7d890d8457f190d72df"
     },
     {
       "path": "docs/install/windsurf.md",
@@ -3721,8 +3607,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 4377,
-      "sha256": "b2aa7a494d30352661991b5cc58142094519a0a2cc50d59a26b3494a0e4b8802"
+      "byteSize": 4374,
+      "sha256": "59dff48bc25ad753c2931c1900f9948afc8d683c0de7b57ddb398c6e429a4879"
     },
     {
       "path": "docs/install/zed.md",
@@ -3736,8 +3622,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 3204,
-      "sha256": "3218b1030640caad90d18efedd3e8b938aec9ee8d178ef72db9f1fb39ce8d3a1"
+      "byteSize": 3201,
+      "sha256": "35dfe31a6962dae088f051e4d5c60b5ef144c3cfdb07029a31a9b36ac7350299"
     },
     {
       "path": "docs/knowledge-and-recipe-catalog.md",
@@ -3766,8 +3652,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 13301,
-      "sha256": "8f7965b2ba42d88dfbd613a11b014806ab22c0880c665b8eab0bf2e42891c152"
+      "byteSize": 13341,
+      "sha256": "5ca6c7860e7fe86ccba15699de64eba789096ab8085f1497b7b0e0daf4d03576"
     },
     {
       "path": "docs/product-direction.md",
@@ -3796,8 +3682,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 2247,
-      "sha256": "18c22d9c795b23bc5bedd9217309d6bc0f0e078023d6b066326ed6baafb1d6e0"
+      "byteSize": 2200,
+      "sha256": "c9e8b8149bf983a6771b3a2d5691e17be39e1fe325173330d0c03bdc0a7d7359"
     },
     {
       "path": "docs/recipes/cyberpunk-shoe-hero.md",
@@ -3811,8 +3697,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 3491,
-      "sha256": "4d2e950325bd4f7a1868d68bc05614a02c94f93a50bad468c039de9a878c735a"
+      "byteSize": 3488,
+      "sha256": "c2f676a91f6bd67ed528a932af2b2efd1a658c2884e6ed638506df5cd006b4a1"
     },
     {
       "path": "docs/reference-runtime.md",
@@ -3830,21 +3716,6 @@
       "sha256": "d5908b066b8666e570958d5655f9331e8fa54315be5e0c0121890966fe422a3b"
     },
     {
-      "path": "docs/release-readiness-rollup-v0.md",
-      "fileType": ".md",
-      "classification": "historical_record",
-      "purpose": "Historical Draft v0 pre-runtime release readiness rollup snapshot",
-      "owningSubsystem": "product-and-target-docs",
-      "includedInNpmPackage": false,
-      "referencedByCi": true,
-      "referencedByOtherFiles": true,
-      "isGenerated": false,
-      "generatorScript": null,
-      "safeToMoveOrRemove": false,
-      "byteSize": 15515,
-      "sha256": "01a0cca88aca4e9153b97bc75276f42df96177927351d423d758c0804b556436"
-    },
-    {
       "path": "docs/release-readiness.md",
       "fileType": ".md",
       "classification": "documentation",
@@ -3856,8 +3727,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 13700,
-      "sha256": "e99b5230fcec01a7a2ea01d52446e60abefde19e7d827e59ee5820174ff8114c"
+      "byteSize": 8709,
+      "sha256": "98e9b87dcef95338a3e04eb8902f1e30eec896a0e01c85d3a0db428572f90da3"
     },
     {
       "path": "docs/runtime-stack-strategy.md",
@@ -3871,8 +3742,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 18851,
-      "sha256": "f83c4fdef03d327f69f17df7043dbdcb9cab0cdffdd3f4d5de6ffcd76b285b30"
+      "byteSize": 18856,
+      "sha256": "ead556e1dcd3803c5cae2ad316e161bc92e68a8be3ad4ef75a3a09d5bada5219"
     },
     {
       "path": "docs/safety-model.md",
@@ -3886,8 +3757,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 12355,
-      "sha256": "29e97d3dd7fb949e79e0a1d8eb692913d4fd9485e2dc5bd91158f712f6b59f8f"
+      "byteSize": 12323,
+      "sha256": "722912762c1e5d1c6539f189fac3f504b351920bafa204ad968cf4e4af4e9f27"
     },
     {
       "path": "docs/skill-system.md",
@@ -3901,8 +3772,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 14121,
-      "sha256": "df10c27d030afe2675c1faf0227f69412cb8e5e52817e4dbaaf6d3de2ac67fce"
+      "byteSize": 14105,
+      "sha256": "6b2f620226509e2baf9a38bb1ec1fde0be458cf5bf0c3ac7769a6e916ca948f4"
     },
     {
       "path": "docs/start-here.md",
@@ -3916,8 +3787,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 11480,
-      "sha256": "83b04aad84eebc2986cad369e0bae66829b8b80bc27ae0adfc32495f1fec46ee"
+      "byteSize": 11601,
+      "sha256": "438c91d817e3351dd771adbd32f7ab425f80fca8ed77ca297139b087e1e4697a"
     },
     {
       "path": "docs/unofficial-runtime-bridges.md",
@@ -3932,7 +3803,7 @@
       "generatorScript": null,
       "safeToMoveOrRemove": false,
       "byteSize": 8860,
-      "sha256": "0c7c85b871138fce5d020cf6966aede01b822b0d41757a23f745cbe4daf75efb"
+      "sha256": "cae7931a8950808256af573a60a1e4dceda03fb437e009dbb20f0563494cedaf"
     },
     {
       "path": "docs/workflow-contract.md",
@@ -3961,8 +3832,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 794,
-      "sha256": "e9ace38932aaaa9d216d34b841a05678989ec53510e6b593a996fb3f99d9e1be"
+      "byteSize": 783,
+      "sha256": "f29841eb559d8c32543a023ca1ac91d67963b668317f872b5a8e99273adf30c2"
     },
     {
       "path": "docs/workflows/full-non-blender-user-workflow.md",
@@ -3976,8 +3847,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 10864,
-      "sha256": "f79ff932e87531794e70fbc1078e9cf7bf52ec03720534d7f4f49ffc19b13b1a"
+      "byteSize": 10853,
+      "sha256": "a0cbbc954df7adf80720e16be313252cf66b3403b1f1f1742e9a4c1c0d3ec27d"
     },
     {
       "path": "docs/workflows/product-hero-workflow.md",
@@ -3992,7 +3863,7 @@
       "generatorScript": null,
       "safeToMoveOrRemove": false,
       "byteSize": 2951,
-      "sha256": "7fc0f7b2f8ee334157d8499f0b3f9820a26d870ccb010a6d1abe30441d413e7e"
+      "sha256": "35f58a7d20be0f302ba61b8609761fd122394396304f9dc11804d9ec04b0c495"
     },
     {
       "path": "evals/catalog-retrieval-evals.json",
@@ -4021,8 +3892,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 49930,
-      "sha256": "ae97ca854b4a8960246223a1f17acb8cb701df10f09883c9f2cb2f7ef69dcb1b"
+      "byteSize": 49934,
+      "sha256": "b6949d0500f632e3b56a8140ae2c94f9776c92a3ce2fe2746a5b467f150abb09"
     },
     {
       "path": "evals/scene-specs/conflict-udim-vs-standard-glb.scene-spec.json",
@@ -4936,8 +4807,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 1535,
-      "sha256": "1e2cf6ba2e42c8bbab5bac1fe3bbfd6a02ca5c25fab95da368215b68b1b8fec7"
+      "byteSize": 1536,
+      "sha256": "f46f4ad9fd34f0fba359245e1ca3c84828336ed7d6b84f8dcb42164d2d15c538"
     },
     {
       "path": "laws/evidence-before-done.md",
@@ -4951,8 +4822,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 1137,
-      "sha256": "2e4d0212026eb33f3acda95534326be6f710fd8daa9b30b4f4ff82b39065898b"
+      "byteSize": 1287,
+      "sha256": "74e6d57c51f61f95e7079f79ae3111bebed76ecff369c0a5f746323934e7bcf9"
     },
     {
       "path": "laws/no-arbitrary-python-interface.md",
@@ -4966,8 +4837,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 1165,
-      "sha256": "76cca4120a7a089491035639d75eeeaee4eea58fe122958f43848599de7a1e7b"
+      "byteSize": 1162,
+      "sha256": "fa36241dfd29e78b8977741fc169efe8c4b1af169417c24ab7c5e823270500fc"
     },
     {
       "path": "laws/non-blender-user-language.md",
@@ -4981,8 +4852,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 811,
-      "sha256": "d9702a640c66eb166e3cce160ef738e46a5927f6427d3a9633d352d85a3af9e4"
+      "byteSize": 872,
+      "sha256": "b52d48ac0b2b9882bf5862bbde8b206743f35c085de888c0809f9fc39b0e91b7"
     },
     {
       "path": "laws/official-runtime-only.md",
@@ -4996,8 +4867,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 5013,
-      "sha256": "c0e6b1cc230d5251912f89d4b8a37c9db9d91e434d32c7578eba6bdffa7acf00"
+      "byteSize": 5010,
+      "sha256": "60249de7d44ceb41d5e1c153eea4bc02ebafc0c20d87c5a1d30598ca4872c640"
     },
     {
       "path": "package-lock.json",
@@ -5011,8 +4882,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 43570,
-      "sha256": "67ef3efb646e6450ae4d9651131bec534e7e9f31f9908c69fbe90ad27da520f7"
+      "byteSize": 43558,
+      "sha256": "8e76899ae514bcd10d99e3b88476e719f49db0ae9f7c015f75eb3915ad9d2b37"
     },
     {
       "path": "package.json",
@@ -5026,8 +4897,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 4489,
-      "sha256": "775273189ad8a7c4ecab5c3e332efb6aa3fa0909d432a754d3e7362aaf84ce78"
+      "byteSize": 4352,
+      "sha256": "cd230419e2ed7d37bc973c0798073bdd2623b989364b98bf0f8cd393b4c92a6d"
     },
     {
       "path": "packs/README.md",
@@ -5041,14 +4912,14 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 237,
-      "sha256": "767cb46011976eeb532a483d1364644aee08fd6ae29d476fc1f4a295789e5fe7"
+      "byteSize": 234,
+      "sha256": "f11f55c28be28bf75730a490373b71386ef76e69d830c2856781170d5a833255"
     },
     {
       "path": "packs/product-hero-v0/PACK.md",
       "fileType": ".md",
       "classification": "canonical_source",
-      "purpose": "Canonical Product Hero v0 multi-skill workflow pack manifest",
+      "purpose": "Canonical Product Hero multi-skill workflow pack manifest (v1.0.0)",
       "owningSubsystem": "laws-and-packs",
       "includedInNpmPackage": true,
       "referencedByCi": true,
@@ -5056,8 +4927,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 5213,
-      "sha256": "769dcd5110b5ea67a1856ec321f18b38baca95662590ee3a89c53af93f1e1806"
+      "byteSize": 5232,
+      "sha256": "8e9b10d0153136111959fb619ae84fb1e6f9c235e0d7609b3b2d7d127d168846"
     },
     {
       "path": "registry/catalog-index.json",
@@ -5386,8 +5257,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 16572,
-      "sha256": "2c9355aabac4221040c1c1c5413a58b3883ed44d27b3e9bd11f2079192aaecdb"
+      "byteSize": 16562,
+      "sha256": "3d985aa43228a7a036b2f329a08c2099d04ec6bfce77afd6d05084ad69a42b1e"
     },
     {
       "path": "schemas/runtime-session.schema.json",
@@ -5446,8 +5317,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 13099,
-      "sha256": "a8fc8c09e5dc207ce7963bd321722abf04c4efb4d28caa18bd0e4640eb6692ce"
+      "byteSize": 13089,
+      "sha256": "8b372aa2fee0067d290c352dc7fd0c029dd57bb0e13436855f3467970f5b1569"
     },
     {
       "path": "scripts/build-knowledge-catalog.mjs",
@@ -5461,8 +5332,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 108029,
-      "sha256": "1ae3ecff749f2f5e3148264a41d3316b6de04b287a131f7af718ed67326a5e1c"
+      "byteSize": 107985,
+      "sha256": "0eade46f4787df687ec770cb10d94c50a6dc5712ddafd1bf8c72907ce0b6cfd5"
     },
     {
       "path": "scripts/build-registry.mjs",
@@ -5491,8 +5362,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 45755,
-      "sha256": "cc08990e5236f02075c52700850366f27f9f546bd26e37e857ba3566edb0f28f"
+      "byteSize": 44523,
+      "sha256": "0e25a3b04ebbed4b3f0f8d87d00bebccea1b4818c66b888d15cf1104f0c6e8ad"
     },
     {
       "path": "scripts/compile-scene-plan.mjs",
@@ -5506,8 +5377,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 79192,
-      "sha256": "7eaa978f31e6609f3740330359afb8b50cd73793f57322619379bae83279d036"
+      "byteSize": 79173,
+      "sha256": "7146d31579edf04c05d4721fc251a752164d0d4ff04ba22b17bb5d1ae5f3b542"
     },
     {
       "path": "scripts/dev-server.mjs",
@@ -5521,8 +5392,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 121956,
-      "sha256": "f3e27afc30eb071f8764d7a8d81429d0dce36e17bde8e542728135fcc5ddf7ea"
+      "byteSize": 43079,
+      "sha256": "8d32cbbbf23bef67913d617a09d2cab6e56fa7c936f0f51786f50136732c1426"
     },
     {
       "path": "scripts/export-claude-skills.mjs",
@@ -5566,8 +5437,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 103953,
-      "sha256": "102b34ad0d55c9452f4a5e78a48fab1815850d4df587e7802e45a9a8b8a8fc61"
+      "byteSize": 94353,
+      "sha256": "3a73bece5a4d3aace41296bc758a86db1f45a3bc8edaa6dc92c440b2a2e9515b"
     },
     {
       "path": "scripts/generate-glb-handoff-report.mjs",
@@ -5581,8 +5452,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 89655,
-      "sha256": "baba778ec5634e6492ee59c3c41269f901677efc9ea0501e436eb216ad92d964"
+      "byteSize": 89646,
+      "sha256": "2652f844c91b5825ccf99c7bf1b979a9e2146db97b8b3af011e63bb1eb105e4e"
     },
     {
       "path": "scripts/inspect-glb.mjs",
@@ -5611,8 +5482,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 193651,
-      "sha256": "eea6e3adbacafde0adb765fecb1bce26930b7ce6716cf41e02d98e7111c8bb15"
+      "byteSize": 193657,
+      "sha256": "b0a12ded934bfd8c28f8dd19aed81bc0020151471ed82ba4b95e18c79d0cd207"
     },
     {
       "path": "scripts/run-evals.mjs",
@@ -5626,8 +5497,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 41347,
-      "sha256": "6a8c68ef41f8b2214ed6b494c0b8f1110f1102a81033a3f99a966999b34e8a03"
+      "byteSize": 41343,
+      "sha256": "5149f4530a160fa0fd71053a845b93e411061dc22b09ff91d065aca33b11bc01"
     },
     {
       "path": "scripts/runtime-orchestrator.mjs",
@@ -5641,8 +5512,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 295971,
-      "sha256": "419af09056d3a4b3d7bf0c973d6572ac65db31e517ffb9bac065e5a92156aaea"
+      "byteSize": 295379,
+      "sha256": "7ce292aa3b6948cb4c61beac0c7c17877ac011e1e7796709f99ca055b97f94ed"
     },
     {
       "path": "scripts/sync-current-audit-digest.mjs",
@@ -5660,10 +5531,10 @@
       "sha256": "2fb78e8b88ba4e335c96cff625981db760c4620e8072c721e9698929dabfe976"
     },
     {
-      "path": "scripts/test-phase1.mjs",
+      "path": "scripts/test-adapter-matrix.mjs",
       "fileType": ".mjs",
       "classification": "runtime_build_test_infrastructure",
-      "purpose": "Automated regression and verification test suite (test-phase1.mjs)",
+      "purpose": "Automated regression and verification test suite (test-adapter-matrix.mjs)",
       "owningSubsystem": "test-suites",
       "includedInNpmPackage": false,
       "referencedByCi": true,
@@ -5671,14 +5542,14 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 12294,
-      "sha256": "f515956089c1466996f6101edaa45f52a0df93a217a75a00fbfc80e7743bcde8"
+      "byteSize": 21994,
+      "sha256": "34e357de6852b1fadd1a87227a3c9f5ce18f9a458f90d8e6ef6532b6c9c2a779"
     },
     {
-      "path": "scripts/test-phase10.mjs",
+      "path": "scripts/test-behavioral-evals.mjs",
       "fileType": ".mjs",
       "classification": "runtime_build_test_infrastructure",
-      "purpose": "Automated regression and verification test suite (test-phase10.mjs)",
+      "purpose": "Automated regression and verification test suite (test-behavioral-evals.mjs)",
       "owningSubsystem": "test-suites",
       "includedInNpmPackage": false,
       "referencedByCi": true,
@@ -5686,14 +5557,14 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 96364,
-      "sha256": "86131423dfd23395d450d6a3e971661844cc2345641ae84b050766d4ab49c7b9"
+      "byteSize": 56600,
+      "sha256": "1eb78e73a9155b655a0807b8e14e7ebde2538136f6d2acce9447287a0a34dab8"
     },
     {
-      "path": "scripts/test-phase11.mjs",
+      "path": "scripts/test-bundle-summaries.mjs",
       "fileType": ".mjs",
       "classification": "runtime_build_test_infrastructure",
-      "purpose": "Automated regression and verification test suite (test-phase11.mjs)",
+      "purpose": "Automated regression and verification test suite (test-bundle-summaries.mjs)",
       "owningSubsystem": "test-suites",
       "includedInNpmPackage": false,
       "referencedByCi": true,
@@ -5701,14 +5572,14 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 51925,
-      "sha256": "e803309b2aff12ff416325a6d4e1c3d08be23e2660b6a2954121189b8056999b"
+      "byteSize": 66805,
+      "sha256": "fea5186b0730adb5c11aab466fb39ee71645a2f5c975f3ee521e3061d9bd5a82"
     },
     {
-      "path": "scripts/test-phase12.mjs",
+      "path": "scripts/test-catalog-contracts.mjs",
       "fileType": ".mjs",
       "classification": "runtime_build_test_infrastructure",
-      "purpose": "Automated regression and verification test suite (test-phase12.mjs)",
+      "purpose": "Automated regression and verification test suite (test-catalog-contracts.mjs)",
       "owningSubsystem": "test-suites",
       "includedInNpmPackage": false,
       "referencedByCi": true,
@@ -5716,14 +5587,14 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 41320,
-      "sha256": "cb42459c8d554d103f9db113e51e80de78624bf985f834126362b986c2267142"
+      "byteSize": 32071,
+      "sha256": "a6755b1b3ff8a4df807b18dedff449243d662d7570b43288efe0dacd982e1101"
     },
     {
-      "path": "scripts/test-phase13.mjs",
+      "path": "scripts/test-cli-package.mjs",
       "fileType": ".mjs",
       "classification": "runtime_build_test_infrastructure",
-      "purpose": "Automated regression and verification test suite (test-phase13.mjs)",
+      "purpose": "Automated regression and verification test suite (test-cli-package.mjs)",
       "owningSubsystem": "test-suites",
       "includedInNpmPackage": false,
       "referencedByCi": true,
@@ -5731,14 +5602,14 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 25943,
-      "sha256": "c32ec64edef86929bdbc13e18c271fba6028975269a35de1c84fa8737964808a"
+      "byteSize": 51959,
+      "sha256": "5a10d837cb0c30a7bb9b838d2462f7be4175bcb426aed097fe6d63523caf320b"
     },
     {
-      "path": "scripts/test-phase14.mjs",
+      "path": "scripts/test-dev-server.mjs",
       "fileType": ".mjs",
       "classification": "runtime_build_test_infrastructure",
-      "purpose": "Automated regression and verification test suite (test-phase14.mjs)",
+      "purpose": "Automated regression and verification test suite (test-dev-server.mjs)",
       "owningSubsystem": "test-suites",
       "includedInNpmPackage": false,
       "referencedByCi": true,
@@ -5746,14 +5617,14 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 13045,
-      "sha256": "f852fc467dc6baa5047ba815060f2fbae2ca7704bea86108f4495140b79f292e"
+      "byteSize": 22897,
+      "sha256": "a4f1547a3d92ed6f02dc4e3b498be3f5d0a6d505255b20643e151a8de2653045"
     },
     {
-      "path": "scripts/test-phase15.mjs",
+      "path": "scripts/test-eval-coverage.mjs",
       "fileType": ".mjs",
       "classification": "runtime_build_test_infrastructure",
-      "purpose": "Automated regression and verification test suite (test-phase15.mjs)",
+      "purpose": "Automated regression and verification test suite (test-eval-coverage.mjs)",
       "owningSubsystem": "test-suites",
       "includedInNpmPackage": false,
       "referencedByCi": true,
@@ -5761,14 +5632,14 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 26165,
-      "sha256": "d2efb77c95064a6fa28c1b307da2e0a2edbdd08ec73b0b9d2c2e75bb7dfbd4c9"
+      "byteSize": 34164,
+      "sha256": "e511d17aa752403b9b556f078969d079b5a26bca332b088d061531bee638fbb8"
     },
     {
-      "path": "scripts/test-phase16.mjs",
+      "path": "scripts/test-glb-handoff.mjs",
       "fileType": ".mjs",
       "classification": "runtime_build_test_infrastructure",
-      "purpose": "Automated regression and verification test suite (test-phase16.mjs)",
+      "purpose": "Automated regression and verification test suite (test-glb-handoff.mjs)",
       "owningSubsystem": "test-suites",
       "includedInNpmPackage": false,
       "referencedByCi": true,
@@ -5776,14 +5647,14 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 35965,
-      "sha256": "8c670d547cddd9af93d7fb161584b77ca9a9e62f469908ed033b793d9e2f1247"
+      "byteSize": 41318,
+      "sha256": "654876d933c3b97850fc2ea08ff0892d0cc9075823942214bf4f250eed02f9fd"
     },
     {
-      "path": "scripts/test-phase17.mjs",
+      "path": "scripts/test-knowledge-catalog.mjs",
       "fileType": ".mjs",
       "classification": "runtime_build_test_infrastructure",
-      "purpose": "Automated regression and verification test suite (test-phase17.mjs)",
+      "purpose": "Automated regression and verification test suite (test-knowledge-catalog.mjs)",
       "owningSubsystem": "test-suites",
       "includedInNpmPackage": false,
       "referencedByCi": true,
@@ -5791,14 +5662,14 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 38035,
-      "sha256": "042c2a3b182ead590c5a765f60606e5c97c6fc2723cbd57f230a2eb0707e1108"
+      "byteSize": 12982,
+      "sha256": "55ce9b0eafc1a50609015c7e2bfe62ef5c00138dfe92519c12dc010a7ac1f731"
     },
     {
-      "path": "scripts/test-phase18.mjs",
+      "path": "scripts/test-mcp-client-skills-sh.mjs",
       "fileType": ".mjs",
       "classification": "runtime_build_test_infrastructure",
-      "purpose": "Automated regression and verification test suite (test-phase18.mjs)",
+      "purpose": "Automated regression and verification test suite (test-mcp-client-skills-sh.mjs)",
       "owningSubsystem": "test-suites",
       "includedInNpmPackage": false,
       "referencedByCi": true,
@@ -5806,14 +5677,14 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 26884,
-      "sha256": "97576455a454540181004364954ad0fb486ff454507f8a6149c26a2b73af16dc"
+      "byteSize": 52584,
+      "sha256": "2fb2b3f6cbdb2c4b488b949e0eeed81c38ec5d4602d501a3bf79bf6a8e66b3ae"
     },
     {
-      "path": "scripts/test-phase19.mjs",
+      "path": "scripts/test-mcp-qualification.mjs",
       "fileType": ".mjs",
       "classification": "runtime_build_test_infrastructure",
-      "purpose": "Automated regression and verification test suite (test-phase19.mjs)",
+      "purpose": "Automated regression and verification test suite (test-mcp-qualification.mjs)",
       "owningSubsystem": "test-suites",
       "includedInNpmPackage": false,
       "referencedByCi": true,
@@ -5821,14 +5692,14 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 52598,
-      "sha256": "58fc19f426e284c1004cb6470b47623c1f5e8e0eef6e778ff44e27c1a550b90f"
+      "byteSize": 26870,
+      "sha256": "9454eadde233920fe85bad4f2058fdf23b196b42f5cb7e1021a4de60f890ec30"
     },
     {
-      "path": "scripts/test-phase2.mjs",
+      "path": "scripts/test-project-installer.mjs",
       "fileType": ".mjs",
       "classification": "runtime_build_test_infrastructure",
-      "purpose": "Automated regression and verification test suite (test-phase2.mjs)",
+      "purpose": "Automated regression and verification test suite (test-project-installer.mjs)",
       "owningSubsystem": "test-suites",
       "includedInNpmPackage": false,
       "referencedByCi": true,
@@ -5836,14 +5707,14 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 23077,
-      "sha256": "7980a59698e69301afe105a52dd995bc281fc8fd98e0ae95dc08d858398ebc0a"
+      "byteSize": 96202,
+      "sha256": "874958d069c06763d7dfb0a2ffda07a5e3e1c9d9d52e6fe669c2c4afba8e597d"
     },
     {
-      "path": "scripts/test-phase3.mjs",
+      "path": "scripts/test-repository-architecture.mjs",
       "fileType": ".mjs",
       "classification": "runtime_build_test_infrastructure",
-      "purpose": "Automated regression and verification test suite (test-phase3.mjs)",
+      "purpose": "Automated regression and verification test suite (test-repository-architecture.mjs)",
       "owningSubsystem": "test-suites",
       "includedInNpmPackage": false,
       "referencedByCi": true,
@@ -5851,14 +5722,14 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 57492,
-      "sha256": "ce3ce9388d0f2d5a06beee5f72ad7a8d6ab00e3028e89430034bbf68e2f11993"
+      "byteSize": 25915,
+      "sha256": "e51b12e12bbd89dcffaa8cdbee0265276729b5d172cf4372bd97215f4dd86528"
     },
     {
-      "path": "scripts/test-phase4.mjs",
+      "path": "scripts/test-routing-contracts.mjs",
       "fileType": ".mjs",
       "classification": "runtime_build_test_infrastructure",
-      "purpose": "Automated regression and verification test suite (test-phase4.mjs)",
+      "purpose": "Automated regression and verification test suite (test-routing-contracts.mjs)",
       "owningSubsystem": "test-suites",
       "includedInNpmPackage": false,
       "referencedByCi": true,
@@ -5866,14 +5737,14 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 16042,
-      "sha256": "94ea1633815311a68cf6f0760eda9112999567b2f84872f517cc10c4e0c16750"
+      "byteSize": 23177,
+      "sha256": "e7b3b58c5e679c9f19ecafbfd69accad17ad50d1ab1f854113be5e850e979349"
     },
     {
-      "path": "scripts/test-phase5.mjs",
+      "path": "scripts/test-runtime-hardening.mjs",
       "fileType": ".mjs",
       "classification": "runtime_build_test_infrastructure",
-      "purpose": "Automated regression and verification test suite (test-phase5.mjs)",
+      "purpose": "Automated regression and verification test suite (test-runtime-hardening.mjs)",
       "owningSubsystem": "test-suites",
       "includedInNpmPackage": false,
       "referencedByCi": true,
@@ -5881,14 +5752,14 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 32702,
-      "sha256": "1da3b51253b5acf13b3da1f6a2829ddba36c1c314943b6f53044ef0a0669e2d5"
+      "byteSize": 37764,
+      "sha256": "6c034b174c432448d526e480507d4c97b90409ee9d794c8c3f7900a1bc60697a"
     },
     {
-      "path": "scripts/test-phase6.mjs",
+      "path": "scripts/test-runtime-orchestrator.mjs",
       "fileType": ".mjs",
       "classification": "runtime_build_test_infrastructure",
-      "purpose": "Automated regression and verification test suite (test-phase6.mjs)",
+      "purpose": "Automated regression and verification test suite (test-runtime-orchestrator.mjs)",
       "owningSubsystem": "test-suites",
       "includedInNpmPackage": false,
       "referencedByCi": true,
@@ -5896,14 +5767,14 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 34159,
-      "sha256": "7f7bd9a43d49e1093bf188ebf365cef55b0ea840a46f4d14aa43e98401596733"
+      "byteSize": 35913,
+      "sha256": "5cd1c68a0dd442875f5ba97bed2da40c390ea0ff3cd059d72571387e463f3469"
     },
     {
-      "path": "scripts/test-phase7.mjs",
+      "path": "scripts/test-scene-spec-harmonizer.mjs",
       "fileType": ".mjs",
       "classification": "runtime_build_test_infrastructure",
-      "purpose": "Automated regression and verification test suite (test-phase7.mjs)",
+      "purpose": "Automated regression and verification test suite (test-scene-spec-harmonizer.mjs)",
       "owningSubsystem": "test-suites",
       "includedInNpmPackage": false,
       "referencedByCi": true,
@@ -5911,14 +5782,14 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 22046,
-      "sha256": "c4f861ed5bddab0f9b9fd96fca289f51e0252a72b2d10c2a5d5b46e0a6c62cff"
+      "byteSize": 26012,
+      "sha256": "08a207c0128c5b9ee5a6a242ada41e2e40949afa1bf8276e7902c27ae394b1da"
     },
     {
-      "path": "scripts/test-phase8.mjs",
+      "path": "scripts/test-skill-templates.mjs",
       "fileType": ".mjs",
       "classification": "runtime_build_test_infrastructure",
-      "purpose": "Automated regression and verification test suite (test-phase8.mjs)",
+      "purpose": "Automated regression and verification test suite (test-skill-templates.mjs)",
       "owningSubsystem": "test-suites",
       "includedInNpmPackage": false,
       "referencedByCi": true,
@@ -5926,14 +5797,14 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 67494,
-      "sha256": "8bbadbfb1fbe6c5bb24b8def131bed8c5d408be7452e2d0e122aad78126b529a"
+      "byteSize": 15960,
+      "sha256": "c121b9ab6fe3513f847d92e4813cf29e5e4ebc7227f3160377954a927f26d111"
     },
     {
-      "path": "scripts/test-phase9.mjs",
+      "path": "scripts/test-skills-export.mjs",
       "fileType": ".mjs",
       "classification": "runtime_build_test_infrastructure",
-      "purpose": "Automated regression and verification test suite (test-phase9.mjs)",
+      "purpose": "Automated regression and verification test suite (test-skills-export.mjs)",
       "owningSubsystem": "test-suites",
       "includedInNpmPackage": false,
       "referencedByCi": true,
@@ -5941,8 +5812,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 23128,
-      "sha256": "4a447856666d43b0b4366193ac333c9e576d54244b353e211ee4b42980c36f7c"
+      "byteSize": 12316,
+      "sha256": "9928af2d7acc8475ca5f54e3a76add49f2c7dbf34f7bc42910299a1d76031d01"
     },
     {
       "path": "scripts/validate-capability-policy.mjs",
@@ -5971,8 +5842,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 43471,
-      "sha256": "835bd324d0331b3baab79ad873bc34618a7e09ccc173a3e78cb14127273f314a"
+      "byteSize": 43473,
+      "sha256": "c1a4138d26e8bda98e0014d425445d1a47c61cc8e7d30020119fa3691a957b97"
     },
     {
       "path": "scripts/validate-evidence-packet.mjs",
@@ -6001,8 +5872,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 32256,
-      "sha256": "9917ce953bbc9aefdda5baa40ae9b75b4ed5980cd662d31ef7d542868d5c0a5c"
+      "byteSize": 32206,
+      "sha256": "0dac5971c9fd56c7f8fbdf9f88b23ba4cba79a5fd2700a3feff4500a3c20ed7d"
     },
     {
       "path": "skill-reviews/README.md",
@@ -6016,8 +5887,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 447,
-      "sha256": "461dd032de06ac4e326184053e3fcbdea84163c48c537024aeb819e911e968e7"
+      "byteSize": 444,
+      "sha256": "d0628e125a84e43bf69df63b21c90f8cd603a5687e827ec1b8c3c6ecc09e7004"
     },
     {
       "path": "skill-reviews/acceptance-criteria.md",
@@ -6031,8 +5902,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 1754,
-      "sha256": "1451e4e09ef347913c750d0afc54b8bf8234eeb14c6099bde24ed508b390ff38"
+      "byteSize": 1775,
+      "sha256": "a937987ccde4419c82ffdac524f3494ea526d2485e34cba5faa51064cc36d4b2"
     },
     {
       "path": "skill-reviews/blendops-skill-template.md",
@@ -6046,8 +5917,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 1021,
-      "sha256": "e1eb1435591580e2a6900c87579942e9af7801d806880460d17695412fd65c31"
+      "byteSize": 1069,
+      "sha256": "d5a876aaff09bae3d04a3c401c407293105765f5bf78bd19f350ef0d208f7fb9"
     },
     {
       "path": "skill-reviews/depth-standard.md",
@@ -6061,14 +5932,14 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 1950,
-      "sha256": "afc0c927c3d3233a0eb87f9b42ec0f45873eea272df9a08b27456c86da970fac"
+      "byteSize": 1947,
+      "sha256": "b192c0b9943703ff7d72d778a65c82e57ad4a7e8df4f6c5fc0d9d78819bb8030"
     },
     {
       "path": "skill-reviews/reports/v0-skill-depth-audit.md",
       "fileType": ".md",
       "classification": "historical_record",
-      "purpose": "Historical v0 skill depth audit and gate review evidence report",
+      "purpose": "Skill depth audit and gate review evidence report",
       "owningSubsystem": "quality-and-skill-reviews",
       "includedInNpmPackage": false,
       "referencedByCi": true,
@@ -6076,14 +5947,14 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 5736,
-      "sha256": "60bfc546863ec3504287173307d17d1ec50e7c00b75d729c00b6cec2a2c9f3db"
+      "byteSize": 5789,
+      "sha256": "ad1814349337cd19c9c492c21089a238006b788dce164c7c6a9ca557e66263c3"
     },
     {
       "path": "skill-reviews/reports/v0-skill-gate-review.md",
       "fileType": ".md",
       "classification": "historical_record",
-      "purpose": "Historical v0 skill depth audit and gate review evidence report",
+      "purpose": "Skill depth audit and gate review evidence report",
       "owningSubsystem": "quality-and-skill-reviews",
       "includedInNpmPackage": false,
       "referencedByCi": true,
@@ -6091,8 +5962,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 5468,
-      "sha256": "d393222ba7ff669b146689d5930fcec7c952dc307fbfddd271100baaa84c34cc"
+      "byteSize": 5608,
+      "sha256": "47b961c098761b9fc5b07b7085305ce86e03046cbc4ed5b24dde3dc911eb94cd"
     },
     {
       "path": "skill-reviews/review-gates.md",
@@ -6106,8 +5977,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 2425,
-      "sha256": "fc1d550acd5b391f9e21f4a2b2831a75d094794a2c2d1c313401275c1ad891af"
+      "byteSize": 2426,
+      "sha256": "b769b5467bdd13efdd0ea12b09afd5f752f9354115c17386fffd153afdeda7af"
     },
     {
       "path": "skills.sh.json",
@@ -6136,8 +6007,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 25598,
-      "sha256": "e1ea1a43a3b9bf62515f8aa1e9ce82d324ba44cc76b66e1b0d14b20b6d956711"
+      "byteSize": 25300,
+      "sha256": "2d8292477dcf014e372341caeaa706339aaed569c456ed1fa4875c8802e6c745"
     },
     {
       "path": "skills/_template/SKILL.md",
@@ -6151,8 +6022,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 10830,
-      "sha256": "a7456f4fb4affc954fca4cb0aae8b304348d1b9eb813b670c5e5b911cd8e5450"
+      "byteSize": 10827,
+      "sha256": "780ccafb0ca9840530c35c14b39810b2792d5c878e9da1374b71eccf5c064edc"
     },
     {
       "path": "skills/acceptance-criteria-builder/EVAL.md",
@@ -6256,8 +6127,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 4368,
-      "sha256": "22aeb1d55eff279d4a411d4413dc047c46e3c7ba4fd2d9a242110ec8cdc184be"
+      "byteSize": 4365,
+      "sha256": "5b550afdedbc2994531cea34d4e888419590b06561962c3227c940f4de3bb212"
     },
     {
       "path": "skills/asset-discovery/SKILL.md",
@@ -6706,8 +6577,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 4434,
-      "sha256": "49f14f678a04593ee722c633b2942b82ad8b4b38d8bac1d3b028ab6ca3c906ae"
+      "byteSize": 4431,
+      "sha256": "d4d203e774841df9b405532d566788f7e58a91e7ef643c09c6ec727eaf5c6661"
     },
     {
       "path": "skills/blender-brainstorming/SKILL.md",
@@ -6886,8 +6757,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 4502,
-      "sha256": "dddfc2ec3a036c43fbc49c720f7c87535e7a252e5e4c51a70b1ff13313ee5701"
+      "byteSize": 4499,
+      "sha256": "d96ee3ee14f3e5ffad6a6d481e2eb2aca10a5a83635aeb8acdff19fac726274d"
     },
     {
       "path": "skills/blender-troubleshooting/SKILL.md",
@@ -6976,8 +6847,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 4006,
-      "sha256": "9eab39d0e0eacd47d35bb01ce281125cfb97e1ed3d3da9a462b61e05d05e154c"
+      "byteSize": 4003,
+      "sha256": "86548b1f1d64d5d3cbf03344147f6449e596fbeb1bb746809c60cd3060b3b84d"
     },
     {
       "path": "skills/blendops-help/SKILL.md",
@@ -6991,8 +6862,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 15995,
-      "sha256": "c7185363097c9e28dfc59f3c63fd8a0a44bd2da3ac60a7f653f75b3c43130615"
+      "byteSize": 15940,
+      "sha256": "f8def3af5baf2960155baae68e0dd56035c03388d6eae6b89ea83153aeb824b4"
     },
     {
       "path": "skills/blendops-help/contract.json",
@@ -7066,8 +6937,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 4729,
-      "sha256": "0eed608df99b61b5cd570b3eabd162a17a2d1ce2a40bf37b75991957ccab7f4c"
+      "byteSize": 4726,
+      "sha256": "9bd0c1d2d46303ac60d13c6926c4fc216c66997edb365e248d7da5118703cd79"
     },
     {
       "path": "skills/bridge-conflicts/SKILL.md",
@@ -8086,8 +7957,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 3885,
-      "sha256": "eb6e4851765e7f50a643eb6dd87046a3451e8a8856d2492a85e919fa0bb878e2"
+      "byteSize": 3882,
+      "sha256": "9ffd5d1b68c8695122ed14fe8f149b0890fbc8a31b5a5b80a58a634d8d4e7bf6"
     },
     {
       "path": "skills/intent-to-3d-brief-writer/SKILL.md",
@@ -8791,8 +8662,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 2409,
-      "sha256": "7ef7e196a5d47b58adf15d641fa7698a8abf92f7aaa43f7339f9efccd350cc22"
+      "byteSize": 2423,
+      "sha256": "d9b190adf1a74b76b95be3a8a9cf483e827e7c3fe41b395064631f6479c0d3b0"
     },
     {
       "path": "skills/pack-prerequisite-checker/references/pack-readiness-template.md",
@@ -9121,8 +8992,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 4311,
-      "sha256": "9b061bea3c577eda6840cfe64a2eed13ec5e7b6629aa6d1746a0e7113805b6e1"
+      "byteSize": 4308,
+      "sha256": "327557260de17ed00ff77b27e7972528a8c70b01de43d5bcf14713d534b1fa09"
     },
     {
       "path": "skills/pre-handoff-verification/SKILL.md",
@@ -9601,8 +9472,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 15849,
-      "sha256": "d9b0ff81cd562b53951a3b42fe79f4b0645e79f82efeec551aeeced1543bc282"
+      "byteSize": 15855,
+      "sha256": "c4b744afdaaf470d5e64ec8de4cdf8e60198575811336f47279a5ae9570d8f42"
     },
     {
       "path": "skills/recipe-fit-assessor/contract.json",
@@ -9631,8 +9502,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 4008,
-      "sha256": "3fb6b334de83faaf19315ea026bdb62b4efbec5a7dcab67d67910982c0b31016"
+      "byteSize": 3995,
+      "sha256": "aa58bdb85c135b80087a41283fcc00e4d1341941ae1c9db4deaf19b5dd448087"
     },
     {
       "path": "skills/recipe-fit-assessor/references/scope-gap-rules.md",
@@ -9646,8 +9517,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 2493,
-      "sha256": "12c58b8a65a405e9fc0cdb838da55570881ebd4b05ddce24e4f7e6828737ca1e"
+      "byteSize": 2490,
+      "sha256": "fcc769e22106d3e60c7db68b43410e4404b72e68b48b398fa1db127560a3fb5b"
     },
     {
       "path": "skills/recipe-fit-assessor/references/workflow-recommendation-template.md",
@@ -9676,8 +9547,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 7049,
-      "sha256": "d698c2871eaac5454e096d817a8e49d2a5b5365201e5d9ae092de335c0a3e50b"
+      "byteSize": 7046,
+      "sha256": "d8985e7cb4957945d5525d58fcb6bcef1b31fd7984b903d3305c110ec4c0d618"
     },
     {
       "path": "skills/render-export-evidence/SKILL.md",
@@ -9736,8 +9607,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 4028,
-      "sha256": "c9af9d9ca4bdfb80ec629abca95616ed78325307016c70d7412f887bb20eeb5e"
+      "byteSize": 3988,
+      "sha256": "d4df85a9a3f0cda8955a91317ef84bffd872b9d202dcad055caed466801bff06"
     },
     {
       "path": "skills/render-export-evidence/references/truth-label-decision-tree.md",
@@ -9871,8 +9742,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 16327,
-      "sha256": "9a0fce739067eca7484b5f65e68cbcc8af377662c10af4b1436486919695c2c8"
+      "byteSize": 16324,
+      "sha256": "994294a6a27dc22c8625eebc8a8e1d0191abc3c596ce219791f077197921e9d0"
     },
     {
       "path": "skills/runtime-attempt-report/contract.json",
@@ -9901,8 +9772,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 591,
-      "sha256": "2dbcfdb0a9c5bdfac757746906ab890717b672aee6f508868ab09d2b55ae3301"
+      "byteSize": 3067,
+      "sha256": "0696796204cdee9dec18775c5e9e26b91ce9b874c5c4c2f7d814ecd9f9ae9e0b"
     },
     {
       "path": "skills/runtime-attempt-report/references/triage-next-steps.md",
@@ -10111,8 +9982,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 505,
-      "sha256": "cdb6475c97c18c929703457709695ebfdd13240c6624e884b4b1ae2f55b70382"
+      "byteSize": 4215,
+      "sha256": "72c928fec3646437b5194cd263e51a649f024069101468d0fd107f9a723f47ca"
     },
     {
       "path": "skills/runtime-setup/EVAL.md",

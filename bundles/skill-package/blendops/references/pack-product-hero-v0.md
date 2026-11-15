@@ -1,6 +1,6 @@
 # product-hero-v0 pack
 
-Draft v0 workflow pack for product hero scene planning.
+1.0.0 workflow pack for product hero scene planning.
 
 Included flow:
 1. Help/routing
@@ -18,4 +18,4 @@ Evidence gates:
 - Artifacts remain `Not Produced` until output evidence exists.
 - No preview/render/GLB claim without validation notes.
 
-Limitations: Draft v0, not stable, no runtime execution guarantee, no artifact guarantee.
+Limitations: 1.0.0 workflow pack, not published to npm/marketplace, no runtime execution guarantee, no artifact guarantee.

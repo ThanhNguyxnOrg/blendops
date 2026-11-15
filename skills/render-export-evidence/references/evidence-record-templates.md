@@ -140,4 +140,4 @@ Date: <YYYY-MM-DD>
 
 - Filename: `path-<N>-[host-]-<recipe>-<YYYY-MM-DD>.md` under `docs/evals/`.
 - Append the new file to the "Evidence and result index" in `docs/evals/README.md`.
-- If the new evidence changes a verdict, update `docs/release-readiness.md` + `docs/release-readiness-rollup-v0.md`.
+- If the new evidence changes a verdict, update `docs/release-readiness.md`.
