@@ -3473,7 +3473,7 @@
       "generatorScript": null,
       "safeToMoveOrRemove": false,
       "byteSize": 17889,
-      "sha256": "8b7d46402df7d610c0678509bfd7cd6cecb00f53e476117f707c4b1518eec5e1"
+      "sha256": "c1a03b3359234b671c67a112eb8e06faad814d68e1f16076907d29d7acd434ed"
     },
     {
       "path": "docs/install/jetbrains-junie.md",

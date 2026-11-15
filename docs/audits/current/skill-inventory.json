@@ -14,7 +14,7 @@
     "workingTreeState": "clean",
     "snapshotBasis": "clean-committed-tree",
     "uncommittedChangeCount": 0,
-    "auditedInputsSha256": "946b0e215d7deee218c0a08d7fcf2d5f813be1ff3c6967954f2beb8ba98fea77",
+    "auditedInputsSha256": "1f42cd2171f65b0287c66478001d48dd56a26d31f5110b974342a3120e65e622",
     "selfReferentialCommitRule": "A Git commit cannot contain its own final commit SHA inside tracked files. sourceCommitSha records the verified HEAD commit present when the generator ran, workingTreeState and snapshotBasis record whether uncommitted working-tree changes were present on top of sourceCommitSha, and auditedInputsSha256 digests the exact audited file contents."
   },
   "summary": {
