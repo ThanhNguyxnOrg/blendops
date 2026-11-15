@@ -1,0 +1,112 @@
+name: Distribution Metadata Sync
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - README.md
+      - package.json
+      - package-lock.json
+      - skills.sh.json
+      - "skills/**/SKILL.md"
+      - scripts/audit-distribution-metadata.mjs
+      - scripts/install-skills.mjs
+      - .github/workflows/distribution-metadata-sync.yml
+  schedule:
+    - cron: "17 5 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: blendops-distribution-metadata-\${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 20
+          package-manager-cache: false
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Audit live npm and skills.sh metadata
+        id: audit
+        continue-on-error: true
+        run: node scripts/audit-distribution-metadata.mjs --live --write-report docs/audits/current/distribution-metadata.json
+
+      - name: Mint repository-scoped ThanhNguyxnAgent token
+        id: agent
+        uses: ThanhNguyxnOrg/.github/.github/actions/agent-token@da9d02544f60aeec92f8c851846ee3a587044beb
+        with:
+          profile: content
+          client-id: \${{ secrets.BOT_APP_ID }}
+          private-key: \${{ secrets.BOT_PRIVATE_KEY }}
+
+      - name: Persist distribution metadata report as ThanhNguyxnAgent
+        uses: actions/github-script@v9
+        env:
+          REPORT_PATH: docs/audits/current/distribution-metadata.json
+        with:
+          github-token: \${{ steps.agent.outputs.token }}
+          script: |
+            const fs = require('fs');
+            const path = process.env.REPORT_PATH;
+            const content = fs.readFileSync(path, 'utf8');
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const branch = 'main';
+
+            let current = null;
+            try {
+              const result = await github.rest.repos.getContent({ owner, repo, path, ref: branch });
+              current = {
+                sha: result.data.sha,
+                content: Buffer.from(result.data.content, 'base64').toString('utf8'),
+              };
+            } catch (error) {
+              if (error.status !== 404) throw error;
+            }
+
+            if (current && current.content === content) {
+              core.info('Distribution metadata report is already synchronized.');
+              return;
+            }
+
+            const payload = {
+              owner,
+              repo,
+              path,
+              message: 'chore(agent): sync npm and skills.sh distribution metadata',
+              content: Buffer.from(content, 'utf8').toString('base64'),
+              branch,
+            };
+            if (current) payload.sha = current.sha;
+
+            let lastError;
+            for (let attempt = 1; attempt <= 3; attempt += 1) {
+              try {
+                await github.rest.repos.createOrUpdateFileContents(payload);
+                core.info('ThanhNguyxnAgent synchronized ' + path);
+                return;
+              } catch (error) {
+                lastError = error;
+                if (attempt === 3 || ![500, 502, 503, 504].includes(error.status)) throw error;
+                await new Promise((resolve) => setTimeout(resolve, attempt * 1500));
+              }
+            }
+            throw lastError;
+
+      - name: Enforce local distribution metadata contracts
+        run: npm run distribution:check

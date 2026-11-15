@@ -1222,6 +1222,48 @@ describe('Secure Async MCP Client, Runtime Trust Verification & Governed Live Re
     }
   });
 
+  it('validates skills.sh.json against the upstream schema enum and safe search-path rules', () => {
+    const tmpRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-skills-sh-schema-'));
+    try {
+      fs.mkdirSync(path.join(tmpRoot, 'skills', 'alpha'), { recursive: true });
+      fs.writeFileSync(path.join(tmpRoot, 'skills', 'alpha', 'SKILL.md'), '---\nname: alpha\ndescription: Alpha fixture skill.\n---\n');
+      fs.mkdirSync(path.join(tmpRoot, 'extra-skills'), { recursive: true });
+
+      const base = {
+        $schema: 'https://skills.sh/schemas/skills.sh.schema.json',
+        notGrouped: 'bottom',
+        groupings: [{ title: 'Alpha', description: 'Alpha skills.', skills: ['alpha'] }],
+      };
+      const writeConfig = (config) => fs.writeFileSync(
+        path.join(tmpRoot, 'skills.sh.json'),
+        JSON.stringify(config, null, 2),
+      );
+
+      writeConfig(base);
+      assert.equal(validateSkillsShConfig(tmpRoot).valid, true);
+
+      writeConfig({ ...base, notGrouped: 'top' });
+      assert.equal(validateSkillsShConfig(tmpRoot).valid, true);
+
+      writeConfig({ ...base, notGrouped: 'hide' });
+      assert.equal(validateSkillsShConfig(tmpRoot).valid, false);
+
+      writeConfig({ ...base, paths: ['./extra-skills'] });
+      assert.equal(validateSkillsShConfig(tmpRoot).valid, true);
+
+      writeConfig({ ...base, paths: ['../outside'] });
+      assert.equal(validateSkillsShConfig(tmpRoot).valid, false);
+
+      writeConfig({ ...base, groupings: [{ ...base.groupings[0], unexpected: true }] });
+      assert.equal(validateSkillsShConfig(tmpRoot).valid, false);
+
+      writeConfig({ ...base, groupings: [{ title: 'x'.repeat(121), skills: ['alpha'] }] });
+      assert.equal(validateSkillsShConfig(tmpRoot).valid, false);
+    } finally {
+      fs.rmSync(tmpRoot, { recursive: true, force: true });
+    }
+  });
+
   it('Group I: skills.sh / vercel-labs/skills ecosystem integration — skills.sh.json validation, Lockfile v2 computedHash test vectors, and --with-skills-dir + --skill transactional install & rollback', () => {
     // 1. Validate root skills.sh.json covers all 48 canonical skills across 8 domain groupings
     const shValidation = validateSkillsShConfig(REPO_ROOT);

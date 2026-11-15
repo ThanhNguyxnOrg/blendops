@@ -1440,7 +1440,7 @@ export function validateSkillsShConfig(repoRoot = DEFAULT_REPO_ROOT) {
   if (!fs.existsSync(configPath)) {
     return {
       valid: false,
-      errors: [`Missing skills.sh.json at ${configPath}`],
+      errors: ['Missing skills.sh.json at ' + configPath],
       groupCount: 0,
       skillCount: 0,
       skills: [],
@@ -1453,7 +1453,7 @@ export function validateSkillsShConfig(repoRoot = DEFAULT_REPO_ROOT) {
   } catch (err) {
     return {
       valid: false,
-      errors: [`Invalid JSON in skills.sh.json: ${err.message}`],
+      errors: ['Invalid JSON in skills.sh.json: ' + err.message],
       groupCount: 0,
       skillCount: 0,
       skills: [],
@@ -1465,30 +1465,51 @@ export function validateSkillsShConfig(repoRoot = DEFAULT_REPO_ROOT) {
     return { valid: false, errors, groupCount: 0, skillCount: 0, skills: [] };
   }
 
+  const allowedRootKeys = new Set(['$schema', 'schema', 'notGrouped', 'groupings', 'paths']);
+  for (const key of Object.keys(parsed)) {
+    if (!allowedRootKeys.has(key)) errors.push('Unknown top-level property in skills.sh.json: ' + key);
+  }
+
   if (parsed.$schema !== 'https://skills.sh/schemas/skills.sh.schema.json') {
     errors.push(
-      `skills.sh.json $schema must be 'https://skills.sh/schemas/skills.sh.schema.json', got '${String(parsed.$schema)}'`,
+      "skills.sh.json $schema must be 'https://skills.sh/schemas/skills.sh.schema.json', got '" +
+        String(parsed.$schema) + "'",
     );
   }
+
+  // Upstream schema enum is exactly "top" | "bottom"; "hide" is not valid.
   if (
     parsed.notGrouped !== undefined &&
-    parsed.notGrouped !== 'bottom' &&
-    parsed.notGrouped !== 'hide'
+    parsed.notGrouped !== 'top' &&
+    parsed.notGrouped !== 'bottom'
   ) {
     errors.push(
-      `skills.sh.json notGrouped must be 'bottom' or 'hide', got '${String(parsed.notGrouped)}'`,
+      "skills.sh.json notGrouped must be 'top' or 'bottom', got '" + String(parsed.notGrouped) + "'",
     );
   }
-  if (!Array.isArray(parsed.groupings) || parsed.groupings.length < 1 || parsed.groupings.length > 50) {
+
+  if (
+    !Array.isArray(parsed.groupings) ||
+    parsed.groupings.length < 1 ||
+    parsed.groupings.length > 50
+  ) {
     errors.push('skills.sh.json groupings must be a non-empty array with 1..50 groups');
   }
 
-  const canonicalSkillDirs = new Set(
-    fs
-      .readdirSync(path.join(realRepoRoot, 'skills'), { withFileTypes: true })
-      .filter((d) => d.isDirectory() && d.name !== '_template')
-      .map((d) => d.name),
-  );
+  const skillsRoot = path.join(realRepoRoot, 'skills');
+  const canonicalSkillDirs = new Set();
+  if (!fs.existsSync(skillsRoot) || !fs.statSync(skillsRoot).isDirectory()) {
+    errors.push('Missing canonical skills/ directory');
+  } else {
+    for (const entry of fs.readdirSync(skillsRoot, { withFileTypes: true })) {
+      if (!entry.isDirectory() || entry.name === '_template') continue;
+      canonicalSkillDirs.add(entry.name);
+      const skillFile = path.join(skillsRoot, entry.name, 'SKILL.md');
+      if (!fs.existsSync(skillFile) || !fs.statSync(skillFile).isFile()) {
+        errors.push("Canonical skill directory '" + entry.name + "' is missing SKILL.md");
+      }
+    }
+  }
 
   const seenSkills = new Set();
   const seenTitles = new Set();
@@ -1497,35 +1518,88 @@ export function validateSkillsShConfig(repoRoot = DEFAULT_REPO_ROOT) {
       errors.push('Each entry in skills.sh.json groupings must be an object');
       continue;
     }
-    if (typeof group.title !== 'string' || group.title.trim().length === 0) {
-      errors.push('Every group in skills.sh.json must have a non-empty title');
+
+    for (const key of Object.keys(group)) {
+      if (!['title', 'description', 'skills'].includes(key)) {
+        errors.push("Unknown property '" + key + "' in skills.sh.json group");
+      }
+    }
+
+    if (
+      typeof group.title !== 'string' ||
+      group.title.trim().length === 0 ||
+      group.title.length > 120
+    ) {
+      errors.push('Every group title must be a non-empty string of at most 120 characters');
     } else if (seenTitles.has(group.title.trim())) {
-      errors.push(`Duplicate group title in skills.sh.json: '${group.title.trim()}'`);
+      errors.push("Duplicate group title in skills.sh.json: '" + group.title.trim() + "'");
     } else {
       seenTitles.add(group.title.trim());
     }
+
+    if (
+      group.description !== undefined &&
+      (typeof group.description !== 'string' || group.description.length > 500)
+    ) {
+      errors.push("Group '" + String(group.title) + "' description must be a string of at most 500 characters");
+    }
+
     if (!Array.isArray(group.skills) || group.skills.length < 1 || group.skills.length > 500) {
-      errors.push(`Group '${String(group.title)}' must have 1..500 skill slugs`);
+      errors.push("Group '" + String(group.title) + "' must have 1..500 skill slugs");
       continue;
     }
+
     for (const slug of group.skills) {
-      if (typeof slug !== 'string' || !/^[a-z0-9-]+$/.test(slug)) {
-        errors.push(`Invalid skill slug '${String(slug)}' in group '${String(group.title)}'`);
+      if (
+        typeof slug !== 'string' ||
+        slug.length < 1 ||
+        slug.length > 120 ||
+        !/^[a-z0-9-]+$/.test(slug)
+      ) {
+        errors.push("Invalid skill slug '" + String(slug) + "' in group '" + String(group.title) + "'");
         continue;
       }
-      if (seenSkills.has(slug)) {
-        errors.push(`Duplicate skill slug '${slug}' across skills.sh.json groupings`);
-      }
+      if (seenSkills.has(slug)) errors.push("Duplicate skill slug '" + slug + "' across skills.sh.json groupings");
       seenSkills.add(slug);
       if (!canonicalSkillDirs.has(slug)) {
-        errors.push(`Skill slug '${slug}' in skills.sh.json does not exist under skills/${slug}/SKILL.md`);
+        errors.push("Skill slug '" + slug + "' in skills.sh.json does not exist under skills/" + slug + "/SKILL.md");
       }
     }
   }
 
+  // BlendOps requires every canonical skill to have an explicit curated group.
+  // Do not rely on skills.sh's generic notGrouped fallback for newly added skills.
   for (const canonical of [...canonicalSkillDirs].sort(compareCodeUnitOrder)) {
     if (!seenSkills.has(canonical)) {
-      errors.push(`Canonical skill '${canonical}' is missing from skills.sh.json groupings`);
+      errors.push("Canonical skill '" + canonical + "' is missing from skills.sh.json groupings");
+    }
+  }
+
+  if (parsed.paths !== undefined) {
+    if (!Array.isArray(parsed.paths) || parsed.paths.length < 1) {
+      errors.push('skills.sh.json paths must be a non-empty array when specified');
+    } else {
+      const seenPaths = new Set();
+      for (const entry of parsed.paths) {
+        if (typeof entry !== 'string' || !/^\.\/[^\\]+$/.test(entry)) {
+          errors.push("Invalid skills.sh.json search path '" + String(entry) + "' (expected ./relative/path)");
+          continue;
+        }
+        const segments = entry.slice(2).split('/');
+        if (segments.some((segment) => !segment || segment === '.' || segment === '..')) {
+          errors.push("Unsafe skills.sh.json search path '" + entry + "'");
+          continue;
+        }
+        if (seenPaths.has(entry)) errors.push("Duplicate skills.sh.json search path '" + entry + "'");
+        seenPaths.add(entry);
+        const resolved = path.resolve(realRepoRoot, entry.slice(2));
+        const relative = path.relative(realRepoRoot, resolved);
+        if (relative.startsWith('..') || path.isAbsolute(relative)) {
+          errors.push("skills.sh.json search path escapes repository: '" + entry + "'");
+        } else if (!fs.existsSync(resolved) || !fs.statSync(resolved).isDirectory()) {
+          errors.push("skills.sh.json search path is not an existing directory: '" + entry + "'");
+        }
+      }
     }
   }
 

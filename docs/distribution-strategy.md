@@ -98,6 +98,26 @@ Do not claim availability until it is verified for the specific surface.
 
 ---
 
+## Automated distribution metadata audit
+
+The repository keeps these source files authoritative:
+
+- `package.json` + `package-lock.json`: the next npm package manifest and dependency lock. A published npm version is immutable; changing these files on GitHub does not rewrite an already-published tarball or README.
+- `skills.sh.json`: the curated eight-group skills.sh page manifest. Its grouped slugs must map one-to-one to the canonical `skills/<slug>/SKILL.md` directories. The upstream `notGrouped` enum is `top` or `bottom`; BlendOps currently uses `bottom`.
+- `skills/*/SKILL.md`: canonical skill source and inventory.
+
+Run `npm run distribution:check` for the offline local contract. The [Distribution Metadata Sync workflow](../.github/workflows/distribution-metadata-sync.yml) runs when these source files change and weekly. It checks the public npm registry and live skills.sh page, then lets **ThanhNguyxnAgent** commit the deterministic snapshot to [`distribution-metadata.json`](./audits/current/distribution-metadata.json).
+
+The workflow is intentionally conservative:
+
+- It never increments `package.json.version`, publishes npm, or overwrites a published npm version. It reports when the repository is ahead of or behind the registry and when the published npm README is older than the current GitHub README; a new versioned release is required to update npm.
+- It never invents skill categories or changes curated groupings. Missing, duplicate, or unknown skill slugs fail the local contract; a maintainer must assign a new skill to the right group.
+- It compares the canonical grouped skills with the live skills.sh page but records the page's displayed metric separately. skills.sh may retain older ungrouped names in its “Other skills” area; that display/telemetry count is not the canonical BlendOps inventory.
+
+This makes external distribution drift visible without silently rewriting release versions or taxonomy.
+
+---
+
 ## Runtime boundary
 
 Distribution strategy does not change runtime strategy.
