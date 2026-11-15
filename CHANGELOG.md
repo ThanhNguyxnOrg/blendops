@@ -5,7 +5,7 @@ content and tooling layer (skills + contracts + laws + packs + CLI); it does not
 which is redirected to upstream (Blender Lab MCP, Anthropic Connector,
 community `mcp-for-blender`, Blender CLI).
 
-## [v1.0.0] — Production Release
+## [v1.0.0] - Production Release
 
 ### Added & Changed
 - **Production Release Normalization (`v1.0.0`)**:
