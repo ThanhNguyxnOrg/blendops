@@ -7,7 +7,7 @@ Target: `generic-project`
 
 This is a static, inspectable project-local install fixture for BlendOps. It gives an AI coding agent a minimal set of files it can copy into another repository when target detection is unknown or ambiguous.
 
-It is not an installer script, npm package, release artifact, marketplace listing, or runtime setup.
+This directory is a static reference fixture only; it is not itself an installer script, an npm package, a separate release artifact, an official marketplace listing, or a runtime setup. For the published CLI, use [`blendops@1.0.0`](https://www.npmjs.com/package/blendops); for direct Agent Skills installation, use [`skills.sh`](https://www.skills.sh/ThanhNguyxnOrg/blendops).
 
 ## When to use it
 
@@ -26,7 +26,8 @@ Do not use this bundle when:
 - the user expects Blender runtime setup,
 - the user expects a Claude Desktop Connector or Blender MCP bridge configuration,
 - the user expects preview/render/GLB artifacts,
-- the user expects a published package or marketplace install.
+- the user expects to invoke the published npm CLI directly (use `npx blendops` instead of copying this static fixture),
+- the user expects an official marketplace install (no such listing is claimed).
 
 ## Relationship to install docs
 

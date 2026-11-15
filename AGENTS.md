@@ -102,10 +102,11 @@ npm run ci
 - Does not configure the Blender Lab MCP add-on for the user.
 - Does not configure the community `mcp-for-blender` for the user.
 - Does not run Blender, render, export, or produce preview/render/GLB artifacts.
-- Does not ship a published `npm` package or `npx` installer.
-- Does not have a marketplace listing.
+- The public npm CLI package is published as `blendops@1.0.0`; use `npx blendops` for the project installer and utility commands.
+- The public GitHub Agent Skills source is listed on [skills.sh](https://www.skills.sh/ThanhNguyxnOrg/blendops); use `npx skills add ThanhNguyxnOrg/blendops` to install skills.
+- Does not have an official marketplace/plugin listing.
 
-If you find a doc claiming any of these, that's a bug — fix the doc honestly to mark it `Not Run` / `Not Produced` / `Not Published`.
+If you find a doc claiming an official marketplace/plugin listing exists, that Blender runtime was installed/configured, or render/export artifacts were produced without evidence, fix the doc honestly to preserve `Not Run` / `Not Produced` / `Not Published` boundaries.
 
 ---
 
