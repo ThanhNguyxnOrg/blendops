@@ -2872,8 +2872,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 8317,
-      "sha256": "e43ff25e57bf4d72ef294440feda5352ad540c3cacdb439e3821e5f9e920784b"
+      "byteSize": 8612,
+      "sha256": "06c6f7f35a2985b121235b6488afdcd1a7355aa3d83979e40dd4835d0ed1fa9b"
     },
     {
       "path": "docs/evals/README.md",
@@ -3472,8 +3472,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 17873,
-      "sha256": "b230f49a429a85b4911fa93942612ce49f0eb2b207bf9e2e01927aff353a99ba"
+      "byteSize": 17889,
+      "sha256": "8b7d46402df7d610c0678509bfd7cd6cecb00f53e476117f707c4b1518eec5e1"
     },
     {
       "path": "docs/install/jetbrains-junie.md",
@@ -5377,8 +5377,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 44523,
-      "sha256": "0e25a3b04ebbed4b3f0f8d87d00bebccea1b4818c66b888d15cf1104f0c6e8ad"
+      "byteSize": 44697,
+      "sha256": "d1a8366b0a1c2a0c5ff3f89ecaa0a084f6ae55e4b0dc8c0d4e5e5ada6c289490"
     },
     {
       "path": "scripts/compile-scene-plan.mjs",
