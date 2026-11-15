@@ -292,8 +292,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 2638,
-      "sha256": "017a98b7c57320ba167187027df3909d5c1834a53704b0eb1cbce454e3468817"
+      "byteSize": 2918,
+      "sha256": "c60b82f777a985d0c4871fe2a559b18e7fa7dcfac7c77fc43e394df818297879"
     },
     {
       "path": ".github/workflows/agent-pr-worker.yml",
@@ -307,8 +307,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 1553,
-      "sha256": "0705467d67fa6c9d8038b275db9a881cddf4fbe59eaea6a2e5c457843e34832c"
+      "byteSize": 5269,
+      "sha256": "42ab980985bf632a56d0d229eda2cafe346f2873f867915b2aea20f1592401f8"
     },
     {
       "path": ".github/workflows/ci.yml",
@@ -323,7 +323,7 @@
       "generatorScript": null,
       "safeToMoveOrRemove": false,
       "byteSize": 583,
-      "sha256": "d67164efe9fa53e325f0d537a2ac4c16c3199db3e9633cea02ef6e3617335a29"
+      "sha256": "68e71aa460fd8e4c42d88f308e85328b4ce76ea5dc2de5373dceb88ebb6dd0f1"
     },
     {
       "path": ".github/workflows/distribution-metadata-sync.yml",
