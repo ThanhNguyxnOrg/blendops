@@ -2,9 +2,9 @@
   "schemaVersion": "1.0.0",
   "auditPhase": "v1.0.0-current",
   "summary": {
-    "totalTrackedFiles": 688,
+    "totalTrackedFiles": 692,
     "npmPackageIncludedFiles": 484,
-    "generatedTrackedFiles": 110,
+    "generatedTrackedFiles": 111,
     "canonicalSkillsCount": 48,
     "lawsCount": 4,
     "packsCount": 1,
@@ -12,22 +12,22 @@
     "installTargetsCount": 26,
     "exactDuplicateGroupsCount": 1,
     "classificationCounts": {
-      "configuration": 36,
+      "configuration": 37,
       "documentation": 84,
       "historical_record": 15,
       "distribution_artifact": 15,
       "canonical_source": 327,
-      "generated_artifact": 110,
-      "runtime_build_test_infrastructure": 101
+      "generated_artifact": 111,
+      "runtime_build_test_infrastructure": 103
     },
     "subsystemCounts": {
       "repository-governance": 4,
-      "github-governance-ci": 12,
+      "github-governance-ci": 13,
       "documentation-governance": 8,
       "cli-distribution": 1,
       "bundles-and-packaging": 130,
       "product-and-target-docs": 67,
-      "audits-and-provenance": 10,
+      "audits-and-provenance": 11,
       "runtime-and-adapter-evals": 13,
       "glb-web-handoff-toolkit": 3,
       "knowledge-and-recipe-catalog": 5,
@@ -36,32 +36,32 @@
       "package-governance": 2,
       "registry-and-routing": 6,
       "schemas-and-contracts": 16,
+      "ci-and-build-generators": 10,
       "cli-and-runtime-tools": 9,
-      "ci-and-build-generators": 9,
-      "test-suites": 19,
+      "test-suites": 20,
       "quality-and-skill-reviews": 7,
       "skills-catalog": 298
     },
     "topLevelCounts": {
       "(root)": 15,
-      ".github": 12,
+      ".github": 13,
       "bin": 1,
       "bundles": 130,
-      "docs": 94,
+      "docs": 95,
       "evals": 62,
       "laws": 5,
       "packs": 2,
       "registry": 10,
       "schemas": 16,
-      "scripts": 37,
+      "scripts": 39,
       "skill-reviews": 7,
       "skills": 297
     },
     "referenceIntegrity": {
       "markdownFiles": 484,
-      "jsModules": 38,
+      "jsModules": 40,
       "schemas": 16,
-      "workflows": 5
+      "workflows": 6
     }
   },
   "rootPolicy": {
@@ -326,6 +326,21 @@
       "sha256": "d67164efe9fa53e325f0d537a2ac4c16c3199db3e9633cea02ef6e3617335a29"
     },
     {
+      "path": ".github/workflows/distribution-metadata-sync.yml",
+      "fileType": ".yml",
+      "classification": "configuration",
+      "purpose": "GitHub Actions CI/CD and repository automation workflow definition",
+      "owningSubsystem": "github-governance-ci",
+      "includedInNpmPackage": false,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 3608,
+      "sha256": "58624e436e14b215b5ba3d6ea265936886ed8ff2a269992ca1d72f7fc1788244"
+    },
+    {
       "path": ".github/workflows/docs.yml",
       "fileType": ".yml",
       "classification": "configuration",
@@ -382,8 +397,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 6438,
-      "sha256": "3f2b4f9af5458ddc5f78ed897726fffb15ae8a26de25f909609a326931f9b4ca"
+      "byteSize": 6592,
+      "sha256": "fe76d71c4cdd229db4a483fd77aa117e04d1ff0a29d523d25a0e6765cd5f3e29"
     },
     {
       "path": "CHANGELOG.md",
@@ -2482,8 +2497,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 21714,
-      "sha256": "199fd0a9c0342a0a6e585095c910125845a8dc937daff06193265f5a0c0fc82a"
+      "byteSize": 21936,
+      "sha256": "9ba8aa5c83dc3a21e41cdffe885b1a3c90db9359a6eeb1eb674339b66a474439"
     },
     {
       "path": "docs/adapter-registry.md",
@@ -2696,6 +2711,21 @@
       "sha256": "dynamic-current-audit-artifact"
     },
     {
+      "path": "docs/audits/current/distribution-metadata.json",
+      "fileType": ".json",
+      "classification": "generated_artifact",
+      "purpose": "Deterministically generated current-release audit artifact (distribution-metadata.json)",
+      "owningSubsystem": "audits-and-provenance",
+      "includedInNpmPackage": false,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": true,
+      "generatorScript": "scripts/generate-current-audit.mjs",
+      "safeToMoveOrRemove": false,
+      "byteSize": 0,
+      "sha256": "dynamic-current-audit-artifact"
+    },
+    {
       "path": "docs/audits/current/eval-inventory.json",
       "fileType": ".json",
       "classification": "generated_artifact",
@@ -2872,8 +2902,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 8499,
-      "sha256": "8305cea3e180c37d270463225913e710423d7decca30c8ff097decf8acec41c9"
+      "byteSize": 10419,
+      "sha256": "6e75f434a87d2c32e77564087efabeefe3e8e31f5b67acc3645d3d207e76cb2d"
     },
     {
       "path": "docs/evals/README.md",
@@ -4912,8 +4942,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 4382,
-      "sha256": "60c4df1916ee14eefbdf4294ee438185ec355f480f52510cd8885ace40211c17"
+      "byteSize": 4533,
+      "sha256": "9574c39a75c9c608409c8ded1480d6c72bc5012af0834b8ba75010af2b64e0b7"
     },
     {
       "path": "packs/README.md",
@@ -5336,6 +5366,21 @@
       "sha256": "8b372aa2fee0067d290c352dc7fd0c029dd57bb0e13436855f3467970f5b1569"
     },
     {
+      "path": "scripts/audit-distribution-metadata.mjs",
+      "fileType": ".mjs",
+      "classification": "runtime_build_test_infrastructure",
+      "purpose": "Repository generator, validator, or preview server script (audit-distribution-metadata.mjs)",
+      "owningSubsystem": "ci-and-build-generators",
+      "includedInNpmPackage": false,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 14426,
+      "sha256": "61338adbe23dd9173eaa49f08170738f1fb7e4c76483e8bb7d0a9f780699c2f4"
+    },
+    {
       "path": "scripts/build-knowledge-catalog.mjs",
       "fileType": ".mjs",
       "classification": "runtime_build_test_infrastructure",
@@ -5497,8 +5542,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 193648,
-      "sha256": "237d407f94246db8e6eceab0ee0163b4718d356a7761c4df73b2593596984351"
+      "byteSize": 196646,
+      "sha256": "7dfa320535a1c20c8174b0e788c233178617ba1506f6551214763ecf90350d54"
     },
     {
       "path": "scripts/run-evals.mjs",
@@ -5636,6 +5681,21 @@
       "sha256": "a4f1547a3d92ed6f02dc4e3b498be3f5d0a6d505255b20643e151a8de2653045"
     },
     {
+      "path": "scripts/test-distribution-metadata.mjs",
+      "fileType": ".mjs",
+      "classification": "runtime_build_test_infrastructure",
+      "purpose": "Automated regression and verification test suite (test-distribution-metadata.mjs)",
+      "owningSubsystem": "test-suites",
+      "includedInNpmPackage": false,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 2609,
+      "sha256": "f7b22aebb65287a94bcde471a48a4c7a94c4438a6d2febbc8f28dd1aad77b4bf"
+    },
+    {
       "path": "scripts/test-eval-coverage.mjs",
       "fileType": ".mjs",
       "classification": "runtime_build_test_infrastructure",
@@ -5692,8 +5752,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 52584,
-      "sha256": "2fb2b3f6cbdb2c4b488b949e0eeed81c38ec5d4602d501a3bf79bf6a8e66b3ae"
+      "byteSize": 54428,
+      "sha256": "3f0e6eb4e829d025fb5fcb7ff630fb7b86bc4387911234957112dfd944edd8b2"
     },
     {
       "path": "scripts/test-mcp-qualification.mjs",
