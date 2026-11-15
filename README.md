@@ -144,7 +144,7 @@ npm run skills:install -- --target universal --project /path/to/your-project --w
 ```
 
 > [!NOTE]
-> `package.json` intentionally retains `"private": true` (`npm package: Not Published` — no `npx blendops` registry package exists yet). Runtime status stays `Not Run` and artifact status stays `Not Produced` on install.
+> `package.json` is configured for public npm publication (`publishConfig.access: public`). The first staged npm release is pending maintainer approval (`npm package: Not Published` — no `npx blendops` registry package is live yet). Runtime status stays `Not Run` and artifact status stays `Not Produced` on install.
 
 The agent auto-detects which mode applies. Coding agents (Claude Code, Cursor, Codex, OpenCode, Cline, Roo Code, Blackbox AI, Continue, Zed, Windsurf, Trae, Augment Code, goose, OpenHands, JetBrains Junie, Sourcegraph Cody, Aider, Amazon Q Developer, Gemini, Copilot, Antigravity, Kiro, Amp, Droid, Kilo, OpenClaw, ClawdBot, VS Code, universal `.agents/skills/`) hit **Mode A** and install **project-locally**. Claude Desktop / Claude.ai / ChatGPT chats hit **Mode B** and output **separate ZIPs from skills/*/SKILL.md** (one per skill, 48 total) for you to drag-drop into the Skills UI manually. Anything else falls back to **Mode C — blocked-needs-input**. Full mode logic in [`docs/ai-agent-install-flow.md`](./docs/ai-agent-install-flow.md).
 
@@ -181,7 +181,7 @@ BlendOps recognizes **2 MCP execution paths + a CLI fallback appendix** ([full d
 
 ## 🚫 What it does **not** do
 
-BlendOps does not install Blender, ship its own runtime, configure Anthropic Connector or the Lab MCP add-on for you, run Blender, claim mutation/render/export artifacts, publish an npm registry package (the `blendops` CLI is packaged for local/tarball use with `"private": true`), or claim a marketplace listing. See [`docs/release-readiness.md`](./docs/release-readiness.md) for the honest current state.
+BlendOps does not install Blender, ship its own runtime, configure Anthropic Connector or the Lab MCP add-on for you, run Blender, claim mutation/render/export artifacts, or claim a published npm registry package (the initial staged npm release is pending maintainer approval) or marketplace listing. See [`docs/release-readiness.md`](./docs/release-readiness.md) for the honest current state.
 
 ---
 

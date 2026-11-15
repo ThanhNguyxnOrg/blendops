@@ -14,7 +14,7 @@ Welcome to BlendOps! This guide helps you understand what BlendOps is, where it 
 | **Product version** | v1.0.0 | Production skills, knowledge/recipe catalogs, CLI tooling, and CI suite |
 | **Runtime eval** | Not Run | Live Blender official runtime manual eval is optional operator-side provenance |
 | **Artifacts** | Not Produced | No preview/render/GLB files generated in this repo |
-| **Package/marketplace** | Not Published | Local/tarball CLI (`bin/blendops.mjs`, `"private": true`) implemented; no published npm registry package or marketplace listing |
+| **Package/marketplace** | Not Published | CLI package metadata is public-release ready; first npm staged publication awaits maintainer approval; no marketplace listing |
 | **Canonical skill package** | Verified fixture | `bundles/skill-package/blendops/` built and checked by CI |
 
 ---
@@ -40,8 +40,8 @@ Pick the path that matches what you want to do:
 ### 📦 I want to install/use the skill package
 
 **Current reality:**
-- BlendOps is not published to the public npm registry (`"private": true`) or any marketplace
-- A local/tarball CLI (`bin/blendops.mjs` / `scripts/install-skills.mjs`) is implemented and packable via `npm pack`, but no public `npx blendops` registry release exists yet
+- BlendOps is not yet published to the public npm registry; its first staged release is awaiting maintainer approval. No marketplace listing exists.
+- The CLI (`bin/blendops.mjs` / `scripts/install-skills.mjs`) is packaged and tested via `npm pack`; public `npx blendops` use is unavailable until the staged version is approved.
 - Installation is project-local or multiple-skill-zip-prepared, transactional, and reversible
 
 Use the short prompt from [README.md](../README.md#-use-in-30-seconds). The agent will read [AI Agent Quickstart](./ai-agent-quickstart.md) and auto-select project-local install or multiple Skills ZIP preparation.
@@ -147,7 +147,7 @@ Use the short prompt from [README.md](../README.md#-use-in-30-seconds). The agen
 - Production `v1.0.0` skills, knowledge, recipe, CLI, and CI layers
 - Runtime eval: Not Run
 - Artifacts: Not Produced
-- Public npm / marketplace listing: Not Published (`"private": true`)
+- Public npm package: Not Published (initial staged publication pending approval); marketplace listing: Not Published
 
 **Start here:**
 - [Release readiness](./release-readiness.md) — current release readiness and scope boundaries
@@ -199,7 +199,7 @@ BlendOps documents **two MCP execution paths** plus a **CLI fallback appendix** 
 
 **Local repository installer & future `npx`:**
 - Local repository script: `node scripts/install-skills.mjs` (`--doctor`, `--dry-run`, `--write`, `--rollback`) — see [docs/install/installer-spec.md](./install/installer-spec.md)
-- Published `npm`/`npx`: Not published; do not claim `npx blendops` works
+- Public `npm`/`npx`: Not published yet; use only after the initial staged release is approved and the registry version is verified
 
 ---
 

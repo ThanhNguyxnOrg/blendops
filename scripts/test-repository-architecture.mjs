@@ -12,7 +12,7 @@
  *    and `test-cli-package.mjs` import guard preventing duplicate suite execution when imported by `test-glb-handoff.mjs`).
  * 6. Skills (48), laws (4), packs (1), bundles (3), install targets (26), registry, and bundle reference summary determinism.
  * 7. Removal of obsolete development phase snapshots and verification of current-state (`v1.0.0-current`) audit provenance (`87.0/100`, `F-08 = PARTIALLY_FIXED`, `Not Run` / `Not Produced` / `Not Published`).
- * 8. `npm pack` tarball file list audit (`"private": true` preserved, no test/audit bloat) and isolated consumer CLI execution.
+ * 8. `npm pack` tarball file list audit (public npm metadata, no test/audit bloat) and isolated consumer CLI execution.
  */
 
 import { describe, test, before, after } from 'node:test';
@@ -491,9 +491,10 @@ describe('Repository Architecture, Organization & Finalization', () => {
     assert.equal(repoInv.auditPhase, 'v1.0.0-current');
   });
 
-  test('Scenario 8: npm pack tarball audit and isolated consumer execution preserve "private": true and clean distribution boundary', () => {
+  test('Scenario 8: npm pack tarball audit and isolated consumer execution preserve public npm metadata and clean distribution boundary', () => {
     const pkg = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8'));
-    assert.equal(pkg.private, true, 'package.json must retain "private": true (npm package Status: Not Published)');
+    assert.notEqual(pkg.private, true, 'package.json must be eligible for npm publication');
+    assert.equal(pkg.publishConfig?.access, 'public', 'package.json must declare public npm access');
 
     const packDir = path.join(suiteTmpDir, 'pack');
     const consumerDir = path.join(suiteTmpDir, 'consumer');

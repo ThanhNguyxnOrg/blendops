@@ -16,7 +16,7 @@ Scope: BlendOps content distribution, not Blender runtime distribution
 | 1 | Project-local file install | Users or agents copy/reference BlendOps docs, skills, laws, packs, and `.blendops/catalog/*` inside a project. | Preferred route; supported via [AI Agent Install Flow](./ai-agent-install-flow.md) and local CLI (`bin/blendops.mjs` / `scripts/install-skills.mjs`). |
 | 2 | User-managed Claude Desktop skill import + shared catalog attachment | User manually imports BlendOps skill ZIPs (`dist/claude-skills/desktop-zips/*.zip`) and optionally attaches `dist/shared-catalog/blendops-knowledge-and-recipes.zip` to Claude Project Knowledge. | Supported route; exportable via `npm run skills:export` or `blendops install --target claude-desktop --out <dir> --write`; must stay separate from connector setup. |
 | 3 | GitHub/raw/plugin-from-repo install | Tool consumes content directly from a GitHub URL, raw file, or repo plugin reference. | Future; must follow target tool format. |
-| 4 | Tool-native package/extension & CLI tarball | BlendOps ships in a packable CLI tarball (`npm pack`) or tool-native package format. | Local CLI & `npm pack` tarball verified in `scripts/test-cli-package.mjs`; public npm registry publish remains deferred (`"private": true`). |
+| 4 | Tool-native package/extension & CLI tarball | BlendOps ships in a packable CLI tarball (`npm pack`) or tool-native package format. | Local CLI & `npm pack` tarball verified in `scripts/test-cli-package.mjs`; public npm metadata is ready, with the first staged registry release awaiting maintainer approval. |
 | 5 | Official marketplace listing | BlendOps appears in an official marketplace/catalog with review or approval as required. | Future only; do not claim until published and verified. |
 
 BlendOps v1.0.0 does not depend on Level 5.
@@ -68,16 +68,16 @@ If the canonical package source `bundles/skill-package/blendops/` is used as upl
 
 BlendOps packages a self-contained CLI (`bin/blendops.mjs`) that can be packed into a local tarball (`npm pack`) and installed into a local consumer project (`npm install ./blendops-1.0.0.tgz`, invoked via `node_modules/.bin/blendops`, `node node_modules/blendops/bin/blendops.mjs`, or `npx --no-install blendops`).
 
-- **`"private": true` preserved:** `package.json` intentionally retains `"private": true` as a hard guard against accidental `npm publish`.
-- **No public npm release:** BlendOps is **not** published to the public npm registry (`Not Published`). Do not claim that `npx blendops` or `npm install -g blendops` can fetch a publicly published package.
-- **Registry `E404` check limitation:** During namespace verification, querying the public npm registry (`npm view`) for `blendops`, `@blendops/cli`, and `@thanhnguyxn/blendops` returned `E404` (`Not Found`). An npm registry `E404` only means a package name was not found during that check; it does **not** guarantee reservation rights, npm similarity/anti-typosquatting clearance at publish time, trademark rights, or scope ownership (such as `@blendops` or `@thanhnguyxn`).
+- **Public-release metadata:** `package.json` omits `private` and declares `publishConfig.access: public`; this makes the package publishable but does not itself publish it.
+- **Initial npm publication pending:** BlendOps is **not yet** published to the public npm registry (`Not Published`). The first staged version must be reviewed and approved by a maintainer with 2FA before `npx blendops` or `npm install -g blendops` can fetch it.
+- **Historical registry `E404` check:** A query on 2026-10-31 found no package for `blendops`, `@blendops/cli`, or `@thanhnguyxn/blendops`. Re-check the live registry immediately before first staging. An npm registry `E404` only means a name was not found at that check time; it does **not** guarantee reservation rights, npm similarity/anti-typosquatting clearance, trademark rights, or scope ownership.
 
 ---
 
 ## Release policy
 
 - `v1.0.0` does not depend on official marketplace acceptance.
-- `v1.0.0` ships GitHub, project-local, docs-only, local CLI tarball (`"private": true`), and manual install guidance.
+- `v1.0.0` ships GitHub, project-local, docs-only, local CLI tarball, and manual install guidance; its initial public npm stage is a separate pending maintainer action.
 - Marketplace publishing is a later, evidence-gated distribution option.
 - Do not claim official marketplace listing until the listing is actually published and verified.
 - Do not claim broad install confidence until multiple target surfaces have install and rollback evidence.

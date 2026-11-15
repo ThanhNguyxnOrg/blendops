@@ -55,7 +55,7 @@ blendops/
 ├── SECURITY.md                           # Vulnerability reporting and safety policy
 ├── SUPPORT.md                            # User and contributor support guide
 ├── TODO.md                               # Roadmap, completed milestones, and permanent policy guards
-├── package.json                          # Package manifest (`"private": true`), CLI bin, and CI scripts
+├── package.json                          # Public npm package manifest, CLI bin, and CI scripts
 ├── package-lock.json                     # Deterministic npm dependency lockfile
 ├── bin/
 │   └── blendops.mjs                      # Distributable CLI entrypoint (`doctor`, `install`, `rollback`, `glb-*`, `catalog-*`, `scene-spec-validate`, `plan-*`, `runtime`, `operation`, `execution`)
@@ -176,7 +176,7 @@ blendops/
 
 - **Packaged Tarball Scope (`package.json` `"files"`)**: Includes `bin/`, core runtime scripts (`install-skills.mjs`, `build-knowledge-catalog.mjs`, `compile-scene-plan.mjs`, `runtime-orchestrator.mjs`, `validate-capability-policy.mjs`, `validate-evidence-packet.mjs`, `export-claude-skills.mjs`, `inspect-glb.mjs`, `generate-glb-handoff-report.mjs`), `docs/knowledge-and-recipe-catalog.md`, `docs/recipes/`, `docs/workflows/`, `docs/examples/glb-web-handoff/`, `skills/`, `laws/`, `packs/`, `bundles/`, `registry/`, `schemas/`, `README.md`, `LICENSE`, and `CHANGELOG.md`. Excludes test suites (`scripts/test-*.mjs`), CI-only audit generators, dev server, `docs/audits/`, `evals/`, and `.github/`.
 - **Permanent Non-Goals**:
-  - `"private": true` remains set — npm publication status is `Not Published`.
+  - Public npm metadata is configured (`publishConfig.access: public`); the initial staged publication remains `Not Published` until maintainer approval.
   - Marketplace/plugin listing status is `Not Published`.
   - Live Blender runtime execution remains `Not Run` and production artifacts remain `Not Produced` unless backed by a formal operator evidence packet under `docs/evals/`.
 

@@ -112,7 +112,7 @@ Never do these during BlendOps install/prep:
 - run runtime eval,
 - create/render/export preview, render, GLB, or artifact files,
 - claim runtime success or artifact output without evidence,
-- claim a published npm registry package, public `npx` release, marketplace listing, or plugin listing exists (the `blendops` CLI is local/tarball-only with `"private": true`).
+- claim a published npm registry package, public `npx` release, marketplace listing, or plugin listing exists (the first npm staged publication is pending maintainer approval).
 
 ## Required report
 

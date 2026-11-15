@@ -1023,9 +1023,10 @@ describe('Distributable CLI & Package Readiness', () => {
     assert.match(workflowYaml, /-\s*macos-latest/);
     assert.match(workflowYaml, /run:\s*node --test scripts\/test-cli-package\.mjs/);
 
-    // 2. Verify package.json preserves private: true and Node >=20.0.0 (or >=18)
+    // 2. Verify package.json is eligible for a public npm release and Node >=20.0.0 (or >=18)
     const pkgJson = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8'));
-    assert.equal(pkgJson.private, true, 'package.json must keep "private": true');
+    assert.notEqual(pkgJson.private, true, 'package.json must be eligible for npm publication');
+    assert.equal(pkgJson.publishConfig?.access, 'public', 'package.json must declare public npm access');
     assert.ok(
       pkgJson.engines?.node === '>=20.0.0' || pkgJson.engines?.node === '>=18',
       'package.json must retain Node >=20.0.0 engine requirement',
@@ -1036,7 +1037,8 @@ describe('Distributable CLI & Package Readiness', () => {
     assert.match(distDoc, /E404/);
     assert.match(distDoc, /does \*\*not\*\* guarantee reservation rights/i);
     assert.match(distDoc, /scope ownership/i);
-    assert.match(distDoc, /"private":\s*true/);
+    assert.doesNotMatch(distDoc, /"private":\s*true/);
+    assert.match(distDoc, /initial staged publication is pending maintainer approval/i);
     assert.match(distDoc, /Not Published/);
 
     // 4. Verify all generated docs/audits/current/* files use v1.0.0-current and never legacy draft phase-*-current IDs

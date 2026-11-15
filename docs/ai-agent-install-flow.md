@@ -244,10 +244,10 @@ blendops plan-inspect /path/to/plan.json
 blendops rollback --project /path/to/project
 ```
 
-By contrast, public npm registry `npx blendops` commands remain unpublished (`"private": true` in `package.json`) until an explicit maintainer release decision:
+By contrast, public npm registry `npx blendops` commands remain unavailable until the initial staged package is approved by a maintainer:
 
 ```sh
-# Future public registry invocation only — package is currently "private": true and not published to npm
+# Public registry invocation — use only after the initial staged release is approved and the package is visible on npm
 npx blendops install --target auto --project .
 npx blendops install --target claude-code --project .
 npx blendops doctor --project .

@@ -4,7 +4,7 @@ Status: 1.0.0 — local repository script (`scripts/install-skills.mjs`) and dis
 Scope: project-local installer and tarball-packable CLI for BlendOps skill/law/pack attachment and manual Claude Desktop export prep
 
 > [!IMPORTANT]
-> `scripts/install-skills.mjs` is implemented as the local repository installer and verified by `scripts/test-project-installer.mjs`, and `bin/blendops.mjs` provides the distributable CLI entrypoint verified via `npm pack` + consumer tarball installation in `scripts/test-cli-package.mjs`. No `npx blendops` CLI, published npm package, or marketplace listing exists (`"private": true` remains set in `package.json`). Global installs (`--allow-global`) remain disabled.
+> `scripts/install-skills.mjs` is implemented as the local repository installer and verified by `scripts/test-project-installer.mjs`, and `bin/blendops.mjs` provides the distributable CLI entrypoint verified via `npm pack` + consumer tarball installation in `scripts/test-cli-package.mjs`. No `npx blendops` CLI, published npm package, or marketplace listing exists yet; the initial staged npm publication is pending maintainer approval. Global installs (`--allow-global`) remain disabled.
 
 ## Purpose
 
@@ -62,8 +62,16 @@ node scripts/install-skills.mjs --rollback --project /path/to/project
 ## Package readiness & publish-safety boundary
 
 - `package.json` declares `"bin": { "blendops": "bin/blendops.mjs" }`, runtime `"dependencies": { "fflate": "0.8.3" }`, and an explicit `"files"` allowlist so `npm pack` produces a self-contained tarball (`blendops-1.0.0.tgz`) containing all 48 skills, 4 laws, 1 pack, bundles, registry files, schemas, and scripts while excluding test suites, dev server, audit snapshots, and `.git` artifacts.
-- Registry name check (verified 2026-10-31 via `npm view`): `blendops`, `@thanhnguyxn/blendops`, and `@blendops/cli` all return `404 Not Found` (`E404`) on `https://registry.npmjs.org` (all three names are available).
-- `"private": true` is intentionally retained in `package.json` to prevent accidental `npm publish` until an explicit human maintainer release decision.
+- Historical registry check (2026-10-31): `npm view` returned `E404` for `blendops`, `@thanhnguyxn/blendops`, and `@blendops/cli`. This result is not a live availability guarantee; re-check the exact package name before staging.
+- `package.json` omits `private` and sets `publishConfig.access: public`. The package is publishable, but is not live on npm until its first staged version is reviewed and approved.
+
+## First npm publication
+
+1. From the repository root, confirm the exact name is still available with `npm view blendops version` (a not-found response is expected only if the name remains unclaimed).
+2. Use Node `22.14.0+` and npm CLI `11.15.0+`, then run `npm stage publish`.
+3. Open npmjs.com → **Staged Packages**, inspect the submitted `blendops@1.0.0`, and approve it with npm 2FA. For a new package, npm may create a public `0.0.0-stage` placeholder; the staged `1.0.0` contents remain unavailable until approval.
+4. After approval, verify `npm view blendops version` and install the package in a clean consumer project before claiming public availability.
+5. Configure npm Trusted Publishing for GitHub Actions (`ThanhNguyxnOrg` / `blendops` / `.github/workflows/npm-publish.yml`). The existing workflow intentionally skips the bootstrap tag `v1.0.0`; future version tags use OIDC and do not need a long-lived `NPM_TOKEN` secret.
 
 ## Required command behavior
 

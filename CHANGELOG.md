@@ -22,11 +22,11 @@ community `mcp-for-blender`, Blender CLI).
 - **Web-Ready GLB Delivery & Viewer Integration (`schemas/glb-web-handoff-manifest.schema.json`, `scripts/inspect-glb.mjs`, `scripts/generate-glb-handoff-report.mjs`, `docs/examples/glb-web-handoff/`)**:
   - GLB 2.0 scene hierarchy, accessor bounds, extension, and URI safety inspection, deterministic JSON/Markdown/HTML web handoff reports, CLI subcommands (`blendops glb-inspect`, `blendops glb-handoff`, `blendops glb-validate-manifest`), and Three.js / React Three Fiber viewer modules.
 - **Distributable CLI & Safe Project-Local Installer (`bin/blendops.mjs`, `scripts/install-skills.mjs`)**:
-  - Added `blendops` CLI entrypoint, `package.json` `"bin"` and `"files"` allowlist for `npm pack` tarballs (retaining `"private": true`), `--doctor`, `--dry-run`, `--write`, and `--rollback` with transactional journals and SHA-256 ownership tracking.
+  - Added `blendops` CLI entrypoint, `package.json` `"bin"` and `"files"` allowlist for `npm pack` tarballs, public-release metadata (`publishConfig.access: public`), `--doctor`, `--dry-run`, `--write`, and `--rollback` with transactional journals and SHA-256 ownership tracking.
 
 ### Truth-State Posture
 - In-repo live Blender runtime status remains `Not Run` and live Blender artifacts remain `Not Produced`.
-- npm package distribution remains `Not Published` (`"private": true`).
+- npm package distribution remains `Not Published`; the initial staged publication is pending maintainer approval.
 
 ## [v0.8.0-draft] — 2026-10-16
 

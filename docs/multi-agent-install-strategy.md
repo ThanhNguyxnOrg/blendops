@@ -143,7 +143,7 @@ The primary near-term UX is a user-managed paste prompt: the user copies [AI Age
 
 This is an install-layer action only. It does not install Blender, configure runtime bridges, run runtime evals, or create preview/render/GLB artifacts. Unknown or mixed targets should use the generic project-local fallback or ask the user before writing.
 
-Per-target guidance lives in [docs/install/](./install/README.md). Local repository & tarball installer behavior is specified in [docs/install/installer-spec.md](./install/installer-spec.md) (`scripts/install-skills.mjs` and `bin/blendops.mjs`, `"private": true`).
+Per-target guidance lives in [docs/install/](./install/README.md). Local repository & tarball installer behavior is specified in [docs/install/installer-spec.md](./install/installer-spec.md) (`scripts/install-skills.mjs` and `bin/blendops.mjs`); initial public npm publication awaits maintainer approval.
 
 ---
 

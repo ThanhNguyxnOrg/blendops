@@ -3,7 +3,7 @@
 The single index for everything in this repo. Bookmark this page.
 
 > [!NOTE]
-> BlendOps is **v1.0.0 (Production)**. It is a portable AI-agent workflow, knowledge, and verification system for Blender. No marketplace listing. No published npm registry package (`bin/blendops.mjs` is packaged for local/tarball use with `"private": true`). In-repo live Blender runtime evidence remains partial (Path 1 read-only smoke only; mutation/render/export `Not Run` / `Not Produced`).
+> BlendOps is **v1.0.0 (Production)**. It is a portable AI-agent workflow, knowledge, and verification system for Blender. No marketplace listing. No published npm registry package yet; public-release metadata is configured and the first staged version awaits maintainer approval. In-repo live Blender runtime evidence remains partial (Path 1 read-only smoke only; mutation/render/export `Not Run` / `Not Produced`).
 
 ---
 
@@ -160,7 +160,7 @@ All 21 accept BlendOps via project-local files and can host MCP for Blender via 
 | Target | Doc | Selected mode | Confidence |
 |---|---|---|---|
 | Generic project | [`install/generic-project.md`](./install/generic-project.md) | project-local install fallback | verified-read fallback |
-| Local installer & CLI spec | [`install/installer-spec.md`](./install/installer-spec.md) | local CLI & tarball (`bin/blendops.mjs`, `scripts/install-skills.mjs`) | Implemented locally; unpublished (`"private": true`) |
+| Local installer & CLI spec | [`install/installer-spec.md`](./install/installer-spec.md) | local CLI & tarball (`bin/blendops.mjs`, `scripts/install-skills.mjs`) | Public-release ready; initial npm stage pending approval |
 
 ---
 
@@ -271,5 +271,5 @@ Legacy quick links below cover only the **baseline 16**; the [`skills/README.md`
 - BlendOps does not install Blender, configure the Anthropic Blender Connector, configure the Blender Lab MCP add-on, configure the community `mcp-for-blender` stack, or run Blender.
 - Read-only smoke evidence is not mutation/render/export evidence.
 - CLI fallback is **documented upstream** as a first-class Blender CLI surface; no in-repo evidence file yet.
-- No marketplace / public npm / `npx` listing (`"private": true`).
+- No marketplace / public npm / `npx` listing yet; the initial npm staged publication awaits maintainer approval.
 - See [`release-readiness.md`](./release-readiness.md) for the full readiness state.

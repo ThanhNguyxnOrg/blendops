@@ -38,7 +38,7 @@ _Last updated for **v1.0.0** (48 canonical skills, 151 reference guides, 26 inst
 | Item | Why optional | Where |
 |---|---|---|
 | In-repo per-path evidence file (`docs/evals/path-X-...md`) | Useful provenance for an operator who wants a captured eval record. NOT a BlendOps publishing blocker because BlendOps redirects to upstream paths and does not run Blender. | `docs/evals/path-2-mcp-for-blender-readonly-template.md` is a fill-in template. |
-| Local/tarball `blendops` CLI & project-local installer | ✅ Implemented locally (`bin/blendops.mjs` + `scripts/install-skills.mjs`, verified via `npm pack` + consumer tarball install in `scripts/test-cli-package.mjs`). Public npm registry publish remains deferred (`"private": true`). | `docs/install/installer-spec.md` |
+| `blendops` CLI & project-local installer | ✅ Implemented and tarball-tested (`bin/blendops.mjs` + `scripts/install-skills.mjs`). Public npm metadata is prepared; initial staged publication is pending maintainer approval. | `docs/install/installer-spec.md` |
 | Marketplace / plugin listing | Future distribution work. Gated on upstream listing acceptance. | — |
 
 **Bottom line**: clone the repo → run `npx skills add ThanhNguyxnOrg/blendops` or `npm run skills:install` → plan a scene with **48 skills** → follow per-target install doc to enable an upstream runtime path → drive Blender via Path 1 / Path 2 (both user-reported verified by the repo owner — operator statement) or CLI (upstream-documented).
@@ -84,7 +84,7 @@ These are useful for any operator who wants a **captured in-repo eval record** u
 
 ## 🔵 Post-v1.0.0 Future Work (deliberately deferred)
 
-- [ ] Public npm registry release (`npm publish`) — deferred until explicit human maintainer release approval (`"private": true` retained until approval).
+- [ ] Complete initial public npm registry release — run `npm stage publish`, review the staged package, and approve it with npm 2FA; verify `npm view blendops version` and a clean consumer install.
 - [ ] Empirical verification across the remaining 24 `linked-only` external AI host applications outside CI (`F-08` tracking).
 
 ---

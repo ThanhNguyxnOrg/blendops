@@ -69,7 +69,7 @@ BlendOps ships a root [`skills.sh.json`](../../skills.sh.json) grouping manifest
 | Target | Doc | Selected mode | Confidence |
 |---|---|---|---|
 | Generic project | [generic-project.md](./generic-project.md) | project-local install fallback (when target type is unknown) | verified-read fallback |
-| Local installer & CLI spec | [installer-spec.md](./installer-spec.md) | local/tarball CLI (`bin/blendops.mjs`, `scripts/install-skills.mjs`, `--with-skills-dir`) | Implemented locally; unpublished (`"private": true`) |
+| Local installer & CLI spec | [installer-spec.md](./installer-spec.md) | local CLI & tarball (`bin/blendops.mjs`, `scripts/install-skills.mjs`, `--with-skills-dir`) | Public-release ready; initial npm stage pending maintainer approval |
 
 ## Shared rules
 

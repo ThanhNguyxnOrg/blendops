@@ -1,7 +1,6 @@
 {
   "name": "blendops",
   "version": "1.0.0",
-  "private": true,
   "description": "AI-native Blender workflow, knowledge catalog, and portable skill pack for non-Blender users. Ships 48 Anthropic Skills, 4 hard guardrail laws, 10 canonical recipes, deterministic SceneSpec/ExecutionPlan compilation, MCP runtime qualification, GLB inspection, and 26+ agent install targets.",
   "homepage": "https://github.com/ThanhNguyxnOrg/blendops#readme",
   "repository": {
@@ -95,5 +94,8 @@
     "fflate": "0.8.3",
     "zod": "4.6.7"
   },
-  "devDependencies": {}
+  "devDependencies": {},
+  "publishConfig": {
+    "access": "public"
+  }
 }
