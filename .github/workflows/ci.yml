@@ -17,7 +17,7 @@ concurrency:
 
 jobs:
   verify:
-    uses: ThanhNguyxnOrg/.github/.github/workflows/ci-node.yml@3adfa6d196e4455aa8d39cee45ce8e9e4e44e846
+    uses: ThanhNguyxnOrg/.github/.github/workflows/ci-node.yml@a032059a58ff65456dcb98a223bd636b96a3d018
     with:
       job_name: Verify (BlendOps)
       node_version: "20"
