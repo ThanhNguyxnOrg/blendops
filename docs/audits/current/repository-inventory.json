@@ -307,8 +307,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 1552,
-      "sha256": "223842bbe603bb477674552fbfae3cf7851e3e6ed55323edeb1c6bf67fb7368e"
+      "byteSize": 1553,
+      "sha256": "0705467d67fa6c9d8038b275db9a881cddf4fbe59eaea6a2e5c457843e34832c"
     },
     {
       "path": ".github/workflows/ci.yml",
