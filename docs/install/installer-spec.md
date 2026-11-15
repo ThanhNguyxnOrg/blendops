@@ -4,7 +4,7 @@ Status: 1.0.0 — local repository script (`scripts/install-skills.mjs`) and dis
 Scope: project-local installer and tarball-packable CLI for BlendOps skill/law/pack attachment and manual Claude Desktop export prep
 
 > [!IMPORTANT]
-> `scripts/install-skills.mjs` is implemented as the local repository installer, and `bin/blendops.mjs` is the distributable CLI entrypoint. The public npm package is live as [`blendops@1.0.0`](https://www.npmjs.com/package/blendops); the GitHub Agent Skills source is also [listed on skills.sh](https://www.skills.sh/ThanhNguyxnOrg/blendops). No official marketplace/plugin listing is claimed. Global file writes (`--allow-global`) remain disabled.
+> `scripts/install-skills.mjs` is implemented as the local repository installer, and `bin/blendops.mjs` is the distributable CLI entrypoint. The public npm package is live as [`blendops@1.0.0`](https://www.npmjs.com/package/blendops). The GitHub Agent Skills source is also [listed on skills.sh](https://www.skills.sh/ThanhNguyxnOrg/blendops). No official marketplace/plugin listing is claimed. Global file writes (`--allow-global`) remain disabled.
 
 ## Purpose
 
