@@ -307,8 +307,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 1526,
-      "sha256": "332c57ca02e51c736431cb92e635493abdce9502b5e23c69de4ecf330a544a21"
+      "byteSize": 1615,
+      "sha256": "31b8007550e10f678f6ec4ea70b97c706e285f85bac62dcec47df0e79e43757e"
     },
     {
       "path": ".github/workflows/ci.yml",
@@ -337,8 +337,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 3608,
-      "sha256": "58624e436e14b215b5ba3d6ea265936886ed8ff2a269992ca1d72f7fc1788244"
+      "byteSize": 3624,
+      "sha256": "d68ccfa571c04d4786b036b6535703e26df470bfc6af8da3b89a013da4321404"
     },
     {
       "path": ".github/workflows/docs.yml",
@@ -352,8 +352,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 5350,
-      "sha256": "bdcb14e2a484fb99e090e45a16d89064cb47fa1539006c2b40592b2db74a34c2"
+      "byteSize": 5366,
+      "sha256": "893c04daaf7e12d3679957115935e9ed6ed44b6dce7be80784b3071de588f9ce"
     },
     {
       "path": ".github/workflows/npm-publish.yml",
