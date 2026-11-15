@@ -17,10 +17,11 @@ concurrency:
 
 jobs:
   verify:
-    uses: ThanhNguyxnOrg/.github/.github/workflows/ci-node.yml@3b9ff6de3e26a64ab1fbe049abf5e2cfc34dc7f1
+    uses: ThanhNguyxnOrg/.github/.github/workflows/ci-node.yml@3adfa6d196e4455aa8d39cee45ce8e9e4e44e846
     with:
       job_name: Verify (BlendOps)
       node_version: "20"
+      fetch_depth: 2
       package_manager: npm
       cache: npm
       validation_command: npm run arch:build && npm run audit:sync-digest && npm run ci
