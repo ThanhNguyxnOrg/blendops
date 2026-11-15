@@ -55,11 +55,24 @@ function stableJson(value) {
   return JSON.stringify(value === undefined ? null : value);
 }
 
-function manifestDifferences(source, published) {
+export function manifestDifferences(source, published) {
   const fields = ['name', 'version', 'description', 'homepage', 'bugs', 'license', 'keywords', 'engines', 'bin'];
   const differences = [];
   for (const field of fields) {
-    if (stableJson(source[field]) !== stableJson(published[field])) differences.push(field);
+    if (stableJson(source[field]) === stableJson(published[field])) continue;
+
+    // npm registry metadata truncates package descriptions at exactly 255 characters.
+    // Only accept an exact published prefix; all other content changes remain visible as drift.
+    if (
+      field === 'description' &&
+      typeof source.description === 'string' &&
+      typeof published.description === 'string' &&
+      published.description.length === 255 &&
+      source.description.startsWith(published.description)
+    ) {
+      continue;
+    }
+    differences.push(field);
   }
   if (normalizeRepositoryUrl(source.repository?.url) !== normalizeRepositoryUrl(published.repository?.url)) {
     differences.push('repository.url');
