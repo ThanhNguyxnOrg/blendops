@@ -337,8 +337,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 3624,
-      "sha256": "d68ccfa571c04d4786b036b6535703e26df470bfc6af8da3b89a013da4321404"
+      "byteSize": 3602,
+      "sha256": "4dcb2c26cb789de0817b32b01bb17d3bc0c0639171ce215f5133cc95ce5dae0c"
     },
     {
       "path": ".github/workflows/docs.yml",
@@ -352,8 +352,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 5366,
-      "sha256": "893c04daaf7e12d3679957115935e9ed6ed44b6dce7be80784b3071de588f9ce"
+      "byteSize": 5344,
+      "sha256": "7cb5221c3681f21dc9e7f3df869bb5471a8cd7d44a1b87d4824176a1d1f16c4e"
     },
     {
       "path": ".github/workflows/npm-publish.yml",
