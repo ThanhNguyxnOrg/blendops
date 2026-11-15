@@ -51,7 +51,7 @@ jobs:
         uses: ThanhNguyxnOrg/.github/.github/actions/agent-token@da9d02544f60aeec92f8c851846ee3a587044beb
         with:
           profile: content
-          client-id: ${{ vars.BOT_APP_ID || secrets.BOT_APP_ID }}
+          app-id: ${{ vars.BOT_APP_ID || secrets.BOT_APP_ID }}
           private-key: ${{ secrets.BOT_PRIVATE_KEY }}
 
       - name: Persist distribution metadata report as ThanhNguyxnAgent
