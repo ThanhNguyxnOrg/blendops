@@ -2,7 +2,7 @@
   "schemaVersion": "1.0.0",
   "auditPhase": "v1.0.0-current",
   "summary": {
-    "totalTrackedFiles": 687,
+    "totalTrackedFiles": 688,
     "npmPackageIncludedFiles": 484,
     "generatedTrackedFiles": 110,
     "canonicalSkillsCount": 48,
@@ -12,7 +12,7 @@
     "installTargetsCount": 26,
     "exactDuplicateGroupsCount": 1,
     "classificationCounts": {
-      "configuration": 35,
+      "configuration": 36,
       "documentation": 84,
       "historical_record": 15,
       "distribution_artifact": 15,
@@ -22,7 +22,7 @@
     },
     "subsystemCounts": {
       "repository-governance": 4,
-      "github-governance-ci": 11,
+      "github-governance-ci": 12,
       "documentation-governance": 8,
       "cli-distribution": 1,
       "bundles-and-packaging": 130,
@@ -44,7 +44,7 @@
     },
     "topLevelCounts": {
       "(root)": 15,
-      ".github": 11,
+      ".github": 12,
       "bin": 1,
       "bundles": 130,
       "docs": 94,
@@ -61,7 +61,7 @@
       "markdownFiles": 484,
       "jsModules": 38,
       "schemas": 16,
-      "workflows": 4
+      "workflows": 5
     }
   },
   "rootPolicy": {
@@ -339,6 +339,21 @@
       "safeToMoveOrRemove": false,
       "byteSize": 5350,
       "sha256": "bdcb14e2a484fb99e090e45a16d89064cb47fa1539006c2b40592b2db74a34c2"
+    },
+    {
+      "path": ".github/workflows/npm-publish.yml",
+      "fileType": ".yml",
+      "classification": "configuration",
+      "purpose": "GitHub Actions CI/CD and repository automation workflow definition",
+      "owningSubsystem": "github-governance-ci",
+      "includedInNpmPackage": false,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 2615,
+      "sha256": "224d64492851d8d692e9190092e02bd4dbb2e9aa9afc9470d0d6ed06a308f4ef"
     },
     {
       "path": ".gitignore",
