@@ -11,6 +11,7 @@
 **AI-native Blender workflow specs for people who do not know Blender.**
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-2ea44f.svg?style=flat-square)](./LICENSE)
+[![npm version](https://img.shields.io/npm/v/blendops.svg?style=flat-square)](https://www.npmjs.com/package/blendops)
 [![Status: v1.0.0](https://img.shields.io/badge/status-v1.0.0-2ea44f.svg?style=flat-square)](./docs/release-readiness.md)
 [![Runtime model: 2-path + CLI appendix](https://img.shields.io/badge/runtime%20model-2--path%20%2B%20CLI%20appendix-6f42c1.svg?style=flat-square)](./docs/runtime-stack-strategy.md)
 [![Path 1 read-only smoke: Pass](https://img.shields.io/badge/path%201%20smoke-Pass-2ea44f.svg?style=flat-square)](./docs/evals/blender-connector-read-only-smoke-test.md)
@@ -132,19 +133,43 @@ Auto-detect your environment first, then pick one mode:
 Do not install Blender, configure runtime connectors, run Blender, or claim generated artifacts. Report the selected mode, files changed or ZIP filenames, runtime status, artifact status, and limitations.
 ```
 
-### Option 2 — Direct `skills.sh` or Project-Local CLI Install
+### Option 2 — Install BlendOps Agent Skills
+
+The BlendOps GitHub repository is already listed on [skills.sh](https://www.skills.sh/ThanhNguyxnOrg/blendops). Install the skill collection with the Agent Skills CLI:
 
 ```bash
-# Via skills.sh ecosystem (pulls portable SKILL.md folders cleanly via skills.sh.json)
 npx skills add ThanhNguyxnOrg/blendops
+```
 
-# Or from a local clone using the transactional installer (35+ targets + Lockfile v2)
+The CLI prompts you to choose skills and supported agent targets. To select one skill explicitly:
+
+```bash
+npx skills add ThanhNguyxnOrg/blendops --skill glb-web-handoff
+```
+
+The repository's `skills.sh.json` defines eight display groups for the listing. It is source metadata; no ZIP upload or separate npm publication is required for skills.sh.
+
+### Option 3 — Install and run the published BlendOps npm CLI
+
+The public npm package is `blendops@1.0.0` (dist-tag `latest`). No clone or global install is required:
+
+```bash
+npx blendops --help
+npx blendops doctor --project .
+npx blendops install --target auto --project . --dry-run
+npx blendops install --target auto --project . --write
+```
+
+Review the dry-run plan before running the matching `--write`. The installer changes only the selected project; it does not install Blender or configure an MCP runtime.
+
+### Option 4 — Local checkout installer
+
+For contributors working from a local clone, use the repository scripts:
+
+```bash
 npm run skills:install -- --target universal --project /path/to/your-project --with-skills-dir --dry-run
 npm run skills:install -- --target universal --project /path/to/your-project --with-skills-dir --write
 ```
-
-> [!NOTE]
-> `package.json` is configured for public npm publication (`publishConfig.access: public`). The first staged npm release is pending maintainer approval (`npm package: Not Published` — no `npx blendops` registry package is live yet). Runtime status stays `Not Run` and artifact status stays `Not Produced` on install.
 
 The agent auto-detects which mode applies. Coding agents (Claude Code, Cursor, Codex, OpenCode, Cline, Roo Code, Blackbox AI, Continue, Zed, Windsurf, Trae, Augment Code, goose, OpenHands, JetBrains Junie, Sourcegraph Cody, Aider, Amazon Q Developer, Gemini, Copilot, Antigravity, Kiro, Amp, Droid, Kilo, OpenClaw, ClawdBot, VS Code, universal `.agents/skills/`) hit **Mode A** and install **project-locally**. Claude Desktop / Claude.ai / ChatGPT chats hit **Mode B** and output **separate ZIPs from skills/*/SKILL.md** (one per skill, 48 total) for you to drag-drop into the Skills UI manually. Anything else falls back to **Mode C — blocked-needs-input**. Full mode logic in [`docs/ai-agent-install-flow.md`](./docs/ai-agent-install-flow.md).
 
@@ -181,7 +206,7 @@ BlendOps recognizes **2 MCP execution paths + a CLI fallback appendix** ([full d
 
 ## 🚫 What it does **not** do
 
-BlendOps does not install Blender, ship its own runtime, configure Anthropic Connector or the Lab MCP add-on for you, run Blender, claim mutation/render/export artifacts, or claim a published npm registry package (the initial staged npm release is pending maintainer approval) or marketplace listing. See [`docs/release-readiness.md`](./docs/release-readiness.md) for the honest current state.
+BlendOps does not install Blender, ship its own runtime, configure Anthropic Connector or the Lab MCP add-on for you, run Blender, claim mutation/render/export artifacts, or claim an official marketplace/plugin listing. npm and skills.sh provide content/CLI distribution only; Blender runtime setup is separate. See [`docs/release-readiness.md`](./docs/release-readiness.md) for the honest current state.
 
 ---
 

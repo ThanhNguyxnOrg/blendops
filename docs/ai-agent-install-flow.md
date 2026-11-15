@@ -244,11 +244,16 @@ blendops plan-inspect /path/to/plan.json
 blendops rollback --project /path/to/project
 ```
 
-By contrast, public npm registry `npx blendops` commands remain unavailable until the initial staged package is approved by a maintainer:
+The npm CLI is publicly available as `blendops@1.0.0`. Use it directly without cloning the repository. For direct Agent Skills installation, use the separate Skills CLI:
 
 ```sh
-# Public registry invocation — use only after the initial staged release is approved and the package is visible on npm
-npx blendops install --target auto --project .
-npx blendops install --target claude-code --project .
+# Install from the public Agent Skills source on skills.sh
+npx skills add ThanhNguyxnOrg/blendops
+
+# Use the BlendOps npm CLI and project-local installer
 npx blendops doctor --project .
+npx blendops install --target auto --project . --dry-run
+npx blendops install --target auto --project . --write
 ```
+
+The Skills CLI installs `SKILL.md` files into supported agents. The npm CLI provides BlendOps project installation and utility commands. Both remain separate from Blender runtime/MCP setup.

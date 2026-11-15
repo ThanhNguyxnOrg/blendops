@@ -9,7 +9,21 @@ https://github.com/ThanhNguyxnOrg/blendops
 
 Prepare BlendOps for the current environment using the safest available mode.
 
-BlendOps attaches workflow knowledge only. It does not install Blender, configure runtime connectors, run Blender, or prove generated artifacts.
+BlendOps attaches workflow knowledge only. Its npm CLI is published as `blendops@1.0.0`, and its Agent Skills source is listed on skills.sh. It does not install Blender, configure runtime connectors, run Blender, or prove generated artifacts.
+
+## Public install routes
+
+```sh
+# Install Agent Skills into a supported coding agent
+npx skills add ThanhNguyxnOrg/blendops
+
+# Use the BlendOps project installer from npm
+npx blendops doctor --project .
+npx blendops install --target auto --project . --dry-run
+npx blendops install --target auto --project . --write
+```
+
+The npm CLI and Skills CLI are complementary. The first provides BlendOps installer/utility commands; the second installs the repository's `SKILL.md` collection. Run the matching `--dry-run` before `--write`.
 
 ## Mode auto-detect (do this first, in 5 seconds)
 
@@ -112,7 +126,7 @@ Never do these during BlendOps install/prep:
 - run runtime eval,
 - create/render/export preview, render, GLB, or artifact files,
 - claim runtime success or artifact output without evidence,
-- claim a published npm registry package, public `npx` release, marketplace listing, or plugin listing exists (the first npm staged publication is pending maintainer approval).
+- claim an official marketplace/plugin listing exists unless that specific listing is published and verified.
 
 ## Required report
 

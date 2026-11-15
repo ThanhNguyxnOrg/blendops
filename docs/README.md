@@ -3,7 +3,7 @@
 The single index for everything in this repo. Bookmark this page.
 
 > [!NOTE]
-> BlendOps is **v1.0.0 (Production)**. It is a portable AI-agent workflow, knowledge, and verification system for Blender. No marketplace listing. No published npm registry package yet; public-release metadata is configured and the first staged version awaits maintainer approval. In-repo live Blender runtime evidence remains partial (Path 1 read-only smoke only; mutation/render/export `Not Run` / `Not Produced`).
+> BlendOps is **v1.0.0 (Production)**. The public npm CLI package `blendops@1.0.0` is published, and the GitHub Agent Skills source is listed on skills.sh. No official marketplace/plugin listing is claimed. In-repo live Blender runtime evidence remains partial (Path 1 read-only smoke only; mutation/render/export `Not Run` / `Not Produced`).
 
 ---
 
@@ -12,7 +12,7 @@ The single index for everything in this repo. Bookmark this page.
 | Area | Status | Meaning |
 |---|---|---|
 | Product release | v1.0.0 (Production) | Canonical workflow specs, knowledge/recipe catalogs, CLI, and CI verification suites are released. |
-| Skill / law / pack collection | v1.0.0 | **48** portable skills, 4 laws, 1 pack (`product-hero-v0`). Canonical index: [`../skills/README.md`](../skills/README.md). |
+| Skill / law / pack collection | v1.0.0 | **48** canonical portable skills, 4 laws, 1 pack (`product-hero-v0`). Canonical index: [`../skills/README.md`](../skills/README.md); public GitHub source is [listed on skills.sh](https://www.skills.sh/ThanhNguyxnOrg/blendops). |
 | Runtime path model | Active (2-path + CLI appendix) | Path 1 (Lab MCP, hosted from Anthropic Connector or manual MCP); Path 2 (community `mcp-for-blender`); CLI fallback (documented upstream as first-class Blender CLI; no in-repo evidence file yet). |
 | Path 1 read-only smoke | Pass / Available | 2026-04-29 record (likely Anthropic Connector host). |
 | Path 2 user-reported verified | Yes (2026-05-08) | No formal eval file yet. |
@@ -20,7 +20,7 @@ The single index for everything in this repo. Bookmark this page.
 | Full runtime manual eval (any path) | Not Run | Mutation/render/export not attempted. |
 | Runtime artifacts | Not Produced | No fresh preview/render/GLB. |
 | Release tag (`v1.0.0`) | Ready | Skills layer (48 skills + 151 hardened references), catalogs, CLI (`35+` targets), and full verification suite are complete. |
-| Local CLI / tarball package | Implemented locally (`Not Published`) | `bin/blendops.mjs` + `scripts/install-skills.mjs` verified via `npm pack`; no public npm registry or marketplace listing claimed. |
+| npm CLI package | Published (`blendops@1.0.0`, `latest`) | [Public npm package](https://www.npmjs.com/package/blendops); the CLI entrypoint and transactional project installer ship in the package. |
 | Knowledge & Recipe Catalog | Implemented & Verified (`90/90` bilingual retrieval evals) | **30** `knowledge.*` records across **11** 3D domains, **10** `recipe.*` blueprints, **20** `source.*` citations, deterministic `catalog-search` / `catalog-resolve` / `plan-compile` CLI, and 48-skill / 151-reference architecture audit in [`knowledge-and-recipe-catalog.md`](./knowledge-and-recipe-catalog.md) and [`audits/skill-architecture-audit.md`](./audits/skill-architecture-audit.md). |
 | GLB Web Handoff & Viewer Integration | Implemented (`Not Run` / `Not Produced` for live Blender exports) | `schemas/glb-web-handoff-manifest.schema.json`, `scripts/inspect-glb.mjs`, `scripts/generate-glb-handoff-report.mjs`, CLI `glb-inspect` / `glb-handoff` / `glb-validate-manifest`, and Three.js + R3F examples in [`examples/glb-web-handoff/README.md`](./examples/glb-web-handoff/README.md). |
 | Repository architecture & file inventory | Verified (`npm run arch:check`) | Canonical source, generated artifact, historical record, documentation, runtime/test, distribution, and config classification in [`architecture.md`](./architecture.md) and [`audits/current/repository-inventory.json`](./audits/current/repository-inventory.json). |
@@ -271,5 +271,5 @@ Legacy quick links below cover only the **baseline 16**; the [`skills/README.md`
 - BlendOps does not install Blender, configure the Anthropic Blender Connector, configure the Blender Lab MCP add-on, configure the community `mcp-for-blender` stack, or run Blender.
 - Read-only smoke evidence is not mutation/render/export evidence.
 - CLI fallback is **documented upstream** as a first-class Blender CLI surface; no in-repo evidence file yet.
-- No marketplace / public npm / `npx` listing yet; the initial npm staged publication awaits maintainer approval.
+- No official marketplace/plugin listing is claimed. The npm CLI and skills.sh Agent Skills source are publicly available; Blender runtime execution and generated artifacts remain separately evidence-gated.
 - See [`release-readiness.md`](./release-readiness.md) for the full readiness state.

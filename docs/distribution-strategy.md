@@ -1,25 +1,93 @@
 # Distribution Strategy
 
-Status: Release v1.0.0 strategy  
-Scope: BlendOps content distribution, not Blender runtime distribution
+Status: `blendops@1.0.0` published on npm; GitHub skill source listed on skills.sh  
+Scope: BlendOps content and CLI distribution, not Blender runtime distribution
 
-> [!CAUTION]
-> This document does not claim BlendOps is published in any marketplace, package registry, extension catalog, or official plugin listing. Distribution beyond docs and project-local/manual use is future and evidence-gated.
+> [!NOTE]
+> BlendOps has two public developer distribution channels: the npm CLI package and the GitHub-hosted Agent Skills collection listed on skills.sh. Neither is a Blender runtime, MCP server, nor official marketplace/plugin listing.
 
 ---
 
 ## Distribution levels
 
-| Level | Name | Meaning | Current v1.0.0 posture |
+| Level | Name | Meaning | Current posture |
 |---:|---|---|---|
-| 0 | Docs-only/reference | Users read docs, copy prompts, or link source material without installing files. | Present in repo docs now. |
-| 1 | Project-local file install | Users or agents copy/reference BlendOps docs, skills, laws, packs, and `.blendops/catalog/*` inside a project. | Preferred route; supported via [AI Agent Install Flow](./ai-agent-install-flow.md) and local CLI (`bin/blendops.mjs` / `scripts/install-skills.mjs`). |
-| 2 | User-managed Claude Desktop skill import + shared catalog attachment | User manually imports BlendOps skill ZIPs (`dist/claude-skills/desktop-zips/*.zip`) and optionally attaches `dist/shared-catalog/blendops-knowledge-and-recipes.zip` to Claude Project Knowledge. | Supported route; exportable via `npm run skills:export` or `blendops install --target claude-desktop --out <dir> --write`; must stay separate from connector setup. |
-| 3 | GitHub/raw/plugin-from-repo install | Tool consumes content directly from a GitHub URL, raw file, or repo plugin reference. | Future; must follow target tool format. |
-| 4 | Tool-native package/extension & CLI tarball | BlendOps ships in a packable CLI tarball (`npm pack`) or tool-native package format. | Local CLI & `npm pack` tarball verified in `scripts/test-cli-package.mjs`; public npm metadata is ready, with the first staged registry release awaiting maintainer approval. |
-| 5 | Official marketplace listing | BlendOps appears in an official marketplace/catalog with review or approval as required. | Future only; do not claim until published and verified. |
+| 0 | Docs-only/reference | Users read docs, copy prompts, or link source material without installing files. | Available in this repository. |
+| 1 | Project-local file install | Users or agents attach BlendOps docs, skills, laws, packs, and `.blendops/catalog/*` to a project. | Supported by the published npm CLI and local repository installer. |
+| 2 | User-managed Claude Desktop skill import + shared catalog attachment | User manually imports individual skill ZIPs and optionally attaches the shared catalog to Claude Project Knowledge. | Supported via `npm run skills:export` or the CLI bundle target; manual UI import remains the user's action. |
+| 3 | GitHub-hosted Agent Skills / skills.sh | The public GitHub repo exposes canonical `SKILL.md` folders to the Skills CLI; skills.sh provides discovery and install information. | [Listed now](https://www.skills.sh/ThanhNguyxnOrg/blendops); install with `npx skills add ThanhNguyxnOrg/blendops`. |
+| 4 | npm CLI package | A self-contained `blendops` CLI package is published to the npm registry. | [Published: `blendops@1.0.0`](https://www.npmjs.com/package/blendops); dist-tag `latest`. |
+| 5 | Official marketplace/plugin listing | BlendOps appears in a third-party product marketplace/catalog with its own review or approval. | Not published; future, evidence-gated work only. |
 
-BlendOps v1.0.0 does not depend on Level 5.
+The npm CLI and skills.sh are complementary, not interchangeable. Use npm for the BlendOps installer and utility commands. Use `npx skills add` when the goal is to install selected Agent Skills into a supported coding agent.
+
+---
+
+## Install from the public channels
+
+### npm CLI
+
+The package supports Node.js `>=20.0.0`. No global install or repository clone is required:
+
+```sh
+npx blendops --help
+npx blendops --version
+npx blendops doctor --project .
+npx blendops install --target auto --project . --dry-run
+npx blendops install --target auto --project . --write
+```
+
+Review the dry-run plan before running the matching write. The CLI installer defaults to project-local operations; global file writes remain disabled.
+
+Optional: install the CLI executable globally on PATH:
+
+```sh
+npm install --global blendops
+blendops --help
+```
+
+Installing the executable globally does not enable global writes by the BlendOps installer. The `--allow-global` installer option remains disabled.
+
+Verify the registry metadata independently:
+
+```sh
+npm view blendops version
+npm view blendops dist-tags
+npm view blendops dist.tarball
+```
+
+Expected current version and `latest` tag: `1.0.0`.
+
+### skills.sh / Agent Skills CLI
+
+BlendOps is listed at [skills.sh/ThanhNguyxnOrg/blendops](https://www.skills.sh/ThanhNguyxnOrg/blendops). Install from the public GitHub repository:
+
+```sh
+npx skills add ThanhNguyxnOrg/blendops
+```
+
+The Skills CLI prompts for skills and supported agent targets. Select one skill explicitly with `--skill <skill-id>`:
+
+```sh
+npx skills add ThanhNguyxnOrg/blendops --skill glb-web-handoff
+```
+
+The root `skills.sh.json` supplies the eight display groups used by the repository listing. It is repository metadata, not a ZIP or package that needs a separate upload. Keep the GitHub repository public and maintain valid canonical `SKILL.md` files and grouping metadata; there is no separate skills.sh package upload or npm stage/approve step.
+
+The skills.sh page displays live catalog metrics. Those metrics are not the canonical source-of-truth skill count. BlendOps' canonical inventory remains **48 skills**, documented in [`skills/README.md`](../skills/README.md) and grouped in [`skills.sh.json`](../skills.sh.json).
+
+---
+
+## Package publication and release automation
+
+- The npm registry currently serves `blendops@1.0.0` with dist-tag `latest`. The package metadata identifies `ThanhNguyxnOrg/blendops`, the MIT license, and `bin/blendops.mjs` as the `blendops` executable.
+- The initial bootstrap used npm staged publishing. The temporary `0.0.0-stage` placeholder may remain in version history; it is not the `latest` version and is not the operational CLI release.
+- [`.github/workflows/npm-publish.yml`](../.github/workflows/npm-publish.yml) skips the already-published bootstrap tag `v1.0.0`. Later `v*` tags run release validation and publish through npm Trusted Publishing (OIDC).
+- Before the next version tag, configure npm Trusted Publishing once: provider GitHub Actions, organization `ThanhNguyxnOrg`, repository `blendops`, workflow filename `npm-publish.yml`, and no environment unless the workflow is changed. This Trusted Publisher account setting has not been independently verified as configured; check it before relying on the next tag.
+- With Trusted Publishing configured, the workflow uses the GitHub OIDC identity; a long-lived `NPM_TOKEN` is not required.
+- The README shown on npm for version `1.0.0` is an immutable snapshot bundled at publication time. GitHub README changes do not retroactively update that version page; refreshed npm documentation will appear with the next package version (for example, `1.0.1`).
+
+A pre-publication registry check on 2026-10-31 returned `E404` for candidate names. That historical result is superseded by the successful publication of `blendops@1.0.0`. An npm registry `E404` only describes what was available at the time of the query; it does **not** guarantee reservation rights, npm similarity/anti-typosquatting clearance, trademark rights, or scope ownership.
 
 ---
 
@@ -28,59 +96,11 @@ BlendOps v1.0.0 does not depend on Level 5.
 | Distribution route | Approval expectation | Requirement before claiming availability |
 |---|---|---|
 | User-managed install | No marketplace approval needed. | Clear manual instructions and rollback/safety caveats. |
-| GitHub/raw install | No official listing needed, but must follow tool format. | Source-backed tool syntax and successful install evidence. |
-| Tool-native package | May require package format, local validation, and compatibility testing. | Package exists, installs cleanly, and has rollback/upgrade notes. |
+| GitHub/skills.sh | No separate marketplace application; source must be public and discoverable by the Skills CLI. | Valid source skill folders and a live listing/install route. |
+| npm CLI | Registry publication permission; first-time staged publication required maintainer 2FA approval. | Package version appears on npm and registry metadata confirms the intended dist-tag. |
 | Official marketplace | May require platform approval, review, listing permission, or policy compliance. | Marketplace listing is published and install evidence is recorded. |
 
 Do not claim availability until it is verified for the specific surface.
-
----
-
-## Surface matrix
-
-| Surface | Best near-term install route | Needs marketplace approval? | User manual step? | Runtime bridge separate? | Current confidence |
-|---|---|---:|---:|---:|---|
-| Claude Desktop Personal Skills | User-managed manual skill import or docs attachment. | No for manual import; yes if future marketplace/listing is pursued. | Yes | Yes | linked-only |
-| Claude Desktop Blender Connector | Not a BlendOps content install route; official connector setup is separate. | No BlendOps marketplace dependency. | Yes | It is the runtime bridge path. | read-only smoke evidence available |
-| Claude Code | Project-local file install or verified tool-native skill path. | Not for project-local; future plugin/listing may. | Maybe | Yes | verified-read for project-local, native path environment-dependent |
-| OpenCode | Project-local file install now; future plugin-style repo install if verified. | Not for project-local; maybe for any future catalog. | Maybe | Yes | linked-only |
-| Cursor | Project-local rules/docs attachment if verified. | Not for project-local; maybe for extension marketplace later. | Maybe | Yes | linked-only |
-| Codex CLI/App | Generic project instruction or future adapter. | Unknown for future app distribution. | Maybe | Yes | linked-only |
-| Gemini CLI | Docs-only/reference until adapter is researched. | Unknown for future extension distribution. | Yes | Yes | not researched |
-| Generic root fallback | `BLENDOPS.md`, `AGENTS.md`, or copied core collection references. | No | Maybe | Yes | verified-read |
-
----
-
-## Claude Desktop special note
-
-Claude Desktop has separate user journeys:
-
-- **Personal skill import**: the user manually imports or attaches BlendOps skill content. This makes the workflow/law/pack guidance available to Claude Desktop, but it does not prove Blender runtime access.
-- **Blender Connector setup**: the user separately enables and connects the official Blender Connector. The Blender-side MCP bridge/server must be running for runtime access.
-
-Skill import does not prove connector setup. Connector read-only access does not prove full runtime eval, render/export behavior, or artifact validation.
-
-If the canonical package source `bundles/skill-package/blendops/` is used as upload/import material, its `agents/openai.yaml` file remains OpenAI/ChatGPT Skills UI metadata only. It is not Claude Desktop connector setup and is not cross-agent adapter configuration.
-
----
-
-## npm package readiness & registry `E404` boundary
-
-BlendOps packages a self-contained CLI (`bin/blendops.mjs`) that can be packed into a local tarball (`npm pack`) and installed into a local consumer project (`npm install ./blendops-1.0.0.tgz`, invoked via `node_modules/.bin/blendops`, `node node_modules/blendops/bin/blendops.mjs`, or `npx --no-install blendops`).
-
-- **Public-release metadata:** `package.json` omits `private` and declares `publishConfig.access: public`; this makes the package publishable but does not itself publish it.
-- **Initial npm publication pending:** Initial staged publication is pending maintainer approval. BlendOps is **not yet** published to the public npm registry (`Not Published`). The staged `1.0.0` version must be reviewed and approved by a maintainer with 2FA before `npx blendops` or `npm install -g blendops` can fetch it.
-- **Historical registry `E404` check:** A query on 2026-10-31 found no package for `blendops`, `@blendops/cli`, or `@thanhnguyxn/blendops`. Re-check the live registry immediately before first staging. An npm registry `E404` only means a name was not found at that check time; it does **not** guarantee reservation rights, npm similarity/anti-typosquatting clearance, trademark rights, or scope ownership.
-
----
-
-## Release policy
-
-- `v1.0.0` does not depend on official marketplace acceptance.
-- `v1.0.0` ships GitHub, project-local, docs-only, local CLI tarball, and manual install guidance; its initial public npm stage is a separate pending maintainer action.
-- Marketplace publishing is a later, evidence-gated distribution option.
-- Do not claim official marketplace listing until the listing is actually published and verified.
-- Do not claim broad install confidence until multiple target surfaces have install and rollback evidence.
 
 ---
 
@@ -88,23 +108,20 @@ BlendOps packages a self-contained CLI (`bin/blendops.mjs`) that can be packed i
 
 Distribution strategy does not change runtime strategy.
 
-- Public runtime guidance uses **2 MCP execution paths plus a CLI fallback appendix** (replaces older 3-stack and 4-route drafts — see [`./runtime-stack-strategy.md`](./runtime-stack-strategy.md)):
-  1. **Path 1 — Official Blender Lab MCP** (Lab add-on + Lab server installed in Blender 5.1+, hosted from either (a) Anthropic Blender Connector in Claude Desktop, or (b) any other MCP client configured manually).
+- Public runtime guidance uses **2 MCP execution paths plus a CLI fallback appendix** (see [runtime-stack-strategy.md](./runtime-stack-strategy.md)):
+  1. **Path 1 — Official Blender Lab MCP** (Lab add-on + Lab server installed in Blender 5.1+, hosted from either Anthropic Blender Connector in Claude Desktop or another manually configured MCP client).
   2. **Path 2 — Community `mcp-for-blender`** (mature third-party, Blender 3.0+).
-  3. **CLI fallback (appendix)** — direct `blender --background --python`. **Documented upstream** as a first-class Blender CLI surface; no in-repo evidence file yet.
-- Anthropic Connector is **not** standalone. Anthropic's tutorial step 2 explicitly tells you to install the Lab MCP add-on inside Blender. The Connector is the Claude-Desktop-specific MCP host on top of the Lab stack.
-- Path 2 (`mcp-for-blender`) is mature prior art. Caveats live in [`./unofficial-runtime-bridges.md`](./unofficial-runtime-bridges.md).
-- Blender runtime setup is separate from BlendOps skill/law/pack distribution.
-- Runtime artifacts still require eval evidence before any claim.
-- Full official runtime manual eval remains Not Run until the eval packet is executed and evidence is recorded.
+  3. **CLI fallback (appendix)** — direct `blender --background --python`; documented upstream as a first-class Blender CLI surface, with no in-repo runtime evidence file yet.
+- Anthropic Connector is **not** standalone. The Blender Lab MCP add-on must also be installed in Blender.
+- Blender runtime setup is separate from BlendOps skill/CLI distribution.
+- Runtime artifacts still require eval evidence before any claim. The full official runtime manual eval remains `Not Run` until an operator executes the eval packet and records evidence.
 
 ---
 
 ## What this strategy does not do
 
-- It does not submit BlendOps to a marketplace.
-- It does not publish a package.
-- It does not create a release.
+- It does not publish BlendOps to an official marketplace or plugin directory.
+- It does not automatically create a new npm release when documentation changes; a versioned release is still required.
 - It does not install Blender.
 - It does not configure a runtime bridge.
 - It does not create or claim preview/render/GLB artifacts.

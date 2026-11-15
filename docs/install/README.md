@@ -8,13 +8,36 @@ Start with the concise prompt in [`README.md`](../../README.md#-use-in-30-second
 - **Multiple Skills ZIP preparation** for Claude Desktop / Claude.ai / chat-only contexts without project write access.
 - **Blocked-needs-input** when target choice, permissions, source fetch, or ZIP creation is unclear.
 
-These pages are detailed fallbacks and target notes. For the local repository and tarball CLI (`bin/blendops.mjs` / `scripts/install-skills.mjs`), see [installer-spec.md](./installer-spec.md). They do not claim a published npm registry package, marketplace listing, or runtime setup.
+These pages are detailed target notes. The public npm CLI is [`blendops@1.0.0`](https://www.npmjs.com/package/blendops), and the public GitHub Agent Skills source is [listed on skills.sh](https://www.skills.sh/ThanhNguyxnOrg/blendops). Neither configures a Blender runtime or claims an official marketplace listing. For the full CLI safety contract, see [installer-spec.md](./installer-spec.md).
 
 The canonical portable package source is `bundles/skill-package/blendops/`. Its `SKILL.md` plus `references/` are the target-neutral content layer; `agents/openai.yaml` is OpenAI/ChatGPT Skills UI metadata only, not the universal adapter layer for the targets below.
 
 ## Target docs
 
 BlendOps recognizes 3 fundamentally different consumer types: **chat UI with Skills upload** (Claude Desktop), **coding agents that work with project-local files and host MCP** (everything from Claude Code to goose), and **local LLM runners that host MCP without project-local-file conventions**.
+
+## Install from the public distribution channels
+
+### npm CLI — project installer and utility commands
+
+```sh
+npx blendops --help
+npx blendops doctor --project .
+npx blendops install --target auto --project . --dry-run
+npx blendops install --target auto --project . --write
+```
+
+The CLI requires Node.js `>=20.0.0`. Review the dry-run plan before running the matching write. It does not install Blender or configure MCP.
+
+### skills.sh — install Agent Skills into a supported agent
+
+```sh
+npx skills add ThanhNguyxnOrg/blendops
+```
+
+The Skills CLI prompts for skill and agent selection. Select one skill with `--skill <skill-id>`. The public listing is [skills.sh/ThanhNguyxnOrg/blendops](https://www.skills.sh/ThanhNguyxnOrg/blendops). The root `skills.sh.json` defines the eight display groups; it does not need a separate upload.
+
+These routes are complementary: npm provides BlendOps CLI commands; skills.sh provides installation of the GitHub-hosted `SKILL.md` collection.
 
 ### 1) Chat UI with Skills upload — 1 target
 
@@ -69,7 +92,7 @@ BlendOps ships a root [`skills.sh.json`](../../skills.sh.json) grouping manifest
 | Target | Doc | Selected mode | Confidence |
 |---|---|---|---|
 | Generic project | [generic-project.md](./generic-project.md) | project-local install fallback (when target type is unknown) | verified-read fallback |
-| Local installer & CLI spec | [installer-spec.md](./installer-spec.md) | local CLI & tarball (`bin/blendops.mjs`, `scripts/install-skills.mjs`, `--with-skills-dir`) | Public-release ready; initial npm stage pending maintainer approval |
+| Local installer & CLI spec | [installer-spec.md](./installer-spec.md) | npm CLI (`npx blendops`), local CLI & tarball (`bin/blendops.mjs`, `scripts/install-skills.mjs`, `--with-skills-dir`) | Published on npm as `blendops@1.0.0` |
 
 ## Shared rules
 

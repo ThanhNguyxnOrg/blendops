@@ -14,7 +14,9 @@ Welcome to BlendOps! This guide helps you understand what BlendOps is, where it 
 | **Product version** | v1.0.0 | Production skills, knowledge/recipe catalogs, CLI tooling, and CI suite |
 | **Runtime eval** | Not Run | Live Blender official runtime manual eval is optional operator-side provenance |
 | **Artifacts** | Not Produced | No preview/render/GLB files generated in this repo |
-| **Package/marketplace** | Not Published | CLI package metadata is public-release ready; first npm staged publication awaits maintainer approval; no marketplace listing |
+| **npm CLI** | Published | Public package [`blendops@1.0.0`](https://www.npmjs.com/package/blendops), dist-tag `latest` |
+| **skills.sh** | Listed | Public Agent Skills source: [ThanhNguyxnOrg/blendops](https://www.skills.sh/ThanhNguyxnOrg/blendops) |
+| **Marketplace/plugin** | Not Published | No official marketplace/plugin listing is claimed |
 | **Canonical skill package** | Verified fixture | `bundles/skill-package/blendops/` built and checked by CI |
 
 ---
@@ -40,9 +42,10 @@ Pick the path that matches what you want to do:
 ### 📦 I want to install/use the skill package
 
 **Current reality:**
-- BlendOps is not yet published to the public npm registry; its first staged release is awaiting maintainer approval. No marketplace listing exists.
-- The CLI (`bin/blendops.mjs` / `scripts/install-skills.mjs`) is packaged and tested via `npm pack`; public `npx blendops` use is unavailable until the staged version is approved.
-- Installation is project-local or multiple-skill-zip-prepared, transactional, and reversible
+- The public npm CLI is live as `blendops@1.0.0`; use `npx blendops` without cloning the repository.
+- The canonical Agent Skills source is listed on skills.sh; install it with `npx skills add ThanhNguyxnOrg/blendops`.
+- The local installer is project-local, transactional, and reversible. Run `--dry-run` before the matching `--write`.
+- No official marketplace/plugin listing is claimed.
 
 Use the short prompt from [README.md](../README.md#-use-in-30-seconds). The agent will read [AI Agent Quickstart](./ai-agent-quickstart.md) and auto-select project-local install or multiple Skills ZIP preparation.
 
@@ -147,7 +150,7 @@ Use the short prompt from [README.md](../README.md#-use-in-30-seconds). The agen
 - Production `v1.0.0` skills, knowledge, recipe, CLI, and CI layers
 - Runtime eval: Not Run
 - Artifacts: Not Produced
-- Public npm package: Not Published (initial staged publication pending approval); marketplace listing: Not Published
+- Public npm package: Published (`blendops@1.0.0`); skills.sh: Listed; official marketplace listing: Not Published
 
 **Start here:**
 - [Release readiness](./release-readiness.md) — current release readiness and scope boundaries
@@ -182,7 +185,7 @@ BlendOps documents **two MCP execution paths** plus a **CLI fallback appendix** 
 **Canonical portable skill package:**
 - Source: `bundles/skill-package/blendops/`
 - Structure: `SKILL.md` + `references/` (target-neutral core) + `agents/openai.yaml` (OpenAI metadata only)
-- Status: Verified local fixture (`1.0.0`), not published to a marketplace
+- Status: Verified local fixture (`1.0.0`); the GitHub Agent Skills source is discoverable through skills.sh, but this is not an official marketplace listing
 
 **Claude Desktop manual bundle:**
 - Source: `bundles/claude-desktop-manual/`
@@ -197,9 +200,10 @@ BlendOps documents **two MCP execution paths** plus a **CLI fallback appendix** 
 **Per-target install docs:**
 - [docs/install/README.md](./install/README.md) — all target-specific guides
 
-**Local repository installer & future `npx`:**
-- Local repository script: `node scripts/install-skills.mjs` (`--doctor`, `--dry-run`, `--write`, `--rollback`) — see [docs/install/installer-spec.md](./install/installer-spec.md)
-- Public `npm`/`npx`: Not published yet; use only after the initial staged release is approved and the registry version is verified
+**Published npm CLI & Agent Skills:**
+- npm CLI: `npx blendops --help`, then `npx blendops doctor --project .` and `npx blendops install --target auto --project . --dry-run` followed by the matching `--write`.
+- Skills CLI: `npx skills add ThanhNguyxnOrg/blendops` — choose skill(s) and agent target(s) interactively.
+- Full installer and safety contract: [docs/install/installer-spec.md](./install/installer-spec.md).
 
 ---
 

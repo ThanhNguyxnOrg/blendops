@@ -1032,14 +1032,17 @@ describe('Distributable CLI & Package Readiness', () => {
       'package.json must retain Node >=20.0.0 engine requirement',
     );
 
-    // 3. Verify docs/distribution-strategy.md documents the npm registry E404 boundary and Not Published posture
+    // 3. Verify docs/distribution-strategy.md documents the published npm package and skills.sh install route
     const distDoc = fs.readFileSync(path.join(ROOT, 'docs', 'distribution-strategy.md'), 'utf8');
     assert.match(distDoc, /E404/);
     assert.match(distDoc, /does \*\*not\*\* guarantee reservation rights/i);
     assert.match(distDoc, /scope ownership/i);
     assert.doesNotMatch(distDoc, /"private":\s*true/);
-    assert.match(distDoc, /initial staged publication is pending maintainer approval/i);
-    assert.match(distDoc, /Not Published/);
+    assert.match(distDoc, /blendops@1\.0\.0.*published/i);
+    assert.match(distDoc, /npx blendops/);
+    assert.match(distDoc, /npx skills add ThanhNguyxnOrg\/blendops/);
+    assert.match(distDoc, /npm Trusted Publishing/i);
+    assert.doesNotMatch(distDoc, /initial staged publication is pending maintainer approval/i);
 
     // 4. Verify all generated docs/audits/current/* files use v1.0.0-current and never legacy draft phase-*-current IDs
     const currentAuditDir = path.join(ROOT, 'docs', 'audits', 'current');

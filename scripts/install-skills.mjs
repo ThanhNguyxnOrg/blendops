@@ -2685,7 +2685,7 @@ export function formatInstallerHelp() {
     ...targetLines,
     '',
     'Boundaries:',
-    '- Local content & CLI package installer only (unpublished npm package; no public npx registry release, no marketplace listing, no Blender install or MCP setup).',
+    '- Public npm CLI (blendops@1.0.0) and GitHub Agent Skills source (listed on skills.sh); no official marketplace listing, Blender install, or MCP setup.',
     '- Global files touched: No',
     '- Runtime status: Not Run',
     '- Artifact status: Not Produced',

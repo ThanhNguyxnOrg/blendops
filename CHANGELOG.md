@@ -26,7 +26,7 @@ community `mcp-for-blender`, Blender CLI).
 
 ### Truth-State Posture
 - In-repo live Blender runtime status remains `Not Run` and live Blender artifacts remain `Not Produced`.
-- npm package distribution remains `Not Published`; the initial staged publication is pending maintainer approval.
+- Public npm distribution is live as [`blendops@1.0.0`](https://www.npmjs.com/package/blendops) (`latest` dist-tag); the repository's Agent Skills source is also [listed on skills.sh](https://www.skills.sh/ThanhNguyxnOrg/blendops). Official marketplace/plugin listings remain unpublished.
 
 ## [v0.8.0-draft] — 2026-10-16
 

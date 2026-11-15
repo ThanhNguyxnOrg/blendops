@@ -38,7 +38,7 @@ _Last updated for **v1.0.0** (48 canonical skills, 151 reference guides, 26 inst
 | Item | Why optional | Where |
 |---|---|---|
 | In-repo per-path evidence file (`docs/evals/path-X-...md`) | Useful provenance for an operator who wants a captured eval record. NOT a BlendOps publishing blocker because BlendOps redirects to upstream paths and does not run Blender. | `docs/evals/path-2-mcp-for-blender-readonly-template.md` is a fill-in template. |
-| `blendops` CLI & project-local installer | ✅ Implemented and tarball-tested (`bin/blendops.mjs` + `scripts/install-skills.mjs`). Public npm metadata is prepared; initial staged publication is pending maintainer approval. | `docs/install/installer-spec.md` |
+| `blendops` CLI & project-local installer | ✅ Published as `blendops@1.0.0` on npm. GitHub Agent Skills source is listed on skills.sh. | `docs/install/installer-spec.md` |
 | Marketplace / plugin listing | Future distribution work. Gated on upstream listing acceptance. | — |
 
 **Bottom line**: clone the repo → run `npx skills add ThanhNguyxnOrg/blendops` or `npm run skills:install` → plan a scene with **48 skills** → follow per-target install doc to enable an upstream runtime path → drive Blender via Path 1 / Path 2 (both user-reported verified by the repo owner — operator statement) or CLI (upstream-documented).
@@ -84,7 +84,8 @@ These are useful for any operator who wants a **captured in-repo eval record** u
 
 ## 🔵 Post-v1.0.0 Future Work (deliberately deferred)
 
-- [ ] Complete initial public npm registry release — run `npm stage publish`, review the staged package, and approve it with npm 2FA; verify `npm view blendops version` and a clean consumer install.
+- [x] Publish the initial npm package — `blendops@1.0.0` is live and the npm `latest` dist-tag points to it.
+- [ ] Configure npm Trusted Publishing for the next tagged release (`ThanhNguyxnOrg` / `blendops` / `npm-publish.yml`) and verify a clean consumer install.
 - [ ] Empirical verification across the remaining 24 `linked-only` external AI host applications outside CI (`F-08` tracking).
 
 ---
@@ -93,5 +94,5 @@ These are useful for any operator who wants a **captured in-repo eval record** u
 
 - **Runtime status remains `Not Run`** unless a per-path runtime eval evidence file is recorded under `docs/evals/`.
 - **Artifact status remains `Not Produced`** unless preview / render / GLB output paths exist on disk AND validation notes are recorded.
-- **Packaged skill, plugin listing, marketplace listing remain "Not Published"** unless that surface actually accepts and lists the package — see `docs/distribution-strategy.md`.
+- **Official plugin/marketplace listings remain "Not Published"** unless that surface actually accepts and lists the package — see `docs/distribution-strategy.md`.
 - **Arbitrary Python is never the BlendOps user-facing workflow.** This is enforced by `laws/no-arbitrary-python-interface.md`. The runtime paths use LLM-generated Python internally; BlendOps' final product surface stays workflow + validation + evidence.

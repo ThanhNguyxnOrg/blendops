@@ -4,7 +4,7 @@ Status: 1.0.0 — local repository script (`scripts/install-skills.mjs`) and dis
 Scope: project-local installer and tarball-packable CLI for BlendOps skill/law/pack attachment and manual Claude Desktop export prep
 
 > [!IMPORTANT]
-> `scripts/install-skills.mjs` is implemented as the local repository installer and verified by `scripts/test-project-installer.mjs`, and `bin/blendops.mjs` provides the distributable CLI entrypoint verified via `npm pack` + consumer tarball installation in `scripts/test-cli-package.mjs`. No `npx blendops` CLI, published npm package, or marketplace listing exists yet; the initial staged npm publication is pending maintainer approval. Global installs (`--allow-global`) remain disabled.
+> `scripts/install-skills.mjs` is the local repository installer and `bin/blendops.mjs` is the distributable CLI entrypoint. The public npm package is live as [`blendops@1.0.0`](https://www.npmjs.com/package/blendops); the GitHub Agent Skills source is also [listed on skills.sh](https://www.skills.sh/ThanhNguyxnOrg/blendops). No official marketplace/plugin listing is claimed. Global file writes (`--allow-global`) remain disabled.
 
 ## Purpose
 
@@ -59,19 +59,45 @@ blendops rollback --project /path/to/project
 node scripts/install-skills.mjs --rollback --project /path/to/project
 ```
 
-## Package readiness & publish-safety boundary
+## Published package & public install commands
 
-- `package.json` declares `"bin": { "blendops": "bin/blendops.mjs" }`, runtime `"dependencies": { "fflate": "0.8.3" }`, and an explicit `"files"` allowlist so `npm pack` produces a self-contained tarball (`blendops-1.0.0.tgz`) containing all 48 skills, 4 laws, 1 pack, bundles, registry files, schemas, and scripts while excluding test suites, dev server, audit snapshots, and `.git` artifacts.
-- Historical registry check (2026-10-31): `npm view` returned `E404` for `blendops`, `@thanhnguyxn/blendops`, and `@blendops/cli`. This result is not a live availability guarantee; re-check the exact package name before staging.
-- `package.json` omits `private` and sets `publishConfig.access: public`. The package is publishable, but is not live on npm until its first staged version is reviewed and approved.
+- `package.json` declares the `blendops` executable (`bin/blendops.mjs`), Node.js engine `>=20.0.0`, public access, and an explicit `files` allowlist. The published package is `blendops@1.0.0`; npm's `latest` dist-tag resolves to that version.
+- The published tarball includes the CLI, installer, canonical skills, laws, pack, bundles, registry files, schemas, and user documentation. The registry reports 484 files in the published tarball.
+- The old pre-publication registry `E404` check from 2026-10-31 is historical only; `blendops@1.0.0` is now public.
 
-## First npm publication
+### Run npm CLI without cloning
 
-1. From the repository root, confirm the exact name is still available with `npm view blendops version` (a not-found response is expected only if the name remains unclaimed).
-2. Use Node `22.14.0+` and npm CLI `11.15.0+`, then run `npm stage publish`.
-3. Open npmjs.com → **Staged Packages**, inspect the submitted `blendops@1.0.0`, and approve it with npm 2FA. For a new package, npm may create a public `0.0.0-stage` placeholder; the staged `1.0.0` contents remain unavailable until approval.
-4. After approval, verify `npm view blendops version` and install the package in a clean consumer project before claiming public availability.
-5. Configure npm Trusted Publishing for GitHub Actions (`ThanhNguyxnOrg` / `blendops` / `.github/workflows/npm-publish.yml`). The existing workflow intentionally skips the bootstrap tag `v1.0.0`; future version tags use OIDC and do not need a long-lived `NPM_TOKEN` secret.
+```sh
+npx blendops --help
+npx blendops --version
+npx blendops doctor --project .
+npx blendops install --target auto --project . --dry-run
+npx blendops install --target auto --project . --write
+```
+
+The npm CLI supports Node.js `>=20.0.0`. No global installation is required. Optionally, install its executable on PATH using `npm install --global blendops`; this does not enable global file writes by the BlendOps installer. `--allow-global` remains rejected.
+
+### Install Agent Skills through skills.sh
+
+```sh
+npx skills add ThanhNguyxnOrg/blendops
+```
+
+The Skills CLI selects skills and supported agent targets from the public GitHub repository. Select a particular skill with `--skill <skill-id>`, for example:
+
+```sh
+npx skills add ThanhNguyxnOrg/blendops --skill glb-web-handoff
+```
+
+The live listing is [skills.sh/ThanhNguyxnOrg/blendops](https://www.skills.sh/ThanhNguyxnOrg/blendops). The root `skills.sh.json` defines eight display groups and is not an artifact that needs manual upload. The canonical repository inventory remains 48 skills in [`skills/README.md`](../../skills/README.md).
+
+### Future npm release automation
+
+- The existing [`npm-publish.yml`](../../.github/workflows/npm-publish.yml) intentionally skips the bootstrap tag `v1.0.0`; that version was published through the initial staged workflow.
+- Before the next version tag, configure npm Trusted Publishing once: provider GitHub Actions, organization `ThanhNguyxnOrg`, repository `blendops`, workflow filename `npm-publish.yml`, and no environment unless the workflow is changed.
+- This Trusted Publisher account setting has not been independently verified as configured; check it before relying on the next tag.
+- Once configured, the workflow publishes using npm OIDC Trusted Publishing, so a long-lived `NPM_TOKEN` is not required.
+- The README shown on npm for `1.0.0` is an immutable publication-time snapshot. GitHub README changes do not retroactively update that version page; refreshed npm documentation will appear with the next package version (for example, `1.0.1`).
 
 ## Required command behavior
 
@@ -276,7 +302,7 @@ It must not claim:
 - direct official MCP is supported from non-Claude Desktop agents,
 - runtime eval passed,
 - preview/render/GLB artifacts were produced,
-- package/plugin/marketplace availability exists.
+- official marketplace/plugin listing availability exists.
 
 Runtime status remains `Not Run`. Artifact status remains `Not Produced`.
 
