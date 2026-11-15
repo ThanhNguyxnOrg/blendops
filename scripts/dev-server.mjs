@@ -531,6 +531,11 @@ function renderHtml(options = {}) {
     commitShort: '3ea3c35',
     measuredScore: 54.5,
   };
+  const baselineCommitShort =
+    historicalBaseline.commitShort ||
+    (typeof historicalBaseline.commitSha === 'string' && historicalBaseline.commitSha.length >= 7
+      ? historicalBaseline.commitSha.slice(0, 7)
+      : '3ea3c35');
   const currentCommitShort =
     currentScorecard?.sourceCommitShort ||
     (currentScorecard?.sourceCommitSha ? currentScorecard.sourceCommitSha.slice(0, 7) : 'HEAD');
@@ -549,6 +554,9 @@ function renderHtml(options = {}) {
           sha256: bundle.sha256,
         }
       : { exists: false, filename: CANONICAL_BUNDLE_FILENAME, size: 0, sha256: null };
+  const primaryBundleUrl = releaseBundle.exists
+    ? `/dist/${CANONICAL_BUNDLE_FILENAME}`
+    : `/${CANONICAL_BUNDLE_FILENAME}`;
 
   return `<!doctype html>
 <html lang="en">
@@ -608,9 +616,15 @@ function renderHtml(options = {}) {
     main { max-width: 1400px; margin: 0 auto; padding: 24px 28px 48px; }
     .kpi-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      grid-template-columns: repeat(3, minmax(220px, 1fr));
       gap: 14px;
       margin-bottom: 24px;
+    }
+    @media (max-width: 960px) {
+      .kpi-grid { grid-template-columns: repeat(2, minmax(200px, 1fr)); }
+    }
+    @media (max-width: 600px) {
+      .kpi-grid { grid-template-columns: 1fr; }
     }
     .card {
       background: var(--surface);
@@ -723,7 +737,7 @@ function renderHtml(options = {}) {
   <header>
     <h1>BlendOps ${escapeHtml(RELEASE_TAG)} Inspector</h1>
     <div class="header-meta">
-      <span class="badge">Baseline: ${escapeHtml(historicalBaseline.commitShort)} (${escapeHtml(historicalBaseline.measuredScore)}/100)</span>
+      <span class="badge">Baseline: ${escapeHtml(baselineCommitShort)} (${escapeHtml(historicalBaseline.measuredScore)}/100)</span>
       <span class="badge badge-ok">HEAD: ${escapeHtml(currentCommitShort)} &middot; Score ${escapeHtml(measuredScore)}/100</span>
       <span class="badge badge-warn">Runtime: Not Run &middot; Artifacts: Not Produced</span>
     </div>
@@ -747,7 +761,7 @@ function renderHtml(options = {}) {
         <div class="actions-row">
           ${
             activeBundle.exists
-              ? `<button id="download-canonical-bundle-btn" type="button" class="btn btn-primary" onclick="downloadVerifiedDeliverable('/${CANONICAL_BUNDLE_FILENAME}', '${CANONICAL_BUNDLE_FILENAME}', '${escapeHtml(activeBundle.sha256)}', ${activeBundle.size})">Download ${CANONICAL_BUNDLE_FILENAME} (${Math.max(1, Math.round(activeBundle.size / 1024))} KB)</button>`
+              ? `<button id="download-canonical-bundle-btn" type="button" class="btn btn-primary" onclick="downloadVerifiedDeliverable('${primaryBundleUrl}', '${CANONICAL_BUNDLE_FILENAME}', '${escapeHtml(activeBundle.sha256)}', ${activeBundle.size})">Download ${CANONICAL_BUNDLE_FILENAME} (${Math.max(1, Math.round(activeBundle.size / 1024))} KB)</button>`
               : ''
           }
           ${RELEASE_DELIVERABLES.map((item) => {
@@ -769,7 +783,7 @@ function renderHtml(options = {}) {
       <div class="card">
         <div class="kpi-label">Initial Baseline Reference</div>
         <div class="kpi-val" style="color:var(--muted)">${escapeHtml(historicalBaseline.measuredScore)} / 100</div>
-        <div class="kpi-sub">Commit <code>${escapeHtml(historicalBaseline.commitShort)}</code> historical reference</div>
+        <div class="kpi-sub">Commit <code>${escapeHtml(baselineCommitShort)}</code> historical reference</div>
       </div>
       <div class="card">
         <div class="kpi-label">Truth-State &amp; ZIP Export Integrity</div>
@@ -800,7 +814,7 @@ function renderHtml(options = {}) {
           <th>ID</th>
           <th>Severity</th>
           <th>Finding &amp; Pillar</th>
-          <th>Initial Baseline (${escapeHtml(historicalBaseline.commitShort)})</th>
+          <th>Initial Baseline (${escapeHtml(baselineCommitShort)})</th>
           <th>Current Status</th>
           <th>Verification &amp; Remaining Scope</th>
         </tr>
@@ -834,7 +848,7 @@ function renderHtml(options = {}) {
       <thead>
         <tr>
           <th>Pillar</th>
-          <th>Baseline (${escapeHtml(historicalBaseline.commitShort)})</th>
+          <th>Baseline (${escapeHtml(baselineCommitShort)})</th>
           <th>v${RELEASE_VERSION}</th>
           <th>Verdict</th>
           <th>Verified Evidence &amp; Open Criteria</th>
