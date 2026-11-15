@@ -5377,8 +5377,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 14426,
-      "sha256": "61338adbe23dd9173eaa49f08170738f1fb7e4c76483e8bb7d0a9f780699c2f4"
+      "byteSize": 14908,
+      "sha256": "94f7172bf8a6000336057406dcec7800232637b5ebd4134b588fb0c2cebf2e60"
     },
     {
       "path": "scripts/build-knowledge-catalog.mjs",
