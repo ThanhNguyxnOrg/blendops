@@ -21,7 +21,7 @@ jobs:
     with:
       job_name: Verify (BlendOps)
       node_version: "20"
-      fetch_depth: 2
+      fetch_depth: 0
       package_manager: npm
       cache: npm
       validation_command: npm run arch:build && npm run audit:sync-digest && npm run ci

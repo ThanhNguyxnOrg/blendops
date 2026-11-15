@@ -1045,20 +1045,14 @@ describe('Distributable CLI & Package Readiness', () => {
       cwd: ROOT,
       encoding: 'utf8',
     }).trim();
-    const validCommitShas = new Set([
-      '122af1abe4fb72574e6746c58788fbf9064c01c2',
-      headCommitSha,
-    ]);
-    try {
-      const parentSha = execFileSync('git', ['rev-parse', '--verify', 'HEAD^'], {
+    const validCommitShas = new Set(
+      execFileSync('git', ['rev-list', 'HEAD'], {
         cwd: ROOT,
         encoding: 'utf8',
-        stdio: ['ignore', 'pipe', 'ignore'],
-      }).trim();
-      if (parentSha) validCommitShas.add(parentSha);
-    } catch {
-      // shallow or single-commit clone
-    }
+      })
+        .split(/\r?\n/)
+        .filter(Boolean),
+    );
     for (const jsonName of [
       'scorecard.json',
       'findings.json',

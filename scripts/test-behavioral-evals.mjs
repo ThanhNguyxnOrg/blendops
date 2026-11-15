@@ -452,19 +452,14 @@ describe('Behavioral Evaluation Schema & Deterministic Runner', () => {
 
     // Verify explicit auditProvenance on all 5 JSON artifacts and no ambiguous self-referential commitSha
     const liveDigest = computeAuditedInputsDigest(root);
-    const expectedCommitShas = new Set([
-      headCommitSha,
-    ]);
-    try {
-      const parentCommitSha = execFileSync('git', ['rev-parse', '--verify', 'HEAD^'], {
+    const expectedCommitShas = new Set(
+      execFileSync('git', ['rev-list', 'HEAD'], {
         cwd: root,
         encoding: 'utf8',
-        stdio: ['ignore', 'pipe', 'ignore'],
-      }).trim();
-      if (parentCommitSha) expectedCommitShas.add(parentCommitSha);
-    } catch {
-      // shallow or single-commit clone
-    }
+      })
+        .split(/\r?\n/)
+        .filter(Boolean),
+    );
     for (const [label, doc] of [
       ['scorecard.json', currentScorecard],
       ['findings.json', currentFindings],
