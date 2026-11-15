@@ -4,7 +4,7 @@ Status: `blendops@1.0.0` published on npm; GitHub skill source listed on skills.
 Scope: BlendOps content and CLI distribution, not Blender runtime distribution
 
 > [!NOTE]
-> BlendOps has two public developer distribution channels: the npm CLI package and the GitHub-hosted Agent Skills collection listed on skills.sh. Neither is a Blender runtime, MCP server, nor official marketplace/plugin listing.
+> BlendOps has two public developer distribution channels: the npm CLI package and the GitHub-hosted Agent Skills collection listed on skills.sh. Neither is a Blender runtime or MCP server. This document does not claim BlendOps is published in any marketplace; skills.sh is an Agent Skills discovery directory, not an official marketplace/plugin listing. Do not claim official marketplace listing until the listing is actually published and verified. Do not claim availability until it is verified for the specific surface.
 
 ---
 

@@ -505,7 +505,9 @@ const requiredMarketplaceSnippets = [
 
 const requiredInstallerSpecSnippets = [
   '`scripts/install-skills.mjs` is implemented as the local repository installer',
-  'No `npx blendops` CLI, published npm package, or marketplace listing exists',
+  'The public npm package is live as [`blendops@1.0.0`](https://www.npmjs.com/package/blendops)',
+  'The GitHub Agent Skills source is also [listed on skills.sh](https://www.skills.sh/ThanhNguyxnOrg/blendops)',
+  'npx skills add ThanhNguyxnOrg/blendops',
   '--rollback',
   'does not install Blender',
   'does not run Blender or runtime eval',
