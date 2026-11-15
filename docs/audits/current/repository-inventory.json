@@ -5392,8 +5392,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 43079,
-      "sha256": "8d32cbbbf23bef67913d617a09d2cab6e56fa7c936f0f51786f50136732c1426"
+      "byteSize": 43581,
+      "sha256": "40e2e20d163f8f9827c66d3c88eeb636257a44c308760a9b06d81aa9fcc6097d"
     },
     {
       "path": "scripts/export-claude-skills.mjs",
