@@ -83,13 +83,7 @@ The npm CLI supports Node.js `>=20.0.0`. No global installation is required. Opt
 npx skills add ThanhNguyxnOrg/blendops
 ```
 
-The Skills CLI selects skills and supported agent targets from the public GitHub repository. Select a particular skill with `--skill <skill-id>`, for example:
-
-```sh
-npx skills add ThanhNguyxnOrg/blendops --skill glb-web-handoff
-```
-
-The live listing is [skills.sh/ThanhNguyxnOrg/blendops](https://www.skills.sh/ThanhNguyxnOrg/blendops). The root `skills.sh.json` defines eight display groups and is not an artifact that needs manual upload. The canonical repository inventory remains 48 skills in [`skills/README.md`](../../skills/README.md).
+The Skills CLI guides users through choosing skills and supported agent targets from the public GitHub repository. The live listing is [skills.sh/ThanhNguyxnOrg/blendops](https://www.skills.sh/ThanhNguyxnOrg/blendops). The root `skills.sh.json` defines eight display groups and is not an artifact that needs manual upload. The canonical repository inventory remains 48 skills in [`skills/README.md`](../../skills/README.md).
 
 ### Future npm release automation
 

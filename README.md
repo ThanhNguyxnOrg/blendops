@@ -141,13 +141,7 @@ The BlendOps GitHub repository is already listed on [skills.sh](https://www.skil
 npx skills add ThanhNguyxnOrg/blendops
 ```
 
-The CLI prompts you to choose skills and supported agent targets. To select one skill explicitly:
-
-```bash
-npx skills add ThanhNguyxnOrg/blendops --skill glb-web-handoff
-```
-
-The repository's `skills.sh.json` defines eight display groups for the listing. It is source metadata; no ZIP upload or separate npm publication is required for skills.sh.
+The Skills CLI guides you through choosing skills and supported agent targets. The repository's `skills.sh.json` defines eight display groups for the listing. It is source metadata; no ZIP upload or separate npm publication is required for skills.sh.
 
 ### Option 3 — Install and run the published BlendOps npm CLI
 

@@ -35,7 +35,7 @@ The CLI requires Node.js `>=20.0.0`. Review the dry-run plan before running the 
 npx skills add ThanhNguyxnOrg/blendops
 ```
 
-The Skills CLI prompts for skill and agent selection. Select one skill with `--skill <skill-id>`. The public listing is [skills.sh/ThanhNguyxnOrg/blendops](https://www.skills.sh/ThanhNguyxnOrg/blendops). The root `skills.sh.json` defines the eight display groups; it does not need a separate upload.
+The Skills CLI guides you through skill and agent selection. The public listing is [skills.sh/ThanhNguyxnOrg/blendops](https://www.skills.sh/ThanhNguyxnOrg/blendops). The root `skills.sh.json` defines the eight display groups; it does not need a separate upload.
 
 These routes are complementary: npm provides BlendOps CLI commands; skills.sh provides installation of the GitHub-hosted `SKILL.md` collection.
 
