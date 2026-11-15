@@ -382,8 +382,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 6042,
-      "sha256": "34ffda9cefcd68ab821c1b0206ae52e3d1821b11f51bc2bbbb8fd29f48455058"
+      "byteSize": 6438,
+      "sha256": "3f2b4f9af5458ddc5f78ed897726fffb15ae8a26de25f909609a326931f9b4ca"
     },
     {
       "path": "CHANGELOG.md",
@@ -457,8 +457,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 17700,
-      "sha256": "b0ec94fc1de6329f6459cf17eeda4d16ce02a7fd22480b402eddf16c7b9b2a6f"
+      "byteSize": 17604,
+      "sha256": "8a93db40c4e129b19d8833efff77ed3190cb3300638c1c2a377d1884c86620e8"
     },
     {
       "path": "SECURITY.md",
@@ -1507,8 +1507,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 2711,
-      "sha256": "4930f233f2840af92c94a4f07528adac13ba499d7407c8db8b371ead01a3c39b"
+      "byteSize": 3127,
+      "sha256": "f6e5e89010b9e43670283a218b826d60c1e6404f21f7241e80fd7bb95b4071d2"
     },
     {
       "path": "bundles/generic-project-local/ROLLBACK.md",
@@ -2872,8 +2872,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 8612,
-      "sha256": "06c6f7f35a2985b121235b6488afdcd1a7355aa3d83979e40dd4835d0ed1fa9b"
+      "byteSize": 8499,
+      "sha256": "8305cea3e180c37d270463225913e710423d7decca30c8ff097decf8acec41c9"
     },
     {
       "path": "docs/evals/README.md",
@@ -3232,8 +3232,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 8550,
-      "sha256": "8305025d5826f0ce6ea94b2481e83309796e1aa31b483deb8cac17635c69f502"
+      "byteSize": 8513,
+      "sha256": "7f2ddd98d48cd18f32f7b2b5d46558fa8f5c93fd241be3eba680d42f3f5d8424"
     },
     {
       "path": "docs/install/aider.md",
@@ -3472,8 +3472,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 17889,
-      "sha256": "c1a03b3359234b671c67a112eb8e06faad814d68e1f16076907d29d7acd434ed"
+      "byteSize": 17770,
+      "sha256": "890555ec7d0b37ecff14f23e1d445efc6f9674d58b47c06246284e53c12b4357"
     },
     {
       "path": "docs/install/jetbrains-junie.md",
@@ -3667,8 +3667,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 13381,
-      "sha256": "13f22657ab31b0ac9b21f85cd1df18d329568d18c32001d8a450aca7860e30f5"
+      "byteSize": 13753,
+      "sha256": "97f1eaea891657085554757a248e19af8d4a8077fc7b6f5ed62fd63e10aee6d6"
     },
     {
       "path": "docs/product-direction.md",
