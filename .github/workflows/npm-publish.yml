@@ -1,22 +1,23 @@
 name: npm Publish
 
 on:
-  release:
-    types: [published]
+  push:
+    tags:
+      - "v*"
 
 permissions:
   contents: read
 
 concurrency:
-  group: blendops-npm-publish-${{ github.event.release.tag_name }}
+  group: blendops-npm-publish-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
   publish:
     # v1.0.0 is the one-time bootstrap release; publish it manually after
     # npm package creation and Trusted Publisher setup. Later releases use OIDC.
-    if: startsWith(github.event.release.tag_name, 'v') && github.event.release.tag_name != 'v1.0.0'
-    name: Publish ${{ github.event.release.tag_name }} to npm
+    if: startsWith(github.ref_name, 'v') && github.ref_name != 'v1.0.0'
+    name: Publish ${{ github.ref_name }} to npm
     runs-on: ubuntu-latest
     timeout-minutes: 30
     permissions:
@@ -26,7 +27,7 @@ jobs:
       - name: Checkout the exact release tag
         uses: actions/checkout@v7
         with:
-          ref: ${{ github.event.release.tag_name }}
+          ref: ${{ github.ref }}
           fetch-depth: 0
 
       - name: Set up Node.js and npm registry
@@ -46,7 +47,7 @@ jobs:
       - name: Validate package identity and release version
         shell: bash
         env:
-          RELEASE_TAG: ${{ github.event.release.tag_name }}
+          RELEASE_TAG: ${{ github.ref_name }}
         run: |
           node --input-type=module <<'NODE'
           import fs from 'node:fs';
