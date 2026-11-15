@@ -1,11 +1,13 @@
 #!/usr/bin/env node
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
   auditLocalDistributionMetadata,
   compareVersions,
   buildDistributionReport,
+  manifestDifferences,
 } from './audit-distribution-metadata.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -26,6 +28,28 @@ test('semantic version comparison distinguishes release order and prereleases', 
   assert.equal(compareVersions('1.0.0', '1.0.0-beta.1'), 1);
   assert.equal(compareVersions('1.0.0-beta.2', '1.0.0-beta.1'), 1);
   assert.equal(compareVersions('not-semver', '1.0.0'), null);
+});
+
+test('published npm manifest comparison tolerates URL case and npm 255-character description truncation only', () => {
+  const fullDescription = 'x'.repeat(280);
+  const published = {
+    name: 'blendops',
+    version: '1.0.0',
+    description: fullDescription.slice(0, 255),
+    repository: { url: 'git+https://github.com/ThanhNguyxnOrg/blendops.git' },
+  };
+  const source = {
+    name: 'blendops',
+    version: '1.0.0',
+    description: fullDescription,
+    repository: { url: 'https://github.com/ThanhNguyxnOrg/blendops.git' },
+  };
+  assert.deepEqual(manifestDifferences(source, published), []);
+
+  assert.deepEqual(
+    manifestDifferences({ ...source, description: 'different description' }, published),
+    ['description'],
+  );
 });
 
 test('distribution report keeps skills.sh display metrics separate from canonical inventory', () => {

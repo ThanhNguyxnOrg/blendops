@@ -48,7 +48,7 @@ export function compareVersions(left, right) {
 }
 
 function normalizeRepositoryUrl(value) {
-  return String(value || '').replace(/^git\+/, '').replace(/\/$/, '');
+  return String(value || '').replace(/^git\+/, '').replace(/\/$/, '').toLowerCase();
 }
 
 function stableJson(value) {
