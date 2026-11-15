@@ -1,0 +1,77 @@
+name: npm Publish
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: blendops-npm-publish-${{ github.event.release.tag_name }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    # v1.0.0 is the one-time bootstrap release; publish it manually after
+    # npm package creation and Trusted Publisher setup. Later releases use OIDC.
+    if: startsWith(github.event.release.tag_name, 'v') && github.event.release.tag_name != 'v1.0.0'
+    name: Publish ${{ github.event.release.tag_name }} to npm
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Checkout the exact release tag
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.release.tag_name }}
+          fetch-depth: 0
+
+      - name: Set up Node.js and npm registry
+        uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+          registry-url: https://registry.npmjs.org
+          package-manager-cache: false
+
+      - name: Ensure npm supports Trusted Publishing
+        shell: bash
+        run: |
+          npm install --global npm@^11.5.1
+          node --version
+          npm --version
+
+      - name: Validate package identity and release version
+        shell: bash
+        env:
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+          const version = process.env.RELEASE_TAG.replace(/^v/, '');
+          if (pkg.private === true) {
+            throw new Error('Refusing to publish: package.json still has private: true');
+          }
+          if (pkg.version !== version) {
+            throw new Error(`Release tag v${version} does not match package.json version ${pkg.version}`);
+          }
+          if (pkg.repository?.url !== 'https://github.com/ThanhNguyxnOrg/blendops.git') {
+            throw new Error('package.json repository.url does not match the trusted GitHub repository');
+          }
+          if (!pkg.bin?.blendops || pkg.bin.blendops !== 'bin/blendops.mjs') {
+            throw new Error('Unexpected or missing blendops CLI entry point');
+          }
+          console.log(`Validated public package ${pkg.name}@${pkg.version}`);
+          NODE
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Run full release verification
+        run: npm run ci
+
+      - name: Publish with npm Trusted Publishing (OIDC)
+        run: npm publish --access public
