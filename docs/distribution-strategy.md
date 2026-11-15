@@ -69,7 +69,7 @@ If the canonical package source `bundles/skill-package/blendops/` is used as upl
 BlendOps packages a self-contained CLI (`bin/blendops.mjs`) that can be packed into a local tarball (`npm pack`) and installed into a local consumer project (`npm install ./blendops-1.0.0.tgz`, invoked via `node_modules/.bin/blendops`, `node node_modules/blendops/bin/blendops.mjs`, or `npx --no-install blendops`).
 
 - **Public-release metadata:** `package.json` omits `private` and declares `publishConfig.access: public`; this makes the package publishable but does not itself publish it.
-- **Initial npm publication pending:** BlendOps is **not yet** published to the public npm registry (`Not Published`). The first staged version must be reviewed and approved by a maintainer with 2FA before `npx blendops` or `npm install -g blendops` can fetch it.
+- **Initial npm publication pending:** Initial staged publication is pending maintainer approval. BlendOps is **not yet** published to the public npm registry (`Not Published`). The staged `1.0.0` version must be reviewed and approved by a maintainer with 2FA before `npx blendops` or `npm install -g blendops` can fetch it.
 - **Historical registry `E404` check:** A query on 2026-10-31 found no package for `blendops`, `@blendops/cli`, or `@thanhnguyxn/blendops`. Re-check the live registry immediately before first staging. An npm registry `E404` only means a name was not found at that check time; it does **not** guarantee reservation rights, npm similarity/anti-typosquatting clearance, trademark rights, or scope ownership.
 
 ---
