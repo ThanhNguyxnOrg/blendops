@@ -352,8 +352,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 2615,
-      "sha256": "224d64492851d8d692e9190092e02bd4dbb2e9aa9afc9470d0d6ed06a308f4ef"
+      "byteSize": 2518,
+      "sha256": "913a70b9c57d15b9c1a8bcfbc105ad984a9386cb784fde53259d7975d821c6ee"
     },
     {
       "path": ".gitignore",
