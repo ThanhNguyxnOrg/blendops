@@ -397,8 +397,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 4783,
-      "sha256": "169c481b586138ec8f61b4366a6615e2212ae6d34896c959dcd8a90a606408a0"
+      "byteSize": 4957,
+      "sha256": "9a800b92f215ed684cf26613e446062aedd735bb2455719df95ecd7002ec4625"
     },
     {
       "path": "CODE_OF_CONDUCT.md",
@@ -457,8 +457,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 16929,
-      "sha256": "f5d2ba7d4c886bc1309374fd4b98f8be2261d73d6500e031898fb22c2b65bfc1"
+      "byteSize": 17700,
+      "sha256": "b0ec94fc1de6329f6459cf17eeda4d16ce02a7fd22480b402eddf16c7b9b2a6f"
     },
     {
       "path": "SECURITY.md",
@@ -502,8 +502,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 11176,
-      "sha256": "bb5580fe3f7139210a2f9d9a5d0e6f1ce498528be30439d790ad01d2c928f422"
+      "byteSize": 11140,
+      "sha256": "2283dba4296a7b117bb1e180def783847563135590ee3ee38e294cd37a6394ec"
     },
     {
       "path": "bin/blendops.mjs",
@@ -2482,8 +2482,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 21594,
-      "sha256": "d9a6681d7edb4873b3a861e0eddd173bddab079d389105aa2b9ad1a7c844528f"
+      "byteSize": 21714,
+      "sha256": "199fd0a9c0342a0a6e585095c910125845a8dc937daff06193265f5a0c0fc82a"
     },
     {
       "path": "docs/adapter-registry.md",
@@ -2632,8 +2632,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 15099,
-      "sha256": "3583d87ac3334ecd468d17257de23d8a0b7875e17213aa92ab282577ca1a0bed"
+      "byteSize": 15366,
+      "sha256": "630207603d2992d9196053b74a4727ea053d5e09e8674f8d4210c5bd24ebd9b4"
     },
     {
       "path": "docs/ai-agent-quickstart.md",
@@ -2647,8 +2647,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 6367,
-      "sha256": "fe569e96f70d818e9ea2eef5516ff8d7731f95dc71c363638ef47a80c844debf"
+      "byteSize": 6928,
+      "sha256": "fb9ba60da5ab7e6820b5f8f7789993cf05ea1d93a1919c9e391e74712db3668c"
     },
     {
       "path": "docs/architecture.md",
@@ -2662,8 +2662,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 20624,
-      "sha256": "042d0dd227e339f6957a8d10a70a4ffc85a545c17e44b482ba4fa9a0a0961ca7"
+      "byteSize": 20689,
+      "sha256": "60b6366cd753b6fe13b4ca538cbd49c27a5567dec7a7866fb26011b7d0ce892b"
     },
     {
       "path": "docs/audits/audited-inputs.manifest.json",
@@ -2872,8 +2872,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 8878,
-      "sha256": "a3651f61767d803707477d18e74defdfac10060820fa9e0d37890cf51566a0d6"
+      "byteSize": 8317,
+      "sha256": "e43ff25e57bf4d72ef294440feda5352ad540c3cacdb439e3821e5f9e920784b"
     },
     {
       "path": "docs/evals/README.md",
@@ -3232,8 +3232,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 7460,
-      "sha256": "6cee5ea321904f2e452daa1424f97ec20c0b7c284ab5cc46975528ca1261e025"
+      "byteSize": 8550,
+      "sha256": "8305025d5826f0ce6ea94b2481e83309796e1aa31b483deb8cac17635c69f502"
     },
     {
       "path": "docs/install/aider.md",
@@ -3472,8 +3472,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 17017,
-      "sha256": "119392b0653916124732c40e83547ce829ad64276ddecaa32d428a7f87eb037b"
+      "byteSize": 17873,
+      "sha256": "b230f49a429a85b4911fa93942612ce49f0eb2b207bf9e2e01927aff353a99ba"
     },
     {
       "path": "docs/install/jetbrains-junie.md",
@@ -3742,8 +3742,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 8874,
-      "sha256": "2337dacbaf0b71136efd09cf1d0504a6f51f61f29997b2c0a98619b89c17f86f"
+      "byteSize": 8752,
+      "sha256": "1acbb1b165d010fda5d2bed70aca1635f86ffb318be146c1b79e6a752982a664"
     },
     {
       "path": "docs/runtime-stack-strategy.md",
@@ -3802,8 +3802,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 11765,
-      "sha256": "59ffafbecf732518f7cb6016675e836846681f6bab6332cb0521a1dc3b297d27"
+      "byteSize": 12048,
+      "sha256": "bdbccaa3cbcaf6b66e4e39c575a5a5b87de60eb8e9a8e8a316d4583a22cc67e5"
     },
     {
       "path": "docs/unofficial-runtime-bridges.md",
@@ -5497,8 +5497,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 193657,
-      "sha256": "b0a12ded934bfd8c28f8dd19aed81bc0020151471ed82ba4b95e18c79d0cd207"
+      "byteSize": 193648,
+      "sha256": "237d407f94246db8e6eceab0ee0163b4718d356a7761c4df73b2593596984351"
     },
     {
       "path": "scripts/run-evals.mjs",
@@ -5617,8 +5617,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 51957,
-      "sha256": "c26f457a30446d7380719d996c34f51507c71a08ae24fb616d3eab4da16e3a17"
+      "byteSize": 52143,
+      "sha256": "df08007625358aaa095a465d7eaeda2769881435bed094e8f34dfa0f9ee0c067"
     },
     {
       "path": "scripts/test-dev-server.mjs",
