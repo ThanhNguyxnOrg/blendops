@@ -20,7 +20,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: blendops-distribution-metadata-\${{ github.ref }}
+  group: blendops-distribution-metadata-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
@@ -51,15 +51,15 @@ jobs:
         uses: ThanhNguyxnOrg/.github/.github/actions/agent-token@da9d02544f60aeec92f8c851846ee3a587044beb
         with:
           profile: content
-          client-id: \${{ secrets.BOT_APP_ID }}
-          private-key: \${{ secrets.BOT_PRIVATE_KEY }}
+          client-id: ${{ secrets.BOT_APP_ID }}
+          private-key: ${{ secrets.BOT_PRIVATE_KEY }}
 
       - name: Persist distribution metadata report as ThanhNguyxnAgent
         uses: actions/github-script@v9
         env:
           REPORT_PATH: docs/audits/current/distribution-metadata.json
         with:
-          github-token: \${{ steps.agent.outputs.token }}
+          github-token: ${{ steps.agent.outputs.token }}
           script: |
             const fs = require('fs');
             const path = process.env.REPORT_PATH;

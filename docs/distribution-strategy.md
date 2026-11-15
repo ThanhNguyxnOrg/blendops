@@ -106,7 +106,7 @@ The repository keeps these source files authoritative:
 - `skills.sh.json`: the curated eight-group skills.sh page manifest. Its grouped slugs must map one-to-one to the canonical `skills/<slug>/SKILL.md` directories. The upstream `notGrouped` enum is `top` or `bottom`; BlendOps currently uses `bottom`.
 - `skills/*/SKILL.md`: canonical skill source and inventory.
 
-Run `npm run distribution:check` for the offline local contract. The [Distribution Metadata Sync workflow](../.github/workflows/distribution-metadata-sync.yml) runs when these source files change and weekly. It checks the public npm registry and live skills.sh page, then lets **ThanhNguyxnAgent** commit the deterministic snapshot to [`distribution-metadata.json`](./audits/current/distribution-metadata.json).
+Run `npm run distribution:check` for the offline local contract. The [Distribution Metadata Sync workflow](../.github/workflows/distribution-metadata-sync.yml) runs when these source files change and weekly. It checks the public npm registry and live skills.sh page, then lets **ThanhNguyxnAgent** commit the deterministic snapshot to `docs/audits/current/distribution-metadata.json`.
 
 The workflow is intentionally conservative:
 

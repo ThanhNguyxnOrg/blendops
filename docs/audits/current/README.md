@@ -68,7 +68,7 @@ The `auditedInputsSha256` digest is governed by [`../audited-inputs.manifest.jso
 - [`eval-inventory.json`](./eval-inventory.json) — Live 48-skill evaluation inventory covering all 48 machine-readable suites (269 cases) with 0 remaining prose-only skills.
 - [`verification-manifest.json`](./verification-manifest.json) — Verified provenance context, CI pipeline commands, and runtime/artifact truth states.
 - [`repository-inventory.json`](./repository-inventory.json) — Complete machine-readable inventory classifying every tracked repository file across 7 canonical categories.
-- [`distribution-metadata.json`](./distribution-metadata.json) — Live npm registry and skills.sh metadata audit, refreshed by ThanhNguyxnAgent on source changes and weekly.
+- `distribution-metadata.json` — Generated live npm registry and skills.sh metadata audit; the first successful Distribution Metadata Sync run creates it, and later runs refresh it only when the snapshot changes.
 
 ## Related Documentation
 
