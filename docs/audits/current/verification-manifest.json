@@ -4,16 +4,16 @@
   "releaseVersion": "1.0.0",
   "repository": "ThanhNguyxnOrg/blendops",
   "branch": "main",
-  "sourceCommitSha": "9f6c85728d308a8e1669f3b64b56e235dc2193fa",
-  "sourceCommitShort": "9f6c857",
-  "sourceCommitDate": "2026-11-14 04:27:00 +0000",
+  "sourceCommitSha": "482926a84eb3375f166b94506ca03956128904e4",
+  "sourceCommitShort": "482926a",
+  "sourceCommitDate": "2026-11-15 04:11:15 +0000",
   "auditProvenance": {
-    "sourceCommitSha": "9f6c85728d308a8e1669f3b64b56e235dc2193fa",
-    "sourceCommitShort": "9f6c857",
-    "sourceCommitDate": "2026-11-14 04:27:00 +0000",
-    "workingTreeState": "dirty",
-    "snapshotBasis": "working-tree-on-top-of-source-commit",
-    "uncommittedChangeCount": 171,
+    "sourceCommitSha": "482926a84eb3375f166b94506ca03956128904e4",
+    "sourceCommitShort": "482926a",
+    "sourceCommitDate": "2026-11-15 04:11:15 +0000",
+    "workingTreeState": "clean",
+    "snapshotBasis": "clean-committed-tree",
+    "uncommittedChangeCount": 0,
     "auditedInputsSha256": "ee79cfad4407edccf09274cc3797aa08ac902a3866f049beaddcb323031d098b",
     "selfReferentialCommitRule": "A Git commit cannot contain its own final commit SHA inside tracked files. sourceCommitSha records the verified HEAD commit present when the generator ran, workingTreeState and snapshotBasis record whether uncommitted working-tree changes were present on top of sourceCommitSha, and auditedInputsSha256 digests the exact audited file contents."
   },
@@ -25,16 +25,16 @@
     },
     {
       "milestone": "BlendOps v1.0.0 Head Snapshot",
-      "commitSha": "9f6c85728d308a8e1669f3b64b56e235dc2193fa",
+      "commitSha": "482926a84eb3375f166b94506ca03956128904e4",
       "summary": "Verified production release baseline covering 48 skills, 4 laws, 10 recipes, SceneSpec/ExecutionPlan compilation, MCP qualification, GLB inspection, and 26 agent install targets"
     }
   ],
   "releaseContext": {
     "releaseTag": "v1.0.0",
     "title": "BlendOps 1.0.0 — Portable Blender Workflow, Knowledge Catalog, Safe Installer & Runtime Qualification",
-    "sourceCommitSha": "9f6c85728d308a8e1669f3b64b56e235dc2193fa",
-    "workingTreeState": "dirty",
-    "snapshotBasis": "working-tree-on-top-of-source-commit",
+    "sourceCommitSha": "482926a84eb3375f166b94506ca03956128904e4",
+    "workingTreeState": "clean",
+    "snapshotBasis": "clean-committed-tree",
     "auditedInputsSha256": "ee79cfad4407edccf09274cc3797aa08ac902a3866f049beaddcb323031d098b",
     "auditedInputsManifest": "docs/audits/audited-inputs.manifest.json",
     "provenanceNote": "A Git commit cannot embed its own final commit SHA inside tracked files; sourceCommitSha records the verified HEAD present when audit snapshots were generated, while auditedInputsSha256 hashes all inputs declared in docs/audits/audited-inputs.manifest.json."

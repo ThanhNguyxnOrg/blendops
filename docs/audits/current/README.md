@@ -27,10 +27,10 @@ Because a Git commit cannot honestly contain its own final commit SHA inside tra
 
 | Provenance Field | Recorded Value | Explanation |
 | :--- | :--- | :--- |
-| `sourceCommitSha` | `9f6c85728d308a8e1669f3b64b56e235dc2193fa` (`9f6c857`) | Latest verified commit in Git history when the generator executed |
-| `workingTreeState` | `dirty` | Whether audited files had uncommitted changes on top of `sourceCommitSha` |
-| `snapshotBasis` | `working-tree-on-top-of-source-commit` | Explicit distinction between a clean committed tree and a working tree on top of `sourceCommitSha` |
-| `uncommittedChangeCount` | `171` | Count of modified/staged/deleted/untracked repository paths outside `docs/audits/current/**` |
+| `sourceCommitSha` | `482926a84eb3375f166b94506ca03956128904e4` (`482926a`) | Latest verified commit in Git history when the generator executed |
+| `workingTreeState` | `clean` | Whether audited files had uncommitted changes on top of `sourceCommitSha` |
+| `snapshotBasis` | `clean-committed-tree` | Explicit distinction between a clean committed tree and a working tree on top of `sourceCommitSha` |
+| `uncommittedChangeCount` | `0` | Count of modified/staged/deleted/untracked repository paths outside `docs/audits/current/**` |
 | `auditedInputsSha256` | `ee79cfad4407edccf09274cc3797aa08ac902a3866f049beaddcb323031d098b` | Deterministic SHA-256 content digest across all manifest-declared repository inputs |
 
 ### 1.2 Audited Input Digest Scope & Manifest Governance
