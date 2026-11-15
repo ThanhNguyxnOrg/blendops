@@ -322,8 +322,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 562,
-      "sha256": "391335d8a887f478d59449616bcaf5b88fcc9efa0ca7e342cb8c5ca4cd890bf2"
+      "byteSize": 583,
+      "sha256": "8eca82264c9be7bad5d33975768d248245d99ab15757d07dd59d0e23d53ec7c2"
     },
     {
       "path": ".github/workflows/docs.yml",
@@ -337,8 +337,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 5272,
-      "sha256": "369756d83cd42707b0b37fc31e878e3992caafe84894170ed5c500e9d317b741"
+      "byteSize": 5350,
+      "sha256": "ed3813786efaeca584fbfef15a8ebd9b93b248ac1fc22444bdd6a8821dae666b"
     },
     {
       "path": ".gitignore",
