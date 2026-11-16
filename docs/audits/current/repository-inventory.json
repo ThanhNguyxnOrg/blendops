@@ -292,8 +292,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 2918,
-      "sha256": "c60b82f777a985d0c4871fe2a559b18e7fa7dcfac7c77fc43e394df818297879"
+      "byteSize": 3444,
+      "sha256": "9ceef46f3f76bedec3c02fe262bf5b6eaaedd3b9cd8c9f1ce1e4c837d7588a3e"
     },
     {
       "path": ".github/workflows/agent-pr-worker.yml",
@@ -307,8 +307,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 5269,
-      "sha256": "42ab980985bf632a56d0d229eda2cafe346f2873f867915b2aea20f1592401f8"
+      "byteSize": 5530,
+      "sha256": "4d2b79af151bf4c06c1e1d26a50e2d8efd537b3345a2bc6490d73bd2934852f1"
     },
     {
       "path": ".github/workflows/ci.yml",
