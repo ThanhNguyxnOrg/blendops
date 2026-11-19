@@ -13,6 +13,8 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const REPOSITORY = 'ThanhNguyxnOrg/blendops';
 const NPM_REGISTRY_URL = 'https://registry.npmjs.org/blendops';
 const SKILLS_SH_URL = 'https://skills.sh/ThanhNguyxnOrg/blendops';
+const NUMERIC_IDENTIFIER_RE = /^(0|[1-9]\d*)$/;
+const ALLOWED_NODE_ENGINES = new Set(['>=20.0.0', '>=22.14.0']);
 
 function readJson(filePath, errors) {
   try {
@@ -21,6 +23,35 @@ function readJson(filePath, errors) {
     errors.push('Cannot read ' + filePath + ': ' + error.message);
     return null;
   }
+}
+
+function compareAscii(left, right) {
+  if (left === right) return 0;
+  return left < right ? -1 : 1;
+}
+
+function comparePrereleaseIdentifiers(left, right) {
+  const leftParts = left.split('.');
+  const rightParts = right.split('.');
+  const len = Math.max(leftParts.length, rightParts.length);
+
+  for (let i = 0; i < len; i += 1) {
+    if (i >= leftParts.length) return -1;
+    if (i >= rightParts.length) return 1;
+    const a = leftParts[i];
+    const b = rightParts[i];
+    if (a === b) continue;
+
+    const aNum = NUMERIC_IDENTIFIER_RE.test(a);
+    const bNum = NUMERIC_IDENTIFIER_RE.test(b);
+    if (aNum && bNum) {
+      const diff = BigInt(a) - BigInt(b);
+      return diff < 0n ? -1 : 1;
+    }
+    if (aNum !== bNum) return aNum ? -1 : 1;
+    return compareAscii(a, b);
+  }
+  return 0;
 }
 
 export function compareVersions(left, right) {
@@ -44,7 +75,7 @@ export function compareVersions(left, right) {
   if (!a.prerelease && !b.prerelease) return 0;
   if (!a.prerelease) return 1;
   if (!b.prerelease) return -1;
-  return a.prerelease.localeCompare(b.prerelease);
+  return comparePrereleaseIdentifiers(a.prerelease, b.prerelease);
 }
 
 function normalizeRepositoryUrl(value) {
@@ -61,8 +92,7 @@ export function manifestDifferences(source, published) {
   for (const field of fields) {
     if (stableJson(source[field]) === stableJson(published[field])) continue;
 
-    // npm registry metadata truncates package descriptions at exactly 255 characters.
-    // Only accept an exact published prefix; all other content changes remain visible as drift.
+    // Historical npm registry metadata (e.g. v1.0.0) truncated descriptions at 255 chars.
     if (
       field === 'description' &&
       typeof source.description === 'string' &&
@@ -91,6 +121,11 @@ export function auditLocalDistributionMetadata(rootDir = ROOT) {
   if (!/^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?$/.test(String(pkg.version || ''))) {
     errors.push('package.json version must be a valid semantic version');
   }
+  if (typeof pkg.description !== 'string' || pkg.description.trim().length === 0) {
+    errors.push('package.json description must be a non-empty string');
+  } else if (pkg.description.length > 255) {
+    errors.push('package.json description must be at most 255 characters so npm registry metadata does not truncate it');
+  }
   if (pkg.private === true) errors.push('package.json must not set private: true');
   if (pkg.publishConfig?.access !== 'public') errors.push("package.json publishConfig.access must be 'public'");
   if (
@@ -106,7 +141,9 @@ export function auditLocalDistributionMetadata(rootDir = ROOT) {
     errors.push('package.json bugs.url does not point to the canonical repository issues');
   }
   if (pkg.license !== 'MIT') errors.push("package.json license must be 'MIT'");
-  if (pkg.engines?.node !== '>=20.0.0') errors.push("package.json engines.node must be '>=20.0.0'");
+  if (!ALLOWED_NODE_ENGINES.has(pkg.engines?.node)) {
+    errors.push("package.json engines.node must be '>=20.0.0' or '>=22.14.0'");
+  }
   if (pkg.bin?.blendops !== 'bin/blendops.mjs') errors.push("package.json bin.blendops must be 'bin/blendops.mjs'");
   if (
     !Array.isArray(pkg.files) ||
@@ -124,6 +161,9 @@ export function auditLocalDistributionMetadata(rootDir = ROOT) {
   }
   if (lock.packages?.['']?.name !== pkg.name || lock.packages?.['']?.version !== pkg.version) {
     errors.push('package-lock.json packages[""] name/version do not match package.json');
+  }
+  if (lock.packages?.['']?.engines?.node !== pkg.engines?.node) {
+    errors.push('package-lock.json packages[""].engines.node must match package.json');
   }
 
   for (const error of skillsValidation.errors) errors.push(error);
@@ -178,6 +218,18 @@ function stripHtml(value) {
 
 function normalizeReadme(value) {
   return String(value || '').replace(/\r\n/g, '\n').trim();
+}
+
+function escapeRegExp(value) {
+  return String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+export function hasSkillsShRoute(html, slug) {
+  const normalizedHtml = String(html || '').toLowerCase();
+  const normalizedSlug = String(slug || '').toLowerCase();
+  if (!normalizedSlug) return false;
+  const pattern = new RegExp(`/${escapeRegExp(normalizedSlug)}(?:["'/?#\\s<]|$)`);
+  return pattern.test(normalizedHtml);
 }
 
 export async function auditLiveDistributionMetadata(rootDir = ROOT, fetchImpl = fetch) {
@@ -251,9 +303,8 @@ export async function auditLiveDistributionMetadata(rootDir = ROOT, fetchImpl = 
   let skillsSh;
   try {
     const html = await fetchText(SKILLS_SH_URL, fetchImpl);
-    const searchable = html.toLowerCase();
     const visibleText = stripHtml(html).toLowerCase();
-    const missingSkills = expectedSkills.filter((slug) => !searchable.includes('/' + String(slug).toLowerCase()));
+    const missingSkills = expectedSkills.filter((slug) => !hasSkillsShRoute(html, slug));
     const missingGroups = groupings
       .map((group) => String(group.title || ''))
       .filter((title) => !visibleText.includes(title.toLowerCase()));

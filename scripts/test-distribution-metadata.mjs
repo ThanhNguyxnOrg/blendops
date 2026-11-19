@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
@@ -8,6 +10,8 @@ import {
   compareVersions,
   buildDistributionReport,
   manifestDifferences,
+  hasSkillsShRoute,
+  auditLiveDistributionMetadata,
 } from './audit-distribution-metadata.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -21,16 +25,67 @@ test('local npm and skills.sh source manifests are internally aligned', () => {
   assert.equal(result.skills.canonicalSkillCount, 48);
 });
 
-test('semantic version comparison distinguishes release order and prereleases', () => {
+test('semantic version comparison follows SemVer 2.0.0 prerelease precedence', () => {
   assert.equal(compareVersions('1.0.1', '1.0.0'), 1);
   assert.equal(compareVersions('1.0.0', '1.0.0'), 0);
   assert.equal(compareVersions('1.0.0', '1.0.1'), -1);
   assert.equal(compareVersions('1.0.0', '1.0.0-beta.1'), 1);
   assert.equal(compareVersions('1.0.0-beta.2', '1.0.0-beta.1'), 1);
+  assert.equal(compareVersions('1.0.0-beta.10', '1.0.0-beta.2'), 1);
+  assert.equal(compareVersions('1.0.0-beta.2', '1.0.0-beta.10'), -1);
+  assert.equal(compareVersions('1.0.0-alpha.beta', '1.0.0-alpha.1'), 1);
+  assert.equal(compareVersions('1.0.0-alpha.1', '1.0.0-alpha'), 1);
   assert.equal(compareVersions('not-semver', '1.0.0'), null);
 });
 
-test('published npm manifest comparison tolerates URL case and npm 255-character description truncation only', () => {
+test('skills.sh route matching enforces slug boundaries and avoids prefix false positives', async () => {
+  const html = '<a href="/ThanhNguyxnOrg/blendops/stage-gates">Stage Gates</a>';
+  assert.equal(hasSkillsShRoute(html, 'stage-gates'), true);
+  assert.equal(hasSkillsShRoute(html, 'stage'), false);
+
+  const tmpRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-dist-audit-'));
+  try {
+    fs.writeFileSync(
+      path.join(tmpRoot, 'package.json'),
+      JSON.stringify({ name: 'blendops', version: '1.0.0' }),
+    );
+    fs.writeFileSync(path.join(tmpRoot, 'README.md'), '# BlendOps\n');
+    fs.writeFileSync(
+      path.join(tmpRoot, 'skills.sh.json'),
+      JSON.stringify({
+        groupings: [
+          {
+            title: 'Stage Gates',
+            skills: ['stage', 'stage-gates'],
+          },
+        ],
+      }),
+    );
+
+    const live = await auditLiveDistributionMetadata(tmpRoot, async (url) => {
+      const parsed = new URL(String(url));
+      if (parsed.hostname === 'registry.npmjs.org') {
+        return {
+          ok: true,
+          text: async () => JSON.stringify({
+            'dist-tags': { latest: '1.0.0' },
+            versions: { '1.0.0': { name: 'blendops', version: '1.0.0' } },
+          }),
+        };
+      }
+      return {
+        ok: true,
+        text: async () => '<a href="/ThanhNguyxnOrg/blendops/stage-gates">Stage Gates</a>',
+      };
+    });
+    assert.deepEqual(live.skillsSh.missingGroupedSkills, ['stage']);
+    assert.equal(live.skillsSh.missingGroupedSkills.includes('stage-gates'), false);
+  } finally {
+    fs.rmSync(tmpRoot, { recursive: true, force: true });
+  }
+});
+
+test('published npm manifest comparison tolerates URL case and historical 255-character truncation only', () => {
   const fullDescription = 'x'.repeat(280);
   const published = {
     name: 'blendops',
