@@ -293,7 +293,7 @@
       "generatorScript": null,
       "safeToMoveOrRemove": false,
       "byteSize": 3444,
-      "sha256": "9ceef46f3f76bedec3c02fe262bf5b6eaaedd3b9cd8c9f1ce1e4c837d7588a3e"
+      "sha256": "30622d9187d68ad820cc7512a4b8acd46d3235317558ac0eb8fc001b66560b76"
     },
     {
       "path": ".github/workflows/agent-pr-worker.yml",
@@ -308,7 +308,7 @@
       "generatorScript": null,
       "safeToMoveOrRemove": false,
       "byteSize": 5530,
-      "sha256": "4d2b79af151bf4c06c1e1d26a50e2d8efd537b3345a2bc6490d73bd2934852f1"
+      "sha256": "9092ea9931c150d5c5f004175d0e18b38488e247be9be00815106fa60a9b5691"
     },
     {
       "path": ".github/workflows/ci.yml",
@@ -472,8 +472,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 17604,
-      "sha256": "8a93db40c4e129b19d8833efff77ed3190cb3300638c1c2a377d1884c86620e8"
+      "byteSize": 17636,
+      "sha256": "c15e978f03c1fb4ab8d1e6b6189b9e3a135821e3dd49a99eaede23be56a8d29a"
     },
     {
       "path": "SECURITY.md",
@@ -4942,8 +4942,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 4533,
-      "sha256": "9574c39a75c9c608409c8ded1480d6c72bc5012af0834b8ba75010af2b64e0b7"
+      "byteSize": 4905,
+      "sha256": "40c639294c6c8c73e70e8fae666c95df1d68b6e3d599cee72c7cf6adc35af742"
     },
     {
       "path": "packs/README.md",
@@ -5377,8 +5377,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 14908,
-      "sha256": "94f7172bf8a6000336057406dcec7800232637b5ebd4134b588fb0c2cebf2e60"
+      "byteSize": 16619,
+      "sha256": "051888ab7113772442f87d2e85e7db83e88425265cba59710f4e7b49cbe1c3d4"
     },
     {
       "path": "scripts/build-knowledge-catalog.mjs",
@@ -5692,8 +5692,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 2609,
-      "sha256": "f7b22aebb65287a94bcde471a48a4c7a94c4438a6d2febbc8f28dd1aad77b4bf"
+      "byteSize": 4620,
+      "sha256": "721ef195902d7e9490f9e6009f0d05386823b312fdf82d70f624000722dcc2b9"
     },
     {
       "path": "scripts/test-eval-coverage.mjs",
