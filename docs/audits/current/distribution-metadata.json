@@ -86,7 +86,10 @@
       "publishedVersionGitHead": "59e0d2c0738e52323fde0ca2d69524dd91d2e4ea",
       "latestTarball": "https://registry.npmjs.org/blendops/-/blendops-1.0.0.tgz",
       "latestFileCount": 484,
-      "manifestDiffs": [],
+      "manifestDiffs": [
+        "description",
+        "keywords"
+      ],
       "publishedReadmeMatchesRepository": false,
       "readmeStatus": "repository-readme-changed-since-published-version",
       "historicalStagePlaceholderPresent": true,
