@@ -4942,8 +4942,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 4905,
-      "sha256": "40c639294c6c8c73e70e8fae666c95df1d68b6e3d599cee72c7cf6adc35af742"
+      "byteSize": 4486,
+      "sha256": "21fe0a3b5e7b8f909370c005159947cbb3f7d3841823d5607421fc9247563be2"
     },
     {
       "path": "packs/README.md",
