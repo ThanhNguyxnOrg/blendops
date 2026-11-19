@@ -472,8 +472,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 17636,
-      "sha256": "c15e978f03c1fb4ab8d1e6b6189b9e3a135821e3dd49a99eaede23be56a8d29a"
+      "byteSize": 17604,
+      "sha256": "8a93db40c4e129b19d8833efff77ed3190cb3300638c1c2a377d1884c86620e8"
     },
     {
       "path": "SECURITY.md",
