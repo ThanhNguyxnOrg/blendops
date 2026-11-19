@@ -10,6 +10,8 @@
 
 **AI-native Blender workflow specs for people who do not know Blender.**
 
+> Testing Devin Bots with Poke
+
 [![License: MIT](https://img.shields.io/badge/license-MIT-2ea44f.svg?style=flat-square)](./LICENSE)
 [![npm version](https://img.shields.io/npm/v/blendops.svg?style=flat-square)](https://www.npmjs.com/package/blendops)
 [![Status: v1.0.0](https://img.shields.io/badge/status-v1.0.0-2ea44f.svg?style=flat-square)](./docs/release-readiness.md)
