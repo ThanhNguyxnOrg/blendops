@@ -60,3 +60,11 @@ Skills-layer review hardening + runtime consistency.
 
 ## [v0.1.0-draft]
 - 16 baseline skills.
+
+## [1.0.1] - 2026-11-20
+
+### Bug Fixes and Performance
+
+- SemVer 2.0 prerelease order, exact skills.sh matching, <=255 description, and CodeQL-clean tests ([12a7a12](https://github.com/ThanhNguyxnOrg/blendops/commit/12a7a1257d740441d2e212df5f482e7819d0abab))
+- restore original scripts, files, and keywords while keeping <=255 char description ([9cc3de8](https://github.com/ThanhNguyxnOrg/blendops/commit/9cc3de808a567b99d4d6420bf5b8ce1ae5042266))
+
