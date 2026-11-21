@@ -4,30 +4,51 @@ on:
   push:
     tags:
       - "v*"
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: Existing release tag to retry (for example, v1.1.0)
+        required: true
+        type: string
 
 permissions:
   contents: read
 
 concurrency:
-  group: blendops-npm-publish-${{ github.ref }}
+  group: blendops-npm-publish-${{ inputs.release_tag || github.ref_name }}
   cancel-in-progress: false
 
 jobs:
   publish:
     # v1.0.0 is the one-time bootstrap release; publish it manually after
     # npm package creation and Trusted Publisher setup. Later releases use OIDC.
-    if: startsWith(github.ref_name, 'v') && github.ref_name != 'v1.0.0'
-    name: Publish ${{ github.ref_name }} to npm
+    if: >-
+      (github.event_name == 'push' && github.ref_name != 'v1.0.0') ||
+      (github.event_name == 'workflow_dispatch' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch))
+    name: Publish ${{ inputs.release_tag || github.ref_name }} to npm
     runs-on: ubuntu-latest
     timeout-minutes: 30
     permissions:
       contents: read
       id-token: write
     steps:
+      - name: Select the release tag
+        id: release
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          RELEASE_TAG: ${{ inputs.release_tag || github.ref_name }}
+        run: |
+          if [[ "$EVENT_NAME" == workflow_dispatch ]] &&
+            { [[ ! "$RELEASE_TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]] || [[ "$RELEASE_TAG" == v1.0.0 ]]; }; then
+            echo "::error::Choose an existing stable release tag after v1.0.0."
+            exit 1
+          fi
+          echo "tag=$RELEASE_TAG" >> "$GITHUB_OUTPUT"
+
       - name: Checkout the exact release tag
         uses: actions/checkout@v7
         with:
-          ref: ${{ github.ref }}
+          ref: refs/tags/${{ steps.release.outputs.tag }}
           fetch-depth: 0
 
       - name: Set up Node.js and npm registry
@@ -47,7 +68,7 @@ jobs:
       - name: Validate package identity and release version
         shell: bash
         env:
-          RELEASE_TAG: ${{ github.ref_name }}
+          RELEASE_TAG: ${{ steps.release.outputs.tag }}
         run: |
           node --input-type=module <<'NODE'
           import fs from 'node:fs';
@@ -72,7 +93,10 @@ jobs:
         run: npm ci
 
       - name: Run full release verification
-        run: npm run ci
+        run: |
+          npm run arch:build
+          npm run audit:sync-digest
+          npm run ci
 
       - name: Publish with npm Trusted Publishing (OIDC)
         run: npm publish --access public
