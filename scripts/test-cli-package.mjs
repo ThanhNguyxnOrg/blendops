@@ -473,6 +473,19 @@ describe('Distributable CLI & Package Readiness', () => {
     assert.match(repoScriptHelp, /blendops install/);
   });
 
+  test('catalog-validate resolves catalog references from the installed tarball', () => {
+    const result = JSON.parse(runInstalledCli(['catalog-validate', '--json']));
+    assert.equal(result.valid, true);
+    assert.ok(result.counts.knowledge_records > 0);
+  });
+
+  test('catalog-eval runs the retrieval suite from the installed tarball', () => {
+    const result = JSON.parse(runInstalledCli(['catalog-eval', '--json']));
+    assert.equal(result.passed, true);
+    assert.ok(result.total > 0);
+    assert.equal(result.passed_count, result.total);
+  });
+
   test('Scenario D: Doctor mode from installed tarball inspects package health, target markers, manifests, and journals with zero target mutations', () => {
     const docBase = path.join(suiteTmpDir, 'scenario-d');
     const cleanProj = path.join(docBase, 'clean-proj');
