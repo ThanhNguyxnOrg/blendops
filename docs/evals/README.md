@@ -16,7 +16,7 @@ BlendOps evals are evidence records for laws, skills, workflows, recipes, and pa
 | Runtime cyberpunk shoe eval | Blocked | Not Run |
 | Path 1 read-only smoke (likely Anthropic Connector host) | Pass | Available / Read-only session access |
 | Path 2 (`mcp-for-blender` (formerly `blender-mcp`)) | User-reported verified (operator statement, does not promote eval scope) | No formal evidence file yet; template at [`path-2-mcp-for-blender-readonly-template.md`](./path-2-mcp-for-blender-readonly-template.md) |
-| CLI fallback | Not Run | Documented upstream as a first-class Blender CLI surface; no in-repo evidence file yet |
+| CLI fallback | Verified (scoped structural GLB check) | [Mech-prop eval, 2026-11-21](./cli-fallback-recipe-2026-11-21.md): checkpoint, rollback, GLB inspection; visual quality and full recipe compliance not verified |
 | Adapter install dry-run | Warn | Executed / Dry-run |
 | Adapter empirical verification (`F-08`) | Warn (2 Pass repo-local, 24 Blocked host-absent) | Executed / Host discovery + disposable `/tmp` fixture verification |
 | Manual install beta v0 | Warn | Executed / Dry-run / No runtime / No global config writes |
@@ -59,6 +59,7 @@ BlendOps evals are evidence records for laws, skills, workflows, recipes, and pa
 | [cyberpunk-shoe-hero-v0-runtime-eval.md](./cyberpunk-shoe-hero-v0-runtime-eval.md) | Not Run | No runtime evidence | Runtime eval result record is blocked in current environment. |
 | [blender-connector-read-only-smoke-test.md](./blender-connector-read-only-smoke-test.md) | Pass / Available (Path 1 read-only, likely Anthropic Connector host) | Read-only smoke evidence | Lab MCP tool surface (`get_blendfile_summary_*`, `get_objects_summary`) returned `status: ok` (attribution: consistent with Lab MCP; `path_info` attested only by this smoke test). No mutation, render, export, or artifacts. |
 | [path-2-mcp-for-blender-readonly-template.md](./path-2-mcp-for-blender-readonly-template.md) | Template only / Not Yet Run | Fill-in template | Use this template to record Path 2 read-only smoke evidence when running `mcp-for-blender` (formerly `blender-mcp`). |
+| [cli-fallback-recipe-2026-11-21.md](./cli-fallback-recipe-2026-11-21.md) | Verified (structural inspection only) | Executed / Runtime | Upstream Blender CLI mech-prop export, checkpoint and rollback; explicit recipe limitations remain. |
 | [adapter-install-v0-dry-run.md](./adapter-install-v0-dry-run.md) | Warn | Dry-run install evidence | Adapter install evaluation report. |
 | [adapter-empirical-verification.md](./adapter-empirical-verification.md) | Warn (2 Pass repo-local, 24 Blocked) | Host discovery + disposable `/tmp` fixture evidence | Empirical host verification across all 26 install targets (`F-08`). |
 | [manual-install-beta-v0.md](./manual-install-beta-v0.md) | Warn | Dry-run fixture evidence | Manual install beta dry-run summary. |
