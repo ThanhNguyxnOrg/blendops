@@ -531,13 +531,18 @@ describe('Repository Architecture, Organization & Finalization', () => {
       assert.ok(packedFiles.has(requiredFile), `Expected ${requiredFile} in npm pack tarball`);
     }
 
+    assert.deepEqual(
+      [...packedFiles].filter((p) => p.startsWith('evals/')),
+      ['evals/catalog-retrieval-evals.json'],
+      'Only the retrieval suite used by catalog-eval belongs in the consumer tarball',
+    );
+
     // Repo-only test suites, audits, and web preview files must NOT leak into the consumer tarball
     for (const forbiddenPrefix of [
       'scripts/test-',
       'scripts/validate-repository-architecture.mjs',
       'scripts/generate-current-audit.mjs',
       'docs/audits/',
-      'evals/',
       'src/',
       '.github/',
     ]) {
