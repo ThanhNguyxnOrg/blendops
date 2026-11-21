@@ -25,6 +25,7 @@ if (script.endsWith('recipe.py')) {
   if (fs.readFileSync(path.join(dir, 'checkpoint.blend'), 'utf8') !== ${JSON.stringify(baseline)}) process.exit(3);
   fs.writeFileSync(blend, 'MUTATED');
   if (${JSON.stringify(mode)} === 'failure') process.exit(7);
+  if (${JSON.stringify(mode)} === 'delete-scene') { fs.rmSync(blend); process.exit(7); }
   if (${JSON.stringify(mode)} === 'missing-glb') process.exit(0);
   if (${JSON.stringify(mode)} === 'empty-glb') { fs.writeFileSync(path.join(dir, 'actuator.glb'), ''); process.exit(0); }
   fs.writeFileSync(path.join(dir, 'actuator.glb'), ${JSON.stringify(mode)} === 'bad-glb' ? Buffer.from('broken') : Buffer.from(${JSON.stringify(glb)}, 'base64'));
@@ -75,3 +76,10 @@ for (const mode of ['empty-glb', 'missing-glb']) {
     assert.equal(fs.existsSync(result.glbPath), false);
   });
 }
+
+test('rollback restores the checkpoint when the failed recipe deleted the scene file', (t) => {
+  const result = runCliFallbackEval(fixture(t, 'delete-scene'));
+  assert.equal(result.ok, false);
+  assert.equal(result.rollback.verified, true, result.rollback.error);
+  assert.deepEqual(fs.readFileSync(result.blendPath), fs.readFileSync(result.checkpointPath));
+});

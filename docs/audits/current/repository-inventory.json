@@ -5617,8 +5617,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 299264,
-      "sha256": "5b930c3443ed489ba8474862978af8d64b914b4623b170ff67f234c72b4933c1"
+      "byteSize": 299583,
+      "sha256": "0e887dd02dfe7d0ea58db280649d54b370bcbc54c075d48b63f1c84cd621b216"
     },
     {
       "path": "scripts/sync-current-audit-digest.mjs",
@@ -5797,8 +5797,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 3925,
-      "sha256": "6ddf9e43f22b7c75d80f3ffbef49ebc2693492f4fc79868e985136d77ef1920b"
+      "byteSize": 4380,
+      "sha256": "f2f4143635c2eabfb1a3207757cf30ab1e4c7ab8f87219d87c84a51898195f8b"
     },
     {
       "path": "scripts/test-mcp-client-skills-sh.mjs",

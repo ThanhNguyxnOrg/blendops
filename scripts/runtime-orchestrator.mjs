@@ -69,6 +69,7 @@ export function runCliFallbackEval({ sceneSpecPath, recipePath, workDir, blender
     commands.push({ executable: blender, args, status: result.status, stdout: result.stdout, stderr: result.stderr });
     if (result.error || result.status !== 0) throw new Error(`${name} failed: ${result.error?.message || result.stderr || result.stdout}`);
   };
+  const isSymlink = (file) => { try { return fs.lstatSync(file).isSymbolicLink(); } catch { return false; } };
   const hash = (file) => crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex');
   const summaryPath = path.join(dir, 'baseline.json');
   const summaryExpression = "sorted((o.name, o.type) for o in bpy.data.objects)";
@@ -89,10 +90,13 @@ export function runCliFallbackEval({ sceneSpecPath, recipePath, workDir, blender
   } catch (error) {
     report.error = error.message;
     try {
-      const safeRestore = validateSafeBlendCheckpointPaths(blendPath, checkpointPath);
+      const sceneMissing = !fs.existsSync(blendPath) && !isSymlink(blendPath);
+      const safeRestore = sceneMissing
+        ? validateSafeBlendCheckpointPaths(checkpointPath)
+        : validateSafeBlendCheckpointPaths(blendPath, checkpointPath);
       if (!safeRestore.valid) throw new Error(safeRestore.reason);
       if (hash(checkpointPath) !== checkpointSha256) throw new Error('Checkpoint changed after mutation');
-      fs.copyFileSync(checkpointPath, blendPath);
+      fs.copyFileSync(checkpointPath, blendPath, sceneMissing ? fs.constants.COPYFILE_EXCL : 0);
       if (hash(blendPath) !== checkpointSha256) throw new Error('Restored digest mismatch');
       run('readback', `import bpy, json\nbpy.ops.wm.open_mainfile(filepath=${JSON.stringify(blendPath)})\nassert json.loads(json.dumps(${summaryExpression})) == json.load(open(${JSON.stringify(summaryPath)}))\n`);
       report.rollback = { verified: true, sha256: hash(blendPath) };
