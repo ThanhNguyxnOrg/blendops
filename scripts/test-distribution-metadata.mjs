@@ -18,9 +18,10 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
 test('local npm and skills.sh source manifests are internally aligned', () => {
   const result = auditLocalDistributionMetadata(root);
+  const packageJson = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8'));
   assert.equal(result.valid, true, result.errors.join('\n'));
   assert.equal(result.package.name, 'blendops');
-  assert.equal(result.package.version, '1.0.0');
+  assert.equal(result.package.version, packageJson.version);
   assert.equal(result.skills.groupCount, 8);
   assert.equal(result.skills.canonicalSkillCount, 48);
 });
