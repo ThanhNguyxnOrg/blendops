@@ -122,7 +122,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const DEFAULT_REPO_ROOT = path.resolve(__dirname, '..');
 
-export const INSTALLER_VERSION = '1.0.0';
+export const INSTALLER_VERSION = '1.0.1';
 export const MANAGED_SECTION_START = '<!-- blendops:installer:start -->';
 export const MANAGED_SECTION_END = '<!-- blendops:installer:end -->';
 
