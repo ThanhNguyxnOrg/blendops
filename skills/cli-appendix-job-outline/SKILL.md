@@ -85,7 +85,7 @@ Limitations: Stateless execution, no interactive viewport
 
 ## Official runtime boundary
 
-Planning outline only — BlendOps never executes Blender and never presents arbitrary Python as the product surface. This CLI workflow is an **appendix only**, never a peer path without an eval record, and BlendOps has **no in-repo CLI evidence file yet**. Point users to the upstream Blender manual for exact CLI flags.
+Planning outline only — BlendOps never executes Blender and never presents arbitrary Python as the product surface. This CLI workflow is an **appendix only**, not a peer MCP path; see the [scoped mech-prop CLI eval](https://github.com/ThanhNguyxnOrg/blendops/blob/main/docs/evals/cli-fallback-recipe-2026-11-21.md). Point users to the upstream Blender manual for exact CLI flags.
 
 ## Operating procedure
 
@@ -133,7 +133,7 @@ Did the operator already run the CLI job and produce logs or files?
 ### Playbook C: Restricted IT environment where MCP ports are blocked
 
 - Acknowledge the policy blocker on a separate `Blockers:` line when MCP bridges (port `9876`) are disallowed.
-- Frame the `blender --background` workflow strictly as the **CLI fallback appendix** (documented upstream as a first-class Blender CLI surface, with no in-repo BlendOps eval record yet).
+- Frame the `blender --background` workflow strictly as the **CLI fallback appendix** (documented upstream as a first-class Blender CLI surface; see the [scoped mech-prop CLI eval](https://github.com/ThanhNguyxnOrg/blendops/blob/main/docs/evals/cli-fallback-recipe-2026-11-21.md)).
 - Provide the phased job outline and logging hooks without pasting executable Python scripts.
 
 ## Mode handling
@@ -172,7 +172,7 @@ Outline the intended phased job structure and record blockers on a separate line
 - If the user asks for a copy-paste Python script or raw `bpy` batch code, refuse the code dump per `laws/no-arbitrary-python-interface.md` and provide a plain-language phased job outline plus upstream manual pointers instead.
 - If the user wants live interactive viewport adjustments through the CLI appendix, stop and route back to `runtime-path-picker` or `path-one-host-outline`.
 - If a prior CLI run failed silently (for example, flags placed after the scene filename were ignored before load), keep `Runtime status: Failed` (or `Attempted`), keep `Artifact status: Not Produced`, and route the log capture to `runtime-attempt-report`.
-- Never promote the CLI fallback appendix to a peer MCP runtime path when no in-repo CLI evaluation record exists under `docs/evals/`.
+- Never promote the CLI fallback appendix to a peer MCP runtime path based on the [scoped mech-prop CLI eval](https://github.com/ThanhNguyxnOrg/blendops/blob/main/docs/evals/cli-fallback-recipe-2026-11-21.md) or a new CLI-only record.
 
 ## Troubleshooting
 
@@ -184,7 +184,7 @@ Outline the intended phased job structure and record blockers on a separate line
 
 ## Best practices
 
-- Always label `blender --background` workflows as the **CLI fallback appendix** — documented upstream as a first-class Blender CLI surface, while noting BlendOps has **no in-repo CLI evidence file yet**.
+- Always label `blender --background` workflows as the **CLI fallback appendix** — documented upstream as a first-class Blender CLI surface; see the [scoped mech-prop CLI eval](https://github.com/ThanhNguyxnOrg/blendops/blob/main/docs/evals/cli-fallback-recipe-2026-11-21.md).
 - Express job steps as phased operational checkpoints (`Startup → Load → Process → Save & Verify`) rather than raw shell one-liners or Python code blocks.
 - Remind operators that argument order in Blender's CLI is positional and must be verified against the exact Blender manual version running on the host.
 - Pair every CLI outline with explicit stdout/stderr log paths and output file checks consumed by `render-export-evidence`.
@@ -203,7 +203,7 @@ Outline the intended phased job structure and record blockers on a separate line
 ## User-facing response template
 
 ```txt
-Job classification: <Batch still render | Batch GLB export | Scripted scene prep | Hygiene pass> (CLI fallback appendix — not a peer MCP path; no in-repo BlendOps CLI evidence file yet)
+Job classification: <Batch still render | Batch GLB export | Scripted scene prep | Hygiene pass> (CLI fallback appendix — not a peer MCP path)
 Upstream reference: Verify exact positional flags in the official Blender Command Line Manual for your Blender version.
 
 Phased job outline:

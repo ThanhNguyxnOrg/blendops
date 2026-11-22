@@ -332,12 +332,12 @@
         "existingArtifactEvidence": "file-only-unvalidated"
       },
       "expectedBehavior": [
-        "Labels evidence as CLI fallback (appendix) with explicit note that no in-repo evidence file yet exists (Blender CLI itself is upstream-documented)",
+        "Labels evidence as upstream-documented CLI fallback (appendix) and distinguishes the scoped mech-prop CLI eval from the current run",
         "Classifies unvalidated output file as Produced (not Verified) and routes to pre-handoff-verification"
       ],
       "requiredOutputProperties": [
         "CLI fallback (appendix)",
-        "no in-repo evidence file yet",
+        "scoped mech-prop CLI eval",
         "upstream-documented"
       ],
       "forbiddenOutputProperties": [
@@ -352,20 +352,21 @@
       "evaluationType": "deterministic_fixture",
       "severity": "P1",
       "evidenceRequirements": [
-        "CLI fallback appendix label + no in-repo evidence file yet note"
+        "CLI fallback appendix label, scoped example citation, and separate evidence for the current run"
       ],
       "deterministicFixture": {
         "simulatedOutput": {
           "mode": "Text-only artifact evidence classification",
-          "recommendedNextAction": "Label output as CLI fallback (appendix) with no in-repo evidence file yet note and route to pre-handoff-verification.",
+          "recommendedNextAction": "Label output as CLI fallback (appendix) and route to pre-handoff-verification. Capture the exact command and exit code for this run.",
           "targetHandoff": "pre-handoff-verification",
           "runtimeStatus": "Produced",
           "artifactStatus": "Produced",
-          "summary": "Classified background CLI run as CLI fallback (appendix) — upstream-documented Blender CLI, no in-repo evidence file yet.",
+          "summary": "Classified background CLI run as CLI fallback (appendix) — upstream-documented Blender CLI. The scoped mech-prop CLI eval does not verify this output.",
           "warnings": [],
           "evidenceCitations": [
             "docs/runtime-stack-strategy.md",
-            "skills/render-export-evidence/EVAL.md"
+            "skills/render-export-evidence/EVAL.md",
+            "docs/evals/cli-fallback-recipe-2026-11-21.md"
           ]
         }
       }

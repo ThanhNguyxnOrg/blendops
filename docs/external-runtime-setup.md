@@ -17,7 +17,7 @@ Active runtime guidance uses the **2-path + CLI appendix** model in [Runtime sta
 |---|---|---|
 | **Path 1** Official Blender Lab MCP (Lab add-on + Lab server, hosted from Anthropic Connector OR manual MCP client) | **5.1+** | The Lab page's install link carries `blender_version_min=5.1.0` and the add-on manifest declares the same literal (both re-verified 2026-10-13). Anthropic's tutorial says "Blender 4.2 or later" but the add-on it tells you to install requires 5.1+, so **5.1+ is the binding floor**. |
 | **Path 2** Community `mcp-for-blender` | **3.0+** | Upstream targets stable `bpy` ([github.com/ahujasid/mcp-for-blender](https://github.com/ahujasid/mcp-for-blender)). |
-| **CLI fallback (appendix)** | 4.2+ recommended | [Blender CLI docs](https://docs.blender.org/manual/en/latest/advanced/command_line/index.html). **Documented upstream** as a first-class Blender CLI surface; no in-repo evidence file yet. |
+| **CLI fallback (appendix)** | 4.2+ recommended | [Blender CLI docs](https://docs.blender.org/manual/en/latest/advanced/command_line/index.html). **Documented upstream** as a first-class Blender CLI surface; see the [scoped mech-prop CLI eval](./evals/cli-fallback-recipe-2026-11-21.md). |
 
 > [!WARNING]
 > The **Anthropic Connector path is not a separate "Blender 4.2+ enough" route.** Anthropic's tutorial step 2 explicitly tells you to install the Blender Lab MCP add-on inside Blender. That add-on requires **Blender 5.1+**. So anyone using Anthropic Connector to drive Blender via MCP is also on Path 1 and bound by the 5.1+ floor.
@@ -101,7 +101,7 @@ See [`unofficial-runtime-bridges.md`](./unofficial-runtime-bridges.md). Third-pa
 
 Direct `blender --background`, `--python`, render flags. Source: [Blender CLI docs](https://docs.blender.org/manual/en/latest/advanced/command_line/index.html).
 
-**Maturity note:** Blender's CLI is an upstream-documented surface (render/Cycles/format/Python sections read in the current Blender 5.2 LTS Manual) — stability beyond the current LTS is not asserted. The `--background`, `--python`, `--render-output`, `--render-frame`, `--factory-startup` flags are documented in the current Manual. **BlendOps simply has no in-repo evidence file yet** capturing a per-recipe CLI-fallback eval. Operators who use shell `blender` should still record the exact command, inputs, output paths, exit code, and validation evidence per `docs/evals/official-runtime-verification-criteria.md` before any artifact claim — for **provenance**, not because the CLI itself is unstable.
+**Maturity note:** Blender's CLI is an upstream-documented surface (render/Cycles/format/Python sections read in the current Blender 5.2 LTS Manual) — stability beyond the current LTS is not asserted. The `--background`, `--python`, `--render-output`, `--render-frame`, `--factory-startup` flags are documented in the current Manual. The [scoped mech-prop CLI eval](./evals/cli-fallback-recipe-2026-11-21.md) covers one headless Blender run, not the current job. Operators who use shell `blender` should still record the exact command, inputs, output paths, exit code, and validation evidence per `docs/evals/official-runtime-verification-criteria.md` before any artifact claim — for **provenance**, not because the CLI itself is unstable.
 
 **Evidence:** `Not Run` / `Not Produced` until a future eval record exists.
 

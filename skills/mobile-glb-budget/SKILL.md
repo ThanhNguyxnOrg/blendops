@@ -95,7 +95,7 @@ BlendOps runtime guidance uses **2 MCP execution paths plus a CLI fallback appen
 
 1. **Path 1 — Official Blender Lab MCP** (Lab add-on + Lab server in Blender 5.1+, hosted from Anthropic Connector or any other MCP client manually).
 2. **Path 2 — Community `mcp-for-blender` (formerly `blender-mcp`)** (Blender 3.0+, third-party prior art).
-3. **CLI fallback (appendix)** — `blender --background --python ...`. **Documented upstream** as a first-class Blender CLI surface; no in-repo evidence file yet.
+3. **CLI fallback (appendix)** — `blender --background --python ...`. **Documented upstream** as a first-class Blender CLI surface; see the [scoped mech-prop CLI eval](https://github.com/ThanhNguyxnOrg/blendops/blob/main/docs/evals/cli-fallback-recipe-2026-11-21.md).
 
 This skill is a **planning** skill. It sets numeric budgets but never installs Blender, runs Blender, or claims that an exported GLB satisfies the budget without measured evidence.
 

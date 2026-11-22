@@ -3202,7 +3202,7 @@
         {
           "path": "skills/runtime-path-picker/references/decision-tree.md",
           "title": "Decision Tree — Choosing a Blender Execution Path",
-          "line_count": 30,
+          "line_count": 32,
           "classification": "workflow_or_pack_governance",
           "classification_method": "rule_based_governance_and_recipe_mapping",
           "review_status": "rule_classified_governance_or_recipe",
@@ -5144,7 +5144,7 @@
     {
       "path": "skills/runtime-path-picker/references/decision-tree.md",
       "title": "Decision Tree — Choosing a Blender Execution Path",
-      "line_count": 30,
+      "line_count": 32,
       "classification": "workflow_or_pack_governance",
       "classification_method": "rule_based_governance_and_recipe_mapping",
       "review_status": "rule_classified_governance_or_recipe",

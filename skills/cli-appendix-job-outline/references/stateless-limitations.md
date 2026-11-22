@@ -1,6 +1,6 @@
 # Stateless CLI Limitations & Verification Caveats
 
-The `blender --background` CLI fallback is documented upstream as a **first-class Blender CLI surface** (currently carrying `Not Run` in-repo eval evidence in BlendOps). Operators using stateless batch jobs must account for these structural constraints:
+The `blender --background` CLI fallback is documented upstream as a **first-class Blender CLI surface** (see the [scoped mech-prop CLI eval](https://github.com/ThanhNguyxnOrg/blendops/blob/main/docs/evals/cli-fallback-recipe-2026-11-21.md) for one recorded run). Operators using stateless batch jobs must account for these structural constraints:
 
 1. **No mid-run conversational refinement**: A headless invocation executes its planned DAG once and exits. Visual lookdev tuning requires inspecting staged PNG/GLB outputs and running a bounded follow-up revision pass.
 2. **UI & viewport operators fail without active GUI context**: Any script relying on `bpy.context.area`, viewport shading overrides, or interactive selection breaks under `-b` unless rewritten around headless `render(write_still=True)` or explicit data APIs (`bpy.data`).

@@ -37,7 +37,7 @@ Metadata: Contract `v1.0.0` | Category `runtime-and-execution` | Role `headless-
 - [progression] Runtime attempt reporting → `runtime-attempt-report` (`references/skill-runtime-attempt-report.md`) — `when.all: [runtime.status in ["Attempted","Produced","Verified","Failed"]; request.topic equals "attempt_report"]`
 
 ## Safety boundaries & non-goals
-- Runtime boundary: Planning outline only — BlendOps never executes Blender and never presents arbitrary Python as the product surface. This CLI workflow is an **appendix only**, never a peer path without an eval record, and BlendOps has **no in-repo CLI evidence file yet**. Point users to the upstream Blender manual for exact CLI flags.
+- Runtime boundary: Planning outline only — BlendOps never executes Blender and never presents arbitrary Python as the product surface. This CLI workflow is an **appendix only**, not a peer MCP path; see the [scoped mech-prop CLI eval](https://github.com/ThanhNguyxnOrg/blendops/blob/main/docs/evals/cli-fallback-recipe-2026-11-21.md). Point users to the upstream Blender manual for exact CLI flags.
 - Generating or debugging user-facing Python (`bpy`) scripts.
 - Executing `blender --background` jobs or inspecting output files directly.
 - Selecting between MCP Path 1, Path 2, and CLI (owned by `runtime-path-picker`).

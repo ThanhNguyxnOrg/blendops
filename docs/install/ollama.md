@@ -60,7 +60,7 @@ Skill install != runtime setup.
 For Blender runtime via Ollama as MCP host:
 - **Path 1 (Lab MCP)** — Blender 5.1+ + Lab MCP add-on installed in Blender + MCP server reachable from Ollama's MCP config. Anthropic Connector toggle is Claude Desktop only; not applicable here.
 - **Path 2 (community `mcp-for-blender` (formerly `blender-mcp`))** — Blender 3.0+ + `addon.py` + `uvx mcp-for-blender` registered in Ollama's MCP config.
-- **CLI fallback (appendix)** — Ollama can also drive Blender via shell. The Blender CLI is **documented upstream** as a first-class Blender CLI surface; no in-repo evidence file yet.
+- **CLI fallback (appendix)** — Ollama can also drive Blender via shell. The Blender CLI is **documented upstream** as a first-class Blender CLI surface; see the [scoped mech-prop CLI eval](../evals/cli-fallback-recipe-2026-11-21.md).
 
 See [`docs/runtime-stack-strategy.md`](../runtime-stack-strategy.md) for the canonical 2-path + CLI appendix model.
 

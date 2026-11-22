@@ -12,7 +12,7 @@ Date: 2026-04-29 (original); legacy 3-stack labels mapped to 2-path + CLI append
 > | Legacy label | New mapping |
 > |---|---|
 > | Stack 1 — Claude Desktop official connector stack | **Path 1** (Official Blender Lab MCP), with **host option (a)** Anthropic Blender Connector. Lab add-on inside Blender is required either way; **Blender 5.1+** is the binding floor. |
-> | Stack 2 — Official Blender CLI fallback | **CLI fallback (appendix)**. Direct `blender --background --python`. **Documented upstream** as a first-class Blender CLI surface; no in-repo evidence file yet. |
+> | Stack 2 — Official Blender CLI fallback | **CLI fallback (appendix)**. Direct `blender --background --python`. **Documented upstream** as a first-class Blender CLI surface; see the [scoped mech-prop CLI eval](./cli-fallback-recipe-2026-11-21.md). |
 > | Stack 3 — Optional unofficial third-party bridge stack | **Path 2** (Community `mcp-for-blender`, mature third-party, Blender 3.0+). |
 >
 > Verification criteria below apply per path. Any verification record produced under these criteria must name the path explicitly (and Path 1 host option a/b when relevant) and record `blender --version`, Blender-side add-on identity, MCP server source/commit, MCP host product, and exact tool names.
@@ -27,9 +27,9 @@ This document defines the minimum criteria for the **2-path + CLI appendix** mod
 
 1. **Path 1 — Official Blender Lab MCP** (Lab MCP add-on + Lab MCP server installed in Blender 5.1+, hosted from either (a) Anthropic Blender Connector in Claude Desktop, or (b) any other MCP client configured manually). Anthropic Connector is **not** standalone — Lab add-on inside Blender is required either way.
 2. **Path 2 — Community `mcp-for-blender`** (different add-on/server, mature third-party, Blender 3.0+).
-3. **CLI fallback (appendix)** — direct `blender --background --python`. **Documented upstream** as a first-class Blender CLI surface; no in-repo evidence file yet.
+3. **CLI fallback (appendix)** — direct `blender --background --python`. **Documented upstream** as a first-class Blender CLI surface; see the [scoped mech-prop CLI eval](./cli-fallback-recipe-2026-11-21.md).
 
-Path 1 + Path 2 are user-reported verified by repo owner (Path 1: 2026-04-29 read-only smoke + 2026-05-09 reconfirmation; Path 2: 2026-05-08 statement, reconfirmed 2026-05-09). Mutation/render/export `Not Run` for both — no formal in-repo evidence file yet. CLI fallback is appendix only and not a peer of Path 1/2 — documented upstream as first-class Blender CLI surface; no in-repo evidence file yet.
+Path 1 + Path 2 are user-reported verified by repo owner (Path 1: 2026-04-29 read-only smoke + 2026-05-09 reconfirmation; Path 2: 2026-05-08 statement, reconfirmed 2026-05-09). Mutation/render/export `Not Run` for both — no formal in-repo evidence file yet. CLI fallback is appendix only and not a peer of Path 1/2 — documented upstream as first-class Blender CLI surface; see the [scoped mech-prop CLI eval](./cli-fallback-recipe-2026-11-21.md).
 
 ---
 
@@ -40,7 +40,7 @@ BlendOps recognizes these runtime stacks for public guidance:
 | Runtime stack | Current evidence status | Source stance |
 |---|---|---|
 | Stack 1 — Claude Desktop official connector stack | Only official connector stack currently verified for read-only smoke access | Use upstream Claude tutorial plus official Blender MCP project/page for the required Blender-side bridge/add-on. |
-| Stack 2 — Official Blender CLI fallback | Official deterministic fallback; full CLI eval `Not Run` | Use upstream Blender manual CLI documentation. |
+| Stack 2 — Official Blender CLI fallback | Official deterministic fallback; [one scoped mech-prop CLI eval](./cli-fallback-recipe-2026-11-21.md) | Use upstream Blender manual CLI documentation and record evidence for the current run. |
 | Stack 3 — Optional unofficial third-party bridge stack | Optional / unofficial / user-managed / experimental-local; not release-eval evidence | Link upstream third-party repo only; do not copy or own its install docs. |
 
 > [!IMPORTANT]
