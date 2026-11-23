@@ -71,7 +71,7 @@ Review-only skill: never executes Blender, never runs or emits Python, and never
 2. Score **Subject clarity** against brief/plan intent.
 3. Score **Composition/camera** readiness (consume `blendops-camera` output if available; do not redo deep domain validation).
 4. Score **Lighting/material** readiness (consume `blendops-lighting-materials` outputs if available; do not redo deep domain validation).
-5. Score **Scale, transforms, and geometry budget** readiness (consume `blendops-glb-budget` output if available).
+5. Score **Scale, transforms, and geometry budget** readiness (consume `blendops-glb-budget` output if available). Use the latest `scene-state` JSON report from `blendops-build` or `blendops-look-check` when it came from the current file: any `fail` issue fails this category, `warn` items lower it to Warn unless the plan explains them. A missing or older report leaves the category at Warn; this skill does not run it.
 6. Score **Evidence and export readiness** (consume `blendops-final-check` classification if available; verify readiness for `blendops-final-check` and `blendops-glb-web-handoff` without taking over their roles).
 7. Assign independent Pass / Warn / Fail scores per category and trace how each contributes to the final outcome.
 8. Apply downgrade-only rules to truth states if gaps or missing provenance are found.
