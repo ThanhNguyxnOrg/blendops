@@ -2,7 +2,7 @@
 
 ## Scope and truth states
 
-- Runtime status: **Verified**, limited to running the read-only [scene-state script](../../skills/blendops-look-check/references/scene-state.md) headless on Linux against three synthetic test scenes.
+- Runtime status: **Verified**, limited to running the read-only [scene-state script](../../skills/blendops-look-check/references/scene-state.md) headless on Linux against four synthetic test scenes.
 - Blender versions: `Blender 4.2.23 LTS` and `Blender 5.1.2`, official Linux x64 archives from download.blender.org.
 - Path 1 and Path 2: **Not Run**.
 - Render, preview, GLB and other artifacts: **Not Produced**. The script only reads the scene and never saves it.
@@ -83,11 +83,63 @@ bpy.ops.object.camera_add(location=(0, -800, 200), rotation=(math.radians(85), 0
 bpy.ops.wm.save_as_mainfile(filepath="/home/ubuntu/out/ss/test_cm.blend")
 ```
 
-Plans: scene 2 `{"objects": {"Ring": [1.1, 1.1, 0.1], "Scatter": [1.2, 1.2, 0.2], "Heavy": [1, 1, 0]}, "grounded": ["Ring", "Scatter", "Heavy"]}`; scene 3 `{"objects": {"CmBox": [1, 1, 1]}, "grounded": ["CmBox"]}`.
+Scene 4 (rotated Geometry Nodes spheres resting on the floor, a mesh with no material that also makes an instance and has a loose part above it, a metaball family, a long bar turned 45 degrees under a camera rolled to match):
+
+```python
+import bpy, math
+bpy.ops.wm.read_factory_settings(use_empty=True)
+s = bpy.context.scene
+mat = bpy.data.materials.new("M")
+# Geometry Nodes scatter of spheres rotated 45 degrees, resting on the floor (radius 0.1, centre z 0.1)
+bpy.ops.mesh.primitive_plane_add(size=1, location=(2, 0, 0))
+sc = bpy.context.object; sc.name = "Pebbles"; sc.data.materials.append(mat)
+g = bpy.data.node_groups.new("Pebbles", 'GeometryNodeTree')
+g.interface.new_socket("Geometry", in_out='INPUT', socket_type='NodeSocketGeometry')
+g.interface.new_socket("Geometry", in_out='OUTPUT', socket_type='NodeSocketGeometry')
+n = g.nodes; i, o = n.new('NodeGroupInput'), n.new('NodeGroupOutput')
+pts = n.new('GeometryNodeMeshToPoints'); ball = n.new('GeometryNodeMeshUVSphere'); ball.inputs['Radius'].default_value = 0.1
+iop = n.new('GeometryNodeInstanceOnPoints'); iop.inputs['Rotation'].default_value = (math.radians(45), math.radians(45), 0)
+tr = n.new('GeometryNodeTranslateInstances'); tr.inputs['Translation'].default_value = (0, 0, 0.1); tr.inputs['Local Space'].default_value = False
+join = n.new('GeometryNodeJoinGeometry')
+g.links.new(i.outputs[0], pts.inputs['Mesh']); g.links.new(pts.outputs[0], iop.inputs['Points'])
+g.links.new(ball.outputs['Mesh'], iop.inputs['Instance']); g.links.new(iop.outputs[0], tr.inputs[0])
+g.links.new(i.outputs[0], join.inputs[0]); g.links.new(tr.outputs[0], join.inputs[0]); g.links.new(join.outputs[0], o.inputs[0])
+sc.modifiers.new("GN", 'NODES').node_group = g
+# Mesh plus instances, the mesh has no material and a detached part far from the instances
+bpy.ops.mesh.primitive_cube_add(size=0.5, location=(-2, 0, 0.25))
+mi = bpy.context.object; mi.name = "Unshaded"
+bpy.ops.mesh.primitive_cube_add(size=0.2, location=(-2, 0, 1.5)); part = bpy.context.object
+bpy.ops.object.select_all(action='DESELECT'); part.select_set(True); mi.select_set(True)
+bpy.context.view_layer.objects.active = mi; bpy.ops.object.join()
+g2 = bpy.data.node_groups.new("Side", 'GeometryNodeTree')
+g2.interface.new_socket("Geometry", in_out='INPUT', socket_type='NodeSocketGeometry')
+g2.interface.new_socket("Geometry", in_out='OUTPUT', socket_type='NodeSocketGeometry')
+n = g2.nodes; i, o = n.new('NodeGroupInput'), n.new('NodeGroupOutput')
+pt = n.new('GeometryNodePoints'); pt.inputs['Position'].default_value = (1.0, 0, -0.15)
+cu = n.new('GeometryNodeMeshCube'); cu.inputs['Size'].default_value = (0.2, 0.2, 0.2)
+iop = n.new('GeometryNodeInstanceOnPoints'); join = n.new('GeometryNodeJoinGeometry')
+g2.links.new(pt.outputs[0], iop.inputs['Points']); g2.links.new(cu.outputs['Mesh'], iop.inputs['Instance'])
+g2.links.new(i.outputs[0], join.inputs[0]); g2.links.new(iop.outputs[0], join.inputs[0]); g2.links.new(join.outputs[0], o.inputs[0])
+mi.modifiers.new("GN", 'NODES').node_group = g2
+# Metaball family: basis Blob and member Blob.001
+for nm, x in (("Blob", 0.0), ("Blob.001", 0.4)):
+    mb = bpy.data.metaballs.new(nm); mb.resolution = 0.05; mb.elements.new().radius = 0.3
+    ob = bpy.data.objects.new(nm, mb); ob.location = (x, 2, 0.3); s.collection.objects.link(ob); mb.materials.append(mat)
+# Long bar rotated 45 degrees about Z, inside the shot, whose world box corners poke out at the sides
+bpy.ops.mesh.primitive_cube_add(location=(0, 0, 0.1)); bar = bpy.context.object; bar.name = "Bar"
+bar.data.materials.append(mat)
+bar.scale = (2.6, 0.05, 0.1); bpy.ops.object.transform_apply(scale=True); bar.rotation_euler.z = math.radians(45)
+cd = bpy.data.cameras.new("Cam"); cam = bpy.data.objects.new("Camera", cd); s.collection.objects.link(cam)
+cam.location = (0, 0, 10); cam.rotation_euler = (0, 0, math.radians(45)); cd.lens = 50; s.camera = cam
+s.render.resolution_x, s.render.resolution_y = 1000, 300
+bpy.ops.wm.save_as_mainfile(filepath="/home/ubuntu/out/ss/test3.blend")
+```
+
+Plans: scene 2 `{"objects": {"Ring": [1.1, 1.1, 0.1], "Scatter": [1.2, 1.2, 0.2], "Heavy": [1, 1, 0]}, "grounded": ["Ring", "Scatter", "Heavy"]}`; scene 3 `{"objects": {"CmBox": [1, 1, 1]}, "grounded": ["CmBox"]}`; scene 4 `{"objects": {"Pebbles": [0, 0, 0.2], "Unshaded": [0, 0, 0], "Blob": [0, 0, 0], "Blob.001": [0, 0, 0], "Bar": [0, 0, 0.2]}, "grounded": ["Pebbles", "Bar"], "in_frame": ["Bar"]}`.
 
 ## Results
 
-All 16 runs exited with code 0 and printed one JSON report. Both versions gave the same per-object values.
+All 20 runs exited with code 0 and printed one JSON report. Both versions gave the same per-object values.
 
 Scene 1 on Blender 5.1.2:
 
@@ -120,8 +172,11 @@ Scenes 2 and 3 on Blender 5.1.2:
 | 5.1.2, scene 2 plan | `fail` | `warn:below_floor`, `warn:floating`, `fail:ground_contact`, `fail:ground_contact` |
 | 4.2.23, centimetre scene plan | `pass` | none |
 | 5.1.2, centimetre scene plan | `pass` | none |
+| 4.2.23, scene 4 plan | `fail` | `warn:floating_parts`, `fail:material` |
+| 5.1.2, scene 4 plan | `fail` | `warn:floating_parts`, `fail:material` |
 
 - Scene 1: each planted problem was found: the floating cube, the inside-out cube, the empty material slot, the loose part on `Lamp`, and the mesh a modifier empties (`Empty_Mesh`, no vertices, no crash). The tilted sphere (lowest vertex 1.2 mm) and the stacked cube `Top` are not reported as floating.
 - Scene 1 with the example plan: the plan is for a shoe scene, so its `fail` items are expected. Only 4.2 fails `engine`: its EEVEE id is `BLENDER_EEVEE_NEXT`, the plan uses the 5.x id `BLENDER_EEVEE`.
 - Scene 2: the curve is measured from its evaluated mesh and sits on the floor. The scatter has no vertices of its own but passes `geometry` and `size` through its 4 instances; it fails `ground_contact` because its 0.2 m cubes are centred on the floor and sink 0.1 m below it, which is correct. The heavy grid gets `lowest_z_m` (0.3) and fails `ground_contact`.
 - Scene 3: the centimetre cube reports 1 m sizes and passes the plan.
+- Scene 4: only the two planted problems are reported: `Unshaded` has no material on its own mesh although it also makes an instance, and its loose part floats away from the instance. The rotated spheres sit on the floor (`lowest_z_m` 0.0, measured from their vertices), the metaball member `Blob.001` is not failed for having no surface of its own, and the turned bar is `in` frame. The previous script version reported `ground_contact`, `size` and `below_floor` on `Pebbles`, `geometry` on `Blob.001` and `in_frame` on `Bar` for this scene, and missed both planted problems.
