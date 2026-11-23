@@ -80,7 +80,7 @@
     {
       "target": "blendops-final-check",
       "type": "progression",
-      "label": "Preview output exists; check it against the done criteria",
+      "label": "Preview, render or GLB exists; check it against the done criteria",
       "when": {
         "all": [
           {
@@ -90,8 +90,12 @@
           },
           {
             "field": "artifact.type",
-            "operator": "equals",
-            "value": "preview"
+            "operator": "in",
+            "value": [
+              "preview",
+              "render",
+              "glb"
+            ]
           }
         ]
       }
