@@ -278,7 +278,7 @@
       "generatorScript": null,
       "safeToMoveOrRemove": false,
       "byteSize": 2020,
-      "sha256": "ddecfb197fb002340127994fda03f050d0d02cd1cd9b4a253bc056163f8d478e"
+      "sha256": "e04be1831533d25a4efeb9959c858ded4ae245efa2c2288ce08ffd98eab31f08"
     },
     {
       "path": ".github/workflows/agent-pr-signal.yml",
@@ -3503,7 +3503,7 @@
       "generatorScript": null,
       "safeToMoveOrRemove": false,
       "byteSize": 4637,
-      "sha256": "0e521bfbb61dcba9fc0f57923107f5ef728614774b78ff6df0f719e186c33ae4"
+      "sha256": "85247da648727ad0b6432f650b732c0b166075db832b01acef28df2aedfba78c"
     },
     {
       "path": "packs/README.md",
@@ -3937,8 +3937,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 16619,
-      "sha256": "051888ab7113772442f87d2e85e7db83e88425265cba59710f4e7b49cbe1c3d4"
+      "byteSize": 17328,
+      "sha256": "92035445bec40fe096cd1c742994fe916dbe6a8957ba8a5dbd7008ee54c5f0d4"
     },
     {
       "path": "scripts/build-knowledge-catalog.mjs",
@@ -4027,8 +4027,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 13778,
-      "sha256": "e124a096b6c738bc628a48916e2ae274754fc88167ee3f8366a54823af8a0871"
+      "byteSize": 14067,
+      "sha256": "03f29b8f20656d6129e76df62b3a49aba2379447ea3a1fb5a89cf461167e9cfc"
     },
     {
       "path": "scripts/cli/doctor.mjs",
