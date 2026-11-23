@@ -1,6 +1,6 @@
 # Fix loop
 
-One round = numeric checks → capture views → visual review → one fix.
+One round = numeric checks → capture views → visual review → one fix. Set `gate.status` to `pending` when a round starts.
 
 1. List all issues from the numeric checks and the visual review.
 2. Order them: numeric `fail` first, then visual `fail`, then `warn`.
