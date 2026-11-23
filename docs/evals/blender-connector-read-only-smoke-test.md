@@ -99,7 +99,7 @@ Runtime artifacts: Not Produced
 Full runtime verification: Not Run (read-only smoke only)
 ```
 
-For CLI evidence from a separate run, see the [scoped mech-prop CLI eval](./cli-fallback-recipe-2026-11-21.md).
+For CLI evidence from a separate run, see the [scoped mech-prop CLI eval](./cli-fallback-mech-prop.md).
 
 ---
 

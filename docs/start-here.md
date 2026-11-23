@@ -127,7 +127,7 @@ Use the short prompt from [README.md](../README.md#-use-in-30-seconds). The agen
 |---|---|---|
 | **Path 1** | Official **Blender Lab MCP** (Lab add-on + Lab server in Blender), hosted from either (a) Anthropic Blender Connector in Claude Desktop, OR (b) any other MCP client configured manually | **5.1+** (Lab add-on manifest) |
 | **Path 2** | Community **`mcp-for-blender`** (formerly `ahujasid/blender-mcp`, mature third-party, different add-on/server) | 3.0+ |
-| **CLI fallback (appendix)** | Direct `blender --background --python` (no MCP); see the [scoped mech-prop CLI eval](./evals/cli-fallback-recipe-2026-11-21.md) | 4.2+ recommended |
+| **CLI fallback (appendix)** | Direct `blender --background --python` (no MCP); see the [scoped mech-prop CLI eval](./evals/cli-fallback-mech-prop.md) | 4.2+ recommended |
 
 **Anthropic Connector is not a separate path.** It is one host option for Path 1; you still install the Blender Lab MCP add-on inside Blender either way (Anthropic tutorial step 2). The 5.1+ floor applies whichever Path 1 host you pick. See [`docs/runtime-stack-strategy.md`](./runtime-stack-strategy.md) for the corrected attribution history of the 2026-04-29 smoke test.
 
@@ -172,7 +172,7 @@ BlendOps documents **two MCP execution paths** plus a **CLI fallback appendix** 
 |---|---|---|
 | **Path 1** | Official Blender Lab MCP (Lab add-on + Lab server, **Blender 5.1+**), hosted from Anthropic Blender Connector OR any other MCP client manually configured | Read-only smoke 2026-04-29 (likely Anthropic Connector host); mutation/render/export `Not Run` |
 | **Path 2** | Community **`mcp-for-blender`** (formerly `ahujasid/blender-mcp`, mature third-party, **Blender 3.0+**) | User-reported verified 2026-05-08 (operator statement, does not promote eval scope); no formal eval file yet |
-| **CLI fallback** | Direct `blender --background --python` (no MCP, **Blender 4.2+ recommended**) | One Blender 4.2.0 run with structural GLB verification only; see the [scoped mech-prop CLI eval](./evals/cli-fallback-recipe-2026-11-21.md) |
+| **CLI fallback** | Direct `blender --background --python` (no MCP, **Blender 4.2+ recommended**) | One Blender 4.2.0 run with structural GLB verification only; see the [scoped mech-prop CLI eval](./evals/cli-fallback-mech-prop.md) |
 
 **Single-bridge constraint:** Blender accepts one MCP bridge session per Blender instance on the default port (`localhost:9876`). Do not run Path 1 + Path 2 concurrently against the same Blender instance. Side-by-side on separate instances is supported upstream via per-instance `--port 9877`.
 

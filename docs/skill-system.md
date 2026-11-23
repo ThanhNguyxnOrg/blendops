@@ -32,7 +32,7 @@ Skills are intentionally composable. A helper skill routes the task, planning sk
 | SceneSpec & Skill Harmonizer (`scripts/compile-scene-plan.mjs`) | Structured intermediate representation (`schemas/scene-spec.schema.json`) compiled into a 7-stage `ExecutionPlan` (`schemas/execution-plan.schema.json`) with an 8-level conflict precedence hierarchy (`1_laws` > `2_runtime_boundary_and_version_floor` > `3_hard_budget_and_export_constraints` > `4_scene_spec_explicit_constraints` > `5_recipe_stage_contracts` > `6_knowledge_record_rules` > `7_skill_heuristics` > `8_aesthetic_defaults`). | `blendops plan-compile evals/scene-specs/cyberpunk-shoe-hero.scene-spec.json` |
 | Packs | Curated skill/law bundles for a scenario. | `packs/product-hero-v0/PACK.md` composes product-hero work. |
 | Evals & Audits | Deterministic behavioral/retrieval suites and evidence records. | `evals/catalog-retrieval-evals.json`, `evals/scene-specs/*.json`, `docs/audits/skill-architecture-audit.md`, `docs/evals/runtime-availability-checklist.md`. |
-| Runtime paths | External execution choices, separate from skill install. | Path 1 Official Blender Lab MCP (host: Anthropic Connector OR manual MCP client), Path 2 community `mcp-for-blender`, CLI fallback (documented upstream as first-class Blender CLI; see the [scoped mech-prop CLI eval](./evals/cli-fallback-recipe-2026-11-21.md)). |
+| Runtime paths | External execution choices, separate from skill install. | Path 1 Official Blender Lab MCP (host: Anthropic Connector OR manual MCP client), Path 2 community `mcp-for-blender`, CLI fallback (documented upstream as first-class Blender CLI; see the [scoped mech-prop CLI eval](./evals/cli-fallback-mech-prop.md)). |
 
 A skill may point to runtime docs, knowledge records (`knowledge.*`), or recipes (`recipe.*`), but it must not imply runtime was installed or run. See [`knowledge-and-recipe-catalog.md`](./knowledge-and-recipe-catalog.md) for the full catalog and [`audits/skill-architecture-audit.md`](./audits/skill-architecture-audit.md) for the 48-skill and 151-reference classification audit.
 
@@ -82,7 +82,7 @@ BlendOps runtime guidance uses **two MCP execution paths** plus a **CLI fallback
 
 1. **Path 1 — Official Blender Lab MCP** (Lab add-on + Lab server installed in Blender 5.1+, hosted from either (a) Anthropic Blender Connector in Claude Desktop, or (b) any other MCP client configured manually). The Anthropic Connector is **not** a separate path — it is one host option for Path 1, and the Lab add-on inside Blender is required either way.
 2. **Path 2 — Community `mcp-for-blender`** (different `addon.py` + server via `uvx mcp-for-blender`, mature third-party, Blender 3.0+).
-3. **CLI fallback (appendix)** — direct `blender --background --python`, no MCP. **Documented upstream** as a first-class Blender CLI surface; see the [scoped mech-prop CLI eval](./evals/cli-fallback-recipe-2026-11-21.md).
+3. **CLI fallback (appendix)** — direct `blender --background --python`, no MCP. **Documented upstream** as a first-class Blender CLI surface; see the [scoped mech-prop CLI eval](./evals/cli-fallback-mech-prop.md).
 
 Skills must not present Anthropic Connector as a separate runtime that needs no Blender-side install. Skills must apply Blender 5.1+ to all of Path 1 (whichever host). Skills must label CLI as appendix, not peer.
 

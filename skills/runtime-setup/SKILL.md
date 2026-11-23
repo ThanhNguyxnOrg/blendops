@@ -206,4 +206,4 @@ Establish runtime setup prerequisites, per-path minimum versions, source-confide
 - Path 1 host (a) source — Anthropic Connector: https://claude.com/resources/tutorials/using-the-blender-connector-in-claude
 - Path 1 Blender-side source — Lab MCP (required for both hosts): https://www.blender.org/lab/mcp-server/
 - Path 2 source: https://github.com/ahujasid/mcp-for-blender
-- CLI fallback source (documented upstream as a first-class Blender CLI; see the [scoped mech-prop CLI eval](https://github.com/ThanhNguyxnOrg/blendops/blob/main/docs/evals/cli-fallback-recipe-2026-11-21.md)): https://docs.blender.org/manual/en/latest/advanced/command_line/index.html
+- CLI fallback source (documented upstream as a first-class Blender CLI; see the [scoped mech-prop CLI eval](https://github.com/ThanhNguyxnOrg/blendops/blob/main/docs/evals/cli-fallback-mech-prop.md)): https://docs.blender.org/manual/en/latest/advanced/command_line/index.html

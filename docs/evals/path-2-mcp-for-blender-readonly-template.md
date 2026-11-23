@@ -118,7 +118,7 @@ Full official runtime manual eval: Not Run
 Runtime artifacts: Not Produced
 ```
 
-For CLI evidence from a separate run, see the [scoped mech-prop CLI eval](./cli-fallback-recipe-2026-11-21.md).
+For CLI evidence from a separate run, see the [scoped mech-prop CLI eval](./cli-fallback-mech-prop.md).
 
 ---
 

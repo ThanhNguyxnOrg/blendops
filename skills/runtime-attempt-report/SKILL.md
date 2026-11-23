@@ -87,7 +87,7 @@ Record a chronological, secret-free runtime attempt log—including version stam
 Documentation skill only—never executes Blender or generates Python. Reports must strictly preserve upstream runtime distinctions:
 - **Path 1**: Official Blender Lab MCP in Blender 5.1+, hosted from (a) Anthropic Connector or (b) manual MCP client. The Connector is NOT standalone.
 - **Path 2**: Community `mcp-for-blender` (third-party, Blender 3.0+); document only with explicit caveats and never treat as release evidence.
-- **CLI fallback**: Appendix only (`blender --background --python`); upstream-documented. The [scoped mech-prop CLI eval](https://github.com/ThanhNguyxnOrg/blendops/blob/main/docs/evals/cli-fallback-recipe-2026-11-21.md) is one prior run; record evidence for the current attempt separately.
+- **CLI fallback**: Appendix only (`blender --background --python`); upstream-documented. The [scoped mech-prop CLI eval](https://github.com/ThanhNguyxnOrg/blendops/blob/main/docs/evals/cli-fallback-mech-prop.md) is one prior run; record evidence for the current attempt separately.
 
 ## Operating procedure
 

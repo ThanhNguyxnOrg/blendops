@@ -125,7 +125,7 @@ Distribution strategy does not change runtime strategy.
 - Public runtime guidance uses **2 MCP execution paths plus a CLI fallback appendix** (see [runtime-stack-strategy.md](./runtime-stack-strategy.md)):
   1. **Path 1 — Official Blender Lab MCP** (Lab add-on + Lab server installed in Blender 5.1+, hosted from either Anthropic Blender Connector in Claude Desktop or another manually configured MCP client).
   2. **Path 2 — Community `mcp-for-blender`** (mature third-party, Blender 3.0+).
-  3. **CLI fallback (appendix)** — direct `blender --background --python`; documented upstream as a first-class Blender CLI surface; see the [scoped mech-prop CLI eval](./evals/cli-fallback-recipe-2026-11-21.md).
+  3. **CLI fallback (appendix)** — direct `blender --background --python`; documented upstream as a first-class Blender CLI surface; see the [scoped mech-prop CLI eval](./evals/cli-fallback-mech-prop.md).
 - Anthropic Connector is **not** standalone. The Blender Lab MCP add-on must also be installed in Blender.
 - Blender runtime setup is separate from BlendOps skill/CLI distribution.
 - Runtime artifacts still require eval evidence before any claim. The full official runtime manual eval remains `Not Run` until an operator executes the eval packet and records evidence.

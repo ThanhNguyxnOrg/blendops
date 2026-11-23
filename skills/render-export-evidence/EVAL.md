@@ -16,7 +16,7 @@ Use render-export-evidence to classify artifact evidence state (Not Run / Attemp
 - preserves `Not Run` / `Not Produced` when no runtime action occurred
 - labels Path 2 (`mcp-for-blender`) evidence with the Path 2 tag, the upstream commit/version, and the third-party-from-Anthropic-and-Blender-Foundation caveat — not as official release evidence on its own
 - labels read-only smoke evidence as runtime access scoped read-only, artifacts `Not Produced`, with the path + host explicit (Path 1 host a / Path 1 host b / Path 2)
-- labels the upstream-documented CLI fallback as an appendix and does not use the [scoped mech-prop CLI eval](https://github.com/ThanhNguyxnOrg/blendops/blob/main/docs/evals/cli-fallback-recipe-2026-11-21.md) as evidence of the current run
+- labels the upstream-documented CLI fallback as an appendix and does not use the [scoped mech-prop CLI eval](https://github.com/ThanhNguyxnOrg/blendops/blob/main/docs/evals/cli-fallback-mech-prop.md) as evidence of the current run
 
 ## Eval cases
 

@@ -95,7 +95,7 @@ Limitations: <unknown Blender build or unverified host state>
 Decision skill only — chooses a single primary path from constraints and configures nothing (see `../../docs/runtime-stack-strategy.md` for the canonical model).
 - **Path 1**: Official Blender Lab MCP in Blender 5.1+ (add-on manifest literal `blender_version_min = "5.1.0"`), hosted from (a) Anthropic Connector in Claude Desktop or (b) any manually configured MCP client. Connector is NOT standalone.
 - **Path 2**: Community `mcp-for-blender` (renamed from `ahujasid/blender-mcp`), third-party, Blender 3.0+, recommended only with explicit caveats and **never as release evidence**. Manual configuration responsibility; see `docs/unofficial-runtime-bridges.md`.
-- **CLI fallback**: Appendix only (`blender --background --python`), not a peer MCP path. Documented upstream as a first-class Blender CLI surface (render/Cycles/format/Python sections read in the current Blender 5.2 LTS Manual); see the [scoped mech-prop CLI eval](https://github.com/ThanhNguyxnOrg/blendops/blob/main/docs/evals/cli-fallback-recipe-2026-11-21.md).
+- **CLI fallback**: Appendix only (`blender --background --python`), not a peer MCP path. Documented upstream as a first-class Blender CLI surface (render/Cycles/format/Python sections read in the current Blender 5.2 LTS Manual); see the [scoped mech-prop CLI eval](https://github.com/ThanhNguyxnOrg/blendops/blob/main/docs/evals/cli-fallback-mech-prop.md).
 - **Bridge limit**: One MCP bridge per Blender instance (default port 9876).
 - **Role boundary**: Prerequisite framing belongs to `runtime-setup`; readiness matrix checks belong to `runtime-readiness`; Path 1 host a/b details belong to `path-one-host-outline`; headless job outlines belong to `cli-appendix-job-outline`; bridge conflicts belong to `bridge-conflicts`.
 
@@ -143,7 +143,7 @@ Is Blender 5.1+ (`blender_version_min = "5.1.0"`) available and can the Official
 
 ### Playbook C: Headless CI or batch export pipeline (`CLI fallback appendix` selected)
 
-- Select the **CLI fallback (`blender --background --python`)** with the mandatory **appendix-only** label (documented upstream as a first-class Blender CLI surface; see the [scoped mech-prop CLI eval](https://github.com/ThanhNguyxnOrg/blendops/blob/main/docs/evals/cli-fallback-recipe-2026-11-21.md) — never a peer MCP path).
+- Select the **CLI fallback (`blender --background --python`)** with the mandatory **appendix-only** label (documented upstream as a first-class Blender CLI surface; see the [scoped mech-prop CLI eval](https://github.com/ThanhNguyxnOrg/blendops/blob/main/docs/evals/cli-fallback-mech-prop.md) — never a peer MCP path).
 - Reject Path 1 and Path 2 for stateless batch runners and hand off job structure to `../cli-appendix-job-outline/SKILL.md`.
 
 ## Mode handling

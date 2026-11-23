@@ -15,7 +15,7 @@ Path decision: [../runtime-stack-strategy.md](../runtime-stack-strategy.md)
 > | Legacy label | New mapping |
 > |---|---|
 > | Stack 1 — Claude Desktop official connector stack | **Path 1** (Official Blender Lab MCP). Lab add-on + Lab server installed in Blender 5.1+, hosted from either (a) Anthropic Blender Connector or (b) manual MCP client. Anthropic Connector is **not** standalone — Lab add-on inside Blender is required either way. |
-> | Stack 2 — Official Blender CLI fallback | **CLI fallback (appendix)**. Direct `blender --background --python`. **Documented upstream** as a first-class Blender CLI surface; see the [scoped mech-prop CLI eval](./cli-fallback-recipe-2026-11-21.md). |
+> | Stack 2 — Official Blender CLI fallback | **CLI fallback (appendix)**. Direct `blender --background --python`. **Documented upstream** as a first-class Blender CLI surface; see the [scoped mech-prop CLI eval](./cli-fallback-mech-prop.md). |
 > | Stack 3 — Optional unofficial third-party bridge stack | **Path 2** (Community `mcp-for-blender`, mature third-party, Blender 3.0+). |
 >
 > A fresh per-path eval record must explicitly name the path (Path 1 host a / Path 1 host b / Path 2 / CLI fallback), record `blender --version`, record the Blender-side add-on identity, record the MCP server source/commit, record the MCP host product, and record the exact tool names used.
@@ -36,9 +36,9 @@ This packet covers manual eval preparation for the paths in [runtime-stack-strat
 
 1. **Path 1 — Official Blender Lab MCP** (Lab MCP add-on + Lab MCP server installed in Blender 5.1+, hosted from either (a) Anthropic Blender Connector in Claude Desktop, or (b) any other MCP client configured manually). Anthropic Connector is **not** standalone — Lab add-on inside Blender is required either way.
 2. **Path 2 — Community `mcp-for-blender`** (different add-on/server, mature third-party, Blender 3.0+).
-3. **CLI fallback (appendix)** — direct `blender --background --python`. **Documented upstream** as a first-class Blender CLI surface; see the [scoped mech-prop CLI eval](./cli-fallback-recipe-2026-11-21.md).
+3. **CLI fallback (appendix)** — direct `blender --background --python`. **Documented upstream** as a first-class Blender CLI surface; see the [scoped mech-prop CLI eval](./cli-fallback-mech-prop.md).
 
-Path 1 + Path 2 are user-reported verified by repo owner (Path 1: 2026-04-29 read-only smoke + 2026-05-09 reconfirmation; Path 2: 2026-05-08 statement, reconfirmed 2026-05-09). Mutation/render/export `Not Run` for both — no formal in-repo evidence file yet. CLI fallback is appendix only — documented upstream as first-class Blender CLI surface; see the [scoped mech-prop CLI eval](./cli-fallback-recipe-2026-11-21.md).
+Path 1 + Path 2 are user-reported verified by repo owner (Path 1: 2026-04-29 read-only smoke + 2026-05-09 reconfirmation; Path 2: 2026-05-08 statement, reconfirmed 2026-05-09). Mutation/render/export `Not Run` for both — no formal in-repo evidence file yet. CLI fallback is appendix only — documented upstream as first-class Blender CLI surface; see the [scoped mech-prop CLI eval](./cli-fallback-mech-prop.md).
 
 The operator must choose one path (and Path 1 host option a/b when relevant) per eval record unless the test plan explicitly compares paths. Each path/host needs its own evidence notes, artifact labels, and final verdict.
 

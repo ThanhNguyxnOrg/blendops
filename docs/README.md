@@ -13,17 +13,17 @@ The single index for everything in this repo. Bookmark this page.
 |---|---|---|
 | Product release | v1.0.0 (Production) | Canonical workflow specs, knowledge/recipe catalogs, CLI, and CI verification suites are released. |
 | Skill / law / pack collection | v1.0.0 | **48** canonical portable skills, 4 laws, 1 pack (`product-hero-v0`). Canonical index: [`../skills/README.md`](../skills/README.md); public GitHub source is [listed on skills.sh](https://www.skills.sh/ThanhNguyxnOrg/blendops). |
-| Runtime path model | Active (2-path + CLI appendix) | Path 1 (Lab MCP, hosted from Anthropic Connector or manual MCP); Path 2 (community `mcp-for-blender`); CLI fallback (documented upstream as first-class Blender CLI; see the [scoped mech-prop CLI eval](./evals/cli-fallback-recipe-2026-11-21.md)). |
+| Runtime path model | Active (2-path + CLI appendix) | Path 1 (Lab MCP, hosted from Anthropic Connector or manual MCP); Path 2 (community `mcp-for-blender`); CLI fallback (documented upstream as first-class Blender CLI; see the [scoped mech-prop CLI eval](./evals/cli-fallback-mech-prop.md)). |
 | Path 1 read-only smoke | Pass / Available | 2026-04-29 record (likely Anthropic Connector host). |
 | Path 2 user-reported verified | Yes (2026-05-08) | No formal eval file yet. |
-| CLI fallback | One scoped run | **Documented upstream** as a first-class Blender CLI surface; see the [scoped mech-prop CLI eval](./evals/cli-fallback-recipe-2026-11-21.md). |
+| CLI fallback | One scoped run | **Documented upstream** as a first-class Blender CLI surface; see the [scoped mech-prop CLI eval](./evals/cli-fallback-mech-prop.md). |
 | Full official runtime manual eval | Not Run | The scoped CLI run does not cover the full official runtime eval. |
 | Full official runtime eval artifacts | Not Produced | No preview/render/GLB from the full official runtime eval. |
 | Release tag (`v1.0.0`) | Ready | Skills layer (48 skills + 151 hardened references), catalogs, CLI (`35+` targets), and full verification suite are complete. |
 | npm CLI package | Published (`blendops@1.0.0`, `latest`) | [Public npm package](https://www.npmjs.com/package/blendops); the CLI entrypoint and transactional project installer ship in the package. |
 | Distribution metadata sync | Automated | ThanhNguyxnAgent checks npm registry + skills.sh on source changes and weekly; see `docs/audits/current/distribution-metadata.json` (created by the first successful live sync). |
 | Knowledge & Recipe Catalog | Implemented & Verified (`90/90` bilingual retrieval evals) | **30** `knowledge.*` records across **11** 3D domains, **10** `recipe.*` blueprints, **20** `source.*` citations, deterministic `catalog-search` / `catalog-resolve` / `plan-compile` CLI, and 48-skill / 151-reference architecture audit in [`knowledge-and-recipe-catalog.md`](./knowledge-and-recipe-catalog.md) and [`audits/skill-architecture-audit.md`](./audits/skill-architecture-audit.md). |
-| GLB Web Handoff & Viewer Integration | Implemented; browser check for the [scoped mech-prop CLI eval](./evals/cli-fallback-recipe-2026-11-21.md) was `Not Run` | `schemas/glb-web-handoff-manifest.schema.json`, `scripts/inspect-glb.mjs`, `scripts/generate-glb-handoff-report.mjs`, CLI `glb-inspect` / `glb-handoff` / `glb-validate-manifest`, and Three.js + R3F examples in [`examples/glb-web-handoff/README.md`](./examples/glb-web-handoff/README.md). |
+| GLB Web Handoff & Viewer Integration | Implemented; browser check for the [scoped mech-prop CLI eval](./evals/cli-fallback-mech-prop.md) was `Not Run` | `schemas/glb-web-handoff-manifest.schema.json`, `scripts/inspect-glb.mjs`, `scripts/generate-glb-handoff-report.mjs`, CLI `glb-inspect` / `glb-handoff` / `glb-validate-manifest`, and Three.js + R3F examples in [`examples/glb-web-handoff/README.md`](./examples/glb-web-handoff/README.md). |
 | Repository architecture & file inventory | Verified (`npm run arch:check`) | Canonical source, generated artifact, historical record, documentation, runtime/test, distribution, and config classification in [`architecture.md`](./architecture.md) and [`audits/current/repository-inventory.json`](./audits/current/repository-inventory.json). |
 
 ---
@@ -271,6 +271,6 @@ Legacy quick links below cover only the **baseline 16**; the [`skills/README.md`
 
 - BlendOps does not install Blender, configure the Anthropic Blender Connector, configure the Blender Lab MCP add-on, configure the community `mcp-for-blender` stack, or run Blender.
 - Read-only smoke evidence is not mutation/render/export evidence.
-- CLI fallback is **documented upstream** as a first-class Blender CLI surface; see the [scoped mech-prop CLI eval](./evals/cli-fallback-recipe-2026-11-21.md).
+- CLI fallback is **documented upstream** as a first-class Blender CLI surface; see the [scoped mech-prop CLI eval](./evals/cli-fallback-mech-prop.md).
 - No official marketplace/plugin listing is claimed. The npm CLI and skills.sh Agent Skills source are publicly available; Blender runtime execution and generated artifacts remain separately evidence-gated.
 - See [`release-readiness.md`](./release-readiness.md) for the full readiness state.

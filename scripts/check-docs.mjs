@@ -456,13 +456,13 @@ const requiredRuntimeStackSnippets = [
   'mcp-for-blender',
   'CLI fallback',
   'first-class',
-  '](./evals/cli-fallback-recipe-2026-11-21.md)',
+  '](./evals/cli-fallback-mech-prop.md)',
 ];
 
 const requiredArtifactEvidenceSnippets = [
   {
     file: 'docs/start-here.md',
-    snippets: ['](./evals/cli-fallback-recipe-2026-11-21.md)'],
+    snippets: ['](./evals/cli-fallback-mech-prop.md)'],
   },
   {
     file: 'laws/evidence-before-done.md',

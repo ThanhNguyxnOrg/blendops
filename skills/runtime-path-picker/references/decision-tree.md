@@ -20,7 +20,7 @@ Need interactive, multi-step scene inspection or steering inside a live Blender 
                request verbatim `blender --version` output before proceeding.
 ```
 
-The [scoped mech-prop CLI eval](https://github.com/ThanhNguyxnOrg/blendops/blob/main/docs/evals/cli-fallback-recipe-2026-11-21.md) is an example, not evidence for the current job.
+The [scoped mech-prop CLI eval](https://github.com/ThanhNguyxnOrg/blendops/blob/main/docs/evals/cli-fallback-mech-prop.md) is an example, not evidence for the current job.
 
 ## Non-Negotiable Rules
 - Anthropic Connector is a **Path 1 host option**, never a standalone runtime — the Blender Lab MCP add-on must be installed and enabled inside Blender 5.1+ first.
