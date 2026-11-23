@@ -526,6 +526,7 @@
         }
       ],
       "evidence_status": "version-checked",
+      "documentation_path": "docs/recipes/dusk-campsite-environment.md",
       "related_recipes": [
         "recipe.procedural-geometry-nodes-asset",
         "recipe.presentation-lighting-and-camera"
@@ -773,6 +774,7 @@
         }
       ],
       "evidence_status": "version-checked",
+      "documentation_path": "docs/recipes/sci-fi-crate-prop.md",
       "related_recipes": [
         "recipe.uv-and-pbr-material-preparation",
         "recipe.web-ready-asset-optimization"
@@ -2237,6 +2239,7 @@
         }
       ],
       "evidence_status": "version-checked",
+      "documentation_path": "docs/recipes/chair-glb-web-handoff.md",
       "related_recipes": [
         "recipe.web-ready-asset-optimization",
         "recipe.product-hero-scene",

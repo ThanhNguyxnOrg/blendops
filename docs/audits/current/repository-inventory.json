@@ -331,8 +331,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 3520,
-      "sha256": "32bb773ca17f47c19d8f084cd2484247046f038d438713382808fdaae9441130"
+      "byteSize": 3572,
+      "sha256": "0924e3a97585b2434ef5ec158d033f2509a7cccf12d6f13cc1dd464699415bf0"
     },
     {
       "path": ".github/workflows/ci.yml",
@@ -1891,8 +1891,8 @@
       "isGenerated": true,
       "generatorScript": "scripts/build-knowledge-catalog.mjs",
       "safeToMoveOrRemove": false,
-      "byteSize": 314426,
-      "sha256": "3a50e1ca106e875c056dd24330fc2cff3071c05cef81a6269bc41b13d52c9396"
+      "byteSize": 314573,
+      "sha256": "f46d30f4e9dc9a9410a3afb611ac379d907abbc1d832b102584911c9d7ea6ca0"
     },
     {
       "path": "docs/audits/skill-architecture-audit.md",
@@ -1906,8 +1906,8 @@
       "isGenerated": true,
       "generatorScript": "scripts/build-knowledge-catalog.mjs",
       "safeToMoveOrRemove": false,
-      "byteSize": 21523,
-      "sha256": "eaa0ce6401b3884c558ef9aaf03f347af0d5c27e65d0e5cd2c30237c42235fbd"
+      "byteSize": 21502,
+      "sha256": "d5cd1f53bffbf3b024ce273c8fdb655b87725f089b4986d8aff45cea4a12148f"
     },
     {
       "path": "docs/blender-version-compatibility.md",
@@ -1981,8 +1981,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 7134,
-      "sha256": "179d5a28f861b40af595a3952288b3f5d9bb05c3660771441f517767042e4629"
+      "byteSize": 7449,
+      "sha256": "c5e545694975a02f8a0360fdbe2efcdd2e79cf76e38811bafd0742e7a8365701"
     },
     {
       "path": "docs/evals/adapter-empirical-verification.md",
@@ -2041,8 +2041,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 4876,
-      "sha256": "443429a6aea3ad755f877d03ed27c3f7a4a882485f8917e132e79eb967dd6344"
+      "byteSize": 5039,
+      "sha256": "a6ab78cf39b9213680b23f2f7960cbcc4ca29eb746f5444d33fc3faf32b3b665"
     },
     {
       "path": "docs/evals/cli-fallback-mech-prop.md",
@@ -2806,8 +2806,8 @@
       "isGenerated": true,
       "generatorScript": "scripts/build-knowledge-catalog.mjs",
       "safeToMoveOrRemove": false,
-      "byteSize": 37514,
-      "sha256": "b1018dfdaf323dd56e9236ff0cd9e3a26cd90e356dc90ab7e66228c7f1ba48c0"
+      "byteSize": 37724,
+      "sha256": "0a0d96b835d9c1416e7deb79dad6490a9771da65a2022dcb05a2a6e66d32ff42"
     },
     {
       "path": "docs/multi-agent-install-strategy.md",
@@ -2851,8 +2851,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 2159,
-      "sha256": "93c863288afc15fada1b1483c60b25374fdddce3f6cb42af8f327fd76fc31353"
+      "byteSize": 3144,
+      "sha256": "2f8cc53b1551dc97be39442865bb0ce67d1246361f7e1de4c1d3df95a016dde1"
     },
     {
       "path": "docs/recipes/cyberpunk-shoe-hero.md",
@@ -3676,8 +3676,8 @@
       "isGenerated": true,
       "generatorScript": "scripts/build-knowledge-catalog.mjs",
       "safeToMoveOrRemove": false,
-      "byteSize": 493663,
-      "sha256": "564083cae4617fc9543f6a329e988b12fc9b50477709b55b44eae384d2dbc3ac"
+      "byteSize": 493894,
+      "sha256": "3a8dfaa4e6c082e9736f0bfbe84513a7e069dbd3d39840d5749b640ebfccaad0"
     },
     {
       "path": "registry/compatibility-matrix.json",
@@ -3751,8 +3751,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 125692,
-      "sha256": "a0086ef16d3dfbfbf698a3fbbd3873e9918c68de31366ddad42883294f2d6fac"
+      "byteSize": 125899,
+      "sha256": "1c6e6e3848e8fe08f9879af0614b55e2340a676c8d3278171a2833f0173f87cd"
     },
     {
       "path": "registry/runtime-capability-policy.json",
@@ -4081,8 +4081,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 107447,
-      "sha256": "2a3bac1a08c162a006f2916c50a47f300d706491c901801b9d002813d97c1102"
+      "byteSize": 107529,
+      "sha256": "1a0276da64c5e657d18d6310ee4f5edb103a4e30b7062a9ccb9da95701d555c5"
     },
     {
       "path": "scripts/build-registry.mjs",
@@ -4546,8 +4546,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 8018,
-      "sha256": "a2c2756beee16e60dfbc77e166c7e5f418bf722b2e2d2fa0e5a09de40eaa448b"
+      "byteSize": 12061,
+      "sha256": "e90bd4ff92e34051b90e1fbb4c58b7bedc7a3d4e192f83cec46daec3458d7766"
     },
     {
       "path": "scripts/test-bundle-summaries.mjs",

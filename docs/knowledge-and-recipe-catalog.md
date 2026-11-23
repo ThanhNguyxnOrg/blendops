@@ -54,6 +54,7 @@ BlendOps separates **atomic agent workflow skills** (`skills/*/SKILL.md`) from *
 - **Required Skills**: `blendops-brief`, `blendops-assets`, `blendops-scene-plan`, `blendops-camera`, `blendops-lighting-materials`, `blendops-glb-budget`, `blendops-render-settings`, `blendops-final-check`, `blendops-start`
 - **Knowledge Records**: `knowledge.modular-architectural-grid-and-metric-scale`, `knowledge.mesh-manifold-normals-and-scale-hygiene`, `knowledge.environment-depth-layering-and-atmospheric-perspective`, `knowledge.physically-based-camera-lens-and-dof`, `knowledge.procedural-instancing-and-realize-instances-budget`, `knowledge.procedural-scatter-poisson-disk-and-slope-masking`, `knowledge.volumetrics-fog-and-principled-volume-tradeoffs`, `knowledge.agx-filmic-color-management-and-cycles-eevee`, `knowledge.triangle-draw-call-and-vram-budgets`
 - **Stages**: `stage-environment-brief-and-assets` (Stage 1) → `stage-depth-layering-and-camera` (Stage 2) → `stage-procedural-scatter-and-atmosphere` (Stage 3) → `stage-environment-validation-and-handoff` (Stage 4)
+- **Scenario Reference Doc**: `docs/recipes/dusk-campsite-environment.md`
 
 #### `recipe.hard-surface-prop` — Non-Destructive Hard-Surface Prop Modeling & Shading Hygiene
 
@@ -62,6 +63,7 @@ BlendOps separates **atomic agent workflow skills** (`skills/*/SKILL.md`) from *
 - **Required Skills**: `blendops-brief`, `blendops-done-criteria`, `blendops-glb-budget`, `blendops-lighting-materials`, `blendops-final-check`, `blendops-start`
 - **Knowledge Records**: `knowledge.mesh-manifold-normals-and-scale-hygiene`, `knowledge.cad-creases-and-panel-gap-detailing`, `knowledge.non-destructive-hard-surface-modifier-stack`, `knowledge.boolean-bevel-shading-cleanup`, `knowledge.quad-dominant-subdivision-topology`, `knowledge.uv-seam-placement-and-texel-density`, `knowledge.high-to-low-normal-and-ao-baking`, `knowledge.principled-bsdf-v2-energy-conserving-pbr`, `knowledge.triangle-draw-call-and-vram-budgets`, `knowledge.gltf-2-coordinate-system-and-transform-conventions`
 - **Stages**: `stage-prop-scale-and-blockout` (Stage 1) → `stage-modifier-stack-and-topology` (Stage 2) → `stage-uv-and-surface-materials` (Stage 3) → `stage-prop-validation-and-handoff` (Stage 4)
+- **Scenario Reference Doc**: `docs/recipes/sci-fi-crate-prop.md`
 
 #### `recipe.procedural-geometry-nodes-asset` — Procedural Geometry Nodes Asset & Scatter Pipeline
 
@@ -110,6 +112,7 @@ BlendOps separates **atomic agent workflow skills** (`skills/*/SKILL.md`) from *
 - **Required Skills**: `blendops-lighting-materials`, `blendops-glb-budget`, `blendops-glb-web-handoff`, `blendops-final-check`, `blendops-start`
 - **Knowledge Records**: `knowledge.gltf-2-coordinate-system-and-transform-conventions`, `knowledge.shader-node-gltf-export-portability`, `knowledge.normal-roughness-and-orm-channel-packing`, `knowledge.glb-binary-chunk-alignment-and-khronos-validation`, `knowledge.texture-resolution-ktx2-and-draco-meshopt-compression`, `knowledge.threejs-r3f-tone-mapping-and-environment-parity`, `knowledge.agx-filmic-color-management-and-cycles-eevee`
 - **Stages**: `stage-pre-export-gltf-audit` (Stage 1) → `stage-glb-container-inspection` (Stage 2) → `stage-web-viewer-component-plan` (Stage 3) → `stage-handoff-verification-and-summary` (Stage 4)
+- **Scenario Reference Doc**: `docs/recipes/chair-glb-web-handoff.md`
 
 #### `recipe.web-ready-asset-optimization` — Mobile/Web GLB Performance Budgeting, Compression & LOD Pipeline
 

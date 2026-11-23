@@ -12,7 +12,7 @@ No BlendOps-owned CLI command, MCP server or add-on was added. The check scripts
 
 ## What runs
 
-[`.github/workflows/blender.yml`](../../.github/workflows/blender.yml) runs `npm run test:blender` ([`scripts/test-blender-references.mjs`](../../scripts/test-blender-references.mjs)) once per Blender version, on pull requests and pushes to `main` that touch the build, look-check or final-check skills or the check scripts, and on manual dispatch. Every Blender call uses `--background --factory-startup --python-exit-code 1`, so a Python error fails the job.
+[`.github/workflows/blender.yml`](../../.github/workflows/blender.yml) runs `npm run test:blender` ([`scripts/test-blender-references.mjs`](../../scripts/test-blender-references.mjs)) once per Blender version, on pull requests and pushes to `main` that touch the build, look-check or final-check skills, the recipe walkthroughs or the check scripts, and on manual dispatch. The recipe walkthrough checks it also runs are described in [cli-fallback-recipe-walkthroughs.md](./cli-fallback-recipe-walkthroughs.md). Every Blender call uses `--background --factory-startup --python-exit-code 1`, so a Python error fails the job.
 
 1. **Build reference examples.** Each `python` block in `skills/blendops-build/references/*.md` runs in file order, in a fresh scene holding `Shoe_Sole`, `Shoe_Upper` and a camera ([`run-snippets.py`](../../evals/blender-checks/run-snippets.py)). A check per file then confirms the result:
 

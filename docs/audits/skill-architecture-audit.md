@@ -8,7 +8,7 @@
 | :--- | :--- | :--- | :--- |
 | **A. Skill Layer** | `skills/*/SKILL.md`, `skills/*/contract.json`, `registry/skills.json`, `registry/workflow-graph.json` | 16 skills, 204 workflow edges | Single-responsibility agent task units, contracts, capability tiers (`L0`–`L3`), and handoffs |
 | **B. Knowledge Layer** | `registry/knowledge-sources.json`, `registry/knowledge-catalog.json` | 30 records across 11 domains (20 sources) | Reusable, source-traceable 3D/Blender domain rules, parameters, tradeoffs, and validation checks |
-| **C. Recipe Layer** | `registry/recipe-catalog.json`, `docs/recipes/cyberpunk-shoe-hero.md` | 10 canonical recipes + 1 golden-path scenario doc | Multi-stage asset/scene construction plans composing skills, knowledge records, and checkpoints |
+| **C. Recipe Layer** | `registry/recipe-catalog.json`, `docs/recipes/*.md` | 10 canonical recipes + 4 scenario walkthroughs | Multi-stage asset/scene construction plans composing skills, knowledge records, and checkpoints |
 | **D. Runtime / Production Layer** | `registry/runtime-capability-policy.json`, `docs/runtime-stack-strategy.md` | External boundary (Path 1 Lab MCP 5.1+, Path 2 `mcp-for-blender` 3.0+, CLI appendix) | External execution bridges; BlendOps owns zero runtime servers or add-ons |
 | **E. Evaluation & Evidence Layer** | `evals/suites/`, `evals/catalog-retrieval-evals.json`, `evals/scene-specs/`, `docs/evals/` | Offline contract + retrieval + planner evals passing; runtime = `Not Run`, artifacts = `Not Produced` | Separates schema validity, source backing, version checks, runtime execution, and visual critique |
 
@@ -24,7 +24,7 @@
 | `skill_specific_operating_instructions` | 83 | `rule_based_path_and_heading_inspection` (5 flagged `needs_semantic_review`) | Skill-local checklists, report templates, and step-by-step operating instructions |
 | `workflow_or_pack_governance` | 75 | `rule_based_governance_and_recipe_mapping` | Stage routing, intake clarification, pack prerequisite, stage gates, and runtime path governance |
 | `recipe_specific_procedure` | 16 | `rule_based_governance_and_recipe_mapping` | Recipe discovery catalog and recipe decomposition rules synchronized with `registry/recipe-catalog.json` |
-| `historical_or_eval_evidence` | 0 | Stored in `docs/evals/` (16 files) | Historical evaluation and runtime evidence records live under `docs/evals/` rather than inside `skills/*/references/` |
+| `historical_or_eval_evidence` | 0 | Stored in `docs/evals/` (17 files) | Historical evaluation and runtime evidence records live under `docs/evals/` rather than inside `skills/*/references/` |
 | `outdated_or_duplicated` | 0 | Exact hash & promotion audit | Zero exact duplicate reference files; 5 adjacent checklist files tracked under `needs_semantic_review` |
 | **Total** | **211** | **100% accounted for** | **All 205 `skills/*/references/*.md` files classified with zero `undefined` fields** |
 
