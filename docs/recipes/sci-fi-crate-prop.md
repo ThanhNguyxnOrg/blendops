@@ -262,7 +262,7 @@ print(json.dumps({"step": "export", "file": "/abs/path/crate.glb", "bytes": os.p
 **13. Check the file.** Outside Blender, inspect the GLB and compare triangles with the budget:
 
 ```bash
-npx blendops glb-inspect /abs/path/crate.glb
+npx blendops glb-inspect "/abs/path/crate.glb"
 ```
 
 Expect a valid container with 2 meshes, 2 materials, and about 660 triangles (the inspector estimate): far under the 50,000 mid-mobile ceiling. Then `blendops-final-check` labels each file: previews and GLB `Produced` once found on disk, `Verified` only after its checks pass.
