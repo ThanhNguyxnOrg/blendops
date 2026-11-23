@@ -81,11 +81,68 @@
       }
     },
     {
+      "id": "build-preview-progression-to-look-check",
+      "skillId": "blendops-build",
+      "scenario": "Build steps produced a preview; blendops-build hands off to blendops-look-check",
+      "category": "structured_skip",
+      "inputPrompt": "While applying blendops-build, the workflow context is {\"runtime.status\":\"Produced\",\"artifact.type\":\"preview\"} (Preview exists; check sizes, framing and looks before the final output). Determine the contract-governed handoff target.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates the progression handoff predicate in skills/blendops-build/contract.json",
+        "Routes to blendops-look-check without claiming Verified"
+      ],
+      "requiredOutputProperties": [
+        "blendops-look-check",
+        "progression",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "final render before look check"
+      ],
+      "expectedRoutingTarget": "blendops-look-check",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Contract progression handoff predicate match to blendops-look-check"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "runtime.status": "Produced",
+          "artifact.type": "preview"
+        },
+        "simulatedOutput": {
+          "mode": "Contract handoff evaluation (blendops-build)",
+          "recommendedNextAction": "Hand off to blendops-look-check to check sizes, framing and looks before the final output.",
+          "targetHandoff": "blendops-look-check",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Matched progression predicate runtime.status=Produced and artifact.type=preview and routed to blendops-look-check.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-build/contract.json",
+            "skills/blendops-build/SKILL.md"
+          ]
+        }
+      }
+    },
+    {
       "id": "build-produced-progression-to-final-check",
       "skillId": "blendops-build",
-      "scenario": "Build steps produced a preview file; blendops-build hands off to blendops-final-check",
+      "scenario": "Build steps produced the final render; blendops-build hands off to blendops-final-check",
       "category": "structured_skip",
-      "inputPrompt": "While applying blendops-build, the workflow context is {\"runtime.status\":\"Produced\",\"artifact.type\":\"preview\"} (Preview output exists; check it against the done criteria). Determine the contract-governed handoff target.",
+      "inputPrompt": "While applying blendops-build, the workflow context is {\"runtime.status\":\"Produced\",\"artifact.type\":\"render\"} (Final render or GLB exists; check it against the done criteria). Determine the contract-governed handoff target.",
       "preconditions": {
         "mode": "text-only",
         "runtimeAvailable": false,
@@ -118,7 +175,7 @@
       "deterministicFixture": {
         "handoffContext": {
           "runtime.status": "Produced",
-          "artifact.type": "preview"
+          "artifact.type": "render"
         },
         "simulatedOutput": {
           "mode": "Contract handoff evaluation (blendops-build)",
@@ -126,7 +183,7 @@
           "targetHandoff": "blendops-final-check",
           "runtimeStatus": "Not Run",
           "artifactStatus": "Not Produced",
-          "summary": "Matched progression predicate runtime.status=Produced and artifact.type=preview and routed to blendops-final-check.",
+          "summary": "Matched progression predicate runtime.status=Produced and artifact.type=render and routed to blendops-final-check.",
           "warnings": [
             "Text-only workflow output; no live Blender session or artifact was executed."
           ],

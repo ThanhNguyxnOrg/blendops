@@ -21,4 +21,4 @@ Apply blendops-build on Blender 5.1 via Path 1: set the EEVEE engine and add an 
 ### Expected behavior
 - uses `BLENDER_EEVEE` (not `BLENDER_EEVEE_NEXT`) and `Emission Color`
 - saves a backup first and prints a JSON report per step
-- hands off to blendops-final-check once the preview file exists
+- hands off to blendops-look-check once the preview file exists

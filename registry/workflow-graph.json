@@ -1,23 +1,23 @@
 {
   "schemaVersion": "1.0.0",
   "coverage": "full-catalog",
-  "contractedSkills": 15,
+  "contractedSkills": 16,
   "uncontractedSkills": 0,
-  "catalogSkills": 15,
-  "sourceChecksum": "451a98549323da6e9558c85f1e99f18d2dc4b16fabeea22dd95808d31677b21d",
+  "catalogSkills": 16,
+  "sourceChecksum": "f5ecfad3254e5df7c8bbc643fda1ffea8bb2650d5bba26b96c0d11352db0b719",
   "summary": {
-    "totalNodes": 15,
-    "contractedNodes": 15,
+    "totalNodes": 16,
+    "contractedNodes": 16,
     "catalogOnlyNodes": 0,
     "routingPrecedenceParticipants": 3,
-    "specialistNodes": 12,
-    "totalContractedEdges": 199,
+    "specialistNodes": 13,
+    "totalContractedEdges": 204,
     "edgesByType": {
       "boundary_delegation": 6,
-      "progression": 57,
-      "conditional": 35,
+      "progression": 59,
+      "conditional": 37,
       "alternative": 32,
-      "fallback": 21,
+      "fallback": 22,
       "upstream_reference": 48
     },
     "progressionCycles": 0
@@ -118,6 +118,15 @@
       "status": "contracted",
       "category": "scene-planners",
       "role": "lighting-material-color-planner-and-checker",
+      "capabilityTier": "L0",
+      "isRoutingParticipant": false,
+      "precedenceRank": null
+    },
+    {
+      "id": "blendops-look-check",
+      "status": "contracted",
+      "category": "runtime-and-execution",
+      "role": "preview-look-check-loop",
       "capabilityTier": "L0",
       "isRoutingParticipant": false,
       "precedenceRank": null
@@ -1757,9 +1766,29 @@
     },
     {
       "from": "blendops-build",
+      "to": "blendops-look-check",
+      "type": "progression",
+      "label": "Preview exists; check sizes, framing and looks before the final output",
+      "when": {
+        "all": [
+          {
+            "field": "runtime.status",
+            "operator": "equals",
+            "value": "Produced"
+          },
+          {
+            "field": "artifact.type",
+            "operator": "equals",
+            "value": "preview"
+          }
+        ]
+      }
+    },
+    {
+      "from": "blendops-build",
       "to": "blendops-final-check",
       "type": "progression",
-      "label": "Preview, render or GLB exists; check it against the done criteria",
+      "label": "Final render or GLB exists; check it against the done criteria",
       "when": {
         "all": [
           {
@@ -1771,7 +1800,6 @@
             "field": "artifact.type",
             "operator": "in",
             "value": [
-              "preview",
               "render",
               "glb"
             ]
@@ -3270,6 +3298,74 @@
             "field": "budget.verdict",
             "operator": "equals",
             "value": "Not Run"
+          }
+        ]
+      }
+    },
+    {
+      "from": "blendops-look-check",
+      "to": "blendops-final-check",
+      "type": "progression",
+      "label": "Numbers and views pass; check the preview against the done criteria",
+      "when": {
+        "all": [
+          {
+            "field": "quality.verdict",
+            "operator": "equals",
+            "value": "pass"
+          }
+        ]
+      }
+    },
+    {
+      "from": "blendops-look-check",
+      "to": "blendops-build",
+      "type": "conditional",
+      "label": "An issue was found; fix it with one build step and check again",
+      "when": {
+        "all": [
+          {
+            "field": "quality.verdict",
+            "operator": "in",
+            "value": [
+              "warn",
+              "fail"
+            ]
+          },
+          {
+            "field": "runtime.errorDetected",
+            "operator": "equals",
+            "value": false
+          }
+        ]
+      }
+    },
+    {
+      "from": "blendops-look-check",
+      "to": "blendops-fix-problems",
+      "type": "conditional",
+      "label": "A check or capture failed, or an issue came back after its fix",
+      "when": {
+        "all": [
+          {
+            "field": "runtime.errorDetected",
+            "operator": "equals",
+            "value": true
+          }
+        ]
+      }
+    },
+    {
+      "from": "blendops-look-check",
+      "to": "blendops-connect-blender",
+      "type": "fallback",
+      "label": "Runtime is not ready for checks",
+      "when": {
+        "all": [
+          {
+            "field": "runtime.verifiedReady",
+            "operator": "equals",
+            "value": false
           }
         ]
       }

@@ -1,12 +1,12 @@
 # BlendOps — Skill Architecture & Reference Classification Audit
 
-> Generated deterministically by `scripts/build-knowledge-catalog.mjs`. Maps all 15 canonical skills from `registry/skills.json` and `registry/runtime-capability-policy.json`, and classifies all 205 `skills/*/references/*.md` files across the 5-layer architecture.
+> Generated deterministically by `scripts/build-knowledge-catalog.mjs`. Maps all 16 canonical skills from `registry/skills.json` and `registry/runtime-capability-policy.json`, and classifies all 205 `skills/*/references/*.md` files across the 5-layer architecture.
 
 ## 1. Five-Layer Architecture Summary
 
 | Layer | Canonical Artifacts | Count / Status | Responsibility |
 | :--- | :--- | :--- | :--- |
-| **A. Skill Layer** | `skills/*/SKILL.md`, `skills/*/contract.json`, `registry/skills.json`, `registry/workflow-graph.json` | 15 skills, 199 workflow edges | Single-responsibility agent task units, contracts, capability tiers (`L0`–`L3`), and handoffs |
+| **A. Skill Layer** | `skills/*/SKILL.md`, `skills/*/contract.json`, `registry/skills.json`, `registry/workflow-graph.json` | 16 skills, 204 workflow edges | Single-responsibility agent task units, contracts, capability tiers (`L0`–`L3`), and handoffs |
 | **B. Knowledge Layer** | `registry/knowledge-sources.json`, `registry/knowledge-catalog.json` | 30 records across 11 domains (20 sources) | Reusable, source-traceable 3D/Blender domain rules, parameters, tradeoffs, and validation checks |
 | **C. Recipe Layer** | `registry/recipe-catalog.json`, `docs/recipes/cyberpunk-shoe-hero.md` | 10 canonical recipes + 1 golden-path scenario doc | Multi-stage asset/scene construction plans composing skills, knowledge records, and checkpoints |
 | **D. Runtime / Production Layer** | `registry/runtime-capability-policy.json`, `docs/runtime-stack-strategy.md` | External boundary (Path 1 Lab MCP 5.1+, Path 2 `mcp-for-blender` 3.0+, CLI appendix) | External execution bridges; BlendOps owns zero runtime servers or add-ons |
@@ -15,18 +15,18 @@
 ## 2. Skill Reference Classification & Methodology Summary (205 Files)
 
 - **Derivation Rule for Workflow Stages**: Derived deterministically from registry/skills.json category + role + skill ID: routing-and-governance/brief-and-scope/recipe-and-pack-governance -> discover-and-plan; asset-and-library-governance -> source-and-clear-assets; runtime-and-bridge-governance -> runtime-preflight; scene-and-domain-planning/color-and-render-decisions -> stage-camera-lighting-and-lookdev; quality-and-budget-validation -> inspect-and-validate; web-and-glb-handoff/evidence-and-reporting -> verify-evidence-and-handoff.
-- **Classification Methodology**: Combines explicit promoted_from_skill_refs mappings (37 files), rule-based governance & recipe prefix mappings (91 files), rule-based path + heading inspection of skill-local operating instructions (77 files), and verified human semantic reviews (0 files — requires traceable reviewer, timestamp, scope, and outcome evidence).
+- **Classification Methodology**: Combines explicit promoted_from_skill_refs mappings (37 files), rule-based governance & recipe prefix mappings (91 files), rule-based path + heading inspection of skill-local operating instructions (81 files), and verified human semantic reviews (0 files — requires traceable reviewer, timestamp, scope, and outcome evidence).
 - **Honesty Note**: outdated_or_duplicated is 0 for exact file hash collisions inside skills/*/references/*.md; 8 skill-local checklist references that border promoted domain topics are explicitly marked review_status="needs_semantic_review", and rule-based prefix classifications are never represented as human_semantic_review without traceable reviewer/timestamp/scope/outcome evidence.
 
 | Classification Category | File Count | Primary Method | Description |
 | :--- | ---: | :--- | :--- |
 | `reusable_cross_skill_knowledge` | 37 | `knowledge_promotion_mapping` | Domain rules promoted to canonical `knowledge.*` records in `registry/knowledge-catalog.json` |
-| `skill_specific_operating_instructions` | 77 | `rule_based_path_and_heading_inspection` (5 flagged `needs_semantic_review`) | Skill-local checklists, report templates, and step-by-step operating instructions |
+| `skill_specific_operating_instructions` | 81 | `rule_based_path_and_heading_inspection` (5 flagged `needs_semantic_review`) | Skill-local checklists, report templates, and step-by-step operating instructions |
 | `workflow_or_pack_governance` | 75 | `rule_based_governance_and_recipe_mapping` | Stage routing, intake clarification, pack prerequisite, stage gates, and runtime path governance |
 | `recipe_specific_procedure` | 16 | `rule_based_governance_and_recipe_mapping` | Recipe discovery catalog and recipe decomposition rules synchronized with `registry/recipe-catalog.json` |
 | `historical_or_eval_evidence` | 0 | Stored in `docs/evals/` (14 files) | Historical evaluation and runtime evidence records live under `docs/evals/` rather than inside `skills/*/references/` |
 | `outdated_or_duplicated` | 0 | Exact hash & promotion audit | Zero exact duplicate reference files; 5 adjacent checklist files tracked under `needs_semantic_review` |
-| **Total** | **205** | **100% accounted for** | **All 205 `skills/*/references/*.md` files classified with zero `undefined` fields** |
+| **Total** | **209** | **100% accounted for** | **All 205 `skills/*/references/*.md` files classified with zero `undefined` fields** |
 
 ## 3. Complete 14-Skill Architecture Matrix
 
@@ -44,9 +44,10 @@
 | 10 | `blendops-glb-budget` | `quality-validators` | `stage-camera-lighting-and-lookdev` | `L0` (`L2`) | `modeling-or-procedural-workflow` | `keep_as_skill_and_link_knowledge` | 17 | 8 | 8 |
 | 11 | `blendops-glb-web-handoff` | `evidence-and-handoff` | `stage-camera-lighting-and-lookdev` | `L0` (`L2`) | `modeling-or-procedural-workflow` | `keep_as_skill_and_link_knowledge` | 14 | 5 | 13 |
 | 12 | `blendops-lighting-materials` | `scene-planners` | `stage-camera-lighting-and-lookdev` | `L0` (`L1`) | `modeling-or-procedural-workflow` | `keep_as_skill_and_link_knowledge` | 13 | 9 | 18 |
-| 13 | `blendops-product-shot` | `scene-planners` | `stage-camera-lighting-and-lookdev` | `L0` (`L1`) | `modeling-or-procedural-workflow` | `keep_as_skill_and_link_knowledge` | 9 | 1 | 9 |
-| 14 | `blendops-render-settings` | `render-and-output-decisions` | `stage-camera-lighting-and-lookdev` | `L0` (`L2`) | `modeling-or-procedural-workflow` | `keep_as_skill_and_link_knowledge` | 5 | 5 | 8 |
-| 15 | `blendops-scene-plan` | `scene-planners` | `stage-camera-lighting-and-lookdev` | `L0` (`L1`) | `modeling-or-procedural-workflow` | `keep_as_skill_and_link_knowledge` | 8 | 2 | 12 |
+| 13 | `blendops-look-check` | `runtime-and-execution` | `stage-camera-lighting-and-lookdev` | `L0` (`L2`) | `modeling-or-procedural-workflow` | `keep_as_skill_and_link_knowledge` | 0 | 0 | 4 |
+| 14 | `blendops-product-shot` | `scene-planners` | `stage-camera-lighting-and-lookdev` | `L0` (`L1`) | `modeling-or-procedural-workflow` | `keep_as_skill_and_link_knowledge` | 9 | 1 | 9 |
+| 15 | `blendops-render-settings` | `render-and-output-decisions` | `stage-camera-lighting-and-lookdev` | `L0` (`L2`) | `modeling-or-procedural-workflow` | `keep_as_skill_and_link_knowledge` | 5 | 5 | 8 |
+| 16 | `blendops-scene-plan` | `scene-planners` | `stage-camera-lighting-and-lookdev` | `L0` (`L1`) | `modeling-or-procedural-workflow` | `keep_as_skill_and_link_knowledge` | 8 | 2 | 12 |
 
 ## 4. Promoted Cross-Skill Reference Files -> Canonical Knowledge Records
 

@@ -206,8 +206,8 @@ test('Routing Contracts (7/7): Deterministic registry build produces identical c
 
   assert.deepEqual(run1.errors, []);
   assert.equal(run1.skillsRegistry.coverage, 'full-catalog');
-  assert.equal(run1.skillsRegistry.contractedSkills, 15);
-  assert.equal(run1.skillsRegistry.catalogSkills, 15);
+  assert.equal(run1.skillsRegistry.contractedSkills, 16);
+  assert.equal(run1.skillsRegistry.catalogSkills, 16);
   assert.equal(run1.skillsRegistry.sourceChecksum, run2.skillsRegistry.sourceChecksum);
   assert.equal(JSON.stringify(run1.skillsRegistry), JSON.stringify(run2.skillsRegistry));
   assert.equal(JSON.stringify(run1.workflowGraph), JSON.stringify(run2.workflowGraph));

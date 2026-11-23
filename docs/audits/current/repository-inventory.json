@@ -2,10 +2,10 @@
   "schemaVersion": "1.0.0",
   "auditPhase": "v1.0.0-current",
   "summary": {
-    "totalTrackedFiles": 567,
-    "npmPackageIncludedFiles": 389,
-    "generatedTrackedFiles": 45,
-    "canonicalSkillsCount": 15,
+    "totalTrackedFiles": 577,
+    "npmPackageIncludedFiles": 398,
+    "generatedTrackedFiles": 47,
+    "canonicalSkillsCount": 16,
     "lawsCount": 4,
     "packsCount": 1,
     "bundlesCount": 3,
@@ -16,22 +16,22 @@
       "documentation": 84,
       "historical_record": 17,
       "distribution_artifact": 15,
-      "canonical_source": 282,
-      "generated_artifact": 45,
-      "runtime_build_test_infrastructure": 87
+      "canonical_source": 289,
+      "generated_artifact": 47,
+      "runtime_build_test_infrastructure": 88
     },
     "subsystemCounts": {
       "repository-governance": 4,
       "github-governance-ci": 13,
       "documentation-governance": 8,
       "cli-distribution": 1,
-      "bundles-and-packaging": 64,
+      "bundles-and-packaging": 66,
       "product-and-target-docs": 67,
       "audits-and-provenance": 11,
       "runtime-and-adapter-evals": 15,
       "glb-web-handoff-toolkit": 3,
       "knowledge-and-recipe-catalog": 5,
-      "behavioral-evals": 30,
+      "behavioral-evals": 31,
       "laws-and-packs": 7,
       "package-governance": 2,
       "registry-and-routing": 6,
@@ -40,25 +40,25 @@
       "cli-and-runtime-tools": 23,
       "test-suites": 21,
       "quality-and-skill-reviews": 7,
-      "skills-catalog": 253
+      "skills-catalog": 260
     },
     "topLevelCounts": {
       "(root)": 15,
       ".github": 13,
       "bin": 1,
-      "bundles": 64,
+      "bundles": 66,
       "docs": 97,
-      "evals": 30,
+      "evals": 31,
       "laws": 5,
       "packs": 2,
       "registry": 10,
       "schemas": 16,
       "scripts": 55,
       "skill-reviews": 7,
-      "skills": 252
+      "skills": 259
     },
     "referenceIntegrity": {
-      "markdownFiles": 408,
+      "markdownFiles": 416,
       "jsModules": 56,
       "schemas": 16,
       "workflows": 6
@@ -125,7 +125,7 @@
     ],
     "nearDuplicateGeneratedFamilies": [
       {
-        "pattern": "bundles/claude-desktop-manual/references/skills/*.md (15 files) & bundles/skill-package/blendops/references/skill-*.md (15 files)",
+        "pattern": "bundles/claude-desktop-manual/references/skills/*.md (16 files) & bundles/skill-package/blendops/references/skill-*.md (16 files)",
         "generatorScript": "scripts/generate-bundle-reference-summaries.mjs",
         "rationale": "Dual-profile reference summaries required by the Claude Desktop manual bundle and the standalone uploadable skill package; verified 100% semantically equivalent to skills/*/SKILL.md and contract.json in CI."
       },
@@ -278,7 +278,7 @@
       "generatorScript": null,
       "safeToMoveOrRemove": false,
       "byteSize": 2020,
-      "sha256": "e04be1831533d25a4efeb9959c858ded4ae245efa2c2288ce08ffd98eab31f08"
+      "sha256": "7c83cae5f4c28d33a8d67b274047f209c239bfc614907d1081a9e60866efde7c"
     },
     {
       "path": ".github/workflows/agent-pr-signal.yml",
@@ -412,8 +412,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 8316,
-      "sha256": "cbeab91269eb4da38fd945c1c68ff5808d839bf53f64c710c19a86e169a12d42"
+      "byteSize": 8735,
+      "sha256": "aeccbb28398d97458025dd79fa1155f7fa4149d56ea2013ee0c61a812a52287b"
     },
     {
       "path": "CODE_OF_CONDUCT.md",
@@ -443,7 +443,7 @@
       "generatorScript": null,
       "safeToMoveOrRemove": false,
       "byteSize": 6707,
-      "sha256": "134e57bfb2d458469e355116f8699f2764d34f46e4a4254daf26b6cec23e5743"
+      "sha256": "1b2fb3dc0100e15b2cf86d18fe7b0353a045124a83a0235cf763638d0f989050"
     },
     {
       "path": "LICENSE",
@@ -472,8 +472,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 9776,
-      "sha256": "c5198c37655cdbe7d1fddc5eff091625f99299b133d2ca8e7d8fbd2054832d03"
+      "byteSize": 9981,
+      "sha256": "696850499e394984ccfea487273215d819c8a8070659179e01b4f36692a5d05e"
     },
     {
       "path": "SECURITY.md",
@@ -518,7 +518,7 @@
       "generatorScript": null,
       "safeToMoveOrRemove": false,
       "byteSize": 11247,
-      "sha256": "35c3ac03168a76b5fb5a5812433f4dab8fea7499709481ed301e83d3a6c20740"
+      "sha256": "98663ca825f85209b15b371f7dc3e4c3c2602c3471fdad8941a28d929bbc5ea0"
     },
     {
       "path": "bin/blendops.mjs",
@@ -622,8 +622,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 5214,
-      "sha256": "131a85e66eea95669e1acf5f49fc12bfa054b9cadd09081e3b0411d27929ab67"
+      "byteSize": 5395,
+      "sha256": "69238b8682732e9b256e7ab79392279bd121d44ff5f23e15ec25f350868c1e59"
     },
     {
       "path": "bundles/claude-desktop-manual/references/evidence-rules.md",
@@ -802,8 +802,8 @@
       "isGenerated": true,
       "generatorScript": "scripts/generate-bundle-reference-summaries.mjs",
       "safeToMoveOrRemove": false,
-      "byteSize": 4630,
-      "sha256": "8462172ede96dfae62a0f2c5ed8eec4fa312359a4d42a7464a96a5df650a0b90"
+      "byteSize": 4786,
+      "sha256": "011137d38bb97bf26056dc1a684b66b3d3047e376fb935fd3f7f2f51c1f5ef20"
     },
     {
       "path": "bundles/claude-desktop-manual/references/skills/blendops-camera.md",
@@ -924,6 +924,21 @@
       "safeToMoveOrRemove": false,
       "byteSize": 8204,
       "sha256": "415dabd3b97074cad2922e712b659d90578ae1d66a35b4744c7e7719410f114b"
+    },
+    {
+      "path": "bundles/claude-desktop-manual/references/skills/blendops-look-check.md",
+      "fileType": ".md",
+      "classification": "generated_artifact",
+      "purpose": "Deterministically generated bundle reference summary synced from skills/*/SKILL.md and contract.json",
+      "owningSubsystem": "bundles-and-packaging",
+      "includedInNpmPackage": true,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": true,
+      "generatorScript": "scripts/generate-bundle-reference-summaries.mjs",
+      "safeToMoveOrRemove": false,
+      "byteSize": 4376,
+      "sha256": "315dd7be21217a7ac111e5468d8970babb75afe7665699d9366e508809bd9e66"
     },
     {
       "path": "bundles/claude-desktop-manual/references/skills/blendops-product-shot.md",
@@ -1297,8 +1312,8 @@
       "isGenerated": true,
       "generatorScript": "scripts/generate-bundle-reference-summaries.mjs",
       "safeToMoveOrRemove": false,
-      "byteSize": 4435,
-      "sha256": "d2fc33444919a4336bafe4b202e89ddf78c12212a87cab462cf79ab396e8c7a4"
+      "byteSize": 4586,
+      "sha256": "4aa17cb6f5a8a19bc296c92bac3199f56b5ab00d35976e5a562494b567500d06"
     },
     {
       "path": "bundles/skill-package/blendops/references/skill-blendops-camera.md",
@@ -1421,6 +1436,21 @@
       "sha256": "f744a7b07a275c2ca158dbc2f60277c742a7b7e745caede7851d5b4b874ec333"
     },
     {
+      "path": "bundles/skill-package/blendops/references/skill-blendops-look-check.md",
+      "fileType": ".md",
+      "classification": "generated_artifact",
+      "purpose": "Deterministically generated bundle reference summary synced from skills/*/SKILL.md and contract.json",
+      "owningSubsystem": "bundles-and-packaging",
+      "includedInNpmPackage": true,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": true,
+      "generatorScript": "scripts/generate-bundle-reference-summaries.mjs",
+      "safeToMoveOrRemove": false,
+      "byteSize": 4168,
+      "sha256": "848c0b6cfb934084fcef8c9a1973c9efb1cdc85c6b924d77ed82155d0d6f393b"
+    },
+    {
       "path": "bundles/skill-package/blendops/references/skill-blendops-product-shot.md",
       "fileType": ".md",
       "classification": "generated_artifact",
@@ -1508,7 +1538,7 @@
       "generatorScript": null,
       "safeToMoveOrRemove": false,
       "byteSize": 22255,
-      "sha256": "e50f4cd53472320d23e8b93c3727646accf49364cc41a5fad0d59400b11a0371"
+      "sha256": "c75bbc8b4711e7fa18c49d095e2b3d62a72bd077ec2b643e8c2a1fac66c3d011"
     },
     {
       "path": "docs/adapter-registry.md",
@@ -1688,7 +1718,7 @@
       "generatorScript": null,
       "safeToMoveOrRemove": false,
       "byteSize": 20748,
-      "sha256": "f686532e14c2eb192daa1e11efd9f9297bdf094abf6b10614cba892dc9a6fb2b"
+      "sha256": "2452cfc2d636596d3df5da1a7c42ac2047ee902df3deefc07d4d3a72bd85ea53"
     },
     {
       "path": "docs/audits/audited-inputs.manifest.json",
@@ -1837,8 +1867,8 @@
       "isGenerated": true,
       "generatorScript": "scripts/build-knowledge-catalog.mjs",
       "safeToMoveOrRemove": false,
-      "byteSize": 306209,
-      "sha256": "6cb469d424443d8f759f1fbc1c489d795a8d74b9d1b8806788c5f1ee24fdfdcb"
+      "byteSize": 312184,
+      "sha256": "a549467cc0337a2b96d0c5283d864aed5dbb00128ac02c3db5ef8e366d6de1ab"
     },
     {
       "path": "docs/audits/skill-architecture-audit.md",
@@ -1852,8 +1882,8 @@
       "isGenerated": true,
       "generatorScript": "scripts/build-knowledge-catalog.mjs",
       "safeToMoveOrRemove": false,
-      "byteSize": 21329,
-      "sha256": "d3f108d2936ee21fb7e8a12a31c5c4a1ed013f2e2dfd53f134df0392c1d2f3fc"
+      "byteSize": 21523,
+      "sha256": "604b40a493892ece7d1c715484238ef75b7e7c23f0485fa4b758d324096cabd9"
     },
     {
       "path": "docs/blender-version-compatibility.md",
@@ -1913,7 +1943,7 @@
       "generatorScript": null,
       "safeToMoveOrRemove": false,
       "byteSize": 10447,
-      "sha256": "6675412743c847394a15120822563220d700b82eddc08343711317fcf109b628"
+      "sha256": "46757b2319d807ebc478ec27e14ed2d919265310ed41989eeb620aba042d20a2"
     },
     {
       "path": "docs/evals/README.md",
@@ -2303,7 +2333,7 @@
       "generatorScript": null,
       "safeToMoveOrRemove": false,
       "byteSize": 8511,
-      "sha256": "4b0bafb989f9d3c0bdc4b263801452788032486e6fb7dd5f3b61c7dca6a52110"
+      "sha256": "c4c0376f40e5183b6a874896ca4961963466a90cb0ef8cd212607aaa545c4468"
     },
     {
       "path": "docs/install/aider.md",
@@ -2543,7 +2573,7 @@
       "generatorScript": null,
       "safeToMoveOrRemove": false,
       "byteSize": 17769,
-      "sha256": "bf322955bea62b4f1a3111b1027bee3c289f050911696a3363a6d77c5e0e9b2d"
+      "sha256": "6ee6a1dd12bd14dc7f420f1422bae6862e574ff84633d391546c5bddf96a915c"
     },
     {
       "path": "docs/install/jetbrains-junie.md",
@@ -2813,7 +2843,7 @@
       "generatorScript": null,
       "safeToMoveOrRemove": false,
       "byteSize": 8779,
-      "sha256": "dacb51138bac23d15900bf8688c52533da369ed48751561a3300721d310a661e"
+      "sha256": "7d2a233fa5091d6d302e525c3a58a4e59aa2d29a5e9fa2158e70e7de5c9e125d"
     },
     {
       "path": "docs/runtime-stack-strategy.md",
@@ -2857,8 +2887,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 14274,
-      "sha256": "f6f9077fe4d84b56685f3d7b7de0d3e5a65e2f9e52fef21f79228101dd40d2b2"
+      "byteSize": 14415,
+      "sha256": "bafca8efe4c453466844688deaf8bc8b601d659550974d4e4e45827c931f0b6d"
     },
     {
       "path": "docs/start-here.md",
@@ -2977,8 +3007,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 16500,
-      "sha256": "bc82cbe9ab93e652700bb5b151a754a7ca120f7bff7bd1379bf246df6e42d88c"
+      "byteSize": 17513,
+      "sha256": "93a74da4024514588b8d18ff1c7d75209113100fde0c6dea869a133ddd557a5d"
     },
     {
       "path": "evals/recipes/hard-surface-mech-prop.py",
@@ -3217,8 +3247,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 12814,
-      "sha256": "a20372b07af1a16d553321b5e442b73577e966c48d49717a85cf4b447c27afa0"
+      "byteSize": 15230,
+      "sha256": "788d6eb6fca86f1f69e736050dcc6aaf9c3b08eaaa16f61d32784de1e5e4735b"
     },
     {
       "path": "evals/suites/blendops-camera.eval.json",
@@ -3339,6 +3369,21 @@
       "safeToMoveOrRemove": false,
       "byteSize": 62807,
       "sha256": "ab73b97e4a79b9a5496a4aae7167e2f9af3fa7bec38336b0d9e582d9f46f260c"
+    },
+    {
+      "path": "evals/suites/blendops-look-check.eval.json",
+      "fileType": ".json",
+      "classification": "runtime_build_test_infrastructure",
+      "purpose": "Deterministic behavioral evaluation suite for skill 'blendops-look-check.eval'",
+      "owningSubsystem": "behavioral-evals",
+      "includedInNpmPackage": false,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 12881,
+      "sha256": "a099e6178e30f02d17bbd3ec823bcb3a9da2a5f5eaafb0ab6e41857c6f2db96f"
     },
     {
       "path": "evals/suites/blendops-product-shot.eval.json",
@@ -3503,7 +3548,7 @@
       "generatorScript": null,
       "safeToMoveOrRemove": false,
       "byteSize": 4637,
-      "sha256": "85247da648727ad0b6432f650b732c0b166075db832b01acef28df2aedfba78c"
+      "sha256": "5e3de85e5a12accf84c5ee4631ea6ff27ea36946a58dde276f209b1a578c0977"
     },
     {
       "path": "packs/README.md",
@@ -3533,7 +3578,7 @@
       "generatorScript": null,
       "safeToMoveOrRemove": false,
       "byteSize": 5235,
-      "sha256": "d9ddc47ca4d4ee239e045ce5f71036071c70a87540cafe5ca852a6d85dc67a8e"
+      "sha256": "13da4a75308bb378a0eadcbca9ddf1cc6ffca13bade28c959a64373ba2a0efad"
     },
     {
       "path": "registry/catalog-index.json",
@@ -3548,7 +3593,7 @@
       "generatorScript": "scripts/build-knowledge-catalog.mjs",
       "safeToMoveOrRemove": false,
       "byteSize": 493663,
-      "sha256": "1c64caabafef4447ef6840e4b338dc701eb37f33c2048a67f7a62c907d0cc031"
+      "sha256": "564083cae4617fc9543f6a329e988b12fc9b50477709b55b44eae384d2dbc3ac"
     },
     {
       "path": "registry/compatibility-matrix.json",
@@ -3637,8 +3682,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 8634,
-      "sha256": "6bb8dd060c6e3e833afe316b8aa3e604d2b85d09f83d7b5892764ae9c31f24f1"
+      "byteSize": 8945,
+      "sha256": "3b2a5af87dfb1eacb973d9e3818226b90781411cf44ea396dccfe6ddc3d13c7d"
     },
     {
       "path": "registry/runtime-operations.json",
@@ -3667,8 +3712,8 @@
       "isGenerated": true,
       "generatorScript": "scripts/build-registry.mjs",
       "safeToMoveOrRemove": false,
-      "byteSize": 180065,
-      "sha256": "f0769920c874b6b791eddaa2197351006db291e75aef13ca4b0499a1e4be5678"
+      "byteSize": 185047,
+      "sha256": "b47d696d1a77fb5d0d25d8c95059a649c45dc3599d40b175a29b303a3084effd"
     },
     {
       "path": "registry/workflow-graph.json",
@@ -3682,8 +3727,8 @@
       "isGenerated": true,
       "generatorScript": "scripts/build-registry.mjs",
       "safeToMoveOrRemove": false,
-      "byteSize": 94531,
-      "sha256": "1e00879469f6183056bbb9dbe6831a2c840b02c241cb3002c4549ae54f261c83"
+      "byteSize": 96918,
+      "sha256": "f0e02964c919eb1c544e1e4cc01d8ac382f26b823dc4575536dedc2d6f28c5a5"
     },
     {
       "path": "schemas/adapter-compatibility-matrix.schema.json",
@@ -3818,7 +3863,7 @@
       "generatorScript": null,
       "safeToMoveOrRemove": false,
       "byteSize": 5335,
-      "sha256": "76ce8f45f54fa3f87606e307c47d08f72d7d6e2ae37f9f458cdd9ba0d08ad6ba"
+      "sha256": "0cfec78e488542013dfa34ea14597455ed902f832d0db5099f094b052fe76e87"
     },
     {
       "path": "schemas/runtime-evidence-packet.schema.json",
@@ -3953,7 +3998,7 @@
       "generatorScript": null,
       "safeToMoveOrRemove": false,
       "byteSize": 107447,
-      "sha256": "95fe7bfa6dfae14b9e60d3053cd2c584338a0d8ee92b1d55675364f10fcf243d"
+      "sha256": "2a3bac1a08c162a006f2916c50a47f300d706491c901801b9d002813d97c1102"
     },
     {
       "path": "scripts/build-registry.mjs",
@@ -3982,8 +4027,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 40694,
-      "sha256": "f9592112a2e35275234185d1a488b5eb7cae372e5840de17ab10c6c1d194e373"
+      "byteSize": 41160,
+      "sha256": "964c957b2ce98c2b3d89795d1bf470ccdc5a57413e94f947bb75c6d96c45e138"
     },
     {
       "path": "scripts/cli/args.mjs",
@@ -4028,7 +4073,7 @@
       "generatorScript": null,
       "safeToMoveOrRemove": false,
       "byteSize": 14067,
-      "sha256": "03f29b8f20656d6129e76df62b3a49aba2379447ea3a1fb5a89cf461167e9cfc"
+      "sha256": "c0086bc9b969bb672e8082c406a9b2c242b10fc66cb457c43897804ae8164380"
     },
     {
       "path": "scripts/cli/doctor.mjs",
@@ -4073,7 +4118,7 @@
       "generatorScript": null,
       "safeToMoveOrRemove": false,
       "byteSize": 35037,
-      "sha256": "68c173d7ed1f91b3c697c7c10ba07561dc9a33b77cb206644fcf653d658f4469"
+      "sha256": "71771a5ec5da5d42ef0284da67e59cfa4a6fbad4e13855b4a6732b2b40e08cee"
     },
     {
       "path": "scripts/cli/installer.mjs",
@@ -4088,7 +4133,7 @@
       "generatorScript": null,
       "safeToMoveOrRemove": false,
       "byteSize": 10312,
-      "sha256": "15331782d7d51f723866dc3f126c5db0fbcf4daa65e5c089f28c03c82e669ce6"
+      "sha256": "1d5dd004548d3da4a36c137ed824492c982501ba380a4060b7bcb1f7232a7ccb"
     },
     {
       "path": "scripts/cli/managed-blocks.mjs",
@@ -4133,7 +4178,7 @@
       "generatorScript": null,
       "safeToMoveOrRemove": false,
       "byteSize": 7536,
-      "sha256": "3363d1e007066dbc8e3c21840795a999968c029b65215a13e5832a8d1162b9ec"
+      "sha256": "eae9d64e3cad073f146367bb3903ada886a0861b7faf481eb335a88bea8c7433"
     },
     {
       "path": "scripts/cli/rollback.mjs",
@@ -4178,7 +4223,7 @@
       "generatorScript": null,
       "safeToMoveOrRemove": false,
       "byteSize": 11453,
-      "sha256": "8753a669da6ca306e26b2a8202ca10585bd6e3c4bfc7f4549a77236c4dfd4dba"
+      "sha256": "e32134304b9d8114bc842c13846a7f772472183ab0aa7de0438d75bc05d1b6a8"
     },
     {
       "path": "scripts/cli/write-project.mjs",
@@ -4223,7 +4268,7 @@
       "generatorScript": null,
       "safeToMoveOrRemove": false,
       "byteSize": 43581,
-      "sha256": "fa62f547010169edb967333be1d7f59c85f854cfccddd240abb3ce9974108feb"
+      "sha256": "3819d843d943879890d58c1365205d738aa79c95cbd9e92d59bc66d1241c7480"
     },
     {
       "path": "scripts/export-claude-skills.mjs",
@@ -4253,7 +4298,7 @@
       "generatorScript": null,
       "safeToMoveOrRemove": false,
       "byteSize": 70891,
-      "sha256": "9bc21b2ebb6065cd1aa2ed821d8c68d9cee19e04c4ea44f52a703fc88d91f489"
+      "sha256": "aa21cd93d80de8475c21a8d38ec827c8b6c53ef660aa160772273ec95d27d280"
     },
     {
       "path": "scripts/generate-current-audit.mjs",
@@ -4267,8 +4312,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 94193,
-      "sha256": "ff65184df1db1cfa17a827c551069284d80e4e4cdcf2368f3508dc2f1f97df79"
+      "byteSize": 94215,
+      "sha256": "3531356ad014c926ee165979618bcf8a73f80056e1515dec6493b90ef24cb6c1"
     },
     {
       "path": "scripts/generate-glb-handoff-report.mjs",
@@ -4403,7 +4448,7 @@
       "generatorScript": null,
       "safeToMoveOrRemove": false,
       "byteSize": 56703,
-      "sha256": "63887748f8681c7eefe3e3659783748f8b067092864d0d5c394d8c17b3bb18a7"
+      "sha256": "4c45226a3fa3d0365eaccf64a40ea58b359eaf546df6aac9984a49bc27e1e89f"
     },
     {
       "path": "scripts/test-bundle-summaries.mjs",
@@ -4418,7 +4463,7 @@
       "generatorScript": null,
       "safeToMoveOrRemove": false,
       "byteSize": 68601,
-      "sha256": "2c2e1f8fc5ed6737a308b391c17f42ef5b04939f4b5b8a0c429378de97bddc23"
+      "sha256": "451b480cf801b45c43c72d9dd8c5caef7a25daa36255bb33e660133f24cf822a"
     },
     {
       "path": "scripts/test-catalog-contracts.mjs",
@@ -4433,7 +4478,7 @@
       "generatorScript": null,
       "safeToMoveOrRemove": false,
       "byteSize": 32376,
-      "sha256": "7af9009337620a74266f01f01440ec40b0c0a0758b9140cff18f7eba02661f31"
+      "sha256": "236baeb1cd822d968e86b89e661ab4d515f15c1f9274c7f8bb1973f7eaa50c10"
     },
     {
       "path": "scripts/test-cli-package.mjs",
@@ -4448,7 +4493,7 @@
       "generatorScript": null,
       "safeToMoveOrRemove": false,
       "byteSize": 52764,
-      "sha256": "821b5fa892bf2543a1537ad6ccd5185df7ec4fa5cfabf53d3773acc73a81d32d"
+      "sha256": "8917f27eecd7183f78acf58d5a077762584afb3a6d810084708ec105a404b2d0"
     },
     {
       "path": "scripts/test-dev-server.mjs",
@@ -4478,7 +4523,7 @@
       "generatorScript": null,
       "safeToMoveOrRemove": false,
       "byteSize": 4779,
-      "sha256": "bac1b19c93e0066ed56531c134ccab2b7cfcaf122c0f4f252fce45bdd66c22c0"
+      "sha256": "661c7968652ab05f329dc6c13bbb32818cdfd4f98cf949dc942dfa63141dea82"
     },
     {
       "path": "scripts/test-eval-coverage.mjs",
@@ -4493,7 +4538,7 @@
       "generatorScript": null,
       "safeToMoveOrRemove": false,
       "byteSize": 34084,
-      "sha256": "a2a493eb2648598c061c6e329db562415a36e6765f7a111a4603dc28d525a61b"
+      "sha256": "9a7520749856f449db2de2de235419b2ff3d7ec624f19bc66949b89eaa8e508a"
     },
     {
       "path": "scripts/test-glb-handoff.mjs",
@@ -4523,7 +4568,7 @@
       "generatorScript": null,
       "safeToMoveOrRemove": false,
       "byteSize": 12929,
-      "sha256": "d55ffbf2971fc3729e02d4b6861697f56c55d2fb241f340f8f0952ee5d7b7163"
+      "sha256": "9209b034107c5ab8a36c6852b12cc9e6a49c7808fdd50e0e166b8da7ededcc43"
     },
     {
       "path": "scripts/test-live-runtime-eval.mjs",
@@ -4553,7 +4598,7 @@
       "generatorScript": null,
       "safeToMoveOrRemove": false,
       "byteSize": 54422,
-      "sha256": "1fc176f357bbc9a6dbdc30b825a9114434e1f1cf57634ff266b8433ec80e77ef"
+      "sha256": "1cf0f5049fd0a1c0c226f8e0ddb7360d6206a66bb504ca371e94ae347ce6953d"
     },
     {
       "path": "scripts/test-mcp-qualification.mjs",
@@ -4583,7 +4628,7 @@
       "generatorScript": null,
       "safeToMoveOrRemove": false,
       "byteSize": 96206,
-      "sha256": "ec2df13a78d8a688d842d20b3ff9265c3264ed19430ca60e14fe6ffe8edd8af1"
+      "sha256": "4ffe8bfa5c2da78342c396af7a53428c95a6d6eb8697d6f818fafec15de2c131"
     },
     {
       "path": "scripts/test-repository-architecture.mjs",
@@ -4598,7 +4643,7 @@
       "generatorScript": null,
       "safeToMoveOrRemove": false,
       "byteSize": 25994,
-      "sha256": "e1af319d0cf7ee840896f6071d80be79a70d240c66267d81ecb308c2f0884169"
+      "sha256": "c58670b761f34abd3c3925bca262d99f94ce9d77bf7f573a5d463b48d2f163d2"
     },
     {
       "path": "scripts/test-routing-contracts.mjs",
@@ -4613,7 +4658,7 @@
       "generatorScript": null,
       "safeToMoveOrRemove": false,
       "byteSize": 22819,
-      "sha256": "42c33769efb552645bfd20f6e614da0c46ccd66dc3407fda3976c0894fa458c7"
+      "sha256": "a06bb145d92e3bf81eb129d12b6a7499c5eabc6ab07dd1d541e407c76dfdcf14"
     },
     {
       "path": "scripts/test-runtime-hardening.mjs",
@@ -4658,7 +4703,7 @@
       "generatorScript": null,
       "safeToMoveOrRemove": false,
       "byteSize": 26012,
-      "sha256": "c07bc11c43ac2076326302e1acf16a706d93653151769a755ffd84fd6b5eb407"
+      "sha256": "235c0fe915a3febb9a8143757872c79114bd2b440ec9016c18580bddab5ba21e"
     },
     {
       "path": "scripts/test-skill-templates.mjs",
@@ -4673,7 +4718,7 @@
       "generatorScript": null,
       "safeToMoveOrRemove": false,
       "byteSize": 15893,
-      "sha256": "f644ffa0944daf0997ff7c66975a7c3ee4a9ddc0b5f54809529a664a44b8e486"
+      "sha256": "37d23bba0decfba56cd6f7861454d8e2f034f0a135ca492bd1fbda262a64c451"
     },
     {
       "path": "scripts/test-skills-export.mjs",
@@ -4688,7 +4733,7 @@
       "generatorScript": null,
       "safeToMoveOrRemove": false,
       "byteSize": 12318,
-      "sha256": "8e61df2ccba11036f3f74081d802794d92a1285f51220809231e94bb9ebda2e5"
+      "sha256": "9e3a82346f4bd058778c6cddee5f995ef01b57e7e8f97931f378ebf5a07649c8"
     },
     {
       "path": "scripts/validate-capability-policy.mjs",
@@ -4702,8 +4747,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 21050,
-      "sha256": "5404b15a4cbcae94e76318a332930a36dbb1f4a4d5399a70722720ab4a516279"
+      "byteSize": 21081,
+      "sha256": "c3861a3b4831d0cae6ded2b3c9a748667f6753fe6311cd34d7938f0207c94b31"
     },
     {
       "path": "scripts/validate-compatibility-matrix.mjs",
@@ -4748,7 +4793,7 @@
       "generatorScript": null,
       "safeToMoveOrRemove": false,
       "byteSize": 32259,
-      "sha256": "d870b623db2f751cc921d5cd5403d4f7f9b137565a178203c90a89a0a1967ee2"
+      "sha256": "d5df7ead3c48374ae82b6233a53638c24299fcf4d66f2a5f937622a043afbba7"
     },
     {
       "path": "skill-reviews/README.md",
@@ -4859,7 +4904,7 @@
       "path": "skills.sh.json",
       "fileType": ".json",
       "classification": "configuration",
-      "purpose": "Canonical skills.sh repository grouping and catalog customization manifest for all 15 skills",
+      "purpose": "Canonical skills.sh repository grouping and catalog customization manifest for all 16 skills",
       "owningSubsystem": "skills-catalog",
       "includedInNpmPackage": true,
       "referencedByCi": true,
@@ -4867,14 +4912,14 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 1490,
-      "sha256": "84e5b07c1a0c4288b82099ca2a5aeada666a7ea7ee292fd209f7ad1916f434e9"
+      "byteSize": 1521,
+      "sha256": "8e7c1ac19924fbd1f0889e041cfa01253e2e6bf7a077a26bd4961136389c1d59"
     },
     {
       "path": "skills/README.md",
       "fileType": ".md",
       "classification": "documentation",
-      "purpose": "Canonical index and authoring guide for all 15 BlendOps skills",
+      "purpose": "Canonical index and authoring guide for all 16 BlendOps skills",
       "owningSubsystem": "skills-catalog",
       "includedInNpmPackage": true,
       "referencedByCi": true,
@@ -4882,8 +4927,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 12717,
-      "sha256": "81dfaa22b1b95f209e009ed4eb4b9e81a1258ad5bffb164a6cc9645df9e509ff"
+      "byteSize": 13108,
+      "sha256": "4785a6d6879d9c4fca4a34bb12d241a98338208054a147882d922733e39b8bd1"
     },
     {
       "path": "skills/_template/SKILL.md",
@@ -5542,8 +5587,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 1025,
-      "sha256": "3d7bcc4674365820e07b6b8ba1f20500d3c20a75a62aa46045b018139dbd1ea9"
+      "byteSize": 1024,
+      "sha256": "fc0d17638ce83d55b3cdbc94e3206b018cad158c84ce136d4e278b68f5ef1189"
     },
     {
       "path": "skills/blendops-build/SKILL.md",
@@ -5557,8 +5602,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 9637,
-      "sha256": "1cc316335d8b9d8d9f3d766eeaf8dcd76eaf28ba68672021bfc8311ea6b2ff19"
+      "byteSize": 9694,
+      "sha256": "b33b0496afbce2d884829416691ad778ea6bca4abcb637730c9b13b53edf852d"
     },
     {
       "path": "skills/blendops-build/contract.json",
@@ -5572,8 +5617,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 3723,
-      "sha256": "85ee6eb9bbe7a737c9d04944c43460bd529aaee0960af1697b53442264b7a6a8"
+      "byteSize": 4173,
+      "sha256": "6b2741ead22c3a463cb19d99a2dc17ea3a6a2e0b5b89360355afdb3815bce521"
     },
     {
       "path": "skills/blendops-build/references/api-version-rules.md",
@@ -5602,8 +5647,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 2711,
-      "sha256": "5c9e2e315d200e705ebd96b62bc671b5dcd1934056ee7e199e6d4094e86036bd"
+      "byteSize": 2645,
+      "sha256": "13d030af73752cb2079a122e871a4f76be014008ae44e5f66f60ae1520e189ef"
     },
     {
       "path": "skills/blendops-build/references/lighting-camera.md",
@@ -7841,6 +7886,111 @@
       "sha256": "0e1f60aca726de0669973d4bc44c2f342714f6668e961bb1ed85825d672c1537"
     },
     {
+      "path": "skills/blendops-look-check/EVAL.md",
+      "fileType": ".md",
+      "classification": "canonical_source",
+      "purpose": "Human-readable evaluation prompt and rubric specification for skill",
+      "owningSubsystem": "skills-catalog",
+      "includedInNpmPackage": true,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 1168,
+      "sha256": "91e97cb1d2f8896b46b7902719c36279ac83019c5c19ebbd007d47110b8e743c"
+    },
+    {
+      "path": "skills/blendops-look-check/SKILL.md",
+      "fileType": ".md",
+      "classification": "canonical_source",
+      "purpose": "Canonical Anthropic-compliant skill specification and operating playbook",
+      "owningSubsystem": "skills-catalog",
+      "includedInNpmPackage": true,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 8697,
+      "sha256": "5d866342ae61aefe2acc87d3cc2a415369d10371bf553ad6f8d744c9a9f86094"
+    },
+    {
+      "path": "skills/blendops-look-check/contract.json",
+      "fileType": ".json",
+      "classification": "canonical_source",
+      "purpose": "Machine-readable routing, input/output, and handoff contract for skill",
+      "owningSubsystem": "skills-catalog",
+      "includedInNpmPackage": true,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 3887,
+      "sha256": "5841d772164c4026e828c66269cbc493e25a3b63ff4eb27d0d7585649f82e01f"
+    },
+    {
+      "path": "skills/blendops-look-check/references/capture-views.md",
+      "fileType": ".md",
+      "classification": "canonical_source",
+      "purpose": "Domain reference guide attached to canonical skill",
+      "owningSubsystem": "skills-catalog",
+      "includedInNpmPackage": true,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 1500,
+      "sha256": "72ba3bedd35fd7d03ff3f9261a8aee89da4fa469d5a413e822424a033ed2b47c"
+    },
+    {
+      "path": "skills/blendops-look-check/references/fix-loop.md",
+      "fileType": ".md",
+      "classification": "canonical_source",
+      "purpose": "Domain reference guide attached to canonical skill",
+      "owningSubsystem": "skills-catalog",
+      "includedInNpmPackage": true,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 1602,
+      "sha256": "8b6e67e9be34322d9743adeb9ff5056dc44ce7239f36b38165d7a822c452fb46"
+    },
+    {
+      "path": "skills/blendops-look-check/references/numeric-checks.md",
+      "fileType": ".md",
+      "classification": "canonical_source",
+      "purpose": "Domain reference guide attached to canonical skill",
+      "owningSubsystem": "skills-catalog",
+      "includedInNpmPackage": true,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 3955,
+      "sha256": "12ce26d82cb5883195caced583b3e7463f944338fb3c176d49b65f1bf4bb60d4"
+    },
+    {
+      "path": "skills/blendops-look-check/references/visual-review.md",
+      "fileType": ".md",
+      "classification": "canonical_source",
+      "purpose": "Domain reference guide attached to canonical skill",
+      "owningSubsystem": "skills-catalog",
+      "includedInNpmPackage": true,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 1401,
+      "sha256": "80ec826e22010cdebd735407ab75708e45d6f01bcf6bb1c0a7aca4cd3dc0e8f8"
+    },
+    {
       "path": "skills/blendops-product-shot/EVAL.md",
       "fileType": ".md",
       "classification": "canonical_source",
@@ -8438,7 +8588,7 @@
       "generatorScript": null,
       "safeToMoveOrRemove": false,
       "byteSize": 14370,
-      "sha256": "30115efec03a0212755fa85a915a947b5321a7e481ff9077d9c9b97b698445ac"
+      "sha256": "c927b36394f94a95e5f55c4f272f93202e45b799091808d8ffbfe19482f8f00c"
     },
     {
       "path": "skills/blendops-start/contract.json",

@@ -78,9 +78,28 @@
   },
   "handoffs": [
     {
+      "target": "blendops-look-check",
+      "type": "progression",
+      "label": "Preview exists; check sizes, framing and looks before the final output",
+      "when": {
+        "all": [
+          {
+            "field": "runtime.status",
+            "operator": "equals",
+            "value": "Produced"
+          },
+          {
+            "field": "artifact.type",
+            "operator": "equals",
+            "value": "preview"
+          }
+        ]
+      }
+    },
+    {
       "target": "blendops-final-check",
       "type": "progression",
-      "label": "Preview, render or GLB exists; check it against the done criteria",
+      "label": "Final render or GLB exists; check it against the done criteria",
       "when": {
         "all": [
           {
@@ -92,7 +111,6 @@
             "field": "artifact.type",
             "operator": "in",
             "value": [
-              "preview",
               "render",
               "glb"
             ]

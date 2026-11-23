@@ -51,6 +51,7 @@ const GOVERNED_CEILING_BY_SKILL = Object.freeze({
   'blendops-glb-budget': 'L2',
   'blendops-glb-web-handoff': 'L2',
   'blendops-final-check': 'L2',
+  'blendops-look-check': 'L2',
 
   // L3 — Headless CLI / Batch Execution Outlines (requires explicit confirmation + backup + no user-facing raw Python)
   'blendops-connect-blender': 'L3',

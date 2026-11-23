@@ -189,6 +189,15 @@
       "userFacingPythonAllowed": false
     },
     {
+      "skillId": "blendops-look-check",
+      "capabilityTier": "L0",
+      "governedRuntimeCeiling": "L2",
+      "requiresPreMutationBackupWhenExecuted": true,
+      "requiresAssetLicenseClearance": true,
+      "requiresExplicitOperatorConfirmation": false,
+      "userFacingPythonAllowed": false
+    },
+    {
       "skillId": "blendops-product-shot",
       "capabilityTier": "L0",
       "governedRuntimeCeiling": "L1",

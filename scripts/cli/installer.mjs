@@ -155,7 +155,7 @@ export function runInstaller(rawArgsOrOptions, options = {}) {
     };
     if (isBundleTarget) {
       result.skillMdCountPerZip = 1;
-      result.zipCount = livePlan.skillCount || 15;
+      result.zipCount = livePlan.skillCount || 16;
     }
     result.report = formatInstallerReport(result);
     return result;

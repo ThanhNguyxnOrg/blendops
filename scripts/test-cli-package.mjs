@@ -387,13 +387,13 @@ describe('Distributable CLI & Package Readiness', () => {
       assert.ok(packedPaths.has(reqPath), `Packed tarball must include required file '${reqPath}'`);
     }
 
-    // All 15 canonical skills must have both SKILL.md and EVAL.md in the packed tarball
+    // All 16 canonical skills must have both SKILL.md and EVAL.md in the packed tarball
     const skillDirs = fs
       .readdirSync(path.join(ROOT, 'skills'), { withFileTypes: true })
       .filter((d) => d.isDirectory() && d.name !== '_template')
       .map((d) => d.name)
       .sort();
-    assert.equal(skillDirs.length, 15, 'Repository must have 15 canonical skills');
+    assert.equal(skillDirs.length, 16, 'Repository must have 16 canonical skills');
 
     for (const skillName of skillDirs) {
       assert.ok(
@@ -455,7 +455,7 @@ describe('Distributable CLI & Package Readiness', () => {
 
     const jsDoc = runInstalledCli(['doctor'], { cwd: unrelatedCwd, via: 'js' });
     assert.match(jsDoc, /Mode: doctor/);
-    assert.match(jsDoc, /15 canonical skills verified/);
+    assert.match(jsDoc, /16 canonical skills verified/);
     assert.match(jsDoc, /Runtime status: Not Run/);
     assert.match(jsDoc, /Artifact status: Not Produced/);
 
@@ -509,7 +509,7 @@ describe('Distributable CLI & Package Readiness', () => {
     // 1. Package-level doctor without --project
     const pkgDocOut = runInstalledCli(['doctor']);
     assert.match(pkgDocOut, /Mode: doctor/);
-    assert.match(pkgDocOut, /15 canonical skills verified/);
+    assert.match(pkgDocOut, /16 canonical skills verified/);
     assert.match(pkgDocOut, /Runtime status: Not Run/);
     assert.match(pkgDocOut, /Artifact status: Not Produced/);
 
@@ -825,7 +825,7 @@ describe('Distributable CLI & Package Readiness', () => {
     assert.deepEqual(fs.readdirSync(cleanTarget), [], 'Corrupted package must write zero files to target');
   });
 
-  test('Scenario H: Claude Desktop export from installed tarball (dry-run, existing --out refusal, write 15 ZIPs + manual bundle, and rollback)', () => {
+  test('Scenario H: Claude Desktop export from installed tarball (dry-run, existing --out refusal, write 16 ZIPs + manual bundle, and rollback)', () => {
     const envPlans = { BLENDOPS_INSTALLER_PLAN_DIR: path.join(suiteTmpDir, 'plans-h') };
     const existingOutDir = path.join(suiteTmpDir, 'scenario-h-existing-out');
     fs.mkdirSync(existingOutDir, { recursive: true });
@@ -846,7 +846,7 @@ describe('Distributable CLI & Package Readiness', () => {
       { env: envPlans },
     );
     assert.match(dryOut, /Mode: dry-run/);
-    assert.match(dryOut, /SKILL\.md count if ZIP mode: 1 per ZIP \(15 ZIPs\)/);
+    assert.match(dryOut, /SKILL\.md count if ZIP mode: 1 per ZIP \(16 ZIPs\)/);
     assert.ok(!fs.existsSync(outDir), '--dry-run must not create --out directory');
 
     const writeOut = runInstalledCli(
@@ -859,7 +859,7 @@ describe('Distributable CLI & Package Readiness', () => {
     assert.match(writeOut, /Runtime setup: Separate; not performed/);
 
     const zipFiles = fs.readdirSync(path.join(outDir, 'desktop-zips')).filter((f) => f.endsWith('.zip'));
-    assert.equal(zipFiles.length, 15, 'Must generate all 15 per-skill ZIP archives from installed tarball');
+    assert.equal(zipFiles.length, 16, 'Must generate all 16 per-skill ZIP archives from installed tarball');
     assert.ok(fs.existsSync(path.join(outDir, 'claude-desktop-manual', 'SKILL.md')));
     assert.ok(fs.existsSync(path.join(outDir, 'manifest.json')));
     assert.ok(fs.existsSync(path.join(outDir, '.blendops', 'install-manifest.json')));

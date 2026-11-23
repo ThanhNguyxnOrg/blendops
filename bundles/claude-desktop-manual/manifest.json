@@ -89,6 +89,10 @@
       "purpose": "Generated Claude Desktop reference summary for blendops-lighting-materials (scene-planners)"
     },
     {
+      "path": "references/skills/blendops-look-check.md",
+      "purpose": "Generated Claude Desktop reference summary for blendops-look-check (runtime-and-execution)"
+    },
+    {
       "path": "references/skills/blendops-product-shot.md",
       "purpose": "Generated Claude Desktop reference summary for blendops-product-shot (scene-planners)"
     },

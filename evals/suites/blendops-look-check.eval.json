@@ -1,0 +1,307 @@
+{
+  "schemaVersion": "2.0.0",
+  "skillId": "blendops-look-check",
+  "category": "runtime-and-execution",
+  "isContractedSkill": true,
+  "isRoutingParticipant": false,
+  "contractPath": "skills/blendops-look-check/contract.json",
+  "skillMarkdownPath": "skills/blendops-look-check/SKILL.md",
+  "evalMarkdownPath": "skills/blendops-look-check/EVAL.md",
+  "sourceEvalTier": "prose_outline_contract_migrated",
+  "evaluationStatus": {
+    "staticValidation": "Passed",
+    "deterministicFixture": "Passed",
+    "contractRouting": "Not Applicable",
+    "contractHandoff": "Passed",
+    "liveModel": "Not Run",
+    "blenderRuntime": "Not Run"
+  },
+  "cases": [
+    {
+      "id": "look-check-normal-text-only-plan",
+      "skillId": "blendops-look-check",
+      "scenario": "Preview look check with no runtime: lists numeric checks and views, routes to blendops-connect-blender",
+      "category": "normal",
+      "inputPrompt": "Apply blendops-look-check to a sneaker product-hero preview. No Blender runtime is connected.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Produces numeric_check_report, multi_view_capture_record, visual_issue_list for role preview-look-check-loop",
+        "Lists numeric checks before any visual review and preserves Runtime: Not Run and Artifact: Not Produced",
+        "Evaluates contract handoff predicate and hands off to blendops-connect-blender (Runtime is not ready for checks)"
+      ],
+      "requiredOutputProperties": [
+        "blendops-connect-blender",
+        "numeric checks",
+        "three views",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "preview looks perfect",
+        "Artifact: Verified",
+        "paste this Python"
+      ],
+      "expectedRoutingTarget": "blendops-connect-blender",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Outputs the check order in skills/blendops-look-check/SKILL.md",
+        "Matches contract fallback predicate to blendops-connect-blender in skills/blendops-look-check/contract.json"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "runtime.verifiedReady": false
+        },
+        "simulatedOutput": {
+          "mode": "Text-only preview-look-check-loop plan (blendops-look-check)",
+          "recommendedNextAction": "Run readiness checks in blendops-connect-blender before checking the preview.",
+          "targetHandoff": "blendops-connect-blender",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Listed the numeric checks (size, scale, ground, in frame, material, camera, lights), three views to capture and the three-round fix loop, and routed to blendops-connect-blender because no runtime is ready.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-look-check/contract.json",
+            "skills/blendops-look-check/SKILL.md",
+            "skills/blendops-look-check/EVAL.md",
+            "skills/blendops-look-check/references/numeric-checks.md",
+            "skills/blendops-look-check/references/capture-views.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "look-check-pass-progression-to-final-check",
+      "skillId": "blendops-look-check",
+      "scenario": "Numbers and views pass; blendops-look-check hands the preview to blendops-final-check",
+      "category": "structured_skip",
+      "inputPrompt": "While applying blendops-look-check, the workflow context is {\"quality.verdict\":\"pass\"} (Numbers and views pass; check the preview against the done criteria). Determine the contract-governed handoff target.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates the progression handoff predicate in skills/blendops-look-check/contract.json",
+        "Routes to blendops-final-check without claiming Verified"
+      ],
+      "requiredOutputProperties": [
+        "blendops-final-check",
+        "progression",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "verified without final check"
+      ],
+      "expectedRoutingTarget": "blendops-final-check",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Contract progression handoff predicate match to blendops-final-check"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "quality.verdict": "pass"
+        },
+        "simulatedOutput": {
+          "mode": "Contract handoff evaluation (blendops-look-check)",
+          "recommendedNextAction": "Hand off to blendops-final-check to check the preview against the done criteria.",
+          "targetHandoff": "blendops-final-check",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Matched progression predicate quality.verdict=pass and routed to blendops-final-check.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-look-check/contract.json",
+            "skills/blendops-look-check/SKILL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "look-check-issue-conditional-to-build",
+      "skillId": "blendops-look-check",
+      "scenario": "A look issue was found; blendops-look-check routes one fix back to blendops-build",
+      "category": "ambiguous",
+      "inputPrompt": "While applying blendops-look-check, the workflow context is {\"quality.verdict\":\"fail\",\"runtime.errorDetected\":false} (An issue was found; fix it with one build step and check again). Determine the contract-governed handoff target.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates the conditional handoff predicate in skills/blendops-look-check/contract.json",
+        "Routes to blendops-build without claiming Verified"
+      ],
+      "requiredOutputProperties": [
+        "blendops-build",
+        "conditional",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "fixed every issue at once"
+      ],
+      "expectedRoutingTarget": "blendops-build",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Contract conditional handoff predicate match to blendops-build"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "quality.verdict": "fail",
+          "runtime.errorDetected": false
+        },
+        "simulatedOutput": {
+          "mode": "Contract handoff evaluation (blendops-look-check)",
+          "recommendedNextAction": "Hand off to blendops-build to fix the top issue with one step, then check again.",
+          "targetHandoff": "blendops-build",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Matched conditional predicate quality.verdict=fail and runtime.errorDetected=false and routed to blendops-build.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-look-check/contract.json",
+            "skills/blendops-look-check/SKILL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "look-check-error-conditional-to-fix-problems",
+      "skillId": "blendops-look-check",
+      "scenario": "A check script or capture failed; blendops-look-check routes to blendops-fix-problems",
+      "category": "evidence_boundary",
+      "inputPrompt": "While applying blendops-look-check, the workflow context is {\"runtime.errorDetected\":true} (A check or capture failed, or an issue came back after its fix). Determine the contract-governed handoff target.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates the conditional handoff predicate in skills/blendops-look-check/contract.json",
+        "Routes to blendops-fix-problems without claiming Verified"
+      ],
+      "requiredOutputProperties": [
+        "blendops-fix-problems",
+        "conditional",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Produced",
+        "check passed"
+      ],
+      "expectedRoutingTarget": "blendops-fix-problems",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Contract conditional handoff predicate match to blendops-fix-problems"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "runtime.errorDetected": true
+        },
+        "simulatedOutput": {
+          "mode": "Contract handoff evaluation (blendops-look-check)",
+          "recommendedNextAction": "Hand off to blendops-fix-problems with the failed check or capture and its error text.",
+          "targetHandoff": "blendops-fix-problems",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Matched conditional predicate runtime.errorDetected=true and routed to blendops-fix-problems.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-look-check/contract.json",
+            "skills/blendops-look-check/SKILL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "look-check-out-of-scope-final-verification",
+      "skillId": "blendops-look-check",
+      "scenario": "Final render verification is delegated to blendops-final-check",
+      "category": "scope_creep",
+      "inputPrompt": "Instead of checking the preview, handle this inside blendops-look-check: mark the final render Verified for handoff to the client.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Enforces the blendops-look-check exclusion boundary for final verification",
+        "Delegates to blendops-final-check without marking anything Verified"
+      ],
+      "requiredOutputProperties": [
+        "blendops-final-check",
+        "out of scope",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "handled inside blendops-look-check anyway"
+      ],
+      "expectedRoutingTarget": "blendops-final-check",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Cites the exclusion in skills/blendops-look-check/contract.json"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Out-of-scope exclusion gate (blendops-look-check)",
+          "recommendedNextAction": "Request is out of scope for blendops-look-check (final verification); delegate to blendops-final-check.",
+          "targetHandoff": "blendops-final-check",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Enforced blendops-look-check exclusion boundary and delegated final verification to blendops-final-check.",
+          "warnings": [
+            "blendops-look-check checks previews and does not mark outputs Verified."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-look-check/contract.json",
+            "skills/blendops-look-check/SKILL.md"
+          ]
+        }
+      }
+    }
+  ]
+}

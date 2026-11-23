@@ -52,9 +52,9 @@ function listRealCatalogSkills(rootDir = root) {
 }
 
 describe('Catalog Template Completion & F-05 Resolution', () => {
-  it('Scenario 1: all 15 catalog skills contain all 9 extended template sections and all 9 core sections', () => {
+  it('Scenario 1: all 16 catalog skills contain all 9 extended template sections and all 9 core sections', () => {
     const skills = listRealCatalogSkills(root);
-    assert.equal(skills.length, 15, 'Expected exactly 15 real catalog skills');
+    assert.equal(skills.length, 16, 'Expected exactly 16 real catalog skills');
     assert.deepEqual(
       REQUIRED_EXTENDED_SKILL_HEADINGS,
       EXPECTED_EXTENDED_HEADINGS,
@@ -191,7 +191,7 @@ describe('Catalog Template Completion & F-05 Resolution', () => {
   it('Scenario 6: template files, non-skill Markdown, and generated artifacts are not mistaken for real catalog skills', () => {
     const skills = listRealCatalogSkills(root);
     assert.equal(skills.includes('_template'), false, '_template must never be listed as a real catalog skill');
-    assert.equal(skills.length, 15);
+    assert.equal(skills.length, 16);
 
     const templatePath = 'skills/_template/SKILL.md';
     const templateMd = fs.readFileSync(path.join(root, templatePath), 'utf8');
@@ -204,15 +204,15 @@ describe('Catalog Template Completion & F-05 Resolution', () => {
 
     const docsCheckRes = runDocsCheck(root);
     assert.equal(docsCheckRes.ok, true, `runDocsCheck failed: ${docsCheckRes.errors.join('; ')}`);
-    assert.equal(docsCheckRes.catalogSkillCount, 15);
+    assert.equal(docsCheckRes.catalogSkillCount, 16);
   });
 
   it('Scenario 7: inventory counts in docs/audits/current/skill-inventory.json agree 100% with per-skill records', () => {
     const inv = JSON.parse(
       fs.readFileSync(path.join(root, 'docs', 'audits', 'current', 'skill-inventory.json'), 'utf8'),
     );
-    assert.equal(inv.summary.totalSkills, 15);
-    assert.equal(inv.skills.length, 15);
+    assert.equal(inv.summary.totalSkills, 16);
+    assert.equal(inv.skills.length, 16);
 
     const derivedMissingExtendedSkills = inv.skills.filter(
       (s) => Array.isArray(s.missingExtendedTemplateHeadings) && s.missingExtendedTemplateHeadings.length > 0,
@@ -249,7 +249,7 @@ describe('Catalog Template Completion & F-05 Resolution', () => {
     }
   });
 
-  it('Scenario 8: F-05 status in findings.json is FIXED only when all 15 skills pass extended-section compliance and reverts to OPEN if a skill omits an extended section', () => {
+  it('Scenario 8: F-05 status in findings.json is FIXED only when all 16 skills pass extended-section compliance and reverts to OPEN if a skill omits an extended section', () => {
     const currentFindings = JSON.parse(
       fs.readFileSync(path.join(root, 'docs', 'audits', 'current', 'findings.json'), 'utf8'),
     );
@@ -334,7 +334,7 @@ describe('Catalog Template Completion & F-05 Resolution', () => {
     assert.equal(fs.existsSync(path.join(root, 'docs', 'audits', 'phase-0')), false);
   });
 
-  it('Scenario 10: all 15 skills preserve valid Anthropic frontmatter and resolvable relative links', () => {
+  it('Scenario 10: all 16 skills preserve valid Anthropic frontmatter and resolvable relative links', () => {
     const skills = listRealCatalogSkills(root);
     for (const skillId of skills) {
       const info = scanSkillMarkdown(root, skillId);
@@ -363,7 +363,7 @@ describe('Catalog Template Completion & F-05 Resolution', () => {
     assert.match(out, /build-registry --check passed/i);
   });
 
-  it('Scenario 12: evaluation suites and exporter remain green across all 15 skills', () => {
+  it('Scenario 12: evaluation suites and exporter remain green across all 16 skills', () => {
     const evalCheckOut = execFileSync(process.execPath, [path.join(root, 'scripts', 'run-evals.mjs'), '--check'], {
       cwd: root,
       encoding: 'utf8',
@@ -374,6 +374,6 @@ describe('Catalog Template Completion & F-05 Resolution', () => {
       cwd: root,
       encoding: 'utf8',
     });
-    assert.match(evalRunOut, /274\/274 deterministic cases Passed/i);
+    assert.match(evalRunOut, /280\/280 deterministic cases Passed/i);
   });
 });

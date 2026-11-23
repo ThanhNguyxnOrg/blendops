@@ -1,7 +1,7 @@
 # BlendOps Skills Collection
 
 > [!NOTE]
-> Status: 2.0.0. 15 skills for Blender workflow planning, runtime readiness, evidence truth, and user-facing handoff. v2.0.0 merged the former 48 narrow skills into these 14; each former skill now lives as a reference file inside its new skill.
+> Status: 2.0.0. 16 skills for Blender workflow planning, runtime readiness, evidence truth, and user-facing handoff. v2.0.0 merged the former 48 narrow skills into 14 (`blendops-build` and `blendops-look-check` were added later); each former skill now lives as a reference file inside its new skill.
 
 BlendOps skills are composable operating units. They load only when relevant, follow shared laws, preserve runtime boundaries, and hand off to the next skill instead of becoming one monolithic Blender prompt. Each skill keeps a short `SKILL.md` and loads its detailed playbooks from `references/` only when that step is in scope.
 
@@ -26,7 +26,7 @@ Core guide: [docs/skill-system.md](../docs/skill-system.md)
 | **Start & Scope** | `blendops-start`, `blendops-brief`, `blendops-done-criteria` |
 | **Scene Planning** | `blendops-product-shot`, `blendops-scene-plan`, `blendops-camera`, `blendops-lighting-materials`, `blendops-render-settings` |
 | **Assets & Web 3D** | `blendops-assets`, `blendops-glb-budget`, `blendops-glb-web-handoff` |
-| **Runtime & Verification** | `blendops-connect-blender`, `blendops-build`, `blendops-final-check`, `blendops-fix-problems` |
+| **Runtime & Verification** | `blendops-connect-blender`, `blendops-build`, `blendops-look-check`, `blendops-final-check`, `blendops-fix-problems` |
 
 Start with `blendops-start` when unsure. Routing participants, in precedence order: `blendops-brief` (no recipe yet), `blendops-done-criteria` (recipe chosen, prerequisites not checked), `blendops-start` (ready, route by stage).
 
@@ -49,6 +49,7 @@ Start with `blendops-start` when unsure. Routing participants, in precedence ord
 | [`blendops-glb-web-handoff`](./blendops-glb-web-handoff/SKILL.md) | Prepare GLB handoff to web teams, including animation clips and a React Three Fiber component plan. | `glb-web-handoff`, `glb-animation-handoff`, `r3f-component-plan` | [EVAL](./blendops-glb-web-handoff/EVAL.md) |
 | [`blendops-connect-blender`](./blendops-connect-blender/SKILL.md) | Pick a runtime path (Lab MCP, mcp-for-blender, or CLI fallback), guide setup, check readiness, and resolve bridge conflicts. | `runtime-readiness`, `runtime-setup`, `runtime-path-picker`, `path-one-host-outline`, `bridge-conflicts`, `cli-appendix-job-outline` | [EVAL](./blendops-connect-blender/EVAL.md) |
 | [`blendops-build`](./blendops-build/SKILL.md) | Build the planned scene in Blender step by step: units, shapes, modifiers, materials, lights, camera, preview, render or GLB export, with a JSON report per step and Blender-version API rules. | `build-order`, `api-version-rules`, `modeling`, `materials`, `lighting-camera`, `render-export` | [EVAL](./blendops-build/EVAL.md) |
+| [`blendops-look-check`](./blendops-look-check/SKILL.md) | Check a built preview: numeric checks first, then pictures from several views, one fix per round through `blendops-build`, at most three rounds. | `numeric-checks`, `capture-views`, `visual-review`, `fix-loop` | [EVAL](./blendops-look-check/EVAL.md) |
 | [`blendops-final-check`](./blendops-final-check/SKILL.md) | Check scene readiness, collect render and export evidence, write preview and runtime-attempt reports, and verify before handoff. | `pre-handoff-verification`, `scene-readiness`, `render-export-evidence`, `preview-report`, `runtime-attempt-report` | [EVAL](./blendops-final-check/EVAL.md) |
 | [`blendops-fix-problems`](./blendops-fix-problems/SKILL.md) | Diagnose wrong-looking renders, exports, and runtime errors in plain language and route to the fix without claiming results. | `blender-troubleshooting` | [EVAL](./blendops-fix-problems/EVAL.md) |
 

@@ -10,7 +10,7 @@ const __dirname = path.dirname(__filename);
 const REPO_ROOT = path.resolve(__dirname, '..');
 const DEFAULT_ROOT = process.cwd();
 
-export const EXPECTED_CANONICAL_SKILL_COUNT = 15;
+export const EXPECTED_CANONICAL_SKILL_COUNT = 16;
 export const VALID_CAPABILITY_TIERS = new Set(['L0', 'L1', 'L2', 'L3']);
 export const VALID_GATE_GOAL_CLARITIES = new Set(['ambiguous_or_mixed', 'clear', 'any']);
 export const ROUTING_PARTICIPANT_IDS = new Set([

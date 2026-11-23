@@ -36,8 +36,8 @@ function loadSuite(skillId) {
 }
 
 describe('Full-Catalog Behavioral Evaluation Coverage & F-04 Resolution', () => {
-  it('Scenario 1: all 15 catalog skills have a valid .eval.json file under evals/suites/ and evals/pilot/ is removed', () => {
-    assert.equal(catalogIds.length, 15);
+  it('Scenario 1: all 16 catalog skills have a valid .eval.json file under evals/suites/ and evals/pilot/ is removed', () => {
+    assert.equal(catalogIds.length, 16);
     assert.equal(
       fs.existsSync(path.join(root, 'evals', 'pilot')),
       false,
@@ -51,7 +51,7 @@ describe('Full-Catalog Behavioral Evaluation Coverage & F-04 Resolution', () => 
       .readdirSync(suitesDir)
       .filter((f) => f.endsWith('.eval.json'))
       .sort();
-    assert.equal(suiteFiles.length, 15);
+    assert.equal(suiteFiles.length, 16);
 
     for (const skillId of catalogIds) {
       const suitePath = path.join(suitesDir, `${skillId}.eval.json`);
@@ -59,39 +59,39 @@ describe('Full-Catalog Behavioral Evaluation Coverage & F-04 Resolution', () => 
     }
   });
 
-  it('Scenario 2: evals/index.json accurately reflects 15/15 coverage, 0 missing suites, 0 prose-only pending skills, and 274 total cases', () => {
+  it('Scenario 2: evals/index.json accurately reflects 16/16 coverage, 0 missing suites, 0 prose-only pending skills, and 280 total cases', () => {
     const evalIndex = JSON.parse(
       fs.readFileSync(path.join(root, 'evals', 'index.json'), 'utf8'),
     );
     assert.equal(evalIndex.schemaVersion, '2.0.0');
     assert.equal(evalIndex.suiteScope, 'v1.0.0-full-catalog-behavioral-evals');
-    assert.equal(evalIndex.coverageSummary.catalogSkills, 15);
-    assert.equal(evalIndex.coverageSummary.machineReadableSuites, 15);
+    assert.equal(evalIndex.coverageSummary.catalogSkills, 16);
+    assert.equal(evalIndex.coverageSummary.machineReadableSuites, 16);
     assert.equal(evalIndex.coverageSummary.skillsWithoutSuites, 0);
     assert.equal(evalIndex.coverageSummary.proseOnlySkillsPendingMigration, 0);
     assert.equal(evalIndex.coverageSummary.routingParticipants, 3);
-    assert.equal(evalIndex.coverageSummary.specialistSkills, 12);
-    assert.equal(evalIndex.coverageSummary.totalCases, 274);
+    assert.equal(evalIndex.coverageSummary.specialistSkills, 13);
+    assert.equal(evalIndex.coverageSummary.totalCases, 280);
     assert.deepEqual(evalIndex.coverageSummary.countsByEvaluationType, {
       contract_routing: 35,
-      contract_handoff: 72,
-      deterministic_fixture: 167,
+      contract_handoff: 76,
+      deterministic_fixture: 169,
     });
     assert.deepEqual(evalIndex.coverageSummary.contractRoutingCoverage, {
       routingParticipantsWithRoutingEvals: 3,
       totalRoutingParticipantCases: 35,
     });
     assert.deepEqual(evalIndex.coverageSummary.contractHandoffCoverage, {
-      specialistSkillsWithHandoffEvals: 12,
-      totalSpecialistHandoffCases: 72,
+      specialistSkillsWithHandoffEvals: 13,
+      totalSpecialistHandoffCases: 76,
     });
     assert.deepEqual(evalIndex.coverageSummary.deterministicFixtureCoverage, {
-      skillsWithFixtureEvals: 15,
-      totalDeterministicFixtureCases: 167,
+      skillsWithFixtureEvals: 16,
+      totalDeterministicFixtureCases: 169,
     });
     assert.equal(evalIndex.coverageSummary.liveModel, 'Not Run');
     assert.equal(evalIndex.coverageSummary.blenderRuntime, 'Not Run');
-    assert.equal(evalIndex.suites.length, 15);
+    assert.equal(evalIndex.suites.length, 16);
     assert.deepEqual(evalIndex.remainingProseSkillsPendingMigration, []);
   });
 
@@ -344,7 +344,7 @@ describe('Full-Catalog Behavioral Evaluation Coverage & F-04 Resolution', () => 
 
   it('Scenario 11: specialist contract_handoff cases pass when handoffContext matches the expected contract handoff target across all 12 specialist skills', () => {
     const specialistIds = catalogIds.filter((id) => !ROUTING_PARTICIPANT_IDS.includes(id));
-    assert.equal(specialistIds.length, 12);
+    assert.equal(specialistIds.length, 13);
 
     let totalHandoffCases = 0;
     for (const skillId of specialistIds) {
@@ -364,7 +364,7 @@ describe('Full-Catalog Behavioral Evaluation Coverage & F-04 Resolution', () => 
         totalHandoffCases += 1;
       }
     }
-    assert.equal(totalHandoffCases, 72);
+    assert.equal(totalHandoffCases, 76);
   });
 
   it('Scenario 12: specialist contract_handoff cases fail when handoffContext matches zero handoffs or the wrong handoff target', () => {
@@ -560,7 +560,7 @@ describe('Full-Catalog Behavioral Evaluation Coverage & F-04 Resolution', () => 
     assert.match(cliText, /Not Run/);
   });
 
-  it('Scenario 20: liveModel and blenderRuntime remain Not Run across all 15 suites and in evals/index.json', () => {
+  it('Scenario 20: liveModel and blenderRuntime remain Not Run across all 16 suites and in evals/index.json', () => {
     const evalIndex = JSON.parse(
       fs.readFileSync(path.join(root, 'evals', 'index.json'), 'utf8'),
     );
@@ -640,7 +640,7 @@ describe('Full-Catalog Behavioral Evaluation Coverage & F-04 Resolution', () => 
     }
   });
 
-  it('Scenario 23: scripts/export-claude-skills.mjs still exports all 15 skills with SKILL.md, EVAL.md, and references/', () => {
+  it('Scenario 23: scripts/export-claude-skills.mjs still exports all 16 skills with SKILL.md, EVAL.md, and references/', () => {
     const tempExportRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-eval-export-'));
     try {
       const out = execFileSync(
@@ -648,12 +648,12 @@ describe('Full-Catalog Behavioral Evaluation Coverage & F-04 Resolution', () => 
         [path.join(root, 'scripts', 'export-claude-skills.mjs'), '--output-root', tempExportRoot],
         { cwd: root, encoding: 'utf8' },
       );
-      assert.match(out, /Exported 15 Claude skill zips/i);
+      assert.match(out, /Exported 16 Claude skill zips/i);
 
       const manifestPath = path.join(tempExportRoot, 'manifest.json');
       assert.equal(fs.existsSync(manifestPath), true);
       const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
-      assert.equal(manifest.skillCount, 15);
+      assert.equal(manifest.skillCount, 16);
       assert.deepEqual(manifest.skills, catalogIds);
 
       for (const skillId of catalogIds) {
@@ -701,7 +701,7 @@ describe('Full-Catalog Behavioral Evaluation Coverage & F-04 Resolution', () => 
     }
   });
 
-  it('Scenario 24: docs/audits/current/* marks F-04 FIXED, updates eval-inventory.json to 15/15 suites (0 prose-only remaining), preserves F-08 PARTIALLY_FIXED and marks F-09 FIXED, and keeps auditedInputsSha256 synchronized', () => {
+  it('Scenario 24: docs/audits/current/* marks F-04 FIXED, updates eval-inventory.json to 16/16 suites (0 prose-only remaining), preserves F-08 PARTIALLY_FIXED and marks F-09 FIXED, and keeps auditedInputsSha256 synchronized', () => {
     const scorecard = JSON.parse(
       fs.readFileSync(path.join(root, 'docs', 'audits', 'current', 'scorecard.json'), 'utf8'),
     );
@@ -722,14 +722,14 @@ describe('Full-Catalog Behavioral Evaluation Coverage & F-04 Resolution', () => 
     assert.equal(f08?.currentLifecycleStatus, 'PARTIALLY_FIXED');
     assert.equal(f09?.currentLifecycleStatus, 'FIXED');
 
-    assert.equal(evalInv.summary.totalEvalFiles, 15);
-    assert.equal(evalInv.summary.machineReadableSuitesCount, 15);
+    assert.equal(evalInv.summary.totalEvalFiles, 16);
+    assert.equal(evalInv.summary.machineReadableSuitesCount, 16);
     assert.equal(evalInv.summary.skillsWithoutSuitesCount, 0);
     assert.equal(evalInv.summary.remainingUnmigratedProseSkillsCount, 0);
-    assert.equal(evalInv.summary.totalMachineReadableCases, 274);
+    assert.equal(evalInv.summary.totalMachineReadableCases, 280);
     assert.equal(evalInv.summary.contractRoutingCasesCount, 35);
-    assert.equal(evalInv.summary.contractHandoffCasesCount, 72);
-    assert.equal(evalInv.summary.deterministicFixtureCasesCount, 167);
+    assert.equal(evalInv.summary.contractHandoffCasesCount, 76);
+    assert.equal(evalInv.summary.deterministicFixtureCasesCount, 169);
     assert.equal(evalInv.summary.deterministicRunnerStatus, 'Passed');
     assert.equal(evalInv.summary.liveModelRunnerStatus, 'Not Run');
     assert.equal(evalInv.summary.blenderRuntimeRunnerStatus, 'Not Run');
@@ -743,9 +743,9 @@ describe('Full-Catalog Behavioral Evaluation Coverage & F-04 Resolution', () => 
       assert.equal(item.blenderRuntimeStatus, 'Not Run');
     }
 
-    assert.equal(skillInv.summary.machineReadableEvalSuitesCount, 15);
+    assert.equal(skillInv.summary.machineReadableEvalSuitesCount, 16);
     assert.equal(skillInv.summary.skillsWithoutEvalSuitesCount, 0);
-    assert.equal(skillInv.summary.totalMachineReadableEvalCases, 274);
+    assert.equal(skillInv.summary.totalMachineReadableEvalCases, 280);
 
     const resolvedFiles = new Set(resolveAuditedInputFiles(root));
     assert.equal(resolvedFiles.has('scripts/test-eval-coverage.mjs'), true);

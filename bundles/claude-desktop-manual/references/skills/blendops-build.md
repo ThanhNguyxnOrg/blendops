@@ -56,10 +56,11 @@ Turn an approved scene plan into a real Blender scene through the ready runtime 
 2. Tell the user in plain words what will change in their scene and which files will be written, and wait for their yes before the first change.
 3. Read the Blender version and the current scene; save a backup copy of the `.blend` file.
 4. Build in this order, one small step at a time: units, rough shapes, modifiers, materials, lights, camera, preview.
-5. Hand the preview to `blendops-final-check` for the look criteria only (shapes, sizes, materials, lighting, framing); criteria about the finished file wait for it. Make the final render or GLB export once the look passes, then hand that file to `blendops-final-check` for the full done criteria. On any failure, hand off to `blendops-fix-problems`.
+5. Hand the preview to `blendops-look-check` (numbers, several views, one fix per round). Make the final render or GLB export once the look passes, then hand that file to `blendops-final-check` for the full done criteria. On any failure, hand off to `blendops-fix-problems`.
 
 ## Handoff notes
-- **[progression]** Preview, render or GLB exists; check it against the done criteria → `blendops-final-check` (`references/skills/blendops-final-check.md`) — `when.all: [runtime.status equals "Produced"; artifact.type in ["preview","render","glb"]]`
+- **[progression]** Preview exists; check sizes, framing and looks before the final output → `blendops-look-check` (`references/skills/blendops-look-check.md`) — `when.all: [runtime.status equals "Produced"; artifact.type equals "preview"]`
+- **[progression]** Final render or GLB exists; check it against the done criteria → `blendops-final-check` (`references/skills/blendops-final-check.md`) — `when.all: [runtime.status equals "Produced"; artifact.type in ["render","glb"]]`
 - **[conditional]** A build step failed or the output looks wrong → `blendops-fix-problems` (`references/skills/blendops-fix-problems.md`) — `when.all: [runtime.errorDetected equals true]`
 - **[fallback]** Runtime is not ready for building → `blendops-connect-blender` (`references/skills/blendops-connect-blender.md`) — `when.all: [runtime.verifiedReady equals false]`
 
