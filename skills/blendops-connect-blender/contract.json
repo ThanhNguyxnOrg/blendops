@@ -168,7 +168,7 @@
     {
       "target": "blendops-build",
       "type": "progression",
-      "label": "Runtime is ready and the plan is locked; build the scene",
+      "label": "Runtime is ready and the scene plan is locked; build the scene",
       "when": {
         "all": [
           {
@@ -177,7 +177,7 @@
             "value": true
           },
           {
-            "field": "brief.locked",
+            "field": "decision.planLocked",
             "operator": "equals",
             "value": true
           }
