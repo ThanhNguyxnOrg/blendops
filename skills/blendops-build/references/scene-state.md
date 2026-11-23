@@ -58,15 +58,26 @@ U = scene.unit_settings.scale_length  # metres per Blender unit
 cam = scene.camera
 depsgraph = bpy.context.evaluated_depsgraph_get()
 issues = []
-instances = {}  # object name -> [count, box min, box max], Blender units
+instances = {}  # object name -> [count, box min, box max, box corners], Blender units
+local_verts, budget = {}, MAX_VERTS
 for inst in depsgraph.object_instances:
     # a curve or text object lists its own mesh as an instance; that one is not extra
     if inst.is_instance and inst.parent and (inst.parent.type == 'MESH' or inst.object.original != inst.parent.original):
-        pts = [inst.matrix_world @ Vector(c) for c in inst.object.bound_box]
+        mw, ob = inst.matrix_world.copy(), inst.object
+        corners = [mw @ Vector(c) for c in ob.bound_box]
+        pts = corners
+        if ob.type == 'MESH':
+            key = ob.data.as_pointer()
+            if key not in local_verts:
+                local_verts[key] = [v.co.copy() for v in ob.data.vertices] if len(ob.data.vertices) <= MAX_VERTS else []
+            if local_verts[key] and len(local_verts[key]) <= budget:
+                budget -= len(local_verts[key])
+                pts = [mw @ v for v in local_verts[key]]  # vertices, so rotation does not inflate the box
         lo = Vector(min(c[k] for c in pts) for k in range(3))
         hi = Vector(max(c[k] for c in pts) for k in range(3))
-        rec = instances.setdefault(inst.parent.original.name, [0, lo, hi])
+        rec = instances.setdefault(inst.parent.original.name, [0, lo, hi, []])
         rec[0] += 1
+        rec[3] += corners
         for k in range(3):
             rec[1][k], rec[2][k] = min(rec[1][k], lo[k]), max(rec[2][k], hi[k])
 
@@ -97,6 +108,8 @@ def mesh_facts(ev):
         if not mesh.vertices:
             return f, []
         world = [(mw @ v.co) * U for v in mesh.vertices]
+        local = [Vector(f(v.co[k] for v in mesh.vertices) for k in range(3)) for f in (min, max)]
+        f["corners"] = [mw @ Vector((x, y, z)) for x in (local[0].x, local[1].x) for y in (local[0].y, local[1].y) for z in (local[0].z, local[1].z)]
         f["box"] = (Vector(min(p[k] for p in world) for k in range(3)), Vector(max(p[k] for p in world) for k in range(3)))
         f["lowest_z_m"] = round(f["box"][0].z, 4)
         if len(mesh.vertices) > MAX_VERTS:
@@ -160,19 +173,21 @@ for obj in scene.objects:
     if obj.type in GEOMETRY:
         facts, boxes = mesh_facts(ev)
         box = facts.pop("box", None)
+        frame = facts.pop("corners", [])
         rec.update(facts)
         if inst:
             rec["instances"] = inst[0]
             lo, hi = inst[1] * U, inst[2] * U
+            boxes = boxes + [(lo, hi)]
+            frame = frame + inst[3]
             if box:
                 lo = Vector(min(a, b) for a, b in zip(lo, box[0]))
                 hi = Vector(max(a, b) for a, b in zip(hi, box[1]))
             box = (lo, hi)
-            boxes = boxes + [box]
             rec["lowest_z_m"] = round(lo.z, 4)
         if box:
             rec["bbox_min_m"], rec["bbox_max_m"] = rnd(box[0]), rnd(box[1])
-            rec["in_frame"] = frame_status([Vector((x, y, z)) / U for x in (box[0].x, box[1].x) for y in (box[0].y, box[1].y) for z in (box[0].z, box[1].z)])
+            rec["in_frame"] = frame_status(frame)
         rec["modifiers"] = [m.type for m in obj.modifiers]
         rec["materials"] = [s.material.name if s.material else None for s in obj.material_slots]
         if rec["visible"]:
@@ -216,6 +231,12 @@ for rec in objects:
 
 if PLAN:
     by_name = {r["name"]: r for r in objects}
+
+    def meta_member(rec):
+        # Blender puts a metaball family's surface on its basis object ("Ball" for "Ball.001")
+        base = rec["name"].split(".")[0]
+        return rec["type"] == 'META' and base != rec["name"] and by_name.get(base, {}).get("vertices")
+
     for name, size in plan.get("objects", {}).items():
         rec = by_name.get(name)
         if rec is None:
@@ -229,7 +250,7 @@ if PLAN:
                 issue("fail", "size", object=name, axis="xyz"[axis], got_m=got, want_m=want)
         if any(abs(s - 1) > 1e-4 for s in rec["scale"]):
             issue("fail", "scale_applied", object=name, scale=rec["scale"])
-        if rec["type"] in GEOMETRY and rec.get("vertices") == 0 and not rec.get("instances"):
+        if rec["type"] in GEOMETRY and rec.get("vertices") == 0 and not rec.get("instances") and not meta_member(rec):
             issue("fail", "geometry", object=name)
         if name in plan.get("grounded", []):
             if "lowest_z_m" not in rec:
@@ -238,7 +259,7 @@ if PLAN:
                 issue("fail", "ground_contact", object=name, gap_m=round(rec["lowest_z_m"] - floor_z, 4))
         if name in plan.get("in_frame", []) and rec["in_frame"] != "in":
             issue("fail", "in_frame", object=name, status=rec["in_frame"])
-        if rec["type"] in GEOMETRY and not rec.get("instances") and not any(rec["materials"]):
+        if rec["type"] in GEOMETRY and (rec.get("vertices") or not rec.get("instances")) and not meta_member(rec) and not any(rec["materials"]):
             issue("fail", "material", object=name)
     allowed = set(plan.get("objects", {})) | set(plan.get("approved_extra", []))
     extra = [r["name"] for r in objects if r["type"] in GEOMETRY and r["visible"] and r["name"] not in allowed]
@@ -277,9 +298,9 @@ print(json.dumps({
 
 - `verdict` is `fail` with any `fail` issue, `warn` with only `warn` issues, else `pass`. `plan_checked: false` means no plan checks ran.
 - Distances are in metres: Blender units times the scene's unit scale (`scale_length`), so a centimetre scene still reports metres.
-- Curves, surfaces, text and metaballs are measured like meshes, after modifiers.
-- `instances` counts Geometry Nodes or particle instances an object makes; they render without being mesh vertices, so such an object passes `geometry`. Its box, `lowest_z_m` and plan `size` include the instances' boxes, measured along the world axes.
-- For geometry, the box is measured from the evaluated vertices (and instances), not the object's bounding box. Meshes over 200,000 vertices skip `parts`, `open_edges` and `normals_inward`; their box stands in for their parts.
+- Curves, surfaces, text and metaballs are measured like meshes, after modifiers. A metaball family's surface sits on its basis object (`Ball` for `Ball.001`), so the other members skip the plan `geometry` and `material` checks.
+- `instances` counts Geometry Nodes or particle instances an object makes; they render without being mesh vertices, so an object made only of instances passes `geometry` and `material`. Its box, `lowest_z_m` and plan `size` include the instances' vertices (their boxes past 200,000 instanced vertices), and the instances count as one extra part.
+- The box and `lowest_z_m` are measured along the world axes from the evaluated vertices; `in_frame` uses the object's own box turned with it, so a rotated object is not judged by a looser world box. Meshes over 200,000 vertices skip `parts`, `open_edges` and `normals_inward`; their box stands in for their parts.
 - A grounded object with no measurable geometry fails `ground_contact` with `gap_m: null`.
 - `resting` and `floating_parts` compare boxes, so a part inside another object's box counts as touching it.
 - On Path 1, `get_objects_summary` and `get_object_detail_summary` give part of this without code; on Path 2, `get_scene_info` and `get_object_info`. Run the script when you need the plan checks.
