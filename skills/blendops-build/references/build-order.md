@@ -12,7 +12,7 @@ Build in small steps. Each step is one short code call that changes one thing an
 8. **Lights.** See [lighting and camera](lighting-camera.md).
 9. **Camera.** Frame the subject. See [lighting and camera](lighting-camera.md).
 10. **Preview.** Low-sample render or viewport capture, then the look check in `blendops-final-check`.
-11. **Final render or export.** See [render and export](render-export.md).
+11. **Final render or export.** Only after the preview passes the check. See [render and export](render-export.md). Then hand the finished file to `blendops-final-check` again.
 
 ## Rules for every step
 
@@ -33,6 +33,6 @@ print(json.dumps({
 }))
 ```
 
-- On the CLI fallback every step is a new Blender process: run `blender --background scene.blend --python step.py` and end the script with `bpy.ops.wm.save_mainfile()`.
+- On the CLI fallback every step is a new Blender process: run `blender --background scene.blend --python-exit-code 1 --python step.py` so a Python error fails the command. Only steps that change the scene (after the user's yes and the backup) end with `bpy.ops.wm.save_mainfile()`; the first scene check never saves.
 - If a step fails, read the error, fix only that step, and run it again. Do not re-run earlier steps blindly; objects from them still exist (`bpy.data` keeps state between calls).
 - Never give this code to the user as their answer. Tell them what changed in plain words.
