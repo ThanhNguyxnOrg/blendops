@@ -1,6 +1,6 @@
 """Run the bpy examples from one skill reference file in a fresh test scene.
 
-Run: blender -b --factory-startup --python-exit-code 1 --python run_snippets.py -- <job.json>
+Run: blender -b --factory-startup --python-exit-code 1 --python run-snippets.py -- <job.json>
 job.json: {"blocks": [code, ...], "check": code, "out_dir": path}. The blocks share one namespace,
 in file order; "/abs/path/" in a block becomes out_dir. "check" runs last and raises on a wrong result.
 """

@@ -2,7 +2,7 @@
   "schemaVersion": "1.0.0",
   "auditPhase": "v1.0.0-current",
   "summary": {
-    "totalTrackedFiles": 580,
+    "totalTrackedFiles": 585,
     "npmPackageIncludedFiles": 400,
     "generatedTrackedFiles": 47,
     "canonicalSkillsCount": 16,
@@ -12,56 +12,56 @@
     "installTargetsCount": 26,
     "exactDuplicateGroupsCount": 2,
     "classificationCounts": {
-      "configuration": 37,
+      "configuration": 38,
       "documentation": 84,
-      "historical_record": 18,
+      "historical_record": 19,
       "distribution_artifact": 15,
       "canonical_source": 291,
       "generated_artifact": 47,
-      "runtime_build_test_infrastructure": 88
+      "runtime_build_test_infrastructure": 91
     },
     "subsystemCounts": {
       "repository-governance": 4,
-      "github-governance-ci": 13,
+      "github-governance-ci": 14,
       "documentation-governance": 8,
       "cli-distribution": 1,
       "bundles-and-packaging": 66,
       "product-and-target-docs": 67,
       "audits-and-provenance": 11,
-      "runtime-and-adapter-evals": 16,
+      "runtime-and-adapter-evals": 17,
       "glb-web-handoff-toolkit": 3,
       "knowledge-and-recipe-catalog": 5,
-      "behavioral-evals": 31,
+      "behavioral-evals": 33,
       "laws-and-packs": 7,
       "package-governance": 2,
       "registry-and-routing": 6,
       "schemas-and-contracts": 16,
       "ci-and-build-generators": 11,
       "cli-and-runtime-tools": 23,
-      "test-suites": 21,
+      "test-suites": 22,
       "quality-and-skill-reviews": 7,
       "skills-catalog": 262
     },
     "topLevelCounts": {
       "(root)": 15,
-      ".github": 13,
+      ".github": 14,
       "bin": 1,
       "bundles": 66,
-      "docs": 98,
-      "evals": 31,
+      "docs": 99,
+      "evals": 33,
       "laws": 5,
       "packs": 2,
       "registry": 10,
       "schemas": 16,
-      "scripts": 55,
+      "scripts": 56,
       "skill-reviews": 7,
       "skills": 261
     },
     "referenceIntegrity": {
-      "markdownFiles": 419,
-      "jsModules": 56,
+      "markdownFiles": 420,
+      "jsModules": 57,
       "schemas": 16,
-      "workflows": 6
+      "workflows": 7
     }
   },
   "rootPolicy": {
@@ -318,6 +318,21 @@
       "safeToMoveOrRemove": false,
       "byteSize": 5439,
       "sha256": "bf81800914019e98e18971a139b42e5d0466bc01bb9fecd7933aaa15c1881db3"
+    },
+    {
+      "path": ".github/workflows/blender.yml",
+      "fileType": ".yml",
+      "classification": "configuration",
+      "purpose": "GitHub Actions CI/CD and repository automation workflow definition",
+      "owningSubsystem": "github-governance-ci",
+      "includedInNpmPackage": false,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 3520,
+      "sha256": "32bb773ca17f47c19d8f084cd2484247046f038d438713382808fdaae9441130"
     },
     {
       "path": ".github/workflows/ci.yml",
@@ -2015,6 +2030,21 @@
       "sha256": "74198a141405c1a59bfa393649c5680a6cccae5fe7f3ea062e3553eaf5d19e02"
     },
     {
+      "path": "docs/evals/cli-fallback-blender-ci.md",
+      "fileType": ".md",
+      "classification": "historical_record",
+      "purpose": "Evaluation packet or recorded verification evidence (cli-fallback-blender-ci.md)",
+      "owningSubsystem": "runtime-and-adapter-evals",
+      "includedInNpmPackage": false,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 3380,
+      "sha256": "d3bb7fa5479b9f3f61db5cb547c745626e607307271f1a6a9997c8f7f8c9cad2"
+    },
+    {
       "path": "docs/evals/cli-fallback-mech-prop.md",
       "fileType": ".md",
       "classification": "historical_record",
@@ -2056,8 +2086,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 16798,
-      "sha256": "09e7b75ad37a7cae90d899c8d96e30479dc6773f5ec74d2668d0f0daaa83a8c8"
+      "byteSize": 16794,
+      "sha256": "dc805d5b473830407158311e0e9fe65c51bf5bf844d3a220abae8ae1e31b595c"
     },
     {
       "path": "docs/evals/cyberpunk-shoe-hero-v0-manual-eval.md",
@@ -3003,6 +3033,36 @@
       "safeToMoveOrRemove": false,
       "byteSize": 2973,
       "sha256": "2f2189a8d890e01b70b4361d2e1cda45ecaa679ddbea93db20f4479d6d8882c5"
+    },
+    {
+      "path": "evals/blender-checks/run-snippets.py",
+      "fileType": ".py",
+      "classification": "runtime_build_test_infrastructure",
+      "purpose": "Headless Blender helper (run-snippets.py) for the skill reference checks in scripts/test-blender-references.mjs",
+      "owningSubsystem": "behavioral-evals",
+      "includedInNpmPackage": false,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 1531,
+      "sha256": "d794895bef2a79a1fbf2ec25888eb3383ab3ee6c5dc85a4841334693e284861f"
+    },
+    {
+      "path": "evals/blender-checks/scene-state-scenes.py",
+      "fileType": ".py",
+      "classification": "runtime_build_test_infrastructure",
+      "purpose": "Headless Blender helper (scene-state-scenes.py) for the skill reference checks in scripts/test-blender-references.mjs",
+      "owningSubsystem": "behavioral-evals",
+      "includedInNpmPackage": false,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 8324,
+      "sha256": "7964f4fc46aed8cadde1d05c9943acffcb0eb8521341b5c48816f74bb6c2620d"
     },
     {
       "path": "evals/catalog-retrieval-evals.json",
@@ -4475,6 +4535,21 @@
       "sha256": "4c45226a3fa3d0365eaccf64a40ea58b359eaf546df6aac9984a49bc27e1e89f"
     },
     {
+      "path": "scripts/test-blender-references.mjs",
+      "fileType": ".mjs",
+      "classification": "runtime_build_test_infrastructure",
+      "purpose": "Automated regression and verification test suite (test-blender-references.mjs)",
+      "owningSubsystem": "test-suites",
+      "includedInNpmPackage": false,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 8018,
+      "sha256": "a2c2756beee16e60dfbc77e166c7e5f418bf722b2e2d2fa0e5a09de40eaa448b"
+    },
+    {
       "path": "scripts/test-bundle-summaries.mjs",
       "fileType": ".mjs",
       "classification": "runtime_build_test_infrastructure",
@@ -4816,8 +4891,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 33033,
-      "sha256": "d3a4ac2249ef2db25bda2e872ec768e48d700750490249609b8f497ff1feec2c"
+      "byteSize": 33229,
+      "sha256": "40e86e5cbd19bdc31b02f878fab27a1db94e7c7f99ca7227c549235d49f19aff"
     },
     {
       "path": "skill-reviews/README.md",

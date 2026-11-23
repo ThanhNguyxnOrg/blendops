@@ -12,7 +12,7 @@ No BlendOps-owned CLI command, MCP server or add-on was added. The script is int
 
 ## Method
 
-The same scenes are built by [`scripts/blender-checks/scene_state_scenes.py`](../../scripts/blender-checks/scene_state_scenes.py) and rechecked in CI on every relevant change; see [cli-fallback-blender-ci.md](./cli-fallback-blender-ci.md).
+The same scenes are built by [`evals/blender-checks/scene-state-scenes.py`](../../evals/blender-checks/scene-state-scenes.py) and rechecked in CI on every relevant change; see [cli-fallback-blender-ci.md](./cli-fallback-blender-ci.md).
 
 1. Build the test scenes with the scripts below, once per Blender version (a 5.1 file does not open in 4.2).
 2. Take the last `python` block of `scene-state.md` as `scene_state.py`, and copies with a `PLAN` pasted in: the example plan from the same file for scene 1, and the plans below for scenes 2 and 3.

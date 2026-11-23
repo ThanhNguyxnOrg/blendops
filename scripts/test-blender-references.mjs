@@ -10,7 +10,7 @@ import { fileURLToPath } from 'node:url';
 import { inspectGlbFile } from './inspect-glb.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const CHECKS = path.join(ROOT, 'scripts', 'blender-checks');
+const CHECKS = path.join(ROOT, 'evals', 'blender-checks');
 const BUILD_REFS = path.join(ROOT, 'skills', 'blendops-build', 'references');
 const SCENE_STATE = path.join(ROOT, 'skills', 'blendops-look-check', 'references', 'scene-state.md');
 const BLENDER = process.env.BLENDER;
@@ -74,7 +74,7 @@ for (const [file, check] of Object.entries(BUILD_CHECKS)) {
     fs.mkdirSync(out, { recursive: true });
     const job = path.join(out, 'job.json');
     fs.writeFileSync(job, JSON.stringify({ blocks: pythonBlocks(path.join(BUILD_REFS, file)), check, out_dir: out }));
-    blender(['--python', path.join(CHECKS, 'run_snippets.py'), '--', job], file);
+    blender(['--python', path.join(CHECKS, 'run-snippets.py'), '--', job], file);
     if (file === 'render-export.md') {
       assert.ok(fs.statSync(path.join(out, 'preview.png')).size > 0, 'preview.png was not written');
       const glb = await inspectGlbFile(path.join(out, 'model.glb'));
@@ -121,7 +121,7 @@ const SCENE_CASES = [
 test('scene-state reports the planted problems and nothing else', { skip }, () => {
   const v = version();
   const scenes = path.join(OUT, 'scene-state');
-  blender(['--python', path.join(CHECKS, 'scene_state_scenes.py'), '--', scenes], 'scene_state_scenes.py');
+  blender(['--python', path.join(CHECKS, 'scene-state-scenes.py'), '--', scenes], 'scene-state-scenes.py');
   const blocks = pythonBlocks(SCENE_STATE);
   const [examplePlan, script] = [blocks[0], blocks.at(-1)];
   assert.match(script, /^PLAN = None.*$/m);

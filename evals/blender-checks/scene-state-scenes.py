@@ -1,6 +1,6 @@
 """Build the synthetic scenes the scene-state check is tested on.
 
-Run: blender -b --factory-startup --python-exit-code 1 --python scene_state_scenes.py -- <out_dir>
+Run: blender -b --factory-startup --python-exit-code 1 --python scene-state-scenes.py -- <out_dir>
 Writes scene1.blend .. scene5.blend; see docs/evals/cli-fallback-scene-state.md for what each holds.
 """
 import bpy, bmesh, json, math, os, sys
