@@ -2086,8 +2086,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 3991,
-      "sha256": "6bd1b27c69caa84d49fda6ccea5ec7d66738d5c5c5df0f606538f61ff5a4a9b8"
+      "byteSize": 4553,
+      "sha256": "190f3692eb132d5ad6854b5e477c9c6b7f01e3b476143a5f8061b3f2bc369d3d"
     },
     {
       "path": "docs/evals/cli-fallback-scene-state.md",

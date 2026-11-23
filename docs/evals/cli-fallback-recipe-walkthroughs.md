@@ -37,4 +37,11 @@ The 12 tests are the 8 of [cli-fallback-blender-ci.md](./cli-fallback-blender-ci
 
 ## CI results
 
-The [Blender workflow](../../.github/workflows/blender.yml) runs these tests on both versions and uploads `blender-check-out/` (including `recipes/<walkthrough>/`) as a 14-day artifact. The run link is added here once it has passed on GitHub.
+The [Blender workflow](../../.github/workflows/blender.yml) runs these tests on both versions and uploads `blender-check-out/` (including `recipes/<walkthrough>/`) as a 14-day artifact.
+
+[Run 45215822342](https://github.com/ThanhNguyxnOrg/blendops/actions/runs/45215822342) on commit `0fbaf8a`, both jobs passed:
+
+| Job | Artifact |
+|---|---|
+| [Blender 4.2.23](https://github.com/ThanhNguyxnOrg/blendops/actions/runs/45215822342/job/137836546703) | [`blender-4.2.23-check-output`](https://github.com/ThanhNguyxnOrg/blendops/actions/runs/45215822342/artifacts/14839825033) |
+| [Blender 5.1.2](https://github.com/ThanhNguyxnOrg/blendops/actions/runs/45215822342/job/137836547328) | [`blender-5.1.2-check-output`](https://github.com/ThanhNguyxnOrg/blendops/actions/runs/45215822342/artifacts/14839195763) |
