@@ -303,6 +303,7 @@ export function classifyTrackedFile(relPath, pkgFiles = []) {
       purpose = `Automated regression and verification test suite (${path.basename(relPath)})`;
     } else if (
       relPath === 'scripts/install-skills.mjs' ||
+      relPath.startsWith('scripts/cli/') ||
       relPath === 'scripts/build-knowledge-catalog.mjs' ||
       relPath === 'scripts/compile-scene-plan.mjs' ||
       relPath === 'scripts/runtime-orchestrator.mjs' ||

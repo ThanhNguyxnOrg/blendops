@@ -38,6 +38,7 @@
   "files": [
     "bin/",
     "scripts/install-skills.mjs",
+    "scripts/cli/",
     "scripts/build-knowledge-catalog.mjs",
     "scripts/compile-scene-plan.mjs",
     "scripts/runtime-orchestrator.mjs",

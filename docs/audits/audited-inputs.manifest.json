@@ -106,6 +106,7 @@
     "packs",
     "registry",
     "schemas",
+    "scripts/cli",
     "skills"
   ]
 }
