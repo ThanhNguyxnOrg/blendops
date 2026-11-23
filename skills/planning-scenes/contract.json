@@ -1,0 +1,316 @@
+{
+  "$schema": "../../schemas/skill-contract.schema.json",
+  "id": "planning-scenes",
+  "version": "2.0.0",
+  "category": "scene-planners",
+  "role": "character-environment-and-interior-scene-planner",
+  "purpose": "Plan character portraits, environment shots, and interior scenes from a locked brief, with stage gates and evidence expectations.",
+  "capabilityTier": "L0",
+  "triggers": [
+    "portrait of",
+    "character looking at the camera",
+    "headshot",
+    "hero shot of [person / mascot / creature]",
+    "establishing shot of",
+    "wide shot of",
+    "city / forest / desert / ocean scene",
+    "set the scene",
+    "interior of",
+    "living room scene",
+    "office showcase",
+    "hotel lobby",
+    "kitchen showroom"
+  ],
+  "exclusions": [
+    {
+      "condition": "product hero scenes",
+      "delegateTo": "planning-product-scenes",
+      "reason": "use planning-product-scenes"
+    },
+    {
+      "condition": "multi-character ensemble (this skill is single-subject)",
+      "delegateTo": "scoping-3d-briefs",
+      "reason": "this skill is single-subject"
+    },
+    {
+      "condition": "product hero",
+      "delegateTo": "planning-product-scenes",
+      "reason": "use planning-product-scenes"
+    },
+    {
+      "condition": "single hero product",
+      "delegateTo": "planning-product-scenes",
+      "reason": "use planning-product-scenes"
+    }
+  ],
+  "inputs": {
+    "required": [
+      {
+        "name": "locked_3d_brief",
+        "type": "object",
+        "description": "Locked 3D brief specifying character subject, expression/pose, and framing intent"
+      },
+      {
+        "name": "character_asset_posture",
+        "type": "object",
+        "description": "Available character model/rig status and material readiness from asset discovery"
+      }
+    ],
+    "optional": [
+      {
+        "name": "turntable_or_still_preference",
+        "type": "string",
+        "description": "Whether the deliverable is a portrait still, bust turntable, or full-body pose"
+      },
+      {
+        "name": "atmosphere_and_time_of_day",
+        "type": "object",
+        "description": "Target time of day, weather condition, and atmospheric haze/fog parameters"
+      },
+      {
+        "name": "asset_discovery_constraints",
+        "type": "object",
+        "description": "Available environment kitbash or terrain assets from sourcing-assets"
+      },
+      {
+        "name": "room_dimensions_and_openings",
+        "type": "object",
+        "description": "Architectural envelope, window/door openings, and primary furniture anchor zones"
+      },
+      {
+        "name": "sourced_furniture_and_finish_assets",
+        "type": "array",
+        "description": "Available furniture and architectural material assets from sourcing-assets"
+      }
+    ]
+  },
+  "outputs": {
+    "primary": [
+      "character_staging_and_pose_plan",
+      "eyeline_and_portrait_camera_anchors",
+      "skin_hair_rim_lighting_hooks",
+      "foreground_midground_background_layer_plan",
+      "sun_sky_atmosphere_specification",
+      "horizon_and_scale_anchor_plan",
+      "interior_zone_and_circulation_plan",
+      "window_portal_and_fixture_lighting_plan",
+      "two_point_vertical_camera_constraints"
+    ],
+    "truthStatePolicy": {
+      "runtimeDefault": "Not Run",
+      "artifactDefault": "Not Produced",
+      "mutationRule": "downgrade_only"
+    }
+  },
+  "handoffs": [
+    {
+      "target": "scoping-3d-briefs",
+      "type": "upstream_reference",
+      "label": "Upstream brief",
+      "when": {
+        "all": [
+          {
+            "field": "goal.clarity",
+            "operator": "equals",
+            "value": "clear"
+          },
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": false
+          }
+        ]
+      }
+    },
+    {
+      "target": "planning-camera-and-framing",
+      "type": "progression",
+      "label": "Framing deep-dive",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "camera_planning"
+          }
+        ]
+      }
+    },
+    {
+      "target": "planning-lighting-and-materials",
+      "type": "progression",
+      "label": "Lookdev deep-dive",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "lookdev_planning"
+          }
+        ]
+      }
+    },
+    {
+      "target": "sourcing-assets",
+      "type": "upstream_reference",
+      "label": "Asset discovery",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "assets.discoveryComplete",
+            "operator": "equals",
+            "value": false
+          }
+        ]
+      }
+    },
+    {
+      "target": "planning-camera-and-framing",
+      "type": "progression",
+      "label": "Composition validation",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "composition"
+          },
+          {
+            "field": "quality.verdict",
+            "operator": "equals",
+            "value": "not_run"
+          }
+        ]
+      }
+    },
+    {
+      "target": "planning-lighting-and-materials",
+      "type": "progression",
+      "label": "Lighting validation",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "lighting"
+          },
+          {
+            "field": "quality.verdict",
+            "operator": "equals",
+            "value": "not_run"
+          }
+        ]
+      }
+    },
+    {
+      "target": "verifying-before-handoff",
+      "type": "progression",
+      "label": "Scene quality validation",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "holistic"
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "quality_validation"
+          }
+        ]
+      }
+    },
+    {
+      "target": "planning-product-scenes",
+      "type": "upstream_reference",
+      "label": "Single hero product redirect",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "recipe.domain",
+            "operator": "equals",
+            "value": "product_hero"
+          }
+        ]
+      }
+    },
+    {
+      "target": "budgeting-glb-for-web",
+      "type": "upstream_reference",
+      "label": "Performance / polycount budget",
+      "when": {
+        "all": [
+          {
+            "field": "artifact.type",
+            "operator": "equals",
+            "value": "glb"
+          },
+          {
+            "field": "budget.pinned",
+            "operator": "equals",
+            "value": false
+          }
+        ]
+      }
+    },
+    {
+      "target": "sourcing-assets",
+      "type": "upstream_reference",
+      "label": "Style consistency check",
+      "when": {
+        "all": [
+          {
+            "field": "assets.licenseCleared",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "style_check"
+          }
+        ]
+      }
+    },
+    {
+      "target": "planning-lighting-and-materials",
+      "type": "progression",
+      "label": "Material validation",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "material"
+          },
+          {
+            "field": "quality.verdict",
+            "operator": "equals",
+            "value": "not_run"
+          }
+        ]
+      }
+    }
+  ]
+}

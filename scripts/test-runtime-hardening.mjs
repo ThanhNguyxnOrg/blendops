@@ -259,7 +259,7 @@ describe('Adversarial Audit & Cross-Layer Runtime Hardening', () => {
       winning_layer_id: 'layer_2_target_delivery_format_and_spec',
       losing_layer_id: 'layer_5_explicit_scene_spec_parameters',
       summary: 'Injected blocking conflict while status remains ready',
-      affected_skills: ['glb-web-handoff'],
+      affected_skills: ['handing-off-glb-to-web'],
       knowledge_refs: ['knowledge.glb-binary-chunk-alignment-and-khronos-validation'],
       remediation: 'Fix conflict.',
     });
@@ -273,7 +273,7 @@ describe('Adversarial Audit & Cross-Layer Runtime Hardening', () => {
     // 3.2 Tampered can_proceed_to_runtime=true on unconfigured-planning-only
     const tamperedPlanningOnly = structuredClone(validPlan);
     tamperedPlanningOnly.runtime_preference.preferred_path = 'unconfigured-planning-only';
-    tamperedPlanningOnly.runtime_preference.selected_runtime_skill = 'runtime-setup';
+    tamperedPlanningOnly.runtime_preference.selected_runtime_skill = 'setting-up-blender-runtime';
     tamperedPlanningOnly.can_proceed_to_runtime = true;
     const res2 = inspectExecutionPlan(tamperedPlanningOnly, { repoRoot: ROOT });
     assert.equal(res2.valid, false, 'inspectExecutionPlan must reject can_proceed_to_runtime=true on unconfigured-planning-only');
@@ -383,7 +383,7 @@ describe('Adversarial Audit & Cross-Layer Runtime Hardening', () => {
       human_review_evidence: {
         reviewer: 'RealThanhNguyxnn',
         reviewed_at: '2026-11-05T00:00:00Z',
-        reviewed_scope: 'skills/camera-composition/references/framing-guides.md',
+        reviewed_scope: 'skills/planning-camera-and-framing/references/framing-guides.md',
         review_outcome: 'confirmed_skill_local_framing_reference',
       },
     });
@@ -394,7 +394,7 @@ describe('Adversarial Audit & Cross-Layer Runtime Hardening', () => {
     assert.equal(audit.classification_methodology.methods_breakdown.human_semantic_review, 0);
     assert.equal(
       audit.classification_methodology.methods_breakdown.rule_based_governance_and_recipe_mapping,
-      48,
+      91,
     );
 
     // 5.3 Shared catalog map has all 20 canonical artifacts including runtime governance files and schemas
@@ -413,7 +413,7 @@ describe('Adversarial Audit & Cross-Layer Runtime Hardening', () => {
     const forbiddenTargets = [
       ROOT,
       path.join(ROOT, '.git', 'config'),
-      path.join(ROOT, 'skills', 'camera-composition', 'SKILL.md'),
+      path.join(ROOT, 'skills', 'planning-camera-and-framing', 'SKILL.md'),
       path.join(ROOT, 'laws', 'evidence-before-done.md'),
       path.join(ROOT, 'registry', 'recipe-catalog.json'),
       path.join(ROOT, 'schemas', 'scene-spec.schema.json'),
@@ -601,7 +601,7 @@ describe('Adversarial Audit & Cross-Layer Runtime Hardening', () => {
       operations: [
         {
           operation_id: 'op.mutate.camera-transform-and-lens',
-          skill_id: 'camera-composition',
+          skill_id: 'planning-camera-and-framing',
           input: {
             camera_name: 'Camera',
             location: [0.1, -2.5, 0.5],
@@ -687,7 +687,7 @@ describe('Adversarial Audit & Cross-Layer Runtime Hardening', () => {
       operations: [
         {
           operation_id: 'op.mutate.camera-transform-and-lens',
-          skill_id: 'camera-composition',
+          skill_id: 'planning-camera-and-framing',
           idempotency_key: customIdemKey,
           input: {
             camera_name: 'Camera',
@@ -698,7 +698,7 @@ describe('Adversarial Audit & Cross-Layer Runtime Hardening', () => {
         },
         {
           operation_id: 'op.mutate.camera-transform-and-lens',
-          skill_id: 'camera-composition',
+          skill_id: 'planning-camera-and-framing',
           idempotency_key: customIdemKey,
           input: {
             camera_name: 'Camera',
@@ -725,7 +725,7 @@ describe('Adversarial Audit & Cross-Layer Runtime Hardening', () => {
       operations: [
         {
           operation_id: 'op.mutate.camera-transform-and-lens',
-          skill_id: 'camera-composition',
+          skill_id: 'planning-camera-and-framing',
           idempotency_key: customIdemKey,
           input: {
             camera_name: 'Camera',

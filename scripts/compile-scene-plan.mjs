@@ -4,8 +4,8 @@
  *
  * Implements:
  * - validateSceneSpec(specOrPath, options): Real JSON Schema Draft 2020-12 (Ajv2020) + semantic + canonical catalog validation
- * - compileExecutionPlan(specOrPath, options): Deterministic recipe selection (recipe-fit-assessor),
- *   sub-goal decomposition (blender-recipe-decomposer), 8-layer precedence resolution, cross-skill
+ * - compileExecutionPlan(specOrPath, options): Deterministic recipe selection (scoping-3d-briefs),
+ *   sub-goal decomposition (scoping-3d-briefs), 8-layer precedence resolution, cross-skill
  *   conflict detection (blocking / warning / informational), and Ajv2020 ExecutionPlan validation
  * - inspectExecutionPlan(planOrPath, options): Schema + cross-layer semantic invariant verification of a compiled plan
  * - runPlanCliSubcommand(argv, options): CLI integration for scene-spec-validate, plan-compile, plan-inspect
@@ -48,7 +48,7 @@ export const PRECEDENCE_HIERARCHY = [
     layer_id: 'layer_4_explicit_performance_and_resource_budgets',
     name: 'Explicit Performance, Triangle, Draw-Call & VRAM Budgets',
     description:
-      'Target platform resource envelopes (mobile_web, desktop_web, hybrid_render_and_web, offline_cinema) enforced by polycount-budget-checker and mobile-glb-budget.',
+      'Target platform resource envelopes (mobile_web, desktop_web, hybrid_render_and_web, offline_cinema) enforced by budgeting-glb-for-web and budgeting-glb-for-web.',
   },
   {
     rank: 5,
@@ -511,8 +511,8 @@ export function validateSceneSpec(specOrPath, options = {}) {
 }
 
 /**
- * Resolves the primary recipe and supporting recipes using `recipe-fit-assessor`
- * and decomposes sub-goals via `blender-recipe-decomposer`.
+ * Resolves the primary recipe and supporting recipes using `scoping-3d-briefs`
+ * and decomposes sub-goals via `scoping-3d-briefs`.
  */
 function resolveRecipesForSpec(spec, recipesById) {
   const primaryRecipeId =
@@ -617,7 +617,7 @@ function resolveRecipesForSpec(spec, recipesById) {
     };
   });
 
-  const selectionRationale = `Selected primary recipe ${primaryRecipeId} for intent.primary_goal="${spec.intent.primary_goal}" via recipe-fit-assessor, decomposed into ${decomposedSubGoals.length} ordered sub-goal(s) via blender-recipe-decomposer (${supportingRecipeIds.length} supporting recipe(s): ${supportingRecipeIds.join(', ') || 'none'}).`;
+  const selectionRationale = `Selected primary recipe ${primaryRecipeId} for intent.primary_goal="${spec.intent.primary_goal}" via scoping-3d-briefs, decomposed into ${decomposedSubGoals.length} ordered sub-goal(s) via scoping-3d-briefs (${supportingRecipeIds.length} supporting recipe(s): ${supportingRecipeIds.join(', ') || 'none'}).`;
 
   return {
     primary_recipe_id: primaryRecipeId,
@@ -654,7 +654,7 @@ function detectConflicts(spec) {
       losing_layer_id: 'layer_5_explicit_scene_spec_parameters',
       summary:
         'SceneSpec requests multi-tile UDIM UV packing (>1 tile in 1001+ range) together with standard Khronos glTF 2.0 GLB delivery. Core glTF 2.0 does not support multi-tile UDIM textures without baking/repacking into [0, 1] UV space or splitting materials per tile.',
-      affected_skills: ['glb-web-handoff', 'material-quality-checker', 'output-format-decision'],
+      affected_skills: ['handing-off-glb-to-web', 'planning-lighting-and-materials', 'choosing-render-and-output'],
       knowledge_refs: [
         'knowledge.udim-vs-single-atlas-uv-packing',
         'knowledge.uv-seam-placement-and-texel-density',
@@ -679,7 +679,7 @@ function detectConflicts(spec) {
       losing_layer_id: 'layer_5_explicit_scene_spec_parameters',
       summary:
         'SceneSpec enables Blender Cycles/EEVEE volumetric fog without a real-time card/shader fallback while only exporting a standard web GLB. Standard glTF 2.0 does not transport Blender Principled Volume shaders or Mantaflow smoke grids.',
-      affected_skills: ['lighting-material-plan', 'glb-web-handoff', 'output-format-decision'],
+      affected_skills: ['planning-lighting-and-materials', 'handing-off-glb-to-web', 'choosing-render-and-output'],
       knowledge_refs: [
         'knowledge.volumetrics-fog-and-principled-volume-tradeoffs',
         'knowledge.rigid-body-cloth-and-simulation-cache-baking',
@@ -705,7 +705,7 @@ function detectConflicts(spec) {
       losing_layer_id: 'layer_5_explicit_scene_spec_parameters',
       summary:
         'SceneSpec uses unbaked Blender procedural shader nodes (Noise/Voronoi/ColorRamp/Shader-to-RGB) while targeting standard glTF 2.0 GLB export. Blender procedural nodes are silently dropped by the glTF exporter unless baked to PBR image textures.',
-      affected_skills: ['lighting-material-plan', 'material-quality-checker', 'glb-web-handoff'],
+      affected_skills: ['planning-lighting-and-materials', 'planning-lighting-and-materials', 'handing-off-glb-to-web'],
       knowledge_refs: [
         'knowledge.shader-node-gltf-export-portability',
         'knowledge.principled-bsdf-v2-energy-conserving-pbr',
@@ -729,7 +729,7 @@ function detectConflicts(spec) {
       losing_layer_id: 'layer_5_explicit_scene_spec_parameters',
       summary:
         'SceneSpec includes Geometry Nodes procedural scatter/generator objects with geometry_nodes_realize_instances: false while targeting standard GLB export. Unrealized procedural instances and unmapped named attributes export as empty nodes or missing UVs.',
-      affected_skills: ['scene-readiness', 'glb-web-handoff', 'pre-handoff-verification'],
+      affected_skills: ['verifying-before-handoff', 'handing-off-glb-to-web', 'verifying-before-handoff'],
       knowledge_refs: [
         'knowledge.procedural-instancing-and-realize-instances-budget',
         'knowledge.geometry-nodes-fields-and-anonymous-attributes',
@@ -755,7 +755,7 @@ function detectConflicts(spec) {
       winning_layer_id: 'layer_1_hard_laws_and_safety',
       losing_layer_id: 'layer_5_explicit_scene_spec_parameters',
       summary: `Object(s) [${badScaleObjects.map((o) => o.id).join(', ')}] have unapplied transforms or non-unit/negative scale (${hasNegativeScale ? 'negative scale inverts face winding and flips normals in glTF/Three.js' : 'non-unit scale distorts bevels, UVs, and skeletal skinning'}).`,
-      affected_skills: ['scene-readiness', 'pre-handoff-verification', 'glb-web-handoff'],
+      affected_skills: ['verifying-before-handoff', 'verifying-before-handoff', 'handing-off-glb-to-web'],
       knowledge_refs: [
         'knowledge.mesh-manifold-normals-and-scale-hygiene',
         'knowledge.gltf-2-coordinate-system-and-transform-conventions',
@@ -779,7 +779,7 @@ function detectConflicts(spec) {
       winning_layer_id: 'layer_2_target_delivery_format_and_spec',
       losing_layer_id: 'layer_5_explicit_scene_spec_parameters',
       summary: `SceneSpec specifies max_bone_influences_per_vertex = ${spec.animation_and_rigging.max_bone_influences_per_vertex}, exceeding the core Khronos glTF 2.0 JOINTS_0 / WEIGHTS_0 limit of 4 normalized bone influences per vertex.`,
-      affected_skills: ['glb-animation-handoff', 'pre-handoff-verification'],
+      affected_skills: ['handing-off-glb-to-web', 'verifying-before-handoff'],
       knowledge_refs: ['knowledge.armature-joint-hierarchy-and-linear-blend-skinning'],
       remediation:
         'Run Limit Total (<= 4 influences per vertex) and Normalize All in Weight Paint mode before exporting to glTF 2.0.',
@@ -800,7 +800,7 @@ function detectConflicts(spec) {
       losing_layer_id: 'layer_5_explicit_scene_spec_parameters',
       summary:
         'SceneSpec sets apply_modifiers_with_shape_keys: true on a mesh with active Shape Keys. Blender cannot directly apply topology-changing modifiers on meshes with Shape Keys without destroying morph target vertex indices.',
-      affected_skills: ['glb-animation-handoff', 'scene-readiness'],
+      affected_skills: ['handing-off-glb-to-web', 'verifying-before-handoff'],
       knowledge_refs: [
         'knowledge.nla-action-baking-and-morph-target-export',
         'knowledge.non-destructive-hard-surface-modifier-stack',
@@ -826,7 +826,7 @@ function detectConflicts(spec) {
       losing_layer_id: 'layer_5_explicit_scene_spec_parameters',
       summary:
         'SceneSpec enables armature animation for GLB delivery with bake_nla_to_linear_keyframes: false. Blender IK solvers, Copy Transforms, and Python driver expressions are not exported to glTF 2.0 unless baked to visual deformation keyframes.',
-      affected_skills: ['glb-animation-handoff', 'glb-web-handoff'],
+      affected_skills: ['handing-off-glb-to-web', 'handing-off-glb-to-web'],
       knowledge_refs: ['knowledge.nla-action-baking-and-morph-target-export'],
       remediation:
         'Set bake_nla_to_linear_keyframes: true (Bake Action with Visual Keying, Clear Constraints, and Export Deform Bones Only).',
@@ -848,7 +848,7 @@ function detectConflicts(spec) {
       winning_layer_id: 'layer_4_explicit_performance_and_resource_budgets',
       losing_layer_id: 'layer_5_explicit_scene_spec_parameters',
       summary: `Total object triangle budget (${totalObjectTriangles.toLocaleString()} tris) exceeds optimization_and_budgets.max_triangles (${spec.optimization_and_budgets.max_triangles.toLocaleString()} tris, ${(ratio * 100).toFixed(0)}% of budget).`,
-      affected_skills: ['polycount-budget-checker', 'mobile-glb-budget'],
+      affected_skills: ['budgeting-glb-for-web', 'budgeting-glb-for-web'],
       knowledge_refs: [
         'knowledge.triangle-draw-call-and-vram-budgets',
         'knowledge.lod-hierarchy-and-decimation-strategy',
@@ -869,7 +869,7 @@ function detectConflicts(spec) {
       winning_layer_id: 'layer_7_skill_level_heuristics',
       losing_layer_id: 'layer_5_explicit_scene_spec_parameters',
       summary: `Camera clip_end_m / clip_start_m ratio (${Math.round(clipRatio).toLocaleString()}:1) exceeds the safe 100,000:1 depth precision threshold and risks coplanar Z-fighting flicker.`,
-      affected_skills: ['camera-composition', 'composition-quality-checker'],
+      affected_skills: ['planning-camera-and-framing', 'planning-camera-and-framing'],
       knowledge_refs: ['knowledge.physically-based-camera-lens-and-dof'],
       remediation:
         'Raise camera_and_framing.clip_start_m (>= 0.01m - 0.1m) and lower clip_end_m to tightly bound the actual scene extents.',
@@ -887,10 +887,10 @@ function detectConflicts(spec) {
       winning_layer_id: 'layer_1_hard_laws_and_safety',
       losing_layer_id: 'layer_6_domain_recipe_defaults',
       summary: `Object(s) [${noisyObjects.map((o) => o.id).join(', ')}] flag has_non_manifold_or_scan_noise: true. UV unwrapping, normal baking, and Booleans will fail unless preceded by manifold cleanup.`,
-      affected_skills: ['scene-readiness', 'pre-handoff-verification'],
+      affected_skills: ['verifying-before-handoff', 'verifying-before-handoff'],
       knowledge_refs: ['knowledge.mesh-manifold-normals-and-scale-hygiene'],
       remediation:
-        'Execute scene-readiness manifold cleanup (Merge by Distance, Delete Loose, Fill Holes, Recalculate Outside Normals) before stage 5 material/UV baking.',
+        'Execute verifying-before-handoff manifold cleanup (Merge by Distance, Delete Loose, Fill Holes, Recalculate Outside Normals) before stage 5 material/UV baking.',
     });
   }
 
@@ -909,9 +909,9 @@ function detectConflicts(spec) {
       summary:
         'SceneSpec targets both offline Cycles AgX rendering and standard web GLB export. Harmonizer schedules a dual-branch execution plan: full Cycles AgX lighting for still renders, and baked Principled BSDF PBR + KTX2/Draco for GLB handoff.',
       affected_skills: [
-        'cycles-vs-eevee-decision',
-        'color-management-decision',
-        'glb-web-handoff',
+        'choosing-render-and-output',
+        'planning-lighting-and-materials',
+        'handing-off-glb-to-web',
       ],
       knowledge_refs: [
         'knowledge.agx-filmic-color-management-and-cycles-eevee',
@@ -938,7 +938,7 @@ function detectConflicts(spec) {
       winning_layer_id: 'layer_3_runtime_and_blender_version_limits',
       losing_layer_id: 'layer_5_explicit_scene_spec_parameters',
       summary: `SceneSpec selects Path 1 (Official Blender Lab MCP) with blender_version_target recommended="${spec.blender_version_target.recommended}" (tested_range="${spec.blender_version_target.tested_range}"), which is below the mandatory Blender 5.1+ floor required by the official Blender Lab MCP add-on manifest.`,
-      affected_skills: ['runtime-path-picker', 'runtime-readiness', 'path-one-host-outline'],
+      affected_skills: ['setting-up-blender-runtime', 'setting-up-blender-runtime', 'setting-up-blender-runtime'],
       knowledge_refs: ['knowledge.mesh-manifold-normals-and-scale-hygiene'],
       remediation:
         'Upgrade blender_version_target.recommended / tested_range to Blender 5.1+ for Path 1 Official Blender Lab MCP, or switch runtime_preference.preferred_path to "path-2-community-mcp-for-blender" (supports Blender 3.0+) or "cli-appendix-headless".',
@@ -958,7 +958,7 @@ function detectConflicts(spec) {
       winning_layer_id: 'layer_3_runtime_and_blender_version_limits',
       losing_layer_id: 'layer_5_explicit_scene_spec_parameters',
       summary: `SceneSpec selects ${preferredPath} with blender_version_target min="${spec.blender_version_target.min}" / recommended="${spec.blender_version_target.recommended}", which is below the Blender 3.0+ floor supported by Path 2 community mcp-for-blender and the CLI appendix.`,
-      affected_skills: ['runtime-path-picker', 'runtime-readiness'],
+      affected_skills: ['setting-up-blender-runtime', 'setting-up-blender-runtime'],
       knowledge_refs: ['knowledge.mesh-manifold-normals-and-scale-hygiene'],
       remediation:
         'Target Blender 3.0+ (recommended 3.6 LTS - 5.1+) when using Path 2 community mcp-for-blender or CLI appendix headless execution.',
@@ -1024,24 +1024,21 @@ export function compileExecutionPlan(specOrPath, options = {}) {
   const canProceedToRuntime = blockingCount === 0 && !isPlanningOnlyPath;
 
   const runtimeSkillMap = {
-    'path-1-official-blender-lab-mcp': 'path-one-host-outline',
-    'path-2-community-mcp-for-blender': 'runtime-path-picker',
-    'cli-appendix-headless': 'cli-appendix-job-outline',
-    'unconfigured-planning-only': 'runtime-setup',
+    'path-1-official-blender-lab-mcp': 'setting-up-blender-runtime',
+    'path-2-community-mcp-for-blender': 'setting-up-blender-runtime',
+    'cli-appendix-headless': 'setting-up-blender-runtime',
+    'unconfigured-planning-only': 'setting-up-blender-runtime',
   };
   const selectedRuntimeSkill =
-    runtimeSkillMap[spec.runtime_preference.preferred_path] || 'runtime-path-picker';
+    runtimeSkillMap[spec.runtime_preference.preferred_path] || 'setting-up-blender-runtime';
 
   const primaryRec = recipesById.get(recipeResolution.primary_recipe_id);
   const primaryPlannerSkill =
     primaryRec && Array.isArray(primaryRec.required_skill_ids)
       ? primaryRec.required_skill_ids.find((s) =>
           [
-            'product-hero-scene-planner',
-            'environment-shot',
-            'interior-scene',
-            'character-portrait',
-            'product-grid-scene-planner',
+            'planning-product-scenes',
+            'planning-scenes',
           ].includes(s),
         )
       : null;
@@ -1058,7 +1055,7 @@ export function compileExecutionPlan(specOrPath, options = {}) {
       stage_index: 1,
       stage_id: 'discover',
       stage_name: 'Discover & Scope Intent',
-      skills: ['blender-brainstorming', 'workflow-stage-router', 'scope-guard'],
+      skills: ['scoping-3d-briefs', 'using-blendops', 'defining-done-and-gates'],
       knowledge_refs: [
         'knowledge.mesh-manifold-normals-and-scale-hygiene',
         'knowledge.modular-architectural-grid-and-metric-scale',
@@ -1071,10 +1068,10 @@ export function compileExecutionPlan(specOrPath, options = {}) {
       stage_id: 'define',
       stage_name: 'Define Brief, Budgets & Acceptance Criteria',
       skills: [
-        'intent-to-3d-brief-writer',
-        'acceptance-criteria-builder',
-        'polycount-budget-checker',
-        ...(spec.optimization_and_budgets.target_tier === 'mobile_web' ? ['mobile-glb-budget'] : []),
+        'scoping-3d-briefs',
+        'defining-done-and-gates',
+        'budgeting-glb-for-web',
+        ...(spec.optimization_and_budgets.target_tier === 'mobile_web' ? ['budgeting-glb-for-web'] : []),
       ],
       knowledge_refs: [
         'knowledge.triangle-draw-call-and-vram-budgets',
@@ -1088,15 +1085,11 @@ export function compileExecutionPlan(specOrPath, options = {}) {
       stage_id: 'plan',
       stage_name: 'Harmonize Recipes, Camera, Lighting & Render Decisions',
       skills: [
-        'recipe-fit-assessor',
-        'blender-recipe-decomposer',
+        'scoping-3d-briefs',
         ...(primaryPlannerSkill ? [primaryPlannerSkill] : []),
-        'camera-composition',
-        'lighting-material-plan',
-        'cycles-vs-eevee-decision',
-        'color-management-decision',
-        'resolution-aspect-decision',
-        'output-format-decision',
+        'planning-camera-and-framing',
+        'planning-lighting-and-materials',
+        'choosing-render-and-output',
       ],
       knowledge_refs: [
         'knowledge.physically-based-camera-lens-and-dof',
@@ -1112,13 +1105,9 @@ export function compileExecutionPlan(specOrPath, options = {}) {
       stage_id: 'source',
       stage_name: 'Source Assets, Check Readiness & Verify Runtime Path',
       skills: [
-        'asset-discovery',
-        'asset-license-checker',
-        'asset-style-check',
-        'asset-fallback-strategy',
-        'scene-readiness',
-        'runtime-path-picker',
-        'runtime-readiness',
+        'sourcing-assets',
+        'verifying-before-handoff',
+        'setting-up-blender-runtime',
         selectedRuntimeSkill,
       ],
       knowledge_refs: [
@@ -1133,10 +1122,10 @@ export function compileExecutionPlan(specOrPath, options = {}) {
       stage_id: 'execute',
       stage_name: 'Execute Scene Assembly, Shading, Lighting & Baking',
       skills: [
-        'stage-gates',
-        'runtime-attempt-report',
-        ...(spec.animation_and_rigging.enabled ? ['glb-animation-handoff'] : []),
-        ...(deliversGlb ? ['glb-web-handoff'] : []),
+        'defining-done-and-gates',
+        'verifying-before-handoff',
+        ...(spec.animation_and_rigging.enabled ? ['handing-off-glb-to-web'] : []),
+        ...(deliversGlb ? ['handing-off-glb-to-web'] : []),
       ],
       knowledge_refs: [
         'knowledge.non-destructive-hard-surface-modifier-stack',
@@ -1154,11 +1143,9 @@ export function compileExecutionPlan(specOrPath, options = {}) {
       stage_id: 'verify',
       stage_name: 'Verify Quality Checkers & Pre-Handoff Gates',
       skills: [
-        'composition-quality-checker',
-        'lighting-quality-checker',
-        'material-quality-checker',
-        'preview-report',
-        'pre-handoff-verification',
+        'planning-camera-and-framing',
+        'planning-lighting-and-materials',
+        'verifying-before-handoff',
       ],
       knowledge_refs: [
         'knowledge.environment-depth-layering-and-atmospheric-perspective',
@@ -1173,10 +1160,10 @@ export function compileExecutionPlan(specOrPath, options = {}) {
       stage_id: 'deliver',
       stage_name: 'Record Evidence Packets & Plain-Language Delivery',
       skills: [
-        'render-export-evidence',
-        'done-criteria',
-        'plain-language-response',
-        ...(spec.deliverables.target_consumers.includes('threejs_r3f') ? ['r3f-component-plan'] : []),
+        'verifying-before-handoff',
+        'defining-done-and-gates',
+        'using-blendops',
+        ...(spec.deliverables.target_consumers.includes('threejs_r3f') ? ['handing-off-glb-to-web'] : []),
       ],
       knowledge_refs: [
         'knowledge.glb-binary-chunk-alignment-and-khronos-validation',
@@ -1240,7 +1227,7 @@ export function compileExecutionPlan(specOrPath, options = {}) {
       winning_layer_rank: 4,
       winning_layer_id: 'layer_4_explicit_performance_and_resource_budgets',
       governing_id: 'knowledge.triangle-draw-call-and-vram-budgets',
-      rationale: `Enforces explicit ${spec.optimization_and_budgets.target_tier} budget ceiling via polycount-budget-checker.`,
+      rationale: `Enforces explicit ${spec.optimization_and_budgets.target_tier} budget ceiling via budgeting-glb-for-web.`,
     },
     {
       parameter: 'render_engine_and_color_transform',
@@ -1265,7 +1252,7 @@ export function compileExecutionPlan(specOrPath, options = {}) {
     {
       gate_id: 'gate.transform-and-manifold-readiness',
       stage_id: 'source',
-      skill_id: 'scene-readiness',
+      skill_id: 'verifying-before-handoff',
       criterion:
         'All objects have applied unit scale [1, 1, 1], zero non-manifold holes, and consistent outward normals.',
       blocking: true,
@@ -1273,14 +1260,14 @@ export function compileExecutionPlan(specOrPath, options = {}) {
     {
       gate_id: 'gate.polycount-and-vram-budget',
       stage_id: 'define',
-      skill_id: 'polycount-budget-checker',
+      skill_id: 'budgeting-glb-for-web',
       criterion: `Total triangles <= ${spec.optimization_and_budgets.max_triangles.toLocaleString()}, draw calls <= ${spec.optimization_and_budgets.max_draw_calls}, VRAM <= ${spec.optimization_and_budgets.max_vram_mb} MB.`,
       blocking: true,
     },
     {
       gate_id: 'gate.pbr-and-color-management-audit',
       stage_id: 'verify',
-      skill_id: 'material-quality-checker',
+      skill_id: 'planning-lighting-and-materials',
       criterion:
         'Albedo within [0.04, 0.90] linear sRGB, Non-Color set on Normal/ORM maps, and AgX view transform verified.',
       blocking: true,
@@ -1288,7 +1275,7 @@ export function compileExecutionPlan(specOrPath, options = {}) {
     {
       gate_id: 'gate.evidence-before-done',
       stage_id: 'deliver',
-      skill_id: 'done-criteria',
+      skill_id: 'defining-done-and-gates',
       criterion:
         'No runtime mutation, render, or GLB export claim may be marked Verified without a schema-valid evidence packet under docs/evals/.',
       blocking: true,
@@ -1298,14 +1285,14 @@ export function compileExecutionPlan(specOrPath, options = {}) {
   const requiredEvidencePackets = [
     {
       packet_type: 'runtime-smoke',
-      governing_skill: 'runtime-readiness',
+      governing_skill: 'setting-up-blender-runtime',
       schema_ref: 'schemas/evidence-packet.schema.json',
       required_before_claim: 'Verified runtime connection or scene inspection',
       default_truth_state: 'Not Run',
     },
     {
       packet_type: 'preview-check',
-      governing_skill: 'preview-report',
+      governing_skill: 'verifying-before-handoff',
       schema_ref: 'schemas/evidence-packet.schema.json',
       required_before_claim: 'Verified viewport/camera/lighting preview',
       default_truth_state: 'Not Produced',
@@ -1315,7 +1302,7 @@ export function compileExecutionPlan(specOrPath, options = {}) {
   if (deliversRender) {
     requiredEvidencePackets.push({
       packet_type: 'render-export',
-      governing_skill: 'render-export-evidence',
+      governing_skill: 'verifying-before-handoff',
       schema_ref: 'schemas/evidence-packet.schema.json',
       required_before_claim: 'Verified still render or turntable artifact',
       default_truth_state: 'Not Produced',
@@ -1324,7 +1311,7 @@ export function compileExecutionPlan(specOrPath, options = {}) {
   if (deliversGlb) {
     requiredEvidencePackets.push({
       packet_type: 'glb-handoff',
-      governing_skill: 'glb-web-handoff',
+      governing_skill: 'handing-off-glb-to-web',
       schema_ref: 'schemas/evidence-packet.schema.json',
       required_before_claim: 'Verified Khronos glTF 2.0 GLB export and web handoff',
       default_truth_state: 'Not Produced',
@@ -1495,10 +1482,10 @@ export function inspectExecutionPlan(planOrPath, options = {}) {
 
     // 2. Runtime path and version floor consistency
     const runtimeSkillMap = {
-      'path-1-official-blender-lab-mcp': 'path-one-host-outline',
-      'path-2-community-mcp-for-blender': 'runtime-path-picker',
-      'cli-appendix-headless': 'cli-appendix-job-outline',
-      'unconfigured-planning-only': 'runtime-setup',
+      'path-1-official-blender-lab-mcp': 'setting-up-blender-runtime',
+      'path-2-community-mcp-for-blender': 'setting-up-blender-runtime',
+      'cli-appendix-headless': 'setting-up-blender-runtime',
+      'unconfigured-planning-only': 'setting-up-blender-runtime',
     };
     const prefPath = plan.runtime_preference?.preferred_path;
     if (!prefPath || !Object.prototype.hasOwnProperty.call(runtimeSkillMap, prefPath)) {
@@ -1589,7 +1576,7 @@ export function inspectExecutionPlan(planOrPath, options = {}) {
         for (const sk of sg.skills || []) {
           if (!canonicalSkillIds.has(sk)) {
             errors.push(
-              `Unknown skill "${sk}" in decomposed_sub_goals[${idx}].skills (not in canonical 48-skill registry).`,
+              `Unknown skill "${sk}" in decomposed_sub_goals[${idx}].skills (not in canonical 14-skill registry).`,
             );
           }
         }
@@ -1613,7 +1600,7 @@ export function inspectExecutionPlan(planOrPath, options = {}) {
         resolvedSkillSet.add(sk);
         if (!canonicalSkillIds.has(sk)) {
           errors.push(
-            `Unknown skill ID "${sk}" in resolved_skills (not in canonical 48-skill registry).`,
+            `Unknown skill ID "${sk}" in resolved_skills (not in canonical 14-skill registry).`,
           );
         }
       }

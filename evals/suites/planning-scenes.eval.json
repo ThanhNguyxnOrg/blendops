@@ -1,0 +1,933 @@
+{
+  "schemaVersion": "2.0.0",
+  "skillId": "planning-scenes",
+  "category": "scene-planners",
+  "isContractedSkill": true,
+  "isRoutingParticipant": false,
+  "contractPath": "skills/planning-scenes/contract.json",
+  "skillMarkdownPath": "skills/planning-scenes/SKILL.md",
+  "evalMarkdownPath": "skills/planning-scenes/EVAL.md",
+  "sourceEvalTier": "prose_outline_contract_migrated",
+  "evaluationStatus": {
+    "staticValidation": "Passed",
+    "deterministicFixture": "Passed",
+    "contractRouting": "Not Applicable",
+    "contractHandoff": "Passed",
+    "liveModel": "Not Run",
+    "blenderRuntime": "Not Run"
+  },
+  "cases": [
+    {
+      "id": "character-portrait-normal-in-scope-handoff",
+      "skillId": "planning-scenes",
+      "scenario": "Normal in-scope execution of planning-scenes (character-portrait-and-turntable-architect) with contract handoff to planning-camera-and-framing",
+      "category": "normal",
+      "inputPrompt": "Use planning-scenes on a hero close-up brief: stylized 30s tech founder, confident editorial mood, 85mm lens, eye-line on upper third, Rembrandt key lighting, 16:9 web hero card.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Primary inputs (locked_3d_brief) provided in text-only planning/audit mode."
+      },
+      "expectedBehavior": [
+        "Produces character_staging_and_pose_plan, eyeline_and_portrait_camera_anchors, skin_hair_rim_lighting_hooks for role character-portrait-and-turntable-architect",
+        "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
+        "Evaluates contract handoff predicate and hands off to planning-camera-and-framing (Framing deep-dive)"
+      ],
+      "requiredOutputProperties": [
+        "eye-line upper third",
+        "85mm",
+        "Rembrandt key/fill/rim",
+        "planning-camera-and-framing",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "18mm wide distortion close-up",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "planning-camera-and-framing",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Outputs character_staging_and_pose_plan, eyeline_and_portrait_camera_anchors, skin_hair_rim_lighting_hooks conforming to skills/planning-scenes/SKILL.md",
+        "Matches contract handoff predicate to planning-camera-and-framing in skills/planning-scenes/contract.json"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "brief.locked": true,
+          "stage.current": "camera_planning"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only character-portrait-and-turntable-architect (planning-scenes)",
+          "recommendedNextAction": "Complete character_staging_and_pose_plan and hand off to planning-camera-and-framing (Framing deep-dive).",
+          "targetHandoff": "planning-camera-and-framing",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Planned single-subject character portrait scene (pose/gaze, wardrobe, 85mm eye-line framing, Rembrandt key/fill/rim rig, and asset discovery checklist). Delivered eye-line upper third, 85mm, Rembrandt key/fill/rim and routed to planning-camera-and-framing.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/planning-scenes/SKILL.md",
+            "skills/planning-scenes/EVAL.md",
+            "skills/planning-scenes/contract.json",
+            "skills/planning-scenes/references/portrait-framing-rules.md",
+            "skills/planning-scenes/references/portrait-lighting-patterns.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "character-portrait-secondary-contract-handoff",
+      "skillId": "planning-scenes",
+      "scenario": "Secondary upstream_reference contract handoff from planning-scenes to scoping-3d-briefs",
+      "category": "structured_skip",
+      "inputPrompt": "While applying planning-scenes, the workflow context is {\"goal.clarity\":\"clear\",\"brief.locked\":false} (Upstream brief). Determine the contract-governed handoff target.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates the upstream_reference handoff predicate in skills/planning-scenes/contract.json",
+        "Routes to scoping-3d-briefs (Upstream brief) without claiming runtime execution"
+      ],
+      "requiredOutputProperties": [
+        "scoping-3d-briefs",
+        "upstream_reference",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "18mm wide distortion close-up",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "scoping-3d-briefs",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Contract upstream_reference handoff predicate match to scoping-3d-briefs"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "goal.clarity": "clear",
+          "brief.locked": false
+        },
+        "simulatedOutput": {
+          "mode": "Text-only planning-scenes (upstream_reference handoff)",
+          "recommendedNextAction": "Follow upstream_reference handoff to scoping-3d-briefs (Upstream brief).",
+          "targetHandoff": "scoping-3d-briefs",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Triggered upstream_reference handoff from planning-scenes to scoping-3d-briefs under context {\"goal.clarity\":\"clear\",\"brief.locked\":false}.",
+          "warnings": [
+            "Contract-governed upstream_reference handoff."
+          ],
+          "evidenceCitations": [
+            "skills/planning-scenes/contract.json",
+            "skills/planning-scenes/SKILL.md",
+            "skills/planning-scenes/references/portrait-framing-rules.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "character-portrait-unmatched-handoff-and-evidence-boundary",
+      "skillId": "planning-scenes",
+      "scenario": "Unmatched contract handoff context returns none and blocks upgrading unvalidated file to Verified in planning-scenes",
+      "category": "evidence_boundary",
+      "inputPrompt": "An operator provides an unvalidated file on disk during planning-scenes with context {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and asks to mark Artifact: Verified and auto-advance.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "file-only-unvalidated",
+        "notes": "A file exists on disk but validation checks have not been recorded."
+      },
+      "expectedBehavior": [
+        "Refuses to upgrade Artifact status to Verified when existingArtifactEvidence is file-only-unvalidated (caps at Produced)",
+        "Evaluates contract handoffs for planning-scenes and returns targetHandoff none because no handoff predicate matches"
+      ],
+      "requiredOutputProperties": [
+        "Artifact: Produced",
+        "Runtime: Not Run",
+        "validation",
+        "none"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "validation not needed"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Downgrade unvalidated Verified claim to Produced per laws/evidence-before-done.md",
+        "Verify 0 handoffs match in skills/planning-scenes/contract.json for {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true}"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Artifact-claim boundary check (planning-scenes)",
+          "recommendedNextAction": "Keep Artifact status at Produced (never Verified without validation evidence) and hold at targetHandoff none until a downstream precondition is met.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Produced",
+          "summary": "Capped unvalidated artifact claim at Artifact: Produced and verified zero matching contract handoffs (none) for planning-scenes.",
+          "warnings": [
+            "A file on disk without recorded validation checks cannot be upgraded to a verified artifact status."
+          ],
+          "evidenceCitations": [
+            "laws/evidence-before-done.md",
+            "skills/planning-scenes/contract.json",
+            "skills/planning-scenes/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "character-portrait-ambiguous-missing-required-inputs",
+      "skillId": "planning-scenes",
+      "scenario": "Missing required input (locked_3d_brief) for planning-scenes halts fabricated output and requests clarification",
+      "category": "ambiguous",
+      "inputPrompt": "Plan a character portrait scene without specifying who the character is, whether it is stylized or photoreal, or what framing/aspect ratio is needed.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Required input 'locked_3d_brief' is missing or underspecified."
+      },
+      "expectedBehavior": [
+        "Identifies missing character archetype/style, framing crop, and target aspect ratio required by planning-scenes (locked_3d_brief)",
+        "Refuses to fabricate domain parameters and keeps Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "locked_3d_brief",
+        "character archetype/style, framing crop, and target aspect ratio",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "18mm wide distortion close-up",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "guessed parameters silently"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicitly names missing required input 'locked_3d_brief' (character archetype/style, framing crop, and target aspect ratio)",
+        "Conservative Runtime: Not Run and Artifact: Not Produced truth states"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Clarification gate (planning-scenes)",
+          "recommendedNextAction": "Provide the missing character archetype/style, framing crop, and target aspect ratio (locked_3d_brief) before planning-scenes locks character_staging_and_pose_plan.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted planning-scenes due to missing required input 'locked_3d_brief' (character archetype/style, framing crop, and target aspect ratio); no values were fabricated.",
+          "warnings": [
+            "Do not invent character archetype/style, framing crop, and target aspect ratio when 'locked_3d_brief' is omitted."
+          ],
+          "evidenceCitations": [
+            "skills/planning-scenes/SKILL.md",
+            "skills/planning-scenes/EVAL.md",
+            "skills/planning-scenes/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "character-portrait-out-of-scope-exclusion-delegation",
+      "skillId": "planning-scenes",
+      "scenario": "Out-of-scope request (product hero scenes) is excluded from planning-scenes and delegated to planning-product-scenes",
+      "category": "scope_creep",
+      "inputPrompt": "Instead of plan a planning-scenes scene (subject, pose, expression, wardrobe, framing, lighting, background) before any modeling or render attempt., handle this request inside planning-scenes: product hero scenes.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Enforces the declared exclusion boundary in skills/planning-scenes/contract.json when product hero scenes",
+        "Delegates to planning-product-scenes (use planning-product-scenes) with Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "planning-product-scenes",
+        "out of scope",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "18mm wide distortion close-up",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "handled inside planning-scenes anyway"
+      ],
+      "expectedRoutingTarget": "planning-product-scenes",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Exclusion delegation to planning-product-scenes per skills/planning-scenes/contract.json"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Out-of-scope exclusion gate (planning-scenes)",
+          "recommendedNextAction": "Request is out of scope for planning-scenes (product hero scenes); delegate to planning-product-scenes.",
+          "targetHandoff": "planning-product-scenes",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Enforced planning-scenes exclusion boundary (use planning-product-scenes) and delegated to planning-product-scenes.",
+          "warnings": [
+            "planning-scenes is scoped to character-portrait-and-turntable-architect and does not absorb planning-product-scenes responsibilities."
+          ],
+          "evidenceCitations": [
+            "skills/planning-scenes/contract.json",
+            "skills/planning-scenes/SKILL.md",
+            "skills/planning-product-scenes/SKILL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "environment-shot-normal-in-scope-handoff",
+      "skillId": "planning-scenes",
+      "scenario": "Normal in-scope execution of planning-scenes (environment-establishing-shot-architect) with contract handoff to planning-camera-and-framing",
+      "category": "normal",
+      "inputPrompt": "Use planning-scenes on a locked brief: \"cyberpunk city street at night, light rain, wet asphalt reflections, neon signage focal subject, cinematic 2.39:1 wide shot\".",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Primary inputs (locked_3d_brief) provided in text-only planning/audit mode."
+      },
+      "expectedBehavior": [
+        "Produces foreground_midground_background_layer_plan, sun_sky_atmosphere_specification, horizon_and_scale_anchor_plan for role environment-establishing-shot-architect",
+        "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
+        "Evaluates contract handoff predicate and hands off to planning-camera-and-framing (Composition validation)"
+      ],
+      "requiredOutputProperties": [
+        "FG / MG / BG depth layers",
+        "2.39:1",
+        "atmosphere volume",
+        "planning-camera-and-framing",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "no depth layers needed",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "planning-camera-and-framing",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Outputs foreground_midground_background_layer_plan, sun_sky_atmosphere_specification, horizon_and_scale_anchor_plan conforming to skills/planning-scenes/SKILL.md",
+        "Matches contract handoff predicate to planning-camera-and-framing in skills/planning-scenes/contract.json"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "quality.domain": "composition",
+          "quality.verdict": "not_run"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only environment-establishing-shot-architect (planning-scenes)",
+          "recommendedNextAction": "Complete foreground_midground_background_layer_plan and hand off to planning-camera-and-framing (Composition validation).",
+          "targetHandoff": "planning-camera-and-framing",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Planned wide 2.39:1 environment establishing shot with explicit foreground/midground/background depth layers, night rain atmosphere/fog volume, and 24mm camera rig. Delivered FG / MG / BG depth layers, 2.39:1, atmosphere volume and routed to planning-camera-and-framing.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/planning-scenes/SKILL.md",
+            "skills/planning-scenes/EVAL.md",
+            "skills/planning-scenes/contract.json",
+            "skills/planning-scenes/references/depth-layering-rules.md",
+            "skills/planning-scenes/references/time-and-weather-rules.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "environment-shot-secondary-contract-handoff",
+      "skillId": "planning-scenes",
+      "scenario": "Secondary upstream_reference contract handoff from planning-scenes to scoping-3d-briefs",
+      "category": "structured_skip",
+      "inputPrompt": "While applying planning-scenes, the workflow context is {\"goal.clarity\":\"clear\",\"brief.locked\":false} (Brief writer). Determine the contract-governed handoff target.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates the upstream_reference handoff predicate in skills/planning-scenes/contract.json",
+        "Routes to scoping-3d-briefs (Brief writer) without claiming runtime execution"
+      ],
+      "requiredOutputProperties": [
+        "scoping-3d-briefs",
+        "upstream_reference",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "no depth layers needed",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "scoping-3d-briefs",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Contract upstream_reference handoff predicate match to scoping-3d-briefs"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "goal.clarity": "clear",
+          "brief.locked": false
+        },
+        "simulatedOutput": {
+          "mode": "Text-only planning-scenes (upstream_reference handoff)",
+          "recommendedNextAction": "Follow upstream_reference handoff to scoping-3d-briefs (Brief writer).",
+          "targetHandoff": "scoping-3d-briefs",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Triggered upstream_reference handoff from planning-scenes to scoping-3d-briefs under context {\"goal.clarity\":\"clear\",\"brief.locked\":false}.",
+          "warnings": [
+            "Contract-governed upstream_reference handoff."
+          ],
+          "evidenceCitations": [
+            "skills/planning-scenes/contract.json",
+            "skills/planning-scenes/SKILL.md",
+            "skills/planning-scenes/references/depth-layering-rules.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "environment-shot-unmatched-handoff-and-evidence-boundary",
+      "skillId": "planning-scenes",
+      "scenario": "Unmatched contract handoff context returns none and blocks upgrading unvalidated file to Verified in planning-scenes",
+      "category": "evidence_boundary",
+      "inputPrompt": "An operator provides an unvalidated file on disk during planning-scenes with context {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and asks to mark Artifact: Verified and auto-advance.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "file-only-unvalidated",
+        "notes": "A file exists on disk but validation checks have not been recorded."
+      },
+      "expectedBehavior": [
+        "Refuses to upgrade Artifact status to Verified when existingArtifactEvidence is file-only-unvalidated (caps at Produced)",
+        "Evaluates contract handoffs for planning-scenes and returns targetHandoff none because no handoff predicate matches"
+      ],
+      "requiredOutputProperties": [
+        "Artifact: Produced",
+        "Runtime: Not Run",
+        "validation",
+        "none"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "validation not needed"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Downgrade unvalidated Verified claim to Produced per laws/evidence-before-done.md",
+        "Verify 0 handoffs match in skills/planning-scenes/contract.json for {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true}"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Artifact-claim boundary check (planning-scenes)",
+          "recommendedNextAction": "Keep Artifact status at Produced (never Verified without validation evidence) and hold at targetHandoff none until a downstream precondition is met.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Produced",
+          "summary": "Capped unvalidated artifact claim at Artifact: Produced and verified zero matching contract handoffs (none) for planning-scenes.",
+          "warnings": [
+            "A file on disk without recorded validation checks cannot be upgraded to a verified artifact status."
+          ],
+          "evidenceCitations": [
+            "laws/evidence-before-done.md",
+            "skills/planning-scenes/contract.json",
+            "skills/planning-scenes/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "environment-shot-ambiguous-missing-required-inputs",
+      "skillId": "planning-scenes",
+      "scenario": "Missing required input (locked_3d_brief) for planning-scenes halts fabricated output and requests clarification",
+      "category": "ambiguous",
+      "inputPrompt": "Plan an environment establishing shot without specifying the locale, time of day, weather atmosphere, or focal anchor.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Required input 'locked_3d_brief' is missing or underspecified."
+      },
+      "expectedBehavior": [
+        "Identifies missing environment locale, time-of-day/weather state, and focal subject anchor required by planning-scenes (locked_3d_brief)",
+        "Refuses to fabricate domain parameters and keeps Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "locked_3d_brief",
+        "environment locale, time-of-day/weather state, and focal subject anchor",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "no depth layers needed",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "guessed parameters silently"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicitly names missing required input 'locked_3d_brief' (environment locale, time-of-day/weather state, and focal subject anchor)",
+        "Conservative Runtime: Not Run and Artifact: Not Produced truth states"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Clarification gate (planning-scenes)",
+          "recommendedNextAction": "Provide the missing environment locale, time-of-day/weather state, and focal subject anchor (locked_3d_brief) before planning-scenes locks foreground_midground_background_layer_plan.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted planning-scenes due to missing required input 'locked_3d_brief' (environment locale, time-of-day/weather state, and focal subject anchor); no values were fabricated.",
+          "warnings": [
+            "Do not invent environment locale, time-of-day/weather state, and focal subject anchor when 'locked_3d_brief' is omitted."
+          ],
+          "evidenceCitations": [
+            "skills/planning-scenes/SKILL.md",
+            "skills/planning-scenes/EVAL.md",
+            "skills/planning-scenes/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "environment-shot-out-of-scope-exclusion-delegation",
+      "skillId": "planning-scenes",
+      "scenario": "Out-of-scope request (character portrait) is excluded from planning-scenes and delegated to planning-scenes",
+      "category": "scope_creep",
+      "inputPrompt": "Instead of plan a wide environment / establishing-shot scene (locale, time of day, weather, focal subject, depth, atmosphere) before any modeling or render attempt., handle this request inside planning-scenes: character portrait.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Enforces the declared exclusion boundary in skills/planning-scenes/contract.json when character portrait",
+        "Delegates to planning-scenes (use planning-scenes) with Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "planning-scenes",
+        "out of scope",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "no depth layers needed",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "handled inside planning-scenes anyway"
+      ],
+      "expectedRoutingTarget": "planning-scenes",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Exclusion delegation to planning-scenes per skills/planning-scenes/contract.json"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Out-of-scope exclusion gate (planning-scenes)",
+          "recommendedNextAction": "Request is out of scope for planning-scenes (character portrait); delegate to planning-scenes.",
+          "targetHandoff": "planning-scenes",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Enforced planning-scenes exclusion boundary (use planning-scenes) and delegated to planning-scenes.",
+          "warnings": [
+            "planning-scenes is scoped to environment-establishing-shot-architect and does not absorb planning-scenes responsibilities."
+          ],
+          "evidenceCitations": [
+            "skills/planning-scenes/contract.json",
+            "skills/planning-scenes/SKILL.md",
+            "skills/planning-scenes/SKILL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "interior-scene-normal-in-scope-handoff",
+      "skillId": "planning-scenes",
+      "scenario": "Normal in-scope execution of planning-scenes (interior-archviz-scene-architect) with contract handoff to planning-camera-and-framing",
+      "category": "normal",
+      "inputPrompt": "Use planning-scenes on a locked brief: \"Scandinavian minimalist dining room, late-afternoon sun through floor-to-ceiling west windows, oak table focal anchor, 16:9 architectural hero\".",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Primary inputs (locked_3d_brief) provided in text-only planning/audit mode."
+      },
+      "expectedBehavior": [
+        "Produces interior_zone_and_circulation_plan, window_portal_and_fixture_lighting_plan, two_point_vertical_camera_constraints for role interior-archviz-scene-architect",
+        "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
+        "Evaluates contract handoff predicate and hands off to planning-camera-and-framing (Composition validation)"
+      ],
+      "requiredOutputProperties": [
+        "light portal",
+        "two-point perspective",
+        "room shell",
+        "planning-camera-and-framing",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "fisheye vertical distortion",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "planning-camera-and-framing",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Outputs interior_zone_and_circulation_plan, window_portal_and_fixture_lighting_plan, two_point_vertical_camera_constraints conforming to skills/planning-scenes/SKILL.md",
+        "Matches contract handoff predicate to planning-camera-and-framing in skills/planning-scenes/contract.json"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "quality.domain": "composition",
+          "quality.verdict": "not_run"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only interior-archviz-scene-architect (planning-scenes)",
+          "recommendedNextAction": "Complete interior_zone_and_circulation_plan and hand off to planning-camera-and-framing (Composition validation).",
+          "targetHandoff": "planning-camera-and-framing",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Planned interior archviz scene with room shell dimensions, window light portal layout, 28mm two-point perspective camera (vertical tilt lock), and hero furniture hierarchy. Delivered light portal, two-point perspective, room shell and routed to planning-camera-and-framing.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/planning-scenes/SKILL.md",
+            "skills/planning-scenes/EVAL.md",
+            "skills/planning-scenes/contract.json",
+            "skills/planning-scenes/references/furniture-layout-rules.md",
+            "skills/planning-scenes/references/interior-architecture-rules.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "interior-scene-secondary-contract-handoff",
+      "skillId": "planning-scenes",
+      "scenario": "Secondary upstream_reference contract handoff from planning-scenes to scoping-3d-briefs",
+      "category": "structured_skip",
+      "inputPrompt": "While applying planning-scenes, the workflow context is {\"goal.clarity\":\"clear\",\"brief.locked\":false} (Upstream brief). Determine the contract-governed handoff target.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates the upstream_reference handoff predicate in skills/planning-scenes/contract.json",
+        "Routes to scoping-3d-briefs (Upstream brief) without claiming runtime execution"
+      ],
+      "requiredOutputProperties": [
+        "scoping-3d-briefs",
+        "upstream_reference",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "fisheye vertical distortion",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "scoping-3d-briefs",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Contract upstream_reference handoff predicate match to scoping-3d-briefs"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "goal.clarity": "clear",
+          "brief.locked": false
+        },
+        "simulatedOutput": {
+          "mode": "Text-only planning-scenes (upstream_reference handoff)",
+          "recommendedNextAction": "Follow upstream_reference handoff to scoping-3d-briefs (Upstream brief).",
+          "targetHandoff": "scoping-3d-briefs",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Triggered upstream_reference handoff from planning-scenes to scoping-3d-briefs under context {\"goal.clarity\":\"clear\",\"brief.locked\":false}.",
+          "warnings": [
+            "Contract-governed upstream_reference handoff."
+          ],
+          "evidenceCitations": [
+            "skills/planning-scenes/contract.json",
+            "skills/planning-scenes/SKILL.md",
+            "skills/planning-scenes/references/furniture-layout-rules.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "interior-scene-unmatched-handoff-and-evidence-boundary",
+      "skillId": "planning-scenes",
+      "scenario": "Unmatched contract handoff context returns none and blocks upgrading unvalidated file to Verified in planning-scenes",
+      "category": "evidence_boundary",
+      "inputPrompt": "An operator provides an unvalidated file on disk during planning-scenes with context {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and asks to mark Artifact: Verified and auto-advance.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "file-only-unvalidated",
+        "notes": "A file exists on disk but validation checks have not been recorded."
+      },
+      "expectedBehavior": [
+        "Refuses to upgrade Artifact status to Verified when existingArtifactEvidence is file-only-unvalidated (caps at Produced)",
+        "Evaluates contract handoffs for planning-scenes and returns targetHandoff none because no handoff predicate matches"
+      ],
+      "requiredOutputProperties": [
+        "Artifact: Produced",
+        "Runtime: Not Run",
+        "validation",
+        "none"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "validation not needed"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Downgrade unvalidated Verified claim to Produced per laws/evidence-before-done.md",
+        "Verify 0 handoffs match in skills/planning-scenes/contract.json for {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true}"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Artifact-claim boundary check (planning-scenes)",
+          "recommendedNextAction": "Keep Artifact status at Produced (never Verified without validation evidence) and hold at targetHandoff none until a downstream precondition is met.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Produced",
+          "summary": "Capped unvalidated artifact claim at Artifact: Produced and verified zero matching contract handoffs (none) for planning-scenes.",
+          "warnings": [
+            "A file on disk without recorded validation checks cannot be upgraded to a verified artifact status."
+          ],
+          "evidenceCitations": [
+            "laws/evidence-before-done.md",
+            "skills/planning-scenes/contract.json",
+            "skills/planning-scenes/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "interior-scene-ambiguous-missing-required-inputs",
+      "skillId": "planning-scenes",
+      "scenario": "Missing required input (locked_3d_brief) for planning-scenes halts fabricated output and requests clarification",
+      "category": "ambiguous",
+      "inputPrompt": "Plan an interior architectural scene without specifying the room type, window daylight openings, focal furniture group, or camera aspect ratio.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Required input 'locked_3d_brief' is missing or underspecified."
+      },
+      "expectedBehavior": [
+        "Identifies missing room typology, natural daylight openings, and focal furniture anchor required by planning-scenes (locked_3d_brief)",
+        "Refuses to fabricate domain parameters and keeps Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "locked_3d_brief",
+        "room typology, natural daylight openings, and focal furniture anchor",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "fisheye vertical distortion",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "guessed parameters silently"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicitly names missing required input 'locked_3d_brief' (room typology, natural daylight openings, and focal furniture anchor)",
+        "Conservative Runtime: Not Run and Artifact: Not Produced truth states"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Clarification gate (planning-scenes)",
+          "recommendedNextAction": "Provide the missing room typology, natural daylight openings, and focal furniture anchor (locked_3d_brief) before planning-scenes locks interior_zone_and_circulation_plan.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted planning-scenes due to missing required input 'locked_3d_brief' (room typology, natural daylight openings, and focal furniture anchor); no values were fabricated.",
+          "warnings": [
+            "Do not invent room typology, natural daylight openings, and focal furniture anchor when 'locked_3d_brief' is omitted."
+          ],
+          "evidenceCitations": [
+            "skills/planning-scenes/SKILL.md",
+            "skills/planning-scenes/EVAL.md",
+            "skills/planning-scenes/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "interior-scene-out-of-scope-exclusion-delegation",
+      "skillId": "planning-scenes",
+      "scenario": "Out-of-scope request (outdoor establishing) is excluded from planning-scenes and delegated to planning-scenes",
+      "category": "scope_creep",
+      "inputPrompt": "Instead of plan an interior architectural visualization scene (room layout, furniture, materials, natural + artificial lighting) before any modeling or render attempt., handle this request inside planning-scenes: outdoor establishing.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Enforces the declared exclusion boundary in skills/planning-scenes/contract.json when outdoor establishing",
+        "Delegates to planning-scenes (use planning-scenes) with Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "planning-scenes",
+        "out of scope",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "fisheye vertical distortion",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "handled inside planning-scenes anyway"
+      ],
+      "expectedRoutingTarget": "planning-scenes",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Exclusion delegation to planning-scenes per skills/planning-scenes/contract.json"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Out-of-scope exclusion gate (planning-scenes)",
+          "recommendedNextAction": "Request is out of scope for planning-scenes (outdoor establishing); delegate to planning-scenes.",
+          "targetHandoff": "planning-scenes",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Enforced planning-scenes exclusion boundary (use planning-scenes) and delegated to planning-scenes.",
+          "warnings": [
+            "planning-scenes is scoped to interior-archviz-scene-architect and does not absorb planning-scenes responsibilities."
+          ],
+          "evidenceCitations": [
+            "skills/planning-scenes/contract.json",
+            "skills/planning-scenes/SKILL.md",
+            "skills/planning-scenes/SKILL.md"
+          ]
+        }
+      }
+    }
+  ]
+}

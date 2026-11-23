@@ -1,0 +1,1915 @@
+{
+  "schemaVersion": "2.0.0",
+  "skillId": "verifying-before-handoff",
+  "category": "evidence-and-handoff",
+  "isContractedSkill": true,
+  "isRoutingParticipant": false,
+  "contractPath": "skills/verifying-before-handoff/contract.json",
+  "skillMarkdownPath": "skills/verifying-before-handoff/SKILL.md",
+  "evalMarkdownPath": "skills/verifying-before-handoff/EVAL.md",
+  "sourceEvalTier": "structured_multi_case_table",
+  "evaluationStatus": {
+    "staticValidation": "Passed",
+    "deterministicFixture": "Passed",
+    "contractRouting": "Not Applicable",
+    "contractHandoff": "Passed",
+    "liveModel": "Not Run",
+    "blenderRuntime": "Not Run"
+  },
+  "cases": [
+    {
+      "id": "pre-handoff-verified-claim-upheld",
+      "skillId": "verifying-before-handoff",
+      "scenario": "Verified claim with all 7 checklist items passing is upheld",
+      "category": "normal",
+      "inputPrompt": "Proposed claim: Verified. Path 1 host (a). File renders/preview-2026.png exists. Validation notes complete. Tool names recorded. Plain language verified.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": true,
+        "existingArtifactEvidence": "file-and-validation-recorded"
+      },
+      "expectedBehavior": [
+        "Runs all 7 checks systematically, confirms Pass on each, and upholds Verified claim",
+        "Hands off to using-blendops"
+      ],
+      "requiredOutputProperties": [
+        "7-check record",
+        "Verified upheld",
+        "using-blendops"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Not Run",
+        "skipped check"
+      ],
+      "expectedRoutingTarget": "using-blendops",
+      "truthStateExpectations": {
+        "runtimeStatus": "Verified",
+        "artifactStatus": "Verified"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Complete 7-check record all Pass + Verified upheld"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only 7-point handoff gate",
+          "recommendedNextAction": "7-check record all Pass (Verified upheld); hand off to using-blendops.",
+          "targetHandoff": "using-blendops",
+          "runtimeStatus": "Verified",
+          "artifactStatus": "Verified",
+          "summary": "Completed 7-check record with all checks passing; Verified upheld for final user response.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/verifying-before-handoff/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "pre-handoff-missing-validation-downgrades-to-produced",
+      "skillId": "verifying-before-handoff",
+      "scenario": "Verified claim missing validation notes fails Check 4 and downgrades to Produced",
+      "category": "evidence_boundary",
+      "inputPrompt": "Proposed claim: Verified. File exports/shoe.glb exists on disk, but Check 4 validation notes are empty.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": true,
+        "existingArtifactEvidence": "file-only-unvalidated"
+      },
+      "expectedBehavior": [
+        "Marks Check 4 (validation notes) Fail and downgrades resulting claim from Verified to Produced",
+        "Routes to verifying-before-handoff"
+      ],
+      "requiredOutputProperties": [
+        "Check 4 Fail",
+        "downgrade to Produced",
+        "verifying-before-handoff"
+      ],
+      "forbiddenOutputProperties": [
+        "Verified upheld",
+        "Artifact: Verified"
+      ],
+      "expectedRoutingTarget": "verifying-before-handoff",
+      "truthStateExpectations": {
+        "runtimeStatus": "Produced",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Check 4 Fail + explicit downgrade from Verified to Produced"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only 7-point handoff gate",
+          "recommendedNextAction": "Check 4 Fail: downgrade to Produced and route to verifying-before-handoff for validation.",
+          "targetHandoff": "verifying-before-handoff",
+          "runtimeStatus": "Produced",
+          "artifactStatus": "Produced",
+          "summary": "Check 4 Fail (missing validation notes); enforced downgrade to Produced.",
+          "warnings": [
+            "verifying-before-handoff only confirms or downgrades claims; never upgrades."
+          ],
+          "evidenceCitations": [
+            "skills/verifying-before-handoff/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "pre-handoff-produced-no-file-downgrades-to-attempted",
+      "skillId": "verifying-before-handoff",
+      "scenario": "Produced claim with no file path fails Check 3 and downgrades to Attempted",
+      "category": "evidence_boundary",
+      "inputPrompt": "Proposed claim: Produced. Operator says render finished, but no output file path exists.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": true,
+        "existingArtifactEvidence": "attempted-no-file"
+      },
+      "expectedBehavior": [
+        "Marks Check 3 (artifact paths) Fail and downgrades claim from Produced to Attempted",
+        "Routes to verifying-before-handoff"
+      ],
+      "requiredOutputProperties": [
+        "Check 3 Fail",
+        "downgrade to Attempted",
+        "verifying-before-handoff"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Produced",
+        "Artifact: Verified"
+      ],
+      "expectedRoutingTarget": "verifying-before-handoff",
+      "truthStateExpectations": {
+        "runtimeStatus": "Attempted",
+        "artifactStatus": "Attempted"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Check 3 Fail + downgrade to Attempted"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only 7-point handoff gate",
+          "recommendedNextAction": "Check 3 Fail (missing file path): downgrade to Attempted and route to verifying-before-handoff.",
+          "targetHandoff": "verifying-before-handoff",
+          "runtimeStatus": "Attempted",
+          "artifactStatus": "Attempted",
+          "summary": "Check 3 Fail; downgraded Produced claim to Attempted due to missing artifact path.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/verifying-before-handoff/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "pre-handoff-smoke-claim-with-mutation-tool-fails",
+      "skillId": "verifying-before-handoff",
+      "scenario": "Read-only smoke claim includes execute_blender_code mutation tool call",
+      "category": "blocked_or_adversarial",
+      "inputPrompt": "Proposed claim: Pass on read-only smoke test, but tool transcript includes execute_blender_code.",
+      "preconditions": {
+        "mode": "read-only-smoke-transcript",
+        "runtimeAvailable": true,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Fails Check 6 (no-mutation guarantee) and flags mutation tool execution during a read-only smoke claim",
+        "Routes to verifying-before-handoff to reclassify transcript"
+      ],
+      "requiredOutputProperties": [
+        "Check 6 Fail",
+        "mutation flag",
+        "verifying-before-handoff"
+      ],
+      "forbiddenOutputProperties": [
+        "read-only smoke upheld",
+        "Artifact: Verified"
+      ],
+      "expectedRoutingTarget": "verifying-before-handoff",
+      "truthStateExpectations": {
+        "runtimeStatus": "Attempted",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Check 6 Fail + mutation flag on execute_blender_code"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only 7-point handoff gate",
+          "recommendedNextAction": "Check 6 Fail (mutation flag on execute_blender_code): reject read-only smoke label and route to verifying-before-handoff.",
+          "targetHandoff": "verifying-before-handoff",
+          "runtimeStatus": "Attempted",
+          "artifactStatus": "Not Produced",
+          "summary": "Failed Check 6 (no-mutation guarantee) because execute_blender_code was called; raised mutation flag.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/verifying-before-handoff/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "pre-handoff-vague-ready-claim-rejected",
+      "skillId": "verifying-before-handoff",
+      "scenario": "Vague \"It's ready, ship it\" claim fails Check 1 (claim named)",
+      "category": "blocked_or_adversarial",
+      "inputPrompt": "Proposed handoff says: \"It is ready, ship it to the client!\" without any canonical truth state.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Fails Check 1 because \"ready\" is not one of the 5 canonical truth states",
+        "Rejects handoff and routes to verifying-before-handoff"
+      ],
+      "requiredOutputProperties": [
+        "Check 1 Fail",
+        "reject handoff until claim is named",
+        "verifying-before-handoff"
+      ],
+      "forbiddenOutputProperties": [
+        "ship it approved",
+        "Artifact: Verified"
+      ],
+      "expectedRoutingTarget": "verifying-before-handoff",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Check 1 Fail + rejection of non-canonical truth label"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only 7-point handoff gate",
+          "recommendedNextAction": "Check 1 Fail: reject handoff until claim is named using canonical truth states via verifying-before-handoff.",
+          "targetHandoff": "verifying-before-handoff",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Check 1 Fail: \"ready\" is not a valid truth label; rejected handoff until claim is named.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/verifying-before-handoff/EVAL.md",
+            "laws/evidence-before-done.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "pre-handoff-text-only-mode-na-checks",
+      "skillId": "verifying-before-handoff",
+      "scenario": "Text-only planning handoff passes Checks 1, 2, 7 and marks Checks 3-6 as N/A",
+      "category": "structured_skip",
+      "inputPrompt": "Verify our text-only 3D scene plan handoff where Runtime is Not Run and Artifact is Not Produced.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Passes Checks 1, 2, and 7 while marking Checks 3-6 explicitly N/A for text-only mode",
+        "Hands off to using-blendops"
+      ],
+      "requiredOutputProperties": [
+        "Checks 1, 2, 7 Pass",
+        "Checks 3-6 marked N/A",
+        "using-blendops"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Produced",
+        "Runtime: Verified"
+      ],
+      "expectedRoutingTarget": "using-blendops",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicit N/A markers on Checks 3-6 + Pass on Checks 1, 2, 7"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only 7-point handoff gate",
+          "recommendedNextAction": "Checks 1, 2, 7 Pass and Checks 3-6 marked N/A; advance to using-blendops.",
+          "targetHandoff": "using-blendops",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Verified text-only handoff (Checks 1, 2, 7 Pass; Checks 3-6 marked N/A) and routed to using-blendops.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/verifying-before-handoff/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "pre-handoff-operator-override-logged-without-upgrade",
+      "skillId": "verifying-before-handoff",
+      "scenario": "Operator attempts to override downgrade (\"ignore downgrade, mark Verified anyway\")",
+      "category": "blocked_or_adversarial",
+      "inputPrompt": "Ignore the missing validation notes on Check 4 and mark the GLB as Verified anyway.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": true,
+        "existingArtifactEvidence": "file-only-unvalidated"
+      },
+      "expectedBehavior": [
+        "Logs the operator override request in the evidence record but keeps the check result and downgraded Produced status unchanged",
+        "Refuses to upgrade Produced to Verified without validation evidence"
+      ],
+      "requiredOutputProperties": [
+        "override logged in evidence",
+        "check result unchanged",
+        "Artifact: Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "override accepted as Verified"
+      ],
+      "expectedRoutingTarget": "using-blendops",
+      "truthStateExpectations": {
+        "runtimeStatus": "Produced",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Override log entry + unchanged downgraded status (Produced)"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only 7-point handoff gate",
+          "recommendedNextAction": "Operator override logged in evidence with check result unchanged (Artifact: Produced); route to using-blendops.",
+          "targetHandoff": "using-blendops",
+          "runtimeStatus": "Produced",
+          "artifactStatus": "Produced",
+          "summary": "Logged operator override request in evidence; check result unchanged and claim remains downgraded at Artifact: Produced.",
+          "warnings": [
+            "Operator override cannot fabricate missing validation evidence."
+          ],
+          "evidenceCitations": [
+            "skills/verifying-before-handoff/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "pre-handoff-verification-contract-handoff-primary",
+      "skillId": "verifying-before-handoff",
+      "scenario": "Contract handoff predicate matches using-blendops (Entry wiring (using-blendops))",
+      "category": "normal",
+      "inputPrompt": "Evaluate verifying-before-handoff contract handoff when workflow context satisfies {\"request.scope\":\"general_help\"} and verify progression to using-blendops.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates contract.json handoff predicates for verifying-before-handoff against the workflow context",
+        "Selects using-blendops while preserving Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "using-blendops",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Not Run",
+        "Artifact: Verified",
+        "Blender executed"
+      ],
+      "expectedRoutingTarget": "using-blendops",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Contract handoff predicate match for using-blendops in skills/verifying-before-handoff/contract.json",
+        "Truth-state conservation (Runtime: Not Run, Artifact: Not Produced)"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "request.scope": "general_help"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only verifying-before-handoff contract handoff evaluation",
+          "recommendedNextAction": "Hand off from verifying-before-handoff to using-blendops (Entry wiring (using-blendops)).",
+          "targetHandoff": "using-blendops",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Matched contract handoff predicate in verifying-before-handoff and routed to using-blendops.",
+          "warnings": [
+            "Specialist contract handoff evaluated without global routingPrecedence escalation."
+          ],
+          "evidenceCitations": [
+            "skills/verifying-before-handoff/contract.json",
+            "skills/verifying-before-handoff/SKILL.md",
+            "skills/verifying-before-handoff/EVAL.md",
+            "skills/verifying-before-handoff/references/downgrade-rules.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "pre-handoff-verification-contract-handoff-unmatched-none",
+      "skillId": "verifying-before-handoff",
+      "scenario": "Contract handoff predicate returns none when no downstream handoff condition matches in verifying-before-handoff",
+      "category": "evidence_boundary",
+      "inputPrompt": "Check verifying-before-handoff contract handoff behavior when context is {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and no automatic handoff predicate is satisfied.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates all 13 contract handoffs in verifying-before-handoff with fail-closed predicate semantics",
+        "Returns targetHandoff none when no handoff predicate matches and preserves conservative truth states"
+      ],
+      "requiredOutputProperties": [
+        "none",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Not Run",
+        "Artifact: Verified",
+        "invented handoff target"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Zero matching handoff predicates in skills/verifying-before-handoff/contract.json for non-matching context"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Text-only verifying-before-handoff contract boundary check",
+          "recommendedNextAction": "Remain at verifying-before-handoff (targetHandoff: none) until a declared downstream handoff precondition is satisfied.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Verified fail-closed specialist handoff evaluation for verifying-before-handoff when no contract predicate matches (secondary candidate using-blendops remained inactive).",
+          "warnings": [
+            "Never fabricate an undeclared handoff when no contract predicate matches."
+          ],
+          "evidenceCitations": [
+            "skills/verifying-before-handoff/contract.json",
+            "skills/verifying-before-handoff/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "scene-readiness-normal-in-scope-handoff",
+      "skillId": "verifying-before-handoff",
+      "scenario": "Normal in-scope execution of verifying-before-handoff (holistic-scene-readiness-aggregator) with contract handoff to verifying-before-handoff",
+      "category": "normal",
+      "inputPrompt": "Use verifying-before-handoff to aggregate composition, lighting, PBR material, and polycount sub-validator results for our product-hero-v0 scene plan before final handoff.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Primary inputs (scene_plan_and_specialist_verdicts) provided in text-only planning/audit mode."
+      },
+      "expectedBehavior": [
+        "Produces holistic_scene_quality_verdict, aggregated_pass_warn_fail_table, blocking_defect_remediation_route for role holistic-scene-readiness-aggregator",
+        "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
+        "Evaluates contract handoff predicate and hands off to verifying-before-handoff (Evidence classification)"
+      ],
+      "requiredOutputProperties": [
+        "4-pillar quality matrix",
+        "worst-offender rollup",
+        "holistic verdict",
+        "verifying-before-handoff",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "all checks verified in live viewport",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "verifying-before-handoff",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Outputs holistic_scene_quality_verdict, aggregated_pass_warn_fail_table, blocking_defect_remediation_route conforming to skills/verifying-before-handoff/SKILL.md",
+        "Matches contract handoff predicate to verifying-before-handoff in skills/verifying-before-handoff/contract.json"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "stage.current": "post_execution_audit"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only holistic-scene-readiness-aggregator (verifying-before-handoff)",
+          "recommendedNextAction": "Complete holistic_scene_quality_verdict and hand off to verifying-before-handoff (Evidence classification).",
+          "targetHandoff": "verifying-before-handoff",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Aggregated holistic 4-pillar quality matrix (composition, lighting, material, polycount) with worst-offender rollup and conservative Not Run truth labels. Delivered 4-pillar quality matrix, worst-offender rollup, holistic verdict and routed to verifying-before-handoff.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/verifying-before-handoff/SKILL.md",
+            "skills/verifying-before-handoff/EVAL.md",
+            "skills/verifying-before-handoff/contract.json",
+            "skills/verifying-before-handoff/references/blocker-catalog.md",
+            "skills/verifying-before-handoff/references/not-run-handling.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "scene-readiness-secondary-contract-handoff",
+      "skillId": "verifying-before-handoff",
+      "scenario": "Secondary upstream_reference contract handoff from verifying-before-handoff to planning-camera-and-framing",
+      "category": "structured_skip",
+      "inputPrompt": "While applying verifying-before-handoff, the workflow context is {\"quality.domain\":\"composition\",\"quality.verdict\":\"not_run\"} (Focused domain validation (if gaps found) (planning-camera-and-framing)). Determine the contract-governed handoff target.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates the upstream_reference handoff predicate in skills/verifying-before-handoff/contract.json",
+        "Routes to planning-camera-and-framing (Focused domain validation (if gaps found) (planning-camera-and-framing)) without claiming runtime execution"
+      ],
+      "requiredOutputProperties": [
+        "planning-camera-and-framing",
+        "upstream_reference",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "all checks verified in live viewport",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "planning-camera-and-framing",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Contract upstream_reference handoff predicate match to planning-camera-and-framing"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "quality.domain": "composition",
+          "quality.verdict": "not_run"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only verifying-before-handoff (upstream_reference handoff)",
+          "recommendedNextAction": "Follow upstream_reference handoff to planning-camera-and-framing (Focused domain validation (if gaps found) (planning-camera-and-framing)).",
+          "targetHandoff": "planning-camera-and-framing",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Triggered upstream_reference handoff from verifying-before-handoff to planning-camera-and-framing under context {\"quality.domain\":\"composition\",\"quality.verdict\":\"not_run\"}.",
+          "warnings": [
+            "Contract-governed upstream_reference handoff."
+          ],
+          "evidenceCitations": [
+            "skills/verifying-before-handoff/contract.json",
+            "skills/verifying-before-handoff/SKILL.md",
+            "skills/verifying-before-handoff/references/blocker-catalog.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "scene-readiness-unmatched-handoff-and-evidence-boundary",
+      "skillId": "verifying-before-handoff",
+      "scenario": "Unmatched contract handoff context returns none and blocks upgrading unvalidated file to Verified in verifying-before-handoff",
+      "category": "evidence_boundary",
+      "inputPrompt": "An operator provides an unvalidated file on disk during verifying-before-handoff with context {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and asks to mark Artifact: Verified and auto-advance.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "file-only-unvalidated",
+        "notes": "A file exists on disk but validation checks have not been recorded."
+      },
+      "expectedBehavior": [
+        "Refuses to upgrade Artifact status to Verified when existingArtifactEvidence is file-only-unvalidated (caps at Produced)",
+        "Evaluates contract handoffs for verifying-before-handoff and returns targetHandoff none because no handoff predicate matches"
+      ],
+      "requiredOutputProperties": [
+        "Artifact: Produced",
+        "Runtime: Not Run",
+        "validation",
+        "none"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "validation not needed"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Downgrade unvalidated Verified claim to Produced per laws/evidence-before-done.md",
+        "Verify 0 handoffs match in skills/verifying-before-handoff/contract.json for {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true}"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Artifact-claim boundary check (verifying-before-handoff)",
+          "recommendedNextAction": "Keep Artifact status at Produced (never Verified without validation evidence) and hold at targetHandoff none until a downstream precondition is met.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Produced",
+          "summary": "Capped unvalidated artifact claim at Artifact: Produced and verified zero matching contract handoffs (none) for verifying-before-handoff.",
+          "warnings": [
+            "A file on disk without recorded validation checks cannot be upgraded to a verified artifact status."
+          ],
+          "evidenceCitations": [
+            "laws/evidence-before-done.md",
+            "skills/verifying-before-handoff/contract.json",
+            "skills/verifying-before-handoff/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "scene-readiness-ambiguous-missing-required-inputs",
+      "skillId": "verifying-before-handoff",
+      "scenario": "Missing required input (scene_plan_and_specialist_verdicts) for verifying-before-handoff halts fabricated output and requests clarification",
+      "category": "ambiguous",
+      "inputPrompt": "Give me a holistic Pass verdict from verifying-before-handoff without providing any composition, lighting, material, or polycount sub-check inputs.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Required input 'scene_plan_and_specialist_verdicts' is missing or underspecified."
+      },
+      "expectedBehavior": [
+        "Identifies missing sub-validator check inputs for composition, lighting, materials, and polycount required by verifying-before-handoff (scene_plan_and_specialist_verdicts)",
+        "Refuses to fabricate domain parameters and keeps Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "scene_plan_and_specialist_verdicts",
+        "sub-validator check inputs for composition, lighting, materials, and polycount",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "all checks verified in live viewport",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "guessed parameters silently"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicitly names missing required input 'scene_plan_and_specialist_verdicts' (sub-validator check inputs for composition, lighting, materials, and polycount)",
+        "Conservative Runtime: Not Run and Artifact: Not Produced truth states"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Clarification gate (verifying-before-handoff)",
+          "recommendedNextAction": "Provide the missing sub-validator check inputs for composition, lighting, materials, and polycount (scene_plan_and_specialist_verdicts) before verifying-before-handoff locks holistic_scene_quality_verdict.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted verifying-before-handoff due to missing required input 'scene_plan_and_specialist_verdicts' (sub-validator check inputs for composition, lighting, materials, and polycount); no values were fabricated.",
+          "warnings": [
+            "Do not invent sub-validator check inputs for composition, lighting, materials, and polycount when 'scene_plan_and_specialist_verdicts' is omitted."
+          ],
+          "evidenceCitations": [
+            "skills/verifying-before-handoff/SKILL.md",
+            "skills/verifying-before-handoff/EVAL.md",
+            "skills/verifying-before-handoff/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "scene-readiness-out-of-scope-exclusion-delegation",
+      "skillId": "verifying-before-handoff",
+      "scenario": "Out-of-scope request (as a replacement for evidence collection) is excluded from verifying-before-handoff and delegated to planning-product-scenes",
+      "category": "scope_creep",
+      "inputPrompt": "Instead of apply multi-category readiness gates with pass/warn/fail and evidence-bound verdicts., handle this request inside verifying-before-handoff: as a replacement for evidence collection.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Enforces the declared exclusion boundary in skills/verifying-before-handoff/contract.json when as a replacement for evidence collection",
+        "Delegates to planning-product-scenes (Delegates out-of-scope requests to planning-product-scenes) with Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "planning-product-scenes",
+        "out of scope",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "all checks verified in live viewport",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "handled inside verifying-before-handoff anyway"
+      ],
+      "expectedRoutingTarget": "planning-product-scenes",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Exclusion delegation to planning-product-scenes per skills/verifying-before-handoff/contract.json"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Out-of-scope exclusion gate (verifying-before-handoff)",
+          "recommendedNextAction": "Request is out of scope for verifying-before-handoff (as a replacement for evidence collection); delegate to planning-product-scenes.",
+          "targetHandoff": "planning-product-scenes",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Enforced verifying-before-handoff exclusion boundary (Delegates out-of-scope requests to planning-product-scenes) and delegated to planning-product-scenes.",
+          "warnings": [
+            "verifying-before-handoff is scoped to holistic-scene-readiness-aggregator and does not absorb planning-product-scenes responsibilities."
+          ],
+          "evidenceCitations": [
+            "skills/verifying-before-handoff/contract.json",
+            "skills/verifying-before-handoff/SKILL.md",
+            "skills/planning-product-scenes/SKILL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "render-evidence-no-runtime-action",
+      "skillId": "verifying-before-handoff",
+      "scenario": "No Blender execution attempted preserves Not Run and Not Produced",
+      "category": "normal",
+      "inputPrompt": "We completed our text-only scene and lighting plan with zero Blender execution. Classify evidence status.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Classifies Runtime status as Not Run and Artifact status as Not Produced",
+        "Hands off to verifying-before-handoff"
+      ],
+      "requiredOutputProperties": [
+        "Runtime: Not Run",
+        "Artifact: Not Produced",
+        "verifying-before-handoff"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Not Run",
+        "Artifact: Produced",
+        "Artifact: Verified"
+      ],
+      "expectedRoutingTarget": "verifying-before-handoff",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Runtime: Not Run and Artifact: Not Produced separation"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only artifact evidence classification",
+          "recommendedNextAction": "Pass conservative Not Run / Not Produced evidence table to verifying-before-handoff.",
+          "targetHandoff": "verifying-before-handoff",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Classified text-only session as Runtime: Not Run and Artifact: Not Produced.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/verifying-before-handoff/EVAL.md",
+            "laws/evidence-before-done.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "render-evidence-attempted-no-output-file",
+      "skillId": "verifying-before-handoff",
+      "scenario": "Runtime command attempted but no output path or file evidence exists",
+      "category": "evidence_boundary",
+      "inputPrompt": "The operator ran a render command in Blender, but no output path or file on disk was recorded.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": true,
+        "existingArtifactEvidence": "attempted-no-file"
+      },
+      "expectedBehavior": [
+        "Classifies Artifact status as Attempted (never Produced or Verified)",
+        "Routes to verifying-before-handoff with blocked validation notes"
+      ],
+      "requiredOutputProperties": [
+        "Artifact: Attempted",
+        "output path missing",
+        "verifying-before-handoff"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Produced",
+        "Artifact: Verified"
+      ],
+      "expectedRoutingTarget": "verifying-before-handoff",
+      "truthStateExpectations": {
+        "runtimeStatus": "Attempted",
+        "artifactStatus": "Attempted"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Artifact status Attempted when output path or file existence is missing"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only artifact evidence classification",
+          "recommendedNextAction": "Keep status at Artifact: Attempted (output path missing) and route to verifying-before-handoff.",
+          "targetHandoff": "verifying-before-handoff",
+          "runtimeStatus": "Attempted",
+          "artifactStatus": "Attempted",
+          "summary": "Downgraded unsubstantiated render claim to Artifact: Attempted because output path is missing.",
+          "warnings": [
+            "Never upgrade Attempted to Produced without file existence evidence."
+          ],
+          "evidenceCitations": [
+            "skills/verifying-before-handoff/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "render-evidence-file-exists-validation-missing",
+      "skillId": "verifying-before-handoff",
+      "scenario": "Output file exists on disk but validation checks are missing",
+      "category": "evidence_boundary",
+      "inputPrompt": "File renders/hero.png exists on disk, but no framing, lighting, or polycount validation checks have been recorded yet.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": true,
+        "existingArtifactEvidence": "file-only-unvalidated"
+      },
+      "expectedBehavior": [
+        "Classifies Artifact status as Produced (never Verified without validation notes)",
+        "Routes to verifying-before-handoff to complete validation checks"
+      ],
+      "requiredOutputProperties": [
+        "Artifact: Produced",
+        "validation notes pending",
+        "verifying-before-handoff"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "validation complete"
+      ],
+      "expectedRoutingTarget": "verifying-before-handoff",
+      "truthStateExpectations": {
+        "runtimeStatus": "Produced",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Produced (not Verified) classification when validation notes are missing"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only artifact evidence classification",
+          "recommendedNextAction": "Record Artifact: Produced (validation notes pending) and route to verifying-before-handoff.",
+          "targetHandoff": "verifying-before-handoff",
+          "runtimeStatus": "Produced",
+          "artifactStatus": "Produced",
+          "summary": "Classified renders/hero.png as Artifact: Produced because validation notes are still pending.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/verifying-before-handoff/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "render-evidence-full-path-existence-and-validation",
+      "skillId": "verifying-before-handoff",
+      "scenario": "Output path, file existence, tool names, and validation notes are all recorded",
+      "category": "normal",
+      "inputPrompt": "Path 1 host (a) produced renders/hero-v1.png; file existence verified; framing, PBR material, and lighting validation checks all passed.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": true,
+        "existingArtifactEvidence": "file-and-validation-recorded"
+      },
+      "expectedBehavior": [
+        "Classifies Artifact status as Verified with full provenance fields",
+        "Hands off to verifying-before-handoff for final 7-point check"
+      ],
+      "requiredOutputProperties": [
+        "Artifact: Verified",
+        "Path 1 host (a)",
+        "verifying-before-handoff"
+      ],
+      "forbiddenOutputProperties": [
+        "standalone connector",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "verifying-before-handoff",
+      "truthStateExpectations": {
+        "runtimeStatus": "Verified",
+        "artifactStatus": "Verified"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Complete 13-field evidence record + Verified classification"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only artifact evidence classification",
+          "recommendedNextAction": "Pass complete Path 1 host (a) Artifact: Verified record to verifying-before-handoff.",
+          "targetHandoff": "verifying-before-handoff",
+          "runtimeStatus": "Verified",
+          "artifactStatus": "Verified",
+          "summary": "Recorded Artifact: Verified for renders/hero-v1.png under Path 1 host (a) with complete validation notes.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/verifying-before-handoff/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "render-evidence-path1-read-only-smoke-no-artifacts",
+      "skillId": "verifying-before-handoff",
+      "scenario": "Path 1 read-only smoke test returned get_blendfile_summary_* and get_objects_summary only",
+      "category": "evidence_boundary",
+      "inputPrompt": "Lab MCP returned get_blendfile_summary and get_objects_summary from Blender 5.1 under Path 1 host (a); no render or export was run.",
+      "preconditions": {
+        "mode": "read-only-smoke-transcript",
+        "runtimeAvailable": true,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Labels runtime access as scoped read-only (Attempted) and keeps Artifact status strictly Not Produced",
+        "Explicitly records Path 1 + host option (a) and tool names"
+      ],
+      "requiredOutputProperties": [
+        "scoped read-only",
+        "Path 1 host (a)",
+        "Artifact: Not Produced",
+        "verifying-before-handoff"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Produced",
+        "Artifact: Verified"
+      ],
+      "expectedRoutingTarget": "verifying-before-handoff",
+      "truthStateExpectations": {
+        "runtimeStatus": "Attempted",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Read-only smoke separation from artifact production (Artifact: Not Produced)"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only artifact evidence classification",
+          "recommendedNextAction": "Record scoped read-only runtime access under Path 1 host (a) with Artifact: Not Produced and route to verifying-before-handoff.",
+          "targetHandoff": "verifying-before-handoff",
+          "runtimeStatus": "Attempted",
+          "artifactStatus": "Not Produced",
+          "summary": "Classified Lab MCP read-only smoke transcript as scoped read-only with Artifact: Not Produced.",
+          "warnings": [
+            "Read-only smoke tests never constitute render or GLB artifact production."
+          ],
+          "evidenceCitations": [
+            "docs/evals/blender-connector-read-only-smoke-test.md",
+            "skills/verifying-before-handoff/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "render-evidence-path2-community-caveat-labeling",
+      "skillId": "verifying-before-handoff",
+      "scenario": "Path 2 (mcp-for-blender) evidence requires upstream commit and third-party caveat",
+      "category": "normal",
+      "inputPrompt": "We produced a preview image using community uvx mcp-for-blender (Path 2) with execute_blender_code.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": true,
+        "existingArtifactEvidence": "file-only-unvalidated"
+      },
+      "expectedBehavior": [
+        "Labels evidence as Path 2 with upstream addon.py / uvx mcp-for-blender version and third-party caveat",
+        "Never promotes Path 2 evidence as official Path 1 release evidence"
+      ],
+      "requiredOutputProperties": [
+        "Path 2",
+        "third-party from Anthropic and Blender Foundation",
+        "docs/unofficial-runtime-bridges.md"
+      ],
+      "forbiddenOutputProperties": [
+        "official Path 1 evidence",
+        "Artifact: Verified"
+      ],
+      "expectedRoutingTarget": "verifying-before-handoff",
+      "truthStateExpectations": {
+        "runtimeStatus": "Produced",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Path 2 label + third-party caveat per docs/unofficial-runtime-bridges.md"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only artifact evidence classification",
+          "recommendedNextAction": "Attach Path 2 third-party caveat per docs/unofficial-runtime-bridges.md and route to verifying-before-handoff.",
+          "targetHandoff": "verifying-before-handoff",
+          "runtimeStatus": "Produced",
+          "artifactStatus": "Produced",
+          "summary": "Labeled preview output as Path 2 (third-party from Anthropic and Blender Foundation) per docs/unofficial-runtime-bridges.md.",
+          "warnings": [],
+          "evidenceCitations": [
+            "docs/unofficial-runtime-bridges.md",
+            "skills/verifying-before-handoff/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "render-evidence-cli-fallback-appendix-note",
+      "skillId": "verifying-before-handoff",
+      "scenario": "CLI fallback (blender --background --python) evidence requires explicit appendix note",
+      "category": "normal",
+      "inputPrompt": "We ran blender --background scene.blend --python render.py and produced /tmp/out.png.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": true,
+        "existingArtifactEvidence": "file-only-unvalidated"
+      },
+      "expectedBehavior": [
+        "Labels evidence as upstream-documented CLI fallback (appendix) and distinguishes the scoped mech-prop CLI eval from the current run",
+        "Classifies unvalidated output file as Produced (not Verified) and routes to verifying-before-handoff"
+      ],
+      "requiredOutputProperties": [
+        "CLI fallback (appendix)",
+        "scoped mech-prop CLI eval",
+        "upstream-documented"
+      ],
+      "forbiddenOutputProperties": [
+        "publisher-verified MCP peer",
+        "Artifact: Verified"
+      ],
+      "expectedRoutingTarget": "verifying-before-handoff",
+      "truthStateExpectations": {
+        "runtimeStatus": "Produced",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "CLI fallback appendix label, scoped example citation, and separate evidence for the current run"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only artifact evidence classification",
+          "recommendedNextAction": "Label output as CLI fallback (appendix) and route to verifying-before-handoff. Capture the exact command and exit code for this run.",
+          "targetHandoff": "verifying-before-handoff",
+          "runtimeStatus": "Produced",
+          "artifactStatus": "Produced",
+          "summary": "Classified background CLI run as CLI fallback (appendix) — upstream-documented Blender CLI. The scoped mech-prop CLI eval does not verify this output.",
+          "warnings": [],
+          "evidenceCitations": [
+            "docs/runtime-stack-strategy.md",
+            "skills/verifying-before-handoff/EVAL.md",
+            "docs/evals/cli-fallback-mech-prop.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "render-evidence-tool-name-vs-path-label-mismatch",
+      "skillId": "verifying-before-handoff",
+      "scenario": "Recorded tool names (get_scene_info) contradict Path 1 label",
+      "category": "blocked_or_adversarial",
+      "inputPrompt": "Operator labeled the run as Path 1 Lab MCP, but the recorded tool calls are get_scene_info and get_object_info from Path 2.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "attempted-no-file"
+      },
+      "expectedBehavior": [
+        "Flags tool-name vs path-label inconsistency as ambiguous and refuses to count it as verified evidence",
+        "Recommends re-verification via setting-up-blender-runtime"
+      ],
+      "requiredOutputProperties": [
+        "ambiguous",
+        "re-verification needed",
+        "setting-up-blender-runtime"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Produced"
+      ],
+      "expectedRoutingTarget": "setting-up-blender-runtime",
+      "truthStateExpectations": {
+        "runtimeStatus": "Attempted",
+        "artifactStatus": "Attempted"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Tool-surface vs path-label mismatch detection + re-verification recommendation"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only artifact evidence classification",
+          "recommendedNextAction": "Mark path attribution ambiguous (re-verification needed) and route to setting-up-blender-runtime.",
+          "targetHandoff": "setting-up-blender-runtime",
+          "runtimeStatus": "Attempted",
+          "artifactStatus": "Attempted",
+          "summary": "Detected tool-name vs path-label mismatch (get_scene_info belongs to Path 2, not Path 1); marked ambiguous with re-verification needed.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/verifying-before-handoff/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "render-export-evidence-contract-handoff-primary",
+      "skillId": "verifying-before-handoff",
+      "scenario": "Contract handoff predicate matches verifying-before-handoff (Handoff gating (confirm-or-downgrade))",
+      "category": "normal",
+      "inputPrompt": "Evaluate verifying-before-handoff contract handoff when workflow context satisfies {\"stage.current\":\"final_verification\"} and verify progression to verifying-before-handoff.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates contract.json handoff predicates for verifying-before-handoff against the workflow context",
+        "Selects verifying-before-handoff while preserving Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "verifying-before-handoff",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Not Run",
+        "Artifact: Verified",
+        "Blender executed"
+      ],
+      "expectedRoutingTarget": "verifying-before-handoff",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Contract handoff predicate match for verifying-before-handoff in skills/verifying-before-handoff/contract.json",
+        "Truth-state conservation (Runtime: Not Run, Artifact: Not Produced)"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "stage.current": "final_verification"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only verifying-before-handoff contract handoff evaluation",
+          "recommendedNextAction": "Hand off from verifying-before-handoff to verifying-before-handoff (Handoff gating (confirm-or-downgrade)).",
+          "targetHandoff": "verifying-before-handoff",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Matched contract handoff predicate in verifying-before-handoff and routed to verifying-before-handoff.",
+          "warnings": [
+            "Specialist contract handoff evaluated without global routingPrecedence escalation."
+          ],
+          "evidenceCitations": [
+            "skills/verifying-before-handoff/contract.json",
+            "skills/verifying-before-handoff/SKILL.md",
+            "skills/verifying-before-handoff/EVAL.md",
+            "skills/verifying-before-handoff/references/attempted-vs-failed-rubric.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "render-export-evidence-contract-handoff-unmatched-none",
+      "skillId": "verifying-before-handoff",
+      "scenario": "Contract handoff predicate returns none when no downstream handoff condition matches in verifying-before-handoff",
+      "category": "evidence_boundary",
+      "inputPrompt": "Check verifying-before-handoff contract handoff behavior when context is {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and no automatic handoff predicate is satisfied.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates all 7 contract handoffs in verifying-before-handoff with fail-closed predicate semantics",
+        "Returns targetHandoff none when no handoff predicate matches and preserves conservative truth states"
+      ],
+      "requiredOutputProperties": [
+        "none",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Not Run",
+        "Artifact: Verified",
+        "invented handoff target"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Zero matching handoff predicates in skills/verifying-before-handoff/contract.json for non-matching context"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Text-only verifying-before-handoff contract boundary check",
+          "recommendedNextAction": "Remain at verifying-before-handoff (targetHandoff: none) until a declared downstream handoff precondition is satisfied.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Verified fail-closed specialist handoff evaluation for verifying-before-handoff when no contract predicate matches (secondary candidate setting-up-blender-runtime remained inactive).",
+          "warnings": [
+            "Never fabricate an undeclared handoff when no contract predicate matches."
+          ],
+          "evidenceCitations": [
+            "skills/verifying-before-handoff/contract.json",
+            "skills/verifying-before-handoff/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "preview-report-normal-in-scope-handoff",
+      "skillId": "verifying-before-handoff",
+      "scenario": "Normal in-scope execution of verifying-before-handoff (stakeholder-preview-packet-formatter) with contract handoff to verifying-before-handoff",
+      "category": "normal",
+      "inputPrompt": "Use verifying-before-handoff to format a stakeholder preview packet for a Path 1 host (a) run where `renders/watch-hero.png` and `exports/watch.glb` exist on disk but quality checks are still Not Run.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Primary inputs (classified_artifact_evidence) provided in text-only planning/audit mode."
+      },
+      "expectedBehavior": [
+        "Produces stakeholder_preview_evidence_packet, truth_state_and_provenance_summary, pre_handoff_gate_submission for role stakeholder-preview-packet-formatter",
+        "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
+        "Evaluates contract handoff predicate and hands off to verifying-before-handoff (Handoff gate (gates handoffs before downstream delivery))"
+      ],
+      "requiredOutputProperties": [
+        "canonical preview report",
+        "Artifact: Produced",
+        "Path 1",
+        "verifying-before-handoff",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "upgraded Produced to Verified without validation",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "verifying-before-handoff",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Outputs stakeholder_preview_evidence_packet, truth_state_and_provenance_summary, pre_handoff_gate_submission conforming to skills/verifying-before-handoff/SKILL.md",
+        "Matches contract handoff predicate to verifying-before-handoff in skills/verifying-before-handoff/contract.json"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "stage.current": "final_verification"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only stakeholder-preview-packet-formatter (verifying-before-handoff)",
+          "recommendedNextAction": "Complete stakeholder_preview_evidence_packet and hand off to verifying-before-handoff (Handoff gate (gates handoffs before downstream delivery)).",
+          "targetHandoff": "verifying-before-handoff",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Formatted canonical stakeholder preview report recording Path 1 host (a) provenance, artifact paths, and conservative `Artifact: Produced` (not Verified) labels pending quality gates. Delivered canonical preview report, Artifact: Produced, Path 1 and routed to verifying-before-handoff.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/verifying-before-handoff/SKILL.md",
+            "skills/verifying-before-handoff/EVAL.md",
+            "skills/verifying-before-handoff/contract.json",
+            "skills/verifying-before-handoff/references/handoff-recipients.md",
+            "skills/verifying-before-handoff/references/report-schema.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "preview-report-secondary-contract-handoff",
+      "skillId": "verifying-before-handoff",
+      "scenario": "Secondary fallback contract handoff from verifying-before-handoff to troubleshooting-blender-output",
+      "category": "blocked_or_adversarial",
+      "inputPrompt": "While applying verifying-before-handoff, the workflow context is {\"runtime.errorDetected\":true} (Raw debug log triage (out of scope here)). Determine the contract-governed handoff target.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates the fallback handoff predicate in skills/verifying-before-handoff/contract.json",
+        "Routes to troubleshooting-blender-output (Raw debug log triage (out of scope here)) without claiming runtime execution"
+      ],
+      "requiredOutputProperties": [
+        "troubleshooting-blender-output",
+        "fallback",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "upgraded Produced to Verified without validation",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "troubleshooting-blender-output",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Contract fallback handoff predicate match to troubleshooting-blender-output"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "runtime.errorDetected": true
+        },
+        "simulatedOutput": {
+          "mode": "Text-only verifying-before-handoff (fallback handoff)",
+          "recommendedNextAction": "Follow fallback handoff to troubleshooting-blender-output (Raw debug log triage (out of scope here)).",
+          "targetHandoff": "troubleshooting-blender-output",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Triggered fallback handoff from verifying-before-handoff to troubleshooting-blender-output under context {\"runtime.errorDetected\":true}.",
+          "warnings": [
+            "Contract-governed fallback handoff."
+          ],
+          "evidenceCitations": [
+            "skills/verifying-before-handoff/contract.json",
+            "skills/verifying-before-handoff/SKILL.md",
+            "skills/verifying-before-handoff/references/handoff-recipients.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "preview-report-unmatched-handoff-and-evidence-boundary",
+      "skillId": "verifying-before-handoff",
+      "scenario": "Unmatched contract handoff context returns none and blocks upgrading unvalidated file to Verified in verifying-before-handoff",
+      "category": "evidence_boundary",
+      "inputPrompt": "An operator provides an unvalidated file on disk during verifying-before-handoff with context {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and asks to mark Artifact: Verified and auto-advance.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "file-only-unvalidated",
+        "notes": "A file exists on disk but validation checks have not been recorded."
+      },
+      "expectedBehavior": [
+        "Refuses to upgrade Artifact status to Verified when existingArtifactEvidence is file-only-unvalidated (caps at Produced)",
+        "Evaluates contract handoffs for verifying-before-handoff and returns targetHandoff none because no handoff predicate matches"
+      ],
+      "requiredOutputProperties": [
+        "Artifact: Produced",
+        "Runtime: Not Run",
+        "validation",
+        "none"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "validation not needed"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Downgrade unvalidated Verified claim to Produced per laws/evidence-before-done.md",
+        "Verify 0 handoffs match in skills/verifying-before-handoff/contract.json for {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true}"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Artifact-claim boundary check (verifying-before-handoff)",
+          "recommendedNextAction": "Keep Artifact status at Produced (never Verified without validation evidence) and hold at targetHandoff none until a downstream precondition is met.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Produced",
+          "summary": "Capped unvalidated artifact claim at Artifact: Produced and verified zero matching contract handoffs (none) for verifying-before-handoff.",
+          "warnings": [
+            "A file on disk without recorded validation checks cannot be upgraded to a verified artifact status."
+          ],
+          "evidenceCitations": [
+            "laws/evidence-before-done.md",
+            "skills/verifying-before-handoff/contract.json",
+            "skills/verifying-before-handoff/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "preview-report-ambiguous-missing-required-inputs",
+      "skillId": "verifying-before-handoff",
+      "scenario": "Missing required input (classified_artifact_evidence) for verifying-before-handoff halts fabricated output and requests clarification",
+      "category": "ambiguous",
+      "inputPrompt": "Write a completed preview report table claiming Pass without providing any artifact paths, runtime path identity, or validation check statuses.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Required input 'classified_artifact_evidence' is missing or underspecified."
+      },
+      "expectedBehavior": [
+        "Identifies missing artifact file paths, runtime path metadata, and validation gate verdicts required by verifying-before-handoff (classified_artifact_evidence)",
+        "Refuses to fabricate domain parameters and keeps Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "classified_artifact_evidence",
+        "artifact file paths, runtime path metadata, and validation gate verdicts",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "upgraded Produced to Verified without validation",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "guessed parameters silently"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicitly names missing required input 'classified_artifact_evidence' (artifact file paths, runtime path metadata, and validation gate verdicts)",
+        "Conservative Runtime: Not Run and Artifact: Not Produced truth states"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Clarification gate (verifying-before-handoff)",
+          "recommendedNextAction": "Provide the missing artifact file paths, runtime path metadata, and validation gate verdicts (classified_artifact_evidence) before verifying-before-handoff locks stakeholder_preview_evidence_packet.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted verifying-before-handoff due to missing required input 'classified_artifact_evidence' (artifact file paths, runtime path metadata, and validation gate verdicts); no values were fabricated.",
+          "warnings": [
+            "Do not invent artifact file paths, runtime path metadata, and validation gate verdicts when 'classified_artifact_evidence' is omitted."
+          ],
+          "evidenceCitations": [
+            "skills/verifying-before-handoff/SKILL.md",
+            "skills/verifying-before-handoff/EVAL.md",
+            "skills/verifying-before-handoff/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "preview-report-out-of-scope-exclusion-delegation",
+      "skillId": "verifying-before-handoff",
+      "scenario": "Out-of-scope request (measuring artifacts directly) is excluded from verifying-before-handoff and delegated to verifying-before-handoff",
+      "category": "scope_creep",
+      "inputPrompt": "Instead of generate the structured verifying-before-handoff markdown that handing-off-glb-to-web and using-blendops consume after a render or export run., handle this request inside verifying-before-handoff: measuring artifacts directly.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Enforces the declared exclusion boundary in skills/verifying-before-handoff/contract.json when measuring artifacts directly",
+        "Delegates to verifying-before-handoff (use verifying-before-handoff instead) with Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "verifying-before-handoff",
+        "out of scope",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "upgraded Produced to Verified without validation",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "handled inside verifying-before-handoff anyway"
+      ],
+      "expectedRoutingTarget": "verifying-before-handoff",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Exclusion delegation to verifying-before-handoff per skills/verifying-before-handoff/contract.json"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Out-of-scope exclusion gate (verifying-before-handoff)",
+          "recommendedNextAction": "Request is out of scope for verifying-before-handoff (measuring artifacts directly); delegate to verifying-before-handoff.",
+          "targetHandoff": "verifying-before-handoff",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Enforced verifying-before-handoff exclusion boundary (use verifying-before-handoff instead) and delegated to verifying-before-handoff.",
+          "warnings": [
+            "verifying-before-handoff is scoped to stakeholder-preview-packet-formatter and does not absorb verifying-before-handoff responsibilities."
+          ],
+          "evidenceCitations": [
+            "skills/verifying-before-handoff/contract.json",
+            "skills/verifying-before-handoff/SKILL.md",
+            "skills/verifying-before-handoff/SKILL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "runtime-attempt-report-normal-in-scope-handoff",
+      "skillId": "verifying-before-handoff",
+      "scenario": "Normal in-scope execution of verifying-before-handoff (execution-attempt-provenance-logger) with contract handoff to verifying-before-handoff",
+      "category": "normal",
+      "inputPrompt": "A Path 2 (`mcp-for-blender` on Blender 4.2 LTS) execution attempt connected on port 9876, ran scene inspection, and timed out during render before any file was written. Use verifying-before-handoff.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Primary inputs (attempted_runtime_path_and_host) provided in text-only planning/audit mode."
+      },
+      "expectedBehavior": [
+        "Produces structured_runtime_attempt_report_md, locked_runtime_and_artifact_truth_labels, eval_evidence_archival_path for role execution-attempt-provenance-logger",
+        "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
+        "Evaluates contract handoff predicate and hands off to verifying-before-handoff (Artifact evidence classification)"
+      ],
+      "requiredOutputProperties": [
+        "Runtime: Failed",
+        "Artifact: Not Produced",
+        "Path 2 community bridge",
+        "verifying-before-handoff",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Everything verified",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "verifying-before-handoff",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Outputs structured_runtime_attempt_report_md, locked_runtime_and_artifact_truth_labels, eval_evidence_archival_path conforming to skills/verifying-before-handoff/SKILL.md",
+        "Matches contract handoff predicate to verifying-before-handoff in skills/verifying-before-handoff/contract.json"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "stage.current": "post_execution_audit"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only execution-attempt-provenance-logger (verifying-before-handoff)",
+          "recommendedNextAction": "Complete structured_runtime_attempt_report_md and hand off to verifying-before-handoff (Artifact evidence classification).",
+          "targetHandoff": "verifying-before-handoff",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Logged chronological runtime attempt report with `Runtime: Failed` / `Attempted`, `Artifact: Not Produced`, Path 2 community bridge attribution, and triage handoff. Delivered Runtime: Failed, Artifact: Not Produced, Path 2 community bridge and routed to verifying-before-handoff.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/verifying-before-handoff/SKILL.md",
+            "skills/verifying-before-handoff/EVAL.md",
+            "skills/verifying-before-handoff/contract.json",
+            "skills/verifying-before-handoff/references/attempt-record-template.md",
+            "skills/verifying-before-handoff/references/triage-next-steps.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "runtime-attempt-report-secondary-contract-handoff",
+      "skillId": "verifying-before-handoff",
+      "scenario": "Secondary fallback contract handoff from verifying-before-handoff to setting-up-blender-runtime",
+      "category": "blocked_or_adversarial",
+      "inputPrompt": "While applying verifying-before-handoff, the workflow context is {\"runtime.conflictDetected\":true} (Bridge / port / host conflicts). Determine the contract-governed handoff target.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates the fallback handoff predicate in skills/verifying-before-handoff/contract.json",
+        "Routes to setting-up-blender-runtime (Bridge / port / host conflicts) without claiming runtime execution"
+      ],
+      "requiredOutputProperties": [
+        "setting-up-blender-runtime",
+        "fallback",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Everything verified",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "setting-up-blender-runtime",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Contract fallback handoff predicate match to setting-up-blender-runtime"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "runtime.conflictDetected": true
+        },
+        "simulatedOutput": {
+          "mode": "Text-only verifying-before-handoff (fallback handoff)",
+          "recommendedNextAction": "Follow fallback handoff to setting-up-blender-runtime (Bridge / port / host conflicts).",
+          "targetHandoff": "setting-up-blender-runtime",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Triggered fallback handoff from verifying-before-handoff to setting-up-blender-runtime under context {\"runtime.conflictDetected\":true}.",
+          "warnings": [
+            "Contract-governed fallback handoff."
+          ],
+          "evidenceCitations": [
+            "skills/verifying-before-handoff/contract.json",
+            "skills/verifying-before-handoff/SKILL.md",
+            "skills/verifying-before-handoff/references/attempt-record-template.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "runtime-attempt-report-unmatched-handoff-and-evidence-boundary",
+      "skillId": "verifying-before-handoff",
+      "scenario": "Unmatched contract handoff context returns none and blocks upgrading unvalidated file to Verified in verifying-before-handoff",
+      "category": "evidence_boundary",
+      "inputPrompt": "An operator provides an unvalidated file on disk during verifying-before-handoff with context {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and asks to mark Artifact: Verified and auto-advance.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "file-only-unvalidated",
+        "notes": "A file exists on disk but validation checks have not been recorded."
+      },
+      "expectedBehavior": [
+        "Refuses to upgrade Artifact status to Verified when existingArtifactEvidence is file-only-unvalidated (caps at Produced)",
+        "Evaluates contract handoffs for verifying-before-handoff and returns targetHandoff none because no handoff predicate matches"
+      ],
+      "requiredOutputProperties": [
+        "Artifact: Produced",
+        "Runtime: Not Run",
+        "validation",
+        "none"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "validation not needed"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Downgrade unvalidated Verified claim to Produced per laws/evidence-before-done.md",
+        "Verify 0 handoffs match in skills/verifying-before-handoff/contract.json for {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true}"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Artifact-claim boundary check (verifying-before-handoff)",
+          "recommendedNextAction": "Keep Artifact status at Produced (never Verified without validation evidence) and hold at targetHandoff none until a downstream precondition is met.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Produced",
+          "summary": "Capped unvalidated artifact claim at Artifact: Produced and verified zero matching contract handoffs (none) for verifying-before-handoff.",
+          "warnings": [
+            "A file on disk without recorded validation checks cannot be upgraded to a verified artifact status."
+          ],
+          "evidenceCitations": [
+            "laws/evidence-before-done.md",
+            "skills/verifying-before-handoff/contract.json",
+            "skills/verifying-before-handoff/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "runtime-attempt-report-ambiguous-missing-required-inputs",
+      "skillId": "verifying-before-handoff",
+      "scenario": "Missing required input (attempted_runtime_path_and_host) for verifying-before-handoff halts fabricated output and requests clarification",
+      "category": "ambiguous",
+      "inputPrompt": "Write a formal runtime attempt report without providing which runtime path was used, what tool call was attempted, or whether any output files were written.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Required input 'attempted_runtime_path_and_host' is missing or underspecified."
+      },
+      "expectedBehavior": [
+        "Identifies missing runtime path identity, chronological tool log, and output file check required by verifying-before-handoff (attempted_runtime_path_and_host)",
+        "Refuses to fabricate domain parameters and keeps Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "attempted_runtime_path_and_host",
+        "runtime path identity, chronological tool log, and output file check",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Everything verified",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "guessed parameters silently"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicitly names missing required input 'attempted_runtime_path_and_host' (runtime path identity, chronological tool log, and output file check)",
+        "Conservative Runtime: Not Run and Artifact: Not Produced truth states"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Clarification gate (verifying-before-handoff)",
+          "recommendedNextAction": "Provide the missing runtime path identity, chronological tool log, and output file check (attempted_runtime_path_and_host) before verifying-before-handoff locks structured_runtime_attempt_report_md.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted verifying-before-handoff due to missing required input 'attempted_runtime_path_and_host' (runtime path identity, chronological tool log, and output file check); no values were fabricated.",
+          "warnings": [
+            "Do not invent runtime path identity, chronological tool log, and output file check when 'attempted_runtime_path_and_host' is omitted."
+          ],
+          "evidenceCitations": [
+            "skills/verifying-before-handoff/SKILL.md",
+            "skills/verifying-before-handoff/EVAL.md",
+            "skills/verifying-before-handoff/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "runtime-attempt-report-out-of-scope-exclusion-delegation",
+      "skillId": "verifying-before-handoff",
+      "scenario": "Out-of-scope request (Classifying rendered or exported visual artifacts (verifying-before-handoff)) is excluded from verifying-before-handoff and delegated to verifying-before-handoff",
+      "category": "scope_creep",
+      "inputPrompt": "Instead of produce an evidence-bound runtime attempt report with truth labels and next steps; does not certify upstream stack success., handle this request inside verifying-before-handoff: Classifying rendered or exported visual artifacts (verifying-before-handoff).",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Enforces the declared exclusion boundary in skills/verifying-before-handoff/contract.json when Classifying rendered or exported visual artifacts (verifying-before-handoff)",
+        "Delegates to verifying-before-handoff (verifying-before-handoff) with Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "verifying-before-handoff",
+        "out of scope",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Everything verified",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "handled inside verifying-before-handoff anyway"
+      ],
+      "expectedRoutingTarget": "verifying-before-handoff",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Exclusion delegation to verifying-before-handoff per skills/verifying-before-handoff/contract.json"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Out-of-scope exclusion gate (verifying-before-handoff)",
+          "recommendedNextAction": "Request is out of scope for verifying-before-handoff (Classifying rendered or exported visual artifacts (verifying-before-handoff)); delegate to verifying-before-handoff.",
+          "targetHandoff": "verifying-before-handoff",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Enforced verifying-before-handoff exclusion boundary (verifying-before-handoff) and delegated to verifying-before-handoff.",
+          "warnings": [
+            "verifying-before-handoff is scoped to execution-attempt-provenance-logger and does not absorb verifying-before-handoff responsibilities."
+          ],
+          "evidenceCitations": [
+            "skills/verifying-before-handoff/contract.json",
+            "skills/verifying-before-handoff/SKILL.md",
+            "skills/verifying-before-handoff/SKILL.md"
+          ]
+        }
+      }
+    }
+  ]
+}

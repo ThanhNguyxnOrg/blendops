@@ -385,13 +385,13 @@ describe('Distributable CLI & Package Readiness', () => {
       assert.ok(packedPaths.has(reqPath), `Packed tarball must include required file '${reqPath}'`);
     }
 
-    // All 48 canonical skills must have both SKILL.md and EVAL.md in the packed tarball
+    // All 14 canonical skills must have both SKILL.md and EVAL.md in the packed tarball
     const skillDirs = fs
       .readdirSync(path.join(ROOT, 'skills'), { withFileTypes: true })
       .filter((d) => d.isDirectory() && d.name !== '_template')
       .map((d) => d.name)
       .sort();
-    assert.equal(skillDirs.length, 48, 'Repository must have 48 canonical skills');
+    assert.equal(skillDirs.length, 14, 'Repository must have 14 canonical skills');
 
     for (const skillName of skillDirs) {
       assert.ok(
@@ -453,7 +453,7 @@ describe('Distributable CLI & Package Readiness', () => {
 
     const jsDoc = runInstalledCli(['doctor'], { cwd: unrelatedCwd, via: 'js' });
     assert.match(jsDoc, /Mode: doctor/);
-    assert.match(jsDoc, /48 canonical skills verified/);
+    assert.match(jsDoc, /14 canonical skills verified/);
     assert.match(jsDoc, /Runtime status: Not Run/);
     assert.match(jsDoc, /Artifact status: Not Produced/);
 
@@ -507,7 +507,7 @@ describe('Distributable CLI & Package Readiness', () => {
     // 1. Package-level doctor without --project
     const pkgDocOut = runInstalledCli(['doctor']);
     assert.match(pkgDocOut, /Mode: doctor/);
-    assert.match(pkgDocOut, /48 canonical skills verified/);
+    assert.match(pkgDocOut, /14 canonical skills verified/);
     assert.match(pkgDocOut, /Runtime status: Not Run/);
     assert.match(pkgDocOut, /Artifact status: Not Produced/);
 
@@ -823,7 +823,7 @@ describe('Distributable CLI & Package Readiness', () => {
     assert.deepEqual(fs.readdirSync(cleanTarget), [], 'Corrupted package must write zero files to target');
   });
 
-  test('Scenario H: Claude Desktop export from installed tarball (dry-run, existing --out refusal, write 48 ZIPs + manual bundle, and rollback)', () => {
+  test('Scenario H: Claude Desktop export from installed tarball (dry-run, existing --out refusal, write 14 ZIPs + manual bundle, and rollback)', () => {
     const envPlans = { BLENDOPS_INSTALLER_PLAN_DIR: path.join(suiteTmpDir, 'plans-h') };
     const existingOutDir = path.join(suiteTmpDir, 'scenario-h-existing-out');
     fs.mkdirSync(existingOutDir, { recursive: true });
@@ -844,7 +844,7 @@ describe('Distributable CLI & Package Readiness', () => {
       { env: envPlans },
     );
     assert.match(dryOut, /Mode: dry-run/);
-    assert.match(dryOut, /SKILL\.md count if ZIP mode: 1 per ZIP \(48 ZIPs\)/);
+    assert.match(dryOut, /SKILL\.md count if ZIP mode: 1 per ZIP \(14 ZIPs\)/);
     assert.ok(!fs.existsSync(outDir), '--dry-run must not create --out directory');
 
     const writeOut = runInstalledCli(
@@ -857,7 +857,7 @@ describe('Distributable CLI & Package Readiness', () => {
     assert.match(writeOut, /Runtime setup: Separate; not performed/);
 
     const zipFiles = fs.readdirSync(path.join(outDir, 'desktop-zips')).filter((f) => f.endsWith('.zip'));
-    assert.equal(zipFiles.length, 48, 'Must generate all 48 per-skill ZIP archives from installed tarball');
+    assert.equal(zipFiles.length, 14, 'Must generate all 14 per-skill ZIP archives from installed tarball');
     assert.ok(fs.existsSync(path.join(outDir, 'claude-desktop-manual', 'SKILL.md')));
     assert.ok(fs.existsSync(path.join(outDir, 'manifest.json')));
     assert.ok(fs.existsSync(path.join(outDir, '.blendops', 'install-manifest.json')));
@@ -1128,7 +1128,7 @@ describe('Distributable CLI & Package Readiness', () => {
       Buffer.byteLength(writePipeRes.stdout, 'utf8') > 16 * 1024,
       'Claude Desktop --write report must include full multi-kilobyte Files created output',
     );
-    assert.match(writePipeRes.stdout, /- Files created:.*desktop-zips\/workflow-stage-router\.zip/);
+    assert.match(writePipeRes.stdout, /- Files created:.*desktop-zips\/using-blendops\.zip/);
     assert.match(writePipeRes.stdout, /Runtime status: Not Run/);
     assert.match(writePipeRes.stdout, /Artifact status: Not Produced/);
     assert.match(writePipeRes.stdout, /Runtime setup: Separate; not performed/);

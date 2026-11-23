@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/ThanhNguyxnOrg/blendops/schemas/runtime-capability-policy.schema.json",
   "title": "BlendOps Runtime Capability & Scene Rollback Policy Schema",
-  "description": "Formal L0-L3 runtime capability tiering, non-escalation rules, and pre-mutation .blend checkpoint/rollback requirements across the 48-skill BlendOps catalog.",
+  "description": "Formal L0-L3 runtime capability tiering, non-escalation rules, and pre-mutation .blend checkpoint/rollback requirements across the 14-skill BlendOps catalog.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -104,8 +104,8 @@
     },
     "skills": {
       "type": "array",
-      "minItems": 48,
-      "maxItems": 48,
+      "minItems": 14,
+      "maxItems": 14,
       "items": {
         "type": "object",
         "additionalProperties": false,

@@ -20,7 +20,7 @@
 [![Artifacts: Not Produced](https://img.shields.io/badge/artifacts-Not%20Produced-lightgrey.svg?style=flat-square)](./docs/release-readiness.md)
 [![Release: v1.0.0](https://img.shields.io/github/v/release/ThanhNguyxnOrg/blendops?label=release&color=2ea44f&style=flat-square)](https://github.com/ThanhNguyxnOrg/blendops/releases/tag/v1.0.0)
 
-[![Skills: 48](https://img.shields.io/badge/skills-48-1f6feb.svg?style=flat-square)](./skills/README.md)
+[![Skills: 14](https://img.shields.io/badge/skills-14-1f6feb.svg?style=flat-square)](./skills/README.md)
 [![Laws: 4](https://img.shields.io/badge/laws-4-1f6feb.svg?style=flat-square)](./laws/README.md)
 [![Packs: 1](https://img.shields.io/badge/packs-1-1f6feb.svg?style=flat-square)](./packs/README.md)
 [![Install docs: 26 • CLI targets: 35+](https://img.shields.io/badge/install%20docs-26%20%E2%80%A2%20CLI%20targets%2035%2B-1f6feb.svg?style=flat-square)](./docs/install/README.md)
@@ -82,15 +82,15 @@ Human intent (non-Blender user)
 
 | BlendOps **publishes** (this repo's deliverable) | BlendOps **redirects to** (upstream — not this repo's work) |
 |---|---|
-| 48 skills (baseline + web 3D deep + quality validators + domain planners + process discipline + asset/sourcing + color/format/output + recipe/pack ops + runtime path discipline, …) | **Path 1 — Blender Lab MCP** (Lab add-on + Lab server). Owner: Blender Foundation. Source: [blender.org/lab/mcp-server](https://www.blender.org/lab/mcp-server/) |
+| 14 skills (baseline + web 3D deep + quality validators + domain planners + process discipline + asset/sourcing + color/format/output + recipe/pack ops + runtime path discipline, …) | **Path 1 — Blender Lab MCP** (Lab add-on + Lab server). Owner: Blender Foundation. Source: [blender.org/lab/mcp-server](https://www.blender.org/lab/mcp-server/) |
 | 4 laws (evidence-before-done, official-runtime-only, no-arbitrary-python-interface, non-blender-user-language) | **Path 1 host (a) — Anthropic Blender Connector** (Claude-Desktop-specific MCP host). Owner: Anthropic. Source: [claude.com/.../using-the-blender-connector-in-claude](https://claude.com/resources/tutorials/using-the-blender-connector-in-claude) |
 | 1 pack (`product-hero-v0`), 3 bundles (skill-package, claude-desktop-manual, generic-project-local) | **Path 2 — Community `mcp-for-blender` (formerly `blender-mcp`)** (different add-on/server). Owner: mature community project. Source: [github.com/ahujasid/mcp-for-blender](https://github.com/ahujasid/mcp-for-blender) |
 | 26 install target docs + **35+ CLI targets** (`--with-skills-dir`, `skills.sh.json`, `skills-lock.json` v2) + 3 mode auto-detect install flow | **CLI fallback** (`blender --background --python ...`). Owner: Blender Foundation. Source: [docs.blender.org/manual/.../command_line](https://docs.blender.org/manual/en/latest/advanced/command_line/index.html) |
-| Skill ZIP / OpenAI YAML / canonical bundle generation (`npm run skills:export` → 48 ZIPs, one per `skills/*/SKILL.md`) + distributable local CLI (`bin/blendops.mjs` / `scripts/install-skills.mjs`, packable via `npm pack`) + GLB 2.0 web handoff toolkit (`blendops glb-inspect`, `blendops glb-handoff`, `blendops glb-validate-manifest`, Three.js & R3F integration examples in [`docs/examples/glb-web-handoff/README.md`](./docs/examples/glb-web-handoff/README.md)) | The Blender executable, MCP servers, MCP host clients, OS, GPU drivers, network. |
+| Skill ZIP / OpenAI YAML / canonical bundle generation (`npm run skills:export` → 14 ZIPs, one per `skills/*/SKILL.md`) + distributable local CLI (`bin/blendops.mjs` / `scripts/install-skills.mjs`, packable via `npm pack`) + GLB 2.0 web handoff toolkit (`blendops glb-inspect`, `blendops glb-handoff`, `blendops glb-validate-manifest`, Three.js & R3F integration examples in [`docs/examples/handing-off-glb-to-web/README.md`](./docs/examples/handing-off-glb-to-web/README.md)) | The Blender executable, MCP servers, MCP host clients, OS, GPU drivers, network. |
 
 **What this means for "completeness":**
 
-- The **skills layer** (48 skills + 151 deep reference guides across 8 `skills.sh.json` groups + 26 install docs + 35+ CLI targets + ZIP/package export + deterministic CI guards) is **complete and production-ready at `v1.0.0`** — nothing upstream blocks it. Milestones: `v0.4.0-draft` (40 skills) → `v0.5.0-draft` (48 skills) → `v0.8.0-draft` (hardening) → `v0.9.0-draft` (catalog & CLI readiness) → **`v1.0.0` (production release)**.
+- The **skills layer** (14 skills + 151 deep reference guides across 8 `skills.sh.json` groups + 26 install docs + 35+ CLI targets + ZIP/package export + deterministic CI guards) is **complete and production-ready at `v1.0.0`** — nothing upstream blocks it. Milestones: `v0.4.0-draft` (40 skills) → `v0.5.0-draft` (14 skills) → `v0.8.0-draft` (hardening) → `v0.9.0-draft` (catalog & CLI readiness) → **`v1.0.0` (production release)**.
 - Whether the **upstream runtime paths work in your environment** is up to upstream Blender Foundation / Anthropic / community `mcp-for-blender` (Path 1 + Path 2 are user-reported verified by the repo owner — operator statement, does not promote eval scope; CLI is upstream-documented). BlendOps **redirects** to them via per-target install docs but does not own their stability.
 - The "Full runtime eval: Not Run" / "Artifacts: Not Produced" labels refer to **in-repo provenance evidence files only** — operator-side records under `docs/evals/`. They do **not** mean "the upstream runtime paths don't work" or "BlendOps is incomplete."
 
@@ -98,19 +98,19 @@ Human intent (non-Blender user)
 
 ## 🧭 10-Second Skill Decision Tree
 
-Start at `blendops-help` or jump straight into the narrowest group from [`skills.sh.json`](./skills.sh.json) and [`skills/README.md`](./skills/README.md):
+Start at `using-blendops` or jump straight into the narrowest group from [`skills.sh.json`](./skills.sh.json) and [`skills/README.md`](./skills/README.md):
 
 ```txt
-Goal unclear or messy request? ──▶ blendops-help / blender-brainstorming ──▶ intent-to-3d-brief-writer
-Know what you want to build?    ──▶ recipe-fit-assessor / workflow-stage-router
-                                    ├─ Product / Catalog ──▶ product-hero-scene-planner / product-grid-scene-planner
-                                    ├─ Character / Env   ──▶ character-portrait / environment-shot / interior-scene
-                                    └─ Complex (4+ steps)──▶ blender-recipe-decomposer ──▶ stage-gates ──▶ done-criteria
-Need visual / budget checks?    ──▶ lighting-quality-checker • material-quality-checker • composition-quality-checker • polycount-budget-checker
-Need render / format rules?     ──▶ color-management-decision • cycles-vs-eevee-decision • resolution-aspect-decision • output-format-decision
-Ready for Web 3D / GLB?         ──▶ mobile-glb-budget ──▶ glb-animation-handoff / r3f-component-plan ──▶ glb-web-handoff
-Setting up or auditing runtime? ──▶ runtime-path-picker ──▶ runtime-readiness ──▶ runtime-attempt-report (or bridge-conflicts)
-Ready to deliver / claim Pass?  ──▶ scene-readiness ──▶ render-export-evidence ──▶ pre-handoff-verification ──▶ plain-language-response
+Goal unclear or messy request? ──▶ using-blendops / scoping-3d-briefs ──▶ scoping-3d-briefs
+Know what you want to build?    ──▶ scoping-3d-briefs / using-blendops
+                                    ├─ Product / Catalog ──▶ planning-product-scenes / planning-product-scenes
+                                    ├─ Character / Env   ──▶ planning-scenes / planning-scenes / planning-scenes
+                                    └─ Complex (4+ steps)──▶ scoping-3d-briefs ──▶ defining-done-and-gates ──▶ defining-done-and-gates
+Need visual / budget checks?    ──▶ planning-lighting-and-materials • planning-lighting-and-materials • planning-camera-and-framing • budgeting-glb-for-web
+Need render / format rules?     ──▶ planning-lighting-and-materials • choosing-render-and-output • planning-camera-and-framing • choosing-render-and-output
+Ready for Web 3D / GLB?         ──▶ budgeting-glb-for-web ──▶ handing-off-glb-to-web / handing-off-glb-to-web ──▶ handing-off-glb-to-web
+Setting up or auditing runtime? ──▶ setting-up-blender-runtime ──▶ setting-up-blender-runtime ──▶ verifying-before-handoff (or setting-up-blender-runtime)
+Ready to deliver / claim Pass?  ──▶ verifying-before-handoff ──▶ verifying-before-handoff ──▶ verifying-before-handoff ──▶ using-blendops
 ```
 
 ---
@@ -127,7 +127,7 @@ https://raw.githubusercontent.com/ThanhNguyxnOrg/blendops/main/docs/ai-agent-qui
 
 Auto-detect your environment first, then pick one mode:
 - If you have project filesystem write access → Mode A: install BlendOps project-locally (skills/, laws/, packs/, target-specific entrypoint).
-- If you are in a chat-only UI (Claude Desktop chat, Claude.ai, ChatGPT) with no filesystem write → Mode B: output 48 separate ZIPs from skills/*/SKILL.md (one ZIP per skill) for me to drag-drop into the Skills UI manually.
+- If you are in a chat-only UI (Claude Desktop chat, Claude.ai, ChatGPT) with no filesystem write → Mode B: output 14 separate ZIPs from skills/*/SKILL.md (one ZIP per skill) for me to drag-drop into the Skills UI manually.
 - If you cannot fetch the repo, cannot write, AND cannot output ZIPs → Mode C: ask one concise question.
 
 Do not install Blender, configure runtime connectors, run Blender, or claim generated artifacts. Report the selected mode, files changed or ZIP filenames, runtime status, artifact status, and limitations.
@@ -165,7 +165,7 @@ npm run skills:install -- --target universal --project /path/to/your-project --w
 npm run skills:install -- --target universal --project /path/to/your-project --with-skills-dir --write
 ```
 
-The agent auto-detects which mode applies. Coding agents (Claude Code, Cursor, Codex, OpenCode, Cline, Roo Code, Blackbox AI, Continue, Zed, Windsurf, Trae, Augment Code, goose, OpenHands, JetBrains Junie, Sourcegraph Cody, Aider, Amazon Q Developer, Gemini, Copilot, Antigravity, Kiro, Amp, Droid, Kilo, OpenClaw, ClawdBot, VS Code, universal `.agents/skills/`) hit **Mode A** and install **project-locally**. Claude Desktop / Claude.ai / ChatGPT chats hit **Mode B** and output **separate ZIPs from skills/*/SKILL.md** (one per skill, 48 total) for you to drag-drop into the Skills UI manually. Anything else falls back to **Mode C — blocked-needs-input**. Full mode logic in [`docs/ai-agent-install-flow.md`](./docs/ai-agent-install-flow.md).
+The agent auto-detects which mode applies. Coding agents (Claude Code, Cursor, Codex, OpenCode, Cline, Roo Code, Blackbox AI, Continue, Zed, Windsurf, Trae, Augment Code, goose, OpenHands, JetBrains Junie, Sourcegraph Cody, Aider, Amazon Q Developer, Gemini, Copilot, Antigravity, Kiro, Amp, Droid, Kilo, OpenClaw, ClawdBot, VS Code, universal `.agents/skills/`) hit **Mode A** and install **project-locally**. Claude Desktop / Claude.ai / ChatGPT chats hit **Mode B** and output **separate ZIPs from skills/*/SKILL.md** (one per skill, 14 total) for you to drag-drop into the Skills UI manually. Anything else falls back to **Mode C — blocked-needs-input**. Full mode logic in [`docs/ai-agent-install-flow.md`](./docs/ai-agent-install-flow.md).
 
 ---
 
@@ -190,7 +190,7 @@ BlendOps recognizes **2 MCP execution paths + a CLI fallback appendix** ([full d
 | 5-minute orientation | [`docs/start-here.md`](./docs/start-here.md) |
 | Set up Blender runtime | [`docs/external-runtime-setup.md`](./docs/external-runtime-setup.md) |
 | Install BlendOps in your AI tool | [`docs/install/README.md`](./docs/install/README.md) |
-| Inspect a GLB & generate a web handoff report (Three.js / R3F) | [`docs/examples/glb-web-handoff/README.md`](./docs/examples/glb-web-handoff/README.md) |
+| Inspect a GLB & generate a web handoff report (Three.js / R3F) | [`docs/examples/handing-off-glb-to-web/README.md`](./docs/examples/handing-off-glb-to-web/README.md) |
 | Browse skills / laws / packs | [`skills/README.md`](./skills/README.md) · [`laws/README.md`](./laws/README.md) · [`packs/README.md`](./packs/README.md) |
 | Check release readiness | [`docs/release-readiness.md`](./docs/release-readiness.md) |
 | Inspect repository architecture & file inventory | [`docs/architecture.md`](./docs/architecture.md) · [`docs/audits/current/repository-inventory.json`](./docs/audits/current/repository-inventory.json) |

@@ -84,7 +84,7 @@ function assertSnapshotsEqual(beforeSnap, afterSnap, contextMessage) {
   }
 }
 
-test('Scenario 1: Canonical discovery finds 48 valid SKILL.md + contract.json pairs', () => {
+test('Scenario 1: Canonical discovery finds 14 valid SKILL.md + contract.json pairs', () => {
   const discovery = discoverCanonicalSkillIds(root);
   assert.equal(discovery.ok, true, `Discovery errors: ${discovery.errors.join('; ')}`);
   assert.equal(discovery.skillIds.length, EXPECTED_CANONICAL_SKILL_COUNT);
@@ -102,26 +102,26 @@ test('Scenario 1: Canonical discovery finds 48 valid SKILL.md + contract.json pa
   }
 });
 
-test('Scenario 2: Generator emits 48 Claude Desktop summaries and 48 portable package summaries (96 total)', () => {
+test('Scenario 2: Generator emits 14 Claude Desktop summaries and 14 portable package summaries (28 total)', () => {
   const tempRoot = createIsolatedFixtureRepo();
   try {
     const res = generateBundleReferenceSummaries(tempRoot);
     assert.equal(res.ok, true, `Build errors: ${res.errors.join('; ')}`);
-    assert.equal(res.skillCount, 48);
-    assert.equal(res.generatedCount, 96);
-    assert.equal(res.writtenFiles.length, 96);
+    assert.equal(res.skillCount, 14);
+    assert.equal(res.generatedCount, 28);
+    assert.equal(res.writtenFiles.length, 28);
 
     const claudeFiles = fs
       .readdirSync(path.join(tempRoot, CLAUDE_DESKTOP_SKILLS_REL_DIR))
       .filter((f) => f.endsWith('.md'))
       .sort();
-    assert.equal(claudeFiles.length, 48);
+    assert.equal(claudeFiles.length, 14);
 
     const portableSkillFiles = fs
       .readdirSync(path.join(tempRoot, PORTABLE_PACKAGE_REFS_REL_DIR))
       .filter((f) => f.startsWith('skill-') && f !== 'skill-map.md' && f.endsWith('.md'))
       .sort();
-    assert.equal(portableSkillFiles.length, 48);
+    assert.equal(portableSkillFiles.length, 14);
   } finally {
     fs.rmSync(tempRoot, { recursive: true, force: true });
   }
@@ -204,7 +204,7 @@ test('Scenario 4: Every generated summary includes required operational sections
   }
 });
 
-test('Scenario 5: Both profiles remain semantically aligned across all 48 skills', () => {
+test('Scenario 5: Both profiles remain semantically aligned across all 14 skills', () => {
   const plan = computeBundleSummaryPlan(root);
   assert.equal(plan.ok, true);
 
@@ -261,18 +261,18 @@ test('Scenario 5: Both profiles remain semantically aligned across all 48 skills
 test('Scenario 6: Missing SKILL.md fails closed', () => {
   const tempRoot = createIsolatedFixtureRepo();
   try {
-    fs.unlinkSync(path.join(tempRoot, 'skills', 'blendops-help', 'SKILL.md'));
+    fs.unlinkSync(path.join(tempRoot, 'skills', 'using-blendops', 'SKILL.md'));
     const buildRes = generateBundleReferenceSummaries(tempRoot);
     assert.equal(buildRes.ok, false);
     assert.equal(
-      buildRes.errors.some((e) => e.includes('Missing canonical SKILL.md: skills/blendops-help/SKILL.md')),
+      buildRes.errors.some((e) => e.includes('Missing canonical SKILL.md: skills/using-blendops/SKILL.md')),
       true,
     );
 
     const checkRes = checkBundleReferenceSummaries(tempRoot);
     assert.equal(checkRes.ok, false);
     assert.equal(
-      checkRes.errors.some((e) => e.includes('Missing canonical SKILL.md: skills/blendops-help/SKILL.md')),
+      checkRes.errors.some((e) => e.includes('Missing canonical SKILL.md: skills/using-blendops/SKILL.md')),
       true,
     );
   } finally {
@@ -283,12 +283,12 @@ test('Scenario 6: Missing SKILL.md fails closed', () => {
 test('Scenario 7: Missing or malformed contract.json fails closed', () => {
   const tempRoot = createIsolatedFixtureRepo();
   try {
-    const contractPath = path.join(tempRoot, 'skills', 'blendops-help', 'contract.json');
+    const contractPath = path.join(tempRoot, 'skills', 'using-blendops', 'contract.json');
     fs.writeFileSync(contractPath, '{ invalid json', 'utf8');
     const malformedRes = generateBundleReferenceSummaries(tempRoot);
     assert.equal(malformedRes.ok, false);
     assert.equal(
-      malformedRes.errors.some((e) => e.includes('Malformed JSON in skills/blendops-help/contract.json')),
+      malformedRes.errors.some((e) => e.includes('Malformed JSON in skills/using-blendops/contract.json')),
       true,
     );
 
@@ -296,7 +296,7 @@ test('Scenario 7: Missing or malformed contract.json fails closed', () => {
     const missingRes = generateBundleReferenceSummaries(tempRoot);
     assert.equal(missingRes.ok, false);
     assert.equal(
-      missingRes.errors.some((e) => e.includes('Missing canonical contract.json: skills/blendops-help/contract.json')),
+      missingRes.errors.some((e) => e.includes('Missing canonical contract.json: skills/using-blendops/contract.json')),
       true,
     );
   } finally {
@@ -307,7 +307,7 @@ test('Scenario 7: Missing or malformed contract.json fails closed', () => {
 test('Scenario 8: Skill/contract ID mismatch fails closed', () => {
   const tempRoot = createIsolatedFixtureRepo();
   try {
-    const contractPath = path.join(tempRoot, 'skills', 'blendops-help', 'contract.json');
+    const contractPath = path.join(tempRoot, 'skills', 'using-blendops', 'contract.json');
     const contract = JSON.parse(fs.readFileSync(contractPath, 'utf8'));
     contract.id = 'wrong-skill-id';
     fs.writeFileSync(contractPath, JSON.stringify(contract, null, 2), 'utf8');
@@ -315,7 +315,7 @@ test('Scenario 8: Skill/contract ID mismatch fails closed', () => {
     const res = generateBundleReferenceSummaries(tempRoot);
     assert.equal(res.ok, false);
     assert.equal(
-      res.errors.some((e) => e.includes('Contract ID mismatch in skills/blendops-help/contract.json')),
+      res.errors.some((e) => e.includes('Contract ID mismatch in skills/using-blendops/contract.json')),
       true,
     );
   } finally {
@@ -326,7 +326,7 @@ test('Scenario 8: Skill/contract ID mismatch fails closed', () => {
 test('Scenario 9: Invalid handoff or exclusion target fails closed', () => {
   const tempRoot = createIsolatedFixtureRepo();
   try {
-    const contractPath = path.join(tempRoot, 'skills', 'blendops-help', 'contract.json');
+    const contractPath = path.join(tempRoot, 'skills', 'using-blendops', 'contract.json');
     const contract = JSON.parse(fs.readFileSync(contractPath, 'utf8'));
     contract.handoffs[0].target = 'non-existent-skill-target';
     fs.writeFileSync(contractPath, JSON.stringify(contract, null, 2), 'utf8');
@@ -345,7 +345,7 @@ test('Scenario 9: Invalid handoff or exclusion target fails closed', () => {
 test('Scenario 10: Unsupported capability tier or invalid truth-state policy fails closed', () => {
   const tempRoot = createIsolatedFixtureRepo();
   try {
-    const contractPath = path.join(tempRoot, 'skills', 'blendops-help', 'contract.json');
+    const contractPath = path.join(tempRoot, 'skills', 'using-blendops', 'contract.json');
     const contract = JSON.parse(fs.readFileSync(contractPath, 'utf8'));
     contract.capabilityTier = 'L99';
     contract.outputs.truthStatePolicy.artifactDefault = 'Not Run';
@@ -370,26 +370,26 @@ test('Scenario 11: Check mode detects a missing generated summary in either bund
   const tempRoot = createIsolatedFixtureRepo();
   try {
     fs.unlinkSync(
-      path.join(tempRoot, CLAUDE_DESKTOP_SKILLS_REL_DIR, 'blendops-help.md'),
+      path.join(tempRoot, CLAUDE_DESKTOP_SKILLS_REL_DIR, 'using-blendops.md'),
     );
     const resA = checkBundleReferenceSummaries(tempRoot);
     assert.equal(resA.ok, false);
     assert.equal(
       resA.errors.some((e) =>
-        e.includes('Missing generated bundle summary: bundles/claude-desktop-manual/references/skills/blendops-help.md'),
+        e.includes('Missing generated bundle summary: bundles/claude-desktop-manual/references/skills/using-blendops.md'),
       ),
       true,
     );
 
     generateBundleReferenceSummaries(tempRoot);
     fs.unlinkSync(
-      path.join(tempRoot, PORTABLE_PACKAGE_REFS_REL_DIR, 'skill-blendops-help.md'),
+      path.join(tempRoot, PORTABLE_PACKAGE_REFS_REL_DIR, 'skill-using-blendops.md'),
     );
     const resB = checkBundleReferenceSummaries(tempRoot);
     assert.equal(resB.ok, false);
     assert.equal(
       resB.errors.some((e) =>
-        e.includes('Missing generated bundle summary: bundles/skill-package/blendops/references/skill-blendops-help.md'),
+        e.includes('Missing generated bundle summary: bundles/skill-package/blendops/references/skill-using-blendops.md'),
       ),
       true,
     );
@@ -404,7 +404,7 @@ test('Scenario 12: Check mode detects a stale or manually modified generated sum
     const targetFile = path.join(
       tempRoot,
       PORTABLE_PACKAGE_REFS_REL_DIR,
-      'skill-acceptance-criteria-builder.md',
+      'skill-defining-done-and-gates.md',
     );
     const original = fs.readFileSync(targetFile, 'utf8');
     fs.writeFileSync(targetFile, `${original}\n<!-- manual drift -->\n`, 'utf8');
@@ -414,7 +414,7 @@ test('Scenario 12: Check mode detects a stale or manually modified generated sum
     assert.equal(
       res.errors.some((e) =>
         e.includes(
-          'Stale or manually modified bundle summary: bundles/skill-package/blendops/references/skill-acceptance-criteria-builder.md',
+          'Stale or manually modified bundle summary: bundles/skill-package/blendops/references/skill-defining-done-and-gates.md',
         ),
       ),
       true,
@@ -469,7 +469,7 @@ test('Scenario 14: Bundle manifest check verifies completeness, uniqueness, and 
     const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
 
     const skillEntries = manifest.files.filter((f) => f.path.startsWith('references/skills/'));
-    assert.equal(skillEntries.length, 48);
+    assert.equal(skillEntries.length, 14);
     const nonSkillPaths = manifest.files
       .filter((f) => !f.path.startsWith('references/skills/'))
       .map((f) => f.path);
@@ -493,10 +493,10 @@ test('Scenario 14: Bundle manifest check verifies completeness, uniqueness, and 
 
     const mutated = structuredClone(manifest);
     mutated.files = mutated.files.filter(
-      (f) => f.path !== 'references/skills/blendops-help.md',
+      (f) => f.path !== 'references/skills/using-blendops.md',
     );
     mutated.files.push({
-      path: 'references/skills/acceptance-criteria-builder.md',
+      path: 'references/skills/defining-done-and-gates.md',
       purpose: 'Duplicate entry',
     });
     mutated.files.push({
@@ -509,13 +509,13 @@ test('Scenario 14: Bundle manifest check verifies completeness, uniqueness, and 
     assert.equal(checkRes.ok, false);
     assert.equal(
       checkRes.errors.some((e) =>
-        e.includes('Missing generated skill summary entry in bundles/claude-desktop-manual/manifest.json: "references/skills/blendops-help.md"'),
+        e.includes('Missing generated skill summary entry in bundles/claude-desktop-manual/manifest.json: "references/skills/using-blendops.md"'),
       ),
       true,
     );
     assert.equal(
       checkRes.errors.some((e) =>
-        e.includes('Duplicate generated skill summary entry in bundles/claude-desktop-manual/manifest.json: "references/skills/acceptance-criteria-builder.md"'),
+        e.includes('Duplicate generated skill summary entry in bundles/claude-desktop-manual/manifest.json: "references/skills/defining-done-and-gates.md"'),
       ),
       true,
     );
@@ -530,7 +530,7 @@ test('Scenario 14: Bundle manifest check verifies completeness, uniqueness, and 
   }
 });
 
-test('Scenario 15: Repeat builds are byte-identical across all 96 generated summaries and manifest.json', () => {
+test('Scenario 15: Repeat builds are byte-identical across all 28 generated summaries and manifest.json', () => {
   const tempRoot = createIsolatedFixtureRepo();
   try {
     const firstBuild = generateBundleReferenceSummaries(tempRoot);
@@ -563,7 +563,7 @@ test('Scenario 16: Check mode is strictly read-only and never modifies files on 
     const targetPath = path.join(
       tempRoot,
       CLAUDE_DESKTOP_SKILLS_REL_DIR,
-      'blendops-help.md',
+      'using-blendops.md',
     );
     const driftedContent = '# manually drifted content\n';
     fs.writeFileSync(targetPath, driftedContent, 'utf8');
@@ -589,7 +589,7 @@ test('Scenario 17: Path-traversal protection rejects out-of-root paths and inval
 
   const traversalRes = loadAndValidateSkillSourcePair(
     '../outside',
-    new Set(['blendops-help']),
+    new Set(['using-blendops']),
     root,
   );
   assert.equal(traversalRes.ok, false);
@@ -658,7 +658,7 @@ test('Scenario 20: CLI check and build modes return non-zero exit codes on inval
 
   const tempRoot = createIsolatedFixtureRepo();
   try {
-    fs.unlinkSync(path.join(tempRoot, 'skills', 'blendops-help', 'contract.json'));
+    fs.unlinkSync(path.join(tempRoot, 'skills', 'using-blendops', 'contract.json'));
 
     const badBuildCli = spawnSync(
       process.execPath,
@@ -684,7 +684,7 @@ test('Scenario 20: CLI check and build modes return non-zero exit codes on inval
 // Extended Hardening Scenarios (21 through 35)
 // ============================================================================
 
-test('Scenario 21: Handoff condition when.all and when.any modes plus every predicate field, operator, and scalar/array/boolean value are preserved in both profiles across all 48 skills', () => {
+test('Scenario 21: Handoff condition when.all and when.any modes plus every predicate field, operator, and scalar/array/boolean value are preserved in both profiles across all 14 skills', () => {
   const discovery = discoverCanonicalSkillIds(root);
   assert.equal(discovery.ok, true);
 
@@ -749,15 +749,15 @@ test('Scenario 21: Handoff condition when.all and when.any modes plus every pred
     }
   }
 
-  assert.ok(observedWhenAllCount > 300, 'Expected > 300 when.all handoffs across catalog');
-  assert.ok(observedWhenAnyCount >= 3, 'Expected >= 3 when.any handoffs across catalog');
-  assert.ok(observedArrayValuePredicates >= 4, 'Expected array-valued in/not_in predicates');
+  assert.ok(observedWhenAllCount > 150, 'Expected > 150 when.all handoffs across catalog');
+  assert.ok(observedWhenAnyCount >= 2, 'Expected >= 2 when.any handoffs across catalog');
+  assert.ok(observedArrayValuePredicates >= 1, 'Expected array-valued in/not_in predicates');
   assert.ok(observedBooleanValuePredicates > 50, 'Expected boolean-valued predicates');
   assert.ok(observedStringValuePredicates > 100, 'Expected string-valued predicates');
-  assert.ok(observedNotEqualsPredicates >= 10, 'Expected not_equals predicates');
+  assert.ok(observedNotEqualsPredicates >= 5, 'Expected not_equals predicates');
 });
 
-test('Scenario 22: Routing participant activationGate fields (goalClarity, recipeSelected, preflightPassed, hasStageOrArtifactInventory) are preserved in both profiles for all 4 routers', () => {
+test('Scenario 22: Routing participant activationGate fields (goalClarity, recipeSelected, preflightPassed, hasStageOrArtifactInventory) are preserved in both profiles for all 3 routers', () => {
   const discovery = discoverCanonicalSkillIds(root);
   assert.equal(discovery.ok, true);
 
@@ -796,7 +796,7 @@ test('Scenario 22: Routing participant activationGate fields (goalClarity, recip
       assert.equal(portableExtracted.routingPrecedence, null);
     }
   }
-  assert.equal(routerCount, 4);
+  assert.equal(routerCount, 3);
 });
 
 test('Scenario 23: retryPolicy.maxAttempts and retryPolicy.exitCondition are preserved in both profiles when present', () => {
@@ -841,13 +841,53 @@ test('Scenario 23: retryPolicy.maxAttempts and retryPolicy.exitCondition are pre
       }
     }
   }
-  assert.equal(retryHandoffCount, 4);
+  // Former retry loops (quality checker -> planner) now live inside one merged skill.
+  assert.equal(retryHandoffCount, 0);
+
+  const tempRoot = createIsolatedFixtureRepo();
+  try {
+    const skillId = 'planning-camera-and-framing';
+    const contractPath = path.join(tempRoot, 'skills', skillId, 'contract.json');
+    const contract = JSON.parse(fs.readFileSync(contractPath, 'utf8'));
+    const retryHandoff = {
+      target: 'planning-lighting-and-materials',
+      type: 'retry',
+      label: 'Lighting and materials re-plan',
+      when: {
+        all: [
+          { field: 'quality.domain', operator: 'equals', value: 'composition' },
+          { field: 'quality.verdict', operator: 'equals', value: 'Fail' },
+        ],
+      },
+      retryPolicy: {
+        maxAttempts: 2,
+        exitCondition: {
+          all: [{ field: 'quality.verdict', operator: 'in', value: ['Pass', 'Warn'] }],
+        },
+      },
+    };
+    contract.handoffs.push(retryHandoff);
+    fs.writeFileSync(contractPath, JSON.stringify(contract, null, 2), 'utf8');
+    const res = generateBundleReferenceSummaries(tempRoot);
+    assert.equal(res.ok, true, `Expected retry fixture build to succeed, got: ${(res.errors || []).join('; ')}`);
+    const idx = contract.handoffs.length - 1;
+    const claudeExtracted = extractSummaryRoutingSemantics(
+      fs.readFileSync(path.join(tempRoot, CLAUDE_DESKTOP_SKILLS_REL_DIR, `${skillId}.md`), 'utf8'),
+    );
+    const portableExtracted = extractSummaryRoutingSemantics(
+      fs.readFileSync(path.join(tempRoot, PORTABLE_PACKAGE_REFS_REL_DIR, `skill-${skillId}.md`), 'utf8'),
+    );
+    assert.deepEqual(claudeExtracted.handoffs[idx].retryPolicy, retryHandoff.retryPolicy);
+    assert.deepEqual(portableExtracted.handoffs[idx].retryPolicy, retryHandoff.retryPolicy);
+  } finally {
+    fs.rmSync(tempRoot, { recursive: true, force: true });
+  }
 });
 
 test('Scenario 24: Malformed or incomplete optional inputs fail closed with a clear diagnostic', () => {
   const tempRoot = createIsolatedFixtureRepo();
   try {
-    const contractPath = path.join(tempRoot, 'skills', 'blendops-help', 'contract.json');
+    const contractPath = path.join(tempRoot, 'skills', 'using-blendops', 'contract.json');
     const baseContract = JSON.parse(fs.readFileSync(contractPath, 'utf8'));
 
     // Case A: null entry in inputs.optional (must not throw TypeError)
@@ -894,7 +934,7 @@ test('Scenario 24: Malformed or incomplete optional inputs fail closed with a cl
 test('Scenario 25: Missing required input type fails closed instead of defaulting to string', () => {
   const tempRoot = createIsolatedFixtureRepo();
   try {
-    const contractPath = path.join(tempRoot, 'skills', 'blendops-help', 'contract.json');
+    const contractPath = path.join(tempRoot, 'skills', 'using-blendops', 'contract.json');
     const contract = JSON.parse(fs.readFileSync(contractPath, 'utf8'));
     delete contract.inputs.required[0].type;
     fs.writeFileSync(contractPath, JSON.stringify(contract, null, 2), 'utf8');
@@ -915,7 +955,7 @@ test('Scenario 25: Missing required input type fails closed instead of defaultin
 test('Scenario 26: Missing or invalid version fails closed instead of defaulting to 1.0.0', () => {
   const tempRoot = createIsolatedFixtureRepo();
   try {
-    const contractPath = path.join(tempRoot, 'skills', 'blendops-help', 'contract.json');
+    const contractPath = path.join(tempRoot, 'skills', 'using-blendops', 'contract.json');
     const baseContract = JSON.parse(fs.readFileSync(contractPath, 'utf8'));
 
     // Missing version
@@ -949,7 +989,7 @@ test('Scenario 27: L4 capability tier fails closed while valid schema tiers (L0,
 
   const tempRoot = createIsolatedFixtureRepo();
   try {
-    const contractPath = path.join(tempRoot, 'skills', 'blendops-help', 'contract.json');
+    const contractPath = path.join(tempRoot, 'skills', 'using-blendops', 'contract.json');
     const baseContract = JSON.parse(fs.readFileSync(contractPath, 'utf8'));
     const catalogSet = new Set(discoverCanonicalSkillIds(tempRoot).skillIds);
 
@@ -958,7 +998,7 @@ test('Scenario 27: L4 capability tier fails closed while valid schema tiers (L0,
       const validCopy = structuredClone(baseContract);
       validCopy.capabilityTier = validTier;
       fs.writeFileSync(contractPath, JSON.stringify(validCopy, null, 2), 'utf8');
-      const pairRes = loadAndValidateSkillSourcePair('blendops-help', catalogSet, tempRoot);
+      const pairRes = loadAndValidateSkillSourcePair('using-blendops', catalogSet, tempRoot);
       assert.equal(
         pairRes.ok,
         true,
@@ -990,7 +1030,7 @@ test('Scenario 28: Symlink escape attempts for source, output, and manifest path
 
   try {
     // 1. Symlinked source SKILL.md pointing outside rootDir
-    const skillMdPath = path.join(tempRoot, 'skills', 'blendops-help', 'SKILL.md');
+    const skillMdPath = path.join(tempRoot, 'skills', 'using-blendops', 'SKILL.md');
     const origSkillMd = fs.readFileSync(skillMdPath);
     fs.unlinkSync(skillMdPath);
     fs.symlinkSync(outsideFile, skillMdPath);
@@ -1011,7 +1051,7 @@ test('Scenario 28: Symlink escape attempts for source, output, and manifest path
     const outSummaryPath = path.join(
       tempRoot,
       CLAUDE_DESKTOP_SKILLS_REL_DIR,
-      'blendops-help.md',
+      'using-blendops.md',
     );
     const origOutSummary = fs.readFileSync(outSummaryPath);
     fs.unlinkSync(outSummaryPath);
@@ -1174,11 +1214,11 @@ test('Scenario 31: Aborted builds do not partially write or delete bundle summar
     );
     fs.writeFileSync(staleSummaryPath, '# obsolete skill summary\n', 'utf8');
 
-    // Break the 48th skill contract (workflow-stage-router) so preflight fails after earlier skills
+    // Break the 14th skill contract (using-blendops) so preflight fails after earlier skills
     const routerContractPath = path.join(
       tempRoot,
       'skills',
-      'workflow-stage-router',
+      'using-blendops',
       'contract.json',
     );
     const routerContract = JSON.parse(fs.readFileSync(routerContractPath, 'utf8'));
@@ -1306,7 +1346,7 @@ test('Scenario 33: F-09 audit status is OPEN (not FIXED) when either bundle summ
   }
 });
 
-test('Scenario 34: Both profiles remain 100% semantically equivalent to each other and to contract.json across all 48 skills', () => {
+test('Scenario 34: Both profiles remain 100% semantically equivalent to each other and to contract.json across all 14 skills', () => {
   const discovery = discoverCanonicalSkillIds(root);
   assert.equal(discovery.ok, true);
 
@@ -1359,7 +1399,7 @@ test('Scenario 34: Both profiles remain 100% semantically equivalent to each oth
 test('Scenario 35: Contract validation rejects malformed handoff when conditions, missing retryPolicy on retry handoffs, and unexpected retryPolicy on non-retry handoffs', () => {
   const tempRoot = createIsolatedFixtureRepo();
   try {
-    const contractPath = path.join(tempRoot, 'skills', 'blendops-help', 'contract.json');
+    const contractPath = path.join(tempRoot, 'skills', 'using-blendops', 'contract.json');
     const baseContract = JSON.parse(fs.readFileSync(contractPath, 'utf8'));
 
     // 1. Missing handoff.when
@@ -1415,12 +1455,12 @@ test('Scenario 35: Contract validation rejects malformed handoff when conditions
 test('Scenario 36: Condition expressions with single/multiple semicolons, escaped quotes, backslashes, Unicode, and array elements survive formatter -> summary -> extractor round trips in both profiles', () => {
   const tempRoot = createIsolatedFixtureRepo();
   try {
-    const contractPath = path.join(tempRoot, 'skills', 'blendops-help', 'contract.json');
+    const contractPath = path.join(tempRoot, 'skills', 'using-blendops', 'contract.json');
     const contract = JSON.parse(fs.readFileSync(contractPath, 'utf8'));
 
     contract.handoffs = [
       {
-        target: 'recipe-fit-assessor',
+        target: 'scoping-3d-briefs',
         type: 'progression',
         label: 'Single semicolon string predicate in when.all',
         when: {
@@ -1428,7 +1468,7 @@ test('Scenario 36: Condition expressions with single/multiple semicolons, escape
         },
       },
       {
-        target: 'pack-prerequisite-checker',
+        target: 'defining-done-and-gates',
         type: 'conditional',
         label: 'Multiple semicolons, escaped quotes, backslashes, and Unicode in when.any',
         when: {
@@ -1452,7 +1492,7 @@ test('Scenario 36: Condition expressions with single/multiple semicolons, escape
         },
       },
       {
-        target: 'workflow-stage-router',
+        target: 'scoping-3d-briefs',
         type: 'conditional',
         label: 'Array values with semicolons and mixed multi-predicate when.all',
         when: {
@@ -1480,7 +1520,7 @@ test('Scenario 36: Condition expressions with single/multiple semicolons, escape
         },
       },
       {
-        target: 'blender-troubleshooting',
+        target: 'troubleshooting-blender-output',
         type: 'retry',
         label: 'Retry handoff with semicolon strings in both when.any and exitCondition.all',
         when: {
@@ -1530,11 +1570,11 @@ test('Scenario 36: Condition expressions with single/multiple semicolons, escape
     assert.equal(checkRes.ok, true, `Check mode failed: ${checkRes.errors.join('; ')}`);
 
     const claudeMd = fs.readFileSync(
-      path.join(tempRoot, CLAUDE_DESKTOP_SKILLS_REL_DIR, 'blendops-help.md'),
+      path.join(tempRoot, CLAUDE_DESKTOP_SKILLS_REL_DIR, 'using-blendops.md'),
       'utf8',
     );
     const portableMd = fs.readFileSync(
-      path.join(tempRoot, PORTABLE_PACKAGE_REFS_REL_DIR, 'skill-blendops-help.md'),
+      path.join(tempRoot, PORTABLE_PACKAGE_REFS_REL_DIR, 'skill-using-blendops.md'),
       'utf8',
     );
 
@@ -1621,7 +1661,7 @@ test('Scenario 37: Malformed condition expressions are rejected with actionable 
 test('Scenario 38: Routing precedence rank boundaries (1, 4, 100 accepted; 0, 101, non-integer rejected) match canonical schema', () => {
   const tempRoot = createIsolatedFixtureRepo();
   try {
-    const contractPath = path.join(tempRoot, 'skills', 'blendops-help', 'contract.json');
+    const contractPath = path.join(tempRoot, 'skills', 'using-blendops', 'contract.json');
     const baseContract = JSON.parse(fs.readFileSync(contractPath, 'utf8'));
     const catalogSet = new Set(discoverCanonicalSkillIds(tempRoot).skillIds);
 
@@ -1631,7 +1671,7 @@ test('Scenario 38: Routing precedence rank boundaries (1, 4, 100 accepted; 0, 10
       candidate.routingPrecedence.rank = validRank;
       fs.writeFileSync(contractPath, JSON.stringify(candidate, null, 2), 'utf8');
 
-      const res = loadAndValidateSkillSourcePair('blendops-help', catalogSet, tempRoot);
+      const res = loadAndValidateSkillSourcePair('using-blendops', catalogSet, tempRoot);
       assert.equal(
         res.ok,
         true,
@@ -1651,7 +1691,7 @@ test('Scenario 38: Routing precedence rank boundaries (1, 4, 100 accepted; 0, 10
       candidate.routingPrecedence.rank = invalidRank;
       fs.writeFileSync(contractPath, JSON.stringify(candidate, null, 2), 'utf8');
 
-      const res = loadAndValidateSkillSourcePair('blendops-help', catalogSet, tempRoot);
+      const res = loadAndValidateSkillSourcePair('using-blendops', catalogSet, tempRoot);
       assert.equal(res.ok, false, `Expected invalid rank ${JSON.stringify(invalidRank)} to fail`);
       assert.equal(
         res.errors.some((e) => e.includes('Invalid routingPrecedence.rank')),
@@ -1672,7 +1712,7 @@ test('Scenario 39: Activation gate goalClarity accepts ambiguous_or_mixed, clear
 
   const tempRoot = createIsolatedFixtureRepo();
   try {
-    const contractPath = path.join(tempRoot, 'skills', 'blendops-help', 'contract.json');
+    const contractPath = path.join(tempRoot, 'skills', 'using-blendops', 'contract.json');
     const baseContract = JSON.parse(fs.readFileSync(contractPath, 'utf8'));
     const catalogSet = new Set(discoverCanonicalSkillIds(tempRoot).skillIds);
 
@@ -1681,7 +1721,7 @@ test('Scenario 39: Activation gate goalClarity accepts ambiguous_or_mixed, clear
       candidate.routingPrecedence.activationGate.goalClarity = validClarity;
       fs.writeFileSync(contractPath, JSON.stringify(candidate, null, 2), 'utf8');
 
-      const res = loadAndValidateSkillSourcePair('blendops-help', catalogSet, tempRoot);
+      const res = loadAndValidateSkillSourcePair('using-blendops', catalogSet, tempRoot);
       assert.equal(
         res.ok,
         true,
@@ -1706,7 +1746,7 @@ test('Scenario 39: Activation gate goalClarity accepts ambiguous_or_mixed, clear
       candidate.routingPrecedence.activationGate.goalClarity = invalidClarity;
       fs.writeFileSync(contractPath, JSON.stringify(candidate, null, 2), 'utf8');
 
-      const res = loadAndValidateSkillSourcePair('blendops-help', catalogSet, tempRoot);
+      const res = loadAndValidateSkillSourcePair('using-blendops', catalogSet, tempRoot);
       assert.equal(
         res.ok,
         false,
@@ -1726,7 +1766,7 @@ test('Scenario 39: Activation gate goalClarity accepts ambiguous_or_mixed, clear
     badBool.routingPrecedence.activationGate.extraGateFlag = true;
     badBool.routingPrecedence.extraTopFlag = true;
     fs.writeFileSync(contractPath, JSON.stringify(badBool, null, 2), 'utf8');
-    const resBadBool = loadAndValidateSkillSourcePair('blendops-help', catalogSet, tempRoot);
+    const resBadBool = loadAndValidateSkillSourcePair('using-blendops', catalogSet, tempRoot);
     assert.equal(resBadBool.ok, false);
     assert.equal(
       resBadBool.errors.some((e) =>

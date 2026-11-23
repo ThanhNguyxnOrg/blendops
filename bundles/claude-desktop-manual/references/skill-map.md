@@ -6,30 +6,30 @@ These are **reference summaries inside one Claude Desktop BlendOps skill bundle*
 
 | Canonical subskill | Use when | Reference summary |
 |---|---|---|
-| `blendops-help` | next step is unclear, routing needed | `skills/blendops-help.md` |
-| `blender-brainstorming` | vague creative request, intent exploration before brief | `skills/blender-brainstorming.md` |
-| `intent-to-3d-brief-writer` | convert confirmed intent into 8-slot brief | `skills/intent-to-3d-brief-writer.md` |
-| `asset-discovery` | per-asset strategy (procedural / library / generative / photogrammetry) before scene plan | `skills/asset-discovery.md` |
-| `runtime-setup` | choosing/setting up runtime prerequisites | `skills/runtime-setup.md` |
-| `runtime-readiness` | runtime preflight/readiness decision | `skills/runtime-readiness.md` |
-| `bridge-conflicts` | Single-bridge constraint conflicts (Path 1 + Path 2 + port 9876) | `skills/bridge-conflicts.md` |
-| `product-hero-scene-planner` | generating scene plan/spec | `skills/product-hero-scene-planner.md` |
-| `camera-composition` | composition/camera strategy | `skills/camera-composition.md` |
-| `lighting-material-plan` | lighting/material/lookdev planning | `skills/lighting-material-plan.md` |
-| `scene-readiness` | pass/warn/fail quality gate | `skills/scene-readiness.md` |
-| `blender-troubleshooting` | output looks wrong, 4-phase root-cause analysis | `skills/blender-troubleshooting.md` |
-| `render-export-evidence` | proving/downgrading render/export claims | `skills/render-export-evidence.md` |
-| `pre-handoff-verification` | 7-point gate before any "ready" / `Verified` claim | `skills/pre-handoff-verification.md` |
-| `glb-web-handoff` | web handoff framing and caveats | `skills/glb-web-handoff.md` |
-| `plain-language-response` | plain-language final response | `skills/plain-language-response.md` |
-| `recipe-fit-assessor` | choose recipe/pack fit before locking brief | `skills/recipe-fit-assessor.md` |
-| `pack-prerequisite-checker` | GO/NO-GO pre-flight for pack workflows | `skills/pack-prerequisite-checker.md` |
-| `workflow-stage-router` | resume / pick next narrow skill from artifact state | `skills/workflow-stage-router.md` |
-| `acceptance-criteria-builder` | definition-of-done checklist with evidence hooks | `skills/acceptance-criteria-builder.md` |
-| `runtime-path-picker` | Path 1 vs Path 2 vs CLI appendix choice | `skills/runtime-path-picker.md` |
-| `path-one-host-outline` | Path 1 Connector vs manual MCP host ordering | `skills/path-one-host-outline.md` |
-| `cli-appendix-job-outline` | headless batch job outline when MCP is wrong | `skills/cli-appendix-job-outline.md` |
-| `runtime-attempt-report` | truth-label attempt report after runtime tries | `skills/runtime-attempt-report.md` |
+| `using-blendops` | next step is unclear, routing needed | `skills/using-blendops.md` |
+| `scoping-3d-briefs` | vague creative request, intent exploration before brief | `skills/scoping-3d-briefs.md` |
+| `scoping-3d-briefs` | convert confirmed intent into 8-slot brief | `skills/scoping-3d-briefs.md` |
+| `sourcing-assets` | per-asset strategy (procedural / library / generative / photogrammetry) before scene plan | `skills/sourcing-assets.md` |
+| `setting-up-blender-runtime` | choosing/setting up runtime prerequisites | `skills/setting-up-blender-runtime.md` |
+| `setting-up-blender-runtime` | runtime preflight/readiness decision | `skills/setting-up-blender-runtime.md` |
+| `setting-up-blender-runtime` | Single-bridge constraint conflicts (Path 1 + Path 2 + port 9876) | `skills/setting-up-blender-runtime.md` |
+| `planning-product-scenes` | generating scene plan/spec | `skills/planning-product-scenes.md` |
+| `planning-camera-and-framing` | composition/camera strategy | `skills/planning-camera-and-framing.md` |
+| `planning-lighting-and-materials` | lighting/material/lookdev planning | `skills/planning-lighting-and-materials.md` |
+| `verifying-before-handoff` | pass/warn/fail quality gate | `skills/verifying-before-handoff.md` |
+| `troubleshooting-blender-output` | output looks wrong, 4-phase root-cause analysis | `skills/troubleshooting-blender-output.md` |
+| `verifying-before-handoff` | proving/downgrading render/export claims | `skills/verifying-before-handoff.md` |
+| `verifying-before-handoff` | 7-point gate before any "ready" / `Verified` claim | `skills/verifying-before-handoff.md` |
+| `handing-off-glb-to-web` | web handoff framing and caveats | `skills/handing-off-glb-to-web.md` |
+| `using-blendops` | plain-language final response | `skills/using-blendops.md` |
+| `scoping-3d-briefs` | choose recipe/pack fit before locking brief | `skills/scoping-3d-briefs.md` |
+| `defining-done-and-gates` | GO/NO-GO pre-flight for pack workflows | `skills/defining-done-and-gates.md` |
+| `using-blendops` | resume / pick next narrow skill from artifact state | `skills/using-blendops.md` |
+| `defining-done-and-gates` | definition-of-done checklist with evidence hooks | `skills/defining-done-and-gates.md` |
+| `setting-up-blender-runtime` | Path 1 vs Path 2 vs CLI appendix choice | `skills/setting-up-blender-runtime.md` |
+| `setting-up-blender-runtime` | Path 1 Connector vs manual MCP host ordering | `skills/setting-up-blender-runtime.md` |
+| `setting-up-blender-runtime` | headless batch job outline when MCP is wrong | `skills/setting-up-blender-runtime.md` |
+| `verifying-before-handoff` | truth-label attempt report after runtime tries | `skills/verifying-before-handoff.md` |
 
 Additional expansion skills (web 3D deep, quality validators, domain planners, process discipline, asset/sourcing, color/format/output) live under `skills/*.md` in this bundle; see repo `skills/README.md` for the full inventory table.
 

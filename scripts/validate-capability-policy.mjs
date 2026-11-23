@@ -29,31 +29,31 @@ const CLEARED_ASSET_LICENSES = new Set([
 // while governing target runtime actions up to governedRuntimeCeiling with mandatory backup/license/confirmation gates.
 const GOVERNED_CEILING_BY_SKILL = Object.freeze({
   // L1 — Reversible Scene Mutation planners
-  'product-hero-scene-planner': 'L1',
-  'camera-composition': 'L1',
-  'lighting-material-plan': 'L1',
-  'character-portrait': 'L1',
-  'environment-shot': 'L1',
-  'interior-scene': 'L1',
-  'product-grid-scene-planner': 'L1',
-  'color-management-decision': 'L1',
-  'resolution-aspect-decision': 'L1',
-  'cycles-vs-eevee-decision': 'L1',
+  'planning-product-scenes': 'L1',
+  'planning-camera-and-framing': 'L1',
+  'planning-lighting-and-materials': 'L1',
+  'planning-scenes': 'L1',
+  'planning-scenes': 'L1',
+  'planning-scenes': 'L1',
+  'planning-product-scenes': 'L1',
+  'planning-lighting-and-materials': 'L1',
+  'planning-camera-and-framing': 'L1',
+  'choosing-render-and-output': 'L1',
 
   // L2 — File Export & External Asset Import planners / handoffs
-  'asset-discovery': 'L2',
-  'asset-license-checker': 'L2',
-  'asset-style-check': 'L2',
-  'asset-fallback-strategy': 'L2',
-  'asset-library-plan': 'L2',
-  'output-format-decision': 'L2',
-  'glb-web-handoff': 'L2',
-  'mobile-glb-budget': 'L2',
-  'glb-animation-handoff': 'L2',
-  'render-export-evidence': 'L2',
+  'sourcing-assets': 'L2',
+  'sourcing-assets': 'L2',
+  'sourcing-assets': 'L2',
+  'sourcing-assets': 'L2',
+  'sourcing-assets': 'L2',
+  'choosing-render-and-output': 'L2',
+  'handing-off-glb-to-web': 'L2',
+  'budgeting-glb-for-web': 'L2',
+  'handing-off-glb-to-web': 'L2',
+  'verifying-before-handoff': 'L2',
 
   // L3 — Headless CLI / Batch Execution Outlines (requires explicit confirmation + backup + no user-facing raw Python)
-  'cli-appendix-job-outline': 'L3',
+  'setting-up-blender-runtime': 'L3',
 });
 
 let cachedSchemaValidator = null;
@@ -146,7 +146,7 @@ export function buildExpectedCapabilityPolicy(rootDir = ROOT_DIR) {
         rank: 2,
         name: 'File Export & External Asset Import',
         summary:
-          'Permits rendering still/turntable outputs, exporting .glb containers to an allowlisted output directory, and importing external 3D/material assets cleared by asset-license-checker.',
+          'Permits rendering still/turntable outputs, exporting .glb containers to an allowlisted output directory, and importing external 3D/material assets cleared by sourcing-assets.',
         allowSceneMutation: true,
         allowFileExport: true,
         allowExternalAssetImport: true,
@@ -451,10 +451,10 @@ export function evaluateRuntimeCapabilityInvocation(invocation, policy = null) {
         typeof clearance !== 'object' ||
         clearance.status !== 'Cleared' ||
         !CLEARED_ASSET_LICENSES.has(clearance.spdxOrCategory) ||
-        clearance.verifiedBySkill !== 'asset-license-checker'
+        clearance.verifiedBySkill !== 'sourcing-assets'
       ) {
         errors.push(
-          `External asset import blocked in ${requestedTier}: requires assetLicenseClearance { status: 'Cleared', spdxOrCategory in [${[...CLEARED_ASSET_LICENSES].join(', ')}], verifiedBySkill: 'asset-license-checker' }`,
+          `External asset import blocked in ${requestedTier}: requires assetLicenseClearance { status: 'Cleared', spdxOrCategory in [${[...CLEARED_ASSET_LICENSES].join(', ')}], verifiedBySkill: 'sourcing-assets' }`,
         );
       }
     }

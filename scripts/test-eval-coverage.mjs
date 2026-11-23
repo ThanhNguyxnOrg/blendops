@@ -36,8 +36,8 @@ function loadSuite(skillId) {
 }
 
 describe('Full-Catalog Behavioral Evaluation Coverage & F-04 Resolution', () => {
-  it('Scenario 1: all 48 catalog skills have a valid .eval.json file under evals/suites/ and evals/pilot/ is removed', () => {
-    assert.equal(catalogIds.length, 48);
+  it('Scenario 1: all 14 catalog skills have a valid .eval.json file under evals/suites/ and evals/pilot/ is removed', () => {
+    assert.equal(catalogIds.length, 14);
     assert.equal(
       fs.existsSync(path.join(root, 'evals', 'pilot')),
       false,
@@ -51,7 +51,7 @@ describe('Full-Catalog Behavioral Evaluation Coverage & F-04 Resolution', () => 
       .readdirSync(suitesDir)
       .filter((f) => f.endsWith('.eval.json'))
       .sort();
-    assert.equal(suiteFiles.length, 48);
+    assert.equal(suiteFiles.length, 14);
 
     for (const skillId of catalogIds) {
       const suitePath = path.join(suitesDir, `${skillId}.eval.json`);
@@ -59,39 +59,39 @@ describe('Full-Catalog Behavioral Evaluation Coverage & F-04 Resolution', () => 
     }
   });
 
-  it('Scenario 2: evals/index.json accurately reflects 48/48 coverage, 0 missing suites, 0 prose-only pending skills, and 269 total cases', () => {
+  it('Scenario 2: evals/index.json accurately reflects 14/14 coverage, 0 missing suites, 0 prose-only pending skills, and 269 total cases', () => {
     const evalIndex = JSON.parse(
       fs.readFileSync(path.join(root, 'evals', 'index.json'), 'utf8'),
     );
     assert.equal(evalIndex.schemaVersion, '2.0.0');
     assert.equal(evalIndex.suiteScope, 'v1.0.0-full-catalog-behavioral-evals');
-    assert.equal(evalIndex.coverageSummary.catalogSkills, 48);
-    assert.equal(evalIndex.coverageSummary.machineReadableSuites, 48);
+    assert.equal(evalIndex.coverageSummary.catalogSkills, 14);
+    assert.equal(evalIndex.coverageSummary.machineReadableSuites, 14);
     assert.equal(evalIndex.coverageSummary.skillsWithoutSuites, 0);
     assert.equal(evalIndex.coverageSummary.proseOnlySkillsPendingMigration, 0);
-    assert.equal(evalIndex.coverageSummary.routingParticipants, 4);
-    assert.equal(evalIndex.coverageSummary.specialistSkills, 44);
+    assert.equal(evalIndex.coverageSummary.routingParticipants, 3);
+    assert.equal(evalIndex.coverageSummary.specialistSkills, 11);
     assert.equal(evalIndex.coverageSummary.totalCases, 269);
     assert.deepEqual(evalIndex.coverageSummary.countsByEvaluationType, {
-      contract_routing: 21,
-      contract_handoff: 124,
-      deterministic_fixture: 124,
+      contract_routing: 35,
+      contract_handoff: 70,
+      deterministic_fixture: 164,
     });
     assert.deepEqual(evalIndex.coverageSummary.contractRoutingCoverage, {
-      routingParticipantsWithRoutingEvals: 4,
-      totalRoutingParticipantCases: 21,
+      routingParticipantsWithRoutingEvals: 3,
+      totalRoutingParticipantCases: 35,
     });
     assert.deepEqual(evalIndex.coverageSummary.contractHandoffCoverage, {
-      specialistSkillsWithHandoffEvals: 44,
-      totalSpecialistHandoffCases: 124,
+      specialistSkillsWithHandoffEvals: 11,
+      totalSpecialistHandoffCases: 70,
     });
     assert.deepEqual(evalIndex.coverageSummary.deterministicFixtureCoverage, {
-      skillsWithFixtureEvals: 48,
-      totalDeterministicFixtureCases: 124,
+      skillsWithFixtureEvals: 14,
+      totalDeterministicFixtureCases: 164,
     });
     assert.equal(evalIndex.coverageSummary.liveModel, 'Not Run');
     assert.equal(evalIndex.coverageSummary.blenderRuntime, 'Not Run');
-    assert.equal(evalIndex.suites.length, 48);
+    assert.equal(evalIndex.suites.length, 14);
     assert.deepEqual(evalIndex.remainingProseSkillsPendingMigration, []);
   });
 
@@ -107,7 +107,7 @@ describe('Full-Catalog Behavioral Evaluation Coverage & F-04 Resolution', () => 
     }
   });
 
-  it('Scenario 4: every suite has at least 4 cases (actual minimum is 5) and preserves all 12 core pilot suites', () => {
+  it('Scenario 4: every suite has at least 4 cases (actual minimum is 5) and preserves every case from the 12 original pilot suites', () => {
     for (const skillId of catalogIds) {
       const suite = loadSuite(skillId);
       assert.ok(
@@ -116,20 +116,15 @@ describe('Full-Catalog Behavioral Evaluation Coverage & F-04 Resolution', () => 
       );
     }
 
-    // Verify all 12 core pilot skills have preserved/expanded case counts
+    // Verify the merged suites that absorbed the 12 original pilot suites keep every pilot case
     const expectedPilotMinCounts = {
-      'blendops-help': 6,
-      'recipe-fit-assessor': 5,
-      'pack-prerequisite-checker': 5,
-      'workflow-stage-router': 5,
-      'blender-brainstorming': 7,
-      'intent-to-3d-brief-writer': 9,
-      'asset-discovery': 9,
-      'blender-troubleshooting': 8,
-      'pre-handoff-verification': 9,
-      'render-export-evidence': 10,
-      'bridge-conflicts': 9,
-      'runtime-readiness': 7,
+      'using-blendops': 16,
+      'scoping-3d-briefs': 26,
+      'defining-done-and-gates': 25,
+      'sourcing-assets': 29,
+      'troubleshooting-blender-output': 8,
+      'verifying-before-handoff': 34,
+      'setting-up-blender-runtime': 36,
     };
     for (const [id, expectedCount] of Object.entries(expectedPilotMinCounts)) {
       const suite = loadSuite(id);
@@ -143,13 +138,13 @@ describe('Full-Catalog Behavioral Evaluation Coverage & F-04 Resolution', () => 
       for (const rel of ['schemas', 'registry', 'skills', 'evals']) {
         fs.cpSync(path.join(root, rel), path.join(tempDir, rel), { recursive: true });
       }
-      fs.unlinkSync(path.join(tempDir, 'evals', 'suites', 'polycount-budget-checker.eval.json'));
+      fs.unlinkSync(path.join(tempDir, 'evals', 'suites', 'budgeting-glb-for-web.eval.json'));
 
       const checkRes = runEvalSuites({ rootDir: tempDir, checkOnly: true });
       assert.equal(checkRes.ok, false);
       assert.ok(
         checkRes.errors.some((e) =>
-          e.includes('Missing evaluation suite file evals/suites/polycount-budget-checker.eval.json'),
+          e.includes('Missing evaluation suite file evals/suites/budgeting-glb-for-web.eval.json'),
         ),
         `Expected missing suite error, got: ${checkRes.errors.join('; ')}`,
       );
@@ -164,7 +159,7 @@ describe('Full-Catalog Behavioral Evaluation Coverage & F-04 Resolution', () => 
       for (const rel of ['schemas', 'registry', 'skills', 'evals']) {
         fs.cpSync(path.join(root, rel), path.join(tempDir, rel), { recursive: true });
       }
-      const orphanSuite = loadSuite('polycount-budget-checker');
+      const orphanSuite = loadSuite('budgeting-glb-for-web');
       orphanSuite.skillId = 'non-existent-orphan-skill';
       fs.writeFileSync(
         path.join(tempDir, 'evals', 'suites', 'non-existent-orphan-skill.eval.json'),
@@ -190,11 +185,11 @@ describe('Full-Catalog Behavioral Evaluation Coverage & F-04 Resolution', () => 
 
   it('Scenario 7: duplicate case IDs within a suite or across suites fail validation', () => {
     // Intra-suite duplicate case ID
-    const suite = loadSuite('acceptance-criteria-builder');
+    const suite = loadSuite('defining-done-and-gates');
     suite.cases.push({ ...structuredClone(suite.cases[0]) });
     const intraErrs = validateEvalSuiteObject(
       suite,
-      'acceptance-criteria-builder',
+      'defining-done-and-gates',
       catalogSet,
       undefined,
       { contractsById, contextFieldMap },
@@ -209,11 +204,11 @@ describe('Full-Catalog Behavioral Evaluation Coverage & F-04 Resolution', () => 
       }
       const suiteA = JSON.parse(
         fs.readFileSync(
-          path.join(tempDir, 'evals', 'suites', 'acceptance-criteria-builder.eval.json'),
+          path.join(tempDir, 'evals', 'suites', 'defining-done-and-gates.eval.json'),
           'utf8',
         ),
       );
-      const suiteBPath = path.join(tempDir, 'evals', 'suites', 'asset-fallback-strategy.eval.json');
+      const suiteBPath = path.join(tempDir, 'evals', 'suites', 'sourcing-assets.eval.json');
       const suiteB = JSON.parse(fs.readFileSync(suiteBPath, 'utf8'));
       suiteB.cases[0].id = suiteA.cases[0].id;
       fs.writeFileSync(suiteBPath, JSON.stringify(suiteB, null, 2) + '\n', 'utf8');
@@ -229,12 +224,12 @@ describe('Full-Catalog Behavioral Evaluation Coverage & F-04 Resolution', () => 
   });
 
   it('Scenario 8: mismatched skillId, category, contractPath, skillMarkdownPath, or evalMarkdownPath fails validation', () => {
-    const base = loadSuite('cycles-vs-eevee-decision');
+    const base = loadSuite('choosing-render-and-output');
 
     const badSkillId = structuredClone(base);
-    badSkillId.skillId = 'color-management-decision';
+    badSkillId.skillId = 'planning-lighting-and-materials';
     assert.ok(
-      validateEvalSuiteObject(badSkillId, 'cycles-vs-eevee-decision', catalogSet, undefined, {
+      validateEvalSuiteObject(badSkillId, 'choosing-render-and-output', catalogSet, undefined, {
         contractsById,
         contextFieldMap,
       }).some((e) => e.includes('does not match expected')),
@@ -243,7 +238,7 @@ describe('Full-Catalog Behavioral Evaluation Coverage & F-04 Resolution', () => 
     const badCategory = structuredClone(base);
     badCategory.category = 'asset-and-sourcing';
     assert.ok(
-      validateEvalSuiteObject(badCategory, 'cycles-vs-eevee-decision', catalogSet, undefined, {
+      validateEvalSuiteObject(badCategory, 'choosing-render-and-output', catalogSet, undefined, {
         contractsById,
         contextFieldMap,
       }).some((e) => e.includes('does not match contract.json category')),
@@ -252,7 +247,7 @@ describe('Full-Catalog Behavioral Evaluation Coverage & F-04 Resolution', () => 
     const badContractPath = structuredClone(base);
     badContractPath.contractPath = 'skills/wrong-skill/contract.json';
     assert.ok(
-      validateEvalSuiteObject(badContractPath, 'cycles-vs-eevee-decision', catalogSet, undefined, {
+      validateEvalSuiteObject(badContractPath, 'choosing-render-and-output', catalogSet, undefined, {
         contractsById,
         contextFieldMap,
       }).some((e) => e.includes('contractPath')),
@@ -261,7 +256,7 @@ describe('Full-Catalog Behavioral Evaluation Coverage & F-04 Resolution', () => 
     const badSkillMdPath = structuredClone(base);
     badSkillMdPath.skillMarkdownPath = 'skills/wrong-skill/SKILL.md';
     assert.ok(
-      validateEvalSuiteObject(badSkillMdPath, 'cycles-vs-eevee-decision', catalogSet, undefined, {
+      validateEvalSuiteObject(badSkillMdPath, 'choosing-render-and-output', catalogSet, undefined, {
         contractsById,
         contextFieldMap,
       }).some((e) => e.includes('skillMarkdownPath')),
@@ -270,7 +265,7 @@ describe('Full-Catalog Behavioral Evaluation Coverage & F-04 Resolution', () => 
     const badEvalMdPath = structuredClone(base);
     badEvalMdPath.evalMarkdownPath = 'skills/wrong-skill/EVAL.md';
     assert.ok(
-      validateEvalSuiteObject(badEvalMdPath, 'cycles-vs-eevee-decision', catalogSet, undefined, {
+      validateEvalSuiteObject(badEvalMdPath, 'choosing-render-and-output', catalogSet, undefined, {
         contractsById,
         contextFieldMap,
       }).some((e) => e.includes('evalMarkdownPath')),
@@ -278,7 +273,7 @@ describe('Full-Catalog Behavioral Evaluation Coverage & F-04 Resolution', () => 
   });
 
   it('Scenario 9: routing participant suites validate contract_routing against resolveRoutingWinner and contract handoffs', () => {
-    assert.equal(ROUTING_PARTICIPANT_IDS.length, 4);
+    assert.equal(ROUTING_PARTICIPANT_IDS.length, 3);
     let totalRoutingCases = 0;
     for (const skillId of ROUTING_PARTICIPANT_IDS) {
       const suite = loadSuite(skillId);
@@ -286,17 +281,18 @@ describe('Full-Catalog Behavioral Evaluation Coverage & F-04 Resolution', () => 
       assert.equal(suite.evaluationStatus.contractRouting, 'Passed');
       assert.equal(suite.evaluationStatus.contractHandoff, 'Not Applicable');
       for (const c of suite.cases) {
+        if (c.evaluationType === 'deterministic_fixture') continue;
         assert.equal(c.evaluationType, 'contract_routing');
         const res = evaluateSingleCase(c, { contractsById, allContracts, contextFieldMap });
         assert.equal(res.status, 'Passed', `Failed routing case ${c.id}: ${res.failures.join('; ')}`);
         totalRoutingCases += 1;
       }
     }
-    assert.equal(totalRoutingCases, 21);
+    assert.equal(totalRoutingCases, 35);
   });
 
   it('Scenario 10: specialist skill suites reject routingState, isRoutingParticipant=true, or contract_routing misuse', () => {
-    const specialistSuite = loadSuite('product-hero-scene-planner');
+    const specialistSuite = loadSuite('planning-product-scenes');
     assert.equal(specialistSuite.isRoutingParticipant, false);
 
     // Mismarking specialist as routing participant
@@ -304,7 +300,7 @@ describe('Full-Catalog Behavioral Evaluation Coverage & F-04 Resolution', () => 
     wrongFlag.isRoutingParticipant = true;
     const errs1 = validateEvalSuiteObject(
       wrongFlag,
-      'product-hero-scene-planner',
+      'planning-product-scenes',
       catalogSet,
       undefined,
       { contractsById, contextFieldMap },
@@ -322,7 +318,7 @@ describe('Full-Catalog Behavioral Evaluation Coverage & F-04 Resolution', () => 
     };
     const errs2 = validateEvalSuiteObject(
       wrongCaseSuite,
-      'product-hero-scene-planner',
+      'planning-product-scenes',
       catalogSet,
       undefined,
       { contractsById, contextFieldMap },
@@ -346,9 +342,9 @@ describe('Full-Catalog Behavioral Evaluation Coverage & F-04 Resolution', () => 
     );
   });
 
-  it('Scenario 11: specialist contract_handoff cases pass when handoffContext matches the expected contract handoff target across all 44 specialist skills', () => {
+  it('Scenario 11: specialist contract_handoff cases pass when handoffContext matches the expected contract handoff target across all 11 specialist skills', () => {
     const specialistIds = catalogIds.filter((id) => !ROUTING_PARTICIPANT_IDS.includes(id));
-    assert.equal(specialistIds.length, 44);
+    assert.equal(specialistIds.length, 11);
 
     let totalHandoffCases = 0;
     for (const skillId of specialistIds) {
@@ -368,11 +364,11 @@ describe('Full-Catalog Behavioral Evaluation Coverage & F-04 Resolution', () => 
         totalHandoffCases += 1;
       }
     }
-    assert.equal(totalHandoffCases, 124);
+    assert.equal(totalHandoffCases, 70);
   });
 
   it('Scenario 12: specialist contract_handoff cases fail when handoffContext matches zero handoffs or the wrong handoff target', () => {
-    const suite = loadSuite('product-hero-scene-planner');
+    const suite = loadSuite('planning-product-scenes');
     const handoffCase = structuredClone(
       suite.cases.find((c) => c.evaluationType === 'contract_handoff' && c.expectedRoutingTarget !== 'none'),
     );
@@ -392,8 +388,8 @@ describe('Full-Catalog Behavioral Evaluation Coverage & F-04 Resolution', () => 
 
     // 2. Context matches a handoff, but expectedRoutingTarget is a different skill
     const wrongTargetCase = structuredClone(handoffCase);
-    wrongTargetCase.expectedRoutingTarget = 'glb-animation-handoff';
-    wrongTargetCase.deterministicFixture.simulatedOutput.targetHandoff = 'glb-animation-handoff';
+    wrongTargetCase.expectedRoutingTarget = 'handing-off-glb-to-web';
+    wrongTargetCase.deterministicFixture.simulatedOutput.targetHandoff = 'handing-off-glb-to-web';
     const res2 = evaluateSingleCase(wrongTargetCase, {
       contractsById,
       allContracts,
@@ -438,7 +434,7 @@ describe('Full-Catalog Behavioral Evaluation Coverage & F-04 Resolution', () => 
     assert.ok(badBoolErrs.some((e) => e.includes('expected boolean value')));
 
     // Also verify evaluateSingleCase fails closed on unregistered handoffContext field
-    const suite = loadSuite('product-hero-scene-planner');
+    const suite = loadSuite('planning-product-scenes');
     const mutatedCase = structuredClone(suite.cases[0]);
     mutatedCase.deterministicFixture.handoffContext['unknown.field'] = 'bad';
     const caseRes = evaluateSingleCase(mutatedCase, {
@@ -451,7 +447,7 @@ describe('Full-Catalog Behavioral Evaluation Coverage & F-04 Resolution', () => 
   });
 
   it('Scenario 14: missing requiredOutputProperties in simulatedOutput fails evals:run', () => {
-    const suite = loadSuite('material-quality-checker');
+    const suite = loadSuite('planning-lighting-and-materials');
     const c = structuredClone(suite.cases[0]);
     c.requiredOutputProperties.push('mandatory-phrase-that-is-missing-xyz');
     const res = evaluateSingleCase(c, { contractsById, allContracts, contextFieldMap });
@@ -464,7 +460,7 @@ describe('Full-Catalog Behavioral Evaluation Coverage & F-04 Resolution', () => 
   });
 
   it('Scenario 15: presence of forbiddenOutputProperties in simulatedOutput fails evals:run', () => {
-    const suite = loadSuite('lighting-quality-checker');
+    const suite = loadSuite('planning-lighting-and-materials');
     const c = structuredClone(suite.cases[0]);
     c.deterministicFixture.simulatedOutput.summary += ' | looks good and Artifact: Verified';
     const res = evaluateSingleCase(c, { contractsById, allContracts, contextFieldMap });
@@ -473,12 +469,12 @@ describe('Full-Catalog Behavioral Evaluation Coverage & F-04 Resolution', () => 
   });
 
   it('Scenario 16: Artifact status = Not Run fails both schema/suite validation and evaluateSingleCase', () => {
-    const suite = loadSuite('glb-web-handoff');
+    const suite = loadSuite('handing-off-glb-to-web');
     const badSuite = structuredClone(suite);
     badSuite.cases[0].truthStateExpectations.artifactStatus = 'Not Run';
     badSuite.cases[0].deterministicFixture.simulatedOutput.artifactStatus = 'Not Run';
 
-    const suiteErrs = validateEvalSuiteObject(badSuite, 'glb-web-handoff', catalogSet, undefined, {
+    const suiteErrs = validateEvalSuiteObject(badSuite, 'handing-off-glb-to-web', catalogSet, undefined, {
       contractsById,
       contextFieldMap,
     });
@@ -494,7 +490,7 @@ describe('Full-Catalog Behavioral Evaluation Coverage & F-04 Resolution', () => 
   });
 
   it('Scenario 17: claiming Produced or Verified with existingArtifactEvidence = none or attempted-no-file fails evals:run', () => {
-    const suite = loadSuite('render-export-evidence');
+    const suite = loadSuite('verifying-before-handoff');
     const noneCase = structuredClone(suite.cases[0]);
     noneCase.preconditions.existingArtifactEvidence = 'none';
     noneCase.truthStateExpectations.artifactStatus = 'Produced';
@@ -517,7 +513,7 @@ describe('Full-Catalog Behavioral Evaluation Coverage & F-04 Resolution', () => 
   });
 
   it('Scenario 18: claiming Verified with existingArtifactEvidence = file-only-unvalidated fails evals:run', () => {
-    const suite = loadSuite('pre-handoff-verification');
+    const suite = loadSuite('verifying-before-handoff');
     const unvalidatedCase = structuredClone(suite.cases[0]);
     unvalidatedCase.preconditions.existingArtifactEvidence = 'file-only-unvalidated';
     unvalidatedCase.truthStateExpectations.artifactStatus = 'Verified';
@@ -536,11 +532,11 @@ describe('Full-Catalog Behavioral Evaluation Coverage & F-04 Resolution', () => 
   });
 
   it('Scenario 19: Path 1 (5.1+ Lab MCP add-on), Path 2 (mcp-for-blender, 3.0+), and CLI fallback semantics are preserved across runtime suites', () => {
-    const readinessSuite = loadSuite('runtime-readiness');
-    const setupSuite = loadSuite('runtime-setup');
-    const hostOutlineSuite = loadSuite('path-one-host-outline');
-    const pathPickerSuite = loadSuite('runtime-path-picker');
-    const cliSuite = loadSuite('cli-appendix-job-outline');
+    const readinessSuite = loadSuite('setting-up-blender-runtime');
+    const setupSuite = loadSuite('setting-up-blender-runtime');
+    const hostOutlineSuite = loadSuite('setting-up-blender-runtime');
+    const pathPickerSuite = loadSuite('setting-up-blender-runtime');
+    const cliSuite = loadSuite('setting-up-blender-runtime');
 
     const readinessText = JSON.stringify(readinessSuite);
     assert.match(readinessText, /Blender 5\.1\+/);
@@ -564,7 +560,7 @@ describe('Full-Catalog Behavioral Evaluation Coverage & F-04 Resolution', () => 
     assert.match(cliText, /Not Run/);
   });
 
-  it('Scenario 20: liveModel and blenderRuntime remain Not Run across all 48 suites and in evals/index.json', () => {
+  it('Scenario 20: liveModel and blenderRuntime remain Not Run across all 14 suites and in evals/index.json', () => {
     const evalIndex = JSON.parse(
       fs.readFileSync(path.join(root, 'evals', 'index.json'), 'utf8'),
     );
@@ -585,24 +581,24 @@ describe('Full-Catalog Behavioral Evaluation Coverage & F-04 Resolution', () => 
   it('Scenario 21: --skill <id> and --suite <id> execute only the requested suite and fail on unknown skill IDs', () => {
     const skillRes = runEvalSuites({
       rootDir: root,
-      skillFilter: 'r3f-component-plan',
+      skillFilter: 'handing-off-glb-to-web',
       checkOnly: false,
     });
     assert.equal(skillRes.ok, true);
     assert.equal(skillRes.summary.suitesExecuted, 1);
-    assert.equal(skillRes.summary.totalCasesExecuted, 5);
-    assert.equal(skillRes.suiteResults[0].skillId, 'r3f-component-plan');
+    assert.equal(skillRes.summary.totalCasesExecuted, 15);
+    assert.equal(skillRes.suiteResults[0].skillId, 'handing-off-glb-to-web');
     assert.equal(skillRes.suiteResults[0].contractHandoff, 'Passed');
     assert.equal(skillRes.suiteResults[0].contractRouting, 'Not Applicable');
 
     const suiteRes = runEvalSuites({
       rootDir: root,
-      suiteFilter: 'mobile-glb-budget',
+      suiteFilter: 'budgeting-glb-for-web',
       checkOnly: false,
     });
     assert.equal(suiteRes.ok, true);
     assert.equal(suiteRes.summary.suitesExecuted, 1);
-    assert.equal(suiteRes.summary.totalCasesExecuted, 5);
+    assert.equal(suiteRes.summary.totalCasesExecuted, 10);
 
     const badRes = runEvalSuites({
       rootDir: root,
@@ -623,7 +619,7 @@ describe('Full-Catalog Behavioral Evaluation Coverage & F-04 Resolution', () => 
         tempDir,
         'evals',
         'suites',
-        'polycount-budget-checker.eval.json',
+        'budgeting-glb-for-web.eval.json',
       );
       const suite = JSON.parse(fs.readFileSync(suitePath, 'utf8'));
       suite.cases.push({
@@ -644,7 +640,7 @@ describe('Full-Catalog Behavioral Evaluation Coverage & F-04 Resolution', () => 
     }
   });
 
-  it('Scenario 23: scripts/export-claude-skills.mjs still exports all 48 skills with SKILL.md, EVAL.md, and references/', () => {
+  it('Scenario 23: scripts/export-claude-skills.mjs still exports all 14 skills with SKILL.md, EVAL.md, and references/', () => {
     const tempExportRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-eval-export-'));
     try {
       const out = execFileSync(
@@ -652,12 +648,12 @@ describe('Full-Catalog Behavioral Evaluation Coverage & F-04 Resolution', () => 
         [path.join(root, 'scripts', 'export-claude-skills.mjs'), '--output-root', tempExportRoot],
         { cwd: root, encoding: 'utf8' },
       );
-      assert.match(out, /Exported 48 Claude skill zips/i);
+      assert.match(out, /Exported 14 Claude skill zips/i);
 
       const manifestPath = path.join(tempExportRoot, 'manifest.json');
       assert.equal(fs.existsSync(manifestPath), true);
       const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
-      assert.equal(manifest.skillCount, 48);
+      assert.equal(manifest.skillCount, 14);
       assert.deepEqual(manifest.skills, catalogIds);
 
       for (const skillId of catalogIds) {
@@ -705,7 +701,7 @@ describe('Full-Catalog Behavioral Evaluation Coverage & F-04 Resolution', () => 
     }
   });
 
-  it('Scenario 24: docs/audits/current/* marks F-04 FIXED, updates eval-inventory.json to 48/48 suites (0 prose-only remaining), preserves F-08 PARTIALLY_FIXED and marks F-09 FIXED, and keeps auditedInputsSha256 synchronized', () => {
+  it('Scenario 24: docs/audits/current/* marks F-04 FIXED, updates eval-inventory.json to 14/14 suites (0 prose-only remaining), preserves F-08 PARTIALLY_FIXED and marks F-09 FIXED, and keeps auditedInputsSha256 synchronized', () => {
     const scorecard = JSON.parse(
       fs.readFileSync(path.join(root, 'docs', 'audits', 'current', 'scorecard.json'), 'utf8'),
     );
@@ -726,14 +722,14 @@ describe('Full-Catalog Behavioral Evaluation Coverage & F-04 Resolution', () => 
     assert.equal(f08?.currentLifecycleStatus, 'PARTIALLY_FIXED');
     assert.equal(f09?.currentLifecycleStatus, 'FIXED');
 
-    assert.equal(evalInv.summary.totalEvalFiles, 48);
-    assert.equal(evalInv.summary.machineReadableSuitesCount, 48);
+    assert.equal(evalInv.summary.totalEvalFiles, 14);
+    assert.equal(evalInv.summary.machineReadableSuitesCount, 14);
     assert.equal(evalInv.summary.skillsWithoutSuitesCount, 0);
     assert.equal(evalInv.summary.remainingUnmigratedProseSkillsCount, 0);
     assert.equal(evalInv.summary.totalMachineReadableCases, 269);
-    assert.equal(evalInv.summary.contractRoutingCasesCount, 21);
-    assert.equal(evalInv.summary.contractHandoffCasesCount, 124);
-    assert.equal(evalInv.summary.deterministicFixtureCasesCount, 124);
+    assert.equal(evalInv.summary.contractRoutingCasesCount, 35);
+    assert.equal(evalInv.summary.contractHandoffCasesCount, 70);
+    assert.equal(evalInv.summary.deterministicFixtureCasesCount, 164);
     assert.equal(evalInv.summary.deterministicRunnerStatus, 'Passed');
     assert.equal(evalInv.summary.liveModelRunnerStatus, 'Not Run');
     assert.equal(evalInv.summary.blenderRuntimeRunnerStatus, 'Not Run');
@@ -747,14 +743,14 @@ describe('Full-Catalog Behavioral Evaluation Coverage & F-04 Resolution', () => 
       assert.equal(item.blenderRuntimeStatus, 'Not Run');
     }
 
-    assert.equal(skillInv.summary.machineReadableEvalSuitesCount, 48);
+    assert.equal(skillInv.summary.machineReadableEvalSuitesCount, 14);
     assert.equal(skillInv.summary.skillsWithoutEvalSuitesCount, 0);
     assert.equal(skillInv.summary.totalMachineReadableEvalCases, 269);
 
     const resolvedFiles = new Set(resolveAuditedInputFiles(root));
     assert.equal(resolvedFiles.has('scripts/test-eval-coverage.mjs'), true);
     assert.equal(
-      resolvedFiles.has('evals/suites/product-hero-scene-planner.eval.json'),
+      resolvedFiles.has('evals/suites/planning-product-scenes.eval.json'),
       true,
     );
     assert.equal(scorecard.auditProvenance.auditedInputsSha256, computeAuditedInputsDigest(root));
@@ -791,12 +787,12 @@ describe('Full-Catalog Behavioral Evaluation Coverage & F-04 Resolution', () => 
       execFileSync('git', ['add', '.'], { cwd: tempDir });
       execFileSync('git', ['commit', '-m', 'Initial temp commit'], { cwd: tempDir });
 
-      // Break one case in polycount-budget-checker.eval.json so evalRunResult.ok becomes false
+      // Break one case in budgeting-glb-for-web.eval.json so evalRunResult.ok becomes false
       const targetSuitePath = path.join(
         tempDir,
         'evals',
         'suites',
-        'polycount-budget-checker.eval.json',
+        'budgeting-glb-for-web.eval.json',
       );
       const suite = JSON.parse(fs.readFileSync(targetSuitePath, 'utf8'));
       suite.cases[0].deterministicFixture.simulatedOutput.summary += ' | Artifact: Verified';

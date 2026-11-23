@@ -1,0 +1,1472 @@
+{
+  "schemaVersion": "2.0.0",
+  "skillId": "scoping-3d-briefs",
+  "category": "routing-and-governance",
+  "isContractedSkill": true,
+  "isRoutingParticipant": true,
+  "contractPath": "skills/scoping-3d-briefs/contract.json",
+  "skillMarkdownPath": "skills/scoping-3d-briefs/SKILL.md",
+  "evalMarkdownPath": "skills/scoping-3d-briefs/EVAL.md",
+  "sourceEvalTier": "routing_contract_pilot",
+  "evaluationStatus": {
+    "staticValidation": "Passed",
+    "deterministicFixture": "Passed",
+    "contractRouting": "Passed",
+    "contractHandoff": "Not Applicable",
+    "liveModel": "Not Run",
+    "blenderRuntime": "Not Run"
+  },
+  "cases": [
+    {
+      "id": "recipe-fit-strong-product-hero-unlocked-brief",
+      "skillId": "scoping-3d-briefs",
+      "scenario": "Clear single-product hero goal with unlocked brief routes to scoping-3d-briefs",
+      "category": "normal",
+      "inputPrompt": "I want a studio hero shot and web GLB viewer spin for a single wireless headphone product. Does product-hero-v0 fit?",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Scores product-hero-v0 as a strong fit for single-subject hero still + web GLB",
+        "Hands off to scoping-3d-briefs because the 8-slot brief is not locked yet"
+      ],
+      "requiredOutputProperties": [
+        "product-hero-v0",
+        "strong_fit",
+        "scoping-3d-briefs"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Produced",
+        "Artifact: Not Run",
+        "skipping brief"
+      ],
+      "expectedRoutingTarget": "scoping-3d-briefs",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Fit verdict table",
+        "Progression handoff to scoping-3d-briefs"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "fit.verdict": "strong_fit",
+          "brief.locked": false
+        },
+        "simulatedOutput": {
+          "mode": "Text-only recipe fit scoring",
+          "recommendedNextAction": "Lock the 8-slot brief in scoping-3d-briefs for pack product-hero-v0 (strong_fit).",
+          "targetHandoff": "scoping-3d-briefs",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Scored product-hero-v0 as strong_fit and handed off to scoping-3d-briefs.",
+          "warnings": [],
+          "evidenceCitations": [
+            "packs/product-hero-v0/PACK.md",
+            "skills/scoping-3d-briefs/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "recipe-fit-locked-brief-routes-to-pack-prerequisite",
+      "skillId": "scoping-3d-briefs",
+      "scenario": "Strong fit with an already locked 8-slot brief advances to defining-done-and-gates",
+      "category": "structured_skip",
+      "inputPrompt": "We already locked our 8-slot brief for a smartwatch hero render and confirmed product-hero-v0 fits. What is the next gate?",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Recognizes brief.locked is true and fit.verdict is strong_fit",
+        "Advances directly to defining-done-and-gates (Rank 3)"
+      ],
+      "requiredOutputProperties": [
+        "defining-done-and-gates",
+        "strong_fit",
+        "Runtime: Not Run"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "ready to render immediately"
+      ],
+      "expectedRoutingTarget": "defining-done-and-gates",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_routing",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Progression handoff to defining-done-and-gates"
+      ],
+      "deterministicFixture": {
+        "routingState": {
+          "goalClarity": "clear",
+          "recipeSelected": false,
+          "preflightPassed": false,
+          "hasStageOrArtifactInventory": false
+        },
+        "handoffContext": {
+          "fit.verdict": "strong_fit",
+          "brief.locked": true
+        },
+        "simulatedOutput": {
+          "mode": "Text-only recipe fit scoring",
+          "recommendedNextAction": "Run defining-done-and-gates to verify preflight readiness for product-hero-v0 (strong_fit).",
+          "targetHandoff": "defining-done-and-gates",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Brief is already locked; advancing from scoping-3d-briefs to defining-done-and-gates.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/scoping-3d-briefs/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "recipe-fit-multi-deliverable-decomposer",
+      "skillId": "scoping-3d-briefs",
+      "scenario": "Multi-deliverable prompt spanning incompatible recipes routes to scoping-3d-briefs",
+      "category": "scope_creep",
+      "inputPrompt": "I need a 12-item e-commerce product grid, a character portrait, AND a full architectural dining room tour all in one pack.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Flags multi-deliverable scope across incompatible domain recipes",
+        "Routes to scoping-3d-briefs before locking a single brief"
+      ],
+      "requiredOutputProperties": [
+        "scoping-3d-briefs",
+        "multi-deliverable",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "product-hero-v0 covers all three without changes",
+        "Artifact: Produced"
+      ],
+      "expectedRoutingTarget": "scoping-3d-briefs",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Conditional handoff to scoping-3d-briefs"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "fit.multiDeliverableDetected": true
+        },
+        "simulatedOutput": {
+          "mode": "Text-only recipe fit scoring",
+          "recommendedNextAction": "Use scoping-3d-briefs to split the multi-deliverable scope into ordered sub-recipes.",
+          "targetHandoff": "scoping-3d-briefs",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Detected multi-deliverable scope across grid, character, and interior domains; routed to scoping-3d-briefs.",
+          "warnings": [
+            "Do not force a single product-hero pack onto a multi-domain request."
+          ],
+          "evidenceCitations": [
+            "skills/scoping-3d-briefs/EVAL.md",
+            "skills/scoping-3d-briefs/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "recipe-fit-interior-dining-room-domain",
+      "skillId": "scoping-3d-briefs",
+      "scenario": "Interior dining room hero with locked brief routes to planning-scenes",
+      "category": "normal",
+      "inputPrompt": "We have a locked brief for a cinematic interior dining room hero for a furniture brand website. Which domain planner fits?",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Recognizes interior architectural domain over single-object product-hero-v0",
+        "Routes to planning-scenes when brief is locked"
+      ],
+      "requiredOutputProperties": [
+        "planning-scenes",
+        "interior caveat",
+        "Runtime: Not Run"
+      ],
+      "forbiddenOutputProperties": [
+        "use product-hero-v0 with no interior caveat",
+        "Artifact: Verified"
+      ],
+      "expectedRoutingTarget": "planning-scenes",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_routing",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Alternative handoff to planning-scenes"
+      ],
+      "deterministicFixture": {
+        "routingState": {
+          "goalClarity": "clear",
+          "recipeSelected": false,
+          "preflightPassed": false,
+          "hasStageOrArtifactInventory": false
+        },
+        "handoffContext": {
+          "brief.locked": true,
+          "recipe.domain": "interior_archviz"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only recipe fit scoring",
+          "recommendedNextAction": "Route to planning-scenes with interior caveat for room-scale lighting and camera blocking.",
+          "targetHandoff": "planning-scenes",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Matched room-scale dining room brief to planning-scenes.",
+          "warnings": [
+            "product-hero-v0 is only partial fit unless scoped to a single hero furniture piece."
+          ],
+          "evidenceCitations": [
+            "skills/scoping-3d-briefs/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "recipe-fit-vague-idea-upstream-brainstorming",
+      "skillId": "scoping-3d-briefs",
+      "scenario": "Vague creative idea without delivery shape delegates upstream to scoping-3d-briefs",
+      "category": "ambiguous",
+      "inputPrompt": "I want something futuristic and 3D for our brand launch next month, maybe neon, not sure what format.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Detects that delivery shape and subject are still diverging",
+        "Routes upstream to scoping-3d-briefs"
+      ],
+      "requiredOutputProperties": [
+        "scoping-3d-briefs",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Produced",
+        "strong_fit for product-hero-v0"
+      ],
+      "expectedRoutingTarget": "scoping-3d-briefs",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Upstream reference handoff to scoping-3d-briefs"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "goal.clarity": "ambiguous_or_mixed"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only recipe fit scoring",
+          "recommendedNextAction": "Route upstream to scoping-3d-briefs to explore 2-3 scoping options before scoring recipe fit.",
+          "targetHandoff": "scoping-3d-briefs",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Delegated unstructured creative prompt to scoping-3d-briefs.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/scoping-3d-briefs/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "brief-writer-fully-specified-intent",
+      "skillId": "scoping-3d-briefs",
+      "scenario": "Confirmed intent covers all 8 brief slots",
+      "category": "normal",
+      "inputPrompt": "Confirmed intent: ceramic pour-over dripper, warm minimalist mood, 2K hero PNG + <=5MB web GLB, marketing team audience, design lead owner, observable framing check.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Writes all 8 slots in plain language, lists deferred decisions, echoes brief for confirmation",
+        "Hands off to planning-product-scenes"
+      ],
+      "requiredOutputProperties": [
+        "8-slot brief",
+        "decisions deferred",
+        "planning-product-scenes"
+      ],
+      "forbiddenOutputProperties": [
+        "subsurf scattering",
+        "Artifact: Produced"
+      ],
+      "expectedRoutingTarget": "planning-product-scenes",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "All 8 slots populated + deferred decisions list + echo confirmation"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only 8-slot brief authoring",
+          "recommendedNextAction": "Echo 8-slot brief for confirmation and hand off to planning-product-scenes.",
+          "targetHandoff": "planning-product-scenes",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Authored complete 8-slot brief in plain language with explicit decisions deferred and echoed to user.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/scoping-3d-briefs/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "brief-writer-half-specified-intent",
+      "skillId": "scoping-3d-briefs",
+      "scenario": "5 of 8 slots present; batches 3 missing-slot questions",
+      "category": "ambiguous",
+      "inputPrompt": "We want a hero render of a mechanical keyboard with neon keycaps for our launch page, but constraints, acceptance criteria, and owner are not set yet.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Marks missing slots explicitly as Unknown and batches 3 targeted questions in one turn",
+        "Echoes draft 8-slot brief before handing off to sourcing-assets"
+      ],
+      "requiredOutputProperties": [
+        "Unknown",
+        "batched 3 missing-slot questions",
+        "sourcing-assets"
+      ],
+      "forbiddenOutputProperties": [
+        "invented owner",
+        "Artifact: Verified"
+      ],
+      "expectedRoutingTarget": "sourcing-assets",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicit Unknown markers + batched missing-slot questions"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only 8-slot brief authoring",
+          "recommendedNextAction": "Resolve the batched 3 missing-slot questions (marked Unknown) and advance to sourcing-assets.",
+          "targetHandoff": "sourcing-assets",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Wrote draft 8-slot brief with Unknown slots explicitly flagged and batched 3 missing-slot questions.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/scoping-3d-briefs/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "brief-writer-four-plus-slots-missing",
+      "skillId": "scoping-3d-briefs",
+      "scenario": "4+ slots missing routes back to scoping-3d-briefs",
+      "category": "ambiguous",
+      "inputPrompt": "Write a 3D brief for something cool in space.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Refuses to fabricate 4+ missing brief slots",
+        "Routes upstream to scoping-3d-briefs"
+      ],
+      "requiredOutputProperties": [
+        "scoping-3d-briefs",
+        "4+ slots missing",
+        "no brief written yet"
+      ],
+      "forbiddenOutputProperties": [
+        "Brief complete and locked",
+        "Artifact: Produced"
+      ],
+      "expectedRoutingTarget": "scoping-3d-briefs",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Explicit re-route message to scoping-3d-briefs"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only 8-slot brief authoring",
+          "recommendedNextAction": "Route back to scoping-3d-briefs because 4+ slots missing (no brief written yet).",
+          "targetHandoff": "scoping-3d-briefs",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted brief generation with 4+ slots missing; no brief written yet; re-routed to scoping-3d-briefs.",
+          "warnings": [
+            "Never invent missing brief slots without user input."
+          ],
+          "evidenceCitations": [
+            "skills/scoping-3d-briefs/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "brief-writer-conflicting-deliverable-constraint",
+      "skillId": "scoping-3d-briefs",
+      "scenario": "Conflicting deliverable and constraint (\"mobile web GLB AND 50MB uncompressed budget\")",
+      "category": "blocked_or_adversarial",
+      "inputPrompt": "Write a brief for a mobile web GLB hero that must load instantly on 3G but also allows a 50MB uncompressed poly/texture budget.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Flags the conflict in Slot 4 (Constraints) and prompts user to resolve before locking",
+        "Routes to budgeting-glb-for-web to reconcile mobile budget targets"
+      ],
+      "requiredOutputProperties": [
+        "conflict flag",
+        "Slot 4",
+        "budgeting-glb-for-web"
+      ],
+      "forbiddenOutputProperties": [
+        "no conflict found",
+        "Artifact: Verified"
+      ],
+      "expectedRoutingTarget": "budgeting-glb-for-web",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Slot 4 conflict flag + resolution prompt"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only 8-slot brief authoring",
+          "recommendedNextAction": "Resolve the Slot 4 conflict flag via budgeting-glb-for-web before locking the brief.",
+          "targetHandoff": "budgeting-glb-for-web",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Raised conflict flag in Slot 4 between instant mobile web GLB delivery and 50MB budget.",
+          "warnings": [
+            "Brief remains unlocked until conflicting constraints are resolved."
+          ],
+          "evidenceCitations": [
+            "skills/scoping-3d-briefs/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "brief-writer-mixed-audience-dual-sections",
+      "skillId": "scoping-3d-briefs",
+      "scenario": "Mixed audience (non-Blender marketing team + technical artist)",
+      "category": "normal",
+      "inputPrompt": "Our audience includes both the non-Blender marketing director and the WebGL technical artist for a sneaker product hero.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Includes both plain-language stakeholder section and technical handoff notes while keeping primary slots jargon-free",
+        "Hands off to planning-product-scenes"
+      ],
+      "requiredOutputProperties": [
+        "plain-language section",
+        "technical section",
+        "planning-product-scenes"
+      ],
+      "forbiddenOutputProperties": [
+        "raw bpy script",
+        "Artifact: Produced"
+      ],
+      "expectedRoutingTarget": "planning-product-scenes",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P2",
+      "evidenceRequirements": [
+        "Dual audience sections with plain-language primary summary"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only 8-slot brief authoring",
+          "recommendedNextAction": "Confirm dual-section brief (plain-language section + technical section) and hand off to planning-product-scenes.",
+          "targetHandoff": "planning-product-scenes",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Generated 8-slot brief containing both plain-language section for marketing and technical section for WebGL integration.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/scoping-3d-briefs/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "brief-writer-user-edits-mood-re-echo",
+      "skillId": "scoping-3d-briefs",
+      "scenario": "User edits mood after initial brief echo",
+      "category": "normal",
+      "inputPrompt": "Change Slot 2 mood from warm daylight studio to high-contrast dramatic rim lighting and re-echo the brief.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Updates Slot 2 in a versioned brief, re-echoes for second confirmation",
+        "Hands off to planning-product-scenes after confirmation"
+      ],
+      "requiredOutputProperties": [
+        "versioned brief",
+        "second confirmation",
+        "planning-product-scenes"
+      ],
+      "forbiddenOutputProperties": [
+        "skipped re-echo",
+        "Artifact: Produced"
+      ],
+      "expectedRoutingTarget": "planning-product-scenes",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P2",
+      "evidenceRequirements": [
+        "Versioned brief update + second confirmation prompt"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only 8-slot brief authoring",
+          "recommendedNextAction": "Await second confirmation on the versioned brief before advancing to planning-product-scenes.",
+          "targetHandoff": "planning-product-scenes",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Updated Slot 2 mood in versioned brief and echoed for second confirmation.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/scoping-3d-briefs/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "brief-writer-text-only-iteration-loop",
+      "skillId": "scoping-3d-briefs",
+      "scenario": "User wants text-only plan first and runtime later",
+      "category": "structured_skip",
+      "inputPrompt": "We want a text-only scene plan first with zero Blender execution right now; runtime will happen next week.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Sets Slot 3 deliverables to text-only plan and Slot 5 evidence expectations to Runtime: Not Run / Artifact: Not Produced",
+        "Hands off to defining-done-and-gates"
+      ],
+      "requiredOutputProperties": [
+        "text-only plan",
+        "Runtime: Not Run",
+        "defining-done-and-gates"
+      ],
+      "forbiddenOutputProperties": [
+        "runtime ready",
+        "Artifact: Produced"
+      ],
+      "expectedRoutingTarget": "defining-done-and-gates",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicit text-only deliverable and Not Run / Not Produced expectations in Slot 5"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only 8-slot brief authoring",
+          "recommendedNextAction": "Hand off locked text-only plan brief to defining-done-and-gates.",
+          "targetHandoff": "defining-done-and-gates",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Locked text-only plan brief with Slot 5 explicitly recording Runtime: Not Run and Artifact: Not Produced.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/scoping-3d-briefs/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "intent-to-3d-brief-writer-contract-handoff-primary",
+      "skillId": "scoping-3d-briefs",
+      "scenario": "Contract handoff predicate matches defining-done-and-gates (Consuming skills (defining-done-and-gates))",
+      "category": "normal",
+      "inputPrompt": "Evaluate scoping-3d-briefs contract handoff when workflow context satisfies {\"brief.locked\":true,\"stage.current\":\"acceptance_criteria\"} and verify progression to defining-done-and-gates.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates contract.json handoff predicates for scoping-3d-briefs against the workflow context",
+        "Selects defining-done-and-gates while preserving Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "defining-done-and-gates",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Not Run",
+        "Artifact: Verified",
+        "Blender executed"
+      ],
+      "expectedRoutingTarget": "defining-done-and-gates",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_routing",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Contract handoff predicate match for defining-done-and-gates in skills/scoping-3d-briefs/contract.json",
+        "Truth-state conservation (Runtime: Not Run, Artifact: Not Produced)"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "brief.locked": true,
+          "stage.current": "acceptance_criteria"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only scoping-3d-briefs contract handoff evaluation",
+          "recommendedNextAction": "Hand off from scoping-3d-briefs to defining-done-and-gates (Consuming skills (defining-done-and-gates)).",
+          "targetHandoff": "defining-done-and-gates",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Matched contract handoff predicate in scoping-3d-briefs and routed to defining-done-and-gates.",
+          "warnings": [
+            "Specialist contract handoff evaluated without global routingPrecedence escalation."
+          ],
+          "evidenceCitations": [
+            "skills/scoping-3d-briefs/contract.json",
+            "skills/scoping-3d-briefs/SKILL.md",
+            "skills/scoping-3d-briefs/EVAL.md",
+            "skills/scoping-3d-briefs/references/acceptance-criteria-patterns.md"
+          ]
+        },
+        "routingState": {
+          "goalClarity": "clear",
+          "recipeSelected": false,
+          "preflightPassed": false,
+          "hasStageOrArtifactInventory": false
+        }
+      }
+    },
+    {
+      "id": "intent-to-3d-brief-writer-contract-handoff-unmatched-none",
+      "skillId": "scoping-3d-briefs",
+      "scenario": "Contract handoff predicate returns none when no downstream handoff condition matches in scoping-3d-briefs",
+      "category": "evidence_boundary",
+      "inputPrompt": "Check scoping-3d-briefs contract handoff behavior when context is {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and no automatic handoff predicate is satisfied.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates all 7 contract handoffs in scoping-3d-briefs with fail-closed predicate semantics",
+        "Returns targetHandoff none when no handoff predicate matches and preserves conservative truth states"
+      ],
+      "requiredOutputProperties": [
+        "none",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Not Run",
+        "Artifact: Verified",
+        "invented handoff target"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_routing",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Zero matching handoff predicates in skills/scoping-3d-briefs/contract.json for non-matching context"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Text-only scoping-3d-briefs contract boundary check",
+          "recommendedNextAction": "Remain at scoping-3d-briefs (targetHandoff: none) until a declared downstream handoff precondition is satisfied.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Verified fail-closed specialist handoff evaluation for scoping-3d-briefs when no contract predicate matches (secondary candidate scoping-3d-briefs remained inactive).",
+          "warnings": [
+            "Never fabricate an undeclared handoff when no contract predicate matches."
+          ],
+          "evidenceCitations": [
+            "skills/scoping-3d-briefs/contract.json",
+            "skills/scoping-3d-briefs/EVAL.md"
+          ]
+        },
+        "routingState": {
+          "goalClarity": "clear",
+          "recipeSelected": false,
+          "preflightPassed": false,
+          "hasStageOrArtifactInventory": false
+        }
+      }
+    },
+    {
+      "id": "brainstorming-vague-creative-request",
+      "skillId": "scoping-3d-briefs",
+      "scenario": "Vague creative request (\"Make me a cool sneaker render\")",
+      "category": "ambiguous",
+      "inputPrompt": "Make me a cool sneaker render for my new shoe line.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Quotes original request verbatim, batches 3-5 clarifying questions, and proposes 3 distinct scopings",
+        "Produces plain-language confirmed intent summary and hands off to scoping-3d-briefs"
+      ],
+      "requiredOutputProperties": [
+        "Make me a cool sneaker render",
+        "clarifying questions",
+        "alternative scopings",
+        "scoping-3d-briefs"
+      ],
+      "forbiddenOutputProperties": [
+        "subsurf modifier",
+        "BSDF shader",
+        "Artifact: Produced"
+      ],
+      "expectedRoutingTarget": "scoping-3d-briefs",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Quoted original request, 3-5 batched questions, 2-3 scopings, plain-language intent summary"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only Socratic intent exploration",
+          "recommendedNextAction": "Confirm preferred scoping option and hand off to scoping-3d-briefs.",
+          "targetHandoff": "scoping-3d-briefs",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Quoted \"Make me a cool sneaker render\", asked 4 batched clarifying questions, and proposed 3 alternative scopings in plain language.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/scoping-3d-briefs/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "brainstorming-half-specified-request",
+      "skillId": "scoping-3d-briefs",
+      "scenario": "Half-specified cyberpunk shoe web hero request",
+      "category": "normal",
+      "inputPrompt": "I need a cyberpunk shoe hero for web, but I do not know what constraints or deliverables to pick.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Asks 1-3 targeted questions on audience, web performance budget, and evidence expectations",
+        "Proposes 2 distinct scopings and hands off to scoping-3d-briefs"
+      ],
+      "requiredOutputProperties": [
+        "cyberpunk shoe hero for web",
+        "targeted questions",
+        "scoping-3d-briefs"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "installed the Blender connector"
+      ],
+      "expectedRoutingTarget": "scoping-3d-briefs",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Targeted questions + 2 scopings + plain-language summary"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only Socratic intent exploration",
+          "recommendedNextAction": "Hand off confirmed cyberpunk shoe web hero intent to scoping-3d-briefs.",
+          "targetHandoff": "scoping-3d-briefs",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Quoted \"cyberpunk shoe hero for web\", asked 3 targeted questions on web budget and audience, and proposed 2 scopings.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/scoping-3d-briefs/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "brainstorming-user-refuses-clarification",
+      "skillId": "scoping-3d-briefs",
+      "scenario": "User refuses clarification (\"Just do whatever, I trust you\")",
+      "category": "blocked_or_adversarial",
+      "inputPrompt": "Just do whatever for the 3D bottle render, I trust you, do not ask me questions.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Records explicit assumption block listing assumed defaults and low-confidence label",
+        "Still offers 2 scoping options and hands off to scoping-3d-briefs"
+      ],
+      "requiredOutputProperties": [
+        "explicit assumption block",
+        "low-confidence",
+        "scoping-3d-briefs"
+      ],
+      "forbiddenOutputProperties": [
+        "high-confidence verified brief",
+        "Artifact: Produced"
+      ],
+      "expectedRoutingTarget": "scoping-3d-briefs",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicit assumption list + low-confidence label"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only Socratic intent exploration",
+          "recommendedNextAction": "Pass explicit assumption block with low-confidence label to scoping-3d-briefs.",
+          "targetHandoff": "scoping-3d-briefs",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Recorded explicit assumption block with low-confidence label and 2 scoping options after user declined clarification.",
+          "warnings": [
+            "Assumptions must be confirmed in scoping-3d-briefs before scene planning."
+          ],
+          "evidenceCitations": [
+            "skills/scoping-3d-briefs/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "brainstorming-continuous-scope-expansion",
+      "skillId": "scoping-3d-briefs",
+      "scenario": "User keeps expanding scope mid-brainstorm (\"and a music video version too\")",
+      "category": "scope_creep",
+      "inputPrompt": "Add the sneaker still... and also an interactive configurator... and a 3-minute music video version too.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Pauses expansion and prompts user to lock current scope or delegate to defining-done-and-gates",
+        "Summarizes current baseline scope clearly"
+      ],
+      "requiredOutputProperties": [
+        "lock current scope",
+        "defining-done-and-gates",
+        "Runtime: Not Run"
+      ],
+      "forbiddenOutputProperties": [
+        "music video rendered",
+        "Artifact: Produced"
+      ],
+      "expectedRoutingTarget": "defining-done-and-gates",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Scope-lock prompt + summary of current baseline scope"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only Socratic intent exploration",
+          "recommendedNextAction": "Ask user to lock current scope and route scope expansion to defining-done-and-gates.",
+          "targetHandoff": "defining-done-and-gates",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Issued scope-lock prompt (\"lock current scope or keep expanding?\") and routed multi-deliverable creep to defining-done-and-gates.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/scoping-3d-briefs/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "brainstorming-already-structured-brief-skip",
+      "skillId": "scoping-3d-briefs",
+      "scenario": "User already provides subject, mood, deliverable, audience, and evidence expectations",
+      "category": "structured_skip",
+      "inputPrompt": "Subject: matte black espresso grinder. Mood: warm studio editorial. Deliverable: 4K PNG + <=8MB GLB. Audience: web buyers. Owner: design lead.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Explicitly states skipping brainstorming because brief inputs are already structured",
+        "Routes directly to scoping-3d-briefs"
+      ],
+      "requiredOutputProperties": [
+        "skipping brainstorming because brief is complete",
+        "scoping-3d-briefs",
+        "Runtime: Not Run"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Produced",
+        "5 mandatory clarifying questions"
+      ],
+      "expectedRoutingTarget": "scoping-3d-briefs",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicit structured-skip message + route to scoping-3d-briefs"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only Socratic intent exploration",
+          "recommendedNextAction": "Route directly to scoping-3d-briefs (skipping brainstorming because brief is complete).",
+          "targetHandoff": "scoping-3d-briefs",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Detected complete brief inputs; skipping brainstorming because brief is complete and routing to scoping-3d-briefs.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/scoping-3d-briefs/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "blender-brainstorming-contract-handoff-primary",
+      "skillId": "scoping-3d-briefs",
+      "scenario": "Contract handoff predicate matches scoping-3d-briefs (Lock the confirmed brief downstream)",
+      "category": "normal",
+      "inputPrompt": "Evaluate scoping-3d-briefs contract handoff when workflow context satisfies {\"goal.clarity\":\"clear\",\"brief.locked\":false} and verify progression to scoping-3d-briefs.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates contract.json handoff predicates for scoping-3d-briefs against the workflow context",
+        "Selects scoping-3d-briefs while preserving Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "scoping-3d-briefs",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Not Run",
+        "Artifact: Verified",
+        "Blender executed"
+      ],
+      "expectedRoutingTarget": "scoping-3d-briefs",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Contract handoff predicate match for scoping-3d-briefs in skills/scoping-3d-briefs/contract.json",
+        "Truth-state conservation (Runtime: Not Run, Artifact: Not Produced)"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "goal.clarity": "clear",
+          "brief.locked": false
+        },
+        "simulatedOutput": {
+          "mode": "Text-only scoping-3d-briefs contract handoff evaluation",
+          "recommendedNextAction": "Hand off from scoping-3d-briefs to scoping-3d-briefs (Lock the confirmed brief downstream).",
+          "targetHandoff": "scoping-3d-briefs",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Matched contract handoff predicate in scoping-3d-briefs and routed to scoping-3d-briefs.",
+          "warnings": [
+            "Specialist contract handoff evaluated without global routingPrecedence escalation."
+          ],
+          "evidenceCitations": [
+            "skills/scoping-3d-briefs/contract.json",
+            "skills/scoping-3d-briefs/SKILL.md",
+            "skills/scoping-3d-briefs/EVAL.md",
+            "skills/scoping-3d-briefs/references/alternative-scoping-templates.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "blender-brainstorming-contract-handoff-unmatched-none",
+      "skillId": "scoping-3d-briefs",
+      "scenario": "Contract handoff predicate returns none when no downstream handoff condition matches in scoping-3d-briefs",
+      "category": "evidence_boundary",
+      "inputPrompt": "Check scoping-3d-briefs contract handoff behavior when context is {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and no automatic handoff predicate is satisfied.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates all 3 contract handoffs in scoping-3d-briefs with fail-closed predicate semantics",
+        "Returns targetHandoff none when no handoff predicate matches and preserves conservative truth states"
+      ],
+      "requiredOutputProperties": [
+        "none",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Not Run",
+        "Artifact: Verified",
+        "invented handoff target"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_routing",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Zero matching handoff predicates in skills/scoping-3d-briefs/contract.json for non-matching context"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Text-only scoping-3d-briefs contract boundary check",
+          "recommendedNextAction": "Remain at scoping-3d-briefs (targetHandoff: none) until a declared downstream handoff precondition is satisfied.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Verified fail-closed specialist handoff evaluation for scoping-3d-briefs when no contract predicate matches (secondary candidate setting-up-blender-runtime remained inactive).",
+          "warnings": [
+            "Never fabricate an undeclared handoff when no contract predicate matches."
+          ],
+          "evidenceCitations": [
+            "skills/scoping-3d-briefs/contract.json",
+            "skills/scoping-3d-briefs/EVAL.md"
+          ]
+        },
+        "routingState": {
+          "goalClarity": "clear",
+          "recipeSelected": false,
+          "preflightPassed": false,
+          "hasStageOrArtifactInventory": false
+        }
+      }
+    },
+    {
+      "id": "blender-recipe-decomposer-normal-in-scope-handoff",
+      "skillId": "scoping-3d-briefs",
+      "scenario": "Normal in-scope execution of scoping-3d-briefs (multi-deliverable-recipe-splitter) with contract handoff to scoping-3d-briefs",
+      "category": "normal",
+      "inputPrompt": "Our stakeholder wants a single hero watch render, a 2x2 colorway catalog grid, and a mobile AR GLB export from one mega-request. Use scoping-3d-briefs to split this into ordered single-recipe milestones.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Primary inputs (multi_deliverable_request) provided in text-only planning/audit mode."
+      },
+      "expectedBehavior": [
+        "Produces ordered_sub_workflow_tracks, shared_asset_and_brief_dependencies, first_track_next_skill for role multi-deliverable-recipe-splitter",
+        "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
+        "Evaluates contract handoff predicate and hands off to scoping-3d-briefs (Full brief authoring for each split recipe)"
+      ],
+      "requiredOutputProperties": [
+        "sub-recipe",
+        "dependency order",
+        "single-deliverable milestone",
+        "scoping-3d-briefs",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "merged into one single step",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "scoping-3d-briefs",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Outputs ordered_sub_workflow_tracks, shared_asset_and_brief_dependencies, first_track_next_skill conforming to skills/scoping-3d-briefs/SKILL.md",
+        "Matches contract handoff predicate to scoping-3d-briefs in skills/scoping-3d-briefs/contract.json"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "goal.clarity": "clear",
+          "brief.locked": false
+        },
+        "simulatedOutput": {
+          "mode": "Text-only multi-deliverable-recipe-splitter (scoping-3d-briefs)",
+          "recommendedNextAction": "Complete ordered_sub_workflow_tracks and hand off to scoping-3d-briefs (Full brief authoring for each split recipe).",
+          "targetHandoff": "scoping-3d-briefs",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Decomposed multi-deliverable mega-request into 3 ordered single-recipe sub-plans with shared asset dependencies and independent acceptance gates. Delivered sub-recipe, dependency order, single-deliverable milestone and routed to scoping-3d-briefs.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/scoping-3d-briefs/SKILL.md",
+            "skills/scoping-3d-briefs/EVAL.md",
+            "skills/scoping-3d-briefs/contract.json",
+            "skills/scoping-3d-briefs/references/dependency-patterns.md",
+            "skills/scoping-3d-briefs/references/recipe-grouping-rules.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "blender-recipe-decomposer-secondary-contract-handoff",
+      "skillId": "scoping-3d-briefs",
+      "scenario": "Secondary progression contract handoff from scoping-3d-briefs to defining-done-and-gates",
+      "category": "structured_skip",
+      "inputPrompt": "While applying scoping-3d-briefs, the workflow context is {\"brief.locked\":true,\"stage.current\":\"stop_condition\"} (Pinning formal done conditions per recipe). Determine the contract-governed handoff target.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates the progression handoff predicate in skills/scoping-3d-briefs/contract.json",
+        "Routes to defining-done-and-gates (Pinning formal done conditions per recipe) without claiming runtime execution"
+      ],
+      "requiredOutputProperties": [
+        "defining-done-and-gates",
+        "progression",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "merged into one single step",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "defining-done-and-gates",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_routing",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Contract progression handoff predicate match to defining-done-and-gates"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "brief.locked": true,
+          "stage.current": "stop_condition"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only scoping-3d-briefs (progression handoff)",
+          "recommendedNextAction": "Follow progression handoff to defining-done-and-gates (Pinning formal done conditions per recipe).",
+          "targetHandoff": "defining-done-and-gates",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Triggered progression handoff from scoping-3d-briefs to defining-done-and-gates under context {\"brief.locked\":true,\"stage.current\":\"stop_condition\"}.",
+          "warnings": [
+            "Contract-governed progression handoff."
+          ],
+          "evidenceCitations": [
+            "skills/scoping-3d-briefs/contract.json",
+            "skills/scoping-3d-briefs/SKILL.md",
+            "skills/scoping-3d-briefs/references/dependency-patterns.md"
+          ]
+        },
+        "routingState": {
+          "goalClarity": "clear",
+          "recipeSelected": false,
+          "preflightPassed": false,
+          "hasStageOrArtifactInventory": false
+        }
+      }
+    },
+    {
+      "id": "blender-recipe-decomposer-unmatched-handoff-and-evidence-boundary",
+      "skillId": "scoping-3d-briefs",
+      "scenario": "Unmatched contract handoff context returns none and blocks upgrading unvalidated file to Verified in scoping-3d-briefs",
+      "category": "evidence_boundary",
+      "inputPrompt": "An operator provides an unvalidated file on disk during scoping-3d-briefs with context {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and asks to mark Artifact: Verified and auto-advance.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "file-only-unvalidated",
+        "notes": "A file exists on disk but validation checks have not been recorded."
+      },
+      "expectedBehavior": [
+        "Refuses to upgrade Artifact status to Verified when existingArtifactEvidence is file-only-unvalidated (caps at Produced)",
+        "Evaluates contract handoffs for scoping-3d-briefs and returns targetHandoff none because no handoff predicate matches"
+      ],
+      "requiredOutputProperties": [
+        "Artifact: Produced",
+        "Runtime: Not Run",
+        "validation",
+        "none"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "validation not needed"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "contract_routing",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Downgrade unvalidated Verified claim to Produced per laws/evidence-before-done.md",
+        "Verify 0 handoffs match in skills/scoping-3d-briefs/contract.json for {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true}"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Artifact-claim boundary check (scoping-3d-briefs)",
+          "recommendedNextAction": "Keep Artifact status at Produced (never Verified without validation evidence) and hold at targetHandoff none until a downstream precondition is met.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Produced",
+          "summary": "Capped unvalidated artifact claim at Artifact: Produced and verified zero matching contract handoffs (none) for scoping-3d-briefs.",
+          "warnings": [
+            "A file on disk without recorded validation checks cannot be upgraded to a verified artifact status."
+          ],
+          "evidenceCitations": [
+            "laws/evidence-before-done.md",
+            "skills/scoping-3d-briefs/contract.json",
+            "skills/scoping-3d-briefs/EVAL.md"
+          ]
+        },
+        "routingState": {
+          "goalClarity": "clear",
+          "recipeSelected": false,
+          "preflightPassed": false,
+          "hasStageOrArtifactInventory": false
+        }
+      }
+    },
+    {
+      "id": "blender-recipe-decomposer-ambiguous-missing-required-inputs",
+      "skillId": "scoping-3d-briefs",
+      "scenario": "Missing required input (multi_deliverable_request) for scoping-3d-briefs halts fabricated output and requests clarification",
+      "category": "ambiguous",
+      "inputPrompt": "Decompose our project into sub-recipes even though I have not listed what deliverables, platforms, or visual outputs we need.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Required input 'multi_deliverable_request' is missing or underspecified."
+      },
+      "expectedBehavior": [
+        "Identifies missing requested deliverable list and target consumer channels required by scoping-3d-briefs (multi_deliverable_request)",
+        "Refuses to fabricate domain parameters and keeps Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "multi_deliverable_request",
+        "requested deliverable list and target consumer channels",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "merged into one single step",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "guessed parameters silently"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicitly names missing required input 'multi_deliverable_request' (requested deliverable list and target consumer channels)",
+        "Conservative Runtime: Not Run and Artifact: Not Produced truth states"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Clarification gate (scoping-3d-briefs)",
+          "recommendedNextAction": "Provide the missing requested deliverable list and target consumer channels (multi_deliverable_request) before scoping-3d-briefs locks ordered_sub_workflow_tracks.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted scoping-3d-briefs due to missing required input 'multi_deliverable_request' (requested deliverable list and target consumer channels); no values were fabricated.",
+          "warnings": [
+            "Do not invent requested deliverable list and target consumer channels when 'multi_deliverable_request' is omitted."
+          ],
+          "evidenceCitations": [
+            "skills/scoping-3d-briefs/SKILL.md",
+            "skills/scoping-3d-briefs/EVAL.md",
+            "skills/scoping-3d-briefs/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "blender-recipe-decomposer-out-of-scope-exclusion-delegation",
+      "skillId": "scoping-3d-briefs",
+      "scenario": "Out-of-scope request (single deliverable that is already right-sized (hand off directly to scoping-3d-briefs)) is excluded from scoping-3d-briefs and delegated to scoping-3d-briefs",
+      "category": "scope_creep",
+      "inputPrompt": "Instead of break over-scoped blender intent into 2-5 cohesive recipes with brief seeds, stop conditions, order, dependencies, shared assets, and handoffs., handle this request inside scoping-3d-briefs: single deliverable that is already right-sized (hand off directly to scoping-3d-briefs).",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Enforces the declared exclusion boundary in skills/scoping-3d-briefs/contract.json when single deliverable that is already right-sized (hand off directly to scoping-3d-briefs)",
+        "Delegates to scoping-3d-briefs (hand off directly to scoping-3d-briefs) with Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "scoping-3d-briefs",
+        "out of scope",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "merged into one single step",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "handled inside scoping-3d-briefs anyway"
+      ],
+      "expectedRoutingTarget": "scoping-3d-briefs",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Exclusion delegation to scoping-3d-briefs per skills/scoping-3d-briefs/contract.json"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Out-of-scope exclusion gate (scoping-3d-briefs)",
+          "recommendedNextAction": "Request is out of scope for scoping-3d-briefs (single deliverable that is already right-sized (hand off directly to scoping-3d-briefs)); delegate to scoping-3d-briefs.",
+          "targetHandoff": "scoping-3d-briefs",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Enforced scoping-3d-briefs exclusion boundary (hand off directly to scoping-3d-briefs) and delegated to scoping-3d-briefs.",
+          "warnings": [
+            "scoping-3d-briefs is scoped to multi-deliverable-recipe-splitter and does not absorb scoping-3d-briefs responsibilities."
+          ],
+          "evidenceCitations": [
+            "skills/scoping-3d-briefs/contract.json",
+            "skills/scoping-3d-briefs/SKILL.md",
+            "skills/scoping-3d-briefs/SKILL.md"
+          ]
+        }
+      }
+    }
+  ]
+}

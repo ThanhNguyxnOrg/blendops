@@ -1,0 +1,328 @@
+{
+  "$schema": "../../schemas/skill-contract.schema.json",
+  "id": "planning-lighting-and-materials",
+  "version": "2.0.0",
+  "category": "scene-planners",
+  "role": "lighting-material-color-planner-and-checker",
+  "purpose": "Plan lighting, materials, and color management, and check lighting and material quality against written criteria.",
+  "capabilityTier": "L0",
+  "triggers": [
+    "plan lighting and materials",
+    "design cyberpunk lookdev",
+    "define PBR and reflection strategy",
+    "is the lighting okay",
+    "check shadow softness",
+    "lighting feels off",
+    "is the HDRI balanced",
+    "are the materials okay",
+    "check PBR sanity",
+    "texture budget for materials",
+    "will the materials work in Three.js",
+    "what color space",
+    "Filmic vs Standard",
+    "ACEScg for our pipeline",
+    "colors look weird"
+  ],
+  "exclusions": [
+    {
+      "condition": "to claim final rendered quality or executed results",
+      "delegateTo": "planning-camera-and-framing",
+      "reason": "Delegates out-of-scope requests to planning-camera-and-framing"
+    },
+    {
+      "condition": "to skip composition/camera context from planning-camera-and-framing",
+      "delegateTo": "planning-camera-and-framing",
+      "reason": "Delegates out-of-scope requests to planning-camera-and-framing"
+    },
+    {
+      "condition": "composition / camera validation",
+      "delegateTo": "planning-camera-and-framing",
+      "reason": "use planning-camera-and-framing"
+    },
+    {
+      "condition": "broad pass/warn/fail scene readiness",
+      "delegateTo": "verifying-before-handoff",
+      "reason": "use verifying-before-handoff"
+    },
+    {
+      "condition": "classifying render or export artifact evidence",
+      "delegateTo": "verifying-before-handoff",
+      "reason": "use verifying-before-handoff"
+    },
+    {
+      "condition": "to fix or edit lights (this skill validates and gives remediation hints only; it never edits)",
+      "delegateTo": "verifying-before-handoff",
+      "reason": "this skill validates and gives remediation hints only; it never edits"
+    },
+    {
+      "condition": "web integration and viewer handoff",
+      "delegateTo": "handing-off-glb-to-web",
+      "reason": "use handing-off-glb-to-web"
+    },
+    {
+      "condition": "Post-render color grading or soft-proofing (handled by compositor / DCC after render).",
+      "delegateTo": "choosing-render-and-output",
+      "reason": "Delegates out-of-scope requests to choosing-render-and-output"
+    },
+    {
+      "condition": "Selecting file formats or bit depths (choosing-render-and-output).",
+      "delegateTo": "choosing-render-and-output",
+      "reason": "Delegates out-of-scope requests to choosing-render-and-output"
+    },
+    {
+      "condition": "Choosing the render engine (choosing-render-and-output).",
+      "delegateTo": "choosing-render-and-output",
+      "reason": "Delegates out-of-scope requests to choosing-render-and-output"
+    },
+    {
+      "condition": "Raw modeling without lookdev (color management does not affect geometry accuracy).",
+      "delegateTo": "choosing-render-and-output",
+      "reason": "Delegates out-of-scope requests to choosing-render-and-output"
+    }
+  ],
+  "inputs": {
+    "required": [
+      {
+        "name": "domain_scene_plan",
+        "type": "object",
+        "description": "Upstream scene layout and subject surface description"
+      },
+      {
+        "name": "camera_framing_plan",
+        "type": "object",
+        "description": "Locked camera angles and hero silhouette requirements from planning-camera-and-framing"
+      }
+    ],
+    "optional": [
+      {
+        "name": "target_render_engine_hint",
+        "type": "string",
+        "description": "Preferred engine (Cycles, Eevee, or WebGL/GLB PBR export target)"
+      },
+      {
+        "name": "lighting_rig_specification",
+        "type": "object",
+        "description": "Key-to-fill ratios, light placements, HDRI rotation, and shadow softness from planning-lighting-and-materials"
+      },
+      {
+        "name": "color_management_pins",
+        "type": "object",
+        "description": "Pinned view transform (AgX/Filmic/Standard) and exposure target from planning-lighting-and-materials"
+      },
+      {
+        "name": "render_or_preview_exposure_notes",
+        "type": "string",
+        "description": "Optional highlight clipping or shadow crush observations from preview output"
+      },
+      {
+        "name": "material_and_shader_inventory",
+        "type": "array",
+        "description": "Principled BSDF parameter ranges, texture maps, UV channels, and normal map conventions"
+      },
+      {
+        "name": "target_consumption_surface",
+        "type": "string",
+        "description": "Whether materials target offline Cycles/Eevee rendering or glTF 2.0 PBR web export"
+      },
+      {
+        "name": "texture_memory_budget",
+        "type": "object",
+        "description": "Maximum texture resolution and VRAM budget from budgeting-glb-for-web"
+      },
+      {
+        "name": "target_delivery_pipeline",
+        "type": "string",
+        "description": "Target display or compositing pipeline (web sRGB, product brand match, ACEScg VFX, HDR)"
+      },
+      {
+        "name": "blender_version_posture",
+        "type": "string",
+        "description": "Target Blender version family (3.6 LTS Filmic, 4.0+ AgX, 5.1+ AgX/ACES)"
+      },
+      {
+        "name": "brand_hex_swatch_constraints",
+        "type": "array",
+        "description": "Optional strict brand hex colors requiring Standard vs tone-mapped tradeoffs"
+      }
+    ]
+  },
+  "outputs": {
+    "primary": [
+      "key_fill_rim_lighting_plan",
+      "pbr_material_and_roughness_spec",
+      "hdri_and_reflection_strategy",
+      "lighting_quality_verdict_table",
+      "key_fill_rim_and_clipping_audit",
+      "lighting_remediation_instructions",
+      "pbr_material_verdict_table",
+      "gltf_shader_portability_risks",
+      "material_remediation_steps",
+      "pinned_view_transform_and_look",
+      "display_and_working_colorspace_spec",
+      "cross_engine_and_web_color_caveats"
+    ],
+    "truthStatePolicy": {
+      "runtimeDefault": "Not Run",
+      "artifactDefault": "Not Produced",
+      "mutationRule": "downgrade_only"
+    }
+  },
+  "handoffs": [
+    {
+      "target": "planning-camera-and-framing",
+      "type": "upstream_reference",
+      "label": "Upstream input from (planning-camera-and-framing)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "camera_planning"
+          }
+        ]
+      }
+    },
+    {
+      "target": "choosing-render-and-output",
+      "type": "progression",
+      "label": "Upstream input from (choosing-render-and-output)",
+      "when": {
+        "all": [
+          {
+            "field": "decision.engineLocked",
+            "operator": "equals",
+            "value": false
+          }
+        ]
+      }
+    },
+    {
+      "target": "choosing-render-and-output",
+      "type": "progression",
+      "label": "Upstream input from (choosing-render-and-output)",
+      "when": {
+        "all": [
+          {
+            "field": "decision.formatLocked",
+            "operator": "equals",
+            "value": false
+          }
+        ]
+      }
+    },
+    {
+      "target": "verifying-before-handoff",
+      "type": "progression",
+      "label": "Then scene check",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "holistic"
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "quality_validation"
+          }
+        ]
+      }
+    },
+    {
+      "target": "handing-off-glb-to-web",
+      "type": "progression",
+      "label": "Then delivery",
+      "when": {
+        "all": [
+          {
+            "field": "artifact.type",
+            "operator": "equals",
+            "value": "glb"
+          },
+          {
+            "field": "handoff.consumerStack",
+            "operator": "equals",
+            "value": "web_glb"
+          }
+        ]
+      }
+    },
+    {
+      "target": "planning-camera-and-framing",
+      "type": "conditional",
+      "label": "Composition validation",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "composition"
+          },
+          {
+            "field": "quality.verdict",
+            "operator": "equals",
+            "value": "not_run"
+          }
+        ]
+      }
+    },
+    {
+      "target": "verifying-before-handoff",
+      "type": "progression",
+      "label": "Render evidence",
+      "when": {
+        "all": [
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "post_execution_audit"
+          }
+        ]
+      }
+    },
+    {
+      "target": "budgeting-glb-for-web",
+      "type": "upstream_reference",
+      "label": "Mobile/web texture budget definition",
+      "when": {
+        "all": [
+          {
+            "field": "artifact.type",
+            "operator": "equals",
+            "value": "glb"
+          },
+          {
+            "field": "budget.pinned",
+            "operator": "equals",
+            "value": false
+          }
+        ]
+      }
+    },
+    {
+      "target": "budgeting-glb-for-web",
+      "type": "progression",
+      "label": "Polycount budget",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "polycount"
+          },
+          {
+            "field": "budget.verdict",
+            "operator": "equals",
+            "value": "Not Run"
+          }
+        ]
+      }
+    }
+  ]
+}

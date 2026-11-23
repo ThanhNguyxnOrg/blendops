@@ -55,7 +55,7 @@ This bundle is a condensed reference fixture aligned to canonical project source
 
 ## Deterministic reference summary generation
 
-All 48 per-skill summary files in `bundles/claude-desktop-manual/references/skills/<skill-id>.md` (along with the 48 flattened package summaries in `bundles/skill-package/blendops/references/skill-<skill-id>.md`) are deterministically generated from canonical skill sources:
+All 14 per-skill summary files in `bundles/claude-desktop-manual/references/skills/<skill-id>.md` (along with the 14 flattened package summaries in `bundles/skill-package/blendops/references/skill-<skill-id>.md`) are deterministically generated from canonical skill sources:
 
 - `skills/<skill-id>/SKILL.md`
 - `skills/<skill-id>/contract.json`

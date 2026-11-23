@@ -1,0 +1,784 @@
+{
+  "$schema": "../../schemas/skill-contract.schema.json",
+  "id": "defining-done-and-gates",
+  "version": "2.0.0",
+  "category": "routing-and-governance",
+  "role": "prerequisites-done-criteria-stage-gates-and-scope-guard",
+  "purpose": "Check pack prerequisites, write measurable done criteria and stage gates, and guard the locked scope against creep.",
+  "capabilityTier": "L0",
+  "routingPrecedence": {
+    "group": "entry-and-stage-routing",
+    "rank": 2,
+    "activationGate": {
+      "goalClarity": "clear",
+      "recipeSelected": true,
+      "preflightPassed": false,
+      "hasStageOrArtifactInventory": false
+    }
+  },
+  "triggers": [
+    "are we ready to start",
+    "pre-flight for the pack",
+    "what's missing before we build",
+    "check prerequisites",
+    "when are we done",
+    "let's set the bar",
+    "what does done look like",
+    "let's do this step by step",
+    "what's done before we move on",
+    "checklist for this work",
+    "I want to make sure each stage is solid",
+    "acceptance criteria",
+    "measurable checklist rows",
+    "evidence hooks for brief",
+    "sign-off checklist table",
+    "can you also",
+    "while you're at it",
+    "actually let's also",
+    "one more thing"
+  ],
+  "exclusions": [
+    {
+      "condition": "Goal or entry point is ambiguous and no pack is chosen yet",
+      "delegateTo": "using-blendops",
+      "reason": "Triages ambiguous entry requests at precedence Rank 1"
+    },
+    {
+      "condition": "Evaluating which recipe or pack fits the user's goal",
+      "delegateTo": "scoping-3d-briefs",
+      "reason": "Scores candidate recipes/packs at precedence Rank 2 before preflight"
+    },
+    {
+      "condition": "Workflow is already past preflight with existing stage or artifact inventory",
+      "delegateTo": "using-blendops",
+      "reason": "Routes in-flight workflows at precedence Rank 4"
+    },
+    {
+      "condition": "Detailed Blender MCP runtime connection preflight",
+      "delegateTo": "setting-up-blender-runtime",
+      "reason": "Inspects Path 1 or Path 2 runtime readiness in detail"
+    },
+    {
+      "condition": "Active MCP bridge port or add-on session conflicts",
+      "delegateTo": "setting-up-blender-runtime",
+      "reason": "Resolves port 9876 and dual-bridge conflicts"
+    },
+    {
+      "condition": "Debugging Blender scene or runtime execution errors",
+      "delegateTo": "troubleshooting-blender-output",
+      "reason": "Diagnoses runtime or scene failures"
+    },
+    {
+      "condition": "Auditing external 3D asset license compliance",
+      "delegateTo": "sourcing-assets",
+      "reason": "Performs dedicated asset license and provenance verification"
+    },
+    {
+      "condition": "pure exploration or brainstorming",
+      "delegateTo": "scoping-3d-briefs",
+      "reason": "use scoping-3d-briefs; goal is divergence"
+    },
+    {
+      "condition": "tiny single-shot requests",
+      "delegateTo": "scoping-3d-briefs",
+      "reason": "Delegates out-of-scope requests to scoping-3d-briefs"
+    },
+    {
+      "condition": "splitting a broad multi-recipe request beforehand",
+      "delegateTo": "scoping-3d-briefs",
+      "reason": "use scoping-3d-briefs first"
+    },
+    {
+      "condition": "performing the final verification gate before delivery",
+      "delegateTo": "verifying-before-handoff",
+      "reason": "use verifying-before-handoff"
+    },
+    {
+      "condition": "single-step requests",
+      "delegateTo": "scoping-3d-briefs",
+      "reason": "Delegates out-of-scope requests to scoping-3d-briefs"
+    },
+    {
+      "condition": "pure exploratory brainstorming",
+      "delegateTo": "scoping-3d-briefs",
+      "reason": "use scoping-3d-briefs"
+    },
+    {
+      "condition": "decomposing a brief into stages",
+      "delegateTo": "scoping-3d-briefs",
+      "reason": "use scoping-3d-briefs"
+    },
+    {
+      "condition": "selecting which skill runs next across the workflow",
+      "delegateTo": "using-blendops",
+      "reason": "use using-blendops"
+    },
+    {
+      "condition": "fixing repeated stage failures or broken renders",
+      "delegateTo": "troubleshooting-blender-output",
+      "reason": "use troubleshooting-blender-output"
+    },
+    {
+      "condition": "executing the final 7-point handoff gate",
+      "delegateTo": "verifying-before-handoff",
+      "reason": "use verifying-before-handoff"
+    },
+    {
+      "condition": "pure exploration without a locked deliverable",
+      "delegateTo": "scoping-3d-briefs",
+      "reason": "use scoping-3d-briefs"
+    },
+    {
+      "condition": "writing or locking the brief itself",
+      "delegateTo": "scoping-3d-briefs",
+      "reason": "use scoping-3d-briefs"
+    },
+    {
+      "condition": "legal or license-permission language",
+      "delegateTo": "sourcing-assets",
+      "reason": "use sourcing-assets"
+    },
+    {
+      "condition": "classifying artifact evidence",
+      "delegateTo": "verifying-before-handoff",
+      "reason": "use verifying-before-handoff"
+    },
+    {
+      "condition": "pure brainstorming with no active recipe",
+      "delegateTo": "scoping-3d-briefs",
+      "reason": "use scoping-3d-briefs"
+    }
+  ],
+  "inputs": {
+    "required": [
+      {
+        "name": "target_pack_id",
+        "type": "string",
+        "description": "Selected BlendOps pack or recipe identifier (e.g., product-hero-v0)"
+      },
+      {
+        "name": "current_brief_status",
+        "type": "object",
+        "description": "Current 3D brief completeness across subject, destination, and constraints"
+      }
+    ],
+    "optional": [
+      {
+        "name": "declared_runtime_posture",
+        "type": "string",
+        "description": "Whether the session is text-only planning or targets Path 1 / Path 2 / CLI"
+      },
+      {
+        "name": "locked_3d_brief",
+        "type": "object",
+        "description": "Locked 8-slot 3D brief defining deliverable intent"
+      },
+      {
+        "name": "acceptance_criteria_rows",
+        "type": "array",
+        "description": "Measurable Pass/Warn/Fail criteria from defining-done-and-gates"
+      },
+      {
+        "name": "iteration_budget_preference",
+        "type": "integer",
+        "description": "Maximum refinement passes before halting or escalating"
+      },
+      {
+        "name": "active_workflow_stages",
+        "type": "array",
+        "description": "Ordered stages of the selected BlendOps recipe or custom workflow"
+      },
+      {
+        "name": "locked_acceptance_criteria",
+        "type": "object",
+        "description": "Measurable acceptance rows from defining-done-and-gates"
+      },
+      {
+        "name": "current_stage_status",
+        "type": "string",
+        "description": "Current stage progress and completed gate checks"
+      },
+      {
+        "name": "target_deliverable_channels",
+        "type": "array",
+        "description": "Target delivery surfaces (hero still, catalog grid, turntable, or web GLB)"
+      },
+      {
+        "name": "performance_budget_pins",
+        "type": "object",
+        "description": "Optional triangle, texture, and file-size ceilings from budgeting-glb-for-web"
+      },
+      {
+        "name": "locked_baseline_brief",
+        "type": "object",
+        "description": "Currently locked 3D brief, acceptance criteria, and stop conditions"
+      },
+      {
+        "name": "proposed_scope_change",
+        "type": "string",
+        "description": "Mid-workflow user request adding new deliverables, environments, animations, or scope"
+      },
+      {
+        "name": "current_workflow_stage",
+        "type": "string",
+        "description": "Active stage when the scope expansion was requested"
+      }
+    ]
+  },
+  "outputs": {
+    "primary": [
+      "prerequisite_matrix_rows",
+      "go_no_go_verdict",
+      "single_next_skill",
+      "definition_of_done_checklist",
+      "max_iteration_caps_per_stage",
+      "halt_and_escalation_triggers",
+      "stage_gate_checklists",
+      "entry_and_exit_preconditions",
+      "gate_failure_routing_rules",
+      "measurable_acceptance_criteria_table",
+      "pass_warn_fail_thresholds",
+      "evidence_hook_mappings",
+      "scope_classification_verdict",
+      "impact_on_locked_brief_and_budget",
+      "defer_split_or_reopen_decision"
+    ],
+    "truthStatePolicy": {
+      "runtimeDefault": "Not Run",
+      "artifactDefault": "Not Produced",
+      "mutationRule": "downgrade_only"
+    }
+  },
+  "handoffs": [
+    {
+      "target": "scoping-3d-briefs",
+      "type": "upstream_reference",
+      "label": "Recipe selection",
+      "when": {
+        "all": [
+          {
+            "field": "recipe.selected",
+            "operator": "equals",
+            "value": false
+          }
+        ]
+      }
+    },
+    {
+      "target": "scoping-3d-briefs",
+      "type": "fallback",
+      "label": "Brief completeness",
+      "when": {
+        "all": [
+          {
+            "field": "brief.complete",
+            "operator": "equals",
+            "value": false
+          }
+        ]
+      }
+    },
+    {
+      "target": "setting-up-blender-runtime",
+      "type": "conditional",
+      "label": "Runtime detail",
+      "when": {
+        "all": [
+          {
+            "field": "runtime.mode",
+            "operator": "equals",
+            "value": "runtime_requested"
+          },
+          {
+            "field": "runtime.verifiedReady",
+            "operator": "equals",
+            "value": false
+          }
+        ]
+      }
+    },
+    {
+      "target": "setting-up-blender-runtime",
+      "type": "fallback",
+      "label": "Bridge conflicts",
+      "when": {
+        "all": [
+          {
+            "field": "runtime.conflictDetected",
+            "operator": "equals",
+            "value": true
+          }
+        ]
+      }
+    },
+    {
+      "target": "troubleshooting-blender-output",
+      "type": "fallback",
+      "label": "Runtime debugging",
+      "when": {
+        "all": [
+          {
+            "field": "runtime.errorDetected",
+            "operator": "equals",
+            "value": true
+          }
+        ]
+      }
+    },
+    {
+      "target": "sourcing-assets",
+      "type": "conditional",
+      "label": "License checks",
+      "when": {
+        "all": [
+          {
+            "field": "assets.externalUsed",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "assets.licenseCleared",
+            "operator": "equals",
+            "value": false
+          }
+        ]
+      }
+    },
+    {
+      "target": "planning-product-scenes",
+      "type": "alternative",
+      "label": "Domain planner (product hero when Go)",
+      "when": {
+        "all": [
+          {
+            "field": "preflight.verdict",
+            "operator": "equals",
+            "value": "go"
+          },
+          {
+            "field": "recipe.domain",
+            "operator": "equals",
+            "value": "product_hero"
+          }
+        ]
+      }
+    },
+    {
+      "target": "planning-product-scenes",
+      "type": "alternative",
+      "label": "Domain planner (product grid when Go)",
+      "when": {
+        "all": [
+          {
+            "field": "preflight.verdict",
+            "operator": "equals",
+            "value": "go"
+          },
+          {
+            "field": "recipe.domain",
+            "operator": "equals",
+            "value": "product_grid"
+          }
+        ]
+      }
+    },
+    {
+      "target": "planning-scenes",
+      "type": "alternative",
+      "label": "Domain planner (character portrait when Go)",
+      "when": {
+        "all": [
+          {
+            "field": "preflight.verdict",
+            "operator": "equals",
+            "value": "go"
+          },
+          {
+            "field": "recipe.domain",
+            "operator": "equals",
+            "value": "character_portrait"
+          }
+        ]
+      }
+    },
+    {
+      "target": "planning-scenes",
+      "type": "alternative",
+      "label": "Domain planner (environment establishing shot when Go)",
+      "when": {
+        "all": [
+          {
+            "field": "preflight.verdict",
+            "operator": "equals",
+            "value": "go"
+          },
+          {
+            "field": "recipe.domain",
+            "operator": "equals",
+            "value": "environment_shot"
+          }
+        ]
+      }
+    },
+    {
+      "target": "planning-scenes",
+      "type": "alternative",
+      "label": "Domain planner (interior architectural when Go)",
+      "when": {
+        "all": [
+          {
+            "field": "preflight.verdict",
+            "operator": "equals",
+            "value": "go"
+          },
+          {
+            "field": "recipe.domain",
+            "operator": "equals",
+            "value": "interior_archviz"
+          }
+        ]
+      }
+    },
+    {
+      "target": "scoping-3d-briefs",
+      "type": "upstream_reference",
+      "label": "Intent brief",
+      "when": {
+        "all": [
+          {
+            "field": "goal.clarity",
+            "operator": "equals",
+            "value": "clear"
+          },
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": false
+          }
+        ]
+      }
+    },
+    {
+      "target": "scoping-3d-briefs",
+      "type": "boundary_delegation",
+      "label": "Scope splitting beforehand",
+      "when": {
+        "all": [
+          {
+            "field": "fit.multiDeliverableDetected",
+            "operator": "equals",
+            "value": true
+          }
+        ]
+      }
+    },
+    {
+      "target": "verifying-before-handoff",
+      "type": "progression",
+      "label": "Artifact and render evidence",
+      "when": {
+        "all": [
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "post_execution_audit"
+          }
+        ]
+      }
+    },
+    {
+      "target": "verifying-before-handoff",
+      "type": "progression",
+      "label": "Final pre-handoff gate",
+      "when": {
+        "all": [
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "final_verification"
+          }
+        ]
+      }
+    },
+    {
+      "target": "scoping-3d-briefs",
+      "type": "upstream_reference",
+      "label": "Brainstorming",
+      "when": {
+        "all": [
+          {
+            "field": "goal.clarity",
+            "operator": "equals",
+            "value": "ambiguous_or_mixed"
+          }
+        ]
+      }
+    },
+    {
+      "target": "using-blendops",
+      "type": "conditional",
+      "label": "Next-skill routing across stages",
+      "when": {
+        "all": [
+          {
+            "field": "preflight.passed",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "inventory.exists",
+            "operator": "equals",
+            "value": true
+          }
+        ]
+      }
+    },
+    {
+      "target": "sourcing-assets",
+      "type": "progression",
+      "label": "Asset discovery",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "assets.discoveryComplete",
+            "operator": "equals",
+            "value": false
+          }
+        ]
+      }
+    },
+    {
+      "target": "planning-camera-and-framing",
+      "type": "progression",
+      "label": "Scene planners (planning-camera-and-framing)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "camera_planning"
+          }
+        ]
+      }
+    },
+    {
+      "target": "planning-lighting-and-materials",
+      "type": "progression",
+      "label": "Scene planners (planning-lighting-and-materials)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "lookdev_planning"
+          }
+        ]
+      }
+    },
+    {
+      "target": "planning-scenes",
+      "type": "alternative",
+      "label": "Scene planners (planning-scenes)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "recipe.domain",
+            "operator": "equals",
+            "value": "character_portrait"
+          }
+        ]
+      }
+    },
+    {
+      "target": "planning-scenes",
+      "type": "alternative",
+      "label": "Scene planners (planning-scenes)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "recipe.domain",
+            "operator": "equals",
+            "value": "environment_shot"
+          }
+        ]
+      }
+    },
+    {
+      "target": "planning-scenes",
+      "type": "alternative",
+      "label": "Scene planners (planning-scenes)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "recipe.domain",
+            "operator": "equals",
+            "value": "interior_archviz"
+          }
+        ]
+      }
+    },
+    {
+      "target": "planning-product-scenes",
+      "type": "alternative",
+      "label": "Scene planners (planning-product-scenes)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "recipe.domain",
+            "operator": "equals",
+            "value": "product_grid"
+          }
+        ]
+      }
+    },
+    {
+      "target": "planning-product-scenes",
+      "type": "alternative",
+      "label": "Scene planners (planning-product-scenes)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "recipe.domain",
+            "operator": "equals",
+            "value": "product_hero"
+          }
+        ]
+      }
+    },
+    {
+      "target": "verifying-before-handoff",
+      "type": "progression",
+      "label": "Quality validators (verifying-before-handoff)",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "holistic"
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "quality_validation"
+          }
+        ]
+      }
+    },
+    {
+      "target": "planning-camera-and-framing",
+      "type": "progression",
+      "label": "Quality validators (planning-camera-and-framing)",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "composition"
+          },
+          {
+            "field": "quality.verdict",
+            "operator": "equals",
+            "value": "not_run"
+          }
+        ]
+      }
+    },
+    {
+      "target": "planning-lighting-and-materials",
+      "type": "progression",
+      "label": "Quality validators (planning-lighting-and-materials)",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "lighting"
+          },
+          {
+            "field": "quality.verdict",
+            "operator": "equals",
+            "value": "not_run"
+          }
+        ]
+      }
+    },
+    {
+      "target": "planning-lighting-and-materials",
+      "type": "progression",
+      "label": "Quality validators (planning-lighting-and-materials)",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "material"
+          },
+          {
+            "field": "quality.verdict",
+            "operator": "equals",
+            "value": "not_run"
+          }
+        ]
+      }
+    },
+    {
+      "target": "budgeting-glb-for-web",
+      "type": "progression",
+      "label": "Quality validators (budgeting-glb-for-web)",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "polycount"
+          },
+          {
+            "field": "budget.verdict",
+            "operator": "equals",
+            "value": "Not Run"
+          }
+        ]
+      }
+    }
+  ]
+}

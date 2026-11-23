@@ -1,0 +1,1012 @@
+{
+  "schemaVersion": "2.0.0",
+  "skillId": "using-blendops",
+  "category": "routing-and-governance",
+  "isContractedSkill": true,
+  "isRoutingParticipant": true,
+  "contractPath": "skills/using-blendops/contract.json",
+  "skillMarkdownPath": "skills/using-blendops/SKILL.md",
+  "evalMarkdownPath": "skills/using-blendops/EVAL.md",
+  "sourceEvalTier": "routing_contract_pilot",
+  "evaluationStatus": {
+    "staticValidation": "Passed",
+    "deterministicFixture": "Passed",
+    "contractRouting": "Passed",
+    "contractHandoff": "Not Applicable",
+    "liveModel": "Not Run",
+    "blenderRuntime": "Not Run"
+  },
+  "cases": [
+    {
+      "id": "workflow-stage-post-execution-evidence-audit",
+      "skillId": "using-blendops",
+      "scenario": "In-flight workflow at post-execution audit stage routes to verifying-before-handoff",
+      "category": "normal",
+      "inputPrompt": "Preflight passed, scene plan is complete, and we are at post_execution_audit to classify our output status. What skill is next?",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Identifies current milestone stage as post_execution_audit",
+        "Routes to verifying-before-handoff without upgrading artifact truth states"
+      ],
+      "requiredOutputProperties": [
+        "verifying-before-handoff",
+        "post_execution_audit",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "verifying-before-handoff",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_routing",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Progression handoff to verifying-before-handoff"
+      ],
+      "deterministicFixture": {
+        "routingState": {
+          "goalClarity": "clear",
+          "recipeSelected": true,
+          "preflightPassed": true,
+          "hasStageOrArtifactInventory": true
+        },
+        "handoffContext": {
+          "stage.current": "post_execution_audit"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only stage routing",
+          "recommendedNextAction": "Advance from post_execution_audit to verifying-before-handoff to record truth states.",
+          "targetHandoff": "verifying-before-handoff",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Routed in-flight workflow at post_execution_audit to verifying-before-handoff.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/using-blendops/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "workflow-stage-runtime-required-but-not-run",
+      "skillId": "using-blendops",
+      "scenario": "Next stage requires runtime mutation while runtime status is Not Run",
+      "category": "evidence_boundary",
+      "inputPrompt": "We have our locked brief, hero plan, camera plan, and lighting plan, and want to execute in Blender next. Where do we route?",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Detects stage.requiresRuntime is true while runtime.status is Not Run",
+        "Routes to setting-up-blender-runtime before any execution step"
+      ],
+      "requiredOutputProperties": [
+        "setting-up-blender-runtime",
+        "Runtime: Not Run",
+        "preconditions"
+      ],
+      "forbiddenOutputProperties": [
+        "Start rendering now",
+        "Runtime: Verified"
+      ],
+      "expectedRoutingTarget": "setting-up-blender-runtime",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_routing",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Conditional handoff to setting-up-blender-runtime"
+      ],
+      "deterministicFixture": {
+        "routingState": {
+          "goalClarity": "clear",
+          "recipeSelected": true,
+          "preflightPassed": true,
+          "hasStageOrArtifactInventory": true
+        },
+        "handoffContext": {
+          "runtime.status": "Not Run",
+          "stage.requiresRuntime": true
+        },
+        "simulatedOutput": {
+          "mode": "Text-only stage routing",
+          "recommendedNextAction": "Route to setting-up-blender-runtime to verify runtime preconditions before any Blender execution.",
+          "targetHandoff": "setting-up-blender-runtime",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Gated transition from planning to execution on setting-up-blender-runtime.",
+          "warnings": [
+            "Never jump directly to rendering without verified runtime readiness."
+          ],
+          "evidenceCitations": [
+            "skills/using-blendops/EVAL.md",
+            "skills/using-blendops/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "workflow-stage-mid-workflow-scope-creep",
+      "skillId": "using-blendops",
+      "scenario": "Mid-workflow scope expansion delegates to defining-done-and-gates",
+      "category": "scope_creep",
+      "inputPrompt": "While routing our product-hero-v0 lighting stage, the stakeholder just asked to add a 60-second character animation and fluid simulation.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Detects mid-workflow scope drift outside the locked brief",
+        "Delegates to defining-done-and-gates"
+      ],
+      "requiredOutputProperties": [
+        "defining-done-and-gates",
+        "scope",
+        "Runtime: Not Run"
+      ],
+      "forbiddenOutputProperties": [
+        "added fluid simulation to current stage",
+        "Artifact: Produced"
+      ],
+      "expectedRoutingTarget": "defining-done-and-gates",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_routing",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Boundary delegation handoff to defining-done-and-gates"
+      ],
+      "deterministicFixture": {
+        "routingState": {
+          "goalClarity": "clear",
+          "recipeSelected": true,
+          "preflightPassed": true,
+          "hasStageOrArtifactInventory": true
+        },
+        "handoffContext": {
+          "scope.driftDetected": true
+        },
+        "simulatedOutput": {
+          "mode": "Text-only stage routing",
+          "recommendedNextAction": "Pause stage progression and route to defining-done-and-gates to handle mid-workflow scope expansion.",
+          "targetHandoff": "defining-done-and-gates",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Intercepted mid-workflow scope expansion and delegated to defining-done-and-gates.",
+          "warnings": [
+            "Unapproved deliverables cannot be injected mid-pack without a formal scope decision."
+          ],
+          "evidenceCitations": [
+            "skills/using-blendops/contract.json",
+            "skills/defining-done-and-gates/SKILL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "workflow-stage-failed-gate-exits-to-pre-handoff",
+      "skillId": "using-blendops",
+      "scenario": "Failed quality gate or final verification exits to verifying-before-handoff",
+      "category": "blocked_or_adversarial",
+      "inputPrompt": "Our scene quality gate failed on material checks, or we are at final_verification before user handoff. Which skill runs next?",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Triggers fallback/final gate handoff to verifying-before-handoff",
+        "Enforces downgrade-only truth state policy"
+      ],
+      "requiredOutputProperties": [
+        "verifying-before-handoff",
+        "downgrade",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "upgraded to Verified",
+        "skipping verification gate"
+      ],
+      "expectedRoutingTarget": "verifying-before-handoff",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_routing",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Fallback handoff to verifying-before-handoff"
+      ],
+      "deterministicFixture": {
+        "routingState": {
+          "goalClarity": "clear",
+          "recipeSelected": true,
+          "preflightPassed": true,
+          "hasStageOrArtifactInventory": true
+        },
+        "handoffContext": {
+          "gate.status": "failed"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only stage routing",
+          "recommendedNextAction": "Exit to verifying-before-handoff to enforce the 7-point checklist and downgrade-only truth labels.",
+          "targetHandoff": "verifying-before-handoff",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Routed failed gate directly to verifying-before-handoff.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/using-blendops/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "workflow-stage-bridge-conflict-fallback",
+      "skillId": "using-blendops",
+      "scenario": "Active MCP bridge conflict during stage transition routes to setting-up-blender-runtime",
+      "category": "blocked_or_adversarial",
+      "inputPrompt": "Mid-workflow before runtime handoff, port 9876 shows a conflict between two MCP clients.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Halts stage progression and routes to setting-up-blender-runtime",
+        "Keeps Runtime status Not Run"
+      ],
+      "requiredOutputProperties": [
+        "setting-up-blender-runtime",
+        "port 9876",
+        "Runtime: Not Run"
+      ],
+      "forbiddenOutputProperties": [
+        "Runtime: Verified",
+        "Artifact: Produced"
+      ],
+      "expectedRoutingTarget": "setting-up-blender-runtime",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_routing",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Fallback handoff to setting-up-blender-runtime"
+      ],
+      "deterministicFixture": {
+        "routingState": {
+          "goalClarity": "clear",
+          "recipeSelected": true,
+          "preflightPassed": true,
+          "hasStageOrArtifactInventory": true
+        },
+        "handoffContext": {
+          "runtime.conflictDetected": true
+        },
+        "simulatedOutput": {
+          "mode": "Text-only stage routing",
+          "recommendedNextAction": "Route to setting-up-blender-runtime to clear the port 9876 MCP client collision.",
+          "targetHandoff": "setting-up-blender-runtime",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Routed mid-workflow MCP port conflict to setting-up-blender-runtime.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/using-blendops/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "blendops-help-unclear-next-step",
+      "skillId": "using-blendops",
+      "scenario": "Unclear next step without a concrete 3D brief",
+      "category": "ambiguous",
+      "inputPrompt": "I just cloned BlendOps and have an idea for a 3D sneaker showcase, what should I do next?",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "States text-only routing scope and does not claim Blender execution",
+        "Recommends exactly one safe next action (scoping-3d-briefs) to lock the 8-slot brief"
+      ],
+      "requiredOutputProperties": [
+        "Text-only routing",
+        "scoping-3d-briefs",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Not Run",
+        "Artifact: Produced",
+        "Artifact: Verified",
+        "Blender executed"
+      ],
+      "expectedRoutingTarget": "scoping-3d-briefs",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_routing",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Single recommended next action",
+        "Conservative Runtime: Not Run and Artifact: Not Produced labels"
+      ],
+      "deterministicFixture": {
+        "routingState": {
+          "goalClarity": "clear",
+          "recipeSelected": true,
+          "preflightPassed": true,
+          "hasStageOrArtifactInventory": true
+        },
+        "handoffContext": {
+          "brief.locked": false
+        },
+        "simulatedOutput": {
+          "mode": "Text-only routing (No runtime execution)",
+          "recommendedNextAction": "Use scoping-3d-briefs to lock the 8-slot 3D brief before selecting a scene planner.",
+          "targetHandoff": "scoping-3d-briefs",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Routed ambiguous entry request to scoping-3d-briefs with zero runtime or artifact claims.",
+          "warnings": [
+            "Do not run Blender or claim preview/GLB outputs during entry routing."
+          ],
+          "evidenceCitations": [
+            "skills/using-blendops/SKILL.md",
+            "skills/using-blendops/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "blendops-help-runtime-readiness-request",
+      "skillId": "using-blendops",
+      "scenario": "User asks whether BlendOps can run Blender right now",
+      "category": "normal",
+      "inputPrompt": "Can BlendOps run Blender right now on my machine and render a preview?",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Routes runtime readiness inquiries to setting-up-blender-runtime",
+        "Preserves Runtime status as Not Run until an actual evaluation occurs"
+      ],
+      "requiredOutputProperties": [
+        "setting-up-blender-runtime",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Runtime: Verified",
+        "Artifact: Produced",
+        "standalone Anthropic Connector"
+      ],
+      "expectedRoutingTarget": "setting-up-blender-runtime",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_routing",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Target handoff to setting-up-blender-runtime",
+        "Explicit Runtime: Not Run label"
+      ],
+      "deterministicFixture": {
+        "routingState": {
+          "goalClarity": "clear",
+          "recipeSelected": true,
+          "preflightPassed": true,
+          "hasStageOrArtifactInventory": true
+        },
+        "handoffContext": {
+          "request.topic": "runtime_readiness"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only routing",
+          "recommendedNextAction": "Run setting-up-blender-runtime to inspect Path 1 (Blender 5.1+ Lab MCP) or Path 2 readiness.",
+          "targetHandoff": "setting-up-blender-runtime",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Routed runtime execution inquiry to setting-up-blender-runtime while keeping Runtime status Not Run.",
+          "warnings": [
+            "Path 1 requires the Blender Lab MCP add-on inside Blender 5.1+; Anthropic Connector is not standalone."
+          ],
+          "evidenceCitations": [
+            "docs/runtime-stack-strategy.md",
+            "skills/setting-up-blender-runtime/SKILL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "blendops-help-unverified-artifact-claim",
+      "skillId": "using-blendops",
+      "scenario": "User claims a GLB render exists without path or validation notes",
+      "category": "evidence_boundary",
+      "inputPrompt": "My agent said the hero GLB is already done and verified, can we ship it?",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Refuses to upgrade artifact status to Produced or Verified without file path and validation notes",
+        "Routes to verifying-before-handoff to audit the artifact claim"
+      ],
+      "requiredOutputProperties": [
+        "verifying-before-handoff",
+        "Artifact: Not Produced",
+        "no output path or validation notes"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Produced",
+        "ready to ship"
+      ],
+      "expectedRoutingTarget": "verifying-before-handoff",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_routing",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Route to verifying-before-handoff",
+        "Preserve Artifact: Not Produced when no path or validation exists"
+      ],
+      "deterministicFixture": {
+        "routingState": {
+          "goalClarity": "clear",
+          "recipeSelected": true,
+          "preflightPassed": true,
+          "hasStageOrArtifactInventory": true
+        },
+        "handoffContext": {
+          "request.topic": "artifact_evidence"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only routing",
+          "recommendedNextAction": "Route to verifying-before-handoff because no output path or validation notes were provided.",
+          "targetHandoff": "verifying-before-handoff",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Blocked unverified shipping claim and routed to verifying-before-handoff.",
+          "warnings": [
+            "Artifact status remains Not Produced until file path, existence, and validation checks are recorded."
+          ],
+          "evidenceCitations": [
+            "laws/evidence-before-done.md",
+            "skills/verifying-before-handoff/SKILL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "blendops-help-bridge-conflict-fallback",
+      "skillId": "using-blendops",
+      "scenario": "User reports port 9876 conflict between Lab MCP and community mcp-for-blender",
+      "category": "blocked_or_adversarial",
+      "inputPrompt": "Both Blender MCP add-ons are enabled on port 9876 and my connection is failing, what skill do I use?",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Detects single-bridge constraint conflict and routes to setting-up-blender-runtime",
+        "Does not claim to disable add-ons automatically"
+      ],
+      "requiredOutputProperties": [
+        "setting-up-blender-runtime",
+        "single-bridge constraint",
+        "Runtime: Not Run"
+      ],
+      "forbiddenOutputProperties": [
+        "disabled the add-on for you",
+        "Runtime: Verified"
+      ],
+      "expectedRoutingTarget": "setting-up-blender-runtime",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_routing",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Fallback handoff to setting-up-blender-runtime"
+      ],
+      "deterministicFixture": {
+        "routingState": {
+          "goalClarity": "clear",
+          "recipeSelected": true,
+          "preflightPassed": true,
+          "hasStageOrArtifactInventory": true
+        },
+        "handoffContext": {
+          "runtime.conflictDetected": true
+        },
+        "simulatedOutput": {
+          "mode": "Text-only routing",
+          "recommendedNextAction": "Use setting-up-blender-runtime to isolate the single-bridge constraint conflict on port 9876.",
+          "targetHandoff": "setting-up-blender-runtime",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Routed dual-bridge conflict to setting-up-blender-runtime.",
+          "warnings": [
+            "Never enable Path 1 Lab MCP and Path 2 mcp-for-blender simultaneously in the same Blender session."
+          ],
+          "evidenceCitations": [
+            "skills/setting-up-blender-runtime/SKILL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "blendops-help-clear-goal-progression-to-recipe-fit",
+      "skillId": "using-blendops",
+      "scenario": "User clarifies goal and needs recipe or pack selection",
+      "category": "structured_skip",
+      "inputPrompt": "My goal is now clear: I want a single product hero render and web GLB spin, which pack fits?",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Delegates clear recipe-selection requests to scoping-3d-briefs at Rank 2",
+        "Preserves conservative runtime and artifact truth states"
+      ],
+      "requiredOutputProperties": [
+        "scoping-3d-briefs",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Produced",
+        "Runtime: Verified"
+      ],
+      "expectedRoutingTarget": "scoping-3d-briefs",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_routing",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Progression handoff to scoping-3d-briefs"
+      ],
+      "deterministicFixture": {
+        "routingState": {
+          "goalClarity": "clear",
+          "recipeSelected": true,
+          "preflightPassed": true,
+          "hasStageOrArtifactInventory": true
+        },
+        "handoffContext": {
+          "goal.clarity": "clear",
+          "recipe.selected": false
+        },
+        "simulatedOutput": {
+          "mode": "Text-only routing",
+          "recommendedNextAction": "Hand off to scoping-3d-briefs to score product-hero-v0 against your deliverable requirements.",
+          "targetHandoff": "scoping-3d-briefs",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Handed off clear recipe selection request to scoping-3d-briefs.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/using-blendops/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "blendops-help-unsupported-direct-mcp-claim",
+      "skillId": "using-blendops",
+      "scenario": "User asks for unsupported direct official Anthropic Connector inside a non-Claude agent",
+      "category": "blocked_or_adversarial",
+      "inputPrompt": "Can I toggle the Claude Desktop Anthropic Connector directly inside Cursor without the Blender Lab MCP add-on?",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Clarifies that the Anthropic Connector is a Path 1 host option in Claude Desktop and is never standalone (requires Blender Lab MCP add-on in Blender 5.1+)",
+        "Routes to setting-up-blender-runtime to pick Path 1 host (b) manual MCP or Path 2 for Cursor"
+      ],
+      "requiredOutputProperties": [
+        "setting-up-blender-runtime",
+        "not standalone",
+        "Blender 5.1+"
+      ],
+      "forbiddenOutputProperties": [
+        "standalone connector works in Cursor",
+        "no add-on needed"
+      ],
+      "expectedRoutingTarget": "setting-up-blender-runtime",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_routing",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Explicit Path 1 Lab MCP add-on attribution (Blender 5.1+)",
+        "Handoff to setting-up-blender-runtime"
+      ],
+      "deterministicFixture": {
+        "routingState": {
+          "goalClarity": "clear",
+          "recipeSelected": true,
+          "preflightPassed": true,
+          "hasStageOrArtifactInventory": true
+        },
+        "handoffContext": {
+          "request.topic": "runtime_selection"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only routing",
+          "recommendedNextAction": "Use setting-up-blender-runtime to select Path 1 host (b) manual Lab MCP (Blender 5.1+) or Path 2 for Cursor; Anthropic Connector is not standalone.",
+          "targetHandoff": "setting-up-blender-runtime",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Rejected standalone Connector misconception and routed to setting-up-blender-runtime.",
+          "warnings": [
+            "Path 1 always requires the Blender Lab MCP add-on inside Blender 5.1+."
+          ],
+          "evidenceCitations": [
+            "docs/runtime-stack-strategy.md",
+            "skills/setting-up-blender-runtime/SKILL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "plain-language-response-normal-in-scope-handoff",
+      "skillId": "using-blendops",
+      "scenario": "Normal in-scope execution of using-blendops (plain-language-final-response-translator) with contract handoff to verifying-before-handoff",
+      "category": "normal",
+      "inputPrompt": "Use using-blendops to translate our technical quality-check and pre-handoff ledger (Runtime: Not Run, Artifact: Not Produced, 1 pending license check on pedestal mesh) into plain language for a brand manager.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Primary inputs (verified_workflow_and_evidence_state) provided in text-only planning/audit mode."
+      },
+      "expectedBehavior": [
+        "Produces plain_language_stakeholder_response, explicit_runtime_and_artifact_status_block, jargon_free_next_steps for role plain-language-final-response-translator",
+        "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
+        "Evaluates contract handoff predicate and hands off to verifying-before-handoff (Upstream artifact evidence classification)"
+      ],
+      "requiredOutputProperties": [
+        "plain-language summary",
+        "verified vs unverified split",
+        "single next action",
+        "verifying-before-handoff",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "paste this bpy Python script",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "verifying-before-handoff",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_routing",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Outputs plain_language_stakeholder_response, explicit_runtime_and_artifact_status_block, jargon_free_next_steps conforming to skills/using-blendops/SKILL.md",
+        "Matches contract handoff predicate to verifying-before-handoff in skills/using-blendops/contract.json"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "stage.current": "post_execution_audit"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only plain-language-final-response-translator (using-blendops)",
+          "recommendedNextAction": "Complete plain_language_stakeholder_response and hand off to verifying-before-handoff (Upstream artifact evidence classification).",
+          "targetHandoff": "verifying-before-handoff",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Translated technical workflow state into a jargon-free stakeholder summary separating verified planning items from unrun Blender execution and naming the single next action. Delivered plain-language summary, verified vs unverified split, single next action and routed to verifying-before-handoff.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/using-blendops/SKILL.md",
+            "skills/using-blendops/EVAL.md",
+            "skills/using-blendops/contract.json",
+            "skills/using-blendops/references/caveat-language.md",
+            "skills/using-blendops/references/plain-language-patterns.md"
+          ]
+        },
+        "routingState": {
+          "goalClarity": "clear",
+          "recipeSelected": true,
+          "preflightPassed": true,
+          "hasStageOrArtifactInventory": true
+        }
+      }
+    },
+    {
+      "id": "plain-language-response-secondary-contract-handoff",
+      "skillId": "using-blendops",
+      "scenario": "Secondary fallback contract handoff from using-blendops to verifying-before-handoff",
+      "category": "blocked_or_adversarial",
+      "inputPrompt": "While applying using-blendops, the workflow context is {\"quality.domain\":\"holistic\",\"stage.current\":\"quality_validation\"} (Upstream quality pass/warn/fail validation (verifying-before-handoff)). Determine the contract-governed handoff target.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates the fallback handoff predicate in skills/using-blendops/contract.json",
+        "Routes to verifying-before-handoff (Upstream quality pass/warn/fail validation (verifying-before-handoff)) without claiming runtime execution"
+      ],
+      "requiredOutputProperties": [
+        "verifying-before-handoff",
+        "fallback",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "paste this bpy Python script",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "verifying-before-handoff",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_routing",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Contract fallback handoff predicate match to verifying-before-handoff"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "quality.domain": "holistic",
+          "stage.current": "quality_validation"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only using-blendops (fallback handoff)",
+          "recommendedNextAction": "Follow fallback handoff to verifying-before-handoff (Upstream quality pass/warn/fail validation (verifying-before-handoff)).",
+          "targetHandoff": "verifying-before-handoff",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Triggered fallback handoff from using-blendops to verifying-before-handoff under context {\"quality.domain\":\"holistic\",\"stage.current\":\"quality_validation\"}.",
+          "warnings": [
+            "Contract-governed fallback handoff."
+          ],
+          "evidenceCitations": [
+            "skills/using-blendops/contract.json",
+            "skills/using-blendops/SKILL.md",
+            "skills/using-blendops/references/caveat-language.md"
+          ]
+        },
+        "routingState": {
+          "goalClarity": "clear",
+          "recipeSelected": true,
+          "preflightPassed": true,
+          "hasStageOrArtifactInventory": true
+        }
+      }
+    },
+    {
+      "id": "plain-language-response-unmatched-handoff-and-evidence-boundary",
+      "skillId": "using-blendops",
+      "scenario": "Unmatched contract handoff context returns none and blocks upgrading unvalidated file to Verified in using-blendops",
+      "category": "evidence_boundary",
+      "inputPrompt": "An operator provides an unvalidated file on disk during using-blendops with context {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and asks to mark Artifact: Verified and auto-advance.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "file-only-unvalidated",
+        "notes": "A file exists on disk but validation checks have not been recorded."
+      },
+      "expectedBehavior": [
+        "Refuses to upgrade Artifact status to Verified when existingArtifactEvidence is file-only-unvalidated (caps at Produced)",
+        "Evaluates contract handoffs for using-blendops and returns targetHandoff none because no handoff predicate matches"
+      ],
+      "requiredOutputProperties": [
+        "Artifact: Produced",
+        "Runtime: Not Run",
+        "validation",
+        "none"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "validation not needed"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "contract_routing",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Downgrade unvalidated Verified claim to Produced per laws/evidence-before-done.md",
+        "Verify 0 handoffs match in skills/using-blendops/contract.json for {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true}"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Artifact-claim boundary check (using-blendops)",
+          "recommendedNextAction": "Keep Artifact status at Produced (never Verified without validation evidence) and hold at targetHandoff none until a downstream precondition is met.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Produced",
+          "summary": "Capped unvalidated artifact claim at Artifact: Produced and verified zero matching contract handoffs (none) for using-blendops.",
+          "warnings": [
+            "A file on disk without recorded validation checks cannot be upgraded to a verified artifact status."
+          ],
+          "evidenceCitations": [
+            "laws/evidence-before-done.md",
+            "skills/using-blendops/contract.json",
+            "skills/using-blendops/EVAL.md"
+          ]
+        },
+        "routingState": {
+          "goalClarity": "clear",
+          "recipeSelected": true,
+          "preflightPassed": true,
+          "hasStageOrArtifactInventory": true
+        }
+      }
+    },
+    {
+      "id": "plain-language-response-ambiguous-missing-required-inputs",
+      "skillId": "using-blendops",
+      "scenario": "Missing required input (verified_workflow_and_evidence_state) for using-blendops halts fabricated output and requests clarification",
+      "category": "ambiguous",
+      "inputPrompt": "Write a final plain-language status update for the stakeholder without providing the current workflow stage, truth-state labels, or any blocker notes.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Required input 'verified_workflow_and_evidence_state' is missing or underspecified."
+      },
+      "expectedBehavior": [
+        "Identifies missing upstream truth-state ledger and blocker/check summary required by using-blendops (verified_workflow_and_evidence_state)",
+        "Refuses to fabricate domain parameters and keeps Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "verified_workflow_and_evidence_state",
+        "upstream truth-state ledger and blocker/check summary",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "paste this bpy Python script",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "guessed parameters silently"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicitly names missing required input 'verified_workflow_and_evidence_state' (upstream truth-state ledger and blocker/check summary)",
+        "Conservative Runtime: Not Run and Artifact: Not Produced truth states"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Clarification gate (using-blendops)",
+          "recommendedNextAction": "Provide the missing upstream truth-state ledger and blocker/check summary (verified_workflow_and_evidence_state) before using-blendops locks plain_language_stakeholder_response.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted using-blendops due to missing required input 'verified_workflow_and_evidence_state' (upstream truth-state ledger and blocker/check summary); no values were fabricated.",
+          "warnings": [
+            "Do not invent upstream truth-state ledger and blocker/check summary when 'verified_workflow_and_evidence_state' is omitted."
+          ],
+          "evidenceCitations": [
+            "skills/using-blendops/SKILL.md",
+            "skills/using-blendops/EVAL.md",
+            "skills/using-blendops/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "plain-language-response-out-of-scope-exclusion-delegation",
+      "skillId": "using-blendops",
+      "scenario": "Out-of-scope request (to hide blockers, drop caveats for readability, or overclaim runtime or artifact success) is excluded from using-blendops and delegated to verifying-before-handoff",
+      "category": "scope_creep",
+      "inputPrompt": "Instead of convert technical blender workflow findings into plain-language user-facing responses with honest caveats., handle this request inside using-blendops: to hide blockers, drop caveats for readability, or overclaim runtime or artifact success.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Enforces the declared exclusion boundary in skills/using-blendops/contract.json when to hide blockers, drop caveats for readability, or overclaim runtime or artifact success",
+        "Delegates to verifying-before-handoff (Delegates out-of-scope requests to verifying-before-handoff) with Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "verifying-before-handoff",
+        "out of scope",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "paste this bpy Python script",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "handled inside using-blendops anyway"
+      ],
+      "expectedRoutingTarget": "verifying-before-handoff",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Exclusion delegation to verifying-before-handoff per skills/using-blendops/contract.json"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Out-of-scope exclusion gate (using-blendops)",
+          "recommendedNextAction": "Request is out of scope for using-blendops (to hide blockers, drop caveats for readability, or overclaim runtime or artifact success); delegate to verifying-before-handoff.",
+          "targetHandoff": "verifying-before-handoff",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Enforced using-blendops exclusion boundary (Delegates out-of-scope requests to verifying-before-handoff) and delegated to verifying-before-handoff.",
+          "warnings": [
+            "using-blendops is scoped to plain-language-final-response-translator and does not absorb verifying-before-handoff responsibilities."
+          ],
+          "evidenceCitations": [
+            "skills/using-blendops/contract.json",
+            "skills/using-blendops/SKILL.md",
+            "skills/verifying-before-handoff/SKILL.md"
+          ]
+        }
+      }
+    }
+  ]
+}

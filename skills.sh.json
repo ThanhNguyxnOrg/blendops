@@ -3,99 +3,41 @@
   "notGrouped": "bottom",
   "groupings": [
     {
-      "title": "Workflow & Intake",
-      "description": "Guided intake, brainstorming, 3D briefs, stage routing, scope guards, acceptance gates, and plain-language reporting for non-Blender users.",
+      "title": "Start & Scope",
+      "description": "Entry routing, 3D briefs, recipe fit, done criteria, stage gates, scope control, and plain-language status for non-Blender users.",
       "skills": [
-        "blendops-help",
-        "blender-brainstorming",
-        "intent-to-3d-brief-writer",
-        "workflow-stage-router",
-        "stage-gates",
-        "scope-guard",
-        "done-criteria",
-        "acceptance-criteria-builder",
-        "plain-language-response"
+        "using-blendops",
+        "scoping-3d-briefs",
+        "defining-done-and-gates"
       ]
     },
     {
       "title": "Scene Planning",
-      "description": "Domain scene planners, recipe decomposition, fit assessment, and pack prerequisite checks before touching Blender.",
+      "description": "Product and non-product scene plans, camera and framing, lighting, materials, color management, render engine, and output format.",
       "skills": [
-        "product-hero-scene-planner",
-        "product-grid-scene-planner",
-        "character-portrait",
-        "environment-shot",
-        "interior-scene",
-        "blender-recipe-decomposer",
-        "recipe-fit-assessor",
-        "pack-prerequisite-checker"
+        "planning-product-scenes",
+        "planning-scenes",
+        "planning-camera-and-framing",
+        "planning-lighting-and-materials",
+        "choosing-render-and-output"
       ]
     },
     {
-      "title": "Camera, Lighting & Materials",
-      "description": "Camera framing, lighting rigs, PBR material planning, AgX/Filmic color management, and quality validators.",
+      "title": "Assets & Web 3D",
+      "description": "Asset discovery and licensing, GLB budgets for web and mobile, and GLB handoff to web and React Three Fiber teams.",
       "skills": [
-        "camera-composition",
-        "lighting-material-plan",
-        "composition-quality-checker",
-        "lighting-quality-checker",
-        "material-quality-checker",
-        "color-management-decision"
+        "sourcing-assets",
+        "budgeting-glb-for-web",
+        "handing-off-glb-to-web"
       ]
     },
     {
-      "title": "Assets & Budgets",
-      "description": "3D asset discovery, license verification, style consistency, fallback strategies, library planning, and polycount/GLB budgets.",
+      "title": "Runtime & Verification",
+      "description": "Runtime path setup and readiness, evidence before handoff, preview and attempt reports, and troubleshooting.",
       "skills": [
-        "asset-discovery",
-        "asset-license-checker",
-        "asset-style-check",
-        "asset-fallback-strategy",
-        "asset-library-plan",
-        "polycount-budget-checker",
-        "mobile-glb-budget"
-      ]
-    },
-    {
-      "title": "Render & Output",
-      "description": "Cycles vs EEVEE engine selection, resolution and aspect ratio decisions, output format selection, preview reports, and export evidence.",
-      "skills": [
-        "cycles-vs-eevee-decision",
-        "resolution-aspect-decision",
-        "output-format-decision",
-        "preview-report",
-        "render-export-evidence"
-      ]
-    },
-    {
-      "title": "Scene Verification",
-      "description": "Pre-render scene readiness checks, pre-handoff verification gates, and deterministic Blender troubleshooting.",
-      "skills": [
-        "scene-readiness",
-        "pre-handoff-verification",
-        "blender-troubleshooting"
-      ]
-    },
-    {
-      "title": "Web 3D & GLB",
-      "description": "Production GLB web handoff, skeletal/keyframe animation handoff, and React Three Fiber (R3F) component planning.",
-      "skills": [
-        "glb-web-handoff",
-        "glb-animation-handoff",
-        "r3f-component-plan"
-      ]
-    },
-    {
-      "title": "Runtime & MCP",
-      "description": "2-path Blender MCP runtime setup, readiness checks, Path 1/Path 2/CLI selection, bridge conflict detection, and truth-state attempt reports.",
-      "skills": [
-        "runtime-setup",
-        "runtime-readiness",
-        "runtime-path-picker",
-        "path-one-host-outline",
-        "cli-appendix-job-outline",
-        "bridge-conflicts",
-        "runtime-attempt-report"
+        "setting-up-blender-runtime",
+        "verifying-before-handoff",
+        "troubleshooting-blender-output"
       ]
     }
   ]

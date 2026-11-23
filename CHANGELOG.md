@@ -5,6 +5,35 @@ content and tooling layer (skills + contracts + laws + packs + CLI); it does not
 which is redirected to upstream (Blender Lab MCP, Anthropic Connector,
 community `mcp-for-blender`, Blender CLI).
 
+## [Unreleased] - Breaking: skill catalog merged 48 → 14 (planned v2.0.0)
+
+### Breaking
+- The 48 narrow skills are merged into 14 skills. Each former skill's body now lives as a reference file under its new skill (`skills/<new-id>/references/<old-id>.md`); old skill folders, ZIPs and `npx skills add --skill <old-id>` slugs are removed.
+- Routing participants are now 3 (`scoping-3d-briefs` → `defining-done-and-gates` → `using-blendops`); `skills.sh.json` has 4 groups.
+- Former quality-checker → planner retry loops (composition, lighting, material) now run inside one merged skill instead of as cross-skill `retry` handoffs.
+
+### Unchanged
+- Runtime model (Path 1 Lab MCP, Path 2 `mcp-for-blender`, CLI appendix), truth states, capability tiers, and all 269 deterministic eval cases (now in 14 suites).
+
+### Legacy → new skill map
+
+| New skill | Former skills |
+|---|---|
+| `using-blendops` | `blendops-help`, `workflow-stage-router`, `plain-language-response` |
+| `scoping-3d-briefs` | `blender-brainstorming`, `intent-to-3d-brief-writer`, `blender-recipe-decomposer`, `recipe-fit-assessor` |
+| `defining-done-and-gates` | `done-criteria`, `stage-gates`, `acceptance-criteria-builder`, `scope-guard`, `pack-prerequisite-checker` |
+| `planning-product-scenes` | `product-hero-scene-planner`, `product-grid-scene-planner` |
+| `planning-scenes` | `character-portrait`, `environment-shot`, `interior-scene` |
+| `planning-camera-and-framing` | `camera-composition`, `composition-quality-checker`, `resolution-aspect-decision` |
+| `planning-lighting-and-materials` | `lighting-material-plan`, `lighting-quality-checker`, `material-quality-checker`, `color-management-decision` |
+| `choosing-render-and-output` | `cycles-vs-eevee-decision`, `output-format-decision` |
+| `sourcing-assets` | `asset-discovery`, `asset-license-checker`, `asset-style-check`, `asset-fallback-strategy`, `asset-library-plan` |
+| `budgeting-glb-for-web` | `polycount-budget-checker`, `mobile-glb-budget` |
+| `handing-off-glb-to-web` | `glb-web-handoff`, `glb-animation-handoff`, `r3f-component-plan` |
+| `setting-up-blender-runtime` | `runtime-setup`, `runtime-readiness`, `runtime-path-picker`, `path-one-host-outline`, `bridge-conflicts`, `cli-appendix-job-outline` |
+| `verifying-before-handoff` | `scene-readiness`, `pre-handoff-verification`, `render-export-evidence`, `preview-report`, `runtime-attempt-report` |
+| `troubleshooting-blender-output` | `blender-troubleshooting` |
+
 ## [v1.0.0] - Production Release
 
 ### Added & Changed

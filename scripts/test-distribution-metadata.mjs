@@ -22,8 +22,8 @@ test('local npm and skills.sh source manifests are internally aligned', () => {
   assert.equal(result.valid, true, result.errors.join('\n'));
   assert.equal(result.package.name, 'blendops');
   assert.equal(result.package.version, packageJson.version);
-  assert.equal(result.skills.groupCount, 8);
-  assert.equal(result.skills.canonicalSkillCount, 48);
+  assert.equal(result.skills.groupCount, 4);
+  assert.equal(result.skills.canonicalSkillCount, 14);
 });
 
 test('semantic version comparison follows SemVer 2.0.0 prerelease precedence', () => {
@@ -40,8 +40,8 @@ test('semantic version comparison follows SemVer 2.0.0 prerelease precedence', (
 });
 
 test('skills.sh route matching enforces slug boundaries and avoids prefix false positives', async () => {
-  const html = '<a href="/ThanhNguyxnOrg/blendops/stage-gates">Stage Gates</a>';
-  assert.equal(hasSkillsShRoute(html, 'stage-gates'), true);
+  const html = '<a href="/ThanhNguyxnOrg/blendops/defining-done-and-gates">Stage Gates</a>';
+  assert.equal(hasSkillsShRoute(html, 'defining-done-and-gates'), true);
   assert.equal(hasSkillsShRoute(html, 'stage'), false);
 
   const tmpRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-dist-audit-'));
@@ -57,7 +57,7 @@ test('skills.sh route matching enforces slug boundaries and avoids prefix false 
         groupings: [
           {
             title: 'Stage Gates',
-            skills: ['stage', 'stage-gates'],
+            skills: ['stage', 'defining-done-and-gates'],
           },
         ],
       }),
@@ -76,11 +76,11 @@ test('skills.sh route matching enforces slug boundaries and avoids prefix false 
       }
       return {
         ok: true,
-        text: async () => '<a href="/ThanhNguyxnOrg/blendops/stage-gates">Stage Gates</a>',
+        text: async () => '<a href="/ThanhNguyxnOrg/blendops/defining-done-and-gates">Stage Gates</a>',
       };
     });
     assert.deepEqual(live.skillsSh.missingGroupedSkills, ['stage']);
-    assert.equal(live.skillsSh.missingGroupedSkills.includes('stage-gates'), false);
+    assert.equal(live.skillsSh.missingGroupedSkills.includes('defining-done-and-gates'), false);
   } finally {
     fs.rmSync(tmpRoot, { recursive: true, force: true });
   }
@@ -115,8 +115,8 @@ test('distribution report keeps skills.sh display metrics separate from canonica
     skillsSh: {
       reachable: true,
       displayedListingMetric: 69,
-      canonicalSkillCount: 48,
-      groupedSkillCount: 48,
+      canonicalSkillCount: 14,
+      groupedSkillCount: 14,
       metricIsCanonicalInventory: false,
     },
   });

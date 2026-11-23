@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://blendops.dev/schemas/contract-context-fields.schema.json",
   "title": "BlendOps Contract Routing Context Field Vocabulary Schema",
-  "description": "Validates the canonical vocabulary of dotted literal context keys, scalar types, and allowed enum values used by conditionRule predicates across all 48 skill contracts.",
+  "description": "Validates the canonical vocabulary of dotted literal context keys, scalar types, and allowed enum values used by conditionRule predicates across all 14 skill contracts.",
   "type": "object",
   "additionalProperties": false,
   "required": [

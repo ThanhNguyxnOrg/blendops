@@ -319,11 +319,11 @@ export const HISTORICAL_BASELINE = Object.freeze({
     }),
     p4c2: Object.freeze({
       id: 'p4-c2',
-      description: '151 domain reference files covering geometry, PBR materials, lighting, camera, color management, and GLB budgets',
+      description: '199 domain reference files covering geometry, PBR materials, lighting, camera, color management, and GLB budgets',
       maxPoints: 6,
       awardedPoints: 4.5,
       status: 'Pass',
-      evidence: '151 reference markdown files across 48 skills (3–4 per skill).',
+      evidence: '199 reference markdown files across 14 skills (3–4 per skill).',
     }),
     p5c2: Object.freeze({
       id: 'p5-c2',
@@ -339,7 +339,7 @@ export const HISTORICAL_BASELINE = Object.freeze({
       maxPoints: 5,
       awardedPoints: 4.5,
       status: 'Pass',
-      evidence: 'Enforced via laws/no-arbitrary-python-interface.md and skills/asset-license-checker/SKILL.md.',
+      evidence: 'Enforced via laws/no-arbitrary-python-interface.md and skills/sourcing-assets/SKILL.md.',
     }),
     p6c2: Object.freeze({
       id: 'p6-c2',
@@ -474,26 +474,26 @@ export function inspectWorkingTreeProvenance(rootDir = ROOT_DIR, baseCommitSha =
 
 
 export const HISTORICAL_TO_CURRENT_SKILL_ID = Object.freeze({
-  "blender-asset-discovery-planner": "asset-discovery",
-  "asset-library-organization-planner": "asset-library-plan",
-  "asset-style-consistency-checker": "asset-style-check",
-  "runtime-bridge-conflict-resolver": "bridge-conflicts",
-  "blender-composition-camera-planner": "camera-composition",
-  "character-portrait-scene-planner": "character-portrait",
-  "blender-stop-condition-decider": "done-criteria",
-  "environment-establishing-shot-planner": "environment-shot",
-  "interior-architectural-scene-planner": "interior-scene",
-  "blender-lighting-material-planner": "lighting-material-plan",
-  "glb-mobile-performance-budget": "mobile-glb-budget",
-  "non-blender-user-response-writer": "plain-language-response",
-  "preview-report-template-writer": "preview-report",
-  "three-fiber-component-shape-planner": "r3f-component-plan",
-  "runtime-attempt-report-writer": "runtime-attempt-report",
-  "official-runtime-readiness-checker": "runtime-readiness",
-  "official-runtime-setup-guide": "runtime-setup",
-  "blender-scene-quality-checker": "scene-readiness",
-  "blender-scope-boundary-enforcer": "scope-guard",
-  "blender-checklist-driven-workflow": "stage-gates",
+  "blender-asset-discovery-planner": "sourcing-assets",
+  "asset-library-organization-planner": "sourcing-assets",
+  "asset-style-consistency-checker": "sourcing-assets",
+  "runtime-bridge-conflict-resolver": "setting-up-blender-runtime",
+  "blender-composition-camera-planner": "planning-camera-and-framing",
+  "character-portrait-scene-planner": "planning-scenes",
+  "blender-stop-condition-decider": "defining-done-and-gates",
+  "environment-establishing-shot-planner": "planning-scenes",
+  "interior-architectural-scene-planner": "planning-scenes",
+  "blender-lighting-material-planner": "planning-lighting-and-materials",
+  "glb-mobile-performance-budget": "budgeting-glb-for-web",
+  "non-blender-user-response-writer": "using-blendops",
+  "preview-report-template-writer": "verifying-before-handoff",
+  "three-fiber-component-shape-planner": "handing-off-glb-to-web",
+  "runtime-attempt-report-writer": "verifying-before-handoff",
+  "official-runtime-readiness-checker": "setting-up-blender-runtime",
+  "official-runtime-setup-guide": "setting-up-blender-runtime",
+  "blender-scene-quality-checker": "verifying-before-handoff",
+  "blender-scope-boundary-enforcer": "defining-done-and-gates",
+  "blender-checklist-driven-workflow": "defining-done-and-gates",
 });
 
 export function resolveCurrentSkillId(skillId) {
@@ -676,7 +676,7 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
   const canonicalSuites = evalIndex.suites || evalIndex.pilotSuites || [];
   const suiteEvalMap = new Map(canonicalSuites.map((s) => [s.skillId, s]));
 
-  // 1. Recompute live skill inventory across all 48 skills from registry/skills.json
+  // 1. Recompute live skill inventory across all 14 skills from registry/skills.json
   const catalogEntries = [...(registrySkills.skills || [])].sort((a, b) =>
     a.id < b.id ? -1 : a.id > b.id ? 1 : 0,
   );
@@ -838,7 +838,7 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
     hasPortablePackageSummariesDir &&
     hasClaudeDesktopManifest &&
     bundleSummariesCheck.ok &&
-    bundleSummariesCheck.expectedSummaryCount === 96;
+    bundleSummariesCheck.expectedSummaryCount === 28;
 
   const currentSkillInventory = {
     schemaVersion: '1.5.0',
@@ -883,7 +883,7 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
     skills: updatedSkills,
   };
 
-  // 2. Recompute live evaluation inventory across all 48 skills
+  // 2. Recompute live evaluation inventory across all 14 skills
   const updatedEvals = updatedSkills.map((skillEntry) => {
     const currentId = skillEntry.id;
     const evalMeta = scanEvalMarkdown(rootDir, currentId);
@@ -953,7 +953,7 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
   const findingsList = [
     {
       id: 'F-01',
-      title: '30 of 48 SKILL.md files include Not Run inside Artifact status',
+      title: '30 of 14 SKILL.md files include Not Run inside Artifact status',
       severity: 'P0',
       pillar: 'Pillar 1 & 5 (Truth State Integrity)',
       baselineState: 'OPEN (30/48 skills affected at 3ea3c35)',
@@ -967,7 +967,7 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
         'schemas/skill-eval.schema.json',
         'docs/audits/current/skill-inventory.json',
       ],
-      verificationMethod: 'Automated scan in scripts/check-docs.mjs and unit test in scripts/test-skills-export.mjs confirm 0/48 skills assign Not Run to Artifact status outside Anti-patterns.',
+      verificationMethod: 'Automated scan in scripts/check-docs.mjs and unit test in scripts/test-skills-export.mjs confirm 0/14 skills assign Not Run to Artifact status outside Anti-patterns.',
       remainingScope: 'None. Guarded in CI on every commit.',
     },
     {
@@ -985,8 +985,8 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
         '.github/workflows/docs.yml',
         'package.json',
       ],
-      verificationMethod: 'Pure Node.js fflate (zlibSync) ZIP builder verified byte-for-byte across all 48 skills (SKILL.md, EVAL.md, and references/*) with isolated --output-root concurrency safety in scripts/test-skills-export.mjs; .github/workflows/docs.yml executes npm run ci.',
-      remainingScope: 'None. Full 48-skill ZIP and folder export runs in CI.',
+      verificationMethod: 'Pure Node.js fflate (zlibSync) ZIP builder verified byte-for-byte across all 14 skills (SKILL.md, EVAL.md, and references/*) with isolated --output-root concurrency safety in scripts/test-skills-export.mjs; .github/workflows/docs.yml executes npm run ci.',
+      remainingScope: 'None. Full 14-skill ZIP and folder export runs in CI.',
     },
     {
       id: 'F-03',
@@ -1009,17 +1009,16 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
         'registry/skills.json',
         'registry/workflow-graph.json',
         'docs/audits/current/skill-inventory.json',
-        'skills/blendops-help/contract.json',
-        'skills/recipe-fit-assessor/contract.json',
-        'skills/pack-prerequisite-checker/contract.json',
-        'skills/workflow-stage-router/contract.json',
+        'skills/using-blendops/contract.json',
+        'skills/scoping-3d-briefs/contract.json',
+        'skills/defining-done-and-gates/contract.json',
       ],
       verificationMethod: f03Fixed
-        ? 'npm run registry:check, scripts/test-routing-contracts.mjs, and scripts/test-catalog-contracts.mjs validate Draft 2020-12 Ajv2020 schema compliance across all 48/48 catalog contracts (4 routing participants + 44 specialist skills), context field vocabulary compliance, 16-state activationGate overlap/reachability, 371-edge progression DAG acyclicity, and managed relative-path Markdown sync across all 48 SKILL.md files (0 bare-ID handoff skills).'
+        ? 'npm run registry:check, scripts/test-routing-contracts.mjs, and scripts/test-catalog-contracts.mjs validate Draft 2020-12 Ajv2020 schema compliance across all 14/14 catalog contracts (3 routing participants + 11 specialist skills), context field vocabulary compliance, 16-state activationGate overlap/reachability, 195-edge progression DAG acyclicity, and managed relative-path Markdown sync across all 14 SKILL.md files (0 bare-ID handoff skills).'
         : 'npm run registry:check and scripts/test-routing-contracts.mjs validate Draft 2020-12 Ajv2020 schema compliance, 16-state activationGate overlap/reachability, progression DAG acyclicity, and managed Markdown sync for contracted skills.',
       remainingScope: f03Fixed
-        ? 'None. All 48 catalog skills ship validated contract.json files, synchronized managed Markdown sections, and relative-path handoff links.'
-        : `${contractedCount}/48 skills contracted; ${updatedSkills.length - contractedCount}/48 skills remain uncontracted, and ${bareIdHandoffCount} skills still use bare-ID handoff notation in Markdown.`,
+        ? 'None. All 14 catalog skills ship validated contract.json files, synchronized managed Markdown sections, and relative-path handoff links.'
+        : `${contractedCount}/14 skills contracted; ${updatedSkills.length - contractedCount}/14 skills remain uncontracted, and ${bareIdHandoffCount} skills still use bare-ID handoff notation in Markdown.`,
     },
     {
       id: 'F-04',
@@ -1042,11 +1041,11 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
         'docs/audits/current/eval-inventory.json',
       ],
       verificationMethod: f04Fixed
-        ? `npm run evals:check, npm run evals:run, scripts/test-behavioral-evals.mjs, and scripts/test-eval-coverage.mjs validate and execute all ${machineReadableSuitesCount}/48 catalog .eval.json suites (${totalEvalCasesCount} deterministic cases: ${contractRoutingCasesCount} contract_routing on the 4 routing participants + ${contractHandoffCasesCount} contract_handoff on the 44 specialist skills + ${deterministicFixtureCasesCount} deterministic_fixture across all 48 skills; 0 unmigrated prose-only skills) in CI.`
+        ? `npm run evals:check, npm run evals:run, scripts/test-behavioral-evals.mjs, and scripts/test-eval-coverage.mjs validate and execute all ${machineReadableSuitesCount}/14 catalog .eval.json suites (${totalEvalCasesCount} deterministic cases: ${contractRoutingCasesCount} contract_routing on the 3 routing participants + ${contractHandoffCasesCount} contract_handoff on the 11 specialist skills + ${deterministicFixtureCasesCount} deterministic_fixture across all 14 skills; 0 unmigrated prose-only skills) in CI.`
         : `npm run evals:check, npm run evals:run, and scripts/test-behavioral-evals.mjs validate and execute ${machineReadableSuitesCount} .eval.json suites (${totalEvalCasesCount} cases) in CI.`,
       remainingScope: f04Fixed
-        ? 'None for machine-readable catalog evaluation suites, contract-routing/contract-handoff predicate verification, and deterministic CI execution (48/48 skills covered, 269/269 cases Passed). Live LLM (live_model) and live Blender MCP (blender_runtime) execution remain Not Run.'
-        : `${machineReadableSuitesCount}/48 skills have machine-readable .eval.json suites; ${remainingProseSuitesCount}/48 prose-only EVAL.md skills await migration; live_model and blender_runtime evaluation modes remain Not Run.`,
+        ? 'None for machine-readable catalog evaluation suites, contract-routing/contract-handoff predicate verification, and deterministic CI execution (14/14 skills covered, 269/269 cases Passed). Live LLM (live_model) and live Blender MCP (blender_runtime) execution remain Not Run.'
+        : `${machineReadableSuitesCount}/14 skills have machine-readable .eval.json suites; ${remainingProseSuitesCount}/14 prose-only EVAL.md skills await migration; live_model and blender_runtime evaluation modes remain Not Run.`,
     },
     {
       id: 'F-05',
@@ -1062,39 +1061,34 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
         'scripts/check-docs.mjs',
         'scripts/test-skill-templates.mjs',
         'docs/audits/current/skill-inventory.json',
-        'skills/acceptance-criteria-builder/SKILL.md',
-        'skills/cli-appendix-job-outline/SKILL.md',
-        'skills/pack-prerequisite-checker/SKILL.md',
-        'skills/path-one-host-outline/SKILL.md',
-        'skills/recipe-fit-assessor/SKILL.md',
-        'skills/runtime-attempt-report/SKILL.md',
-        'skills/runtime-path-picker/SKILL.md',
-        'skills/workflow-stage-router/SKILL.md',
+        'skills/defining-done-and-gates/SKILL.md',
+        'skills/setting-up-blender-runtime/SKILL.md',
+        'skills/scoping-3d-briefs/SKILL.md',
+        'skills/verifying-before-handoff/SKILL.md',
+        'skills/using-blendops/SKILL.md',
       ],
       verificationMethod: f05Fixed
-        ? 'Enforced across all 48 catalog skills by validateSkillMarkdownStructure in scripts/check-docs.mjs (18 required headings: 9 core + 9 extended), verified in scripts/test-skill-templates.mjs, and measured in docs/audits/current/skill-inventory.json (skillsMissingExtendedTemplateSections = 0, totalMissingExtendedSectionInstances = 0).'
+        ? 'Enforced across all 14 catalog skills by validateSkillMarkdownStructure in scripts/check-docs.mjs (18 required headings: 9 core + 9 extended), verified in scripts/test-skill-templates.mjs, and measured in docs/audits/current/skill-inventory.json (skillsMissingExtendedTemplateSections = 0, totalMissingExtendedSectionInstances = 0).'
         : `Measured in docs/audits/current/skill-inventory.json (skillsMissingExtendedTemplateSections = ${missingExtendedSkillsCount}, totalMissingExtendedSectionInstances = ${totalMissingExtendedInstances}).`,
       remainingScope: f05Fixed
-        ? 'None. All 48 catalog skills contain all 9 extended template sections and Non-goals.'
+        ? 'None. All 14 catalog skills contain all 9 extended template sections and Non-goals.'
         : 'Backfill missing extended template sections and enforce requiredSkillHeadings in scripts/check-docs.mjs.',
     },
     {
       id: 'F-06',
-      title: 'Routing quartet handoffs in blendops-help and forward reachability of scope-guard',
+      title: 'Routing quartet handoffs in using-blendops and forward reachability of defining-done-and-gates',
       severity: 'P1',
       pillar: 'Pillar 2 (Workflow Architecture & Routing)',
-      baselineState: 'OPEN (blendops-help omitted Batch 7 routing quartet; scope-guard had 0 incoming forward edges)',
+      baselineState: 'OPEN (using-blendops omitted Batch 7 routing quartet; defining-done-and-gates had 0 incoming forward edges)',
       currentLifecycleStatus: 'FIXED',
       resolvedInMilestone: 'Routing Contracts & Quartet Handoffs (f43385a)',
       lastVerifiedCommit: headSha,
       evidencePaths: [
-        'skills/blendops-help/contract.json',
-        'skills/blendops-help/SKILL.md',
-        'skills/workflow-stage-router/contract.json',
-        'skills/workflow-stage-router/SKILL.md',
+        'skills/using-blendops/contract.json',
+        'skills/using-blendops/SKILL.md',
         'registry/workflow-graph.json',
       ],
-      verificationMethod: 'Verified in registry/workflow-graph.json and evals/suites/workflow-stage-router.eval.json (case workflow-stage-mid-workflow-scope-creep).',
+      verificationMethod: 'Verified in registry/workflow-graph.json and evals/suites/using-blendops.eval.json (case workflow-stage-mid-workflow-scope-creep).',
       remainingScope: 'None for routing quartet and scope-boundary delegation.',
     },
     {
@@ -1115,14 +1109,14 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
         'schemas/runtime-evidence-packet.schema.json',
         'schemas/glb-web-handoff-manifest.schema.json',
         'docs/blender-version-compatibility.md',
-        'docs/examples/glb-web-handoff/README.md',
-        'docs/examples/glb-web-handoff/threejs-glb-viewer.mjs',
-        'docs/examples/glb-web-handoff/r3f-glb-viewer.tsx',
+        'docs/examples/handing-off-glb-to-web/README.md',
+        'docs/examples/handing-off-glb-to-web/threejs-glb-viewer.mjs',
+        'docs/examples/handing-off-glb-to-web/r3f-glb-viewer.tsx',
         'scripts/test-behavioral-evals.mjs',
         'scripts/test-glb-handoff.mjs',
       ],
       verificationMethod: f07Fixed
-        ? 'Verified in scripts/test-behavioral-evals.mjs and scripts/test-glb-handoff.mjs: scripts/inspect-glb.mjs parses GLB 2.0 headers, JSON/BIN chunk alignment, buffer/accessor bounds, scene/node/skin/animation/material/texture/extension inventory, and optional Khronos gltf-validator status; scripts/generate-glb-handoff-report.mjs generates schema-validated JSON manifests and escaped HTML/Markdown handoff reports; docs/examples/glb-web-handoff/ provides Three.js and React Three Fiber integration modules; scripts/validate-evidence-packet.mjs enforces runtime/artifact truth-state laws; docs/blender-version-compatibility.md documents Blender 3.6 LTS, 4.2 LTS, and 5.1+ compatibility matrices.'
+        ? 'Verified in scripts/test-behavioral-evals.mjs and scripts/test-glb-handoff.mjs: scripts/inspect-glb.mjs parses GLB 2.0 headers, JSON/BIN chunk alignment, buffer/accessor bounds, scene/node/skin/animation/material/texture/extension inventory, and optional Khronos gltf-validator status; scripts/generate-glb-handoff-report.mjs generates schema-validated JSON manifests and escaped HTML/Markdown handoff reports; docs/examples/handing-off-glb-to-web/ provides Three.js and React Three Fiber integration modules; scripts/validate-evidence-packet.mjs enforces runtime/artifact truth-state laws; docs/blender-version-compatibility.md documents Blender 3.6 LTS, 4.2 LTS, and 5.1+ compatibility matrices.'
         : 'No inspect-glb.mjs binary parser or glTF-Validator runner is wired yet.',
       remainingScope: f07Fixed
         ? 'None for static container inspection, web handoff manifest/report generation, viewer integration helpers, evidence packet validation, and version compatibility matrices. Live Blender runtime exports remain Not Produced.'
@@ -1169,10 +1163,10 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
       baselineState: 'OPEN (96 manual summary files in bundles/ average 14 lines vs 225 lines in SKILL.md)',
       currentLifecycleStatus: !f03Fixed ? 'DEFERRED' : f09Fixed ? 'FIXED' : 'OPEN',
       resolvedInMilestone: !f03Fixed
-        ? 'Deferred until 48/48 skill contracts are authored'
+        ? 'Deferred until 14/14 skill contracts are authored'
         : f09Fixed
           ? 'Deterministic Bundle Reference Summary Generator (defb847 -> 3e72020)'
-          : 'Prerequisite satisfied (48/48 contracts authored)',
+          : 'Prerequisite satisfied (14/14 contracts authored)',
       lastVerifiedCommit: headSha,
       evidencePaths: f09Fixed
         ? [
@@ -1192,10 +1186,10 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
             'registry/skills.json',
           ],
       verificationMethod: f09Fixed
-        ? 'npm run bundles:summaries:check, scripts/check-docs.mjs, and scripts/test-bundle-summaries.mjs verify that all 96 bundle reference summaries (48 in bundles/claude-desktop-manual/references/skills/<id>.md and 48 in bundles/skill-package/blendops/references/skill-<id>.md) plus bundles/claude-desktop-manual/manifest.json are deterministically generated from the 48 canonical skills/<id>/SKILL.md + skills/<id>/contract.json pairs with zero manual drift.'
-        : 'Static check in scripts/check-docs.mjs confirms all bundle files exist and pass frontmatter/link checks; all 48/48 canonical contract.json inputs are now compiled in registry/skills.json.',
+        ? 'npm run bundles:summaries:check, scripts/check-docs.mjs, and scripts/test-bundle-summaries.mjs verify that all 28 bundle reference summaries (14 in bundles/claude-desktop-manual/references/skills/<id>.md and 14 in bundles/skill-package/blendops/references/skill-<id>.md) plus bundles/claude-desktop-manual/manifest.json are deterministically generated from the 14 canonical skills/<id>/SKILL.md + skills/<id>/contract.json pairs with zero manual drift.'
+        : 'Static check in scripts/check-docs.mjs confirms all bundle files exist and pass frontmatter/link checks; all 14/14 canonical contract.json inputs are now compiled in registry/skills.json.',
       remainingScope: f09Fixed
-        ? 'None. All 96 bundle reference summaries and bundle manifest entries are deterministically generated and verified in CI on every commit.'
+        ? 'None. All 28 bundle reference summaries and bundle manifest entries are deterministically generated and verified in CI on every commit.'
         : 'Implement deterministic bundle reference summary generator from canonical SKILL.md + contract.json.',
     },
     {
@@ -1216,10 +1210,10 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
         'scripts/test-behavioral-evals.mjs',
       ],
       verificationMethod: f10Fixed
-        ? 'Enforced by schemas/runtime-capability-policy.schema.json, registry/runtime-capability-policy.json (all 48 skills defaulting to L0), scripts/validate-capability-policy.mjs, and scripts/test-behavioral-evals.mjs (blocking implicit escalation and blocking scene mutation whenever pre-mutation .blend backup verification fails).'
+        ? 'Enforced by schemas/runtime-capability-policy.schema.json, registry/runtime-capability-policy.json (all 14 skills defaulting to L0), scripts/validate-capability-policy.mjs, and scripts/test-behavioral-evals.mjs (blocking implicit escalation and blocking scene mutation whenever pre-mutation .blend backup verification fails).'
         : 'Runtime capability policy files pending.',
       remainingScope: f10Fixed
-        ? 'None for policy schema, 48-skill capability classification, and fail-closed backup/rollback validation. Live Blender rollback execution remains Not Run.'
+        ? 'None for policy schema, 14-skill capability classification, and fail-closed backup/rollback validation. Live Blender rollback execution remains Not Run.'
         : 'Add L0-L3 capability fields to runtime skill contracts and enforce pre-mutation .blend snapshot instructions.',
     },
   ];
@@ -1309,10 +1303,10 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
         'All three initial P0 zero-compensation blockers (F-01 truth-state contradiction, F-02 non-portable ZIP exporter/CI gap, and F-04 zero automated evaluation runner) have been resolved with deterministic CI runners.',
       activeZeroCompensationBlockers: [],
       resolvedZeroCompensationBlockers: [
-        'RESOLVED (F-01): 0/48 SKILL.md files assign Not Run to Artifact status (was 30/48 at 3ea3c35). Guarded by scripts/check-docs.mjs and schemas.',
-        'RESOLVED (F-02): scripts/export-claude-skills.mjs uses pure-Node fflate across all 48 skills (SKILL.md + EVAL.md + references/*) with isolated --output-root concurrency safety and .github/workflows/docs.yml runs npm run ci.',
-        'RESOLVED (F-03): 48/48 catalog skills ship validated contract.json files, compiled registry/skills.json + registry/workflow-graph.json (371 edges, 0 progression cycles), and synchronized relative-path Markdown handoff blocks.',
-        'RESOLVED (F-04): scripts/run-evals.mjs validates and executes 269 deterministic, contract-routing, and contract-handoff evaluation cases across all 48/48 catalog skills in CI (0 unmigrated prose skills); live_model and blender_runtime modes remain honestly marked Not Run.',
+        'RESOLVED (F-01): 0/14 SKILL.md files assign Not Run to Artifact status (was 30/14 at 3ea3c35). Guarded by scripts/check-docs.mjs and schemas.',
+        'RESOLVED (F-02): scripts/export-claude-skills.mjs uses pure-Node fflate across all 14 skills (SKILL.md + EVAL.md + references/*) with isolated --output-root concurrency safety and .github/workflows/docs.yml runs npm run ci.',
+        'RESOLVED (F-03): 14/14 catalog skills ship validated contract.json files, compiled registry/skills.json + registry/workflow-graph.json (195 edges, 0 progression cycles), and synchronized relative-path Markdown handoff blocks.',
+        'RESOLVED (F-04): scripts/run-evals.mjs validates and executes 269 deterministic, contract-routing, and contract-handoff evaluation cases across all 14/14 catalog skills in CI (0 unmigrated prose skills); live_model and blender_runtime modes remain honestly marked Not Run.',
       ],
     },
     totals: {
@@ -1343,21 +1337,21 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
         criteria: [
           {
             id: 'p1-c1',
-            description: 'All 48 skills ship valid Anthropic/Claude.ai frontmatter (name <= 64, description <= 200, no extra keys)',
+            description: 'All 14 skills ship valid Anthropic/Claude.ai frontmatter (name <= 64, description <= 200, no extra keys)',
             maxPoints: 4,
             awardedPoints: 4.0,
             status: 'Pass',
-            evidence: '48/48 skills pass assertSkillFrontmatterSpecCompliant and assertSkillFrontmatterUploadLimits in scripts/check-docs.mjs.',
+            evidence: '14/14 skills pass assertSkillFrontmatterSpecCompliant and assertSkillFrontmatterUploadLimits in scripts/check-docs.mjs.',
           },
           {
             id: 'p1-c2',
-            description: 'All 48 skills contain complete template sections and consistent truth-state definitions',
+            description: 'All 14 skills contain complete template sections and consistent truth-state definitions',
             maxPoints: 4,
             awardedPoints: p1c2Awarded,
             status: f05Fixed ? 'Pass' : 'Warn',
             evidence: f05Fixed
-              ? 'F-01 FIXED & F-05 FIXED: 48/48 skills strictly separate Runtime status (Not Run) from Artifact status (Not Produced) and include all 9 core + 9 extended template sections enforced by scripts/check-docs.mjs and scripts/test-skill-templates.mjs.'
-              : 'F-01 FIXED: 48/48 skills strictly separate Runtime status (Not Run) from Artifact status (Not Produced). F-05 OPEN: extended template sections remain missing.',
+              ? 'F-01 FIXED & F-05 FIXED: 14/14 skills strictly separate Runtime status (Not Run) from Artifact status (Not Produced) and include all 9 core + 9 extended template sections enforced by scripts/check-docs.mjs and scripts/test-skill-templates.mjs.'
+              : 'F-01 FIXED: 14/14 skills strictly separate Runtime status (Not Run) from Artifact status (Not Produced). F-05 OPEN: extended template sections remain missing.',
           },
           {
             id: 'p1-c3',
@@ -1365,7 +1359,7 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
             maxPoints: 4,
             awardedPoints: 4.0,
             status: 'Pass',
-            evidence: '191 distinct trigger phrases and 48 distinct canonical roles across all 48 contracts with 0 collisions; the 4 routing participants enforce mutually exclusive Rank 1-4 activation gates verified across all 16 state combinations in scripts/build-registry.mjs.',
+            evidence: '191 distinct trigger phrases and 14 distinct canonical roles across all 14 contracts with 0 collisions; the 3 routing participants enforce mutually exclusive Rank 1-4 activation gates verified across all 16 state combinations in scripts/build-registry.mjs.',
           },
           {
             id: 'p1-c4',
@@ -1374,7 +1368,7 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
             awardedPoints: p1c4Awarded,
             status: f03Fixed ? 'Pass' : 'Warn',
             evidence: f03Fixed
-              ? 'F-03 FIXED: All 48/48 catalog skills ship Draft 2020-12 Ajv2020-validated contract.json files, context field vocabulary validation (registry/contract-context-fields.json), and compiled registry/skills.json.'
+              ? 'F-03 FIXED: All 14/14 catalog skills ship Draft 2020-12 Ajv2020-validated contract.json files, context field vocabulary validation (registry/contract-context-fields.json), and compiled registry/skills.json.'
               : 'Draft 2020-12 Ajv2020 contract schema, compiler, and partial contracts are live in registry/skills.json.',
           },
         ],
@@ -1396,12 +1390,12 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
         criteria: [
           {
             id: 'p2-c1',
-            description: 'All 48 skills connected in workflow handoff graph with valid targets',
+            description: 'All 14 skills connected in workflow handoff graph with valid targets',
             maxPoints: 5,
             awardedPoints: p2c1Awarded,
             status: 'Pass',
             evidence: f03Fixed
-              ? 'All 48/48 skills are contracted nodes in registry/workflow-graph.json (371 edges) and 100% of handoff targets and exclusion delegates resolve to valid catalog skill IDs.'
+              ? 'All 14/14 skills are contracted nodes in registry/workflow-graph.json (195 edges) and 100% of handoff targets and exclusion delegates resolve to valid catalog skill IDs.'
               : '100% of handoff targets resolve to valid catalog skill IDs.',
           },
           {
@@ -1410,7 +1404,7 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
             maxPoints: 4,
             awardedPoints: 4.0,
             status: 'Pass',
-            evidence: 'detectProgressionCycles and Ajv2020 retryPolicy validation enforce acyclic progression (0 cycles across all 48 skills) and bounded retry exit conditions in CI.',
+            evidence: 'detectProgressionCycles and Ajv2020 retryPolicy validation enforce acyclic progression (0 cycles across all 14 skills) and bounded retry exit conditions in CI.',
           },
           {
             id: 'p2-c3',
@@ -1419,8 +1413,8 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
             awardedPoints: p2c3Awarded,
             status: f03Fixed ? 'Pass' : 'Warn',
             evidence: f03Fixed
-              ? 'F-03 & F-06 FIXED: All 48/48 SKILL.md files synchronize managed relative-path handoff blocks (../<target>/SKILL.md); 0 skills use bare-ID handoff notation.'
-              : 'F-06 FIXED: blendops-help links the routing quartet and workflow-stage-router links scope-guard. Bare-ID handoff notation remains in uncontracted skills.',
+              ? 'F-03 & F-06 FIXED: All 14/14 SKILL.md files synchronize managed relative-path handoff blocks (../<target>/SKILL.md); 0 skills use bare-ID handoff notation.'
+              : 'F-06 FIXED: using-blendops links the routing quartet and using-blendops links defining-done-and-gates. Bare-ID handoff notation remains in uncontracted skills.',
           },
           {
             id: 'p2-c4',
@@ -1429,7 +1423,7 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
             awardedPoints: p2c4Awarded,
             status: 'Pass',
             evidence: f03Fixed
-              ? 'scripts/build-registry.mjs compiles registry/workflow-graph.json across all 48 contracted skills (371 edges, 0 progression cycles) and validates state-space overlap, reachability, and context field predicates in CI.'
+              ? 'scripts/build-registry.mjs compiles registry/workflow-graph.json across all 14 contracted skills (195 edges, 0 progression cycles) and validates state-space overlap, reachability, and context field predicates in CI.'
               : 'scripts/build-registry.mjs compiles registry/workflow-graph.json and validates state-space overlap/reachability in CI.',
           },
         ],
@@ -1457,7 +1451,7 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
             maxPoints: 4,
             awardedPoints: 4.0,
             status: 'Pass',
-            evidence: '48/48 skills ship EVAL.md verified by check-docs.mjs and exported byte-for-byte into dist/claude-skills/desktop-zips/*.zip and dist/claude-skills/claude-code-skills/*/.',
+            evidence: '14/14 skills ship EVAL.md verified by check-docs.mjs and exported byte-for-byte into dist/claude-skills/desktop-zips/*.zip and dist/claude-skills/claude-code-skills/*/.',
           },
           {
             id: 'p3-c2',
@@ -1466,8 +1460,8 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
             awardedPoints: p3c2Awarded,
             status: f04Fixed ? 'Pass' : 'Warn',
             evidence: f04Fixed
-              ? `F-04 FIXED: All ${machineReadableSuitesCount}/48 catalog skills ship machine-readable evals/suites/<skill>.eval.json suites (${totalEvalCasesCount} total cases, >= 5 cases per skill, 0 unmigrated prose-only skills).`
-              : `${machineReadableSuitesCount}/48 skills ship machine-readable .eval.json suites (${totalEvalCasesCount} total cases). ${remainingProseSuitesCount}/48 skills remain single-prompt prose outlines pending migration.`,
+              ? `F-04 FIXED: All ${machineReadableSuitesCount}/14 catalog skills ship machine-readable evals/suites/<skill>.eval.json suites (${totalEvalCasesCount} total cases, >= 5 cases per skill, 0 unmigrated prose-only skills).`
+              : `${machineReadableSuitesCount}/14 skills ship machine-readable .eval.json suites (${totalEvalCasesCount} total cases). ${remainingProseSuitesCount}/14 skills remain single-prompt prose outlines pending migration.`,
           },
           {
             id: 'p3-c3',
@@ -1476,7 +1470,7 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
             awardedPoints: p3c3Awarded,
             status: 'Warn',
             evidence: f04Fixed
-              ? `scripts/run-evals.mjs executes all ${totalEvalCasesCount} deterministic cases across 48/48 catalog skills (${contractRoutingCasesCount} contract_routing + ${contractHandoffCasesCount} contract_handoff + ${deterministicFixtureCasesCount} deterministic_fixture; ${totalEvalCasesCount}/${totalEvalCasesCount} Passed) in CI. Live LLM (live_model) and Blender MCP (blender_runtime) evaluation modes remain Not Run.`
+              ? `scripts/run-evals.mjs executes all ${totalEvalCasesCount} deterministic cases across 14/14 catalog skills (${contractRoutingCasesCount} contract_routing + ${contractHandoffCasesCount} contract_handoff + ${deterministicFixtureCasesCount} deterministic_fixture; ${totalEvalCasesCount}/${totalEvalCasesCount} Passed) in CI. Live LLM (live_model) and Blender MCP (blender_runtime) evaluation modes remain Not Run.`
               : `scripts/run-evals.mjs executes ${totalEvalCasesCount} deterministic cases in CI. Live LLM (live_model) and Blender MCP (blender_runtime) evaluation modes remain Not Run.`,
           },
         ],
@@ -1494,9 +1488,9 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
           'scripts/inspect-glb.mjs',
           'scripts/generate-glb-handoff-report.mjs',
           'schemas/glb-web-handoff-manifest.schema.json',
-          'docs/examples/glb-web-handoff/README.md',
-          'docs/examples/glb-web-handoff/threejs-glb-viewer.mjs',
-          'docs/examples/glb-web-handoff/r3f-glb-viewer.tsx',
+          'docs/examples/handing-off-glb-to-web/README.md',
+          'docs/examples/handing-off-glb-to-web/threejs-glb-viewer.mjs',
+          'docs/examples/handing-off-glb-to-web/r3f-glb-viewer.tsx',
           'scripts/test-glb-handoff.mjs',
           'docs/audits/current/skill-inventory.json',
         ],
@@ -1510,7 +1504,7 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
             awardedPoints: p4c3Awarded,
             status: f07Fixed ? 'Pass' : 'Warn',
             evidence: f07Fixed
-              ? 'F-07 FIXED: scripts/inspect-glb.mjs and scripts/generate-glb-handoff-report.mjs validate GLB 2.0 binary headers, JSON/BIN chunk alignment, buffer/accessor bounds, scene/node/skin/animation/material/texture/extension inventory, and optional Khronos gltf-validator status; schemas/glb-web-handoff-manifest.schema.json and docs/examples/glb-web-handoff/ provide deterministic web handoff manifests, HTML/Markdown reports, and Three.js / React Three Fiber viewer integration; docs/blender-version-compatibility.md documents Blender 3.6 LTS, 4.2 LTS, and 5.1+ shader, engine, color management, and glTF 2.0 matrices.'
+              ? 'F-07 FIXED: scripts/inspect-glb.mjs and scripts/generate-glb-handoff-report.mjs validate GLB 2.0 binary headers, JSON/BIN chunk alignment, buffer/accessor bounds, scene/node/skin/animation/material/texture/extension inventory, and optional Khronos gltf-validator status; schemas/glb-web-handoff-manifest.schema.json and docs/examples/handing-off-glb-to-web/ provide deterministic web handoff manifests, HTML/Markdown reports, and Three.js / React Three Fiber viewer integration; docs/blender-version-compatibility.md documents Blender 3.6 LTS, 4.2 LTS, and 5.1+ shader, engine, color management, and glTF 2.0 matrices.'
               : 'No deterministic GLB binary parser or version compatibility table present.',
           },
         ],
@@ -1537,7 +1531,7 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
             awardedPoints: p5c1Awarded,
             status: 'Pass',
             evidence:
-              'Enforced across all 48 SKILL.md files by scripts/check-docs.mjs, schemas/skill-contract.schema.json, schemas/skill-eval.schema.json, schemas/runtime-evidence-packet.schema.json, scripts/validate-evidence-packet.mjs, and scripts/run-evals.mjs.',
+              'Enforced across all 14 SKILL.md files by scripts/check-docs.mjs, schemas/skill-contract.schema.json, schemas/skill-eval.schema.json, schemas/runtime-evidence-packet.schema.json, scripts/validate-evidence-packet.mjs, and scripts/run-evals.mjs.',
           },
           HISTORICAL_BASELINE.baselineCriteria.p5c2,
           {
@@ -1561,7 +1555,7 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
         verdict: f10Fixed ? 'Pass' : 'Warn',
         evidenceFiles: [
           'laws/no-arbitrary-python-interface.md',
-          'skills/asset-license-checker/SKILL.md',
+          'skills/sourcing-assets/SKILL.md',
           'bundles/generic-project-local/ROLLBACK.md',
           'docs/safety-model.md',
           'schemas/runtime-capability-policy.schema.json',
@@ -1578,7 +1572,7 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
             awardedPoints: p6c3Awarded,
             status: f10Fixed ? 'Pass' : 'Warn',
             evidence: f10Fixed
-              ? 'F-10 FIXED: schemas/runtime-capability-policy.schema.json, registry/runtime-capability-policy.json (all 48 skills defaulting to L0), scripts/validate-capability-policy.mjs, and docs/safety-model.md enforce L0-L3 capability tiers, non-escalation, asset-license-checker clearance, and fail-closed pre-mutation .blend backup verification.'
+              ? 'F-10 FIXED: schemas/runtime-capability-policy.schema.json, registry/runtime-capability-policy.json (all 14 skills defaulting to L0), scripts/validate-capability-policy.mjs, and docs/safety-model.md enforce L0-L3 capability tiers, non-escalation, sourcing-assets clearance, and fail-closed pre-mutation .blend backup verification.'
               : 'Runtime capability policy enforcement pending.',
           },
         ],
@@ -1642,12 +1636,12 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
           {
             id: 'p8-c1',
             description:
-              'Clear start-here onboarding, hub index, plain-language law, deterministic 96-file bundle reference summaries, and 0 broken relative links across active Markdown files',
+              'Clear start-here onboarding, hub index, plain-language law, deterministic 28-file bundle reference summaries, and 0 broken relative links across active Markdown files',
             maxPoints: 5,
             awardedPoints: p8c1Awarded,
             status: 'Pass',
             evidence: f09Fixed
-              ? 'F-09 FIXED: Active markdown files pass relative link and policy checks in scripts/check-docs.mjs, and all 96 bundle reference summaries across bundles/claude-desktop-manual/references/skills/*.md and bundles/skill-package/blendops/references/skill-*.md are deterministically generated and verified via scripts/generate-bundle-reference-summaries.mjs and scripts/test-bundle-summaries.mjs.'
+              ? 'F-09 FIXED: Active markdown files pass relative link and policy checks in scripts/check-docs.mjs, and all 28 bundle reference summaries across bundles/claude-desktop-manual/references/skills/*.md and bundles/skill-package/blendops/references/skill-*.md are deterministically generated and verified via scripts/generate-bundle-reference-summaries.mjs and scripts/test-bundle-summaries.mjs.'
               : 'Bundle reference summary check pending.',
           },
         ],
@@ -1730,7 +1724,7 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
           script: 'npm run docs:check',
           command: 'node scripts/check-docs.mjs',
           status: 'Passed',
-          verifiedScope: 'Active Markdown files, frontmatter limits, relative links, Path 1 Blender 5.1+ attribution, truth-state guard, 18-heading skill structure, 26-target adapter matrix consistency, and 96-file bundle summaries',
+          verifiedScope: 'Active Markdown files, frontmatter limits, relative links, Path 1 Blender 5.1+ attribution, truth-state guard, 18-heading skill structure, 26-target adapter matrix consistency, and 28-file bundle summaries',
         },
         {
           script: 'npm run catalog:check',
@@ -1754,31 +1748,31 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
           script: 'npm run registry:check',
           command: 'node scripts/build-registry.mjs --check',
           status: 'Passed',
-          verifiedScope: 'Draft 2020-12 Ajv2020 contract schema validation across all 48/48 catalog skills, 16-state precedence ladder overlap/reachability, 371-edge acyclic progression DAG, and managed Markdown sync',
+          verifiedScope: 'Draft 2020-12 Ajv2020 contract schema validation across all 14/14 catalog skills, 16-state precedence ladder overlap/reachability, 195-edge acyclic progression DAG, and managed Markdown sync',
         },
         {
           script: 'npm run evals:check',
           command: 'node scripts/run-evals.mjs --check',
           status: 'Passed',
-          verifiedScope: 'Draft 2020-12 Ajv2020 evaluation schema (2.0.0) validation across all 48/48 catalog suites (269 cases) and evals/index.json synchronization',
+          verifiedScope: 'Draft 2020-12 Ajv2020 evaluation schema (2.0.0) validation across all 14/14 catalog suites (269 cases) and evals/index.json synchronization',
         },
         {
           script: 'npm run evals:run',
           command: 'node scripts/run-evals.mjs',
           status: 'Passed',
-          verifiedScope: '269/269 deterministic fixture, truth-state separation, contract-routing, and specialist contract-handoff assertions passed across 48/48 skills (live_model: Not Run, blender_runtime: Not Run)',
+          verifiedScope: '269/269 deterministic fixture, truth-state separation, contract-routing, and specialist contract-handoff assertions passed across 14/14 skills (live_model: Not Run, blender_runtime: Not Run)',
         },
         {
           script: 'npm run bundles:summaries:check',
           command: 'node scripts/generate-bundle-reference-summaries.mjs --check',
           status: 'Passed',
-          verifiedScope: 'Byte-for-byte verification of all 96 bundle reference summaries and bundles/claude-desktop-manual/manifest.json against canonical SKILL.md + contract.json',
+          verifiedScope: 'Byte-for-byte verification of all 28 bundle reference summaries and bundles/claude-desktop-manual/manifest.json against canonical SKILL.md + contract.json',
         },
         {
           script: 'npm run skills:export',
           command: 'node scripts/export-claude-skills.mjs',
           status: 'Passed',
-          verifiedScope: '48 ZIP archives in dist/claude-skills/desktop-zips/ and 48 folders in dist/claude-skills/claude-code-skills/',
+          verifiedScope: '14 ZIP archives in dist/claude-skills/desktop-zips/ and 14 folders in dist/claude-skills/claude-code-skills/',
         },
         {
           script: 'npm test',
@@ -1790,8 +1784,8 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
     },
     truthStates: {
       staticValidation: 'Verified',
-      contractRoutingPilot: 'Verified (48/48 skills contracted; 4 routing participants + 44 specialist contracts)',
-      deterministicEvalFixtures: `Verified (${machineReadableSuitesCount}/48 skills, ${totalEvalCasesCount} cases: ${contractRoutingCasesCount} contract_routing + ${contractHandoffCasesCount} contract_handoff + ${deterministicFixtureCasesCount} deterministic_fixture)`,
+      contractRoutingPilot: 'Verified (14/14 skills contracted; 3 routing participants + 11 specialist contracts)',
+      deterministicEvalFixtures: `Verified (${machineReadableSuitesCount}/14 skills, ${totalEvalCasesCount} cases: ${contractRoutingCasesCount} contract_routing + ${contractHandoffCasesCount} contract_handoff + ${deterministicFixtureCasesCount} deterministic_fixture)`,
       liveModelEval: 'Not Run',
       blenderRuntimeExecution: 'Not Run',
       blenderArtifacts: 'Not Produced',
@@ -1813,13 +1807,13 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
 | :--- | :---: | :---: | :--- |
 | **Overall Measured Score** | \`54.5 / 100\` | **\`${totalMeasuredScore.toFixed(1)} / 100\`** | **\`${totalScoreDelta}\`** (backed by schemas, registries, CLI tooling, and CI suites) |
 | **Active P0 Zero-Compensation Blockers** | \`3\` (\`F-01\`, \`F-02\`, \`F-04\`) | **\`0\`** | \`F-01\`, \`F-02\`, \`F-03\`, \`F-04\` **FIXED** |
-| **Skills with \`Artifact status: Not Run\` (\`F-01\`)** | \`30 / 48\` | **\`0 / 48\`** | **FIXED** & guarded in \`scripts/check-docs.mjs\` |
-| **Extended Template Completeness (\`F-05\`)** | \`8 / 48\` skills missing sections | **\`${missingExtendedSkillsCount} / 48\` skills missing sections** | **${f05Fixed ? 'FIXED' : 'OPEN'}** (18-heading guard in \`scripts/check-docs.mjs\`) |
-| **Portable ZIP Exporter & Full CI (\`F-02\`)** | \`spawnSync zip ENOENT\` | **Pure-Node \`fflate\` (48/48 ZIPs)** | **FIXED** (isolated \`--output-root\` + full \`npm run ci\`) |
+| **Skills with \`Artifact status: Not Run\` (\`F-01\`)** | \`30 / 14\` | **\`0 / 14\`** | **FIXED** & guarded in \`scripts/check-docs.mjs\` |
+| **Extended Template Completeness (\`F-05\`)** | \`8 / 14\` skills missing sections | **\`${missingExtendedSkillsCount} / 14\` skills missing sections** | **${f05Fixed ? 'FIXED' : 'OPEN'}** (18-heading guard in \`scripts/check-docs.mjs\`) |
+| **Portable ZIP Exporter & Full CI (\`F-02\`)** | \`spawnSync zip ENOENT\` | **Pure-Node \`fflate\` (14/14 ZIPs)** | **FIXED** (isolated \`--output-root\` + full \`npm run ci\`) |
 | **Adapter Registry & Evidence Integrity (\`F-08\`)** | \`16 / 26\` targets synced | **\`26 / 26\` targets synced & guarded** | **PARTIALLY_FIXED** (2 \`verified-read\`, 24 \`linked-only\`, CLI installer verified) |
-| **Machine-Readable Contracts (\`F-03\`)** | \`0 / 48\` | **\`${contractedCount} / 48\` (\`${f03Fixed ? 'full-catalog' : 'routing-pilot'}\`)** | **${f03Fixed ? 'FIXED' : 'PARTIALLY_FIXED'}** (\`Ajv2020\` + 371-edge DAG + 0 bare-ID handoffs) |
-| **Machine-Readable Eval Suites (\`F-04\`)** | \`0 / 48\` (0 runners) | **\`${machineReadableSuitesCount} / 48\` (\`${totalEvalCasesCount}\` cases in CI)** | **${f04Fixed ? 'FIXED' : 'PARTIALLY_FIXED'}** (0 unmigrated prose suites) |
-| **Bundle Reference Summaries (\`F-09\`)** | \`96\` manual summary files | **\`96\` deterministic generated summaries** | **${f09Fixed ? 'FIXED' : 'OPEN'}** (\`bundles:summaries:build\` + \`bundles:summaries:check\` in CI) |
+| **Machine-Readable Contracts (\`F-03\`)** | \`0 / 14\` | **\`${contractedCount} / 14\` (\`${f03Fixed ? 'full-catalog' : 'routing-pilot'}\`)** | **${f03Fixed ? 'FIXED' : 'PARTIALLY_FIXED'}** (\`Ajv2020\` + 195-edge DAG + 0 bare-ID handoffs) |
+| **Machine-Readable Eval Suites (\`F-04\`)** | \`0 / 14\` (0 runners) | **\`${machineReadableSuitesCount} / 14\` (\`${totalEvalCasesCount}\` cases in CI)** | **${f04Fixed ? 'FIXED' : 'PARTIALLY_FIXED'}** (0 unmigrated prose suites) |
+| **Bundle Reference Summaries (\`F-09\`)** | \`28\` manual summary files | **\`28\` deterministic generated summaries** | **${f09Fixed ? 'FIXED' : 'OPEN'}** (\`bundles:summaries:build\` + \`bundles:summaries:check\` in CI) |
 | **Live LLM / Blender Runtime Evals** | \`Not Run\` | **\`Not Run\` / \`Not Produced\`** | Honest zero-fabrication boundary preserved |
 
 ### 1.1 Audit Provenance & Snapshot Basis
@@ -1838,7 +1832,7 @@ Because a Git commit cannot honestly contain its own final commit SHA inside tra
 
 The \`auditedInputsSha256\` digest is governed by [\`../audited-inputs.manifest.json\`](../audited-inputs.manifest.json):
 
-- **Included Scope (\`requiredFiles\` + \`requiredDirectories\`):** Covers [\`../audited-inputs.manifest.json\`](../audited-inputs.manifest.json), root governance & dependency files, core architecture & runtime docs, all CLI/validation/compiler/eval/bundle/installer/test scripts (\`scripts/test-*.mjs\`), and the complete directory trees \`docs/evals\`, \`docs/examples/glb-web-handoff\`, \`docs/install\`, \`docs/adapters\`, \`docs/recipes\`, \`docs/workflows\`, \`laws\`, \`packs\`, \`bundles\`, \`skills\`, \`registry\`, \`evals\`, and \`schemas\`.
+- **Included Scope (\`requiredFiles\` + \`requiredDirectories\`):** Covers [\`../audited-inputs.manifest.json\`](../audited-inputs.manifest.json), root governance & dependency files, core architecture & runtime docs, all CLI/validation/compiler/eval/bundle/installer/test scripts (\`scripts/test-*.mjs\`), and the complete directory trees \`docs/evals\`, \`docs/examples/handing-off-glb-to-web\`, \`docs/install\`, \`docs/adapters\`, \`docs/recipes\`, \`docs/workflows\`, \`laws\`, \`packs\`, \`bundles\`, \`skills\`, \`registry\`, \`evals\`, and \`schemas\`.
 - **Excluded Scope (\`excludedPrefixes\` & \`excludedExactPaths\`):** Excludes \`docs/audits/current/**\`, \`.git/\`, \`node_modules/\`, \`dist/\`, \`.aistudio/\`, temporary files, and symbolic links.
 - **Digest Algorithm:** Expands all manifest files and directories into a deduplicated, lexicographically sorted list of normalized POSIX relative paths and computes a SHA-256 digest over unambiguous length-prefixed framing.
 
@@ -1848,15 +1842,15 @@ The \`auditedInputsSha256\` digest is governed by [\`../audited-inputs.manifest.
 
 | ID | Priority | Finding | Baseline State | Current Status | Verification / Remaining Work |
 | :--- | :---: | :--- | :---: | :---: | :--- |
-| **F-01** | **P0** | \`Artifact status: Not Run\` contradiction in 30 skills | \`OPEN\` | **\`FIXED\`** | 0/48 skills affected; guarded in \`check-docs.mjs\` and \`test-skills-export.mjs\`. |
+| **F-01** | **P0** | \`Artifact status: Not Run\` contradiction in 30 skills | \`OPEN\` | **\`FIXED\`** | 0/14 skills affected; guarded in \`check-docs.mjs\` and \`test-skills-export.mjs\`. |
 | **F-02** | **P0** | External \`zip\` binary dependency & partial CI workflow | \`OPEN\` | **\`FIXED\`** | Pure-Node \`fflate\` exports \`SKILL.md\`, \`EVAL.md\`, and \`references/*\` with \`--output-root\` isolation; \`docs.yml\` runs \`npm run ci\`. |
-| **F-03** | **P0** | Machine-readable \`contract.json\` & compiled \`registry/\` | \`OPEN\` | **\`${f03Fixed ? 'FIXED' : 'PARTIALLY_FIXED'}\`** | ${f03Fixed ? '48/48 skills contracted (`4` routing participants + `44` specialist skills), 371-edge acyclic progression graph, and 48/48 relative-path Markdown handoffs.' : `${contractedCount}/48 skills contracted; ${updatedSkills.length - contractedCount}/48 skills pending.`} |
-| **F-04** | **P0** | Structured behavioral evaluation suites & automated runner | \`OPEN\` | **\`${f04Fixed ? 'FIXED' : 'PARTIALLY_FIXED'}\`** | ${f04Fixed ? `48/48 canonical \`.eval.json\` suites (${totalEvalCasesCount} cases: ${contractRoutingCasesCount} \`contract_routing\` + ${contractHandoffCasesCount} \`contract_handoff\` + ${deterministicFixtureCasesCount} \`deterministic_fixture\`, 0 prose-only pending) verified in CI; \`live_model\` and \`blender_runtime\` remain \`Not Run\`.` : `${machineReadableSuitesCount}/48 \`.eval.json\` suites (${totalEvalCasesCount} cases) in CI; ${remainingProseSuitesCount}/48 prose evals pending.`} |
-| **F-05** | **P1** | 8 skills omit 9–11 extended template sections | \`OPEN\` | **\`${f05Fixed ? 'FIXED' : 'OPEN'}\`** | ${f05Fixed ? '48/48 skills include all 9 core + 9 extended sections; guarded in `check-docs.mjs` and `test-skill-templates.mjs`.' : 'Extended template sections missing; tracked in `skill-inventory.json`.'} |
-| **F-06** | **P1** | Routing quartet handoffs & \`scope-guard\` reachability | \`OPEN\` | **\`FIXED\`** | Wired in \`blendops-help\` and \`workflow-stage-router\` contracts and verified in \`workflow-graph.json\`. |
-| **F-07** | **P1** | Deterministic GLB inspector & Blender version matrices | \`OPEN\` | **\`${f07Fixed ? 'FIXED' : 'OPEN'}\`** | ${f07Fixed ? '`scripts/inspect-glb.mjs`, `scripts/generate-glb-handoff-report.mjs`, `schemas/glb-web-handoff-manifest.schema.json`, `docs/examples/glb-web-handoff/`, `scripts/validate-evidence-packet.mjs`, and `docs/blender-version-compatibility.md` verified in CI.' : 'GLB tooling pending.'} |
+| **F-03** | **P0** | Machine-readable \`contract.json\` & compiled \`registry/\` | \`OPEN\` | **\`${f03Fixed ? 'FIXED' : 'PARTIALLY_FIXED'}\`** | ${f03Fixed ? '14/14 skills contracted (`4` routing participants + `44` specialist skills), 195-edge acyclic progression graph, and 14/14 relative-path Markdown handoffs.' : `${contractedCount}/14 skills contracted; ${updatedSkills.length - contractedCount}/14 skills pending.`} |
+| **F-04** | **P0** | Structured behavioral evaluation suites & automated runner | \`OPEN\` | **\`${f04Fixed ? 'FIXED' : 'PARTIALLY_FIXED'}\`** | ${f04Fixed ? `14/14 canonical \`.eval.json\` suites (${totalEvalCasesCount} cases: ${contractRoutingCasesCount} \`contract_routing\` + ${contractHandoffCasesCount} \`contract_handoff\` + ${deterministicFixtureCasesCount} \`deterministic_fixture\`, 0 prose-only pending) verified in CI; \`live_model\` and \`blender_runtime\` remain \`Not Run\`.` : `${machineReadableSuitesCount}/14 \`.eval.json\` suites (${totalEvalCasesCount} cases) in CI; ${remainingProseSuitesCount}/14 prose evals pending.`} |
+| **F-05** | **P1** | 8 skills omit 9–11 extended template sections | \`OPEN\` | **\`${f05Fixed ? 'FIXED' : 'OPEN'}\`** | ${f05Fixed ? '14/14 skills include all 9 core + 9 extended sections; guarded in `check-docs.mjs` and `test-skill-templates.mjs`.' : 'Extended template sections missing; tracked in `skill-inventory.json`.'} |
+| **F-06** | **P1** | Routing quartet handoffs & \`defining-done-and-gates\` reachability | \`OPEN\` | **\`FIXED\`** | Wired in \`using-blendops\` and \`using-blendops\` contracts and verified in \`workflow-graph.json\`. |
+| **F-07** | **P1** | Deterministic GLB inspector & Blender version matrices | \`OPEN\` | **\`${f07Fixed ? 'FIXED' : 'OPEN'}\`** | ${f07Fixed ? '`scripts/inspect-glb.mjs`, `scripts/generate-glb-handoff-report.mjs`, `schemas/glb-web-handoff-manifest.schema.json`, `docs/examples/handing-off-glb-to-web/`, `scripts/validate-evidence-packet.mjs`, and `docs/blender-version-compatibility.md` verified in CI.' : 'GLB tooling pending.'} |
 | **F-08** | **P1** | \`docs/adapter-registry.md\` drift from 26 \`docs/install/\` targets | \`OPEN\` | **\`PARTIALLY_FIXED\`** | All 26 install targets synced and verified in \`docs/evals/adapter-empirical-verification.md\`; \`bin/blendops.mjs\`, \`scripts/install-skills.mjs\`, \`scripts/test-project-installer.mjs\`, and \`scripts/test-cli-package.mjs\` verify safe project-local attachment, rollback, and packaged CLI tarball execution; 2 targets (\`claude-code\`, \`generic-project\`) are \`verified-read\`; 24 targets remain \`linked-only\` pending live host testing. |
-| **F-09** | **P2** | Manual bundle reference summary drift risk | \`OPEN\` | **\`${!f03Fixed ? 'DEFERRED' : f09Fixed ? 'FIXED' : 'OPEN'}\`** | ${f09Fixed ? '96/96 bundle reference summaries (48 Claude Desktop + 48 portable skill package) and `bundles/claude-desktop-manual/manifest.json` deterministically generated and verified via `npm run bundles:summaries:check` and `scripts/test-bundle-summaries.mjs`.' : 'Bundle generator pending.'} |
+| **F-09** | **P2** | Manual bundle reference summary drift risk | \`OPEN\` | **\`${!f03Fixed ? 'DEFERRED' : f09Fixed ? 'FIXED' : 'OPEN'}\`** | ${f09Fixed ? '28/28 bundle reference summaries (14 Claude Desktop + 14 portable skill package) and `bundles/claude-desktop-manual/manifest.json` deterministically generated and verified via `npm run bundles:summaries:check` and `scripts/test-bundle-summaries.mjs`.' : 'Bundle generator pending.'} |
 | **F-10** | **P1** | Runtime capability tiers (L0–L3) & scene rollback protocol | \`OPEN\` | **\`${f10Fixed ? 'FIXED' : 'OPEN'}\`** | ${f10Fixed ? '`registry/runtime-capability-policy.json`, `scripts/validate-capability-policy.mjs`, and `docs/safety-model.md` enforce L0–L3 tiers and fail-closed `.blend` backup checks.' : 'Capability policy pending.'} |
 
 ---
@@ -1865,8 +1859,8 @@ The \`auditedInputsSha256\` digest is governed by [\`../audited-inputs.manifest.
 
 - [\`scorecard.json\`](./scorecard.json) — Reconciled 9-pillar scorecard (**${totalMeasuredScore.toFixed(1)} / 100**) with initial baseline comparison and \`auditProvenance\`.
 - [\`findings.json\`](./findings.json) — Machine-readable lifecycle table for \`F-01\` through \`F-10\`.
-- [\`skill-inventory.json\`](./skill-inventory.json) — Live 48-skill inventory reflecting truth-state fixes, full-catalog contracts, eval coverage, and template completion.
-- [\`eval-inventory.json\`](./eval-inventory.json) — Live 48-skill evaluation inventory covering all 48 machine-readable suites (${totalEvalCasesCount} cases) with 0 remaining prose-only skills.
+- [\`skill-inventory.json\`](./skill-inventory.json) — Live 14-skill inventory reflecting truth-state fixes, full-catalog contracts, eval coverage, and template completion.
+- [\`eval-inventory.json\`](./eval-inventory.json) — Live 14-skill evaluation inventory covering all 14 machine-readable suites (${totalEvalCasesCount} cases) with 0 remaining prose-only skills.
 - [\`verification-manifest.json\`](./verification-manifest.json) — Verified provenance context, CI pipeline commands, and runtime/artifact truth states.
 - [\`repository-inventory.json\`](./repository-inventory.json) — Complete machine-readable inventory classifying every tracked repository file across 7 canonical categories.
 

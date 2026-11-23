@@ -73,8 +73,8 @@ test('Scenario 1: --doctor is read-only and reports repository/target readiness 
     assert.equal(result.filesCreated.length, 0);
     assert.equal(result.filesModified.length, 0);
     assert.ok(
-      result.limitations.some((l) => l.includes('48 canonical skills verified')),
-      'doctor should report 48 canonical skills verified'
+      result.limitations.some((l) => l.includes('14 canonical skills verified')),
+      'doctor should report 14 canonical skills verified'
     );
     assertHonestTruthStates(result);
 
@@ -666,7 +666,7 @@ test('Scenario 18: --target claude-desktop --out <tempDir> generates verified ma
     assert.match(topReadmeText, /Artifact status: `Not Produced`/);
 
     const zipFiles = fs.readdirSync(zipDir).filter((f) => f.endsWith('.zip'));
-    assert.equal(zipFiles.length, 48, 'must export all 48 skill ZIP archives');
+    assert.equal(zipFiles.length, 14, 'must export all 14 skill ZIP archives');
     assert.ok(
       writeRes.limitations.some((l) => l.includes('Does not automate Claude Desktop UI import')),
       'must include limitation stating it does not automate Claude Desktop UI import'
@@ -1452,7 +1452,7 @@ test('Scenario 30: Source fingerprinting hashes all skill files, references, and
   try {
     const fixtureRepo = createMinimalFixtureRepo(tempBase);
     const baseInfo = computeBlendOpsSourceFingerprint(fixtureRepo);
-    assert.equal(baseInfo.skillCount, 48);
+    assert.equal(baseInfo.skillCount, 14);
     assert.ok(baseInfo.sourceFileCount > 250, 'must hash all recursive skill and bundle files');
 
     // 1. Modifying a skill SKILL.md changes the fingerprint and invalidates a prior --dry-run plan
@@ -1462,7 +1462,7 @@ test('Scenario 30: Source fingerprinting hashes all skill files, references, and
     );
     assert.equal(dryRes.ok, true);
 
-    const helpSkillMd = path.join(fixtureRepo, 'skills', 'blendops-help', 'SKILL.md');
+    const helpSkillMd = path.join(fixtureRepo, 'skills', 'using-blendops', 'SKILL.md');
     const origHelpMd = fs.readFileSync(helpSkillMd, 'utf8');
     fs.writeFileSync(helpSkillMd, `${origHelpMd}\n<!-- fingerprint test edit -->\n`, 'utf8');
 
@@ -1481,7 +1481,7 @@ test('Scenario 30: Source fingerprinting hashes all skill files, references, and
     assert.equal(computeBlendOpsSourceFingerprint(fixtureRepo).fingerprint, baseInfo.fingerprint);
 
     // 2. Modifying a skill EVAL.md changes the fingerprint
-    const helpEvalMd = path.join(fixtureRepo, 'skills', 'blendops-help', 'EVAL.md');
+    const helpEvalMd = path.join(fixtureRepo, 'skills', 'using-blendops', 'EVAL.md');
     const origEvalMd = fs.readFileSync(helpEvalMd, 'utf8');
     fs.writeFileSync(helpEvalMd, `${origEvalMd}\n<!-- eval edit -->\n`, 'utf8');
     assert.notEqual(computeBlendOpsSourceFingerprint(fixtureRepo).fingerprint, baseInfo.fingerprint);
@@ -1494,7 +1494,7 @@ test('Scenario 30: Source fingerprinting hashes all skill files, references, and
       'claude-desktop-manual',
       'references',
       'skills',
-      'blendops-help.md'
+      'using-blendops.md'
     );
     const origRef = fs.readFileSync(refFile, 'utf8');
     fs.writeFileSync(refFile, `${origRef}\n<!-- bundle ref edit -->\n`, 'utf8');
@@ -1502,7 +1502,7 @@ test('Scenario 30: Source fingerprinting hashes all skill files, references, and
     fs.writeFileSync(refFile, origRef, 'utf8');
 
     // 4. Symlink inside skills/ or bundles/ fails closed
-    const rogueSymlink = path.join(fixtureRepo, 'skills', 'blendops-help', 'rogue-link.md');
+    const rogueSymlink = path.join(fixtureRepo, 'skills', 'using-blendops', 'rogue-link.md');
     fs.symlinkSync(helpSkillMd, rogueSymlink);
     assert.throws(
       () => computeBlendOpsSourceFingerprint(fixtureRepo),

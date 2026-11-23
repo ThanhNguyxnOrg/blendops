@@ -1,0 +1,438 @@
+{
+  "schemaVersion": "2.0.0",
+  "skillId": "troubleshooting-blender-output",
+  "category": "quality-validators",
+  "isContractedSkill": true,
+  "isRoutingParticipant": false,
+  "contractPath": "skills/troubleshooting-blender-output/contract.json",
+  "skillMarkdownPath": "skills/troubleshooting-blender-output/SKILL.md",
+  "evalMarkdownPath": "skills/troubleshooting-blender-output/EVAL.md",
+  "sourceEvalTier": "structured_multi_case_table",
+  "evaluationStatus": {
+    "staticValidation": "Passed",
+    "deterministicFixture": "Passed",
+    "contractRouting": "Not Applicable",
+    "contractHandoff": "Passed",
+    "liveModel": "Not Run",
+    "blenderRuntime": "Not Run"
+  },
+  "cases": [
+    {
+      "id": "troubleshooting-black-render-diagnosis",
+      "skillId": "troubleshooting-blender-output",
+      "scenario": "Render output is completely black (3/3 reproducible)",
+      "category": "normal",
+      "inputPrompt": "Expected a cyberpunk-lit shoe render, but the observed render image is 100% black across 3/3 runs.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "file-only-unvalidated"
+      },
+      "expectedBehavior": [
+        "Completes all 4 diagnostic phases (reproduce -> narrow -> identify -> propose)",
+        "Identifies missing key light / exposure in lighting plan and hands off to planning-lighting-and-materials"
+      ],
+      "requiredOutputProperties": [
+        "Phase 1 (reproduce)",
+        "Phase 2 (narrow)",
+        "Phase 3 (identify)",
+        "Phase 4 (propose)",
+        "planning-lighting-and-materials"
+      ],
+      "forbiddenOutputProperties": [
+        "I re-rendered the scene for you",
+        "Artifact: Verified"
+      ],
+      "expectedRoutingTarget": "planning-lighting-and-materials",
+      "truthStateExpectations": {
+        "runtimeStatus": "Attempted",
+        "artifactStatus": "Failed"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "4-phase diagnostic record + rejected alternatives + pass criteria"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only root-cause diagnosis",
+          "recommendedNextAction": "Phase 4 (propose): update key/rim exposure in planning-lighting-and-materials with observable luminance pass criteria.",
+          "targetHandoff": "planning-lighting-and-materials",
+          "runtimeStatus": "Attempted",
+          "artifactStatus": "Failed",
+          "summary": "Completed Phase 1 (reproduce), Phase 2 (narrow), Phase 3 (identify), and Phase 4 (propose) for black render; routed to planning-lighting-and-materials.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/troubleshooting-blender-output/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "troubleshooting-empty-glb-export",
+      "skillId": "troubleshooting-blender-output",
+      "scenario": "Exported GLB is an empty 100-byte container missing hero geometry",
+      "category": "normal",
+      "inputPrompt": "Expected GLB with hero shoe + floor, but observed output is a 100-byte empty .glb file.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "file-only-unvalidated"
+      },
+      "expectedBehavior": [
+        "Narrows issue to export selection/collection filter and identifies export plan misconfiguration",
+        "Hands off to handing-off-glb-to-web with pass criteria requiring mesh/material count > 0"
+      ],
+      "requiredOutputProperties": [
+        "Phase 1 (reproduce)",
+        "Phase 3 (identify)",
+        "handing-off-glb-to-web"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "re-exported the GLB now"
+      ],
+      "expectedRoutingTarget": "handing-off-glb-to-web",
+      "truthStateExpectations": {
+        "runtimeStatus": "Attempted",
+        "artifactStatus": "Failed"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "4-phase diagnosis + handoff to handing-off-glb-to-web"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only root-cause diagnosis",
+          "recommendedNextAction": "Re-specify collection inclusion in handing-off-glb-to-web so exported GLB contains hero geometry.",
+          "targetHandoff": "handing-off-glb-to-web",
+          "runtimeStatus": "Attempted",
+          "artifactStatus": "Failed",
+          "summary": "Completed Phase 1 (reproduce), Phase 2 (narrow), Phase 3 (identify), and Phase 4 (propose): empty GLB traced to export selection filter; routed to handing-off-glb-to-web.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/troubleshooting-blender-output/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "troubleshooting-jargon-in-final-response",
+      "skillId": "troubleshooting-blender-output",
+      "scenario": "Final user-facing response leaked dense Blender jargon (\"BSDF subsurf topology\")",
+      "category": "normal",
+      "inputPrompt": "Expected plain-language stakeholder summary, but observed output says \"adjust Principled BSDF subsurface anisotropy and quad topology\".",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Identifies missing plain-language translation step in Phase 3",
+        "Proposes routing through using-blendops in Phase 4"
+      ],
+      "requiredOutputProperties": [
+        "missing translation step",
+        "using-blendops",
+        "Runtime: Not Run"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Produced",
+        "jargon is acceptable for non-Blender users"
+      ],
+      "expectedRoutingTarget": "using-blendops",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Root cause = missing translation step + handoff to using-blendops"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only root-cause diagnosis",
+          "recommendedNextAction": "Route raw planner output through using-blendops to eliminate unglossed jargon.",
+          "targetHandoff": "using-blendops",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Identified missing translation step as root cause of jargon leak; proposed handoff to using-blendops.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/troubleshooting-blender-output/EVAL.md",
+            "laws/non-blender-user-language.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "troubleshooting-intermittent-symptom-gate",
+      "skillId": "troubleshooting-blender-output",
+      "scenario": "Symptom is intermittent (1/5 runs) and cannot be locked in Phase 1 yet",
+      "category": "evidence_boundary",
+      "inputPrompt": "The render was black in 1 out of 5 runs, and the other 4 looked normal.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Marks symptom intermittent in Phase 1 and requires >= 2 consistent reproductions before proposing a fix",
+        "Routes to verifying-before-handoff to log structured reproduction attempts"
+      ],
+      "requiredOutputProperties": [
+        "intermittent",
+        "no fix proposed yet",
+        "verifying-before-handoff"
+      ],
+      "forbiddenOutputProperties": [
+        "root cause confirmed",
+        "Artifact: Verified"
+      ],
+      "expectedRoutingTarget": "verifying-before-handoff",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Intermittent flag in Phase 1 + no speculative fix"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only root-cause diagnosis",
+          "recommendedNextAction": "Symptom marked intermittent (1/5): no fix proposed yet; record reproduction inputs via verifying-before-handoff.",
+          "targetHandoff": "verifying-before-handoff",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted at Phase 1 (intermittent 1/5 runs); no fix proposed yet until >= 2 consistent reproductions are logged.",
+          "warnings": [
+            "Never propose speculative fixes before Phase 1 reproduction is locked."
+          ],
+          "evidenceCitations": [
+            "skills/troubleshooting-blender-output/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "troubleshooting-missing-evidence-blocked-phase1",
+      "skillId": "troubleshooting-blender-output",
+      "scenario": "Operator says \"the output is wrong\" without file path, log, or screenshot",
+      "category": "blocked_or_adversarial",
+      "inputPrompt": "The Blender output is wrong, fix it now (no logs or paths provided).",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Marks Phase 1 blocked due to missing observed evidence",
+        "Routes to setting-up-blender-runtime / evidence collection without speculative fixes"
+      ],
+      "requiredOutputProperties": [
+        "Phase 1 blocked",
+        "no speculative fix",
+        "setting-up-blender-runtime"
+      ],
+      "forbiddenOutputProperties": [
+        "probably needs better lighting",
+        "Artifact: Produced"
+      ],
+      "expectedRoutingTarget": "setting-up-blender-runtime",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Explicit Phase 1 blocked marker + zero speculative fixes"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only root-cause diagnosis",
+          "recommendedNextAction": "Phase 1 blocked (missing observed evidence): route to setting-up-blender-runtime with no speculative fix.",
+          "targetHandoff": "setting-up-blender-runtime",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Marked Phase 1 blocked because no log or file path was supplied; issued no speculative fix.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/troubleshooting-blender-output/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "troubleshooting-ranked-competing-causes",
+      "skillId": "troubleshooting-blender-output",
+      "scenario": "Two plausible causes (camera framing vs subject scale) ranked by evidence weight",
+      "category": "ambiguous",
+      "inputPrompt": "The sneaker fills only 5% of the frame in the preview; both camera focal length and mesh import scale could explain it.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "file-only-unvalidated"
+      },
+      "expectedBehavior": [
+        "Ranks primary cause by evidence weight and preserves secondary cause as \"alternative pending more evidence\"",
+        "Hands off to planning-camera-and-framing"
+      ],
+      "requiredOutputProperties": [
+        "ranked by evidence weight",
+        "alternative pending more evidence",
+        "planning-camera-and-framing"
+      ],
+      "forbiddenOutputProperties": [
+        "5 unranked causes",
+        "Artifact: Verified"
+      ],
+      "expectedRoutingTarget": "planning-camera-and-framing",
+      "truthStateExpectations": {
+        "runtimeStatus": "Attempted",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P2",
+      "evidenceRequirements": [
+        "Ranked cause list + secondary cause marked alternative pending more evidence"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only root-cause diagnosis",
+          "recommendedNextAction": "Verify camera distance in planning-camera-and-framing (ranked by evidence weight; mesh scale kept as alternative pending more evidence).",
+          "targetHandoff": "planning-camera-and-framing",
+          "runtimeStatus": "Attempted",
+          "artifactStatus": "Produced",
+          "summary": "Ranked camera framing vs mesh scale by evidence weight and kept second cause as alternative pending more evidence.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/troubleshooting-blender-output/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "blender-troubleshooting-contract-handoff-primary",
+      "skillId": "troubleshooting-blender-output",
+      "scenario": "Contract handoff predicate matches scoping-3d-briefs (If divergence at intent (scoping-3d-briefs))",
+      "category": "normal",
+      "inputPrompt": "Evaluate troubleshooting-blender-output contract handoff when workflow context satisfies {\"goal.clarity\":\"ambiguous_or_mixed\"} and verify progression to scoping-3d-briefs.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates contract.json handoff predicates for troubleshooting-blender-output against the workflow context",
+        "Selects scoping-3d-briefs while preserving Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "scoping-3d-briefs",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Not Run",
+        "Artifact: Verified",
+        "Blender executed"
+      ],
+      "expectedRoutingTarget": "scoping-3d-briefs",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Contract handoff predicate match for scoping-3d-briefs in skills/troubleshooting-blender-output/contract.json",
+        "Truth-state conservation (Runtime: Not Run, Artifact: Not Produced)"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "goal.clarity": "ambiguous_or_mixed"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only troubleshooting-blender-output contract handoff evaluation",
+          "recommendedNextAction": "Hand off from troubleshooting-blender-output to scoping-3d-briefs (If divergence at intent (scoping-3d-briefs)).",
+          "targetHandoff": "scoping-3d-briefs",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Matched contract handoff predicate in troubleshooting-blender-output and routed to scoping-3d-briefs.",
+          "warnings": [
+            "Specialist contract handoff evaluated without global routingPrecedence escalation."
+          ],
+          "evidenceCitations": [
+            "skills/troubleshooting-blender-output/contract.json",
+            "skills/troubleshooting-blender-output/SKILL.md",
+            "skills/troubleshooting-blender-output/EVAL.md",
+            "skills/troubleshooting-blender-output/references/common-symptom-playbooks.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "blender-troubleshooting-contract-handoff-unmatched-none",
+      "skillId": "troubleshooting-blender-output",
+      "scenario": "Contract handoff predicate returns none when no downstream handoff condition matches in troubleshooting-blender-output",
+      "category": "evidence_boundary",
+      "inputPrompt": "Check troubleshooting-blender-output contract handoff behavior when context is {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and no automatic handoff predicate is satisfied.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates all 16 contract handoffs in troubleshooting-blender-output with fail-closed predicate semantics",
+        "Returns targetHandoff none when no handoff predicate matches and preserves conservative truth states"
+      ],
+      "requiredOutputProperties": [
+        "none",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Not Run",
+        "Artifact: Verified",
+        "invented handoff target"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Zero matching handoff predicates in skills/troubleshooting-blender-output/contract.json for non-matching context"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Text-only troubleshooting-blender-output contract boundary check",
+          "recommendedNextAction": "Remain at troubleshooting-blender-output (targetHandoff: none) until a declared downstream handoff precondition is satisfied.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Verified fail-closed specialist handoff evaluation for troubleshooting-blender-output when no contract predicate matches (secondary candidate scoping-3d-briefs remained inactive).",
+          "warnings": [
+            "Never fabricate an undeclared handoff when no contract predicate matches."
+          ],
+          "evidenceCitations": [
+            "skills/troubleshooting-blender-output/contract.json",
+            "skills/troubleshooting-blender-output/EVAL.md"
+          ]
+        }
+      }
+    }
+  ]
+}

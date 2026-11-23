@@ -33,7 +33,7 @@
       "maxLength": 120
     },
     "skillId": {
-      "const": "glb-web-handoff"
+      "const": "handing-off-glb-to-web"
     },
     "artifact": {
       "type": "object",
@@ -58,19 +58,34 @@
           "const": "GLB 2.0"
         },
         "byteSize": {
-          "type": ["integer", "null"],
+          "type": [
+            "integer",
+            "null"
+          ],
           "minimum": 0
         },
         "sha256": {
-          "type": ["string", "null"],
+          "type": [
+            "string",
+            "null"
+          ],
           "pattern": "^[a-f0-9]{64}$"
         },
         "gltfVersion": {
-          "type": ["string", "null"],
-          "enum": ["2.0", null]
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "2.0",
+            null
+          ]
         },
         "generator": {
-          "type": ["string", "null"],
+          "type": [
+            "string",
+            "null"
+          ],
           "maxLength": 200
         },
         "provenance": {
@@ -190,25 +205,73 @@
             "buffers"
           ],
           "properties": {
-            "scenes": { "type": "integer", "minimum": 0 },
-            "nodes": { "type": "integer", "minimum": 0 },
-            "meshes": { "type": "integer", "minimum": 0 },
-            "primitives": { "type": "integer", "minimum": 0 },
-            "vertices": { "type": "integer", "minimum": 0 },
-            "trianglesEstimate": { "type": "integer", "minimum": 0 },
-            "materials": { "type": "integer", "minimum": 0 },
-            "textures": { "type": "integer", "minimum": 0 },
-            "images": { "type": "integer", "minimum": 0 },
-            "samplers": { "type": "integer", "minimum": 0 },
-            "animations": { "type": "integer", "minimum": 0 },
-            "skins": { "type": "integer", "minimum": 0 },
-            "accessors": { "type": "integer", "minimum": 0 },
-            "bufferViews": { "type": "integer", "minimum": 0 },
-            "buffers": { "type": "integer", "minimum": 0 }
+            "scenes": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "nodes": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "meshes": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "primitives": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "vertices": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "trianglesEstimate": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "materials": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "textures": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "images": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "samplers": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "animations": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "skins": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "accessors": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "bufferViews": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "buffers": {
+              "type": "integer",
+              "minimum": 0
+            }
           }
         },
         "defaultSceneIndex": {
-          "type": ["integer", "null"],
+          "type": [
+            "integer",
+            "null"
+          ],
           "minimum": 0
         },
         "scenes": {
@@ -216,13 +279,28 @@
           "items": {
             "type": "object",
             "additionalProperties": false,
-            "required": ["index", "name", "rootNodeIndices"],
+            "required": [
+              "index",
+              "name",
+              "rootNodeIndices"
+            ],
             "properties": {
-              "index": { "type": "integer", "minimum": 0 },
-              "name": { "type": ["string", "null"] },
+              "index": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "name": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
               "rootNodeIndices": {
                 "type": "array",
-                "items": { "type": "integer", "minimum": 0 }
+                "items": {
+                  "type": "integer",
+                  "minimum": 0
+                }
               }
             }
           }
@@ -243,20 +321,45 @@
               "morphTargetCount"
             ],
             "properties": {
-              "index": { "type": "integer", "minimum": 0 },
-              "name": { "type": ["string", "null"] },
-              "primitiveCount": { "type": "integer", "minimum": 0 },
-              "vertexCount": { "type": "integer", "minimum": 0 },
-              "triangleEstimate": { "type": "integer", "minimum": 0 },
+              "index": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "name": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "primitiveCount": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "vertexCount": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "triangleEstimate": {
+                "type": "integer",
+                "minimum": 0
+              },
               "attributes": {
                 "type": "array",
-                "items": { "type": "string" }
+                "items": {
+                  "type": "string"
+                }
               },
               "materialIndices": {
                 "type": "array",
-                "items": { "type": "integer", "minimum": 0 }
+                "items": {
+                  "type": "integer",
+                  "minimum": 0
+                }
               },
-              "morphTargetCount": { "type": "integer", "minimum": 0 }
+              "morphTargetCount": {
+                "type": "integer",
+                "minimum": 0
+              }
             }
           }
         },
@@ -282,30 +385,68 @@
               "extensions"
             ],
             "properties": {
-              "index": { "type": "integer", "minimum": 0 },
-              "name": { "type": ["string", "null"] },
+              "index": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "name": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
               "alphaMode": {
                 "type": "string",
-                "enum": ["OPAQUE", "MASK", "BLEND"]
+                "enum": [
+                  "OPAQUE",
+                  "MASK",
+                  "BLEND"
+                ]
               },
-              "doubleSided": { "type": "boolean" },
-              "unlit": { "type": "boolean" },
-              "hasBaseColorTexture": { "type": "boolean" },
-              "hasMetallicRoughnessTexture": { "type": "boolean" },
-              "hasNormalTexture": { "type": "boolean" },
-              "hasOcclusionTexture": { "type": "boolean" },
-              "hasEmissiveTexture": { "type": "boolean" },
+              "doubleSided": {
+                "type": "boolean"
+              },
+              "unlit": {
+                "type": "boolean"
+              },
+              "hasBaseColorTexture": {
+                "type": "boolean"
+              },
+              "hasMetallicRoughnessTexture": {
+                "type": "boolean"
+              },
+              "hasNormalTexture": {
+                "type": "boolean"
+              },
+              "hasOcclusionTexture": {
+                "type": "boolean"
+              },
+              "hasEmissiveTexture": {
+                "type": "boolean"
+              },
               "baseColorFactor": {
                 "type": "array",
                 "minItems": 4,
                 "maxItems": 4,
-                "items": { "type": "number" }
+                "items": {
+                  "type": "number"
+                }
               },
-              "metallicFactor": { "type": "number", "minimum": 0, "maximum": 1 },
-              "roughnessFactor": { "type": "number", "minimum": 0, "maximum": 1 },
+              "metallicFactor": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "roughnessFactor": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              },
               "extensions": {
                 "type": "array",
-                "items": { "type": "string" }
+                "items": {
+                  "type": "string"
+                }
               }
             }
           }
@@ -325,16 +466,52 @@
               "uri"
             ],
             "properties": {
-              "index": { "type": "integer", "minimum": 0 },
-              "name": { "type": ["string", "null"] },
-              "sourceImageIndex": { "type": ["integer", "null"], "minimum": 0 },
-              "samplerIndex": { "type": ["integer", "null"], "minimum": 0 },
-              "mimeType": { "type": ["string", "null"] },
+              "index": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "name": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "sourceImageIndex": {
+                "type": [
+                  "integer",
+                  "null"
+                ],
+                "minimum": 0
+              },
+              "samplerIndex": {
+                "type": [
+                  "integer",
+                  "null"
+                ],
+                "minimum": 0
+              },
+              "mimeType": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
               "storageKind": {
                 "type": "string",
-                "enum": ["bufferView", "dataUri", "externalUri", "extensionSource", "missing"]
+                "enum": [
+                  "bufferView",
+                  "dataUri",
+                  "externalUri",
+                  "extensionSource",
+                  "missing"
+                ]
               },
-              "uri": { "type": ["string", "null"] }
+              "uri": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
             }
           }
         },
@@ -353,18 +530,42 @@
               "interpolationModes"
             ],
             "properties": {
-              "index": { "type": "integer", "minimum": 0 },
-              "name": { "type": ["string", "null"] },
-              "channelCount": { "type": "integer", "minimum": 0 },
-              "samplerCount": { "type": "integer", "minimum": 0 },
-              "durationSeconds": { "type": ["number", "null"], "minimum": 0 },
+              "index": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "name": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "channelCount": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "samplerCount": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "durationSeconds": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0
+              },
               "targetPaths": {
                 "type": "array",
-                "items": { "type": "string" }
+                "items": {
+                  "type": "string"
+                }
               },
               "interpolationModes": {
                 "type": "array",
-                "items": { "type": "string" }
+                "items": {
+                  "type": "string"
+                }
               }
             }
           }
@@ -384,61 +585,112 @@
       "properties": {
         "extensionsUsed": {
           "type": "array",
-          "items": { "type": "string", "minLength": 1 },
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
           "uniqueItems": true
         },
         "extensionsRequired": {
           "type": "array",
-          "items": { "type": "string", "minLength": 1 },
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
           "uniqueItems": true
         },
         "undeclaredExtensionsFound": {
           "type": "array",
-          "items": { "type": "string", "minLength": 1 },
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
           "uniqueItems": true
         },
         "compression": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["draco", "meshopt", "ktx2BasisU", "webp"],
+          "required": [
+            "draco",
+            "meshopt",
+            "ktx2BasisU",
+            "webp"
+          ],
           "properties": {
             "draco": {
               "type": "object",
               "additionalProperties": false,
-              "required": ["used", "required", "decoderRequired"],
+              "required": [
+                "used",
+                "required",
+                "decoderRequired"
+              ],
               "properties": {
-                "used": { "type": "boolean" },
-                "required": { "type": "boolean" },
-                "decoderRequired": { "type": "boolean" }
+                "used": {
+                  "type": "boolean"
+                },
+                "required": {
+                  "type": "boolean"
+                },
+                "decoderRequired": {
+                  "type": "boolean"
+                }
               }
             },
             "meshopt": {
               "type": "object",
               "additionalProperties": false,
-              "required": ["used", "required", "decoderRequired"],
+              "required": [
+                "used",
+                "required",
+                "decoderRequired"
+              ],
               "properties": {
-                "used": { "type": "boolean" },
-                "required": { "type": "boolean" },
-                "decoderRequired": { "type": "boolean" }
+                "used": {
+                  "type": "boolean"
+                },
+                "required": {
+                  "type": "boolean"
+                },
+                "decoderRequired": {
+                  "type": "boolean"
+                }
               }
             },
             "ktx2BasisU": {
               "type": "object",
               "additionalProperties": false,
-              "required": ["used", "required", "transcoderRequired"],
+              "required": [
+                "used",
+                "required",
+                "transcoderRequired"
+              ],
               "properties": {
-                "used": { "type": "boolean" },
-                "required": { "type": "boolean" },
-                "transcoderRequired": { "type": "boolean" }
+                "used": {
+                  "type": "boolean"
+                },
+                "required": {
+                  "type": "boolean"
+                },
+                "transcoderRequired": {
+                  "type": "boolean"
+                }
               }
             },
             "webp": {
               "type": "object",
               "additionalProperties": false,
-              "required": ["used", "required"],
+              "required": [
+                "used",
+                "required"
+              ],
               "properties": {
-                "used": { "type": "boolean" },
-                "required": { "type": "boolean" }
+                "used": {
+                  "type": "boolean"
+                },
+                "required": {
+                  "type": "boolean"
+                }
               }
             }
           }
@@ -448,15 +700,31 @@
           "items": {
             "type": "object",
             "additionalProperties": false,
-            "required": ["kind", "index", "uri", "isExternalFile"],
+            "required": [
+              "kind",
+              "index",
+              "uri",
+              "isExternalFile"
+            ],
             "properties": {
               "kind": {
                 "type": "string",
-                "enum": ["buffer", "image"]
+                "enum": [
+                  "buffer",
+                  "image"
+                ]
               },
-              "index": { "type": "integer", "minimum": 0 },
-              "uri": { "type": "string", "minLength": 1 },
-              "isExternalFile": { "type": "boolean" }
+              "index": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "uri": {
+                "type": "string",
+                "minLength": 1
+              },
+              "isExternalFile": {
+                "type": "boolean"
+              }
             }
           }
         }
@@ -492,7 +760,10 @@
             },
             "forwardAxis": {
               "type": "string",
-              "enum": ["+Z", "-Z"]
+              "enum": [
+                "+Z",
+                "-Z"
+              ]
             },
             "handedness": {
               "const": "right-handed"
@@ -516,31 +787,56 @@
         "sceneBoundingBox": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["min", "max", "dimensions", "center"],
+          "required": [
+            "min",
+            "max",
+            "dimensions",
+            "center"
+          ],
           "properties": {
             "min": {
-              "type": ["array", "null"],
+              "type": [
+                "array",
+                "null"
+              ],
               "minItems": 3,
               "maxItems": 3,
-              "items": { "type": "number" }
+              "items": {
+                "type": "number"
+              }
             },
             "max": {
-              "type": ["array", "null"],
+              "type": [
+                "array",
+                "null"
+              ],
               "minItems": 3,
               "maxItems": 3,
-              "items": { "type": "number" }
+              "items": {
+                "type": "number"
+              }
             },
             "dimensions": {
-              "type": ["array", "null"],
+              "type": [
+                "array",
+                "null"
+              ],
               "minItems": 3,
               "maxItems": 3,
-              "items": { "type": "number" }
+              "items": {
+                "type": "number"
+              }
             },
             "center": {
-              "type": ["array", "null"],
+              "type": [
+                "array",
+                "null"
+              ],
               "minItems": 3,
               "maxItems": 3,
-              "items": { "type": "number" }
+              "items": {
+                "type": "number"
+              }
             }
           }
         },
@@ -559,28 +855,46 @@
               "hasNegativeScale"
             ],
             "properties": {
-              "nodeIndex": { "type": "integer", "minimum": 0 },
-              "name": { "type": ["string", "null"] },
+              "nodeIndex": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "name": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
               "translation": {
                 "type": "array",
                 "minItems": 3,
                 "maxItems": 3,
-                "items": { "type": "number" }
+                "items": {
+                  "type": "number"
+                }
               },
               "rotation": {
                 "type": "array",
                 "minItems": 4,
                 "maxItems": 4,
-                "items": { "type": "number" }
+                "items": {
+                  "type": "number"
+                }
               },
               "scale": {
                 "type": "array",
                 "minItems": 3,
                 "maxItems": 3,
-                "items": { "type": "number" }
+                "items": {
+                  "type": "number"
+                }
               },
-              "hasNonIdentityScale": { "type": "boolean" },
-              "hasNegativeScale": { "type": "boolean" }
+              "hasNonIdentityScale": {
+                "type": "boolean"
+              },
+              "hasNegativeScale": {
+                "type": "boolean"
+              }
             }
           }
         }
@@ -610,10 +924,16 @@
           ]
         },
         "dracoDecoderPath": {
-          "type": ["string", "null"]
+          "type": [
+            "string",
+            "null"
+          ]
         },
         "ktx2TranscoderPath": {
-          "type": ["string", "null"]
+          "type": [
+            "string",
+            "null"
+          ]
         },
         "meshoptDecoderRequired": {
           "type": "boolean"
@@ -645,7 +965,11 @@
       "properties": {
         "overallVerdict": {
           "type": "string",
-          "enum": ["Pass", "Warn", "Fail"]
+          "enum": [
+            "Pass",
+            "Warn",
+            "Fail"
+          ]
         },
         "tiers": {
           "type": "object",
@@ -670,75 +994,142 @@
               "properties": {
                 "status": {
                   "type": "string",
-                  "enum": ["Passed", "Warn", "Failed", "Not Run"]
+                  "enum": [
+                    "Passed",
+                    "Warn",
+                    "Failed",
+                    "Not Run"
+                  ]
                 },
-                "tool": { "type": "string", "minLength": 1 },
-                "errorCount": { "type": "integer", "minimum": 0 },
-                "warningCount": { "type": "integer", "minimum": 0 },
-                "summary": { "type": "string", "minLength": 1 }
+                "tool": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "errorCount": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "warningCount": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "summary": {
+                  "type": "string",
+                  "minLength": 1
+                }
               }
             },
             "gltfSpecification": {
               "type": "object",
               "additionalProperties": false,
-              "required": ["status", "tool", "summary"],
+              "required": [
+                "status",
+                "tool",
+                "summary"
+              ],
               "properties": {
                 "status": {
                   "type": "string",
-                  "enum": ["Passed", "Warn", "Failed", "Not Run", "Unavailable"]
+                  "enum": [
+                    "Passed",
+                    "Warn",
+                    "Failed",
+                    "Not Run",
+                    "Unavailable"
+                  ]
                 },
-                "tool": { "type": "string", "minLength": 1 },
-                "summary": { "type": "string", "minLength": 1 }
+                "tool": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "summary": {
+                  "type": "string",
+                  "minLength": 1
+                }
               }
             },
             "visualQuality": {
               "type": "object",
               "additionalProperties": false,
-              "required": ["status", "summary"],
+              "required": [
+                "status",
+                "summary"
+              ],
               "properties": {
                 "status": {
                   "type": "string",
-                  "enum": ["Passed", "Warn", "Failed", "Not Run"]
+                  "enum": [
+                    "Passed",
+                    "Warn",
+                    "Failed",
+                    "Not Run"
+                  ]
                 },
-                "summary": { "type": "string", "minLength": 1 }
+                "summary": {
+                  "type": "string",
+                  "minLength": 1
+                }
               }
             },
             "liveRuntime": {
               "type": "object",
               "additionalProperties": false,
-              "required": ["status", "summary"],
+              "required": [
+                "status",
+                "summary"
+              ],
               "properties": {
                 "status": {
                   "type": "string",
-                  "enum": ["Passed", "Warn", "Failed", "Not Run"]
+                  "enum": [
+                    "Passed",
+                    "Warn",
+                    "Failed",
+                    "Not Run"
+                  ]
                 },
-                "summary": { "type": "string", "minLength": 1 }
+                "summary": {
+                  "type": "string",
+                  "minLength": 1
+                }
               }
             }
           }
         },
         "errors": {
           "type": "array",
-          "items": { "type": "string" }
+          "items": {
+            "type": "string"
+          }
         },
         "warnings": {
           "type": "array",
-          "items": { "type": "string" }
+          "items": {
+            "type": "string"
+          }
         },
         "performanceWarnings": {
           "type": "array",
-          "items": { "type": "string" }
+          "items": {
+            "type": "string"
+          }
         }
       }
     },
     "unresolvedIssues": {
       "type": "array",
-      "items": { "type": "string", "minLength": 1 }
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
     },
     "nextActions": {
       "type": "array",
       "minItems": 1,
-      "items": { "type": "string", "minLength": 1 }
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
     }
   }
 }

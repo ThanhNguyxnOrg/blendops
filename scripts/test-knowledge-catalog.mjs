@@ -6,11 +6,11 @@
  * 1. JSON Schema Draft 2020-12 validation of `registry/knowledge-sources.json` (20 sources),
  *    `registry/knowledge-catalog.json` (30 records across 11 domains, >= 2 per domain),
  *    and `registry/recipe-catalog.json` (10 canonical recipes), plus negative schema tests.
- * 2. Five-layer architecture reconciliation & 48-skill / 151-reference audit
+ * 2. Five-layer architecture reconciliation & 14-skill / 199-reference audit
  *    (`docs/audits/skill-architecture-audit.json` & `docs/audits/skill-architecture-audit.md`).
  * 3. Upgrade of existing recipe architecture without creating a competing system
- *    (`skills/recipe-fit-assessor/references/recipe-catalog.md`,
- *     `skills/blender-recipe-decomposer/references/recipe-grouping-rules.md`,
+ *    (`skills/scoping-3d-briefs/references/recipe-catalog.md`,
+ *     `skills/scoping-3d-briefs/references/recipe-grouping-rules.md`,
  *     `docs/recipes/cyberpunk-shoe-hero.md`, `packs/product-hero-v0/PACK.md`).
  * 4. Deterministic catalog index (`registry/catalog-index.json`), retrieval accuracy across
  *    all 32 evaluation cases (`evals/catalog-retrieval-evals.json`), disambiguation, and
@@ -55,7 +55,7 @@ describe('Architecture Reconciliation & Knowledge/Recipe Foundation', () => {
       `Expected catalog validation to pass with 0 errors, got:\n${validation.errors.join('\n')}`,
     );
     assert.equal(validation.counts.domains, 11);
-    assert.equal(validation.counts.skills, 48);
+    assert.equal(validation.counts.skills, 14);
     assert.ok(validation.counts.sources >= 18, `Expected >= 18 sources, got ${validation.counts.sources}`);
     assert.equal(validation.counts.knowledge_records, 30);
     assert.equal(validation.counts.recipes, 10);
@@ -101,9 +101,9 @@ describe('Architecture Reconciliation & Knowledge/Recipe Foundation', () => {
     );
   });
 
-  test('Scenario 2: 5-layer architecture reconciliation and 48-skill + 151-reference classification audit are complete and deterministic', () => {
+  test('Scenario 2: 5-layer architecture reconciliation and 14-skill + 199-reference classification audit are complete and deterministic', () => {
     const auditData = generateSkillArchitectureAuditData(ROOT);
-    assert.equal(auditData.five_layer_architecture.skill_layer.skill_count, 48);
+    assert.equal(auditData.five_layer_architecture.skill_layer.skill_count, 14);
     assert.equal(auditData.five_layer_architecture.knowledge_layer.domain_count, 11);
     assert.equal(auditData.five_layer_architecture.knowledge_layer.knowledge_record_count, 30);
     assert.equal(auditData.five_layer_architecture.recipe_layer.recipe_count, 10);
@@ -117,21 +117,21 @@ describe('Architecture Reconciliation & Knowledge/Recipe Foundation', () => {
       'Not Produced',
     );
 
-    assert.equal(auditData.summary.total_skills_audited, 48);
-    assert.equal(auditData.summary.total_skill_references_classified, 151);
+    assert.equal(auditData.summary.total_skills_audited, 14);
+    assert.equal(auditData.summary.total_skill_references_classified, 199);
 
     const sumClassifications = Object.values(
       auditData.summary.reference_classification_breakdown,
     ).reduce((acc, n) => acc + n, 0);
-    assert.equal(sumClassifications, 151, 'All 151 skill reference files must be classified');
+    assert.equal(sumClassifications, 199, 'All 199 skill reference files must be classified');
     assert.ok(
       auditData.summary.reference_classification_breakdown.reusable_cross_skill_knowledge >= 30,
       'Expected >= 30 reusable cross-skill reference files promoted to knowledge records',
     );
     assert.equal(
       auditData.summary.reference_classification_breakdown.recipe_specific_procedure,
-      6,
-      'Expected 6 recipe-specific reference files synchronized with registry/recipe-catalog.json',
+      16,
+      'Expected 16 recipe-specific reference files synchronized with registry/recipe-catalog.json',
     );
 
     const checkRes = buildAllCatalogArtifacts(ROOT, { checkOnly: true });
@@ -153,13 +153,13 @@ describe('Architecture Reconciliation & Knowledge/Recipe Foundation', () => {
     assert.equal(heroRecipe.expected_outputs.truth_state_defaults.runtime_status, 'Not Run');
     assert.equal(heroRecipe.expected_outputs.truth_state_defaults.artifact_status, 'Not Produced');
 
-    // Verify recipe-fit-assessor and blender-recipe-decomposer references list all 10 canonical recipe.* IDs
+    // Verify scoping-3d-briefs and scoping-3d-briefs references list all 10 canonical recipe.* IDs
     const fitCatalogMd = fs.readFileSync(
-      path.join(ROOT, 'skills/recipe-fit-assessor/references/recipe-catalog.md'),
+      path.join(ROOT, 'skills/scoping-3d-briefs/references/recipe-catalog.md'),
       'utf8',
     );
     const decomposerRulesMd = fs.readFileSync(
-      path.join(ROOT, 'skills/blender-recipe-decomposer/references/recipe-grouping-rules.md'),
+      path.join(ROOT, 'skills/scoping-3d-briefs/references/recipe-grouping-rules.md'),
       'utf8',
     );
     const docsRecipesReadme = fs.readFileSync(path.join(ROOT, 'docs/recipes/README.md'), 'utf8');
@@ -167,11 +167,11 @@ describe('Architecture Reconciliation & Knowledge/Recipe Foundation', () => {
     for (const reqId of REQUIRED_RECIPE_IDS) {
       assert.ok(
         fitCatalogMd.includes(reqId),
-        `skills/recipe-fit-assessor/references/recipe-catalog.md must include ${reqId}`,
+        `skills/scoping-3d-briefs/references/recipe-catalog.md must include ${reqId}`,
       );
       assert.ok(
         decomposerRulesMd.includes(reqId),
-        `skills/blender-recipe-decomposer/references/recipe-grouping-rules.md must include ${reqId}`,
+        `skills/scoping-3d-briefs/references/recipe-grouping-rules.md must include ${reqId}`,
       );
       assert.ok(
         docsRecipesReadme.includes(reqId),
@@ -220,7 +220,7 @@ describe('Architecture Reconciliation & Knowledge/Recipe Foundation', () => {
     assert.equal(resolvedSource.found, true);
     assert.equal(resolvedSource.type, 'source');
 
-    const resolvedSkill = resolveCatalogRecord(ROOT, 'glb-web-handoff');
+    const resolvedSkill = resolveCatalogRecord(ROOT, 'handing-off-glb-to-web');
     assert.equal(resolvedSkill.found, true);
     assert.equal(resolvedSkill.type, 'skill');
 

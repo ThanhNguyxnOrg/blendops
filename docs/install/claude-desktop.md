@@ -20,35 +20,35 @@ If Claude cannot fetch repository subpaths, ask the user to upload the repositor
 
 ## Multiple ZIP requirements
 
-Expected ZIP set (one per `skills/*/SKILL.md`, currently 48 — run `npm run skills:export`; do not hand-maintain the list here; inventory: `skills/README.md`):
+Expected ZIP set (one per `skills/*/SKILL.md`, currently 14 — run `npm run skills:export`; do not hand-maintain the list here; inventory: `skills/README.md`):
 
 ```txt
-# Canonical baseline snapshot (16 of 48; full set via skills:export)
+# Canonical skill snapshot (14; full set via skills:export)
 # Help / routing
-blendops-help.zip
+using-blendops.zip
 
 # Process / discipline (Superpowers + BMad inspired)
-blender-brainstorming.zip
-intent-to-3d-brief-writer.zip
-asset-discovery.zip
-blender-troubleshooting.zip
-pre-handoff-verification.zip
-bridge-conflicts.zip
+scoping-3d-briefs.zip
+scoping-3d-briefs.zip
+sourcing-assets.zip
+troubleshooting-blender-output.zip
+verifying-before-handoff.zip
+setting-up-blender-runtime.zip
 
 # Runtime
-runtime-setup.zip
-runtime-readiness.zip
+setting-up-blender-runtime.zip
+setting-up-blender-runtime.zip
 
 # Scene planning (domain)
-product-hero-scene-planner.zip
-camera-composition.zip
-lighting-material-plan.zip
-scene-readiness.zip
+planning-product-scenes.zip
+planning-camera-and-framing.zip
+planning-lighting-and-materials.zip
+verifying-before-handoff.zip
 
 # Evidence + handoff
-render-export-evidence.zip
-glb-web-handoff.zip
-plain-language-response.zip
+verifying-before-handoff.zip
+handing-off-glb-to-web.zip
+using-blendops.zip
 ```
 
 Each ZIP must contain:

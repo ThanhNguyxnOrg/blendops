@@ -1,0 +1,477 @@
+{
+  "$schema": "../../schemas/skill-contract.schema.json",
+  "id": "scoping-3d-briefs",
+  "version": "2.0.0",
+  "category": "routing-and-governance",
+  "role": "goal-brainstorm-brief-writer-and-recipe-fit",
+  "purpose": "Turn a vague or clear 3D goal into a locked brief, pick or decompose a recipe, and say whether the goal fits BlendOps.",
+  "capabilityTier": "L0",
+  "routingPrecedence": {
+    "group": "entry-and-stage-routing",
+    "rank": 1,
+    "activationGate": {
+      "goalClarity": "any",
+      "recipeSelected": false,
+      "preflightPassed": false,
+      "hasStageOrArtifactInventory": false
+    }
+  },
+  "triggers": [
+    "what recipe should I use",
+    "does product hero fit",
+    "closest workflow for X",
+    "which pack",
+    "lock the brief",
+    "write the brief from this conversation",
+    "what's the formal scope?",
+    "before planning, write the spec",
+    "I want a 3D render of...\" (vague)",
+    "Make me something cool with...",
+    "Help me plan a Blender scene\" (no constraints given)",
+    "I'm not sure what I want exactly...",
+    "Brainstorm with me about...",
+    "I want all of these",
+    "this is a lot",
+    "we'll need several outputs",
+    "across these scenes"
+  ],
+  "exclusions": [
+    {
+      "condition": "General entry routing across BlendOps when the goal itself is unclear",
+      "delegateTo": "using-blendops",
+      "reason": "Handles ambiguous entry triage at precedence Rank 1"
+    },
+    {
+      "condition": "Checking whether a selected pack's preflight prerequisites are met",
+      "delegateTo": "defining-done-and-gates",
+      "reason": "Evaluates preflight readiness once the recipe/pack is already selected"
+    },
+    {
+      "condition": "Picking the next workflow stage after preflight passed and artifacts already exist",
+      "delegateTo": "using-blendops",
+      "reason": "Routes active in-flight workflows at precedence Rank 4"
+    },
+    {
+      "condition": "Detailed scene planning once a domain and brief are locked",
+      "delegateTo": "planning-product-scenes",
+      "reason": "Builds the domain-specific scene plan after preflight passes"
+    },
+    {
+      "condition": "Runtime setup, path selection, or bridge conflict troubleshooting",
+      "delegateTo": "setting-up-blender-runtime",
+      "reason": "Handles MCP runtime selection and setup outside recipe scoring"
+    },
+    {
+      "condition": "Legal or asset license verification",
+      "delegateTo": "sourcing-assets",
+      "reason": "Audits asset provenance and license compatibility"
+    },
+    {
+      "condition": "the user is mid-execution and asks for a re-brief",
+      "delegateTo": "troubleshooting-blender-output",
+      "reason": "route to troubleshooting-blender-output instead"
+    },
+    {
+      "condition": "the user pushes for immediate execution",
+      "delegateTo": "setting-up-blender-runtime",
+      "reason": "route to setting-up-blender-runtime"
+    },
+    {
+      "condition": "the user pushes for immediate execution rather than exploration",
+      "delegateTo": "setting-up-blender-runtime",
+      "reason": "route to setting-up-blender-runtime"
+    },
+    {
+      "condition": "after recipes are already split or running",
+      "delegateTo": "defining-done-and-gates",
+      "reason": "use defining-done-and-gates for added scope or defining-done-and-gates to evaluate completion"
+    }
+  ],
+  "inputs": {
+    "required": [
+      {
+        "name": "user_goal_summary",
+        "type": "string",
+        "description": "Plain-language 3D goal and intended deliverable subject"
+      },
+      {
+        "name": "target_output_destination",
+        "type": "string",
+        "description": "Target format or channel (e.g., hero still, catalog grid, turntable, web GLB)"
+      }
+    ],
+    "optional": [
+      {
+        "name": "candidate_pack_hint",
+        "type": "string",
+        "description": "Optional pack or recipe the user is considering"
+      },
+      {
+        "name": "raw_user_goal_and_context",
+        "type": "string",
+        "description": "User request or brainstormed concept to lock into the canonical 8-slot 3D brief"
+      },
+      {
+        "name": "target_deliverable_surface",
+        "type": "string",
+        "description": "Intended output format (hero still, product grid, portrait, environment, interior, or web GLB)"
+      },
+      {
+        "name": "selected_recipe_or_pack",
+        "type": "string",
+        "description": "Recipe or pack selected via scoping-3d-briefs"
+      },
+      {
+        "name": "initial_user_idea",
+        "type": "string",
+        "description": "Vague, exploratory, or open-ended 3D concept from the user"
+      },
+      {
+        "name": "brand_or_mood_references",
+        "type": "array",
+        "description": "Optional mood keywords, reference products, or target audience notes"
+      },
+      {
+        "name": "multi_deliverable_request",
+        "type": "string",
+        "description": "User request spanning multiple scenes, deliverables, or incompatible output channels"
+      },
+      {
+        "name": "candidate_recipes",
+        "type": "array",
+        "description": "Candidate BlendOps recipes or packs identified by scoping-3d-briefs"
+      },
+      {
+        "name": "delivery_priority_order",
+        "type": "array",
+        "description": "Optional user preference on which deliverable to ship first"
+      }
+    ]
+  },
+  "outputs": {
+    "primary": [
+      "recipe_fit_verdict",
+      "candidate_comparison_table",
+      "recommended_next_skill",
+      "canonical_8_slot_3d_brief",
+      "explicit_assumptions_register",
+      "scope_exclusions_and_next_skill",
+      "divergent_concept_options",
+      "clarifying_questions_shortlist",
+      "recommended_direction_for_brief",
+      "ordered_sub_workflow_tracks",
+      "shared_asset_and_brief_dependencies",
+      "first_track_next_skill"
+    ],
+    "truthStatePolicy": {
+      "runtimeDefault": "Not Run",
+      "artifactDefault": "Not Produced",
+      "mutationRule": "downgrade_only"
+    }
+  },
+  "handoffs": [
+    {
+      "target": "using-blendops",
+      "type": "boundary_delegation",
+      "label": "General entry routing",
+      "when": {
+        "all": [
+          {
+            "field": "request.scope",
+            "operator": "equals",
+            "value": "general_help"
+          }
+        ]
+      }
+    },
+    {
+      "target": "defining-done-and-gates",
+      "type": "progression",
+      "label": "Pack prerequisite verification",
+      "when": {
+        "all": [
+          {
+            "field": "fit.verdict",
+            "operator": "equals",
+            "value": "strong_fit"
+          },
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          }
+        ]
+      }
+    },
+    {
+      "target": "using-blendops",
+      "type": "conditional",
+      "label": "Post-artifact stage routing",
+      "when": {
+        "all": [
+          {
+            "field": "preflight.passed",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "inventory.exists",
+            "operator": "equals",
+            "value": true
+          }
+        ]
+      }
+    },
+    {
+      "target": "planning-product-scenes",
+      "type": "alternative",
+      "label": "Domain scene planner (product hero)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "recipe.domain",
+            "operator": "equals",
+            "value": "product_hero"
+          }
+        ]
+      }
+    },
+    {
+      "target": "planning-product-scenes",
+      "type": "alternative",
+      "label": "Domain scene planner (product grid)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "recipe.domain",
+            "operator": "equals",
+            "value": "product_grid"
+          }
+        ]
+      }
+    },
+    {
+      "target": "planning-scenes",
+      "type": "alternative",
+      "label": "Domain scene planner (character portrait)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "recipe.domain",
+            "operator": "equals",
+            "value": "character_portrait"
+          }
+        ]
+      }
+    },
+    {
+      "target": "planning-scenes",
+      "type": "alternative",
+      "label": "Domain scene planner (environment establishing shot)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "recipe.domain",
+            "operator": "equals",
+            "value": "environment_shot"
+          }
+        ]
+      }
+    },
+    {
+      "target": "planning-scenes",
+      "type": "alternative",
+      "label": "Domain scene planner (interior architectural)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "recipe.domain",
+            "operator": "equals",
+            "value": "interior_archviz"
+          }
+        ]
+      }
+    },
+    {
+      "target": "defining-done-and-gates",
+      "type": "progression",
+      "label": "Consuming skills (defining-done-and-gates)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "acceptance_criteria"
+          }
+        ]
+      }
+    },
+    {
+      "target": "planning-camera-and-framing",
+      "type": "progression",
+      "label": "Consuming skills (planning-camera-and-framing)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "camera_planning"
+          }
+        ]
+      }
+    },
+    {
+      "target": "planning-lighting-and-materials",
+      "type": "progression",
+      "label": "Consuming skills (planning-lighting-and-materials)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "lookdev_planning"
+          }
+        ]
+      }
+    },
+    {
+      "target": "setting-up-blender-runtime",
+      "type": "conditional",
+      "label": "If execution is requested",
+      "when": {
+        "all": [
+          {
+            "field": "runtime.path",
+            "operator": "not_equals",
+            "value": "unselected"
+          },
+          {
+            "field": "runtime.verifiedReady",
+            "operator": "equals",
+            "value": false
+          }
+        ]
+      }
+    },
+    {
+      "target": "troubleshooting-blender-output",
+      "type": "fallback",
+      "label": "If mid-execution re-briefing occurs",
+      "when": {
+        "all": [
+          {
+            "field": "runtime.errorDetected",
+            "operator": "equals",
+            "value": true
+          }
+        ]
+      }
+    },
+    {
+      "target": "using-blendops",
+      "type": "conditional",
+      "label": "Explain blocked runtime status to user",
+      "when": {
+        "all": [
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "final_communication"
+          }
+        ]
+      }
+    },
+    {
+      "target": "defining-done-and-gates",
+      "type": "progression",
+      "label": "Pinning formal done conditions per recipe",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "stop_condition"
+          }
+        ]
+      }
+    },
+    {
+      "target": "defining-done-and-gates",
+      "type": "progression",
+      "label": "Workflow stage gates per recipe",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "stage_gates"
+          }
+        ]
+      }
+    },
+    {
+      "target": "defining-done-and-gates",
+      "type": "progression",
+      "label": "Handling scope added after splitting",
+      "when": {
+        "all": [
+          {
+            "field": "scope.driftDetected",
+            "operator": "equals",
+            "value": true
+          }
+        ]
+      }
+    }
+  ]
+}

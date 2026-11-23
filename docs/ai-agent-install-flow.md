@@ -66,26 +66,26 @@ Prepare one downloadable ZIP per canonical skill from:
 skills/*/SKILL.md
 ```
 
-Expected ZIP set (one per `skills/*/SKILL.md`, currently 48 — run `npm run skills:export`; do not hand-maintain the list here; inventory: `skills/README.md`):
+Expected ZIP set (one per `skills/*/SKILL.md`, currently 14 — run `npm run skills:export`; do not hand-maintain the list here; inventory: `skills/README.md`):
 
 ```txt
-# Canonical baseline snapshot (16 of 48; full set via skills:export — do not hand-maintain)
-blendops-help.zip
-blender-brainstorming.zip
-intent-to-3d-brief-writer.zip
-asset-discovery.zip
-blender-troubleshooting.zip
-pre-handoff-verification.zip
-bridge-conflicts.zip
-runtime-setup.zip
-runtime-readiness.zip
-product-hero-scene-planner.zip
-camera-composition.zip
-lighting-material-plan.zip
-scene-readiness.zip
-render-export-evidence.zip
-glb-web-handoff.zip
-plain-language-response.zip
+# Canonical skill snapshot (14; full set via skills:export — do not hand-maintain)
+using-blendops.zip
+scoping-3d-briefs.zip
+scoping-3d-briefs.zip
+sourcing-assets.zip
+troubleshooting-blender-output.zip
+verifying-before-handoff.zip
+setting-up-blender-runtime.zip
+setting-up-blender-runtime.zip
+setting-up-blender-runtime.zip
+planning-product-scenes.zip
+planning-camera-and-framing.zip
+planning-lighting-and-materials.zip
+verifying-before-handoff.zip
+verifying-before-handoff.zip
+handing-off-glb-to-web.zip
+using-blendops.zip
 ```
 
 ZIP requirements:

@@ -22,11 +22,11 @@ Test whether v0 laws/skills/workflow/recipe produce a useful non-Blender-user pl
 - laws/no-arbitrary-python-interface
 - laws/evidence-before-done
 - laws/non-blender-user-language
-- skills/runtime-setup
-- skills/product-hero-scene-planner
-- skills/scene-readiness
-- skills/glb-web-handoff
-- skills/plain-language-response
+- skills/setting-up-blender-runtime
+- skills/planning-product-scenes
+- skills/verifying-before-handoff
+- skills/handing-off-glb-to-web
+- skills/using-blendops
 - workflow/product-hero-workflow
 - recipe/cyberpunk-shoe-hero
 - pack/v0-product-hero-pack
@@ -123,7 +123,7 @@ Evaluate pass/warn/fail:
 ## Required changes
 
 - docs/workflows/product-hero-workflow.md: add text-only evaluation handling under runtime evidence expectations.
-- Root `skills/glb-web-handoff/SKILL.md`: add explicit “Not Run” handling in failure/uncertainty path for dry eval mode.
+- Root `skills/handing-off-glb-to-web/SKILL.md`: add explicit “Not Run” handling in failure/uncertainty path for dry eval mode.
 
 ## Final verdict
 

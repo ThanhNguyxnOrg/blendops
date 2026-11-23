@@ -10,14 +10,13 @@ const __dirname = path.dirname(__filename);
 const REPO_ROOT = path.resolve(__dirname, '..');
 const DEFAULT_ROOT = process.cwd();
 
-export const EXPECTED_CANONICAL_SKILL_COUNT = 48;
+export const EXPECTED_CANONICAL_SKILL_COUNT = 14;
 export const VALID_CAPABILITY_TIERS = new Set(['L0', 'L1', 'L2', 'L3']);
 export const VALID_GATE_GOAL_CLARITIES = new Set(['ambiguous_or_mixed', 'clear', 'any']);
 export const ROUTING_PARTICIPANT_IDS = new Set([
-  'blendops-help',
-  'recipe-fit-assessor',
-  'pack-prerequisite-checker',
-  'workflow-stage-router',
+  'scoping-3d-briefs',
+  'defining-done-and-gates',
+  'using-blendops',
 ]);
 export const VALID_HANDOFF_TYPES = new Set([
   'progression',
@@ -1821,7 +1820,7 @@ export function checkBundleReferenceSummaries(rootDir = DEFAULT_ROOT, options = 
     }
   }
 
-  // Verify all 96 expected summary files exist and match byte-for-byte
+  // Verify all 28 expected summary files exist and match byte-for-byte
   for (const [relPath, expectedContent] of plan.expectedFiles.entries()) {
     let absPath;
     try {

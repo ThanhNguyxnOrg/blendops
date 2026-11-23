@@ -1,0 +1,933 @@
+{
+  "schemaVersion": "2.0.0",
+  "skillId": "planning-camera-and-framing",
+  "category": "scene-planners",
+  "isContractedSkill": true,
+  "isRoutingParticipant": false,
+  "contractPath": "skills/planning-camera-and-framing/contract.json",
+  "skillMarkdownPath": "skills/planning-camera-and-framing/SKILL.md",
+  "evalMarkdownPath": "skills/planning-camera-and-framing/EVAL.md",
+  "sourceEvalTier": "prose_outline_contract_migrated",
+  "evaluationStatus": {
+    "staticValidation": "Passed",
+    "deterministicFixture": "Passed",
+    "contractRouting": "Not Applicable",
+    "contractHandoff": "Passed",
+    "liveModel": "Not Run",
+    "blenderRuntime": "Not Run"
+  },
+  "cases": [
+    {
+      "id": "camera-composition-normal-in-scope-handoff",
+      "skillId": "planning-camera-and-framing",
+      "scenario": "Normal in-scope execution of planning-camera-and-framing (camera-rig-and-composition-deep-planner) with contract handoff to planning-lighting-and-materials",
+      "category": "normal",
+      "inputPrompt": "Use planning-camera-and-framing to design the camera rig for our locked 16:9 luxury watch product-hero-v0 brief (85mm portrait lens, rule-of-thirds right anchor, shallow DOF f/2.8, 15-degree hero three-quarter angle).",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Primary inputs (domain_scene_plan) provided in text-only planning/audit mode."
+      },
+      "expectedBehavior": [
+        "Produces camera_rig_specification, focal_length_and_dof_plan, composition_anchor_guidelines for role camera-rig-and-composition-deep-planner",
+        "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
+        "Evaluates contract handoff predicate and hands off to planning-lighting-and-materials (Next (lookdev & lighting))"
+      ],
+      "requiredOutputProperties": [
+        "85mm",
+        "rule-of-thirds",
+        "safe-frame margin",
+        "planning-lighting-and-materials",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "camera created in Blender",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "planning-lighting-and-materials",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Outputs camera_rig_specification, focal_length_and_dof_plan, composition_anchor_guidelines conforming to skills/planning-camera-and-framing/SKILL.md",
+        "Matches contract handoff predicate to planning-lighting-and-materials in skills/planning-camera-and-framing/contract.json"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "brief.locked": true,
+          "stage.current": "lookdev_planning"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only camera-rig-and-composition-deep-planner (planning-camera-and-framing)",
+          "recommendedNextAction": "Complete camera_rig_specification and hand off to planning-lighting-and-materials (Next (lookdev & lighting)).",
+          "targetHandoff": "planning-lighting-and-materials",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Planned 85mm camera focal length, sensor fit, 3/4 hero camera coordinates, DOF focus target, and 16:9 safe-frame margins. Delivered 85mm, rule-of-thirds, safe-frame margin and routed to planning-lighting-and-materials.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/planning-camera-and-framing/SKILL.md",
+            "skills/planning-camera-and-framing/EVAL.md",
+            "skills/planning-camera-and-framing/contract.json",
+            "skills/planning-camera-and-framing/references/camera-presets.md",
+            "skills/planning-camera-and-framing/references/camera-rubric.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "camera-composition-secondary-contract-handoff",
+      "skillId": "planning-camera-and-framing",
+      "scenario": "Secondary upstream_reference contract handoff from planning-camera-and-framing to planning-product-scenes",
+      "category": "structured_skip",
+      "inputPrompt": "While applying planning-camera-and-framing, the workflow context is {\"brief.locked\":true,\"recipe.domain\":\"product_hero\"} (Upstream input from). Determine the contract-governed handoff target.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates the upstream_reference handoff predicate in skills/planning-camera-and-framing/contract.json",
+        "Routes to planning-product-scenes (Upstream input from) without claiming runtime execution"
+      ],
+      "requiredOutputProperties": [
+        "planning-product-scenes",
+        "upstream_reference",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "camera created in Blender",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "planning-product-scenes",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Contract upstream_reference handoff predicate match to planning-product-scenes"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "brief.locked": true,
+          "recipe.domain": "product_hero"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only planning-camera-and-framing (upstream_reference handoff)",
+          "recommendedNextAction": "Follow upstream_reference handoff to planning-product-scenes (Upstream input from).",
+          "targetHandoff": "planning-product-scenes",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Triggered upstream_reference handoff from planning-camera-and-framing to planning-product-scenes under context {\"brief.locked\":true,\"recipe.domain\":\"product_hero\"}.",
+          "warnings": [
+            "Contract-governed upstream_reference handoff."
+          ],
+          "evidenceCitations": [
+            "skills/planning-camera-and-framing/contract.json",
+            "skills/planning-camera-and-framing/SKILL.md",
+            "skills/planning-camera-and-framing/references/camera-presets.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "camera-composition-unmatched-handoff-and-evidence-boundary",
+      "skillId": "planning-camera-and-framing",
+      "scenario": "Unmatched contract handoff context returns none and blocks upgrading unvalidated file to Verified in planning-camera-and-framing",
+      "category": "evidence_boundary",
+      "inputPrompt": "An operator provides an unvalidated file on disk during planning-camera-and-framing with context {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and asks to mark Artifact: Verified and auto-advance.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "file-only-unvalidated",
+        "notes": "A file exists on disk but validation checks have not been recorded."
+      },
+      "expectedBehavior": [
+        "Refuses to upgrade Artifact status to Verified when existingArtifactEvidence is file-only-unvalidated (caps at Produced)",
+        "Evaluates contract handoffs for planning-camera-and-framing and returns targetHandoff none because no handoff predicate matches"
+      ],
+      "requiredOutputProperties": [
+        "Artifact: Produced",
+        "Runtime: Not Run",
+        "validation",
+        "none"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "validation not needed"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Downgrade unvalidated Verified claim to Produced per laws/evidence-before-done.md",
+        "Verify 0 handoffs match in skills/planning-camera-and-framing/contract.json for {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true}"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Artifact-claim boundary check (planning-camera-and-framing)",
+          "recommendedNextAction": "Keep Artifact status at Produced (never Verified without validation evidence) and hold at targetHandoff none until a downstream precondition is met.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Produced",
+          "summary": "Capped unvalidated artifact claim at Artifact: Produced and verified zero matching contract handoffs (none) for planning-camera-and-framing.",
+          "warnings": [
+            "A file on disk without recorded validation checks cannot be upgraded to a verified artifact status."
+          ],
+          "evidenceCitations": [
+            "laws/evidence-before-done.md",
+            "skills/planning-camera-and-framing/contract.json",
+            "skills/planning-camera-and-framing/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "camera-composition-ambiguous-missing-required-inputs",
+      "skillId": "planning-camera-and-framing",
+      "scenario": "Missing required input (domain_scene_plan) for planning-camera-and-framing halts fabricated output and requests clarification",
+      "category": "ambiguous",
+      "inputPrompt": "Plan the exact camera focal length, position, and depth-of-field for our shot without telling me the subject dimensions, aspect ratio, or framing mood.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Required input 'domain_scene_plan' is missing or underspecified."
+      },
+      "expectedBehavior": [
+        "Identifies missing subject bounding dimensions, target aspect ratio, and framing intent required by planning-camera-and-framing (domain_scene_plan)",
+        "Refuses to fabricate domain parameters and keeps Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "domain_scene_plan",
+        "subject bounding dimensions, target aspect ratio, and framing intent",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "camera created in Blender",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "guessed parameters silently"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicitly names missing required input 'domain_scene_plan' (subject bounding dimensions, target aspect ratio, and framing intent)",
+        "Conservative Runtime: Not Run and Artifact: Not Produced truth states"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Clarification gate (planning-camera-and-framing)",
+          "recommendedNextAction": "Provide the missing subject bounding dimensions, target aspect ratio, and framing intent (domain_scene_plan) before planning-camera-and-framing locks camera_rig_specification.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted planning-camera-and-framing due to missing required input 'domain_scene_plan' (subject bounding dimensions, target aspect ratio, and framing intent); no values were fabricated.",
+          "warnings": [
+            "Do not invent subject bounding dimensions, target aspect ratio, and framing intent when 'domain_scene_plan' is omitted."
+          ],
+          "evidenceCitations": [
+            "skills/planning-camera-and-framing/SKILL.md",
+            "skills/planning-camera-and-framing/EVAL.md",
+            "skills/planning-camera-and-framing/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "camera-composition-out-of-scope-exclusion-delegation",
+      "skillId": "planning-camera-and-framing",
+      "scenario": "Out-of-scope request (as proof of rendered output quality or to validate an existing framing) is excluded from planning-camera-and-framing and delegated to planning-camera-and-framing",
+      "category": "scope_creep",
+      "inputPrompt": "Instead of provide detailed composition and camera planning for product hero outputs., handle this request inside planning-camera-and-framing: as proof of rendered output quality or to validate an existing framing.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Enforces the declared exclusion boundary in skills/planning-camera-and-framing/contract.json when as proof of rendered output quality or to validate an existing framing",
+        "Delegates to planning-camera-and-framing (use planning-camera-and-framing) with Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "planning-camera-and-framing",
+        "out of scope",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "camera created in Blender",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "handled inside planning-camera-and-framing anyway"
+      ],
+      "expectedRoutingTarget": "planning-camera-and-framing",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Exclusion delegation to planning-camera-and-framing per skills/planning-camera-and-framing/contract.json"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Out-of-scope exclusion gate (planning-camera-and-framing)",
+          "recommendedNextAction": "Request is out of scope for planning-camera-and-framing (as proof of rendered output quality or to validate an existing framing); delegate to planning-camera-and-framing.",
+          "targetHandoff": "planning-camera-and-framing",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Enforced planning-camera-and-framing exclusion boundary (use planning-camera-and-framing) and delegated to planning-camera-and-framing.",
+          "warnings": [
+            "planning-camera-and-framing is scoped to camera-rig-and-composition-deep-planner and does not absorb planning-camera-and-framing responsibilities."
+          ],
+          "evidenceCitations": [
+            "skills/planning-camera-and-framing/contract.json",
+            "skills/planning-camera-and-framing/SKILL.md",
+            "skills/planning-camera-and-framing/SKILL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "composition-quality-checker-normal-in-scope-handoff",
+      "skillId": "planning-camera-and-framing",
+      "scenario": "Normal in-scope execution of planning-camera-and-framing (framing-and-silhouette-validator) with contract handoff to verifying-before-handoff",
+      "category": "normal",
+      "inputPrompt": "Use planning-camera-and-framing on a 16:9 product hero card camera plan where the subject is placed at the right-third intersection, occupies 60% frame width, has 12% headroom, and uses an 85mm lens.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Primary inputs (camera_and_framing_spec) provided in text-only planning/audit mode."
+      },
+      "expectedBehavior": [
+        "Produces composition_verdict_table, silhouette_and_headroom_assessment, camera_replan_remediation_hints for role framing-and-silhouette-validator",
+        "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
+        "Evaluates contract handoff predicate and hands off to verifying-before-handoff (Broad scene readiness review (consumes these rows))"
+      ],
+      "requiredOutputProperties": [
+        "7 check rows",
+        "headroom",
+        "negative space",
+        "verifying-before-handoff",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Composition looks great without rows",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "verifying-before-handoff",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Outputs composition_verdict_table, silhouette_and_headroom_assessment, camera_replan_remediation_hints conforming to skills/planning-camera-and-framing/SKILL.md",
+        "Matches contract handoff predicate to verifying-before-handoff in skills/planning-camera-and-framing/contract.json"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "quality.domain": "holistic",
+          "stage.current": "quality_validation"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only framing-and-silhouette-validator (planning-camera-and-framing)",
+          "recommendedNextAction": "Complete composition_verdict_table and hand off to verifying-before-handoff (Broad scene readiness review (consumes these rows)).",
+          "targetHandoff": "verifying-before-handoff",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Evaluated 7 composition check rows (rule of thirds, subject placement, headroom, lead room, negative space, visual hierarchy, lens/FOV) with top-line Pass verdict. Delivered 7 check rows, headroom, negative space and routed to verifying-before-handoff.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/planning-camera-and-framing/SKILL.md",
+            "skills/planning-camera-and-framing/EVAL.md",
+            "skills/planning-camera-and-framing/contract.json",
+            "skills/planning-camera-and-framing/references/aspect-ratio-rules.md",
+            "skills/planning-camera-and-framing/references/composition-rules.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "composition-quality-checker-secondary-contract-handoff",
+      "skillId": "planning-camera-and-framing",
+      "scenario": "Secondary retry contract handoff from planning-camera-and-framing to planning-camera-and-framing",
+      "category": "blocked_or_adversarial",
+      "inputPrompt": "While applying planning-camera-and-framing, the workflow context is {\"quality.domain\":\"composition\",\"quality.verdict\":\"Fail\"} (Camera & framing re-plan). Determine the contract-governed handoff target.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates the retry handoff predicate in skills/planning-camera-and-framing/contract.json",
+        "Routes to planning-camera-and-framing (Camera & framing re-plan) without claiming runtime execution"
+      ],
+      "requiredOutputProperties": [
+        "planning-camera-and-framing",
+        "retry",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Composition looks great without rows",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "planning-camera-and-framing",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Contract retry handoff predicate match to planning-camera-and-framing"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "quality.domain": "composition",
+          "quality.verdict": "Fail"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only planning-camera-and-framing (retry handoff)",
+          "recommendedNextAction": "Follow retry handoff to planning-camera-and-framing (Camera & framing re-plan).",
+          "targetHandoff": "planning-camera-and-framing",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Triggered retry handoff from planning-camera-and-framing to planning-camera-and-framing under context {\"quality.domain\":\"composition\",\"quality.verdict\":\"Fail\"}.",
+          "warnings": [
+            "Bounded retry handoff to planning-camera-and-framing (maxAttempts=2)."
+          ],
+          "evidenceCitations": [
+            "skills/planning-camera-and-framing/contract.json",
+            "skills/planning-camera-and-framing/SKILL.md",
+            "skills/planning-camera-and-framing/references/aspect-ratio-rules.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "composition-quality-checker-unmatched-handoff-and-evidence-boundary",
+      "skillId": "planning-camera-and-framing",
+      "scenario": "Unmatched contract handoff context returns none and blocks upgrading unvalidated file to Verified in planning-camera-and-framing",
+      "category": "evidence_boundary",
+      "inputPrompt": "An operator provides an unvalidated file on disk during planning-camera-and-framing with context {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and asks to mark Artifact: Verified and auto-advance.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "file-only-unvalidated",
+        "notes": "A file exists on disk but validation checks have not been recorded."
+      },
+      "expectedBehavior": [
+        "Refuses to upgrade Artifact status to Verified when existingArtifactEvidence is file-only-unvalidated (caps at Produced)",
+        "Evaluates contract handoffs for planning-camera-and-framing and returns targetHandoff none because no handoff predicate matches"
+      ],
+      "requiredOutputProperties": [
+        "Artifact: Produced",
+        "Runtime: Not Run",
+        "validation",
+        "none"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "validation not needed"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Downgrade unvalidated Verified claim to Produced per laws/evidence-before-done.md",
+        "Verify 0 handoffs match in skills/planning-camera-and-framing/contract.json for {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true}"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Artifact-claim boundary check (planning-camera-and-framing)",
+          "recommendedNextAction": "Keep Artifact status at Produced (never Verified without validation evidence) and hold at targetHandoff none until a downstream precondition is met.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Produced",
+          "summary": "Capped unvalidated artifact claim at Artifact: Produced and verified zero matching contract handoffs (none) for planning-camera-and-framing.",
+          "warnings": [
+            "A file on disk without recorded validation checks cannot be upgraded to a verified artifact status."
+          ],
+          "evidenceCitations": [
+            "laws/evidence-before-done.md",
+            "skills/planning-camera-and-framing/contract.json",
+            "skills/planning-camera-and-framing/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "composition-quality-checker-ambiguous-missing-required-inputs",
+      "skillId": "planning-camera-and-framing",
+      "scenario": "Missing required input (camera_and_framing_spec) for planning-camera-and-framing halts fabricated output and requests clarification",
+      "category": "ambiguous",
+      "inputPrompt": "Run planning-camera-and-framing and give me a Pass verdict without providing the aspect ratio, subject frame occupancy, or camera focal length.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Required input 'camera_and_framing_spec' is missing or underspecified."
+      },
+      "expectedBehavior": [
+        "Identifies missing target aspect ratio, camera focal length, and subject placement coordinates required by planning-camera-and-framing (camera_and_framing_spec)",
+        "Refuses to fabricate domain parameters and keeps Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "camera_and_framing_spec",
+        "target aspect ratio, camera focal length, and subject placement coordinates",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Composition looks great without rows",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "guessed parameters silently"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicitly names missing required input 'camera_and_framing_spec' (target aspect ratio, camera focal length, and subject placement coordinates)",
+        "Conservative Runtime: Not Run and Artifact: Not Produced truth states"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Clarification gate (planning-camera-and-framing)",
+          "recommendedNextAction": "Provide the missing target aspect ratio, camera focal length, and subject placement coordinates (camera_and_framing_spec) before planning-camera-and-framing locks composition_verdict_table.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted planning-camera-and-framing due to missing required input 'camera_and_framing_spec' (target aspect ratio, camera focal length, and subject placement coordinates); no values were fabricated.",
+          "warnings": [
+            "Do not invent target aspect ratio, camera focal length, and subject placement coordinates when 'camera_and_framing_spec' is omitted."
+          ],
+          "evidenceCitations": [
+            "skills/planning-camera-and-framing/SKILL.md",
+            "skills/planning-camera-and-framing/EVAL.md",
+            "skills/planning-camera-and-framing/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "composition-quality-checker-out-of-scope-exclusion-delegation",
+      "skillId": "planning-camera-and-framing",
+      "scenario": "Out-of-scope request (planning or editing camera framing) is excluded from planning-camera-and-framing and delegated to planning-camera-and-framing",
+      "category": "scope_creep",
+      "inputPrompt": "Instead of validate camera framing, subject placement, headroom/lead-room, and visual hierarchy against the scene brief before render., handle this request inside planning-camera-and-framing: planning or editing camera framing.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Enforces the declared exclusion boundary in skills/planning-camera-and-framing/contract.json when planning or editing camera framing",
+        "Delegates to planning-camera-and-framing (use planning-camera-and-framing) with Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "planning-camera-and-framing",
+        "out of scope",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Composition looks great without rows",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "handled inside planning-camera-and-framing anyway"
+      ],
+      "expectedRoutingTarget": "planning-camera-and-framing",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Exclusion delegation to planning-camera-and-framing per skills/planning-camera-and-framing/contract.json"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Out-of-scope exclusion gate (planning-camera-and-framing)",
+          "recommendedNextAction": "Request is out of scope for planning-camera-and-framing (planning or editing camera framing); delegate to planning-camera-and-framing.",
+          "targetHandoff": "planning-camera-and-framing",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Enforced planning-camera-and-framing exclusion boundary (use planning-camera-and-framing) and delegated to planning-camera-and-framing.",
+          "warnings": [
+            "planning-camera-and-framing is scoped to framing-and-silhouette-validator and does not absorb planning-camera-and-framing responsibilities."
+          ],
+          "evidenceCitations": [
+            "skills/planning-camera-and-framing/contract.json",
+            "skills/planning-camera-and-framing/SKILL.md",
+            "skills/planning-camera-and-framing/SKILL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "resolution-aspect-decision-normal-in-scope-handoff",
+      "skillId": "planning-camera-and-framing",
+      "scenario": "Normal in-scope execution of planning-camera-and-framing (resolution-and-aspect-ratio-pinner) with contract handoff to planning-camera-and-framing",
+      "category": "normal",
+      "inputPrompt": "Apply planning-camera-and-framing for a retina web hero banner (16:9 aspect ratio, 2880x1620 master render downscaled to 1920x1080 and 960x540 responsive breakpoints).",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Primary inputs (target_delivery_surfaces) provided in text-only planning/audit mode."
+      },
+      "expectedBehavior": [
+        "Produces pinned_pixel_dimensions_and_aspect_ratio, safe_frame_and_overscan_margins, camera_sensor_fit_alignment_notes for role resolution-and-aspect-ratio-pinner",
+        "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
+        "Evaluates contract handoff predicate and hands off to planning-camera-and-framing (Composition framing validation against pinned aspect)"
+      ],
+      "requiredOutputProperties": [
+        "16:9",
+        "2880x1620",
+        "downscale derivative",
+        "planning-camera-and-framing",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "upscale 720p to 4K master",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "planning-camera-and-framing",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Outputs pinned_pixel_dimensions_and_aspect_ratio, safe_frame_and_overscan_margins, camera_sensor_fit_alignment_notes conforming to skills/planning-camera-and-framing/SKILL.md",
+        "Matches contract handoff predicate to planning-camera-and-framing in skills/planning-camera-and-framing/contract.json"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "quality.domain": "composition",
+          "quality.verdict": "not_run"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only resolution-and-aspect-ratio-pinner (planning-camera-and-framing)",
+          "recommendedNextAction": "Complete pinned_pixel_dimensions_and_aspect_ratio and hand off to planning-camera-and-framing (Composition framing validation against pinned aspect).",
+          "targetHandoff": "planning-camera-and-framing",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Pinned 16:9 aspect ratio, 2880x1620 master render resolution (100% scale), downscale derivative table (1920x1080, 960x540), and safe-area crop rules. Delivered 16:9, 2880x1620, downscale derivative and routed to planning-camera-and-framing.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/planning-camera-and-framing/SKILL.md",
+            "skills/planning-camera-and-framing/EVAL.md",
+            "skills/planning-camera-and-framing/contract.json",
+            "skills/planning-camera-and-framing/references/aspect-defaults.md",
+            "skills/planning-camera-and-framing/references/print-vs-screen-rules.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "resolution-aspect-decision-secondary-contract-handoff",
+      "skillId": "planning-camera-and-framing",
+      "scenario": "Secondary upstream_reference contract handoff from planning-camera-and-framing to planning-camera-and-framing",
+      "category": "structured_skip",
+      "inputPrompt": "While applying planning-camera-and-framing, the workflow context is {\"brief.locked\":true,\"stage.current\":\"camera_planning\"} (Camera & composition planning (upstream framing setup)). Determine the contract-governed handoff target.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates the upstream_reference handoff predicate in skills/planning-camera-and-framing/contract.json",
+        "Routes to planning-camera-and-framing (Camera & composition planning (upstream framing setup)) without claiming runtime execution"
+      ],
+      "requiredOutputProperties": [
+        "planning-camera-and-framing",
+        "upstream_reference",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "upscale 720p to 4K master",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "planning-camera-and-framing",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Contract upstream_reference handoff predicate match to planning-camera-and-framing"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "brief.locked": true,
+          "stage.current": "camera_planning"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only planning-camera-and-framing (upstream_reference handoff)",
+          "recommendedNextAction": "Follow upstream_reference handoff to planning-camera-and-framing (Camera & composition planning (upstream framing setup)).",
+          "targetHandoff": "planning-camera-and-framing",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Triggered upstream_reference handoff from planning-camera-and-framing to planning-camera-and-framing under context {\"brief.locked\":true,\"stage.current\":\"camera_planning\"}.",
+          "warnings": [
+            "Contract-governed upstream_reference handoff."
+          ],
+          "evidenceCitations": [
+            "skills/planning-camera-and-framing/contract.json",
+            "skills/planning-camera-and-framing/SKILL.md",
+            "skills/planning-camera-and-framing/references/aspect-defaults.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "resolution-aspect-decision-unmatched-handoff-and-evidence-boundary",
+      "skillId": "planning-camera-and-framing",
+      "scenario": "Unmatched contract handoff context returns none and blocks upgrading unvalidated file to Verified in planning-camera-and-framing",
+      "category": "evidence_boundary",
+      "inputPrompt": "An operator provides an unvalidated file on disk during planning-camera-and-framing with context {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and asks to mark Artifact: Verified and auto-advance.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "file-only-unvalidated",
+        "notes": "A file exists on disk but validation checks have not been recorded."
+      },
+      "expectedBehavior": [
+        "Refuses to upgrade Artifact status to Verified when existingArtifactEvidence is file-only-unvalidated (caps at Produced)",
+        "Evaluates contract handoffs for planning-camera-and-framing and returns targetHandoff none because no handoff predicate matches"
+      ],
+      "requiredOutputProperties": [
+        "Artifact: Produced",
+        "Runtime: Not Run",
+        "validation",
+        "none"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "validation not needed"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Downgrade unvalidated Verified claim to Produced per laws/evidence-before-done.md",
+        "Verify 0 handoffs match in skills/planning-camera-and-framing/contract.json for {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true}"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Artifact-claim boundary check (planning-camera-and-framing)",
+          "recommendedNextAction": "Keep Artifact status at Produced (never Verified without validation evidence) and hold at targetHandoff none until a downstream precondition is met.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Produced",
+          "summary": "Capped unvalidated artifact claim at Artifact: Produced and verified zero matching contract handoffs (none) for planning-camera-and-framing.",
+          "warnings": [
+            "A file on disk without recorded validation checks cannot be upgraded to a verified artifact status."
+          ],
+          "evidenceCitations": [
+            "laws/evidence-before-done.md",
+            "skills/planning-camera-and-framing/contract.json",
+            "skills/planning-camera-and-framing/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "resolution-aspect-decision-ambiguous-missing-required-inputs",
+      "skillId": "planning-camera-and-framing",
+      "scenario": "Missing required input (target_delivery_surfaces) for planning-camera-and-framing halts fabricated output and requests clarification",
+      "category": "ambiguous",
+      "inputPrompt": "Pin the exact render pixel resolution and aspect ratio without telling me whether the output is for desktop web hero, vertical mobile stories, or print poster.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Required input 'target_delivery_surfaces' is missing or underspecified."
+      },
+      "expectedBehavior": [
+        "Identifies missing target placement channel (web vs mobile vs print) and aspect ratio requirement required by planning-camera-and-framing (target_delivery_surfaces)",
+        "Refuses to fabricate domain parameters and keeps Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "target_delivery_surfaces",
+        "target placement channel (web vs mobile vs print) and aspect ratio requirement",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "upscale 720p to 4K master",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "guessed parameters silently"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicitly names missing required input 'target_delivery_surfaces' (target placement channel (web vs mobile vs print) and aspect ratio requirement)",
+        "Conservative Runtime: Not Run and Artifact: Not Produced truth states"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Clarification gate (planning-camera-and-framing)",
+          "recommendedNextAction": "Provide the missing target placement channel (web vs mobile vs print) and aspect ratio requirement (target_delivery_surfaces) before planning-camera-and-framing locks pinned_pixel_dimensions_and_aspect_ratio.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted planning-camera-and-framing due to missing required input 'target_delivery_surfaces' (target placement channel (web vs mobile vs print) and aspect ratio requirement); no values were fabricated.",
+          "warnings": [
+            "Do not invent target placement channel (web vs mobile vs print) and aspect ratio requirement when 'target_delivery_surfaces' is omitted."
+          ],
+          "evidenceCitations": [
+            "skills/planning-camera-and-framing/SKILL.md",
+            "skills/planning-camera-and-framing/EVAL.md",
+            "skills/planning-camera-and-framing/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "resolution-aspect-decision-out-of-scope-exclusion-delegation",
+      "skillId": "planning-camera-and-framing",
+      "scenario": "Out-of-scope request (after render is complete (no benefit)) is excluded from planning-camera-and-framing and delegated to planning-camera-and-framing",
+      "category": "scope_creep",
+      "inputPrompt": "Instead of pick the right render resolution + aspect ratio for the consumer use case before render; avoid render-then-crop and aspect mismatch., handle this request inside planning-camera-and-framing: after render is complete (no benefit).",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Enforces the declared exclusion boundary in skills/planning-camera-and-framing/contract.json when after render is complete (no benefit)",
+        "Delegates to planning-camera-and-framing (no benefit) with Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "planning-camera-and-framing",
+        "out of scope",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "upscale 720p to 4K master",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "handled inside planning-camera-and-framing anyway"
+      ],
+      "expectedRoutingTarget": "planning-camera-and-framing",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Exclusion delegation to planning-camera-and-framing per skills/planning-camera-and-framing/contract.json"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Out-of-scope exclusion gate (planning-camera-and-framing)",
+          "recommendedNextAction": "Request is out of scope for planning-camera-and-framing (after render is complete (no benefit)); delegate to planning-camera-and-framing.",
+          "targetHandoff": "planning-camera-and-framing",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Enforced planning-camera-and-framing exclusion boundary (no benefit) and delegated to planning-camera-and-framing.",
+          "warnings": [
+            "planning-camera-and-framing is scoped to resolution-and-aspect-ratio-pinner and does not absorb planning-camera-and-framing responsibilities."
+          ],
+          "evidenceCitations": [
+            "skills/planning-camera-and-framing/contract.json",
+            "skills/planning-camera-and-framing/SKILL.md",
+            "skills/planning-camera-and-framing/SKILL.md"
+          ]
+        }
+      }
+    }
+  ]
+}

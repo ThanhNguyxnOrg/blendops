@@ -125,16 +125,16 @@ description: Blender skills pack for non-Blender users. Use for scene planning, 
 | Runtime stacks | Pass | `references/runtime-stacks.md` |
 | Evidence rules | Pass | `references/evidence-rules.md` |
 | Install boundary | Pass | `references/install-boundary.md` |
-| BlendOps helper summary | Pass | `references/skill-blendops-help.md` |
-| Official runtime setup guide summary | Pass | `references/skill-runtime-setup.md` |
-| Product hero scene planner summary | Pass | `references/skill-product-hero-scene-planner.md` |
-| Official runtime readiness checker summary | Pass | `references/skill-runtime-readiness.md` |
-| Render/export evidence summary | Pass | `references/skill-render-export-evidence.md` |
-| GLB web handoff summary | Pass | `references/skill-glb-web-handoff.md` |
-| Composition/camera planner summary | Pass | `references/skill-camera-composition.md` |
-| Lighting/material planner summary | Pass | `references/skill-lighting-material-plan.md` |
-| Scene quality checker summary | Pass | `references/skill-scene-readiness.md` |
-| Non-Blender-user response writer summary | Pass | `references/skill-plain-language-response.md` |
+| BlendOps helper summary | Pass | `references/skill-using-blendops.md` |
+| Official runtime setup guide summary | Pass | `references/skill-setting-up-blender-runtime.md` |
+| Product hero scene planner summary | Pass | `references/skill-planning-product-scenes.md` |
+| Official runtime readiness checker summary | Pass | `references/skill-setting-up-blender-runtime.md` |
+| Render/export evidence summary | Pass | `references/skill-verifying-before-handoff.md` |
+| GLB web handoff summary | Pass | `references/skill-handing-off-glb-to-web.md` |
+| Composition/camera planner summary | Pass | `references/skill-planning-camera-and-framing.md` |
+| Lighting/material planner summary | Pass | `references/skill-planning-lighting-and-materials.md` |
+| Scene quality checker summary | Pass | `references/skill-verifying-before-handoff.md` |
+| Non-Blender-user response writer summary | Pass | `references/skill-using-blendops.md` |
 | Evidence law summary | Pass | `references/law-evidence-before-done.md` |
 | Official runtime law summary | Pass | `references/law-official-runtime-only.md` |
 | No arbitrary Python interface law summary | Pass | `references/law-no-arbitrary-python-interface.md` |

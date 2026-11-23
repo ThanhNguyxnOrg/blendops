@@ -85,7 +85,7 @@ These are LLM hosts, not coding agents. They don't have project-local-file conve
 
 ### 4) Open Agent Skills CLI (`skills.sh`) & Local Installer Targets (`35+` agents)
 
-BlendOps ships a root [`skills.sh.json`](../../skills.sh.json) grouping manifest organizing all 48 skills across 8 domain groups (`npx skills add ThanhNguyxnOrg/blendops`), plus `35+` canonical target skill directory mappings in `scripts/install-skills.mjs` (`--with-skills-dir`) backed by deterministic SHA-256 Lockfile v2 hashes (`.blendops/skills-lock.json`).
+BlendOps ships a root [`skills.sh.json`](../../skills.sh.json) grouping manifest organizing all 14 skills across 4 domain groups (`npx skills add ThanhNguyxnOrg/blendops`), plus `35+` canonical target skill directory mappings in `scripts/install-skills.mjs` (`--with-skills-dir`) backed by deterministic SHA-256 Lockfile v2 hashes (`.blendops/skills-lock.json`).
 
 ### Generic / future
 

@@ -26,7 +26,7 @@ Skills are intentionally composable. A helper skill routes the task, planning sk
 | Layer | Role | Example |
 |---|---|---|
 | Laws | Non-negotiable guardrails shared by every skill. | `laws/evidence-before-done.md` blocks artifact overclaims. |
-| Skills (`skills/*/SKILL.md`) | Focused operating workflows loaded by an agent when relevant (48 total). | `skills/product-hero-scene-planner/SKILL.md` plans a product hero scene. |
+| Skills (`skills/*/SKILL.md`) | Focused operating workflows loaded by an agent when relevant (14 total). | `skills/planning-product-scenes/SKILL.md` plans a product hero scene. |
 | Knowledge (`registry/knowledge-catalog.json`) | Source-backed, version-aware 3D domain rules (`knowledge.*`, 30 records across 11 domains) cited by multiple skills and recipes. | `knowledge.principled-bsdf-v2-energy-conserving-pbr`, `knowledge.agx-filmic-color-management-and-cycles-eevee`. |
 | Recipes (`registry/recipe-catalog.json`) | Multi-stage composable blueprints (`recipe.*`, 10 canonical recipes) chaining skills and knowledge records for an end-to-end deliverable. | `recipe.product-hero-scene` (bound to `packs/product-hero-v0/PACK.md` and `docs/recipes/cyberpunk-shoe-hero.md`). |
 | SceneSpec & Skill Harmonizer (`scripts/compile-scene-plan.mjs`) | Structured intermediate representation (`schemas/scene-spec.schema.json`) compiled into a 7-stage `ExecutionPlan` (`schemas/execution-plan.schema.json`) with an 8-level conflict precedence hierarchy (`1_laws` > `2_runtime_boundary_and_version_floor` > `3_hard_budget_and_export_constraints` > `4_scene_spec_explicit_constraints` > `5_recipe_stage_contracts` > `6_knowledge_record_rules` > `7_skill_heuristics` > `8_aesthetic_defaults`). | `blendops plan-compile evals/scene-specs/cyberpunk-shoe-hero.scene-spec.json` |
@@ -34,7 +34,7 @@ Skills are intentionally composable. A helper skill routes the task, planning sk
 | Evals & Audits | Deterministic behavioral/retrieval suites and evidence records. | `evals/catalog-retrieval-evals.json`, `evals/scene-specs/*.json`, `docs/audits/skill-architecture-audit.md`, `docs/evals/runtime-availability-checklist.md`. |
 | Runtime paths | External execution choices, separate from skill install. | Path 1 Official Blender Lab MCP (host: Anthropic Connector OR manual MCP client), Path 2 community `mcp-for-blender`, CLI fallback (documented upstream as first-class Blender CLI; see the [scoped mech-prop CLI eval](./evals/cli-fallback-mech-prop.md)). |
 
-A skill may point to runtime docs, knowledge records (`knowledge.*`), or recipes (`recipe.*`), but it must not imply runtime was installed or run. See [`knowledge-and-recipe-catalog.md`](./knowledge-and-recipe-catalog.md) for the full catalog and [`audits/skill-architecture-audit.md`](./audits/skill-architecture-audit.md) for the 48-skill and 151-reference classification audit.
+A skill may point to runtime docs, knowledge records (`knowledge.*`), or recipes (`recipe.*`), but it must not imply runtime was installed or run. See [`knowledge-and-recipe-catalog.md`](./knowledge-and-recipe-catalog.md) for the full catalog and [`audits/skill-architecture-audit.md`](./audits/skill-architecture-audit.md) for the 14-skill and 199-reference classification audit.
 
 ---
 
@@ -42,35 +42,35 @@ A skill may point to runtime docs, knowledge records (`knowledge.*`), or recipes
 
 | Family | Purpose | Current examples |
 |---|---|---|
-| Workflow skills | Route goals, plan next steps, and coordinate handoffs. | `blendops-help`, `plain-language-response` |
-| Blender domain skills | Plan scene content, composition, camera, lighting, material, and quality. | `product-hero-scene-planner`, `camera-composition`, `lighting-material-plan`, `scene-readiness` |
-| Runtime/eval skills | Check readiness and preserve runtime truth. | `runtime-setup`, `runtime-readiness` |
-| Evidence skills | Verify artifact truth before claims. | `render-export-evidence`, `glb-web-handoff` |
+| Workflow skills | Route goals, plan next steps, and coordinate handoffs. | `using-blendops`, `using-blendops` |
+| Blender domain skills | Plan scene content, composition, camera, lighting, material, and quality. | `planning-product-scenes`, `planning-camera-and-framing`, `planning-lighting-and-materials`, `verifying-before-handoff` |
+| Runtime/eval skills | Check readiness and preserve runtime truth. | `setting-up-blender-runtime`, `setting-up-blender-runtime` |
+| Evidence skills | Verify artifact truth before claims. | `verifying-before-handoff`, `handing-off-glb-to-web` |
 | Packaging/adapter skills | Future install/package helpers for target agents. | Not packaged yet; tracked in install/distribution docs. |
 
 ---
 
 ## Canonical skill map
 
-All 48 skills, grouped by canonical role (16-skill original baseline plus 32 expansion skills across Batches 1–8). The full per-skill table with depth and gate-review status lives in [`skills/README.md`](../skills/README.md).
+All 14 skills, grouped by canonical role (merged from the former 48 narrow skills in v2.0.0). The full per-skill table with depth and gate-review status lives in [`skills/README.md`](../skills/README.md).
 
 | Canonical role | Active skill path | Notes |
 |---|---|---|
-| Help / next safe action | `skills/blendops-help/SKILL.md` | Routes between docs, skills, runtime readiness, evals, and packaging. Baseline eval: `skills/blendops-help/EVAL.md`. |
-| Brainstorming (intent exploration) | `skills/blender-brainstorming/SKILL.md` | Socratic intent exploration before brief writer; Superpowers `/brainstorming` analog. |
-| 3D brief writer | `skills/intent-to-3d-brief-writer/SKILL.md` | Convert confirmed intent into an 8-slot structured 3D brief; BMad analysis-phase analog. |
-| Asset discovery | `skills/asset-discovery/SKILL.md` | Per-asset strategy (procedural / library / generative / photogrammetry) before scene planner. |
-| Runtime setup prerequisites | `skills/runtime-setup/SKILL.md` | Canonical role: `runtime-setup`; chooses Path 1 (host a or b) / Path 2 / CLI prerequisites without installing Blender. |
-| Runtime readiness | `skills/runtime-readiness/SKILL.md` | Canonical role: `runtime-readiness`; keep per-path + per-host boundaries. |
-| Bridge-conflict resolution | `skills/bridge-conflicts/SKILL.md` | Diagnose Single-bridge constraint conflicts (Path 1 + Path 2 + port `9876`); BlendOps-specific. |
-| Scene planning | `skills/product-hero-scene-planner/SKILL.md` | Canonical role for product-hero scene planning. |
-| Camera / lighting / composition | `skills/camera-composition/SKILL.md`, `skills/lighting-material-plan/SKILL.md` | Domain planning, no runtime claim. |
-| Scene quality gate | `skills/scene-readiness/SKILL.md` | Pass/Warn/Fail readiness verdict before runtime mutation. |
-| Troubleshooting | `skills/blender-troubleshooting/SKILL.md` | Structured 4-phase root-cause analysis when output looks wrong; Superpowers `/systematic-debugging` analog. |
-| Render/export evidence | `skills/render-export-evidence/SKILL.md` | Artifact truth ledger for preview/render/GLB evidence. Baseline eval: `skills/render-export-evidence/EVAL.md`. |
-| Pre-handoff verification | `skills/pre-handoff-verification/SKILL.md` | 7-point evidence gate before any "ready" / `Verified` claim; Superpowers `/verification-before-completion` analog. |
-| GLB handoff | `skills/glb-web-handoff/SKILL.md` | Web handoff language after evidence state is known. |
-| Plain-language final response | `skills/plain-language-response/SKILL.md` | Stakeholder-friendly summary after evidence state is known. |
+| Help / next safe action | `skills/using-blendops/SKILL.md` | Routes between docs, skills, runtime readiness, evals, and packaging. Baseline eval: `skills/using-blendops/EVAL.md`. |
+| Brainstorming (intent exploration) | `skills/scoping-3d-briefs/SKILL.md` | Socratic intent exploration before brief writer; Superpowers `/brainstorming` analog. |
+| 3D brief writer | `skills/scoping-3d-briefs/SKILL.md` | Convert confirmed intent into an 8-slot structured 3D brief; BMad analysis-phase analog. |
+| Asset discovery | `skills/sourcing-assets/SKILL.md` | Per-asset strategy (procedural / library / generative / photogrammetry) before scene planner. |
+| Runtime setup prerequisites | `skills/setting-up-blender-runtime/SKILL.md` | Canonical role: `setting-up-blender-runtime`; chooses Path 1 (host a or b) / Path 2 / CLI prerequisites without installing Blender. |
+| Runtime readiness | `skills/setting-up-blender-runtime/SKILL.md` | Canonical role: `setting-up-blender-runtime`; keep per-path + per-host boundaries. |
+| Bridge-conflict resolution | `skills/setting-up-blender-runtime/SKILL.md` | Diagnose Single-bridge constraint conflicts (Path 1 + Path 2 + port `9876`); BlendOps-specific. |
+| Scene planning | `skills/planning-product-scenes/SKILL.md` | Canonical role for product-hero scene planning. |
+| Camera / lighting / composition | `skills/planning-camera-and-framing/SKILL.md`, `skills/planning-lighting-and-materials/SKILL.md` | Domain planning, no runtime claim. |
+| Scene quality gate | `skills/verifying-before-handoff/SKILL.md` | Pass/Warn/Fail readiness verdict before runtime mutation. |
+| Troubleshooting | `skills/troubleshooting-blender-output/SKILL.md` | Structured 4-phase root-cause analysis when output looks wrong; Superpowers `/systematic-debugging` analog. |
+| Render/export evidence | `skills/verifying-before-handoff/SKILL.md` | Artifact truth ledger for preview/render/GLB evidence. Baseline eval: `skills/verifying-before-handoff/EVAL.md`. |
+| Pre-handoff verification | `skills/verifying-before-handoff/SKILL.md` | 7-point evidence gate before any "ready" / `Verified` claim; Superpowers `/verification-before-completion` analog. |
+| GLB handoff | `skills/handing-off-glb-to-web/SKILL.md` | Web handoff language after evidence state is known. |
+| Plain-language final response | `skills/using-blendops/SKILL.md` | Stakeholder-friendly summary after evidence state is known. |
 
 Do not create duplicate alias folders unless packaging evidence shows a target agent needs them.
 
@@ -96,11 +96,11 @@ Use the smallest skill that can safely move the work forward.
 
 | User intent | Load first | Then hand off to |
 |---|---|---|
-| “What should I do next?” | `blendops-help` | Readiness, planning, evidence, or packaging docs. |
-| “Can I run Blender?” | `runtime-readiness` | Runtime stack docs and manual eval packet. |
-| “Plan this scene” | `product-hero-scene-planner` | Composition/lighting/material planners. |
-| “Check this scene plan” | `scene-readiness` | Response writer or evidence skill. |
-| “Did render/export/GLB succeed?” | `render-export-evidence` | `glb-web-handoff` and response writer. |
+| “What should I do next?” | `using-blendops` | Readiness, planning, evidence, or packaging docs. |
+| “Can I run Blender?” | `setting-up-blender-runtime` | Runtime stack docs and manual eval packet. |
+| “Plan this scene” | `planning-product-scenes` | Composition/lighting/material planners. |
+| “Check this scene plan” | `verifying-before-handoff` | Response writer or evidence skill. |
+| “Did render/export/GLB succeed?” | `verifying-before-handoff` | `handing-off-glb-to-web` and response writer. |
 | “Package/install BlendOps” | Install/distribution docs | Future adapter/package skills when verified. |
 
 If runtime status is unknown, check readiness before mutation/render/export. If artifact evidence is missing, keep status `Not Run` or `Not Produced`.
@@ -158,10 +158,10 @@ Do not claim packaged skill, plugin listing, marketplace listing, or broad adapt
 
 ```txt
 skills/
-├─ README.md                       # canonical inventory: all 48 skills by batch
+├─ README.md                       # canonical inventory: all 14 skills by batch
 ├─ _template/
 │  └─ SKILL.md                      # placeholder, excluded from export + spec checks
-├─ <skill-name>/                    # one folder per skill (48 total: 16 baseline + 32 expansion)
+├─ <skill-name>/                    # one folder per skill (14 total)
 │  ├─ SKILL.md
 │  └─ EVAL.md
 └─ ...                              # see skills/README.md for the full directory list

@@ -25,13 +25,13 @@
           "Visual hierarchy requires clean silhouette separation, controlled specular highlights, and explicit quality gates before rendering or exporting."
         ],
         "do_not_use_when": [
-          "The user wants a multi-item catalog comparison grid of 4+ products (use recipe.scene-quality-inspection-and-correction with product-grid-scene-planner instead).",
+          "The user wants a multi-item catalog comparison grid of 4+ products (use recipe.scene-quality-inspection-and-correction with planning-product-scenes instead).",
           "The user wants a wide outdoor landscape or interior architectural walkthrough (use recipe.stylized-environment-scene)."
         ]
       },
       "prerequisites": [
-        "Confirmed 8-slot 3D brief from intent-to-3d-brief-writer with target delivery channel (render, web GLB, or both).",
-        "Source product mesh or acquisition strategy cleared via asset-discovery and asset-license-checker."
+        "Confirmed 8-slot 3D brief from scoping-3d-briefs with target delivery channel (render, web GLB, or both).",
+        "Source product mesh or acquisition strategy cleared via sourcing-assets and sourcing-assets."
       ],
       "inputs": [
         {
@@ -69,10 +69,9 @@
           "title": "Intent Lock, Done Criteria & Asset Clearance",
           "objective": "Lock the 8-slot 3D brief, pin explicit stop conditions, and verify source product asset strategy and license compliance.",
           "skill_ids": [
-            "intent-to-3d-brief-writer",
-            "done-criteria",
-            "asset-discovery",
-            "asset-license-checker"
+            "scoping-3d-briefs",
+            "defining-done-and-gates",
+            "sourcing-assets"
           ],
           "knowledge_ids": [
             "knowledge.mesh-manifold-normals-and-scale-hygiene",
@@ -96,9 +95,8 @@
           "title": "Hero Staging & Telephoto Camera Composition",
           "objective": "Establish subject elevation, ground/backdrop plane geometry, and distortion-free camera framing with reserved negative space.",
           "skill_ids": [
-            "product-hero-scene-planner",
-            "camera-composition",
-            "resolution-aspect-decision"
+            "planning-product-scenes",
+            "planning-camera-and-framing"
           ],
           "knowledge_ids": [
             "knowledge.physically-based-camera-lens-and-dof",
@@ -122,9 +120,8 @@
           "title": "Studio Lighting & Energy-Conserving PBR Lookdev",
           "objective": "Build key/fill/rim lighting with controlled floor reflections and author portable Principled BSDF materials.",
           "skill_ids": [
-            "lighting-material-plan",
-            "color-management-decision",
-            "cycles-vs-eevee-decision"
+            "planning-lighting-and-materials",
+            "choosing-render-and-output"
           ],
           "knowledge_ids": [
             "knowledge.three-point-and-hdri-studio-lighting",
@@ -150,22 +147,19 @@
           "title": "Quality Gate, Evidence Verification & Stakeholder Handoff",
           "objective": "Run domain quality checkers, record honest runtime/artifact truth labels, and prepare final render/GLB handoff documentation.",
           "skill_ids": [
-            "lighting-quality-checker",
-            "material-quality-checker",
-            "composition-quality-checker",
-            "scene-readiness",
-            "render-export-evidence",
-            "pre-handoff-verification",
-            "glb-web-handoff",
-            "plain-language-response"
+            "planning-lighting-and-materials",
+            "planning-camera-and-framing",
+            "verifying-before-handoff",
+            "handing-off-glb-to-web",
+            "using-blendops"
           ],
           "knowledge_ids": [
             "knowledge.glb-binary-chunk-alignment-and-khronos-validation",
             "knowledge.threejs-r3f-tone-mapping-and-environment-parity"
           ],
           "actions": [
-            "Evaluate lighting, material, and composition quality gates and synthesize an overall scene-readiness Pass/Warn/Fail verdict.",
-            "Verify on-disk render/GLB evidence via render-export-evidence and pre-handoff-verification (keeping Runtime status: Not Run and Artifact status: Not Produced if no Blender execution occurred).",
+            "Evaluate lighting, material, and composition quality gates and synthesize an overall verifying-before-handoff Pass/Warn/Fail verdict.",
+            "Verify on-disk render/GLB evidence via verifying-before-handoff and verifying-before-handoff (keeping Runtime status: Not Run and Artifact status: Not Produced if no Blender execution occurred).",
             "Generate the plain-language stakeholder summary and web viewer integration notes."
           ],
           "stage_outputs": [
@@ -189,24 +183,16 @@
         "knowledge.threejs-r3f-tone-mapping-and-environment-parity"
       ],
       "required_skill_ids": [
-        "intent-to-3d-brief-writer",
-        "done-criteria",
-        "asset-discovery",
-        "asset-license-checker",
-        "product-hero-scene-planner",
-        "camera-composition",
-        "resolution-aspect-decision",
-        "lighting-material-plan",
-        "color-management-decision",
-        "cycles-vs-eevee-decision",
-        "lighting-quality-checker",
-        "material-quality-checker",
-        "composition-quality-checker",
-        "scene-readiness",
-        "render-export-evidence",
-        "pre-handoff-verification",
-        "glb-web-handoff",
-        "plain-language-response"
+        "scoping-3d-briefs",
+        "defining-done-and-gates",
+        "sourcing-assets",
+        "planning-product-scenes",
+        "planning-camera-and-framing",
+        "planning-lighting-and-materials",
+        "choosing-render-and-output",
+        "verifying-before-handoff",
+        "handing-off-glb-to-web",
+        "using-blendops"
       ],
       "expected_outputs": {
         "intermediate": [
@@ -229,19 +215,19 @@
         {
           "id": "vc.silhouette-readability",
           "criterion": "Hero subject silhouette separates cleanly from the background and floor across 100% of its contour.",
-          "measurement_method": "Inspect rim light placement and luminance contrast ratio in composition-quality-checker and lighting-quality-checker.",
+          "measurement_method": "Inspect rim light placement and luminance contrast ratio in planning-camera-and-framing and planning-lighting-and-materials.",
           "pass_threshold": "Dedicated rim/backlight present with >= 3:1 edge contrast against backdrop."
         },
         {
           "id": "vc.pbr-portability",
           "criterion": "All hero materials use energy-conserving PBR sockets or have an explicit texture-bake plan for glTF 2.0 export.",
-          "measurement_method": "Audit shader nodes against knowledge.shader-node-gltf-export-portability and material-quality-checker.",
+          "measurement_method": "Audit shader nodes against knowledge.shader-node-gltf-export-portability and planning-lighting-and-materials.",
           "pass_threshold": "Zero unbaked Blender-only procedural nodes on GLB export path; normal/ORM maps set to Non-Color."
         },
         {
           "id": "vc.truth-state-compliance",
           "criterion": "Runtime and artifact truth states accurately reflect whether Blender executed.",
-          "measurement_method": "Verify pre-handoff-verification 7-point gate and render-export-evidence ledger.",
+          "measurement_method": "Verify verifying-before-handoff 7-point gate and verifying-before-handoff ledger.",
           "pass_threshold": "Runtime status is Not Run and Artifact status is Not Produced unless backed by a verified evidence file."
         }
       ],
@@ -250,13 +236,13 @@
           "symptom": "Product silhouette merges into dark background or glossy floor reflections overpower the subject.",
           "root_cause": "Missing rim light or floor roughness/specular intensity is uncalibrated relative to key light.",
           "recovery_action": "Add a dedicated grazing rim area light behind the subject and increase floor roughness to 0.15-0.30 with controlled specular weight.",
-          "fallback_skill_id": "lighting-quality-checker"
+          "fallback_skill_id": "planning-lighting-and-materials"
         },
         {
           "symptom": "Exported GLB appears flat or missing procedural surface details in Three.js / React Three Fiber.",
           "root_cause": "Blender procedural nodes (Noise, Voronoi, ColorRamp) were left unbaked in the shader graph.",
           "recovery_action": "Bake procedural channels to tangent-space normal, roughness, and baseColor image textures using Cycles bake before GLB export.",
-          "fallback_skill_id": "material-quality-checker"
+          "fallback_skill_id": "planning-lighting-and-materials"
         }
       ],
       "blender_versions": {
@@ -318,7 +304,7 @@
         ],
         "do_not_use_when": [
           "The user wants a close-up single-product studio shot (use recipe.product-hero-scene).",
-          "The user wants a closed-room interior furniture layout without exterior vista (use interior-scene with recipe.presentation-lighting-and-camera)."
+          "The user wants a closed-room interior furniture layout without exterior vista (use planning-scenes with recipe.presentation-lighting-and-camera)."
         ]
       },
       "prerequisites": [
@@ -354,10 +340,8 @@
           "title": "Brief Lock, Asset Discovery & Style Consistency",
           "objective": "Define the environment brief, source modular architectural/foliage kit assets, and verify visual style coherence.",
           "skill_ids": [
-            "intent-to-3d-brief-writer",
-            "asset-discovery",
-            "asset-license-checker",
-            "asset-style-check"
+            "scoping-3d-briefs",
+            "sourcing-assets"
           ],
           "knowledge_ids": [
             "knowledge.modular-architectural-grid-and-metric-scale",
@@ -371,7 +355,7 @@
             "locked_environment_brief",
             "style_verified_asset_kit"
           ],
-          "gate_check": "All kit assets share consistent metric scale and pass asset-style-check across realism, detail frequency, and palette axes."
+          "gate_check": "All kit assets share consistent metric scale and pass sourcing-assets across realism, detail frequency, and palette axes."
         },
         {
           "stage_number": 2,
@@ -379,9 +363,8 @@
           "title": "Three-Plane Depth Staging & Wide Camera Composition",
           "objective": "Arrange foreground framing elements, midground focal landmark, and background silhouette with a locked establishing camera.",
           "skill_ids": [
-            "environment-shot",
-            "camera-composition",
-            "resolution-aspect-decision"
+            "planning-scenes",
+            "planning-camera-and-framing"
           ],
           "knowledge_ids": [
             "knowledge.environment-depth-layering-and-atmospheric-perspective",
@@ -403,9 +386,9 @@
           "title": "Procedural Instancing & Time-of-Day Atmospheric Lighting",
           "objective": "Populate foliage/debris via Geometry Nodes point instancing without blowing memory budgets, and stage sun/sky/practical lighting.",
           "skill_ids": [
-            "lighting-material-plan",
-            "polycount-budget-checker",
-            "cycles-vs-eevee-decision"
+            "planning-lighting-and-materials",
+            "budgeting-glb-for-web",
+            "choosing-render-and-output"
           ],
           "knowledge_ids": [
             "knowledge.procedural-instancing-and-realize-instances-budget",
@@ -428,11 +411,10 @@
           "title": "Readiness Audit & Evidence-Bound Handoff",
           "objective": "Verify composition, lighting, and polycount gates and produce the final truth-labeled environment report.",
           "skill_ids": [
-            "composition-quality-checker",
-            "lighting-quality-checker",
-            "scene-readiness",
-            "pre-handoff-verification",
-            "plain-language-response"
+            "planning-camera-and-framing",
+            "planning-lighting-and-materials",
+            "verifying-before-handoff",
+            "using-blendops"
           ],
           "knowledge_ids": [
             "knowledge.agx-filmic-color-management-and-cycles-eevee",
@@ -461,21 +443,15 @@
         "knowledge.triangle-draw-call-and-vram-budgets"
       ],
       "required_skill_ids": [
-        "intent-to-3d-brief-writer",
-        "asset-discovery",
-        "asset-license-checker",
-        "asset-style-check",
-        "environment-shot",
-        "camera-composition",
-        "resolution-aspect-decision",
-        "lighting-material-plan",
-        "polycount-budget-checker",
-        "cycles-vs-eevee-decision",
-        "composition-quality-checker",
-        "lighting-quality-checker",
-        "scene-readiness",
-        "pre-handoff-verification",
-        "plain-language-response"
+        "scoping-3d-briefs",
+        "sourcing-assets",
+        "planning-scenes",
+        "planning-camera-and-framing",
+        "planning-lighting-and-materials",
+        "budgeting-glb-for-web",
+        "choosing-render-and-output",
+        "verifying-before-handoff",
+        "using-blendops"
       ],
       "expected_outputs": {
         "intermediate": [
@@ -496,13 +472,13 @@
         {
           "id": "vc.three-plane-depth",
           "criterion": "Scene exhibits distinct foreground, midground, and background depth layers with clear luminance separation.",
-          "measurement_method": "Check depth plane assignments in environment-shot and composition-quality-checker.",
+          "measurement_method": "Check depth plane assignments in planning-scenes and planning-camera-and-framing.",
           "pass_threshold": "All 3 depth planes populated; midground focal landmark has highest contrast."
         },
         {
           "id": "vc.instance-preservation",
           "criterion": "Repeated foliage and modular props use collection/geometry-node instancing rather than duplicated unique meshes.",
-          "measurement_method": "Audit instance vs. unique mesh counts in polycount-budget-checker.",
+          "measurement_method": "Audit instance vs. unique mesh counts in budgeting-glb-for-web.",
           "pass_threshold": "Repeated scatter elements use Instance on Points without unnecessary Realize Instances."
         },
         {
@@ -517,13 +493,13 @@
           "symptom": "Viewport freezes or memory spikes to several gigabytes after scattering foliage.",
           "root_cause": "Realize Instances node was placed after high-poly foliage instancing or Poisson Disk density is uncalibrated for object scale.",
           "recovery_action": "Remove Realize Instances downstream of Instance on Points, apply object scale (1,1,1) to terrain, and enforce a minimum Poisson Disk distance.",
-          "fallback_skill_id": "polycount-budget-checker"
+          "fallback_skill_id": "budgeting-glb-for-web"
         },
         {
           "symptom": "Scene feels flat and cluttered with no clear focal point.",
           "root_cause": "Uniform light intensity across all depth planes and competing high-contrast textures in the background.",
           "recovery_action": "Shadow the foreground plane with a gobo/cutter, focus warm key/practical light on the midground landmark, and increase atmospheric haze on background elements.",
-          "fallback_skill_id": "composition-quality-checker"
+          "fallback_skill_id": "planning-camera-and-framing"
         }
       ],
       "blender_versions": {
@@ -615,9 +591,8 @@
           "title": "Metric Scale Hygiene & Primary Silhouette Blockout",
           "objective": "Establish primary forms at 1:1 metric scale with applied transforms and clean outward face orientation.",
           "skill_ids": [
-            "intent-to-3d-brief-writer",
-            "done-criteria",
-            "scope-guard"
+            "scoping-3d-briefs",
+            "defining-done-and-gates"
           ],
           "knowledge_ids": [
             "knowledge.mesh-manifold-normals-and-scale-hygiene",
@@ -639,8 +614,8 @@
           "title": "Non-Destructive Modifier Stack & Shading Control",
           "objective": "Order Mirror, Boolean, Bevel, and Weighted Normal / Subdivision modifiers to eliminate shading gradients and pinching.",
           "skill_ids": [
-            "stage-gates",
-            "polycount-budget-checker"
+            "defining-done-and-gates",
+            "budgeting-glb-for-web"
           ],
           "knowledge_ids": [
             "knowledge.non-destructive-hard-surface-modifier-stack",
@@ -663,8 +638,7 @@
           "title": "Seam Placement, Baking & Machined PBR Materials",
           "objective": "Unwrap hard edges or bake high-to-low normal/curvature maps and assign physically plausible metal/dielectric materials.",
           "skill_ids": [
-            "lighting-material-plan",
-            "material-quality-checker"
+            "planning-lighting-and-materials"
           ],
           "knowledge_ids": [
             "knowledge.uv-seam-placement-and-texel-density",
@@ -687,10 +661,9 @@
           "title": "Geometry, Budget & Export Readiness Verification",
           "objective": "Validate triangle budget, custom split normals preservation, and final readiness verdict.",
           "skill_ids": [
-            "polycount-budget-checker",
-            "scene-readiness",
-            "pre-handoff-verification",
-            "plain-language-response"
+            "budgeting-glb-for-web",
+            "verifying-before-handoff",
+            "using-blendops"
           ],
           "knowledge_ids": [
             "knowledge.triangle-draw-call-and-vram-budgets",
@@ -720,16 +693,12 @@
         "knowledge.gltf-2-coordinate-system-and-transform-conventions"
       ],
       "required_skill_ids": [
-        "intent-to-3d-brief-writer",
-        "done-criteria",
-        "scope-guard",
-        "stage-gates",
-        "polycount-budget-checker",
-        "lighting-material-plan",
-        "material-quality-checker",
-        "scene-readiness",
-        "pre-handoff-verification",
-        "plain-language-response"
+        "scoping-3d-briefs",
+        "defining-done-and-gates",
+        "budgeting-glb-for-web",
+        "planning-lighting-and-materials",
+        "verifying-before-handoff",
+        "using-blendops"
       ],
       "expected_outputs": {
         "intermediate": [
@@ -771,13 +740,13 @@
           "symptom": "Boolean modifier disappears, leaves open holes, or creates inverted faces.",
           "root_cause": "Cutter or base mesh has non-manifold open edges, inverted face normals, or coplanar faces using the Fast solver.",
           "recovery_action": "Recalculate normals outside (Shift+N) on both meshes, close open holes, switch Boolean solver to Exact, and nudge coplanar faces by 0.1mm if needed.",
-          "fallback_skill_id": "blender-troubleshooting"
+          "fallback_skill_id": "troubleshooting-blender-output"
         },
         {
           "symptom": "Bevel modifier clamps to nearly zero width despite increasing the amount slider.",
           "root_cause": "Two vertices or edges from a preceding Boolean cut are nearly coincident, triggering Clamp Overlap immediately.",
           "recovery_action": "Insert a Weld / Merge by Distance modifier (0.0001m) between Boolean and Bevel or slide the intersecting cutter slightly.",
-          "fallback_skill_id": "blender-troubleshooting"
+          "fallback_skill_id": "troubleshooting-blender-output"
         }
       ],
       "blender_versions": {
@@ -869,9 +838,8 @@
           "title": "Parametric Group Input Contract & Scale Normalization",
           "objective": "Define bounded Group Input parameters (seed, density, dimensions) and ensure host geometry has applied scale.",
           "skill_ids": [
-            "intent-to-3d-brief-writer",
-            "done-criteria",
-            "stage-gates"
+            "scoping-3d-briefs",
+            "defining-done-and-gates"
           ],
           "knowledge_ids": [
             "knowledge.geometry-nodes-fields-and-anonymous-attributes",
@@ -893,8 +861,8 @@
           "title": "Field Evaluation, Distribution & Instance on Points",
           "objective": "Construct the procedural field graph using Poisson Disk distribution, slope/altitude masks, and collection instancing.",
           "skill_ids": [
-            "polycount-budget-checker",
-            "asset-style-check"
+            "budgeting-glb-for-web",
+            "sourcing-assets"
           ],
           "knowledge_ids": [
             "knowledge.procedural-scatter-poisson-disk-and-slope-masking",
@@ -916,8 +884,7 @@
           "title": "Named Attribute Storage & Shader Integration",
           "objective": "Persist UV coordinates and per-instance/per-point attributes via Store Named Attribute for material evaluation.",
           "skill_ids": [
-            "lighting-material-plan",
-            "material-quality-checker"
+            "planning-lighting-and-materials"
           ],
           "knowledge_ids": [
             "knowledge.geometry-nodes-fields-and-anonymous-attributes",
@@ -939,10 +906,9 @@
           "title": "Realization Boundary, Validation & Handoff",
           "objective": "Apply the correct realization/baking strategy for the target delivery surface and verify final readiness.",
           "skill_ids": [
-            "scene-readiness",
-            "glb-web-handoff",
-            "pre-handoff-verification",
-            "plain-language-response"
+            "verifying-before-handoff",
+            "handing-off-glb-to-web",
+            "using-blendops"
           ],
           "knowledge_ids": [
             "knowledge.procedural-instancing-and-realize-instances-budget",
@@ -968,17 +934,14 @@
         "knowledge.glb-binary-chunk-alignment-and-khronos-validation"
       ],
       "required_skill_ids": [
-        "intent-to-3d-brief-writer",
-        "done-criteria",
-        "stage-gates",
-        "polycount-budget-checker",
-        "asset-style-check",
-        "lighting-material-plan",
-        "material-quality-checker",
-        "scene-readiness",
-        "glb-web-handoff",
-        "pre-handoff-verification",
-        "plain-language-response"
+        "scoping-3d-briefs",
+        "defining-done-and-gates",
+        "budgeting-glb-for-web",
+        "sourcing-assets",
+        "planning-lighting-and-materials",
+        "verifying-before-handoff",
+        "handing-off-glb-to-web",
+        "using-blendops"
       ],
       "expected_outputs": {
         "intermediate": [
@@ -1020,13 +983,13 @@
           "symptom": "Textures disappear or turn into a solid single-pixel color after Realize Instances or Curve to Mesh.",
           "root_cause": "UV coordinates were not captured/stored as a Face Corner 2D Vector named attribute ('UVMap') or the Shader Editor references UV Texture Coordinate instead of the named attribute.",
           "recovery_action": "Store the UV vector via Store Named Attribute (2D Vector, Face Corner, 'UVMap') and connect an Attribute node ('UVMap') in the Shader Editor.",
-          "fallback_skill_id": "blender-troubleshooting"
+          "fallback_skill_id": "troubleshooting-blender-output"
         },
         {
           "symptom": "Scattered instances float away from the surface or orient sideways.",
           "root_cause": "Instance collection objects have unapplied location/rotation offsets from world origin or Align Euler to Vector uses the wrong primary axis.",
           "recovery_action": "Place instance source assets at world origin (or enable Separate Children + Reset Children on Collection Info) and align Z axis to surface Normal.",
-          "fallback_skill_id": "blender-troubleshooting"
+          "fallback_skill_id": "troubleshooting-blender-output"
         }
       ],
       "blender_versions": {
@@ -1118,8 +1081,8 @@
           "title": "Seam Placement, Unwrapping & Texel Density Normalization",
           "objective": "Mark seams along hard edges and occluded cuts, unwrap with minimal distortion, and equalize texel density.",
           "skill_ids": [
-            "stage-gates",
-            "material-quality-checker"
+            "defining-done-and-gates",
+            "planning-lighting-and-materials"
           ],
           "knowledge_ids": [
             "knowledge.uv-seam-placement-and-texel-density",
@@ -1142,8 +1105,7 @@
           "title": "Tangent-Space MikkTSpace Normal, AO & Procedural Map Baking",
           "objective": "Bake high-poly details or procedural Blender shader channels into Non-Color and sRGB image textures using Cycles.",
           "skill_ids": [
-            "cycles-vs-eevee-decision",
-            "output-format-decision"
+            "choosing-render-and-output"
           ],
           "knowledge_ids": [
             "knowledge.high-to-low-normal-and-ao-baking",
@@ -1165,8 +1127,7 @@
           "title": "Energy-Conserving Principled BSDF v2 Wiring",
           "objective": "Connect baked textures to Principled BSDF sockets following strict glTF 2.0 and physical PBR rules.",
           "skill_ids": [
-            "lighting-material-plan",
-            "material-quality-checker"
+            "planning-lighting-and-materials"
           ],
           "knowledge_ids": [
             "knowledge.principled-bsdf-v2-energy-conserving-pbr",
@@ -1180,7 +1141,7 @@
           "stage_outputs": [
             "portable_pbr_shader_graph"
           ],
-          "gate_check": "material-quality-checker passes with zero color-space mismatches and 100% glTF-portable node connections."
+          "gate_check": "planning-lighting-and-materials passes with zero color-space mismatches and 100% glTF-portable node connections."
         },
         {
           "stage_number": 4,
@@ -1188,10 +1149,9 @@
           "title": "Material Audit & Export Verification",
           "objective": "Verify texture memory budget, compression readiness, and truth-labeled material handoff.",
           "skill_ids": [
-            "mobile-glb-budget",
-            "scene-readiness",
-            "pre-handoff-verification",
-            "plain-language-response"
+            "budgeting-glb-for-web",
+            "verifying-before-handoff",
+            "using-blendops"
           ],
           "knowledge_ids": [
             "knowledge.texture-resolution-ktx2-and-draco-meshopt-compression",
@@ -1220,15 +1180,12 @@
         "knowledge.triangle-draw-call-and-vram-budgets"
       ],
       "required_skill_ids": [
-        "stage-gates",
-        "material-quality-checker",
-        "cycles-vs-eevee-decision",
-        "output-format-decision",
-        "lighting-material-plan",
-        "mobile-glb-budget",
-        "scene-readiness",
-        "pre-handoff-verification",
-        "plain-language-response"
+        "defining-done-and-gates",
+        "planning-lighting-and-materials",
+        "choosing-render-and-output",
+        "budgeting-glb-for-web",
+        "verifying-before-handoff",
+        "using-blendops"
       ],
       "expected_outputs": {
         "intermediate": [
@@ -1249,7 +1206,7 @@
         {
           "id": "vc.non-color-data-maps",
           "criterion": "All normal, roughness, metallic, and packed ORM image textures use Non-Color (linear) color space.",
-          "measurement_method": "Inspect Image Texture node color space in material-quality-checker.",
+          "measurement_method": "Inspect Image Texture node color space in planning-lighting-and-materials.",
           "pass_threshold": "100% of non-albedo/non-emissive data textures are set to Non-Color."
         },
         {
@@ -1270,13 +1227,13 @@
           "symptom": "Visible dark seam lines appear along UV borders when the normal map is applied.",
           "root_cause": "The Normal Map Image Texture node is set to 'sRGB' instead of 'Non-Color', or the green channel uses DirectX (-Y) instead of OpenGL (+Y).",
           "recovery_action": "Switch the Normal Image Texture node Color Space to 'Non-Color' and ensure +Y (OpenGL) orientation.",
-          "fallback_skill_id": "material-quality-checker"
+          "fallback_skill_id": "planning-lighting-and-materials"
         },
         {
           "symptom": "Texture colors bleed across seams when viewed from a distance in Three.js or Blender.",
           "root_cause": "Insufficient pixel margin between UV islands causes mipmap downsampling to average adjacent islands.",
           "recovery_action": "Repack UV islands with at least 8-16 pixels of margin at 2048x2048 and set bake Margin to >= 16 px.",
-          "fallback_skill_id": "material-quality-checker"
+          "fallback_skill_id": "planning-lighting-and-materials"
         }
       ],
       "blender_versions": {
@@ -1374,10 +1331,8 @@
           "title": "Physical Camera Sensor, Lens & Composition Setup",
           "objective": "Lock sensor width, focal length, f-stop depth of field, aspect ratio, and visual hierarchy.",
           "skill_ids": [
-            "camera-composition",
-            "resolution-aspect-decision",
-            "character-portrait",
-            "interior-scene"
+            "planning-camera-and-framing",
+            "planning-scenes"
           ],
           "knowledge_ids": [
             "knowledge.physically-based-camera-lens-and-dof",
@@ -1391,7 +1346,7 @@
             "physical_camera_spec",
             "framing_and_aspect_plan"
           ],
-          "gate_check": "Focal length matches scene archetype, verticals are parallel in architectural shots, and headroom/lead-room pass composition-quality-checker."
+          "gate_check": "Focal length matches scene archetype, verticals are parallel in architectural shots, and headroom/lead-room pass planning-camera-and-framing."
         },
         {
           "stage_number": 2,
@@ -1399,8 +1354,7 @@
           "title": "Key/Fill/Rim Illuminance Ratios & Shadow Softness",
           "objective": "Stage area lights and environment HDRI with deliberate contrast ratios and Kelvin color temperature balance.",
           "skill_ids": [
-            "lighting-material-plan",
-            "lighting-quality-checker"
+            "planning-lighting-and-materials"
           ],
           "knowledge_ids": [
             "knowledge.three-point-and-hdri-studio-lighting",
@@ -1422,9 +1376,8 @@
           "title": "AgX / Filmic Color Management, Engine & Output Format",
           "objective": "Configure view transform, exposure, sampling/denoising, and bit-depth output format.",
           "skill_ids": [
-            "color-management-decision",
-            "cycles-vs-eevee-decision",
-            "output-format-decision"
+            "planning-lighting-and-materials",
+            "choosing-render-and-output"
           ],
           "knowledge_ids": [
             "knowledge.agx-filmic-color-management-and-cycles-eevee"
@@ -1446,20 +1399,18 @@
           "title": "Quality Gate Audit & Evidence-Verified Handoff",
           "objective": "Validate composition and lighting checklists and produce truth-labeled render readiness documentation.",
           "skill_ids": [
-            "composition-quality-checker",
-            "lighting-quality-checker",
-            "scene-readiness",
-            "render-export-evidence",
-            "pre-handoff-verification",
-            "plain-language-response"
+            "planning-camera-and-framing",
+            "planning-lighting-and-materials",
+            "verifying-before-handoff",
+            "using-blendops"
           ],
           "knowledge_ids": [
             "knowledge.three-point-and-hdri-studio-lighting",
             "knowledge.physically-based-camera-lens-and-dof"
           ],
           "actions": [
-            "Run composition-quality-checker and lighting-quality-checker and record the scene-readiness verdict.",
-            "Verify artifact status via render-export-evidence and summarize next steps in plain language."
+            "Run planning-camera-and-framing and planning-lighting-and-materials and record the verifying-before-handoff verdict.",
+            "Verify artifact status via verifying-before-handoff and summarize next steps in plain language."
           ],
           "stage_outputs": [
             "presentation_render_verdict",
@@ -1476,20 +1427,12 @@
         "knowledge.agx-filmic-color-management-and-cycles-eevee"
       ],
       "required_skill_ids": [
-        "camera-composition",
-        "resolution-aspect-decision",
-        "character-portrait",
-        "interior-scene",
-        "lighting-material-plan",
-        "lighting-quality-checker",
-        "color-management-decision",
-        "cycles-vs-eevee-decision",
-        "output-format-decision",
-        "composition-quality-checker",
-        "scene-readiness",
-        "render-export-evidence",
-        "pre-handoff-verification",
-        "plain-language-response"
+        "planning-camera-and-framing",
+        "planning-scenes",
+        "planning-lighting-and-materials",
+        "choosing-render-and-output",
+        "verifying-before-handoff",
+        "using-blendops"
       ],
       "expected_outputs": {
         "intermediate": [
@@ -1510,19 +1453,19 @@
         {
           "id": "vc.lens-distortion-control",
           "criterion": "Portraits and close-up products use >= 50mm (85mm ideal) focal length; architectural interiors maintain parallel vertical lines.",
-          "measurement_method": "Inspect camera focal length and rotation X/shift Y in composition-quality-checker.",
+          "measurement_method": "Inspect camera focal length and rotation X/shift Y in planning-camera-and-framing.",
           "pass_threshold": "Zero wide-angle distortion on close-up subjects; zero converging verticals in archviz."
         },
         {
           "id": "vc.highlight-headroom",
           "criterion": "Bright specular and emissive highlights roll off smoothly without hard RGB channel clipping.",
-          "measurement_method": "Check view transform (AgX/Filmic) and baseColor albedo <= 0.90 in lighting-quality-checker.",
+          "measurement_method": "Check view transform (AgX/Filmic) and baseColor albedo <= 0.90 in planning-lighting-and-materials.",
           "pass_threshold": "AgX or Filmic active with exposure tuned below clipping threshold."
         },
         {
           "id": "vc.banding-free-output",
           "criterion": "Smooth dark lighting gradients are saved with sufficient bit depth or dithering.",
-          "measurement_method": "Verify output-format-decision bit depth (16-bit PNG or OpenEXR) and dithering >= 1.0.",
+          "measurement_method": "Verify choosing-render-and-output bit depth (16-bit PNG or OpenEXR) and dithering >= 1.0.",
           "pass_threshold": "16-bit or 32-bit float format selected for gradient-heavy scenes."
         }
       ],
@@ -1531,13 +1474,13 @@
           "symptom": "Depth of field has no visible blur even at f/1.4, or blurs the entire scene into an unintelligible smudge.",
           "root_cause": "Scene geometry was modeled at 100x or 0.01x real-world meter scale, throwing off physical aperture diameter math.",
           "recovery_action": "Rescale scene to real-world metric units (1 BU = 1m) and apply scale (Ctrl+A -> Scale) before adjusting f-stop.",
-          "fallback_skill_id": "camera-composition"
+          "fallback_skill_id": "planning-camera-and-framing"
         },
         {
           "symptom": "Saturated neon or colored area lights clip to harsh yellow/cyan/magenta bands.",
           "root_cause": "Color Management View Transform is set to 'Standard' or 'Filmic' without AgX chroma attenuation.",
           "recovery_action": "Switch View Transform to 'AgX' (Blender 4.0+) with 'Medium High Contrast' or 'Punchy' look.",
-          "fallback_skill_id": "color-management-decision"
+          "fallback_skill_id": "planning-lighting-and-materials"
         }
       ],
       "blender_versions": {
@@ -1628,8 +1571,8 @@
           "title": "Transform Application, Joint Hierarchy & Deform Bone Separation",
           "objective": "Align mesh and armature origins, apply transforms, and establish a clean single-root deform bone hierarchy.",
           "skill_ids": [
-            "intent-to-3d-brief-writer",
-            "stage-gates"
+            "scoping-3d-briefs",
+            "defining-done-and-gates"
           ],
           "knowledge_ids": [
             "knowledge.armature-joint-hierarchy-and-linear-blend-skinning",
@@ -1652,8 +1595,7 @@
           "title": "4-Influence Linear Blend Skinning & Shape Key Discipline",
           "objective": "Limit vertex group influences to 4 bones per vertex, normalize weights to 1.0, and audit morph target budgets.",
           "skill_ids": [
-            "polycount-budget-checker",
-            "mobile-glb-budget"
+            "budgeting-glb-for-web"
           ],
           "knowledge_ids": [
             "knowledge.armature-joint-hierarchy-and-linear-blend-skinning",
@@ -1675,8 +1617,7 @@
           "title": "Visual Keying Action Bake & NLA Track Stashing",
           "objective": "Bake IK/constraint/driver motion onto deform bones and organize named clips as NLA tracks.",
           "skill_ids": [
-            "glb-animation-handoff",
-            "r3f-component-plan"
+            "handing-off-glb-to-web"
           ],
           "knowledge_ids": [
             "knowledge.nla-action-baking-and-morph-target-export",
@@ -1699,10 +1640,9 @@
           "title": "Animation Handoff Contract & Evidence Verification",
           "objective": "Document clip names, durations, FPS, looping behavior, and R3F/Three.js AnimationMixer integration.",
           "skill_ids": [
-            "glb-animation-handoff",
-            "glb-web-handoff",
-            "pre-handoff-verification",
-            "plain-language-response"
+            "handing-off-glb-to-web",
+            "verifying-before-handoff",
+            "using-blendops"
           ],
           "knowledge_ids": [
             "knowledge.glb-binary-chunk-alignment-and-khronos-validation",
@@ -1730,15 +1670,12 @@
         "knowledge.threejs-r3f-tone-mapping-and-environment-parity"
       ],
       "required_skill_ids": [
-        "intent-to-3d-brief-writer",
-        "stage-gates",
-        "polycount-budget-checker",
-        "mobile-glb-budget",
-        "glb-animation-handoff",
-        "r3f-component-plan",
-        "glb-web-handoff",
-        "pre-handoff-verification",
-        "plain-language-response"
+        "scoping-3d-briefs",
+        "defining-done-and-gates",
+        "budgeting-glb-for-web",
+        "handing-off-glb-to-web",
+        "verifying-before-handoff",
+        "using-blendops"
       ],
       "expected_outputs": {
         "intermediate": [
@@ -1765,7 +1702,7 @@
         {
           "id": "vc.visual-keying-baked",
           "criterion": "All IK, driver, and constraint motion is baked to deform bone keyframes before glTF export.",
-          "measurement_method": "Verify Bake Action with Visual Keying in glb-animation-handoff.",
+          "measurement_method": "Verify Bake Action with Visual Keying in handing-off-glb-to-web.",
           "pass_threshold": "Zero unbaked Blender-only bone constraints required for playback."
         },
         {
@@ -1780,13 +1717,13 @@
           "symptom": "Character mesh explodes, flips inside out, or scales 100x when animation plays in Three.js.",
           "root_cause": "Mesh or Armature had unapplied scale/rotation before parenting, or non-uniform bone scaling was used in parent bones.",
           "recovery_action": "Unparent with Keep Transform, apply Location/Rotation/Scale (Ctrl+A) to both Mesh and Armature at Rest Pose, re-parent to Armature, and avoid non-uniform scale on parent bones.",
-          "fallback_skill_id": "glb-animation-handoff"
+          "fallback_skill_id": "handing-off-glb-to-web"
         },
         {
           "symptom": "Exported GLB contains only one animation clip or the limbs stay frozen while the root moves.",
           "root_cause": "Actions were not pushed down into separate NLA tracks, or IK constraints were not baked with Visual Keying onto deform bones.",
           "recovery_action": "Bake each action with Visual Keying onto deform bones, stash each into its own named NLA track, and enable NLA Strips export in glTF exporter.",
-          "fallback_skill_id": "glb-animation-handoff"
+          "fallback_skill_id": "handing-off-glb-to-web"
         }
       ],
       "blender_versions": {
@@ -1841,7 +1778,7 @@
           "The user asks for a comprehensive quality review or systematic troubleshooting of a Blender workflow."
         ],
         "do_not_use_when": [
-          "No scene brief, plan, or symptom exists yet and the user is asking for initial brainstorming from scratch (use blender-brainstorming first)."
+          "No scene brief, plan, or symptom exists yet and the user is asking for initial brainstorming from scratch (use scoping-3d-briefs first)."
         ]
       },
       "prerequisites": [
@@ -1870,8 +1807,8 @@
           "title": "4-Phase Symptom Triage & Geometry/Budget Audit",
           "objective": "Isolate the subsystem causing defects (geometry, UV/shader, lighting/color, or export) and audit mesh hygiene and triangle budgets.",
           "skill_ids": [
-            "blender-troubleshooting",
-            "polycount-budget-checker"
+            "troubleshooting-blender-output",
+            "budgeting-glb-for-web"
           ],
           "knowledge_ids": [
             "knowledge.mesh-manifold-normals-and-scale-hygiene",
@@ -1894,9 +1831,7 @@
           "title": "Material PBR Sanity & Lighting/Color Audit",
           "objective": "Verify shader energy conservation, texture color spaces, lighting ratios, and view transform configuration.",
           "skill_ids": [
-            "material-quality-checker",
-            "lighting-quality-checker",
-            "color-management-decision"
+            "planning-lighting-and-materials"
           ],
           "knowledge_ids": [
             "knowledge.principled-bsdf-v2-energy-conserving-pbr",
@@ -1920,9 +1855,9 @@
           "title": "Composition Audit & Holistic Scene Readiness Verdict",
           "objective": "Check camera framing, focal hierarchy, and synthesize the unified Pass/Warn/Fail readiness gate.",
           "skill_ids": [
-            "composition-quality-checker",
-            "scene-readiness",
-            "stage-gates"
+            "planning-camera-and-framing",
+            "verifying-before-handoff",
+            "defining-done-and-gates"
           ],
           "knowledge_ids": [
             "knowledge.physically-based-camera-lens-and-dof",
@@ -1930,13 +1865,13 @@
           ],
           "actions": [
             "Evaluate focal length, subject framing, headroom/lead-room, and background separation.",
-            "Aggregate all domain checker results into a single scene-readiness Pass/Warn/Fail verdict with prioritized blocker remediation steps."
+            "Aggregate all domain checker results into a single verifying-before-handoff Pass/Warn/Fail verdict with prioritized blocker remediation steps."
           ],
           "stage_outputs": [
             "composition_quality_verdict",
             "holistic_scene_readiness_report"
           ],
-          "gate_check": "Any single domain Fail downgrades holistic scene-readiness to Fail/Not Ready until resolved."
+          "gate_check": "Any single domain Fail downgrades holistic verifying-before-handoff to Fail/Not Ready until resolved."
         },
         {
           "stage_number": 4,
@@ -1944,9 +1879,8 @@
           "title": "Pre-Handoff Verification & Plain-Language Action Plan",
           "objective": "Verify evidence truth states and deliver a prioritized, jargon-free correction and readiness report.",
           "skill_ids": [
-            "render-export-evidence",
-            "pre-handoff-verification",
-            "plain-language-response"
+            "verifying-before-handoff",
+            "using-blendops"
           ],
           "knowledge_ids": [
             "knowledge.glb-binary-chunk-alignment-and-khronos-validation"
@@ -1975,17 +1909,13 @@
         "knowledge.glb-binary-chunk-alignment-and-khronos-validation"
       ],
       "required_skill_ids": [
-        "blender-troubleshooting",
-        "polycount-budget-checker",
-        "material-quality-checker",
-        "lighting-quality-checker",
-        "color-management-decision",
-        "composition-quality-checker",
-        "scene-readiness",
-        "stage-gates",
-        "render-export-evidence",
-        "pre-handoff-verification",
-        "plain-language-response"
+        "troubleshooting-blender-output",
+        "budgeting-glb-for-web",
+        "planning-lighting-and-materials",
+        "planning-camera-and-framing",
+        "verifying-before-handoff",
+        "defining-done-and-gates",
+        "using-blendops"
       ],
       "expected_outputs": {
         "intermediate": [
@@ -2008,7 +1938,7 @@
         {
           "id": "vc.blocker-downgrade-discipline",
           "criterion": "Any unresolved P0 blocker in geometry, materials, lighting, or composition prevents a Pass readiness verdict.",
-          "measurement_method": "Verify scene-readiness aggregation rules across the 4 domain checkers.",
+          "measurement_method": "Verify verifying-before-handoff aggregation rules across the 4 domain checkers.",
           "pass_threshold": "Zero unresolved Fail items in a Pass verdict."
         },
         {
@@ -2020,22 +1950,22 @@
         {
           "id": "vc.no-false-verification",
           "criterion": "Inspecting a plan is never reported as inspecting a live rendered frame or GLB file unless the file exists on disk.",
-          "measurement_method": "Verify pre-handoff-verification truth-state gate.",
+          "measurement_method": "Verify verifying-before-handoff truth-state gate.",
           "pass_threshold": "100% separation between plan review and artifact verification."
         }
       ],
       "failure_modes": [
         {
           "symptom": "Agent changes lighting and camera repeatedly when the actual defect is inverted face normals or sRGB on a normal map.",
-          "root_cause": "Skipping Phase 1 subsystem isolation in blender-troubleshooting.",
+          "root_cause": "Skipping Phase 1 subsystem isolation in troubleshooting-blender-output.",
           "recovery_action": "Always verify mesh scale/normals and texture color-space invariants before modifying lighting or camera rigs.",
-          "fallback_skill_id": "blender-troubleshooting"
+          "fallback_skill_id": "troubleshooting-blender-output"
         },
         {
           "symptom": "Scene passes individual aesthetic checks but crashes mobile web browsers on load.",
           "root_cause": "Unchecked 4K uncompressed textures and high triangle counts exceeded device VRAM limits.",
-          "recovery_action": "Run polycount-budget-checker and material-quality-checker against mobile-glb-budget limits.",
-          "fallback_skill_id": "mobile-glb-budget"
+          "recovery_action": "Run budgeting-glb-for-web and planning-lighting-and-materials against budgeting-glb-for-web limits.",
+          "fallback_skill_id": "budgeting-glb-for-web"
         }
       ],
       "blender_versions": {
@@ -2127,9 +2057,9 @@
           "title": "Coordinate Transform, Shader Portability & Animation Pre-Export Check",
           "objective": "Verify +Y Up conversion readiness, applied scale, baked procedural textures, and NLA animation tracks before export.",
           "skill_ids": [
-            "material-quality-checker",
-            "polycount-budget-checker",
-            "glb-animation-handoff"
+            "planning-lighting-and-materials",
+            "budgeting-glb-for-web",
+            "handing-off-glb-to-web"
           ],
           "knowledge_ids": [
             "knowledge.gltf-2-coordinate-system-and-transform-conventions",
@@ -2152,8 +2082,7 @@
           "title": "Binary GLB 2.0 Structural Inspection & Evidence Ledger",
           "objective": "Inspect the exported `.glb` binary container (if present on disk) using `blendops glb-inspect` or record `Not Produced` if planning only.",
           "skill_ids": [
-            "render-export-evidence",
-            "preview-report"
+            "verifying-before-handoff"
           ],
           "knowledge_ids": [
             "knowledge.glb-binary-chunk-alignment-and-khronos-validation",
@@ -2175,8 +2104,7 @@
           "title": "Three.js / React Three Fiber Viewer & Tone-Mapping Parity Plan",
           "objective": "Design the consumer viewer component shape, loader decoders (DRACO/KTX2/Meshopt), and tone-mapping/environment parity.",
           "skill_ids": [
-            "r3f-component-plan",
-            "glb-web-handoff"
+            "handing-off-glb-to-web"
           ],
           "knowledge_ids": [
             "knowledge.threejs-r3f-tone-mapping-and-environment-parity",
@@ -2198,8 +2126,8 @@
           "title": "Pre-Handoff Gate & Plain-Language Web Delivery Summary",
           "objective": "Run the 7-point pre-handoff verification check and deliver the final stakeholder and developer handoff report.",
           "skill_ids": [
-            "pre-handoff-verification",
-            "plain-language-response"
+            "verifying-before-handoff",
+            "using-blendops"
           ],
           "knowledge_ids": [
             "knowledge.glb-binary-chunk-alignment-and-khronos-validation"
@@ -2225,15 +2153,11 @@
         "knowledge.agx-filmic-color-management-and-cycles-eevee"
       ],
       "required_skill_ids": [
-        "material-quality-checker",
-        "polycount-budget-checker",
-        "glb-animation-handoff",
-        "render-export-evidence",
-        "preview-report",
-        "r3f-component-plan",
-        "glb-web-handoff",
-        "pre-handoff-verification",
-        "plain-language-response"
+        "planning-lighting-and-materials",
+        "budgeting-glb-for-web",
+        "handing-off-glb-to-web",
+        "verifying-before-handoff",
+        "using-blendops"
       ],
       "expected_outputs": {
         "intermediate": [
@@ -2261,7 +2185,7 @@
         {
           "id": "vc.decoder-requirement-matching",
           "criterion": "Any `KHR_draco_mesh_compression`, `EXT_meshopt_compression`, or `KHR_texture_basisu` extension in `extensionsRequired` has matching loader configuration in the web viewer plan.",
-          "measurement_method": "Verify `extensionsRequired` vs. `r3f-component-plan` / `glb-web-handoff` manifest.",
+          "measurement_method": "Verify `extensionsRequired` vs. `handing-off-glb-to-web` / `handing-off-glb-to-web` manifest.",
           "pass_threshold": "100% of required glTF extensions have configured web decoders."
         },
         {
@@ -2276,13 +2200,13 @@
           "symptom": "Metallic materials render completely black in Three.js despite looking bright in Blender Material Preview.",
           "root_cause": "Metallic conductors (metallic = 1.0) have zero diffuse reflection and require an environment map (`scene.environment` / R3F `<Environment />`) in Three.js.",
           "recovery_action": "Attach a PMREM environment HDRI or room environment in Three.js / React Three Fiber in addition to direct lights.",
-          "fallback_skill_id": "glb-web-handoff"
+          "fallback_skill_id": "handing-off-glb-to-web"
         },
         {
           "symptom": "`GLTFLoader` throws an error on load when the GLB uses Draco, Meshopt, or KTX2 compression.",
           "root_cause": "The GLB declares compression in `extensionsRequired` without `DRACOLoader`, `MeshoptDecoder`, or `KTX2Loader` attached to `GLTFLoader`.",
           "recovery_action": "Configure the required decoder instance on `GLTFLoader` (or pass the decoder props in `@react-three/drei` `useGLTF`).",
-          "fallback_skill_id": "r3f-component-plan"
+          "fallback_skill_id": "handing-off-glb-to-web"
         }
       ],
       "blender_versions": {
@@ -2372,8 +2296,8 @@
           "title": "Pin Device-Tier Triangle, Draw-Call, VRAM & Payload Budgets",
           "objective": "Lock hard numerical ceilings for triangles, draw calls, texture dimensions, VRAM, and compressed file size.",
           "skill_ids": [
-            "mobile-glb-budget",
-            "done-criteria"
+            "budgeting-glb-for-web",
+            "defining-done-and-gates"
           ],
           "knowledge_ids": [
             "knowledge.triangle-draw-call-and-vram-budgets"
@@ -2393,15 +2317,15 @@
           "title": "Topology Decimation, Draw-Call Consolidation & LOD Hierarchy",
           "objective": "Reduce worst-offender mesh triangle counts, merge static draw calls sharing materials, and define LOD0-LOD2 tiers.",
           "skill_ids": [
-            "polycount-budget-checker",
-            "asset-fallback-strategy"
+            "budgeting-glb-for-web",
+            "sourcing-assets"
           ],
           "knowledge_ids": [
             "knowledge.lod-hierarchy-and-decimation-strategy",
             "knowledge.procedural-instancing-and-realize-instances-budget"
           ],
           "actions": [
-            "Identify top triangle offenders via polycount-budget-checker; remove hidden interior faces, reduce unseen cylinder/bevel segments, and bake fine geometric detail into normal maps.",
+            "Identify top triangle offenders via budgeting-glb-for-web; remove hidden interior faces, reduce unseen cylinder/bevel segments, and bake fine geometric detail into normal maps.",
             "Plan discrete LOD levels (LOD0 100%, LOD1 50%, LOD2 25% triangles) preserving UV seams and silhouettes, and use instancing for repeated props."
           ],
           "stage_outputs": [
@@ -2416,8 +2340,8 @@
           "title": "ORM Channel Packing, KTX2 BasisU & Draco/Meshopt Selection",
           "objective": "Minimize both network download size and GPU VRAM footprint using channel packing and standard glTF compression extensions.",
           "skill_ids": [
-            "material-quality-checker",
-            "output-format-decision"
+            "planning-lighting-and-materials",
+            "choosing-render-and-output"
           ],
           "knowledge_ids": [
             "knowledge.normal-roughness-and-orm-channel-packing",
@@ -2440,10 +2364,9 @@
           "title": "Budget Verification & Web Handoff Report",
           "objective": "Verify post-optimization metrics against the budget contract and document loader requirements.",
           "skill_ids": [
-            "glb-web-handoff",
-            "r3f-component-plan",
-            "pre-handoff-verification",
-            "plain-language-response"
+            "handing-off-glb-to-web",
+            "verifying-before-handoff",
+            "using-blendops"
           ],
           "knowledge_ids": [
             "knowledge.glb-binary-chunk-alignment-and-khronos-validation",
@@ -2471,16 +2394,14 @@
         "knowledge.threejs-r3f-tone-mapping-and-environment-parity"
       ],
       "required_skill_ids": [
-        "mobile-glb-budget",
-        "done-criteria",
-        "polycount-budget-checker",
-        "asset-fallback-strategy",
-        "material-quality-checker",
-        "output-format-decision",
-        "glb-web-handoff",
-        "r3f-component-plan",
-        "pre-handoff-verification",
-        "plain-language-response"
+        "budgeting-glb-for-web",
+        "defining-done-and-gates",
+        "sourcing-assets",
+        "planning-lighting-and-materials",
+        "choosing-render-and-output",
+        "handing-off-glb-to-web",
+        "verifying-before-handoff",
+        "using-blendops"
       ],
       "expected_outputs": {
         "intermediate": [
@@ -2522,13 +2443,13 @@
           "symptom": "Converting 4K PNG textures to 4K WebP shrank the `.glb` download from 25 MB to 3 MB, but iOS Safari still crashes due to memory exhaustion.",
           "root_cause": "PNG, JPEG, and WebP all decompress to uncompressed 32-bit RGBA8 in GPU VRAM (a single 4096x4096 texture consumes ~89 MB of VRAM with mipmaps regardless of WebP file size).",
           "recovery_action": "Downscale textures to 1024x1024 or 2048x2048 for mobile and/or transcode to KTX2 (`KHR_texture_basisu`), which stays block-compressed directly on the GPU.",
-          "fallback_skill_id": "mobile-glb-budget"
+          "fallback_skill_id": "budgeting-glb-for-web"
         },
         {
           "symptom": "Normal maps show severe blocky staircase artifacts after KTX2 compression.",
           "root_cause": "Normal map was compressed with ETC1S (designed for color/diffuse maps) instead of UASTC.",
           "recovery_action": "Encode normal and ORM data maps with KTX2 UASTC + Zstandard supercompression, reserving ETC1S for baseColor/emissive maps.",
-          "fallback_skill_id": "material-quality-checker"
+          "fallback_skill_id": "planning-lighting-and-materials"
         }
       ],
       "blender_versions": {

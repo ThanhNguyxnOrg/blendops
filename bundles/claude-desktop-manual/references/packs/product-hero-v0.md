@@ -3,14 +3,14 @@
 Status: 1.0.0
 
 ## Included skills
-- product-hero-scene-planner
-- camera-composition
-- lighting-material-plan
-- scene-readiness
-- runtime-readiness
-- render-export-evidence
-- glb-web-handoff
-- plain-language-response
+- planning-product-scenes
+- planning-camera-and-framing
+- planning-lighting-and-materials
+- verifying-before-handoff
+- setting-up-blender-runtime
+- verifying-before-handoff
+- handing-off-glb-to-web
+- using-blendops
 
 ## Intended flow
 1. Planning (scene, composition, lighting)

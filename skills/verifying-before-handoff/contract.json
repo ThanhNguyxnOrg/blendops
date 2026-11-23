@@ -1,0 +1,398 @@
+{
+  "$schema": "../../schemas/skill-contract.schema.json",
+  "id": "verifying-before-handoff",
+  "version": "2.0.0",
+  "category": "evidence-and-handoff",
+  "role": "scene-readiness-evidence-preview-and-attempt-report",
+  "purpose": "Check scene readiness, collect render and export evidence, write preview and runtime-attempt reports, and verify before handoff.",
+  "capabilityTier": "L0",
+  "triggers": [
+    "looks ready, can we ship?",
+    "I think the render is good — verify before sending",
+    "before saving the evidence file...",
+    "is this Verified or do we downgrade?",
+    "confirm whether this claim holds or must be downgraded",
+    "quality-check this scene",
+    "is this ready",
+    "evaluate pass warn fail",
+    "Did the render produce?",
+    "Can I claim the GLB exists?",
+    "Verify export evidence.",
+    "What artifact status should this have?",
+    "Summarize preview/render/GLB evidence.",
+    "summarize the render",
+    "write up the export evidence",
+    "what's the preview status",
+    "write up what we tried",
+    "runtime attempt log",
+    "postmortem blender connect",
+    "evidence report template"
+  ],
+  "exclusions": [
+    {
+      "condition": "the user explicitly asked for a draft, not a verified deliverable",
+      "delegateTo": "troubleshooting-blender-output",
+      "reason": "Delegates out-of-scope requests to troubleshooting-blender-output"
+    },
+    {
+      "condition": "as a replacement for evidence collection",
+      "delegateTo": "planning-product-scenes",
+      "reason": "Delegates out-of-scope requests to planning-product-scenes"
+    },
+    {
+      "condition": "to fabricate confidence in missing artifacts",
+      "delegateTo": "planning-lighting-and-materials",
+      "reason": "Delegates out-of-scope requests to planning-lighting-and-materials"
+    },
+    {
+      "condition": "the user only needs a scene plan with no runtime or artifact evidence",
+      "delegateTo": "setting-up-blender-runtime",
+      "reason": "Delegates out-of-scope requests to setting-up-blender-runtime"
+    },
+    {
+      "condition": "runtime readiness or path selection has not been completed and the user wants setup or routing; use setting-up-blender-runtime or setting-up-blender-runtime",
+      "delegateTo": "setting-up-blender-runtime",
+      "reason": "Delegates out-of-scope requests to setting-up-blender-runtime"
+    },
+    {
+      "condition": "the task is GLB web integration after evidence is already classified and gated; use handing-off-glb-to-web",
+      "delegateTo": "handing-off-glb-to-web",
+      "reason": "Delegates out-of-scope requests to handing-off-glb-to-web"
+    },
+    {
+      "condition": "raw debug logs or crash triage",
+      "delegateTo": "troubleshooting-blender-output",
+      "reason": "use troubleshooting-blender-output instead"
+    },
+    {
+      "condition": "Diagnosing systematic runtime or scene defects (troubleshooting-blender-output)",
+      "delegateTo": "troubleshooting-blender-output",
+      "reason": "troubleshooting-blender-output"
+    },
+    {
+      "condition": "Running pre-attempt environment checks (setting-up-blender-runtime)",
+      "delegateTo": "setting-up-blender-runtime",
+      "reason": "setting-up-blender-runtime"
+    },
+    {
+      "condition": "Selecting which runtime path to use before an attempt (setting-up-blender-runtime)",
+      "delegateTo": "setting-up-blender-runtime",
+      "reason": "setting-up-blender-runtime"
+    }
+  ],
+  "inputs": {
+    "required": [
+      {
+        "name": "candidate_delivery_package",
+        "type": "object",
+        "description": "Complete set of planning, quality validation, runtime attempt, and artifact evidence records"
+      },
+      {
+        "name": "proposed_truth_state_claims",
+        "type": "object",
+        "description": "Proposed Runtime status and Artifact status labels to audit against the 7-point release gate"
+      }
+    ],
+    "optional": [
+      {
+        "name": "active_blocker_or_failed_gate_notes",
+        "type": "array",
+        "description": "Any upstream Warn/Fail quality verdicts or unresolved runtime blockers"
+      },
+      {
+        "name": "scene_plan_and_specialist_verdicts",
+        "type": "object",
+        "description": "Scene specification plus specialist rows from material, lighting, composition, and polycount checkers"
+      },
+      {
+        "name": "acceptance_criteria_table",
+        "type": "object",
+        "description": "Measurable Pass/Warn/Fail thresholds for the target deliverable"
+      },
+      {
+        "name": "preview_or_inspection_notes",
+        "type": "object",
+        "description": "Optional read-only scene inspection summary or viewport preview notes"
+      },
+      {
+        "name": "candidate_artifact_records",
+        "type": "array",
+        "description": "Reported file paths, byte sizes, SHA-256 digests, and inspection outputs for renders or GLBs"
+      },
+      {
+        "name": "runtime_execution_trace",
+        "type": "object",
+        "description": "Factual runtime attempt record indicating whether Blender actually ran"
+      },
+      {
+        "name": "glb_inspector_or_validator_report",
+        "type": "object",
+        "description": "Optional output from scripts/inspect-glb.mjs or Khronos gltf-validator"
+      },
+      {
+        "name": "classified_artifact_evidence",
+        "type": "object",
+        "description": "Verified or Produced artifact evidence record from verifying-before-handoff"
+      },
+      {
+        "name": "quality_checker_summary",
+        "type": "object",
+        "description": "Pass/Warn/Fail summary from verifying-before-handoff and specialist validators"
+      },
+      {
+        "name": "known_visual_caveats",
+        "type": "array",
+        "description": "Optional non-blocking visual warnings or pending stakeholder review questions"
+      },
+      {
+        "name": "attempted_runtime_path_and_host",
+        "type": "object",
+        "description": "Path 1, Path 2, or CLI appendix route and MCP host configuration used during the attempt"
+      },
+      {
+        "name": "chronological_execution_log",
+        "type": "array",
+        "description": "Timestamped sequence of read-only or mutation tool calls, responses, and observed outcomes"
+      },
+      {
+        "name": "version_stamps",
+        "type": "object",
+        "description": "Exact Blender version, add-on version, and MCP client version strings"
+      },
+      {
+        "name": "pre_mutation_backup_record",
+        "type": "object",
+        "description": "Optional .blend checkpoint backup metadata if an L1+ mutation was attempted"
+      }
+    ]
+  },
+  "outputs": {
+    "primary": [
+      "seven_point_release_gate_table",
+      "enforced_downgrade_only_truth_states",
+      "release_clearance_or_remediation_route",
+      "holistic_scene_quality_verdict",
+      "aggregated_pass_warn_fail_table",
+      "blocking_defect_remediation_route",
+      "artifact_truth_state_ledger",
+      "downgrade_only_evidence_classification",
+      "missing_evidence_remediation_checklist",
+      "stakeholder_preview_evidence_packet",
+      "truth_state_and_provenance_summary",
+      "pre_handoff_gate_submission",
+      "structured_runtime_attempt_report_md",
+      "locked_runtime_and_artifact_truth_labels",
+      "eval_evidence_archival_path"
+    ],
+    "truthStatePolicy": {
+      "runtimeDefault": "Not Run",
+      "artifactDefault": "Not Produced",
+      "mutationRule": "downgrade_only"
+    }
+  },
+  "handoffs": [
+    {
+      "target": "using-blendops",
+      "type": "boundary_delegation",
+      "label": "Entry wiring (using-blendops)",
+      "when": {
+        "all": [
+          {
+            "field": "request.scope",
+            "operator": "equals",
+            "value": "general_help"
+          }
+        ]
+      }
+    },
+    {
+      "target": "using-blendops",
+      "type": "upstream_reference",
+      "label": "Entry wiring (using-blendops)",
+      "when": {
+        "all": [
+          {
+            "field": "preflight.passed",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "inventory.exists",
+            "operator": "equals",
+            "value": true
+          }
+        ]
+      }
+    },
+    {
+      "target": "using-blendops",
+      "type": "conditional",
+      "label": "If verdict is Pass (using-blendops)",
+      "when": {
+        "all": [
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "final_communication"
+          }
+        ]
+      }
+    },
+    {
+      "target": "planning-camera-and-framing",
+      "type": "upstream_reference",
+      "label": "scene/asset quality gap (planning-camera-and-framing)",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "composition"
+          },
+          {
+            "field": "quality.verdict",
+            "operator": "equals",
+            "value": "not_run"
+          }
+        ]
+      }
+    },
+    {
+      "target": "planning-lighting-and-materials",
+      "type": "upstream_reference",
+      "label": "scene/asset quality gap (planning-lighting-and-materials)",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "lighting"
+          },
+          {
+            "field": "quality.verdict",
+            "operator": "equals",
+            "value": "not_run"
+          }
+        ]
+      }
+    },
+    {
+      "target": "planning-lighting-and-materials",
+      "type": "upstream_reference",
+      "label": "scene/asset quality gap (planning-lighting-and-materials)",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "material"
+          },
+          {
+            "field": "quality.verdict",
+            "operator": "equals",
+            "value": "not_run"
+          }
+        ]
+      }
+    },
+    {
+      "target": "budgeting-glb-for-web",
+      "type": "upstream_reference",
+      "label": "scene/asset quality gap (budgeting-glb-for-web)",
+      "when": {
+        "all": [
+          {
+            "field": "quality.domain",
+            "operator": "equals",
+            "value": "polycount"
+          },
+          {
+            "field": "budget.verdict",
+            "operator": "equals",
+            "value": "Not Run"
+          }
+        ]
+      }
+    },
+    {
+      "target": "troubleshooting-blender-output",
+      "type": "fallback",
+      "label": "runtime/bridge failure (troubleshooting-blender-output)",
+      "when": {
+        "all": [
+          {
+            "field": "runtime.errorDetected",
+            "operator": "equals",
+            "value": true
+          }
+        ]
+      }
+    },
+    {
+      "target": "setting-up-blender-runtime",
+      "type": "fallback",
+      "label": "runtime/bridge failure (setting-up-blender-runtime)",
+      "when": {
+        "all": [
+          {
+            "field": "runtime.path",
+            "operator": "not_equals",
+            "value": "unselected"
+          },
+          {
+            "field": "runtime.verifiedReady",
+            "operator": "equals",
+            "value": false
+          }
+        ]
+      }
+    },
+    {
+      "target": "setting-up-blender-runtime",
+      "type": "fallback",
+      "label": "runtime/bridge failure (setting-up-blender-runtime)",
+      "when": {
+        "all": [
+          {
+            "field": "runtime.conflictDetected",
+            "operator": "equals",
+            "value": true
+          }
+        ]
+      }
+    },
+    {
+      "target": "handing-off-glb-to-web",
+      "type": "conditional",
+      "label": "Web delivery (when applicable)",
+      "when": {
+        "all": [
+          {
+            "field": "artifact.type",
+            "operator": "equals",
+            "value": "glb"
+          },
+          {
+            "field": "handoff.consumerStack",
+            "operator": "equals",
+            "value": "web_glb"
+          }
+        ]
+      }
+    },
+    {
+      "target": "setting-up-blender-runtime",
+      "type": "upstream_reference",
+      "label": "Runtime path selection context",
+      "when": {
+        "all": [
+          {
+            "field": "runtime.path",
+            "operator": "equals",
+            "value": "unselected"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,1703 @@
+{
+  "schemaVersion": "2.0.0",
+  "skillId": "sourcing-assets",
+  "category": "asset-and-sourcing",
+  "isContractedSkill": true,
+  "isRoutingParticipant": false,
+  "contractPath": "skills/sourcing-assets/contract.json",
+  "skillMarkdownPath": "skills/sourcing-assets/SKILL.md",
+  "evalMarkdownPath": "skills/sourcing-assets/EVAL.md",
+  "sourceEvalTier": "structured_multi_case_table",
+  "evaluationStatus": {
+    "staticValidation": "Passed",
+    "deterministicFixture": "Passed",
+    "contractRouting": "Not Applicable",
+    "contractHandoff": "Passed",
+    "liveModel": "Not Run",
+    "blenderRuntime": "Not Run"
+  },
+  "cases": [
+    {
+      "id": "asset-discovery-cyberpunk-shoe-web-hero",
+      "skillId": "sourcing-assets",
+      "scenario": "Cyberpunk shoe web hero brief (<=10MB GLB constraint)",
+      "category": "normal",
+      "inputPrompt": "Plan asset strategy for a floating cyberpunk shoe hero with neon glossy floor under a 10MB GLB budget.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Produces per-asset strategy table, sums estimated GLB budget (8MB vs 10MB limit), and flags Path 2 generative caveat",
+        "Hands off to planning-product-scenes without downloading or generating files"
+      ],
+      "requiredOutputProperties": [
+        "asset table",
+        "budget sum",
+        "Path 2 generative caveat",
+        "planning-product-scenes"
+      ],
+      "forbiddenOutputProperties": [
+        "downloaded asset",
+        "Artifact: Produced"
+      ],
+      "expectedRoutingTarget": "planning-product-scenes",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Per-asset strategy table + GLB budget sum + Path 2 generative caveat"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only asset discovery plan",
+          "recommendedNextAction": "Proceed to planning-product-scenes with the 8MB estimated asset table and Path 2 generative caveat.",
+          "targetHandoff": "planning-product-scenes",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Built full asset table with budget sum (8MB / 10MB) and explicit Path 2 generative caveat.",
+          "warnings": [
+            "Generative 3D integrations belong to community Path 2 (mcp-for-blender) and require readiness verification."
+          ],
+          "evidenceCitations": [
+            "skills/sourcing-assets/EVAL.md",
+            "docs/unofficial-runtime-bridges.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "asset-discovery-brand-restricted-library",
+      "skillId": "sourcing-assets",
+      "scenario": "Brand product render restricted to brand-approved library only",
+      "category": "normal",
+      "inputPrompt": "Subject is an official brand sneaker; constraint requires brand-restricted asset library only and zero third-party meshes.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Enforces brand-only library source for subject and procedural environment",
+        "Routes to sourcing-assets to record brand-restricted license compliance"
+      ],
+      "requiredOutputProperties": [
+        "brand-restricted",
+        "license risk callout",
+        "sourcing-assets"
+      ],
+      "forbiddenOutputProperties": [
+        "use any free model from the internet",
+        "Artifact: Produced"
+      ],
+      "expectedRoutingTarget": "sourcing-assets",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Brand-restricted enforcement + license risk callout"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only asset discovery plan",
+          "recommendedNextAction": "Verify brand-restricted terms in sourcing-assets before scene planning.",
+          "targetHandoff": "sourcing-assets",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Enforced brand-restricted library for hero asset and procedural environment with explicit license risk callout.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/sourcing-assets/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "asset-discovery-procedural-iteration-sketch",
+      "skillId": "sourcing-assets",
+      "scenario": "Text-only iteration sketch prioritizes procedural primitives and CC0 HDRI",
+      "category": "structured_skip",
+      "inputPrompt": "Deliverable is a fast text-only blocking sketch loop with zero external mesh dependencies.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Assigns procedural-first strategy for geometry and CC0 Poly Haven HDRI for lighting",
+        "Hands off to planning-product-scenes"
+      ],
+      "requiredOutputProperties": [
+        "procedural-first",
+        "Poly Haven CC0",
+        "planning-product-scenes"
+      ],
+      "forbiddenOutputProperties": [
+        "fetched external model",
+        "Artifact: Produced"
+      ],
+      "expectedRoutingTarget": "planning-product-scenes",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P2",
+      "evidenceRequirements": [
+        "Procedural-first asset assignment with low license risk"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only asset discovery plan",
+          "recommendedNextAction": "Hand off procedural-first asset table with Poly Haven CC0 HDRI to planning-product-scenes.",
+          "targetHandoff": "planning-product-scenes",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Selected procedural-first blocking primitives and Poly Haven CC0 lighting with low license risk.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/sourcing-assets/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "asset-discovery-generative-without-path2-blocked",
+      "skillId": "sourcing-assets",
+      "scenario": "User requests Hyper3D generative mesh without Path 2 readiness",
+      "category": "blocked_or_adversarial",
+      "inputPrompt": "Use Hyper3D to generate the hero sneaker mesh right now even though Path 2 is not configured.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Marks generative strategy blocked, offers procedural/library fallback, and routes to setting-up-blender-runtime",
+        "Never claims Hyper3D generated an asset"
+      ],
+      "requiredOutputProperties": [
+        "generative blocked",
+        "setting-up-blender-runtime",
+        "procedural/library alternatives"
+      ],
+      "forbiddenOutputProperties": [
+        "generated Hyper3D mesh",
+        "Artifact: Produced"
+      ],
+      "expectedRoutingTarget": "setting-up-blender-runtime",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Blocked flag + procedural/library alternatives + route to setting-up-blender-runtime"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only asset discovery plan",
+          "recommendedNextAction": "Generative blocked without Path 2: route to setting-up-blender-runtime or use procedural/library alternatives.",
+          "targetHandoff": "setting-up-blender-runtime",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Marked Hyper3D generative strategy blocked and offered procedural/library alternatives.",
+          "warnings": [
+            "Hyper3D requires community Path 2 (mcp-for-blender) readiness and third-party caveats."
+          ],
+          "evidenceCitations": [
+            "skills/sourcing-assets/EVAL.md",
+            "docs/unofficial-runtime-bridges.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "asset-discovery-skipped-license-tbd",
+      "skillId": "sourcing-assets",
+      "scenario": "User says license \"doesn't matter\" for web commercial deployment",
+      "category": "evidence_boundary",
+      "inputPrompt": "Just grab any 3D watch mesh, license does not matter to us.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Marks license column as TBD (never silently approved) and requires follow-up via sourcing-assets",
+        "Preserves Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "TBD",
+        "sourcing-assets",
+        "follow-up required"
+      ],
+      "forbiddenOutputProperties": [
+        "license approved automatically",
+        "Artifact: Verified"
+      ],
+      "expectedRoutingTarget": "sourcing-assets",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicit TBD license marker + handoff to sourcing-assets"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only asset discovery plan",
+          "recommendedNextAction": "License marked TBD (follow-up required): route to sourcing-assets before downstream planner consumes.",
+          "targetHandoff": "sourcing-assets",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Refused to skip license tracking; marked license TBD with follow-up required via sourcing-assets.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/sourcing-assets/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "asset-discovery-conflicting-2mb-brand-cad",
+      "skillId": "sourcing-assets",
+      "scenario": "Conflicting constraints: unoptimized 80MB CAD brand asset vs <=2MB GLB target",
+      "category": "blocked_or_adversarial",
+      "inputPrompt": "Use our raw 80MB CAD shoe assembly with 4K uncompressed textures inside a <=2MB mobile GLB budget.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Surfaces budget conflict between raw CAD source and <=2MB GLB constraint",
+        "Routes to sourcing-assets to plan decimation/baking or proxy replacement"
+      ],
+      "requiredOutputProperties": [
+        "conflict callout",
+        "sourcing-assets",
+        "2MB"
+      ],
+      "forbiddenOutputProperties": [
+        "80MB fits inside 2MB without changes",
+        "Artifact: Produced"
+      ],
+      "expectedRoutingTarget": "sourcing-assets",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicit budget conflict callout + route to sourcing-assets"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only asset discovery plan",
+          "recommendedNextAction": "Surface 80MB vs 2MB conflict callout and route to sourcing-assets.",
+          "targetHandoff": "sourcing-assets",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Raised conflict callout on 80MB CAD asset vs 2MB GLB constraint and routed to sourcing-assets.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/sourcing-assets/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "asset-discovery-missing-brief-reroute",
+      "skillId": "sourcing-assets",
+      "scenario": "No 8-slot brief provided before asset discovery",
+      "category": "ambiguous",
+      "inputPrompt": "Pick assets for my project right now (no brief provided).",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Refuses to guess asset classes without an 8-slot brief",
+        "Routes back to scoping-3d-briefs"
+      ],
+      "requiredOutputProperties": [
+        "scoping-3d-briefs",
+        "missing 8-slot brief",
+        "Runtime: Not Run"
+      ],
+      "forbiddenOutputProperties": [
+        "invented asset table",
+        "Artifact: Produced"
+      ],
+      "expectedRoutingTarget": "scoping-3d-briefs",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Re-route message to scoping-3d-briefs"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only asset discovery plan",
+          "recommendedNextAction": "Route back to scoping-3d-briefs because of missing 8-slot brief.",
+          "targetHandoff": "scoping-3d-briefs",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted asset discovery due to missing 8-slot brief and re-routed to scoping-3d-briefs.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/sourcing-assets/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "asset-discovery-contract-handoff-primary",
+      "skillId": "sourcing-assets",
+      "scenario": "Contract handoff predicate matches sourcing-assets (**License verdicts**)",
+      "category": "normal",
+      "inputPrompt": "Evaluate sourcing-assets contract handoff when workflow context satisfies {\"assets.externalUsed\":true,\"assets.licenseCleared\":false} and verify progression to sourcing-assets.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates contract.json handoff predicates for sourcing-assets against the workflow context",
+        "Selects sourcing-assets while preserving Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "sourcing-assets",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Not Run",
+        "Artifact: Verified",
+        "Blender executed"
+      ],
+      "expectedRoutingTarget": "sourcing-assets",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Contract handoff predicate match for sourcing-assets in skills/sourcing-assets/contract.json",
+        "Truth-state conservation (Runtime: Not Run, Artifact: Not Produced)"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "assets.externalUsed": true,
+          "assets.licenseCleared": false
+        },
+        "simulatedOutput": {
+          "mode": "Text-only sourcing-assets contract handoff evaluation",
+          "recommendedNextAction": "Hand off from sourcing-assets to sourcing-assets (**License verdicts**).",
+          "targetHandoff": "sourcing-assets",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Matched contract handoff predicate in sourcing-assets and routed to sourcing-assets.",
+          "warnings": [
+            "Specialist contract handoff evaluated without global routingPrecedence escalation."
+          ],
+          "evidenceCitations": [
+            "skills/sourcing-assets/contract.json",
+            "skills/sourcing-assets/SKILL.md",
+            "skills/sourcing-assets/EVAL.md",
+            "skills/sourcing-assets/references/asset-strategy-decision-tree.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "asset-discovery-contract-handoff-unmatched-none",
+      "skillId": "sourcing-assets",
+      "scenario": "Contract handoff predicate returns none when no downstream handoff condition matches in sourcing-assets",
+      "category": "evidence_boundary",
+      "inputPrompt": "Check sourcing-assets contract handoff behavior when context is {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and no automatic handoff predicate is satisfied.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates all 12 contract handoffs in sourcing-assets with fail-closed predicate semantics",
+        "Returns targetHandoff none when no handoff predicate matches and preserves conservative truth states"
+      ],
+      "requiredOutputProperties": [
+        "none",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Not Run",
+        "Artifact: Verified",
+        "invented handoff target"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Zero matching handoff predicates in skills/sourcing-assets/contract.json for non-matching context"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Text-only sourcing-assets contract boundary check",
+          "recommendedNextAction": "Remain at sourcing-assets (targetHandoff: none) until a declared downstream handoff precondition is satisfied.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Verified fail-closed specialist handoff evaluation for sourcing-assets when no contract predicate matches (secondary candidate scoping-3d-briefs remained inactive).",
+          "warnings": [
+            "Never fabricate an undeclared handoff when no contract predicate matches."
+          ],
+          "evidenceCitations": [
+            "skills/sourcing-assets/contract.json",
+            "skills/sourcing-assets/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "asset-license-checker-normal-in-scope-handoff",
+      "skillId": "sourcing-assets",
+      "scenario": "Normal in-scope execution of sourcing-assets (asset-license-and-provenance-gate) with contract handoff to sourcing-assets",
+      "category": "normal",
+      "inputPrompt": "Audit 4 external assets for our commercial product-hero-v0 launch: 2 Poly Haven CC0 HDRIs, 1 CC-BY-4.0 pedestal mesh, and 1 forum mesh with unknown authorship. Use sourcing-assets.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Primary inputs (candidate_assets) provided in text-only planning/audit mode."
+      },
+      "expectedBehavior": [
+        "Produces per_asset_license_verdict_table, attribution_obligations_list, quarantined_or_blocked_assets for role asset-license-and-provenance-gate",
+        "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
+        "Evaluates contract handoff predicate and hands off to sourcing-assets (Visual style validation)"
+      ],
+      "requiredOutputProperties": [
+        "CC0",
+        "attribution requirement",
+        "blocked unverified",
+        "sourcing-assets",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "safe for commercial use without license",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "sourcing-assets",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Outputs per_asset_license_verdict_table, attribution_obligations_list, quarantined_or_blocked_assets conforming to skills/sourcing-assets/SKILL.md",
+        "Matches contract handoff predicate to sourcing-assets in skills/sourcing-assets/contract.json"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "assets.licenseCleared": true,
+          "stage.current": "style_check"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only asset-license-and-provenance-gate (sourcing-assets)",
+          "recommendedNextAction": "Complete per_asset_license_verdict_table and hand off to sourcing-assets (Visual style validation).",
+          "targetHandoff": "sourcing-assets",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Audited per-asset license provenance: cleared CC0 HDRIs, flagged attribution requirement on CC-BY-4.0 mesh, and blocked the unverified forum mesh. Delivered CC0, attribution requirement, blocked unverified and routed to sourcing-assets.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/sourcing-assets/SKILL.md",
+            "skills/sourcing-assets/EVAL.md",
+            "skills/sourcing-assets/contract.json",
+            "skills/sourcing-assets/references/attribution-rendering-patterns.md",
+            "skills/sourcing-assets/references/common-license-mapping.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "asset-license-checker-secondary-contract-handoff",
+      "skillId": "sourcing-assets",
+      "scenario": "Secondary fallback contract handoff from sourcing-assets to sourcing-assets",
+      "category": "blocked_or_adversarial",
+      "inputPrompt": "While applying sourcing-assets, the workflow context is {\"assets.fallbackNeeded\":true} (Rejected/blocked asset handling). Determine the contract-governed handoff target.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates the fallback handoff predicate in skills/sourcing-assets/contract.json",
+        "Routes to sourcing-assets (Rejected/blocked asset handling) without claiming runtime execution"
+      ],
+      "requiredOutputProperties": [
+        "sourcing-assets",
+        "fallback",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "safe for commercial use without license",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "sourcing-assets",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Contract fallback handoff predicate match to sourcing-assets"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "assets.fallbackNeeded": true
+        },
+        "simulatedOutput": {
+          "mode": "Text-only sourcing-assets (fallback handoff)",
+          "recommendedNextAction": "Follow fallback handoff to sourcing-assets (Rejected/blocked asset handling).",
+          "targetHandoff": "sourcing-assets",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Triggered fallback handoff from sourcing-assets to sourcing-assets under context {\"assets.fallbackNeeded\":true}.",
+          "warnings": [
+            "Contract-governed fallback handoff."
+          ],
+          "evidenceCitations": [
+            "skills/sourcing-assets/contract.json",
+            "skills/sourcing-assets/SKILL.md",
+            "skills/sourcing-assets/references/attribution-rendering-patterns.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "asset-license-checker-unmatched-handoff-and-evidence-boundary",
+      "skillId": "sourcing-assets",
+      "scenario": "Unmatched contract handoff context returns none and blocks upgrading unvalidated file to Verified in sourcing-assets",
+      "category": "evidence_boundary",
+      "inputPrompt": "An operator provides an unvalidated file on disk during sourcing-assets with context {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and asks to mark Artifact: Verified and auto-advance.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "file-only-unvalidated",
+        "notes": "A file exists on disk but validation checks have not been recorded."
+      },
+      "expectedBehavior": [
+        "Refuses to upgrade Artifact status to Verified when existingArtifactEvidence is file-only-unvalidated (caps at Produced)",
+        "Evaluates contract handoffs for sourcing-assets and returns targetHandoff none because no handoff predicate matches"
+      ],
+      "requiredOutputProperties": [
+        "Artifact: Produced",
+        "Runtime: Not Run",
+        "validation",
+        "none"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "validation not needed"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Downgrade unvalidated Verified claim to Produced per laws/evidence-before-done.md",
+        "Verify 0 handoffs match in skills/sourcing-assets/contract.json for {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true}"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Artifact-claim boundary check (sourcing-assets)",
+          "recommendedNextAction": "Keep Artifact status at Produced (never Verified without validation evidence) and hold at targetHandoff none until a downstream precondition is met.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Produced",
+          "summary": "Capped unvalidated artifact claim at Artifact: Produced and verified zero matching contract handoffs (none) for sourcing-assets.",
+          "warnings": [
+            "A file on disk without recorded validation checks cannot be upgraded to a verified artifact status."
+          ],
+          "evidenceCitations": [
+            "laws/evidence-before-done.md",
+            "skills/sourcing-assets/contract.json",
+            "skills/sourcing-assets/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "asset-license-checker-ambiguous-missing-required-inputs",
+      "skillId": "sourcing-assets",
+      "scenario": "Missing required input (candidate_assets) for sourcing-assets halts fabricated output and requests clarification",
+      "category": "ambiguous",
+      "inputPrompt": "Check if our downloaded 3D models are legally safe to ship in a commercial web GLB, even though I have no source URLs, author names, or license SPDX identifiers.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Required input 'candidate_assets' is missing or underspecified."
+      },
+      "expectedBehavior": [
+        "Identifies missing asset source URLs, license identifiers, and commercial redistribution target required by sourcing-assets (candidate_assets)",
+        "Refuses to fabricate domain parameters and keeps Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "candidate_assets",
+        "asset source URLs, license identifiers, and commercial redistribution target",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "safe for commercial use without license",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "guessed parameters silently"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicitly names missing required input 'candidate_assets' (asset source URLs, license identifiers, and commercial redistribution target)",
+        "Conservative Runtime: Not Run and Artifact: Not Produced truth states"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Clarification gate (sourcing-assets)",
+          "recommendedNextAction": "Provide the missing asset source URLs, license identifiers, and commercial redistribution target (candidate_assets) before sourcing-assets locks per_asset_license_verdict_table.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted sourcing-assets due to missing required input 'candidate_assets' (asset source URLs, license identifiers, and commercial redistribution target); no values were fabricated.",
+          "warnings": [
+            "Do not invent asset source URLs, license identifiers, and commercial redistribution target when 'candidate_assets' is omitted."
+          ],
+          "evidenceCitations": [
+            "skills/sourcing-assets/SKILL.md",
+            "skills/sourcing-assets/EVAL.md",
+            "skills/sourcing-assets/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "asset-license-checker-out-of-scope-exclusion-delegation",
+      "skillId": "sourcing-assets",
+      "scenario": "Out-of-scope request (Sourcing or searching for candidate assets) is excluded from sourcing-assets and delegated to sourcing-assets",
+      "category": "scope_creep",
+      "inputPrompt": "Instead of verify license compliance for downloaded 3d assets, textures, hdris, fonts before scene build or export., handle this request inside sourcing-assets: Sourcing or searching for candidate assets.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Enforces the declared exclusion boundary in skills/sourcing-assets/contract.json when Sourcing or searching for candidate assets",
+        "Delegates to sourcing-assets (Delegates out-of-scope requests to sourcing-assets) with Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "sourcing-assets",
+        "out of scope",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "safe for commercial use without license",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "handled inside sourcing-assets anyway"
+      ],
+      "expectedRoutingTarget": "sourcing-assets",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Exclusion delegation to sourcing-assets per skills/sourcing-assets/contract.json"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Out-of-scope exclusion gate (sourcing-assets)",
+          "recommendedNextAction": "Request is out of scope for sourcing-assets (Sourcing or searching for candidate assets); delegate to sourcing-assets.",
+          "targetHandoff": "sourcing-assets",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Enforced sourcing-assets exclusion boundary (Delegates out-of-scope requests to sourcing-assets) and delegated to sourcing-assets.",
+          "warnings": [
+            "sourcing-assets is scoped to asset-license-and-provenance-gate and does not absorb sourcing-assets responsibilities."
+          ],
+          "evidenceCitations": [
+            "skills/sourcing-assets/contract.json",
+            "skills/sourcing-assets/SKILL.md",
+            "skills/sourcing-assets/SKILL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "asset-style-check-normal-in-scope-handoff",
+      "skillId": "sourcing-assets",
+      "scenario": "Normal in-scope execution of sourcing-assets (cross-asset-visual-coherence-validator) with contract handoff to sourcing-assets",
+      "category": "normal",
+      "inputPrompt": "Use sourcing-assets to audit a 4-asset desk scene combining a photoreal brushed-aluminum laptop, a stylized hand-painted coffee mug, a low-poly plant, and a realistic wood table.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Primary inputs (candidate_asset_list) provided in text-only planning/audit mode."
+      },
+      "expectedBehavior": [
+        "Produces style_coherence_matrix, mismatched_asset_flags, remediation_or_fallback_recommendations for role cross-asset-visual-coherence-validator",
+        "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
+        "Evaluates contract handoff predicate and hands off to sourcing-assets (Approved asset organization)"
+      ],
+      "requiredOutputProperties": [
+        "texel density",
+        "shader realism",
+        "style outlier",
+        "sourcing-assets",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "all assets match perfectly",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "sourcing-assets",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Outputs style_coherence_matrix, mismatched_asset_flags, remediation_or_fallback_recommendations conforming to skills/sourcing-assets/SKILL.md",
+        "Matches contract handoff predicate to sourcing-assets in skills/sourcing-assets/contract.json"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "assets.discoveryComplete": true,
+          "stage.current": "library_organization"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only cross-asset-visual-coherence-validator (sourcing-assets)",
+          "recommendedNextAction": "Complete style_coherence_matrix and hand off to sourcing-assets (Approved asset organization).",
+          "targetHandoff": "sourcing-assets",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Evaluated cross-asset visual coherence across scale, texel density, shader realism, and edge bevel language; flagged stylized mug and low-poly plant as style outliers. Delivered texel density, shader realism, style outlier and routed to sourcing-assets.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/sourcing-assets/SKILL.md",
+            "skills/sourcing-assets/EVAL.md",
+            "skills/sourcing-assets/contract.json",
+            "skills/sourcing-assets/references/drift-classification.md",
+            "skills/sourcing-assets/references/intentional-mixed-style.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "asset-style-check-secondary-contract-handoff",
+      "skillId": "sourcing-assets",
+      "scenario": "Secondary fallback contract handoff from sourcing-assets to sourcing-assets",
+      "category": "blocked_or_adversarial",
+      "inputPrompt": "While applying sourcing-assets, the workflow context is {\"assets.fallbackNeeded\":true} (Rejected asset fallback). Determine the contract-governed handoff target.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates the fallback handoff predicate in skills/sourcing-assets/contract.json",
+        "Routes to sourcing-assets (Rejected asset fallback) without claiming runtime execution"
+      ],
+      "requiredOutputProperties": [
+        "sourcing-assets",
+        "fallback",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "all assets match perfectly",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "sourcing-assets",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Contract fallback handoff predicate match to sourcing-assets"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "assets.fallbackNeeded": true
+        },
+        "simulatedOutput": {
+          "mode": "Text-only sourcing-assets (fallback handoff)",
+          "recommendedNextAction": "Follow fallback handoff to sourcing-assets (Rejected asset fallback).",
+          "targetHandoff": "sourcing-assets",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Triggered fallback handoff from sourcing-assets to sourcing-assets under context {\"assets.fallbackNeeded\":true}.",
+          "warnings": [
+            "Contract-governed fallback handoff."
+          ],
+          "evidenceCitations": [
+            "skills/sourcing-assets/contract.json",
+            "skills/sourcing-assets/SKILL.md",
+            "skills/sourcing-assets/references/drift-classification.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "asset-style-check-unmatched-handoff-and-evidence-boundary",
+      "skillId": "sourcing-assets",
+      "scenario": "Unmatched contract handoff context returns none and blocks upgrading unvalidated file to Verified in sourcing-assets",
+      "category": "evidence_boundary",
+      "inputPrompt": "An operator provides an unvalidated file on disk during sourcing-assets with context {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and asks to mark Artifact: Verified and auto-advance.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "file-only-unvalidated",
+        "notes": "A file exists on disk but validation checks have not been recorded."
+      },
+      "expectedBehavior": [
+        "Refuses to upgrade Artifact status to Verified when existingArtifactEvidence is file-only-unvalidated (caps at Produced)",
+        "Evaluates contract handoffs for sourcing-assets and returns targetHandoff none because no handoff predicate matches"
+      ],
+      "requiredOutputProperties": [
+        "Artifact: Produced",
+        "Runtime: Not Run",
+        "validation",
+        "none"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "validation not needed"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Downgrade unvalidated Verified claim to Produced per laws/evidence-before-done.md",
+        "Verify 0 handoffs match in skills/sourcing-assets/contract.json for {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true}"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Artifact-claim boundary check (sourcing-assets)",
+          "recommendedNextAction": "Keep Artifact status at Produced (never Verified without validation evidence) and hold at targetHandoff none until a downstream precondition is met.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Produced",
+          "summary": "Capped unvalidated artifact claim at Artifact: Produced and verified zero matching contract handoffs (none) for sourcing-assets.",
+          "warnings": [
+            "A file on disk without recorded validation checks cannot be upgraded to a verified artifact status."
+          ],
+          "evidenceCitations": [
+            "laws/evidence-before-done.md",
+            "skills/sourcing-assets/contract.json",
+            "skills/sourcing-assets/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "asset-style-check-ambiguous-missing-required-inputs",
+      "skillId": "sourcing-assets",
+      "scenario": "Missing required input (candidate_asset_list) for sourcing-assets halts fabricated output and requests clarification",
+      "category": "ambiguous",
+      "inputPrompt": "Check whether our scene assets are stylistically consistent, without providing the target art direction, reference anchor asset, or per-asset material descriptions.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Required input 'candidate_asset_list' is missing or underspecified."
+      },
+      "expectedBehavior": [
+        "Identifies missing target art-direction anchor and per-asset scale/shader inventory required by sourcing-assets (candidate_asset_list)",
+        "Refuses to fabricate domain parameters and keeps Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "candidate_asset_list",
+        "target art-direction anchor and per-asset scale/shader inventory",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "all assets match perfectly",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "guessed parameters silently"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicitly names missing required input 'candidate_asset_list' (target art-direction anchor and per-asset scale/shader inventory)",
+        "Conservative Runtime: Not Run and Artifact: Not Produced truth states"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Clarification gate (sourcing-assets)",
+          "recommendedNextAction": "Provide the missing target art-direction anchor and per-asset scale/shader inventory (candidate_asset_list) before sourcing-assets locks style_coherence_matrix.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted sourcing-assets due to missing required input 'candidate_asset_list' (target art-direction anchor and per-asset scale/shader inventory); no values were fabricated.",
+          "warnings": [
+            "Do not invent target art-direction anchor and per-asset scale/shader inventory when 'candidate_asset_list' is omitted."
+          ],
+          "evidenceCitations": [
+            "skills/sourcing-assets/SKILL.md",
+            "skills/sourcing-assets/EVAL.md",
+            "skills/sourcing-assets/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "asset-style-check-out-of-scope-exclusion-delegation",
+      "skillId": "sourcing-assets",
+      "scenario": "Out-of-scope request (single isolated asset where no multi-asset or scene-brief consistency check is requested) is excluded from sourcing-assets and delegated to sourcing-assets",
+      "category": "scope_creep",
+      "inputPrompt": "Instead of verify chosen assets share visual style (realism, detail, color treatment) before scene build; flag style drift between assets early., handle this request inside sourcing-assets: single isolated asset where no multi-asset or scene-brief consistency check is requested.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Enforces the declared exclusion boundary in skills/sourcing-assets/contract.json when single isolated asset where no multi-asset or scene-brief consistency check is requested",
+        "Delegates to sourcing-assets (Delegates out-of-scope requests to sourcing-assets) with Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "sourcing-assets",
+        "out of scope",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "all assets match perfectly",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "handled inside sourcing-assets anyway"
+      ],
+      "expectedRoutingTarget": "sourcing-assets",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Exclusion delegation to sourcing-assets per skills/sourcing-assets/contract.json"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Out-of-scope exclusion gate (sourcing-assets)",
+          "recommendedNextAction": "Request is out of scope for sourcing-assets (single isolated asset where no multi-asset or scene-brief consistency check is requested); delegate to sourcing-assets.",
+          "targetHandoff": "sourcing-assets",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Enforced sourcing-assets exclusion boundary (Delegates out-of-scope requests to sourcing-assets) and delegated to sourcing-assets.",
+          "warnings": [
+            "sourcing-assets is scoped to cross-asset-visual-coherence-validator and does not absorb sourcing-assets responsibilities."
+          ],
+          "evidenceCitations": [
+            "skills/sourcing-assets/contract.json",
+            "skills/sourcing-assets/SKILL.md",
+            "skills/sourcing-assets/SKILL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "asset-fallback-strategy-normal-in-scope-handoff",
+      "skillId": "sourcing-assets",
+      "scenario": "Normal in-scope execution of sourcing-assets (blocked-asset-replacement-planner) with contract handoff to sourcing-assets",
+      "category": "normal",
+      "inputPrompt": "Our primary photogrammetry leather armchair mesh failed CC0 license verification and exceeds our 50k triangle budget. Use sourcing-assets to plan a deterministic procedural/primitive proxy fallback.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Primary inputs (blocked_asset_entry) provided in text-only planning/audit mode."
+      },
+      "expectedBehavior": [
+        "Produces ranked_fallback_options, selected_replacement_plan, revalidation_routing_hooks for role blocked-asset-replacement-planner",
+        "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
+        "Evaluates contract handoff predicate and hands off to sourcing-assets (Internal library lookup)"
+      ],
+      "requiredOutputProperties": [
+        "fallback tier",
+        "silhouette preservation",
+        "blocked asset",
+        "sourcing-assets",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "use unlicensed mesh anyway",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "sourcing-assets",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Outputs ranked_fallback_options, selected_replacement_plan, revalidation_routing_hooks conforming to skills/sourcing-assets/SKILL.md",
+        "Matches contract handoff predicate to sourcing-assets in skills/sourcing-assets/contract.json"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "assets.discoveryComplete": true,
+          "stage.current": "library_organization"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only blocked-asset-replacement-planner (sourcing-assets)",
+          "recommendedNextAction": "Complete ranked_fallback_options and hand off to sourcing-assets (Internal library lookup).",
+          "targetHandoff": "sourcing-assets",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Planned a 3-tier blocked-asset replacement strategy (procedural proxy + licensed library substitute) preserving silhouette and scale. Delivered fallback tier, silhouette preservation, blocked asset and routed to sourcing-assets.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/sourcing-assets/SKILL.md",
+            "skills/sourcing-assets/EVAL.md",
+            "skills/sourcing-assets/contract.json",
+            "skills/sourcing-assets/references/drop-with-caveat-rules.md",
+            "skills/sourcing-assets/references/fallback-option-types.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "asset-fallback-strategy-secondary-contract-handoff",
+      "skillId": "sourcing-assets",
+      "scenario": "Secondary fallback contract handoff from sourcing-assets to sourcing-assets",
+      "category": "blocked_or_adversarial",
+      "inputPrompt": "While applying sourcing-assets, the workflow context is {\"assets.externalUsed\":true,\"assets.licenseCleared\":false} (License re-check on replacement). Determine the contract-governed handoff target.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates the fallback handoff predicate in skills/sourcing-assets/contract.json",
+        "Routes to sourcing-assets (License re-check on replacement) without claiming runtime execution"
+      ],
+      "requiredOutputProperties": [
+        "sourcing-assets",
+        "fallback",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "use unlicensed mesh anyway",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "sourcing-assets",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Contract fallback handoff predicate match to sourcing-assets"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "assets.externalUsed": true,
+          "assets.licenseCleared": false
+        },
+        "simulatedOutput": {
+          "mode": "Text-only sourcing-assets (fallback handoff)",
+          "recommendedNextAction": "Follow fallback handoff to sourcing-assets (License re-check on replacement).",
+          "targetHandoff": "sourcing-assets",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Triggered fallback handoff from sourcing-assets to sourcing-assets under context {\"assets.externalUsed\":true,\"assets.licenseCleared\":false}.",
+          "warnings": [
+            "Contract-governed fallback handoff."
+          ],
+          "evidenceCitations": [
+            "skills/sourcing-assets/contract.json",
+            "skills/sourcing-assets/SKILL.md",
+            "skills/sourcing-assets/references/drop-with-caveat-rules.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "asset-fallback-strategy-unmatched-handoff-and-evidence-boundary",
+      "skillId": "sourcing-assets",
+      "scenario": "Unmatched contract handoff context returns none and blocks upgrading unvalidated file to Verified in sourcing-assets",
+      "category": "evidence_boundary",
+      "inputPrompt": "An operator provides an unvalidated file on disk during sourcing-assets with context {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and asks to mark Artifact: Verified and auto-advance.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "file-only-unvalidated",
+        "notes": "A file exists on disk but validation checks have not been recorded."
+      },
+      "expectedBehavior": [
+        "Refuses to upgrade Artifact status to Verified when existingArtifactEvidence is file-only-unvalidated (caps at Produced)",
+        "Evaluates contract handoffs for sourcing-assets and returns targetHandoff none because no handoff predicate matches"
+      ],
+      "requiredOutputProperties": [
+        "Artifact: Produced",
+        "Runtime: Not Run",
+        "validation",
+        "none"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "validation not needed"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Downgrade unvalidated Verified claim to Produced per laws/evidence-before-done.md",
+        "Verify 0 handoffs match in skills/sourcing-assets/contract.json for {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true}"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Artifact-claim boundary check (sourcing-assets)",
+          "recommendedNextAction": "Keep Artifact status at Produced (never Verified without validation evidence) and hold at targetHandoff none until a downstream precondition is met.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Produced",
+          "summary": "Capped unvalidated artifact claim at Artifact: Produced and verified zero matching contract handoffs (none) for sourcing-assets.",
+          "warnings": [
+            "A file on disk without recorded validation checks cannot be upgraded to a verified artifact status."
+          ],
+          "evidenceCitations": [
+            "laws/evidence-before-done.md",
+            "skills/sourcing-assets/contract.json",
+            "skills/sourcing-assets/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "asset-fallback-strategy-ambiguous-missing-required-inputs",
+      "skillId": "sourcing-assets",
+      "scenario": "Missing required input (blocked_asset_entry) for sourcing-assets halts fabricated output and requests clarification",
+      "category": "ambiguous",
+      "inputPrompt": "One of our 3D assets is blocked and we need a fallback plan right now, but I do not know which asset failed or whether the blocker is license, polycount, or missing textures.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Required input 'blocked_asset_entry' is missing or underspecified."
+      },
+      "expectedBehavior": [
+        "Identifies missing blocked asset identifier and failure reason (license vs budget vs corrupt file) required by sourcing-assets (blocked_asset_entry)",
+        "Refuses to fabricate domain parameters and keeps Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "blocked_asset_entry",
+        "blocked asset identifier and failure reason (license vs budget vs corrupt file)",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "use unlicensed mesh anyway",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "guessed parameters silently"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicitly names missing required input 'blocked_asset_entry' (blocked asset identifier and failure reason (license vs budget vs corrupt file))",
+        "Conservative Runtime: Not Run and Artifact: Not Produced truth states"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Clarification gate (sourcing-assets)",
+          "recommendedNextAction": "Provide the missing blocked asset identifier and failure reason (license vs budget vs corrupt file) (blocked_asset_entry) before sourcing-assets locks ranked_fallback_options.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted sourcing-assets due to missing required input 'blocked_asset_entry' (blocked asset identifier and failure reason (license vs budget vs corrupt file)); no values were fabricated.",
+          "warnings": [
+            "Do not invent blocked asset identifier and failure reason (license vs budget vs corrupt file) when 'blocked_asset_entry' is omitted."
+          ],
+          "evidenceCitations": [
+            "skills/sourcing-assets/SKILL.md",
+            "skills/sourcing-assets/EVAL.md",
+            "skills/sourcing-assets/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "asset-fallback-strategy-out-of-scope-exclusion-delegation",
+      "skillId": "sourcing-assets",
+      "scenario": "Out-of-scope request (when no asset has failed (nothing to fall back to)) is excluded from sourcing-assets and delegated to sourcing-assets",
+      "category": "scope_creep",
+      "inputPrompt": "Instead of provide a fallback strategy when an asset is unavailable, over-budget, license-blocked, or style-incompatible — without halting the recipe., handle this request inside sourcing-assets: when no asset has failed (nothing to fall back to).",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Enforces the declared exclusion boundary in skills/sourcing-assets/contract.json when when no asset has failed (nothing to fall back to)",
+        "Delegates to sourcing-assets (nothing to fall back to) with Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "sourcing-assets",
+        "out of scope",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "use unlicensed mesh anyway",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "handled inside sourcing-assets anyway"
+      ],
+      "expectedRoutingTarget": "sourcing-assets",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Exclusion delegation to sourcing-assets per skills/sourcing-assets/contract.json"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Out-of-scope exclusion gate (sourcing-assets)",
+          "recommendedNextAction": "Request is out of scope for sourcing-assets (when no asset has failed (nothing to fall back to)); delegate to sourcing-assets.",
+          "targetHandoff": "sourcing-assets",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Enforced sourcing-assets exclusion boundary (nothing to fall back to) and delegated to sourcing-assets.",
+          "warnings": [
+            "sourcing-assets is scoped to blocked-asset-replacement-planner and does not absorb sourcing-assets responsibilities."
+          ],
+          "evidenceCitations": [
+            "skills/sourcing-assets/contract.json",
+            "skills/sourcing-assets/SKILL.md",
+            "skills/sourcing-assets/SKILL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "asset-library-plan-normal-in-scope-handoff",
+      "skillId": "sourcing-assets",
+      "scenario": "Normal in-scope execution of sourcing-assets (local-asset-library-taxonomy-planner) with contract handoff to budgeting-glb-for-web",
+      "category": "normal",
+      "inputPrompt": "We have 45 local `.blend` furniture assets, HDRIs, and 4K PBR texture sets scattered across folders. Use sourcing-assets to design a deterministic Blender Asset Browser catalog taxonomy and naming convention.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Primary inputs (raw_asset_inventory) provided in text-only planning/audit mode."
+      },
+      "expectedBehavior": [
+        "Produces directory_taxonomy_plan, datablock_naming_rules, quarantine_and_license_sidecar_policy for role local-asset-library-taxonomy-planner",
+        "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
+        "Evaluates contract handoff predicate and hands off to budgeting-glb-for-web (File size and asset/polygon count pressure)"
+      ],
+      "requiredOutputProperties": [
+        "catalog taxonomy",
+        "relative path",
+        "naming convention",
+        "budgeting-glb-for-web",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "files moved on disk automatically",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "budgeting-glb-for-web",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Outputs directory_taxonomy_plan, datablock_naming_rules, quarantine_and_license_sidecar_policy conforming to skills/sourcing-assets/SKILL.md",
+        "Matches contract handoff predicate to budgeting-glb-for-web in skills/sourcing-assets/contract.json"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "artifact.type": "glb",
+          "budget.pinned": false
+        },
+        "simulatedOutput": {
+          "mode": "Text-only local-asset-library-taxonomy-planner (sourcing-assets)",
+          "recommendedNextAction": "Complete directory_taxonomy_plan and hand off to budgeting-glb-for-web (File size and asset/polygon count pressure).",
+          "targetHandoff": "budgeting-glb-for-web",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Defined hierarchical Blender Asset Browser catalog taxonomy, relative-path rules, and semantic naming conventions for 45 local assets. Delivered catalog taxonomy, relative path, naming convention and routed to budgeting-glb-for-web.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/sourcing-assets/SKILL.md",
+            "skills/sourcing-assets/EVAL.md",
+            "skills/sourcing-assets/contract.json",
+            "skills/sourcing-assets/references/folder-structure-rules.md",
+            "skills/sourcing-assets/references/metadata-schema.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "asset-library-plan-secondary-contract-handoff",
+      "skillId": "sourcing-assets",
+      "scenario": "Secondary fallback contract handoff from sourcing-assets to sourcing-assets",
+      "category": "blocked_or_adversarial",
+      "inputPrompt": "While applying sourcing-assets, the workflow context is {\"assets.fallbackNeeded\":true} (Consuming this library as fastest fallback source). Determine the contract-governed handoff target.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates the fallback handoff predicate in skills/sourcing-assets/contract.json",
+        "Routes to sourcing-assets (Consuming this library as fastest fallback source) without claiming runtime execution"
+      ],
+      "requiredOutputProperties": [
+        "sourcing-assets",
+        "fallback",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "files moved on disk automatically",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "sourcing-assets",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Contract fallback handoff predicate match to sourcing-assets"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "assets.fallbackNeeded": true
+        },
+        "simulatedOutput": {
+          "mode": "Text-only sourcing-assets (fallback handoff)",
+          "recommendedNextAction": "Follow fallback handoff to sourcing-assets (Consuming this library as fastest fallback source).",
+          "targetHandoff": "sourcing-assets",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Triggered fallback handoff from sourcing-assets to sourcing-assets under context {\"assets.fallbackNeeded\":true}.",
+          "warnings": [
+            "Contract-governed fallback handoff."
+          ],
+          "evidenceCitations": [
+            "skills/sourcing-assets/contract.json",
+            "skills/sourcing-assets/SKILL.md",
+            "skills/sourcing-assets/references/folder-structure-rules.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "asset-library-plan-unmatched-handoff-and-evidence-boundary",
+      "skillId": "sourcing-assets",
+      "scenario": "Unmatched contract handoff context returns none and blocks upgrading unvalidated file to Verified in sourcing-assets",
+      "category": "evidence_boundary",
+      "inputPrompt": "An operator provides an unvalidated file on disk during sourcing-assets with context {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and asks to mark Artifact: Verified and auto-advance.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "file-only-unvalidated",
+        "notes": "A file exists on disk but validation checks have not been recorded."
+      },
+      "expectedBehavior": [
+        "Refuses to upgrade Artifact status to Verified when existingArtifactEvidence is file-only-unvalidated (caps at Produced)",
+        "Evaluates contract handoffs for sourcing-assets and returns targetHandoff none because no handoff predicate matches"
+      ],
+      "requiredOutputProperties": [
+        "Artifact: Produced",
+        "Runtime: Not Run",
+        "validation",
+        "none"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "validation not needed"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Downgrade unvalidated Verified claim to Produced per laws/evidence-before-done.md",
+        "Verify 0 handoffs match in skills/sourcing-assets/contract.json for {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true}"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Artifact-claim boundary check (sourcing-assets)",
+          "recommendedNextAction": "Keep Artifact status at Produced (never Verified without validation evidence) and hold at targetHandoff none until a downstream precondition is met.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Produced",
+          "summary": "Capped unvalidated artifact claim at Artifact: Produced and verified zero matching contract handoffs (none) for sourcing-assets.",
+          "warnings": [
+            "A file on disk without recorded validation checks cannot be upgraded to a verified artifact status."
+          ],
+          "evidenceCitations": [
+            "laws/evidence-before-done.md",
+            "skills/sourcing-assets/contract.json",
+            "skills/sourcing-assets/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "asset-library-plan-ambiguous-missing-required-inputs",
+      "skillId": "sourcing-assets",
+      "scenario": "Missing required input (raw_asset_inventory) for sourcing-assets halts fabricated output and requests clarification",
+      "category": "ambiguous",
+      "inputPrompt": "Organize our team Blender asset library and give me the catalog tree, without knowing what asset types we store or whether we use linked `.blend` files or GLB exports.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Required input 'raw_asset_inventory' is missing or underspecified."
+      },
+      "expectedBehavior": [
+        "Identifies missing asset inventory categories and linking/packing workflow mode required by sourcing-assets (raw_asset_inventory)",
+        "Refuses to fabricate domain parameters and keeps Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "raw_asset_inventory",
+        "asset inventory categories and linking/packing workflow mode",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "files moved on disk automatically",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "guessed parameters silently"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicitly names missing required input 'raw_asset_inventory' (asset inventory categories and linking/packing workflow mode)",
+        "Conservative Runtime: Not Run and Artifact: Not Produced truth states"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Clarification gate (sourcing-assets)",
+          "recommendedNextAction": "Provide the missing asset inventory categories and linking/packing workflow mode (raw_asset_inventory) before sourcing-assets locks directory_taxonomy_plan.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted sourcing-assets due to missing required input 'raw_asset_inventory' (asset inventory categories and linking/packing workflow mode); no values were fabricated.",
+          "warnings": [
+            "Do not invent asset inventory categories and linking/packing workflow mode when 'raw_asset_inventory' is omitted."
+          ],
+          "evidenceCitations": [
+            "skills/sourcing-assets/SKILL.md",
+            "skills/sourcing-assets/EVAL.md",
+            "skills/sourcing-assets/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "asset-library-plan-out-of-scope-exclusion-delegation",
+      "skillId": "sourcing-assets",
+      "scenario": "Out-of-scope request (single-recipe repo with < 5 assets) is excluded from sourcing-assets and delegated to sourcing-assets",
+      "category": "scope_creep",
+      "inputPrompt": "Instead of plan an internal asset library structure (folders, naming, metadata, license tracking, version control) so future recipes find and reuse assets reliably., handle this request inside sourcing-assets: single-recipe repo with < 5 assets.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Enforces the declared exclusion boundary in skills/sourcing-assets/contract.json when single-recipe repo with < 5 assets",
+        "Delegates to sourcing-assets (Delegates out-of-scope requests to sourcing-assets) with Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "sourcing-assets",
+        "out of scope",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "files moved on disk automatically",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "handled inside sourcing-assets anyway"
+      ],
+      "expectedRoutingTarget": "sourcing-assets",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Exclusion delegation to sourcing-assets per skills/sourcing-assets/contract.json"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Out-of-scope exclusion gate (sourcing-assets)",
+          "recommendedNextAction": "Request is out of scope for sourcing-assets (single-recipe repo with < 5 assets); delegate to sourcing-assets.",
+          "targetHandoff": "sourcing-assets",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Enforced sourcing-assets exclusion boundary (Delegates out-of-scope requests to sourcing-assets) and delegated to sourcing-assets.",
+          "warnings": [
+            "sourcing-assets is scoped to local-asset-library-taxonomy-planner and does not absorb sourcing-assets responsibilities."
+          ],
+          "evidenceCitations": [
+            "skills/sourcing-assets/contract.json",
+            "skills/sourcing-assets/SKILL.md",
+            "skills/sourcing-assets/SKILL.md"
+          ]
+        }
+      }
+    }
+  ]
+}
