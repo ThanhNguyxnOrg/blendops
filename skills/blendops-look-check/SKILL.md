@@ -66,7 +66,7 @@ Check scripts run inside the runtime only. They are never handed to the user as 
 
 ## Decision tree
 
-- Context flags: look issues go in `quality.verdict` (`fail` or `warn`), not in `runtime.errorDetected`. Set `runtime.errorDetected` only when a check script, capture or tool call fails, or the same issue comes back after its fix. Set `gate.status` to `pending` at the start of every round; after round three with a `fail` left, set it to `blocked`, stop, and ask the user.
+- Context flags: look issues go in `quality.verdict` (`fail` or `warn`), not in `runtime.errorDetected`. Set `runtime.errorDetected` only when a check script, capture or tool call fails, the same issue comes back after its fix, or a fix breaks a check that passed before. Set `gate.status` to `pending` at the start of every round; after round three with a `fail` left, set it to `blocked`, stop, and ask the user.
 
 - Always start with the [numeric checks](references/numeric-checks.md); a failed number beats a picture that looks fine.
 - Numbers pass → [capture views](references/capture-views.md), then [visual review](references/visual-review.md).

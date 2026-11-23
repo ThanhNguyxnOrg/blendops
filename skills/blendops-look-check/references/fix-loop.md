@@ -10,7 +10,7 @@ One round = numeric checks → capture views → visual review → one fix. Set 
 Stop when:
 
 - No `fail` is left: verdict `pass` (or `warn` with the polish items listed). Hand the preview to `blendops-final-check`.
-- The same issue comes back after its fix, or a fix breaks something that passed: hand off to `blendops-fix-problems`.
+- The same issue comes back after its fix, or a fix breaks something that passed: set `runtime.errorDetected` and hand off to `blendops-fix-problems`.
 - Three rounds have run and a `fail` is left: set `gate.status` to `blocked`, stop, show the user the latest pictures and the issue list, and ask how to go on.
 - A tool call or script fails: set `runtime.errorDetected` and hand off to `blendops-fix-problems`. A look issue alone never sets `runtime.errorDetected`; it goes in `quality.verdict`.
 
