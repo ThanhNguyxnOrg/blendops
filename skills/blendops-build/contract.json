@@ -80,13 +80,18 @@
     {
       "target": "blendops-final-check",
       "type": "progression",
-      "label": "Built output exists; check it against the done criteria",
+      "label": "Preview output exists; check it against the done criteria",
       "when": {
         "all": [
           {
             "field": "runtime.status",
             "operator": "equals",
             "value": "Produced"
+          },
+          {
+            "field": "artifact.type",
+            "operator": "equals",
+            "value": "preview"
           }
         ]
       }

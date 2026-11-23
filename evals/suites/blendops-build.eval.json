@@ -85,7 +85,7 @@
       "skillId": "blendops-build",
       "scenario": "Build steps produced a preview file; blendops-build hands off to blendops-final-check",
       "category": "structured_skip",
-      "inputPrompt": "While applying blendops-build, the workflow context is {\"runtime.status\":\"Produced\"} (Built output exists; check it against the done criteria). Determine the contract-governed handoff target.",
+      "inputPrompt": "While applying blendops-build, the workflow context is {\"runtime.status\":\"Produced\",\"artifact.type\":\"preview\"} (Preview output exists; check it against the done criteria). Determine the contract-governed handoff target.",
       "preconditions": {
         "mode": "text-only",
         "runtimeAvailable": false,
@@ -117,7 +117,8 @@
       ],
       "deterministicFixture": {
         "handoffContext": {
-          "runtime.status": "Produced"
+          "runtime.status": "Produced",
+          "artifact.type": "preview"
         },
         "simulatedOutput": {
           "mode": "Contract handoff evaluation (blendops-build)",
@@ -125,7 +126,7 @@
           "targetHandoff": "blendops-final-check",
           "runtimeStatus": "Not Run",
           "artifactStatus": "Not Produced",
-          "summary": "Matched progression predicate runtime.status=Produced and routed to blendops-final-check.",
+          "summary": "Matched progression predicate runtime.status=Produced and artifact.type=preview and routed to blendops-final-check.",
           "warnings": [
             "Text-only workflow output; no live Blender session or artifact was executed."
           ],
