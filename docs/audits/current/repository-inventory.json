@@ -123,7 +123,7 @@
         "rationale": "Root MIT LICENSE is mirrored in bundles/skill-package/blendops/LICENSE.txt so the standalone skill upload package remains self-contained."
       },
       {
-        "sha256": "1fb0912af4f3243d5953e402a15cb570d28aed69f107aa25137a10cd588bc0c7",
+        "sha256": "3e08645f3bb9ac93b2c9f8c5f84a3f70df0423e7ceaccb87aad115ceb0778560",
         "paths": [
           "skills/blendops-build/references/scene-state.md",
           "skills/blendops-look-check/references/scene-state.md"
@@ -1877,7 +1877,7 @@
       "generatorScript": "scripts/build-knowledge-catalog.mjs",
       "safeToMoveOrRemove": false,
       "byteSize": 314426,
-      "sha256": "943c9abc00c3bc9c9de409cd8df861980a47f3d687c422d996fdbac90747dde6"
+      "sha256": "f1323fdc44d68a9340c4c9a6521b81df05e0591d076e95d4ab9631e83ac5b63f"
     },
     {
       "path": "docs/audits/skill-architecture-audit.md",
@@ -1966,8 +1966,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 6879,
-      "sha256": "5b40b07adef2953771046678a9b54222ae8db2f649a883251f16c74525cc401c"
+      "byteSize": 6884,
+      "sha256": "aaaf008e5585aeb08e9df36fd304527aa3a9a6a6669166b667d7fec56c55a61f"
     },
     {
       "path": "docs/evals/adapter-empirical-verification.md",
@@ -2056,8 +2056,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 4938,
-      "sha256": "fd082382c93489909b07aff387569866d9f2a2573ff69116c4eb982521580a9c"
+      "byteSize": 8701,
+      "sha256": "6a6b5eabe807e23469383bb8e506944b5a47c9ee959673b3aa8155cfb3b57d28"
     },
     {
       "path": "docs/evals/cyberpunk-shoe-hero-v0-manual-eval.md",
@@ -5746,8 +5746,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 11079,
-      "sha256": "1fb0912af4f3243d5953e402a15cb570d28aed69f107aa25137a10cd588bc0c7"
+      "byteSize": 13814,
+      "sha256": "3e08645f3bb9ac93b2c9f8c5f84a3f70df0423e7ceaccb87aad115ceb0778560"
     },
     {
       "path": "skills/blendops-camera/EVAL.md",
@@ -6991,8 +6991,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 10968,
-      "sha256": "597298550cf744b0b089a83176258e440846fa88da497d4b83c7fb7003c679d0"
+      "byteSize": 11210,
+      "sha256": "0c61e681729c54e320307d65ffc28d98ec78e1d91a683248e0cb4923d4dd8dbc"
     },
     {
       "path": "skills/blendops-final-check/references/seven-point-checklist.md",
@@ -8026,8 +8026,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 11079,
-      "sha256": "1fb0912af4f3243d5953e402a15cb570d28aed69f107aa25137a10cd588bc0c7"
+      "byteSize": 13814,
+      "sha256": "3e08645f3bb9ac93b2c9f8c5f84a3f70df0423e7ceaccb87aad115ceb0778560"
     },
     {
       "path": "skills/blendops-look-check/references/visual-review.md",
