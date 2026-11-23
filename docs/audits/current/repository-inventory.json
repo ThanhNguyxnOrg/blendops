@@ -4591,8 +4591,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 8226,
-      "sha256": "8ea968e0789030de7b8a607b1f449225238eab7b3c30a08ccac7f2afd57c7f00"
+      "byteSize": 8295,
+      "sha256": "69d37c3adad95d48b312461e6ad7a0b66b80712b7fbf46b30dbe5a3a6e54cb69"
     },
     {
       "path": "scripts/runtime-orchestrator.mjs",
@@ -4936,8 +4936,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 3732,
-      "sha256": "db1a677584147defda50b165c8dcd58b8e12735dc86394bf60e0e46728f2714b"
+      "byteSize": 3857,
+      "sha256": "09951d905c7994b4f003e34cb90de980a334bcb2dfed3d8209f1c91b14c143c1"
     },
     {
       "path": "scripts/test-skill-templates.mjs",
