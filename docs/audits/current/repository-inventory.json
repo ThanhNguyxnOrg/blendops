@@ -123,7 +123,7 @@
         "rationale": "Root MIT LICENSE is mirrored in bundles/skill-package/blendops/LICENSE.txt so the standalone skill upload package remains self-contained."
       },
       {
-        "sha256": "3e08645f3bb9ac93b2c9f8c5f84a3f70df0423e7ceaccb87aad115ceb0778560",
+        "sha256": "48bcd5f4498982bb063ea836d3b95d81ee1feec655e0fef41ce37b7ac0e41155",
         "paths": [
           "skills/blendops-build/references/scene-state.md",
           "skills/blendops-look-check/references/scene-state.md"
@@ -1877,7 +1877,7 @@
       "generatorScript": "scripts/build-knowledge-catalog.mjs",
       "safeToMoveOrRemove": false,
       "byteSize": 314426,
-      "sha256": "f1323fdc44d68a9340c4c9a6521b81df05e0591d076e95d4ab9631e83ac5b63f"
+      "sha256": "1a8ad4d78fd3de03d04b8f651be6142a0569cf128cdad0bb38bed6729f45db7d"
     },
     {
       "path": "docs/audits/skill-architecture-audit.md",
@@ -2056,8 +2056,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 8701,
-      "sha256": "6a6b5eabe807e23469383bb8e506944b5a47c9ee959673b3aa8155cfb3b57d28"
+      "byteSize": 13626,
+      "sha256": "91e0da1d66cab98ee871313d418fffeebb580f410eae7c53df79245826a058f1"
     },
     {
       "path": "docs/evals/cyberpunk-shoe-hero-v0-manual-eval.md",
@@ -5746,8 +5746,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 13814,
-      "sha256": "3e08645f3bb9ac93b2c9f8c5f84a3f70df0423e7ceaccb87aad115ceb0778560"
+      "byteSize": 15296,
+      "sha256": "48bcd5f4498982bb063ea836d3b95d81ee1feec655e0fef41ce37b7ac0e41155"
     },
     {
       "path": "skills/blendops-camera/EVAL.md",
@@ -8026,8 +8026,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 13814,
-      "sha256": "3e08645f3bb9ac93b2c9f8c5f84a3f70df0423e7ceaccb87aad115ceb0778560"
+      "byteSize": 15296,
+      "sha256": "48bcd5f4498982bb063ea836d3b95d81ee1feec655e0fef41ce37b7ac0e41155"
     },
     {
       "path": "skills/blendops-look-check/references/visual-review.md",
