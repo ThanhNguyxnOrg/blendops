@@ -2656,7 +2656,7 @@
         {
           "path": "skills/blendops-look-check/references/numeric-checks.md",
           "title": "Numeric checks",
-          "line_count": 99,
+          "line_count": 104,
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "rule_classified_skill_local",
@@ -5188,7 +5188,7 @@
     {
       "path": "skills/blendops-look-check/references/numeric-checks.md",
       "title": "Numeric checks",
-      "line_count": 99,
+      "line_count": 104,
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "rule_classified_skill_local",

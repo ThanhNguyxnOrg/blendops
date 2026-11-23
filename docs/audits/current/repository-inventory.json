@@ -1867,8 +1867,8 @@
       "isGenerated": true,
       "generatorScript": "scripts/build-knowledge-catalog.mjs",
       "safeToMoveOrRemove": false,
-      "byteSize": 312184,
-      "sha256": "8588a187cc9cbb3554377bc8d8c977f7220b9aa3bad4ecdc1e2e4d514f6f6d91"
+      "byteSize": 312186,
+      "sha256": "2ee13ee063091d96d283d53ece5157f7bc07a63e19d8a2d9f3c4f34469ec4c92"
     },
     {
       "path": "docs/audits/skill-architecture-audit.md",
@@ -7912,8 +7912,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 9031,
-      "sha256": "8829c20de3345d11efa7a8f0c2e5de69e711ac2338f057320ccc5ace5d669f26"
+      "byteSize": 9121,
+      "sha256": "d9c4a1d4180d196658c06cec4fbd6438fe98c6806e5b5ab0a50e482845f133cb"
     },
     {
       "path": "skills/blendops-look-check/contract.json",
@@ -7957,8 +7957,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 1751,
-      "sha256": "11ddfc46fcf1b2ca5a62ef2c55ea8613bff83bc5239b913f20a79dd2083ccd8d"
+      "byteSize": 1835,
+      "sha256": "5a416e8e4032d8871042acfeccf8728124cb9aae4d87684d1ef01cf73b9171d9"
     },
     {
       "path": "skills/blendops-look-check/references/numeric-checks.md",
@@ -7972,8 +7972,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 5067,
-      "sha256": "78a9152361cbfb90574829024958c2167f0418cf0f60dd6c1014897adf655f0f"
+      "byteSize": 5321,
+      "sha256": "9736db5d2246779e961b488785385940c968b35768c757315321e5fcabf31493"
     },
     {
       "path": "skills/blendops-look-check/references/visual-review.md",
