@@ -1,0 +1,106 @@
+name: Blender
+
+# Runs the bpy examples in the build and look-check skill references, and the shared
+# scene-state check, inside real headless Blender builds from download.blender.org.
+on:
+  pull_request:
+    paths:
+      - "skills/blendops-build/**"
+      - "skills/blendops-look-check/**"
+      - "skills/blendops-final-check/**"
+      - "evals/blender-checks/**"
+      - "scripts/test-blender-references.mjs"
+      - "scripts/inspect-glb.mjs"
+      - ".github/workflows/blender.yml"
+  push:
+    branches: [main]
+    paths:
+      - "skills/blendops-build/**"
+      - "skills/blendops-look-check/**"
+      - "skills/blendops-final-check/**"
+      - "evals/blender-checks/**"
+      - "scripts/test-blender-references.mjs"
+      - "scripts/inspect-glb.mjs"
+      - ".github/workflows/blender.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: blender-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  references:
+    name: Blender ${{ matrix.version }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - version: "4.2.23"
+            series: "4.2"
+            sha256: bea0eb3146be13eae6225409a117b215184f41b7f79e799f97cb3abb8f6dc404
+          - version: "5.1.2"
+            series: "5.1"
+            sha256: aaccb355f50183979b698bcce7467103a76261b5fa59f4972295842662a285fb
+    env:
+      BLENDER_VERSION: ${{ matrix.version }}
+      BLENDER_SERIES: ${{ matrix.series }}
+      BLENDER_SHA256: ${{ matrix.sha256 }}
+      BLENDER_CHECK_OUT: ${{ github.workspace }}/blender-check-out
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: "20"
+
+      - name: Cache Blender archive
+        uses: actions/cache@v6
+        with:
+          path: ~/blender-archive
+          key: blender-${{ matrix.version }}-${{ matrix.sha256 }}
+
+      - name: Install Blender system libraries
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            libegl1 libgl1 libglu1-mesa libsm6 libx11-6 libxext6 libxfixes3 libxi6 \
+            libxkbcommon0 libxrender1 libxxf86vm1
+
+      - name: Download and verify Blender
+        run: |
+          archive="blender-${BLENDER_VERSION}-linux-x64.tar.xz"
+          mkdir -p ~/blender-archive
+          if [ ! -f ~/blender-archive/"$archive" ]; then
+            curl -fsSL --retry 3 -o ~/blender-archive/"$archive" \
+              "https://download.blender.org/release/Blender${BLENDER_SERIES}/${archive}"
+          fi
+          echo "${BLENDER_SHA256}  ${HOME}/blender-archive/${archive}" | sha256sum -c -
+          mkdir -p ~/blender
+          tar -xJf ~/blender-archive/"$archive" -C ~/blender
+          echo "BLENDER=${HOME}/blender/blender-${BLENDER_VERSION}-linux-x64/blender" >> "$GITHUB_ENV"
+
+      - name: Blender version
+        run: |
+          "$BLENDER" --background --factory-startup --version | tee blender-version.txt
+          grep -q "Blender ${BLENDER_VERSION}" blender-version.txt
+
+      - name: Run reference examples and scene-state checks
+        run: npm run test:blender
+
+      - name: Upload check output
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: blender-${{ matrix.version }}-check-output
+          path: blender-check-out/
+          if-no-files-found: ignore
+          retention-days: 14
