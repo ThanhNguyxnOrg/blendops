@@ -6,9 +6,16 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 export const DEFAULT_REPO_ROOT = path.resolve(__dirname, '..', '..');
 
-export const INSTALLER_VERSION = JSON.parse(
-  fs.readFileSync(path.join(DEFAULT_REPO_ROOT, 'package.json'), 'utf8'),
-).version;
+function readPackageVersion() {
+  try {
+    const { version } = JSON.parse(fs.readFileSync(path.join(DEFAULT_REPO_ROOT, 'package.json'), 'utf8'));
+    return typeof version === 'string' ? version : 'unknown';
+  } catch {
+    return 'unknown';
+  }
+}
+
+export const INSTALLER_VERSION = readPackageVersion();
 export const MANAGED_SECTION_START = '<!-- blendops:installer:start -->';
 export const MANAGED_SECTION_END = '<!-- blendops:installer:end -->';
 
