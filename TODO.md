@@ -5,7 +5,7 @@ _Last updated for **v1.0.0** (48 canonical skills, 151 reference guides, 26 inst
 > [!NOTE]
 > BlendOps publishes one thing: a **skills layer** (**48 skills** + **151 reference guides** + 4 laws + 1 pack + 3 bundles + **26 install target docs** / **35+ CLI targets** via `--with-skills-dir` + deterministic catalog & CLI + ZIP/package generation + automated CI guards). The layer is **complete and production-ready at `v1.0.0`**.
 >
-> Everything related to actually running Blender — the Blender executable, the MCP servers, the MCP hosts, the CLI — is **upstream**, owned by Blender Foundation / Anthropic / the `ahujasid` community. BlendOps **redirects** users to the right upstream docs per install target. Path 1 + Path 2 are **user-reported verified by the repo owner**; CLI is **documented upstream as a first-class Blender CLI surface**, with one scoped [CLI eval record](docs/evals/cli-fallback-recipe-2026-11-21.md).
+> Everything related to actually running Blender — the Blender executable, the MCP servers, the MCP hosts, the CLI — is **upstream**, owned by Blender Foundation / Anthropic / the `ahujasid` community. BlendOps **redirects** users to the right upstream docs per install target. Path 1 + Path 2 are **user-reported verified by the repo owner**; CLI is **documented upstream as a first-class Blender CLI surface**, with one scoped [CLI eval record](docs/evals/cli-fallback-mech-prop.md).
 >
 > Optional operator-side runtime evidence records under `docs/evals/` are useful for provenance, and are **not** BlendOps publishing blockers.
 
@@ -31,7 +31,7 @@ _Last updated for **v1.0.0** (48 canonical skills, 151 reference guides, 26 inst
 | Path 1 host (a) — **Anthropic Blender Connector** | Anthropic ([claude.com tutorial](https://claude.com/resources/tutorials/using-the-blender-connector-in-claude)) | ✅ Documented upstream | Redirect from `docs/install/claude-desktop.md`. |
 | Path 1 host (b) — **Manual MCP client config** (Cursor, Claude Code, Codex, OpenCode, Cline, …) | Each MCP client | ✅ Documented upstream per client | Redirect from per-target install doc. |
 | **Path 2 — Community `mcp-for-blender` (formerly `blender-mcp`)** (Blender 3.0+) | `ahujasid` community ([github.com/ahujasid/mcp-for-blender](https://github.com/ahujasid/mcp-for-blender)) | ✅ User-reported verified by repo owner — operator statement, does not promote eval scope (2026-05-08, reconfirmed 2026-05-09) | Redirect via `docs/unofficial-runtime-bridges.md` + install docs. |
-| **CLI fallback** (`blender --background --python ...`) | Blender Foundation ([CLI manual](https://docs.blender.org/manual/en/latest/advanced/command_line/index.html)) | One mech-prop GLB structurally Verified; [evidence and limitations](docs/evals/cli-fallback-recipe-2026-11-21.md) | Upstream executable driven by a disposable eval script, not a new BlendOps runtime. |
+| **CLI fallback** (`blender --background --python ...`) | Blender Foundation ([CLI manual](https://docs.blender.org/manual/en/latest/advanced/command_line/index.html)) | One mech-prop GLB structurally Verified; [evidence and limitations](docs/evals/cli-fallback-mech-prop.md) | Upstream executable driven by a disposable eval script, not a new BlendOps runtime. |
 
 ### Optional operator-side provenance (not blockers)
 
@@ -80,7 +80,7 @@ These are useful for any operator who wants a **captured in-repo eval record** u
 
 - [ ] Capture Path 1 in-repo evidence file (`docs/evals/path-1-recipe-cyberpunk-shoe-YYYY-MM-DD.md`) — run a recipe via Path 1 (host a Anthropic Connector OR host b manual MCP). Record `blender --version`, Lab MCP add-on version, MCP server source/commit, MCP host product+build, exact tool names + responses, artifacts.
 - [ ] Capture Path 2 in-repo evidence file (`docs/evals/path-2-mcp-for-blender-readonly-YYYY-MM-DD.md`) — run a recipe via `mcp-for-blender` (formerly `blender-mcp`). Template at `docs/evals/path-2-mcp-for-blender-readonly-template.md`.
-- [x] Capture [CLI fallback mech-prop evidence](docs/evals/cli-fallback-recipe-2026-11-21.md) — upstream `blender --background --python`, checkpoint, injected-failure rollback, real GLB inspection. This does not certify every SceneSpec quality gate or other runtime paths.
+- [x] Capture [CLI fallback mech-prop evidence](docs/evals/cli-fallback-mech-prop.md) — upstream `blender --background --python`, checkpoint, injected-failure rollback, real GLB inspection. This does not certify every SceneSpec quality gate or other runtime paths.
 
 ## 🔵 Post-v1.0.0 Future Work (deliberately deferred)
 

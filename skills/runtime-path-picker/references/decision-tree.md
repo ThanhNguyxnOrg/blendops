@@ -4,7 +4,7 @@
 Need interactive, multi-step scene inspection or steering inside a live Blender session?
   ├─ NO (headless batch renders, deterministic CI export, scripted hygiene passes)
   │    └─ Use CLI appendix (`cli-appendix-job-outline`) — documented upstream as a
-  │       first-class Blender CLI surface (no in-repo eval evidence file yet).
+  │       first-class Blender CLI surface.
   └─ YES (interactive MCP host session)
        ├─ Are TWO or more MCP bridges/add-ons enabled on port 9876 or the same instance?
        │    └─ STOP immediately → route to `bridge-conflicts` (single-bridge law).
@@ -19,6 +19,8 @@ Need interactive, multi-step scene inspection or steering inside a live Blender 
             └─ WARN branch: emit conditional Path 1 (5.1+) vs Path 2 (3.0+) table;
                request verbatim `blender --version` output before proceeding.
 ```
+
+The [scoped mech-prop CLI eval](https://github.com/ThanhNguyxnOrg/blendops/blob/main/docs/evals/cli-fallback-mech-prop.md) is an example, not evidence for the current job.
 
 ## Non-Negotiable Rules
 - Anthropic Connector is a **Path 1 host option**, never a standalone runtime — the Blender Lab MCP add-on must be installed and enabled inside Blender 5.1+ first.

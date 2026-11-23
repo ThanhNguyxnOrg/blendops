@@ -93,11 +93,13 @@ This smoke test only upgrades the Path 1 read-only access signal:
 Path 1 read-only Lab MCP access (likely via Anthropic Connector host): Pass / Available
 Path 1 mutation/render/export eval: Not Run
 Path 2 (community mcp-for-blender): User-reported verified separately; no formal eval file
-CLI fallback: Not Run; documented upstream as first-class Blender CLI; no in-repo evidence file yet
+CLI fallback: Not Run in this smoke test
 Full official runtime manual eval: Not Run
 Runtime artifacts: Not Produced
 Full runtime verification: Not Run (read-only smoke only)
 ```
+
+For CLI evidence from a separate run, see the [scoped mech-prop CLI eval](./cli-fallback-mech-prop.md).
 
 ---
 

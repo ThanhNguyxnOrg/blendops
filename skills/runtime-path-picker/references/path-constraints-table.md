@@ -7,7 +7,7 @@
 | **Blender-side prerequisite** | Blender Lab MCP add-on installed & enabled inside Blender | Community `addon.py` installed & enabled inside Blender | None (no MCP server or add-on required) |
 | **Interactive iteration** | High (live tool inspection & staged updates) | High (community tool schemas vary by version) | Low (stateless batch execution per invocation) |
 | **Deterministic batch / CI** | Heavyweight (requires open GUI + add-on socket) | Heavyweight & community-coupled | Ideal (headless reproducible job outline) |
-| **Release gate policy** | Preferred official path when Blender 5.1+ available | **Never** ship as primary release recommendation; explicit caveat required | First-class upstream CLI surface (no in-repo evidence file yet) |
+| **Release gate policy** | Preferred official path when Blender 5.1+ available | **Never** ship as primary release recommendation; explicit caveat required | Upstream-documented appendix; [scoped mech-prop CLI eval](https://github.com/ThanhNguyxnOrg/blendops/blob/main/docs/evals/cli-fallback-mech-prop.md) is not MCP release evidence |
 | **Single-bridge invariant** | Strictly **1 active MCP bridge** per Blender instance | Strictly **1 active MCP bridge** per Blender instance (watch port `9876` collisions) | Not applicable |
 
 ## Caveats & Links

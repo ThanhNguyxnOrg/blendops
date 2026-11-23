@@ -20,9 +20,9 @@ BlendOps recognizes **two MCP execution paths** plus a **CLI fallback appendix**
    - Verification: user-reported verified 2026-05-08; no formal evidence file with Path 2 tool names yet.
    - Caveats: [Unofficial runtime bridges](./unofficial-runtime-bridges.md).
 
-3. **CLI fallback (appendix)** — direct `blender --background --python`, no MCP. Documented upstream as a first-class Blender CLI surface (render/Cycles/format/Python sections read in the current Blender 5.2 LTS Manual); no in-repo evidence file yet.
+3. **CLI fallback (appendix)** — direct `blender --background --python`, no MCP. Documented upstream as a first-class Blender CLI surface (render/Cycles/format/Python sections read in the current Blender 5.2 LTS Manual); see the [scoped mech-prop CLI eval](./evals/cli-fallback-mech-prop.md).
    - Source: https://docs.blender.org/manual/en/latest/advanced/command_line/index.html.
-   - Verification: `Not Run`.
+   - Verification: One mech-prop run in Blender 4.2.0 passed structural GLB checks; visual quality and other recipes were not verified. New runs start at `Not Run`.
 
 ## Important interface boundary
 

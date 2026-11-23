@@ -443,9 +443,8 @@ const requiredUnofficialBridgeDisclaimers = [
 // MCP). Path 1 = Lab MCP add-on/server in Blender 5.1+, hosted from either the
 // Anthropic Connector (host a) or a manual MCP client (host b) — the Connector
 // is NOT standalone. Path 2 = community mcp-for-blender. CLI fallback is
-// an appendix documented upstream as a first-class Blender CLI surface —
-// BlendOps simply does not have an in-repo eval record
-// file yet, but the path itself is upstream-documented, not "experimental". Path 1 + Path 2
+// an appendix documented upstream as a first-class Blender CLI surface, with
+// a scoped mech-prop eval record that does not verify either MCP path. Path 1 + Path 2
 // are user-reported verified by the repo owner with no formal in-repo evidence
 // file yet. See docs/runtime-stack-strategy.md for the canonical write-up.
 const requiredRuntimeStackSnippets = [
@@ -457,10 +456,14 @@ const requiredRuntimeStackSnippets = [
   'mcp-for-blender',
   'CLI fallback',
   'first-class',
-  'No in-repo evidence file yet',
+  '](./evals/cli-fallback-mech-prop.md)',
 ];
 
 const requiredArtifactEvidenceSnippets = [
+  {
+    file: 'docs/start-here.md',
+    snippets: ['](./evals/cli-fallback-mech-prop.md)'],
+  },
   {
     file: 'laws/evidence-before-done.md',
     snippets: [

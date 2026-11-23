@@ -113,10 +113,12 @@ This smoke test only upgrades Path 2 read-only access. Set the verdict and confi
 Path 2 (mcp-for-blender) read-only access: Pass / Available    ← change if the test failed
 Path 2 mutation / render / export eval: Not Run                     ← keep this verbatim
 Path 1 (Lab MCP): unchanged by this record (still smoke-only)       ← keep verbatim
-CLI fallback: unchanged by this record (documented upstream; no in-repo evidence file yet)     ← keep verbatim
+CLI fallback: unchanged by this record     ← keep verbatim
 Full official runtime manual eval: Not Run
 Runtime artifacts: Not Produced
 ```
+
+For CLI evidence from a separate run, see the [scoped mech-prop CLI eval](./cli-fallback-mech-prop.md).
 
 ---
 

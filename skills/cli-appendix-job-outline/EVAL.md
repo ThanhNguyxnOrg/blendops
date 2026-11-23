@@ -6,7 +6,7 @@ CI must nightly export GLBs from `.blend` files on Linux agents without MCP. Out
 
 ## Expected behavior
 
-- CLI appendix framing + first-class upstream mention + no in-repo BlendOps evidence claim
+- CLI appendix framing + first-class upstream mention + link to the [scoped mech-prop CLI eval](https://github.com/ThanhNguyxnOrg/blendops/blob/main/docs/evals/cli-fallback-mech-prop.md) without implying verification of the current run
 - Phases: background startup, load file, export, verify output path logging
 - Stateless limits noted
 - Hand off to render-export-evidence for ledger expectations

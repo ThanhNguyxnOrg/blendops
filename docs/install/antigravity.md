@@ -71,7 +71,7 @@ Skill install != runtime setup.
 For Blender runtime via Antigravity as MCP host:
 - **Path 1 (Lab MCP)** — Blender 5.1+ + Lab add-on + Lab server. Anthropic Connector is Claude Desktop only.
 - **Path 2 (community `mcp-for-blender` (formerly `blender-mcp`))** — Blender 3.0+ + `addon.py` + `uvx mcp-for-blender`.
-- **CLI fallback (appendix)** — Documented upstream as a first-class Blender CLI surface; no in-repo evidence file yet.
+- **CLI fallback (appendix)** — Documented upstream as a first-class Blender CLI surface; see the [scoped mech-prop CLI eval](../evals/cli-fallback-mech-prop.md).
 
 See [`docs/runtime-stack-strategy.md`](../runtime-stack-strategy.md).
 
