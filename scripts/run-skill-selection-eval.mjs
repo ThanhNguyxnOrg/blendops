@@ -99,7 +99,8 @@ export function descriptionOverlap(skills) {
 
 export function scorePicks(cases, picks) {
   const rows = cases.map((c) => {
-    const pick = picks[c.id] === undefined ? undefined : picks[c.id];
+    const raw = picks[c.id];
+    const pick = typeof raw === 'string' && ['null', 'none', ''].includes(raw.trim().toLowerCase()) ? null : raw;
     const ok = pick !== undefined && (pick === c.expected || (c.acceptable ?? []).includes(pick));
     return { id: c.id, lang: c.lang, expected: c.expected, pick: pick ?? null, answered: pick !== undefined, ok };
   });
@@ -144,7 +145,7 @@ export function promptPack(skills, cases) {
     ...skills.map((s) => `- ${s.name}: ${s.description}`),
     '',
     'For each request below, answer with the one skill you would load first, or null if none fits.',
-    'Reply with JSON only, shaped {"<request key>": "<skill name or null>"}.',
+    'Reply with JSON only, shaped {"<request key>": "<skill name>"}, using the JSON value null (not a string) when no skill fits.',
     '',
     ...packKeys(cases).map(({ key, case: c }) => `${key}: ${c.prompt}`),
     '',

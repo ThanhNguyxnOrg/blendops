@@ -59,6 +59,9 @@ test('agent responses are scored, with alternates and unanswered cases', () => {
   assert.equal(partial.accuracy, 0);
   const none = cases.find((c) => c.expected === null);
   assert.equal(scorePicks([none], { [none.id]: 'blendops-start' }).falseTriggers, 1);
+  const quoted = scorePicks([none], { [none.id]: 'null' });
+  assert.equal(quoted.falseTriggers, 0);
+  assert.equal(quoted.accuracy, 1);
 });
 
 test('prompt pack lists every skill and case, and the CLI scores a responses file', () => {
