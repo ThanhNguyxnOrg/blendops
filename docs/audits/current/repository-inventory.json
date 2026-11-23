@@ -1981,8 +1981,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 7114,
-      "sha256": "b5f8a896224abcdb5f07edbf6ea413812e34c53d7ff792a54e3ccf288e8b0fc8"
+      "byteSize": 7134,
+      "sha256": "179d5a28f861b40af595a3952288b3f5d9bb05c3660771441f517767042e4629"
     },
     {
       "path": "docs/evals/adapter-empirical-verification.md",
@@ -2041,8 +2041,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 3380,
-      "sha256": "d3bb7fa5479b9f3f61db5cb547c745626e607307271f1a6a9997c8f7f8c9cad2"
+      "byteSize": 4876,
+      "sha256": "443429a6aea3ad755f877d03ed27c3f7a4a882485f8917e132e79eb967dd6344"
     },
     {
       "path": "docs/evals/cli-fallback-mech-prop.md",

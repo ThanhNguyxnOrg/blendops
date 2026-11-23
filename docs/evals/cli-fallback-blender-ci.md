@@ -5,7 +5,7 @@
 - Runtime status: **Verified**, limited to the checks below, run headless on Linux.
 - Blender versions: `Blender 4.2.23 LTS` and `Blender 5.1.2`, official Linux x64 archives from download.blender.org, SHA-256 checked before use.
 - Path 1 and Path 2: **Not Run**.
-- Artifacts: a 32×18 test preview PNG and a two-mesh test GLB of placeholder boxes are **Produced** as CI output only. They are not committed and are not product renders or exports.
+- Artifacts: a 32×18 test preview PNG and a two-mesh test GLB of placeholder boxes are **Produced** as CI artifacts only (see CI results). They are not committed and are not product renders or exports.
 - Real product scenes and the visual review: **Not Run**.
 
 No BlendOps-owned CLI command, MCP server or add-on was added. The check scripts live under `evals/blender-checks/` and are not part of the npm package.
@@ -27,6 +27,28 @@ No BlendOps-owned CLI command, MCP server or add-on was added. The check scripts
 
    A new reference with `python` blocks fails the run until it gets a check.
 2. **Scene-state.** [`scene-state-scenes.py`](../../evals/blender-checks/scene-state-scenes.py) builds the five test scenes of [cli-fallback-scene-state.md](./cli-fallback-scene-state.md). The last `python` block of `skills/blendops-look-check/references/scene-state.md` runs on each, with the plans listed in the test. The test compares the exact issue list (level, check, object), the verdict and key object facts (unit-scaled size, instance count, lowest point, framing).
+
+## CI results
+
+[Workflow run 45206981903](https://github.com/ThanhNguyxnOrg/blendops/actions/runs/45206981903) on commit `28b7c54` (PR #27), both jobs `success`:
+
+| Job | Tests | Artifact (kept 14 days) |
+|---|---|---|
+| [Blender 4.2.23](https://github.com/ThanhNguyxnOrg/blendops/actions/runs/45206981903/job/137805232368) | 8 pass, 0 fail, 0 skipped | `blender-4.2.23-check-output` (id 14833229373) |
+| [Blender 5.1.2](https://github.com/ThanhNguyxnOrg/blendops/actions/runs/45206981903/job/137805232852) | 8 pass, 0 fail, 0 skipped | `blender-5.1.2-check-output` (id 14835165716) |
+
+Each artifact holds the same files:
+
+- `build/<reference>/job.json` for the six build references.
+- `build/render-export/preview.png`: 32×18 PNG.
+- `build/render-export/model.glb`: `inspect-glb` valid, 2 meshes, 2 nodes.
+- `scene-state/scene1.blend` … `scene5.blend`: the five test scenes.
+- `scene-state/<case>.py` and `<case>.json` for the six cases: verdicts `scene1-no-plan` warn, `scene1-example-plan` fail, `scene2-plan` fail, `scene3-plan` pass, `scene4-plan` fail, `scene5-plan` pass on both versions.
+
+| Artifact file | 4.2.23 SHA-256 | 5.1.2 SHA-256 |
+|---|---|---|
+| `model.glb` | `ebff2e5c5096511a67e8e5cd0e0726d8614220f0e178c8aac4e9fa8e66f4ef72` | `d4193daa69f623943e7a3f91528197f4e091959a68b5b61ac1d3779a5b2fa5ed` |
+| `preview.png` | `d4b38ea669602f30520d79d486501c35dd9e8bda03f93bbbef02b3f7a0e71ec6` | `cc08b0896eda7c1f654d215039242f4d8eba36d2e4d8dfda2ab53ea8bcd85fcc` |
 
 ## Local results
 
