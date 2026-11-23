@@ -24,7 +24,7 @@
 | `skill_specific_operating_instructions` | 83 | `rule_based_path_and_heading_inspection` (5 flagged `needs_semantic_review`) | Skill-local checklists, report templates, and step-by-step operating instructions |
 | `workflow_or_pack_governance` | 75 | `rule_based_governance_and_recipe_mapping` | Stage routing, intake clarification, pack prerequisite, stage gates, and runtime path governance |
 | `recipe_specific_procedure` | 16 | `rule_based_governance_and_recipe_mapping` | Recipe discovery catalog and recipe decomposition rules synchronized with `registry/recipe-catalog.json` |
-| `historical_or_eval_evidence` | 0 | Stored in `docs/evals/` (17 files) | Historical evaluation and runtime evidence records live under `docs/evals/` rather than inside `skills/*/references/` |
+| `historical_or_eval_evidence` | 0 | Stored in `docs/evals/` (18 files) | Historical evaluation and runtime evidence records live under `docs/evals/` rather than inside `skills/*/references/` |
 | `outdated_or_duplicated` | 0 | Exact hash & promotion audit | Zero exact duplicate reference files; 5 adjacent checklist files tracked under `needs_semantic_review` |
 | **Total** | **211** | **100% accounted for** | **All 205 `skills/*/references/*.md` files classified with zero `undefined` fields** |
 

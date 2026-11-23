@@ -1892,7 +1892,7 @@
       "generatorScript": "scripts/build-knowledge-catalog.mjs",
       "safeToMoveOrRemove": false,
       "byteSize": 314573,
-      "sha256": "f46d30f4e9dc9a9410a3afb611ac379d907abbc1d832b102584911c9d7ea6ca0"
+      "sha256": "dd84df43562d4db7cb805a5d38125cd5459552ffdbe85cd6e7478a9f33dd1744"
     },
     {
       "path": "docs/audits/skill-architecture-audit.md",
@@ -1907,7 +1907,7 @@
       "generatorScript": "scripts/build-knowledge-catalog.mjs",
       "safeToMoveOrRemove": false,
       "byteSize": 21502,
-      "sha256": "d5cd1f53bffbf3b024ce273c8fdb655b87725f089b4986d8aff45cea4a12148f"
+      "sha256": "49abc14e6cae6550550256f9db9b7d2c8dc4e3ccaea9ba14bd47e621c1d54dd8"
     },
     {
       "path": "docs/blender-version-compatibility.md",
@@ -1981,8 +1981,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 7449,
-      "sha256": "c5e545694975a02f8a0360fdbe2efcdd2e79cf76e38811bafd0742e7a8365701"
+      "byteSize": 7679,
+      "sha256": "f69607f0071d67c378842d1a1f5dde1cc8c5ef7051932c8826df83e5d5d1aece"
     },
     {
       "path": "docs/evals/adapter-empirical-verification.md",
@@ -3706,8 +3706,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 4708,
-      "sha256": "7d3dfcc6443636d1abcd0fbe4eb4026c442805fa2ad74df65daf4be076106b73"
+      "byteSize": 4809,
+      "sha256": "c89531b1d0e3726f42c17134033079215d9a2c5083f03688435791b2b26b8b64"
     },
     {
       "path": "packs/README.md",
@@ -4966,8 +4966,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 33229,
-      "sha256": "40e86e5cbd19bdc31b02f878fab27a1db94e7c7f99ca7227c549235d49f19aff"
+      "byteSize": 33403,
+      "sha256": "32a7b90808b1353492868b723caaa86153d0e15228739ab167da575b5d68df66"
     },
     {
       "path": "skill-reviews/README.md",

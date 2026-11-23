@@ -1,0 +1,94 @@
+{
+  "schemaVersion": "1.0.0",
+  "description": "Which skill should an agent load for each request? Labels are judged from each skill's name and description only, the text an agent sees before loading a skill. expected is the best skill; acceptable lists other skills that are also a correct first pick. expected null means no BlendOps skill should load.",
+  "cases": [
+    { "id": "start-01", "lang": "en", "prompt": "I want to make something in Blender but I have no idea where to begin. What do I do first?", "expected": "blendops-start", "acceptable": ["blendops-brief"] },
+    { "id": "start-02", "lang": "en", "prompt": "We stopped halfway through the shoe scene yesterday. Pick it back up and tell me what is next.", "expected": "blendops-start" },
+    { "id": "start-03", "lang": "en", "prompt": "Write the status update for our client, who has never used Blender, about where the 3D work stands.", "expected": "blendops-start", "acceptable": ["blendops-final-check"] },
+    { "id": "start-04", "lang": "vi", "prompt": "Hôm qua làm dở cảnh 3D, giờ làm tiếp bước nào đây?", "expected": "blendops-start" },
+
+    { "id": "brief-01", "lang": "en", "prompt": "I kind of want a cool 3D thing for my landing page, maybe something techy? Help me pin down what it should be.", "expected": "blendops-brief" },
+    { "id": "brief-02", "lang": "en", "prompt": "Can BlendOps even handle a full rigged character animation, or is that outside what it does?", "expected": "blendops-brief", "acceptable": ["blendops-start"] },
+    { "id": "brief-03", "lang": "en", "prompt": "Break my idea of an animated product unboxing into stages and find a recipe that matches.", "expected": "blendops-brief" },
+    { "id": "brief-04", "lang": "vi", "prompt": "Mình muốn có một cảnh 3D cho trang web nhưng chưa rõ làm gì, giúp mình chốt ý tưởng.", "expected": "blendops-brief" },
+
+    { "id": "done-01", "lang": "en", "prompt": "Before anyone opens Blender, write down exactly what has to be true for this hero render to count as finished.", "expected": "blendops-done-criteria" },
+    { "id": "done-02", "lang": "en", "prompt": "The client now also wants a turntable video and a second colorway. Does that fit what we locked?", "expected": "blendops-done-criteria" },
+    { "id": "done-03", "lang": "en", "prompt": "Set the stage gates for the product pack and check that its prerequisites are in place.", "expected": "blendops-done-criteria" },
+    { "id": "done-04", "lang": "vi", "prompt": "Trước khi làm, ghi rõ tiêu chí thế nào thì coi là xong cho cảnh này.", "expected": "blendops-done-criteria" },
+
+    { "id": "build-01", "lang": "en", "prompt": "The plan is approved and Blender is connected. Go ahead and model the crate and add its materials.", "expected": "blendops-build" },
+    { "id": "build-02", "lang": "en", "prompt": "Add the three lights and the camera from the plan to the open scene, then make a preview.", "expected": "blendops-build" },
+    { "id": "build-03", "lang": "en", "prompt": "Everything is signed off. Export the chair as a GLB from the scene now.", "expected": "blendops-build" },
+    { "id": "build-04", "lang": "vi", "prompt": "Plan đã duyệt, Blender đã kết nối rồi, dựng cảnh theo plan đi.", "expected": "blendops-build" },
+
+    { "id": "look-01", "lang": "en", "prompt": "Here is the first preview. Something looks off; check it and fix what is wrong.", "expected": "blendops-look-check" },
+    { "id": "look-02", "lang": "en", "prompt": "The preview render is done. Look at it from a few sides and tell me if the bottle is floating.", "expected": "blendops-look-check" },
+    { "id": "look-03", "lang": "en", "prompt": "Review the preview against the brief and fix the biggest visual problem, one at a time.", "expected": "blendops-look-check" },
+    { "id": "look-04", "lang": "vi", "prompt": "Có ảnh preview rồi, xem giúp chỗ nào nhìn sai thì sửa.", "expected": "blendops-look-check" },
+
+    { "id": "product-01", "lang": "en", "prompt": "Plan a hero shot for our new wireless earbuds on a clean studio backdrop.", "expected": "blendops-product-shot" },
+    { "id": "product-02", "lang": "en", "prompt": "Lay out six sneakers in a catalog grid for the spring collection page.", "expected": "blendops-product-shot" },
+    { "id": "product-03", "lang": "en", "prompt": "Design a lineup scene with our three perfume bottles side by side.", "expected": "blendops-product-shot" },
+    { "id": "product-04", "lang": "vi", "prompt": "Lên kế hoạch ảnh hero cho chai nước hoa mới.", "expected": "blendops-product-shot" },
+
+    { "id": "scene-01", "lang": "en", "prompt": "Plan a cozy low-poly campsite at dusk with a tent and a campfire.", "expected": "blendops-scene-plan" },
+    { "id": "scene-02", "lang": "en", "prompt": "I need a character portrait scene of a knight for a poster. Plan the layout.", "expected": "blendops-scene-plan" },
+    { "id": "scene-03", "lang": "en", "prompt": "Plan a modern living room interior with a sofa, a window and evening light.", "expected": "blendops-scene-plan" },
+    { "id": "scene-04", "lang": "vi", "prompt": "Lên plan cho cảnh nội thất phòng ngủ phong cách Nhật.", "expected": "blendops-scene-plan" },
+
+    { "id": "camera-01", "lang": "en", "prompt": "Which shots should we take of the watch, and should the output be 16:9 or square?", "expected": "blendops-camera" },
+    { "id": "camera-02", "lang": "en", "prompt": "Choose a lens and framing so the shoe fills the frame with a bit of room on the right.", "expected": "blendops-camera" },
+    { "id": "camera-03", "lang": "en", "prompt": "Does the current framing meet the composition rules we wrote in the brief?", "expected": "blendops-camera" },
+    { "id": "camera-04", "lang": "vi", "prompt": "Chọn góc máy và tỉ lệ khung hình cho ảnh sản phẩm này.", "expected": "blendops-camera" },
+
+    { "id": "light-01", "lang": "en", "prompt": "Set up a three-point light rig and a brushed metal material for the speaker.", "expected": "blendops-lighting-materials" },
+    { "id": "light-02", "lang": "en", "prompt": "Should we use AgX or Filmic for the view transform on this scene?", "expected": "blendops-lighting-materials" },
+    { "id": "light-03", "lang": "en", "prompt": "The glass material looks cheap. Plan better lighting and material settings.", "expected": "blendops-lighting-materials" },
+    { "id": "light-04", "lang": "vi", "prompt": "Thiết lập ánh sáng và vật liệu kim loại cho cái loa.", "expected": "blendops-lighting-materials" },
+
+    { "id": "render-01", "lang": "en", "prompt": "Cycles or EEVEE for a quick social media clip of the bottle?", "expected": "blendops-render-settings" },
+    { "id": "render-02", "lang": "en", "prompt": "The compositor team wants EXR passes. What output format and settings do we pick?", "expected": "blendops-render-settings" },
+    { "id": "render-03", "lang": "en", "prompt": "Decide whether this delivery should be a PNG still, a video, or a GLB.", "expected": "blendops-render-settings" },
+    { "id": "render-04", "lang": "vi", "prompt": "Nên render bằng Cycles hay EEVEE, xuất PNG hay video?", "expected": "blendops-render-settings" },
+
+    { "id": "assets-01", "lang": "en", "prompt": "Find a free HDRI of a sunset sky that we are allowed to use commercially.", "expected": "blendops-assets" },
+    { "id": "assets-02", "lang": "en", "prompt": "Check the license on this downloaded chair model before we put it in the ad.", "expected": "blendops-assets" },
+    { "id": "assets-03", "lang": "en", "prompt": "Search for wood floor textures that fit a stylized look, with a backup if none fit.", "expected": "blendops-assets" },
+    { "id": "assets-04", "lang": "vi", "prompt": "Tìm texture gỗ miễn phí và kiểm tra license giúp mình.", "expected": "blendops-assets" },
+
+    { "id": "budget-01", "lang": "en", "prompt": "Our GLB is 40 MB and takes forever on phones. What should the limits be?", "expected": "blendops-glb-budget" },
+    { "id": "budget-02", "lang": "en", "prompt": "Check whether this model's polycount and texture sizes are fine for mobile web.", "expected": "blendops-glb-budget" },
+    { "id": "budget-03", "lang": "en", "prompt": "Set a file size and triangle budget for the product viewer on our site.", "expected": "blendops-glb-budget" },
+    { "id": "budget-04", "lang": "vi", "prompt": "File GLB nặng quá, load trên điện thoại chậm, giới hạn bao nhiêu là hợp lý?", "expected": "blendops-glb-budget" },
+
+    { "id": "handoff-01", "lang": "en", "prompt": "Prepare this GLB for our web developers with notes on how to load it.", "expected": "blendops-glb-web-handoff" },
+    { "id": "handoff-02", "lang": "en", "prompt": "Document the animation clips in the robot GLB for the frontend team.", "expected": "blendops-glb-web-handoff" },
+    { "id": "handoff-03", "lang": "en", "prompt": "Plan a React Three Fiber component that shows the sneaker model.", "expected": "blendops-glb-web-handoff" },
+    { "id": "handoff-04", "lang": "vi", "prompt": "Bàn giao file GLB cho team web kèm hướng dẫn dùng React Three Fiber.", "expected": "blendops-glb-web-handoff" },
+
+    { "id": "connect-01", "lang": "en", "prompt": "Should I use the official Blender Lab MCP or mcp-for-blender with Blender 4.2?", "expected": "blendops-connect-blender" },
+    { "id": "connect-02", "lang": "en", "prompt": "Is my Blender connection ready? The agent cannot see the scene.", "expected": "blendops-connect-blender", "acceptable": ["blendops-fix-problems"] },
+    { "id": "connect-03", "lang": "en", "prompt": "I have two Blender MCP bridges installed and they fight each other. Sort it out.", "expected": "blendops-connect-blender" },
+    { "id": "connect-04", "lang": "vi", "prompt": "Kết nối Blender với agent bằng cách nào, dùng MCP hay chạy CLI?", "expected": "blendops-connect-blender" },
+
+    { "id": "final-01", "lang": "en", "prompt": "Is the work actually done? Collect the proof that the render and export exist before we hand it over.", "expected": "blendops-final-check" },
+    { "id": "final-02", "lang": "en", "prompt": "Write the runtime-attempt report for today's Blender session.", "expected": "blendops-final-check" },
+    { "id": "final-03", "lang": "en", "prompt": "Verify the final render matches the done criteria before we send it to the client.", "expected": "blendops-final-check" },
+    { "id": "final-04", "lang": "vi", "prompt": "Kiểm tra lần cuối xem đã xong thật chưa trước khi bàn giao.", "expected": "blendops-final-check" },
+
+    { "id": "fix-01", "lang": "en", "prompt": "The render came out completely black. What went wrong?", "expected": "blendops-fix-problems" },
+    { "id": "fix-02", "lang": "en", "prompt": "The GLB export failed with an error about a missing texture.", "expected": "blendops-fix-problems" },
+    { "id": "fix-03", "lang": "en", "prompt": "In the browser the model shows up pink and the colors look wrong. Explain in simple words how to fix it.", "expected": "blendops-fix-problems" },
+    { "id": "fix-04", "lang": "vi", "prompt": "Render ra toàn màu đen, lỗi gì vậy?", "expected": "blendops-fix-problems" },
+
+    { "id": "none-01", "lang": "en", "prompt": "Write a Python function that sorts a list of dictionaries by date.", "expected": null },
+    { "id": "none-02", "lang": "en", "prompt": "Fix the CSS so the navbar stays at the top of the page.", "expected": null },
+    { "id": "none-03", "lang": "en", "prompt": "Summarize this quarterly sales spreadsheet.", "expected": null },
+    { "id": "none-04", "lang": "en", "prompt": "Edit this photo in Photoshop to remove the background.", "expected": null },
+    { "id": "none-05", "lang": "en", "prompt": "Draft an email asking the landlord to fix the heating.", "expected": null },
+    { "id": "none-06", "lang": "vi", "prompt": "Viết giúp mình bài đăng Facebook giới thiệu quán cà phê.", "expected": null },
+    { "id": "none-07", "lang": "en", "prompt": "Set up a Postgres database for the user accounts.", "expected": null },
+    { "id": "none-08", "lang": "vi", "prompt": "Dịch đoạn văn này sang tiếng Anh.", "expected": null }
+  ]
+}

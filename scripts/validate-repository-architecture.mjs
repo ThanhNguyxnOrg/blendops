@@ -223,6 +223,8 @@ export function classifyTrackedFile(relPath, pkgFiles = []) {
         ? 'Behavioral evaluation dataset index and schema documentation'
         : relPath === 'evals/catalog-retrieval-evals.json'
           ? 'Deterministic 90-case bilingual knowledge & recipe catalog retrieval evaluation suite'
+          : relPath === 'evals/skill-selection-evals.json'
+            ? 'Bilingual skill selection cases: which skill a request should load from name and description alone'
           : relPath.startsWith('evals/blender-checks/')
             ? `Headless Blender helper (${path.basename(relPath)}) for the skill reference checks in scripts/test-blender-references.mjs`
             : relPath.startsWith('evals/scene-specs/')
