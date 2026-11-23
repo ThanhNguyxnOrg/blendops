@@ -2,7 +2,7 @@
   "schemaVersion": "1.0.0",
   "auditPhase": "v1.0.0-current",
   "summary": {
-    "totalTrackedFiles": 590,
+    "totalTrackedFiles": 594,
     "npmPackageIncludedFiles": 403,
     "generatedTrackedFiles": 47,
     "canonicalSkillsCount": 16,
@@ -14,11 +14,11 @@
     "classificationCounts": {
       "configuration": 38,
       "documentation": 87,
-      "historical_record": 20,
+      "historical_record": 21,
       "distribution_artifact": 15,
       "canonical_source": 291,
       "generated_artifact": 47,
-      "runtime_build_test_infrastructure": 92
+      "runtime_build_test_infrastructure": 95
     },
     "subsystemCounts": {
       "repository-governance": 4,
@@ -28,17 +28,17 @@
       "bundles-and-packaging": 66,
       "product-and-target-docs": 70,
       "audits-and-provenance": 11,
-      "runtime-and-adapter-evals": 18,
+      "runtime-and-adapter-evals": 19,
       "glb-web-handoff-toolkit": 3,
       "knowledge-and-recipe-catalog": 5,
-      "behavioral-evals": 34,
+      "behavioral-evals": 35,
       "laws-and-packs": 7,
       "package-governance": 2,
       "registry-and-routing": 6,
       "schemas-and-contracts": 16,
-      "ci-and-build-generators": 11,
+      "ci-and-build-generators": 12,
       "cli-and-runtime-tools": 23,
-      "test-suites": 22,
+      "test-suites": 23,
       "quality-and-skill-reviews": 7,
       "skills-catalog": 262
     },
@@ -47,19 +47,19 @@
       ".github": 14,
       "bin": 1,
       "bundles": 66,
-      "docs": 103,
-      "evals": 34,
+      "docs": 104,
+      "evals": 35,
       "laws": 5,
       "packs": 2,
       "registry": 10,
       "schemas": 16,
-      "scripts": 56,
+      "scripts": 58,
       "skill-reviews": 7,
       "skills": 261
     },
     "referenceIntegrity": {
-      "markdownFiles": 424,
-      "jsModules": 57,
+      "markdownFiles": 425,
+      "jsModules": 59,
       "schemas": 16,
       "workflows": 7
     }
@@ -2240,6 +2240,21 @@
       "sha256": "ae7337735b61f0ca2f45eefbdc854701f49d08cd47860803eceaed7b6ceb9b15"
     },
     {
+      "path": "docs/evals/skill-selection.md",
+      "fileType": ".md",
+      "classification": "historical_record",
+      "purpose": "Evaluation packet or recorded verification evidence (skill-selection.md)",
+      "owningSubsystem": "runtime-and-adapter-evals",
+      "includedInNpmPackage": false,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 2820,
+      "sha256": "9257eade62dc56aab0d7fe309edd4137912a76954e92c89ae9b2141aed11d50c"
+    },
+    {
       "path": "docs/examples/agent-install-prompt.md",
       "fileType": ".md",
       "classification": "documentation",
@@ -3363,6 +3378,21 @@
       "safeToMoveOrRemove": false,
       "byteSize": 4000,
       "sha256": "3d8bd1f0845c6ecff6b1f515a63bd69d283fddc3a8956d2bbf302309bd1ec7c0"
+    },
+    {
+      "path": "evals/skill-selection-evals.json",
+      "fileType": ".json",
+      "classification": "runtime_build_test_infrastructure",
+      "purpose": "Bilingual skill selection cases: which skill a request should load from name and description alone",
+      "owningSubsystem": "behavioral-evals",
+      "includedInNpmPackage": false,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 12255,
+      "sha256": "de0c4013c8b625dd5e2b9b1166cf44a09865f5a35e9f8c35a026dcdbaa0ce9c9"
     },
     {
       "path": "evals/suites/blendops-assets.eval.json",
@@ -4550,6 +4580,21 @@
       "sha256": "245058537d2a3ac43aca462c595c115c1efbd875e40adff9c6075fbb9af2e062"
     },
     {
+      "path": "scripts/run-skill-selection-eval.mjs",
+      "fileType": ".mjs",
+      "classification": "runtime_build_test_infrastructure",
+      "purpose": "Repository generator, validator, or preview server script (run-skill-selection-eval.mjs)",
+      "owningSubsystem": "ci-and-build-generators",
+      "includedInNpmPackage": false,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 8226,
+      "sha256": "8ea968e0789030de7b8a607b1f449225238eab7b3c30a08ccac7f2afd57c7f00"
+    },
+    {
       "path": "scripts/runtime-orchestrator.mjs",
       "fileType": ".mjs",
       "classification": "runtime_build_test_infrastructure",
@@ -4878,6 +4923,21 @@
       "safeToMoveOrRemove": false,
       "byteSize": 26012,
       "sha256": "cf2d8963241be1b62b28cf88481e300d4bad0ef359697b2508fece3407e72d5e"
+    },
+    {
+      "path": "scripts/test-skill-selection.mjs",
+      "fileType": ".mjs",
+      "classification": "runtime_build_test_infrastructure",
+      "purpose": "Automated regression and verification test suite (test-skill-selection.mjs)",
+      "owningSubsystem": "test-suites",
+      "includedInNpmPackage": false,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 3732,
+      "sha256": "db1a677584147defda50b165c8dcd58b8e12735dc86394bf60e0e46728f2714b"
     },
     {
       "path": "scripts/test-skill-templates.mjs",
