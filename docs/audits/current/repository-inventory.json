@@ -1672,8 +1672,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 3541,
-      "sha256": "40f112c97d997d603da1ed7f46832f12082b720619950743b1da96b4aca1b127"
+      "byteSize": 3560,
+      "sha256": "6fe2669b1b65963bd00386dc55eb86f11c4f4913e9d7a9d39880ed3d72b77f51"
     },
     {
       "path": "docs/audits/current/README.md",
