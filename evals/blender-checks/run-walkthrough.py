@@ -30,7 +30,8 @@ def boxes(name, parts):
 
 def chair_file():
     """A user's chair scene with three export problems: unapplied scale, a procedural
-    roughness node, and an old hidden copy."""
+    roughness node, and an old hidden copy that shares the chair's material. The cushion
+    is parented to the chair."""
     scene = bpy.context.scene
     h = 0.5  # modelled at half size, then scaled up 2x without applying the scale
     legs = [((0.02, 0.02, 0.225), (x * 0.1, y * 0.1, 0.1125)) for x in (-1, 1) for y in (-1, 1)]
@@ -53,6 +54,10 @@ def chair_file():
     fb.inputs["Roughness"].default_value = 0.8
     cushion.data.materials.append(fabric)
     old = boxes("Chair_Old", [((0.45, 0.45, 0.9), (1.5, 0, 0.45))])
+    old.data.materials.append(wood)  # shared with the export chair; must keep its pattern
+    bpy.context.view_layer.update()
+    cushion.parent = chair  # attached as Ctrl+P would, so it must keep its size when the scale is applied
+    cushion.matrix_parent_inverse = chair.matrix_world.inverted()
     old.hide_set(True)
     old.hide_render = True
     fm = bpy.data.meshes.new("Floor")

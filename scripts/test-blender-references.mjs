@@ -170,7 +170,12 @@ assert len(trees) == 8 and len({o.data.name for o in trees}) == 1, "trees must s
     glb: { file: 'chair.glb', meshes: 2, maxTriangles: 100000 },
     check: `import bpy
 assert tuple(bpy.data.objects["Chair"].scale) == (1.0, 1.0, 1.0)
-assert not [n for n in bpy.data.materials["Wood"].node_tree.nodes if n.bl_idname == "ShaderNodeTexNoise"]
+assert not [n for n in bpy.data.objects["Chair"].active_material.node_tree.nodes if n.bl_idname == "ShaderNodeTexNoise"]
+noise = lambda o: [n for n in o.active_material.node_tree.nodes if n.bl_idname == "ShaderNodeTexNoise"]
+assert noise(bpy.data.objects["Chair_Old"]), "the hidden copy must keep its pattern"
+c = bpy.data.objects["Cushion"]
+zs = [(c.matrix_world @ v.co).z for v in c.data.vertices]
+assert abs(min(zs) - 0.49) < 1e-4 and abs(max(zs) - 0.54) < 1e-4, "the cushion must keep its size and place"
 `,
   },
 };

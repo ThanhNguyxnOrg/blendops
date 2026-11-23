@@ -63,25 +63,33 @@ bpy.ops.wm.save_as_mainfile(filepath="/abs/path/chair-backup.blend", copy=True)
 print(json.dumps({"step": "backup", "file": "/abs/path/chair-backup.blend"}))
 ```
 
-**3. Apply the scale.** Baked into the mesh directly, so no selection or operator context is needed. Only safe when the mesh is not shared with other objects.
+**3. Apply the scale.** Baked into the mesh directly, so no selection or operator context is needed. Only safe when the mesh is not shared with other objects; children attached to the chair are compensated so they keep their size and place.
 
 ```python
 import bpy, json
 from mathutils import Matrix
 obj = bpy.data.objects["Chair"]
 assert obj.data.users == 1, "shared mesh: make it single-user first"
-obj.data.transform(Matrix.Diagonal((*obj.scale, 1.0)))
+scale = Matrix.Diagonal((*obj.scale, 1.0))
+obj.data.transform(scale)
+for child in obj.children:
+    child.matrix_parent_inverse = scale @ child.matrix_parent_inverse
 obj.scale = (1.0, 1.0, 1.0)
 bpy.context.view_layer.update()
 bpy.ops.wm.save_mainfile()
 print(json.dumps({"step": "apply-scale", "object": obj.name, "dimensions_m": [round(v, 3) for v in obj.dimensions]}))
 ```
 
-**4. Replace the pattern with a value the GLB keeps.** Remove the noise node and set one roughness. (Keeping the pattern would mean baking it to an image texture first; out of scope here.)
+**4. Replace the pattern with a value the GLB keeps.** Remove the noise node and set one roughness. (Keeping the pattern would mean baking it to an image texture first; out of scope here.) If an object that is not exported also uses `Wood`, the chair gets its own copy first, so that object keeps its finish.
 
 ```python
 import bpy, json
-mat = bpy.data.materials["Wood"]
+export = {"Chair", "Cushion"}
+chair = bpy.data.objects["Chair"]
+mat = chair.material_slots[0].material
+if any(o.name not in export and mat.name in o.data.materials for o in bpy.data.objects if o.type == 'MESH'):
+    mat = mat.copy()
+    chair.material_slots[0].material = mat
 nodes = mat.node_tree.nodes
 for node in [n for n in nodes if n.bl_idname == "ShaderNodeTexNoise"]:
     nodes.remove(node)
@@ -106,8 +114,8 @@ print(json.dumps({"step": "export", "file": "/abs/path/chair.glb", "bytes": os.p
 **6. Inspect the file.** Outside Blender:
 
 ```bash
-npx blendops glb-inspect /abs/path/chair.glb
-npx blendops glb-handoff /abs/path/chair.glb --out-dir /abs/path/handoff --viewer threejs
+npx blendops glb-inspect "/abs/path/chair.glb"
+npx blendops glb-handoff "/abs/path/chair.glb" --out-dir "/abs/path/handoff" --viewer threejs
 ```
 
 Expect a valid GLB 2.0 container with 2 meshes, 2 materials, no textures and no compression extensions, so the website needs no Draco, Meshopt or KTX2 decoder. The triangle count is 84, far under budget. This proves the **file** is sound; it does not prove how it looks on the website.

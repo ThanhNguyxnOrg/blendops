@@ -14,7 +14,7 @@ No BlendOps-owned CLI command, MCP server or add-on was added. The runner lives 
 
 `npm run test:blender` ([`scripts/test-blender-references.mjs`](../../scripts/test-blender-references.mjs)) also covers every walkthrough in `docs/recipes/` that has `python` steps; a new one fails the run until it gets an entry. For each walkthrough:
 
-1. [`run-walkthrough.py`](../../evals/blender-checks/run-walkthrough.py) starts the scene the user would hand over (an empty file, or for the chair a test file with three planted export problems), then runs each `python` step in order in its own namespace, with `/abs/path/` pointed at the output folder. Any Python error fails the run (`--python-exit-code 1`).
+1. [`run-walkthrough.py`](../../evals/blender-checks/run-walkthrough.py) starts the scene the user would hand over (an empty file, or for the chair a test file with three planted export problems, a cushion parented to the chair and a hidden copy sharing its material), then runs each `python` step in order in its own namespace, with `/abs/path/` pointed at the output folder. Any Python error fails the run (`--python-exit-code 1`).
 2. The scene-state script from `skills/blendops-look-check/references/scene-state.md` runs on the saved `.blend` with the walkthrough's own `## Plan` JSON. The test requires zero issues and verdict `pass`.
 3. Every expected file must exist and be non-empty; a GLB must pass `inspect-glb` with the planned mesh count and under the triangle budget.
 
@@ -22,7 +22,7 @@ No BlendOps-owned CLI command, MCP server or add-on was added. The runner lives 
 |---|---|---|---|
 | [sci-fi-crate-prop](../recipes/sci-fi-crate-prop.md) | `recipe.hard-surface-prop` | none | `preview.png`, 3 look-check views, `crate.glb` with 2 meshes, ≤ 50,000 triangles |
 | [dusk-campsite-environment](../recipes/dusk-campsite-environment.md) | `recipe.stylized-environment-scene` | all 8 trees share one mesh | `preview.png`, 3 look-check views, 1280 × 720 `campsite.png` |
-| [chair-glb-web-handoff](../recipes/chair-glb-web-handoff.md) | `recipe.blender-to-glb-handoff` | before the steps, scene-state reports exactly `fail:scale_applied:Chair`; after, `Chair` has scale 1 and `Wood` has no noise node | `chair-backup.blend`, `chair.glb` with 2 meshes, ≤ 100,000 triangles |
+| [chair-glb-web-handoff](../recipes/chair-glb-web-handoff.md) | `recipe.blender-to-glb-handoff` | before the steps, scene-state reports exactly `fail:scale_applied:Chair`; after, `Chair` has scale 1, its material has no noise node, the hidden copy that shared `Wood` keeps it, and the parented cushion keeps its size and height | `chair-backup.blend`, `chair.glb` with 2 meshes, ≤ 100,000 triangles |
 
 ## Local results
 
