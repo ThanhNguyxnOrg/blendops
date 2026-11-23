@@ -78,13 +78,16 @@
     {
       "target": "blendops-final-check",
       "type": "progression",
-      "label": "Numbers and views pass; check the preview against the done criteria",
+      "label": "No fail left; check the preview against the done criteria",
       "when": {
         "all": [
           {
             "field": "quality.verdict",
-            "operator": "equals",
-            "value": "pass"
+            "operator": "in",
+            "value": [
+              "pass",
+              "warn"
+            ]
           }
         ]
       }
@@ -92,21 +95,23 @@
     {
       "target": "blendops-build",
       "type": "conditional",
-      "label": "An issue was found; fix it with one build step and check again",
+      "label": "A fail was found within three rounds; fix it with one build step and check again",
       "when": {
         "all": [
           {
             "field": "quality.verdict",
-            "operator": "in",
-            "value": [
-              "warn",
-              "fail"
-            ]
+            "operator": "equals",
+            "value": "fail"
           },
           {
             "field": "runtime.errorDetected",
             "operator": "equals",
             "value": false
+          },
+          {
+            "field": "gate.status",
+            "operator": "not_equals",
+            "value": "blocked"
           }
         ]
       }

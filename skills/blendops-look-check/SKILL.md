@@ -66,6 +66,8 @@ Check scripts run inside the runtime only. They are never handed to the user as 
 
 ## Decision tree
 
+- Context flags: look issues go in `quality.verdict` (`fail` or `warn`), not in `runtime.errorDetected`. Set `runtime.errorDetected` only when a check script, capture or tool call fails, or the same issue comes back after its fix. After round three with a `fail` left, set `gate.status` to `blocked`, stop, and ask the user.
+
 - Always start with the [numeric checks](references/numeric-checks.md); a failed number beats a picture that looks fine.
 - Numbers pass → [capture views](references/capture-views.md), then [visual review](references/visual-review.md).
 - Any issue → [fix loop](references/fix-loop.md): one fix per round through `blendops-build`.
