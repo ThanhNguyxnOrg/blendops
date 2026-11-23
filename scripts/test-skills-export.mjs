@@ -247,7 +247,7 @@ test('Exporter Validation: export-claude-skills.mjs rejects malformed CLI argume
     ['--output-root', '/'],
     ['--output-root', os.tmpdir()],
     ['--output-root', 'skills'],
-    ['--output-root', 'skills/using-blendops'],
+    ['--output-root', 'skills/blendops-start'],
     ['--output-root', 'scripts'],
     ['--output-root', 'docs'],
     ['--output-root', 'dist'],
@@ -266,7 +266,7 @@ test('Exporter Validation: export-claude-skills.mjs rejects malformed CLI argume
     );
   }
 
-  assert.equal(fs.existsSync(path.join(skillsDir, 'using-blendops', 'SKILL.md')), true);
+  assert.equal(fs.existsSync(path.join(skillsDir, 'blendops-start', 'SKILL.md')), true);
 });
 
 test('Truth States (F-01): all 14 skills and _template separate Runtime status (Not Run) from Artifact status (Not Produced)', () => {

@@ -1,9 +1,9 @@
 # BlendOps Roadmap
 
-_Last updated for **v1.0.0** (14 canonical skills, 151 reference guides, 26 install target docs, 35+ CLI targets via `--with-skills-dir` + `skills.sh.json`, 269 deterministic eval cases, 17 CI test suites)._
+_Last updated for **v1.0.0** (14 canonical skills, 199 reference guides, 26 install target docs, 35+ CLI targets via `--with-skills-dir` + `skills.sh.json`, 269 deterministic eval cases, 17 CI test suites)._
 
 > [!NOTE]
-> BlendOps publishes one thing: a **skills layer** (**14 skills** + **151 reference guides** + 4 laws + 1 pack + 3 bundles + **26 install target docs** / **35+ CLI targets** via `--with-skills-dir` + deterministic catalog & CLI + ZIP/package generation + automated CI guards). The layer is **complete and production-ready at `v1.0.0`**.
+> BlendOps publishes one thing: a **skills layer** (**14 skills** + **199 reference guides** + 4 laws + 1 pack + 3 bundles + **26 install target docs** / **35+ CLI targets** via `--with-skills-dir` + deterministic catalog & CLI + ZIP/package generation + automated CI guards). The layer is **complete and production-ready at `v1.0.0`**.
 >
 > Everything related to actually running Blender — the Blender executable, the MCP servers, the MCP hosts, the CLI — is **upstream**, owned by Blender Foundation / Anthropic / the `ahujasid` community. BlendOps **redirects** users to the right upstream docs per install target. Path 1 + Path 2 are **user-reported verified by the repo owner**; CLI is **documented upstream as a first-class Blender CLI surface**, with one scoped [CLI eval record](docs/evals/cli-fallback-mech-prop.md).
 >
@@ -67,7 +67,7 @@ _Last updated for **v1.0.0** (14 canonical skills, 151 reference guides, 26 inst
 - [x] `@modelcontextprotocol/sdk` async STDIO + Streamable HTTP client (`connectMcpRuntimeClient`), 7-state lifecycle, SHA-256 tool-contract fingerprinting, secret redaction, and deterministic CLI exit codes `0..7`.
 
 ### GLB 2.0 Web Handoff, Installer, CLI & Distribution
-- [x] GLB 2.0 container inspector (`scripts/inspect-glb.mjs`), web handoff report generator (`scripts/generate-glb-handoff-report.mjs`), Three.js & React Three Fiber viewer examples (`docs/examples/handing-off-glb-to-web/`).
+- [x] GLB 2.0 container inspector (`scripts/inspect-glb.mjs`), web handoff report generator (`scripts/generate-glb-handoff-report.mjs`), Three.js & React Three Fiber viewer examples (`docs/examples/blendops-glb-web-handoff/`).
 - [x] Transactional project-local installer (`scripts/install-skills.mjs`), distributable CLI (`bin/blendops.mjs`), deterministic 14-skill ZIP/folder exporter (`scripts/export-claude-skills.mjs`), and 96 deterministic bundle reference summaries (`scripts/generate-bundle-reference-summaries.mjs`).
 - [x] Root `skills.sh.json` 8-group catalog, `vercel-labs/skills` Lockfile v2 (`skills-lock.json` `computedHash`), `--with-skills-dir` + `--skill <slug>` across `26` install target docs and `35+` CLI targets.
 - [x] Complete repository inventory classification & reference integrity verification (`scripts/validate-repository-architecture.mjs`, `.gitattributes`, `.editorconfig`, clean `v1.0.0` audit snapshots under `docs/audits/current/`).

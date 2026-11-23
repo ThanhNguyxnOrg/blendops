@@ -129,7 +129,7 @@
       "required_capability_tier": "L0",
       "required_governed_runtime_ceiling": "L0",
       "governing_skills": [
-        "setting-up-blender-runtime"
+        "blendops-connect-blender"
       ],
       "side_effect_classification": "none",
       "behavior": "read_only",
@@ -268,8 +268,8 @@
       "required_capability_tier": "L0",
       "required_governed_runtime_ceiling": "L0",
       "governing_skills": [
-        "verifying-before-handoff",
-        "setting-up-blender-runtime"
+        "blendops-final-check",
+        "blendops-connect-blender"
       ],
       "side_effect_classification": "none",
       "behavior": "read_only",
@@ -405,8 +405,8 @@
       "required_capability_tier": "L0",
       "required_governed_runtime_ceiling": "L0",
       "governing_skills": [
-        "verifying-before-handoff",
-        "planning-product-scenes"
+        "blendops-final-check",
+        "blendops-product-shot"
       ],
       "side_effect_classification": "none",
       "behavior": "read_only",
@@ -565,8 +565,8 @@
       "required_capability_tier": "L0",
       "required_governed_runtime_ceiling": "L0",
       "governing_skills": [
-        "verifying-before-handoff",
-        "planning-camera-and-framing"
+        "blendops-final-check",
+        "blendops-camera"
       ],
       "side_effect_classification": "none",
       "behavior": "read_only",
@@ -704,7 +704,7 @@
       "required_capability_tier": "L0",
       "required_governed_runtime_ceiling": "L0",
       "governing_skills": [
-        "budgeting-glb-for-web"
+        "blendops-glb-budget"
       ],
       "side_effect_classification": "none",
       "behavior": "read_only",
@@ -858,7 +858,7 @@
       "required_capability_tier": "L0",
       "required_governed_runtime_ceiling": "L0",
       "governing_skills": [
-        "planning-lighting-and-materials"
+        "blendops-lighting-materials"
       ],
       "side_effect_classification": "none",
       "behavior": "read_only",
@@ -994,8 +994,8 @@
       "required_capability_tier": "L0",
       "required_governed_runtime_ceiling": "L0",
       "governing_skills": [
-        "planning-camera-and-framing",
-        "planning-lighting-and-materials"
+        "blendops-camera",
+        "blendops-lighting-materials"
       ],
       "side_effect_classification": "none",
       "behavior": "read_only",
@@ -1127,9 +1127,9 @@
       "required_capability_tier": "L0",
       "required_governed_runtime_ceiling": "L0",
       "governing_skills": [
-        "choosing-render-and-output",
-        "planning-camera-and-framing",
-        "planning-lighting-and-materials"
+        "blendops-render-settings",
+        "blendops-camera",
+        "blendops-lighting-materials"
       ],
       "side_effect_classification": "none",
       "behavior": "read_only",
@@ -1257,7 +1257,7 @@
       "required_capability_tier": "L0",
       "required_governed_runtime_ceiling": "L0",
       "governing_skills": [
-        "verifying-before-handoff"
+        "blendops-final-check"
       ],
       "side_effect_classification": "none",
       "behavior": "read_only",
@@ -1397,8 +1397,8 @@
       "required_capability_tier": "L0",
       "required_governed_runtime_ceiling": "L0",
       "governing_skills": [
-        "handing-off-glb-to-web",
-        "verifying-before-handoff"
+        "blendops-glb-web-handoff",
+        "blendops-final-check"
       ],
       "side_effect_classification": "none",
       "behavior": "read_only",
@@ -1551,9 +1551,9 @@
       "required_capability_tier": "L0",
       "required_governed_runtime_ceiling": "L0",
       "governing_skills": [
-        "verifying-before-handoff",
-        "handing-off-glb-to-web",
-        "budgeting-glb-for-web"
+        "blendops-final-check",
+        "blendops-glb-web-handoff",
+        "blendops-glb-budget"
       ],
       "side_effect_classification": "none",
       "behavior": "read_only",
@@ -1730,9 +1730,9 @@
       "required_capability_tier": "L1",
       "required_governed_runtime_ceiling": "L1",
       "governing_skills": [
-        "planning-camera-and-framing",
-        "planning-product-scenes",
-        "planning-scenes"
+        "blendops-camera",
+        "blendops-product-shot",
+        "blendops-scene-plan"
       ],
       "side_effect_classification": "reversible_scene_mutation",
       "behavior": "mutating",
@@ -1919,9 +1919,9 @@
       "required_capability_tier": "L1",
       "required_governed_runtime_ceiling": "L1",
       "governing_skills": [
-        "planning-lighting-and-materials",
-        "planning-product-scenes",
-        "planning-scenes"
+        "blendops-lighting-materials",
+        "blendops-product-shot",
+        "blendops-scene-plan"
       ],
       "side_effect_classification": "reversible_scene_mutation",
       "behavior": "mutating",
@@ -2097,8 +2097,8 @@
       "required_capability_tier": "L1",
       "required_governed_runtime_ceiling": "L1",
       "governing_skills": [
-        "planning-lighting-and-materials",
-        "planning-product-scenes"
+        "blendops-lighting-materials",
+        "blendops-product-shot"
       ],
       "side_effect_classification": "reversible_scene_mutation",
       "behavior": "mutating",
@@ -2277,8 +2277,8 @@
       "required_capability_tier": "L1",
       "required_governed_runtime_ceiling": "L1",
       "governing_skills": [
-        "planning-product-scenes",
-        "planning-scenes"
+        "blendops-product-shot",
+        "blendops-scene-plan"
       ],
       "side_effect_classification": "reversible_scene_mutation",
       "behavior": "mutating",
@@ -2458,8 +2458,8 @@
       "required_capability_tier": "L2",
       "required_governed_runtime_ceiling": "L2",
       "governing_skills": [
-        "verifying-before-handoff",
-        "choosing-render-and-output"
+        "blendops-final-check",
+        "blendops-render-settings"
       ],
       "side_effect_classification": "file_write_export",
       "behavior": "export",
@@ -2632,9 +2632,9 @@
       "required_capability_tier": "L2",
       "required_governed_runtime_ceiling": "L2",
       "governing_skills": [
-        "handing-off-glb-to-web",
-        "budgeting-glb-for-web",
-        "verifying-before-handoff"
+        "blendops-glb-web-handoff",
+        "blendops-glb-budget",
+        "blendops-final-check"
       ],
       "side_effect_classification": "file_write_export",
       "behavior": "export",
@@ -2685,7 +2685,7 @@
     {
       "operation_id": "op.export.import-cleared-asset",
       "display_name": "Import License-Cleared External 3D / Material Asset",
-      "purpose": "Import an external asset only after sourcing-assets clearance and a verified pre-mutation .blend checkpoint.",
+      "purpose": "Import an external asset only after blendops-assets clearance and a verified pre-mutation .blend checkpoint.",
       "category": "export_or_import",
       "supported_runtime_paths": [
         "path-2-community"
@@ -2753,7 +2753,7 @@
                 ]
               },
               "verifiedBySkill": {
-                "const": "sourcing-assets"
+                "const": "blendops-assets"
               }
             }
           }
@@ -2780,7 +2780,7 @@
       "required_capability_tier": "L2",
       "required_governed_runtime_ceiling": "L2",
       "governing_skills": [
-        "sourcing-assets"
+        "blendops-assets"
       ],
       "side_effect_classification": "external_asset_import",
       "behavior": "mutating",
@@ -2788,7 +2788,7 @@
       "required_preconditions": [
         {
           "check_id": "pre.asset_license_cleared",
-          "description": "Asset must carry Cleared license status from sourcing-assets.",
+          "description": "Asset must carry Cleared license status from blendops-assets.",
           "blocking": true
         },
         {

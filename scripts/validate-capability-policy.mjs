@@ -29,31 +29,31 @@ const CLEARED_ASSET_LICENSES = new Set([
 // while governing target runtime actions up to governedRuntimeCeiling with mandatory backup/license/confirmation gates.
 const GOVERNED_CEILING_BY_SKILL = Object.freeze({
   // L1 — Reversible Scene Mutation planners
-  'planning-product-scenes': 'L1',
-  'planning-camera-and-framing': 'L1',
-  'planning-lighting-and-materials': 'L1',
-  'planning-scenes': 'L1',
-  'planning-scenes': 'L1',
-  'planning-scenes': 'L1',
-  'planning-product-scenes': 'L1',
-  'planning-lighting-and-materials': 'L1',
-  'planning-camera-and-framing': 'L1',
-  'choosing-render-and-output': 'L1',
+  'blendops-product-shot': 'L1',
+  'blendops-camera': 'L1',
+  'blendops-lighting-materials': 'L1',
+  'blendops-scene-plan': 'L1',
+  'blendops-scene-plan': 'L1',
+  'blendops-scene-plan': 'L1',
+  'blendops-product-shot': 'L1',
+  'blendops-lighting-materials': 'L1',
+  'blendops-camera': 'L1',
+  'blendops-render-settings': 'L1',
 
   // L2 — File Export & External Asset Import planners / handoffs
-  'sourcing-assets': 'L2',
-  'sourcing-assets': 'L2',
-  'sourcing-assets': 'L2',
-  'sourcing-assets': 'L2',
-  'sourcing-assets': 'L2',
-  'choosing-render-and-output': 'L2',
-  'handing-off-glb-to-web': 'L2',
-  'budgeting-glb-for-web': 'L2',
-  'handing-off-glb-to-web': 'L2',
-  'verifying-before-handoff': 'L2',
+  'blendops-assets': 'L2',
+  'blendops-assets': 'L2',
+  'blendops-assets': 'L2',
+  'blendops-assets': 'L2',
+  'blendops-assets': 'L2',
+  'blendops-render-settings': 'L2',
+  'blendops-glb-web-handoff': 'L2',
+  'blendops-glb-budget': 'L2',
+  'blendops-glb-web-handoff': 'L2',
+  'blendops-final-check': 'L2',
 
   // L3 — Headless CLI / Batch Execution Outlines (requires explicit confirmation + backup + no user-facing raw Python)
-  'setting-up-blender-runtime': 'L3',
+  'blendops-connect-blender': 'L3',
 });
 
 let cachedSchemaValidator = null;
@@ -146,7 +146,7 @@ export function buildExpectedCapabilityPolicy(rootDir = ROOT_DIR) {
         rank: 2,
         name: 'File Export & External Asset Import',
         summary:
-          'Permits rendering still/turntable outputs, exporting .glb containers to an allowlisted output directory, and importing external 3D/material assets cleared by sourcing-assets.',
+          'Permits rendering still/turntable outputs, exporting .glb containers to an allowlisted output directory, and importing external 3D/material assets cleared by blendops-assets.',
         allowSceneMutation: true,
         allowFileExport: true,
         allowExternalAssetImport: true,
@@ -453,10 +453,10 @@ export function evaluateRuntimeCapabilityInvocation(invocation, policy = null) {
         typeof clearance !== 'object' ||
         clearance.status !== 'Cleared' ||
         !CLEARED_ASSET_LICENSES.has(clearance.spdxOrCategory) ||
-        clearance.verifiedBySkill !== 'sourcing-assets'
+        clearance.verifiedBySkill !== 'blendops-assets'
       ) {
         errors.push(
-          `External asset import blocked in ${requestedTier}: requires assetLicenseClearance { status: 'Cleared', spdxOrCategory in [${[...CLEARED_ASSET_LICENSES].join(', ')}], verifiedBySkill: 'sourcing-assets' }`,
+          `External asset import blocked in ${requestedTier}: requires assetLicenseClearance { status: 'Cleared', spdxOrCategory in [${[...CLEARED_ASSET_LICENSES].join(', ')}], verifiedBySkill: 'blendops-assets' }`,
         );
       }
     }

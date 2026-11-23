@@ -50,7 +50,7 @@
     "docs/knowledge-and-recipe-catalog.md",
     "docs/recipes/",
     "docs/workflows/",
-    "docs/examples/handing-off-glb-to-web/",
+    "docs/examples/blendops-glb-web-handoff/",
     "evals/catalog-retrieval-evals.json",
     "skills/",
     "laws/",

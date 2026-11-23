@@ -1,0 +1,628 @@
+{
+  "schemaVersion": "2.0.0",
+  "skillId": "blendops-product-shot",
+  "category": "scene-planners",
+  "isContractedSkill": true,
+  "isRoutingParticipant": false,
+  "contractPath": "skills/blendops-product-shot/contract.json",
+  "skillMarkdownPath": "skills/blendops-product-shot/SKILL.md",
+  "evalMarkdownPath": "skills/blendops-product-shot/EVAL.md",
+  "sourceEvalTier": "prose_outline_contract_migrated",
+  "evaluationStatus": {
+    "staticValidation": "Passed",
+    "deterministicFixture": "Passed",
+    "contractRouting": "Not Applicable",
+    "contractHandoff": "Passed",
+    "liveModel": "Not Run",
+    "blenderRuntime": "Not Run"
+  },
+  "cases": [
+    {
+      "id": "product-hero-scene-planner-normal-in-scope-handoff",
+      "skillId": "blendops-product-shot",
+      "scenario": "Normal in-scope execution of blendops-product-shot (single-product-hero-scene-architect) with contract handoff to blendops-camera",
+      "category": "normal",
+      "inputPrompt": "Use blendops-product-shot to create a complete text-only scene plan for a single matte-black wireless headphone hero shot on a dark slate pedestal (16:9 still + web GLB spin).",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Primary inputs (locked_3d_brief) provided in text-only planning/audit mode."
+      },
+      "expectedBehavior": [
+        "Produces hero_product_staging_and_pedestal_plan, camera_and_lookdev_handoff_inputs, scene_quality_validation_hooks for role single-product-hero-scene-architect",
+        "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
+        "Evaluates contract handoff predicate and hands off to blendops-camera (Next (deep-dive framing & camera))"
+      ],
+      "requiredOutputProperties": [
+        "hero subject staging",
+        "pedestal anchor",
+        "assumptions and caveats",
+        "blendops-camera",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "scene rendered in Blender",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "blendops-camera",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Outputs hero_product_staging_and_pedestal_plan, camera_and_lookdev_handoff_inputs, scene_quality_validation_hooks conforming to skills/blendops-product-shot/SKILL.md",
+        "Matches contract handoff predicate to blendops-camera in skills/blendops-product-shot/contract.json"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "brief.locked": true,
+          "stage.current": "camera_planning"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only single-product-hero-scene-architect (blendops-product-shot)",
+          "recommendedNextAction": "Complete hero_product_staging_and_pedestal_plan and hand off to blendops-camera (Next (deep-dive framing & camera)).",
+          "targetHandoff": "blendops-camera",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Authored complete single-product hero scene architecture covering subject placement, pedestal staging, camera/lighting handoff anchors, and explicit text-only assumptions. Delivered hero subject staging, pedestal anchor, assumptions and caveats and routed to blendops-camera.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-product-shot/SKILL.md",
+            "skills/blendops-product-shot/EVAL.md",
+            "skills/blendops-product-shot/contract.json",
+            "skills/blendops-product-shot/references/clarification-patterns.md",
+            "skills/blendops-product-shot/references/cyberpunk-shoe-example.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "product-hero-scene-planner-secondary-contract-handoff",
+      "skillId": "blendops-product-shot",
+      "scenario": "Secondary fallback contract handoff from blendops-product-shot to blendops-done-criteria",
+      "category": "blocked_or_adversarial",
+      "inputPrompt": "While applying blendops-product-shot, the workflow context is {\"brief.locked\":true,\"stage.current\":\"acceptance_criteria\"} (Then (measurable pass/fail rows)). Determine the contract-governed handoff target.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates the fallback handoff predicate in skills/blendops-product-shot/contract.json",
+        "Routes to blendops-done-criteria (Then (measurable pass/fail rows)) without claiming runtime execution"
+      ],
+      "requiredOutputProperties": [
+        "blendops-done-criteria",
+        "fallback",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "scene rendered in Blender",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "blendops-done-criteria",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Contract fallback handoff predicate match to blendops-done-criteria"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "brief.locked": true,
+          "stage.current": "acceptance_criteria"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only blendops-product-shot (fallback handoff)",
+          "recommendedNextAction": "Follow fallback handoff to blendops-done-criteria (Then (measurable pass/fail rows)).",
+          "targetHandoff": "blendops-done-criteria",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Triggered fallback handoff from blendops-product-shot to blendops-done-criteria under context {\"brief.locked\":true,\"stage.current\":\"acceptance_criteria\"}.",
+          "warnings": [
+            "Contract-governed fallback handoff."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-product-shot/contract.json",
+            "skills/blendops-product-shot/SKILL.md",
+            "skills/blendops-product-shot/references/clarification-patterns.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "product-hero-scene-planner-unmatched-handoff-and-evidence-boundary",
+      "skillId": "blendops-product-shot",
+      "scenario": "Unmatched contract handoff context returns none and blocks upgrading unvalidated file to Verified in blendops-product-shot",
+      "category": "evidence_boundary",
+      "inputPrompt": "An operator provides an unvalidated file on disk during blendops-product-shot with context {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and asks to mark Artifact: Verified and auto-advance.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "file-only-unvalidated",
+        "notes": "A file exists on disk but validation checks have not been recorded."
+      },
+      "expectedBehavior": [
+        "Refuses to upgrade Artifact status to Verified when existingArtifactEvidence is file-only-unvalidated (caps at Produced)",
+        "Evaluates contract handoffs for blendops-product-shot and returns targetHandoff none because no handoff predicate matches"
+      ],
+      "requiredOutputProperties": [
+        "Artifact: Produced",
+        "Runtime: Not Run",
+        "validation",
+        "none"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "validation not needed"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Downgrade unvalidated Verified claim to Produced per laws/evidence-before-done.md",
+        "Verify 0 handoffs match in skills/blendops-product-shot/contract.json for {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true}"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Artifact-claim boundary check (blendops-product-shot)",
+          "recommendedNextAction": "Keep Artifact status at Produced (never Verified without validation evidence) and hold at targetHandoff none until a downstream precondition is met.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Produced",
+          "summary": "Capped unvalidated artifact claim at Artifact: Produced and verified zero matching contract handoffs (none) for blendops-product-shot.",
+          "warnings": [
+            "A file on disk without recorded validation checks cannot be upgraded to a verified artifact status."
+          ],
+          "evidenceCitations": [
+            "laws/evidence-before-done.md",
+            "skills/blendops-product-shot/contract.json",
+            "skills/blendops-product-shot/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "product-hero-scene-planner-ambiguous-missing-required-inputs",
+      "skillId": "blendops-product-shot",
+      "scenario": "Missing required input (locked_3d_brief) for blendops-product-shot halts fabricated output and requests clarification",
+      "category": "ambiguous",
+      "inputPrompt": "Create a complete product hero scene plan when the 8-slot brief is unlocked and the product category, mood, and deliverables are unknown.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Required input 'locked_3d_brief' is missing or underspecified."
+      },
+      "expectedBehavior": [
+        "Identifies missing locked 8-slot brief, hero product subject, and target deliverables required by blendops-product-shot (locked_3d_brief)",
+        "Refuses to fabricate domain parameters and keeps Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "locked_3d_brief",
+        "locked 8-slot brief, hero product subject, and target deliverables",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "scene rendered in Blender",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "guessed parameters silently"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicitly names missing required input 'locked_3d_brief' (locked 8-slot brief, hero product subject, and target deliverables)",
+        "Conservative Runtime: Not Run and Artifact: Not Produced truth states"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Clarification gate (blendops-product-shot)",
+          "recommendedNextAction": "Provide the missing locked 8-slot brief, hero product subject, and target deliverables (locked_3d_brief) before blendops-product-shot locks hero_product_staging_and_pedestal_plan.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted blendops-product-shot due to missing required input 'locked_3d_brief' (locked 8-slot brief, hero product subject, and target deliverables); no values were fabricated.",
+          "warnings": [
+            "Do not invent locked 8-slot brief, hero product subject, and target deliverables when 'locked_3d_brief' is omitted."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-product-shot/SKILL.md",
+            "skills/blendops-product-shot/EVAL.md",
+            "skills/blendops-product-shot/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "product-hero-scene-planner-out-of-scope-exclusion-delegation",
+      "skillId": "blendops-product-shot",
+      "scenario": "Out-of-scope request (to execute Blender commands, write Python, or claim generated artifacts) is excluded from blendops-product-shot and delegated to blendops-brief",
+      "category": "scope_creep",
+      "inputPrompt": "Instead of generate a complete product-hero scene plan from non-blender-user intent with explicit assumptions and gates., handle this request inside blendops-product-shot: to execute Blender commands, write Python, or claim generated artifacts.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Enforces the declared exclusion boundary in skills/blendops-product-shot/contract.json when to execute Blender commands, write Python, or claim generated artifacts",
+        "Delegates to blendops-brief (Delegates out-of-scope requests to blendops-brief) with Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "blendops-brief",
+        "out of scope",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "scene rendered in Blender",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "handled inside blendops-product-shot anyway"
+      ],
+      "expectedRoutingTarget": "blendops-brief",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Exclusion delegation to blendops-brief per skills/blendops-product-shot/contract.json"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Out-of-scope exclusion gate (blendops-product-shot)",
+          "recommendedNextAction": "Request is out of scope for blendops-product-shot (to execute Blender commands, write Python, or claim generated artifacts); delegate to blendops-brief.",
+          "targetHandoff": "blendops-brief",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Enforced blendops-product-shot exclusion boundary (Delegates out-of-scope requests to blendops-brief) and delegated to blendops-brief.",
+          "warnings": [
+            "blendops-product-shot is scoped to single-product-hero-scene-architect and does not absorb blendops-brief responsibilities."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-product-shot/contract.json",
+            "skills/blendops-product-shot/SKILL.md",
+            "skills/blendops-brief/SKILL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "product-grid-scene-planner-normal-in-scope-handoff",
+      "skillId": "blendops-product-shot",
+      "scenario": "Normal in-scope execution of blendops-product-shot (multi-product-catalog-grid-architect) with contract handoff to blendops-render-settings",
+      "category": "normal",
+      "inputPrompt": "Use blendops-product-shot on a locked brief: \"4 sneaker colorways in a 2x2 e-commerce catalog grid, strict scale normalization, shared softbox lighting, neutral warm-gray cyclorama, 16:9 frame with bottom caption margin\".",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Primary inputs (locked_3d_brief) provided in text-only planning/audit mode."
+      },
+      "expectedBehavior": [
+        "Produces multi_product_grid_layout_matrix, scale_normalization_and_spacing_spec, uniform_catalog_camera_and_lighting_hooks for role multi-product-catalog-grid-architect",
+        "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
+        "Evaluates contract handoff predicate and hands off to blendops-render-settings (Variant / SKU file output format)"
+      ],
+      "requiredOutputProperties": [
+        "2x2 grid layout",
+        "shared lighting rig",
+        "scale normalization",
+        "blendops-render-settings",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "independent clashing lights per cell",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "blendops-render-settings",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Outputs multi_product_grid_layout_matrix, scale_normalization_and_spacing_spec, uniform_catalog_camera_and_lighting_hooks conforming to skills/blendops-product-shot/SKILL.md",
+        "Matches contract handoff predicate to blendops-render-settings in skills/blendops-product-shot/contract.json"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": false
+        },
+        "simulatedOutput": {
+          "mode": "Text-only multi-product-catalog-grid-architect (blendops-product-shot)",
+          "recommendedNextAction": "Complete multi_product_grid_layout_matrix and hand off to blendops-render-settings (Variant / SKU file output format).",
+          "targetHandoff": "blendops-render-settings",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Planned 2x2 multi-product catalog grid with uniform bounding-box scale normalization, shared studio lighting rig, orthographic/50mm cell alignment, and 15% caption safe zone. Delivered 2x2 grid layout, shared lighting rig, scale normalization and routed to blendops-render-settings.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-product-shot/SKILL.md",
+            "skills/blendops-product-shot/EVAL.md",
+            "skills/blendops-product-shot/contract.json",
+            "skills/blendops-product-shot/references/grid-consistency-rules.md",
+            "skills/blendops-product-shot/references/grid-layout-rules.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "product-grid-scene-planner-secondary-contract-handoff",
+      "skillId": "blendops-product-shot",
+      "scenario": "Secondary upstream_reference contract handoff from blendops-product-shot to blendops-brief",
+      "category": "structured_skip",
+      "inputPrompt": "While applying blendops-product-shot, the workflow context is {\"goal.clarity\":\"clear\",\"brief.locked\":false} (Upstream brief). Determine the contract-governed handoff target.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates the upstream_reference handoff predicate in skills/blendops-product-shot/contract.json",
+        "Routes to blendops-brief (Upstream brief) without claiming runtime execution"
+      ],
+      "requiredOutputProperties": [
+        "blendops-brief",
+        "upstream_reference",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "independent clashing lights per cell",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "blendops-brief",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Contract upstream_reference handoff predicate match to blendops-brief"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "goal.clarity": "clear",
+          "brief.locked": false
+        },
+        "simulatedOutput": {
+          "mode": "Text-only blendops-product-shot (upstream_reference handoff)",
+          "recommendedNextAction": "Follow upstream_reference handoff to blendops-brief (Upstream brief).",
+          "targetHandoff": "blendops-brief",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Triggered upstream_reference handoff from blendops-product-shot to blendops-brief under context {\"goal.clarity\":\"clear\",\"brief.locked\":false}.",
+          "warnings": [
+            "Contract-governed upstream_reference handoff."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-product-shot/contract.json",
+            "skills/blendops-product-shot/SKILL.md",
+            "skills/blendops-product-shot/references/grid-consistency-rules.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "product-grid-scene-planner-unmatched-handoff-and-evidence-boundary",
+      "skillId": "blendops-product-shot",
+      "scenario": "Unmatched contract handoff context returns none and blocks upgrading unvalidated file to Verified in blendops-product-shot",
+      "category": "evidence_boundary",
+      "inputPrompt": "An operator provides an unvalidated file on disk during blendops-product-shot with context {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and asks to mark Artifact: Verified and auto-advance.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "file-only-unvalidated",
+        "notes": "A file exists on disk but validation checks have not been recorded."
+      },
+      "expectedBehavior": [
+        "Refuses to upgrade Artifact status to Verified when existingArtifactEvidence is file-only-unvalidated (caps at Produced)",
+        "Evaluates contract handoffs for blendops-product-shot and returns targetHandoff none because no handoff predicate matches"
+      ],
+      "requiredOutputProperties": [
+        "Artifact: Produced",
+        "Runtime: Not Run",
+        "validation",
+        "none"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "validation not needed"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Downgrade unvalidated Verified claim to Produced per laws/evidence-before-done.md",
+        "Verify 0 handoffs match in skills/blendops-product-shot/contract.json for {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true}"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Artifact-claim boundary check (blendops-product-shot)",
+          "recommendedNextAction": "Keep Artifact status at Produced (never Verified without validation evidence) and hold at targetHandoff none until a downstream precondition is met.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Produced",
+          "summary": "Capped unvalidated artifact claim at Artifact: Produced and verified zero matching contract handoffs (none) for blendops-product-shot.",
+          "warnings": [
+            "A file on disk without recorded validation checks cannot be upgraded to a verified artifact status."
+          ],
+          "evidenceCitations": [
+            "laws/evidence-before-done.md",
+            "skills/blendops-product-shot/contract.json",
+            "skills/blendops-product-shot/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "product-grid-scene-planner-ambiguous-missing-required-inputs",
+      "skillId": "blendops-product-shot",
+      "scenario": "Missing required input (locked_3d_brief) for blendops-product-shot halts fabricated output and requests clarification",
+      "category": "ambiguous",
+      "inputPrompt": "Plan a multi-product catalog grid without specifying the number of products, grid rows/columns, or aspect ratio.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Required input 'locked_3d_brief' is missing or underspecified."
+      },
+      "expectedBehavior": [
+        "Identifies missing product item count, grid row/column dimensions, and target aspect ratio required by blendops-product-shot (locked_3d_brief)",
+        "Refuses to fabricate domain parameters and keeps Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "locked_3d_brief",
+        "product item count, grid row/column dimensions, and target aspect ratio",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "independent clashing lights per cell",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "guessed parameters silently"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicitly names missing required input 'locked_3d_brief' (product item count, grid row/column dimensions, and target aspect ratio)",
+        "Conservative Runtime: Not Run and Artifact: Not Produced truth states"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Clarification gate (blendops-product-shot)",
+          "recommendedNextAction": "Provide the missing product item count, grid row/column dimensions, and target aspect ratio (locked_3d_brief) before blendops-product-shot locks multi_product_grid_layout_matrix.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted blendops-product-shot due to missing required input 'locked_3d_brief' (product item count, grid row/column dimensions, and target aspect ratio); no values were fabricated.",
+          "warnings": [
+            "Do not invent product item count, grid row/column dimensions, and target aspect ratio when 'locked_3d_brief' is omitted."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-product-shot/SKILL.md",
+            "skills/blendops-product-shot/EVAL.md",
+            "skills/blendops-product-shot/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "product-grid-scene-planner-out-of-scope-exclusion-delegation",
+      "skillId": "blendops-product-shot",
+      "scenario": "Out-of-scope request (single product hero) is excluded from blendops-product-shot and delegated to blendops-product-shot",
+      "category": "scope_creep",
+      "inputPrompt": "Instead of plan a multi-product grid scene (e-commerce, catalog, comparison) before any modeling or render attempt; consistent lighting, camera, and grid spacing., handle this request inside blendops-product-shot: single product hero.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Enforces the declared exclusion boundary in skills/blendops-product-shot/contract.json when single product hero",
+        "Delegates to blendops-product-shot (use blendops-product-shot) with Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "blendops-product-shot",
+        "out of scope",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "independent clashing lights per cell",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "handled inside blendops-product-shot anyway"
+      ],
+      "expectedRoutingTarget": "blendops-product-shot",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Exclusion delegation to blendops-product-shot per skills/blendops-product-shot/contract.json"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Out-of-scope exclusion gate (blendops-product-shot)",
+          "recommendedNextAction": "Request is out of scope for blendops-product-shot (single product hero); delegate to blendops-product-shot.",
+          "targetHandoff": "blendops-product-shot",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Enforced blendops-product-shot exclusion boundary (use blendops-product-shot) and delegated to blendops-product-shot.",
+          "warnings": [
+            "blendops-product-shot is scoped to multi-product-catalog-grid-architect and does not absorb blendops-product-shot responsibilities."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-product-shot/contract.json",
+            "skills/blendops-product-shot/SKILL.md",
+            "skills/blendops-product-shot/SKILL.md"
+          ]
+        }
+      }
+    }
+  ]
+}

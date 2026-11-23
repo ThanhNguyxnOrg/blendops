@@ -22,11 +22,11 @@ const root = process.cwd();
 const skillsDir = path.join(root, 'skills');
 
 const ORIGINALLY_AFFECTED_SKILLS = [
-  'defining-done-and-gates',
-  'setting-up-blender-runtime',
-  'scoping-3d-briefs',
-  'verifying-before-handoff',
-  'using-blendops',
+  'blendops-done-criteria',
+  'blendops-connect-blender',
+  'blendops-brief',
+  'blendops-final-check',
+  'blendops-start',
 ];
 
 const EXPECTED_EXTENDED_HEADINGS = [
@@ -128,7 +128,7 @@ describe('Catalog Template Completion & F-05 Resolution', () => {
   });
 
   it('Scenario 3: removing a required heading from a real skill causes structural validation to fail', () => {
-    const relPath = 'skills/defining-done-and-gates/SKILL.md';
+    const relPath = 'skills/blendops-done-criteria/SKILL.md';
     const originalMd = fs.readFileSync(path.join(root, relPath), 'utf8');
 
     for (const targetHeading of ['Decision tree', 'User-facing response template', 'Purpose']) {
@@ -146,7 +146,7 @@ describe('Catalog Template Completion & F-05 Resolution', () => {
   });
 
   it('Scenario 4: duplicating a required heading in a real skill causes structural validation to fail', () => {
-    const relPath = 'skills/setting-up-blender-runtime/SKILL.md';
+    const relPath = 'skills/blendops-connect-blender/SKILL.md';
     const originalMd = fs.readFileSync(path.join(root, relPath), 'utf8');
     const mutatedMd = `${originalMd}\n## Troubleshooting\n\nDuplicate troubleshooting section content for test.\n`;
 
@@ -305,7 +305,7 @@ describe('Catalog Template Completion & F-05 Resolution', () => {
       execFileSync('git', ['commit', '-m', 'Initial temp commit'], { cwd: tempDir });
 
       // Remove "## Decision tree" and "## Playbooks" from one skill in tempDir
-      const targetSkillFile = path.join(tempDir, 'skills', 'setting-up-blender-runtime', 'SKILL.md');
+      const targetSkillFile = path.join(tempDir, 'skills', 'blendops-connect-blender', 'SKILL.md');
       const txt = fs.readFileSync(targetSkillFile, 'utf8');
       const mutated = txt
         .replace(/^##\s+Decision tree\s*$/m, '### Decision tree')

@@ -9,8 +9,8 @@
  * 2. Five-layer architecture reconciliation & 14-skill / 199-reference audit
  *    (`docs/audits/skill-architecture-audit.json` & `docs/audits/skill-architecture-audit.md`).
  * 3. Upgrade of existing recipe architecture without creating a competing system
- *    (`skills/scoping-3d-briefs/references/recipe-catalog.md`,
- *     `skills/scoping-3d-briefs/references/recipe-grouping-rules.md`,
+ *    (`skills/blendops-brief/references/recipe-catalog.md`,
+ *     `skills/blendops-brief/references/recipe-grouping-rules.md`,
  *     `docs/recipes/cyberpunk-shoe-hero.md`, `packs/product-hero-v0/PACK.md`).
  * 4. Deterministic catalog index (`registry/catalog-index.json`), retrieval accuracy across
  *    all 32 evaluation cases (`evals/catalog-retrieval-evals.json`), disambiguation, and
@@ -153,13 +153,13 @@ describe('Architecture Reconciliation & Knowledge/Recipe Foundation', () => {
     assert.equal(heroRecipe.expected_outputs.truth_state_defaults.runtime_status, 'Not Run');
     assert.equal(heroRecipe.expected_outputs.truth_state_defaults.artifact_status, 'Not Produced');
 
-    // Verify scoping-3d-briefs and scoping-3d-briefs references list all 10 canonical recipe.* IDs
+    // Verify blendops-brief and blendops-brief references list all 10 canonical recipe.* IDs
     const fitCatalogMd = fs.readFileSync(
-      path.join(ROOT, 'skills/scoping-3d-briefs/references/recipe-catalog.md'),
+      path.join(ROOT, 'skills/blendops-brief/references/recipe-catalog.md'),
       'utf8',
     );
     const decomposerRulesMd = fs.readFileSync(
-      path.join(ROOT, 'skills/scoping-3d-briefs/references/recipe-grouping-rules.md'),
+      path.join(ROOT, 'skills/blendops-brief/references/recipe-grouping-rules.md'),
       'utf8',
     );
     const docsRecipesReadme = fs.readFileSync(path.join(ROOT, 'docs/recipes/README.md'), 'utf8');
@@ -167,11 +167,11 @@ describe('Architecture Reconciliation & Knowledge/Recipe Foundation', () => {
     for (const reqId of REQUIRED_RECIPE_IDS) {
       assert.ok(
         fitCatalogMd.includes(reqId),
-        `skills/scoping-3d-briefs/references/recipe-catalog.md must include ${reqId}`,
+        `skills/blendops-brief/references/recipe-catalog.md must include ${reqId}`,
       );
       assert.ok(
         decomposerRulesMd.includes(reqId),
-        `skills/scoping-3d-briefs/references/recipe-grouping-rules.md must include ${reqId}`,
+        `skills/blendops-brief/references/recipe-grouping-rules.md must include ${reqId}`,
       );
       assert.ok(
         docsRecipesReadme.includes(reqId),
@@ -220,7 +220,7 @@ describe('Architecture Reconciliation & Knowledge/Recipe Foundation', () => {
     assert.equal(resolvedSource.found, true);
     assert.equal(resolvedSource.type, 'source');
 
-    const resolvedSkill = resolveCatalogRecord(ROOT, 'handing-off-glb-to-web');
+    const resolvedSkill = resolveCatalogRecord(ROOT, 'blendops-glb-web-handoff');
     assert.equal(resolvedSkill.found, true);
     assert.equal(resolvedSkill.type, 'skill');
 

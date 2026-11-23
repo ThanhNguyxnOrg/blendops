@@ -129,10 +129,10 @@
           "knowledge.organic-sculpt-to-retopology-workflow"
         ],
         "skill_ids": [
-          "budgeting-glb-for-web",
-          "verifying-before-handoff",
-          "planning-product-scenes",
-          "planning-scenes"
+          "blendops-glb-budget",
+          "blendops-final-check",
+          "blendops-product-shot",
+          "blendops-scene-plan"
         ],
         "recipe_ids": [
           "recipe.product-hero-scene",
@@ -160,7 +160,7 @@
       },
       "evidence_status": "version-checked",
       "promoted_from_skill_refs": [
-        "skills/budgeting-glb-for-web/references/topology-hints.md"
+        "skills/blendops-glb-budget/references/topology-hints.md"
       ]
     },
     {
@@ -289,9 +289,9 @@
           "knowledge.gltf-2-coordinate-system-and-transform-conventions"
         ],
         "skill_ids": [
-          "troubleshooting-blender-output",
-          "budgeting-glb-for-web",
-          "verifying-before-handoff"
+          "blendops-fix-problems",
+          "blendops-glb-budget",
+          "blendops-final-check"
         ],
         "recipe_ids": [
           "recipe.product-hero-scene",
@@ -321,8 +321,8 @@
       },
       "evidence_status": "version-checked",
       "promoted_from_skill_refs": [
-        "skills/troubleshooting-blender-output/references/common-symptom-playbooks.md",
-        "skills/budgeting-glb-for-web/references/per-mesh-rules.md"
+        "skills/blendops-fix-problems/references/common-symptom-playbooks.md",
+        "skills/blendops-glb-budget/references/per-mesh-rules.md"
       ]
     },
     {
@@ -451,9 +451,9 @@
           "knowledge.quad-dominant-subdivision-topology"
         ],
         "skill_ids": [
-          "troubleshooting-blender-output",
-          "budgeting-glb-for-web",
-          "verifying-before-handoff"
+          "blendops-fix-problems",
+          "blendops-glb-budget",
+          "blendops-final-check"
         ],
         "recipe_ids": [
           "recipe.hard-surface-prop",
@@ -482,7 +482,7 @@
       "evidence_status": "version-checked",
       "promoted_from_skill_refs": [
         "docs/blender-version-compatibility.md",
-        "skills/troubleshooting-blender-output/references/common-symptom-playbooks.md"
+        "skills/blendops-fix-problems/references/common-symptom-playbooks.md"
       ]
     },
     {
@@ -606,9 +606,9 @@
           "knowledge.mesh-manifold-normals-and-scale-hygiene"
         ],
         "skill_ids": [
-          "planning-product-scenes",
-          "budgeting-glb-for-web",
-          "troubleshooting-blender-output"
+          "blendops-product-shot",
+          "blendops-glb-budget",
+          "blendops-fix-problems"
         ],
         "recipe_ids": [
           "recipe.hard-surface-prop",
@@ -636,8 +636,8 @@
       },
       "evidence_status": "version-checked",
       "promoted_from_skill_refs": [
-        "skills/budgeting-glb-for-web/references/topology-hints.md",
-        "skills/planning-product-scenes/references/product-hero-playbooks.md"
+        "skills/blendops-glb-budget/references/topology-hints.md",
+        "skills/blendops-product-shot/references/product-hero-playbooks.md"
       ]
     },
     {
@@ -766,8 +766,8 @@
           "knowledge.armature-joint-hierarchy-and-linear-blend-skinning"
         ],
         "skill_ids": [
-          "planning-scenes",
-          "budgeting-glb-for-web"
+          "blendops-scene-plan",
+          "blendops-glb-budget"
         ],
         "recipe_ids": [
           "recipe.rigged-and-animated-asset",
@@ -795,8 +795,8 @@
       },
       "evidence_status": "version-checked",
       "promoted_from_skill_refs": [
-        "skills/planning-scenes/references/style-consistency-rules.md",
-        "skills/budgeting-glb-for-web/references/topology-hints.md"
+        "skills/blendops-scene-plan/references/style-consistency-rules.md",
+        "skills/blendops-glb-budget/references/topology-hints.md"
       ]
     },
     {
@@ -927,9 +927,9 @@
           "knowledge.three-point-and-hdri-studio-lighting"
         ],
         "skill_ids": [
-          "planning-product-scenes",
-          "planning-lighting-and-materials",
-          "budgeting-glb-for-web"
+          "blendops-product-shot",
+          "blendops-lighting-materials",
+          "blendops-glb-budget"
         ],
         "recipe_ids": [
           "recipe.product-hero-scene",
@@ -957,8 +957,8 @@
       },
       "evidence_status": "version-checked",
       "promoted_from_skill_refs": [
-        "skills/planning-product-scenes/references/product-hero-playbooks.md",
-        "skills/planning-product-scenes/references/cyberpunk-shoe-example.md"
+        "skills/blendops-product-shot/references/product-hero-playbooks.md",
+        "skills/blendops-product-shot/references/cyberpunk-shoe-example.md"
       ]
     },
     {
@@ -1082,9 +1082,9 @@
           "knowledge.shader-node-gltf-export-portability"
         ],
         "skill_ids": [
-          "budgeting-glb-for-web",
-          "planning-lighting-and-materials",
-          "handing-off-glb-to-web"
+          "blendops-glb-budget",
+          "blendops-lighting-materials",
+          "blendops-glb-web-handoff"
         ],
         "recipe_ids": [
           "recipe.procedural-geometry-nodes-asset",
@@ -1113,7 +1113,7 @@
       "evidence_status": "version-checked",
       "promoted_from_skill_refs": [
         "docs/blender-version-compatibility.md",
-        "skills/budgeting-glb-for-web/references/instance-counting-rules.md"
+        "skills/blendops-glb-budget/references/instance-counting-rules.md"
       ]
     },
     {
@@ -1136,7 +1136,7 @@
       "applicability": {
         "when_to_apply": [
           "Scattering repeated props, foliage, architectural modules, or fasteners via Geometry Nodes (`Instance on Points`) or Collection Instances.",
-          "Auditing scene memory and polycount budgets in `budgeting-glb-for-web` and `budgeting-glb-for-web`."
+          "Auditing scene memory and polycount budgets in `blendops-glb-budget` and `blendops-glb-budget`."
         ],
         "when_not_to_apply": [
           "Single unique hero mesh with zero repeated components."
@@ -1160,7 +1160,7 @@
         "workflow_steps": [
           "Place source scatter assets in a dedicated collection with origins at the base contact point and enable `Separate Children` and `Reset Children` on `Collection Info`.",
           "Enable `Pick Instance` on `Instance on Points` so each point instances one child rather than the entire collection at once.",
-          "Audit both `Unique Triangles` (VRAM/file size driver) and `Total Evaluated Scene Triangles` (rasterization vertex load) in `budgeting-glb-for-web`."
+          "Audit both `Unique Triangles` (VRAM/file size driver) and `Total Evaluated Scene Triangles` (rasterization vertex load) in `blendops-glb-budget`."
         ],
         "recommended_parameters": {
           "collection_info_separate_children": true,
@@ -1245,8 +1245,8 @@
           "knowledge.triangle-draw-call-and-vram-budgets"
         ],
         "skill_ids": [
-          "budgeting-glb-for-web",
-          "handing-off-glb-to-web"
+          "blendops-glb-budget",
+          "blendops-glb-web-handoff"
         ],
         "recipe_ids": [
           "recipe.procedural-geometry-nodes-asset",
@@ -1275,8 +1275,8 @@
       },
       "evidence_status": "version-checked",
       "promoted_from_skill_refs": [
-        "skills/budgeting-glb-for-web/references/instance-counting-rules.md",
-        "skills/budgeting-glb-for-web/references/budget-tiers.md"
+        "skills/blendops-glb-budget/references/instance-counting-rules.md",
+        "skills/blendops-glb-budget/references/budget-tiers.md"
       ]
     },
     {
@@ -1401,9 +1401,9 @@
           "knowledge.environment-depth-layering-and-atmospheric-perspective"
         ],
         "skill_ids": [
-          "planning-scenes",
-          "budgeting-glb-for-web",
-          "planning-product-scenes"
+          "blendops-scene-plan",
+          "blendops-glb-budget",
+          "blendops-product-shot"
         ],
         "recipe_ids": [
           "recipe.procedural-geometry-nodes-asset",
@@ -1431,8 +1431,8 @@
       },
       "evidence_status": "version-checked",
       "promoted_from_skill_refs": [
-        "skills/planning-scenes/references/depth-layering-rules.md",
-        "skills/budgeting-glb-for-web/references/instance-counting-rules.md"
+        "skills/blendops-scene-plan/references/depth-layering-rules.md",
+        "skills/blendops-glb-budget/references/instance-counting-rules.md"
       ]
     },
     {
@@ -1455,7 +1455,7 @@
       "applicability": {
         "when_to_apply": [
           "Unwrapping any 3D mesh for image texturing, normal/AO baking, or glTF 2.0 export.",
-          "Auditing UV stretching and texture sharpness in `planning-lighting-and-materials`."
+          "Auditing UV stretching and texture sharpness in `blendops-lighting-materials`."
         ],
         "when_not_to_apply": [
           "Untextured meshes that rely strictly on uniform material scalar values or camera-projected triplanar shaders inside offline Cycles renders."
@@ -1561,8 +1561,8 @@
           "knowledge.mesh-manifold-normals-and-scale-hygiene"
         ],
         "skill_ids": [
-          "planning-lighting-and-materials",
-          "budgeting-glb-for-web"
+          "blendops-lighting-materials",
+          "blendops-glb-budget"
         ],
         "recipe_ids": [
           "recipe.uv-and-pbr-material-preparation",
@@ -1591,8 +1591,8 @@
       },
       "evidence_status": "version-checked",
       "promoted_from_skill_refs": [
-        "skills/planning-lighting-and-materials/references/texture-budget-rules.md",
-        "skills/planning-lighting-and-materials/references/material-portability.md"
+        "skills/blendops-lighting-materials/references/texture-budget-rules.md",
+        "skills/blendops-lighting-materials/references/material-portability.md"
       ]
     },
     {
@@ -1723,9 +1723,9 @@
           "knowledge.triangle-draw-call-and-vram-budgets"
         ],
         "skill_ids": [
-          "planning-lighting-and-materials",
-          "budgeting-glb-for-web",
-          "handing-off-glb-to-web"
+          "blendops-lighting-materials",
+          "blendops-glb-budget",
+          "blendops-glb-web-handoff"
         ],
         "recipe_ids": [
           "recipe.uv-and-pbr-material-preparation",
@@ -1753,8 +1753,8 @@
       },
       "evidence_status": "version-checked",
       "promoted_from_skill_refs": [
-        "skills/planning-lighting-and-materials/references/texture-budget-rules.md",
-        "skills/budgeting-glb-for-web/references/degradation-plan.md"
+        "skills/blendops-lighting-materials/references/texture-budget-rules.md",
+        "skills/blendops-glb-budget/references/degradation-plan.md"
       ]
     },
     {
@@ -1777,7 +1777,7 @@
       "applicability": {
         "when_to_apply": [
           "Baking high-poly sculpts, subdivision surfaces, bevels, or procedural bump/shader setups into tangent-space normal and ambient occlusion maps.",
-          "Diagnosing inverted normal lighting or seam discontinuities in `planning-lighting-and-materials` and `troubleshooting-blender-output`."
+          "Diagnosing inverted normal lighting or seam discontinuities in `blendops-lighting-materials` and `blendops-fix-problems`."
         ],
         "when_not_to_apply": [
           "Flat untextured meshes or unbaked high-poly offline renders."
@@ -1889,8 +1889,8 @@
           "knowledge.organic-sculpt-to-retopology-workflow"
         ],
         "skill_ids": [
-          "planning-lighting-and-materials",
-          "choosing-render-and-output"
+          "blendops-lighting-materials",
+          "blendops-render-settings"
         ],
         "recipe_ids": [
           "recipe.uv-and-pbr-material-preparation",
@@ -1919,8 +1919,8 @@
       },
       "evidence_status": "version-checked",
       "promoted_from_skill_refs": [
-        "skills/planning-lighting-and-materials/references/pbr-sanity-rules.md",
-        "skills/troubleshooting-blender-output/references/common-symptom-playbooks.md"
+        "skills/blendops-lighting-materials/references/pbr-sanity-rules.md",
+        "skills/blendops-fix-problems/references/common-symptom-playbooks.md"
       ]
     },
     {
@@ -1942,7 +1942,7 @@
       ],
       "applicability": {
         "when_to_apply": [
-          "Authoring or auditing any PBR material in Blender (`planning-lighting-and-materials` and `planning-lighting-and-materials`).",
+          "Authoring or auditing any PBR material in Blender (`blendops-lighting-materials` and `blendops-lighting-materials`).",
           "Migrating shader graphs between Blender 3.6 LTS (`Principled BSDF v1`) and Blender 4.0+/4.2 LTS/5.1+ (`Principled BSDF v2`)."
         ],
         "when_not_to_apply": [
@@ -2051,8 +2051,8 @@
           "knowledge.agx-filmic-color-management-and-cycles-eevee"
         ],
         "skill_ids": [
-          "planning-lighting-and-materials",
-          "planning-product-scenes"
+          "blendops-lighting-materials",
+          "blendops-product-shot"
         ],
         "recipe_ids": [
           "recipe.product-hero-scene",
@@ -2083,7 +2083,7 @@
       "evidence_status": "version-checked",
       "promoted_from_skill_refs": [
         "docs/blender-version-compatibility.md",
-        "skills/planning-lighting-and-materials/references/pbr-sanity-rules.md"
+        "skills/blendops-lighting-materials/references/pbr-sanity-rules.md"
       ]
     },
     {
@@ -2106,7 +2106,7 @@
       "applicability": {
         "when_to_apply": [
           "Wiring image textures into Principled BSDF for rendering or glTF 2.0 / GLB export.",
-          "Auditing material setups in `planning-lighting-and-materials` and `budgeting-glb-for-web`."
+          "Auditing material setups in `blendops-lighting-materials` and `blendops-glb-budget`."
         ],
         "when_not_to_apply": [
           "Untextured scalar-only materials."
@@ -2210,9 +2210,9 @@
           "knowledge.high-to-low-normal-and-ao-baking"
         ],
         "skill_ids": [
-          "planning-lighting-and-materials",
-          "handing-off-glb-to-web",
-          "budgeting-glb-for-web"
+          "blendops-lighting-materials",
+          "blendops-glb-web-handoff",
+          "blendops-glb-budget"
         ],
         "recipe_ids": [
           "recipe.uv-and-pbr-material-preparation",
@@ -2242,8 +2242,8 @@
       },
       "evidence_status": "version-checked",
       "promoted_from_skill_refs": [
-        "skills/planning-lighting-and-materials/references/pbr-sanity-rules.md",
-        "skills/planning-lighting-and-materials/references/web-material-simplification.md"
+        "skills/blendops-lighting-materials/references/pbr-sanity-rules.md",
+        "skills/blendops-lighting-materials/references/web-material-simplification.md"
       ]
     },
     {
@@ -2266,7 +2266,7 @@
       ],
       "applicability": {
         "when_to_apply": [
-          "Planning or auditing materials for any asset that will be exported to `.glb` / `.gltf` (`planning-lighting-and-materials`, `planning-lighting-and-materials`, `handing-off-glb-to-web`)."
+          "Planning or auditing materials for any asset that will be exported to `.glb` / `.gltf` (`blendops-lighting-materials`, `blendops-lighting-materials`, `blendops-glb-web-handoff`)."
         ],
         "when_not_to_apply": [
           "Assets rendered exclusively inside Blender Cycles/EEVEE with zero 3D file interchange."
@@ -2373,8 +2373,8 @@
           "knowledge.high-to-low-normal-and-ao-baking"
         ],
         "skill_ids": [
-          "planning-lighting-and-materials",
-          "handing-off-glb-to-web"
+          "blendops-lighting-materials",
+          "blendops-glb-web-handoff"
         ],
         "recipe_ids": [
           "recipe.product-hero-scene",
@@ -2405,8 +2405,8 @@
       "evidence_status": "version-checked",
       "promoted_from_skill_refs": [
         "docs/blender-version-compatibility.md",
-        "skills/planning-lighting-and-materials/references/material-portability.md",
-        "skills/planning-lighting-and-materials/references/consumer-stack-rules.md"
+        "skills/blendops-lighting-materials/references/material-portability.md",
+        "skills/blendops-lighting-materials/references/consumer-stack-rules.md"
       ]
     },
     {
@@ -2428,7 +2428,7 @@
       ],
       "applicability": {
         "when_to_apply": [
-          "Planning or auditing lighting for product hero scenes, product grids, or character portraits (`planning-lighting-and-materials`, `planning-lighting-and-materials`, `planning-product-scenes`, `planning-scenes`)."
+          "Planning or auditing lighting for product hero scenes, product grids, or character portraits (`blendops-lighting-materials`, `blendops-lighting-materials`, `blendops-product-shot`, `blendops-scene-plan`)."
         ],
         "when_not_to_apply": [
           "Pure sun/sky exterior architectural daylight studies where a single physical sun + sky atmosphere dominates."
@@ -2533,9 +2533,9 @@
           "knowledge.threejs-r3f-tone-mapping-and-environment-parity"
         ],
         "skill_ids": [
-          "planning-lighting-and-materials",
-          "planning-product-scenes",
-          "planning-scenes"
+          "blendops-lighting-materials",
+          "blendops-product-shot",
+          "blendops-scene-plan"
         ],
         "recipe_ids": [
           "recipe.product-hero-scene",
@@ -2564,10 +2564,10 @@
       },
       "evidence_status": "version-checked",
       "promoted_from_skill_refs": [
-        "skills/planning-lighting-and-materials/references/lighting-patterns.md",
-        "skills/planning-lighting-and-materials/references/intensity-ranges.md",
-        "skills/planning-lighting-and-materials/references/hdri-balance-rules.md",
-        "skills/planning-lighting-and-materials/references/shadow-softness-rules.md"
+        "skills/blendops-lighting-materials/references/lighting-patterns.md",
+        "skills/blendops-lighting-materials/references/intensity-ranges.md",
+        "skills/blendops-lighting-materials/references/hdri-balance-rules.md",
+        "skills/blendops-lighting-materials/references/shadow-softness-rules.md"
       ]
     },
     {
@@ -2589,7 +2589,7 @@
       ],
       "applicability": {
         "when_to_apply": [
-          "Configuring camera optics, framing, and depth of field in `planning-camera-and-framing`, `planning-camera-and-framing`, `planning-product-scenes`, `planning-scenes`, `planning-scenes`, and `planning-scenes`."
+          "Configuring camera optics, framing, and depth of field in `blendops-camera`, `blendops-camera`, `blendops-product-shot`, `blendops-scene-plan`, `blendops-scene-plan`, and `blendops-scene-plan`."
         ],
         "when_not_to_apply": [
           "Asset-only geometry preparation where no camera or render view is configured."
@@ -2689,9 +2689,9 @@
           "knowledge.environment-depth-layering-and-atmospheric-perspective"
         ],
         "skill_ids": [
-          "planning-camera-and-framing",
-          "planning-product-scenes",
-          "planning-scenes"
+          "blendops-camera",
+          "blendops-product-shot",
+          "blendops-scene-plan"
         ],
         "recipe_ids": [
           "recipe.product-hero-scene",
@@ -2720,10 +2720,10 @@
       },
       "evidence_status": "version-checked",
       "promoted_from_skill_refs": [
-        "skills/planning-camera-and-framing/references/camera-presets.md",
-        "skills/planning-camera-and-framing/references/camera-rubric.md",
-        "skills/planning-scenes/references/interior-camera-rules.md",
-        "skills/planning-scenes/references/portrait-framing-rules.md"
+        "skills/blendops-camera/references/camera-presets.md",
+        "skills/blendops-camera/references/camera-rubric.md",
+        "skills/blendops-scene-plan/references/interior-camera-rules.md",
+        "skills/blendops-scene-plan/references/portrait-framing-rules.md"
       ]
     },
     {
@@ -2745,7 +2745,7 @@
       ],
       "applicability": {
         "when_to_apply": [
-          "Selecting color management (`planning-lighting-and-materials`), render engine (`choosing-render-and-output`), and output file format (`choosing-render-and-output`).",
+          "Selecting color management (`blendops-lighting-materials`), render engine (`blendops-render-settings`), and output file format (`blendops-render-settings`).",
           "Synchronizing Blender lookdev with Three.js / React Three Fiber web viewers."
         ],
         "when_not_to_apply": [
@@ -2852,8 +2852,8 @@
           "knowledge.threejs-r3f-tone-mapping-and-environment-parity"
         ],
         "skill_ids": [
-          "planning-lighting-and-materials",
-          "choosing-render-and-output"
+          "blendops-lighting-materials",
+          "blendops-render-settings"
         ],
         "recipe_ids": [
           "recipe.product-hero-scene",
@@ -2885,9 +2885,9 @@
       "evidence_status": "version-checked",
       "promoted_from_skill_refs": [
         "docs/blender-version-compatibility.md",
-        "skills/planning-lighting-and-materials/references/look-comparison.md",
-        "skills/choosing-render-and-output/references/engine-feature-matrix.md",
-        "skills/choosing-render-and-output/references/bit-depth-rules.md"
+        "skills/blendops-lighting-materials/references/look-comparison.md",
+        "skills/blendops-render-settings/references/engine-feature-matrix.md",
+        "skills/blendops-render-settings/references/bit-depth-rules.md"
       ]
     },
     {
@@ -2909,7 +2909,7 @@
       ],
       "applicability": {
         "when_to_apply": [
-          "Rigging and skinning any character, creature, or articulated mechanical asset destined for animation playback or glTF/GLB export (`handing-off-glb-to-web`)."
+          "Rigging and skinning any character, creature, or articulated mechanical asset destined for animation playback or glTF/GLB export (`blendops-glb-web-handoff`)."
         ],
         "when_not_to_apply": [
           "Static unrigged props."
@@ -3012,8 +3012,8 @@
           "knowledge.gltf-2-coordinate-system-and-transform-conventions"
         ],
         "skill_ids": [
-          "handing-off-glb-to-web",
-          "budgeting-glb-for-web"
+          "blendops-glb-web-handoff",
+          "blendops-glb-budget"
         ],
         "recipe_ids": [
           "recipe.rigged-and-animated-asset",
@@ -3042,8 +3042,8 @@
       "evidence_status": "version-checked",
       "promoted_from_skill_refs": [
         "docs/blender-version-compatibility.md",
-        "skills/handing-off-glb-to-web/references/animation-types.md",
-        "skills/handing-off-glb-to-web/references/web-stack-caveats.md"
+        "skills/blendops-glb-web-handoff/references/animation-types.md",
+        "skills/blendops-glb-web-handoff/references/web-stack-caveats.md"
       ]
     },
     {
@@ -3155,8 +3155,8 @@
           "knowledge.glb-binary-chunk-alignment-and-khronos-validation"
         ],
         "skill_ids": [
-          "handing-off-glb-to-web",
-          "budgeting-glb-for-web"
+          "blendops-glb-web-handoff",
+          "blendops-glb-budget"
         ],
         "recipe_ids": [
           "recipe.rigged-and-animated-asset",
@@ -3184,9 +3184,9 @@
       },
       "evidence_status": "version-checked",
       "promoted_from_skill_refs": [
-        "skills/handing-off-glb-to-web/references/animation-types.md",
-        "skills/handing-off-glb-to-web/references/web-stack-caveats.md",
-        "skills/handing-off-glb-to-web/references/component-shape-patterns.md"
+        "skills/blendops-glb-web-handoff/references/animation-types.md",
+        "skills/blendops-glb-web-handoff/references/web-stack-caveats.md",
+        "skills/blendops-glb-web-handoff/references/component-shape-patterns.md"
       ]
     },
     {
@@ -3294,8 +3294,8 @@
           "knowledge.volumetrics-fog-and-principled-volume-tradeoffs"
         ],
         "skill_ids": [
-          "handing-off-glb-to-web",
-          "verifying-before-handoff"
+          "blendops-glb-web-handoff",
+          "blendops-final-check"
         ],
         "recipe_ids": [
           "recipe.rigged-and-animated-asset",
@@ -3324,8 +3324,8 @@
       },
       "evidence_status": "source-reviewed",
       "promoted_from_skill_refs": [
-        "skills/handing-off-glb-to-web/references/animation-types.md",
-        "skills/handing-off-glb-to-web/references/web-stack-caveats.md"
+        "skills/blendops-glb-web-handoff/references/animation-types.md",
+        "skills/blendops-glb-web-handoff/references/web-stack-caveats.md"
       ]
     },
     {
@@ -3432,10 +3432,10 @@
           "knowledge.agx-filmic-color-management-and-cycles-eevee"
         ],
         "skill_ids": [
-          "planning-lighting-and-materials",
-          "planning-scenes",
-          "choosing-render-and-output",
-          "handing-off-glb-to-web"
+          "blendops-lighting-materials",
+          "blendops-scene-plan",
+          "blendops-render-settings",
+          "blendops-glb-web-handoff"
         ],
         "recipe_ids": [
           "recipe.stylized-environment-scene",
@@ -3465,9 +3465,9 @@
       },
       "evidence_status": "version-checked",
       "promoted_from_skill_refs": [
-        "skills/planning-lighting-and-materials/references/cyberpunk-lookdev.md",
-        "skills/planning-scenes/references/depth-layering-rules.md",
-        "skills/choosing-render-and-output/references/engine-feature-matrix.md"
+        "skills/blendops-lighting-materials/references/cyberpunk-lookdev.md",
+        "skills/blendops-scene-plan/references/depth-layering-rules.md",
+        "skills/blendops-render-settings/references/engine-feature-matrix.md"
       ]
     },
     {
@@ -3578,9 +3578,9 @@
           "knowledge.procedural-instancing-and-realize-instances-budget"
         ],
         "skill_ids": [
-          "verifying-before-handoff",
-          "planning-scenes",
-          "planning-product-scenes"
+          "blendops-final-check",
+          "blendops-scene-plan",
+          "blendops-product-shot"
         ],
         "recipe_ids": [
           "recipe.stylized-environment-scene",
@@ -3610,9 +3610,9 @@
       },
       "evidence_status": "version-checked",
       "promoted_from_skill_refs": [
-        "skills/verifying-before-handoff/references/blocker-catalog.md",
-        "skills/planning-scenes/references/furniture-layout-rules.md",
-        "skills/planning-product-scenes/references/clarification-patterns.md"
+        "skills/blendops-final-check/references/blocker-catalog.md",
+        "skills/blendops-scene-plan/references/furniture-layout-rules.md",
+        "skills/blendops-product-shot/references/clarification-patterns.md"
       ]
     },
     {
@@ -3717,9 +3717,9 @@
           "knowledge.volumetrics-fog-and-principled-volume-tradeoffs"
         ],
         "skill_ids": [
-          "planning-product-scenes",
-          "planning-scenes",
-          "planning-camera-and-framing"
+          "blendops-product-shot",
+          "blendops-scene-plan",
+          "blendops-camera"
         ],
         "recipe_ids": [
           "recipe.product-hero-scene",
@@ -3749,9 +3749,9 @@
       },
       "evidence_status": "source-reviewed",
       "promoted_from_skill_refs": [
-        "skills/planning-product-scenes/references/clarification-patterns.md",
-        "skills/planning-scenes/references/depth-layering-rules.md",
-        "skills/planning-camera-and-framing/references/aspect-ratio-rules.md"
+        "skills/blendops-product-shot/references/clarification-patterns.md",
+        "skills/blendops-scene-plan/references/depth-layering-rules.md",
+        "skills/blendops-camera/references/aspect-ratio-rules.md"
       ]
     },
     {
@@ -3862,9 +3862,9 @@
           "knowledge.normal-roughness-and-orm-channel-packing"
         ],
         "skill_ids": [
-          "budgeting-glb-for-web",
-          "planning-lighting-and-materials",
-          "defining-done-and-gates"
+          "blendops-glb-budget",
+          "blendops-lighting-materials",
+          "blendops-done-criteria"
         ],
         "recipe_ids": [
           "recipe.web-ready-asset-optimization",
@@ -3894,8 +3894,8 @@
       },
       "evidence_status": "source-reviewed",
       "promoted_from_skill_refs": [
-        "skills/budgeting-glb-for-web/references/instance-counting-rules.md",
-        "skills/budgeting-glb-for-web/references/budget-tiers.md"
+        "skills/blendops-glb-budget/references/instance-counting-rules.md",
+        "skills/blendops-glb-budget/references/budget-tiers.md"
       ]
     },
     {
@@ -4002,9 +4002,9 @@
           "knowledge.uv-seam-placement-and-texel-density"
         ],
         "skill_ids": [
-          "budgeting-glb-for-web",
-          "handing-off-glb-to-web",
-          "verifying-before-handoff"
+          "blendops-glb-budget",
+          "blendops-glb-web-handoff",
+          "blendops-final-check"
         ],
         "recipe_ids": [
           "recipe.web-ready-asset-optimization",
@@ -4033,8 +4033,8 @@
       },
       "evidence_status": "source-reviewed",
       "promoted_from_skill_refs": [
-        "skills/budgeting-glb-for-web/references/instance-counting-rules.md",
-        "skills/handing-off-glb-to-web/references/component-shape-patterns.md"
+        "skills/blendops-glb-budget/references/instance-counting-rules.md",
+        "skills/blendops-glb-web-handoff/references/component-shape-patterns.md"
       ]
     },
     {
@@ -4146,9 +4146,9 @@
           "knowledge.glb-binary-chunk-alignment-and-khronos-validation"
         ],
         "skill_ids": [
-          "budgeting-glb-for-web",
-          "handing-off-glb-to-web",
-          "choosing-render-and-output"
+          "blendops-glb-budget",
+          "blendops-glb-web-handoff",
+          "blendops-render-settings"
         ],
         "recipe_ids": [
           "recipe.web-ready-asset-optimization",
@@ -4177,8 +4177,8 @@
       },
       "evidence_status": "version-checked",
       "promoted_from_skill_refs": [
-        "skills/budgeting-glb-for-web/references/budget-tiers.md",
-        "skills/handing-off-glb-to-web/references/artifact-status-language.md"
+        "skills/blendops-glb-budget/references/budget-tiers.md",
+        "skills/blendops-glb-web-handoff/references/artifact-status-language.md"
       ]
     },
     {
@@ -4283,8 +4283,8 @@
           "knowledge.threejs-r3f-tone-mapping-and-environment-parity"
         ],
         "skill_ids": [
-          "verifying-before-handoff",
-          "handing-off-glb-to-web"
+          "blendops-final-check",
+          "blendops-glb-web-handoff"
         ],
         "recipe_ids": [
           "recipe.blender-to-glb-handoff",
@@ -4314,8 +4314,8 @@
       },
       "evidence_status": "source-reviewed",
       "promoted_from_skill_refs": [
-        "skills/verifying-before-handoff/references/blocker-catalog.md",
-        "skills/handing-off-glb-to-web/references/artifact-status-language.md"
+        "skills/blendops-final-check/references/blocker-catalog.md",
+        "skills/blendops-glb-web-handoff/references/artifact-status-language.md"
       ]
     },
     {
@@ -4436,9 +4436,9 @@
           "knowledge.texture-resolution-ktx2-and-draco-meshopt-compression"
         ],
         "skill_ids": [
-          "handing-off-glb-to-web",
-          "verifying-before-handoff",
-          "choosing-render-and-output"
+          "blendops-glb-web-handoff",
+          "blendops-final-check",
+          "blendops-render-settings"
         ],
         "recipe_ids": [
           "recipe.blender-to-glb-handoff",
@@ -4468,9 +4468,9 @@
       },
       "evidence_status": "version-checked",
       "promoted_from_skill_refs": [
-        "skills/handing-off-glb-to-web/references/artifact-status-language.md",
-        "skills/verifying-before-handoff/references/attempted-vs-failed-rubric.md",
-        "skills/verifying-before-handoff/references/downgrade-rules.md"
+        "skills/blendops-glb-web-handoff/references/artifact-status-language.md",
+        "skills/blendops-final-check/references/attempted-vs-failed-rubric.md",
+        "skills/blendops-final-check/references/downgrade-rules.md"
       ]
     },
     {
@@ -4576,9 +4576,9 @@
           "knowledge.three-point-and-hdri-studio-lighting"
         ],
         "skill_ids": [
-          "handing-off-glb-to-web",
-          "planning-lighting-and-materials",
-          "verifying-before-handoff"
+          "blendops-glb-web-handoff",
+          "blendops-lighting-materials",
+          "blendops-final-check"
         ],
         "recipe_ids": [
           "recipe.blender-to-glb-handoff",
@@ -4608,8 +4608,8 @@
       },
       "evidence_status": "version-checked",
       "promoted_from_skill_refs": [
-        "skills/handing-off-glb-to-web/references/component-shape-patterns.md",
-        "skills/planning-lighting-and-materials/references/look-comparison.md"
+        "skills/blendops-glb-web-handoff/references/component-shape-patterns.md",
+        "skills/blendops-lighting-materials/references/look-comparison.md"
       ]
     }
   ]

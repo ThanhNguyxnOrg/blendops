@@ -16,7 +16,7 @@ Welcome:
 - pack manifests (`packs/`)
 - per-target install docs (`docs/install/`) and adapter mappings (`docs/adapters/`)
 - bundle fixtures (`bundles/skill-package/`, `bundles/claude-desktop-manual/`, `bundles/generic-project-local/`)
-- GLB 2.0 container inspection and web viewer handoff examples (`docs/examples/handing-off-glb-to-web/`)
+- GLB 2.0 container inspection and web viewer handoff examples (`docs/examples/blendops-glb-web-handoff/`)
 - evidence records under `docs/evals/` when you actually run a path
 
 Out of scope (will be rejected):

@@ -6,38 +6,38 @@
       "title": "Start & Scope",
       "description": "Entry routing, 3D briefs, recipe fit, done criteria, stage gates, scope control, and plain-language status for non-Blender users.",
       "skills": [
-        "using-blendops",
-        "scoping-3d-briefs",
-        "defining-done-and-gates"
+        "blendops-start",
+        "blendops-brief",
+        "blendops-done-criteria"
       ]
     },
     {
       "title": "Scene Planning",
       "description": "Product and non-product scene plans, camera and framing, lighting, materials, color management, render engine, and output format.",
       "skills": [
-        "planning-product-scenes",
-        "planning-scenes",
-        "planning-camera-and-framing",
-        "planning-lighting-and-materials",
-        "choosing-render-and-output"
+        "blendops-product-shot",
+        "blendops-scene-plan",
+        "blendops-camera",
+        "blendops-lighting-materials",
+        "blendops-render-settings"
       ]
     },
     {
       "title": "Assets & Web 3D",
       "description": "Asset discovery and licensing, GLB budgets for web and mobile, and GLB handoff to web and React Three Fiber teams.",
       "skills": [
-        "sourcing-assets",
-        "budgeting-glb-for-web",
-        "handing-off-glb-to-web"
+        "blendops-assets",
+        "blendops-glb-budget",
+        "blendops-glb-web-handoff"
       ]
     },
     {
       "title": "Runtime & Verification",
       "description": "Runtime path setup and readiness, evidence before handoff, preview and attempt reports, and troubleshooting.",
       "skills": [
-        "setting-up-blender-runtime",
-        "verifying-before-handoff",
-        "troubleshooting-blender-output"
+        "blendops-connect-blender",
+        "blendops-final-check",
+        "blendops-fix-problems"
       ]
     }
   ]

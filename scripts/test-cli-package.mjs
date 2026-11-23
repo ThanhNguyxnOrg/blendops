@@ -1128,7 +1128,7 @@ describe('Distributable CLI & Package Readiness', () => {
       Buffer.byteLength(writePipeRes.stdout, 'utf8') > 16 * 1024,
       'Claude Desktop --write report must include full multi-kilobyte Files created output',
     );
-    assert.match(writePipeRes.stdout, /- Files created:.*desktop-zips\/using-blendops\.zip/);
+    assert.match(writePipeRes.stdout, /- Files created:.*desktop-zips\/blendops-start\.zip/);
     assert.match(writePipeRes.stdout, /Runtime status: Not Run/);
     assert.match(writePipeRes.stdout, /Artifact status: Not Produced/);
     assert.match(writePipeRes.stdout, /Runtime setup: Separate; not performed/);

@@ -1,0 +1,352 @@
+{
+  "$schema": "../../schemas/skill-contract.schema.json",
+  "id": "blendops-fix-problems",
+  "version": "2.0.0",
+  "category": "quality-validators",
+  "role": "blender-output-troubleshooting",
+  "purpose": "Diagnose wrong-looking renders, exports, and runtime errors in plain language and route to the fix without claiming results.",
+  "capabilityTier": "L0",
+  "triggers": [
+    "the render looks wrong",
+    "the GLB doesn't open / looks empty / is wrong scale",
+    "the output doesn't match what I asked for",
+    "why did it produce X instead of Y?",
+    "debug this Blender output"
+  ],
+  "exclusions": [
+    {
+      "condition": "the user has not yet stated a clear expected outcome (run blendops-brief first)",
+      "delegateTo": "blendops-brief",
+      "reason": "run blendops-brief first"
+    },
+    {
+      "condition": "runtime has never been attempted (run blendops-connect-blender first)",
+      "delegateTo": "blendops-connect-blender",
+      "reason": "run blendops-connect-blender first"
+    },
+    {
+      "condition": "the request is creative iteration (\"can we make it more dramatic\"), not debugging",
+      "delegateTo": "blendops-brief",
+      "reason": "Delegates out-of-scope requests to blendops-brief"
+    },
+    {
+      "condition": "the user wants a one-shot fix without diagnostic discipline",
+      "delegateTo": "blendops-brief",
+      "reason": "Delegates out-of-scope requests to blendops-brief"
+    }
+  ],
+  "inputs": {
+    "required": [
+      {
+        "name": "observed_symptom_or_error",
+        "type": "string",
+        "description": "Observed render defect, broken GLB export, scale mismatch, or MCP execution failure"
+      },
+      {
+        "name": "active_workflow_context",
+        "type": "object",
+        "description": "Current scene plan, runtime path, and recent actions preceding the failure"
+      }
+    ],
+    "optional": [
+      {
+        "name": "runtime_attempt_notes",
+        "type": "string",
+        "description": "Optional error output or attempt timeline from blendops-final-check"
+      }
+    ]
+  },
+  "outputs": {
+    "primary": [
+      "root_cause_classification",
+      "minimal_remediation_plan",
+      "reverification_target_skill"
+    ],
+    "truthStatePolicy": {
+      "runtimeDefault": "Not Run",
+      "artifactDefault": "Not Produced",
+      "mutationRule": "downgrade_only"
+    }
+  },
+  "handoffs": [
+    {
+      "target": "blendops-brief",
+      "type": "upstream_reference",
+      "label": "If divergence at intent (blendops-brief)",
+      "when": {
+        "all": [
+          {
+            "field": "goal.clarity",
+            "operator": "equals",
+            "value": "ambiguous_or_mixed"
+          }
+        ]
+      }
+    },
+    {
+      "target": "blendops-brief",
+      "type": "upstream_reference",
+      "label": "If divergence at intent (blendops-brief)",
+      "when": {
+        "all": [
+          {
+            "field": "goal.clarity",
+            "operator": "equals",
+            "value": "clear"
+          },
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": false
+          }
+        ]
+      }
+    },
+    {
+      "target": "blendops-camera",
+      "type": "conditional",
+      "label": "If divergence at planning (blendops-camera)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "camera_planning"
+          }
+        ]
+      }
+    },
+    {
+      "target": "blendops-lighting-materials",
+      "type": "conditional",
+      "label": "If divergence at planning (blendops-lighting-materials)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "lookdev_planning"
+          }
+        ]
+      }
+    },
+    {
+      "target": "blendops-scene-plan",
+      "type": "alternative",
+      "label": "If divergence at planning (blendops-scene-plan)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "recipe.domain",
+            "operator": "equals",
+            "value": "character_portrait"
+          }
+        ]
+      }
+    },
+    {
+      "target": "blendops-scene-plan",
+      "type": "alternative",
+      "label": "If divergence at planning (blendops-scene-plan)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "recipe.domain",
+            "operator": "equals",
+            "value": "environment_shot"
+          }
+        ]
+      }
+    },
+    {
+      "target": "blendops-scene-plan",
+      "type": "alternative",
+      "label": "If divergence at planning (blendops-scene-plan)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "recipe.domain",
+            "operator": "equals",
+            "value": "interior_archviz"
+          }
+        ]
+      }
+    },
+    {
+      "target": "blendops-product-shot",
+      "type": "alternative",
+      "label": "If divergence at planning (blendops-product-shot)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "recipe.domain",
+            "operator": "equals",
+            "value": "product_grid"
+          }
+        ]
+      }
+    },
+    {
+      "target": "blendops-product-shot",
+      "type": "alternative",
+      "label": "If divergence at planning (blendops-product-shot)",
+      "when": {
+        "all": [
+          {
+            "field": "brief.locked",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "recipe.domain",
+            "operator": "equals",
+            "value": "product_hero"
+          }
+        ]
+      }
+    },
+    {
+      "target": "blendops-connect-blender",
+      "type": "upstream_reference",
+      "label": "If divergence at execution (blendops-connect-blender)",
+      "when": {
+        "all": [
+          {
+            "field": "runtime.path",
+            "operator": "not_equals",
+            "value": "unselected"
+          },
+          {
+            "field": "runtime.verifiedReady",
+            "operator": "equals",
+            "value": false
+          }
+        ]
+      }
+    },
+    {
+      "target": "blendops-connect-blender",
+      "type": "fallback",
+      "label": "If divergence at execution (blendops-connect-blender)",
+      "when": {
+        "all": [
+          {
+            "field": "runtime.conflictDetected",
+            "operator": "equals",
+            "value": true
+          }
+        ]
+      }
+    },
+    {
+      "target": "blendops-connect-blender",
+      "type": "upstream_reference",
+      "label": "If divergence at execution (blendops-connect-blender)",
+      "when": {
+        "all": [
+          {
+            "field": "runtime.path",
+            "operator": "equals",
+            "value": "unselected"
+          }
+        ]
+      }
+    },
+    {
+      "target": "blendops-glb-web-handoff",
+      "type": "conditional",
+      "label": "If divergence at output (blendops-glb-web-handoff)",
+      "when": {
+        "all": [
+          {
+            "field": "artifact.hasAnimation",
+            "operator": "equals",
+            "value": true
+          },
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "animation_handoff"
+          }
+        ]
+      }
+    },
+    {
+      "target": "blendops-glb-web-handoff",
+      "type": "conditional",
+      "label": "If divergence at output (blendops-glb-web-handoff)",
+      "when": {
+        "all": [
+          {
+            "field": "artifact.type",
+            "operator": "equals",
+            "value": "glb"
+          },
+          {
+            "field": "handoff.consumerStack",
+            "operator": "equals",
+            "value": "web_glb"
+          }
+        ]
+      }
+    },
+    {
+      "target": "blendops-final-check",
+      "type": "conditional",
+      "label": "If divergence at output (blendops-final-check)",
+      "when": {
+        "all": [
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "post_execution_audit"
+          }
+        ]
+      }
+    },
+    {
+      "target": "blendops-start",
+      "type": "conditional",
+      "label": "If divergence at response",
+      "when": {
+        "all": [
+          {
+            "field": "stage.current",
+            "operator": "equals",
+            "value": "final_communication"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -40,8 +40,8 @@ test('semantic version comparison follows SemVer 2.0.0 prerelease precedence', (
 });
 
 test('skills.sh route matching enforces slug boundaries and avoids prefix false positives', async () => {
-  const html = '<a href="/ThanhNguyxnOrg/blendops/defining-done-and-gates">Stage Gates</a>';
-  assert.equal(hasSkillsShRoute(html, 'defining-done-and-gates'), true);
+  const html = '<a href="/ThanhNguyxnOrg/blendops/blendops-done-criteria">Stage Gates</a>';
+  assert.equal(hasSkillsShRoute(html, 'blendops-done-criteria'), true);
   assert.equal(hasSkillsShRoute(html, 'stage'), false);
 
   const tmpRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-dist-audit-'));
@@ -57,7 +57,7 @@ test('skills.sh route matching enforces slug boundaries and avoids prefix false 
         groupings: [
           {
             title: 'Stage Gates',
-            skills: ['stage', 'defining-done-and-gates'],
+            skills: ['stage', 'blendops-done-criteria'],
           },
         ],
       }),
@@ -76,11 +76,11 @@ test('skills.sh route matching enforces slug boundaries and avoids prefix false 
       }
       return {
         ok: true,
-        text: async () => '<a href="/ThanhNguyxnOrg/blendops/defining-done-and-gates">Stage Gates</a>',
+        text: async () => '<a href="/ThanhNguyxnOrg/blendops/blendops-done-criteria">Stage Gates</a>',
       };
     });
     assert.deepEqual(live.skillsSh.missingGroupedSkills, ['stage']);
-    assert.equal(live.skillsSh.missingGroupedSkills.includes('defining-done-and-gates'), false);
+    assert.equal(live.skillsSh.missingGroupedSkills.includes('blendops-done-criteria'), false);
   } finally {
     fs.rmSync(tmpRoot, { recursive: true, force: true });
   }

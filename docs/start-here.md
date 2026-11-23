@@ -47,13 +47,13 @@ Pick the path that matches what you want to do:
 - The local installer is project-local, transactional, and reversible. Run `--dry-run` before the matching `--write`.
 - No official marketplace/plugin listing is claimed.
 
-Use the short prompt from [README.md](../README.md#-use-in-30-seconds). The agent will read [AI Agent Quickstart](./ai-agent-quickstart.md) and auto-select project-local install or multiple Skills ZIP preparation.
+Use the short prompt from [README.md](../README.md#use-in-30-seconds). The agent will read [AI Agent Quickstart](./ai-agent-quickstart.md) and auto-select project-local install or multiple Skills ZIP preparation.
 
 **Your options:**
 
 | Method | Best for | Start here |
 |---|---|---|
-| **30-second prompt** | Any AI/agent | [README 30-second prompt](../README.md#-use-in-30-seconds) |
+| **30-second prompt** | Any AI/agent | [README 30-second prompt](../README.md#use-in-30-seconds) |
 | **Project-local install details** | Claude Code, OpenCode, Cursor, Codex, Gemini, GitHub Copilot | [AI agent install flow](./ai-agent-install-flow.md) |
 | **Claude Desktop multiple ZIP details** | Claude Desktop / Claude.ai Skills UI upload prep | [Claude Desktop install guide](./install/claude-desktop.md) |
 | **Generic project-local fallback** | Unknown/unsupported writable projects | [Generic bundle](../bundles/generic-project-local/README.md) |
@@ -70,13 +70,13 @@ Use the short prompt from [README.md](../README.md#-use-in-30-seconds). The agen
 ### 🖥️ I use Claude Desktop
 
 **What you need to know:**
-- Use the short prompt from [README.md](../README.md#-use-in-30-seconds); expected mode is usually multiple Skills ZIP preparation
+- Use the short prompt from [README.md](../README.md#use-in-30-seconds); expected mode is usually multiple Skills ZIP preparation
 - BlendOps skill package can be manually imported as a Personal Skill
 - Runtime requires separate Claude Desktop Blender Connector setup
 - Connector configuration is not automatic
 
 **Start here:**
-- [README 30-second prompt](../README.md#-use-in-30-seconds)
+- [README 30-second prompt](../README.md#use-in-30-seconds)
 - [Claude Desktop install guide](./install/claude-desktop.md)
 - [Claude Desktop manual bundle](../bundles/claude-desktop-manual/README.md)
 - [Claude app setup notes](./claude-app-setup.md)
@@ -95,7 +95,7 @@ Use the short prompt from [README.md](../README.md#-use-in-30-seconds). The agen
 - Coding agents host Path 1 via manual MCP config (host option b) or Path 2; native skill-loader maturity varies per tool
 
 **Start here:**
-- [README 30-second prompt](../README.md#-use-in-30-seconds)
+- [README 30-second prompt](../README.md#use-in-30-seconds)
 - [AI agent install flow](./ai-agent-install-flow.md) — project-local mode details
 - [Multi-agent install strategy](./multi-agent-install-strategy.md) — cross-tool approach
 

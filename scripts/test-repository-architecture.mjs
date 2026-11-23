@@ -522,9 +522,9 @@ describe('Repository Architecture, Organization & Finalization', () => {
       'scripts/inspect-glb.mjs',
       'scripts/generate-glb-handoff-report.mjs',
       'schemas/glb-web-handoff-manifest.schema.json',
-      'docs/examples/handing-off-glb-to-web/README.md',
-      'docs/examples/handing-off-glb-to-web/threejs-glb-viewer.mjs',
-      'docs/examples/handing-off-glb-to-web/r3f-glb-viewer.tsx',
+      'docs/examples/blendops-glb-web-handoff/README.md',
+      'docs/examples/blendops-glb-web-handoff/threejs-glb-viewer.mjs',
+      'docs/examples/blendops-glb-web-handoff/r3f-glb-viewer.tsx',
       'registry/skills.json',
       'registry/workflow-graph.json',
     ]) {

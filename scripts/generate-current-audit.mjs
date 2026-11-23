@@ -339,7 +339,7 @@ export const HISTORICAL_BASELINE = Object.freeze({
       maxPoints: 5,
       awardedPoints: 4.5,
       status: 'Pass',
-      evidence: 'Enforced via laws/no-arbitrary-python-interface.md and skills/sourcing-assets/SKILL.md.',
+      evidence: 'Enforced via laws/no-arbitrary-python-interface.md and skills/blendops-assets/SKILL.md.',
     }),
     p6c2: Object.freeze({
       id: 'p6-c2',
@@ -474,26 +474,26 @@ export function inspectWorkingTreeProvenance(rootDir = ROOT_DIR, baseCommitSha =
 
 
 export const HISTORICAL_TO_CURRENT_SKILL_ID = Object.freeze({
-  "blender-asset-discovery-planner": "sourcing-assets",
-  "asset-library-organization-planner": "sourcing-assets",
-  "asset-style-consistency-checker": "sourcing-assets",
-  "runtime-bridge-conflict-resolver": "setting-up-blender-runtime",
-  "blender-composition-camera-planner": "planning-camera-and-framing",
-  "character-portrait-scene-planner": "planning-scenes",
-  "blender-stop-condition-decider": "defining-done-and-gates",
-  "environment-establishing-shot-planner": "planning-scenes",
-  "interior-architectural-scene-planner": "planning-scenes",
-  "blender-lighting-material-planner": "planning-lighting-and-materials",
-  "glb-mobile-performance-budget": "budgeting-glb-for-web",
-  "non-blender-user-response-writer": "using-blendops",
-  "preview-report-template-writer": "verifying-before-handoff",
-  "three-fiber-component-shape-planner": "handing-off-glb-to-web",
-  "runtime-attempt-report-writer": "verifying-before-handoff",
-  "official-runtime-readiness-checker": "setting-up-blender-runtime",
-  "official-runtime-setup-guide": "setting-up-blender-runtime",
-  "blender-scene-quality-checker": "verifying-before-handoff",
-  "blender-scope-boundary-enforcer": "defining-done-and-gates",
-  "blender-checklist-driven-workflow": "defining-done-and-gates",
+  "blender-asset-discovery-planner": "blendops-assets",
+  "asset-library-organization-planner": "blendops-assets",
+  "asset-style-consistency-checker": "blendops-assets",
+  "runtime-bridge-conflict-resolver": "blendops-connect-blender",
+  "blender-composition-camera-planner": "blendops-camera",
+  "character-portrait-scene-planner": "blendops-scene-plan",
+  "blender-stop-condition-decider": "blendops-done-criteria",
+  "environment-establishing-shot-planner": "blendops-scene-plan",
+  "interior-architectural-scene-planner": "blendops-scene-plan",
+  "blender-lighting-material-planner": "blendops-lighting-materials",
+  "glb-mobile-performance-budget": "blendops-glb-budget",
+  "non-blender-user-response-writer": "blendops-start",
+  "preview-report-template-writer": "blendops-final-check",
+  "three-fiber-component-shape-planner": "blendops-glb-web-handoff",
+  "runtime-attempt-report-writer": "blendops-final-check",
+  "official-runtime-readiness-checker": "blendops-connect-blender",
+  "official-runtime-setup-guide": "blendops-connect-blender",
+  "blender-scene-quality-checker": "blendops-final-check",
+  "blender-scope-boundary-enforcer": "blendops-done-criteria",
+  "blender-checklist-driven-workflow": "blendops-done-criteria",
 });
 
 export function resolveCurrentSkillId(skillId) {
@@ -1009,9 +1009,9 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
         'registry/skills.json',
         'registry/workflow-graph.json',
         'docs/audits/current/skill-inventory.json',
-        'skills/using-blendops/contract.json',
-        'skills/scoping-3d-briefs/contract.json',
-        'skills/defining-done-and-gates/contract.json',
+        'skills/blendops-start/contract.json',
+        'skills/blendops-brief/contract.json',
+        'skills/blendops-done-criteria/contract.json',
       ],
       verificationMethod: f03Fixed
         ? 'npm run registry:check, scripts/test-routing-contracts.mjs, and scripts/test-catalog-contracts.mjs validate Draft 2020-12 Ajv2020 schema compliance across all 14/14 catalog contracts (3 routing participants + 11 specialist skills), context field vocabulary compliance, 16-state activationGate overlap/reachability, 195-edge progression DAG acyclicity, and managed relative-path Markdown sync across all 14 SKILL.md files (0 bare-ID handoff skills).'
@@ -1061,11 +1061,11 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
         'scripts/check-docs.mjs',
         'scripts/test-skill-templates.mjs',
         'docs/audits/current/skill-inventory.json',
-        'skills/defining-done-and-gates/SKILL.md',
-        'skills/setting-up-blender-runtime/SKILL.md',
-        'skills/scoping-3d-briefs/SKILL.md',
-        'skills/verifying-before-handoff/SKILL.md',
-        'skills/using-blendops/SKILL.md',
+        'skills/blendops-done-criteria/SKILL.md',
+        'skills/blendops-connect-blender/SKILL.md',
+        'skills/blendops-brief/SKILL.md',
+        'skills/blendops-final-check/SKILL.md',
+        'skills/blendops-start/SKILL.md',
       ],
       verificationMethod: f05Fixed
         ? 'Enforced across all 14 catalog skills by validateSkillMarkdownStructure in scripts/check-docs.mjs (18 required headings: 9 core + 9 extended), verified in scripts/test-skill-templates.mjs, and measured in docs/audits/current/skill-inventory.json (skillsMissingExtendedTemplateSections = 0, totalMissingExtendedSectionInstances = 0).'
@@ -1076,19 +1076,19 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
     },
     {
       id: 'F-06',
-      title: 'Routing quartet handoffs in using-blendops and forward reachability of defining-done-and-gates',
+      title: 'Routing quartet handoffs in blendops-start and forward reachability of blendops-done-criteria',
       severity: 'P1',
       pillar: 'Pillar 2 (Workflow Architecture & Routing)',
-      baselineState: 'OPEN (using-blendops omitted Batch 7 routing quartet; defining-done-and-gates had 0 incoming forward edges)',
+      baselineState: 'OPEN (blendops-start omitted Batch 7 routing quartet; blendops-done-criteria had 0 incoming forward edges)',
       currentLifecycleStatus: 'FIXED',
       resolvedInMilestone: 'Routing Contracts & Quartet Handoffs (f43385a)',
       lastVerifiedCommit: headSha,
       evidencePaths: [
-        'skills/using-blendops/contract.json',
-        'skills/using-blendops/SKILL.md',
+        'skills/blendops-start/contract.json',
+        'skills/blendops-start/SKILL.md',
         'registry/workflow-graph.json',
       ],
-      verificationMethod: 'Verified in registry/workflow-graph.json and evals/suites/using-blendops.eval.json (case workflow-stage-mid-workflow-scope-creep).',
+      verificationMethod: 'Verified in registry/workflow-graph.json and evals/suites/blendops-start.eval.json (case workflow-stage-mid-workflow-scope-creep).',
       remainingScope: 'None for routing quartet and scope-boundary delegation.',
     },
     {
@@ -1109,14 +1109,14 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
         'schemas/runtime-evidence-packet.schema.json',
         'schemas/glb-web-handoff-manifest.schema.json',
         'docs/blender-version-compatibility.md',
-        'docs/examples/handing-off-glb-to-web/README.md',
-        'docs/examples/handing-off-glb-to-web/threejs-glb-viewer.mjs',
-        'docs/examples/handing-off-glb-to-web/r3f-glb-viewer.tsx',
+        'docs/examples/blendops-glb-web-handoff/README.md',
+        'docs/examples/blendops-glb-web-handoff/threejs-glb-viewer.mjs',
+        'docs/examples/blendops-glb-web-handoff/r3f-glb-viewer.tsx',
         'scripts/test-behavioral-evals.mjs',
         'scripts/test-glb-handoff.mjs',
       ],
       verificationMethod: f07Fixed
-        ? 'Verified in scripts/test-behavioral-evals.mjs and scripts/test-glb-handoff.mjs: scripts/inspect-glb.mjs parses GLB 2.0 headers, JSON/BIN chunk alignment, buffer/accessor bounds, scene/node/skin/animation/material/texture/extension inventory, and optional Khronos gltf-validator status; scripts/generate-glb-handoff-report.mjs generates schema-validated JSON manifests and escaped HTML/Markdown handoff reports; docs/examples/handing-off-glb-to-web/ provides Three.js and React Three Fiber integration modules; scripts/validate-evidence-packet.mjs enforces runtime/artifact truth-state laws; docs/blender-version-compatibility.md documents Blender 3.6 LTS, 4.2 LTS, and 5.1+ compatibility matrices.'
+        ? 'Verified in scripts/test-behavioral-evals.mjs and scripts/test-glb-handoff.mjs: scripts/inspect-glb.mjs parses GLB 2.0 headers, JSON/BIN chunk alignment, buffer/accessor bounds, scene/node/skin/animation/material/texture/extension inventory, and optional Khronos gltf-validator status; scripts/generate-glb-handoff-report.mjs generates schema-validated JSON manifests and escaped HTML/Markdown handoff reports; docs/examples/blendops-glb-web-handoff/ provides Three.js and React Three Fiber integration modules; scripts/validate-evidence-packet.mjs enforces runtime/artifact truth-state laws; docs/blender-version-compatibility.md documents Blender 3.6 LTS, 4.2 LTS, and 5.1+ compatibility matrices.'
         : 'No inspect-glb.mjs binary parser or glTF-Validator runner is wired yet.',
       remainingScope: f07Fixed
         ? 'None for static container inspection, web handoff manifest/report generation, viewer integration helpers, evidence packet validation, and version compatibility matrices. Live Blender runtime exports remain Not Produced.'
@@ -1414,7 +1414,7 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
             status: f03Fixed ? 'Pass' : 'Warn',
             evidence: f03Fixed
               ? 'F-03 & F-06 FIXED: All 14/14 SKILL.md files synchronize managed relative-path handoff blocks (../<target>/SKILL.md); 0 skills use bare-ID handoff notation.'
-              : 'F-06 FIXED: using-blendops links the routing quartet and using-blendops links defining-done-and-gates. Bare-ID handoff notation remains in uncontracted skills.',
+              : 'F-06 FIXED: blendops-start links the routing quartet and blendops-start links blendops-done-criteria. Bare-ID handoff notation remains in uncontracted skills.',
           },
           {
             id: 'p2-c4',
@@ -1488,9 +1488,9 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
           'scripts/inspect-glb.mjs',
           'scripts/generate-glb-handoff-report.mjs',
           'schemas/glb-web-handoff-manifest.schema.json',
-          'docs/examples/handing-off-glb-to-web/README.md',
-          'docs/examples/handing-off-glb-to-web/threejs-glb-viewer.mjs',
-          'docs/examples/handing-off-glb-to-web/r3f-glb-viewer.tsx',
+          'docs/examples/blendops-glb-web-handoff/README.md',
+          'docs/examples/blendops-glb-web-handoff/threejs-glb-viewer.mjs',
+          'docs/examples/blendops-glb-web-handoff/r3f-glb-viewer.tsx',
           'scripts/test-glb-handoff.mjs',
           'docs/audits/current/skill-inventory.json',
         ],
@@ -1504,7 +1504,7 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
             awardedPoints: p4c3Awarded,
             status: f07Fixed ? 'Pass' : 'Warn',
             evidence: f07Fixed
-              ? 'F-07 FIXED: scripts/inspect-glb.mjs and scripts/generate-glb-handoff-report.mjs validate GLB 2.0 binary headers, JSON/BIN chunk alignment, buffer/accessor bounds, scene/node/skin/animation/material/texture/extension inventory, and optional Khronos gltf-validator status; schemas/glb-web-handoff-manifest.schema.json and docs/examples/handing-off-glb-to-web/ provide deterministic web handoff manifests, HTML/Markdown reports, and Three.js / React Three Fiber viewer integration; docs/blender-version-compatibility.md documents Blender 3.6 LTS, 4.2 LTS, and 5.1+ shader, engine, color management, and glTF 2.0 matrices.'
+              ? 'F-07 FIXED: scripts/inspect-glb.mjs and scripts/generate-glb-handoff-report.mjs validate GLB 2.0 binary headers, JSON/BIN chunk alignment, buffer/accessor bounds, scene/node/skin/animation/material/texture/extension inventory, and optional Khronos gltf-validator status; schemas/glb-web-handoff-manifest.schema.json and docs/examples/blendops-glb-web-handoff/ provide deterministic web handoff manifests, HTML/Markdown reports, and Three.js / React Three Fiber viewer integration; docs/blender-version-compatibility.md documents Blender 3.6 LTS, 4.2 LTS, and 5.1+ shader, engine, color management, and glTF 2.0 matrices.'
               : 'No deterministic GLB binary parser or version compatibility table present.',
           },
         ],
@@ -1555,7 +1555,7 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
         verdict: f10Fixed ? 'Pass' : 'Warn',
         evidenceFiles: [
           'laws/no-arbitrary-python-interface.md',
-          'skills/sourcing-assets/SKILL.md',
+          'skills/blendops-assets/SKILL.md',
           'bundles/generic-project-local/ROLLBACK.md',
           'docs/safety-model.md',
           'schemas/runtime-capability-policy.schema.json',
@@ -1572,7 +1572,7 @@ export function generateCurrentAuditArtifacts(rootDir = ROOT_DIR) {
             awardedPoints: p6c3Awarded,
             status: f10Fixed ? 'Pass' : 'Warn',
             evidence: f10Fixed
-              ? 'F-10 FIXED: schemas/runtime-capability-policy.schema.json, registry/runtime-capability-policy.json (all 14 skills defaulting to L0), scripts/validate-capability-policy.mjs, and docs/safety-model.md enforce L0-L3 capability tiers, non-escalation, sourcing-assets clearance, and fail-closed pre-mutation .blend backup verification.'
+              ? 'F-10 FIXED: schemas/runtime-capability-policy.schema.json, registry/runtime-capability-policy.json (all 14 skills defaulting to L0), scripts/validate-capability-policy.mjs, and docs/safety-model.md enforce L0-L3 capability tiers, non-escalation, blendops-assets clearance, and fail-closed pre-mutation .blend backup verification.'
               : 'Runtime capability policy enforcement pending.',
           },
         ],
@@ -1832,7 +1832,7 @@ Because a Git commit cannot honestly contain its own final commit SHA inside tra
 
 The \`auditedInputsSha256\` digest is governed by [\`../audited-inputs.manifest.json\`](../audited-inputs.manifest.json):
 
-- **Included Scope (\`requiredFiles\` + \`requiredDirectories\`):** Covers [\`../audited-inputs.manifest.json\`](../audited-inputs.manifest.json), root governance & dependency files, core architecture & runtime docs, all CLI/validation/compiler/eval/bundle/installer/test scripts (\`scripts/test-*.mjs\`), and the complete directory trees \`docs/evals\`, \`docs/examples/handing-off-glb-to-web\`, \`docs/install\`, \`docs/adapters\`, \`docs/recipes\`, \`docs/workflows\`, \`laws\`, \`packs\`, \`bundles\`, \`skills\`, \`registry\`, \`evals\`, and \`schemas\`.
+- **Included Scope (\`requiredFiles\` + \`requiredDirectories\`):** Covers [\`../audited-inputs.manifest.json\`](../audited-inputs.manifest.json), root governance & dependency files, core architecture & runtime docs, all CLI/validation/compiler/eval/bundle/installer/test scripts (\`scripts/test-*.mjs\`), and the complete directory trees \`docs/evals\`, \`docs/examples/blendops-glb-web-handoff\`, \`docs/install\`, \`docs/adapters\`, \`docs/recipes\`, \`docs/workflows\`, \`laws\`, \`packs\`, \`bundles\`, \`skills\`, \`registry\`, \`evals\`, and \`schemas\`.
 - **Excluded Scope (\`excludedPrefixes\` & \`excludedExactPaths\`):** Excludes \`docs/audits/current/**\`, \`.git/\`, \`node_modules/\`, \`dist/\`, \`.aistudio/\`, temporary files, and symbolic links.
 - **Digest Algorithm:** Expands all manifest files and directories into a deduplicated, lexicographically sorted list of normalized POSIX relative paths and computes a SHA-256 digest over unambiguous length-prefixed framing.
 
@@ -1847,8 +1847,8 @@ The \`auditedInputsSha256\` digest is governed by [\`../audited-inputs.manifest.
 | **F-03** | **P0** | Machine-readable \`contract.json\` & compiled \`registry/\` | \`OPEN\` | **\`${f03Fixed ? 'FIXED' : 'PARTIALLY_FIXED'}\`** | ${f03Fixed ? '14/14 skills contracted (`4` routing participants + `44` specialist skills), 195-edge acyclic progression graph, and 14/14 relative-path Markdown handoffs.' : `${contractedCount}/14 skills contracted; ${updatedSkills.length - contractedCount}/14 skills pending.`} |
 | **F-04** | **P0** | Structured behavioral evaluation suites & automated runner | \`OPEN\` | **\`${f04Fixed ? 'FIXED' : 'PARTIALLY_FIXED'}\`** | ${f04Fixed ? `14/14 canonical \`.eval.json\` suites (${totalEvalCasesCount} cases: ${contractRoutingCasesCount} \`contract_routing\` + ${contractHandoffCasesCount} \`contract_handoff\` + ${deterministicFixtureCasesCount} \`deterministic_fixture\`, 0 prose-only pending) verified in CI; \`live_model\` and \`blender_runtime\` remain \`Not Run\`.` : `${machineReadableSuitesCount}/14 \`.eval.json\` suites (${totalEvalCasesCount} cases) in CI; ${remainingProseSuitesCount}/14 prose evals pending.`} |
 | **F-05** | **P1** | 8 skills omit 9–11 extended template sections | \`OPEN\` | **\`${f05Fixed ? 'FIXED' : 'OPEN'}\`** | ${f05Fixed ? '14/14 skills include all 9 core + 9 extended sections; guarded in `check-docs.mjs` and `test-skill-templates.mjs`.' : 'Extended template sections missing; tracked in `skill-inventory.json`.'} |
-| **F-06** | **P1** | Routing quartet handoffs & \`defining-done-and-gates\` reachability | \`OPEN\` | **\`FIXED\`** | Wired in \`using-blendops\` and \`using-blendops\` contracts and verified in \`workflow-graph.json\`. |
-| **F-07** | **P1** | Deterministic GLB inspector & Blender version matrices | \`OPEN\` | **\`${f07Fixed ? 'FIXED' : 'OPEN'}\`** | ${f07Fixed ? '`scripts/inspect-glb.mjs`, `scripts/generate-glb-handoff-report.mjs`, `schemas/glb-web-handoff-manifest.schema.json`, `docs/examples/handing-off-glb-to-web/`, `scripts/validate-evidence-packet.mjs`, and `docs/blender-version-compatibility.md` verified in CI.' : 'GLB tooling pending.'} |
+| **F-06** | **P1** | Routing quartet handoffs & \`blendops-done-criteria\` reachability | \`OPEN\` | **\`FIXED\`** | Wired in \`blendops-start\` and \`blendops-start\` contracts and verified in \`workflow-graph.json\`. |
+| **F-07** | **P1** | Deterministic GLB inspector & Blender version matrices | \`OPEN\` | **\`${f07Fixed ? 'FIXED' : 'OPEN'}\`** | ${f07Fixed ? '`scripts/inspect-glb.mjs`, `scripts/generate-glb-handoff-report.mjs`, `schemas/glb-web-handoff-manifest.schema.json`, `docs/examples/blendops-glb-web-handoff/`, `scripts/validate-evidence-packet.mjs`, and `docs/blender-version-compatibility.md` verified in CI.' : 'GLB tooling pending.'} |
 | **F-08** | **P1** | \`docs/adapter-registry.md\` drift from 26 \`docs/install/\` targets | \`OPEN\` | **\`PARTIALLY_FIXED\`** | All 26 install targets synced and verified in \`docs/evals/adapter-empirical-verification.md\`; \`bin/blendops.mjs\`, \`scripts/install-skills.mjs\`, \`scripts/test-project-installer.mjs\`, and \`scripts/test-cli-package.mjs\` verify safe project-local attachment, rollback, and packaged CLI tarball execution; 2 targets (\`claude-code\`, \`generic-project\`) are \`verified-read\`; 24 targets remain \`linked-only\` pending live host testing. |
 | **F-09** | **P2** | Manual bundle reference summary drift risk | \`OPEN\` | **\`${!f03Fixed ? 'DEFERRED' : f09Fixed ? 'FIXED' : 'OPEN'}\`** | ${f09Fixed ? '28/28 bundle reference summaries (14 Claude Desktop + 14 portable skill package) and `bundles/claude-desktop-manual/manifest.json` deterministically generated and verified via `npm run bundles:summaries:check` and `scripts/test-bundle-summaries.mjs`.' : 'Bundle generator pending.'} |
 | **F-10** | **P1** | Runtime capability tiers (L0–L3) & scene rollback protocol | \`OPEN\` | **\`${f10Fixed ? 'FIXED' : 'OPEN'}\`** | ${f10Fixed ? '`registry/runtime-capability-policy.json`, `scripts/validate-capability-policy.mjs`, and `docs/safety-model.md` enforce L0–L3 tiers and fail-closed `.blend` backup checks.' : 'Capability policy pending.'} |

@@ -23,7 +23,7 @@ The single index for everything in this repo. Bookmark this page.
 | npm CLI package | Published (`blendops@1.0.0`, `latest`) | [Public npm package](https://www.npmjs.com/package/blendops); the CLI entrypoint and transactional project installer ship in the package. |
 | Distribution metadata sync | Automated | ThanhNguyxnAgent checks npm registry + skills.sh on source changes and weekly; see `docs/audits/current/distribution-metadata.json` (created by the first successful live sync). |
 | Knowledge & Recipe Catalog | Implemented & Verified (`90/90` bilingual retrieval evals) | **30** `knowledge.*` records across **11** 3D domains, **10** `recipe.*` blueprints, **20** `source.*` citations, deterministic `catalog-search` / `catalog-resolve` / `plan-compile` CLI, and 14-skill / 199-reference architecture audit in [`knowledge-and-recipe-catalog.md`](./knowledge-and-recipe-catalog.md) and [`audits/skill-architecture-audit.md`](./audits/skill-architecture-audit.md). |
-| GLB Web Handoff & Viewer Integration | Implemented; browser check for the [scoped mech-prop CLI eval](./evals/cli-fallback-mech-prop.md) was `Not Run` | `schemas/glb-web-handoff-manifest.schema.json`, `scripts/inspect-glb.mjs`, `scripts/generate-glb-handoff-report.mjs`, CLI `glb-inspect` / `glb-handoff` / `glb-validate-manifest`, and Three.js + R3F examples in [`examples/handing-off-glb-to-web/README.md`](./examples/handing-off-glb-to-web/README.md). |
+| GLB Web Handoff & Viewer Integration | Implemented; browser check for the [scoped mech-prop CLI eval](./evals/cli-fallback-mech-prop.md) was `Not Run` | `schemas/glb-web-handoff-manifest.schema.json`, `scripts/inspect-glb.mjs`, `scripts/generate-glb-handoff-report.mjs`, CLI `glb-inspect` / `glb-handoff` / `glb-validate-manifest`, and Three.js + R3F examples in [`examples/blendops-glb-web-handoff/README.md`](./examples/blendops-glb-web-handoff/README.md). |
 | Repository architecture & file inventory | Verified (`npm run arch:check`) | Canonical source, generated artifact, historical record, documentation, runtime/test, distribution, and config classification in [`architecture.md`](./architecture.md) and [`audits/current/repository-inventory.json`](./audits/current/repository-inventory.json). |
 
 ---
@@ -51,7 +51,7 @@ The single index for everything in this repo. Bookmark this page.
 | Review workflow behavior | [`workflow-contract.md`](./workflow-contract.md) | [`first-user-journey.md`](./first-user-journey.md), [`safety-model.md`](./safety-model.md) |
 | Search 3D domain knowledge & canonical recipes | [`knowledge-and-recipe-catalog.md`](./knowledge-and-recipe-catalog.md) | [`../registry/knowledge-catalog.json`](../registry/knowledge-catalog.json), [`../registry/recipe-catalog.json`](../registry/recipe-catalog.json), [`audits/skill-architecture-audit.md`](./audits/skill-architecture-audit.md) |
 | Install BlendOps into a tool | [`ai-agent-quickstart.md`](./ai-agent-quickstart.md) | [`ai-agent-install-flow.md`](./ai-agent-install-flow.md), [`install-scopes.md`](./install-scopes.md), [`multi-agent-install-strategy.md`](./multi-agent-install-strategy.md), [`adapters/README.md`](./adapters/README.md), [`install/README.md`](./install/README.md) |
-| Inspect a GLB & integrate into Three.js / React Three Fiber | [`examples/handing-off-glb-to-web/README.md`](./examples/handing-off-glb-to-web/README.md) | [`../skills/handing-off-glb-to-web/SKILL.md`](../skills/handing-off-glb-to-web/SKILL.md), [`../schemas/glb-web-handoff-manifest.schema.json`](../schemas/glb-web-handoff-manifest.schema.json) |
+| Inspect a GLB & integrate into Three.js / React Three Fiber | [`examples/blendops-glb-web-handoff/README.md`](./examples/blendops-glb-web-handoff/README.md) | [`../skills/blendops-glb-web-handoff/SKILL.md`](../skills/blendops-glb-web-handoff/SKILL.md), [`../schemas/glb-web-handoff-manifest.schema.json`](../schemas/glb-web-handoff-manifest.schema.json) |
 | Check eval evidence & repository audit | [`evals/README.md`](./evals/README.md) | [`audits/current/README.md`](./audits/current/README.md), [`audits/current/repository-inventory.json`](./audits/current/repository-inventory.json), [`release-readiness.md`](./release-readiness.md) |
 | Review pack content | [`../packs/README.md`](../packs/README.md) | [`../skills/README.md`](../skills/README.md), [`workflows/README.md`](./workflows/README.md), [`recipes/README.md`](./recipes/README.md) |
 
@@ -106,7 +106,7 @@ The single index for everything in this repo. Bookmark this page.
 | Example: agent install prompts | [`examples/agent-install-prompt.md`](./examples/agent-install-prompt.md) |
 | Example: `BLENDOPS.md` root template | [`examples/blendops-root-entrypoint.md`](./examples/blendops-root-entrypoint.md) |
 | Example: Claude app project instructions | [`examples/claude-app-project-instructions.md`](./examples/claude-app-project-instructions.md) |
-| Example: GLB web handoff & Three.js / R3F viewer integration | [`examples/handing-off-glb-to-web/README.md`](./examples/handing-off-glb-to-web/README.md) |
+| Example: GLB web handoff & Three.js / R3F viewer integration | [`examples/blendops-glb-web-handoff/README.md`](./examples/blendops-glb-web-handoff/README.md) |
 
 ---
 
@@ -194,22 +194,22 @@ Legacy quick links below cover only the **baseline 16**; the [`skills/README.md`
 | Skill | Doc | Group |
 |---|---|---|
 | Index + how to add a new skill | [`../skills/README.md`](../skills/README.md) | — |
-| `using-blendops` (router) | [`../skills/using-blendops/SKILL.md`](../skills/using-blendops/SKILL.md) | Help |
-| `scoping-3d-briefs` (Superpowers `/brainstorming` analog) | [`../skills/scoping-3d-briefs/SKILL.md`](../skills/scoping-3d-briefs/SKILL.md) | Process |
-| `scoping-3d-briefs` (BMad analysis-phase analog) | [`../skills/scoping-3d-briefs/SKILL.md`](../skills/scoping-3d-briefs/SKILL.md) | Process |
-| `sourcing-assets` | [`../skills/sourcing-assets/SKILL.md`](../skills/sourcing-assets/SKILL.md) | Process |
-| `setting-up-blender-runtime` | [`../skills/setting-up-blender-runtime/SKILL.md`](../skills/setting-up-blender-runtime/SKILL.md) | Runtime |
-| `setting-up-blender-runtime` | [`../skills/setting-up-blender-runtime/SKILL.md`](../skills/setting-up-blender-runtime/SKILL.md) | Runtime |
-| `setting-up-blender-runtime` (Single-bridge constraint) | [`../skills/setting-up-blender-runtime/SKILL.md`](../skills/setting-up-blender-runtime/SKILL.md) | Runtime |
-| `planning-product-scenes` | [`../skills/planning-product-scenes/SKILL.md`](../skills/planning-product-scenes/SKILL.md) | Planning |
-| `planning-camera-and-framing` | [`../skills/planning-camera-and-framing/SKILL.md`](../skills/planning-camera-and-framing/SKILL.md) | Planning |
-| `planning-lighting-and-materials` | [`../skills/planning-lighting-and-materials/SKILL.md`](../skills/planning-lighting-and-materials/SKILL.md) | Planning |
-| `verifying-before-handoff` | [`../skills/verifying-before-handoff/SKILL.md`](../skills/verifying-before-handoff/SKILL.md) | Quality |
-| `troubleshooting-blender-output` (Superpowers `/systematic-debugging` analog) | [`../skills/troubleshooting-blender-output/SKILL.md`](../skills/troubleshooting-blender-output/SKILL.md) | Quality |
-| `verifying-before-handoff` | [`../skills/verifying-before-handoff/SKILL.md`](../skills/verifying-before-handoff/SKILL.md) | Evidence |
-| `verifying-before-handoff` (Superpowers `/verification-before-completion` analog) | [`../skills/verifying-before-handoff/SKILL.md`](../skills/verifying-before-handoff/SKILL.md) | Evidence |
-| `handing-off-glb-to-web` | [`../skills/handing-off-glb-to-web/SKILL.md`](../skills/handing-off-glb-to-web/SKILL.md) | Handoff |
-| `using-blendops` | [`../skills/using-blendops/SKILL.md`](../skills/using-blendops/SKILL.md) | Handoff |
+| `blendops-start` (router) | [`../skills/blendops-start/SKILL.md`](../skills/blendops-start/SKILL.md) | Help |
+| `blendops-brief` (Superpowers `/brainstorming` analog) | [`../skills/blendops-brief/SKILL.md`](../skills/blendops-brief/SKILL.md) | Process |
+| `blendops-brief` (BMad analysis-phase analog) | [`../skills/blendops-brief/SKILL.md`](../skills/blendops-brief/SKILL.md) | Process |
+| `blendops-assets` | [`../skills/blendops-assets/SKILL.md`](../skills/blendops-assets/SKILL.md) | Process |
+| `blendops-connect-blender` | [`../skills/blendops-connect-blender/SKILL.md`](../skills/blendops-connect-blender/SKILL.md) | Runtime |
+| `blendops-connect-blender` | [`../skills/blendops-connect-blender/SKILL.md`](../skills/blendops-connect-blender/SKILL.md) | Runtime |
+| `blendops-connect-blender` (Single-bridge constraint) | [`../skills/blendops-connect-blender/SKILL.md`](../skills/blendops-connect-blender/SKILL.md) | Runtime |
+| `blendops-product-shot` | [`../skills/blendops-product-shot/SKILL.md`](../skills/blendops-product-shot/SKILL.md) | Planning |
+| `blendops-camera` | [`../skills/blendops-camera/SKILL.md`](../skills/blendops-camera/SKILL.md) | Planning |
+| `blendops-lighting-materials` | [`../skills/blendops-lighting-materials/SKILL.md`](../skills/blendops-lighting-materials/SKILL.md) | Planning |
+| `blendops-final-check` | [`../skills/blendops-final-check/SKILL.md`](../skills/blendops-final-check/SKILL.md) | Quality |
+| `blendops-fix-problems` (Superpowers `/systematic-debugging` analog) | [`../skills/blendops-fix-problems/SKILL.md`](../skills/blendops-fix-problems/SKILL.md) | Quality |
+| `blendops-final-check` | [`../skills/blendops-final-check/SKILL.md`](../skills/blendops-final-check/SKILL.md) | Evidence |
+| `blendops-final-check` (Superpowers `/verification-before-completion` analog) | [`../skills/blendops-final-check/SKILL.md`](../skills/blendops-final-check/SKILL.md) | Evidence |
+| `blendops-glb-web-handoff` | [`../skills/blendops-glb-web-handoff/SKILL.md`](../skills/blendops-glb-web-handoff/SKILL.md) | Handoff |
+| `blendops-start` | [`../skills/blendops-start/SKILL.md`](../skills/blendops-start/SKILL.md) | Handoff |
 
 ---
 
@@ -227,7 +227,7 @@ Legacy quick links below cover only the **baseline 16**; the [`skills/README.md`
 | Area | Doc |
 |---|---|
 | Workflows index | [`workflows/README.md`](./workflows/README.md) |
-| **Full non-Blender-user workflow** (canonical **baseline 16** chain; extend with `using-blendops` + [`skills/README.md`](../skills/README.md) for all 14) | [`workflows/full-non-blender-user-workflow.md`](./workflows/full-non-blender-user-workflow.md) |
+| **Full non-Blender-user workflow** (canonical **baseline 16** chain; extend with `blendops-start` + [`skills/README.md`](../skills/README.md) for all 14) | [`workflows/full-non-blender-user-workflow.md`](./workflows/full-non-blender-user-workflow.md) |
 | Product hero workflow (narrower subset, 5 stages) | [`workflows/product-hero-workflow.md`](./workflows/product-hero-workflow.md) |
 | Recipes index | [`recipes/README.md`](./recipes/README.md) |
 | Cyberpunk shoe hero recipe | [`recipes/cyberpunk-shoe-hero.md`](./recipes/cyberpunk-shoe-hero.md) |

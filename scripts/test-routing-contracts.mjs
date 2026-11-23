@@ -33,15 +33,15 @@ function loadPilotContract(id) {
 
 function loadPilotContracts() {
   return [
-    loadPilotContract('scoping-3d-briefs'),
-    loadPilotContract('defining-done-and-gates'),
-    loadPilotContract('using-blendops'),
+    loadPilotContract('blendops-brief'),
+    loadPilotContract('blendops-done-criteria'),
+    loadPilotContract('blendops-start'),
   ];
 }
 
 test('Routing Contracts (1/7): Schema validation passes for all 3 routing contracts and rejects malformed contracts', () => {
   const catalogSet = getCatalogSet();
-  const pilotIds = ['scoping-3d-briefs', 'defining-done-and-gates', 'using-blendops'];
+  const pilotIds = ['blendops-brief', 'blendops-done-criteria', 'blendops-start'];
 
   for (const id of pilotIds) {
     const contract = loadPilotContract(id);
@@ -50,9 +50,9 @@ test('Routing Contracts (1/7): Schema validation passes for all 3 routing contra
   }
 
   // Reject invalid operator in condition DSL
-  const badOperator = structuredClone(loadPilotContract('using-blendops'));
+  const badOperator = structuredClone(loadPilotContract('blendops-start'));
   badOperator.handoffs[0].when.all[0].operator = 'eval_js';
-  const opErrors = validateContractObject(badOperator, 'using-blendops', catalogSet);
+  const opErrors = validateContractObject(badOperator, 'blendops-start', catalogSet);
   assert.equal(opErrors.some((e) => e.includes('eval_js')), true, 'Must reject unsupported DSL operator');
 });
 
@@ -71,7 +71,7 @@ test('Routing Contracts (2/7): Precedence ladder resolves non-overlapping winner
         preflightPassed: false,
         hasStageOrArtifactInventory: false,
       }),
-      'scoping-3d-briefs',
+      'blendops-brief',
     );
   }
 
@@ -83,7 +83,7 @@ test('Routing Contracts (2/7): Precedence ladder resolves non-overlapping winner
       preflightPassed: false,
       hasStageOrArtifactInventory: false,
     }),
-    'defining-done-and-gates',
+    'blendops-done-criteria',
   );
 
   // Rank 3: Goal clear, recipe selected, preflight passed, stage/artifact inventory exists
@@ -94,7 +94,7 @@ test('Routing Contracts (2/7): Precedence ladder resolves non-overlapping winner
       preflightPassed: true,
       hasStageOrArtifactInventory: true,
     }),
-    'using-blendops',
+    'blendops-start',
   );
 
   // Incomplete or contradictory state must return null (never silently fallback to Rank 1)
@@ -125,7 +125,7 @@ test('Routing Contracts (2/7): Precedence ladder resolves non-overlapping winner
 
 test('Routing Contracts (3/7): Unknown handoff target or exclusion delegateTo fails validation', () => {
   const catalogSet = getCatalogSet();
-  const c = structuredClone(loadPilotContract('using-blendops'));
+  const c = structuredClone(loadPilotContract('blendops-start'));
   c.handoffs.push({
     target: 'non-existent-blender-skill',
     type: 'progression',
@@ -133,7 +133,7 @@ test('Routing Contracts (3/7): Unknown handoff target or exclusion delegateTo fa
     when: { all: [{ field: 'stage.current', operator: 'equals', value: 'test' }] },
   });
 
-  const errors = validateContractObject(c, 'using-blendops', catalogSet);
+  const errors = validateContractObject(c, 'blendops-start', catalogSet);
   assert.equal(
     errors.some((e) => e.includes('non-existent-blender-skill')),
     true,
@@ -143,16 +143,16 @@ test('Routing Contracts (3/7): Unknown handoff target or exclusion delegateTo fa
 
 test('Routing Contracts (4/7): Progression cycle detection catches linear loops while permitting non-progression edges', () => {
   const acyclicEdges = [
-    { from: 'using-blendops', to: 'scoping-3d-briefs', type: 'progression' },
-    { from: 'scoping-3d-briefs', to: 'defining-done-and-gates', type: 'progression' },
-    { from: 'defining-done-and-gates', to: 'scoping-3d-briefs', type: 'upstream_reference' },
+    { from: 'blendops-start', to: 'blendops-brief', type: 'progression' },
+    { from: 'blendops-brief', to: 'blendops-done-criteria', type: 'progression' },
+    { from: 'blendops-done-criteria', to: 'blendops-brief', type: 'upstream_reference' },
   ];
   assert.equal(detectProgressionCycles(acyclicEdges).length, 0, 'Acyclic progression graph must pass');
 
   const cyclicEdges = [
-    { from: 'using-blendops', to: 'scoping-3d-briefs', type: 'progression' },
-    { from: 'scoping-3d-briefs', to: 'defining-done-and-gates', type: 'progression' },
-    { from: 'defining-done-and-gates', to: 'using-blendops', type: 'progression' },
+    { from: 'blendops-start', to: 'blendops-brief', type: 'progression' },
+    { from: 'blendops-brief', to: 'blendops-done-criteria', type: 'progression' },
+    { from: 'blendops-done-criteria', to: 'blendops-start', type: 'progression' },
   ];
   const cycles = detectProgressionCycles(cyclicEdges);
   assert.equal(cycles.length > 0, true, 'Must detect cycle in progression subgraph');
@@ -160,14 +160,14 @@ test('Routing Contracts (4/7): Progression cycle detection catches linear loops 
 
 test('Routing Contracts (5/7): Retry edges require bounded maxAttempts (1..5) and structured exitCondition', () => {
   const catalogSet = getCatalogSet();
-  const missingRetryPolicy = structuredClone(loadPilotContract('using-blendops'));
+  const missingRetryPolicy = structuredClone(loadPilotContract('blendops-start'));
   missingRetryPolicy.handoffs.push({
-    target: 'verifying-before-handoff',
+    target: 'blendops-final-check',
     type: 'retry',
     label: 'Unbounded retry test',
     when: { all: [{ field: 'quality.verdict', operator: 'equals', value: 'fail' }] },
   });
-  const err1 = validateContractObject(missingRetryPolicy, 'using-blendops', catalogSet);
+  const err1 = validateContractObject(missingRetryPolicy, 'blendops-start', catalogSet);
   assert.equal(
     err1.some((e) => e.includes('requires a retryPolicy object')),
     true,
@@ -181,13 +181,13 @@ test('Routing Contracts (5/7): Retry edges require bounded maxAttempts (1..5) an
       all: [{ field: 'quality.verdict', operator: 'equals', value: 'pass' }],
     },
   };
-  const err2 = validateContractObject(validRetryPolicy, 'using-blendops', catalogSet);
+  const err2 = validateContractObject(validRetryPolicy, 'blendops-start', catalogSet);
   assert.deepEqual(err2, [], 'Bounded retry edge with maxAttempts and exitCondition must pass');
 });
 
 test('Routing Contracts (6/7): SKILL.md managed section drift is detected accurately without mutating files in --check mode', () => {
-  const contract = loadPilotContract('using-blendops');
-  const currentSkillMd = fs.readFileSync(path.join(root, 'skills', 'using-blendops', 'SKILL.md'), 'utf8');
+  const contract = loadPilotContract('blendops-start');
+  const currentSkillMd = fs.readFileSync(path.join(root, 'skills', 'blendops-start', 'SKILL.md'), 'utf8');
   const expectedSkillMd = applyManagedSectionsToSkillMd(currentSkillMd, contract);
   assert.equal(currentSkillMd, expectedSkillMd, 'Synced SKILL.md must match rendered contract sections');
 
@@ -227,13 +227,13 @@ test('Routing Hardening (Workstream A): Draft 2020-12 JSON Schema rejects invali
   const catalogSet = getCatalogSet();
 
   // 1. Unknown nested property inside inputs.required[0]
-  const badInputProp = structuredClone(loadPilotContract('using-blendops'));
+  const badInputProp = structuredClone(loadPilotContract('blendops-start'));
   badInputProp.inputs.required[0].extraNestedField = true;
-  const errInput = validateContractObject(badInputProp, 'using-blendops', catalogSet);
+  const errInput = validateContractObject(badInputProp, 'blendops-start', catalogSet);
   assert.equal(
     errInput.some(
       (e) =>
-        e.includes('contract(using-blendops)') &&
+        e.includes('contract(blendops-start)') &&
         e.includes('/inputs/required/0') &&
         e.includes('extraNestedField'),
     ),
@@ -242,9 +242,9 @@ test('Routing Hardening (Workstream A): Draft 2020-12 JSON Schema rejects invali
   );
 
   // 2. Invalid input parameter name pattern (camelCase instead of snake_case)
-  const badInputName = structuredClone(loadPilotContract('using-blendops'));
+  const badInputName = structuredClone(loadPilotContract('blendops-start'));
   badInputName.inputs.required[0].name = 'InvalidCamelCaseName';
-  const errInputName = validateContractObject(badInputName, 'using-blendops', catalogSet);
+  const errInputName = validateContractObject(badInputName, 'blendops-start', catalogSet);
   assert.equal(
     errInputName.some((e) => e.includes('/inputs/required/0/name')),
     true,
@@ -252,18 +252,18 @@ test('Routing Hardening (Workstream A): Draft 2020-12 JSON Schema rejects invali
   );
 
   // 3. Non-retry handoff edge accidentally receiving retryPolicy
-  const unexpectedRetryPolicy = structuredClone(loadPilotContract('using-blendops'));
+  const unexpectedRetryPolicy = structuredClone(loadPilotContract('blendops-start'));
   unexpectedRetryPolicy.handoffs[0].retryPolicy = {
     maxAttempts: 2,
     exitCondition: {
       all: [{ field: 'goal.clarity', operator: 'equals', value: 'clear' }],
     },
   };
-  const errNonRetry = validateContractObject(unexpectedRetryPolicy, 'using-blendops', catalogSet);
+  const errNonRetry = validateContractObject(unexpectedRetryPolicy, 'blendops-start', catalogSet);
   assert.equal(
     errNonRetry.some(
       (e) =>
-        e.includes('contract(using-blendops)') &&
+        e.includes('contract(blendops-start)') &&
         e.includes('/handoffs/0') &&
         e.includes('retryPolicy'),
     ),
@@ -272,9 +272,9 @@ test('Routing Hardening (Workstream A): Draft 2020-12 JSON Schema rejects invali
   );
 
   // 4. Predicate operator 'in' with scalar instead of non-empty array
-  const badInPredicate = structuredClone(loadPilotContract('scoping-3d-briefs'));
+  const badInPredicate = structuredClone(loadPilotContract('blendops-brief'));
   badInPredicate.handoffs[3].when.all[0].value = 'strong_fit'; // operator is 'in'
-  const errInPred = validateContractObject(badInPredicate, 'scoping-3d-briefs', catalogSet);
+  const errInPred = validateContractObject(badInPredicate, 'blendops-brief', catalogSet);
   assert.equal(
     errInPred.some((e) => e.includes('/handoffs/3/when/all/0/value')),
     true,
@@ -282,13 +282,13 @@ test('Routing Hardening (Workstream A): Draft 2020-12 JSON Schema rejects invali
   );
 
   // 5. Predicate operator 'exists' with non-boolean value
-  const badExistsPredicate = structuredClone(loadPilotContract('using-blendops'));
+  const badExistsPredicate = structuredClone(loadPilotContract('blendops-start'));
   badExistsPredicate.handoffs[0].when.all[0] = {
     field: 'goal.clarity',
     operator: 'exists',
     value: 'yes',
   };
-  const errExistsPred = validateContractObject(badExistsPredicate, 'using-blendops', catalogSet);
+  const errExistsPred = validateContractObject(badExistsPredicate, 'blendops-start', catalogSet);
   assert.equal(
     errExistsPred.some((e) => e.includes('/handoffs/0/when/all/0/value')),
     true,
@@ -296,12 +296,12 @@ test('Routing Hardening (Workstream A): Draft 2020-12 JSON Schema rejects invali
   );
 
   // 6. ConditionGroup containing both 'all' and 'any' simultaneously
-  const bothAllAndAny = structuredClone(loadPilotContract('using-blendops'));
+  const bothAllAndAny = structuredClone(loadPilotContract('blendops-start'));
   bothAllAndAny.handoffs[0].when = {
     all: [{ field: 'goal.clarity', operator: 'equals', value: 'clear' }],
     any: [{ field: 'recipe.selected', operator: 'equals', value: false }],
   };
-  const errBoth = validateContractObject(bothAllAndAny, 'using-blendops', catalogSet);
+  const errBoth = validateContractObject(bothAllAndAny, 'blendops-start', catalogSet);
   assert.equal(
     errBoth.some((e) => e.includes('/handoffs/0/when')),
     true,
@@ -309,11 +309,11 @@ test('Routing Hardening (Workstream A): Draft 2020-12 JSON Schema rejects invali
   );
 
   // 7. Self-reference and directory ID mismatch
-  const selfRef = structuredClone(loadPilotContract('using-blendops'));
+  const selfRef = structuredClone(loadPilotContract('blendops-start'));
   selfRef.id = 'wrong-dir-id';
-  selfRef.exclusions[0].delegateTo = 'using-blendops';
-  selfRef.handoffs[0].target = 'using-blendops';
-  const errSelf = validateContractObject(selfRef, 'using-blendops', catalogSet);
+  selfRef.exclusions[0].delegateTo = 'blendops-start';
+  selfRef.handoffs[0].target = 'blendops-start';
+  const errSelf = validateContractObject(selfRef, 'blendops-start', catalogSet);
   assert.equal(errSelf.some((e) => e.includes('/id')), true, 'Must report directory ID mismatch');
   assert.equal(
     errSelf.some((e) => e.includes('/exclusions/0/delegateTo') && e.includes('self-reference')),
@@ -335,14 +335,14 @@ test('Routing Hardening (Workstream B): Deterministic state-space overlap detect
 
   // 1. Detect goalClarity: 'any' overlapping another gate in the same group
   const wildcardOverlap = structuredClone(loadPilotContracts());
-  wildcardOverlap[1].routingPrecedence.activationGate.recipeSelected = false; // defining-done-and-gates now overlaps scoping-3d-briefs on clear + no recipe
+  wildcardOverlap[1].routingPrecedence.activationGate.recipeSelected = false; // blendops-done-criteria now overlaps blendops-brief on clear + no recipe
   const overlapErrors = validatePrecedenceLadder(wildcardOverlap);
   assert.equal(
     overlapErrors.some(
       (e) =>
         e.includes('Overlapping activationGate') &&
-        e.includes("'scoping-3d-briefs' (rank 1)") &&
-        e.includes("'defining-done-and-gates' (rank 2)") &&
+        e.includes("'blendops-brief' (rank 1)") &&
+        e.includes("'blendops-done-criteria' (rank 2)") &&
         e.includes('"goalClarity":"clear"'),
     ),
     true,
@@ -356,12 +356,12 @@ test('Routing Hardening (Workstream B): Deterministic state-space overlap detect
   );
   const dupErrors = validatePrecedenceLadder(duplicateGate);
   assert.equal(
-    dupErrors.some((e) => e.includes('Identical activationGate') && e.includes('defining-done-and-gates') && e.includes('using-blendops')),
+    dupErrors.some((e) => e.includes('Identical activationGate') && e.includes('blendops-done-criteria') && e.includes('blendops-start')),
     true,
     'Must detect identical activationGate across different ranks',
   );
   assert.equal(
-    dupErrors.some((e) => e.includes('Unreachable activationGate') && e.includes('using-blendops')),
+    dupErrors.some((e) => e.includes('Unreachable activationGate') && e.includes('blendops-start')),
     true,
     'Must detect that shadowed lower-rank gate is unreachable',
   );
@@ -379,7 +379,7 @@ test('Routing Hardening (Workstream B): Deterministic state-space overlap detect
     unreachableErrors.some(
       (e) =>
         e.includes('Unreachable activationGate') &&
-        e.includes("'using-blendops' (rank 3)") &&
+        e.includes("'blendops-start' (rank 3)") &&
         e.includes('matches 0 valid runtime states'),
     ),
     true,
@@ -457,8 +457,8 @@ test('Routing Hardening (Workstream D): --check is strictly read-only and reject
 
     const skillsJsonPath = path.join(tmpRoot, 'registry', 'skills.json');
     const graphJsonPath = path.join(tmpRoot, 'registry', 'workflow-graph.json');
-    const helpSkillMdPath = path.join(tmpRoot, 'skills', 'using-blendops', 'SKILL.md');
-    const helpContractPath = path.join(tmpRoot, 'skills', 'using-blendops', 'contract.json');
+    const helpSkillMdPath = path.join(tmpRoot, 'skills', 'blendops-start', 'SKILL.md');
+    const helpContractPath = path.join(tmpRoot, 'skills', 'blendops-start', 'contract.json');
 
     // 1. Introduce managed Markdown drift in SKILL.md and verify --check fails without modifying ANY file
     const driftedMd = fs
@@ -477,7 +477,7 @@ test('Routing Hardening (Workstream D): --check is strictly read-only and reject
     );
     assert.notEqual(checkRes.status, 0, '--check must exit non-zero when SKILL.md managed section has drifted');
     assert.equal(
-      checkRes.stderr.includes('Managed section drift detected in skills/using-blendops/SKILL.md'),
+      checkRes.stderr.includes('Managed section drift detected in skills/blendops-start/SKILL.md'),
       true,
       'Must report exact drifted SKILL.md path',
     );
@@ -496,7 +496,7 @@ test('Routing Hardening (Workstream D): --check is strictly read-only and reject
     assert.equal(
       crypto.createHash('sha256').update(fs.readFileSync(helpSkillMdPath)).digest('hex'),
       beforeHashMd,
-      '--check must not modify skills/using-blendops/SKILL.md',
+      '--check must not modify skills/blendops-start/SKILL.md',
     );
 
     // 2. Verify --sync-skills restores drifted SKILL.md cleanly
@@ -512,7 +512,7 @@ test('Routing Hardening (Workstream D): --check is strictly read-only and reject
     const cleanMdBeforeFail = fs.readFileSync(helpSkillMdPath, 'utf8');
 
     const badContract = JSON.parse(fs.readFileSync(helpContractPath, 'utf8'));
-    badContract.routingPrecedence.rank = 2; // collides with scoping-3d-briefs
+    badContract.routingPrecedence.rank = 2; // collides with blendops-brief
     fs.writeFileSync(helpContractPath, JSON.stringify(badContract, null, 2), 'utf8');
 
     const failBuildRes = spawnSync(

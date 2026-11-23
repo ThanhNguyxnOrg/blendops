@@ -40,22 +40,22 @@ Compose the included skills to plan, validate, and communicate product-hero Blen
 
 | Category | Skill path | Status |
 |---|---|---|
-| Help / routing | `../../skills/using-blendops/SKILL.md` | 1.0.0 |
-| Process / discipline (Superpowers + BMad inspired) | `../../skills/scoping-3d-briefs/SKILL.md` | 1.0.0 |
-| Process / discipline | `../../skills/scoping-3d-briefs/SKILL.md` | 1.0.0 |
-| Process / discipline | `../../skills/sourcing-assets/SKILL.md` | 1.0.0 |
-| Setup / readiness | `../../skills/setting-up-blender-runtime/SKILL.md` | 1.0.0 |
-| Setup / readiness | `../../skills/setting-up-blender-runtime/SKILL.md` | 1.0.0 |
-| Setup / readiness | `../../skills/setting-up-blender-runtime/SKILL.md` | 1.0.0 |
-| Planning | `../../skills/planning-product-scenes/SKILL.md` | 1.0.0 |
-| Planning | `../../skills/planning-camera-and-framing/SKILL.md` | 1.0.0 |
-| Planning | `../../skills/planning-lighting-and-materials/SKILL.md` | 1.0.0 |
-| Quality / eval | `../../skills/verifying-before-handoff/SKILL.md` | 1.0.0 |
-| Quality / debugging | `../../skills/troubleshooting-blender-output/SKILL.md` | 1.0.0 |
-| Quality / evidence | `../../skills/verifying-before-handoff/SKILL.md` | 1.0.0 |
-| Quality / pre-handoff | `../../skills/verifying-before-handoff/SKILL.md` | 1.0.0 |
-| Handoff / communication | `../../skills/handing-off-glb-to-web/SKILL.md` | 1.0.0 |
-| Handoff / communication | `../../skills/using-blendops/SKILL.md` | 1.0.0 |
+| Help / routing | `../../skills/blendops-start/SKILL.md` | 1.0.0 |
+| Process / discipline (Superpowers + BMad inspired) | `../../skills/blendops-brief/SKILL.md` | 1.0.0 |
+| Process / discipline | `../../skills/blendops-brief/SKILL.md` | 1.0.0 |
+| Process / discipline | `../../skills/blendops-assets/SKILL.md` | 1.0.0 |
+| Setup / readiness | `../../skills/blendops-connect-blender/SKILL.md` | 1.0.0 |
+| Setup / readiness | `../../skills/blendops-connect-blender/SKILL.md` | 1.0.0 |
+| Setup / readiness | `../../skills/blendops-connect-blender/SKILL.md` | 1.0.0 |
+| Planning | `../../skills/blendops-product-shot/SKILL.md` | 1.0.0 |
+| Planning | `../../skills/blendops-camera/SKILL.md` | 1.0.0 |
+| Planning | `../../skills/blendops-lighting-materials/SKILL.md` | 1.0.0 |
+| Quality / eval | `../../skills/blendops-final-check/SKILL.md` | 1.0.0 |
+| Quality / debugging | `../../skills/blendops-fix-problems/SKILL.md` | 1.0.0 |
+| Quality / evidence | `../../skills/blendops-final-check/SKILL.md` | 1.0.0 |
+| Quality / pre-handoff | `../../skills/blendops-final-check/SKILL.md` | 1.0.0 |
+| Handoff / communication | `../../skills/blendops-glb-web-handoff/SKILL.md` | 1.0.0 |
+| Handoff / communication | `../../skills/blendops-start/SKILL.md` | 1.0.0 |
 
 ## Recipe scenario
 

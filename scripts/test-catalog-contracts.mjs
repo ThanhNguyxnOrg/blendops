@@ -82,9 +82,9 @@ describe('Full Catalog Contract Coverage & F-03 Resolution (30 Scenarios)', () =
 
   it('Scenario 3: enforces strict separation between the 3 routing participants and 11 specialist contracts', () => {
     assert.deepEqual(ROUTING_PARTICIPANT_IDS, [
-      'scoping-3d-briefs',
-      'defining-done-and-gates',
-      'using-blendops',
+      'blendops-brief',
+      'blendops-done-criteria',
+      'blendops-start',
     ]);
 
     let routingCount = 0;
@@ -112,7 +112,7 @@ describe('Full Catalog Contract Coverage & F-03 Resolution (30 Scenarios)', () =
 
   it('Scenario 4: adding routingPrecedence to a specialist contract fails schema validation and precedence ladder validation', () => {
     const specialist = JSON.parse(
-      fs.readFileSync(path.join(skillsDir, 'planning-camera-and-framing', 'contract.json'), 'utf8'),
+      fs.readFileSync(path.join(skillsDir, 'blendops-camera', 'contract.json'), 'utf8'),
     );
     const mutated = {
       ...specialist,
@@ -130,7 +130,7 @@ describe('Full Catalog Contract Coverage & F-03 Resolution (30 Scenarios)', () =
     };
     const errs = validateContractObject(
       mutated,
-      'planning-camera-and-framing',
+      'blendops-camera',
       catalogSkillSet,
       undefined,
       { rootDir: root, contextFieldMap },
@@ -150,24 +150,24 @@ describe('Full Catalog Contract Coverage & F-03 Resolution (30 Scenarios)', () =
 
   it('Scenario 5: removing routingPrecedence from a routing participant fails schema validation and precedence ladder validation', () => {
     const participant = JSON.parse(
-      fs.readFileSync(path.join(skillsDir, 'using-blendops', 'contract.json'), 'utf8'),
+      fs.readFileSync(path.join(skillsDir, 'blendops-start', 'contract.json'), 'utf8'),
     );
     const mutated = { ...participant };
     delete mutated.routingPrecedence;
 
-    const errs = validateContractObject(mutated, 'using-blendops', catalogSkillSet, undefined, {
+    const errs = validateContractObject(mutated, 'blendops-start', catalogSkillSet, undefined, {
       rootDir: root,
       contextFieldMap,
     });
     assert.equal(
       errs.some((e) => e.includes('routingPrecedence')),
       true,
-      `Expected missing routingPrecedence error on using-blendops, got: ${errs.join('; ')}`,
+      `Expected missing routingPrecedence error on blendops-start, got: ${errs.join('; ')}`,
     );
 
     const ladderErrs = validatePrecedenceLadder([mutated]);
     assert.equal(
-      ladderErrs.some((e) => e.includes("Contract 'using-blendops' is missing a valid routingPrecedence object")),
+      ladderErrs.some((e) => e.includes("Contract 'blendops-start' is missing a valid routingPrecedence object")),
       true,
     );
   });
@@ -178,12 +178,12 @@ describe('Full Catalog Contract Coverage & F-03 Resolution (30 Scenarios)', () =
       for (const rel of ['schemas', 'registry', 'skills']) {
         fs.cpSync(path.join(root, rel), path.join(tempDir, rel), { recursive: true });
       }
-      fs.unlinkSync(path.join(tempDir, 'skills', 'budgeting-glb-for-web', 'contract.json'));
+      fs.unlinkSync(path.join(tempDir, 'skills', 'blendops-glb-budget', 'contract.json'));
 
       const res = buildRegistryArtifacts(tempDir);
       assert.equal(
         res.errors.some((e) =>
-          e.includes("Missing contract.json for catalog skill 'budgeting-glb-for-web'"),
+          e.includes("Missing contract.json for catalog skill 'blendops-glb-budget'"),
         ),
         true,
         `Expected missing contract error, got: ${res.errors.join('; ')}`,
@@ -209,12 +209,12 @@ describe('Full Catalog Contract Coverage & F-03 Resolution (30 Scenarios)', () =
     }
 
     const sample = JSON.parse(
-      fs.readFileSync(path.join(skillsDir, 'planning-lighting-and-materials', 'contract.json'), 'utf8'),
+      fs.readFileSync(path.join(skillsDir, 'blendops-lighting-materials', 'contract.json'), 'utf8'),
     );
     const escalated = { ...sample, capabilityTier: 'L1' };
     const errs = validateContractObject(
       escalated,
-      'planning-lighting-and-materials',
+      'blendops-lighting-materials',
       catalogSkillSet,
       undefined,
       { rootDir: root, contextFieldMap, capabilityPolicyMap: policyMap },
@@ -237,13 +237,13 @@ describe('Full Catalog Contract Coverage & F-03 Resolution (30 Scenarios)', () =
     }
 
     const sample = JSON.parse(
-      fs.readFileSync(path.join(skillsDir, 'verifying-before-handoff', 'contract.json'), 'utf8'),
+      fs.readFileSync(path.join(skillsDir, 'blendops-final-check', 'contract.json'), 'utf8'),
     );
     const badTruth = structuredClone(sample);
     badTruth.outputs.truthStatePolicy.artifactDefault = 'Not Run';
     const errs = validateContractObject(
       badTruth,
-      'verifying-before-handoff',
+      'blendops-final-check',
       catalogSkillSet,
       undefined,
       { rootDir: root, contextFieldMap },
@@ -281,7 +281,7 @@ describe('Full Catalog Contract Coverage & F-03 Resolution (30 Scenarios)', () =
 
     // Intra-contract case-insensitive duplicate trigger must fail
     const sample = JSON.parse(
-      fs.readFileSync(path.join(skillsDir, 'planning-lighting-and-materials', 'contract.json'), 'utf8'),
+      fs.readFileSync(path.join(skillsDir, 'blendops-lighting-materials', 'contract.json'), 'utf8'),
     );
     const dupTriggerContract = {
       ...sample,
@@ -289,7 +289,7 @@ describe('Full Catalog Contract Coverage & F-03 Resolution (30 Scenarios)', () =
     };
     const errs = validateContractObject(
       dupTriggerContract,
-      'planning-lighting-and-materials',
+      'blendops-lighting-materials',
       catalogSkillSet,
       undefined,
       { rootDir: root, contextFieldMap },
@@ -315,21 +315,21 @@ describe('Full Catalog Contract Coverage & F-03 Resolution (30 Scenarios)', () =
 
   it('Scenario 11: unknown or self-referencing exclusion delegateTo or handoff target is rejected by validateContractObject', () => {
     const sample = JSON.parse(
-      fs.readFileSync(path.join(skillsDir, 'sourcing-assets', 'contract.json'), 'utf8'),
+      fs.readFileSync(path.join(skillsDir, 'blendops-assets', 'contract.json'), 'utf8'),
     );
     const badTargets = structuredClone(sample);
     badTargets.exclusions[0].delegateTo = 'non-existent-skill';
-    badTargets.handoffs[0].target = 'sourcing-assets';
+    badTargets.handoffs[0].target = 'blendops-assets';
 
     const errs = validateContractObject(
       badTargets,
-      'sourcing-assets',
+      'blendops-assets',
       catalogSkillSet,
       undefined,
       { rootDir: root, contextFieldMap },
     );
     assert.equal(errs.some((e) => e.includes("'non-existent-skill' is not a valid catalog skill ID")), true);
-    assert.equal(errs.some((e) => e.includes("cannot self-reference 'sourcing-assets'")), true);
+    assert.equal(errs.some((e) => e.includes("cannot self-reference 'blendops-assets'")), true);
   });
 
   it('Scenario 12: registry/contract-context-fields.json validates cleanly against schemas/contract-context-fields.schema.json', () => {
@@ -359,14 +359,14 @@ describe('Full Catalog Contract Coverage & F-03 Resolution (30 Scenarios)', () =
 
   it('Scenario 14: unknown context field in a handoff when or retryPolicy.exitCondition predicate is rejected', () => {
     const sample = JSON.parse(
-      fs.readFileSync(path.join(skillsDir, 'planning-camera-and-framing', 'contract.json'), 'utf8'),
+      fs.readFileSync(path.join(skillsDir, 'blendops-camera', 'contract.json'), 'utf8'),
     );
     const mutated = structuredClone(sample);
     mutated.handoffs[0].when = {
       all: [{ field: 'unknown.domainField', operator: 'equals', value: 'passed' }],
     };
 
-    const errs = validateContractContextFields(mutated, 'planning-camera-and-framing', contextFieldMap);
+    const errs = validateContractContextFields(mutated, 'blendops-camera', contextFieldMap);
     assert.equal(
       errs.some((e) => e.includes("unknown context field 'unknown.domainField'")),
       true,
@@ -375,13 +375,13 @@ describe('Full Catalog Contract Coverage & F-03 Resolution (30 Scenarios)', () =
 
   it('Scenario 15: wrong valueType or disallowed enum value in a context field predicate is rejected', () => {
     const sample = JSON.parse(
-      fs.readFileSync(path.join(skillsDir, 'planning-camera-and-framing', 'contract.json'), 'utf8'),
+      fs.readFileSync(path.join(skillsDir, 'blendops-camera', 'contract.json'), 'utf8'),
     );
     const badEnum = structuredClone(sample);
     badEnum.handoffs[0].when = {
       all: [{ field: 'gate.status', operator: 'equals', value: 'invented_gate_status' }],
     };
-    const errsEnum = validateContractContextFields(badEnum, 'planning-camera-and-framing', contextFieldMap);
+    const errsEnum = validateContractContextFields(badEnum, 'blendops-camera', contextFieldMap);
     assert.equal(
       errsEnum.some((e) => e.includes('not in allowedValues')),
       true,
@@ -391,7 +391,7 @@ describe('Full Catalog Contract Coverage & F-03 Resolution (30 Scenarios)', () =
     badType.handoffs[0].when = {
       all: [{ field: 'brief.locked', operator: 'equals', value: 'yes' }],
     };
-    const errsType = validateContractContextFields(badType, 'planning-camera-and-framing', contextFieldMap);
+    const errsType = validateContractContextFields(badType, 'blendops-camera', contextFieldMap);
     assert.equal(
       errsType.some((e) => e.includes("expects valueType 'boolean'")),
       true,
@@ -400,11 +400,11 @@ describe('Full Catalog Contract Coverage & F-03 Resolution (30 Scenarios)', () =
 
   it('Scenario 16: retry handoff without retryPolicy or non-retry handoff with retryPolicy fails validation', () => {
     const sample = JSON.parse(
-      fs.readFileSync(path.join(skillsDir, 'planning-camera-and-framing', 'contract.json'), 'utf8'),
+      fs.readFileSync(path.join(skillsDir, 'blendops-camera', 'contract.json'), 'utf8'),
     );
     const missingPolicy = structuredClone(sample);
     const retryHandoff = {
-      target: 'planning-lighting-and-materials',
+      target: 'blendops-lighting-materials',
       type: 'retry',
       label: 'Lighting and materials re-plan',
       when: {
@@ -425,7 +425,7 @@ describe('Full Catalog Contract Coverage & F-03 Resolution (30 Scenarios)', () =
 
     const errsMissing = validateContractObject(
       missingPolicy,
-      'planning-camera-and-framing',
+      'blendops-camera',
       catalogSkillSet,
       undefined,
       { rootDir: root, contextFieldMap },
@@ -443,7 +443,7 @@ describe('Full Catalog Contract Coverage & F-03 Resolution (30 Scenarios)', () =
     };
     const errsForbidden = validateContractObject(
       forbiddenPolicy,
-      'planning-camera-and-framing',
+      'blendops-camera',
       catalogSkillSet,
       undefined,
       { rootDir: root, contextFieldMap },
@@ -536,8 +536,8 @@ describe('Full Catalog Contract Coverage & F-03 Resolution (30 Scenarios)', () =
     }
 
     assert.ok(
-      (inDegree.get('defining-done-and-gates') || 0) >= 2,
-      'defining-done-and-gates must have incoming handoff edges',
+      (inDegree.get('blendops-done-criteria') || 0) >= 2,
+      'blendops-done-criteria must have incoming handoff edges',
     );
   });
 
@@ -557,7 +557,7 @@ describe('Full Catalog Contract Coverage & F-03 Resolution (30 Scenarios)', () =
   });
 
   it('Scenario 22: managed section drift in any SKILL.md file is detected and rejected', () => {
-    const skillId = 'planning-lighting-and-materials';
+    const skillId = 'blendops-lighting-materials';
     const contract = JSON.parse(
       fs.readFileSync(path.join(skillsDir, skillId, 'contract.json'), 'utf8'),
     );
@@ -679,7 +679,7 @@ describe('Full Catalog Contract Coverage & F-03 Resolution (30 Scenarios)', () =
       execFileSync('git', ['commit', '-m', 'Initial temp commit'], { cwd: tempDir });
 
       // Remove one contract.json in tempDir
-      fs.unlinkSync(path.join(tempDir, 'skills', 'budgeting-glb-for-web', 'contract.json'));
+      fs.unlinkSync(path.join(tempDir, 'skills', 'blendops-glb-budget', 'contract.json'));
 
       const generated = generateCurrentAuditArtifacts(tempDir);
       assert.equal(generated.currentSkillInventory.summary.contractedSkillsCount, 13);
@@ -719,8 +719,8 @@ describe('Full Catalog Contract Coverage & F-03 Resolution (30 Scenarios)', () =
       'registry/skills.json',
       'registry/workflow-graph.json',
       'scripts/test-catalog-contracts.mjs',
-      'skills/planning-camera-and-framing/contract.json',
-      'skills/using-blendops/contract.json',
+      'skills/blendops-camera/contract.json',
+      'skills/blendops-start/contract.json',
     ]) {
       assert.equal(
         resolved.has(expectedPath),

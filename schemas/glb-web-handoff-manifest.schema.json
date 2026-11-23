@@ -33,7 +33,7 @@
       "maxLength": 120
     },
     "skillId": {
-      "const": "handing-off-glb-to-web"
+      "const": "blendops-glb-web-handoff"
     },
     "artifact": {
       "type": "object",

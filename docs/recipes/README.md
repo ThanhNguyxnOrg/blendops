@@ -4,7 +4,7 @@ BlendOps organizes recipes across two linked surfaces so there is never a duplic
 
 1. **Canonical Machine-Readable Recipe Registry (`registry/recipe-catalog.json`)**:
    - Defines 10 reusable, multi-stage `recipe.<slug>` blueprints validated by `schemas/recipe-record.schema.json`, indexed in `registry/catalog-index.json`, and rendered in [`../knowledge-and-recipe-catalog.md`](../knowledge-and-recipe-catalog.md).
-   - Used by `scoping-3d-briefs`, `scoping-3d-briefs`, `using-blendops`, and `bin/blendops.mjs catalog-search --type recipe`.
+   - Used by `blendops-brief`, `blendops-start`, and `bin/blendops.mjs catalog-search --type recipe`.
 2. **Human-Readable Scenario Recipes (`docs/recipes/*.md`)**:
    - Concrete, styled walkthroughs that instantiate a canonical recipe for a specific user prompt (linked via `documentation_path` on the canonical recipe record).
 

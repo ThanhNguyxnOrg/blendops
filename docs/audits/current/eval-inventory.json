@@ -14,7 +14,7 @@
     "workingTreeState": "dirty",
     "snapshotBasis": "working-tree-on-top-of-source-commit",
     "uncommittedChangeCount": 601,
-    "auditedInputsSha256": "2ff18db4681519ef4b266a1d16fe11133be5a7b68109dbcf75e5fdf2b96f7d3e",
+    "auditedInputsSha256": "32883c38bdae37fe98208a88eae7c9fb287efef194081debe4c3844f6262040e",
     "selfReferentialCommitRule": "A Git commit cannot contain its own final commit SHA inside tracked files. sourceCommitSha records the verified HEAD commit present when the generator ran, workingTreeState and snapshotBasis record whether uncommitted working-tree changes were present on top of sourceCommitSha, and auditedInputsSha256 digests the exact audited file contents."
   },
   "summary": {
@@ -37,20 +37,20 @@
   },
   "evals": [
     {
-      "id": "budgeting-glb-for-web",
+      "id": "blendops-glb-budget",
       "category": "quality-validators",
       "isGatewaySkill": false,
       "lineCount": 86,
       "headings": [
-        "From former `budgeting-glb-for-web`",
-        "From former `budgeting-glb-for-web`"
+        "From former `blendops-glb-budget`",
+        "From former `blendops-glb-budget`"
       ],
       "hasStructuredEvalCasesTable": false,
       "evalCaseRowCount": 0,
       "evalTierClassification": "single_prompt_prose_outline",
-      "evalPath": "skills/budgeting-glb-for-web/EVAL.md",
+      "evalPath": "skills/blendops-glb-budget/EVAL.md",
       "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/budgeting-glb-for-web.eval.json",
+      "evalJsonPath": "evals/suites/blendops-glb-budget.eval.json",
       "machineReadableCaseCount": 10,
       "countsByEvaluationType": {
         "contract_routing": 0,
@@ -67,20 +67,20 @@
       "auditDisposition": "EVAL_JSON_IMPLEMENTED"
     },
     {
-      "id": "choosing-render-and-output",
+      "id": "blendops-render-settings",
       "category": "render-and-output-decisions",
       "isGatewaySkill": false,
       "lineCount": 59,
       "headings": [
-        "From former `choosing-render-and-output`",
-        "From former `choosing-render-and-output`"
+        "From former `blendops-render-settings`",
+        "From former `blendops-render-settings`"
       ],
       "hasStructuredEvalCasesTable": false,
       "evalCaseRowCount": 0,
       "evalTierClassification": "single_prompt_prose_outline",
-      "evalPath": "skills/choosing-render-and-output/EVAL.md",
+      "evalPath": "skills/blendops-render-settings/EVAL.md",
       "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/choosing-render-and-output.eval.json",
+      "evalJsonPath": "evals/suites/blendops-render-settings.eval.json",
       "machineReadableCaseCount": 10,
       "countsByEvaluationType": {
         "contract_routing": 0,
@@ -97,23 +97,23 @@
       "auditDisposition": "EVAL_JSON_IMPLEMENTED"
     },
     {
-      "id": "defining-done-and-gates",
+      "id": "blendops-done-criteria",
       "category": "routing-and-governance",
       "isGatewaySkill": false,
       "lineCount": 166,
       "headings": [
-        "From former `defining-done-and-gates`",
-        "From former `defining-done-and-gates`",
-        "From former `defining-done-and-gates`",
-        "From former `defining-done-and-gates`",
-        "From former `defining-done-and-gates`"
+        "From former `blendops-done-criteria`",
+        "From former `blendops-done-criteria`",
+        "From former `blendops-done-criteria`",
+        "From former `blendops-done-criteria`",
+        "From former `blendops-done-criteria`"
       ],
       "hasStructuredEvalCasesTable": false,
       "evalCaseRowCount": 0,
       "evalTierClassification": "single_prompt_prose_outline",
-      "evalPath": "skills/defining-done-and-gates/EVAL.md",
+      "evalPath": "skills/blendops-done-criteria/EVAL.md",
       "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/defining-done-and-gates.eval.json",
+      "evalJsonPath": "evals/suites/blendops-done-criteria.eval.json",
       "machineReadableCaseCount": 25,
       "countsByEvaluationType": {
         "contract_routing": 14,
@@ -130,21 +130,21 @@
       "auditDisposition": "EVAL_JSON_IMPLEMENTED"
     },
     {
-      "id": "handing-off-glb-to-web",
+      "id": "blendops-glb-web-handoff",
       "category": "evidence-and-handoff",
       "isGatewaySkill": false,
       "lineCount": 122,
       "headings": [
-        "From former `handing-off-glb-to-web`",
-        "From former `handing-off-glb-to-web`",
-        "From former `handing-off-glb-to-web`"
+        "From former `blendops-glb-web-handoff`",
+        "From former `blendops-glb-web-handoff`",
+        "From former `blendops-glb-web-handoff`"
       ],
       "hasStructuredEvalCasesTable": false,
       "evalCaseRowCount": 0,
       "evalTierClassification": "single_prompt_prose_outline",
-      "evalPath": "skills/handing-off-glb-to-web/EVAL.md",
+      "evalPath": "skills/blendops-glb-web-handoff/EVAL.md",
       "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/handing-off-glb-to-web.eval.json",
+      "evalJsonPath": "evals/suites/blendops-glb-web-handoff.eval.json",
       "machineReadableCaseCount": 15,
       "countsByEvaluationType": {
         "contract_routing": 0,
@@ -161,21 +161,21 @@
       "auditDisposition": "EVAL_JSON_IMPLEMENTED"
     },
     {
-      "id": "planning-camera-and-framing",
+      "id": "blendops-camera",
       "category": "scene-planners",
       "isGatewaySkill": false,
       "lineCount": 103,
       "headings": [
-        "From former `planning-camera-and-framing`",
-        "From former `planning-camera-and-framing`",
-        "From former `planning-camera-and-framing`"
+        "From former `blendops-camera`",
+        "From former `blendops-camera`",
+        "From former `blendops-camera`"
       ],
       "hasStructuredEvalCasesTable": false,
       "evalCaseRowCount": 0,
       "evalTierClassification": "single_prompt_prose_outline",
-      "evalPath": "skills/planning-camera-and-framing/EVAL.md",
+      "evalPath": "skills/blendops-camera/EVAL.md",
       "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/planning-camera-and-framing.eval.json",
+      "evalJsonPath": "evals/suites/blendops-camera.eval.json",
       "machineReadableCaseCount": 15,
       "countsByEvaluationType": {
         "contract_routing": 0,
@@ -192,22 +192,22 @@
       "auditDisposition": "EVAL_JSON_IMPLEMENTED"
     },
     {
-      "id": "planning-lighting-and-materials",
+      "id": "blendops-lighting-materials",
       "category": "scene-planners",
       "isGatewaySkill": false,
       "lineCount": 149,
       "headings": [
-        "From former `planning-lighting-and-materials`",
-        "From former `planning-lighting-and-materials`",
-        "From former `planning-lighting-and-materials`",
-        "From former `planning-lighting-and-materials`"
+        "From former `blendops-lighting-materials`",
+        "From former `blendops-lighting-materials`",
+        "From former `blendops-lighting-materials`",
+        "From former `blendops-lighting-materials`"
       ],
       "hasStructuredEvalCasesTable": false,
       "evalCaseRowCount": 0,
       "evalTierClassification": "single_prompt_prose_outline",
-      "evalPath": "skills/planning-lighting-and-materials/EVAL.md",
+      "evalPath": "skills/blendops-lighting-materials/EVAL.md",
       "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/planning-lighting-and-materials.eval.json",
+      "evalJsonPath": "evals/suites/blendops-lighting-materials.eval.json",
       "machineReadableCaseCount": 20,
       "countsByEvaluationType": {
         "contract_routing": 0,
@@ -224,20 +224,20 @@
       "auditDisposition": "EVAL_JSON_IMPLEMENTED"
     },
     {
-      "id": "planning-product-scenes",
+      "id": "blendops-product-shot",
       "category": "scene-planners",
       "isGatewaySkill": false,
       "lineCount": 81,
       "headings": [
-        "From former `planning-product-scenes`",
-        "From former `planning-product-scenes`"
+        "From former `blendops-product-shot`",
+        "From former `blendops-product-shot`"
       ],
       "hasStructuredEvalCasesTable": false,
       "evalCaseRowCount": 0,
       "evalTierClassification": "single_prompt_prose_outline",
-      "evalPath": "skills/planning-product-scenes/EVAL.md",
+      "evalPath": "skills/blendops-product-shot/EVAL.md",
       "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/planning-product-scenes.eval.json",
+      "evalJsonPath": "evals/suites/blendops-product-shot.eval.json",
       "machineReadableCaseCount": 10,
       "countsByEvaluationType": {
         "contract_routing": 0,
@@ -254,21 +254,21 @@
       "auditDisposition": "EVAL_JSON_IMPLEMENTED"
     },
     {
-      "id": "planning-scenes",
+      "id": "blendops-scene-plan",
       "category": "scene-planners",
       "isGatewaySkill": false,
       "lineCount": 137,
       "headings": [
-        "From former `planning-scenes`",
-        "From former `planning-scenes`",
-        "From former `planning-scenes`"
+        "From former `blendops-scene-plan`",
+        "From former `blendops-scene-plan`",
+        "From former `blendops-scene-plan`"
       ],
       "hasStructuredEvalCasesTable": false,
       "evalCaseRowCount": 0,
       "evalTierClassification": "single_prompt_prose_outline",
-      "evalPath": "skills/planning-scenes/EVAL.md",
+      "evalPath": "skills/blendops-scene-plan/EVAL.md",
       "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/planning-scenes.eval.json",
+      "evalJsonPath": "evals/suites/blendops-scene-plan.eval.json",
       "machineReadableCaseCount": 15,
       "countsByEvaluationType": {
         "contract_routing": 0,
@@ -285,22 +285,22 @@
       "auditDisposition": "EVAL_JSON_IMPLEMENTED"
     },
     {
-      "id": "scoping-3d-briefs",
+      "id": "blendops-brief",
       "category": "routing-and-governance",
       "isGatewaySkill": false,
       "lineCount": 232,
       "headings": [
-        "From former `scoping-3d-briefs`",
-        "From former `scoping-3d-briefs`",
-        "From former `scoping-3d-briefs`",
-        "From former `scoping-3d-briefs`"
+        "From former `blendops-brief`",
+        "From former `blendops-brief`",
+        "From former `blendops-brief`",
+        "From former `blendops-brief`"
       ],
       "hasStructuredEvalCasesTable": true,
       "evalCaseRowCount": 35,
       "evalTierClassification": "structured_multi_case_table",
-      "evalPath": "skills/scoping-3d-briefs/EVAL.md",
+      "evalPath": "skills/blendops-brief/EVAL.md",
       "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/scoping-3d-briefs.eval.json",
+      "evalJsonPath": "evals/suites/blendops-brief.eval.json",
       "machineReadableCaseCount": 26,
       "countsByEvaluationType": {
         "contract_routing": 7,
@@ -317,24 +317,24 @@
       "auditDisposition": "EVAL_JSON_IMPLEMENTED"
     },
     {
-      "id": "setting-up-blender-runtime",
+      "id": "blendops-connect-blender",
       "category": "runtime-and-execution",
       "isGatewaySkill": false,
       "lineCount": 237,
       "headings": [
-        "From former `setting-up-blender-runtime`",
-        "From former `setting-up-blender-runtime`",
-        "From former `setting-up-blender-runtime`",
-        "From former `setting-up-blender-runtime`",
-        "From former `setting-up-blender-runtime`",
-        "From former `setting-up-blender-runtime`"
+        "From former `blendops-connect-blender`",
+        "From former `blendops-connect-blender`",
+        "From former `blendops-connect-blender`",
+        "From former `blendops-connect-blender`",
+        "From former `blendops-connect-blender`",
+        "From former `blendops-connect-blender`"
       ],
       "hasStructuredEvalCasesTable": true,
       "evalCaseRowCount": 17,
       "evalTierClassification": "structured_multi_case_table",
-      "evalPath": "skills/setting-up-blender-runtime/EVAL.md",
+      "evalPath": "skills/blendops-connect-blender/EVAL.md",
       "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/setting-up-blender-runtime.eval.json",
+      "evalJsonPath": "evals/suites/blendops-connect-blender.eval.json",
       "machineReadableCaseCount": 36,
       "countsByEvaluationType": {
         "contract_routing": 0,
@@ -351,23 +351,23 @@
       "auditDisposition": "EVAL_JSON_IMPLEMENTED"
     },
     {
-      "id": "sourcing-assets",
+      "id": "blendops-assets",
       "category": "asset-and-sourcing",
       "isGatewaySkill": false,
       "lineCount": 211,
       "headings": [
-        "From former `sourcing-assets`",
-        "From former `sourcing-assets`",
-        "From former `sourcing-assets`",
-        "From former `sourcing-assets`",
-        "From former `sourcing-assets`"
+        "From former `blendops-assets`",
+        "From former `blendops-assets`",
+        "From former `blendops-assets`",
+        "From former `blendops-assets`",
+        "From former `blendops-assets`"
       ],
       "hasStructuredEvalCasesTable": true,
       "evalCaseRowCount": 18,
       "evalTierClassification": "structured_multi_case_table",
-      "evalPath": "skills/sourcing-assets/EVAL.md",
+      "evalPath": "skills/blendops-assets/EVAL.md",
       "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/sourcing-assets.eval.json",
+      "evalJsonPath": "evals/suites/blendops-assets.eval.json",
       "machineReadableCaseCount": 29,
       "countsByEvaluationType": {
         "contract_routing": 0,
@@ -384,19 +384,19 @@
       "auditDisposition": "EVAL_JSON_IMPLEMENTED"
     },
     {
-      "id": "troubleshooting-blender-output",
+      "id": "blendops-fix-problems",
       "category": "quality-validators",
       "isGatewaySkill": false,
       "lineCount": 83,
       "headings": [
-        "From former `troubleshooting-blender-output`"
+        "From former `blendops-fix-problems`"
       ],
       "hasStructuredEvalCasesTable": true,
       "evalCaseRowCount": 15,
       "evalTierClassification": "structured_multi_case_table",
-      "evalPath": "skills/troubleshooting-blender-output/EVAL.md",
+      "evalPath": "skills/blendops-fix-problems/EVAL.md",
       "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/troubleshooting-blender-output.eval.json",
+      "evalJsonPath": "evals/suites/blendops-fix-problems.eval.json",
       "machineReadableCaseCount": 8,
       "countsByEvaluationType": {
         "contract_routing": 0,
@@ -413,21 +413,21 @@
       "auditDisposition": "EVAL_JSON_IMPLEMENTED"
     },
     {
-      "id": "using-blendops",
+      "id": "blendops-start",
       "category": "routing-and-governance",
       "isGatewaySkill": false,
       "lineCount": 132,
       "headings": [
-        "From former `using-blendops`",
-        "From former `using-blendops`",
-        "From former `using-blendops`"
+        "From former `blendops-start`",
+        "From former `blendops-start`",
+        "From former `blendops-start`"
       ],
       "hasStructuredEvalCasesTable": true,
       "evalCaseRowCount": 14,
       "evalTierClassification": "structured_multi_case_table",
-      "evalPath": "skills/using-blendops/EVAL.md",
+      "evalPath": "skills/blendops-start/EVAL.md",
       "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/using-blendops.eval.json",
+      "evalJsonPath": "evals/suites/blendops-start.eval.json",
       "machineReadableCaseCount": 16,
       "countsByEvaluationType": {
         "contract_routing": 14,
@@ -444,23 +444,23 @@
       "auditDisposition": "EVAL_JSON_IMPLEMENTED"
     },
     {
-      "id": "verifying-before-handoff",
+      "id": "blendops-final-check",
       "category": "evidence-and-handoff",
       "isGatewaySkill": false,
       "lineCount": 277,
       "headings": [
-        "From former `verifying-before-handoff`",
-        "From former `verifying-before-handoff`",
-        "From former `verifying-before-handoff`",
-        "From former `verifying-before-handoff`",
-        "From former `verifying-before-handoff`"
+        "From former `blendops-final-check`",
+        "From former `blendops-final-check`",
+        "From former `blendops-final-check`",
+        "From former `blendops-final-check`",
+        "From former `blendops-final-check`"
       ],
       "hasStructuredEvalCasesTable": true,
       "evalCaseRowCount": 42,
       "evalTierClassification": "structured_multi_case_table",
-      "evalPath": "skills/verifying-before-handoff/EVAL.md",
+      "evalPath": "skills/blendops-final-check/EVAL.md",
       "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/verifying-before-handoff.eval.json",
+      "evalJsonPath": "evals/suites/blendops-final-check.eval.json",
       "machineReadableCaseCount": 34,
       "countsByEvaluationType": {
         "contract_routing": 0,

@@ -14,7 +14,7 @@
     "workingTreeState": "dirty",
     "snapshotBasis": "working-tree-on-top-of-source-commit",
     "uncommittedChangeCount": 601,
-    "auditedInputsSha256": "2ff18db4681519ef4b266a1d16fe11133be5a7b68109dbcf75e5fdf2b96f7d3e",
+    "auditedInputsSha256": "32883c38bdae37fe98208a88eae7c9fb287efef194081debe4c3844f6262040e",
     "selfReferentialCommitRule": "A Git commit cannot contain its own final commit SHA inside tracked files. sourceCommitSha records the verified HEAD commit present when the generator ran, workingTreeState and snapshotBasis record whether uncommitted working-tree changes were present on top of sourceCommitSha, and auditedInputsSha256 digests the exact audited file contents."
   },
   "historicalBaseline": {
@@ -204,9 +204,9 @@
         "scripts/inspect-glb.mjs",
         "scripts/generate-glb-handoff-report.mjs",
         "schemas/glb-web-handoff-manifest.schema.json",
-        "docs/examples/handing-off-glb-to-web/README.md",
-        "docs/examples/handing-off-glb-to-web/threejs-glb-viewer.mjs",
-        "docs/examples/handing-off-glb-to-web/r3f-glb-viewer.tsx",
+        "docs/examples/blendops-glb-web-handoff/README.md",
+        "docs/examples/blendops-glb-web-handoff/threejs-glb-viewer.mjs",
+        "docs/examples/blendops-glb-web-handoff/r3f-glb-viewer.tsx",
         "scripts/test-glb-handoff.mjs",
         "docs/audits/current/skill-inventory.json"
       ],
@@ -233,7 +233,7 @@
           "maxPoints": 4,
           "awardedPoints": 4,
           "status": "Pass",
-          "evidence": "F-07 FIXED: scripts/inspect-glb.mjs and scripts/generate-glb-handoff-report.mjs validate GLB 2.0 binary headers, JSON/BIN chunk alignment, buffer/accessor bounds, scene/node/skin/animation/material/texture/extension inventory, and optional Khronos gltf-validator status; schemas/glb-web-handoff-manifest.schema.json and docs/examples/handing-off-glb-to-web/ provide deterministic web handoff manifests, HTML/Markdown reports, and Three.js / React Three Fiber viewer integration; docs/blender-version-compatibility.md documents Blender 3.6 LTS, 4.2 LTS, and 5.1+ shader, engine, color management, and glTF 2.0 matrices."
+          "evidence": "F-07 FIXED: scripts/inspect-glb.mjs and scripts/generate-glb-handoff-report.mjs validate GLB 2.0 binary headers, JSON/BIN chunk alignment, buffer/accessor bounds, scene/node/skin/animation/material/texture/extension inventory, and optional Khronos gltf-validator status; schemas/glb-web-handoff-manifest.schema.json and docs/examples/blendops-glb-web-handoff/ provide deterministic web handoff manifests, HTML/Markdown reports, and Three.js / React Three Fiber viewer integration; docs/blender-version-compatibility.md documents Blender 3.6 LTS, 4.2 LTS, and 5.1+ shader, engine, color management, and glTF 2.0 matrices."
         }
       ]
     },
@@ -287,7 +287,7 @@
       "verdict": "Pass",
       "evidenceFiles": [
         "laws/no-arbitrary-python-interface.md",
-        "skills/sourcing-assets/SKILL.md",
+        "skills/blendops-assets/SKILL.md",
         "bundles/generic-project-local/ROLLBACK.md",
         "docs/safety-model.md",
         "schemas/runtime-capability-policy.schema.json",
@@ -301,7 +301,7 @@
           "maxPoints": 5,
           "awardedPoints": 4.5,
           "status": "Pass",
-          "evidence": "Enforced via laws/no-arbitrary-python-interface.md and skills/sourcing-assets/SKILL.md."
+          "evidence": "Enforced via laws/no-arbitrary-python-interface.md and skills/blendops-assets/SKILL.md."
         },
         {
           "id": "p6-c2",
@@ -317,7 +317,7 @@
           "maxPoints": 3,
           "awardedPoints": 3,
           "status": "Pass",
-          "evidence": "F-10 FIXED: schemas/runtime-capability-policy.schema.json, registry/runtime-capability-policy.json (all 14 skills defaulting to L0), scripts/validate-capability-policy.mjs, and docs/safety-model.md enforce L0-L3 capability tiers, non-escalation, sourcing-assets clearance, and fail-closed pre-mutation .blend backup verification."
+          "evidence": "F-10 FIXED: schemas/runtime-capability-policy.schema.json, registry/runtime-capability-policy.json (all 14 skills defaulting to L0), scripts/validate-capability-policy.mjs, and docs/safety-model.md enforce L0-L3 capability tiers, non-escalation, blendops-assets clearance, and fail-closed pre-mutation .blend backup verification."
         }
       ]
     },

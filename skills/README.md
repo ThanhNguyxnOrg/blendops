@@ -23,12 +23,12 @@ Core guide: [docs/skill-system.md](../docs/skill-system.md)
 
 | Group | Skills |
 |---|---|
-| **Start & Scope** | `using-blendops`, `scoping-3d-briefs`, `defining-done-and-gates` |
-| **Scene Planning** | `planning-product-scenes`, `planning-scenes`, `planning-camera-and-framing`, `planning-lighting-and-materials`, `choosing-render-and-output` |
-| **Assets & Web 3D** | `sourcing-assets`, `budgeting-glb-for-web`, `handing-off-glb-to-web` |
-| **Runtime & Verification** | `setting-up-blender-runtime`, `verifying-before-handoff`, `troubleshooting-blender-output` |
+| **Start & Scope** | `blendops-start`, `blendops-brief`, `blendops-done-criteria` |
+| **Scene Planning** | `blendops-product-shot`, `blendops-scene-plan`, `blendops-camera`, `blendops-lighting-materials`, `blendops-render-settings` |
+| **Assets & Web 3D** | `blendops-assets`, `blendops-glb-budget`, `blendops-glb-web-handoff` |
+| **Runtime & Verification** | `blendops-connect-blender`, `blendops-final-check`, `blendops-fix-problems` |
 
-Start with `using-blendops` when unsure. Routing participants, in precedence order: `scoping-3d-briefs` (no recipe yet), `defining-done-and-gates` (recipe chosen, prerequisites not checked), `using-blendops` (ready, route by stage).
+Start with `blendops-start` when unsure. Routing participants, in precedence order: `blendops-brief` (no recipe yet), `blendops-done-criteria` (recipe chosen, prerequisites not checked), `blendops-start` (ready, route by stage).
 
 ---
 
@@ -36,20 +36,20 @@ Start with `using-blendops` when unsure. Routing participants, in precedence ord
 
 | Skill | Purpose | Merged from (now in `references/`) | Eval |
 |---|---|---|---|
-| [`using-blendops`](./using-blendops/SKILL.md) | Entry point for BlendOps: pick the next stage from current artifacts and evidence, and keep every user-facing reply in plain language with honest truth states. | `workflow-stage-router`, `blendops-help`, `plain-language-response` | [EVAL](./using-blendops/EVAL.md) |
-| [`scoping-3d-briefs`](./scoping-3d-briefs/SKILL.md) | Turn a vague or clear 3D goal into a locked brief, pick or decompose a recipe, and say whether the goal fits BlendOps. | `recipe-fit-assessor`, `intent-to-3d-brief-writer`, `blender-brainstorming`, `blender-recipe-decomposer` | [EVAL](./scoping-3d-briefs/EVAL.md) |
-| [`defining-done-and-gates`](./defining-done-and-gates/SKILL.md) | Check pack prerequisites, write measurable done criteria and stage gates, and guard the locked scope against creep. | `pack-prerequisite-checker`, `done-criteria`, `stage-gates`, `acceptance-criteria-builder`, `scope-guard` | [EVAL](./defining-done-and-gates/EVAL.md) |
-| [`planning-product-scenes`](./planning-product-scenes/SKILL.md) | Plan single-product hero shots and multi-product grid or catalog scenes, including staging, camera, lighting, and output targets. | `product-hero-scene-planner`, `product-grid-scene-planner` | [EVAL](./planning-product-scenes/EVAL.md) |
-| [`planning-scenes`](./planning-scenes/SKILL.md) | Plan character portraits, environment shots, and interior scenes from a locked brief, with stage gates and evidence expectations. | `character-portrait`, `environment-shot`, `interior-scene` | [EVAL](./planning-scenes/EVAL.md) |
-| [`planning-camera-and-framing`](./planning-camera-and-framing/SKILL.md) | Plan camera, composition, resolution, and aspect ratio, and check framing quality against written criteria. | `camera-composition`, `composition-quality-checker`, `resolution-aspect-decision` | [EVAL](./planning-camera-and-framing/EVAL.md) |
-| [`planning-lighting-and-materials`](./planning-lighting-and-materials/SKILL.md) | Plan lighting, materials, and color management, and check lighting and material quality against written criteria. | `lighting-material-plan`, `lighting-quality-checker`, `material-quality-checker`, `color-management-decision` | [EVAL](./planning-lighting-and-materials/EVAL.md) |
-| [`choosing-render-and-output`](./choosing-render-and-output/SKILL.md) | Choose Cycles or EEVEE and the output format for stills, sequences, video, or GLB based on the delivery target. | `cycles-vs-eevee-decision`, `output-format-decision` | [EVAL](./choosing-render-and-output/EVAL.md) |
-| [`sourcing-assets`](./sourcing-assets/SKILL.md) | Find assets, clear licenses, check style fit, plan fallbacks, and organize a reusable asset library. | `asset-discovery`, `asset-license-checker`, `asset-style-check`, `asset-fallback-strategy`, `asset-library-plan` | [EVAL](./sourcing-assets/EVAL.md) |
-| [`budgeting-glb-for-web`](./budgeting-glb-for-web/SKILL.md) | Set and check polycount, texture, and file-size budgets for GLB delivery on web and mobile. | `mobile-glb-budget`, `polycount-budget-checker` | [EVAL](./budgeting-glb-for-web/EVAL.md) |
-| [`handing-off-glb-to-web`](./handing-off-glb-to-web/SKILL.md) | Prepare GLB handoff to web teams, including animation clips and a React Three Fiber component plan. | `glb-web-handoff`, `glb-animation-handoff`, `r3f-component-plan` | [EVAL](./handing-off-glb-to-web/EVAL.md) |
-| [`setting-up-blender-runtime`](./setting-up-blender-runtime/SKILL.md) | Pick a runtime path (Lab MCP, mcp-for-blender, or CLI fallback), guide setup, check readiness, and resolve bridge conflicts. | `runtime-readiness`, `runtime-setup`, `runtime-path-picker`, `path-one-host-outline`, `bridge-conflicts`, `cli-appendix-job-outline` | [EVAL](./setting-up-blender-runtime/EVAL.md) |
-| [`verifying-before-handoff`](./verifying-before-handoff/SKILL.md) | Check scene readiness, collect render and export evidence, write preview and runtime-attempt reports, and verify before handoff. | `pre-handoff-verification`, `scene-readiness`, `render-export-evidence`, `preview-report`, `runtime-attempt-report` | [EVAL](./verifying-before-handoff/EVAL.md) |
-| [`troubleshooting-blender-output`](./troubleshooting-blender-output/SKILL.md) | Diagnose wrong-looking renders, exports, and runtime errors in plain language and route to the fix without claiming results. | `blender-troubleshooting` | [EVAL](./troubleshooting-blender-output/EVAL.md) |
+| [`blendops-start`](./blendops-start/SKILL.md) | Entry point for BlendOps: pick the next stage from current artifacts and evidence, and keep every user-facing reply in plain language with honest truth states. | `workflow-stage-router`, `blendops-help`, `plain-language-response` | [EVAL](./blendops-start/EVAL.md) |
+| [`blendops-brief`](./blendops-brief/SKILL.md) | Turn a vague or clear 3D goal into a locked brief, pick or decompose a recipe, and say whether the goal fits BlendOps. | `recipe-fit-assessor`, `intent-to-3d-brief-writer`, `blender-brainstorming`, `blender-recipe-decomposer` | [EVAL](./blendops-brief/EVAL.md) |
+| [`blendops-done-criteria`](./blendops-done-criteria/SKILL.md) | Check pack prerequisites, write measurable done criteria and stage gates, and guard the locked scope against creep. | `pack-prerequisite-checker`, `done-criteria`, `stage-gates`, `acceptance-criteria-builder`, `scope-guard` | [EVAL](./blendops-done-criteria/EVAL.md) |
+| [`blendops-product-shot`](./blendops-product-shot/SKILL.md) | Plan single-product hero shots and multi-product grid or catalog scenes, including staging, camera, lighting, and output targets. | `product-hero-scene-planner`, `product-grid-scene-planner` | [EVAL](./blendops-product-shot/EVAL.md) |
+| [`blendops-scene-plan`](./blendops-scene-plan/SKILL.md) | Plan character portraits, environment shots, and interior scenes from a locked brief, with stage gates and evidence expectations. | `character-portrait`, `environment-shot`, `interior-scene` | [EVAL](./blendops-scene-plan/EVAL.md) |
+| [`blendops-camera`](./blendops-camera/SKILL.md) | Plan camera, composition, resolution, and aspect ratio, and check framing quality against written criteria. | `camera-composition`, `composition-quality-checker`, `resolution-aspect-decision` | [EVAL](./blendops-camera/EVAL.md) |
+| [`blendops-lighting-materials`](./blendops-lighting-materials/SKILL.md) | Plan lighting, materials, and color management, and check lighting and material quality against written criteria. | `lighting-material-plan`, `lighting-quality-checker`, `material-quality-checker`, `color-management-decision` | [EVAL](./blendops-lighting-materials/EVAL.md) |
+| [`blendops-render-settings`](./blendops-render-settings/SKILL.md) | Choose Cycles or EEVEE and the output format for stills, sequences, video, or GLB based on the delivery target. | `cycles-vs-eevee-decision`, `output-format-decision` | [EVAL](./blendops-render-settings/EVAL.md) |
+| [`blendops-assets`](./blendops-assets/SKILL.md) | Find assets, clear licenses, check style fit, plan fallbacks, and organize a reusable asset library. | `asset-discovery`, `asset-license-checker`, `asset-style-check`, `asset-fallback-strategy`, `asset-library-plan` | [EVAL](./blendops-assets/EVAL.md) |
+| [`blendops-glb-budget`](./blendops-glb-budget/SKILL.md) | Set and check polycount, texture, and file-size budgets for GLB delivery on web and mobile. | `mobile-glb-budget`, `polycount-budget-checker` | [EVAL](./blendops-glb-budget/EVAL.md) |
+| [`blendops-glb-web-handoff`](./blendops-glb-web-handoff/SKILL.md) | Prepare GLB handoff to web teams, including animation clips and a React Three Fiber component plan. | `glb-web-handoff`, `glb-animation-handoff`, `r3f-component-plan` | [EVAL](./blendops-glb-web-handoff/EVAL.md) |
+| [`blendops-connect-blender`](./blendops-connect-blender/SKILL.md) | Pick a runtime path (Lab MCP, mcp-for-blender, or CLI fallback), guide setup, check readiness, and resolve bridge conflicts. | `runtime-readiness`, `runtime-setup`, `runtime-path-picker`, `path-one-host-outline`, `bridge-conflicts`, `cli-appendix-job-outline` | [EVAL](./blendops-connect-blender/EVAL.md) |
+| [`blendops-final-check`](./blendops-final-check/SKILL.md) | Check scene readiness, collect render and export evidence, write preview and runtime-attempt reports, and verify before handoff. | `pre-handoff-verification`, `scene-readiness`, `render-export-evidence`, `preview-report`, `runtime-attempt-report` | [EVAL](./blendops-final-check/EVAL.md) |
+| [`blendops-fix-problems`](./blendops-fix-problems/SKILL.md) | Diagnose wrong-looking renders, exports, and runtime errors in plain language and route to the fix without claiming results. | `blender-troubleshooting` | [EVAL](./blendops-fix-problems/EVAL.md) |
 
 ---
 
@@ -97,16 +97,16 @@ Start from [`_template/SKILL.md`](./_template/SKILL.md).
 
 | Rule | Example |
 |---|---|
-| Use kebab-case folder names | `verifying-before-handoff` |
-| Match `name` to folder slug | `name: verifying-before-handoff` |
-| Prefer domain/action names | `planning-lighting-and-materials` |
+| Use kebab-case folder names | `blendops-final-check` |
+| Match `name` to folder slug | `name: blendops-final-check` |
+| Prefer domain/action names | `blendops-lighting-materials` |
 | Avoid duplicate aliases unless packaging requires them | Use canonical role notes instead. |
 
 ---
 
 ## Trigger rules
 
-- Use `using-blendops` when the next action is unclear.
+- Use `blendops-start` when the next action is unclear.
 - Use readiness skills before runtime mutation/render/export.
 - Use planning skills before runtime execution.
 - Use evidence skills before artifact claims.

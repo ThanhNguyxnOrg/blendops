@@ -60,11 +60,11 @@ Per-path status:
 - laws/no-arbitrary-python-interface
 - laws/evidence-before-done
 - laws/non-blender-user-language
-- skills/setting-up-blender-runtime
-- skills/planning-product-scenes
-- skills/verifying-before-handoff
-- skills/handing-off-glb-to-web
-- skills/using-blendops
+- skills/blendops-connect-blender
+- skills/blendops-product-shot
+- skills/blendops-final-check
+- skills/blendops-glb-web-handoff
+- skills/blendops-start
 - workflow/product-hero-workflow
 - recipe/cyberpunk-shoe-hero
 - pack/v0-product-hero-pack

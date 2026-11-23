@@ -7,35 +7,35 @@ Status: 1.0.0 fallback only
 
 ## Condensed skill map (baseline 16 — full inventory: 14 skills)
 
-The routes below cover the canonical baseline workflow (full inventory: **14 skills** = 16 core + 32 specialized across web 3D handoff deep, quality validators, domain scene planners, process discipline, asset/sourcing, color/format/output decisions, recipe/pack ops, runtime path discipline). For the full inventory, switch to the multi-file bundle (`bundles/claude-desktop-manual/references/skills/*.md`) or browse `skills/README.md` upstream. When in doubt, route to `using-blendops`.
+The routes below cover the canonical baseline workflow (full inventory: **14 skills** = 16 core + 32 specialized across web 3D handoff deep, quality validators, domain scene planners, process discipline, asset/sourcing, color/format/output decisions, recipe/pack ops, runtime path discipline). For the full inventory, switch to the multi-file bundle (`bundles/claude-desktop-manual/references/skills/*.md`) or browse `skills/README.md` upstream. When in doubt, route to `blendops-start`.
 
 Baseline routes:
-- unclear next step → `using-blendops`
-- vague creative request, intent exploration → `scoping-3d-briefs` (Superpowers `/brainstorming` analog)
-- convert intent → 8-slot 3D brief → `scoping-3d-briefs` (BMad analysis-phase analog)
-- per-asset acquisition strategy → `sourcing-assets`
-- runtime setup prerequisites → `setting-up-blender-runtime`
-- runtime preflight/readiness → `setting-up-blender-runtime`
-- MCP bridge conflicts (Path 1 + Path 2 + port 9876) → `setting-up-blender-runtime`
-- scene planning → `planning-product-scenes`
-- composition/camera planning → `planning-camera-and-framing`
-- lighting/material planning → `planning-lighting-and-materials`
-- quality gate decision → `verifying-before-handoff`
-- output looks wrong, root-cause analysis → `troubleshooting-blender-output` (Superpowers `/systematic-debugging` analog)
-- artifact truth/evidence → `verifying-before-handoff`
-- 7-point gate before any "ready" / `Verified` claim → `verifying-before-handoff` (Superpowers `/verification-before-completion` analog)
-- GLB/web handoff framing → `handing-off-glb-to-web`
-- plain-language final answer → `using-blendops`
+- unclear next step → `blendops-start`
+- vague creative request, intent exploration → `blendops-brief` (Superpowers `/brainstorming` analog)
+- convert intent → 8-slot 3D brief → `blendops-brief` (BMad analysis-phase analog)
+- per-asset acquisition strategy → `blendops-assets`
+- runtime setup prerequisites → `blendops-connect-blender`
+- runtime preflight/readiness → `blendops-connect-blender`
+- MCP bridge conflicts (Path 1 + Path 2 + port 9876) → `blendops-connect-blender`
+- scene planning → `blendops-product-shot`
+- composition/camera planning → `blendops-camera`
+- lighting/material planning → `blendops-lighting-materials`
+- quality gate decision → `blendops-final-check`
+- output looks wrong, root-cause analysis → `blendops-fix-problems` (Superpowers `/systematic-debugging` analog)
+- artifact truth/evidence → `blendops-final-check`
+- 7-point gate before any "ready" / `Verified` claim → `blendops-final-check` (Superpowers `/verification-before-completion` analog)
+- GLB/web handoff framing → `blendops-glb-web-handoff`
+- plain-language final answer → `blendops-start`
 
 Expansion routes (load via the multi-file bundle for full SKILL.md content):
-- recipe/pack fit → `scoping-3d-briefs`; pre-flight → `defining-done-and-gates`; resume routing → `using-blendops`; acceptance criteria → `defining-done-and-gates`
-- runtime path discipline: `setting-up-blender-runtime`, `setting-up-blender-runtime`, `setting-up-blender-runtime`, `verifying-before-handoff`
-- web 3D deep: `budgeting-glb-for-web`, `handing-off-glb-to-web`, `handing-off-glb-to-web`, `verifying-before-handoff`
-- quality validators: `planning-lighting-and-materials`, `planning-lighting-and-materials`, `planning-camera-and-framing`, `budgeting-glb-for-web`
-- domain scene planners: `planning-scenes`, `planning-scenes`, `planning-scenes`, `planning-product-scenes`
-- process discipline: `defining-done-and-gates`, `defining-done-and-gates`, `defining-done-and-gates`, `scoping-3d-briefs`
-- asset/sourcing: `sourcing-assets`, `sourcing-assets`, `sourcing-assets`, `sourcing-assets`
-- color/format/output: `planning-lighting-and-materials`, `choosing-render-and-output`, `planning-camera-and-framing`, `choosing-render-and-output`
+- recipe/pack fit → `blendops-brief`; pre-flight → `blendops-done-criteria`; resume routing → `blendops-start`; acceptance criteria → `blendops-done-criteria`
+- runtime path discipline: `blendops-connect-blender`, `blendops-final-check`
+- web 3D deep: `blendops-glb-budget`, `blendops-glb-web-handoff`, `blendops-final-check`
+- quality validators: `blendops-lighting-materials`, `blendops-camera`, `blendops-glb-budget`
+- domain scene planners: `blendops-scene-plan`, `blendops-product-shot`
+- process discipline: `blendops-done-criteria`, `blendops-brief`
+- asset/sourcing: `blendops-assets`
+- color/format/output: `blendops-lighting-materials`, `blendops-render-settings`, `blendops-camera`, `blendops-render-settings`
 
 ## Runtime boundary
 

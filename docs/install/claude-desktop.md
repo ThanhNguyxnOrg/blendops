@@ -4,7 +4,7 @@ Status/confidence: 1.0.0, linked-only/manual
 
 ## Recommended near-term install mode
 
-Claude Desktop can use the concise prompt from [`README.md`](../../README.md#-use-in-30-seconds), which points the assistant to [`AI Agent Quickstart`](../ai-agent-quickstart.md). Expected selected mode is usually **multiple Skills ZIP preparation**, because Claude Desktop-style chats often lack target project write access.
+Claude Desktop can use the concise prompt from [`README.md`](../../README.md#use-in-30-seconds), which points the assistant to [`AI Agent Quickstart`](../ai-agent-quickstart.md). Expected selected mode is usually **multiple Skills ZIP preparation**, because Claude Desktop-style chats often lack target project write access.
 
 This is not a normal coding-agent install target. Project-local install is only appropriate if the assistant is actually operating inside a writable target project.
 
@@ -25,30 +25,30 @@ Expected ZIP set (one per `skills/*/SKILL.md`, currently 14 — run `npm run ski
 ```txt
 # Canonical skill snapshot (14; full set via skills:export)
 # Help / routing
-using-blendops.zip
+blendops-start.zip
 
 # Process / discipline (Superpowers + BMad inspired)
-scoping-3d-briefs.zip
-scoping-3d-briefs.zip
-sourcing-assets.zip
-troubleshooting-blender-output.zip
-verifying-before-handoff.zip
-setting-up-blender-runtime.zip
+blendops-brief.zip
+blendops-brief.zip
+blendops-assets.zip
+blendops-fix-problems.zip
+blendops-final-check.zip
+blendops-connect-blender.zip
 
 # Runtime
-setting-up-blender-runtime.zip
-setting-up-blender-runtime.zip
+blendops-connect-blender.zip
+blendops-connect-blender.zip
 
 # Scene planning (domain)
-planning-product-scenes.zip
-planning-camera-and-framing.zip
-planning-lighting-and-materials.zip
-verifying-before-handoff.zip
+blendops-product-shot.zip
+blendops-camera.zip
+blendops-lighting-materials.zip
+blendops-final-check.zip
 
 # Evidence + handoff
-verifying-before-handoff.zip
-handing-off-glb-to-web.zip
-using-blendops.zip
+blendops-final-check.zip
+blendops-glb-web-handoff.zip
+blendops-start.zip
 ```
 
 Each ZIP must contain:

@@ -3,7 +3,7 @@
 Status: 1.0.0
 
 > [!NOTE]
-> This is the **canonical full-lifecycle workflow** that chains the **original 16** BlendOps core skills for a complete non-Blender-user run. The repo now ships **14** composable skills (see [`skills/README.md`](../../skills/README.md)); use [`using-blendops`](../../skills/using-blendops/SKILL.md) when you need to interleave expansion skills. `product-hero-workflow.md` is the narrower product-hero-specific subset.
+> This is the **canonical full-lifecycle workflow** that chains the **original 16** BlendOps core skills for a complete non-Blender-user run. The repo now ships **14** composable skills (see [`skills/README.md`](../../skills/README.md)); use [`blendops-start`](../../skills/blendops-start/SKILL.md) when you need to interleave expansion skills. `product-hero-workflow.md` is the narrower product-hero-specific subset.
 
 ## Trigger
 
@@ -30,36 +30,36 @@ If the user already has a confirmed brief, jump in at Stage 2. If runtime is not
 
 ```txt
 Stage 1 — Intent
-  scoping-3d-briefs                 (Socratic, when intent is vague)
-  scoping-3d-briefs             (8-slot structured brief)
+  blendops-brief                 (Socratic, when intent is vague)
+  blendops-brief             (8-slot structured brief)
 
 Stage 2 — Asset planning
-  sourcing-assets       (per-asset strategy + license + budget)
+  blendops-assets       (per-asset strategy + license + budget)
 
 Stage 3 — Runtime readiness
-  setting-up-blender-runtime          (path + host prerequisites)
-  setting-up-blender-runtime    (matrix + verdict)
-  setting-up-blender-runtime      (only if readiness signals are inconsistent)
+  blendops-connect-blender          (path + host prerequisites)
+  blendops-connect-blender    (matrix + verdict)
+  blendops-connect-blender      (only if readiness signals are inconsistent)
 
 Stage 4 — Scene planning
-  planning-product-scenes            (subject + scene structure)
-  planning-camera-and-framing    (framing + camera)
-  planning-lighting-and-materials     (mood + lookdev + portability)
+  blendops-product-shot            (subject + scene structure)
+  blendops-camera    (framing + camera)
+  blendops-lighting-materials     (mood + lookdev + portability)
 
 Stage 5 — Quality gate
-  verifying-before-handoff         (Pass / Warn / Fail readiness verdict)
-  troubleshooting-blender-output               (only if output diverges from intent)
+  blendops-final-check         (Pass / Warn / Fail readiness verdict)
+  blendops-fix-problems               (only if output diverges from intent)
 
 Stage 6 — Evidence + verification
-  verifying-before-handoff                (classify each artifact's truth label)
-  verifying-before-handoff              (7-point gate before any "ready" claim)
+  blendops-final-check                (classify each artifact's truth label)
+  blendops-final-check              (7-point gate before any "ready" claim)
 
 Stage 7 — Handoff + final response
-  handing-off-glb-to-web                       (web/GLB framing if in scope)
-  using-blendops      (plain-language final response)
+  blendops-glb-web-handoff                       (web/GLB framing if in scope)
+  blendops-start      (plain-language final response)
 
 Routing utility (always available)
-  using-blendops                         (load when next safe action is unclear)
+  blendops-start                         (load when next safe action is unclear)
 ```
 
 ## Stages
@@ -71,8 +71,8 @@ Routing utility (always available)
 
 Goal: confirmed user intent + 8-slot structured brief.
 
-- If user request is vague: load `scoping-3d-briefs` first. Ask 3-5 batched clarifying questions, propose 2-3 alternative scopings, end with one-paragraph confirmed intent summary.
-- Once intent is confirmed: load `scoping-3d-briefs`. Fill the 8 slots (Subject, Mood, Deliverables, Constraints, Evidence expectations, Acceptance criteria, Audience, Owner). Echo to user. Confirm before proceeding.
+- If user request is vague: load `blendops-brief` first. Ask 3-5 batched clarifying questions, propose 2-3 alternative scopings, end with one-paragraph confirmed intent summary.
+- Once intent is confirmed: load `blendops-brief`. Fill the 8 slots (Subject, Mood, Deliverables, Constraints, Evidence expectations, Acceptance criteria, Audience, Owner). Echo to user. Confirm before proceeding.
 
 Exit gate: brief locked. Runtime status `Not Run`. Artifact status `Not Produced`.
 
@@ -80,7 +80,7 @@ Exit gate: brief locked. Runtime status `Not Run`. Artifact status `Not Produced
 
 Goal: per-asset acquisition strategy with license + confidence + budget reconciliation.
 
-- Load `sourcing-assets`. Walk the 5-step decision tree (brand-restricted? specific? tight budget? iteration? mood-specific?).
+- Load `blendops-assets`. Walk the 5-step decision tree (brand-restricted? specific? tight budget? iteration? mood-specific?).
 - Per asset class, record strategy (procedural / library / generative / photogrammetry) + source candidate + license + confidence label + risk.
 - Sum poly / GLB-size budget vs Slot 4 of the brief. Surface conflicts.
 - If generative is chosen: flag with Path 2 caveat; route through Stage 3 readiness check before runtime.
@@ -91,9 +91,9 @@ Exit gate: asset plan reconciled with brief. Runtime status unchanged.
 
 Goal: ONE selected runtime path that's actually ready, OR explicit "stay text-only" decision.
 
-- Load `setting-up-blender-runtime` to choose Path 1 host (a or b), Path 2, or CLI fallback per client + Blender version + brief preferences.
-- Load `setting-up-blender-runtime` to build the readiness matrix (Blender version, MCP host product, Blender-side add-on, MCP server source, output path readiness, single-bridge constraint).
-- If readiness signals are inconsistent (e.g. tool surface doesn't match labeled path, two MCP clients targeting same Blender, port `9876` collision): load `setting-up-blender-runtime`. Build the bridge state matrix. Propose the cheapest resolution. Operator executes. Re-run readiness checker.
+- Load `blendops-connect-blender` to choose Path 1 host (a or b), Path 2, or CLI fallback per client + Blender version + brief preferences.
+- Load `blendops-connect-blender` to build the readiness matrix (Blender version, MCP host product, Blender-side add-on, MCP server source, output path readiness, single-bridge constraint).
+- If readiness signals are inconsistent (e.g. tool surface doesn't match labeled path, two MCP clients targeting same Blender, port `9876` collision): load `blendops-connect-blender`. Build the bridge state matrix. Propose the cheapest resolution. Operator executes. Re-run readiness checker.
 
 Exit gate: readiness verdict `Ready` or `Partially Ready` (with documented caveats), OR explicit "stay text-only — runtime out of scope for this run".
 
@@ -101,9 +101,9 @@ Exit gate: readiness verdict `Ready` or `Partially Ready` (with documented cavea
 
 Goal: structured scene plan ready for runtime mutation.
 
-- Load `planning-product-scenes` (subject, scene scope, hero placement, support elements).
-- Load `planning-camera-and-framing` (framing, focal length, negative space, hero centering).
-- Load `planning-lighting-and-materials` (mood lookdev, light placement, material portability per deliverable target).
+- Load `blendops-product-shot` (subject, scene scope, hero placement, support elements).
+- Load `blendops-camera` (framing, focal length, negative space, hero centering).
+- Load `blendops-lighting-materials` (mood lookdev, light placement, material portability per deliverable target).
 
 Exit gate: plans reviewable in plain language; no jargon leak. Runtime status still `Not Run`.
 
@@ -111,11 +111,11 @@ Exit gate: plans reviewable in plain language; no jargon leak. Runtime status st
 
 Goal: Pass / Warn / Fail readiness verdict before any runtime mutation.
 
-- Load `verifying-before-handoff`. Score the plan against the rubric.
+- Load `blendops-final-check`. Score the plan against the rubric.
 - If verdict is Pass: proceed to Stage 6.
 - If verdict is Warn: record explicit caveats; user decides whether to proceed.
 - If verdict is Fail: route back to the relevant Stage 4 planner.
-- If post-runtime output diverges from intent (loop-back from Stage 6): load `troubleshooting-blender-output` for 4-phase root-cause; then route the proposed fix to the correct upstream stage.
+- If post-runtime output diverges from intent (loop-back from Stage 6): load `blendops-fix-problems` for 4-phase root-cause; then route the proposed fix to the correct upstream stage.
 
 Exit gate: explicit Pass or Warn-with-caveats. Runtime status still `Not Run`.
 
@@ -123,8 +123,8 @@ Exit gate: explicit Pass or Warn-with-caveats. Runtime status still `Not Run`.
 
 Goal: honest evidence record per artifact + 7-point pre-handoff gate before "ready" claim.
 
-- Load `verifying-before-handoff`. For each artifact item (preview / render / GLB / blend), walk the truth-label decision tree (`Not Run` → `Attempted` → `Produced` → `Verified` / `Failed`). Save evidence file under `docs/evals/path-X-...md` using the templates in `skills/verifying-before-handoff/references/evidence-record-templates.md`.
-- Load `verifying-before-handoff`. Run all 7 checks (claim named, path attribution, artifact paths exist, validation notes, tool names, no-mutation guarantee for read-only smoke, plain language). Confirm or downgrade the claim. Never upgrade.
+- Load `blendops-final-check`. For each artifact item (preview / render / GLB / blend), walk the truth-label decision tree (`Not Run` → `Attempted` → `Produced` → `Verified` / `Failed`). Save evidence file under `docs/evals/path-X-...md` using the templates in `skills/blendops-final-check/references/evidence-record-templates.md`.
+- Load `blendops-final-check`. Run all 7 checks (claim named, path attribution, artifact paths exist, validation notes, tool names, no-mutation guarantee for read-only smoke, plain language). Confirm or downgrade the claim. Never upgrade.
 
 Exit gate: evidence file exists + 7-point gate verdict (Pass / Warn / Fail) recorded. Truth label finalized.
 
@@ -132,10 +132,10 @@ Exit gate: evidence file exists + 7-point gate verdict (Pass / Warn / Fail) reco
 
 Goal: plain-language response to non-Blender stakeholders.
 
-- If GLB / web is in scope: load `handing-off-glb-to-web`. Add R3F / Three.js snippets, performance caveats, artifact-status language per the bundled references.
-- Always: load `using-blendops`. Produce final user-facing response. Cite truth labels (`Not Run` / `Verified` etc.) explicitly. No Blender jargon without inline explanation.
+- If GLB / web is in scope: load `blendops-glb-web-handoff`. Add R3F / Three.js snippets, performance caveats, artifact-status language per the bundled references.
+- Always: load `blendops-start`. Produce final user-facing response. Cite truth labels (`Not Run` / `Verified` etc.) explicitly. No Blender jargon without inline explanation.
 
-Exit gate: response confirmed plain-language by check 7 of `verifying-before-handoff` (which already ran in Stage 6).
+Exit gate: response confirmed plain-language by check 7 of `blendops-final-check` (which already ran in Stage 6).
 
 ## Outputs
 
@@ -171,8 +171,8 @@ Exit gate: response confirmed plain-language by check 7 of `verifying-before-han
 - license unknown / TBD on a hero asset → loop back to Stage 2 + brief slot 4
 - runtime path unavailable / blocked → either choose different path in Stage 3 or stay text-only
 - quality gate Fail → loop back to relevant Stage 4 planner
-- runtime output diverges from intent → load `troubleshooting-blender-output`; route fix upstream per `divergence-routing-table.md`
-- pre-handoff verification Fail (3+ checks) → route to `troubleshooting-blender-output`; do not let the deliverable through
+- runtime output diverges from intent → load `blendops-fix-problems`; route fix upstream per `divergence-routing-table.md`
+- pre-handoff verification Fail (3+ checks) → route to `blendops-fix-problems`; do not let the deliverable through
 
 ## Runtime evidence expectations
 

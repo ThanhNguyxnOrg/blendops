@@ -97,7 +97,7 @@
     "bundles",
     "docs/adapters",
     "docs/evals",
-    "docs/examples/handing-off-glb-to-web",
+    "docs/examples/blendops-glb-web-handoff",
     "docs/install",
     "docs/recipes",
     "docs/workflows",

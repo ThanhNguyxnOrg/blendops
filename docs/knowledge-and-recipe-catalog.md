@@ -42,7 +42,7 @@ BlendOps separates **atomic agent workflow skills** (`skills/*/SKILL.md`) from *
 
 - **Intent**: Transform a product brief into a verified single-subject hero scene with three-point/accent lighting, physically plausible materials, controlled reflections, and an optional web-ready GLB handoff package.
 - **Domain**: `lighting-camera-and-rendering`
-- **Required Skills**: `scoping-3d-briefs`, `defining-done-and-gates`, `sourcing-assets`, `planning-product-scenes`, `planning-camera-and-framing`, `planning-lighting-and-materials`, `choosing-render-and-output`, `verifying-before-handoff`, `handing-off-glb-to-web`, `using-blendops`
+- **Required Skills**: `blendops-brief`, `blendops-done-criteria`, `blendops-assets`, `blendops-product-shot`, `blendops-camera`, `blendops-lighting-materials`, `blendops-render-settings`, `blendops-final-check`, `blendops-glb-web-handoff`, `blendops-start`
 - **Knowledge Records**: `knowledge.mesh-manifold-normals-and-scale-hygiene`, `knowledge.triangle-draw-call-and-vram-budgets`, `knowledge.physically-based-camera-lens-and-dof`, `knowledge.modular-architectural-grid-and-metric-scale`, `knowledge.three-point-and-hdri-studio-lighting`, `knowledge.principled-bsdf-v2-energy-conserving-pbr`, `knowledge.agx-filmic-color-management-and-cycles-eevee`, `knowledge.shader-node-gltf-export-portability`, `knowledge.glb-binary-chunk-alignment-and-khronos-validation`, `knowledge.threejs-r3f-tone-mapping-and-environment-parity`
 - **Stages**: `stage-brief-and-scope` (Stage 1) → `stage-scene-and-camera-plan` (Stage 2) → `stage-lighting-and-materials` (Stage 3) → `stage-quality-and-handoff` (Stage 4)
 - **Scenario Reference Doc**: `docs/recipes/cyberpunk-shoe-hero.md`
@@ -51,7 +51,7 @@ BlendOps separates **atomic agent workflow skills** (`skills/*/SKILL.md`) from *
 
 - **Intent**: Plan and assemble a readable environment or diorama establishing shot with metric scale cues, three-plane depth staging, instanced foliage/props, and time-of-day atmospheric lighting.
 - **Domain**: `environment-and-architecture`
-- **Required Skills**: `scoping-3d-briefs`, `sourcing-assets`, `planning-scenes`, `planning-camera-and-framing`, `planning-lighting-and-materials`, `budgeting-glb-for-web`, `choosing-render-and-output`, `verifying-before-handoff`, `using-blendops`
+- **Required Skills**: `blendops-brief`, `blendops-assets`, `blendops-scene-plan`, `blendops-camera`, `blendops-lighting-materials`, `blendops-glb-budget`, `blendops-render-settings`, `blendops-final-check`, `blendops-start`
 - **Knowledge Records**: `knowledge.modular-architectural-grid-and-metric-scale`, `knowledge.mesh-manifold-normals-and-scale-hygiene`, `knowledge.environment-depth-layering-and-atmospheric-perspective`, `knowledge.physically-based-camera-lens-and-dof`, `knowledge.procedural-instancing-and-realize-instances-budget`, `knowledge.procedural-scatter-poisson-disk-and-slope-masking`, `knowledge.volumetrics-fog-and-principled-volume-tradeoffs`, `knowledge.agx-filmic-color-management-and-cycles-eevee`, `knowledge.triangle-draw-call-and-vram-budgets`
 - **Stages**: `stage-environment-brief-and-assets` (Stage 1) → `stage-depth-layering-and-camera` (Stage 2) → `stage-procedural-scatter-and-atmosphere` (Stage 3) → `stage-environment-validation-and-handoff` (Stage 4)
 
@@ -59,7 +59,7 @@ BlendOps separates **atomic agent workflow skills** (`skills/*/SKILL.md`) from *
 
 - **Intent**: Design and validate a mechanical or manufactured hard-surface prop with consistent millimeter bevel widths, clean boolean shading via weighted normals or quad holding loops, and export-ready mesh hygiene.
 - **Domain**: `hard-surface-and-organic`
-- **Required Skills**: `scoping-3d-briefs`, `defining-done-and-gates`, `budgeting-glb-for-web`, `planning-lighting-and-materials`, `verifying-before-handoff`, `using-blendops`
+- **Required Skills**: `blendops-brief`, `blendops-done-criteria`, `blendops-glb-budget`, `blendops-lighting-materials`, `blendops-final-check`, `blendops-start`
 - **Knowledge Records**: `knowledge.mesh-manifold-normals-and-scale-hygiene`, `knowledge.cad-creases-and-panel-gap-detailing`, `knowledge.non-destructive-hard-surface-modifier-stack`, `knowledge.boolean-bevel-shading-cleanup`, `knowledge.quad-dominant-subdivision-topology`, `knowledge.uv-seam-placement-and-texel-density`, `knowledge.high-to-low-normal-and-ao-baking`, `knowledge.principled-bsdf-v2-energy-conserving-pbr`, `knowledge.triangle-draw-call-and-vram-budgets`, `knowledge.gltf-2-coordinate-system-and-transform-conventions`
 - **Stages**: `stage-prop-scale-and-blockout` (Stage 1) → `stage-modifier-stack-and-topology` (Stage 2) → `stage-uv-and-surface-materials` (Stage 3) → `stage-prop-validation-and-handoff` (Stage 4)
 
@@ -67,7 +67,7 @@ BlendOps separates **atomic agent workflow skills** (`skills/*/SKILL.md`) from *
 
 - **Intent**: Build a deterministic, parameter-exposed Geometry Nodes asset or scatter system with explicit attribute domain propagation, instance memory discipline, and clear realization rules for rendering vs. glTF export.
 - **Domain**: `geometry-nodes-and-procedural`
-- **Required Skills**: `scoping-3d-briefs`, `defining-done-and-gates`, `budgeting-glb-for-web`, `sourcing-assets`, `planning-lighting-and-materials`, `verifying-before-handoff`, `handing-off-glb-to-web`, `using-blendops`
+- **Required Skills**: `blendops-brief`, `blendops-done-criteria`, `blendops-glb-budget`, `blendops-assets`, `blendops-lighting-materials`, `blendops-final-check`, `blendops-glb-web-handoff`, `blendops-start`
 - **Knowledge Records**: `knowledge.geometry-nodes-fields-and-anonymous-attributes`, `knowledge.mesh-manifold-normals-and-scale-hygiene`, `knowledge.procedural-scatter-poisson-disk-and-slope-masking`, `knowledge.procedural-instancing-and-realize-instances-budget`, `knowledge.shader-node-gltf-export-portability`, `knowledge.glb-binary-chunk-alignment-and-khronos-validation`
 - **Stages**: `stage-gn-interface-and-inputs` (Stage 1) → `stage-gn-distribution-and-instancing` (Stage 2) → `stage-gn-attributes-and-shading` (Stage 3) → `stage-gn-realization-and-export` (Stage 4)
 
@@ -75,7 +75,7 @@ BlendOps separates **atomic agent workflow skills** (`skills/*/SKILL.md`) from *
 
 - **Intent**: Prepare clean, non-overlapping 0-1 UV layouts (or UDIM tiles for offline renders), bake high-to-low or procedural maps without seam artifacts, and wire physically accurate PBR materials.
 - **Domain**: `uv-texturing-and-baking`
-- **Required Skills**: `defining-done-and-gates`, `planning-lighting-and-materials`, `choosing-render-and-output`, `budgeting-glb-for-web`, `verifying-before-handoff`, `using-blendops`
+- **Required Skills**: `blendops-done-criteria`, `blendops-lighting-materials`, `blendops-render-settings`, `blendops-glb-budget`, `blendops-final-check`, `blendops-start`
 - **Knowledge Records**: `knowledge.uv-seam-placement-and-texel-density`, `knowledge.udim-vs-single-atlas-uv-packing`, `knowledge.mesh-manifold-normals-and-scale-hygiene`, `knowledge.high-to-low-normal-and-ao-baking`, `knowledge.normal-roughness-and-orm-channel-packing`, `knowledge.principled-bsdf-v2-energy-conserving-pbr`, `knowledge.shader-node-gltf-export-portability`, `knowledge.texture-resolution-ktx2-and-draco-meshopt-compression`, `knowledge.triangle-draw-call-and-vram-budgets`
 - **Stages**: `stage-uv-seams-and-unwrap` (Stage 1) → `stage-mikktspace-baking` (Stage 2) → `stage-principled-bsdf-wiring` (Stage 3) → `stage-material-validation-and-handoff` (Stage 4)
 
@@ -83,7 +83,7 @@ BlendOps separates **atomic agent workflow skills** (`skills/*/SKILL.md`) from *
 
 - **Intent**: Configure a production-ready camera, lighting rig, color management pipeline, and render engine (Cycles or EEVEE) with verified contrast ratios, shadow softness, and output format settings.
 - **Domain**: `lighting-camera-and-rendering`
-- **Required Skills**: `planning-camera-and-framing`, `planning-scenes`, `planning-lighting-and-materials`, `choosing-render-and-output`, `verifying-before-handoff`, `using-blendops`
+- **Required Skills**: `blendops-camera`, `blendops-scene-plan`, `blendops-lighting-materials`, `blendops-render-settings`, `blendops-final-check`, `blendops-start`
 - **Knowledge Records**: `knowledge.physically-based-camera-lens-and-dof`, `knowledge.modular-architectural-grid-and-metric-scale`, `knowledge.three-point-and-hdri-studio-lighting`, `knowledge.principled-bsdf-v2-energy-conserving-pbr`, `knowledge.agx-filmic-color-management-and-cycles-eevee`
 - **Stages**: `stage-camera-optics-and-framing` (Stage 1) → `stage-three-point-and-hdri-lighting` (Stage 2) → `stage-color-and-render-engine` (Stage 3) → `stage-render-quality-and-handoff` (Stage 4)
 
@@ -91,7 +91,7 @@ BlendOps separates **atomic agent workflow skills** (`skills/*/SKILL.md`) from *
 
 - **Intent**: Rig, skin, animate, and bake skeletal or shape-key animations so that IK/constraint rigs convert cleanly into self-contained FK deform keyframes and export to GLB without deformation breakage.
 - **Domain**: `rigging-and-animation`
-- **Required Skills**: `scoping-3d-briefs`, `defining-done-and-gates`, `budgeting-glb-for-web`, `handing-off-glb-to-web`, `verifying-before-handoff`, `using-blendops`
+- **Required Skills**: `blendops-brief`, `blendops-done-criteria`, `blendops-glb-budget`, `blendops-glb-web-handoff`, `blendops-final-check`, `blendops-start`
 - **Knowledge Records**: `knowledge.armature-joint-hierarchy-and-linear-blend-skinning`, `knowledge.mesh-manifold-normals-and-scale-hygiene`, `knowledge.organic-sculpt-to-retopology-workflow`, `knowledge.nla-action-baking-and-morph-target-export`, `knowledge.rigid-body-cloth-and-simulation-cache-baking`, `knowledge.gltf-2-coordinate-system-and-transform-conventions`, `knowledge.glb-binary-chunk-alignment-and-khronos-validation`, `knowledge.threejs-r3f-tone-mapping-and-environment-parity`
 - **Stages**: `stage-armature-and-transform-hygiene` (Stage 1) → `stage-skin-weights-and-morphs` (Stage 2) → `stage-nla-action-baking` (Stage 3) → `stage-animation-validation-and-handoff` (Stage 4)
 
@@ -99,7 +99,7 @@ BlendOps separates **atomic agent workflow skills** (`skills/*/SKILL.md`) from *
 
 - **Intent**: Systematically evaluate a 3D scene or plan against domain quality rubrics, classify blockers vs. warnings, run 4-phase root-cause troubleshooting on defects, and issue an evidence-backed Pass/Warn/Fail readiness verdict.
 - **Domain**: `lighting-camera-and-rendering`
-- **Required Skills**: `troubleshooting-blender-output`, `budgeting-glb-for-web`, `planning-lighting-and-materials`, `planning-camera-and-framing`, `verifying-before-handoff`, `defining-done-and-gates`, `using-blendops`
+- **Required Skills**: `blendops-fix-problems`, `blendops-glb-budget`, `blendops-lighting-materials`, `blendops-camera`, `blendops-final-check`, `blendops-done-criteria`, `blendops-start`
 - **Knowledge Records**: `knowledge.mesh-manifold-normals-and-scale-hygiene`, `knowledge.boolean-bevel-shading-cleanup`, `knowledge.triangle-draw-call-and-vram-budgets`, `knowledge.principled-bsdf-v2-energy-conserving-pbr`, `knowledge.normal-roughness-and-orm-channel-packing`, `knowledge.three-point-and-hdri-studio-lighting`, `knowledge.agx-filmic-color-management-and-cycles-eevee`, `knowledge.physically-based-camera-lens-and-dof`, `knowledge.environment-depth-layering-and-atmospheric-perspective`, `knowledge.glb-binary-chunk-alignment-and-khronos-validation`
 - **Stages**: `stage-symptom-triage-and-geometry-audit` (Stage 1) → `stage-material-and-lighting-audit` (Stage 2) → `stage-composition-and-holistic-readiness` (Stage 3) → `stage-correction-verification-and-response` (Stage 4)
 
@@ -107,7 +107,7 @@ BlendOps separates **atomic agent workflow skills** (`skills/*/SKILL.md`) from *
 
 - **Intent**: Ensure a Blender asset exports cleanly to a spec-compliant GLB 2.0 binary container, run deterministic structural inspection (`blendops glb-inspect` / `glb-handoff`), and provide complete Three.js or React Three Fiber integration guidance.
 - **Domain**: `interchange-gltf-and-web`
-- **Required Skills**: `planning-lighting-and-materials`, `budgeting-glb-for-web`, `handing-off-glb-to-web`, `verifying-before-handoff`, `using-blendops`
+- **Required Skills**: `blendops-lighting-materials`, `blendops-glb-budget`, `blendops-glb-web-handoff`, `blendops-final-check`, `blendops-start`
 - **Knowledge Records**: `knowledge.gltf-2-coordinate-system-and-transform-conventions`, `knowledge.shader-node-gltf-export-portability`, `knowledge.normal-roughness-and-orm-channel-packing`, `knowledge.glb-binary-chunk-alignment-and-khronos-validation`, `knowledge.texture-resolution-ktx2-and-draco-meshopt-compression`, `knowledge.threejs-r3f-tone-mapping-and-environment-parity`, `knowledge.agx-filmic-color-management-and-cycles-eevee`
 - **Stages**: `stage-pre-export-gltf-audit` (Stage 1) → `stage-glb-container-inspection` (Stage 2) → `stage-web-viewer-component-plan` (Stage 3) → `stage-handoff-verification-and-summary` (Stage 4)
 
@@ -115,7 +115,7 @@ BlendOps separates **atomic agent workflow skills** (`skills/*/SKILL.md`) from *
 
 - **Intent**: Pin device-tier performance budgets upfront, audit geometry/texture/draw-call bottlenecks, design a progressive degradation and LOD plan, and select optimal texture (KTX2 ETC1S/UASTC) and mesh (Draco vs. Meshopt) compression.
 - **Domain**: `optimization-lod-and-performance`
-- **Required Skills**: `budgeting-glb-for-web`, `defining-done-and-gates`, `sourcing-assets`, `planning-lighting-and-materials`, `choosing-render-and-output`, `handing-off-glb-to-web`, `verifying-before-handoff`, `using-blendops`
+- **Required Skills**: `blendops-glb-budget`, `blendops-done-criteria`, `blendops-assets`, `blendops-lighting-materials`, `blendops-render-settings`, `blendops-glb-web-handoff`, `blendops-final-check`, `blendops-start`
 - **Knowledge Records**: `knowledge.triangle-draw-call-and-vram-budgets`, `knowledge.lod-hierarchy-and-decimation-strategy`, `knowledge.procedural-instancing-and-realize-instances-budget`, `knowledge.normal-roughness-and-orm-channel-packing`, `knowledge.texture-resolution-ktx2-and-draco-meshopt-compression`, `knowledge.udim-vs-single-atlas-uv-packing`, `knowledge.glb-binary-chunk-alignment-and-khronos-validation`, `knowledge.threejs-r3f-tone-mapping-and-environment-parity`
 - **Stages**: `stage-pin-device-budget` (Stage 1) → `stage-geometry-and-lod-optimization` (Stage 2) → `stage-texture-and-mesh-compression` (Stage 3) → `stage-optimization-verification-and-handoff` (Stage 4)
 
@@ -127,86 +127,86 @@ BlendOps separates **atomic agent workflow skills** (`skills/*/SKILL.md`) from *
 
 | Knowledge ID | Title | Kind | Min Blender | Doc-Checked LTS | Evidence Status | Linked Skills | Linked Recipes |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| `knowledge.quad-dominant-subdivision-topology` | Quad-Dominant Subdivision Topology, Pole Routing & Edge-Flow Discipline | `topology-rule` | `3.0+` | `5.2.3 LTS` | `version-checked` | `budgeting-glb-for-web`, `verifying-before-handoff`, `planning-product-scenes`, `planning-scenes` | `recipe.product-hero-scene`, `recipe.hard-surface-prop` |
-| `knowledge.mesh-manifold-normals-and-scale-hygiene` | Mesh Manifold Integrity, Outward Normals & Applied Scale Hygiene | `topology-rule` | `3.0+` | `5.2.3 LTS` | `version-checked` | `troubleshooting-blender-output`, `budgeting-glb-for-web`, `verifying-before-handoff` | `recipe.product-hero-scene`, `recipe.hard-surface-prop`, `recipe.uv-and-pbr-material-preparation`, `recipe.scene-quality-inspection-and-correction` |
-| `knowledge.boolean-bevel-shading-cleanup` | Boolean Cutout Shading Cleanup, Custom Split Normals & Smooth by Angle | `topology-rule` | `3.6 LTS` | `5.2.3 LTS` | `version-checked` | `troubleshooting-blender-output`, `budgeting-glb-for-web`, `verifying-before-handoff` | `recipe.hard-surface-prop`, `recipe.scene-quality-inspection-and-correction` |
+| `knowledge.quad-dominant-subdivision-topology` | Quad-Dominant Subdivision Topology, Pole Routing & Edge-Flow Discipline | `topology-rule` | `3.0+` | `5.2.3 LTS` | `version-checked` | `blendops-glb-budget`, `blendops-final-check`, `blendops-product-shot`, `blendops-scene-plan` | `recipe.product-hero-scene`, `recipe.hard-surface-prop` |
+| `knowledge.mesh-manifold-normals-and-scale-hygiene` | Mesh Manifold Integrity, Outward Normals & Applied Scale Hygiene | `topology-rule` | `3.0+` | `5.2.3 LTS` | `version-checked` | `blendops-fix-problems`, `blendops-glb-budget`, `blendops-final-check` | `recipe.product-hero-scene`, `recipe.hard-surface-prop`, `recipe.uv-and-pbr-material-preparation`, `recipe.scene-quality-inspection-and-correction` |
+| `knowledge.boolean-bevel-shading-cleanup` | Boolean Cutout Shading Cleanup, Custom Split Normals & Smooth by Angle | `topology-rule` | `3.6 LTS` | `5.2.3 LTS` | `version-checked` | `blendops-fix-problems`, `blendops-glb-budget`, `blendops-final-check` | `recipe.hard-surface-prop`, `recipe.scene-quality-inspection-and-correction` |
 
 ### Domain: `hard-surface-and-organic` (3 records)
 
 | Knowledge ID | Title | Kind | Min Blender | Doc-Checked LTS | Evidence Status | Linked Skills | Linked Recipes |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| `knowledge.non-destructive-hard-surface-modifier-stack` | Non-Destructive Hard-Surface Modifier Stack Ordering & Evaluation Rules | `modeling-workflow` | `3.6 LTS` | `5.2.3 LTS` | `version-checked` | `planning-product-scenes`, `budgeting-glb-for-web`, `troubleshooting-blender-output` | `recipe.hard-surface-prop`, `recipe.product-hero-scene` |
-| `knowledge.organic-sculpt-to-retopology-workflow` | Organic High-Poly Sculpting to Clean Quad Retopology & Detail Transfer | `modeling-workflow` | `3.6 LTS` | `5.2.3 LTS` | `version-checked` | `planning-scenes`, `budgeting-glb-for-web` | `recipe.rigged-and-animated-asset`, `recipe.uv-and-pbr-material-preparation` |
-| `knowledge.cad-creases-and-panel-gap-detailing` | Physical Bevel Minimums, Panel Seam Gaps & Industrial Readability | `modeling-workflow` | `3.0+` | `5.2.3 LTS` | `version-checked` | `planning-product-scenes`, `planning-lighting-and-materials`, `budgeting-glb-for-web` | `recipe.product-hero-scene`, `recipe.hard-surface-prop` |
+| `knowledge.non-destructive-hard-surface-modifier-stack` | Non-Destructive Hard-Surface Modifier Stack Ordering & Evaluation Rules | `modeling-workflow` | `3.6 LTS` | `5.2.3 LTS` | `version-checked` | `blendops-product-shot`, `blendops-glb-budget`, `blendops-fix-problems` | `recipe.hard-surface-prop`, `recipe.product-hero-scene` |
+| `knowledge.organic-sculpt-to-retopology-workflow` | Organic High-Poly Sculpting to Clean Quad Retopology & Detail Transfer | `modeling-workflow` | `3.6 LTS` | `5.2.3 LTS` | `version-checked` | `blendops-scene-plan`, `blendops-glb-budget` | `recipe.rigged-and-animated-asset`, `recipe.uv-and-pbr-material-preparation` |
+| `knowledge.cad-creases-and-panel-gap-detailing` | Physical Bevel Minimums, Panel Seam Gaps & Industrial Readability | `modeling-workflow` | `3.0+` | `5.2.3 LTS` | `version-checked` | `blendops-product-shot`, `blendops-lighting-materials`, `blendops-glb-budget` | `recipe.product-hero-scene`, `recipe.hard-surface-prop` |
 
 ### Domain: `geometry-nodes-and-procedural` (3 records)
 
 | Knowledge ID | Title | Kind | Min Blender | Doc-Checked LTS | Evidence Status | Linked Skills | Linked Recipes |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| `knowledge.geometry-nodes-fields-and-anonymous-attributes` | Geometry Nodes Fields Evaluation, Attribute Domains & UV/Shader Persistence | `procedural-system` | `3.6 LTS` | `5.2.3 LTS` | `version-checked` | `budgeting-glb-for-web`, `planning-lighting-and-materials`, `handing-off-glb-to-web` | `recipe.procedural-geometry-nodes-asset`, `recipe.stylized-environment-scene` |
-| `knowledge.procedural-instancing-and-realize-instances-budget` | Procedural Collection Instancing vs. Realize Instances Memory & Export Tradeoffs | `procedural-system` | `3.6 LTS` | `5.2.3 LTS` | `version-checked` | `budgeting-glb-for-web`, `handing-off-glb-to-web` | `recipe.procedural-geometry-nodes-asset`, `recipe.stylized-environment-scene`, `recipe.web-ready-asset-optimization` |
-| `knowledge.procedural-scatter-poisson-disk-and-slope-masking` | Poisson Disk Point Distribution, Slope/Altitude Masking & Orientation Alignment | `procedural-system` | `3.6 LTS` | `5.2.3 LTS` | `version-checked` | `planning-scenes`, `budgeting-glb-for-web`, `planning-product-scenes` | `recipe.procedural-geometry-nodes-asset`, `recipe.stylized-environment-scene` |
+| `knowledge.geometry-nodes-fields-and-anonymous-attributes` | Geometry Nodes Fields Evaluation, Attribute Domains & UV/Shader Persistence | `procedural-system` | `3.6 LTS` | `5.2.3 LTS` | `version-checked` | `blendops-glb-budget`, `blendops-lighting-materials`, `blendops-glb-web-handoff` | `recipe.procedural-geometry-nodes-asset`, `recipe.stylized-environment-scene` |
+| `knowledge.procedural-instancing-and-realize-instances-budget` | Procedural Collection Instancing vs. Realize Instances Memory & Export Tradeoffs | `procedural-system` | `3.6 LTS` | `5.2.3 LTS` | `version-checked` | `blendops-glb-budget`, `blendops-glb-web-handoff` | `recipe.procedural-geometry-nodes-asset`, `recipe.stylized-environment-scene`, `recipe.web-ready-asset-optimization` |
+| `knowledge.procedural-scatter-poisson-disk-and-slope-masking` | Poisson Disk Point Distribution, Slope/Altitude Masking & Orientation Alignment | `procedural-system` | `3.6 LTS` | `5.2.3 LTS` | `version-checked` | `blendops-scene-plan`, `blendops-glb-budget`, `blendops-product-shot` | `recipe.procedural-geometry-nodes-asset`, `recipe.stylized-environment-scene` |
 
 ### Domain: `uv-texturing-and-baking` (3 records)
 
 | Knowledge ID | Title | Kind | Min Blender | Doc-Checked LTS | Evidence Status | Linked Skills | Linked Recipes |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| `knowledge.uv-seam-placement-and-texel-density` | UV Seam Placement, Hard-Edge Splits, Texel Density & Mipmap Padding | `uv-baking-rule` | `3.6 LTS` | `5.2.3 LTS` | `version-checked` | `planning-lighting-and-materials`, `budgeting-glb-for-web` | `recipe.uv-and-pbr-material-preparation`, `recipe.hard-surface-prop`, `recipe.product-hero-scene` |
-| `knowledge.udim-vs-single-atlas-uv-packing` | Single 0-1 UV Atlas Packing vs. Multi-Tile UDIM Workflows for Offline & glTF | `uv-baking-rule` | `3.6 LTS` | `5.2.3 LTS` | `version-checked` | `planning-lighting-and-materials`, `budgeting-glb-for-web`, `handing-off-glb-to-web` | `recipe.uv-and-pbr-material-preparation`, `recipe.web-ready-asset-optimization` |
-| `knowledge.high-to-low-normal-and-ao-baking` | Tangent-Space MikkTSpace Normal & Ambient Occlusion Baking Protocol | `uv-baking-rule` | `3.6 LTS` | `5.2.3 LTS` | `version-checked` | `planning-lighting-and-materials`, `choosing-render-and-output` | `recipe.uv-and-pbr-material-preparation`, `recipe.hard-surface-prop`, `recipe.product-hero-scene` |
+| `knowledge.uv-seam-placement-and-texel-density` | UV Seam Placement, Hard-Edge Splits, Texel Density & Mipmap Padding | `uv-baking-rule` | `3.6 LTS` | `5.2.3 LTS` | `version-checked` | `blendops-lighting-materials`, `blendops-glb-budget` | `recipe.uv-and-pbr-material-preparation`, `recipe.hard-surface-prop`, `recipe.product-hero-scene` |
+| `knowledge.udim-vs-single-atlas-uv-packing` | Single 0-1 UV Atlas Packing vs. Multi-Tile UDIM Workflows for Offline & glTF | `uv-baking-rule` | `3.6 LTS` | `5.2.3 LTS` | `version-checked` | `blendops-lighting-materials`, `blendops-glb-budget`, `blendops-glb-web-handoff` | `recipe.uv-and-pbr-material-preparation`, `recipe.web-ready-asset-optimization` |
+| `knowledge.high-to-low-normal-and-ao-baking` | Tangent-Space MikkTSpace Normal & Ambient Occlusion Baking Protocol | `uv-baking-rule` | `3.6 LTS` | `5.2.3 LTS` | `version-checked` | `blendops-lighting-materials`, `blendops-render-settings` | `recipe.uv-and-pbr-material-preparation`, `recipe.hard-surface-prop`, `recipe.product-hero-scene` |
 
 ### Domain: `materials-shaders-and-pbr` (3 records)
 
 | Knowledge ID | Title | Kind | Min Blender | Doc-Checked LTS | Evidence Status | Linked Skills | Linked Recipes |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| `knowledge.principled-bsdf-v2-energy-conserving-pbr` | Principled BSDF v2 Energy Conservation, Dielectric vs. Conductor Albedo & Blender 4.0+ Socket Changes | `material-shader-profile` | `3.6 LTS` | `5.2.3 LTS` | `version-checked` | `planning-lighting-and-materials`, `planning-product-scenes` | `recipe.product-hero-scene`, `recipe.uv-and-pbr-material-preparation`, `recipe.presentation-lighting-and-camera`, `recipe.scene-quality-inspection-and-correction` |
-| `knowledge.normal-roughness-and-orm-channel-packing` | ORM Channel Packing (Occlusion/Roughness/Metallic) & Linear Non-Color Space Discipline | `material-shader-profile` | `3.6 LTS` | `5.2.3 LTS` | `version-checked` | `planning-lighting-and-materials`, `handing-off-glb-to-web`, `budgeting-glb-for-web` | `recipe.uv-and-pbr-material-preparation`, `recipe.product-hero-scene`, `recipe.blender-to-glb-handoff`, `recipe.web-ready-asset-optimization` |
-| `knowledge.shader-node-gltf-export-portability` | Blender Shader Graph to Khronos glTF 2.0 Export Portability & Extension Matrix | `material-shader-profile` | `3.6 LTS` | `5.2.3 LTS` | `version-checked` | `planning-lighting-and-materials`, `handing-off-glb-to-web` | `recipe.product-hero-scene`, `recipe.uv-and-pbr-material-preparation`, `recipe.blender-to-glb-handoff`, `recipe.procedural-geometry-nodes-asset` |
+| `knowledge.principled-bsdf-v2-energy-conserving-pbr` | Principled BSDF v2 Energy Conservation, Dielectric vs. Conductor Albedo & Blender 4.0+ Socket Changes | `material-shader-profile` | `3.6 LTS` | `5.2.3 LTS` | `version-checked` | `blendops-lighting-materials`, `blendops-product-shot` | `recipe.product-hero-scene`, `recipe.uv-and-pbr-material-preparation`, `recipe.presentation-lighting-and-camera`, `recipe.scene-quality-inspection-and-correction` |
+| `knowledge.normal-roughness-and-orm-channel-packing` | ORM Channel Packing (Occlusion/Roughness/Metallic) & Linear Non-Color Space Discipline | `material-shader-profile` | `3.6 LTS` | `5.2.3 LTS` | `version-checked` | `blendops-lighting-materials`, `blendops-glb-web-handoff`, `blendops-glb-budget` | `recipe.uv-and-pbr-material-preparation`, `recipe.product-hero-scene`, `recipe.blender-to-glb-handoff`, `recipe.web-ready-asset-optimization` |
+| `knowledge.shader-node-gltf-export-portability` | Blender Shader Graph to Khronos glTF 2.0 Export Portability & Extension Matrix | `material-shader-profile` | `3.6 LTS` | `5.2.3 LTS` | `version-checked` | `blendops-lighting-materials`, `blendops-glb-web-handoff` | `recipe.product-hero-scene`, `recipe.uv-and-pbr-material-preparation`, `recipe.blender-to-glb-handoff`, `recipe.procedural-geometry-nodes-asset` |
 
 ### Domain: `lighting-camera-and-rendering` (3 records)
 
 | Knowledge ID | Title | Kind | Min Blender | Doc-Checked LTS | Evidence Status | Linked Skills | Linked Recipes |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| `knowledge.three-point-and-hdri-studio-lighting` | Three-Point Studio Lighting Ratios, Area Light Angular Size & HDRI Balance | `lighting-camera-rule` | `3.6 LTS` | `5.2.3 LTS` | `version-checked` | `planning-lighting-and-materials`, `planning-product-scenes`, `planning-scenes` | `recipe.product-hero-scene`, `recipe.presentation-lighting-and-camera`, `recipe.scene-quality-inspection-and-correction` |
-| `knowledge.physically-based-camera-lens-and-dof` | Physical Camera Sensor Size, Focal Length Compression, Tilt-Shift & Depth of Field | `lighting-camera-rule` | `3.0+` | `5.2.3 LTS` | `version-checked` | `planning-camera-and-framing`, `planning-product-scenes`, `planning-scenes` | `recipe.product-hero-scene`, `recipe.presentation-lighting-and-camera`, `recipe.stylized-environment-scene` |
-| `knowledge.agx-filmic-color-management-and-cycles-eevee` | AgX vs. Filmic Color Management, EEVEE Next (4.2+) vs. Cycles & Output Bit Depth | `render-engine-profile` | `3.6 LTS` | `5.2.3 LTS` | `version-checked` | `planning-lighting-and-materials`, `choosing-render-and-output` | `recipe.product-hero-scene`, `recipe.presentation-lighting-and-camera`, `recipe.stylized-environment-scene`, `recipe.scene-quality-inspection-and-correction`, `recipe.blender-to-glb-handoff` |
+| `knowledge.three-point-and-hdri-studio-lighting` | Three-Point Studio Lighting Ratios, Area Light Angular Size & HDRI Balance | `lighting-camera-rule` | `3.6 LTS` | `5.2.3 LTS` | `version-checked` | `blendops-lighting-materials`, `blendops-product-shot`, `blendops-scene-plan` | `recipe.product-hero-scene`, `recipe.presentation-lighting-and-camera`, `recipe.scene-quality-inspection-and-correction` |
+| `knowledge.physically-based-camera-lens-and-dof` | Physical Camera Sensor Size, Focal Length Compression, Tilt-Shift & Depth of Field | `lighting-camera-rule` | `3.0+` | `5.2.3 LTS` | `version-checked` | `blendops-camera`, `blendops-product-shot`, `blendops-scene-plan` | `recipe.product-hero-scene`, `recipe.presentation-lighting-and-camera`, `recipe.stylized-environment-scene` |
+| `knowledge.agx-filmic-color-management-and-cycles-eevee` | AgX vs. Filmic Color Management, EEVEE Next (4.2+) vs. Cycles & Output Bit Depth | `render-engine-profile` | `3.6 LTS` | `5.2.3 LTS` | `version-checked` | `blendops-lighting-materials`, `blendops-render-settings` | `recipe.product-hero-scene`, `recipe.presentation-lighting-and-camera`, `recipe.stylized-environment-scene`, `recipe.scene-quality-inspection-and-correction`, `recipe.blender-to-glb-handoff` |
 
 ### Domain: `rigging-and-animation` (2 records)
 
 | Knowledge ID | Title | Kind | Min Blender | Doc-Checked LTS | Evidence Status | Linked Skills | Linked Recipes |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| `knowledge.armature-joint-hierarchy-and-linear-blend-skinning` | Armature Joint Hierarchy, Transform Alignment & 4-Bone Linear Blend Skinning | `rigging-animation-rule` | `3.6 LTS` | `5.2.3 LTS` | `version-checked` | `handing-off-glb-to-web`, `budgeting-glb-for-web` | `recipe.rigged-and-animated-asset`, `recipe.blender-to-glb-handoff` |
-| `knowledge.nla-action-baking-and-morph-target-export` | NLA Action Baking, Constraint Sampling, and Shape Key (Morph Target) Export Rules | `rigging-animation-rule` | `3.6 LTS` | `5.2.3 LTS` | `version-checked` | `handing-off-glb-to-web`, `budgeting-glb-for-web` | `recipe.rigged-and-animated-asset`, `recipe.blender-to-glb-handoff` |
+| `knowledge.armature-joint-hierarchy-and-linear-blend-skinning` | Armature Joint Hierarchy, Transform Alignment & 4-Bone Linear Blend Skinning | `rigging-animation-rule` | `3.6 LTS` | `5.2.3 LTS` | `version-checked` | `blendops-glb-web-handoff`, `blendops-glb-budget` | `recipe.rigged-and-animated-asset`, `recipe.blender-to-glb-handoff` |
+| `knowledge.nla-action-baking-and-morph-target-export` | NLA Action Baking, Constraint Sampling, and Shape Key (Morph Target) Export Rules | `rigging-animation-rule` | `3.6 LTS` | `5.2.3 LTS` | `version-checked` | `blendops-glb-web-handoff`, `blendops-glb-budget` | `recipe.rigged-and-animated-asset`, `recipe.blender-to-glb-handoff` |
 
 ### Domain: `simulation-and-vfx` (2 records)
 
 | Knowledge ID | Title | Kind | Min Blender | Doc-Checked LTS | Evidence Status | Linked Skills | Linked Recipes |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| `knowledge.rigid-body-cloth-and-simulation-cache-baking` | Rigid Body, Cloth, and Physics Simulation Cache Baking vs. Real-Time Tradeoffs | `simulation-vfx-profile` | `3.0+` | `5.2.3 LTS` | `source-reviewed` | `handing-off-glb-to-web`, `verifying-before-handoff` | `recipe.rigged-and-animated-asset`, `recipe.blender-to-glb-handoff` |
-| `knowledge.volumetrics-fog-and-principled-volume-tradeoffs` | Volumetric Lighting, Principled Volume, and Real-Time Depth Fog Tradeoffs | `simulation-vfx-profile` | `3.0+` | `5.2.3 LTS` | `version-checked` | `planning-lighting-and-materials`, `planning-scenes`, `choosing-render-and-output`, `handing-off-glb-to-web` | `recipe.stylized-environment-scene`, `recipe.product-hero-scene`, `recipe.presentation-lighting-and-camera` |
+| `knowledge.rigid-body-cloth-and-simulation-cache-baking` | Rigid Body, Cloth, and Physics Simulation Cache Baking vs. Real-Time Tradeoffs | `simulation-vfx-profile` | `3.0+` | `5.2.3 LTS` | `source-reviewed` | `blendops-glb-web-handoff`, `blendops-final-check` | `recipe.rigged-and-animated-asset`, `recipe.blender-to-glb-handoff` |
+| `knowledge.volumetrics-fog-and-principled-volume-tradeoffs` | Volumetric Lighting, Principled Volume, and Real-Time Depth Fog Tradeoffs | `simulation-vfx-profile` | `3.0+` | `5.2.3 LTS` | `version-checked` | `blendops-lighting-materials`, `blendops-scene-plan`, `blendops-render-settings`, `blendops-glb-web-handoff` | `recipe.stylized-environment-scene`, `recipe.product-hero-scene`, `recipe.presentation-lighting-and-camera` |
 
 ### Domain: `environment-and-architecture` (2 records)
 
 | Knowledge ID | Title | Kind | Min Blender | Doc-Checked LTS | Evidence Status | Linked Skills | Linked Recipes |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| `knowledge.modular-architectural-grid-and-metric-scale` | Modular Architectural Grid Snapping, Pivot Placement, and Real-World Metric Scale | `scene-assembly-pattern` | `3.0+` | `5.2.3 LTS` | `version-checked` | `verifying-before-handoff`, `planning-scenes`, `planning-product-scenes` | `recipe.stylized-environment-scene`, `recipe.product-hero-scene`, `recipe.scene-quality-inspection-and-correction` |
-| `knowledge.environment-depth-layering-and-atmospheric-perspective` | Foreground / Midground / Background Depth Layering and Cyclorama Staging | `scene-assembly-pattern` | `3.0+` | `5.2.3 LTS` | `source-reviewed` | `planning-product-scenes`, `planning-scenes`, `planning-camera-and-framing` | `recipe.product-hero-scene`, `recipe.stylized-environment-scene`, `recipe.presentation-lighting-and-camera` |
+| `knowledge.modular-architectural-grid-and-metric-scale` | Modular Architectural Grid Snapping, Pivot Placement, and Real-World Metric Scale | `scene-assembly-pattern` | `3.0+` | `5.2.3 LTS` | `version-checked` | `blendops-final-check`, `blendops-scene-plan`, `blendops-product-shot` | `recipe.stylized-environment-scene`, `recipe.product-hero-scene`, `recipe.scene-quality-inspection-and-correction` |
+| `knowledge.environment-depth-layering-and-atmospheric-perspective` | Foreground / Midground / Background Depth Layering and Cyclorama Staging | `scene-assembly-pattern` | `3.0+` | `5.2.3 LTS` | `source-reviewed` | `blendops-product-shot`, `blendops-scene-plan`, `blendops-camera` | `recipe.product-hero-scene`, `recipe.stylized-environment-scene`, `recipe.presentation-lighting-and-camera` |
 
 ### Domain: `optimization-lod-and-performance` (3 records)
 
 | Knowledge ID | Title | Kind | Min Blender | Doc-Checked LTS | Evidence Status | Linked Skills | Linked Recipes |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| `knowledge.triangle-draw-call-and-vram-budgets` | Triangle, Draw Call, Texture VRAM, and File Size Budgets by Target Tier | `performance-budget-rule` | `3.0+` | `5.2.3 LTS` | `source-reviewed` | `budgeting-glb-for-web`, `planning-lighting-and-materials`, `defining-done-and-gates` | `recipe.web-ready-asset-optimization`, `recipe.blender-to-glb-handoff`, `recipe.scene-quality-inspection-and-correction` |
-| `knowledge.lod-hierarchy-and-decimation-strategy` | Level of Detail (LOD0–LOD3) Hierarchy, Planar Dissolve, and UV-Safe Decimation | `performance-budget-rule` | `3.0+` | `5.2.3 LTS` | `source-reviewed` | `budgeting-glb-for-web`, `handing-off-glb-to-web`, `verifying-before-handoff` | `recipe.web-ready-asset-optimization`, `recipe.hard-surface-prop` |
-| `knowledge.texture-resolution-ktx2-and-draco-meshopt-compression` | KTX2 / Basis Universal Texture Compression vs. Draco and Meshopt Geometry Compression | `performance-budget-rule` | `3.0+` | `5.2.3 LTS` | `version-checked` | `budgeting-glb-for-web`, `handing-off-glb-to-web`, `choosing-render-and-output` | `recipe.web-ready-asset-optimization`, `recipe.blender-to-glb-handoff` |
+| `knowledge.triangle-draw-call-and-vram-budgets` | Triangle, Draw Call, Texture VRAM, and File Size Budgets by Target Tier | `performance-budget-rule` | `3.0+` | `5.2.3 LTS` | `source-reviewed` | `blendops-glb-budget`, `blendops-lighting-materials`, `blendops-done-criteria` | `recipe.web-ready-asset-optimization`, `recipe.blender-to-glb-handoff`, `recipe.scene-quality-inspection-and-correction` |
+| `knowledge.lod-hierarchy-and-decimation-strategy` | Level of Detail (LOD0–LOD3) Hierarchy, Planar Dissolve, and UV-Safe Decimation | `performance-budget-rule` | `3.0+` | `5.2.3 LTS` | `source-reviewed` | `blendops-glb-budget`, `blendops-glb-web-handoff`, `blendops-final-check` | `recipe.web-ready-asset-optimization`, `recipe.hard-surface-prop` |
+| `knowledge.texture-resolution-ktx2-and-draco-meshopt-compression` | KTX2 / Basis Universal Texture Compression vs. Draco and Meshopt Geometry Compression | `performance-budget-rule` | `3.0+` | `5.2.3 LTS` | `version-checked` | `blendops-glb-budget`, `blendops-glb-web-handoff`, `blendops-render-settings` | `recipe.web-ready-asset-optimization`, `recipe.blender-to-glb-handoff` |
 
 ### Domain: `interchange-gltf-and-web` (3 records)
 
 | Knowledge ID | Title | Kind | Min Blender | Doc-Checked LTS | Evidence Status | Linked Skills | Linked Recipes |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| `knowledge.gltf-2-coordinate-system-and-transform-conventions` | glTF 2.0 Right-Handed +Y Up Coordinate System and Blender Transform Conversion | `interchange-export-rule` | `3.0+` | `5.2.3 LTS` | `source-reviewed` | `verifying-before-handoff`, `handing-off-glb-to-web` | `recipe.blender-to-glb-handoff`, `recipe.scene-quality-inspection-and-correction`, `recipe.product-hero-scene` |
-| `knowledge.glb-binary-chunk-alignment-and-khronos-validation` | GLB Binary Container Structure, Export Flags, and Khronos Validator Compliance | `interchange-export-rule` | `3.0+` | `5.2.3 LTS` | `version-checked` | `handing-off-glb-to-web`, `verifying-before-handoff`, `choosing-render-and-output` | `recipe.blender-to-glb-handoff`, `recipe.web-ready-asset-optimization`, `recipe.product-hero-scene` |
-| `knowledge.threejs-r3f-tone-mapping-and-environment-parity` | Three.js and React Three Fiber Tone Mapping, Color Management, and IBL Parity with Blender | `interchange-export-rule` | `3.0+` | `5.2.3 LTS` | `version-checked` | `handing-off-glb-to-web`, `planning-lighting-and-materials`, `verifying-before-handoff` | `recipe.blender-to-glb-handoff`, `recipe.product-hero-scene`, `recipe.web-ready-asset-optimization` |
+| `knowledge.gltf-2-coordinate-system-and-transform-conventions` | glTF 2.0 Right-Handed +Y Up Coordinate System and Blender Transform Conversion | `interchange-export-rule` | `3.0+` | `5.2.3 LTS` | `source-reviewed` | `blendops-final-check`, `blendops-glb-web-handoff` | `recipe.blender-to-glb-handoff`, `recipe.scene-quality-inspection-and-correction`, `recipe.product-hero-scene` |
+| `knowledge.glb-binary-chunk-alignment-and-khronos-validation` | GLB Binary Container Structure, Export Flags, and Khronos Validator Compliance | `interchange-export-rule` | `3.0+` | `5.2.3 LTS` | `version-checked` | `blendops-glb-web-handoff`, `blendops-final-check`, `blendops-render-settings` | `recipe.blender-to-glb-handoff`, `recipe.web-ready-asset-optimization`, `recipe.product-hero-scene` |
+| `knowledge.threejs-r3f-tone-mapping-and-environment-parity` | Three.js and React Three Fiber Tone Mapping, Color Management, and IBL Parity with Blender | `interchange-export-rule` | `3.0+` | `5.2.3 LTS` | `version-checked` | `blendops-glb-web-handoff`, `blendops-lighting-materials`, `blendops-final-check` | `recipe.blender-to-glb-handoff`, `recipe.product-hero-scene`, `recipe.web-ready-asset-optimization` |
 
 ---
 

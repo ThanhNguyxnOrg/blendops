@@ -88,7 +88,7 @@
         true,
         false
       ],
-      "description": "Whether all external assets have passed sourcing-assets verification."
+      "description": "Whether all external assets have passed blendops-assets verification."
     },
     {
       "field": "assets.licenseVerdict",
@@ -99,7 +99,7 @@
         "Warn",
         "Fail"
       ],
-      "description": "Top-line validation verdict from sourcing-assets."
+      "description": "Top-line validation verdict from blendops-assets."
     },
     {
       "field": "assets.styleVerdict",
@@ -110,7 +110,7 @@
         "Warn",
         "Fail"
       ],
-      "description": "Top-line visual coherence verdict across realism, detail, color, and surface axes from sourcing-assets."
+      "description": "Top-line visual coherence verdict across realism, detail, color, and surface axes from blendops-assets."
     },
     {
       "field": "brief.complete",
@@ -130,7 +130,7 @@
         true,
         false
       ],
-      "description": "Whether the structured 8-slot 3D brief has been authored and locked via scoping-3d-briefs."
+      "description": "Whether the structured 8-slot 3D brief has been authored and locked via blendops-brief."
     },
     {
       "field": "budget.pinned",
@@ -152,7 +152,7 @@
         "Fail",
         "Not Run"
       ],
-      "description": "Validation verdict from budgeting-glb-for-web or budgeting-glb-for-web comparison."
+      "description": "Validation verdict from blendops-glb-budget or blendops-glb-budget comparison."
     },
     {
       "field": "decision.aspectLocked",
@@ -162,7 +162,7 @@
         true,
         false
       ],
-      "description": "Whether target aspect ratio, pixel resolution, and DPI/PPI have been pinned via planning-camera-and-framing."
+      "description": "Whether target aspect ratio, pixel resolution, and DPI/PPI have been pinned via blendops-camera."
     },
     {
       "field": "decision.colorLocked",
@@ -214,7 +214,7 @@
         "custom_decomposition",
         "poor_fit"
       ],
-      "description": "Recipe/pack fit classification produced by scoping-3d-briefs."
+      "description": "Recipe/pack fit classification produced by blendops-brief."
     },
     {
       "field": "gate.status",
@@ -269,7 +269,7 @@
         true,
         false
       ],
-      "description": "Whether defining-done-and-gates preflight readiness checks have passed."
+      "description": "Whether blendops-done-criteria preflight readiness checks have passed."
     },
     {
       "field": "preflight.verdict",
@@ -280,7 +280,7 @@
         "conditional_go",
         "no_go"
       ],
-      "description": "Go/No-Go preflight decision emitted by defining-done-and-gates."
+      "description": "Go/No-Go preflight decision emitted by blendops-done-criteria."
     },
     {
       "field": "quality.domain",
@@ -457,7 +457,7 @@
         "Blocked",
         "Unknown"
       ],
-      "description": "Readiness matrix check completeness verdict from setting-up-blender-runtime."
+      "description": "Readiness matrix check completeness verdict from blendops-connect-blender."
     },
     {
       "field": "runtime.status",
@@ -491,7 +491,7 @@
         "add_now",
         "defer_to_followup"
       ],
-      "description": "Recorded operator/user decision on a mid-workflow scope addition from defining-done-and-gates."
+      "description": "Recorded operator/user decision on a mid-workflow scope addition from blendops-done-criteria."
     },
     {
       "field": "scope.driftDetected",
@@ -572,7 +572,7 @@
         "output",
         "response"
       ],
-      "description": "Workflow phase identified by troubleshooting-blender-output as the root cause of divergence."
+      "description": "Workflow phase identified by blendops-fix-problems as the root cause of divergence."
     }
   ]
 }

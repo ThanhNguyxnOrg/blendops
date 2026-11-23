@@ -14,9 +14,9 @@ export const EXPECTED_CANONICAL_SKILL_COUNT = 14;
 export const VALID_CAPABILITY_TIERS = new Set(['L0', 'L1', 'L2', 'L3']);
 export const VALID_GATE_GOAL_CLARITIES = new Set(['ambiguous_or_mixed', 'clear', 'any']);
 export const ROUTING_PARTICIPANT_IDS = new Set([
-  'scoping-3d-briefs',
-  'defining-done-and-gates',
-  'using-blendops',
+  'blendops-brief',
+  'blendops-done-criteria',
+  'blendops-start',
 ]);
 export const VALID_HANDOFF_TYPES = new Set([
   'progression',

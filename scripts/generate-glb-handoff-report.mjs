@@ -38,7 +38,7 @@ const PROTECTED_REPO_DIRS = new Set([
   'skills',
 ]);
 
-// Mid-mobile hero card planning ceilings from skills/budgeting-glb-for-web
+// Mid-mobile hero card planning ceilings from skills/blendops-glb-budget
 export const DEFAULT_WEB_PERFORMANCE_BUDGET = Object.freeze({
   tier: 'mid-mobile-hero-default',
   maxFileSizeBytes: 5 * 1024 * 1024, // 5 MB
@@ -607,7 +607,7 @@ export function buildGlbWebHandoffManifestFromInspection(
     );
   }
   nextActions.push(
-    'Pass this handoff manifest and summary to using-blendops when preparing the final plain-language delivery note.',
+    'Pass this handoff manifest and summary to blendops-start when preparing the final plain-language delivery note.',
   );
 
   const overallVerdict =
@@ -642,7 +642,7 @@ export function buildGlbWebHandoffManifestFromInspection(
     $schema: '../schemas/glb-web-handoff-manifest.schema.json',
     schemaVersion: '1.0.0',
     manifestId: sanitizeSlug(safeFilename),
-    skillId: 'handing-off-glb-to-web',
+    skillId: 'blendops-glb-web-handoff',
     artifact: {
       filename: safeFilename,
       format: 'GLB 2.0',

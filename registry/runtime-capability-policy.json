@@ -40,7 +40,7 @@
       "id": "L2",
       "rank": 2,
       "name": "File Export & External Asset Import",
-      "summary": "Permits rendering still/turntable outputs, exporting .glb containers to an allowlisted output directory, and importing external 3D/material assets cleared by sourcing-assets.",
+      "summary": "Permits rendering still/turntable outputs, exporting .glb containers to an allowlisted output directory, and importing external 3D/material assets cleared by blendops-assets.",
       "allowSceneMutation": true,
       "allowFileExport": true,
       "allowExternalAssetImport": true,
@@ -90,7 +90,7 @@
   },
   "skills": [
     {
-      "skillId": "budgeting-glb-for-web",
+      "skillId": "blendops-glb-budget",
       "capabilityTier": "L0",
       "governedRuntimeCeiling": "L2",
       "requiresPreMutationBackupWhenExecuted": true,
@@ -99,7 +99,7 @@
       "userFacingPythonAllowed": false
     },
     {
-      "skillId": "choosing-render-and-output",
+      "skillId": "blendops-render-settings",
       "capabilityTier": "L0",
       "governedRuntimeCeiling": "L2",
       "requiresPreMutationBackupWhenExecuted": true,
@@ -108,7 +108,7 @@
       "userFacingPythonAllowed": false
     },
     {
-      "skillId": "defining-done-and-gates",
+      "skillId": "blendops-done-criteria",
       "capabilityTier": "L0",
       "governedRuntimeCeiling": "L0",
       "requiresPreMutationBackupWhenExecuted": false,
@@ -117,7 +117,7 @@
       "userFacingPythonAllowed": false
     },
     {
-      "skillId": "handing-off-glb-to-web",
+      "skillId": "blendops-glb-web-handoff",
       "capabilityTier": "L0",
       "governedRuntimeCeiling": "L2",
       "requiresPreMutationBackupWhenExecuted": true,
@@ -126,7 +126,7 @@
       "userFacingPythonAllowed": false
     },
     {
-      "skillId": "planning-camera-and-framing",
+      "skillId": "blendops-camera",
       "capabilityTier": "L0",
       "governedRuntimeCeiling": "L1",
       "requiresPreMutationBackupWhenExecuted": true,
@@ -135,7 +135,7 @@
       "userFacingPythonAllowed": false
     },
     {
-      "skillId": "planning-lighting-and-materials",
+      "skillId": "blendops-lighting-materials",
       "capabilityTier": "L0",
       "governedRuntimeCeiling": "L1",
       "requiresPreMutationBackupWhenExecuted": true,
@@ -144,7 +144,7 @@
       "userFacingPythonAllowed": false
     },
     {
-      "skillId": "planning-product-scenes",
+      "skillId": "blendops-product-shot",
       "capabilityTier": "L0",
       "governedRuntimeCeiling": "L1",
       "requiresPreMutationBackupWhenExecuted": true,
@@ -153,7 +153,7 @@
       "userFacingPythonAllowed": false
     },
     {
-      "skillId": "planning-scenes",
+      "skillId": "blendops-scene-plan",
       "capabilityTier": "L0",
       "governedRuntimeCeiling": "L1",
       "requiresPreMutationBackupWhenExecuted": true,
@@ -162,7 +162,7 @@
       "userFacingPythonAllowed": false
     },
     {
-      "skillId": "scoping-3d-briefs",
+      "skillId": "blendops-brief",
       "capabilityTier": "L0",
       "governedRuntimeCeiling": "L0",
       "requiresPreMutationBackupWhenExecuted": false,
@@ -171,7 +171,7 @@
       "userFacingPythonAllowed": false
     },
     {
-      "skillId": "setting-up-blender-runtime",
+      "skillId": "blendops-connect-blender",
       "capabilityTier": "L0",
       "governedRuntimeCeiling": "L3",
       "requiresPreMutationBackupWhenExecuted": true,
@@ -180,7 +180,7 @@
       "userFacingPythonAllowed": false
     },
     {
-      "skillId": "sourcing-assets",
+      "skillId": "blendops-assets",
       "capabilityTier": "L0",
       "governedRuntimeCeiling": "L2",
       "requiresPreMutationBackupWhenExecuted": true,
@@ -189,7 +189,7 @@
       "userFacingPythonAllowed": false
     },
     {
-      "skillId": "troubleshooting-blender-output",
+      "skillId": "blendops-fix-problems",
       "capabilityTier": "L0",
       "governedRuntimeCeiling": "L0",
       "requiresPreMutationBackupWhenExecuted": false,
@@ -198,7 +198,7 @@
       "userFacingPythonAllowed": false
     },
     {
-      "skillId": "using-blendops",
+      "skillId": "blendops-start",
       "capabilityTier": "L0",
       "governedRuntimeCeiling": "L0",
       "requiresPreMutationBackupWhenExecuted": false,
@@ -207,7 +207,7 @@
       "userFacingPythonAllowed": false
     },
     {
-      "skillId": "verifying-before-handoff",
+      "skillId": "blendops-final-check",
       "capabilityTier": "L0",
       "governedRuntimeCeiling": "L2",
       "requiresPreMutationBackupWhenExecuted": true,

@@ -26,9 +26,9 @@
           "id": {
             "type": "string",
             "enum": [
-              "using-blendops",
-              "scoping-3d-briefs",
-              "defining-done-and-gates"
+              "blendops-start",
+              "blendops-brief",
+              "blendops-done-criteria"
             ]
           }
         },

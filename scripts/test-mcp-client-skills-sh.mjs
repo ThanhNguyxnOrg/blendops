@@ -1330,12 +1330,12 @@ describe('Secure Async MCP Client, Runtime Trust Verification & Governed Live Re
           proj,
           '--with-skills-dir',
           '--skill',
-          'planning-camera-and-framing,verifying-before-handoff',
+          'blendops-camera,blendops-final-check',
         ]);
         assert.equal(dryRes.ok, true);
         assert.ok(
-          dryRes.filesCreated.includes(`${expectedDir}/planning-camera-and-framing/SKILL.md`),
-          `Expected ${expectedDir}/planning-camera-and-framing/SKILL.md in dry-run plan`,
+          dryRes.filesCreated.includes(`${expectedDir}/blendops-camera/SKILL.md`),
+          `Expected ${expectedDir}/blendops-camera/SKILL.md in dry-run plan`,
         );
         assert.ok(dryRes.filesCreated.includes('skills-lock.json'));
 
@@ -1348,20 +1348,20 @@ describe('Secure Async MCP Client, Runtime Trust Verification & Governed Live Re
           proj,
           '--with-skills-dir',
           '--skill',
-          'planning-camera-and-framing,verifying-before-handoff',
+          'blendops-camera,blendops-final-check',
         ]);
         assert.equal(writeRes.ok, true);
         assert.equal(writeRes.runtimeStatus, 'Not Run');
         assert.equal(writeRes.artifactStatus, 'Not Produced');
 
-        const installedSkillDir = path.join(proj, expectedDir, 'planning-camera-and-framing');
+        const installedSkillDir = path.join(proj, expectedDir, 'blendops-camera');
         assert.ok(fs.existsSync(path.join(installedSkillDir, 'SKILL.md')));
         const lockJson = JSON.parse(fs.readFileSync(path.join(proj, 'skills-lock.json'), 'utf8'));
         assert.equal(lockJson.version, 2);
-        assert.deepEqual(Object.keys(lockJson.skills), ['planning-camera-and-framing', 'verifying-before-handoff']);
+        assert.deepEqual(Object.keys(lockJson.skills), ['blendops-camera', 'blendops-final-check']);
         assert.equal(
           computeSkillFolderLockHash(installedSkillDir),
-          lockJson.skills['planning-camera-and-framing'].computedHash,
+          lockJson.skills['blendops-camera'].computedHash,
           'Installed skill folder computedHash must match skills-lock.json v2 entry byte-for-byte',
         );
 

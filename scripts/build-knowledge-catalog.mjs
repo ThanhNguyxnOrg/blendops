@@ -333,7 +333,7 @@ export function deriveSkillWorkflowStage(skill) {
     cat === 'routing-and-governance' ||
     cat === 'brief-and-scope' ||
     cat === 'recipe-and-pack-governance' ||
-    id === 'scoping-3d-briefs'
+    id === 'blendops-brief'
   ) {
     return 'discover-and-plan';
   }
@@ -346,7 +346,7 @@ export function deriveSkillWorkflowStage(skill) {
   if (cat === 'scene-and-domain-planning' || cat === 'color-and-render-decisions') {
     return 'stage-camera-lighting-and-lookdev';
   }
-  if (cat === 'quality-and-budget-validation' || id === 'troubleshooting-blender-output') {
+  if (cat === 'quality-and-budget-validation' || id === 'blendops-fix-problems') {
     return 'inspect-and-validate';
   }
   if (cat === 'web-and-glb-handoff' || cat === 'evidence-and-reporting') {
@@ -444,14 +444,14 @@ function inspectReferenceMarkdownFile(rootDir, relPath) {
 // Cross-skill reference files that touch domain concepts shared across multiple skills and are flagged
 // for periodic human semantic review rather than claiming 100% automated semantic deduplication.
 const SEMANTIC_REVIEW_CANDIDATE_REFS = new Set([
-  'skills/planning-product-scenes/references/scene-plan-schema.md',
-  'skills/handing-off-glb-to-web/references/suspense-placement-rules.md',
-  'skills/handing-off-glb-to-web/references/usegltf-caching-rules.md',
-  'skills/verifying-before-handoff/references/evidence-record-templates.md',
-  'skills/verifying-before-handoff/references/truth-label-decision-tree.md',
-  'skills/planning-camera-and-framing/references/aspect-defaults.md',
-  'skills/planning-camera-and-framing/references/print-vs-screen-rules.md',
-  'skills/verifying-before-handoff/references/quality-rubric.md'
+  'skills/blendops-product-shot/references/scene-plan-schema.md',
+  'skills/blendops-glb-web-handoff/references/suspense-placement-rules.md',
+  'skills/blendops-glb-web-handoff/references/usegltf-caching-rules.md',
+  'skills/blendops-final-check/references/evidence-record-templates.md',
+  'skills/blendops-final-check/references/truth-label-decision-tree.md',
+  'skills/blendops-camera/references/aspect-defaults.md',
+  'skills/blendops-camera/references/print-vs-screen-rules.md',
+  'skills/blendops-final-check/references/quality-rubric.md'
 ]);
 
 /**
@@ -511,7 +511,7 @@ function classifyReferenceFile(rootDir, relPath, promotedMap, humanReviewsMap = 
   }
 
   if (
-    relPath.startsWith('skills/scoping-3d-briefs/references/')
+    relPath.startsWith('skills/blendops-brief/references/')
   ) {
     return {
       path: relPath,
@@ -546,10 +546,10 @@ function classifyReferenceFile(rootDir, relPath, promotedMap, humanReviewsMap = 
   }
 
   if (
-    relPath.startsWith('skills/using-blendops/references/') ||
-    relPath.startsWith('skills/defining-done-and-gates/references/') ||
-    relPath.startsWith('skills/setting-up-blender-runtime/references/') ||
-    relPath.startsWith('skills/verifying-before-handoff/references/')
+    relPath.startsWith('skills/blendops-start/references/') ||
+    relPath.startsWith('skills/blendops-done-criteria/references/') ||
+    relPath.startsWith('skills/blendops-connect-blender/references/') ||
+    relPath.startsWith('skills/blendops-final-check/references/')
   ) {
     return {
       path: relPath,

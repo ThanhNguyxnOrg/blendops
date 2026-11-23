@@ -44,7 +44,7 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const catalogSet = new Set(getCatalogSkillIds(root));
 const { contractsById, allContracts } = loadContractMap(root);
 
-function loadValidPilotSuite(skillId = 'using-blendops') {
+function loadValidPilotSuite(skillId = 'blendops-start') {
   const fullPath = path.join(root, 'evals', 'suites', `${skillId}.eval.json`);
   return JSON.parse(fs.readFileSync(fullPath, 'utf8'));
 }
@@ -76,7 +76,7 @@ describe('Behavioral Evaluation Schema & Deterministic Runner', () => {
   it('supports filtering by --skill and --suite and rejects unknown skill filters', () => {
     const singleSkillRes = runEvalSuites({
       rootDir: root,
-      skillFilter: 'scoping-3d-briefs',
+      skillFilter: 'blendops-brief',
       checkOnly: false,
     });
     assert.equal(singleSkillRes.ok, true);
@@ -93,29 +93,29 @@ describe('Behavioral Evaluation Schema & Deterministic Runner', () => {
   });
 
   it('rejects schema violations: extra keys, < 4 cases, unknown routing target, and Artifact status = Not Run', () => {
-    const extraKeySuite = loadValidPilotSuite('using-blendops');
+    const extraKeySuite = loadValidPilotSuite('blendops-start');
     extraKeySuite.unexpectedField = true;
-    const errs1 = validateEvalSuiteObject(extraKeySuite, 'using-blendops', catalogSet);
+    const errs1 = validateEvalSuiteObject(extraKeySuite, 'blendops-start', catalogSet);
     assert.ok(errs1.some((e) => e.includes('unexpectedField')));
 
-    const tooFewCasesSuite = loadValidPilotSuite('using-blendops');
+    const tooFewCasesSuite = loadValidPilotSuite('blendops-start');
     tooFewCasesSuite.cases = tooFewCasesSuite.cases.slice(0, 2);
-    const errs2 = validateEvalSuiteObject(tooFewCasesSuite, 'using-blendops', catalogSet);
+    const errs2 = validateEvalSuiteObject(tooFewCasesSuite, 'blendops-start', catalogSet);
     assert.ok(errs2.some((e) => e.includes('must NOT have fewer than 4 items') || e.includes('at least 4 cases')));
 
-    const badTargetSuite = loadValidPilotSuite('using-blendops');
+    const badTargetSuite = loadValidPilotSuite('blendops-start');
     badTargetSuite.cases[0].expectedRoutingTarget = 'fabricated-blender-skill';
-    const errs3 = validateEvalSuiteObject(badTargetSuite, 'using-blendops', catalogSet);
+    const errs3 = validateEvalSuiteObject(badTargetSuite, 'blendops-start', catalogSet);
     assert.ok(errs3.some((e) => e.includes('fabricated-blender-skill')));
 
-    const badTruthSuite = loadValidPilotSuite('using-blendops');
+    const badTruthSuite = loadValidPilotSuite('blendops-start');
     badTruthSuite.cases[0].truthStateExpectations.artifactStatus = 'Not Run';
-    const errs4 = validateEvalSuiteObject(badTruthSuite, 'using-blendops', catalogSet);
+    const errs4 = validateEvalSuiteObject(badTruthSuite, 'blendops-start', catalogSet);
     assert.ok(errs4.some((e) => e.includes('/cases/0/truthStateExpectations/artifactStatus') || e.includes('Truth-state law violation')));
   });
 
   it('detects behavioral and evidence-before-done regressions in evaluateSingleCase', () => {
-    const suite = loadValidPilotSuite('using-blendops');
+    const suite = loadValidPilotSuite('blendops-start');
 
     // 1. Forbidden output property regression
     const forbiddenCase = structuredClone(suite.cases.find((c) => c.id === 'blendops-help-unclear-next-step'));
@@ -125,7 +125,7 @@ describe('Behavioral Evaluation Schema & Deterministic Runner', () => {
     assert.ok(res1.failures.some((f) => f.includes('forbidden property/overclaim')));
 
     // 2. Evidence-before-done regression: claiming Verified when existingArtifactEvidence is file-only-unvalidated
-    const renderSuite = loadValidPilotSuite('verifying-before-handoff');
+    const renderSuite = loadValidPilotSuite('blendops-final-check');
     const unvalidatedCase = structuredClone(
       renderSuite.cases.find((c) => c.id === 'render-evidence-file-exists-validation-missing'),
     );
@@ -531,7 +531,7 @@ describe('Behavioral Evaluation Schema & Deterministic Runner', () => {
 
     assert.equal(currentSkillInv.summary.totalSkills, 14);
     assert.equal(Object.keys(HISTORICAL_TO_CURRENT_SKILL_ID).length, 20);
-    assert.equal(resolveCurrentSkillId('blender-asset-discovery-planner'), 'sourcing-assets');
+    assert.equal(resolveCurrentSkillId('blender-asset-discovery-planner'), 'blendops-assets');
     assert.equal(currentSkillInv.summary.contractedSkillsCount, 14);
     assert.equal(currentSkillInv.summary.skillsWithArtifactNotRunContradiction, 0);
     assert.equal(currentSkillInv.summary.skillsMissingExtendedTemplateSections, 0);
@@ -622,7 +622,7 @@ describe('Behavioral Evaluation Schema & Deterministic Runner', () => {
       );
 
       // 3. Modify a tracked skill file in tempDir without committing -> must detect dirty working tree
-      const helpSkillPath = path.join(tempDir, 'skills', 'using-blendops', 'SKILL.md');
+      const helpSkillPath = path.join(tempDir, 'skills', 'blendops-start', 'SKILL.md');
       fs.appendFileSync(helpSkillPath, '\n', 'utf8');
 
       const dirtyRun = generateCurrentAuditArtifacts(tempDir);
@@ -652,10 +652,10 @@ describe('Behavioral Evaluation Schema & Deterministic Runner', () => {
       );
 
       // Initialize clean repo with both tracked source files and tracked docs/audits/current/* outputs
-      fs.mkdirSync(path.join(tempDir, 'skills', 'using-blendops'), { recursive: true });
+      fs.mkdirSync(path.join(tempDir, 'skills', 'blendops-start'), { recursive: true });
       fs.mkdirSync(path.join(tempDir, 'docs', 'audits', 'current'), { recursive: true });
-      fs.writeFileSync(path.join(tempDir, 'skills', 'using-blendops', 'SKILL.md'), '# Help\n', 'utf8');
-      fs.writeFileSync(path.join(tempDir, 'skills', 'using-blendops', 'EVAL.md'), '# Eval\n', 'utf8');
+      fs.writeFileSync(path.join(tempDir, 'skills', 'blendops-start', 'SKILL.md'), '# Help\n', 'utf8');
+      fs.writeFileSync(path.join(tempDir, 'skills', 'blendops-start', 'EVAL.md'), '# Eval\n', 'utf8');
       fs.writeFileSync(
         path.join(tempDir, 'docs', 'audits', 'current', 'scorecard.json'),
         '{"score":70}\n',
@@ -683,7 +683,7 @@ describe('Behavioral Evaluation Schema & Deterministic Runner', () => {
 
       // Scenario 2: Modify a tracked source file -> dirty, count 1
       fs.appendFileSync(
-        path.join(tempDir, 'skills', 'using-blendops', 'SKILL.md'),
+        path.join(tempDir, 'skills', 'blendops-start', 'SKILL.md'),
         'updated line\n',
         'utf8',
       );
@@ -715,12 +715,12 @@ describe('Behavioral Evaluation Schema & Deterministic Runner', () => {
         'utf8',
       );
       fs.appendFileSync(
-        path.join(tempDir, 'skills', 'using-blendops', 'SKILL.md'),
+        path.join(tempDir, 'skills', 'blendops-start', 'SKILL.md'),
         'mod 1\n',
         'utf8',
       );
       fs.appendFileSync(
-        path.join(tempDir, 'skills', 'using-blendops', 'EVAL.md'),
+        path.join(tempDir, 'skills', 'blendops-start', 'EVAL.md'),
         'mod 2\n',
         'utf8',
       );
@@ -731,7 +731,7 @@ describe('Behavioral Evaluation Schema & Deterministic Runner', () => {
 
       // Scenario 5: Stage a source change -> counted (and staged docs/audits/current/ change still excluded)
       fs.appendFileSync(
-        path.join(tempDir, 'skills', 'using-blendops', 'SKILL.md'),
+        path.join(tempDir, 'skills', 'blendops-start', 'SKILL.md'),
         'staged mod\n',
         'utf8',
       );
@@ -742,7 +742,7 @@ describe('Behavioral Evaluation Schema & Deterministic Runner', () => {
       );
       execFileSync(
         'git',
-        ['add', 'skills/using-blendops/SKILL.md', 'docs/audits/current/scorecard.json'],
+        ['add', 'skills/blendops-start/SKILL.md', 'docs/audits/current/scorecard.json'],
         { cwd: tempDir },
       );
       const s5 = inspectWorkingTreeProvenance(tempDir);
@@ -751,14 +751,14 @@ describe('Behavioral Evaluation Schema & Deterministic Runner', () => {
       execFileSync('git', ['reset', '--hard', 'HEAD'], { cwd: tempDir });
 
       // Scenario 6: Delete a tracked source file -> counted
-      fs.unlinkSync(path.join(tempDir, 'skills', 'using-blendops', 'EVAL.md'));
+      fs.unlinkSync(path.join(tempDir, 'skills', 'blendops-start', 'EVAL.md'));
       const s6 = inspectWorkingTreeProvenance(tempDir);
       assert.equal(s6.workingTreeState, 'dirty');
       assert.equal(s6.uncommittedChangeCount, 1);
       execFileSync('git', ['checkout', '--', '.'], { cwd: tempDir });
 
       // Scenario 7: Add an untracked source file -> counted
-      const untrackedSource = path.join(tempDir, 'skills', 'using-blendops', 'NEW.md');
+      const untrackedSource = path.join(tempDir, 'skills', 'blendops-start', 'NEW.md');
       fs.writeFileSync(untrackedSource, '# New\n', 'utf8');
       const s7 = inspectWorkingTreeProvenance(tempDir);
       assert.equal(s7.workingTreeState, 'dirty');
@@ -774,7 +774,7 @@ describe('Behavioral Evaluation Schema & Deterministic Runner', () => {
       fs.unlinkSync(untrackedAudit);
 
       // Scenario 9: Filename with spaces -> parsed and counted accurately as 1 logical path
-      const spacedFile = path.join(tempDir, 'skills', 'using-blendops', 'reference with spaces.md');
+      const spacedFile = path.join(tempDir, 'skills', 'blendops-start', 'reference with spaces.md');
       fs.writeFileSync(spacedFile, '# Spaced file\n', 'utf8');
       const s9 = inspectWorkingTreeProvenance(tempDir);
       assert.equal(s9.workingTreeState, 'dirty');
@@ -1120,7 +1120,7 @@ describe('Behavioral Evaluation Schema & Deterministic Runner', () => {
     const validNotRunPacket = {
       schemaVersion: '1.0.0',
       packetId: 'packet-text-only-default',
-      skillId: 'planning-product-scenes',
+      skillId: 'blendops-product-shot',
       isStaticFixture: true,
       runtimeEvidence: {
         runtimePath: 'none',
@@ -1197,7 +1197,7 @@ describe('Behavioral Evaluation Schema & Deterministic Runner', () => {
     const validVerifiedLive = {
       schemaVersion: '1.0.0',
       packetId: 'packet-live-verified-glb',
-      skillId: 'verifying-before-handoff',
+      skillId: 'blendops-final-check',
       isStaticFixture: false,
       runtimeEvidence: {
         runtimePath: 'path-1-host-a',
@@ -1259,7 +1259,7 @@ describe('Behavioral Evaluation Schema & Deterministic Runner', () => {
     // 1. Default L0 read-only operation succeeds without backup
     const l0Read = evaluateRuntimeCapabilityInvocation(
       {
-        skillId: 'using-blendops',
+        skillId: 'blendops-start',
         requestedOperationTier: 'L0',
         mutatesScene: false,
       },
@@ -1268,10 +1268,10 @@ describe('Behavioral Evaluation Schema & Deterministic Runner', () => {
     assert.equal(l0Read.allowed, true);
     assert.equal(l0Read.effectiveGrantedTier, 'L0');
 
-    // 2. Privilege escalation denied: L0 skill (using-blendops) attempting L1 scene mutation
+    // 2. Privilege escalation denied: L0 skill (blendops-start) attempting L1 scene mutation
     const l0Escalation = evaluateRuntimeCapabilityInvocation(
       {
-        skillId: 'using-blendops',
+        skillId: 'blendops-start',
         requestedOperationTier: 'L1',
         mutatesScene: true,
       },
@@ -1283,7 +1283,7 @@ describe('Behavioral Evaluation Schema & Deterministic Runner', () => {
     // 3. L1 scene mutation WITHOUT verified backup is strictly blocked (fail-closed)
     const l1NoBackup = evaluateRuntimeCapabilityInvocation(
       {
-        skillId: 'planning-product-scenes',
+        skillId: 'blendops-product-shot',
         requestedOperationTier: 'L1',
         mutatesScene: true,
         backupRecord: {
@@ -1312,7 +1312,7 @@ describe('Behavioral Evaluation Schema & Deterministic Runner', () => {
     // 4. L1 scene mutation WITH verified backup, boundaries, and recovery protocol succeeds
     const l1Valid = evaluateRuntimeCapabilityInvocation(
       {
-        skillId: 'planning-product-scenes',
+        skillId: 'blendops-product-shot',
         requestedOperationTier: 'L1',
         mutatesScene: true,
         backupRecord: {
@@ -1338,10 +1338,10 @@ describe('Behavioral Evaluation Schema & Deterministic Runner', () => {
     assert.equal(l1Valid.allowed, true);
     assert.equal(l1Valid.mutationBlockedByBackupFailure, false);
 
-    // 5. L2 external asset import requires sourcing-assets clearance & allowlisted output directory
+    // 5. L2 external asset import requires blendops-assets clearance & allowlisted output directory
     const l2UnclearLicense = evaluateRuntimeCapabilityInvocation(
       {
-        skillId: 'handing-off-glb-to-web',
+        skillId: 'blendops-glb-web-handoff',
         requestedOperationTier: 'L2',
         mutatesScene: false,
         exportsFile: true,
@@ -1351,7 +1351,7 @@ describe('Behavioral Evaluation Schema & Deterministic Runner', () => {
         assetLicenseClearance: {
           status: 'Blocked',
           spdxOrCategory: 'Unknown-Unverified',
-          verifiedBySkill: 'sourcing-assets',
+          verifiedBySkill: 'blendops-assets',
         },
       },
       policy,
@@ -1362,7 +1362,7 @@ describe('Behavioral Evaluation Schema & Deterministic Runner', () => {
     // 6. L3 requires explicit operatorConfirmation and forbids exposing raw Python to the end user
     const l3ExposesPython = evaluateRuntimeCapabilityInvocation(
       {
-        skillId: 'setting-up-blender-runtime',
+        skillId: 'blendops-connect-blender',
         requestedOperationTier: 'L3',
         mutatesScene: false,
         exposesRawPythonToEndUser: true,

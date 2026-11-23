@@ -22,9 +22,9 @@ const DEFAULT_CAPABILITY_POLICY_PATH = path.join(
 );
 
 export const ROUTING_PARTICIPANT_IDS = Object.freeze([
-  'scoping-3d-briefs',
-  'defining-done-and-gates',
-  'using-blendops',
+  'blendops-brief',
+  'blendops-done-criteria',
+  'blendops-start',
 ]);
 const ROUTING_PARTICIPANT_SET = new Set(ROUTING_PARTICIPANT_IDS);
 

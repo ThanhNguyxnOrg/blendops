@@ -1,0 +1,1472 @@
+{
+  "schemaVersion": "2.0.0",
+  "skillId": "blendops-brief",
+  "category": "routing-and-governance",
+  "isContractedSkill": true,
+  "isRoutingParticipant": true,
+  "contractPath": "skills/blendops-brief/contract.json",
+  "skillMarkdownPath": "skills/blendops-brief/SKILL.md",
+  "evalMarkdownPath": "skills/blendops-brief/EVAL.md",
+  "sourceEvalTier": "routing_contract_pilot",
+  "evaluationStatus": {
+    "staticValidation": "Passed",
+    "deterministicFixture": "Passed",
+    "contractRouting": "Passed",
+    "contractHandoff": "Not Applicable",
+    "liveModel": "Not Run",
+    "blenderRuntime": "Not Run"
+  },
+  "cases": [
+    {
+      "id": "recipe-fit-strong-product-hero-unlocked-brief",
+      "skillId": "blendops-brief",
+      "scenario": "Clear single-product hero goal with unlocked brief routes to blendops-brief",
+      "category": "normal",
+      "inputPrompt": "I want a studio hero shot and web GLB viewer spin for a single wireless headphone product. Does product-hero-v0 fit?",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Scores product-hero-v0 as a strong fit for single-subject hero still + web GLB",
+        "Hands off to blendops-brief because the 8-slot brief is not locked yet"
+      ],
+      "requiredOutputProperties": [
+        "product-hero-v0",
+        "strong_fit",
+        "blendops-brief"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Produced",
+        "Artifact: Not Run",
+        "skipping brief"
+      ],
+      "expectedRoutingTarget": "blendops-brief",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Fit verdict table",
+        "Progression handoff to blendops-brief"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "fit.verdict": "strong_fit",
+          "brief.locked": false
+        },
+        "simulatedOutput": {
+          "mode": "Text-only recipe fit scoring",
+          "recommendedNextAction": "Lock the 8-slot brief in blendops-brief for pack product-hero-v0 (strong_fit).",
+          "targetHandoff": "blendops-brief",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Scored product-hero-v0 as strong_fit and handed off to blendops-brief.",
+          "warnings": [],
+          "evidenceCitations": [
+            "packs/product-hero-v0/PACK.md",
+            "skills/blendops-brief/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "recipe-fit-locked-brief-routes-to-pack-prerequisite",
+      "skillId": "blendops-brief",
+      "scenario": "Strong fit with an already locked 8-slot brief advances to blendops-done-criteria",
+      "category": "structured_skip",
+      "inputPrompt": "We already locked our 8-slot brief for a smartwatch hero render and confirmed product-hero-v0 fits. What is the next gate?",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Recognizes brief.locked is true and fit.verdict is strong_fit",
+        "Advances directly to blendops-done-criteria (Rank 3)"
+      ],
+      "requiredOutputProperties": [
+        "blendops-done-criteria",
+        "strong_fit",
+        "Runtime: Not Run"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "ready to render immediately"
+      ],
+      "expectedRoutingTarget": "blendops-done-criteria",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_routing",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Progression handoff to blendops-done-criteria"
+      ],
+      "deterministicFixture": {
+        "routingState": {
+          "goalClarity": "clear",
+          "recipeSelected": false,
+          "preflightPassed": false,
+          "hasStageOrArtifactInventory": false
+        },
+        "handoffContext": {
+          "fit.verdict": "strong_fit",
+          "brief.locked": true
+        },
+        "simulatedOutput": {
+          "mode": "Text-only recipe fit scoring",
+          "recommendedNextAction": "Run blendops-done-criteria to verify preflight readiness for product-hero-v0 (strong_fit).",
+          "targetHandoff": "blendops-done-criteria",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Brief is already locked; advancing from blendops-brief to blendops-done-criteria.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/blendops-brief/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "recipe-fit-multi-deliverable-decomposer",
+      "skillId": "blendops-brief",
+      "scenario": "Multi-deliverable prompt spanning incompatible recipes routes to blendops-brief",
+      "category": "scope_creep",
+      "inputPrompt": "I need a 12-item e-commerce product grid, a character portrait, AND a full architectural dining room tour all in one pack.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Flags multi-deliverable scope across incompatible domain recipes",
+        "Routes to blendops-brief before locking a single brief"
+      ],
+      "requiredOutputProperties": [
+        "blendops-brief",
+        "multi-deliverable",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "product-hero-v0 covers all three without changes",
+        "Artifact: Produced"
+      ],
+      "expectedRoutingTarget": "blendops-brief",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Conditional handoff to blendops-brief"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "fit.multiDeliverableDetected": true
+        },
+        "simulatedOutput": {
+          "mode": "Text-only recipe fit scoring",
+          "recommendedNextAction": "Use blendops-brief to split the multi-deliverable scope into ordered sub-recipes.",
+          "targetHandoff": "blendops-brief",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Detected multi-deliverable scope across grid, character, and interior domains; routed to blendops-brief.",
+          "warnings": [
+            "Do not force a single product-hero pack onto a multi-domain request."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-brief/EVAL.md",
+            "skills/blendops-brief/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "recipe-fit-interior-dining-room-domain",
+      "skillId": "blendops-brief",
+      "scenario": "Interior dining room hero with locked brief routes to blendops-scene-plan",
+      "category": "normal",
+      "inputPrompt": "We have a locked brief for a cinematic interior dining room hero for a furniture brand website. Which domain planner fits?",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Recognizes interior architectural domain over single-object product-hero-v0",
+        "Routes to blendops-scene-plan when brief is locked"
+      ],
+      "requiredOutputProperties": [
+        "blendops-scene-plan",
+        "interior caveat",
+        "Runtime: Not Run"
+      ],
+      "forbiddenOutputProperties": [
+        "use product-hero-v0 with no interior caveat",
+        "Artifact: Verified"
+      ],
+      "expectedRoutingTarget": "blendops-scene-plan",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_routing",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Alternative handoff to blendops-scene-plan"
+      ],
+      "deterministicFixture": {
+        "routingState": {
+          "goalClarity": "clear",
+          "recipeSelected": false,
+          "preflightPassed": false,
+          "hasStageOrArtifactInventory": false
+        },
+        "handoffContext": {
+          "brief.locked": true,
+          "recipe.domain": "interior_archviz"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only recipe fit scoring",
+          "recommendedNextAction": "Route to blendops-scene-plan with interior caveat for room-scale lighting and camera blocking.",
+          "targetHandoff": "blendops-scene-plan",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Matched room-scale dining room brief to blendops-scene-plan.",
+          "warnings": [
+            "product-hero-v0 is only partial fit unless scoped to a single hero furniture piece."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-brief/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "recipe-fit-vague-idea-upstream-brainstorming",
+      "skillId": "blendops-brief",
+      "scenario": "Vague creative idea without delivery shape delegates upstream to blendops-brief",
+      "category": "ambiguous",
+      "inputPrompt": "I want something futuristic and 3D for our brand launch next month, maybe neon, not sure what format.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Detects that delivery shape and subject are still diverging",
+        "Routes upstream to blendops-brief"
+      ],
+      "requiredOutputProperties": [
+        "blendops-brief",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Produced",
+        "strong_fit for product-hero-v0"
+      ],
+      "expectedRoutingTarget": "blendops-brief",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Upstream reference handoff to blendops-brief"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "goal.clarity": "ambiguous_or_mixed"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only recipe fit scoring",
+          "recommendedNextAction": "Route upstream to blendops-brief to explore 2-3 scoping options before scoring recipe fit.",
+          "targetHandoff": "blendops-brief",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Delegated unstructured creative prompt to blendops-brief.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/blendops-brief/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "brief-writer-fully-specified-intent",
+      "skillId": "blendops-brief",
+      "scenario": "Confirmed intent covers all 8 brief slots",
+      "category": "normal",
+      "inputPrompt": "Confirmed intent: ceramic pour-over dripper, warm minimalist mood, 2K hero PNG + <=5MB web GLB, marketing team audience, design lead owner, observable framing check.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Writes all 8 slots in plain language, lists deferred decisions, echoes brief for confirmation",
+        "Hands off to blendops-product-shot"
+      ],
+      "requiredOutputProperties": [
+        "8-slot brief",
+        "decisions deferred",
+        "blendops-product-shot"
+      ],
+      "forbiddenOutputProperties": [
+        "subsurf scattering",
+        "Artifact: Produced"
+      ],
+      "expectedRoutingTarget": "blendops-product-shot",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "All 8 slots populated + deferred decisions list + echo confirmation"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only 8-slot brief authoring",
+          "recommendedNextAction": "Echo 8-slot brief for confirmation and hand off to blendops-product-shot.",
+          "targetHandoff": "blendops-product-shot",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Authored complete 8-slot brief in plain language with explicit decisions deferred and echoed to user.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/blendops-brief/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "brief-writer-half-specified-intent",
+      "skillId": "blendops-brief",
+      "scenario": "5 of 8 slots present; batches 3 missing-slot questions",
+      "category": "ambiguous",
+      "inputPrompt": "We want a hero render of a mechanical keyboard with neon keycaps for our launch page, but constraints, acceptance criteria, and owner are not set yet.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Marks missing slots explicitly as Unknown and batches 3 targeted questions in one turn",
+        "Echoes draft 8-slot brief before handing off to blendops-assets"
+      ],
+      "requiredOutputProperties": [
+        "Unknown",
+        "batched 3 missing-slot questions",
+        "blendops-assets"
+      ],
+      "forbiddenOutputProperties": [
+        "invented owner",
+        "Artifact: Verified"
+      ],
+      "expectedRoutingTarget": "blendops-assets",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicit Unknown markers + batched missing-slot questions"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only 8-slot brief authoring",
+          "recommendedNextAction": "Resolve the batched 3 missing-slot questions (marked Unknown) and advance to blendops-assets.",
+          "targetHandoff": "blendops-assets",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Wrote draft 8-slot brief with Unknown slots explicitly flagged and batched 3 missing-slot questions.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/blendops-brief/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "brief-writer-four-plus-slots-missing",
+      "skillId": "blendops-brief",
+      "scenario": "4+ slots missing routes back to blendops-brief",
+      "category": "ambiguous",
+      "inputPrompt": "Write a 3D brief for something cool in space.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Refuses to fabricate 4+ missing brief slots",
+        "Routes upstream to blendops-brief"
+      ],
+      "requiredOutputProperties": [
+        "blendops-brief",
+        "4+ slots missing",
+        "no brief written yet"
+      ],
+      "forbiddenOutputProperties": [
+        "Brief complete and locked",
+        "Artifact: Produced"
+      ],
+      "expectedRoutingTarget": "blendops-brief",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Explicit re-route message to blendops-brief"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only 8-slot brief authoring",
+          "recommendedNextAction": "Route back to blendops-brief because 4+ slots missing (no brief written yet).",
+          "targetHandoff": "blendops-brief",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted brief generation with 4+ slots missing; no brief written yet; re-routed to blendops-brief.",
+          "warnings": [
+            "Never invent missing brief slots without user input."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-brief/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "brief-writer-conflicting-deliverable-constraint",
+      "skillId": "blendops-brief",
+      "scenario": "Conflicting deliverable and constraint (\"mobile web GLB AND 50MB uncompressed budget\")",
+      "category": "blocked_or_adversarial",
+      "inputPrompt": "Write a brief for a mobile web GLB hero that must load instantly on 3G but also allows a 50MB uncompressed poly/texture budget.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Flags the conflict in Slot 4 (Constraints) and prompts user to resolve before locking",
+        "Routes to blendops-glb-budget to reconcile mobile budget targets"
+      ],
+      "requiredOutputProperties": [
+        "conflict flag",
+        "Slot 4",
+        "blendops-glb-budget"
+      ],
+      "forbiddenOutputProperties": [
+        "no conflict found",
+        "Artifact: Verified"
+      ],
+      "expectedRoutingTarget": "blendops-glb-budget",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Slot 4 conflict flag + resolution prompt"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only 8-slot brief authoring",
+          "recommendedNextAction": "Resolve the Slot 4 conflict flag via blendops-glb-budget before locking the brief.",
+          "targetHandoff": "blendops-glb-budget",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Raised conflict flag in Slot 4 between instant mobile web GLB delivery and 50MB budget.",
+          "warnings": [
+            "Brief remains unlocked until conflicting constraints are resolved."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-brief/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "brief-writer-mixed-audience-dual-sections",
+      "skillId": "blendops-brief",
+      "scenario": "Mixed audience (non-Blender marketing team + technical artist)",
+      "category": "normal",
+      "inputPrompt": "Our audience includes both the non-Blender marketing director and the WebGL technical artist for a sneaker product hero.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Includes both plain-language stakeholder section and technical handoff notes while keeping primary slots jargon-free",
+        "Hands off to blendops-product-shot"
+      ],
+      "requiredOutputProperties": [
+        "plain-language section",
+        "technical section",
+        "blendops-product-shot"
+      ],
+      "forbiddenOutputProperties": [
+        "raw bpy script",
+        "Artifact: Produced"
+      ],
+      "expectedRoutingTarget": "blendops-product-shot",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P2",
+      "evidenceRequirements": [
+        "Dual audience sections with plain-language primary summary"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only 8-slot brief authoring",
+          "recommendedNextAction": "Confirm dual-section brief (plain-language section + technical section) and hand off to blendops-product-shot.",
+          "targetHandoff": "blendops-product-shot",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Generated 8-slot brief containing both plain-language section for marketing and technical section for WebGL integration.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/blendops-brief/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "brief-writer-user-edits-mood-re-echo",
+      "skillId": "blendops-brief",
+      "scenario": "User edits mood after initial brief echo",
+      "category": "normal",
+      "inputPrompt": "Change Slot 2 mood from warm daylight studio to high-contrast dramatic rim lighting and re-echo the brief.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Updates Slot 2 in a versioned brief, re-echoes for second confirmation",
+        "Hands off to blendops-product-shot after confirmation"
+      ],
+      "requiredOutputProperties": [
+        "versioned brief",
+        "second confirmation",
+        "blendops-product-shot"
+      ],
+      "forbiddenOutputProperties": [
+        "skipped re-echo",
+        "Artifact: Produced"
+      ],
+      "expectedRoutingTarget": "blendops-product-shot",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P2",
+      "evidenceRequirements": [
+        "Versioned brief update + second confirmation prompt"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only 8-slot brief authoring",
+          "recommendedNextAction": "Await second confirmation on the versioned brief before advancing to blendops-product-shot.",
+          "targetHandoff": "blendops-product-shot",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Updated Slot 2 mood in versioned brief and echoed for second confirmation.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/blendops-brief/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "brief-writer-text-only-iteration-loop",
+      "skillId": "blendops-brief",
+      "scenario": "User wants text-only plan first and runtime later",
+      "category": "structured_skip",
+      "inputPrompt": "We want a text-only scene plan first with zero Blender execution right now; runtime will happen next week.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Sets Slot 3 deliverables to text-only plan and Slot 5 evidence expectations to Runtime: Not Run / Artifact: Not Produced",
+        "Hands off to blendops-done-criteria"
+      ],
+      "requiredOutputProperties": [
+        "text-only plan",
+        "Runtime: Not Run",
+        "blendops-done-criteria"
+      ],
+      "forbiddenOutputProperties": [
+        "runtime ready",
+        "Artifact: Produced"
+      ],
+      "expectedRoutingTarget": "blendops-done-criteria",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicit text-only deliverable and Not Run / Not Produced expectations in Slot 5"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only 8-slot brief authoring",
+          "recommendedNextAction": "Hand off locked text-only plan brief to blendops-done-criteria.",
+          "targetHandoff": "blendops-done-criteria",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Locked text-only plan brief with Slot 5 explicitly recording Runtime: Not Run and Artifact: Not Produced.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/blendops-brief/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "intent-to-3d-brief-writer-contract-handoff-primary",
+      "skillId": "blendops-brief",
+      "scenario": "Contract handoff predicate matches blendops-done-criteria (Consuming skills (blendops-done-criteria))",
+      "category": "normal",
+      "inputPrompt": "Evaluate blendops-brief contract handoff when workflow context satisfies {\"brief.locked\":true,\"stage.current\":\"acceptance_criteria\"} and verify progression to blendops-done-criteria.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates contract.json handoff predicates for blendops-brief against the workflow context",
+        "Selects blendops-done-criteria while preserving Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "blendops-done-criteria",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Not Run",
+        "Artifact: Verified",
+        "Blender executed"
+      ],
+      "expectedRoutingTarget": "blendops-done-criteria",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_routing",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Contract handoff predicate match for blendops-done-criteria in skills/blendops-brief/contract.json",
+        "Truth-state conservation (Runtime: Not Run, Artifact: Not Produced)"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "brief.locked": true,
+          "stage.current": "acceptance_criteria"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only blendops-brief contract handoff evaluation",
+          "recommendedNextAction": "Hand off from blendops-brief to blendops-done-criteria (Consuming skills (blendops-done-criteria)).",
+          "targetHandoff": "blendops-done-criteria",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Matched contract handoff predicate in blendops-brief and routed to blendops-done-criteria.",
+          "warnings": [
+            "Specialist contract handoff evaluated without global routingPrecedence escalation."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-brief/contract.json",
+            "skills/blendops-brief/SKILL.md",
+            "skills/blendops-brief/EVAL.md",
+            "skills/blendops-brief/references/acceptance-criteria-patterns.md"
+          ]
+        },
+        "routingState": {
+          "goalClarity": "clear",
+          "recipeSelected": false,
+          "preflightPassed": false,
+          "hasStageOrArtifactInventory": false
+        }
+      }
+    },
+    {
+      "id": "intent-to-3d-brief-writer-contract-handoff-unmatched-none",
+      "skillId": "blendops-brief",
+      "scenario": "Contract handoff predicate returns none when no downstream handoff condition matches in blendops-brief",
+      "category": "evidence_boundary",
+      "inputPrompt": "Check blendops-brief contract handoff behavior when context is {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and no automatic handoff predicate is satisfied.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates all 7 contract handoffs in blendops-brief with fail-closed predicate semantics",
+        "Returns targetHandoff none when no handoff predicate matches and preserves conservative truth states"
+      ],
+      "requiredOutputProperties": [
+        "none",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Not Run",
+        "Artifact: Verified",
+        "invented handoff target"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_routing",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Zero matching handoff predicates in skills/blendops-brief/contract.json for non-matching context"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Text-only blendops-brief contract boundary check",
+          "recommendedNextAction": "Remain at blendops-brief (targetHandoff: none) until a declared downstream handoff precondition is satisfied.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Verified fail-closed specialist handoff evaluation for blendops-brief when no contract predicate matches (secondary candidate blendops-brief remained inactive).",
+          "warnings": [
+            "Never fabricate an undeclared handoff when no contract predicate matches."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-brief/contract.json",
+            "skills/blendops-brief/EVAL.md"
+          ]
+        },
+        "routingState": {
+          "goalClarity": "clear",
+          "recipeSelected": false,
+          "preflightPassed": false,
+          "hasStageOrArtifactInventory": false
+        }
+      }
+    },
+    {
+      "id": "brainstorming-vague-creative-request",
+      "skillId": "blendops-brief",
+      "scenario": "Vague creative request (\"Make me a cool sneaker render\")",
+      "category": "ambiguous",
+      "inputPrompt": "Make me a cool sneaker render for my new shoe line.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Quotes original request verbatim, batches 3-5 clarifying questions, and proposes 3 distinct scopings",
+        "Produces plain-language confirmed intent summary and hands off to blendops-brief"
+      ],
+      "requiredOutputProperties": [
+        "Make me a cool sneaker render",
+        "clarifying questions",
+        "alternative scopings",
+        "blendops-brief"
+      ],
+      "forbiddenOutputProperties": [
+        "subsurf modifier",
+        "BSDF shader",
+        "Artifact: Produced"
+      ],
+      "expectedRoutingTarget": "blendops-brief",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Quoted original request, 3-5 batched questions, 2-3 scopings, plain-language intent summary"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only Socratic intent exploration",
+          "recommendedNextAction": "Confirm preferred scoping option and hand off to blendops-brief.",
+          "targetHandoff": "blendops-brief",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Quoted \"Make me a cool sneaker render\", asked 4 batched clarifying questions, and proposed 3 alternative scopings in plain language.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/blendops-brief/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "brainstorming-half-specified-request",
+      "skillId": "blendops-brief",
+      "scenario": "Half-specified cyberpunk shoe web hero request",
+      "category": "normal",
+      "inputPrompt": "I need a cyberpunk shoe hero for web, but I do not know what constraints or deliverables to pick.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Asks 1-3 targeted questions on audience, web performance budget, and evidence expectations",
+        "Proposes 2 distinct scopings and hands off to blendops-brief"
+      ],
+      "requiredOutputProperties": [
+        "cyberpunk shoe hero for web",
+        "targeted questions",
+        "blendops-brief"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "installed the Blender connector"
+      ],
+      "expectedRoutingTarget": "blendops-brief",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Targeted questions + 2 scopings + plain-language summary"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only Socratic intent exploration",
+          "recommendedNextAction": "Hand off confirmed cyberpunk shoe web hero intent to blendops-brief.",
+          "targetHandoff": "blendops-brief",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Quoted \"cyberpunk shoe hero for web\", asked 3 targeted questions on web budget and audience, and proposed 2 scopings.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/blendops-brief/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "brainstorming-user-refuses-clarification",
+      "skillId": "blendops-brief",
+      "scenario": "User refuses clarification (\"Just do whatever, I trust you\")",
+      "category": "blocked_or_adversarial",
+      "inputPrompt": "Just do whatever for the 3D bottle render, I trust you, do not ask me questions.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Records explicit assumption block listing assumed defaults and low-confidence label",
+        "Still offers 2 scoping options and hands off to blendops-brief"
+      ],
+      "requiredOutputProperties": [
+        "explicit assumption block",
+        "low-confidence",
+        "blendops-brief"
+      ],
+      "forbiddenOutputProperties": [
+        "high-confidence verified brief",
+        "Artifact: Produced"
+      ],
+      "expectedRoutingTarget": "blendops-brief",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicit assumption list + low-confidence label"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only Socratic intent exploration",
+          "recommendedNextAction": "Pass explicit assumption block with low-confidence label to blendops-brief.",
+          "targetHandoff": "blendops-brief",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Recorded explicit assumption block with low-confidence label and 2 scoping options after user declined clarification.",
+          "warnings": [
+            "Assumptions must be confirmed in blendops-brief before scene planning."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-brief/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "brainstorming-continuous-scope-expansion",
+      "skillId": "blendops-brief",
+      "scenario": "User keeps expanding scope mid-brainstorm (\"and a music video version too\")",
+      "category": "scope_creep",
+      "inputPrompt": "Add the sneaker still... and also an interactive configurator... and a 3-minute music video version too.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Pauses expansion and prompts user to lock current scope or delegate to blendops-done-criteria",
+        "Summarizes current baseline scope clearly"
+      ],
+      "requiredOutputProperties": [
+        "lock current scope",
+        "blendops-done-criteria",
+        "Runtime: Not Run"
+      ],
+      "forbiddenOutputProperties": [
+        "music video rendered",
+        "Artifact: Produced"
+      ],
+      "expectedRoutingTarget": "blendops-done-criteria",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Scope-lock prompt + summary of current baseline scope"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only Socratic intent exploration",
+          "recommendedNextAction": "Ask user to lock current scope and route scope expansion to blendops-done-criteria.",
+          "targetHandoff": "blendops-done-criteria",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Issued scope-lock prompt (\"lock current scope or keep expanding?\") and routed multi-deliverable creep to blendops-done-criteria.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/blendops-brief/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "brainstorming-already-structured-brief-skip",
+      "skillId": "blendops-brief",
+      "scenario": "User already provides subject, mood, deliverable, audience, and evidence expectations",
+      "category": "structured_skip",
+      "inputPrompt": "Subject: matte black espresso grinder. Mood: warm studio editorial. Deliverable: 4K PNG + <=8MB GLB. Audience: web buyers. Owner: design lead.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Explicitly states skipping brainstorming because brief inputs are already structured",
+        "Routes directly to blendops-brief"
+      ],
+      "requiredOutputProperties": [
+        "skipping brainstorming because brief is complete",
+        "blendops-brief",
+        "Runtime: Not Run"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Produced",
+        "5 mandatory clarifying questions"
+      ],
+      "expectedRoutingTarget": "blendops-brief",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicit structured-skip message + route to blendops-brief"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Text-only Socratic intent exploration",
+          "recommendedNextAction": "Route directly to blendops-brief (skipping brainstorming because brief is complete).",
+          "targetHandoff": "blendops-brief",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Detected complete brief inputs; skipping brainstorming because brief is complete and routing to blendops-brief.",
+          "warnings": [],
+          "evidenceCitations": [
+            "skills/blendops-brief/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "blender-brainstorming-contract-handoff-primary",
+      "skillId": "blendops-brief",
+      "scenario": "Contract handoff predicate matches blendops-brief (Lock the confirmed brief downstream)",
+      "category": "normal",
+      "inputPrompt": "Evaluate blendops-brief contract handoff when workflow context satisfies {\"goal.clarity\":\"clear\",\"brief.locked\":false} and verify progression to blendops-brief.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates contract.json handoff predicates for blendops-brief against the workflow context",
+        "Selects blendops-brief while preserving Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "blendops-brief",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Not Run",
+        "Artifact: Verified",
+        "Blender executed"
+      ],
+      "expectedRoutingTarget": "blendops-brief",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Contract handoff predicate match for blendops-brief in skills/blendops-brief/contract.json",
+        "Truth-state conservation (Runtime: Not Run, Artifact: Not Produced)"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "goal.clarity": "clear",
+          "brief.locked": false
+        },
+        "simulatedOutput": {
+          "mode": "Text-only blendops-brief contract handoff evaluation",
+          "recommendedNextAction": "Hand off from blendops-brief to blendops-brief (Lock the confirmed brief downstream).",
+          "targetHandoff": "blendops-brief",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Matched contract handoff predicate in blendops-brief and routed to blendops-brief.",
+          "warnings": [
+            "Specialist contract handoff evaluated without global routingPrecedence escalation."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-brief/contract.json",
+            "skills/blendops-brief/SKILL.md",
+            "skills/blendops-brief/EVAL.md",
+            "skills/blendops-brief/references/alternative-scoping-templates.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "blender-brainstorming-contract-handoff-unmatched-none",
+      "skillId": "blendops-brief",
+      "scenario": "Contract handoff predicate returns none when no downstream handoff condition matches in blendops-brief",
+      "category": "evidence_boundary",
+      "inputPrompt": "Check blendops-brief contract handoff behavior when context is {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and no automatic handoff predicate is satisfied.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates all 3 contract handoffs in blendops-brief with fail-closed predicate semantics",
+        "Returns targetHandoff none when no handoff predicate matches and preserves conservative truth states"
+      ],
+      "requiredOutputProperties": [
+        "none",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Not Run",
+        "Artifact: Verified",
+        "invented handoff target"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_routing",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Zero matching handoff predicates in skills/blendops-brief/contract.json for non-matching context"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Text-only blendops-brief contract boundary check",
+          "recommendedNextAction": "Remain at blendops-brief (targetHandoff: none) until a declared downstream handoff precondition is satisfied.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Verified fail-closed specialist handoff evaluation for blendops-brief when no contract predicate matches (secondary candidate blendops-connect-blender remained inactive).",
+          "warnings": [
+            "Never fabricate an undeclared handoff when no contract predicate matches."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-brief/contract.json",
+            "skills/blendops-brief/EVAL.md"
+          ]
+        },
+        "routingState": {
+          "goalClarity": "clear",
+          "recipeSelected": false,
+          "preflightPassed": false,
+          "hasStageOrArtifactInventory": false
+        }
+      }
+    },
+    {
+      "id": "blender-recipe-decomposer-normal-in-scope-handoff",
+      "skillId": "blendops-brief",
+      "scenario": "Normal in-scope execution of blendops-brief (multi-deliverable-recipe-splitter) with contract handoff to blendops-brief",
+      "category": "normal",
+      "inputPrompt": "Our stakeholder wants a single hero watch render, a 2x2 colorway catalog grid, and a mobile AR GLB export from one mega-request. Use blendops-brief to split this into ordered single-recipe milestones.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Primary inputs (multi_deliverable_request) provided in text-only planning/audit mode."
+      },
+      "expectedBehavior": [
+        "Produces ordered_sub_workflow_tracks, shared_asset_and_brief_dependencies, first_track_next_skill for role multi-deliverable-recipe-splitter",
+        "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
+        "Evaluates contract handoff predicate and hands off to blendops-brief (Full brief authoring for each split recipe)"
+      ],
+      "requiredOutputProperties": [
+        "sub-recipe",
+        "dependency order",
+        "single-deliverable milestone",
+        "blendops-brief",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "merged into one single step",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "blendops-brief",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Outputs ordered_sub_workflow_tracks, shared_asset_and_brief_dependencies, first_track_next_skill conforming to skills/blendops-brief/SKILL.md",
+        "Matches contract handoff predicate to blendops-brief in skills/blendops-brief/contract.json"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "goal.clarity": "clear",
+          "brief.locked": false
+        },
+        "simulatedOutput": {
+          "mode": "Text-only multi-deliverable-recipe-splitter (blendops-brief)",
+          "recommendedNextAction": "Complete ordered_sub_workflow_tracks and hand off to blendops-brief (Full brief authoring for each split recipe).",
+          "targetHandoff": "blendops-brief",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Decomposed multi-deliverable mega-request into 3 ordered single-recipe sub-plans with shared asset dependencies and independent acceptance gates. Delivered sub-recipe, dependency order, single-deliverable milestone and routed to blendops-brief.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-brief/SKILL.md",
+            "skills/blendops-brief/EVAL.md",
+            "skills/blendops-brief/contract.json",
+            "skills/blendops-brief/references/dependency-patterns.md",
+            "skills/blendops-brief/references/recipe-grouping-rules.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "blender-recipe-decomposer-secondary-contract-handoff",
+      "skillId": "blendops-brief",
+      "scenario": "Secondary progression contract handoff from blendops-brief to blendops-done-criteria",
+      "category": "structured_skip",
+      "inputPrompt": "While applying blendops-brief, the workflow context is {\"brief.locked\":true,\"stage.current\":\"stop_condition\"} (Pinning formal done conditions per recipe). Determine the contract-governed handoff target.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates the progression handoff predicate in skills/blendops-brief/contract.json",
+        "Routes to blendops-done-criteria (Pinning formal done conditions per recipe) without claiming runtime execution"
+      ],
+      "requiredOutputProperties": [
+        "blendops-done-criteria",
+        "progression",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "merged into one single step",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "blendops-done-criteria",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_routing",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Contract progression handoff predicate match to blendops-done-criteria"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "brief.locked": true,
+          "stage.current": "stop_condition"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only blendops-brief (progression handoff)",
+          "recommendedNextAction": "Follow progression handoff to blendops-done-criteria (Pinning formal done conditions per recipe).",
+          "targetHandoff": "blendops-done-criteria",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Triggered progression handoff from blendops-brief to blendops-done-criteria under context {\"brief.locked\":true,\"stage.current\":\"stop_condition\"}.",
+          "warnings": [
+            "Contract-governed progression handoff."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-brief/contract.json",
+            "skills/blendops-brief/SKILL.md",
+            "skills/blendops-brief/references/dependency-patterns.md"
+          ]
+        },
+        "routingState": {
+          "goalClarity": "clear",
+          "recipeSelected": false,
+          "preflightPassed": false,
+          "hasStageOrArtifactInventory": false
+        }
+      }
+    },
+    {
+      "id": "blender-recipe-decomposer-unmatched-handoff-and-evidence-boundary",
+      "skillId": "blendops-brief",
+      "scenario": "Unmatched contract handoff context returns none and blocks upgrading unvalidated file to Verified in blendops-brief",
+      "category": "evidence_boundary",
+      "inputPrompt": "An operator provides an unvalidated file on disk during blendops-brief with context {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and asks to mark Artifact: Verified and auto-advance.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "file-only-unvalidated",
+        "notes": "A file exists on disk but validation checks have not been recorded."
+      },
+      "expectedBehavior": [
+        "Refuses to upgrade Artifact status to Verified when existingArtifactEvidence is file-only-unvalidated (caps at Produced)",
+        "Evaluates contract handoffs for blendops-brief and returns targetHandoff none because no handoff predicate matches"
+      ],
+      "requiredOutputProperties": [
+        "Artifact: Produced",
+        "Runtime: Not Run",
+        "validation",
+        "none"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "validation not needed"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "contract_routing",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Downgrade unvalidated Verified claim to Produced per laws/evidence-before-done.md",
+        "Verify 0 handoffs match in skills/blendops-brief/contract.json for {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true}"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Artifact-claim boundary check (blendops-brief)",
+          "recommendedNextAction": "Keep Artifact status at Produced (never Verified without validation evidence) and hold at targetHandoff none until a downstream precondition is met.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Produced",
+          "summary": "Capped unvalidated artifact claim at Artifact: Produced and verified zero matching contract handoffs (none) for blendops-brief.",
+          "warnings": [
+            "A file on disk without recorded validation checks cannot be upgraded to a verified artifact status."
+          ],
+          "evidenceCitations": [
+            "laws/evidence-before-done.md",
+            "skills/blendops-brief/contract.json",
+            "skills/blendops-brief/EVAL.md"
+          ]
+        },
+        "routingState": {
+          "goalClarity": "clear",
+          "recipeSelected": false,
+          "preflightPassed": false,
+          "hasStageOrArtifactInventory": false
+        }
+      }
+    },
+    {
+      "id": "blender-recipe-decomposer-ambiguous-missing-required-inputs",
+      "skillId": "blendops-brief",
+      "scenario": "Missing required input (multi_deliverable_request) for blendops-brief halts fabricated output and requests clarification",
+      "category": "ambiguous",
+      "inputPrompt": "Decompose our project into sub-recipes even though I have not listed what deliverables, platforms, or visual outputs we need.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Required input 'multi_deliverable_request' is missing or underspecified."
+      },
+      "expectedBehavior": [
+        "Identifies missing requested deliverable list and target consumer channels required by blendops-brief (multi_deliverable_request)",
+        "Refuses to fabricate domain parameters and keeps Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "multi_deliverable_request",
+        "requested deliverable list and target consumer channels",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "merged into one single step",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "guessed parameters silently"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicitly names missing required input 'multi_deliverable_request' (requested deliverable list and target consumer channels)",
+        "Conservative Runtime: Not Run and Artifact: Not Produced truth states"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Clarification gate (blendops-brief)",
+          "recommendedNextAction": "Provide the missing requested deliverable list and target consumer channels (multi_deliverable_request) before blendops-brief locks ordered_sub_workflow_tracks.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted blendops-brief due to missing required input 'multi_deliverable_request' (requested deliverable list and target consumer channels); no values were fabricated.",
+          "warnings": [
+            "Do not invent requested deliverable list and target consumer channels when 'multi_deliverable_request' is omitted."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-brief/SKILL.md",
+            "skills/blendops-brief/EVAL.md",
+            "skills/blendops-brief/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "blender-recipe-decomposer-out-of-scope-exclusion-delegation",
+      "skillId": "blendops-brief",
+      "scenario": "Out-of-scope request (single deliverable that is already right-sized (hand off directly to blendops-brief)) is excluded from blendops-brief and delegated to blendops-brief",
+      "category": "scope_creep",
+      "inputPrompt": "Instead of break over-scoped blender intent into 2-5 cohesive recipes with brief seeds, stop conditions, order, dependencies, shared assets, and handoffs., handle this request inside blendops-brief: single deliverable that is already right-sized (hand off directly to blendops-brief).",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Enforces the declared exclusion boundary in skills/blendops-brief/contract.json when single deliverable that is already right-sized (hand off directly to blendops-brief)",
+        "Delegates to blendops-brief (hand off directly to blendops-brief) with Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "blendops-brief",
+        "out of scope",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "merged into one single step",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "handled inside blendops-brief anyway"
+      ],
+      "expectedRoutingTarget": "blendops-brief",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Exclusion delegation to blendops-brief per skills/blendops-brief/contract.json"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Out-of-scope exclusion gate (blendops-brief)",
+          "recommendedNextAction": "Request is out of scope for blendops-brief (single deliverable that is already right-sized (hand off directly to blendops-brief)); delegate to blendops-brief.",
+          "targetHandoff": "blendops-brief",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Enforced blendops-brief exclusion boundary (hand off directly to blendops-brief) and delegated to blendops-brief.",
+          "warnings": [
+            "blendops-brief is scoped to multi-deliverable-recipe-splitter and does not absorb blendops-brief responsibilities."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-brief/contract.json",
+            "skills/blendops-brief/SKILL.md",
+            "skills/blendops-brief/SKILL.md"
+          ]
+        }
+      }
+    }
+  ]
+}

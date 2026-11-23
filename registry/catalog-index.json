@@ -171,7 +171,7 @@
     ]
   },
   "by_skill_id": {
-    "budgeting-glb-for-web": {
+    "blendops-glb-budget": {
       "knowledge_ids": [
         "knowledge.quad-dominant-subdivision-topology",
         "knowledge.mesh-manifold-normals-and-scale-hygiene",
@@ -202,7 +202,7 @@
         "recipe.web-ready-asset-optimization"
       ]
     },
-    "verifying-before-handoff": {
+    "blendops-final-check": {
       "knowledge_ids": [
         "knowledge.quad-dominant-subdivision-topology",
         "knowledge.mesh-manifold-normals-and-scale-hygiene",
@@ -227,7 +227,7 @@
         "recipe.web-ready-asset-optimization"
       ]
     },
-    "planning-product-scenes": {
+    "blendops-product-shot": {
       "knowledge_ids": [
         "knowledge.quad-dominant-subdivision-topology",
         "knowledge.non-destructive-hard-surface-modifier-stack",
@@ -243,7 +243,7 @@
         "recipe.product-hero-scene"
       ]
     },
-    "planning-scenes": {
+    "blendops-scene-plan": {
       "knowledge_ids": [
         "knowledge.quad-dominant-subdivision-topology",
         "knowledge.organic-sculpt-to-retopology-workflow",
@@ -259,7 +259,7 @@
         "recipe.presentation-lighting-and-camera"
       ]
     },
-    "troubleshooting-blender-output": {
+    "blendops-fix-problems": {
       "knowledge_ids": [
         "knowledge.mesh-manifold-normals-and-scale-hygiene",
         "knowledge.boolean-bevel-shading-cleanup",
@@ -269,7 +269,7 @@
         "recipe.scene-quality-inspection-and-correction"
       ]
     },
-    "planning-lighting-and-materials": {
+    "blendops-lighting-materials": {
       "knowledge_ids": [
         "knowledge.cad-creases-and-panel-gap-detailing",
         "knowledge.geometry-nodes-fields-and-anonymous-attributes",
@@ -297,7 +297,7 @@
         "recipe.web-ready-asset-optimization"
       ]
     },
-    "handing-off-glb-to-web": {
+    "blendops-glb-web-handoff": {
       "knowledge_ids": [
         "knowledge.geometry-nodes-fields-and-anonymous-attributes",
         "knowledge.procedural-instancing-and-realize-instances-budget",
@@ -322,7 +322,7 @@
         "recipe.web-ready-asset-optimization"
       ]
     },
-    "choosing-render-and-output": {
+    "blendops-render-settings": {
       "knowledge_ids": [
         "knowledge.high-to-low-normal-and-ao-baking",
         "knowledge.agx-filmic-color-management-and-cycles-eevee",
@@ -338,7 +338,7 @@
         "recipe.web-ready-asset-optimization"
       ]
     },
-    "planning-camera-and-framing": {
+    "blendops-camera": {
       "knowledge_ids": [
         "knowledge.physically-based-camera-lens-and-dof",
         "knowledge.environment-depth-layering-and-atmospheric-perspective"
@@ -350,7 +350,7 @@
         "recipe.scene-quality-inspection-and-correction"
       ]
     },
-    "defining-done-and-gates": {
+    "blendops-done-criteria": {
       "knowledge_ids": [
         "knowledge.triangle-draw-call-and-vram-budgets"
       ],
@@ -364,7 +364,7 @@
         "recipe.web-ready-asset-optimization"
       ]
     },
-    "scoping-3d-briefs": {
+    "blendops-brief": {
       "knowledge_ids": [],
       "recipe_ids": [
         "recipe.product-hero-scene",
@@ -374,7 +374,7 @@
         "recipe.rigged-and-animated-asset"
       ]
     },
-    "sourcing-assets": {
+    "blendops-assets": {
       "knowledge_ids": [],
       "recipe_ids": [
         "recipe.product-hero-scene",
@@ -383,7 +383,7 @@
         "recipe.web-ready-asset-optimization"
       ]
     },
-    "using-blendops": {
+    "blendops-start": {
       "knowledge_ids": [],
       "recipe_ids": [
         "recipe.product-hero-scene",
@@ -423,16 +423,16 @@
         "knowledge.triangle-draw-call-and-vram-budgets"
       ],
       "skill_ids": [
-        "scoping-3d-briefs",
-        "defining-done-and-gates",
-        "sourcing-assets",
-        "planning-product-scenes",
-        "planning-camera-and-framing",
-        "planning-lighting-and-materials",
-        "choosing-render-and-output",
-        "verifying-before-handoff",
-        "handing-off-glb-to-web",
-        "using-blendops"
+        "blendops-brief",
+        "blendops-done-criteria",
+        "blendops-assets",
+        "blendops-product-shot",
+        "blendops-camera",
+        "blendops-lighting-materials",
+        "blendops-render-settings",
+        "blendops-final-check",
+        "blendops-glb-web-handoff",
+        "blendops-start"
       ]
     },
     "recipe.hard-surface-prop": {
@@ -450,12 +450,12 @@
         "knowledge.gltf-2-coordinate-system-and-transform-conventions"
       ],
       "skill_ids": [
-        "scoping-3d-briefs",
-        "defining-done-and-gates",
-        "budgeting-glb-for-web",
-        "planning-lighting-and-materials",
-        "verifying-before-handoff",
-        "using-blendops"
+        "blendops-brief",
+        "blendops-done-criteria",
+        "blendops-glb-budget",
+        "blendops-lighting-materials",
+        "blendops-final-check",
+        "blendops-start"
       ]
     },
     "recipe.uv-and-pbr-material-preparation": {
@@ -472,12 +472,12 @@
         "knowledge.triangle-draw-call-and-vram-budgets"
       ],
       "skill_ids": [
-        "defining-done-and-gates",
-        "planning-lighting-and-materials",
-        "choosing-render-and-output",
-        "budgeting-glb-for-web",
-        "verifying-before-handoff",
-        "using-blendops"
+        "blendops-done-criteria",
+        "blendops-lighting-materials",
+        "blendops-render-settings",
+        "blendops-glb-budget",
+        "blendops-final-check",
+        "blendops-start"
       ]
     },
     "recipe.scene-quality-inspection-and-correction": {
@@ -496,13 +496,13 @@
         "knowledge.glb-binary-chunk-alignment-and-khronos-validation"
       ],
       "skill_ids": [
-        "troubleshooting-blender-output",
-        "budgeting-glb-for-web",
-        "planning-lighting-and-materials",
-        "planning-camera-and-framing",
-        "verifying-before-handoff",
-        "defining-done-and-gates",
-        "using-blendops"
+        "blendops-fix-problems",
+        "blendops-glb-budget",
+        "blendops-lighting-materials",
+        "blendops-camera",
+        "blendops-final-check",
+        "blendops-done-criteria",
+        "blendops-start"
       ]
     },
     "recipe.rigged-and-animated-asset": {
@@ -517,12 +517,12 @@
         "knowledge.threejs-r3f-tone-mapping-and-environment-parity"
       ],
       "skill_ids": [
-        "scoping-3d-briefs",
-        "defining-done-and-gates",
-        "budgeting-glb-for-web",
-        "handing-off-glb-to-web",
-        "verifying-before-handoff",
-        "using-blendops"
+        "blendops-brief",
+        "blendops-done-criteria",
+        "blendops-glb-budget",
+        "blendops-glb-web-handoff",
+        "blendops-final-check",
+        "blendops-start"
       ]
     },
     "recipe.procedural-geometry-nodes-asset": {
@@ -535,14 +535,14 @@
         "knowledge.glb-binary-chunk-alignment-and-khronos-validation"
       ],
       "skill_ids": [
-        "scoping-3d-briefs",
-        "defining-done-and-gates",
-        "budgeting-glb-for-web",
-        "sourcing-assets",
-        "planning-lighting-and-materials",
-        "verifying-before-handoff",
-        "handing-off-glb-to-web",
-        "using-blendops"
+        "blendops-brief",
+        "blendops-done-criteria",
+        "blendops-glb-budget",
+        "blendops-assets",
+        "blendops-lighting-materials",
+        "blendops-final-check",
+        "blendops-glb-web-handoff",
+        "blendops-start"
       ]
     },
     "recipe.stylized-environment-scene": {
@@ -559,15 +559,15 @@
         "knowledge.triangle-draw-call-and-vram-budgets"
       ],
       "skill_ids": [
-        "scoping-3d-briefs",
-        "sourcing-assets",
-        "planning-scenes",
-        "planning-camera-and-framing",
-        "planning-lighting-and-materials",
-        "budgeting-glb-for-web",
-        "choosing-render-and-output",
-        "verifying-before-handoff",
-        "using-blendops"
+        "blendops-brief",
+        "blendops-assets",
+        "blendops-scene-plan",
+        "blendops-camera",
+        "blendops-lighting-materials",
+        "blendops-glb-budget",
+        "blendops-render-settings",
+        "blendops-final-check",
+        "blendops-start"
       ]
     },
     "recipe.web-ready-asset-optimization": {
@@ -582,14 +582,14 @@
         "knowledge.threejs-r3f-tone-mapping-and-environment-parity"
       ],
       "skill_ids": [
-        "budgeting-glb-for-web",
-        "defining-done-and-gates",
-        "sourcing-assets",
-        "planning-lighting-and-materials",
-        "choosing-render-and-output",
-        "handing-off-glb-to-web",
-        "verifying-before-handoff",
-        "using-blendops"
+        "blendops-glb-budget",
+        "blendops-done-criteria",
+        "blendops-assets",
+        "blendops-lighting-materials",
+        "blendops-render-settings",
+        "blendops-glb-web-handoff",
+        "blendops-final-check",
+        "blendops-start"
       ]
     },
     "recipe.presentation-lighting-and-camera": {
@@ -603,12 +603,12 @@
         "knowledge.modular-architectural-grid-and-metric-scale"
       ],
       "skill_ids": [
-        "planning-camera-and-framing",
-        "planning-scenes",
-        "planning-lighting-and-materials",
-        "choosing-render-and-output",
-        "verifying-before-handoff",
-        "using-blendops"
+        "blendops-camera",
+        "blendops-scene-plan",
+        "blendops-lighting-materials",
+        "blendops-render-settings",
+        "blendops-final-check",
+        "blendops-start"
       ]
     },
     "recipe.blender-to-glb-handoff": {
@@ -626,11 +626,11 @@
         "knowledge.threejs-r3f-tone-mapping-and-environment-parity"
       ],
       "skill_ids": [
-        "planning-lighting-and-materials",
-        "budgeting-glb-for-web",
-        "handing-off-glb-to-web",
-        "verifying-before-handoff",
-        "using-blendops"
+        "blendops-lighting-materials",
+        "blendops-glb-budget",
+        "blendops-glb-web-handoff",
+        "blendops-final-check",
+        "blendops-start"
       ]
     }
   },
@@ -1098,10 +1098,10 @@
         "5.1+"
       ],
       "skill_ids": [
-        "budgeting-glb-for-web",
-        "verifying-before-handoff",
-        "planning-product-scenes",
-        "planning-scenes"
+        "blendops-glb-budget",
+        "blendops-final-check",
+        "blendops-product-shot",
+        "blendops-scene-plan"
       ],
       "recipe_ids": [
         "recipe.product-hero-scene",
@@ -1594,9 +1594,9 @@
         "5.1+"
       ],
       "skill_ids": [
-        "troubleshooting-blender-output",
-        "budgeting-glb-for-web",
-        "verifying-before-handoff"
+        "blendops-fix-problems",
+        "blendops-glb-budget",
+        "blendops-final-check"
       ],
       "recipe_ids": [
         "recipe.product-hero-scene",
@@ -2087,9 +2087,9 @@
         "5.1+"
       ],
       "skill_ids": [
-        "troubleshooting-blender-output",
-        "budgeting-glb-for-web",
-        "verifying-before-handoff"
+        "blendops-fix-problems",
+        "blendops-glb-budget",
+        "blendops-final-check"
       ],
       "recipe_ids": [
         "recipe.hard-surface-prop",
@@ -2586,9 +2586,9 @@
         "5.1+"
       ],
       "skill_ids": [
-        "planning-product-scenes",
-        "budgeting-glb-for-web",
-        "troubleshooting-blender-output"
+        "blendops-product-shot",
+        "blendops-glb-budget",
+        "blendops-fix-problems"
       ],
       "recipe_ids": [
         "recipe.hard-surface-prop",
@@ -3053,8 +3053,8 @@
         "5.1+"
       ],
       "skill_ids": [
-        "planning-scenes",
-        "budgeting-glb-for-web"
+        "blendops-scene-plan",
+        "blendops-glb-budget"
       ],
       "recipe_ids": [
         "recipe.rigged-and-animated-asset",
@@ -3560,9 +3560,9 @@
         "5.1+"
       ],
       "skill_ids": [
-        "planning-product-scenes",
-        "planning-lighting-and-materials",
-        "budgeting-glb-for-web"
+        "blendops-product-shot",
+        "blendops-lighting-materials",
+        "blendops-glb-budget"
       ],
       "recipe_ids": [
         "recipe.product-hero-scene",
@@ -4070,9 +4070,9 @@
         "5.1+"
       ],
       "skill_ids": [
-        "budgeting-glb-for-web",
-        "planning-lighting-and-materials",
-        "handing-off-glb-to-web"
+        "blendops-glb-budget",
+        "blendops-lighting-materials",
+        "blendops-glb-web-handoff"
       ],
       "recipe_ids": [
         "recipe.procedural-geometry-nodes-asset",
@@ -4522,8 +4522,8 @@
         "5.1+"
       ],
       "skill_ids": [
-        "budgeting-glb-for-web",
-        "handing-off-glb-to-web"
+        "blendops-glb-budget",
+        "blendops-glb-web-handoff"
       ],
       "recipe_ids": [
         "recipe.procedural-geometry-nodes-asset",
@@ -4617,7 +4617,7 @@
           "memory",
           "polycount",
           "budgets",
-          "budgeting-glb-for-web",
+          "blendops-glb-budget",
           "geometry-nodes-graph",
           "scene-hierarchy",
           "glb-container",
@@ -4713,7 +4713,7 @@
           "scene",
           "polycount",
           "budgets",
-          "budgeting-glb-for-web",
+          "blendops-glb-budget",
           "geometry-nodes-graph",
           "scene-hierarchy",
           "glb-container",
@@ -4986,9 +4986,9 @@
         "5.1+"
       ],
       "skill_ids": [
-        "planning-scenes",
-        "budgeting-glb-for-web",
-        "planning-product-scenes"
+        "blendops-scene-plan",
+        "blendops-glb-budget",
+        "blendops-product-shot"
       ],
       "recipe_ids": [
         "recipe.procedural-geometry-nodes-asset",
@@ -5439,8 +5439,8 @@
         "5.1+"
       ],
       "skill_ids": [
-        "planning-lighting-and-materials",
-        "budgeting-glb-for-web"
+        "blendops-lighting-materials",
+        "blendops-glb-budget"
       ],
       "recipe_ids": [
         "recipe.uv-and-pbr-material-preparation",
@@ -5546,7 +5546,7 @@
           "stretching",
           "texture",
           "sharpness",
-          "planning-lighting-and-materials",
+          "blendops-lighting-materials",
           "uv-layout",
           "polygon-game-mesh",
           "hard-surface-mesh",
@@ -5651,7 +5651,7 @@
           "stretching",
           "texture",
           "sharpness",
-          "planning-lighting-and-materials",
+          "blendops-lighting-materials",
           "uv-layout",
           "polygon-game-mesh",
           "hard-surface-mesh",
@@ -5965,9 +5965,9 @@
         "5.1+"
       ],
       "skill_ids": [
-        "planning-lighting-and-materials",
-        "budgeting-glb-for-web",
-        "handing-off-glb-to-web"
+        "blendops-lighting-materials",
+        "blendops-glb-budget",
+        "blendops-glb-web-handoff"
       ],
       "recipe_ids": [
         "recipe.uv-and-pbr-material-preparation",
@@ -6420,8 +6420,8 @@
         "5.1+"
       ],
       "skill_ids": [
-        "planning-lighting-and-materials",
-        "choosing-render-and-output"
+        "blendops-lighting-materials",
+        "blendops-render-settings"
       ],
       "recipe_ids": [
         "recipe.uv-and-pbr-material-preparation",
@@ -6526,8 +6526,8 @@
           "lighting",
           "seam",
           "discontinuities",
-          "planning-lighting-and-materials",
-          "troubleshooting-blender-output",
+          "blendops-lighting-materials",
+          "blendops-fix-problems",
           "uv-layout",
           "pbr-material-graph",
           "polygon-game-mesh",
@@ -6643,8 +6643,8 @@
           "lighting",
           "seam",
           "discontinuities",
-          "planning-lighting-and-materials",
-          "troubleshooting-blender-output",
+          "blendops-lighting-materials",
+          "blendops-fix-problems",
           "uv-layout",
           "pbr-material-graph",
           "polygon-game-mesh",
@@ -6933,8 +6933,8 @@
         "5.1+"
       ],
       "skill_ids": [
-        "planning-lighting-and-materials",
-        "planning-product-scenes"
+        "blendops-lighting-materials",
+        "blendops-product-shot"
       ],
       "recipe_ids": [
         "recipe.product-hero-scene",
@@ -7030,7 +7030,7 @@
           "pbr",
           "material",
           "blender",
-          "planning-lighting-and-materials",
+          "blendops-lighting-materials",
           "migrating",
           "shader",
           "graphs",
@@ -7129,7 +7129,7 @@
           "auditing",
           "any",
           "material",
-          "planning-lighting-and-materials",
+          "blendops-lighting-materials",
           "migrating",
           "shader",
           "graphs",
@@ -7416,9 +7416,9 @@
         "5.1+"
       ],
       "skill_ids": [
-        "planning-lighting-and-materials",
-        "handing-off-glb-to-web",
-        "budgeting-glb-for-web"
+        "blendops-lighting-materials",
+        "blendops-glb-web-handoff",
+        "blendops-glb-budget"
       ],
       "recipe_ids": [
         "recipe.uv-and-pbr-material-preparation",
@@ -7514,8 +7514,8 @@
           "auditing",
           "material",
           "setups",
-          "planning-lighting-and-materials",
-          "budgeting-glb-for-web",
+          "blendops-lighting-materials",
+          "blendops-glb-budget",
           "pbr-material-graph",
           "glb-container",
           "ao",
@@ -7605,8 +7605,8 @@
           "auditing",
           "material",
           "setups",
-          "planning-lighting-and-materials",
-          "budgeting-glb-for-web",
+          "blendops-lighting-materials",
+          "blendops-glb-budget",
           "pbr-material-graph",
           "glb-container",
           "maps",
@@ -7834,8 +7834,8 @@
         "5.1+"
       ],
       "skill_ids": [
-        "planning-lighting-and-materials",
-        "handing-off-glb-to-web"
+        "blendops-lighting-materials",
+        "blendops-glb-web-handoff"
       ],
       "recipe_ids": [
         "recipe.product-hero-scene",
@@ -7936,8 +7936,8 @@
           "exported",
           "glb",
           "gltf",
-          "planning-lighting-and-materials",
-          "handing-off-glb-to-web",
+          "blendops-lighting-materials",
+          "blendops-glb-web-handoff",
           "pbr-material-graph",
           "glb-container",
           "target",
@@ -8028,8 +8028,8 @@
           "any",
           "asset",
           "will",
-          "planning-lighting-and-materials",
-          "handing-off-glb-to-web",
+          "blendops-lighting-materials",
+          "blendops-glb-web-handoff",
           "pbr-material-graph",
           "glb-container",
           "target",
@@ -8303,9 +8303,9 @@
         "5.1+"
       ],
       "skill_ids": [
-        "planning-lighting-and-materials",
-        "planning-product-scenes",
-        "planning-scenes"
+        "blendops-lighting-materials",
+        "blendops-product-shot",
+        "blendops-scene-plan"
       ],
       "recipe_ids": [
         "recipe.product-hero-scene",
@@ -8400,9 +8400,9 @@
           "grids",
           "character",
           "portraits",
-          "planning-lighting-and-materials",
-          "planning-product-scenes",
-          "planning-scenes",
+          "blendops-lighting-materials",
+          "blendops-product-shot",
+          "blendops-scene-plan",
           "lighting-camera-rig",
           "scene-hierarchy",
           "subject",
@@ -8511,9 +8511,9 @@
           "scenes",
           "grids",
           "portraits",
-          "planning-lighting-and-materials",
-          "planning-product-scenes",
-          "planning-scenes",
+          "blendops-lighting-materials",
+          "blendops-product-shot",
+          "blendops-scene-plan",
           "lighting-camera-rig",
           "scene-hierarchy",
           "subject",
@@ -8838,9 +8838,9 @@
         "5.1+"
       ],
       "skill_ids": [
-        "planning-camera-and-framing",
-        "planning-product-scenes",
-        "planning-scenes"
+        "blendops-camera",
+        "blendops-product-shot",
+        "blendops-scene-plan"
       ],
       "recipe_ids": [
         "recipe.product-hero-scene",
@@ -8934,9 +8934,9 @@
           "framing",
           "depth",
           "field",
-          "planning-camera-and-framing",
-          "planning-product-scenes",
-          "planning-scenes",
+          "blendops-camera",
+          "blendops-product-shot",
+          "blendops-scene-plan",
           "lighting-camera-rig",
           "scene-hierarchy",
           "scene",
@@ -9019,9 +9019,9 @@
           "configuring",
           "optics",
           "framing",
-          "planning-camera-and-framing",
-          "planning-product-scenes",
-          "planning-scenes",
+          "blendops-camera",
+          "blendops-product-shot",
+          "blendops-scene-plan",
           "lighting-camera-rig",
           "scene-hierarchy",
           "scene",
@@ -9322,8 +9322,8 @@
         "5.1+"
       ],
       "skill_ids": [
-        "planning-lighting-and-materials",
-        "choosing-render-and-output"
+        "blendops-lighting-materials",
+        "blendops-render-settings"
       ],
       "recipe_ids": [
         "recipe.product-hero-scene",
@@ -9417,10 +9417,10 @@
           "selecting",
           "color",
           "management",
-          "planning-lighting-and-materials",
+          "blendops-lighting-materials",
           "render",
           "engine",
-          "choosing-render-and-output",
+          "blendops-render-settings",
           "output",
           "file",
           "format",
@@ -9525,10 +9525,10 @@
           "gradients",
           "selecting",
           "management",
-          "planning-lighting-and-materials",
+          "blendops-lighting-materials",
           "render",
           "engine",
-          "choosing-render-and-output",
+          "blendops-render-settings",
           "output",
           "file",
           "format",
@@ -9840,8 +9840,8 @@
         "5.1+"
       ],
       "skill_ids": [
-        "handing-off-glb-to-web",
-        "budgeting-glb-for-web"
+        "blendops-glb-web-handoff",
+        "blendops-glb-budget"
       ],
       "recipe_ids": [
         "recipe.rigged-and-animated-asset",
@@ -9944,7 +9944,7 @@
           "gltf",
           "glb",
           "export",
-          "handing-off-glb-to-web",
+          "blendops-glb-web-handoff",
           "skeletal-armature",
           "glb-container",
           "mesh",
@@ -10028,7 +10028,7 @@
           "destined",
           "animation",
           "playback",
-          "handing-off-glb-to-web",
+          "blendops-glb-web-handoff",
           "skeletal-armature",
           "glb-container",
           "topology",
@@ -10288,8 +10288,8 @@
         "5.1+"
       ],
       "skill_ids": [
-        "handing-off-glb-to-web",
-        "budgeting-glb-for-web"
+        "blendops-glb-web-handoff",
+        "blendops-glb-budget"
       ],
       "recipe_ids": [
         "recipe.rigged-and-animated-asset",
@@ -10736,8 +10736,8 @@
         "5.1+"
       ],
       "skill_ids": [
-        "handing-off-glb-to-web",
-        "verifying-before-handoff"
+        "blendops-glb-web-handoff",
+        "blendops-final-check"
       ],
       "recipe_ids": [
         "recipe.rigged-and-animated-asset",
@@ -11148,10 +11148,10 @@
         "5.1+"
       ],
       "skill_ids": [
-        "planning-lighting-and-materials",
-        "planning-scenes",
-        "choosing-render-and-output",
-        "handing-off-glb-to-web"
+        "blendops-lighting-materials",
+        "blendops-scene-plan",
+        "blendops-render-settings",
+        "blendops-glb-web-handoff"
       ],
       "recipe_ids": [
         "recipe.stylized-environment-scene",
@@ -11529,9 +11529,9 @@
         "5.1+"
       ],
       "skill_ids": [
-        "verifying-before-handoff",
-        "planning-scenes",
-        "planning-product-scenes"
+        "blendops-final-check",
+        "blendops-scene-plan",
+        "blendops-product-shot"
       ],
       "recipe_ids": [
         "recipe.stylized-environment-scene",
@@ -11924,9 +11924,9 @@
         "5.1+"
       ],
       "skill_ids": [
-        "planning-product-scenes",
-        "planning-scenes",
-        "planning-camera-and-framing"
+        "blendops-product-shot",
+        "blendops-scene-plan",
+        "blendops-camera"
       ],
       "recipe_ids": [
         "recipe.product-hero-scene",
@@ -12284,9 +12284,9 @@
         "5.1+"
       ],
       "skill_ids": [
-        "budgeting-glb-for-web",
-        "planning-lighting-and-materials",
-        "defining-done-and-gates"
+        "blendops-glb-budget",
+        "blendops-lighting-materials",
+        "blendops-done-criteria"
       ],
       "recipe_ids": [
         "recipe.web-ready-asset-optimization",
@@ -12679,9 +12679,9 @@
         "5.1+"
       ],
       "skill_ids": [
-        "budgeting-glb-for-web",
-        "handing-off-glb-to-web",
-        "verifying-before-handoff"
+        "blendops-glb-budget",
+        "blendops-glb-web-handoff",
+        "blendops-final-check"
       ],
       "recipe_ids": [
         "recipe.web-ready-asset-optimization",
@@ -13088,9 +13088,9 @@
         "5.1+"
       ],
       "skill_ids": [
-        "budgeting-glb-for-web",
-        "handing-off-glb-to-web",
-        "choosing-render-and-output"
+        "blendops-glb-budget",
+        "blendops-glb-web-handoff",
+        "blendops-render-settings"
       ],
       "recipe_ids": [
         "recipe.web-ready-asset-optimization",
@@ -13487,8 +13487,8 @@
         "5.1+"
       ],
       "skill_ids": [
-        "verifying-before-handoff",
-        "handing-off-glb-to-web"
+        "blendops-final-check",
+        "blendops-glb-web-handoff"
       ],
       "recipe_ids": [
         "recipe.blender-to-glb-handoff",
@@ -13882,9 +13882,9 @@
         "5.1+"
       ],
       "skill_ids": [
-        "handing-off-glb-to-web",
-        "verifying-before-handoff",
-        "choosing-render-and-output"
+        "blendops-glb-web-handoff",
+        "blendops-final-check",
+        "blendops-render-settings"
       ],
       "recipe_ids": [
         "recipe.blender-to-glb-handoff",
@@ -14270,9 +14270,9 @@
         "5.1+"
       ],
       "skill_ids": [
-        "handing-off-glb-to-web",
-        "planning-lighting-and-materials",
-        "verifying-before-handoff"
+        "blendops-glb-web-handoff",
+        "blendops-lighting-materials",
+        "blendops-final-check"
       ],
       "recipe_ids": [
         "recipe.blender-to-glb-handoff",
@@ -14654,16 +14654,16 @@
         "4.2 LTS"
       ],
       "skill_ids": [
-        "scoping-3d-briefs",
-        "defining-done-and-gates",
-        "sourcing-assets",
-        "planning-product-scenes",
-        "planning-camera-and-framing",
-        "planning-lighting-and-materials",
-        "choosing-render-and-output",
-        "verifying-before-handoff",
-        "handing-off-glb-to-web",
-        "using-blendops"
+        "blendops-brief",
+        "blendops-done-criteria",
+        "blendops-assets",
+        "blendops-product-shot",
+        "blendops-camera",
+        "blendops-lighting-materials",
+        "blendops-render-settings",
+        "blendops-final-check",
+        "blendops-glb-web-handoff",
+        "blendops-start"
       ],
       "knowledge_ids": [
         "knowledge.mesh-manifold-normals-and-scale-hygiene",
@@ -14791,7 +14791,7 @@
           "confirmed",
           "8-slot",
           "brief",
-          "scoping-3d-briefs",
+          "blendops-brief",
           "target",
           "delivery",
           "channel",
@@ -14804,7 +14804,7 @@
           "strategy",
           "cleared",
           "via",
-          "sourcing-assets",
+          "blendops-assets",
           "subject",
           "primary",
           "identifier",
@@ -14850,7 +14850,7 @@
           "4+",
           "products",
           "recipe.scene-quality-inspection-and-correction",
-          "planning-product-scenes",
+          "blendops-product-shot",
           "instead",
           "wide",
           "outdoor",
@@ -14990,7 +14990,7 @@
           "exporting",
           "confirmed",
           "8-slot",
-          "scoping-3d-briefs",
+          "blendops-brief",
           "target",
           "delivery",
           "channel",
@@ -15001,7 +15001,7 @@
           "strategy",
           "cleared",
           "via",
-          "sourcing-assets",
+          "blendops-assets",
           "subject",
           "primary",
           "identifier",
@@ -15040,7 +15040,7 @@
           "4+",
           "products",
           "recipe.scene-quality-inspection-and-correction",
-          "planning-product-scenes",
+          "blendops-product-shot",
           "instead",
           "wide",
           "outdoor",
@@ -15243,7 +15243,7 @@
           "material",
           "synthesize",
           "overall",
-          "verifying-before-handoff",
+          "blendops-final-check",
           "pass",
           "warn",
           "fail",
@@ -15274,8 +15274,8 @@
           "inspect",
           "luminance",
           "contrast",
-          "planning-camera-and-framing",
-          "planning-lighting-and-materials",
+          "blendops-camera",
+          "blendops-lighting-materials",
           "backlight",
           "present",
           "against",
@@ -15345,15 +15345,15 @@
         "4.2 LTS"
       ],
       "skill_ids": [
-        "scoping-3d-briefs",
-        "sourcing-assets",
-        "planning-scenes",
-        "planning-camera-and-framing",
-        "planning-lighting-and-materials",
-        "budgeting-glb-for-web",
-        "choosing-render-and-output",
-        "verifying-before-handoff",
-        "using-blendops"
+        "blendops-brief",
+        "blendops-assets",
+        "blendops-scene-plan",
+        "blendops-camera",
+        "blendops-lighting-materials",
+        "blendops-glb-budget",
+        "blendops-render-settings",
+        "blendops-final-check",
+        "blendops-start"
       ],
       "knowledge_ids": [
         "knowledge.modular-architectural-grid-and-metric-scale",
@@ -15534,7 +15534,7 @@
           "without",
           "exterior",
           "vista",
-          "planning-scenes",
+          "blendops-scene-plan",
           "recipe.presentation-lighting-and-camera",
           "viewport",
           "freezes",
@@ -15717,7 +15717,7 @@
           "furniture",
           "layout",
           "without",
-          "planning-scenes",
+          "blendops-scene-plan",
           "recipe.presentation-lighting-and-camera",
           "viewport",
           "freezes",
@@ -15807,7 +15807,7 @@
           "harmony",
           "share",
           "pass",
-          "sourcing-assets",
+          "blendops-assets",
           "realism",
           "detail",
           "frequency",
@@ -15915,7 +15915,7 @@
           "luminance",
           "check",
           "assignments",
-          "planning-camera-and-framing",
+          "blendops-camera",
           "populated",
           "has",
           "vc.instance-preservation",
@@ -15928,7 +15928,7 @@
           "unique",
           "meshes",
           "mesh",
-          "budgeting-glb-for-web",
+          "blendops-glb-budget",
           "unnecessary",
           "vc.volumetric-export-honesty",
           "shaders",
@@ -15988,12 +15988,12 @@
         "4.2 LTS"
       ],
       "skill_ids": [
-        "scoping-3d-briefs",
-        "defining-done-and-gates",
-        "budgeting-glb-for-web",
-        "planning-lighting-and-materials",
-        "verifying-before-handoff",
-        "using-blendops"
+        "blendops-brief",
+        "blendops-done-criteria",
+        "blendops-glb-budget",
+        "blendops-lighting-materials",
+        "blendops-final-check",
+        "blendops-start"
       ],
       "knowledge_ids": [
         "knowledge.mesh-manifold-normals-and-scale-hygiene",
@@ -16628,14 +16628,14 @@
         "4.2 LTS"
       ],
       "skill_ids": [
-        "scoping-3d-briefs",
-        "defining-done-and-gates",
-        "budgeting-glb-for-web",
-        "sourcing-assets",
-        "planning-lighting-and-materials",
-        "verifying-before-handoff",
-        "handing-off-glb-to-web",
-        "using-blendops"
+        "blendops-brief",
+        "blendops-done-criteria",
+        "blendops-glb-budget",
+        "blendops-assets",
+        "blendops-lighting-materials",
+        "blendops-final-check",
+        "blendops-glb-web-handoff",
+        "blendops-start"
       ],
       "knowledge_ids": [
         "knowledge.geometry-nodes-fields-and-anonymous-attributes",
@@ -17242,12 +17242,12 @@
         "4.2 LTS"
       ],
       "skill_ids": [
-        "defining-done-and-gates",
-        "planning-lighting-and-materials",
-        "choosing-render-and-output",
-        "budgeting-glb-for-web",
-        "verifying-before-handoff",
-        "using-blendops"
+        "blendops-done-criteria",
+        "blendops-lighting-materials",
+        "blendops-render-settings",
+        "blendops-glb-budget",
+        "blendops-final-check",
+        "blendops-start"
       ],
       "knowledge_ids": [
         "knowledge.uv-seam-placement-and-texel-density",
@@ -17767,7 +17767,7 @@
           "conductor",
           "above",
           "0.50",
-          "planning-lighting-and-materials",
+          "blendops-lighting-materials",
           "passes",
           "color-space",
           "mismatches",
@@ -17883,12 +17883,12 @@
         "4.2 LTS"
       ],
       "skill_ids": [
-        "planning-camera-and-framing",
-        "planning-scenes",
-        "planning-lighting-and-materials",
-        "choosing-render-and-output",
-        "verifying-before-handoff",
-        "using-blendops"
+        "blendops-camera",
+        "blendops-scene-plan",
+        "blendops-lighting-materials",
+        "blendops-render-settings",
+        "blendops-final-check",
+        "blendops-start"
       ],
       "knowledge_ids": [
         "knowledge.physically-based-camera-lens-and-dof",
@@ -18359,7 +18359,7 @@
           "headroom",
           "lead-room",
           "pass",
-          "planning-camera-and-framing",
+          "blendops-camera",
           "stage-three-point-and-hdri-lighting",
           "key",
           "fill",
@@ -18445,9 +18445,9 @@
           "readiness",
           "documentation",
           "run",
-          "planning-lighting-and-materials",
+          "blendops-lighting-materials",
           "record",
-          "verifying-before-handoff",
+          "blendops-final-check",
           "verdict",
           "verify",
           "artifact",
@@ -18496,7 +18496,7 @@
           "saved",
           "sufficient",
           "dithering",
-          "choosing-render-and-output",
+          "blendops-render-settings",
           "1.0",
           "32-bit",
           "float",
@@ -18543,12 +18543,12 @@
         "4.2 LTS"
       ],
       "skill_ids": [
-        "scoping-3d-briefs",
-        "defining-done-and-gates",
-        "budgeting-glb-for-web",
-        "handing-off-glb-to-web",
-        "verifying-before-handoff",
-        "using-blendops"
+        "blendops-brief",
+        "blendops-done-criteria",
+        "blendops-glb-budget",
+        "blendops-glb-web-handoff",
+        "blendops-final-check",
+        "blendops-start"
       ],
       "knowledge_ids": [
         "knowledge.armature-joint-hierarchy-and-linear-blend-skinning",
@@ -19143,7 +19143,7 @@
           "max",
           "skinned",
           "vc.visual-keying-baked",
-          "handing-off-glb-to-web",
+          "blendops-glb-web-handoff",
           "unbaked",
           "blender-only",
           "required",
@@ -19195,13 +19195,13 @@
         "4.2 LTS"
       ],
       "skill_ids": [
-        "troubleshooting-blender-output",
-        "budgeting-glb-for-web",
-        "planning-lighting-and-materials",
-        "planning-camera-and-framing",
-        "verifying-before-handoff",
-        "defining-done-and-gates",
-        "using-blendops"
+        "blendops-fix-problems",
+        "blendops-glb-budget",
+        "blendops-lighting-materials",
+        "blendops-camera",
+        "blendops-final-check",
+        "blendops-done-criteria",
+        "blendops-start"
       ],
       "knowledge_ids": [
         "knowledge.mesh-manifold-normals-and-scale-hygiene",
@@ -19375,7 +19375,7 @@
           "initial",
           "brainstorming",
           "scratch",
-          "scoping-3d-briefs",
+          "blendops-brief",
           "first",
           "agent",
           "changes",
@@ -19394,7 +19394,7 @@
           "phase",
           "subsystem",
           "isolation",
-          "troubleshooting-blender-output",
+          "blendops-fix-problems",
           "always",
           "verify",
           "mesh",
@@ -19427,8 +19427,8 @@
           "vram",
           "limits",
           "run",
-          "budgeting-glb-for-web",
-          "planning-lighting-and-materials",
+          "blendops-glb-budget",
+          "blendops-lighting-materials",
           "against"
         ],
         "body": [
@@ -19530,7 +19530,7 @@
           "initial",
           "brainstorming",
           "scratch",
-          "scoping-3d-briefs",
+          "blendops-brief",
           "first",
           "agent",
           "changes",
@@ -19547,7 +19547,7 @@
           "phase",
           "subsystem",
           "isolation",
-          "troubleshooting-blender-output",
+          "blendops-fix-problems",
           "always",
           "verify",
           "mesh",
@@ -19575,8 +19575,8 @@
           "exceeded",
           "vram",
           "limits",
-          "budgeting-glb-for-web",
-          "planning-lighting-and-materials",
+          "blendops-glb-budget",
+          "blendops-lighting-materials",
           "stage-symptom-triage-and-geometry-audit",
           "triage",
           "geometry",
@@ -19660,7 +19660,7 @@
           "checker",
           "results",
           "single",
-          "verifying-before-handoff",
+          "blendops-final-check",
           "prioritized",
           "blocker",
           "remediation",
@@ -19781,11 +19781,11 @@
         "4.2 LTS"
       ],
       "skill_ids": [
-        "planning-lighting-and-materials",
-        "budgeting-glb-for-web",
-        "handing-off-glb-to-web",
-        "verifying-before-handoff",
-        "using-blendops"
+        "blendops-lighting-materials",
+        "blendops-glb-budget",
+        "blendops-glb-web-handoff",
+        "blendops-final-check",
+        "blendops-start"
       ],
       "knowledge_ids": [
         "knowledge.gltf-2-coordinate-system-and-transform-conventions",
@@ -20326,7 +20326,7 @@
           "has",
           "matching",
           "configuration",
-          "handing-off-glb-to-web",
+          "blendops-glb-web-handoff",
           "configured",
           "vc.color-space-and-tonemapping-parity",
           "configures",
@@ -20377,14 +20377,14 @@
         "4.2 LTS"
       ],
       "skill_ids": [
-        "budgeting-glb-for-web",
-        "defining-done-and-gates",
-        "sourcing-assets",
-        "planning-lighting-and-materials",
-        "choosing-render-and-output",
-        "handing-off-glb-to-web",
-        "verifying-before-handoff",
-        "using-blendops"
+        "blendops-glb-budget",
+        "blendops-done-criteria",
+        "blendops-assets",
+        "blendops-lighting-materials",
+        "blendops-render-settings",
+        "blendops-glb-web-handoff",
+        "blendops-final-check",
+        "blendops-start"
       ],
       "knowledge_ids": [
         "knowledge.triangle-draw-call-and-vram-budgets",
@@ -20838,7 +20838,7 @@
           "top",
           "offenders",
           "via",
-          "budgeting-glb-for-web",
+          "blendops-glb-budget",
           "remove",
           "hidden",
           "interior",

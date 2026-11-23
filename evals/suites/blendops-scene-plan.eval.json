@@ -1,0 +1,933 @@
+{
+  "schemaVersion": "2.0.0",
+  "skillId": "blendops-scene-plan",
+  "category": "scene-planners",
+  "isContractedSkill": true,
+  "isRoutingParticipant": false,
+  "contractPath": "skills/blendops-scene-plan/contract.json",
+  "skillMarkdownPath": "skills/blendops-scene-plan/SKILL.md",
+  "evalMarkdownPath": "skills/blendops-scene-plan/EVAL.md",
+  "sourceEvalTier": "prose_outline_contract_migrated",
+  "evaluationStatus": {
+    "staticValidation": "Passed",
+    "deterministicFixture": "Passed",
+    "contractRouting": "Not Applicable",
+    "contractHandoff": "Passed",
+    "liveModel": "Not Run",
+    "blenderRuntime": "Not Run"
+  },
+  "cases": [
+    {
+      "id": "character-portrait-normal-in-scope-handoff",
+      "skillId": "blendops-scene-plan",
+      "scenario": "Normal in-scope execution of blendops-scene-plan (character-portrait-and-turntable-architect) with contract handoff to blendops-camera",
+      "category": "normal",
+      "inputPrompt": "Use blendops-scene-plan on a hero close-up brief: stylized 30s tech founder, confident editorial mood, 85mm lens, eye-line on upper third, Rembrandt key lighting, 16:9 web hero card.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Primary inputs (locked_3d_brief) provided in text-only planning/audit mode."
+      },
+      "expectedBehavior": [
+        "Produces character_staging_and_pose_plan, eyeline_and_portrait_camera_anchors, skin_hair_rim_lighting_hooks for role character-portrait-and-turntable-architect",
+        "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
+        "Evaluates contract handoff predicate and hands off to blendops-camera (Framing deep-dive)"
+      ],
+      "requiredOutputProperties": [
+        "eye-line upper third",
+        "85mm",
+        "Rembrandt key/fill/rim",
+        "blendops-camera",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "18mm wide distortion close-up",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "blendops-camera",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Outputs character_staging_and_pose_plan, eyeline_and_portrait_camera_anchors, skin_hair_rim_lighting_hooks conforming to skills/blendops-scene-plan/SKILL.md",
+        "Matches contract handoff predicate to blendops-camera in skills/blendops-scene-plan/contract.json"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "brief.locked": true,
+          "stage.current": "camera_planning"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only character-portrait-and-turntable-architect (blendops-scene-plan)",
+          "recommendedNextAction": "Complete character_staging_and_pose_plan and hand off to blendops-camera (Framing deep-dive).",
+          "targetHandoff": "blendops-camera",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Planned single-subject character portrait scene (pose/gaze, wardrobe, 85mm eye-line framing, Rembrandt key/fill/rim rig, and asset discovery checklist). Delivered eye-line upper third, 85mm, Rembrandt key/fill/rim and routed to blendops-camera.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-scene-plan/SKILL.md",
+            "skills/blendops-scene-plan/EVAL.md",
+            "skills/blendops-scene-plan/contract.json",
+            "skills/blendops-scene-plan/references/portrait-framing-rules.md",
+            "skills/blendops-scene-plan/references/portrait-lighting-patterns.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "character-portrait-secondary-contract-handoff",
+      "skillId": "blendops-scene-plan",
+      "scenario": "Secondary upstream_reference contract handoff from blendops-scene-plan to blendops-brief",
+      "category": "structured_skip",
+      "inputPrompt": "While applying blendops-scene-plan, the workflow context is {\"goal.clarity\":\"clear\",\"brief.locked\":false} (Upstream brief). Determine the contract-governed handoff target.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates the upstream_reference handoff predicate in skills/blendops-scene-plan/contract.json",
+        "Routes to blendops-brief (Upstream brief) without claiming runtime execution"
+      ],
+      "requiredOutputProperties": [
+        "blendops-brief",
+        "upstream_reference",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "18mm wide distortion close-up",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "blendops-brief",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Contract upstream_reference handoff predicate match to blendops-brief"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "goal.clarity": "clear",
+          "brief.locked": false
+        },
+        "simulatedOutput": {
+          "mode": "Text-only blendops-scene-plan (upstream_reference handoff)",
+          "recommendedNextAction": "Follow upstream_reference handoff to blendops-brief (Upstream brief).",
+          "targetHandoff": "blendops-brief",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Triggered upstream_reference handoff from blendops-scene-plan to blendops-brief under context {\"goal.clarity\":\"clear\",\"brief.locked\":false}.",
+          "warnings": [
+            "Contract-governed upstream_reference handoff."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-scene-plan/contract.json",
+            "skills/blendops-scene-plan/SKILL.md",
+            "skills/blendops-scene-plan/references/portrait-framing-rules.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "character-portrait-unmatched-handoff-and-evidence-boundary",
+      "skillId": "blendops-scene-plan",
+      "scenario": "Unmatched contract handoff context returns none and blocks upgrading unvalidated file to Verified in blendops-scene-plan",
+      "category": "evidence_boundary",
+      "inputPrompt": "An operator provides an unvalidated file on disk during blendops-scene-plan with context {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and asks to mark Artifact: Verified and auto-advance.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "file-only-unvalidated",
+        "notes": "A file exists on disk but validation checks have not been recorded."
+      },
+      "expectedBehavior": [
+        "Refuses to upgrade Artifact status to Verified when existingArtifactEvidence is file-only-unvalidated (caps at Produced)",
+        "Evaluates contract handoffs for blendops-scene-plan and returns targetHandoff none because no handoff predicate matches"
+      ],
+      "requiredOutputProperties": [
+        "Artifact: Produced",
+        "Runtime: Not Run",
+        "validation",
+        "none"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "validation not needed"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Downgrade unvalidated Verified claim to Produced per laws/evidence-before-done.md",
+        "Verify 0 handoffs match in skills/blendops-scene-plan/contract.json for {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true}"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Artifact-claim boundary check (blendops-scene-plan)",
+          "recommendedNextAction": "Keep Artifact status at Produced (never Verified without validation evidence) and hold at targetHandoff none until a downstream precondition is met.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Produced",
+          "summary": "Capped unvalidated artifact claim at Artifact: Produced and verified zero matching contract handoffs (none) for blendops-scene-plan.",
+          "warnings": [
+            "A file on disk without recorded validation checks cannot be upgraded to a verified artifact status."
+          ],
+          "evidenceCitations": [
+            "laws/evidence-before-done.md",
+            "skills/blendops-scene-plan/contract.json",
+            "skills/blendops-scene-plan/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "character-portrait-ambiguous-missing-required-inputs",
+      "skillId": "blendops-scene-plan",
+      "scenario": "Missing required input (locked_3d_brief) for blendops-scene-plan halts fabricated output and requests clarification",
+      "category": "ambiguous",
+      "inputPrompt": "Plan a character portrait scene without specifying who the character is, whether it is stylized or photoreal, or what framing/aspect ratio is needed.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Required input 'locked_3d_brief' is missing or underspecified."
+      },
+      "expectedBehavior": [
+        "Identifies missing character archetype/style, framing crop, and target aspect ratio required by blendops-scene-plan (locked_3d_brief)",
+        "Refuses to fabricate domain parameters and keeps Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "locked_3d_brief",
+        "character archetype/style, framing crop, and target aspect ratio",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "18mm wide distortion close-up",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "guessed parameters silently"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicitly names missing required input 'locked_3d_brief' (character archetype/style, framing crop, and target aspect ratio)",
+        "Conservative Runtime: Not Run and Artifact: Not Produced truth states"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Clarification gate (blendops-scene-plan)",
+          "recommendedNextAction": "Provide the missing character archetype/style, framing crop, and target aspect ratio (locked_3d_brief) before blendops-scene-plan locks character_staging_and_pose_plan.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted blendops-scene-plan due to missing required input 'locked_3d_brief' (character archetype/style, framing crop, and target aspect ratio); no values were fabricated.",
+          "warnings": [
+            "Do not invent character archetype/style, framing crop, and target aspect ratio when 'locked_3d_brief' is omitted."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-scene-plan/SKILL.md",
+            "skills/blendops-scene-plan/EVAL.md",
+            "skills/blendops-scene-plan/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "character-portrait-out-of-scope-exclusion-delegation",
+      "skillId": "blendops-scene-plan",
+      "scenario": "Out-of-scope request (product hero scenes) is excluded from blendops-scene-plan and delegated to blendops-product-shot",
+      "category": "scope_creep",
+      "inputPrompt": "Instead of plan a blendops-scene-plan scene (subject, pose, expression, wardrobe, framing, lighting, background) before any modeling or render attempt., handle this request inside blendops-scene-plan: product hero scenes.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Enforces the declared exclusion boundary in skills/blendops-scene-plan/contract.json when product hero scenes",
+        "Delegates to blendops-product-shot (use blendops-product-shot) with Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "blendops-product-shot",
+        "out of scope",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "18mm wide distortion close-up",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "handled inside blendops-scene-plan anyway"
+      ],
+      "expectedRoutingTarget": "blendops-product-shot",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Exclusion delegation to blendops-product-shot per skills/blendops-scene-plan/contract.json"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Out-of-scope exclusion gate (blendops-scene-plan)",
+          "recommendedNextAction": "Request is out of scope for blendops-scene-plan (product hero scenes); delegate to blendops-product-shot.",
+          "targetHandoff": "blendops-product-shot",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Enforced blendops-scene-plan exclusion boundary (use blendops-product-shot) and delegated to blendops-product-shot.",
+          "warnings": [
+            "blendops-scene-plan is scoped to character-portrait-and-turntable-architect and does not absorb blendops-product-shot responsibilities."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-scene-plan/contract.json",
+            "skills/blendops-scene-plan/SKILL.md",
+            "skills/blendops-product-shot/SKILL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "environment-shot-normal-in-scope-handoff",
+      "skillId": "blendops-scene-plan",
+      "scenario": "Normal in-scope execution of blendops-scene-plan (environment-establishing-shot-architect) with contract handoff to blendops-camera",
+      "category": "normal",
+      "inputPrompt": "Use blendops-scene-plan on a locked brief: \"cyberpunk city street at night, light rain, wet asphalt reflections, neon signage focal subject, cinematic 2.39:1 wide shot\".",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Primary inputs (locked_3d_brief) provided in text-only planning/audit mode."
+      },
+      "expectedBehavior": [
+        "Produces foreground_midground_background_layer_plan, sun_sky_atmosphere_specification, horizon_and_scale_anchor_plan for role environment-establishing-shot-architect",
+        "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
+        "Evaluates contract handoff predicate and hands off to blendops-camera (Composition validation)"
+      ],
+      "requiredOutputProperties": [
+        "FG / MG / BG depth layers",
+        "2.39:1",
+        "atmosphere volume",
+        "blendops-camera",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "no depth layers needed",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "blendops-camera",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Outputs foreground_midground_background_layer_plan, sun_sky_atmosphere_specification, horizon_and_scale_anchor_plan conforming to skills/blendops-scene-plan/SKILL.md",
+        "Matches contract handoff predicate to blendops-camera in skills/blendops-scene-plan/contract.json"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "quality.domain": "composition",
+          "quality.verdict": "not_run"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only environment-establishing-shot-architect (blendops-scene-plan)",
+          "recommendedNextAction": "Complete foreground_midground_background_layer_plan and hand off to blendops-camera (Composition validation).",
+          "targetHandoff": "blendops-camera",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Planned wide 2.39:1 environment establishing shot with explicit foreground/midground/background depth layers, night rain atmosphere/fog volume, and 24mm camera rig. Delivered FG / MG / BG depth layers, 2.39:1, atmosphere volume and routed to blendops-camera.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-scene-plan/SKILL.md",
+            "skills/blendops-scene-plan/EVAL.md",
+            "skills/blendops-scene-plan/contract.json",
+            "skills/blendops-scene-plan/references/depth-layering-rules.md",
+            "skills/blendops-scene-plan/references/time-and-weather-rules.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "environment-shot-secondary-contract-handoff",
+      "skillId": "blendops-scene-plan",
+      "scenario": "Secondary upstream_reference contract handoff from blendops-scene-plan to blendops-brief",
+      "category": "structured_skip",
+      "inputPrompt": "While applying blendops-scene-plan, the workflow context is {\"goal.clarity\":\"clear\",\"brief.locked\":false} (Brief writer). Determine the contract-governed handoff target.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates the upstream_reference handoff predicate in skills/blendops-scene-plan/contract.json",
+        "Routes to blendops-brief (Brief writer) without claiming runtime execution"
+      ],
+      "requiredOutputProperties": [
+        "blendops-brief",
+        "upstream_reference",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "no depth layers needed",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "blendops-brief",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Contract upstream_reference handoff predicate match to blendops-brief"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "goal.clarity": "clear",
+          "brief.locked": false
+        },
+        "simulatedOutput": {
+          "mode": "Text-only blendops-scene-plan (upstream_reference handoff)",
+          "recommendedNextAction": "Follow upstream_reference handoff to blendops-brief (Brief writer).",
+          "targetHandoff": "blendops-brief",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Triggered upstream_reference handoff from blendops-scene-plan to blendops-brief under context {\"goal.clarity\":\"clear\",\"brief.locked\":false}.",
+          "warnings": [
+            "Contract-governed upstream_reference handoff."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-scene-plan/contract.json",
+            "skills/blendops-scene-plan/SKILL.md",
+            "skills/blendops-scene-plan/references/depth-layering-rules.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "environment-shot-unmatched-handoff-and-evidence-boundary",
+      "skillId": "blendops-scene-plan",
+      "scenario": "Unmatched contract handoff context returns none and blocks upgrading unvalidated file to Verified in blendops-scene-plan",
+      "category": "evidence_boundary",
+      "inputPrompt": "An operator provides an unvalidated file on disk during blendops-scene-plan with context {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and asks to mark Artifact: Verified and auto-advance.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "file-only-unvalidated",
+        "notes": "A file exists on disk but validation checks have not been recorded."
+      },
+      "expectedBehavior": [
+        "Refuses to upgrade Artifact status to Verified when existingArtifactEvidence is file-only-unvalidated (caps at Produced)",
+        "Evaluates contract handoffs for blendops-scene-plan and returns targetHandoff none because no handoff predicate matches"
+      ],
+      "requiredOutputProperties": [
+        "Artifact: Produced",
+        "Runtime: Not Run",
+        "validation",
+        "none"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "validation not needed"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Downgrade unvalidated Verified claim to Produced per laws/evidence-before-done.md",
+        "Verify 0 handoffs match in skills/blendops-scene-plan/contract.json for {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true}"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Artifact-claim boundary check (blendops-scene-plan)",
+          "recommendedNextAction": "Keep Artifact status at Produced (never Verified without validation evidence) and hold at targetHandoff none until a downstream precondition is met.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Produced",
+          "summary": "Capped unvalidated artifact claim at Artifact: Produced and verified zero matching contract handoffs (none) for blendops-scene-plan.",
+          "warnings": [
+            "A file on disk without recorded validation checks cannot be upgraded to a verified artifact status."
+          ],
+          "evidenceCitations": [
+            "laws/evidence-before-done.md",
+            "skills/blendops-scene-plan/contract.json",
+            "skills/blendops-scene-plan/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "environment-shot-ambiguous-missing-required-inputs",
+      "skillId": "blendops-scene-plan",
+      "scenario": "Missing required input (locked_3d_brief) for blendops-scene-plan halts fabricated output and requests clarification",
+      "category": "ambiguous",
+      "inputPrompt": "Plan an environment establishing shot without specifying the locale, time of day, weather atmosphere, or focal anchor.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Required input 'locked_3d_brief' is missing or underspecified."
+      },
+      "expectedBehavior": [
+        "Identifies missing environment locale, time-of-day/weather state, and focal subject anchor required by blendops-scene-plan (locked_3d_brief)",
+        "Refuses to fabricate domain parameters and keeps Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "locked_3d_brief",
+        "environment locale, time-of-day/weather state, and focal subject anchor",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "no depth layers needed",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "guessed parameters silently"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicitly names missing required input 'locked_3d_brief' (environment locale, time-of-day/weather state, and focal subject anchor)",
+        "Conservative Runtime: Not Run and Artifact: Not Produced truth states"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Clarification gate (blendops-scene-plan)",
+          "recommendedNextAction": "Provide the missing environment locale, time-of-day/weather state, and focal subject anchor (locked_3d_brief) before blendops-scene-plan locks foreground_midground_background_layer_plan.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted blendops-scene-plan due to missing required input 'locked_3d_brief' (environment locale, time-of-day/weather state, and focal subject anchor); no values were fabricated.",
+          "warnings": [
+            "Do not invent environment locale, time-of-day/weather state, and focal subject anchor when 'locked_3d_brief' is omitted."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-scene-plan/SKILL.md",
+            "skills/blendops-scene-plan/EVAL.md",
+            "skills/blendops-scene-plan/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "environment-shot-out-of-scope-exclusion-delegation",
+      "skillId": "blendops-scene-plan",
+      "scenario": "Out-of-scope request (character portrait) is excluded from blendops-scene-plan and delegated to blendops-scene-plan",
+      "category": "scope_creep",
+      "inputPrompt": "Instead of plan a wide environment / establishing-shot scene (locale, time of day, weather, focal subject, depth, atmosphere) before any modeling or render attempt., handle this request inside blendops-scene-plan: character portrait.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Enforces the declared exclusion boundary in skills/blendops-scene-plan/contract.json when character portrait",
+        "Delegates to blendops-scene-plan (use blendops-scene-plan) with Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "blendops-scene-plan",
+        "out of scope",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "no depth layers needed",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "handled inside blendops-scene-plan anyway"
+      ],
+      "expectedRoutingTarget": "blendops-scene-plan",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Exclusion delegation to blendops-scene-plan per skills/blendops-scene-plan/contract.json"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Out-of-scope exclusion gate (blendops-scene-plan)",
+          "recommendedNextAction": "Request is out of scope for blendops-scene-plan (character portrait); delegate to blendops-scene-plan.",
+          "targetHandoff": "blendops-scene-plan",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Enforced blendops-scene-plan exclusion boundary (use blendops-scene-plan) and delegated to blendops-scene-plan.",
+          "warnings": [
+            "blendops-scene-plan is scoped to environment-establishing-shot-architect and does not absorb blendops-scene-plan responsibilities."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-scene-plan/contract.json",
+            "skills/blendops-scene-plan/SKILL.md",
+            "skills/blendops-scene-plan/SKILL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "interior-scene-normal-in-scope-handoff",
+      "skillId": "blendops-scene-plan",
+      "scenario": "Normal in-scope execution of blendops-scene-plan (interior-archviz-scene-architect) with contract handoff to blendops-camera",
+      "category": "normal",
+      "inputPrompt": "Use blendops-scene-plan on a locked brief: \"Scandinavian minimalist dining room, late-afternoon sun through floor-to-ceiling west windows, oak table focal anchor, 16:9 architectural hero\".",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Primary inputs (locked_3d_brief) provided in text-only planning/audit mode."
+      },
+      "expectedBehavior": [
+        "Produces interior_zone_and_circulation_plan, window_portal_and_fixture_lighting_plan, two_point_vertical_camera_constraints for role interior-archviz-scene-architect",
+        "Preserves Runtime: Not Run and Artifact: Not Produced in text-only mode",
+        "Evaluates contract handoff predicate and hands off to blendops-camera (Composition validation)"
+      ],
+      "requiredOutputProperties": [
+        "light portal",
+        "two-point perspective",
+        "room shell",
+        "blendops-camera",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "fisheye vertical distortion",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "blendops-camera",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Outputs interior_zone_and_circulation_plan, window_portal_and_fixture_lighting_plan, two_point_vertical_camera_constraints conforming to skills/blendops-scene-plan/SKILL.md",
+        "Matches contract handoff predicate to blendops-camera in skills/blendops-scene-plan/contract.json"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "quality.domain": "composition",
+          "quality.verdict": "not_run"
+        },
+        "simulatedOutput": {
+          "mode": "Text-only interior-archviz-scene-architect (blendops-scene-plan)",
+          "recommendedNextAction": "Complete interior_zone_and_circulation_plan and hand off to blendops-camera (Composition validation).",
+          "targetHandoff": "blendops-camera",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Planned interior archviz scene with room shell dimensions, window light portal layout, 28mm two-point perspective camera (vertical tilt lock), and hero furniture hierarchy. Delivered light portal, two-point perspective, room shell and routed to blendops-camera.",
+          "warnings": [
+            "Text-only workflow output; no live Blender session or artifact was executed."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-scene-plan/SKILL.md",
+            "skills/blendops-scene-plan/EVAL.md",
+            "skills/blendops-scene-plan/contract.json",
+            "skills/blendops-scene-plan/references/furniture-layout-rules.md",
+            "skills/blendops-scene-plan/references/interior-architecture-rules.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "interior-scene-secondary-contract-handoff",
+      "skillId": "blendops-scene-plan",
+      "scenario": "Secondary upstream_reference contract handoff from blendops-scene-plan to blendops-brief",
+      "category": "structured_skip",
+      "inputPrompt": "While applying blendops-scene-plan, the workflow context is {\"goal.clarity\":\"clear\",\"brief.locked\":false} (Upstream brief). Determine the contract-governed handoff target.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Evaluates the upstream_reference handoff predicate in skills/blendops-scene-plan/contract.json",
+        "Routes to blendops-brief (Upstream brief) without claiming runtime execution"
+      ],
+      "requiredOutputProperties": [
+        "blendops-brief",
+        "upstream_reference",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "fisheye vertical distortion",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "Artifact: Not Run"
+      ],
+      "expectedRoutingTarget": "blendops-brief",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Contract upstream_reference handoff predicate match to blendops-brief"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "goal.clarity": "clear",
+          "brief.locked": false
+        },
+        "simulatedOutput": {
+          "mode": "Text-only blendops-scene-plan (upstream_reference handoff)",
+          "recommendedNextAction": "Follow upstream_reference handoff to blendops-brief (Upstream brief).",
+          "targetHandoff": "blendops-brief",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Triggered upstream_reference handoff from blendops-scene-plan to blendops-brief under context {\"goal.clarity\":\"clear\",\"brief.locked\":false}.",
+          "warnings": [
+            "Contract-governed upstream_reference handoff."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-scene-plan/contract.json",
+            "skills/blendops-scene-plan/SKILL.md",
+            "skills/blendops-scene-plan/references/furniture-layout-rules.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "interior-scene-unmatched-handoff-and-evidence-boundary",
+      "skillId": "blendops-scene-plan",
+      "scenario": "Unmatched contract handoff context returns none and blocks upgrading unvalidated file to Verified in blendops-scene-plan",
+      "category": "evidence_boundary",
+      "inputPrompt": "An operator provides an unvalidated file on disk during blendops-scene-plan with context {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true} and asks to mark Artifact: Verified and auto-advance.",
+      "preconditions": {
+        "mode": "artifact-claim-audit",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "file-only-unvalidated",
+        "notes": "A file exists on disk but validation checks have not been recorded."
+      },
+      "expectedBehavior": [
+        "Refuses to upgrade Artifact status to Verified when existingArtifactEvidence is file-only-unvalidated (caps at Produced)",
+        "Evaluates contract handoffs for blendops-scene-plan and returns targetHandoff none because no handoff predicate matches"
+      ],
+      "requiredOutputProperties": [
+        "Artifact: Produced",
+        "Runtime: Not Run",
+        "validation",
+        "none"
+      ],
+      "forbiddenOutputProperties": [
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "validation not needed"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Produced"
+      },
+      "evaluationType": "contract_handoff",
+      "severity": "P0",
+      "evidenceRequirements": [
+        "Downgrade unvalidated Verified claim to Produced per laws/evidence-before-done.md",
+        "Verify 0 handoffs match in skills/blendops-scene-plan/contract.json for {\"decision.formatLocked\":true,\"decision.colorLocked\":true,\"decision.engineLocked\":true,\"decision.aspectLocked\":true}"
+      ],
+      "deterministicFixture": {
+        "handoffContext": {
+          "decision.formatLocked": true,
+          "decision.colorLocked": true,
+          "decision.engineLocked": true,
+          "decision.aspectLocked": true
+        },
+        "simulatedOutput": {
+          "mode": "Artifact-claim boundary check (blendops-scene-plan)",
+          "recommendedNextAction": "Keep Artifact status at Produced (never Verified without validation evidence) and hold at targetHandoff none until a downstream precondition is met.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Produced",
+          "summary": "Capped unvalidated artifact claim at Artifact: Produced and verified zero matching contract handoffs (none) for blendops-scene-plan.",
+          "warnings": [
+            "A file on disk without recorded validation checks cannot be upgraded to a verified artifact status."
+          ],
+          "evidenceCitations": [
+            "laws/evidence-before-done.md",
+            "skills/blendops-scene-plan/contract.json",
+            "skills/blendops-scene-plan/EVAL.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "interior-scene-ambiguous-missing-required-inputs",
+      "skillId": "blendops-scene-plan",
+      "scenario": "Missing required input (locked_3d_brief) for blendops-scene-plan halts fabricated output and requests clarification",
+      "category": "ambiguous",
+      "inputPrompt": "Plan an interior architectural scene without specifying the room type, window daylight openings, focal furniture group, or camera aspect ratio.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none",
+        "notes": "Required input 'locked_3d_brief' is missing or underspecified."
+      },
+      "expectedBehavior": [
+        "Identifies missing room typology, natural daylight openings, and focal furniture anchor required by blendops-scene-plan (locked_3d_brief)",
+        "Refuses to fabricate domain parameters and keeps Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "locked_3d_brief",
+        "room typology, natural daylight openings, and focal furniture anchor",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "fisheye vertical distortion",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "guessed parameters silently"
+      ],
+      "expectedRoutingTarget": "none",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Explicitly names missing required input 'locked_3d_brief' (room typology, natural daylight openings, and focal furniture anchor)",
+        "Conservative Runtime: Not Run and Artifact: Not Produced truth states"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Clarification gate (blendops-scene-plan)",
+          "recommendedNextAction": "Provide the missing room typology, natural daylight openings, and focal furniture anchor (locked_3d_brief) before blendops-scene-plan locks interior_zone_and_circulation_plan.",
+          "targetHandoff": "none",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Halted blendops-scene-plan due to missing required input 'locked_3d_brief' (room typology, natural daylight openings, and focal furniture anchor); no values were fabricated.",
+          "warnings": [
+            "Do not invent room typology, natural daylight openings, and focal furniture anchor when 'locked_3d_brief' is omitted."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-scene-plan/SKILL.md",
+            "skills/blendops-scene-plan/EVAL.md",
+            "skills/blendops-scene-plan/contract.json"
+          ]
+        }
+      }
+    },
+    {
+      "id": "interior-scene-out-of-scope-exclusion-delegation",
+      "skillId": "blendops-scene-plan",
+      "scenario": "Out-of-scope request (outdoor establishing) is excluded from blendops-scene-plan and delegated to blendops-scene-plan",
+      "category": "scope_creep",
+      "inputPrompt": "Instead of plan an interior architectural visualization scene (room layout, furniture, materials, natural + artificial lighting) before any modeling or render attempt., handle this request inside blendops-scene-plan: outdoor establishing.",
+      "preconditions": {
+        "mode": "text-only",
+        "runtimeAvailable": false,
+        "existingArtifactEvidence": "none"
+      },
+      "expectedBehavior": [
+        "Enforces the declared exclusion boundary in skills/blendops-scene-plan/contract.json when outdoor establishing",
+        "Delegates to blendops-scene-plan (use blendops-scene-plan) with Runtime: Not Run and Artifact: Not Produced"
+      ],
+      "requiredOutputProperties": [
+        "blendops-scene-plan",
+        "out of scope",
+        "Runtime: Not Run",
+        "Artifact: Not Produced"
+      ],
+      "forbiddenOutputProperties": [
+        "fisheye vertical distortion",
+        "Artifact: Verified",
+        "Artifact: Not Run",
+        "handled inside blendops-scene-plan anyway"
+      ],
+      "expectedRoutingTarget": "blendops-scene-plan",
+      "truthStateExpectations": {
+        "runtimeStatus": "Not Run",
+        "artifactStatus": "Not Produced"
+      },
+      "evaluationType": "deterministic_fixture",
+      "severity": "P1",
+      "evidenceRequirements": [
+        "Exclusion delegation to blendops-scene-plan per skills/blendops-scene-plan/contract.json"
+      ],
+      "deterministicFixture": {
+        "simulatedOutput": {
+          "mode": "Out-of-scope exclusion gate (blendops-scene-plan)",
+          "recommendedNextAction": "Request is out of scope for blendops-scene-plan (outdoor establishing); delegate to blendops-scene-plan.",
+          "targetHandoff": "blendops-scene-plan",
+          "runtimeStatus": "Not Run",
+          "artifactStatus": "Not Produced",
+          "summary": "Enforced blendops-scene-plan exclusion boundary (use blendops-scene-plan) and delegated to blendops-scene-plan.",
+          "warnings": [
+            "blendops-scene-plan is scoped to interior-archviz-scene-architect and does not absorb blendops-scene-plan responsibilities."
+          ],
+          "evidenceCitations": [
+            "skills/blendops-scene-plan/contract.json",
+            "skills/blendops-scene-plan/SKILL.md",
+            "skills/blendops-scene-plan/SKILL.md"
+          ]
+        }
+      }
+    }
+  ]
+}

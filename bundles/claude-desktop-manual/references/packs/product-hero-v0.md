@@ -3,14 +3,14 @@
 Status: 1.0.0
 
 ## Included skills
-- planning-product-scenes
-- planning-camera-and-framing
-- planning-lighting-and-materials
-- verifying-before-handoff
-- setting-up-blender-runtime
-- verifying-before-handoff
-- handing-off-glb-to-web
-- using-blendops
+- blendops-product-shot
+- blendops-camera
+- blendops-lighting-materials
+- blendops-final-check
+- blendops-connect-blender
+- blendops-final-check
+- blendops-glb-web-handoff
+- blendops-start
 
 ## Intended flow
 1. Planning (scene, composition, lighting)

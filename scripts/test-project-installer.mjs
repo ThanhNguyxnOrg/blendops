@@ -1462,7 +1462,7 @@ test('Scenario 30: Source fingerprinting hashes all skill files, references, and
     );
     assert.equal(dryRes.ok, true);
 
-    const helpSkillMd = path.join(fixtureRepo, 'skills', 'using-blendops', 'SKILL.md');
+    const helpSkillMd = path.join(fixtureRepo, 'skills', 'blendops-start', 'SKILL.md');
     const origHelpMd = fs.readFileSync(helpSkillMd, 'utf8');
     fs.writeFileSync(helpSkillMd, `${origHelpMd}\n<!-- fingerprint test edit -->\n`, 'utf8');
 
@@ -1481,7 +1481,7 @@ test('Scenario 30: Source fingerprinting hashes all skill files, references, and
     assert.equal(computeBlendOpsSourceFingerprint(fixtureRepo).fingerprint, baseInfo.fingerprint);
 
     // 2. Modifying a skill EVAL.md changes the fingerprint
-    const helpEvalMd = path.join(fixtureRepo, 'skills', 'using-blendops', 'EVAL.md');
+    const helpEvalMd = path.join(fixtureRepo, 'skills', 'blendops-start', 'EVAL.md');
     const origEvalMd = fs.readFileSync(helpEvalMd, 'utf8');
     fs.writeFileSync(helpEvalMd, `${origEvalMd}\n<!-- eval edit -->\n`, 'utf8');
     assert.notEqual(computeBlendOpsSourceFingerprint(fixtureRepo).fingerprint, baseInfo.fingerprint);
@@ -1494,7 +1494,7 @@ test('Scenario 30: Source fingerprinting hashes all skill files, references, and
       'claude-desktop-manual',
       'references',
       'skills',
-      'using-blendops.md'
+      'blendops-start.md'
     );
     const origRef = fs.readFileSync(refFile, 'utf8');
     fs.writeFileSync(refFile, `${origRef}\n<!-- bundle ref edit -->\n`, 'utf8');
@@ -1502,7 +1502,7 @@ test('Scenario 30: Source fingerprinting hashes all skill files, references, and
     fs.writeFileSync(refFile, origRef, 'utf8');
 
     // 4. Symlink inside skills/ or bundles/ fails closed
-    const rogueSymlink = path.join(fixtureRepo, 'skills', 'using-blendops', 'rogue-link.md');
+    const rogueSymlink = path.join(fixtureRepo, 'skills', 'blendops-start', 'rogue-link.md');
     fs.symlinkSync(helpSkillMd, rogueSymlink);
     assert.throws(
       () => computeBlendOpsSourceFingerprint(fixtureRepo),

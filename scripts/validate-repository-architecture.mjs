@@ -352,7 +352,7 @@ export function classifyTrackedFile(relPath, pkgFiles = []) {
       relPath === 'docs/evals/README.md'
         ? 'Index and policy guide for runtime, install, and package readiness evaluation records'
         : `Evaluation packet or recorded verification evidence (${path.basename(relPath)})`;
-  } else if (relPath.startsWith('docs/examples/handing-off-glb-to-web/')) {
+  } else if (relPath.startsWith('docs/examples/blendops-glb-web-handoff/')) {
     owningSubsystem = 'glb-web-handoff-toolkit';
     referencedByCi = true;
     if (relPath.endsWith('README.md')) {

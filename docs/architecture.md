@@ -140,7 +140,7 @@ blendops/
     ├── adapters/                         # Verified & drafted project-local adapter mappings (8 files)
     ├── audits/                           # `skill-architecture-audit.{json,md}` + `current/` audit state
     ├── evals/                            # Runtime smoke tests, dry-run install evidence, and manual eval packets (12 files)
-    ├── examples/handing-off-glb-to-web/         # Three.js (`threejs-glb-viewer.mjs`) & React Three Fiber (`r3f-glb-viewer.tsx`) viewer modules
+    ├── examples/blendops-glb-web-handoff/         # Three.js (`threejs-glb-viewer.mjs`) & React Three Fiber (`r3f-glb-viewer.tsx`) viewer modules
     ├── install/                          # Per-target install guides for 26 targets + `installer-spec.md` (28 files)
     ├── recipes/                          # End-to-end 3D scene scenario recipes (`cyberpunk-shoe-hero.md`)
     └── workflows/                        # Canonical multi-skill workflow chains (`full-non-blender-user-workflow.md`, `product-hero-workflow.md`)
@@ -156,7 +156,7 @@ blendops/
 | **Generated Artifacts** (`generated_artifact`) | `registry/{skills,workflow-graph,catalog-index}.json`, `docs/knowledge-and-recipe-catalog.md`, `docs/audits/skill-architecture-audit.{json,md}`, `bundles/claude-desktop-manual/references/skills/*.md` (14), `bundles/skill-package/blendops/references/skill-*.md` (14), `docs/audits/current/*`, `dist/*` (untracked build output) | Must **never** be hand-edited. Regenerated deterministically by `npm run catalog:build`, `npm run registry:build`, `npm run bundles:summaries:build`, `node scripts/generate-current-audit.mjs`, and `npm run arch:build`. |
 | **Historical Records** (`historical_record`) | `skill-reviews/reports/*`, `docs/evals/*.md`, `CHANGELOG.md` | Preserved for auditability and provenance. Historical review and eval records must not be rewritten to falsify past baselines (obsolete build-time phase snapshots were removed prior to `v1.0.0`). |
 | **Documentation** (`documentation`) | `README.md`, `TODO.md`, `AGENTS.md`, `CONTRIBUTING.md`, `SECURITY.md`, `SUPPORT.md`, `CODE_OF_CONDUCT.md`, `docs/*.md`, `docs/{install,adapters,recipes,workflows}/*.md` | User-facing and contributor-facing guides; validated for link integrity and runtime model accuracy by `npm run docs:check` and `npm run arch:check`. |
-| **Runtime, Build & Test Infrastructure** (`runtime_build_test_infrastructure`) | `scripts/*.mjs`, `evals/*.json`, `evals/suites/*.eval.json`, `docs/examples/handing-off-glb-to-web/*.{mjs,tsx}` | Executed by `npm run ci`, `npm test`, and the `blendops` CLI. |
+| **Runtime, Build & Test Infrastructure** (`runtime_build_test_infrastructure`) | `scripts/*.mjs`, `evals/*.json`, `evals/suites/*.eval.json`, `docs/examples/blendops-glb-web-handoff/*.{mjs,tsx}` | Executed by `npm run ci`, `npm test`, and the `blendops` CLI. |
 | **Distribution Artifacts** (`distribution_artifact`) | `bin/blendops.mjs`, `bundles/*/manifest.json`, `bundles/skill-package/blendops/**` | Packaged into local `npm pack` tarballs and offline skill bundles. |
 | **Configuration** (`configuration`) | `package.json`, `package-lock.json`, `.gitignore`, `.gitattributes`, `.editorconfig`, `.github/**`, `schemas/*.schema.json`, `docs/audits/audited-inputs.manifest.json` | Governs tooling, schema validation, CI matrix execution, and repository hygiene. |
 
@@ -174,7 +174,7 @@ blendops/
 
 ## 5. npm Packaging & Permanent Scope Boundaries
 
-- **Packaged Tarball Scope (`package.json` `"files"`)**: Includes `bin/`, core runtime scripts (`install-skills.mjs`, `build-knowledge-catalog.mjs`, `compile-scene-plan.mjs`, `runtime-orchestrator.mjs`, `validate-capability-policy.mjs`, `validate-evidence-packet.mjs`, `export-claude-skills.mjs`, `inspect-glb.mjs`, `generate-glb-handoff-report.mjs`), `docs/knowledge-and-recipe-catalog.md`, `docs/recipes/`, `docs/workflows/`, `docs/examples/handing-off-glb-to-web/`, `skills/`, `laws/`, `packs/`, `bundles/`, `registry/`, `schemas/`, `README.md`, `LICENSE`, and `CHANGELOG.md`. Excludes test suites (`scripts/test-*.mjs`), CI-only audit generators, dev server, `docs/audits/`, `evals/`, and `.github/`.
+- **Packaged Tarball Scope (`package.json` `"files"`)**: Includes `bin/`, core runtime scripts (`install-skills.mjs`, `build-knowledge-catalog.mjs`, `compile-scene-plan.mjs`, `runtime-orchestrator.mjs`, `validate-capability-policy.mjs`, `validate-evidence-packet.mjs`, `export-claude-skills.mjs`, `inspect-glb.mjs`, `generate-glb-handoff-report.mjs`), `docs/knowledge-and-recipe-catalog.md`, `docs/recipes/`, `docs/workflows/`, `docs/examples/blendops-glb-web-handoff/`, `skills/`, `laws/`, `packs/`, `bundles/`, `registry/`, `schemas/`, `README.md`, `LICENSE`, and `CHANGELOG.md`. Excludes test suites (`scripts/test-*.mjs`), CI-only audit generators, dev server, `docs/audits/`, `evals/`, and `.github/`.
 - **Permanent Non-Goals**:
   - Public npm CLI distribution is published as [`blendops@1.0.0`](https://www.npmjs.com/package/blendops); the Agent Skills source is listed on [skills.sh](https://www.skills.sh/ThanhNguyxnOrg/blendops).
   - Official marketplace/plugin listing status remains `Not Published`.

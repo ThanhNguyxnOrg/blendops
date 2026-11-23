@@ -8,7 +8,7 @@ Scope: universal BlendOps install/prep UX across coding agents and Claude Deskto
 
 ## Purpose
 
-This is the detailed companion to the concise prompt in [`README.md`](../README.md#-use-in-30-seconds) and the agent-facing [`AI Agent Quickstart`](./ai-agent-quickstart.md). The flow works across project-aware coding agents and chat-only assistants by selecting one safe mode:
+This is the detailed companion to the concise prompt in [`README.md`](../README.md#use-in-30-seconds) and the agent-facing [`AI Agent Quickstart`](./ai-agent-quickstart.md). The flow works across project-aware coding agents and chat-only assistants by selecting one safe mode:
 
 1. **Project-local install** for Claude Code, OpenCode, Cursor, Codex, Gemini, Antigravity, GitHub Copilot, or similar agents with project file access.
 2. **Multiple Skills ZIP preparation** for Claude Desktop / Claude.ai / chat-only contexts without target project write access.
@@ -32,7 +32,7 @@ Success in one layer does not imply success in another. A successful install or 
 
 ## Universal flow
 
-1. User pastes the concise prompt from [`README.md`](../README.md#-use-in-30-seconds) into any AI/agent; the prompt tells the agent to read [`docs/ai-agent-quickstart.md`](./ai-agent-quickstart.md).
+1. User pastes the concise prompt from [`README.md`](../README.md#use-in-30-seconds) into any AI/agent; the prompt tells the agent to read [`docs/ai-agent-quickstart.md`](./ai-agent-quickstart.md).
 2. The assistant decides mode from available capability, not optimism.
 3. If project write access exists, use project-local mode.
 4. If no target project/write access exists, use multiple Skills ZIP mode.
@@ -70,22 +70,22 @@ Expected ZIP set (one per `skills/*/SKILL.md`, currently 14 — run `npm run ski
 
 ```txt
 # Canonical skill snapshot (14; full set via skills:export — do not hand-maintain)
-using-blendops.zip
-scoping-3d-briefs.zip
-scoping-3d-briefs.zip
-sourcing-assets.zip
-troubleshooting-blender-output.zip
-verifying-before-handoff.zip
-setting-up-blender-runtime.zip
-setting-up-blender-runtime.zip
-setting-up-blender-runtime.zip
-planning-product-scenes.zip
-planning-camera-and-framing.zip
-planning-lighting-and-materials.zip
-verifying-before-handoff.zip
-verifying-before-handoff.zip
-handing-off-glb-to-web.zip
-using-blendops.zip
+blendops-start.zip
+blendops-brief.zip
+blendops-brief.zip
+blendops-assets.zip
+blendops-fix-problems.zip
+blendops-final-check.zip
+blendops-connect-blender.zip
+blendops-connect-blender.zip
+blendops-connect-blender.zip
+blendops-product-shot.zip
+blendops-camera.zip
+blendops-lighting-materials.zip
+blendops-final-check.zip
+blendops-final-check.zip
+blendops-glb-web-handoff.zip
+blendops-start.zip
 ```
 
 ZIP requirements:

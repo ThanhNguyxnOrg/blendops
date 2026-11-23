@@ -14,7 +14,7 @@
     "workingTreeState": "dirty",
     "snapshotBasis": "working-tree-on-top-of-source-commit",
     "uncommittedChangeCount": 601,
-    "auditedInputsSha256": "2ff18db4681519ef4b266a1d16fe11133be5a7b68109dbcf75e5fdf2b96f7d3e",
+    "auditedInputsSha256": "32883c38bdae37fe98208a88eae7c9fb287efef194081debe4c3844f6262040e",
     "selfReferentialCommitRule": "A Git commit cannot contain its own final commit SHA inside tracked files. sourceCommitSha records the verified HEAD commit present when the generator ran, workingTreeState and snapshotBasis record whether uncommitted working-tree changes were present on top of sourceCommitSha, and auditedInputsSha256 digests the exact audited file contents."
   },
   "summary": {
@@ -87,9 +87,9 @@
         "registry/skills.json",
         "registry/workflow-graph.json",
         "docs/audits/current/skill-inventory.json",
-        "skills/using-blendops/contract.json",
-        "skills/scoping-3d-briefs/contract.json",
-        "skills/defining-done-and-gates/contract.json"
+        "skills/blendops-start/contract.json",
+        "skills/blendops-brief/contract.json",
+        "skills/blendops-done-criteria/contract.json"
       ],
       "verificationMethod": "npm run registry:check, scripts/test-routing-contracts.mjs, and scripts/test-catalog-contracts.mjs validate Draft 2020-12 Ajv2020 schema compliance across all 14/14 catalog contracts (3 routing participants + 11 specialist skills), context field vocabulary compliance, 16-state activationGate overlap/reachability, 195-edge progression DAG acyclicity, and managed relative-path Markdown sync across all 14 SKILL.md files (0 bare-ID handoff skills).",
       "remainingScope": "None. All 14 catalog skills ship validated contract.json files, synchronized managed Markdown sections, and relative-path handoff links."
@@ -129,30 +129,30 @@
         "scripts/check-docs.mjs",
         "scripts/test-skill-templates.mjs",
         "docs/audits/current/skill-inventory.json",
-        "skills/defining-done-and-gates/SKILL.md",
-        "skills/setting-up-blender-runtime/SKILL.md",
-        "skills/scoping-3d-briefs/SKILL.md",
-        "skills/verifying-before-handoff/SKILL.md",
-        "skills/using-blendops/SKILL.md"
+        "skills/blendops-done-criteria/SKILL.md",
+        "skills/blendops-connect-blender/SKILL.md",
+        "skills/blendops-brief/SKILL.md",
+        "skills/blendops-final-check/SKILL.md",
+        "skills/blendops-start/SKILL.md"
       ],
       "verificationMethod": "Enforced across all 14 catalog skills by validateSkillMarkdownStructure in scripts/check-docs.mjs (18 required headings: 9 core + 9 extended), verified in scripts/test-skill-templates.mjs, and measured in docs/audits/current/skill-inventory.json (skillsMissingExtendedTemplateSections = 0, totalMissingExtendedSectionInstances = 0).",
       "remainingScope": "None. All 14 catalog skills contain all 9 extended template sections and Non-goals."
     },
     {
       "id": "F-06",
-      "title": "Routing quartet handoffs in using-blendops and forward reachability of defining-done-and-gates",
+      "title": "Routing quartet handoffs in blendops-start and forward reachability of blendops-done-criteria",
       "severity": "P1",
       "pillar": "Pillar 2 (Workflow Architecture & Routing)",
-      "baselineState": "OPEN (using-blendops omitted Batch 7 routing quartet; defining-done-and-gates had 0 incoming forward edges)",
+      "baselineState": "OPEN (blendops-start omitted Batch 7 routing quartet; blendops-done-criteria had 0 incoming forward edges)",
       "currentLifecycleStatus": "FIXED",
       "resolvedInMilestone": "Routing Contracts & Quartet Handoffs (f43385a)",
       "lastVerifiedCommit": "657b5ba04235997d2212cee5f9cd2a2e3cfadaf8",
       "evidencePaths": [
-        "skills/using-blendops/contract.json",
-        "skills/using-blendops/SKILL.md",
+        "skills/blendops-start/contract.json",
+        "skills/blendops-start/SKILL.md",
         "registry/workflow-graph.json"
       ],
-      "verificationMethod": "Verified in registry/workflow-graph.json and evals/suites/using-blendops.eval.json (case workflow-stage-mid-workflow-scope-creep).",
+      "verificationMethod": "Verified in registry/workflow-graph.json and evals/suites/blendops-start.eval.json (case workflow-stage-mid-workflow-scope-creep).",
       "remainingScope": "None for routing quartet and scope-boundary delegation."
     },
     {
@@ -171,13 +171,13 @@
         "schemas/runtime-evidence-packet.schema.json",
         "schemas/glb-web-handoff-manifest.schema.json",
         "docs/blender-version-compatibility.md",
-        "docs/examples/handing-off-glb-to-web/README.md",
-        "docs/examples/handing-off-glb-to-web/threejs-glb-viewer.mjs",
-        "docs/examples/handing-off-glb-to-web/r3f-glb-viewer.tsx",
+        "docs/examples/blendops-glb-web-handoff/README.md",
+        "docs/examples/blendops-glb-web-handoff/threejs-glb-viewer.mjs",
+        "docs/examples/blendops-glb-web-handoff/r3f-glb-viewer.tsx",
         "scripts/test-behavioral-evals.mjs",
         "scripts/test-glb-handoff.mjs"
       ],
-      "verificationMethod": "Verified in scripts/test-behavioral-evals.mjs and scripts/test-glb-handoff.mjs: scripts/inspect-glb.mjs parses GLB 2.0 headers, JSON/BIN chunk alignment, buffer/accessor bounds, scene/node/skin/animation/material/texture/extension inventory, and optional Khronos gltf-validator status; scripts/generate-glb-handoff-report.mjs generates schema-validated JSON manifests and escaped HTML/Markdown handoff reports; docs/examples/handing-off-glb-to-web/ provides Three.js and React Three Fiber integration modules; scripts/validate-evidence-packet.mjs enforces runtime/artifact truth-state laws; docs/blender-version-compatibility.md documents Blender 3.6 LTS, 4.2 LTS, and 5.1+ compatibility matrices.",
+      "verificationMethod": "Verified in scripts/test-behavioral-evals.mjs and scripts/test-glb-handoff.mjs: scripts/inspect-glb.mjs parses GLB 2.0 headers, JSON/BIN chunk alignment, buffer/accessor bounds, scene/node/skin/animation/material/texture/extension inventory, and optional Khronos gltf-validator status; scripts/generate-glb-handoff-report.mjs generates schema-validated JSON manifests and escaped HTML/Markdown handoff reports; docs/examples/blendops-glb-web-handoff/ provides Three.js and React Three Fiber integration modules; scripts/validate-evidence-packet.mjs enforces runtime/artifact truth-state laws; docs/blender-version-compatibility.md documents Blender 3.6 LTS, 4.2 LTS, and 5.1+ compatibility matrices.",
       "remainingScope": "None for static container inspection, web handoff manifest/report generation, viewer integration helpers, evidence packet validation, and version compatibility matrices. Live Blender runtime exports remain Not Produced."
     },
     {
