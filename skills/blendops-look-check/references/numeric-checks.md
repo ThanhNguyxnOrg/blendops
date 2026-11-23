@@ -94,5 +94,5 @@ print(json.dumps({
 - Get the planned names and sizes from the locked scene plan, never from what is in the scene.
 - Leave out `grounded` for objects that float on purpose (a hanging lamp).
 - Leave backdrops, floors and objects the brief crops on purpose (a macro shot) out of `in_frame`.
-- A preview may run at a lower `resolution_percentage`; put the preview value in `output`, and check the final value again before the final render.
+- A preview may use another engine or a lower `resolution_percentage` than the final (the CLI preview in `blendops-build` uses Cycles at 50%); put the preview settings in `output`, and `blendops-final-check` checks the final settings.
 - On Path 1, `get_objects_summary` and `get_object_detail_summary` give the same facts without code; on Path 2, `get_scene_info` and `get_object_info`.
