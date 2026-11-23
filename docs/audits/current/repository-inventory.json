@@ -802,8 +802,8 @@
       "isGenerated": true,
       "generatorScript": "scripts/generate-bundle-reference-summaries.mjs",
       "safeToMoveOrRemove": false,
-      "byteSize": 4160,
-      "sha256": "d2f981e6030602d3ade99971c45b8a1ddd674e9afb695160d31a5efac1dec677"
+      "byteSize": 4388,
+      "sha256": "a3ffb724d4854373af302b072294699555104813bac10dc4ea3a744224c41b65"
     },
     {
       "path": "bundles/claude-desktop-manual/references/skills/blendops-camera.md",
@@ -832,8 +832,8 @@
       "isGenerated": true,
       "generatorScript": "scripts/generate-bundle-reference-summaries.mjs",
       "safeToMoveOrRemove": false,
-      "byteSize": 8001,
-      "sha256": "67ffd8fc2a889fbca32cce9b295a315e19a7e6f033c1e54545f67f3c3490ba06"
+      "byteSize": 8014,
+      "sha256": "371a8fa2bdd5365e6c85d95686cb7ff316176096deb2f5f03b57137bebe0bad5"
     },
     {
       "path": "bundles/claude-desktop-manual/references/skills/blendops-done-criteria.md",
@@ -1297,8 +1297,8 @@
       "isGenerated": true,
       "generatorScript": "scripts/generate-bundle-reference-summaries.mjs",
       "safeToMoveOrRemove": false,
-      "byteSize": 3965,
-      "sha256": "f0979d016f52383136c137a2c437987291e5a0cd496a36fe54895c1efe0395e8"
+      "byteSize": 4193,
+      "sha256": "17d0a98cdcf6bccae3c56def5dafdf862b86c586cc0e6fd1de9bd248e506502b"
     },
     {
       "path": "bundles/skill-package/blendops/references/skill-blendops-camera.md",
@@ -1327,8 +1327,8 @@
       "isGenerated": true,
       "generatorScript": "scripts/generate-bundle-reference-summaries.mjs",
       "safeToMoveOrRemove": false,
-      "byteSize": 7937,
-      "sha256": "9e29bfcda0de18c2012779f8deb49d409acee324c2ba420dd5980287d95fc36b"
+      "byteSize": 7950,
+      "sha256": "366c5161ca0cef9d82af83bd293a6851dd9239eea3ef70048a1fb5476e8b8974"
     },
     {
       "path": "bundles/skill-package/blendops/references/skill-blendops-done-criteria.md",
@@ -1838,7 +1838,7 @@
       "generatorScript": "scripts/build-knowledge-catalog.mjs",
       "safeToMoveOrRemove": false,
       "byteSize": 306209,
-      "sha256": "a5b290a42140aeaec145cddccd3065832e2822684dbf81bec0f4c8211d363ab9"
+      "sha256": "6cb469d424443d8f759f1fbc1c489d795a8d74b9d1b8806788c5f1ee24fdfdcb"
     },
     {
       "path": "docs/audits/skill-architecture-audit.md",
@@ -3217,8 +3217,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 12718,
-      "sha256": "51e3901c26122f322acb3a08d300d00c606bddcaac9a95d07f110c81a6d29cf5"
+      "byteSize": 12814,
+      "sha256": "a20372b07af1a16d553321b5e442b73577e966c48d49717a85cf4b447c27afa0"
     },
     {
       "path": "evals/suites/blendops-camera.eval.json",
@@ -3577,8 +3577,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 15815,
-      "sha256": "3c99263fb92ff7a321f0a985a9f683f4f55884c69b568cda513be9054e616b56"
+      "byteSize": 16149,
+      "sha256": "3edad1b152141857e0259500336d81accec46cc6ad797d8284234c947da5a108"
     },
     {
       "path": "registry/knowledge-catalog.json",
@@ -3667,8 +3667,8 @@
       "isGenerated": true,
       "generatorScript": "scripts/build-registry.mjs",
       "safeToMoveOrRemove": false,
-      "byteSize": 179807,
-      "sha256": "dc027dd12f88191c94dd96ae12316391e59783bb04c15f0b5364b44c3282d936"
+      "byteSize": 179970,
+      "sha256": "1afcf524dece686bad1ced6b9c2b6683d6f77bd5c5ffd97ee53bf2706a8b1484"
     },
     {
       "path": "registry/workflow-graph.json",
@@ -3682,8 +3682,8 @@
       "isGenerated": true,
       "generatorScript": "scripts/build-registry.mjs",
       "safeToMoveOrRemove": false,
-      "byteSize": 94309,
-      "sha256": "a995a5223e507d2a2641a5e52a098a7df826213dd7671f3d6be79a05eb8ec524"
+      "byteSize": 94452,
+      "sha256": "e28cf37308758b81c1240ed1e0ad3a94e7c3fbd612e02ba30ae2ee318da3e44d"
     },
     {
       "path": "schemas/adapter-compatibility-matrix.schema.json",
@@ -5557,8 +5557,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 8522,
-      "sha256": "c298daff173dfd2343f4af4132a3dd478264b73fa514d9396a461281fbdee996"
+      "byteSize": 9262,
+      "sha256": "3d3f8baf956e6b79cff9ee9e50cf1cfccabf78b221496166d50aa079a694f349"
     },
     {
       "path": "skills/blendops-build/contract.json",
@@ -5572,8 +5572,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 3514,
-      "sha256": "22dd6e76c74630ee55d7d5460fa13815eb136c2fc325d58f2280a8940fbf0f39"
+      "byteSize": 3644,
+      "sha256": "54c7c9d0343f078b75fd3468b4bdcd6d373f35a5570b37b49c5804b1dbd9411e"
     },
     {
       "path": "skills/blendops-build/references/api-version-rules.md",
@@ -5602,8 +5602,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 2118,
-      "sha256": "a97ebf78cd5901bd5540c167588eb3ffc45cc5b50dc448e8802ea45f7b849238"
+      "byteSize": 2390,
+      "sha256": "0d90b587075b62b393d1e5b5cf15f4bd7d5ee5ea2fe07fb181be47c0817ccacd"
     },
     {
       "path": "skills/blendops-build/references/lighting-camera.md",
@@ -5662,8 +5662,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 1221,
-      "sha256": "47575b00a71418d83b83bf74f8a0d5da0222ffcff9ed1605c5f0aca3a2fccffd"
+      "byteSize": 1793,
+      "sha256": "b67ccd1954f1b37ef5423a21a676424d949e5d08fe1c3f775bd66d76e2e4ce27"
     },
     {
       "path": "skills/blendops-camera/EVAL.md",
@@ -5932,8 +5932,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 11992,
-      "sha256": "a06526fd37bf2830510ca47bc90e7ae39b3576cf66dfcda98b9bf20160ba4d36"
+      "byteSize": 11998,
+      "sha256": "c407090a42442f97f9d87f46c5a469916b8d34a5d8eea018d8556e45792a95f9"
     },
     {
       "path": "skills/blendops-connect-blender/contract.json",
@@ -5947,8 +5947,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 9659,
-      "sha256": "08997c7222e0cb8b0f956744b8f1ad6168c9f9aa950807382143a4a98b5ab260"
+      "byteSize": 9672,
+      "sha256": "3ec78cfa75d8df86dd81cdb50e915ac30538b1756a6ca63af88d951f39db0544"
     },
     {
       "path": "skills/blendops-connect-blender/references/anti-patterns.md",

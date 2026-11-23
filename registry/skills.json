@@ -12,7 +12,7 @@
     "blendops-done-criteria",
     "blendops-start"
   ],
-  "sourceChecksum": "6215fc51ef00f7e31a519cfcc24ff6fb59a8ac368d026079c4cb297ba01897bb",
+  "sourceChecksum": "6852a3e0874dbbc8ab037327dc34f861712da35e87d0e755217db9edf5512c8f",
   "skills": [
     {
       "$schema": "../../schemas/skill-contract.schema.json",
@@ -2375,13 +2375,18 @@
         {
           "target": "blendops-final-check",
           "type": "progression",
-          "label": "Built output exists; check it against the done criteria",
+          "label": "Preview output exists; check it against the done criteria",
           "when": {
             "all": [
               {
                 "field": "runtime.status",
                 "operator": "equals",
                 "value": "Produced"
+              },
+              {
+                "field": "artifact.type",
+                "operator": "equals",
+                "value": "preview"
               }
             ]
           }
@@ -2871,7 +2876,7 @@
         {
           "target": "blendops-build",
           "type": "progression",
-          "label": "Runtime is ready and the plan is locked; build the scene",
+          "label": "Runtime is ready and the scene plan is locked; build the scene",
           "when": {
             "all": [
               {
@@ -2880,7 +2885,7 @@
                 "value": true
               },
               {
-                "field": "brief.locked",
+                "field": "decision.planLocked",
                 "operator": "equals",
                 "value": true
               }

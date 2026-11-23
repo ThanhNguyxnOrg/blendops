@@ -4,17 +4,17 @@
   "releaseVersion": "1.0.0",
   "repository": "ThanhNguyxnOrg/blendops",
   "branch": "devin/1795439308-build-skill",
-  "sourceCommitSha": "e6675ab544160ed88855748de53d0becaa9a123f",
-  "sourceCommitShort": "e6675ab",
-  "sourceCommitDate": "2026-11-23 13:15:27 +0000",
+  "sourceCommitSha": "38cc5f9a26ac407ce72ee6b36519f8b533f08add",
+  "sourceCommitShort": "38cc5f9",
+  "sourceCommitDate": "2026-11-23 13:21:14 +0000",
   "auditProvenance": {
-    "sourceCommitSha": "e6675ab544160ed88855748de53d0becaa9a123f",
-    "sourceCommitShort": "e6675ab",
-    "sourceCommitDate": "2026-11-23 13:15:27 +0000",
+    "sourceCommitSha": "38cc5f9a26ac407ce72ee6b36519f8b533f08add",
+    "sourceCommitShort": "38cc5f9",
+    "sourceCommitDate": "2026-11-23 13:21:14 +0000",
     "workingTreeState": "dirty",
     "snapshotBasis": "working-tree-on-top-of-source-commit",
-    "uncommittedChangeCount": 3,
-    "auditedInputsSha256": "cbd841cba372983346a14e5f3e979675b8b6b5106effa45b23eeab87af48c9f2",
+    "uncommittedChangeCount": 9,
+    "auditedInputsSha256": "db313e62bd7348c18925dee53c537fb15d8ea35602277c19513fcb3d3b08893e",
     "selfReferentialCommitRule": "A Git commit cannot contain its own final commit SHA inside tracked files. sourceCommitSha records the verified HEAD commit present when the generator ran, workingTreeState and snapshotBasis record whether uncommitted working-tree changes were present on top of sourceCommitSha, and auditedInputsSha256 digests the exact audited file contents."
   },
   "commitChain": [
@@ -25,17 +25,17 @@
     },
     {
       "milestone": "BlendOps v1.0.0 Head Snapshot",
-      "commitSha": "e6675ab544160ed88855748de53d0becaa9a123f",
+      "commitSha": "38cc5f9a26ac407ce72ee6b36519f8b533f08add",
       "summary": "Verified production release baseline covering 48 skills, 4 laws, 10 recipes, SceneSpec/ExecutionPlan compilation, MCP qualification, GLB inspection, and 26 agent install targets"
     }
   ],
   "releaseContext": {
     "releaseTag": "v1.0.0",
     "title": "BlendOps 1.0.0 — Portable Blender Workflow, Knowledge Catalog, Safe Installer & Runtime Qualification",
-    "sourceCommitSha": "e6675ab544160ed88855748de53d0becaa9a123f",
+    "sourceCommitSha": "38cc5f9a26ac407ce72ee6b36519f8b533f08add",
     "workingTreeState": "dirty",
     "snapshotBasis": "working-tree-on-top-of-source-commit",
-    "auditedInputsSha256": "cbd841cba372983346a14e5f3e979675b8b6b5106effa45b23eeab87af48c9f2",
+    "auditedInputsSha256": "db313e62bd7348c18925dee53c537fb15d8ea35602277c19513fcb3d3b08893e",
     "auditedInputsManifest": "docs/audits/audited-inputs.manifest.json",
     "provenanceNote": "A Git commit cannot embed its own final commit SHA inside tracked files; sourceCommitSha records the verified HEAD present when audit snapshots were generated, while auditedInputsSha256 hashes all inputs declared in docs/audits/audited-inputs.manifest.json."
   },

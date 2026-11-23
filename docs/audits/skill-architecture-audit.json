@@ -1043,7 +1043,7 @@
         {
           "path": "skills/blendops-build/references/build-order.md",
           "title": "Build order",
-          "line_count": 37,
+          "line_count": 39,
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "rule_classified_skill_local",
@@ -1087,7 +1087,7 @@
         {
           "path": "skills/blendops-build/references/render-export.md",
           "title": "Render and export",
-          "line_count": 40,
+          "line_count": 44,
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "rule_classified_skill_local",
@@ -3848,7 +3848,7 @@
     {
       "path": "skills/blendops-build/references/build-order.md",
       "title": "Build order",
-      "line_count": 37,
+      "line_count": 39,
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "rule_classified_skill_local",
@@ -3892,7 +3892,7 @@
     {
       "path": "skills/blendops-build/references/render-export.md",
       "title": "Render and export",
-      "line_count": 40,
+      "line_count": 44,
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "rule_classified_skill_local",
