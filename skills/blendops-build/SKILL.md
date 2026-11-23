@@ -12,9 +12,10 @@ Turn an approved scene plan into a real Blender scene through the ready runtime 
 ## Quick start
 
 1. Confirm the plan is locked and `blendops-connect-blender` says the runtime is ready.
-2. Read the Blender version and the current scene; save a backup copy of the `.blend` file.
-3. Follow the build order in the playbook below; load only the reference the current step needs.
-4. After the preview, hand off to `blendops-final-check`; on any failure, to `blendops-fix-problems`.
+2. Tell the user in plain words what will change in their scene and which files will be written, and wait for their yes before the first change.
+3. Read the Blender version and the current scene; save a backup copy of the `.blend` file.
+4. Build in this order, one small step at a time: units, rough shapes, modifiers, materials, lights, camera, preview, final render or GLB export.
+5. After the preview, hand off to `blendops-final-check`; on any failure, to `blendops-fix-problems`.
 
 ## When to use
 
@@ -45,6 +46,7 @@ Turn an approved scene plan into a real Blender scene through the ready runtime 
 
 - Runtime state is one of `Not Run`, `Attempted`, `Produced`, `Verified`, `Failed`; artifacts default to `Not Produced`.
 - The runtime path is ready (`blendops-connect-blender`). On Path 2 the user has opted in to `execute_blender_code`.
+- The user has confirmed the planned changes and output paths (explicit operator confirmation, required by the `L3` ceiling in `registry/runtime-capability-policy.json`).
 - A backup `.blend` copy is saved before the first change.
 
 ## Required laws
@@ -58,9 +60,9 @@ Turn an approved scene plan into a real Blender scene through the ready runtime 
 
 BlendOps runtime guidance uses **2 MCP execution paths plus a CLI fallback appendix** (see `../../docs/runtime-stack-strategy.md`):
 
-1. **Path 1 — Official Blender Lab MCP** (Lab add-on + Lab server installed in Blender 5.1+, hosted from either (a) Anthropic Blender Connector in Claude Desktop, or (b) any other MCP client configured manually). Anthropic Connector is **not** standalone — Anthropic's tutorial step 2 tells you to install the Lab add-on inside Blender. Build with `execute_blender_code`; look up APIs with `search_api_docs` / `get_python_api_docs`; preview with `render_thumbnail_to_path`.
-2. **Path 2 — Community `mcp-for-blender` (formerly `blender-mcp`)** (Blender 3.0+). Build with `execute_blender_code`; preview with `get_viewport_screenshot`. Do not call asset libraries or AI model generators unless the brief allows it.
-3. **CLI fallback (appendix)** — `blender --background --python`, see the [scoped mech-prop CLI eval](https://github.com/ThanhNguyxnOrg/blendops/blob/main/docs/evals/cli-fallback-mech-prop.md). Save the `.blend` at the end of each script; nothing persists between runs otherwise.
+1. **Path 1 — Official Blender Lab MCP** (Lab add-on + Lab server installed in Blender 5.1+, hosted from either (a) Anthropic Blender Connector in Claude Desktop, or (b) any other MCP client configured manually). Anthropic Connector is **not** standalone — Anthropic's tutorial step 2 tells you to install the Lab add-on inside Blender. Build with `execute_blender_code` only after the user confirms the changes; look up APIs with `search_api_docs` / `get_python_api_docs`; preview with `render_thumbnail_to_path` and read the file path the tool returns.
+2. **Path 2 — Community `mcp-for-blender` (formerly `blender-mcp`)** (Blender 3.0+). Build with `execute_blender_code` only after the user confirms the changes; preview with `viewport_capture` or `look` (v2.2.7+) or `get_viewport_screenshot` (v1.x). Do not call asset libraries or AI model generators unless the brief allows it.
+3. **CLI fallback (appendix)** — `blender --background --python`, see the [scoped mech-prop CLI eval](https://github.com/ThanhNguyxnOrg/blendops/blob/main/docs/evals/cli-fallback-mech-prop.md). Each step is a new Blender process: open the saved file (`blender --background scene.blend --python step.py`) and save it in place at the end of the script (`bpy.ops.wm.save_mainfile()`), or later steps will not see earlier changes.
 
 This skill runs generated Blender Python inside the runtime only. It never hands that code to the user as their answer.
 
@@ -95,6 +97,7 @@ Stop building, keep the step list, report the blocker in plain language, and han
 ## Validation checklist
 
 - [ ] Blender version read and version-specific names used.
+- [ ] User confirmed the changes before the first one.
 - [ ] Backup saved before the first change.
 - [ ] Each step changed one thing and printed a JSON report.
 - [ ] Objects are named, at real size, with scale applied and resting on the ground.

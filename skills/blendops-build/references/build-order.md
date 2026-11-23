@@ -3,15 +3,16 @@
 Build in small steps. Each step is one short code call that changes one thing and prints a JSON report.
 
 1. **Check the scene.** Read the Blender version, render engine, unit scale, and the objects that already exist. On Path 1 use `get_objects_summary`; otherwise run a read-only snippet.
-2. **Save a backup.** Save a copy of the `.blend` file before the first change (`bpy.ops.wm.save_as_mainfile(filepath=..., copy=True)`).
-3. **Set units and scale.** Metric, 1 unit = 1 m. Model at real size (a shoe is about 0.3 m long).
-4. **Block out shapes.** Primitives first, named after what they are (`Shoe_Sole`, not `Cube.001`).
-5. **Refine shapes.** Modifiers (bevel, subdivision, boolean, weighted normal) before hand edits.
-6. **Materials.** One Principled BSDF material per surface type. See [materials](materials.md).
-7. **Lights.** See [lighting and camera](lighting-camera.md).
-8. **Camera.** Frame the subject. See [lighting and camera](lighting-camera.md).
-9. **Preview.** Low-sample render or viewport capture, then the look check in `blendops-final-check`.
-10. **Final render or export.** See [render and export](render-export.md).
+2. **Ask first.** Tell the user what will change and which files will be written; wait for their yes.
+3. **Save a backup.** Save a copy of the `.blend` file before the first change (`bpy.ops.wm.save_as_mainfile(filepath=..., copy=True)`).
+4. **Set units and scale.** Metric, 1 unit = 1 m. Model at real size (a shoe is about 0.3 m long).
+5. **Block out shapes.** Primitives first, named after what they are (`Shoe_Sole`, not `Cube.001`).
+6. **Refine shapes.** Modifiers (bevel, subdivision, boolean, weighted normal) before hand edits.
+7. **Materials.** One Principled BSDF material per surface type. See [materials](materials.md).
+8. **Lights.** See [lighting and camera](lighting-camera.md).
+9. **Camera.** Frame the subject. See [lighting and camera](lighting-camera.md).
+10. **Preview.** Low-sample render or viewport capture, then the look check in `blendops-final-check`.
+11. **Final render or export.** See [render and export](render-export.md).
 
 ## Rules for every step
 
@@ -32,5 +33,6 @@ print(json.dumps({
 }))
 ```
 
+- On the CLI fallback every step is a new Blender process: run `blender --background scene.blend --python step.py` and end the script with `bpy.ops.wm.save_mainfile()`.
 - If a step fails, read the error, fix only that step, and run it again. Do not re-run earlier steps blindly; objects from them still exist (`bpy.data` keeps state between calls).
 - Never give this code to the user as their answer. Tell them what changed in plain words.
