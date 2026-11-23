@@ -51,7 +51,7 @@ Use render-export-evidence to classify artifact evidence state (Not Run / Attemp
 
 ## Pass / Warn / Fail criteria
 
-- Pass: artifact status matches evidence exactly, no `Produced`/`Verified` claim without output path + file existence + validation notes, Path 2 labeled correctly with upstream commit, path attribution unambiguous (tool names match labeled path's tool surface), read-only smoke evidence does not claim artifacts, CLI fallback labeled as an appendix with evidence for the current run.
+- Pass: artifact status matches evidence exactly, no `Produced`/`Verified` claim without output path + file existence + validation notes, Path 2 labeled correctly with upstream commit, path attribution unambiguous (tool names match labeled path's tool surface), read-only smoke evidence does not claim artifacts, and CLI fallback is labeled as an appendix. Claims of CLI attempts or artifacts require evidence from the current run; a text-only plan stays `Not Run` / `Not Produced`.
 - Warn: partial evidence with explicit caveat and conservative status downgrade, but no unsupported artifact claim
 - Fail: `Produced` or `Verified` claim without output path/file/validation, Path 2 evidence promoted as Path 1 without separately recorded Path 1 tool names, path label contradicts recorded tool names (e.g., labeling Path 2 but recording Lab MCP `get_blendfile_summary_*`), read-only smoke evidence claims render/export/artifact success, CLI fallback presented as publisher-verified peer of Path 1/2.
 

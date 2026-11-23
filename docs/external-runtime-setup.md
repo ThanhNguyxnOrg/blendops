@@ -103,7 +103,7 @@ Direct `blender --background`, `--python`, render flags. Source: [Blender CLI do
 
 **Maturity note:** Blender's CLI is an upstream-documented surface (render/Cycles/format/Python sections read in the current Blender 5.2 LTS Manual) — stability beyond the current LTS is not asserted. The `--background`, `--python`, `--render-output`, `--render-frame`, `--factory-startup` flags are documented in the current Manual. The [scoped mech-prop CLI eval](./evals/cli-fallback-recipe-2026-11-21.md) covers one headless Blender run, not the current job. Operators who use shell `blender` should still record the exact command, inputs, output paths, exit code, and validation evidence per `docs/evals/official-runtime-verification-criteria.md` before any artifact claim — for **provenance**, not because the CLI itself is unstable.
 
-**Evidence:** `Not Run` / `Not Produced` until a future eval record exists.
+**New jobs:** Start at `Not Run` / `Not Produced`. The recorded mech-prop run verified the GLB structure only; it does not establish evidence for a new job.
 
 ---
 
