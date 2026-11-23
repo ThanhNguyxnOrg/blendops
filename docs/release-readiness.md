@@ -1,7 +1,7 @@
 # 🚦 Release Readiness
 
 Status: **1.0.0 (Production)**  
-Scope: 16 skills + 209 reference guides + 30 knowledge records + 10 recipes + 20 sources + 26 install target docs (`35+` CLI targets via `--with-skills-dir` and `skills.sh.json`)
+Scope: 16 skills + 211 reference guides + 30 knowledge records + 10 recipes + 20 sources + 26 install target docs (`35+` CLI targets via `--with-skills-dir` and `skills.sh.json`)
 
 > [!IMPORTANT]
 > **Scope: BlendOps publishes the skills, knowledge, recipe, and local CLI tooling layers; runtime paths are an upstream redirect.** This readiness report grades what BlendOps **owns**: 15 skills + 4 laws + 1 pack (`product-hero-v0`) + 3 bundles + Knowledge/Recipe Catalog + SceneSpec compiler + GLB inspector + runtime capability/transaction orchestrator + 26 install target docs (`35+` CLI targets) + ZIP/package generation + CI guards. Runtime execution (Path 1 Lab MCP, Path 2 `mcp-for-blender`, CLI appendix) is owned by Blender Foundation / Anthropic / the community — BlendOps redirects users via per-target install docs and does **not** claim ownership of those upstream paths' stability.

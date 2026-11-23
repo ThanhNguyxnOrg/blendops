@@ -3,15 +3,15 @@
   "audit_scope": "five-layer-architecture-reconciliation",
   "workflow_stage_derivation_rule": "Derived deterministically from registry/skills.json category + role + skill ID: routing-and-governance/brief-and-scope/recipe-and-pack-governance -> discover-and-plan; asset-and-library-governance -> source-and-clear-assets; runtime-and-bridge-governance -> runtime-preflight; scene-and-domain-planning/color-and-render-decisions -> stage-camera-lighting-and-lookdev; quality-and-budget-validation -> inspect-and-validate; web-and-glb-handoff/evidence-and-reporting -> verify-evidence-and-handoff.",
   "classification_methodology": {
-    "summary": "Combines explicit promoted_from_skill_refs mappings (37 files), rule-based governance & recipe prefix mappings (91 files), rule-based path + heading inspection of skill-local operating instructions (81 files), and verified human semantic reviews (0 files — requires traceable reviewer, timestamp, scope, and outcome evidence).",
+    "summary": "Combines explicit promoted_from_skill_refs mappings (37 files), rule-based governance & recipe prefix mappings (91 files), rule-based path + heading inspection of skill-local operating instructions (83 files), and verified human semantic reviews (0 files — requires traceable reviewer, timestamp, scope, and outcome evidence).",
     "methods_breakdown": {
       "knowledge_promotion_mapping": 37,
       "rule_based_governance_and_recipe_mapping": 91,
-      "rule_based_path_and_heading_inspection": 81,
+      "rule_based_path_and_heading_inspection": 83,
       "human_semantic_review": 0
     },
     "needs_semantic_review_count": 5,
-    "historical_eval_evidence_files_in_docs_evals": 14,
+    "historical_eval_evidence_files_in_docs_evals": 15,
     "honesty_note": "outdated_or_duplicated is 0 for exact file hash collisions inside skills/*/references/*.md; 8 skill-local checklist references that border promoted domain topics are explicitly marked review_status=\"needs_semantic_review\", and rule-based prefix classifications are never represented as human_semantic_review without traceable reviewer/timestamp/scope/outcome evidence."
   },
   "five_layer_architecture": {
@@ -70,10 +70,10 @@
   },
   "summary": {
     "total_skills_audited": 16,
-    "total_skill_references_classified": 209,
+    "total_skill_references_classified": 211,
     "reference_classification_breakdown": {
       "reusable_cross_skill_knowledge": 37,
-      "skill_specific_operating_instructions": 81,
+      "skill_specific_operating_instructions": 83,
       "recipe_specific_procedure": 16,
       "workflow_or_pack_governance": 75,
       "historical_or_eval_evidence": 0,
@@ -82,7 +82,7 @@
     "classification_method_breakdown": {
       "knowledge_promotion_mapping": 37,
       "rule_based_governance_and_recipe_mapping": 91,
-      "rule_based_path_and_heading_inspection": 81,
+      "rule_based_path_and_heading_inspection": 83,
       "human_semantic_review": 0
     },
     "needs_semantic_review_count": 5,
@@ -1027,7 +1027,7 @@
       "recommended_disposition": "keep_as_skill_and_link_knowledge",
       "linked_knowledge_ids": [],
       "linked_recipe_ids": [],
-      "reference_files_count": 6,
+      "reference_files_count": 7,
       "references": [
         {
           "path": "skills/blendops-build/references/api-version-rules.md",
@@ -1088,6 +1088,17 @@
           "path": "skills/blendops-build/references/render-export.md",
           "title": "Render and export",
           "line_count": 44,
+          "classification": "skill_specific_operating_instructions",
+          "classification_method": "rule_based_path_and_heading_inspection",
+          "review_status": "rule_classified_skill_local",
+          "human_review_evidence": null,
+          "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
+          "promoted_to_knowledge_ids": []
+        },
+        {
+          "path": "skills/blendops-build/references/scene-state.md",
+          "title": "Scene state",
+          "line_count": 246,
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "rule_classified_skill_local",
@@ -2629,7 +2640,7 @@
       "recommended_disposition": "keep_as_skill_and_link_knowledge",
       "linked_knowledge_ids": [],
       "linked_recipe_ids": [],
-      "reference_files_count": 4,
+      "reference_files_count": 5,
       "references": [
         {
           "path": "skills/blendops-look-check/references/capture-views.md",
@@ -2656,7 +2667,18 @@
         {
           "path": "skills/blendops-look-check/references/numeric-checks.md",
           "title": "Numeric checks",
-          "line_count": 104,
+          "line_count": 23,
+          "classification": "skill_specific_operating_instructions",
+          "classification_method": "rule_based_path_and_heading_inspection",
+          "review_status": "rule_classified_skill_local",
+          "human_review_evidence": null,
+          "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
+          "promoted_to_knowledge_ids": []
+        },
+        {
+          "path": "skills/blendops-look-check/references/scene-state.md",
+          "title": "Scene state",
+          "line_count": 246,
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "rule_classified_skill_local",
@@ -3975,6 +3997,17 @@
       "promoted_to_knowledge_ids": []
     },
     {
+      "path": "skills/blendops-build/references/scene-state.md",
+      "title": "Scene state",
+      "line_count": 246,
+      "classification": "skill_specific_operating_instructions",
+      "classification_method": "rule_based_path_and_heading_inspection",
+      "review_status": "rule_classified_skill_local",
+      "human_review_evidence": null,
+      "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
+      "promoted_to_knowledge_ids": []
+    },
+    {
       "path": "skills/blendops-camera/references/aspect-defaults.md",
       "title": "Aspect-ratio defaults per use case",
       "line_count": 42,
@@ -5188,7 +5221,18 @@
     {
       "path": "skills/blendops-look-check/references/numeric-checks.md",
       "title": "Numeric checks",
-      "line_count": 104,
+      "line_count": 23,
+      "classification": "skill_specific_operating_instructions",
+      "classification_method": "rule_based_path_and_heading_inspection",
+      "review_status": "rule_classified_skill_local",
+      "human_review_evidence": null,
+      "rationale": "Provides skill-local execution steps, report formatting templates, or checklists specific to this skill contract.",
+      "promoted_to_knowledge_ids": []
+    },
+    {
+      "path": "skills/blendops-look-check/references/scene-state.md",
+      "title": "Scene state",
+      "line_count": 246,
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "rule_classified_skill_local",

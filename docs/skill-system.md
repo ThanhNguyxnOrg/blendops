@@ -34,7 +34,7 @@ Skills are intentionally composable. A helper skill routes the task, planning sk
 | Evals & Audits | Deterministic behavioral/retrieval suites and evidence records. | `evals/catalog-retrieval-evals.json`, `evals/scene-specs/*.json`, `docs/audits/skill-architecture-audit.md`, `docs/evals/runtime-availability-checklist.md`. |
 | Runtime paths | External execution choices, separate from skill install. | Path 1 Official Blender Lab MCP (host: Anthropic Connector OR manual MCP client), Path 2 community `mcp-for-blender`, CLI fallback (documented upstream as first-class Blender CLI; see the [scoped mech-prop CLI eval](./evals/cli-fallback-mech-prop.md)). |
 
-A skill may point to runtime docs, knowledge records (`knowledge.*`), or recipes (`recipe.*`), but it must not imply runtime was installed or run. See [`knowledge-and-recipe-catalog.md`](./knowledge-and-recipe-catalog.md) for the full catalog and [`audits/skill-architecture-audit.md`](./audits/skill-architecture-audit.md) for the 15-skill and 209-reference classification audit.
+A skill may point to runtime docs, knowledge records (`knowledge.*`), or recipes (`recipe.*`), but it must not imply runtime was installed or run. See [`knowledge-and-recipe-catalog.md`](./knowledge-and-recipe-catalog.md) for the full catalog and [`audits/skill-architecture-audit.md`](./audits/skill-architecture-audit.md) for the 15-skill and 211-reference classification audit.
 
 ---
 

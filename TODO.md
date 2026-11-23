@@ -1,9 +1,9 @@
 # BlendOps Roadmap
 
-_Last updated for **v1.0.0** (16 canonical skills, 209 reference guides, 26 install target docs, 35+ CLI targets via `--with-skills-dir` + `skills.sh.json`, 280 deterministic eval cases, 17 CI test suites)._
+_Last updated for **v1.0.0** (16 canonical skills, 211 reference guides, 26 install target docs, 35+ CLI targets via `--with-skills-dir` + `skills.sh.json`, 280 deterministic eval cases, 17 CI test suites)._
 
 > [!NOTE]
-> BlendOps publishes one thing: a **skills layer** (**16 skills** + **209 reference guides** + 4 laws + 1 pack + 3 bundles + **26 install target docs** / **35+ CLI targets** via `--with-skills-dir` + deterministic catalog & CLI + ZIP/package generation + automated CI guards). The layer is **complete and production-ready at `v1.0.0`**.
+> BlendOps publishes one thing: a **skills layer** (**16 skills** + **211 reference guides** + 4 laws + 1 pack + 3 bundles + **26 install target docs** / **35+ CLI targets** via `--with-skills-dir` + deterministic catalog & CLI + ZIP/package generation + automated CI guards). The layer is **complete and production-ready at `v1.0.0`**.
 >
 > Everything related to actually running Blender — the Blender executable, the MCP servers, the MCP hosts, the CLI — is **upstream**, owned by Blender Foundation / Anthropic / the `ahujasid` community. BlendOps **redirects** users to the right upstream docs per install target. Path 1 + Path 2 are **user-reported verified by the repo owner**; CLI is **documented upstream as a first-class Blender CLI surface**, with one scoped [CLI eval record](docs/evals/cli-fallback-mech-prop.md).
 >
