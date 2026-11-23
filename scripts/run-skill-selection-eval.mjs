@@ -99,8 +99,8 @@ export function descriptionOverlap(skills) {
 
 export function scorePicks(cases, picks) {
   const rows = cases.map((c) => {
-    const raw = picks[c.id];
-    const pick = typeof raw === 'string' && ['null', 'none', ''].includes(raw.trim().toLowerCase()) ? null : raw;
+    const raw = typeof picks[c.id] === 'string' ? picks[c.id].trim() : picks[c.id];
+    const pick = raw === '' ? undefined : typeof raw === 'string' && ['null', 'none'].includes(raw.toLowerCase()) ? null : raw;
     const ok = pick !== undefined && (pick === c.expected || (c.acceptable ?? []).includes(pick));
     return { id: c.id, lang: c.lang, expected: c.expected, pick: pick ?? null, answered: pick !== undefined, ok };
   });

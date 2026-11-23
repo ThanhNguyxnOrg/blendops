@@ -62,6 +62,9 @@ test('agent responses are scored, with alternates and unanswered cases', () => {
   const quoted = scorePicks([none], { [none.id]: 'null' });
   assert.equal(quoted.falseTriggers, 0);
   assert.equal(quoted.accuracy, 1);
+  const blank = scorePicks([none], { [none.id]: '' });
+  assert.equal(blank.answered, 0);
+  assert.equal(blank.accuracy, 0);
 });
 
 test('prompt pack lists every skill and case, and the CLI scores a responses file', () => {
