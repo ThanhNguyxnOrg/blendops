@@ -49,13 +49,26 @@ PLAN = None  # set to the plan dict to add plan checks; see "Plan checks"
 
 TOL = 0.001          # 1 mm, for planned ground contact
 GAP = 0.01           # 1 cm, before a part counts as floating
-MAX_VERTS = 200000   # skip per-vertex checks on heavier meshes
+MAX_VERTS = 200000   # skip part and normal checks on heavier meshes
+GEOMETRY = {'MESH', 'CURVE', 'SURFACE', 'FONT', 'META'}
 plan = PLAN or {}
 floor_z = plan.get("floor_z", 0.0)
 scene = bpy.context.scene
+U = scene.unit_settings.scale_length  # metres per Blender unit
 cam = scene.camera
 depsgraph = bpy.context.evaluated_depsgraph_get()
 issues = []
+instances = {}  # object name -> [count, box min, box max], Blender units
+for inst in depsgraph.object_instances:
+    # a curve or text object lists its own mesh as an instance; that one is not extra
+    if inst.is_instance and inst.parent and (inst.parent.type == 'MESH' or inst.object.original != inst.parent.original):
+        pts = [inst.matrix_world @ Vector(c) for c in inst.object.bound_box]
+        lo = Vector(min(c[k] for c in pts) for k in range(3))
+        hi = Vector(max(c[k] for c in pts) for k in range(3))
+        rec = instances.setdefault(inst.parent.original.name, [0, lo, hi])
+        rec[0] += 1
+        for k in range(3):
+            rec[1][k], rec[2][k] = min(rec[1][k], lo[k]), max(rec[2][k], hi[k])
 
 
 def rnd(v, n=4):
@@ -81,10 +94,13 @@ def mesh_facts(ev):
     try:
         mw = ev.matrix_world
         f = {"vertices": len(mesh.vertices), "faces": len(mesh.polygons)}
-        if not mesh.vertices or len(mesh.vertices) > MAX_VERTS:
+        if not mesh.vertices:
             return f, []
-        world = [mw @ v.co for v in mesh.vertices]
-        f["lowest_z_m"] = round(min(p.z for p in world), 4)
+        world = [(mw @ v.co) * U for v in mesh.vertices]
+        f["box"] = (Vector(min(p[k] for p in world) for k in range(3)), Vector(max(p[k] for p in world) for k in range(3)))
+        f["lowest_z_m"] = round(f["box"][0].z, 4)
+        if len(mesh.vertices) > MAX_VERTS:
+            return f, [f["box"]]
         root = list(range(len(world)))
 
         def find(i):
@@ -128,21 +144,35 @@ objects, parts = [], []
 for obj in scene.objects:
     ev = obj.evaluated_get(depsgraph)
     corners = [ev.matrix_world @ Vector(c) for c in ev.bound_box]
+    inst = instances.get(obj.name)
     rec = {
         "name": obj.name,
         "type": obj.type,
         "visible": obj.visible_get(),
-        "location_m": rnd(obj.location),
+        "location_m": rnd(obj.location * U),
         "rotation_deg": rnd((math.degrees(a) for a in obj.rotation_euler), 2),
         "scale": rnd(obj.scale),
-        "dimensions_m": rnd(obj.dimensions),
-        "bbox_min_m": rnd(Vector(min(c[k] for c in corners) for k in range(3))),
-        "bbox_max_m": rnd(Vector(max(c[k] for c in corners) for k in range(3))),
+        "dimensions_m": rnd(obj.dimensions * U),
+        "bbox_min_m": rnd(Vector(min(c[k] for c in corners) for k in range(3)) * U),
+        "bbox_max_m": rnd(Vector(max(c[k] for c in corners) for k in range(3)) * U),
         "in_frame": frame_status(corners),
     }
-    if obj.type == 'MESH':
+    if obj.type in GEOMETRY:
         facts, boxes = mesh_facts(ev)
+        box = facts.pop("box", None)
         rec.update(facts)
+        if inst:
+            rec["instances"] = inst[0]
+            lo, hi = inst[1] * U, inst[2] * U
+            if box:
+                lo = Vector(min(a, b) for a, b in zip(lo, box[0]))
+                hi = Vector(max(a, b) for a, b in zip(hi, box[1]))
+            box = (lo, hi)
+            boxes = boxes + [box]
+            rec["lowest_z_m"] = round(lo.z, 4)
+        if box:
+            rec["bbox_min_m"], rec["bbox_max_m"] = rnd(box[0]), rnd(box[1])
+            rec["in_frame"] = frame_status([Vector((x, y, z)) / U for x in (box[0].x, box[1].x) for y in (box[0].y, box[1].y) for z in (box[0].z, box[1].z)])
         rec["modifiers"] = [m.type for m in obj.modifiers]
         rec["materials"] = [s.material.name if s.material else None for s in obj.material_slots]
         if rec["visible"]:
@@ -154,7 +184,7 @@ for obj in scene.objects:
     objects.append(rec)
 
 for rec in objects:
-    if rec["type"] != 'MESH' or not rec["visible"] or "lowest_z_m" not in rec:
+    if rec["type"] not in GEOMETRY or not rec["visible"] or "lowest_z_m" not in rec:
         continue
     own = [b for n, b in parts if n == rec["name"]]
     others = [b for n, b in parts if n != rec["name"]]
@@ -191,21 +221,27 @@ if PLAN:
         if rec is None:
             issue("fail", "exists", object=name)
             continue
-        for axis, (got, want) in enumerate(zip(rec["dimensions_m"], size)):
+        dims = rec["dimensions_m"]
+        if rec.get("instances"):
+            dims = [round(b - a, 4) for a, b in zip(rec["bbox_min_m"], rec["bbox_max_m"])]
+        for axis, (got, want) in enumerate(zip(dims, size)):
             if want and abs(got - want) / want > plan.get("size_tolerance", 0.10):
                 issue("fail", "size", object=name, axis="xyz"[axis], got_m=got, want_m=want)
         if any(abs(s - 1) > 1e-4 for s in rec["scale"]):
             issue("fail", "scale_applied", object=name, scale=rec["scale"])
-        if rec["type"] == 'MESH' and rec.get("vertices") == 0:
+        if rec["type"] in GEOMETRY and rec.get("vertices") == 0 and not rec.get("instances"):
             issue("fail", "geometry", object=name)
-        if name in plan.get("grounded", []) and "lowest_z_m" in rec and abs(rec["lowest_z_m"] - floor_z) > TOL:
-            issue("fail", "ground_contact", object=name, gap_m=round(rec["lowest_z_m"] - floor_z, 4))
+        if name in plan.get("grounded", []):
+            if "lowest_z_m" not in rec:
+                issue("fail", "ground_contact", object=name, gap_m=None)
+            elif abs(rec["lowest_z_m"] - floor_z) > TOL:
+                issue("fail", "ground_contact", object=name, gap_m=round(rec["lowest_z_m"] - floor_z, 4))
         if name in plan.get("in_frame", []) and rec["in_frame"] != "in":
             issue("fail", "in_frame", object=name, status=rec["in_frame"])
-        if rec["type"] == 'MESH' and not any(rec["materials"]):
+        if rec["type"] in GEOMETRY and not rec.get("instances") and not any(rec["materials"]):
             issue("fail", "material", object=name)
     allowed = set(plan.get("objects", {})) | set(plan.get("approved_extra", []))
-    extra = [r["name"] for r in objects if r["type"] == 'MESH' and r["visible"] and r["name"] not in allowed]
+    extra = [r["name"] for r in objects if r["type"] in GEOMETRY and r["visible"] and r["name"] not in allowed]
     if extra:
         issue("fail", "extra_objects", objects=extra)
     if cam is None:
@@ -240,6 +276,10 @@ print(json.dumps({
 ```
 
 - `verdict` is `fail` with any `fail` issue, `warn` with only `warn` issues, else `pass`. `plan_checked: false` means no plan checks ran.
-- Meshes over 200,000 vertices skip the per-vertex facts; the box fields still apply.
+- Distances are in metres: Blender units times the scene's unit scale (`scale_length`), so a centimetre scene still reports metres.
+- Curves, surfaces, text and metaballs are measured like meshes, after modifiers.
+- `instances` counts Geometry Nodes or particle instances an object makes; they render without being mesh vertices, so such an object passes `geometry`. Its box, `lowest_z_m` and plan `size` include the instances' boxes, measured along the world axes.
+- For geometry, the box is measured from the evaluated vertices (and instances), not the object's bounding box. Meshes over 200,000 vertices skip `parts`, `open_edges` and `normals_inward`; their box stands in for their parts.
+- A grounded object with no measurable geometry fails `ground_contact` with `gap_m: null`.
 - `resting` and `floating_parts` compare boxes, so a part inside another object's box counts as touching it.
 - On Path 1, `get_objects_summary` and `get_object_detail_summary` give part of this without code; on Path 2, `get_scene_info` and `get_object_info`. Run the script when you need the plan checks.
