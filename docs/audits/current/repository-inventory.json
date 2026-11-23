@@ -451,8 +451,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 6707,
-      "sha256": "1b2fb3dc0100e15b2cf86d18fe7b0353a045124a83a0235cf763638d0f989050"
+      "byteSize": 6856,
+      "sha256": "ee7593aaf9c63bac05965304d7462cb6107cfb9dd45bc39efd8878fa261a0be1"
     },
     {
       "path": "LICENSE",
@@ -1877,7 +1877,7 @@
       "generatorScript": "scripts/build-knowledge-catalog.mjs",
       "safeToMoveOrRemove": false,
       "byteSize": 314426,
-      "sha256": "8f7550aa0d340b9fc4150ca321fe76865c70796a35a726224b31e01a1fb7f248"
+      "sha256": "3a50e1ca106e875c056dd24330fc2cff3071c05cef81a6269bc41b13d52c9396"
     },
     {
       "path": "docs/audits/skill-architecture-audit.md",
@@ -1892,7 +1892,7 @@
       "generatorScript": "scripts/build-knowledge-catalog.mjs",
       "safeToMoveOrRemove": false,
       "byteSize": 21523,
-      "sha256": "c5ef5164281a20c86fb34cbf0f87399a5f3bfcbbcdd972706a3eec6e651e8ee4"
+      "sha256": "eaa0ce6401b3884c558ef9aaf03f347af0d5c27e65d0e5cd2c30237c42235fbd"
     },
     {
       "path": "docs/blender-version-compatibility.md",
@@ -1966,8 +1966,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 6884,
-      "sha256": "aaaf008e5585aeb08e9df36fd304527aa3a9a6a6669166b667d7fec56c55a61f"
+      "byteSize": 7114,
+      "sha256": "b5f8a896224abcdb5f07edbf6ea413812e34c53d7ff792a54e3ccf288e8b0fc8"
     },
     {
       "path": "docs/evals/adapter-empirical-verification.md",
@@ -2056,8 +2056,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 16557,
-      "sha256": "c5ba7526b3926b5a51fb05ab88b643c2768ca2b62e2806bf73534009a59b68d1"
+      "byteSize": 16798,
+      "sha256": "09e7b75ad37a7cae90d899c8d96e30479dc6773f5ec74d2668d0f0daaa83a8c8"
     },
     {
       "path": "docs/evals/cyberpunk-shoe-hero-v0-manual-eval.md",
@@ -3571,8 +3571,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 4637,
-      "sha256": "5e3de85e5a12accf84c5ee4631ea6ff27ea36946a58dde276f209b1a578c0977"
+      "byteSize": 4708,
+      "sha256": "7d3dfcc6443636d1abcd0fbe4eb4026c442805fa2ad74df65daf4be076106b73"
     },
     {
       "path": "packs/README.md",

@@ -53,6 +53,7 @@ npm run registry:check           # verifies registry/skills.json and registry/wo
 npm run evals:check              # validates evals/*.json against schemas/skill-eval.schema.json
 npm run evals:run                # runs deterministic behavioral evaluations across all 16 skills (280 cases)
 npm run bundles:summaries:check  # verifies 96 generated bundle reference summaries are in sync
+npm run test:blender             # needs BLENDER=/path/to/blender; runs skill reference examples in real Blender (CI: .github/workflows/blender.yml)
 npm run skills:export            # produces one ZIP + one Claude Code folder per skills/*/SKILL.md (16 total) into dist/claude-skills/
 npm test                         # runs all 17 descriptive regression test suites (scripts/test-*.mjs)
 ```
