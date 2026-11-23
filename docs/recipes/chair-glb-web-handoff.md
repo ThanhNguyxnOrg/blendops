@@ -86,10 +86,11 @@ print(json.dumps({"step": "apply-scale", "object": obj.name, "dimensions_m": [ro
 import bpy, json
 export = {"Chair", "Cushion"}
 chair = bpy.data.objects["Chair"]
-mat = chair.material_slots[0].material
+slot = next(s for s in chair.material_slots if s.material and s.material.name == "Wood")
+mat = slot.material
 if any(o.name not in export and mat.name in o.data.materials for o in bpy.data.objects if o.type == 'MESH'):
     mat = mat.copy()
-    chair.material_slots[0].material = mat
+    slot.material = mat
 nodes = mat.node_tree.nodes
 for node in [n for n in nodes if n.bl_idname == "ShaderNodeTexNoise"]:
     nodes.remove(node)
