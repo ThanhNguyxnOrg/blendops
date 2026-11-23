@@ -2,8 +2,8 @@
   "schemaVersion": "1.0.0",
   "auditPhase": "v1.0.0-current",
   "summary": {
-    "totalTrackedFiles": 594,
-    "npmPackageIncludedFiles": 403,
+    "totalTrackedFiles": 595,
+    "npmPackageIncludedFiles": 404,
     "generatedTrackedFiles": 47,
     "canonicalSkillsCount": 16,
     "lawsCount": 4,
@@ -16,7 +16,7 @@
       "documentation": 87,
       "historical_record": 21,
       "distribution_artifact": 15,
-      "canonical_source": 291,
+      "canonical_source": 292,
       "generated_artifact": 47,
       "runtime_build_test_infrastructure": 95
     },
@@ -40,7 +40,7 @@
       "cli-and-runtime-tools": 23,
       "test-suites": 23,
       "quality-and-skill-reviews": 7,
-      "skills-catalog": 262
+      "skills-catalog": 263
     },
     "topLevelCounts": {
       "(root)": 15,
@@ -55,10 +55,10 @@
       "schemas": 16,
       "scripts": 58,
       "skill-reviews": 7,
-      "skills": 261
+      "skills": 262
     },
     "referenceIntegrity": {
-      "markdownFiles": 425,
+      "markdownFiles": 426,
       "jsModules": 59,
       "schemas": 16,
       "workflows": 7
@@ -2251,8 +2251,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 2705,
-      "sha256": "e73225189a75848fe1e42c1150a9368d484e8027ac15ebe9a76eda0a0b66ce04"
+      "byteSize": 2820,
+      "sha256": "9257eade62dc56aab0d7fe309edd4137912a76954e92c89ae9b2141aed11d50c"
     },
     {
       "path": "docs/examples/agent-install-prompt.md",
@@ -4591,8 +4591,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 7381,
-      "sha256": "b8311d8ae8cea6f0155c5b698a68374817a40d0153bd372cf1b47d032f9874b0"
+      "byteSize": 8226,
+      "sha256": "8ea968e0789030de7b8a607b1f449225238eab7b3c30a08ccac7f2afd57c7f00"
     },
     {
       "path": "scripts/runtime-orchestrator.mjs",
@@ -4922,7 +4922,7 @@
       "generatorScript": null,
       "safeToMoveOrRemove": false,
       "byteSize": 26012,
-      "sha256": "5efc17126e50d234e964a3bd3f1fad9a76402e41ef03ef4723a8518a47094734"
+      "sha256": "5a221ec03bfab9cb7e1ccdd40b1fa35c6933b5963bc4e39b48615210fa7cdc88"
     },
     {
       "path": "scripts/test-skill-selection.mjs",
@@ -4936,8 +4936,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 3425,
-      "sha256": "fd128dbd316ba635fa061eb95ceb2b3f24fe665dd188ab6b40f96c2e096dabfc"
+      "byteSize": 3732,
+      "sha256": "db1a677584147defda50b165c8dcd58b8e12735dc86394bf60e0e46728f2714b"
     },
     {
       "path": "scripts/test-skill-templates.mjs",
@@ -5283,6 +5283,21 @@
       "safeToMoveOrRemove": false,
       "byteSize": 11780,
       "sha256": "e94fcba341e8122946dcfec08edd7558f3640b9a8b7003346709d854b372a479"
+    },
+    {
+      "path": "skills/blendops-assets/references/asset-source-gate.md",
+      "fileType": ".md",
+      "classification": "canonical_source",
+      "purpose": "Domain reference guide attached to canonical skill",
+      "owningSubsystem": "skills-catalog",
+      "includedInNpmPackage": true,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 1755,
+      "sha256": "25be36d6bddd1f501a5e4cd0048acba3f3dd8783f3eca327170b752af98c7db1"
     },
     {
       "path": "skills/blendops-assets/references/asset-strategy-decision-tree.md",
