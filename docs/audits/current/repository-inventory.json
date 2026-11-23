@@ -4216,8 +4216,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 42034,
-      "sha256": "438f8adbd21a55ee6fb4823906f365b86866f2457479f6529aee93d9a59834ab"
+      "byteSize": 42021,
+      "sha256": "f217f7ad34f0ae0a34926f0e890eb7db213b8c036c5996603193cb3b957d2b07"
     },
     {
       "path": "scripts/cli/args.mjs",
@@ -5851,8 +5851,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 10124,
-      "sha256": "dca340a8d45e3ae9932f031ee6618a89698a0b3681c712cad98e72b0486c073e"
+      "byteSize": 10924,
+      "sha256": "9b1be8928947a8447cb990399319ab577295ca56c65aaf0a4205b19354141dc4"
     },
     {
       "path": "skills/blendops-build/contract.json",

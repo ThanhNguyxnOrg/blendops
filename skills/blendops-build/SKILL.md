@@ -61,10 +61,20 @@ Turn an approved scene plan into a real Blender scene through the ready runtime 
 BlendOps runtime guidance uses **2 MCP execution paths plus a CLI fallback appendix** (see `../../docs/runtime-stack-strategy.md`):
 
 1. **Path 1 — Official Blender Lab MCP** (Lab add-on + Lab server installed in Blender 5.1+, hosted from either (a) Anthropic Blender Connector in Claude Desktop, or (b) any other MCP client configured manually). Anthropic Connector is **not** standalone — Anthropic's tutorial step 2 tells you to install the Lab add-on inside Blender. Build with `execute_blender_code` only after the user confirms the changes; look up APIs with `search_api_docs` / `get_python_api_docs`; preview with `render_thumbnail_to_path` and read the file path the tool returns.
-2. **Path 2 — Community `mcp-for-blender` (formerly `blender-mcp`)** (Blender 3.0+). Build with `execute_blender_code` only after the user confirms the changes; preview with `viewport_capture` or `look` (v2.2.7+) or `get_viewport_screenshot` (v1.x). Do not call `search_assets`, `import_asset`, or `generate_3d` unless the asset plan names that asset and source and the user approved the call ([asset source gate](../blendops-assets/references/asset-source-gate.md)).
+2. **Path 2 — Community `mcp-for-blender` (formerly `blender-mcp`)** (Blender 3.0+). Build with `execute_blender_code` only after the user confirms the changes; preview with `viewport_capture` or `look` (v2.2.7+) or `get_viewport_screenshot` (v1.x). Do not call `search_assets`, `import_asset`, or `generate_3d` unless the asset plan names that asset and source and the user approved the call (see Asset source gate below).
 3. **CLI fallback (appendix)** — `blender --background --python`, see the [scoped mech-prop CLI eval](https://github.com/ThanhNguyxnOrg/blendops/blob/main/docs/evals/cli-fallback-mech-prop.md). Each step is a new Blender process: open the saved file with `blender --background scene.blend --python-exit-code 1 --python step.py` (without the exit-code flag a Python error still exits 0). Each step that changes the scene saves it in place at the end (`bpy.ops.wm.save_mainfile()`), or later steps will not see earlier changes; the first read-only scene check does not save.
 
 This skill runs generated Blender Python inside the runtime only. It never hands that code to the user as their answer.
+
+## Asset source gate
+
+Fetch, import, or AI-generate an asset (`search_assets`, `import_asset`, `generate_3d`, or any tool that downloads or generates) only when all three hold:
+
+1. The locked asset plan names this asset, its source, and its license or `TBD`.
+2. The user said yes to this call this session, after hearing what will be fetched or generated, from which service, whether it costs credits or sends their prompt or images out, and the license.
+3. On Path 2, only the approved integration is switched on in the add-on panel.
+
+Otherwise build the part from primitives or procedural materials as the plan's fallback, or ask. Files the user supplied are not gated. Record source, asset id or prompt, license, the user's approval, and the file path in the run evidence; an asset without that record stays out of the final render or GLB.
 
 ## Decision tree
 

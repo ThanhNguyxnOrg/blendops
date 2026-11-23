@@ -408,7 +408,7 @@ const requiredArtifactEvidenceSnippets = [
   },
   {
     file: 'skills/blendops-build/SKILL.md',
-    snippets: ['../blendops-assets/references/asset-source-gate.md'],
+    snippets: ['## Asset source gate', '`generate_3d`'],
   },
   {
     file: 'docs/start-here.md',
