@@ -4,7 +4,7 @@
   "contractedSkills": 15,
   "uncontractedSkills": 0,
   "catalogSkills": 15,
-  "sourceChecksum": "6852a3e0874dbbc8ab037327dc34f861712da35e87d0e755217db9edf5512c8f",
+  "sourceChecksum": "451a98549323da6e9558c85f1e99f18d2dc4b16fabeea22dd95808d31677b21d",
   "summary": {
     "totalNodes": 15,
     "contractedNodes": 15,
@@ -1759,7 +1759,7 @@
       "from": "blendops-build",
       "to": "blendops-final-check",
       "type": "progression",
-      "label": "Preview output exists; check it against the done criteria",
+      "label": "Preview, render or GLB exists; check it against the done criteria",
       "when": {
         "all": [
           {
@@ -1769,8 +1769,12 @@
           },
           {
             "field": "artifact.type",
-            "operator": "equals",
-            "value": "preview"
+            "operator": "in",
+            "value": [
+              "preview",
+              "render",
+              "glb"
+            ]
           }
         ]
       }

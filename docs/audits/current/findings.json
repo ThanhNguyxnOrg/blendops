@@ -4,17 +4,17 @@
   "repository": "ThanhNguyxnOrg/blendops",
   "branch": "devin/1795439308-build-skill",
   "baselineCommitSha": "3ea3c35c6b8a6e5e915bab9f63333d4a1c09bd4d",
-  "sourceCommitSha": "38cc5f9a26ac407ce72ee6b36519f8b533f08add",
-  "sourceCommitShort": "38cc5f9",
-  "sourceCommitDate": "2026-11-23 13:21:14 +0000",
+  "sourceCommitSha": "a9375523cb77d310af9412ffae7ec706acfefe99",
+  "sourceCommitShort": "a937552",
+  "sourceCommitDate": "2026-11-23 13:26:15 +0000",
   "auditProvenance": {
-    "sourceCommitSha": "38cc5f9a26ac407ce72ee6b36519f8b533f08add",
-    "sourceCommitShort": "38cc5f9",
-    "sourceCommitDate": "2026-11-23 13:21:14 +0000",
+    "sourceCommitSha": "a9375523cb77d310af9412ffae7ec706acfefe99",
+    "sourceCommitShort": "a937552",
+    "sourceCommitDate": "2026-11-23 13:26:15 +0000",
     "workingTreeState": "dirty",
     "snapshotBasis": "working-tree-on-top-of-source-commit",
-    "uncommittedChangeCount": 9,
-    "auditedInputsSha256": "db313e62bd7348c18925dee53c537fb15d8ea35602277c19513fcb3d3b08893e",
+    "uncommittedChangeCount": 5,
+    "auditedInputsSha256": "b8ca42fb8a44afe96010bae0ae71dcb09dee43c640cce8120fa01f0c7c7ad2d1",
     "selfReferentialCommitRule": "A Git commit cannot contain its own final commit SHA inside tracked files. sourceCommitSha records the verified HEAD commit present when the generator ran, workingTreeState and snapshotBasis record whether uncommitted working-tree changes were present on top of sourceCommitSha, and auditedInputsSha256 digests the exact audited file contents."
   },
   "summary": {
@@ -39,7 +39,7 @@
       "baselineState": "OPEN (30/48 skills affected at 3ea3c35)",
       "currentLifecycleStatus": "FIXED",
       "resolvedInMilestone": "Truth-State Normalization (ac1ccdb)",
-      "lastVerifiedCommit": "38cc5f9a26ac407ce72ee6b36519f8b533f08add",
+      "lastVerifiedCommit": "a9375523cb77d310af9412ffae7ec706acfefe99",
       "evidencePaths": [
         "scripts/check-docs.mjs",
         "scripts/test-skills-export.mjs",
@@ -58,7 +58,7 @@
       "baselineState": "OPEN (spawnSync zip ENOENT on minimal Linux; CI skipped export)",
       "currentLifecycleStatus": "FIXED",
       "resolvedInMilestone": "Portable Exporter & Full CI (ac1ccdb -> 4af8b16)",
-      "lastVerifiedCommit": "38cc5f9a26ac407ce72ee6b36519f8b533f08add",
+      "lastVerifiedCommit": "a9375523cb77d310af9412ffae7ec706acfefe99",
       "evidencePaths": [
         "scripts/export-claude-skills.mjs",
         "scripts/test-skills-export.mjs",
@@ -76,7 +76,7 @@
       "baselineState": "OPEN (0/48 contracts, no registry/, split handoff notation)",
       "currentLifecycleStatus": "FIXED",
       "resolvedInMilestone": "Full-Catalog Contracts & Workflow Graph (f8301a3)",
-      "lastVerifiedCommit": "38cc5f9a26ac407ce72ee6b36519f8b533f08add",
+      "lastVerifiedCommit": "a9375523cb77d310af9412ffae7ec706acfefe99",
       "evidencePaths": [
         "schemas/skill-contract.schema.json",
         "schemas/contract-context-fields.schema.json",
@@ -102,7 +102,7 @@
       "baselineState": "OPEN (0 automated runners; 8/48 structured EVAL.md tables; 40/48 prose-only)",
       "currentLifecycleStatus": "FIXED",
       "resolvedInMilestone": "Full-Catalog Behavioral Eval Suites (869462d)",
-      "lastVerifiedCommit": "38cc5f9a26ac407ce72ee6b36519f8b533f08add",
+      "lastVerifiedCommit": "a9375523cb77d310af9412ffae7ec706acfefe99",
       "evidencePaths": [
         "schemas/skill-eval.schema.json",
         "scripts/run-evals.mjs",
@@ -123,7 +123,7 @@
       "baselineState": "OPEN (8/48 skills missing Decision tree, Playbooks, Failure handling, Troubleshooting, Best practices, Good/Bad examples, User-facing response template, Anti-patterns)",
       "currentLifecycleStatus": "FIXED",
       "resolvedInMilestone": "Catalog Template Completion (a5ddece)",
-      "lastVerifiedCommit": "38cc5f9a26ac407ce72ee6b36519f8b533f08add",
+      "lastVerifiedCommit": "a9375523cb77d310af9412ffae7ec706acfefe99",
       "evidencePaths": [
         "skills/_template/SKILL.md",
         "scripts/check-docs.mjs",
@@ -146,7 +146,7 @@
       "baselineState": "OPEN (blendops-start omitted Batch 7 routing quartet; blendops-done-criteria had 0 incoming forward edges)",
       "currentLifecycleStatus": "FIXED",
       "resolvedInMilestone": "Routing Contracts & Quartet Handoffs (f43385a)",
-      "lastVerifiedCommit": "38cc5f9a26ac407ce72ee6b36519f8b533f08add",
+      "lastVerifiedCommit": "a9375523cb77d310af9412ffae7ec706acfefe99",
       "evidencePaths": [
         "skills/blendops-start/contract.json",
         "skills/blendops-start/SKILL.md",
@@ -163,7 +163,7 @@
       "baselineState": "OPEN (no inspect-glb.mjs or version matrices)",
       "currentLifecycleStatus": "FIXED",
       "resolvedInMilestone": "GLB Inspector & Web Handoff Toolkit (75f3b5c -> 112ecf7)",
-      "lastVerifiedCommit": "38cc5f9a26ac407ce72ee6b36519f8b533f08add",
+      "lastVerifiedCommit": "a9375523cb77d310af9412ffae7ec706acfefe99",
       "evidencePaths": [
         "scripts/inspect-glb.mjs",
         "scripts/generate-glb-handoff-report.mjs",
@@ -188,7 +188,7 @@
       "baselineState": "OPEN (Windsurf, Continue, Cline, Roo, Aider listed as not researched; 10 targets missing from install-only table)",
       "currentLifecycleStatus": "PARTIALLY_FIXED",
       "resolvedInMilestone": "26-Target Adapter Matrix, Safe Local Installer & CLI Packaging (ac1ccdb -> 4f5bd1e)",
-      "lastVerifiedCommit": "38cc5f9a26ac407ce72ee6b36519f8b533f08add",
+      "lastVerifiedCommit": "a9375523cb77d310af9412ffae7ec706acfefe99",
       "evidencePaths": [
         "docs/adapter-registry.md",
         "docs/install/README.md",
@@ -221,7 +221,7 @@
       "baselineState": "OPEN (96 manual summary files in bundles/ average 15 lines vs 225 lines in SKILL.md)",
       "currentLifecycleStatus": "FIXED",
       "resolvedInMilestone": "Deterministic Bundle Reference Summary Generator (defb847 -> 3e72020)",
-      "lastVerifiedCommit": "38cc5f9a26ac407ce72ee6b36519f8b533f08add",
+      "lastVerifiedCommit": "a9375523cb77d310af9412ffae7ec706acfefe99",
       "evidencePaths": [
         "scripts/generate-bundle-reference-summaries.mjs",
         "scripts/check-docs.mjs",
@@ -244,7 +244,7 @@
       "baselineState": "OPEN (only file-install ROLLBACK.md exists; no L0-L3 runtime capability model)",
       "currentLifecycleStatus": "FIXED",
       "resolvedInMilestone": "Runtime Capability Policy & Rollback Protocol (75f3b5c)",
-      "lastVerifiedCommit": "38cc5f9a26ac407ce72ee6b36519f8b533f08add",
+      "lastVerifiedCommit": "a9375523cb77d310af9412ffae7ec706acfefe99",
       "evidencePaths": [
         "schemas/runtime-capability-policy.schema.json",
         "registry/runtime-capability-policy.json",

@@ -28,11 +28,11 @@ Metadata: Contract `v2.0.0` | Category `runtime-and-execution` | Role `scene-bui
 1. Confirm the plan is locked and `blendops-connect-blender` says the runtime is ready.
 2. Tell the user in plain words what will change in their scene and which files will be written, and wait for their yes before the first change.
 3. Read the Blender version and the current scene; save a backup copy of the `.blend` file.
-4. Build in this order, one small step at a time: units, rough shapes, modifiers, materials, lights, camera, preview, final render or GLB export.
-5. After the preview, hand off to `blendops-final-check`; on any failure, to `blendops-fix-problems`.
+4. Build in this order, one small step at a time: units, rough shapes, modifiers, materials, lights, camera, preview.
+5. Hand the preview to `blendops-final-check`; make the final render or GLB export only after it passes, then hand that file to `blendops-final-check` too. On any failure, hand off to `blendops-fix-problems`.
 
 ## Cross-skill handoffs
-- [progression] Preview output exists; check it against the done criteria → `blendops-final-check` (`references/skill-blendops-final-check.md`) — `when.all: [runtime.status equals "Produced"; artifact.type equals "preview"]`
+- [progression] Preview, render or GLB exists; check it against the done criteria → `blendops-final-check` (`references/skill-blendops-final-check.md`) — `when.all: [runtime.status equals "Produced"; artifact.type in ["preview","render","glb"]]`
 - [conditional] A build step failed or the output looks wrong → `blendops-fix-problems` (`references/skill-blendops-fix-problems.md`) — `when.all: [runtime.errorDetected equals true]`
 - [fallback] Runtime is not ready for building → `blendops-connect-blender` (`references/skill-blendops-connect-blender.md`) — `when.all: [runtime.verifiedReady equals false]`
 

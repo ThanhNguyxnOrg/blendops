@@ -159,7 +159,7 @@ Limitations: <gaps>
 
 ## Cross-skill handoff
 <!-- blendops:generated:start handoffs -->
-- [progression] Preview output exists; check it against the done criteria → `../blendops-final-check/SKILL.md`
+- [progression] Preview, render or GLB exists; check it against the done criteria → `../blendops-final-check/SKILL.md`
 - [conditional] A build step failed or the output looks wrong → `../blendops-fix-problems/SKILL.md`
 - [fallback] Runtime is not ready for building → `../blendops-connect-blender/SKILL.md`
 <!-- blendops:generated:end handoffs -->
