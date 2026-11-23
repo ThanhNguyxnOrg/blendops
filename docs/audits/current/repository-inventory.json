@@ -2,8 +2,8 @@
   "schemaVersion": "1.0.0",
   "auditPhase": "v1.0.0-current",
   "summary": {
-    "totalTrackedFiles": 585,
-    "npmPackageIncludedFiles": 400,
+    "totalTrackedFiles": 590,
+    "npmPackageIncludedFiles": 403,
     "generatedTrackedFiles": 47,
     "canonicalSkillsCount": 16,
     "lawsCount": 4,
@@ -13,12 +13,12 @@
     "exactDuplicateGroupsCount": 2,
     "classificationCounts": {
       "configuration": 38,
-      "documentation": 84,
-      "historical_record": 19,
+      "documentation": 87,
+      "historical_record": 20,
       "distribution_artifact": 15,
       "canonical_source": 291,
       "generated_artifact": 47,
-      "runtime_build_test_infrastructure": 91
+      "runtime_build_test_infrastructure": 92
     },
     "subsystemCounts": {
       "repository-governance": 4,
@@ -26,12 +26,12 @@
       "documentation-governance": 8,
       "cli-distribution": 1,
       "bundles-and-packaging": 66,
-      "product-and-target-docs": 67,
+      "product-and-target-docs": 70,
       "audits-and-provenance": 11,
-      "runtime-and-adapter-evals": 17,
+      "runtime-and-adapter-evals": 18,
       "glb-web-handoff-toolkit": 3,
       "knowledge-and-recipe-catalog": 5,
-      "behavioral-evals": 33,
+      "behavioral-evals": 34,
       "laws-and-packs": 7,
       "package-governance": 2,
       "registry-and-routing": 6,
@@ -47,8 +47,8 @@
       ".github": 14,
       "bin": 1,
       "bundles": 66,
-      "docs": 99,
-      "evals": 33,
+      "docs": 103,
+      "evals": 34,
       "laws": 5,
       "packs": 2,
       "registry": 10,
@@ -58,7 +58,7 @@
       "skills": 261
     },
     "referenceIntegrity": {
-      "markdownFiles": 420,
+      "markdownFiles": 424,
       "jsModules": 57,
       "schemas": 16,
       "workflows": 7
@@ -2075,6 +2075,21 @@
       "sha256": "33e0dcb4cf629727d500d42df69e6e489c2b4ba5f543f63d84a88561f278332b"
     },
     {
+      "path": "docs/evals/cli-fallback-recipe-walkthroughs.md",
+      "fileType": ".md",
+      "classification": "historical_record",
+      "purpose": "Evaluation packet or recorded verification evidence (cli-fallback-recipe-walkthroughs.md)",
+      "owningSubsystem": "runtime-and-adapter-evals",
+      "includedInNpmPackage": false,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 3991,
+      "sha256": "6bd1b27c69caa84d49fda6ccea5ec7d66738d5c5c5df0f606538f61ff5a4a9b8"
+    },
+    {
       "path": "docs/evals/cli-fallback-scene-state.md",
       "fileType": ".md",
       "classification": "historical_record",
@@ -2855,6 +2870,21 @@
       "sha256": "2f8cc53b1551dc97be39442865bb0ce67d1246361f7e1de4c1d3df95a016dde1"
     },
     {
+      "path": "docs/recipes/chair-glb-web-handoff.md",
+      "fileType": ".md",
+      "classification": "documentation",
+      "purpose": "Product, runtime, adapter, workflow, recipe, or target installation guide (docs/recipes/chair-glb-web-handoff.md)",
+      "owningSubsystem": "product-and-target-docs",
+      "includedInNpmPackage": true,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 7891,
+      "sha256": "9ca773e3cf94106da55dd22bc36b361f0f5cbc5ec16b6a64562a0438db2245f8"
+    },
+    {
       "path": "docs/recipes/cyberpunk-shoe-hero.md",
       "fileType": ".md",
       "classification": "documentation",
@@ -2868,6 +2898,36 @@
       "safeToMoveOrRemove": false,
       "byteSize": 3488,
       "sha256": "c2f676a91f6bd67ed528a932af2b2efd1a658c2884e6ed638506df5cd006b4a1"
+    },
+    {
+      "path": "docs/recipes/dusk-campsite-environment.md",
+      "fileType": ".md",
+      "classification": "documentation",
+      "purpose": "Product, runtime, adapter, workflow, recipe, or target installation guide (docs/recipes/dusk-campsite-environment.md)",
+      "owningSubsystem": "product-and-target-docs",
+      "includedInNpmPackage": true,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 14290,
+      "sha256": "9951e2f7d23c028921bf9609e9b6e51812f1a447d93a7d3a5a2feba09fa61e36"
+    },
+    {
+      "path": "docs/recipes/sci-fi-crate-prop.md",
+      "fileType": ".md",
+      "classification": "documentation",
+      "purpose": "Product, runtime, adapter, workflow, recipe, or target installation guide (docs/recipes/sci-fi-crate-prop.md)",
+      "owningSubsystem": "product-and-target-docs",
+      "includedInNpmPackage": true,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 12598,
+      "sha256": "95add17ca071c17f611ed013635782a51cee375e271492efd27aacab6fee4638"
     },
     {
       "path": "docs/reference-runtime.md",
@@ -3048,6 +3108,21 @@
       "safeToMoveOrRemove": false,
       "byteSize": 1531,
       "sha256": "d794895bef2a79a1fbf2ec25888eb3383ab3ee6c5dc85a4841334693e284861f"
+    },
+    {
+      "path": "evals/blender-checks/run-walkthrough.py",
+      "fileType": ".py",
+      "classification": "runtime_build_test_infrastructure",
+      "purpose": "Headless Blender helper (run-walkthrough.py) for the skill reference checks in scripts/test-blender-references.mjs",
+      "owningSubsystem": "behavioral-evals",
+      "includedInNpmPackage": false,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 4185,
+      "sha256": "9e2da35dc94e1950581c82ef4fe82746a1bde10fab3798307bfbf40beb4b6d88"
     },
     {
       "path": "evals/blender-checks/scene-state-scenes.py",
@@ -4546,8 +4621,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 12061,
-      "sha256": "e90bd4ff92e34051b90e1fbb4c58b7bedc7a3d4e192f83cec46daec3458d7766"
+      "byteSize": 12464,
+      "sha256": "1031e538bf75ef2e5a7ea3cc6eb665d4910df0b8857613999ee0aa10947baef5"
     },
     {
       "path": "scripts/test-bundle-summaries.mjs",
