@@ -15,7 +15,7 @@ Turn an approved scene plan into a real Blender scene through the ready runtime 
 2. Tell the user in plain words what will change in their scene and which files will be written, and wait for their yes before the first change.
 3. Read the Blender version and the current scene; save a backup copy of the `.blend` file.
 4. Build in this order, one small step at a time: units, rough shapes, modifiers, materials, lights, camera, preview.
-5. Hand the preview to `blendops-final-check`; make the final render or GLB export only after it passes, then hand that file to `blendops-final-check` too. On any failure, hand off to `blendops-fix-problems`.
+5. Hand the preview to `blendops-final-check` for the look criteria only (shapes, sizes, materials, lighting, framing); criteria about the finished file wait for it. Make the final render or GLB export once the look passes, then hand that file to `blendops-final-check` for the full done criteria. On any failure, hand off to `blendops-fix-problems`.
 
 ## When to use
 

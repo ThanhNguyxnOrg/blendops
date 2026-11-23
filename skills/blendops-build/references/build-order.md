@@ -11,8 +11,8 @@ Build in small steps. Each step is one short code call that changes one thing an
 7. **Materials.** One Principled BSDF material per surface type. See [materials](materials.md).
 8. **Lights.** See [lighting and camera](lighting-camera.md).
 9. **Camera.** Frame the subject. See [lighting and camera](lighting-camera.md).
-10. **Preview.** Low-sample render or viewport capture, then the look check in `blendops-final-check`.
-11. **Final render or export.** Only after the preview passes the check. See [render and export](render-export.md). Then hand the finished file to `blendops-final-check` again.
+10. **Preview.** Low-sample render or viewport capture, then the look check in `blendops-final-check` (look criteria only; file criteria wait for the finished output).
+11. **Final render or export.** Only after the preview passes the look check. See [render and export](render-export.md). Then hand the finished file to `blendops-final-check` again.
 
 ## Rules for every step
 
