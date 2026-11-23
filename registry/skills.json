@@ -12,7 +12,7 @@
     "blendops-done-criteria",
     "blendops-start"
   ],
-  "sourceChecksum": "f5ecfad3254e5df7c8bbc643fda1ffea8bb2650d5bba26b96c0d11352db0b719",
+  "sourceChecksum": "1eecd613921d3bca21a8ad3c6270588472f3a9117b03c38c74084d03d0d35b62",
   "skills": [
     {
       "$schema": "../../schemas/skill-contract.schema.json",
@@ -4901,13 +4901,16 @@
         {
           "target": "blendops-final-check",
           "type": "progression",
-          "label": "Numbers and views pass; check the preview against the done criteria",
+          "label": "No fail left; check the preview against the done criteria",
           "when": {
             "all": [
               {
                 "field": "quality.verdict",
-                "operator": "equals",
-                "value": "pass"
+                "operator": "in",
+                "value": [
+                  "pass",
+                  "warn"
+                ]
               }
             ]
           }
@@ -4915,21 +4918,23 @@
         {
           "target": "blendops-build",
           "type": "conditional",
-          "label": "An issue was found; fix it with one build step and check again",
+          "label": "A fail was found within three rounds; fix it with one build step and check again",
           "when": {
             "all": [
               {
                 "field": "quality.verdict",
-                "operator": "in",
-                "value": [
-                  "warn",
-                  "fail"
-                ]
+                "operator": "equals",
+                "value": "fail"
               },
               {
                 "field": "runtime.errorDetected",
                 "operator": "equals",
                 "value": false
+              },
+              {
+                "field": "gate.status",
+                "operator": "not_equals",
+                "value": "blocked"
               }
             ]
           }

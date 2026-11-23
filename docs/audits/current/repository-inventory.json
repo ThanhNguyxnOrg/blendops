@@ -937,8 +937,8 @@
       "isGenerated": true,
       "generatorScript": "scripts/generate-bundle-reference-summaries.mjs",
       "safeToMoveOrRemove": false,
-      "byteSize": 4376,
-      "sha256": "315dd7be21217a7ac111e5468d8970babb75afe7665699d9366e508809bd9e66"
+      "byteSize": 4418,
+      "sha256": "ec6848f5a5f7f0006f6d84f2312ef2e3e5bce97f324c50aa39a8d122e903a5f3"
     },
     {
       "path": "bundles/claude-desktop-manual/references/skills/blendops-product-shot.md",
@@ -1447,8 +1447,8 @@
       "isGenerated": true,
       "generatorScript": "scripts/generate-bundle-reference-summaries.mjs",
       "safeToMoveOrRemove": false,
-      "byteSize": 4168,
-      "sha256": "848c0b6cfb934084fcef8c9a1973c9efb1cdc85c6b924d77ed82155d0d6f393b"
+      "byteSize": 4210,
+      "sha256": "6c58f18a938c12cf39bd7dd1c1daa13fd9f2b1c062996b1d84d3b68cf36453a4"
     },
     {
       "path": "bundles/skill-package/blendops/references/skill-blendops-product-shot.md",
@@ -1868,7 +1868,7 @@
       "generatorScript": "scripts/build-knowledge-catalog.mjs",
       "safeToMoveOrRemove": false,
       "byteSize": 312184,
-      "sha256": "a549467cc0337a2b96d0c5283d864aed5dbb00128ac02c3db5ef8e366d6de1ab"
+      "sha256": "8588a187cc9cbb3554377bc8d8c977f7220b9aa3bad4ecdc1e2e4d514f6f6d91"
     },
     {
       "path": "docs/audits/skill-architecture-audit.md",
@@ -3382,8 +3382,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 12881,
-      "sha256": "a099e6178e30f02d17bbd3ec823bcb3a9da2a5f5eaafb0ab6e41857c6f2db96f"
+      "byteSize": 12978,
+      "sha256": "c4b1f3e425eb70db05139ed372f68660de0a0edb77e23556566ac2c736b29df7"
     },
     {
       "path": "evals/suites/blendops-product-shot.eval.json",
@@ -3712,8 +3712,8 @@
       "isGenerated": true,
       "generatorScript": "scripts/build-registry.mjs",
       "safeToMoveOrRemove": false,
-      "byteSize": 185047,
-      "sha256": "b47d696d1a77fb5d0d25d8c95059a649c45dc3599d40b175a29b303a3084effd"
+      "byteSize": 185205,
+      "sha256": "8298a5ddc90bcbe89f964434515a38e88f90473cffede92c404b1e138816262c"
     },
     {
       "path": "registry/workflow-graph.json",
@@ -3727,8 +3727,8 @@
       "isGenerated": true,
       "generatorScript": "scripts/build-registry.mjs",
       "safeToMoveOrRemove": false,
-      "byteSize": 96918,
-      "sha256": "f0e02964c919eb1c544e1e4cc01d8ac382f26b823dc4575536dedc2d6f28c5a5"
+      "byteSize": 97056,
+      "sha256": "bd002f1a31760a458931bfaf0e8e8692a2bb2645a8b018af5585d678b95b5cce"
     },
     {
       "path": "schemas/adapter-compatibility-matrix.schema.json",
@@ -7912,8 +7912,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 8697,
-      "sha256": "5d866342ae61aefe2acc87d3cc2a415369d10371bf553ad6f8d744c9a9f86094"
+      "byteSize": 9031,
+      "sha256": "8829c20de3345d11efa7a8f0c2e5de69e711ac2338f057320ccc5ace5d669f26"
     },
     {
       "path": "skills/blendops-look-check/contract.json",
@@ -7927,8 +7927,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 3887,
-      "sha256": "5841d772164c4026e828c66269cbc493e25a3b63ff4eb27d0d7585649f82e01f"
+      "byteSize": 4025,
+      "sha256": "d4491cbfc4571860cf8fbbc4e8fba0a262f7904d87982418e6b9c44884f9c71e"
     },
     {
       "path": "skills/blendops-look-check/references/capture-views.md",
@@ -7957,8 +7957,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 1602,
-      "sha256": "8b6e67e9be34322d9743adeb9ff5056dc44ce7239f36b38165d7a822c452fb46"
+      "byteSize": 1751,
+      "sha256": "11ddfc46fcf1b2ca5a62ef2c55ea8613bff83bc5239b913f20a79dd2083ccd8d"
     },
     {
       "path": "skills/blendops-look-check/references/numeric-checks.md",
@@ -7972,8 +7972,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 3955,
-      "sha256": "12ce26d82cb5883195caced583b3e7463f944338fb3c176d49b65f1bf4bb60d4"
+      "byteSize": 5067,
+      "sha256": "78a9152361cbfb90574829024958c2167f0418cf0f60dd6c1014897adf655f0f"
     },
     {
       "path": "skills/blendops-look-check/references/visual-review.md",

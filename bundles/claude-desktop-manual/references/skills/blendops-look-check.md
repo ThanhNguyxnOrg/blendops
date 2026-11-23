@@ -57,8 +57,8 @@ Check a built scene against its plan and brief before the final render or export
 5. Fix the top issue through `blendops-build`, then check again. Stop at `pass`, a repeated issue, or round three.
 
 ## Handoff notes
-- **[progression]** Numbers and views pass; check the preview against the done criteria → `blendops-final-check` (`references/skills/blendops-final-check.md`) — `when.all: [quality.verdict equals "pass"]`
-- **[conditional]** An issue was found; fix it with one build step and check again → `blendops-build` (`references/skills/blendops-build.md`) — `when.all: [quality.verdict in ["warn","fail"]; runtime.errorDetected equals false]`
+- **[progression]** No fail left; check the preview against the done criteria → `blendops-final-check` (`references/skills/blendops-final-check.md`) — `when.all: [quality.verdict in ["pass","warn"]]`
+- **[conditional]** A fail was found within three rounds; fix it with one build step and check again → `blendops-build` (`references/skills/blendops-build.md`) — `when.all: [quality.verdict equals "fail"; runtime.errorDetected equals false; gate.status not_equals "blocked"]`
 - **[conditional]** A check or capture failed, or an issue came back after its fix → `blendops-fix-problems` (`references/skills/blendops-fix-problems.md`) — `when.all: [runtime.errorDetected equals true]`
 - **[fallback]** Runtime is not ready for checks → `blendops-connect-blender` (`references/skills/blendops-connect-blender.md`) — `when.all: [runtime.verifiedReady equals false]`
 

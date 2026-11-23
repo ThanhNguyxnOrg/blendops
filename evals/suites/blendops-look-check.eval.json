@@ -85,7 +85,7 @@
       "skillId": "blendops-look-check",
       "scenario": "Numbers and views pass; blendops-look-check hands the preview to blendops-final-check",
       "category": "structured_skip",
-      "inputPrompt": "While applying blendops-look-check, the workflow context is {\"quality.verdict\":\"pass\"} (Numbers and views pass; check the preview against the done criteria). Determine the contract-governed handoff target.",
+      "inputPrompt": "While applying blendops-look-check, the workflow context is {\"quality.verdict\":\"pass\"} (No fail left; check the preview against the done criteria). Determine the contract-governed handoff target.",
       "preconditions": {
         "mode": "text-only",
         "runtimeAvailable": false,
@@ -141,7 +141,7 @@
       "skillId": "blendops-look-check",
       "scenario": "A look issue was found; blendops-look-check routes one fix back to blendops-build",
       "category": "ambiguous",
-      "inputPrompt": "While applying blendops-look-check, the workflow context is {\"quality.verdict\":\"fail\",\"runtime.errorDetected\":false} (An issue was found; fix it with one build step and check again). Determine the contract-governed handoff target.",
+      "inputPrompt": "While applying blendops-look-check, the workflow context is {\"quality.verdict\":\"fail\",\"runtime.errorDetected\":false,\"gate.status\":\"pending\"} (A fail was found within three rounds; fix it with one build step and check again). Determine the contract-governed handoff target.",
       "preconditions": {
         "mode": "text-only",
         "runtimeAvailable": false,
@@ -174,7 +174,8 @@
       "deterministicFixture": {
         "handoffContext": {
           "quality.verdict": "fail",
-          "runtime.errorDetected": false
+          "runtime.errorDetected": false,
+          "gate.status": "pending"
         },
         "simulatedOutput": {
           "mode": "Contract handoff evaluation (blendops-look-check)",
@@ -182,7 +183,7 @@
           "targetHandoff": "blendops-build",
           "runtimeStatus": "Not Run",
           "artifactStatus": "Not Produced",
-          "summary": "Matched conditional predicate quality.verdict=fail and runtime.errorDetected=false and routed to blendops-build.",
+          "summary": "Matched conditional predicate quality.verdict=fail and runtime.errorDetected=false and gate.status!=blocked and routed to blendops-build.",
           "warnings": [
             "Text-only workflow output; no live Blender session or artifact was executed."
           ],
