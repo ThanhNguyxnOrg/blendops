@@ -10,6 +10,8 @@ import { ensureMainRepoGitRestored } from './generate-current-audit.mjs';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const DEFAULT_ROOT = path.resolve(__dirname, '..');
+// Each skill ZIP must work alone, so a reference several skills run is copied into each of them; check-docs keeps the copies identical.
+const SHARED_SKILL_REFERENCES = ['scene-state.md'];
 
 export const ALLOWED_ROOT_FILES = new Set([
   '.editorconfig',
@@ -647,16 +649,22 @@ export function buildRepositoryArchitectureReport(rootDir = DEFAULT_ROOT) {
         sortedPaths.length === 2 &&
         sortedPaths[0] === 'LICENSE' &&
         sortedPaths[1] === 'bundles/skill-package/blendops/LICENSE.txt';
-      if (!isApprovedLicenseCopy) {
+      const sharedReferenceName = path.posix.basename(sortedPaths[0]);
+      const isApprovedSharedSkillReference =
+        SHARED_SKILL_REFERENCES.includes(sharedReferenceName) &&
+        sortedPaths.every((p) => /^skills\/[^/]+\/references\/[^/]+$/.test(p) && path.posix.basename(p) === sharedReferenceName);
+      if (!isApprovedLicenseCopy && !isApprovedSharedSkillReference) {
         errors.push(`Unapproved exact duplicate tracked files (${sha256}): ${sortedPaths.join(', ')}`);
       }
       exactDuplicateGroups.push({
         sha256,
         paths: sortedPaths,
-        approved: isApprovedLicenseCopy,
+        approved: isApprovedLicenseCopy || isApprovedSharedSkillReference,
         rationale: isApprovedLicenseCopy
           ? 'Root MIT LICENSE is mirrored in bundles/skill-package/blendops/LICENSE.txt so the standalone skill upload package remains self-contained.'
-          : 'Unapproved duplicate',
+          : isApprovedSharedSkillReference
+            ? 'Shared skill reference copied into each skill that runs it so every exported skill stays self-contained; check-docs keeps the copies identical.'
+            : 'Unapproved duplicate',
       });
     }
   }

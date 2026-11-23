@@ -875,6 +875,20 @@ export function runDocsCheck(targetRoot = root) {
     requiredRuntimeStackSnippets,
     'Runtime stack policy',
   );
+  const sharedSceneState = [
+    'skills/blendops-build/references/scene-state.md',
+    'skills/blendops-look-check/references/scene-state.md',
+  ];
+  if (sharedSceneState.every(exists)) {
+    const [first, ...rest] = sharedSceneState.map((rel) => fs.readFileSync(path.join(root, rel), 'utf8'));
+    rest.forEach((text, i) => {
+      if (text !== first) {
+        errors.push(`${sharedSceneState[i + 1]} must match ${sharedSceneState[0]} (shared scene-state script)`);
+      }
+    });
+  } else {
+    errors.push(`Missing shared scene-state reference: ${sharedSceneState.filter((rel) => !exists(rel)).join(', ')}`);
+  }
   for (const policy of requiredArtifactEvidenceSnippets) {
     assertContainsAll(policy.file, policy.snippets, 'Artifact evidence policy');
   }

@@ -2,7 +2,7 @@
 
 Build in small steps. Each step is one short code call that changes one thing and prints a JSON report.
 
-1. **Check the scene.** Read the Blender version, render engine, unit scale, and the objects that already exist. On Path 1 use `get_objects_summary`; otherwise run a read-only snippet.
+1. **Check the scene.** Run the read-only [scene state](scene-state.md) script: Blender version, render engine, units, and the objects that already exist.
 2. **Ask first.** Tell the user what will change and which files will be written; wait for their yes.
 3. **Save a backup.** Save a copy of the `.blend` file before the first change (`bpy.ops.wm.save_as_mainfile(filepath=..., copy=True)`).
 4. **Set units and scale.** Metric, 1 unit = 1 m. Model at real size (a shoe is about 0.3 m long).
@@ -20,7 +20,7 @@ Build in small steps. Each step is one short code call that changes one thing an
 - On Path 1, look up an unfamiliar API with `search_api_docs` or `get_python_api_docs` before you use it.
 - Set values through `bpy.data` where you can. `bpy.ops` needs the right context and fails in background mode more often.
 - Get objects by name, never by selection or index.
-- End each step by printing a JSON report:
+- End each step by printing a short JSON report, and run [scene state](scene-state.md) after steps that add or move objects:
 
 ```python
 import bpy, json

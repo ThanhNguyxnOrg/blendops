@@ -75,6 +75,7 @@ Check scripts run inside the runtime only. They are never handed to the user as 
 ## Playbooks
 
 - [numeric-checks](references/numeric-checks.md) — Read-only size, ground, frame, material and light checks.
+- [scene-state](references/scene-state.md) — The shared read-only scene report that runs those checks.
 - [capture-views](references/capture-views.md) — Camera view plus two more sides, per runtime path.
 - [visual-review](references/visual-review.md) — What to judge in the pictures and what not to trust.
 - [fix-loop](references/fix-loop.md) — Issue order, one fix per round, stop rules, round report.

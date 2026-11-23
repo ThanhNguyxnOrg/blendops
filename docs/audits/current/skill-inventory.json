@@ -3,23 +3,23 @@
   "auditPhase": "v1.0.0-current",
   "reconciledFromBaselineCommit": "3ea3c35c6b8a6e5e915bab9f63333d4a1c09bd4d",
   "repository": "ThanhNguyxnOrg/blendops",
-  "branch": "devin/1795441667-look-check",
-  "sourceCommitSha": "fa09c19dc32774247019de632e6a2e3c9494e316",
-  "sourceCommitShort": "fa09c19",
-  "sourceCommitDate": "2026-11-23 14:05:47 +0000",
+  "branch": "devin/1795444091-scene-state",
+  "sourceCommitSha": "510dd4d2307fcd5042a1a66a24f7d2da771d43bc",
+  "sourceCommitShort": "510dd4d",
+  "sourceCommitDate": "2026-11-23 15:05:30 +0000",
   "auditProvenance": {
-    "sourceCommitSha": "fa09c19dc32774247019de632e6a2e3c9494e316",
-    "sourceCommitShort": "fa09c19",
-    "sourceCommitDate": "2026-11-23 14:05:47 +0000",
+    "sourceCommitSha": "510dd4d2307fcd5042a1a66a24f7d2da771d43bc",
+    "sourceCommitShort": "510dd4d",
+    "sourceCommitDate": "2026-11-23 15:05:30 +0000",
     "workingTreeState": "dirty",
     "snapshotBasis": "working-tree-on-top-of-source-commit",
     "uncommittedChangeCount": 1,
-    "auditedInputsSha256": "402b738d74e874c52e019ccec449f6d39e0479d421bb6c97db87f78a72650b4c",
+    "auditedInputsSha256": "fc37d1ca64d913f38d4a50acb1296b2442317227dabbc5709993cc284f5e4413",
     "selfReferentialCommitRule": "A Git commit cannot contain its own final commit SHA inside tracked files. sourceCommitSha records the verified HEAD commit present when the generator ran, workingTreeState and snapshotBasis record whether uncommitted working-tree changes were present on top of sourceCommitSha, and auditedInputsSha256 digests the exact audited file contents."
   },
   "summary": {
     "totalSkills": 16,
-    "totalReferences": 209,
+    "totalReferences": 211,
     "gatewaySkillCount": 0,
     "contractStatus": "full-catalog",
     "contractedSkillsCount": 16,
@@ -243,7 +243,7 @@
       "path": "skills/blendops-build/SKILL.md",
       "evalPath": "skills/blendops-build/EVAL.md",
       "auditDisposition": "KEEP",
-      "lineCount": 182,
+      "lineCount": 184,
       "headingCount": 23,
       "headings": [
         "Purpose",
@@ -283,14 +283,15 @@
         "Runtime route requirements",
         "Operating procedure"
       ],
-      "referenceCount": 6,
+      "referenceCount": 7,
       "referenceFiles": [
         "api-version-rules.md",
         "build-order.md",
         "lighting-camera.md",
         "materials.md",
         "modeling.md",
-        "render-export.md"
+        "render-export.md",
+        "scene-state.md"
       ],
       "handoffNotationStyle": "relative_path",
       "declaredHandoffTargets": [
@@ -1023,7 +1024,7 @@
       "path": "skills/blendops-look-check/SKILL.md",
       "evalPath": "skills/blendops-look-check/EVAL.md",
       "auditDisposition": "KEEP",
-      "lineCount": 175,
+      "lineCount": 176,
       "headingCount": 23,
       "headings": [
         "Purpose",
@@ -1063,11 +1064,12 @@
         "Runtime route requirements",
         "Operating procedure"
       ],
-      "referenceCount": 4,
+      "referenceCount": 5,
       "referenceFiles": [
         "capture-views.md",
         "fix-loop.md",
         "numeric-checks.md",
+        "scene-state.md",
         "visual-review.md"
       ],
       "handoffNotationStyle": "relative_path",

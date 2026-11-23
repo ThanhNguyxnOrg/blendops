@@ -69,6 +69,7 @@ This skill runs generated Blender Python inside the runtime only. It never hands
 ## Decision tree
 
 - Any code at all → first check [API version rules](references/api-version-rules.md).
+- Before the first change and after each step → run [scene state](references/scene-state.md).
 - Shapes → [modeling](references/modeling.md).
 - Surfaces → [materials](references/materials.md).
 - Lights or camera → [lighting and camera](references/lighting-camera.md).
@@ -77,6 +78,7 @@ This skill runs generated Blender Python inside the runtime only. It never hands
 ## Playbooks
 
 - [build-order](references/build-order.md) — Step order and per-step rules.
+- [scene-state](references/scene-state.md) — Read-only JSON report of the scene, shared with the look and final checks.
 - [api-version-rules](references/api-version-rules.md) — API names that changed in 4.0, 4.2, and 5.0.
 - [modeling](references/modeling.md) — Primitives, bmesh, modifiers, ground contact.
 - [materials](references/materials.md) — Principled BSDF values, glTF-safe setup.

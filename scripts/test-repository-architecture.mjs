@@ -163,17 +163,22 @@ describe('Repository Architecture, Organization & Finalization', () => {
     assert.match(gitignore, /dist\//);
   });
 
-  test('Scenario 3: Naming conventions and duplicate analysis confirm only the approved LICENSE <-> bundles/skill-package/blendops/LICENSE.txt duplicate exists', () => {
+  test('Scenario 3: Naming conventions and duplicate analysis confirm only the approved LICENSE copy and shared scene-state reference duplicates exist', () => {
     const report = buildRepositoryArchitectureReport(ROOT);
     assert.equal(report.ok, true);
 
     const dupGroups = report.inventory.duplicateAnalysis.exactDuplicateGroups;
-    assert.equal(dupGroups.length, 1);
-    assert.deepEqual(dupGroups[0].paths, [
-      'LICENSE',
-      'bundles/skill-package/blendops/LICENSE.txt',
-    ]);
-    assert.equal(dupGroups[0].approved, true);
+    assert.deepEqual(
+      dupGroups.map((group) => group.paths).sort((a, b) => a[0].localeCompare(b[0])),
+      [
+        ['LICENSE', 'bundles/skill-package/blendops/LICENSE.txt'],
+        [
+          'skills/blendops-build/references/scene-state.md',
+          'skills/blendops-look-check/references/scene-state.md',
+        ],
+      ],
+    );
+    assert.ok(dupGroups.every((group) => group.approved === true));
     assert.deepEqual(report.inventory.duplicateAnalysis.archivedDevelopmentSnapshotsRemoved, [
       'docs/audits/phase-0',
       'docs/audits/phase-2',

@@ -27,7 +27,7 @@ Non-Blender user
               └── Layer E (Evaluation & Evidence): 16 skill eval suites + 90 catalog retrieval evals + 12 SceneSpec fixtures + GLB 2.0 inspector & web handoff toolkit
 ```
 
-See [`docs/runtime-stack-strategy.md`](./runtime-stack-strategy.md) for the authoritative 2-path + CLI appendix runtime specification, [`docs/knowledge-and-recipe-catalog.md`](./knowledge-and-recipe-catalog.md) for the human-readable Knowledge & Recipe Catalog, and [`docs/audits/skill-architecture-audit.md`](./audits/skill-architecture-audit.md) for the 15-skill and 209-reference architecture reconciliation audit.
+See [`docs/runtime-stack-strategy.md`](./runtime-stack-strategy.md) for the authoritative 2-path + CLI appendix runtime specification, [`docs/knowledge-and-recipe-catalog.md`](./knowledge-and-recipe-catalog.md) for the human-readable Knowledge & Recipe Catalog, and [`docs/audits/skill-architecture-audit.md`](./audits/skill-architecture-audit.md) for the 15-skill and 211-reference architecture reconciliation audit.
 
 ---
 
