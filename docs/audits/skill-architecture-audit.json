@@ -1098,7 +1098,7 @@
         {
           "path": "skills/blendops-build/references/scene-state.md",
           "title": "Scene state",
-          "line_count": 307,
+          "line_count": 314,
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "rule_classified_skill_local",
@@ -2678,7 +2678,7 @@
         {
           "path": "skills/blendops-look-check/references/scene-state.md",
           "title": "Scene state",
-          "line_count": 307,
+          "line_count": 314,
           "classification": "skill_specific_operating_instructions",
           "classification_method": "rule_based_path_and_heading_inspection",
           "review_status": "rule_classified_skill_local",
@@ -3999,7 +3999,7 @@
     {
       "path": "skills/blendops-build/references/scene-state.md",
       "title": "Scene state",
-      "line_count": 307,
+      "line_count": 314,
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "rule_classified_skill_local",
@@ -5232,7 +5232,7 @@
     {
       "path": "skills/blendops-look-check/references/scene-state.md",
       "title": "Scene state",
-      "line_count": 307,
+      "line_count": 314,
       "classification": "skill_specific_operating_instructions",
       "classification_method": "rule_based_path_and_heading_inspection",
       "review_status": "rule_classified_skill_local",
