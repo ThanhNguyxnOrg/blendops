@@ -33,9 +33,10 @@
     },
     {
       "title": "Runtime & Verification",
-      "description": "Runtime path setup and readiness, evidence before handoff, preview and attempt reports, and troubleshooting.",
+      "description": "Runtime path setup and readiness, building the scene in Blender, evidence before handoff, preview and attempt reports, and troubleshooting.",
       "skills": [
         "blendops-connect-blender",
+        "blendops-build",
         "blendops-final-check",
         "blendops-fix-problems"
       ]

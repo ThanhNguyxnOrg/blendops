@@ -54,6 +54,7 @@ const GOVERNED_CEILING_BY_SKILL = Object.freeze({
 
   // L3 — Headless CLI / Batch Execution Outlines (requires explicit confirmation + backup + no user-facing raw Python)
   'blendops-connect-blender': 'L3',
+  'blendops-build': 'L3',
 });
 
 let cachedSchemaValidator = null;

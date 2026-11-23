@@ -98,6 +98,7 @@ const requiredSkills = [
   'skills/blendops-camera/SKILL.md',
   'skills/blendops-lighting-materials/SKILL.md',
   'skills/blendops-glb-web-handoff/SKILL.md',
+  'skills/blendops-build/SKILL.md',
   // Process and workflow discipline skills:
   'skills/blendops-brief/SKILL.md',
   'skills/blendops-fix-problems/SKILL.md',
@@ -107,6 +108,7 @@ const requiredSkills = [
   // Web 3D handoff deep:
   'skills/blendops-glb-budget/SKILL.md',
   'skills/blendops-glb-web-handoff/SKILL.md',
+  'skills/blendops-build/SKILL.md',
   'skills/blendops-final-check/SKILL.md',
   // Quality validation deep:
   'skills/blendops-lighting-materials/SKILL.md',
@@ -141,12 +143,14 @@ const requiredSkillEvals = [
   'skills/blendops-camera/EVAL.md',
   'skills/blendops-lighting-materials/EVAL.md',
   'skills/blendops-glb-web-handoff/EVAL.md',
+  'skills/blendops-build/EVAL.md',
   'skills/blendops-brief/EVAL.md',
   'skills/blendops-fix-problems/EVAL.md',
   'skills/blendops-assets/EVAL.md',
   // Web 3D handoff deep:
   'skills/blendops-glb-budget/EVAL.md',
   'skills/blendops-glb-web-handoff/EVAL.md',
+  'skills/blendops-build/EVAL.md',
   'skills/blendops-final-check/EVAL.md',
   // Quality validation deep:
   'skills/blendops-lighting-materials/EVAL.md',
@@ -206,9 +210,11 @@ const requiredBundleFixture = [
   'bundles/claude-desktop-manual/references/skills/blendops-final-check.md',
   'bundles/claude-desktop-manual/references/skills/blendops-fix-problems.md',
   'bundles/claude-desktop-manual/references/skills/blendops-glb-web-handoff.md',
+  'bundles/claude-desktop-manual/references/skills/blendops-build.md',
   // Web 3D handoff deep:
   'bundles/claude-desktop-manual/references/skills/blendops-glb-budget.md',
   'bundles/claude-desktop-manual/references/skills/blendops-glb-web-handoff.md',
+  'bundles/claude-desktop-manual/references/skills/blendops-build.md',
   'bundles/claude-desktop-manual/references/skills/blendops-final-check.md',
   // Quality validation deep:
   'bundles/claude-desktop-manual/references/skills/blendops-lighting-materials.md',
@@ -255,12 +261,14 @@ const requiredBundleFixture = [
   'bundles/skill-package/blendops/references/skill-blendops-camera.md',
   'bundles/skill-package/blendops/references/skill-blendops-lighting-materials.md',
   'bundles/skill-package/blendops/references/skill-blendops-glb-web-handoff.md',
+  'bundles/skill-package/blendops/references/skill-blendops-build.md',
   'bundles/skill-package/blendops/references/skill-blendops-brief.md',
   'bundles/skill-package/blendops/references/skill-blendops-fix-problems.md',
   'bundles/skill-package/blendops/references/skill-blendops-assets.md',
   // Web 3D handoff deep:
   'bundles/skill-package/blendops/references/skill-blendops-glb-budget.md',
   'bundles/skill-package/blendops/references/skill-blendops-glb-web-handoff.md',
+  'bundles/skill-package/blendops/references/skill-blendops-build.md',
   'bundles/skill-package/blendops/references/skill-blendops-final-check.md',
   // Quality validation deep:
   'bundles/skill-package/blendops/references/skill-blendops-lighting-materials.md',
@@ -981,7 +989,7 @@ export function runDocsCheck(targetRoot = root) {
     }
   }
 
-  // Verify deterministic bundle reference summaries (28 generated files + manifest sync)
+  // Verify deterministic bundle reference summaries (30 generated files + manifest sync)
   const bundleSummaryCheck = checkBundleReferenceSummaries(targetRoot);
   if (!bundleSummaryCheck.ok) {
     for (const e of bundleSummaryCheck.errors) {

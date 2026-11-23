@@ -3,29 +3,29 @@
   "auditPhase": "v1.0.0-current",
   "reconciledFromBaselineCommit": "3ea3c35c6b8a6e5e915bab9f63333d4a1c09bd4d",
   "repository": "ThanhNguyxnOrg/blendops",
-  "branch": "devin/1795432846-merge-skills-14",
-  "sourceCommitSha": "657b5ba04235997d2212cee5f9cd2a2e3cfadaf8",
-  "sourceCommitShort": "657b5ba",
-  "sourceCommitDate": "2026-11-22 22:00:20 -0500",
+  "branch": "devin/1795439308-build-skill",
+  "sourceCommitSha": "1eea7d44dcbebc67f13eadea5b69515ac380cbc8",
+  "sourceCommitShort": "1eea7d4",
+  "sourceCommitDate": "2026-11-23 08:00:57 -0500",
   "auditProvenance": {
-    "sourceCommitSha": "657b5ba04235997d2212cee5f9cd2a2e3cfadaf8",
-    "sourceCommitShort": "657b5ba",
-    "sourceCommitDate": "2026-11-22 22:00:20 -0500",
+    "sourceCommitSha": "1eea7d44dcbebc67f13eadea5b69515ac380cbc8",
+    "sourceCommitShort": "1eea7d4",
+    "sourceCommitDate": "2026-11-23 08:00:57 -0500",
     "workingTreeState": "dirty",
     "snapshotBasis": "working-tree-on-top-of-source-commit",
-    "uncommittedChangeCount": 601,
-    "auditedInputsSha256": "659ad473e46ba5860f09fec3eb8f2b8e6d08c74b724006882e112e504a5b6725",
+    "uncommittedChangeCount": 71,
+    "auditedInputsSha256": "c7c4e800f6c42af577d4eaca873935fcb6a2afcaa78054aaa658445cd0aea41b",
     "selfReferentialCommitRule": "A Git commit cannot contain its own final commit SHA inside tracked files. sourceCommitSha records the verified HEAD commit present when the generator ran, workingTreeState and snapshotBasis record whether uncommitted working-tree changes were present on top of sourceCommitSha, and auditedInputsSha256 digests the exact audited file contents."
   },
   "summary": {
-    "totalEvalFiles": 14,
-    "machineReadableSuitesCount": 14,
-    "machineReadablePilotSuitesCount": 14,
+    "totalEvalFiles": 15,
+    "machineReadableSuitesCount": 15,
+    "machineReadablePilotSuitesCount": 15,
     "skillsWithoutSuitesCount": 0,
-    "totalMachineReadableCases": 269,
+    "totalMachineReadableCases": 274,
     "contractRoutingCasesCount": 35,
-    "contractHandoffCasesCount": 70,
-    "deterministicFixtureCasesCount": 164,
+    "contractHandoffCasesCount": 72,
+    "deterministicFixtureCasesCount": 167,
     "structuredMultiCaseTableCount": 8,
     "singlePromptProseOutlineCount": 40,
     "remainingUnmigratedProseSkillsCount": 0,
@@ -37,25 +37,118 @@
   },
   "evals": [
     {
-      "id": "blendops-glb-budget",
-      "category": "quality-validators",
+      "id": "blendops-assets",
+      "category": "asset-and-sourcing",
       "isGatewaySkill": false,
-      "lineCount": 86,
+      "lineCount": 211,
       "headings": [
-        "From former `blendops-glb-budget`",
-        "From former `blendops-glb-budget`"
+        "From former `blendops-assets`",
+        "From former `blendops-assets`",
+        "From former `blendops-assets`",
+        "From former `blendops-assets`",
+        "From former `blendops-assets`"
+      ],
+      "hasStructuredEvalCasesTable": true,
+      "evalCaseRowCount": 18,
+      "evalTierClassification": "structured_multi_case_table",
+      "evalPath": "skills/blendops-assets/EVAL.md",
+      "hasMachineReadableEvalJson": true,
+      "evalJsonPath": "evals/suites/blendops-assets.eval.json",
+      "machineReadableCaseCount": 29,
+      "countsByEvaluationType": {
+        "contract_routing": 0,
+        "contract_handoff": 6,
+        "deterministic_fixture": 23
+      },
+      "evaluationTypes": [
+        "deterministic_fixture",
+        "contract_handoff"
+      ],
+      "deterministicRunnerStatus": "Passed",
+      "liveModelStatus": "Not Run",
+      "blenderRuntimeStatus": "Not Run",
+      "auditDisposition": "EVAL_JSON_IMPLEMENTED"
+    },
+    {
+      "id": "blendops-brief",
+      "category": "routing-and-governance",
+      "isGatewaySkill": false,
+      "lineCount": 232,
+      "headings": [
+        "From former `blendops-brief`",
+        "From former `blendops-brief`",
+        "From former `blendops-brief`",
+        "From former `blendops-brief`"
+      ],
+      "hasStructuredEvalCasesTable": true,
+      "evalCaseRowCount": 35,
+      "evalTierClassification": "structured_multi_case_table",
+      "evalPath": "skills/blendops-brief/EVAL.md",
+      "hasMachineReadableEvalJson": true,
+      "evalJsonPath": "evals/suites/blendops-brief.eval.json",
+      "machineReadableCaseCount": 26,
+      "countsByEvaluationType": {
+        "contract_routing": 7,
+        "contract_handoff": 0,
+        "deterministic_fixture": 19
+      },
+      "evaluationTypes": [
+        "deterministic_fixture",
+        "contract_routing"
+      ],
+      "deterministicRunnerStatus": "Passed",
+      "liveModelStatus": "Not Run",
+      "blenderRuntimeStatus": "Not Run",
+      "auditDisposition": "EVAL_JSON_IMPLEMENTED"
+    },
+    {
+      "id": "blendops-build",
+      "category": "runtime-and-execution",
+      "isGatewaySkill": false,
+      "lineCount": 25,
+      "headings": [],
+      "hasStructuredEvalCasesTable": false,
+      "evalCaseRowCount": 0,
+      "evalTierClassification": "single_prompt_prose_outline",
+      "evalPath": "skills/blendops-build/EVAL.md",
+      "hasMachineReadableEvalJson": true,
+      "evalJsonPath": "evals/suites/blendops-build.eval.json",
+      "machineReadableCaseCount": 5,
+      "countsByEvaluationType": {
+        "contract_routing": 0,
+        "contract_handoff": 2,
+        "deterministic_fixture": 3
+      },
+      "evaluationTypes": [
+        "deterministic_fixture",
+        "contract_handoff"
+      ],
+      "deterministicRunnerStatus": "Passed",
+      "liveModelStatus": "Not Run",
+      "blenderRuntimeStatus": "Not Run",
+      "auditDisposition": "EVAL_JSON_IMPLEMENTED"
+    },
+    {
+      "id": "blendops-camera",
+      "category": "scene-planners",
+      "isGatewaySkill": false,
+      "lineCount": 103,
+      "headings": [
+        "From former `blendops-camera`",
+        "From former `blendops-camera`",
+        "From former `blendops-camera`"
       ],
       "hasStructuredEvalCasesTable": false,
       "evalCaseRowCount": 0,
       "evalTierClassification": "single_prompt_prose_outline",
-      "evalPath": "skills/blendops-glb-budget/EVAL.md",
+      "evalPath": "skills/blendops-camera/EVAL.md",
       "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/blendops-glb-budget.eval.json",
-      "machineReadableCaseCount": 10,
+      "evalJsonPath": "evals/suites/blendops-camera.eval.json",
+      "machineReadableCaseCount": 15,
       "countsByEvaluationType": {
         "contract_routing": 0,
-        "contract_handoff": 5,
-        "deterministic_fixture": 5
+        "contract_handoff": 6,
+        "deterministic_fixture": 9
       },
       "evaluationTypes": [
         "contract_handoff",
@@ -67,25 +160,29 @@
       "auditDisposition": "EVAL_JSON_IMPLEMENTED"
     },
     {
-      "id": "blendops-render-settings",
-      "category": "render-and-output-decisions",
+      "id": "blendops-connect-blender",
+      "category": "runtime-and-execution",
       "isGatewaySkill": false,
-      "lineCount": 59,
+      "lineCount": 237,
       "headings": [
-        "From former `blendops-render-settings`",
-        "From former `blendops-render-settings`"
+        "From former `blendops-connect-blender`",
+        "From former `blendops-connect-blender`",
+        "From former `blendops-connect-blender`",
+        "From former `blendops-connect-blender`",
+        "From former `blendops-connect-blender`",
+        "From former `blendops-connect-blender`"
       ],
-      "hasStructuredEvalCasesTable": false,
-      "evalCaseRowCount": 0,
-      "evalTierClassification": "single_prompt_prose_outline",
-      "evalPath": "skills/blendops-render-settings/EVAL.md",
+      "hasStructuredEvalCasesTable": true,
+      "evalCaseRowCount": 17,
+      "evalTierClassification": "structured_multi_case_table",
+      "evalPath": "skills/blendops-connect-blender/EVAL.md",
       "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/blendops-render-settings.eval.json",
-      "machineReadableCaseCount": 10,
+      "evalJsonPath": "evals/suites/blendops-connect-blender.eval.json",
+      "machineReadableCaseCount": 36,
       "countsByEvaluationType": {
         "contract_routing": 0,
-        "contract_handoff": 5,
-        "deterministic_fixture": 5
+        "contract_handoff": 7,
+        "deterministic_fixture": 29
       },
       "evaluationTypes": [
         "deterministic_fixture",
@@ -130,6 +227,98 @@
       "auditDisposition": "EVAL_JSON_IMPLEMENTED"
     },
     {
+      "id": "blendops-final-check",
+      "category": "evidence-and-handoff",
+      "isGatewaySkill": false,
+      "lineCount": 277,
+      "headings": [
+        "From former `blendops-final-check`",
+        "From former `blendops-final-check`",
+        "From former `blendops-final-check`",
+        "From former `blendops-final-check`",
+        "From former `blendops-final-check`"
+      ],
+      "hasStructuredEvalCasesTable": true,
+      "evalCaseRowCount": 42,
+      "evalTierClassification": "structured_multi_case_table",
+      "evalPath": "skills/blendops-final-check/EVAL.md",
+      "hasMachineReadableEvalJson": true,
+      "evalJsonPath": "evals/suites/blendops-final-check.eval.json",
+      "machineReadableCaseCount": 34,
+      "countsByEvaluationType": {
+        "contract_routing": 0,
+        "contract_handoff": 9,
+        "deterministic_fixture": 25
+      },
+      "evaluationTypes": [
+        "deterministic_fixture",
+        "contract_handoff"
+      ],
+      "deterministicRunnerStatus": "Passed",
+      "liveModelStatus": "Not Run",
+      "blenderRuntimeStatus": "Not Run",
+      "auditDisposition": "EVAL_JSON_IMPLEMENTED"
+    },
+    {
+      "id": "blendops-fix-problems",
+      "category": "quality-validators",
+      "isGatewaySkill": false,
+      "lineCount": 83,
+      "headings": [
+        "From former `blendops-fix-problems`"
+      ],
+      "hasStructuredEvalCasesTable": true,
+      "evalCaseRowCount": 15,
+      "evalTierClassification": "structured_multi_case_table",
+      "evalPath": "skills/blendops-fix-problems/EVAL.md",
+      "hasMachineReadableEvalJson": true,
+      "evalJsonPath": "evals/suites/blendops-fix-problems.eval.json",
+      "machineReadableCaseCount": 8,
+      "countsByEvaluationType": {
+        "contract_routing": 0,
+        "contract_handoff": 2,
+        "deterministic_fixture": 6
+      },
+      "evaluationTypes": [
+        "deterministic_fixture",
+        "contract_handoff"
+      ],
+      "deterministicRunnerStatus": "Passed",
+      "liveModelStatus": "Not Run",
+      "blenderRuntimeStatus": "Not Run",
+      "auditDisposition": "EVAL_JSON_IMPLEMENTED"
+    },
+    {
+      "id": "blendops-glb-budget",
+      "category": "quality-validators",
+      "isGatewaySkill": false,
+      "lineCount": 86,
+      "headings": [
+        "From former `blendops-glb-budget`",
+        "From former `blendops-glb-budget`"
+      ],
+      "hasStructuredEvalCasesTable": false,
+      "evalCaseRowCount": 0,
+      "evalTierClassification": "single_prompt_prose_outline",
+      "evalPath": "skills/blendops-glb-budget/EVAL.md",
+      "hasMachineReadableEvalJson": true,
+      "evalJsonPath": "evals/suites/blendops-glb-budget.eval.json",
+      "machineReadableCaseCount": 10,
+      "countsByEvaluationType": {
+        "contract_routing": 0,
+        "contract_handoff": 5,
+        "deterministic_fixture": 5
+      },
+      "evaluationTypes": [
+        "contract_handoff",
+        "deterministic_fixture"
+      ],
+      "deterministicRunnerStatus": "Passed",
+      "liveModelStatus": "Not Run",
+      "blenderRuntimeStatus": "Not Run",
+      "auditDisposition": "EVAL_JSON_IMPLEMENTED"
+    },
+    {
       "id": "blendops-glb-web-handoff",
       "category": "evidence-and-handoff",
       "isGatewaySkill": false,
@@ -150,37 +339,6 @@
         "contract_routing": 0,
         "contract_handoff": 7,
         "deterministic_fixture": 8
-      },
-      "evaluationTypes": [
-        "contract_handoff",
-        "deterministic_fixture"
-      ],
-      "deterministicRunnerStatus": "Passed",
-      "liveModelStatus": "Not Run",
-      "blenderRuntimeStatus": "Not Run",
-      "auditDisposition": "EVAL_JSON_IMPLEMENTED"
-    },
-    {
-      "id": "blendops-camera",
-      "category": "scene-planners",
-      "isGatewaySkill": false,
-      "lineCount": 103,
-      "headings": [
-        "From former `blendops-camera`",
-        "From former `blendops-camera`",
-        "From former `blendops-camera`"
-      ],
-      "hasStructuredEvalCasesTable": false,
-      "evalCaseRowCount": 0,
-      "evalTierClassification": "single_prompt_prose_outline",
-      "evalPath": "skills/blendops-camera/EVAL.md",
-      "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/blendops-camera.eval.json",
-      "machineReadableCaseCount": 15,
-      "countsByEvaluationType": {
-        "contract_routing": 0,
-        "contract_handoff": 6,
-        "deterministic_fixture": 9
       },
       "evaluationTypes": [
         "contract_handoff",
@@ -254,6 +412,36 @@
       "auditDisposition": "EVAL_JSON_IMPLEMENTED"
     },
     {
+      "id": "blendops-render-settings",
+      "category": "render-and-output-decisions",
+      "isGatewaySkill": false,
+      "lineCount": 59,
+      "headings": [
+        "From former `blendops-render-settings`",
+        "From former `blendops-render-settings`"
+      ],
+      "hasStructuredEvalCasesTable": false,
+      "evalCaseRowCount": 0,
+      "evalTierClassification": "single_prompt_prose_outline",
+      "evalPath": "skills/blendops-render-settings/EVAL.md",
+      "hasMachineReadableEvalJson": true,
+      "evalJsonPath": "evals/suites/blendops-render-settings.eval.json",
+      "machineReadableCaseCount": 10,
+      "countsByEvaluationType": {
+        "contract_routing": 0,
+        "contract_handoff": 5,
+        "deterministic_fixture": 5
+      },
+      "evaluationTypes": [
+        "deterministic_fixture",
+        "contract_handoff"
+      ],
+      "deterministicRunnerStatus": "Passed",
+      "liveModelStatus": "Not Run",
+      "blenderRuntimeStatus": "Not Run",
+      "auditDisposition": "EVAL_JSON_IMPLEMENTED"
+    },
+    {
       "id": "blendops-scene-plan",
       "category": "scene-planners",
       "isGatewaySkill": false,
@@ -285,134 +473,6 @@
       "auditDisposition": "EVAL_JSON_IMPLEMENTED"
     },
     {
-      "id": "blendops-brief",
-      "category": "routing-and-governance",
-      "isGatewaySkill": false,
-      "lineCount": 232,
-      "headings": [
-        "From former `blendops-brief`",
-        "From former `blendops-brief`",
-        "From former `blendops-brief`",
-        "From former `blendops-brief`"
-      ],
-      "hasStructuredEvalCasesTable": true,
-      "evalCaseRowCount": 35,
-      "evalTierClassification": "structured_multi_case_table",
-      "evalPath": "skills/blendops-brief/EVAL.md",
-      "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/blendops-brief.eval.json",
-      "machineReadableCaseCount": 26,
-      "countsByEvaluationType": {
-        "contract_routing": 7,
-        "contract_handoff": 0,
-        "deterministic_fixture": 19
-      },
-      "evaluationTypes": [
-        "deterministic_fixture",
-        "contract_routing"
-      ],
-      "deterministicRunnerStatus": "Passed",
-      "liveModelStatus": "Not Run",
-      "blenderRuntimeStatus": "Not Run",
-      "auditDisposition": "EVAL_JSON_IMPLEMENTED"
-    },
-    {
-      "id": "blendops-connect-blender",
-      "category": "runtime-and-execution",
-      "isGatewaySkill": false,
-      "lineCount": 237,
-      "headings": [
-        "From former `blendops-connect-blender`",
-        "From former `blendops-connect-blender`",
-        "From former `blendops-connect-blender`",
-        "From former `blendops-connect-blender`",
-        "From former `blendops-connect-blender`",
-        "From former `blendops-connect-blender`"
-      ],
-      "hasStructuredEvalCasesTable": true,
-      "evalCaseRowCount": 17,
-      "evalTierClassification": "structured_multi_case_table",
-      "evalPath": "skills/blendops-connect-blender/EVAL.md",
-      "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/blendops-connect-blender.eval.json",
-      "machineReadableCaseCount": 36,
-      "countsByEvaluationType": {
-        "contract_routing": 0,
-        "contract_handoff": 7,
-        "deterministic_fixture": 29
-      },
-      "evaluationTypes": [
-        "deterministic_fixture",
-        "contract_handoff"
-      ],
-      "deterministicRunnerStatus": "Passed",
-      "liveModelStatus": "Not Run",
-      "blenderRuntimeStatus": "Not Run",
-      "auditDisposition": "EVAL_JSON_IMPLEMENTED"
-    },
-    {
-      "id": "blendops-assets",
-      "category": "asset-and-sourcing",
-      "isGatewaySkill": false,
-      "lineCount": 211,
-      "headings": [
-        "From former `blendops-assets`",
-        "From former `blendops-assets`",
-        "From former `blendops-assets`",
-        "From former `blendops-assets`",
-        "From former `blendops-assets`"
-      ],
-      "hasStructuredEvalCasesTable": true,
-      "evalCaseRowCount": 18,
-      "evalTierClassification": "structured_multi_case_table",
-      "evalPath": "skills/blendops-assets/EVAL.md",
-      "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/blendops-assets.eval.json",
-      "machineReadableCaseCount": 29,
-      "countsByEvaluationType": {
-        "contract_routing": 0,
-        "contract_handoff": 6,
-        "deterministic_fixture": 23
-      },
-      "evaluationTypes": [
-        "deterministic_fixture",
-        "contract_handoff"
-      ],
-      "deterministicRunnerStatus": "Passed",
-      "liveModelStatus": "Not Run",
-      "blenderRuntimeStatus": "Not Run",
-      "auditDisposition": "EVAL_JSON_IMPLEMENTED"
-    },
-    {
-      "id": "blendops-fix-problems",
-      "category": "quality-validators",
-      "isGatewaySkill": false,
-      "lineCount": 83,
-      "headings": [
-        "From former `blendops-fix-problems`"
-      ],
-      "hasStructuredEvalCasesTable": true,
-      "evalCaseRowCount": 15,
-      "evalTierClassification": "structured_multi_case_table",
-      "evalPath": "skills/blendops-fix-problems/EVAL.md",
-      "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/blendops-fix-problems.eval.json",
-      "machineReadableCaseCount": 8,
-      "countsByEvaluationType": {
-        "contract_routing": 0,
-        "contract_handoff": 2,
-        "deterministic_fixture": 6
-      },
-      "evaluationTypes": [
-        "deterministic_fixture",
-        "contract_handoff"
-      ],
-      "deterministicRunnerStatus": "Passed",
-      "liveModelStatus": "Not Run",
-      "blenderRuntimeStatus": "Not Run",
-      "auditDisposition": "EVAL_JSON_IMPLEMENTED"
-    },
-    {
       "id": "blendops-start",
       "category": "routing-and-governance",
       "isGatewaySkill": false,
@@ -437,39 +497,6 @@
       "evaluationTypes": [
         "contract_routing",
         "deterministic_fixture"
-      ],
-      "deterministicRunnerStatus": "Passed",
-      "liveModelStatus": "Not Run",
-      "blenderRuntimeStatus": "Not Run",
-      "auditDisposition": "EVAL_JSON_IMPLEMENTED"
-    },
-    {
-      "id": "blendops-final-check",
-      "category": "evidence-and-handoff",
-      "isGatewaySkill": false,
-      "lineCount": 277,
-      "headings": [
-        "From former `blendops-final-check`",
-        "From former `blendops-final-check`",
-        "From former `blendops-final-check`",
-        "From former `blendops-final-check`",
-        "From former `blendops-final-check`"
-      ],
-      "hasStructuredEvalCasesTable": true,
-      "evalCaseRowCount": 42,
-      "evalTierClassification": "structured_multi_case_table",
-      "evalPath": "skills/blendops-final-check/EVAL.md",
-      "hasMachineReadableEvalJson": true,
-      "evalJsonPath": "evals/suites/blendops-final-check.eval.json",
-      "machineReadableCaseCount": 34,
-      "countsByEvaluationType": {
-        "contract_routing": 0,
-        "contract_handoff": 9,
-        "deterministic_fixture": 25
-      },
-      "evaluationTypes": [
-        "deterministic_fixture",
-        "contract_handoff"
       ],
       "deterministicRunnerStatus": "Passed",
       "liveModelStatus": "Not Run",

@@ -7,6 +7,9 @@ community `mcp-for-blender`, Blender CLI).
 
 ## [Unreleased] - Breaking: skill catalog merged 48 → 14 (planned v2.0.0)
 
+### Added
+- `blendops-build`: builds the planned scene in Blender step by step (units, shapes, modifiers, materials, lights, camera, preview, render or GLB export) with a JSON report per step and API rules for Blender 4.0, 4.2 and 5.0. The catalog is now 15 skills; `blendops-connect-blender` hands off to it once the runtime is ready and the brief is locked.
+
 ### Breaking
 - The 48 narrow skills are merged into 14 skills. Each former skill's body now lives as a reference file under its new skill (`skills/<new-id>/references/<old-id>.md`); old skill folders, ZIPs and `npx skills add --skill <old-id>` slugs are removed.
 - Routing participants are now 3 (`blendops-brief` → `blendops-done-criteria` → `blendops-start`); `skills.sh.json` has 4 groups.

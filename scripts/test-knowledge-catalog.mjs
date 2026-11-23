@@ -55,7 +55,7 @@ describe('Architecture Reconciliation & Knowledge/Recipe Foundation', () => {
       `Expected catalog validation to pass with 0 errors, got:\n${validation.errors.join('\n')}`,
     );
     assert.equal(validation.counts.domains, 11);
-    assert.equal(validation.counts.skills, 14);
+    assert.equal(validation.counts.skills, 15);
     assert.ok(validation.counts.sources >= 18, `Expected >= 18 sources, got ${validation.counts.sources}`);
     assert.equal(validation.counts.knowledge_records, 30);
     assert.equal(validation.counts.recipes, 10);
@@ -101,9 +101,9 @@ describe('Architecture Reconciliation & Knowledge/Recipe Foundation', () => {
     );
   });
 
-  test('Scenario 2: 5-layer architecture reconciliation and 14-skill + 199-reference classification audit are complete and deterministic', () => {
+  test('Scenario 2: 5-layer architecture reconciliation and 15-skill + 205-reference classification audit are complete and deterministic', () => {
     const auditData = generateSkillArchitectureAuditData(ROOT);
-    assert.equal(auditData.five_layer_architecture.skill_layer.skill_count, 14);
+    assert.equal(auditData.five_layer_architecture.skill_layer.skill_count, 15);
     assert.equal(auditData.five_layer_architecture.knowledge_layer.domain_count, 11);
     assert.equal(auditData.five_layer_architecture.knowledge_layer.knowledge_record_count, 30);
     assert.equal(auditData.five_layer_architecture.recipe_layer.recipe_count, 10);
@@ -117,13 +117,13 @@ describe('Architecture Reconciliation & Knowledge/Recipe Foundation', () => {
       'Not Produced',
     );
 
-    assert.equal(auditData.summary.total_skills_audited, 14);
-    assert.equal(auditData.summary.total_skill_references_classified, 199);
+    assert.equal(auditData.summary.total_skills_audited, 15);
+    assert.equal(auditData.summary.total_skill_references_classified, 205);
 
     const sumClassifications = Object.values(
       auditData.summary.reference_classification_breakdown,
     ).reduce((acc, n) => acc + n, 0);
-    assert.equal(sumClassifications, 199, 'All 199 skill reference files must be classified');
+    assert.equal(sumClassifications, 205, 'All 205 skill reference files must be classified');
     assert.ok(
       auditData.summary.reference_classification_breakdown.reusable_cross_skill_knowledge >= 30,
       'Expected >= 30 reusable cross-skill reference files promoted to knowledge records',

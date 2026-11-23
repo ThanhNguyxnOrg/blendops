@@ -187,6 +187,7 @@ Limitations: <gaps>
 
 ## Cross-skill handoff
 <!-- blendops:generated:start handoffs -->
+- [progression] Runtime is ready and the plan is locked; build the scene → `../blendops-build/SKILL.md`
 - [alternative] If Ready / Partially Ready and moving to scene planning (blendops-product-shot) → `../blendops-product-shot/SKILL.md`
 - [conditional] If Ready / Partially Ready and moving to scene planning (blendops-start) → `../blendops-start/SKILL.md`
 - [fallback] Contradictory constraints failure exit → `../blendops-final-check/SKILL.md`

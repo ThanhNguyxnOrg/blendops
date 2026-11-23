@@ -5,9 +5,9 @@ Status: 1.0.0 fallback only
 > [!IMPORTANT]
 > This file is a **fallback only**. It is less complete than the full manual bundle (`SKILL.md` + `references/`). Use this only when your Claude Desktop import/copy path supports one file.
 
-## Condensed skill map (baseline 16 — full inventory: 14 skills)
+## Condensed skill map (baseline 16 — full inventory: 15 skills)
 
-The routes below cover the canonical baseline workflow (full inventory: **14 skills** = 16 core + 32 specialized across web 3D handoff deep, quality validators, domain scene planners, process discipline, asset/sourcing, color/format/output decisions, recipe/pack ops, runtime path discipline). For the full inventory, switch to the multi-file bundle (`bundles/claude-desktop-manual/references/skills/*.md`) or browse `skills/README.md` upstream. When in doubt, route to `blendops-start`.
+The routes below cover the canonical baseline workflow (full inventory: **15 skills** = 16 core + 32 specialized across web 3D handoff deep, quality validators, domain scene planners, process discipline, asset/sourcing, color/format/output decisions, recipe/pack ops, runtime path discipline). For the full inventory, switch to the multi-file bundle (`bundles/claude-desktop-manual/references/skills/*.md`) or browse `skills/README.md` upstream. When in doubt, route to `blendops-start`.
 
 Baseline routes:
 - unclear next step → `blendops-start`
@@ -17,6 +17,7 @@ Baseline routes:
 - runtime setup prerequisites → `blendops-connect-blender`
 - runtime preflight/readiness → `blendops-connect-blender`
 - MCP bridge conflicts (Path 1 + Path 2 + port 9876) → `blendops-connect-blender`
+- build the planned scene in Blender (shapes, materials, lights, camera, preview, export) → `blendops-build`
 - scene planning → `blendops-product-shot`
 - composition/camera planning → `blendops-camera`
 - lighting/material planning → `blendops-lighting-materials`
@@ -29,7 +30,7 @@ Baseline routes:
 
 Expansion routes (load via the multi-file bundle for full SKILL.md content):
 - recipe/pack fit → `blendops-brief`; pre-flight → `blendops-done-criteria`; resume routing → `blendops-start`; acceptance criteria → `blendops-done-criteria`
-- runtime path discipline: `blendops-connect-blender`, `blendops-final-check`
+- runtime path discipline: `blendops-connect-blender`, `blendops-build`, `blendops-final-check`
 - web 3D deep: `blendops-glb-budget`, `blendops-glb-web-handoff`, `blendops-final-check`
 - quality validators: `blendops-lighting-materials`, `blendops-camera`, `blendops-glb-budget`
 - domain scene planners: `blendops-scene-plan`, `blendops-product-shot`

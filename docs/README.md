@@ -19,10 +19,10 @@ The single index for everything in this repo. Bookmark this page.
 | CLI fallback | One scoped run | **Documented upstream** as a first-class Blender CLI surface; see the [scoped mech-prop CLI eval](./evals/cli-fallback-mech-prop.md). |
 | Full official runtime manual eval | Not Run | The scoped CLI run does not cover the full official runtime eval. |
 | Full official runtime eval artifacts | Not Produced | No preview/render/GLB from the full official runtime eval. |
-| Release tag (`v1.0.0`) | Ready | Skills layer (14 skills + 199 references), catalogs, CLI (`35+` targets), and full verification suite are complete. |
+| Release tag (`v1.0.0`) | Ready | Skills layer (15 skills + 205 references), catalogs, CLI (`35+` targets), and full verification suite are complete. |
 | npm CLI package | Published (`blendops@1.0.0`, `latest`) | [Public npm package](https://www.npmjs.com/package/blendops); the CLI entrypoint and transactional project installer ship in the package. |
 | Distribution metadata sync | Automated | ThanhNguyxnAgent checks npm registry + skills.sh on source changes and weekly; see `docs/audits/current/distribution-metadata.json` (created by the first successful live sync). |
-| Knowledge & Recipe Catalog | Implemented & Verified (`90/90` bilingual retrieval evals) | **30** `knowledge.*` records across **11** 3D domains, **10** `recipe.*` blueprints, **20** `source.*` citations, deterministic `catalog-search` / `catalog-resolve` / `plan-compile` CLI, and 14-skill / 199-reference architecture audit in [`knowledge-and-recipe-catalog.md`](./knowledge-and-recipe-catalog.md) and [`audits/skill-architecture-audit.md`](./audits/skill-architecture-audit.md). |
+| Knowledge & Recipe Catalog | Implemented & Verified (`90/90` bilingual retrieval evals) | **30** `knowledge.*` records across **11** 3D domains, **10** `recipe.*` blueprints, **20** `source.*` citations, deterministic `catalog-search` / `catalog-resolve` / `plan-compile` CLI, and 15-skill / 205-reference architecture audit in [`knowledge-and-recipe-catalog.md`](./knowledge-and-recipe-catalog.md) and [`audits/skill-architecture-audit.md`](./audits/skill-architecture-audit.md). |
 | GLB Web Handoff & Viewer Integration | Implemented; browser check for the [scoped mech-prop CLI eval](./evals/cli-fallback-mech-prop.md) was `Not Run` | `schemas/glb-web-handoff-manifest.schema.json`, `scripts/inspect-glb.mjs`, `scripts/generate-glb-handoff-report.mjs`, CLI `glb-inspect` / `glb-handoff` / `glb-validate-manifest`, and Three.js + R3F examples in [`examples/blendops-glb-web-handoff/README.md`](./examples/blendops-glb-web-handoff/README.md). |
 | Repository architecture & file inventory | Verified (`npm run arch:check`) | Canonical source, generated artifact, historical record, documentation, runtime/test, distribution, and config classification in [`architecture.md`](./architecture.md) and [`audits/current/repository-inventory.json`](./audits/current/repository-inventory.json). |
 
@@ -65,7 +65,7 @@ The single index for everything in this repo. Bookmark this page.
 | Architecture | [`architecture.md`](./architecture.md) |
 | Skill system | [`skill-system.md`](./skill-system.md) |
 | Knowledge & recipe catalog | [`knowledge-and-recipe-catalog.md`](./knowledge-and-recipe-catalog.md) |
-| 14-skill & 199-reference architecture audit | [`audits/skill-architecture-audit.md`](./audits/skill-architecture-audit.md) |
+| 15-skill & 205-reference architecture audit | [`audits/skill-architecture-audit.md`](./audits/skill-architecture-audit.md) |
 | Workflow contract | [`workflow-contract.md`](./workflow-contract.md) |
 | Safety model | [`safety-model.md`](./safety-model.md) |
 | First user journey | [`first-user-journey.md`](./first-user-journey.md) |

@@ -125,7 +125,7 @@ export function executeWriteClaudeDesktopPlan(livePlan) {
     ].join('\n');
     writeAtomicFile(path.join(stagingDir, 'README.md'), topReadmeContent);
 
-    // Verify all 14 ZIPs, extracted skill folders, manual bundle, README, and manifest inside staging
+    // Verify all 15 ZIPs, extracted skill folders, manual bundle, README, and manifest inside staging
     for (const skillName of sourceInfo.skillNames) {
       const zipAbs = path.join(stagingDir, 'desktop-zips', `${skillName}.zip`);
       if (!fs.existsSync(zipAbs)) {

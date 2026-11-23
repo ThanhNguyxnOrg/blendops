@@ -44,6 +44,7 @@ Metadata: Contract `v2.0.0` | Category `runtime-and-execution` | Role `runtime-p
 4. Reply with the user-facing template, keeping truth states honest.
 
 ## Cross-skill handoffs
+- [progression] Runtime is ready and the plan is locked; build the scene → `blendops-build` (`references/skill-blendops-build.md`) — `when.all: [runtime.verifiedReady equals true; brief.locked equals true]`
 - [alternative] If Ready / Partially Ready and moving to scene planning (blendops-product-shot) → `blendops-product-shot` (`references/skill-blendops-product-shot.md`) — `when.all: [brief.locked equals true; recipe.domain equals "product_hero"]`
 - [conditional] If Ready / Partially Ready and moving to scene planning (blendops-start) → `blendops-start` (`references/skill-blendops-start.md`) — `when.all: [preflight.passed equals true; inventory.exists equals true]`
 - [fallback] Contradictory constraints failure exit → `blendops-final-check` (`references/skill-blendops-final-check.md`) — `when.any: [gate.status equals "failed"; runtime.mode equals "blocked"]`

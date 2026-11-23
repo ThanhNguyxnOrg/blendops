@@ -84,7 +84,7 @@ function assertSnapshotsEqual(beforeSnap, afterSnap, contextMessage) {
   }
 }
 
-test('Scenario 1: Canonical discovery finds 14 valid SKILL.md + contract.json pairs', () => {
+test('Scenario 1: Canonical discovery finds 15 valid SKILL.md + contract.json pairs', () => {
   const discovery = discoverCanonicalSkillIds(root);
   assert.equal(discovery.ok, true, `Discovery errors: ${discovery.errors.join('; ')}`);
   assert.equal(discovery.skillIds.length, EXPECTED_CANONICAL_SKILL_COUNT);
@@ -102,26 +102,26 @@ test('Scenario 1: Canonical discovery finds 14 valid SKILL.md + contract.json pa
   }
 });
 
-test('Scenario 2: Generator emits 14 Claude Desktop summaries and 14 portable package summaries (28 total)', () => {
+test('Scenario 2: Generator emits 15 Claude Desktop summaries and 15 portable package summaries (30 total)', () => {
   const tempRoot = createIsolatedFixtureRepo();
   try {
     const res = generateBundleReferenceSummaries(tempRoot);
     assert.equal(res.ok, true, `Build errors: ${res.errors.join('; ')}`);
-    assert.equal(res.skillCount, 14);
-    assert.equal(res.generatedCount, 28);
-    assert.equal(res.writtenFiles.length, 28);
+    assert.equal(res.skillCount, 15);
+    assert.equal(res.generatedCount, 30);
+    assert.equal(res.writtenFiles.length, 30);
 
     const claudeFiles = fs
       .readdirSync(path.join(tempRoot, CLAUDE_DESKTOP_SKILLS_REL_DIR))
       .filter((f) => f.endsWith('.md'))
       .sort();
-    assert.equal(claudeFiles.length, 14);
+    assert.equal(claudeFiles.length, 15);
 
     const portableSkillFiles = fs
       .readdirSync(path.join(tempRoot, PORTABLE_PACKAGE_REFS_REL_DIR))
       .filter((f) => f.startsWith('skill-') && f !== 'skill-map.md' && f.endsWith('.md'))
       .sort();
-    assert.equal(portableSkillFiles.length, 14);
+    assert.equal(portableSkillFiles.length, 15);
   } finally {
     fs.rmSync(tempRoot, { recursive: true, force: true });
   }
@@ -204,7 +204,7 @@ test('Scenario 4: Every generated summary includes required operational sections
   }
 });
 
-test('Scenario 5: Both profiles remain semantically aligned across all 14 skills', () => {
+test('Scenario 5: Both profiles remain semantically aligned across all 15 skills', () => {
   const plan = computeBundleSummaryPlan(root);
   assert.equal(plan.ok, true);
 
@@ -469,7 +469,7 @@ test('Scenario 14: Bundle manifest check verifies completeness, uniqueness, and 
     const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
 
     const skillEntries = manifest.files.filter((f) => f.path.startsWith('references/skills/'));
-    assert.equal(skillEntries.length, 14);
+    assert.equal(skillEntries.length, 15);
     const nonSkillPaths = manifest.files
       .filter((f) => !f.path.startsWith('references/skills/'))
       .map((f) => f.path);
@@ -530,7 +530,7 @@ test('Scenario 14: Bundle manifest check verifies completeness, uniqueness, and 
   }
 });
 
-test('Scenario 15: Repeat builds are byte-identical across all 28 generated summaries and manifest.json', () => {
+test('Scenario 15: Repeat builds are byte-identical across all 30 generated summaries and manifest.json', () => {
   const tempRoot = createIsolatedFixtureRepo();
   try {
     const firstBuild = generateBundleReferenceSummaries(tempRoot);
@@ -684,7 +684,7 @@ test('Scenario 20: CLI check and build modes return non-zero exit codes on inval
 // Extended Hardening Scenarios (21 through 35)
 // ============================================================================
 
-test('Scenario 21: Handoff condition when.all and when.any modes plus every predicate field, operator, and scalar/array/boolean value are preserved in both profiles across all 14 skills', () => {
+test('Scenario 21: Handoff condition when.all and when.any modes plus every predicate field, operator, and scalar/array/boolean value are preserved in both profiles across all 15 skills', () => {
   const discovery = discoverCanonicalSkillIds(root);
   assert.equal(discovery.ok, true);
 
@@ -1214,7 +1214,7 @@ test('Scenario 31: Aborted builds do not partially write or delete bundle summar
     );
     fs.writeFileSync(staleSummaryPath, '# obsolete skill summary\n', 'utf8');
 
-    // Break the 14th skill contract (blendops-start) so preflight fails after earlier skills
+    // Break the 15th skill contract (blendops-start) so preflight fails after earlier skills
     const routerContractPath = path.join(
       tempRoot,
       'skills',
@@ -1346,7 +1346,7 @@ test('Scenario 33: F-09 audit status is OPEN (not FIXED) when either bundle summ
   }
 });
 
-test('Scenario 34: Both profiles remain 100% semantically equivalent to each other and to contract.json across all 14 skills', () => {
+test('Scenario 34: Both profiles remain 100% semantically equivalent to each other and to contract.json across all 15 skills', () => {
   const discovery = discoverCanonicalSkillIds(root);
   assert.equal(discovery.ok, true);
 

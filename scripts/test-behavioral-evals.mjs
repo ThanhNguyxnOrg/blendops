@@ -50,24 +50,24 @@ function loadValidPilotSuite(skillId = 'blendops-start') {
 }
 
 describe('Behavioral Evaluation Schema & Deterministic Runner', () => {
-  it('validates all 14 catalog evaluation suites (269 cases) via runEvalSuites(--check)', () => {
+  it('validates all 15 catalog evaluation suites (274 cases) via runEvalSuites(--check)', () => {
     const checkRes = runEvalSuites({ rootDir: root, checkOnly: true });
     assert.equal(checkRes.ok, true, `Expected evals:check to pass, got: ${checkRes.errors.join('; ')}`);
-    assert.equal(checkRes.summary.machineReadableSuites, 14);
-    assert.equal(checkRes.summary.machineReadablePilotSuites, 14);
-    assert.equal(checkRes.summary.totalCases, 269);
-    assert.equal(checkRes.summary.totalMachineReadableCases, 269);
+    assert.equal(checkRes.summary.machineReadableSuites, 15);
+    assert.equal(checkRes.summary.machineReadablePilotSuites, 15);
+    assert.equal(checkRes.summary.totalCases, 274);
+    assert.equal(checkRes.summary.totalMachineReadableCases, 274);
     assert.equal(checkRes.summary.remainingProseOnlyEvalFiles, 0);
     assert.equal(checkRes.summary.liveModelStatus, 'Not Run');
     assert.equal(checkRes.summary.blenderRuntimeStatus, 'Not Run');
   });
 
-  it('executes all 269 deterministic evaluation cases across all 14 catalog skills and passes', () => {
+  it('executes all 274 deterministic evaluation cases across all 15 catalog skills and passes', () => {
     const runRes = runEvalSuites({ rootDir: root, checkOnly: false });
     assert.equal(runRes.ok, true, `Expected evals:run to pass, got: ${runRes.errors.join('; ')}`);
-    assert.equal(runRes.summary.suitesExecuted, 14);
-    assert.equal(runRes.summary.totalCasesExecuted, 269);
-    assert.equal(runRes.summary.passedCases, 269);
+    assert.equal(runRes.summary.suitesExecuted, 15);
+    assert.equal(runRes.summary.totalCasesExecuted, 274);
+    assert.equal(runRes.summary.passedCases, 274);
     assert.equal(runRes.summary.failedCases, 0);
     assert.equal(runRes.summary.liveModelStatus, 'Not Run');
     assert.equal(runRes.summary.blenderRuntimeStatus, 'Not Run');
@@ -529,17 +529,17 @@ describe('Behavioral Evaluation Schema & Deterministic Runner', () => {
     assert.equal(f09?.currentLifecycleStatus, 'FIXED');
     assert.equal(f10?.currentLifecycleStatus, 'FIXED');
 
-    assert.equal(currentSkillInv.summary.totalSkills, 14);
+    assert.equal(currentSkillInv.summary.totalSkills, 15);
     assert.equal(Object.keys(HISTORICAL_TO_CURRENT_SKILL_ID).length, 20);
     assert.equal(resolveCurrentSkillId('blender-asset-discovery-planner'), 'blendops-assets');
-    assert.equal(currentSkillInv.summary.contractedSkillsCount, 14);
+    assert.equal(currentSkillInv.summary.contractedSkillsCount, 15);
     assert.equal(currentSkillInv.summary.skillsWithArtifactNotRunContradiction, 0);
     assert.equal(currentSkillInv.summary.skillsMissingExtendedTemplateSections, 0);
     assert.equal(currentSkillInv.summary.totalMissingExtendedSectionInstances, 0);
-    assert.equal(currentEvalInv.summary.machineReadableSuitesCount, 14);
-    assert.equal(currentEvalInv.summary.machineReadablePilotSuitesCount, 14);
+    assert.equal(currentEvalInv.summary.machineReadableSuitesCount, 15);
+    assert.equal(currentEvalInv.summary.machineReadablePilotSuitesCount, 15);
     assert.ok(
-      currentEvalInv.summary.totalMachineReadableCases === 269 ||
+      currentEvalInv.summary.totalMachineReadableCases === 274 ||
         currentEvalInv.summary.totalMachineReadableCases === 384,
     );
     assert.equal(currentEvalInv.summary.liveModelRunnerStatus, 'Not Run');
@@ -1252,7 +1252,7 @@ describe('Behavioral Evaluation Schema & Deterministic Runner', () => {
     const valPolicy = validateCapabilityPolicyObject(policy, { rootDir: root });
     assert.equal(valPolicy.valid, true, `Expected valid capability policy, got: ${valPolicy.errors.join('; ')}`);
     assert.equal(policy.defaultCapabilityTier, 'L0');
-    assert.equal(policy.skills.length, 14);
+    assert.equal(policy.skills.length, 15);
     assert.equal(policy.runtimeExecutionState.blenderRuntime, 'Not Run');
     assert.equal(policy.runtimeExecutionState.liveRollbackEngineExecuted, false);
 

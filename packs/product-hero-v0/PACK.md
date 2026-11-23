@@ -78,7 +78,7 @@ This pack expects included skills to pass Gate 0 through Gate 8 in `skill-review
 | Expectation | Status language |
 |---|---|
 | Per-skill evals | Each included skill ships `SKILL.md`, `contract.json`, `EVAL.md`, `evals/suites/<id>.eval.json`, and 3+ `references/` files. |
-| Automated deterministic evals | Verified across all 14 catalog skills (`269/269` deterministic cases via `npm run evals:run`). |
+| Automated deterministic evals | Verified across all 15 catalog skills (`274/274` deterministic cases via `npm run evals:run`). |
 | Runtime blockers | Must be recordable without overclaims. |
 | Depth audit | Tracked in `skill-reviews/reports/v0-skill-depth-audit.md`. |
 | Gate review | Tracked in `skill-reviews/reports/v0-skill-gate-review.md`. |

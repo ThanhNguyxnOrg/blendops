@@ -1265,7 +1265,7 @@ describe('Secure Async MCP Client, Runtime Trust Verification & Governed Live Re
   });
 
   it('Group I: skills.sh / vercel-labs/skills ecosystem integration — skills.sh.json validation, Lockfile v2 computedHash test vectors, and --with-skills-dir + --skill transactional install & rollback', () => {
-    // 1. Validate root skills.sh.json covers all 14 canonical skills across 8 domain groupings
+    // 1. Validate root skills.sh.json covers all 15 canonical skills across 8 domain groupings
     const shValidation = validateSkillsShConfig(REPO_ROOT);
     assert.equal(
       shValidation.valid,
@@ -1273,7 +1273,7 @@ describe('Secure Async MCP Client, Runtime Trust Verification & Governed Live Re
       `Expected skills.sh.json to be valid, got: ${shValidation.errors.join('; ')}`,
     );
     assert.equal(shValidation.groupCount, 4);
-    assert.equal(shValidation.skillCount, 14);
+    assert.equal(shValidation.skillCount, 15);
 
     // 2. Verify computeSkillEntriesLockHash & computeSkillFolderLockHash against official vercel-labs/skills Lockfile v2 test vectors
     assert.equal(
@@ -1294,10 +1294,10 @@ describe('Secure Async MCP Client, Runtime Trust Verification & Governed Live Re
       'b22c4d22aa319d2924312fa18fcbfedc88fa89c74dbd8f298c683e1caf7b7f24',
     );
 
-    // 3. Verify buildSkillsLockJsonV2 across all 14 canonical BlendOps skills
+    // 3. Verify buildSkillsLockJsonV2 across all 15 canonical BlendOps skills
     const fullLock = buildSkillsLockJsonV2(REPO_ROOT);
     assert.equal(fullLock.version, 2);
-    assert.equal(Object.keys(fullLock.skills).length, 14);
+    assert.equal(Object.keys(fullLock.skills).length, 15);
     for (const [slug, entry] of Object.entries(fullLock.skills)) {
       assert.equal(entry.source, 'ThanhNguyxnOrg/blendops');
       assert.equal(entry.sourceType, 'github');

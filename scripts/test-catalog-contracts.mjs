@@ -45,8 +45,8 @@ describe('Full Catalog Contract Coverage & F-03 Resolution (30 Scenarios)', () =
   const catalogSkillSet = new Set(catalogSkillIds);
   const { vocab, fieldMap: contextFieldMap, errors: vocabLoadErrors } = loadContextFieldVocabulary(root);
 
-  it('Scenario 1: all 14 real catalog skills have skills/<id>/contract.json on disk and _template is excluded', () => {
-    assert.equal(catalogSkillIds.length, 14, 'Expected exactly 14 real catalog skills');
+  it('Scenario 1: all 15 real catalog skills have skills/<id>/contract.json on disk and _template is excluded', () => {
+    assert.equal(catalogSkillIds.length, 15, 'Expected exactly 15 real catalog skills');
     assert.equal(catalogSkillIds.includes('_template'), false);
 
     for (const skillId of catalogSkillIds) {
@@ -64,7 +64,7 @@ describe('Full Catalog Contract Coverage & F-03 Resolution (30 Scenarios)', () =
     );
   });
 
-  it('Scenario 2: all 14 contract.json files validate cleanly against schemas/skill-contract.schema.json with Ajv2020 strict mode', () => {
+  it('Scenario 2: all 15 contract.json files validate cleanly against schemas/skill-contract.schema.json with Ajv2020 strict mode', () => {
     for (const skillId of catalogSkillIds) {
       const raw = fs.readFileSync(path.join(skillsDir, skillId, 'contract.json'), 'utf8');
       const parsed = JSON.parse(raw);
@@ -80,7 +80,7 @@ describe('Full Catalog Contract Coverage & F-03 Resolution (30 Scenarios)', () =
     }
   });
 
-  it('Scenario 3: enforces strict separation between the 3 routing participants and 11 specialist contracts', () => {
+  it('Scenario 3: enforces strict separation between the 3 routing participants and 12 specialist contracts', () => {
     assert.deepEqual(ROUTING_PARTICIPANT_IDS, [
       'blendops-brief',
       'blendops-done-criteria',
@@ -107,7 +107,7 @@ describe('Full Catalog Contract Coverage & F-03 Resolution (30 Scenarios)', () =
       }
     }
     assert.equal(routingCount, 3);
-    assert.equal(specialistCount, 11);
+    assert.equal(specialistCount, 12);
   });
 
   it('Scenario 4: adding routingPrecedence to a specialist contract fails schema validation and precedence ladder validation', () => {
@@ -193,12 +193,12 @@ describe('Full Catalog Contract Coverage & F-03 Resolution (30 Scenarios)', () =
     }
   });
 
-  it('Scenario 7: all 14 contracts declare capabilityTier L0 aligned with runtime-capability-policy.json and reject mismatches', () => {
+  it('Scenario 7: all 15 contracts declare capabilityTier L0 aligned with runtime-capability-policy.json and reject mismatches', () => {
     const policy = JSON.parse(
       fs.readFileSync(path.join(root, 'registry', 'runtime-capability-policy.json'), 'utf8'),
     );
     const policyMap = new Map(policy.skills.map((s) => [s.skillId, s]));
-    assert.equal(policyMap.size, 14);
+    assert.equal(policyMap.size, 15);
 
     for (const skillId of catalogSkillIds) {
       const contract = JSON.parse(
@@ -226,7 +226,7 @@ describe('Full Catalog Contract Coverage & F-03 Resolution (30 Scenarios)', () =
     );
   });
 
-  it('Scenario 8: all 14 contracts enforce outputs.truthStatePolicy runtimeDefault="Not Run", artifactDefault="Not Produced", and mutationRule="downgrade_only"', () => {
+  it('Scenario 8: all 15 contracts enforce outputs.truthStatePolicy runtimeDefault="Not Run", artifactDefault="Not Produced", and mutationRule="downgrade_only"', () => {
     for (const skillId of catalogSkillIds) {
       const contract = JSON.parse(
         fs.readFileSync(path.join(skillsDir, skillId, 'contract.json'), 'utf8'),
@@ -255,7 +255,7 @@ describe('Full Catalog Contract Coverage & F-03 Resolution (30 Scenarios)', () =
     );
   });
 
-  it('Scenario 9: all 14 contracts have globally unique roles and 191 unique normalized trigger phrases, and reject duplicates', () => {
+  it('Scenario 9: all 15 contracts have globally unique roles and 200 unique normalized trigger phrases, and reject duplicates', () => {
     const roles = new Set();
     const triggers = new Set();
     let totalTriggerCount = 0;
@@ -275,9 +275,9 @@ describe('Full Catalog Contract Coverage & F-03 Resolution (30 Scenarios)', () =
       }
     }
 
-    assert.equal(roles.size, 14);
-    assert.equal(totalTriggerCount, 191);
-    assert.equal(triggers.size, 191);
+    assert.equal(roles.size, 15);
+    assert.equal(totalTriggerCount, 200);
+    assert.equal(triggers.size, 200);
 
     // Intra-contract case-insensitive duplicate trigger must fail
     const sample = JSON.parse(
@@ -297,7 +297,7 @@ describe('Full Catalog Contract Coverage & F-03 Resolution (30 Scenarios)', () =
     assert.equal(errs.some((e) => e.includes('duplicate trigger')), true);
   });
 
-  it('Scenario 10: every exclusion delegateTo and handoff target across all 14 contracts resolves to a valid catalog skill ID without self-reference', () => {
+  it('Scenario 10: every exclusion delegateTo and handoff target across all 15 contracts resolves to a valid catalog skill ID without self-reference', () => {
     for (const skillId of catalogSkillIds) {
       const contract = JSON.parse(
         fs.readFileSync(path.join(skillsDir, skillId, 'contract.json'), 'utf8'),
@@ -340,7 +340,7 @@ describe('Full Catalog Contract Coverage & F-03 Resolution (30 Scenarios)', () =
     assert.equal(contextFieldMap.size, vocab.fields.length);
   });
 
-  it('Scenario 13: every when and retryPolicy.exitCondition predicate across all 195 edges in all 14 contracts conforms to the context field vocabulary', () => {
+  it('Scenario 13: every when and retryPolicy.exitCondition predicate across all 199 edges in all 15 contracts conforms to the context field vocabulary', () => {
     let totalCheckedEdges = 0;
     for (const skillId of catalogSkillIds) {
       const contract = JSON.parse(
@@ -354,7 +354,7 @@ describe('Full Catalog Contract Coverage & F-03 Resolution (30 Scenarios)', () =
         `Unexpected context field errors in ${skillId}: ${fieldErrs.join('; ')}`,
       );
     }
-    assert.equal(totalCheckedEdges, 195);
+    assert.equal(totalCheckedEdges, 199);
   });
 
   it('Scenario 14: unknown context field in a handoff when or retryPolicy.exitCondition predicate is rejected', () => {
@@ -454,19 +454,19 @@ describe('Full Catalog Contract Coverage & F-03 Resolution (30 Scenarios)', () =
     );
   });
 
-  it('Scenario 17: compiled registry/skills.json has full-catalog coverage, 14 contracted skills, 0 uncontracted, and deterministic ordering', () => {
+  it('Scenario 17: compiled registry/skills.json has full-catalog coverage, 15 contracted skills, 0 uncontracted, and deterministic ordering', () => {
     const skillsRegistry = JSON.parse(
       fs.readFileSync(path.join(root, 'registry', 'skills.json'), 'utf8'),
     );
     assert.equal(skillsRegistry.coverage, 'full-catalog');
     assert.equal(skillsRegistry.contractStatus, 'full-catalog');
-    assert.equal(skillsRegistry.contractedSkills, 14);
+    assert.equal(skillsRegistry.contractedSkills, 15);
     assert.equal(skillsRegistry.uncontractedSkills, 0);
-    assert.equal(skillsRegistry.catalogSkills, 14);
+    assert.equal(skillsRegistry.catalogSkills, 15);
     assert.equal(skillsRegistry.routingPrecedenceParticipants, 3);
-    assert.equal(skillsRegistry.specialistContracts, 11);
+    assert.equal(skillsRegistry.specialistContracts, 12);
     assert.deepEqual(skillsRegistry.routingPrecedenceOrder, ROUTING_PARTICIPANT_IDS);
-    assert.equal(skillsRegistry.skills.length, 14);
+    assert.equal(skillsRegistry.skills.length, 15);
 
     // First 3 are routing participants in rank order 1..3
     assert.deepEqual(
@@ -478,19 +478,19 @@ describe('Full Catalog Contract Coverage & F-03 Resolution (30 Scenarios)', () =
     assert.deepEqual(specialistIds, [...specialistIds].sort());
   });
 
-  it('Scenario 18: compiled registry/workflow-graph.json has 14 contracted nodes, 0 catalog-only nodes, 195 edges, and 0 progression cycles', () => {
+  it('Scenario 18: compiled registry/workflow-graph.json has 15 contracted nodes, 0 catalog-only nodes, 199 edges, and 0 progression cycles', () => {
     const graph = JSON.parse(
       fs.readFileSync(path.join(root, 'registry', 'workflow-graph.json'), 'utf8'),
     );
     assert.equal(graph.coverage, 'full-catalog');
-    assert.equal(graph.contractedSkills, 14);
+    assert.equal(graph.contractedSkills, 15);
     assert.equal(graph.uncontractedSkills, 0);
-    assert.equal(graph.summary.totalNodes, 14);
-    assert.equal(graph.summary.contractedNodes, 14);
+    assert.equal(graph.summary.totalNodes, 15);
+    assert.equal(graph.summary.contractedNodes, 15);
     assert.equal(graph.summary.catalogOnlyNodes, 0);
     assert.equal(graph.summary.routingPrecedenceParticipants, 3);
-    assert.equal(graph.summary.specialistNodes, 11);
-    assert.equal(graph.summary.totalContractedEdges, 195);
+    assert.equal(graph.summary.specialistNodes, 12);
+    assert.equal(graph.summary.totalContractedEdges, 199);
     assert.equal(graph.summary.progressionCycles, 0);
     assert.equal(graph.nodes.every((n) => n.status === 'contracted'), true);
   });
@@ -517,7 +517,7 @@ describe('Full Catalog Contract Coverage & F-03 Resolution (30 Scenarios)', () =
     assert.ok(cycles.length >= 1, 'Expected progression cycle to be detected');
   });
 
-  it('Scenario 20: all 14 skills are connected in registry/workflow-graph.json with zero isolated nodes and reachable scope-boundary enforcer', () => {
+  it('Scenario 20: all 15 skills are connected in registry/workflow-graph.json with zero isolated nodes and reachable scope-boundary enforcer', () => {
     const graph = JSON.parse(
       fs.readFileSync(path.join(root, 'registry', 'workflow-graph.json'), 'utf8'),
     );
@@ -541,7 +541,7 @@ describe('Full Catalog Contract Coverage & F-03 Resolution (30 Scenarios)', () =
     );
   });
 
-  it('Scenario 21: all 14 SKILL.md files contain synchronized managed sections matching their contract.json', () => {
+  it('Scenario 21: all 15 SKILL.md files contain synchronized managed sections matching their contract.json', () => {
     for (const skillId of catalogSkillIds) {
       const contract = JSON.parse(
         fs.readFileSync(path.join(skillsDir, skillId, 'contract.json'), 'utf8'),
@@ -569,7 +569,7 @@ describe('Full Catalog Contract Coverage & F-03 Resolution (30 Scenarios)', () =
     assert.notEqual(applyManagedSectionsToSkillMd(driftedMd, contract), driftedMd);
   });
 
-  it('Scenario 23: all 14 SKILL.md files use canonical relative-path handoff notation (0 bare-ID handoffs)', () => {
+  it('Scenario 23: all 15 SKILL.md files use canonical relative-path handoff notation (0 bare-ID handoffs)', () => {
     for (const skillId of catalogSkillIds) {
       const scan = scanSkillMarkdown(root, skillId);
       assert.equal(scan.hasContract, true);
@@ -582,52 +582,52 @@ describe('Full Catalog Contract Coverage & F-03 Resolution (30 Scenarios)', () =
     }
   });
 
-  it('Scenario 24: resolveRoutingWinner resolves the exact same routing winners across all 16 state vectors with 14 contracts vs 3 routing contracts', () => {
+  it('Scenario 24: resolveRoutingWinner resolves the exact same routing winners across all 16 state vectors with 15 contracts vs 3 routing contracts', () => {
     const skillsRegistry = JSON.parse(
       fs.readFileSync(path.join(root, 'registry', 'skills.json'), 'utf8'),
     );
-    const all14Contracts = skillsRegistry.skills;
-    const pilot4Contracts = all14Contracts.filter((c) => ROUTING_PARTICIPANT_IDS.includes(c.id));
-    assert.equal(all14Contracts.length, 14);
+    const all15Contracts = skillsRegistry.skills;
+    const pilot4Contracts = all15Contracts.filter((c) => ROUTING_PARTICIPANT_IDS.includes(c.id));
+    assert.equal(all15Contracts.length, 15);
     assert.equal(pilot4Contracts.length, 3);
 
     const all16States = enumerateRoutingStateSpace({ includeContradictory: true });
     assert.equal(all16States.length, 16);
 
     for (const state of all16States) {
-      const winner14 = resolveRoutingWinner(all14Contracts, state);
+      const winner15 = resolveRoutingWinner(all15Contracts, state);
       const winner4 = resolveRoutingWinner(pilot4Contracts, state);
       assert.equal(
-        winner14,
+        winner15,
         winner4,
-        `Routing winner mismatch on state ${JSON.stringify(state)}: ${winner14} vs ${winner4}`,
+        `Routing winner mismatch on state ${JSON.stringify(state)}: ${winner15} vs ${winner4}`,
       );
     }
   });
 
-  it('Scenario 25: all 14 catalog evaluation suites (269 deterministic, contract-routing & contract-handoff cases) pass against the 14-skill registry', () => {
+  it('Scenario 25: all 15 catalog evaluation suites (274 deterministic, contract-routing & contract-handoff cases) pass against the 14-skill registry', () => {
     const evalRes = runEvalSuites({ rootDir: root, checkOnly: false });
     assert.equal(evalRes.ok, true, `Expected eval suites to pass, got: ${evalRes.errors.join('; ')}`);
-    assert.equal(evalRes.summary.suitesExecuted, 14);
-    assert.equal(evalRes.summary.totalCasesExecuted, 269);
-    assert.equal(evalRes.summary.passedCases, 269);
+    assert.equal(evalRes.summary.suitesExecuted, 15);
+    assert.equal(evalRes.summary.totalCasesExecuted, 274);
+    assert.equal(evalRes.summary.passedCases, 274);
     assert.equal(evalRes.summary.failedCases, 0);
   });
 
-  it('Scenario 26: docs/audits/current/skill-inventory.json reflects 14/14 contracted skills, 14 relative-path handoffs, 0 bare-ID handoffs, and 14 KEEP skills', () => {
+  it('Scenario 26: docs/audits/current/skill-inventory.json reflects 15/15 contracted skills, 15 relative-path handoffs, 0 bare-ID handoffs, and 15 KEEP skills', () => {
     const skillInv = JSON.parse(
       fs.readFileSync(path.join(root, 'docs', 'audits', 'current', 'skill-inventory.json'), 'utf8'),
     );
-    assert.equal(skillInv.summary.totalSkills, 14);
+    assert.equal(skillInv.summary.totalSkills, 15);
     assert.equal(skillInv.summary.contractStatus, 'full-catalog');
-    assert.equal(skillInv.summary.contractedSkillsCount, 14);
+    assert.equal(skillInv.summary.contractedSkillsCount, 15);
     assert.equal(skillInv.summary.uncontractedSkillsCount, 0);
     assert.equal(skillInv.summary.routingPrecedenceParticipantsCount, 3);
-    assert.equal(skillInv.summary.specialistContractsCount, 11);
-    assert.equal(skillInv.summary.totalWorkflowEdges, 195);
-    assert.equal(skillInv.summary.skillsUsingRelativePathHandoffNotation, 14);
+    assert.equal(skillInv.summary.specialistContractsCount, 12);
+    assert.equal(skillInv.summary.totalWorkflowEdges, 199);
+    assert.equal(skillInv.summary.skillsUsingRelativePathHandoffNotation, 15);
     assert.equal(skillInv.summary.skillsUsingBareIdHandoffNotation, 0);
-    assert.equal(skillInv.summary.dispositionBreakdown.KEEP, 14);
+    assert.equal(skillInv.summary.dispositionBreakdown.KEEP, 15);
     assert.equal(skillInv.summary.dispositionBreakdown.IMPROVE, 0);
 
     for (const s of skillInv.skills) {
@@ -682,7 +682,7 @@ describe('Full Catalog Contract Coverage & F-03 Resolution (30 Scenarios)', () =
       fs.unlinkSync(path.join(tempDir, 'skills', 'blendops-glb-budget', 'contract.json'));
 
       const generated = generateCurrentAuditArtifacts(tempDir);
-      assert.equal(generated.currentSkillInventory.summary.contractedSkillsCount, 13);
+      assert.equal(generated.currentSkillInventory.summary.contractedSkillsCount, 14);
       assert.equal(generated.currentSkillInventory.summary.uncontractedSkillsCount, 1);
       const mutatedF03 = generated.findings.findings.find((f) => f.id === 'F-03');
       const mutatedF09 = generated.findings.findings.find((f) => f.id === 'F-09');
@@ -738,14 +738,14 @@ describe('Full Catalog Contract Coverage & F-03 Resolution (30 Scenarios)', () =
   it('Scenario 30: docs:check, registry:check, evals:check, and skills:export all pass across the 14-skill catalog', () => {
     const docsRes = runDocsCheck(root);
     assert.equal(docsRes.ok, true, `docs:check failed: ${docsRes.errors.join('; ')}`);
-    assert.equal(docsRes.catalogSkillCount, 14);
+    assert.equal(docsRes.catalogSkillCount, 15);
 
     const regCheckOut = execFileSync(
       process.execPath,
       [path.join(root, 'scripts', 'build-registry.mjs'), '--check'],
       { cwd: root, encoding: 'utf8' },
     );
-    assert.match(regCheckOut, /14 contracted skills, 195 edges/);
+    assert.match(regCheckOut, /15 contracted skills, 199 edges/);
 
     const tempExportRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'blendops-catalog-export-'));
     try {
@@ -754,12 +754,12 @@ describe('Full Catalog Contract Coverage & F-03 Resolution (30 Scenarios)', () =
         [path.join(root, 'scripts', 'export-claude-skills.mjs'), '--output-root', tempExportRoot],
         { cwd: root, encoding: 'utf8' },
       );
-      assert.match(exportOut, /Exported 14 Claude skill zips/i);
+      assert.match(exportOut, /Exported 15 Claude skill zips/i);
 
       const manifest = JSON.parse(
         fs.readFileSync(path.join(tempExportRoot, 'manifest.json'), 'utf8'),
       );
-      assert.equal(manifest.skillCount, 14);
+      assert.equal(manifest.skillCount, 15);
       assert.deepEqual(manifest.skills, catalogSkillIds);
       for (const skillId of catalogSkillIds) {
         assert.equal(
