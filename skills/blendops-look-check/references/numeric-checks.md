@@ -47,12 +47,17 @@ for name, size in plan["objects"].items():
     ev = obj.evaluated_get(depsgraph)
     corners = [ev.matrix_world @ Vector(c) for c in ev.bound_box]
     if name in plan["grounded"]:
+        low = min(c.z for c in corners)
         if ev.type == 'MESH':
             mesh = ev.to_mesh()
-            low = min((ev.matrix_world @ v.co).z for v in mesh.vertices)
-            ev.to_mesh_clear()
-        else:
-            low = min(c.z for c in corners)
+            try:
+                zs = [(ev.matrix_world @ v.co).z for v in mesh.vertices]
+            finally:
+                ev.to_mesh_clear()
+            if not zs:
+                issues.append({"check": "geometry", "object": name})
+                continue
+            low = min(zs)
         if abs(low - plan["floor_z"]) > 0.001:
             issues.append({"check": "ground_contact", "object": name, "gap_m": round(low - plan["floor_z"], 4)})
     if cam and name in plan["in_frame"]:
