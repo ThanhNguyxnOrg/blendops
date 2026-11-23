@@ -42,6 +42,7 @@
     "scripts/build-knowledge-catalog.mjs",
     "scripts/compile-scene-plan.mjs",
     "scripts/runtime-orchestrator.mjs",
+    "scripts/runtime/",
     "scripts/validate-capability-policy.mjs",
     "scripts/validate-evidence-packet.mjs",
     "scripts/export-claude-skills.mjs",

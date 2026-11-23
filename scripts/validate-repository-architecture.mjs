@@ -313,6 +313,7 @@ export function classifyTrackedFile(relPath, pkgFiles = []) {
       relPath === 'scripts/build-knowledge-catalog.mjs' ||
       relPath === 'scripts/compile-scene-plan.mjs' ||
       relPath === 'scripts/runtime-orchestrator.mjs' ||
+      relPath.startsWith('scripts/runtime/') ||
       relPath === 'scripts/validate-capability-policy.mjs' ||
       relPath === 'scripts/validate-evidence-packet.mjs' ||
       relPath === 'scripts/export-claude-skills.mjs' ||
