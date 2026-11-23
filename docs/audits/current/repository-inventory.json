@@ -2,8 +2,8 @@
   "schemaVersion": "1.0.0",
   "auditPhase": "v1.0.0-current",
   "summary": {
-    "totalTrackedFiles": 541,
-    "npmPackageIncludedFiles": 364,
+    "totalTrackedFiles": 555,
+    "npmPackageIncludedFiles": 378,
     "generatedTrackedFiles": 43,
     "canonicalSkillsCount": 14,
     "lawsCount": 4,
@@ -18,7 +18,7 @@
       "distribution_artifact": 15,
       "canonical_source": 273,
       "generated_artifact": 43,
-      "runtime_build_test_infrastructure": 72
+      "runtime_build_test_infrastructure": 86
     },
     "subsystemCounts": {
       "repository-governance": 4,
@@ -37,7 +37,7 @@
       "registry-and-routing": 6,
       "schemas-and-contracts": 16,
       "ci-and-build-generators": 11,
-      "cli-and-runtime-tools": 9,
+      "cli-and-runtime-tools": 23,
       "test-suites": 21,
       "quality-and-skill-reviews": 7,
       "skills-catalog": 244
@@ -53,13 +53,13 @@
       "packs": 2,
       "registry": 10,
       "schemas": 16,
-      "scripts": 41,
+      "scripts": 55,
       "skill-reviews": 7,
       "skills": 243
     },
     "referenceIntegrity": {
       "markdownFiles": 398,
-      "jsModules": 42,
+      "jsModules": 56,
       "schemas": 16,
       "workflows": 6
     }
@@ -1058,7 +1058,7 @@
       "generatorScript": null,
       "safeToMoveOrRemove": false,
       "byteSize": 3019,
-      "sha256": "6158b100499a8c51d9fb384ef795483619b6d5696f765b1203079a62e83da7bf"
+      "sha256": "b022e1687036e0222f2767867ac48f3b7cccdc9a8d85f0bb70f089dd81ec9eff"
     },
     {
       "path": "bundles/skill-package/blendops/LICENSE.txt",
@@ -1657,8 +1657,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 20716,
-      "sha256": "0b5acad8d675ad0ee34a519d6a301e7fad831f8c5906656d784c4c6fbb540aba"
+      "byteSize": 20748,
+      "sha256": "352ff37c0a41b10378b0dd8d1f35fb5a42a47a01cc3b36f093ca839c17c23b00"
     },
     {
       "path": "docs/audits/audited-inputs.manifest.json",
@@ -3457,8 +3457,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 4617,
-      "sha256": "cd06c7f800d8d56933edef064b32d1d6237e9ad7cc4976dd321bae58ac896c8c"
+      "byteSize": 4637,
+      "sha256": "0e521bfbb61dcba9fc0f57923107f5ef728614774b78ff6df0f719e186c33ae4"
     },
     {
       "path": "packs/README.md",
@@ -3941,6 +3941,216 @@
       "sha256": "c7d4c5a747cc9243f76a809a284943d15863bb0776a3382221db6575de10d275"
     },
     {
+      "path": "scripts/cli/args.mjs",
+      "fileType": ".mjs",
+      "classification": "runtime_build_test_infrastructure",
+      "purpose": "Packaged CLI and runtime verification tool (args.mjs)",
+      "owningSubsystem": "cli-and-runtime-tools",
+      "includedInNpmPackage": true,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 9283,
+      "sha256": "0b6d4d0c755a92732ab519be6ed53a2f602cc397804f49dfb0713424ed875458"
+    },
+    {
+      "path": "scripts/cli/catalog-command.mjs",
+      "fileType": ".mjs",
+      "classification": "runtime_build_test_infrastructure",
+      "purpose": "Packaged CLI and runtime verification tool (catalog-command.mjs)",
+      "owningSubsystem": "cli-and-runtime-tools",
+      "includedInNpmPackage": true,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 9587,
+      "sha256": "c3f2424a9652626d86e2e2de6074ee1f85dfbb98ae98060127b32fdda15a49f5"
+    },
+    {
+      "path": "scripts/cli/constants.mjs",
+      "fileType": ".mjs",
+      "classification": "runtime_build_test_infrastructure",
+      "purpose": "Packaged CLI and runtime verification tool (constants.mjs)",
+      "owningSubsystem": "cli-and-runtime-tools",
+      "includedInNpmPackage": true,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 13778,
+      "sha256": "1663bcf00b07419383aa8461625df18e707edc65ad2ad45f28c98629ad8a4d99"
+    },
+    {
+      "path": "scripts/cli/doctor.mjs",
+      "fileType": ".mjs",
+      "classification": "runtime_build_test_infrastructure",
+      "purpose": "Packaged CLI and runtime verification tool (doctor.mjs)",
+      "owningSubsystem": "cli-and-runtime-tools",
+      "includedInNpmPackage": true,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 5075,
+      "sha256": "fb052f4a35c57fd5728cf8728694c775e887ef7e016d7b8ecd2ba1bee66b2ec7"
+    },
+    {
+      "path": "scripts/cli/glb-command.mjs",
+      "fileType": ".mjs",
+      "classification": "runtime_build_test_infrastructure",
+      "purpose": "Packaged CLI and runtime verification tool (glb-command.mjs)",
+      "owningSubsystem": "cli-and-runtime-tools",
+      "includedInNpmPackage": true,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 10294,
+      "sha256": "4afbc3013651c62d5ba95d5861da9717ee6458f49b3f3ef2c37c5e3d9a65a038"
+    },
+    {
+      "path": "scripts/cli/install-plan.mjs",
+      "fileType": ".mjs",
+      "classification": "runtime_build_test_infrastructure",
+      "purpose": "Packaged CLI and runtime verification tool (install-plan.mjs)",
+      "owningSubsystem": "cli-and-runtime-tools",
+      "includedInNpmPackage": true,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 35037,
+      "sha256": "c0a764059eeb357d1cdecb8583dbeb9f0c9b47b5b558dc2decb61095ec5fdf24"
+    },
+    {
+      "path": "scripts/cli/installer.mjs",
+      "fileType": ".mjs",
+      "classification": "runtime_build_test_infrastructure",
+      "purpose": "Packaged CLI and runtime verification tool (installer.mjs)",
+      "owningSubsystem": "cli-and-runtime-tools",
+      "includedInNpmPackage": true,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 10312,
+      "sha256": "9c7dd8042a29079cff484fc7a613bf918984ae0394e63545db1e03950e347f9c"
+    },
+    {
+      "path": "scripts/cli/managed-blocks.mjs",
+      "fileType": ".mjs",
+      "classification": "runtime_build_test_infrastructure",
+      "purpose": "Packaged CLI and runtime verification tool (managed-blocks.mjs)",
+      "owningSubsystem": "cli-and-runtime-tools",
+      "includedInNpmPackage": true,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 5801,
+      "sha256": "0cb292196244e0c73ff85fcf4cd126d061845212254427712281ce4ac3a4925f"
+    },
+    {
+      "path": "scripts/cli/path-safety.mjs",
+      "fileType": ".mjs",
+      "classification": "runtime_build_test_infrastructure",
+      "purpose": "Packaged CLI and runtime verification tool (path-safety.mjs)",
+      "owningSubsystem": "cli-and-runtime-tools",
+      "includedInNpmPackage": true,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 8292,
+      "sha256": "77a44f9ee5a1a7b3bf76b6c36a20acaf56413887158eefc0720728045b57e7f4"
+    },
+    {
+      "path": "scripts/cli/report.mjs",
+      "fileType": ".mjs",
+      "classification": "runtime_build_test_infrastructure",
+      "purpose": "Packaged CLI and runtime verification tool (report.mjs)",
+      "owningSubsystem": "cli-and-runtime-tools",
+      "includedInNpmPackage": true,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 7536,
+      "sha256": "0eb167a6c690cd21851f988cfb1d520bee0b379f33d9e6be58c8e5e55c23bba1"
+    },
+    {
+      "path": "scripts/cli/rollback.mjs",
+      "fileType": ".mjs",
+      "classification": "runtime_build_test_infrastructure",
+      "purpose": "Packaged CLI and runtime verification tool (rollback.mjs)",
+      "owningSubsystem": "cli-and-runtime-tools",
+      "includedInNpmPackage": true,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 28371,
+      "sha256": "beb0c499c9429695d06654c121b3c5b63be7390abc62a8a22c11d5716e59a133"
+    },
+    {
+      "path": "scripts/cli/source-fingerprint.mjs",
+      "fileType": ".mjs",
+      "classification": "runtime_build_test_infrastructure",
+      "purpose": "Packaged CLI and runtime verification tool (source-fingerprint.mjs)",
+      "owningSubsystem": "cli-and-runtime-tools",
+      "includedInNpmPackage": true,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 18568,
+      "sha256": "8a54f67ca774f0afb008c61ffb72962f300f47a840af315ca16e80090453bf70"
+    },
+    {
+      "path": "scripts/cli/write-claude-desktop.mjs",
+      "fileType": ".mjs",
+      "classification": "runtime_build_test_infrastructure",
+      "purpose": "Packaged CLI and runtime verification tool (write-claude-desktop.mjs)",
+      "owningSubsystem": "cli-and-runtime-tools",
+      "includedInNpmPackage": true,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 11453,
+      "sha256": "c6a227f4f78f89fce9fd6175fc186a7a7a7377e0b0624a48c0bf74097936668a"
+    },
+    {
+      "path": "scripts/cli/write-project.mjs",
+      "fileType": ".mjs",
+      "classification": "runtime_build_test_infrastructure",
+      "purpose": "Packaged CLI and runtime verification tool (write-project.mjs)",
+      "owningSubsystem": "cli-and-runtime-tools",
+      "includedInNpmPackage": true,
+      "referencedByCi": true,
+      "referencedByOtherFiles": true,
+      "isGenerated": false,
+      "generatorScript": null,
+      "safeToMoveOrRemove": false,
+      "byteSize": 22865,
+      "sha256": "6f73630fab84b3f2e17e8b18ba2b41d03adc688a733ee0e09ae4e4756ab7e618"
+    },
+    {
       "path": "scripts/compile-scene-plan.mjs",
       "fileType": ".mjs",
       "classification": "runtime_build_test_infrastructure",
@@ -4057,8 +4267,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 196636,
-      "sha256": "7f19e6abc693dfb162af761a8d35a3445488e4b857c3bc182f37d653bb4c1059"
+      "byteSize": 6222,
+      "sha256": "a4d2f103ebac2d435538ffe4dc6949e8fee6d1aaf20dac59df37af9bccdc563d"
     },
     {
       "path": "scripts/run-evals.mjs",
@@ -4192,8 +4402,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 52694,
-      "sha256": "39879ba2387af0955c6c44ddd4954ba40035c3d73deadac4be6fb5b1e71c28ef"
+      "byteSize": 52764,
+      "sha256": "a4c191a79e1d13ef8397a9c562fcdc2d22537c4cadd0c8cae525bcdffcd340ef"
     },
     {
       "path": "scripts/test-dev-server.mjs",
@@ -4492,8 +4702,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 32215,
-      "sha256": "8fb7154a7e07518a166c43af8e72da2f5e76dbfd70a8750cd249236db80bce8f"
+      "byteSize": 32259,
+      "sha256": "d4bd492414fe8262f8e504cd72bad9d2370aa8521e4d2177b979e7bc202bbd65"
     },
     {
       "path": "skill-reviews/README.md",

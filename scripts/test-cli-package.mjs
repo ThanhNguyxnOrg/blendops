@@ -365,6 +365,8 @@ describe('Distributable CLI & Package Readiness', () => {
       'CHANGELOG.md',
       'bin/blendops.mjs',
       'scripts/install-skills.mjs',
+      'scripts/cli/installer.mjs',
+      'scripts/cli/constants.mjs',
       'scripts/export-claude-skills.mjs',
       'laws/README.md',
       'packs/README.md',
