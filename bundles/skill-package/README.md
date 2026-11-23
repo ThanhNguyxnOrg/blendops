@@ -39,7 +39,7 @@ Runtime status remains `Not Run` and artifact status remains `Not Produced` unle
 
 ## Deterministic skill reference summary generation
 
-All 14 flattened per-skill summary files at `bundles/skill-package/blendops/references/skill-<skill-id>.md` (together with the 48 manual-bundle summaries at `bundles/claude-desktop-manual/references/skills/<skill-id>.md`) are deterministically generated from the canonical skill definitions:
+All 14 flattened per-skill summary files at `bundles/skill-package/blendops/references/skill-<skill-id>.md` (together with the 14 manual-bundle summaries at `bundles/claude-desktop-manual/references/skills/<skill-id>.md`) are deterministically generated from the canonical skill definitions:
 
 - `skills/<skill-id>/SKILL.md`
 - `skills/<skill-id>/contract.json`
