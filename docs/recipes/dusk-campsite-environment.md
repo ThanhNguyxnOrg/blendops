@@ -140,7 +140,7 @@ bpy.ops.wm.save_mainfile()
 print(json.dumps({"step": "trees", "count": len(spots), "shared_mesh": pine.name, "users": pine.users}))
 ```
 
-**5. Materials.** Flat colors; the flame glows through the Blender 4.0+ socket names `Emission Color` and `Emission Strength` ([API version rules](../../skills/blendops-build/references/api-version-rules.md)).
+**5. Materials.** Flat colors; the flame glows through `Emission Color` (named `Emission` before Blender 4.0) and `Emission Strength` ([API version rules](../../skills/blendops-build/references/api-version-rules.md)).
 
 ```python
 import bpy, json
@@ -151,8 +151,8 @@ def material(name, color, roughness=0.9, glow=0.0):
     bsdf = mat.node_tree.nodes["Principled BSDF"]
     bsdf.inputs["Base Color"].default_value = (*color, 1.0)
     bsdf.inputs["Roughness"].default_value = roughness
-    if glow:
-        bsdf.inputs["Emission Color"].default_value = (*color, 1.0)
+    if glow:  # Blender 4.0 renamed the socket "Emission" to "Emission Color"
+        bsdf.inputs["Emission Color" if "Emission Color" in bsdf.inputs else "Emission"].default_value = (*color, 1.0)
         bsdf.inputs["Emission Strength"].default_value = glow
     return mat
 
