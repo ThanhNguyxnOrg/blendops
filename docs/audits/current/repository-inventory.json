@@ -2881,8 +2881,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 7891,
-      "sha256": "9ca773e3cf94106da55dd22bc36b361f0f5cbc5ec16b6a64562a0438db2245f8"
+      "byteSize": 7942,
+      "sha256": "06cfb37a4733e067af062b110733bf9f7bc30e223dabe3df8ebb2a14e9e60dec"
     },
     {
       "path": "docs/recipes/cyberpunk-shoe-hero.md",
@@ -4621,8 +4621,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 12464,
-      "sha256": "1031e538bf75ef2e5a7ea3cc6eb665d4910df0b8857613999ee0aa10947baef5"
+      "byteSize": 12406,
+      "sha256": "855fad6061b46ba8c63bfd74659f25c7cf7b181a0d98faf6a71953ed1877d498"
     },
     {
       "path": "scripts/test-bundle-summaries.mjs",
