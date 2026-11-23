@@ -158,7 +158,7 @@ User: "I have a brief and the product-hero recipe; the camera plan is done." →
 
 ## Bad examples
 
-Telling the user "your render is done" because a plan exists, or listing all 15 skills instead of naming one next step. Doing this skips the checks this skill owns and leaves the user without evidence for the result.
+Telling the user "your render is done" because a plan exists, or listing all 16 skills instead of naming one next step. Doing this skips the checks this skill owns and leaves the user without evidence for the result.
 
 ## User-facing response template
 

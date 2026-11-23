@@ -37,6 +37,7 @@
       "skills": [
         "blendops-connect-blender",
         "blendops-build",
+        "blendops-look-check",
         "blendops-final-check",
         "blendops-fix-problems"
       ]

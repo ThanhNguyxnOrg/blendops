@@ -24,10 +24,10 @@ Non-Blender user
               ├── Layer B (Knowledge): 30 `knowledge.*` records across 11 3D domains + 20 `source.*` citations (`registry/knowledge-catalog.json`)
               ├── Layer C (Recipes & SceneSpec Harmonizer): 10 `recipe.*` blueprints + `SceneSpec` -> `ExecutionPlan` compiler (`scripts/compile-scene-plan.mjs`)
               ├── Layer D (Runtime Boundary & Production Layer): L0–L3 capability policy + 18 typed operations (`registry/runtime-operations.json`) + transaction/checkpoint orchestrator (`scripts/runtime-orchestrator.mjs`) + upstream redirect (Path 1 Lab MCP 5.1+, Path 2 `mcp-for-blender` 3.0+, CLI appendix)
-              └── Layer E (Evaluation & Evidence): 15 skill eval suites + 90 catalog retrieval evals + 12 SceneSpec fixtures + GLB 2.0 inspector & web handoff toolkit
+              └── Layer E (Evaluation & Evidence): 16 skill eval suites + 90 catalog retrieval evals + 12 SceneSpec fixtures + GLB 2.0 inspector & web handoff toolkit
 ```
 
-See [`docs/runtime-stack-strategy.md`](./runtime-stack-strategy.md) for the authoritative 2-path + CLI appendix runtime specification, [`docs/knowledge-and-recipe-catalog.md`](./knowledge-and-recipe-catalog.md) for the human-readable Knowledge & Recipe Catalog, and [`docs/audits/skill-architecture-audit.md`](./audits/skill-architecture-audit.md) for the 15-skill and 205-reference architecture reconciliation audit.
+See [`docs/runtime-stack-strategy.md`](./runtime-stack-strategy.md) for the authoritative 2-path + CLI appendix runtime specification, [`docs/knowledge-and-recipe-catalog.md`](./knowledge-and-recipe-catalog.md) for the human-readable Knowledge & Recipe Catalog, and [`docs/audits/skill-architecture-audit.md`](./audits/skill-architecture-audit.md) for the 15-skill and 209-reference architecture reconciliation audit.
 
 ---
 
@@ -59,7 +59,7 @@ blendops/
 ├── package-lock.json                     # Deterministic npm dependency lockfile
 ├── bin/
 │   └── blendops.mjs                      # Distributable CLI entrypoint (`doctor`, `install`, `rollback`, `glb-*`, `catalog-*`, `scene-spec-validate`, `plan-*`, `runtime`, `operation`, `execution`)
-├── skills/                               # 15 canonical skills + `_template/` authoring template
+├── skills/                               # 16 canonical skills + `_template/` authoring template
 │   ├── README.md                         # Canonical 15-skill catalog index
 │   ├── _template/                        # Skill & eval authoring template (`SKILL.md`, `EVAL.md`)
 │   └── <skill-id>/                       # Each skill: `SKILL.md`, `EVAL.md`, `contract.json`, `references/*.md`
@@ -114,13 +114,13 @@ blendops/
 │   ├── check-docs.mjs                    # Enforces frontmatter, runtime model, links, headings, and policy guards
 │   ├── compile-scene-plan.mjs            # Deterministic SceneSpec validator, Skill Harmonizer, and ExecutionPlan compiler
 │   ├── dev-server.mjs                    # Local documentation & git bundle verification server (port 3000)
-│   ├── export-claude-skills.mjs          # Deterministically exports 15 skill ZIPs + Claude Code folders + shared catalog ZIP to `dist/`
+│   ├── export-claude-skills.mjs          # Deterministically exports 16 skill ZIPs + Claude Code folders + shared catalog ZIP to `dist/`
 │   ├── generate-bundle-reference-summaries.mjs # Generates & verifies 96 dual-profile bundle reference summaries
 │   ├── generate-current-audit.mjs        # Reconciles `docs/audits/current/*` with live SHA-256 input provenance
 │   ├── generate-glb-handoff-report.mjs   # Generates JSON/Markdown/HTML GLB web handoff reports
 │   ├── inspect-glb.mjs                   # Binary GLB 2.0 container & glTF semantic inspector
 │   ├── install-skills.mjs                # Safe project-local installer & CLI (`--doctor`, `--dry-run`, `--write`, `--rollback`, `glb-*`, `catalog-*`, `scene-spec-validate`, `plan-*`, `runtime`, `operation`, `execution`)
-│   ├── run-evals.mjs                     # Deterministic behavioral evaluation runner for all 15 skills
+│   ├── run-evals.mjs                     # Deterministic behavioral evaluation runner for all 16 skills
 │   ├── runtime-orchestrator.mjs          # Runtime session discovery, typed operation registry validator, checkpoint/rollback transaction orchestrator, and CLI subcommands
 │   ├── validate-capability-policy.mjs    # Validates `registry/runtime-capability-policy.json`
 │   ├── validate-compatibility-matrix.mjs # Validates `registry/compatibility-matrix.json` against `docs/install/` & `docs/adapters/`

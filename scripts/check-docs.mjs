@@ -99,6 +99,7 @@ const requiredSkills = [
   'skills/blendops-lighting-materials/SKILL.md',
   'skills/blendops-glb-web-handoff/SKILL.md',
   'skills/blendops-build/SKILL.md',
+  'skills/blendops-look-check/SKILL.md',
   // Process and workflow discipline skills:
   'skills/blendops-brief/SKILL.md',
   'skills/blendops-fix-problems/SKILL.md',
@@ -109,6 +110,7 @@ const requiredSkills = [
   'skills/blendops-glb-budget/SKILL.md',
   'skills/blendops-glb-web-handoff/SKILL.md',
   'skills/blendops-build/SKILL.md',
+  'skills/blendops-look-check/SKILL.md',
   'skills/blendops-final-check/SKILL.md',
   // Quality validation deep:
   'skills/blendops-lighting-materials/SKILL.md',
@@ -144,6 +146,7 @@ const requiredSkillEvals = [
   'skills/blendops-lighting-materials/EVAL.md',
   'skills/blendops-glb-web-handoff/EVAL.md',
   'skills/blendops-build/EVAL.md',
+  'skills/blendops-look-check/EVAL.md',
   'skills/blendops-brief/EVAL.md',
   'skills/blendops-fix-problems/EVAL.md',
   'skills/blendops-assets/EVAL.md',
@@ -151,6 +154,7 @@ const requiredSkillEvals = [
   'skills/blendops-glb-budget/EVAL.md',
   'skills/blendops-glb-web-handoff/EVAL.md',
   'skills/blendops-build/EVAL.md',
+  'skills/blendops-look-check/EVAL.md',
   'skills/blendops-final-check/EVAL.md',
   // Quality validation deep:
   'skills/blendops-lighting-materials/EVAL.md',
@@ -211,10 +215,12 @@ const requiredBundleFixture = [
   'bundles/claude-desktop-manual/references/skills/blendops-fix-problems.md',
   'bundles/claude-desktop-manual/references/skills/blendops-glb-web-handoff.md',
   'bundles/claude-desktop-manual/references/skills/blendops-build.md',
+  'bundles/claude-desktop-manual/references/skills/blendops-look-check.md',
   // Web 3D handoff deep:
   'bundles/claude-desktop-manual/references/skills/blendops-glb-budget.md',
   'bundles/claude-desktop-manual/references/skills/blendops-glb-web-handoff.md',
   'bundles/claude-desktop-manual/references/skills/blendops-build.md',
+  'bundles/claude-desktop-manual/references/skills/blendops-look-check.md',
   'bundles/claude-desktop-manual/references/skills/blendops-final-check.md',
   // Quality validation deep:
   'bundles/claude-desktop-manual/references/skills/blendops-lighting-materials.md',
@@ -262,6 +268,7 @@ const requiredBundleFixture = [
   'bundles/skill-package/blendops/references/skill-blendops-lighting-materials.md',
   'bundles/skill-package/blendops/references/skill-blendops-glb-web-handoff.md',
   'bundles/skill-package/blendops/references/skill-blendops-build.md',
+  'bundles/skill-package/blendops/references/skill-blendops-look-check.md',
   'bundles/skill-package/blendops/references/skill-blendops-brief.md',
   'bundles/skill-package/blendops/references/skill-blendops-fix-problems.md',
   'bundles/skill-package/blendops/references/skill-blendops-assets.md',
@@ -269,6 +276,7 @@ const requiredBundleFixture = [
   'bundles/skill-package/blendops/references/skill-blendops-glb-budget.md',
   'bundles/skill-package/blendops/references/skill-blendops-glb-web-handoff.md',
   'bundles/skill-package/blendops/references/skill-blendops-build.md',
+  'bundles/skill-package/blendops/references/skill-blendops-look-check.md',
   'bundles/skill-package/blendops/references/skill-blendops-final-check.md',
   // Quality validation deep:
   'bundles/skill-package/blendops/references/skill-blendops-lighting-materials.md',

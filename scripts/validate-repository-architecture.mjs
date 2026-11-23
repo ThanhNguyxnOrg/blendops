@@ -130,7 +130,7 @@ export function classifyTrackedFile(relPath, pkgFiles = []) {
     referencedByCi = true;
   } else if (relPath === 'skills.sh.json') {
     classification = 'configuration';
-    purpose = 'Canonical skills.sh repository grouping and catalog customization manifest for all 15 skills';
+    purpose = 'Canonical skills.sh repository grouping and catalog customization manifest for all 16 skills';
     owningSubsystem = 'skills-catalog';
     referencedByCi = true;
   } else if (
@@ -234,7 +234,7 @@ export function classifyTrackedFile(relPath, pkgFiles = []) {
       purpose = 'Authoring template for canonical BlendOps skills and evaluations';
     } else if (relPath === 'skills/README.md') {
       classification = 'documentation';
-      purpose = 'Canonical index and authoring guide for all 15 BlendOps skills';
+      purpose = 'Canonical index and authoring guide for all 16 BlendOps skills';
     } else if (relPath.endsWith('/SKILL.md')) {
       classification = 'canonical_source';
       purpose = 'Canonical Anthropic-compliant skill specification and operating playbook';
@@ -699,7 +699,7 @@ export function buildRepositoryArchitectureReport(rootDir = DEFAULT_ROOT) {
       totalTrackedFiles: fileEntries.length,
       npmPackageIncludedFiles: npmIncludedCount,
       generatedTrackedFiles: generatedCount,
-      canonicalSkillsCount: 15,
+      canonicalSkillsCount: 16,
       lawsCount: 4,
       packsCount: 1,
       bundlesCount: 3,
@@ -719,7 +719,7 @@ export function buildRepositoryArchitectureReport(rootDir = DEFAULT_ROOT) {
       exactDuplicateGroups,
       nearDuplicateGeneratedFamilies: [
         {
-          pattern: 'bundles/claude-desktop-manual/references/skills/*.md (15 files) & bundles/skill-package/blendops/references/skill-*.md (15 files)',
+          pattern: 'bundles/claude-desktop-manual/references/skills/*.md (16 files) & bundles/skill-package/blendops/references/skill-*.md (16 files)',
           generatorScript: 'scripts/generate-bundle-reference-summaries.mjs',
           rationale:
             'Dual-profile reference summaries required by the Claude Desktop manual bundle and the standalone uploadable skill package; verified 100% semantically equivalent to skills/*/SKILL.md and contract.json in CI.',

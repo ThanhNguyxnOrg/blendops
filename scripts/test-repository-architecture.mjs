@@ -269,7 +269,7 @@ describe('Repository Architecture, Organization & Finalization', () => {
       .filter((d) => d.isDirectory() && d.name !== '_template')
       .map((d) => d.name)
       .sort();
-    assert.equal(skillsDirs.length, 15);
+    assert.equal(skillsDirs.length, 16);
 
     for (const skillId of skillsDirs) {
       const skillDir = path.join(ROOT, 'skills', skillId);
@@ -352,8 +352,8 @@ describe('Repository Architecture, Organization & Finalization', () => {
 
     const manifest1 = JSON.parse(fs.readFileSync(path.join(exportOut1, 'manifest.json'), 'utf8'));
     const manifest2 = JSON.parse(fs.readFileSync(path.join(exportOut2, 'manifest.json'), 'utf8'));
-    assert.equal(manifest1.skillCount, 15);
-    assert.equal(manifest2.skillCount, 15);
+    assert.equal(manifest1.skillCount, 16);
+    assert.equal(manifest2.skillCount, 16);
     assert.deepEqual(manifest1.skills, skillsDirs);
     assert.deepEqual(manifest2.skills, skillsDirs);
 
@@ -365,9 +365,9 @@ describe('Repository Architecture, Organization & Finalization', () => {
     const claudeSkillsZips2 = fs.readdirSync(zipsDir2).filter((f) => f.endsWith('.zip')).sort(compareCodeUnitOrder);
     const claudeCodeFolders = fs.readdirSync(codeSkillsDir1).sort(compareCodeUnitOrder);
     const claudeCodeFolders2 = fs.readdirSync(codeSkillsDir2).sort(compareCodeUnitOrder);
-    assert.equal(claudeSkillsZips.length, 15);
+    assert.equal(claudeSkillsZips.length, 16);
     assert.deepEqual(claudeSkillsZips, claudeSkillsZips2);
-    assert.equal(claudeCodeFolders.length, 15);
+    assert.equal(claudeCodeFolders.length, 16);
     assert.deepEqual(claudeCodeFolders, claudeCodeFolders2);
 
     for (const zipName of claudeSkillsZips) {

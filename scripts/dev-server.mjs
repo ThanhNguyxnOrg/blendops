@@ -899,8 +899,8 @@ function renderHtml(options = {}) {
       </tbody>
     </table>
 
-    <h2>15 Skills Inventory</h2>
-    <input id="skills-filter-input" type="search" aria-label="Filter 15 skills by ID, category, contract status, eval status, or flag" placeholder="Filter 15 skills by ID, category, contract status, eval status, or remaining issue..." oninput="filterSkills(this.value)" />
+    <h2>16 Skills Inventory</h2>
+    <input id="skills-filter-input" type="search" aria-label="Filter 16 skills by ID, category, contract status, eval status, or flag" placeholder="Filter 16 skills by ID, category, contract status, eval status, or remaining issue..." oninput="filterSkills(this.value)" />
     <table id="skills-table">
       <thead>
         <tr>

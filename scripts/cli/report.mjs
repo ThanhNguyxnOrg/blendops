@@ -124,7 +124,7 @@ export function formatInstallerReport(result) {
   ];
 
   if (result.skillMdCountPerZip !== undefined) {
-    lines.push(`- SKILL.md count if ZIP mode: ${result.skillMdCountPerZip} per ZIP (${result.zipCount || 15} ZIPs)`);
+    lines.push(`- SKILL.md count if ZIP mode: ${result.skillMdCountPerZip} per ZIP (${result.zipCount || 16} ZIPs)`);
   }
 
   return `${lines.join('\n')}\n`;

@@ -12,12 +12,12 @@
 | :--- | :---: | :---: | :--- |
 | **Overall Measured Score** | `54.5 / 100` | **`87.0 / 100`** | **`+32.5`** (backed by schemas, registries, CLI tooling, and CI suites) |
 | **Active P0 Zero-Compensation Blockers** | `3` (`F-01`, `F-02`, `F-04`) | **`0`** | `F-01`, `F-02`, `F-03`, `F-04` **FIXED** |
-| **Skills with `Artifact status: Not Run` (`F-01`)** | `30 / 15` | **`0 / 15`** | **FIXED** & guarded in `scripts/check-docs.mjs` |
-| **Extended Template Completeness (`F-05`)** | `8 / 15` skills missing sections | **`0 / 15` skills missing sections** | **FIXED** (18-heading guard in `scripts/check-docs.mjs`) |
-| **Portable ZIP Exporter & Full CI (`F-02`)** | `spawnSync zip ENOENT` | **Pure-Node `fflate` (15/15 ZIPs)** | **FIXED** (isolated `--output-root` + full `npm run ci`) |
+| **Skills with `Artifact status: Not Run` (`F-01`)** | `30 / 16` | **`0 / 16`** | **FIXED** & guarded in `scripts/check-docs.mjs` |
+| **Extended Template Completeness (`F-05`)** | `8 / 16` skills missing sections | **`0 / 16` skills missing sections** | **FIXED** (18-heading guard in `scripts/check-docs.mjs`) |
+| **Portable ZIP Exporter & Full CI (`F-02`)** | `spawnSync zip ENOENT` | **Pure-Node `fflate` (16/16 ZIPs)** | **FIXED** (isolated `--output-root` + full `npm run ci`) |
 | **Adapter Registry & Evidence Integrity (`F-08`)** | `16 / 26` targets synced | **`26 / 26` targets synced & guarded** | **PARTIALLY_FIXED** (2 `verified-read`, 24 `linked-only`, CLI installer verified) |
-| **Machine-Readable Contracts (`F-03`)** | `0 / 15` | **`15 / 15` (`full-catalog`)** | **FIXED** (`Ajv2020` + 195-edge DAG + 0 bare-ID handoffs) |
-| **Machine-Readable Eval Suites (`F-04`)** | `0 / 15` (0 runners) | **`15 / 15` (`274` cases in CI)** | **FIXED** (0 unmigrated prose suites) |
+| **Machine-Readable Contracts (`F-03`)** | `0 / 16` | **`16 / 16` (`full-catalog`)** | **FIXED** (`Ajv2020` + 195-edge DAG + 0 bare-ID handoffs) |
+| **Machine-Readable Eval Suites (`F-04`)** | `0 / 16` (0 runners) | **`16 / 16` (`280` cases in CI)** | **FIXED** (0 unmigrated prose suites) |
 | **Bundle Reference Summaries (`F-09`)** | `28` manual summary files | **`28` deterministic generated summaries** | **FIXED** (`bundles:summaries:build` + `bundles:summaries:check` in CI) |
 | **Live LLM / Blender Runtime Evals** | `Not Run` | **`Not Run` / `Not Produced`** | Honest zero-fabrication boundary preserved |
 
@@ -27,11 +27,11 @@ Because a Git commit cannot honestly contain its own final commit SHA inside tra
 
 | Provenance Field | Recorded Value | Explanation |
 | :--- | :--- | :--- |
-| `sourceCommitSha` | `028e9dde9e701f947562a2e170b77e236706ddf7` (`028e9dd`) | Latest verified commit in Git history when the generator executed |
+| `sourceCommitSha` | `fa09c19dc32774247019de632e6a2e3c9494e316` (`fa09c19`) | Latest verified commit in Git history when the generator executed |
 | `workingTreeState` | `dirty` | Whether audited files had uncommitted changes on top of `sourceCommitSha` |
 | `snapshotBasis` | `working-tree-on-top-of-source-commit` | Explicit distinction between a clean committed tree and a working tree on top of `sourceCommitSha` |
-| `uncommittedChangeCount` | `2` | Count of modified/staged/deleted/untracked repository paths outside `docs/audits/current/**` |
-| `auditedInputsSha256` | `f288edacebf2df7e16a0c0c2aca2d5678519edf20de597d79bdb53545ca8b29c` | Deterministic SHA-256 content digest across all manifest-declared repository inputs |
+| `uncommittedChangeCount` | `1` | Count of modified/staged/deleted/untracked repository paths outside `docs/audits/current/**` |
+| `auditedInputsSha256` | `402b738d74e874c52e019ccec449f6d39e0479d421bb6c97db87f78a72650b4c` | Deterministic SHA-256 content digest across all manifest-declared repository inputs |
 
 ### 1.2 Audited Input Digest Scope & Manifest Governance
 
@@ -49,9 +49,9 @@ The `auditedInputsSha256` digest is governed by [`../audited-inputs.manifest.jso
 | :--- | :---: | :--- | :---: | :---: | :--- |
 | **F-01** | **P0** | `Artifact status: Not Run` contradiction in 30 skills | `OPEN` | **`FIXED`** | 0/14 skills affected; guarded in `check-docs.mjs` and `test-skills-export.mjs`. |
 | **F-02** | **P0** | External `zip` binary dependency & partial CI workflow | `OPEN` | **`FIXED`** | Pure-Node `fflate` exports `SKILL.md`, `EVAL.md`, and `references/*` with `--output-root` isolation; `docs.yml` runs `npm run ci`. |
-| **F-03** | **P0** | Machine-readable `contract.json` & compiled `registry/` | `OPEN` | **`FIXED`** | 15/15 skills contracted (`4` routing participants + `44` specialist skills), 195-edge acyclic progression graph, and 15/15 relative-path Markdown handoffs. |
-| **F-04** | **P0** | Structured behavioral evaluation suites & automated runner | `OPEN` | **`FIXED`** | 15/15 canonical `.eval.json` suites (274 cases: 35 `contract_routing` + 72 `contract_handoff` + 167 `deterministic_fixture`, 0 prose-only pending) verified in CI; `live_model` and `blender_runtime` remain `Not Run`. |
-| **F-05** | **P1** | 8 skills omit 9–11 extended template sections | `OPEN` | **`FIXED`** | 15/15 skills include all 9 core + 9 extended sections; guarded in `check-docs.mjs` and `test-skill-templates.mjs`. |
+| **F-03** | **P0** | Machine-readable `contract.json` & compiled `registry/` | `OPEN` | **`FIXED`** | 16/16 skills contracted (`4` routing participants + `44` specialist skills), 195-edge acyclic progression graph, and 16/16 relative-path Markdown handoffs. |
+| **F-04** | **P0** | Structured behavioral evaluation suites & automated runner | `OPEN` | **`FIXED`** | 16/16 canonical `.eval.json` suites (280 cases: 35 `contract_routing` + 76 `contract_handoff` + 169 `deterministic_fixture`, 0 prose-only pending) verified in CI; `live_model` and `blender_runtime` remain `Not Run`. |
+| **F-05** | **P1** | 8 skills omit 9–11 extended template sections | `OPEN` | **`FIXED`** | 16/16 skills include all 9 core + 9 extended sections; guarded in `check-docs.mjs` and `test-skill-templates.mjs`. |
 | **F-06** | **P1** | Routing quartet handoffs & `blendops-done-criteria` reachability | `OPEN` | **`FIXED`** | Wired in `blendops-start` and `blendops-start` contracts and verified in `workflow-graph.json`. |
 | **F-07** | **P1** | Deterministic GLB inspector & Blender version matrices | `OPEN` | **`FIXED`** | `scripts/inspect-glb.mjs`, `scripts/generate-glb-handoff-report.mjs`, `schemas/glb-web-handoff-manifest.schema.json`, `docs/examples/blendops-glb-web-handoff/`, `scripts/validate-evidence-packet.mjs`, and `docs/blender-version-compatibility.md` verified in CI. |
 | **F-08** | **P1** | `docs/adapter-registry.md` drift from 26 `docs/install/` targets | `OPEN` | **`PARTIALLY_FIXED`** | All 26 install targets synced and verified in `docs/evals/adapter-empirical-verification.md`; `bin/blendops.mjs`, `scripts/install-skills.mjs`, `scripts/test-project-installer.mjs`, and `scripts/test-cli-package.mjs` verify safe project-local attachment, rollback, and packaged CLI tarball execution; 2 targets (`claude-code`, `generic-project`) are `verified-read`; 24 targets remain `linked-only` pending live host testing. |
@@ -65,7 +65,7 @@ The `auditedInputsSha256` digest is governed by [`../audited-inputs.manifest.jso
 - [`scorecard.json`](./scorecard.json) — Reconciled 9-pillar scorecard (**87.0 / 100**) with initial baseline comparison and `auditProvenance`.
 - [`findings.json`](./findings.json) — Machine-readable lifecycle table for `F-01` through `F-10`.
 - [`skill-inventory.json`](./skill-inventory.json) — Live 14-skill inventory reflecting truth-state fixes, full-catalog contracts, eval coverage, and template completion.
-- [`eval-inventory.json`](./eval-inventory.json) — Live 14-skill evaluation inventory covering all 15 machine-readable suites (274 cases) with 0 remaining prose-only skills.
+- [`eval-inventory.json`](./eval-inventory.json) — Live 14-skill evaluation inventory covering all 16 machine-readable suites (280 cases) with 0 remaining prose-only skills.
 - [`verification-manifest.json`](./verification-manifest.json) — Verified provenance context, CI pipeline commands, and runtime/artifact truth states.
 - [`repository-inventory.json`](./repository-inventory.json) — Complete machine-readable inventory classifying every tracked repository file across 7 canonical categories.
 

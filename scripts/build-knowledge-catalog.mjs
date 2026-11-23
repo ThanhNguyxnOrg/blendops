@@ -766,7 +766,7 @@ export function renderSkillArchitectureAuditMarkdown(auditData) {
   const lines = [
     '# BlendOps — Skill Architecture & Reference Classification Audit',
     '',
-    '> Generated deterministically by `scripts/build-knowledge-catalog.mjs`. Maps all 15 canonical skills from `registry/skills.json` and `registry/runtime-capability-policy.json`, and classifies all 205 `skills/*/references/*.md` files across the 5-layer architecture.',
+    '> Generated deterministically by `scripts/build-knowledge-catalog.mjs`. Maps all 16 canonical skills from `registry/skills.json` and `registry/runtime-capability-policy.json`, and classifies all 205 `skills/*/references/*.md` files across the 5-layer architecture.',
     '',
     '## 1. Five-Layer Architecture Summary',
     '',

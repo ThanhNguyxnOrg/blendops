@@ -3,39 +3,39 @@
   "suiteScope": "v1.0.0-full-catalog-behavioral-evals",
   "generatedBy": "scripts/run-evals.mjs",
   "coverageSummary": {
-    "catalogSkills": 15,
-    "machineReadableSuites": 15,
+    "catalogSkills": 16,
+    "machineReadableSuites": 16,
     "skillsWithoutSuites": 0,
     "proseOnlySkillsPendingMigration": 0,
     "routingParticipants": 3,
-    "specialistSkills": 12,
-    "totalCases": 274,
+    "specialistSkills": 13,
+    "totalCases": 280,
     "countsByEvaluationType": {
       "contract_routing": 35,
-      "contract_handoff": 72,
-      "deterministic_fixture": 167
+      "contract_handoff": 76,
+      "deterministic_fixture": 169
     },
     "contractRoutingCoverage": {
       "routingParticipantsWithRoutingEvals": 3,
       "totalRoutingParticipantCases": 35
     },
     "contractHandoffCoverage": {
-      "specialistSkillsWithHandoffEvals": 12,
-      "totalSpecialistHandoffCases": 72
+      "specialistSkillsWithHandoffEvals": 13,
+      "totalSpecialistHandoffCases": 76
     },
     "deterministicFixtureCoverage": {
-      "skillsWithFixtureEvals": 15,
-      "totalDeterministicFixtureCases": 167
+      "skillsWithFixtureEvals": 16,
+      "totalDeterministicFixtureCases": 169
     },
     "liveModel": "Not Run",
     "blenderRuntime": "Not Run",
-    "totalCatalogSkills": 15,
-    "machineReadablePilotSuites": 15,
+    "totalCatalogSkills": 16,
+    "machineReadablePilotSuites": 16,
     "remainingProseOnlyEvalFiles": 0,
-    "totalMachineReadableCases": 274,
+    "totalMachineReadableCases": 280,
     "contractRoutingCases": 35,
-    "contractHandoffCases": 72,
-    "deterministicFixtureCases": 167,
+    "contractHandoffCases": 76,
+    "deterministicFixtureCases": 169,
     "liveModelStatus": "Not Run",
     "blenderRuntimeStatus": "Not Run"
   },
@@ -108,10 +108,10 @@
       "contractPath": "skills/blendops-build/contract.json",
       "skillMarkdownPath": "skills/blendops-build/SKILL.md",
       "evalMarkdownPath": "skills/blendops-build/EVAL.md",
-      "caseCount": 5,
+      "caseCount": 6,
       "countsByEvaluationType": {
         "contract_routing": 0,
-        "contract_handoff": 2,
+        "contract_handoff": 3,
         "deterministic_fixture": 3
       },
       "evaluationTypes": [
@@ -345,6 +345,35 @@
         "contract_routing": 0,
         "contract_handoff": 8,
         "deterministic_fixture": 12
+      },
+      "evaluationTypes": [
+        "deterministic_fixture",
+        "contract_handoff"
+      ],
+      "evaluationStatus": {
+        "staticValidation": "Passed",
+        "deterministicFixture": "Passed",
+        "contractRouting": "Not Applicable",
+        "contractHandoff": "Passed",
+        "liveModel": "Not Run",
+        "blenderRuntime": "Not Run"
+      }
+    },
+    {
+      "skillId": "blendops-look-check",
+      "category": "runtime-and-execution",
+      "isContractedSkill": true,
+      "isRoutingParticipant": false,
+      "sourceEvalTier": "prose_outline_contract_migrated",
+      "evalJsonPath": "evals/suites/blendops-look-check.eval.json",
+      "contractPath": "skills/blendops-look-check/contract.json",
+      "skillMarkdownPath": "skills/blendops-look-check/SKILL.md",
+      "evalMarkdownPath": "skills/blendops-look-check/EVAL.md",
+      "caseCount": 5,
+      "countsByEvaluationType": {
+        "contract_routing": 0,
+        "contract_handoff": 3,
+        "deterministic_fixture": 2
       },
       "evaluationTypes": [
         "deterministic_fixture",

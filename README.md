@@ -56,7 +56,7 @@ Coding agents (Claude Code, Cursor, Codex, Cline, Windsurf, and others) take Mod
 npx skills add ThanhNguyxnOrg/blendops
 ```
 
-The repository is [listed on skills.sh](https://www.skills.sh/ThanhNguyxnOrg/blendops). [`skills.sh.json`](./skills.sh.json) groups the 15 skills into 4 groups.
+The repository is [listed on skills.sh](https://www.skills.sh/ThanhNguyxnOrg/blendops). [`skills.sh.json`](./skills.sh.json) groups the 16 skills into 4 groups.
 
 ### Option 3: use the npm CLI
 
@@ -71,7 +71,7 @@ Review the dry run before `--write`. The installer only changes the chosen proje
 
 ---
 
-## The 15 skills
+## The 16 skills
 
 Every skill name starts with `blendops-` so they stay together when installed next to other packs. Start with `blendops-start` if you are not sure which one you need.
 
@@ -90,10 +90,11 @@ Every skill name starts with `blendops-` so they stay together when installed ne
 | Assets & web | [`blendops-glb-web-handoff`](./skills/blendops-glb-web-handoff/SKILL.md) | Hands a GLB to a web team (Three.js / React Three Fiber). |
 | Run & check | [`blendops-connect-blender`](./skills/blendops-connect-blender/SKILL.md) | Picks and checks the way your agent connects to Blender. |
 | Run & check | [`blendops-build`](./skills/blendops-build/SKILL.md) | Builds the planned scene in Blender step by step: shapes, materials, lights, camera, preview, render or GLB. |
+| Run & check | [`blendops-look-check`](./skills/blendops-look-check/SKILL.md) | Checks a preview with numbers and pictures from several sides, then fixes one issue at a time. |
 | Run & check | [`blendops-final-check`](./skills/blendops-final-check/SKILL.md) | Collects evidence and checks the work before handoff. |
 | Run & check | [`blendops-fix-problems`](./skills/blendops-fix-problems/SKILL.md) | Explains and fixes broken renders, exports, and runtime errors. |
 
-v2.0.0 merged the former 48 narrow skills into 14; `blendops-build` was added after that. Each former skill is kept as a reference file inside its new skill; the old → new map is in [`CHANGELOG.md`](./CHANGELOG.md).
+v2.0.0 merged the former 48 narrow skills into 14; `blendops-build` and `blendops-look-check` were added after that. Each former skill is kept as a reference file inside its new skill; the old → new map is in [`CHANGELOG.md`](./CHANGELOG.md).
 
 ---
 
@@ -133,10 +134,10 @@ Setup walkthrough: [`docs/external-runtime-setup.md`](./docs/external-runtime-se
 
 | Folder | Holds |
 |---|---|
-| [`skills/`](./skills/README.md) | The 15 canonical skills (`SKILL.md`, `contract.json`, `references/`). |
+| [`skills/`](./skills/README.md) | The 16 canonical skills (`SKILL.md`, `contract.json`, `references/`). |
 | [`laws/`](./laws/README.md) · [`packs/`](./packs/README.md) | 4 laws every skill follows, and the `product-hero-v0` pack. |
 | [`registry/`](./registry/) · [`schemas/`](./schemas/) | Generated skill registry, workflow graph, catalogs, and their JSON schemas. |
-| [`evals/`](./evals/) | 14 deterministic eval suites (274 cases). |
+| [`evals/`](./evals/) | 14 deterministic eval suites (280 cases). |
 | [`bundles/`](./bundles/) | Ready-made bundles: skill package, Claude Desktop manual upload, generic project. |
 | [`docs/`](./docs/README.md) | Install guides for 26 targets, runtime setup, eval evidence, architecture. |
 | [`bin/`](./bin/) · [`scripts/`](./scripts/) | The `blendops` CLI and the build / check scripts behind `npm run ci`. |

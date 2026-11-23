@@ -1,9 +1,9 @@
 # BlendOps Roadmap
 
-_Last updated for **v1.0.0** (15 canonical skills, 205 reference guides, 26 install target docs, 35+ CLI targets via `--with-skills-dir` + `skills.sh.json`, 274 deterministic eval cases, 17 CI test suites)._
+_Last updated for **v1.0.0** (16 canonical skills, 209 reference guides, 26 install target docs, 35+ CLI targets via `--with-skills-dir` + `skills.sh.json`, 280 deterministic eval cases, 17 CI test suites)._
 
 > [!NOTE]
-> BlendOps publishes one thing: a **skills layer** (**15 skills** + **205 reference guides** + 4 laws + 1 pack + 3 bundles + **26 install target docs** / **35+ CLI targets** via `--with-skills-dir` + deterministic catalog & CLI + ZIP/package generation + automated CI guards). The layer is **complete and production-ready at `v1.0.0`**.
+> BlendOps publishes one thing: a **skills layer** (**16 skills** + **209 reference guides** + 4 laws + 1 pack + 3 bundles + **26 install target docs** / **35+ CLI targets** via `--with-skills-dir` + deterministic catalog & CLI + ZIP/package generation + automated CI guards). The layer is **complete and production-ready at `v1.0.0`**.
 >
 > Everything related to actually running Blender — the Blender executable, the MCP servers, the MCP hosts, the CLI — is **upstream**, owned by Blender Foundation / Anthropic / the `ahujasid` community. BlendOps **redirects** users to the right upstream docs per install target. Path 1 + Path 2 are **user-reported verified by the repo owner**; CLI is **documented upstream as a first-class Blender CLI surface**, with one scoped [CLI eval record](docs/evals/cli-fallback-mech-prop.md).
 >
@@ -20,7 +20,7 @@ _Last updated for **v1.0.0** (15 canonical skills, 205 reference guides, 26 inst
 | Content install (clone → paste prompt → agent installs project-locally OR prepares Skills ZIPs) | ✅ Yes | `docs/ai-agent-quickstart.md` + 3-mode auto-detect flow + 26 install targets + 35+ CLI targets. |
 | Skill ZIP / package generation | ✅ Yes | `npm run skills:export` → 14 ZIPs in `dist/claude-skills/desktop-zips/` + canonical portable skill at `bundles/skill-package/blendops/`. |
 | Skill upload to Claude Desktop / Claude.ai / ChatGPT Skills UI | ✅ Yes (UI drag-drop = user's manual action, not a publisher gap) | `npm run skills:export` produces compliant Anthropic Skills (≤200-char description, no `version:` / `status:` keys) and an OpenAI YAML manifest. |
-| CI guards | ✅ Yes | `npm run ci` validates active Markdown docs, knowledge/recipe catalogs, 14 contracts, 274 deterministic evals, repository architecture, and all 17 `node --test` suites. |
+| CI guards | ✅ Yes | `npm run ci` validates active Markdown docs, knowledge/recipe catalogs, 14 contracts, 280 deterministic evals, repository architecture, and all 17 `node --test` suites. |
 | `v1.0.0` release | ✅ Ready | Skills layer, contracts, evals, CLI, and release inspection server are complete and verified. |
 
 ### Runtime paths (BlendOps redirects to — owned by upstream, not this repo)
@@ -41,7 +41,7 @@ _Last updated for **v1.0.0** (15 canonical skills, 205 reference guides, 26 inst
 | `blendops` CLI & project-local installer | ✅ Published as `blendops@1.0.0` on npm. GitHub Agent Skills source is listed on skills.sh. | `docs/install/installer-spec.md` |
 | Marketplace / plugin listing | Future distribution work. Gated on upstream listing acceptance. | — |
 
-**Bottom line**: clone the repo → run `npx skills add ThanhNguyxnOrg/blendops` or `npm run skills:install` → plan a scene with **15 skills** → follow per-target install doc to enable an upstream runtime path → drive Blender via Path 1 / Path 2 (both user-reported verified by the repo owner — operator statement) or CLI (upstream-documented).
+**Bottom line**: clone the repo → run `npx skills add ThanhNguyxnOrg/blendops` or `npm run skills:install` → plan a scene with **16 skills** → follow per-target install doc to enable an upstream runtime path → drive Blender via Path 1 / Path 2 (both user-reported verified by the repo owner — operator statement) or CLI (upstream-documented).
 
 ---
 
@@ -54,13 +54,13 @@ _Last updated for **v1.0.0** (15 canonical skills, 205 reference guides, 26 inst
 ### Full-Catalog Skill Layer (14/14 Skills, Contracts & Reference Hardening)
 - [x] Canonical template (`skills/_template/SKILL.md`), depth standard (`skill-reviews/depth-standard.md`), and 9 review gates (`skill-reviews/review-gates.md`).
 - [x] Complete 15-skill catalog (16 baseline skills + 32 expansion skills across Web 3D, Quality Validation, Domain Planners, Process Discipline, Asset/Sourcing, Color/Format/Output, Recipe/Pack Ops, Runtime Path Discipline).
-- [x] Full-catalog machine-readable `contract.json` coverage (14/15 skills, 199 edges, 16-state routing precedence determinism) and deterministic `SKILL.md` managed sections (`scripts/build-registry.mjs`).
+- [x] Full-catalog machine-readable `contract.json` coverage (16/16 skills, 204 edges, 16-state routing precedence determinism) and deterministic `SKILL.md` managed sections (`scripts/build-registry.mjs`).
 - [x] Deep enrichment across all **199/199 skill reference guides** (principled BSDF tables, multi-engine export parity, 6-gate mesh/UV QA rules, reference-silhouette checks, Superpowers-style verification rubrics).
 
 ### Knowledge, Recipes, SceneSpec Compiler & Behavioral Evals
 - [x] Architecture Reconciliation & Knowledge/Recipe Foundation: 20-source citation registry (`registry/knowledge-sources.json`), 30-record domain knowledge catalog (`registry/knowledge-catalog.json`), 10-record recipe catalog (`registry/recipe-catalog.json`), bilingual retrieval index (`registry/catalog-index.json`), and 90/90 retrieval eval suite (`evals/catalog-retrieval-evals.json`).
 - [x] Deterministic `SceneSpec` → `ExecutionPlan` compiler & skill harmonizer (`scripts/compile-scene-plan.mjs`), Ajv Draft 2020-12 schema suite (`schemas/*.schema.json`), and shared catalog ZIP export (`dist/shared-catalog/blendops-knowledge-and-recipes.zip`).
-- [x] Full-catalog machine-readable evaluation suites (`evals/suites/*.eval.json`, 14/15 skills, 274/274 deterministic cases passing via `npm run evals:run`).
+- [x] Full-catalog machine-readable evaluation suites (`evals/suites/*.eval.json`, 16/16 skills, 280/280 deterministic cases passing via `npm run evals:run`).
 
 ### Safe Runtime Governance, MCP Qualification & Async Client
 - [x] Typed 18-operation runtime registry (`registry/runtime-operations.json`), capability tiers (`L0`–`L3`), fail-closed pre-mutation `.blend` checkpoints, and rollback protocol (`scripts/runtime-orchestrator.mjs`).

@@ -3,18 +3,18 @@
   "auditPhase": "v1.0.0-current",
   "releaseVersion": "1.0.0",
   "repository": "ThanhNguyxnOrg/blendops",
-  "branch": "devin/1795439308-build-skill",
-  "sourceCommitSha": "028e9dde9e701f947562a2e170b77e236706ddf7",
-  "sourceCommitShort": "028e9dd",
-  "sourceCommitDate": "2026-11-23 13:34:25 +0000",
+  "branch": "devin/1795441667-look-check",
+  "sourceCommitSha": "fa09c19dc32774247019de632e6a2e3c9494e316",
+  "sourceCommitShort": "fa09c19",
+  "sourceCommitDate": "2026-11-23 14:05:47 +0000",
   "auditProvenance": {
-    "sourceCommitSha": "028e9dde9e701f947562a2e170b77e236706ddf7",
-    "sourceCommitShort": "028e9dd",
-    "sourceCommitDate": "2026-11-23 13:34:25 +0000",
+    "sourceCommitSha": "fa09c19dc32774247019de632e6a2e3c9494e316",
+    "sourceCommitShort": "fa09c19",
+    "sourceCommitDate": "2026-11-23 14:05:47 +0000",
     "workingTreeState": "dirty",
     "snapshotBasis": "working-tree-on-top-of-source-commit",
-    "uncommittedChangeCount": 2,
-    "auditedInputsSha256": "f288edacebf2df7e16a0c0c2aca2d5678519edf20de597d79bdb53545ca8b29c",
+    "uncommittedChangeCount": 1,
+    "auditedInputsSha256": "402b738d74e874c52e019ccec449f6d39e0479d421bb6c97db87f78a72650b4c",
     "selfReferentialCommitRule": "A Git commit cannot contain its own final commit SHA inside tracked files. sourceCommitSha records the verified HEAD commit present when the generator ran, workingTreeState and snapshotBasis record whether uncommitted working-tree changes were present on top of sourceCommitSha, and auditedInputsSha256 digests the exact audited file contents."
   },
   "commitChain": [
@@ -25,17 +25,17 @@
     },
     {
       "milestone": "BlendOps v1.0.0 Head Snapshot",
-      "commitSha": "028e9dde9e701f947562a2e170b77e236706ddf7",
+      "commitSha": "fa09c19dc32774247019de632e6a2e3c9494e316",
       "summary": "Verified production release baseline covering 48 skills, 4 laws, 10 recipes, SceneSpec/ExecutionPlan compilation, MCP qualification, GLB inspection, and 26 agent install targets"
     }
   ],
   "releaseContext": {
     "releaseTag": "v1.0.0",
     "title": "BlendOps 1.0.0 — Portable Blender Workflow, Knowledge Catalog, Safe Installer & Runtime Qualification",
-    "sourceCommitSha": "028e9dde9e701f947562a2e170b77e236706ddf7",
+    "sourceCommitSha": "fa09c19dc32774247019de632e6a2e3c9494e316",
     "workingTreeState": "dirty",
     "snapshotBasis": "working-tree-on-top-of-source-commit",
-    "auditedInputsSha256": "f288edacebf2df7e16a0c0c2aca2d5678519edf20de597d79bdb53545ca8b29c",
+    "auditedInputsSha256": "402b738d74e874c52e019ccec449f6d39e0479d421bb6c97db87f78a72650b4c",
     "auditedInputsManifest": "docs/audits/audited-inputs.manifest.json",
     "provenanceNote": "A Git commit cannot embed its own final commit SHA inside tracked files; sourceCommitSha records the verified HEAD present when audit snapshots were generated, while auditedInputsSha256 hashes all inputs declared in docs/audits/audited-inputs.manifest.json."
   },
@@ -46,7 +46,7 @@
         "script": "npm run docs:check",
         "command": "node scripts/check-docs.mjs",
         "status": "Passed",
-        "verifiedScope": "Active Markdown files, frontmatter limits, relative links, Path 1 Blender 5.1+ attribution, truth-state guard, 18-heading skill structure, 26-target adapter matrix consistency, and 30-file bundle summaries"
+        "verifiedScope": "Active Markdown files, frontmatter limits, relative links, Path 1 Blender 5.1+ attribution, truth-state guard, 18-heading skill structure, 26-target adapter matrix consistency, and 32-file bundle summaries"
       },
       {
         "script": "npm run catalog:check",
@@ -70,19 +70,19 @@
         "script": "npm run registry:check",
         "command": "node scripts/build-registry.mjs --check",
         "status": "Passed",
-        "verifiedScope": "Draft 2020-12 Ajv2020 contract schema validation across all 15/15 catalog skills, 16-state precedence ladder overlap/reachability, 195-edge acyclic progression DAG, and managed Markdown sync"
+        "verifiedScope": "Draft 2020-12 Ajv2020 contract schema validation across all 16/16 catalog skills, 16-state precedence ladder overlap/reachability, 195-edge acyclic progression DAG, and managed Markdown sync"
       },
       {
         "script": "npm run evals:check",
         "command": "node scripts/run-evals.mjs --check",
         "status": "Passed",
-        "verifiedScope": "Draft 2020-12 Ajv2020 evaluation schema (2.0.0) validation across all 15/15 catalog suites (274 cases) and evals/index.json synchronization"
+        "verifiedScope": "Draft 2020-12 Ajv2020 evaluation schema (2.0.0) validation across all 16/16 catalog suites (274 cases) and evals/index.json synchronization"
       },
       {
         "script": "npm run evals:run",
         "command": "node scripts/run-evals.mjs",
         "status": "Passed",
-        "verifiedScope": "274/274 deterministic fixture, truth-state separation, contract-routing, and specialist contract-handoff assertions passed across 15/15 skills (live_model: Not Run, blender_runtime: Not Run)"
+        "verifiedScope": "280/280 deterministic fixture, truth-state separation, contract-routing, and specialist contract-handoff assertions passed across 16/16 skills (live_model: Not Run, blender_runtime: Not Run)"
       },
       {
         "script": "npm run bundles:summaries:check",
@@ -94,7 +94,7 @@
         "script": "npm run skills:export",
         "command": "node scripts/export-claude-skills.mjs",
         "status": "Passed",
-        "verifiedScope": "15 ZIP archives in dist/claude-skills/desktop-zips/ and 15 folders in dist/claude-skills/claude-code-skills/"
+        "verifiedScope": "16 ZIP archives in dist/claude-skills/desktop-zips/ and 16 folders in dist/claude-skills/claude-code-skills/"
       },
       {
         "script": "npm test",
@@ -106,8 +106,8 @@
   },
   "truthStates": {
     "staticValidation": "Verified",
-    "contractRoutingPilot": "Verified (15/15 skills contracted; 3 routing participants + 11 specialist contracts)",
-    "deterministicEvalFixtures": "Verified (15/15 skills, 274 cases: 35 contract_routing + 72 contract_handoff + 167 deterministic_fixture)",
+    "contractRoutingPilot": "Verified (16/16 skills contracted; 3 routing participants + 11 specialist contracts)",
+    "deterministicEvalFixtures": "Verified (16/16 skills, 280 cases: 35 contract_routing + 76 contract_handoff + 169 deterministic_fixture)",
     "liveModelEval": "Not Run",
     "blenderRuntimeExecution": "Not Run",
     "blenderArtifacts": "Not Produced"

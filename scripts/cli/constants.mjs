@@ -314,7 +314,7 @@ export const SUPPORTED_TARGETS = Object.freeze({
     scope: 'bundle-output',
     requiresProject: false,
     requiresOut: true,
-    description: 'User-managed manual import/upload package under --out (15 per-skill ZIPs + manual bundle); no UI automation.',
+    description: 'User-managed manual import/upload package under --out (16 per-skill ZIPs + manual bundle); no UI automation.',
   },
 });
 

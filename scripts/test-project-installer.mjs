@@ -73,8 +73,8 @@ test('Scenario 1: --doctor is read-only and reports repository/target readiness 
     assert.equal(result.filesCreated.length, 0);
     assert.equal(result.filesModified.length, 0);
     assert.ok(
-      result.limitations.some((l) => l.includes('15 canonical skills verified')),
-      'doctor should report 15 canonical skills verified'
+      result.limitations.some((l) => l.includes('16 canonical skills verified')),
+      'doctor should report 16 canonical skills verified'
     );
     assertHonestTruthStates(result);
 
@@ -666,7 +666,7 @@ test('Scenario 18: --target claude-desktop --out <tempDir> generates verified ma
     assert.match(topReadmeText, /Artifact status: `Not Produced`/);
 
     const zipFiles = fs.readdirSync(zipDir).filter((f) => f.endsWith('.zip'));
-    assert.equal(zipFiles.length, 15, 'must export all 15 skill ZIP archives');
+    assert.equal(zipFiles.length, 16, 'must export all 16 skill ZIP archives');
     assert.ok(
       writeRes.limitations.some((l) => l.includes('Does not automate Claude Desktop UI import')),
       'must include limitation stating it does not automate Claude Desktop UI import'
@@ -1452,7 +1452,7 @@ test('Scenario 30: Source fingerprinting hashes all skill files, references, and
   try {
     const fixtureRepo = createMinimalFixtureRepo(tempBase);
     const baseInfo = computeBlendOpsSourceFingerprint(fixtureRepo);
-    assert.equal(baseInfo.skillCount, 15);
+    assert.equal(baseInfo.skillCount, 16);
     assert.ok(baseInfo.sourceFileCount > 250, 'must hash all recursive skill and bundle files');
 
     // 1. Modifying a skill SKILL.md changes the fingerprint and invalidates a prior --dry-run plan
