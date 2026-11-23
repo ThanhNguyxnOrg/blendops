@@ -4,7 +4,7 @@
  *
  * Covers:
  * 1. Architecture Audit & Schema Hardening:
- *    - Reconciled Skill Architecture Audit (16 skills, 211 reference files, 8 needs_semantic_review).
+ *    - Reconciled Skill Architecture Audit (16 skills, 212 reference files, 8 needs_semantic_review).
  *    - Real JSON Schema Draft 2020-12 (Ajv2020) enforcement and negative schema rejection tests.
  *    - Evidence-state promotion/demotion gate (`evaluateEvidencePromotionGate`).
  *    - Source authority tier taxonomy + Blender/glTF version applicability across all 30 knowledge records and 10 recipes.
@@ -81,14 +81,14 @@ describe('Agent Consumption, SceneSpec & Skill Harmonizer', () => {
     // 1.1 Reconciled Skill Architecture Audit counts & honest classification metadata
     const audit = generateSkillArchitectureAuditData(ROOT);
     assert.equal(audit.summary.total_skills_audited, 16);
-    assert.equal(audit.summary.total_skill_references_classified, 211);
+    assert.equal(audit.summary.total_skill_references_classified, 212);
     assert.equal(audit.summary.reference_classification_breakdown.outdated_or_duplicated, 0);
     assert.equal(audit.summary.needs_semantic_review_count, 5);
     assert.equal(audit.classification_methodology.needs_semantic_review_count, 5);
     assert.equal(audit.classification_methodology.methods_breakdown.knowledge_promotion_mapping, 37);
     assert.equal(audit.classification_methodology.methods_breakdown.rule_based_governance_and_recipe_mapping, 91);
     assert.equal(audit.classification_methodology.methods_breakdown.human_semantic_review, 0);
-    assert.equal(audit.classification_methodology.methods_breakdown.rule_based_path_and_heading_inspection, 83);
+    assert.equal(audit.classification_methodology.methods_breakdown.rule_based_path_and_heading_inspection, 84);
 
     const needsReviewRefs = audit.reference_classifications.filter(
       (r) => r.review_status === 'needs_semantic_review',

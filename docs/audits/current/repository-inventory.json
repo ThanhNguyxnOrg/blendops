@@ -1562,7 +1562,7 @@
       "generatorScript": null,
       "safeToMoveOrRemove": false,
       "byteSize": 22255,
-      "sha256": "6693f45ff6a80e0eeef94085f02df0a86a16c6cbee721833a37be30c86423c48"
+      "sha256": "213c5502d961e566c5d9c9c4aca9106e08afad58840d3b99f0b55e4a193e5414"
     },
     {
       "path": "docs/adapter-registry.md",
@@ -1891,8 +1891,8 @@
       "isGenerated": true,
       "generatorScript": "scripts/build-knowledge-catalog.mjs",
       "safeToMoveOrRemove": false,
-      "byteSize": 314573,
-      "sha256": "dd84df43562d4db7cb805a5d38125cd5459552ffdbe85cd6e7478a9f33dd1744"
+      "byteSize": 315713,
+      "sha256": "5ccc1ed8035778cf91d6ebee80d919fc99c877a259477b757a919e92c5387bdc"
     },
     {
       "path": "docs/audits/skill-architecture-audit.md",
@@ -1907,7 +1907,7 @@
       "generatorScript": "scripts/build-knowledge-catalog.mjs",
       "safeToMoveOrRemove": false,
       "byteSize": 21502,
-      "sha256": "49abc14e6cae6550550256f9db9b7d2c8dc4e3ccaea9ba14bd47e621c1d54dd8"
+      "sha256": "de42ccdda004a9e7117e7dd1f98b7824e88cd89871159eb2f5df969ae1cbaa8e"
     },
     {
       "path": "docs/blender-version-compatibility.md",
@@ -2251,8 +2251,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 2820,
-      "sha256": "9257eade62dc56aab0d7fe309edd4137912a76954e92c89ae9b2141aed11d50c"
+      "byteSize": 2705,
+      "sha256": "e73225189a75848fe1e42c1150a9368d484e8027ac15ebe9a76eda0a0b66ce04"
     },
     {
       "path": "docs/examples/agent-install-prompt.md",
@@ -2972,7 +2972,7 @@
       "generatorScript": null,
       "safeToMoveOrRemove": false,
       "byteSize": 8779,
-      "sha256": "5a36a839eec367dbdee8455533cffa059711ee67b12f8bf700e68bc126fc2d34"
+      "sha256": "30b07e2d309c3908db974e8aad4d94da967df8508edcf5a3d95e01c75e7d16ed"
     },
     {
       "path": "docs/runtime-stack-strategy.md",
@@ -3046,8 +3046,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 8902,
-      "sha256": "22669e06b32af7e9b490c40114577a4f539d604c57904aad405c774a777f1141"
+      "byteSize": 9120,
+      "sha256": "e17efb45b859bc56f1c8765450a726bd2c1d80e00acb33f640788244f23c8b48"
     },
     {
       "path": "docs/workflow-contract.md",
@@ -4216,8 +4216,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 41779,
-      "sha256": "d677526b9f49e839a805e65cbdd0e08ef75414b68a19f9c712689ba0c9454f30"
+      "byteSize": 42034,
+      "sha256": "438f8adbd21a55ee6fb4823906f365b86866f2457479f6529aee93d9a59834ab"
     },
     {
       "path": "scripts/cli/args.mjs",
@@ -4502,7 +4502,7 @@
       "generatorScript": null,
       "safeToMoveOrRemove": false,
       "byteSize": 94215,
-      "sha256": "1e0211e6cbe3c43cf5d731775edb40a2f50c02701cf83e2052eeb7246ad0c9d0"
+      "sha256": "cea08f5bcacad895762806727e718e67cb731abb7c01e203e2ccc0e4e2bfef9d"
     },
     {
       "path": "scripts/generate-glb-handoff-report.mjs",
@@ -4591,8 +4591,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 8295,
-      "sha256": "69d37c3adad95d48b312461e6ad7a0b66b80712b7fbf46b30dbe5a3a6e54cb69"
+      "byteSize": 7381,
+      "sha256": "b8311d8ae8cea6f0155c5b698a68374817a40d0153bd372cf1b47d032f9874b0"
     },
     {
       "path": "scripts/runtime-orchestrator.mjs",
@@ -4787,7 +4787,7 @@
       "generatorScript": null,
       "safeToMoveOrRemove": false,
       "byteSize": 12929,
-      "sha256": "82ee20bb702008a4800f20a49a86bbb8b116d767e0c601b42d4a346f412dbe09"
+      "sha256": "0153f38e3c4f797c018ca62c6fea868d04a6944e1599cc6f083eb12bc1e880b5"
     },
     {
       "path": "scripts/test-live-runtime-eval.mjs",
@@ -4922,7 +4922,7 @@
       "generatorScript": null,
       "safeToMoveOrRemove": false,
       "byteSize": 26012,
-      "sha256": "cf2d8963241be1b62b28cf88481e300d4bad0ef359697b2508fece3407e72d5e"
+      "sha256": "5efc17126e50d234e964a3bd3f1fad9a76402e41ef03ef4723a8518a47094734"
     },
     {
       "path": "scripts/test-skill-selection.mjs",
@@ -4936,8 +4936,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 3857,
-      "sha256": "09951d905c7994b4f003e34cb90de980a334bcb2dfed3d8209f1c91b14c143c1"
+      "byteSize": 3425,
+      "sha256": "fd128dbd316ba635fa061eb95ceb2b3f24fe665dd188ab6b40f96c2e096dabfc"
     },
     {
       "path": "scripts/test-skill-templates.mjs",
@@ -5206,8 +5206,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 12319,
-      "sha256": "7ad7d3ab5723cc3ee1e10ac6764f5a6b33c5fdbd76e33ebbc0942b8545b6231c"
+      "byteSize": 13028,
+      "sha256": "ea487b3e3472f89a38a90e099a9657a08ba858db522300af27ae89f72a8d3b44"
     },
     {
       "path": "skills/blendops-assets/contract.json",
@@ -5236,8 +5236,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 11788,
-      "sha256": "1298ed33642cd1528f420538d499d24cb8962262a465103401b3b240565fe465"
+      "byteSize": 11936,
+      "sha256": "3991942398d95603925d1fd2ad88b54fc96edc7967915eccf0b3ac97ad8f6f58"
     },
     {
       "path": "skills/blendops-assets/references/asset-fallback-strategy.md",
@@ -5836,8 +5836,8 @@
       "isGenerated": false,
       "generatorScript": null,
       "safeToMoveOrRemove": false,
-      "byteSize": 9912,
-      "sha256": "08f5ebef6777993f0a04dcf8a8155ae72e917d5a34bdddf2b6d2939f20bcaf35"
+      "byteSize": 10124,
+      "sha256": "dca340a8d45e3ae9932f031ee6618a89698a0b3681c712cad98e72b0486c073e"
     },
     {
       "path": "skills/blendops-build/contract.json",

@@ -97,6 +97,7 @@ Before use:
 - `BLENDER_MCP_SAFE_MODE=1` validates scripts before they run in Blender; the socket has no auth — keep it on `localhost`.
 - Do not claim preview, render, GLB, or Blender artifacts without generated evidence.
 - Record failures, caveats, prompts, actions, and generated file paths if you later use this path experimentally.
+- Keep the Poly Haven, Sketchfab, Hyper3D and Hunyuan3D integrations off unless the asset plan and the user approved that source; see the [asset source gate](../skills/blendops-assets/references/asset-source-gate.md).
 
 ---
 

@@ -93,6 +93,10 @@ This skill must not install Blender, run Blender, configure a runtime bridge, mu
 | Path 2 (community `mcp-for-blender` (formerly `blender-mcp`)) | `uvx mcp-for-blender` registered in client config + `addon.py` installed/enabled in Blender 3.0+; read `../../docs/unofficial-runtime-bridges.md` first; explicit user opt-in for `execute_blender_code` (no sandbox). |
 | CLI fallback (appendix) | Exact Blender executable/CLI command, input/script, output paths, logs, validation evidence; see the [scoped mech-prop CLI eval](https://github.com/ThanhNguyxnOrg/blendops/blob/main/docs/evals/cli-fallback-mech-prop.md) as an example, not as evidence of the current run. |
 
+## Asset source gate
+
+Fetch, import, or AI-generate an asset (Poly Haven, Sketchfab, Hyper3D, Hunyuan3D, or any other tool that downloads or generates) only when the locked asset plan names it and its source, and the user approved that call this session after hearing the cost, what data leaves their machine, and the license. Otherwise use the plan's fallback or ask. Details and the evidence record: [asset-source-gate](references/asset-source-gate.md).
+
 ## Decision tree
 
 - Need assets → [discovery](references/asset-discovery.md).
@@ -107,6 +111,7 @@ This skill must not install Blender, run Blender, configure a runtime bridge, mu
 - [asset-style-check](references/asset-style-check.md) — Check style fit against the brief.
 - [asset-fallback-strategy](references/asset-fallback-strategy.md) — Plan fallbacks when assets are missing.
 - [asset-library-plan](references/asset-library-plan.md) — Organize a reusable library.
+- [asset-source-gate](references/asset-source-gate.md) — When an agent may fetch or generate an asset.
 
 ## Mode handling
 
@@ -178,6 +183,7 @@ Limitations: <gaps>
 - Recommending "paste this Python" as the user's fix.
 - Describing Anthropic Connector as standalone.
 - Loading every reference file instead of the one the step needs.
+- Calling an asset download or AI model generator the plan and the user did not approve.
 
 ## Cross-skill handoff
 <!-- blendops:generated:start handoffs -->
@@ -209,6 +215,7 @@ Limitations: <gaps>
 - [asset-discovery.md](references/asset-discovery.md)
 - [asset-fallback-strategy.md](references/asset-fallback-strategy.md)
 - [asset-library-plan.md](references/asset-library-plan.md)
+- [asset-source-gate.md](references/asset-source-gate.md)
 - [asset-license-checker.md](references/asset-license-checker.md)
 - [asset-strategy-decision-tree.md](references/asset-strategy-decision-tree.md)
 - [asset-style-check.md](references/asset-style-check.md)

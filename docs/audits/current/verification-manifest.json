@@ -14,7 +14,7 @@
     "workingTreeState": "dirty",
     "snapshotBasis": "working-tree-on-top-of-source-commit",
     "uncommittedChangeCount": 1,
-    "auditedInputsSha256": "c1a2e306ce621ecd19be833065fce663cb4183888209bdc236204061d3c07232",
+    "auditedInputsSha256": "21900103578e0672a4db7e310fd4faa8445d26c9b127e85df9d8557a0f7d0c0a",
     "selfReferentialCommitRule": "A Git commit cannot contain its own final commit SHA inside tracked files. sourceCommitSha records the verified HEAD commit present when the generator ran, workingTreeState and snapshotBasis record whether uncommitted working-tree changes were present on top of sourceCommitSha, and auditedInputsSha256 digests the exact audited file contents."
   },
   "commitChain": [
@@ -35,7 +35,7 @@
     "sourceCommitSha": "510dd4d2307fcd5042a1a66a24f7d2da771d43bc",
     "workingTreeState": "dirty",
     "snapshotBasis": "working-tree-on-top-of-source-commit",
-    "auditedInputsSha256": "c1a2e306ce621ecd19be833065fce663cb4183888209bdc236204061d3c07232",
+    "auditedInputsSha256": "21900103578e0672a4db7e310fd4faa8445d26c9b127e85df9d8557a0f7d0c0a",
     "auditedInputsManifest": "docs/audits/audited-inputs.manifest.json",
     "provenanceNote": "A Git commit cannot embed its own final commit SHA inside tracked files; sourceCommitSha records the verified HEAD present when audit snapshots were generated, while auditedInputsSha256 hashes all inputs declared in docs/audits/audited-inputs.manifest.json."
   },
